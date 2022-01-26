@@ -1,208 +1,104 @@
-╒══════════╤═══════════════════════════════════╤════════════╤═══════════════╤═══════════╤════════════════════════╤═══════════════════════════════════╤══════════════╕
-│          │ Name                              │ Sector     │ Industry      │ Country   │ City                   │ Website                           │ Market Cap   │
-╞══════════╪═══════════════════════════════════╪════════════╪═══════════════╪═══════════╪════════════════════════╪═══════════════════════════════════╪══════════════╡
-│ 0LW.F    │ Neovacs S.A.                      │ Healthcare │ Biotechnology │ France    │ Paris                  │ http://www.neovacs.fr             │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ 16O.F    │ Oncodesign Société Anonyme        │ Healthcare │ Biotechnology │ France    │ Dijon                  │ http://www.oncodesign.com         │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ 1F6.F    │ Fermentalg Société Anonyme        │ Healthcare │ Biotechnology │ France    │ Libourne               │ http://www.fermentalg.com/fr      │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ 2E4.F    │ ERYTECH Pharma S.A.               │ Healthcare │ Biotechnology │ France    │ Lyon                   │ http://www.erytech.com            │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ 2E4A.F   │ ERYTECH Pharma S.A.               │ Healthcare │ Biotechnology │ France    │ Lyon                   │ http://www.erytech.com            │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ 2X1.F    │ ABIVAX Société Anonyme            │ Healthcare │ Biotechnology │ France    │ Paris                  │ http://www.abivax.com             │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ 35L.F    │ Pherecydes Pharma Société anonyme │ Healthcare │ Biotechnology │ France    │ Romainville            │ http://www.pherecydes-pharma.com  │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ 3HB.SG   │ Hybrigenics Société Anonyme       │ Healthcare │ Biotechnology │ France    │                        │ http://www.hybrigenics.com        │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ 3MM.F    │ Advicenne S.A.                    │ Healthcare │ Biotechnology │ France    │ Paris                  │ http://www.advicenne.com          │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ 3VG.F    │ Theranexus Société Anonyme        │ Healthcare │ Biotechnology │ France    │ Lyon                   │ http://www.theranexus.com         │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ 4W4.F    │ Lysogene S.A.                     │ Healthcare │ Biotechnology │ France    │ Neuilly-sur-Seine      │ http://www.lysogene.com           │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ 5D8.F    │ Deinove SA                        │ Healthcare │ Biotechnology │ France    │ Grabels                │ http://www.deinove.com            │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ 5NR.F    │ Nanobiotix S.A.                   │ Healthcare │ Biotechnology │ France    │ Paris                  │ http://www.nanobiotix.com         │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ 5NRA.F   │ Nanobiotix S.A.                   │ Healthcare │ Biotechnology │ France    │ Paris                  │ http://www.nanobiotix.com         │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ 609.F    │ ABIONYX Pharma SA                 │ Healthcare │ Biotechnology │ France    │ Labege                 │ http://abionyx.com                │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ 609.SG   │ ABIONYX Pharma SA                 │ Healthcare │ Biotechnology │ France    │ Labege                 │ http://abionyx.com                │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ 6IV.F    │ Inventiva S.A.                    │ Healthcare │ Biotechnology │ France    │ Daix                   │ http://www.inventivapharma.com    │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ 6IVA.F   │ Inventiva S.A.                    │ Healthcare │ Biotechnology │ France    │ Daix                   │ http://www.inventivapharma.com    │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ 6OP.F    │ OSE Immunotherapeutics SA         │ Healthcare │ Biotechnology │ France    │ Nantes                 │ http://www.ose-immuno.com         │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ 6XB.F    │ Biophytis SA                      │ Healthcare │ Biotechnology │ France    │ Paris                  │ http://www.biophytis.com          │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ 6XBA.F   │ Biophytis SA                      │ Healthcare │ Biotechnology │ France    │ Paris                  │ http://www.biophytis.com          │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ 76D.F    │ Medesis Pharma S.A.               │ Healthcare │ Biotechnology │ France    │ Montpellier            │ http://www.medesispharma.com      │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ 7PO.F    │ Poxel S.A.                        │ Healthcare │ Biotechnology │ France    │ Lyon                   │ http://www.poxelpharma.com        │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ 8JD.F    │ Valbiotis SA                      │ Healthcare │ Biotechnology │ France    │ PÃ©rigny               │ http://www.valbiotis.com          │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ A89.F    │ Adocia SA                         │ Healthcare │ Biotechnology │ France    │ Lyon                   │ http://www.adocia.com             │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ AAVXF    │ ABIVAX Société Anonyme            │ Healthcare │ Biotechnology │ France    │ Paris                  │ http://www.abivax.com             │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ ABNX.PA  │ ABIONYX Pharma SA                 │ Healthcare │ Biotechnology │ France    │ Labege                 │ http://abionyx.com                │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ ABVX.PA  │ ABIVAX Société Anonyme            │ Healthcare │ Biotechnology │ France    │ Paris                  │ http://www.abivax.com             │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ ADOC.PA  │ Adocia SA                         │ Healthcare │ Biotechnology │ France    │ Lyon                   │ http://www.adocia.com             │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ ADOCY    │ Adocia SA                         │ Healthcare │ Biotechnology │ France    │ Lyon                   │ http://www.adocia.com             │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ ADVIC.PA │ Advicenne S.A.                    │ Healthcare │ Biotechnology │ France    │ Paris                  │ http://www.advicenne.com          │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ ALBPS.PA │ Biophytis SA                      │ Healthcare │ Biotechnology │ France    │ Paris                  │ http://www.biophytis.com          │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ ALCLS.PA │ Cellectis S.A.                    │ Healthcare │ Biotechnology │ France    │ Paris                  │ http://www.cellectis.com          │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ ALDEI.PA │ Deinove SA                        │ Healthcare │ Biotechnology │ France    │ Grabels                │ http://www.deinove.com            │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ ALGEN.PA │ genOway Société anonyme           │ Healthcare │ Biotechnology │ France    │ Lyon                   │ http://www.genoway.com            │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ ALHYG.PA │ Hybrigenics Société Anonyme       │ Healthcare │ Biotechnology │ France    │                        │ http://www.hybrigenics.com        │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ ALINT.PA │ IntegraGen SA                     │ Healthcare │ Biotechnology │ France    │ Ãvry                        │ http://www.integragen.com         │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ ALMDP.PA │ Medesis Pharma S.A.               │ Healthcare │ Biotechnology │ France    │ Montpellier            │ http://www.medesispharma.com      │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ ALNEV.PA │ Neovacs S.A.                      │ Healthcare │ Biotechnology │ France    │ Paris                  │ http://www.neovacs.fr             │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ ALONC.PA │ Oncodesign Société Anonyme        │ Healthcare │ Biotechnology │ France    │ Dijon                  │ http://www.oncodesign.com         │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ ALONX.PA │ Onxeo SA                          │ Healthcare │ Biotechnology │ France    │ Paris                  │ http://www.onxeo.com              │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ ALPAT.PA │ Plant Advanced Technologies SA    │ Healthcare │ Biotechnology │ France    │ VandÅuvre-lÃ¨s-Nancy                        │ http://www.plantadvanced.com      │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ ALPHA.PA │ Pharnext SA                       │ Healthcare │ Biotechnology │ France    │ Issy-les-Moulineaux    │ http://www.pharnext.com           │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ ALPHE.PA │ Pherecydes Pharma Société anonyme │ Healthcare │ Biotechnology │ France    │ Romainville            │ http://www.pherecydes-pharma.com  │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ ALQGC.PA │ Quantum Genomics Société Anonyme  │ Healthcare │ Biotechnology │ France    │ Paris                  │ http://www.quantum-genomics.com   │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ ALSEN.PA │ Sensorion SA                      │ Healthcare │ Biotechnology │ France    │ Montpellier            │ http://www.sensorion.com          │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ ALTHX.PA │ Theranexus Société Anonyme        │ Healthcare │ Biotechnology │ France    │ Lyon                   │ http://www.theranexus.com         │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ ALVAL.PA │ Valbiotis SA                      │ Healthcare │ Biotechnology │ France    │ PÃ©rigny               │ http://www.valbiotis.com          │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ AYJ.F    │ Valneva SE                        │ Healthcare │ Biotechnology │ France    │ Saint-Herblain         │ http://valneva.com                │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ BPTS     │ Biophytis SA                      │ Healthcare │ Biotechnology │ France    │ Paris                  │ http://www.biophytis.com          │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ C4X.F    │ Onxeo SA                          │ Healthcare │ Biotechnology │ France    │ Paris                  │ http://www.onxeo.com              │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ CLLS     │ Cellectis S.A.                    │ Healthcare │ Biotechnology │ France    │ Paris                  │ http://www.cellectis.com          │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ CMVLF    │ Cellectis S.A.                    │ Healthcare │ Biotechnology │ France    │ Paris                  │ http://www.cellectis.com          │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ COX.PA   │ Nicox S.A.                        │ Healthcare │ Biotechnology │ France    │ Valbonne               │ http://www.nicox.com              │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ DBV.F    │ DBV Technologies S.A.             │ Healthcare │ Biotechnology │ France    │ Montrouge              │ http://www.dbv-technologies.com   │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ DBV.PA   │ DBV Technologies S.A.             │ Healthcare │ Biotechnology │ France    │ Montrouge              │ http://www.dbv-technologies.com   │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ DBVA.F   │ DBV Technologies S.A.             │ Healthcare │ Biotechnology │ France    │ Montrouge              │ http://www.dbv-technologies.com   │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ DBVT     │ DBV Technologies S.A.             │ Healthcare │ Biotechnology │ France    │ Montrouge              │ http://www.dbv-technologies.com   │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ ERYP.PA  │ ERYTECH Pharma S.A.               │ Healthcare │ Biotechnology │ France    │ Lyon                   │ http://www.erytech.com            │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ ERYP     │ ERYTECH Pharma S.A.               │ Healthcare │ Biotechnology │ France    │ Lyon                   │ http://www.erytech.com            │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ FALG.PA  │ Fermentalg Société Anonyme        │ Healthcare │ Biotechnology │ France    │ Libourne               │ http://www.fermentalg.com/fr      │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ G061.F   │ Genkyotex SA                      │ Healthcare │ Biotechnology │ France    │ LabÃ¨ge                │ http://www.genkyotex.com          │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ G49N.F   │ GenSight Biologics S.A.           │ Healthcare │ Biotechnology │ France    │ Paris                  │ http://www.gensight-biologics.com │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ GKTX.PA  │ Genkyotex SA                      │ Healthcare │ Biotechnology │ France    │ LabÃ¨ge                │ http://www.genkyotex.com          │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ GNFT.PA  │ Genfit SA                         │ Healthcare │ Biotechnology │ France    │ Loos                   │ http://www.genfit.com             │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ GNFT     │ Genfit S.A.                       │ Healthcare │ Biotechnology │ France    │ Loos                   │ http://www.genfit.com             │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ GNFTF    │ Genfit SA                         │ Healthcare │ Biotechnology │ France    │ Loos                   │ http://www.genfit.com             │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ IDD.F    │ Innate Pharma S.A.                │ Healthcare │ Biotechnology │ France    │ Marseille              │ http://www.innate-pharma.com      │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ IDDA.MU  │ Innate Pharma S.A.                │ Healthcare │ Biotechnology │ France    │ Marseille              │ http://www.innate-pharma.com      │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ INRLF    │ Valneva SE                        │ Healthcare │ Biotechnology │ France    │ Saint-Herblain         │ http://valneva.com                │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ IPH.PA   │ Innate Pharma S.A.                │ Healthcare │ Biotechnology │ France    │ Marseille              │ http://www.innate-pharma.com      │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ IPHA     │ Innate Pharma S.A.                │ Healthcare │ Biotechnology │ France    │ Marseille              │ http://www.innate-pharma.com      │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ IPHYF    │ Innate Pharma S.A.                │ Healthcare │ Biotechnology │ France    │ Marseille              │ http://www.innate-pharma.com      │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ IVA.PA   │ Inventiva S.A.                    │ Healthcare │ Biotechnology │ France    │ Daix                   │ http://www.inventivapharma.com    │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ IVA      │ Inventiva S.A.                    │ Healthcare │ Biotechnology │ France    │ Daix                   │ http://www.inventivapharma.com    │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ JEH.F    │ genOway Société anonyme           │ Healthcare │ Biotechnology │ France    │ Lyon                   │ http://www.genoway.com            │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ LYS.PA   │ Lysogene S.A.                     │ Healthcare │ Biotechnology │ France    │ Neuilly-sur-Seine      │ http://www.lysogene.com           │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ MDCLF    │ MedinCell S.A.                    │ Healthcare │ Biotechnology │ France    │ Jacou                  │ http://www.medincell.com          │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ MEB.F    │ MedinCell S.A.                    │ Healthcare │ Biotechnology │ France    │ Jacou                  │ http://www.medincell.com          │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ MEDCL.PA │ MedinCell S.A.                    │ Healthcare │ Biotechnology │ France    │ Jacou                  │ http://www.medincell.com          │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ NANO.PA  │ Nanobiotix S.A.                   │ Healthcare │ Biotechnology │ France    │ Paris                  │ http://www.nanobiotix.com         │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ NBTX     │ Nanobiotix S.A.                   │ Healthcare │ Biotechnology │ France    │ Paris                  │ http://www.nanobiotix.com         │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ NICXF    │ Nicox S.A.                        │ Healthcare │ Biotechnology │ France    │ Valbonne               │ http://www.nicox.com              │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ NXOA.F   │ Nicox S.A.                        │ Healthcare │ Biotechnology │ France    │ Valbonne               │ http://www.nicox.com              │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ ONXEO.CO │ Onxeo SA                          │ Healthcare │ Biotechnology │ France    │ Paris                  │ http://www.onxeo.com              │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ OSE.PA   │ OSE Immunotherapeutics SA         │ Healthcare │ Biotechnology │ France    │ Nantes                 │ http://www.ose-immuno.com         │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ P0X.F    │ Pharnext SA                       │ Healthcare │ Biotechnology │ France    │ Issy-les-Moulineaux    │ http://www.pharnext.com           │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ P0X.SG   │ Pharnext SA                       │ Healthcare │ Biotechnology │ France    │ Issy-les-Moulineaux    │ http://www.pharnext.com           │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ PNEXF    │ Pharnext SA                       │ Healthcare │ Biotechnology │ France    │ Issy-les-Moulineaux    │ http://www.pharnext.com           │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ POXEL.PA │ Poxel S.A.                        │ Healthcare │ Biotechnology │ France    │ Lyon                   │ http://www.poxelpharma.com        │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ RFM.F    │ Sensorion SA                      │ Healthcare │ Biotechnology │ France    │ Montpellier            │ http://www.sensorion.com          │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ RFM.SG   │ Sensorion SA                      │ Healthcare │ Biotechnology │ France    │ Montpellier            │ http://www.sensorion.com          │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ SIGHT.PA │ GenSight Biologics S.A.           │ Healthcare │ Biotechnology │ France    │ Paris                  │ http://www.gensight-biologics.com │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ TGNA.F   │ Transgene SA                      │ Healthcare │ Biotechnology │ France    │ Illkirch-Graffenstaden │ http://www.transgene.fr           │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ TNG.PA   │ Transgene SA                      │ Healthcare │ Biotechnology │ France    │ Illkirch-Graffenstaden │ http://www.transgene.fr           │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ TRGNF    │ Transgene SA                      │ Healthcare │ Biotechnology │ France    │ Illkirch-Graffenstaden │ http://www.transgene.fr           │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ VLA.PA   │ Valneva SE                        │ Healthcare │ Biotechnology │ France    │ Saint-Herblain         │ http://valneva.com                │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ XUP.F    │ Genfit SA                         │ Healthcare │ Biotechnology │ France    │ Loos                   │ http://www.genfit.com             │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ XUP.SG   │ Genfit SA                         │ Healthcare │ Biotechnology │ France    │ Loos                   │ http://www.genfit.com             │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ XUPB.MU  │ Genfit SA                         │ Healthcare │ Biotechnology │ France    │ Loos                   │ http://www.genfit.com             │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ ZVA.F    │ Cellectis S.A.                    │ Healthcare │ Biotechnology │ France    │ Paris                  │ http://www.cellectis.com          │ Small Cap    │
-├──────────┼───────────────────────────────────┼────────────┼───────────────┼───────────┼────────────────────────┼───────────────────────────────────┼──────────────┤
-│ ZVAA.F   │ Cellectis S.A.                    │ Healthcare │ Biotechnology │ France    │ Paris                  │ http://www.cellectis.com          │ Small Cap    │
-╘══════════╧═══════════════════════════════════╧════════════╧═══════════════╧═══════════╧════════════════════════╧═══════════════════════════════════╧══════════════╛ 
+                                  long_name      sector       industry country                    city                            website market_cap
+0LW.F                          Neovacs S.A.  Healthcare  Biotechnology  France                   Paris              http://www.neovacs.fr  Small Cap
+16O.F            Oncodesign Société Anonyme  Healthcare  Biotechnology  France                   Dijon          http://www.oncodesign.com  Small Cap
+1F6.F            Fermentalg Société Anonyme  Healthcare  Biotechnology  France                Libourne       http://www.fermentalg.com/fr  Small Cap
+2E4.F                   ERYTECH Pharma S.A.  Healthcare  Biotechnology  France                    Lyon             http://www.erytech.com  Small Cap
+2E4A.F                  ERYTECH Pharma S.A.  Healthcare  Biotechnology  France                    Lyon             http://www.erytech.com  Small Cap
+2X1.F                ABIVAX Société Anonyme  Healthcare  Biotechnology  France                   Paris              http://www.abivax.com  Small Cap
+35L.F     Pherecydes Pharma Société anonyme  Healthcare  Biotechnology  France             Romainville   http://www.pherecydes-pharma.com  Small Cap
+3HB.SG          Hybrigenics Société Anonyme  Healthcare  Biotechnology  France                    None         http://www.hybrigenics.com  Small Cap
+3MM.F                        Advicenne S.A.  Healthcare  Biotechnology  France                   Paris           http://www.advicenne.com  Small Cap
+3VG.F            Theranexus Société Anonyme  Healthcare  Biotechnology  France                    Lyon          http://www.theranexus.com  Small Cap
+4W4.F                         Lysogene S.A.  Healthcare  Biotechnology  France       Neuilly-sur-Seine            http://www.lysogene.com  Small Cap
+5D8.F                            Deinove SA  Healthcare  Biotechnology  France                 Grabels             http://www.deinove.com  Small Cap
+5NR.F                       Nanobiotix S.A.  Healthcare  Biotechnology  France                   Paris          http://www.nanobiotix.com  Small Cap
+5NRA.F                      Nanobiotix S.A.  Healthcare  Biotechnology  France                   Paris          http://www.nanobiotix.com  Small Cap
+609.F                     ABIONYX Pharma SA  Healthcare  Biotechnology  France                  Labege                 http://abionyx.com  Small Cap
+609.SG                    ABIONYX Pharma SA  Healthcare  Biotechnology  France                  Labege                 http://abionyx.com  Small Cap
+6IV.F                        Inventiva S.A.  Healthcare  Biotechnology  France                    Daix     http://www.inventivapharma.com  Small Cap
+6IVA.F                       Inventiva S.A.  Healthcare  Biotechnology  France                    Daix     http://www.inventivapharma.com  Small Cap
+6OP.F             OSE Immunotherapeutics SA  Healthcare  Biotechnology  France                  Nantes          http://www.ose-immuno.com  Small Cap
+6XB.F                          Biophytis SA  Healthcare  Biotechnology  France                   Paris           http://www.biophytis.com  Small Cap
+6XBA.F                         Biophytis SA  Healthcare  Biotechnology  France                   Paris           http://www.biophytis.com  Small Cap
+76D.F                   Medesis Pharma S.A.  Healthcare  Biotechnology  France             Montpellier       http://www.medesispharma.com  Small Cap
+7PO.F                            Poxel S.A.  Healthcare  Biotechnology  France                    Lyon         http://www.poxelpharma.com  Small Cap
+8JD.F                          Valbiotis SA  Healthcare  Biotechnology  France                PÃ©rigny           http://www.valbiotis.com  Small Cap
+A89.F                             Adocia SA  Healthcare  Biotechnology  France                    Lyon              http://www.adocia.com  Small Cap
+AAVXF                ABIVAX Société Anonyme  Healthcare  Biotechnology  France                   Paris              http://www.abivax.com  Small Cap
+ABNX.PA                   ABIONYX Pharma SA  Healthcare  Biotechnology  France                  Labege                 http://abionyx.com  Small Cap
+ABVX.PA              ABIVAX Société Anonyme  Healthcare  Biotechnology  France                   Paris              http://www.abivax.com  Small Cap
+ADOC.PA                           Adocia SA  Healthcare  Biotechnology  France                    Lyon              http://www.adocia.com  Small Cap
+ADOCY                             Adocia SA  Healthcare  Biotechnology  France                    Lyon              http://www.adocia.com  Small Cap
+ADVIC.PA                     Advicenne S.A.  Healthcare  Biotechnology  France                   Paris           http://www.advicenne.com  Small Cap
+ALBPS.PA                       Biophytis SA  Healthcare  Biotechnology  France                   Paris           http://www.biophytis.com  Small Cap
+ALCLS.PA                     Cellectis S.A.  Healthcare  Biotechnology  France                   Paris           http://www.cellectis.com  Small Cap
+ALDEI.PA                         Deinove SA  Healthcare  Biotechnology  France                 Grabels             http://www.deinove.com  Small Cap
+ALGEN.PA            genOway Société anonyme  Healthcare  Biotechnology  France                    Lyon             http://www.genoway.com  Small Cap
+ALHYG.PA        Hybrigenics Société Anonyme  Healthcare  Biotechnology  France                    None         http://www.hybrigenics.com  Small Cap
+ALINT.PA                      IntegraGen SA  Healthcare  Biotechnology  France                   Ãvry          http://www.integragen.com  Small Cap
+ALMDP.PA                Medesis Pharma S.A.  Healthcare  Biotechnology  France             Montpellier       http://www.medesispharma.com  Small Cap
+ALNEV.PA                       Neovacs S.A.  Healthcare  Biotechnology  France                   Paris              http://www.neovacs.fr  Small Cap
+ALONC.PA         Oncodesign Société Anonyme  Healthcare  Biotechnology  France                   Dijon          http://www.oncodesign.com  Small Cap
+ALONX.PA                           Onxeo SA  Healthcare  Biotechnology  France                   Paris               http://www.onxeo.com  Small Cap
+ALPAT.PA     Plant Advanced Technologies SA  Healthcare  Biotechnology  France   VandÅuvre-lÃ¨s-Nancy       http://www.plantadvanced.com  Small Cap
+ALPHA.PA                        Pharnext SA  Healthcare  Biotechnology  France     Issy-les-Moulineaux            http://www.pharnext.com  Small Cap
+ALPHE.PA  Pherecydes Pharma Société anonyme  Healthcare  Biotechnology  France             Romainville   http://www.pherecydes-pharma.com  Small Cap
+ALQGC.PA   Quantum Genomics Société Anonyme  Healthcare  Biotechnology  France                   Paris    http://www.quantum-genomics.com  Small Cap
+ALSEN.PA                       Sensorion SA  Healthcare  Biotechnology  France             Montpellier           http://www.sensorion.com  Small Cap
+ALTHX.PA         Theranexus Société Anonyme  Healthcare  Biotechnology  France                    Lyon          http://www.theranexus.com  Small Cap
+ALVAL.PA                       Valbiotis SA  Healthcare  Biotechnology  France                PÃ©rigny           http://www.valbiotis.com  Small Cap
+AYJ.F                            Valneva SE  Healthcare  Biotechnology  France          Saint-Herblain                 http://valneva.com  Small Cap
+BPTS                           Biophytis SA  Healthcare  Biotechnology  France                   Paris           http://www.biophytis.com  Small Cap
+C4X.F                              Onxeo SA  Healthcare  Biotechnology  France                   Paris               http://www.onxeo.com  Small Cap
+CLLS                         Cellectis S.A.  Healthcare  Biotechnology  France                   Paris           http://www.cellectis.com  Small Cap
+CMVLF                        Cellectis S.A.  Healthcare  Biotechnology  France                   Paris           http://www.cellectis.com  Small Cap
+COX.PA                           Nicox S.A.  Healthcare  Biotechnology  France                Valbonne               http://www.nicox.com  Small Cap
+DBV.F                 DBV Technologies S.A.  Healthcare  Biotechnology  France               Montrouge    http://www.dbv-technologies.com  Small Cap
+DBV.PA                DBV Technologies S.A.  Healthcare  Biotechnology  France               Montrouge    http://www.dbv-technologies.com  Small Cap
+DBVA.F                DBV Technologies S.A.  Healthcare  Biotechnology  France               Montrouge    http://www.dbv-technologies.com  Small Cap
+DBVT                  DBV Technologies S.A.  Healthcare  Biotechnology  France               Montrouge    http://www.dbv-technologies.com  Small Cap
+ERYP.PA                 ERYTECH Pharma S.A.  Healthcare  Biotechnology  France                    Lyon             http://www.erytech.com  Small Cap
+ERYP                    ERYTECH Pharma S.A.  Healthcare  Biotechnology  France                    Lyon             http://www.erytech.com  Small Cap
+FALG.PA          Fermentalg Société Anonyme  Healthcare  Biotechnology  France                Libourne       http://www.fermentalg.com/fr  Small Cap
+G061.F                         Genkyotex SA  Healthcare  Biotechnology  France                 LabÃ¨ge           http://www.genkyotex.com  Small Cap
+G49N.F              GenSight Biologics S.A.  Healthcare  Biotechnology  France                   Paris  http://www.gensight-biologics.com  Small Cap
+GKTX.PA                        Genkyotex SA  Healthcare  Biotechnology  France                 LabÃ¨ge           http://www.genkyotex.com  Small Cap
+GNFT.PA                           Genfit SA  Healthcare  Biotechnology  France                    Loos              http://www.genfit.com  Small Cap
+GNFT                            Genfit S.A.  Healthcare  Biotechnology  France                    Loos              http://www.genfit.com  Small Cap
+GNFTF                             Genfit SA  Healthcare  Biotechnology  France                    Loos              http://www.genfit.com  Small Cap
+IDD.F                    Innate Pharma S.A.  Healthcare  Biotechnology  France               Marseille       http://www.innate-pharma.com  Small Cap
+IDDA.MU                  Innate Pharma S.A.  Healthcare  Biotechnology  France               Marseille       http://www.innate-pharma.com  Small Cap
+INRLF                            Valneva SE  Healthcare  Biotechnology  France          Saint-Herblain                 http://valneva.com  Small Cap
+IPH.PA                   Innate Pharma S.A.  Healthcare  Biotechnology  France               Marseille       http://www.innate-pharma.com  Small Cap
+IPHA                     Innate Pharma S.A.  Healthcare  Biotechnology  France               Marseille       http://www.innate-pharma.com  Small Cap
+IPHYF                    Innate Pharma S.A.  Healthcare  Biotechnology  France               Marseille       http://www.innate-pharma.com  Small Cap
+IVA.PA                       Inventiva S.A.  Healthcare  Biotechnology  France                    Daix     http://www.inventivapharma.com  Small Cap
+IVA                          Inventiva S.A.  Healthcare  Biotechnology  France                    Daix     http://www.inventivapharma.com  Small Cap
+JEH.F               genOway Société anonyme  Healthcare  Biotechnology  France                    Lyon             http://www.genoway.com  Small Cap
+LYS.PA                        Lysogene S.A.  Healthcare  Biotechnology  France       Neuilly-sur-Seine            http://www.lysogene.com  Small Cap
+MDCLF                        MedinCell S.A.  Healthcare  Biotechnology  France                   Jacou           http://www.medincell.com  Small Cap
+MEB.F                        MedinCell S.A.  Healthcare  Biotechnology  France                   Jacou           http://www.medincell.com  Small Cap
+MEDCL.PA                     MedinCell S.A.  Healthcare  Biotechnology  France                   Jacou           http://www.medincell.com  Small Cap
+NANO.PA                     Nanobiotix S.A.  Healthcare  Biotechnology  France                   Paris          http://www.nanobiotix.com  Small Cap
+NBTX                        Nanobiotix S.A.  Healthcare  Biotechnology  France                   Paris          http://www.nanobiotix.com  Small Cap
+NICXF                            Nicox S.A.  Healthcare  Biotechnology  France                Valbonne               http://www.nicox.com  Small Cap
+NXOA.F                           Nicox S.A.  Healthcare  Biotechnology  France                Valbonne               http://www.nicox.com  Small Cap
+ONXEO.CO                           Onxeo SA  Healthcare  Biotechnology  France                   Paris               http://www.onxeo.com  Small Cap
+OSE.PA            OSE Immunotherapeutics SA  Healthcare  Biotechnology  France                  Nantes          http://www.ose-immuno.com  Small Cap
+P0X.F                           Pharnext SA  Healthcare  Biotechnology  France     Issy-les-Moulineaux            http://www.pharnext.com  Small Cap
+P0X.SG                          Pharnext SA  Healthcare  Biotechnology  France     Issy-les-Moulineaux            http://www.pharnext.com  Small Cap
+PNEXF                           Pharnext SA  Healthcare  Biotechnology  France     Issy-les-Moulineaux            http://www.pharnext.com  Small Cap
+POXEL.PA                         Poxel S.A.  Healthcare  Biotechnology  France                    Lyon         http://www.poxelpharma.com  Small Cap
+RFM.F                          Sensorion SA  Healthcare  Biotechnology  France             Montpellier           http://www.sensorion.com  Small Cap
+RFM.SG                         Sensorion SA  Healthcare  Biotechnology  France             Montpellier           http://www.sensorion.com  Small Cap
+SIGHT.PA            GenSight Biologics S.A.  Healthcare  Biotechnology  France                   Paris  http://www.gensight-biologics.com  Small Cap
+TGNA.F                         Transgene SA  Healthcare  Biotechnology  France  Illkirch-Graffenstaden            http://www.transgene.fr  Small Cap
+TNG.PA                         Transgene SA  Healthcare  Biotechnology  France  Illkirch-Graffenstaden            http://www.transgene.fr  Small Cap
+TRGNF                          Transgene SA  Healthcare  Biotechnology  France  Illkirch-Graffenstaden            http://www.transgene.fr  Small Cap
+VLA.PA                           Valneva SE  Healthcare  Biotechnology  France          Saint-Herblain                 http://valneva.com  Small Cap
+XUP.F                             Genfit SA  Healthcare  Biotechnology  France                    Loos              http://www.genfit.com  Small Cap
+XUP.SG                            Genfit SA  Healthcare  Biotechnology  France                    Loos              http://www.genfit.com  Small Cap
+XUPB.MU                           Genfit SA  Healthcare  Biotechnology  France                    Loos              http://www.genfit.com  Small Cap
+ZVA.F                        Cellectis S.A.  Healthcare  Biotechnology  France                   Paris           http://www.cellectis.com  Small Cap
+ZVAA.F                       Cellectis S.A.  Healthcare  Biotechnology  France                   Paris           http://www.cellectis.com  Small Cap
 

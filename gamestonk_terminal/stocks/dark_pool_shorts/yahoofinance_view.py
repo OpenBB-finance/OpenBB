@@ -2,8 +2,7 @@
 __docformat__ = "numpy"
 
 import os
-from tabulate import tabulate
-from gamestonk_terminal.helper_funcs import export_data
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.stocks.dark_pool_shorts import yahoofinance_model
 from gamestonk_terminal.rich_config import console
 
@@ -25,14 +24,8 @@ def display_most_shorted(num_stocks: int, export: str):
     if df.empty:
         console.print("No data found.")
     else:
-        print(
-            tabulate(
-                df,
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            )
+        print_rich_table(
+            df, headers=list(df.columns), show_index=False, title="Most Shorted Stocks"
         )
     console.print("")
 

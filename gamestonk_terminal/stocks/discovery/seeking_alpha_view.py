@@ -3,10 +3,9 @@ __docformat__ = "numpy"
 
 from typing import List
 import os
-from tabulate import tabulate
 import pandas as pd
-from gamestonk_terminal.helper_funcs import export_data
 
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.stocks.discovery import seeking_alpha_model
 from gamestonk_terminal.rich_config import console
 
@@ -54,14 +53,11 @@ def upcoming_earning_release_dates(num_pages: int, num_earnings: int, export: st
         df_earn.index = df_earn["Ticker"].values
         df_earn.drop(columns=["Ticker"], inplace=True)
 
-        print(
-            tabulate(
-                df_earn,
-                showindex=True,
-                headers=[f"Earnings on {earning_date.date()}"],
-                tablefmt="fancy_grid",
-            ),
-            "\n",
+        print_rich_table(
+            df_earn,
+            show_index=True,
+            headers=[f"Earnings on {earning_date.date()}"],
+            title="Upcoming Earnings Releases",
         )
 
     if export:
