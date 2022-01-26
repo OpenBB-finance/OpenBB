@@ -81,7 +81,12 @@ class ModelsNamespace:
 
 
 class TerminalStyle:
-    """The class that helps with handling of style configurations."""
+    """The class that helps with handling of style configurations.
+
+    It serves styles for 3 libraries. For `Matplotlib` this class serves absolute paths
+    to the .mplstyle files. For `Matplotlib Finance` and `Rich` this class serves custom
+    styles as python dictionaries.
+    """
 
     _STYLES_FOLDER = os.path.abspath(
         os.path.join(os.path.dirname(__file__), "..", "styles")
@@ -89,19 +94,13 @@ class TerminalStyle:
     DEFAULT_STYLES_LOCATION = os.path.join(_STYLES_FOLDER, "default")
     USER_STYLES_LOCATION = os.path.join(_STYLES_FOLDER, "user")
 
-    # Matplotlib stylesheets
     mpl_styles_available: Dict[str, str] = {}
-    # Matplotlib loads custom styles from absolute paths to the .mplstyle files
     mpl_style: str = ""
 
-    # MPLFinance style dictionaries
     mpf_styles_available: Dict[str, str] = {}
-    # Matplotlib Finance constructs custom styles from python dictionaries
     mpf_style: Dict = {}
 
-    # Rich style dictionaries
     console_styles_available: Dict[str, str] = {}
-    # Rich constructs custom styles from python dictionaries
     console_style: Dict[str, str] = {}
 
     def __init__(
@@ -111,9 +110,6 @@ class TerminalStyle:
         console_style: Optional[str] = "",
     ) -> None:
         """Instantiate a terminal style class
-
-        An instance of this class helps serving stylesheets for matplotlib, mplfinance
-        and rich in a way the stylesheets can be directly used by the libraries.
 
         The stylesheet files should be placed to the `styles/default` or `styles/user`
         folders. The parameters required for class instantiation are stylesheet names
@@ -137,22 +133,22 @@ class TerminalStyle:
         if mpl_style in self.mpl_styles_available:
             self.mpl_style = self.mpl_styles_available[mpl_style]
         else:
-            self.mpl_style = self.mpl_styles_available["boring"]
+            self.mpl_style = self.mpl_styles_available["dark"]
 
         if mpf_style in self.mpf_styles_available:
             with open(self.mpf_styles_available[mpf_style]) as stylesheet:
                 self.mpf_style = json.load(stylesheet)
-                self.mpf_style["base_mpl_style"] = self.mpl_style
+            self.mpf_style["base_mpl_style"] = self.mpl_style
         else:
-            with open(self.mpf_styles_available["boring"]) as stylesheet:
+            with open(self.mpf_styles_available["dark"]) as stylesheet:
                 self.mpf_style = json.load(stylesheet)
-                self.mpf_style["base_mpl_style"] = self.mpl_style
+            self.mpf_style["base_mpl_style"] = self.mpl_style
 
         if console_style in self.console_styles_available:
             with open(self.console_styles_available[console_style]) as stylesheet:
                 self.console_style = json.load(stylesheet)
         else:
-            with open(self.console_styles_available["boring"]) as stylesheet:
+            with open(self.console_styles_available["dark"]) as stylesheet:
                 self.console_style = json.load(stylesheet)
 
     def load_custom_fonts_from_folder(self, folder: str) -> None:
@@ -172,6 +168,19 @@ class TerminalStyle:
                 font_manager.fontManager.addfont(font_path)
 
     def load_available_styles_from_folder(self, folder: str) -> None:
+        """Load custom styles from folder.
+
+        Parses the styles/default and styles/user folders and loads style files.
+        To be recognized files need to follow a naming convention:
+        *.mplstyle        - matplotlib stylesheets
+        *.mpfstyle.json   - matplotlib finance stylesheets
+        *.richstyle.json  - rich stylesheets
+
+        Parameters
+        ----------
+        folder : str
+            Path to the folder containing the stylesheets
+        """
         for stf in os.listdir(folder):
             if stf.endswith(".mplstyle"):
                 self.mpl_styles_available[stf.replace(".mplstyle", "")] = os.path.join(
@@ -187,20 +196,24 @@ class TerminalStyle:
                 ] = os.path.join(folder, stf)
 
     def applyMPLstyle(self):
+        """Apply style to the current matplotlib context."""
         plt.style.use(self.mpl_style)
         self.mpf_style["mavcolors"] = plt.rcParams["axes.prop_cycle"].by_key()["color"]
 
     def hex_to_rgb(self, color):
+        """Convert hex color to RGB color."""
         color = color.lstrip("#")
         return tuple(int(color[i : i + 2], 16) for i in (0, 2, 4))  # noqa: E203
 
     def get_pie_colors(self) -> List:
+        """Get color sequence for a pie chart."""
         plt.style.use(self.mpl_style)
         colors = plt.rcParams["axes.prop_cycle"].by_key()["color"]
         colors.sort(key=self.hex_to_rgb)
         return colors
 
     def get_bar_colors(self) -> List:
+        """Get reversed color sequence for a bar chart."""
         plt.style.use(self.mpl_style)
         colors = plt.rcParams["axes.prop_cycle"].by_key()["color"]
         colors.sort(key=self.hex_to_rgb)
