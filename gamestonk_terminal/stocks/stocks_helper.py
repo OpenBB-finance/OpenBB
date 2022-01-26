@@ -314,17 +314,16 @@ def display_candle(
             plt.ion()
         kwargs = {"mav": ma} if ma else {}
 
-        mpf.plot(
+        fig, _ = mpf.plot(
             df_stock,
             type="candle",
             style=cfg.style.mpf_style,
             volume=True,
-            title=f"\nStock {s_ticker}",
             addplot=ap0,
             xrotation=10,
             figratio=(10, 7),
             figscale=1.10,
-            scale_padding={"left": 0.3, "right": 1, "top": 0.8, "bottom": 0.8},
+            scale_padding={"left": 0.3, "right": 1.1, "top": 0.8, "bottom": 0.8},
             figsize=(plot_autoscale()),
             update_width_config=dict(
                 candle_linewidth=0.6,
@@ -333,7 +332,14 @@ def display_candle(
                 volume_width=0.8,
             ),
             warn_too_much_data=10000,
+            returnfig=True,
             **kwargs,
+        )
+        fig.suptitle(
+            f"Stock {s_ticker}",
+            x=0.055,
+            y=0.965,
+            horizontalalignment="left",
         )
     else:
         fig = make_subplots(
