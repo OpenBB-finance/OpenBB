@@ -5,7 +5,7 @@ import argparse
 import os
 from os import listdir
 from os.path import isfile, join
-from typing import List, Dict
+from typing import List
 from datetime import datetime
 
 from prompt_toolkit.completion import NestedCompleter
