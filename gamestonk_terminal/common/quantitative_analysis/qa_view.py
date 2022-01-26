@@ -646,8 +646,8 @@ def display_var(data: pd.DataFrame, use_mean: bool, ticker: str, adjusted_var: b
         str_var_label = "VaR:"
         str_title = ""
 
-    dict = {str_var_label: var_list, str_hist_label: hist_var_list}
-    data = pd.DataFrame(dict, index=["90%", "95%", "99%"])
+    data_dictonary = {str_var_label: var_list, str_hist_label: hist_var_list}
+    data = pd.DataFrame(data_dictonary, index=["90%", "95%", "99%"])
 
     print_rich_table(
         data,
