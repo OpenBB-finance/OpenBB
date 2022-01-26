@@ -2,11 +2,14 @@
 __docformat__ = "numpy"
 
 import os
-from tabulate import tabulate
 import matplotlib.pyplot as plt
 import mplfinance as mpf
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
+from gamestonk_terminal.helper_funcs import (
+    export_data,
+    plot_autoscale,
+    print_rich_table,
+)
 from gamestonk_terminal.portfolio.brokers.robinhood import robinhood_model
 from gamestonk_terminal.rich_config import console
 
@@ -31,10 +34,9 @@ def display_holdings(export: str = ""):
         Format to export data, by default ""
     """
     holdings = robinhood_model.get_holdings()
-    if gtff.USE_TABULATE_DF:
-        print(tabulate(holdings, headers=holdings.columns, tablefmt="fancy_grid"))
-    else:
-        console.print(holdings.to_string())
+    print_rich_table(
+        holdings, headers=list(holdings.columns), title="Robinhood Holdings"
+    )
     console.print("")
     export_data(
         export,

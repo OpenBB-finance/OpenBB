@@ -4,11 +4,8 @@ __docformat__ = "numpy"
 from typing import List
 import os
 
-from tabulate import tabulate
-
-from gamestonk_terminal.helper_funcs import export_data
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.stocks.comparison_analysis import finviz_compare_model
-from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.rich_config import console
 
 
@@ -29,18 +26,12 @@ def screener(similar: List[str], data_type: str, export: str = ""):
     if df_screen.empty:
         console.print("No screened data found.")
     else:
-        if gtff.USE_TABULATE_DF:
-            # TODO: figure out right way to use different floatfmts across different cols
-            print(
-                tabulate(
-                    df_screen,
-                    headers=df_screen.columns,
-                    showindex=False,
-                    tablefmt="fancy_grid",
-                )
-            )
-        else:
-            console.print(df_screen.to_string())
+        print_rich_table(
+            df_screen,
+            headers=list(df_screen.columns),
+            show_index=False,
+            title="Stock Screener",
+        )
 
     console.print("")
     export_data(

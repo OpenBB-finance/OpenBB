@@ -155,7 +155,7 @@ Stock: [/param]{stock_text}
             default=10,
             type=int,
             dest="amount",
-            help="Enter the number of Equities you wish to see in the Tabulate window.",
+            help="Enter the number of Equities you wish to see in the table window.",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-q")

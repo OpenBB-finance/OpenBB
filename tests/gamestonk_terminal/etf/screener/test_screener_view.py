@@ -5,6 +5,7 @@ import pytest
 
 # IMPORTATION INTERNAL
 from gamestonk_terminal.etf.screener import screener_view
+from gamestonk_terminal import helper_funcs
 
 
 @pytest.fixture(scope="module")
@@ -26,7 +27,7 @@ def vcr_config():
 )
 def test_view_screener(preset, num_to_show, sortby, ascend, mocker):
     mocker.patch.object(
-        target=screener_view.gtff, attribute="USE_TABULATE_DF", new=False
+        target=helper_funcs.gtff, attribute="USE_TABULATE_DF", new=False
     )
     screener_view.view_screener(
         preset, num_to_show=num_to_show, sortby=sortby, ascend=ascend, export=""

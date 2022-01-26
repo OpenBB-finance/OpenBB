@@ -3,11 +3,8 @@ __docformat__ = "numpy"
 
 import os
 
-from tabulate import tabulate
-
-from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.economy import wsj_model
-from gamestonk_terminal.helper_funcs import export_data
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.rich_config import console
 
 
@@ -24,18 +21,13 @@ def display_overview(export: str):
         console.print("No overview data available\n")
         return
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df_data,
-                showindex=False,
-                headers=df_data.columns,
-                floatfmt=".2f",
-                tablefmt="fancy_grid",
-            )
-        )
-    else:
-        console.print(df_data.to_string(index=False))
+    print_rich_table(
+        df_data,
+        show_index=False,
+        headers=list(df_data.columns),
+        title="Market Overview",
+    )
+
     console.print("")
 
     export_data(
@@ -59,18 +51,9 @@ def display_indices(export: str):
         console.print("No indices data available\n")
         return
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df_data,
-                showindex=False,
-                headers=df_data.columns,
-                floatfmt=".2f",
-                tablefmt="fancy_grid",
-            )
-        )
-    else:
-        console.print(df_data.to_string(index=False))
+    print_rich_table(
+        df_data, show_index=False, headers=list(df_data.columns), title="US Indices"
+    )
     console.print("")
 
     export_data(
@@ -94,18 +77,12 @@ def display_futures(export: str):
         console.print("No futures/commodities data available\n")
         return
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df_data,
-                showindex=False,
-                headers=df_data.columns,
-                floatfmt=".2f",
-                tablefmt="fancy_grid",
-            )
-        )
-    else:
-        console.print(df_data.to_string(index=False))
+    print_rich_table(
+        df_data,
+        show_index=False,
+        headers=list(df_data.columns),
+        title="Futures/Commodities",
+    )
     console.print("")
 
     export_data(
@@ -129,18 +106,9 @@ def display_usbonds(export: str):
         console.print("No US bonds data available\n")
         return
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df_data,
-                showindex=False,
-                headers=df_data.columns,
-                floatfmt=".2f",
-                tablefmt="fancy_grid",
-            )
-        )
-    else:
-        console.print(df_data.to_string(index=False))
+    print_rich_table(
+        df_data, show_index=False, headers=list(df_data.columns), title="US Bonds"
+    )
     console.print("")
 
     export_data(
@@ -164,18 +132,9 @@ def display_glbonds(export: str):
         console.print("No global bonds data available\n")
         return
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df_data,
-                showindex=False,
-                headers=df_data.columns,
-                floatfmt=".2f",
-                tablefmt="fancy_grid",
-            )
-        )
-    else:
-        console.print(df_data.to_string(index=False))
+    print_rich_table(
+        df_data, show_index=False, headers=list(df_data.columns), title="Global Bonds"
+    )
     console.print("")
 
     export_data(
@@ -199,18 +158,9 @@ def display_currencies(export: str):
         console.print("No currencies data available\n")
         return
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df_data,
-                showindex=False,
-                headers=df_data.columns,
-                floatfmt=".2f",
-                tablefmt="fancy_grid",
-            )
-        )
-    else:
-        console.print(df_data.to_string(index=False))
+    print_rich_table(
+        df_data, show_index=False, headers=list(df_data.columns), title="Currencies"
+    )
     console.print("")
 
     export_data(

@@ -2,12 +2,10 @@
 __docformat__ = "numpy"
 
 import os
-from tabulate import tabulate
-from gamestonk_terminal.helper_funcs import export_data
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
     very_long_number_formatter,
 )
-from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.cryptocurrency.onchain import ethplorer_model
 from gamestonk_terminal.rich_config import console
 
@@ -43,19 +41,13 @@ def display_address_info(
         lambda x: very_long_number_formatter(x) if x >= 10000 else round(float(x), 4)
     )
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df.head(top),
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        console.print(df.to_string, "\n")
+    print_rich_table(
+        df.head(top),
+        headers=list(df.columns),
+        show_index=False,
+        title="Blockchain Token Information",
+    )
+    console.print("")
 
     export_data(
         export,
@@ -93,19 +85,13 @@ def display_top_tokens(
         if col in df.columns:
             df[col] = df[col].apply(lambda x: very_long_number_formatter(x))
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df.head(top),
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        console.print(df.to_string, "\n")
+    print_rich_table(
+        df.head(top),
+        headers=list(df.columns),
+        show_index=False,
+        title="Top ERC20 Tokens",
+    )
+    console.print("")
 
     export_data(
         export,
@@ -143,19 +129,13 @@ def display_top_token_holders(
     df = df.sort_values(by=sortby, ascending=descend)
     df["balance"] = df["balance"].apply(lambda x: very_long_number_formatter(x))
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df.head(top),
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        console.print(df.to_string, "\n")
+    print_rich_table(
+        df.head(top),
+        headers=list(df.columns),
+        show_index=False,
+        title="ERC20 Token Holder Info",
+    )
+    console.print("")
 
     export_data(
         export,
@@ -195,19 +175,13 @@ def display_address_history(
         lambda x: very_long_number_formatter(x) if x >= 10000 else round(float(x), 4)
     )
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df.head(top),
-                headers=df.columns,
-                floatfmt=".0f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        console.print(df.to_string, "\n")
+    print_rich_table(
+        df.head(top),
+        headers=list(df.columns),
+        show_index=False,
+        title="Historical Transactions Information",
+    )
+    console.print("")
 
     export_data(
         export,
@@ -244,19 +218,10 @@ def display_token_info(
     else:
         df = df[~df["Metric"].isin(socials)]
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df,
-                headers=df.columns,
-                floatfmt=".0f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        console.print(df.to_string, "\n")
+    print_rich_table(
+        df, headers=list(df.columns), show_index=False, title="ERC20 Token Information"
+    )
+    console.print("")
 
     export_data(
         export,
@@ -282,19 +247,13 @@ def display_tx_info(
 
     df = ethplorer_model.get_tx_info(tx_hash)
     df_data = df.copy()
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df,
-                headers=df.columns,
-                floatfmt=".0f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        console.print(df.to_string, "\n")
+    print_rich_table(
+        df,
+        headers=list(df.columns),
+        show_index=False,
+        title="Information About Transactions",
+    )
+    console.print("")
 
     export_data(
         export,
@@ -344,19 +303,13 @@ def display_token_history(
     else:
         df.drop("transactionHash", inplace=True, axis=1)
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df.head(top),
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        console.print(df.to_string, "\n")
+    print_rich_table(
+        df.head(top),
+        headers=list(df.columns),
+        show_index=False,
+        title="Token History Information",
+    )
+    console.print("")
 
     export_data(
         export,
@@ -402,19 +355,13 @@ def display_token_historical_prices(
     df["cap"] = df["cap"].apply(lambda x: very_long_number_formatter(x))
     df = df.sort_values(by=sortby, ascending=descend)
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df.head(top),
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        console.print(df.to_string, "\n")
+    print_rich_table(
+        df.head(top),
+        headers=list(df.columns),
+        show_index=False,
+        title="Historical Token Prices",
+    )
+    console.print("")
 
     export_data(
         export,

@@ -7,7 +7,6 @@ from gamestonk_terminal.helper_funcs import (
     long_number_format,
     print_rich_table,
 )
-from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.rich_config import console
 
 
@@ -52,17 +51,14 @@ def display_crypto_hacks(
             df["Amount [$]"] = df["Amount [$]"].apply(lambda x: long_number_format(x))
             df["Date"] = df["Date"].dt.date
 
-            if gtff.USE_TABULATE_DF:
-                print_rich_table(
-                    df.head(top),
-                    headers=list(df.columns),
-                    floatfmt=".1f",
-                    show_index=False,
-                    title="Major Crypto Hacks",
-                )
-                console.print()
-            else:
-                console.print(df.to_string(index=False), "\n")
+            print_rich_table(
+                df.head(top),
+                headers=list(df.columns),
+                floatfmt=".1f",
+                show_index=False,
+                title="Major Crypto Hacks",
+            )
+            console.print("")
 
             export_data(
                 export,
