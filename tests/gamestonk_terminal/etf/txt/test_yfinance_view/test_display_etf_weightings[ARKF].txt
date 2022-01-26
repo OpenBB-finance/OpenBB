@@ -1,6 +1,6 @@
 
 Sector holdings of ARKF
-<bound method DataFrame.to_string of                         % of holdings in the sector
+                        % of holdings in the sector
 Technology                                    34.03
 Communication Services                        24.13
 Consumer Cyclical                             18.63
@@ -11,5 +11,5 @@ Basic Materials                                0.00
 Consumer Defensive                             0.00
 Utilities                                      0.00
 Industrials                                    0.00
-Energy                                         0.00> 
+Energy                                         0.00
 

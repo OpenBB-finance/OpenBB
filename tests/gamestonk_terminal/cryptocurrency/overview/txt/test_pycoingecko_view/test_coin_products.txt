@@ -1,0 +1,17 @@
+    Rank         Platform    Identifier             Supply_Rate      Borrow_Rate
+0      1        Staked US          Keep                     3.4             None
+1      2  Binance Savings        XTZ001                1.956035             None
+2      3        Staked US     V-Systems                    17.8             None
+3      4  Binance Savings        ZEC001                0.182865             None
+4      5  Binance Savings        UNI001                  1.0001             None
+5      6  Celsius Network  USDC-Polygon                     0.0             None
+6      7  Celsius Network  AAVE-Polygon                     0.0             None
+7      8           Inlock           UNI                    2.64             None
+8      9             dYdX          USDC  0.00000861722030988069  0.0134690445216
+9     10  Binance Savings      WAVES001                5.000135             None
+10    11  Binance Staking         STRAT                     1.5             None
+11    12  Celsius Network           TRU                     0.0             None
+12    13  Celsius Network          ZUSD                     4.5             None
+13    14  Celsius Network          XAUT                    5.36             None
+14    15        Staked US           Dai                   4.212             None
+

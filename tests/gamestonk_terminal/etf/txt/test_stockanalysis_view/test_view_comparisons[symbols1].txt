@@ -13,3 +13,4 @@ Previous Close     102.98       80.24
 52-Week High        98.75       76.91
 Beta                 1.41        1.58
 Holdings               43          44
+
