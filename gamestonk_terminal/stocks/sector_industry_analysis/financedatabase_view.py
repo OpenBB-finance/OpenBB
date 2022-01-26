@@ -14,7 +14,7 @@ from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.helper_funcs import (
     plot_autoscale,
     export_data,
-    rich_table_from_df,
+    print_rich_table,
 )
 from gamestonk_terminal.stocks.sector_industry_analysis import financedatabase_model
 from gamestonk_terminal.rich_config import console
@@ -126,7 +126,7 @@ def display_bars_financials(
         df = df_all.head(limit)
 
         if raw:
-            rich_table_from_df(
+            print_rich_table(
                 df, headers=list(df.columns), show_index=False, title="Bars Financials"
             )
         else:
@@ -279,7 +279,7 @@ def display_companies_per_sector_in_country(
     title += " excluding exchanges" if exclude_exchanges else " including exchanges"
 
     if raw:
-        rich_table_from_df(df, headers=list(df.columns), show_index=True, title=title)
+        print_rich_table(df, headers=list(df.columns), show_index=True, title=title)
     else:
         colors = [
             "b",
@@ -426,7 +426,7 @@ def display_companies_per_industry_in_country(
     title += " excluding exchanges" if exclude_exchanges else " including exchanges"
 
     if raw:
-        rich_table_from_df(df, headers=list(df.columns), show_index=True, title=title)
+        print_rich_table(df, headers=list(df.columns), show_index=True, title=title)
     else:
         colors = [
             "b",
@@ -578,7 +578,7 @@ def display_companies_per_industry_in_sector(
     title += " excluding exchanges" if exclude_exchanges else " including exchanges"
 
     if raw:
-        rich_table_from_df(
+        print_rich_table(
             df,
             headers=list(df.columns),
             show_index=True,
@@ -735,7 +735,7 @@ def display_companies_per_country_in_sector(
     title += " excluding exchanges" if exclude_exchanges else " including exchanges"
 
     if raw:
-        rich_table_from_df(df, headers=list(df.columns), show_index=True, title=title)
+        print_rich_table(df, headers=list(df.columns), show_index=True, title=title)
     else:
         colors = [
             "b",
@@ -885,7 +885,7 @@ def display_companies_per_country_in_industry(
     title += " excluding exchanges" if exclude_exchanges else " including exchanges"
 
     if raw:
-        rich_table_from_df(df, headers=list(df.columns), show_index=True, title=title)
+        print_rich_table(df, headers=list(df.columns), show_index=True, title=title)
     else:
         colors = [
             "b",

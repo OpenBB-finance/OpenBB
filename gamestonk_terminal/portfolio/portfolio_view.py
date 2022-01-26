@@ -9,7 +9,6 @@ import os
 
 import numpy as np
 import pandas as pd
-from tabulate import tabulate
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 from reportlab.lib.utils import ImageReader
@@ -25,7 +24,12 @@ from gamestonk_terminal.portfolio import (
     yfinance_model,
 )
 from gamestonk_terminal.portfolio import reportlab_helpers
-from gamestonk_terminal.helper_funcs import get_rf, plot_autoscale, export_data
+from gamestonk_terminal.helper_funcs import (
+    get_rf,
+    plot_autoscale,
+    export_data,
+    print_rich_table,
+)
 from gamestonk_terminal.portfolio.portfolio_optimization import optimizer_model
 from gamestonk_terminal.rich_config import console
 
@@ -68,19 +72,12 @@ def show_df(df: pd.DataFrame, show: bool) -> None:
 
     df = df.dropna(how="all", axis=1).fillna("")
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df,
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=show,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        console.print(df.to_string, "\n")
+    print_rich_table(
+        df,
+        headers=list(df.columns),
+        show_index=show,
+    )
+    console.print("")
 
 
 def plot_overall_return(
@@ -261,17 +258,7 @@ def display_allocation(data: pd.DataFrame, graph: bool):
     graph: bool
         If pie chart shall be displayed with table"""
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                data,
-                headers=data.columns,
-                tablefmt="fancy_grid",
-                floatfmt=".2f",
-            ),
-        )
-    else:
-        console.print(data.to_string())
+    print_rich_table(data, headers=list(data.columns), title="Allocation")
     console.print("")
 
     if graph:

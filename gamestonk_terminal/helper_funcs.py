@@ -42,7 +42,7 @@ MENU_QUIT = 1
 MENU_RESET = 2
 
 
-def rich_table_from_df(
+def print_rich_table(
     df: pd.DataFrame,
     show_index: bool = False,
     title: str = "",
@@ -724,38 +724,37 @@ def lett_to_num(word: str) -> str:
 
 def get_flair() -> str:
     """Get a flair icon"""
-    flair = {
-        "rocket": "(🚀🚀)",
-        "diamond": "(💎💎)",
-        "stars": "(✨)",
-        "baseball": "(⚾)",
-        "boat": "(⛵)",
-        "phone": "(☎)",
-        "mercury": "(☿)",
-        "sun": "(☼)",
-        "moon": "(☾)",
-        "nuke": "(☢)",
-        "hazard": "(☣)",
-        "tunder": "(☈)",
-        "king": "(♔)",
-        "queen": "(♕)",
-        "knight": "(♘)",
-        "recycle": "(♻)",
-        "scales": "(⚖)",
-        "ball": "(⚽)",
-        "golf": "(⛳)",
-        "piece": "(☮)",
-        "yy": "(☯)",
+    flairs = {
+        ":rocket": "(🚀🚀)",
+        ":diamond": "(💎💎)",
+        ":stars": "(✨)",
+        ":baseball": "(⚾)",
+        ":boat": "(⛵)",
+        ":phone": "(☎)",
+        ":mercury": "(☿)",
+        ":sun": "(☼)",
+        ":moon": "(☾)",
+        ":nuke": "(☢)",
+        ":hazard": "(☣)",
+        ":tunder": "(☈)",
+        ":king": "(♔)",
+        ":queen": "(♕)",
+        ":knight": "(♘)",
+        ":recycle": "(♻)",
+        ":scales": "(⚖)",
+        ":ball": "(⚽)",
+        ":golf": "(⛳)",
+        ":piece": "(☮)",
+        ":yy": "(☯)",
     }
 
-    if flair.get(gtff.USE_FLAIR):
-        if gtff.USE_DATETIME and get_user_timezone_or_invalid() != "INVALID":
-            dtime = datetime.now(pytz.timezone(get_user_timezone())).strftime(
-                "%Y %b %d, %H:%M"
-            )
-            return f"{dtime} {flair[gtff.USE_FLAIR]}"
-        return flair[gtff.USE_FLAIR]
-    return ""
+    flair = flairs[gtff.USE_FLAIR] if gtff.USE_FLAIR in flairs else gtff.USE_FLAIR
+    if gtff.USE_DATETIME and get_user_timezone_or_invalid() != "INVALID":
+        dtime = datetime.now(pytz.timezone(get_user_timezone())).strftime(
+            "%Y %b %d, %H:%M"
+        )
+        return f"{dtime} {flair}"
+    return flair
 
 
 def is_timezone_valid(user_tz: str) -> bool:

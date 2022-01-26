@@ -1,10 +1,12 @@
 crypto
-disc
-coins btc -l 3
+cgtop
+cgtop stablecoins
 cgtrending
-cgvoted
-cgvisited
-cgvolume
 cggainers
+cglosers
 cpsearch bitcoin
+drnft
+drgames
+drdapps
+drdex
 exit

@@ -1,0 +1,33 @@
+
+[CNN]
+    feargreed     CNN Fear and Greed Index
+[Wall St. Journal]
+    overview      market data overview
+    indices       US indices overview
+    futures       futures and commodities overview
+    usbonds       US bonds overview
+    glbonds       global bonds overview
+    currencies    currencies overview
+[Finviz]
+    energy        energy futures overview
+    metals        metals futures overview
+    meats         meats futures overview
+    grains        grains futures overview
+    softs         softs futures overview
+    map           S&P500 index stocks map
+    valuation     valuation of sectors, industry, country
+    performance   performance of sectors, industry, country
+    spectrum      spectrum of sectors, industry, country
+[Alpha Vantage]
+    rtps          real-time performance sectors
+    gdp           real GDP for United States
+    gdpc          quarterly real GDP per Capita data of the United States
+    inf           infation rates for United States
+    cpi           consumer price index for United States
+    tyld          treasury yields for United States
+    unemp         United States unemployment rates
+[NASDAQ DataLink]
+    bigmac        the economists Big Mac index
+
+>   fred          Federal Reserve Economic Data submenu
+

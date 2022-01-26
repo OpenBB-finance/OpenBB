@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import os
 import pandas as pd
 from gamestonk_terminal.stocks.insider import finviz_model
-from gamestonk_terminal.helper_funcs import export_data, rich_table_from_df
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.rich_config import console
 
 
@@ -36,7 +36,7 @@ def last_insider_activity(ticker: str, num: int, export: str):
         ]
     ]
 
-    rich_table_from_df(
+    print_rich_table(
         df.head(num),
         headers=list(df.columns),
         show_index=True,

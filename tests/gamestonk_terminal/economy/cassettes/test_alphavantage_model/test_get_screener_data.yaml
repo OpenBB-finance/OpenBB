@@ -1,0 +1,61 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www.alphavantage.co/query?function=SECTOR&apikey=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA+yW30/bMBDH3/krrEpMIK03n3/GedtoGUxDmig88GgVs0ZrkykxkxDif5/SMmhM
+        eo32NmmvseM7fz/n793jAWOMjS5C9Gziox/l7HH9af35vLyr6pWPRVWOcja6nrFZmMeqZt9CvV4p
+        54Ed1cEvY7EK7B1bFE2s6mLul8ej96/nfPVNZJfhrg7NIty2RwkuxJjjWCjGTS54rjW7nn2Y+iaG
+        uhytf33anDC69OUP9jFnl8Evx1dtoK3w3YRPqrK5X4WazaL/uQxNG4oDF4fb2bTnsGkTfWz/Ho05
+        cNXZcB2LZRGLze9jDph1ls/L2/sm1oVf/tngbGfDWSvIgp34ehMAgZvkhBdd2VWYL8pqWX1/eN7r
+        ZGfvtAz165rurJ0WpS/nL4mI9KYXPoZ6a1m5zvKLWpOimdehTcfXm1ASkCd7V6v7sphvkp6F+lcx
+        fxZIQpYd9iD7lDNkE//wH9c/geskZ5rGtXU3Dhb7k9tCOUaQFCoEJUkSEgwna0EB5yRsBW4wSwOI
+        BA8DqIdqbECT6C3IbCjbDBzv4zVpn9dFVcbFEGKYAdd7iSGojMgbQZJyc7Cc5E0WPKasUto6pZ3W
+        iwaRDaedDX5eZo1gKHqHfbimOZP7cPUhsaDtDoexoAm5xT45OUj6+XHIJMlLuKFqC9C0K4tU4uTF
+        KHDZcFyJZAQuRNCyj9dpzm6Cr8exGk98DOzo5mpyPOilCbBuiDdqQ3cHoYm3JMGaPc4nHQHPghQk
+        /Czto4SIDrglS82lvkK1VARphqJGAWj78H1u3bEFOASZUqlxJBcQGaAiaAkJ2f5+iDZteLtlQANO
+        UYBRQKZ2A0YOWlGAHVlfDjgOpG/TMWc3LglG9cE6a72RhkUoJQ0IHJiBMW99ZNfFjABFDATaptNJ
+        tyaUBcH31oSygOS8q3Q62yWFoBQ4R5FWCiyBWrjUSra8bJ3cW2Dn7az4t8CEkOkIvhsYIqZ2mlwv
+        M2mj63IwGqTdjdEoUJbSVxtQJCEtwew3fGXSbtqhoBCsGliYkiDWOmL/vPglZ8j3QEukFUaC0Tsj
+        4frdbSIdPP0GAAD//wMA/HMV9ksQAAA=
+    headers:
+      Allow:
+      - GET, HEAD, OPTIONS
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 6d28e012ec423abd-CDG
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 24 Jan 2022 11:20:55 GMT
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Cookie
+      Via:
+      - 1.1 vegur
+      X-Frame-Options:
+      - SAMEORIGIN
+    status:
+      code: 200
+      message: OK
+version: 1

@@ -9,7 +9,7 @@ from gamestonk_terminal.helper_funcs import (
     export_data,
     long_number_format,
     plot_autoscale,
-    rich_table_from_df,
+    print_rich_table,
 )
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
     prettify_column_names,
@@ -37,7 +37,7 @@ def display_account_staking_info(
 
     df, report = terramoney_fcd_model.get_staking_account_info(address)
     if not df.empty:
-        rich_table_from_df(
+        print_rich_table(
             df.head(top), headers=list(df.columns), show_index=False, title=report
         )
     console.print("")
@@ -78,7 +78,7 @@ def display_validators(
         for x in prettify_column_names(df.columns)
     ]
 
-    rich_table_from_df(
+    print_rich_table(
         df.head(top),
         headers=list(df.columns),
         floatfmt=".2f",
@@ -122,7 +122,7 @@ def display_gov_proposals(
     df = df.sort_values(by=sortby, ascending=descend).head(top)
     df.columns = prettify_column_names(df.columns)
 
-    rich_table_from_df(
+    print_rich_table(
         df,
         headers=list(df.columns),
         floatfmt=".2f",

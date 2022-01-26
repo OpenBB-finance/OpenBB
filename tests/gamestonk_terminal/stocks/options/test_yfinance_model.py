@@ -56,7 +56,6 @@ def test_get_option_chain(mocker, recorder):
     recorder.capture_list(result_tuple)
 
 
-@pytest.mark.skip
 @pytest.mark.vcr
 @pytest.mark.parametrize(
     "func",
@@ -78,6 +77,12 @@ def test_call_func(func, mocker, recorder):
         return yf_download(*args, **kwargs)
 
     mocker.patch("yfinance.download", side_effect=mock_yf_download)
+
+    # MOCK OPTION
+    mocker.patch(
+        target="gamestonk_terminal.stocks.options.yfinance_model.get_dte",
+        return_value=1,
+    )
 
     result = getattr(yfinance_model, func)(ticker="PM")
 

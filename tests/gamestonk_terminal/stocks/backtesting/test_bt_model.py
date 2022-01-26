@@ -21,14 +21,12 @@ def vcr_config():
     }
 
 
-@pytest.mark.skip
 @pytest.mark.vcr
 def test_get_data(recorder):
     df_stock = bt_model.get_data(ticker="TSLA", start_date="2021-12-05")
     recorder.capture(df_stock)
 
 
-@pytest.mark.skip
 @pytest.mark.vcr
 def test_buy_and_hold(mocker):
     yf_download = stocks_helper.yf.download
@@ -47,7 +45,6 @@ def test_buy_and_hold(mocker):
     assert isinstance(back_test_instance, bt.Backtest)
 
 
-@pytest.mark.skip
 @pytest.mark.vcr
 def test_ema_strategy(mocker):
     yf_download = stocks_helper.yf.download
@@ -72,7 +69,6 @@ def test_ema_strategy(mocker):
     assert isinstance(back_test_instance, bt.backtest.Result)
 
 
-@pytest.mark.skip
 @pytest.mark.vcr
 def test_ema_cross_strategy(mocker):
     yf_download = stocks_helper.yf.download
@@ -99,7 +95,6 @@ def test_ema_cross_strategy(mocker):
     assert isinstance(back_test_instance, bt.backtest.Result)
 
 
-@pytest.mark.skip
 @pytest.mark.vcr
 def test_rsi_strategy(mocker):
     yf_download = stocks_helper.yf.download
