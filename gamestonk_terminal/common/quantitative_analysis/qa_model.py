@@ -4,7 +4,6 @@ __docformat__ = "numpy"
 import warnings
 from typing import Any, Tuple
 import pandas as pd
-import numpy as np
 import statsmodels.api as sm
 from scipy import stats
 from statsmodels.tsa.seasonal import seasonal_decompose
