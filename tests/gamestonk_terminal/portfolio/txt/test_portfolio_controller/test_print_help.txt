@@ -1,20 +1,22 @@
 
->   bro         brokers holdings, 		 supports: robinhood, ally, degiro, coinbase
->   po          portfolio optimization, 	 optimal portfolio weights from pyportfolioopt
->   pa          portfolio analysis, 		 analyse portfolios
+>   bro         brokers holdings, \t\t supports: robinhood, ally, degiro, coinbase
+>   po          portfolio optimization, \t optimal portfolio weights from pyportfolioopt
+>   pa          portfolio analysis, \t\t analyse portfolios[/menu]
 
-Portfolio:
-    load        load data into the portfolio
+[info]Portfolio:[/info][cmds]
+    load        load data into the portfolio[/cmds][param]
+
+Current Portfolio:[/param] {self.portname or None}[cmds]
+
     save        save your portfolio for future use
     show        show existing transactions
     add         add a security to your portfolio
     rmv         remove a security from your portfolio
 
-Reports:
-    ar          annual report for performance of a given portfolio
+[info]Reports:[/info][cmds]
+    ar          annual report for performance of a given portfolio[/cmds]
 
-Graphs:
-    rmr         graph your returns versus the market's returns
-    al          displays the allocation of the portfolio
-    mdd         display portfolio drawdown
-        
+[info]Graphs:[/info][cmds]
+    rmr         returns versus the market's returns
+    al          allocation of the portfolio
+    mdd         maximum drawdown[/cmds]
