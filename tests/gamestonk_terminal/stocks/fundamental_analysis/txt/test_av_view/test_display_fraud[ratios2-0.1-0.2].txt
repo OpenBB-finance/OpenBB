@@ -1,0 +1,8 @@
+Mscore Sub Stats:
+   AQI : 1.00
+
+MSCORE:  -2.00 (moderate chance of fraud)
+ZSCORE:  0.10 (high chance of bankruptcy) 
+
+McKee:  0.20 (low chance of bankruptcy) 
+
