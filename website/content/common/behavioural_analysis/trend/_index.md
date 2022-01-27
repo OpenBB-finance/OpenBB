@@ -12,7 +12,7 @@ optional arguments:
   -hr HOUR, --hour HOUR
                         Hour of the day in the 24-hour notation. Example: 14 (default: 0)
   -n NUMBER, --number NUMBER
-                        Number of results returned from Sentiment Investor. Default: 10 (default: 10)
+                        Number of results returned from Sentiment Investor. (default: 10)
   -h, --help            show this help message (default: False)
   --export {csv,json,xlsx}
                         Export raw data into csv, json, xlsx (default: )
