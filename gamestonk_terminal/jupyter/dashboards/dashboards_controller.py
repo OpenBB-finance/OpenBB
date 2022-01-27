@@ -100,9 +100,12 @@ def create_call(other_args: List[str], name: str, filename: str = None) -> None:
         file = os.path.join(
             os.path.abspath(os.path.dirname(__file__)), f"{filename}.ipynb"
         )
-        console.print(f"Warning: opens a port on your computer to run a {cmd} server.")
-        response = input("Would you like us to run the server for you? y/n\n")
-        if response.lower() == "y":
+        if not ns_parser.input:
+            console.print(
+                f"Warning: opens a port on your computer to run a {cmd} server."
+            )
+            response = input("Would you like us to run the server for you? y/n\n")
+        if ns_parser.input or response.lower() == "y":
             subprocess.Popen(
                 f"{cmd} {file}",
                 stdout=subprocess.PIPE,
