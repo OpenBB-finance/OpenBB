@@ -56,36 +56,38 @@ def fibonacci_retracement(
     levels = df_fib.Price
     fig, ax = plt.subplots(figsize=(plot_autoscale()), dpi=cfp.PLOT_DPI)
 
-    ax.plot(df_stock["Adj Close"], "b")
-    ax.plot([min_date, max_date], [min_pr, max_pr], c="k")
+    ax.plot(df_stock["Adj Close"])
+    ax.plot([min_date, max_date], [min_pr, max_pr])
 
     for i in levels:
-        ax.axhline(y=i, c="g", alpha=0.5)
+        ax.axhline(y=i, alpha=0.5)
 
     for i in range(5):
-        ax.fill_between(df_stock.index, levels[i], levels[i + 1], alpha=0.6)
+        ax.fill_between(df_stock.index, levels[i], levels[i + 1], alpha=0.15)
 
-    ax.set_ylabel("Price")
-    ax.set_title(f"Fibonacci Support for {s_ticker.upper()}")
     ax.set_xlim(df_stock.index[0], df_stock.index[-1])
 
-    ax1 = ax.twinx()
-    ax1.set_ylim(ax.get_ylim())
-    ax1.set_yticks(levels)
-    ax1.set_yticklabels([0, 0.235, 0.382, 0.5, 0.618, 1])
+    ax.set_title(f"Fibonacci Support for {s_ticker.upper()}")
+    ax.grid(visible=True, zorder=0)
+    ax.set_yticks(levels)
+    ax.set_yticklabels([0, 0.235, 0.382, 0.5, 0.618, 1])
+    ax.tick_params(axis="x", rotation=10)
 
-    plt.gcf().autofmt_xdate()
-    fig.tight_layout(pad=1)
+    ax1 = ax.twinx()
+    ax1.set_ylabel("Price")
+    ax.yaxis.set_label_position("right")
+    ax1.set_ylim(ax.get_ylim())
 
     if gtff.USE_ION:
         plt.ion()
+    fig.tight_layout(pad=1)
     plt.show()
 
     print_rich_table(
         df_fib,
         headers=["Fib Level", "Price"],
         show_index=False,
-        title="Fibonacci retractment levels",
+        title="Fibonacci retracement levels",
     )
     console.print("")
 
