@@ -182,7 +182,7 @@ def display_rsi(
     """
     df_ta = momentum_model.rsi(prices, length, scalar, drift)
 
-    fig, axes = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
+    fig, axes = plt.subplots(2, 1, sharex=True, figsize=plot_autoscale(), dpi=PLOT_DPI)
     ax = axes[0]
     ax.plot(prices.index, prices.values)
     ax.set_title(f"{s_ticker} RSI{length}")
@@ -262,7 +262,6 @@ def display_stoch(
 
     ax.set_title(f"Stochastic Relative Strength Index (STOCH RSI) on {s_ticker}")
     ax.set_xlim(df_stock.index[0], df_stock.index[-1])
-    ax.set_xticklabels([])
     ax.set_ylabel("Share Price ($)")
     ax.yaxis.set_label_position("right")
     ax.grid(visible=True, zorder=0)
@@ -276,8 +275,8 @@ def display_stoch(
     ax2.axhline(80, color=cfg.style.down_color, ls="--")
     ax2.axhline(20, color=cfg.style.up_color, ls="--")
     ax2.set_ylim([0, 100])
-    ax2.tick_params(axis="x", rotation=10)
     ax2.grid(visible=True, zorder=0)
+    ax2.tick_params(axis="x", rotation=10)
 
     ax3 = ax2.twinx()
     ax3.set_ylim(ax2.get_ylim())

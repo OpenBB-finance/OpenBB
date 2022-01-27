@@ -73,7 +73,6 @@ def display_adx(
             f"-DI ({df_ta.columns[2]})",
         ]
     )
-    ax1.set_xlabel("Time")
     ax1.set_ylim([0, 100])
     ax1.tick_params(axis="x", rotation=10)
     ax1.grid(visible=True, zorder=0)
@@ -143,7 +142,6 @@ def display_aroon(
     ax2 = ax[2]
     ax2.plot(df_ta.index, df_ta.iloc[:, 2].values)
     ax2.set_xlim(df_stock.index[0], df_stock.index[-1])
-    ax2.set_xlabel("Time")
     ax2.legend([f"Aroon OSC ({df_ta.columns[2]})"])
     ax2.grid(visible=True, zorder=0)
     ax2.set_ylim([-100, 100])

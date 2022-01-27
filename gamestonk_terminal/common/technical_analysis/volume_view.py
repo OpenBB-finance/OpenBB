@@ -81,7 +81,6 @@ def display_ad(
     ax3 = axes[2]
     ax3.set_ylabel("A/D [M]")
     ax3.yaxis.set_label_position("right")
-    ax3.set_xlabel("Time")
     ax3.tick_params(axis="x", rotation=10)
     ax3.grid(visible=True, zorder=0)
 
@@ -169,7 +168,6 @@ def display_adosc(
 
     ax2 = axes[2]
     ax2.set_ylabel("AD Osc [M]")
-    ax2.set_xlabel("Time")
     ax2.plot(df_ta.index, df_cal, label="AD Osc")
     ax2.set_xlim(df_stock.index[0], df_stock.index[-1])
     ax2.yaxis.set_label_position("right")
@@ -249,7 +247,6 @@ def display_obv(df_stock: pd.DataFrame, s_ticker: str = "", export: str = ""):
 
     ax3 = axes[2]
     ax3.set_ylabel("OBV [M]")
-    ax3.set_xlabel("Time")
     ax3.plot(df_ta.index, df_cal)
     ax3.set_xlim(df_stock.index[0], df_stock.index[-1])
     ax3.yaxis.set_label_position("right")

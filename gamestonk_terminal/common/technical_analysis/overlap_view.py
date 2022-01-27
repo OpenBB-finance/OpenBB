@@ -72,7 +72,6 @@ def view_ma(
 
     ax.plot(values.index, values.values, linewidth=1)
 
-    ax.set_xlabel("Time")
     ax.set_xlim([price_df.index[0], price_df.index[-1]])
     ax.tick_params(axis="x", rotation=10)
 

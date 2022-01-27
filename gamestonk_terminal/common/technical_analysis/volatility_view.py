@@ -56,7 +56,6 @@ def display_bbands(
     ax.plot(df_ta.index, df_ta.iloc[:, 2].values, cfg.style.up_color, linewidth=0.7)
     ax.set_title(f"{ticker} Bollinger Bands")
     ax.set_xlim(df_stock.index[0], df_stock.index[-1])
-    ax.set_xlabel("Time")
     ax.set_ylabel("Share Price ($)")
     ax.yaxis.set_label_position("right")
     ax.grid(visible=True, zorder=0)
@@ -116,7 +115,6 @@ def display_donchian(
     ax.plot(df_ta.index, df_ta.iloc[:, 2].values, linewidth=0.7, label="Lower")
     ax.set_title(f"{ticker} donchian")
     ax.set_xlim(df_stock.index[0], df_stock.index[-1])
-    ax.set_xlabel("Time")
     ax.set_ylabel("Price ($)")
     ax.yaxis.set_label_position("right")
     ax.grid(visible=True, zorder=0)
@@ -186,7 +184,6 @@ def view_kc(
     ax.plot(df_ta.index, df_ta.iloc[:, 2].values, linewidth=0.7, label="Lower")
     ax.set_title(f"{s_ticker} Keltner Channels")
     ax.set_xlim(df_stock.index[0], df_stock.index[-1])
-    ax.set_xlabel("Time")
     ax.set_ylabel("Price")
     ax.yaxis.set_label_position("right")
     ax.grid(visible=True, zorder=0)
@@ -196,7 +193,6 @@ def view_kc(
     ax.fill_between(
         df_ta.index, df_ta.iloc[:, 0].values, df_ta.iloc[:, 2].values, alpha=0.1
     )
-    ax.grid(b=True, which="major", color="#666666", linestyle="-")
 
     if gtff.USE_ION:
         plt.ion()
