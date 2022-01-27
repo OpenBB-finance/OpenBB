@@ -721,6 +721,10 @@ Ticker: [/param] {self.ticker} [cmds]
                 " higher probability of default. One of the criticisms that Zmijewski made was that"
                 " other bankruptcy scoring models oversampled distressed firms and favored situations"
                 " with more complete data.[Source: YCharts]"
+                "McKee-score:\n------------------------------------------------\n"
+                "The McKee Score is a bankruptcy model used to predict a firm's bankruptcy in one year"
+                "It looks at a companie's size, profitability, and liquidity to determine the probability."
+                "This model is 80% accurate in predicting bankruptcy."
             ),
         )
         ns_parser = parse_known_args_and_warn(

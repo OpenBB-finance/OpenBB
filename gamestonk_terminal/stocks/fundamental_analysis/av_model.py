@@ -1,12 +1,13 @@
 """Alpha Vantage Model"""
 __docformat__ = "numpy"
 
-from typing import Dict, Tuple
+from typing import Dict, Tuple, List
 
 import requests
 
 from alpha_vantage.fundamentaldata import FundamentalData
 import pandas as pd
+import numpy as np
 from gamestonk_terminal.stocks.fundamental_analysis.fa_helper import clean_df_index
 from gamestonk_terminal.helper_funcs import long_number_format
 from gamestonk_terminal import config_terminal as cfg
@@ -301,7 +302,27 @@ def get_earnings(ticker: str, quarterly: bool = False) -> pd.DataFrame:
     return pd.DataFrame()
 
 
-def get_fraud_ratios(ticker: str) -> Tuple[Dict[str, float], float]:
+def df_values(df: pd.DataFrame, item: str) -> List[int]:
+    """Clean the values from the df
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        The Dataframe to use
+    item : str
+        The item to select
+
+    Returns
+    -------
+    values : List[int]
+        The values for the dataframe
+    """
+    selection = df[item]
+    values = selection.apply(lambda x: int(x) if x else 0).values
+    return values.tolist()
+
+
+def get_fraud_ratios(ticker: str) -> Tuple[Dict[str, float], float, float]:
     """Get fraud ratios based on fundamentals
 
     Parameters
@@ -326,42 +347,23 @@ def get_fraud_ratios(ticker: str) -> Tuple[Dict[str, float], float]:
     df_bs = df_bs.set_index("fiscalDateEnding").iloc[:2]
     df_is = df_is.set_index("fiscalDateEnding").iloc[:2]
 
-    ar = df_bs["currentNetReceivables"].apply(lambda x: 0 if x else int(x)).values
-    sales = df_is["totalRevenue"].apply(lambda x: 0 if x else int(x)).values
-    cogs = (
-        df_is["costofGoodsAndServicesSold"].apply(lambda x: 0 if x else int(x)).values
-    )
-    ni = df_is["netIncome"].apply(lambda x: 0 if x else int(x)).values
-    ca = df_bs["totalCurrentAssets"].apply(lambda x: 0 if x else int(x)).values
-    cl = df_bs["totalCurrentLiabilities"].apply(lambda x: 0 if x else int(x)).values
-    ppe = df_bs["propertyPlantEquipment"].apply(lambda x: 0 if x else int(x)).values
-    cash = (
-        df_bs["cashAndCashEquivalentsAtCarryingValue"]
-        .apply(lambda x: 0 if x else int(x))
-        .values
-    )
-    cash_and_sec = (
-        df_bs["cashAndShortTermInvestments"].apply(lambda x: 0 if x else int(x)).values
-    )
+    ar = df_values(df_bs, "currentNetReceivables")
+    sales = df_values(df_is, "totalRevenue")
+    cogs = df_values(df_is, "costofGoodsAndServicesSold")
+    ni = df_values(df_is, "netIncome")
+    ca = df_values(df_bs, "totalCurrentAssets")
+    cl = df_values(df_bs, "totalCurrentLiabilities")
+    ppe = df_values(df_bs, "propertyPlantEquipment")
+    cash = df_values(df_bs, "cashAndCashEquivalentsAtCarryingValue")
+    cash_and_sec = df_values(df_bs, "cashAndShortTermInvestments")
     sec = [y - x for (x, y) in zip(cash, cash_and_sec)]
-    ta = df_bs["totalAssets"].apply(lambda x: 0 if x else int(x)).values
-    dep = (
-        df_bs["accumulatedDepreciationAmortizationPPE"]
-        .apply(lambda x: 0 if x else int(x))
-        .values
-    )
-    sga = (
-        df_is["sellingGeneralAndAdministrative"]
-        .apply(lambda x: 0 if x else int(x))
-        .values
-    )
-    tl = df_bs["totalLiabilities"].apply(lambda x: 0 if x else int(x)).values
-    icfo = (
-        df_is["netIncomeFromContinuingOperations"]
-        .apply(lambda x: 0 if x else int(x))
-        .values
-    )
-    cfo = df_cf["operatingCashflow"].apply(lambda x: 0 if x else int(x)).values
+    ta = df_values(df_bs, "totalAssets")
+    dep = df_values(df_bs, "accumulatedDepreciationAmortizationPPE")
+    sga = df_values(df_is, "sellingGeneralAndAdministrative")
+    tl = df_values(df_bs, "totalLiabilities")
+    icfo = df_values(df_is, "netIncomeFromContinuingOperations")
+    cfo = df_values(df_cf, "operatingCashflow")
+
     ratios: Dict = {}
     ratios["DSRI"] = (ar[0] / sales[0]) / (ar[1] / sales[1])
     ratios["GMI"] = ((sales[1] - cogs[1]) / sales[1]) / (
@@ -392,5 +394,13 @@ def get_fraud_ratios(ticker: str) -> Tuple[Dict[str, float], float]:
         + (5.679 * (tl[0] / ta[0]))
         + (0.004 * (ca[0] / cl[0]))
     )
+    v1 = np.log(ta[0] / 1000)
+    v2 = ni[0] / ta[0]
+    v3 = cash[0] / cl[0]
 
-    return ratios, zscore
+    x = ((v1 + 0.85) * v2) - 0.85
+    y = 1 + v3
+
+    mckee = x ** 2 / (x ** 2 + y ** 2)
+
+    return ratios, zscore, mckee
