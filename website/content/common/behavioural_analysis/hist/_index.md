@@ -28,3 +28,11 @@ optional arguments:
   -l LIMIT, --limit LIMIT
                         Number of entries to show in data. (default: 10)
 ```
+**Plot**
+
+![image](https://user-images.githubusercontent.com/40023817/151354884-e62ddfa9-3eed-44a2-91cb-4219b2fca245.png)
+
+**Raw Data**
+
+![image](https://user-images.githubusercontent.com/40023817/151355175-0a11f78d-5e62-451b-9dc6-37e04f084a6f.png)
+
