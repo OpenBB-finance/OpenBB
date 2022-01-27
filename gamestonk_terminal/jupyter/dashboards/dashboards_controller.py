@@ -82,6 +82,14 @@ def create_call(other_args: List[str], name: str, filename: str = None) -> None:
         dest="jupyter",
         help="Shows dashboard in jupyter-lab.",
     )
+    parser.add_argument(
+        "-n",
+        "--no-input",
+        action="store_true",
+        default=False,
+        dest="input",
+        help="Skips confirmation to run server.",
+    )
 
     ns_parser = parse_known_args_and_warn(
         parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
