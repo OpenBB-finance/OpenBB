@@ -103,6 +103,9 @@ class TerminalStyle:
     console_styles_available: Dict[str, str] = {}
     console_style: Dict[str, str] = {}
 
+    down_color: str = ""
+    up_color: str = ""
+
     def __init__(
         self,
         mpl_style: Optional[str] = "",
@@ -199,6 +202,8 @@ class TerminalStyle:
         """Apply style to the current matplotlib context."""
         plt.style.use(self.mpl_style)
         self.mpf_style["mavcolors"] = plt.rcParams["axes.prop_cycle"].by_key()["color"]
+        self.down_color = self.mpf_style["marketcolors"]["volume"]["down"]
+        self.up_color = self.mpf_style["marketcolors"]["volume"]["up"]
 
     def hex_to_rgb(self, color):
         """Convert hex color to RGB color."""
