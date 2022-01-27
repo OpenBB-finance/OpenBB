@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 import os
+from datetime import datetime
 import matplotlib.dates as mdates
 from matplotlib import pyplot as plt
 import pandas as pd
@@ -49,7 +50,7 @@ def display_historical(
 
     # Check to see if the ticker is supported
     if not supported_ticker:
-        print(f"Ticker {ticker} not supported. Please try another one!")
+        print(f"Ticker {ticker} not supported. Please try another one!\n")
 
     else:
         df = sentimentinvestor_model.get_historical(ticker, start, end, number)
@@ -108,7 +109,7 @@ def display_historical(
 
 
 def display_trending(
-    start: str,
+    start: datetime,
     hour: int,
     export: str,
     number: int = 10,
@@ -119,8 +120,8 @@ def display_trending(
 
     Parameters
     ----------
-    start: str
-        Initial date like string (e.g. 12-21-2021)
+    start: datetime
+        Datetime object (e.g. datetime(2021, 12, 21)
     hour: int
         Hour of the day in 24-hour notation (e.g. 14)
     number : int
@@ -129,8 +130,9 @@ def display_trending(
     limit: int
         Number of results display on the terminal
         Default: 10
-    Returns
     -------
+    Returns
+        None
     """
 
     df = sentimentinvestor_model.get_trending(start, hour, number)

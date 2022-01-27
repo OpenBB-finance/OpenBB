@@ -96,7 +96,7 @@ def check_supported_ticker(ticker: str) -> bool:
     return False
 
 
-def get_trending(start: str, hour: int, number: int) -> pd.DataFrame:
+def get_trending(start: datetime, hour: int, number: int) -> pd.DataFrame:
     """Get sentiment data on the most talked about tickers
     within the last hour
 
@@ -104,8 +104,8 @@ def get_trending(start: str, hour: int, number: int) -> pd.DataFrame:
 
     Parameters
     ----------
-    start: str
-        Initial date like string (e.g. 12-21-2021)
+    start: datetime
+        Datetime object (e.g. datetime(2021, 12, 21)
     hour: int
         Hour of the day in 24-hour notation (e.g. 14)
     number : int
@@ -118,7 +118,8 @@ def get_trending(start: str, hour: int, number: int) -> pd.DataFrame:
         Dataframe of trending data
     """
 
-    start_timestamp = datetime.strptime(start, "%Y-%m-%d") + timedelta(hours=hour)
+    # type is datetime
+    start_timestamp = start + timedelta(hours=hour)
 
     payload: Dict[str, Union[int, str]] = {
         "token": cfg.API_SENTIMENTINVESTOR_TOKEN,
