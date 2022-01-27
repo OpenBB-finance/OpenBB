@@ -6,6 +6,7 @@ import os
 import matplotlib.pyplot as plt
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
+from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.common.technical_analysis import volume_model
 from gamestonk_terminal.config_plot import PLOT_DPI
@@ -35,7 +36,10 @@ def display_ad(
         Format to export data as
     """
 
-    bar_colors = ["r" if x[1].Open < x[1].Close else "g" for x in df_stock.iterrows()]
+    bar_colors = [
+        cfg.style.down_color if x[1].Open < x[1].Close else cfg.style.up_color
+        for x in df_stock.iterrows()
+    ]
     bar_width = df_stock.index[1] - df_stock.index[0]
     divisor = 1_000_000
     df_vol = df_stock["Volume"].dropna()
@@ -47,19 +51,21 @@ def display_ad(
     fig, axes = plt.subplots(
         3,
         1,
+        sharex=True,
         gridspec_kw={"height_ratios": [2, 1, 1]},
         figsize=plot_autoscale(),
         dpi=PLOT_DPI,
     )
     ax = axes[0]
     ax.plot(df_stock.index, df_stock["Adj Close"].values)
-    ax.set_title(f"{s_ticker} AD")
+    ax.set_title(f"{s_ticker} AD", x=0.08, y=1)
     ax.set_xlim(df_stock.index[0], df_stock.index[-1])
     ax.set_ylabel("Price")
-    ax.grid(b=True, which="major", color="#666666", linestyle="-")
+    ax.yaxis.set_label_position("right")
 
     ax2 = axes[1]
     ax2.set_ylabel("Volume [M]")
+    ax2.yaxis.set_label_position("right")
 
     ax2.bar(
         df_stock.index,
@@ -72,17 +78,17 @@ def display_ad(
 
     ax3 = axes[2]
     ax3.set_ylabel("A/D [M]")
+    ax3.yaxis.set_label_position("right")
     ax3.set_xlabel("Time")
     ax3.plot(df_ta.index, df_cal)
     ax3.set_xlim(df_stock.index[0], df_stock.index[-1])
     ax3.axhline(0, linestyle="--")
-    ax3.grid(b=True, which="major", color="#666666", linestyle="-")
+
+    ax3.tick_params(axis="x", rotation=10)
+    fig.tight_layout(pad=1)
 
     if gtff.USE_ION:
         plt.ion()
-
-    plt.gcf().autofmt_xdate()
-    fig.tight_layout(pad=1)
 
     plt.show()
     console.print("")
@@ -120,7 +126,10 @@ def display_adosc(
     export : str
         Format to export data
     """
-    bar_colors = ["r" if x[1].Open < x[1].Close else "g" for x in df_stock.iterrows()]
+    bar_colors = [
+        cfg.style.down_color if x[1].Open < x[1].Close else cfg.style.up_color
+        for x in df_stock.iterrows()
+    ]
 
     bar_width = df_stock.index[1] - df_stock.index[0]
 
@@ -139,29 +148,29 @@ def display_adosc(
     )
     ax = axes[0]
     ax.set_title(f"{s_ticker} AD Oscillator")
-    ax.plot(df_stock.index, df_stock["Adj Close"].values, "fuchsia", lw=1)
+    ax.plot(df_stock.index, df_stock["Adj Close"].values)
     ax.set_xlim(df_stock.index[0], df_stock.index[-1])
     ax.set_ylabel("Price")
-    ax.grid(b=True, which="major", color="#666666", linestyle="-")
+    ax.yaxis.set_label_position("right")
+    ax.grid(visible=True, zorder=0)
 
     ax1 = axes[1]
     ax1.set_ylabel("Volume [M]")
 
     ax1.bar(
-        df_stock.index,
-        df_vol,
-        color=bar_colors,
-        alpha=0.8,
-        width=bar_width,
+        df_stock.index, df_vol, color=bar_colors, alpha=0.8, width=bar_width, zorder=2
     )
     ax1.set_xlim(df_stock.index[0], df_stock.index[-1])
+    ax1.yaxis.set_label_position("right")
+    ax1.grid(visible=True, zorder=0)
 
     ax2 = axes[2]
     ax2.set_ylabel("AD Osc [M]")
     ax2.set_xlabel("Time")
-    ax2.plot(df_ta.index, df_cal, "b", lw=2, label="AD Osc")
+    ax2.plot(df_ta.index, df_cal, label="AD Osc")
     ax2.set_xlim(df_stock.index[0], df_stock.index[-1])
-    ax2.grid(b=True, which="major", color="#666666", linestyle="-")
+    ax2.yaxis.set_label_position("right")
+    ax2.grid(visible=True, zorder=0)
 
     if gtff.USE_ION:
         plt.ion()
@@ -192,7 +201,12 @@ def display_obv(df_stock: pd.DataFrame, s_ticker: str = "", export: str = ""):
     export: str
         Format to export data as
     """
-    bar_colors = ["r" if x[1].Open < x[1].Close else "g" for x in df_stock.iterrows()]
+    bar_colors = [
+        cfg.style.mpf_style["marketcolors"]["volume"]["down"]
+        if x[1].Open < x[1].Close
+        else cfg.style.mpf_style["marketcolors"]["volume"]["up"]
+        for x in df_stock.iterrows()
+    ]
 
     bar_width = df_stock.index[1] - df_stock.index[0]
 
