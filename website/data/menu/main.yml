@@ -430,6 +430,8 @@ main:
             ref: "/stocks/options/parity"
           - name: binom
             ref: "/stocks/options/binom"
+          - name: greeks
+            ref: "/stocks/options/greeks"
           - name: payoff
             ref: "/stocks/options/payoff"
             sub:

@@ -6,11 +6,9 @@ import webbrowser
 import pandas as pd
 
 from PIL import Image
-from tabulate import tabulate
 
-from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.economy import finviz_model
-from gamestonk_terminal.helper_funcs import export_data
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.rich_config import console
 
 
@@ -73,31 +71,13 @@ def display_performance(
     df_group = df_group.rename(
         columns={"Volume": "Volume (1M)", "AvgVolume": "AvgVolume (1M)"}
     )
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df_group.fillna(""),
-                showindex=False,
-                headers=df_group.columns,
-                tablefmt="fancy_grid",
-                floatfmt=[
-                    "",
-                    ".3f",
-                    ".3f",
-                    ".3f",
-                    ".3f",
-                    ".3f",
-                    ".3f",
-                    ".2f",
-                    ".0f",
-                    ".2f",
-                    ".2f",
-                    ".0f",
-                ],
-            )
-        )
-    else:
-        console.print(df_group.fillna("").to_string(index=False))
+    print_rich_table(
+        df_group.fillna(""),
+        show_index=False,
+        headers=df_group.columns,
+        title="Group Performance Data",
+    )
+
     console.print("")
 
     export_data(
@@ -133,18 +113,14 @@ def display_valuation(
     df_group = df_group.sort_values(by=sort_col, ascending=ascending)
     df_group["Volume"] = df_group["Volume"] / 1_000_000
     df_group = df_group.rename(columns={"Volume": "Volume (1M)"})
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df_group.fillna(""),
-                showindex=False,
-                headers=df_group.columns,
-                tablefmt="fancy_grid",
-                floatfmt=".2f",
-            )
-        )
-    else:
-        console.print(df_group.fillna("").to_string(index=False))
+
+    print_rich_table(
+        df_group.fillna(""),
+        show_index=False,
+        headers=list(df_group.columns),
+        title="Group Valuation Data",
+    )
+
     console.print("")
 
     export_data(
@@ -203,20 +179,12 @@ def display_future(
     df = pd.DataFrame(d_futures[future_type])
     df = df.set_index("label")
     df = df.sort_values(by=sort_col, ascending=ascending)
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df[["prevClose", "last", "change"]].fillna(""),
-                showindex=True,
-                floatfmt=".2f",
-                headers=["prevClose", "last", "change (%)"],
-                tablefmt="fancy_grid",
-            )
-        )
-    else:
-        console.print(
-            df[["prevClose", "last", "change"]].fillna("").to_string(index=True)
-        )
+    print_rich_table(
+        df[["prevClose", "last", "change"]].fillna(""),
+        show_index=True,
+        headers=["prevClose", "last", "change (%)"],
+        title="Future Table",
+    )
 
     export_data(
         export,

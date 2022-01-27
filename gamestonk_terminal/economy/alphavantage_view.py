@@ -4,11 +4,14 @@ __docformat__ = "numpy"
 import os
 
 import matplotlib.pyplot as plt
-from tabulate import tabulate
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.economy import alphavantage_model
-from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
+from gamestonk_terminal.helper_funcs import (
+    export_data,
+    plot_autoscale,
+    print_rich_table,
+)
 from gamestonk_terminal import config_plot as cfp
 from gamestonk_terminal.rich_config import console
 
@@ -29,18 +32,12 @@ def realtime_performance_sector(raw: bool, export: str):
     df_rtp = df_sectors["Rank A: Real-Time Performance"]
 
     if raw:
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    df_rtp.to_frame(),
-                    showindex=True,
-                    headers=["Sector", "Real-Time Performance"],
-                    floatfmt=".5f",
-                    tablefmt="fancy_grid",
-                )
-            )
-        else:
-            console.print(df_rtp.to_string())
+        print_rich_table(
+            df_rtp.to_frame(),
+            show_index=True,
+            headers=["Sector", "Real-Time Performance"],
+            title="Real-Time Performance",
+        )
 
     else:
         df_rtp.plot(kind="bar")
@@ -104,17 +101,9 @@ def display_real_gdp(
         gdp_full,
     )
     if raw:
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    gdp.head(20),
-                    headers=["Date", "GDP"],
-                    tablefmt="fancy_grid",
-                    showindex=False,
-                )
-            )
-        else:
-            console.print(gdp.head(20).to_string())
+        print_rich_table(
+            gdp.head(20), headers=["Date", "GDP"], show_index=False, title="US GDP"
+        )
     console.print("")
 
 
@@ -153,17 +142,12 @@ def display_gdp_capita(start_year: int = 2010, raw: bool = False, export: str = 
         gdp_capita,
     )
     if raw:
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    gdp.head(20),
-                    headers=["Date", "GDP"],
-                    tablefmt="fancy_grid",
-                    showindex=False,
-                )
-            )
-        else:
-            console.print(gdp.head(20).to_string())
+        print_rich_table(
+            gdp.head(20),
+            headers=["Date", "GDP"],
+            show_index=False,
+            title="US GDP Per Capita",
+        )
     console.print("")
 
 
@@ -202,17 +186,12 @@ def display_inflation(start_year: int = 2010, raw: bool = False, export: str = "
         inflation,
     )
     if raw:
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    inf.head(20),
-                    headers=["Date", "Inflation"],
-                    tablefmt="fancy_grid",
-                    showindex=False,
-                )
-            )
-        else:
-            console.print(inf.head(20).to_string())
+        print_rich_table(
+            inf.head(20),
+            headers=["Date", "Inflation"],
+            show_index=False,
+            title="US Inflation",
+        )
     console.print("")
 
 
@@ -257,17 +236,9 @@ def display_cpi(
         cpi_full,
     )
     if raw:
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    cpi.head(20),
-                    headers=["Date", "CPI"],
-                    tablefmt="fancy_grid",
-                    showindex=False,
-                )
-            )
-        else:
-            console.print(cpi.head(20).to_string())
+        print_rich_table(
+            cpi.head(20), headers=["Date", "CPI"], show_index=False, title="US CPI"
+        )
     console.print("")
 
 
@@ -313,17 +284,12 @@ def display_treasury_yield(
         yields,
     )
     if raw:
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    yld.head(20),
-                    headers=["Date", "Yield"],
-                    tablefmt="fancy_grid",
-                    showindex=False,
-                )
-            )
-        else:
-            console.print(yld.head(20).to_string())
+        print_rich_table(
+            yld.head(20),
+            headers=["Date", "Yield"],
+            title="Historical Treasurey Yield",
+            show_index=False,
+        )
     console.print("")
 
 
@@ -367,16 +333,11 @@ def display_unemployment(start_year: int = 2015, raw: bool = False, export: str 
     )
 
     if raw:
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    un.head(20),
-                    headers=["Date", "GDP"],
-                    tablefmt="fancy_grid",
-                    showindex=False,
-                )
-            )
-        else:
-            console.print(un.head(20).to_string())
+        print_rich_table(
+            un.head(20),
+            headers=["Date", "GDP"],
+            title="US Unemployment",
+            show_index=False,
+        )
 
     console.print("")

@@ -5,6 +5,7 @@ import pytest
 
 # IMPORTATION INTERNAL
 from gamestonk_terminal.etf import financedatabase_view
+from gamestonk_terminal import helper_funcs
 
 
 @pytest.fixture(scope="module")
@@ -22,7 +23,7 @@ def vcr_config():
 )
 def test_display_etf_by_name(name, mocker):
     mocker.patch.object(
-        target=financedatabase_view.gtff, attribute="USE_TABULATE_DF", new=False
+        target=helper_funcs.gtff, attribute="USE_TABULATE_DF", new=False
     )
     financedatabase_view.display_etf_by_name(name, limit=5, export="")
 
@@ -35,7 +36,7 @@ def test_display_etf_by_name(name, mocker):
 )
 def test_display_etf_by_description(description, mocker):
     mocker.patch.object(
-        target=financedatabase_view.gtff, attribute="USE_TABULATE_DF", new=False
+        target=helper_funcs.gtff, attribute="USE_TABULATE_DF", new=False
     )
     financedatabase_view.display_etf_by_description(description, limit=5, export="")
 
@@ -51,6 +52,6 @@ def test_display_etf_by_description(description, mocker):
 )
 def test_display_etf_by_category(category, mocker):
     mocker.patch.object(
-        target=financedatabase_view.gtff, attribute="USE_TABULATE_DF", new=False
+        target=helper_funcs.gtff, attribute="USE_TABULATE_DF", new=False
     )
     financedatabase_view.display_etf_by_category(category, limit=5, export="")

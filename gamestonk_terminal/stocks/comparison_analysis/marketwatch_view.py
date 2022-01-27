@@ -4,13 +4,12 @@ __docformat__ = "numpy"
 import os
 from typing import List
 
-from tabulate import tabulate
-
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     export_data,
     financials_colored_values,
     patch_pandas_text_adjustment,
+    print_rich_table,
 )
 from gamestonk_terminal.stocks.comparison_analysis import marketwatch_model
 from gamestonk_terminal.rich_config import console
@@ -55,18 +54,13 @@ def display_income_comparison(
     if not quarter:
         df_financials_compared.index.name = timeframe
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df_financials_compared,
-                headers=df_financials_compared.columns,
-                showindex=True,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        console.print(df_financials_compared.to_string(), "\n")
+    print_rich_table(
+        df_financials_compared,
+        headers=list(df_financials_compared.columns),
+        show_index=True,
+        title="Income Data",
+    )
+    console.print("")
 
 
 def display_balance_comparison(
@@ -108,18 +102,13 @@ def display_balance_comparison(
     if not quarter:
         df_financials_compared.index.name = timeframe
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df_financials_compared,
-                headers=df_financials_compared.columns,
-                showindex=True,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        console.print(df_financials_compared.to_string(), "\n")
+    print_rich_table(
+        df_financials_compared,
+        headers=list(df_financials_compared.columns),
+        show_index=True,
+        title="Company Comparison",
+    )
+    console.print("")
 
 
 def display_cashflow_comparison(
@@ -164,15 +153,10 @@ def display_cashflow_comparison(
     if not quarter:
         df_financials_compared.index.name = timeframe
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df_financials_compared,
-                headers=df_financials_compared.columns,
-                showindex=True,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        console.print(df_financials_compared.to_string(), "\n")
+    print_rich_table(
+        df_financials_compared,
+        headers=list(df_financials_compared.columns),
+        show_index=True,
+        title="Cashflow Comparison",
+    )
+    console.print("")

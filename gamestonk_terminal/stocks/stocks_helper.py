@@ -20,7 +20,6 @@ from alpha_vantage.timeseries import TimeSeries
 from numpy.core.fromnumeric import transpose
 from plotly.subplots import make_subplots
 from scipy import stats
-from tabulate import tabulate
 
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal import feature_flags as gtff
@@ -28,6 +27,7 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     plot_autoscale,
     get_user_timezone_or_invalid,
+    print_rich_table,
 )
 from gamestonk_terminal.rich_config import console
 
@@ -40,7 +40,7 @@ SOURCES = ["yf", "av", "iex"]
 def search(
     query: str,
     amount: int,
-):
+) -> None:
     """Search selected query for tickers.
 
     Parameters
@@ -49,11 +49,6 @@ def search(
         The search term used to find company tickers.
     amount : int
         The amount of companies shown.
-
-    Returns
-    -------
-    tabulate
-        Companies that match the query.
     """
     equities_list = (
         "https://raw.githubusercontent.com/JerBouma/FinanceDatabase/master/"
@@ -77,18 +72,13 @@ def search(
     if equities_dataframe.empty:
         raise ValueError("No companies found. \n")
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                equities_dataframe.iloc[:amount],
-                showindex=False,
-                headers=["Company", "Ticker"],
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        console.print(equities_dataframe.iloc[:amount].to_string())
+    print_rich_table(
+        equities_dataframe.iloc[:amount],
+        show_index=False,
+        headers=["Company", "Ticker"],
+        title="Search Results",
+    )
+    console.print("")
 
 
 def load(
@@ -606,14 +596,7 @@ def quote(other_args: List[str], s_ticker: str):
 
         quote_data = transpose(quote_df)
 
-        print(
-            tabulate(
-                quote_data,
-                headers=quote_data.columns,  # type: ignore
-                tablefmt="fancy_grid",
-                stralign="right",
-            )
-        )
+        print_rich_table(quote_data, title="Ticker Quote")
 
     except KeyError:
         console.print(f"Invalid stock ticker: {ns_parser.s_ticker}")

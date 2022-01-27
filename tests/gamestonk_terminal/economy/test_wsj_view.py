@@ -5,6 +5,7 @@ import pytest
 
 # IMPORTATION INTERNAL
 from gamestonk_terminal.economy import wsj_view
+from gamestonk_terminal import helper_funcs
 
 
 @pytest.mark.vcr
@@ -26,7 +27,7 @@ from gamestonk_terminal.economy import wsj_view
 @pytest.mark.record_stdout
 def test_call_func(func, mocker, tab):
     # MOCK GTFF
-    mocker.patch.object(target=wsj_view.gtff, attribute="USE_TABULATE_DF", new=tab)
+    mocker.patch.object(target=helper_funcs.gtff, attribute="USE_TABULATE_DF", new=tab)
 
     # MOCK EXPORT_DATA
     mocker.patch(target="gamestonk_terminal.economy.wsj_view.export_data")

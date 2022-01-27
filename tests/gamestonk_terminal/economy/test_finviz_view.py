@@ -5,6 +5,7 @@ import pytest
 
 # IMPORTATION INTERNAL
 from gamestonk_terminal.economy import finviz_view
+from gamestonk_terminal import helper_funcs
 
 
 @pytest.fixture(scope="module")
@@ -39,8 +40,8 @@ def test_map_sp500_view(mocker):
 )
 def test_display_performance(mocker, tab):
     # MOCK GTFF
-    mocker.patch.object(target=finviz_view.gtff, attribute="USE_TABULATE_DF", new=tab)
-    mocker.patch.object(target=finviz_view.gtff, attribute="USE_ION", new=True)
+    mocker.patch.object(target=helper_funcs.gtff, attribute="USE_TABULATE_DF", new=tab)
+    mocker.patch.object(target=helper_funcs.gtff, attribute="USE_ION", new=True)
 
     # MOCK EXPORT_DATA
     mocker.patch(target="gamestonk_terminal.economy.finviz_view.export_data")
@@ -65,8 +66,8 @@ def test_display_performance(mocker, tab):
 )
 def test_display_valuation(mocker, tab):
     # MOCK GTFF
-    mocker.patch.object(target=finviz_view.gtff, attribute="USE_TABULATE_DF", new=tab)
-    mocker.patch.object(target=finviz_view.gtff, attribute="USE_ION", new=True)
+    mocker.patch.object(target=helper_funcs.gtff, attribute="USE_TABULATE_DF", new=tab)
+    mocker.patch.object(target=helper_funcs.gtff, attribute="USE_ION", new=True)
 
     # MOCK EXPORT_DATA
     mocker.patch(target="gamestonk_terminal.economy.finviz_view.export_data")
@@ -116,8 +117,8 @@ def test_display_spectrum(mocker):
 )
 def test_display_future(mocker, tab):
     # MOCK GTFF
-    mocker.patch.object(target=finviz_view.gtff, attribute="USE_TABULATE_DF", new=tab)
-    mocker.patch.object(target=finviz_view.gtff, attribute="USE_ION", new=True)
+    mocker.patch.object(target=helper_funcs.gtff, attribute="USE_TABULATE_DF", new=tab)
+    mocker.patch.object(target=helper_funcs.gtff, attribute="USE_ION", new=True)
 
     # MOCK EXPORT_DATA
     mocker.patch(target="gamestonk_terminal.economy.finviz_view.export_data")

@@ -2,9 +2,8 @@
 __docformat__ = "numpy"
 
 import pandas as pd
-from tabulate import tabulate
-import gamestonk_terminal.feature_flags as gtff
 from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.helper_funcs import print_rich_table
 
 
 def display_group_holdings(
@@ -28,15 +27,5 @@ def display_group_holdings(
         total_value = grouped_df["value"].sum()
         grouped_df["pct_allocation"] = grouped_df["value"] / total_value * 100
         headers.append("pct_allocation")
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                grouped_df,
-                headers=headers,
-                tablefmt="fancy_grid",
-                floatfmt=".2f",
-            ),
-            "\n",
-        )
-    else:
-        console.print(portfolio.to_string(), "\n")
+    print_rich_table(grouped_df, headers=list(headers), title="Portfolio Holdings")
+    console.print("")
