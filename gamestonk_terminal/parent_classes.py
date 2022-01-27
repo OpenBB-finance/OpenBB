@@ -6,16 +6,22 @@ import argparse
 import re
 import os
 import difflib
+import logging
+
 from typing import Union, List, Dict, Any
 
 from prompt_toolkit.completion import NestedCompleter
 from rich.markdown import Markdown
+
+from gamestonk_terminal.decorators import log_start_end
 
 from gamestonk_terminal.menu import session
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal.helper_funcs import system_clear, get_flair
 from gamestonk_terminal.rich_config import console
+
+logger = logging.getLogger(__name__)
 
 
 controllers: Dict[str, Any] = {}
@@ -55,6 +61,7 @@ class BaseController(metaclass=ABCMeta):
         self.check_path()
         self.path = [x for x in self.PATH.split("/") if x != ""]
 
+        # self.queue = self.switch("".join(queue))
         self.queue = queue if (queue and self.PATH != "/") else list()
 
         controller_choices = self.CHOICES_COMMANDS + self.CHOICES_MENUS
@@ -104,6 +111,7 @@ class BaseController(metaclass=ABCMeta):
     def print_help(self) -> None:
         raise NotImplementedError("Must override print_help")
 
+    @log_start_end(log=logger)
     @try_except
     def switch(self, an_input: str) -> List[str]:
         """Process and dispatch input
@@ -116,69 +124,75 @@ class BaseController(metaclass=ABCMeta):
         # Empty command
         if not an_input:
             console.print("")
-            return self.queue
 
-        # Navigation slash is being used
-        if "/" in an_input:
+        # Navigation slash is being used first split commands
+        elif "/" in an_input:
             actions = an_input.split("/")
 
             # Absolute path is specified
             if not actions[0]:
-                an_input = "home"
-            # Relative path so execute first instruction
-            else:
-                an_input = actions[0]
+                actions[0] = "home"
 
             # Add all instructions to the queue
-            for cmd in actions[1:][::-1]:
+            for cmd in actions[0:][::-1]:
                 if cmd:
                     self.queue.insert(0, cmd)
 
-        (known_args, other_args) = self.parser.parse_known_args(an_input.split())
+        # Single command fed, process
+        else:
+            (known_args, other_args) = self.parser.parse_known_args(an_input.split())
 
-        # Redirect commands to their correct functions
-        if known_args.cmd:
-            if known_args.cmd in ("..", "q"):
-                known_args.cmd = "quit"
-            elif known_args.cmd in ("?", "h"):
-                known_args.cmd = "help"
-            elif known_args.cmd == "r":
-                known_args.cmd = "reset"
+            # Redirect commands to their correct functions
+            if known_args.cmd:
+                if known_args.cmd in ("..", "q"):
+                    known_args.cmd = "quit"
+                elif known_args.cmd in ("?", "h"):
+                    known_args.cmd = "help"
+                elif known_args.cmd == "r":
+                    known_args.cmd = "reset"
 
-        getattr(
-            self,
-            "call_" + known_args.cmd,
-            lambda _: "Command not recognized!",
-        )(other_args)
+            getattr(
+                self,
+                "call_" + known_args.cmd,
+                lambda _: "Command not recognized!",
+            )(other_args)
+
+        logger.info("remaining queue: %s", "/".join(self.queue))
 
         return self.queue
 
+    @log_start_end(log=logger)
     def call_cls(self, _) -> None:
         """Process cls command"""
         system_clear()
 
+    @log_start_end(log=logger)
     def call_home(self, _) -> None:
         """Process home command"""
         self.save_class()
         for _ in range(self.PATH.count("/") - 1):
             self.queue.insert(0, "quit")
 
+    @log_start_end(log=logger)
     def call_help(self, _) -> None:
         """Process help command"""
         self.print_help()
 
+    @log_start_end(log=logger)
     def call_quit(self, _) -> None:
         """Process quit menu command"""
         self.save_class()
         console.print("")
         self.queue.insert(0, "quit")
 
+    @log_start_end(log=logger)
     def call_exit(self, _) -> None:
         # Not sure how to handle controller loading here
         """Process exit terminal command"""
         for _ in range(self.PATH.count("/")):
             self.queue.insert(0, "quit")
 
+    @log_start_end(log=logger)
     def call_reset(self, _) -> None:
         """Process reset command. If you would like to have customization in the
         reset process define a methom `custom_reset` in the child class.
@@ -193,6 +207,7 @@ class BaseController(metaclass=ABCMeta):
             for _ in range(len(self.path)):
                 self.queue.insert(0, "quit")
 
+    @log_start_end(log=logger)
     def call_resources(self, _) -> None:
         """Process resources command"""
         if os.path.isfile(self.FILE_PATH):
