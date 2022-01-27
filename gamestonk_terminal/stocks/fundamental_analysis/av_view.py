@@ -171,19 +171,18 @@ def display_fraud(ticker: str):
     ticker : str
         Fundamental analysis ticker symbol
     """
-    ratios, zscore = av_model.get_fraud_ratios(ticker)
+    ratios, zscore, mckee = av_model.get_fraud_ratios(ticker)
 
     if ratios["MSCORE"] > -1.78:
-        chanceM = "high"
+        chance_m = "high"
     elif ratios["MSCORE"] > -2.22:
-        chanceM = "moderate"
+        chance_m = "moderate"
     else:
-        chanceM = "low"
+        chance_m = "low"
 
-    if zscore < 0.5:
-        chanceZ = "high"
-    else:
-        chanceZ = "low"
+    chance_z = "high" if zscore < 0.5 else "low"
+
+    chance_mcke = "low" if mckee < 0.5 else "high"
 
     if np.isnan(ratios["MSCORE"]) or np.isnan(zscore):
         console.print("Data incomplete for this ticker. Unable to calculate risk")
@@ -196,8 +195,10 @@ def display_fraud(ticker: str):
 
     console.print(
         "\n" + "MSCORE: ",
-        f"{ratios['MSCORE']:.2f} ({chanceM} chance of fraud)",
+        f"{ratios['MSCORE']:.2f} ({chance_m} chance of fraud)",
     )
 
-    console.print("ZSCORE: ", f"{zscore:.2f} ({chanceZ} chance of bankruptcy)", "\n")
+    console.print("ZSCORE: ", f"{zscore:.2f} ({chance_z} chance of bankruptcy)", "\n")
+
+    console.print("McKee: ", f"{mckee:.2f} ({chance_mcke} chance of bankruptcy)", "\n")
     return
