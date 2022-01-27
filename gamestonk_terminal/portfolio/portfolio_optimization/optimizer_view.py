@@ -1,21 +1,21 @@
 """Optimization View"""
 __docformat__ = "numpy"
 
+import copy
 import math
 from typing import List
 
 import matplotlib.pyplot as plt
-
 from matplotlib.lines import Line2D
 import numpy as np
 import pandas as pd
 from pypfopt import plotting
-from tabulate import tabulate
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_plot import PLOT_DPI
-from gamestonk_terminal.helper_funcs import plot_autoscale, get_rf
+from gamestonk_terminal.helper_funcs import plot_autoscale, get_rf, print_rich_table
 from gamestonk_terminal.portfolio.portfolio_optimization import optimizer_model
+from gamestonk_terminal.rich_config import console
 
 d_period = {
     "1d": "[1 Day]",
@@ -60,31 +60,13 @@ def display_weights(weights: dict, market_neutral: bool = False):
                 + " $"
             )
 
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    weight_df, headers=["Value"], showindex=True, tablefmt="fancy_grid"
-                )
-            )
-        else:
-            print(weight_df.to_string(header=False))
+        print_rich_table(weight_df, headers=["Value"], show_index=True, title="Weights")
 
     else:
         tot_value = weight_df["value"].abs().mean()
         header = "Value ($)" if tot_value > 1.01 else "Value (%)"
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    weight_df,
-                    headers=[header],
-                    showindex=True,
-                    tablefmt="fancy_grid",
-                    floatfmt=".2f",
-                ),
-            )
-        else:
-            print(weight_df.to_string(header=False))
-    print("")
+        print_rich_table(weight_df, headers=[header], show_index=True, title="Weights")
+    console.print("")
 
 
 def display_equal_weight(stocks: List[str], value: float, pie: bool = False):
@@ -159,10 +141,10 @@ def display_max_sharpe(
     if pie:
         pie_chart_weights(weights, s_title)
     else:
-        print("\n", s_title)
+        console.print("\n", s_title)
         display_weights(weights)
     ef.portfolio_performance(verbose=True, risk_free_rate=rfrate)
-    print("")
+    console.print("")
 
 
 def display_min_volatility(
@@ -187,10 +169,10 @@ def display_min_volatility(
     if pie:
         pie_chart_weights(weights, s_title)
     else:
-        print("\n", s_title)
+        console.print("\n", s_title)
         display_weights(weights)
     ef.portfolio_performance(verbose=True)
-    print("")
+    console.print("")
 
 
 def display_max_quadratic_utility(
@@ -227,13 +209,13 @@ def display_max_quadratic_utility(
     if not market_neutral and pie:
         pie_chart_weights(weights, s_title)
         ef.portfolio_performance(verbose=True)
-        print("")
+        console.print("")
         return
 
-    print(s_title)
+    console.print(s_title)
     display_weights(weights, market_neutral)
     ef.portfolio_performance(verbose=True)
-    print("")
+    console.print("")
 
 
 def display_efficient_risk(
@@ -270,13 +252,13 @@ def display_efficient_risk(
     if not market_neutral and pie:
         pie_chart_weights(weights, s_title)
         ef.portfolio_performance(verbose=True)
-        print("")
+        console.print("")
         return
 
-    print(s_title)
+    console.print(s_title)
     display_weights(weights, market_neutral)
     ef.portfolio_performance(verbose=True)
-    print("")
+    console.print("")
 
 
 def display_efficient_return(
@@ -313,13 +295,13 @@ def display_efficient_return(
     if not market_neutral and pie:
         pie_chart_weights(weights, s_title)
         ef.portfolio_performance(verbose=True)
-        print("")
+        console.print("")
         return
 
-    print(s_title)
+    console.print(s_title)
     display_weights(weights, market_neutral)
     ef.portfolio_performance(verbose=True)
-    print("")
+    console.print("")
 
 
 def display_ef(
@@ -341,13 +323,20 @@ def display_ef(
     ef, rets, stds = optimizer_model.generate_random_portfolios(
         stocks, period, n_portfolios
     )
+    # The ef needs to be deep-copied to avoid error in plotting sharpe
+    ef2 = copy.deepcopy(ef)
+
     sharpes = rets / stds
     ax.scatter(stds, rets, marker=".", c=sharpes, cmap="viridis_r")
+    for ticker, ret, std in zip(
+        ef.tickers, ef.expected_returns, np.sqrt(np.diag(ef.cov_matrix))
+    ):
+        ax.annotate(ticker, (std * 1.01, ret))
     plotting.plot_efficient_frontier(ef, ax=ax, show_assets=True)
     # Find the tangency portfolio
     rfrate = get_rf()
-    ef.max_sharpe(risk_free_rate=rfrate)
-    ret_sharpe, std_sharpe, _ = ef.portfolio_performance(
+    ef2.max_sharpe(risk_free_rate=rfrate)
+    ret_sharpe, std_sharpe, _ = ef2.portfolio_performance(
         verbose=True, risk_free_rate=rfrate
     )
     ax.scatter(std_sharpe, ret_sharpe, marker="*", s=100, c="r", label="Max Sharpe")
@@ -371,7 +360,7 @@ def display_ef(
         plt.ion()
 
     plt.show()
-    print("")
+    console.print("")
 
 
 def my_autopct(x):
@@ -469,4 +458,4 @@ def pie_chart_weights(weights: dict, title_opt: str):
     plt.tight_layout()
 
     plt.show()
-    print("")
+    console.print("")

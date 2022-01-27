@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 from typing import List
 
 from prompt_toolkit.completion import NestedCompleter
-
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 
@@ -20,10 +20,11 @@ class JupyterController(BaseController):
         "reports",
         "dashboards",
     ]
+    PATH = "/jupyter/"
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/jupyter/", queue)
+        super().__init__(queue)
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
@@ -31,11 +32,11 @@ class JupyterController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_str = """
+        help_text = """[menu]
 >   reports     creates jupyter reports
->   dashboards  shows interactive jupyter dashboards
+>   dashboards  shows interactive jupyter dashboards[/menu]
         """
-        print(help_str)
+        console.print(text=help_text, menu="Jupyter")
 
     def call_reports(self, _):
         """Process reports command"""
@@ -43,7 +44,7 @@ class JupyterController(BaseController):
             ReportController,
         )
 
-        self.queue = ReportController(self.queue).menu()
+        self.queue = self.load_class(ReportController, self.queue)
 
     def call_dashboards(self, _):
         """Process dashboards command"""
@@ -51,4 +52,4 @@ class JupyterController(BaseController):
             DashboardsController,
         )
 
-        self.queue = DashboardsController(self.queue).menu()
+        self.queue = self.load_class(DashboardsController, self.queue)

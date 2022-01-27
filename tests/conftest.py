@@ -6,16 +6,19 @@ from typing import Any, Dict, List, Optional, Type
 
 # IMPORTATION THIRDPARTY
 import pandas as pd
+import pkg_resources
 import pytest
 from _pytest.config.argparsing import Parser
 
-# from pytest_recording._vcr import merge_kwargs
 from _pytest.capture import MultiCapture, SysCapture
 from _pytest.config import Config
 from _pytest.fixtures import SubRequest
 from _pytest.mark.structures import Mark
 
 # IMPORTATION INTERNAL
+from gamestonk_terminal import rich_config
+from gamestonk_terminal import helper_funcs
+
 
 # pylint: disable=redefined-outer-name
 
@@ -165,6 +168,14 @@ class Recorder:
         self.__display_limit = display_limit
 
     @property
+    def rewrite_expected(self) -> bool:
+        return self.__rewrite_expected
+
+    @rewrite_expected.setter
+    def rewrite_expected(self, rewrite_expected: bool):
+        self.__rewrite_expected = rewrite_expected
+
+    @property
     def path_template(self) -> PathTemplate:
         return self.__path_template
 
@@ -181,10 +192,12 @@ class Recorder:
         path_template: PathTemplate,
         record_mode: str,
         display_limit: int = DISPLAY_LIMIT,
+        rewrite_expected: bool = False,
     ) -> None:
         self.__path_template = path_template
         self.__record_mode = record_mode
         self.__display_limit = display_limit
+        self.__rewrite_expected = rewrite_expected
 
         self.__record_list: List[Record] = list()
 
@@ -227,6 +240,7 @@ class Recorder:
     def persist(self):
         record_list = self.__record_list
         record_mode = self.__record_mode
+        rewrite_expected = self.__rewrite_expected
 
         for record in record_list:
             if record_mode == "all":
@@ -245,7 +259,7 @@ class Recorder:
             else:
                 raise Exception(f"Unknown `record-mode` : {record_mode}")
 
-            if save:
+            if save or rewrite_expected:
                 record.persist()
 
 
@@ -283,10 +297,32 @@ def pytest_addoption(parser: Parser):
         action="store_true",
         help="To run tests with the marker : @pytest.mark.prediction",
     )
+    parser.addoption(
+        "--rewrite-expected",
+        action="store_true",
+        help="To force `record_stdout` and `recorder` to rewrite all files.",
+    )
 
 
 def pytest_configure(config: Config) -> None:
+    installed_packages = pkg_resources.working_set
+    for item in list(installed_packages):
+        if "brotli" in str(item).lower():
+            pytest.exit("Uninstall brotli before running tests")
+    rich_config.disable_rich()
+
+    def effect(df, *xargs, **kwargs):  # pylint: disable=unused-argument
+        print(df.to_string())
+
+    helper_funcs.print_rich_table = effect
     config.addinivalue_line("markers", "record_stdout: Mark the test as text record.")
+    os.environ["DEBUG_MODE"] = "true"
+
+
+@pytest.fixture(scope="session")  # type: ignore
+def rewrite_expected(request: SubRequest) -> bool:
+    """Force rewriting of all expected data by : `record_stdout` and `recorder`."""
+    return request.config.getoption("--rewrite-expected")
 
 
 @pytest.fixture
@@ -313,7 +349,7 @@ def record_stdout_markers(request: SubRequest) -> List[Mark]:
 
 
 def merge_markers_kwargs(markers: List[Mark]) -> Dict[str, Any]:
-    """Merge all kwargs into a single dictionary to pass to `vcr.use_cassette`."""
+    """Merge all kwargs into a single dictionary."""
     kwargs: Dict[str, Any] = dict()
     for marker in reversed(markers):
         kwargs.update(marker.kwargs)
@@ -341,6 +377,7 @@ def record_stdout_format_kwargs(
 @pytest.fixture(autouse=True)
 def record_stdout(
     disable_recording: bool,
+    rewrite_expected: bool,
     record_stdout_markers: List[Mark],
     record_mode: str,
     request: SubRequest,
@@ -372,6 +409,7 @@ def record_stdout(
             path_template=path_template,
             record_mode=formatted_kwargs["record_mode"],
             display_limit=formatted_kwargs["display_limit"],
+            rewrite_expected=rewrite_expected,
         )
 
         # CAPTURE STDOUT
@@ -409,6 +447,7 @@ def record_stdout(
 @pytest.fixture
 def recorder(
     disable_recording: bool,
+    rewrite_expected: bool,
     record_mode: str,
     request: SubRequest,
 ):
@@ -428,7 +467,9 @@ def recorder(
             "You can't combine both of these fixtures : `record_stdout marker`, `recorder`."
         )
     else:
-        recorder = Recorder(path_template, record_mode)
+        recorder = Recorder(
+            path_template, record_mode, rewrite_expected=rewrite_expected
+        )
         yield recorder
         recorder.persist()
         recorder.assert_equal()

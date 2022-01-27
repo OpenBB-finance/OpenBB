@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 import os
 import warnings
 from typing import Any
+from datetime import datetime
 
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
@@ -12,7 +13,6 @@ from matplotlib import gridspec
 
 import numpy as np
 import pandas as pd
-from rich.console import Console
 import seaborn as sns
 import statsmodels.api as sm
 from detecta import detect_cusum
@@ -20,18 +20,18 @@ from pandas.plotting import register_matplotlib_converters
 from scipy import stats
 from statsmodels.graphics.gofplots import qqplot
 
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.common.quantitative_analysis import qa_model
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.helper_funcs import (
     export_data,
     plot_autoscale,
-    rich_table_from_df,
-    LineAnnotateDrawer,
+    print_rich_table,
 )
+from gamestonk_terminal.helper_classes import LineAnnotateDrawer
 
 register_matplotlib_converters()
-t_console = Console()
 
 # TODO : Since these are common/ they should be independent of 'stock' info.
 # df_stock should be replaced with a generic df and a column variable
@@ -56,16 +56,14 @@ def display_summary(df: pd.DataFrame, export: str):
     """
     summary = qa_model.get_summary(df)
 
-    t_console.print(
-        rich_table_from_df(
-            summary,
-            headers=list(summary.columns),
-            floatfmt=".3f",
-            show_index=True,
-            title="[bold]Summary Statistics[/bold]",
-        )
+    print_rich_table(
+        summary,
+        headers=list(summary.columns),
+        floatfmt=".3f",
+        show_index=True,
+        title="[bold]Summary Statistics[/bold]",
     )
-    t_console.print("")
+    console.print("")
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
@@ -95,20 +93,25 @@ def display_hist(
     """
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     data = df[target]
-    start = df.index[0]
 
     sns.histplot(data, bins=bins, kde=True, ax=ax, stat="proportion")
     sns.rugplot(data, c="r", ax=ax)
 
-    ax.set_title(f"Histogram of {name} {target} from {start.strftime('%Y-%m-%d')}")
-    ax.set_xlabel("Share Price")
+    if isinstance(df.index[0], datetime):
+        start = df.index[0]
+
+        ax.set_title(f"Histogram of {name} {target} from {start.strftime('%Y-%m-%d')}")
+    else:
+        ax.set_title(f"Histogram of {name} {target}")
+
+    ax.set_xlabel("Value")
     ax.grid(True)
 
     if gtff.USE_ION:
         plt.ion()
     fig.tight_layout()
     plt.show()
-    t_console.print("")
+    console.print("")
 
 
 def display_cdf(
@@ -182,7 +185,7 @@ def display_cdf(
         plt.ion()
 
     plt.show()
-    t_console.print("")
+    console.print("")
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
@@ -248,7 +251,7 @@ def display_bw(
         plt.ion()
 
     plt.show()
-    t_console.print("")
+    console.print("")
 
 
 def display_acf(name: str, df: pd.DataFrame, target: str, lags: int):
@@ -298,7 +301,7 @@ def display_acf(name: str, df: pd.DataFrame, target: str, lags: int):
         plt.ion()
 
     plt.show()
-    t_console.print("")
+    console.print("")
 
 
 def display_cusum(df: pd.DataFrame, target: str, threshold: float, drift: float):
@@ -319,7 +322,7 @@ def display_cusum(df: pd.DataFrame, target: str, threshold: float, drift: float)
     if gtff.USE_ION:
         plt.ion()
     plt.show()
-    t_console.print("")
+    console.print("")
 
 
 def display_seasonal(
@@ -383,20 +386,20 @@ def display_seasonal(
         plt.ion()
 
     plt.show()
-    t_console.print("")
+    console.print("")
 
     # From  # https://otexts.com/fpp2/seasonal-strength.html
 
-    t_console.print("Time-Series Level is " + str(round(data.mean(), 2)))
+    console.print("Time-Series Level is " + str(round(data.mean(), 2)))
 
     Ft = max(0, 1 - np.var(result.resid)) / np.var(result.trend + result.resid)
-    t_console.print(f"Strength of Trend: {Ft:.4f}")
+    console.print(f"Strength of Trend: {Ft:.4f}")
 
     Fs = max(
         0,
         1 - np.var(result.resid) / np.var(result.seasonal + result.resid),
     )
-    t_console.print(f"Strength of Seasonality: {Fs:.4f}\n")
+    console.print(f"Strength of Seasonality: {Fs:.4f}\n")
 
     export_data(
         export,
@@ -423,19 +426,14 @@ def display_normality(df: pd.DataFrame, target: str, export: str = ""):
     stats1 = normal.copy().T
     stats1.iloc[:, 1] = stats1.iloc[:, 1].apply(lambda x: color_red(x))
 
-    if gtff.USE_TABULATE_DF:
-        t_console.print(
-            rich_table_from_df(
-                stats1,
-                show_index=True,
-                headers=["Statistic", "p-value"],
-                floatfmt=".4f",
-                title="[bold]Normality Statistics[/bold]",
-            )
-        )
-        t_console.print("")
-    else:
-        t_console.print(normal.round(4).to_string(), "\n")
+    print_rich_table(
+        stats1,
+        show_index=True,
+        headers=["Statistic", "p-value"],
+        floatfmt=".4f",
+        title="[bold]Normality Statistics[/bold]",
+    )
+    console.print("")
 
     export_data(
         export,
@@ -457,7 +455,7 @@ def display_qqplot(name: str, df: pd.DataFrame, target: str):
     target : str
         Column in data to look at
     """
-    # Statsmodels has a UserWarning for marker kwarg-- which we dont use
+    # Statsmodels has a UserWarning for marker kwarg-- which we don't use
     warnings.filterwarnings(category=UserWarning, action="ignore")
     data = df[target]
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -471,7 +469,7 @@ def display_qqplot(name: str, df: pd.DataFrame, target: str):
         plt.ion()
     fig.tight_layout(pad=1)
     plt.show()
-    t_console.print("")
+    console.print("")
 
 
 def display_unitroot(
@@ -494,19 +492,14 @@ def display_unitroot(
     """
     df = df[target]
     data = qa_model.get_unitroot(df, fuller_reg, kpss_reg)
-    if gtff.USE_TABULATE_DF:
-        t_console.print(
-            rich_table_from_df(
-                data,
-                show_index=True,
-                headers=list(data.columns),
-                title="[bold]Unit Root Calculation[/bold]",
-                floatfmt=".4f",
-            )
-        )
-    else:
-        t_console.print(data.round(4).to_string(), "\n")
-    t_console.print("")
+    print_rich_table(
+        data,
+        show_index=True,
+        headers=list(data.columns),
+        title="[bold]Unit Root Calculation[/bold]",
+        floatfmt=".4f",
+    )
+    console.print("")
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
@@ -547,20 +540,15 @@ def display_raw(
     if sort:
         df = df.sort_values(by=sort, ascending=des)
     df.index = [x.strftime("%Y-%m-%d") for x in df.index]
-    if gtff.USE_TABULATE_DF:
-        t_console.print(
-            rich_table_from_df(
-                df.tail(num),
-                headers=[x.title() if x != "" else "Date" for x in df.columns],
-                title="[bold]Raw Data[/bold]",
-                show_index=True,
-                floatfmt=".3f",
-            )
-        )
-    else:
-        t_console.print(df.to_string(index=False))
+    print_rich_table(
+        df.tail(num),
+        headers=[x.title() if x != "" else "Date" for x in df.columns],
+        title="[bold]Raw Data[/bold]",
+        show_index=True,
+        floatfmt=".3f",
+    )
 
-    t_console.print("")
+    console.print("")
 
 
 def display_line(
@@ -585,7 +573,7 @@ def display_line(
     export: str
         Format to export data
     """
-    t_console.print("")
+    console.print("")
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
     if log_y:
@@ -610,6 +598,16 @@ def display_line(
 
     if gtff.USE_ION:
         plt.ion()
+    if gtff.USE_WATERMARK:
+        ax.text(
+            0.73,
+            0.025,
+            "Gamestonk Terminal",
+            transform=ax.transAxes,
+            fontsize=12,
+            color="gray",
+            alpha=0.5,
+        )
 
     if draw:
         LineAnnotateDrawer(ax).draw_lines_and_annotate()

@@ -1,10 +1,9 @@
 """ opensea.io View """
 
 import os
-from tabulate import tabulate
-from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import export_data
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.cryptocurrency.nft.opensea_model import get_collection_stats
+from gamestonk_terminal.rich_config import console
 
 
 def display_collection_stats(slug: str, export: str):
@@ -20,21 +19,15 @@ def display_collection_stats(slug: str, export: str):
 
     collection_stats_df = get_collection_stats(slug)
     if collection_stats_df.empty:
-        print("No data found.", "\n")
+        console.print("No data found.", "\n")
     else:
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    collection_stats_df,
-                    headers=collection_stats_df.columns,
-                    floatfmt=".2f",
-                    showindex=False,
-                    tablefmt="fancy_grid",
-                ),
-                "\n",
-            )
-        else:
-            print(collection_stats_df.to_string, "\n")
+        print_rich_table(
+            collection_stats_df,
+            headers=list(collection_stats_df.columns),
+            show_index=False,
+            title="Collection Stats",
+        )
+        console.print("")
 
     export_data(
         export,

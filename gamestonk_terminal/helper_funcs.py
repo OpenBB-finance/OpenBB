@@ -1,8 +1,9 @@
 """Helper functions"""
 __docformat__ = "numpy"
+# pylint: disable=too-many-lines
 import argparse
 import logging
-from typing import List
+from typing import List, Union
 from datetime import datetime, timedelta
 import os
 import random
@@ -16,13 +17,13 @@ import iso8601
 import matplotlib
 import matplotlib.pyplot as plt
 from holidays import US as us_holidays
-from colorama import Fore, Style
 from pandas._config.config import get_option
 from pandas.plotting import register_matplotlib_converters
 import pandas.io.formats.format
 import requests
 from screeninfo import get_monitors
 
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal import config_plot as cfgPlot
 
@@ -41,14 +42,14 @@ MENU_QUIT = 1
 MENU_RESET = 2
 
 
-def rich_table_from_df(
+def print_rich_table(
     df: pd.DataFrame,
     show_index: bool = False,
     title: str = "",
     index_name: str = "",
-    headers: List[str] = None,
-    floatfmt: str = ".2f",
-) -> Table:
+    headers: Union[List[str], pd.Index] = None,
+    floatfmt: Union[str, List[str]] = ".2f",
+):
     """Prepare a table from df in rich
 
     Parameters
@@ -65,33 +66,43 @@ def rich_table_from_df(
         Titles for columns
     floatfmt: str
         String to
-    Returns
-    -------
-    Table
-        rich table
     """
-    table = Table(title=title, show_lines=True)
 
-    if show_index:
-        table.add_column(index_name)
+    if gtff.USE_TABULATE_DF:
+        table = Table(title=title, show_lines=True)
 
-    if headers:
-        if len(headers) != len(df.columns):
-            raise ValueError("Length of headers does not match length of DataFrame")
-        for header in headers:
-            table.add_column(str(header))
+        if show_index:
+            table.add_column(index_name)
+
+        if headers:
+            if isinstance(headers, pd.Index):
+                headers = list(headers)
+            if len(headers) != len(df.columns):
+                raise ValueError("Length of headers does not match length of DataFrame")
+            for header in headers:
+                table.add_column(str(header))
+        else:
+            for column in df.columns:
+                table.add_column(str(column))
+
+        if isinstance(floatfmt, list):
+            if len(floatfmt) != len(df.columns):
+                raise ValueError(
+                    "Length of floatfmt list does not match length of DataFrame columns."
+                )
+        if isinstance(floatfmt, str):
+            floatfmt = [floatfmt for _ in range(len(df.columns))]
+
+        for idx, values in zip(df.index.tolist(), df.values.tolist()):
+            row = [str(idx)] if show_index else []
+            row += [
+                str(x) if not isinstance(x, float) else f"{x:{floatfmt[idx]}}"
+                for idx, x in enumerate(values)
+            ]
+            table.add_row(*row)
+        console.print(table)
     else:
-        for column in df.columns:
-            table.add_column(str(column))
-
-    for idx, values in zip(df.index.tolist(), df.values.tolist()):
-        row = [str(idx)] if show_index else []
-        row += [
-            str(x) if not isinstance(x, float) else f"{x:{floatfmt}}" for x in values
-        ]
-        table.add_row(*row)
-
-    return table
+        console.print(df.to_string())
 
 
 def check_int_range(mini: int, maxi: int):
@@ -146,6 +157,27 @@ def check_non_negative(value) -> int:
     if new_value < 0:
         raise argparse.ArgumentTypeError(f"{value} is negative")
     return new_value
+
+
+def check_terra_address_format(address: str) -> str:
+    """Validate if terra account address has proper format: ^terra1[a-z0-9]{38}$
+
+    Parameters
+    ----------
+    address: str
+        terra blockchain account address
+    Returns
+    -------
+    str
+        Terra blockchain address or raise argparse exception
+    """
+
+    pattern = re.compile(r"^terra1[a-z0-9]{38}$")
+    if not pattern.match(address):
+        raise argparse.ArgumentTypeError(
+            f"Terra address: {address} has invalid format. Valid format: ^terra1[a-z0-9]{{38}}$"
+        )
+    return address
 
 
 def check_non_negative_float(value) -> float:
@@ -257,8 +289,8 @@ def plot_view_stock(df: pd.DataFrame, symbol: str, interval: str):
             dpi=cfgPlot.PLOT_DPI,
         )
     except Exception as e:
-        print(e)
-        print(
+        console.print(e)
+        console.print(
             "Encountered an error trying to open a chart window. Check your X server configuration."
         )
         logging.exception("%s", type(e).__name__)
@@ -310,7 +342,7 @@ def plot_view_stock(df: pd.DataFrame, symbol: str, interval: str):
     plt.setp(ax[1].get_xticklabels(), rotation=20, horizontalalignment="right")
 
     plt.show()
-    print("")
+    console.print("")
 
 
 def us_market_holidays(years) -> list:
@@ -426,7 +458,7 @@ def divide_chunks(data, n):
     """Split into chunks"""
     # looping till length of data
     for i in range(0, len(data), n):
-        yield data[i : i + n]
+        yield data[i : i + n]  # noqa: E203
 
 
 def get_next_stock_market_days(last_stock_day, n_next_days) -> list:
@@ -649,16 +681,16 @@ def parse_known_args_and_warn(
         (ns_parser, l_unknown_args) = parser.parse_known_args(other_args)
     except SystemExit:
         # In case the command has required argument that isn't specified
-        print("")
+        console.print("")
         return None
 
     if ns_parser.help:
-        parser.print_help()
-        print("")
+        txt_help = parser.format_help()
+        console.print(f"[help]{txt_help}[/help]")
         return None
 
     if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}")
+        console.print(f"The following args couldn't be interpreted: {l_unknown_args}")
 
     return ns_parser
 
@@ -666,12 +698,12 @@ def parse_known_args_and_warn(
 def financials_colored_values(val: str) -> str:
     """Add a color to a value"""
     if val == "N/A" or str(val) == "nan":
-        val = f"{Fore.YELLOW}N/A{Style.RESET_ALL}"
+        val = "[yellow]N/A[/yellow]"
     elif sum(c.isalpha() for c in val) < 2:
         if "%" in val and "-" in val or "%" not in val and "(" in val:
-            val = f"{Fore.RED}{val}{Style.RESET_ALL}"
+            val = f"[red]{val}[/red]"
         elif "%" in val:
-            val = f"{Fore.GREEN}{val}{Style.RESET_ALL}"
+            val = f"[green]{val}[/green]"
     return val
 
 
@@ -692,38 +724,44 @@ def lett_to_num(word: str) -> str:
 
 def get_flair() -> str:
     """Get a flair icon"""
-    flair = {
-        "rocket": "(🚀🚀)",
-        "diamond": "(💎💎)",
-        "stars": "(✨)",
-        "baseball": "(⚾)",
-        "boat": "(⛵)",
-        "phone": "(☎)",
-        "mercury": "(☿)",
-        "sun": "(☼)",
-        "moon": "(☾)",
-        "nuke": "(☢)",
-        "hazard": "(☣)",
-        "tunder": "(☈)",
-        "king": "(♔)",
-        "queen": "(♕)",
-        "knight": "(♘)",
-        "recycle": "(♻)",
-        "scales": "(⚖)",
-        "ball": "(⚽)",
-        "golf": "(⛳)",
-        "piece": "(☮)",
-        "yy": "(☯)",
+    flairs = {
+        ":rocket": "(🚀🚀)",
+        ":diamond": "(💎💎)",
+        ":stars": "(✨)",
+        ":baseball": "(⚾)",
+        ":boat": "(⛵)",
+        ":phone": "(☎)",
+        ":mercury": "(☿)",
+        ":hidden": "",
+        ":sun": "(☼)",
+        ":moon": "(☾)",
+        ":nuke": "(☢)",
+        ":hazard": "(☣)",
+        ":tunder": "(☈)",
+        ":king": "(♔)",
+        ":queen": "(♕)",
+        ":knight": "(♘)",
+        ":recycle": "(♻)",
+        ":scales": "(⚖)",
+        ":ball": "(⚽)",
+        ":golf": "(⛳)",
+        ":piece": "(☮)",
+        ":yy": "(☯)",
     }
 
-    if flair.get(gtff.USE_FLAIR):
-        if gtff.USE_DATETIME and get_user_timezone_or_invalid() != "INVALID":
-            dtime = datetime.now(pytz.timezone(get_user_timezone())).strftime(
-                "%Y %b %d, %H:%M"
-            )
-            return f"{dtime} {flair[gtff.USE_FLAIR]}"
-        return flair[gtff.USE_FLAIR]
-    return ""
+    flair = flairs[gtff.USE_FLAIR] if gtff.USE_FLAIR in flairs else gtff.USE_FLAIR
+    if gtff.USE_DATETIME and get_user_timezone_or_invalid() != "INVALID":
+        dtime = datetime.now(pytz.timezone(get_user_timezone())).strftime(
+            "%Y %b %d, %H:%M"
+        )
+
+        # if there is no flair, don't add an extra space after the time
+        if flair == "":
+            return f"{dtime}"
+
+        return f"{dtime} {flair}"
+
+    return flair
 
 
 def is_timezone_valid(user_tz: str) -> bool:
@@ -790,13 +828,13 @@ def replace_user_timezone(user_tz: str) -> None:
         with open(filename, "w") as f:
             if is_timezone_valid(user_tz):
                 if f.write(user_tz):
-                    print("Timezone successfully updated", "\n")
+                    console.print("Timezone successfully updated", "\n")
                 else:
-                    print("Timezone not set successfully", "\n")
+                    console.print("Timezone not set successfully", "\n")
             else:
-                print("Timezone selected is not valid", "\n")
+                console.print("Timezone selected is not valid", "\n")
     else:
-        print("timezone.gst file does not exist", "\n")
+        console.print("timezone.gst file does not exist", "\n")
 
 
 def str_to_bool(value) -> bool:
@@ -815,7 +853,9 @@ def get_screeninfo():
     screens = get_monitors()  # Get all available monitors
     if len(screens) - 1 < cfgPlot.MONITOR:  # Check to see if chosen monitor is detected
         monitor = 0
-        print(f"Could not locate monitor {cfgPlot.MONITOR}, using primary monitor.")
+        console.print(
+            f"Could not locate monitor {cfgPlot.MONITOR}, using primary monitor."
+        )
     else:
         monitor = cfgPlot.MONITOR
     main_screen = screens[monitor]  # Choose what monitor to get
@@ -857,7 +897,7 @@ def get_last_time_market_was_open(dt):
 
 def export_data(
     export_type: str, dir_path: str, func_name: str, df: pd.DataFrame = pd.DataFrame()
-):
+) -> None:
     """Export data to a file.
 
     Parameters
@@ -904,9 +944,9 @@ def export_data(
                 elif exp_type == "svg":
                     plt.savefig(saved_path)
                 else:
-                    print("Wrong export file specified.\n")
+                    console.print("Wrong export file specified.\n")
 
-                print(f"Saved file: {saved_path}\n")
+                console.print(f"Saved file: {saved_path}\n")
 
 
 def get_rf() -> float:
@@ -930,11 +970,12 @@ def get_rf() -> float:
 
 
 class LineAnnotateDrawer:
+    """Line drawing class."""
+
     def __init__(self, ax: matplotlib.axes = None):
         self.ax = ax
 
     def draw_lines_and_annotate(self):
-
         # ymin, _ = self.ax.get_ylim()
         # xmin, _ = self.ax.get_xlim()
         # self.ax.plot(
@@ -946,14 +987,16 @@ class LineAnnotateDrawer:
         # )
         # self.ax.legend(handlelength=0, handletextpad=0, fancybox=True, loc=2)
         # self.ax.figure.canvas.draw()
-
-        print("Click twice for annotation.\nClose window to keep using terminal.\n")
+        """Draw lines."""
+        console.print(
+            "Click twice for annotation.\nClose window to keep using terminal.\n"
+        )
 
         while True:
             xy = plt.ginput(2)
             # Check whether the user has closed the window or not
             if not plt.get_fignums():
-                print("")
+                console.print("")
                 return
 
             if len(xy) == 2:
@@ -972,3 +1015,23 @@ class LineAnnotateDrawer:
 def system_clear():
     """Clear screen"""
     os.system("cls||clear")  # nosec
+
+
+def excel_columns() -> List[str]:
+    """
+    Returns potential columns for excel
+
+    Returns
+    -------
+    letters : List[str]
+        Letters to be used as excel columns
+    """
+    letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M"]
+    letters += ["N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
+
+    opts = (
+        [f"{x}" for x in letters]
+        + [f"{x}{y}" for x in letters for y in letters]
+        + [f"{x}{y}{z}" for x in letters for y in letters for z in letters]
+    )
+    return opts

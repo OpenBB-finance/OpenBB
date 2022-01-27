@@ -2,16 +2,16 @@
 __docformat__ = "numpy"
 
 import os
-from tabulate import tabulate
 from pandas.plotting import register_matplotlib_converters
 from gamestonk_terminal.helper_funcs import (
     export_data,
+    print_rich_table,
 )
 from gamestonk_terminal.cryptocurrency.due_diligence import coinpaprika_model
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
     long_number_format_with_type_check,
 )
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.rich_config import console
 
 register_matplotlib_converters()
 
@@ -101,7 +101,7 @@ def display_twitter(
     df = coinpaprika_model.get_coin_twitter_timeline(coin_id)
 
     if df.empty:
-        print(f"Couldn't find any tweets for coin {coin_id}", "\n")
+        console.print(f"Couldn't find any tweets for coin {coin_id}", "\n")
         return
 
     df = df.sort_values(by=sortby, ascending=descend)
@@ -109,19 +109,13 @@ def display_twitter(
     df["status"] = df["status"].apply(
         lambda text: "".join(i if ord(i) < 128 else "" for i in text)
     )
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df.head(top),
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        print(df.to_string, "\n")
+    print_rich_table(
+        df.head(top),
+        headers=list(df.columns),
+        show_index=False,
+        title="Twitter Timeline",
+    )
+    console.print("")
 
     export_data(
         export,
@@ -155,7 +149,7 @@ def display_events(
     df = coinpaprika_model.get_coin_events_by_id(coin_id)
 
     if df.empty:
-        print(f"Couldn't find any events for coin {coin_id}\n")
+        console.print(f"Couldn't find any events for coin {coin_id}\n")
         return
 
     df = df.sort_values(by=sortby, ascending=descend)
@@ -167,19 +161,10 @@ def display_events(
     else:
         df.drop("link", axis=1, inplace=True)
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df.head(top),
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        print(df.to_string, "\n")
+    print_rich_table(
+        df.head(top), headers=list(df.columns), show_index=False, title="All Events"
+    )
+    console.print("")
 
     export_data(
         export,
@@ -211,24 +196,15 @@ def display_exchanges(
     df = coinpaprika_model.get_coin_exchanges_by_id(coin_id)
 
     if df.empty:
-        print("No data found", "\n")
+        console.print("No data found", "\n")
         return
 
     df = df.sort_values(by=sortby, ascending=descend)
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df.head(top),
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        print(df.to_string, "\n")
+    print_rich_table(
+        df.head(top), headers=list(df.columns), show_index=False, title="All Exchanges"
+    )
+    console.print("")
 
     export_data(
         export,
@@ -273,7 +249,7 @@ def display_markets(
     df = coinpaprika_model.get_coin_markets_by_id(coin_id, currency)
 
     if df.empty:
-        print("There is no data \n")
+        console.print("There is no data \n")
         return
 
     df = df.sort_values(by=sortby, ascending=descend)
@@ -285,19 +261,10 @@ def display_markets(
     else:
         df.drop("market_url", axis=1, inplace=True)
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df.head(top),
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        print(df.to_string, "\n")
+    print_rich_table(
+        df.head(top), headers=list(df.columns), show_index=False, title="All Markets"
+    )
+    console.print("")
 
     export_data(
         export,
@@ -324,24 +291,15 @@ def display_price_supply(coin_id: str, currency: str, export: str) -> None:
     df = coinpaprika_model.get_tickers_info_for_coin(coin_id, currency)
 
     if df.empty:
-        print("No data found", "\n")
+        console.print("No data found", "\n")
         return
 
     df = df.applymap(lambda x: long_number_format_with_type_check(x))
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df,
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        print(df.to_string, "\n")
+    print_rich_table(
+        df, headers=list(df.columns), show_index=False, title="Coin Information"
+    )
+    console.print("")
 
     export_data(
         export,
@@ -366,22 +324,12 @@ def display_basic(coin_id: str, export: str) -> None:
     df = coinpaprika_model.basic_coin_info(coin_id)
 
     if df.empty:
-        print("No data available\n")
+        console.print("No data available\n")
         return
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df,
-                headers=df.columns,
-                floatfmt=".0f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        print(df.to_string, "\n")
+    print_rich_table(
+        df, headers=list(df.columns), show_index=False, title="Basic Coin Information"
+    )
 
     export_data(
         export,

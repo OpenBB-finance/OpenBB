@@ -6,6 +6,7 @@ import numpy as np
 from sklearn import linear_model
 from sklearn import pipeline
 from sklearn import preprocessing
+from gamestonk_terminal.rich_config import console
 
 # The tsxv dependence was removed so this fails.  Taking from didiers source
 
@@ -42,7 +43,7 @@ def split_train(
     y: List = []
 
     if numInputs + numOutputs > len(sequence):
-        print(
+        console.print(
             "To have at least one X,y arrays, the sequence size needs to be bigger than numInputs+numOutputs"
         )
         return X, y
@@ -101,7 +102,7 @@ def get_regression_model(
     )
 
     if not stock_x:
-        print("Given the model parameters more training data is needed.\n")
+        console.print("Given the model parameters more training data is needed.\n")
         return [], None
 
     # Machine Learning model

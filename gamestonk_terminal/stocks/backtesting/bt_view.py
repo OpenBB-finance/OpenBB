@@ -14,6 +14,7 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
 from gamestonk_terminal.stocks.backtesting import bt_model
+from gamestonk_terminal.rich_config import console
 
 register_matplotlib_converters()
 
@@ -46,14 +47,14 @@ def display_whatif_scenario(
 
     if not date_shares_acquired:
         date_shares_acquired = ipo_date
-        print("IPO date selected by default.")
+        console.print("IPO date selected by default.")
 
     if date_shares_acquired > last_date:
-        print("The date selected is in the future. Select a valid date.", "\n")
+        console.print("The date selected is in the future. Select a valid date.", "\n")
         return
 
     if date_shares_acquired < ipo_date:
-        print(
+        console.print(
             f"{ticker} had not IPO at that date. Thus, changing the date to IPO on the {ipo_date.strftime('%Y-%m-%d')}",
             "\n",
         )
@@ -74,7 +75,7 @@ def display_whatif_scenario(
         shares += "s"
         these = "These"
 
-    print(
+    console.print(
         f"If you had acquired {nshares} {shares} of {ticker} on "
         f"{date_shares_acquired.strftime('%Y-%m-%d')} with a cost of {initial_shares_value:.2f}."
     )
@@ -82,11 +83,22 @@ def display_whatif_scenario(
     current_shares_value = (
         data[data.index > date_shares_acquired].values[-1] * num_shares_acquired
     )
-    increase_pct = 100 * current_shares_value / initial_shares_value
-    print(
-        f"{these} would be worth {current_shares_value:.2f}. Which represents an increase of {increase_pct:.2f}%.",
-        "\n",
-    )
+    if current_shares_value > initial_shares_value:
+        pct = 100 * (
+            (current_shares_value - initial_shares_value) / initial_shares_value
+        )
+        console.print(
+            f"{these} would be worth {current_shares_value:.2f}. Which represents an increase of {pct:.2f}%.",
+            "\n",
+        )
+    else:
+        pct = 100 * (
+            (initial_shares_value - current_shares_value) / initial_shares_value
+        )
+        console.print(
+            f"{these} would be worth {current_shares_value:.2f}. Which represents an decrease of {pct:.2f}%.",
+            "\n",
+        )
 
 
 def display_simple_ema(
@@ -123,7 +135,7 @@ def display_simple_ema(
     if gtff.USE_ION:
         plt.ion()
     plt.show()
-    print(res.display(), "\n")
+    console.print(res.display(), "\n")
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "simple_ema", res.stats
     )
@@ -171,7 +183,7 @@ def display_ema_cross(
     if gtff.USE_ION:
         plt.ion()
     plt.show()
-    print(res.display(), "\n")
+    console.print(res.display(), "\n")
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "ema_cross", res.stats
     )
@@ -223,7 +235,7 @@ def display_rsi_strategy(
     if gtff.USE_ION:
         plt.ion()
     plt.show()
-    print(res.display(), "\n")
+    console.print(res.display(), "\n")
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "rsi_corss", res.stats
     )

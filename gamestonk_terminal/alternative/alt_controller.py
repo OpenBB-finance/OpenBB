@@ -5,12 +5,11 @@ import logging
 from typing import List
 
 from prompt_toolkit.completion import NestedCompleter
-from rich.console import Console
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal.menu import session
 
-t_console = Console()
 logger = logging.getLogger(__name__)
 # pylint:disable=import-outside-toplevel
 
@@ -20,22 +19,22 @@ class AlternativeDataController(BaseController):
 
     CHOICES_COMMANDS: List[str] = []
     CHOICES_MENUS = ["covid"]
+    PATH = "/alternative/"
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/alternative/", queue)
+        super().__init__(queue)
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
-    @staticmethod
-    def print_help():
+    def print_help(self):
         """Print help"""
-        help_str = """
->   covid           cases, deaths, rates
+        help_text = """[menu]
+>   covid     COVID menu,                    e.g.: cases, deaths, rates[/menu]
         """
-        t_console.print(help_str)
+        console.print(text=help_text, menu="Alternative")
 
     def call_covid(self, _):
         """Process covid command"""
@@ -43,4 +42,4 @@ class AlternativeDataController(BaseController):
             CovidController,
         )
 
-        self.queue = CovidController(self.queue).menu()
+        self.queue = self.load_class(CovidController, self.queue)

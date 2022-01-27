@@ -1,21 +1,22 @@
 import os
+from typing import List
 import textwrap
 import itertools
 from bs4 import BeautifulSoup
 import requests
 import numpy as np
 import pandas as pd
-from tabulate import tabulate
-from colorama import Fore, Style
 from gamestonk_terminal.helper_funcs import (
     patch_pandas_text_adjustment,
     export_data,
+    print_rich_table,
 )
 from gamestonk_terminal.stocks.insider.openinsider_model import (
     get_open_insider_link,
     get_open_insider_data,
 )
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.rich_config import console
 
 d_open_insider = {
     "lcb": "latest-cluster-buys",
@@ -48,17 +49,17 @@ d_notes = {
 }
 
 d_trade_types = {
-    "S - Sale": f"{Fore.RED}S - Sale: Sale of securities on an exchange or to another person{Style.RESET_ALL}",
-    "S - Sale+OE": f"{Fore.YELLOW}S - Sale+OE: Sale of securities "
-    f"on an exchange or to another person (after option exercise){Style.RESET_ALL}",
-    "F - Tax": f"{Fore.MAGENTA}F - Tax: Payment of exercise price or "
-    f"tax liability using portion of securities received from the company{Style.RESET_ALL}",
-    "P - Purchase": f"{Fore.GREEN}P - Purchase: Purchase of securities on "
-    f"an exchange or from another person{Style.RESET_ALL}",
+    "S - Sale": "[red]S - Sale: Sale of securities on an exchange or to another person[/red]",
+    "S - Sale+OE": "[yellow]S - Sale+OE: Sale of securities "
+    "on an exchange or to another person (after option exercise)[/yellow]",
+    "F - Tax": "[magenta]F - Tax: Payment of exercise price or "
+    "tax liability using portion of securities received from the company[/magenta]",
+    "P - Purchase": "[green]P - Purchase: Purchase of securities on "
+    "an exchange or from another person[/green]",
 }
 
 
-def red_highlight(values):
+def red_highlight(values) -> List[str]:
     """Red highlight
 
     Parameters
@@ -71,10 +72,10 @@ def red_highlight(values):
     List[str]
         colored dataframes values
     """
-    return [f"{Fore.RED}{val}{Style.RESET_ALL}" for val in values]
+    return [f"[red]{val}[/red]" for val in values]
 
 
-def yellow_highlight(values):
+def yellow_highlight(values) -> List[str]:
     """Yellow highlight
 
     Parameters
@@ -87,7 +88,7 @@ def yellow_highlight(values):
     List[str]
         colored dataframes values
     """
-    return [f"{Fore.YELLOW}{val}{Style.RESET_ALL}" for val in values]
+    return [f"[yellow]{val}[/yellow]" for val in values]
 
 
 def magenta_highlight(values):
@@ -103,7 +104,7 @@ def magenta_highlight(values):
     List[str]
         colored dataframes values
     """
-    return [f"{Fore.MAGENTA}{val}{Style.RESET_ALL}" for val in values]
+    return [f"[magenta]{val}[/magenta]" for val in values]
 
 
 def green_highlight(values):
@@ -119,7 +120,7 @@ def green_highlight(values):
     List[str]
         colored dataframes values
     """
-    return [f"{Fore.GREEN}{val}{Style.RESET_ALL}" for val in values]
+    return [f"[green]{val}[/green]" for val in values]
 
 
 def print_insider_data(type_insider: str, limit: int = 10, export: str = ""):
@@ -139,7 +140,7 @@ def print_insider_data(type_insider: str, limit: int = 10, export: str = ""):
     table = soup.find("table", {"class": "tinytable"})
 
     if not table:
-        print("No insider information found", "\n")
+        console.print("No insider information found", "\n")
         return
 
     table_rows = table.find_all("tr")
@@ -186,18 +187,12 @@ def print_insider_data(type_insider: str, limit: int = 10, export: str = ""):
             lambda x: "\n".join(textwrap.wrap(x, width=20)) if isinstance(x, str) else x
         )
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df,
-                headers=df.columns,
-                tablefmt="fancy_grid",
-                stralign="right",
-                showindex=False,
-            )
-        )
-    else:
-        print(df.to_string())
+    print_rich_table(
+        df,
+        headers=[x.title() for x in df.columns],
+        show_index=False,
+        title="Insider Data",
+    )
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), type_insider, df)
 
@@ -205,8 +200,8 @@ def print_insider_data(type_insider: str, limit: int = 10, export: str = ""):
     l_uchars = np.unique(list(itertools.chain(*l_chars)))
 
     for char in l_uchars:
-        print(d_notes[char])
-    print("")
+        console.print(d_notes[char])
+    console.print("")
 
 
 def print_insider_filter(
@@ -237,14 +232,14 @@ def print_insider_filter(
         link = get_open_insider_link(preset_loaded)
 
     if not link:
-        print("")
+        console.print("")
         return
 
     df_insider = get_open_insider_data(link, has_company_name=bool(not ticker))
     df_insider_orig = df_insider.copy()
 
     if df_insider.empty:
-        print("No insider data found\n")
+        console.print("No insider data found\n")
         return
 
     if links:
@@ -285,17 +280,12 @@ def print_insider_filter(
         # needs to be done because table is too large :(
         df_insider = df_insider.drop(columns=["Filing Date"])
 
-    print("")
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df_insider,
-                headers=df_insider.columns,
-                tablefmt="fancy_grid",
-            )
-        )
-    else:
-        print(df_insider.to_string(index=False))
+    console.print("")
+    print_rich_table(
+        df_insider,
+        headers=[x.title() for x in df_insider.columns],
+        title="Insider filtered",
+    )
 
     if export:
         if preset_loaded:
@@ -308,14 +298,14 @@ def print_insider_filter(
     if not links:
         l_chars = [list(chars) for chars in df_insider_orig["X"].values]
         l_uchars = np.unique(list(itertools.chain(*l_chars)))
-        print("")
+        console.print("")
         for char in l_uchars:
-            print(d_notes[char])
+            console.print(d_notes[char])
 
         l_tradetype = df_insider_orig["Trade Type"].values
         l_utradetype = np.unique(l_tradetype)
-        print("")
+        console.print("")
         for tradetype in l_utradetype:
-            print(d_trade_types[tradetype])
+            console.print(d_trade_types[tradetype])
 
-    print("")
+    console.print("")

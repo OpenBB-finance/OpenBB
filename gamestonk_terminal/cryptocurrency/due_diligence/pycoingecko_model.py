@@ -1,12 +1,11 @@
 """CoinGecko model"""
 __docformat__ = "numpy"
 
-import os
-import json
 from typing import Tuple, Union, Any, Dict, List, Optional
 import regex as re
 import pandas as pd
 from pycoingecko import CoinGeckoAPI
+from gamestonk_terminal.cryptocurrency.discovery.pycoingecko_model import read_file_data
 from gamestonk_terminal.cryptocurrency.pycoingecko_helpers import (
     remove_keys,
     filter_list,
@@ -19,6 +18,7 @@ from gamestonk_terminal.cryptocurrency.pycoingecko_helpers import (
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
     replace_underscores_in_column_names,
 )
+from gamestonk_terminal.rich_config import console
 
 CHANNELS = {
     "telegram_channel_identifier": "telegram",
@@ -186,24 +186,13 @@ def get_coin_potential_returns(
 
 
 def check_coin(coin_id: str):
-    coins = load_coins_list("coingecko_coins.json")
+    coins = read_file_data("coingecko_coins.json")
     for coin in coins:
         if coin["id"] == coin_id:
             return coin["id"]
         if coin["symbol"] == coin_id:
             return coin["id"]
     return None
-
-
-def load_coins_list(file_name: str) -> pd.DataFrame:
-    if file_name.split(".")[1] != "json":
-        raise TypeError("Please load json file")
-
-    par_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    path = os.path.join(par_dir, "data", file_name)
-    with open(path, encoding="utf8") as f:
-        coins = json.load(f)
-    return coins
 
 
 def get_coin_market_chart(
@@ -243,7 +232,7 @@ class Coin:
         if load_from_api:
             self._coin_list = self.client.get_coins_list()
         else:
-            self._coin_list = load_coins_list("coingecko_coins.json")
+            self._coin_list = read_file_data("coingecko_coins.json")
         self.coin_symbol, self.symbol = self._validate_coin(symbol)
 
         if self.coin_symbol:
@@ -552,7 +541,7 @@ class Coin:
                 single_stats["circulating_supply"] / single_stats["total_supply"]
             )
         except (ZeroDivisionError, TypeError) as e:
-            print(e)
+            console.print(e)
         df = pd.Series(single_stats).to_frame().reset_index()
         df.columns = ["Metric", "Value"]
         df["Metric"] = df["Metric"].apply(

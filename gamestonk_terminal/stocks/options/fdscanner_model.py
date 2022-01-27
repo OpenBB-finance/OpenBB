@@ -5,6 +5,7 @@ import numpy as np
 import pandas as pd
 import requests
 from gamestonk_terminal.helper_funcs import get_user_agent
+from gamestonk_terminal.rich_config import console
 
 
 def unusual_options(num: int):
@@ -32,7 +33,7 @@ def unusual_options(num: int):
         )
 
         if r.status_code != 200:
-            print("Error in fdscanner request")
+            console.print("Error in fdscanner request")
             return pd.DataFrame(), "request error"
 
         data_list.append(r.json())

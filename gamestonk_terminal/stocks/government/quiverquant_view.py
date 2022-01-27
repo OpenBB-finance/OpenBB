@@ -7,16 +7,17 @@ import textwrap
 from datetime import datetime, timedelta
 import numpy as np
 import pandas as pd
-from tabulate import tabulate
 from matplotlib import pyplot as plt
 import matplotlib.dates as mdates
 from gamestonk_terminal.stocks.government import quiverquant_model
 from gamestonk_terminal.helper_funcs import (
     plot_autoscale,
     export_data,
+    print_rich_table,
 )
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.rich_config import console
 
 # pylint: disable=C0302
 
@@ -40,9 +41,9 @@ def display_last_government(
     df_gov = quiverquant_model.get_government_trading(gov_type)
 
     if df_gov.empty:
-        print(f"No {gov_type} trading data found\n")
+        console.print(f"No {gov_type} trading data found\n")
         return
-    print(f"\nLast transactions for {gov_type.upper()}\n")
+    console.print(f"\nLast transactions for {gov_type.upper()}\n")
     df_gov = df_gov.sort_values("TransactionDate", ascending=False)
 
     df_gov = df_gov[
@@ -83,36 +84,26 @@ def display_last_government(
         ]
 
         if df_gov_rep.empty:
-            print(
+            console.print(
                 f"No representative {representative} found in the past {past_days}"
                 f" days. The following are available: "
                 f"{', '.join(df_gov['Representative'].str.split().str[0].unique())}"
             )
         else:
-            if gtff.USE_TABULATE_DF:
-                print(
-                    tabulate(
-                        df_gov_rep,
-                        headers=df_gov_rep.columns,
-                        tablefmt="fancy_grid",
-                        showindex=False,
-                    )
-                )
-            else:
-                print(df_gov_rep.to_string(index=False))
-    else:
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    df_gov,
-                    headers=df_gov.columns,
-                    tablefmt="fancy_grid",
-                    showindex=False,
-                )
+            print_rich_table(
+                df_gov_rep,
+                headers=list(df_gov_rep.columns),
+                show_index=False,
+                title="Representative Trading",
             )
-        else:
-            print(df_gov.to_string(index=False))
-    print("")
+    else:
+        print_rich_table(
+            df_gov,
+            headers=list(df_gov.columns),
+            show_index=False,
+            title="Representative Trading",
+        )
+    console.print("")
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "lasttrades", df_gov
     )
@@ -143,7 +134,7 @@ def display_government_buys(
     df_gov = quiverquant_model.get_government_trading(gov_type)
 
     if df_gov.empty:
-        print(f"No {gov_type} trading data found\n")
+        console.print(f"No {gov_type} trading data found\n")
         return
 
     df_gov = df_gov.sort_values("TransactionDate", ascending=False)
@@ -186,14 +177,9 @@ def display_government_buys(
             .sort_values(ascending=False)
             .head(n=num)
         )
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    df, headers=["Amount ($1k)"], tablefmt="fancy_grid", showindex=True
-                )
-            )
-        else:
-            print(df.to_string())
+        print_rich_table(
+            df, headers=["Amount ($1k)"], show_index=True, title="Top Government Buys"
+        )
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
     df_gov.groupby("Ticker")["upper"].sum().div(1000).sort_values(ascending=False).head(
@@ -210,7 +196,7 @@ def display_government_buys(
         plt.ion()
     fig.tight_layout()
     plt.show()
-    print("")
+    console.print("")
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "topbuys", df_gov)
 
 
@@ -239,7 +225,7 @@ def display_government_sells(
     df_gov = quiverquant_model.get_government_trading(gov_type)
 
     if df_gov.empty:
-        print(f"No {gov_type} trading data found\n")
+        console.print(f"No {gov_type} trading data found\n")
         return
 
     df_gov = df_gov.sort_values("TransactionDate", ascending=False)
@@ -294,14 +280,9 @@ def display_government_sells(
             .abs()
             .head(n=num)
         )
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    df, headers=["Amount ($1k)"], tablefmt="fancy_grid", showindex=True
-                )
-            )
-        else:
-            print(df.to_string())
+        print_rich_table(
+            df, headers=["Amount ($1k)"], show_index=True, title="Top Government Trades"
+        )
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
     df_gov.groupby("Ticker")["upper"].sum().div(1000).sort_values().abs().head(
@@ -317,7 +298,7 @@ def display_government_sells(
         plt.ion()
     fig.tight_layout()
     plt.show()
-    print("")
+    console.print("")
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "topsells", df_gov)
 
 
@@ -343,7 +324,7 @@ def display_last_contracts(
     df_contracts = quiverquant_model.get_government_trading("contracts")
 
     if df_contracts.empty:
-        print("No government contracts found\n")
+        console.print("No government contracts found\n")
         return
 
     df_contracts.sort_values("Date", ascending=False)
@@ -359,21 +340,15 @@ def display_last_contracts(
     df_contracts = df_contracts[["Date", "Ticker", "Amount", "Description", "Agency"]][
         :num
     ]
-    if gtff.USE_TABULATE_DF:
-        df_contracts["Description"] = df_contracts["Description"].apply(
-            lambda x: "\n".join(textwrap.wrap(x, 50))
-        )
-        print(
-            tabulate(
-                df_contracts,
-                headers=df_contracts.columns,
-                tablefmt="fancy_grid",
-                showindex=False,
-                floatfmt=".2f",
-            )
-        )
-    else:
-        print(df_contracts.to_string(index=False))
+    df_contracts["Description"] = df_contracts["Description"].apply(
+        lambda x: "\n".join(textwrap.wrap(x, 50))
+    )
+    print_rich_table(
+        df_contracts,
+        headers=list(df_contracts.columns),
+        show_index=False,
+        title="Last Government Contracts",
+    )
     if sum_contracts:
         fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
         df["Date"] = pd.to_datetime(df["Date"]).dt.date
@@ -385,7 +360,7 @@ def display_last_contracts(
             plt.ion()
         fig.tight_layout()
         plt.show()
-    print("")
+    console.print("")
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "lastcontracts", df)
 
 
@@ -453,7 +428,7 @@ def display_government_trading(
     df_gov = quiverquant_model.get_government_trading(gov_type, ticker)
 
     if df_gov.empty:
-        print(f"No {gov_type} trading data found\n")
+        console.print(f"No {gov_type} trading data found\n")
         return
 
     df_gov = df_gov.sort_values("TransactionDate", ascending=False)
@@ -465,7 +440,7 @@ def display_government_trading(
     df_gov = df_gov[df_gov["TransactionDate"] > start_date]
 
     if df_gov.empty:
-        print(f"No recent {gov_type} trading data found\n")
+        console.print(f"No recent {gov_type} trading data found\n")
         return
 
     df_gov["min"] = df_gov["Range"].apply(
@@ -493,22 +468,17 @@ def display_government_trading(
     df_gov = df_gov.sort_values("TransactionDate", ascending=True)
 
     if raw:
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    df_gov,
-                    headers=df_gov.columns,
-                    tablefmt="fancy_grid",
-                    showindex=False,
-                )
-            )
-        else:
-            print(df_gov.to_string())
+        print_rich_table(
+            df_gov,
+            headers=list(df_gov.columns),
+            show_index=False,
+            title=f"Government Trading for {ticker.upper()}",
+        )
     else:
         plot_government(df_gov, ticker, gov_type)
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "gtrades", df_gov)
-    print("")
+    console.print("")
 
 
 def display_contracts(
@@ -530,7 +500,7 @@ def display_contracts(
     df_contracts = quiverquant_model.get_government_trading("contracts", ticker)
 
     if df_contracts.empty:
-        print("No government contracts found\n")
+        console.print("No government contracts found\n")
         return
 
     df_contracts["Date"] = pd.to_datetime(df_contracts["Date"]).dt.date
@@ -542,18 +512,12 @@ def display_contracts(
     df_contracts.drop_duplicates(inplace=True)
 
     if raw:
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    df_contracts,
-                    headers=df_contracts.columns,
-                    tablefmt="fancy_grid",
-                    showindex=False,
-                    floatfmt=".2f",
-                )
-            )
-        else:
-            print(df_contracts.to_string())
+        print_rich_table(
+            df_contracts,
+            headers=list(df_contracts.columns),
+            show_index=False,
+            title=f"Government Contracts for {ticker.upper()}",
+        )
 
     else:
         fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -570,7 +534,7 @@ def display_contracts(
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "contracts", df_contracts
     )
-    print("")
+    console.print("")
 
 
 def display_qtr_contracts(analysis: str, num: int, raw: bool = False, export: str = ""):
@@ -590,23 +554,18 @@ def display_qtr_contracts(analysis: str, num: int, raw: bool = False, export: st
     df_contracts = quiverquant_model.get_government_trading("quarter-contracts")
 
     if df_contracts.empty:
-        print("No quarterly government contracts found\n")
+        console.print("No quarterly government contracts found\n")
         return
 
     tickers = quiverquant_model.analyze_qtr_contracts(analysis, num)
     if analysis in ("upmom", "downmom"):
         if raw:
-            if gtff.USE_TABULATE_DF:
-                print(
-                    tabulate(
-                        pd.DataFrame(tickers.values),
-                        headers=["tickers"],
-                        tablefmt="fancy_grid",
-                        showindex=False,
-                    )
-                )
-            else:
-                print(tickers.to_string())
+            print_rich_table(
+                pd.DataFrame(tickers.values),
+                headers=["tickers"],
+                show_index=False,
+                title="Quarterly Contracts",
+            )
         else:
             fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
             max_amount = 0
@@ -658,19 +617,12 @@ def display_qtr_contracts(analysis: str, num: int, raw: bool = False, export: st
             plt.show()
 
     elif analysis == "total":
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    tickers, headers=["Total"], tablefmt="fancy_grid", floatfmt=".2e"
-                )
-            )
-        else:
-            print(tickers.to_string())
+        print_rich_table(tickers, headers=["Total"], title="Quarterly Contracts")
 
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "qtrcontracts", df_contracts
     )
-    print("")
+    console.print("")
 
 
 def display_hist_contracts(ticker: str, raw: bool = False, export: str = ""):
@@ -690,7 +642,7 @@ def display_hist_contracts(ticker: str, raw: bool = False, export: str = ""):
     )
 
     if df_contracts.empty:
-        print("No quarterly government contracts found\n")
+        console.print("No quarterly government contracts found\n")
         return
 
     amounts = df_contracts.sort_values(by=["Year", "Qtr"])["Amount"].values
@@ -703,17 +655,11 @@ def display_hist_contracts(ticker: str, raw: bool = False, export: str = ""):
     ]
 
     if raw:
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    df_contracts,
-                    headers=df_contracts.columns,
-                    tablefmt="fancy_grid",
-                    showindex=False,
-                )
-            )
-        else:
-            print(df_contracts.to_string())
+        print_rich_table(
+            df_contracts,
+            headers=list(df_contracts.columns),
+            title="Historical Quarterly Government Contracts",
+        )
 
     else:
         fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -734,7 +680,7 @@ def display_hist_contracts(ticker: str, raw: bool = False, export: str = ""):
         plt.show()
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "histcont")
-    print("")
+    console.print("")
 
 
 def display_top_lobbying(num: int, raw: bool = False, export: str = ""):
@@ -752,7 +698,7 @@ def display_top_lobbying(num: int, raw: bool = False, export: str = ""):
     df_lobbying = quiverquant_model.get_government_trading("corporate-lobbying")
 
     if df_lobbying.empty:
-        print("No corporate lobbying found\n")
+        console.print("No corporate lobbying found\n")
         return
 
     df_lobbying["Amount"] = df_lobbying.Amount.astype(float).fillna(0) / 100_000
@@ -762,18 +708,12 @@ def display_top_lobbying(num: int, raw: bool = False, export: str = ""):
     ).sort_values(by="Amount", ascending=False)
 
     if raw:
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    lobbying_by_ticker.head(num),
-                    headers=["Amount ($100k)"],
-                    tablefmt="fancy_grid",
-                    showindex=True,
-                    floatfmt=".2f",
-                )
-            )
-        else:
-            print(lobbying_by_ticker.head(num).to_string())
+        print_rich_table(
+            lobbying_by_ticker.head(num),
+            headers=["Amount ($100k)"],
+            show_index=True,
+            title="Top Lobbying Tickers",
+        )
     else:
         fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
         lobbying_by_ticker.head(num).plot(kind="bar", ax=ax)
@@ -785,7 +725,7 @@ def display_top_lobbying(num: int, raw: bool = False, export: str = ""):
             plt.ion()
 
         plt.show()
-    print("")
+    console.print("")
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "lobbying", df_lobbying
     )
@@ -806,7 +746,7 @@ def display_lobbying(ticker: str, num: int = 10):
     )
 
     if df_lobbying.empty:
-        print("No corporate lobbying found\n")
+        console.print("No corporate lobbying found\n")
         return
 
     for _, row in (
@@ -815,8 +755,10 @@ def display_lobbying(ticker: str, num: int = 10):
         amount = (
             "$" + str(int(float(row["Amount"]))) if row["Amount"] is not None else "N/A"
         )
-        print(f"{row['Date']}: {row['Client']} {amount}")
+        console.print(f"{row['Date']}: {row['Client']} {amount}")
         if row["Amount"] is not None:
-            print("\t" + row["Specific_Issue"].replace("\n", " ").replace("\r", ""))
-        print("")
-    print("")
+            console.print(
+                "\t" + row["Specific_Issue"].replace("\n", " ").replace("\r", "")
+            )
+        console.print("")
+    console.print("")

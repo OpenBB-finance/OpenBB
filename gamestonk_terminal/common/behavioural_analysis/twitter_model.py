@@ -9,6 +9,7 @@ from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal.helper_funcs import clean_tweet, get_data
+from gamestonk_terminal.rich_config import console
 
 analyzer = SentimentIntensityAnalyzer()
 
@@ -65,10 +66,10 @@ def load_analyze_tweets(
             row = get_data(tweet)
             df_tweets = df_tweets.append(row, ignore_index=True)
     elif response.status_code == 401:
-        print("Twitter API Key provided is incorrect\n")
+        console.print("Twitter API Key provided is incorrect\n")
         return pd.DataFrame()
     elif response.status_code == 400:
-        print(
+        console.print(
             "Status Code 400.  This means you are requesting data from beyond the API's 7 day limit"
         )
         return pd.DataFrame()

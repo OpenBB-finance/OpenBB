@@ -19,7 +19,7 @@ pytest --fixtures
 This will include the :
 - `fixtures` available by default in `pytest`
 - `fixtures` defined by installed `pytest plugins`
-- custom `fixtures` built specialy for this GamestonkTerminal
+- custom `fixtures` built specially for this GamestonkTerminal
 
 ## 1.3. Which are the custom `fixtures` ?
 
@@ -81,7 +81,7 @@ def test_function(default_csv_path):
 
 You might want to comment the file saving part after the first run.
 
-Or find a way to conditionnaly disable it.
+Or find a way to conditionally disable it.
 
 ## 2.3. How to use `default_txt_path` ?
 
@@ -156,9 +156,19 @@ This works if :
 You can run this command to regenerate the text file :
 
 ```bash
-pytest --record-mode=rewrite
+pytest --record_mode=once --rewrite-expected
 ```
 
+**REWRITE EXPECTED**
+
+This will force `record_stdout` to rewrite any changed file (`txt`).
+
+This will not rewrite the cassettes.
+
+Example :
+```
+pytest --rewrite-expected
+```
 
 **VCR**
 
@@ -283,6 +293,17 @@ You can run this command to regenerate the text file :
 
 ```bash
 pytest --record-mode=rewrite
+```
+
+**REWRITE EXPECTED**
+
+This will force `recorder` to rewrite any changed file (`csv`, `json`, `txt`).
+
+This will not rewrite the cassettes.
+
+Example :
+```
+pytest --record_mode=once --rewrite-expected
 ```
 
 **VCR**

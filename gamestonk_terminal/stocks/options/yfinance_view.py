@@ -15,19 +15,27 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 import yfinance as yf
-from tabulate import tabulate
 from openpyxl import Workbook
 
 import gamestonk_terminal.config_plot as cfp
 import gamestonk_terminal.feature_flags as gtff
-from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
+from gamestonk_terminal.helper_funcs import (
+    export_data,
+    plot_autoscale,
+    excel_columns,
+    print_rich_table,
+    get_rf,
+)
 from gamestonk_terminal.stocks.options import op_helpers, yfinance_model
 from gamestonk_terminal.stocks.options.yfinance_model import (
     generate_data,
     get_option_chain,
     get_price,
 )
-from gamestonk_terminal.helper_funcs import get_rf
+from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.stocks.options.op_helpers import Option
+
+# pylint: disable=C0302
 
 
 def plot_oi(
@@ -80,7 +88,7 @@ def plot_oi(
         max_strike = max_sp
 
     if calls_only and puts_only:
-        print("Both flags selected, please select one", "\n")
+        console.print("Both flags selected, please select one", "\n")
         return
 
     call_oi = calls.set_index("strike")["openInterest"] / 1000
@@ -130,7 +138,7 @@ def plot_oi(
     fig.tight_layout(pad=1)
 
     plt.show()
-    print("")
+    console.print("")
 
 
 def plot_vol(
@@ -177,7 +185,7 @@ def plot_vol(
         max_strike = max_sp
 
     if calls_only and puts_only:
-        print("Both flags selected, please select one", "\n")
+        console.print("Both flags selected, please select one", "\n")
         return
 
     call_v = calls.set_index("strike")["volume"] / 1000
@@ -225,7 +233,7 @@ def plot_vol(
         "vol_yf",
         options,
     )
-    print("")
+    console.print("")
 
 
 def plot_volume_open_interest(
@@ -314,7 +322,7 @@ def plot_volume_open_interest(
             df_puts = df_puts[df_puts["strike"] < max_sp]
 
     if df_calls.empty and df_puts.empty:
-        print(
+        console.print(
             "The filtering applied is too strong, there is no data available for such conditions.\n"
         )
         return
@@ -411,7 +419,7 @@ def plot_volume_open_interest(
         "voi_yf",
         options,
     )
-    print("")
+    console.print("")
 
 
 def plot_plot(
@@ -484,7 +492,7 @@ def plot_plot(
         plt.ion()
     plt.show()
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "plot")
-    print("")
+    console.print("")
 
 
 def plot_payoff(
@@ -511,7 +519,7 @@ def plot_payoff(
     if gtff.USE_ION:
         plt.ion()
     plt.show()
-    print("")
+    console.print("")
 
 
 def show_parity(
@@ -598,22 +606,15 @@ def show_parity(
 
     show = filtered[["strike", diff]].copy()
 
-    print("Warning: Low volume options may be difficult to trade.\n")
     if ask:
-        print("Warning: Options with no current ask price not shown.\n")
+        console.print("Warning: Options with no current ask price not shown.\n")
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                show,
-                headers=[x.title() for x in show.columns],
-                tablefmt="fancy_grid",
-                showindex=False,
-                floatfmt=".2f",
-            )
-        )
-    else:
-        print(show.to_string(index=False))
+    print_rich_table(
+        show,
+        headers=[x.title() for x in show.columns],
+        show_index=False,
+        title="Warning: Low volume options may be difficult to trade.",
+    )
 
     export_data(
         export,
@@ -621,7 +622,7 @@ def show_parity(
         "parity",
         show,
     )
-    print("")
+    console.print("")
 
 
 def risk_neutral_vals(
@@ -681,19 +682,13 @@ def risk_neutral_vals(
     new_df = new_df[new_df["Strike"] >= mini]
     new_df = new_df[new_df["Strike"] <= maxi]
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                new_df,
-                headers=[x.title() for x in new_df.columns],
-                tablefmt="fancy_grid",
-                showindex=False,
-                floatfmt=".2f",
-            )
-        )
-    else:
-        print(new_df.to_string(index=False))
-    print("")
+    print_rich_table(
+        new_df,
+        headers=[x.title() for x in new_df.columns],
+        show_index=False,
+        title="Risk Neutral Values",
+    )
+    console.print("")
 
 
 def plot_expected_prices(
@@ -754,41 +749,8 @@ def export_binomial_calcs(
     ticker : str
         The ticker for the company
     """
-    letters = [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E",
-        "F",
-        "G",
-        "H",
-        "I",
-        "J",
-        "K",
-        "L",
-        "M",
-    ]
-    letters += [
-        "N",
-        "O",
-        "P",
-        "Q",
-        "R",
-        "S",
-        "T",
-        "U",
-        "V",
-        "W",
-        "X",
-        "Y",
-        "Z",
-    ]
-    opts = (
-        [f"{x}" for x in letters]
-        + [f"{x}{y}" for x in letters for y in letters]
-        + [f"{x}{y}{z}" for x in letters for y in letters for z in letters]
-    )
+
+    opts = excel_columns()
     wb = Workbook()
     ws = wb.active
 
@@ -820,7 +782,9 @@ def export_binomial_calcs(
         f"{ticker} {datetime.now()}.xlsx",
     )
     wb.save(trypath)
-    print(f"Analysis ran for {ticker}\nPlease look in {trypath} for the file.\n")
+    console.print(
+        f"Analysis ran for {ticker}\nPlease look in {trypath} for the file.\n"
+    )
 
 
 def show_binom(
@@ -926,6 +890,140 @@ def show_binom(
     if plot:
         plot_expected_prices(und_vals, prob_up, ticker, expiration)
 
-    print(
+    console.print(
         f"{ticker} {'put' if put else 'call'} at ${strike:.2f} expiring on {expiration} is worth ${opt_vals[0][0]:.2f}\n"
     )
+
+
+def display_vol_surface(ticker: str, export: str = "", z: str = "IV"):
+    """Display vol surface
+
+    Parameters
+    ----------
+    ticker : str
+        Ticker to get surface for
+    export : str
+        Format to export data
+    z : str
+        The variable for the Z axis
+    """
+    data = yfinance_model.get_iv_surface(ticker)
+    if data.empty:
+        print(f"No options data found for {ticker}.\n")
+        return
+    X = data.dte
+    Y = data.strike
+    if z == "IV":
+        Z = data.impliedVolatility
+        label = "Volatility"
+    elif z == "OI":
+        Z = data.openInterest
+        label = "Open Interest"
+    elif z == "LP":
+        Z = data.lastPrice
+        label = "Last Price"
+    fig = plt.figure()
+    ax = plt.axes(projection="3d")
+    ax.plot_trisurf(X, Y, Z, cmap="jet", linewidth=0.2)
+    ax.set_xlabel("DTE")
+    ax.set_ylabel("Strike")
+    ax.set_zlabel(z)
+    fig.tight_layout()
+    fig.suptitle(f"{label} Surface for {ticker.upper()}")
+    if gtff.USE_ION:
+        plt.ion()
+    plt.show()
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "vsurf",
+        data,
+    )
+    console.print("")
+
+
+def show_greeks(
+    ticker: str,
+    div_cont: float,
+    expire: str,
+    rf: float = None,
+    opt_type: int = 1,
+    mini: float = None,
+    maxi: float = None,
+    show_all: bool = False,
+) -> None:
+    """
+    Shows the greeks for a given option
+
+    Parameters
+    ----------
+    ticker : str
+        The ticker value of the option
+    div_cont : float
+        The dividend continuous rate
+    expire : str
+        The date of expiration
+    rf : float
+        The risk-free rate
+    opt_type : Union[1, -1]
+        The option type 1 is for call and -1 is for put
+    mini : float
+        The minimum strike price to include in the table
+    maxi : float
+        The maximum strike price to include in the table
+    all : bool
+        Whether to show all greeks
+    """
+
+    s = yfinance_model.get_price(ticker)
+    chains = yfinance_model.get_option_chain(ticker, expire)
+    chain = chains.calls if opt_type == 1 else chains.puts
+
+    if mini is None:
+        mini = chain.strike.quantile(0.25)
+    if maxi is None:
+        maxi = chain.strike.quantile(0.75)
+
+    chain = chain[chain["strike"] >= mini]
+    chain = chain[chain["strike"] <= maxi]
+
+    risk_free = rf if rf is not None else get_rf()
+    expire_dt = datetime.strptime(expire, "%Y-%m-%d")
+    dif = (expire_dt - datetime.now()).seconds / (60 * 60 * 24)
+
+    strikes = []
+    for _, row in chain.iterrows():
+        vol = row["impliedVolatility"]
+        opt = Option(s, row["strike"], risk_free, div_cont, dif, vol, opt_type)
+        result = [
+            row["strike"],
+            row["impliedVolatility"],
+            opt.Delta(),
+            opt.Gamma(),
+            opt.Vega(),
+            opt.Theta(),
+        ]
+        if show_all:
+            result += [
+                opt.Rho(),
+                opt.Phi(),
+                opt.Charm(),
+                opt.Vanna(0.01),
+                opt.Vomma(0.01),
+            ]
+        strikes.append(result)
+
+    columns = [
+        "Strike",
+        "Implied Vol",
+        "Delta",
+        "Gamma",
+        "Vega",
+        "Theta",
+    ]
+    if show_all:
+        columns += ["Rho", "Phi", "Charm", "Vanna", "Vomma"]
+    df = pd.DataFrame(strikes, columns=columns)
+    print_rich_table(df, headers=list(df.columns), show_index=False, title="Greeks")
+    console.print("")
+    return None

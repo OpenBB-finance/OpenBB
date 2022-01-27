@@ -8,6 +8,7 @@ from gamestonk_terminal.cryptocurrency.due_diligence.coinglass_model import (
 from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
 from gamestonk_terminal import config_plot as cfgPlot
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.rich_config import console
 
 
 def display_open_interest(symbol: str, interval: int, export: str) -> None:
@@ -24,10 +25,10 @@ def display_open_interest(symbol: str, interval: int, export: str) -> None:
         Export dataframe data to csv,json,xlsx file"""
     df = get_open_interest_per_exchange(symbol, interval)
     if df.empty:
-        print("Error in coinglass request")
+        console.print("Error in coinglass request")
     else:
         plot_data(df, symbol)
-    print("")
+    console.print("")
 
     export_data(
         export,

@@ -4,11 +4,10 @@ __docformat__ = "numpy"
 import os
 
 import pandas as pd
-from tabulate import tabulate
 
 from gamestonk_terminal.stocks.due_diligence import ark_model
-from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import export_data
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
+from gamestonk_terminal.rich_config import console
 
 
 def display_ark_trades(
@@ -30,7 +29,9 @@ def display_ark_trades(
     ark_holdings = ark_model.get_ark_trades_by_ticker(ticker)
 
     if ark_holdings.empty:
-        print("Issue getting data from cathiesark.com.  Likely no trades found.\n")
+        console.print(
+            "Issue getting data from cathiesark.com.  Likely no trades found.\n"
+        )
         return
 
     # Since this is for a given ticker, no need to show it
@@ -44,19 +45,14 @@ def display_ark_trades(
     ark_holdings.index = pd.Series(ark_holdings.index).apply(
         lambda x: x.strftime("%Y-%m-%d")
     )
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                ark_holdings.head(num),
-                headers=ark_holdings.columns,
-                showindex=True,
-                floatfmt=("", ".4f", ".4f", ".4f", "", ".2f", ".2f", ".3f"),
-                tablefmt="fancy_grid",
-            )
-        )
-    else:
-        print(ark_holdings.head(num).to_string())
-    print("")
+    print_rich_table(
+        ark_holdings.head(num),
+        headers=list(ark_holdings.columns),
+        show_index=True,
+        title="ARK Trades",
+    )
+
+    console.print("")
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "arktrades", ark_holdings
     )

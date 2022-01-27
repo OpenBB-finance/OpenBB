@@ -2,9 +2,9 @@
 __docformat__ = "numpy"
 
 import os
-from tabulate import tabulate
-from gamestonk_terminal.helper_funcs import export_data
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.stocks.due_diligence import fmp_model
+from gamestonk_terminal.rich_config import console
 
 
 def rating(ticker: str, num: int, export: str):
@@ -33,16 +33,13 @@ def rating(ticker: str, num: int, export: str):
             for recom in l_recoms
         ]
         l_recoms_show[0] = "Rating"
-        print(
-            tabulate(
-                df[l_recoms].head(num),
-                headers=l_recoms_show,
-                floatfmt=".2f",
-                showindex=True,
-                tablefmt="fancy_grid",
-            )
+        print_rich_table(
+            df[l_recoms].head(num),
+            headers=l_recoms_show,
+            show_index=True,
+            title="Rating",
         )
-    print("")
+    console.print("")
 
     export_data(
         export,

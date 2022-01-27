@@ -8,11 +8,10 @@ from typing import List
 import yfinance as yf
 import matplotlib.pyplot as plt
 import mplfinance as mpf
-from colorama import Style
 
 from prompt_toolkit.completion import NestedCompleter
-
 from thepassiveinvestor import create_ETF_report
+from gamestonk_terminal.rich_config import console
 
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
@@ -58,6 +57,7 @@ class ETFController(BaseController):
         "weights",
         "summary",
         "compare",
+        "resources",
     ]
     CHOICES_MENUS = [
         "ta",
@@ -66,10 +66,12 @@ class ETFController(BaseController):
         "scr",
         "disc",
     ]
+    PATH = "/etf/"
+    FILE_PATH = os.path.join(os.path.dirname(__file__), "README.md")
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/etf/", queue)
+        super().__init__(queue)
 
         self.etf_name = ""
         self.etf_data = ""
@@ -81,33 +83,36 @@ class ETFController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_txt = f"""
-    ln            lookup by name [FinanceDatabase/StockAnalysis.com]
-    ld            lookup by description [FinanceDatabase]
-    load          load ETF data [Yfinance]
-{Style.DIM if not self.etf_name else ""}
-Symbol: {self.etf_name}{Style.DIM if len(self.etf_holdings)==0 else ""}
-Major holdings: {', '.join(self.etf_holdings)}
+        has_ticker_start = "" if self.etf_name else "[unvl]"
+        has_ticker_end = "" if self.etf_name else "[/unvl]"
+        has_etfs_start = "[unvl]" if len(self.etf_holdings) == 0 else ""
+        has_etfs_end = "[/unvl]" if len(self.etf_holdings) == 0 else ""
+        help_text = f"""[cmds]
+    ln            lookup by name [src][FinanceDatabase/StockAnalysis.com][/src]
+    ld            lookup by description [src][FinanceDatabase][/src]
+    load          load ETF data [src][Yfinance][/src][/cmds]
 
->   ca            comparison analysis,          e.g.: get similar, historical, correlation, financials
-{Style.RESET_ALL}
+[param]Symbol: [/param]{self.etf_name}{has_etfs_start}
+[param]Major holdings: [/param]{', '.join(self.etf_holdings)}
+[menu]
+>   ca            comparison analysis,          e.g.: get similar, historical, correlation, financials{has_etfs_end}
 >   disc          discover ETFs,                e.g.: gainers/decliners/active
->   scr           screener ETFs,                e.g.: overview/performance, using preset filters
-{Style.DIM if not self.etf_name else ""}
-    overview      get overview [StockAnalysis]
-    holdings      top company holdings [StockAnalysis]
-    weights       sector weights allocation [Yfinance]
-    summary       summary description of the ETF [Yfinance]
+>   scr           screener ETFs,                e.g.: overview/performance, using preset filters[/menu]
+{has_ticker_start}[cmds]
+    overview      get overview [src][StockAnalysis][/src]
+    holdings      top company holdings [src][StockAnalysis][/src]
+    weights       sector weights allocation [src][Yfinance][/src]
+    summary       summary description of the ETF [src][Yfinance][/src]
     candle        view a candle chart for ETF
-    news          latest news of the company [News API]
+    news          latest news of the company [src][News API][/src]
 
-    pir           create (multiple) passive investor excel report(s) [PassiveInvestor]
-    compare       compare multiple different ETFs [StockAnalysis]
-
+    pir           create (multiple) passive investor excel report(s) [src][PassiveInvestor][/src]
+    compare       compare multiple different ETFs [src][StockAnalysis][/src][/cmds]
+[menu]
 >   ta            technical analysis,           e.g.: ema, macd, rsi, adx, bbands, obv
->   pred          prediction techniques,        e.g.: regression, arima, rnn, lstm
-{Style.RESET_ALL}"""
-        print(help_txt)
+>   pred          prediction techniques,        e.g.: regression, arima, rnn, lstm[/menu]
+{has_ticker_end}"""
+        console.print(text=help_text, menu="ETF")
 
     def custom_reset(self):
         """Class specific component of reset command"""
@@ -171,7 +176,7 @@ Major holdings: {', '.join(self.etf_holdings)}
                     export=ns_parser.export,
                 )
             else:
-                print("Wrong source choice!\n")
+                console.print("Wrong source choice!\n")
 
     def call_ld(self, other_args: List[str]):
         """Process ld command"""
@@ -265,7 +270,7 @@ Major holdings: {', '.join(self.etf_holdings)}
                 progress=False,
             )
             if df_etf_candidate.empty:
-                print("ETF ticker provided does not exist!\n")
+                console.print("ETF ticker provided does not exist!\n")
                 return
 
             df_etf_candidate.index.name = "date"
@@ -275,12 +280,14 @@ Major holdings: {', '.join(self.etf_holdings)}
 
             holdings = stockanalysis_model.get_etf_holdings(self.etf_name)
             if holdings.empty:
-                print("No company holdings found!\n")
+                console.print("No company holdings found!\n")
             else:
                 self.etf_holdings = holdings.index[: ns_parser.limit].tolist()
-                print(f"Top company holdings found: {', '.join(self.etf_holdings)}\n")
+                console.print(
+                    f"Top company holdings found: {', '.join(self.etf_holdings)}\n"
+                )
 
-            print("")
+            console.print("")
 
     def call_overview(self, other_args: List[str]):
         """Process overview command"""
@@ -392,7 +399,7 @@ Major holdings: {', '.join(self.etf_holdings)}
                     sources=",".join(sources),
                 )
             else:
-                print("Use 'load <ticker>' prior to this command!", "\n")
+                console.print("Use 'load <ticker>' prior to this command!", "\n")
 
     def call_candle(self, other_args: List[str]):
         """Process candle command"""
@@ -407,6 +414,7 @@ Major holdings: {', '.join(self.etf_holdings)}
         )
         if ns_parser:
             if self.etf_name:
+                # TODO: Should be done in one function
                 data = stocks_helper.process_candle(self.etf_data)
                 df_etf = stocks_helper.find_trendline(data, "OC_High", "high")
                 df_etf = stocks_helper.find_trendline(data, "OC_Low", "low")
@@ -453,7 +461,7 @@ Major holdings: {', '.join(self.etf_holdings)}
                         candle_linewidth=1.0, candle_width=0.8, volume_linewidth=1.0
                     ),
                 )
-                print("")
+                console.print("")
 
                 export_data(
                     ns_parser.export,
@@ -463,7 +471,7 @@ Major holdings: {', '.join(self.etf_holdings)}
                 )
 
             else:
-                print("No ticker loaded. First use `load {ticker}`\n")
+                console.print("No ticker loaded. First use `load {ticker}`\n")
 
     def call_pir(self, other_args):
         """Process pir command"""
@@ -499,13 +507,13 @@ Major holdings: {', '.join(self.etf_holdings)}
             other_args.insert(0, "-e")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            if self.etf_name:
+            if ns_parser.names:
                 create_ETF_report(
-                    ns_parser.names if ns_parser.names else [self.etf_name],
+                    ns_parser.names,
                     filename=ns_parser.filename,
                     folder=ns_parser.folder,
                 )
-                print(
+                console.print(
                     f"Created ETF report as {ns_parser.filename} in folder {ns_parser.folder} \n"
                 )
 
@@ -564,12 +572,16 @@ Major holdings: {', '.join(self.etf_holdings)}
 
     def call_ta(self, _):
         """Process ta command"""
-        if self.etf_name:
-            self.queue = ta_controller.TechnicalAnalysisController(
-                self.etf_name, self.etf_data.index[0], self.etf_data, self.queue
-            ).menu()
+        if self.etf_name and not self.etf_data.empty:
+            self.queue = self.load_class(
+                ta_controller.TechnicalAnalysisController,
+                self.etf_name,
+                self.etf_data.index[0],
+                self.etf_data,
+                self.queue,
+            )
         else:
-            print("Use 'load <ticker>' prior to this command!", "\n")
+            console.print("Use 'load <ticker>' prior to this command!", "\n")
 
     def call_pred(self, _):
         """Process pred command"""
@@ -580,23 +592,25 @@ Major holdings: {', '.join(self.etf_holdings)}
                         pred_controller,
                     )
 
-                    self.queue = pred_controller.PredictionTechniquesController(
+                    self.queue = self.load_class(
+                        pred_controller.PredictionTechniquesController,
                         self.etf_name,
                         self.etf_data.index[0],
                         "1440min",
                         self.etf_data,
                         self.queue,
-                    ).menu()
+                    )
+
                 except ModuleNotFoundError as e:
-                    print(
+                    console.print(
                         "One of the optional packages seems to be missing: ",
                         e,
                         "\n",
                     )
             else:
-                print("Use 'load <ticker>' prior to this command!", "\n")
+                console.print("Use 'load <ticker>' prior to this command!", "\n")
         else:
-            print(
+            console.print(
                 "Predict is disabled. Check ENABLE_PREDICT flag on feature_flags.py",
                 "\n",
             )
@@ -607,14 +621,16 @@ Major holdings: {', '.join(self.etf_holdings)}
             self.queue = ca_controller.ComparisonAnalysisController(
                 self.etf_holdings, self.queue
             ).menu(custom_path_menu_above="/stocks/")
+        else:
+            print("Load a ticker with major holdings to compare them on this menu\n")
 
     def call_scr(self, _):
         """Process scr command"""
-        self.queue = screener_controller.ScreenerController(self.queue).menu()
+        self.queue = self.load_class(screener_controller.ScreenerController, self.queue)
 
     def call_disc(self, _):
         """Process disc command"""
-        self.queue = disc_controller.DiscoveryController(self.queue).menu()
+        self.queue = self.load_class(disc_controller.DiscoveryController, self.queue)
 
     def call_compare(self, other_args):
         """Process compare command"""

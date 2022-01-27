@@ -9,6 +9,7 @@ import requests
 import yfinance as yf
 
 from gamestonk_terminal.stocks.options import yfinance_model
+from gamestonk_terminal.rich_config import console
 
 
 accepted_orders = [
@@ -63,7 +64,7 @@ def get_historical_greeks(
     r = requests.get(f"https://api.syncretism.io/ops/historical/{chain_id}")
 
     if r.status_code != 200:
-        print("Error in request.")
+        console.print("Error in request.")
         return pd.DataFrame()
 
     history = r.json()

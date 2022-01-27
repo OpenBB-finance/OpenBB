@@ -10,6 +10,7 @@ import mplfinance as mpf
 
 from gamestonk_terminal.helper_funcs import plot_autoscale, export_data
 from gamestonk_terminal.stocks.technical_analysis import finnhub_model
+from gamestonk_terminal.rich_config import console
 
 
 def plot_pattern_recognition(ticker: str, resolution: str, export: str):
@@ -118,7 +119,7 @@ def plot_pattern_recognition(ticker: str, resolution: str, export: str):
     )
 
     for ix in range(len(pattern.columns)):
-        print(f"From {l_segments[ix][0][0]} to {l_segments[ix][-1][0]}")
-        print(
+        console.print(f"From {l_segments[ix][0][0]} to {l_segments[ix][-1][0]}")
+        console.print(
             f"Pattern: {pattern[0]['patternname']} ({pattern[0]['patterntype']})", "\n"
         )

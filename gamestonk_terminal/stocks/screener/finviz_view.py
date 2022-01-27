@@ -4,15 +4,15 @@ __docformat__ = "numpy"
 from typing import List
 import os
 import difflib
-from tabulate import tabulate
 import pandas as pd
 from gamestonk_terminal.helper_funcs import (
     export_data,
+    print_rich_table,
 )
 from gamestonk_terminal.stocks.screener.finviz_model import (
     get_screener_data,
 )
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.rich_config import console
 
 
 d_cols_to_sort = {
@@ -176,7 +176,7 @@ def screener(
                     cutoff=0.7,
                 )
                 if similar_cmd:
-                    print(
+                    console.print(
                         f"Replacing '{' '.join(sort)}' by '{similar_cmd[0]}' so table can be sorted."
                     )
                     df_screen = df_screen.sort_values(
@@ -185,25 +185,19 @@ def screener(
                         na_position="last",
                     )
                 else:
-                    print(
+                    console.print(
                         f"Wrong sort column provided! Provide one of these: {', '.join(d_cols_to_sort[data_type])}"
                     )
 
         df_screen = df_screen.fillna("")
 
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    df_screen.head(n=limit),
-                    headers=df_screen.columns,
-                    floatfmt=".2f",
-                    showindex=False,
-                    tablefmt="fancy_grid",
-                ),
-            )
-        else:
-            print(df_screen.head(n=limit).to_string())
-        print("")
+        print_rich_table(
+            df_screen.head(n=limit),
+            headers=list(df_screen.columns),
+            show_index=False,
+            title="Finzin Screener",
+        )
+        console.print("")
 
         export_data(
             export,
@@ -214,5 +208,5 @@ def screener(
 
         return list(df_screen.head(n=limit)["Ticker"].values)
 
-    print("")
+    console.print("")
     return []

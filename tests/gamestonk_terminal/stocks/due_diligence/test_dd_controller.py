@@ -370,3 +370,25 @@ def test_call_func_no_parser(func, mocker):
     assert func_result is None
     assert controller.queue == []
     getattr(dd_controller, "parse_known_args_and_warn").assert_called_once()
+
+
+@pytest.mark.vcr(record_mode="none")
+@pytest.mark.parametrize(
+    "ticker, expected",
+    [
+        (None, []),
+        ("MOCK_TICKER", ["stocks", "load MOCK_TICKER", "dd"]),
+    ],
+)
+def test_custom_reset(expected, ticker):
+    controller = dd_controller.DueDiligenceController(
+        ticker=None,
+        start="10/25/2021",
+        interval="1440min",
+        stock=pd.DataFrame(),
+    )
+    controller.ticker = ticker
+
+    result = controller.custom_reset()
+
+    assert result == expected

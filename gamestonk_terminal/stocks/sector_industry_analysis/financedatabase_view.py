@@ -8,12 +8,16 @@ from typing import Dict
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
-from tabulate import tabulate
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_plot import PLOT_DPI
-from gamestonk_terminal.helper_funcs import plot_autoscale, export_data
+from gamestonk_terminal.helper_funcs import (
+    plot_autoscale,
+    export_data,
+    print_rich_table,
+)
 from gamestonk_terminal.stocks.sector_industry_analysis import financedatabase_model
+from gamestonk_terminal.rich_config import console
 
 
 def display_bars_financials(
@@ -113,7 +117,7 @@ def display_bars_financials(
         )
 
         if len(df_all) > limit:
-            print(f"Limiting the amount of companies displayed to {limit}.")
+            console.print(f"Limiting the amount of companies displayed to {limit}.")
 
         company_name = np.array(company_names)[:limit]
         company_metric = np.array(company_metrics)[:limit]
@@ -122,19 +126,9 @@ def display_bars_financials(
         df = df_all.head(limit)
 
         if raw:
-            print("")
-            if gtff.USE_TABULATE_DF:
-                print(
-                    tabulate(
-                        df,
-                        headers=df.columns,
-                        floatfmt=".2f",
-                        showindex=False,
-                        tablefmt="fancy_grid",
-                    ),
-                )
-            else:
-                print(df.to_string, "\n")
+            print_rich_table(
+                df, headers=list(df.columns), show_index=False, title="Bars Financials"
+            )
         else:
             plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
@@ -215,17 +209,17 @@ def display_bars_financials(
         )
 
         if not export:
-            print("")
+            console.print("")
 
         return stocks_data, company_tickers
 
     if len(metric_data) == 1:
-        print(
+        console.print(
             f"Only 1 company found '{list(metric_data.keys())[0]}'. No barchart will be depicted.\n"
         )
         return stocks_data, [list(metric_data.values())[0][1]]
 
-    print("No company found. No barchart will be depicted.\n")
+    console.print("No company found. No barchart will be depicted.\n")
     return dict(), list()
 
 
@@ -272,7 +266,7 @@ def display_companies_per_sector_in_country(
             del companies_per_sector[key]
 
     if not companies_per_sector:
-        print("No companies found with these parameters!\n")
+        console.print("No companies found with these parameters!\n")
         return
 
     df = pd.DataFrame.from_dict(companies_per_sector, orient="index")
@@ -285,18 +279,7 @@ def display_companies_per_sector_in_country(
     title += " excluding exchanges" if exclude_exchanges else " including exchanges"
 
     if raw:
-        print(f"\n{title}")
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    df,
-                    headers=df.columns,
-                    showindex=True,
-                    tablefmt="fancy_grid",
-                ),
-            )
-        else:
-            print(df.to_string, "\n")
+        print_rich_table(df, headers=list(df.columns), show_index=True, title=title)
     else:
         colors = [
             "b",
@@ -335,7 +318,7 @@ def display_companies_per_sector_in_country(
                         max_sectors_to_display = num_sectors_to_display
 
             else:
-                print(
+                console.print(
                     "The minimum threshold percentage specified is too high, thus it will be ignored."
                 )
 
@@ -370,12 +353,12 @@ def display_companies_per_sector_in_country(
             plt.show()
 
         elif len(companies_per_sector) == 1:
-            print(
+            console.print(
                 f"Only 1 sector found '{list(companies_per_sector.keys())[0]}'. No pie chart will be depicted."
             )
         else:
-            print("No sector found. No pie chart will be depicted.")
-    print("")
+            console.print("No sector found. No pie chart will be depicted.")
+    console.print("")
 
     export_data(
         export,
@@ -430,7 +413,7 @@ def display_companies_per_industry_in_country(
             del companies_per_industry[key]
 
     if not companies_per_industry:
-        print("No companies found with these parameters!\n")
+        console.print("No companies found with these parameters!\n")
         return
 
     df = pd.DataFrame.from_dict(companies_per_industry, orient="index")
@@ -443,18 +426,7 @@ def display_companies_per_industry_in_country(
     title += " excluding exchanges" if exclude_exchanges else " including exchanges"
 
     if raw:
-        print(f"\n{title}")
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    df,
-                    headers=df.columns,
-                    showindex=True,
-                    tablefmt="fancy_grid",
-                ),
-            )
-        else:
-            print(df.to_string, "\n")
+        print_rich_table(df, headers=list(df.columns), show_index=True, title=title)
     else:
         colors = [
             "b",
@@ -495,7 +467,7 @@ def display_companies_per_industry_in_country(
                         max_industries_to_display = num_industries_to_display
 
             else:
-                print(
+                console.print(
                     "The minimum threshold percentage specified is too high, thus it will be ignored."
                 )
 
@@ -535,12 +507,12 @@ def display_companies_per_industry_in_country(
             plt.show()
 
         elif len(companies_per_industry) == 1:
-            print(
+            console.print(
                 f"Only 1 industry found '{list(companies_per_industry.keys())[0]}'. No pie chart will be depicted."
             )
         else:
-            print("No industry found. No pie chart will be depicted.")
-    print("")
+            console.print("No industry found. No pie chart will be depicted.")
+    console.print("")
 
     export_data(
         export,
@@ -593,7 +565,7 @@ def display_companies_per_industry_in_sector(
             del companies_per_industry[key]
 
     if not companies_per_industry:
-        print("No companies found with these parameters!\n")
+        console.print("No companies found with these parameters!\n")
         return
 
     df = pd.DataFrame.from_dict(companies_per_industry, orient="index")
@@ -606,18 +578,12 @@ def display_companies_per_industry_in_sector(
     title += " excluding exchanges" if exclude_exchanges else " including exchanges"
 
     if raw:
-        print(f"\n{title}")
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    df,
-                    headers=df.columns,
-                    showindex=True,
-                    tablefmt="fancy_grid",
-                ),
-            )
-        else:
-            print(df.to_string, "\n")
+        print_rich_table(
+            df,
+            headers=list(df.columns),
+            show_index=True,
+            title=title,
+        )
     else:
         colors = [
             "b",
@@ -658,7 +624,7 @@ def display_companies_per_industry_in_sector(
                         max_industries_to_display = num_industries_to_display
 
             else:
-                print(
+                console.print(
                     "The minimum threshold percentage specified is too high, thus it will be ignored."
                 )
 
@@ -698,12 +664,12 @@ def display_companies_per_industry_in_sector(
             plt.show()
 
         elif len(companies_per_industry) == 1:
-            print(
+            console.print(
                 f"Only 1 industry found '{list(companies_per_industry.keys())[0]}'. No pie chart will be depicted."
             )
         else:
-            print("No industry found. No pie chart will be depicted.")
-    print("")
+            console.print("No industry found. No pie chart will be depicted.")
+    console.print("")
 
     export_data(
         export,
@@ -756,7 +722,7 @@ def display_companies_per_country_in_sector(
             del companies_per_country[key]
 
     if not companies_per_country:
-        print("No companies found with these parameters!\n")
+        console.print("No companies found with these parameters!\n")
         return
 
     df = pd.DataFrame.from_dict(companies_per_country, orient="index")
@@ -769,18 +735,7 @@ def display_companies_per_country_in_sector(
     title += " excluding exchanges" if exclude_exchanges else " including exchanges"
 
     if raw:
-        print(f"\n{title}")
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    df,
-                    headers=df.columns,
-                    showindex=True,
-                    tablefmt="fancy_grid",
-                ),
-            )
-        else:
-            print(df.to_string, "\n")
+        print_rich_table(df, headers=list(df.columns), show_index=True, title=title)
     else:
         colors = [
             "b",
@@ -821,7 +776,7 @@ def display_companies_per_country_in_sector(
                         max_countries_to_display = num_countries_to_display
 
             else:
-                print(
+                console.print(
                     "The minimum threshold percentage specified is too high, thus it will be ignored."
                 )
 
@@ -859,12 +814,12 @@ def display_companies_per_country_in_sector(
             plt.show()
 
         elif len(companies_per_country) == 1:
-            print(
+            console.print(
                 f"Only 1 country found '{list(companies_per_country.keys())[0]}'. No pie chart will be depicted."
             )
         else:
-            print("No country found. No pie chart will be depicted.")
-    print("")
+            console.print("No country found. No pie chart will be depicted.")
+    console.print("")
 
     export_data(
         export,
@@ -917,7 +872,7 @@ def display_companies_per_country_in_industry(
             del companies_per_country[key]
 
     if not companies_per_country:
-        print("No companies found with these parameters!\n")
+        console.print("No companies found with these parameters!\n")
         return
 
     df = pd.DataFrame.from_dict(companies_per_country, orient="index")
@@ -930,18 +885,7 @@ def display_companies_per_country_in_industry(
     title += " excluding exchanges" if exclude_exchanges else " including exchanges"
 
     if raw:
-        print(f"\n{title}")
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    df,
-                    headers=df.columns,
-                    showindex=True,
-                    tablefmt="fancy_grid",
-                ),
-            )
-        else:
-            print(df.to_string, "\n")
+        print_rich_table(df, headers=list(df.columns), show_index=True, title=title)
     else:
         colors = [
             "b",
@@ -982,7 +926,7 @@ def display_companies_per_country_in_industry(
                         max_countries_to_display = num_countries_to_display
 
             else:
-                print(
+                console.print(
                     "The minimum threshold percentage specified is too high, thus it will be ignored."
                 )
 
@@ -1020,12 +964,12 @@ def display_companies_per_country_in_industry(
             plt.show()
 
         elif len(companies_per_country) == 1:
-            print(
+            console.print(
                 f"Only 1 country found '{list(companies_per_country.keys())[0]}'. No pie chart will be depicted."
             )
         else:
-            print("No country found. No pie chart will be depicted.")
-    print("")
+            console.print("No country found. No pie chart will be depicted.")
+    console.print("")
 
     export_data(
         export,

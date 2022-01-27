@@ -7,6 +7,7 @@ import difflib
 from datetime import datetime, timedelta
 from typing import List
 from prompt_toolkit.completion import NestedCompleter
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.cryptocurrency.overview.blockchaincenter_model import DAYS
@@ -24,6 +25,8 @@ from gamestonk_terminal.cryptocurrency.overview import (
     pycoingecko_view,
     coinpaprika_view,
     cryptopanic_view,
+    rekt_model,
+    rekt_view,
     withdrawalfees_model,
     withdrawalfees_view,
     coinpaprika_model,
@@ -46,10 +49,7 @@ class OverviewController(BaseController):
     CHOICES_COMMANDS = [
         "cgglobal",
         "cgdefi",
-        "cgnews",
         "cgstables",
-        "cgnft",
-        "cgnftday",
         "cgexchanges",
         "cgexrates",
         "cgplatforms",
@@ -72,22 +72,28 @@ class OverviewController(BaseController):
         "wfpe",
         "btcrb",
         "altindex",
+        "ch",
     ]
+
+    PATH = "/crypto/ov/"
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/crypto/ov/", queue)
+        super().__init__(queue)
 
         if session and gtff.USE_PROMPT_TOOLKIT:
+            crypto_hack_slugs = rekt_model.get_crypto_hack_slugs()
             choices: dict = {c: {} for c in self.controller_choices}
+            choices["ch"]["--sort"] = {c: None for c in rekt_model.HACKS_COLUMNS}
+            choices["ch"]["-s"] = {c: None for c in crypto_hack_slugs}
+            choices["ch"]["--slug"] = {c: None for c in crypto_hack_slugs}
             choices["cghold"] = {c: None for c in pycoingecko_model.HOLD_COINS}
             choices["cgcompanies"] = {c: None for c in pycoingecko_model.HOLD_COINS}
-            choices["cgnews"]["-s"] = {c: None for c in pycoingecko_model.NEWS_FILTERS}
             choices["cgcategories"]["-s"] = {
                 c: None for c in pycoingecko_model.CATEGORIES_FILTERS
             }
             choices["cgstables"]["-s"] = {
-                c: None for c in pycoingecko_model.STABLES_FILTERS
+                c: None for c in pycoingecko_model.COINS_COLUMNS
             }
             choices["cgproducts"]["-s"] = {
                 c: None for c in pycoingecko_model.PRODUCTS_FILTERS
@@ -131,14 +137,11 @@ class OverviewController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = """
-CoinGecko:
+        help_text = """[cmds]
+[src][CoinGecko][/src]
     cgglobal          global crypto market info
-    cgnews            last news available on CoinGecko
     cgdefi            global DeFi market info
     cgstables         stablecoins
-    cgnft             non fungible token market status
-    cgnftday          non fungible token of the day
     cgexchanges       top crypto exchanges
     cgexrates         coin exchange rates
     cgplatforms       crypto financial platforms
@@ -147,28 +150,91 @@ CoinGecko:
     cgderivatives     crypto derivatives
     cgcategories      crypto categories
     cghold            ethereum, bitcoin holdings overview statistics
-CoinPaprika:
+[src][CoinPaprika][/src]
     cpglobal          global crypto market info
-    cpinfo            basic info about all coins available on CoinPaprika
-    cpmarkets         market related info about all coins available on CoinPaprika
+    cpinfo            basic info about all coins available
+    cpmarkets         market related info about all coins available
     cpexchanges       list all exchanges
     cpexmarkets       all available markets on given exchange
     cpplatforms       list blockchain platforms eg. ethereum, solana, kusama, terra
     cpcontracts       all smart contracts for given platform
-Coinbase:
-    cbpairs           info about available trading pairs on Coinbase
-CryptoPanic:
-    news              recent crypto news from CryptoPanic aggregator
-WithdrawalFees:
+[src][Coinbase][/src]
+    cbpairs           info about available trading pairs
+[src][CryptoPanic][/src]
+    news              recent crypto news
+[src][WithdrawalFees][/src]
     wf                overall withdrawal fees
     ewf               overall exchange withdrawal fees
     wfpe              crypto withdrawal fees per exchange
-BlockchainCenter:
-    altindex          displays altcoin season index (if 75% of top 50 coins perform better than btc)
+[src][BlockchainCenter][/src]
+    altindex          display altcoin season index (if 75% of top 50 coins perform better than BTC)
     btcrb             display bitcoin rainbow price chart (logarithmic regression)
+[src][Rekt][/src]
+    ch                lists major crypto-related hacks
 """
+        console.print(text=help_text, menu="Cryptocurrency - Overview")
 
-        print(help_text)
+    def call_ch(self, other_args):
+        """Process ch command"""
+        parser = argparse.ArgumentParser(
+            prog="ch",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="""Display list of major crypto-related hacks [Source: https://rekt.news]
+            Can be sorted by {Platform,Date,Amount [$],Audit,Slug,URL} with --sort
+            and reverse the display order with --descend
+            Show only N elements with --limit
+            Accepts --slug or -s to check individual crypto hack (e.g., -s polynetwork-rekt)
+            """,
+        )
+
+        parser.add_argument(
+            "-l",
+            "--limit",
+            dest="limit",
+            type=int,
+            help="Display N items",
+            default=15,
+        )
+        parser.add_argument(
+            "--sort",
+            dest="sortby",
+            type=str,
+            help="Sort by given column. Default: Amount [$]",
+            default="Amount [$]",
+            nargs="+",
+        )
+        parser.add_argument(
+            "--descend",
+            action="store_true",
+            help="Flag to sort in descending order (lowest first)",
+            dest="descend",
+            default=False,
+        )
+
+        parser.add_argument(
+            "-s",
+            "--slug",
+            dest="slug",
+            type=str,
+            help="Slug to check crypto hack (e.g., polynetwork-rekt)",
+            default="",
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-s")
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            rekt_view.display_crypto_hacks(
+                slug=ns_parser.slug,
+                top=ns_parser.limit,
+                export=ns_parser.export,
+                sortby=" ".join(ns_parser.sortby),
+                descend=ns_parser.descend,
+            )
 
     def call_btcrb(self, other_args: List[str]):
         """Process btcrb command"""
@@ -350,7 +416,7 @@ BlockchainCenter:
                         symbol=ns_parser.coin, export=ns_parser.export
                     )
                 else:
-                    print(f"Coin '{ns_parser.coin}' does not exist.")
+                    console.print(f"Coin '{ns_parser.coin}' does not exist.")
 
                     similar_cmd = difflib.get_close_matches(
                         ns_parser.coin,
@@ -359,7 +425,7 @@ BlockchainCenter:
                         cutoff=0.75,
                     )
                     if similar_cmd:
-                        print(f"Replacing by '{similar_cmd[0]}'")
+                        console.print(f"Replacing by '{similar_cmd[0]}'")
                         withdrawalfees_view.display_crypto_withdrawal_fees(
                             symbol=similar_cmd[0], export=ns_parser.export
                         )
@@ -371,9 +437,9 @@ BlockchainCenter:
                             cutoff=0.5,
                         )
                         if similar_cmd:
-                            print(f"Did you mean '{similar_cmd[0]}'?")
+                            console.print(f"Did you mean '{similar_cmd[0]}'?")
             else:
-                print(
+                console.print(
                     f"Couldn't find any coin with provided name: {ns_parser.coin}. "
                     f"Please choose one from list: {withdrawalfees_model.POSSIBLE_CRYPTOS}\n"
                 )
@@ -400,6 +466,21 @@ BlockchainCenter:
             default="bitcoin",
             choices=pycoingecko_model.HOLD_COINS,
         )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            dest="limit",
+            type=check_positive,
+            help="display N number of records",
+            default=5,
+        )
+        parser.add_argument(
+            "--bar",
+            action="store_true",
+            help="Flag to show bar chart",
+            dest="bar",
+            default=False,
+        )
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-c")
@@ -409,67 +490,10 @@ BlockchainCenter:
         )
         if ns_parser:
             pycoingecko_view.display_holdings_overview(
-                coin=ns_parser.coin, export=ns_parser.export
-            )
-
-    def call_cgnews(self, other_args):
-        """Process news command"""
-        parser = argparse.ArgumentParser(
-            prog="cgnews",
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            description="Shows latest crypto news from CoinGecko. "
-            "You will see Index, Title, Author, Posted columns. "
-            "You can sort by each of column above, using --sort parameter and also do it descending with --descend flag"
-            "To display urls to news use --urls flag.",
-        )
-
-        parser.add_argument(
-            "-l",
-            "--limit",
-            dest="limit",
-            type=int,
-            help="display N number of news >=10",
-            default=15,
-        )
-
-        parser.add_argument(
-            "-s",
-            "--sort",
-            dest="sortby",
-            type=str,
-            help="Sort by given column. Default: index",
-            default="Index",
-            choices=pycoingecko_model.NEWS_FILTERS,
-        )
-
-        parser.add_argument(
-            "--descend",
-            action="store_false",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
-            default=True,
-        )
-
-        parser.add_argument(
-            "-u",
-            "--urls",
-            dest="urls",
-            action="store_true",
-            help="Flag to show urls. If you will use that flag you will additional column with urls",
-            default=False,
-        )
-
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            pycoingecko_view.display_news(
-                top=ns_parser.limit,
+                coin=ns_parser.coin,
                 export=ns_parser.export,
-                sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
-                links=ns_parser.urls,
+                show_bar=ns_parser.bar,
+                top=ns_parser.limit,
             )
 
     def call_cgcategories(self, other_args):
@@ -480,9 +504,7 @@ BlockchainCenter:
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""Shows top cryptocurrency categories by market capitalization. It includes categories like:
             stablecoins, defi, solana ecosystem, polkadot ecosystem and many others.
-            "You can sort by each of column above, using --sort parameter and also do it descending with --descend flag"
-            "To display urls use --urls flag.",
-            Displays: Rank, Name, Change_1h, Change_7d, Market_Cap, Volume_24h, Coins,""",
+            You can sort by {}, using --sort parameter""",
         )
 
         parser.add_argument(
@@ -499,25 +521,16 @@ BlockchainCenter:
             "--sort",
             dest="sortby",
             type=str,
-            help="Sort by given column. Default: Rank",
-            default="Rank",
-            choices=pycoingecko_model.CATEGORIES_FILTERS,
+            help="Sort by given column. Default: market_cap_desc",
+            default=pycoingecko_model.SORT_VALUES[0],
+            choices=pycoingecko_model.SORT_VALUES,
         )
 
         parser.add_argument(
-            "--descend",
-            action="store_false",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
-            default=True,
-        )
-
-        parser.add_argument(
-            "-u",
-            "--urls",
-            dest="urls",
+            "--pie",
             action="store_true",
-            help="Flag to show urls. If you will use that flag you will additional column with urls",
+            help="Flag to show pie chart",
+            dest="pie",
             default=False,
         )
 
@@ -529,10 +542,10 @@ BlockchainCenter:
                 top=ns_parser.limit,
                 export=ns_parser.export,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
-                links=ns_parser.urls,
+                pie=ns_parser.pie,
             )
 
+    # TODO: solve sort (similar to cglosers from discovery)
     def call_cgstables(self, other_args):
         """Process stables command"""
         parser = argparse.ArgumentParser(
@@ -543,9 +556,7 @@ BlockchainCenter:
                 Stablecoins are cryptocurrencies that attempt to peg their market value to some external reference
                 like the U.S. dollar or to a commodity's price such as gold.
                 You can display only N number of coins with --limit parameter.
-                You can sort data by Rank, Name, Symbol, Price, Change_24h, Exchanges, Market_Cap, Change_30d with --sort
-                and also with --descend flag to sort descending.
-                Flag --urls will display stablecoins urls""",
+                You can sort data by {} with --sort""",
         )
 
         parser.add_argument(
@@ -562,9 +573,9 @@ BlockchainCenter:
             "--sort",
             dest="sortby",
             type=str,
-            help="Sort by given column. Default: Rank",
-            default="Rank",
-            choices=pycoingecko_model.STABLES_FILTERS,
+            help="Sort by given column. Default: market_cap",
+            default="market_cap",
+            choices=pycoingecko_model.COINS_COLUMNS,
         )
 
         parser.add_argument(
@@ -572,15 +583,14 @@ BlockchainCenter:
             action="store_false",
             help="Flag to sort in descending order (lowest first)",
             dest="descend",
-            default=True,
+            default=False,
         )
 
         parser.add_argument(
-            "-u",
-            "--urls",
-            dest="urls",
+            "--pie",
             action="store_true",
-            help="Flag to show urls. If you will use that flag you will additional column with urls",
+            help="Flag to show pie chart",
+            dest="pie",
             default=False,
         )
 
@@ -593,47 +603,8 @@ BlockchainCenter:
                 export=ns_parser.export,
                 sortby=ns_parser.sortby,
                 descend=ns_parser.descend,
-                links=ns_parser.urls,
+                pie=ns_parser.pie,
             )
-
-    def call_cgnft(self, other_args):
-        """Process nft command"""
-
-        parser = argparse.ArgumentParser(
-            prog="cgnft",
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            description="""Shows NFT market status
-                NFT (Non-fungible Token) refers to digital assets with unique characteristics.
-                Examples of NFT include crypto artwork, collectibles, game items, financial products, and more.
-                Displays: NFT Market Cap, 24h Trading Volume, NFT Dominance vs Global market, Theta Network NFT Dominance
-                """,
-        )
-
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            pycoingecko_view.display_nft_market_status(export=ns_parser.export)
-
-    def call_cgnftday(self, other_args):
-        """Process nftday command"""
-        parser = argparse.ArgumentParser(
-            prog="cgnftday",
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            description="""Shows NFT of the day
-                NFT (Non-fungible Token) refers to digital assets with unique characteristics.
-                Examples of NFT include crypto artwork, collectibles, game items, financial products, and more.
-                With nft_today command you will display:
-                    author, description, url, img url for NFT which was chosen on CoinGecko as a nft of the day.""",
-        )
-
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            pycoingecko_view.display_nft_of_the_day(export=ns_parser.export)
 
     def call_cgproducts(self, other_args):
         """Process products command"""
@@ -966,11 +937,21 @@ BlockchainCenter:
             description="""Shows global statistics about Crypto Market""",
         )
 
+        parser.add_argument(
+            "--pie",
+            action="store_true",
+            help="Flag to show pie chart with market cap distribution",
+            dest="pie",
+            default=False,
+        )
+
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            pycoingecko_view.display_global_market_info(export=ns_parser.export)
+            pycoingecko_view.display_global_market_info(
+                export=ns_parser.export, pie=ns_parser.pie
+            )
 
     def call_cgdefi(self, other_args):
         """Process defi command"""

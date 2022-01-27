@@ -9,15 +9,16 @@ import argparse
 from typing import List
 
 import pandas as pd
-from tabulate import tabulate
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     financials_colored_values,
     parse_known_args_and_warn,
     patch_pandas_text_adjustment,
+    print_rich_table,
 )
 from gamestonk_terminal.stocks.fundamental_analysis import market_watch_model as mwm
+from gamestonk_terminal.rich_config import console
 
 
 # pylint: disable=too-many-branches
@@ -81,10 +82,10 @@ def income(other_args: List[str], ticker: str):
         pd.set_option("display.max_rows", None)
 
     if df_financials.empty:
-        print("Marketwatch does not yet provide financials for this ticker")
+        console.print("Marketwatch does not yet provide financials for this ticker")
     else:
-        print(df_financials.to_string(index=False))
-    print("")
+        console.print(df_financials.to_string(index=False))
+    console.print("")
 
 
 def balance(other_args: List[str], ticker: str):
@@ -157,10 +158,10 @@ def balance(other_args: List[str], ticker: str):
         pd.set_option("display.max_rows", None)
 
     if df_financials.empty:
-        print("Marketwatch does not yet provide financials for this ticker")
+        console.print("Marketwatch does not yet provide financials for this ticker")
     else:
-        print(df_financials.to_string(index=False))
-    print("")
+        console.print(df_financials.to_string(index=False))
+    console.print("")
 
 
 def cash(other_args: List[str], ticker: str):
@@ -229,10 +230,10 @@ def cash(other_args: List[str], ticker: str):
         pd.set_option("display.max_rows", None)
 
     if df_financials.empty:
-        print("Marketwatch does not yet provide financials for this ticker")
+        console.print("Marketwatch does not yet provide financials for this ticker")
     else:
-        print(df_financials.to_string(index=False))
-    print("")
+        console.print(df_financials.to_string(index=False))
+    console.print("")
 
 
 def display_sean_seah_warnings(ticker: str, debug: bool = False):
@@ -248,23 +249,15 @@ def display_sean_seah_warnings(ticker: str, debug: bool = False):
     financials, warnings, debugged_warnings = mwm.get_sean_seah_warnings(ticker, debug)
 
     if financials.empty:
-        print(f"No financials found for {ticker}\n")
+        console.print(f"No financials found for {ticker}\n")
         return
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                financials,
-                headers=financials.columns,
-                tablefmt="fancy_grid",
-                floatfmt=".2f",
-            )
-        )
-    else:
-        print(financials.to_string())
+    print_rich_table(
+        financials, headers=list(financials.columns), title="Sean Seah Warnings"
+    )
 
     if not warnings:
-        print("No warnings found.  Good stonk")
+        console.print("No warnings found.  Good stonk")
         return
 
     messages = (
@@ -273,5 +266,5 @@ def display_sean_seah_warnings(ticker: str, debug: bool = False):
         else warnings
     )
 
-    print("Warnings:\n")
-    print("\n".join(messages), "\n")
+    console.print("Warnings:\n")
+    console.print("\n".join(messages), "\n")

@@ -9,7 +9,7 @@ from datetime import datetime
 
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
-
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
@@ -59,6 +59,8 @@ class TechnicalAnalysisController(BaseController):
         "fib",
     ]
 
+    PATH = "/etf/ta/"
+
     def __init__(
         self,
         ticker: str,
@@ -67,7 +69,7 @@ class TechnicalAnalysisController(BaseController):
         queue: List[str] = None,
     ):
         """Constructor"""
-        super().__init__("/etf/ta/", queue)
+        super().__init__(queue)
 
         self.ticker = ticker
         self.start = start
@@ -79,38 +81,37 @@ class TechnicalAnalysisController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_str = f"""
+        help_text = f"""
+[param]ETF: [/param]{self.ticker}[cmds]
 
-ETF: {self.ticker}
-
-Overlap:
+[info]Overlap:[/info]
     ema         exponential moving average
     sma         simple moving average
     wma         weighted moving average
     hma         hull moving average
     zlma        zero lag moving average
-Momentum:
+[info]Momentum:[/info]
     cci         commodity channel index
     macd        moving average convergence/divergence
     rsi         relative strength index
     stoch       stochastic oscillator
     fisher      fisher transform
     cg          centre of gravity
-Trend:
+[info]Trend:[/info]
     adx         average directional movement index
     aroon       aroon indicator
-Volatility:
+[info]Volatility:[/info]
     bbands      bollinger bands
     donchian    donchian channels
     kc          keltner channels
-Volume:
+[info]Volume:[/info]
     ad          accumulation/distribution line
     adosc       chaikin oscillator
     obv         on balance volume
-Custom:
-    fib         fibonacci retracement
+[info]Custom:[/info]
+    fib         fibonacci retracement[/cmds]
 """
-        print(help_str)
+        console.print(text=help_text, menu="ETF - Technical Analysis")
 
     def custom_reset(self):
         """Class specific component of reset command"""
@@ -362,7 +363,7 @@ Custom:
             overlap_view.view_ma(
                 ma_type="ZLMA",
                 s_ticker=self.ticker,
-                values=self.data["Adj  Close"],
+                values=self.data["Adj Close"],
                 length=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,

@@ -2,10 +2,9 @@
 __docformat__ = "numpy"
 
 import os
-from tabulate import tabulate
 from gamestonk_terminal.cryptocurrency.discovery import coinmarketcap_model
-from gamestonk_terminal.helper_funcs import export_data
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
+from gamestonk_terminal.rich_config import console
 
 sort_map = {
     "Symbol": "Symbol",
@@ -35,24 +34,15 @@ def display_cmc_top_coins(top: int, sortby: str, descend: bool, export: str) -> 
     df = coinmarketcap_model.get_cmc_top_n()
 
     if df.empty:
-        print("No Data Found\n")
+        console.print("No Data Found\n")
         return
 
     df = df.sort_values(by=sort_map[sortby], ascending=descend)
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df.iloc[:top, :],
-                headers=df.columns,
-                showindex=False,
-                tablefmt="fancy_grid",
-                floatfmt=".2f",
-            ),
-            "\n",
-        )
-    else:
-        print(df.to_string, "\n")
+    print_rich_table(
+        df.iloc[:top, :], headers=list(df.columns), show_index=False, title="Top Coins"
+    )
+    console.print("")
 
     export_data(
         export,

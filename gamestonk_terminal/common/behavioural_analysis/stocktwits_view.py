@@ -3,9 +3,9 @@ __docformat__ = "numpy"
 
 import pandas as pd
 
-from tabulate import tabulate
-from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.common.behavioural_analysis import stocktwits_model
+from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.helper_funcs import print_rich_table
 
 
 def display_bullbear(ticker: str):
@@ -19,14 +19,14 @@ def display_bullbear(ticker: str):
         Stock ticker
     """
     watchlist_count, n_cases, n_bull, n_bear = stocktwits_model.get_bullbear(ticker)
-    print(f"Watchlist count: {watchlist_count}")
+    console.print(f"Watchlist count: {watchlist_count}")
     if n_cases > 0:
-        print(f"\nLast {n_cases} sentiment messages:")
-        print(f"Bullish {round(100*n_bull/n_cases, 2)}%")
-        print(f"Bearish {round(100*n_bear/n_cases, 2)}%")
+        console.print(f"\nLast {n_cases} sentiment messages:")
+        console.print(f"Bullish {round(100*n_bull/n_cases, 2)}%")
+        console.print(f"Bearish {round(100*n_bear/n_cases, 2)}%")
     else:
-        print("No messages found")
-    print("")
+        console.print("No messages found")
+    console.print("")
 
 
 def display_messages(ticker: str, limit: int = 30):
@@ -41,32 +41,24 @@ def display_messages(ticker: str, limit: int = 30):
     """
     messages = stocktwits_model.get_messages(ticker, limit)
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                pd.DataFrame(messages), headers=[], tablefmt="grid", showindex=False
-            )
-        )
-    else:
-        for message in messages:
-            print(message, "\n")
+    print_rich_table(
+        pd.DataFrame(messages),
+        headers=[],
+        show_index=False,
+        title="Last Messages on Board",
+    )
 
 
 def display_trending():
     """Show trensing stocks on stocktwits"""
     df_trending = stocktwits_model.get_trending()
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df_trending,
-                headers=df_trending.columns,
-                tablefmt="fancy_grid",
-                showindex=False,
-            )
-        )
-    else:
-        print(df_trending.to_string(index=False))
-    print("")
+    print_rich_table(
+        df_trending,
+        headers=list(df_trending.columns),
+        show_index=False,
+        title="Trending Stocks",
+    )
+    console.print("")
 
 
 def display_stalker(user: str, limit: int = 10):
@@ -81,9 +73,9 @@ def display_stalker(user: str, limit: int = 10):
     """
     messages = stocktwits_model.get_stalker(user, limit)
     for message in messages:
-        print(
+        console.print(
             "------------------------------------------------------------------------------"
         )
-        print(message["created_at"].replace("T", " ").replace("Z", ""))
-        print(message["body"])
-        print("")
+        console.print(message["created_at"].replace("T", " ").replace("Z", ""))
+        console.print(message["body"])
+        console.print("")

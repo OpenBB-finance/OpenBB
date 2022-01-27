@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 import pandas as pd
 import numpy as np
 from prompt_toolkit.completion import NestedCompleter
-
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
@@ -50,25 +50,25 @@ class PredictionTechniquesController(BaseController):
         "mc",
     ]
 
+    PATH = "/etf/pred/"
+
     def __init__(
         self,
         ticker: str,
         start: datetime,
         interval: str,
-        stock: pd.DataFrame,
+        data: pd.DataFrame,
         queue: List[str] = None,
     ):
         """Constructor"""
-        super().__init__("/etf/pred/", queue)
+        super().__init__(queue)
 
-        stock["Returns"] = stock["Adj Close"].pct_change()
-        stock["LogRet"] = np.log(stock["Adj Close"]) - np.log(
-            stock["Adj Close"].shift(1)
-        )
-        stock = stock.rename(columns={"Adj Close": "AdjClose"})
-        stock = stock.dropna()
+        data["Returns"] = data["Adj Close"].pct_change()
+        data["LogRet"] = np.log(data["Adj Close"]) - np.log(data["Adj Close"].shift(1))
+        data = data.rename(columns={"Adj Close": "AdjClose"})
+        data = data.dropna()
 
-        self.stock = stock
+        self.data = data
         self.ticker = ticker
         self.start = start
         self.interval = interval
@@ -77,7 +77,7 @@ class PredictionTechniquesController(BaseController):
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["load"]["-r"] = {c: {} for c in stocks_helper.INTERVALS}
-            choices["pick"] = {c: {} for c in self.stock.columns}
+            choices["pick"] = {c: {} for c in self.data.columns}
             choices["ets"]["-t"] = {c: {} for c in ets_model.TRENDS}
             choices["ets"]["-s"] = {c: {} for c in ets_model.SEASONS}
             choices["arima"]["-i"] = {c: {} for c in arima_model.ICS}
@@ -86,22 +86,16 @@ class PredictionTechniquesController(BaseController):
 
     def print_help(self):
         """Print help"""
-        s_intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
-        if self.start:
-            stock_info = f"{s_intraday} Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
-        else:
-            stock_info = "{s_intraday} Stock: {self.ticker}"
+        etf_info = f"{self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
 
-        help_string = f"""
-Prediction Techniques Menu:
-
+        help_text = f"""[cmds]
     load        load new ticker
-    pick        pick new target variable
+    pick        pick new target variable[/cmds]
 
-Ticker Loaded: {stock_info}
-Target Column: {self.target}
+[param]Ticker Loaded: [/param]{etf_info}
+[param]Target Column: [/param]{self.target}
 
-Models:
+[info]Models:[/info][cmds]
     ets         exponential smoothing (e.g. Holt-Winters)
     knn         k-Nearest Neighbors
     regression  polynomial regression
@@ -110,9 +104,9 @@ Models:
     rnn         Recurrent Neural Network
     lstm        Long-Short Term Memory
     conv1d      1D Convolutional Neural Network
-    mc          Monte-Carlo simulations
+    mc          Monte-Carlo simulations[/cmds]
         """
-        print(help_string)
+        console.print(text=help_text, menu="ETF - Prediction Techniques")
 
     def custom_reset(self):
         """Class specific component of reset command"""
@@ -199,7 +193,7 @@ Models:
             )
 
             if not df_stock_candidate.empty:
-                self.stock = df_stock_candidate
+                self.data = df_stock_candidate
                 if "." in ns_parser.ticker:
                     self.ticker = ns_parser.ticker.upper().split(".")[0]
                 else:
@@ -208,12 +202,12 @@ Models:
                 self.start = ns_parser.start
                 self.interval = str(ns_parser.interval) + "min"
 
-                self.stock["Returns"] = self.stock["Adj Close"].pct_change()
-                self.stock["LogRet"] = np.log(self.stock["Adj Close"]) - np.log(
-                    self.stock["Adj Close"].shift(1)
+                self.data["Returns"] = self.data["Adj Close"].pct_change()
+                self.data["LogRet"] = np.log(self.data["Adj Close"]) - np.log(
+                    self.data["Adj Close"].shift(1)
                 )
-                self.stock = self.stock.rename(columns={"Adj Close": "AdjClose"})
-                self.stock = self.stock.dropna()
+                self.data = self.data.rename(columns={"Adj Close": "AdjClose"})
+                self.data = self.data.dropna()
 
     def call_pick(self, other_args: List[str]):
         """Process pick command"""
@@ -229,7 +223,7 @@ Models:
             "-t",
             "--target",
             dest="target",
-            choices=list(self.stock.columns),
+            choices=list(self.data.columns),
             help="Select variable to analyze",
         )
         if other_args and "-t" not in other_args and "-h" not in other_args:
@@ -240,7 +234,7 @@ Models:
         )
         if ns_parser:
             self.target = ns_parser.target
-            print("")
+            console.print("")
 
     def call_ets(self, other_args: List[str]):
         """Process ets command"""
@@ -316,22 +310,22 @@ Models:
 
             if ns_parser.s_end_date:
 
-                if ns_parser.s_end_date < self.stock.index[0]:
-                    print(
+                if ns_parser.s_end_date < self.data.index[0]:
+                    console.print(
                         "Backtesting not allowed, since End Date is older than Start Date of historical data\n"
                     )
 
                 if ns_parser.s_end_date < get_next_stock_market_days(
-                    last_stock_day=self.stock.index[0],
+                    last_stock_day=self.data.index[0],
                     n_next_days=5 + ns_parser.n_days,
                 )[-1]:
-                    print(
+                    console.print(
                         "Backtesting not allowed, since End Date is too close to Start Date to train model\n"
                     )
 
             ets_view.display_exponential_smoothing(
                 ticker=self.ticker,
-                values=self.stock[self.target],
+                values=self.data[self.target],
                 n_predict=ns_parser.n_days,
                 trend=ns_parser.trend,
                 seasonal=ns_parser.seasonal,
@@ -418,7 +412,7 @@ Models:
         if ns_parser:
             knn_view.display_k_nearest_neighbors(
                 ticker=self.ticker,
-                data=self.stock[self.target],
+                data=self.data[self.target],
                 n_neighbors=ns_parser.n_neighbors,
                 n_input_days=ns_parser.n_inputs,
                 n_predict_days=ns_parser.n_days,
@@ -497,22 +491,22 @@ Models:
         if ns_parser:
             # BACKTESTING CHECK
             if ns_parser.s_end_date:
-                if ns_parser.s_end_date < self.stock.index[0]:
-                    print(
+                if ns_parser.s_end_date < self.data.index[0]:
+                    console.print(
                         "Backtesting not allowed, since End Date is older than Start Date of historical data\n"
                     )
 
                 if ns_parser.s_end_date < get_next_stock_market_days(
-                    last_stock_day=self.stock.index[0],
+                    last_stock_day=self.data.index[0],
                     n_next_days=5 + ns_parser.n_days,
                 )[-1]:
-                    print(
+                    console.print(
                         "Backtesting not allowed, since End Date is too close to Start Date to train model\n"
                     )
 
             regression_view.display_regression(
                 dataset=self.ticker,
-                values=self.stock[self.target],
+                values=self.data[self.target],
                 poly_order=ns_parser.n_polynomial,
                 n_input=ns_parser.n_inputs,
                 n_predict=ns_parser.n_days,
@@ -598,22 +592,22 @@ Models:
             # BACKTESTING CHECK
             if ns_parser.s_end_date:
 
-                if ns_parser.s_end_date < self.stock.index[0]:
-                    print(
+                if ns_parser.s_end_date < self.data.index[0]:
+                    console.print(
                         "Backtesting not allowed, since End Date is older than Start Date of historical data\n"
                     )
 
                 if ns_parser.s_end_date < get_next_stock_market_days(
-                    last_stock_day=self.stock.index[0],
+                    last_stock_day=self.data.index[0],
                     n_next_days=5 + ns_parser.n_days,
                 )[-1]:
-                    print(
+                    console.print(
                         "Backtesting not allowed, since End Date is too close to Start Date to train model\n"
                     )
 
             arima_view.display_arima(
                 dataset=self.ticker,
-                values=self.stock[self.target],
+                values=self.data[self.target],
                 arima_order=ns_parser.s_order,
                 n_predict=ns_parser.n_days,
                 seasonal=ns_parser.b_seasonal,
@@ -634,7 +628,7 @@ Models:
             if ns_parser:
                 neural_networks_view.display_mlp(
                     dataset=self.ticker,
-                    data=self.stock[self.target],
+                    data=self.data[self.target],
                     n_input_days=ns_parser.n_inputs,
                     n_predict_days=ns_parser.n_days,
                     learning_rate=ns_parser.lr,
@@ -645,7 +639,7 @@ Models:
                     no_shuffle=ns_parser.no_shuffle,
                 )
         except Exception as e:
-            print(e, "\n")
+            console.print(e, "\n")
 
         finally:
             pred_helper.restore_env()
@@ -661,7 +655,7 @@ Models:
             if ns_parser:
                 neural_networks_view.display_rnn(
                     dataset=self.ticker,
-                    data=self.stock[self.target],
+                    data=self.data[self.target],
                     n_input_days=ns_parser.n_inputs,
                     n_predict_days=ns_parser.n_days,
                     learning_rate=ns_parser.lr,
@@ -673,7 +667,7 @@ Models:
                 )
 
         except Exception as e:
-            print(e, "\n")
+            console.print(e, "\n")
 
         finally:
             pred_helper.restore_env()
@@ -689,7 +683,7 @@ Models:
             if ns_parser:
                 neural_networks_view.display_lstm(
                     dataset=self.ticker,
-                    data=self.stock[self.target],
+                    data=self.data[self.target],
                     n_input_days=ns_parser.n_inputs,
                     n_predict_days=ns_parser.n_days,
                     learning_rate=ns_parser.lr,
@@ -701,7 +695,7 @@ Models:
                 )
 
         except Exception as e:
-            print(e, "\n")
+            console.print(e, "\n")
 
         finally:
             pred_helper.restore_env()
@@ -717,7 +711,7 @@ Models:
             if ns_parser:
                 neural_networks_view.display_conv1d(
                     dataset=self.ticker,
-                    data=self.stock[self.target],
+                    data=self.data[self.target],
                     n_input_days=ns_parser.n_inputs,
                     n_predict_days=ns_parser.n_days,
                     learning_rate=ns_parser.lr,
@@ -729,7 +723,7 @@ Models:
                 )
 
         except Exception as e:
-            print(e, "\n")
+            console.print(e, "\n")
 
         finally:
             pred_helper.restore_env()
@@ -772,10 +766,10 @@ Models:
         )
         if ns_parser:
             if self.target != "AdjClose":
-                print("MC Prediction designed for AdjClose prices\n")
+                console.print("MC Prediction designed for AdjClose prices\n")
 
             mc_view.display_mc_forecast(
-                data=self.stock[self.target],
+                data=self.data[self.target],
                 n_future=ns_parser.n_days,
                 n_sims=ns_parser.n_sims,
                 use_log=ns_parser.dist == "lognormal",

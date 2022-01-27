@@ -6,18 +6,16 @@ import os
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from rich import console
+from gamestonk_terminal.rich_config import console
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.helper_funcs import (
     export_data,
     plot_autoscale,
-    rich_table_from_df,
+    print_rich_table,
 )
 from gamestonk_terminal.mutual_funds import investpy_model
-
-t_console = console.Console()
 
 
 def display_search(
@@ -47,31 +45,24 @@ def display_search(
     """
     searches = investpy_model.search_funds(by, value)
     if searches.empty:
-        t_console.print("No matches found.\n")
+        console.print("No matches found.\n")
         return
     if country:
         searches = searches[searches.country == country]
         if searches.empty:
-            t_console.print(f"No matches found in {country}.\n")
+            console.print(f"No matches found in {country}.\n")
             return
         searches = searches.drop(columns=["country", "underlying"])
 
     if sortby:
         searches = searches.sort_values(by=sortby, ascending=ascending)
 
-    # If we want to move forward with rich -- should rename this gtff
-    # Additionally, I recreated the tabulate functions with the rich.Table class.
-    if gtff.USE_TABULATE_DF:
-        t_console.print(
-            rich_table_from_df(
-                searches.head(limit),
-                show_index=False,
-                title=f"[bold]Mutual Funds with {by} matching {value}[/bold]",
-            )
-        )
-    else:
-        t_console.print(searches.head(limit).to_string())
-    t_console.print("\n")
+    print_rich_table(
+        searches.head(limit),
+        show_index=False,
+        title=f"[bold]Mutual Funds with {by} matching {value}[/bold]",
+    )
+    console.print("\n")
 
 
 def display_overview(country: str = "united states", limit: int = 10, export: str = ""):
@@ -89,21 +80,16 @@ def display_overview(country: str = "united states", limit: int = 10, export: st
     overview = investpy_model.get_overview(country=country, limit=limit)
     overview["Assets (1B)"] = overview.total_assets / 1_000_000_000
     overview = overview.drop(columns=["country", "total_assets"])
-    if gtff.USE_TABULATE_DF:
-        t_console.print(
-            rich_table_from_df(
-                overview, title=f"[bold]Fund overview for {country.title()}[/bold]"
-            )
-        )
-    else:
-        t_console.print(overview.to_string())
+    print_rich_table(
+        overview, title=f"[bold]Fund overview for {country.title()}[/bold]"
+    )
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         f"overview_{country.replace(' ','_')}",
         overview,
     )
-    t_console.print("\n")
+    console.print("\n")
 
 
 def display_fund_info(fund_name: str, country: str = "united states"):
@@ -122,18 +108,13 @@ def display_fund_info(fund_name: str, country: str = "united states"):
         .applymap(lambda x: np.nan if not x else x)
         .dropna()
     )
-    if gtff.USE_TABULATE_DF:
-        t_console.print(
-            rich_table_from_df(
-                info,
-                title=f"[bold]{fund_name.title()} Information[/bold]",
-                show_index=False,
-                headers=["Info", "Value"],
-            )
-        )
-    else:
-        t_console.print(info.to_string())
-    t_console.print("\n")
+    print_rich_table(
+        info,
+        title=f"[bold]{fund_name.title()} Information[/bold]",
+        show_index=False,
+        headers=["Info", "Value"],
+    )
+    console.print("\n")
 
 
 def display_historical(data: pd.DataFrame, fund: str = "", export: str = ""):
@@ -148,7 +129,7 @@ def display_historical(data: pd.DataFrame, fund: str = "", export: str = ""):
     export: str
         Format to export data
     """
-    t_console.print("")
+    console.print("")
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     ax.plot(data.index, data.Close, "-g")
     ax.grid("on")

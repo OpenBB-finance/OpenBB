@@ -113,6 +113,7 @@ def vcr_config():
             ("token", "MOCK_TOKEN"),
             ("period1", "MOCK_PERIOD_1"),
             ("period2", "MOCK_PERIOD_2"),
+            ("date", "MOCK_DATE"),
         ]
     }
 

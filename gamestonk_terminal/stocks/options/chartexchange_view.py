@@ -3,11 +3,9 @@ __docformat__ = "numpy"
 
 import os
 
-from tabulate import tabulate
-
-from gamestonk_terminal.helper_funcs import export_data
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.stocks.options import chartexchange_model
+from gamestonk_terminal.rich_config import console
 
 
 def display_raw(
@@ -40,17 +38,11 @@ def display_raw(
         df,
     )
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df.head(num),
-                headers=df.columns,
-                tablefmt="fancy_grid",
-                showindex=True,
-                floatfmt=".2f",
-            )
-        )
-    else:
-        print(df.to_string(index=False))
+    print_rich_table(
+        df.head(num),
+        headers=list(df.columns),
+        show_index=True,
+        title=f"{ticker.upper()} raw data",
+    )
 
-    print("")
+    console.print("")

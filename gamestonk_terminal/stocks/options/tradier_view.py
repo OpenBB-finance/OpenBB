@@ -11,8 +11,6 @@ import mplfinance as mpf
 import numpy as np
 import pandas as pd
 import seaborn as sns
-from colorama import Fore, Style
-from tabulate import tabulate
 
 from gamestonk_terminal import config_plot as cfp
 from gamestonk_terminal import feature_flags as gtff
@@ -20,8 +18,10 @@ from gamestonk_terminal.helper_funcs import (
     export_data,
     patch_pandas_text_adjustment,
     plot_autoscale,
+    print_rich_table,
 )
 from gamestonk_terminal.stocks.options import op_helpers, tradier_model
+from gamestonk_terminal.rich_config import console
 
 column_map = {"mid_iv": "iv", "open_interest": "oi", "volume": "vol"}
 
@@ -39,7 +39,7 @@ def red_highlight(val) -> str:
     str
         colored dataframes values
     """
-    return f"{Fore.RED}{val}{Style.RESET_ALL}"
+    return f"[red]{val}[/red]"
 
 
 def green_highlight(val) -> str:
@@ -55,7 +55,7 @@ def green_highlight(val) -> str:
     List[str]
         colored dataframes values
     """
-    return f"{Fore.GREEN}{val}{Style.RESET_ALL}"
+    return f"[green]{val}[/green]"
 
 
 def check_valid_option_chains_headers(headers: str) -> List[str]:
@@ -126,34 +126,20 @@ def display_chains(
     else:
         max_strike = max_sp
 
-    print(f"The strike prices are displayed between {min_strike} and {max_strike}")
-
     chains_df = chains_df[chains_df["strike"] >= min_strike]
     chains_df = chains_df[chains_df["strike"] <= max_strike]
 
     calls_df = chains_df[chains_df.option_type == "call"].drop(columns=["option_type"])
     puts_df = chains_df[chains_df.option_type == "put"].drop(columns=["option_type"])
 
-    if calls_only:
-        print(
-            tabulate(
-                calls_df,
-                headers=calls_df.columns,
-                tablefmt="grid",
-                showindex=False,
-                floatfmt=".2f",
-            )
-        )
+    df = calls_df if calls_only else puts_df
 
-    elif puts_only:
-        print(
-            tabulate(
-                puts_df,
-                headers=puts_df.columns,
-                tablefmt="grid",
-                showindex=False,
-                floatfmt=".2f",
-            )
+    if calls_only or puts_only:
+        print_rich_table(
+            df,
+            headers=[x.title() for x in df.columns],
+            show_index=False,
+            title=f"The strike prices are displayed between {min_strike} and {max_strike}",
         )
 
     else:
@@ -178,15 +164,8 @@ def display_chains(
             else col
             for col in chain_table.columns
         ]
-        print(
-            tabulate(
-                chain_table,
-                headers=headers,
-                tablefmt="fancy_grid",
-                showindex=False,
-                floatfmt=".2f",
-            ),
-            "\n",
+        print_rich_table(
+            chain_table, headers=headers, show_index=False, title="Option chain"
         )
 
     export_data(
@@ -240,7 +219,7 @@ def plot_oi(
         max_strike = max_sp
 
     if calls_only and puts_only:
-        print("Both flags selected, please select one", "\n")
+        console.print("Both flags selected, please select one", "\n")
         return
 
     calls = options[options.option_type == "call"][["strike", "open_interest"]]
@@ -298,7 +277,7 @@ def plot_oi(
         "oi_tr",
         options,
     )
-    print("")
+    console.print("")
 
 
 def plot_vol(
@@ -344,7 +323,7 @@ def plot_vol(
         max_strike = max_sp
 
     if calls_only and puts_only:
-        print("Both flags selected, please select one", "\n")
+        console.print("Both flags selected, please select one", "\n")
         return
 
     calls = options[options.option_type == "call"][["strike", "volume"]]
@@ -394,7 +373,7 @@ def plot_vol(
         "vol_tr",
         options,
     )
-    print("")
+    console.print("")
 
 
 def plot_volume_open_interest(
@@ -485,7 +464,7 @@ def plot_volume_open_interest(
             df_puts = df_puts[df_puts["strike"] < max_sp]
 
     if df_calls.empty and df_puts.empty:
-        print(
+        console.print(
             "The filtering applied is too strong, there is no data available for such conditions.\n"
         )
         return
@@ -582,7 +561,7 @@ def plot_volume_open_interest(
         "voi_tr",
         options,
     )
-    print("")
+    console.print("")
 
 
 def display_historical(
@@ -619,7 +598,11 @@ def display_historical(
     )
 
     if raw:
-        print(tabulate(df_hist, headers=df_hist.columns, tablefmt="fancy_grid"))
+        print_rich_table(
+            df_hist,
+            headers=[x.title() for x in df_hist.columns],
+            title="Historical Option Prices",
+        )
 
     op_type = ["call", "put"][put]
 
@@ -646,7 +629,7 @@ def display_historical(
         ),
     )
 
-    print("")
+    console.print("")
 
     if export:
         export_data(

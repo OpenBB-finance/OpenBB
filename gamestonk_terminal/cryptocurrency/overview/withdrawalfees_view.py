@@ -1,14 +1,13 @@
 """Withdrawal Fees view"""
 import os
 
-from tabulate import tabulate
 from gamestonk_terminal.cryptocurrency.overview.withdrawalfees_model import (
     get_crypto_withdrawal_fees,
     get_overall_exchange_withdrawal_fees,
     get_overall_withdrawal_fees,
 )
-from gamestonk_terminal.helper_funcs import export_data
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
+from gamestonk_terminal.rich_config import console
 
 
 def display_overall_withdrawal_fees(top: int, export: str = "") -> None:
@@ -26,23 +25,17 @@ def display_overall_withdrawal_fees(top: int, export: str = "") -> None:
     df_fees = get_overall_withdrawal_fees(top)
 
     if df_fees.empty:
-        print("\nError in withdrawal fees request\n")
+        console.print("\nError in withdrawal fees request\n")
     else:
-        print("\nWithdrawal fees on exchanges:")
+        console.print("\nWithdrawal fees on exchanges:")
 
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    df_fees.head(top),
-                    headers=df_fees.columns,
-                    floatfmt=".1f",
-                    showindex=False,
-                    tablefmt="fancy_grid",
-                ),
-                "\n",
-            )
-        else:
-            print(df_fees.to_string(index=False), "\n")
+        print_rich_table(
+            df_fees.head(top),
+            headers=list(df_fees.columns),
+            show_index=False,
+            title="Top Withdrawal Fees",
+        )
+        console.print("")
 
         export_data(
             export,
@@ -65,23 +58,17 @@ def display_overall_exchange_withdrawal_fees(export: str) -> None:
     df_fees = get_overall_exchange_withdrawal_fees()
 
     if df_fees.empty:
-        print("\nError in withdrawal fees request\n")
+        console.print("\nError in withdrawal fees request\n")
     else:
-        print("\nWithdrawal fees per exchange:")
+        console.print("\nWithdrawal fees per exchange:")
 
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    df_fees,
-                    headers=df_fees.columns,
-                    floatfmt=".1f",
-                    showindex=False,
-                    tablefmt="fancy_grid",
-                ),
-                "\n",
-            )
-        else:
-            print(df_fees.to_string(index=False), "\n")
+        print_rich_table(
+            df_fees,
+            headers=list(df_fees.columns),
+            show_index=False,
+            title="Withdrawal Fees",
+        )
+        console.print("")
 
         export_data(
             export,
@@ -107,25 +94,19 @@ def display_crypto_withdrawal_fees(symbol: str, export: str = "") -> None:
     stats_string = res[0]
     df_fees = res[1]
     if df_fees.empty:
-        print("\nError in withdrawal fees request\n")
+        console.print("\nError in withdrawal fees request\n")
     else:
-        print(f"\nWithdrawal fees for {symbol}:")
+        console.print(f"\nWithdrawal fees for {symbol}:")
 
-        print(f"\n{stats_string}\n")
+        console.print(f"\n{stats_string}\n")
 
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    df_fees,
-                    headers=df_fees.columns,
-                    floatfmt=".1f",
-                    showindex=False,
-                    tablefmt="fancy_grid",
-                ),
-                "\n",
-            )
-        else:
-            print(df_fees.to_string(index=False), "\n")
+        print_rich_table(
+            df_fees,
+            headers=list(df_fees.columns),
+            show_index=False,
+            title="Withdrawal Fees per Exchange",
+        )
+        console.print("")
 
         export_data(
             export,

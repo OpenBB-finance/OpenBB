@@ -3,12 +3,11 @@ __docformat__ = "numpy"
 
 import os
 
-from tabulate import tabulate
 import numpy as np
 
-from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import export_data
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.stocks.fundamental_analysis import av_model
+from gamestonk_terminal.rich_config import console
 
 
 def display_overview(ticker: str):
@@ -21,20 +20,15 @@ def display_overview(ticker: str):
     """
     df_fa = av_model.get_overview(ticker)
     if df_fa.empty:
-        print("No API calls left. Try me later", "\n")
+        console.print("No API calls left. Try me later", "\n")
         return
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df_fa.drop(index=["Description"]), headers=[], tablefmt="fancy_grid"
-            )
-        )
-    else:
-        print(df_fa.drop(index=["Description"]).to_string(header=False))
+    print_rich_table(
+        df_fa.drop(index=["Description"]), headers=[], title="Ticker Overview"
+    )
 
-    print(f"\nCompany Description:\n\n{df_fa.loc['Description'][0]}")
-    print("")
+    console.print(f"\nCompany Description:\n\n{df_fa.loc['Description'][0]}")
+    console.print("")
 
 
 def display_key(ticker: str):
@@ -47,15 +41,12 @@ def display_key(ticker: str):
     """
     df_key = av_model.get_key_metrics(ticker)
     if df_key.empty:
-        print("No API calls left. Try me later", "\n")
+        console.print("No API calls left. Try me later", "\n")
         return
 
-    if gtff.USE_TABULATE_DF:
-        print(tabulate(df_key, headers=[], tablefmt="fancy_grid"))
-    else:
-        print(df_key.to_string(header=False))
+    print_rich_table(df_key, headers=[], title="Ticker Key Metrics")
 
-    print("")
+    console.print("")
 
 
 def display_income_statement(
@@ -76,15 +67,14 @@ def display_income_statement(
     """
     df_income = av_model.get_income_statements(ticker, limit, quarterly)
     if df_income.empty:
-        print("No API calls left. Try me later", "\n")
+        console.print("No API calls left. Try me later", "\n")
         return
 
-    if gtff.USE_TABULATE_DF:
-        print(tabulate(df_income, headers=df_income.columns, tablefmt="fancy_grid"))
-    else:
-        print(df_income.to_string())
+    print_rich_table(
+        df_income, headers=list(df_income.columns), title="Ticker Income Statement"
+    )
 
-    print("")
+    console.print("")
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "income", df_income)
 
 
@@ -106,15 +96,14 @@ def display_balance_sheet(
     """
     df_balance = av_model.get_balance_sheet(ticker, limit, quarterly)
     if df_balance.empty:
-        print("No API calls left. Try me later", "\n")
+        console.print("No API calls left. Try me later", "\n")
         return
 
-    if gtff.USE_TABULATE_DF:
-        print(tabulate(df_balance, headers=df_balance.columns, tablefmt="fancy_grid"))
-    else:
-        print(df_balance.to_string())
+    print_rich_table(
+        df_balance, headers=list(df_balance.columns), title="Ticker Balance Sheet"
+    )
 
-    print("")
+    console.print("")
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "balance", df_balance
     )
@@ -138,15 +127,14 @@ def display_cash_flow(
     """
     df_cash = av_model.get_cash_flow(ticker, limit, quarterly)
     if df_cash.empty:
-        print("No API calls left. Try me later", "\n")
+        console.print("No API calls left. Try me later", "\n")
         return
 
-    if gtff.USE_TABULATE_DF:
-        print(tabulate(df_cash, headers=df_cash.columns, tablefmt="fancy_grid"))
-    else:
-        print(df_cash.to_string())
+    print_rich_table(
+        df_cash, headers=list(df_cash.columns), title="Ticker Balance Sheet"
+    )
 
-    print("")
+    console.print("")
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "cash", df_cash)
 
 
@@ -164,21 +152,16 @@ def display_earnings(ticker: str, limit: int, quarterly: bool = False):
     """
     df_fa = av_model.get_earnings(ticker, quarterly)
     if df_fa.empty:
-        print("No API calls left. Try me later", "\n")
+        console.print("No API calls left. Try me later", "\n")
         return
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df_fa.head(limit),
-                headers=df_fa.columns,
-                showindex=False,
-                tablefmt="fancy_grid",
-            )
-        )
-    else:
-        print(df_fa.head(n=limit).T.to_string(header=False))
+    print_rich_table(
+        df_fa.head(limit),
+        headers=list(df_fa.columns),
+        show_index=False,
+        title="Ticker Earnings",
+    )
 
-    print("")
+    console.print("")
 
 
 def display_fraud(ticker: str):
@@ -203,18 +186,18 @@ def display_fraud(ticker: str):
         chanceZ = "low"
 
     if np.isnan(ratios["MSCORE"]) or np.isnan(zscore):
-        print("Data incomplete for this ticker. Unable to calculate risk")
+        console.print("Data incomplete for this ticker. Unable to calculate risk")
         return
 
-    print("Mscore Sub Stats:")
+    console.print("Mscore Sub Stats:")
     for rkey, value in ratios.items():
         if rkey != "MSCORE":
-            print("  ", f"{rkey} : {value:.2f}")
+            console.print("  ", f"{rkey} : {value:.2f}")
 
-    print(
+    console.print(
         "\n" + "MSCORE: ",
         f"{ratios['MSCORE']:.2f} ({chanceM} chance of fraud)",
     )
 
-    print("ZSCORE: ", f"{zscore:.2f} ({chanceZ} chance of bankruptcy)", "\n")
+    console.print("ZSCORE: ", f"{zscore:.2f} ({chanceZ} chance of bankruptcy)", "\n")
     return

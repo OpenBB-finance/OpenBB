@@ -7,23 +7,27 @@ import matplotlib.dates as mdates
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 import numpy as np
-from colorama import Fore, Style
-from tabulate import tabulate
-from gamestonk_terminal.helper_funcs import plot_autoscale, export_data
+from gamestonk_terminal.helper_funcs import (
+    plot_autoscale,
+    export_data,
+    print_rich_table,
+)
 from gamestonk_terminal.common.behavioural_analysis import finbrain_model
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.rich_config import console
 
 
 register_matplotlib_converters()
 
 
 def sentiment_coloring(val: float, last_val: float) -> str:
-    color = Fore.GREEN if float(val) > last_val else Fore.RED
-    return f"{color}{val}{Style.RESET_ALL}"
+    if float(val) > last_val:
+        return f"[green]{val}[/green]"
+    return f"[red]{val}[/red]"
 
 
-def plot_sentiment(sentiment: pd.DataFrame, ticker: str):
+def plot_sentiment(sentiment: pd.DataFrame, ticker: str) -> None:
     """Plot Sentiment analysis provided by FinBrain's API
 
     Parameters
@@ -91,7 +95,7 @@ def display_sentiment_analysis(ticker: str, export: str = ""):
     """
     df_sentiment = finbrain_model.get_sentiment(ticker)
     if df_sentiment.empty:
-        print("No sentiment data found.\n")
+        console.print("No sentiment data found.\n")
         return
 
     plot_sentiment(df_sentiment, ticker)
@@ -102,30 +106,28 @@ def display_sentiment_analysis(ticker: str, export: str = ""):
         color_df = df_sentiment["Sentiment Analysis"].apply(
             sentiment_coloring, last_val=0
         )
-        if gtff.USE_TABULATE_DF:
-            color_df = pd.DataFrame(
-                data=color_df.values,
-                index=pd.to_datetime(df_sentiment.index).strftime("%Y-%m-%d"),
-            )
-            print(tabulate(color_df, headers=["Sentiment"], tablefmt="fancy_grid"))
-        else:
-            print(color_df.to_string())
+        color_df = pd.DataFrame(
+            data=color_df.values,
+            index=pd.to_datetime(df_sentiment.index).strftime("%Y-%m-%d"),
+        )
+        print_rich_table(
+            color_df,
+            headers=["Sentiment"],
+            title="FinBrain Ticker Sentiment",
+            show_index=True,
+        )
     else:
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    pd.DataFrame(
-                        data=df_sentiment.values,
-                        index=pd.to_datetime(df_sentiment.index).strftime("%Y-%m-%d"),
-                    ),
-                    headers=["Sentiment"],
-                    tablefmt="fancy_grid",
-                )
-            )
+        print_rich_table(
+            pd.DataFrame(
+                data=df_sentiment.values,
+                index=pd.to_datetime(df_sentiment.index).strftime("%Y-%m-%d"),
+            ),
+            headers=["Sentiment"],
+            title="FinBrain Ticker Sentiment",
+            show_index=True,
+        )
 
-        else:
-            print(df_sentiment.to_string())
-    print("")
+    console.print("")
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "headlines", df_sentiment
     )

@@ -11,6 +11,7 @@ from pandas.core.frame import DataFrame
 import yfinance as yf
 
 from gamestonk_terminal.helper_funcs import get_user_agent
+from gamestonk_terminal.rich_config import console
 
 
 def get_ark_orders() -> DataFrame:
@@ -88,13 +89,14 @@ def add_order_total(df_orders: DataFrame) -> DataFrame:
 
     tickers = " ".join(df_orders["ticker"].unique())
 
-    print("")
+    console.print("")
 
     prices = yf.download(tickers, start=start_date, progress=False)
 
     for i, candle in enumerate(["Volume", "Open", "Close", "High", "Low", "Total"]):
         df_orders.insert(i + 3, candle.lower(), 0)
 
+    pd.options.mode.chained_assignment = None
     for i, _ in df_orders.iterrows():
         if np.isnan(
             prices["Open"][df_orders.loc[i, "ticker"]][
@@ -113,5 +115,7 @@ def add_order_total(df_orders: DataFrame) -> DataFrame:
         df_orders.loc[i, "total"] = (
             df_orders.loc[i, "close"] * df_orders.loc[i, "shares"]
         )
+
+    pd.options.mode.chained_assignment = "warn"
 
     return df_orders

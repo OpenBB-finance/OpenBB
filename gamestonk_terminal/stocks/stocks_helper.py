@@ -1,12 +1,14 @@
 """Main helper"""
 __docformat__ = "numpy"
+
 import argparse
 import json
 from datetime import datetime, timedelta
-from typing import List, Union
+from typing import List, Union, Tuple, Optional
 
 import matplotlib.pyplot as plt
 import mplfinance as mpf
+import numpy as np
 import pandas as pd
 import pandas_market_calendars as mcal
 import plotly.graph_objects as go
@@ -18,7 +20,6 @@ from alpha_vantage.timeseries import TimeSeries
 from numpy.core.fromnumeric import transpose
 from plotly.subplots import make_subplots
 from scipy import stats
-from tabulate import tabulate
 
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal import feature_flags as gtff
@@ -26,7 +27,9 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     plot_autoscale,
     get_user_timezone_or_invalid,
+    print_rich_table,
 )
+from gamestonk_terminal.rich_config import console
 
 # pylint: disable=no-member,too-many-branches,C0302
 
@@ -37,7 +40,7 @@ SOURCES = ["yf", "av", "iex"]
 def search(
     query: str,
     amount: int,
-):
+) -> None:
     """Search selected query for tickers.
 
     Parameters
@@ -46,11 +49,6 @@ def search(
         The search term used to find company tickers.
     amount : int
         The amount of companies shown.
-
-    Returns
-    -------
-    tabulate
-        Companies that match the query.
     """
     equities_list = (
         "https://raw.githubusercontent.com/JerBouma/FinanceDatabase/master/"
@@ -74,18 +72,13 @@ def search(
     if equities_dataframe.empty:
         raise ValueError("No companies found. \n")
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                equities_dataframe.iloc[:amount],
-                showindex=False,
-                headers=["Company", "Ticker"],
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        print(equities_dataframe.iloc[:amount].to_string(), "\n")
+    print_rich_table(
+        equities_dataframe.iloc[:amount],
+        show_index=False,
+        headers=["Company", "Ticker"],
+        title="Search Results",
+    )
+    console.print("")
 
 
 def load(
@@ -168,6 +161,7 @@ def load(
             # Check that loading a stock was not successful
             # pylint: disable=no-member
             if df_stock_candidate.empty:
+                console.print("")
                 return pd.DataFrame()
 
             df_stock_candidate.index = df_stock_candidate.index.tz_localize(None)
@@ -192,6 +186,7 @@ def load(
 
             # Check that loading a stock was not successful
             if df_stock_candidate.empty:
+                console.print("")
                 return pd.DataFrame()
 
             df_stock_candidate.index.name = "date"
@@ -204,6 +199,7 @@ def load(
 
             # Check that loading a stock was not successful
             if df_stock_candidate.empty:
+                console.print("")
                 return pd.DataFrame()
 
             df_stock_candidate = df_stock_candidate[
@@ -243,6 +239,7 @@ def load(
 
         # Check that loading a stock was not successful
         if df_stock_candidate.empty:
+            console.print("")
             return pd.DataFrame()
 
         df_stock_candidate.index = df_stock_candidate.index.tz_localize(None)
@@ -256,16 +253,22 @@ def load(
 
     s_intraday = (f"Intraday {s_interval}", "Daily")[interval == 1440]
 
-    print(
+    console.print(
         f"Loading {s_intraday} {ticker.upper()} stock "
         f"with starting period {s_start.strftime('%Y-%m-%d')} for analysis.",
     )
 
+    console.print("")
     return df_stock_candidate
 
 
 def display_candle(
-    s_ticker: str, df_stock: pd.DataFrame, use_matplotlib: bool, intraday: bool = False
+    s_ticker: str,
+    df_stock: pd.DataFrame,
+    use_matplotlib: bool,
+    intraday: bool = False,
+    add_trend: bool = False,
+    ma: Optional[Tuple[int, ...]] = None,
 ):
     """Shows candle plot of loaded ticker. [Source: Yahoo Finance, IEX Cloud or Alpha Vantage]
 
@@ -279,10 +282,15 @@ def display_candle(
         Flag to use matplotlib instead of interactive plotly chart
     intraday: bool
         Flag for intraday data for plotly range breaks
+    add_trend: bool
+        Flag to add high and low trends to chart
+    mov_avg: Tuple[int]
+        Moving averages to add to the candle
     """
-    if (df_stock.index[1] - df_stock.index[0]).total_seconds() >= 86400:
-        df_stock = find_trendline(df_stock, "OC_High", "high")
-        df_stock = find_trendline(df_stock, "OC_Low", "low")
+    if add_trend:
+        if (df_stock.index[1] - df_stock.index[0]).total_seconds() >= 86400:
+            df_stock = find_trendline(df_stock, "OC_High", "high")
+            df_stock = find_trendline(df_stock, "OC_Low", "low")
 
     if use_matplotlib:
         mc = mpf.make_marketcolors(
@@ -297,24 +305,24 @@ def display_candle(
         s = mpf.make_mpf_style(marketcolors=mc, gridstyle=":", y_on_right=True)
 
         ap0 = []
+        if add_trend:
+            if "OC_High_trend" in df_stock.columns:
+                ap0.append(
+                    mpf.make_addplot(df_stock["OC_High_trend"], color="g"),
+                )
 
-        if "OC_High_trend" in df_stock.columns:
-            ap0.append(
-                mpf.make_addplot(df_stock["OC_High_trend"], color="g"),
-            )
-
-        if "OC_Low_trend" in df_stock.columns:
-            ap0.append(
-                mpf.make_addplot(df_stock["OC_Low_trend"], color="b"),
-            )
+            if "OC_Low_trend" in df_stock.columns:
+                ap0.append(
+                    mpf.make_addplot(df_stock["OC_Low_trend"], color="b"),
+                )
 
         if gtff.USE_ION:
             plt.ion()
+        kwargs = {"mav": ma} if ma else {}
 
         mpf.plot(
             df_stock,
             type="candle",
-            mav=(20, 50),
             volume=True,
             title=f"\nStock {s_ticker}",
             addplot=ap0,
@@ -326,6 +334,8 @@ def display_candle(
             update_width_config=dict(
                 candle_linewidth=1.0, candle_width=0.8, volume_linewidth=1.0
             ),
+            warn_too_much_data=10000,
+            **kwargs,
         )
     else:
         fig = make_subplots(
@@ -348,60 +358,70 @@ def display_candle(
             row=1,
             col=1,
         )
-        fig.add_trace(
-            go.Scatter(
-                x=df_stock.index,
-                y=df_stock["ma20"],
-                name="MA20",
-                mode="lines",
-                line=go.scatter.Line(color="royalblue"),
-            ),
-            row=1,
-            col=1,
-        )
-        fig.add_trace(
-            go.Scatter(
-                x=df_stock.index,
-                y=df_stock["ma50"],
-                name="MA50",
-                mode="lines",
-                line=go.scatter.Line(color="black"),
-            ),
-            row=1,
-            col=1,
-        )
+        if ma:
+            plotly_colors = [
+                "black",
+                "teal",
+                "blue",
+                "purple",
+                "orange",
+                "gray",
+                "deepskyblue",
+            ]
+            for idx, ma_val in enumerate(ma):
+                temp = df_stock["Adj Close"].copy()
+                temp[f"ma{ma_val}"] = df_stock["Adj Close"].rolling(ma_val).mean()
+                temp = temp.dropna()
+                fig.add_trace(
+                    go.Scatter(
+                        x=temp.index,
+                        y=temp[f"ma{ma_val}"],
+                        name=f"MA{ma_val}",
+                        mode="lines",
+                        line=go.scatter.Line(
+                            color=plotly_colors[np.mod(idx, len(plotly_colors))]
+                        ),
+                    ),
+                    row=1,
+                    col=1,
+                )
 
-        if "OC_High_trend" in df_stock.columns:
-            fig.add_trace(
-                go.Scatter(
-                    x=df_stock.index,
-                    y=df_stock["OC_High_trend"],
-                    name="High Trend",
-                    mode="lines",
-                    line=go.scatter.Line(color="green"),
-                ),
-                row=1,
-                col=1,
-            )
-        if "OC_Low_trend" in df_stock.columns:
-            fig.add_trace(
-                go.Scatter(
-                    x=df_stock.index,
-                    y=df_stock["OC_Low_trend"],
-                    name="Low Trend",
-                    mode="lines",
-                    line=go.scatter.Line(color="red"),
-                ),
-                row=1,
-                col=1,
-            )
+        if add_trend:
+            if "OC_High_trend" in df_stock.columns:
+                fig.add_trace(
+                    go.Scatter(
+                        x=df_stock.index,
+                        y=df_stock["OC_High_trend"],
+                        name="High Trend",
+                        mode="lines",
+                        line=go.scatter.Line(color="green"),
+                    ),
+                    row=1,
+                    col=1,
+                )
+            if "OC_Low_trend" in df_stock.columns:
+                fig.add_trace(
+                    go.Scatter(
+                        x=df_stock.index,
+                        y=df_stock["OC_Low_trend"],
+                        name="Low Trend",
+                        mode="lines",
+                        line=go.scatter.Line(color="red"),
+                    ),
+                    row=1,
+                    col=1,
+                )
 
+        colors = [
+            "red" if row.Open < row["Adj Close"] else "green"
+            for _, row in df_stock.iterrows()
+        ]
         fig.add_trace(
             go.Bar(
                 x=df_stock.index,
                 y=df_stock.Volume,
                 name="Volume",
-                marker_color="#696969",
+                marker_color=colors,
             ),
             row=2,
             col=1,
@@ -439,16 +459,34 @@ def display_candle(
                 type="date",
             ),
         )
+
+        fig.update_layout(
+            updatemenus=[
+                dict(
+                    buttons=[
+                        dict(
+                            label="linear",
+                            method="relayout",
+                            args=[{"yaxis.type": "linear"}],
+                        ),
+                        dict(
+                            label="log", method="relayout", args=[{"yaxis.type": "log"}]
+                        ),
+                    ]
+                )
+            ]
+        )
+
         if intraday:
             fig.update_xaxes(
                 rangebreaks=[
                     dict(bounds=["sat", "mon"]),
-                    dict(bounds=[16, 9.5], pattern="hour"),
+                    dict(bounds=[20, 9], pattern="hour"),
                 ]
             )
 
-        fig.show()
-    print("")
+        fig.show(config=dict({"scrollZoom": True}))
+    console.print("")
 
 
 def quote(other_args: List[str], s_ticker: str):
@@ -506,14 +544,16 @@ def quote(other_args: List[str], s_ticker: str):
             return
 
     except SystemExit:
-        print("")
+        console.print("")
         return
 
     ticker = yf.Ticker(ns_parser.s_ticker)
 
     # If price only option, return immediate market price for ticker.
     if ns_parser.price_only:
-        print(f"Price of {ns_parser.s_ticker} {ticker.info['regularMarketPrice']} \n")
+        console.print(
+            f"Price of {ns_parser.s_ticker} {ticker.info['regularMarketPrice']} \n"
+        )
         return
 
     try:
@@ -556,19 +596,12 @@ def quote(other_args: List[str], s_ticker: str):
 
         quote_data = transpose(quote_df)
 
-        print(
-            tabulate(
-                quote_data,
-                headers=quote_data.columns,  # type: ignore
-                tablefmt="fancy_grid",
-                stralign="right",
-            )
-        )
+        print_rich_table(quote_data, title="Ticker Quote")
 
     except KeyError:
-        print(f"Invalid stock ticker: {ns_parser.s_ticker}")
+        console.print(f"Invalid stock ticker: {ns_parser.s_ticker}")
 
-    print("")
+    console.print("")
     return
 
 
@@ -709,7 +742,7 @@ def additional_info_about_ticker(ticker: str) -> str:
         if "." in ticker:
             ticker_info = yf.Ticker(ticker).info
 
-            extra_info += "\nDatetime: "
+            extra_info += "\n[param]Datetime: [/param]"
             if (
                 "exchangeTimezoneName" in ticker_info
                 and ticker_info["exchangeTimezoneName"]
@@ -718,22 +751,22 @@ def additional_info_about_ticker(ticker: str) -> str:
                     pytz.timezone(ticker_info["exchangeTimezoneName"])
                 ).strftime("%Y %b %d %H:%M")
                 extra_info += dtime
-                extra_info += "\nTimezone: "
+                extra_info += "\n[param]Timezone: [/param]"
                 extra_info += ticker_info["exchangeTimezoneName"]
             else:
-                extra_info += "\nDatetime: "
-                extra_info += "\nTimezone: "
+                extra_info += "\n[param]Datetime: [/param]"
+                extra_info += "\n[param]Timezone: [/param]"
 
-            extra_info += "\nExchange: "
+            extra_info += "\n[param]Exchange: [/param]"
             if "exchange" in ticker_info and ticker_info["exchange"]:
                 exchange_name = ticker_info["exchange"]
                 extra_info += exchange_name
 
-            extra_info += "\nCurrency: "
+            extra_info += "\n[param]Currency: [/param]"
             if "currency" in ticker_info and ticker_info["currency"]:
                 extra_info += ticker_info["currency"]
 
-            extra_info += "\nMarket:   "
+            extra_info += "\n[param]Market:   [/param]"
             if "exchange" in ticker_info and ticker_info["exchange"]:
                 if exchange_name in mcal.get_calendar_names():
                     calendar = mcal.get_calendar(exchange_name)
@@ -758,14 +791,14 @@ def additional_info_about_ticker(ticker: str) -> str:
                         else:
                             extra_info += "CLOSED"
         else:
-            extra_info += "\nDatetime: "
+            extra_info += "\n[param]Datetime: [/param]"
             dtime = datetime.now(pytz.timezone("America/New_York")).strftime(
                 "%Y %b %d %H:%M"
             )
             extra_info += dtime
-            extra_info += "\nTimezone: America/New_York"
-            extra_info += "\nCurrency: USD"
-            extra_info += "\nMarket:   "
+            extra_info += "\n[param]Timezone: [/param]America/New_York"
+            extra_info += "\n[param]Currency: [/param]USD"
+            extra_info += "\n[param]Market:   [/param]"
             calendar = mcal.get_calendar("NYSE")
             sch = calendar.schedule(
                 start_date=(datetime.now() - timedelta(days=3)).strftime("%Y-%m-%d"),
@@ -783,10 +816,10 @@ def additional_info_about_ticker(ticker: str) -> str:
                     extra_info += "CLOSED"
 
     else:
-        extra_info += "\nDatetime: "
-        extra_info += "\nTimezone: "
-        extra_info += "\nExchange: "
-        extra_info += "\nMarket: "
-        extra_info += "\nCurrency: "
+        extra_info += "\n[param]Datetime: [/param]"
+        extra_info += "\n[param]Timezone: [/param]"
+        extra_info += "\n[param]Exchange: [/param]"
+        extra_info += "\n[param]Market: [/param]"
+        extra_info += "\n[param]Currency: [/param]"
 
     return extra_info

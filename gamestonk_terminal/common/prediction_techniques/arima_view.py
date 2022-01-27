@@ -9,12 +9,10 @@ from typing import Union
 import matplotlib.pyplot as plt
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
-from tabulate import tabulate
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.common.prediction_techniques import arima_model
 from gamestonk_terminal.common.prediction_techniques.pred_helper import (
-    price_prediction_backtesting_color,
     print_prediction_kpis,
     print_pretty_prediction,
 )
@@ -22,9 +20,10 @@ from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.helper_funcs import (
     export_data,
     get_next_stock_market_days,
-    patch_pandas_text_adjustment,
     plot_autoscale,
+    print_rich_table,
 )
+from gamestonk_terminal.rich_config import console
 
 
 register_matplotlib_converters()
@@ -83,7 +82,7 @@ def display_arima(
             )[1:]
 
         if future_index[-1] > datetime.datetime.now():
-            print(
+            console.print(
                 "Backtesting not allowed, since End Date + Prediction days is in the future\n"
             )
             return
@@ -109,8 +108,8 @@ def display_arima(
     df_pred = pd.Series(l_predictions, index=l_pred_days, name="Price")
 
     if results:
-        print(model.summary())
-        print("")
+        console.print(model.summary())
+        console.print("")
 
     # Plotting
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -270,53 +269,31 @@ def display_arima(
         df_pred["Real"] = df_future.values
 
         if gtff.USE_COLOR:
-            if gtff.USE_TABULATE_DF:
-                df_pred["Real"] = df_pred["Real"].astype(float)
-                df_pred["Prediction"] = df_pred["Prediction"].astype(float)
-                df_pred["Dif"] = (
-                    100 * (df_pred.Prediction - df_pred.Real) / df_pred.Real
-                )
-                print(
-                    tabulate(
-                        df_pred,
-                        headers=["Date", "Predicted", "Actual", "% Difference"],
-                        showindex=True,
-                        floatfmt=".2f",
-                        tablefmt="fancy_grid",
-                    )
-                )
-            else:
-                patch_pandas_text_adjustment()
-                print("Time         Real [$]  x  Prediction [$]")
-                print(
-                    df_pred.apply(
-                        price_prediction_backtesting_color, axis=1
-                    ).to_string()
-                )
+            df_pred["Real"] = df_pred["Real"].astype(float)
+            df_pred["Prediction"] = df_pred["Prediction"].astype(float)
+            df_pred["Dif"] = 100 * (df_pred.Prediction - df_pred.Real) / df_pred.Real
+            print_rich_table(
+                df_pred,
+                headers=["Date", "Predicted", "Actual", "% Difference"],
+                show_index=True,
+                title="ARIMA Model",
+            )
         else:
-            if gtff.USE_TABULATE_DF:
-                df_pred["Real"] = df_pred["Real"].astype(float)
-                df_pred["Prediction"] = df_pred["Predicted"].astype(float)
-                df_pred["Dif"] = (
-                    100 * (df_pred.Prediction - df_pred.Real) / df_pred.Real
-                )
-                print(
-                    tabulate(
-                        df_pred,
-                        headers=["Date", "Predicted", "Actual", "% Difference"],
-                        showindex=True,
-                        floatfmt=".2f",
-                        tablefmt="fancy_grid",
-                    )
-                )
-            else:
-                print(df_pred[["Real", "Prediction"]].round(2).to_string())
+            df_pred["Real"] = df_pred["Real"].astype(float)
+            df_pred["Prediction"] = df_pred["Predicted"].astype(float)
+            df_pred["Dif"] = 100 * (df_pred.Prediction - df_pred.Real) / df_pred.Real
+            print_rich_table(
+                df_pred,
+                headers=["Date", "Predicted", "Actual", "% Difference"],
+                show_index=True,
+                title="ARIMA Model",
+            )
 
-        print("")
+        console.print("")
         print_prediction_kpis(df_pred["Real"].values, df_pred["Prediction"].values)
 
     else:
         # Print prediction data
         print_pretty_prediction(df_pred, values.values[-1])
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "arima")
-    print("")
+    console.print("")

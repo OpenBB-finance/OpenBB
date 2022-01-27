@@ -1,10 +1,8 @@
 import os
 
-from tabulate import tabulate
-
-from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.economy import finnhub_model
-from gamestonk_terminal.helper_funcs import export_data
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
+from gamestonk_terminal.rich_config import console
 
 
 def economy_calendar_events(country: str, num: int, impact: str, export: str):
@@ -24,7 +22,7 @@ def economy_calendar_events(country: str, num: int, impact: str, export: str):
     df_events = finnhub_model.get_economy_calendar_events()
 
     if df_events.empty:
-        print("No latest economy calendar events found\n")
+        console.print("No latest economy calendar events found\n")
         return
 
     df_econ_calendar = df_events[df_events["country"] == country].sort_values(
@@ -32,14 +30,16 @@ def economy_calendar_events(country: str, num: int, impact: str, export: str):
     )
 
     if df_econ_calendar.empty:
-        print("No latest economy calendar events found in the specified country\n")
+        console.print(
+            "No latest economy calendar events found in the specified country\n"
+        )
         return
 
     if impact != "all":
         df_econ_calendar = df_econ_calendar[df_econ_calendar["impact"] == impact]
 
         if df_econ_calendar.empty:
-            print(
+            console.print(
                 "No latest economy calendar events found in the specified country with this impact\n"
             )
             return
@@ -64,19 +64,13 @@ def economy_calendar_events(country: str, num: int, impact: str, export: str):
     df_econ_calendar.replace("", float("NaN"), inplace=True)
     df_econ_calendar.dropna(how="all", axis=1, inplace=True)
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df_econ_calendar,
-                headers=df_econ_calendar.columns,
-                showindex=False,
-                floatfmt=".2f",
-                tablefmt="fancy_grid",
-            )
-        )
-    else:
-        print(df_econ_calendar.to_string(index=False))
-    print("")
+    print_rich_table(
+        df_econ_calendar,
+        headers=list(df_econ_calendar.columns),
+        show_index=False,
+        title="Economy Calendar",
+    )
+    console.print("")
 
     export_data(
         export,

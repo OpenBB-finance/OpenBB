@@ -11,12 +11,16 @@ import seaborn as sns
 
 from matplotlib import pyplot as plt
 from pandas.plotting import register_matplotlib_converters
-from tabulate import tabulate
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_plot import PLOT_DPI
-from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
+from gamestonk_terminal.helper_funcs import (
+    export_data,
+    plot_autoscale,
+    print_rich_table,
+)
 from gamestonk_terminal.stocks.comparison_analysis import finbrain_model
+from gamestonk_terminal.rich_config import console
 
 register_matplotlib_converters()
 
@@ -35,7 +39,7 @@ def display_sentiment_compare(similar: List[str], raw: bool = False, export: str
     """
     df_sentiment = finbrain_model.get_sentiments(similar)
     if df_sentiment.empty:
-        print("No sentiments found.")
+        console.print("No sentiments found.")
 
     else:
         fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -84,16 +88,12 @@ def display_sentiment_compare(similar: List[str], raw: bool = False, export: str
         plt.show()
 
         if raw:
-            if gtff.USE_TABULATE_DF:
-                print(
-                    tabulate(
-                        df_sentiment,
-                        headers=df_sentiment.columns,
-                        tablefmt="fancy_grid",
-                    )
-                )
-            else:
-                print(df_sentiment.to_string())
+            print_rich_table(
+                df_sentiment,
+                headers=list(df_sentiment.columns),
+                title="Ticker Sentiment",
+            )
+            console.print("")
 
         export_data(
             export,
@@ -101,7 +101,7 @@ def display_sentiment_compare(similar: List[str], raw: bool = False, export: str
             "sentiment",
             df_sentiment,
         )
-    print("")
+    console.print("")
 
 
 def display_sentiment_correlation(
@@ -121,7 +121,7 @@ def display_sentiment_correlation(
     df_sentiment = finbrain_model.get_sentiments(similar)
     corrs = df_sentiment.corr()
     if df_sentiment.empty:
-        print("No sentiments found.")
+        console.print("No sentiments found.")
 
     else:
         fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -146,17 +146,12 @@ def display_sentiment_correlation(
         plt.show()
 
         if raw:
-            if gtff.USE_TABULATE_DF:
-                print(
-                    tabulate(
-                        corrs,
-                        headers=corrs.columns,
-                        showindex=True,
-                        tablefmt="fancy_grid",
-                    )
-                )
-            else:
-                print(corrs.to_string())
+            print_rich_table(
+                corrs,
+                headers=list(corrs.columns),
+                show_index=True,
+                title="Correlation Sentiments",
+            )
 
         export_data(
             export,
@@ -165,4 +160,4 @@ def display_sentiment_correlation(
             corrs,
         )
 
-    print("")
+    console.print("")

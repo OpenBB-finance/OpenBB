@@ -3,13 +3,13 @@ __docformat__ = "numpy"
 
 import os
 from datetime import datetime, timedelta
-from tabulate import tabulate
 import pandas as pd
 from matplotlib import pyplot as plt
 import matplotlib.dates as mdates
 from gamestonk_terminal.stocks.dark_pool_shorts import sec_model
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import export_data
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
+from gamestonk_terminal.rich_config import console
 
 
 def fails_to_deliver(
@@ -68,19 +68,16 @@ def fails_to_deliver(
         plt.ion()
 
     plt.show()
-    print("")
+    console.print("")
 
     if raw:
-        print(
-            tabulate(
-                ftds_data,
-                headers=ftds_data.columns,
-                tablefmt="fancy_grid",
-                stralign="right",
-                showindex=False,
-            )
+        print_rich_table(
+            ftds_data,
+            headers=list(ftds_data.columns),
+            show_index=False,
+            title="Fails-To-Deliver Data",
         )
-        print("")
+        console.print("")
 
     export_data(
         export,

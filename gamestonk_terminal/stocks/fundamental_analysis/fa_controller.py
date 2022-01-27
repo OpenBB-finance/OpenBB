@@ -5,7 +5,7 @@ import argparse
 from datetime import datetime, timedelta
 from typing import List
 from prompt_toolkit.completion import NestedCompleter
-from colorama import Style
+from gamestonk_terminal.rich_config import console
 
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal.stocks.fundamental_analysis.financial_modeling_prep import (
@@ -67,6 +67,7 @@ class FundamentalAnalysisController(BaseController):
     CHOICES_MENUS = [
         "fmp",
     ]
+    PATH = "/stocks/fa/"
 
     def __init__(
         self,
@@ -77,7 +78,7 @@ class FundamentalAnalysisController(BaseController):
         queue: List[str] = None,
     ):
         """Constructor"""
-        super().__init__("/stocks/fa/", queue)
+        super().__init__(queue)
 
         self.ticker = f"{ticker}.{suffix}" if suffix else ticker
         self.start = start
@@ -92,42 +93,37 @@ class FundamentalAnalysisController(BaseController):
 
     def print_help(self):
         """Print help."""
-        newline = "\n"
-        help_text = f"""
-Ticker: {self.ticker}
-{f"Note that only Yahoo Finance currently supports foreign exchanges{Style.DIM}{newline}" if self.suffix else ""}
-    data          fundamental and technical data of company [FinViz]
-    mgmt          management team of the company [Business Insider]
-    analysis      analyse SEC filings with the help of machine learning [Eclect.us]
-    score         investing score from Warren Buffett, Joseph Piotroski and Benjamin Graham [FMP]
-    warnings      company warnings according to Sean Seah book [Market Watch]
-    dcf           advanced Excel customizable discounted cash flow [stockanalysis] {Style.RESET_ALL}
-Yahoo Finance:
-    info          information scope of the company
+        is_foreign_start = "" if not self.suffix else "[unvl]"
+        is_foreign_end = "" if not self.suffix else "[/unvl]"
+        help_text = f"""[param]
+Ticker: [/param] {self.ticker} [cmds]
+
+[cmds]    data          fundamental and technical data of company [src][FinViz][/src]
+    mgmt          management team of the company [src][Business Insider][/src]
+    analysis      analyse SEC filings with the help of machine learning [src][Eclect.us][/src]
+    score         investing score from Warren Buffett, Joseph Piotroski and Benjamin Graham [src][FMP][/src]
+    warnings      company warnings according to Sean Seah book [src][Market Watch][/src]
+    dcf           advanced Excel customizable discounted cash flow [src][Stockanalysis][/src][/cmds]
+[src][Yahoo Finance][/src]
+    info          information scope of the company{is_foreign_start}
     shrs          shareholders of the company
     sust          sustainability values of the company
     cal           calendar earnings and estimates of the company
     web           open web browser of the company
     hq            open HQ location of the company
-    divs          show historical dividends for company {Style.DIM if self.suffix else ""}
-Alpha Vantage:
+    divs          show historical dividends for company{is_foreign_end}
+[src][Alpha Vantage][/src]
     overview      overview of the company
     key           company key metrics
     income        income statements of the company
     balance       balance sheet of the company
     cash          cash flow of the company
     earnings      earnings dates and reported EPS
-    fraud         key fraud ratios
-Other Sources:
->   fmp           profile,quote,enterprise,dcf,income,ratios,growth from FMP{Style.RESET_ALL}
+    fraud         key fraud ratios[/cmds]
+[info]Other Sources:[/info][menu]
+>   fmp           profile,quote,enterprise,dcf,income,ratios,growth from FMP[/menu]
         """
-        print(help_text)
-        # No longer used, but keep for future:
-        # print("")
-        # print("Market Watch API - DEPRECATED")
-        # print("   income        income statement of the company")
-        # print("   balance       balance sheet of the company")
-        # print("   cash          cash flow statement of the company")
+        console.print(text=help_text, menu="Stocks - Fundamental Analysis")
 
     def custom_reset(self):
         """Class specific component of reset command"""
@@ -326,9 +322,11 @@ Other Sources:
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
-        if ns_parser:
-            yahoo_finance_view.display_shareholders(self.ticker)
+        if not self.suffix:
+            if ns_parser:
+                yahoo_finance_view.display_shareholders(self.ticker)
+        else:
+            console.print("Only US tickers are recognized.", "\n")
 
     def call_sust(self, other_args: List[str]):
         """Process sust command."""
@@ -348,8 +346,11 @@ Other Sources:
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if ns_parser:
-            yahoo_finance_view.display_sustainability(self.ticker)
+        if not self.suffix:
+            if ns_parser:
+                yahoo_finance_view.display_sustainability(self.ticker)
+        else:
+            console.print("Only US tickers are recognized.", "\n")
 
     def call_cal(self, other_args: List[str]):
         """Process cal command."""
@@ -365,8 +366,11 @@ Other Sources:
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if ns_parser:
-            yahoo_finance_view.display_calendar_earnings(ticker=self.ticker)
+        if not self.suffix:
+            if ns_parser:
+                yahoo_finance_view.display_calendar_earnings(ticker=self.ticker)
+        else:
+            console.print("Only US tickers are recognized.", "\n")
 
     def call_web(self, other_args: List[str]):
         """Process web command."""
@@ -381,8 +385,11 @@ Other Sources:
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if ns_parser:
-            yahoo_finance_view.open_web(self.ticker)
+        if not self.suffix:
+            if ns_parser:
+                yahoo_finance_view.open_web(self.ticker)
+        else:
+            console.print("Only US tickers are recognized.", "\n")
 
     def call_hq(self, other_args: List[str]):
         """Process hq command."""
@@ -397,8 +404,11 @@ Other Sources:
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if ns_parser:
-            yahoo_finance_view.open_headquarters_map(self.ticker)
+        if not self.suffix:
+            if ns_parser:
+                yahoo_finance_view.open_headquarters_map(self.ticker)
+        else:
+            console.print("Only US tickers are recognized.", "\n")
 
     def call_divs(self, other_args: List[str]):
         """Process divs command."""
@@ -427,13 +437,16 @@ Other Sources:
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if ns_parser:
-            yahoo_finance_view.display_dividends(
-                ticker=self.ticker,
-                limit=ns_parser.limit,
-                plot=ns_parser.plot,
-                export=ns_parser.export,
-            )
+        if not self.suffix:
+            if ns_parser:
+                yahoo_finance_view.display_dividends(
+                    ticker=self.ticker,
+                    limit=ns_parser.limit,
+                    plot=ns_parser.plot,
+                    export=ns_parser.export,
+                )
+        else:
+            console.print("Only US tickers are recognized.", "\n")
 
     def call_overview(self, other_args: List[str]):
         """Process overview command."""
@@ -723,9 +736,24 @@ Other Sources:
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="dcf",
             description="""
-                Generates a discounted cash flow statement. The statement uses machine
-                learning to predict the future financial statement, and then predicts the future
-                value of the stock based on the predicted financials.""",
+                A discounted cash flow statement looks to analyze the value of a company. To do
+                this we need to predict the future cash flows and then determine how much those
+                cash flows are worth to us today.\n\n
+
+                We predict the future expected cash flows by prediciting what the financial
+                statements will look like in the future, and then using this to determine the
+                cash the company will have in the future. This cash is paid to share holders.
+                We us linear regression to predict the future financial statements.\n\n
+
+                Once we have our predicted financial statements we need to determine how much the
+                cash flows are worth today. This is done with a discount factor. Our DCF allows
+                users to choose between Fama French and CAPM for the factor. This allows us
+                to calculate the present value of the future cash flows.\n\n
+
+                The present value of all of these cash payments is the companies' value. Dividing
+                this value by the number of shares outstanding allows us to calculate the value of
+                each share in a company.\n\n
+                """,
         )
         parser.add_argument(
             "-a",
@@ -733,14 +761,48 @@ Other Sources:
             action="store_true",
             dest="audit",
             default=False,
-            help="Confirms that the numbers provided are accurate.",
+            help="Generates a tie-out for financial statement information pulled from online.",
+        )
+        parser.add_argument(
+            "--no-ratios",
+            action="store_false",
+            dest="ratios",
+            default=True,
+            help="Removes ratios from DCF.",
+        )
+        parser.add_argument(
+            "--no-filter",
+            action="store_true",
+            dest="ratios",
+            default=False,
+            help="Allow similar companies of any market cap to be shown.",
+        )
+        parser.add_argument(
+            "-p" "--prediction",
+            type=int,
+            dest="prediction",
+            default=10,
+            help="Number of years to predict before using terminal value.",
+        )
+        parser.add_argument(
+            "-s" "--similar",
+            type=int,
+            dest="similar",
+            default=6,
+            help="Number of similar companies to generate ratios for.",
         )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
         if ns_parser:
-            dcf = dcf_view.CreateExcelFA(self.ticker, ns_parser.audit)
+            dcf = dcf_view.CreateExcelFA(
+                self.ticker,
+                ns_parser.audit,
+                ns_parser.ratios,
+                ns_parser.prediction,
+                ns_parser.similar,
+            )
             dcf.create_workbook()
 
     def call_warnings(self, other_args: List[str]):
@@ -774,9 +836,13 @@ Other Sources:
 
     def call_fmp(self, _):
         """Process fmp command."""
-        self.queue = fmp_controller.FinancialModelingPrepController(
-            self.ticker, self.start, self.interval, self.queue
-        ).menu()
+        self.queue = self.load_class(
+            fmp_controller.FinancialModelingPrepController,
+            self.ticker,
+            self.start,
+            self.interval,
+            self.queue,
+        )
 
 
 def key_metrics_explained(other_args: List[str]):
@@ -804,6 +870,6 @@ def key_metrics_explained(other_args: List[str]):
         with open(filepath) as fp:
             line = fp.readline()
             while line:
-                print(f"{line.strip()}")
+                console.print(f"{line.strip()}")
                 line = fp.readline()
-            print("")
+            console.print("")

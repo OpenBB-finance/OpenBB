@@ -17,14 +17,14 @@ import quandl
 import requests
 from alpha_vantage.timeseries import TimeSeries
 from coinmarketcapapi import CoinMarketCapAPI, CoinMarketCapAPIError
-from colorama import Fore, Style
 from prawcore.exceptions import ResponseException
 from pyEX.common.exception import PyEXception
-from tabulate import tabulate
 
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal import thought_of_the_day as thought
+from gamestonk_terminal.helper_funcs import print_rich_table
+from gamestonk_terminal.rich_config import console
 
 # pylint: disable=too-many-statements,no-member,too-many-branches,C0302
 
@@ -274,15 +274,13 @@ def check_api_keys():
         else:
             key_dict["SENTIMENT_INVESTOR"] = "Defined, test unsuccessful"
 
-    print(
-        tabulate(
-            pd.DataFrame(key_dict.items()),
-            showindex=False,
-            headers=[],
-            tablefmt="fancy_grid",
-        ),
-        "\n",
+    print_rich_table(
+        pd.DataFrame(key_dict.items()),
+        show_index=False,
+        headers=["API", "Key"],
+        title="API Keys",
     )
+    console.print("")
 
 
 def print_goodbye():
@@ -310,7 +308,7 @@ def print_goodbye():
     else:
         goodbye_msg_time = "Go get some rest soldier!"
 
-    print(  # nosec
+    console.print(  # nosec
         goodbye_msg[random.randint(0, len(goodbye_msg) - 1)] + goodbye_msg_time + "\n"
     )
 
@@ -338,9 +336,9 @@ def update_terminal():
     new_poetry_hash = sha256sum("poetry.lock")
 
     if poetry_hash == new_poetry_hash:
-        print("Great, seems like poetry hasn't been updated!")
+        console.print("Great, seems like poetry hasn't been updated!")
         return completed_process.returncode
-    print(
+    console.print(
         "Seems like more modules have been added, grab a coke, this may take a while."
     )
 
@@ -355,25 +353,25 @@ def update_terminal():
 
 def about_us():
     """Prints an about us section"""
-    print(
-        f"{Fore.GREEN}Thanks for using Gamestonk Terminal. This is our way!{Style.RESET_ALL}\n"
+    console.print(
+        "[green]Thanks for using Gamestonk Terminal. This is our way![/green]\n"
         "\n"
-        f"{Fore.CYAN}Join our community on discord: {Style.RESET_ALL}https://discord.gg/Up2QGbMKHY\n"
-        f"{Fore.CYAN}Follow our twitter for updates: {Style.RESET_ALL}https://twitter.com/gamestonkt\n"
-        f"{Fore.CYAN}Access our landing page: {Style.RESET_ALL}https://gamestonkterminal.vercel.app\n"
+        "[cyan]Join our community on discord: [/cyan]https://discord.gg/Up2QGbMKHY\n"
+        "[cyan]Follow our twitter for updates: [/cyan]https://twitter.com/gamestonkt\n"
+        "[cyan]Access our landing page: [/cyan]https://gamestonkterminal.github.io/GamestonkTerminal/\n"
         "\n"
-        f"{Fore.YELLOW}Partnerships:{Style.RESET_ALL}\n"
-        f"{Fore.CYAN}FinBrain: {Style.RESET_ALL}https://finbrain.tech\n"
-        f"{Fore.CYAN}Quiver Quantitative: {Style.RESET_ALL}https://www.quiverquant.com\n"
-        f"{Fore.CYAN}SentimentInvestor: {Style.RESET_ALL}https://sentimentinvestor.com\n"
-        f"\n{Fore.RED}"
+        "[yellow]Partnerships:[/yellow]]\n"
+        "[cyan]FinBrain: [/cyan]https://finbrain.tech\n"
+        "[cyan]Quiver Quantitative: [/cyan]https://www.quiverquant.com\n"
+        "[cyan]SentimentInvestor: [/cyan]https://sentimentinvestor.com\n"
+        "\n[red]"
         "DISCLAIMER: Trading in financial instruments involves high risks including the risk of losing some, "
         "or all, of your investment amount, and may not be suitable for all investors. Before deciding to trade in "
         "financial instrument you should be fully informed of the risks and costs associated with trading the financial "
         "markets, carefully consider your investment objectives, level of experience, and risk appetite, and seek "
         "professional advice where needed. The data contained in Gamestonk Terminal (GST) is not necessarily accurate. "
         "GST and any provider of the data contained in this website will not accept liability for any loss or damage "
-        f"as a result of your trading, or your reliance on the information displayed.{Style.RESET_ALL}"
+        "as a result of your trading, or your reliance on the information displayed.[/red]\n"
     )
 
 
@@ -390,27 +388,27 @@ def bootup():
             sys.stdout.reconfigure(encoding="utf-8")
     except Exception as e:
         logger.exception("%s", type(e).__name__)
-        print(e, "\n")
+        console.print(e, "\n")
 
     # Print first welcome message and help
-    print("\nWelcome to Gamestonk Terminal Beta\n")
+    console.print("\nWelcome to Gamestonk Terminal Beta\n")
 
     # The commit has was commented out because the terminal was crashing due to git import for multiple users
     # ({str(git.Repo('.').head.commit)[:7]})
 
     if gtff.ENABLE_THOUGHTS_DAY:
-        print("-------------------")
+        console.print("-------------------")
         try:
             thought.get_thought_of_the_day()
         except Exception as e:
             logger.exception("%s", type(e).__name__)
-            print(e)
-        print("")
+            console.print(e)
+        console.print("")
 
 
 def reset(queue: List[str] = None):
     """Resets the terminal.  Allows for checking code or keys without quitting"""
-    print("resetting...")
+    console.print("resetting...")
     plt.close("all")
 
     if queue and len(queue) > 0:
@@ -424,6 +422,6 @@ def reset(queue: List[str] = None):
             f"{sys.executable} terminal.py", shell=True, check=False
         )
     if completed_process.returncode != 0:
-        print("Unfortunately, resetting wasn't possible!\n")
+        console.print("Unfortunately, resetting wasn't possible!\n")
 
     return completed_process.returncode

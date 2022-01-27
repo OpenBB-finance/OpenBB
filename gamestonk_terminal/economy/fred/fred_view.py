@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 from pandas.plotting import register_matplotlib_converters
-from rich.console import Console
+from gamestonk_terminal.rich_config import console
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_plot import PLOT_DPI
@@ -16,12 +16,10 @@ from gamestonk_terminal.economy.fred import fred_model
 from gamestonk_terminal.helper_funcs import (
     export_data,
     plot_autoscale,
-    rich_table_from_df,
+    print_rich_table,
 )
 
 register_matplotlib_converters()
-
-t_console = Console()
 
 
 def format_units(num: int) -> str:
@@ -51,7 +49,7 @@ def notes(series_term: str, num: int):
     """
     df_search = fred_model.get_series_notes(series_term)
     if df_search.empty:
-        t_console.print("No matches found. \n")
+        console.print("No matches found. \n")
         return
     df_search["notes"] = df_search["notes"].apply(
         lambda x: "\n".join(textwrap.wrap(x, width=100)) if isinstance(x, str) else x
@@ -59,20 +57,13 @@ def notes(series_term: str, num: int):
     df_search["title"] = df_search["title"].apply(
         lambda x: "\n".join(textwrap.wrap(x, width=50)) if isinstance(x, str) else x
     )
-    if gtff.USE_TABULATE_DF:
-        t_console.print(
-            rich_table_from_df(
-                df_search[["id", "title", "notes"]].head(num),
-                title=f"[bold]Search results for {series_term}[/bold]",
-                show_index=False,
-                headers=["Series ID", "Title", "Description"],
-            )
-        )
-    else:
-        t_console.print(
-            df_search[["id", "title", "notes"]].head(num).to_string(index=False)
-        )
-    t_console.print("")
+    print_rich_table(
+        df_search[["id", "title", "notes"]].head(num),
+        title=f"[bold]Search results for {series_term}[/bold]",
+        show_index=False,
+        headers=["Series ID", "Title", "Description"],
+    )
+    console.print("")
 
 
 def display_fred_series(
@@ -129,7 +120,9 @@ def display_fred_series(
             ax.plot(
                 data_to_plot.index,
                 data_to_plot,
-                label="\n".join(textwrap.wrap(title, 80)),
+                label="\n".join(textwrap.wrap(title, 80))
+                if len(series_ids) < 5
+                else title,
             )
 
     ax.legend(prop={"size": 10}, bbox_to_anchor=(0, 1), loc="lower left")
@@ -137,28 +130,24 @@ def display_fred_series(
     ax.set_xlim(data.index[0], data.index[-1])
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
-    if gtff.USE_ION:
-        plt.ion()
     plt.gcf().autofmt_xdate()
     fig.tight_layout()
+    if gtff.USE_ION:
+        plt.ion()
+
     plt.show()
     data.index = [x.strftime("%Y-%m-%d") for x in data.index]
     if raw:
-        if gtff.USE_TABULATE_DF:
-            t_console.print(
-                rich_table_from_df(
-                    data.tail(limit),
-                    headers=list(data.columns),
-                    show_index=True,
-                    index_name="Date",
-                )
-            )
-        else:
-            t_console.print(data.tail(limit).to_string())
+        print_rich_table(
+            data.tail(limit),
+            headers=list(data.columns),
+            show_index=True,
+            index_name="Date",
+        )
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "plot",
         data,
     )
-    t_console.print("")
+    console.print("")

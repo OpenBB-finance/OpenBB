@@ -1,0 +1,84 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: GET
+    uri: https://raw.githubusercontent.com/JerBouma/FinanceDatabase/master/Database/Equities/Countries/Georgia/Industrials/Conglomerates.json
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA+1UTXPTMBC9M8N/2MmBU6a0XPi4taF0MgSaacu5s5bWtqayZCQ5JjD8d55sA/FM
+        e+DABZpDEmvfvl2/t9pvT58QPovVxfnl0Wbxhr6NB8NhrH1It44bQWABxNXF+pRWp9v1zemGtpsV
+        XV69pZPtYnmQZL2rfueID5VhWnFrEtucMwPHrmk47B+AkonE1Aaz4yQknzuT9sRO005c6oKQmrCl
+        CQ3FVpRha74aV5FxJBzsnmLiSpYEbnZGURV8n+qBhBUIo0nGu3hE60QKf4yWAJCIK41YHSnVwXdV
+        TQ0PFQc6IJsWdIK8m1rG8mnfGsUWJY3bSUwx98Bd8o1PZicUJLGxSxLdKc5FKUrYGSVxSbVPYvEb
+        JELxSM9IBfQmZI2T8TxxF9glPBSyk4Aucp6wTbXigDcs2N3hqA2+lTDppDh2QOSWYk5XwFlTyhAc
+        kw9DrMGcoImrlqTRdIgGMmi6Ol/fgLuHDYG6ZCxUy/UzTRAnPRcWBllRKRgFlwY9o8gdBPSTIFmP
+        yeQD2UZQ4Tloav1oR0a2XWHhVws9Sm+NP9Qc3PLFpN/mrLeXcJhSYA2LGL2Aocyqo3oSR3sMw6FZ
+        gaFu/DU/P3kORkxLkWB6uJOUeV1kNU3KfYPac6TSd05DLJR+cXzyamDBABccx8ObArpFs/xF0Js8
+        iVoP7wwiX5YYhwzdeKe9AzLIIPn4PDCeBROTxxx9ciaB+D3M0r65v608CiDIo6ilFXy5hAH1JZ3h
+        NoPedy21VhHax+EH3tOL18uh/aPZPVVdgM9qvKhn7fwOw3UfcmTtdBcxAWzjDGHG8yF7hfVgfTP2
+        NUPJF1Wzq4a9sbk+n8VGI3KkKm6nh1l/0D7N9si8xYRqCLrO2lka3M45kzWznK+mVV4P3RyfvHw9
+        i/VSYFKHWJ1S++b5877vj6qx8jRUeLznFW4RzWnXDVZF9moxQr5P0MXF1cXq3Z/u4ccF/LiAHxfw
+        /7KAP12//esLePvx/QMLuIv/5gJ++uT7Dwh7CoMNCwAA
+    headers:
+      Accept-Ranges:
+      - bytes
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - max-age=300
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '774'
+      Content-Security-Policy:
+      - default-src 'none'; style-src 'unsafe-inline'; sandbox
+      Content-Type:
+      - text/plain; charset=utf-8
+      Date:
+      - Fri, 21 Jan 2022 03:56:10 GMT
+      ETag:
+      - W/"7944e09935c5795d659b0fec4489e9a0e8555b6cf79154782631f68102e1ff07"
+      Expires:
+      - Fri, 21 Jan 2022 04:01:10 GMT
+      Source-Age:
+      - '0'
+      Strict-Transport-Security:
+      - max-age=31536000
+      Vary:
+      - Authorization,Accept-Encoding,Origin
+      Via:
+      - 1.1 varnish
+      X-Cache:
+      - MISS
+      X-Cache-Hits:
+      - '0'
+      X-Content-Type-Options:
+      - nosniff
+      X-Fastly-Request-ID:
+      - ea0abd11adc29cd1e5d26cd389103dc2cb2ecb5e
+      X-Frame-Options:
+      - deny
+      X-GitHub-Request-Id:
+      - 5086:11EF7:43C5EA9:466A547:61EA2EDA
+      X-Served-By:
+      - cache-cdg20755-CDG
+      X-Timer:
+      - S1642737371.715271,VS0,VE154
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

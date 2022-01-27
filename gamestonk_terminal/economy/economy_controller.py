@@ -5,11 +5,11 @@ import argparse
 from datetime import datetime, timedelta
 import os
 from typing import List
+import logging
 
-from rich.console import Console
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
-
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.economy import (
@@ -29,7 +29,7 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal.menu import session
 
-t_console = Console()
+logger = logging.getLogger(__name__)
 
 
 class EconomyController(BaseController):
@@ -62,6 +62,7 @@ class EconomyController(BaseController):
         "unemp",
         "industry",
         "bigmac",
+        "resources",
     ]
     CHOICES_MENUS = ["fred"]
 
@@ -120,10 +121,12 @@ class EconomyController(BaseController):
         "country": "Country (U.S. listed stocks only)",
         "capitalization": "Capitalization",
     }
+    PATH = "/economy/"
+    FILE_PATH = os.path.join(os.path.dirname(__file__), "README.md")
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
-        super().__init__("/economy/", queue)
+        super().__init__(queue)
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
@@ -161,20 +164,19 @@ class EconomyController(BaseController):
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
-    @staticmethod
-    def print_help():
+    def print_help(self):
         """Print help"""
-        help_text = """
-CNN:
+        help_text = """[cmds]
+[src][CNN][/src]
     feargreed     CNN Fear and Greed Index
-Wall St. Journal:
+[src][Wall St. Journal][/src]
     overview      market data overview
     indices       US indices overview
     futures       futures and commodities overview
     usbonds       US bonds overview
     glbonds       global bonds overview
     currencies    currencies overview
-Finviz:
+[src][Finviz][/src]
     energy        energy futures overview
     metals        metals futures overview
     meats         meats futures overview
@@ -184,7 +186,7 @@ Finviz:
     valuation     valuation of sectors, industry, country
     performance   performance of sectors, industry, country
     spectrum      spectrum of sectors, industry, country
-Alpha Vantage:
+[src][Alpha Vantage][/src]
     rtps          real-time performance sectors
     gdp           real GDP for United States
     gdpc          quarterly real GDP per Capita data of the United States
@@ -192,13 +194,12 @@ Alpha Vantage:
     cpi           consumer price index for United States
     tyld          treasury yields for United States
     unemp         United States unemployment rates
-NASDAQ DataLink (formerly Quandl):
-    bigmac        the economists Big Mac index
-
->   fred          Federal Reserve Economic Data submenu
+[src][NASDAQ DataLink][/src]
+    bigmac        the economists Big Mac index[/cmds]
+[menu]
+>   fred          Federal Reserve Economic Data submenu[/menu]
 """
-        print(type(help_text))
-        t_console.print(help_text)
+        console.print(text=help_text, menu="Economy")
 
     def call_feargreed(self, other_args: List[str]):
         """Process feargreed command"""
@@ -1009,7 +1010,7 @@ NASDAQ DataLink (formerly Quandl):
                 file = os.path.join(
                     os.path.dirname(__file__), "NASDAQ_CountryCodes.csv"
                 )
-                t_console.print(
+                console.print(
                     pd.read_csv(file, index_col=0).to_string(index=False), "\n"
                 )
             else:
@@ -1023,4 +1024,4 @@ NASDAQ DataLink (formerly Quandl):
         """Process fred command"""
         from gamestonk_terminal.economy.fred.fred_controller import FredController
 
-        self.queue = FredController(self.queue).menu()
+        self.queue = self.load_class(FredController, self.queue)

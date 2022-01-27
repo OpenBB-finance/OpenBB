@@ -2,10 +2,9 @@
 __docformat__ = "numpy"
 
 import os
-from tabulate import tabulate
-from gamestonk_terminal.helper_funcs import export_data
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.portfolio.brokers.coinbase import coinbase_model
+from gamestonk_terminal.rich_config import console
 
 
 def display_account(currency: str = "USD", export: str = "") -> None:
@@ -23,24 +22,14 @@ def display_account(currency: str = "USD", export: str = "") -> None:
     df = df[df.balance > 0]
 
     if df.empty:
-        print("No funds/coins found in your account.")
+        console.print("No funds/coins found in your account.")
         return
 
     df_data = df.copy()
     df = df.drop(columns=["id"])
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df,
-                headers=df.columns,
-                floatfmt=(None, ".8f", ".8f", ".8f", ".2f"),  # type: ignore
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        print(df.to_string, "\n")
+    print_rich_table(
+        df, headers=list(df.columns), show_index=False, title="All Trading Accounts"
+    )
 
     export_data(
         export,
@@ -66,25 +55,19 @@ def display_history(account: str, export: str = "", limit: int = 20) -> None:
     df_data = df.copy()
 
     if df.empty:
-        print(
+        console.print(
             f"Your account {account} doesn't have any funds or you provide wrong account name or id. "
             f"To check all your accounts use command account --all\n"
         )
         return
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df.head(limit),
-                headers=df.columns,
-                floatfmt=".3f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        print(df.head(limit).to_string, "\n")
+    print_rich_table(
+        df.head(limit),
+        headers=list(df.columns),
+        show_index=False,
+        title="Account History",
+    )
+    console.print("")
 
     export_data(
         export,
@@ -111,26 +94,20 @@ def display_orders(limit: int, sortby: str, descend: bool, export: str = "") -> 
     df = coinbase_model.get_orders()
 
     if df.empty:
-        print("No orders found for your account\n")
+        console.print("No orders found for your account\n")
         return
 
     df_data = df.copy()
 
     df = df.sort_values(by=sortby, ascending=descend).head(limit)
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df,
-                headers=df.columns,
-                floatfmt=".3f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        print(df.to_string, "\n")
+    print_rich_table(
+        df,
+        headers=list(df.columns),
+        show_index=False,
+        title="Current Open Doors",
+    )
+    console.print("")
 
     export_data(
         export,
@@ -162,26 +139,17 @@ def display_deposits(
     df = coinbase_model.get_deposits(deposit_type=deposit_type)
 
     if df.empty:
-        print("No deposits found for your account\n")
+        console.print("No deposits found for your account\n")
         return
 
     df_data = df.copy()
 
     df = df.sort_values(by=sortby, ascending=descend).head(limit)
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df,
-                headers=df.columns,
-                floatfmt=".3f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        print(df.to_string, "\n")
+    print_rich_table(
+        df, headers=list(df.columns), show_index=False, title="Account Deposits"
+    )
+    console.print("")
 
     export_data(
         export,
