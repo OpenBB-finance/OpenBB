@@ -8,6 +8,7 @@ import numpy as np
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 
+from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.common.technical_analysis import momentum_model
 from gamestonk_terminal.config_plot import PLOT_DPI
@@ -42,32 +43,39 @@ def display_cci(
     """
     df_ta = momentum_model.cci(df["High"], df["Low"], df["Adj Close"], length, scalar)
 
-    fig, axes = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
+    fig, axes = plt.subplots(2, 1, figsize=plot_autoscale(), sharex=True, dpi=PLOT_DPI)
     ax = axes[0]
     ax.set_title(f"{s_ticker} CCI")
-    ax.plot(df.index, df["Adj Close"].values, "k", lw=2)
+    ax.plot(
+        df.index,
+        df["Adj Close"].values,
+    )
     ax.set_xlim(df.index[0], df.index[-1])
     ax.set_ylabel("Share Price ($)")
-    ax.grid(b=True, which="major", color="#666666", linestyle="-")
+    ax.yaxis.set_label_position("right")
+    ax.grid(visible=True, zorder=0)
 
     ax2 = axes[1]
-    ax2.plot(df_ta.index, df_ta.values, "b", lw=2)
+    ax2.plot(df_ta.index, df_ta.values)
     ax2.set_xlim(df.index[0], df.index[-1])
-    ax2.axhspan(100, plt.gca().get_ylim()[1], facecolor="r", alpha=0.2)
-    ax2.axhspan(plt.gca().get_ylim()[0], -100, facecolor="g", alpha=0.2)
-    ax2.axhline(100, linewidth=3, color="r", ls="--")
-    ax2.axhline(-100, linewidth=3, color="g", ls="--")
-    ax2.grid(b=True, which="major", color="#666666", linestyle="-")
+    ax2.axhspan(100, plt.gca().get_ylim()[1], facecolor=cfg.style.down_color, alpha=0.2)
+    ax2.axhspan(plt.gca().get_ylim()[0], -100, facecolor=cfg.style.up_color, alpha=0.2)
+
+    ax2.tick_params(axis="x", rotation=10)
+
+    ax2.grid(visible=True, zorder=0)
 
     ax3 = ax2.twinx()
     ax3.set_ylim(ax2.get_ylim())
-    ax3.set_yticks([-100, 100])
-    ax3.set_yticklabels(["OVERSOLD", "OVERBOUGHT"])
+    ax3.axhline(100, color=cfg.style.down_color, ls="--")
+    ax3.axhline(-100, color=cfg.style.up_color, ls="--")
+
+    ax2.set_yticks([-100, 100])
+    ax2.set_yticklabels(["OVERSOLD", "OVERBOUGHT"])
 
     if gtff.USE_ION:
         plt.ion()
 
-    plt.gcf().autofmt_xdate()
     fig.tight_layout(pad=1)
     plt.show()
 
@@ -108,33 +116,33 @@ def display_macd(
     """
     df_ta = momentum_model.macd(values, n_fast, n_slow, n_signal)
 
-    fig, axes = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
+    fig, axes = plt.subplots(2, 1, sharex=True, figsize=plot_autoscale(), dpi=PLOT_DPI)
     ax = axes[0]
     ax.set_title(f"{s_ticker} MACD")
-    ax.plot(values.index, values.values, "k", lw=2)
+    ax.plot(values.index, values.values)
     ax.set_xlim(values.index[0], values.index[-1])
     ax.set_ylabel("Share Price ($)")
-    ax.grid(b=True, which="major", color="#666666", linestyle="-")
+    ax.yaxis.set_label_position("right")
+    ax.grid(visible=True, zorder=0)
 
     ax2 = axes[1]
-    ax2.plot(df_ta.index, df_ta.iloc[:, 0].values, "b", lw=2)
-    ax2.plot(df_ta.index, df_ta.iloc[:, 2].values, "r", lw=2)
-    ax2.bar(df_ta.index, df_ta.iloc[:, 1].values, color="g")
+    ax2.plot(df_ta.index, df_ta.iloc[:, 0].values)
+    ax2.plot(df_ta.index, df_ta.iloc[:, 2].values, color=cfg.style.down_color)
+    ax2.bar(df_ta.index, df_ta.iloc[:, 1].values, color=cfg.style.up_color)
     ax2.legend(
         [
             f"MACD Line {df_ta.columns[0]}",
             f"Signal Line {df_ta.columns[2]}",
             f"Histogram {df_ta.columns[1]}",
-        ],
-        loc="upper left",
+        ]
     )
     ax2.set_xlim(values.index[0], values.index[-1])
-    ax2.grid(b=True, which="major", color="#666666", linestyle="-")
+    ax2.tick_params(axis="x", rotation=10)
+    ax2.grid(visible=True, zorder=0)
 
     if gtff.USE_ION:
         plt.ion()
 
-    plt.gcf().autofmt_xdate()
     fig.tight_layout(pad=1)
 
     plt.show()
@@ -176,30 +184,32 @@ def display_rsi(
 
     fig, axes = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
     ax = axes[0]
-    ax.plot(prices.index, prices.values, "k", lw=2)
-    ax.set_title(f" {s_ticker} RSI{length} ")
+    ax.plot(prices.index, prices.values)
+    ax.set_title(f"{s_ticker} RSI{length}")
     ax.set_xlim(prices.index[0], prices.index[-1])
     ax.set_ylabel("Share Price ($)")
-    ax.grid(b=True, which="major", color="#666666", linestyle="-")
+    ax.yaxis.set_label_position("right")
+    ax.grid(visible=True, zorder=0)
 
     ax2 = axes[1]
-    ax2.plot(df_ta.index, df_ta.values, "b", lw=2)
+    ax2.plot(df_ta.index, df_ta.values)
     ax2.set_xlim(prices.index[0], prices.index[-1])
-    ax2.axhspan(70, 100, facecolor="r", alpha=0.2)
-    ax2.axhspan(0, 30, facecolor="g", alpha=0.2)
-    ax2.axhline(70, linewidth=3, color="r", ls="--")
-    ax2.axhline(30, linewidth=3, color="g", ls="--")
-    ax2.grid(b=True, which="major", color="#666666", linestyle="-")
+    ax2.axhspan(0, 30, facecolor=cfg.style.up_color, alpha=0.2)
+    ax2.axhspan(70, 100, facecolor=cfg.style.down_color, alpha=0.2)
+    ax2.grid(visible=True, zorder=0)
+    ax2.tick_params(axis="x", rotation=10)
+
     ax2.set_ylim([0, 100])
     ax3 = ax2.twinx()
     ax3.set_ylim(ax2.get_ylim())
-    ax3.set_yticks([30, 70])
-    ax3.set_yticklabels(["OVERSOLD", "OVERBOUGHT"])
+    ax3.axhline(30, color=cfg.style.up_color, ls="--")
+    ax3.axhline(70, color=cfg.style.down_color, ls="--")
+    ax2.set_yticks([30, 70])
+    ax2.set_yticklabels(["OVERSOLD", "OVERBOUGHT"])
 
     if gtff.USE_ION:
         plt.ion()
 
-    plt.gcf().autofmt_xdate()
     fig.tight_layout(pad=1)
     plt.show()
     console.print("")
@@ -246,37 +256,39 @@ def display_stoch(
         slowkperiod,
     )
 
-    fig, axes = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
+    fig, axes = plt.subplots(2, 1, sharex=True, figsize=plot_autoscale(), dpi=PLOT_DPI)
     ax = axes[0]
-    ax.plot(df_stock.index, df_stock["Adj Close"].values, "k", lw=2)
+    ax.plot(df_stock.index, df_stock["Adj Close"].values)
 
     ax.set_title(f"Stochastic Relative Strength Index (STOCH RSI) on {s_ticker}")
     ax.set_xlim(df_stock.index[0], df_stock.index[-1])
     ax.set_xticklabels([])
     ax.set_ylabel("Share Price ($)")
-    ax.grid(b=True, which="major", color="#666666", linestyle="-")
+    ax.yaxis.set_label_position("right")
+    ax.grid(visible=True, zorder=0)
 
     ax2 = axes[1]
-    ax2.plot(df_ta.index, df_ta.iloc[:, 0].values, "k", lw=2)
-    ax2.plot(df_ta.index, df_ta.iloc[:, 1].values, "b", lw=2, ls="--")
+    ax2.plot(df_ta.index, df_ta.iloc[:, 0].values)
+    ax2.plot(df_ta.index, df_ta.iloc[:, 1].values, ls="--")
     ax2.set_xlim(df_stock.index[0], df_stock.index[-1])
-    ax2.axhspan(80, 100, facecolor="r", alpha=0.2)
-    ax2.axhspan(0, 20, facecolor="g", alpha=0.2)
-    ax2.axhline(80, linewidth=3, color="r", ls="--")
-    ax2.axhline(20, linewidth=3, color="g", ls="--")
-    ax2.grid(b=True, which="major", color="#666666", linestyle="-")
+    ax2.axhspan(80, 100, facecolor=cfg.style.down_color, alpha=0.2)
+    ax2.axhspan(0, 20, facecolor=cfg.style.up_color, alpha=0.2)
+    ax2.axhline(80, color=cfg.style.down_color, ls="--")
+    ax2.axhline(20, color=cfg.style.up_color, ls="--")
     ax2.set_ylim([0, 100])
+    ax2.tick_params(axis="x", rotation=10)
+    ax2.grid(visible=True, zorder=0)
 
     ax3 = ax2.twinx()
     ax3.set_ylim(ax2.get_ylim())
-    ax3.set_yticks([20, 80])
-    ax3.set_yticklabels(["OVERSOLD", "OVERBOUGHT"])
-    ax2.legend([f"%K {df_ta.columns[0]}", f"%D {df_ta.columns[1]}"], loc="lower left")
+
+    ax2.set_yticks([20, 80])
+    ax2.set_yticklabels(["OVERSOLD", "OVERBOUGHT"])
+    ax2.legend([f"%K {df_ta.columns[0]}", f"%D {df_ta.columns[1]}"])
 
     if gtff.USE_ION:
         plt.ion()
 
-    plt.gcf().autofmt_xdate()
     fig.tight_layout(pad=1)
     plt.show()
     console.print("")
@@ -310,51 +322,53 @@ def display_fisher(
     """
     df_ta = momentum_model.fisher(df_stock["High"], df_stock["Low"], length)
 
-    fig, axes = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
+    fig, axes = plt.subplots(2, 1, sharex=True, figsize=plot_autoscale(), dpi=PLOT_DPI)
     ax = axes[0]
     ax.set_title(f"{s_ticker} Fisher Transform")
-    ax.plot(df_stock.index, df_stock["Adj Close"].values, "k", lw=1)
+    ax.plot(df_stock.index, df_stock["Adj Close"].values)
     ax.set_xlim(df_stock.index[0], df_stock.index[-1])
     ax.set_ylabel("Price")
-    ax.grid(b=True, which="major", color="#666666", linestyle="-")
+    ax.yaxis.set_label_position("right")
+    ax.grid(visible=True, zorder=0)
 
     ax2 = axes[1]
     ax2.plot(
         df_ta.index,
         df_ta.iloc[:, 0].values,
-        "b",
-        lw=2,
         label="Fisher",
     )
     ax2.plot(
         df_ta.index,
         df_ta.iloc[:, 1].values,
-        "fuchsia",
-        lw=2,
         label="Signal",
     )
+
     ax2.set_xlim(df_stock.index[0], df_stock.index[-1])
-    ax2.axhspan(2, plt.gca().get_ylim()[1], facecolor="r", alpha=0.2)
-    ax2.axhspan(plt.gca().get_ylim()[0], -2, facecolor="g", alpha=0.2)
-    ax2.axhline(2, linewidth=3, color="r", ls="--")
-    ax2.axhline(-2, linewidth=3, color="g", ls="--")
-    ax2.grid(b=True, which="major", color="#666666", linestyle="-")
+    ax2.axhspan(2, plt.gca().get_ylim()[1], facecolor=cfg.style.down_color, alpha=0.2)
+    ax2.axhspan(plt.gca().get_ylim()[0], -2, facecolor=cfg.style.up_color, alpha=0.2)
+    ax2.axhline(2, color=cfg.style.down_color, ls="--")
+    ax2.axhline(-2, color=cfg.style.up_color, ls="--")
+
     ax2.set_xlim(df_stock.index[0], df_stock.index[-1])
-    ax2.axhspan(2, plt.gca().get_ylim()[1], facecolor="r", alpha=0.2)
-    ax2.axhspan(plt.gca().get_ylim()[0], -2, facecolor="g", alpha=0.2)
-    ax2.axhline(2, linewidth=3, color="r", ls="--")
-    ax2.axhline(-2, linewidth=3, color="g", ls="--")
-    ax2.grid(b=True, which="major", color="#666666", linestyle="-")
+    ax2.axhspan(2, plt.gca().get_ylim()[1], facecolor=cfg.style.down_color, alpha=0.2)
+    ax2.axhspan(plt.gca().get_ylim()[0], -2, facecolor=cfg.style.up_color, alpha=0.2)
+    ax2.axhline(2, color=cfg.style.down_color, ls="--")
+    ax2.axhline(-2, color=cfg.style.up_color, ls="--")
+    ax2.grid(visible=True, zorder=0)
+    ax2.tick_params(axis="x", rotation=10)
+
+    ax3 = ax2.twinx()
+    ax3.set_ylim(ax2.get_ylim())
+
     ax2.set_yticks([-2, 0, 2])
     ax2.set_yticklabels(["-2 STDEV", "0", "+2 STDEV"])
+    ax2.legend()
 
     if gtff.USE_ION:
         plt.ion()
 
-    plt.gcf().autofmt_xdate()
     fig.tight_layout(pad=1)
 
-    plt.legend()
     plt.show()
 
     console.print("")
@@ -388,27 +402,28 @@ def display_cg(
     """
     df_ta = momentum_model.cg(values, length)
 
-    fig, axes = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
+    fig, axes = plt.subplots(2, 1, sharex=True, figsize=plot_autoscale(), dpi=PLOT_DPI)
     ax = axes[0]
     ax.set_title(f"{s_ticker} Centre of Gravity")
-    ax.plot(values.index, values.values, "k", lw=1)
+    ax.plot(values.index, values.values)
     ax.set_xlim(values.index[0], values.index[-1])
     ax.set_ylabel("Share Price ($)")
-    ax.grid(b=True, which="major", color="#666666", linestyle="-")
+    ax.yaxis.set_label_position("right")
+    ax.grid(visible=True, zorder=0)
 
     ax2 = axes[1]
-    ax2.plot(df_ta.index, df_ta.values, "b", lw=2, label="CG")
+    ax2.plot(df_ta.index, df_ta.values, label="CG")
     # shift cg 1 bar forward for signal
     signal = df_ta.values
     signal = np.roll(signal, 1)
-    ax2.plot(df_ta.index, signal, "g", lw=1, label="Signal")
+    ax2.plot(df_ta.index, signal, label="Signal")
     ax2.set_xlim(values.index[0], values.index[-1])
-    ax2.grid(b=True, which="major", color="#666666", linestyle="-")
+    ax2.grid(visible=True, zorder=0)
+    ax2.tick_params(axis="x", rotation=10)
 
     if gtff.USE_ION:
         plt.ion()
 
-    plt.gcf().autofmt_xdate()
     fig.tight_layout(pad=1)
     plt.legend()
     plt.show()
