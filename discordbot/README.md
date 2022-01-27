@@ -22,7 +22,6 @@ Next, go into the discordbot folder with `cd discordbot` and install the followi
 pip install discord
 pip install discord_components
 pip install pyimgur
-pip install python-dotenv
 ```
 
 ## Registering Applications

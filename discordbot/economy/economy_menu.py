@@ -5,7 +5,7 @@ import discord_components
 
 from discordbot.bot_controller import bot_controller
 import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import gst_bot, logger
+from discordbot.run_discordbot import gst_bot, logger, gst_imgur
 from discordbot.economy.currencies import currencies_command
 from discordbot.economy.energy import energy_command
 from discordbot.economy.feargreed import feargreed_command
@@ -39,7 +39,9 @@ class EconomyCommands(discord.ext.commands.Cog):
             Junk Bond Demand, Market Volatility, Put and Call Options, Market Momentum,
             Stock Price Strength, Stock Price Breadth, Safe Heaven Demand.
         """
-        await bot_controller.discord(gst_bot, logger, feargreed_command, ctx, indicator)
+        await bot_controller.discord(
+            gst_imgur, logger, feargreed_command, ctx, indicator
+        )
 
     @discord.ext.commands.command(name="economy.overview")
     async def overview(self, ctx: discord.ext.commands.Context):

@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from gamestonk_terminal.economy import cnn_model, cnn_view
 
 
-async def feargreed_command(indicator="") -> Dict[str, Any]:
+def feargreed_command(indicator="") -> Dict[str, Any]:
     """CNN Fear and Greed Index [CNN]"""
 
     # Check for argument
