@@ -19,3 +19,4 @@ optional arguments:
   -l LIMIT, --limit LIMIT
                         Number of entries to show in data. (default: 10)
 ```
+![image](https://user-images.githubusercontent.com/40023817/151354698-dc5eb7ab-46c4-4c98-882b-2c9607659b7d.png)
