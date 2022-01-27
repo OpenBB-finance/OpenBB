@@ -11,11 +11,14 @@ import seaborn as sns
 
 from matplotlib import pyplot as plt
 from pandas.plotting import register_matplotlib_converters
-from tabulate import tabulate
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_plot import PLOT_DPI
-from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
+from gamestonk_terminal.helper_funcs import (
+    export_data,
+    plot_autoscale,
+    print_rich_table,
+)
 from gamestonk_terminal.stocks.comparison_analysis import finbrain_model
 from gamestonk_terminal.rich_config import console
 
@@ -85,16 +88,12 @@ def display_sentiment_compare(similar: List[str], raw: bool = False, export: str
         plt.show()
 
         if raw:
-            if gtff.USE_TABULATE_DF:
-                console.print(
-                    tabulate(
-                        df_sentiment,
-                        headers=df_sentiment.columns,
-                        tablefmt="fancy_grid",
-                    )
-                )
-            else:
-                console.print(df_sentiment.to_string())
+            print_rich_table(
+                df_sentiment,
+                headers=list(df_sentiment.columns),
+                title="Ticker Sentiment",
+            )
+            console.print("")
 
         export_data(
             export,
@@ -147,17 +146,12 @@ def display_sentiment_correlation(
         plt.show()
 
         if raw:
-            if gtff.USE_TABULATE_DF:
-                console.print(
-                    tabulate(
-                        corrs,
-                        headers=corrs.columns,
-                        showindex=True,
-                        tablefmt="fancy_grid",
-                    )
-                )
-            else:
-                console.print(corrs.to_string())
+            print_rich_table(
+                corrs,
+                headers=list(corrs.columns),
+                show_index=True,
+                title="Correlation Sentiments",
+            )
 
         export_data(
             export,

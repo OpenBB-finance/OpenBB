@@ -1,14 +1,8 @@
-╒════════════╤═════════════════════════════╤═════════════════╤══════════════╤═══════════════╤═════════════╕
-│            │ category                    │ analyst         │ rating       │   target_from │   target_to │
-╞════════════╪═════════════════════════════╪═════════════════╪══════════════╪═══════════════╪═════════════╡
-│ 2021-11-08 │ [yellow]Reiterated[/yellow] │ Jefferies       │ Buy          │        950.00 │     1400.00 │
-├────────────┼─────────────────────────────┼─────────────────┼──────────────┼───────────────┼─────────────┤
-│ 2021-10-25 │ [yellow]Reiterated[/yellow] │ Morgan Stanley  │ Overweight   │        900.00 │     1200.00 │
-├────────────┼─────────────────────────────┼─────────────────┼──────────────┼───────────────┼─────────────┤
-│ 2021-10-21 │ [yellow]Reiterated[/yellow] │ Wells Fargo     │ Equal Weight │        660.00 │      860.00 │
-├────────────┼─────────────────────────────┼─────────────────┼──────────────┼───────────────┼─────────────┤
-│ 2021-10-21 │ [yellow]Reiterated[/yellow] │ Wedbush         │ Outperform   │       1000.00 │     1100.00 │
-├────────────┼─────────────────────────────┼─────────────────┼──────────────┼───────────────┼─────────────┤
-│ 2021-10-21 │ [yellow]Reiterated[/yellow] │ Robert W. Baird │ Outperform   │        764.00 │      888.00 │
-╘════════════╧═════════════════════════════╧═════════════════╧══════════════╧═══════════════╧═════════════╛ 
+                               category          analyst        rating  target_from  target_to
+date                                                                                          
+2021-11-08  [yellow]Reiterated[/yellow]        Jefferies           Buy        950.0     1400.0
+2021-10-25  [yellow]Reiterated[/yellow]   Morgan Stanley    Overweight        900.0     1200.0
+2021-10-21  [yellow]Reiterated[/yellow]      Wells Fargo  Equal Weight        660.0      860.0
+2021-10-21  [yellow]Reiterated[/yellow]          Wedbush    Outperform       1000.0     1100.0
+2021-10-21  [yellow]Reiterated[/yellow]  Robert W. Baird    Outperform        764.0      888.0
 

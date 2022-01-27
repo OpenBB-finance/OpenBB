@@ -6,12 +6,15 @@ from typing import Any
 
 import matplotlib.pyplot as plt
 import pandas as pd
-from tabulate import tabulate
 
 from gamestonk_terminal import config_plot as cfp
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.common.technical_analysis import custom_indicators_model
-from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
+from gamestonk_terminal.helper_funcs import (
+    export_data,
+    plot_autoscale,
+    print_rich_table,
+)
 from gamestonk_terminal.rich_config import console
 
 
@@ -78,13 +81,11 @@ def fibonacci_retracement(
         plt.ion()
     plt.show()
 
-    print(
-        tabulate(
-            df_fib,
-            headers=["Fib Level", "Price"],
-            showindex=False,
-            tablefmt="fancy_grid",
-        )
+    print_rich_table(
+        df_fib,
+        headers=["Fib Level", "Price"],
+        show_index=False,
+        title="Fibonacci retractment levels",
     )
     console.print("")
 

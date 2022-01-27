@@ -2,14 +2,12 @@
 __docformat__ = "numpy"
 
 import os
-from tabulate import tabulate
 from pandas.plotting import register_matplotlib_converters
-from gamestonk_terminal.helper_funcs import export_data
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 import gamestonk_terminal.cryptocurrency.overview.coinpaprika_model as paprika
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
     long_number_format_with_type_check,
 )
-from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.rich_config import console
 
 register_matplotlib_converters()
@@ -82,19 +80,10 @@ def display_global_market(export: str) -> None:
     df_data = df.copy()
     df["Value"] = df["Value"].apply(lambda x: long_number_format_with_type_check(x))
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df,
-                headers=df.columns,
-                floatfmt=".1f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        console.print(df.to_string, "\n")
+    print_rich_table(
+        df, headers=list(df.columns), show_index=False, title="Global Crypto Statistics"
+    )
+    console.print("")
 
     export_data(
         export,
@@ -140,19 +129,13 @@ def display_all_coins_market_info(
 
     console.print(f"\nDisplaying data vs {currency}")
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df.head(top),
-                headers=df.columns,
-                floatfmt=".3f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        console.print(df.to_string, "\n")
+    print_rich_table(
+        df.head(top),
+        headers=list(df.columns),
+        show_index=False,
+        title="Basic Market Information",
+    )
+    console.print("")
 
     export_data(
         export,
@@ -198,19 +181,12 @@ def display_all_coins_info(
 
     console.print(f"\nDisplaying data vs {currency}")
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df.head(top),
-                headers=df.columns,
-                floatfmt=".3f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        console.print(df.to_string, "\n")
+    print_rich_table(
+        df.head(top),
+        headers=list(df.columns),
+        show_index=False,
+        title="Basic Coin Information",
+    )
 
     export_data(
         export,
@@ -256,19 +232,10 @@ def display_all_exchanges(
     df[cols] = df[cols].applymap(lambda x: long_number_format_with_type_check(x))
     console.print(f"\nDisplaying data vs {currency}")
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df.head(top),
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        console.print(df.to_string, "\n")
+    print_rich_table(
+        df.head(top), headers=list(df.columns), show_index=False, title="List Exchanges"
+    )
+    console.print("")
 
     export_data(
         export,
@@ -314,19 +281,13 @@ def display_exchange_markets(
     else:
         df.drop("market_url", axis=1, inplace=True)
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df.head(top),
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        console.print(df.to_string, "\n")
+    print_rich_table(
+        df.head(top),
+        headers=list(df.columns),
+        show_index=False,
+        title="Exchange Markets",
+    )
+    console.print("")
 
     export_data(
         export,
@@ -347,19 +308,10 @@ def display_all_platforms(export: str) -> None:
 
     df = paprika.get_all_contract_platforms()
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df,
-                headers=df.columns,
-                floatfmt=".0f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        console.print(df.to_string, "\n")
+    print_rich_table(
+        df, headers=list(df.columns), show_index=False, title="Smart Contract Platforms"
+    )
+    console.print("")
 
     export_data(
         export,
@@ -396,19 +348,13 @@ def display_contracts(
 
     df = df.sort_values(by=sortby, ascending=descend)
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df.head(top),
-                headers=df.columns,
-                floatfmt=".0f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        console.print(df.to_string, "\n")
+    print_rich_table(
+        df.head(top),
+        headers=list(df.columns),
+        show_index=False,
+        title="Contract Addresses",
+    )
+    console.print("")
 
     export_data(
         export,

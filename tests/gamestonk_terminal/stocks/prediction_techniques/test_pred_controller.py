@@ -7,10 +7,10 @@ import pandas as pd
 import pytest
 
 # IMPORTATION INTERNAL
-pred_controller = pytest.importorskip(
-    modname="gamestonk_terminal.stocks.prediction_techniques.pred_controller",
-    reason="Requires prediction dependencies, like tensorflow",
-)
+try:
+    from gamestonk_terminal.stocks.prediction_techniques import pred_controller
+except ImportError:
+    pytest.skip(allow_module_level=True)
 
 # pylint: disable=E1101
 # pylint: disable=W0603
@@ -90,10 +90,10 @@ def test_menu_without_queue_completion(mocker):
         new=True,
     )
     mocker.patch(
-        target="gamestonk_terminal.helper_funcs.session",
+        target="gamestonk_terminal.parent_classes.session",
     )
     mocker.patch(
-        target="gamestonk_terminal.helper_funcs.session.prompt",
+        target="gamestonk_terminal.parent_classes.session.prompt",
         return_value="quit",
     )
 
@@ -558,27 +558,22 @@ def test_call_func_no_parser(func, mocker):
 
 
 @pytest.mark.vcr(record_mode="none")
-def test_call_load(mocker):
-    # DISABLE AUTO-COMPLETION
-    mocker.patch.object(
-        target=pred_controller.gtff,
-        attribute="USE_PROMPT_TOOLKIT",
-        new=True,
-    )
-    mocker.patch(
-        target="gamestonk_terminal.stocks.prediction_techniques.pred_controller.session",
-    )
-    mocker.patch(
-        target="gamestonk_terminal.stocks.prediction_techniques.pred_controller.session.prompt",
-        return_value="quit",
-    )
-
-    result_menu = pred_controller.PredictionTechniquesController(
-        ticker="TSLA",
+@pytest.mark.parametrize(
+    "ticker, expected",
+    [
+        (None, []),
+        ("MOCK_TICKER", ["stocks", "load MOCK_TICKER", "pred"]),
+    ],
+)
+def test_custom_reset(expected, ticker):
+    controller = pred_controller.PredictionTechniquesController(
+        ticker=None,
         start=datetime.strptime("2020-12-01", "%Y-%m-%d"),
         interval="1440min",
-        stock=DF_STOCK,
-        queue=None,
-    ).menu()
+        stock=DF_STOCK.copy(),
+    )
+    controller.ticker = ticker
 
-    assert result_menu == []
+    result = controller.custom_reset()
+
+    assert result == expected

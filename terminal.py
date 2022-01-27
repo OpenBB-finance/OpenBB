@@ -10,7 +10,6 @@ from typing import List
 import pytz
 
 from prompt_toolkit.completion import NestedCompleter
-
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
@@ -33,6 +32,8 @@ from gamestonk_terminal.terminal_helper import (
 # pylint: disable=too-many-public-methods,import-outside-toplevel
 
 logger = logging.getLogger(__name__)
+
+DEBUG_MODE = False
 
 
 class TerminalController(BaseController):
@@ -316,7 +317,10 @@ def terminal(jobs_cmds: List[str] = None):
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
-        if ".gst" in sys.argv[1]:
+        if "--debug" in sys.argv:
+            os.environ["DEBUG_MODE"] = "true"
+            sys.argv.remove("--debug")
+        if len(sys.argv) > 1 and ".gst" in sys.argv[1]:
             if os.path.isfile(sys.argv[1]):
                 with open(sys.argv[1]) as fp:
                     simulate_argv = f"/{'/'.join([line.rstrip() for line in fp])}"

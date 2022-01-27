@@ -1,13 +1,4 @@
 repos:
-  - repo: local
-    hooks:
-      - id: check-debug-mode
-        name: check-debug-mode
-        entry: python custom_pre_commit/debug_mode.py
-        language: python
-        language_version: python3
-        types: ["file"]
-        pass_filenames: false
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.0.1
     hooks:
@@ -44,14 +35,11 @@ repos:
       - id: mypy
         args: ["--ignore-missing-imports", '--exclude=/setup\.py$']
         additional_dependencies: [types-all]
-
-  - repo: https://github.com/roy-ht/pre-commit-jupyter
-    rev: v1.2.1
+  - repo: https://github.com/kynan/nbstripout
+    rev: 0.5.0
     hooks:
-      - id: jupyter-notebook-cleanup
-        args:
-          - --remove-kernel-metadata
-          - --pin-patterns
+      - id: nbstripout
+        name: Strip notebooks output
   - repo: local
     hooks:
       - id: pylint

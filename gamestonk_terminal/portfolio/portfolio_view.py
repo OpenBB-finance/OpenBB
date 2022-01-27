@@ -5,10 +5,10 @@ from typing import List
 from datetime import datetime
 from io import BytesIO
 from os import path
+import os
 
 import numpy as np
 import pandas as pd
-from tabulate import tabulate
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 from reportlab.lib.utils import ImageReader
@@ -24,7 +24,12 @@ from gamestonk_terminal.portfolio import (
     yfinance_model,
 )
 from gamestonk_terminal.portfolio import reportlab_helpers
-from gamestonk_terminal.helper_funcs import get_rf
+from gamestonk_terminal.helper_funcs import (
+    get_rf,
+    plot_autoscale,
+    export_data,
+    print_rich_table,
+)
 from gamestonk_terminal.portfolio.portfolio_optimization import optimizer_model
 from gamestonk_terminal.rich_config import console
 
@@ -67,19 +72,12 @@ def show_df(df: pd.DataFrame, show: bool) -> None:
 
     df = df.dropna(how="all", axis=1).fillna("")
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df,
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=show,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        console.print(df.to_string, "\n")
+    print_rich_table(
+        df,
+        headers=list(df.columns),
+        show_index=show,
+    )
+    console.print("")
 
 
 def plot_overall_return(
@@ -249,6 +247,74 @@ def plot_ef(
     plt.close("all")
     imgdata.seek(0)
     return ImageReader(imgdata)
+
+
+def display_allocation(data: pd.DataFrame, graph: bool):
+    """Displays allocation
+    Parameters
+    ----------
+    data: pd.DataFrame
+        The portfolio allocation dataframe
+    graph: bool
+        If pie chart shall be displayed with table"""
+
+    print_rich_table(data, headers=list(data.columns), title="Allocation")
+    console.print("")
+
+    if graph:
+        graph_data = data[data["pct_allocation"] >= 5].copy()
+        if not graph_data.empty:
+            graph_data.loc["Other"] = [
+                "NA",
+                data["value"].sum() - graph_data["value"].sum(),
+                100 - graph_data["value"].sum(),
+            ]
+            labels = graph_data.index.values
+            sizes = graph_data["value"].to_list()
+        else:
+            labels = data.index.values
+            sizes = data["value"].to_list()
+        fig, ax = plt.subplots()
+        ax.pie(sizes, labels=labels, autopct="%1.1f%%", startangle=90)
+        ax.axis("equal")
+        ax.set_title("Portfolio Allocation")
+        fig.set_tight_layout(True)
+
+        plt.show()
+
+
+def display_drawdown(holdings: pd.DataFrame, export: str = ""):
+    """Display drawdown curve
+
+    Parameters
+    ----------
+    holdings: pd.DataFrame
+        Dataframe of holdings vs time
+    export: str
+        Format to export data
+
+    """
+    drawdown = portfolio_model.calculate_drawdown(holdings)
+    fig, ax = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
+    ax[0].plot(holdings.index, holdings)
+    ax[0].set_title("Cumulative Returns")
+
+    ax[1].plot(holdings.index, drawdown)
+    ax[1].fill_between(holdings.index, np.asarray(drawdown["return"]), alpha=0.4)
+    ax[1].set_title("Portfolio Drawdown")
+    ax[0].grid()
+    ax[1].grid()
+    fig.autofmt_xdate()
+    fig.tight_layout()
+    if gtff.USE_ION:
+        plt.ion()
+    console.print()
+    plt.show()
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "mdd",
+    )
 
 
 class Report:

@@ -1,26 +1,10 @@
 """CoinGecko model"""
 __docformat__ = "numpy"
 
-from typing import Any, List
+import os
+import json
 import pandas as pd
 from pycoingecko import CoinGeckoAPI
-from requests.adapters import RetryError
-from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
-    percent_to_float,
-    create_df_index,
-    wrap_text_in_df,
-)
-from gamestonk_terminal.cryptocurrency.pycoingecko_helpers import (
-    changes_parser,
-    replace_qm,
-    clean_row,
-    collateral_auditors_parse,
-    swap_columns,
-    scrape_gecko_data,
-    get_btc_price,
-    GECKO_BASE_URL,
-)
-from gamestonk_terminal.rich_config import console
 
 PERIODS = {
     "1h": "?time=h1",
@@ -31,6 +15,8 @@ PERIODS = {
     "60d": "?time=d60",
     "1y": "?time=y1",
 }
+
+API_PERIODS = ["14d", "1h", "1y", "200d", "24h", "30d", "7d"]
 
 CATEGORIES = {
     "trending": 0,
@@ -88,19 +74,92 @@ DEX_FILTERS = [
     "Market_Share",
 ]
 
-# TODO: convert Volume and other str that should be int to int otherwise sort won't work
 
-# This function does not use coingecko api because there is not an endpoint for this
+def read_file_data(file_name: str):
+    if file_name.split(".")[1] != "json":
+        raise TypeError("Please load json file")
+
+    par_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    path = os.path.join(par_dir, "data", file_name)
+    with open(path, encoding="utf8") as f:
+        data = json.load(f)
+    return data
 
 
-def get_gainers_or_losers(period: str = "1h", typ: str = "gainers") -> pd.DataFrame:
-    """Scrape data about top gainers - coins which gain the most in given period and
+def get_categories_keys():
+    categories = read_file_data("coingecko_categories.json")
+    return categories.keys()
+
+
+def get_coins(top: int = 250, category: str = ""):
+    """Get N coins from CoinGecko [Source: CoinGecko]
+
+    Parameters
+    ----------
+    top: int
+        Number of top coins to grab from CoinGecko
+    Returns
+    -------
+    pandas.DataFrame
+        N coins
+    """
+    client = CoinGeckoAPI()
+    df = pd.DataFrame()
+    if top <= 250:
+        kwargs = {
+            "vs_currency": "usd",
+            "order": "market_cap_desc",
+            "per_page": top,
+            "sparkline": False,
+            "price_change_percentage": "1h,24h,7d,14d,30d,200d,1y",
+        }
+        if category:
+            kwargs["category"] = category
+        data = client.get_coins_markets(**kwargs)
+        df = df.append(pd.DataFrame(data), ignore_index=True)
+    else:
+        p = 1
+        while top > 0:
+            kwargs = {
+                "vs_currency": "usd",
+                "order": "market_cap_desc",
+                "per_page": top,
+                "sparkline": False,
+                "price_change_percentage": "1h,24h,7d,14d,30d,200d,1y",
+                "page": p,
+            }
+            if category:
+                kwargs["category"] = category
+
+            data = client.get_coins_markets(**kwargs)
+            df = df.append(pd.DataFrame(data), ignore_index=True)
+            top -= 250
+            p += 1
+    return df
+
+
+GAINERS_LOSERS_COLUMNS = [
+    "Symbol",
+    "Name",
+    "Price [$]",
+    "Market Cap [$]",
+    "Market Cap Rank",
+    "Volume [$]",
+]
+
+
+def get_gainers_or_losers(
+    top: int = 20, period: str = "1h", typ: str = "gainers"
+) -> pd.DataFrame:
+    """Returns data about top gainers - coins which gain the most in given period and
     top losers - coins that lost the most in given period of time. [Source: CoinGecko]
 
     Parameters
     ----------
+    top: int
+        Num of coins to get
     period: str
-        One from [1h, 24h, 7d, 14d, 30d, 60d, 1y]
+        One from {14d,1h,1y,200d,24h,30d,7d}
     typ: str
         Either "gainers" or "losers"
     Returns
@@ -110,436 +169,52 @@ def get_gainers_or_losers(period: str = "1h", typ: str = "gainers") -> pd.DataFr
         Columns: Symbol, Name, Volume, Price, %Change_{period}, Url
     """
 
-    category = {
-        "gainers": 0,
-        "losers": 1,
-    }
-
-    if period not in PERIODS:
+    if period not in API_PERIODS:
         raise ValueError(
-            f"Wrong time period\nPlease chose one from list: {PERIODS.keys()}"
+            f"Wrong time period\nPlease chose one from list: {API_PERIODS}"
         )
-
-    url = f"https://www.coingecko.com/en/coins/trending{PERIODS.get(period)}"
-    try:
-        scraped_data = scrape_gecko_data(url)
-    except RetryError as e:
-        console.print(e)
-        return pd.DataFrame()
-    rows = scraped_data.find_all("tbody")[category.get(typ)].find_all("tr")
-    results = []
-    for row in rows:
-        url = GECKO_BASE_URL + row.find("a")["href"]
-        symbol, name, *_, volume, price, change = clean_row(row)
-        try:
-            change = percent_to_float(change)
-        except (ValueError, TypeError) as e:
-            console.print(e)
-        results.append([symbol, name, volume, price, change, url])
-    df = pd.DataFrame(
-        results,
-        columns=[
-            "Symbol",
-            "Name",
-            "Volume",
-            "Price",
-            f"%Change_{period}",
-            "Url",
-        ],
+    df = get_coins(top)
+    sorted_df = df.sort_values(
+        by=[f"price_change_percentage_{period}_in_currency"],
+        ascending=typ != "gainers",
     )
-    df.index = df.index + 1
-    df.reset_index(inplace=True)
-    df = df.rename(columns={"index": "Rank"})
-    df["Price"] = df["Price"].apply(lambda x: float(x.strip("$").replace(",", "")))
-    return df
+    sorted_df = sorted_df[
+        [
+            "symbol",
+            "name",
+            "current_price",
+            "market_cap",
+            "market_cap_rank",
+            "total_volume",
+            f"price_change_percentage_{period}_in_currency",
+        ]
+    ]
+    sorted_df = sorted_df.set_axis(
+        GAINERS_LOSERS_COLUMNS + [f"Change {period} [%]"],
+        axis=1,
+        inplace=False,
+    )
+    return sorted_df
 
 
-# This function does not use coingecko api because there is not an endpoint for this
-def get_discovered_coins(category: str = "trending") -> pd.DataFrame:
-    """Scrapes data from "https://www.coingecko.com/en/discover" [Source: CoinGecko]
-        - Most voted coins
-        - Most popular coins
-        - Recently added coins
-        - Most positive sentiment coins
+def get_trending_coins() -> pd.DataFrame:
+    """Returns trending coins [Source: CoinGecko]
 
     Parameters
     ----------
-    category: str
-        - one from list: [trending, most_voted, positive_sentiment,recently_added, most_visited]
+
     Returns
     -------
     pandas.DataFrame:
-        Most voted, most trending, recently added, most positive sentiment coins.
-        Columns: Name, Price_BTC, Price_USD, Url
+        Trending Coins
     """
-
-    if category not in CATEGORIES:
-        raise ValueError(
-            f"Wrong category name\nPlease chose one from list: {CATEGORIES.keys()}"
-        )
-    url = "https://www.coingecko.com/en/discover"
-    try:
-        scraped_data = scrape_gecko_data(url)
-    except RetryError as e:
-        console.print(e)
-        return pd.DataFrame()
-    popular = scraped_data.find_all("div", class_="col-12 col-sm-6 col-md-6 col-lg-4")[
-        CATEGORIES[category]
-    ]
-    rows = popular.find_all("a")
-    results = []
-    btc_price = get_btc_price()
-
-    for row in rows:
-        name, *_, price = clean_row(row)
-        url = GECKO_BASE_URL + row["href"]
-        if price.startswith("BTC"):
-            price = price.replace("BTC", "").replace(",", ".")
-
-        price_usd = (int(btc_price) * float(price)) if btc_price else None
-        results.append([name, price, price_usd, url])
-    return pd.DataFrame(
-        results,
-        columns=[
-            "Name",
-            "Price_BTC",
-            "Price_USD",
-            "Url",
-        ],
-    )
-
-
-# This function does not use coingecko api because there is not an endpoint for this
-def get_recently_added_coins() -> pd.DataFrame:
-    """Scrape recently added coins on CoinGecko from "https://www.coingecko.com/en/coins/recently_added"
-    [Source: CoinGecko]
-
-    Returns
-    -------
-    pandas.DataFrame
-        Recently Added Coins on CoinGecko
-        Columns: Name, Symbol, Price, Change_1h, Change_24h, Added
-    """
-
-    columns = [
-        "Name",
-        "Symbol",
-        "Price",
-        "Change_1h",
-        "Change_24h",
-        "Added",
-        "Url",
-    ]
-
-    url = "https://www.coingecko.com/en/coins/recently_added"
-    try:
-        scraped_data = scrape_gecko_data(url)
-    except RetryError as e:
-        console.print(e)
-        return pd.DataFrame()
-    rows = scraped_data.find("tbody").find_all("tr")
-    results = []
-
-    for row in rows:
-        url = GECKO_BASE_URL + row.find("a")["href"]
-        row_cleaned = clean_row(row)
-        (
-            name,
-            symbol,
-            _,
-            price,
-            *changes,
-            _,
-            _volume,
-            last_added,
-        ) = row_cleaned
-        change_1h, change_24h, _ = changes_parser(changes)
-        results.append([name, symbol, price, change_1h, change_24h, last_added, url])
-    df = replace_qm(pd.DataFrame(results, columns=columns))
-    df.index = df.index + 1
-    df.reset_index(inplace=True)
-    df.rename(columns={"index": "Rank"}, inplace=True)
-    df["Price"] = df["Price"].apply(lambda x: float(x.strip("$").replace(",", "")))
-    return df
-
-
-# This function does not use coingecko api because there is not an endpoint for this
-def get_yield_farms() -> pd.DataFrame:
-    """Scrapes yield farms data from "https://www.coingecko.com/en/yield-farming" [Source: CoinGecko]
-
-    Returns
-    -------
-    pandas.DataFrame
-        Top Yield Farms
-        Columns: Rank, Name, Pool, Audits, Collateral, Value Locked, Return Year, Return Hour
-    """
-
-    columns = [
-        "Rank",
-        "Name",
-        "Pool",
-        "Audits",
-        "Collateral",
-        "Value_Locked",
-        "Return_Year",
-    ]
-    url = "https://www.coingecko.com/en/yield-farming"
-    try:
-        scraped_data = scrape_gecko_data(url)
-    except RetryError as e:
-        console.print(e)
-        return pd.DataFrame()
-    rows = scraped_data.find("tbody").find_all("tr")
-    results = []
-    for row in rows:
-        row_cleaned = clean_row(row)[:-2]
-        if " New" in row_cleaned:  # find better way to fix it in future
-            row_cleaned.remove(" New")
-
-        if len(row_cleaned) == 7:
-            row_cleaned.insert(2, None)
-        (
-            rank,
-            name,
-            pool,
-            *others,
-            _,
-            value_locked,
-            apy1,
-            _,  # hourly removed for most cases it's 0.00 so it doesn't bring any value for user
-        ) = row_cleaned
-        auditors, collateral = collateral_auditors_parse(others)
-        auditors = ", ".join(aud.strip() for aud in auditors)
-        collateral = ", ".join(coll.strip() for coll in collateral)
-        results.append(
-            [
-                rank,
-                name,
-                pool,
-                auditors,
-                collateral,
-                value_locked,
-                apy1,
-            ]
-        )
-    df = pd.DataFrame(results, columns=columns).replace({"": None})
-    for col in ["Return_Year"]:
-        df[col] = df[col].apply(
-            lambda x: x.replace(" Yearly", "") if isinstance(x, str) else x
-        )
-    df["Rank"] = df["Rank"].astype(int)
-    df = wrap_text_in_df(df, w=30)
-    return df
-
-
-# This function does not use coingecko api because there is not an endpoint for this
-def get_top_volume_coins() -> pd.DataFrame:
-    """Scrapes top coins by trading volume "https://www.coingecko.com/en/coins/high_volume" [Source: CoinGecko]
-
-    Returns
-    -------
-    pandas.DataFrame
-        Top Coins by Trading Volume
-        Columns: Rank, Name, Symbol, Price, Change_1h, Change_24h, Change_7d, Volume_24h, Market_Cap
-    """
-
-    columns = [
-        "Rank",
-        "Name",
-        "Symbol",
-        "Price",
-        "Change_1h",
-        "Change_24h",
-        "Change_7d",
-        "Volume_24h",
-        "Market_Cap",
-    ]
-    url = "https://www.coingecko.com/en/coins/high_volume"
-    try:
-        scraped_data = scrape_gecko_data(url)
-    except RetryError as e:
-        console.print(e)
-        return pd.DataFrame()
-    rows = scraped_data.find("tbody").find_all("tr")
-    results = []
-    for row in rows:
-        row_cleaned = clean_row(row)
-        if len(row_cleaned) == 9:
-            row_cleaned.insert(0, "?")
-        row_cleaned.pop(3)
-        results.append(row_cleaned)
-    df = replace_qm(pd.DataFrame(results, columns=columns))
-    df.drop("Rank", axis=1, inplace=True)
-    create_df_index(df, "Rank")
-    df["Price"] = df["Price"].apply(lambda x: float(x.strip("$").replace(",", "")))
-    return df
-
-
-# This function does not use coingecko api because there is not an endpoint for this
-def get_top_defi_coins() -> List[Any]:
-    """Scrapes top decentralized finance coins "https://www.coingecko.com/en/defi" [Source: CoinGecko]
-
-    Returns
-    -------
-    str
-        Top defi coins stats
-    pandas.DataFrame
-        Top Decentralized Finance Coins
-        Columns: Rank, Name, Symbol, Price, Change_1h, Change_24h, Change_7d, Volume_24h, Market_Cap, Url
-    """
-
-    cg = CoinGeckoAPI()
-    data = cg.get_global_decentralized_finance_defi()
-
-    stats_str = f"""
-Defi has currently a market cap of {int(float(data['defi_market_cap']))} USD dollars:
-    - {data["defi_to_eth_ratio"]}% of ETH market cap
-    - {round(float(data["defi_dominance"]),2)}% of total market cap
-{data["top_coin_name"]} is the most popular Defi cryptocurrency with {round(float(data["top_coin_defi_dominance"]), 2)}% of defi dominance
-    """  # noqa
-
-    url = "https://www.coingecko.com/en/defi"
-    try:
-        scraped_data = scrape_gecko_data(url)
-    except RetryError as e:
-        console.print(e)
-        return ["", pd.DataFrame()]
-    rows = scraped_data.find("tbody").find_all("tr")
-    results = []
-    for row in rows:
-
-        row_cleaned = clean_row(row)
-        row_cleaned.pop(2)
-        url = GECKO_BASE_URL + row.find("a")["href"]
-        row_cleaned.append(url)
-        if len(row_cleaned) == 11:
-            row_cleaned.insert(4, "?")
-        results.append(row_cleaned)
-
-    df = pd.DataFrame(
-        results,
-        columns=[
-            "Rank",
-            "Name",
-            "Symbol",
-            "Price",
-            "Change_1h",
-            "Change_24h",
-            "Change_7d",
-            "Volume_24h",
-            "Market_Cap",
-            "Fully Diluted Market Cap",
-            "Market Cap to TVL Ratio",
-            "Url",
-        ],
-    )
-    df.drop(
-        ["Fully Diluted Market Cap", "Market Cap to TVL Ratio"],
-        axis=1,
-        inplace=True,
-    )
-    df["Rank"] = df["Rank"].astype(int)
-    df["Price"] = df["Price"].apply(lambda x: float(x.strip("$").replace(",", "")))
-    return [stats_str, df]
-
-
-# This function does not use coingecko api because there is not an endpoint for this
-def get_top_dexes() -> pd.DataFrame:
-    """Scrapes top decentralized exchanges from "https://www.coingecko.com/en/dex" [Source: CoinGecko]
-
-    Returns
-    -------
-    pandas.DataFrame
-        Top Decentralized Crypto Exchanges
-        Columns: Name, Rank, Volume_24h, Coins, Pairs, Visits, Most_Traded, Market_Share
-    """
-
-    columns = [
-        "Name",
-        "Rank",
-        "Volume_24h",
-        "Coins",
-        "Pairs",
-        "Visits",
-        "Most_Traded",
-        "Market_Share",
-    ]
-    url = "https://www.coingecko.com/en/dex"
-    try:
-        scraped_data = scrape_gecko_data(url)
-    except RetryError as e:
-        console.print(e)
-        return pd.DataFrame()
-    rows = scraped_data.find("tbody").find_all("tr")
-    results = []
-    for row in rows:
-        row_cleaned = clean_row(row)
-        if " Trading Incentives" in row_cleaned:
-            row_cleaned.remove(" Trading Incentives")
-        if len(row_cleaned) == 8:
-            row_cleaned.insert(-3, "N/A")
-        results.append(row_cleaned)
-    df = pd.DataFrame(results)
-    df["Name"] = df.iloc[:, 1] + " " + df.iloc[:, 2].replace("N/A", "")
-    df.drop(df.columns[1:3], axis=1, inplace=True)
-    df = swap_columns(df)
-    df.columns = columns
-    df["Most_Traded"] = (
-        df["Most_Traded"]
-        .apply(lambda x: x.split("$")[0])
-        .str.replace(",", "", regex=True)
-        .str.replace(".", "", regex=True)
-    )
-    df["Most_Traded"] = df["Most_Traded"].apply(lambda x: None if x.isdigit() else x)
-    df["Rank"] = df["Rank"].astype(int)
-    df.set_index("Rank", inplace=True)
-    return df.reset_index()
-
-
-# This function does not use coingecko api because there is not an endpoint for this
-def get_top_nfts() -> pd.DataFrame:
-    """Scrapes top nfts from "https://www.coingecko.com/en/nft" [Source: CoinGecko]
-
-    Returns
-    -------
-    pandas.DataFrame
-        Top NFTs (Non-Fungible Tokens)
-        Columns: Rank, Name, Symbol, Price, Change_1d, Change_24h, Change_7d, Market_Cap, Url
-    """
-
-    url = "https://www.coingecko.com/en/nft"
-    try:
-        scraped_data = scrape_gecko_data(url)
-    except RetryError as e:
-        console.print(e)
-        return pd.DataFrame()
-    rows = scraped_data.find("tbody").find_all("tr")
-    results = []
-    for row in rows:
-        link = GECKO_BASE_URL + row.find("a")["href"]
-        row_cleaned = clean_row(row)
-        if len(row_cleaned) == 9:
-            row_cleaned.insert(5, "N/A")
-        row_cleaned.append(link)
-        row_cleaned.pop(3)
-        results.append(row_cleaned)
-    df = pd.DataFrame(
-        results,
-        columns=[
-            "Rank",
-            "Name",
-            "Symbol",
-            "Price",
-            "Change_1h",
-            "Change_24h",
-            "Change_7d",
-            "Volume_24h",
-            "Market_Cap",
-            "Url",
-        ],
-    )
-    df["Rank"] = df["Rank"].astype(int)
-    df["Price"] = df["Price"].apply(lambda x: x.strip("$").replace(",", ""))
+    client = CoinGeckoAPI()
+    data = client.get_search_trending()
+    coins = data["coins"]
+    df = pd.DataFrame(columns=["Symbol", "Name", "Market Cap Rank"])
+    for i, coin in enumerate(coins):
+        coin = coin["item"]
+        df.loc[i] = [coin["id"], coin["name"], coin["market_cap_rank"]]
     return df
 
 

@@ -3,11 +3,8 @@ __docformat__ = "numpy"
 
 import os
 
-from tabulate import tabulate
-
 from gamestonk_terminal.etf.screener import screener_model
-from gamestonk_terminal.helper_funcs import export_data
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.rich_config import console
 
 # pylint:disable=no-member
@@ -36,18 +33,12 @@ def view_screener(
 
     screened_data = screened_data.sort_values(by=sortby, ascending=ascend)
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                screened_data.head(num_to_show).fillna(""),
-                tablefmt="fancy_grid",
-                headers=screened_data.columns,
-                showindex=True,
-                disable_numparse=True,
-            )
-        )
-    else:
-        console.print(screened_data.head(num_to_show).fillna("").to_string())
+    print_rich_table(
+        screened_data.head(num_to_show).fillna(""),
+        headers=screened_data.columns,
+        show_index=True,
+        title="Display Screener Output",
+    )
     console.print("")
 
     export_data(
