@@ -34,6 +34,11 @@ Zscore:
 ------------------------------------------------
 The Zmijewski Score is a bankruptcy model used to predict a firm's bankruptcy in two years. The ratio uses in the Zmijewski score were determined by probit analysis (think of probit as probability unit). In this case, scores less than .5 represent a higher probability of default. One of the criticisms that Zmijewski made was that other bankruptcy scoring models oversampled distressed firms and favored situations with more complete data.[Source: YCharts]
 
+McKee Score:
+------------------------------------------------
+The McKee Score is a bankruptcy model used to predict a firm's bankruptcy in one year. It looks at a companie's size, profitability, and liquidity to determine the probability. This model is 80% accurate in predicting bankruptcy.
+[Source: McKee and Lensberg](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.619.594&rep=rep1&type=pdf)
+
 ```
 optional arguments:
   -h, --help  show this help message
