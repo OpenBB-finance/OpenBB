@@ -12,7 +12,7 @@ interactions:
       - Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML,
         like Gecko) Chrome/39.0.2171.95 Safari/537.36
     method: GET
-    uri: https://query2.finance.yahoo.com/v8/finance/chart/GME?events=div%2Csplits&includePrePost=False&interval=1d&period1=1605481200&period2=1637103600
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/GME?events=div%2Csplits&includePrePost=False&interval=1d&period1=MOCK_PERIOD_1&period2=MOCK_PERIOD_2
   response:
     body:
       string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"GME","exchangeName":"NYQ","instrumentType":"EQUITY","firstTradeDate":1013610600,"regularMarketTime":1639069524,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":162.183,"chartPreviousClose":196.21,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","end":1639060200,"start":1639040400,"gmtoffset":-18000},"regular":{"timezone":"EST","end":1639083600,"start":1639060200,"gmtoffset":-18000},"post":{"timezone":"EST","end":1639098000,"start":1639083600,"gmtoffset":-18000}},"dataGranularity":"1d","range":"","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1638282600,1638369000],"indicators":{"quote":[{"low":[188.0,177.00999450683594],"volume":[1723900,2351500],"close":[196.2100067138672,179.83999633789062],"high":[203.9499969482422,200.11000061035156],"open":[200.10000610351562,199.39999389648438]}],"adjclose":[{"adjclose":[196.2100067138672,179.83999633789062]}]}}],"error":null}}'

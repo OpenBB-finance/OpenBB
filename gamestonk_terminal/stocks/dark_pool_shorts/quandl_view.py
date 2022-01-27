@@ -5,11 +5,11 @@ import os
 import matplotlib.ticker
 from matplotlib import pyplot as plt
 import pandas as pd
-from tabulate import tabulate
 from gamestonk_terminal.stocks.dark_pool_shorts import quandl_model
 from gamestonk_terminal.helper_funcs import (
     long_number_format,
     export_data,
+    print_rich_table,
 )
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.rich_config import console
@@ -110,18 +110,12 @@ def short_interest(ticker: str, nyse: bool, days: int, raw: bool, export: str):
 
         df_short_interest.index = df_short_interest.index.date
 
-        print(
-            tabulate(
-                df_short_interest,
-                headers=df_short_interest.columns,
-                floatfmt=".2f",
-                showindex=True,
-                tablefmt="fancy_grid",
-            )
+        print_rich_table(
+            df_short_interest,
+            headers=list(df_short_interest.columns),
+            show_index=True,
+            title="Short Interest of Stock",
         )
-
-    else:
-        plot_short_interest(ticker, nyse, df_short_interest)
 
     console.print("")
 

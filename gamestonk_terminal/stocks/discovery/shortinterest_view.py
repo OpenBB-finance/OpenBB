@@ -2,9 +2,8 @@
 __docformat__ = "numpy"
 
 import os
-from tabulate import tabulate
-from gamestonk_terminal.helper_funcs import export_data
 
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.stocks.discovery import shortinterest_model
 
 
@@ -21,15 +20,11 @@ def low_float(num: int, export: str):
     df_low_float = shortinterest_model.get_low_float()
     df_low_float = df_low_float.iloc[1:].head(n=num)
 
-    print(
-        tabulate(
-            df_low_float,
-            headers=df_low_float.columns,
-            floatfmt=".2f",
-            showindex=False,
-            tablefmt="fancy_grid",
-        ),
-        "\n",
+    print_rich_table(
+        df_low_float,
+        headers=list(df_low_float.columns),
+        show_index=False,
+        title="Top Float Stocks",
     )
 
     export_data(
@@ -52,15 +47,11 @@ def hot_penny_stocks(num: int, export: str):
     """
     df_penny_stocks = shortinterest_model.get_today_hot_penny_stocks()
 
-    print(
-        tabulate(
-            df_penny_stocks.head(num),
-            headers=df_penny_stocks.columns,
-            floatfmt=".2f",
-            showindex=True,
-            tablefmt="fancy_grid",
-        ),
-        "\n",
+    print_rich_table(
+        df_penny_stocks.head(num),
+        headers=list(df_penny_stocks.columns),
+        show_index=True,
+        title="Top Penny Stocks",
     )
 
     export_data(

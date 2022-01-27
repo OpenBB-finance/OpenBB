@@ -352,3 +352,24 @@ def test_call_func_no_parser(func, mocker):
     assert func_result is None
     assert controller.queue == []
     getattr(fmp_controller, "parse_known_args_and_warn").assert_called_once()
+
+
+@pytest.mark.vcr(record_mode="none")
+@pytest.mark.parametrize(
+    "ticker, expected",
+    [
+        (None, []),
+        ("MOCK_TICKER", ["stocks", "load MOCK_TICKER", "fa", "fmp"]),
+    ],
+)
+def test_custom_reset(expected, ticker):
+    controller = fmp_controller.FinancialModelingPrepController(
+        ticker=None,
+        start="10/25/2021",
+        interval="1440min",
+    )
+    controller.ticker = ticker
+
+    result = controller.custom_reset()
+
+    assert result == expected

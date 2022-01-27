@@ -4,8 +4,7 @@ __docformat__ = "numpy"
 
 import financedatabase as fd
 import pandas as pd
-from tabulate import tabulate
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.helper_funcs import print_rich_table
 from gamestonk_terminal.rich_config import console
 
 
@@ -74,7 +73,7 @@ def show_equities(
             data, query=f"{''.join(marketcap)} Cap", search="market_cap"
         )
 
-    tabulate_data = pd.DataFrame(data).T[
+    table_data = pd.DataFrame(data).T[
         [
             "long_name",
             "sector",
@@ -86,24 +85,18 @@ def show_equities(
         ]
     ]
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                tabulate_data.iloc[:amount],
-                showindex=True,
-                headers=[
-                    "Name",
-                    "Sector",
-                    "Industry",
-                    "Country",
-                    "City",
-                    "Website",
-                    "Market Cap",
-                ],
-                floatfmt=".2f",
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        console.print(tabulate_data.iloc[:amount].to_string(), "\n")
+    print_rich_table(
+        table_data.iloc[:amount],
+        show_index=True,
+        headers=[
+            "Name",
+            "Sector",
+            "Industry",
+            "Country",
+            "City",
+            "Website",
+            "Market Cap",
+        ],
+        title="Equities",
+    )
+    console.print("")

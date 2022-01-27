@@ -212,5 +212,4 @@ Select one of the following reports:[/info][cmds]
                 ),
                 "\n",
             )
-
         return self.queue

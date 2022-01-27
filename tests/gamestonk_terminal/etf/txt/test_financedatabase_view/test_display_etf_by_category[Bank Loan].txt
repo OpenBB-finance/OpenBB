@@ -1,0 +1,7 @@
+                             long_name                             family   category total_assets
+SRLN   SPDR Blackstone Senior Loan ETF  SPDR State Street Global Advisors  Bank Loan  4684.969472
+FTSL      First Trust Senior Loan Fund                        First Trust  Bank Loan  1770.325248
+FLBL  Franklin Liberty Senior Loan ETF     Franklin Templeton Investments  Bank Loan   195.366608
+SNLN    Highland/iBoxx Senior Loan ETF                     Highland Funds  Bank Loan    45.402932
+FLRT    Pacific Global Senior Loan ETF                     Pacific Global  Bank Loan     29.24656 
+

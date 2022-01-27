@@ -13,7 +13,7 @@ from gamestonk_terminal.helper_funcs import (
     export_data,
     plot_autoscale,
     long_number_format,
-    rich_table_from_df,
+    print_rich_table,
 )
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_plot import PLOT_DPI
@@ -117,7 +117,7 @@ def display_defi_protocols(
         inplace=True,
     )
 
-    rich_table_from_df(df.head(top), headers=list(df.columns), show_index=False)
+    print_rich_table(df.head(top), headers=list(df.columns), show_index=False)
     console.print("")
 
     export_data(

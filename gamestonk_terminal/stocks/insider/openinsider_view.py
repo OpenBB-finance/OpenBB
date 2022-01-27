@@ -9,7 +9,7 @@ import pandas as pd
 from gamestonk_terminal.helper_funcs import (
     patch_pandas_text_adjustment,
     export_data,
-    rich_table_from_df,
+    print_rich_table,
 )
 from gamestonk_terminal.stocks.insider.openinsider_model import (
     get_open_insider_link,
@@ -187,7 +187,7 @@ def print_insider_data(type_insider: str, limit: int = 10, export: str = ""):
             lambda x: "\n".join(textwrap.wrap(x, width=20)) if isinstance(x, str) else x
         )
 
-    rich_table_from_df(
+    print_rich_table(
         df,
         headers=[x.title() for x in df.columns],
         show_index=False,
@@ -281,7 +281,7 @@ def print_insider_filter(
         df_insider = df_insider.drop(columns=["Filing Date"])
 
     console.print("")
-    rich_table_from_df(
+    print_rich_table(
         df_insider,
         headers=[x.title() for x in df_insider.columns],
         title="Insider filtered",
