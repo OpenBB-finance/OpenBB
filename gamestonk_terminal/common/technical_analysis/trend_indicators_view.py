@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 
+from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.common.technical_analysis import trend_indicators_model
 from gamestonk_terminal.config_plot import PLOT_DPI
@@ -50,38 +51,36 @@ def display_adx(
         drift=drift,
     )
 
-    fig, ax = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
+    fig, ax = plt.subplots(2, 1, sharex=True, figsize=plot_autoscale(), dpi=PLOT_DPI)
     ax0 = ax[0]
-    ax0.plot(df_stock.index, df_stock["Close"].values, "k", lw=2)
+    ax0.plot(df_stock.index, df_stock["Close"].values)
     ax0.set_title(f"Average Directional Movement Index (ADX) on {s_ticker}")
     ax0.set_xlim(df_stock.index[0], df_stock.index[-1])
     ax0.set_ylabel("Share Price ($)")
-    ax0.grid(b=True, which="major", color="#666666", linestyle="-")
+    ax0.yaxis.set_label_position("right")
+    ax0.grid(visible=True, zorder=0)
 
     ax1 = ax[1]
-    ax1.plot(df_ta.index, df_ta.iloc[:, 0].values, "b", lw=2)
-    ax1.plot(df_ta.index, df_ta.iloc[:, 1].values, "g", lw=1)
-    ax1.plot(df_ta.index, df_ta.iloc[:, 2].values, "r", lw=1)
+    ax1.plot(df_ta.index, df_ta.iloc[:, 0].values)
+    ax1.plot(df_ta.index, df_ta.iloc[:, 1].values, color=cfg.style.up_color)
+    ax1.plot(df_ta.index, df_ta.iloc[:, 2].values, color=cfg.style.down_color)
     ax1.set_xlim(df_stock.index[0], df_stock.index[-1])
-    ax1.axhline(25, linewidth=3, color="k", ls="--")
+    ax1.axhline(25, ls="--")
     ax1.legend(
         [
             f"ADX ({df_ta.columns[0]})",
             f"+DI ({df_ta.columns[1]})",
-            f"- DI ({df_ta.columns[2]})",
-        ],
-        loc="upper left",
+            f"-DI ({df_ta.columns[2]})",
+        ]
     )
     ax1.set_xlabel("Time")
-    ax1.grid(b=True, which="major", color="#666666", linestyle="-")
-
     ax1.set_ylim([0, 100])
+    ax1.tick_params(axis="x", rotation=10)
+    ax1.grid(visible=True, zorder=0)
 
     if gtff.USE_ION:
         plt.ion()
     fig.tight_layout()
-    plt.gcf().autofmt_xdate()
-
     plt.show()
     console.print("")
 
@@ -120,42 +119,41 @@ def display_aroon(
         scalar=scalar,
     )
 
-    fig, ax = plt.subplots(3, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
-    ax0 = ax[0]
+    fig, ax = plt.subplots(3, 1, sharex=True, figsize=plot_autoscale(), dpi=PLOT_DPI)
+
     # Daily
-    ax0.plot(df_stock.index, df_stock["Adj Close"].values, "k", lw=2)
+    ax0 = ax[0]
+    ax0.plot(df_stock.index, df_stock["Adj Close"].values)
 
     ax0.set_title(f"Aroon on {s_ticker}")
     ax0.set_xlim(df_stock.index[0], df_stock.index[-1])
     ax0.set_ylabel("Share Price ($)")
-    ax0.grid(b=True, which="major", color="#666666", linestyle="-")
+    ax0.yaxis.set_label_position("right")
+    ax0.grid(visible=True, zorder=0)
 
     ax1 = ax[1]
-    ax1.plot(df_ta.index, df_ta.iloc[:, 0].values, "r", lw=2)
-    ax1.plot(df_ta.index, df_ta.iloc[:, 1].values, "g", lw=2)
+    ax1.plot(df_ta.index, df_ta.iloc[:, 0].values, cfg.style.down_color)
+    ax1.plot(df_ta.index, df_ta.iloc[:, 1].values, cfg.style.up_color)
     ax1.set_xlim(df_stock.index[0], df_stock.index[-1])
-    ax1.axhline(50, linewidth=1, color="k", ls="--")
-    ax1.legend(
-        [f"Aroon DOWN ({df_ta.columns[0]})", f"Aroon UP ({df_ta.columns[1]})"],
-        loc="upper left",
-    )
-    ax1.grid(b=True, which="major", color="#666666", linestyle="-")
+    ax1.axhline(50, ls="--")
+    ax1.legend([f"Aroon DOWN ({df_ta.columns[0]})", f"Aroon UP ({df_ta.columns[1]})"])
+    ax1.grid(visible=True, zorder=0)
     ax1.set_ylim([0, 100])
 
     ax2 = ax[2]
-    ax2.plot(df_ta.index, df_ta.iloc[:, 2].values, "b", lw=2)
+    ax2.plot(df_ta.index, df_ta.iloc[:, 2].values)
     ax2.set_xlim(df_stock.index[0], df_stock.index[-1])
     ax2.set_xlabel("Time")
-    ax2.legend([f"Aroon OSC ({df_ta.columns[2]})"], loc="upper left")
-    ax2.grid(b=True, which="major", color="#666666", linestyle="-")
+    ax2.legend([f"Aroon OSC ({df_ta.columns[2]})"])
+    ax2.grid(visible=True, zorder=0)
     ax2.set_ylim([-100, 100])
+    ax2.tick_params(axis="x", rotation=10)
 
     if gtff.USE_ION:
         plt.ion()
 
     fig.tight_layout(pad=1)
     plt.show()
-    plt.gcf().autofmt_xdate()
 
     console.print("")
 
