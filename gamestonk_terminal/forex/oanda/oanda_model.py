@@ -21,7 +21,8 @@ from oandapyV20.exceptions import V20Error
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal.rich_config import console
 
-client = API(access_token=cfg.OANDA_TOKEN, environment=cfg.OANDA_ACCOUNT_TYPE)
+if cfg.OANDA_ACCOUNT_TYPE != "REPLACE_ME":
+    client = API(access_token=cfg.OANDA_TOKEN, environment=cfg.OANDA_ACCOUNT_TYPE)
 account = cfg.OANDA_ACCOUNT
 
 
