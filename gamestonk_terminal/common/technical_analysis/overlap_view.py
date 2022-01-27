@@ -74,7 +74,10 @@ def view_ma(
 
     ax.set_xlabel("Time")
     ax.set_xlim([price_df.index[0], price_df.index[-1]])
+    ax.tick_params(axis="x", rotation=10)
+
     ax.set_ylabel(f"{s_ticker} Price")
+    ax.yaxis.set_label_position("right")
 
     for idx in range(1, price_df.shape[1]):
         ax.plot(price_df.iloc[:, idx])
@@ -85,7 +88,6 @@ def view_ma(
     if gtff.USE_ION:
         plt.ion()
 
-    plt.gcf().autofmt_xdate()
     fig.tight_layout(pad=1)
 
     plt.show()
@@ -134,13 +136,12 @@ def view_vwap(
     if gtff.USE_ION:
         plt.ion()
 
-    mpf.plot(
+    fig, _ = mpf.plot(
         day_df,
-        style=cfg.style.mpf_style,
         type="candle",
-        addplot=addplot_result,
+        style=cfg.style.mpf_style,
         volume=True,
-        title=f"\n{s_ticker} {s_interval} VWAP",
+        addplot=addplot_result,
         xrotation=10,
         figratio=(10, 7),
         figscale=1.10,
@@ -152,8 +153,14 @@ def view_vwap(
             volume_linewidth=0.8,
             volume_width=0.8,
         ),
+        returnfig=True,
     )
-
+    fig.suptitle(
+        f"{s_ticker} {s_interval} VWAP",
+        x=0.055,
+        y=0.965,
+        horizontalalignment="left",
+    )
     console.print("")
 
     export_data(
