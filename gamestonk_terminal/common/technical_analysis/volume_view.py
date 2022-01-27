@@ -62,10 +62,12 @@ def display_ad(
     ax.set_xlim(df_stock.index[0], df_stock.index[-1])
     ax.set_ylabel("Price")
     ax.yaxis.set_label_position("right")
+    ax.grid(visible=True, zorder=0)
 
     ax2 = axes[1]
     ax2.set_ylabel("Volume [M]")
     ax2.yaxis.set_label_position("right")
+    ax2.grid(visible=True, zorder=0)
 
     ax2.bar(
         df_stock.index,
@@ -80,16 +82,16 @@ def display_ad(
     ax3.set_ylabel("A/D [M]")
     ax3.yaxis.set_label_position("right")
     ax3.set_xlabel("Time")
+    ax3.tick_params(axis="x", rotation=10)
+    ax3.grid(visible=True, zorder=0)
+
     ax3.plot(df_ta.index, df_cal)
     ax3.set_xlim(df_stock.index[0], df_stock.index[-1])
     ax3.axhline(0, linestyle="--")
 
-    ax3.tick_params(axis="x", rotation=10)
-    fig.tight_layout(pad=1)
-
     if gtff.USE_ION:
         plt.ion()
-
+    fig.tight_layout(pad=1)
     plt.show()
     console.print("")
 
@@ -143,6 +145,7 @@ def display_adosc(
     fig, axes = plt.subplots(
         3,
         1,
+        sharex=True,
         figsize=plot_autoscale(),
         dpi=PLOT_DPI,
     )
@@ -171,11 +174,11 @@ def display_adosc(
     ax2.set_xlim(df_stock.index[0], df_stock.index[-1])
     ax2.yaxis.set_label_position("right")
     ax2.grid(visible=True, zorder=0)
+    ax2.tick_params(axis="x", rotation=10)
 
     if gtff.USE_ION:
         plt.ion()
 
-    plt.gcf().autofmt_xdate()
     fig.tight_layout(pad=1)
     plt.legend()
     plt.show()
@@ -202,9 +205,7 @@ def display_obv(df_stock: pd.DataFrame, s_ticker: str = "", export: str = ""):
         Format to export data as
     """
     bar_colors = [
-        cfg.style.mpf_style["marketcolors"]["volume"]["down"]
-        if x[1].Open < x[1].Close
-        else cfg.style.mpf_style["marketcolors"]["volume"]["up"]
+        cfg.style.down_color if x[1].Open < x[1].Close else cfg.style.up_color
         for x in df_stock.iterrows()
     ]
 
@@ -220,18 +221,19 @@ def display_obv(df_stock: pd.DataFrame, s_ticker: str = "", export: str = ""):
     fig, axes = plt.subplots(
         3,
         1,
+        sharex=True,
         gridspec_kw={"height_ratios": [2, 1, 1]},
         figsize=plot_autoscale(),
         dpi=PLOT_DPI,
     )
     ax = axes[0]
-    ax.plot(df_stock.index, df_stock["Adj Close"].values, "k", lw=2)
+    ax.plot(df_stock.index, df_stock["Adj Close"].values)
     ax.set_title(f"{s_ticker} OBV")
     ax.set_xlim(df_stock.index[0], df_stock.index[-1])
     ax.set_ylabel("Price")
-    ax.grid(b=True, which="major", color="#666666", linestyle="-")
-    ax.minorticks_on()
-    ax.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+    ax.yaxis.set_label_position("right")
+    ax.grid(visible=True, zorder=0)
+
     ax2 = axes[1]
     ax2.set_xlim(df_stock.index[0], df_stock.index[-1])
     ax2.set_ylabel("Volume [M]")
@@ -242,19 +244,21 @@ def display_obv(df_stock: pd.DataFrame, s_ticker: str = "", export: str = ""):
         alpha=0.8,
         width=bar_width,
     )
+    ax2.yaxis.set_label_position("right")
+    ax2.grid(visible=True, zorder=0)
+
     ax3 = axes[2]
     ax3.set_ylabel("OBV [M]")
     ax3.set_xlabel("Time")
-    ax3.plot(df_ta.index, df_cal, "b", lw=1)
+    ax3.plot(df_ta.index, df_cal)
     ax3.set_xlim(df_stock.index[0], df_stock.index[-1])
-    ax3.grid(b=True, which="major", color="#666666", linestyle="-")
-    ax3.minorticks_on()
-    ax3.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+    ax3.yaxis.set_label_position("right")
+    ax3.grid(visible=True, zorder=0)
+    ax3.tick_params(axis="x", rotation=10)
 
     if gtff.USE_ION:
         plt.ion()
 
-    plt.gcf().autofmt_xdate()
     fig.tight_layout(pad=1)
 
     plt.show()
