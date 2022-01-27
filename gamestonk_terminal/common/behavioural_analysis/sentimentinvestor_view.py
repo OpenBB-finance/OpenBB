@@ -95,7 +95,6 @@ def display_historical(
                 print_rich_table(
                     df[RAW_COLS].head(limit),
                     headers=[
-                        "Time",
                         "Twitter",
                         "Stocktwits",
                         "Yahoo",
@@ -104,6 +103,7 @@ def display_historical(
                         "AHI",
                     ],
                     show_index=True,
+                    index_name="Time",
                     title="Historical Sentiment Data",
                 )
 
