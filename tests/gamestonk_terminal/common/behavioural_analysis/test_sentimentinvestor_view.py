@@ -4,6 +4,15 @@ import pytest
 from gamestonk_terminal.common.behavioural_analysis import sentimentinvestor_view
 
 
+@pytest.fixture(scope="module")
+def vcr_config():
+    return {
+        "filter_query_parameters": [
+            ("token", "MOCK_TOKEN"),
+        ],
+    }
+
+
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_display_historical():
