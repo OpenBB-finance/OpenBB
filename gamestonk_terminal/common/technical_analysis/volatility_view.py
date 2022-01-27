@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 
+from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.common.technical_analysis import volatility_model
 from gamestonk_terminal.config_plot import PLOT_DPI
@@ -46,31 +47,29 @@ def display_bbands(
     df_ta = volatility_model.bbands(df_stock["Adj Close"], length, n_std, mamode)
 
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    ax.plot(df_stock.index, df_stock["Adj Close"].values, color="k", lw=3)
-    ax.plot(df_ta.index, df_ta.iloc[:, 0].values, "r", lw=2)
-    ax.plot(df_ta.index, df_ta.iloc[:, 1].values, "b", lw=1.5, ls="--")
-    ax.plot(df_ta.index, df_ta.iloc[:, 2].values, "g", lw=2)
+    ax.plot(
+        df_stock.index,
+        df_stock["Adj Close"].values,
+    )
+    ax.plot(df_ta.index, df_ta.iloc[:, 0].values, cfg.style.down_color, linewidth=0.7)
+    ax.plot(df_ta.index, df_ta.iloc[:, 1].values, ls="--", linewidth=0.7)
+    ax.plot(df_ta.index, df_ta.iloc[:, 2].values, cfg.style.up_color, linewidth=0.7)
     ax.set_title(f"{ticker} Bollinger Bands")
     ax.set_xlim(df_stock.index[0], df_stock.index[-1])
     ax.set_xlabel("Time")
     ax.set_ylabel("Share Price ($)")
+    ax.yaxis.set_label_position("right")
+    ax.grid(visible=True, zorder=0)
+    ax.tick_params(axis="x", rotation=10)
 
     ax.legend([ticker, df_ta.columns[0], df_ta.columns[1], df_ta.columns[2]])
     ax.fill_between(
-        df_ta.index,
-        df_ta.iloc[:, 0].values,
-        df_ta.iloc[:, 2].values,
-        alpha=0.1,
-        color="b",
+        df_ta.index, df_ta.iloc[:, 0].values, df_ta.iloc[:, 2].values, alpha=0.1
     )
-    ax.grid(b=True, which="major", color="#666666", linestyle="-")
 
     if gtff.USE_ION:
         plt.ion()
-
-    plt.gcf().autofmt_xdate()
     fig.tight_layout(pad=1)
-
     plt.show()
     console.print("")
 
@@ -111,33 +110,28 @@ def display_donchian(
     )
 
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    ax.plot(df_stock.index, df_stock["Adj Close"].values, color="k", lw=3)
-    ax.plot(df_ta.index, df_ta.iloc[:, 0].values, "b", lw=1.5, label="upper")
-    ax.plot(df_ta.index, df_ta.iloc[:, 1].values, "b", lw=1.5, ls="--")
-    ax.plot(df_ta.index, df_ta.iloc[:, 2].values, "b", lw=1.5, label="lower")
+    ax.plot(df_stock.index, df_stock["Adj Close"].values)
+    ax.plot(df_ta.index, df_ta.iloc[:, 0].values, linewidth=0.7, label="Upper")
+    ax.plot(df_ta.index, df_ta.iloc[:, 1].values, linewidth=0.7, ls="--")
+    ax.plot(df_ta.index, df_ta.iloc[:, 2].values, linewidth=0.7, label="Lower")
     ax.set_title(f"{ticker} donchian")
     ax.set_xlim(df_stock.index[0], df_stock.index[-1])
     ax.set_xlabel("Time")
     ax.set_ylabel("Price ($)")
+    ax.yaxis.set_label_position("right")
+    ax.grid(visible=True, zorder=0)
+    ax.tick_params(axis="x", rotation=10)
 
     ax.legend([ticker, df_ta.columns[0], df_ta.columns[1], df_ta.columns[2]])
     ax.fill_between(
-        df_ta.index,
-        df_ta.iloc[:, 0].values,
-        df_ta.iloc[:, 2].values,
-        alpha=0.1,
-        color="b",
+        df_ta.index, df_ta.iloc[:, 0].values, df_ta.iloc[:, 2].values, alpha=0.1
     )
-    ax.grid(b=True, which="major", color="#666666", linestyle="-")
 
     if gtff.USE_ION:
         plt.ion()
 
-    plt.gcf().autofmt_xdate()
     fig.tight_layout(pad=1)
-
     plt.legend()
-
     plt.show()
     console.print("")
 
@@ -186,31 +180,27 @@ def view_kc(
         offset,
     )
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    ax.plot(df_stock.index, df_stock["Adj Close"].values, color="fuchsia")
-    ax.plot(df_ta.index, df_ta.iloc[:, 0].values, "b", lw=1.5, label="upper")
-    ax.plot(df_ta.index, df_ta.iloc[:, 1].values, "b", lw=1.5, ls="--")
-    ax.plot(df_ta.index, df_ta.iloc[:, 2].values, "b", lw=1.5, label="lower")
+    ax.plot(df_stock.index, df_stock["Adj Close"].values)
+    ax.plot(df_ta.index, df_ta.iloc[:, 0].values, linewidth=0.7, label="Upper")
+    ax.plot(df_ta.index, df_ta.iloc[:, 1].values, linewidth=0.7, ls="--")
+    ax.plot(df_ta.index, df_ta.iloc[:, 2].values, linewidth=0.7, label="Lower")
     ax.set_title(f"{s_ticker} Keltner Channels")
     ax.set_xlim(df_stock.index[0], df_stock.index[-1])
     ax.set_xlabel("Time")
     ax.set_ylabel("Price")
+    ax.yaxis.set_label_position("right")
+    ax.grid(visible=True, zorder=0)
+    ax.tick_params(axis="x", rotation=10)
 
     ax.legend([s_ticker, df_ta.columns[0], df_ta.columns[1], df_ta.columns[2]])
     ax.fill_between(
-        df_ta.index,
-        df_ta.iloc[:, 0].values,
-        df_ta.iloc[:, 2].values,
-        alpha=0.1,
-        color="b",
+        df_ta.index, df_ta.iloc[:, 0].values, df_ta.iloc[:, 2].values, alpha=0.1
     )
     ax.grid(b=True, which="major", color="#666666", linestyle="-")
 
     if gtff.USE_ION:
         plt.ion()
-
-    plt.gcf().autofmt_xdate()
     fig.tight_layout(pad=1)
-
     plt.legend()
     plt.show()
 
