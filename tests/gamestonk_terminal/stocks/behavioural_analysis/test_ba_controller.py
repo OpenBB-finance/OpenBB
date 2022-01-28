@@ -8,6 +8,7 @@ import pytest
 
 # IMPORTATION INTERNAL
 from gamestonk_terminal.stocks.behavioural_analysis import ba_controller
+from gamestonk_terminal import parent_classes
 
 # pylint: disable=E1101
 # pylint: disable=W0603
@@ -498,7 +499,6 @@ def test_call_func(
 @pytest.mark.parametrize(
     "func",
     [
-        "call_load",
         "call_watchlist",
         "call_spac",
         "call_spac_c",
@@ -574,7 +574,7 @@ def test_call_func_no_ticker(func, mocker):
 
 @pytest.mark.vcr
 def test_call_load(mocker):
-    yf_download = ba_controller.stocks_helper.yf.download
+    yf_download = parent_classes.stocks_helper.yf.download
 
     def mock_yf_download(*args, **kwargs):
         kwargs["threads"] = False

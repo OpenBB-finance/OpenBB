@@ -7,15 +7,24 @@ import re
 import os
 import difflib
 from typing import Union, List, Dict, Any
+from datetime import datetime, timedelta
 
 from prompt_toolkit.completion import NestedCompleter
 from rich.markdown import Markdown
+import pandas as pd
+import numpy as np
 
 from gamestonk_terminal.menu import session
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.decorators import try_except
-from gamestonk_terminal.helper_funcs import system_clear, get_flair
+from gamestonk_terminal.helper_funcs import (
+    system_clear,
+    get_flair,
+    valid_date,
+    parse_known_args_and_warn,
+)
 from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.stocks import stocks_helper
 
 
 controllers: Dict[str, Any] = {}
@@ -285,3 +294,129 @@ class BaseController(metaclass=ABCMeta):
                     self.queue.insert(0, an_input)
                 else:
                     console.print("\n")
+
+
+class StockController(BaseController, metaclass=ABCMeta):
+    def __init__(self, queue):
+        """
+        This is a base class for Stock Controllers that use a load function.
+        """
+        super().__init__(queue)
+        self.stock = pd.DataFrame()
+        self.interval = "1440min"
+        self.ticker = ""
+        self.start = ""
+        self.suffix = ""  # To hold suffix for Yahoo Finance
+        self.add_info = stocks_helper.additional_info_about_ticker("")
+
+    def call_load(self, other_args: List[str]):
+        """Process load command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="load",
+            description="Load stock ticker to perform analysis on. When the data source"
+            + " is syf', an Indian ticker can be"
+            + " loaded by using '.NS' at the end, e.g. 'SBIN.NS'. See available market in"
+            + " https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html.",
+        )
+        parser.add_argument(
+            "-t",
+            "--ticker",
+            action="store",
+            dest="ticker",
+            required="-h" not in other_args,
+            help="Stock ticker",
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            type=valid_date,
+            default=(datetime.now() - timedelta(days=1100)).strftime("%Y-%m-%d"),
+            dest="start",
+            help="The starting date (format YYYY-MM-DD) of the stock",
+        )
+        parser.add_argument(
+            "-e",
+            "--end",
+            type=valid_date,
+            default=datetime.now().strftime("%Y-%m-%d"),
+            dest="end",
+            help="The ending date (format YYYY-MM-DD) of the stock",
+        )
+        parser.add_argument(
+            "-i",
+            "--interval",
+            action="store",
+            dest="interval",
+            type=int,
+            default=1440,
+            choices=[1, 5, 15, 30, 60],
+            help="Intraday stock minutes",
+        )
+        parser.add_argument(
+            "--source",
+            action="store",
+            dest="source",
+            choices=["yf", "av", "iex"] if "-i" not in other_args else ["yf"],
+            default="yf",
+            help="Source of historical data.",
+        )
+        parser.add_argument(
+            "-p",
+            "--prepost",
+            action="store_true",
+            default=False,
+            dest="prepost",
+            help="Pre/After market hours. Only works for 'yf' source, and intraday data",
+        )
+        parser.add_argument(
+            "-r",
+            "--iexrange",
+            dest="iexrange",
+            help="Range for using the iexcloud api.  Note that longer range requires more tokens in account",
+            choices=["ytd", "1y", "2y", "5y", "6m"],
+            type=str,
+            default="ytd",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-t")
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            df_stock_candidate = stocks_helper.load(
+                ns_parser.ticker,
+                ns_parser.start,
+                ns_parser.interval,
+                ns_parser.end,
+                ns_parser.prepost,
+                ns_parser.source,
+            )
+            if not df_stock_candidate.empty:
+                self.stock = df_stock_candidate
+                self.add_info = stocks_helper.additional_info_about_ticker(
+                    ns_parser.ticker
+                )
+                console.print(self.add_info)
+                if "." in ns_parser.ticker:
+                    self.ticker, self.suffix = ns_parser.ticker.upper().split(".")
+                else:
+                    self.ticker = ns_parser.ticker.upper()
+                    self.suffix = ""
+
+                if ns_parser.source == "iex":
+                    self.start = self.stock.index[0].strftime("%Y-%m-%d")
+                else:
+                    self.start = ns_parser.start
+                self.interval = f"{ns_parser.interval}min"
+
+                if self.PATH in ["/stocks/qa/", "/stocks/pred/"]:
+                    self.stock["Returns"] = self.stock["Adj Close"].pct_change()
+                    self.stock["LogRet"] = np.log(self.stock["Adj Close"]) - np.log(
+                        self.stock["Adj Close"].shift(1)
+                    )
+                    self.stock["LogPrice"] = np.log(self.stock["Adj Close"])
+                    self.stock = self.stock.rename(columns={"Adj Close": "AdjClose"})
+                    self.stock = self.stock.dropna()
+                    self.stock.columns = [x.lower() for x in self.stock.columns]
+                    console.print("")
