@@ -275,6 +275,7 @@ def filter_json_data(response):
 
     return response
 
+
 @pytest.mark.vcr
 @pytest.mark.parametrize(
     "industry, sector",
@@ -461,6 +462,7 @@ def test_get_companies_per_country_in_sector(recorder):
         exclude_exchanges=True,
     )
     recorder.capture(result)
+
 
 @pytest.mark.vcr
 def test_get_companies_per_country_in_industry(recorder):
