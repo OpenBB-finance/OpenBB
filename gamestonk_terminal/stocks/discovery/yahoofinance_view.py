@@ -3,9 +3,8 @@ __docformat__ = "numpy"
 
 import os
 import logging
-from tabulate import tabulate
 from gamestonk_terminal.decorators import log_start_end
-from gamestonk_terminal.helper_funcs import export_data
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.stocks.discovery import yahoofinance_model
 from gamestonk_terminal.rich_config import console
 
@@ -31,14 +30,11 @@ def display_gainers(num_stocks: int, export: str) -> None:
     if df_gainers.empty:
         console.print("No gainers found.")
     else:
-        print(
-            tabulate(
-                df_gainers.head(num_stocks),
-                headers=df_gainers.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            )
+        print_rich_table(
+            df_gainers.head(num_stocks),
+            headers=list(df_gainers.columns),
+            show_index=False,
+            title="Gainers",
         )
     console.print("")
 
@@ -69,14 +65,11 @@ def display_losers(num_stocks: int, export: str) -> None:
     if df_losers.empty:
         console.print("No losers found.")
     else:
-        print(
-            tabulate(
-                df_losers.head(num_stocks),
-                headers=df_losers.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            )
+        print_rich_table(
+            df_losers.head(num_stocks),
+            headers=list(df_losers.columns),
+            show_index=False,
+            title="Display Losers",
         )
     console.print("")
 
@@ -107,14 +100,11 @@ def display_ugs(num_stocks: int, export: str) -> None:
     if df.empty:
         console.print("No data found.")
     else:
-        print(
-            tabulate(
-                df.head(num_stocks),
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            )
+        print_rich_table(
+            df.head(num_stocks),
+            headers=list(df.columns),
+            show_index=False,
+            title="Undervalued Growth Stocks",
         )
     console.print("")
 
@@ -145,14 +135,11 @@ def display_gtech(num_stocks: int, export: str) -> None:
     if df.empty:
         console.print("No data found.")
     else:
-        print(
-            tabulate(
-                df.head(num_stocks),
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            )
+        print_rich_table(
+            df.head(num_stocks),
+            headers=list(df.columns),
+            show_index=False,
+            title="Growth Tech Stocks",
         )
     console.print("")
 
@@ -183,14 +170,11 @@ def display_active(num_stocks: int, export: str) -> None:
     if df.empty:
         console.print("No data found.")
     else:
-        print(
-            tabulate(
-                df.head(num_stocks),
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            )
+        print_rich_table(
+            df.head(num_stocks),
+            headers=list(df.columns),
+            show_index=False,
+            title="Most Active Stocks",
         )
     console.print("")
 
@@ -221,14 +205,11 @@ def display_ulc(num_stocks: int, export: str) -> None:
     if df.empty:
         console.print("No data found.")
     else:
-        print(
-            tabulate(
-                df.head(num_stocks).dropna(),
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            )
+        print_rich_table(
+            df.head(num_stocks).dropna(),
+            headers=list(df.columns),
+            show_index=False,
+            title="Undervalued Large Cap Stocks",
         )
     console.print("")
 
@@ -259,14 +240,11 @@ def display_asc(num_stocks: int, export: str) -> None:
     if df.empty:
         console.print("No data found.")
     else:
-        print(
-            tabulate(
-                df.head(num_stocks).dropna(),
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            )
+        print_rich_table(
+            df.head(num_stocks).dropna(),
+            headers=list(df.columns),
+            show_index=False,
+            title="High Growth Small Caps",
         )
     console.print("")
 

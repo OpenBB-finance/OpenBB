@@ -3,11 +3,9 @@ __docformat__ = "numpy"
 
 import os
 
-from tabulate import tabulate
 import numpy as np
 
-from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import export_data
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.stocks.fundamental_analysis import av_model
 from gamestonk_terminal.rich_config import console
 
@@ -25,14 +23,9 @@ def display_overview(ticker: str):
         console.print("No API calls left. Try me later", "\n")
         return
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df_fa.drop(index=["Description"]), headers=[], tablefmt="fancy_grid"
-            )
-        )
-    else:
-        console.print(df_fa.drop(index=["Description"]).to_string(header=False))
+    print_rich_table(
+        df_fa.drop(index=["Description"]), headers=[], title="Ticker Overview"
+    )
 
     console.print(f"\nCompany Description:\n\n{df_fa.loc['Description'][0]}")
     console.print("")
@@ -51,10 +44,7 @@ def display_key(ticker: str):
         console.print("No API calls left. Try me later", "\n")
         return
 
-    if gtff.USE_TABULATE_DF:
-        print(tabulate(df_key, headers=[], tablefmt="fancy_grid"))
-    else:
-        console.print(df_key.to_string(header=False))
+    print_rich_table(df_key, headers=[], title="Ticker Key Metrics")
 
     console.print("")
 
@@ -80,10 +70,9 @@ def display_income_statement(
         console.print("No API calls left. Try me later", "\n")
         return
 
-    if gtff.USE_TABULATE_DF:
-        print(tabulate(df_income, headers=df_income.columns, tablefmt="fancy_grid"))
-    else:
-        console.print(df_income.to_string())
+    print_rich_table(
+        df_income, headers=list(df_income.columns), title="Ticker Income Statement"
+    )
 
     console.print("")
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "income", df_income)
@@ -110,10 +99,9 @@ def display_balance_sheet(
         console.print("No API calls left. Try me later", "\n")
         return
 
-    if gtff.USE_TABULATE_DF:
-        print(tabulate(df_balance, headers=df_balance.columns, tablefmt="fancy_grid"))
-    else:
-        console.print(df_balance.to_string())
+    print_rich_table(
+        df_balance, headers=list(df_balance.columns), title="Ticker Balance Sheet"
+    )
 
     console.print("")
     export_data(
@@ -142,10 +130,9 @@ def display_cash_flow(
         console.print("No API calls left. Try me later", "\n")
         return
 
-    if gtff.USE_TABULATE_DF:
-        print(tabulate(df_cash, headers=df_cash.columns, tablefmt="fancy_grid"))
-    else:
-        console.print(df_cash.to_string())
+    print_rich_table(
+        df_cash, headers=list(df_cash.columns), title="Ticker Balance Sheet"
+    )
 
     console.print("")
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "cash", df_cash)
@@ -167,17 +154,12 @@ def display_earnings(ticker: str, limit: int, quarterly: bool = False):
     if df_fa.empty:
         console.print("No API calls left. Try me later", "\n")
         return
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df_fa.head(limit),
-                headers=df_fa.columns,
-                showindex=False,
-                tablefmt="fancy_grid",
-            )
-        )
-    else:
-        console.print(df_fa.head(n=limit).T.to_string(header=False))
+    print_rich_table(
+        df_fa.head(limit),
+        headers=list(df_fa.columns),
+        show_index=False,
+        title="Ticker Earnings",
+    )
 
     console.print("")
 
@@ -189,19 +171,18 @@ def display_fraud(ticker: str):
     ticker : str
         Fundamental analysis ticker symbol
     """
-    ratios, zscore = av_model.get_fraud_ratios(ticker)
+    ratios, zscore, mckee = av_model.get_fraud_ratios(ticker)
 
     if ratios["MSCORE"] > -1.78:
-        chanceM = "high"
+        chance_m = "high"
     elif ratios["MSCORE"] > -2.22:
-        chanceM = "moderate"
+        chance_m = "moderate"
     else:
-        chanceM = "low"
+        chance_m = "low"
 
-    if zscore < 0.5:
-        chanceZ = "high"
-    else:
-        chanceZ = "low"
+    chance_z = "high" if zscore < 0.5 else "low"
+
+    chance_mcke = "low" if mckee < 0.5 else "high"
 
     if np.isnan(ratios["MSCORE"]) or np.isnan(zscore):
         console.print("Data incomplete for this ticker. Unable to calculate risk")
@@ -214,8 +195,10 @@ def display_fraud(ticker: str):
 
     console.print(
         "\n" + "MSCORE: ",
-        f"{ratios['MSCORE']:.2f} ({chanceM} chance of fraud)",
+        f"{ratios['MSCORE']:.2f} ({chance_m} chance of fraud)",
     )
 
-    console.print("ZSCORE: ", f"{zscore:.2f} ({chanceZ} chance of bankruptcy)", "\n")
+    console.print("ZSCORE: ", f"{zscore:.2f} ({chance_z} chance of bankruptcy)", "\n")
+
+    console.print("McKee: ", f"{mckee:.2f} ({chance_mcke} chance of bankruptcy)", "\n")
     return

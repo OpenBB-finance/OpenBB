@@ -732,6 +732,7 @@ def get_flair() -> str:
         ":boat": "(⛵)",
         ":phone": "(☎)",
         ":mercury": "(☿)",
+        ":hidden": "",
         ":sun": "(☼)",
         ":moon": "(☾)",
         ":nuke": "(☢)",
@@ -753,7 +754,13 @@ def get_flair() -> str:
         dtime = datetime.now(pytz.timezone(get_user_timezone())).strftime(
             "%Y %b %d, %H:%M"
         )
+
+        # if there is no flair, don't add an extra space after the time
+        if flair == "":
+            return f"{dtime}"
+
         return f"{dtime} {flair}"
+
     return flair
 
 

@@ -52,13 +52,18 @@ def log_start_end(func=None, log=None):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
 
+            kwargs_passed_in_function = list()
             args_passed_in_function = [repr(a) for a in args]
             # view files have parameters that are usually small given they are input by the user
-            if log.name[-5:] == "_view":
+            if "_view" in log.name:
                 kwargs_passed_in_function = [f"{k}={v!r}" for k, v in kwargs.items()]
+            # we are only interested in the other_args from controller methods
+            elif "_controller" in log.name:
+                # check len of args is 2 because of (self, other_args: List[str])
+                if len(args) == 2:
+                    args_passed_in_function = args[1]
             # other files can have as parameters big variables, therefore adds logic to only add small ones
             else:
-                kwargs_passed_in_function = list()
                 for k, v in kwargs.items():
                     if type(v) in (int, float):
                         kwargs_passed_in_function.append(f"{k}={v!r}")
