@@ -544,16 +544,10 @@ main:
             ref: "/common/behavioural_analysis/queries"
           - name: rise
             ref: "/common/behavioural_analysis/rise"
-          - name: popularsi
-            ref: "/common/behavioural_analysis/popularsi"
-          - name: emerging
-            ref: "/common/behavioural_analysis/emerging"
-          - name: metrics
-            ref: "/common/behavioural_analysis/metrics"
-          - name: social
-            ref: "/common/behavioural_analysis/social"
-          - name: historical
-            ref: "/common/behavioural_analysis/historical"
+          - name: hist
+            ref: "/common/behavioural_analysis/hist"
+          - name: trend
+            ref: "/common/behavioural_analysis/trend"
       - name: quantitative analysis
         ref: "/common/quantitative_analysis"
         sub:

@@ -264,6 +264,16 @@ def valid_date(s: str) -> datetime:
         raise argparse.ArgumentTypeError(f"Not a valid date: {s}") from value_error
 
 
+def valid_hour(hr: str) -> int:
+    """Argparse type to check hour is valid with 24-hour notation"""
+
+    new_hr = int(hr)
+
+    if (new_hr < 0) or (new_hr > 24):
+        raise argparse.ArgumentTypeError(f"{hr} doesn't follow 24-hour notion.")
+    return new_hr
+
+
 def plot_view_stock(df: pd.DataFrame, symbol: str, interval: str):
     """
     Plot the loaded stock dataframe
