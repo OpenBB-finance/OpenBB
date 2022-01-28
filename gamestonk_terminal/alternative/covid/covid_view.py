@@ -3,12 +3,12 @@ __docformat__ = "numpy"
 
 import os
 
-import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
 import pandas as pd
 from gamestonk_terminal.rich_config import console
 
-import gamestonk_terminal.feature_flags as gtff
+from gamestonk_terminal import config_terminal as cfg
+from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.alternative.covid import covid_model
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.helper_funcs import (
@@ -42,24 +42,25 @@ def display_covid_ov(
 
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
-    ax.plot(cases.index, cases, alpha=0.2, c="b")
-    ax.plot(cases.index, cases.rolling(7).mean(), lw=4, c="b")
-    ax.set_ylabel("Cases (1k)", color="blue")
-    ax.tick_params(axis="y", labelcolor="blue")
+    ax.plot(cases.index, cases, color=cfg.style.up_color, alpha=0.2)
+    ax.plot(cases.index, cases.rolling(7).mean(), color=cfg.style.up_color)
+    ax.set_ylabel("Cases (1k)")
+    ax.tick_params(axis="y")
+    ax.grid(visible=True, zorder=0)
 
     ax2 = ax.twinx()
-    ax2.plot(deaths.index, deaths, "r", alpha=0.2)
-    ax2.plot(deaths.index, deaths.rolling(7).mean(), "r", lw=4)
-    ax2.grid()
+    ax2.plot(deaths.index, deaths, color=cfg.style.down_color, alpha=0.2)
+    ax2.plot(deaths.index, deaths.rolling(7).mean(), color=cfg.style.down_color)
     ax2.set_title(f"Overview for {country.upper()}")
     ax2.set_xlabel("Date")
-    ax2.set_ylabel("Deaths", color="red")
-    ax2.tick_params(axis="y", labelcolor="red")
+    ax2.set_ylabel("Deaths")
+    ax2.tick_params(axis="y")
 
-    dateFmt = mdates.DateFormatter("%Y-%m-%d")
-    ax.xaxis.set_major_formatter(dateFmt)
-    ax.tick_params(axis="x", labelrotation=45)
     ax.set_xlim(ov.index[0], ov.index[-1])
+    ax.tick_params(axis="x", rotation=10)
+    legend = ax.legend(ov.columns)
+    legend.legendHandles[1].set_color(cfg.style.down_color)
+    legend.legendHandles[0].set_color(cfg.style.up_color)
 
     fig.tight_layout(pad=2)
     if gtff.USE_ION:
@@ -115,24 +116,29 @@ def display_covid_stat(
 
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
-    ax.plot(data.index, data, alpha=0.2, c="b")
-    ax.plot(data.index, data.rolling(7).mean(), lw=4, c="b")
     if stat == "cases":
-        ax.set_ylabel(stat.title() + " (1k)", color="blue")
+        ax.set_ylabel(stat.title() + " (1k)")
+        color = cfg.style.up_color
+    elif stat == "deaths":
+        ax.set_ylabel(stat.title())
+        color = cfg.style.down_color
     else:
-        ax.set_ylabel(stat.title(), color="blue")
-    ax.tick_params(axis="y", labelcolor="blue")
-    ax.grid("on")
-    dateFmt = mdates.DateFormatter("%Y-%m-%d")
-    ax.xaxis.set_major_formatter(dateFmt)
-    ax.tick_params(axis="x", labelrotation=45)
-    ax.spines["right"].set_visible(False)
-    ax.spines["top"].set_visible(False)
+        ax.set_ylabel(stat.title() + " (Deaths/Cases)")
+        color = cfg.style.get_bar_colors()[0]
+
+    ax.plot(data.index, data, color=color, alpha=0.2)
+    ax.plot(data.index, data.rolling(7).mean(), color=color)
+    ax.grid(visible=True, zorder=0)
+    ax.yaxis.set_label_position("right")
+
+    ax.tick_params(axis="x", rotation=10)
+
     ax.set_title(f"{country} COVID {stat}")
     ax.set_xlim(data.index[0], data.index[-1])
-    fig.tight_layout(pad=2)
+
     if gtff.USE_ION:
         plt.ion()
+    fig.tight_layout(pad=1)
     plt.show()
 
     if raw:
