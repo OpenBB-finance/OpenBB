@@ -70,7 +70,7 @@ legend.facecolor: black
 legend.edgecolor: black
 legend.scatterpoints: 3
 legend.fontsize: small
-legend.loc: best
+legend.loc: upper left
 
 figure.facecolor: black
 figure.edgecolor: black
