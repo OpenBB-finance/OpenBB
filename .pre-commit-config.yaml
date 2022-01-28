@@ -25,7 +25,7 @@ repos:
         entry: codespell
         args:
           [
-            "--ignore-words-list=zlot,ba,buil,coo,ether,hist,hsi,mape,navagation,operatio,pres,ser,yeld,shold",
+            "--ignore-words-list=zlot,ba,buil,coo,ether,hist,hsi,mape,navagation,operatio,pres,ser,yeld,shold,ist",
             "--quiet-level=2",
             "--skip=./tests,.git,*.css,*.csv,*.html,*.ini,*.ipynb,*.js,*.json,*.lock,*.scss,*.txt,*.yaml",
           ]
@@ -35,14 +35,11 @@ repos:
       - id: mypy
         args: ["--ignore-missing-imports", '--exclude=/setup\.py$']
         additional_dependencies: [types-all]
-
-  - repo: https://github.com/roy-ht/pre-commit-jupyter
-    rev: v1.2.1
+  - repo: https://github.com/kynan/nbstripout
+    rev: 0.5.0
     hooks:
-      - id: jupyter-notebook-cleanup
-        args:
-          - --remove-kernel-metadata
-          - --pin-patterns
+      - id: nbstripout
+        name: Strip notebooks output
   - repo: local
     hooks:
       - id: pylint

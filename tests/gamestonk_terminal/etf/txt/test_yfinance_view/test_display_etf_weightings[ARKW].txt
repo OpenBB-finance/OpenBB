@@ -1,6 +1,6 @@
 
 Sector holdings of ARKW
-<bound method DataFrame.to_string of                         % of holdings in the sector
+                        % of holdings in the sector
 Technology                                    34.59
 Communication Services                        32.09
 Consumer Cyclical                             21.67
@@ -11,5 +11,5 @@ Consumer Defensive                             0.92
 Industrials                                    0.09
 Basic Materials                                0.00
 Utilities                                      0.00
-Energy                                         0.00> 
+Energy                                         0.00
 

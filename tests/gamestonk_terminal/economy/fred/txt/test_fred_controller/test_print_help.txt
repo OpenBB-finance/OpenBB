@@ -1,0 +1,13 @@
+
+    search        search FRED series notes
+    add           add series ID to list
+    rmv           remove series ID from list
+
+Current Series IDs:
+    MOCK_SERIES_ID_1 : [italic]MOCK_TITLE_11[/italic]
+    MOCK_SERIES_ID_2 : [italic]MOCK_TITLE_21[/italic]
+
+    plot          plot selected series 
+[dim]
+>   pred          prediction techniques (single SeriesID)[/dim]
+        

@@ -10,7 +10,6 @@ from typing import List
 import pytz
 
 from prompt_toolkit.completion import NestedCompleter
-
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
@@ -321,8 +320,6 @@ if __name__ == "__main__":
         if "--debug" in sys.argv:
             os.environ["DEBUG_MODE"] = "true"
             sys.argv.remove("--debug")
-        else:
-            os.environ["DEBUG_MODE"] = "false"
         if len(sys.argv) > 1 and ".gst" in sys.argv[1]:
             if os.path.isfile(sys.argv[1]):
                 with open(sys.argv[1]) as fp:
@@ -336,5 +333,4 @@ if __name__ == "__main__":
         else:
             terminal(sys.argv[1:])
     else:
-        os.environ["DEBUG_MODE"] = "false"
         terminal()

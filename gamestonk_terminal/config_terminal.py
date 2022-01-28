@@ -6,8 +6,6 @@ env_files = [f for f in os.listdir() if f.endswith(".env")]
 if env_files:
     load_dotenv(env_files[0])
 
-# Set to True to see full stack traces for debugging/error reporting
-
 # By default the jupyter notebook will be run on port 8888
 PAPERMILL_NOTEBOOK_REPORT_PORT = "8888"
 

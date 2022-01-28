@@ -1,3 +1,4 @@
+                                                                   0
 Symbol                                                          TSLA
 Asset type                                              Common Stock
 Name                                                       Tesla Inc

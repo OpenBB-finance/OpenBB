@@ -38,5 +38,5 @@ Net Goodwill                                           207M                  1.9
 Net Other Intangibles                                  313M                  3.32B
 Other Assets                                           923M                  5.72B
 Total Assets                                         52.15B                235.19B
-Total Assets Growth                   [green]14.13%[/green]      [red]-1.87%[/red] 
+Total Assets Growth                   [green]14.13%[/green]      [red]-1.87%[/red]
 

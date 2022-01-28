@@ -1,4 +1,5 @@
 
+                           Values
 Company               Tesla, Inc.
 Sector          Consumer Cyclical
 Industry       Auto Manufacturers

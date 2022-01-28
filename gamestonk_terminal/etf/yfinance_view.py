@@ -4,11 +4,14 @@ __docformat__ = "numpy"
 import os
 import pandas as pd
 from matplotlib import pyplot as plt
-from tabulate import tabulate
 from gamestonk_terminal.etf import yfinance_model
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_plot import PLOT_DPI
-from gamestonk_terminal.helper_funcs import plot_autoscale, export_data
+from gamestonk_terminal.helper_funcs import (
+    plot_autoscale,
+    export_data,
+    print_rich_table,
+)
 from gamestonk_terminal.rich_config import console
 
 
@@ -43,17 +46,13 @@ def display_etf_weightings(
     if raw:
         console.print(f"\n{title}")
         holdings.columns = ["% of holdings in the sector"]
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    holdings,
-                    headers=holdings.columns,
-                    showindex=True,
-                    tablefmt="fancy_grid",
-                ),
-            )
-        else:
-            console.print(holdings.to_string, "\n")
+        print_rich_table(
+            holdings,
+            headers=list(holdings.columns),
+            show_index=True,
+            title="Sector Weightings Allocation",
+        )
+        console.print("")
 
     else:
         main_holdings = holdings[holdings.values > min_pct_to_display].to_dict()[

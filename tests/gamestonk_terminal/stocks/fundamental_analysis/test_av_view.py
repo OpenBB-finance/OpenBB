@@ -7,6 +7,7 @@ import pytest
 
 # IMPORTATION INTERNAL
 from gamestonk_terminal.stocks.fundamental_analysis import av_view
+from gamestonk_terminal import helper_funcs
 
 
 @pytest.fixture(scope="module")
@@ -71,7 +72,7 @@ def vcr_config():
     [True, False],
 )
 def test_check_output(func, kwargs_dict, monkeypatch, use_tab):
-    monkeypatch.setattr(av_view.gtff, "USE_TABULATE_DF", use_tab)
+    monkeypatch.setattr(helper_funcs.gtff, "USE_TABULATE_DF", use_tab)
     getattr(av_view, func)(**kwargs_dict)
 
 
@@ -109,7 +110,7 @@ def test_check_empty_df(func, kwargs_dict, mocked_func, mocker):
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
-    "ratios, zscore",
+    "ratios, zscore, mckscore",
     [
         (
             {
@@ -124,15 +125,16 @@ def test_check_empty_df(func, kwargs_dict, mocked_func, mocker):
                 "MSCORE": np.nan,
             },
             np.nan,
+            np.nan,
         ),
-        ({"MSCORE": -1}, 0.1),
-        ({"AQI": 1, "MSCORE": -2}, 0.1),
-        ({"MSCORE": -3}, 1),
+        ({"MSCORE": -1}, 0.1, 0.2),
+        ({"AQI": 1, "MSCORE": -2}, 0.1, 0.2),
+        ({"MSCORE": -3}, 1, 0.2),
     ],
 )
-def test_display_fraud(mocker, ratios, zscore):
+def test_display_fraud(mocker, ratios, zscore, mckscore):
     mocker.patch(
         "gamestonk_terminal.stocks.fundamental_analysis.av_view.av_model.get_fraud_ratios",
-        return_value=(ratios, zscore),
+        return_value=(ratios, zscore, mckscore),
     )
     av_view.display_fraud(ticker="TSLA")
