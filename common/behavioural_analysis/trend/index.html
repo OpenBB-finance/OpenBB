@@ -9,14 +9,13 @@
 
 
 
-    <meta name="description" content="usage: popularsi [-l LIMIT] [-h] The stocks with highest Average Hype Index right now.
-AHI (Absolute Hype Index)    AHI is a measure of how much people are talking about a stock on social media. It is calculated by dividing the total number of mentions for the chosen stock on a social network by the mean number of mentions any stock receives on that social medium.
-Sentiment Investor analyzes data from four major social media platforms to generate hourly metrics on over 2,000 stocks.">
+    <meta name="description" content="usage: trend [-s START] [-hr HOUR] [-n NUMBER] [-h] [--export {csv,json,xlsx}] [-l LIMIT] Show most talked about tickers within the last one hour. Source: [Sentiment Investor]
+optional arguments: -s START, --start START The starting date (format YYYY-MM-DD). Default: Today (default: 2022-01-26) -hr HOUR, --hour HOUR Hour of the day in the 24-hour notation. Example: 14 (default: 0) -n NUMBER, --number NUMBER Number of results returned from Sentiment Investor. (default: 10) -h, --help show this help message (default: False) --export {csv,json,xlsx} Export raw data into csv, json, xlsx (default: ) -l LIMIT, --limit LIMIT Number of entries to show in data.">
 
 
 
     <title>
-      Popularsi | Gamestonk Terminal
+      Trend | Gamestonk Terminal
     </title>
 
     <link rel="icon" href="/GamestonkTerminal/favicon/favicon-32x32.png" type="image/x-icon">
@@ -37,7 +36,7 @@ Sentiment Investor analyzes data from four major social media platforms to gener
 <link rel="preload" href="/GamestonkTerminal/custom.css" as="style">
 <link rel="stylesheet" href="/GamestonkTerminal/custom.css" media="all">
 
-<link rel="alternate" type="application/rss+xml" href="https://gamestonkterminal.github.io/GamestonkTerminal/common/behavioural_analysis/popularsi/index.xml" title="Gamestonk Terminal" />
+<link rel="alternate" type="application/rss+xml" href="https://gamestonkterminal.github.io/GamestonkTerminal/common/behavioural_analysis/trend/index.xml" title="Gamestonk Terminal" />
 
 
 <!-- Made with Geekdoc theme https://github.com/thegeeklab/hugo-geekdoc -->
@@ -8573,133 +8572,40 @@ Sentiment Investor analyzes data from four major social media platforms to gener
             
             <span class="flex">
                 
-                <a href="/GamestonkTerminal/common/behavioural_analysis/popularsi/"
+                <a href="/GamestonkTerminal/common/behavioural_analysis/hist/"
+                    class="gdoc-nav__entry ">
+                    hist
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/GamestonkTerminal/common/behavioural_analysis/trend/"
                     class="gdoc-nav__entry is-active">
-                    popularsi
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/common/behavioural_analysis/emerging/"
-                    class="gdoc-nav__entry ">
-                    emerging
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/common/behavioural_analysis/metrics/"
-                    class="gdoc-nav__entry ">
-                    metrics
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/common/behavioural_analysis/social/"
-                    class="gdoc-nav__entry ">
-                    social
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/common/behavioural_analysis/historical/"
-                    class="gdoc-nav__entry ">
-                    historical
+                    trend
                 </a>
             </span>
             
@@ -19748,7 +19654,7 @@ Sentiment Investor analyzes data from four major social media platforms to gener
         
     
     
-        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/GamestonkTerminal/' href='/GamestonkTerminal/'><span itemprop='name'>Gamestonk Terminal</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/GamestonkTerminal/common/' href='/GamestonkTerminal/common/'><span itemprop='name'>Common</span></a><meta itemprop='position' content='3' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/GamestonkTerminal/common/behavioural_analysis/' href='/GamestonkTerminal/common/behavioural_analysis/'><span itemprop='name'>Behavioural Analysis</span></a><meta itemprop='position' content='4' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>Popularsi</span><meta itemprop='position' content='5' /></li>
+        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/GamestonkTerminal/' href='/GamestonkTerminal/'><span itemprop='name'>Gamestonk Terminal</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/GamestonkTerminal/common/' href='/GamestonkTerminal/common/'><span itemprop='name'>Common</span></a><meta itemprop='position' content='3' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/GamestonkTerminal/common/behavioural_analysis/' href='/GamestonkTerminal/common/behavioural_analysis/'><span itemprop='name'>Behavioural Analysis</span></a><meta itemprop='position' content='4' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>Trend</span><meta itemprop='position' content='5' /></li>
     
 
     
@@ -19764,7 +19670,7 @@ Sentiment Investor analyzes data from four major social media platforms to gener
     <div>
         <span class="editpage">
             <svg class="icon gdoc_code" style="color: #C7C7C7;"><use xlink:href="#gdoc_code"></use></svg>
-            <a href="https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/website//content/common/behavioural_analysis/popularsi/_index.md" style="color: #C7C7C7;">
+            <a href="https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/website//content/common/behavioural_analysis/trend/_index.md" style="color: #C7C7C7;">
                 Edit this page
             </a>
         </span>
@@ -19773,39 +19679,24 @@ Sentiment Investor analyzes data from four major social media platforms to gener
 </div>
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
-        <h1>Popularsi</h1>
-        <pre><code>usage: popularsi [-l LIMIT] [-h]
-</code></pre><p>The stocks with highest Average Hype Index right now.</p>
-<div class="gdoc-page__anchorwrap">
-    <h2 id="ahi-absolute-hype-index">
-        AHI (Absolute Hype Index)
-        <a data-clipboard-text="https://gamestonkterminal.github.io/GamestonkTerminal/common/behavioural_analysis/popularsi/#ahi-absolute-hype-index" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor AHI (Absolute Hype Index)" href="#ahi-absolute-hype-index">
-            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
-        </a>
-    </h2>
-</div><p>AHI is a measure of how much people are talking about a stock on social media.
-It is calculated by dividing the total number of mentions for the chosen stock on a social network by the mean number of mentions any stock receives on that social medium.</p>
-<p>Sentiment Investor analyzes data from four major social media platforms to generate hourly metrics on over 2,000 stocks. Sentiment provides volume and
-sentiment metrics powered by proprietary NLP models.</p>
+        <h1>Trend</h1>
+        <pre><code>usage: trend [-s START] [-hr HOUR] [-n NUMBER] [-h] [--export {csv,json,xlsx}] [-l LIMIT]
+
+</code></pre><p>Show most talked about tickers within the last one hour. Source: [Sentiment Investor]</p>
 <pre><code>optional arguments:
+  -s START, --start START
+                        The starting date (format YYYY-MM-DD). Default: Today (default: 2022-01-26)
+  -hr HOUR, --hour HOUR
+                        Hour of the day in the 24-hour notation. Example: 14 (default: 0)
+  -n NUMBER, --number NUMBER
+                        Number of results returned from Sentiment Investor. (default: 10)
+  -h, --help            show this help message (default: False)
+  --export {csv,json,xlsx}
+                        Export raw data into csv, json, xlsx (default: )
   -l LIMIT, --limit LIMIT
-                        the maximum number of stocks to retrieve
-  -h, --help            show this help message
-</code></pre><p>Sample output:</p>
-<pre><code>(✨) (stocks)&gt;(ba)&gt; popularsi
-  Rank  Ticker      AHI
-------  --------  -----
-     1  AMC       4.514
-     2  TSLA      4.184
-     3  BTC       4.045
-     4  SPY       3.890
-     5  WISH      3.175
-     6  NAKD      2.220
-     7  SOFI      2.153
-     8  SAND      1.813
-     9  AMD       1.628
-    10  MMAT      1.617
-</code></pre>
+                        Number of entries to show in data. (default: 10)
+</code></pre><p><img src="https://user-images.githubusercontent.com/40023817/151354698-dc5eb7ab-46c4-4c98-882b-2c9607659b7d.png" alt="image"  /></p>
+
     </article>
  
 
@@ -24949,6 +24840,25 @@ sentiment metrics powered by proprietary NLP models.</p>
             
 
             
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
                 
                 
             
@@ -24959,6 +24869,9 @@ sentiment metrics powered by proprietary NLP models.</p>
         
         
     
+
+        
+    
         
         
 
@@ -24971,85 +24884,6 @@ sentiment metrics powered by proprietary NLP models.</p>
             
                 
                 
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
             
 
             
@@ -31636,12 +31470,12 @@ sentiment metrics powered by proprietary NLP models.</p>
     
         <span class="gdoc-page__nav">
             
-                <a class="gdoc-page__nav--prev flex align-center" href="/GamestonkTerminal/common/behavioural_analysis/rise/" title="rise"> rise</a>
+                <a class="gdoc-page__nav--prev flex align-center" href="/GamestonkTerminal/common/behavioural_analysis/hist/" title="hist"> hist</a>
             
         </span>
         <span class="gdoc-page__nav">
             
-                <a class="gdoc-page__nav--next flex align-center" href="/GamestonkTerminal/common/behavioural_analysis/emerging/" title="emerging">emerging </a>
+                <a class="gdoc-page__nav--next flex align-center" href="/GamestonkTerminal/common/quantitative_analysis/" title="quantitative analysis">quantitative analysis </a>
             
         </span>
     
