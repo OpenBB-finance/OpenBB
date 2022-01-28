@@ -125,13 +125,13 @@ def test_print_help():
     "an_input, expected_queue",
     [
         ("", []),
-        ("/help", ['quit', 'quit', 'help']),
+        ("/help", ["quit", "quit", "help"]),
         ("help/help", ["help"]),
         ("q", ["quit"]),
         ("h", []),
         (
             "r",
-            ['quit', 'quit', 'reset', 'crypto', 'defi'],
+            ["quit", "quit", "reset", "crypto", "defi"],
         ),
     ],
 )
@@ -160,22 +160,22 @@ def test_call_cls(mocker):
         (
             "call_exit",
             [],
-            ['quit', 'quit', 'quit'],
+            ["quit", "quit", "quit"],
         ),
-        ("call_exit", ["help"], ['quit', 'quit', 'quit', 'help']),
-        ("call_home", [], ['quit', 'quit']),
+        ("call_exit", ["help"], ["quit", "quit", "quit", "help"]),
+        ("call_home", [], ["quit", "quit"]),
         ("call_help", [], []),
         ("call_quit", [], ["quit"]),
         ("call_quit", ["help"], ["quit", "help"]),
         (
             "call_reset",
             [],
-            ['quit', 'quit', 'reset', 'crypto', 'defi'],
+            ["quit", "quit", "reset", "crypto", "defi"],
         ),
         (
             "call_reset",
             ["help"],
-            ['quit', 'quit', 'reset', 'crypto', 'defi', 'help'],
+            ["quit", "quit", "reset", "crypto", "defi", "help"],
         ),
     ],
 )
@@ -193,10 +193,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
     [
         (
             "call_aterra",
-            [
-                "ust",
-                "--address=terra1wg2mlrxdmnnkkykgqg4znky86nyrtc45q336yv"
-            ],
+            ["ust", "--address=terra1wg2mlrxdmnnkkykgqg4znky86nyrtc45q336yv"],
             "terraengineer_view.display_terra_asset_history",
             [],
             dict(),
