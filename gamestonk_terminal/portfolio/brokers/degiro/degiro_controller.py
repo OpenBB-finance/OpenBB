@@ -2,7 +2,6 @@ import argparse
 from typing import List
 
 from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.rich_config import console
 import gamestonk_terminal.config_terminal as config
 
 from gamestonk_terminal import feature_flags as gtff
