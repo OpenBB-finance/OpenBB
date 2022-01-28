@@ -522,7 +522,6 @@ def test_call_func(
 @pytest.mark.parametrize(
     "func",
     [
-        "call_load",
         "call_act",
         "call_lins",
     ],
@@ -601,10 +600,9 @@ def test_call_func_no_stock(func):
 
 @pytest.mark.vcr(record_mode="none")
 def test_call_load(mocker):
-    path_controller = "gamestonk_terminal.stocks.insider.insider_controller"
 
     # MOCK LOAD
-    target = f"{path_controller}.stocks_helper.load"
+    target = "gamestonk_terminal.parent_classes.stocks_helper.load"
     mocker.patch(target=target, return_value=DF_STOCK)
 
     controller = insider_controller.InsiderController(
