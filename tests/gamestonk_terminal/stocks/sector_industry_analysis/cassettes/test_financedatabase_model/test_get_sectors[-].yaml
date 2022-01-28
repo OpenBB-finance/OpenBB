@@ -1,0 +1,74 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: GET
+    uri: https://raw.githubusercontent.com/JerBouma/FinanceDatabase/master/Database/Categories/equities_sectors.json
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA2WPuw7CMAxF90r9h6gzX0Epj4GFx4QYLNe0llJHStJK/XuChJJAMjnn+vraj7pS
+        4TXN5ltswTGqM3iyDNpF3pppmoURPBtRV7ILI+WyDNpMZIPxh7o5QNWuqINXl8qOXiSOFyqlgzF9
+        mtUJ2WGN3z0LCHI2MpJyuyOB9iOCTSkn6WfnPzf+5SQhsUvwq875cFxkRciNcBSjTbbk3bNmz6Gp
+        rp5vNAjipmsBAAA=
+    headers:
+      Accept-Ranges:
+      - bytes
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - max-age=300
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '182'
+      Content-Security-Policy:
+      - default-src 'none'; style-src 'unsafe-inline'; sandbox
+      Content-Type:
+      - text/plain; charset=utf-8
+      Date:
+      - Fri, 28 Jan 2022 01:15:24 GMT
+      ETag:
+      - W/"263950799e0dc59b79009e2f6d9b7b42ba7de8ea2c367a0947e8ef59f28686c6"
+      Expires:
+      - Fri, 28 Jan 2022 01:20:24 GMT
+      Source-Age:
+      - '215'
+      Strict-Transport-Security:
+      - max-age=31536000
+      Vary:
+      - Authorization,Accept-Encoding,Origin
+      Via:
+      - 1.1 varnish
+      X-Cache:
+      - HIT
+      X-Cache-Hits:
+      - '1'
+      X-Content-Type-Options:
+      - nosniff
+      X-Fastly-Request-ID:
+      - d01e27a8fa710659c8c3e7753a4784dc4c56e79d
+      X-Frame-Options:
+      - deny
+      X-GitHub-Request-Id:
+      - DE10:7297:1BDB291:1CE52D9:61F342D5
+      X-Served-By:
+      - cache-cdg20748-CDG
+      X-Timer:
+      - S1643332525.734119,VS0,VE0
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1
