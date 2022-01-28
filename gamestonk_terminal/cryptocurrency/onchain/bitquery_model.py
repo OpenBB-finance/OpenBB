@@ -13,6 +13,7 @@ from requests.adapters import HTTPAdapter
 import requests
 import pandas as pd
 from gamestonk_terminal import config_terminal as cfg
+from gamestonk_terminal.rich_config import console
 
 
 class BitQueryApiKeyException(Exception):
@@ -286,7 +287,10 @@ def get_dex_trades_by_exchange(
         }}
         """
 
-    data = query_graph(BQ_URL, query)
+    try:
+        data = query_graph(BQ_URL, query)
+    except BitQueryApiKeyException:
+        console.print("[red]Invalid API Key[/red]\n")
 
     df = _extract_dex_trades(data)
     df.columns = ["trades", "tradeAmount", "exchange"]
@@ -339,8 +343,11 @@ def get_dex_trades_monthly(
           }}
         }}
         """
-
-    data = query_graph(BQ_URL, query)
+    try:
+        data = query_graph(BQ_URL, query)
+    except BitQueryApiKeyException:
+        console.print("[red]Invalid API Key[/red]\n")
+        return pd.DataFrame()
     if not data:
         return pd.DataFrame()
 
@@ -415,7 +422,12 @@ def get_daily_dex_volume_for_given_pair(
         }}
         """
 
-    data = query_graph(BQ_URL, query)
+    try:
+        data = query_graph(BQ_URL, query)
+    except BitQueryApiKeyException:
+        console.print("[red]Invalid API Key[/red]\n")
+        return pd.DataFrame()
+
     if not data:
         return pd.DataFrame()
 
@@ -495,8 +507,12 @@ def get_token_volume_on_dexes(
             }}
 
         """
+    try:
+        data = query_graph(BQ_URL, query)
+    except BitQueryApiKeyException:
+        console.print("[red]Invalid API Key[/red]\n")
+        return pd.DataFrame()
 
-    data = query_graph(BQ_URL, query)
     if not data:
         return pd.DataFrame()
 
@@ -553,7 +569,11 @@ def get_ethereum_unique_senders(interval: str = "day", limit: int = 90) -> pd.Da
         }}
         """
 
-    data = query_graph(BQ_URL, query)
+    try:
+        data = query_graph(BQ_URL, query)
+    except BitQueryApiKeyException:
+        console.print("[red]Invalid API Key[/red]\n")
+        return pd.DataFrame()
     if not data:
         return pd.DataFrame()
 
@@ -602,7 +622,11 @@ def get_most_traded_pairs(
     }}
     }}
     """
-    data = query_graph(BQ_URL, query)
+    try:
+        data = query_graph(BQ_URL, query)
+    except BitQueryApiKeyException:
+        console.print("[red]Invalid API Key[/red]\n")
+        return pd.DataFrame()
     if not data:
         return pd.DataFrame()
 
@@ -659,7 +683,11 @@ def get_spread_for_crypto_pair(
       }}
     }}
     """
-    data = query_graph(BQ_URL, query)
+    try:
+        data = query_graph(BQ_URL, query)
+    except BitQueryApiKeyException:
+        console.print("[red]Invalid API Key[/red]\n")
+        return pd.DataFrame()
     if not data:
         return pd.DataFrame()
 
