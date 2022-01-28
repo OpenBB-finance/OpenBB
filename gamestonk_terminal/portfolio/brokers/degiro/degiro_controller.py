@@ -2,7 +2,6 @@ import argparse
 from typing import List
 
 from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.rich_config import console
 import gamestonk_terminal.config_terminal as config
 
 from gamestonk_terminal import feature_flags as gtff
@@ -30,7 +29,7 @@ class DegiroController(BaseController):
         "topnews",
         "update",
     ]
-    PATH = "/portfolio/bro/derigo/"
+    PATH = "/portfolio/bro/degiro/"
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
@@ -44,25 +43,9 @@ class DegiroController(BaseController):
 
     def print_help(self):
         """Print help."""
-        help_text = """
-    login        connect to degiro's api
-    logout       disconnect from degiro's api
+        DegiroView.help_display()
 
-    hold         view holdings
-    lookup       view search for a product by name
-
-    create       create an order
-    update       update an order
-    cancel       cancel an order using the id
-    pending      view pending orders
-
-    companynews  view news about a company with it's isin
-    lastnews     view latest news
-    topnews      view top news preview
-    """
-        console.print(text=help_text, menu="Portfolio - Brokers - Degiro")
-
-    def cancel(self, other_args: List[str]):
+    def call_cancel(self, other_args: List[str]):
         """Cancel an order using the `id`."""
 
         # PARSE ARGS
@@ -79,7 +62,7 @@ class DegiroController(BaseController):
 
         self.__degiro_view.cancel(ns_parser=ns_parser)
 
-    def companynews(self, other_args: List[str]):
+    def call_companynews(self, other_args: List[str]):
         """Display news related to a company using its ISIN."""
 
         # PARSE ARGS
@@ -96,7 +79,7 @@ class DegiroController(BaseController):
 
         self.__degiro_view.companynews(ns_parser=ns_parser)
 
-    def create(self, other_args: List[str]):
+    def call_create(self, other_args: List[str]):
         """Create an order."""
 
         # PARSE ARGS
@@ -174,7 +157,7 @@ class DegiroController(BaseController):
 
         self.__degiro_view.create(ns_parser=ns_parser)
 
-    def hold(self, other_args):
+    def call_hold(self, other_args):
         """Display held products."""
 
         # PARSE ARGS
@@ -186,7 +169,7 @@ class DegiroController(BaseController):
 
         self.__degiro_view.hold(ns_parser=ns_parser)
 
-    def lastnews(self, other_args: List[str]):
+    def call_lastnews(self, other_args: List[str]):
         """Display latest news."""
 
         # PARSE ARGS
@@ -206,7 +189,7 @@ class DegiroController(BaseController):
 
         self.__degiro_view.lastnews(ns_parser=ns_parser)
 
-    def login(self, other_args: List[str]):
+    def call_login(self, other_args: List[str]):
         """Connect to Degiro's API."""
 
         # PARSE ARGS
@@ -246,7 +229,7 @@ class DegiroController(BaseController):
 
         self.__degiro_view.login(ns_parser=ns_parser)
 
-    def logout(self, other_args: List[str]):
+    def call_logout(self, other_args: List[str]):
         """Log out from Degiro's API."""
 
         # PARSE ARGS
@@ -258,7 +241,7 @@ class DegiroController(BaseController):
 
         self.__degiro_view.logout(ns_parser=ns_parser)
 
-    def lookup(self, other_args: List[str]):
+    def call_lookup(self, other_args: List[str]):
         """Search for products by their name."""
 
         # PARSING ARGS
@@ -289,7 +272,7 @@ class DegiroController(BaseController):
 
         self.__degiro_view.lookup(ns_parser=ns_parser)
 
-    def pending(self, other_args: List[str]):
+    def call_pending(self, other_args: List[str]):
         """Display pending orders."""
 
         # PARSING ARGS
@@ -301,7 +284,7 @@ class DegiroController(BaseController):
 
         self.__degiro_view.pending(ns_parser=ns_parser)
 
-    def topnews(self, other_args: List[str]):
+    def call_topnews(self, other_args: List[str]):
         """Display top news."""
 
         # PARSING ARGS
@@ -313,7 +296,7 @@ class DegiroController(BaseController):
 
         self.__degiro_view.topnews(ns_parser=ns_parser)
 
-    def update(self, other_args: List[str]):
+    def call_update(self, other_args: List[str]):
         """Update an order."""
 
         # PARSING ARGS
