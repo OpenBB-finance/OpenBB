@@ -1,0 +1,7 @@
+Mscore Sub Stats:
+
+MSCORE:  -1.00 (high chance of fraud)
+ZSCORE:  0.10 (high chance of bankruptcy) 
+
+McKee:  0.20 (low chance of bankruptcy) 
+
