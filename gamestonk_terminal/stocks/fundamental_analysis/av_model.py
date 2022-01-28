@@ -1,19 +1,24 @@
 """Alpha Vantage Model"""
 __docformat__ = "numpy"
 
-from typing import Dict, Tuple, List
+import logging
+from typing import Dict, List, Tuple
 
-import requests
-
-from alpha_vantage.fundamentaldata import FundamentalData
-import pandas as pd
 import numpy as np
-from gamestonk_terminal.stocks.fundamental_analysis.fa_helper import clean_df_index
-from gamestonk_terminal.helper_funcs import long_number_format
+import pandas as pd
+import requests
+from alpha_vantage.fundamentaldata import FundamentalData
+
 from gamestonk_terminal import config_terminal as cfg
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_funcs import long_number_format
 from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.stocks.fundamental_analysis.fa_helper import clean_df_index
+
+logger = logging.getLogger(__name__)
 
 
+@log_start_end(log=logger)
 def get_overview(ticker: str) -> pd.DataFrame:
     """Get alpha vantage company overview
 
@@ -70,6 +75,7 @@ def get_overview(ticker: str) -> pd.DataFrame:
     return pd.DataFrame()
 
 
+@log_start_end(log=logger)
 def get_key_metrics(ticker: str) -> pd.DataFrame:
     """Get key metrics from overview
 
@@ -122,6 +128,7 @@ def get_key_metrics(ticker: str) -> pd.DataFrame:
     return pd.DataFrame()
 
 
+@log_start_end(log=logger)
 def get_income_statements(
     ticker: str, number: int, quarterly: bool = False
 ) -> pd.DataFrame:
@@ -163,6 +170,7 @@ def get_income_statements(
     return pd.DataFrame()
 
 
+@log_start_end(log=logger)
 def get_balance_sheet(
     ticker: str, number: int, quarterly: bool = False
 ) -> pd.DataFrame:
@@ -204,6 +212,7 @@ def get_balance_sheet(
     return pd.DataFrame()
 
 
+@log_start_end(log=logger)
 def get_cash_flow(ticker: str, number: int, quarterly: bool = False) -> pd.DataFrame:
     """Get cash flows for company
 
@@ -243,6 +252,7 @@ def get_cash_flow(ticker: str, number: int, quarterly: bool = False) -> pd.DataF
     return pd.DataFrame()
 
 
+@log_start_end(log=logger)
 def get_earnings(ticker: str, quarterly: bool = False) -> pd.DataFrame:
     """Get earnings calendar for ticker
 
@@ -302,6 +312,7 @@ def get_earnings(ticker: str, quarterly: bool = False) -> pd.DataFrame:
     return pd.DataFrame()
 
 
+@log_start_end(log=logger)
 def df_values(df: pd.DataFrame, item: str) -> List[int]:
     """Clean the values from the df
 
@@ -322,6 +333,7 @@ def df_values(df: pd.DataFrame, item: str) -> List[int]:
     return values.tolist()
 
 
+@log_start_end(log=logger)
 def get_fraud_ratios(ticker: str) -> Tuple[Dict[str, float], float, float]:
     """Get fraud ratios based on fundamentals
 

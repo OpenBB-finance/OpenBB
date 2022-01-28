@@ -1,4 +1,5 @@
 """Withdrawal Fees view"""
+import logging
 import os
 
 from gamestonk_terminal.cryptocurrency.overview.withdrawalfees_model import (
@@ -6,10 +7,14 @@ from gamestonk_terminal.cryptocurrency.overview.withdrawalfees_model import (
     get_overall_exchange_withdrawal_fees,
     get_overall_withdrawal_fees,
 )
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.rich_config import console
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def display_overall_withdrawal_fees(top: int, export: str = "") -> None:
     """Top coins withdrawal fees
     [Source: https://withdrawalfees.com/]
@@ -45,6 +50,7 @@ def display_overall_withdrawal_fees(top: int, export: str = "") -> None:
         )
 
 
+@log_start_end(log=logger)
 def display_overall_exchange_withdrawal_fees(export: str) -> None:
     """Exchange withdrawal fees
     [Source: https://withdrawalfees.com/]
@@ -78,6 +84,7 @@ def display_overall_exchange_withdrawal_fees(export: str) -> None:
         )
 
 
+@log_start_end(log=logger)
 def display_crypto_withdrawal_fees(symbol: str, export: str = "") -> None:
     """Coin withdrawal fees per exchange
     [Source: https://withdrawalfees.com/]

@@ -1,23 +1,28 @@
 """ KNN Prediction View"""
 __docformat__ = "numpy"
 
+import logging
 from typing import Union
 
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 
-from gamestonk_terminal.common.prediction_techniques.pred_helper import (
-    print_pretty_prediction,
-    plot_data_predictions,
-)
 from gamestonk_terminal.common.prediction_techniques import knn_model
+from gamestonk_terminal.common.prediction_techniques.pred_helper import (
+    plot_data_predictions,
+    print_pretty_prediction,
+)
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.rich_config import console
+
+logger = logging.getLogger(__name__)
 
 register_matplotlib_converters()
 
 # pylint:disable=too-many-arguments
 
 
+@log_start_end(log=logger)
 def display_k_nearest_neighbors(
     ticker: str,
     data: Union[pd.DataFrame, pd.Series],

@@ -1,14 +1,20 @@
 """ FINRA Model """
 __docformat__ = "numpy"
 
-from typing import List, Tuple, Dict
-import requests
+import logging
+from typing import Dict, List, Tuple
+
 import pandas as pd
+import requests
 from scipy import stats
 
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.rich_config import console
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def getFINRAweeks(tier: str, is_ats: bool) -> List:
     """Get FINRA weeks. [Source: FINRA]
 
@@ -55,6 +61,7 @@ def getFINRAweeks(tier: str, is_ats: bool) -> List:
     return response.json() if response.status_code == 200 else list()
 
 
+@log_start_end(log=logger)
 def getFINRAdata_offset(
     weekStartDate: str, tier: str, ticker: str, is_ats: bool, offset: int
 ) -> requests.Response:
@@ -126,6 +133,7 @@ def getFINRAdata_offset(
     )
 
 
+@log_start_end(log=logger)
 def getFINRAdata(
     weekStartDate: str, tier: str, ticker: str, is_ats: bool
 ) -> Tuple[int, List]:
@@ -201,6 +209,7 @@ def getFINRAdata(
     )
 
 
+@log_start_end(log=logger)
 def getATSdata(num_tickers_to_filter: int, tier_ats: str) -> Tuple[pd.DataFrame, Dict]:
     """Get all FINRA ATS data, and parse most promising tickers based on linear regression
 
@@ -278,6 +287,7 @@ def getATSdata(num_tickers_to_filter: int, tier_ats: str) -> Tuple[pd.DataFrame,
     return df_ats, d_ats_reg
 
 
+@log_start_end(log=logger)
 def getTickerFINRAdata(ticker: str) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """Get all FINRA data associated with a ticker
 

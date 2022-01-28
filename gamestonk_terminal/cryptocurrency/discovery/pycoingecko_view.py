@@ -1,14 +1,20 @@
 """CoinGecko view"""
 __docformat__ = "numpy"
 
+import logging
 import os
+
 from pandas.plotting import register_matplotlib_converters
+
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
     very_long_number_formatter,
 )
 from gamestonk_terminal.cryptocurrency.discovery import pycoingecko_model
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.rich_config import console
+
+logger = logging.getLogger(__name__)
 
 register_matplotlib_converters()
 
@@ -26,6 +32,7 @@ COINS_COLUMNS = [
 ]
 
 
+@log_start_end(log=logger)
 def display_coins(category: str, top: int, sortby: str, export: str) -> None:
     """Display top coins [Source: CoinGecko]
 
@@ -80,6 +87,7 @@ def display_coins(category: str, top: int, sortby: str, export: str) -> None:
         console.print("\nUnable to retrieve data from CoinGecko.\n")
 
 
+@log_start_end(log=logger)
 def display_gainers(period: str, top: int, sortby: str, export: str) -> None:
     """Shows Largest Gainers - coins which gain the most in given period. [Source: CoinGecko]
 
@@ -119,6 +127,7 @@ def display_gainers(period: str, top: int, sortby: str, export: str) -> None:
         console.print("\nUnable to retrieve data from CoinGecko.\n")
 
 
+@log_start_end(log=logger)
 def display_losers(period: str, top: int, export: str, sortby: str) -> None:
     """Shows Largest Losers - coins which lost the most in given period of time. [Source: CoinGecko]
 
@@ -158,6 +167,7 @@ def display_losers(period: str, top: int, export: str, sortby: str) -> None:
         console.print("\nUnable to retrieve data from CoinGecko.\n")
 
 
+@log_start_end(log=logger)
 def display_trending(export: str) -> None:
     """Display trending coins [Source: CoinGecko]
 

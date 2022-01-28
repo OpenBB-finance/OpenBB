@@ -1,43 +1,49 @@
 """Yfinance options view"""
 __docformat__ = "numpy"
 
-import os
+import logging
 import math
+import os
 from bisect import bisect_left
-from typing import List, Dict, Any
-from datetime import datetime, date, timedelta
+from datetime import date, datetime, timedelta
+from typing import Any, Dict, List
 
-import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
+import matplotlib.pyplot as plt
 import matplotlib.ticker as mtick
-from scipy.stats import binom
 import numpy as np
 import pandas as pd
 import seaborn as sns
 import yfinance as yf
 from openpyxl import Workbook
+from scipy.stats import binom
 
 import gamestonk_terminal.config_plot as cfp
 import gamestonk_terminal.feature_flags as gtff
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
-    export_data,
-    plot_autoscale,
     excel_columns,
-    print_rich_table,
+    export_data,
     get_rf,
+    plot_autoscale,
+    print_rich_table,
 )
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.stocks.options import op_helpers, yfinance_model
+from gamestonk_terminal.stocks.options.op_helpers import Option
 from gamestonk_terminal.stocks.options.yfinance_model import (
     generate_data,
     get_option_chain,
     get_price,
 )
-from gamestonk_terminal.rich_config import console
-from gamestonk_terminal.stocks.options.op_helpers import Option
 
 # pylint: disable=C0302
 
 
+logger = logging.getLogger(__name__)
+
+
+@log_start_end(log=logger)
 def plot_oi(
     ticker: str,
     expiry: str,
@@ -141,6 +147,7 @@ def plot_oi(
     console.print("")
 
 
+@log_start_end(log=logger)
 def plot_vol(
     ticker: str,
     expiry: str,
@@ -236,6 +243,7 @@ def plot_vol(
     console.print("")
 
 
+@log_start_end(log=logger)
 def plot_volume_open_interest(
     ticker: str,
     expiry: str,
@@ -422,6 +430,7 @@ def plot_volume_open_interest(
     console.print("")
 
 
+@log_start_end(log=logger)
 def plot_plot(
     ticker: str, expiration: str, put: bool, x: str, y: str, custom: str, export: str
 ) -> None:
@@ -495,6 +504,7 @@ def plot_plot(
     console.print("")
 
 
+@log_start_end(log=logger)
 def plot_payoff(
     current_price: float,
     options: List[Dict[Any, Any]],
@@ -522,6 +532,7 @@ def plot_payoff(
     console.print("")
 
 
+@log_start_end(log=logger)
 def show_parity(
     ticker: str, exp: str, put: bool, ask: bool, mini: float, maxi: float, export: str
 ) -> None:
@@ -625,6 +636,7 @@ def show_parity(
     console.print("")
 
 
+@log_start_end(log=logger)
 def risk_neutral_vals(
     ticker: str,
     exp: str,
@@ -691,6 +703,7 @@ def risk_neutral_vals(
     console.print("")
 
 
+@log_start_end(log=logger)
 def plot_expected_prices(
     und_vals: List[List[float]], p: float, ticker: str, expiration: str
 ) -> None:
@@ -721,6 +734,7 @@ def plot_expected_prices(
     plt.show()
 
 
+@log_start_end(log=logger)
 def export_binomial_calcs(
     up: float,
     prob_up: float,
@@ -787,6 +801,7 @@ def export_binomial_calcs(
     )
 
 
+@log_start_end(log=logger)
 def show_binom(
     ticker: str,
     expiration: str,
@@ -895,6 +910,7 @@ def show_binom(
     )
 
 
+@log_start_end(log=logger)
 def display_vol_surface(ticker: str, export: str = "", z: str = "IV"):
     """Display vol surface
 
@@ -942,6 +958,7 @@ def display_vol_surface(ticker: str, export: str = "", z: str = "IV"):
     console.print("")
 
 
+@log_start_end(log=logger)
 def show_greeks(
     ticker: str,
     div_cont: float,

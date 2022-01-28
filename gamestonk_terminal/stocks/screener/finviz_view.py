@@ -1,19 +1,19 @@
 """ Finviz View """
 __docformat__ = "numpy"
 
-from typing import List
-import os
 import difflib
-import pandas as pd
-from gamestonk_terminal.helper_funcs import (
-    export_data,
-    print_rich_table,
-)
-from gamestonk_terminal.stocks.screener.finviz_model import (
-    get_screener_data,
-)
-from gamestonk_terminal.rich_config import console
+import logging
+import os
+from typing import List
 
+import pandas as pd
+
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
+from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.stocks.screener.finviz_model import get_screener_data
+
+logger = logging.getLogger(__name__)
 
 d_cols_to_sort = {
     "overview": [
@@ -118,6 +118,7 @@ d_cols_to_sort = {
 }
 
 
+@log_start_end(log=logger)
 def screener(
     loaded_preset: str,
     data_type: str,

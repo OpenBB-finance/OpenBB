@@ -2,13 +2,13 @@
 __docformat__ = "numpy"
 
 import datetime
+import logging
 import os
 import warnings
 from typing import Union
 
-import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
-
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
@@ -21,6 +21,7 @@ from gamestonk_terminal.common.prediction_techniques.pred_helper import (
     print_pretty_prediction,
 )
 from gamestonk_terminal.config_plot import PLOT_DPI
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
     export_data,
     get_next_stock_market_days,
@@ -29,12 +30,15 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal.rich_config import console
 
+logger = logging.getLogger(__name__)
+
 register_matplotlib_converters()
 
 warnings.filterwarnings("ignore")
 # pylint:disable=too-many-arguments
 
 
+@log_start_end(log=logger)
 def display_exponential_smoothing(
     ticker: str,
     values: Union[pd.DataFrame, pd.Series],

@@ -1,11 +1,17 @@
+import configparser
+import logging
+import os
 from datetime import datetime
 from typing import Dict, List
-import os
-import configparser
+
+import pandas as pd
 import requests
 from bs4 import BeautifulSoup
-import pandas as pd
+
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.rich_config import console
+
+logger = logging.getLogger(__name__)
 
 presets_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
 
@@ -526,6 +532,7 @@ d_SectorSubsectorIndustry = {
 }
 
 
+@log_start_end(log=logger)
 def check_valid_range(
     category: str, field: str, val: str, min_range: int, max_range: int
 ) -> str:
@@ -566,6 +573,7 @@ def check_valid_range(
     return error
 
 
+@log_start_end(log=logger)
 def check_dates(d_date: Dict) -> str:
     """Check valid dates
 
@@ -633,6 +641,7 @@ def check_dates(d_date: Dict) -> str:
     return error
 
 
+@log_start_end(log=logger)
 def check_valid_multiple(category: str, field: str, val: str, multiple: int) -> str:
     """Check valid value being a multiple
 
@@ -666,6 +675,7 @@ def check_valid_multiple(category: str, field: str, val: str, multiple: int) -> 
     return error
 
 
+@log_start_end(log=logger)
 def check_boolean_list(category: str, d_data: Dict, l_fields_to_check: List) -> str:
     """Check list of fields being bools
 
@@ -692,6 +702,7 @@ def check_boolean_list(category: str, d_data: Dict, l_fields_to_check: List) -> 
     return error
 
 
+@log_start_end(log=logger)
 def check_in_list(
     category: str, field: str, val: int, l_possible_vals: List[str]
 ) -> str:
@@ -725,6 +736,7 @@ def check_in_list(
     return error
 
 
+@log_start_end(log=logger)
 def check_int_in_list(
     category: str, field: str, val: str, l_possible_vals: List[int]
 ) -> str:
@@ -764,6 +776,7 @@ def check_int_in_list(
     return error
 
 
+@log_start_end(log=logger)
 def check_open_insider_general(d_general) -> str:
     """Check valid open insider general
 
@@ -796,6 +809,7 @@ def check_open_insider_general(d_general) -> str:
     return error
 
 
+@log_start_end(log=logger)
 def check_open_insider_date(d_date: Dict) -> str:
     """Check valid open insider date
 
@@ -821,6 +835,7 @@ def check_open_insider_date(d_date: Dict) -> str:
     return error
 
 
+@log_start_end(log=logger)
 def check_open_insider_transaction_filing(d_transaction_filing: Dict) -> str:
     """Check valid open insider transaction filing
 
@@ -876,6 +891,7 @@ def check_open_insider_transaction_filing(d_transaction_filing: Dict) -> str:
     return error
 
 
+@log_start_end(log=logger)
 def check_open_insider_industry(d_industry: Dict) -> str:
     """Check valid open insider industry
 
@@ -896,6 +912,7 @@ def check_open_insider_industry(d_industry: Dict) -> str:
     return ""
 
 
+@log_start_end(log=logger)
 def check_open_insider_insider_title(d_insider_title: Dict) -> str:
     """Check valid open insider title
 
@@ -928,6 +945,7 @@ def check_open_insider_insider_title(d_insider_title: Dict) -> str:
     return error
 
 
+@log_start_end(log=logger)
 def check_open_insider_others(d_others: Dict) -> str:
     """Check valid open insider others
 
@@ -957,6 +975,7 @@ def check_open_insider_others(d_others: Dict) -> str:
     return error
 
 
+@log_start_end(log=logger)
 def check_open_insider_company_totals(d_company_totals: Dict) -> str:
     """Check valid open insider company totals
 
@@ -1013,6 +1032,7 @@ def check_open_insider_company_totals(d_company_totals: Dict) -> str:
     return error
 
 
+@log_start_end(log=logger)
 def check_open_insider_screener(
     d_general: Dict,
     d_date: Dict,
@@ -1058,6 +1078,7 @@ def check_open_insider_screener(
     return error
 
 
+@log_start_end(log=logger)
 def get_open_insider_link(preset_loaded: str) -> str:
     """Get open insider link
 
@@ -1226,6 +1247,7 @@ def get_open_insider_link(preset_loaded: str) -> str:
     return link
 
 
+@log_start_end(log=logger)
 def get_open_insider_data(url: str, has_company_name: bool) -> pd.DataFrame:
     """Get open insider link
 

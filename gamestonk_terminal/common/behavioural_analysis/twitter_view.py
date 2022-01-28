@@ -1,23 +1,26 @@
 """Twitter view"""
 __docformat__ = "numpy"
 
+import logging
 import os
 from datetime import datetime, timedelta
-
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-
 from dateutil import parser as dparse
 
+import gamestonk_terminal.config_plot as cfg_plot
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.common.behavioural_analysis import twitter_model
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
-import gamestonk_terminal.config_plot as cfg_plot
 from gamestonk_terminal.rich_config import console
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def display_inference(ticker: str, num: int, export: str = ""):
     """Infer sentiment from past n tweets
 
@@ -65,6 +68,7 @@ def display_inference(ticker: str, num: int, export: str = ""):
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "infer", df_tweets)
 
 
+@log_start_end(log=logger)
 def display_sentiment(ticker: str, n_tweets: int, n_days_past: int, export: str = ""):
     """Plot sentiments from ticker
 

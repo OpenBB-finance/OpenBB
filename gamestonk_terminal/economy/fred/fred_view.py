@@ -1,27 +1,33 @@
 """ Fred View """
 __docformat__ = "numpy"
 
+import logging
 import os
 import textwrap
 from typing import Dict
+
 import matplotlib.pyplot as plt
-import pandas as pd
 import numpy as np
+import pandas as pd
 from pandas.plotting import register_matplotlib_converters
-from gamestonk_terminal.rich_config import console
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_plot import PLOT_DPI
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.economy.fred import fred_model
 from gamestonk_terminal.helper_funcs import (
     export_data,
     plot_autoscale,
     print_rich_table,
 )
+from gamestonk_terminal.rich_config import console
+
+logger = logging.getLogger(__name__)
 
 register_matplotlib_converters()
 
 
+@log_start_end(log=logger)
 def format_units(num: int) -> str:
     """Helper to format number into string with K,M,B,T.  Number will be in form of 10^n"""
     number_zeros = int(np.log10(num))
@@ -38,6 +44,7 @@ def format_units(num: int) -> str:
     return f"10^{number_zeros}"
 
 
+@log_start_end(log=logger)
 def notes(series_term: str, num: int):
     """Print Series notes. [Source: FRED]
     Parameters
@@ -66,6 +73,7 @@ def notes(series_term: str, num: int):
     console.print("")
 
 
+@log_start_end(log=logger)
 def display_fred_series(
     d_series: Dict[str, Dict[str, str]],
     start_date: str,

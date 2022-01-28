@@ -1,6 +1,7 @@
 """Yahoo Finance Comparison Model"""
 __docformat__ = "numpy"
 
+import logging
 from datetime import datetime, timedelta
 from typing import List
 
@@ -10,9 +11,12 @@ import yfinance as yf
 from sklearn.manifold import TSNE
 from sklearn.preprocessing import normalize
 
-from gamestonk_terminal.config_plot import PLOT_DPI
-from gamestonk_terminal.helper_funcs import plot_autoscale
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.config_plot import PLOT_DPI
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_funcs import plot_autoscale
+
+logger = logging.getLogger(__name__)
 
 d_candle_types = {
     "o": "Open",
@@ -24,6 +28,7 @@ d_candle_types = {
 }
 
 
+@log_start_end(log=logger)
 def get_historical(
     similar_tickers: List[str],
     start: str = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
@@ -52,6 +57,7 @@ def get_historical(
     ][similar_tickers]
 
 
+@log_start_end(log=logger)
 def get_1y_sp500() -> pd.DataFrame:
     """
     Gets the last year of Adj Close prices for all current SP 500 stocks.
@@ -71,6 +77,7 @@ def get_1y_sp500() -> pd.DataFrame:
 # pylint:disable=E1137,E1101
 
 
+@log_start_end(log=logger)
 def get_sp500_comps_tsne(
     ticker: str, lr: int = 200, no_plot: bool = False, num_tickers: int = 10
 ) -> List[str]:

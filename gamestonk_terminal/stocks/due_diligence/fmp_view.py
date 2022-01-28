@@ -1,12 +1,18 @@
 """ Financial Modeling Prep View """
 __docformat__ = "numpy"
 
+import logging
 import os
+
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import export_data, print_rich_table
-from gamestonk_terminal.stocks.due_diligence import fmp_model
 from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.stocks.due_diligence import fmp_model
+
+logger = logging.getLogger(__name__)
 
 
+@log_start_end(log=logger)
 def rating(ticker: str, num: int, export: str):
     """Display ratings for a given ticker. [Source: Financial Modeling Prep]
 

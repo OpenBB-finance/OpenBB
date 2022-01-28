@@ -1,25 +1,31 @@
 """ DCF View """
 __docformat__ = "numpy"
 
-from typing import List, Union, Dict, Any
+import logging
 from datetime import datetime
+from typing import Any, Dict, List, Union
 
-from openpyxl.styles.numbers import FORMAT_PERCENTAGE_00
+import numpy as np
+import pandas as pd
+import yfinance as yf
 from openpyxl import Workbook
 from openpyxl.styles import Font
+from openpyxl.styles.numbers import FORMAT_PERCENTAGE_00
 from sklearn.linear_model import LinearRegression
-import yfinance as yf
-import pandas as pd
-import numpy as np
 
-from gamestonk_terminal.stocks.fundamental_analysis import dcf_model, dcf_static
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import get_rf
 from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.stocks.fundamental_analysis import dcf_model, dcf_static
 
 # pylint: disable=C0302
 
 
+logger = logging.getLogger(__name__)
+
+
 class CreateExcelFA:
+    @log_start_end(log=logger)
     def __init__(
         self,
         ticker: str,
@@ -77,6 +83,7 @@ class CreateExcelFA:
             "r_ff": dcf_model.get_fama_coe(self.info["ticker"]),
         }
 
+    @log_start_end(log=logger)
     def create_workbook(self):
         self.ws[1].title = "Financials"
         self.ws[1].column_dimensions["A"].width = 25
@@ -110,6 +117,7 @@ class CreateExcelFA:
                 break
             i += 1
 
+    @log_start_end(log=logger)
     def get_data(self, statement: str, row: int, header: bool) -> pd.DataFrame:
         df, rounding = dcf_model.create_dataframe(self.info["ticker"], statement)
         if df.empty:
@@ -166,6 +174,7 @@ class CreateExcelFA:
 
         return df
 
+    @log_start_end(log=logger)
     def add_estimates(self):
         last_year = self.df["BS"].columns[-1]  # Replace with columns in DF
         col = self.info["len_data"] + 1
@@ -340,6 +349,7 @@ class CreateExcelFA:
             font=dcf_static.red,
         )
 
+    @log_start_end(log=logger)
     def create_dcf(self):
         self.ws[2]["A5"] = "Net Income"
         self.ws[2]["A6"] = "Change in NWC"
@@ -583,6 +593,7 @@ class CreateExcelFA:
             self.ws[2], "B18", float(self.data["info"]["regularMarketPrice"])
         )
 
+    @log_start_end(log=logger)
     def create_header(self, ws: Workbook):
         for i in range(10):
             dcf_model.set_cell(
@@ -602,6 +613,7 @@ class CreateExcelFA:
             ws, "A2", f"DCF for {self.info['ticker']} generated on {self.data['now']}"
         )
 
+    @log_start_end(log=logger)
     def run_audit(self):
         start = 67
         for i, value in enumerate(dcf_static.sum_rows):
@@ -750,6 +762,7 @@ class CreateExcelFA:
             True,
         )
 
+    @log_start_end(log=logger)
     def get_linear(self, x_ind: str, y_ind: str, no_neg: bool = False):
         x_type = "IS" if x_ind in self.df["IS"].index else "BS"
         y_type = "IS" if y_ind in self.df["IS"].index else "BS"
@@ -842,6 +855,7 @@ class CreateExcelFA:
 
         self.letter += 1
 
+    @log_start_end(log=logger)
     def get_sum(
         self,
         row: Union[int, str],
@@ -868,6 +882,7 @@ class CreateExcelFA:
         if text:
             self.custom_exp(row, text)
 
+    @log_start_end(log=logger)
     def title_to_row(self, title: str) -> int:
         df = (
             self.df["IS"]
@@ -889,6 +904,7 @@ class CreateExcelFA:
         )
         return ind
 
+    @log_start_end(log=logger)
     def custom_exp(
         self, row: Union[int, str], text: str, ws: int = 1, column: str = None
     ):
@@ -918,6 +934,7 @@ class CreateExcelFA:
         dcf_model.set_cell(self.ws[3], f"B{self.letter+4}", text)
         self.letter += 1
 
+    @log_start_end(log=logger)
     def add_ratios(self):
         self.ws[4] = self.wb.create_sheet("Ratios")
         self.create_header(self.ws[4])

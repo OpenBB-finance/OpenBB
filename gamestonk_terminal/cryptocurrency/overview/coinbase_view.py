@@ -1,14 +1,22 @@
 """Coinbase view"""
 __docformat__ = "numpy"
 
+import logging
 import os
 
-from gamestonk_terminal.helper_funcs import export_data
 from gamestonk_terminal.cryptocurrency.overview import coinbase_model
-from gamestonk_terminal.helper_funcs import long_number_format, print_rich_table
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_funcs import (
+    export_data,
+    long_number_format,
+    print_rich_table,
+)
 from gamestonk_terminal.rich_config import console
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def display_trading_pairs(top: int, sortby: str, descend: bool, export: str) -> None:
     """Displays a list of available currency pairs for trading. [Source: Coinbase]
 

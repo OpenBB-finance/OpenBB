@@ -1,13 +1,19 @@
 """SentimentInvestor Model"""
 __docformat__ = "numpy"
 
-from typing import Union, Dict
-import requests
+import logging
+from typing import Dict, Union
+
 import pandas as pd
+import requests
 
 from gamestonk_terminal import config_terminal as cfg
+from gamestonk_terminal.decorators import log_start_end
+
+logger = logging.getLogger(__name__)
 
 
+@log_start_end(log=logger)
 def get_historical(ticker: str, start: str, end: str, number: int) -> pd.DataFrame:
     """Get hour-level sentiment data for the chosen ticker
 
