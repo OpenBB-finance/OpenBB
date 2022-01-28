@@ -7,8 +7,7 @@ from datetime import datetime, timedelta
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.rich_config import console
 
-from gamestonk_terminal.parent_classes import BaseController
-from gamestonk_terminal.decorators import try_except
+from gamestonk_terminal.parent_classes import StockController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -28,12 +27,11 @@ from gamestonk_terminal.common.behavioural_analysis import (
     twitter_view,
     sentimentinvestor_view,
 )
-from gamestonk_terminal.stocks import stocks_helper
 
 # pylint:disable=R0904,C0302
 
 
-class BehaviouralAnalysisController(BaseController):
+class BehaviouralAnalysisController(StockController):
     """Behavioural Analysis Controller class"""
 
     CHOICES_COMMANDS = [
@@ -113,51 +111,6 @@ class BehaviouralAnalysisController(BaseController):
 
         """
         console.print(text=help_text, menu="Stocks - Behavioural Analysis")
-
-    @try_except
-    def call_load(self, other_args: List[str]):
-        """Process load command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="load",
-            description="Load stock ticker to perform analysis on. When the data "
-            + "source is 'yf', an Indian ticker can be loaded by using '.NS' at the end,"
-            + " e.g. 'SBIN.NS'. See available market in"
-            + " https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html.",
-        )
-        parser.add_argument(
-            "-t",
-            "--ticker",
-            action="store",
-            dest="ticker",
-            required="-h" not in other_args,
-            help="Stock ticker",
-        )
-        parser.add_argument(
-            "-s",
-            "--start",
-            type=valid_date,
-            default=(datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
-            dest="start",
-            help="The starting date (format YYYY-MM-DD) of the stock",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-t")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            df_stock_candidate = stocks_helper.load(
-                ns_parser.ticker,
-                ns_parser.start,
-            )
-            if not df_stock_candidate.empty:
-                self.start = ns_parser.start
-                if "." in ns_parser.ticker:
-                    self.ticker = ns_parser.ticker.upper().split(".")[0]
-                else:
-                    self.ticker = ns_parser.ticker.upper()
-            else:
-                console.print("Provide a valid ticker")
 
     def call_watchlist(self, other_args: List[str]):
         """Process watchlist command"""
