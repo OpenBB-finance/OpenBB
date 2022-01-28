@@ -125,13 +125,13 @@ def test_print_help():
     "an_input, expected_queue",
     [
         ("", []),
-        ("/help", ['quit', 'quit', 'quit', 'help']),
+        ("/help", ["quit", "quit", "quit", "help"]),
         ("help/help", ["help"]),
         ("q", ["quit"]),
         ("h", []),
         (
             "r",
-            ['quit', 'quit', 'quit', 'reset', 'portfolio', 'bro', 'degiro'],
+            ["quit", "quit", "quit", "reset", "portfolio", "bro", "degiro"],
         ),
     ],
 )
@@ -160,22 +160,22 @@ def test_call_cls(mocker):
         (
             "call_exit",
             [],
-            ['quit', 'quit', 'quit', 'quit'],
+            ["quit", "quit", "quit", "quit"],
         ),
-        ("call_exit", ["help"], ['quit', 'quit', 'quit', 'quit', 'help']),
-        ("call_home", [], ['quit', 'quit', 'quit']),
+        ("call_exit", ["help"], ["quit", "quit", "quit", "quit", "help"]),
+        ("call_home", [], ["quit", "quit", "quit"]),
         ("call_help", [], []),
         ("call_quit", [], ["quit"]),
         ("call_quit", ["help"], ["quit", "help"]),
         (
             "call_reset",
             [],
-            ['quit', 'quit', 'quit', 'reset', 'portfolio', 'bro', 'degiro'],
+            ["quit", "quit", "quit", "reset", "portfolio", "bro", "degiro"],
         ),
         (
             "call_reset",
             ["help"],
-            ['quit', 'quit', 'quit', 'reset', 'portfolio', 'bro', 'degiro', 'help'],
+            ["quit", "quit", "quit", "reset", "portfolio", "bro", "degiro", "help"],
         ),
     ],
 )
@@ -213,8 +213,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             "call_create",
             [
                 "--action=buy",
-                "--symbol=MOCK_SYMBOL"
-                "--price=1",
+                "--symbol=MOCK_SYMBOL" "--price=1",
                 "--size=2",
             ],
             "DegiroView.create",
