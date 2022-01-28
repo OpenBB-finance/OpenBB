@@ -11,7 +11,7 @@ import yfinance as yf
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.rich_config import console
 
-from gamestonk_terminal.parent_classes import StockController
+from gamestonk_terminal.parent_classes import StockBaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.common import newsapi_view
 from gamestonk_terminal.helper_funcs import (
@@ -31,7 +31,7 @@ from gamestonk_terminal.common.quantitative_analysis import qa_view
 logger = logging.getLogger(__name__)
 
 
-class StocksController(StockController):
+class StocksController(StockBaseController):
     """Stocks Controller class"""
 
     CHOICES_COMMANDS = [

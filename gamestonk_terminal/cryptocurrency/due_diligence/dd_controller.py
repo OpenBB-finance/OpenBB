@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.rich_config import console
-from gamestonk_terminal.parent_classes import BaseController
+from gamestonk_terminal.parent_classes import CryptoBaseController
 from gamestonk_terminal.cryptocurrency.due_diligence import (
     coinglass_model,
     glassnode_model,
@@ -34,14 +34,11 @@ from gamestonk_terminal.helper_funcs import (
     check_positive,
     valid_date,
 )
-from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import (
-    load,
-)
 
 FILTERS_VS_USD_BTC = ["usd", "btc"]
 
 
-class DueDiligenceController(BaseController):
+class DueDiligenceController(CryptoBaseController):
     """Due Diligence Controller class"""
 
     CHOICES_COMMANDS = ["load", "oi", "active", "change", "nonzero", "eb"]
@@ -95,8 +92,7 @@ class DueDiligenceController(BaseController):
         for _, value in self.SPECIFIC_CHOICES.items():
             self.controller_choices.extend(value)
 
-        self.current_coin = coin
-        self.current_df = pd.DataFrame()
+        self.coin = coin
         self.source = source
         self.symbol = symbol
         self.coin_map_df = coin_map_df
@@ -142,7 +138,7 @@ class DueDiligenceController(BaseController):
         help_text = f"""[cmds]
     load        load a specific cryptocurrency for analysis
 
-[param]Coin: [/param]{self.current_coin}
+[param]Coin: [/param]{self.coin}
 [param]Source: [/param]{source_txt}
 
 [src]Glassnode[/src]
@@ -181,58 +177,9 @@ class DueDiligenceController(BaseController):
 
     def custom_reset(self):
         """Class specific component of reset command"""
-        if self.current_coin:
-            return ["crypto", f"load {self.current_coin} --source {self.source}"]
+        if self.coin:
+            return ["crypto", f"load {self.coin} --source {self.source}"]
         return []
-
-    def call_load(self, other_args: List[str]):
-        """Process load command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="load",
-            description="Load crypto currency to perform analysis on. "
-            "Available data sources are CoinGecko, CoinPaprika, Binance, Coinbase"
-            "By default main source used for analysis is CoinGecko (cg). To change it use --source flag",
-        )
-
-        parser.add_argument(
-            "-c",
-            "--coin",
-            help="Coin to get",
-            dest="coin",
-            type=str,
-            required="-h" not in other_args,
-        )
-
-        parser.add_argument(
-            "-s",
-            "--source",
-            help="Source of data",
-            dest="source",
-            choices=CRYPTO_SOURCES.keys(),
-            default="cg",
-            required=False,
-        )
-        if other_args and not other_args[0][0] == "-":
-            other_args.insert(0, "-c")
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-
-        if ns_parser:
-            source = ns_parser.source
-
-            for arg in ["--source", source]:
-                if arg in other_args:
-                    other_args.remove(arg)
-
-            self.current_coin, self.source, self.symbol, self.coin_map_df, _, _ = load(
-                coin=ns_parser.coin, source=ns_parser.source
-            )
-            if self.symbol:
-                console.print(
-                    f"\nLoaded {self.current_coin} from source {self.source}\n"
-                )
 
     def call_nonzero(self, other_args: List[str]):
         """Process nonzero command"""
@@ -843,7 +790,7 @@ class DueDiligenceController(BaseController):
         _, quotes = coinbase_model.show_available_pairs_for_given_symbol(coin)
         if len(quotes) < 0:
             console.print(
-                f"Couldn't find any quoted coins for provided symbol {self.current_coin}"
+                f"Couldn't find any quoted coins for provided symbol {self.coin}"
             )
 
         parser.add_argument(

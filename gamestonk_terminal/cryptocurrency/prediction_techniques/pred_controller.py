@@ -2,14 +2,13 @@
 __docformat__ = "numpy"
 # pylint: disable=R0902
 import argparse
-from datetime import datetime, timedelta
 from typing import List
 
 import pandas as pd
 import numpy as np
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.rich_config import console
-from gamestonk_terminal.parent_classes import BaseController
+from gamestonk_terminal.parent_classes import CryptoBaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
@@ -17,7 +16,6 @@ from gamestonk_terminal.helper_funcs import (
     valid_date,
     get_next_stock_market_days,
     EXPORT_ONLY_FIGURES_ALLOWED,
-    valid_date_in_past,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.common.prediction_techniques import (
@@ -35,7 +33,7 @@ from gamestonk_terminal.common.prediction_techniques import (
 from gamestonk_terminal.cryptocurrency import cryptocurrency_helpers as c_help
 
 
-class PredictionTechniquesController(BaseController):
+class PredictionTechniquesController(CryptoBaseController):
     """Prediction Techniques Controller class"""
 
     CHOICES_COMMANDS = [
@@ -70,14 +68,7 @@ class PredictionTechniquesController(BaseController):
 
         self.data = data
         self.coin = coin
-        self.resolution = "1D"
         self.target = "Close"
-        self.symbol = ""
-        self.current_currency = ""
-        self.source = ""
-        self.coin_map_df = pd.DataFrame()
-        self.current_interval = ""
-        self.price_str = ""
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
@@ -116,90 +107,6 @@ class PredictionTechniquesController(BaseController):
         if self.coin:
             return ["crypto", f"load {self.coin}", "pred"]
         return []
-
-    def call_load(self, other_args: List[str]):
-        """Process load command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="load",
-            description="Load crypto currency to perform analysis on."
-            "Available data sources are CoinGecko, CoinPaprika, Binance, Coinbase"
-            "By default main source used for analysis is CoinGecko (cg). To change it use --source flag",
-        )
-        parser.add_argument(
-            "-c",
-            "--coin",
-            help="Coin to get",
-            dest="coin",
-            type=str,
-            required="-h" not in other_args,
-        )
-        parser.add_argument(
-            "--source",
-            help="Source of data",
-            dest="source",
-            choices=("cp", "cg", "bin", "cb"),
-            default="cg",
-            required=False,
-        )
-        parser.add_argument(
-            "-s",
-            "--start",
-            type=valid_date_in_past,
-            default=(datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
-            dest="start",
-            help="The starting date (format YYYY-MM-DD) of the crypto",
-        )
-        parser.add_argument(
-            "--vs",
-            help="Quote currency (what to view coin vs)",
-            dest="vs",
-            default="usd",
-            type=str,
-        )
-        parser.add_argument(
-            "-r",
-            "--resolution",
-            default="1D",
-            type=str,
-            dest="resolution",
-            help="How often to resample data.",
-            choices=c_help.INTERVALS,
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-c")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        delta = (datetime.now() - ns_parser.start).days
-        if ns_parser:
-            source = ns_parser.source
-            for arg in ["--source", source]:
-                if arg in other_args:
-                    other_args.remove(arg)
-
-            # self.data = c_help.load_cg_coin_data(
-            #   ns_parser.coin, ns_parser.currency, ns_parser.days, ns_parser.resolution
-            # )
-            res = ns_parser.resolution if delta < 90 else "1D"
-            self.resolution = res
-            (
-                self.coin,
-                self.source,
-                self.symbol,
-                self.coin_map_df,
-                self.data,
-                self.current_currency,
-            ) = c_help.load(
-                coin=ns_parser.coin,
-                source=ns_parser.source,
-                should_load_ta_data=True,
-                days=delta,
-                interval="1day",
-                vs=ns_parser.vs,
-            )
-            console.print(
-                f"{delta} Days of {self.coin} vs {self.current_currency} loaded with {res} resolution.\n"
-            )
 
     def call_pick(self, other_args: List[str]):
         """Process pick command"""

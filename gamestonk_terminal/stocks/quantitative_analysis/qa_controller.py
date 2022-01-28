@@ -9,7 +9,7 @@ import numpy as np
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.rich_config import console
-from gamestonk_terminal.parent_classes import StockController
+from gamestonk_terminal.parent_classes import StockBaseController
 from gamestonk_terminal.common.quantitative_analysis import (
     qa_view,
     rolling_view,
@@ -26,7 +26,7 @@ from gamestonk_terminal.menu import session
 from gamestonk_terminal.stocks.quantitative_analysis.factors_view import capm_view
 
 
-class QaController(StockController):
+class QaController(StockBaseController):
     """Quantitative Analysis Controller class"""
 
     CHOICES_COMMANDS = [
