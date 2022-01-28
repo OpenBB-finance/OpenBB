@@ -284,7 +284,7 @@ def test_create_calculate_size(expected, kwargs):
 
 
 @pytest.mark.vcr(record_mode="none")
-def test_create_calculate_product_id_product_id(mocker):
+def test_create_calculate_product_id_product_id():
     model = DegiroModel()
 
     result = model.create_calculate_product_id(product=1, symbol=None)
