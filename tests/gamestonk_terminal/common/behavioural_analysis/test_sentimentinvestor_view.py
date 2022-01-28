@@ -15,7 +15,16 @@ def vcr_config():
 
 @pytest.mark.vcr
 @pytest.mark.record_stdout
-def test_display_historical():
+def test_display_historical(mocker):
+    mocker.patch.object(
+        target=sentimentinvestor_view.gtff, attribute="USE_ION", new=True
+    )
+    mocker.patch(
+        target="gamestonk_terminal.common.behavioural_analysis.sentimentinvestor_view.plt.ion"
+    )
+    mocker.patch(
+        target="gamestonk_terminal.common.behavioural_analysis.sentimentinvestor_view.plt.show"
+    )
     sentimentinvestor_view.display_historical(
         ticker="AAPL", start="2021-12-12", end="2021-12-15", export="", raw=True
     )
