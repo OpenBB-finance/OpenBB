@@ -596,7 +596,7 @@ def quote(other_args: List[str], s_ticker: str):
 
         quote_data = transpose(quote_df)
 
-        print_rich_table(quote_data, title="Ticker Quote")
+        print_rich_table(quote_data, title="Ticker Quote", show_index=True)
 
     except KeyError:
         console.print(f"Invalid stock ticker: {ns_parser.s_ticker}")
