@@ -10,10 +10,7 @@ from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import (
-    EXPORT_ONLY_RAW_DATA_ALLOWED,
-    parse_known_args_and_warn,
-)
+from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 from gamestonk_terminal.menu import session
 
 # pylint: disable=consider-using-with
@@ -91,9 +88,7 @@ def create_call(other_args: List[str], name: str, filename: str = None) -> None:
         help="Skips confirmation to run server.",
     )
 
-    ns_parser = parse_known_args_and_warn(
-        parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-    )
+    ns_parser = parse_known_args_and_warn(parser, other_args)
 
     if ns_parser:
         cmd = "jupyter-lab" if ns_parser.jupyter else "voila"
