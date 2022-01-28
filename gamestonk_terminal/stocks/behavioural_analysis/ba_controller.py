@@ -15,6 +15,7 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     check_int_range,
     valid_date,
+    valid_hour,
     check_positive,
 )
 from gamestonk_terminal.menu import session
@@ -56,6 +57,7 @@ class BehaviouralAnalysisController(StockController):
         "popular",
         "getdd",
         "hist",
+        "trend",
     ]
 
     historical_sort = ["date", "value"]
@@ -106,7 +108,8 @@ class BehaviouralAnalysisController(StockController):
     regions       regions that show highest interest in stock
     queries       top related queries with this stock
     rise          top rising related queries with stock{has_ticker_end}
-[src][SentimentInvestor][/src]{has_ticker_start}
+[src][SentimentInvestor][/src]
+    trend         most talked about tickers within the last hour{has_ticker_start}
     hist          plot historical RHI and AHI data by hour{has_ticker_end}[/cmds]
 
         """
@@ -714,6 +717,52 @@ class BehaviouralAnalysisController(StockController):
                     raw=ns_parser.raw,
                     limit=ns_parser.limit,
                 )
-
             else:
-                print("No ticker loaded. Please load using 'load <ticker>'\n")
+                console.print("No ticker loaded. Please load using 'load <ticker>'\n")
+
+    def call_trend(self, other_args: List[str]):
+        """Process trend command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="trend",
+            description="Show most talked about tickers within the last one hour",
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            type=valid_date,
+            default=datetime.utcnow().strftime("%Y-%m-%d"),
+            dest="start",
+            help="The starting date (format YYYY-MM-DD). Default: Today",
+        )
+
+        parser.add_argument(
+            "-hr",
+            "--hour",
+            type=valid_hour,
+            default=0,
+            dest="hour",
+            help="Hour of the day in the 24-hour notation. Example: 14",
+        )
+
+        parser.add_argument(
+            "-n",
+            "--number",
+            default=10,
+            type=check_positive,
+            dest="number",
+            help="Number of results returned from Sentiment Investor. Default: 10",
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED, limit=10
+        )
+
+        if ns_parser:
+            sentimentinvestor_view.display_trending(
+                start=ns_parser.start,
+                hour=ns_parser.hour,
+                export=ns_parser.export,
+                number=ns_parser.number,
+            )

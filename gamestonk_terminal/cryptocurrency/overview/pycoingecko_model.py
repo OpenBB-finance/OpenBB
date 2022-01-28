@@ -1,7 +1,7 @@
 """CoinGecko model"""
 __docformat__ = "numpy"
 
-# pylint: disable=C0301
+# pylint: disable=C0301, E1101
 
 from typing import Any, List
 import re
