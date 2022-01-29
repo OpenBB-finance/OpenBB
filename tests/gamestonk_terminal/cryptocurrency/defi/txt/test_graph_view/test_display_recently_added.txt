@@ -1,0 +1,12 @@
+              created            pair            token0          token1 volumeUSD txCount totalSupply
+0 2022-01-28 15:49:19   WETH/XAEA-Xii     Wrapped Ether  XAEA-Xii Token      1.5M    1239       43.1K
+1 2022-01-28 13:23:36  McDonalds/WETH     McDonalds DAO   Wrapped Ether      1.5M     125       16.1M
+2 2022-01-27 14:07:41  SPELLFIRE/WETH   SPELLFIRE Token   Wrapped Ether      5.9M     286       18.2K
+3 2022-01-26 22:18:40       Para/WETH         ParaToken   Wrapped Ether    784.7K     346       36.4K
+4 2022-01-26 00:31:41       GRIM/WETH      Grimace Coin   Wrapped Ether    670.4K    4528           2
+5 2022-01-25 13:39:58     MCDOGE/WETH            McDoge   Wrapped Ether      2.7M    2852       32.2M
+6 2022-01-24 19:15:49       LOOT/WETH        LOOT Token   Wrapped Ether    799.1K     183        8.8K
+7 2022-01-23 14:56:02     Amazon/WETH  Amazon Metaverse   Wrapped Ether      1.4M     130      118.9K
+8 2022-01-23 11:07:20     HERMÈS/WETH  Hermès Metaverse   Wrapped Ether    962.9K     175           0
+9 2022-01-23 06:07:54        WETH/INC     Wrapped Ether     Inu Capital    131.4K     659      238.5K
+

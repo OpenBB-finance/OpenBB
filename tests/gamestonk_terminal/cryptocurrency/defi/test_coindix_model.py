@@ -40,7 +40,7 @@ def test_get_defi_vaults_value_error(mocker):
     # MOCK GET
     attrs = {
         "status_code": 200,
-        "json.side_effect": ValueError,
+        "json.side_effect": UnicodeDecodeError,
     }
     mock_response = mocker.Mock(**attrs)
     mocker.patch(target="requests.get", new=mocker.Mock(return_value=mock_response))

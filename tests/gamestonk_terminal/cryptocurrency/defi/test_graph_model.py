@@ -26,16 +26,20 @@ def test_query_graph_status_400(mocker):
     [
         ("get_uni_tokens", dict(skip=0, limit=5)),
         ("get_uniswap_stats", dict()),
-        (
-            "get_uniswap_pool_recently_added",
-            dict(last_days=14, min_volume=100, min_liquidity=0, min_tx=100),
-        ),
         ("get_uni_pools_by_volume", dict()),
         ("get_last_uni_swaps", dict(limit=5)),
     ],
 )
 def test_call_func(func, kwargs, recorder):
     df = getattr(graph_model, func)(**kwargs)
+    recorder.capture(df)
+
+
+@pytest.mark.vcr(filter_post_data_parameters=[("query", "MOCK_QUERY")])
+def test_get_uniswap_pool_recently_added(recorder):
+    df = graph_model.get_uniswap_pool_recently_added(
+        last_days=14, min_volume=100, min_liquidity=0, min_tx=100
+    )
     recorder.capture(df)
 
 

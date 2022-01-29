@@ -1,0 +1,22 @@
+               token0.name token0.symbol           token1.name token1.symbol volumeUSD txCount
+426          Wrapped Ether          WETH               Autonio          NIOX     99.9M   34535
+427              Akropolis          AKRO                USD//C          USDC     99.5M   40756
+428                   INFI          INFI         Wrapped Ether          WETH     99.5M   41116
+39   UnFederalReserveToken         eRSDL         Wrapped Ether          WETH      993M  147768
+429                    GET           GET         Wrapped Ether          WETH     98.9M   21510
+430          Wrapped Ether          WETH            Gen Shards            GS     98.8M   16673
+431       AMPnet APX Token          AAPX         Wrapped Ether          WETH     98.7M   22911
+432          Wrapped Ether          WETH     0x Protocol Token           ZRX     98.6M   37046
+433         Dai Stablecoin           DAI            HOPR Token          HOPR     98.1M   11592
+434          Wrapped Ether          WETH                  RMPL          RMPL     97.7M   46404
+435                   DSLA          DSLA         Wrapped Ether          WETH     97.2M   37746
+40            CARD.STARTER         CARDS         Wrapped Ether          WETH    969.2M  100973
+436           Dinger Token        DINGER         Wrapped Ether          WETH     96.9M   26351
+437       Let's Go Brandon           LGB         Wrapped Ether          WETH     96.8M   20141
+438     Seigniorage Shares         SHARE         Wrapped Ether          WETH     96.7M   34843
+439          Wrapped Ether          WETH                 Unido           UDO     96.7M   24141
+440           UREEQA Token          URQA         Wrapped Ether          WETH     96.6M   22142
+441          Wrapped Ether          WETH             Bot Ocean          BOTS     96.6M   21525
+442          Wrapped Ether          WETH            DAFI Token          DAFI       96M   25347
+443          Wrapped Ether          WETH  Sora Validator Token           VAL     95.3M   26064
+
