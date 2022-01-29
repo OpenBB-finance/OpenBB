@@ -110,7 +110,7 @@ def display_btc_rainbow(since: int, until: int, export: str = ""):
             [datetime(2012, 11, 28), datetime(2016, 7, 9), datetime(2020, 5, 11)]
         )
         sample_dates = mdates.date2num(sample_dates)
-        ax.vlines(x=sample_dates, ymin=0, ymax=10 ** 5, color="grey")
+        ax.vlines(x=sample_dates, ymin=0, ymax=10**5, color="grey")
         for i, x in enumerate(sample_dates):
             ax.text(x, 1, f"Halving {i+1}", rotation=-90, verticalalignment="center")
 
