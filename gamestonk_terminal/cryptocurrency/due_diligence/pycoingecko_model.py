@@ -359,7 +359,7 @@ class Coin:
 
         return df[df["Value"].notna()]
 
-    @log_start_end(log=logging)
+    @log_start_end(log=logger)
     def get_blockchain_explorers(self) -> Union[pd.DataFrame, Any]:
         """Get list of URLs to blockchain explorers for given coin. [Source: CoinGecko]
 
