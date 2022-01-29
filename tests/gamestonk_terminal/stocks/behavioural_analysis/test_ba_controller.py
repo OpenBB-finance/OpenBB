@@ -422,6 +422,23 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             ),
         ),
         (
+            "call_trend",
+            [
+                "--start=2020-12-01",
+                "--hour=9",
+                "--export=csv",
+                "--number=20",
+            ],
+            "sentimentinvestor_view.display_trending",
+            [],
+            dict(
+                start=datetime(2020, 12, 1),
+                hour=9,
+                export="csv",
+                number=20,
+            ),
+        ),
+        (
             "call_popular",
             ["--num=1", "--limit=2", "--sub=MOCK_SUB"],
             "reddit_view.display_popular_tickers",
@@ -500,6 +517,7 @@ def test_call_func(
         "call_headlines",
         "call_stats",
         "call_hist",
+        "call_trend",
         "call_popular",
         "call_getdd",
     ],

@@ -1772,4 +1772,36 @@ interactions:
     status:
       code: 200
       message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.26.0
+    method: GET
+    uri: https://api.sentimentinvestor.com/v1/trending?token=MJYQW23-5TMMDD8-KEMTCN9-GEHX08G
+  response:
+    body:
+      string: '{"success":true,"results":[{"id":"hist_27_11_tsla","sentiment_count":38,"timestamp_date":"2022-01-27T11:00:00.000Z","total":94,"twitter":0,"stocktwits":73,"reddit_comment":0,"reddit_post":0,"yahoo":21,"ticker":"tsla","likes":39,"retweets":0,"user_followers":0,"user_tweet_count":0,"RHI":1.4586,"AHI":1.4576,"SGP":0,"total_tweet_volume":203},{"id":"hist_27_11_msft","sentiment_count":8,"timestamp_date":"2022-01-27T11:00:00.000Z","total":16,"twitter":0,"stocktwits":10,"reddit_comment":0,"reddit_post":0,"yahoo":6,"ticker":"msft","likes":6,"retweets":0,"user_followers":0,"user_tweet_count":0,"RHI":0.6668,"AHI":0.9962,"SGP":0,"total_tweet_volume":21},{"id":"hist_27_11_aapl","sentiment_count":22,"timestamp_date":"2022-01-27T11:00:00.000Z","total":39,"twitter":0,"stocktwits":32,"reddit_comment":0,"reddit_post":0,"yahoo":7,"ticker":"aapl","likes":11,"retweets":0,"user_followers":0,"user_tweet_count":0,"RHI":1.3089,"AHI":1.4339,"SGP":0,"total_tweet_volume":15},{"id":"hist_27_12_amzn","sentiment_count":3,"timestamp_date":"2022-01-27T12:00:00.000Z","total":6,"twitter":0,"stocktwits":6,"reddit_comment":0,"reddit_post":0,"yahoo":0,"ticker":"amzn","likes":2,"retweets":0,"user_followers":0,"user_tweet_count":0,"RHI":0.6556,"AHI":0.7887,"SGP":0,"total_tweet_volume":6},{"id":"hist_27_11_t","sentiment_count":7,"timestamp_date":"2022-01-27T11:00:00.000Z","total":18,"twitter":0,"stocktwits":8,"reddit_comment":0,"reddit_post":0,"yahoo":10,"ticker":"t","likes":1,"retweets":0,"user_followers":0,"user_tweet_count":0,"RHI":1.2419,"AHI":1.5161,"SGP":0,"total_tweet_volume":3},{"id":"hist_27_11_amd","sentiment_count":68,"timestamp_date":"2022-01-27T11:00:00.000Z","total":131,"twitter":0,"stocktwits":75,"reddit_comment":0,"reddit_post":0,"yahoo":56,"ticker":"amd","likes":60,"retweets":0,"user_followers":0,"user_tweet_count":0,"RHI":1.1039,"AHI":1.1116,"SGP":0,"total_tweet_volume":2}],"start":"2022-01-27T11:00:00.000Z","end":"2022-01-27T12:59:59.999Z","limit":10}'
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Content-Length:
+      - '1964'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 27 Jan 2022 12:44:37 GMT
+      Etag:
+      - W/"7ac-qd5HBUoH8qXqlwMmTJslqPErT/Q"
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
 version: 1
