@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import os
 import json
-from typing import Dict, List
+from typing import List
 import pandas as pd
 from pycoingecko import CoinGeckoAPI
 
@@ -76,7 +76,7 @@ DEX_FILTERS = [
 ]
 
 
-def read_file_data(file_name: str) -> Dict[str, str]:
+def read_file_data(file_name: str) -> dict:
     if file_name.split(".")[1] != "json":
         raise TypeError("Please load json file")
 
