@@ -16,7 +16,7 @@ def get_defipulse_index() -> pd.DataFrame:
         List of DeFi Pulse protocols.
     """
 
-    req = requests.get("https://defipulse.com/")
+    req = requests.get("https://www.defipulse.com/")
     result = req.content.decode("utf8")
     soup = BeautifulSoup(result, features="lxml")
     table = soup.find("tbody").find_all("tr")
@@ -32,16 +32,14 @@ def get_defipulse_index() -> pd.DataFrame:
     df = pd.DataFrame(
         list_of_records,
         columns=[
-            "x",
             "Rank",
             "Name",
             "Chain",
-            "Category",
+            "Sector",
             "TVL",
-            "Change_1D",
+            "1 Day (%)",
         ],
     )
     df["Rank"] = df["Rank"].apply(lambda x: int(x.replace(".", "")))
 
-    df.drop("x", axis=1, inplace=True)
     return df
