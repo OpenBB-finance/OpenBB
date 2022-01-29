@@ -12,7 +12,10 @@ from gamestonk_terminal.cryptocurrency.defi import terramoney_fcd_view
 @pytest.mark.parametrize(
     "func, kwargs",
     [
-        ("display_account_staking_info", dict(address="terra1jvwelvs7rdk6j3mqdztq5tya99w8lxk6l9hcqg")),
+        (
+            "display_account_staking_info",
+            dict(address="terra1jvwelvs7rdk6j3mqdztq5tya99w8lxk6l9hcqg"),
+        ),
         ("display_validators", dict()),
         ("display_gov_proposals", dict()),
         ("display_account_growth", dict()),
