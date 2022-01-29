@@ -8,6 +8,7 @@ import pytest
 # IMPORTATION INTERNAL
 from gamestonk_terminal.cryptocurrency.defi import llama_view
 
+
 def filter_json_data(response):
     """To reduce cassette size."""
 
@@ -39,6 +40,7 @@ def filter_json_data(response):
     response["headers"]["FILTERED"] = ["TRUE"]
 
     return response
+
 
 def gzip_data(response):
     """To reduce cassette size."""

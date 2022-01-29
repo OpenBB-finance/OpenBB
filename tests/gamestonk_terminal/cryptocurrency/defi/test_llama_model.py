@@ -9,6 +9,7 @@ import pytest
 # IMPORTATION INTERNAL
 from gamestonk_terminal.cryptocurrency.defi import llama_model
 
+
 def filter_json_data(response):
     """To reduce cassette size."""
 
@@ -41,6 +42,7 @@ def filter_json_data(response):
 
     return response
 
+
 def gzip_data(response):
     """To reduce cassette size."""
 
@@ -60,6 +62,7 @@ def gzip_data(response):
     response["headers"]["COMPRESSED"] = ["TRUE"]
 
     return response
+
 
 @pytest.mark.vcr(before_record_response=gzip_data)
 @pytest.mark.vcr
