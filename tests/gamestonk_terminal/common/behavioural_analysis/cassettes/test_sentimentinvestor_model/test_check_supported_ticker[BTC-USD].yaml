@@ -1,0 +1,34 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.26.0
+    method: GET
+    uri: https://api.sentimentinvestor.com/v1/supported?symbol=BTC-USD&token=MOCK_TOKEN
+  response:
+    body:
+      string: '{"error":"symbol \"btc-usd\" is not currently active."}'
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Content-Length:
+      - '55'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 27 Jan 2022 16:22:36 GMT
+      Etag:
+      - W/"37-H7l44r2kph8E+3x5mpaNoV/50F8"
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1
