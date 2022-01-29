@@ -75,9 +75,10 @@ class TerminalController(BaseController):
 
         if jobs_cmds:
             # close the eyes if the user forgets the initial `/`
-            for cmd_i, job_cmd in enumerate(jobs_cmds):
-                if not job_cmd.startswith("/"):
-                    jobs_cmds[cmd_i] = f"/{job_cmd}"
+            jobs_cmds = [
+                job_cmd if job_cmd.startswith("/") else f"/{job_cmd}"
+                for job_cmd in jobs_cmds
+            ]
 
             self.queue = self.switch(" ".join(jobs_cmds))
 

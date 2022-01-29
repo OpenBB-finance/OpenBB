@@ -61,7 +61,6 @@ class BaseController(metaclass=ABCMeta):
         self.check_path()
         self.path = [x for x in self.PATH.split("/") if x != ""]
 
-        # self.queue = self.switch("".join(queue))
         self.queue = queue if (queue and self.PATH != "/") else list()
 
         controller_choices = self.CHOICES_COMMANDS + self.CHOICES_MENUS
@@ -134,7 +133,7 @@ class BaseController(metaclass=ABCMeta):
                 actions[0] = "home"
 
             # Add all instructions to the queue
-            for cmd in actions[0:][::-1]:
+            for cmd in actions[::-1]:
                 if cmd:
                     self.queue.insert(0, cmd)
 
@@ -170,6 +169,7 @@ class BaseController(metaclass=ABCMeta):
     def call_home(self, _) -> None:
         """Process home command"""
         self.save_class()
+        console.print("")
         for _ in range(self.PATH.count("/") - 1):
             self.queue.insert(0, "quit")
 
@@ -225,7 +225,6 @@ class BaseController(metaclass=ABCMeta):
             if self.queue and len(self.queue) > 0:
                 # If the command is quitting the menu we want to return in here
                 if self.queue[0] in ("q", "..", "quit"):
-                    console.print("")
                     # Go back to the root in order to go to the right directory because
                     # there was a jump between indirect menus
                     if custom_path_menu_above:
@@ -243,7 +242,11 @@ class BaseController(metaclass=ABCMeta):
                 self.queue = self.queue[1:]
 
                 # Print location because this was an instruction and we want user to know the action
-                if an_input and an_input.split(" ")[0] in self.controller_choices:
+                if (
+                    an_input
+                    and an_input != "home"
+                    and an_input.split(" ")[0] in self.controller_choices
+                ):
                     console.print(f"{get_flair()} {self.PATH} $ {an_input}")
 
             # Get input command from user
