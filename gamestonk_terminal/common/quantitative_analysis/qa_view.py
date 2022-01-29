@@ -621,7 +621,9 @@ def display_line(
     )
 
 
-def display_var(data: pd.DataFrame, use_mean: bool, ticker: str, adjusted_var: bool, percentile: int):
+def display_var(
+    data: pd.DataFrame, use_mean: bool, ticker: str, adjusted_var: bool, percentile: int
+):
     """Displays VaR of dataframe
 
     Parameters
@@ -649,7 +651,9 @@ def display_var(data: pd.DataFrame, use_mean: bool, ticker: str, adjusted_var: b
         str_title = ""
 
     data_dictionary = {str_var_label: var_list, str_hist_label: hist_var_list}
-    data = pd.DataFrame(data_dictionary, index=["90.0%", "95.0%", "99.0%", f"{percentile*100}%"])
+    data = pd.DataFrame(
+        data_dictionary, index=["90.0%", "95.0%", "99.0%", f"{percentile*100}%"]
+    )
 
     print_rich_table(
         data,
