@@ -61,9 +61,9 @@ def query_graph(url: str, query: str) -> dict:
         Dictionary with response data
     """
 
-    request = requests.post(url, json={"query": query})
-    if request.status_code == 200:
-        return request.json()["data"]
+    response = requests.post(url, json={"query": query})
+    if response.status_code == 200:
+        return response.json()["data"]
     return {}
 
 
