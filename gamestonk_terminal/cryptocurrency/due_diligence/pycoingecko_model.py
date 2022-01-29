@@ -319,7 +319,6 @@ class Coin:
 
         return self.coin.get("links", {})
 
-    @property
     @log_start_end(log=logger)
     def get_repositories(self) -> Optional[Any]:
         """Get list of all repositories for given coin [Source: CoinGecko]
@@ -332,7 +331,6 @@ class Coin:
 
         return self._get_links().get("repos_url")
 
-    @property
     @log_start_end(log=logger)
     def get_developers_data(self) -> pd.DataFrame:
         """Get coin development data from GitHub or BitBucket like:
@@ -361,8 +359,7 @@ class Coin:
 
         return df[df["Value"].notna()]
 
-    @property
-    @log_start_end(log=logger)
+    @log_start_end(log=logging)
     def get_blockchain_explorers(self) -> Union[pd.DataFrame, Any]:
         """Get list of URLs to blockchain explorers for given coin. [Source: CoinGecko]
 
@@ -386,7 +383,6 @@ class Coin:
             return df[df["Value"].notna()]
         return None
 
-    @property
     @log_start_end(log=logger)
     def get_social_media(self) -> pd.DataFrame:
         """Get list of URLs to social media like twitter, facebook, reddit... [Source: CoinGecko]
@@ -421,7 +417,6 @@ class Coin:
         )
         return df[df["Value"].notna()]
 
-    @property
     @log_start_end(log=logger)
     def get_websites(self) -> pd.DataFrame:
         """Get list of URLs to websites like homepage of coin, forum. [Source: CoinGecko]
@@ -448,8 +443,7 @@ class Coin:
         )
         return df[df["Value"].notna()]
 
-    @property
-    @log_start_end(log=logger)
+    @log_start_end(log=logging)
     def get_categories(self) -> Union[Dict[Any, Any], List[Any]]:
         """Coins categories. [Source: CoinGecko]
 
@@ -487,7 +481,6 @@ class Coin:
         market_dct.update(prices)
         return market_dct
 
-    @property
     @log_start_end(log=logger)
     def get_base_info(self) -> pd.DataFrame:
         """Get all the base information about given coin. [Source: CoinGecko]
@@ -519,7 +512,6 @@ class Coin:
 
         return df[df["Value"].notna()]
 
-    @property
     @log_start_end(log=logger)
     def get_market_data(self) -> pd.DataFrame:
         """Get all the base market information about given coin. [Source: CoinGecko]
@@ -647,7 +639,6 @@ class Coin:
         df["Metric"] = df["Metric"] + f" {currency.upper()}"
         return df[df["Value"].notna()]
 
-    @property
     @log_start_end(log=logger)
     def get_scores(self) -> pd.DataFrame:
         """Get different kind of scores for given coin. [Source: CoinGecko]

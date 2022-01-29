@@ -79,7 +79,7 @@ def display_info(symbol: str, export: str) -> None:
 
     coin = gecko.Coin(symbol)
 
-    df = wrap_text_in_df(coin.get_base_info, w=80)
+    df = wrap_text_in_df(coin.get_base_info(), w=80)
 
     print_rich_table(
         df, headers=list(df.columns), show_index=False, title="Basic Coin Information"
@@ -108,7 +108,7 @@ def display_web(symbol: str, export: str) -> None:
 
     coin = gecko.Coin(symbol)
 
-    df = coin.get_websites
+    df = coin.get_websites()
 
     print_rich_table(
         df, headers=list(df.columns), show_index=False, title="Websites for Loaded Coin"
@@ -135,7 +135,7 @@ def display_social(symbol: str, export: str) -> None:
         Export dataframe data to csv,json,xlsx file
     """
     coin = gecko.Coin(symbol)
-    df = coin.get_social_media
+    df = coin.get_social_media()
 
     print_rich_table(
         df,
@@ -166,7 +166,7 @@ def display_dev(symbol: str, export: str) -> None:
     """
     coin = gecko.Coin(symbol)
 
-    df = coin.get_developers_data
+    df = coin.get_developers_data()
 
     print_rich_table(
         df,
@@ -255,7 +255,7 @@ def display_score(symbol: str, export: str) -> None:
     """
     coin = gecko.Coin(symbol)
 
-    df = coin.get_scores
+    df = coin.get_scores()
 
     print_rich_table(
         df,
@@ -286,7 +286,7 @@ def display_bc(symbol: str, export: str) -> None:
     """
     coin = gecko.Coin(symbol)
 
-    df = coin.get_blockchain_explorers
+    df = coin.get_blockchain_explorers()
 
     print_rich_table(
         df, headers=list(df.columns), show_index=False, title="Blockchain URLs"
@@ -314,7 +314,7 @@ def display_market(symbol: str, export: str) -> None:
     """
     coin = gecko.Coin(symbol)
 
-    df = coin.get_market_data
+    df = coin.get_market_data()
 
     print_rich_table(
         df, headers=list(df.columns), show_index=False, title="Market Data"
