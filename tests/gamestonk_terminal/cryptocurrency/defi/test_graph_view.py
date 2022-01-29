@@ -8,7 +8,6 @@ from gamestonk_terminal.cryptocurrency.defi import graph_view
 
 
 @pytest.mark.vcr
-@pytest.mark.record_stdout
 @pytest.mark.parametrize(
     "func, kwargs",
     [
@@ -26,7 +25,6 @@ def test_call_func(func, kwargs, mocker):
 
 
 @pytest.mark.vcr(filter_post_data_parameters=[("query", "MOCK_QUERY")])
-@pytest.mark.record_stdout
 def test_display_recently_added(mocker):
     # MOCK EXPORT_DATA
     mocker.patch(target="gamestonk_terminal.cryptocurrency.defi.graph_view.export_data")

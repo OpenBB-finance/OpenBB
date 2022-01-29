@@ -1,6 +1,0 @@
-            timestamp   token0 token1 amountUSD
-0 2022-01-29 10:35:59     WETH    SPO      2.1K
-1 2022-01-29 10:35:59     LINK   WETH       495
-2 2022-01-29 10:35:59     COMP   WETH       496
-3 2022-01-29 10:35:59     SHIB   WETH       351
-4 2022-01-29 10:35:59  SAITAMA   WETH       204
