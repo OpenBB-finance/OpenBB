@@ -1,0 +1,122 @@
+interactions:
+- request:
+    body: '{"query": "\n           {\n            tokens(first: 100, skip:0) {\n                symbol\n                name\n                tradeVolumeUSD\n                totalLiquidity\n                txCount\n                }\n            }\n        "}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '248'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-requests/2.27.1
+    method: POST
+    uri: https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2
+  response:
+    body:
+      string: !!binary |
+        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
+        AwCUglgCTDIAAA==
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 6d4e0936fa8a049f-CDG
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 28 Jan 2022 23:35:14 GMT
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Strict-Transport-Security:
+      - max-age=15724800; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      access-control-allow-headers:
+      - Content-Type, User-Agent
+      access-control-allow-methods:
+      - GET, OPTIONS, POST
+      graph-attestable:
+      - 'true'
+    status:
+      code: 200
+      message: OK
+version: 1
