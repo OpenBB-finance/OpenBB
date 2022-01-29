@@ -1,0 +1,82 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: GET
+    uri: https://raw.githubusercontent.com/JerBouma/FinanceDatabase/master/Database/Categories/equities_countries.json
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA21UTVPbMBC9M8N/0HDunwgppCEkk8bAgU4PG3uRt5EldyUR7F9fGdpoFeqDZ97T
+        fmn3rX5cXqj0Xc1edAuWfAB79eUfZ3UkYyATrNEGsoKJPjAYOmMkHpH3QL9E3GtooQMvsNUGGvSt
+        oJJT44QNGk2xk5hGFJC72OSs1y74I4hCrxlGMgJSIN+qJ2JNVi29AdvkbHPo9q4Rt5inWI2EQwf/
+        cWvJoESigLkzrtvLkC41W+2oFtTQcxThRqxbtcM+7g3VJ/or2g74kLHryKYw9rPpjR76kJEPzooK
+        bsEcpgt8usct2YnImMHWKCDaVNgikuzwAvYuz3iBLnVWnKYBgR0ybgtf2icVBeDMMKJIOcGypkVE
+        th5zxG/OarVKv8xEq4GzxbLGIsTSyhEn5Cx6yfCZvTeo3ItaCy0vPQNmXS0DGJHw1fGg5g58HsId
+        9ML9Dlne4c5xI05XMMKhLXZyNbAexoK6h/Aqqr6npJqA1gckYUShjSCnfx/fMKk8cm7YGmqIEmFT
+        CGYNBgZfEkGiOK2VUPAa36h2GToLJdROvh2JSIWjZmnDri58xrSb9DtmbawHmBbihDfQkVy0DYYW
+        uVS44NQsPWnGoDw8qmeEYvYb0iiftY3jI+TBbZOaOxCwj6CmOGlJLIoD5NzgbXouqO+TQc69dUXa
+        reMQNWSBfQe5JTuMlsTW7VxXzHgXvRxXBbEhNWOQ7ammjosMFaWt6R3nBlfGvcJBuiQCZZ7KxdCq
+        2QvL1+yDXKVIgutBiLJKekl9E5mO2KA4P1IYP8Z04h6AjkL8D2DH4soPLVDpEPkgVuzxwKmEnPLR
+        UsDmvSnqpiOGIKbx93CVWtK47pyuQmnMUUehiSfCkG53ws/w/v5fXvz8A5FdW1d1BwAA
+    headers:
+      Accept-Ranges:
+      - bytes
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - max-age=300
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '678'
+      Content-Security-Policy:
+      - default-src 'none'; style-src 'unsafe-inline'; sandbox
+      Content-Type:
+      - text/plain; charset=utf-8
+      Date:
+      - Fri, 28 Jan 2022 01:15:24 GMT
+      ETag:
+      - W/"3e9fcbc95bfd7c6294e48a7aa396eb8aa56a8809e3c5ab96a4782aa16b34e7f7"
+      Expires:
+      - Fri, 28 Jan 2022 01:20:24 GMT
+      Source-Age:
+      - '215'
+      Strict-Transport-Security:
+      - max-age=31536000
+      Vary:
+      - Authorization,Accept-Encoding,Origin
+      Via:
+      - 1.1 varnish
+      X-Cache:
+      - HIT
+      X-Cache-Hits:
+      - '1'
+      X-Content-Type-Options:
+      - nosniff
+      X-Fastly-Request-ID:
+      - 7962f163c7ab5375720df2ba1b9b1dff46f8f896
+      X-Frame-Options:
+      - deny
+      X-GitHub-Request-Id:
+      - 16EC:F42A:1AED1D4:1BF3CD0:61F342D5
+      X-Served-By:
+      - cache-cdg20761-CDG
+      X-Timer:
+      - S1643332524.448308,VS0,VE0
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

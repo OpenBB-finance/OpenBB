@@ -141,7 +141,8 @@ class Option:
         opt_type: int = 1,
     ):
         """
-        Class for getting the greeks of options
+        Class for getting the greeks of options. Inspiration from:
+        http://www.smileofthales.com/computation/option-pricing-python-inheritance/
 
         Parameters
         ----------

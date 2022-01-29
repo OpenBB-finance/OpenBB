@@ -1,0 +1,34 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.26.0
+    method: GET
+    uri: https://api.sentimentinvestor.com/v1/trending?end=2021-12-21+09%3A00%3A00&limit=10&start=2021-12-21+09%3A00%3A00&token=MOCK_TOKEN
+  response:
+    body:
+      string: '{"success":true,"results":[{"id":"hist_21_9_btc.x","sentiment_count":22,"timestamp_date":"2021-12-21T09:00:00.000Z","total":40,"twitter":0,"stocktwits":40,"reddit_comment":0,"reddit_post":0,"yahoo":0,"ticker":"btc.x","likes":25,"retweets":0,"user_followers":0,"user_tweet_count":0,"RHI":3.4728,"AHI":3.3006,"SGP":0},{"id":"hist_21_9_amc","sentiment_count":33,"timestamp_date":"2021-12-21T09:00:00.000Z","total":40,"twitter":0,"stocktwits":40,"reddit_comment":0,"reddit_post":0,"yahoo":0,"ticker":"amc","likes":57,"retweets":0,"user_followers":0,"user_tweet_count":0,"RHI":0.4931,"AHI":0.5699,"SGP":0},{"id":"hist_21_9_tsla","sentiment_count":19,"timestamp_date":"2021-12-21T09:00:00.000Z","total":33,"twitter":0,"stocktwits":31,"reddit_comment":0,"reddit_post":0,"yahoo":2,"ticker":"tsla","likes":30,"retweets":0,"user_followers":0,"user_tweet_count":0,"RHI":0.4169,"AHI":0.5384,"SGP":1,"sentiment":7.8684},{"id":"hist_21_9_mrna","sentiment_count":11,"timestamp_date":"2021-12-21T09:00:00.000Z","total":15,"twitter":0,"stocktwits":8,"reddit_comment":0,"reddit_post":0,"yahoo":7,"ticker":"mrna","likes":4,"retweets":0,"user_followers":0,"user_tweet_count":0,"RHI":0.7673,"AHI":0.6587,"SGP":0},{"id":"hist_21_9_btc","sentiment_count":9,"timestamp_date":"2021-12-21T09:00:00.000Z","total":12,"twitter":0,"stocktwits":0,"reddit_comment":0,"reddit_post":0,"yahoo":12,"ticker":"btc","likes":0,"retweets":0,"user_followers":0,"user_tweet_count":0,"RHI":0.4879,"AHI":0.4465,"SGP":1,"sentiment":16.9798},{"id":"hist_21_9_aapl","sentiment_count":9,"timestamp_date":"2021-12-21T09:00:00.000Z","total":10,"twitter":0,"stocktwits":8,"reddit_comment":0,"reddit_post":0,"yahoo":2,"ticker":"aapl","likes":10,"retweets":0,"user_followers":0,"user_tweet_count":0,"RHI":0.3676,"AHI":0.4111,"SGP":0},{"id":"hist_21_9_lcid","sentiment_count":8,"timestamp_date":"2021-12-21T09:00:00.000Z","total":10,"twitter":0,"stocktwits":9,"reddit_comment":0,"reddit_post":0,"yahoo":1,"ticker":"lcid","likes":23,"retweets":0,"user_followers":0,"user_tweet_count":0,"RHI":0.4674,"AHI":0.5561,"SGP":0},{"id":"hist_21_9_amd","sentiment_count":6,"timestamp_date":"2021-12-21T09:00:00.000Z","total":9,"twitter":0,"stocktwits":3,"reddit_comment":0,"reddit_post":0,"yahoo":6,"ticker":"amd","likes":3,"retweets":0,"user_followers":0,"user_tweet_count":0,"RHI":0.4516,"AHI":0.5424,"SGP":0},{"id":"hist_21_9_nke","sentiment_count":4,"timestamp_date":"2021-12-21T09:00:00.000Z","total":6,"twitter":0,"stocktwits":4,"reddit_comment":0,"reddit_post":0,"yahoo":2,"ticker":"nke","likes":1,"retweets":0,"user_followers":0,"user_tweet_count":0,"RHI":1.3136,"AHI":2.0879,"SGP":0},{"id":"hist_21_9_t","sentiment_count":4,"timestamp_date":"2021-12-21T09:00:00.000Z","total":6,"twitter":0,"stocktwits":3,"reddit_comment":0,"reddit_post":0,"yahoo":3,"ticker":"t","likes":0,"retweets":0,"user_followers":0,"user_tweet_count":0,"RHI":0.4844,"AHI":0.6866,"SGP":0}],"start":"2021-12-21T09:00:00.000Z","end":"2021-12-21T09:00:00.000Z","limit":"10"}'
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Content-Length:
+      - '2986'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 27 Jan 2022 17:41:19 GMT
+      Etag:
+      - W/"baa-MWXy163w4MAIoe1ZkpGOeHUUI0M"
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1
