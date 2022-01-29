@@ -621,7 +621,7 @@ def display_line(
     )
 
 
-def display_var(data: pd.DataFrame, use_mean: bool, ticker: str, adjusted_var: bool):
+def display_var(data: pd.DataFrame, use_mean: bool, ticker: str, adjusted_var: bool, percentile: int):
     """Displays VaR of dataframe
 
     Parameters
@@ -634,8 +634,10 @@ def display_var(data: pd.DataFrame, use_mean: bool, ticker: str, adjusted_var: b
         ticker of the stock
     adjusted_var: bool
         if one should have VaR adjusted for skew and kurtosis (Cornish-Fisher-Expansion)
+    percentile: int
+        var percentile
     """
-    var_list, hist_var_list = qa_model.get_var(data, use_mean, adjusted_var)
+    var_list, hist_var_list = qa_model.get_var(data, use_mean, adjusted_var, percentile)
 
     str_hist_label = "Historical VaR:"
 
@@ -646,8 +648,8 @@ def display_var(data: pd.DataFrame, use_mean: bool, ticker: str, adjusted_var: b
         str_var_label = "VaR:"
         str_title = ""
 
-    data_dictonary = {str_var_label: var_list, str_hist_label: hist_var_list}
-    data = pd.DataFrame(data_dictonary, index=["90%", "95%", "99%"])
+    data_dictionary = {str_var_label: var_list, str_hist_label: hist_var_list}
+    data = pd.DataFrame(data_dictionary, index=["90.0%", "95.0%", "99.0%", f"{percentile*100}%"])
 
     print_rich_table(
         data,

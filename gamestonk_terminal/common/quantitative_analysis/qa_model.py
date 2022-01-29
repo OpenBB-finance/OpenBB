@@ -197,7 +197,7 @@ def calculate_adjusted_var(
     return real_return
 
 
-def get_var(data: pd.DataFrame, use_mean: bool, adjusted_var: bool):
+def get_var(data: pd.DataFrame, use_mean: bool, adjusted_var: bool, percentile: int):
     """Gets value at risk for specified stock dataframe
 
     Parameters
@@ -208,6 +208,8 @@ def get_var(data: pd.DataFrame, use_mean: bool, adjusted_var: bool):
         If one should use the stocks mean for calculation
     adjusted_var: bool
         If one should return VaR adjusted for skew and kurtosis
+    percentile: int
+        VaR percentile
 
     Returns
     -------
@@ -223,6 +225,7 @@ def get_var(data: pd.DataFrame, use_mean: bool, adjusted_var: bool):
     percentile_90 = -1.282
     percentile_95 = -1.645
     percentile_99 = -2.326
+    percentile_custom = stats.norm.ppf(1 - percentile)
 
     # Mean
     if use_mean:
@@ -247,12 +250,14 @@ def get_var(data: pd.DataFrame, use_mean: bool, adjusted_var: bool):
         var_90 = calculate_adjusted_var(k, s, percentile_90, std, mean)
         var_95 = calculate_adjusted_var(k, s, percentile_95, std, mean)
         var_99 = calculate_adjusted_var(k, s, percentile_99, std, mean)
+        var_custom = calculate_adjusted_var(k, s, percentile_custom, std, mean)
 
     else:
         # Regular Var
         var_90 = 2.7182818 ** (mean + percentile_90 * std) - 1
         var_95 = 2.7182818 ** (mean + percentile_95 * std) - 1
         var_99 = 2.7182818 ** (mean + percentile_99 * std) - 1
+        var_custom = 2.7182818 ** (mean + percentile_custom * std) - 1
 
     data.sort_values("return", inplace=True, ascending=True)
 
@@ -260,7 +265,8 @@ def get_var(data: pd.DataFrame, use_mean: bool, adjusted_var: bool):
     hist_var_90 = data["return"].quantile(0.1)
     hist_var_95 = data["return"].quantile(0.05)
     hist_var_99 = data["return"].quantile(0.01)
+    hist_var_custom = data["return"].quantile(1 - percentile)
 
-    var_list = [var_90, var_95, var_99]
-    hist_var_list = [hist_var_90, hist_var_95, hist_var_99]
+    var_list = [var_90, var_95, var_99, var_custom]
+    hist_var_list = [hist_var_90, hist_var_95, hist_var_99, hist_var_custom]
     return var_list, hist_var_list

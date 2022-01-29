@@ -24,7 +24,6 @@ Rolling Metrics:
     kurtosis    rolling kurtosis of distribution of prices
 Risk:
     var         value at risk
-    avar        kurtosis and skew adjusted value at risk
 Other:
     raw         print raw data
     decompose   decomposition in cyclic-trend, season, and residuals of prices
