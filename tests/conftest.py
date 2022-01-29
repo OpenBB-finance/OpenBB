@@ -291,6 +291,32 @@ def build_path_by_extension(
     return path
 
 
+def merge_markers_kwargs(markers: List[Mark]) -> Dict[str, Any]:
+    """Merge all kwargs into a single dictionary."""
+    kwargs: Dict[str, Any] = dict()
+    for marker in reversed(markers):
+        kwargs.update(marker.kwargs)
+    return kwargs
+
+
+def record_stdout_format_kwargs(
+    test_name: str,
+    record_mode: str,
+    record_stdout_markers: List[Mark],
+) -> Dict[str, Any]:
+    kwargs = merge_markers_kwargs(record_stdout_markers)
+
+    formatted_fields = dict()
+    formatted_fields["assert_in_list"] = kwargs.get("assert_in_list", list())
+    formatted_fields["display_limit"] = kwargs.get("display_limit", DISPLAY_LIMIT)
+    formatted_fields["record_mode"] = kwargs.get("record_mode", record_mode)
+    formatted_fields["record_name"] = kwargs.get("record_name", test_name)
+    formatted_fields["save_record"] = kwargs.get("save_record", True)
+    formatted_fields["strip"] = kwargs.get("strip", True)
+
+    return formatted_fields
+
+
 def pytest_addoption(parser: Parser):
     parser.addoption(
         "--prediction",
@@ -304,19 +330,32 @@ def pytest_addoption(parser: Parser):
     )
 
 
-def pytest_configure(config: Config) -> None:
+def brotli_check():
     installed_packages = pkg_resources.working_set
     for item in list(installed_packages):
         if "brotli" in str(item).lower():
             pytest.exit("Uninstall brotli before running tests")
+
+
+def disable_rich():
     rich_config.disable_rich()
 
     def effect(df, *xargs, **kwargs):  # pylint: disable=unused-argument
         print(df.to_string())
 
     helper_funcs.print_rich_table = effect
-    config.addinivalue_line("markers", "record_stdout: Mark the test as text record.")
+
+
+def enable_debug():
     os.environ["DEBUG_MODE"] = "true"
+
+
+def pytest_configure(config: Config) -> None:
+    config.addinivalue_line("markers", "record_stdout: Mark the test as text record.")
+
+    brotli_check()
+    disable_rich()
+    enable_debug()
 
 
 @pytest.fixture(scope="session")  # type: ignore
@@ -346,32 +385,6 @@ def default_json_path(request: SubRequest) -> str:
 def record_stdout_markers(request: SubRequest) -> List[Mark]:
     """All markers applied to the certain test together with cassette names associated with each marker."""
     return list(request.node.iter_markers(name="record_stdout"))
-
-
-def merge_markers_kwargs(markers: List[Mark]) -> Dict[str, Any]:
-    """Merge all kwargs into a single dictionary."""
-    kwargs: Dict[str, Any] = dict()
-    for marker in reversed(markers):
-        kwargs.update(marker.kwargs)
-    return kwargs
-
-
-def record_stdout_format_kwargs(
-    test_name: str,
-    record_mode: str,
-    record_stdout_markers: List[Mark],
-) -> Dict[str, Any]:
-    kwargs = merge_markers_kwargs(record_stdout_markers)
-
-    formatted_fields = dict()
-    formatted_fields["assert_in_list"] = kwargs.get("assert_in_list", list())
-    formatted_fields["display_limit"] = kwargs.get("display_limit", DISPLAY_LIMIT)
-    formatted_fields["record_mode"] = kwargs.get("record_mode", record_mode)
-    formatted_fields["record_name"] = kwargs.get("record_name", test_name)
-    formatted_fields["save_record"] = kwargs.get("save_record", True)
-    formatted_fields["strip"] = kwargs.get("strip", True)
-
-    return formatted_fields
 
 
 @pytest.fixture(autouse=True)

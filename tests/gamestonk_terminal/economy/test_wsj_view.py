@@ -54,7 +54,7 @@ def test_call_func_empty_df(func, mocked_func, mocker):
     mock_empty_df = mocker.Mock(**attrs)
     mocker.patch(
         target=f"gamestonk_terminal.economy.wsj_view.wsj_model.{mocked_func}",
-        new=mock_empty_df,
+        return_value=mock_empty_df,
     )
 
     # MOCK EXPORT_DATA
