@@ -1,0 +1,34 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.26.0
+    method: GET
+    uri: https://api.sentimentinvestor.com/v1/supported?symbol=BTC&token=MOCK_TOKEN
+  response:
+    body:
+      string: '{"success":true,"result":true}'
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Content-Length:
+      - '30'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 27 Jan 2022 16:22:36 GMT
+      Etag:
+      - W/"1e-67lGrrcaMC/51/8ZvvIFlxBZfJs"
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1
