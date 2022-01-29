@@ -5,7 +5,10 @@ import pandas as pd
 import pytest
 
 # IMPORTATION INTERNAL
-from gamestonk_terminal.economy.fred.prediction import pred_controller
+try:
+    from gamestonk_terminal.economy.fred.prediction import pred_controller
+except ImportError:
+    pytest.skip(allow_module_level=True)
 
 # pylint: disable=E1101
 # pylint: disable=W0603
