@@ -73,13 +73,14 @@ class CustomDataController(BaseController):
         help_text = f"""[cmds]
     load            load in custom data set[/cmds]
 
-Current file:    {self.file or None}[cmds]{has_data_start}
+[param]Current file:[/param]    {self.file or None}[cmds]{has_data_start}
+
     show            show portion of loaded data
     info            show data info (columns and datatypes)
     plot            plot data from loaded file{has_data_end}[/cmds]
-[menus]
->   qa          quantitative analysis,   \t e.g.: decompose, cusum, residuals analysis
->   pred        prediction techniques    \t e.g.: regression, arima, rnn, lstm[/menus]
+[menu]
+>   qa              quantitative analysis,   \t e.g.: decompose, cusum, residuals analysis
+>   pred            prediction techniques    \t e.g.: regression, arima, rnn, lstm[/menu]
 """
         console.print(text=help_text, menu="Custom")
 
