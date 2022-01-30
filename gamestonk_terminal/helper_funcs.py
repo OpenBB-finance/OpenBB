@@ -42,7 +42,7 @@ MENU_QUIT = 1
 MENU_RESET = 2
 
 
-def rich_table_from_df(
+def print_rich_table(
     df: pd.DataFrame,
     show_index: bool = False,
     title: str = "",
@@ -262,6 +262,16 @@ def valid_date(s: str) -> datetime:
         return datetime.strptime(s, "%Y-%m-%d")
     except ValueError as value_error:
         raise argparse.ArgumentTypeError(f"Not a valid date: {s}") from value_error
+
+
+def valid_hour(hr: str) -> int:
+    """Argparse type to check hour is valid with 24-hour notation"""
+
+    new_hr = int(hr)
+
+    if (new_hr < 0) or (new_hr > 24):
+        raise argparse.ArgumentTypeError(f"{hr} doesn't follow 24-hour notion.")
+    return new_hr
 
 
 def plot_view_stock(df: pd.DataFrame, symbol: str, interval: str):
@@ -503,7 +513,7 @@ def clean_tweet(tweet: str, s_ticker: str) -> str:
     """Cleans tweets to be fed to sentiment model"""
     whitespace = re.compile(r"\s+")
     web_address = re.compile(r"(?i)http(s):\/\/[a-z0-9.~_\-\/]+")
-    ticker = re.compile(fr"(?i)@{s_ticker}(?=\b)")
+    ticker = re.compile(rf"(?i)@{s_ticker}(?=\b)")
     user = re.compile(r"(?i)@[a-z0-9_]+")
 
     tweet = whitespace.sub(" ", tweet)
@@ -724,38 +734,44 @@ def lett_to_num(word: str) -> str:
 
 def get_flair() -> str:
     """Get a flair icon"""
-    flair = {
-        "rocket": "(🚀🚀)",
-        "diamond": "(💎💎)",
-        "stars": "(✨)",
-        "baseball": "(⚾)",
-        "boat": "(⛵)",
-        "phone": "(☎)",
-        "mercury": "(☿)",
-        "sun": "(☼)",
-        "moon": "(☾)",
-        "nuke": "(☢)",
-        "hazard": "(☣)",
-        "tunder": "(☈)",
-        "king": "(♔)",
-        "queen": "(♕)",
-        "knight": "(♘)",
-        "recycle": "(♻)",
-        "scales": "(⚖)",
-        "ball": "(⚽)",
-        "golf": "(⛳)",
-        "piece": "(☮)",
-        "yy": "(☯)",
+    flairs = {
+        ":rocket": "(🚀🚀)",
+        ":diamond": "(💎💎)",
+        ":stars": "(✨)",
+        ":baseball": "(⚾)",
+        ":boat": "(⛵)",
+        ":phone": "(☎)",
+        ":mercury": "(☿)",
+        ":hidden": "",
+        ":sun": "(☼)",
+        ":moon": "(☾)",
+        ":nuke": "(☢)",
+        ":hazard": "(☣)",
+        ":tunder": "(☈)",
+        ":king": "(♔)",
+        ":queen": "(♕)",
+        ":knight": "(♘)",
+        ":recycle": "(♻)",
+        ":scales": "(⚖)",
+        ":ball": "(⚽)",
+        ":golf": "(⛳)",
+        ":piece": "(☮)",
+        ":yy": "(☯)",
     }
 
-    if flair.get(gtff.USE_FLAIR):
-        if gtff.USE_DATETIME and get_user_timezone_or_invalid() != "INVALID":
-            dtime = datetime.now(pytz.timezone(get_user_timezone())).strftime(
-                "%Y %b %d, %H:%M"
-            )
-            return f"{dtime} {flair[gtff.USE_FLAIR]}"
-        return flair[gtff.USE_FLAIR]
-    return ""
+    flair = flairs[gtff.USE_FLAIR] if gtff.USE_FLAIR in flairs else gtff.USE_FLAIR
+    if gtff.USE_DATETIME and get_user_timezone_or_invalid() != "INVALID":
+        dtime = datetime.now(pytz.timezone(get_user_timezone())).strftime(
+            "%Y %b %d, %H:%M"
+        )
+
+        # if there is no flair, don't add an extra space after the time
+        if flair == "":
+            return f"{dtime}"
+
+        return f"{dtime} {flair}"
+
+    return flair
 
 
 def is_timezone_valid(user_tz: str) -> bool:
@@ -862,12 +878,12 @@ def plot_autoscale():
 
     if gtff.USE_PLOT_AUTOSCALING:
         x, y = get_screeninfo()  # Get screen size
-        x = ((x) * cfgPlot.PLOT_WIDTH_PERCENTAGE * 10 ** -2) / (
+        x = ((x) * cfgPlot.PLOT_WIDTH_PERCENTAGE * 10**-2) / (
             cfgPlot.PLOT_DPI
         )  # Calculate width
         if cfgPlot.PLOT_HEIGHT_PERCENTAGE == 100:  # If full height
             y = y - 60  # Remove the height of window toolbar
-        y = ((y) * cfgPlot.PLOT_HEIGHT_PERCENTAGE * 10 ** -2) / (cfgPlot.PLOT_DPI)
+        y = ((y) * cfgPlot.PLOT_HEIGHT_PERCENTAGE * 10**-2) / (cfgPlot.PLOT_DPI)
     else:  # If not autoscale, use size defined in config_plot.py
         x = cfgPlot.PLOT_WIDTH / (cfgPlot.PLOT_DPI)
         y = cfgPlot.PLOT_HEIGHT / (cfgPlot.PLOT_DPI)

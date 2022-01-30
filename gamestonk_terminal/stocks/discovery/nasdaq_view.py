@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import os
 
-from gamestonk_terminal.helper_funcs import export_data, rich_table_from_df
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.stocks.discovery import nasdaq_model
 from gamestonk_terminal.rich_config import console
 
@@ -24,7 +24,7 @@ def display_top_retail(n_days: int = 3, export: str = ""):
     for date, df in retails.head(n_days * 10).groupby("Date"):
         df = df.drop(columns=["Date"])
         df = df.reset_index(drop=True)
-        rich_table_from_df(
+        print_rich_table(
             df,
             headers=[x.title() for x in df.columns],
             show_index=False,
@@ -77,7 +77,7 @@ def display_dividend_calendar(
     calendar = calendar.drop(columns=["announcement_Date"])
     calendar.columns = calendar.columns.map(div_map)
     calendar = calendar.sort_values(by=sort_col, ascending=ascending)
-    rich_table_from_df(
+    print_rich_table(
         calendar.head(limit),
         headers=[x.title() for x in calendar.columns],
         title=f"[bold]Dividend Calendar for {date}[/bold]",

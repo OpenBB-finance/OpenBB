@@ -5,11 +5,14 @@ import os
 import webbrowser
 import matplotlib.pyplot as plt
 import pandas as pd
-from tabulate import tabulate
 
 from gamestonk_terminal.stocks.fundamental_analysis import yahoo_finance_model
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
+from gamestonk_terminal.helper_funcs import (
+    export_data,
+    plot_autoscale,
+    print_rich_table,
+)
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.rich_config import console
 
@@ -49,11 +52,7 @@ def display_info(ticker: str):
         summary = df_info.loc["Long business summary"].values[0]
         df_info = df_info.drop(index=["Long business summary"])
 
-    if gtff.USE_TABULATE_DF:
-        print(tabulate(df_info, headers=[], showindex=True, tablefmt="fancy_grid"))
-
-    else:
-        console.print(df_info.to_string(header=False))
+    print_rich_table(df_info, headers=[], show_index=True, title="Ticker Info")
 
     if summary:
         console.print("Business Summary:")
@@ -80,12 +79,9 @@ def display_shareholders(ticker: str):
     console.print("")
     for df, title in zip(dfs, titles):
         console.print(title)
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(df, headers=df.columns, tablefmt="fancy_grid", showindex=False)
-            )
-        else:
-            console.print(df.to_string(index=False))
+        print_rich_table(
+            df, headers=list(df.columns), show_index=False, title="Ticker Shareholders"
+        )
         console.print("")
 
 
@@ -105,17 +101,12 @@ def display_sustainability(ticker: str):
         console.print("No sustainability data found.", "\n")
         return
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df_sustainability,
-                headers=[],
-                tablefmt="fancy_grid",
-                showindex=True,
-            )
-        )
-    else:
-        console.print(df_sustainability.to_string(index=True))
+    print_rich_table(
+        df_sustainability,
+        headers=[],
+        title="Ticker Sustainability",
+        show_index=True,
+    )
     console.print("")
 
 
@@ -130,17 +121,12 @@ def display_calendar_earnings(ticker: str):
     if df_calendar.empty:
         console.print("No calendar events found.\n")
         return
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df_calendar,
-                showindex=False,
-                headers=df_calendar.columns,
-                tablefmt="fancy_grid",
-            )
-        )
-    else:
-        console.print(df_calendar.to_string(index=False))
+    print_rich_table(
+        df_calendar,
+        show_index=False,
+        headers=list(df_calendar.columns),
+        title="Ticker Calendar Earnings",
+    )
     console.print("")
 
 
@@ -193,16 +179,10 @@ def display_dividends(
         div_history.index = pd.to_datetime(div_history.index, format="%Y%m%d").strftime(
             "%Y-%m-%d"
         )
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    div_history.head(limit),
-                    tablefmt="fancy_grid",
-                    headers=["Amount Paid ($)", "Change"],
-                    floatfmt=".2f",
-                )
-            )
-        else:
-            console.print(div_history.to_string())
+        print_rich_table(
+            div_history.head(limit),
+            headers=["Amount Paid ($)", "Change"],
+            title="Ticker Historical Dividends",
+        )
     console.print("")
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "divs", div_history)

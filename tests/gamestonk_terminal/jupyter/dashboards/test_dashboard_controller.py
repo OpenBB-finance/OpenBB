@@ -65,7 +65,6 @@ def test_menu_without_queue_completion(mocker):
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.record_stdout
 def test_print_help():
-
     controller = dashboards_controller.DashboardsController(queue=None)
     controller.print_help()
 
@@ -75,8 +74,8 @@ def test_print_help():
     "an_input, expected_queue",
     [
         ("", []),
-        ("/help", ["quit", "quit", "help"]),
-        ("help/help", ["help"]),
+        ("/help", ["home", "help"]),
+        ("help/help", ["help", "help"]),
         ("q", ["quit"]),
         ("h", []),
         (
@@ -86,7 +85,6 @@ def test_print_help():
     ],
 )
 def test_switch(an_input, expected_queue):
-
     controller = dashboards_controller.DashboardsController(queue=None)
     queue = controller.switch(an_input=an_input)
 

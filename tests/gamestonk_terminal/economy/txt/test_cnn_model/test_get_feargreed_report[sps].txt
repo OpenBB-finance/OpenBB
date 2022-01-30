@@ -1,0 +1,3 @@
+Stock Price Strength: Extreme Fear                                                                  [Updated Jan 20 at 7:00pm]
+   The number of stocks hitting 52-week lows exceeds the number hitting highs and is at the lower end of its range, indicating extreme fear.
+   (Last changed Jan 20 from a Fear rating)

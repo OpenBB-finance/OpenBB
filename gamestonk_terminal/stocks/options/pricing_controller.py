@@ -10,7 +10,7 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
-    rich_table_from_df,
+    print_rich_table,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.stocks.options import yfinance_view
@@ -155,7 +155,7 @@ class PricingController(BaseController):
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            rich_table_from_df(
+            print_rich_table(
                 self.prices,
                 headers=list(self.prices.columns),
                 show_index=False,

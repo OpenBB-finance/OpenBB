@@ -28,4 +28,5 @@ Ticker: TSLA
     queries       top related queries with this stock
     rise          top rising related queries with stock
 [SentimentInvestor]
+    trend         most talked about tickers within the last hour
     hist          plot historical RHI and AHI data by hour

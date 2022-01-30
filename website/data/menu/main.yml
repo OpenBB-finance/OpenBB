@@ -430,6 +430,8 @@ main:
             ref: "/stocks/options/parity"
           - name: binom
             ref: "/stocks/options/binom"
+          - name: greeks
+            ref: "/stocks/options/greeks"
           - name: payoff
             ref: "/stocks/options/payoff"
             sub:
@@ -542,16 +544,10 @@ main:
             ref: "/common/behavioural_analysis/queries"
           - name: rise
             ref: "/common/behavioural_analysis/rise"
-          - name: popularsi
-            ref: "/common/behavioural_analysis/popularsi"
-          - name: emerging
-            ref: "/common/behavioural_analysis/emerging"
-          - name: metrics
-            ref: "/common/behavioural_analysis/metrics"
-          - name: social
-            ref: "/common/behavioural_analysis/social"
-          - name: historical
-            ref: "/common/behavioural_analysis/historical"
+          - name: hist
+            ref: "/common/behavioural_analysis/hist"
+          - name: trend
+            ref: "/common/behavioural_analysis/trend"
       - name: quantitative analysis
         ref: "/common/quantitative_analysis"
         sub:
@@ -626,8 +622,6 @@ main:
         ref: "/cryptocurrency/chart"
       - name: find
         ref: "/cryptocurrency/find"
-      - name: coins
-        ref: "/cryptocurrency/coins"
       - name: headlines
         ref: "/cryptocurrency/headlines"
       - name: prt
@@ -637,28 +631,20 @@ main:
         sub:
           - name: cgtrending
             ref: "/cryptocurrency/discovery/cgtrending"
-          - name: cgvoted
-            ref: "/cryptocurrency/discovery/cgvoted"
-          - name: cgvisited
-            ref: "/cryptocurrency/discovery/cgvisited"
-          - name: cgvolume
-            ref: "/cryptocurrency/discovery/cgvolume"
-          - name: cgrecently
-            ref: "/cryptocurrency/discovery/cgrecently"
-          - name: cgsentiment
-            ref: "/cryptocurrency/discovery/cgsentiment"
+          - name: drnft
+            ref: "/cryptocurrency/discovery/drnft"
+          - name: drdex
+            ref: "/cryptocurrency/discovery/drdex"
+          - name: drdapps
+            ref: "/cryptocurrency/discovery/drdapps"
+          - name: drgames
+            ref: "/cryptocurrency/discovery/drgames"
           - name: cggainers
             ref: "/cryptocurrency/discovery/cggainers"
           - name: cglosers
             ref: "/cryptocurrency/discovery/cglosers"
-          - name: cgyfarms
-            ref: "/cryptocurrency/discovery/cgyfarms"
-          - name: cgdefi
-            ref: "/cryptocurrency/discovery/cgdefi"
-          - name: cgdex
-            ref: "/cryptocurrency/discovery/cgdex"
-          - name: cgnft
-            ref: "/cryptocurrency/discovery/cgnft"
+          - name: cgtop
+            ref: "/cryptocurrency/discovery/cgtop"
           - name: cpsearch
             ref: "/cryptocurrency/discovery/cpsearch"
           - name: cmctop
@@ -678,10 +664,6 @@ main:
             ref: "/cryptocurrency/overview/cgdefi"
           - name: cgstables
             ref: "/cryptocurrency/overview/cgstables"
-          - name: cgnft
-            ref: "/cryptocurrency/overview/cgnft"
-          - name: cgnftday
-            ref: "/cryptocurrency/overview/cgnftday"
           - name: cgexchanges
             ref: "/cryptocurrency/overview/cgexchanges"
           - name: cgexrates
@@ -1009,26 +991,46 @@ main:
   - name: etf
     ref: "/etf"
     sub:
-      - name: search
-        ref: "/etf/search"
+      - name: ln
+        ref: "/etf/ln"
+      - name: ld
+        ref: "/etf/ld"
       - name: overview
         ref: "/etf/overview"
       - name: holdings
         ref: "/etf/holdings"
-      - name: compare
-        ref: "/etf/compare"
-      - name: screener
-        ref: "/etf/screener"
-      - name: gainers
-        ref: "/etf/gainers"
-      - name: decliners
-        ref: "/etf/decliners"
-      - name: active
-        ref: "/etf/active"
+      - name: weights
+        ref: "/etf/weights"
+      - name: summary
+        ref: "/etf/summary"
+      - name: candle
+        ref: "/etf/candle"
+      - name: news
+        ref: "/etf/news"
+      - name: disc
+        ref: "/etf/disc"
+        sub:
+          - name: gainers
+            ref: "/etf/disc/gainers"
+          - name: decliners
+            ref: "/etf/disc/decliners"
+          - name: active
+            ref: "/etf/disc/active"
+      - name: scr
+        ref: "/etf/scr"
+        sub:
+          - name: view
+            ref: "/etf/scr/view"
+          - name: set
+            ref: "/etf/scr/set"
+          - name: screen
+            ref: "/etf/scr/screen"
+          - name: sbc
+            ref: "/etf/scr/sbc"
       - name: pir
         ref: "/etf/pir"
-      - name: fds
-        ref: "/etf/fds"
+      - name: compare
+        ref: "/etf/compare"
   - name: funds
     ref: "/funds"
     sub:
@@ -1126,6 +1128,8 @@ main:
         ref: "/portfolio/ar"
       - name: rmr
         ref: "/portfolio/rmr"
+      - name: mdd
+        ref: "portfolio/mdd"
   - name: forex
     ref: "/forex"
     sub:
@@ -1233,7 +1237,7 @@ main:
     sub:
         - name: "dashboards"
           ref: "/jupyter/dashboards"
-          sub: 
+          sub:
             - name: "stocks"
               ref: "/jupyter/dashboards/stocks"
             - name: "correlation"

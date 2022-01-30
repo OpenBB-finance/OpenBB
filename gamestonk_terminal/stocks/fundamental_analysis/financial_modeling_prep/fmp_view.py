@@ -4,13 +4,11 @@ __docformat__ = "numpy"
 import os
 
 import pandas as pd
-from tabulate import tabulate
 
-from gamestonk_terminal.helper_funcs import export_data
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.stocks.fundamental_analysis.financial_modeling_prep import (
     fmp_model,
 )
-import gamestonk_terminal.feature_flags as gtff
 from gamestonk_terminal.rich_config import console
 
 
@@ -40,18 +38,9 @@ def display_profile(ticker: str):
         Fundamental analysis ticker symbol
     """
     profile = fmp_model.get_profile(ticker)
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                profile.drop(index=["description", "image"]),
-                headers=[],
-                tablefmt="fancy_grid",
-            )
-        )
-    else:
-        console.print(
-            profile.drop(index=["description", "image"]).to_string(header=False)
-        )
+    print_rich_table(
+        profile.drop(index=["description", "image"]), headers=[], title="Ticker Profile"
+    )
 
     console.print(f"\nImage: {profile.loc['image'][0]}")
     console.print(f"\nDescription: {profile.loc['description'][0]}")
@@ -68,10 +57,7 @@ def display_quote(ticker: str):
     """
 
     quote = fmp_model.get_quote(ticker)
-    if gtff.USE_TABULATE_DF:
-        print(tabulate(quote, headers=[], tablefmt="fancy_grid"))
-    else:
-        console.print(quote.to_string(header=False))
+    print_rich_table(quote, headers=[], title="Ticker Quote")
     console.print("")
 
 
@@ -93,10 +79,7 @@ def display_enterprise(
     """
     df_fa = fmp_model.get_enterprise(ticker, number, quarterly)
     df_fa = df_fa[df_fa.columns[::-1]]
-    if gtff.USE_TABULATE_DF:
-        print(tabulate(df_fa, headers=df_fa.columns, tablefmt="fancy_grid"))
-    else:
-        console.print(df_fa.to_string())
+    print_rich_table(df_fa, headers=list(df_fa.columns), title="Ticker Enterprise")
     console.print("")
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "enterprise", df_fa)
 
@@ -119,10 +102,7 @@ def display_discounted_cash_flow(
     """
     dcf = fmp_model.get_dcf(ticker, number, quarterly)
     dcf = dcf[dcf.columns[::-1]]
-    if gtff.USE_TABULATE_DF:
-        print(tabulate(dcf, headers=[], tablefmt="fancy_grid"))
-    else:
-        console.print(dcf.to_string())
+    print_rich_table(dcf, headers=[], title="Discounted Cash Flow")
 
     console.print("")
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "dcf", dcf)
@@ -146,18 +126,11 @@ def display_income_statement(
     """
     income = fmp_model.get_income(ticker, number, quarterly)
     income = income[income.columns[::-1]]
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                income.drop(index=["Final link", "Link"]),
-                headers=income.columns,
-                tablefmt="fancy_grid",
-            )
-        )
-
-    else:
-
-        console.print(income.drop(index=["Final link", "Link"]).to_string())
+    print_rich_table(
+        income.drop(index=["Final link", "Link"]),
+        headers=list(income.columns),
+        title="Ticker Income Statement",
+    )
 
     pd.set_option("display.max_colwidth", None)
     console.print("")
@@ -186,17 +159,11 @@ def display_balance_sheet(
     """
     balance = fmp_model.get_balance(ticker, number, quarterly)
     balance = balance[balance.columns[::-1]]
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                balance.drop(index=["Final link", "Link"]),
-                headers=balance.columns,
-                tablefmt="fancy_grid",
-            )
-        )
-
-    else:
-        console.print(balance.drop(index=["Final link", "Link"]).to_string())
+    print_rich_table(
+        balance.drop(index=["Final link", "Link"]),
+        headers=list(balance.columns),
+        title="Ticker Balance SHeet",
+    )
 
     pd.set_option("display.max_colwidth", None)
     console.print("")
@@ -225,16 +192,11 @@ def display_cash_flow(
     """
     cash = fmp_model.get_cash(ticker, number, quarterly)
     cash = cash[cash.columns[::-1]]
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                cash.drop(index=["Final link", "Link"]),
-                headers=cash.columns,
-                tablefmt="fancy_grid",
-            )
-        )
-    else:
-        console.print(cash.drop(index=["Final link", "Link"]).to_string())
+    print_rich_table(
+        cash.drop(index=["Final link", "Link"]),
+        headers=list(cash.columns),
+        title="Ticker Cash Flow",
+    )
 
     pd.set_option("display.max_colwidth", None)
     console.print("")
@@ -263,10 +225,9 @@ def display_key_metrics(
     """
     key_metrics = fmp_model.get_key_metrics(ticker, number, quarterly)
     key_metrics = key_metrics[key_metrics.columns[::-1]]
-    if gtff.USE_TABULATE_DF:
-        print(tabulate(key_metrics, headers=key_metrics.columns, tablefmt="fancy_grid"))
-    else:
-        console.print(key_metrics.to_string())
+    print_rich_table(
+        key_metrics, headers=list(key_metrics.columns), title="Ticker Key Metrics"
+    )
     console.print("")
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "metrics", key_metrics
@@ -291,11 +252,7 @@ def display_financial_ratios(
     """
     ratios = fmp_model.get_key_ratios(ticker, number, quarterly)
     ratios = ratios[ratios.columns[::-1]]
-    if gtff.USE_TABULATE_DF:
-        print(tabulate(ratios, headers=ratios.columns, tablefmt="fancy_grid"))
-    else:
-
-        console.print(ratios.to_string())
+    print_rich_table(ratios, headers=list(ratios.columns), title="Ticker Ratios")
     console.print("")
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "grratiosowth", ratios
@@ -320,10 +277,6 @@ def display_financial_statement_growth(
     """
     growth = fmp_model.get_financial_growth(ticker, number, quarterly)
     growth = growth[growth.columns[::-1]]
-    if gtff.USE_TABULATE_DF:
-        print(tabulate(growth, headers=growth.columns, tablefmt="fancy_grid"))
-    else:
-
-        console.print(growth.to_string())
+    print_rich_table(growth, headers=list(growth.columns), title="Ticker Growth")
     console.print("")
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "growth", growth)

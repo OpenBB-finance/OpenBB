@@ -8,11 +8,10 @@ from typing import List
 
 from datetime import datetime, timedelta
 import yfinance as yf
-import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.rich_config import console
 
-from gamestonk_terminal.parent_classes import BaseController
+from gamestonk_terminal.parent_classes import StockController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.common import newsapi_view
 from gamestonk_terminal.helper_funcs import (
@@ -32,7 +31,7 @@ from gamestonk_terminal.common.quantitative_analysis import qa_view
 logger = logging.getLogger(__name__)
 
 
-class StocksController(BaseController):
+class StocksController(StockController):
     """Stocks Controller class"""
 
     CHOICES_COMMANDS = [
@@ -69,13 +68,6 @@ class StocksController(BaseController):
         """Constructor"""
         super().__init__(queue)
 
-        self.stock = pd.DataFrame()
-        self.ticker = ""
-        self.suffix = ""  # To hold suffix for Yahoo Finance
-        self.start = ""
-        self.interval = "1440min"
-        self.add_info = stocks_helper.additional_info_about_ticker("")
-
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             self.completer = NestedCompleter.from_nested_dict(choices)
@@ -103,12 +95,12 @@ Stock: [/param]{stock_text}
     news        latest news of the company[/cmds] [src][News API][/src]
 [menu]
 >   options     options menu,  \t\t\t e.g.: chains, open interest, greeks, parity
->   disc        discover trending stocks, \t e.g. map, sectors, high short interest
->   sia         sector and industry analysis, \t e.g. companies per sector, quick ratio per industry and country
->   dps         dark pool and short data, \t e.g. darkpool, short interest, ftd
->   scr         screener stocks, \t\t e.g. overview/performance, using preset filters
+>   disc        discover trending stocks, \t e.g.: map, sectors, high short interest
+>   sia         sector and industry analysis, \t e.g.: companies per sector, quick ratio per industry and country
+>   dps         dark pool and short data, \t e.g.: darkpool, short interest, ftd
+>   scr         screener stocks, \t\t e.g.: overview/performance, using preset filters
 >   ins         insider trading,         \t e.g.: latest penny stock buys, top officer purchases
->   gov         government menu, \t\t e.g. house trading, contracts, corporate lobbying
+>   gov         government menu, \t\t e.g.: house trading, contracts, corporate lobbying
 >   ba          behavioural analysis,    \t from: reddit, stocktwits, twitter, google
 >   ca          comparison analysis,     \t e.g.: get similar, historical, correlation, financials{has_ticker_start}
 >   fa          fundamental analysis,    \t e.g.: income, balance, cash, earnings
@@ -155,115 +147,13 @@ Stock: [/param]{stock_text}
             default=10,
             type=int,
             dest="amount",
-            help="Enter the number of Equities you wish to see in the Tabulate window.",
+            help="Enter the number of Equities you wish to see in the table window.",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-q")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             stocks_helper.search(query=ns_parser.query, amount=ns_parser.amount)
-
-    def call_load(self, other_args: List[str]):
-        """Process load command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="load",
-            description="Load stock ticker to perform analysis on. When the data source"
-            + " is syf', an Indian ticker can be"
-            + " loaded by using '.NS' at the end, e.g. 'SBIN.NS'. See available market in"
-            + " https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html.",
-        )
-        parser.add_argument(
-            "-t",
-            "--ticker",
-            action="store",
-            dest="ticker",
-            required="-h" not in other_args,
-            help="Stock ticker",
-        )
-        parser.add_argument(
-            "-s",
-            "--start",
-            type=valid_date,
-            default=(datetime.now() - timedelta(days=1100)).strftime("%Y-%m-%d"),
-            dest="start",
-            help="The starting date (format YYYY-MM-DD) of the stock",
-        )
-        parser.add_argument(
-            "-e",
-            "--end",
-            type=valid_date,
-            default=datetime.now().strftime("%Y-%m-%d"),
-            dest="end",
-            help="The ending date (format YYYY-MM-DD) of the stock",
-        )
-        parser.add_argument(
-            "-i",
-            "--interval",
-            action="store",
-            dest="interval",
-            type=int,
-            default=1440,
-            choices=[1, 5, 15, 30, 60],
-            help="Intraday stock minutes",
-        )
-        parser.add_argument(
-            "--source",
-            action="store",
-            dest="source",
-            choices=["yf", "av", "iex"] if "-i" not in other_args else ["yf"],
-            default="yf",
-            help="Source of historical data.",
-        )
-        parser.add_argument(
-            "-p",
-            "--prepost",
-            action="store_true",
-            default=False,
-            dest="prepost",
-            help="Pre/After market hours. Only works for 'yf' source, and intraday data",
-        )
-        parser.add_argument(
-            "-r",
-            "--iexrange",
-            dest="iexrange",
-            help="Range for using the iexcloud api.  Note that longer range requires more tokens in account",
-            choices=["ytd", "1y", "2y", "5y", "6m"],
-            type=str,
-            default="ytd",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-t")
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            df_stock_candidate = stocks_helper.load(
-                ns_parser.ticker,
-                ns_parser.start,
-                ns_parser.interval,
-                ns_parser.end,
-                ns_parser.prepost,
-                ns_parser.source,
-            )
-            if not df_stock_candidate.empty:
-                self.stock = df_stock_candidate
-                self.add_info = stocks_helper.additional_info_about_ticker(
-                    ns_parser.ticker
-                )
-                console.print(self.add_info)
-                if "." in ns_parser.ticker:
-                    self.ticker, self.suffix = ns_parser.ticker.upper().split(".")
-                else:
-                    self.ticker = ns_parser.ticker.upper()
-                    self.suffix = ""
-
-                if ns_parser.source == "iex":
-                    self.start = self.stock.index[0].strftime("%Y-%m-%d")
-                else:
-                    self.start = ns_parser.start
-                self.interval = f"{ns_parser.interval}min"
-                console.print("")
 
     def call_quote(self, other_args: List[str]):
         """Process quote command"""

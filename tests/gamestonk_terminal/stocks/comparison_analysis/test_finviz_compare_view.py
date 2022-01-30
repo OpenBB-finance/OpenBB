@@ -6,9 +6,9 @@ import pytest
 
 # IMPORTATION INTERNAL
 from gamestonk_terminal.stocks.comparison_analysis import finviz_compare_view
+from gamestonk_terminal import helper_funcs
 
 
-@pytest.mark.skip
 @pytest.mark.default_cassette("test_screener")
 @pytest.mark.vcr
 @pytest.mark.record_stdout
@@ -17,9 +17,7 @@ from gamestonk_terminal.stocks.comparison_analysis import finviz_compare_view
     [True, False],
 )
 def test_screener(mocker, tab):
-    mocker.patch.object(
-        target=finviz_compare_view.gtff, attribute="USE_TABULATE_DF", new=tab
-    )
+    mocker.patch.object(target=helper_funcs.gtff, attribute="USE_TABULATE_DF", new=tab)
     finviz_compare_view.screener(
         similar=["TSLA", "GM"],
         data_type="overview",

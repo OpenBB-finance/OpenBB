@@ -2,9 +2,11 @@
 __docformat__ = "numpy"
 
 import os
-from tabulate import tabulate
-from gamestonk_terminal.helper_funcs import export_data, long_number_format
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.helper_funcs import (
+    export_data,
+    long_number_format,
+    print_rich_table,
+)
 from gamestonk_terminal.cryptocurrency.onchain import whale_alert_model
 from gamestonk_terminal.rich_config import console
 
@@ -48,19 +50,13 @@ def display_whales_transactions(
     for col in ["amount_usd", "amount"]:
         df[col] = df[col].apply(lambda x: long_number_format(x))
 
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df.head(top),
-                headers=df.columns,
-                floatfmt=".0f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        console.print(df.to_string, "\n")
+    print_rich_table(
+        df.head(top),
+        headers=list(df.columns),
+        show_index=False,
+        title="Large Value Transactions",
+    )
+    console.print("")
 
     export_data(
         export,

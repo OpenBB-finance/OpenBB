@@ -159,8 +159,8 @@ def test_print_help():
     "an_input, expected_queue",
     [
         ("", []),
-        ("/help", ["quit", "quit", "help"]),
-        ("help/help", ["help"]),
+        ("/help", ["home", "help"]),
+        ("help/help", ["help", "help"]),
         ("q", ["quit"]),
         ("h", []),
         ("r", ["quit", "quit", "reset", "stocks", "load TSLA", "dps"]),
@@ -436,7 +436,6 @@ def test_call_func(tested_func, mocked_func, other_args, called_with, mocker):
 @pytest.mark.parametrize(
     "func",
     [
-        "call_load",
         "call_shorted",
         "call_hsi",
         "call_prom",
@@ -494,7 +493,6 @@ def test_call_func_no_ticker(func, mocker):
     getattr(dps_controller, "parse_known_args_and_warn").assert_called_once()
 
 
-@pytest.mark.skip
 @pytest.mark.vcr
 def test_call_load(mocker):
     yf_download = stocks_helper.yf.download

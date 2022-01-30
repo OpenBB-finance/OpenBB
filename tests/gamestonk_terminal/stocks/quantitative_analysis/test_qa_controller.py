@@ -8,6 +8,7 @@ import pytest
 
 # IMPORTATION INTERNAL
 from gamestonk_terminal.stocks.quantitative_analysis import qa_controller
+from gamestonk_terminal import parent_classes
 
 # pylint: disable=E1101
 # pylint: disable=W0603
@@ -196,8 +197,8 @@ def test_print_help():
     "an_input, expected_queue",
     [
         ("", []),
-        ("/help", ["quit", "quit", "help"]),
-        ("help/help", ["help"]),
+        ("/help", ["home", "help"]),
+        ("help/help", ["help", "help"]),
         ("q", ["quit"]),
         ("h", []),
         ("r", ["quit", "quit", "reset", "stocks", "qa"]),
@@ -529,10 +530,9 @@ def test_call_func(
         getattr(QA_CONTROLLER, tested_func)(other_args=other_args)
 
 
-@pytest.mark.skip
 @pytest.mark.vcr
 def test_call_load(mocker):
-    yf_download = qa_controller.stocks_helper.yf.download
+    yf_download = parent_classes.stocks_helper.yf.download
 
     def mock_yf_download(*args, **kwargs):
         kwargs["threads"] = False

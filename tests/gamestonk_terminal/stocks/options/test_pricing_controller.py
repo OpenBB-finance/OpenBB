@@ -148,8 +148,8 @@ def test_print_help():
     "an_input, expected_queue",
     [
         ("", []),
-        ("/help", ["quit", "quit", "quit", "help"]),
-        ("help/help", ["help"]),
+        ("/help", ["home", "help"]),
+        ("help/help", ["help", "help"]),
         ("q", ["quit"]),
         ("h", []),
         (
@@ -291,7 +291,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
         (
             "call_show",
             [],
-            "rich_table_from_df",
+            "print_rich_table",
             [
                 PRICES,
             ],

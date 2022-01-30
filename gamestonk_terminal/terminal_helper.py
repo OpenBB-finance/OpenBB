@@ -23,7 +23,7 @@ from pyEX.common.exception import PyEXception
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal import thought_of_the_day as thought
-from gamestonk_terminal.helper_funcs import rich_table_from_df
+from gamestonk_terminal.helper_funcs import print_rich_table
 from gamestonk_terminal.rich_config import console
 
 # pylint: disable=too-many-statements,no-member,too-many-branches,C0302
@@ -261,20 +261,20 @@ def check_api_keys():
         else:
             key_dict["BITQUERY"] = "defined, test failed"
     # SentimentInvestor keys
-    si_keys = [cfg.API_SENTIMENTINVESTOR_KEY, cfg.API_SENTIMENTINVESTOR_TOKEN]
+    si_keys = [cfg.API_SENTIMENTINVESTOR_TOKEN]
     if "REPLACE_ME" in si_keys:
         key_dict["SENTIMENT_INVESTOR"] = "Not defined"
     else:
         account = requests.get(
-            f"https://api.sentimentinvestor.com/v4/account"
-            f"?token={cfg.API_SENTIMENTINVESTOR_TOKEN}&key={cfg.API_SENTIMENTINVESTOR_KEY}"
+            f"https://api.sentimentinvestor.com/v1/trending"
+            f"?token={cfg.API_SENTIMENTINVESTOR_TOKEN}"
         )
         if account.ok and account.json().get("success", False):
             key_dict["SENTIMENT_INVESTOR"] = "Defined, test passed"
         else:
             key_dict["SENTIMENT_INVESTOR"] = "Defined, test unsuccessful"
 
-    rich_table_from_df(
+    print_rich_table(
         pd.DataFrame(key_dict.items()),
         show_index=False,
         headers=["API", "Key"],

@@ -167,8 +167,8 @@ def test_print_help():
     "an_input, expected_queue",
     [
         ("", []),
-        ("/help", ["quit", "help"]),
-        ("help/help", ["help"]),
+        ("/help", ["home", "help"]),
+        ("help/help", ["help", "help"]),
         ("q", ["quit"]),
         ("h", []),
         (
@@ -485,7 +485,6 @@ def test_call_func(
     "func",
     [
         "call_search",
-        "call_load",
         "call_candle",
     ],
 )
@@ -549,7 +548,6 @@ def test_custom_reset(expected, ticker):
     assert result == expected
 
 
-@pytest.mark.skip
 @pytest.mark.vcr
 def test_call_load(mocker):
     # FORCE SINGLE THREADING

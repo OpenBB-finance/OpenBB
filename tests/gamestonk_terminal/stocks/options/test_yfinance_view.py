@@ -148,7 +148,6 @@ def test_plot_payoff(mocker):
     )
 
 
-@pytest.mark.skip
 @pytest.mark.default_cassette("test_show_parity")
 @pytest.mark.vcr
 def test_show_parity(mocker):
@@ -193,7 +192,6 @@ def test_risk_neutral_vals(mocker):
     )
 
 
-@pytest.mark.skip
 @pytest.mark.default_cassette("test_show_binom")
 @pytest.mark.vcr
 def test_show_binom(mocker):
@@ -218,3 +216,9 @@ def test_show_binom(mocker):
         plot=True,
         vol=None,
     )
+
+
+@pytest.mark.default_cassette("test_show_greeks")
+@pytest.mark.vcr
+def test_show_greeks():
+    yfinance_view.show_greeks(ticker="AAPL", expire="2022-01-28", div_cont=0)

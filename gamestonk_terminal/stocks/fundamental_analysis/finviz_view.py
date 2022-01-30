@@ -3,10 +3,7 @@ __docformat__ = "numpy"
 
 import os
 
-from tabulate import tabulate
-
-from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import export_data
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.stocks.fundamental_analysis import finviz_model
 from gamestonk_terminal.rich_config import console
 
@@ -23,10 +20,7 @@ def display_screen_data(ticker: str, export: str = ""):
     """
     fund_data = finviz_model.get_data(ticker)
     console.print("")
-    if gtff.USE_TABULATE_DF:
-        print(tabulate(fund_data, tablefmt="fancy_grid", showindex=True))
-    else:
-        console.print(fund_data.to_string(header=False))
+    print_rich_table(fund_data, title="Ticker Screener", show_index=True)
 
     console.print("")
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "data", fund_data)

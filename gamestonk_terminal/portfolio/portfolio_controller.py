@@ -17,6 +17,7 @@ from gamestonk_terminal.helper_funcs import (
     valid_date,
     check_positive_float,
     check_positive,
+    EXPORT_ONLY_FIGURES_ALLOWED,
 )
 from gamestonk_terminal.menu import session
 
@@ -35,16 +36,7 @@ from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 class PortfolioController(BaseController):
     """Portfolio Controller class"""
 
-    CHOICES_COMMANDS = [
-        "load",
-        "save",
-        "show",
-        "add",
-        "rmv",
-        "ar",
-        "rmr",
-        "al",
-    ]
+    CHOICES_COMMANDS = ["load", "save", "show", "add", "rmv", "ar", "rmr", "al", "mdd"]
     CHOICES_MENUS = [
         "bro",
         "po",
@@ -93,6 +85,7 @@ class PortfolioController(BaseController):
 [info]Graphs:[/info][cmds]
     rmr         graph your returns versus the market's returns
     al          displays the allocation of the portfolio
+    mdd         display portfolio drawdown[/cmds]
         """
         console.print(text=help_text, menu="Portfolio")
 
@@ -402,3 +395,24 @@ class PortfolioController(BaseController):
                 console.print("Cannot generate a graph from an empty dataframe\n")
         else:
             console.print("Please add items to the portfolio\n")
+
+    def call_mdd(self, other_args: List[str]):
+        """Process mdd command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="mdd",
+            description="Show portfolio drawdown",
+        )
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
+        )
+        if ns_parser:
+            if not self.portfolio.empty:
+                val, _ = portfolio_model.convert_df(self.portfolio)
+                if not val.empty:
+                    df_m = yfinance_model.get_market(val.index[0], "SPY")
+                    returns, _ = portfolio_model.get_return(val, df_m, 365)
+                    portfolio_view.display_drawdown(returns[["return"]].dropna())
+            else:
+                console.print("[red]No portfolio loaded.\n[/red]")
