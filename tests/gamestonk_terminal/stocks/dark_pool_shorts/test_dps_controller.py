@@ -436,7 +436,6 @@ def test_call_func(tested_func, mocked_func, other_args, called_with, mocker):
 @pytest.mark.parametrize(
     "func",
     [
-        "call_load",
         "call_shorted",
         "call_hsi",
         "call_prom",

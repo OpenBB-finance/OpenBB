@@ -27,7 +27,7 @@ def get_cmc_top_n() -> pd.DataFrame:
         rank.append(coin["cmc_rank"])
         price.append(coin["quote"]["USD"]["price"])
         pchange1d.append(coin["quote"]["USD"]["percent_change_24h"])
-        mkt_cap.append(coin["quote"]["USD"]["market_cap"] / (10 ** 9))
+        mkt_cap.append(coin["quote"]["USD"]["market_cap"] / (10**9))
 
     df = pd.DataFrame(data=[symbol, rank, price, pchange1d, mkt_cap]).transpose()
     df.columns = [
