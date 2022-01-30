@@ -1,0 +1,71 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: GET
+    uri: https://api.coinpaprika.com/v1/coins/btc-bitcoin/
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAA/6SV34/bNgzH3/dXCNprnNjJ5XI1MAz9ga4rum5ACxRYdwhoiYnVyJIh0edmxf3v
+        g2zHdnzp9YABfjFFfiiJX1LfuJI85RmJKFMkrDJ8xg0UyFP+ojf4Y5FZHUwfX/IZd2AOPE1mXPmt
+        wZqnO9Aem18QpO6Qp+QqnHE6lgHUUQj2nqefu5Qe97WiIduH03/w3gpbGULH0ySecSXsYIjvZx1B
+        uGNJVlTOoRHHgfRyaj8nbq5XE+TVwCydtbvI7qLausOA/CuY2Z879qk1nxOv4vWEmFwNRDgWaMiP
+        YINlctZNMuGsnvUcn8NyfT26r9P/ZC9TRNITCmWU2Q+EP07/54Tl5sFpbnqGVvucQlhkkM7v6N1p
+        ib3vl87J1w9KeTvjhFCMVAFkfa4iAwcoLNnRedsV9n5YKa1XpKzhKX9tKyPR8X6jtQapCuWiL9Ed
+        mEiiizTASN2fOgf2ds7uwDCJjr1rPUbcF9qKg8hBGfYK71DbcpzkizXgIy9yg1qrgf022NmHwf5k
+        YgFO2GgH+oCjQgUje90Zf8i6nXGJXjhVntzaRmbKM2DnXcPASFZbp2WtJLJOrMwfPWExZ79TCKIc
+        2U45T0yiQEMOtPoXJZNqrwg0O8FmDFrnNjxwD57VinJbUUjdxrIMzIFZx7wye40MZFCmJwdk3ZzP
+        eIHewz6cnM+4LdFsva2c6MeKJ3CEcgvEU76M42dRnETx6mMcp833Nw830NxHOM3WE1DlQ82tOwSB
+        ls7KSoRhk4OTNTjc1qA10ilDMwa23fhqm9/2zW/dfuvJVYIqF9ZfjS+lYfp8C3pvnaK8CNJ987xt
+        Va3MwfP0G8evpbYu9MBnnhOVPl0sslMx3VzYYjGM4wcOpnHoGRMPTw6hmCuzs4vRmlZ3OG8RxzLH
+        LgmJsU9GYt7qQ8kW0DjczvgOBGbWHsYbrut6frKPt+ybCIdSKpr6t9bG2/VHvJ3xtsBbYSWOQ/aK
+        8iobw8dBNWZe0VlAtzq3bt/s4mgrqjKcbqMzN+AaSOS/3v3ym1iiWZk3X59f/VPF8fKa3953Jdvi
+        V0IjUTaDqnLhKbyUEU0oQRipnXSav9Dck5jvlboL60v7SOgDETwxdiKPH0c9Jpwn5LwsqaeEPqKv
+        PrzX5YXMrTeBPoTiDDHdeNlmFpz8Tt6LOu0JnbabSURNQ/sqCxM3Q+d5urq5utmsb+4foh/Rcw8f
+        t8Iog7CGnMoqsiFFEoeHPgxCz9PrZB0/u5CNakWEZxoT1uHZZXQ+40w7q7Wtm5Mk6+RmdQmNGgW5
+        qmhk/7O0tdEW5IDtxul3q9I26ODedfLlYjytW3vYqefDQ1jnirCE8C6m35pmHrHDiZWYh/2UUDp1
+        gCaFJ+tgjwshzWKI94tlsp6XchcS5VWRGVD6/8A28y9lGA68eVq3EghOL1oSR/EmSjZnL5qGiddy
+        Gd69VfwxuUmTdeN1/9N/AQAA//8y52CE0QsAAA==
+    headers:
+      Accept-Ranges:
+      - bytes
+      CF-Cache-Status:
+      - MISS
+      CF-RAY:
+      - 6d5cb383d90e3a87-CDG
+      Cache-Control:
+      - public, max-age=60, s-maxage=60, stale-while-revalidate=10, stale-if-error=600
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '1111'
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Sun, 30 Jan 2022 18:18:09 GMT
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Last-Modified:
+      - Sun, 30 Jan 2022 18:18:09 GMT
+      Server:
+      - cloudflare
+      Vary:
+      - Accept-Encoding
+      - Origin
+      alt-svc:
+      - h3=":443"; ma=86400, h3-29=":443"; ma=86400
+    status:
+      code: 200
+      message: OK
+version: 1
