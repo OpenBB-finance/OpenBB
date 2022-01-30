@@ -15,12 +15,12 @@ Currency:
     news        latest news of the company [News API]
 
 >   options     options menu,  			 e.g.: chains, open interest, greeks, parity
->   disc        discover trending stocks, 	 e.g. map, sectors, high short interest
->   sia         sector and industry analysis, 	 e.g. companies per sector, quick ratio per industry and country
->   dps         dark pool and short data, 	 e.g. darkpool, short interest, ftd
->   scr         screener stocks, 		 e.g. overview/performance, using preset filters
+>   disc        discover trending stocks, 	 e.g.: map, sectors, high short interest
+>   sia         sector and industry analysis, 	 e.g.: companies per sector, quick ratio per industry and country
+>   dps         dark pool and short data, 	 e.g.: darkpool, short interest, ftd
+>   scr         screener stocks, 		 e.g.: overview/performance, using preset filters
 >   ins         insider trading,         	 e.g.: latest penny stock buys, top officer purchases
->   gov         government menu, 		 e.g. house trading, contracts, corporate lobbying
+>   gov         government menu, 		 e.g.: house trading, contracts, corporate lobbying
 >   ba          behavioural analysis,    	 from: reddit, stocktwits, twitter, google
 >   ca          comparison analysis,     	 e.g.: get similar, historical, correlation, financials[unvl]
 >   fa          fundamental analysis,    	 e.g.: income, balance, cash, earnings

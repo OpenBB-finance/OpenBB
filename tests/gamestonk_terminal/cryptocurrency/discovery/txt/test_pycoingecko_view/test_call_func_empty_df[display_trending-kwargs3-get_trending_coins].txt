@@ -1,0 +1,3 @@
+
+Unable to retrieve data from CoinGecko.
+

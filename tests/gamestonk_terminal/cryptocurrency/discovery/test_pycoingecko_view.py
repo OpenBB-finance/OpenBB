@@ -1,30 +1,68 @@
-from unittest import TestCase
+# IMPORTATION STANDARD
 
-import vcr
+# IMPORTATION THIRDPARTY
 import pytest
-from gamestonk_terminal.cryptocurrency.discovery import (
-    pycoingecko_view as disc_pycoingecko_view,
+
+# IMPORTATION INTERNAL
+from gamestonk_terminal.cryptocurrency.discovery import pycoingecko_view
+
+
+@pytest.mark.vcr
+@pytest.mark.record_stdout
+@pytest.mark.parametrize(
+    "func, kwargs",
+    [
+        ("display_coins", dict(category="analytics")),
+        ("display_gainers", dict()),
+        ("display_losers", dict()),
+        ("display_trending", dict()),
+    ],
 )
-
-from tests.helpers.helpers import check_print
-
-# pylint: disable=R0904
-
-
-class TestCoinGeckoAPI(TestCase):
-    @pytest.mark.skip
-    @check_print(assert_in="Rank")
-    @pytest.mark.vcr
-    def test_coin_gainers(self):
-        disc_pycoingecko_view.display_gainers(
-            period="24h", top=15, export="", sortby=""
-        )
-
-    @pytest.mark.skip
-    @check_print(assert_in="Rank")
-    @vcr.use_cassette(
-        "tests/gamestonk_terminal/cryptocurrency/discovery/cassettes/test_pycoingecko_view/losers.yaml",
-        record_mode="new_episodes",
+def test_call_func(func, kwargs, mocker):
+    # MOCK EXPORT_DATA
+    mocker.patch(
+        target="gamestonk_terminal.cryptocurrency.discovery.pycoingecko_view.export_data"
     )
-    def test_coin_losers(self):
-        disc_pycoingecko_view.display_losers(period="24h", top=15, export="", sortby="")
+
+    getattr(pycoingecko_view, func)(**kwargs)
+
+
+@pytest.mark.vcr(record_mode="none")
+@pytest.mark.record_stdout
+@pytest.mark.parametrize(
+    "func, kwargs, mocked_func",
+    [
+        (
+            "display_coins",
+            dict(category="analytics"),
+            "get_coins",
+        ),
+        (
+            "display_gainers",
+            dict(),
+            "get_gainers_or_losers",
+        ),
+        (
+            "display_losers",
+            dict(),
+            "get_gainers_or_losers",
+        ),
+        (
+            "display_trending",
+            dict(),
+            "get_trending_coins",
+        ),
+    ],
+)
+def test_call_func_empty_df(func, kwargs, mocked_func, mocker):
+    view_path = "gamestonk_terminal.cryptocurrency.discovery.pycoingecko_view"
+
+    # MOCK MOCKED_FUNC
+    attrs = {"empty": True}
+    mock_empty_df = mocker.Mock(**attrs)
+    mocker.patch(
+        target=f"{view_path}.pycoingecko_model.{mocked_func}",
+        return_value=mock_empty_df,
+    )
+
+    getattr(pycoingecko_view, func)(**kwargs)
