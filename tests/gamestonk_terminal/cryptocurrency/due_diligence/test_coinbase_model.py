@@ -14,7 +14,7 @@ from gamestonk_terminal.cryptocurrency.due_diligence import coinbase_model
     [
         ("show_available_pairs_for_given_symbol", dict()),
         ("get_trading_pair_info", dict(product_id="ETH-USDT")),
-        ("get_trades", dict(product_id="ETH-USDT")),
+        ("get_trades", dict(product_id="ETH-USDT", side="buy")),
         ("get_candles", dict(product_id="ETH-USDT")),
         ("get_product_stats", dict(product_id="ETH-USDT")),
     ],

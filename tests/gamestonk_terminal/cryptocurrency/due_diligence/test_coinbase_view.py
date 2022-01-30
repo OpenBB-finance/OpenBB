@@ -19,6 +19,8 @@ from gamestonk_terminal.cryptocurrency.due_diligence import coinbase_view
 )
 def test_call_func(func, kwargs, mocker):
     # MOCK EXPORT_DATA
-    mocker.patch(target="gamestonk_terminal.cryptocurrency.due_diligence.coinbase_view.export_data")
+    mocker.patch(
+        target="gamestonk_terminal.cryptocurrency.due_diligence.coinbase_view.export_data"
+    )
 
     getattr(coinbase_view, func)(**kwargs)
