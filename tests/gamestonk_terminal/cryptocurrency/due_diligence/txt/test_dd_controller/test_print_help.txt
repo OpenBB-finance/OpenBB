@@ -1,0 +1,38 @@
+
+    load        load a specific cryptocurrency for analysis
+
+Coin: None
+Source: ?
+
+Glassnode
+   active          active addresses
+   nonzero         addresses with non-zero balances
+   change          30d change of supply held on exchange wallets
+   eb              total balance held on exchanges (in percentage and units)
+Coinglass
+   oi              open interest per exchange
+CoinPaprika
+   basic           basic information about loaded coin
+   ps              price and supply related metrics for loaded coin
+   mkt             all markets for loaded coin
+   ex              all exchanges where loaded coin is listed
+   twitter         tweets for loaded coin
+   events          events related to loaded coin
+CoinGecko
+   info            basic information about loaded coin
+   market          market stats about loaded coin
+   ath             all time high related stats for loaded coin
+   atl             all time low related stats for loaded coin
+   web             found websites for loaded coin e.g forum, homepage
+   social          social portals urls for loaded coin, e.g reddit, twitter
+   score           different kind of scores for loaded coin, e.g developer score, sentiment score
+   dev             github, bitbucket coin development statistics
+   bc              links to blockchain explorers for loaded coin
+Binance
+   binbook         show order book
+   balance         show coin balance
+Coinbase
+   cbbook          show order book
+   trades          show last trades
+   stats           show coin stats
+

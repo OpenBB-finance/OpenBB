@@ -2,51 +2,14 @@
 import os
 
 # IMPORTATION THIRDPARTY
-import pandas as pd
 import pytest
 
 # IMPORTATION INTERNAL
-from gamestonk_terminal.cryptocurrency.due_diligence import dd_controller
+from gamestonk_terminal.cryptocurrency.onchain import onchain_controller
 
 # pylint: disable=E1101
 # pylint: disable=W0603
 # pylint: disable=E1111
-
-
-COIN_MAP_DF = pd.Series(
-    data={
-        "CoinGecko": "bitcoin",
-        "CoinPaprika": "btc-bitcoin",
-        "Binance": "BTC",
-        "Coinbase": "BTC",
-    }
-)
-CURRENT_COIN = "bitcoin"
-SYMBOL = "BTC"
-BINANCE_SHOW_AVAILABLE_PAIRS_OF_GIVEN_SYMBOL = (
-    "BTC",
-    [
-        "USDT",
-        "TUSD",
-        "USDC",
-        "BUSD",
-        "NGN",
-        "RUB",
-        "TRY",
-        "EUR",
-        "GBP",
-        "UAH",
-        "BIDR",
-        "AUD",
-        "DAI",
-        "BRL",
-        "USDP",
-    ],
-)
-COINBASE_SHOW_AVAILABLE_PAIRS_OF_GIVEN_SYMBOL = (
-    "BTC",
-    ["GBP", "USD", "EUR", "USDC", "UST", "USDT"],
-)
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -58,21 +21,21 @@ COINBASE_SHOW_AVAILABLE_PAIRS_OF_GIVEN_SYMBOL = (
     ],
 )
 def test_menu_with_queue(expected, mocker, queue):
-    path_controller = "gamestonk_terminal.cryptocurrency.due_diligence.dd_controller"
+    path_controller = "gamestonk_terminal.cryptocurrency.onchain.onchain_controller"
 
     # MOCK SWITCH
     mocker.patch(
-        target=f"{path_controller}.DueDiligenceController.switch",
+        target=f"{path_controller}.OnchainController.switch",
         return_value=["quit"],
     )
-    result_menu = dd_controller.DueDiligenceController(queue=queue).menu()
+    result_menu = onchain_controller.OnchainController(queue=queue).menu()
 
     assert result_menu == expected
 
 
 @pytest.mark.vcr(record_mode="none")
 def test_menu_without_queue_completion(mocker):
-    path_controller = "gamestonk_terminal.cryptocurrency.due_diligence.dd_controller"
+    path_controller = "gamestonk_terminal.cryptocurrency.onchain.onchain_controller"
 
     # ENABLE AUTO-COMPLETION : HELPER_FUNCS.MENU
     mocker.patch(
@@ -89,7 +52,7 @@ def test_menu_without_queue_completion(mocker):
 
     # DISABLE AUTO-COMPLETION : CONTROLLER.COMPLETER
     mocker.patch.object(
-        target=dd_controller.gtff,
+        target=onchain_controller.gtff,
         attribute="USE_PROMPT_TOOLKIT",
         new=True,
     )
@@ -101,7 +64,7 @@ def test_menu_without_queue_completion(mocker):
         return_value="quit",
     )
 
-    result_menu = dd_controller.DueDiligenceController(queue=None).menu()
+    result_menu = onchain_controller.OnchainController(queue=None).menu()
 
     assert result_menu == []
 
@@ -112,11 +75,11 @@ def test_menu_without_queue_completion(mocker):
     ["help", "homee help", "home help", "mock"],
 )
 def test_menu_without_queue_sys_exit(mock_input, mocker):
-    path_controller = "gamestonk_terminal.cryptocurrency.due_diligence.dd_controller"
+    path_controller = "gamestonk_terminal.cryptocurrency.onchain.onchain_controller"
 
     # DISABLE AUTO-COMPLETION
     mocker.patch.object(
-        target=dd_controller.gtff,
+        target=onchain_controller.gtff,
         attribute="USE_PROMPT_TOOLKIT",
         new=False,
     )
@@ -141,11 +104,11 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
 
     mock_switch = mocker.Mock(side_effect=SystemExitSideEffect())
     mocker.patch(
-        target=f"{path_controller}.DueDiligenceController.switch",
+        target=f"{path_controller}.OnchainController.switch",
         new=mock_switch,
     )
 
-    result_menu = dd_controller.DueDiligenceController(queue=None).menu()
+    result_menu = onchain_controller.OnchainController(queue=None).menu()
 
     assert result_menu == []
 
@@ -153,7 +116,7 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.record_stdout
 def test_print_help():
-    controller = dd_controller.DueDiligenceController(queue=None)
+    controller = onchain_controller.OnchainController(queue=None)
     controller.print_help()
 
 
@@ -168,12 +131,12 @@ def test_print_help():
         ("h", []),
         (
             "r",
-            ["quit", "quit", "reset", "crypto", "dd"],
+            ["quit", "quit", "reset", "crypto", "onchain"],
         ),
     ],
 )
 def test_switch(an_input, expected_queue):
-    controller = dd_controller.DueDiligenceController(queue=None)
+    controller = onchain_controller.OnchainController(queue=None)
     queue = controller.switch(an_input=an_input)
 
     assert queue == expected_queue
@@ -183,7 +146,7 @@ def test_switch(an_input, expected_queue):
 def test_call_cls(mocker):
     mocker.patch("os.system")
 
-    controller = dd_controller.DueDiligenceController(queue=None)
+    controller = onchain_controller.OnchainController(queue=None)
     controller.call_cls([])
 
     assert controller.queue == []
@@ -207,17 +170,17 @@ def test_call_cls(mocker):
         (
             "call_reset",
             [],
-            ["quit", "quit", "reset", "crypto", "dd"],
+            ["quit", "quit", "reset", "crypto", "onchain"],
         ),
         (
             "call_reset",
             ["help"],
-            ["quit", "quit", "reset", "crypto", "dd", "help"],
+            ["quit", "quit", "reset", "crypto", "onchain", "help"],
         ),
     ],
 )
 def test_call_func_expect_queue(expected_queue, func, queue):
-    controller = dd_controller.DueDiligenceController(queue=queue)
+    controller = onchain_controller.OnchainController(queue=queue)
     result = getattr(controller, func)([])
 
     assert result is None
@@ -229,170 +192,142 @@ def test_call_func_expect_queue(expected_queue, func, queue):
     "tested_func, other_args, mocked_func, called_args, called_kwargs",
     [
         (
-            "call_nonzero",
+            "call_btcct",
             [],
-            "glassnode_view.display_non_zero_addresses",
-            [],
-            dict(),
-        ),
-        (
-            "call_active",
-            [],
-            "glassnode_view.display_active_addresses",
+            "blockchain_view.display_btc_confirmed_transactions",
             [],
             dict(),
         ),
         (
-            "call_change",
-            ["binance"],
-            "glassnode_view.display_exchange_net_position_change",
+            "call_btccp",
+            [],
+            "blockchain_view.display_btc_circulating_supply",
             [],
             dict(),
         ),
         (
-            "call_eb",
-            [],
-            "glassnode_view.display_exchange_balances",
-            [],
-            dict(),
-        ),
-        (
-            "call_oi",
-            [],
-            "coinglass_view.display_open_interest",
+            "call_hr",
+            ["BTC"],
+            "display_hashrate",
             [],
             dict(),
         ),
         (
-            "call_info",
+            "call_gwei",
             [],
-            "pycoingecko_view.display_info",
-            [],
-            dict(),
-        ),
-        (
-            "call_market",
-            [],
-            "pycoingecko_view.display_market",
+            "ethgasstation_view.display_gwei_fees",
             [],
             dict(),
         ),
         (
-            "call_web",
+            "call_whales",
             [],
-            "pycoingecko_view.display_web",
-            [],
-            dict(),
-        ),
-        (
-            "call_dev",
-            [],
-            "pycoingecko_view.display_dev",
+            "whale_alert_view.display_whales_transactions",
             [],
             dict(),
         ),
         (
-            "call_ath",
-            [],
-            "pycoingecko_view.display_ath",
-            [],
-            dict(),
-        ),
-        (
-            "call_atl",
-            [],
-            "pycoingecko_view.display_atl",
+            "call_address",
+            ["0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984", "-t"],
+            "",
             [],
             dict(),
         ),
         (
-            "call_score",
-            [],
-            "pycoingecko_view.display_score",
-            [],
-            dict(),
-        ),
-        (
-            "call_bc",
-            [],
-            "pycoingecko_view.display_bc",
-            [],
-            dict(),
-        ),
-        (
-            "call_book",
-            [],
-            "binance_view.display_order_book",
-            [],
-            dict(),
-        ),
-        (
-            "call_cbbook",
-            [],
-            "coinbase_view.display_order_book",
+            "call_address",
+            ["MOCK_WRONG_ADDRESS", "-t"],
+            "",
             [],
             dict(),
         ),
         (
             "call_balance",
             [],
-            "binance_view.display_balance",
+            "ethplorer_view.display_address_info",
             [],
             dict(),
         ),
         (
-            "call_trades",
+            "call_hist",
             [],
-            "coinbase_view.display_trades",
-            [],
-            dict(),
-        ),
-        (
-            "call_stats",
-            [],
-            "coinbase_view.display_stats",
+            "ethplorer_view.display_address_history",
             [],
             dict(),
         ),
         (
-            "call_ps",
+            "call_holders",
             [],
-            "coinpaprika_view.display_price_supply",
-            [],
-            dict(),
-        ),
-        (
-            "call_basic",
-            [],
-            "coinpaprika_view.display_basic",
+            "ethplorer_view.display_top_token_holders",
             [],
             dict(),
         ),
         (
-            "call_mkt",
+            "call_top",
             [],
-            "coinpaprika_view.display_markets",
-            [],
-            dict(),
-        ),
-        (
-            "call_ex",
-            [],
-            "coinpaprika_view.display_exchanges",
+            "ethplorer_view.display_top_tokens",
             [],
             dict(),
         ),
         (
-            "call_events",
+            "call_info",
             [],
-            "coinpaprika_view.display_events",
+            "ethplorer_view.display_token_info",
             [],
             dict(),
         ),
         (
-            "call_twitter",
+            "call_th",
             [],
-            "coinpaprika_view.display_twitter",
+            "ethplorer_view.display_token_history",
+            [],
+            dict(),
+        ),
+        (
+            "call_tx",
+            [],
+            "ethplorer_view.display_tx_info",
+            [],
+            dict(),
+        ),
+        (
+            "call_prices",
+            [],
+            "ethplorer_view.display_token_historical_prices",
+            [],
+            dict(),
+        ),
+        (
+            "call_lt",
+            [],
+            "bitquery_view.display_dex_trades",
+            [],
+            dict(),
+        ),
+        (
+            "call_dvcp",
+            ["BTC"],
+            "bitquery_view.display_daily_volume_for_given_pair",
+            [],
+            dict(),
+        ),
+        (
+            "call_tv",
+            ["BTC"],
+            "bitquery_view.display_dex_volume_for_token",
+            [],
+            dict(),
+        ),
+        (
+            "call_ueat",
+            [],
+            "bitquery_view.display_ethereum_unique_senders",
+            [],
+            dict(),
+        ),
+        (
+            "call_ttcp",
+            ["Balancer"],
+            "bitquery_view.display_most_traded_pairs",
             [],
             dict(),
         ),
@@ -401,19 +336,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
 def test_call_func(
     tested_func, mocked_func, other_args, called_args, called_kwargs, mocker
 ):
-    path_controller = "gamestonk_terminal.cryptocurrency.due_diligence.dd_controller"
-
-    # MOCK SHOW_AVAILABLE_PAIRS_FOR_GIVEN_SYMBOL
-    mocker.patch(
-        target=f"{path_controller}.binance_model.show_available_pairs_for_given_symbol",
-        return_value=BINANCE_SHOW_AVAILABLE_PAIRS_OF_GIVEN_SYMBOL,
-    )
-
-    # MOCK SHOW_AVAILABLE_PAIRS_FOR_GIVEN_SYMBOL
-    mocker.patch(
-        target=f"{path_controller}.coinbase_model.show_available_pairs_for_given_symbol",
-        return_value=COINBASE_SHOW_AVAILABLE_PAIRS_OF_GIVEN_SYMBOL,
-    )
+    path_controller = "gamestonk_terminal.cryptocurrency.onchain.onchain_controller"
 
     if mocked_func:
         mock = mocker.Mock()
@@ -422,10 +345,10 @@ def test_call_func(
             new=mock,
         )
 
-        controller = dd_controller.DueDiligenceController()
-        controller.coin_map_df = COIN_MAP_DF
-        controller.current_coin = CURRENT_COIN
-        controller.symbol = SYMBOL
+        controller = onchain_controller.OnchainController(queue=None)
+        controller.address = "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984"
+        controller.address_type = "token"
+
         getattr(controller, tested_func)(other_args)
 
         if called_args or called_kwargs:
@@ -433,16 +356,27 @@ def test_call_func(
         else:
             mock.assert_called_once()
     else:
-        controller = dd_controller.DueDiligenceController()
-        controller.coin_map_df = COIN_MAP_DF
-        controller.current_coin = CURRENT_COIN
-        controller.symbol = SYMBOL
+        controller = onchain_controller.OnchainController(queue=None)
+        controller.address = "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984"
+        controller.address_type = "token"
+
         getattr(controller, tested_func)(other_args)
 
 
-@pytest.mark.vcr
-@pytest.mark.record_stdout
-def test_call_load():
-    controller = dd_controller.DueDiligenceController()
-    other_args = [SYMBOL]
-    controller.call_load(other_args=other_args)
+@pytest.mark.vcr(record_mode="none")
+@pytest.mark.parametrize(
+    "tested_func",
+    [
+        "call_balance",
+        "call_hist",
+        "call_holders",
+        "call_info",
+        "call_th",
+        "call_tx",
+        "call_prices",
+    ],
+)
+def test_call_func_no_address(tested_func):
+    controller = onchain_controller.OnchainController(queue=None)
+    controller.address = ""
+    getattr(controller, tested_func)([])
