@@ -26,7 +26,9 @@ COINS_COLUMNS = [
 ]
 
 
-def display_coins(category: str, top: int, sortby: str, export: str) -> None:
+def display_coins(
+    category: str, top: int = 250, sortby: str = "Symbol", export: str = ""
+) -> None:
     """Display top coins [Source: CoinGecko]
 
     Parameters
@@ -80,7 +82,9 @@ def display_coins(category: str, top: int, sortby: str, export: str) -> None:
         console.print("\nUnable to retrieve data from CoinGecko.\n")
 
 
-def display_gainers(period: str, top: int, sortby: str, export: str) -> None:
+def display_gainers(
+    period: str = "1h", top: int = 20, sortby: str = "Symbol", export: str = ""
+) -> None:
     """Shows Largest Gainers - coins which gain the most in given period. [Source: CoinGecko]
 
     Parameters
@@ -119,7 +123,9 @@ def display_gainers(period: str, top: int, sortby: str, export: str) -> None:
         console.print("\nUnable to retrieve data from CoinGecko.\n")
 
 
-def display_losers(period: str, top: int, export: str, sortby: str) -> None:
+def display_losers(
+    period: str = "1h", top: int = 20, export: str = "", sortby: str = "Symbol"
+) -> None:
     """Shows Largest Losers - coins which lost the most in given period of time. [Source: CoinGecko]
 
     Parameters
@@ -158,7 +164,7 @@ def display_losers(period: str, top: int, export: str, sortby: str) -> None:
         console.print("\nUnable to retrieve data from CoinGecko.\n")
 
 
-def display_trending(export: str) -> None:
+def display_trending(export: str = "") -> None:
     """Display trending coins [Source: CoinGecko]
 
     Parameters
