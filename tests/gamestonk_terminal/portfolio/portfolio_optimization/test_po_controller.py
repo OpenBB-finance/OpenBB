@@ -21,7 +21,9 @@ from gamestonk_terminal.portfolio.portfolio_optimization import po_controller
     ],
 )
 def test_menu_with_queue(expected, mocker, queue):
-    path_controller = "gamestonk_terminal.portfolio.portfolio_optimization.po_controller"
+    path_controller = (
+        "gamestonk_terminal.portfolio.portfolio_optimization.po_controller"
+    )
 
     # MOCK SWITCH
     mocker.patch(
@@ -35,7 +37,9 @@ def test_menu_with_queue(expected, mocker, queue):
 
 @pytest.mark.vcr(record_mode="none")
 def test_menu_without_queue_completion(mocker):
-    path_controller = "gamestonk_terminal.portfolio.portfolio_optimization.po_controller"
+    path_controller = (
+        "gamestonk_terminal.portfolio.portfolio_optimization.po_controller"
+    )
 
     # ENABLE AUTO-COMPLETION : HELPER_FUNCS.MENU
     mocker.patch(
@@ -75,7 +79,9 @@ def test_menu_without_queue_completion(mocker):
     ["help", "homee help", "home help", "mock"],
 )
 def test_menu_without_queue_sys_exit(mock_input, mocker):
-    path_controller = "gamestonk_terminal.portfolio.portfolio_optimization.po_controller"
+    path_controller = (
+        "gamestonk_terminal.portfolio.portfolio_optimization.po_controller"
+    )
 
     # DISABLE AUTO-COMPLETION
     mocker.patch.object(
@@ -131,7 +137,7 @@ def test_print_help():
         ("h", []),
         (
             "r",
-            ['quit', 'quit', 'reset', 'portfolio', 'po'],
+            ["quit", "quit", "reset", "portfolio", "po"],
         ),
     ],
 )
@@ -170,12 +176,12 @@ def test_call_cls(mocker):
         (
             "call_reset",
             [],
-            ['quit', 'quit', 'reset', 'portfolio', 'po'],
+            ["quit", "quit", "reset", "portfolio", "po"],
         ),
         (
             "call_reset",
             ["help"],
-            ['quit', 'quit', 'reset', 'portfolio', 'po', 'help'],
+            ["quit", "quit", "reset", "portfolio", "po", "help"],
         ),
     ],
 )
@@ -308,7 +314,9 @@ def test_call_func_expect_queue(expected_queue, func, queue):
 def test_call_func(
     tested_func, mocked_func, other_args, called_args, called_kwargs, mocker
 ):
-    path_controller = "gamestonk_terminal.portfolio.portfolio_optimization.po_controller"
+    path_controller = (
+        "gamestonk_terminal.portfolio.portfolio_optimization.po_controller"
+    )
 
     if mocked_func:
         mock = mocker.Mock()
