@@ -823,7 +823,7 @@ def show_binom(
     price = info["regularMarketPrice"]
     if vol is None:
         closings = yfinance_model.get_closing(ticker)
-        vol = (closings / closings.shift()).std() * (252 ** 0.5)
+        vol = (closings / closings.shift()).std() * (252**0.5)
     div_yield = (
         info["trailingAnnualDividendYield"]
         if info["trailingAnnualDividendYield"] is not None
@@ -836,7 +836,7 @@ def show_binom(
     days = (exp_date - today).days
 
     # Binomial pricing specific variables
-    up = math.exp(vol * (delta_t ** 0.5))
+    up = math.exp(vol * (delta_t**0.5))
     down = 1 / up
     prob_up = (math.exp((rf - div_yield) * delta_t) - down) / (up - down)
     prob_down = 1 - prob_up
