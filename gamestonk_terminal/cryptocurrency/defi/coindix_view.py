@@ -63,6 +63,7 @@ def display_defi_vaults(
             f"{'' if not chain else 'chain: ' + chain}{'' if not protocol else ', protocol: ' + protocol}"
             f"{'' if not kind else ', kind:' + kind}"
         )
+        return
 
     df = df.sort_values(by=sortby, ascending=descend)
     df["tvl"] = df["tvl"].apply(lambda x: long_number_format(x))
