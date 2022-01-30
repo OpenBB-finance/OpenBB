@@ -18,7 +18,7 @@ from gamestonk_terminal.cryptocurrency.due_diligence import coinpaprika_model
         ("get_coin_markets_by_id", dict()),
         ("get_ohlc_historical", dict()),
         ("get_tickers_info_for_coin", dict()),
-        ("validate_coin", dict(coin="btc-bitcoin", coins_dct={'btc-bitcoin': 'BTC'})),
+        ("validate_coin", dict(coin="btc-bitcoin", coins_dct={"btc-bitcoin": "BTC"})),
         ("basic_coin_info", dict()),
     ],
 )
