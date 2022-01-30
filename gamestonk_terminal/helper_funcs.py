@@ -513,7 +513,7 @@ def clean_tweet(tweet: str, s_ticker: str) -> str:
     """Cleans tweets to be fed to sentiment model"""
     whitespace = re.compile(r"\s+")
     web_address = re.compile(r"(?i)http(s):\/\/[a-z0-9.~_\-\/]+")
-    ticker = re.compile(fr"(?i)@{s_ticker}(?=\b)")
+    ticker = re.compile(rf"(?i)@{s_ticker}(?=\b)")
     user = re.compile(r"(?i)@[a-z0-9_]+")
 
     tweet = whitespace.sub(" ", tweet)
@@ -878,12 +878,12 @@ def plot_autoscale():
 
     if gtff.USE_PLOT_AUTOSCALING:
         x, y = get_screeninfo()  # Get screen size
-        x = ((x) * cfgPlot.PLOT_WIDTH_PERCENTAGE * 10 ** -2) / (
+        x = ((x) * cfgPlot.PLOT_WIDTH_PERCENTAGE * 10**-2) / (
             cfgPlot.PLOT_DPI
         )  # Calculate width
         if cfgPlot.PLOT_HEIGHT_PERCENTAGE == 100:  # If full height
             y = y - 60  # Remove the height of window toolbar
-        y = ((y) * cfgPlot.PLOT_HEIGHT_PERCENTAGE * 10 ** -2) / (cfgPlot.PLOT_DPI)
+        y = ((y) * cfgPlot.PLOT_HEIGHT_PERCENTAGE * 10**-2) / (cfgPlot.PLOT_DPI)
     else:  # If not autoscale, use size defined in config_plot.py
         x = cfgPlot.PLOT_WIDTH / (cfgPlot.PLOT_DPI)
         y = cfgPlot.PLOT_HEIGHT / (cfgPlot.PLOT_DPI)

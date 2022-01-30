@@ -15,7 +15,12 @@ sort_map = {
 }
 
 
-def display_cmc_top_coins(top: int, sortby: str, descend: bool, export: str) -> None:
+def display_cmc_top_coins(
+    top: int = 15,
+    sortby: str = "CMC_Rank",
+    descend: bool = False,
+    export: str = "",
+) -> None:
     """Shows top n coins. [Source: CoinMarketCap]
 
     Parameters

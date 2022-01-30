@@ -95,12 +95,12 @@ Stock: [/param]{stock_text}
     news        latest news of the company[/cmds] [src][News API][/src]
 [menu]
 >   options     options menu,  \t\t\t e.g.: chains, open interest, greeks, parity
->   disc        discover trending stocks, \t e.g. map, sectors, high short interest
->   sia         sector and industry analysis, \t e.g. companies per sector, quick ratio per industry and country
->   dps         dark pool and short data, \t e.g. darkpool, short interest, ftd
->   scr         screener stocks, \t\t e.g. overview/performance, using preset filters
+>   disc        discover trending stocks, \t e.g.: map, sectors, high short interest
+>   sia         sector and industry analysis, \t e.g.: companies per sector, quick ratio per industry and country
+>   dps         dark pool and short data, \t e.g.: darkpool, short interest, ftd
+>   scr         screener stocks, \t\t e.g.: overview/performance, using preset filters
 >   ins         insider trading,         \t e.g.: latest penny stock buys, top officer purchases
->   gov         government menu, \t\t e.g. house trading, contracts, corporate lobbying
+>   gov         government menu, \t\t e.g.: house trading, contracts, corporate lobbying
 >   ba          behavioural analysis,    \t from: reddit, stocktwits, twitter, google
 >   ca          comparison analysis,     \t e.g.: get similar, historical, correlation, financials{has_ticker_start}
 >   fa          fundamental analysis,    \t e.g.: income, balance, cash, earnings
