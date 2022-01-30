@@ -47,6 +47,7 @@ COINBASE_SHOW_AVAILABLE_PAIRS_OF_GIVEN_SYMBOL = (
     ["GBP", "USD", "EUR", "USDC", "UST", "USDT"],
 )
 
+
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.parametrize(
     "queue, expected",
@@ -160,7 +161,7 @@ def test_print_help():
     "an_input, expected_queue",
     [
         ("", []),
-        ("/help", ['home', 'help']),
+        ("/help", ["home", "help"]),
         ("help/help", ["help", "help"]),
         ("q", ["quit"]),
         ("h", []),
@@ -282,7 +283,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [],
             dict(),
         ),
-    ]
+    ],
 )
 def test_call_func(
     tested_func, mocked_func, other_args, called_args, called_kwargs, mocker
@@ -337,7 +338,7 @@ def test_call_func(
         "call_ta",
         "call_dd",
         "call_pred",
-    ]
+    ],
 )
 def test_call_func_no_current_coin(tested_func):
     controller = crypto_controller.CryptoController(queue=None)
