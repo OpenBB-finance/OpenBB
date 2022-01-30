@@ -727,7 +727,9 @@ class QaController(StockController):
             action="store_true",
             default=False,
             dest="adjusted",
-            help="If the VaR should be adjusted for skew and kurtosis (Cornish-Fisher-Expansion)",
+            help="""
+                If the VaR should be adjusted for skew and kurtosis (Cornish-Fisher-Expansion)
+            """,
         )
         parser.add_argument(
             "-p",
@@ -736,7 +738,9 @@ class QaController(StockController):
             dest="percentile",
             type=float,
             default=99.9,
-            help="Percentile used for VaR calculations, for example input 99.9 equals a 99.9% VaR",
+            help="""
+                Percentile used for VaR calculations, for example input 99.9 equals a 99.9% VaR
+            """,
         )
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
