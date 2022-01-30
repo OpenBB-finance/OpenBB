@@ -126,7 +126,7 @@ def test_print_help():
     [
         ("", []),
         ("/help", ["quit", "quit", "help"]),
-        ("help/help", ["help"]),
+        ("help/help", ["help", "help"]),
         ("q", ["quit"]),
         ("h", []),
         (
