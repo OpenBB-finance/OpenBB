@@ -12,7 +12,6 @@ from gamestonk_terminal.cryptocurrency.nft import nft_controller
 # pylint: disable=E1111
 
 
-
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.parametrize(
     "queue, expected",
@@ -126,13 +125,13 @@ def test_print_help():
     "an_input, expected_queue",
     [
         ("", []),
-        ("/help", ['home', 'help']),
-        ("help/help", ['help', 'help']),
+        ("/help", ["home", "help"]),
+        ("help/help", ["help", "help"]),
         ("q", ["quit"]),
         ("h", []),
         (
             "r",
-            ['quit', 'quit', 'reset', 'crypto', 'nft'],
+            ["quit", "quit", "reset", "crypto", "nft"],
         ),
     ],
 )
@@ -161,22 +160,22 @@ def test_call_cls(mocker):
         (
             "call_exit",
             [],
-            ['quit', 'quit', 'quit'],
+            ["quit", "quit", "quit"],
         ),
-        ("call_exit", ["help"], ['quit', 'quit', 'quit', 'help']),
-        ("call_home", [], ['quit', 'quit']),
+        ("call_exit", ["help"], ["quit", "quit", "quit", "help"]),
+        ("call_home", [], ["quit", "quit"]),
         ("call_help", [], []),
-        ("call_quit", [], ['quit']),
+        ("call_quit", [], ["quit"]),
         ("call_quit", ["help"], ["quit", "help"]),
         (
             "call_reset",
             [],
-            ["quit", 'quit', "reset", "crypto", "nft"],
+            ["quit", "quit", "reset", "crypto", "nft"],
         ),
         (
             "call_reset",
             ["help"],
-            ["quit", 'quit', "reset", "crypto", "nft", "help"],
+            ["quit", "quit", "reset", "crypto", "nft", "help"],
         ),
     ],
 )
@@ -227,7 +226,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [],
             dict(),
         ),
-    ]
+    ],
 )
 def test_call_func(
     tested_func, mocked_func, other_args, called_args, called_kwargs, mocker
