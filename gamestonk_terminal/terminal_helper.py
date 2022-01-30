@@ -312,7 +312,7 @@ def print_goodbye():
         goodbye_msg[random.randint(0, len(goodbye_msg) - 1)] + goodbye_msg_time + "\n"
     )
 
-    logger.info("Terminal stopped")
+    logger.info("END||")
 
 
 def sha256sum(filename):

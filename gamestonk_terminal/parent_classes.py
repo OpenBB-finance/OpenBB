@@ -165,7 +165,7 @@ class BaseController(metaclass=ABCMeta):
                 lambda _: "Command not recognized!",
             )(other_args)
 
-        logger.info("remaining queue: %s", "/".join(self.queue))
+        logger.info("||{'remaining queue': '%s'}", "/".join(self.queue))
 
         return self.queue
 

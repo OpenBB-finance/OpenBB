@@ -52,11 +52,10 @@ def log_start_end(func=None, log=None):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
 
-            kwargs_passed_in_function = list()
             args_passed_in_function = [repr(a) for a in args]
             # view files have parameters that are usually small given they are input by the user
             if "_view" in log.name:
-                kwargs_passed_in_function = [f"{k}={v!r}" for k, v in kwargs.items()]
+                kwargs_passed_in_function = kwargs
             # we are only interested in the other_args from controller methods
             elif "_controller" in log.name:
                 # check len of args is 2 because of (self, other_args: List[str])
@@ -64,28 +63,27 @@ def log_start_end(func=None, log=None):
                     args_passed_in_function = args[1]
             # other files can have as parameters big variables, therefore adds logic to only add small ones
             else:
-                for k, v in kwargs.items():
-                    if type(v) in (int, float):
-                        kwargs_passed_in_function.append(f"{k}={v!r}")
-                    elif k == "export":
-                        kwargs_passed_in_function.append(f"{k}={v!r}")
-                    else:
-                        kwargs_passed_in_function.append(f"{k}={type(v)!r}")
+                kwargs_passed_in_function = {
+                    key: (
+                        value
+                        if ((type(value) in (int, float)) or (key == "export"))
+                        else type(value)
+                    )
+                    for key, value in kwargs.items()
+                }
 
-            if args_passed_in_function or kwargs_passed_in_function:
-                formatted_arguments = ", ".join(
-                    args_passed_in_function + kwargs_passed_in_function
-                )
-                log.info(
-                    f"START params: {formatted_arguments}",
-                    extra={"func_name_override": func.__name__},
-                )
-            else:
-                log.info("START", extra={"func_name_override": func.__name__})
+            if not kwargs_passed_in_function:
+                kwargs_passed_in_function = ""
+            args_passed_in_function = ";".join(args_passed_in_function)
+
+            log.info(
+                f"START|{args_passed_in_function}|{str(kwargs_passed_in_function)}",
+                extra={"func_name_override": func.__name__},
+            )
 
             try:
                 value = func(*args, **kwargs)
-                log.info("END", extra={"func_name_override": func.__name__})
+                log.info("END||", extra={"func_name_override": func.__name__})
                 return value
             except Exception:
                 log.exception("Exception", extra={"func_name_override": func.__name__})

@@ -217,7 +217,7 @@ def terminal(jobs_cmds: List[str] = None):
     """Terminal Menu"""
     setup_logging()
 
-    logger.info("Terminal started")
+    logger.info("START||")
 
     ret_code = 1
     t_controller = TerminalController(jobs_cmds)
