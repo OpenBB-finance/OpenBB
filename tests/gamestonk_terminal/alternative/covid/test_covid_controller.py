@@ -5,7 +5,7 @@ import os
 import pytest
 
 # IMPORTATION INTERNAL
-from gamestonk_terminal.portfolio import portfolio_controller
+from gamestonk_terminal.alternative.covid import covid_controller
 
 # pylint: disable=E1101
 # pylint: disable=W0603
@@ -21,21 +21,21 @@ from gamestonk_terminal.portfolio import portfolio_controller
     ],
 )
 def test_menu_with_queue(expected, mocker, queue):
-    path_controller = "gamestonk_terminal.portfolio.portfolio_controller"
+    path_controller = "gamestonk_terminal.alternative.covid.covid_controller"
 
     # MOCK SWITCH
     mocker.patch(
-        target=f"{path_controller}.PortfolioController.switch",
+        target=f"{path_controller}.CovidController.switch",
         return_value=["quit"],
     )
-    result_menu = portfolio_controller.PortfolioController(queue=queue).menu()
+    result_menu = covid_controller.CovidController(queue=queue).menu()
 
     assert result_menu == expected
 
 
 @pytest.mark.vcr(record_mode="none")
 def test_menu_without_queue_completion(mocker):
-    path_controller = "gamestonk_terminal.portfolio.portfolio_controller"
+    path_controller = "gamestonk_terminal.alternative.covid.covid_controller"
 
     # ENABLE AUTO-COMPLETION : HELPER_FUNCS.MENU
     mocker.patch(
@@ -52,7 +52,7 @@ def test_menu_without_queue_completion(mocker):
 
     # DISABLE AUTO-COMPLETION : CONTROLLER.COMPLETER
     mocker.patch.object(
-        target=portfolio_controller.gtff,
+        target=covid_controller.gtff,
         attribute="USE_PROMPT_TOOLKIT",
         new=True,
     )
@@ -64,7 +64,7 @@ def test_menu_without_queue_completion(mocker):
         return_value="quit",
     )
 
-    result_menu = portfolio_controller.PortfolioController(queue=None).menu()
+    result_menu = covid_controller.CovidController(queue=None).menu()
 
     assert result_menu == []
 
@@ -75,11 +75,11 @@ def test_menu_without_queue_completion(mocker):
     ["help", "homee help", "home help", "mock"],
 )
 def test_menu_without_queue_sys_exit(mock_input, mocker):
-    path_controller = "gamestonk_terminal.portfolio.portfolio_controller"
+    path_controller = "gamestonk_terminal.alternative.covid.covid_controller"
 
     # DISABLE AUTO-COMPLETION
     mocker.patch.object(
-        target=portfolio_controller.gtff,
+        target=covid_controller.gtff,
         attribute="USE_PROMPT_TOOLKIT",
         new=False,
     )
@@ -104,11 +104,11 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
 
     mock_switch = mocker.Mock(side_effect=SystemExitSideEffect())
     mocker.patch(
-        target=f"{path_controller}.PortfolioController.switch",
+        target=f"{path_controller}.CovidController.switch",
         new=mock_switch,
     )
 
-    result_menu = portfolio_controller.PortfolioController(queue=None).menu()
+    result_menu = covid_controller.CovidController(queue=None).menu()
 
     assert result_menu == []
 
@@ -116,7 +116,7 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.record_stdout
 def test_print_help():
-    controller = portfolio_controller.PortfolioController(queue=None)
+    controller = covid_controller.CovidController(queue=None)
     controller.print_help()
 
 
@@ -131,12 +131,12 @@ def test_print_help():
         ("h", []),
         (
             "r",
-            ["quit", "reset", "portfolio"],
+            ["quit", "quit", "reset", "alternative", "covid", "country US"],
         ),
     ],
 )
 def test_switch(an_input, expected_queue):
-    controller = portfolio_controller.PortfolioController(queue=None)
+    controller = covid_controller.CovidController(queue=None)
     queue = controller.switch(an_input=an_input)
 
     assert queue == expected_queue
@@ -146,7 +146,7 @@ def test_switch(an_input, expected_queue):
 def test_call_cls(mocker):
     mocker.patch("os.system")
 
-    controller = portfolio_controller.PortfolioController(queue=None)
+    controller = covid_controller.CovidController(queue=None)
     controller.call_cls([])
 
     assert controller.queue == []
@@ -160,27 +160,27 @@ def test_call_cls(mocker):
         (
             "call_exit",
             [],
-            ["quit", "quit"],
+            ["quit", "quit", "quit"],
         ),
-        ("call_exit", ["help"], ["quit", "quit", "help"]),
-        ("call_home", [], ["quit"]),
+        ("call_exit", ["help"], ["quit", "quit", "quit", "help"]),
+        ("call_home", [], ["quit", "quit"]),
         ("call_help", [], []),
         ("call_quit", [], ["quit"]),
         ("call_quit", ["help"], ["quit", "help"]),
         (
             "call_reset",
             [],
-            ["quit", "reset", "portfolio"],
+            ["quit", "quit", "reset", "alternative", "covid", "country US"],
         ),
         (
             "call_reset",
             ["help"],
-            ["quit", "reset", "portfolio", "help"],
+            ["quit", "quit", "reset", "alternative", "covid", "country US", "help"],
         ),
     ],
 )
 def test_call_func_expect_queue(expected_queue, func, queue):
-    controller = portfolio_controller.PortfolioController(queue=queue)
+    controller = covid_controller.CovidController(queue=queue)
     result = getattr(controller, func)([])
 
     assert result is None
@@ -192,37 +192,37 @@ def test_call_func_expect_queue(expected_queue, func, queue):
     "tested_func, other_args, mocked_func, called_args, called_kwargs",
     [
         (
-            "call_bro",
-            [],
-            "PortfolioController.load_class",
-            [],
-            dict(),
-        ),
-        (
-            "call_po",
-            [],
-            "PortfolioController.load_class",
+            "call_country",
+            ["US"],
+            "",
             [],
             dict(),
         ),
         (
-            "call_pa",
+            "call_rates",
             [],
-            "PortfolioController.load_class",
-            [],
-            dict(),
-        ),
-        (
-            "call_save",
-            ["MOCK_NAME.csv"],
-            "portfolio_model.save_df",
+            "covid_view.display_covid_stat",
             [],
             dict(),
         ),
         (
-            "call_show",
+            "call_deaths",
             [],
-            "portfolio_view.show_df",
+            "covid_view.display_covid_stat",
+            [],
+            dict(),
+        ),
+        (
+            "call_cases",
+            [],
+            "covid_view.display_covid_stat",
+            [],
+            dict(),
+        ),
+        (
+            "call_slopes",
+            [],
+            "covid_view.display_country_slopes",
             [],
             dict(),
         ),
@@ -231,7 +231,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
 def test_call_func(
     tested_func, mocked_func, other_args, called_args, called_kwargs, mocker
 ):
-    path_controller = "gamestonk_terminal.portfolio.portfolio_controller"
+    path_controller = "gamestonk_terminal.alternative.covid.covid_controller"
 
     if mocked_func:
         mock = mocker.Mock()
@@ -240,8 +240,7 @@ def test_call_func(
             new=mock,
         )
 
-        controller = portfolio_controller.PortfolioController(queue=None)
-
+        controller = covid_controller.CovidController(queue=None)
         getattr(controller, tested_func)(other_args)
 
         if called_args or called_kwargs:
@@ -249,6 +248,5 @@ def test_call_func(
         else:
             mock.assert_called_once()
     else:
-        controller = portfolio_controller.PortfolioController(queue=None)
-
+        controller = covid_controller.CovidController(queue=None)
         getattr(controller, tested_func)(other_args)

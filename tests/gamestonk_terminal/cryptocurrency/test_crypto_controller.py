@@ -2,14 +2,50 @@
 import os
 
 # IMPORTATION THIRDPARTY
+import pandas as pd
 import pytest
 
 # IMPORTATION INTERNAL
-from gamestonk_terminal.portfolio import portfolio_controller
+from gamestonk_terminal.cryptocurrency import crypto_controller
 
 # pylint: disable=E1101
 # pylint: disable=W0603
 # pylint: disable=E1111
+
+COIN_MAP_DF = pd.Series(
+    data={
+        "CoinGecko": "bitcoin",
+        "CoinPaprika": "btc-bitcoin",
+        "Binance": "BTC",
+        "Coinbase": "BTC",
+    }
+)
+CURRENT_COIN = "bitcoin"
+SYMBOL = "BTC"
+BINANCE_SHOW_AVAILABLE_PAIRS_OF_GIVEN_SYMBOL = (
+    "BTC",
+    [
+        "USDT",
+        "TUSD",
+        "USDC",
+        "BUSD",
+        "NGN",
+        "RUB",
+        "TRY",
+        "EUR",
+        "GBP",
+        "UAH",
+        "BIDR",
+        "AUD",
+        "DAI",
+        "BRL",
+        "USDP",
+    ],
+)
+COINBASE_SHOW_AVAILABLE_PAIRS_OF_GIVEN_SYMBOL = (
+    "BTC",
+    ["GBP", "USD", "EUR", "USDC", "UST", "USDT"],
+)
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -21,21 +57,21 @@ from gamestonk_terminal.portfolio import portfolio_controller
     ],
 )
 def test_menu_with_queue(expected, mocker, queue):
-    path_controller = "gamestonk_terminal.portfolio.portfolio_controller"
+    path_controller = "gamestonk_terminal.cryptocurrency.crypto_controller"
 
     # MOCK SWITCH
     mocker.patch(
-        target=f"{path_controller}.PortfolioController.switch",
+        target=f"{path_controller}.CryptoController.switch",
         return_value=["quit"],
     )
-    result_menu = portfolio_controller.PortfolioController(queue=queue).menu()
+    result_menu = crypto_controller.CryptoController(queue=queue).menu()
 
     assert result_menu == expected
 
 
 @pytest.mark.vcr(record_mode="none")
 def test_menu_without_queue_completion(mocker):
-    path_controller = "gamestonk_terminal.portfolio.portfolio_controller"
+    path_controller = "gamestonk_terminal.cryptocurrency.crypto_controller"
 
     # ENABLE AUTO-COMPLETION : HELPER_FUNCS.MENU
     mocker.patch(
@@ -52,7 +88,7 @@ def test_menu_without_queue_completion(mocker):
 
     # DISABLE AUTO-COMPLETION : CONTROLLER.COMPLETER
     mocker.patch.object(
-        target=portfolio_controller.gtff,
+        target=crypto_controller.gtff,
         attribute="USE_PROMPT_TOOLKIT",
         new=True,
     )
@@ -64,7 +100,7 @@ def test_menu_without_queue_completion(mocker):
         return_value="quit",
     )
 
-    result_menu = portfolio_controller.PortfolioController(queue=None).menu()
+    result_menu = crypto_controller.CryptoController(queue=None).menu()
 
     assert result_menu == []
 
@@ -75,11 +111,11 @@ def test_menu_without_queue_completion(mocker):
     ["help", "homee help", "home help", "mock"],
 )
 def test_menu_without_queue_sys_exit(mock_input, mocker):
-    path_controller = "gamestonk_terminal.portfolio.portfolio_controller"
+    path_controller = "gamestonk_terminal.cryptocurrency.crypto_controller"
 
     # DISABLE AUTO-COMPLETION
     mocker.patch.object(
-        target=portfolio_controller.gtff,
+        target=crypto_controller.gtff,
         attribute="USE_PROMPT_TOOLKIT",
         new=False,
     )
@@ -104,11 +140,11 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
 
     mock_switch = mocker.Mock(side_effect=SystemExitSideEffect())
     mocker.patch(
-        target=f"{path_controller}.PortfolioController.switch",
+        target=f"{path_controller}.CryptoController.switch",
         new=mock_switch,
     )
 
-    result_menu = portfolio_controller.PortfolioController(queue=None).menu()
+    result_menu = crypto_controller.CryptoController(queue=None).menu()
 
     assert result_menu == []
 
@@ -116,7 +152,7 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.record_stdout
 def test_print_help():
-    controller = portfolio_controller.PortfolioController(queue=None)
+    controller = crypto_controller.CryptoController(queue=None)
     controller.print_help()
 
 
@@ -131,12 +167,12 @@ def test_print_help():
         ("h", []),
         (
             "r",
-            ["quit", "reset", "portfolio"],
+            ["quit", "reset", "crypto"],
         ),
     ],
 )
 def test_switch(an_input, expected_queue):
-    controller = portfolio_controller.PortfolioController(queue=None)
+    controller = crypto_controller.CryptoController(queue=None)
     queue = controller.switch(an_input=an_input)
 
     assert queue == expected_queue
@@ -146,7 +182,7 @@ def test_switch(an_input, expected_queue):
 def test_call_cls(mocker):
     mocker.patch("os.system")
 
-    controller = portfolio_controller.PortfolioController(queue=None)
+    controller = crypto_controller.CryptoController(queue=None)
     controller.call_cls([])
 
     assert controller.queue == []
@@ -170,17 +206,17 @@ def test_call_cls(mocker):
         (
             "call_reset",
             [],
-            ["quit", "reset", "portfolio"],
+            ["quit", "reset", "crypto"],
         ),
         (
             "call_reset",
             ["help"],
-            ["quit", "reset", "portfolio", "help"],
+            ["quit", "reset", "crypto", "help"],
         ),
     ],
 )
 def test_call_func_expect_queue(expected_queue, func, queue):
-    controller = portfolio_controller.PortfolioController(queue=queue)
+    controller = crypto_controller.CryptoController(queue=queue)
     result = getattr(controller, func)([])
 
     assert result is None
@@ -192,37 +228,58 @@ def test_call_func_expect_queue(expected_queue, func, queue):
     "tested_func, other_args, mocked_func, called_args, called_kwargs",
     [
         (
-            "call_bro",
-            [],
-            "PortfolioController.load_class",
-            [],
-            dict(),
-        ),
-        (
-            "call_po",
-            [],
-            "PortfolioController.load_class",
+            "call_prt",
+            ["eth"],
+            "pycoingecko_view.display_coin_potential_returns",
             [],
             dict(),
         ),
         (
-            "call_pa",
+            "call_disc",
             [],
-            "PortfolioController.load_class",
-            [],
-            dict(),
-        ),
-        (
-            "call_save",
-            ["MOCK_NAME.csv"],
-            "portfolio_model.save_df",
+            "CryptoController.load_class",
             [],
             dict(),
         ),
         (
-            "call_show",
+            "call_ov",
             [],
-            "portfolio_view.show_df",
+            "CryptoController.load_class",
+            [],
+            dict(),
+        ),
+        (
+            "call_defi",
+            [],
+            "CryptoController.load_class",
+            [],
+            dict(),
+        ),
+        (
+            "call_headlines",
+            [],
+            "finbrain_crypto_view.display_crypto_sentiment_analysis",
+            [],
+            dict(),
+        ),
+        (
+            "call_dd",
+            [],
+            "CryptoController.load_class",
+            [],
+            dict(),
+        ),
+        (
+            "call_onchain",
+            [],
+            "CryptoController.load_class",
+            [],
+            dict(),
+        ),
+        (
+            "call_nft",
+            [],
+            "CryptoController.load_class",
             [],
             dict(),
         ),
@@ -231,7 +288,19 @@ def test_call_func_expect_queue(expected_queue, func, queue):
 def test_call_func(
     tested_func, mocked_func, other_args, called_args, called_kwargs, mocker
 ):
-    path_controller = "gamestonk_terminal.portfolio.portfolio_controller"
+    path_controller = "gamestonk_terminal.cryptocurrency.crypto_controller"
+
+    # MOCK SHOW_AVAILABLE_PAIRS_FOR_GIVEN_SYMBOL
+    mocker.patch(
+        target=f"{path_controller}.binance_model.show_available_pairs_for_given_symbol",
+        return_value=BINANCE_SHOW_AVAILABLE_PAIRS_OF_GIVEN_SYMBOL,
+    )
+
+    # MOCK SHOW_AVAILABLE_PAIRS_FOR_GIVEN_SYMBOL
+    mocker.patch(
+        target=f"{path_controller}.coinbase_model.show_available_pairs_for_given_symbol",
+        return_value=COINBASE_SHOW_AVAILABLE_PAIRS_OF_GIVEN_SYMBOL,
+    )
 
     if mocked_func:
         mock = mocker.Mock()
@@ -240,8 +309,11 @@ def test_call_func(
             new=mock,
         )
 
-        controller = portfolio_controller.PortfolioController(queue=None)
-
+        controller = crypto_controller.CryptoController(queue=None)
+        controller.coin_map_df = COIN_MAP_DF
+        controller.current_coin = CURRENT_COIN
+        controller.symbol = SYMBOL
+        controller.source = "bin"
         getattr(controller, tested_func)(other_args)
 
         if called_args or called_kwargs:
@@ -249,6 +321,34 @@ def test_call_func(
         else:
             mock.assert_called_once()
     else:
-        controller = portfolio_controller.PortfolioController(queue=None)
-
+        controller = crypto_controller.CryptoController(queue=None)
+        controller.coin_map_df = COIN_MAP_DF
+        controller.current_coin = CURRENT_COIN
+        controller.symbol = SYMBOL
+        controller.source = "bin"
         getattr(controller, tested_func)(other_args)
+
+
+@pytest.mark.vcr(record_mode="none")
+@pytest.mark.parametrize(
+    "tested_func",
+    [
+        "call_prt",
+        "call_chart",
+        "call_ta",
+        "call_dd",
+        "call_pred",
+    ],
+)
+def test_call_func_no_current_coin(tested_func):
+    controller = crypto_controller.CryptoController(queue=None)
+    controller.current_coin = None
+    getattr(controller, tested_func)([])
+
+
+@pytest.mark.vcr
+@pytest.mark.record_stdout
+def test_call_load():
+    controller = crypto_controller.CryptoController()
+    other_args = [SYMBOL]
+    controller.call_load(other_args=other_args)
