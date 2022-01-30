@@ -12,7 +12,6 @@ from gamestonk_terminal.alternative import alt_controller
 # pylint: disable=E1111
 
 
-
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.parametrize(
     "queue, expected",
@@ -126,8 +125,8 @@ def test_print_help():
     "an_input, expected_queue",
     [
         ("", []),
-        ("/help", ['home', 'help']),
-        ("help/help", ['help', 'help']),
+        ("/help", ["home", "help"]),
+        ("help/help", ["help", "help"]),
         ("q", ["quit"]),
         ("h", []),
         (
@@ -199,7 +198,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [],
             dict(),
         ),
-    ]
+    ],
 )
 def test_call_func(
     tested_func, mocked_func, other_args, called_args, called_kwargs, mocker
