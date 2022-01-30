@@ -75,11 +75,12 @@ class TerminalController(BaseController):
 
         if jobs_cmds:
             # close the eyes if the user forgets the initial `/`
-            if len(jobs_cmds) > 0:
-                if jobs_cmds[0][0] != "/":
-                    jobs_cmds[0] = f"/{jobs_cmds[0]}"
+            jobs_cmds = [
+                job_cmd if job_cmd.startswith("/") else f"/{job_cmd}"
+                for job_cmd in jobs_cmds
+            ]
 
-            self.queue = " ".join(jobs_cmds).split("/")
+            self.queue = self.switch(" ".join(jobs_cmds))
 
         self.update_succcess = False
 
