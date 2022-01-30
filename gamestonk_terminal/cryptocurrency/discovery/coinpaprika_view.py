@@ -8,7 +8,12 @@ from gamestonk_terminal.rich_config import console
 
 
 def display_search_results(
-    query: str, category: str, top: int, sortby: str, descend: bool, export: str
+    query: str,
+    category: str,
+    top: int = 10,
+    sortby: str = "id",
+    descend: bool = False,
+    export: str = "",
 ) -> None:
     """Search over CoinPaprika. [Source: CoinPaprika]
 

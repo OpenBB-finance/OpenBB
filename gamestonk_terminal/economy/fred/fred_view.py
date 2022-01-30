@@ -114,7 +114,7 @@ def display_fred_series(
         for s_id, sub_dict in d_series.items():
             data_to_plot = data[s_id].dropna()
             exponent = int(np.log10(data_to_plot.max()))
-            data_to_plot /= 10 ** exponent
+            data_to_plot /= 10**exponent
             multiplier = f"x {format_units(10**exponent)}" if exponent > 0 else ""
             title = f"{sub_dict['title']} ({sub_dict['units']}) {'['+multiplier+']' if multiplier else ''}"
             ax.plot(
