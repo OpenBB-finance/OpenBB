@@ -80,7 +80,11 @@ CURRENCIES = [
 
 
 def display_twitter(
-    coin_id: str, top: int, sortby: str, descend: bool, export: str
+    coin_id: str = "btc-bitcoin",
+    top: int = 10,
+    sortby: str = "date",
+    descend: bool = False,
+    export: str = "",
 ) -> None:
     """Get twitter timeline for given coin id. Not more than last 50 tweets [Source: CoinPaprika]
 
@@ -126,7 +130,12 @@ def display_twitter(
 
 
 def display_events(
-    coin_id: str, top: int, sortby: str, descend: bool, links: bool, export: str
+    coin_id: str = "btc-bitcoin",
+    top: int = 10,
+    sortby: str = "date",
+    descend: bool = False,
+    links: bool = False,
+    export: str = "",
 ) -> None:
     """Get all events for given coin id. [Source: CoinPaprika]
 
@@ -175,7 +184,11 @@ def display_events(
 
 
 def display_exchanges(
-    coin_id: str, top: int, sortby: str, descend: bool, export: str
+    coin_id: str = "btc-bitcoin",
+    top: int = 10,
+    sortby: str = "adjusted_volume_24h_share",
+    descend: bool = False,
+    export: str = "",
 ) -> None:
     """Get all exchanges for given coin id. [Source: CoinPaprika]
 
@@ -215,12 +228,12 @@ def display_exchanges(
 
 
 def display_markets(
-    coin_id: str,
-    currency: str,
-    top: int,
-    sortby: str,
-    descend: bool,
-    links: bool,
+    coin_id: str = "btc-bitcoin",
+    currency: str = "USD",
+    top: int = 20,
+    sortby: str = "pct_volume_share",
+    descend: bool = False,
+    links: bool = False,
     export: str = "",
 ) -> None:
     """Get all markets for given coin id. [Source: CoinPaprika]
@@ -274,7 +287,11 @@ def display_markets(
     )
 
 
-def display_price_supply(coin_id: str, currency: str, export: str) -> None:
+def display_price_supply(
+    coin_id: str = "btc-bitcoin",
+    currency: str = "USD",
+    export: str = "",
+) -> None:
     """Get ticker information for single coin [Source: CoinPaprika]
 
     Parameters
@@ -309,7 +326,10 @@ def display_price_supply(coin_id: str, currency: str, export: str) -> None:
     )
 
 
-def display_basic(coin_id: str, export: str) -> None:
+def display_basic(
+    coin_id: str = "btc-bitcoin",
+    export: str = "",
+) -> None:
     """Get basic information for coin. Like:
         name, symbol, rank, type, description, platform, proof_type, contract, tags, parent.  [Source: CoinPaprika]
 

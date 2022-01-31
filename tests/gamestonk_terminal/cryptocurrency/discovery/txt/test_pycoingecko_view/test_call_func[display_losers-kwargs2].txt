@@ -1,0 +1,22 @@
+   Symbol             Name     Price [$] Market Cap [$]  Market Cap Rank Volume [$]  Change 1h [%]
+7     xrp              XRP      0.615418          29.4B                8       2.3B      -0.329291
+17   wbtc  Wrapped Bitcoin  37720.000000          10.2B               18     220.5M       0.118615
+15    ust         TerraUSD      0.999417          11.3B               16         1B      -0.133569
+2    usdt           Tether      1.000000          78.2B                3      35.8B      -0.319022
+4    usdc         USD Coin      1.000000          49.7B                5       3.3B      -0.075392
+6     sol           Solana     94.290000          29.7B                7       1.6B      -0.883357
+13   shib        Shiba Inu      0.000022          11.9B               14     460.8M       0.143690
+14  matic          Polygon      1.700000          11.7B               15     852.9M       0.004525
+8    luna            Terra     51.520000          20.7B                9       2.4B      -0.030959
+1     eth         Ethereum   2573.290000         307.3B                2      11.1B      -0.051930
+9     dot         Polkadot     18.580000          20.1B               10     655.1M      -0.036936
+10   doge         Dogecoin      0.142164          18.9B               11     422.3M      -0.551672
+18    dai              Dai      1.000000           9.1B               19     443.8M      -0.007330
+16    cro  Crypto.com Coin      0.434061            11B               17     136.9M       0.559317
+12   busd      Binance USD      1.000000            15B               13       2.8B       0.093768
+0     btc          Bitcoin  37711.000000         715.1B                1      13.9B       0.031302
+3     bnb     Binance Coin    384.510000          64.7B                4       1.1B      -0.337470
+19   atom           Cosmos     28.970000           8.3B               20     895.4M      -0.128879
+5     ada          Cardano      1.060000          33.8B                6     783.7M      -0.536012
+11   AVAX        Avalanche     70.650000          17.3B               12       609M       0.436807
+

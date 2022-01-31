@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import os
 import json
+from typing import List
 import pandas as pd
 from pycoingecko import CoinGeckoAPI
 
@@ -75,7 +76,7 @@ DEX_FILTERS = [
 ]
 
 
-def read_file_data(file_name: str):
+def read_file_data(file_name: str) -> dict:
     if file_name.split(".")[1] != "json":
         raise TypeError("Please load json file")
 
@@ -86,12 +87,12 @@ def read_file_data(file_name: str):
     return data
 
 
-def get_categories_keys():
+def get_categories_keys() -> List[str]:
     categories = read_file_data("coingecko_categories.json")
-    return categories.keys()
+    return list(categories.keys())
 
 
-def get_coins(top: int = 250, category: str = ""):
+def get_coins(top: int = 250, category: str = "") -> pd.DataFrame:
     """Get N coins from CoinGecko [Source: CoinGecko]
 
     Parameters

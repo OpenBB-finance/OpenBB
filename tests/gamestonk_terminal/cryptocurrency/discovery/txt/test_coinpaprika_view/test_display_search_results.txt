@@ -1,0 +1,12 @@
+                                              id                                       name    category
+27                        xlc-ethereum-lite-cash                         Ethereum Lite Cash  currencies
+18                             void-ethereumvoid                               EthereumVoid  currencies
+23                    uet-useless-ethereum-token                     Useless Ethereum Token  currencies
+5   push-ethereum-push-notification-service-epns  Ethereum Push Notification Service - EPNS  currencies
+46       push-ethereum-push-notification-service         Ethereum Push Notification Service        icos
+11     nwset-2100news-ethereum-tokens-index-fund        2100news Ethereum Tokens Index Fund  currencies
+15                     horses-horses-of-ethereum                         Horses of Ethereum  currencies
+19                           eye-eye-on-ethereum                            eYe on Ethereum  currencies
+28                                 etx-ethereumx                                  EthereumX  currencies
+6                  etlt-ethereum-lightning-token                   Ethereum Lightning Token  currencies
+
