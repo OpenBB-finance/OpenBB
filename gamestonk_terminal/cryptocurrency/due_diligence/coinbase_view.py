@@ -63,18 +63,14 @@ def display_trades(
     df_data = df.copy()
 
     print_rich_table(
-        df,
-        headers=list(df.columns),
-        show_index=False,
+        df, headers=list(df.columns), show_index=False,
     )
     console.print("")
 
     export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "trades",
-        df_data,
+        export, os.path.dirname(os.path.abspath(__file__)), "trades", df_data,
     )
+
 
 @log_start_end(log=logger)
 def display_candles(product_id: str, interval: str = "24h", export: str = "") -> None:
@@ -98,10 +94,7 @@ def display_candles(product_id: str, interval: str = "24h", export: str = "") ->
     )
 
     export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "candles",
-        df_data,
+        export, os.path.dirname(os.path.abspath(__file__)), "candles", df_data,
     )
 
 
@@ -126,8 +119,5 @@ def display_stats(product_id: str, export: str = "") -> None:
     )
 
     export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "stats",
-        df_data,
+        export, os.path.dirname(os.path.abspath(__file__)), "stats", df_data,
     )

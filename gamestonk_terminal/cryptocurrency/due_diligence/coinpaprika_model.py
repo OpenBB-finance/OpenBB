@@ -359,7 +359,6 @@ def validate_coin(coin: str, coins_dct: dict) -> Tuple[str, Optional[Any]]:
     return coin_found, symbol
 
 
-
 @log_start_end(log=logger)
 def basic_coin_info(coin_id: str = "btc-bitcoin") -> pd.DataFrame:
     """Basic coin information [Source: CoinPaprika]

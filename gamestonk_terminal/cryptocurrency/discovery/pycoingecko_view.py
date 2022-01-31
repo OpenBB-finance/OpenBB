@@ -31,6 +31,7 @@ COINS_COLUMNS = [
     "24H Change [%]",
 ]
 
+
 @log_start_end(log=logger)
 def display_coins(
     category: str, top: int = 250, sortby: str = "Symbol", export: str = ""
@@ -61,28 +62,19 @@ def display_coins(
                 "price_change_percentage_24h_in_currency",
             ]
         ]
-        df = df.set_axis(
-            COINS_COLUMNS,
-            axis=1,
-            inplace=False,
-        )
+        df = df.set_axis(COINS_COLUMNS, axis=1, inplace=False,)
         if sortby in COINS_COLUMNS:
             df = df.sort_values(by=sortby, ascending=False)
         for col in ["Volume [$]", "Market Cap [$]"]:
             if col in df.columns:
                 df[col] = df[col].apply(lambda x: very_long_number_formatter(x))
         print_rich_table(
-            df.head(top),
-            headers=list(df.columns),
-            show_index=False,
+            df.head(top), headers=list(df.columns), show_index=False,
         )
         console.print("")
 
         export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            "cgtop",
-            df,
+            export, os.path.dirname(os.path.abspath(__file__)), "cgtop", df,
         )
     else:
         console.print("\nUnable to retrieve data from CoinGecko.\n")
@@ -114,21 +106,15 @@ def display_gainers(
             if col in df.columns:
                 df[col] = df[col].apply(lambda x: very_long_number_formatter(x))
         print_rich_table(
-            df.head(top),
-            headers=list(df.columns),
-            show_index=False,
+            df.head(top), headers=list(df.columns), show_index=False,
         )
         console.print("")
 
         export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            "gainers",
-            df,
+            export, os.path.dirname(os.path.abspath(__file__)), "gainers", df,
         )
     else:
         console.print("\nUnable to retrieve data from CoinGecko.\n")
-
 
 
 @log_start_end(log=logger)
@@ -157,20 +143,16 @@ def display_losers(
             if col in df.columns:
                 df[col] = df[col].apply(lambda x: very_long_number_formatter(x))
         print_rich_table(
-            df.head(top),
-            headers=list(df.columns),
-            show_index=False,
+            df.head(top), headers=list(df.columns), show_index=False,
         )
         console.print()
 
         export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            "cglosers",
-            df,
+            export, os.path.dirname(os.path.abspath(__file__)), "cglosers", df,
         )
     else:
         console.print("\nUnable to retrieve data from CoinGecko.\n")
+
 
 @log_start_end(log=logger)
 def display_trending(export: str = "") -> None:
@@ -194,10 +176,7 @@ def display_trending(export: str = "") -> None:
         console.print("")
 
         export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            "cgtrending",
-            df,
+            export, os.path.dirname(os.path.abspath(__file__)), "cgtrending", df,
         )
     else:
         console.print("\nUnable to retrieve data from CoinGecko.\n")
