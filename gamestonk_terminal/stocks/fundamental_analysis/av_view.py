@@ -1,15 +1,20 @@
 """ Alpha Vantage View """
 __docformat__ = "numpy"
 
+import logging
 import os
 
 import numpy as np
 
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import export_data, print_rich_table
-from gamestonk_terminal.stocks.fundamental_analysis import av_model
 from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.stocks.fundamental_analysis import av_model
+
+logger = logging.getLogger(__name__)
 
 
+@log_start_end(log=logger)
 def display_overview(ticker: str):
     """Alpha Vantage stock ticker overview
 
@@ -31,6 +36,7 @@ def display_overview(ticker: str):
     console.print("")
 
 
+@log_start_end(log=logger)
 def display_key(ticker: str):
     """Alpha Vantage key metrics
 
@@ -49,6 +55,7 @@ def display_key(ticker: str):
     console.print("")
 
 
+@log_start_end(log=logger)
 def display_income_statement(
     ticker: str, limit: int, quarterly: bool = False, export: str = ""
 ):
@@ -78,6 +85,7 @@ def display_income_statement(
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "income", df_income)
 
 
+@log_start_end(log=logger)
 def display_balance_sheet(
     ticker: str, limit: int, quarterly: bool = False, export: str = ""
 ):
@@ -109,6 +117,7 @@ def display_balance_sheet(
     )
 
 
+@log_start_end(log=logger)
 def display_cash_flow(
     ticker: str, limit: int, quarterly: bool = False, export: str = ""
 ):
@@ -138,6 +147,7 @@ def display_cash_flow(
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "cash", df_cash)
 
 
+@log_start_end(log=logger)
 def display_earnings(ticker: str, limit: int, quarterly: bool = False):
     """Alpha Vantage earnings
 
@@ -164,6 +174,7 @@ def display_earnings(ticker: str, limit: int, quarterly: bool = False):
     console.print("")
 
 
+@log_start_end(log=logger)
 def display_fraud(ticker: str):
     """Fraud indicators for given ticker
     Parameters

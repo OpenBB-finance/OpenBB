@@ -1,13 +1,20 @@
 """AlphaVantage FX Model."""
 
 import argparse
-from typing import Dict, List
+import logging
 import os
+from typing import Dict, List
+
 import pandas as pd
 import requests
+
 from gamestonk_terminal import config_terminal as cfg
+from gamestonk_terminal.decorators import log_start_end
+
+logger = logging.getLogger(__name__)
 
 
+@log_start_end(log=logger)
 def get_currency_list() -> List:
     """Load AV currency codes from a local file."""
     path = os.path.join(os.path.dirname(__file__), "av_forex_currencies.csv")
@@ -17,6 +24,7 @@ def get_currency_list() -> List:
 CURRENCY_LIST = get_currency_list()
 
 
+@log_start_end(log=logger)
 def check_valid_forex_currency(fx_symbol: str) -> str:
     """Check if given symbol is supported on alphavantage.
 
@@ -43,6 +51,7 @@ def check_valid_forex_currency(fx_symbol: str) -> str:
     )
 
 
+@log_start_end(log=logger)
 def get_quote(to_symbol: str, from_symbol: str) -> Dict:
     """Get current exchange rate quote from alpha vantage.
 
@@ -70,6 +79,7 @@ def get_quote(to_symbol: str, from_symbol: str) -> Dict:
     return r.json()
 
 
+@log_start_end(log=logger)
 def get_historical(
     to_symbol: str,
     from_symbol: str,

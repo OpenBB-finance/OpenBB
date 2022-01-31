@@ -1,10 +1,17 @@
 """Trend Indicators Technical Analysis Model"""
 __docformat__ = "numpy"
 
+import logging
+
 import pandas as pd
 import pandas_ta as ta
 
+from gamestonk_terminal.decorators import log_start_end
 
+logger = logging.getLogger(__name__)
+
+
+@log_start_end(log=logger)
 def adx(
     high_values: pd.Series,
     low_values: pd.Series,
@@ -47,6 +54,7 @@ def adx(
     )
 
 
+@log_start_end(log=logger)
 def aroon(
     high_values: pd.Series, low_values: pd.Series, length: int = 25, scalar: int = 100
 ) -> pd.DataFrame:

@@ -1,6 +1,7 @@
 """ Comparison Analysis Yahoo Finance View """
 __docformat__ = "numpy"
 
+import logging
 import os
 from datetime import datetime, timedelta
 from typing import List
@@ -11,13 +12,15 @@ import pandas as pd
 import seaborn as sns
 from pandas.plotting import register_matplotlib_converters
 from sklearn.preprocessing import MinMaxScaler
+
 from gamestonk_terminal import feature_flags as gtff
-
 from gamestonk_terminal.config_plot import PLOT_DPI
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
-from gamestonk_terminal.stocks.comparison_analysis import yahoo_finance_model
 from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.stocks.comparison_analysis import yahoo_finance_model
 
+logger = logging.getLogger(__name__)
 
 register_matplotlib_converters()
 
@@ -31,6 +34,7 @@ d_candle_types = {
 }
 
 
+@log_start_end(log=logger)
 def display_historical(
     similar_tickers: List[str],
     start: str = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
@@ -89,6 +93,7 @@ def display_historical(
     console.print("")
 
 
+@log_start_end(log=logger)
 def display_volume(
     similar_tickers: List[str],
     start: str = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
@@ -130,6 +135,7 @@ def display_volume(
     console.print("")
 
 
+@log_start_end(log=logger)
 def display_correlation(
     similar_tickers: List[str],
     start: str = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),

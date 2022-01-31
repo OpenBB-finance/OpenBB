@@ -261,13 +261,13 @@ def check_api_keys():
         else:
             key_dict["BITQUERY"] = "defined, test failed"
     # SentimentInvestor keys
-    si_keys = [cfg.API_SENTIMENTINVESTOR_KEY, cfg.API_SENTIMENTINVESTOR_TOKEN]
+    si_keys = [cfg.API_SENTIMENTINVESTOR_TOKEN]
     if "REPLACE_ME" in si_keys:
         key_dict["SENTIMENT_INVESTOR"] = "Not defined"
     else:
         account = requests.get(
-            f"https://api.sentimentinvestor.com/v4/account"
-            f"?token={cfg.API_SENTIMENTINVESTOR_TOKEN}&key={cfg.API_SENTIMENTINVESTOR_KEY}"
+            f"https://api.sentimentinvestor.com/v1/trending"
+            f"?token={cfg.API_SENTIMENTINVESTOR_TOKEN}"
         )
         if account.ok and account.json().get("success", False):
             key_dict["SENTIMENT_INVESTOR"] = "Defined, test passed"

@@ -1,16 +1,22 @@
 """Finbrain Crypto Sentiment Analysis"""
 __docformat__ = "numpy"
 
+import logging
 import os
+
 import pandas as pd
+
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.common.behavioural_analysis.finbrain_model import get_sentiment
 from gamestonk_terminal.common.behavioural_analysis.finbrain_view import (
     plot_sentiment,
     sentiment_coloring,
 )
-from gamestonk_terminal.common.behavioural_analysis.finbrain_model import get_sentiment
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import export_data
 from gamestonk_terminal.rich_config import console
+
+logger = logging.getLogger(__name__)
 
 PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -21,6 +27,7 @@ except ValueError:
     COINS = None
 
 
+@log_start_end(log=logger)
 def display_crypto_sentiment_analysis(coin: str, export: str) -> None:
     """Sentiment analysis from FinBrain for Cryptocurrencies
 

@@ -1,6 +1,15 @@
+# IMPORTATION STANDARD
 import os
+
+# IMPORTATION THIRDPARTY
 import pytest
+
+# IMPORTATION INTERNAL
 from gamestonk_terminal.portfolio import portfolio_controller
+
+# pylint: disable=E1101
+# pylint: disable=W0603
+# pylint: disable=E1111
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -116,17 +125,13 @@ def test_print_help():
     "an_input, expected_queue",
     [
         ("", []),
-        ("/help", ["quit", "help"]),
-        ("help/help", ["help"]),
+        ("/help", ["home", "help"]),
+        ("help/help", ["help", "help"]),
         ("q", ["quit"]),
         ("h", []),
         (
             "r",
-            [
-                "quit",
-                "reset",
-                "portfolio",
-            ],
+            ["quit", "reset", "portfolio"],
         ),
     ],
 )
@@ -165,21 +170,12 @@ def test_call_cls(mocker):
         (
             "call_reset",
             [],
-            [
-                "quit",
-                "reset",
-                "portfolio",
-            ],
+            ["quit", "reset", "portfolio"],
         ),
         (
             "call_reset",
             ["help"],
-            [
-                "quit",
-                "reset",
-                "portfolio",
-                "help",
-            ],
+            ["quit", "reset", "portfolio", "help"],
         ),
     ],
 )
@@ -189,3 +185,70 @@ def test_call_func_expect_queue(expected_queue, func, queue):
 
     assert result is None
     assert controller.queue == expected_queue
+
+
+@pytest.mark.vcr(record_mode="none")
+@pytest.mark.parametrize(
+    "tested_func, other_args, mocked_func, called_args, called_kwargs",
+    [
+        (
+            "call_bro",
+            [],
+            "PortfolioController.load_class",
+            [],
+            dict(),
+        ),
+        (
+            "call_po",
+            [],
+            "PortfolioController.load_class",
+            [],
+            dict(),
+        ),
+        (
+            "call_pa",
+            [],
+            "PortfolioController.load_class",
+            [],
+            dict(),
+        ),
+        (
+            "call_save",
+            ["MOCK_NAME.csv"],
+            "portfolio_model.save_df",
+            [],
+            dict(),
+        ),
+        (
+            "call_show",
+            [],
+            "portfolio_view.show_df",
+            [],
+            dict(),
+        ),
+    ],
+)
+def test_call_func(
+    tested_func, mocked_func, other_args, called_args, called_kwargs, mocker
+):
+    path_controller = "gamestonk_terminal.portfolio.portfolio_controller"
+
+    if mocked_func:
+        mock = mocker.Mock()
+        mocker.patch(
+            target=f"{path_controller}.{mocked_func}",
+            new=mock,
+        )
+
+        controller = portfolio_controller.PortfolioController(queue=None)
+
+        getattr(controller, tested_func)(other_args)
+
+        if called_args or called_kwargs:
+            mock.assert_called_once_with(*called_args, **called_kwargs)
+        else:
+            mock.assert_called_once()
+    else:
+        controller = portfolio_controller.PortfolioController(queue=None)
+
+        getattr(controller, tested_func)(other_args)

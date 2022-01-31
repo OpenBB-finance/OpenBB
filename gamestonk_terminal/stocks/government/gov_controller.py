@@ -2,28 +2,25 @@
 __docformat__ = "numpy"
 
 import argparse
-from datetime import datetime, timedelta
 from typing import List
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.rich_config import console
 
-from gamestonk_terminal.parent_classes import BaseController
+from gamestonk_terminal.parent_classes import StockController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.stocks.government import quiverquant_view
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     check_positive,
-    valid_date,
 )
-from gamestonk_terminal.stocks import stocks_helper
 from gamestonk_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
 )
 
 
-class GovController(BaseController):
+class GovController(StockController):
     """Gov Controller class"""
 
     CHOICES_COMMANDS = [
@@ -96,46 +93,6 @@ class GovController(BaseController):
         if self.ticker:
             return ["stocks", f"load {self.ticker}", "gov"]
         return []
-
-    def call_load(self, other_args: List[str]):
-        """Process load command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="load",
-            description="Load stock ticker to perform analysis on. When the data source"
-            + " is 'yf', an Indian ticker can be loaded by using '.NS' at the end,"
-            + " e.g. 'SBIN.NS'. See available market in"
-            + " https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html.",
-        )
-        parser.add_argument(
-            "-t",
-            "--ticker",
-            action="store",
-            dest="ticker",
-            required="-h" not in other_args,
-            help="Stock ticker",
-        )
-        parser.add_argument(
-            "-s",
-            "--start",
-            type=valid_date,
-            default=(datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
-            dest="start",
-            help="The starting date (format YYYY-MM-DD) of the stock",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-t")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            df_stock_candidate = stocks_helper.load(
-                ns_parser.ticker,
-                ns_parser.start,
-            )
-            if not df_stock_candidate.empty:
-                self.ticker = ns_parser.ticker.upper()
-            else:
-                console.print("Ticker selected does not exist!", "\n")
 
     def call_lasttrades(self, other_args: List[str]):
         """Process lasttrades command"""

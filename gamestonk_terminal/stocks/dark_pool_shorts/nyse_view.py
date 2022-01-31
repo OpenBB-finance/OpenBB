@@ -2,21 +2,28 @@
 __docformat__ = "numpy"
 
 
+import logging
 import os
+
 import matplotlib.pyplot as plt
 import seaborn as sns
 from plotly import express as px
-from gamestonk_terminal.stocks.dark_pool_shorts import nyse_model
+
+from gamestonk_terminal.config_plot import PLOT_DPI
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.feature_flags import USE_ION
 from gamestonk_terminal.helper_funcs import (
-    plot_autoscale,
     export_data,
+    plot_autoscale,
     print_rich_table,
 )
-from gamestonk_terminal.feature_flags import USE_ION
-from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.stocks.dark_pool_shorts import nyse_model
+
+logger = logging.getLogger(__name__)
 
 
+@log_start_end(log=logger)
 def display_short_by_exchange(
     ticker: str,
     raw: bool = False,

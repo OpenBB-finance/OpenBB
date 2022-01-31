@@ -1,12 +1,19 @@
 """ opensea.io Model """
 
+import logging
 from datetime import datetime
-import requests
+
 import pandas as pd
+import requests
+
+from gamestonk_terminal.decorators import log_start_end
+
+logger = logging.getLogger(__name__)
 
 API_URL = "https://api.opensea.io/api/v1"
 
 
+@log_start_end(log=logger)
 def get_collection_stats(slug: str) -> pd.DataFrame:
     """Get stats of a nft collection [Source: opensea.io]
 

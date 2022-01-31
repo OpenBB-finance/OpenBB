@@ -1,22 +1,27 @@
 """Yahoo Finance Mutual Fund Model"""
 __docformat__ = "numpy"
 
+import logging
 import os
 
-import pandas as pd
 import matplotlib.pyplot as plt
-from gamestonk_terminal.rich_config import console
+import pandas as pd
 
-from gamestonk_terminal.helper_funcs import (
-    print_rich_table,
-    export_data,
-    plot_autoscale,
-)
-from gamestonk_terminal.mutual_funds import yfinance_model
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_plot import PLOT_DPI
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_funcs import (
+    export_data,
+    plot_autoscale,
+    print_rich_table,
+)
+from gamestonk_terminal.mutual_funds import yfinance_model
+from gamestonk_terminal.rich_config import console
+
+logger = logging.getLogger(__name__)
 
 
+@log_start_end(log=logger)
 def display_sector(fund: str, min_pct_to_display: float = 5, export: str = ""):
     """Display sector weightings for fund
 
@@ -83,6 +88,7 @@ def display_sector(fund: str, min_pct_to_display: float = 5, export: str = ""):
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "sector", df_weight)
 
 
+@log_start_end(log=logger)
 def display_equity(fund: str):
     """Display equity holdings for fund
 

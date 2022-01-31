@@ -1,0 +1,58 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: GET
+    uri: https://api.coinpaprika.com/v1/tickers/btc-bitcoin/?quotes=USD
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAA/3SSzW7dIBCF932MWQOaAQyGZds36O2mG4RtkmvFf7Vx1Ci6717ZvokSubUsIZ1v
+        5miGwyu0DXiocs2rNtdjOwCDIfYJPHx9F5aXvhq7Tbp8AwZzHJ7AE4O6neu1i7kdHsOyTlP3Ap5K
+        p7V0mkEec+w+6wqRQR//vKuScP8YVCnH8By7NYFH4bCUKBk8tPOSQxNzDDGDB4mEHC0ne0H0+/8L
+        GHRxyWGdmphTs1dJyZG4wguVXimv1Fb1ex1zWsC/ws8f37djmts6gVclIglEp3TpCsPgeezWPgWp
+        r+DJuMJYo02BwrniIwz1NQ6P9zqOQpltufkp5VDHCbwl51BKpzSqj+RTHwpbMpjSXKchvxEq+t2R
+        9AkpvCM6d+12WJyAOeaT7twiD6TtCf1/OtuAt+KsK2zAc3JC/WOj7QmQ0MQg5mu437wpjZOClEVl
+        nJIH21I8QiROxAkvZHxBnootxDffh3nsD5sQ87aE1sKUt9vty98AAAD//1w/QR7UAgAA
+    headers:
+      Accept-Ranges:
+      - bytes
+      CF-Cache-Status:
+      - HIT
+      CF-RAY:
+      - 6d5ccbe4987e40cf-CDG
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '393'
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Sun, 30 Jan 2022 18:34:48 GMT
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Last-Modified:
+      - Sun, 30 Jan 2022 18:34:46 GMT
+      Server:
+      - cloudflare
+      alt-svc:
+      - h3=":443"; ma=86400, h3-29=":443"; ma=86400
+      cache-control:
+      - public, max-age=60, s-maxage=60, stale-while-revalidate=10, stale-if-error=600
+      content-encoding:
+      - gzip
+      vary:
+      - Accept-Encoding
+      - Origin
+    status:
+      code: 200
+      message: OK
+version: 1

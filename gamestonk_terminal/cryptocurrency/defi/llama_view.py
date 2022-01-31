@@ -1,25 +1,33 @@
 """Llama View"""
 __docformat__ = "numpy"
 
+import logging
 import os
-from matplotlib import ticker, dates as mdates
+
 import matplotlib.pyplot as plt
+from matplotlib import dates as mdates
+from matplotlib import ticker
+
+from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import read_data_file
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
     replace_underscores_in_column_names,
 )
 from gamestonk_terminal.cryptocurrency.defi import llama_model
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
     export_data,
-    plot_autoscale,
     long_number_format,
+    plot_autoscale,
     print_rich_table,
 )
-from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.rich_config import console
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def display_grouped_defi_protocols(num: int = 50, export: str = "") -> None:
     """Display top dApps (in terms of TVL) grouped by chain.
     [Source: https://docs.llama.fi/api]
@@ -65,6 +73,7 @@ def display_grouped_defi_protocols(num: int = 50, export: str = "") -> None:
     )
 
 
+@log_start_end(log=logger)
 def display_defi_protocols(
     top: int, sortby: str, descend: bool, description: bool, export: str = ""
 ) -> None:
@@ -128,6 +137,7 @@ def display_defi_protocols(
     )
 
 
+@log_start_end(log=logger)
 def display_historical_tvl(dapps: str = "", export: str = ""):
     """Displays historical TVL of different dApps
     [Source: https://docs.llama.fi/api]
@@ -179,6 +189,7 @@ def display_historical_tvl(dapps: str = "", export: str = ""):
         )
 
 
+@log_start_end(log=logger)
 def display_defi_tvl(top: int, export: str = "") -> None:
     """Displays historical values of the total sum of TVLs from all listed protocols.
     [Source: https://docs.llama.fi/api]

@@ -1,0 +1,166 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: GET
+    uri: https://raw.githubusercontent.com/JerBouma/FinanceDatabase/master/Database/Equities/Countries/France/France%20Sectors.json
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA2WPuw6DMAxFdyT+IWLuV5TSx9Clj6nqYAUXLBlHSgISf19XqghtvPlcX1/7URZG
+        q9pCIGvOENETcKg2X167YRiFLERyYq7oJ7K4lqVjN6BX4w8No0JTz5bVy7mywxdKoAlz6eBcm3Y1
+        gr6bl3ZPAmJptXIh+XVHBI69BZ9STtKOIX5+/MtJQmIX9ZsmRH1uYVnIDW0vjt3qyHskpkg6VBbP
+        NzUTBNViAQAA
+    headers:
+      Accept-Ranges:
+      - bytes
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - max-age=300
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '180'
+      Content-Security-Policy:
+      - default-src 'none'; style-src 'unsafe-inline'; sandbox
+      Content-Type:
+      - text/plain; charset=utf-8
+      Date:
+      - Fri, 28 Jan 2022 01:15:24 GMT
+      ETag:
+      - W/"20ea20df300d4ee03e472ef40d0bdf0f19741f893c8bb863d510ef314c1e471f"
+      Expires:
+      - Fri, 28 Jan 2022 01:20:24 GMT
+      Source-Age:
+      - '215'
+      Strict-Transport-Security:
+      - max-age=31536000
+      Vary:
+      - Authorization,Accept-Encoding,Origin
+      Via:
+      - 1.1 varnish
+      X-Cache:
+      - HIT
+      X-Cache-Hits:
+      - '1'
+      X-Content-Type-Options:
+      - nosniff
+      X-Fastly-Request-ID:
+      - d89232fa8ec3e41f4354fa96fe256f896b172bb7
+      X-Frame-Options:
+      - deny
+      X-GitHub-Request-Id:
+      - D02E:A95B:D3CBCB:E2305D:61F342D4
+      X-Served-By:
+      - cache-cdg20752-CDG
+      X-Timer:
+      - S1643332525.597912,VS0,VE1
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: GET
+    uri: https://raw.githubusercontent.com/JerBouma/FinanceDatabase/master/Database/Equities/Countries/France/France%20Industries.json
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA4VXy3LbOBC8pyr/wMrBp+xHxLZkK2WVVZJ3ddjaAwyOKKxBgIuHbP/99lAPgCSU
+        5OIIPXj19PSAf3/9UuHftx/1gVxQXpmm+tGQkYr8t+9nkJz1nZBU3VT3tCPjqYCdkOqPain+ta66
+        V1jSq52iOkU3TsmoQ3RCVwvTxZDtopxWhgYDnXXBY1f8t9qQOyiZ4zq2ysQ2DXSdcKSxv4k7IbEL
+        rjNB1xSE0pPhTbAuX9x7CrySaKglExIQg8WJXlyUb7iz0LjkXnV+GHAVSGcDPIRWwmV03Arz5kHm
+        mhpljUgHviXwilMxeOvoPV8nx7Yg0yGNnDTlg9K6/5lilQ0k98Zq23ymUWdFLQXiM+puo9I1S2Mp
+        AhYR2k+hlbN1lH22Zv9F1Q1Iu42eU+sThLBN7Do9ONE5apLqO9GpIDiz7o0yku721CqZn+fOtm00
+        GAtgrXAS4FAduepRuPodmc8Q02jbgr+Q72yNh2D5htNTMYYJ1UyTDM5i2wx0VKswnXSvRGMs+JVM
+        1Zo8CSf3GeyljeBnpMesmorb5fhSyD0nP2X13sVmKD0I5IEQkwmrGNTX8q9DNh1JaCJ84j79mkpe
+        JsygiWMquGSEMkUijxfiRA4EMiyIdOuKk2gNgorog2h5l5tqyYlrkQZRCGP2L2LgAnHqNfJJi7Hb
+        vdXkUdMJNQ04JnfciqUQYAnDBQzWhtmYgQLnwrWY8Uji8DmYV8hbH3uurDSqjDBMeXUvguBKChZm
+        NPuQe2GajNe5tXX5bkDCO5TH3iqRCm8H3jCPzii4l2n892quPjjXvQ9zxWLvLBRsv+rcLE6yqn5h
+        GucQ3D44KMlmFvZgdeoXD85K8DEuBnCnwx4NZGdde5TXRFOPKOVq0XbOHnoDH/v+o42ekNWahQYh
+        s8dOqV6YOjJ9zHWJx/wILxc3nZ4GcU4cMw0qq+eObQaT8giPrghqUVGl1pnjT2pHRWBN6vyrgMPb
+        3/JusYA+G7a7upo7Us2ei+7JNqp3p0GYM+iGnK5jZWbXnoaNiP6JFqWnOXwihXOlYz7Zusll9BTb
+        V2J9blnEp8Tk+z3Fj4hlHwCnVdEgUEHVBo23y1dbwgXYXu7g+NVcSKVVyAV/xu9pmLfLeCn5Z3DR
+        1zCLzJfa2hJWhUon5qfq23oGudCgX2OJA/kw8InkXuyrTnR7NqKN3YVB23pWmnGB3nqzKo3mHXcs
+        yxSWtFAA17Q7OvfNqQPn1D6HPe6VFcoS+dfMxLKfNApcOXQL1N7VsJWQb6AEmhxk9jh8cVu21VzL
+        K9H1ajn+ndTxymodL32IRE/10X9sZkyYh+l9J7sTPvZNbTGpqFWE4/XueBlazxYvVwr3BD3itcV8
+        LvnvGEzsjZHn3U5lW59G8WxQNW5QmDCqvjV+8JMu3XFN3GZ9QK75xHgxajt8I40iSnfKIiaiWpNk
+        hvtXa/UXQbZ6gBp+ycFoSPjiayC7XLmvIuD0XXDHS9jB1CA4W1nqN/iWwWKgkXPPHj0u2hRKEt8M
+        ffqhBLyOy61lw49Oa1hh+M7JC2za6gax2fCpjMFv31Pl0EszeNg5UsTl0XX91Zxipu/khOWVO3mA
+        pLCRrjZBQJl9Nc7aTtvPnoHpEQJlan8hPKlsOw17oQ98oJzY6D/HfvNAOU8of+q9WNs7S3GmEwf+
+        3Bsf4c9w6glXJJ/joIw6MizSamXfL4aTG1Iej2+4qPs+Czf9TcSWJXQlxtC7eM3eoFsIg0ofqVsF
+        DlkTg88h/+3rl3/+B7CnDYjyDwAA
+    headers:
+      Accept-Ranges:
+      - bytes
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - max-age=300
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '1332'
+      Content-Security-Policy:
+      - default-src 'none'; style-src 'unsafe-inline'; sandbox
+      Content-Type:
+      - text/plain; charset=utf-8
+      Date:
+      - Fri, 28 Jan 2022 01:15:24 GMT
+      ETag:
+      - W/"3915accad7d004505ec1292b4c4b6b91d9b7bbf2155436a7d9bf9781036b7693"
+      Expires:
+      - Fri, 28 Jan 2022 01:20:24 GMT
+      Source-Age:
+      - '215'
+      Strict-Transport-Security:
+      - max-age=31536000
+      Vary:
+      - Authorization,Accept-Encoding,Origin
+      Via:
+      - 1.1 varnish
+      X-Cache:
+      - HIT
+      X-Cache-Hits:
+      - '1'
+      X-Content-Type-Options:
+      - nosniff
+      X-Fastly-Request-ID:
+      - db7bf337d9913adfda9c41c4797f3dda054cff8c
+      X-Frame-Options:
+      - deny
+      X-GitHub-Request-Id:
+      - 9822:A95B:D3CBDD:E23099:61F342D5
+      X-Served-By:
+      - cache-cdg20739-CDG
+      X-Timer:
+      - S1643332525.662397,VS0,VE0
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

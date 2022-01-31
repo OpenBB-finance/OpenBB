@@ -1,22 +1,29 @@
 """ Business Insider View """
 __docformat__ = "numpy"
 
+import logging
 import os
-import pandas as pd
+
 import matplotlib.pyplot as plt
+import pandas as pd
 from pandas.plotting import register_matplotlib_converters
+
+from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
     export_data,
     get_next_stock_market_days,
     print_rich_table,
 )
-from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.stocks.insider import businessinsider_model
 from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.stocks.insider import businessinsider_model
+
+logger = logging.getLogger(__name__)
 
 register_matplotlib_converters()
 
 
+@log_start_end(log=logger)
 def insider_activity(
     stock: pd.DataFrame,
     ticker: str,

@@ -1,15 +1,19 @@
 """Cryptopanic model"""
 __docformat__ = "numpy"
 
-import time
+import logging
 import math
 import textwrap
-from typing import Optional, Any
+import time
+from typing import Any, Optional
+
 import pandas as pd
 import requests
 
-
 import gamestonk_terminal.config_terminal as cfg
+from gamestonk_terminal.decorators import log_start_end
+
+logger = logging.getLogger(__name__)
 
 CATEGORIES = ["news", "media"]
 
@@ -37,14 +41,17 @@ REGIONS = ["en", "de", "es", "fr", "nl", "it", "pt", "ru"]
 class ApiKeyException(Exception):
     """Api Key Exception object"""
 
+    @log_start_end(log=logger)
     def __init__(self, message: str):
         super().__init__(message)
         self.message = message
 
+    @log_start_end(log=logger)
     def __str__(self) -> str:
         return f"ApiKeyException: {self.message}"
 
 
+@log_start_end(log=logger)
 def make_request(**kwargs: Any) -> dict:
     """Helper methods for requests [Source: https://cryptopanic.com/developers/api/]
 
@@ -95,6 +102,7 @@ def make_request(**kwargs: Any) -> dict:
         raise ValueError(f"Invalid Response: {response.text}") from e
 
 
+@log_start_end(log=logger)
 def _parse_post(post: dict) -> dict:
     """Helper method - parse news response object to dictionary with target structure.
     [Source: https://cryptopanic.com/]
@@ -120,6 +128,7 @@ def _parse_post(post: dict) -> dict:
     }
 
 
+@log_start_end(log=logger)
 def get_news(
     limit: int = 60,
     post_kind: str = "news",

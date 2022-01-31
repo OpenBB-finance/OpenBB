@@ -276,6 +276,7 @@ def filter_json_data(response):
     return response
 
 
+@pytest.mark.vcr
 @pytest.mark.parametrize(
     "industry, sector",
     [
@@ -289,6 +290,7 @@ def test_get_countries(industry, recorder, sector):
     recorder.capture(result)
 
 
+@pytest.mark.vcr
 @pytest.mark.parametrize(
     "industry, country",
     [
@@ -462,6 +464,7 @@ def test_get_companies_per_country_in_sector(recorder):
     recorder.capture(result)
 
 
+@pytest.mark.vcr
 def test_get_companies_per_country_in_industry(recorder):
     result = financedatabase_model.get_companies_per_country_in_industry(
         industry="Uranium",

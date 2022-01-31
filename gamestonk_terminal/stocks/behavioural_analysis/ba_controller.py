@@ -7,8 +7,7 @@ from datetime import datetime, timedelta
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.rich_config import console
 
-from gamestonk_terminal.parent_classes import BaseController
-from gamestonk_terminal.decorators import try_except
+from gamestonk_terminal.parent_classes import StockController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -16,6 +15,7 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     check_int_range,
     valid_date,
+    valid_hour,
     check_positive,
 )
 from gamestonk_terminal.menu import session
@@ -28,12 +28,11 @@ from gamestonk_terminal.common.behavioural_analysis import (
     twitter_view,
     sentimentinvestor_view,
 )
-from gamestonk_terminal.stocks import stocks_helper
 
 # pylint:disable=R0904,C0302
 
 
-class BehaviouralAnalysisController(BaseController):
+class BehaviouralAnalysisController(StockController):
     """Behavioural Analysis Controller class"""
 
     CHOICES_COMMANDS = [
@@ -58,6 +57,7 @@ class BehaviouralAnalysisController(BaseController):
         "popular",
         "getdd",
         "hist",
+        "trend",
     ]
 
     historical_sort = ["date", "value"]
@@ -108,56 +108,12 @@ class BehaviouralAnalysisController(BaseController):
     regions       regions that show highest interest in stock
     queries       top related queries with this stock
     rise          top rising related queries with stock{has_ticker_end}
-[src][SentimentInvestor][/src]{has_ticker_start}
+[src][SentimentInvestor][/src]
+    trend         most talked about tickers within the last hour{has_ticker_start}
     hist          plot historical RHI and AHI data by hour{has_ticker_end}[/cmds]
 
         """
         console.print(text=help_text, menu="Stocks - Behavioural Analysis")
-
-    @try_except
-    def call_load(self, other_args: List[str]):
-        """Process load command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="load",
-            description="Load stock ticker to perform analysis on. When the data "
-            + "source is 'yf', an Indian ticker can be loaded by using '.NS' at the end,"
-            + " e.g. 'SBIN.NS'. See available market in"
-            + " https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html.",
-        )
-        parser.add_argument(
-            "-t",
-            "--ticker",
-            action="store",
-            dest="ticker",
-            required="-h" not in other_args,
-            help="Stock ticker",
-        )
-        parser.add_argument(
-            "-s",
-            "--start",
-            type=valid_date,
-            default=(datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
-            dest="start",
-            help="The starting date (format YYYY-MM-DD) of the stock",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-t")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            df_stock_candidate = stocks_helper.load(
-                ns_parser.ticker,
-                ns_parser.start,
-            )
-            if not df_stock_candidate.empty:
-                self.start = ns_parser.start
-                if "." in ns_parser.ticker:
-                    self.ticker = ns_parser.ticker.upper().split(".")[0]
-                else:
-                    self.ticker = ns_parser.ticker.upper()
-            else:
-                console.print("Provide a valid ticker")
 
     def call_watchlist(self, other_args: List[str]):
         """Process watchlist command"""
@@ -761,6 +717,52 @@ class BehaviouralAnalysisController(BaseController):
                     raw=ns_parser.raw,
                     limit=ns_parser.limit,
                 )
-
             else:
-                print("No ticker loaded. Please load using 'load <ticker>'\n")
+                console.print("No ticker loaded. Please load using 'load <ticker>'\n")
+
+    def call_trend(self, other_args: List[str]):
+        """Process trend command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="trend",
+            description="Show most talked about tickers within the last one hour",
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            type=valid_date,
+            default=datetime.utcnow().strftime("%Y-%m-%d"),
+            dest="start",
+            help="The starting date (format YYYY-MM-DD). Default: Today",
+        )
+
+        parser.add_argument(
+            "-hr",
+            "--hour",
+            type=valid_hour,
+            default=0,
+            dest="hour",
+            help="Hour of the day in the 24-hour notation. Example: 14",
+        )
+
+        parser.add_argument(
+            "-n",
+            "--number",
+            default=10,
+            type=check_positive,
+            dest="number",
+            help="Number of results returned from Sentiment Investor. Default: 10",
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED, limit=10
+        )
+
+        if ns_parser:
+            sentimentinvestor_view.display_trending(
+                start=ns_parser.start,
+                hour=ns_parser.hour,
+                export=ns_parser.export,
+                number=ns_parser.number,
+            )

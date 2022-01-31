@@ -2,11 +2,18 @@
 __docformat__ = "numpy"
 # pylint:disable=too-many-arguments,unexpected-keyword-arg
 
-from tqdm import tqdm
+import logging
+
 import financedatabase as fd
 import yfinance as yf
+from tqdm import tqdm
+
+from gamestonk_terminal.decorators import log_start_end
+
+logger = logging.getLogger(__name__)
 
 
+@log_start_end(log=logger)
 def get_countries(industry: str = "", sector: str = ""):
     """Get all countries in Yahoo Finance data based on sector or industry. [Source: Finance Database]
 
@@ -30,6 +37,7 @@ def get_countries(industry: str = "", sector: str = ""):
     return fd.show_options("equities", "countries")
 
 
+@log_start_end(log=logger)
 def get_sectors(industry: str = "", country: str = ""):
     """Get all sectors in Yahoo Finance data based on country or industry. [Source: Finance Database]
 
@@ -54,6 +62,7 @@ def get_sectors(industry: str = "", country: str = ""):
     return fd.show_options("equities", "sectors")
 
 
+@log_start_end(log=logger)
 def get_industries(country: str = "", sector: str = ""):
     """Get all industries in Yahoo Finance data based on country or sector. [Source: Finance Database]
 
@@ -81,6 +90,7 @@ def get_industries(country: str = "", sector: str = ""):
     return fd.show_options("equities", "industries")
 
 
+@log_start_end(log=logger)
 def get_marketcap():
     """Get all market cap division in Yahoo Finance data. [Source: Finance Database]
 
@@ -92,6 +102,7 @@ def get_marketcap():
     return list(["Small Cap", "Mid Cap", "Large Cap"])
 
 
+@log_start_end(log=logger)
 def filter_stocks(
     country: str,
     sector: str,
@@ -179,6 +190,7 @@ def filter_stocks(
         return list()
 
 
+@log_start_end(log=logger)
 def get_stocks_data(
     country: str,
     sector: str,
@@ -217,6 +229,7 @@ def get_stocks_data(
     return stocks_data
 
 
+@log_start_end(log=logger)
 def get_companies_per_sector_in_country(
     country: str, mktcap: str = "", exclude_exchanges: bool = True
 ):
@@ -256,6 +269,7 @@ def get_companies_per_sector_in_country(
     return companies_per_sector
 
 
+@log_start_end(log=logger)
 def get_companies_per_industry_in_country(
     country: str, mktcap: str = "", exclude_exchanges: bool = True
 ):
@@ -298,6 +312,7 @@ def get_companies_per_industry_in_country(
     return companies_per_industry
 
 
+@log_start_end(log=logger)
 def get_companies_per_industry_in_sector(
     sector: str, mktcap: str = "", exclude_exchanges: bool = True
 ):
@@ -339,6 +354,7 @@ def get_companies_per_industry_in_sector(
     return companies_per_industry
 
 
+@log_start_end(log=logger)
 def get_companies_per_country_in_sector(
     sector: str, mktcap: str = "", exclude_exchanges: bool = True
 ):
@@ -380,6 +396,7 @@ def get_companies_per_country_in_sector(
     return companies_per_country
 
 
+@log_start_end(log=logger)
 def get_companies_per_country_in_industry(
     industry: str, mktcap: str = "", exclude_exchanges: bool = True
 ):
