@@ -344,11 +344,3 @@ def test_call_func_no_current_coin(tested_func):
     controller = crypto_controller.CryptoController(queue=None)
     controller.current_coin = None
     getattr(controller, tested_func)([])
-
-
-@pytest.mark.vcr
-@pytest.mark.record_stdout
-def test_call_load():
-    controller = crypto_controller.CryptoController()
-    other_args = [SYMBOL]
-    controller.call_load(other_args=other_args)
