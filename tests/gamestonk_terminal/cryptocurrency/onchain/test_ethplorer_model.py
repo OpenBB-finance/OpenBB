@@ -51,7 +51,7 @@ def test_call_func(func, kwargs, recorder):
     result = getattr(ethplorer_model, func)(**kwargs)
 
     if isinstance(result, pd.DataFrame) and "timestamp" in result.columns:
-        result["timestamp"] = datetime.strptime("2020-12-15", "%Y-%m-%d")
+        result.drop(columns=["timestamp"], inplace=True)
 
     if isinstance(result, tuple):
         recorder.capture_list(result)
