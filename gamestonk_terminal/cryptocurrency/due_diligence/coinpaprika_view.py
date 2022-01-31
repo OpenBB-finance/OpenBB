@@ -126,7 +126,10 @@ def display_twitter(
     console.print("")
 
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), "twitter", df,
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "twitter",
+        df,
     )
 
 
@@ -178,7 +181,10 @@ def display_events(
     console.print("")
 
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), "events", df_data,
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "events",
+        df_data,
     )
 
 
@@ -220,7 +226,10 @@ def display_exchanges(
     console.print("")
 
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), "ex", df,
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "ex",
+        df,
     )
 
 
@@ -278,13 +287,18 @@ def display_markets(
     console.print("")
 
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), "mkt", df_data,
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "mkt",
+        df_data,
     )
 
 
 @log_start_end(log=logger)
 def display_price_supply(
-    coin_id: str = "btc-bitcoin", currency: str = "USD", export: str = "",
+    coin_id: str = "btc-bitcoin",
+    currency: str = "USD",
+    export: str = "",
 ) -> None:
     """Get ticker information for single coin [Source: CoinPaprika]
 
@@ -313,12 +327,18 @@ def display_price_supply(
     console.print("")
 
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), "ps", df,
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "ps",
+        df,
     )
 
 
 @log_start_end(log=logger)
-def display_basic(coin_id: str = "btc-bitcoin", export: str = "",) -> None:
+def display_basic(
+    coin_id: str = "btc-bitcoin",
+    export: str = "",
+) -> None:
     """Get basic information for coin. Like:
         name, symbol, rank, type, description, platform, proof_type, contract, tags, parent.  [Source: CoinPaprika]
 
@@ -341,5 +361,8 @@ def display_basic(coin_id: str = "btc-bitcoin", export: str = "",) -> None:
     )
 
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), "basic", df,
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "basic",
+        df,
     )

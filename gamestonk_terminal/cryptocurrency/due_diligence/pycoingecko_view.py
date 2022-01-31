@@ -15,9 +15,6 @@ logger = logging.getLogger(__name__)
 
 register_matplotlib_converters()
 
-# pylint: disable=inconsistent-return-statements
-# pylint: disable=R0904, C0302
-
 
 @log_start_end(log=logger)
 def display_coin_potential_returns(
