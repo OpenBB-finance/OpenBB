@@ -1,10 +1,16 @@
 """Eclect.us view"""
 __docformat__ = "numpy"
 
-from gamestonk_terminal.stocks.fundamental_analysis import eclect_us_model
+import logging
+
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.stocks.fundamental_analysis import eclect_us_model
+
+logger = logging.getLogger(__name__)
 
 
+@log_start_end(log=logger)
 def display_analysis(
     ticker: str,
 ) -> None:

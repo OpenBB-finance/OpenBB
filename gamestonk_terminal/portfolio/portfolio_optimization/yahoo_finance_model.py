@@ -1,12 +1,18 @@
 """YFinance Model"""
 __docformat__ = "numpy"
 
+import logging
 from typing import List
 
 import pandas as pd
 import yfinance as yf
 
+from gamestonk_terminal.decorators import log_start_end
 
+logger = logging.getLogger(__name__)
+
+
+@log_start_end(log=logger)
 def process_stocks(list_of_stocks: List[str], period: str = "3mo") -> pd.DataFrame:
     """Get adjusted closing price for each stock in the list
 

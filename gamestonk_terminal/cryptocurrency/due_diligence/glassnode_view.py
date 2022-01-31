@@ -1,10 +1,15 @@
-from datetime import datetime
+import logging
 import os
-from matplotlib import pyplot as plt, dates as mdates, ticker
+from datetime import datetime
+
 import matplotlib
 import numpy as np
-from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
+from matplotlib import dates as mdates
+from matplotlib import pyplot as plt
+from matplotlib import ticker
+
 from gamestonk_terminal import config_plot as cfgPlot
+from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.cryptocurrency.due_diligence.glassnode_model import (
     get_active_addresses,
     get_close_price,
@@ -13,10 +18,14 @@ from gamestonk_terminal.cryptocurrency.due_diligence.glassnode_model import (
     get_hashrate,
     get_non_zero_addresses,
 )
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
 from gamestonk_terminal.rich_config import console
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def display_btc_rainbow(since: int, until: int, export: str = ""):
     """Displays bitcoin rainbow chart
     [Price data from source: https://glassnode.com]
@@ -136,6 +145,7 @@ def display_btc_rainbow(since: int, until: int, export: str = ""):
         )
 
 
+@log_start_end(log=logger)
 def display_active_addresses(
     asset: str, since: int, until: int, interval: str, export: str = ""
 ) -> None:
@@ -190,6 +200,7 @@ def display_active_addresses(
     )
 
 
+@log_start_end(log=logger)
 def display_non_zero_addresses(
     asset: str, since: int, until: int, interval: str, export: str = ""
 ) -> None:
@@ -244,6 +255,7 @@ def display_non_zero_addresses(
     )
 
 
+@log_start_end(log=logger)
 def display_exchange_net_position_change(
     asset: str, exchange: str, since: int, until: int, interval: str, export: str = ""
 ) -> None:
@@ -315,6 +327,7 @@ def display_exchange_net_position_change(
     )
 
 
+@log_start_end(log=logger)
 def display_exchange_balances(
     asset: str,
     exchange: str,
@@ -386,6 +399,7 @@ def display_exchange_balances(
     )
 
 
+@log_start_end(log=logger)
 def display_hashrate(
     asset: str,
     since: int,

@@ -4,7 +4,6 @@
 import requests
 import pandas as pd
 import pytest
-import vcr
 
 # IMPORTATION INTERNAL
 from gamestonk_terminal.stocks.due_diligence import ark_model
@@ -27,13 +26,6 @@ def test_get_ark_trades_by_ticker(recorder):
     result_df = ark_model.get_ark_trades_by_ticker(ticker="TSLA")
 
     recorder.capture(result_df)
-
-
-@pytest.mark.default_cassette("test_get_ark_trades_by_ticker_AAPL")
-@pytest.mark.vcr(record_mode="none")
-def test_get_ark_trades_by_ticker_not_recorded():
-    with pytest.raises(vcr.errors.CannotOverwriteExistingCassetteException):
-        ark_model.get_ark_trades_by_ticker(ticker="AAPL")
 
 
 @pytest.mark.default_cassette("test_get_ark_trades_by_ticker_INVALID_TICKER")

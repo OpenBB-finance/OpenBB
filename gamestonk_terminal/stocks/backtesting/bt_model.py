@@ -1,12 +1,19 @@
 """Backtesting Model"""
 __docformat__ = "numpy"
 
+import logging
+
 import bt
 import pandas as pd
 import pandas_ta as ta
 import yfinance as yf
 
+from gamestonk_terminal.decorators import log_start_end
 
+logger = logging.getLogger(__name__)
+
+
+@log_start_end(log=logger)
 def get_data(ticker: str, start_date: str) -> pd.DataFrame:
     """Function to replace bt.get,  Gets Adjusted close of ticker using yfinance
 
@@ -28,6 +35,7 @@ def get_data(ticker: str, start_date: str) -> pd.DataFrame:
     return prices
 
 
+@log_start_end(log=logger)
 def buy_and_hold(ticker: str, start_date: str, name: str) -> bt.Backtest:
     """Generates a buy and hold backtest object for the given ticker
 
@@ -58,6 +66,7 @@ def buy_and_hold(ticker: str, start_date: str, name: str) -> bt.Backtest:
     return bt.Backtest(bt_strategy, prices)
 
 
+@log_start_end(log=logger)
 def ema_strategy(
     ticker: str,
     df_stock: pd.DataFrame,
@@ -112,6 +121,7 @@ def ema_strategy(
     return res
 
 
+@log_start_end(log=logger)
 def ema_cross_strategy(
     ticker: str,
     df_stock: pd.DataFrame,
@@ -182,6 +192,7 @@ def ema_cross_strategy(
     return res
 
 
+@log_start_end(log=logger)
 def rsi_strategy(
     ticker: str,
     df_stock: pd.DataFrame,

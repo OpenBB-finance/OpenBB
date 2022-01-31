@@ -1,13 +1,17 @@
 """Tradier options model"""
 __docformat__ = "numpy"
 
+import logging
 from typing import List, Optional
 
 import pandas as pd
 import requests
 
 from gamestonk_terminal import config_terminal as cfg
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.rich_config import console
+
+logger = logging.getLogger(__name__)
 
 option_columns = [
     "symbol",
@@ -36,6 +40,7 @@ default_columns = [
 ]
 
 
+@log_start_end(log=logger)
 def get_historical_options(
     ticker: str, expiry: str, strike: float, put: bool, chain_id: Optional[str]
 ) -> pd.DataFrame:
@@ -101,6 +106,7 @@ def get_historical_options(
 # pylint: disable=no-else-return
 
 
+@log_start_end(log=logger)
 def option_expirations(ticker: str) -> List[str]:
     """Get available expiration dates for given ticker
 
@@ -134,6 +140,7 @@ def option_expirations(ticker: str) -> List[str]:
         return []
 
 
+@log_start_end(log=logger)
 def get_option_chains(symbol: str, expiry: str) -> pd.DataFrame:
     """Display option chains [Source: Tradier]"
 
@@ -169,6 +176,7 @@ def get_option_chains(symbol: str, expiry: str) -> pd.DataFrame:
     return chains
 
 
+@log_start_end(log=logger)
 def process_chains(response: requests.models.Response) -> pd.DataFrame:
     """Function to take in the requests.get and return a DataFrame
 
@@ -208,6 +216,7 @@ def process_chains(response: requests.models.Response) -> pd.DataFrame:
     return opt_chain
 
 
+@log_start_end(log=logger)
 def last_price(ticker: str):
     """Makes api request for last price
 

@@ -1,14 +1,20 @@
 """CoinPaprika view"""
 __docformat__ = "numpy"
 
+import logging
 import os
+
 from pandas.plotting import register_matplotlib_converters
-from gamestonk_terminal.helper_funcs import export_data, print_rich_table
+
 import gamestonk_terminal.cryptocurrency.overview.coinpaprika_model as paprika
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
     long_number_format_with_type_check,
 )
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.rich_config import console
+
+logger = logging.getLogger(__name__)
 
 register_matplotlib_converters()
 
@@ -64,6 +70,7 @@ CURRENCIES = [
 # EXCHANGES = paprika.get_list_of_exchanges()
 
 
+@log_start_end(log=logger)
 def display_global_market(export: str) -> None:
     """Return data frame with most important global crypto statistics like:
     market_cap_usd, volume_24h_usd, bitcoin_dominance_percentage, cryptocurrencies_number,
@@ -93,6 +100,7 @@ def display_global_market(export: str) -> None:
     )
 
 
+@log_start_end(log=logger)
 def display_all_coins_market_info(
     currency: str, sortby: str, descend: bool, top: int, export: str
 ) -> None:
@@ -145,6 +153,7 @@ def display_all_coins_market_info(
     )
 
 
+@log_start_end(log=logger)
 def display_all_coins_info(
     currency: str, sortby: str, descend: bool, top: int, export: str
 ) -> None:
@@ -196,6 +205,7 @@ def display_all_coins_info(
     )
 
 
+@log_start_end(log=logger)
 def display_all_exchanges(
     currency: str, sortby: str, descend: bool, top: int, export: str
 ) -> None:
@@ -245,6 +255,7 @@ def display_all_exchanges(
     )
 
 
+@log_start_end(log=logger)
 def display_exchange_markets(
     exchange: str, sortby: str, descend: bool, top: int, links: bool, export: str
 ) -> None:
@@ -297,6 +308,7 @@ def display_exchange_markets(
     )
 
 
+@log_start_end(log=logger)
 def display_all_platforms(export: str) -> None:
     """List all smart contract platforms like ethereum, solana, cosmos, polkadot, kusama. [Source: CoinPaprika]
 
@@ -321,6 +333,7 @@ def display_all_platforms(export: str) -> None:
     )
 
 
+@log_start_end(log=logger)
 def display_contracts(
     platform: str, sortby: str, descend: bool, top: int, export: str
 ) -> None:

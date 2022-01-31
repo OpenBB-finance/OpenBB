@@ -1,11 +1,18 @@
 """ Stockgrid View """
 __docformat__ = "numpy"
 
+import logging
 from typing import List, Tuple
-import requests
+
 import pandas as pd
+import requests
+
+from gamestonk_terminal.decorators import log_start_end
+
+logger = logging.getLogger(__name__)
 
 
+@log_start_end(log=logger)
 def get_dark_pool_short_positions(sort_field: str, ascending: bool) -> pd.DataFrame:
     """Get dark pool short positions. [Source: Stockgrid]
 
@@ -61,6 +68,7 @@ def get_dark_pool_short_positions(sort_field: str, ascending: bool) -> pd.DataFr
     return df
 
 
+@log_start_end(log=logger)
 def get_short_interest_days_to_cover(sort_field: str) -> pd.DataFrame:
     """Get short interest and days to cover. [Source: Stockgrid]
 
@@ -95,6 +103,7 @@ def get_short_interest_days_to_cover(sort_field: str) -> pd.DataFrame:
     return df
 
 
+@log_start_end(log=logger)
 def get_short_interest_volume(ticker: str) -> Tuple[pd.DataFrame, List]:
     """Get price vs short interest volume. [Source: Stockgrid]
 
@@ -119,6 +128,7 @@ def get_short_interest_volume(ticker: str) -> Tuple[pd.DataFrame, List]:
     return df, response.json()["prices"]["prices"]
 
 
+@log_start_end(log=logger)
 def get_net_short_position(ticker: str) -> pd.DataFrame:
     """Get net short position. [Source: Stockgrid]
 

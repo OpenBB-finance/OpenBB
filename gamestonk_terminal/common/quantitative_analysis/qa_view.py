@@ -1,35 +1,38 @@
 """Quantitative Analysis View"""
 __docformat__ = "numpy"
 
+import logging
 import os
 import warnings
-from typing import Any
 from datetime import datetime
+from typing import Any
 
-import matplotlib.pyplot as plt
-import matplotlib.dates as mdates
 import matplotlib
-from matplotlib import gridspec
-
+import matplotlib.dates as mdates
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
 import statsmodels.api as sm
 from detecta import detect_cusum
+from matplotlib import gridspec
 from pandas.plotting import register_matplotlib_converters
 from scipy import stats
 from statsmodels.graphics.gofplots import qqplot
 
-from gamestonk_terminal.rich_config import console
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.common.quantitative_analysis import qa_model
 from gamestonk_terminal.config_plot import PLOT_DPI
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_classes import LineAnnotateDrawer
 from gamestonk_terminal.helper_funcs import (
     export_data,
     plot_autoscale,
     print_rich_table,
 )
-from gamestonk_terminal.helper_classes import LineAnnotateDrawer
+from gamestonk_terminal.rich_config import console
+
+logger = logging.getLogger(__name__)
 
 register_matplotlib_converters()
 
@@ -37,6 +40,7 @@ register_matplotlib_converters()
 # df_stock should be replaced with a generic df and a column variable
 
 
+@log_start_end(log=logger)
 def color_red(val: Any) -> str:
     """Adds red to dataframe value"""
     if val > 0.05:
@@ -44,6 +48,7 @@ def color_red(val: Any) -> str:
     return round(val, 4)
 
 
+@log_start_end(log=logger)
 def display_summary(df: pd.DataFrame, export: str):
     """Show summary statistics
 
@@ -72,6 +77,7 @@ def display_summary(df: pd.DataFrame, export: str):
     )
 
 
+@log_start_end(log=logger)
 def display_hist(
     name: str,
     df: pd.DataFrame,
@@ -114,6 +120,7 @@ def display_hist(
     console.print("")
 
 
+@log_start_end(log=logger)
 def display_cdf(
     name: str,
     df: pd.DataFrame,
@@ -194,6 +201,7 @@ def display_cdf(
     )
 
 
+@log_start_end(log=logger)
 def display_bw(
     name: str,
     df: pd.DataFrame,
@@ -254,6 +262,7 @@ def display_bw(
     console.print("")
 
 
+@log_start_end(log=logger)
 def display_acf(name: str, df: pd.DataFrame, target: str, lags: int):
     """Show Auto and Partial Auto Correlation of returns and change in returns
 
@@ -304,6 +313,7 @@ def display_acf(name: str, df: pd.DataFrame, target: str, lags: int):
     console.print("")
 
 
+@log_start_end(log=logger)
 def display_cusum(df: pd.DataFrame, target: str, threshold: float, drift: float):
     """Cumulative sum algorithm (CUSUM) to detect abrupt changes in data
 
@@ -325,6 +335,7 @@ def display_cusum(df: pd.DataFrame, target: str, threshold: float, drift: float)
     console.print("")
 
 
+@log_start_end(log=logger)
 def display_seasonal(
     name: str,
     df: pd.DataFrame,
@@ -409,6 +420,7 @@ def display_seasonal(
     )
 
 
+@log_start_end(log=logger)
 def display_normality(df: pd.DataFrame, target: str, export: str = ""):
     """View normality statistics
 
@@ -443,6 +455,7 @@ def display_normality(df: pd.DataFrame, target: str, export: str = ""):
     )
 
 
+@log_start_end(log=logger)
 def display_qqplot(name: str, df: pd.DataFrame, target: str):
     """Show QQ plot for data against normal quantiles
 
@@ -472,6 +485,7 @@ def display_qqplot(name: str, df: pd.DataFrame, target: str):
     console.print("")
 
 
+@log_start_end(log=logger)
 def display_unitroot(
     df: pd.DataFrame, target: str, fuller_reg: str, kpss_reg: str, export: str = ""
 ):
@@ -508,6 +522,7 @@ def display_unitroot(
     )
 
 
+@log_start_end(log=logger)
 def display_raw(
     df: pd.DataFrame, sort: str = "", des: bool = False, num: int = 20, export: str = ""
 ) -> None:
@@ -551,6 +566,7 @@ def display_raw(
     console.print("")
 
 
+@log_start_end(log=logger)
 def display_line(
     data: pd.Series,
     title: str = "",

@@ -1,16 +1,22 @@
 """ Financial Modeling Prep Model"""
 __docformat__ = "numpy"
+import logging
 from datetime import datetime
 
 import FundamentalAnalysis as fa  # Financial Modeling Prep
 import numpy as np
 import pandas as pd
 import valinvest
+
 from gamestonk_terminal import config_terminal as cfg
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import long_number_format
 from gamestonk_terminal.stocks.fundamental_analysis.fa_helper import clean_df_index
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def get_score(ticker: str) -> np.number:
     """Gets value score from fmp
 
@@ -28,11 +34,13 @@ def get_score(ticker: str) -> np.number:
     return 100 * (valstock.fscore() / 9)
 
 
+@log_start_end(log=logger)
 def get_profile(ticker: str) -> pd.DataFrame:
     """Get ticker profile from FMP"""
     return fa.profile(ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
 
 
+@log_start_end(log=logger)
 def get_quote(ticker) -> pd.DataFrame:
     """Gets ticker quote from FMP"""
     df_fa = fa.quote(ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
@@ -55,6 +63,7 @@ def get_quote(ticker) -> pd.DataFrame:
     return df_fa
 
 
+@log_start_end(log=logger)
 def get_enterprise(ticker: str, number: int, quarterly: bool = False) -> pd.DataFrame:
     """Financial Modeling Prep ticker enterprise
 
@@ -84,6 +93,7 @@ def get_enterprise(ticker: str, number: int, quarterly: bool = False) -> pd.Data
     return df_fa
 
 
+@log_start_end(log=logger)
 def get_dcf(ticker: str, number: int, quarterly: bool = False) -> pd.DataFrame:
     """Get stocks dcf from FMP
 
@@ -112,6 +122,7 @@ def get_dcf(ticker: str, number: int, quarterly: bool = False) -> pd.DataFrame:
     return df_fa
 
 
+@log_start_end(log=logger)
 def get_income(ticker: str, number: int, quarterly: bool = False) -> pd.DataFrame:
     """Get income statements
 
@@ -140,6 +151,7 @@ def get_income(ticker: str, number: int, quarterly: bool = False) -> pd.DataFram
     return df_fa
 
 
+@log_start_end(log=logger)
 def get_balance(ticker: str, number: int, quarterly: bool = False) -> pd.DataFrame:
     """Get balance sheets
 
@@ -168,6 +180,7 @@ def get_balance(ticker: str, number: int, quarterly: bool = False) -> pd.DataFra
     return df_fa
 
 
+@log_start_end(log=logger)
 def get_cash(ticker: str, number: int, quarterly: bool = False) -> pd.DataFrame:
     """Get cash flow
 
@@ -196,6 +209,7 @@ def get_cash(ticker: str, number: int, quarterly: bool = False) -> pd.DataFrame:
     return df_fa
 
 
+@log_start_end(log=logger)
 def get_key_metrics(ticker: str, number: int, quarterly: bool = False) -> pd.DataFrame:
     """Get key metrics
 
@@ -224,6 +238,7 @@ def get_key_metrics(ticker: str, number: int, quarterly: bool = False) -> pd.Dat
     return df_fa
 
 
+@log_start_end(log=logger)
 def get_key_ratios(ticker: str, number: int, quarterly: bool = False) -> pd.DataFrame:
     """Get key ratios
 
@@ -252,6 +267,7 @@ def get_key_ratios(ticker: str, number: int, quarterly: bool = False) -> pd.Data
     return df_fa
 
 
+@log_start_end(log=logger)
 def get_financial_growth(
     ticker: str, number: int, quarterly: bool = False
 ) -> pd.DataFrame:
@@ -282,6 +298,7 @@ def get_financial_growth(
     return df_fa
 
 
+@log_start_end(log=logger)
 def clean_metrics_df(df_fa: pd.DataFrame, num: int, mask: bool = True) -> pd.DataFrame:
     """Clean metrics data frame
 

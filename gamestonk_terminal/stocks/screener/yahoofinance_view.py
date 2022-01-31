@@ -2,25 +2,27 @@
 __docformat__ = "numpy"
 import configparser
 import datetime
+import logging
 import os
 import random
 from typing import List
+
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-
-from pandas.plotting import register_matplotlib_converters
-from sklearn.preprocessing import MinMaxScaler
-import matplotlib.pyplot as plt
 import yfinance as yf
 from finvizfinance.screener import ticker
+from pandas.plotting import register_matplotlib_converters
+from sklearn.preprocessing import MinMaxScaler
+
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_plot import PLOT_DPI
-from gamestonk_terminal.helper_funcs import (
-    export_data,
-    plot_autoscale,
-)
-from gamestonk_terminal.stocks.screener import finviz_model
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
 from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.stocks.screener import finviz_model
+
+logger = logging.getLogger(__name__)
 
 register_matplotlib_converters()
 
@@ -35,6 +37,7 @@ d_candle_types = {
 }
 
 
+@log_start_end(log=logger)
 def historical(
     preset_loaded: str,
     limit: int = 10,

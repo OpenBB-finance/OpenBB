@@ -1,15 +1,22 @@
 """AlphaVantage Forex View."""
 __docformat__ = "numpy"
 
-import pandas as pd
-import mplfinance as mpf
+import logging
+
 import matplotlib.pyplot as plt
-from gamestonk_terminal.forex import av_model
+import mplfinance as mpf
+import pandas as pd
+
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.forex import av_model
 from gamestonk_terminal.helper_funcs import plot_autoscale, print_rich_table
 from gamestonk_terminal.rich_config import console
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def display_quote(to_symbol: str, from_symbol: str):
     """Display current forex pair exchange rate.
 
@@ -37,6 +44,7 @@ def display_quote(to_symbol: str, from_symbol: str):
     console.print("")
 
 
+@log_start_end(log=logger)
 def display_candle(data: pd.DataFrame, to_symbol: str, from_symbol: str):
     """Show candle plot for fx data.
 
