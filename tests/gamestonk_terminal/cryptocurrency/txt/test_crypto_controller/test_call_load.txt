@@ -1,0 +1,7 @@
+
+Loaded bitcoin against usd from CoinGecko source
+
+Current Price: 38199.42 USD
+Performance in interval (1day): [green]0.92%[/green]
+Performance since 2021-01-29: [green]11.86%[/green]
+
