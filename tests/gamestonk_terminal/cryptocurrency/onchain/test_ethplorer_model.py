@@ -1,7 +1,13 @@
+# IMPORTATION STANDARD
+from datetime import datetime
+
+# IMPORTATION THIRDPARTY
 import pandas as pd
 import pytest
 
+# IMPORTATION INTERNAL
 from gamestonk_terminal.cryptocurrency.onchain import ethplorer_model
+
 
 
 @pytest.mark.vcr
@@ -42,5 +48,13 @@ from gamestonk_terminal.cryptocurrency.onchain import ethplorer_model
         ),
     ],
 )
-def test_call_func(func, kwargs):
+def test_call_func(func, kwargs, mocker, recorder):
     result = getattr(ethplorer_model, func)(**kwargs)
+
+    if isinstance(result, pd.DataFrame) and "timestamp" in result.columns:
+        result["timestamp"] = datetime.strptime("2020-12-15", "%Y-%m-%d")
+
+    if isinstance(result, tuple):
+        recorder.capture_list(result)
+    else:
+        recorder.capture(result)
