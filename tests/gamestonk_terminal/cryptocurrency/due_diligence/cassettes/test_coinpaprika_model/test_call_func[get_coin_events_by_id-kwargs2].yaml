@@ -1,0 +1,120 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: GET
+    uri: https://api.coinpaprika.com/v1/coins/eth-ethereum/events/
+  response:
+    body:
+      string: '<a href="/v1/coins/eth-ethereum/events">Moved Permanently</a>.
+
+
+        '
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      CF-Cache-Status:
+      - EXPIRED
+      CF-RAY:
+      - 6d5cb37bff4e3a41-CDG
+      Cache-Control:
+      - public, max-age=60, s-maxage=60, stale-while-revalidate=10, stale-if-error=600
+      Connection:
+      - keep-alive
+      Content-Security-Policy-Report-Only:
+      - script-src 'none'; report-uri /cdn-cgi/script_monitor/report?m=bX17amVc_yZIDVORfZlvk0NQZxjVc0pQ17kP9vaTGrM-1643566688-0-AfiA1myqplJz9qxmqEfi0DBCFd6Fhgsx2F-ge6etDwzWgH5N-5mtX30Qk5hxirFO4nceUYSOvYhwt3kyzuSB-54
+      Content-Type:
+      - text/html; charset=utf-8
+      Date:
+      - Sun, 30 Jan 2022 18:18:08 GMT
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Location:
+      - /v1/coins/eth-ethereum/events
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      alt-svc:
+      - h3=":443"; ma=86400, h3-29=":443"; ma=86400
+    status:
+      code: 301
+      message: Moved Permanently
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: GET
+    uri: https://api.coinpaprika.com/v1/coins/eth-ethereum/events
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAA/4yV32/cRBDH/5WRX6DR+excW9LcS1VBEX1BlRqpgqSy5nbH3uXWO2ZnHfeE+N/R
+        2HeXtBDg0d755c/3O+vbPwpvi23x3fXV1WXZhtFbnw+ljH3vc7mpL6+LVWExU7Et9KmsX5b19U39
+        alvX27r+9XjaZP4y4PL6ISBir+k/HovDh7k4nIqTmOSH7Dn+Q9Au+dgJZEcwcQpWgFtofcRoCDBa
+        yGRc5MDdATJ3lB0lyAzicKA5rR3zmEjTdoHN3jj0cc40OPiMAXpMe8qyLlaFl8ZwbClRNFRsWwxC
+        qyL4uC+2hct5kG1VnSAtjNaG+2JVDIm5bXyPHTVLfBxD+HN1xHu9efXiZUnZlZu6xGjL5y8mh7mc
+        fAilw2GgWGYuDzwmjXr+4jH1zWVZX5Wb+mYm+jV17XNm/DY72Kzr+fvuCm0B2gKWFgpGW8Dbm5/u
+        ir+x/x4jTAQdZUCQ7M3+AIk6TNbHDrLzApkHb17Du/yNBRMIE4zDTNmiDwcwHO8ZOC7BMu4AoUuE
+        GSxhWN/Fu3hx8VGn8qJD6KyvtxcXevAGhJKnWeBx6BJa0n5z9bcqK409RMoTpz3Q5yGgj2ThVk8+
+        fXsSh46Ra05dRVGfN9WzubP2/oHhHTi8J61sGTAesvOxOw3xM6/hRmf3AhhhHBTzaYpTc5+FQrta
+        pgJHwYKPC9gJQ6AMnBQCRqDPxmHsSN9gPEw6HFAQ0gaSVRqtLNgTYJvVu46gp9TRY1pfaagxQ/KG
+        TmN/dAz7yJOckyguSbpCBIkCoZA9s84g3BMM7GPW4R8WZa26bObxznK0hHokVes/k8DkswOhAZPC
+        sXRPgYeeYoYZj3rv2BAUn6zhPX84UoPedy6DkG4voDEUSMs8pMzWOai1dmOGWU7ARBAZuhETxkxa
+        8hcewWCElkPg6UuXWLqHTNjLMpBvVRyYvDiltycawAQWpY07ZQYK7U2UidLsOQxBvzs7EoLfRxLd
+        EJn77QhaHqNdXE5w+9hxT/jwGYjPtF7YX8Dth4x7H5+KPrlWlqjq2ZzzXi+YkttSk//F8Ec5KEll
+        2UhlOApFGaXsSb3opZdqYDmWXcSO0FGkhOG/FmnOac6gF02bp7PmS85LeXqvFe7iWN0cEj4PMCS+
+        95YsIOilqegfVVrWwHBfrWBy3jiwTHK+Un7jnYo0X8PL/aR/inH43xf5NE3rRNYul3iVztNXhnv1
+        s1Tx6hL9lR40m7rBaBv9okZXq1n2scnc6Oo3lF319I/g018BAAD//34qEV1pBwAA
+    headers:
+      Accept-Ranges:
+      - bytes
+      Access-Control-Allow-Origin:
+      - '*'
+      CF-Cache-Status:
+      - EXPIRED
+      CF-RAY:
+      - 6d5cb37c98b03a41-CDG
+      Cache-Control:
+      - public, max-age=60, s-maxage=60, stale-while-revalidate=10, stale-if-error=600
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '960'
+      Content-Type:
+      - application/json
+      Date:
+      - Sun, 30 Jan 2022 18:18:08 GMT
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Last-Modified:
+      - Sun, 30 Jan 2022 17:38:01 GMT
+      Server:
+      - cloudflare
+      Vary:
+      - Accept-Encoding
+      alt-svc:
+      - h3=":443"; ma=86400, h3-29=":443"; ma=86400
+    status:
+      code: 200
+      message: OK
+version: 1

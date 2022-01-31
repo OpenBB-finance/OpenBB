@@ -561,29 +561,25 @@ def print_pretty_prediction(df_pred: pd.DataFrame, last_price: float):
         df_pred["pred"] = df_pred["pred"].apply(
             lambda x: price_prediction_color(x, last_val=last_price)
         )
-        console.print(
-            print_rich_table(
-                df_pred,
-                show_index=True,
-                index_name="Datetime",
-                headers=["Prediction"],
-                floatfmt=".2f",
-                title=f"Actual price: [yellow]{last_price:.2f} $[/yellow]\n",
-            )
+        print_rich_table(
+            df_pred,
+            show_index=True,
+            index_name="Datetime",
+            headers=["Prediction"],
+            floatfmt=".2f",
+            title=f"Actual price: [yellow]{last_price:.2f} $[/yellow]\n",
         )
 
     else:
         df_pred = pd.DataFrame(df_pred)
         df_pred.columns = ["pred"]
-        console.print(
-            print_rich_table(
-                df_pred,
-                show_index=True,
-                title=f"Actual price: [yellow]{last_price:.2f} $[/yellow]\n",
-                index_name="Datetime",
-                headers=["Prediction"],
-                floatfmt=".2f",
-            )
+        print_rich_table(
+            df_pred,
+            show_index=True,
+            title=f"Actual price: [yellow]{last_price:.2f} $[/yellow]\n",
+            index_name="Datetime",
+            headers=["Prediction"],
+            floatfmt=".2f",
         )
 
 
@@ -619,13 +615,11 @@ def print_prediction_kpis(real: np.ndarray, pred: np.ndarray):
     }
 
     df = pd.DataFrame.from_dict(kpis, orient="index")
-    console.print(
-        print_rich_table(
-            df,
-            show_index=True,
-            title="KPIs",
-            floatfmt=".2f",
-        )
+    print_rich_table(
+        df,
+        show_index=True,
+        title="KPIs",
+        floatfmt=".2f",
     )
 
 

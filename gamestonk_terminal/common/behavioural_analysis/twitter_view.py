@@ -172,7 +172,7 @@ def display_sentiment(ticker: str, n_tweets: int, n_days_past: int, export: str 
     ax[1].set_xticks(xlocations)
     ax[1].set_xticklabels(xlabels)
     plt.suptitle(
-        f"Twitter's {ticker} total compound sentiment over time is {np.sum(df_tweets['sentiment'])}"
+        f"Twitter's {ticker} total compound sentiment over time is {round(np.sum(df_tweets['sentiment']), 2)}"
     )
     if gtff.USE_ION:
         plt.ion()

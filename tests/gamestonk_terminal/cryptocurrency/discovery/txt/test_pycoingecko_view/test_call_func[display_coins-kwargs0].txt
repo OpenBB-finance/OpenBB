@@ -1,0 +1,17 @@
+    Symbol                                       Name Volume [$] Market Cap [$]  Market Cap Rank  7D Change [%]  24H Change [%]
+10  vision                                 APY.vision      42.6K           1.3M             2167      13.236021        7.168403
+5      vib                                   Viberate     614.6K           4.6M             1511       1.303144        6.079256
+7      uwl                                  UniWhales          0           3.9M             1590      -6.569339        2.314318
+4     push  Ethereum Push Notification Service - EPNS     737.7K          19.2M              896     -13.742802        2.947288
+2      prq                                     PARSIQ     499.4K          48.9M              589     -11.368488        7.333316
+14   moons                                  MoonTools          0         351.4K             2760     -12.540717             NaN
+12     krw                                      KROWN       5.5K         553.5K             2570      -2.491260       -0.565617
+0      grt                                  The Graph        58M           2.5B               53      -4.838908        1.856266
+6      glq                         GraphLinq Protocol       137K           4.3M             1543      -7.574684        3.303603
+3     dext                                   DexTools     222.3K          32.7M              710      25.938642        5.941974
+9     data                         Data Economy Index       1.2K           1.7M             2008       6.401614        3.931475
+1      cqt                                   Covalent       1.5M         100.3M              408      -9.590428        3.684198
+11   chart                                    ChartEx        152         587.3K             2541      33.269168       11.429070
+8      bdp                          Big Data Protocol     293.1K           2.3M             1841       9.361384       12.350032
+13   astro                                 AstroTools          0         357.9K             2751     -16.451474        0.503533
+

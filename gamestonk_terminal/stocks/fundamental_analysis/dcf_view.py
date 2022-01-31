@@ -769,7 +769,7 @@ class CreateExcelFA:
         y = vfunc(pre_y)
         model = LinearRegression().fit(x, y)
         r_sq = model.score(x, y)
-        r = abs(r_sq ** 0.5)
+        r = abs(r_sq**0.5)
 
         if r > 0.9:
             strength = "very strong"

@@ -401,6 +401,6 @@ def get_fraud_ratios(ticker: str) -> Tuple[Dict[str, float], float, float]:
     x = ((v1 + 0.85) * v2) - 0.85
     y = 1 + v3
 
-    mckee = x ** 2 / (x ** 2 + y ** 2)
+    mckee = x**2 / (x**2 + y**2)
 
     return ratios, zscore, mckee
