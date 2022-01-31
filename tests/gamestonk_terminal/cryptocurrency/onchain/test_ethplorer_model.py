@@ -1,3 +1,4 @@
+import pandas as pd
 import pytest
 
 from gamestonk_terminal.cryptocurrency.onchain import ethplorer_model
@@ -41,10 +42,5 @@ from gamestonk_terminal.cryptocurrency.onchain import ethplorer_model
         ),
     ],
 )
-def test_call_func(func, kwargs, recorder):
+def test_call_func(func, kwargs):
     result = getattr(ethplorer_model, func)(**kwargs)
-
-    if isinstance(result, tuple):
-        recorder.capture_list(result)
-    else:
-        recorder.capture(result)
