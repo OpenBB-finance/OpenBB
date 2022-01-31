@@ -1,0 +1,138 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: GET
+    uri: https://api.ethplorer.io/getTopTokenHolders/0x1f9840a85d5af5bf1d1762f925bdaddc4201f984?apiKey=freekey&limit=100
+  response:
+    body:
+      string: !!binary |
+        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
+        f42+HN5YJAAA
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 31 Jan 2022 22:39:20 GMT
+      Transfer-Encoding:
+      - chunked
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: GET
+    uri: https://api.ethplorer.io/getTokenInfo/0x1f9840a85d5af5bf1d1762f925bdaddc4201f984?apiKey=freekey
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA3VSyW7bMBD9FYNnVeZOSrciTooe2h5iAw2KHiiJsglrA0nZCYL8e4eynQYFSkAi
+        h7Nw3pv3ikzTeBsCKhF+Jm2hOTZaNMK0ompJQ5SkbUFF1UBczSleQlCGGlu73nQpj2iwB9NbOO8G
+        F85mgovxPFi/VAUjvPTV2CX/969gxjGa7nGepu4l5eP/rxTszRBa68PdOA8RlYxhxgTNUGdC3E2N
+        ibZBJZGcSakoERlyIcxmqO0tA2foMHbNhxIYUwYV6tENe1sfR+hifu/8bKvgYkJziHEK5Xp99eWj
+        36eGzi7GBdtftMDFPmWsl0NYA84bmfk0pCxvm8ZB+x+SbDxs/wEHrU7e1VDqFXlABsBIrrhUmnIA
+        xzTmCsh3bYvKIpfkclaJAJxTDs3BRC5caAjOUG/80cY7M+0CBCmmWaFpgVkOIQRDLXMyrjNVZ2/z
+        kFSLQlIs4V1O4cvQaezm3lJ+QCWlWBSaUZUXnBdCK31pgWEo/4kR6IkKKfTyS1OC3A34CSo5zzmV
+        SWFEQ1ABk7o6FSqlyJkQcM2wpErIdx/D8CjLBYMlFcecYMkYzG723g51EtDucYPegLi56ly9NXug
+        4Bfa3P8E1u+f64OBGa+249EOcLGxDw62L+PJ+iGJBIwnZ7tm9WB8D3IA+/Mcxz7JavVtYQ+2I8z7
+        dxIMSPDHBA9cVfj2B9lvxsJBAwAA
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 31 Jan 2022 22:39:21 GMT
+      Transfer-Encoding:
+      - chunked
+    status:
+      code: 200
+      message: OK
+version: 1
