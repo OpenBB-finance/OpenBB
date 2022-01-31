@@ -1,6 +1,7 @@
 """ Fundamental Analysis Market Watch Model """
 __docformat__ = "numpy"
 
+import logging
 import re
 from typing import List, Tuple
 
@@ -8,6 +9,8 @@ import numpy as np
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
+
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
     clean_data_values_to_float,
     get_user_agent,
@@ -15,7 +18,10 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal.rich_config import console
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def prepare_df_financials(
     ticker: str, statement: str, quarter: bool = False
 ) -> pd.DataFrame:
@@ -121,6 +127,7 @@ def prepare_df_financials(
     return df_financials
 
 
+@log_start_end(log=logger)
 def get_sean_seah_warnings(
     ticker: str, debug: bool = False
 ) -> Tuple[pd.DataFrame, List[str], List[str]]:

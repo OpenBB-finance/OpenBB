@@ -1,15 +1,21 @@
 """Chartexchange model"""
 __docformat__ = "numpy"
 
-import requests
+import logging
+
 import pandas as pd
+import requests
 from bs4 import BeautifulSoup
 
-from gamestonk_terminal.stocks.options.op_helpers import convert
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import get_user_agent
 from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.stocks.options.op_helpers import convert
+
+logger = logging.getLogger(__name__)
 
 
+@log_start_end(log=logger)
 def get_option_history(ticker: str, date: str, call: bool, price: str) -> pd.DataFrame:
     """Historic prices for a specific option [chartexchange]
 

@@ -1,11 +1,16 @@
 """Withdrawal Fees model"""
-from typing import Any, List
+import logging
 import math
+from typing import Any, List
+
+import pandas as pd
 import requests
 from bs4 import BeautifulSoup
-import pandas as pd
 
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import get_user_agent
+
+logger = logging.getLogger(__name__)
 
 POSSIBLE_CRYPTOS = [
     "bitcoin",
@@ -111,6 +116,7 @@ POSSIBLE_CRYPTOS = [
 ]
 
 
+@log_start_end(log=logger)
 def get_overall_withdrawal_fees(top: int = 100) -> pd.DataFrame:
     """Scrapes top coins withdrawal fees
     [Source: https://withdrawalfees.com/]
@@ -171,6 +177,7 @@ def get_overall_withdrawal_fees(top: int = 100) -> pd.DataFrame:
     return df
 
 
+@log_start_end(log=logger)
 def get_overall_exchange_withdrawal_fees() -> pd.DataFrame:
     """Scrapes exchange withdrawal fees
     [Source: https://withdrawalfees.com/]
@@ -198,6 +205,7 @@ def get_overall_exchange_withdrawal_fees() -> pd.DataFrame:
     return df
 
 
+@log_start_end(log=logger)
 def get_crypto_withdrawal_fees(
     symbol: str,
 ) -> List[Any]:

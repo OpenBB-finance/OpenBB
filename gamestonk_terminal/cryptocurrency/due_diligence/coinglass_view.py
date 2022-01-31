@@ -1,16 +1,23 @@
+import logging
 import os
-from matplotlib import pyplot as plt, dates as mdates
-import pandas as pd
 
+import pandas as pd
+from matplotlib import dates as mdates
+from matplotlib import pyplot as plt
+
+from gamestonk_terminal import config_plot as cfgPlot
+from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.cryptocurrency.due_diligence.coinglass_model import (
     get_open_interest_per_exchange,
 )
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
-from gamestonk_terminal import config_plot as cfgPlot
-from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.rich_config import console
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def display_open_interest(symbol: str, interval: int, export: str) -> None:
     """Displays open interest by exchange for a certain cryptocurrency
     [Source: https://coinglass.github.io/API-Reference/]
@@ -38,6 +45,7 @@ def display_open_interest(symbol: str, interval: int, export: str) -> None:
     )
 
 
+@log_start_end(log=logger)
 def plot_data(df: pd.DataFrame, symbol: str):
     df_price = df[["price"]].copy()
 

@@ -48,6 +48,15 @@ COINBASE_SHOW_AVAILABLE_PAIRS_OF_GIVEN_SYMBOL = (
 )
 
 
+@pytest.fixture(scope="module")
+def vcr_config():
+    return {
+        "filter_query_parameters": [
+            ("days", "MOCK_DAYS"),
+        ]
+    }
+
+
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.parametrize(
     "queue, expected",

@@ -1,15 +1,20 @@
 """Ethplorer model"""
 __docformat__ = "numpy"
 
+import logging
 import textwrap
-
 from datetime import datetime
-from typing import Any, Optional
 from time import sleep
+from typing import Any, Optional
+
 import pandas as pd
 import requests
-from gamestonk_terminal.cryptocurrency.dataframe_helpers import create_df_index
+
 import gamestonk_terminal.config_terminal as cfg
+from gamestonk_terminal.cryptocurrency.dataframe_helpers import create_df_index
+from gamestonk_terminal.decorators import log_start_end
+
+logger = logging.getLogger(__name__)
 
 PRICES_FILTERS = [
     "date",
@@ -50,6 +55,7 @@ HOLDERS_FILTERS = [
 ]
 
 
+@log_start_end(log=logger)
 def split_cols_with_dot(column: str) -> str:
     """Split column name in data frame columns whenever there is a dot between 2 words.
     E.g. price.availableSupply -> priceAvailableSupply.
@@ -65,6 +71,7 @@ def split_cols_with_dot(column: str) -> str:
         Value of column with replaced format.
     """
 
+    @log_start_end(log=logger)
     def replace(string: str, char: str, index: int) -> str:
         """Helper method which replaces values with dot as a separator and converts it to camelCase format
 
@@ -92,6 +99,7 @@ def split_cols_with_dot(column: str) -> str:
     return column
 
 
+@log_start_end(log=logger)
 def enrich_social_media(dct: dict) -> None:
     """Searching inside dictionary if there are any information about twitter, reddit or coingecko. If yes it
     updates dictionary with url to given social media site.
@@ -113,6 +121,7 @@ def enrich_social_media(dct: dict) -> None:
             dct[k] = v + dct[k]
 
 
+@log_start_end(log=logger)
 def make_request(endpoint: str, address: Optional[str] = None, **kwargs: Any) -> dict:
     """Helper method that handles request for Ethplorer API [Source: https://ethplorer.io/]
 
@@ -152,6 +161,7 @@ def make_request(endpoint: str, address: Optional[str] = None, **kwargs: Any) ->
     return response
 
 
+@log_start_end(log=logger)
 def get_token_decimals(address: str) -> Optional[int]:
     """Helper methods that gets token decimals number. [Source: Ethplorer]
 
@@ -171,6 +181,7 @@ def get_token_decimals(address: str) -> Optional[int]:
     return None
 
 
+@log_start_end(log=logger)
 def get_address_info(address: str) -> pd.DataFrame:
     """Get info about tokens on you ethereum blockchain balance. Eth balance, balance of all tokens which
     have name and symbol. [Source: Ethplorer]
@@ -237,6 +248,7 @@ def get_address_info(address: str) -> pd.DataFrame:
     return df
 
 
+@log_start_end(log=logger)
 def get_top_tokens() -> pd.DataFrame:
     """Get top 50 tokens. [Source: Ethplorer]
 
@@ -265,6 +277,7 @@ def get_top_tokens() -> pd.DataFrame:
     return df
 
 
+@log_start_end(log=logger)
 def get_top_token_holders(address) -> pd.DataFrame:
     """Get info about top token holders. [Source: Ethplorer]
 
@@ -288,6 +301,7 @@ def get_top_token_holders(address) -> pd.DataFrame:
     return df
 
 
+@log_start_end(log=logger)
 def get_address_history(address) -> pd.DataFrame:
     """Get information about balance historical transactions. [Source: Ethplorer]
 
@@ -321,6 +335,7 @@ def get_address_history(address) -> pd.DataFrame:
     return df[cols]
 
 
+@log_start_end(log=logger)
 def get_token_info(address) -> pd.DataFrame:
     """Get info about ERC20 token. [Source: Ethplorer]
 
@@ -382,6 +397,7 @@ def get_token_info(address) -> pd.DataFrame:
     return df
 
 
+@log_start_end(log=logger)
 def get_tx_info(tx_hash) -> pd.DataFrame:
     """Get info about transaction. [Source: Ethplorer]
 
@@ -424,6 +440,7 @@ def get_tx_info(tx_hash) -> pd.DataFrame:
     return df
 
 
+@log_start_end(log=logger)
 def get_token_history(address) -> pd.DataFrame:
     """Get info about token historical transactions. [Source: Ethplorer]
 
@@ -467,6 +484,7 @@ def get_token_history(address) -> pd.DataFrame:
     return df[["timestamp", "name", "symbol", "value", "from", "to", "transactionHash"]]
 
 
+@log_start_end(log=logger)
 def get_token_historical_price(address) -> pd.DataFrame:
     """Get token historical prices with volume and market cap, and average price. [Source: Ethplorer]
 

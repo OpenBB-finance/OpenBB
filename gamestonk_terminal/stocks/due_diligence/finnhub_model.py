@@ -1,11 +1,18 @@
 """ Finnhub Model """
 __docformat__ = "numpy"
 
-import requests
+import logging
+
 import pandas as pd
+import requests
+
 from gamestonk_terminal import config_terminal as cfg
+from gamestonk_terminal.decorators import log_start_end
+
+logger = logging.getLogger(__name__)
 
 
+@log_start_end(log=logger)
 def get_rating_over_time(ticker: str) -> pd.DataFrame:
     """Get rating over time data. [Source: Finnhub]
 

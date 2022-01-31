@@ -1,10 +1,17 @@
 """Ally Model"""
 __docformat__ = "numpy"
 
+import logging
+
 import ally
 import pandas as pd
 
+from gamestonk_terminal.decorators import log_start_end
 
+logger = logging.getLogger(__name__)
+
+
+@log_start_end(log=logger)
 def get_holdings() -> pd.DataFrame:
     """Get holdings from Ally account in pandas df
 
@@ -17,6 +24,7 @@ def get_holdings() -> pd.DataFrame:
     return ally_positions_to_df(a.holdings(dataframe=True))
 
 
+@log_start_end(log=logger)
 def ally_positions_to_df(df: pd.DataFrame) -> pd.DataFrame:
     """Clean up ally holdings dataframe
 
@@ -45,6 +53,7 @@ def ally_positions_to_df(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
+@log_start_end(log=logger)
 def get_history() -> pd.DataFrame:
     """Gets transaction history for the account."
 
@@ -57,6 +66,7 @@ def get_history() -> pd.DataFrame:
     return a.history(dataframe=True)
 
 
+@log_start_end(log=logger)
 def get_balances() -> pd.DataFrame:
     """Gets balance details for the account."
 
@@ -69,6 +79,7 @@ def get_balances() -> pd.DataFrame:
     return a.balances(dataframe=True)
 
 
+@log_start_end(log=logger)
 def get_stock_quote(ticker: str) -> pd.DataFrame:
     """Gets quote for stock ticker
 
@@ -89,6 +100,7 @@ def get_stock_quote(ticker: str) -> pd.DataFrame:
     )
 
 
+@log_start_end(log=logger)
 def get_top_movers(list_type: str, exchange: str) -> pd.DataFrame:
     """
     Gets top lists from ally Invest API.  Documentation for parameters below:

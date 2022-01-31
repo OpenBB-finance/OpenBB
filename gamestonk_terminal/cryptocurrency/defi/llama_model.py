@@ -1,11 +1,17 @@
 """Llama model"""
 __docformat__ = "numpy"
 
-from datetime import datetime
+import logging
 import textwrap
-import requests
-import pandas as pd
+from datetime import datetime
+
 import numpy as np
+import pandas as pd
+import requests
+
+from gamestonk_terminal.decorators import log_start_end
+
+logger = logging.getLogger(__name__)
 
 API_URL = "https://api.llama.fi"
 
@@ -21,6 +27,7 @@ LLAMA_FILTERS = [
 ]
 
 
+@log_start_end(log=logger)
 def get_defi_protocols() -> pd.DataFrame:
     """Returns information about listed DeFi protocols, their current TVL and changes to it in the last hour/day/week.
     [Source: https://docs.llama.fi/api]
@@ -62,6 +69,7 @@ def get_defi_protocols() -> pd.DataFrame:
         raise ValueError("Wrong response type\n") from e
 
 
+@log_start_end(log=logger)
 def get_defi_protocol(protocol: str) -> pd.DataFrame:
     """Returns information about historical tvl of a defi protocol.
     [Source: https://docs.llama.fi/api]
@@ -81,6 +89,7 @@ def get_defi_protocol(protocol: str) -> pd.DataFrame:
     return df
 
 
+@log_start_end(log=logger)
 def get_defi_tvl() -> pd.DataFrame:
     """Returns historical values of the total sum of TVLs from all listed protocols.
     [Source: https://docs.llama.fi/api]

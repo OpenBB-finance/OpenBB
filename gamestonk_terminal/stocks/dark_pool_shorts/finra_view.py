@@ -1,18 +1,25 @@
 """ FINRA View """
 __docformat__ = "numpy"
 
+import logging
 import os
 from typing import List
+
+import matplotlib.dates as mdates
 import pandas as pd
 from matplotlib import pyplot as plt
-import matplotlib.dates as mdates
-from gamestonk_terminal.stocks.dark_pool_shorts import finra_model
-from gamestonk_terminal.config_plot import PLOT_DPI
+
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import plot_autoscale, export_data
+from gamestonk_terminal.config_plot import PLOT_DPI
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
 from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.stocks.dark_pool_shorts import finra_model
+
+logger = logging.getLogger(__name__)
 
 
+@log_start_end(log=logger)
 def plot_dark_pools(ticker: str, ats: pd.DataFrame, otc: pd.DataFrame):
     """Plots ATS and NON-ATS data
 
@@ -96,6 +103,7 @@ def plot_dark_pools(ticker: str, ats: pd.DataFrame, otc: pd.DataFrame):
     plt.show()
 
 
+@log_start_end(log=logger)
 def darkpool_ats_otc(ticker: str, export: str):
     """Display barchart of dark pool (ATS) and OTC (Non ATS) data. [Source: FINRA]
 
@@ -128,6 +136,7 @@ def darkpool_ats_otc(ticker: str, export: str):
     )
 
 
+@log_start_end(log=logger)
 def plot_dark_pools_ats(ats: pd.DataFrame, top_ats_tickers: List):
     """Plots promising tickers based on growing ATS data
 
@@ -162,6 +171,7 @@ def plot_dark_pools_ats(ats: pd.DataFrame, top_ats_tickers: List):
     plt.show()
 
 
+@log_start_end(log=logger)
 def darkpool_otc(num: int, promising: int, tier: str, export: str):
     """Display dark pool (ATS) data of tickers with growing trades activity. [Source: FINRA]
 

@@ -1,17 +1,22 @@
 """The BitQuery view"""
 __docformat__ = "numpy"
 
+import logging
 import os
 
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
-    very_long_number_formatter,
     prettify_column_names,
+    very_long_number_formatter,
 )
 from gamestonk_terminal.cryptocurrency.onchain import bitquery_model
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.rich_config import console
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def display_dex_trades(
     trade_amount_currency: str = "USD",
     kind: str = "dex",
@@ -73,6 +78,7 @@ def display_dex_trades(
     )
 
 
+@log_start_end(log=logger)
 def display_daily_volume_for_given_pair(
     token: str = "WBTC",
     vs: str = "USDT",
@@ -137,6 +143,7 @@ def display_daily_volume_for_given_pair(
     )
 
 
+@log_start_end(log=logger)
 def display_dex_volume_for_token(
     token: str = "WBTC",
     trade_amount_currency: str = "USD",
@@ -195,6 +202,7 @@ def display_dex_volume_for_token(
     )
 
 
+@log_start_end(log=logger)
 def display_ethereum_unique_senders(
     interval: str = "days",
     limit: int = 10,
@@ -253,6 +261,7 @@ def display_ethereum_unique_senders(
     )
 
 
+@log_start_end(log=logger)
 def display_most_traded_pairs(
     exchange="Uniswap",
     days: int = 10,
@@ -307,6 +316,7 @@ def display_most_traded_pairs(
     )
 
 
+@log_start_end(log=logger)
 def display_spread_for_crypto_pair(
     token="ETH",
     vs="USDC",

@@ -1,6 +1,7 @@
 """Quantitative Analysis Model"""
 __docformat__ = "numpy"
 
+import logging
 import warnings
 from typing import Any, Tuple
 
@@ -10,10 +11,16 @@ from scipy import stats
 from statsmodels.tsa.seasonal import seasonal_decompose
 from statsmodels.tsa.stattools import adfuller, kpss
 
+from gamestonk_terminal.decorators import log_start_end
+
 # TODO : Since these are common/ they should be independent of 'stock' info.
 # df_stock should be replaced with a generic df and a column variable
 
 
+logger = logging.getLogger(__name__)
+
+
+@log_start_end(log=logger)
 def get_summary(df: pd.DataFrame) -> pd.DataFrame:
     """Print summary statistics
 
@@ -29,6 +36,7 @@ def get_summary(df: pd.DataFrame) -> pd.DataFrame:
     return df_stats
 
 
+@log_start_end(log=logger)
 def get_seasonal_decomposition(
     df: pd.DataFrame, multiplicative: bool
 ) -> Tuple[Any, pd.DataFrame, pd.DataFrame]:
@@ -65,6 +73,7 @@ def get_seasonal_decomposition(
     return result, pd.DataFrame(cycle), pd.DataFrame(trend)
 
 
+@log_start_end(log=logger)
 def get_normality(data: pd.DataFrame) -> pd.DataFrame:
     """
     Look at the distribution of returns and generate statistics on the relation to the normal curve.
@@ -118,6 +127,7 @@ def get_normality(data: pd.DataFrame) -> pd.DataFrame:
     )
 
 
+@log_start_end(log=logger)
 def get_unitroot(df: pd.DataFrame, fuller_reg: str, kpss_reg: str) -> pd.DataFrame:
     """Calculate test statistics for unit roots
 

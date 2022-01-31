@@ -1,18 +1,24 @@
 """KNN Prediction Model"""
 __docformat__ = "numpy"
 
-from typing import Tuple, Any, Union
-import pandas as pd
+import logging
+from typing import Any, Tuple, Union
+
 import numpy as np
+import pandas as pd
 from sklearn import neighbors
 
-from gamestonk_terminal.helper_funcs import get_next_stock_market_days
 from gamestonk_terminal.common.prediction_techniques.pred_helper import (
     prepare_scale_train_valid_test,
 )
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_funcs import get_next_stock_market_days
 from gamestonk_terminal.rich_config import console
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def get_knn_model_data(
     data: Union[pd.Series, pd.DataFrame],
     n_input_days: int,

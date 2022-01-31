@@ -1,14 +1,20 @@
 """ Finviz Model """
 __docformat__ = "numpy"
 
+import logging
 from ast import literal_eval
-import requests
+
 import pandas as pd
+import requests
 from finvizfinance.group import performance, spectrum, valuation
 
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import get_user_agent
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def get_valuation_performance_data(group: str, data_type: str) -> pd.DataFrame:
     """Get group (sectors, industry or country) valuation/performance data. [Source: Finviz]
 
@@ -29,6 +35,7 @@ def get_valuation_performance_data(group: str, data_type: str) -> pd.DataFrame:
     return performance.Performance().ScreenerView(group=group)
 
 
+@log_start_end(log=logger)
 def get_spectrum_data(group: str):
     """Get group (sectors, industry or country) valuation/performance data. [Source: Finviz]
 
@@ -40,6 +47,7 @@ def get_spectrum_data(group: str):
     spectrum.Spectrum().ScreenerView(group=group)
 
 
+@log_start_end(log=logger)
 def get_futures() -> dict:
     """Get futures data. [Source: Finviz]
 

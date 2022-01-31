@@ -1,13 +1,20 @@
 """Yfinance options model"""
 __docformat__ = "numpy"
 
-from typing import List, Dict, Tuple, Any
+import logging
 from datetime import datetime
-import yfinance as yf
+from typing import Any, Dict, List, Tuple
+
 import pandas as pd
+import yfinance as yf
+
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.rich_config import console
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def option_expirations(ticker: str):
     """Get available expiration dates for given ticker
 
@@ -28,6 +35,7 @@ def option_expirations(ticker: str):
     return dates
 
 
+@log_start_end(log=logger)
 def get_option_chain(ticker: str, expiration: str) -> pd.DataFrame:
     """Gets option chain from yf for given ticker and expiration
 
@@ -48,6 +56,7 @@ def get_option_chain(ticker: str, expiration: str) -> pd.DataFrame:
     return chains
 
 
+@log_start_end(log=logger)
 def get_dividend(ticker: str) -> pd.Series:
     """Gets option chain from yf for given ticker and expiration
 
@@ -66,6 +75,7 @@ def get_dividend(ticker: str) -> pd.Series:
     return dividend
 
 
+@log_start_end(log=logger)
 def get_x_values(current_price: float, options: List[Dict[str, int]]) -> List[float]:
     """Generates different price values that need to be tested"""
     x_list = list(range(101))
@@ -83,6 +93,7 @@ def get_x_values(current_price: float, options: List[Dict[str, int]]) -> List[fl
     return [(x / 100) * num_range + mini for x in x_list]
 
 
+@log_start_end(log=logger)
 def get_y_values(
     base: float,
     price: float,
@@ -102,6 +113,7 @@ def get_y_values(
     return (change * underlying) + option_change
 
 
+@log_start_end(log=logger)
 def generate_data(
     current_price: float, options: List[Dict[str, int]], underlying: int
 ) -> Tuple[List[float], List[float], List[float]]:
@@ -118,6 +130,7 @@ def generate_data(
     return x_vals, before, []
 
 
+@log_start_end(log=logger)
 def get_price(ticker: str) -> float:
     """Get current price for a given ticker
 
@@ -137,6 +150,7 @@ def get_price(ticker: str) -> float:
     return last_quote
 
 
+@log_start_end(log=logger)
 def get_info(ticker: str):
     """Get info for a given ticker
 
@@ -154,6 +168,7 @@ def get_info(ticker: str):
     return tick.info
 
 
+@log_start_end(log=logger)
 def get_closing(ticker: str) -> pd.Series:
     """Get closing prices for a given ticker
 
@@ -171,11 +186,13 @@ def get_closing(ticker: str) -> pd.Series:
     return tick.history(period="1y")["Close"]
 
 
+@log_start_end(log=logger)
 def get_dte(date: str) -> int:
     """Gets days to expiration from yfinance option date"""
     return (datetime.strptime(date, "%Y-%m-%d") - datetime.now()).days
 
 
+@log_start_end(log=logger)
 def get_iv_surface(ticker: str) -> pd.DataFrame:
     """Gets IV surface for calls and puts for ticker
 

@@ -2,15 +2,18 @@
 __docformat__ = "numpy"
 
 import configparser
+import logging
 from typing import Tuple
 
 import pandas as pd
 import requests
 import yfinance as yf
 
-from gamestonk_terminal.stocks.options import yfinance_model
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.stocks.options import yfinance_model
 
+logger = logging.getLogger(__name__)
 
 accepted_orders = [
     "e_desc",
@@ -28,6 +31,7 @@ accepted_orders = [
 ]
 
 
+@log_start_end(log=logger)
 def get_historical_greeks(
     ticker: str, expiry: str, chain_id: str, strike: float, put: bool
 ) -> pd.DataFrame:
@@ -107,6 +111,7 @@ def get_historical_greeks(
     return df
 
 
+@log_start_end(log=logger)
 def get_screener_output(preset: str, presets_path: str) -> Tuple[pd.DataFrame, str]:
     """Screen options based on preset filters
 
@@ -198,6 +203,7 @@ def get_screener_output(preset: str, presets_path: str) -> Tuple[pd.DataFrame, s
 # pylint: disable=eval-used
 
 
+@log_start_end(log=logger)
 def check_presets(preset_dict: dict) -> str:
     """Checks option screener preset values
 

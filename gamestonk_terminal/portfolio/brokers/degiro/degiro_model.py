@@ -1,32 +1,36 @@
 # IMPORTATION STANDARD
+import logging
 import math
-
 from typing import Union
 
 # IMPORTATION THIRDPARTY
 import pandas as pd
 from degiro_connector.core.helpers import pb_handler
-
 from degiro_connector.trading.api import API as TradingAPI
 from degiro_connector.trading.models.trading_pb2 import (
     Credentials,
     LatestNews,
     NewsByCompany,
     Order,
-    ProductsInfo,
     ProductSearch,
+    ProductsInfo,
     TopNewsPreview,
     Update,
 )
 
 # IMPORTATION INTERNAL
 import gamestonk_terminal.config_terminal as config
+from gamestonk_terminal.decorators import log_start_end
 
 # pylint: disable=no-member
 # pylint: disable=no-else-return
 
 
+logger = logging.getLogger(__name__)
+
+
 class DegiroModel:
+    @log_start_end(log=logger)
     def __init__(self):
         self.__default_credentials = Credentials(
             int_account=None,
@@ -39,6 +43,7 @@ class DegiroModel:
             credentials=self.__default_credentials,
         )
 
+    @log_start_end(log=logger)
     def __hold_fetch_additional_information(
         self,
         positions: pd.DataFrame,
@@ -87,6 +92,7 @@ class DegiroModel:
 
         return positions_full
 
+    @log_start_end(log=logger)
     def __hold_fetch_current_positions(self) -> pd.DataFrame:
         # GET ATTRIBUTES
         trading_api = self.__trading_api
@@ -123,6 +129,7 @@ class DegiroModel:
             return positions
 
     @staticmethod
+    @log_start_end(log=logger)
     def __hold_filter_current_positions(
         portfolio: Update.Portfolio,
     ) -> pd.DataFrame:
@@ -153,15 +160,18 @@ class DegiroModel:
 
         return positions
 
+    @log_start_end(log=logger)
     def __setup_extra_credentials(self):
         trading_api = self.__trading_api
         client_details_table = trading_api.get_client_details()
         int_account = client_details_table["data"]["intAccount"]
         trading_api.credentials.int_account = int_account
 
+    @log_start_end(log=logger)
     def cancel(self, order_id: str) -> bool:
         return self.__trading_api.delete_order(order_id=order_id)
 
+    @log_start_end(log=logger)
     def companynews(self, isin: str) -> NewsByCompany:
         trading_api = self.__trading_api
         request = NewsByCompany.Request(
@@ -179,6 +189,7 @@ class DegiroModel:
 
         return news
 
+    @log_start_end(log=logger)
     def create_calculate_product_id(
         self,
         product: int,
@@ -210,6 +221,7 @@ class DegiroModel:
         else:
             return product
 
+    @log_start_end(log=logger)
     def create_calculate_size(
         self,
         price: float,
@@ -221,9 +233,11 @@ class DegiroModel:
         else:
             return size
 
+    @log_start_end(log=logger)
     def create_check(self, order: Order) -> Union[Order.CheckingResponse, bool]:
         return self.__trading_api.check_order(order=order)
 
+    @log_start_end(log=logger)
     def create_confirm(
         self,
         confirmation_id: str,
@@ -234,9 +248,11 @@ class DegiroModel:
             order=order,
         )
 
+    @log_start_end(log=logger)
     def hold_positions(self) -> pd.DataFrame:
         return self.__hold_fetch_current_positions()
 
+    @log_start_end(log=logger)
     def lastnews(self, limit: int) -> LatestNews:
         trading_api = self.__trading_api
         request = LatestNews.Request(
@@ -248,17 +264,21 @@ class DegiroModel:
 
         return news
 
+    @log_start_end(log=logger)
     def login(self, credentials: Credentials):
         self.__trading_api.credentials.CopyFrom(credentials)
         self.__trading_api.connect()
         self.__setup_extra_credentials()
 
+    @log_start_end(log=logger)
     def login_default_credentials(self):
         return self.__default_credentials
 
+    @log_start_end(log=logger)
     def logout(self) -> bool:
         return self.__trading_api.logout()
 
+    @log_start_end(log=logger)
     def lookup(
         self,
         limit: int,
@@ -278,6 +298,7 @@ class DegiroModel:
 
         return product_search
 
+    @log_start_end(log=logger)
     def pending(self) -> Update.Orders:
         trading_api = self.__trading_api
         request_list = Update.RequestList()
@@ -290,12 +311,15 @@ class DegiroModel:
 
         return update.orders
 
+    @log_start_end(log=logger)
     def topnews(self) -> TopNewsPreview:
         return self.__trading_api.get_top_news_preview(raw=False)
 
+    @log_start_end(log=logger)
     def update(self, order: Order) -> Update.Orders:
         return self.__trading_api.update_order(order=order)
 
+    @log_start_end(log=logger)
     def update_pending_order(self, order_id: str) -> Union[None, Order]:
         trading_api = self.__trading_api
         request_list = Update.RequestList()
