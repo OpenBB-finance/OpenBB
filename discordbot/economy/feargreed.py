@@ -19,7 +19,7 @@ async def feargreed_command(ctx, indicator=""):
 
         if indicator not in possible_indicators:
             raise Exception(
-                f"Select a valid indicator from {', '.join(possible_indicators)}"  # nosec
+                f"Select valid indicator from {', '.join(possible_indicators)}"  # nosec
             )
 
         # Retrieve data
