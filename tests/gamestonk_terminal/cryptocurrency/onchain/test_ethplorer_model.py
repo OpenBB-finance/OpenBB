@@ -47,7 +47,7 @@ from gamestonk_terminal.cryptocurrency.onchain import ethplorer_model
         ),
     ],
 )
-def test_call_func(func, kwargs, mocker, recorder):
+def test_call_func(func, kwargs, recorder):
     result = getattr(ethplorer_model, func)(**kwargs)
 
     if isinstance(result, pd.DataFrame) and "timestamp" in result.columns:
