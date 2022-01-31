@@ -1,11 +1,17 @@
 """Calculator Model"""
 ___docformat__ = "numpy"
 
+import logging
 from typing import Dict, Tuple
 
 import numpy as np
 
+from gamestonk_terminal.decorators import log_start_end
 
+logger = logging.getLogger(__name__)
+
+
+@log_start_end(log=logger)
 def pnl_calculator(
     strike: float, premium: float, put: bool, sell: bool, **kwargs: Dict[str, int]
 ) -> Tuple[np.ndarray, np.ndarray, float]:

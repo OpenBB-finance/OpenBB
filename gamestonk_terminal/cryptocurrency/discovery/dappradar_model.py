@@ -4,9 +4,15 @@ __docformat__ = "numpy"
 # pylint: disable=C0301,E1137
 from typing import Optional
 import requests
+import logging
 import pandas as pd
+import requests
+
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import get_user_agent
 from gamestonk_terminal.rich_config import console
+
+logger = logging.getLogger(__name__)
 
 NFT_COLUMNS = [
     "Name",
@@ -32,6 +38,7 @@ DEX_COLUMNS = [
 ]
 
 
+@log_start_end(log=logger)
 def _make_request(url: str) -> Optional[dict]:
     """Helper method handles dappradar api requests. [Source: https://dappradar.com/]
 
@@ -58,6 +65,7 @@ def _make_request(url: str) -> Optional[dict]:
         return None
 
 
+@log_start_end(log=logger)
 def get_top_nfts() -> pd.DataFrame:
     """Get top nft collections [Source: https://dappradar.com/]
 
@@ -97,6 +105,7 @@ def get_top_nfts() -> pd.DataFrame:
     return pd.DataFrame()
 
 
+@log_start_end(log=logger)
 def get_top_dexes() -> pd.DataFrame:
     """Get top dexes by daily volume and users [Source: https://dappradar.com/]
 
@@ -126,6 +135,7 @@ def get_top_dexes() -> pd.DataFrame:
     return pd.DataFrame()
 
 
+@log_start_end(log=logger)
 def get_top_games() -> pd.DataFrame:
     """Get top blockchain games by daily volume and users [Source: https://dappradar.com/]
 
@@ -158,6 +168,7 @@ def get_top_games() -> pd.DataFrame:
     return pd.DataFrame()
 
 
+@log_start_end(log=logger)
 def get_top_dapps() -> pd.DataFrame:
     """Get top decentralized applications by daily volume and users [Source: https://dappradar.com/]
 

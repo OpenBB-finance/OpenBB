@@ -1,19 +1,25 @@
 """SentimentInvestor View"""
 __docformat__ = "numpy"
 
+import logging
 import os
 from datetime import datetime
 import matplotlib.dates as mdates
 from matplotlib import pyplot as plt
 import pandas as pd
 
-from gamestonk_terminal.common.behavioural_analysis import sentimentinvestor_model
-from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.common.behavioural_analysis import sentimentinvestor_model
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 
 # pylint: disable=E1101
 
 
+logger = logging.getLogger(__name__)
+
+
+@log_start_end(log=logger)
 def display_historical(
     ticker: str,
     start: str,

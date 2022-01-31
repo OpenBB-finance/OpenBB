@@ -1,14 +1,19 @@
+import logging
 from typing import Dict
 
 from matplotlib import pyplot as plt
 
 from gamestonk_terminal import config_plot as cfp
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import plot_autoscale
-from gamestonk_terminal.stocks.options import calculator_model
 from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.stocks.options import calculator_model
+
+logger = logging.getLogger(__name__)
 
 
+@log_start_end(log=logger)
 def view_calculator(
     strike: float, premium: float, put: bool, sell: bool, **kwargs: Dict[str, int]
 ):

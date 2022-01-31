@@ -3,26 +3,32 @@ __docformat__ = "numpy"
 
 import datetime
 import json
+import logging
 import os
 from typing import Optional
 
 import numpy as np
-from requests.exceptions import HTTPError
-from requests.adapters import HTTPAdapter
-
-import requests
 import pandas as pd
+import requests
+from requests.adapters import HTTPAdapter
+from requests.exceptions import HTTPError
+
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.decorators import log_start_end
+
+logger = logging.getLogger(__name__)
 
 
 class BitQueryApiKeyException(Exception):
     """Bit Query Api Key Exception object"""
 
+    @log_start_end(log=logger)
     def __init__(self, message: str):
         super().__init__(message)
         self.message = message
 
+    @log_start_end(log=logger)
     def __str__(self) -> str:
         return f"BitQueryApiKeyException: {self.message}"
 
@@ -124,6 +130,7 @@ DECENTRALIZED_EXCHANGES_MAP = {e.lower(): e for e in DECENTRALIZED_EXCHANGES}
 NETWORKS = ["bsc", "ethereum", "matic"]
 
 
+@log_start_end(log=logger)
 def _extract_dex_trades(data: dict) -> pd.DataFrame:
     """Helper method that extracts from bitquery api response data from nested dictionary:
     response = {'ethereum' : {'dexTrades' : <data>}}. If 'dexTrades' is None, raises Exception.
@@ -145,6 +152,7 @@ def _extract_dex_trades(data: dict) -> pd.DataFrame:
     return pd.json_normalize(dex_trades)
 
 
+@log_start_end(log=logger)
 def query_graph(url: str, query: str) -> dict:
     """Helper methods for querying graphql api. [Source: https://bitquery.io/]
 
@@ -192,6 +200,7 @@ def query_graph(url: str, query: str) -> dict:
     return data["data"]
 
 
+@log_start_end(log=logger)
 def get_erc20_tokens() -> pd.DataFrame:
     """Helper method that loads ~1500 most traded erc20 token.
     [Source: json file]
@@ -212,6 +221,7 @@ def get_erc20_tokens() -> pd.DataFrame:
     return df[["name", "symbol", "address", "count"]]
 
 
+@log_start_end(log=logger)
 def find_token_address(token: str) -> Optional[str]:
     """Helper methods that search for ERC20 coin base on provided symbol or token address.
     If erc20 token address is provided, then function checks if it's proper address and returns it back.
@@ -245,6 +255,7 @@ def find_token_address(token: str) -> Optional[str]:
     return found_token.iloc[0]["address"]
 
 
+@log_start_end(log=logger)
 def get_dex_trades_by_exchange(
     trade_amount_currency: str = "USD", limit: int = 90
 ) -> pd.DataFrame:
@@ -300,6 +311,7 @@ def get_dex_trades_by_exchange(
     )
 
 
+@log_start_end(log=logger)
 def get_dex_trades_monthly(
     trade_amount_currency: str = "USD", limit: int = 90
 ) -> pd.DataFrame:
@@ -359,6 +371,7 @@ def get_dex_trades_monthly(
     return df[["date", "trades", "tradeAmount"]]
 
 
+@log_start_end(log=logger)
 def get_daily_dex_volume_for_given_pair(
     limit: int = 100,
     token: str = "UNI",
@@ -461,6 +474,7 @@ def get_daily_dex_volume_for_given_pair(
     ].sort_values(by="date", ascending=False)
 
 
+@log_start_end(log=logger)
 def get_token_volume_on_dexes(
     token: str = "UNI",
     trade_amount_currency: str = "USD",
@@ -523,6 +537,7 @@ def get_token_volume_on_dexes(
     )
 
 
+@log_start_end(log=logger)
 def get_ethereum_unique_senders(interval: str = "day", limit: int = 90) -> pd.DataFrame:
     """Get number of unique ethereum addresses which made a transaction in given time interval.
 
@@ -582,6 +597,7 @@ def get_ethereum_unique_senders(interval: str = "day", limit: int = 90) -> pd.Da
     return df[UEAT_FILTERS]
 
 
+@log_start_end(log=logger)
 def get_most_traded_pairs(
     network: str = "ethereum", exchange: str = "Uniswap", limit: int = 90
 ) -> pd.DataFrame:
@@ -635,6 +651,7 @@ def get_most_traded_pairs(
     return df[TTCP_FILTERS]
 
 
+@log_start_end(log=logger)
 def get_spread_for_crypto_pair(
     token: str = "WETH", vs: str = "USDT", limit: int = 30
 ) -> pd.DataFrame:

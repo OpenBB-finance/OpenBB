@@ -1,20 +1,28 @@
 """Blockchain View"""
 __docformat__ = "numpy"
 
+import logging
 import os
 from datetime import datetime
+
 import matplotlib.pyplot as plt
-from matplotlib import ticker, dates as mdates
-from gamestonk_terminal.cryptocurrency.onchain import blockchain_model
-from gamestonk_terminal.helper_funcs import (
-    export_data,
-    plot_autoscale,
-    long_number_format,
-)
+from matplotlib import dates as mdates
+from matplotlib import ticker
+
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_plot import PLOT_DPI
+from gamestonk_terminal.cryptocurrency.onchain import blockchain_model
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_funcs import (
+    export_data,
+    long_number_format,
+    plot_autoscale,
+)
+
+logger = logging.getLogger(__name__)
 
 
+@log_start_end(log=logger)
 def display_btc_circulating_supply(since: int, until: int, export: str) -> None:
     """Returns BTC circulating supply [Source: https://api.blockchain.info/]
 
@@ -62,6 +70,7 @@ def display_btc_circulating_supply(since: int, until: int, export: str) -> None:
     )
 
 
+@log_start_end(log=logger)
 def display_btc_confirmed_transactions(since: int, until: int, export: str) -> None:
     """Returns BTC confirmed transactions [Source: https://api.blockchain.info/]
 

@@ -2,10 +2,17 @@
 __docformat__ = "numpy"
 
 import io
-import requests
+import logging
+
 import pandas as pd
+import requests
+
+from gamestonk_terminal.decorators import log_start_end
+
+logger = logging.getLogger(__name__)
 
 
+@log_start_end(log=logger)
 def download_file_from_google_drive(file_id: str) -> bytes:
     """Custom function from rkornmeyer for pulling csv from google drive
 
@@ -20,6 +27,7 @@ def download_file_from_google_drive(file_id: str) -> bytes:
         Content from request response
     """
 
+    @log_start_end(log=logger)
     def get_confirm_token(response):
         for key, value in response.cookies.items():
             if key.startswith("download_warning"):
@@ -41,6 +49,7 @@ def download_file_from_google_drive(file_id: str) -> bytes:
     return response.content
 
 
+@log_start_end(log=logger)
 def get_realtime_earnings() -> pd.DataFrame:
     """Pulls realtime earnings from geek of wallstreet
 

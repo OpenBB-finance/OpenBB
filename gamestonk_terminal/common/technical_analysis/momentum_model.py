@@ -1,10 +1,17 @@
 """Momentum Technical Analysis"""
 __docformat__ = "numpy"
 
+import logging
+
 import pandas as pd
 import pandas_ta as ta
 
+from gamestonk_terminal.decorators import log_start_end
 
+logger = logging.getLogger(__name__)
+
+
+@log_start_end(log=logger)
 def cci(
     high_vals: pd.Series,
     low_vals: pd.Series,
@@ -43,6 +50,7 @@ def cci(
     )
 
 
+@log_start_end(log=logger)
 def macd(
     values: pd.DataFrame,
     n_fast: int = 12,
@@ -71,6 +79,7 @@ def macd(
     )
 
 
+@log_start_end(log=logger)
 def rsi(values: pd.Series, length: int, scalar: float, drift: int) -> pd.DataFrame:
     """Relative strength index
 
@@ -95,6 +104,7 @@ def rsi(values: pd.Series, length: int, scalar: float, drift: int) -> pd.DataFra
     )
 
 
+@log_start_end(log=logger)
 def stoch(
     high_vals: pd.Series,
     low_vals: pd.Series,
@@ -136,6 +146,7 @@ def stoch(
     )
 
 
+@log_start_end(log=logger)
 def fisher(high_vals: pd.Series, low_vals: pd.Series, length: int = 14) -> pd.DataFrame:
     """Fisher Transform
 
@@ -156,6 +167,7 @@ def fisher(high_vals: pd.Series, low_vals: pd.Series, length: int = 14) -> pd.Da
     return pd.DataFrame(ta.fisher(high=high_vals, low=low_vals, length=length).dropna())
 
 
+@log_start_end(log=logger)
 def cg(values: pd.Series, length: int) -> pd.DataFrame:
     """Center of gravity
 

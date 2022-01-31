@@ -1,12 +1,18 @@
 """Whale Alert model"""
 __docformat__ = "numpy"
 
-from typing import Optional
+import logging
 import textwrap
-import requests
-import pandas as pd
+from typing import Optional
+
 import numpy as np
+import pandas as pd
+import requests
+
 import gamestonk_terminal.config_terminal as cfg
+from gamestonk_terminal.decorators import log_start_end
+
+logger = logging.getLogger(__name__)
 
 FILTERS = [
     "date",
@@ -22,14 +28,17 @@ FILTERS = [
 class ApiKeyException(Exception):
     """Api Key Exception object"""
 
+    @log_start_end(log=logger)
     def __init__(self, message: str):
         super().__init__(message)
         self.message = message
 
+    @log_start_end(log=logger)
     def __str__(self) -> str:
         return f"ApiKeyException: {self.message}"
 
 
+@log_start_end(log=logger)
 def make_request(params: Optional[dict] = None) -> dict:
     """Helper methods for requests [Source: https://docs.whale-alert.io/]
 
@@ -56,6 +65,7 @@ def make_request(params: Optional[dict] = None) -> dict:
         raise ValueError(f"Invalid Response: {response.text}") from e
 
 
+@log_start_end(log=logger)
 def get_whales_transactions(min_value: int = 800000, limit: int = 100) -> pd.DataFrame:
     """Whale Alert's API allows you to retrieve live and historical transaction data from major blockchains.
     Supported blockchain: Bitcoin, Ethereum, Ripple, NEO, EOS, Stellar and Tron. [Source: https://docs.whale-alert.io/]

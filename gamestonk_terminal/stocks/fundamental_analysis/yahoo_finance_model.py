@@ -1,16 +1,21 @@
 """Yahoo Finance Model"""
 __docformat__ = "numpy"
 
+import logging
 from datetime import datetime
 from typing import Tuple
-import yfinance as yf
+
 import pandas as pd
-from gamestonk_terminal.helper_funcs import (
-    long_number_format,
-)
+import yfinance as yf
+
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_funcs import long_number_format
 from gamestonk_terminal.stocks.fundamental_analysis.fa_helper import clean_df_index
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def get_info(ticker: str) -> pd.DataFrame:
     """Gets ticker info
 
@@ -54,6 +59,7 @@ def get_info(ticker: str) -> pd.DataFrame:
     return df_info
 
 
+@log_start_end(log=logger)
 def get_shareholders(ticker: str) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     """Get shareholders from yahoo
 
@@ -112,6 +118,7 @@ def get_shareholders(ticker: str) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFr
     return df_major_holders, df_institutional_shareholders, df_mutualfund_shareholders
 
 
+@log_start_end(log=logger)
 def get_sustainability(ticker) -> pd.DataFrame:
     """Get sustainability metrics from yahoo
 
@@ -152,6 +159,7 @@ def get_sustainability(ticker) -> pd.DataFrame:
     return df_sustainability
 
 
+@log_start_end(log=logger)
 def get_calendar_earnings(ticker: str) -> pd.DataFrame:
     """Get calendar earnings for ticker
 
@@ -182,6 +190,7 @@ def get_calendar_earnings(ticker: str) -> pd.DataFrame:
     return df_calendar
 
 
+@log_start_end(log=logger)
 def get_website(ticker: str) -> str:
     """Gets website of company from yfinance"""
     stock = yf.Ticker(ticker)
@@ -189,6 +198,7 @@ def get_website(ticker: str) -> str:
     return df_info[df_info["Metric"] == "website"]["Value"].values[0]
 
 
+@log_start_end(log=logger)
 def get_hq(ticker: str) -> str:
     """Gets google map url for headquarter"""
     stock = yf.Ticker(ticker)
@@ -205,6 +215,7 @@ def get_hq(ticker: str) -> str:
     return maps[:-1]
 
 
+@log_start_end(log=logger)
 def get_dividends(ticker: str) -> pd.DataFrame:
     """Get historical dividend for ticker
 

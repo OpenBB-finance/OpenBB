@@ -1,10 +1,17 @@
 """WSJ model"""
 __docformat__ = "numpy"
+import logging
+
 import pandas as pd
 import requests
+
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import get_user_agent
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def etf_movers(sort_type: str = "gainers") -> pd.DataFrame:
     """
     Scrape data for top etf movers.

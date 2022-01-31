@@ -1,6 +1,3 @@
-# IMPORTATION STANDARD
-from argparse import ArgumentTypeError
-
 # IMPORTATION THIRDPARTY
 import pandas as pd
 import pytest
@@ -22,15 +19,6 @@ def test_check_country_code_type(recorder):
     result_list = nasdaq_model.check_country_code_type(list_of_codes=list_of_codes)
 
     recorder.capture(result_list)
-
-
-@pytest.mark.vcr(record_mode="none")
-def test_check_country_code_type_error(recorder):
-    with pytest.raises(ArgumentTypeError) as e:
-        list_of_codes = ""
-        nasdaq_model.check_country_code_type(list_of_codes=list_of_codes)
-
-    recorder.capture(str(e))
 
 
 @pytest.mark.vcr
