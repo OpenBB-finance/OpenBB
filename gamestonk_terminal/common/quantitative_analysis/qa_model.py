@@ -187,13 +187,13 @@ def calculate_adjusted_var(
     #       https://www.value-at-risk.net/the-cornish-fisher-expansion/;
     #       "Risk Management and Financial Institutions" by John C. Hull
 
-    skew_component = skew / 6 * (ndp ** 2 - 1) ** 2 - skew ** 2 / 36 * ndp * (
-        2 * ndp ** 2 - 5
+    skew_component = skew / 6 * (ndp**2 - 1) ** 2 - skew**2 / 36 * ndp * (
+        2 * ndp**2 - 5
     )
-    kurtosis_component = (kurtosis - 3) / 24 * ndp * (ndp ** 2 - 3)
+    kurtosis_component = (kurtosis - 3) / 24 * ndp * (ndp**2 - 3)
     quantile = ndp + skew_component + kurtosis_component
     log_return = mean + quantile * std
-    real_return = 2.7182818 ** log_return - 1
+    real_return = 2.7182818**log_return - 1
     return real_return
 
 
