@@ -3,8 +3,8 @@ __docformat__ = "numpy"
 
 # pylint: disable=C0301,E1137
 from typing import Optional
-import requests
 import logging
+
 import pandas as pd
 import requests
 
