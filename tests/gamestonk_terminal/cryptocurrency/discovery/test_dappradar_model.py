@@ -33,6 +33,7 @@ def test_call_func(func, kwargs, recorder):
 
 
 @pytest.mark.vcr(record_mode="none")
+@pytest.mark.record_stdout
 def test__make_request_status_400(mocker):
     # MOCK GET
     attrs = {
@@ -41,8 +42,7 @@ def test__make_request_status_400(mocker):
     mock_response = mocker.Mock(**attrs)
     mocker.patch(target="requests.get", new=mocker.Mock(return_value=mock_response))
 
-    with pytest.raises(Exception) as _:
-        dappradar_model._make_request(url="MOCK_URL")
+    dappradar_model._make_request(url="MOCK_URL")
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -55,5 +55,4 @@ def test__make_request_value_error(mocker):
     mock_response = mocker.Mock(**attrs)
     mocker.patch(target="requests.get", new=mocker.Mock(return_value=mock_response))
 
-    with pytest.raises(ValueError) as _:
-        dappradar_model._make_request(url="MOCK_URL")
+    dappradar_model._make_request(url="MOCK_URL")
