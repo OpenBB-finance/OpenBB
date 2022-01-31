@@ -1,1 +1,1 @@
-[red]Invalid Response:: <Mock name='mock.text' id='140280496894736'>[/red]
+[red]Invalid Response:: MOCK_TEXT[/red]
