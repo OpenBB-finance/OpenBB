@@ -311,7 +311,7 @@ def test_call_func(
 
         controller = crypto_controller.CryptoController(queue=None)
         controller.coin_map_df = COIN_MAP_DF
-        controller.current_coin = CURRENT_COIN
+        controller.coin = CURRENT_COIN
         controller.symbol = SYMBOL
         controller.source = "bin"
         getattr(controller, tested_func)(other_args)
@@ -323,7 +323,7 @@ def test_call_func(
     else:
         controller = crypto_controller.CryptoController(queue=None)
         controller.coin_map_df = COIN_MAP_DF
-        controller.current_coin = CURRENT_COIN
+        controller.coin = CURRENT_COIN
         controller.symbol = SYMBOL
         controller.source = "bin"
         getattr(controller, tested_func)(other_args)
