@@ -1,10 +1,17 @@
 """FinBrain Model"""
 __docformat__ = "numpy"
 
+import logging
+
 import pandas as pd
 import requests
 
+from gamestonk_terminal.decorators import log_start_end
 
+logger = logging.getLogger(__name__)
+
+
+@log_start_end(log=logger)
 def get_sentiment(ticker: str) -> pd.DataFrame:
     """Gets Sentiment analysis provided by FinBrain's API [Source: finbrain]
 

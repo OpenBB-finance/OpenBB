@@ -1,20 +1,25 @@
 """Reddit View"""
 __docformat__ = "numpy"
 
+import logging
 import os
 import warnings
 from datetime import datetime
 from typing import Dict
 
 import finviz
-import praw
 import pandas as pd
+import praw
 
 from gamestonk_terminal.common.behavioural_analysis import reddit_model
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.rich_config import console
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def print_and_record_reddit_post(
     submissions_dict: Dict, submission: praw.models.reddit.submission.Submission
 ):
@@ -68,6 +73,7 @@ def print_and_record_reddit_post(
     console.print("\n")
 
 
+@log_start_end(log=logger)
 def display_watchlist(num: int):
     """Print other users watchlist. [Source: Reddit]
 
@@ -105,6 +111,7 @@ def display_watchlist(num: int):
     console.print("")
 
 
+@log_start_end(log=logger)
 def display_popular_tickers(
     n_top: int = 10, posts_to_look_at: int = 50, subreddits: str = "", export: str = ""
 ):
@@ -143,6 +150,7 @@ def display_popular_tickers(
     )
 
 
+@log_start_end(log=logger)
 def display_spac_community(limit: int = 10, popular: bool = False):
     """Look at tickers mentioned in r/SPACs [Source: Reddit]
 
@@ -183,6 +191,7 @@ def display_spac_community(limit: int = 10, popular: bool = False):
     console.print("")
 
 
+@log_start_end(log=logger)
 def display_spac(limit: int = 5):
     """Look at posts containing 'spac' in top communities
 
@@ -220,6 +229,7 @@ def display_spac(limit: int = 5):
     console.print("")
 
 
+@log_start_end(log=logger)
 def display_wsb_community(limit: int = 10, new: bool = False):
     """Show WSB posts
 
@@ -236,6 +246,7 @@ def display_wsb_community(limit: int = 10, new: bool = False):
         print_and_record_reddit_post({}, sub)
 
 
+@log_start_end(log=logger)
 def display_due_diligence(
     ticker: str, limit: int = 10, n_days: int = 3, show_all_flairs: bool = False
 ):

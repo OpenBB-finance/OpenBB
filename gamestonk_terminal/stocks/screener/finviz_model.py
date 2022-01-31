@@ -1,15 +1,21 @@
-import os
 import configparser
+import logging
+import os
+
 import pandas as pd
 from finvizfinance.screener import (
-    technical,
-    overview,
-    valuation,
     financial,
+    overview,
     ownership,
     performance,
+    technical,
+    valuation,
 )
+
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.rich_config import console
+
+logger = logging.getLogger(__name__)
 
 presets_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
 
@@ -52,6 +58,7 @@ d_signals = {
 }
 
 
+@log_start_end(log=logger)
 def get_screener_data(preset_loaded: str, data_type: str, limit: int, ascend: bool):
     """Screener Overview
 

@@ -1,20 +1,27 @@
 """ Quandl View """
 __docformat__ = "numpy"
 
+import logging
 import os
+
 import matplotlib.ticker
-from matplotlib import pyplot as plt
 import pandas as pd
-from gamestonk_terminal.stocks.dark_pool_shorts import quandl_model
+from matplotlib import pyplot as plt
+
+from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
-    long_number_format,
     export_data,
+    long_number_format,
     print_rich_table,
 )
-from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.stocks.dark_pool_shorts import quandl_model
+
+logger = logging.getLogger(__name__)
 
 
+@log_start_end(log=logger)
 def plot_short_interest(ticker: str, nyse: bool, df_short_interest: pd.DataFrame):
     """Plots the short interest of a stock. This corresponds to the
     number of shares that have been sold short but have not yet been
@@ -66,6 +73,7 @@ def plot_short_interest(ticker: str, nyse: bool, df_short_interest: pd.DataFrame
     plt.show()
 
 
+@log_start_end(log=logger)
 def short_interest(ticker: str, nyse: bool, days: int, raw: bool, export: str):
     """Plots the short interest of a stock. This corresponds to the
     number of shares that have been sold short but have not yet been

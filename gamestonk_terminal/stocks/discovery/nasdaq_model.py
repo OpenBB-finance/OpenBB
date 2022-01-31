@@ -1,12 +1,19 @@
 """NASDAQ DataLink Model"""
 __docformat__ = "numpy"
 
+import logging
+
 import pandas as pd
 import requests
+
 import gamestonk_terminal.config_terminal as cfg
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import get_user_agent
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def get_retail_tickers() -> pd.DataFrame:
     """Gets the top 10 retail stocks per day
 
@@ -26,6 +33,7 @@ def get_retail_tickers() -> pd.DataFrame:
     return df
 
 
+@log_start_end(log=logger)
 def get_dividend_cal(date: str) -> pd.DataFrame:
     """Gets dividend calendar for given date.  Date represents Ex-Dividend Date
 

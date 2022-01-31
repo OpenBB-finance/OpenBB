@@ -1,6 +1,7 @@
 """Twitter Model"""
 __docformat__ = "numpy"
 
+import logging
 from typing import Optional
 
 import pandas as pd
@@ -8,12 +9,16 @@ import requests
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
 from gamestonk_terminal import config_terminal as cfg
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import clean_tweet, get_data
 from gamestonk_terminal.rich_config import console
+
+logger = logging.getLogger(__name__)
 
 analyzer = SentimentIntensityAnalyzer()
 
 
+@log_start_end(log=logger)
 def load_analyze_tweets(
     ticker: str,
     count: int,

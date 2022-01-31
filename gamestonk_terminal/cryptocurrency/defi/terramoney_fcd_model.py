@@ -1,16 +1,22 @@
 """Terra Money FCD model"""
 __docformat__ = "numpy"
 
+import logging
 import textwrap
-from typing import Any, Tuple
 from datetime import datetime
-import requests
+from typing import Any, Tuple
+
 import pandas as pd
+import requests
+
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
     denominate_number,
     prettify_column_names,
     replace_unicode,
 )
+from gamestonk_terminal.decorators import log_start_end
+
+logger = logging.getLogger(__name__)
 
 GOV_COLUMNS = [
     "submitTime",
@@ -33,6 +39,7 @@ VALIDATORS_COLUMNS = [
 ]
 
 
+@log_start_end(log=logger)
 def _make_request(endpoint: str) -> dict:
     """Helper method handles terra fcd api requests. [Source: https://fcd.terra.dev/v1]
 
@@ -58,6 +65,7 @@ def _make_request(endpoint: str) -> dict:
         raise ValueError(f"Invalid Response: {response.text}") from e
 
 
+@log_start_end(log=logger)
 def _adjust_delegation_info(delegation: dict) -> dict:
     """Helper method which removes redundant fields from delegation info dictionary,
     and denominate value fields. [Source: https://fcd.terra.dev/v1]
@@ -84,6 +92,7 @@ def _adjust_delegation_info(delegation: dict) -> dict:
     return delegation_info
 
 
+@log_start_end(log=logger)
 def get_staking_account_info(address: str = "") -> Tuple[pd.DataFrame, str]:
     """Get staking info for provided terra account [Source: https://fcd.terra.dev/swagger]
 
@@ -131,6 +140,7 @@ def get_staking_account_info(address: str = "") -> Tuple[pd.DataFrame, str]:
     return df, report
 
 
+@log_start_end(log=logger)
 def get_validators() -> pd.DataFrame:
     """Get information about terra validators [Source: https://fcd.terra.dev/swagger]
 
@@ -162,6 +172,7 @@ def get_validators() -> pd.DataFrame:
     return pd.DataFrame(results).sort_values(by="votingPower")
 
 
+@log_start_end(log=logger)
 def get_proposals(status: str = "") -> pd.DataFrame:
     """Get terra blockchain governance proposals list [Source: https://fcd.terra.dev/swagger]
 
@@ -217,6 +228,7 @@ def get_proposals(status: str = "") -> pd.DataFrame:
     return df
 
 
+@log_start_end(log=logger)
 def get_account_growth(cumulative: bool = True) -> pd.DataFrame:
     """Get terra blockchain account growth history [Source: https://fcd.terra.dev/swagger]
 
@@ -239,6 +251,7 @@ def get_account_growth(cumulative: bool = True) -> pd.DataFrame:
     return df
 
 
+@log_start_end(log=logger)
 def get_staking_ratio_history():
     """Get terra blockchain staking ratio history [Source: https://fcd.terra.dev/swagger]
 
@@ -255,6 +268,7 @@ def get_staking_ratio_history():
     return df[["date", "stakingRatio"]]
 
 
+@log_start_end(log=logger)
 def get_staking_returns_history():
     """Get terra blockchain staking returns history [Source: https://fcd.terra.dev/v1]
 

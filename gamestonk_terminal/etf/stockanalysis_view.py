@@ -1,14 +1,19 @@
 """StockAnalysis.com view functions"""
 __docformat__ = "numpy"
 
+import logging
 import os
 from typing import List
 
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.etf import stockanalysis_model
 from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.rich_config import console
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def view_overview(symbol: str, export: str = ""):
     """Print etf overview information
 
@@ -32,6 +37,7 @@ def view_overview(symbol: str, export: str = ""):
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "overview", data)
 
 
+@log_start_end(log=logger)
 def view_holdings(symbol: str, num_to_show: int, export: str):
     """
 
@@ -56,6 +62,7 @@ def view_holdings(symbol: str, num_to_show: int, export: str):
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "holdings", data)
 
 
+@log_start_end(log=logger)
 def view_comparisons(symbols: List[str], export: str):
     """Show ETF comparisons
 
@@ -82,6 +89,7 @@ def view_comparisons(symbols: List[str], export: str):
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "overview", data)
 
 
+@log_start_end(log=logger)
 def display_etf_by_name(name: str, limit: int, export: str):
     """Display ETFs matching search string. [Source: StockAnalysis]
 

@@ -1,39 +1,44 @@
 """Portfolio View"""
 __docformat__ = "numpy"
 
-from typing import List
+import logging
+import os
 from datetime import datetime
 from io import BytesIO
 from os import path
-import os
+from typing import List
 
+import matplotlib.ticker as mtick
 import numpy as np
 import pandas as pd
-from reportlab.lib.pagesizes import letter
-from reportlab.pdfgen import canvas
-from reportlab.lib.utils import ImageReader
-from matplotlib.lines import Line2D
 from matplotlib import pyplot as plt
-import matplotlib.ticker as mtick
+from matplotlib.lines import Line2D
 from pypfopt import plotting
+from reportlab.lib.pagesizes import letter
+from reportlab.lib.utils import ImageReader
+from reportlab.pdfgen import canvas
 
-from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.portfolio import (
-    portfolio_model,
-    yfinance_model,
-)
-from gamestonk_terminal.portfolio import reportlab_helpers
+from gamestonk_terminal.config_plot import PLOT_DPI
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
+    export_data,
     get_rf,
     plot_autoscale,
-    export_data,
     print_rich_table,
+)
+from gamestonk_terminal.portfolio import (
+    portfolio_model,
+    reportlab_helpers,
+    yfinance_model,
 )
 from gamestonk_terminal.portfolio.portfolio_optimization import optimizer_model
 from gamestonk_terminal.rich_config import console
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def load_info():
     """Prints instructions to load a CSV
 
@@ -59,6 +64,7 @@ In order to load a CSV do the following:
     console.print(text)
 
 
+@log_start_end(log=logger)
 def show_df(df: pd.DataFrame, show: bool) -> None:
     """Shows the given dataframe
 
@@ -80,6 +86,7 @@ def show_df(df: pd.DataFrame, show: bool) -> None:
     console.print("")
 
 
+@log_start_end(log=logger)
 def plot_overall_return(
     comb: pd.DataFrame, m_tick: str, plot: bool = False
 ) -> ImageReader:
@@ -137,6 +144,7 @@ def plot_overall_return(
     return ImageReader(imgdata)
 
 
+@log_start_end(log=logger)
 def plot_rolling_beta(df: pd.DataFrame) -> ImageReader:
     """Returns a chart with the portfolio's rolling beta
 
@@ -185,6 +193,7 @@ def plot_rolling_beta(df: pd.DataFrame) -> ImageReader:
     return ImageReader(imgdata)
 
 
+@log_start_end(log=logger)
 def plot_ef(
     stocks: List[str],
     variance: float,
@@ -249,6 +258,7 @@ def plot_ef(
     return ImageReader(imgdata)
 
 
+@log_start_end(log=logger)
 def display_allocation(data: pd.DataFrame, graph: bool):
     """Displays allocation
     Parameters
@@ -283,6 +293,7 @@ def display_allocation(data: pd.DataFrame, graph: bool):
         plt.show()
 
 
+@log_start_end(log=logger)
 def display_drawdown(holdings: pd.DataFrame, export: str = ""):
     """Display drawdown curve
 
@@ -318,6 +329,7 @@ def display_drawdown(holdings: pd.DataFrame, export: str = ""):
 
 
 class Report:
+    @log_start_end(log=logger)
     def __init__(self, df: pd.DataFrame, hist: pd.DataFrame, m_tick: str, n: int):
         """Generate financial reports.
         Financial reports allow users to show the how they have been performing in
@@ -355,6 +367,7 @@ class Report:
             self.df, self.hist, self.df_m, 365
         )
 
+    @log_start_end(log=logger)
     def generate_report(self) -> None:
         d = path.dirname(path.abspath(__file__)).replace(
             "gamestonk_terminal", "exports"
@@ -372,6 +385,7 @@ class Report:
         report.save()
         console.print("File save in:\n", loc, "\n")
 
+    @log_start_end(log=logger)
     def generate_pg1(self, report: canvas.Canvas) -> None:
         report.drawImage(
             plot_overall_return(self.returns, self.m_tick, False), 15, 400, 600, 300
@@ -399,6 +413,7 @@ class Report:
         )
         report.showPage()
 
+    @log_start_end(log=logger)
     def generate_pg2(self, report: canvas.Canvas) -> None:
         reportlab_helpers.base_format(report, "Portfolio Analysis")
         if "Holding" in self.df.columns:

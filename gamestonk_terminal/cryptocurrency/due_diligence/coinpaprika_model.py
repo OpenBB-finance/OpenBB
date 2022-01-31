@@ -1,15 +1,22 @@
 """CoinPaprika model"""
 __docformat__ = "numpy"
 
-from typing import Tuple, Optional, Any
-from datetime import datetime, timedelta
+import logging
 import textwrap
+from datetime import datetime, timedelta
+from typing import Any, Optional, Tuple
+
 import pandas as pd
 from dateutil import parser
+
 from gamestonk_terminal.cryptocurrency.coinpaprika_helpers import PaprikaSession
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.rich_config import console
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def get_coin(coin_id: str = "eth-ethereum") -> dict:
     """Get coin by id [Source: CoinPaprika]
 
@@ -28,6 +35,7 @@ def get_coin(coin_id: str = "eth-ethereum") -> dict:
     return coin
 
 
+@log_start_end(log=logger)
 def get_coin_twitter_timeline(coin_id: str = "eth-ethereum") -> pd.DataFrame:
     """Get twitter timeline for given coin id. Not more than last 50 tweets [Source: CoinPaprika]
 
@@ -62,6 +70,7 @@ def get_coin_twitter_timeline(coin_id: str = "eth-ethereum") -> pd.DataFrame:
     return df
 
 
+@log_start_end(log=logger)
 def get_coin_events_by_id(coin_id: str = "eth-ethereum") -> pd.DataFrame:
     """Get all events related to given coin like conferences, start date of futures trading etc. [Source: CoinPaprika]
 
@@ -112,6 +121,7 @@ def get_coin_events_by_id(coin_id: str = "eth-ethereum") -> pd.DataFrame:
     return data
 
 
+@log_start_end(log=logger)
 def get_coin_exchanges_by_id(coin_id: str = "eth-ethereum") -> pd.DataFrame:
     """Get all exchanges for given coin id. [Source: CoinPaprika]
 
@@ -134,6 +144,7 @@ def get_coin_exchanges_by_id(coin_id: str = "eth-ethereum") -> pd.DataFrame:
     return df
 
 
+@log_start_end(log=logger)
 def get_coin_markets_by_id(
     coin_id: str = "eth-ethereum", quotes: str = "USD"
 ) -> pd.DataFrame:
@@ -182,6 +193,7 @@ def get_coin_markets_by_id(
     return pd.DataFrame(data)
 
 
+@log_start_end(log=logger)
 def get_ohlc_historical(
     coin_id: str = "eth-ethereum", quotes: str = "USD", days: int = 90
 ) -> pd.DataFrame:
@@ -228,6 +240,7 @@ def get_ohlc_historical(
     return pd.DataFrame(data)
 
 
+@log_start_end(log=logger)
 def get_tickers_info_for_coin(
     coin_id: str = "btc-bitcoin", quotes: str = "USD"
 ) -> pd.DataFrame:
@@ -313,6 +326,7 @@ def get_tickers_info_for_coin(
     return df
 
 
+@log_start_end(log=logger)
 def validate_coin(coin: str, coins_dct: dict) -> Tuple[str, Optional[Any]]:
     """Helper method that validates if proper coin id or symbol was provided [Source: CoinPaprika]
 
@@ -345,6 +359,7 @@ def validate_coin(coin: str, coins_dct: dict) -> Tuple[str, Optional[Any]]:
     return coin_found, symbol
 
 
+@log_start_end(log=logger)
 def basic_coin_info(coin_id: str = "btc-bitcoin") -> pd.DataFrame:
     """Basic coin information [Source: CoinPaprika]
 

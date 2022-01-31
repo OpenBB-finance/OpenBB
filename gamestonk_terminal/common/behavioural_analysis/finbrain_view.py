@@ -1,32 +1,39 @@
 """FinBrain View Module"""
 __docformat__ = "numpy"
 
+import logging
 import os
-from matplotlib import pyplot as plt
+
 import matplotlib.dates as mdates
-import pandas as pd
-from pandas.plotting import register_matplotlib_converters
 import numpy as np
-from gamestonk_terminal.helper_funcs import (
-    plot_autoscale,
-    export_data,
-    print_rich_table,
-)
+import pandas as pd
+from matplotlib import pyplot as plt
+from pandas.plotting import register_matplotlib_converters
+
+from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.common.behavioural_analysis import finbrain_model
 from gamestonk_terminal.config_plot import PLOT_DPI
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_funcs import (
+    export_data,
+    plot_autoscale,
+    print_rich_table,
+)
 from gamestonk_terminal.rich_config import console
 
+logger = logging.getLogger(__name__)
 
 register_matplotlib_converters()
 
 
+@log_start_end(log=logger)
 def sentiment_coloring(val: float, last_val: float) -> str:
     if float(val) > last_val:
         return f"[green]{val}[/green]"
     return f"[red]{val}[/red]"
 
 
+@log_start_end(log=logger)
 def plot_sentiment(sentiment: pd.DataFrame, ticker: str) -> None:
     """Plot Sentiment analysis provided by FinBrain's API
 
@@ -83,6 +90,7 @@ def plot_sentiment(sentiment: pd.DataFrame, ticker: str) -> None:
     plt.show()
 
 
+@log_start_end(log=logger)
 def display_sentiment_analysis(ticker: str, export: str = ""):
     """Sentiment analysis from FinBrain
 

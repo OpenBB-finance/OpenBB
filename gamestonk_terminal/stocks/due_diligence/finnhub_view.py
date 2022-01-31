@@ -1,23 +1,30 @@
 """ Finnhub View """
 __docformat__ = "numpy"
 
+import logging
 import os
+
 import pandas as pd
 from matplotlib import pyplot as plt
 from pandas.plotting import register_matplotlib_converters
-from gamestonk_terminal.stocks.due_diligence import finnhub_model
+
+from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.config_plot import PLOT_DPI
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
-    plot_autoscale,
     export_data,
+    plot_autoscale,
     print_rich_table,
 )
-from gamestonk_terminal.config_plot import PLOT_DPI
-from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.stocks.due_diligence import finnhub_model
+
+logger = logging.getLogger(__name__)
 
 register_matplotlib_converters()
 
 
+@log_start_end(log=logger)
 def plot_rating_over_time(df_rot: pd.DataFrame, ticker: str):
     """Plot rating over time
 
@@ -53,6 +60,7 @@ def plot_rating_over_time(df_rot: pd.DataFrame, ticker: str):
     plt.show()
 
 
+@log_start_end(log=logger)
 def rating_over_time(ticker: str, num: int, raw: bool, export: str):
     """Rating over time (monthly). [Source: Finnhub]
 

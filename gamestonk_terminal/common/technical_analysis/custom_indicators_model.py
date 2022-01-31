@@ -1,13 +1,18 @@
 """Custom Indicator Models"""
 __docformat__ = "numpy"
 
+import logging
 from typing import Any, Tuple
 
 import pandas as pd
 
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.rich_config import console
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def calculate_fib_levels(
     df_stock: pd.DataFrame,
     period: int = 120,

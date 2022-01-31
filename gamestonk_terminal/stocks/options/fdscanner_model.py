@@ -1,13 +1,20 @@
 """FDScanner model"""
 __docformat__ = "numpy"
 
+import logging
+
 import numpy as np
 import pandas as pd
 import requests
+
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import get_user_agent
 from gamestonk_terminal.rich_config import console
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def unusual_options(num: int):
     """Get unusual option activity from fdscanner.com
 
