@@ -21,9 +21,9 @@ def vcr_config():
     "func, kwargs",
     [
         ("get_top_nfts", dict()),
-        # ("get_top_dexes", dict()),
-        # ("get_top_games", dict()),
-        # ("get_top_dapps", dict()),
+        ("get_top_dexes", dict()),
+        ("get_top_games", dict()),
+        ("get_top_dapps", dict()),
     ],
 )
 def test_call_func(func, kwargs, recorder):
