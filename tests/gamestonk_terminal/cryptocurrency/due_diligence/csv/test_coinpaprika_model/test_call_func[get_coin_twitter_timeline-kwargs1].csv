@@ -1,0 +1,213 @@
+,date,user_name,status,retweet_count,like_count
+0,"2022-01-30
+09:19:06",hexonaut,"Wrote an article about deploying your token/dapp to L2 first and the mental
+model switch involved with making this choice.https://t.co/vOIdCse980",71,0
+1,"2022-01-28
+22:49:31",TimBeiko,"New @ethereum #AllCoreDevs update fresh off the press 🔥! It covers Kintsugi 🍵,
+upcoming devnets 🏗, the next Community Call 📣 and Shanghai planning 🇨🇳
+https://t.co/d4EDlDRulZ",74,0
+2,"2022-01-28
+21:34:45",transmissions11,incredible gas alpha from @_hrkrshnn⛽️👑https://t.co/YhvQbRgWo6,67,0
+3,"2022-01-27
+00:36:06",etheralphateam,"We're proud to announce https://t.co/HZDz72oVyt, a resource site geared towards
+Ethereum client diversity.Thanks to @miga_labs for the distribution API based
+on their fingerprinting research &amp; @sproulM_ @ethStaker @ethnimbus
+@ChainSafeth for the feedback during the dev process!",122,0
+4,"2022-01-26
+22:48:32",paulmillr,"Proud to release ethereum-cryptography 1.0 funded by @ethereum foundation.The
+new audited libraries behind it will empower all kinds of projects in the space.
+https://t.co/W0Ewg9b4f3",124,0
+5,"2022-01-24
+16:07:59",ethdotorg,"We've removed all uses of 'Eth2' terminology on https://t.co/v9gxnMUQFz Find
+out why 👇 https://t.co/84uJXSD4q1",370,0
+6,"2022-01-22
+17:47:52",WeekInEthNews,"⟠ Latest Week in Ethereum News!🗓️ @0xstark Year in Ethereum 2021 🐦 @Twitter
+hexagon NFT profile pics on iOS 🐼 @vdWijden Goerli shadow forked in PoW switch
+off testhttps://t.co/mY9HiWlpRDThanks to @kwenta_io &amp; @synthetix_io for
+making this issue possible 🙏",64,0
+7,"2022-01-21
+23:44:59",TimBeiko,"We just wrapped up @ethereum #allcoredevs no. 130! Covered a lot of Merge ⛓
+&amp; Shanghai updates 🇨🇳Agenda: https://t.co/JuXjY6A2Kx Stream: Recap below
+👇🏻 https://t.co/rucvxkdUWv",85,0
+8,"2022-01-20
+19:12:39",UNICEFinnovate,"@UNICEF and @Gigaconnect are looking to invest in #startups developing
+#blockchain-based software solutions that help build capacity for and empower
+communities. 🔗Read more and apply today: https://t.co/imgtjIbLW1#funding
+#startup https://t.co/ckyfkPFUKf",98,0
+9,"2022-01-19
+18:26:23",austingriffith,"🧑‍🚀 If you understand why decentralization is so important and powerful...🧑‍💻
+And you know how to write code and build basic web apps...🌍🛰🌍📡🌎📱🌍
+🎙🌍💳🌎🎮🌏🧙 Explore these 3 major steps to becoming a decentralized
+application developer:",229,0
+10,"2022-01-17
+19:01:22",0xstark,The Year in Ethereum 2021by me &amp; @evan_van_ness https://t.co/qr8Ni5fN75,346,0
+11,"2022-01-17
+01:18:55",WeekInEthNews,"⟠ Latest Week in Ethereum News!⚠️ @sproulM_ super-majority staking client! 🦆
+@optimismPBC transaction fees ~30% cheaper 🧪 @vdWijden Kintsugi testnet
+finalizes after fuzz testinghttps://t.co/Z89yh1nHSGThanks to @StarbloomVent
+for making this issue possible 🙏",113,0
+12,"2022-01-15
+17:56:00",benjaminion_xyz,"Happy New Year, everybody!Here's your first https://t.co/LeRPRKrtQP of 2022 🎉
+Loads going on as ever - apparently Eth2 doesn't stop for holidays 😅#Ethereum",125,0
+13,"2022-01-14
+21:34:38",dannyryan,"The new @ethnimbus release uses 1GB of memory on mainnet today and they expect
+they can get it firmly under 1GB in subsequent releases.This is a *massive*
+accomplishment and makes it a no-brainer client to use in a post-merge context",104,0
+14,"2022-01-11
+17:13:35",crisgarner,"Announcing Honduras CLR Grants! This is something that the @EthereumTGU
+community has been working for months with the @clrfund team to make it happen
+https://t.co/g7l6eStZGY",105,0
+15,"2022-01-09
+21:26:00",WeekInEthNews,"⟠ Latest Week in Ethereum News!🎯 @VitalikButerin multidimensional EIP1559 📺
+@Samsung 2022 TVs to include NFT platform 👷 @austingriffith challenges for web2
+devshttps://t.co/0YzEHmUDQQThanks to @CelerNetwork for making this issue
+possible 🙏",134,0
+16,"2022-01-06
+21:25:35",drakefjustin,"the EF research team will host a Reddit AMA on Jan 7 at 1pm UTC
+https://t.co/J2wL8oDrz9",208,0
+17,"2022-01-06
+16:18:29",austingriffith,"🎖 So you’ve crushed the 🏗 scaffold-eth challenges. 🧙‍♂️ You understand how to
+build a simple NFT, a staking app, and a token vendor.🚁 You’re ready for the
+rest of the mental model.👩‍🎓 Web3 developer next steps…",308,0
+18,"2022-01-05
+21:14:27",go_ethereum,"Geth v1.10.15 is released!It contains a few important bugfixes, so please
+upgrade#golang #Ethereumhttps://t.co/NYphfmkzwL",169,0
+19,"2021-12-31
+14:50:38",vdWijden,"A big thanks to everyone participating in #TestingTheMerge! Some stats:The
+Kintsugi testnet is about to hit block 100.000, and it already has 97.519
+accounts on it! Looking through the blocks, it seems that there's a new
+transaction every block. https://t.co/T2W8ZdTd2L",185,0
+20,"2021-12-29
+20:38:10",EthereumOnARM,"1/ This is an Archive #Ethereum node synced from scratch on a @raspberry_pi
+(@erigoneth). No pruning, an Archive node. So, no more FUD on running an ETH
+node, please. &amp; btw, we are running @ethnimbus with 1 Validator on this
+RPI too. Yes, 1 Archive node + 1 #eth2 node👇 https://t.co/27P8FH9vLN",172,0
+21,"2021-12-26
+22:34:21",WeekInEthNews,"⟠ Latest Week in Ethereum News!⭐ @icebearhww PoW switch off consensus upgrade
+named Bellatrix 💼 @SAP joins @EntEthAlliance / @baselineproto 🎉 @Ethereum teams
+Q4 achievementshttps://t.co/zMF41qIpnDThanks to @kwenta_io &amp;
+@synthetix_io for making this issue possible 🙏",90,0
+22,"2021-12-22
+18:06:19",ethereum,"This holiday season (and always), we’re thankful for the incredible work of the
+many EF-supported teams that continue to improve #Ethereum.A final (hefty) EF-
+Supported Teams Roundup of 2021 from 15+ teams is here, and it's worth the read.
+Enjoy! 🦄https://t.co/HGcVVPCZgX",272,936
+23,"2021-12-22
+17:58:54",pintail_xyz,"New article looking at the Ethereum gas market before and after the London hard
+fork - did EIP-1559 deliver?https://t.co/fEQl1mfSHf",118,0
+24,"2021-12-21
+14:56:53",ethdotorg,"Excited to have the new https://t.co/v9gxnMUQFz homepage live in over 20
+languages 🌍❤️ Check out your language: https://t.co/yidjkdon42",164,0
+25,"2021-12-20
+20:12:10",dannyryan,"Are you* a p2p networking wiz * a lover hard problems * self driven * and want
+to change the world?Then join us as on the EF consensus research team!
+https://t.co/dF5zs203AQ",115,0
+26,"2021-12-20
+16:07:15",TimBeiko,"Over the past few months, client teams have been working tirelessly to implement
+a new set of merge milestones. They are now live on a new testnet: Kintsugi 🍵!
+Here's how you can join the testnet and help with testing:
+https://t.co/ARDezguzXE 👀Christmas came early🎄!",249,0
+27,"2021-12-19
+22:06:36",benjaminion_xyz,"🎄 Did Christmas come early?No, it's only your last pre-festivities edition of
+What's New in Eth2 🎁Here with your usual regular mashup of staking, Merge,
+news and opinion. Lots of Kintsugi stuff in this one.https://t.co/97X85jdCzM
+#Ethereum",81,0
+28,"2021-12-18
+17:34:36",WeekInEthNews,"⟠ Latest Week in Ethereum News!🍵 Kintsugi testnet live, help test PoW switch
+off 2️⃣ @optimismPBC permissionless deployment 👷 @Ethereum Foundation - client
+incentive programhttps://t.co/WJ0qZXcZGYThanks to @StarbloomVent for making
+this issue possible 🙏",64,0
+29,"2021-12-17
+17:47:04",vdWijden,"Are you bored on a friday night? Don't know what to do over the weekend? Get
+involved in #TestingTheMerge and help us get #Ethereum to Proof-of-Stake as soon
+as possibleIt's super easy to get started and we have some more advanced ideas
+to work on here: https://t.co/rrz3rOUhuA https://t.co/pohROKBqMg",49,0
+30,"2021-12-16
+19:39:56",protolambda,"The Kintsugi Merge testnet is live!And it is incredibly easy to use and join,
+thanks to @parithosh_j, @skylenet and the client devs!Help test the Merge, get
+started here: https://t.co/wj0q2a2MYd#ethereum https://t.co/2oAcZ3ObH2
+https://t.co/tIDqLISp59",97,0
+31,"2021-12-16
+19:30:01",ethdotorg,"We've launched a page about Ethereum's energy consumption 🌳🌳 interested to hear
+how we're reducing energy consumption by 99%? 👇👇👇 https://t.co/00qTC4EFcC",490,0
+32,"2021-12-16
+13:50:39",sajidazouarhi,"This is a Ξ 39168 incentive program. 🎉 At current value that's: $158mil This is
+next level ecosystem funding.Kudos to the EF for making it happen and to all
+the client teams.#Ethereum 🚀 https://t.co/sBawLJMKmT https://t.co/gSKiq9RmrO",52,0
+33,"2021-12-14
+07:18:36",AyaMiyagotchi,"1/We strongly believe that a diverse set of clients is essential to Ethereum's
+health and decentralization.To ensure that client teams have a long term
+incentive to maintain the network, the @Ethereum Foundation has launched the
+Client Incentive Program https://t.co/m71r3NnLjg",314,0
+34,"2021-12-13
+17:07:46",EFDevconnect,"👋👋👋...Meet Devconnect: A week-long gathering in Amsterdam featuring
+independent Ethereum events, each with a unique focus.Devconnect aims to bring
+people together in April 2022 to learn &amp; make progress together.More:
+https://t.co/jJb3cV7pIL Visit: https://t.co/UkWYnKg014",148,0
+35,"2021-12-11
+20:24:38",WeekInEthNews,"⟠ Latest Week in Ethereum News!🏁 @VitalikButerin scalable blockchain endgame 🪙
+@Reddit expanding Community Points 🚧 @mirprotocol joins @0xPolygon to build
+Polygon Zerohttps://t.co/oBbBYgiT4AThanks to @CelerNetwork for making this
+issue possible 🙏",69,0
+36,"2021-12-10
+21:59:23",TimBeiko,"We had our last @ethereum #AllCoreDevs of 2021 today 📆! This was IMO one of the
+most interesting calls of the year, and recommend people interested in the
+tradeoffs of Ethereum governance watch the entire thing 🎥Agenda:
+https://t.co/2AIKXvzcaJ Stream:https://t.co/sCqV0s8o6U",82,0
+37,"2021-12-10
+01:08:57",protolambda,Arrow Glacier is here! #ethereum https://t.co/zpNCaQAQB0,67,0
+38,"2021-12-08
+20:07:49",nethermindeth,"👋Don't forget to update your nodes to version 1.11.7 or above before the Arrow
+Glacier mainnet hard fork!Block number: 13,773,000 ETA: 09.December 2021,
+20:30Minimal Arrow Glacier release:https://t.co/KHOpHyzHOi Latest release:
+https://t.co/sdqOGCKL35",50,0
+39,"2021-12-07
+16:49:21",benson_njuguna,"Enhanced trust and timely payouts! We’re proud to be leading a successful
+Microinsurance solution on Ethereum that serves the smallholder farmer community
+in Sub-Saharan Africa. Join the conversation and read more:
+https://t.co/6KBQr5zKty @acreafrica@etherisc@ethereum",48,0
+40,"2021-12-07
+14:31:35",solidity_lang,"The Solidity Developer Survey 2021 is live! 📋🎉 The survey helps us to further
+improve the language &amp; compiler and shape the future roadmap of Solidity. We
+can't wait to hear your thoughts on new features, learn about your coding
+preferences and more! https://t.co/ANei2uytRC https://t.co/yfvE0AGp5s",95,0
+41,"2021-12-06
+17:53:25",TimBeiko,"Arrow Glacier expected in 3 days. If you haven't yet, upgrade your nodes ⛓👀
+https://t.co/VRhXPo7dJy",38,0
+42,"2021-12-05
+20:44:20",tair,"Been learning Web3 on the side and was fortunate to collaborate with @ComityLabs
+🙌 on https://t.co/H4JKerjeEr - An interactive reference to Ethereum Virtual
+Machine Opcodes. Stoked to have my first open-source contribution to Web3. How
+we built it 👉 https://t.co/ui5v5s6paF 🤓",92,0
+43,"2021-12-04
+20:22:40",lightclients,"The Arrow Glacier upgrade is just over one week away - don't forget to update
+your Ethereum clients. https://t.co/DNnNDKpsVG",60,0
+44,"2021-12-04
+20:18:42",benjaminion_xyz,"📰 What's New in #Eth2 has hit the stands! 📰https://t.co/97X85jdCzMI'm sorry
+it's not quite as polished as I usually strive for. I spent 8 hours watching a
+chess match today, which was utterly epic but left me a little behind 😅
+#Ethereum",58,0
+45,"2021-12-03
+02:11:04",TimBeiko,"I just published another #AllCoreDevs update, covering Arrow Glacier 🏹🧊,
+Kintsugi 🍵 and the recently proposed EIP-4488 📜 Strongly recommend for folks
+wanting to get up to speed on the tradeoffs related to the EIP, as things may
+move quickly! https://t.co/RXPYiPIk2B",104,0
+46,"2021-12-02
+18:43:02",gballet,"Interested in implementing verkle trees in your clients, but find the spec
+daunting? @dankrad and I give a simple explanation of what the structure of a
+verkle tree looks like: https://t.co/dDqpUeDD2K",46,0
+47,"2021-12-02
+14:35:43",VitalikButerin,"Happy birthday beacon chain!Here's an updated roadmap diagram for where
+Ethereum protocol development is at and what's coming in what order.(I'm sure
+this is missing a lot, as all diagrams are, but it covers a lot of the important
+stuff!) https://t.co/puWP7hwDlx",4736,0
+48,"2021-12-01
+16:28:19",BanklessHQ,"🚨 IT'S TIME FOR CRYPTO ADVOCACY 🚨Bankless and @gitcoin are teaming up to kick
+off Gitcoin Rd 1️⃣2️⃣$800k is being MATCHED towards advocacy initiatives!
+Come hear the why &amp; how!Panel 1: Why advocacy matters! Panel 2: How to
+support!Starts 2pm EST!https://t.co/RBQ6AjPGVC",92,0
+49,"2021-12-01
+15:59:43",trent_vanepps,"it's another day (gm) so you know i'm tweeting about this community call🤩 w/
+@TimBeiko → Merge Community Call #2 → This Friday! 14:00 UTC (9 ET) Tag your
+favorite Exchanges, Apps, Wallets &amp; Infra Providers to make sure they
+attend! 🛠https://t.co/KtdXZUr0dQ",38,0

@@ -141,7 +141,8 @@ class Option:
         opt_type: int = 1,
     ):
         """
-        Class for getting the greeks of options
+        Class for getting the greeks of options. Inspiration from:
+        http://www.smileofthales.com/computation/option-pricing-python-inheritance/
 
         Parameters
         ----------
@@ -167,13 +168,13 @@ class Option:
         self.div_cont = float(div_cont)
         self.exp_time = float(expiry) / 365.0
         self._sigma = float(vol)
-        self.sigmaT = self._sigma * self.exp_time ** 0.5
+        self.sigmaT = self._sigma * self.exp_time**0.5
 
     @property
     def d1(self):
         return (
             log(self.price / self.strike)
-            + (self.risk_free - self.div_cont + 0.5 * (self.sigma ** 2)) * self.exp_time
+            + (self.risk_free - self.div_cont + 0.5 * (self.sigma**2)) * self.exp_time
         ) / self.sigmaT
 
     @property
@@ -187,7 +188,7 @@ class Option:
     @sigma.setter
     def sigma(self, val):
         self._sigma = val
-        self.sigmaT = val * self.exp_time ** 0.5
+        self.sigmaT = val * self.exp_time**0.5
 
     def Premium(self):
         tmpprem = self.Type * (
@@ -215,7 +216,7 @@ class Option:
             * self.price
             * e ** (-self.div_cont * self.exp_time)
             * norm.pdf(self.d1)
-            * self.exp_time ** 0.5
+            * self.exp_time**0.5
         )
 
     def Theta(self):
@@ -228,7 +229,7 @@ class Option:
             * dfq
             * norm.pdf(self.d1)
             * self.sigma
-            / (self.exp_time ** 0.5)
+            / (self.exp_time**0.5)
             + self.Type
             * (
                 self.div_cont * self.price * dfq * norm.cdf(self.Type * self.d1)

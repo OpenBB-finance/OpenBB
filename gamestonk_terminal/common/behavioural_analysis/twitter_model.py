@@ -44,7 +44,7 @@ def load_analyze_tweets(
         Dataframe of tweets and sentiment
     """
     params = {
-        "query": fr"(\${ticker}) (lang:en)",
+        "query": rf"(\${ticker}) (lang:en)",
         "max_results": str(count),
         "tweet.fields": "created_at,lang",
     }

@@ -10,10 +10,7 @@ from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import (
-    EXPORT_ONLY_RAW_DATA_ALLOWED,
-    parse_known_args_and_warn,
-)
+from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 from gamestonk_terminal.menu import session
 
 # pylint: disable=consider-using-with
@@ -82,19 +79,28 @@ def create_call(other_args: List[str], name: str, filename: str = None) -> None:
         dest="jupyter",
         help="Shows dashboard in jupyter-lab.",
     )
-
-    ns_parser = parse_known_args_and_warn(
-        parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+    parser.add_argument(
+        "-n",
+        "--no-input",
+        action="store_true",
+        default=False,
+        dest="input",
+        help="Skips confirmation to run server.",
     )
+
+    ns_parser = parse_known_args_and_warn(parser, other_args)
 
     if ns_parser:
         cmd = "jupyter-lab" if ns_parser.jupyter else "voila"
         file = os.path.join(
             os.path.abspath(os.path.dirname(__file__)), f"{filename}.ipynb"
         )
-        console.print(f"Warning: opens a port on your computer to run a {cmd} server.")
-        response = input("Would you like us to run the server for you? y/n\n")
-        if response.lower() == "y":
+        if not ns_parser.input:
+            console.print(
+                f"Warning: opens a port on your computer to run a {cmd} server."
+            )
+            response = input("Would you like us to run the server for you? y/n\n")
+        if ns_parser.input or response.lower() == "y":
             subprocess.Popen(
                 f"{cmd} {file}",
                 stdout=subprocess.PIPE,

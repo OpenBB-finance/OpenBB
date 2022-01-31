@@ -76,9 +76,8 @@ def display_trades(
         df_data,
     )
 
-
 @log_start_end(log=logger)
-def display_candles(product_id: str, interval: str, export) -> None:
+def display_candles(product_id: str, interval: str = "24h", export: str = "") -> None:
     """Get candles for chosen trading pair and time interval. [Source: Coinbase]
 
     Parameters
@@ -107,7 +106,7 @@ def display_candles(product_id: str, interval: str, export) -> None:
 
 
 @log_start_end(log=logger)
-def display_stats(product_id: str, export: str) -> None:
+def display_stats(product_id: str, export: str = "") -> None:
     """Get 24 hr stats for the product. Volume is in base currency units.
     Open, high and low are in quote currency units.  [Source: Coinbase]
 

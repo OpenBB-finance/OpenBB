@@ -266,7 +266,7 @@ class DegiroModel:
 
     @log_start_end(log=logger)
     def login(self, credentials: Credentials):
-        self.__trading_api = TradingAPI(credentials=credentials)
+        self.__trading_api.credentials.CopyFrom(credentials)
         self.__trading_api.connect()
         self.__setup_extra_credentials()
 
