@@ -1,12 +1,10 @@
 """CoinGecko view"""
 __docformat__ = "numpy"
-# pylint: disable=C0209
+
 import logging
 import os
 from typing import Union
-
 from pandas.plotting import register_matplotlib_converters
-
 import gamestonk_terminal.cryptocurrency.due_diligence.pycoingecko_model as gecko
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import wrap_text_in_df
 from gamestonk_terminal.decorators import log_start_end

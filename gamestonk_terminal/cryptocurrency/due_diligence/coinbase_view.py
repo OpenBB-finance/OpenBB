@@ -4,10 +4,8 @@ __docformat__ = "numpy"
 import logging
 import os
 from typing import Optional
-
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
-
 from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import plot_order_book
 from gamestonk_terminal.cryptocurrency.due_diligence import coinbase_model
 from gamestonk_terminal.decorators import log_start_end
@@ -63,12 +61,17 @@ def display_trades(
     df_data = df.copy()
 
     print_rich_table(
-        df, headers=list(df.columns), show_index=False,
+        df,
+        headers=list(df.columns),
+        show_index=False,
     )
     console.print("")
 
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), "trades", df_data,
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "trades",
+        df_data,
     )
 
 
@@ -94,7 +97,10 @@ def display_candles(product_id: str, interval: str = "24h", export: str = "") ->
     )
 
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), "candles", df_data,
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "candles",
+        df_data,
     )
 
 
@@ -119,5 +125,8 @@ def display_stats(product_id: str, export: str = "") -> None:
     )
 
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), "stats", df_data,
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "stats",
+        df_data,
     )

@@ -7,7 +7,6 @@ import os
 from typing import List
 import pandas as pd
 from pycoingecko import CoinGeckoAPI
-
 from gamestonk_terminal.decorators import log_start_end
 
 logger = logging.getLogger(__name__)
@@ -201,7 +200,9 @@ def get_gainers_or_losers(
         ]
     ]
     sorted_df = sorted_df.set_axis(
-        GAINERS_LOSERS_COLUMNS + [f"Change {period} [%]"], axis=1, inplace=False,
+        GAINERS_LOSERS_COLUMNS + [f"Change {period} [%]"],
+        axis=1,
+        inplace=False,
     )
     return sorted_df
 
@@ -241,7 +242,8 @@ def get_coin_list() -> pd.DataFrame:
 
     client = CoinGeckoAPI()
     return pd.DataFrame(
-        client.get_coins_list(), columns=["id", "symbol", "name"],
+        client.get_coins_list(),
+        columns=["id", "symbol", "name"],
     ).reset_index()
 
 
