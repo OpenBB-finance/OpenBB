@@ -42,11 +42,11 @@ def display_coin_potential_returns(
     df = gecko.get_coin_potential_returns(main_coin, vs, top, price)
 
     df["Potential Market Cap ($)"] = df.apply(
-        lambda x: f"{'{:,}'.format(int(x['Potential Market Cap ($)']))}", axis=1
+        lambda x: f"{int(x['Potential Market Cap ($)']):n}", axis=1
     )
 
     df["Current Market Cap ($)"] = df.apply(
-        lambda x: f"{'{:,}'.format(int(x['Current Market Cap ($)']))}", axis=1
+        lambda x: f"{int(x['Current Market Cap ($)']):n}", axis=1
     )
 
     print_rich_table(
