@@ -1,10 +1,15 @@
-import discord
+import os
+import disnake
+from PIL import Image
+import numpy as np
+import pandas as pd
+import df2img
+from discordbot.helpers import autocrop_image
 
 from gamestonk_terminal.economy import finviz_model
 
 import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import logger
-from discordbot.helpers import pagination
+from discordbot.config_discordbot import logger
 
 
 async def valuation_command(ctx, economy_group="sector"):
@@ -52,48 +57,88 @@ async def valuation_command(ctx, economy_group="sector"):
         # Retrieve data
         df_group = finviz_model.get_valuation_performance_data(group, "valuation")
 
-        # Debug user output
-        if cfg.DEBUG:
-            logger.debug(df_group.to_string())
-
         # Output data
-        future_column_name = df_group["Name"]
-        df_group = df_group.transpose()
-        df_group.columns = future_column_name
-        df_group.drop("Name")
-        columns = []
+        df = pd.DataFrame(df_group)
+        df = df.replace(np.nan, 0)
 
-        initial_str = "Page 0: Overview"
-        i = 1
-        for col_name in df_group.columns.values:
-            initial_str += f"\nPage {i}: {col_name}"
-            i += 1
+        df = df.set_axis([
+            "Name",
+            "MarketCap",
+            "P/E",
+            "FwdP/E",
+            "PEG",
+            "P/S",
+            "P/B",
+            "P/C",
+            "P/FCF",
+            "EPSpast5Y",
+            "EPSnext5Y",
+            "Salespast5Y",
+            "Change",
+            "Volume",
+        ], axis='columns')
 
-        columns.append(
-            discord.Embed(
-                title=f"Economy: [Finviz] Valuation {group}",
-                description=initial_str,
-                colour=cfg.COLOR,
-            ).set_author(
-                name=cfg.AUTHOR_NAME,
-                icon_url=cfg.AUTHOR_ICON_URL,
-            )
+        df["P/E"] = pd.to_numeric(df["P/E"].astype(float))
+        df["FwdP/E"] = pd.to_numeric(df["FwdP/E"].astype(float))
+        df["EPSpast5Y"] = pd.to_numeric(df["EPSpast5Y"].astype(float))
+        df["EPSnext5Y"] = pd.to_numeric(df["EPSnext5Y"].astype(float))
+        df["Salespast5Y"] = pd.to_numeric(df["Salespast5Y"].astype(float))
+        df["Volume"] = pd.to_numeric(df["Volume"].astype(float))
+        df["Volume"] = df["Volume"] / 1_000_000
+
+        formats = {
+            'P/E': '{:.2f}',
+            'FwdP/E': '{:.2f}',
+            'EPSpast5Y': '{:.2f}',
+            'EPSnext5Y': '{:.2f}',
+            'Salespast5Y': '{:.2f}',
+            'Change': '{:.2f}',
+            'Volume': '{:.0f}M',
+        }
+        for col, f in formats.items():
+            df[col] = df[col].map(lambda x: f.format(x))
+
+        df = df.fillna("")
+        df.set_index("Name", inplace=True)
+
+        dindex = len(df.index)
+        fig = df2img.plot_dataframe(
+            df,
+            fig_size=(1600, (40 + (50 * dindex))),
+            col_width=[12, 5, 4, 4, 4, 4, 4, 4, 4, 6, 6, 6, 4, 4],
+            tbl_cells=dict(
+                align=['left', 'center'],
+                height=35,
+            ),
+            template="plotly_dark",
+            font=dict(
+                family="Consolas",
+                size=20,
+            ),
+            paper_bgcolor="rgba(0, 0, 0, 0)",
         )
-        for column in df_group.columns.values:
-            columns.append(
-                discord.Embed(
-                    description="```" + df_group[column].fillna("").to_string() + "```",
-                    colour=cfg.COLOR,
-                ).set_author(
-                    name=cfg.AUTHOR_NAME,
-                    icon_url=cfg.AUTHOR_ICON_URL,
-                )
-            )
+        imagefile = "econ-valuation.png"
+        df2img.save_dataframe(fig=fig, filename=imagefile)
 
-        await pagination(columns, ctx)
+        image = Image.open(imagefile)
+        image = autocrop_image(image, 0)
+        image.save(imagefile, "PNG", quality=100)
+
+        image = disnake.File(imagefile)
+
+        title = f"Economy: [Finviz] Valuation {group}"
+        embed = disnake.Embed(title=title, colour=cfg.COLOR)
+        embed.set_image(url=f"attachment://{imagefile}")
+        embed.set_author(
+            name=cfg.AUTHOR_NAME,
+            icon_url=cfg.AUTHOR_ICON_URL,
+        )
+        os.remove(imagefile)
+
+        await ctx.send(embed=embed, file=image)
 
     except Exception as e:
-        embed = discord.Embed(
+        embed = disnake.Embed(
             title="ERROR Economy: [Finviz] Valuation",
             colour=cfg.COLOR,
             description=e,
@@ -103,4 +148,4 @@ async def valuation_command(ctx, economy_group="sector"):
             icon_url=cfg.AUTHOR_ICON_URL,
         )
 
-        await ctx.send(embed=embed)
+        await ctx.send(embed=embed, delete_after=30.0)

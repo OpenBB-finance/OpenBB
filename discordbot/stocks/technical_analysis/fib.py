@@ -1,6 +1,6 @@
 import os
 from datetime import datetime, timedelta
-import discord
+import disnake
 from matplotlib import pyplot as plt
 
 from gamestonk_terminal.helper_funcs import plot_autoscale
@@ -8,8 +8,9 @@ from gamestonk_terminal.common.technical_analysis import custom_indicators_model
 from gamestonk_terminal import config_plot as cfp
 
 import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import gst_imgur, logger
+from discordbot.config_discordbot import gst_imgur, logger
 import discordbot.helpers
+from PIL import Image
 
 
 async def fib_command(ctx, ticker="", start="", end=""):
@@ -63,6 +64,7 @@ async def fib_command(ctx, ticker="", start="", end=""):
         ) = custom_indicators_model.calculate_fib_levels(df_stock, 120, f_start, f_end)
 
         levels = df_fib.Price
+        plt.style.use("seaborn")
         fig, ax = plt.subplots(figsize=(plot_autoscale()), dpi=cfp.PLOT_DPI)
 
         ax.plot(df_stock["Adj Close"], "b")
@@ -87,13 +89,34 @@ async def fib_command(ctx, ticker="", start="", end=""):
         fig.tight_layout(pad=1)
 
         plt.savefig("ta_fib.png")
+        imagefile = "ta_fib.png"
+
+        img = Image.open(imagefile)
+        print(img.size)
+        im_bg = Image.open(cfg.IMG_BG)
+        h = img.height + 240
+        w = img.width + 520
+
+        img = img.resize((w, h), Image.ANTIALIAS)
+        x1 = int(.5 * im_bg.size[0]) - int(.5 * img.size[0])
+        y1 = int(.5 * im_bg.size[1]) - int(.5 * img.size[1])
+        x2 = int(.5 * im_bg.size[0]) + int(.5 * img.size[0])
+        y2 = int(.5 * im_bg.size[1]) + int(.5 * img.size[1])
+        img = img.convert('RGB')
+        im_bg.paste(img, box=(x1 - 5, y1, x2 - 5, y2))
+        im_bg.save(imagefile, "PNG", quality=100)
+        from discordbot.helpers import autocrop_image
+        image = Image.open(imagefile)
+        image = autocrop_image(image, 0)
+        image.save(imagefile, "PNG", quality=100)
+
         uploaded_image = gst_imgur.upload_image("ta_fib.png", title="something")
         image_link = uploaded_image.link
         if cfg.DEBUG:
             logger.debug("Image URL: %s", image_link)
         title = "Stocks: Fibonacci-Retracement-Levels " + ticker
         str_df_fib = "```" + df_fib.to_string(index=False) + "```"
-        embed = discord.Embed(title=title, colour=cfg.COLOR, description=str_df_fib)
+        embed = disnake.Embed(title=title, colour=cfg.COLOR, description=str_df_fib)
         embed.set_author(
             name=cfg.AUTHOR_NAME,
             icon_url=cfg.AUTHOR_ICON_URL,
@@ -104,7 +127,7 @@ async def fib_command(ctx, ticker="", start="", end=""):
         await ctx.send(embed=embed)
 
     except Exception as e:
-        embed = discord.Embed(
+        embed = disnake.Embed(
             title="ERROR Stocks: Fibonacci-Retracement-Levels",
             colour=cfg.COLOR,
             description=e,
@@ -114,4 +137,4 @@ async def fib_command(ctx, ticker="", start="", end=""):
             icon_url=cfg.AUTHOR_ICON_URL,
         )
 
-        await ctx.send(embed=embed)
+        await ctx.send(embed=embed, delete_after=30.0)

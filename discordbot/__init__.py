@@ -1,5 +1,6 @@
 # flake8: noqa
 from . import (
-    economy,
     stocks,
+    economy,
+    menus,
 )

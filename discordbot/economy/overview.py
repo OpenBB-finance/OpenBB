@@ -1,9 +1,14 @@
-import discord
+import os
+import disnake
+from PIL import Image
+import pandas as pd
+import df2img
+from discordbot.helpers import autocrop_image
 
 from gamestonk_terminal.economy import wsj_model
 
 import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import logger
+from discordbot.config_discordbot import logger
 
 
 async def overview_command(ctx):
@@ -12,35 +17,67 @@ async def overview_command(ctx):
     try:
         # Debug user input
         if cfg.DEBUG:
-            logger.debug("!economy.overview")
+            logger.debug("econ-overview")
 
         # Retrieve data
-        df_data = wsj_model.market_overview()
+        df = wsj_model.market_overview()
+        df["Price"] = pd.to_numeric(df["Price"].astype(float))
+        df["Chg"] = pd.to_numeric(df["Chg"].astype(float))
+        df["%Chg"] = pd.to_numeric(df["%Chg"].astype(float))
 
-        # Debug user output
-        if cfg.DEBUG:
-            logger.debug(df_data.to_string())
+        df = df.fillna("")
+        df.set_index(" ", inplace=True)
 
-        # Output data
-        if df_data.empty:
-            df_data_str = "No overview data available"
-        else:
-            df_data_str = "```" + df_data.to_string(index=False) + "```"
+        formats = {'Price': '${:.2f}', 'Chg': '${:.2f}', '%Chg': '{:.2f}%'}
+        for col, f in formats.items():
+            df[col] = df[col].map(lambda x: f.format(x))
 
-        embed = discord.Embed(
-            title="Economy: [WSJ] Market Overview",
-            description=df_data_str,
-            colour=cfg.COLOR,
+        df = df[
+            [
+                "Price",
+                "Chg",
+                "%Chg",
+            ]
+        ]
+
+        dindex = len(df.index)
+        fig = df2img.plot_dataframe(
+            df,
+            fig_size=(800, (40 + (40 * dindex))),
+            col_width=[8, 3, 3],
+            tbl_cells=dict(
+                align="left",
+                height=35,
+            ),
+            template="plotly_dark",
+            font=dict(
+                family="Consolas",
+                size=20,
+            ),
+            paper_bgcolor="rgba(0, 0, 0, 0)",
         )
+        imagefile = "econ-indices.png"
+        df2img.save_dataframe(fig=fig, filename=imagefile)
+
+        image = Image.open(imagefile)
+        image = autocrop_image(image, 0)
+        image.save(imagefile, "PNG", quality=100)
+
+        image = disnake.File(imagefile)
+
+        title = "Economy: [WSJ] Market Overview"
+        embed = disnake.Embed(title=title, colour=cfg.COLOR)
+        embed.set_image(url=f"attachment://{imagefile}")
         embed.set_author(
             name=cfg.AUTHOR_NAME,
             icon_url=cfg.AUTHOR_ICON_URL,
         )
+        os.remove(imagefile)
 
-        await ctx.send(embed=embed)
+        await ctx.send(embed=embed, file=image)
 
     except Exception as e:
-        embed = discord.Embed(
+        embed = disnake.Embed(
             title="ERROR Economy: [WSJ] Market Overview",
             colour=cfg.COLOR,
             description=e,
@@ -50,4 +87,4 @@ async def overview_command(ctx):
             icon_url=cfg.AUTHOR_ICON_URL,
         )
 
-        await ctx.send(embed=embed)
+        await ctx.send(embed=embed, delete_after=30.0)

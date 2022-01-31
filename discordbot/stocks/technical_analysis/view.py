@@ -1,6 +1,6 @@
 import os
 import io
-import discord
+import disnake
 import matplotlib.pyplot as plt
 from PIL import Image
 
@@ -9,7 +9,7 @@ from gamestonk_terminal.stocks.technical_analysis import finviz_model
 from gamestonk_terminal.config_plot import PLOT_DPI
 
 import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import gst_imgur, logger
+from discordbot.config_discordbot import gst_imgur, logger
 
 
 async def view_command(ctx, ticker=""):
@@ -27,6 +27,7 @@ async def view_command(ctx, ticker=""):
         image_data = finviz_model.get_finviz_image(ticker)
         dataBytesIO = io.BytesIO(image_data)
         im = Image.open(dataBytesIO)
+        plt.style.use("seaborn")
 
         fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
         ax.set_axis_off()
@@ -35,12 +36,33 @@ async def view_command(ctx, ticker=""):
         plt.imshow(im)
 
         plt.savefig("ta_view.png")
+        imagefile = "ta_view.png"
+
+        img = Image.open(imagefile)
+        print(img.size)
+        im_bg = Image.open(cfg.IMG_BG)
+        h = img.height + 240
+        w = img.width + 520
+
+        img = img.resize((w, h), Image.ANTIALIAS)
+        x1 = int(.5 * im_bg.size[0]) - int(.5 * img.size[0])
+        y1 = int(.5 * im_bg.size[1]) - int(.5 * img.size[1])
+        x2 = int(.5 * im_bg.size[0]) + int(.5 * img.size[0])
+        y2 = int(.5 * im_bg.size[1]) + int(.5 * img.size[1])
+        img = img.convert('RGB')
+        im_bg.paste(img, box=(x1 - 5, y1, x2 - 5, y2))
+        im_bg.save(imagefile, "PNG", quality=100)
+        from discordbot.helpers import autocrop_image
+        image = Image.open(imagefile)
+        image = autocrop_image(image, 0)
+        image.save(imagefile, "PNG", quality=100)
+
         uploaded_image = gst_imgur.upload_image("ta_view.png", title="something")
         image_link = uploaded_image.link
         if cfg.DEBUG:
             logger.debug("Image URL: %s", image_link)
         title = "Stocks: [Finviz] Trendlines & Data " + ticker
-        embed = discord.Embed(title=title, colour=cfg.COLOR)
+        embed = disnake.Embed(title=title, colour=cfg.COLOR)
         embed.set_author(
             name=cfg.AUTHOR_NAME,
             icon_url=cfg.AUTHOR_ICON_URL,
@@ -51,7 +73,7 @@ async def view_command(ctx, ticker=""):
         await ctx.send(embed=embed)
 
     except Exception as e:
-        embed = discord.Embed(
+        embed = disnake.Embed(
             title="ERROR Stocks: [Finviz] Trendlines & Data",
             colour=cfg.COLOR,
             description=e,
@@ -61,4 +83,4 @@ async def view_command(ctx, ticker=""):
             icon_url=cfg.AUTHOR_ICON_URL,
         )
 
-        await ctx.send(embed=embed)
+        await ctx.send(embed=embed, delete_after=30.0)

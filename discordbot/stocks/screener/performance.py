@@ -1,18 +1,18 @@
 import difflib
 
-import discord
+import disnake
 import pandas as pd
 
 from gamestonk_terminal.stocks.screener.finviz_model import get_screener_data
 
 import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import logger
-from discordbot.helpers import pagination
+from discordbot.config_discordbot import logger
+from menus.menu import Menu
 from discordbot.stocks.screener import screener_options as so
 
 
 async def performance_command(
-    ctx, preset="template", sort="", limit="5", ascend="False"
+    ctx, preset: str = "template", sort: str = "", limit: int = 5, ascend: bool = False
 ):
     """Displays stocks and sort by performance categories [Finviz]"""
     try:
@@ -27,20 +27,8 @@ async def performance_command(
             )
 
         # Check for argument
-        if not limit.lstrip("-").isnumeric():
-            raise Exception("Number has to be an integer")
-
-        limit = int(limit)
-
         if limit < 0:
             raise Exception("Number has to be above 0")
-
-        if ascend.lower() == "false":
-            ascend = False
-        elif ascend.lower() == "true":
-            ascend = True
-        else:
-            raise Exception("ascend argument has to be true or false")
 
         # Output Data
         df_screen = get_screener_data(
@@ -112,13 +100,20 @@ async def performance_command(
             df_screen.drop("Ticker")
 
             columns = []
-            initial_str = description + "Page 0: Overview"
+            optionss = [
+                disnake.SelectOption(label='Overview', value='0', emoji="🟢"),
+            ]
+            initial_str = description + "Overview"
             i = 1
             for column in df_screen.columns.values:
-                initial_str = initial_str + "\nPage " + str(i) + ": " + column
+                menu = f"\nPage {i}: {column}"
+                initial_str += f"\nPage {i}: {column}"
+                optionss.append(
+                    disnake.SelectOption(label=menu, value=f'{i}', emoji="🟢"),
+                )
                 i += 1
             columns.append(
-                discord.Embed(
+                disnake.Embed(
                     title="Stocks: [Finviz] Performance Screener",
                     description=initial_str,
                     colour=cfg.COLOR,
@@ -129,7 +124,7 @@ async def performance_command(
             )
             for column in df_screen.columns.values:
                 columns.append(
-                    discord.Embed(
+                    disnake.Embed(
                         title="Stocks: [Finviz] Performance Screener",
                         description="```"
                         + df_screen[column].fillna("").to_string()
@@ -141,10 +136,10 @@ async def performance_command(
                     )
                 )
 
-            await pagination(columns, ctx)
+            await ctx.send(embed=columns[0], view=Menu(columns, optionss))
 
     except Exception as e:
-        embed = discord.Embed(
+        embed = disnake.Embed(
             title="ERROR Stocks: [Finviz] Performance Screener",
             colour=cfg.COLOR,
             description=e,
@@ -154,4 +149,4 @@ async def performance_command(
             icon_url=cfg.AUTHOR_ICON_URL,
         )
 
-        await ctx.send(embed=embed)
+        await ctx.send(embed=embed, delete_after=30.0)
