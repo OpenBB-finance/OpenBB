@@ -1,20 +1,27 @@
 """ Stockgrid View """
 __docformat__ = "numpy"
 
+import logging
 import os
 from datetime import timedelta
+
 import matplotlib.pyplot as plt
+
 from gamestonk_terminal.config_plot import PLOT_DPI
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.feature_flags import USE_ION
-from gamestonk_terminal.stocks.dark_pool_shorts import stockgrid_model
 from gamestonk_terminal.helper_funcs import (
-    plot_autoscale,
     export_data,
+    plot_autoscale,
     print_rich_table,
 )
 from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.stocks.dark_pool_shorts import stockgrid_model
+
+logger = logging.getLogger(__name__)
 
 
+@log_start_end(log=logger)
 def dark_pool_short_positions(num: int, sort_field: str, ascending: bool, export: str):
     """Get dark pool short positions. [Source: Stockgrid]
 
@@ -69,6 +76,7 @@ def dark_pool_short_positions(num: int, sort_field: str, ascending: bool, export
     )
 
 
+@log_start_end(log=logger)
 def short_interest_days_to_cover(num: int, sort_field: str, export: str):
     """Print short interest and days to cover. [Source: Stockgrid]
 
@@ -112,6 +120,7 @@ def short_interest_days_to_cover(num: int, sort_field: str, export: str):
     )
 
 
+@log_start_end(log=logger)
 def short_interest_volume(ticker: str, num: int, raw: bool, export: str):
     """Plot price vs short interest volume. [Source: Stockgrid]
 
@@ -233,6 +242,7 @@ def short_interest_volume(ticker: str, num: int, raw: bool, export: str):
     )
 
 
+@log_start_end(log=logger)
 def net_short_position(ticker: str, num: int, raw: bool, export: str):
     """Plot net short position. [Source: Stockgrid]
 

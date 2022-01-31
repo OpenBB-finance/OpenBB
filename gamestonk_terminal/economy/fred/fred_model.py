@@ -1,16 +1,22 @@
 """ Fred Model """
 __docformat__ = "numpy"
 
-from typing import List, Tuple, Dict
-import requests
+import logging
+from typing import Dict, List, Tuple
+
 import fred
 import pandas as pd
+import requests
 from fredapi import Fred
 
 from gamestonk_terminal import config_terminal as cfg
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import get_user_agent
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def check_series_id(series_id: str) -> Tuple[bool, Dict]:
     """Checks if series ID exists in fred
 
@@ -35,6 +41,7 @@ def check_series_id(series_id: str) -> Tuple[bool, Dict]:
     return r.status_code == 200, r.json()
 
 
+@log_start_end(log=logger)
 def get_series_notes(series_term: str) -> pd.DataFrame:
     """Get Series notes. [Source: FRED]
     Parameters
@@ -59,6 +66,7 @@ def get_series_notes(series_term: str) -> pd.DataFrame:
     return df_fred
 
 
+@log_start_end(log=logger)
 def get_series_ids(series_term: str, num: int) -> Tuple[List[str], List[str]]:
     """Get Series IDs. [Source: FRED]
     Parameters
@@ -88,6 +96,7 @@ def get_series_ids(series_term: str, num: int) -> Tuple[List[str], List[str]]:
     return df_series["id"].values, df_series["title"].values
 
 
+@log_start_end(log=logger)
 def get_series_data(series_id: str, start: str) -> pd.DataFrame:
     """Get Series data. [Source: FRED]
     Parameters

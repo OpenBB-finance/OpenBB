@@ -1,10 +1,15 @@
 """Covid Model"""
 __docformat__ = "numpy"
 
+import logging
 import warnings
-import pandas as pd
-import numpy as np
 
+import numpy as np
+import pandas as pd
+
+from gamestonk_terminal.decorators import log_start_end
+
+logger = logging.getLogger(__name__)
 
 global_cases_time_series = (
     "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_"
@@ -16,6 +21,7 @@ global_deaths_time_series = (
 )
 
 
+@log_start_end(log=logger)
 def get_global_cases(country: str) -> pd.DataFrame:
     """Get historical cases for given country
 
@@ -44,6 +50,7 @@ def get_global_cases(country: str) -> pd.DataFrame:
     return cases
 
 
+@log_start_end(log=logger)
 def get_global_deaths(country: str) -> pd.DataFrame:
     """Get historical deaths for given country
 
@@ -72,6 +79,7 @@ def get_global_deaths(country: str) -> pd.DataFrame:
     return deaths
 
 
+@log_start_end(log=logger)
 def get_case_slopes(days_back: int = 30, threshold: int = 10000) -> pd.DataFrame:
     """Load cases and find slope over period
 

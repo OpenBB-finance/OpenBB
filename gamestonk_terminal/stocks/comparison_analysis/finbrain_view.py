@@ -1,6 +1,7 @@
 """ Comparison Analysis FinBrain View """
 __docformat__ = "numpy"
 
+import logging
 import os
 from typing import List
 
@@ -8,23 +9,26 @@ import matplotlib.dates as mdates
 import numpy as np
 import pandas as pd
 import seaborn as sns
-
 from matplotlib import pyplot as plt
 from pandas.plotting import register_matplotlib_converters
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_plot import PLOT_DPI
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
     export_data,
     plot_autoscale,
     print_rich_table,
 )
-from gamestonk_terminal.stocks.comparison_analysis import finbrain_model
 from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.stocks.comparison_analysis import finbrain_model
+
+logger = logging.getLogger(__name__)
 
 register_matplotlib_converters()
 
 
+@log_start_end(log=logger)
 def display_sentiment_compare(similar: List[str], raw: bool = False, export: str = ""):
     """Display sentiment for all ticker. [Source: FinBrain]
 
@@ -104,6 +108,7 @@ def display_sentiment_compare(similar: List[str], raw: bool = False, export: str
     console.print("")
 
 
+@log_start_end(log=logger)
 def display_sentiment_correlation(
     similar: List[str], raw: bool = False, export: str = ""
 ):

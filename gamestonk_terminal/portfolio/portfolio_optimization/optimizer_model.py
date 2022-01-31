@@ -1,17 +1,23 @@
 """Optimization Model"""
 __docformat__ = "numpy"
 
-from typing import List, Dict, Tuple
+import logging
+from typing import Dict, List, Tuple
 
 import numpy as np
 import pandas as pd
 import yfinance as yf
-from pypfopt.efficient_frontier import EfficientFrontier
 from pypfopt import expected_returns, risk_models
+from pypfopt.efficient_frontier import EfficientFrontier
+
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.portfolio.portfolio_optimization import yahoo_finance_model
 from gamestonk_terminal.rich_config import console
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def get_equal_weights(stocks: List[str], value: float = 1.0) -> Dict:
     """Equally weighted portfolio, where weight = 1/# of stocks
 
@@ -30,6 +36,7 @@ def get_equal_weights(stocks: List[str], value: float = 1.0) -> Dict:
     return {stock: value * round(1 / len(stocks), 5) for stock in stocks}
 
 
+@log_start_end(log=logger)
 def get_property_weights(
     stocks: List[str], s_property: str, value: float = 1.0
 ) -> Dict:
@@ -65,6 +72,7 @@ def get_property_weights(
     return {k: value * v / prop_sum for k, v in prop.items()}
 
 
+@log_start_end(log=logger)
 def get_maxsharpe_portfolio(
     stocks: List[str], period: str, rfrate: float
 ) -> Tuple[Dict, EfficientFrontier]:
@@ -91,6 +99,7 @@ def get_maxsharpe_portfolio(
     return dict(ef.max_sharpe(rfrate)), ef
 
 
+@log_start_end(log=logger)
 def get_minvol_portfolio(
     stocks: List[str], period: str = "3mo"
 ) -> Tuple[Dict, EfficientFrontier]:
@@ -115,6 +124,7 @@ def get_minvol_portfolio(
     return dict(ef.min_volatility()), ef
 
 
+@log_start_end(log=logger)
 def get_maxquadutil_portfolio(
     stocks: List[str],
     period: str = "3mo",
@@ -146,6 +156,7 @@ def get_maxquadutil_portfolio(
     return ef.max_quadratic_utility(risk_aversion, market_neutral), ef
 
 
+@log_start_end(log=logger)
 def get_efficient_risk_portfolio(
     stocks: List[str],
     period: str = "3mo",
@@ -177,6 +188,7 @@ def get_efficient_risk_portfolio(
     return ef.efficient_risk(target_vol, market_neutral), ef
 
 
+@log_start_end(log=logger)
 def get_efficient_return_portfolio(
     stocks: List[str],
     period: str = "3mo",
@@ -208,6 +220,7 @@ def get_efficient_return_portfolio(
     return ef.efficient_return(target_return, market_neutral), ef
 
 
+@log_start_end(log=logger)
 def prepare_efficient_frontier(stock_prices: pd.DataFrame):
     """Take in a dataframe of prices and return an efficient frontier object
 
@@ -227,6 +240,7 @@ def prepare_efficient_frontier(stock_prices: pd.DataFrame):
     return EfficientFrontier(mu, S)
 
 
+@log_start_end(log=logger)
 def generate_random_portfolios(
     stocks: List[str], period: str = "3mo", n_portfolios: int = 300
 ):

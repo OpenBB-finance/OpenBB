@@ -1,11 +1,18 @@
 """Finviz model"""
 __docformat__ = "numpy"
 
+import logging
+
 import requests
 from finvizfinance.quote import finvizfinance
 from finvizfinance.util import headers
 
+from gamestonk_terminal.decorators import log_start_end
 
+logger = logging.getLogger(__name__)
+
+
+@log_start_end(log=logger)
 def get_finviz_image(ticker: str) -> bytes:
     """Get finviz image for given ticker
 

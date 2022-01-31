@@ -1,7 +1,13 @@
 import json
+import logging
+
 import pandas as pd
 import requests
+
 from gamestonk_terminal import config_terminal as cfg
+from gamestonk_terminal.decorators import log_start_end
+
+logger = logging.getLogger(__name__)
 
 api_url = "https://api.glassnode.com/v1/metrics/"
 
@@ -167,6 +173,7 @@ INTERVALS_DISPLAY_EXCHANGE_NET_POSITION_CHANGE = ["24h"]
 INTERVALS_EXCHANGE_BALANCES = ["24h"]
 
 
+@log_start_end(log=logger)
 def get_close_price(asset: str, interval: str, since: int, until: int) -> pd.DataFrame:
     """Returns the price of a cryptocurrency
     [Source: https://glassnode.com]
@@ -208,6 +215,7 @@ def get_close_price(asset: str, interval: str, since: int, until: int) -> pd.Dat
     return pd.DataFrame()
 
 
+@log_start_end(log=logger)
 def get_non_zero_addresses(
     asset: str, interval: str, since: int, until: int
 ) -> pd.DataFrame:
@@ -251,6 +259,7 @@ def get_non_zero_addresses(
     return pd.DataFrame()
 
 
+@log_start_end(log=logger)
 def get_active_addresses(
     asset: str, interval: str, since: int, until: int
 ) -> pd.DataFrame:
@@ -294,6 +303,7 @@ def get_active_addresses(
     return pd.DataFrame()
 
 
+@log_start_end(log=logger)
 def get_hashrate(asset: str, interval: str, since: int, until: int) -> pd.DataFrame:
     """Returns dataframe with mean hashrate of btc or eth blockchain and asset price
     [Source: https://glassnode.com]
@@ -340,6 +350,7 @@ def get_hashrate(asset: str, interval: str, since: int, until: int) -> pd.DataFr
     return pd.DataFrame()
 
 
+@log_start_end(log=logger)
 def get_exchange_balances(
     asset: str, exchange: str, interval: str, since: int, until: int
 ) -> pd.DataFrame:
@@ -398,6 +409,7 @@ def get_exchange_balances(
     return pd.DataFrame()
 
 
+@log_start_end(log=logger)
 def get_exchange_net_position_change(
     asset: str, exchange: str, interval: str, since: int, until: int
 ) -> pd.DataFrame:

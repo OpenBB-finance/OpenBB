@@ -1,14 +1,21 @@
 """Business Insider Model"""
 __docformat__ = "numpy"
 
+import logging
+
+import pandas as pd
 import requests
 from bs4 import BeautifulSoup
-import pandas as pd
 from rapidfuzz import fuzz
+
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import get_user_agent
 from gamestonk_terminal.rich_config import console
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def get_management(ticker: str) -> pd.DataFrame:
     """Get company managers from Business Insider
 

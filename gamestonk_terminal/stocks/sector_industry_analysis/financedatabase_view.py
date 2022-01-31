@@ -2,24 +2,30 @@
 __docformat__ = "numpy"
 # pylint:disable=too-many-arguments,too-many-lines
 
+import logging
 import os
 from collections import OrderedDict
 from typing import Dict
+
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_plot import PLOT_DPI
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
-    plot_autoscale,
     export_data,
+    plot_autoscale,
     print_rich_table,
 )
-from gamestonk_terminal.stocks.sector_industry_analysis import financedatabase_model
 from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.stocks.sector_industry_analysis import financedatabase_model
+
+logger = logging.getLogger(__name__)
 
 
+@log_start_end(log=logger)
 def display_bars_financials(
     finance_key: str,
     finance_metric: str,
@@ -223,6 +229,7 @@ def display_bars_financials(
     return dict(), list()
 
 
+@log_start_end(log=logger)
 def display_companies_per_sector_in_country(
     country: str,
     mktcap: str = "",
@@ -368,6 +375,7 @@ def display_companies_per_sector_in_country(
     )
 
 
+@log_start_end(log=logger)
 def display_companies_per_industry_in_country(
     country: str,
     mktcap: str = "",
@@ -522,6 +530,7 @@ def display_companies_per_industry_in_country(
     )
 
 
+@log_start_end(log=logger)
 def display_companies_per_industry_in_sector(
     sector: str,
     mktcap: str = "",
@@ -679,6 +688,7 @@ def display_companies_per_industry_in_sector(
     )
 
 
+@log_start_end(log=logger)
 def display_companies_per_country_in_sector(
     sector: str,
     mktcap: str = "",
@@ -829,6 +839,7 @@ def display_companies_per_country_in_sector(
     )
 
 
+@log_start_end(log=logger)
 def display_companies_per_country_in_industry(
     industry: str,
     mktcap: str = "",
