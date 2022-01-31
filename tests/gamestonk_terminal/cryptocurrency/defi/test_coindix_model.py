@@ -19,41 +19,6 @@ def test_get_defi_vaults(recorder):
 
 
 @pytest.mark.vcr(record_mode="none")
-def test_get_defi_vaults_status_400(mocker):
-    # MOCK GET
-    attrs = {
-        "status_code": 400,
-    }
-    mock_response = mocker.Mock(**attrs)
-    mocker.patch(target="requests.get", new=mocker.Mock(return_value=mock_response))
-
-    with pytest.raises(Exception) as _:
-        coindix_model.get_defi_vaults(
-            chain=None,
-            protocol=None,
-            kind=None,
-        )
-
-
-@pytest.mark.vcr(record_mode="none")
-def test_get_defi_vaults_value_error(mocker):
-    # MOCK GET
-    attrs = {
-        "status_code": 200,
-        "json.side_effect": UnicodeDecodeError,
-    }
-    mock_response = mocker.Mock(**attrs)
-    mocker.patch(target="requests.get", new=mocker.Mock(return_value=mock_response))
-
-    with pytest.raises(ValueError) as _:
-        coindix_model.get_defi_vaults(
-            chain=None,
-            protocol=None,
-            kind=None,
-        )
-
-
-@pytest.mark.vcr(record_mode="none")
 def test_get_defi_vaults_no_data(mocker):
     # MOCK GET
     attrs = {
