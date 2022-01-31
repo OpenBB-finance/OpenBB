@@ -9,7 +9,6 @@ import pytest
 from gamestonk_terminal.cryptocurrency.onchain import ethplorer_model
 
 
-
 @pytest.mark.vcr
 @pytest.mark.parametrize(
     "func, kwargs",
