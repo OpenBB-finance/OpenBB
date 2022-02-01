@@ -1,10 +1,17 @@
 """Blockchain model"""
 __docformat__ = "numpy"
 
-import requests
+import logging
+
 import pandas as pd
+import requests
+
+from gamestonk_terminal.decorators import log_start_end
+
+logger = logging.getLogger(__name__)
 
 
+@log_start_end(log=logger)
 def _make_request(endpoint: str) -> dict:
     """Helper method handles Blockchain API requests. [Source: https://api.blockchain.info/]
 
@@ -30,6 +37,7 @@ def _make_request(endpoint: str) -> dict:
         raise ValueError(f"Invalid Response: {response.text}") from e
 
 
+@log_start_end(log=logger)
 def get_btc_circulating_supply() -> pd.DataFrame:
     """Returns BTC circulating supply [Source: https://api.blockchain.info/]
 
@@ -48,6 +56,7 @@ def get_btc_circulating_supply() -> pd.DataFrame:
     return df
 
 
+@log_start_end(log=logger)
 def get_btc_confirmed_transactions() -> pd.DataFrame:
     """Returns BTC confirmed transactions [Source: https://api.blockchain.info/]
 

@@ -45,15 +45,3 @@ def test_call_func(func, kwargs, recorder):
     result = getattr(pycoingecko_model, func)(**kwargs)
 
     recorder.capture(result)
-
-
-@pytest.mark.vcr(record_mode="none")
-def test_get_gainers_or_losers_value_error():
-    with pytest.raises(ValueError) as _:
-        pycoingecko_model.get_gainers_or_losers(period="WRONG_PERIOD")
-
-
-@pytest.mark.vcr(record_mode="none")
-def test_read_file_data_type_error():
-    with pytest.raises(TypeError) as _:
-        pycoingecko_model.read_file_data(file_name="MOCK_WRONG_FILE_NAME.EXTENSION")

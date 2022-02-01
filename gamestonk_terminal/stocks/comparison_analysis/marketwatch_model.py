@@ -1,16 +1,21 @@
 """ Comparison Analysis Marketwatch Model """
 __docformat__ = "numpy"
 
+import logging
 from typing import Dict, List, Tuple
 
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import get_user_agent
 from gamestonk_terminal.rich_config import console
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def get_financial_comparisons(
     all_stocks: List[str], data: str, timeframe: str, quarter: bool
 ) -> pd.DataFrame:
@@ -57,6 +62,7 @@ def get_financial_comparisons(
     return combine_similar_financials(ddf_financials, all_stocks, s_timeframe, quarter)
 
 
+@log_start_end(log=logger)
 def prepare_df_financials(
     ticker: str, statement: str, quarter: bool = False
 ) -> pd.DataFrame:
@@ -155,6 +161,7 @@ def prepare_df_financials(
     return df_financials
 
 
+@log_start_end(log=logger)
 def prepare_comparison_financials(
     similar: List[str], statement: str, quarter: bool
 ) -> Tuple[List[str], Dict[str, pd.DataFrame]]:
@@ -202,6 +209,7 @@ def prepare_comparison_financials(
     return list(items), financials
 
 
+@log_start_end(log=logger)
 def combine_similar_financials(
     financials: Dict[str, pd.DataFrame],
     similar: List[str],

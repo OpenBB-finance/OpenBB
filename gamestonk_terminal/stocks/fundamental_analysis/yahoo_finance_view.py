@@ -1,22 +1,28 @@
 """ Yahoo Finance View """
 __docformat__ = "numpy"
 
+import logging
 import os
 import webbrowser
+
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from gamestonk_terminal.stocks.fundamental_analysis import yahoo_finance_model
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.config_plot import PLOT_DPI
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
     export_data,
     plot_autoscale,
     print_rich_table,
 )
-from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.stocks.fundamental_analysis import yahoo_finance_model
+
+logger = logging.getLogger(__name__)
 
 
+@log_start_end(log=logger)
 def open_headquarters_map(ticker: str):
     """Headquarters location of the company
     Parameters
@@ -28,6 +34,7 @@ def open_headquarters_map(ticker: str):
     console.print("")
 
 
+@log_start_end(log=logger)
 def open_web(ticker: str):
     """Website of the company
     Parameters
@@ -39,6 +46,7 @@ def open_web(ticker: str):
     console.print("")
 
 
+@log_start_end(log=logger)
 def display_info(ticker: str):
     """Yahoo Finance ticker info
     Parameters
@@ -61,6 +69,7 @@ def display_info(ticker: str):
     console.print("")
 
 
+@log_start_end(log=logger)
 def display_shareholders(ticker: str):
     """Yahoo Finance ticker shareholders
     Parameters
@@ -85,6 +94,7 @@ def display_shareholders(ticker: str):
         console.print("")
 
 
+@log_start_end(log=logger)
 def display_sustainability(ticker: str):
     """Yahoo Finance ticker sustainability
     Parameters
@@ -110,6 +120,7 @@ def display_sustainability(ticker: str):
     console.print("")
 
 
+@log_start_end(log=logger)
 def display_calendar_earnings(ticker: str):
     """Yahoo Finance ticker calendar earnings
     Parameters
@@ -130,6 +141,7 @@ def display_calendar_earnings(ticker: str):
     console.print("")
 
 
+@log_start_end(log=logger)
 def display_dividends(
     ticker: str, limit: int = 12, plot: bool = False, export: str = ""
 ):

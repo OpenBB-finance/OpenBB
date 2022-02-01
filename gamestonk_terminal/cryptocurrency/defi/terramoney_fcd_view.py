@@ -1,25 +1,33 @@
 """Terra Money FCD view"""
 __docformat__ = "numpy"
 
+import logging
 import os
+
 import matplotlib.pyplot as plt
-from matplotlib import ticker, dates as mdates
+from matplotlib import dates as mdates
+from matplotlib import ticker
+
+from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.config_plot import PLOT_DPI
+from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
+    prettify_column_names,
+    very_long_number_formatter,
+)
 from gamestonk_terminal.cryptocurrency.defi import terramoney_fcd_model
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
     export_data,
     long_number_format,
     plot_autoscale,
     print_rich_table,
 )
-from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
-    prettify_column_names,
-    very_long_number_formatter,
-)
-from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.rich_config import console
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def display_account_staking_info(
     address: str = "", top: int = 10, export: str = ""
 ) -> None:
@@ -50,6 +58,7 @@ def display_account_staking_info(
     )
 
 
+@log_start_end(log=logger)
 def display_validators(
     top: int = 10, sortby: str = "votingPower", descend: bool = False, export: str = ""
 ) -> None:
@@ -94,6 +103,7 @@ def display_validators(
     )
 
 
+@log_start_end(log=logger)
 def display_gov_proposals(
     top: int = 10,
     status: str = "all",
@@ -138,6 +148,7 @@ def display_gov_proposals(
     )
 
 
+@log_start_end(log=logger)
 def display_account_growth(
     kind: str = "total", cumulative: bool = False, top: int = 90, export: str = ""
 ) -> None:
@@ -198,6 +209,7 @@ def display_account_growth(
     )
 
 
+@log_start_end(log=logger)
 def display_staking_ratio_history(top: int = 90, export: str = "") -> None:
     """Display terra blockchain staking ratio history [Source: https://fcd.terra.dev/v1]
 
@@ -239,6 +251,7 @@ def display_staking_ratio_history(top: int = 90, export: str = "") -> None:
     )
 
 
+@log_start_end(log=logger)
 def display_staking_returns_history(top: int = 90, export: str = "") -> None:
     """Display terra blockchain staking returns history [Source: https://fcd.terra.dev/swagger]
 

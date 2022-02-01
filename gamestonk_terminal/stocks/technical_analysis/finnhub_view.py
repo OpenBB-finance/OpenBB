@@ -1,18 +1,23 @@
 """Finnhub view"""
 __docformat__ = "numpy"
 
-import os
-
+import logging
 import math
+import os
 from datetime import datetime
-import yfinance as yf
+
 import mplfinance as mpf
+import yfinance as yf
 
-from gamestonk_terminal.helper_funcs import plot_autoscale, export_data
-from gamestonk_terminal.stocks.technical_analysis import finnhub_model
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
 from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.stocks.technical_analysis import finnhub_model
+
+logger = logging.getLogger(__name__)
 
 
+@log_start_end(log=logger)
 def plot_pattern_recognition(ticker: str, resolution: str, export: str):
     """Plot pattern recognition signal
 

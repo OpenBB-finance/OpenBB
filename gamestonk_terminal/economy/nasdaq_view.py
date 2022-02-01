@@ -1,22 +1,28 @@
 """NASDAQ Data Link View"""
 __docformat__ = "numpy"
 
-from typing import List
+import logging
 import os
+from typing import List
 
 import matplotlib.pyplot as plt
 import pandas as pd
+
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.config_plot import PLOT_DPI
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.economy import nasdaq_model
 from gamestonk_terminal.helper_funcs import (
     export_data,
     plot_autoscale,
     print_rich_table,
 )
-from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.rich_config import console
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def display_big_mac_index(
     country_codes: List[str], raw: bool = False, export: str = ""
 ):

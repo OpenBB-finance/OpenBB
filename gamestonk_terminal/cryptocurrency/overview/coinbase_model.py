@@ -1,10 +1,12 @@
 """Coinbase model"""
 __docformat__ = "numpy"
 
+import logging
 import pandas as pd
-from gamestonk_terminal.cryptocurrency.coinbase_helpers import (
-    make_coinbase_request,
-)
+from gamestonk_terminal.cryptocurrency.coinbase_helpers import make_coinbase_request
+from gamestonk_terminal.decorators import log_start_end
+
+logger = logging.getLogger(__name__)
 
 PAIRS_FILTERS = [
     "id",
@@ -18,6 +20,7 @@ PAIRS_FILTERS = [
 ]
 
 
+@log_start_end(log=logger)
 def get_trading_pairs() -> pd.DataFrame:
     """Get a list of available currency pairs for trading. [Source: Coinbase]
 

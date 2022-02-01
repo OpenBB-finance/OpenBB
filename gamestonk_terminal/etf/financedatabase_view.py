@@ -1,13 +1,20 @@
 """Finance Database view"""
 __docformat__ = "numpy"
 
+import logging
 import os
+
 import pandas as pd
+
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.etf import financedatabase_model
 from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.rich_config import console
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def display_etf_by_name(
     name: str,
     limit: int,
@@ -46,6 +53,7 @@ def display_etf_by_name(
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "ln_fd", data)
 
 
+@log_start_end(log=logger)
 def display_etf_by_description(
     description: str,
     limit: int,
@@ -84,6 +92,7 @@ def display_etf_by_description(
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "ld", data)
 
 
+@log_start_end(log=logger)
 def display_etf_by_category(
     category: str,
     limit: int,

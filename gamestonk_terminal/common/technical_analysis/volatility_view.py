@@ -1,6 +1,7 @@
 """Volatility Technical Indicators View"""
 __docformat__ = "numpy"
 
+import logging
 import os
 
 import matplotlib.pyplot as plt
@@ -10,12 +11,16 @@ from pandas.plotting import register_matplotlib_converters
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.common.technical_analysis import volatility_model
 from gamestonk_terminal.config_plot import PLOT_DPI
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
 from gamestonk_terminal.rich_config import console
+
+logger = logging.getLogger(__name__)
 
 register_matplotlib_converters()
 
 
+@log_start_end(log=logger)
 def display_bbands(
     df_stock: pd.DataFrame,
     length: int = 15,
@@ -82,6 +87,7 @@ def display_bbands(
     )
 
 
+@log_start_end(log=logger)
 def display_donchian(
     df_stock: pd.DataFrame,
     upper_length: int = 20,
@@ -149,6 +155,7 @@ def display_donchian(
     )
 
 
+@log_start_end(log=logger)
 def view_kc(
     df_stock: pd.DataFrame,
     length: int = 20,

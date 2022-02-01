@@ -1,16 +1,22 @@
 """Substack model"""
 __docformat__ = "numpy"
 
-import textwrap
 import concurrent.futures
+import logging
+import textwrap
+
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 from dateutil import parser
 
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.rich_config import console
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def scrape_substack(url: str) -> list:
     """Helper method to scrape newsletters from substack.
     [Source: substack.com]
@@ -42,6 +48,7 @@ def scrape_substack(url: str) -> list:
     return results
 
 
+@log_start_end(log=logger)
 def get_newsletters() -> pd.DataFrame:
     """Scrape all substack newsletters from url list.
     [Source: substack.com]

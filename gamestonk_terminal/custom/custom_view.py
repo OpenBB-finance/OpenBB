@@ -1,17 +1,22 @@
 """Custom Controller View"""
 __docformat__ = "numpy"
 
+import logging
 import os
 
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from gamestonk_terminal.helper_funcs import plot_autoscale, export_data
-from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.config_plot import PLOT_DPI
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
 from gamestonk_terminal.rich_config import console
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def custom_plot(
     data: pd.DataFrame,
     y_col: str,

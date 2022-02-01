@@ -1,11 +1,17 @@
 """ opensea.io View """
 
+import logging
 import os
-from gamestonk_terminal.helper_funcs import export_data, print_rich_table
+
 from gamestonk_terminal.cryptocurrency.nft.opensea_model import get_collection_stats
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.rich_config import console
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def display_collection_stats(slug: str, export: str):
     """Display collection stats. [Source: opensea.io]
 

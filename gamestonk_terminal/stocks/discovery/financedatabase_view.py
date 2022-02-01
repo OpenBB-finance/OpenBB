@@ -2,12 +2,19 @@
 __docformat__ = "numpy"
 # pylint:disable=too-many-arguments
 
+import logging
+
 import financedatabase as fd
 import pandas as pd
+
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import print_rich_table
 from gamestonk_terminal.rich_config import console
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def show_equities(
     country: str,
     sector: str,

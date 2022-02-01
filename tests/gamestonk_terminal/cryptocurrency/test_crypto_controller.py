@@ -48,6 +48,15 @@ COINBASE_SHOW_AVAILABLE_PAIRS_OF_GIVEN_SYMBOL = (
 )
 
 
+@pytest.fixture(scope="module")
+def vcr_config():
+    return {
+        "filter_query_parameters": [
+            ("days", "MOCK_DAYS"),
+        ]
+    }
+
+
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.parametrize(
     "queue, expected",
@@ -350,5 +359,5 @@ def test_call_func_no_current_coin(tested_func):
 @pytest.mark.record_stdout
 def test_call_load():
     controller = crypto_controller.CryptoController()
-    other_args = [SYMBOL]
+    other_args = [SYMBOL, "-s", "2021-01-29"]
     controller.call_load(other_args=other_args)

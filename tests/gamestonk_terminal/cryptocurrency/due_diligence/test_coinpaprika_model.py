@@ -7,6 +7,16 @@ import pytest
 from gamestonk_terminal.cryptocurrency.due_diligence import coinpaprika_model
 
 
+@pytest.fixture(scope="module")
+def vcr_config():
+    return {
+        "filter_query_parameters": [
+            ("start", "mock_start"),
+            ("end", "mock_end"),
+        ]
+    }
+
+
 @pytest.mark.vcr
 @pytest.mark.parametrize(
     "func, kwargs",
