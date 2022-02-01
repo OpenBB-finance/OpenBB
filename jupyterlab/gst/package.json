@@ -76,7 +76,8 @@
     "typescript": "<4.4"
   },
   "resolutions": {
-    "json-schema": "^0.4.0"
+    "json-schema": "^0.4.0",
+    "marked": "^4.0.10"
   },
   "sideEffects": [
     "style/*.css",
