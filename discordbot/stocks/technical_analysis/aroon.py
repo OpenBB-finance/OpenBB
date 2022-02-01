@@ -118,9 +118,11 @@ async def aroon_command(ctx, ticker="", length="25", scalar="100", start="", end
         )
         fig.add_hline(
             y=50,
-            fillcolor="grey", opacity=1,
-            layer="below", line_width=3,
-            line=dict(color="grey", dash='dash'),
+            fillcolor="grey",
+            opacity=1,
+            layer="below",
+            line_width=3,
+            line=dict(color="grey", dash="dash"),
             row=2,
             col=1,
         )
@@ -138,15 +140,10 @@ async def aroon_command(ctx, ticker="", length="25", scalar="100", start="", end
                 rangeslider=dict(visible=False),
                 type="date",
             ),
-            dragmode='pan',
-            legend=dict(
-                yanchor="top",
-                y=0.99,
-                xanchor="left",
-                x=0.01
-            ),
+            dragmode="pan",
+            legend=dict(yanchor="top", y=0.99, xanchor="left", x=0.01),
         )
-        config = dict({'scrollZoom': True})
+        config = dict({"scrollZoom": True})
         imagefile = "ta_aroon.png"
 
         # Check if interactive settings are enabled
@@ -157,7 +154,8 @@ async def aroon_command(ctx, ticker="", length="25", scalar="100", start="", end
             plt_link = f"[Interactive]({cfg.INTERACTIVE_URL}/aroon_{html_ran}.html)"
 
         fig.update_layout(
-            width=800, height=500,
+            width=800,
+            height=500,
         )
         fig.write_image(imagefile)
 
@@ -169,11 +167,11 @@ async def aroon_command(ctx, ticker="", length="25", scalar="100", start="", end
 
         # Paste fig onto background img and autocrop background
         img = img.resize((w, h), Image.ANTIALIAS)
-        x1 = int(.5 * im_bg.size[0]) - int(.5 * img.size[0])
-        y1 = int(.5 * im_bg.size[1]) - int(.5 * img.size[1])
-        x2 = int(.5 * im_bg.size[0]) + int(.5 * img.size[0])
-        y2 = int(.5 * im_bg.size[1]) + int(.5 * img.size[1])
-        img = img.convert('RGB')
+        x1 = int(0.5 * im_bg.size[0]) - int(0.5 * img.size[0])
+        y1 = int(0.5 * im_bg.size[1]) - int(0.5 * img.size[1])
+        x2 = int(0.5 * im_bg.size[0]) + int(0.5 * img.size[0])
+        y2 = int(0.5 * im_bg.size[1]) + int(0.5 * img.size[1])
+        img = img.convert("RGB")
         im_bg.paste(img, box=(x1 - 5, y1, x2 - 5, y2))
         im_bg.save(imagefile, "PNG", quality=100)
         image = Image.open(imagefile)
@@ -186,11 +184,7 @@ async def aroon_command(ctx, ticker="", length="25", scalar="100", start="", end
         if cfg.DEBUG:
             logger.debug("Image: %s", imagefile)
         title = f"Stocks: Aroon-Indicator {ticker}"
-        embed = disnake.Embed(
-            title=title,
-            description=plt_link,
-            colour=cfg.COLOR
-        )
+        embed = disnake.Embed(title=title, description=plt_link, colour=cfg.COLOR)
         embed.set_image(url=f"attachment://{imagefile}")
         embed.set_author(
             name=cfg.AUTHOR_NAME,

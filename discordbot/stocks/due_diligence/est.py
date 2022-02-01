@@ -55,7 +55,7 @@ async def est_command(ctx, ticker: str = ""):
                 size=20,
             ),
             template="plotly_dark",
-            paper_bgcolor="rgba(0, 0, 0, 0)"
+            paper_bgcolor="rgba(0, 0, 0, 0)",
         )
         imagefile = "estimates.png"
 
@@ -80,7 +80,7 @@ async def est_command(ctx, ticker: str = ""):
                 size=20,
             ),
             template="plotly_dark",
-            paper_bgcolor="rgba(0, 0, 0, 0)"
+            paper_bgcolor="rgba(0, 0, 0, 0)",
         )
         imagefile = "earnings.png"
 
@@ -104,7 +104,7 @@ async def est_command(ctx, ticker: str = ""):
                 size=20,
             ),
             template="plotly_dark",
-            paper_bgcolor="rgba(0, 0, 0, 0)"
+            paper_bgcolor="rgba(0, 0, 0, 0)",
         )
         imagefile = "revenues.png"
 
@@ -135,9 +135,15 @@ async def est_command(ctx, ticker: str = ""):
         embeds[2].set_image(url=link_revenues)
         # Output data
         optionss = [
-            disnake.SelectOption(label=f'{ticker.upper()} Year Estimates', value='0', emoji="🟢"),
-            disnake.SelectOption(label=f'{ticker.upper()} Quarter Earnings', value='1', emoji="🟢"),
-            disnake.SelectOption(label=f'{ticker.upper()} Quarter Revenues', value='2', emoji="🟢"),
+            disnake.SelectOption(
+                label=f"{ticker.upper()} Year Estimates", value="0", emoji="🟢"
+            ),
+            disnake.SelectOption(
+                label=f"{ticker.upper()} Quarter Earnings", value="1", emoji="🟢"
+            ),
+            disnake.SelectOption(
+                label=f"{ticker.upper()} Quarter Revenues", value="2", emoji="🟢"
+            ),
         ]
 
         await ctx.send(embed=embeds[0], view=Menu(embeds, optionss))

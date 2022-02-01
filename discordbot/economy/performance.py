@@ -36,7 +36,7 @@ async def performance_command(ctx, economy_group="sector"):
     try:
         # Debug user input
         if cfg.DEBUG:
-            logger.debug("!economy.performance %s", economy_group)
+            logger.debug("econ-performance %s", economy_group)
 
         # Select default group
         if not economy_group:
@@ -64,32 +64,35 @@ async def performance_command(ctx, economy_group="sector"):
         df["Avg Volume"] = df["Avg Volume"] / 1_000_000
 
         formats = {
-            'Perf Month': '{:.2f}',
-            'Perf Quart': '{:.2f}',
-            'Perf Half': '{:.2f}',
-            'Perf Year': '{:.2f}',
-            'Perf YTD': '{:.2f}',
-            'Avg Volume': '{:.0f}M',
-            'Change': '{:.2f}',
-            'Volume': '{:.0f}M',
+            "Perf Month": "{:.2f}",
+            "Perf Quart": "{:.2f}",
+            "Perf Half": "{:.2f}",
+            "Perf Year": "{:.2f}",
+            "Perf YTD": "{:.2f}",
+            "Avg Volume": "{:.0f}M",
+            "Change": "{:.2f}",
+            "Volume": "{:.0f}M",
         }
         for col, f in formats.items():
             df[col] = df[col].map(lambda x: f.format(x))
 
-        df = df.set_axis([
-            "Name",
-            "Week",
-            "Month",
-            "3Month",
-            "6Month",
-            "1Year",
-            "YTD",
-            "Recom",
-            "Avg Vol.",
-            "RelVolume",
-            "Change",
-            "Volume",
-        ], axis='columns')
+        df = df.set_axis(
+            [
+                "Name",
+                "Week",
+                "Month",
+                "3Month",
+                "6Month",
+                "1Year",
+                "YTD",
+                "Recom",
+                "Avg Vol.",
+                "RelVolume",
+                "Change",
+                "Volume",
+            ],
+            axis="columns",
+        )
 
         df = df.fillna("")
         df.set_index("Name", inplace=True)
@@ -100,7 +103,7 @@ async def performance_command(ctx, economy_group="sector"):
             fig_size=(1500, (40 + (50 * dindex))),
             col_width=[10, 3, 3, 3, 3, 3, 3, 3, 4, 4, 3, 3.5],
             tbl_cells=dict(
-                align=['left', 'center'],
+                align=["left", "center"],
                 height=35,
             ),
             template="plotly_dark",

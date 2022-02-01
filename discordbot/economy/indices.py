@@ -15,6 +15,10 @@ async def indices_command(ctx):
     """US indices overview [Wall St. Journal]"""
 
     try:
+        # Debug user input
+        if cfg.DEBUG:
+            logger.debug("econ-indices")
+
         # Retrieve data
         df = wsj_model.us_indices()
         df["Price"] = pd.to_numeric(df["Price"].astype(float))
@@ -23,7 +27,7 @@ async def indices_command(ctx):
 
         df = df.fillna("")
         df.set_index(" ", inplace=True)
-        formats = {'Price': '${:.2f}', 'Chg': '${:.2f}', '%Chg': '{:.2f}%'}
+        formats = {"Price": "${:.2f}", "Chg": "${:.2f}", "%Chg": "{:.2f}%"}
         for col, f in formats.items():
             df[col] = df[col].map(lambda x: f.format(x))
 
@@ -44,7 +48,7 @@ async def indices_command(ctx):
             fig_size=(800, (40 + (40 * dindex))),
             col_width=[8, 3, 3],
             tbl_cells=dict(
-                align=['left', 'center'],
+                align=["left", "center"],
                 height=35,
             ),
             template="plotly_dark",

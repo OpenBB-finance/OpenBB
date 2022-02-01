@@ -7,9 +7,7 @@ from discordbot.config_discordbot import logger
 from menus.menu import Menu
 
 
-async def lasttrades_command(
-    ctx, gov_type="", past_days: int = 5, representative=""
-):
+async def lasttrades_command(ctx, gov_type="", past_days: int = 5, representative=""):
     """Displays trades made by the congress/senate/house [quiverquant.com]"""
     try:
         # Debug user input
@@ -83,7 +81,7 @@ async def lasttrades_command(
                     f"{', '.join(df_gov['Representative'].str.split().str[0].unique())}"
                 )
             optionss = [
-                disnake.SelectOption(label='Overview', value='0', emoji="🟢"),
+                disnake.SelectOption(label="Overview", value="0", emoji="🟢"),
             ]
             initial_str = "Overview"
             i = 1
@@ -91,7 +89,7 @@ async def lasttrades_command(
                 menu = f"\nPage {i}: {col_name}"
                 initial_str += f"\nPage {i}: {col_name}"
                 optionss.append(
-                    disnake.SelectOption(label=menu, value=f'{i}', emoji="🟢"),
+                    disnake.SelectOption(label=menu, value=f"{i}", emoji="🟢"),
                 )
                 i += 1
 
@@ -124,7 +122,7 @@ async def lasttrades_command(
 
         else:
             optionss = [
-                disnake.SelectOption(label='Overview', value='0', emoji="🟢"),
+                disnake.SelectOption(label="Overview", value="0", emoji="🟢"),
             ]
             initial_str = "Overview"
             i = 1
@@ -132,7 +130,7 @@ async def lasttrades_command(
                 menu = f"\nPage {i}: {col_name}"
                 initial_str += f"\nPage {i}: {col_name}"
                 optionss.append(
-                    disnake.SelectOption(label=menu, value=f'{i}', emoji="🟢"),
+                    disnake.SelectOption(label=menu, value=f"{i}", emoji="🟢"),
                 )
                 i += 1
 

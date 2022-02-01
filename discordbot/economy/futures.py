@@ -15,6 +15,10 @@ async def futures_command(ctx):
     """Futures and commodities overview [Wall St. Journal]"""
 
     try:
+        # Debug user input
+        if cfg.DEBUG:
+            logger.debug("econ-futures")
+
         # Retrieve data
         df = wsj_model.top_commodities()
         df["Price"] = pd.to_numeric(df["Price"].astype(float))
@@ -27,7 +31,7 @@ async def futures_command(ctx):
 
         df = df.fillna("")
         df.set_index(" ", inplace=True)
-        formats = {'Price': '${:.2f}', 'Chg': '${:.2f}', '%Chg': '{:.2f}%'}
+        formats = {"Price": "${:.2f}", "Chg": "${:.2f}", "%Chg": "{:.2f}%"}
         for col, f in formats.items():
             df[col] = df[col].map(lambda x: f.format(x))
         df = df[

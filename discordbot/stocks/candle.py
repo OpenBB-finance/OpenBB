@@ -67,7 +67,9 @@ async def candle_command(
 
             df_stock_candidate = yf.download(
                 ticker,
-                start=s_date_start if s_start_dt > start else start.strftime("%Y-%m-%d"),
+                start=s_date_start
+                if s_start_dt > start
+                else start.strftime("%Y-%m-%d"),
                 progress=False,
                 interval=s_int,
                 prepost=True,
@@ -133,9 +135,10 @@ async def candle_command(
                 rangeslider=dict(visible=False),
                 type="date",
             ),
-            dragmode='drawline',
-            newshape_line_color='red',
+            dragmode="pan",
+            hovermode="x unified",
         )
+        fig.update_traces(xaxis='x1')
         if interval != 1440:
             if futures in ticker.upper():
                 fig.update_xaxes(
@@ -151,7 +154,7 @@ async def candle_command(
                         dict(bounds=[19, 9.5], pattern="hour"),
                     ],
                 )
-        config = dict({'scrollZoom': True})
+        config = dict({"scrollZoom": True})
         imagefile = "candle.png"
 
         # Check if interactive settings are enabled
@@ -162,7 +165,8 @@ async def candle_command(
             plt_link = f"[Interactive]({cfg.INTERACTIVE_URL}/candle_{html_ran}.html)"
 
         fig.update_layout(
-            width=800, height=500,
+            width=800,
+            height=500,
         )
         fig.write_image(imagefile)
 
@@ -174,11 +178,11 @@ async def candle_command(
 
         # Paste fig onto background img and autocrop background
         img = img.resize((w, h), Image.ANTIALIAS)
-        x1 = int(.5 * im_bg.size[0]) - int(.5 * img.size[0])
-        y1 = int(.5 * im_bg.size[1]) - int(.5 * img.size[1])
-        x2 = int(.5 * im_bg.size[0]) + int(.5 * img.size[0])
-        y2 = int(.5 * im_bg.size[1]) + int(.5 * img.size[1])
-        img = img.convert('RGB')
+        x1 = int(0.5 * im_bg.size[0]) - int(0.5 * img.size[0])
+        y1 = int(0.5 * im_bg.size[1]) - int(0.5 * img.size[1])
+        x2 = int(0.5 * im_bg.size[0]) + int(0.5 * img.size[0])
+        y2 = int(0.5 * im_bg.size[1]) + int(0.5 * img.size[1])
+        img = img.convert("RGB")
         im_bg.paste(img, box=(x1 - 5, y1, x2 - 5, y2))
         im_bg.save(imagefile, "PNG", quality=100)
         image = Image.open(imagefile)
@@ -188,10 +192,7 @@ async def candle_command(
         image = disnake.File(imagefile)
 
         print(f"Image {imagefile}")
-        embed = disnake.Embed(
-            title=title,
-            description=plt_link,
-            colour=cfg.COLOR)
+        embed = disnake.Embed(title=title, description=plt_link, colour=cfg.COLOR)
         embed.set_image(url=f"attachment://{imagefile}")
         embed.set_author(
             name=cfg.AUTHOR_NAME,

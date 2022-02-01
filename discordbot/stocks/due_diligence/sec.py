@@ -27,8 +27,8 @@ async def sec_command(ctx, ticker=""):
             logger.debug(df_financials.to_string())
 
         df = df_financials
-        df.loc[:, 'Link'] = '[Link Source](' + df.loc[:, 'Link'].astype(str)
-        df.loc[:, 'Link'] = df.loc[:, 'Link'] + ')'
+        df.loc[:, "Link"] = "[Link Source](" + df.loc[:, "Link"].astype(str)
+        df.loc[:, "Link"] = df.loc[:, "Link"] + ")"
         # Output data
         embed = disnake.Embed(
             title="Stocks: [Market Watch] SEC Filings",

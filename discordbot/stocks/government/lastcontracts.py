@@ -35,7 +35,7 @@ async def lastcontracts_command(ctx, past_transactions_days: int = 2, num: int =
 
         df_contracts = df_contracts[["Date", "Ticker", "Amount", "Agency"]][:num]
         optionss = [
-            disnake.SelectOption(label='Overview', value='0', emoji="🟢"),
+            disnake.SelectOption(label="Overview", value="0", emoji="🟢"),
         ]
         initial_str = "Overview"
         i = 1
@@ -43,7 +43,7 @@ async def lastcontracts_command(ctx, past_transactions_days: int = 2, num: int =
             menu = f"\nPage {i}: {col_name}"
             initial_str += f"\nPage {i}: {col_name}"
             optionss.append(
-                disnake.SelectOption(label=menu, value=f'{i}', emoji="🟢"),
+                disnake.SelectOption(label=menu, value=f"{i}", emoji="🟢"),
             )
             i += 1
 

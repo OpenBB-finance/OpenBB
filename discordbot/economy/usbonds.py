@@ -26,18 +26,25 @@ async def usbonds_command(ctx):
         df["Yld (%)"] = pd.to_numeric(df["Yld (%)"].astype(float))
         df["Yld Chg (%)"] = pd.to_numeric(df["Yld Chg (%)"].astype(float))
 
-        formats = {'Rate (%)': '{:.2f}%', 'Yld (%)': '{:.2f}%', 'Yld Chg (%)': '{:.2f}%'}
+        formats = {
+            "Rate (%)": "{:.2f}%",
+            "Yld (%)": "{:.2f}%",
+            "Yld Chg (%)": "{:.2f}%",
+        }
         for col, f in formats.items():
             df[col] = df[col].map(lambda x: f.format(x))
 
         df = df.fillna("")
         df.set_index(" ", inplace=True)
 
-        df = df.set_axis([
-            "Rate",
-            "Yld",
-            "Yld Chg",
-        ], axis='columns')
+        df = df.set_axis(
+            [
+                "Rate",
+                "Yld",
+                "Yld Chg",
+            ],
+            axis="columns",
+        )
 
         dindex = len(df.index)
         fig = df2img.plot_dataframe(

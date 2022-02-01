@@ -15,13 +15,17 @@ async def currencies_command(ctx):
     """Currencies overview [Wall St. Journal]"""
 
     try:
+        # Debug user input
+        if cfg.DEBUG:
+            logger.debug("econ-currencies")
+
         # Retrieve data
         df = wsj_model.global_currencies()
         df = pd.DataFrame.from_dict(df)
         df["Last"] = pd.to_numeric(df["Last"].astype(float))
         df["Chng"] = pd.to_numeric(df["Chng"].astype(float))
         df["%Chng"] = pd.to_numeric(df["%Chng"].astype(float))
-        formats = {'Last': '{:.2f}', 'Chng': '{:.2f}', '%Chng': '{:.2f}%'}
+        formats = {"Last": "{:.2f}", "Chng": "{:.2f}", "%Chng": "{:.2f}%"}
         for col, f in formats.items():
             df[col] = df[col].map(lambda x: f.format(x))
         df = df.fillna("")
@@ -75,7 +79,6 @@ async def currencies_command(ctx):
         await ctx.send(embed=embed, file=image)
 
     except Exception as e:
-        print(e)
         embed = disnake.Embed(
             title="ERROR Economy: [WSJ] Currencies",
             colour=cfg.COLOR,

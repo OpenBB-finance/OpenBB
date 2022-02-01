@@ -5,6 +5,7 @@ import disnake.ext.commands as commands
 import pandas as pd
 from cachetools import TTLCache, cached
 
+from discordbot.config_discordbot import logger
 from discordbot.stocks.government.lasttrades import lasttrades_command
 from discordbot.stocks.government.topbuys import topbuys_command
 from discordbot.stocks.government.topsells import topsells_command
@@ -18,7 +19,7 @@ from discordbot.stocks.government.lobbying import lobbying_command
 
 
 def default_completion(inter: disnake.AppCmdInter) -> list[str]:
-    return ["Start Typing", "If you want", "to", "Live"]
+    return ["Start Typing", "for a", "stock ticker"]
 
 
 def ticker_autocomp(inter: disnake.AppCmdInter, ticker: str):
@@ -60,6 +61,7 @@ class GovernmentCommands(commands.Cog):
         representative: Enter name of a representative
         """
         await ctx.response.defer()
+        logger.info("gov-lasttrades")
         await lasttrades_command(ctx, gov_type, past_days, representative)
 
     @commands.slash_command(name="gov-topbuys")
@@ -78,9 +80,10 @@ class GovernmentCommands(commands.Cog):
         gov_type: Government Type
         past_transactions_months: Positive number of past transaction months
         num: Number of most sold stocks to retrieve
-        raw: True or false
+        raw: If raw data should be outputed
         """
         await ctx.response.defer()
+        logger.info("gov-topbuys")
         await topbuys_command(ctx, gov_type, past_transactions_months, num, raw)
 
     @commands.slash_command(name="gov-topsells")
@@ -99,9 +102,10 @@ class GovernmentCommands(commands.Cog):
         gov_type: Government Type
         past_transactions_months: Positive number of past transaction months
         num: Number of most sold stocks to retrieve
-        raw: True or false
+        raw: If raw data should be outputed
         """
         await ctx.response.defer()
+        logger.info("gov-topsells")
         await topsells_command(ctx, gov_type, past_transactions_months, num, raw)
 
     @commands.slash_command(name="gov-lastcontracts")
@@ -116,6 +120,7 @@ class GovernmentCommands(commands.Cog):
         num: Number of contracts
         """
         await ctx.response.defer()
+        logger.info("gov-lastcontracts")
         await lastcontracts_command(ctx, past_transactions_days, num)
 
     @commands.slash_command(name="gov-qtrcontracts")
@@ -132,18 +137,23 @@ class GovernmentCommands(commands.Cog):
         analysis: Possible arguments: total, upmom & downmom
         num: Number of contracts
         """
+        await ctx.response.defer()
+        logger.info("gov-qtrcontracts")
         await qtrcontracts_command(ctx, num, analysis)
 
     @commands.slash_command(name="gov-toplobbying")
-    async def toplobbying(self, ctx: disnake.AppCmdInter, num: int = 10, raw: bool = False):
+    async def toplobbying(
+        self, ctx: disnake.AppCmdInter, num: int = 10, raw: bool = False
+    ):
         """Displays top lobbying firms [quiverquant.com]
 
         Parameters
         -----------
         num: Number to show
-        raw: True or false
+        raw: If raw data should be outputed
         """
         await ctx.response.defer()
+        logger.info("gov-toplobbying")
         await toplobbying_command(ctx, num, raw)
 
     @commands.slash_command(name="gov-gtrades")
@@ -162,9 +172,10 @@ class GovernmentCommands(commands.Cog):
         ticker: Stock Ticker
         gov_type: Government Type
         past_transactions_months: Positive number of past transaction months
-        raw: True or false
+        raw: If raw data should be outputed
         """
         await ctx.response.defer()
+        logger.info("gov-gtrades")
         await gtrades_command(ctx, ticker, gov_type, past_transactions_months, raw)
 
     @commands.slash_command(name="gov-contracts")
@@ -181,16 +192,17 @@ class GovernmentCommands(commands.Cog):
         -----------
         ticker: Stock Ticker
         past_transaction_days: Number of past transaction months
-        raw: True or false
+        raw: If raw data should be outputed
         """
         await ctx.response.defer()
+        logger.info("gov-contracts")
         await contracts_command(ctx, ticker, past_transaction_days, raw)
 
     @commands.slash_command(name="gov-histcont")
     async def histcont(
         self,
         ctx: disnake.AppCmdInter,
-        ticker: str = commands.Param(autocomplete=ticker_autocomp)
+        ticker: str = commands.Param(autocomplete=ticker_autocomp),
     ):
         """Displays historical quarterly-contracts [quiverquant.com]
 
@@ -199,6 +211,7 @@ class GovernmentCommands(commands.Cog):
         ticker: Stock Ticker
         """
         await ctx.response.defer()
+        logger.info("gov-histcont")
         await histcont_command(ctx, ticker)
 
     @commands.slash_command(name="gov-lobbying")
@@ -206,7 +219,7 @@ class GovernmentCommands(commands.Cog):
         self,
         ctx: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
-        num: int = 10
+        num: int = 10,
     ):
         """Displays lobbying details [quiverquant.com]
 
@@ -216,6 +229,7 @@ class GovernmentCommands(commands.Cog):
         num: Number of events
         """
         await ctx.response.defer()
+        logger.info("gov-lobbying")
         await lobbying_command(ctx, ticker, num)
 
 

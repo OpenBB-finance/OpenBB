@@ -98,8 +98,8 @@ async def bbands_command(
                 x=df_ta.index,
                 y=df_ta.iloc[:, 2].values,
                 opacity=1,
-                mode='lines',
-                line_color='indigo',
+                mode="lines",
+                line_color="indigo",
             ),
         )
         fig.add_trace(
@@ -108,10 +108,10 @@ async def bbands_command(
                 x=df_ta.index,
                 y=df_ta.iloc[:, 0].values,
                 opacity=1,
-                mode='lines',
-                line_color='indigo',
-                fill='tonexty',
-                fillcolor='rgba(74, 0, 128, 0.2)',
+                mode="lines",
+                line_color="indigo",
+                fill="tonexty",
+                fillcolor="rgba(74, 0, 128, 0.2)",
             ),
         )
         fig.add_trace(
@@ -120,7 +120,10 @@ async def bbands_command(
                 x=df_ta.index,
                 y=df_ta.iloc[:, 1].values,
                 opacity=1,
-                line=dict(width=1.5, dash="dash",),
+                line=dict(
+                    width=1.5,
+                    dash="dash",
+                ),
             ),
         )
         fig.add_trace(
@@ -147,15 +150,10 @@ async def bbands_command(
                 rangeslider=dict(visible=False),
                 type="date",
             ),
-            dragmode='pan',
-            legend=dict(
-                yanchor="top",
-                y=0.99,
-                xanchor="left",
-                x=0.01
-            ),
+            dragmode="pan",
+            legend=dict(yanchor="top", y=0.99, xanchor="left", x=0.01),
         )
-        config = dict({'scrollZoom': True})
+        config = dict({"scrollZoom": True})
         imagefile = "ta_bbands.png"
 
         # Check if interactive settings are enabled
@@ -166,7 +164,8 @@ async def bbands_command(
             plt_link = f"[Interactive]({cfg.INTERACTIVE_URL}/bbands_{html_ran}.html)"
 
         fig.update_layout(
-            width=800, height=500,
+            width=800,
+            height=500,
         )
         fig.write_image(imagefile)
 
@@ -178,11 +177,11 @@ async def bbands_command(
 
         # Paste fig onto background img and autocrop background
         img = img.resize((w, h), Image.ANTIALIAS)
-        x1 = int(.5 * im_bg.size[0]) - int(.5 * img.size[0])
-        y1 = int(.5 * im_bg.size[1]) - int(.5 * img.size[1])
-        x2 = int(.5 * im_bg.size[0]) + int(.5 * img.size[0])
-        y2 = int(.5 * im_bg.size[1]) + int(.5 * img.size[1])
-        img = img.convert('RGB')
+        x1 = int(0.5 * im_bg.size[0]) - int(0.5 * img.size[0])
+        y1 = int(0.5 * im_bg.size[1]) - int(0.5 * img.size[1])
+        x2 = int(0.5 * im_bg.size[0]) + int(0.5 * img.size[0])
+        y2 = int(0.5 * im_bg.size[1]) + int(0.5 * img.size[1])
+        img = img.convert("RGB")
         im_bg.paste(img, box=(x1 - 5, y1, x2 - 5, y2))
         im_bg.save(imagefile, "PNG", quality=100)
         image = Image.open(imagefile)
@@ -195,11 +194,7 @@ async def bbands_command(
         if cfg.DEBUG:
             logger.debug("Image: %s", imagefile)
         title = f"Stocks: Bollinger-Bands {ticker}"
-        embed = disnake.Embed(
-            title=title,
-            description=plt_link,
-            colour=cfg.COLOR
-        )
+        embed = disnake.Embed(title=title, description=plt_link, colour=cfg.COLOR)
         embed.set_image(url=f"attachment://{imagefile}")
         embed.set_author(
             name=cfg.AUTHOR_NAME,

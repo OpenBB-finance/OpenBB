@@ -30,7 +30,7 @@ async def lobbying_command(ctx, ticker="", num: int = 10):
         # Output Data
         report = ""
         optionss = [
-            disnake.SelectOption(label='Overview', value='0', emoji="🟢"),
+            disnake.SelectOption(label="Overview", value="0", emoji="🟢"),
         ]
         for _, row in (
             df_lobbying.sort_values(by=["Date"], ascending=False).head(num).iterrows()

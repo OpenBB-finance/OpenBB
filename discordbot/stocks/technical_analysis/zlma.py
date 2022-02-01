@@ -117,15 +117,10 @@ async def zlma_command(ctx, ticker="", window="", offset="", start="", end=""):
                 rangeslider=dict(visible=False),
                 type="date",
             ),
-            dragmode='pan',
-            legend=dict(
-                yanchor="top",
-                y=0.99,
-                xanchor="left",
-                x=0.01
-            ),
+            dragmode="pan",
+            legend=dict(yanchor="top", y=0.99, xanchor="left", x=0.01),
         )
-        config = dict({'scrollZoom': True})
+        config = dict({"scrollZoom": True})
         imagefile = "ta_zlma.png"
 
         # Check if interactive settings are enabled
@@ -136,7 +131,8 @@ async def zlma_command(ctx, ticker="", window="", offset="", start="", end=""):
             plt_link = f"[Interactive]({cfg.INTERACTIVE_URL}/zlma_{html_ran}.html)"
 
         fig.update_layout(
-            width=800, height=500,
+            width=800,
+            height=500,
         )
         fig.write_image(imagefile)
 
@@ -147,11 +143,11 @@ async def zlma_command(ctx, ticker="", window="", offset="", start="", end=""):
 
         # Paste fig onto background img and autocrop background
         img = img.resize((w, h), Image.ANTIALIAS)
-        x1 = int(.5 * im_bg.size[0]) - int(.5 * img.size[0])
-        y1 = int(.5 * im_bg.size[1]) - int(.5 * img.size[1])
-        x2 = int(.5 * im_bg.size[0]) + int(.5 * img.size[0])
-        y2 = int(.5 * im_bg.size[1]) + int(.5 * img.size[1])
-        img = img.convert('RGB')
+        x1 = int(0.5 * im_bg.size[0]) - int(0.5 * img.size[0])
+        y1 = int(0.5 * im_bg.size[1]) - int(0.5 * img.size[1])
+        x2 = int(0.5 * im_bg.size[0]) + int(0.5 * img.size[0])
+        y2 = int(0.5 * im_bg.size[1]) + int(0.5 * img.size[1])
+        img = img.convert("RGB")
         im_bg.paste(img, box=(x1 - 5, y1, x2 - 5, y2))
         im_bg.save(imagefile, "PNG", quality=100)
         image = Image.open(imagefile)
@@ -164,7 +160,7 @@ async def zlma_command(ctx, ticker="", window="", offset="", start="", end=""):
         embed = disnake.Embed(
             title=f"Stocks: Zero-Lag-Moving-Average {ticker}",
             description=plt_link,
-            colour=cfg.COLOR
+            colour=cfg.COLOR,
         )
         embed.set_image(url=f"attachment://{imagefile}")
         embed.set_author(

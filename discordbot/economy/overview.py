@@ -28,7 +28,7 @@ async def overview_command(ctx):
         df = df.fillna("")
         df.set_index(" ", inplace=True)
 
-        formats = {'Price': '${:.2f}', 'Chg': '${:.2f}', '%Chg': '{:.2f}%'}
+        formats = {"Price": "${:.2f}", "Chg": "${:.2f}", "%Chg": "{:.2f}%"}
         for col, f in formats.items():
             df[col] = df[col].map(lambda x: f.format(x))
 

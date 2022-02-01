@@ -17,17 +17,17 @@ from discordbot.stocks.dark_pool_shorts.sidtc import sidtc_command
 
 
 pos_choices = [
-    'Short Vol (1M)',
-    'Short Vol %',
-    'Net Short Vol (1M)',
-    'Net Short Vol ($100M)',
-    'DP Position (1M)',
-    'DP Position ($1B)'
+    "Short Vol (1M)",
+    "Short Vol %",
+    "Net Short Vol (1M)",
+    "Net Short Vol ($100M)",
+    "DP Position (1M)",
+    "DP Position ($1B)",
 ]
 
 
 def default_completion(inter: disnake.AppCmdInter) -> list[str]:
-    return ["Start Typing", "If you want", "to", "Live"]
+    return ["Start Typing", "for a", "stock ticker"]
 
 
 def ticker_autocomp(inter: disnake.AppCmdInter, ticker: str):
@@ -81,7 +81,7 @@ class DarkPoolShortsCommands(commands.Cog):
         self,
         ctx: disnake.AppCmdInter,
         sort: str = commands.Param(choices=pos_choices),
-        num: int = 10
+        num: int = 10,
     ):
         """Dark pool short position [Stockgrid]
 
@@ -90,30 +90,32 @@ class DarkPoolShortsCommands(commands.Cog):
         sort: Field for which to sort.
         num: Number of top tickers to show
         """
-        print(sort)
-        if str(sort) == 'Short Vol (1M)':
-            sort = 'sv'
-        if str(sort) == 'Short Vol %':
-            sort = 'sv_pct'
-        if str(sort) == 'Net Short Vol (1M)':
-            sort = 'nsv'
-        if str(sort) == 'Net Short Vol ($100M)':
-            sort = 'nsv_dollar'
-        if str(sort) == 'DP Position (1M)':
-            sort = 'dpp'
-        if str(sort) == 'DP Position ($1B)':
-            sort = 'dpp_dollar'
-        print(sort)
         await ctx.response.defer()
         logger.info("dps-pos")
+
+        if str(sort) == "Short Vol (1M)":
+            sort = "sv"
+        if str(sort) == "Short Vol %":
+            sort = "sv_pct"
+        if str(sort) == "Net Short Vol (1M)":
+            sort = "nsv"
+        if str(sort) == "Net Short Vol ($100M)":
+            sort = "nsv_dollar"
+        if str(sort) == "DP Position (1M)":
+            sort = "dpp"
+        if str(sort) == "DP Position ($1B)":
+            sort = "dpp_dollar"
+
         await pos_command(ctx, sort, num)
 
     @commands.slash_command(name="dps-sidtc")
     async def sidtc(
         self,
         ctx: disnake.AppCmdInter,
-        sort: str = commands.Param(choices=['Float Short %', 'Days to Cover', 'Short Interest']),
-        num: int = 10
+        sort: str = commands.Param(
+            choices=["Float Short %", "Days to Cover", "Short Interest"]
+        ),
+        num: int = 10,
     ):
         """Short interest and days to cover [Stockgrid]
 
@@ -122,14 +124,16 @@ class DarkPoolShortsCommands(commands.Cog):
         sort: Field for which to sort. Possible are: `float`, `dtc`, `si`.
         num: Number of top tickers to show
         """
-        if str(sort) == 'Float Short %':
-            sort = 'float'
-        if str(sort) == 'Days to Cover':
-            sort = 'dtc'
-        if str(sort) == 'Short Interest':
-            sort = 'si'
         await ctx.response.defer()
         logger.info("dps-sidtc")
+
+        if str(sort) == "Float Short %":
+            sort = "float"
+        if str(sort) == "Days to Cover":
+            sort = "dtc"
+        if str(sort) == "Short Interest":
+            sort = "si"
+
         await sidtc_command(ctx, sort, num)
 
     @commands.slash_command(name="dps-ftd")
@@ -138,7 +142,7 @@ class DarkPoolShortsCommands(commands.Cog):
         ctx: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
         start="",
-        end=""
+        end="",
     ):
         """Fails-to-deliver data [SEC]
 
@@ -153,7 +157,11 @@ class DarkPoolShortsCommands(commands.Cog):
         await ftd_command(ctx, ticker, start, end)
 
     @commands.slash_command(name="dps-dpotc")
-    async def dpotc(self, ctx: disnake.AppCmdInter, ticker: str = commands.Param(autocomplete=ticker_autocomp)):
+    async def dpotc(
+        self,
+        ctx: disnake.AppCmdInter,
+        ticker: str = commands.Param(autocomplete=ticker_autocomp),
+    ):
         """Dark pools (ATS) vs OTC data [FINRA]
 
         Parameters
@@ -165,7 +173,11 @@ class DarkPoolShortsCommands(commands.Cog):
         await dpotc_command(ctx, ticker)
 
     @commands.slash_command(name="dps-spos")
-    async def spos(self, ctx: disnake.AppCmdInter, ticker: str = commands.Param(autocomplete=ticker_autocomp)):
+    async def spos(
+        self,
+        ctx: disnake.AppCmdInter,
+        ticker: str = commands.Param(autocomplete=ticker_autocomp),
+    ):
         """Net short vs position [Stockgrid]
 
         Parameters
@@ -177,7 +189,11 @@ class DarkPoolShortsCommands(commands.Cog):
         await spos_command(ctx, ticker)
 
     @commands.slash_command(name="dps-psi")
-    async def psi(self, ctx: disnake.AppCmdInter, ticker: str = commands.Param(autocomplete=ticker_autocomp)):
+    async def psi(
+        self,
+        ctx: disnake.AppCmdInter,
+        ticker: str = commands.Param(autocomplete=ticker_autocomp),
+    ):
         """Price vs short interest volume [Stockgrid]
 
         Parameters

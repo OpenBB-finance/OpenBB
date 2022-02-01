@@ -15,12 +15,8 @@ class CmdsCommands(commands.Cog):
 
     @commands.slash_command(name="cmds")
     async def ta(self, ctx: disnake.AppCmdInter):
-        """Stocks Command List
-        """
-        misctext = (
-            "```md\n[disc-fidelity]()\n"
-            "[ins-last](ticker) <num>\n```"
-        )
+        """Stocks Command List"""
+        misctext = "```md\n[disc-fidelity]()\n" "[ins-last](ticker) <num>\n```"
         opttext = (
             "```md\n[opt-unu]()\n"
             "[opt-iv](ticker)\n"
@@ -116,9 +112,7 @@ class CmdsCommands(commands.Cog):
             "[econ-valuation]() <GROUP>\n"
             "[econ-performance]() <GROUP>\n```"
         )
-        options = [
-            disnake.SelectOption(label='Home', value='0', emoji="🟢")
-        ]
+        options = [disnake.SelectOption(label="Home", value="0", emoji="🟢")]
         embeds = [
             disnake.Embed(
                 title="Stocks: Technical Analysis Command List",

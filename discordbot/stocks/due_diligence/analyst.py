@@ -25,7 +25,7 @@ async def analyst_command(ctx, ticker=""):
 
         df = finviz_model.get_analyst_data(ticker)
         df = df.replace(np.nan, 0)
-        df.index.names = ['Date']
+        df.index.names = ["Date"]
         df = df.rename(
             columns={
                 "category": "Category",
@@ -50,7 +50,7 @@ async def analyst_command(ctx, ticker=""):
                 size=20,
             ),
             template="plotly_dark",
-            paper_bgcolor="rgba(0, 0, 0, 0)"
+            paper_bgcolor="rgba(0, 0, 0, 0)",
         )
         imagefile = "dd-analyst.png"
 

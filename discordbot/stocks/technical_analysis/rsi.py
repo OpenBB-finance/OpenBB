@@ -99,32 +99,42 @@ async def rsi_command(
                 col=1,
             )
         fig.add_hrect(
-            y0=70, y1=100,
-            fillcolor="red", opacity=0.2,
-            layer="below", line_width=0,
+            y0=70,
+            y1=100,
+            fillcolor="red",
+            opacity=0.2,
+            layer="below",
+            line_width=0,
             row=2,
             col=1,
         )
         fig.add_hrect(
-            y0=0, y1=30,
-            fillcolor="green", opacity=0.2,
-            layer="below", line_width=0,
+            y0=0,
+            y1=30,
+            fillcolor="green",
+            opacity=0.2,
+            layer="below",
+            line_width=0,
             row=2,
             col=1,
         )
         fig.add_hline(
             y=70,
-            fillcolor="green", opacity=1,
-            layer="below", line_width=3,
-            line=dict(color="red", dash='dash'),
+            fillcolor="green",
+            opacity=1,
+            layer="below",
+            line_width=3,
+            line=dict(color="red", dash="dash"),
             row=2,
             col=1,
         )
         fig.add_hline(
             y=30,
-            fillcolor="green", opacity=1,
-            layer="below", line_width=3,
-            line=dict(color="green", dash='dash'),
+            fillcolor="green",
+            opacity=1,
+            layer="below",
+            line_width=3,
+            line=dict(color="green", dash="dash"),
             row=2,
             col=1,
         )
@@ -142,15 +152,10 @@ async def rsi_command(
                 rangeslider=dict(visible=False),
                 type="date",
             ),
-            dragmode='pan',
-            legend=dict(
-                yanchor="top",
-                y=0.99,
-                xanchor="left",
-                x=0.01
-            ),
+            dragmode="pan",
+            legend=dict(yanchor="top", y=0.99, xanchor="left", x=0.01),
         )
-        config = dict({'scrollZoom': True})
+        config = dict({"scrollZoom": True})
         imagefile = "ta_rsi.png"
 
         # Check if interactive settings are enabled
@@ -161,7 +166,8 @@ async def rsi_command(
             plt_link = f"[Interactive]({cfg.INTERACTIVE_URL}/rsi_{html_ran}.html)"
 
         fig.update_layout(
-            width=800, height=500,
+            width=800,
+            height=500,
         )
         fig.write_image(imagefile)
 
@@ -173,11 +179,11 @@ async def rsi_command(
 
         # Paste fig onto background img and autocrop background
         img = img.resize((w, h), Image.ANTIALIAS)
-        x1 = int(.5 * im_bg.size[0]) - int(.5 * img.size[0])
-        y1 = int(.5 * im_bg.size[1]) - int(.5 * img.size[1])
-        x2 = int(.5 * im_bg.size[0]) + int(.5 * img.size[0])
-        y2 = int(.5 * im_bg.size[1]) + int(.5 * img.size[1])
-        img = img.convert('RGB')
+        x1 = int(0.5 * im_bg.size[0]) - int(0.5 * img.size[0])
+        y1 = int(0.5 * im_bg.size[1]) - int(0.5 * img.size[1])
+        x2 = int(0.5 * im_bg.size[0]) + int(0.5 * img.size[0])
+        y2 = int(0.5 * im_bg.size[1]) + int(0.5 * img.size[1])
+        img = img.convert("RGB")
         im_bg.paste(img, box=(x1 - 5, y1, x2 - 5, y2))
         im_bg.save(imagefile, "PNG", quality=100)
         image = Image.open(imagefile)
@@ -190,11 +196,7 @@ async def rsi_command(
         if cfg.DEBUG:
             logger.debug("Image: %s", imagefile)
         title = f"Stocks: Relative-Strength-Index {ticker}"
-        embed = disnake.Embed(
-            title=title,
-            description=plt_link,
-            colour=cfg.COLOR
-        )
+        embed = disnake.Embed(title=title, description=plt_link, colour=cfg.COLOR)
         embed.set_image(url=f"attachment://{imagefile}")
         embed.set_author(
             name=cfg.AUTHOR_NAME,

@@ -19,6 +19,7 @@ from discordbot.stocks.options.unu import unu_command
 from discordbot.stocks.options.opt_chain import chain_command
 from discordbot.stocks.candle import candle_command
 from discordbot.stocks.disc.ford import ford_command
+from discordbot.stocks.disc.upcoming import earnings_command
 from discordbot.stocks.insider.lins import lins_command
 from gamestonk_terminal.stocks.options import yfinance_model
 
@@ -39,14 +40,14 @@ class Ticker:
 
     def __repr__(self) -> str:
         data.append(f"{self._ticker}")
-        file = open('ticker', 'wb')
+        file = open("ticker", "wb")
         pickle.dump(data, file)
         file.close()
         return f"{self._ticker}"
 
 
 def default_completion(inter: disnake.AppCmdInter) -> list[str]:
-    return ["Start Typing", "For A", "Ticker"]
+    return ["Start Typing", "for a", "stock ticker"]
 
 
 def ticker_autocomp(inter: disnake.AppCmdInter, ticker: str):
@@ -63,7 +64,7 @@ def ticker_autocomp(inter: disnake.AppCmdInter, ticker: str):
 
 
 def expiry_autocomp(inter: disnake.AppCmdInter, tickerr: str):
-    file = open('ticker', 'rb')
+    file = open("ticker", "rb")
     data = pickle.load(file)
     file.close()
     print(data)
@@ -73,7 +74,6 @@ def expiry_autocomp(inter: disnake.AppCmdInter, tickerr: str):
 
 @cached(cache=TTLCache(maxsize=100, ttl=86400))
 class SlashCommands(commands.Cog):
-
     def __init__(self, bot):
         super().__init__
         self.bot: commands.Bot = bot
@@ -84,7 +84,7 @@ class SlashCommands(commands.Cog):
         inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
         expiry: str = commands.Param(autocomplete=expiry_autocomp),
-        opt_type: str = commands.Param(choices=['Calls', 'Puts']),
+        opt_type: str = commands.Param(choices=["Calls", "Puts"]),
         min_sp: Optional[float] = None,
         max_sp: Optional[float] = None,
     ):
@@ -98,8 +98,8 @@ class SlashCommands(commands.Cog):
         min_sp: Minimum Strike Price
         max_sp: Maximum Strike Price
         """
-        logger.info("stocks.opt-chain")
         await inter.response.defer()
+        logger.info("opt-chain")
         await chain_command(inter, ticker, expiry, opt_type, min_sp, max_sp)
 
     @commands.slash_command(name="opt-oi")
@@ -120,12 +120,16 @@ class SlashCommands(commands.Cog):
         min_sp: Minimum Strike Price
         max_sp: Maximum Strike Price
         """
-        logger.info("stocks.opt-oi")
         await inter.response.defer()
+        logger.info("opt-oi")
         await oi_command(inter, ticker, expiry, min_sp, max_sp)
 
     @commands.slash_command(name="opt-iv")
-    async def iv(self, inter: disnake.AppCmdInter, ticker: str = commands.Param(autocomplete=ticker_autocomp)):
+    async def iv(
+        self,
+        inter: disnake.AppCmdInter,
+        ticker: str = commands.Param(autocomplete=ticker_autocomp),
+    ):
         """Displays ticker options IV [Barchart]
 
         Parameters
@@ -133,7 +137,7 @@ class SlashCommands(commands.Cog):
         ticker: Stock Ticker
         """
         await inter.response.defer()
-        logger.info("stocks.opt.iv")
+        logger.info("opt-iv")
         await iv_command(inter, ticker)
 
     @commands.slash_command(name="disc-ford")
@@ -148,6 +152,14 @@ class SlashCommands(commands.Cog):
         logger.info("disc-ford")
         await ford_command(inter)
 
+    @commands.slash_command(name="earnings")
+    async def earnings(self, inter: disnake.AppCmdInter):
+        """Display Upcoming Earnings. [Source: Seeking Alpha]
+        """
+        await inter.response.defer()
+        logger.info("earnings")
+        await earnings_command(inter)
+
     @commands.slash_command(name="opt-unu")
     async def unu(self, inter: disnake.AppCmdInter):
         """Unusual Options"""
@@ -160,7 +172,7 @@ class SlashCommands(commands.Cog):
         self,
         inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
-        num : int = 10
+        num: int = 10,
     ):
         """Display insider activity for a given stock ticker. [Source: Finviz]
 
@@ -180,7 +192,7 @@ class SlashCommands(commands.Cog):
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
         interval: int = commands.Param(choices=[1, 5, 15, 30, 60, 1440]),
         start="",
-        end=""
+        end="",
     ):
         """Display Candlestick Chart
 
@@ -213,8 +225,8 @@ class SlashCommands(commands.Cog):
         min_sp: Minimum Strike Price
         max_sp: Maximum Strike Price
         """
-        logger.info("stocks.opt-overview")
         await inter.response.defer()
+        logger.info("opt-overview")
         await overview_command(inter, ticker, expiry, min_sp, max_sp)
 
     @commands.slash_command(name="opt-vol")
@@ -223,7 +235,6 @@ class SlashCommands(commands.Cog):
         inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
         expiry: str = commands.Param(autocomplete=expiry_autocomp),
-
     ):
         """Options Volume
 
@@ -232,8 +243,8 @@ class SlashCommands(commands.Cog):
         ticker: Stock Ticker
         expiry: Expiration Date
         """
-        logger.info("stocks.opt-vol")
         await inter.response.defer()
+        logger.info("opt-vol")
         await vol_command(inter, ticker, expiry)
 
     @commands.slash_command(name="opt-vsurf")
@@ -241,7 +252,7 @@ class SlashCommands(commands.Cog):
         self,
         inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
-        z : str = commands.Param(choices=["Volatility", "Open Interest", "Last Price"]),
+        z: str = commands.Param(choices=["Volatility", "Open Interest", "Last Price"]),
     ):
         """Display Volatility Surface
 
@@ -250,14 +261,16 @@ class SlashCommands(commands.Cog):
         ticker: Stock Ticker
         z: The variable for the Z axis
         """
+        await inter.response.defer()
+        logger.info("opt-vsurf")
+
         if z == "Volatility":
             z = "IV"
         if z == "Open Interest":
             z = "OI"
         if z == "Last Price":
             z = "LP"
-        logger.info("stocks.opt-vsurf")
-        await inter.response.defer()
+
         await vsurf_command(inter, ticker, z)
 
     @commands.slash_command(name="opt-hist")
@@ -267,7 +280,7 @@ class SlashCommands(commands.Cog):
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
         expiry: str = commands.Param(autocomplete=expiry_autocomp),
         strike: float = commands.Param(),
-        opt_type: str = commands.Param(choices=['Calls', 'Puts']),
+        opt_type: str = commands.Param(choices=["Calls", "Puts"]),
     ):
         """Options Price History
 
@@ -278,12 +291,12 @@ class SlashCommands(commands.Cog):
         strike: Options Strike Price
         type: Calls or Puts
         """
-        logger.info("stocks.opt-hist")
         await inter.response.defer()
+        logger.info("opt-hist")
         await hist_command(inter, ticker, expiry, strike, opt_type)
 
 
 def setup(bot):
     bot.add_cog(SlashCommands(bot))
-    executionTime = (time.time() - startTime)
+    executionTime = time.time() - startTime
     print(f"> Extension {__name__} is ready: time in seconds: {str(executionTime)}\n")

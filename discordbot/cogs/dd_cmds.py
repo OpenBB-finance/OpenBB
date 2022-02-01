@@ -39,7 +39,10 @@ class DueDiligenceCommands(commands.Cog):
         self.bot = bot
 
     @commands.slash_command(name="dd-analyst")
-    async def analyst(ctx: disnake.AppCmdInter, ticker: str = commands.Param(autocomplete=ticker_autocomp)):
+    async def analyst(
+        ctx: disnake.AppCmdInter,
+        ticker: str = commands.Param(autocomplete=ticker_autocomp),
+    ):
         """Displays analyst recommendations [Finviz]
 
         Parameters
@@ -55,7 +58,7 @@ class DueDiligenceCommands(commands.Cog):
         ctx: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
         raw: bool = False,
-        start=""
+        start="",
     ):
         """Displays chart with price targets [Business Insiders]
 
@@ -70,7 +73,10 @@ class DueDiligenceCommands(commands.Cog):
         await pt_command(ctx, ticker, raw, start)
 
     @commands.slash_command(name="dd-est")
-    async def est(ctx: disnake.AppCmdInter, ticker: str = commands.Param(autocomplete=ticker_autocomp)):
+    async def est(
+        ctx: disnake.AppCmdInter,
+        ticker: str = commands.Param(autocomplete=ticker_autocomp),
+    ):
         """Displays earning estimates [Business Insider]
 
         Parameters
@@ -82,7 +88,10 @@ class DueDiligenceCommands(commands.Cog):
         await est_command(ctx, ticker)
 
     @commands.slash_command(name="dd-sec")
-    async def sec(ctx: disnake.AppCmdInter, ticker: str = commands.Param(autocomplete=ticker_autocomp)):
+    async def sec(
+        ctx: disnake.AppCmdInter,
+        ticker: str = commands.Param(autocomplete=ticker_autocomp),
+    ):
         """Displays sec filings [Market Watch]
 
         Parameters
@@ -94,7 +103,10 @@ class DueDiligenceCommands(commands.Cog):
         await sec_command(ctx, ticker)
 
     @commands.slash_command(name="dd-supplier")
-    async def supplier(ctx: disnake.AppCmdInter, ticker: str = commands.Param(autocomplete=ticker_autocomp)):
+    async def supplier(
+        ctx: disnake.AppCmdInter,
+        ticker: str = commands.Param(autocomplete=ticker_autocomp),
+    ):
         """Displays suppliers of the company [CSIMarket]
 
         Parameters
@@ -106,7 +118,10 @@ class DueDiligenceCommands(commands.Cog):
         await supplier_command(ctx, ticker)
 
     @commands.slash_command(name="dd-customer")
-    async def customer(ctx: disnake.AppCmdInter, ticker: str = commands.Param(autocomplete=ticker_autocomp)):
+    async def customer(
+        ctx: disnake.AppCmdInter,
+        ticker: str = commands.Param(autocomplete=ticker_autocomp),
+    ):
         """Displays customers of the company [CSIMarket]
 
         Parameters
@@ -121,7 +136,7 @@ class DueDiligenceCommands(commands.Cog):
     async def arktrades(
         ctx: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
-        num: int = 10
+        num: int = 10,
     ):
         """Displays trades made by ark [cathiesark.com]
 

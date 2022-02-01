@@ -45,7 +45,7 @@ fgind = [
     "Market Momentum",
     "Stock Price Strength",
     "Stock Price Breadth",
-    "Safe Heaven Demand"
+    "Safe Heaven Demand",
 ]
 
 
@@ -57,7 +57,9 @@ class EconomyCommands(commands.Cog):
         self.bot = bot
 
     @commands.slash_command(name="econ-feargreed")
-    async def feargreed(self, ctx: disnake.AppCmdInter, indicator: str = commands.Param(choices=fgind)):
+    async def feargreed(
+        self, ctx: disnake.AppCmdInter, indicator: str = commands.Param(choices=fgind)
+    ):
         """CNN Fear and Greed Index [CNN]
 
         Parameters
@@ -65,6 +67,7 @@ class EconomyCommands(commands.Cog):
         indicator: Select an Indicator
         """
         await ctx.response.defer()
+        logger.info("econ-feargreed")
         if indicator == "Junk Bond Demand":
             indicator = "jbd"
         if indicator == "Market Volatility":
@@ -159,7 +162,11 @@ class EconomyCommands(commands.Cog):
         await currencies_command(ctx)
 
     @commands.slash_command(name="econ-valuation")
-    async def valuation(self, ctx: disnake.AppCmdInter, economy_group: str = commands.Param(choices=group)):
+    async def valuation(
+        self,
+        ctx: disnake.AppCmdInter,
+        economy_group: str = commands.Param(choices=group),
+    ):
         """Valuation of sectors, industry, country [Finviz]
 
         Parameters
@@ -171,7 +178,11 @@ class EconomyCommands(commands.Cog):
         await valuation_command(ctx, economy_group)
 
     @commands.slash_command(name="econ-performance")
-    async def performance(self, ctx: disnake.AppCmdInter, economy_group: str = commands.Param(choices=group)):
+    async def performance(
+        self,
+        ctx: disnake.AppCmdInter,
+        economy_group: str = commands.Param(choices=group),
+    ):
         """Performance of sectors, industry, country [Finviz]
 
         Parameters

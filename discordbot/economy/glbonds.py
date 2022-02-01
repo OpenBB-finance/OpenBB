@@ -15,13 +15,21 @@ async def glbonds_command(ctx):
     """Global bonds overview [Wall St. Journal]"""
 
     try:
+        # Debug user input
+        if cfg.DEBUG:
+            logger.debug("econ-glbonds")
+
         # Retrieve data
         df = wsj_model.global_bonds()
         df["Rate (%)"] = pd.to_numeric(df["Rate (%)"].astype(float))
         df["Yld (%)"] = pd.to_numeric(df["Yld (%)"].astype(float))
         df["Yld Chg (%)"] = pd.to_numeric(df["Yld Chg (%)"].astype(float))
 
-        formats = {'Rate (%)': '{:.2f}%', 'Yld (%)': '{:.2f}%', 'Yld Chg (%)': '{:.2f}%'}
+        formats = {
+            "Rate (%)": "{:.2f}%",
+            "Yld (%)": "{:.2f}%",
+            "Yld Chg (%)": "{:.2f}%",
+        }
         for col, f in formats.items():
             df[col] = df[col].map(lambda x: f.format(x))
 
@@ -30,13 +38,18 @@ async def glbonds_command(ctx):
             logger.debug(df.to_string())
 
         df = df.fillna("")
-        df = df.replace(('Government Bond', '10 Year'), ('Gov .Bond', '10yr'), regex=True)
+        df = df.replace(
+            ("Government Bond", "10 Year"), ("Gov .Bond", "10yr"), regex=True
+        )
         df.set_index(" ", inplace=True)
-        df = df.set_axis([
-            "Rate",
-            "Yld",
-            "Yld Chg",
-        ], axis='columns')
+        df = df.set_axis(
+            [
+                "Rate",
+                "Yld",
+                "Yld Chg",
+            ],
+            axis="columns",
+        )
         dindex = len(df.index)
         fig = df2img.plot_dataframe(
             df,

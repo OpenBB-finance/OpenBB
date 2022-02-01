@@ -110,39 +110,49 @@ async def stoch_command(
                 name=f"%D {D}",
                 x=df_stock.index,
                 y=df_ta.iloc[:, 1].values,
-                line=dict(width=1.8, dash='dash'),
+                line=dict(width=1.8, dash="dash"),
                 opacity=1,
             ),
             row=2,
             col=1,
         )
         fig.add_hrect(
-            y0=80, y1=100,
-            fillcolor="red", opacity=0.2,
-            layer="below", line_width=0,
+            y0=80,
+            y1=100,
+            fillcolor="red",
+            opacity=0.2,
+            layer="below",
+            line_width=0,
             row=2,
             col=1,
         )
         fig.add_hrect(
-            y0=0, y1=20,
-            fillcolor="green", opacity=0.2,
-            layer="below", line_width=0,
+            y0=0,
+            y1=20,
+            fillcolor="green",
+            opacity=0.2,
+            layer="below",
+            line_width=0,
             row=2,
             col=1,
         )
         fig.add_hline(
             y=80,
-            fillcolor="green", opacity=1,
-            layer="below", line_width=3,
-            line=dict(color="red", dash='dash'),
+            fillcolor="green",
+            opacity=1,
+            layer="below",
+            line_width=3,
+            line=dict(color="red", dash="dash"),
             row=2,
             col=1,
         )
         fig.add_hline(
             y=20,
-            fillcolor="green", opacity=1,
-            layer="below", line_width=3,
-            line=dict(color="green", dash='dash'),
+            fillcolor="green",
+            opacity=1,
+            layer="below",
+            line_width=3,
+            line=dict(color="green", dash="dash"),
             row=2,
             col=1,
         )
@@ -160,15 +170,10 @@ async def stoch_command(
                 rangeslider=dict(visible=False),
                 type="date",
             ),
-            dragmode='pan',
-            legend=dict(
-                yanchor="top",
-                y=0.99,
-                xanchor="left",
-                x=0.01
-            ),
+            dragmode="pan",
+            legend=dict(yanchor="top", y=0.99, xanchor="left", x=0.01),
         )
-        config = dict({'scrollZoom': True})
+        config = dict({"scrollZoom": True})
         imagefile = "ta_stoch.png"
 
         # Check if interactive settings are enabled
@@ -179,7 +184,8 @@ async def stoch_command(
             plt_link = f"[Interactive]({cfg.INTERACTIVE_URL}/stoch_{html_ran}.html)"
 
         fig.update_layout(
-            width=800, height=500,
+            width=800,
+            height=500,
         )
         fig.write_image(imagefile)
 
@@ -190,11 +196,11 @@ async def stoch_command(
 
         # Paste fig onto background img and autocrop background
         img = img.resize((w, h), Image.ANTIALIAS)
-        x1 = int(.5 * im_bg.size[0]) - int(.5 * img.size[0])
-        y1 = int(.5 * im_bg.size[1]) - int(.5 * img.size[1])
-        x2 = int(.5 * im_bg.size[0]) + int(.5 * img.size[0])
-        y2 = int(.5 * im_bg.size[1]) + int(.5 * img.size[1])
-        img = img.convert('RGB')
+        x1 = int(0.5 * im_bg.size[0]) - int(0.5 * img.size[0])
+        y1 = int(0.5 * im_bg.size[1]) - int(0.5 * img.size[1])
+        x2 = int(0.5 * im_bg.size[0]) + int(0.5 * img.size[0])
+        y2 = int(0.5 * im_bg.size[1]) + int(0.5 * img.size[1])
+        img = img.convert("RGB")
         im_bg.paste(img, box=(x1 - 5, y1, x2 - 5, y2))
         im_bg.save(imagefile, "PNG", quality=100)
         image = Image.open(imagefile)
@@ -207,7 +213,7 @@ async def stoch_command(
         embed = disnake.Embed(
             title=f"Stocks: Stochastic-Relative-Strength-Index {ticker}",
             description=plt_link,
-            colour=cfg.COLOR
+            colour=cfg.COLOR,
         )
         embed.set_image(url=f"attachment://{imagefile}")
         embed.set_author(

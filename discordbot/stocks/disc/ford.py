@@ -28,9 +28,14 @@ async def ford_command(ctx):
         df_orders = df_orders.applymap(str)
 
         font_color = (
-            ['white'] * 2
-            + [['#ad0000' if boolv else '#0d5700' for boolv in df_orders['Price Change'].str.contains('-')]]
-            + [['white'] * 3]
+            ["white"] * 2
+            + [
+                [
+                    "#ad0000" if boolv else "#0d5700"
+                    for boolv in df_orders["Price Change"].str.contains("-")
+                ]
+            ]
+            + [["white"] * 3]
         )
 
         df_orders.set_index("Symbol", inplace=True)

@@ -49,16 +49,21 @@ async def sidtc_command(ctx, sort="float", num: int = 10):
         df.drop("Ticker")
         columns = []
         optionss = [
-            disnake.SelectOption(label='Overview', value='0', emoji="🟢"),
+            disnake.SelectOption(label="Overview", value="0", emoji="🟢"),
         ]
         initial_str = "Overview"
         i = 1
         for col_name in df.columns.values:
             menu = f"\nPage {i}: {col_name}"
             initial_str += f"\nPage {i}: {col_name}"
-            optionss.append(
-                disnake.SelectOption(label=menu, value=f'{i}', emoji="🟢"),
-            )
+            if i < 19:
+                optionss.append(
+                    disnake.SelectOption(label=menu, value=f"{i}", emoji="🟢"),
+                )
+            if i == 20:
+                optionss.append(
+                    disnake.SelectOption(label="Max Reached", value=f"{i}", emoji="🟢"),
+                )
             i += 1
         columns.append(
             disnake.Embed(

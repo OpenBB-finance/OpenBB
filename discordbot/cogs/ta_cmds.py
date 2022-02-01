@@ -6,7 +6,7 @@ import disnake.ext.commands as commands
 import pandas as pd
 from cachetools import TTLCache, cached
 
-
+from discordbot.config_discordbot import logger
 from discordbot.stocks.technical_analysis.ema import ema_command
 from discordbot.stocks.technical_analysis.sma import sma_command
 from discordbot.stocks.technical_analysis.wma import wma_command
@@ -54,7 +54,7 @@ possible_ma = [
 
 
 def default_completion(inter: disnake.AppCmdInter) -> list[str]:
-    return ["Start Typing", "If you want", "to", "Live"]
+    return ["Start Typing", "for a", "stock ticker"]
 
 
 def ticker_autocomp(inter: disnake.AppCmdInter, ticker: str):
@@ -96,7 +96,7 @@ class TechnicalAnalysisCommands(commands.Cog):
         end: YYYY-MM-DD format
         """
         await ctx.response.defer()
-
+        logger.info("ta-ema")
         await ema_command(ctx, ticker, window, offset, start, end)
 
     @commands.slash_command(name="ta-sma")
@@ -120,7 +120,7 @@ class TechnicalAnalysisCommands(commands.Cog):
         end: YYYY-MM-DD format
         """
         await ctx.response.defer()
-
+        logger.info("ta-sma")
         await sma_command(ctx, ticker, window, offset, start, end)
 
     @commands.slash_command(name="ta-wma")
@@ -144,7 +144,7 @@ class TechnicalAnalysisCommands(commands.Cog):
         end: YYYY-MM-DD format
         """
         await ctx.response.defer()
-
+        logger.info("ta-wma")
         await wma_command(ctx, ticker, window, offset, start, end)
 
     @commands.slash_command(name="ta-hma")
@@ -168,7 +168,7 @@ class TechnicalAnalysisCommands(commands.Cog):
         end: YYYY-MM-DD format
         """
         await ctx.response.defer()
-
+        logger.info("ta-hma")
         await hma_command(ctx, ticker, window, offset, start, end)
 
     @commands.slash_command(name="ta-zlma")
@@ -192,7 +192,7 @@ class TechnicalAnalysisCommands(commands.Cog):
         end: YYYY-MM-DD format
         """
         await ctx.response.defer()
-
+        logger.info("ta-zlma")
         await zlma_command(ctx, ticker, window, offset, start, end)
 
     @commands.slash_command(name="ta-cci")
@@ -216,12 +216,10 @@ class TechnicalAnalysisCommands(commands.Cog):
         end: YYYY-MM-DD format
         """
         await ctx.response.defer()
-
+        logger.info("ta-cci")
         await cci_command(ctx, ticker, length, scalar, start, end)
 
-    @commands.slash_command(
-        name="ta-macd"
-    )
+    @commands.slash_command(name="ta-macd")
     async def macd(
         self,
         ctx: disnake.AppCmdInter,
@@ -244,12 +242,10 @@ class TechnicalAnalysisCommands(commands.Cog):
         end: YYYY-MM-DD format
         """
         await ctx.response.defer()
-
+        logger.info("ta-macd")
         await macd_command(ctx, ticker, fast, slow, signal, start, end)
 
-    @commands.slash_command(
-        name="ta-rsi"
-    )
+    @commands.slash_command(name="ta-rsi")
     async def rsi(
         self,
         ctx: disnake.AppCmdInter,
@@ -272,12 +268,10 @@ class TechnicalAnalysisCommands(commands.Cog):
         end: YYYY-MM-DD format
         """
         await ctx.response.defer()
-
+        logger.info("ta-rsi")
         await rsi_command(ctx, ticker, length, scalar, drift, start, end)
 
-    @commands.slash_command(
-        name="ta-stoch"
-    )
+    @commands.slash_command(name="ta-stoch")
     async def stoch(
         self,
         ctx: disnake.AppCmdInter,
@@ -300,12 +294,10 @@ class TechnicalAnalysisCommands(commands.Cog):
         end: YYYY-MM-DD format
         """
         await ctx.response.defer()
-
+        logger.info("ta-stoch")
         await stoch_command(ctx, ticker, fast_k, slow_d, slow_k, start, end)
 
-    @commands.slash_command(
-        name="ta-fisher"
-    )
+    @commands.slash_command(name="ta-fisher")
     async def fisher(
         self,
         ctx: disnake.AppCmdInter,
@@ -324,12 +316,10 @@ class TechnicalAnalysisCommands(commands.Cog):
         end: YYYY-MM-DD format
         """
         await ctx.response.defer()
-
+        logger.info("ta-fisher")
         await fisher_command(ctx, ticker, length, start, end)
 
-    @commands.slash_command(
-        name="ta-cg"
-    )
+    @commands.slash_command(name="ta-cg")
     async def cg(
         self,
         ctx: disnake.AppCmdInter,
@@ -348,12 +338,10 @@ class TechnicalAnalysisCommands(commands.Cog):
         end: YYYY-MM-DD format
         """
         await ctx.response.defer()
-
+        logger.info("ta-cg")
         await cg_command(ctx, ticker, length, start, end)
 
-    @commands.slash_command(
-        name="ta-adx"
-    )
+    @commands.slash_command(name="ta-adx")
     async def adx(
         self,
         ctx: disnake.AppCmdInter,
@@ -376,12 +364,10 @@ class TechnicalAnalysisCommands(commands.Cog):
         end: YYYY-MM-DD format
         """
         await ctx.response.defer()
-
+        logger.info("ta-adx")
         await adx_command(ctx, ticker, length, scalar, drift, start, end)
 
-    @commands.slash_command(
-        name="ta-aroon"
-    )
+    @commands.slash_command(name="ta-aroon")
     async def aroon(
         self,
         ctx: disnake.AppCmdInter,
@@ -402,12 +388,10 @@ class TechnicalAnalysisCommands(commands.Cog):
         end: YYYY-MM-DD format
         """
         await ctx.response.defer()
-
+        logger.info("ta-aroon")
         await aroon_command(ctx, ticker, length, scalar, start, end)
 
-    @commands.slash_command(
-        name="ta-bbands"
-    )
+    @commands.slash_command(name="ta-bbands")
     async def bbands(
         self,
         ctx: disnake.AppCmdInter,
@@ -430,13 +414,11 @@ class TechnicalAnalysisCommands(commands.Cog):
         end: YYYY-MM-DD format
         """
         await ctx.response.defer()
+        logger.info("ta-bbands")
         ma_mode = str(ma_mode)
-
         await bbands_command(ctx, ticker, length, std, ma_mode, start, end)
 
-    @commands.slash_command(
-        name="ta-donchian"
-    )
+    @commands.slash_command(name="ta-donchian")
     async def donchian(
         self,
         ctx: disnake.AppCmdInter,
@@ -457,13 +439,11 @@ class TechnicalAnalysisCommands(commands.Cog):
         end: YYYY-MM-DD format
         """
         await ctx.response.defer()
-
+        logger.info("ta-donchian")
         await donchian_command(ctx, ticker, upper_length, lower_length, start, end)
 
     # pylint: disable=too-many-arguments
-    @commands.slash_command(
-        name="ta-kc"
-    )
+    @commands.slash_command(name="ta-kc")
     async def kc(
         self,
         ctx: disnake.AppCmdInter,
@@ -488,13 +468,11 @@ class TechnicalAnalysisCommands(commands.Cog):
         end: YYYY-MM-DD format
         """
         await ctx.response.defer()
+        logger.info("ta-kc")
         ma_mode = str(ma_mode)
-
         await kc_command(ctx, ticker, length, scalar, ma_mode, offset, start, end)
 
-    @commands.slash_command(
-        name="ta-ad"
-    )
+    @commands.slash_command(name="ta-ad")
     async def ad(
         self,
         ctx: disnake.AppCmdInter,
@@ -513,12 +491,10 @@ class TechnicalAnalysisCommands(commands.Cog):
         end: YYYY-MM-DD format
         """
         await ctx.response.defer()
-
+        logger.info("ta-ad")
         await ad_command(ctx, ticker, is_open, start, end)
 
-    @commands.slash_command(
-        name="ta-adosc"
-    )
+    @commands.slash_command(name="ta-adosc")
     async def adosc(
         self,
         ctx: disnake.AppCmdInter,
@@ -541,7 +517,7 @@ class TechnicalAnalysisCommands(commands.Cog):
         end: YYYY-MM-DD format
         """
         await ctx.response.defer()
-
+        logger.info("ta-adosc")
         await adosc_command(ctx, ticker, is_open, fast, slow, start, end)
 
     @commands.slash_command(name="ta-obv")
@@ -561,7 +537,7 @@ class TechnicalAnalysisCommands(commands.Cog):
         end: YYYY-MM-DD
         """
         await ctx.response.defer()
-
+        logger.info("ta-obv")
         await obv_command(ctx, ticker, start, end)
 
     @commands.slash_command(name="ta-fib")
@@ -581,11 +557,15 @@ class TechnicalAnalysisCommands(commands.Cog):
         end: YYYY-MM-DD format
         """
         await ctx.response.defer()
-
+        logger.info("ta-fib")
         await fib_command(ctx, ticker, start, end)
 
     @commands.slash_command(name="ta-view")
-    async def view(self, ctx: disnake.AppCmdInter, ticker: str = commands.Param(autocomplete=ticker_autocomp),):
+    async def view(
+        self,
+        ctx: disnake.AppCmdInter,
+        ticker: str = commands.Param(autocomplete=ticker_autocomp),
+    ):
         """Displays image from Finviz [Finviz]
 
         Parameters
@@ -593,7 +573,7 @@ class TechnicalAnalysisCommands(commands.Cog):
         ticker: Stock Ticker
         """
         await ctx.response.defer()
-
+        logger.info("ta-view")
         await view_command(ctx, ticker)
 
     @commands.slash_command(name="ta-summary")
@@ -609,11 +589,15 @@ class TechnicalAnalysisCommands(commands.Cog):
         ticker: Stock Ticker
         """
         await ctx.response.defer()
-
+        logger.info("ta-summary")
         await summary_command(ctx, ticker)
 
     @commands.slash_command(name="ta-recom")
-    async def recom(self, ctx: disnake.AppCmdInter, ticker: str = commands.Param(autocomplete=ticker_autocomp),):
+    async def recom(
+        self,
+        ctx: disnake.AppCmdInter,
+        ticker: str = commands.Param(autocomplete=ticker_autocomp),
+    ):
         """Displays text of a given stocks recommendation based on ta [Tradingview API]
 
         Parameters
@@ -621,7 +605,7 @@ class TechnicalAnalysisCommands(commands.Cog):
         ticker: Stock Ticker
         """
         await ctx.response.defer()
-
+        logger.info("ta-recom")
         await recom_command(ctx, ticker)
 
 

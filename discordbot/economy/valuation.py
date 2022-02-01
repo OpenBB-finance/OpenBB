@@ -36,7 +36,7 @@ async def valuation_command(ctx, economy_group="sector"):
     try:
         # Debug user input
         if cfg.DEBUG:
-            logger.debug("!economy.valuation %s", economy_group)
+            logger.debug("econ-valuation %s", economy_group)
 
         # Select default group
         if economy_group == "":
@@ -61,22 +61,25 @@ async def valuation_command(ctx, economy_group="sector"):
         df = pd.DataFrame(df_group)
         df = df.replace(np.nan, 0)
 
-        df = df.set_axis([
-            "Name",
-            "MarketCap",
-            "P/E",
-            "FwdP/E",
-            "PEG",
-            "P/S",
-            "P/B",
-            "P/C",
-            "P/FCF",
-            "EPSpast5Y",
-            "EPSnext5Y",
-            "Salespast5Y",
-            "Change",
-            "Volume",
-        ], axis='columns')
+        df = df.set_axis(
+            [
+                "Name",
+                "MarketCap",
+                "P/E",
+                "FwdP/E",
+                "PEG",
+                "P/S",
+                "P/B",
+                "P/C",
+                "P/FCF",
+                "EPSpast5Y",
+                "EPSnext5Y",
+                "Salespast5Y",
+                "Change",
+                "Volume",
+            ],
+            axis="columns",
+        )
 
         df["P/E"] = pd.to_numeric(df["P/E"].astype(float))
         df["FwdP/E"] = pd.to_numeric(df["FwdP/E"].astype(float))
@@ -87,13 +90,13 @@ async def valuation_command(ctx, economy_group="sector"):
         df["Volume"] = df["Volume"] / 1_000_000
 
         formats = {
-            'P/E': '{:.2f}',
-            'FwdP/E': '{:.2f}',
-            'EPSpast5Y': '{:.2f}',
-            'EPSnext5Y': '{:.2f}',
-            'Salespast5Y': '{:.2f}',
-            'Change': '{:.2f}',
-            'Volume': '{:.0f}M',
+            "P/E": "{:.2f}",
+            "FwdP/E": "{:.2f}",
+            "EPSpast5Y": "{:.2f}",
+            "EPSnext5Y": "{:.2f}",
+            "Salespast5Y": "{:.2f}",
+            "Change": "{:.2f}",
+            "Volume": "{:.0f}M",
         }
         for col, f in formats.items():
             df[col] = df[col].map(lambda x: f.format(x))
@@ -107,7 +110,7 @@ async def valuation_command(ctx, economy_group="sector"):
             fig_size=(1600, (40 + (50 * dindex))),
             col_width=[12, 5, 4, 4, 4, 4, 4, 4, 4, 6, 6, 6, 4, 4],
             tbl_cells=dict(
-                align=['left', 'center'],
+                align=["left", "center"],
                 height=35,
             ),
             template="plotly_dark",

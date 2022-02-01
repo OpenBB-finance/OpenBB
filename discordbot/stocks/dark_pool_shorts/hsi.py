@@ -34,7 +34,7 @@ async def hsi_command(ctx, num: int = 10):
         df.drop("Ticker")
         columns = []
         optionss = [
-            disnake.SelectOption(label='Overview', value='0', emoji="🟢"),
+            disnake.SelectOption(label="Overview", value="0", emoji="🟢"),
         ]
         initial_str = "Overview"
         i = 1
@@ -42,7 +42,7 @@ async def hsi_command(ctx, num: int = 10):
             menu = f"\nPage {i}: {col_name}"
             initial_str += f"\nPage {i}: {col_name}"
             optionss.append(
-                disnake.SelectOption(label=menu, value=f'{i}', emoji="🟢"),
+                disnake.SelectOption(label=menu, value=f"{i}", emoji="🟢"),
             )
             i += 1
         columns.append(

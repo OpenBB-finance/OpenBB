@@ -3,78 +3,65 @@ import os
 import df2img
 import discordbot.config_discordbot as cfg
 import disnake
-import pandas as pd
 from discordbot.config_discordbot import gst_imgur, logger
 from discordbot.helpers import autocrop_image
-from gamestonk_terminal.stocks.due_diligence import ark_model
-from menus.menu import Menu
+from gamestonk_terminal.stocks.discovery import seeking_alpha_model
 from PIL import Image
+from menus.menu import Menu
 
 
-async def arktrades_command(ctx, ticker: str = "", num: int = 10):
-    """Displays trades made by ark [cathiesark.com]"""
+async def earnings_command(ctx):
+    """Display Upcoming Earnings. [Source: Seeking Alpha]
+    """
 
     try:
-        # Debug user input
+        # Debug
         if cfg.DEBUG:
-            logger.debug("!stocks.dd.arktrades %s", ticker)
+            logger.debug("earnings")
 
-        if ticker:
-            ark_holdings = ark_model.get_ark_trades_by_ticker(ticker)
-            ark_holdings = ark_holdings.drop(
-                columns=["ticker", "everything.profile.companyName"]
-            )
-        else:
-            ark_holdings = ark_model.get_ark_trades_by_ticker()
+        df_earnings = seeking_alpha_model.get_next_earnings(1)
+        for n_days, earning_date in enumerate(df_earnings.index.unique()):
 
-        if ark_holdings.empty:
-            raise Exception(
-                "Issue getting data from cathiesark.com. Likely no trades found.\n"
-            )
+            df_earn = df_earnings[earning_date == df_earnings.index][
+                ["Ticker", "Name"]
+            ].dropna()
 
-        ark_holdings["Total"] = ark_holdings["Total"] / 1_000_000
-        ark_holdings.rename(columns={"direction": "B/S", "weight": "F %"}, inplace=True)
+            df_earn.index = df_earn["Ticker"].values
+            df_earn.drop(columns=["Ticker"], inplace=True)
 
-        ark_holdings.index = pd.Series(ark_holdings.index).apply(
-            lambda x: x.strftime("%Y-%m-%d")
-        )
-
-        df = ark_holdings.head(num)
-        dindex = len(df.head(num).index)
-        formats = {"Close": "{:.2f}", "Total": "{:.2f}"}
-        for col, f in formats.items():
-            df[col] = df[col].map(lambda x: f.format(x))
-        title = f"Stocks: [cathiesark.com] {ticker.upper()} Trades by Ark"
+        title = f"Earnings on {earning_date.date()}"
 
         embeds: list = []
-
+        # Weekly Calls Pages
         i, i2, end = 0, 0, 20
         df_pg = []
         embeds_img = []
-        dindex = len(df.index)
+        dindex = len(df_earn.index)
         while i < dindex:
-            df_pg = df.iloc[i:end]
+            df_pg = df_earn.iloc[i:end]
             df_pg.append(df_pg)
-            fig = df2img.plot_dataframe(
+            figp = df2img.plot_dataframe(
                 df_pg,
-                fig_size=(900, (40 + (40 * 20))),
-                col_width=[5, 10, 4, 4, 3, 4, 5],
+                fig_size=(800, (40 + (40 * dindex))),
+                col_width=[1, 5],
                 tbl_cells=dict(
+                    align=["center", "left"],
                     height=35,
                 ),
+                template="plotly_dark",
                 font=dict(
                     family="Consolas",
                     size=20,
                 ),
-                template="plotly_dark",
                 paper_bgcolor="rgba(0, 0, 0, 0)",
             )
-            imagefile = f"disc-insider{i}.png"
+            imagefile = f"disc-upcoming{i}.png"
 
-            df2img.save_dataframe(fig=fig, filename=imagefile)
+            df2img.save_dataframe(fig=figp, filename=imagefile)
             image = Image.open(imagefile)
             image = autocrop_image(image, 0)
             image.save(imagefile, "PNG", quality=100)
+
             uploaded_image = gst_imgur.upload_image(imagefile, title="something")
             image_link = uploaded_image.link
             embeds_img.append(
@@ -117,7 +104,7 @@ async def arktrades_command(ctx, ticker: str = "", num: int = 10):
 
     except Exception as e:
         embed = disnake.Embed(
-            title=f"ERROR Stocks: [cathiesark.com] {ticker} Trades by Ark",
+            title="ERROR Display Upcoming Earnings.",
             colour=cfg.COLOR,
             description=e,
         )

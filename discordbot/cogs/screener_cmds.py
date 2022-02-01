@@ -57,7 +57,7 @@ presets_custom = [
     "stocks_strong_support_levels",
     "continued_momentum_scan",
     "modified_dreman",
-    "break_out_stocks"
+    "break_out_stocks",
 ]
 signals = [
     "top_gainers",
@@ -195,12 +195,11 @@ sort = {
         "Volume",
     ],
 }
-print(sort["financial"])
 # pylint: disable=R0912
 
 
 def default_completion(inter: disnake.AppCmdInter) -> list[str]:
-    return ["Start Typing", "If you want", "to", "Live"]
+    return ["Start Typing", "for a", "stock ticker"]
 
 
 def presets_custom_autocomp(inter: disnake.AppCmdInter, preset: str):
@@ -262,10 +261,8 @@ class ScreenerCommands(commands.Cog):
 
         Parameters
         -----------
-        signal: str
-            Signal. Default: most_volatile
-        start:
-            Starting date in YYYY-MM-DD format
+        signal: Signal. Default: most_volatile
+        start: Starting date in YYYY-MM-DD format
         """
         await ctx.response.defer()
         logger.info("scr-historical")
@@ -284,17 +281,11 @@ class ScreenerCommands(commands.Cog):
 
         Parameters
         -----------
-        preset: str
-            screener preset
-        sort: str
-            column to sort by
-        limit: int
-            number of stocks to display
-        ascend: boolean
-            whether it's sorted by ascending order or not. Default: False
+        preset: screener preset
+        sort: column to sort by
+        limit: number of stocks to display
+        ascend: whether it's sorted by ascending order or not. Default: False
         """
-        print(sort)
-        print(preset)
         await ctx.response.defer()
         logger.info("scr-overview")
         await overview_command(ctx, preset, sort, limit, ascend)
@@ -312,14 +303,10 @@ class ScreenerCommands(commands.Cog):
 
         Parameters
         -----------
-        preset: str
-            screener preset
-        sort: str
-            column to sort by
-        limit: int
-            number of stocks to display
-        ascend: boolean
-            whether it's sorted by ascending order or not. Default: False
+        preset: screener preset
+        sort: column to sort by
+        limit: number of stocks to display
+        ascend: whether it's sorted by ascending order or not. Default: False
         """
         await ctx.response.defer()
         logger.info("scr-valuation")
@@ -338,14 +325,10 @@ class ScreenerCommands(commands.Cog):
 
         Parameters
         -----------
-        preset: str
-            screener preset
-        sort: str
-            column to sort by
-        limit: int
-            number of stocks to display
-        ascend: boolean
-            whether it's sorted by ascending order or not. Default: False
+        preset: screener preset
+        sort: column to sort by
+        limit: number of stocks to display
+        ascend: whether it's sorted by ascending order or not. Default: False
         """
         await ctx.response.defer()
         logger.info("scr-financial")
@@ -364,14 +347,10 @@ class ScreenerCommands(commands.Cog):
 
         Parameters
         -----------
-        preset: str
-            screener preset
-        sort: str
-            column to sort by
-        limit: int
-            number of stocks to display
-        ascend: boolean
-            whether it's sorted by ascending order or not. Default: False
+        preset: screener preset
+        sort: column to sort by
+        limit: number of stocks to display
+        ascend: whether it's sorted by ascending order or not. Default: False
         """
         await ctx.response.defer()
         logger.info("scr-ownership")
@@ -390,14 +369,10 @@ class ScreenerCommands(commands.Cog):
 
         Parameters
         -----------
-        preset: str
-            screener preset
-        sort: str
-            column to sort by
-        limit: int
-            number of stocks to display
-        ascend: boolean
-            whether it's sorted by ascending order or not. Default: False
+        preset: screener preset
+        sort: column to sort by
+        limit: number of stocks to display
+        ascend: whether it's sorted by ascending order or not. Default: False
         """
         await ctx.response.defer()
         logger.info("scr-performance")
@@ -416,14 +391,10 @@ class ScreenerCommands(commands.Cog):
 
         Parameters
         -----------
-        preset: str
-            screener preset
-        sort: str
-            column to sort by
-        limit: int
-            number of stocks to display
-        ascend: boolean
-            whether it's sorted by ascending order or not. Default: False
+        preset: screener preset
+        sort: column to sort by
+        limit: number of stocks to display
+        ascend: whether it's sorted by ascending order or not. Default: False
         """
         await ctx.response.defer()
         logger.info("scr-technical")

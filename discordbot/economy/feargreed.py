@@ -14,12 +14,16 @@ async def feargreed_command(ctx, indicator=""):
     """CNN Fear and Greed Index [CNN]"""
 
     try:
+        # Debug user input
+        if cfg.DEBUG:
+            logger.debug("econ-futures")
+
         # Check for argument
         possible_indicators = ("", "jbd", "mv", "pco", "mm", "sps", "spb", "shd")
 
         if indicator not in possible_indicators:
             raise Exception(
-                f"Select valid indicator from {', '.join(possible_indicators)}"  # nosec
+                f"Select a valid indicator from {', '.join(possible_indicators)}"  # nosec
             )
 
         # Retrieve data

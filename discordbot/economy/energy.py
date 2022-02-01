@@ -15,11 +15,15 @@ async def energy_command(ctx):
     """Displays energy futures data [Finviz]"""
 
     try:
+        # Debug user input
+        if cfg.DEBUG:
+            logger.debug("econ-energy")
+
         # Retrieve data
         d_futures = finviz_model.get_futures()
         df = pd.DataFrame(d_futures["Energy"])
 
-        formats = {'last': '${:.2f}', 'prevClose': '${:.2f}'}
+        formats = {"last": "${:.2f}", "prevClose": "${:.2f}"}
         for col, f in formats.items():
             df[col] = df[col].map(lambda x: f.format(x))
         df = df.sort_values(by="ticker", ascending=False)
@@ -38,8 +42,10 @@ async def energy_command(ctx):
                 "change",
             ]
         ]
-        df.index.names = ['']
-        df = df.rename(columns={'prevClose': 'PrevClose', 'last': 'Last', 'change': 'Change'})
+        df.index.names = [""]
+        df = df.rename(
+            columns={"prevClose": "PrevClose", "last": "Last", "change": "Change"}
+        )
         dindex = len(df.index)
         fig = df2img.plot_dataframe(
             df,
