@@ -1,7 +1,11 @@
+# IMPORTATION STANDARD
 from datetime import datetime
 
+# IMPORTATION THIRDPARTY
+import pandas as pd
 import pytest
 
+# IMPORTATION INTERNAL
 from gamestonk_terminal.common.behavioural_analysis import sentimentinvestor_model
 
 
@@ -45,3 +49,22 @@ def test_get_historical(ticker, start, end, number, recorder):
 def test_get_trending(start, hour, number, recorder):
     df = sentimentinvestor_model.get_trending(start, hour, number)
     recorder.capture(df)
+
+
+@pytest.mark.vcr(record_mode="none")
+def test_get_trending_status_400(mocker):
+    # MOCK GET
+    attrs = {
+        "status_code": 400,
+    }
+    mock_response = mocker.Mock(**attrs)
+    mocker.patch(target="requests.get", new=mocker.Mock(return_value=mock_response))
+
+    df = sentimentinvestor_model.get_trending(
+        start=datetime(2021, 12, 21),
+        hour=9,
+        number=10,
+    )
+
+    assert isinstance(df, pd.DataFrame)
+    assert df.empty

@@ -4,7 +4,6 @@ __docformat__ = "numpy"
 import logging
 import warnings
 from typing import Any, Tuple
-
 import pandas as pd
 import statsmodels.api as sm
 from scipy import stats
@@ -31,6 +30,7 @@ def get_summary(df: pd.DataFrame) -> pd.DataFrame:
     """
 
     df_stats = df.describe(percentiles=[0.1, 0.25, 0.5, 0.75, 0.9])
+    print(df_stats.to_string())
     df_stats.loc["var"] = df_stats.loc["std"] ** 2
 
     return df_stats
@@ -164,3 +164,119 @@ def get_unitroot(df: pd.DataFrame, fuller_reg: str, kpss_reg: str) -> pd.DataFra
     vals2 = [res2[0], res2[1], res2[2], "", ""]
     data["KPSS"] = vals2
     return data
+
+
+def calculate_adjusted_var(
+    kurtosis: float, skew: float, ndp: float, std: float, mean: float
+):
+    """Calculates VaR, which is adjusted for skew and kurtosis (Cornish-Fischer-Expansion)
+
+    Parameters
+    ----------
+    kurtosis: float
+        kurtosis of data
+    skew: float
+        skew of data
+    ndp: float
+        normal distribution percentage number (99% -> -2.326)
+    std: float
+        standard deviation of data
+    mean: float
+        mean of data
+
+    Returns
+    -------
+    float
+        Real adjusted VaR
+    """
+
+    # Derived from Cornish-Fisher-Expansion
+    # Formula for quantile from "Finance Compact Plus" by Zimmerman; Part 1, page 130-131
+    # More material/resources:
+    #       "Numerical Methods and Optimization in Finance" by Gilli, Maringer & Schumann;
+    #       https://www.value-at-risk.net/the-cornish-fisher-expansion/;
+    #       "Risk Management and Financial Institutions" by John C. Hull
+
+    skew_component = skew / 6 * (ndp**2 - 1) ** 2 - skew**2 / 36 * ndp * (
+        2 * ndp**2 - 5
+    )
+    kurtosis_component = (kurtosis - 3) / 24 * ndp * (ndp**2 - 3)
+    quantile = ndp + skew_component + kurtosis_component
+    log_return = mean + quantile * std
+    real_return = 2.7182818**log_return - 1
+    return real_return
+
+
+def get_var(data: pd.DataFrame, use_mean: bool, adjusted_var: bool, percentile: int):
+    """Gets value at risk for specified stock dataframe
+
+    Parameters
+    ----------
+    data: pd.DataFrame
+        Dataframe of a stock
+    use_mean: bool
+        If one should use the stocks mean for calculation
+    adjusted_var: bool
+        If one should return VaR adjusted for skew and kurtosis
+    percentile: int
+        VaR percentile
+
+    Returns
+    -------
+    list
+        list of VaR
+    list
+        list of historical VaR
+    """
+    data = data[["adjclose"]].copy()
+    data.loc[:, "return"] = data.adjclose.pct_change()
+
+    # Distribution percentages
+    percentile_90 = -1.282
+    percentile_95 = -1.645
+    percentile_99 = -2.326
+    percentile_custom = stats.norm.ppf(1 - percentile)
+
+    # Mean
+    if use_mean:
+        mean = data["return"].mean()
+    else:
+        mean = 0
+
+    # Standard Deviation
+    std = data["return"].std(axis=0)
+
+    if adjusted_var:
+
+        # Kurtosis
+        # Measures height and sharpness of the central peak relative to that of a standard bell curve
+        k = data["return"].kurtosis(axis=0)
+
+        # Skewness
+        # Measure of the asymmetry of the probability distribution of a random variable about its mean
+        s = data["return"].skew(axis=0)
+
+        # Adjusted VaR
+        var_90 = calculate_adjusted_var(k, s, percentile_90, std, mean)
+        var_95 = calculate_adjusted_var(k, s, percentile_95, std, mean)
+        var_99 = calculate_adjusted_var(k, s, percentile_99, std, mean)
+        var_custom = calculate_adjusted_var(k, s, percentile_custom, std, mean)
+
+    else:
+        # Regular Var
+        var_90 = 2.7182818 ** (mean + percentile_90 * std) - 1
+        var_95 = 2.7182818 ** (mean + percentile_95 * std) - 1
+        var_99 = 2.7182818 ** (mean + percentile_99 * std) - 1
+        var_custom = 2.7182818 ** (mean + percentile_custom * std) - 1
+
+    data.sort_values("return", inplace=True, ascending=True)
+
+    # Historical VaR
+    hist_var_90 = data["return"].quantile(0.1)
+    hist_var_95 = data["return"].quantile(0.05)
+    hist_var_99 = data["return"].quantile(0.01)
+    hist_var_custom = data["return"].quantile(1 - percentile)
+
+    var_list = [var_90, var_95, var_99, var_custom]
+    hist_var_list = [hist_var_90, hist_var_95, hist_var_99, hist_var_custom]
+    return var_list, hist_var_list
