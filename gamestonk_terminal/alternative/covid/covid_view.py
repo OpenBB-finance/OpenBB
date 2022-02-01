@@ -124,7 +124,7 @@ def display_covid_stat(
         color = cfg.style.down_color
     else:
         ax.set_ylabel(stat.title() + " (Deaths/Cases)")
-        color = cfg.style.get_bar_colors()[0]
+        color = cfg.style.get_colors(reverse=True)[0]
 
     ax.plot(data.index, data, color=color, alpha=0.2)
     ax.plot(data.index, data.rolling(7).mean(), color=color)

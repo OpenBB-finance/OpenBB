@@ -225,22 +225,32 @@ class TerminalStyle:
         self.down_color = self.mpf_style["marketcolors"]["volume"]["down"]
         self.up_color = self.mpf_style["marketcolors"]["volume"]["up"]
 
-    def hex_to_rgb(self, color):
-        """Convert hex color to RGB color."""
-        color = color.lstrip("#")
-        return tuple(int(color[i : i + 2], 16) for i in (0, 2, 4))  # noqa: E203
-
-    def get_pie_colors(self) -> List:
-        """Get color sequence for a pie chart."""
+    def get_colors(self, reverse: bool = False) -> List:
+        """Get hex color sequence from the stylesheet."""
         plt.style.use(self.mpl_style)
         colors = plt.rcParams["axes.prop_cycle"].by_key()["color"]
-        colors.sort(key=self.hex_to_rgb)
+        if reverse:
+            colors.reverse()
         return colors
 
-    def get_bar_colors(self) -> List:
-        """Get reversed color sequence for a bar chart."""
-        plt.style.use(self.mpl_style)
-        colors = plt.rcParams["axes.prop_cycle"].by_key()["color"]
-        colors.sort(key=self.hex_to_rgb)
-        colors.reverse()
-        return colors
+    def style_primary_axis(self, ax: plt.Axes):
+        """Apply styling to a primary axis.
+
+        Parameters
+        ----------
+        ax : plt.Axes
+            A matplolib axis
+        """
+        ax.yaxis.set_label_position("right")
+        ax.grid(axis="both", visible=True, zorder=0)
+        ax.tick_params(axis="x", labelrotation=self.xticks_rotation)
+
+    def style_twin_axis(self, ax: plt.Axes):
+        """Apply styling to a twin axis.
+
+        Parameters
+        ----------
+        ax : plt.Axes
+            A matplolib axis
+        """
+        ax.yaxis.set_label_position("left")
