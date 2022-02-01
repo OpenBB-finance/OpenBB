@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import logging
 import textwrap
 from datetime import datetime
-from typing import Any, Tuple
+from typing import Any, Tuple, Dict
 
 import pandas as pd
 import requests
@@ -107,7 +107,7 @@ def get_staking_account_info(address: str = "") -> Tuple[pd.DataFrame, str]:
     """
 
     response = _make_request(f"staking/{address}")
-    results: dict[str, Any] = {"myDelegations": []}
+    results: Dict[str, Any] = {"myDelegations": []}
 
     for field in ["availableLuna", "delegationTotal"]:
         results[field] = denominate_number(response.get(field, 0))
