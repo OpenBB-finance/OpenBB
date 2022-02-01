@@ -2,36 +2,36 @@
 __docformat__ = "numpy"
 
 import logging
-import os
+from typing import List, Optional
 from datetime import datetime
 from io import BytesIO
 from os import path
-from typing import List
+import os
 
-import matplotlib.ticker as mtick
 import numpy as np
 import pandas as pd
-from matplotlib import pyplot as plt
-from matplotlib.lines import Line2D
-from pypfopt import plotting
 from reportlab.lib.pagesizes import letter
-from reportlab.lib.utils import ImageReader
 from reportlab.pdfgen import canvas
+from reportlab.lib.utils import ImageReader
+from matplotlib.lines import Line2D
+from matplotlib import pyplot as plt
+import matplotlib.ticker as mtick
+from pypfopt import plotting
 
-from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_plot import PLOT_DPI
-from gamestonk_terminal.decorators import log_start_end
-from gamestonk_terminal.helper_funcs import (
-    export_data,
-    get_rf,
-    plot_autoscale,
-    print_rich_table,
-)
+from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.portfolio import (
     portfolio_model,
-    reportlab_helpers,
     yfinance_model,
 )
+from gamestonk_terminal.portfolio import reportlab_helpers
+from gamestonk_terminal.helper_funcs import (
+    get_rf,
+    plot_autoscale,
+    export_data,
+    print_rich_table,
+)
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.portfolio.portfolio_optimization import optimizer_model
 from gamestonk_terminal.rich_config import console
 
@@ -65,25 +65,138 @@ In order to load a CSV do the following:
 
 
 @log_start_end(log=logger)
-def show_df(df: pd.DataFrame, show: bool) -> None:
-    """Shows the given dataframe
+def display_returns_vs_bench(
+    portfolio: portfolio_model.Portfolio,
+    benchmark: str = "SPY",
+    external_axes: Optional[plt.Axes] = None,
+):
+    """Display portfolio returns vs benchmark
 
     Parameters
     ----------
-    df : pd.DataFrame
-        The dataframe to be shown
-    show : bool
-        Whether to show the dataframe index
+    portfolio: Portfolio
+        Custom portfolio object with trade list
+    benchmark: str
+        Symbol for benchmark.  Defaults to SPY
+    external_axes: plt.Axes
+        Optional axes to display plot on
+
     """
+    if not external_axes:
+        fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    else:
+        ax = external_axes
 
-    df = df.dropna(how="all", axis=1).fillna("")
+    portfolio.generate_holdings_from_trades()
+    portfolio.add_benchmark(benchmark)
 
-    print_rich_table(
-        df,
-        headers=list(df.columns),
-        show_index=show,
+    cumulative_returns = (1 + portfolio.returns).cumprod()
+    benchmark_c_returns = (1 + portfolio.benchmark_returns).cumprod()
+
+    ax.plot(cumulative_returns.index, cumulative_returns, label="Portfolio")
+    ax.plot(benchmark_c_returns.index, benchmark_c_returns, label="Benchmark")
+    ax.grid()
+    ax.legend(loc=0)
+    if not external_axes:
+        if gtff.USE_ION:
+            plt.ion()
+        fig.autofmt_xdate()
+        fig.tight_layout()
+        plt.show()
+
+
+@log_start_end(log=logger)
+def display_rolling_stats(
+    portfolio: portfolio_model.Portfolio,
+    length: int = 60,
+    benchmark: str = "SPY",
+    risk_free_rate: float = 0,
+    external_axes: Optional[List[plt.Axes]] = None,
+    export: str = "",
+):
+    """Display portfolio returns vs benchmark
+
+    Parameters
+    ----------
+    portfolio: Portfolio
+        Custom portfolio object with trade list
+    length: int
+        Length of rolling window
+    benchmark: str
+        Symbol for benchmark.  Defaults to SPY
+    risk_free_rate: float
+        Value to use for risk free rate in sharpe/other calculations
+    external_axes: Optional[List[plt.Axes]]
+        Optional axes to display plot on
+    export: str
+        Export to file
+    """
+    portfolio.generate_holdings_from_trades()
+    portfolio.add_benchmark(benchmark)
+    portfolio.add_rf(risk_free_rate)
+    if not external_axes:
+        fig, ax = plt.subplots(4, 1, figsize=(8, 8), dpi=PLOT_DPI, sharex=True)
+    else:
+        ax = external_axes
+    rolling_volatility = portfolio.returns.rolling(length).std()
+    rolling_volatility_bench = portfolio.benchmark_returns.rolling(length).std()
+
+    rolling_sharpe = portfolio.returns.rolling(length).apply(
+        lambda x: (x.mean() - risk_free_rate) / x.std()
     )
-    console.print("")
+    rolling_sharpe_bench = portfolio.benchmark_returns.rolling(length).apply(
+        lambda x: (x.mean() - risk_free_rate) / x.std()
+    )
+
+    rolling_volatility.plot(ax=ax[1])
+    rolling_volatility_bench.plot(ax=ax[1])
+    ax[1].set_title("Rolling Volatility")
+
+    rolling_sharpe.plot(ax=ax[2])
+    rolling_sharpe_bench.plot(ax=ax[2])
+    ax[2].set_title("Rolling Sharpe Ratio")
+
+    # Rolling beta is defined as Cov(Port,Bench)/var(Bench)
+    covs = (
+        pd.DataFrame(
+            {"Portfolio": portfolio.returns, "Benchmark": portfolio.benchmark_returns}
+        )
+        .dropna(axis=0)
+        .rolling(length)
+        .cov()
+        .unstack()
+        .dropna()
+    )
+    rolling_beta = covs["Portfolio"]["Benchmark"] / covs["Benchmark"]["Benchmark"]
+    rolling_beta.plot(ax=ax[3])
+    ax[3].set_title("Rolling Beta to Benchmark")
+
+    c_returns = (1 + portfolio.returns).cumprod()
+    bench_c_rets = (1 + portfolio.benchmark_returns).cumprod()
+
+    ax[0].plot(c_returns.index, c_returns)
+    ax[0].plot(bench_c_rets.index, bench_c_rets)
+    ax[0].set_title("Cumulative Returns")
+
+    if not external_axes:
+
+        for a in ax[0], ax[1], ax[2]:
+            a.legend(["Portfolio", "Benchmark"], loc="upper left")
+        for a in ax[0], ax[1], ax[2], ax[3]:
+            a.set_xlim(portfolio.returns.index[0], portfolio.returns.index[-1])
+            a.set_xlabel([])
+            a.grid("on")
+
+        ax[3].set_xlabel("Date")
+        if gtff.USE_ION:
+            plt.ion()
+        fig.tight_layout(pad=2)
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "rolling",
+        )
+        plt.show()
 
 
 @log_start_end(log=logger)
@@ -308,10 +421,10 @@ def display_drawdown(holdings: pd.DataFrame, export: str = ""):
     drawdown = portfolio_model.calculate_drawdown(holdings)
     fig, ax = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
     ax[0].plot(holdings.index, holdings)
-    ax[0].set_title("Cumulative Returns")
+    ax[0].set_title("Holdings")
 
     ax[1].plot(holdings.index, drawdown)
-    ax[1].fill_between(holdings.index, np.asarray(drawdown["return"]), alpha=0.4)
+    ax[1].fill_between(holdings.index, np.asarray(drawdown), alpha=0.4)
     ax[1].set_title("Portfolio Drawdown")
     ax[0].grid()
     ax[1].grid()
@@ -324,13 +437,13 @@ def display_drawdown(holdings: pd.DataFrame, export: str = ""):
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "mdd",
+        "dd",
     )
 
 
 class Report:
     @log_start_end(log=logger)
-    def __init__(self, df: pd.DataFrame, hist: pd.DataFrame, m_tick: str, n: int):
+    def __init__(self, df: pd.DataFrame, hist: pd.DataFrame, m_tick: str):
         """Generate financial reports.
         Financial reports allow users to show the how they have been performing in
         trades. This allows for a simple way to show progress and analyze metrics
@@ -342,8 +455,8 @@ class Report:
             The dataframe with previous holdings information
         hist : pd.DataFrame
             The dataframe with previous prices for stocks in the portfolio
-        m_tick : str
-            The market asset to be identified
+        df_m : pd.DataFrame
+            Dataframe of benchmark
         n : int
             The number of days to analyze
 
@@ -361,7 +474,8 @@ class Report:
         self.hist = hist
         self.m_tick = m_tick
         self.df_m = yfinance_model.get_market(self.df.index[0], self.m_tick)
-        self.returns, self.variance = portfolio_model.get_return(df, self.df_m, n)
+        # self.returns, self.variance = portfolio_model.get_return(df, self.df_m, n)
+        self.returns = pd.DataFrame()
         self.rf = get_rf()
         self.betas = portfolio_model.get_rolling_beta(
             self.df, self.hist, self.df_m, 365
