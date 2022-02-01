@@ -20,9 +20,9 @@ def vcr_config():
     "func, kwargs",
     [
         ("display_top_nfts", dict()),
-        # ("display_top_games", dict()),
-        # ("display_top_dexes", dict()),
-        # ("display_top_dapps", dict()),
+        ("display_top_games", dict()),
+        ("display_top_dexes", dict()),
+        ("display_top_dapps", dict()),
     ],
 )
 def test_call_func(func, kwargs, mocker):
