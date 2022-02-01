@@ -1,14 +1,20 @@
 """Investpy Model"""
 __docformat__ = "numpy"
 
+import logging
 from datetime import datetime, timedelta
 from typing import Tuple
 
 import investpy
 import pandas as pd
+
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.rich_config import console
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def search_funds(by: str = "name", value: str = "") -> pd.DataFrame:
     """Search investpy for matching funds
 
@@ -30,6 +36,7 @@ def search_funds(by: str = "name", value: str = "") -> pd.DataFrame:
         return pd.DataFrame()
 
 
+@log_start_end(log=logger)
 def get_overview(country: str = "united states", limit: int = 20) -> pd.DataFrame:
     """
 
@@ -45,6 +52,7 @@ def get_overview(country: str = "united states", limit: int = 20) -> pd.DataFram
     )
 
 
+@log_start_end(log=logger)
 def get_fund_symbol_from_name(name: str) -> Tuple[str, str]:
     """Get fund symbol from name through investpy
 
@@ -71,6 +79,7 @@ def get_fund_symbol_from_name(name: str) -> Tuple[str, str]:
     return symbol, country
 
 
+@log_start_end(log=logger)
 def get_fund_name_from_symbol(symbol: str) -> Tuple[str, str]:
     """Get fund name from symbol from investpy
 
@@ -97,6 +106,7 @@ def get_fund_name_from_symbol(symbol: str) -> Tuple[str, str]:
     return name, country
 
 
+@log_start_end(log=logger)
 def get_fund_info(fund: str, country: str = "united states") -> pd.DataFrame:
     """
 
@@ -115,6 +125,7 @@ def get_fund_info(fund: str, country: str = "united states") -> pd.DataFrame:
     return investpy.funds.get_fund_information(fund, country).T
 
 
+@log_start_end(log=logger)
 def get_fund_historical(
     fund: str,
     country: str = "united states",

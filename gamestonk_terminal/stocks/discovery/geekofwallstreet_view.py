@@ -1,15 +1,21 @@
 """Geek of wall street view"""
 __docformat__ = "numpy"
+import logging
 import os
 
 import pandas as pd
 
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.stocks.discovery import geekofwallstreet_model as gwt_model
 
 # pylint:disable=no-member
 
 
+logger = logging.getLogger(__name__)
+
+
+@log_start_end(log=logger)
 def display_realtime_earnings(export: str = ""):
     """Displays real time earnings data from geekofwallstreet.com
 

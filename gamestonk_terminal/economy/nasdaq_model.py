@@ -2,14 +2,20 @@
 __docformat__ = "numpy"
 
 import argparse
+import logging
 import os
 from typing import List
 
 import pandas as pd
 import requests
+
 from gamestonk_terminal.config_terminal import API_KEY_QUANDL
+from gamestonk_terminal.decorators import log_start_end
+
+logger = logging.getLogger(__name__)
 
 
+@log_start_end(log=logger)
 def check_country_code_type(list_of_codes: str) -> List[str]:
     """Check that codes are valid for NASDAQ API"""
     nasdaq_codes = list(
@@ -26,6 +32,7 @@ def check_country_code_type(list_of_codes: str) -> List[str]:
     raise argparse.ArgumentTypeError("No valid codes provided.")
 
 
+@log_start_end(log=logger)
 def get_big_mac_index(country_code: str) -> pd.DataFrame:
     """Gets the Big Mac index calculated by the Economist
 

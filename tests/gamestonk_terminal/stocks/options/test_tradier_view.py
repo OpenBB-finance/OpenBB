@@ -1,6 +1,3 @@
-# IMPORTATION STANDARD
-import argparse
-
 # IMPORTATION THIRDPARTY
 import pytest
 
@@ -31,12 +28,6 @@ def test_green_highlight(recorder):
 def test_check_valid_option_chains_headers(recorder):
     result = tradier_view.check_valid_option_chains_headers(headers="gamma,delta")
     recorder.capture(result)
-
-
-@pytest.mark.vcr(record_mode="none")
-def test_check_valid_option_chains_headers_invalid():
-    with pytest.raises(argparse.ArgumentTypeError):
-        tradier_view.check_valid_option_chains_headers(headers="MOCK TEXT")
 
 
 @pytest.mark.default_cassette("test_display_chains")

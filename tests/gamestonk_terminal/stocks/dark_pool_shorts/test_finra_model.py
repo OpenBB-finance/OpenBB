@@ -80,9 +80,11 @@ def filter_json_data(response):
 
 @pytest.mark.vcr(before_record_response=filter_json_data)
 def test_getATSdata(recorder):
-    result_list = finra_model.getATSdata(
+    df_ats, d_ats_reg = finra_model.getATSdata(
         num_tickers_to_filter=2,
         tier_ats="T1",
     )
 
-    recorder.capture_list(result_list)
+    d_ats_reg = {k: round(v, 9) for k, v in d_ats_reg.items()}
+
+    recorder.capture_list([df_ats, d_ats_reg])

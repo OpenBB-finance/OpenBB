@@ -52,6 +52,7 @@ class QaController(StockController):
         "goodness",
         "unitroot",
         "capm",
+        "var",
     ]
 
     stock_interval = [1, 5, 15, 30, 60]
@@ -125,6 +126,8 @@ class QaController(StockController):
     quantile    rolling median and quantile of prices
     skew        rolling skewness of distribution of prices
     kurtosis    rolling kurtosis of distribution of prices
+[info]Risk:[/info]
+    var         value at risk
 [info]Other:[/info]
     raw         print raw data
     decompose   decomposition in cyclic-trend, season, and residuals of prices
@@ -699,3 +702,53 @@ class QaController(StockController):
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             capm_view(self.ticker)
+
+    def call_var(self, other_args: List[str]):
+        """Process var command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="var",
+            description="""
+                Provides value at risk (short: VaR) of the selected stock.
+            """,
+        )
+        parser.add_argument(
+            "-m",
+            "--mean",
+            action="store_true",
+            default=False,
+            dest="use_mean",
+            help="If one should use the mean of the stocks return",
+        )
+        parser.add_argument(
+            "-a",
+            "--adjusted",
+            action="store_true",
+            default=False,
+            dest="adjusted",
+            help="""
+                If the VaR should be adjusted for skew and kurtosis (Cornish-Fisher-Expansion)
+            """,
+        )
+        parser.add_argument(
+            "-p",
+            "--percentile",
+            action="store",
+            dest="percentile",
+            type=float,
+            default=99.9,
+            help="""
+                Percentile used for VaR calculations, for example input 99.9 equals a 99.9% VaR
+            """,
+        )
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            qa_view.display_var(
+                self.stock,
+                ns_parser.use_mean,
+                self.ticker,
+                ns_parser.adjusted,
+                ns_parser.percentile / 100,
+            )

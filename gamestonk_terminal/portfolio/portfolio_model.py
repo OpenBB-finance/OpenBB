@@ -1,9 +1,10 @@
 """Portfolio Model"""
 __docformat__ = "numpy"
 
-import os
+import logging
 import math
-from datetime import date, timedelta, datetime
+import os
+from datetime import date, datetime, timedelta
 from typing import List
 
 import numpy as np
@@ -11,18 +12,23 @@ import pandas as pd
 import statsmodels.api as sm
 from statsmodels.regression.rolling import RollingOLS
 
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.etf import stockanalysis_model
 from gamestonk_terminal.portfolio import (
+    portfolio_helper,
     portfolio_view,
     yfinance_model,
-    portfolio_helper,
 )
-from gamestonk_terminal.etf import stockanalysis_model
 from gamestonk_terminal.rich_config import console
 
 # pylint: disable=E1136
 # pylint: disable=unsupported-assignment-operation
 
 
+logger = logging.getLogger(__name__)
+
+
+@log_start_end(log=logger)
 def save_df(df: pd.DataFrame, name: str) -> None:
     """Saves the portfolio as a csv
 
@@ -43,6 +49,7 @@ def save_df(df: pd.DataFrame, name: str) -> None:
         df.to_excel(path, index=False, engine="openpyxl")
 
 
+@log_start_end(log=logger)
 def load_df(name: str) -> pd.DataFrame:
     """Load the portfolio from a csv
 
@@ -108,6 +115,7 @@ def load_df(name: str) -> pd.DataFrame:
         return pd.DataFrame()
 
 
+@log_start_end(log=logger)
 def add_values(
     log: pd.DataFrame, changes: pd.DataFrame, cashes: pd.DataFrame
 ) -> pd.DataFrame:
@@ -203,6 +211,7 @@ def add_values(
     return log
 
 
+@log_start_end(log=logger)
 def merge_dataframes(
     log: pd.DataFrame,
     hist: pd.DataFrame,
@@ -259,6 +268,7 @@ def merge_dataframes(
     return comb
 
 
+@log_start_end(log=logger)
 def convert_df(portfolio: pd.DataFrame) -> pd.DataFrame:
     """Converts a df from activity to daily holdings
 
@@ -304,6 +314,7 @@ def convert_df(portfolio: pd.DataFrame) -> pd.DataFrame:
     return comb, hist
 
 
+@log_start_end(log=logger)
 def get_return(df: pd.DataFrame, df_m: pd.DataFrame, n: int) -> pd.DataFrame:
     """Adds cumulative returns to a holdings df
 
@@ -343,6 +354,7 @@ def get_return(df: pd.DataFrame, df_m: pd.DataFrame, n: int) -> pd.DataFrame:
     return comb, variance
 
 
+@log_start_end(log=logger)
 def get_rolling_beta(
     df: pd.DataFrame, hist: pd.DataFrame, mark: pd.DataFrame, n: pd.DataFrame
 ) -> pd.DataFrame:
@@ -388,6 +400,7 @@ def get_rolling_beta(
     return comb
 
 
+@log_start_end(log=logger)
 def fix_etf_allocation(
     data: pd.DataFrame,
     df_new: pd.DataFrame,
@@ -448,6 +461,7 @@ def fix_etf_allocation(
     return data
 
 
+@log_start_end(log=logger)
 def get_allocation(
     data: pd.DataFrame,
     hist: pd.DataFrame,
@@ -519,6 +533,7 @@ def get_allocation(
     return df
 
 
+@log_start_end(log=logger)
 def get_main_text(df: pd.DataFrame) -> str:
     """Get main performance summary from a dataframe with returns
 
@@ -561,6 +576,7 @@ def get_main_text(df: pd.DataFrame) -> str:
     return text
 
 
+@log_start_end(log=logger)
 def get_beta_text(df: pd.DataFrame) -> str:
     """Get beta summary for a dataframe
 
@@ -599,6 +615,7 @@ performance_text = (
 )
 
 
+@log_start_end(log=logger)
 def calculate_drawdown(input_series: pd.Series, is_returns: bool = False) -> pd.Series:
     """Calculate the drawdown (MDD) of historical series.  Note that the calculation is done
      on cumulative returns (or prices).  The definition of drawdown is

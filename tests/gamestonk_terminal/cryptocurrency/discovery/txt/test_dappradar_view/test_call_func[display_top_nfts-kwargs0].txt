@@ -1,0 +1,12 @@
+                           Name Protocols Floor Price [$] Avg Price [$] Market Cap [$] Volume [$]
+0          Bored Ape Yacht Club  ethereum          273.3K        294.2K           2.7B      15.9M
+1                   CryptoPunks  ethereum          216.5K        258.1K           2.2B       4.6M
+2         Mutant Ape Yacht Club  ethereum             56K         60.1K             1B       9.4M
+3  CLONE X - X TAKASHI MURAKAMI  ethereum           33.4K         23.3K         626.3M       4.3M
+4                     Cool Cats  ethereum           39.9K         44.9K         396.4M       1.3M
+5                    Doodles V4  ethereum           34.2K         36.4K         341.6M       3.4M
+6                    VeeFriends  ethereum           32.6K           46K         334.1M     276.1K
+7                    Autoglyphs  ethereum          512.4K             0         262.3M          0
+8                World Of Women  ethereum           23.6K         26.4K         236.2M     686.5K
+9                         Azuki  ethereum           21.5K         17.5K         215.5M        23M
+

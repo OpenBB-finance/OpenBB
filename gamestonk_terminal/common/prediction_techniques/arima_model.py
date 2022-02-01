@@ -1,14 +1,21 @@
 """Arima Prediction Model"""
 __docformat__ = "numpy"
 
-from typing import Union, List, Tuple, Any
+import logging
+from typing import Any, List, Tuple, Union
+
 import pandas as pd
 import pmdarima
 from statsmodels.tsa.arima.model import ARIMA
 
+from gamestonk_terminal.decorators import log_start_end
+
+logger = logging.getLogger(__name__)
+
 ICS = ["aic", "aicc", "bic", "hqic", "oob"]
 
 
+@log_start_end(log=logger)
 def get_arima_model(
     values: Union[pd.Series, pd.DataFrame],
     arima_order: str,

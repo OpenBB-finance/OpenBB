@@ -1,6 +1,7 @@
 """Oanda View."""
 __docformat__ = "numpy"
 
+import logging
 from typing import Dict, Union
 
 import matplotlib.pyplot as plt
@@ -12,28 +13,29 @@ import seaborn as sns
 
 from gamestonk_terminal import config_plot as cfgPlot
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import (
-    plot_autoscale,
-)
-
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.forex.oanda.oanda_model import (
+    account_summary_request,
     cancel_pending_order_request,
     close_trades_request,
+    create_order_request,
     fx_price_request,
-    account_summary_request,
+    get_calendar_request,
+    get_candles_dataframe,
     open_positions_request,
     open_trades_request,
+    order_history_request,
     orderbook_plot_data_request,
     pending_orders_request,
     positionbook_plot_data_request,
-    order_history_request,
-    create_order_request,
-    get_candles_dataframe,
-    get_calendar_request,
 )
+from gamestonk_terminal.helper_funcs import plot_autoscale
 from gamestonk_terminal.rich_config import console
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def get_fx_price(account: str, instrument: Union[str, None]):
     """View price for loaded currency pair.
 
@@ -55,6 +57,7 @@ def get_fx_price(account: str, instrument: Union[str, None]):
         console.print("No data was retrieved.\n")
 
 
+@log_start_end(log=logger)
 def get_account_summary(accountID: str):
     """Print Oanda account summary.
 
@@ -70,6 +73,7 @@ def get_account_summary(accountID: str):
         console.print("No data was retrieved.\n")
 
 
+@log_start_end(log=logger)
 def get_order_book(accountID: str, instrument: str):
     """
     Plot the orderbook for the instrument if Oanda provides one.
@@ -98,6 +102,7 @@ def get_order_book(accountID: str, instrument: str):
         console.print("No data was retrieved.\n")
 
 
+@log_start_end(log=logger)
 def get_position_book(accountID: str, instrument: str):
     """Plot a position book for an instrument if Oanda provides one.
 
@@ -125,6 +130,7 @@ def get_position_book(accountID: str, instrument: str):
         console.print("No data was retrieved.\n")
 
 
+@log_start_end(log=logger)
 def list_orders(accountID: str, order_state: str, order_count: int):
     """List order history.
 
@@ -145,6 +151,7 @@ def list_orders(accountID: str, order_state: str, order_count: int):
         console.print("No data was retrieved.\n")
 
 
+@log_start_end(log=logger)
 def create_order(accountID: str, instrument: str, price: int, units: int):
     """Create a buy/sell order.
 
@@ -167,6 +174,7 @@ def create_order(accountID: str, instrument: str, price: int, units: int):
         console.print("No data was returned from Oanda.\n")
 
 
+@log_start_end(log=logger)
 def cancel_pending_order(accountID: str, orderID: str):
     """Cancel a Pending Order.
 
@@ -185,6 +193,7 @@ def cancel_pending_order(accountID: str, orderID: str):
         console.print("No data was returned from Oanda.\n")
 
 
+@log_start_end(log=logger)
 def get_open_positions(accountID: str):
     """Get information about open positions.
 
@@ -201,6 +210,7 @@ def get_open_positions(accountID: str):
         console.print("No data was returned from Oanda.\n")
 
 
+@log_start_end(log=logger)
 def get_pending_orders(accountID: str):
     """Get information about pending orders.
 
@@ -222,6 +232,7 @@ def get_pending_orders(accountID: str):
 # Pylint raises no-member error because the df_trades can be either
 # a dataframe or a boolean (False) value that has no .empty and no .to_string
 # pylint: disable=no-member
+@log_start_end(log=logger)
 def get_open_trades(accountID: str):
     """View open trades.
 
@@ -240,6 +251,7 @@ def get_open_trades(accountID: str):
         console.print("No data was returned from Oanda.\n")
 
 
+@log_start_end(log=logger)
 def close_trade(accountID: str, orderID: str, units: Union[int, None]):
     """Close a trade.
 
@@ -262,6 +274,7 @@ def close_trade(accountID: str, orderID: str, units: Union[int, None]):
         console.print("No data was returned from Oanda.\n")
 
 
+@log_start_end(log=logger)
 def show_candles(
     instrument: str,
     granularity: str,
@@ -310,6 +323,7 @@ def show_candles(
     console.print("")
 
 
+@log_start_end(log=logger)
 def calendar(instrument: str, days: int):
     """View calendar of significant events.
 
@@ -333,6 +347,7 @@ def calendar(instrument: str, days: int):
 # Utilities
 
 
+@log_start_end(log=logger)
 def add_plots(df: pd.DataFrame, additional_charts: Dict[str, bool]):
     """Add additional plots to the candle chart.
 
@@ -411,6 +426,7 @@ def add_plots(df: pd.DataFrame, additional_charts: Dict[str, bool]):
     return plots_to_add, legends, subplot_legends
 
 
+@log_start_end(log=logger)
 def book_plot(df: pd.DataFrame, instrument: str, book_type: str):
     """Plot the order book for a given instrument.
 

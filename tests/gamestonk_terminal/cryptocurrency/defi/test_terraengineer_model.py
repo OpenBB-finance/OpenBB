@@ -1,5 +1,9 @@
+# IMPORTATION STANDARD
+
+# IMPORTATION THIRDPARTY
 import pytest
 
+# IMPORTATION INTERNAL
 from gamestonk_terminal.cryptocurrency.defi import terraengineer_model
 
 
@@ -10,6 +14,7 @@ from gamestonk_terminal.cryptocurrency.defi import terraengineer_model
 )
 def test_get_history_asset_from_terra_address(asset, address, recorder):
     df = terraengineer_model.get_history_asset_from_terra_address(
-        asset=asset, address=address
+        asset=asset,
+        address=address,
     )
     recorder.capture(df)

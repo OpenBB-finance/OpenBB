@@ -1,15 +1,21 @@
 """NASDAQ DataLink View"""
 __docformat__ = "numpy"
 
+import logging
 import os
 
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import export_data, print_rich_table
-from gamestonk_terminal.stocks.discovery import nasdaq_model
 from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.stocks.discovery import nasdaq_model
 
 # pylint: disable=E1123
 
 
+logger = logging.getLogger(__name__)
+
+
+@log_start_end(log=logger)
 def display_top_retail(n_days: int = 3, export: str = ""):
     """Display the top 10 retail traded stocks for last days
 
@@ -35,6 +41,7 @@ def display_top_retail(n_days: int = 3, export: str = ""):
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "rtat", retails)
 
 
+@log_start_end(log=logger)
 def display_dividend_calendar(
     date: str,
     sort_col: str = "Dividend",

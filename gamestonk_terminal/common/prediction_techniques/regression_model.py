@@ -1,16 +1,22 @@
 """Regression Model"""
 __docformat__ = "numpy"
-from typing import Tuple, List, Any, Union
-import pandas as pd
+import logging
+from typing import Any, List, Tuple, Union
+
 import numpy as np
-from sklearn import linear_model
-from sklearn import pipeline
-from sklearn import preprocessing
+import pandas as pd
+from sklearn import linear_model, pipeline, preprocessing
+
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.rich_config import console
 
 # The tsxv dependence was removed so this fails.  Taking from didiers source
 
 
+logger = logging.getLogger(__name__)
+
+
+@log_start_end(log=logger)
 def split_train(
     sequence: np.ndarray, numInputs: int, numOutputs: int, numJumps: int
 ) -> Tuple[List, List]:
@@ -64,6 +70,7 @@ def split_train(
     return X, y
 
 
+@log_start_end(log=logger)
 def get_regression_model(
     values: Union[pd.Series, pd.DataFrame],
     poly_order: int,

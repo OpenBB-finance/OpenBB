@@ -1,12 +1,18 @@
 """Ally View"""
 __docformat__ = "numpy"
 
+import logging
 import os
+
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.portfolio.brokers.ally import ally_model
 from gamestonk_terminal.rich_config import console
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def display_history(n_to_show: int = 15, export: str = "") -> None:
     history = ally_model.get_history()
     show_history = history[["amount", "date", "symbol", "transactiontype", "quantity"]]
@@ -22,6 +28,7 @@ def display_history(n_to_show: int = 15, export: str = "") -> None:
     )
 
 
+@log_start_end(log=logger)
 def display_holdings(export: str = "") -> None:
     """Display holdings from ally account
 
@@ -44,6 +51,7 @@ def display_holdings(export: str = "") -> None:
     )
 
 
+@log_start_end(log=logger)
 def display_balances(export: str = "") -> None:
     """Display balances from ally account
 
@@ -79,6 +87,7 @@ def display_balances(export: str = "") -> None:
     console.print("")
 
 
+@log_start_end(log=logger)
 def display_stock_quote(ticker: str) -> None:
     """Displays stock quote for ticker/tickers
 
@@ -94,6 +103,7 @@ def display_stock_quote(ticker: str) -> None:
     console.print("")
 
 
+@log_start_end(log=logger)
 def display_top_lists(
     list_type: str, exchange: str, num_to_show: int = 20, export: str = ""
 ):

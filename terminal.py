@@ -75,11 +75,12 @@ class TerminalController(BaseController):
 
         if jobs_cmds:
             # close the eyes if the user forgets the initial `/`
-            if len(jobs_cmds) > 0:
-                if jobs_cmds[0][0] != "/":
-                    jobs_cmds[0] = f"/{jobs_cmds[0]}"
+            jobs_cmds = [
+                job_cmd if job_cmd.startswith("/") else f"/{job_cmd}"
+                for job_cmd in jobs_cmds
+            ]
 
-            self.queue = " ".join(jobs_cmds).split("/")
+            self.queue = self.switch(" ".join(jobs_cmds))
 
         self.update_succcess = False
 
@@ -225,6 +226,8 @@ def terminal(jobs_cmds: List[str] = None):
     if not jobs_cmds:
         bootup()
 
+    t_controller.print_help()
+
     while ret_code:
         if gtff.ENABLE_QUICK_EXIT:
             console.print("Quick exit enabled")
@@ -250,10 +253,6 @@ def terminal(jobs_cmds: List[str] = None):
 
         # Get input command from user
         else:
-            # Display help menu when entering on this menu from a level above
-            if not an_input:
-                t_controller.print_help()
-
             # Get input from user using auto-completion
             if session and gtff.USE_PROMPT_TOOLKIT:
                 try:
