@@ -9,7 +9,7 @@ import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.rich_config import console
 
-from gamestonk_terminal.parent_classes import BaseController
+from gamestonk_terminal.parent_classes import StockController
 from gamestonk_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     parse_known_args_and_warn,
@@ -17,7 +17,6 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.stocks import stocks_helper
 from gamestonk_terminal.stocks.insider import (
     openinsider_view,
     businessinsider_view,
@@ -33,7 +32,7 @@ presets_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets
 #       - unification of model return types (now some return dataframes other records list)
 
 
-class InsiderController(BaseController):
+class InsiderController(StockController):
     """Screener Controller class"""
 
     CHOICES_COMMANDS = [
@@ -149,42 +148,6 @@ class InsiderController(BaseController):
         if self.ticker:
             return ["stocks", f"load {self.ticker}", "ins"]
         return []
-
-    def call_load(self, other_args: List[str]):
-        """Process load command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="load",
-            description="Load stock ticker to perform analysis on. When the data source"
-            + " is 'yf', an Indian ticker can be loaded by using '.NS' at the end,"
-            + " e.g. 'SBIN.NS'. See available market in"
-            + " https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html.",
-        )
-        parser.add_argument(
-            "-t",
-            "--ticker",
-            action="store",
-            dest="ticker",
-            required="-h" not in other_args,
-            help="Stock ticker",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-t")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            df_stock_candidate = stocks_helper.load(
-                ns_parser.ticker,
-            )
-            if not df_stock_candidate.empty:
-                if "." in ns_parser.ticker:
-                    self.ticker = ns_parser.ticker.upper().split(".")[0]
-                else:
-                    self.ticker = ns_parser.ticker.upper()
-
-                self.stock = df_stock_candidate
-                self.start = self.stock.index[0].strftime("%Y-%m-%d")
-                self.interval = "1440min"
 
     def call_view(self, other_args: List[str]):
         """Process view command"""

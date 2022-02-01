@@ -1,0 +1,48 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: GET
+    uri: https://api.finbrain.tech/v0/sentiments/AAPL
+  response:
+    body:
+      string: '{"ticker":"AAPL","name":"Apple Inc.\r","sentimentAnalysis":{"2022-01-31":"-0.108","2022-01-28":"-0.097","2022-01-27":"0.301","2022-01-26":"-0.006","2022-01-25":"0.062","2022-01-24":"0.175","2022-01-21":"0.215","2022-01-20":"-0.062","2022-01-19":"0.313","2022-01-18":"0.244"}}'
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '275'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 01 Feb 2022 00:30:03 GMT
+      X-Amzn-Trace-Id:
+      - Root=1-61f87f0a-710723e13736fbc61c793c9b;Sampled=0
+      access-control-allow-origin:
+      - '*'
+      etag:
+      - W/"113-JsF4I7O9Rz0xHyQHBNod6fHqCyA"
+      x-amz-apigw-id:
+      - M1jJvENGoAMF2qA=
+      x-amzn-Remapped-connection:
+      - close
+      x-amzn-Remapped-content-length:
+      - '275'
+      x-amzn-Remapped-date:
+      - Tue, 01 Feb 2022 00:30:03 GMT
+      x-amzn-RequestId:
+      - d6c38d8b-bd0b-4323-8900-286a071d7905
+      x-powered-by:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1

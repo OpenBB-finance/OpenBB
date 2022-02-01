@@ -1,6 +1,7 @@
 """Custom TA indicators"""
 __docformat__ = "numpy"
 
+import logging
 import os
 from typing import Any
 
@@ -10,6 +11,7 @@ import pandas as pd
 from gamestonk_terminal import config_plot as cfp
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.common.technical_analysis import custom_indicators_model
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
     export_data,
     plot_autoscale,
@@ -17,7 +19,10 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal.rich_config import console
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def fibonacci_retracement(
     df_stock: pd.DataFrame,
     period: int = 120,

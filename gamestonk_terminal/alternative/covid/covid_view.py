@@ -1,23 +1,28 @@
 """Covid View"""
 __docformat__ = "numpy"
 
+import logging
 import os
 
 import matplotlib.pyplot as plt
 import pandas as pd
-from gamestonk_terminal.rich_config import console
 
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.alternative.covid import covid_model
 from gamestonk_terminal.config_plot import PLOT_DPI
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
-    plot_autoscale,
     export_data,
+    plot_autoscale,
     print_rich_table,
 )
+from gamestonk_terminal.rich_config import console
+
+logger = logging.getLogger(__name__)
 
 
+@log_start_end(log=logger)
 def display_covid_ov(
     country, raw: bool = False, limit: int = 10, export: str = ""
 ) -> None:
@@ -83,6 +88,7 @@ def display_covid_ov(
         export_data(export, os.path.dirname(os.path.abspath(__file__)), "ov", ov)
 
 
+@log_start_end(log=logger)
 def display_covid_stat(
     country, stat: str = "cases", raw: bool = False, limit: int = 10, export: str = ""
 ) -> None:
@@ -156,6 +162,7 @@ def display_covid_stat(
     export_data(export, os.path.dirname(os.path.abspath(__file__)), stat, data)
 
 
+@log_start_end(log=logger)
 def display_country_slopes(
     days_back: int = 30,
     limit: int = 10,

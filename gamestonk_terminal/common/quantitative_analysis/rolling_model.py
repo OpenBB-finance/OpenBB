@@ -1,12 +1,18 @@
 """Rolling Statistics"""
 __docformat__ = "numpy"
 
+import logging
 from typing import Tuple
 
 import pandas as pd
 import pandas_ta as ta
 
+from gamestonk_terminal.decorators import log_start_end
 
+logger = logging.getLogger(__name__)
+
+
+@log_start_end(log=logger)
 def get_rolling_avg(df: pd.DataFrame, length: int) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """Return rolling mean and standard deviation
 
@@ -30,6 +36,7 @@ def get_rolling_avg(df: pd.DataFrame, length: int) -> Tuple[pd.DataFrame, pd.Dat
     return pd.DataFrame(rolling_mean), pd.DataFrame(rolling_std)
 
 
+@log_start_end(log=logger)
 def get_spread(df: pd.DataFrame, length: int) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """Standard Deviation and Variance
 
@@ -57,6 +64,7 @@ def get_spread(df: pd.DataFrame, length: int) -> Tuple[pd.DataFrame, pd.DataFram
     return pd.DataFrame(df_sd), pd.DataFrame(df_var)
 
 
+@log_start_end(log=logger)
 def get_quantile(
     df: pd.DataFrame, length: int, quantile_pct: float
 ) -> Tuple[pd.DataFrame, pd.DataFrame]:
@@ -88,6 +96,7 @@ def get_quantile(
     return pd.DataFrame(df_med), pd.DataFrame(df_quantile)
 
 
+@log_start_end(log=logger)
 def get_skew(df: pd.DataFrame, length: int) -> pd.DataFrame:
     """Skewness Indicator
 
@@ -107,6 +116,7 @@ def get_skew(df: pd.DataFrame, length: int) -> pd.DataFrame:
     return df_skew
 
 
+@log_start_end(log=logger)
 def get_kurtosis(df: pd.DataFrame, length: int) -> pd.DataFrame:
     """Kurtosis Indicator
 

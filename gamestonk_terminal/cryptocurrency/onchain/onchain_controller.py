@@ -354,7 +354,7 @@ class OnchainController(BaseController):
             "-m",
             "--min",
             dest="min",
-            type=check_int_range(500000, 100 ** 7),
+            type=check_int_range(500000, 100**7),
             help="Minimum value of transactions.",
             default=1000000,
         )

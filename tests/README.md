@@ -249,6 +249,23 @@ More information on markers location are available in pytest documentation :
 
 ## 3.8. Known `issue` / `solution`
 
+**ION Usage**
+
+If you are testing for a `_view.py` module that uses `ION`, you would need to mock it. With Windows, the charts / graphs are unable to close the graph applications. This would make the tests failed when running with Windows.
+
+You can use the following example below. Once you have mocked the graphs / charts, simply call the display function, which is now a mocked object.
+
+```
+@pytest.mark.vcr
+@pytest.mark.record_stdout
+def test_display_defi_tvl(mocker):
+    # MOCK CHARTS
+    mocker.patch.object(target=llama_view.gtff, attribute="USE_ION", new=True)
+    mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.plt.ion")
+    mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.plt.show")
+    llama_view.display_defi_tvl(20)
+```
+
 **YFINANCE**
 
 If a method is using the `yfinance` library but do not let you pick the `start/end` dates it will pick the current date each time.
@@ -324,7 +341,7 @@ def test_ark_orders_view(kwargs_dict, mocker, use_color):
 
 The library `requests` doesn't support : `brotli` comnpression.
 
-Unless `brotli` library is installed in the enviroment.
+Unless `brotli` library is installed in the environment.
 
 Plus `brotli` is not in `GamestonkTerminal` requirements.
 

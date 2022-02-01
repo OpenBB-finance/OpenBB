@@ -79,7 +79,7 @@ def long_number_format_with_type_check(x: Union[int, float]) -> Union[str, Any]:
     Union[str, Any]
     """
 
-    if isinstance(x, (int, float)) and x < 10 ** 18:
+    if isinstance(x, (int, float)) and x < 10**18:
         return long_number_format(x)
     return x
 

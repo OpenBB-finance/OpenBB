@@ -1,14 +1,20 @@
 """ Finviz View """
 __docformat__ = "numpy"
 
+import logging
 import os
-from typing import List, Any
-from gamestonk_terminal.stocks.due_diligence import finviz_model
-from gamestonk_terminal.helper_funcs import export_data, print_rich_table
+from typing import Any, List
+
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.stocks.due_diligence import finviz_model
+
+logger = logging.getLogger(__name__)
 
 
+@log_start_end(log=logger)
 def category_color_red_green(val: str) -> str:
     """Add color to analyst rating
 
@@ -32,6 +38,7 @@ def category_color_red_green(val: str) -> str:
     return val
 
 
+@log_start_end(log=logger)
 def news(ticker: str, num: int):
     """Display news for a given stock ticker
 
@@ -55,6 +62,7 @@ def news(ticker: str, num: int):
         console.print("No news found for this ticker")
 
 
+@log_start_end(log=logger)
 def analyst(ticker: str, export: str = ""):
     """Display analyst ratings. [Source: Finviz]
 

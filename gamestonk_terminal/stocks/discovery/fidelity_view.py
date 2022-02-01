@@ -1,17 +1,22 @@
 """ Fidelity View """
 __docformat__ = "numpy"
 
+import logging
 import os
 import re
+
 import pandas as pd
 
-from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal import feature_flags as gtff
-
-from gamestonk_terminal.stocks.discovery import fidelity_model
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.stocks.discovery import fidelity_model
+
+logger = logging.getLogger(__name__)
 
 
+@log_start_end(log=logger)
 def buy_sell_ratio_color_red_green(val: str) -> str:
     """Add color tags to the Buys/Sells ratio cell
 
@@ -40,6 +45,7 @@ def buy_sell_ratio_color_red_green(val: str) -> str:
     return f"{buys}% Buys, [red]{sells}%[/red] Sells"
 
 
+@log_start_end(log=logger)
 def price_change_color_red_green(val: str) -> str:
     """Add color tags to the price change cell
 
@@ -60,6 +66,7 @@ def price_change_color_red_green(val: str) -> str:
     return f"[red]{val}[/red]"
 
 
+@log_start_end(log=logger)
 def orders_view(num: int, export: str):
     """Prints last N orders by Fidelity customers. [Source: Fidelity]
 

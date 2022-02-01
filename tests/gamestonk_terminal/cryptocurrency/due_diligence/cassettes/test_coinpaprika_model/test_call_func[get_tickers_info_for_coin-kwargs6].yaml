@@ -1,0 +1,60 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: GET
+    uri: https://api.coinpaprika.com/v1/tickers/btc-bitcoin/?quotes=USD
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAA/3SRz27cIBDG732MOQOaAYyBY9s36PbSC2JtkrXif7Vx1Cjad6/wJlEjby1LSN9v
+        5oOZ7xW6Fjycc8PPXW6mbgQGYxwSePj6Iawvw3nqi3T6BgyWOD6BJwZNtzRbH3M3PoZ1m+f+BTxZ
+        p7V0mkGecuzv6EP886FKwv1jcE45hufYbwk8CodWomTw0C1rDm3MMcQMHiQScqw51SdEv/+/gEEf
+        1xy2uY05tXuVlByJKzyR9VJ5tKXq9zbltIJ/hZ8/vpdjXromgVcWKy2qykntKmMZPE/9NqQg9QU8
+        GSR02jothfsXheYSx8e3Kk5S4D7b8pRyaOIMvpboyNSV1eYT+dSIxXROS5PG/A6oGsBzFEgHpHAo
+        PXinaTcjewDmspsdvUjeiD6Q/76sbsHX4niHwrbswAl1ZFTCJ6GJQcyX8LZzY42TglSNyjglb6zk
+        d4uPOBEnPJHxFXmqSnzvvg/LNNxsQsxlBK2FuV6vX/4GAAD//552sr7NAgAA
+    headers:
+      Accept-Ranges:
+      - bytes
+      CF-Cache-Status:
+      - HIT
+      CF-RAY:
+      - 6d5cbefabca0bd77-CDG
+      Cache-Control:
+      - public, max-age=60, s-maxage=60, stale-while-revalidate=10, stale-if-error=600
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '387'
+      Content-Security-Policy-Report-Only:
+      - script-src 'none'; report-uri /cdn-cgi/script_monitor/report?m=SEDLrGjC9z_yM7M8rmC9SAnMzwyGJuOG4eSXSSEiRLc-1643567159-0-ASMHCKxHXZxUdsJgyhUCiTwNnJ-jiasYjNfUkvw1IQnoe3KjFA39iNgJd9npBfnjDPcBCRyrUV037pMonsNmtaw
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Sun, 30 Jan 2022 18:25:59 GMT
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Last-Modified:
+      - Sun, 30 Jan 2022 18:25:05 GMT
+      Server:
+      - cloudflare
+      Vary:
+      - Accept-Encoding
+      - Origin
+      alt-svc:
+      - h3=":443"; ma=86400, h3-29=":443"; ma=86400
+    status:
+      code: 200
+      message: OK
+version: 1
