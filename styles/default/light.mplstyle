@@ -41,6 +41,8 @@ axes.titlelocation: left
 axes.facecolor: white
 axes.edgecolor: 0F0F0F
 axes.labelcolor: 0F0F0F
+axes.grid: true
+axes.grid.which: major
 
 axes.prop_cycle: cycler('color', ['254495', '48277c', '822661', 'c13246', 'e4003a', 'ef7d00', 'ffed00', '00aaff', '9b30d9', 'af005f', '5f00af', 'af87ff'])
 
@@ -54,6 +56,7 @@ xtick.labelsize: small
 ytick.major.size: 2
 ytick.minor.size: 1
 ytick.labelsize: small
+xtick.alignment: center
 
 ytick.left: False
 ytick.labelleft: False

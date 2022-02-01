@@ -97,6 +97,9 @@ class TerminalStyle:
     mpl_styles_available: Dict[str, str] = {}
     mpl_style: str = ""
 
+    mpl_rcparams_available: Dict[str, str] = {}
+    mpl_rcparams: Dict = {}
+
     mpf_styles_available: Dict[str, str] = {}
     mpf_style: Dict = {}
 
@@ -105,6 +108,9 @@ class TerminalStyle:
 
     down_color: str = ""
     up_color: str = ""
+
+    xticks_rotation: str = ""
+    tight_layout_padding: int = 0
 
     def __init__(
         self,
@@ -137,6 +143,13 @@ class TerminalStyle:
             self.mpl_style = self.mpl_styles_available[mpl_style]
         else:
             self.mpl_style = self.mpl_styles_available["dark"]
+
+        if mpl_style in self.mpl_rcparams_available:
+            with open(self.mpl_rcparams_available[mpl_style]) as stylesheet:
+                self.mpl_rcparams = json.load(stylesheet)
+        else:
+            with open(self.mpl_rcparams_available["dark"]) as stylesheet:
+                self.mpl_rcparams = json.load(stylesheet)
 
         if mpf_style in self.mpf_styles_available:
             with open(self.mpf_styles_available[mpf_style]) as stylesheet:
@@ -176,6 +189,7 @@ class TerminalStyle:
         Parses the styles/default and styles/user folders and loads style files.
         To be recognized files need to follow a naming convention:
         *.mplstyle        - matplotlib stylesheets
+        *.mplrc.json      - matplotlib rc stylesheets that are not handled by mplstyle
         *.mpfstyle.json   - matplotlib finance stylesheets
         *.richstyle.json  - rich stylesheets
 
@@ -189,6 +203,10 @@ class TerminalStyle:
                 self.mpl_styles_available[stf.replace(".mplstyle", "")] = os.path.join(
                     folder, stf
                 )
+            elif stf.endswith(".mplrc.json"):
+                self.mpl_rcparams_available[
+                    stf.replace(".mplrc.json", "")
+                ] = os.path.join(folder, stf)
             elif stf.endswith(".mpfstyle.json"):
                 self.mpf_styles_available[
                     stf.replace(".mpfstyle.json", "")
@@ -201,6 +219,8 @@ class TerminalStyle:
     def applyMPLstyle(self):
         """Apply style to the current matplotlib context."""
         plt.style.use(self.mpl_style)
+        self.xticks_rotation = self.mpl_rcparams["xticks_rotation"]
+        self.tight_layout_padding = self.mpl_rcparams["tight_layout_padding"]
         self.mpf_style["mavcolors"] = plt.rcParams["axes.prop_cycle"].by_key()["color"]
         self.down_color = self.mpf_style["marketcolors"]["volume"]["down"]
         self.up_color = self.mpf_style["marketcolors"]["volume"]["up"]
