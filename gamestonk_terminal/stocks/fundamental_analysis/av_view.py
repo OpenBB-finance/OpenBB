@@ -50,7 +50,7 @@ def display_key(ticker: str):
         console.print("No API calls left. Try me later", "\n")
         return
 
-    print_rich_table(df_key, headers=[], title="Ticker Key Metrics")
+    print_rich_table(df_key, headers=[], title="Ticker Key Metrics", show_index=True)
 
     console.print("")
 
