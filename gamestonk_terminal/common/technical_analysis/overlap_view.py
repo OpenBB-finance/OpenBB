@@ -2,7 +2,7 @@
 __docformat__ = "numpy"
 
 import os
-from typing import List
+from typing import List, Optional
 
 import matplotlib.pyplot as plt
 import mplfinance as mpf
@@ -26,7 +26,8 @@ def view_ma(
     ma_type: str = "EMA",
     s_ticker: str = "",
     export: str = "",
-) -> pd.DataFrame:
+    external_axes: Optional[List[plt.Axes]] = None,
+) -> None:
     """Plots MA technical indicator
 
     Parameters
@@ -41,6 +42,8 @@ def view_ma(
         Ticker
     export : str
         Format to export data
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
     # Define a dataframe for adding EMA values to it
     price_df = pd.DataFrame(values)
@@ -67,30 +70,31 @@ def view_ma(
             l_legend.append(f"ZLMA {win}")
         price_df = price_df.join(df_ta)
 
-    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    ax.set_title(f"{s_ticker} {ma_type.upper()}")
+    # This plot has 1 axis
+    if not external_axes:
+        fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    else:
+        if len(external_axes) != 1:
+            console.print("[red]Expected list of one axis item./n[/red]")
+            return
+        (ax,) = external_axes
 
-    ax.plot(values.index, values.values, linewidth=1)
-
+    ax.plot(values.index, values.values)
     ax.set_xlim([price_df.index[0], price_df.index[-1]])
-    ax.tick_params(axis="x", rotation=10)
-
     ax.set_ylabel(f"{s_ticker} Price")
-    ax.yaxis.set_label_position("right")
-
     for idx in range(1, price_df.shape[1]):
         ax.plot(price_df.iloc[:, idx])
 
+    ax.set_title(f"{s_ticker} {ma_type.upper()}")
     ax.legend(l_legend)
-    ax.grid(b=True, which="major", linestyle=":")
+    cfg.style.style_primary_axis(ax)
 
-    if gtff.USE_ION:
-        plt.ion()
-
-    fig.tight_layout(pad=1)
-
-    plt.show()
-    console.print("")
+    if not external_axes:
+        plt.tight_layout(pad=cfg.style.tight_layout_padding)
+        if gtff.USE_ION:
+            plt.ion()
+        fig.show()
+        console.print("")
 
     export_data(
         export,

@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 import os
+from typing import Optional, List
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -229,7 +230,8 @@ def display_stoch(
     slowkperiod: int = 3,
     s_ticker: str = "",
     export: str = "",
-):
+    external_axes: Optional[List[plt.Axes]] = None,
+) -> None:
     """Plot stochastic oscillator signal
 
     Parameters
@@ -246,6 +248,8 @@ def display_stoch(
         Stock ticker
     export : str
         Format to export data
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (3 axes are expected in the list), by default None
     """
     df_ta = momentum_model.stoch(
         df_stock["High"],
@@ -255,42 +259,47 @@ def display_stoch(
         slowdperiod,
         slowkperiod,
     )
+    # This plot has 1 axis
+    if not external_axes:
+        fig, axes = plt.subplots(
+            2, 1, sharex=True, figsize=plot_autoscale(), dpi=PLOT_DPI
+        )
+        ax1, ax2 = axes
+        ax3 = ax2.twinx()
+    else:
+        if len(external_axes) != 3:
+            console.print("[red]Expected list of 3 axis items./n[/red]")
+            return
+        ax1, ax2, ax3 = external_axes
+    ax1.plot(df_stock.index, df_stock["Adj Close"].values)
 
-    fig, axes = plt.subplots(2, 1, sharex=True, figsize=plot_autoscale(), dpi=PLOT_DPI)
-    ax = axes[0]
-    ax.plot(df_stock.index, df_stock["Adj Close"].values)
+    ax1.set_title(f"Stochastic Relative Strength Index (STOCH RSI) on {s_ticker}")
+    ax1.set_xlim(df_stock.index[0], df_stock.index[-1])
+    ax1.set_ylabel("Share Price ($)")
+    cfg.style.style_primary_axis(ax1)
 
-    ax.set_title(f"Stochastic Relative Strength Index (STOCH RSI) on {s_ticker}")
-    ax.set_xlim(df_stock.index[0], df_stock.index[-1])
-    ax.set_ylabel("Share Price ($)")
-    ax.yaxis.set_label_position("right")
-    ax.grid(visible=True, zorder=0)
-
-    ax2 = axes[1]
     ax2.plot(df_ta.index, df_ta.iloc[:, 0].values)
     ax2.plot(df_ta.index, df_ta.iloc[:, 1].values, ls="--")
     ax2.set_xlim(df_stock.index[0], df_stock.index[-1])
-    ax2.axhspan(80, 100, facecolor=cfg.style.down_color, alpha=0.2)
-    ax2.axhspan(0, 20, facecolor=cfg.style.up_color, alpha=0.2)
-    ax2.axhline(80, color=cfg.style.down_color, ls="--")
-    ax2.axhline(20, color=cfg.style.up_color, ls="--")
-    ax2.set_ylim([0, 100])
-    ax2.grid(visible=True, zorder=0)
-    ax2.tick_params(axis="x", rotation=10)
+    cfg.style.style_primary_axis(ax2)
 
-    ax3 = ax2.twinx()
     ax3.set_ylim(ax2.get_ylim())
+    ax3.axhspan(80, 100, facecolor=cfg.style.down_color, alpha=0.2)
+    ax3.axhspan(0, 20, facecolor=cfg.style.up_color, alpha=0.2)
+    ax3.axhline(80, color=cfg.style.down_color, ls="--")
+    ax3.axhline(20, color=cfg.style.up_color, ls="--")
+    cfg.style.style_twin_axis(ax3)
 
     ax2.set_yticks([20, 80])
     ax2.set_yticklabels(["OVERSOLD", "OVERBOUGHT"])
     ax2.legend([f"%K {df_ta.columns[0]}", f"%D {df_ta.columns[1]}"])
 
-    if gtff.USE_ION:
-        plt.ion()
-
-    fig.tight_layout(pad=1)
-    plt.show()
-    console.print("")
+    if not external_axes:
+        plt.tight_layout(pad=cfg.style.tight_layout_padding)
+        if gtff.USE_ION:
+            plt.ion()
+        fig.show()
+        console.print("")
 
     export_data(
         export,
