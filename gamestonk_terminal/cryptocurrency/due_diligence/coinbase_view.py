@@ -1,18 +1,23 @@
 """Coinbase view"""
 __docformat__ = "numpy"
 
+import logging
 import os
 from typing import Optional
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
-from gamestonk_terminal.helper_funcs import export_data, print_rich_table
-from gamestonk_terminal.cryptocurrency.due_diligence import coinbase_model
 from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import plot_order_book
+from gamestonk_terminal.cryptocurrency.due_diligence import coinbase_model
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.rich_config import console
+
+logger = logging.getLogger(__name__)
 
 register_matplotlib_converters()
 
 
+@log_start_end(log=logger)
 def display_order_book(product_id: str, export: str = "") -> None:
     """Displays a list of available currency pairs for trading. [Source: Coinbase]
 
@@ -34,6 +39,7 @@ def display_order_book(product_id: str, export: str = "") -> None:
     )
 
 
+@log_start_end(log=logger)
 def display_trades(
     product_id: str, limit: int = 1000, side: Optional[str] = None, export: str = ""
 ) -> None:
@@ -69,6 +75,7 @@ def display_trades(
     )
 
 
+@log_start_end(log=logger)
 def display_candles(product_id: str, interval: str = "24h", export: str = "") -> None:
     """Get candles for chosen trading pair and time interval. [Source: Coinbase]
 
@@ -97,6 +104,7 @@ def display_candles(product_id: str, interval: str = "24h", export: str = "") ->
     )
 
 
+@log_start_end(log=logger)
 def display_stats(product_id: str, export: str = "") -> None:
     """Get 24 hr stats for the product. Volume is in base currency units.
     Open, high and low are in quote currency units.  [Source: Coinbase]

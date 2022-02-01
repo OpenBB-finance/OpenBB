@@ -1,16 +1,23 @@
 """Coinbase model"""
 __docformat__ = "numpy"
 
+import logging
+
 import pandas as pd
+
 import gamestonk_terminal.config_terminal as cfg
 from gamestonk_terminal.cryptocurrency.coinbase_helpers import (
     CoinbaseProAuth,
     _check_account_validity,
     make_coinbase_request,
 )
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.rich_config import console
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def get_accounts(add_current_price: bool = True, currency: str = "USD") -> pd.DataFrame:
     """Get list of all your trading accounts. [Source: Coinbase]
 
@@ -76,6 +83,7 @@ def get_accounts(add_current_price: bool = True, currency: str = "USD") -> pd.Da
     return df[["id", "currency", "balance", "available", "hold"]]
 
 
+@log_start_end(log=logger)
 def get_account_history(account: str) -> pd.DataFrame:
     """Get your account history. Account activity either increases or decreases your account balance. [Source: Coinbase]
 
@@ -131,6 +139,7 @@ def get_account_history(account: str) -> pd.DataFrame:
     return df
 
 
+@log_start_end(log=logger)
 def get_orders() -> pd.DataFrame:
     """List your current open orders. Only open or un-settled orders are returned. [Source: Coinbase]
 
@@ -185,6 +194,7 @@ def get_orders() -> pd.DataFrame:
     ]
 
 
+@log_start_end(log=logger)
 def get_deposits(deposit_type: str = "deposit") -> pd.DataFrame:
     """Get a list of deposits for your account. [Source: Coinbase]
 

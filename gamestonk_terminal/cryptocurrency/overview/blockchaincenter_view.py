@@ -1,16 +1,24 @@
 """Blockchain Center View"""
+import logging
 import os
-from matplotlib import pyplot as plt, dates as mdates
+
+from matplotlib import dates as mdates
+from matplotlib import pyplot as plt
+
+from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.cryptocurrency.overview.blockchaincenter_model import (
-    get_altcoin_index,
     DAYS,
+    get_altcoin_index,
 )
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
-from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.rich_config import console
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def display_altcoin_index(
     period: int, since: int, until: int, export: str = ""
 ) -> None:

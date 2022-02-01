@@ -1,21 +1,26 @@
 """ Alpha Vantage View """
 __docformat__ = "numpy"
 
+import logging
 import os
 
 import matplotlib.pyplot as plt
 
+from gamestonk_terminal import config_plot as cfp
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.economy import alphavantage_model
 from gamestonk_terminal.helper_funcs import (
     export_data,
     plot_autoscale,
     print_rich_table,
 )
-from gamestonk_terminal import config_plot as cfp
 from gamestonk_terminal.rich_config import console
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def realtime_performance_sector(raw: bool, export: str):
     """Display Real-Time Performance sector. [Source: AlphaVantage]
 
@@ -60,6 +65,7 @@ def realtime_performance_sector(raw: bool, export: str):
         plt.show()
 
 
+@log_start_end(log=logger)
 def display_real_gdp(
     interval: str, start_year: int = 2010, raw: bool = False, export: str = ""
 ):
@@ -107,6 +113,7 @@ def display_real_gdp(
     console.print("")
 
 
+@log_start_end(log=logger)
 def display_gdp_capita(start_year: int = 2010, raw: bool = False, export: str = ""):
     """Display US GDP per Capita from AlphaVantage
 
@@ -151,6 +158,7 @@ def display_gdp_capita(start_year: int = 2010, raw: bool = False, export: str = 
     console.print("")
 
 
+@log_start_end(log=logger)
 def display_inflation(start_year: int = 2010, raw: bool = False, export: str = ""):
     """Display US Inflation from AlphaVantage
 
@@ -195,6 +203,7 @@ def display_inflation(start_year: int = 2010, raw: bool = False, export: str = "
     console.print("")
 
 
+@log_start_end(log=logger)
 def display_cpi(
     interval: str, start_year: int = 2010, raw: bool = False, export: str = ""
 ):
@@ -242,6 +251,7 @@ def display_cpi(
     console.print("")
 
 
+@log_start_end(log=logger)
 def display_treasury_yield(
     interval: str, maturity: str, start_date: str, raw: bool = False, export: str = ""
 ):
@@ -293,6 +303,7 @@ def display_treasury_yield(
     console.print("")
 
 
+@log_start_end(log=logger)
 def display_unemployment(start_year: int = 2015, raw: bool = False, export: str = ""):
     """Display US unemployment AlphaVantage
 

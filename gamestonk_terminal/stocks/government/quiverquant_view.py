@@ -1,27 +1,34 @@
 """Quiverquant View"""
 __docformat__ = "numpy"
 
+import logging
 import os
 import textwrap
-
 from datetime import datetime, timedelta
+
+import matplotlib.dates as mdates
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
-import matplotlib.dates as mdates
-from gamestonk_terminal.stocks.government import quiverquant_model
+
+from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.config_plot import PLOT_DPI
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
-    plot_autoscale,
     export_data,
+    plot_autoscale,
     print_rich_table,
 )
-from gamestonk_terminal.config_plot import PLOT_DPI
-from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.stocks.government import quiverquant_model
 
 # pylint: disable=C0302
 
 
+logger = logging.getLogger(__name__)
+
+
+@log_start_end(log=logger)
 def display_last_government(
     gov_type: str, past_days: int = 5, representative: str = "", export: str = ""
 ):
@@ -109,6 +116,7 @@ def display_last_government(
     )
 
 
+@log_start_end(log=logger)
 def display_government_buys(
     gov_type: str,
     past_transactions_months: int = 6,
@@ -200,6 +208,7 @@ def display_government_buys(
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "topbuys", df_gov)
 
 
+@log_start_end(log=logger)
 def display_government_sells(
     gov_type: str,
     past_transactions_months: int = 6,
@@ -302,6 +311,7 @@ def display_government_sells(
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "topsells", df_gov)
 
 
+@log_start_end(log=logger)
 def display_last_contracts(
     past_transaction_days: int = 2,
     num: int = 20,
@@ -364,6 +374,7 @@ def display_last_contracts(
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "lastcontracts", df)
 
 
+@log_start_end(log=logger)
 def plot_government(government: pd.DataFrame, ticker: str, gov_type: str):
     """Helper for plotting government trading
 
@@ -403,6 +414,7 @@ def plot_government(government: pd.DataFrame, ticker: str, gov_type: str):
     plt.show()
 
 
+@log_start_end(log=logger)
 def display_government_trading(
     ticker: str,
     gov_type: str,
@@ -481,6 +493,7 @@ def display_government_trading(
     console.print("")
 
 
+@log_start_end(log=logger)
 def display_contracts(
     ticker: str, past_transaction_days: int, raw: bool, export: str = ""
 ):
@@ -537,6 +550,7 @@ def display_contracts(
     console.print("")
 
 
+@log_start_end(log=logger)
 def display_qtr_contracts(analysis: str, num: int, raw: bool = False, export: str = ""):
     """Quarterly contracts [Source: quiverquant.com]
 
@@ -625,6 +639,7 @@ def display_qtr_contracts(analysis: str, num: int, raw: bool = False, export: st
     console.print("")
 
 
+@log_start_end(log=logger)
 def display_hist_contracts(ticker: str, raw: bool = False, export: str = ""):
     """Show historical quarterly government contracts [Source: quiverquant.com]
 
@@ -683,6 +698,7 @@ def display_hist_contracts(ticker: str, raw: bool = False, export: str = ""):
     console.print("")
 
 
+@log_start_end(log=logger)
 def display_top_lobbying(num: int, raw: bool = False, export: str = ""):
     """Top lobbying tickers based on total spent
 
@@ -731,6 +747,7 @@ def display_top_lobbying(num: int, raw: bool = False, export: str = ""):
     )
 
 
+@log_start_end(log=logger)
 def display_lobbying(ticker: str, num: int = 10):
     """Corporate lobbying details
 

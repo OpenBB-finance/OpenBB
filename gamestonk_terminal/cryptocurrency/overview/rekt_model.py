@@ -1,16 +1,23 @@
 """Blockchain Center Model"""
+import logging
 from typing import List, Union
+
 import pandas as pd
 import requests
+from bs4 import BeautifulSoup
 from requests.adapters import HTTPAdapter, RetryError
 from urllib3.util.retry import Retry
-from bs4 import BeautifulSoup
+
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import get_user_agent
 from gamestonk_terminal.rich_config import console
+
+logger = logging.getLogger(__name__)
 
 HACKS_COLUMNS = ["Platform", "Date", "Amount [$]", "Audit", "Slug", "URL"]
 
 
+@log_start_end(log=logger)
 def _retry_session(
     url: str, retries: int = 3, backoff_factor: float = 1.0
 ) -> requests.Session:
@@ -45,6 +52,7 @@ def _retry_session(
     return session
 
 
+@log_start_end(log=logger)
 def _make_request(url: str) -> Union[BeautifulSoup, None]:
     """Helper method to scrap
 
@@ -79,6 +87,7 @@ def _make_request(url: str) -> Union[BeautifulSoup, None]:
     return BeautifulSoup(req.text, features="lxml")
 
 
+@log_start_end(log=logger)
 def get_crypto_hacks() -> pd.DataFrame:
     """Get major crypto-related hacks
     [Source: https://rekt.news]
@@ -118,6 +127,7 @@ def get_crypto_hacks() -> pd.DataFrame:
     return pd.DataFrame()
 
 
+@log_start_end(log=logger)
 def get_crypto_hack(slug: str) -> Union[str, None]:
     """Get crypto hack
     [Source: https://rekt.news]
@@ -160,6 +170,7 @@ def get_crypto_hack(slug: str) -> Union[str, None]:
     return final_str
 
 
+@log_start_end(log=logger)
 def get_crypto_hack_slugs() -> List[str]:
     """Get all crypto hack slugs
     [Source: https://rekt.news]

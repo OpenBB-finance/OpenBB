@@ -1,14 +1,20 @@
 """ Alpha Vantage Model """
 __docformat__ = "numpy"
 
+import logging
+
 import pandas as pd
-from alpha_vantage.sectorperformance import SectorPerformances
 import requests
+from alpha_vantage.sectorperformance import SectorPerformances
 
 from gamestonk_terminal import config_terminal as cfg
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import get_user_agent
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def get_sector_data() -> pd.DataFrame:
     """Get real-time performance sector data
 
@@ -25,6 +31,7 @@ def get_sector_data() -> pd.DataFrame:
     return df_sectors
 
 
+@log_start_end(log=logger)
 def get_real_gdp(interval: str = "a") -> pd.DataFrame:
     """Get annual or quarterly Real GDP for US
 
@@ -51,6 +58,7 @@ def get_real_gdp(interval: str = "a") -> pd.DataFrame:
     return data
 
 
+@log_start_end(log=logger)
 def get_gdp_capita() -> pd.DataFrame:
     """Real GDP per Capita for United States
 
@@ -70,6 +78,7 @@ def get_gdp_capita() -> pd.DataFrame:
     return data
 
 
+@log_start_end(log=logger)
 def get_inflation() -> pd.DataFrame:
     """Get historical Inflation for United States from AlphaVantage
 
@@ -90,6 +99,7 @@ def get_inflation() -> pd.DataFrame:
     return data
 
 
+@log_start_end(log=logger)
 def get_cpi(interval: str) -> pd.DataFrame:
     """Get Consumer Price Index from Alpha Vantage
 
@@ -118,6 +128,7 @@ def get_cpi(interval: str) -> pd.DataFrame:
     return data
 
 
+@log_start_end(log=logger)
 def get_treasury_yield(interval: str, maturity: str) -> pd.DataFrame:
     """Get historical yield for a given maturity
 
@@ -150,6 +161,7 @@ def get_treasury_yield(interval: str, maturity: str) -> pd.DataFrame:
     return data
 
 
+@log_start_end(log=logger)
 def get_unemployment() -> pd.DataFrame:
     """Get historical unemployment for United States
 

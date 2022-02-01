@@ -6,24 +6,29 @@ So this code is not being used for the time being, it may be at a later stage.
 __docformat__ = "numpy"
 
 import argparse
+import logging
 from typing import List
 
 import pandas as pd
 
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
     financials_colored_values,
     parse_known_args_and_warn,
     patch_pandas_text_adjustment,
     print_rich_table,
 )
-from gamestonk_terminal.stocks.fundamental_analysis import market_watch_model as mwm
 from gamestonk_terminal.rich_config import console
-
+from gamestonk_terminal.stocks.fundamental_analysis import market_watch_model as mwm
 
 # pylint: disable=too-many-branches
 
 
+logger = logging.getLogger(__name__)
+
+
+@log_start_end(log=logger)
 def income(other_args: List[str], ticker: str):
     """Market Watch ticker income statement
 
@@ -88,6 +93,7 @@ def income(other_args: List[str], ticker: str):
     console.print("")
 
 
+@log_start_end(log=logger)
 def balance(other_args: List[str], ticker: str):
     """Market Watch ticker balance statement
 
@@ -164,6 +170,7 @@ def balance(other_args: List[str], ticker: str):
     console.print("")
 
 
+@log_start_end(log=logger)
 def cash(other_args: List[str], ticker: str):
     """Market Watch ticker cash flow statement
 
@@ -236,6 +243,7 @@ def cash(other_args: List[str], ticker: str):
     console.print("")
 
 
+@log_start_end(log=logger)
 def display_sean_seah_warnings(ticker: str, debug: bool = False):
     """Display Sean Seah warnings
 

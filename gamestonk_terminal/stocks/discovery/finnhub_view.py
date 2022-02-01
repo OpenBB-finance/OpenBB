@@ -1,11 +1,18 @@
+import logging
 import os
 from datetime import datetime, timedelta
+
 import pandas as pd
+
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import export_data, print_rich_table
-from gamestonk_terminal.stocks.discovery import finnhub_model
 from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.stocks.discovery import finnhub_model
+
+logger = logging.getLogger(__name__)
 
 
+@log_start_end(log=logger)
 def past_ipo(num_days_behind: int, export: str) -> pd.DataFrame:
     """Past IPOs dates. [Source: Finnhub]
 
@@ -51,6 +58,7 @@ def past_ipo(num_days_behind: int, export: str) -> pd.DataFrame:
     )
 
 
+@log_start_end(log=logger)
 def future_ipo(num_days_ahead: int, export: str) -> pd.DataFrame:
     """Future IPOs dates. [Source: Finnhub]
 

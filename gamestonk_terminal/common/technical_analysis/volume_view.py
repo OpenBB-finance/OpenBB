@@ -1,20 +1,26 @@
 """Volume View"""
 __docformat__ = "numpy"
 
+import logging
 import os
 
 import matplotlib.pyplot as plt
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
+
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.common.technical_analysis import volume_model
 from gamestonk_terminal.config_plot import PLOT_DPI
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
 from gamestonk_terminal.rich_config import console
+
+logger = logging.getLogger(__name__)
 
 register_matplotlib_converters()
 
 
+@log_start_end(log=logger)
 def display_ad(
     df_stock: pd.DataFrame,
     use_open: bool = False,
@@ -95,6 +101,7 @@ def display_ad(
     )
 
 
+@log_start_end(log=logger)
 def display_adosc(
     df_stock: pd.DataFrame,
     fast: int = 3,
@@ -180,6 +187,7 @@ def display_adosc(
     )
 
 
+@log_start_end(log=logger)
 def display_obv(df_stock: pd.DataFrame, s_ticker: str = "", export: str = ""):
     """Plot OBV technical indicator
 

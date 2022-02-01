@@ -2,20 +2,26 @@
 __docformat__ = "numpy"
 
 import argparse
-
-from typing import Tuple, Union, List
+import logging
 from collections import defaultdict
+from typing import List, Tuple, Union
+
 import matplotlib.pyplot as plt
 import mplfinance as mpf
 import pandas as pd
 from binance.client import Client
 from binance.exceptions import BinanceAPIException
+
 import gamestonk_terminal.config_terminal as cfg
-from gamestonk_terminal.helper_funcs import plot_autoscale
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.feature_flags import USE_ION as ion
+from gamestonk_terminal.helper_funcs import plot_autoscale
 from gamestonk_terminal.rich_config import console
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def _get_trading_pairs() -> List[dict]:
     """Helper method that return all trading pairs on binance. Other methods are use this data as an input for e.g
     building dataframe with all coins, or to build dict of all trading pairs. [Source: Binance]
@@ -51,6 +57,7 @@ def _get_trading_pairs() -> List[dict]:
     return trading_pairs
 
 
+@log_start_end(log=logger)
 def get_all_binance_trading_pairs() -> pd.DataFrame:
     """Returns all available pairs on Binance in DataFrame format. DataFrame has 3 columns symbol, baseAsset, quoteAsset
     example row: ETHBTC | ETH | BTC
@@ -68,6 +75,7 @@ def get_all_binance_trading_pairs() -> pd.DataFrame:
     return pd.DataFrame(trading_pairs)[["symbol", "baseAsset", "quoteAsset"]]
 
 
+@log_start_end(log=logger)
 def get_binance_available_quotes_for_each_coin() -> dict:
     """Helper methods that for every coin available on Binance add all quote assets. [Source: Binance]
 
@@ -85,6 +93,7 @@ def get_binance_available_quotes_for_each_coin() -> dict:
     return results
 
 
+@log_start_end(log=logger)
 def check_valid_binance_str(symbol: str) -> str:
     """Check if symbol is in defined binance. [Source: Binance]"""
     client = Client(cfg.API_BINANCE_KEY, cfg.API_BINANCE_SECRET)
@@ -97,6 +106,7 @@ def check_valid_binance_str(symbol: str) -> str:
         ) from e
 
 
+@log_start_end(log=logger)
 def show_available_pairs_for_given_symbol(
     symbol: str = "ETH",
 ) -> Tuple[Union[str, None], list]:
@@ -124,6 +134,7 @@ def show_available_pairs_for_given_symbol(
     return None, []
 
 
+@log_start_end(log=logger)
 def plot_candles(candles_df: pd.DataFrame, title: str) -> None:
     """Plot candle chart from dataframe. [Source: Binance]
 

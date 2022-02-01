@@ -1,10 +1,17 @@
 """CSIMarket Model"""
 __docformat__ = "numpy"
 
-from bs4 import BeautifulSoup
+import logging
+
 import requests
+from bs4 import BeautifulSoup
+
+from gamestonk_terminal.decorators import log_start_end
+
+logger = logging.getLogger(__name__)
 
 
+@log_start_end(log=logger)
 def get_suppliers(ticker: str) -> str:
     """Get suppliers from ticker provided. [Source: CSIMarket]
 
@@ -36,6 +43,7 @@ def get_suppliers(ticker: str) -> str:
     return "No suppliers found.\n"
 
 
+@log_start_end(log=logger)
 def get_customers(ticker: str) -> str:
     """Print customers from ticker provided
 

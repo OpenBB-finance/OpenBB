@@ -1,14 +1,20 @@
 """ Short Interest View """
 __docformat__ = "numpy"
 
+import logging
+
+import pandas as pd
 import requests
 from bs4 import BeautifulSoup
-import pandas as pd
 from pandas.core.frame import DataFrame
 
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import get_user_agent
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def get_high_short_interest() -> DataFrame:
     """Returns a high short interest DataFrame
 

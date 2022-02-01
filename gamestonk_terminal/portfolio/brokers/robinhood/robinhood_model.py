@@ -1,6 +1,7 @@
 """Robinhood Model"""
 __docformat__ = "numpy"
 
+import logging
 from datetime import datetime, timedelta
 
 import numpy as np
@@ -9,22 +10,28 @@ from robin_stocks import robinhood
 
 from gamestonk_terminal.config_terminal import RH_PASSWORD as pw
 from gamestonk_terminal.config_terminal import RH_USERNAME as user
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.rich_config import console
+
+logger = logging.getLogger(__name__)
 
 dt_format = "%Y-%m-%dT%H:%M:%SZ"
 
 
+@log_start_end(log=logger)
 def login():
     """Robinhood login"""
     robinhood.login(user, pw)
     console.print("")
 
 
+@log_start_end(log=logger)
 def logoff():
     """Robinhood logoff"""
     robinhood.logout()
 
 
+@log_start_end(log=logger)
 def get_holdings() -> pd.DataFrame:
     """Return Robinhood holdings
 
@@ -37,6 +44,7 @@ def get_holdings() -> pd.DataFrame:
     return rh_positions_to_df(holds)
 
 
+@log_start_end(log=logger)
 def rh_positions_to_df(holds: dict) -> pd.DataFrame:
     """Process robinhood holdings to dataframe
 
@@ -67,6 +75,7 @@ def rh_positions_to_df(holds: dict) -> pd.DataFrame:
     return df
 
 
+@log_start_end(log=logger)
 def get_historical(interval: str = "day", span: str = "3month") -> pd.DataFrame:
     """Get historical portfolio in candle form
 

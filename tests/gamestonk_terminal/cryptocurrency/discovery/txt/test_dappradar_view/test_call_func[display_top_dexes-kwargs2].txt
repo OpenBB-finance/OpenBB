@@ -1,0 +1,12 @@
+            Name Daily Users Daily Volume [$]
+0  Splinterlands      305.1K               8K
+1    PancakeSwap      289.3K           223.7M
+2   Alien Worlds      235.6K           759.2K
+3  Farmers World      111.7K             2.3K
+4   AtomicAssets      108.9K           226.3K
+5  Axie Infinity       90.9K            11.6M
+6         Upland       63.3K                0
+7        OpenSea         54K             200M
+8         Katana       45.9K            92.7M
+9     Magic Eden       40.2K            18.5M
+

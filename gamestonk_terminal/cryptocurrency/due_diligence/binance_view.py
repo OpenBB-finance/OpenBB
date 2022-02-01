@@ -1,19 +1,23 @@
 """Binance view"""
 __docformat__ = "numpy"
 
+import logging
 import os
-from binance.client import Client
+
 import numpy as np
 import pandas as pd
-from gamestonk_terminal.helper_funcs import (
-    export_data,
-    print_rich_table,
-)
-from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import plot_order_book
+from binance.client import Client
+
 import gamestonk_terminal.config_terminal as cfg
+from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import plot_order_book
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.rich_config import console
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def display_order_book(coin: str, limit: int, currency: str, export: str) -> None:
     """Get order book for currency. [Source: Binance]
 
@@ -48,6 +52,7 @@ def display_order_book(coin: str, limit: int, currency: str, export: str) -> Non
     )
 
 
+@log_start_end(log=logger)
 def display_balance(coin: str, currency: str, export: str) -> None:
     """Get account holdings for asset. [Source: Binance]
 
