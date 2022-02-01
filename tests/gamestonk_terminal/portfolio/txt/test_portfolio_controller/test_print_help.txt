@@ -8,13 +8,11 @@ Portfolio:
     save        save your portfolio for future use
     show        show existing transactions
     add         add a security to your portfolio
-    rmv         remove a security from your portfolio
-
-Reports:
-    ar          annual report for performance of a given portfolio
+    init        initialize empty portfolio
+    build       build portfolio from list of tickers and weights
 
 Graphs:
+    rolling     display rolling metrics of portfolio and benchmark
     rmr         graph your returns versus the market's returns
-    al          displays the allocation of the portfolio
-    mdd         display portfolio drawdown
+    dd          display portfolio drawdown
         
