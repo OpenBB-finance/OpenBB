@@ -64,11 +64,10 @@ class GSTBot(commands.Bot):
         )
 
     def load_all_extensions(self, folder: str) -> None:
-        py_path = f"{folder}"
-        folder = f"{folder}"
-        for name in os.listdir(folder):
-            if name.endswith(".py") and os.path.isfile(f"{folder}/{name}"):
-                self.load_extension(f"{py_path}.{name[:-3]}")
+        folder_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), folder)
+        for name in os.listdir(folder_path):
+            if name.endswith(".py") and os.path.isfile(f"{folder_path}/{name}"):
+                self.load_extension(f"{folder}.{name[:-3]}")
 
     async def on_command_error(
         self, ctx: commands.Context, error: commands.CommandError

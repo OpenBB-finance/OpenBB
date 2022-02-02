@@ -10,7 +10,6 @@ import pandas as pd
 from discordbot.config_discordbot import logger
 from discordbot.stocks.candle import candle_command
 from discordbot.stocks.disc.ford import ford_command
-from discordbot.stocks.disc.upcoming import earnings_command
 from discordbot.stocks.insider.lins import lins_command
 from discordbot.stocks.options.hist import hist_command
 from discordbot.stocks.options.iv import iv_command
@@ -149,13 +148,6 @@ class SlashCommands(commands.Cog):
         await inter.response.defer()
         logger.info("disc-ford")
         await ford_command(inter)
-
-    @commands.slash_command(name="earnings")
-    async def earnings(self, inter: disnake.AppCmdInter):
-        """Display Upcoming Earnings. [Source: Seeking Alpha]"""
-        await inter.response.defer()
-        logger.info("earnings")
-        await earnings_command(inter)
 
     @commands.slash_command(name="opt-unu")
     async def unu(self, inter: disnake.AppCmdInter):
