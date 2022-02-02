@@ -56,6 +56,7 @@ def view_holdings(symbol: str, num_to_show: int, export: str):
         data[:num_to_show],
         headers=list(data.columns),
         title="ETF Holdings",
+        show_index=True,
     )
     console.print("")
 

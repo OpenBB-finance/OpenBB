@@ -157,6 +157,7 @@ class BaseController(metaclass=ABCMeta):
                 elif known_args.cmd == "r":
                     known_args.cmd = "reset"
 
+            # This is what mutes portfolio issue
             getattr(
                 self,
                 "call_" + known_args.cmd,
