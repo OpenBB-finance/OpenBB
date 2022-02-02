@@ -234,7 +234,13 @@ class Portfolio:
         # Allow for empty initialization
         self.empty = True
         self.rf = rf
-        if not trades.empty:
+        if not trades.empty.to_list():
+            print(trades.Name)
+            if "cash" not in trades.Name:
+                console.print(
+                    "[red]No initial cash deposit.  Calculations may be off as this assumes trading from a "
+                    "funded account[/red]."
+                )
             # Load in trades df and do some quick editing
             trades.Name = trades.Name.map(lambda x: x.upper())
             trades["Side"] = trades["Side"].map(
