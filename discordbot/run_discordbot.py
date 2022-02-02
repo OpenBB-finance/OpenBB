@@ -61,7 +61,9 @@ class GSTBot(commands.Bot):
             sync_commands_debug=True,
             sync_permissions=True,
             activity=activity,
-            test_guilds=cfg.SLASH_TESTING_SERVERS,
+            test_guilds=cfg.SLASH_TESTING_SERVERS
+            if cfg.SLASH_TESTING_SERVERS != "REPLACE_ME"
+            else [],
         )
 
     def load_all_extensions(self, folder: str) -> None:
