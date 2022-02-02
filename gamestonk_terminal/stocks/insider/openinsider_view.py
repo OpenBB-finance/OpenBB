@@ -1,22 +1,28 @@
-import os
-from typing import List
-import textwrap
 import itertools
-from bs4 import BeautifulSoup
-import requests
+import logging
+import os
+import textwrap
+from typing import List
+
 import numpy as np
 import pandas as pd
+import requests
+from bs4 import BeautifulSoup
+
+from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
-    patch_pandas_text_adjustment,
     export_data,
+    patch_pandas_text_adjustment,
     print_rich_table,
 )
-from gamestonk_terminal.stocks.insider.openinsider_model import (
-    get_open_insider_link,
-    get_open_insider_data,
-)
-from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.stocks.insider.openinsider_model import (
+    get_open_insider_data,
+    get_open_insider_link,
+)
+
+logger = logging.getLogger(__name__)
 
 d_open_insider = {
     "lcb": "latest-cluster-buys",
@@ -59,6 +65,7 @@ d_trade_types = {
 }
 
 
+@log_start_end(log=logger)
 def red_highlight(values) -> List[str]:
     """Red highlight
 
@@ -75,6 +82,7 @@ def red_highlight(values) -> List[str]:
     return [f"[red]{val}[/red]" for val in values]
 
 
+@log_start_end(log=logger)
 def yellow_highlight(values) -> List[str]:
     """Yellow highlight
 
@@ -91,6 +99,7 @@ def yellow_highlight(values) -> List[str]:
     return [f"[yellow]{val}[/yellow]" for val in values]
 
 
+@log_start_end(log=logger)
 def magenta_highlight(values):
     """Magenta highlight
 
@@ -107,6 +116,7 @@ def magenta_highlight(values):
     return [f"[magenta]{val}[/magenta]" for val in values]
 
 
+@log_start_end(log=logger)
 def green_highlight(values):
     """Green highlight
 
@@ -123,6 +133,7 @@ def green_highlight(values):
     return [f"[green]{val}[/green]" for val in values]
 
 
+@log_start_end(log=logger)
 def print_insider_data(type_insider: str, limit: int = 10, export: str = ""):
     """Print insider data
 
@@ -204,6 +215,7 @@ def print_insider_data(type_insider: str, limit: int = 10, export: str = ""):
     console.print("")
 
 
+@log_start_end(log=logger)
 def print_insider_filter(
     preset_loaded: str,
     ticker: str,

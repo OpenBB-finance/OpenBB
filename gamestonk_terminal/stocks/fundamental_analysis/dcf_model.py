@@ -1,25 +1,30 @@
 """ DCF Model """
 __docformat__ = "numpy"
 
-from urllib.request import urlopen
-from typing import List, Union, Dict, Any, Tuple
-from pathlib import Path
-from zipfile import ZipFile
-from io import BytesIO
-import re
+import logging
 import os
+import re
+from io import BytesIO
+from pathlib import Path
+from typing import Any, Dict, List, Tuple, Union
+from urllib.request import urlopen
+from zipfile import ZipFile
 
-from sklearn.linear_model import LinearRegression
-from openpyxl import worksheet
-from bs4 import BeautifulSoup
 import financedatabase as fd
-import yfinance as yf
 import pandas as pd
 import requests
+import yfinance as yf
+from bs4 import BeautifulSoup
+from openpyxl import worksheet
+from sklearn.linear_model import LinearRegression
 
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.stocks.fundamental_analysis import dcf_static
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def string_float(string: str) -> float:
     """Convert a string to a float
 
@@ -38,6 +43,7 @@ def string_float(string: str) -> float:
     return float(string.strip().replace(",", "").replace("-", ""))
 
 
+@log_start_end(log=logger)
 def insert_row(
     name: str, index: str, df: pd.DataFrame, row_v: List[str]
 ) -> pd.DataFrame:
@@ -70,6 +76,7 @@ def insert_row(
     return df
 
 
+@log_start_end(log=logger)
 def set_cell(
     ws: worksheet,
     cell: str,
@@ -115,6 +122,7 @@ def set_cell(
         ws[cell].number_format = num_form
 
 
+@log_start_end(log=logger)
 def get_fama_raw() -> pd.DataFrame:
     """Get Fama French data
 
@@ -152,6 +160,7 @@ def get_fama_raw() -> pd.DataFrame:
     return df
 
 
+@log_start_end(log=logger)
 def get_historical_5(ticker: str) -> pd.DataFrame:
     """Get 5 year monthly historical performance for a ticker with dividends filtered
 
@@ -173,6 +182,7 @@ def get_historical_5(ticker: str) -> pd.DataFrame:
     return df
 
 
+@log_start_end(log=logger)
 def get_fama_coe(ticker: str) -> float:
     """Use Fama and French to get the cost of equity for a company
 
@@ -206,6 +216,7 @@ def get_fama_coe(ticker: str) -> float:
     ) * 12
 
 
+@log_start_end(log=logger)
 def others_in_sector(
     ticker: str, sector: str, industry: str, no_filter: bool = False
 ) -> List[str]:
@@ -244,6 +255,7 @@ def others_in_sector(
     return similars
 
 
+@log_start_end(log=logger)
 def create_dataframe(ticker: str, statement: str):
     """
     Creates a df financial statement for a given ticker
@@ -338,6 +350,7 @@ def create_dataframe(ticker: str, statement: str):
     return df, rounding
 
 
+@log_start_end(log=logger)
 def get_similar_dfs(ticker: str, info: Dict[str, Any], n: int, no_filter: bool = False):
     """
     Get dataframes for similar companies
@@ -372,6 +385,7 @@ def get_similar_dfs(ticker: str, info: Dict[str, Any], n: int, no_filter: bool =
     return new_list
 
 
+@log_start_end(log=logger)
 def clean_dataframes(*args) -> List[pd.DataFrame]:
     """
     All dataframes in the list take on the length of the shortest dataframe
@@ -392,6 +406,7 @@ def clean_dataframes(*args) -> List[pd.DataFrame]:
     return dfs
 
 
+@log_start_end(log=logger)
 def get_value(df: pd.DataFrame, row: str, column: int) -> Tuple[float, float]:
     """
     Gets a specific value from the dataframe
@@ -417,6 +432,7 @@ def get_value(df: pd.DataFrame, row: str, column: int) -> Tuple[float, float]:
     return fin_val1, fin_val2
 
 
+@log_start_end(log=logger)
 def frac(num: float, denom: float) -> Union[str, float]:
     """
     Converts a numerator and a denominator in a fraction, checking for invalid denominators
@@ -436,6 +452,7 @@ def frac(num: float, denom: float) -> Union[str, float]:
     return "N/A" if denom == 0 else num / denom
 
 
+@log_start_end(log=logger)
 def generate_path(n: int, ticker: str, date: str) -> Path:
     """
     Create the path to save an excel file to

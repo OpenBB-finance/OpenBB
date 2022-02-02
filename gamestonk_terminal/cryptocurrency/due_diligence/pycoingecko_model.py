@@ -1,24 +1,30 @@
 """CoinGecko model"""
 __docformat__ = "numpy"
 
-from typing import Tuple, Union, Any, Dict, List, Optional
-import regex as re
+import logging
+from typing import Any, Dict, List, Optional, Tuple, Union
+
 import pandas as pd
+import regex as re
 from pycoingecko import CoinGeckoAPI
-from gamestonk_terminal.cryptocurrency.discovery.pycoingecko_model import read_file_data
-from gamestonk_terminal.cryptocurrency.pycoingecko_helpers import (
-    remove_keys,
-    filter_list,
-    find_discord,
-    rename_columns_in_dct,
-    create_dictionary_with_prefixes,
-    DENOMINATION,
-    calc_change,
-)
+
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
     replace_underscores_in_column_names,
 )
+from gamestonk_terminal.cryptocurrency.discovery.pycoingecko_model import read_file_data
+from gamestonk_terminal.cryptocurrency.pycoingecko_helpers import (
+    DENOMINATION,
+    calc_change,
+    create_dictionary_with_prefixes,
+    filter_list,
+    find_discord,
+    remove_keys,
+    rename_columns_in_dct,
+)
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.rich_config import console
+
+logger = logging.getLogger(__name__)
 
 CHANNELS = {
     "telegram_channel_identifier": "telegram",
@@ -41,6 +47,7 @@ BASE_INFO = [
 ]
 
 
+@log_start_end(log=logger)
 def get_coin_potential_returns(
     main_coin: str,
     vs: Union[str, None] = None,
@@ -185,6 +192,7 @@ def get_coin_potential_returns(
     return pd.DataFrame()
 
 
+@log_start_end(log=logger)
 def check_coin(coin_id: str):
     coins = read_file_data("coingecko_coins.json")
     for coin in coins:
@@ -195,6 +203,7 @@ def check_coin(coin_id: str):
     return None
 
 
+@log_start_end(log=logger)
 def get_coin_market_chart(
     coin_id: str = "", vs_currency: str = "usd", days: int = 30, **kwargs: Any
 ) -> pd.DataFrame:
@@ -227,6 +236,7 @@ def get_coin_market_chart(
 class Coin:
     """Coin class, it holds loaded coin"""
 
+    @log_start_end(log=logger)
     def __init__(self, symbol: str, load_from_api: bool = False):
         self.client = CoinGeckoAPI()
         if load_from_api:
@@ -238,9 +248,11 @@ class Coin:
         if self.coin_symbol:
             self.coin: Dict[Any, Any] = self._get_coin_info()
 
+    @log_start_end(log=logger)
     def __str__(self):
         return f"{self.coin_symbol}"
 
+    @log_start_end(log=logger)
     def _validate_coin(self, search_coin: str) -> Tuple[Optional[Any], Optional[Any]]:
         """Validate if given coin symbol or id exists in list of available coins on CoinGecko.
         If yes it returns coin id. [Source: CoinGecko]
@@ -269,6 +281,7 @@ class Coin:
                 return coin, symbol
         raise ValueError(f"Could not find coin with the given id: {search_coin}\n")
 
+    @log_start_end(log=logger)
     def coin_list(self) -> list:
         """List all available coins [Source: CoinGecko]
 
@@ -280,6 +293,7 @@ class Coin:
 
         return [token.get("id") for token in self._coin_list]
 
+    @log_start_end(log=logger)
     def _get_coin_info(self) -> dict:
         """Helper method which fetch the coin information by id from CoinGecko API like:
          (name, price, market, ... including exchange tickers) [Source: CoinGecko]
@@ -293,6 +307,7 @@ class Coin:
         params = dict(localization="false", tickers="false", sparkline=True)
         return self.client.get_coin_by_id(self.coin_symbol, **params)
 
+    @log_start_end(log=logger)
     def _get_links(self) -> Dict:
         """Helper method that extracts links from coin [Source: CoinGecko]
 
@@ -304,7 +319,7 @@ class Coin:
 
         return self.coin.get("links", {})
 
-    @property
+    @log_start_end(log=logger)
     def get_repositories(self) -> Optional[Any]:
         """Get list of all repositories for given coin [Source: CoinGecko]
 
@@ -316,7 +331,7 @@ class Coin:
 
         return self._get_links().get("repos_url")
 
-    @property
+    @log_start_end(log=logger)
     def get_developers_data(self) -> pd.DataFrame:
         """Get coin development data from GitHub or BitBucket like:
             number of pull requests, contributor etc [Source: CoinGecko]
@@ -344,7 +359,7 @@ class Coin:
 
         return df[df["Value"].notna()]
 
-    @property
+    @log_start_end(log=logger)
     def get_blockchain_explorers(self) -> Union[pd.DataFrame, Any]:
         """Get list of URLs to blockchain explorers for given coin. [Source: CoinGecko]
 
@@ -368,7 +383,7 @@ class Coin:
             return df[df["Value"].notna()]
         return None
 
-    @property
+    @log_start_end(log=logger)
     def get_social_media(self) -> pd.DataFrame:
         """Get list of URLs to social media like twitter, facebook, reddit... [Source: CoinGecko]
 
@@ -402,7 +417,7 @@ class Coin:
         )
         return df[df["Value"].notna()]
 
-    @property
+    @log_start_end(log=logger)
     def get_websites(self) -> pd.DataFrame:
         """Get list of URLs to websites like homepage of coin, forum. [Source: CoinGecko]
 
@@ -428,7 +443,7 @@ class Coin:
         )
         return df[df["Value"].notna()]
 
-    @property
+    @log_start_end(log=logging)
     def get_categories(self) -> Union[Dict[Any, Any], List[Any]]:
         """Coins categories. [Source: CoinGecko]
 
@@ -440,6 +455,7 @@ class Coin:
 
         return self.coin.get("categories", {})
 
+    @log_start_end(log=logger)
     def _get_base_market_data_info(self) -> dict:
         """Helper method that fetches all the base market/price information about given coin. [Source: CoinGecko]
 
@@ -465,7 +481,7 @@ class Coin:
         market_dct.update(prices)
         return market_dct
 
-    @property
+    @log_start_end(log=logger)
     def get_base_info(self) -> pd.DataFrame:
         """Get all the base information about given coin. [Source: CoinGecko]
 
@@ -496,7 +512,7 @@ class Coin:
 
         return df[df["Value"].notna()]
 
-    @property
+    @log_start_end(log=logger)
     def get_market_data(self) -> pd.DataFrame:
         """Get all the base market information about given coin. [Source: CoinGecko]
 
@@ -551,6 +567,7 @@ class Coin:
         )
         return df[df["Value"].notna()]
 
+    @log_start_end(log=logger)
     def get_all_time_high(self, currency: str = "usd") -> pd.DataFrame:
         """Get all time high data for given coin. [Source: CoinGecko]
 
@@ -586,6 +603,7 @@ class Coin:
         df["Metric"] = df["Metric"] + f" {currency.upper()}"
         return df[df["Value"].notna()]
 
+    @log_start_end(log=logger)
     def get_all_time_low(self, currency: str = "usd") -> pd.DataFrame:
         """Get all time low data for given coin. [Source: CoinGecko]
 
@@ -621,7 +639,7 @@ class Coin:
         df["Metric"] = df["Metric"] + f" {currency.upper()}"
         return df[df["Value"].notna()]
 
-    @property
+    @log_start_end(log=logger)
     def get_scores(self) -> pd.DataFrame:
         """Get different kind of scores for given coin. [Source: CoinGecko]
 
@@ -666,6 +684,7 @@ class Coin:
         )
         return df[df["Value"].notna()]
 
+    @log_start_end(log=logger)
     def get_coin_market_chart(
         self, vs_currency: str = "usd", days: int = 30, **kwargs: Any
     ) -> pd.DataFrame:
@@ -696,6 +715,7 @@ class Coin:
         df["currency"] = vs_currency
         return df
 
+    @log_start_end(log=logger)
     def get_ohlc(self, vs_currency: str = "usd", days: int = 90) -> pd.DataFrame:
         """Get Open, High, Low, Close prices for given coin. [Source: CoinGecko]
 

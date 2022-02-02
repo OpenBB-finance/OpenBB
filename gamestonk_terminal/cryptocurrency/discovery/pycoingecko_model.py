@@ -1,11 +1,15 @@
 """CoinGecko model"""
 __docformat__ = "numpy"
 
-import os
 import json
+import logging
+import os
 from typing import List
 import pandas as pd
 from pycoingecko import CoinGeckoAPI
+from gamestonk_terminal.decorators import log_start_end
+
+logger = logging.getLogger(__name__)
 
 PERIODS = {
     "1h": "?time=h1",
@@ -76,6 +80,7 @@ DEX_FILTERS = [
 ]
 
 
+@log_start_end(log=logger)
 def read_file_data(file_name: str) -> dict:
     if file_name.split(".")[1] != "json":
         raise TypeError("Please load json file")
@@ -87,12 +92,15 @@ def read_file_data(file_name: str) -> dict:
     return data
 
 
+@log_start_end(log=logger)
 def get_categories_keys() -> List[str]:
     categories = read_file_data("coingecko_categories.json")
     return list(categories.keys())
 
 
+@log_start_end(log=logger)
 def get_coins(top: int = 250, category: str = "") -> pd.DataFrame:
+
     """Get N coins from CoinGecko [Source: CoinGecko]
 
     Parameters
@@ -149,6 +157,7 @@ GAINERS_LOSERS_COLUMNS = [
 ]
 
 
+@log_start_end(log=logger)
 def get_gainers_or_losers(
     top: int = 20, period: str = "1h", typ: str = "gainers"
 ) -> pd.DataFrame:
@@ -198,6 +207,7 @@ def get_gainers_or_losers(
     return sorted_df
 
 
+@log_start_end(log=logger)
 def get_trending_coins() -> pd.DataFrame:
     """Returns trending coins [Source: CoinGecko]
 
@@ -219,6 +229,7 @@ def get_trending_coins() -> pd.DataFrame:
     return df
 
 
+@log_start_end(log=logger)
 def get_coin_list() -> pd.DataFrame:
     """Get list of coins available on CoinGecko [Source: CoinGecko]
 
@@ -236,6 +247,7 @@ def get_coin_list() -> pd.DataFrame:
     ).reset_index()
 
 
+@log_start_end(log=logger)
 def get_coins_for_given_exchange(exchange_id: str = "binance", page: int = 1) -> dict:
     """Helper method to get all coins available on binance exchange [Source: CoinGecko]
 
@@ -257,6 +269,7 @@ def get_coins_for_given_exchange(exchange_id: str = "binance", page: int = 1) ->
     return binance_coins["tickers"]
 
 
+@log_start_end(log=logger)
 def get_mapping_matrix_for_exchange(exchange_id: str, pages: int = 12) -> dict:
     """Creates a matrix with all coins available on Binance with corresponding coingecko coin_id. [Source: CoinGecko]
 

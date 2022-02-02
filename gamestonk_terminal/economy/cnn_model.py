@@ -1,15 +1,21 @@
 """ CNN Model """
 __docformat__ = "numpy"
 
+import logging
 from typing import Tuple
 
 import matplotlib.pyplot as plt
 from fear_greed_index.CNNFearAndGreedIndex import CNNFearAndGreedIndex
 from pandas.plotting import register_matplotlib_converters
 
+from gamestonk_terminal.decorators import log_start_end
+
+logger = logging.getLogger(__name__)
+
 register_matplotlib_converters()
 
 
+@log_start_end(log=logger)
 def get_feargreed_report(indicator: str, fig: plt.figure) -> Tuple[str, plt.figure]:
     """Display CNN Fear And Greed Index.
 

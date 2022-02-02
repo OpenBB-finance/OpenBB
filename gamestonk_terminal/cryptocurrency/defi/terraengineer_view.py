@@ -1,19 +1,27 @@
 """Terra Engineer View"""
 __docformat__ = "numpy"
 
+import logging
 import os
+
 import matplotlib.pyplot as plt
-from matplotlib import ticker, dates as mdates
-from gamestonk_terminal.cryptocurrency.defi import terraengineer_model
-from gamestonk_terminal.helper_funcs import (
-    export_data,
-    plot_autoscale,
-    long_number_format,
-)
+from matplotlib import dates as mdates
+from matplotlib import ticker
+
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_plot import PLOT_DPI
+from gamestonk_terminal.cryptocurrency.defi import terraengineer_model
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_funcs import (
+    export_data,
+    long_number_format,
+    plot_autoscale,
+)
+
+logger = logging.getLogger(__name__)
 
 
+@log_start_end(log=logger)
 def display_terra_asset_history(
     asset: str = "", address: str = "", export: str = ""
 ) -> None:
@@ -63,6 +71,7 @@ def display_terra_asset_history(
     )
 
 
+@log_start_end(log=logger)
 def display_anchor_yield_reserve(export: str = "") -> None:
     """Displays the 30-day history of the Anchor Yield Reserve.
     [Source: https://docs.llama.fi/api]

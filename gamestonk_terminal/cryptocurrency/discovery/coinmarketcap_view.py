@@ -1,10 +1,15 @@
 """CoinMarketCap view"""
 __docformat__ = "numpy"
 
+import logging
 import os
+
 from gamestonk_terminal.cryptocurrency.discovery import coinmarketcap_model
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.rich_config import console
+
+logger = logging.getLogger(__name__)
 
 sort_map = {
     "Symbol": "Symbol",
@@ -15,6 +20,7 @@ sort_map = {
 }
 
 
+@log_start_end(log=logger)
 def display_cmc_top_coins(
     top: int = 15,
     sortby: str = "CMC_Rank",

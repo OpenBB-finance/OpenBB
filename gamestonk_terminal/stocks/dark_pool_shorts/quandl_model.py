@@ -1,11 +1,18 @@
 """ Quandl Model """
 __docformat__ = "numpy"
 
-import quandl
+import logging
+
 import pandas as pd
+import quandl
+
 from gamestonk_terminal import config_terminal as cfg
+from gamestonk_terminal.decorators import log_start_end
+
+logger = logging.getLogger(__name__)
 
 
+@log_start_end(log=logger)
 def get_short_interest(ticker: str, nyse: bool) -> pd.DataFrame:
     """Plots the short interest of a stock. This corresponds to the
     number of shares that have been sold short but have not yet been

@@ -1,17 +1,20 @@
 """CoinPaprika view"""
 __docformat__ = "numpy"
 
+import logging
 import os
+
 from pandas.plotting import register_matplotlib_converters
-from gamestonk_terminal.helper_funcs import (
-    export_data,
-    print_rich_table,
-)
-from gamestonk_terminal.cryptocurrency.due_diligence import coinpaprika_model
+
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
     long_number_format_with_type_check,
 )
+from gamestonk_terminal.cryptocurrency.due_diligence import coinpaprika_model
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.rich_config import console
+
+logger = logging.getLogger(__name__)
 
 register_matplotlib_converters()
 
@@ -79,6 +82,7 @@ CURRENCIES = [
 ]
 
 
+@log_start_end(log=logger)
 def display_twitter(
     coin_id: str = "btc-bitcoin",
     top: int = 10,
@@ -129,6 +133,7 @@ def display_twitter(
     )
 
 
+@log_start_end(log=logger)
 def display_events(
     coin_id: str = "btc-bitcoin",
     top: int = 10,
@@ -183,6 +188,7 @@ def display_events(
     )
 
 
+@log_start_end(log=logger)
 def display_exchanges(
     coin_id: str = "btc-bitcoin",
     top: int = 10,
@@ -227,6 +233,7 @@ def display_exchanges(
     )
 
 
+@log_start_end(log=logger)
 def display_markets(
     coin_id: str = "btc-bitcoin",
     currency: str = "USD",
@@ -287,6 +294,7 @@ def display_markets(
     )
 
 
+@log_start_end(log=logger)
 def display_price_supply(
     coin_id: str = "btc-bitcoin",
     currency: str = "USD",
@@ -326,6 +334,7 @@ def display_price_supply(
     )
 
 
+@log_start_end(log=logger)
 def display_basic(
     coin_id: str = "btc-bitcoin",
     export: str = "",

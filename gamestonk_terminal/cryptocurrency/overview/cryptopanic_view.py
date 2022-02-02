@@ -1,14 +1,19 @@
 """Cryptopanic view"""
 __docformat__ = "numpy"
 
+import logging
 import os
 from typing import Optional
 
-from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.cryptocurrency.overview import cryptopanic_model
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.rich_config import console
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def display_news(
     post_kind: str = "news",
     region: str = "en",
@@ -44,24 +49,25 @@ def display_news(
 
     df = cryptopanic_model.get_news(
         limit=top, post_kind=post_kind, filter_=filter_, region=region
-    ).sort_values(by=sortby, ascending=descend)
-
-    if not links:
-        df.drop("link", axis=1, inplace=True)
-    else:
-        df = df[["title", "link"]]
-
-    print_rich_table(
-        df.head(top),
-        headers=list(df.columns),
-        show_index=False,
-        title="Recent CryptoPanic Posts",
     )
-    console.print("")
+    if not df.empty:
+        df = df.sort_values(by=sortby, ascending=descend)
+        if not links:
+            df.drop("link", axis=1, inplace=True)
+        else:
+            df = df[["title", "link"]]
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "news",
-        df,
-    )
+        print_rich_table(
+            df.head(top),
+            headers=list(df.columns),
+            show_index=False,
+            title="Recent CryptoPanic Posts",
+        )
+        console.print("")
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "news",
+            df,
+        )

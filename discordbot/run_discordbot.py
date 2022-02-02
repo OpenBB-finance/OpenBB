@@ -42,12 +42,12 @@ class GSTHelpCommand(commands.MinimalHelpCommand):
             `{command_syntax} {command_usage}`"""
         return signature_text
 
-    def add_bot_commands_formatting(self, commands, heading):
+    def add_bot_commands_formatting(self, command, heading):
         """Add a minified bot heading with commands to the output."""
-        if commands:
+        if command:
             menu_header = heading.replace("Commands", " category")
             self.paginator.add_line(
-                f"__**{menu_header}**__ " + f"contains {len(commands)} commands."
+                f"__**{menu_header}**__ " + f"contains {len(command)} command."
             )
             self.paginator.add_line(f"\t\t`!help {heading}` for info and options.")
 
@@ -65,11 +65,10 @@ class GSTBot(commands.Bot):
         )
 
     def load_all_extensions(self, folder: str) -> None:
-        py_path = f"{folder}"
-        folder = f"{folder}"
-        for name in os.listdir(folder):
-            if name.endswith(".py") and os.path.isfile(f"{folder}/{name}"):
-                self.load_extension(f"{py_path}.{name[:-3]}")
+        folder_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), folder)
+        for name in os.listdir(folder_path):
+            if name.endswith(".py") and os.path.isfile(f"{folder_path}/{name}"):
+                self.load_extension(f"{folder}.{name[:-3]}")
 
     async def on_command_error(
         self, ctx: commands.Context, error: commands.CommandError
@@ -98,7 +97,7 @@ class GSTBot(commands.Bot):
             description=fancy_traceback(error),
             color=disnake.Color.red(),
         )
-        if inter.response._responded:
+        if inter.response._responded:  # pylint: disable=W0212
             await inter.channel.send(embed=embed, delete_after=30.0)
         else:
             await inter.response.send_message(embed=embed, delete_after=30.0)
@@ -113,7 +112,7 @@ class GSTBot(commands.Bot):
             description=fancy_traceback(error),
             color=disnake.Color.red(),
         )
-        if inter.response._responded:
+        if inter.response._responded:  # pylint: disable=W0212
             await inter.channel.send(embed=embed, delete_after=30.0)
         else:
             await inter.response.send_message(embed=embed, delete_after=30.0)
@@ -128,7 +127,7 @@ class GSTBot(commands.Bot):
             description=fancy_traceback(error),
             color=disnake.Color.red(),
         )
-        if inter.response._responded:
+        if inter.response._responded:  # pylint: disable=W0212
             await inter.channel.send(embed=embed, delete_after=30.0)
         else:
             await inter.response.send_message(embed=embed, delete_after=30.0)

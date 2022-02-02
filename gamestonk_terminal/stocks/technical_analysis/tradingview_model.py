@@ -1,11 +1,16 @@
 """Tradingview model"""
 __docformat__ = "numpy"
 
+import logging
+
+import pandas as pd
 import requests
 from tradingview_ta import TA_Handler
-import pandas as pd
 
 from gamestonk_terminal import config_terminal as cfg
+from gamestonk_terminal.decorators import log_start_end
+
+logger = logging.getLogger(__name__)
 
 INTERVALS = {
     "1m": "1 min",
@@ -21,6 +26,7 @@ INTERVALS = {
 SCREENERS = ["crypto", "forex", "cfd"]
 
 
+@log_start_end(log=logger)
 def get_tradingview_recommendation(
     ticker: str, screener: str, exchange: str, interval: str
 ) -> pd.DataFrame:
