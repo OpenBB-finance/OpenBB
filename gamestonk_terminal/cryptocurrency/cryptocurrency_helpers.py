@@ -904,7 +904,7 @@ def plot_chart(
         mpf.plot(
             df,
             type="candle",
-            style=cfg.style.mpf_style,
+            style=cfg.theme.mpf_style,
             volume=True,
             ylabel_lower="Volume [1M]",
             title=str(title[0]) if isinstance(title, tuple) else title,
@@ -947,7 +947,7 @@ def plot_chart(
         mpf.plot(
             df,
             type="candle",
-            style=cfg.style.mpf_style,
+            style=cfg.theme.mpf_style,
             volume=False,
             title=str(title[0]) if isinstance(title, tuple) else title,
             xrotation=10,
@@ -992,7 +992,7 @@ def plot_chart(
             mpf.plot(
                 df,
                 type="candle",
-                style=cfg.style.mpf_style,
+                style=cfg.theme.mpf_style,
                 volume=True,
                 ylabel_lower="Volume [1K]",
                 title=str(title[0]) if isinstance(title, tuple) else title,

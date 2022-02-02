@@ -152,7 +152,7 @@ def plot_candles(candles_df: pd.DataFrame, title: str) -> None:
     mpf.plot(
         candles_df,
         type="candle",
-        style=cfg.style.mpf_style,
+        style=cfg.theme.mpf_style,
         volume=True,
         title=f"\n{title}",
         xrotation=10,

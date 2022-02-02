@@ -9,7 +9,7 @@ from datetime import datetime
 import mplfinance as mpf
 import yfinance as yf
 
-from gamestonk_terminal import config_terminal as cfg
+from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
 from gamestonk_terminal.rich_config import console
@@ -105,7 +105,7 @@ def plot_pattern_recognition(ticker: str, resolution: str, export: str):
     mpf.plot(
         df_stock,
         type="candle",
-        style=cfg.style.mpf_style,
+        style=theme.mpf_style,
         volume=False,
         title=f"\n{ticker}",
         alines=l_segments,

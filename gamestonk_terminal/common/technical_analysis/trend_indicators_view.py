@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 
-from gamestonk_terminal import config_terminal as cfg
+from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.common.technical_analysis import trend_indicators_model
 from gamestonk_terminal.config_plot import PLOT_DPI
@@ -67,8 +67,8 @@ def display_adx(
 
     ax1 = ax[1]
     ax1.plot(df_ta.index, df_ta.iloc[:, 0].values)
-    ax1.plot(df_ta.index, df_ta.iloc[:, 1].values, color=cfg.style.up_color)
-    ax1.plot(df_ta.index, df_ta.iloc[:, 2].values, color=cfg.style.down_color)
+    ax1.plot(df_ta.index, df_ta.iloc[:, 1].values, color=theme.up_color)
+    ax1.plot(df_ta.index, df_ta.iloc[:, 2].values, color=theme.down_color)
     ax1.set_xlim(df_stock.index[0], df_stock.index[-1])
     ax1.axhline(25, ls="--")
     ax1.legend(
@@ -137,8 +137,8 @@ def display_aroon(
     ax0.grid(visible=True, zorder=0)
 
     ax1 = ax[1]
-    ax1.plot(df_ta.index, df_ta.iloc[:, 0].values, cfg.style.down_color)
-    ax1.plot(df_ta.index, df_ta.iloc[:, 1].values, cfg.style.up_color)
+    ax1.plot(df_ta.index, df_ta.iloc[:, 0].values, theme.down_color)
+    ax1.plot(df_ta.index, df_ta.iloc[:, 1].values, theme.up_color)
     ax1.set_xlim(df_stock.index[0], df_stock.index[-1])
     ax1.axhline(50, ls="--")
     ax1.legend([f"Aroon DOWN ({df_ta.columns[0]})", f"Aroon UP ({df_ta.columns[1]})"])

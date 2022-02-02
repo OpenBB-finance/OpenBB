@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 
-from gamestonk_terminal import config_terminal as cfg
+from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.common.technical_analysis import volume_model
 from gamestonk_terminal.config_plot import PLOT_DPI
@@ -43,7 +43,7 @@ def display_ad(
     """
 
     bar_colors = [
-        cfg.style.down_color if x[1].Open < x[1].Close else cfg.style.up_color
+        theme.down_color if x[1].Open < x[1].Close else theme.up_color
         for x in df_stock.iterrows()
     ]
     bar_width = df_stock.index[1] - df_stock.index[0]
@@ -135,7 +135,7 @@ def display_adosc(
         Format to export data
     """
     bar_colors = [
-        cfg.style.down_color if x[1].Open < x[1].Close else cfg.style.up_color
+        theme.down_color if x[1].Open < x[1].Close else theme.up_color
         for x in df_stock.iterrows()
     ]
 
@@ -211,7 +211,7 @@ def display_obv(df_stock: pd.DataFrame, s_ticker: str = "", export: str = ""):
         Format to export data as
     """
     bar_colors = [
-        cfg.style.down_color if x[1].Open < x[1].Close else cfg.style.up_color
+        theme.down_color if x[1].Open < x[1].Close else theme.up_color
         for x in df_stock.iterrows()
     ]
 

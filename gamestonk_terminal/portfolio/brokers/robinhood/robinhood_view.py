@@ -7,7 +7,7 @@ import os
 import matplotlib.pyplot as plt
 import mplfinance as mpf
 
-from gamestonk_terminal import config_terminal as cfg
+from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
@@ -71,7 +71,7 @@ def display_historical(interval: str = "day", span: str = "3month", export: str 
     mpf.plot(
         hist,
         type="candle",
-        style=cfg.style.mpf_style,
+        style=theme.mpf_style,
         title=f"\nPortfolio for {span_title_dict[span]}",
         ylabel="Equity ($)",
         xrotation=10,

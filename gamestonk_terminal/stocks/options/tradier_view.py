@@ -13,7 +13,7 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 
-from gamestonk_terminal import config_terminal as cfg
+from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal import config_plot as cfp
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.decorators import log_start_end
@@ -625,7 +625,7 @@ def display_historical(
     mpf.plot(
         df_hist,
         type="candle",
-        style=cfg.style.mpf_style,
+        style=theme.mpf_style,
         volume=True,
         title=f"\n{ticker.upper()} {strike} {op_type} expiring {expiry} Historical",
         xrotation=10,

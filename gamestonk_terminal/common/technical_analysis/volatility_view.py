@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 
-from gamestonk_terminal import config_terminal as cfg
+from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.common.technical_analysis import volatility_model
 from gamestonk_terminal.config_plot import PLOT_DPI
@@ -56,9 +56,9 @@ def display_bbands(
         df_stock.index,
         df_stock["Adj Close"].values,
     )
-    ax.plot(df_ta.index, df_ta.iloc[:, 0].values, cfg.style.down_color, linewidth=0.7)
+    ax.plot(df_ta.index, df_ta.iloc[:, 0].values, theme.down_color, linewidth=0.7)
     ax.plot(df_ta.index, df_ta.iloc[:, 1].values, ls="--", linewidth=0.7)
-    ax.plot(df_ta.index, df_ta.iloc[:, 2].values, cfg.style.up_color, linewidth=0.7)
+    ax.plot(df_ta.index, df_ta.iloc[:, 2].values, theme.up_color, linewidth=0.7)
     ax.set_title(f"{ticker} Bollinger Bands")
     ax.set_xlim(df_stock.index[0], df_stock.index[-1])
     ax.set_ylabel("Share Price ($)")

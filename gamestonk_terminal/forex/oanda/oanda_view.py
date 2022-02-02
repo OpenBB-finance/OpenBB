@@ -11,7 +11,7 @@ import pandas as pd
 import pandas_ta as ta
 import seaborn as sns
 
-from gamestonk_terminal import config_terminal as cfg
+from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal import config_plot as cfgPlot
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.decorators import log_start_end
@@ -307,7 +307,7 @@ def show_candles(
     _, ax = mpf.plot(
         df_candles,
         type="candle",
-        style=cfg.style.mpf_style,
+        style=theme.mpf_style,
         volume=True,
         returnfig=True,
         addplot=plots_to_add,

@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import mplfinance as mpf
 import pandas as pd
 
-from gamestonk_terminal import config_terminal as cfg
+from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.forex import av_model
@@ -64,7 +64,7 @@ def display_candle(data: pd.DataFrame, to_symbol: str, from_symbol: str):
     mpf.plot(
         data,
         type="candle",
-        style=cfg.style.mpf_style,
+        style=theme.mpf_style,
         mav=(20, 50),
         volume=False,
         title=f"\n{from_symbol}/{to_symbol}",

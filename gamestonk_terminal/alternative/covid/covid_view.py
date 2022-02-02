@@ -7,7 +7,7 @@ import os
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from gamestonk_terminal import config_terminal as cfg
+from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.alternative.covid import covid_model
 from gamestonk_terminal.config_plot import PLOT_DPI
@@ -47,15 +47,15 @@ def display_covid_ov(
 
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
-    ax.plot(cases.index, cases, color=cfg.style.up_color, alpha=0.2)
-    ax.plot(cases.index, cases.rolling(7).mean(), color=cfg.style.up_color)
+    ax.plot(cases.index, cases, color=theme.up_color, alpha=0.2)
+    ax.plot(cases.index, cases.rolling(7).mean(), color=theme.up_color)
     ax.set_ylabel("Cases (1k)")
     ax.tick_params(axis="y")
     ax.grid(visible=True, zorder=0)
 
     ax2 = ax.twinx()
-    ax2.plot(deaths.index, deaths, color=cfg.style.down_color, alpha=0.2)
-    ax2.plot(deaths.index, deaths.rolling(7).mean(), color=cfg.style.down_color)
+    ax2.plot(deaths.index, deaths, color=theme.down_color, alpha=0.2)
+    ax2.plot(deaths.index, deaths.rolling(7).mean(), color=theme.down_color)
     ax2.set_title(f"Overview for {country.upper()}")
     ax2.set_xlabel("Date")
     ax2.set_ylabel("Deaths")
@@ -64,8 +64,8 @@ def display_covid_ov(
     ax.set_xlim(ov.index[0], ov.index[-1])
     ax.tick_params(axis="x", rotation=10)
     legend = ax.legend(ov.columns)
-    legend.legendHandles[1].set_color(cfg.style.down_color)
-    legend.legendHandles[0].set_color(cfg.style.up_color)
+    legend.legendHandles[1].set_color(theme.down_color)
+    legend.legendHandles[0].set_color(theme.up_color)
 
     fig.tight_layout(pad=2)
     if gtff.USE_ION:
@@ -124,13 +124,13 @@ def display_covid_stat(
 
     if stat == "cases":
         ax.set_ylabel(stat.title() + " (1k)")
-        color = cfg.style.up_color
+        color = theme.up_color
     elif stat == "deaths":
         ax.set_ylabel(stat.title())
-        color = cfg.style.down_color
+        color = theme.down_color
     else:
         ax.set_ylabel(stat.title() + " (Deaths/Cases)")
-        color = cfg.style.get_colors(reverse=True)[0]
+        color = theme.get_colors(reverse=True)[0]
 
     ax.plot(data.index, data, color=color, alpha=0.2)
     ax.plot(data.index, data.rolling(7).mean(), color=color)
