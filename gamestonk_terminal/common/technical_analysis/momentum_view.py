@@ -10,7 +10,7 @@ import numpy as np
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 
-from gamestonk_terminal import config_terminal as cfg
+from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.common.technical_analysis import momentum_model
 from gamestonk_terminal.config_plot import PLOT_DPI
@@ -64,8 +64,8 @@ def display_cci(
     ax2 = axes[1]
     ax2.plot(df_ta.index, df_ta.values)
     ax2.set_xlim(df.index[0], df.index[-1])
-    ax2.axhspan(100, plt.gca().get_ylim()[1], facecolor=cfg.style.down_color, alpha=0.2)
-    ax2.axhspan(plt.gca().get_ylim()[0], -100, facecolor=cfg.style.up_color, alpha=0.2)
+    ax2.axhspan(100, ax2.get_ylim()[1], facecolor=theme.down_color, alpha=0.2)
+    ax2.axhspan(ax2.get_ylim()[0], -100, facecolor=theme.up_color, alpha=0.2)
 
     ax2.tick_params(axis="x", rotation=10)
 
@@ -73,8 +73,8 @@ def display_cci(
 
     ax3 = ax2.twinx()
     ax3.set_ylim(ax2.get_ylim())
-    ax3.axhline(100, color=cfg.style.down_color, ls="--")
-    ax3.axhline(-100, color=cfg.style.up_color, ls="--")
+    ax3.axhline(100, color=theme.down_color, ls="--")
+    ax3.axhline(-100, color=theme.up_color, ls="--")
 
     ax2.set_yticks([-100, 100])
     ax2.set_yticklabels(["OVERSOLD", "OVERBOUGHT"])
@@ -134,8 +134,8 @@ def display_macd(
 
     ax2 = axes[1]
     ax2.plot(df_ta.index, df_ta.iloc[:, 0].values)
-    ax2.plot(df_ta.index, df_ta.iloc[:, 2].values, color=cfg.style.down_color)
-    ax2.bar(df_ta.index, df_ta.iloc[:, 1].values, color=cfg.style.up_color)
+    ax2.plot(df_ta.index, df_ta.iloc[:, 2].values, color=theme.down_color)
+    ax2.bar(df_ta.index, df_ta.iloc[:, 1].values, color=theme.up_color)
     ax2.legend(
         [
             f"MACD Line {df_ta.columns[0]}",
@@ -202,16 +202,16 @@ def display_rsi(
     ax2 = axes[1]
     ax2.plot(df_ta.index, df_ta.values)
     ax2.set_xlim(prices.index[0], prices.index[-1])
-    ax2.axhspan(0, 30, facecolor=cfg.style.up_color, alpha=0.2)
-    ax2.axhspan(70, 100, facecolor=cfg.style.down_color, alpha=0.2)
+    ax2.axhspan(0, 30, facecolor=theme.up_color, alpha=0.2)
+    ax2.axhspan(70, 100, facecolor=theme.down_color, alpha=0.2)
     ax2.grid(visible=True, zorder=0)
     ax2.tick_params(axis="x", rotation=10)
 
     ax2.set_ylim([0, 100])
     ax3 = ax2.twinx()
     ax3.set_ylim(ax2.get_ylim())
-    ax3.axhline(30, color=cfg.style.up_color, ls="--")
-    ax3.axhline(70, color=cfg.style.down_color, ls="--")
+    ax3.axhline(30, color=theme.up_color, ls="--")
+    ax3.axhline(70, color=theme.down_color, ls="--")
     ax2.set_yticks([30, 70])
     ax2.set_yticklabels(["OVERSOLD", "OVERBOUGHT"])
 
@@ -269,7 +269,7 @@ def display_stoch(
     )
     # This plot has 1 axis
     if not external_axes:
-        fig, axes = plt.subplots(
+        _, axes = plt.subplots(
             2, 1, sharex=True, figsize=plot_autoscale(), dpi=PLOT_DPI
         )
         ax1, ax2 = axes
@@ -284,30 +284,26 @@ def display_stoch(
     ax1.set_title(f"Stochastic Relative Strength Index (STOCH RSI) on {s_ticker}")
     ax1.set_xlim(df_stock.index[0], df_stock.index[-1])
     ax1.set_ylabel("Share Price ($)")
-    cfg.style.style_primary_axis(ax1)
+    theme.style_primary_axis(ax1)
 
     ax2.plot(df_ta.index, df_ta.iloc[:, 0].values)
     ax2.plot(df_ta.index, df_ta.iloc[:, 1].values, ls="--")
     ax2.set_xlim(df_stock.index[0], df_stock.index[-1])
-    cfg.style.style_primary_axis(ax2)
+    theme.style_primary_axis(ax2)
 
     ax3.set_ylim(ax2.get_ylim())
-    ax3.axhspan(80, 100, facecolor=cfg.style.down_color, alpha=0.2)
-    ax3.axhspan(0, 20, facecolor=cfg.style.up_color, alpha=0.2)
-    ax3.axhline(80, color=cfg.style.down_color, ls="--")
-    ax3.axhline(20, color=cfg.style.up_color, ls="--")
-    cfg.style.style_twin_axis(ax3)
+    ax3.axhspan(80, 100, facecolor=theme.down_color, alpha=0.2)
+    ax3.axhspan(0, 20, facecolor=theme.up_color, alpha=0.2)
+    ax3.axhline(80, color=theme.down_color, ls="--")
+    ax3.axhline(20, color=theme.up_color, ls="--")
+    theme.style_twin_axis(ax3)
 
     ax2.set_yticks([20, 80])
     ax2.set_yticklabels(["OVERSOLD", "OVERBOUGHT"])
     ax2.legend([f"%K {df_ta.columns[0]}", f"%D {df_ta.columns[1]}"])
 
     if not external_axes:
-        plt.tight_layout(pad=cfg.style.tight_layout_padding)
-        if gtff.USE_ION:
-            plt.ion()
-        fig.show()
-        console.print("")
+        theme.visualize_output()
 
     export_data(
         export,
@@ -361,16 +357,16 @@ def display_fisher(
     )
 
     ax2.set_xlim(df_stock.index[0], df_stock.index[-1])
-    ax2.axhspan(2, plt.gca().get_ylim()[1], facecolor=cfg.style.down_color, alpha=0.2)
-    ax2.axhspan(plt.gca().get_ylim()[0], -2, facecolor=cfg.style.up_color, alpha=0.2)
-    ax2.axhline(2, color=cfg.style.down_color, ls="--")
-    ax2.axhline(-2, color=cfg.style.up_color, ls="--")
+    ax2.axhspan(2, plt.gca().get_ylim()[1], facecolor=theme.down_color, alpha=0.2)
+    ax2.axhspan(plt.gca().get_ylim()[0], -2, facecolor=theme.up_color, alpha=0.2)
+    ax2.axhline(2, color=theme.down_color, ls="--")
+    ax2.axhline(-2, color=theme.up_color, ls="--")
 
     ax2.set_xlim(df_stock.index[0], df_stock.index[-1])
-    ax2.axhspan(2, plt.gca().get_ylim()[1], facecolor=cfg.style.down_color, alpha=0.2)
-    ax2.axhspan(plt.gca().get_ylim()[0], -2, facecolor=cfg.style.up_color, alpha=0.2)
-    ax2.axhline(2, color=cfg.style.down_color, ls="--")
-    ax2.axhline(-2, color=cfg.style.up_color, ls="--")
+    ax2.axhspan(2, plt.gca().get_ylim()[1], facecolor=theme.down_color, alpha=0.2)
+    ax2.axhspan(plt.gca().get_ylim()[0], -2, facecolor=theme.up_color, alpha=0.2)
+    ax2.axhline(2, color=theme.down_color, ls="--")
+    ax2.axhline(-2, color=theme.up_color, ls="--")
     ax2.grid(visible=True, zorder=0)
     ax2.tick_params(axis="x", rotation=10)
 

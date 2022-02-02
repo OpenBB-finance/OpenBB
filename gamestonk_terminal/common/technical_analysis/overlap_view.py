@@ -10,7 +10,7 @@ import mplfinance as mpf
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 
-from gamestonk_terminal import config_terminal as cfg
+from gamestonk_terminal.config_terminal import theme
 import gamestonk_terminal.feature_flags as gtff
 from gamestonk_terminal.common.technical_analysis import overlap_model
 from gamestonk_terminal.config_plot import PLOT_DPI
@@ -77,7 +77,7 @@ def view_ma(
 
     # This plot has 1 axis
     if not external_axes:
-        fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     else:
         if len(external_axes) != 1:
             console.print("[red]Expected list of one axis item./n[/red]")
@@ -92,14 +92,10 @@ def view_ma(
 
     ax.set_title(f"{s_ticker} {ma_type.upper()}")
     ax.legend(l_legend)
-    cfg.style.style_primary_axis(ax)
+    theme.style_primary_axis(ax)
 
     if not external_axes:
-        plt.tight_layout(pad=cfg.style.tight_layout_padding)
-        if gtff.USE_ION:
-            plt.ion()
-        fig.show()
-        console.print("")
+        theme.visualize_output()
 
     export_data(
         export,
@@ -148,7 +144,7 @@ def view_vwap(
     fig, _ = mpf.plot(
         day_df,
         type="candle",
-        style=cfg.style.mpf_style,
+        style=theme.mpf_style,
         volume=True,
         addplot=addplot_result,
         xrotation=10,
