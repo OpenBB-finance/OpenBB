@@ -234,8 +234,8 @@ class Portfolio:
         # Allow for empty initialization
         self.empty = True
         self.rf = rf
-        if not trades.empty.to_list():
-            if "cash" not in trades.Name:
+        if not trades.empty:
+            if "cash" not in trades.Name.to_list():
                 console.print(
                     "[red]No initial cash deposit.  Calculations may be off as this assumes trading from a "
                     "funded account[/red]."
