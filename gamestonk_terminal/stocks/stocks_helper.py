@@ -312,7 +312,7 @@ def display_candle(
         fig, _ = mpf.plot(
             df_stock,
             type="candle",
-            style=cfg.style.mpf_style,
+            style=cfg.theme.mpf_style,
             volume=True,
             addplot=ap0,
             xrotation=10,

@@ -9,12 +9,12 @@ if env_files:
     load_dotenv(env_files[0])
 
 # Terminal UX section
-style = _TerminalStyle(
+theme = _TerminalStyle(
     os.getenv("GT_MPLSTYLE") or "boring",
     os.getenv("GT_MPFSTYLE") or "boring",
     os.getenv("GT_RICHSTYLE") or "boring",
 )
-style.applyMPLstyle()
+theme.applyMPLstyle()
 
 # Set to True to see full stack traces for debugging/error reporting
 DEBUG_MODE = False

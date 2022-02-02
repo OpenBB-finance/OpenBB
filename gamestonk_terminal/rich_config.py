@@ -9,7 +9,7 @@ from gamestonk_terminal import feature_flags as gtff
 # https://rich.readthedocs.io/en/stable/appendix/colors.html#appendix-colors
 # https://rich.readthedocs.io/en/latest/highlighting.html#custom-highlighters
 
-CUSTOM_THEME = Theme(cfg.style.console_style)
+CUSTOM_THEME = Theme(cfg.theme.console_style)
 
 RICH_TAGS = [
     "[menu]",
