@@ -1,14 +1,14 @@
+import asyncio
 import difflib
 import os
 import sys
 import traceback
 
+import config_discordbot as cfg
 import disnake
+from config_discordbot import logger
 from disnake.ext import commands
 from fastapi import FastAPI
-
-import config_discordbot as cfg
-from config_discordbot import logger
 
 app = FastAPI()
 
@@ -55,12 +55,13 @@ class GSTHelpCommand(commands.MinimalHelpCommand):
 class GSTBot(commands.Bot):
     def __init__(self):
         super().__init__(
-            command_prefix="..",
+            command_prefix=cfg.COMMAND_PREFIX,
             intents=disnake.Intents.all(),
             help_command=GSTHelpCommand(sort_commands=False, commands_heading="list:"),
             sync_commands_debug=True,
             sync_permissions=True,
             activity=activity,
+            test_guilds=cfg.SLASH_TESTING_SERVERS,
         )
 
     def load_all_extensions(self, folder: str) -> None:
@@ -156,5 +157,11 @@ gst_bot = GSTBot()
 gst_bot.load_all_extensions("cmds")
 
 
-# Runs the bot
-gst_bot.run(cfg.DISCORD_BOT_TOKEN)
+async def run():
+    try:
+        await gst_bot.start(cfg.DISCORD_BOT_TOKEN)
+    except KeyboardInterrupt:
+        await gst_bot.logout()
+
+
+asyncio.create_task(run())

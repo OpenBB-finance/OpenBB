@@ -16,13 +16,10 @@
 
 This tutorial assumes that you have successfully installed Gamestonk Terminal.
 
-Next, go into the discordbot folder with `cd discordbot` and install the following packages:
+Next, from the GamestonkTerminal root folder run the following command:
 
 ```text
-pip install discord
-pip install discord_components
-pip install pyimgur
-pip install python-dotenv
+poetry install -E discord
 ```
 
 ## Registering Applications
@@ -101,16 +98,28 @@ Other parameters that can be configured are:
 Just run the discord bot from this folder with:
 
 ```text
-python discordbot/main.py
+uvicorn run_discordbot:app
 ```
 
 Now, you should be ready to invoke the discord bot from server using something like:
 
 ```text
-!stocks.dps TSLA
+/cc
 ```
 
 <img width="1211" alt="Screenshot 2021-10-18 at 00 21 30" src="https://user-images.githubusercontent.com/25267873/137649138-8d8158c5-1b76-49bc-928f-694d7005d94d.png">
+
+
+Global slash commands can take up to 1 hour to show up after registration
+
+For testing you can change SLASH_TESTING_SERVERS to you server ID in config_discordbot for instant commands availability
+
+To get your server ID:
+
+1. Go to settings on your discord app
+2. Click on Advanced in the APP SETTINGS tab
+3. Set Developer Mode to on
+4. Right click on your server's icon on the left hand side and select Copy ID at the bottom
 
 ## Contributing
 

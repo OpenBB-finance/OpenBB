@@ -10,7 +10,6 @@ import pandas as pd
 from discordbot.config_discordbot import logger
 from discordbot.stocks.candle import candle_command
 from discordbot.stocks.disc.ford import ford_command
-from discordbot.stocks.disc.upcoming import earnings_command
 from discordbot.stocks.insider.lins import lins_command
 from discordbot.stocks.options.hist import hist_command
 from discordbot.stocks.options.iv import iv_command
@@ -150,13 +149,6 @@ class SlashCommands(commands.Cog):
         logger.info("disc-ford")
         await ford_command(inter)
 
-    @commands.slash_command(name="earnings")
-    async def earnings(self, inter: disnake.AppCmdInter):
-        """Display Upcoming Earnings. [Source: Seeking Alpha]"""
-        await inter.response.defer()
-        logger.info("earnings")
-        await earnings_command(inter)
-
     @commands.slash_command(name="opt-unu")
     async def unu(self, inter: disnake.AppCmdInter):
         """Unusual Options"""
@@ -205,6 +197,72 @@ class SlashCommands(commands.Cog):
         await inter.response.defer()
         logger.info("cc")
         await candle_command(inter, ticker, interval, past_days, start, end)
+
+    @commands.slash_command(name="btc")
+    async def btc(
+        self,
+        inter: disnake.AppCmdInter,
+        interval: int = commands.Param(choices=[1, 5, 15, 30, 60, 1440]),
+        past_days: int = 1,
+        start="",
+        end="",
+    ):
+        """Display Bitcoin Chart
+
+        Parameters
+        ----------
+        interval : Chart Minute Interval, 1440 for Daily
+        past_days: Past Days to Display. Default: 1(Not for Daily)
+        start: YYYY-MM-DD format
+        end: YYYY-MM-DD format
+        """
+        await inter.response.defer()
+        logger.info("btc")
+        await candle_command(inter, "btc-usd", interval, past_days, start, end)
+
+    @commands.slash_command(name="eth")
+    async def eth(
+        self,
+        inter: disnake.AppCmdInter,
+        interval: int = commands.Param(choices=[1, 5, 15, 30, 60, 1440]),
+        past_days: int = 1,
+        start="",
+        end="",
+    ):
+        """Display Ethereum Chart
+
+        Parameters
+        ----------
+        interval : Chart Minute Interval, 1440 for Daily
+        past_days: Past Days to Display. Default: 1(Not for Daily)
+        start: YYYY-MM-DD format
+        end: YYYY-MM-DD format
+        """
+        await inter.response.defer()
+        logger.info("eth")
+        await candle_command(inter, "eth-usd", interval, past_days, start, end)
+
+    @commands.slash_command(name="sol")
+    async def sol(
+        self,
+        inter: disnake.AppCmdInter,
+        interval: int = commands.Param(choices=[1, 5, 15, 30, 60, 1440]),
+        past_days: int = 1,
+        start="",
+        end="",
+    ):
+        """Display Solana Chart
+
+        Parameters
+        ----------
+        interval : Chart Minute Interval, 1440 for Daily
+        past_days: Past Days to Display. Default: 1(Not for Daily)
+        start: YYYY-MM-DD format
+        end: YYYY-MM-DD format
+        """
+        await inter.response.defer()
+        logger.info("sol")
+        await candle_command(inter, "sol-usd", interval, past_days, start, end)
 
     @commands.slash_command(name="opt-overview")
     async def overview(
