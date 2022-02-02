@@ -1,17 +1,17 @@
 import os
+import random
 from datetime import datetime, timedelta
+
 import disnake
 import pandas as pd
-
-from gamestonk_terminal.common.technical_analysis import overlap_model
+import plotly.graph_objects as go
+from PIL import Image
 
 import discordbot.config_discordbot as cfg
-import plotly.graph_objects as go
-from discordbot.helpers import autocrop_image
-from discordbot.config_discordbot import logger
 import discordbot.helpers
-from PIL import Image
-import random
+from discordbot.config_discordbot import logger
+from discordbot.helpers import autocrop_image
+from gamestonk_terminal.common.technical_analysis import overlap_model
 
 
 async def zlma_command(ctx, ticker="", window="", offset="", start="", end=""):

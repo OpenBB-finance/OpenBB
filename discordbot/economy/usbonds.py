@@ -1,13 +1,14 @@
 import os
 
 import df2img
-import discordbot.config_discordbot as cfg
 import disnake
 import pandas as pd
+from PIL import Image
+
+import discordbot.config_discordbot as cfg
 from discordbot.config_discordbot import logger
 from discordbot.helpers import autocrop_image
 from gamestonk_terminal.economy import wsj_model
-from PIL import Image
 
 
 async def usbonds_command(ctx):
@@ -35,7 +36,7 @@ async def usbonds_command(ctx):
             "Yld Chg (%)": "{:.2f}%",
         }
         for col, value in formats.items():
-            df[col] = df[col].map(lambda x: value.format(x))
+            df[col] = df[col].map(lambda x: value.format(x))  # pylint: disable=W0640
 
         df = df.fillna("")
         df.set_index(" ", inplace=True)

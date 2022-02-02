@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import disnake
 import pandas as pd
+from disnake.ext import commands
+
 from discordbot.config_discordbot import logger
 from discordbot.stocks.due_diligence.analyst import analyst_command
 from discordbot.stocks.due_diligence.arktrades import arktrades_command
@@ -10,7 +12,6 @@ from discordbot.stocks.due_diligence.est import est_command
 from discordbot.stocks.due_diligence.pt import pt_command
 from discordbot.stocks.due_diligence.sec import sec_command
 from discordbot.stocks.due_diligence.supplier import supplier_command
-from disnake.ext import commands
 
 
 def default_completion(inter: disnake.AppCmdInter) -> list[str]:

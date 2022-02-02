@@ -1,13 +1,14 @@
 import os
 
 import df2img
-import discordbot.config_discordbot as cfg
 import disnake
 import pandas as pd
+from PIL import Image
+
+import discordbot.config_discordbot as cfg
 from discordbot.config_discordbot import logger
 from discordbot.helpers import autocrop_image
 from gamestonk_terminal.economy import wsj_model
-from PIL import Image
 
 
 async def indices_command(ctx):
@@ -29,12 +30,9 @@ async def indices_command(ctx):
         df["Chg"] = pd.to_numeric(df["Chg"].astype(float))
         df["%Chg"] = pd.to_numeric(df["%Chg"].astype(float))
 
-        df = df.fillna("")
-        df.set_index(" ", inplace=True)
-
         formats = {"Price": "${:.2f}", "Chg": "${:.2f}", "%Chg": "{:.2f}%"}
         for col, value in formats.items():
-            df[col] = df[col].map(lambda x: value.format(x))
+            df[col] = df[col].map(lambda x: value.format(x))  # pylint: disable=W0640
 
         # Debug user output
         if cfg.DEBUG:
@@ -47,6 +45,10 @@ async def indices_command(ctx):
                 "%Chg",
             ]
         ]
+
+        df = df.fillna("")
+        df.set_index(" ", inplace=True)
+
         dindex = len(df.index)
         fig = df2img.plot_dataframe(
             df,

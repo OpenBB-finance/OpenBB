@@ -3,6 +3,8 @@ from __future__ import annotations
 
 import disnake
 import pandas as pd
+from disnake.ext import commands
+
 from discordbot.config_discordbot import logger
 from discordbot.stocks.technical_analysis.ad import ad_command
 from discordbot.stocks.technical_analysis.adosc import adosc_command
@@ -27,7 +29,6 @@ from discordbot.stocks.technical_analysis.summary import summary_command
 from discordbot.stocks.technical_analysis.view import view_command
 from discordbot.stocks.technical_analysis.wma import wma_command
 from discordbot.stocks.technical_analysis.zlma import zlma_command
-from disnake.ext import commands
 
 possible_ma = [
     "dema",

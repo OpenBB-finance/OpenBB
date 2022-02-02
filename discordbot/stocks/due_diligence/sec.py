@@ -1,9 +1,8 @@
 import disnake
 
-from gamestonk_terminal.stocks.due_diligence import marketwatch_model
-
 import discordbot.config_discordbot as cfg
 from discordbot.config_discordbot import logger
+from gamestonk_terminal.stocks.due_diligence import marketwatch_model
 
 
 async def sec_command(ctx, ticker=""):

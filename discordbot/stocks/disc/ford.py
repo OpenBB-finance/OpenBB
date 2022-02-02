@@ -1,13 +1,13 @@
 import os
+
+import df2img
 import disnake
 from PIL import Image
-import df2img
-from discordbot.helpers import autocrop_image
-
-from gamestonk_terminal.stocks.discovery import fidelity_model
 
 import discordbot.config_discordbot as cfg
 from discordbot.config_discordbot import logger
+from discordbot.helpers import autocrop_image
+from gamestonk_terminal.stocks.discovery import fidelity_model
 
 
 async def ford_command(ctx):

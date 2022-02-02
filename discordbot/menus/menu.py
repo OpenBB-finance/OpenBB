@@ -31,7 +31,7 @@ class Menu(disnake.ui.View):
         self.set_link_button()
 
         for opt in options:
-            self.selector.append_option(opt)
+            self.selector.append_option(opt)  # pylint: disable=E1101
         for i, embed in enumerate(self.embeds):
             embed.set_footer(
                 text=f"Page {i + 1} of {len(self.embeds)}",
@@ -80,8 +80,10 @@ class Menu(disnake.ui.View):
         style=disnake.ButtonStyle.red,
         custom_id="persistent_view:prevpage",
     )
-    async def prev_page(
-        self, button: disnake.ui.Button, interaction: disnake.MessageInteraction
+    async def prev_page(  # pylint: disable=W0613
+        self,
+        button: disnake.ui.Button,
+        interaction: disnake.MessageInteraction,
     ):
         # Decrements the embed count.
         self.embed_count -= 1
@@ -102,8 +104,10 @@ class Menu(disnake.ui.View):
         style=disnake.ButtonStyle.red,
         custom_id="persistent_view:nextpage",
     )
-    async def next_page(
-        self, button: disnake.ui.Button, interaction: disnake.MessageInteraction
+    async def next_page(  # pylint: disable=W0613
+        self,
+        button: disnake.ui.Button,
+        interaction: disnake.MessageInteraction,
     ):
         # Increments the embed count.
         self.embed_count += 1

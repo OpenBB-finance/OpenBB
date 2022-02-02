@@ -1,12 +1,11 @@
+import df2img
 import disnake
 from PIL import Image
-import df2img
-from discordbot.helpers import autocrop_image
-
-from gamestonk_terminal.stocks.options import barchart_model
 
 import discordbot.config_discordbot as cfg
 from discordbot.config_discordbot import logger
+from discordbot.helpers import autocrop_image
+from gamestonk_terminal.stocks.options import barchart_model
 
 
 async def iv_command(ctx, ticker: str = None):

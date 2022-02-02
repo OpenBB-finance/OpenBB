@@ -1,8 +1,9 @@
 # pylint: disable=W0612
-import discordbot.config_discordbot as cfg
 import disnake
 from disnake.ext import commands
 from menus.menu import Menu
+
+import discordbot.config_discordbot as cfg
 
 
 class CmdsCommands(commands.Cog):

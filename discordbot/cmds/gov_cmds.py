@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import disnake
 import pandas as pd
+from disnake.ext import commands
+
 from discordbot.config_discordbot import logger
 from discordbot.stocks.government.contracts import contracts_command
 from discordbot.stocks.government.gtrades import gtrades_command
@@ -13,7 +15,6 @@ from discordbot.stocks.government.qtrcontracts import qtrcontracts_command
 from discordbot.stocks.government.topbuys import topbuys_command
 from discordbot.stocks.government.toplobbying import toplobbying_command
 from discordbot.stocks.government.topsells import topsells_command
-from disnake.ext import commands
 
 
 def default_completion(inter: disnake.AppCmdInter) -> list[str]:

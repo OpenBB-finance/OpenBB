@@ -1,9 +1,8 @@
 import disnake
 
-from gamestonk_terminal.stocks.technical_analysis import tradingview_model
-
 import discordbot.config_discordbot as cfg
 from discordbot.config_discordbot import logger
+from gamestonk_terminal.stocks.technical_analysis import tradingview_model
 
 
 async def recom_command(ctx, ticker=""):

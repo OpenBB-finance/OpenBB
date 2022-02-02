@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import disnake
+from disnake.ext import commands
+
 from discordbot.config_discordbot import logger
 from discordbot.economy.currencies import currencies_command
 from discordbot.economy.energy import energy_command
@@ -16,7 +18,6 @@ from discordbot.economy.performance import performance_command
 from discordbot.economy.softs import softs_command
 from discordbot.economy.usbonds import usbonds_command
 from discordbot.economy.valuation import valuation_command
-from disnake.ext import commands
 
 group = [
     "basic_materials",

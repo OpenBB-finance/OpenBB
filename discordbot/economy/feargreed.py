@@ -4,10 +4,9 @@ import os
 import disnake
 import matplotlib.pyplot as plt
 
-from gamestonk_terminal.economy import cnn_model, cnn_view
-
 import discordbot.config_discordbot as cfg
 from discordbot.config_discordbot import gst_imgur, logger
+from gamestonk_terminal.economy import cnn_model, cnn_view
 
 
 async def feargreed_command(ctx, indicator=""):

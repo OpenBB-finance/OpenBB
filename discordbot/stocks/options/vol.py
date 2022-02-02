@@ -1,14 +1,15 @@
 import os
+import random
 import time
+
+import disnake as discord
+import pandas as pd
+import plotly.graph_objects as go
+from PIL import Image
 
 import discordbot.config_discordbot as cfg
 from discordbot.helpers import autocrop_image
-import disnake as discord
-import pandas as pd
 from gamestonk_terminal.stocks.options import yfinance_model
-from PIL import Image
-import plotly.graph_objects as go
-import random
 
 startTime = time.time()
 

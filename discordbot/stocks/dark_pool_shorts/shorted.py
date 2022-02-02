@@ -1,10 +1,9 @@
 import disnake
-
-from gamestonk_terminal.stocks.dark_pool_shorts import yahoofinance_model
+from menus.menu import Menu
 
 import discordbot.config_discordbot as cfg
 from discordbot.config_discordbot import logger
-from menus.menu import Menu
+from gamestonk_terminal.stocks.dark_pool_shorts import yahoofinance_model
 
 
 async def shorted_command(ctx, num: int = 10):

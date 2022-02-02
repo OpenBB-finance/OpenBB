@@ -1,11 +1,10 @@
 import disnake
 import pandas as pd
-
-from gamestonk_terminal.stocks.government import quiverquant_model
+from menus.menu import Menu
 
 import discordbot.config_discordbot as cfg
 from discordbot.config_discordbot import logger
-from menus.menu import Menu
+from gamestonk_terminal.stocks.government import quiverquant_model
 
 
 async def lastcontracts_command(ctx, past_transactions_days: int = 2, num: int = 20):

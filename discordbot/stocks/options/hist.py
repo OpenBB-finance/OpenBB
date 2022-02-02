@@ -1,21 +1,22 @@
 import os
+import random
 import time
-import disnake
 
+import disnake
 import plotly.graph_objects as go
-from plotly.subplots import make_subplots
-from discordbot.helpers import autocrop_image
 from PIL import Image
+from plotly.subplots import make_subplots
+
+import discordbot.config_discordbot as cfg
+from discordbot.helpers import autocrop_image
 from gamestonk_terminal.config_terminal import TRADIER_TOKEN
 from gamestonk_terminal.stocks.options import tradier_model
-import discordbot.config_discordbot as cfg
-import random
 
 startTime = time.time()
 
 
 async def hist_command(
-    ctx, ticker: str = None, expiry: str = "", strike: float = None, opt_type: str = ""
+    ctx, ticker: str = None, expiry: str = "", strike: float = 10, opt_type: str = ""
 ):
     """Plot historical option prices
 

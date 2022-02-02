@@ -1,14 +1,15 @@
 import os
+
+import df2img
 import disnake
 import pandas as pd
+from menus.menu import Menu
 from PIL import Image
-import df2img
-from discordbot.helpers import autocrop_image
 
-from gamestonk_terminal.stocks.insider import finviz_model
 import discordbot.config_discordbot as cfg
 from discordbot.config_discordbot import gst_imgur, logger
-from menus.menu import Menu
+from discordbot.helpers import autocrop_image
+from gamestonk_terminal.stocks.insider import finviz_model
 
 
 async def lins_command(ctx, ticker: str = "", num: int = 10):

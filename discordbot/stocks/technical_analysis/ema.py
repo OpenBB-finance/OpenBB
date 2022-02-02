@@ -2,15 +2,16 @@ import os
 import random
 from datetime import datetime, timedelta
 
-import discordbot.config_discordbot as cfg
-import discordbot.helpers
 import disnake
 import pandas as pd
 import plotly.graph_objects as go
+from PIL import Image
+
+import discordbot.config_discordbot as cfg
+import discordbot.helpers
 from discordbot.config_discordbot import logger
 from discordbot.helpers import autocrop_image
 from gamestonk_terminal.common.technical_analysis import overlap_model
-from PIL import Image
 
 
 async def ema_command(ctx, ticker="", window="", offset="", start="", end=""):

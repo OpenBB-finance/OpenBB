@@ -1,24 +1,27 @@
 import os
+import random
 import time
 
-import discordbot.config_discordbot as cfg
+import df2img
 import disnake
 import numpy as np
 import pandas as pd
-from PIL import Image
-import df2img
-from discordbot.helpers import autocrop_image
+import plotly.graph_objects as go
 import yfinance as yf
+from menus.menu import Menu
+from PIL import Image
+
+import discordbot.config_discordbot as cfg
 from discordbot.config_discordbot import gst_imgur
+from discordbot.helpers import autocrop_image
 from gamestonk_terminal.stocks.options import op_helpers, yfinance_model
 from gamestonk_terminal.stocks.options.barchart_model import get_options_info
-from menus.menu import Menu
-import plotly.graph_objects as go
-import random
 
 startTime = time.time()
 
 
+# pylint: disable=R0914
+# pylint: disable=R0915
 async def overview_command(
     ctx,
     ticker: str = None,
@@ -195,8 +198,12 @@ async def overview_command(
 
         formats = {"iv": "{:.2f}"}
         for col, f in formats.items():
-            calls_df[col] = calls_df[col].map(lambda x: f.format(x))
-            puts_df[col] = puts_df[col].map(lambda x: f.format(x))
+            calls_df[col] = calls_df[col].map(
+                lambda x: f.format(x)  # pylint: disable=W0640
+            )
+            puts_df[col] = puts_df[col].map(
+                lambda x: f.format(x)  # pylint: disable=W0640
+            )
 
         calls_df.set_index("strike", inplace=True)
         puts_df.set_index("strike", inplace=True)

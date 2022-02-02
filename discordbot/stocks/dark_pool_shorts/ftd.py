@@ -2,15 +2,16 @@ import os
 import random
 from datetime import datetime, timedelta
 
-import discordbot.config_discordbot as cfg
-import discordbot.helpers
 import disnake
 import plotly.graph_objects as go
+from PIL import Image
+from plotly.subplots import make_subplots
+
+import discordbot.config_discordbot as cfg
+import discordbot.helpers
 from discordbot.config_discordbot import logger
 from discordbot.helpers import autocrop_image
 from gamestonk_terminal.stocks.dark_pool_shorts import sec_model
-from PIL import Image
-from plotly.subplots import make_subplots
 
 
 async def ftd_command(ctx, ticker: str = "", start="", end=""):

@@ -1,13 +1,14 @@
 import os
 
 import df2img
-import discordbot.config_discordbot as cfg
 import disnake
 import numpy as np
+from PIL import Image
+
+import discordbot.config_discordbot as cfg
 from discordbot.config_discordbot import logger
 from discordbot.helpers import autocrop_image
 from gamestonk_terminal.stocks.due_diligence import finviz_model
-from PIL import Image
 
 
 async def analyst_command(ctx, ticker=""):

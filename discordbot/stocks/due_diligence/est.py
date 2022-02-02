@@ -1,13 +1,14 @@
 import os
 
 import df2img
-import discordbot.config_discordbot as cfg
 import disnake
+from menus.menu import Menu
+from PIL import Image
+
+import discordbot.config_discordbot as cfg
 from discordbot.config_discordbot import gst_imgur, logger
 from discordbot.helpers import autocrop_image
 from gamestonk_terminal.stocks.due_diligence import business_insider_model
-from menus.menu import Menu
-from PIL import Image
 
 
 async def est_command(ctx, ticker: str = ""):

@@ -1,9 +1,8 @@
 import disnake
 
-from gamestonk_terminal.stocks.due_diligence import csimarket_model
-
 import discordbot.config_discordbot as cfg
 from discordbot.config_discordbot import logger
+from gamestonk_terminal.stocks.due_diligence import csimarket_model
 
 
 async def customer_command(ctx, ticker: str = ""):

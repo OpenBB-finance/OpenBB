@@ -1,16 +1,16 @@
 import os
+import random
 from datetime import datetime, timedelta
-import disnake
 
-from gamestonk_terminal.common.technical_analysis import volatility_model
+import disnake
+import plotly.graph_objects as go
+from PIL import Image
 
 import discordbot.config_discordbot as cfg
-import plotly.graph_objects as go
-from discordbot.helpers import autocrop_image
-from discordbot.config_discordbot import logger
 import discordbot.helpers
-from PIL import Image
-import random
+from discordbot.config_discordbot import logger
+from discordbot.helpers import autocrop_image
+from gamestonk_terminal.common.technical_analysis import volatility_model
 
 
 async def kc_command(

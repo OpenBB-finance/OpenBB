@@ -4,13 +4,12 @@ import time
 
 import disnake
 import pandas as pd
+import plotly.graph_objects as go
+from PIL import Image
 
 import discordbot.config_discordbot as cfg
-
-import plotly.graph_objects as go
 from discordbot.helpers import autocrop_image
 from gamestonk_terminal.stocks.options import op_helpers, yfinance_model
-from PIL import Image
 
 startTime = time.time()
 

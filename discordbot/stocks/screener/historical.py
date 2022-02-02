@@ -1,22 +1,22 @@
+import configparser
 import os
 import random
 from datetime import datetime, timedelta
-import configparser
 
 import disnake
-from matplotlib import pyplot as plt
 import yfinance as yf
-from pandas.plotting import register_matplotlib_converters
 from finvizfinance.screener import ticker
-
-from gamestonk_terminal.config_plot import PLOT_DPI
-from gamestonk_terminal.stocks.screener import finviz_model
-from gamestonk_terminal.helper_funcs import plot_autoscale
+from matplotlib import pyplot as plt
+from pandas.plotting import register_matplotlib_converters
+from PIL import Image
 
 import discordbot.config_discordbot as cfg
 from discordbot.config_discordbot import gst_imgur, logger
+from discordbot.helpers import autocrop_image
 from discordbot.stocks.screener import screener_options as so
-from PIL import Image
+from gamestonk_terminal.config_plot import PLOT_DPI
+from gamestonk_terminal.helper_funcs import plot_autoscale
+from gamestonk_terminal.stocks.screener import finviz_model
 
 # pylint:disable=no-member
 
@@ -154,7 +154,6 @@ async def historical_command(ctx, signal: str = "", start=""):
         img = img.convert("RGB")
         im_bg.paste(img, box=(x1 - 5, y1, x2 - 5, y2))
         im_bg.save(imagefile, "PNG", quality=100)
-        from discordbot.helpers import autocrop_image
 
         image = Image.open(imagefile)
         image = autocrop_image(image, 0)

@@ -1,14 +1,15 @@
 import os
 
 import df2img
-import discordbot.config_discordbot as cfg
 import disnake
 import pandas as pd
+from menus.menu import Menu
+from PIL import Image
+
+import discordbot.config_discordbot as cfg
 from discordbot.config_discordbot import gst_imgur, logger
 from discordbot.helpers import autocrop_image
 from gamestonk_terminal.stocks.due_diligence import ark_model
-from menus.menu import Menu
-from PIL import Image
 
 
 async def arktrades_command(ctx, ticker: str = "", num: int = 10):
@@ -41,7 +42,8 @@ async def arktrades_command(ctx, ticker: str = "", num: int = 10):
         dindex = len(df.head(num).index)
         formats = {"Close": "{:.2f}", "Total": "{:.2f}"}
         for col, f in formats.items():
-            df[col] = df[col].map(lambda x: f.format(x))
+            df[col] = df[col].map(lambda x: f.format(x))  # pylint: disable=W0640
+
         title = f"Stocks: [cathiesark.com] {ticker.upper()} Trades by Ark"
 
         embeds: list = []

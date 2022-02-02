@@ -2,17 +2,17 @@ import os
 from datetime import datetime, timedelta
 
 import disnake
-import pandas as pd
 import matplotlib.dates as mdates
+import pandas as pd
 from matplotlib import pyplot as plt
-
-from gamestonk_terminal.config_plot import PLOT_DPI
-from gamestonk_terminal.helper_funcs import plot_autoscale
-from gamestonk_terminal.stocks.government import quiverquant_model
+from PIL import Image
 
 import discordbot.config_discordbot as cfg
 from discordbot.config_discordbot import gst_imgur, logger
-from PIL import Image
+from discordbot.helpers import autocrop_image
+from gamestonk_terminal.config_plot import PLOT_DPI
+from gamestonk_terminal.helper_funcs import plot_autoscale
+from gamestonk_terminal.stocks.government import quiverquant_model
 
 
 async def gtrades_command(
@@ -128,7 +128,6 @@ async def gtrades_command(
         img = img.convert("RGB")
         im_bg.paste(img, box=(x1 - 5, y1, x2 - 5, y2))
         im_bg.save(imagefile, "PNG", quality=100)
-        from discordbot.helpers import autocrop_image
 
         image = Image.open(imagefile)
         image = autocrop_image(image, 0)

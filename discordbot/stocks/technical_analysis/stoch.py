@@ -1,17 +1,17 @@
 import os
+import random
 from datetime import datetime, timedelta
-import disnake
 
-from gamestonk_terminal.common.technical_analysis import momentum_model
+import disnake
+import plotly.graph_objects as go
+from PIL import Image
+from plotly.subplots import make_subplots
 
 import discordbot.config_discordbot as cfg
-import plotly.graph_objects as go
-from plotly.subplots import make_subplots
-from discordbot.helpers import autocrop_image
-from discordbot.config_discordbot import logger
 import discordbot.helpers
-from PIL import Image
-import random
+from discordbot.config_discordbot import logger
+from discordbot.helpers import autocrop_image
+from gamestonk_terminal.common.technical_analysis import momentum_model
 
 
 async def stoch_command(

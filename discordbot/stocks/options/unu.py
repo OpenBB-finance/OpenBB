@@ -1,15 +1,14 @@
+import df2img
 import disnake
 import numpy as np
 import pandas as pd
 import requests
 from PIL import Image
-import df2img
-from discordbot.helpers import autocrop_image
-
-from gamestonk_terminal.helper_funcs import get_user_agent
 
 import discordbot.config_discordbot as cfg
 from discordbot.config_discordbot import logger
+from discordbot.helpers import autocrop_image
+from gamestonk_terminal.helper_funcs import get_user_agent
 
 
 async def unu_command(ctx, num: int = None):
