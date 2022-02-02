@@ -219,8 +219,7 @@ def terminal(jobs_cmds: List[str] = None):
 
     if not jobs_cmds:
         bootup()
-
-    t_controller.print_help()
+        t_controller.print_help()
 
     while ret_code:
         if gtff.ENABLE_QUICK_EXIT:
