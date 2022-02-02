@@ -284,8 +284,8 @@ def create_dataframe(ticker: str, statement: str, period: str = "annual"):
         )
     per_url = f"{period}/" if period != "annual" else ""
 
-    URL = f"https://stockanalysis.com/stocks/{ticker}/financials/{per_url}"
-    URL += dcf_static.statement_url[statement]
+    URL = f"https://stockanalysis.com/stocks/{ticker}/financials/"
+    URL += dcf_static.statement_url[statement] + per_url
     ignores = dcf_static.statement_ignore[statement]
 
     r = requests.get(URL, headers=dcf_static.headers)
