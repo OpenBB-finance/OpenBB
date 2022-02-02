@@ -11,8 +11,11 @@ Portfolio:
     init        initialize empty portfolio
     build       build portfolio from list of tickers and weights
 
+Loaded: None
+
 Graphs:
     rolling     display rolling metrics of portfolio and benchmark
     rmr         graph your returns versus the market's returns
     dd          display portfolio drawdown
+    al          display allocation to given assets over period
         
