@@ -378,6 +378,7 @@ class Portfolio:
         )
         self.portfolio = portfolio.copy()
 
+    # TODO: Add back dividends
     @log_start_end(log=logger)
     def get_yahoo_close_prices(self, use_close: bool = False):
         """Gets historical adj close prices for tickers in list of trades"""

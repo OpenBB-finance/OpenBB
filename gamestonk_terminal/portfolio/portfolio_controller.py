@@ -173,7 +173,7 @@ class PortfolioController(BaseController):
             self.portfolio = portfolio_model.Portfolio.from_csv(
                 os.path.join(portfolios_path, ns_parser.name)
             )
-            console.print("")
+            console.print()
 
     def call_save(self, other_args: List[str]):
         """Process save command"""
