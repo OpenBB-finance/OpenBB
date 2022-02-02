@@ -256,7 +256,7 @@ def others_in_sector(
 
 
 @log_start_end(log=logger)
-def create_dataframe(ticker: str, statement: str):
+def create_dataframe(ticker: str, statement: str, period: str = "annual"):
     """
     Creates a df financial statement for a given ticker
 
@@ -266,6 +266,8 @@ def create_dataframe(ticker: str, statement: str):
         The ticker to create a dataframe for
     statement : str
         The financial statement dataframe to create
+    period : str
+        Whether to look at annual, quarterly, or trailing
 
     Returns
     -------
@@ -274,7 +276,15 @@ def create_dataframe(ticker: str, statement: str):
     rounding : int
         The amount of rounding to use
     """
-    URL = f"https://stockanalysis.com/stocks/{ticker}/financials/"
+    if statement not in ["BS", "CF", "IS"]:
+        raise ValueError("statement variable must be 'BS','CF', or 'IS'")
+    if period not in ["annual", "quarterly", "trailing"]:
+        raise ValueError(
+            "statement variable must be 'annual','quarterly', or 'trailing'"
+        )
+    per_url = f"{period}/" if period != "annual" else ""
+
+    URL = f"https://stockanalysis.com/stocks/{ticker}/financials/{per_url}"
     URL += dcf_static.statement_url[statement]
     ignores = dcf_static.statement_ignore[statement]
 
