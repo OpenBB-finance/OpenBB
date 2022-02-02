@@ -9,7 +9,6 @@ from PIL import Image
 import df2img
 from discordbot.helpers import autocrop_image
 import yfinance as yf
-from cachetools import TTLCache, cached
 from discordbot.config_discordbot import gst_imgur
 from gamestonk_terminal.stocks.options import op_helpers, yfinance_model
 from gamestonk_terminal.stocks.options.barchart_model import get_options_info
@@ -20,7 +19,6 @@ import random
 startTime = time.time()
 
 
-@cached(cache=TTLCache(maxsize=100, ttl=86400))
 async def overview_command(
     ctx,
     ticker: str = None,

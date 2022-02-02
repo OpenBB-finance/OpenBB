@@ -6,7 +6,6 @@ import time
 import disnake
 import disnake.ext.commands as commands
 import pandas as pd
-from cachetools import TTLCache, cached
 from discordbot.config_discordbot import logger
 from discordbot.stocks.options.hist import hist_command
 from discordbot.stocks.options.oi import oi_command
@@ -71,7 +70,6 @@ def expiry_autocomp(inter: disnake.AppCmdInter, tickerr: str):
     return dates
 
 
-@cached(cache=TTLCache(maxsize=100, ttl=86400))
 class SlashCommands(commands.Cog):
     def __init__(self, bot):
         super().__init__
@@ -189,7 +187,7 @@ class SlashCommands(commands.Cog):
         inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
         interval: int = commands.Param(choices=[1, 5, 15, 30, 60, 1440]),
-        past_days: int = 0,
+        past_days: int = 1,
         start="",
         end="",
     ):

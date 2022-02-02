@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import disnake
-from cachetools import TTLCache, cached
 from discordbot.config_discordbot import logger
 from discordbot.economy.currencies import currencies_command
 from discordbot.economy.energy import energy_command
@@ -47,7 +46,6 @@ fgind = [
 ]
 
 
-@cached(cache=TTLCache(maxsize=100, ttl=86400))
 class EconomyCommands(commands.Cog):
     """Economy Commands menu"""
 

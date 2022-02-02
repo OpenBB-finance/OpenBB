@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import disnake
 import pandas as pd
-from cachetools import TTLCache, cached
 from discordbot.config_discordbot import logger
 from discordbot.stocks.dark_pool_shorts.dpotc import dpotc_command
 from discordbot.stocks.dark_pool_shorts.ftd import ftd_command
@@ -39,7 +38,6 @@ def ticker_autocomp(inter: disnake.AppCmdInter, ticker: str):
     return [ticker for ticker in df if ticker.lower().startswith(tlow)][:24]
 
 
-@cached(cache=TTLCache(maxsize=100, ttl=86400))
 class DarkPoolShortsCommands(commands.Cog):
     """Dark Pool Shorts menu"""
 
