@@ -11,7 +11,9 @@ from menus.menu import Menu
 from discordbot.stocks.screener import screener_options as so
 
 
-async def technical_command(ctx, preset: str = "template", sort: str = "", limit: int = 5, ascend: bool = False):
+async def technical_command(
+    ctx, preset: str = "template", sort: str = "", limit: int = 5, ascend: bool = False
+):
     """Displays stocks according to chosen preset, sorting by technical factors [Finviz]"""
     try:
         # Check for argument
@@ -80,13 +82,13 @@ async def technical_command(ctx, preset: str = "template", sort: str = "", limit
             initial_str = description + "Overview"
             i = 1
             optionss = [
-                disnake.SelectOption(label='Overview', value='0', emoji="🟢"),
+                disnake.SelectOption(label="Overview", value="0", emoji="🟢"),
             ]
             for column in df_screen.columns.values:
                 menu = f"\nPage {i}: {column}"
                 initial_str += f"\nPage {i}: {column}"
                 optionss.append(
-                    disnake.SelectOption(label=menu, value=f'{i}', emoji="🟢"),
+                    disnake.SelectOption(label=menu, value=f"{i}", emoji="🟢"),
                 )
                 i += 1
             columns.append(

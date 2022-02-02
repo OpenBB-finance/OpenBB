@@ -101,7 +101,7 @@ async def performance_command(
 
             columns = []
             optionss = [
-                disnake.SelectOption(label='Overview', value='0', emoji="🟢"),
+                disnake.SelectOption(label="Overview", value="0", emoji="🟢"),
             ]
             initial_str = description + "Overview"
             i = 1
@@ -109,7 +109,7 @@ async def performance_command(
                 menu = f"\nPage {i}: {column}"
                 initial_str += f"\nPage {i}: {column}"
                 optionss.append(
-                    disnake.SelectOption(label=menu, value=f'{i}', emoji="🟢"),
+                    disnake.SelectOption(label=menu, value=f"{i}", emoji="🟢"),
                 )
                 i += 1
             columns.append(

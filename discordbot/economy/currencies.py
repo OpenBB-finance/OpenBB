@@ -22,6 +22,11 @@ async def currencies_command(ctx):
         # Retrieve data
         df = wsj_model.global_currencies()
         df = pd.DataFrame.from_dict(df)
+
+        # Check for argument
+        if df.empty:
+            raise Exception("No available data found")
+
         df["Last"] = pd.to_numeric(df["Last"].astype(float))
         df["Chng"] = pd.to_numeric(df["Chng"].astype(float))
         df["%Chng"] = pd.to_numeric(df["%Chng"].astype(float))

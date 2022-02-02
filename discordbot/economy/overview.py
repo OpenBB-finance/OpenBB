@@ -21,6 +21,11 @@ async def overview_command(ctx):
 
         # Retrieve data
         df = wsj_model.market_overview()
+
+        # Check for argument
+        if df.empty:
+            raise Exception("No available data found")
+
         df["Price"] = pd.to_numeric(df["Price"].astype(float))
         df["Chg"] = pd.to_numeric(df["Chg"].astype(float))
         df["%Chg"] = pd.to_numeric(df["%Chg"].astype(float))

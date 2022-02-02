@@ -16,6 +16,7 @@ async def candle_command(
     ctx,
     ticker: str = "",
     interval: int = 15,
+    past_days: int = 0,
     start="",
     end="",
 ):
@@ -27,6 +28,8 @@ async def candle_command(
         Ticker name
     interval: int
         chart mins or daily
+    past_days: int
+        Display the past * days. Default: 1(Not for Daily)
     start: str
         start date format YYYY-MM-DD
     end: str
@@ -61,7 +64,13 @@ async def candle_command(
             df_stock_candidate.index.name = "date"
         else:
             s_int = str(interval) + "m"
-            d_granularity = {"1m": 1, "5m": 1, "15m": 1, "30m": 3, "60m": 3}
+            d_granularity = {
+                "1m": past_days,
+                "5m": past_days,
+                "15m": past_days,
+                "30m": past_days,
+                "60m": past_days,
+            }
             s_start_dt = datetime.utcnow() - timedelta(days=d_granularity[s_int])
             s_date_start = s_start_dt.strftime("%Y-%m-%d")
 
@@ -124,7 +133,7 @@ async def candle_command(
             col=1,
         )
         fig.update_layout(
-            margin=dict(l=0, r=0, t=25, b=5),
+            margin=dict(l=0, r=0, t=25, b=20),
             template=cfg.PLT_CANDLE_STYLE_TEMPLATE,
             showlegend=False,
             yaxis_title="Stock Price ($)",
@@ -138,7 +147,6 @@ async def candle_command(
             dragmode="pan",
             hovermode="x unified",
         )
-        fig.update_traces(xaxis='x1')
         if interval != 1440:
             if futures in ticker.upper():
                 fig.update_xaxes(

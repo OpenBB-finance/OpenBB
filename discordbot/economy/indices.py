@@ -21,12 +21,18 @@ async def indices_command(ctx):
 
         # Retrieve data
         df = wsj_model.us_indices()
+
+        # Check for argument
+        if df.empty:
+            raise Exception("No available data found")
+
         df["Price"] = pd.to_numeric(df["Price"].astype(float))
         df["Chg"] = pd.to_numeric(df["Chg"].astype(float))
         df["%Chg"] = pd.to_numeric(df["%Chg"].astype(float))
 
         df = df.fillna("")
         df.set_index(" ", inplace=True)
+
         formats = {"Price": "${:.2f}", "Chg": "${:.2f}", "%Chg": "{:.2f}%"}
         for col, f in formats.items():
             df[col] = df[col].map(lambda x: f.format(x))

@@ -154,8 +154,7 @@ class SlashCommands(commands.Cog):
 
     @commands.slash_command(name="earnings")
     async def earnings(self, inter: disnake.AppCmdInter):
-        """Display Upcoming Earnings. [Source: Seeking Alpha]
-        """
+        """Display Upcoming Earnings. [Source: Seeking Alpha]"""
         await inter.response.defer()
         logger.info("earnings")
         await earnings_command(inter)
@@ -191,6 +190,7 @@ class SlashCommands(commands.Cog):
         inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
         interval: int = commands.Param(choices=[1, 5, 15, 30, 60, 1440]),
+        past_days: int = 0,
         start="",
         end="",
     ):
@@ -200,12 +200,13 @@ class SlashCommands(commands.Cog):
         ----------
         ticker : Stock Ticker
         interval : Chart Minute Interval, 1440 for Daily
+        past_days: Past Days to Display. Default: 0(Not for Daily)
         start: YYYY-MM-DD format
         end: YYYY-MM-DD format
         """
         await inter.response.defer()
         logger.info("cc")
-        await candle_command(inter, ticker, interval, start, end)
+        await candle_command(inter, ticker, interval, past_days, start, end)
 
     @commands.slash_command(name="opt-overview")
     async def overview(

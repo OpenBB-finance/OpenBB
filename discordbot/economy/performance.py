@@ -56,6 +56,10 @@ async def performance_command(ctx, economy_group="sector"):
         # Retrieve data
         df_group = finviz_model.get_valuation_performance_data(group, "performance")
 
+        # Check for argument
+        if df_group.empty:
+            raise Exception("No available data found")
+
         # Output data
         df = pd.DataFrame(df_group)
         df = df.replace(np.nan, 0)

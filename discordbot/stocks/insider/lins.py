@@ -43,7 +43,7 @@ async def lins_command(ctx, ticker: str = "", num: int = 10):
         ]
 
         df = df.head(num)
-        df = df.replace(to_replace='Option Exercise', value='Opt Ex.', regex=True)
+        df = df.replace(to_replace="Option Exercise", value="Opt Ex.", regex=True)
 
         title = f"Insider Trading for {ticker.upper()}"
 
@@ -68,7 +68,7 @@ async def lins_command(ctx, ticker: str = "", num: int = 10):
                     size=20,
                 ),
                 template="plotly_dark",
-                paper_bgcolor="rgba(0, 0, 0, 0)"
+                paper_bgcolor="rgba(0, 0, 0, 0)",
             )
             imagefile = f"disc-insider{i}.png"
 
@@ -111,7 +111,7 @@ async def lins_command(ctx, ticker: str = "", num: int = 10):
             i += 1
         embeds[0].set_footer(text=f"Page 1 of {len(embeds)}")
         options = [
-            disnake.SelectOption(label="Home", value='0', emoji="🟢"),
+            disnake.SelectOption(label="Home", value="0", emoji="🟢"),
         ]
 
         await ctx.send(embed=embeds[0], view=Menu(embeds, options))

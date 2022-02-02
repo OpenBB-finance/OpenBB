@@ -22,14 +22,19 @@ async def meats_command(ctx):
 
         # Retrieve data
         d_futures = finviz_model.get_futures()
-
         df = pd.DataFrame(d_futures["Meats"])
-        formats = {"last": "${:.2f}", "prevClose": "${:.2f}"}
-        for col, f in formats.items():
-            df[col] = df[col].map(lambda x: f.format(x))
+
+        # Check for argument
+        if df.empty:
+            raise Exception("No available data found")
+
         df = df.fillna("")
         df = df.set_index("label")
         df = df.sort_values(by="ticker", ascending=False)
+
+        formats = {"last": "${:.2f}", "prevClose": "${:.2f}"}
+        for col, f in formats.items():
+            df[col] = df[col].map(lambda x: f.format(x))
 
         # Debug user output
         if cfg.DEBUG:

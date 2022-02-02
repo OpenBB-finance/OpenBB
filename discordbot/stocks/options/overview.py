@@ -11,7 +11,7 @@ from discordbot.helpers import autocrop_image
 import yfinance as yf
 from cachetools import TTLCache, cached
 from discordbot.config_discordbot import gst_imgur
-from gamestonk_terminal.stocks.options import op_helpers, tradier_model
+from gamestonk_terminal.stocks.options import op_helpers, yfinance_model
 from gamestonk_terminal.stocks.options.barchart_model import get_options_info
 from menus.menu import Menu
 import plotly.graph_objects as go
@@ -21,8 +21,14 @@ startTime = time.time()
 
 
 @cached(cache=TTLCache(maxsize=100, ttl=86400))
-async def overview_command(ctx, ticker: str = None, expiry: str = None, min_sp: float = None, max_sp: float = None):
-    """Options IV"""
+async def overview_command(
+    ctx,
+    ticker: str = None,
+    expiry: str = None,
+    min_sp: float = None,
+    max_sp: float = None,
+):
+    """Options Overview"""
 
     try:
 
@@ -38,7 +44,7 @@ async def overview_command(ctx, ticker: str = None, expiry: str = None, min_sp: 
         # Get options info/dates, Look for logo_url
         df = get_options_info(ticker)  # Barchart Options IV Overview
 
-        dates = tradier_model.option_expirations(ticker)  # Expiration dates
+        dates = yfinance_model.option_expirations(ticker)  # Expiration dates
         tup = f"{ticker.upper()}"
         url = yf.Ticker(tup).info["logo_url"]
         url += "?raw=true" if url else ""
@@ -46,19 +52,13 @@ async def overview_command(ctx, ticker: str = None, expiry: str = None, min_sp: 
         if not dates:
             raise Exception("Stock ticker is invalid")
 
-        options = tradier_model.get_option_chains(ticker, expiry)
-        current_price = tradier_model.last_price(ticker)
+        options = yfinance_model.get_option_chain(ticker, expiry)
+        calls = options.calls
+        puts = options.puts
+        current_price = yfinance_model.get_price(ticker)
 
-        calls = options[options.option_type == "call"][["strike", "open_interest"]]
-
-        column_map = {"open_interest": "oi", "volume": "vol"}
-
-        chains_df = options
-        columns = ["strike", "bid", "ask", "volume", "open_interest", "option_type"]
-        chains_df = chains_df[columns].rename(columns=column_map)
-
-        min_strike2 = np.percentile(chains_df["strike"], 1)
-        max_strike2 = np.percentile(chains_df["strike"], 100)
+        min_strike2 = np.percentile(calls["strike"], 1)
+        max_strike2 = np.percentile(calls["strike"], 100)
         min_strike = 0.75 * current_price
         max_strike = 1.95 * current_price
 
@@ -75,47 +75,56 @@ async def overview_command(ctx, ticker: str = None, expiry: str = None, min_sp: 
             if min_sp > max_sp:  # type: ignore
                 min_sp, max_sp = max_strike2, min_strike2
 
-        puts = options[options.option_type == "put"][["strike", "open_interest"]]
-        call_oi = calls.set_index("strike")["open_interest"] / 1000
-        put_oi = puts.set_index("strike")["open_interest"] / 1000
+        call_oi = calls.set_index("strike")["openInterest"] / 1000
+        put_oi = puts.set_index("strike")["openInterest"] / 1000
 
         df_opt = pd.merge(call_oi, put_oi, left_index=True, right_index=True)
-        df_opt = df_opt.rename(columns={"open_interest_x": "OI_call", "open_interest_y": "OI_put"})
+        df_opt = df_opt.rename(
+            columns={"openInterest_x": "OI_call", "openInterest_y": "OI_put"}
+        )
 
         max_pain = op_helpers.calculate_max_pain(df_opt)
         fig = go.Figure()
 
-        dmax = df_opt[['OI_call', 'OI_put']].values.max()
-        dmin = df_opt[['OI_call', 'OI_put']].values.min()
-        fig.add_trace(go.Scatter(
-            x=df_opt.index,
-            y=df_opt['OI_call'],
-            name="Calls",
-            mode='lines+markers',
-            line=dict(color='green', width=3)
-        ))
+        dmax = df_opt[["OI_call", "OI_put"]].values.max()
+        dmin = df_opt[["OI_call", "OI_put"]].values.min()
+        fig.add_trace(
+            go.Scatter(
+                x=df_opt.index,
+                y=df_opt["OI_call"],
+                name="Calls",
+                mode="lines+markers",
+                line=dict(color="green", width=3),
+            )
+        )
 
-        fig.add_trace(go.Scatter(
-            x=df_opt.index,
-            y=df_opt['OI_put'],
-            name="Puts",
-            mode='lines+markers',
-            line=dict(color='red', width=3)
-        ))
-        fig.add_trace(go.Scatter(
-            x=[current_price, current_price],
-            y=[dmin, dmax],
-            mode='lines',
-            line=dict(color='gold', width=2),
-            name='Current Price'
-        ))
-        fig.add_trace(go.Scatter(
-            x=[max_pain, max_pain],
-            y=[dmin, dmax],
-            mode='lines',
-            line=dict(color='grey', width=3, dash='dash'),
-            name=f"Max Pain: {max_pain}"
-        ))
+        fig.add_trace(
+            go.Scatter(
+                x=df_opt.index,
+                y=df_opt["OI_put"],
+                name="Puts",
+                mode="lines+markers",
+                line=dict(color="red", width=3),
+            )
+        )
+        fig.add_trace(
+            go.Scatter(
+                x=[current_price, current_price],
+                y=[dmin, dmax],
+                mode="lines",
+                line=dict(color="gold", width=2),
+                name="Current Price",
+            )
+        )
+        fig.add_trace(
+            go.Scatter(
+                x=[max_pain, max_pain],
+                y=[dmin, dmax],
+                mode="lines",
+                line=dict(color="grey", width=3, dash="dash"),
+                name=f"Max Pain: {max_pain}",
+            )
+        )
         fig.update_xaxes(
             range=[min_strike, max_strike],
             constrain="domain",
@@ -126,20 +135,15 @@ async def overview_command(ctx, ticker: str = None, expiry: str = None, min_sp: 
             title=f"Open Interest for {ticker.upper()} expiring {expiry}",
             title_x=0.5,
             legend_title="",
-            xaxis_title='Strike',
-            yaxis_title='Open Interest (1k)',
+            xaxis_title="Strike",
+            yaxis_title="Open Interest (1k)",
             xaxis=dict(
                 rangeslider=dict(visible=False),
             ),
-            legend=dict(
-                yanchor="top",
-                y=0.99,
-                xanchor="left",
-                x=0.01
-            ),
-            dragmode='pan',
+            legend=dict(yanchor="top", y=0.99, xanchor="left", x=0.01),
+            dragmode="pan",
         )
-        config = dict({'scrollZoom': True})
+        config = dict({"scrollZoom": True})
         imagefile = "opt_oi.png"
         fig.write_image(imagefile)
 
@@ -156,11 +160,11 @@ async def overview_command(ctx, ticker: str = None, expiry: str = None, min_sp: 
         w = img.width + 520
 
         img = img.resize((w, h), Image.ANTIALIAS)
-        x1 = int(.5 * im_bg.size[0]) - int(.5 * img.size[0])
-        y1 = int(.5 * im_bg.size[1]) - int(.5 * img.size[1])
-        x2 = int(.5 * im_bg.size[0]) + int(.5 * img.size[0])
-        y2 = int(.5 * im_bg.size[1]) + int(.5 * img.size[1])
-        img = img.convert('RGB')
+        x1 = int(0.5 * im_bg.size[0]) - int(0.5 * img.size[0])
+        y1 = int(0.5 * im_bg.size[1]) - int(0.5 * img.size[1])
+        x2 = int(0.5 * im_bg.size[0]) + int(0.5 * img.size[0])
+        y2 = int(0.5 * im_bg.size[1]) + int(0.5 * img.size[1])
+        img = img.convert("RGB")
         im_bg.paste(img, box=(x1 - 5, y1, x2 - 5, y2))
         im_bg.save(imagefile, "PNG", quality=100)
         image = Image.open(imagefile)
@@ -170,11 +174,32 @@ async def overview_command(ctx, ticker: str = None, expiry: str = None, min_sp: 
         uploaded_image_oi = gst_imgur.upload_image(imagefile, title="something")
         image_link_oi = uploaded_image_oi.link
 
-        chains_df = chains_df[chains_df["strike"] >= min_strike2]
-        chains_df = chains_df[chains_df["strike"] <= max_strike2]
+        column_map = {"openInterest": "oi", "volume": "vol", "impliedVolatility": "iv"}
+        columns = [
+            "strike",
+            "bid",
+            "ask",
+            "volume",
+            "openInterest",
+            "impliedVolatility",
+        ]
 
-        calls_df = chains_df[chains_df.option_type == "call"].drop(columns=["option_type"])
-        puts_df = chains_df[chains_df.option_type == "put"].drop(columns=["option_type"])
+        calls_df = calls[columns].rename(columns=column_map)
+        puts_df = puts[columns].rename(columns=column_map)
+
+        calls_df = calls_df[calls_df["strike"] >= min_strike2]
+        calls_df = calls_df[calls_df["strike"] <= max_strike2]
+        puts_df = puts_df[puts_df["strike"] >= min_strike2]
+        puts_df = puts_df[puts_df["strike"] <= max_strike2]
+
+        calls_df["iv"] = pd.to_numeric(calls_df["iv"].astype(float))
+        puts_df["iv"] = pd.to_numeric(puts_df["iv"].astype(float))
+
+        formats = {"iv": "{:.2f}"}
+        for col, f in formats.items():
+            calls_df[col] = calls_df[col].map(lambda x: f.format(x))
+            puts_df[col] = puts_df[col].map(lambda x: f.format(x))
+
         calls_df.set_index("strike", inplace=True)
         puts_df.set_index("strike", inplace=True)
 
@@ -200,8 +225,12 @@ async def overview_command(ctx, ticker: str = None, expiry: str = None, min_sp: 
             ),
         ]
         optionss = [
-            disnake.SelectOption(label=f"{ticker.upper()} Overview", value='0', emoji="🟢"),
-            disnake.SelectOption(label=f"{pfix}Open Interest{sfix}", value='1', emoji="🟢"),
+            disnake.SelectOption(
+                label=f"{ticker.upper()} Overview", value="0", emoji="🟢"
+            ),
+            disnake.SelectOption(
+                label=f"{pfix}Open Interest{sfix}", value="1", emoji="🟢"
+            ),
         ]
         embeds_img = []
 
@@ -218,7 +247,7 @@ async def overview_command(ctx, ticker: str = None, expiry: str = None, min_sp: 
                 tbl_cells=cfg.PLT_TBL_CELLS,
                 font=cfg.PLT_TBL_FONT,
                 template=cfg.PLT_TBL_STYLE_TEMPLATE,
-                paper_bgcolor="rgba(0, 0, 0, 0)"
+                paper_bgcolor="rgba(0, 0, 0, 0)",
             )
             imagefile = f"opt-calls{i}.png"
 
@@ -246,7 +275,7 @@ async def overview_command(ctx, ticker: str = None, expiry: str = None, min_sp: 
         i, page, puts_page = 2, 0, 3
         i3 = i2 + 2
         optionss.append(
-            disnake.SelectOption(label='Calls Page 1', value='2', emoji="🟢"),
+            disnake.SelectOption(label="Calls Page 1", value="2", emoji="🟢"),
         )
         for i in range(2, i3):
             page += 1
@@ -269,7 +298,7 @@ async def overview_command(ctx, ticker: str = None, expiry: str = None, min_sp: 
                 tbl_cells=cfg.PLT_TBL_CELLS,
                 font=cfg.PLT_TBL_FONT,
                 template=cfg.PLT_TBL_STYLE_TEMPLATE,
-                paper_bgcolor="rgba(0, 0, 0, 0)"
+                paper_bgcolor="rgba(0, 0, 0, 0)",
             )
             imagefile = f"opt-puts{i}.png"
 
@@ -298,7 +327,7 @@ async def overview_command(ctx, ticker: str = None, expiry: str = None, min_sp: 
         puts_page -= 1
         i2 += 2
         optionss.append(
-            disnake.SelectOption(label='Puts Page 1', value=f'{puts_page}', emoji="🟢"),
+            disnake.SelectOption(label="Puts Page 1", value=f"{puts_page}", emoji="🟢"),
         )
         for i in range(puts_page, i2):
             page += 1
@@ -333,28 +362,38 @@ async def overview_command(ctx, ticker: str = None, expiry: str = None, min_sp: 
         # Overview Section
         embeds[0].add_field(name=f"{df.iloc[0, 0]}", value=iv, inline=False)
 
-        embeds[0].add_field(name=f"•{df.iloc[1, 0]}", value=f"```css\n{df.iloc[1, 1]}\n```", inline=True)
+        embeds[0].add_field(
+            name=f"•{df.iloc[1, 0]}", value=f"```css\n{df.iloc[1, 1]}\n```", inline=True
+        )
         for N in range(2, 6):
             embeds[0].add_field(
-                name=f"_ _ _ _ _ _ _ _ _ _ •{df.iloc[N, 0]}", value=f"```css\n{df.iloc[N, 1]}\n```", inline=True
+                name=f"_ _ _ _ _ _ _ _ _ _ •{df.iloc[N, 0]}",
+                value=f"```css\n{df.iloc[N, 1]}\n```",
+                inline=True,
             )
 
         embeds[0].add_field(name="_ _", value="_ _", inline=False)
         for N in range(6, 8):
             embeds[0].add_field(
-                name=f"_ _ _ _ _ _ _ _ _ _ •{df.iloc[N, 0]}", value=f"```css\n{df.iloc[N, 1]}\n```", inline=True
+                name=f"_ _ _ _ _ _ _ _ _ _ •{df.iloc[N, 0]}",
+                value=f"```css\n{df.iloc[N, 1]}\n```",
+                inline=True,
             )
 
         embeds[0].add_field(name="_ _", value="_ _", inline=False)
         for N in range(8, 10):
             embeds[0].add_field(
-                name=f"_ _ _ _ _ _ _ _ _ _ •{df.iloc[N, 0]}", value=f"```css\n{df.iloc[N, 1]}\n```", inline=True
+                name=f"_ _ _ _ _ _ _ _ _ _ •{df.iloc[N, 0]}",
+                value=f"```css\n{df.iloc[N, 1]}\n```",
+                inline=True,
             )
 
         embeds[0].add_field(name="_ _", value="_ _", inline=False)
         for N in range(10, 12):
             embeds[0].add_field(
-                name=f"_ _ _ _ _ _ _ _ _ _ •{df.iloc[N, 0]}", value=f"```css\n{df.iloc[N, 1]}\n```", inline=True
+                name=f"_ _ _ _ _ _ _ _ _ _ •{df.iloc[N, 0]}",
+                value=f"```css\n{df.iloc[N, 1]}\n```",
+                inline=True,
             )
 
         embeds[0].set_footer(text=f"Page 1 of {len(embeds)}")

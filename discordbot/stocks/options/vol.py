@@ -59,27 +59,33 @@ async def vol_command(
         dmax = df_opt.values.max()
 
         fig = go.Figure()
-        fig.add_trace(go.Scatter(
-            x=call_v.index,
-            y=call_v.values,
-            name="Calls",
-            mode='lines+markers',
-            line=dict(color='green', width=3)
-        ))
-        fig.add_trace(go.Scatter(
-            x=put_v.index,
-            y=put_v.values,
-            name="Puts",
-            mode='lines+markers',
-            line=dict(color='red', width=3)
-        ))
-        fig.add_trace(go.Scatter(
-            x=[current_price, current_price],
-            y=[0, dmax],
-            mode='lines',
-            line=dict(color='gold', width=2),
-            name='Current Price'
-        ))
+        fig.add_trace(
+            go.Scatter(
+                x=call_v.index,
+                y=call_v.values,
+                name="Calls",
+                mode="lines+markers",
+                line=dict(color="green", width=3),
+            )
+        )
+        fig.add_trace(
+            go.Scatter(
+                x=put_v.index,
+                y=put_v.values,
+                name="Puts",
+                mode="lines+markers",
+                line=dict(color="red", width=3),
+            )
+        )
+        fig.add_trace(
+            go.Scatter(
+                x=[current_price, current_price],
+                y=[0, dmax],
+                mode="lines",
+                line=dict(color="gold", width=2),
+                name="Current Price",
+            )
+        )
         fig.update_xaxes(
             range=[min_strike, max_strike],
             constrain="domain",
@@ -90,20 +96,15 @@ async def vol_command(
             title=f"Volume for {ticker.upper()} expiring {expiry}",
             title_x=0.5,
             legend_title="",
-            xaxis_title='Strike',
-            yaxis_title='Volume (1k)',
+            xaxis_title="Strike",
+            yaxis_title="Volume (1k)",
             xaxis=dict(
                 rangeslider=dict(visible=False),
             ),
-            legend=dict(
-                yanchor="top",
-                y=0.99,
-                xanchor="left",
-                x=0.01
-            ),
-            dragmode='pan',
+            legend=dict(yanchor="top", y=0.99, xanchor="left", x=0.01),
+            dragmode="pan",
         )
-        config = dict({'scrollZoom': True})
+        config = dict({"scrollZoom": True})
         imagefile = "opt_vol.png"
         fig.write_image(imagefile)
 
@@ -121,11 +122,11 @@ async def vol_command(
 
         # Paste fig onto background img and autocrop background
         img = img.resize((w, h), Image.ANTIALIAS)
-        x1 = int(.5 * im_bg.size[0]) - int(.5 * img.size[0])
-        y1 = int(.5 * im_bg.size[1]) - int(.5 * img.size[1])
-        x2 = int(.5 * im_bg.size[0]) + int(.5 * img.size[0])
-        y2 = int(.5 * im_bg.size[1]) + int(.5 * img.size[1])
-        img = img.convert('RGB')
+        x1 = int(0.5 * im_bg.size[0]) - int(0.5 * img.size[0])
+        y1 = int(0.5 * im_bg.size[1]) - int(0.5 * img.size[1])
+        x2 = int(0.5 * im_bg.size[0]) + int(0.5 * img.size[0])
+        y2 = int(0.5 * im_bg.size[1]) + int(0.5 * img.size[1])
+        img = img.convert("RGB")
         im_bg.paste(img, box=(x1 - 5, y1, x2 - 5, y2))
         im_bg.save(imagefile, "PNG", quality=100)
         image = Image.open(imagefile)
@@ -137,11 +138,7 @@ async def vol_command(
         if cfg.DEBUG:
             print(f"Image: {imagefile}")
         title = f"Volume for {ticker.upper()} expiring {expiry}"
-        embed = discord.Embed(
-            title=title,
-            description=plt_link,
-            colour=cfg.COLOR
-        )
+        embed = discord.Embed(title=title, description=plt_link, colour=cfg.COLOR)
         embed.set_image(url=f"attachment://{imagefile}")
         embed.set_author(
             name=cfg.AUTHOR_NAME,
@@ -164,5 +161,6 @@ async def vol_command(
 
         await ctx.send(embed=embed, delete_after=30.0)
 
-executionTime = (time.time() - startTime)
+
+executionTime = time.time() - startTime
 print(f"> Extension {__name__} is ready: time in seconds: {str(executionTime)}\n")

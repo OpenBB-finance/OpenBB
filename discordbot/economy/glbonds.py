@@ -21,6 +21,11 @@ async def glbonds_command(ctx):
 
         # Retrieve data
         df = wsj_model.global_bonds()
+
+        # Check for argument
+        if df.empty:
+            raise Exception("No available data found")
+
         df["Rate (%)"] = pd.to_numeric(df["Rate (%)"].astype(float))
         df["Yld (%)"] = pd.to_numeric(df["Yld (%)"].astype(float))
         df["Yld Chg (%)"] = pd.to_numeric(df["Yld Chg (%)"].astype(float))

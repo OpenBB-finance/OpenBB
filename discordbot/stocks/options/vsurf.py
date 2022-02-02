@@ -56,21 +56,29 @@ async def vsurf_command(
         tri = Delaunay(points2D)
         I, J, K = tri.simplices.T
 
-        lighting_effects = dict(ambient=0.5, diffuse=0.5, roughness=0.5, specular=0.4, fresnel=0.4)
-        fig = go.Figure(data=[go.Mesh3d(
-            z=Z,
-            x=X,
-            y=Y,
-            i=I,
-            j=J,
-            k=K,
-            intensity=Z,
-            colorscale=cfg.PLT_3DMESH_COLORSCALE,
-            hovertemplate="<b>DTE</b>: %{y} <br><b>Strike</b>: %{x} <br><b>" + z + "</b>: %{z}<extra></extra>",
-            showscale=False,
-            flatshading=True,
-            lighting=lighting_effects,
-        )])
+        lighting_effects = dict(
+            ambient=0.5, diffuse=0.5, roughness=0.5, specular=0.4, fresnel=0.4
+        )
+        fig = go.Figure(
+            data=[
+                go.Mesh3d(
+                    z=Z,
+                    x=X,
+                    y=Y,
+                    i=I,
+                    j=J,
+                    k=K,
+                    intensity=Z,
+                    colorscale=cfg.PLT_3DMESH_COLORSCALE,
+                    hovertemplate="<b>DTE</b>: %{y} <br><b>Strike</b>: %{x} <br><b>"
+                    + z
+                    + "</b>: %{z}<extra></extra>",
+                    showscale=False,
+                    flatshading=True,
+                    lighting=lighting_effects,
+                )
+            ]
+        )
         fig.update_layout(
             scene=dict(
                 xaxis=dict(
@@ -88,7 +96,8 @@ async def vsurf_command(
         )
         fig.update_layout(
             margin=dict(l=0, r=0, t=40, b=20),
-            width=1320, height=740,
+            width=1320,
+            height=740,
             template=cfg.PLT_3DMESH_STYLE_TEMPLATE,
             title=f"{label} Surface for {ticker.upper()}",
             title_x=0.5,
@@ -100,7 +109,7 @@ async def vsurf_command(
             ),
             scene=cfg.PLT_3DMESH_SCENE,
         )
-        config = dict({'scrollZoom': True})
+        config = dict({"scrollZoom": True})
         imagefile = "opt-vsurf.png"
         fig.write_image(imagefile)
 
@@ -118,11 +127,11 @@ async def vsurf_command(
 
         # Paste fig onto background img and autocrop background
         img = img.resize((w, h), Image.ANTIALIAS)
-        x1 = int(.5 * im_bg.size[0]) - int(.5 * img.size[0])
-        y1 = int(.5 * im_bg.size[1]) - int(.5 * img.size[1])
-        x2 = int(.5 * im_bg.size[0]) + int(.5 * img.size[0])
-        y2 = int(.5 * im_bg.size[1]) + int(.5 * img.size[1])
-        img = img.convert('RGB')
+        x1 = int(0.5 * im_bg.size[0]) - int(0.5 * img.size[0])
+        y1 = int(0.5 * im_bg.size[1]) - int(0.5 * img.size[1])
+        x2 = int(0.5 * im_bg.size[0]) + int(0.5 * img.size[0])
+        y2 = int(0.5 * im_bg.size[1]) + int(0.5 * img.size[1])
+        img = img.convert("RGB")
         im_bg.paste(img, box=(x1 - 5, y1, x2 - 5, y2))
         im_bg.save(imagefile, "PNG", quality=100)
         image = Image.open(imagefile)
@@ -133,11 +142,7 @@ async def vsurf_command(
 
         print(f"Image {imagefile}")
         title = f"{label} Surface for {ticker.upper()}"
-        embed = disnake.Embed(
-            title=title,
-            description=plt_link,
-            colour=cfg.COLOR
-        )
+        embed = disnake.Embed(title=title, description=plt_link, colour=cfg.COLOR)
         embed.set_image(url=f"attachment://{imagefile}")
         embed.set_author(
             name=cfg.AUTHOR_NAME,
@@ -173,5 +178,6 @@ async def vsurf_command(
 
         await ctx.send(embed=embed, delete_after=30.0)
 
-executionTime = (time.time() - startTime)
+
+executionTime = time.time() - startTime
 print(f"> Extension {__name__} is ready: time in seconds: {str(executionTime)}\n")

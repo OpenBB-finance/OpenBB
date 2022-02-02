@@ -42,7 +42,14 @@ async def chain_command(
         puts_df = options.puts
 
         column_map = {"openInterest": "oi", "volume": "vol", "impliedVolatility": "iv"}
-        columns = ["strike", "bid", "ask", "volume", "openInterest", "impliedVolatility"]
+        columns = [
+            "strike",
+            "bid",
+            "ask",
+            "volume",
+            "openInterest",
+            "impliedVolatility",
+        ]
 
         if opt_type == "Calls":
             df = calls_df[columns].rename(columns=column_map)

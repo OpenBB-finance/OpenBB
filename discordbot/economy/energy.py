@@ -23,6 +23,10 @@ async def energy_command(ctx):
         d_futures = finviz_model.get_futures()
         df = pd.DataFrame(d_futures["Energy"])
 
+        # Check for argument
+        if df.empty:
+            raise Exception("No available data found")
+
         formats = {"last": "${:.2f}", "prevClose": "${:.2f}"}
         for col, f in formats.items():
             df[col] = df[col].map(lambda x: f.format(x))

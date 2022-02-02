@@ -23,10 +23,13 @@ async def iv_command(ctx, ticker: str = None):
 
         df = barchart_model.get_options_info(ticker)
         df = df.fillna("")
-        df = df.set_axis([
-            " ",
-            "",
-        ], axis='columns')
+        df = df.set_axis(
+            [
+                " ",
+                "",
+            ],
+            axis="columns",
+        )
         df.set_index(" ", inplace=True)
         fig = df2img.plot_dataframe(
             df,

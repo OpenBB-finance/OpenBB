@@ -66,37 +66,45 @@ async def oi_command(
         max_pain = op_helpers.calculate_max_pain(df_opt)
         fig = go.Figure()
 
-        dmax = df_opt[['OI_call', 'OI_put']].values.max()
-        dmin = df_opt[['OI_call', 'OI_put']].values.min()
-        fig.add_trace(go.Scatter(
-            x=df_opt.index,
-            y=df_opt['OI_call'],
-            name="Calls",
-            mode='lines+markers',
-            line=dict(color='green', width=3)
-        ))
+        dmax = df_opt[["OI_call", "OI_put"]].values.max()
+        dmin = df_opt[["OI_call", "OI_put"]].values.min()
+        fig.add_trace(
+            go.Scatter(
+                x=df_opt.index,
+                y=df_opt["OI_call"],
+                name="Calls",
+                mode="lines+markers",
+                line=dict(color="green", width=3),
+            )
+        )
 
-        fig.add_trace(go.Scatter(
-            x=df_opt.index,
-            y=df_opt['OI_put'],
-            name="Puts",
-            mode='lines+markers',
-            line=dict(color='red', width=3)
-        ))
-        fig.add_trace(go.Scatter(
-            x=[current_price, current_price],
-            y=[dmin, dmax],
-            mode='lines',
-            line=dict(color='gold', width=2),
-            name='Current Price'
-        ))
-        fig.add_trace(go.Scatter(
-            x=[max_pain, max_pain],
-            y=[dmin, dmax],
-            mode='lines',
-            line=dict(color='grey', width=3, dash='dash'),
-            name=f"Max Pain: {max_pain}"
-        ))
+        fig.add_trace(
+            go.Scatter(
+                x=df_opt.index,
+                y=df_opt["OI_put"],
+                name="Puts",
+                mode="lines+markers",
+                line=dict(color="red", width=3),
+            )
+        )
+        fig.add_trace(
+            go.Scatter(
+                x=[current_price, current_price],
+                y=[dmin, dmax],
+                mode="lines",
+                line=dict(color="gold", width=2),
+                name="Current Price",
+            )
+        )
+        fig.add_trace(
+            go.Scatter(
+                x=[max_pain, max_pain],
+                y=[dmin, dmax],
+                mode="lines",
+                line=dict(color="grey", width=3, dash="dash"),
+                name=f"Max Pain: {max_pain}",
+            )
+        )
         fig.update_xaxes(
             range=[min_strike, max_strike],
             constrain="domain",
@@ -107,20 +115,15 @@ async def oi_command(
             title=f"Open Interest for {ticker.upper()} expiring {expiry}",
             title_x=0.5,
             legend_title="",
-            xaxis_title='Strike',
-            yaxis_title='Open Interest (1k)',
+            xaxis_title="Strike",
+            yaxis_title="Open Interest (1k)",
             xaxis=dict(
                 rangeslider=dict(visible=False),
             ),
-            legend=dict(
-                yanchor="top",
-                y=0.99,
-                xanchor="left",
-                x=0.01
-            ),
-            dragmode='pan',
+            legend=dict(yanchor="top", y=0.99, xanchor="left", x=0.01),
+            dragmode="pan",
         )
-        config = dict({'scrollZoom': True})
+        config = dict({"scrollZoom": True})
         imagefile = "opt_oi.png"
 
         # Check if interactive settings are enabled
@@ -131,7 +134,8 @@ async def oi_command(
             plt_link = f"[Interactive]({cfg.INTERACTIVE_URL}/cci_{html_ran}.html)"
 
         fig.update_layout(
-            width=800, height=500,
+            width=800,
+            height=500,
         )
         fig.write_image(imagefile)
 
@@ -141,11 +145,11 @@ async def oi_command(
         w = img.width + 520
 
         img = img.resize((w, h), Image.ANTIALIAS)
-        x1 = int(.5 * im_bg.size[0]) - int(.5 * img.size[0])
-        y1 = int(.5 * im_bg.size[1]) - int(.5 * img.size[1])
-        x2 = int(.5 * im_bg.size[0]) + int(.5 * img.size[0])
-        y2 = int(.5 * im_bg.size[1]) + int(.5 * img.size[1])
-        img = img.convert('RGB')
+        x1 = int(0.5 * im_bg.size[0]) - int(0.5 * img.size[0])
+        y1 = int(0.5 * im_bg.size[1]) - int(0.5 * img.size[1])
+        x2 = int(0.5 * im_bg.size[0]) + int(0.5 * img.size[0])
+        y2 = int(0.5 * im_bg.size[1]) + int(0.5 * img.size[1])
+        img = img.convert("RGB")
         im_bg.paste(img, box=(x1 - 5, y1, x2 - 5, y2))
         im_bg.save(imagefile, "PNG", quality=100)
         image = Image.open(imagefile)
@@ -157,11 +161,7 @@ async def oi_command(
         if cfg.DEBUG:
             print(f"Image URL: {imagefile}")
         title = f"Open Interest for {ticker.upper()} expiring {expiry}"
-        embed = disnake.Embed(
-            title=title,
-            description=plt_link,
-            colour=cfg.COLOR
-        )
+        embed = disnake.Embed(title=title, description=plt_link, colour=cfg.COLOR)
         embed.set_image(url=f"attachment://{imagefile}")
         embed.set_author(
             name=cfg.AUTHOR_NAME,
@@ -184,5 +184,6 @@ async def oi_command(
 
         await ctx.send(embed=embed, delete_after=30.0)
 
-executionTime = (time.time() - startTime)
+
+executionTime = time.time() - startTime
 print(f"> Extension {__name__} is ready: time in seconds: {str(executionTime)}\n")

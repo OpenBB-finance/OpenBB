@@ -11,8 +11,7 @@ from menus.menu import Menu
 
 
 async def earnings_command(ctx):
-    """Display Upcoming Earnings. [Source: Seeking Alpha]
-    """
+    """Display Upcoming Earnings. [Source: Seeking Alpha]"""
 
     try:
         # Debug
