@@ -1,31 +1,28 @@
 """Portfolio Model"""
 __docformat__ = "numpy"
 
-import logging
-import math
 import os
-from datetime import date, datetime, timedelta
-from typing import List
+from datetime import timedelta, datetime
+from typing import Dict, List, Union
+import logging
 
 import numpy as np
 import pandas as pd
 import statsmodels.api as sm
 from statsmodels.regression.rolling import RollingOLS
+import yfinance as yf
+from pycoingecko import CoinGeckoAPI
 
-from gamestonk_terminal.decorators import log_start_end
-from gamestonk_terminal.etf import stockanalysis_model
 from gamestonk_terminal.portfolio import (
     portfolio_helper,
-    portfolio_view,
-    yfinance_model,
 )
 from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.decorators import log_start_end
 
-# pylint: disable=E1136
+# pylint: disable=E1136,W0201,R0902
 # pylint: disable=unsupported-assignment-operation
-
-
 logger = logging.getLogger(__name__)
+cg = CoinGeckoAPI()
 
 
 @log_start_end(log=logger)
@@ -47,311 +44,6 @@ def save_df(df: pd.DataFrame, name: str) -> None:
         df.to_json(path, index=False)
     elif ".xlsx" in name:
         df.to_excel(path, index=False, engine="openpyxl")
-
-
-@log_start_end(log=logger)
-def load_df(name: str) -> pd.DataFrame:
-    """Load the portfolio from a csv
-
-    Parameters
-    ----------
-    name : str
-        The name of the string
-
-    Returns
-    ----------
-    data : pd.DataFrame
-        A DataFrame with historical trading information
-    """
-    if ".csv" not in name and ".xlsx" not in name and ".json" not in name:
-        console.print(
-            "Please submit as 'filename.filetype' with filetype being csv, xlsx, or json\n"
-        )
-        return pd.DataFrame()
-
-    try:
-        if ".csv" in name:
-            df = pd.read_csv(f"gamestonk_terminal/portfolio/portfolios/{name}")
-        elif ".json" in name:
-            df = pd.read_json(f"gamestonk_terminal/portfolio/portfolios/{name}")
-        elif ".xlsx" in name:
-            df = pd.read_excel(
-                f"gamestonk_terminal/portfolio/portfolios/{name}", engine="openpyxl"
-            )
-
-        df.index = list(range(0, len(df.values)))
-        df["Name"] = df["Name"].str.lower()
-        df["Type"] = df["Type"].str.lower()
-        df["Date"] = pd.to_datetime(df["Date"], format="%Y/%m/%d")
-
-        for item in ["Quantity", "Price", "Fees", "Premium"]:
-            result = any(df[item] < 0)
-            if result:
-                console.print(
-                    f"The column '{item}' has a negative value. Ensure all values are positive."
-                )
-                return pd.DataFrame()
-
-        if len(df[~df["Type"].isin(["cash", "stock"])].index):
-            console.print(
-                "Warning: 'Type' other than 'cash' and 'stock' will be ignored."
-            )
-
-        if len(
-            df[
-                ~df["Side"]
-                .str.lower()
-                .isin(["buy", "sell", "interest", "deposit", "withdrawal"])
-            ].index
-        ):
-            console.print(
-                "Warning: 'Side' must be buy, sell, interest, deposit, or withdrawal"
-            )
-            return pd.DataFrame()
-
-        return df
-    except FileNotFoundError:
-        portfolio_view.load_info()
-        return pd.DataFrame()
-
-
-@log_start_end(log=logger)
-def add_values(
-    log: pd.DataFrame, changes: pd.DataFrame, cashes: pd.DataFrame
-) -> pd.DataFrame:
-    """Creates a new df with performance results
-
-    Parameters
-    ----------
-    log : pd.DataFrame
-        The dataframe that will have daily holdings
-    changes : pd.DataFrame
-        Transactions that changed holdings
-    cashes : pd.DataFrame
-        Cash changing transactions
-
-    Returns
-    ----------
-    log : pd.DataFrame
-        A dataframe with daily holdings
-    """
-    for index, _ in log.iterrows():
-        # Add stocks to dataframe
-        values = changes[changes["Date"] == index]
-        if len(values.index) > 0:
-            for _, sub_row in values.iterrows():
-                ticker = sub_row["Name"]
-                quantity = sub_row["Quantity"]
-                price = sub_row["Price"]
-                fees = sub_row["Fees"]
-                if math.isnan(fees):
-                    fees = 0
-                sign = -1 if sub_row["Side"].lower() == "sell" else 1
-                pos1 = log.cumsum().at[index, ("Quantity", ticker)] > 0
-                pos2 = (quantity * sign) > 0
-
-                if sub_row["Side"].lower() == "interest":
-                    log.at[index, ("Cost Basis", ticker)] = (
-                        log.at[index, ("Cost Basis", ticker)] + quantity * price
-                    )
-                    log.at[index, ("Cash", "Cash")] = log.at[
-                        index, ("Cash", "Cash")
-                    ] - (quantity * price)
-
-                elif (
-                    pos1 == pos2
-                    or log.cumsum().at[index, ("Quantity", ticker)] == 0
-                    or (quantity * sign) == 0
-                ):
-                    log.at[index, ("Quantity", ticker)] = (
-                        log.at[index, ("Quantity", ticker)] + quantity * sign
-                    )
-                    log.at[index, ("Cost Basis", ticker)] = (
-                        log.at[index, ("Cost Basis", ticker)]
-                        + fees
-                        + quantity * sign * price
-                    )
-                    log.at[index, ("Cash", "Cash")] = log.at[
-                        index, ("Cash", "Cash")
-                    ] - (fees + quantity * sign * price)
-                else:
-                    rev = (
-                        log.at[index, ("Profit", ticker)] + quantity * sign * price * -1
-                    )
-                    wa_cost = (
-                        quantity / log.cumsum().at[index, ("Quantity", ticker)]
-                    ) * log.cumsum().at[index, ("Cost Basis", ticker)]
-                    log.at[index, ("Profit", ticker)] = rev - wa_cost - fees
-                    log.at[index, ("Cash", "Cash")] = (
-                        log.at[index, ("Cash", "Cash")] + rev - fees
-                    )
-                    log.at[index, ("Quantity", ticker)] = (
-                        log.at[index, ("Quantity", ticker)] + quantity * sign
-                    )
-                    log.at[index, ("Cost Basis", ticker)] = (
-                        log.at[index, ("Cost Basis", ticker)] - wa_cost
-                    )
-        cash_vals = cashes[cashes["Date"] == index]
-        if len(cash_vals.index) > 0:
-            for _, sub_row in cash_vals.iterrows():
-                amount = sub_row["Price"]
-                quantity = sub_row["Quantity"]
-                if sub_row["Side"] == "deposit":
-                    d = 1
-                elif sub_row["Side"] == "withdrawal":
-                    d = -1
-                else:
-                    raise ValueError("Cash type must be deposit or withdrawal")
-                log.at[index, ("Cash", "Cash")] = (
-                    log.at[index, ("Cash", "Cash")] + d * amount * quantity
-                )
-                log.at[index, ("Cash", "User")] = (
-                    log.at[index, ("Cash", "User")] + d * amount * quantity
-                )
-    return log
-
-
-@log_start_end(log=logger)
-def merge_dataframes(
-    log: pd.DataFrame,
-    hist: pd.DataFrame,
-    changes: pd.DataFrame,
-    divs: pd.DataFrame,
-    uniques: List[str],
-) -> pd.DataFrame:
-    """Merge dataframes to create final dataframe
-
-    Parameters
-    ----------
-    log : pd.DataFrame
-        The new dataframe with daily holdings
-    hist : pd.DataFrame
-        Historical returns for stocks in portfolio
-    changes : pd.DataFrame
-        A log of past transactions
-    divs : pd.DataFrame
-        The dividend history for stocks in portfolio
-    uniques: List[str]
-        A list of stocks in the portfolio
-
-    Returns
-    ----------
-    comb : pd.DataFrame
-        Thew new aggregated dataframe
-    """
-    comb = pd.merge(log, hist, how="left", left_index=True, right_index=True)
-    comb = comb.fillna(method="ffill")
-    comb = pd.merge(comb, divs, how="left", left_index=True, right_index=True)
-    comb = comb.fillna(0)
-
-    for uni in uniques:
-        comb[("Quantity", uni)] = comb[("Quantity", uni)].cumsum()
-        comb[("Cost Basis", uni)] = comb[("Cost Basis", uni)].cumsum()
-        comb[("Cash", "Cash")] = comb[("Cash", "Cash")] + (
-            comb[("Quantity", uni)] * comb[("Dividend", uni)]
-        )
-        comb[("Holding", uni)] = (
-            np.where(
-                comb[("Quantity", uni)] > 0,
-                comb[("Close", uni)],
-                (2 * comb[("Close", uni)][0] - comb[("Close", uni)]),
-            )
-            * comb[("Quantity", uni)]
-        )
-        comb[("Profit", uni)] = comb[("Profit", uni)].cumsum()
-    comb[("Cash", "Cash")] = comb[("Cash", "Cash")].cumsum()
-    if len(changes["Date"]) > 0:
-        comb["holdings"] = comb.groupby(level=0, axis=1).sum()["Holding"]
-        comb["profits"] = comb.groupby(level=0, axis=1).sum()["Profit"]
-        comb["total_prof"] = comb["holdings"] + comb["profits"]
-        comb["total_cost"] = comb.groupby(level=0, axis=1).sum()["Cost Basis"]
-    return comb
-
-
-@log_start_end(log=logger)
-def convert_df(portfolio: pd.DataFrame) -> pd.DataFrame:
-    """Converts a df from activity to daily holdings
-
-    Parameters
-    ----------
-    portfolio : pd.DataFrame
-        The dataframe of transactions
-
-    Returns
-    ----------
-    data : pd.DataFrame
-        A dataframe with daily holdings of portfolio
-    hist : pd.DataFrame
-        The historical performance of tickers in portfolio
-    """
-    changes = portfolio.copy()
-    # Transactions sorted for only stocks and etfs
-    cashes = changes[changes["Type"] == "cash"]
-    if cashes.empty:
-        raise ValueError("Brokers require cash, input cash deposits")
-    changes = changes[(changes["Type"] == "stock") | (changes["Type"] == "etf")]
-    uniques = list(set(changes["Name"].tolist()))
-    if uniques:
-        hist = yfinance_model.get_stocks(uniques, min(changes["Date"]))
-        divs = yfinance_model.get_dividends(uniques)
-    else:
-        hist, divs = pd.DataFrame(), pd.DataFrame()
-
-    divs = divs.fillna(0)
-    mini = min(cashes["Date"].to_list() + changes["Date"].to_list())
-    days = pd.date_range(mini, date.today() - timedelta(days=1), freq="d")
-    zeros = [0 for _ in uniques]
-    data = [zeros + zeros + zeros + [0] for _ in days]
-    vals = ["Quantity", "Cost Basis", "Profit"]
-    arrays = [[x for _ in uniques for x in vals] + ["Cash"], uniques * 3 + ["Cash"]]
-    tuples = list(zip(*arrays))
-    headers = pd.MultiIndex.from_tuples(tuples, names=["first", "second"])
-    log = pd.DataFrame(data, columns=headers, index=days)
-    log[("Cash", "User")] = 0
-    log = add_values(log, changes, cashes)
-    comb = merge_dataframes(log, hist, changes, divs, uniques)
-
-    return comb, hist
-
-
-@log_start_end(log=logger)
-def get_return(df: pd.DataFrame, df_m: pd.DataFrame, n: int) -> pd.DataFrame:
-    """Adds cumulative returns to a holdings df
-
-    Parameters
-    ----------
-    df : pd.DataFrame
-        The dataframe of daily holdings
-    df_m : pd.DataFrame
-        The dataframe of market performance
-    n : int
-        The period to get returns for
-
-    Returns
-    ----------
-    comb : pd.DataFrame
-        Dataframe with holdings and returns
-    """
-    df = df.copy()
-    df = df[df.index >= datetime.now() - timedelta(days=n + 1)]
-    comb = pd.merge(df, df_m, how="left", left_index=True, right_index=True)
-    comb = comb.fillna(method="ffill")
-    comb = comb.dropna()
-    comb["return"] = (
-        comb[("Cash", "Cash")]
-        + (0 if "holdings" not in comb.columns else comb["holdings"])
-    ) / (
-        comb[("Cash", "Cash")].shift(1)
-        + comb[("Cash", "User")]
-        + (0 if "holdings" not in comb.columns else comb["holdings"].shift(1))
-    )
-    comb["return"] = comb["return"].fillna(1)
-    variance = np.var(comb["return"])
-    comb["return"] = comb["return"].cumprod() - 1
-    comb[("Market", "Return")] = (
-        comb[("Market", "Close")] - comb[("Market", "Close")][0]
-    ) / comb[("Market", "Close")][0]
-    return comb, variance
 
 
 @log_start_end(log=logger)
@@ -398,139 +90,6 @@ def get_rolling_beta(
     final = final[final.index >= datetime.now() - timedelta(days=n + 1)]
     comb = pd.merge(final, dropped, how="left", left_index=True, right_index=True)
     return comb
-
-
-@log_start_end(log=logger)
-def fix_etf_allocation(
-    data: pd.DataFrame,
-    df_new: pd.DataFrame,
-    etf: str,
-    no_etf_positions: bool,
-    number: int,
-):
-    """Adjusting the dataframe to etf positions, by adding etf holdings to identical portfolio positions or
-    if 'add_etf_positions' is true add a new position
-
-    Parameters
-    ----------
-    data : pd.DataFrame
-        The dataframe of positions
-    df_new: pd.DataFrame
-        A dataframe of etf holdings
-    etf: str
-        String of the etf
-    no_etf_positions: bool
-        If new positions should not be added to the 'data' dataframe for etf holdings
-    number: int
-        Number of etf positions to be checked
-
-    Returns
-    ----------
-    data: pd.DataFrame
-        etf adjusted dataframe
-    """
-    i = 0
-    length = int(df_new.index.size) - 1
-    while i <= (
-        length ^ ((number ^ length) & -(number < length))
-    ):  # gets minimum of number and length
-        if df_new.iloc[[i]].index[0].lower() in data.index:
-            change = (
-                float(df_new.iloc[i]["% Of Etf"].replace("%", ""))
-                * data["value"].loc[data.index == etf][0]
-                / 100
-            )
-            data.loc[data.index == df_new.iloc[[i]].index[0].lower(), "value"] += change
-        elif not no_etf_positions:
-            change = (
-                float(df_new.iloc[i]["% Of Etf"].replace("%", ""))
-                * data["value"].loc[data.index == etf][0]
-                / 100
-            )
-            data.loc[len(data.index)] = [f"{etf}_etf", change]
-            data.rename(
-                index={len(data.index) - 1: df_new.iloc[[i]].index[0].lower()},
-                inplace=True,
-            )
-            data.loc[data.index == etf, "value"] -= change
-        data.loc[data.index == etf, "value"] -= change
-        i += 1
-    data.rename(
-        index={data.loc[data.index == etf].index[0]: f"{etf}_rest"}, inplace=True
-    )
-    return data
-
-
-@log_start_end(log=logger)
-def get_allocation(
-    data: pd.DataFrame,
-    hist: pd.DataFrame,
-    portfolio: pd.DataFrame,
-    number: int,
-    no_etf_positions: bool,
-) -> pd.DataFrame:
-    """Formatting the dataframe to an allocation dataframe of the positions
-
-    Parameters
-    ----------
-    data : pd.DataFrame
-        The dataframe of positions
-    hist: pd.DataFrame
-        A dataframe of the positions historical performances
-    portfolio: pd.DataFrame
-        Portfolio dataframe
-    number: int
-        Number of etf positions to be checked
-    no_etf_positions: bool
-        If new positions should not be added to the 'data' dataframe for etf holdings
-
-    Returns
-    ----------
-    df: pd.DataFrame
-        Dataframe of allocation
-    """
-    # Fixing dataframe formatting
-    df = data["Quantity"].tail(1).transpose()
-    df.columns = ["amount"]
-    df = df.sort_index(axis=0, ascending=True)
-    hist = hist.tail(1).transpose()
-    hist = hist.reset_index(["first"])
-    hist.columns = ["position", "value"]
-    hist = pd.DataFrame(hist["value"])
-
-    i = 0
-    value = []
-    while i < df.index.size:
-        value.append(df["amount"].iloc[i] * hist["value"].iloc[i])
-        i += 1
-    df["value"] = value
-
-    i = 0
-    length = df.index.size
-    while i < length:
-        row_index = df.iloc[[i]].index[0]
-        if (
-            portfolio["Type"].loc[portfolio["Name"] == row_index].to_list()[0] == "etf"
-        ):  # check if position is an etf
-            df = fix_etf_allocation(
-                df,
-                stockanalysis_model.get_etf_holdings(row_index),
-                row_index,
-                no_etf_positions,
-                number,
-            )
-        if df.iloc[i].loc["value"] < 0:
-            # Converting negative positions to "shorts" in order to correctly calculate allocation
-            df.loc[row_index, "value"] = abs(df.loc[row_index, "value"])
-            df.loc[row_index, "amount"] = abs(df.loc[row_index, "amount"])
-            df.rename(index={row_index: f"short_{row_index}"}, inplace=True)
-        i += 1
-
-    total_value = df["value"].sum()
-    df["pct_allocation"] = df["value"] / total_value * 100  # calculate allocation
-    df = df.sort_values(by="pct_allocation", ascending=False)
-
-    return df
 
 
 @log_start_end(log=logger)
@@ -639,3 +198,343 @@ def calculate_drawdown(input_series: pd.Series, is_returns: bool = False) -> pd.
     rolling_max = input_series.cummax()
     drawdown = (input_series - rolling_max) / rolling_max
     return drawdown
+
+
+class Portfolio:
+    """
+    Class for portfolio analysis in GST
+
+    Attributes
+    -------
+    portfolio_value: pd.Series
+        Series containing value at each day
+    returns: pd.Series
+        Series containing daily returns
+    ItemizedReturns: pd.DataFrame
+        Dataframe of Holdings by class
+    portfolio: pd.DataFrame
+        Dataframe containing all relevant holdings data
+
+    Methods
+    -------
+    add_trade:
+        Adds a trade to the dataframe of trades
+    generate_holdings_from_trades:
+        Takes a list of trades and converts to holdings on each day
+    get_yahoo_close_prices:
+        Gets close prices or adj close prices from yfinance
+    add_benchmark
+        Adds a benchmark to the class
+
+    """
+
+    @log_start_end(log=logger)
+    def __init__(self, trades: pd.DataFrame = pd.DataFrame(), rf=0):
+        """Initialize Portfolio class"""
+        # Allow for empty initialization
+        self.empty = True
+        self.rf = rf
+        if not trades.empty:
+            if "cash" not in trades.Name.to_list():
+                console.print(
+                    "[red]No initial cash deposit.  Calculations may be off as this assumes trading from a "
+                    "funded account[/red]."
+                )
+            # Load in trades df and do some quick editing
+            trades.Name = trades.Name.map(lambda x: x.upper())
+            trades["Side"] = trades["Side"].map(
+                lambda x: 1
+                if x.lower() in ["deposit", "buy"]
+                else (-1 if x.lower() == "sell" else 0)
+            )
+            trades["Value"] = trades.Quantity * trades.Price * trades.Side
+            # Make selling negative for cumulative sum of quantity later
+            trades["Quantity"] = trades["Quantity"] * trades["Side"]
+            # Should be simply extended for crypto/bonds etc
+            # Treat etf as stock for yfinance historical.
+            self._stock_tickers = list(
+                set(trades[trades.Type == "stock"].Name.to_list())
+            )
+
+            self._etf_tickers = list(set(trades[trades.Type == "etf"].Name.to_list()))
+
+            self._crypto_tickers = list(
+                set(trades[trades.Type == "crypto"].Name.to_list())
+            )
+            self._start_date = trades.Date[0]
+            # Copy pandas notation
+            self.empty = False
+        self.trades = trades
+        self.portfolio = pd.DataFrame()
+
+    @log_start_end(log=logger)
+    def add_trade(self, trade_info: Dict):
+        self.trades = self.trades.append([trade_info])
+        self.empty = False
+
+    @log_start_end(log=logger)
+    def add_rf(self, risk_free_rate: float):
+        """Sets the risk free rate for calculation purposes"""
+        self.rf = risk_free_rate
+
+    @log_start_end(log=logger)
+    def generate_holdings_from_trades(self, yfinance_use_close: bool = False):
+        """Generates portfolio data from list of trades"""
+        # Load historical prices from yahoo (option to get close instead of adj close)
+        self.get_yahoo_close_prices(use_close=yfinance_use_close)
+        self.get_crypto_yfinance()
+
+        # Pivot list of trades on Name.  This will give a multi-index df where the multiindex are the individual ticker
+        # and the values from the table
+        portfolio = self.trades.pivot(
+            index="Date",
+            columns="Name",
+            values=["Quantity", "Price", "Fees", "Premium", "Side", "Value"],
+        )
+        # Merge with historical close prices (and fillna)
+        portfolio = pd.merge(
+            portfolio,
+            self._historical_prices,
+            how="right",
+            left_index=True,
+            right_index=True,
+        ).fillna(0)
+
+        is_there_stock_or_etf = self._stock_tickers + self._etf_tickers
+
+        # Merge with crypto
+        if self._crypto_tickers:
+            portfolio = pd.merge(
+                portfolio,
+                self._historical_crypto,
+                how="left" if is_there_stock_or_etf else "right",
+                left_index=True,
+                right_index=True,
+            ).fillna(0)
+        else:
+            portfolio[pd.MultiIndex.from_product([["Close"], ["crypto"]])] = 0
+
+        # Add cumulative Quantity held
+        portfolio["Quantity"] = portfolio["Quantity"].cumsum()
+
+        # Add holdings for each 'type'.  Will check for tickers matching type.
+
+        if self._stock_tickers:
+            # Find end of day holdings for each stock
+            portfolio[
+                pd.MultiIndex.from_product([["StockHoldings"], self._stock_tickers])
+            ] = (
+                portfolio["Quantity"][self._stock_tickers]
+                * portfolio["Close"][self._stock_tickers]
+            )
+        else:
+            portfolio[pd.MultiIndex.from_product([["StockHoldings"], ["temp"]])] = 0
+
+        if self._etf_tickers:
+            # Find end of day holdings for each ETF
+            portfolio[
+                pd.MultiIndex.from_product([["ETFHoldings"], self._etf_tickers])
+            ] = (
+                portfolio["Quantity"][self._etf_tickers]
+                * portfolio["Close"][self._etf_tickers]
+            )
+        else:
+            portfolio[pd.MultiIndex.from_product([["ETFHoldings"], ["temp"]])] = 0
+        if self._crypto_tickers:
+            # Find end of day holdings for each stock
+            portfolio[
+                pd.MultiIndex.from_product([["CryptoHoldings"], self._crypto_tickers])
+            ] = (
+                portfolio["Quantity"][self._crypto_tickers]
+                * portfolio["Close"][self._crypto_tickers]
+            )
+        else:
+            portfolio[pd.MultiIndex.from_product([["CryptoHoldings"], ["temp"]])] = 0
+
+        # Find amount of cash held in account.  Defined as deposited cash - stocks bought + stocks sold
+        portfolio["CashHold"] = portfolio["Value"]["CASH"] - portfolio["Value"][
+            self._stock_tickers + self._etf_tickers + self._crypto_tickers
+        ].sum(axis=1)
+
+        # Subtract Fees or Premiums from cash holdings
+        portfolio["CashHold"] = (
+            portfolio["CashHold"]
+            - portfolio["Fees"].sum(axis=1)
+            - portfolio["Premium"].sum(axis=1)
+        )
+        portfolio["CashHold"] = portfolio["CashHold"].cumsum()
+
+        portfolio["TotalHoldings"] = (
+            portfolio["CashHold"]
+            + portfolio["StockHoldings"].sum(axis=1)
+            + portfolio["ETFHoldings"].sum(axis=1)
+            + portfolio["CryptoHoldings"].sum(axis=1)
+        )
+
+        self.portfolio_value = portfolio["TotalHoldings"]
+        self.returns = portfolio["TotalHoldings"].pct_change().dropna()
+        self.ItemizedHoldings = pd.DataFrame(
+            {
+                "Stocks": portfolio["StockHoldings"][self._stock_tickers].sum(axis=1),
+                "ETFs": portfolio["ETFHoldings"][self._etf_tickers].sum(axis=1),
+                "Crypto": portfolio["CryptoHoldings"][self._crypto_tickers].sum(axis=1),
+                "Cash": portfolio["CashHold"],
+            }
+        )
+        self.portfolio = portfolio.copy()
+
+    # TODO: Add back dividends
+    @log_start_end(log=logger)
+    def get_yahoo_close_prices(self, use_close: bool = False):
+        """Gets historical adj close prices for tickers in list of trades"""
+        tickers_to_download = self._stock_tickers + self._etf_tickers
+        if tickers_to_download:
+            if not use_close:
+                self._historical_prices = yf.download(
+                    tickers_to_download, start=self._start_date, progress=False
+                )["Adj Close"]
+            else:
+                self._historical_prices = yf.download(
+                    tickers_to_download, start=self._start_date, progress=False
+                )["Close"]
+
+            # Adjust for case of only 1 ticker
+            if len(tickers_to_download) == 1:
+                self._historical_prices = pd.DataFrame(self._historical_prices)
+                self._historical_prices.columns = tickers_to_download
+
+        else:
+            data_for_index_purposes = yf.download(
+                "AAPL", start=self._start_date, progress=False
+            )["Adj Close"]
+            self._historical_prices = pd.DataFrame()
+            self._historical_prices.index = data_for_index_purposes.index
+            self._historical_prices["stock"] = 0
+
+        self._historical_prices["CASH"] = 1
+
+        # Make columns a multi-index.  This helps the merging.
+        self._historical_prices.columns = pd.MultiIndex.from_product(
+            [["Close"], self._historical_prices.columns]
+        )
+
+    @log_start_end(log=logger)
+    def get_crypto_yfinance(self):
+        """Gets historical coin data from coingecko"""
+        if self._crypto_tickers:
+            list_of_coins = [f"{coin}-USD" for coin in self._crypto_tickers]
+            self._historical_crypto = yf.download(
+                list_of_coins, start=self._start_date, progress=False
+            )["Close"]
+
+            if len(list_of_coins) == 1:
+                self._historical_crypto = pd.DataFrame(self._historical_crypto)
+                self._historical_crypto.columns = list_of_coins
+
+            self._historical_crypto.columns = pd.MultiIndex.from_product(
+                [["Close"], [col[:-4] for col in self._historical_crypto.columns]]
+            )
+
+        else:
+            self._historical_crypto = pd.DataFrame()
+            self._historical_crypto[
+                pd.MultiIndex.from_product([["Close"], ["crypto"]])
+            ] = 0
+
+    @log_start_end(log=logger)
+    def add_benchmark(self, benchmark: str):
+        """Adds benchmark dataframe"""
+        self.benchmark = yf.download(benchmark, start=self._start_date, progress=False)[
+            "Adj Close"
+        ]
+        self.benchmark_returns = self.benchmark.pct_change().dropna()
+
+    @classmethod
+    @log_start_end(log=logger)
+    def from_csv(cls, csv_path: str):
+        """Class method that generates a portfolio object from a csv file
+
+        Parameters
+        ----------
+        csv_path: str
+            Path to csv of trade data
+
+        Returns
+        -------
+        Portfolio
+            Initialized portfolio object
+        """
+        # Load in a list of trades
+        trades = pd.read_csv(csv_path)
+        # Convert the date to what pandas understands
+        trades.Date = pd.to_datetime(trades.Date)
+        # Build the portfolio object
+        return cls(trades)
+
+    @classmethod
+    @log_start_end(log=logger)
+    def from_custom_inputs_and_weights(
+        cls,
+        start_date: str,
+        list_of_symbols: List[str],
+        list_of_weights: List[float],
+        list_of_types: List[str],
+        amount: float = 100_000,
+    ):
+        """Create a class instance from supplied weights and tickers.
+        This first will generate a dataframe of trades then pass to generator.
+
+        Parameters
+        ----------
+        start_date: str
+            Start date
+        list_of_symbols: List[str]
+            List of symbols to consider
+        list_of_weights: List[float]
+            List of weights (in theory negative should be fine),  Must add to 1
+        list_of_types: List[str]
+            List of asset type (stock or crypto)
+        amount: float
+            Amount for portfolio allocation
+
+        Returns
+        -------
+        Portfolio
+            Class instance
+        """
+        if not np.isclose(np.sum(list_of_weights), 1, 0.03):
+            console.print("[red]Weights do not add to 1[/red].")
+            return cls()
+        list_of_amounts = [weight * amount for weight in list_of_weights]
+        # Name,Type,Quantity,Date,Price,Fees,Premium,Side
+        inputs: Dict[str, List[Union[str, float, int]]] = {}
+        inputs["Name"] = ["cash"]
+        inputs["Type"] = ["cash"]
+        inputs["Quantity"] = [1]
+        inputs["Price"] = [amount]
+        inputs["Fees"] = [0]
+        inputs["Premium"] = [0]
+        inputs["Side"] = ["deposit"]
+        inputs["Date"] = [start_date]
+        for ticker, type_, amounts in zip(
+            list_of_symbols, list_of_types, list_of_amounts
+        ):
+            inputs["Name"].append(ticker)
+            inputs["Type"].append(type_)
+            inputs["Fees"].append(0)
+            inputs["Premium"].append(0)
+            inputs["Side"].append("buy")
+            if type_ == "crypto":
+                ticker += "-USD"
+            # Find how much of each ticker we can buy
+            temp = yf.download(ticker, start=start_date, progress=False)["Adj Close"]
+            price_on_date = temp[0]
+            inputs["Date"].append(temp.index[0].strftime("%Y-%m-%d"))
+            inputs["Quantity"].append(amounts / price_on_date)
+            inputs["Price"].append(price_on_date)
+        trades = pd.DataFrame.from_dict(inputs)
+        trades.Date = pd.to_datetime(trades.Date)
+        # Make sure to fix the 'cash' date if it is weekend
+        if trades.Date[1] != trades.Date[0]:
+            trades.Date[0] = trades.Date[1]
+        return cls(trades)

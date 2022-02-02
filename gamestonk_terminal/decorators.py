@@ -9,29 +9,6 @@ from gamestonk_terminal.rich_config import console
 logger = logging.getLogger(__name__)
 
 
-def try_except(f):
-    """Adds a try except block if the user is not in development mode
-
-    Parameters
-    ----------
-    f: function
-        The function to be wrapped
-    """
-    # pylint: disable=inconsistent-return-statements
-    @functools.wraps(f)
-    def inner(*args, **kwargs):
-        if os.environ.get("DEBUG_MODE") == "true":
-            return f(*args, **kwargs)
-        try:
-            return f(*args, **kwargs)
-        except Exception as e:
-            console.print(f"[red]Error: {e}[/red]")
-            logger.exception("%s", type(e).__name__)
-            return []
-
-    return inner
-
-
 def log_start_end(func=None, log=None):
     """Wrap function to add a log entry at execution start and end.
 
@@ -83,11 +60,16 @@ def log_start_end(func=None, log=None):
             else:
                 log.info("START", extra={"func_name_override": func.__name__})
 
+            if os.environ.get("DEBUG_MODE") == "true":
+                value = func(*args, **kwargs)
+                log.info("END", extra={"func_name_override": func.__name__})
+                return value
             try:
                 value = func(*args, **kwargs)
                 log.info("END", extra={"func_name_override": func.__name__})
                 return value
-            except Exception:
+            except Exception as e:
+                console.print(f"[red]Error: {e}[/red]")
                 log.exception("Exception", extra={"func_name_override": func.__name__})
                 return None
 
