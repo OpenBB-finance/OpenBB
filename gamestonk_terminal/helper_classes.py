@@ -254,3 +254,38 @@ class TerminalStyle:
             A matplolib axis
         """
         ax.yaxis.set_label_position("left")
+
+    def add_label(
+        self,
+        fig: plt.figure,
+    ):
+        """Add a text label to a figure in a funny position.
+
+        Parameters
+        ----------
+        fig : plt.figure
+            A matplotlib figure
+        """
+        label = "Gamestonk Terminal"
+        fig.text(
+            0.69,
+            0.0420,
+            label,
+            fontsize=12,
+            color="gray",
+            alpha=0.5,
+        )
+
+    # pylint: disable=import-outside-toplevel
+    def visualize_output(self):
+        """Show chart in an interactive widget."""
+        import gamestonk_terminal.feature_flags as gtff
+        from gamestonk_terminal.rich_config import console
+
+        if gtff.USE_WATERMARK:
+            self.add_label(plt.gcf())
+        plt.tight_layout(pad=self.tight_layout_padding)
+        if gtff.USE_ION:
+            plt.ion()
+        plt.show()
+        console.print("")
