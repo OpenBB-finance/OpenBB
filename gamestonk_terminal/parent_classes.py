@@ -20,7 +20,6 @@ from gamestonk_terminal.decorators import log_start_end
 
 from gamestonk_terminal.menu import session
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.decorators import try_except
 from gamestonk_terminal.helper_funcs import (
     system_clear,
     get_flair,
@@ -120,7 +119,6 @@ class BaseController(metaclass=ABCMeta):
         raise NotImplementedError("Must override print_help")
 
     @log_start_end(log=logger)
-    @try_except
     def switch(self, an_input: str) -> List[str]:
         """Process and dispatch input
 
