@@ -1,13 +1,19 @@
 """ ARK View """
 __docformat__ = "numpy"
 
+import logging
 import os
+
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import export_data, print_rich_table
-from gamestonk_terminal.stocks.discovery import ark_model
 from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.stocks.discovery import ark_model
+
+logger = logging.getLogger(__name__)
 
 
+@log_start_end(log=logger)
 def direction_color_red_green(val: str) -> str:
     """Adds color tags to the Direction information: Buy -> Green, Sell -> Red
 
@@ -25,6 +31,7 @@ def direction_color_red_green(val: str) -> str:
     return f"[{color}]{val}[/{color}]"
 
 
+@log_start_end(log=logger)
 def ark_orders_view(
     num: int,
     sort_col: str = "",

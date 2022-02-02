@@ -1,15 +1,21 @@
 """Ethplorer view"""
 __docformat__ = "numpy"
 
+import logging
 import os
-from gamestonk_terminal.helper_funcs import export_data, print_rich_table
+
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
     very_long_number_formatter,
 )
 from gamestonk_terminal.cryptocurrency.onchain import ethplorer_model
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.rich_config import console
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def display_address_info(
     address: str,
     top: int = 15,
@@ -57,6 +63,7 @@ def display_address_info(
     )
 
 
+@log_start_end(log=logger)
 def display_top_tokens(
     top: int = 15,
     sortby: str = "rank",
@@ -101,6 +108,7 @@ def display_top_tokens(
     )
 
 
+@log_start_end(log=logger)
 def display_top_token_holders(
     address: str,
     top: int = 10,
@@ -145,6 +153,7 @@ def display_top_token_holders(
     )
 
 
+@log_start_end(log=logger)
 def display_address_history(
     address: str,
     top: int = 10,
@@ -191,6 +200,7 @@ def display_address_history(
     )
 
 
+@log_start_end(log=logger)
 def display_token_info(
     address: str,
     social: bool = False,
@@ -231,6 +241,7 @@ def display_token_info(
     )
 
 
+@log_start_end(log=logger)
 def display_tx_info(
     tx_hash: str,
     export: str = "",
@@ -263,6 +274,7 @@ def display_tx_info(
     )
 
 
+@log_start_end(log=logger)
 def display_token_history(
     address: str,
     top: int = 10,
@@ -319,6 +331,7 @@ def display_token_history(
     )
 
 
+@log_start_end(log=logger)
 def display_token_historical_prices(
     address: str,
     top: int = 30,

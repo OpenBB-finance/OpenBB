@@ -1,15 +1,21 @@
 """Blockchain Center Model"""
 import json
+import logging
 from datetime import datetime
+
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import get_user_agent
+
+logger = logging.getLogger(__name__)
 
 DAYS = [30, 90, 365]
 
 
+@log_start_end(log=logger)
 def get_altcoin_index(period: int, since: int, until: int) -> pd.DataFrame:
     """Get altcoin index overtime
     [Source: https://blockchaincenter.net]

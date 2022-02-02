@@ -1,14 +1,20 @@
 """CoinGecko view"""
 __docformat__ = "numpy"
 
+import logging
 import os
+
 from pandas.plotting import register_matplotlib_converters
+
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
     very_long_number_formatter,
 )
 from gamestonk_terminal.cryptocurrency.discovery import pycoingecko_model
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.rich_config import console
+
+logger = logging.getLogger(__name__)
 
 register_matplotlib_converters()
 
@@ -26,6 +32,7 @@ COINS_COLUMNS = [
 ]
 
 
+@log_start_end(log=logger)
 def display_coins(
     category: str, top: int = 250, sortby: str = "Symbol", export: str = ""
 ) -> None:
@@ -82,6 +89,7 @@ def display_coins(
         console.print("\nUnable to retrieve data from CoinGecko.\n")
 
 
+@log_start_end(log=logger)
 def display_gainers(
     period: str = "1h", top: int = 20, sortby: str = "Symbol", export: str = ""
 ) -> None:
@@ -123,6 +131,7 @@ def display_gainers(
         console.print("\nUnable to retrieve data from CoinGecko.\n")
 
 
+@log_start_end(log=logger)
 def display_losers(
     period: str = "1h", top: int = 20, export: str = "", sortby: str = "Symbol"
 ) -> None:
@@ -164,6 +173,7 @@ def display_losers(
         console.print("\nUnable to retrieve data from CoinGecko.\n")
 
 
+@log_start_end(log=logger)
 def display_trending(export: str = "") -> None:
     """Display trending coins [Source: CoinGecko]
 

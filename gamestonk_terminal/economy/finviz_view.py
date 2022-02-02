@@ -1,17 +1,22 @@
 """ Finviz View """
 __docformat__ = "numpy"
 
+import logging
 import os
 import webbrowser
-import pandas as pd
 
+import pandas as pd
 from PIL import Image
 
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.economy import finviz_model
 from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.rich_config import console
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def map_sp500_view(period: str, map_type: str):
     """Opens Finviz map website in a browser. [Source: Finviz]
 
@@ -32,6 +37,7 @@ def map_sp500_view(period: str, map_type: str):
     console.print("")
 
 
+@log_start_end(log=logger)
 def display_performance(
     s_group: str,
     sort_col: str = "Name",
@@ -88,6 +94,7 @@ def display_performance(
     )
 
 
+@log_start_end(log=logger)
 def display_valuation(
     s_group: str,
     sort_col: str = "Name",
@@ -131,6 +138,7 @@ def display_valuation(
     )
 
 
+@log_start_end(log=logger)
 def display_spectrum(s_group: str, export: str = ""):
     """Display finviz spectrum in system viewer [Source: Finviz]
 
@@ -155,6 +163,7 @@ def display_spectrum(s_group: str, export: str = ""):
     img.show()
 
 
+@log_start_end(log=logger)
 def display_future(
     future_type: str = "Indices",
     sort_col: str = "ticker",

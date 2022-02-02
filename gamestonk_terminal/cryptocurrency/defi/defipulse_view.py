@@ -1,12 +1,18 @@
 """DeFi Pulse view"""
 __docformat__ = "numpy"
 
+import logging
 import os
+
 from gamestonk_terminal.cryptocurrency.defi import defipulse_model
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.rich_config import console
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def display_defipulse(top: int, sortby: str, descend: bool, export: str = "") -> None:
     """Displays all DeFi Pulse crypto protocols.
     [Source: https://defipulse.com/]

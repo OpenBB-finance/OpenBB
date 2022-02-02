@@ -1,20 +1,27 @@
 """ Finviz Comparison Model """
 __docformat__ = "numpy"
 
+import logging
 from typing import List, Tuple
+
 import pandas as pd
 from finvizfinance.screener import (
-    technical,
-    overview,
-    valuation,
     financial,
+    overview,
     ownership,
     performance,
+    technical,
+    valuation,
 )
 from finvizfinance.screener.overview import Overview
+
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.rich_config import console
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def get_similar_companies(
     ticker: str, compare_list: List[str]
 ) -> Tuple[List[str], str]:
@@ -46,6 +53,7 @@ def get_similar_companies(
     return similar, user
 
 
+@log_start_end(log=logger)
 def get_comparison_data(data_type: str, similar: List[str]):
     """Screener Overview
 

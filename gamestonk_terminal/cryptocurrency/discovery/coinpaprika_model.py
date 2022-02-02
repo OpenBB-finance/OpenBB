@@ -1,9 +1,15 @@
 """CoinPaprika model"""
 __docformat__ = "numpy"
 
-from typing import Optional, Any
+import logging
+from typing import Any, Optional
+
 import pandas as pd
+
 from gamestonk_terminal.cryptocurrency.coinpaprika_helpers import PaprikaSession
+from gamestonk_terminal.decorators import log_start_end
+
+logger = logging.getLogger(__name__)
 
 CATEGORIES = [
     "currencies",
@@ -17,6 +23,7 @@ CATEGORIES = [
 FILTERS = ["category", "id", "name"]
 
 
+@log_start_end(log=logger)
 def get_search_results(
     query: str, category: Optional[Any] = None, modifier: Optional[Any] = None
 ) -> pd.DataFrame:
