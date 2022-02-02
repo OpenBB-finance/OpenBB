@@ -1,3 +1,4 @@
+from typing import List
 import logging
 import os
 import sys
@@ -30,14 +31,7 @@ DISCORD_BOT_TOKEN = os.getenv("GT_DISCORD_BOT_TOKEN") or "REPLACE_ME"
 IMGUR_CLIENT_ID = os.getenv("GT_IMGUR_CLIENT_ID") or "REPLACE_ME"
 
 # Settings
-GET_SLASH_TESTING_SERVERS = (
-    os.getenv("GT_SLASH_TESTING_SERVERS") or "REPLACE_ME"
-)  # ex. 1884912191119489,1884912191119489
-SLASH_TESTING_SERVERS = (
-    [x for x in GET_SLASH_TESTING_SERVERS.split(",") if x]
-    if GET_SLASH_TESTING_SERVERS
-    else []
-)
+SLASH_TESTING_SERVERS: List[int] = []  # Test server IDs
 COMMAND_PREFIX = "!"
 DATE_FORMAT = "%Y-%m-%d"
 COLOR = disnake.Color.from_rgb(255, 0, 0)
