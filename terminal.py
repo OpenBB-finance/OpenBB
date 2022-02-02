@@ -74,13 +74,7 @@ class TerminalController(BaseController):
         self.queue: List[str] = list()
 
         if jobs_cmds:
-            # close the eyes if the user forgets the initial `/`
-            jobs_cmds = [
-                job_cmd if job_cmd.startswith("/") else f"/{job_cmd}"
-                for job_cmd in jobs_cmds
-            ]
-
-            self.queue = self.switch(" ".join(jobs_cmds))
+            self.queue = " ".join(jobs_cmds).split("/")
 
         self.update_succcess = False
 
@@ -225,8 +219,7 @@ def terminal(jobs_cmds: List[str] = None):
 
     if not jobs_cmds:
         bootup()
-
-    t_controller.print_help()
+        t_controller.print_help()
 
     while ret_code:
         if gtff.ENABLE_QUICK_EXIT:
@@ -321,13 +314,19 @@ if __name__ == "__main__":
             if os.path.isfile(sys.argv[1]):
                 with open(sys.argv[1]) as fp:
                     simulate_argv = f"/{'/'.join([line.rstrip() for line in fp])}"
-                    terminal(simulate_argv.replace("//", "/home/").split())
+                    file_cmds = simulate_argv.replace("//", "/home/").split()
+                    # close the eyes if the user forgets the initial `/`
+                    if len(file_cmds) > 0:
+                        if file_cmds[0][0] != "/":
+                            file_cmds[0] = f"/{file_cmds[0]}"
+                    terminal(file_cmds)
             else:
                 console.print(
                     f"The file '{sys.argv[1]}' doesn't exist. Launching terminal without any configuration.\n"
                 )
                 terminal()
         else:
-            terminal(sys.argv[1:])
+            argv_cmds = list([" ".join(sys.argv[1:]).replace(" /", "/home/")])
+            terminal(argv_cmds)
     else:
         terminal()
