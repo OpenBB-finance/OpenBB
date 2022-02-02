@@ -2,20 +2,14 @@
 __docformat__ = "numpy"
 
 import difflib
-import logging
-from datetime import datetime, timedelta
 from typing import List
+from datetime import datetime, timedelta
 
-import pandas as pd
 import yfinance as yf
-
-from gamestonk_terminal.decorators import log_start_end
+import pandas as pd
 from gamestonk_terminal.stocks.sector_industry_analysis import financedatabase_model
 
-logger = logging.getLogger(__name__)
 
-
-@log_start_end(log=logger)
 def get_stocks(tickers: List[str], start: datetime) -> pd.DataFrame:
     """Gets historic data for list of tickers
 
@@ -49,7 +43,6 @@ def get_stocks(tickers: List[str], start: datetime) -> pd.DataFrame:
     return df
 
 
-@log_start_end(log=logger)
 def get_dividends(tickers: List[str]) -> pd.DataFrame:
     """Past dividends for list of tickers
 
@@ -71,7 +64,6 @@ def get_dividends(tickers: List[str]) -> pd.DataFrame:
     return pd.concat(dfs)
 
 
-@log_start_end(log=logger)
 def get_market(start: datetime, ticker: str = "SPY") -> pd.DataFrame:
     """Get historical data for market asset
 
@@ -95,7 +87,6 @@ def get_market(start: datetime, ticker: str = "SPY") -> pd.DataFrame:
     return df.to_frame(name=("Market", "Close"))
 
 
-@log_start_end(log=logger)
 def get_country(ticker):
     country = "NA"
     data = yf.utils.get_json(f"https://finance.yahoo.com/quote/{ticker}")

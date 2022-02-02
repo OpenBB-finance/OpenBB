@@ -1122,14 +1122,18 @@ main:
         ref: "/portfolio/show"
       - name: add
         ref: "/portfolio/add"
-      - name: rmv
-        ref: "/portfolio/rmv"
       - name: ar
         ref: "/portfolio/ar"
       - name: rmr
         ref: "/portfolio/rmr"
       - name: mdd
-        ref: "portfolio/mdd"
+        ref: "portfolio/dd"
+      - name: build
+        ref: "portfolio/build"
+      - name: init
+        ref: "portfolio/init"
+      - name: rolling
+        ref: "portfolio/rolling"
   - name: forex
     ref: "/forex"
     sub:
