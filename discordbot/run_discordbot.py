@@ -8,9 +8,10 @@ from disnake.ext import commands
 from fastapi import FastAPI
 
 import config_discordbot as cfg
-from config_bot import logger
+from config_discordbot import logger
 
 app = FastAPI()
+
 
 # For next update
 @app.get("/")
