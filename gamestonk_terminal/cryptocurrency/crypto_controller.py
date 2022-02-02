@@ -421,19 +421,21 @@ class CryptoController(CryptoBaseController):
     def call_pred(self, _):
         """Process pred command"""
         if self.coin:
-            from gamestonk_terminal.cryptocurrency.prediction_techniques import (
-                pred_controller,
-            )
-
-            if self.current_interval != "1day":
-                console.print("Only interval `1day` is possible for now.\n")
-            else:
-                self.queue = self.load_class(
-                    pred_controller.PredictionTechniquesController,
-                    self.coin,
-                    self.current_df,
-                    self.queue,
+            try:
+                from gamestonk_terminal.cryptocurrency.prediction_techniques import (
+                    pred_controller,
                 )
+
+                if self.current_interval != "1day":
+                    console.print("Only interval `1day` is possible for now.\n")
+                else:
+                    self.queue = self.load_class(
+                        pred_controller.PredictionTechniquesController,
+                        self.coin,
+                        self.current_df,
+                        self.queue,
+            except ImportError:
+                console.print("[red]Run pip install tensorflow to continue[/red]")
         else:
             console.print(
                 "No coin selected. Use 'load' to load the coin you want to look at.\n"

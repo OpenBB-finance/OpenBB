@@ -11,6 +11,7 @@ import pandas as pd
 import requests
 
 import gamestonk_terminal.config_terminal as cfg
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.decorators import log_start_end
 
 logger = logging.getLogger(__name__)
@@ -52,7 +53,7 @@ class ApiKeyException(Exception):
 
 
 @log_start_end(log=logger)
-def make_request(**kwargs: Any) -> dict:
+def make_request(**kwargs: Any) -> Optional[dict]:
     """Helper methods for requests [Source: https://cryptopanic.com/developers/api/]
 
     Parameters
@@ -94,12 +95,14 @@ def make_request(**kwargs: Any) -> dict:
     response = requests.get(url)
 
     if not 200 <= response.status_code < 300:
-        raise ApiKeyException(f"Invalid Authentication: {response.text}")
+        console.print(f"[red]Invalid Authentication: {response.text}[/red]")
+        return None
 
     try:
         return response.json()
-    except Exception as e:
-        raise ValueError(f"Invalid Response: {response.text}") from e
+    except Exception as _:  # noqa: F841
+        console.print(f"[red]Invalid Response: {response.text}[/red]")
+        return None
 
 
 @log_start_end(log=logger)
@@ -162,35 +165,41 @@ def get_news(
 
     response = make_request(post_kind=post_kind, filter_=filter_, region=region)
 
-    data, next_page, _ = (
-        response["results"],
-        response.get("next"),
-        response.get("count"),
-    )
-
-    for post in data:
-        results.append(_parse_post(post))
-
-    number_of_pages = math.ceil(limit // 20)
-    counter = 0
-    while counter < number_of_pages and next_page:
-        counter += 1
-        try:
-            time.sleep(0.2)
-            res = requests.get(next_page).json()
-            for post in res["results"]:
-                results.append(_parse_post(post))
-            next_page = res.get("next")
-        except Exception as e:
-            raise ValueError(
-                "Something went wrong while fetching news from API\n"
-            ) from e
-
-    try:
-        df = pd.DataFrame(results)
-        df["title"] = df["title"].apply(
-            lambda x: "\n".join(textwrap.wrap(x, width=66)) if isinstance(x, str) else x
+    if response:
+        data, next_page, _ = (
+            response["results"],
+            response.get("next"),
+            response.get("count"),
         )
-        return df
-    except Exception as e:
-        raise ValueError("Something went wrong with DataFrame creation\n") from e
+
+        for post in data:
+            results.append(_parse_post(post))
+
+        number_of_pages = math.ceil(limit // 20)
+        counter = 0
+        while counter < number_of_pages and next_page:
+            counter += 1
+            try:
+                time.sleep(0.2)
+                res = requests.get(next_page).json()
+                for post in res["results"]:
+                    results.append(_parse_post(post))
+                next_page = res.get("next")
+            except Exception as _:  # noqa: F841
+                console.print(
+                    "[red]Something went wrong while fetching news from API[/red]\n"
+                )
+                return pd.DataFrame()
+
+        try:
+            df = pd.DataFrame(results)
+            df["title"] = df["title"].apply(
+                lambda x: "\n".join(textwrap.wrap(x, width=66))
+                if isinstance(x, str)
+                else x
+            )
+            return df
+        except Exception as _:  # noqa: F841
+            console.print("[red]Something went wrong with DataFrame creation[/red]\n")
+            return pd.DataFrame()
+    return pd.DataFrame()
