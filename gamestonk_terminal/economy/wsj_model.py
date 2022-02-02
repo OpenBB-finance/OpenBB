@@ -1,10 +1,17 @@
 """WSJ model"""
 __docformat__ = "numpy"
+import logging
+
 import pandas as pd
 import requests
+
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import get_user_agent
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def us_indices() -> pd.DataFrame:
     """Get the top US indices
 
@@ -42,6 +49,7 @@ def us_indices() -> pd.DataFrame:
     return indices
 
 
+@log_start_end(log=logger)
 def market_overview() -> pd.DataFrame:
     """Scrape data for market overview
 
@@ -77,6 +85,7 @@ def market_overview() -> pd.DataFrame:
     return overview
 
 
+@log_start_end(log=logger)
 def top_commodities() -> pd.DataFrame:
     """Scrape data for top commodities
 
@@ -113,6 +122,7 @@ def top_commodities() -> pd.DataFrame:
     return commodities
 
 
+@log_start_end(log=logger)
 def us_bonds() -> pd.DataFrame:
     """Scrape data for us bonds
 
@@ -150,6 +160,7 @@ def us_bonds() -> pd.DataFrame:
     return bonds
 
 
+@log_start_end(log=logger)
 def global_bonds() -> pd.DataFrame:
     """Scrape data for global bonds
 
@@ -182,6 +193,7 @@ def global_bonds() -> pd.DataFrame:
     return bonds
 
 
+@log_start_end(log=logger)
 def global_currencies() -> pd.DataFrame:
     """Scrape data for global currencies
 

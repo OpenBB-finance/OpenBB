@@ -1,26 +1,31 @@
 """Monte Carlo View"""
 __docformat__ = "numpy"
 
-from typing import Union
+import logging
 import os
+from typing import Union
 
-import pandas as pd
-import numpy as np
-import seaborn as sns
-import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+import seaborn as sns
 
-from gamestonk_terminal.common.prediction_techniques import mc_model
-from gamestonk_terminal.helper_funcs import (
-    plot_autoscale,
-    get_next_stock_market_days,
-    export_data,
-)
-from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.common.prediction_techniques import mc_model
+from gamestonk_terminal.config_plot import PLOT_DPI
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_funcs import (
+    export_data,
+    get_next_stock_market_days,
+    plot_autoscale,
+)
 from gamestonk_terminal.rich_config import console
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def display_mc_forecast(
     data: Union[pd.Series, np.ndarray],
     n_future: int,

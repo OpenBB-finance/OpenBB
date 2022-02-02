@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 import configparser
+import logging
 import os
 from typing import List
 
@@ -9,15 +10,19 @@ import matplotlib.pyplot as plt
 
 from gamestonk_terminal import config_plot as cfp
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
     export_data,
     plot_autoscale,
     print_rich_table,
 )
-from gamestonk_terminal.stocks.options import syncretism_model
 from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.stocks.options import syncretism_model
+
+logger = logging.getLogger(__name__)
 
 
+@log_start_end(log=logger)
 def view_available_presets(preset: str, presets_path: str):
     """View available presets.
 
@@ -50,6 +55,7 @@ def view_available_presets(preset: str, presets_path: str):
     console.print("")
 
 
+@log_start_end(log=logger)
 def view_screener_output(
     preset: str, presets_path: str, n_show: int, export: str
 ) -> List:
@@ -97,6 +103,7 @@ def view_screener_output(
 # pylint:disable=too-many-arguments
 
 
+@log_start_end(log=logger)
 def view_historical_greeks(
     ticker: str,
     expiry: str,

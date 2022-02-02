@@ -1,12 +1,19 @@
 """Volatility Technical Indicators"""
 __docformat__ = "numpy"
 
+import logging
+
 import pandas as pd
 import pandas_ta as ta
+
+from gamestonk_terminal.decorators import log_start_end
+
+logger = logging.getLogger(__name__)
 
 MAMODES = ["ema", "sma", "wma", "hma", "zlma"]
 
 
+@log_start_end(log=logger)
 def bbands(
     close_values: pd.Series, length: int = 15, n_std: float = 2, mamode: str = "ema"
 ) -> pd.DataFrame:
@@ -38,6 +45,7 @@ def bbands(
     ).dropna()
 
 
+@log_start_end(log=logger)
 def donchian(
     high_prices: pd.Series,
     low_prices: pd.Series,
@@ -72,6 +80,7 @@ def donchian(
     )
 
 
+@log_start_end(log=logger)
 def kc(
     high_prices: pd.Series,
     low_prices: pd.Series,

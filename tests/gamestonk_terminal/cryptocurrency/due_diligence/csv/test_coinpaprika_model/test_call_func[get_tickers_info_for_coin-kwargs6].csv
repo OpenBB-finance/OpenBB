@@ -1,0 +1,28 @@
+,Metric,Value
+0,id,btc-bitcoin
+1,name,Bitcoin
+2,symbol,BTC
+3,rank,1
+4,circulating_supply,18944294
+5,total_supply,18944294
+6,max_supply,21000000
+7,beta_value,0.908202
+8,first_data_at,2010-07-17 00:00:00
+9,last_updated,2022-01-30 18:23:08
+10,usd_price,38054.559249568
+11,usd_volume_24h,16010948942.9
+12,usd_volume_24h_change_24h,-12.04
+13,usd_market_cap,720916758464
+14,usd_market_cap_change_24h,0.9
+15,usd_percent_change_15m,-0.01
+16,usd_percent_change_30m,0.09
+17,usd_percent_change_1h,0.18
+18,usd_percent_change_6h,-0.1
+19,usd_percent_change_12h,-0.4
+20,usd_percent_change_24h,0.9
+21,usd_percent_change_7d,7.8
+22,usd_percent_change_30d,-19.38
+23,usd_percent_change_1y,11.41
+24,usd_ath_price,68692.137036932
+25,usd_ath_date,2021-11-10 16:51:15
+26,usd_percent_from_price_ath,-44.6

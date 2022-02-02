@@ -1,14 +1,19 @@
 """Finnhub model"""
 __docformat__ = "numpy"
 
-import requests
+import logging
+
 import pandas as pd
+import requests
 
 from gamestonk_terminal import config_terminal as cfg
-
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.rich_config import console
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def get_pattern_recognition(ticker: str, resolution: str) -> pd.DataFrame:
     """Get pattern recognition data
 

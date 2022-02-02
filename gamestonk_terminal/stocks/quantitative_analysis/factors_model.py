@@ -1,16 +1,22 @@
 """Factors model"""
 __docformat__ = "numpy"
 
-from urllib.request import urlopen
-from zipfile import ZipFile
+import logging
 from io import BytesIO
 from typing import Tuple
+from urllib.request import urlopen
+from zipfile import ZipFile
 
+import pandas as pd
 import statsmodels.api as sm
 import yfinance as yf
-import pandas as pd
+
+from gamestonk_terminal.decorators import log_start_end
+
+logger = logging.getLogger(__name__)
 
 
+@log_start_end(log=logger)
 def get_fama_raw() -> pd.DataFrame:
     """Gets base Fama French data to calculate risk
 
@@ -48,6 +54,7 @@ def get_fama_raw() -> pd.DataFrame:
     return df
 
 
+@log_start_end(log=logger)
 def get_historical_5(ticker: str):
     """Get 5 year monthly historical performance for a ticker with dividends filtered
 
@@ -69,6 +76,7 @@ def get_historical_5(ticker: str):
     return df
 
 
+@log_start_end(log=logger)
 def capm_information(ticker) -> Tuple[float, float]:
     """Provides information that relates to the CAPM model
 

@@ -1,20 +1,27 @@
 """Yahoo Finance view"""
 __docformat__ = "numpy"
 
+import logging
 import os
+
 import pandas as pd
 from matplotlib import pyplot as plt
-from gamestonk_terminal.etf import yfinance_model
+
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_plot import PLOT_DPI
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.etf import yfinance_model
 from gamestonk_terminal.helper_funcs import (
-    plot_autoscale,
     export_data,
+    plot_autoscale,
     print_rich_table,
 )
 from gamestonk_terminal.rich_config import console
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def display_etf_weightings(
     name: str,
     raw: bool = False,
@@ -83,6 +90,7 @@ def display_etf_weightings(
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "weights", holdings)
 
 
+@log_start_end(log=logger)
 def display_etf_description(
     name: str,
 ):

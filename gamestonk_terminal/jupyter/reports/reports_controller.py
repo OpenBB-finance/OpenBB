@@ -6,15 +6,18 @@ import os
 from typing import List
 import webbrowser
 from datetime import datetime
+import logging
 from ast import literal_eval
 from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.rich_config import console
-from gamestonk_terminal.decorators import try_except
 import papermill as pm
 
+from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.menu import session
+
+logger = logging.getLogger(__name__)
 
 
 class ReportController(BaseController):
@@ -91,7 +94,7 @@ Select one of the following reports:[/info][cmds]
 {self.reports_opts}[/cmds]"""
         console.print(text=help_text, menu="Jupyter - Reports")
 
-    @try_except
+    @log_start_end(log=logger)
     def switch(self, an_input: str):
         """Process and dispatch input.
 

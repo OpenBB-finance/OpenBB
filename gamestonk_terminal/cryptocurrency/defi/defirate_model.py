@@ -1,12 +1,19 @@
 """DeFi Rate model"""
 __docformat__ = "numpy"
 
+import logging
+
+import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 from bs4.element import Tag
-import pandas as pd
+
+from gamestonk_terminal.decorators import log_start_end
+
+logger = logging.getLogger(__name__)
 
 
+@log_start_end(log=logger)
 def _scrape_defirate(url: str, current: bool = True) -> Tag:
     """Helper method that scrapes table object from defirate.com
     [Source: https://defirate.com/]
@@ -36,6 +43,7 @@ def _scrape_defirate(url: str, current: bool = True) -> Tag:
     return table
 
 
+@log_start_end(log=logger)
 def get_funding_rates(current: bool = True) -> pd.DataFrame:
     """Funding rates are transfer payments made between long and short positions on perpetual swap futures markets.
     They’re designed to keep contract prices consistent with the underlying asset.
@@ -63,6 +71,7 @@ def get_funding_rates(current: bool = True) -> pd.DataFrame:
     return pd.DataFrame(columns=headers, data=fundings)
 
 
+@log_start_end(log=logger)
 def get_lending_rates(current: bool = True) -> pd.DataFrame:
     """Decentralized Finance lending – or DeFi lending for short – allows users to supply cryptocurrencies
     in exchange for earning an annualized return.
@@ -92,6 +101,7 @@ def get_lending_rates(current: bool = True) -> pd.DataFrame:
     return pd.DataFrame(columns=headers, data=lendings)
 
 
+@log_start_end(log=logger)
 def get_borrow_rates(current: bool = True) -> pd.DataFrame:
     """One aspect of Decentralized Finance (DeFi) is the ability to take out a loan on top cryptocurrencies at any time
     in an entirely permissionless fashion.By using smart contracts, borrowers are able to lock collateral to protect

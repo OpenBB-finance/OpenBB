@@ -2,10 +2,17 @@
 __docformat__ = "numpy"
 
 import difflib
+import logging
+
 import yfinance as yf
+
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.stocks.sector_industry_analysis import financedatabase_model
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def get_country(ticker):
     country = "NA"
     data = yf.utils.get_json(f"https://finance.yahoo.com/quote/{ticker}")

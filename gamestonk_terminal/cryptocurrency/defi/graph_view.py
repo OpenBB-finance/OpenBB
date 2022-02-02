@@ -1,15 +1,21 @@
 """The Graph view"""
 __docformat__ = "numpy"
 
+import logging
 import os
-from gamestonk_terminal.cryptocurrency.defi import graph_model
-from gamestonk_terminal.helper_funcs import export_data, print_rich_table
+
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
     very_long_number_formatter,
 )
+from gamestonk_terminal.cryptocurrency.defi import graph_model
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.rich_config import console
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def display_uni_tokens(
     skip: int = 0,
     limit: int = 20,
@@ -59,6 +65,7 @@ def display_uni_tokens(
     )
 
 
+@log_start_end(log=logger)
 def display_uni_stats(export: str = "") -> None:
     """Displays base statistics about Uniswap DEX. [Source: https://thegraph.com/en/]
     [Source: https://thegraph.com/en/]
@@ -89,6 +96,7 @@ def display_uni_stats(export: str = "") -> None:
     )
 
 
+@log_start_end(log=logger)
 def display_recently_added(
     top: int = 20,
     days: int = 7,
@@ -152,6 +160,7 @@ def display_recently_added(
     )
 
 
+@log_start_end(log=logger)
 def display_uni_pools(
     top: int = 20, sortby: str = "volumeUSD", descend: bool = False, export: str = ""
 ) -> None:
@@ -189,6 +198,7 @@ def display_uni_pools(
     )
 
 
+@log_start_end(log=logger)
 def display_last_uni_swaps(
     top: int = 20, sortby: str = "timestamp", descend: bool = False, export: str = ""
 ) -> None:

@@ -1,0 +1,12 @@
+,Metric,Value
+0,id,btc-bitcoin
+1,name,Bitcoin
+2,symbol,BTC
+3,rank,1
+4,type,coin
+5,description,"Bitcoin is a cryptocurrency and worldwide payment system. It is the first
+decentralized digital currency, as the system works without a central bank or
+single administrator."
+7,proof_type,Proof of Work
+9,tags,"Segwit, Cryptocurrency, Proof Of Work, Payments, Sha256, Mining, Lightning
+Network"

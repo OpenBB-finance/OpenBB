@@ -1,13 +1,19 @@
 """Stocktwits View"""
 __docformat__ = "numpy"
 
+import logging
+
 import pandas as pd
 
 from gamestonk_terminal.common.behavioural_analysis import stocktwits_model
-from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import print_rich_table
+from gamestonk_terminal.rich_config import console
+
+logger = logging.getLogger(__name__)
 
 
+@log_start_end(log=logger)
 def display_bullbear(ticker: str):
     """
     Print bullbear sentiment based on last 30 messages on the board.
@@ -29,6 +35,7 @@ def display_bullbear(ticker: str):
     console.print("")
 
 
+@log_start_end(log=logger)
 def display_messages(ticker: str, limit: int = 30):
     """Print up to 30 of the last messages on the board. [Source: Stocktwits]
 
@@ -49,6 +56,7 @@ def display_messages(ticker: str, limit: int = 30):
     )
 
 
+@log_start_end(log=logger)
 def display_trending():
     """Show trensing stocks on stocktwits"""
     df_trending = stocktwits_model.get_trending()
@@ -61,6 +69,7 @@ def display_trending():
     console.print("")
 
 
+@log_start_end(log=logger)
 def display_stalker(user: str, limit: int = 10):
     """Show last posts for given user
 

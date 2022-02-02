@@ -1,11 +1,16 @@
 """ETH Gas Station view"""
+import logging
 import os
 
-from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.cryptocurrency.onchain.ethgasstation_model import get_gwei_fees
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.rich_config import console
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def display_gwei_fees(export: str) -> None:
     """Current gwei fees
     [Source: https://ethgasstation.info]

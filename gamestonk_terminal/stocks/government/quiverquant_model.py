@@ -1,17 +1,24 @@
 """Quiverquant Model"""
 __docformat__ = "numpy"
 
-import requests
-import pandas as pd
-from sklearn.linear_model import LinearRegression
-import numpy as np
-
 # Provided by Quiverquant guys to GST users
+import logging
+
+import numpy as np
+import pandas as pd
+import requests
+from sklearn.linear_model import LinearRegression
+
+from gamestonk_terminal.decorators import log_start_end
+
+logger = logging.getLogger(__name__)
+
 API_QUIVERQUANT_KEY = (
     "5cd2a65e96d0486efbe926a7cdbc1e8d8ab6c7b3"  # pragma: allowlist secret
 )
 
 
+@log_start_end(log=logger)
 def get_government_trading(gov_type: str, ticker: str = "") -> pd.DataFrame:
     """Returns the most recent transactions by members of government
 
@@ -87,6 +94,7 @@ def get_government_trading(gov_type: str, ticker: str = "") -> pd.DataFrame:
     return pd.DataFrame()
 
 
+@log_start_end(log=logger)
 def analyze_qtr_contracts(analysis: str, num: int = 5) -> pd.DataFrame:
     """Analyzes quarterly contracts by ticker
 
