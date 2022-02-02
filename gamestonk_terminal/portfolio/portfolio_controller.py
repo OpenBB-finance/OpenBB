@@ -73,7 +73,7 @@ class PortfolioController(BaseController):
             ]
         )
 
-        self.portname = ""
+        self.portfolio_name = ""
         self.portlist: List[str] = os.listdir(portfolios_path)
         self.portfolio = portfolio_model.Portfolio()
 
@@ -86,7 +86,7 @@ class PortfolioController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = """[menu]
+        help_text = f"""[menu]
 >   bro         brokers holdings, \t\t supports: robinhood, ally, degiro, coinbase
 >   po          portfolio optimization, \t optimal portfolio weights from pyportfolioopt
 >   pa          portfolio analysis, \t\t analyse portfolios[/menu]
@@ -98,11 +98,14 @@ class PortfolioController(BaseController):
     add         add a security to your portfolio
     init        initialize empty portfolio
     build       build portfolio from list of tickers and weights[/cmds]
+[info]
+Loaded:[/info] {self.portfolio_name or None}
 
 [info]Graphs:[/info][cmds]
     rolling     display rolling metrics of portfolio and benchmark
     rmr         graph your returns versus the market's returns
-    dd          display portfolio drawdown[/cmds]
+    dd          display portfolio drawdown
+    al          display allocation to given assets over period[/cmds]
         """
         # TODO: Clean up the reports inputs
         # TODO: Edit the allocation to allow the different asset classes
@@ -173,6 +176,7 @@ class PortfolioController(BaseController):
             self.portfolio = portfolio_model.Portfolio.from_csv(
                 os.path.join(portfolios_path, ns_parser.name)
             )
+            self.portfolio_name = ns_parser.name
             console.print()
 
     def call_save(self, other_args: List[str]):
@@ -282,7 +286,7 @@ class PortfolioController(BaseController):
         console.print(f"{inputs['Name']} successfully added\n")
 
     def call_build(self, other_args: List[str]):
-        """Process build  ommand"""
+        """Process build command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -343,6 +347,21 @@ class PortfolioController(BaseController):
                 list_of_types=types,
                 amount=ns_parser.amount,
             )
+        console.print()
+
+    def call_al(self, other_args: List[str]):
+        """Process al command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="al",
+            description="Display allocation",
+        )
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
+        )
+        if ns_parser:
+            portfolio_view.display_allocation(self.portfolio, ns_parser.export)
         console.print()
 
     # def call_ar(self, other_args: List[str]):

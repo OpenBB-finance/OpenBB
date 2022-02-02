@@ -29,7 +29,6 @@ from gamestonk_terminal.helper_funcs import (
     get_rf,
     plot_autoscale,
     export_data,
-    print_rich_table,
 )
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.portfolio.portfolio_optimization import optimizer_model
@@ -103,6 +102,45 @@ def display_returns_vs_bench(
         fig.autofmt_xdate()
         fig.tight_layout()
         plt.show()
+
+
+@log_start_end(log=logger)
+def display_allocation(portfolio: portfolio_model.Portfolio, export: str = ""):
+    """Display allocation of assets vs time
+
+    Parameters
+    ----------
+    portfolio: Portfolio
+        Portfolio object with trades loaded
+    export: str
+        Format to export plot
+    """
+    try:
+        portfolio.generate_holdings_from_trades()
+        all_holdings = pd.concat(
+            [
+                portfolio.portfolio["StockHoldings"],
+                portfolio.portfolio["ETFHoldings"],
+                portfolio.portfolio["CryptoHoldings"],
+            ],
+            axis=1,
+        )
+        all_holdings = all_holdings.drop(columns=["temp"])
+        fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        all_holdings.plot(ax=ax)
+        ax.set_title("Individual Holdings")
+        ax.legend(loc="upper left")
+        fig.tight_layout(pad=2)
+        if gtff.USE_ION:
+            plt.ion()
+    except Exception as e:
+        print(e)
+    plt.show()
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "rolling",
+    )
 
 
 @log_start_end(log=logger)
@@ -371,39 +409,39 @@ def plot_ef(
     return ImageReader(imgdata)
 
 
-@log_start_end(log=logger)
-def display_allocation(data: pd.DataFrame, graph: bool):
-    """Displays allocation
-    Parameters
-    ----------
-    data: pd.DataFrame
-        The portfolio allocation dataframe
-    graph: bool
-        If pie chart shall be displayed with table"""
-
-    print_rich_table(data, headers=list(data.columns), title="Allocation")
-    console.print("")
-
-    if graph:
-        graph_data = data[data["pct_allocation"] >= 5].copy()
-        if not graph_data.empty:
-            graph_data.loc["Other"] = [
-                "NA",
-                data["value"].sum() - graph_data["value"].sum(),
-                100 - graph_data["value"].sum(),
-            ]
-            labels = graph_data.index.values
-            sizes = graph_data["value"].to_list()
-        else:
-            labels = data.index.values
-            sizes = data["value"].to_list()
-        fig, ax = plt.subplots()
-        ax.pie(sizes, labels=labels, autopct="%1.1f%%", startangle=90)
-        ax.axis("equal")
-        ax.set_title("Portfolio Allocation")
-        fig.set_tight_layout(True)
-
-        plt.show()
+# @log_start_end(log=logger)
+# def display_allocation2(data: pd.DataFrame, graph: bool):
+#     """Displays allocation
+#     Parameters
+#     ----------
+#     data: pd.DataFrame
+#         The portfolio allocation dataframe
+#     graph: bool
+#         If pie chart shall be displayed with table"""
+#
+#     print_rich_table(data, headers=list(data.columns), title="Allocation")
+#     console.print("")
+#
+#     if graph:
+#         graph_data = data[data["pct_allocation"] >= 5].copy()
+#         if not graph_data.empty:
+#             graph_data.loc["Other"] = [
+#                 "NA",
+#                 data["value"].sum() - graph_data["value"].sum(),
+#                 100 - graph_data["value"].sum(),
+#             ]
+#             labels = graph_data.index.values
+#             sizes = graph_data["value"].to_list()
+#         else:
+#             labels = data.index.values
+#             sizes = data["value"].to_list()
+#         fig, ax = plt.subplots()
+#         ax.pie(sizes, labels=labels, autopct="%1.1f%%", startangle=90)
+#         ax.axis("equal")
+#         ax.set_title("Portfolio Allocation")
+#         fig.set_tight_layout(True)
+#
+#         plt.show()
 
 
 @log_start_end(log=logger)
