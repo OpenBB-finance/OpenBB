@@ -1,4 +1,5 @@
 crypto
+disc
 cgtop
 cgtop stablecoins
 cgtrending

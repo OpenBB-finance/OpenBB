@@ -1,0 +1,48 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: GET
+    uri: https://api.finbrain.tech/v0/sentiments/PM
+  response:
+    body:
+      string: '{"ticker":"PM","name":"Philip Morris International","sentimentAnalysis":{"2022-01-31":"0.427","2022-01-28":"0.417","2022-01-27":"0.472","2022-01-26":"0.468","2022-01-25":"0.455","2022-01-24":"0.394","2022-01-21":"0.355","2022-01-20":"0.337","2022-01-19":"0.349","2022-01-18":"0.339"}}'
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '284'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 01 Feb 2022 00:24:26 GMT
+      X-Amzn-Trace-Id:
+      - Root=1-61f87dba-0ac57bea2a7cd63e2a4e6f3d;Sampled=0
+      access-control-allow-origin:
+      - '*'
+      etag:
+      - W/"11c-U4hUyLPKpaSBEopSrkjvOJ5Dwxg"
+      x-amz-apigw-id:
+      - M1iVKGTJIAMFiWA=
+      x-amzn-Remapped-connection:
+      - close
+      x-amzn-Remapped-content-length:
+      - '284'
+      x-amzn-Remapped-date:
+      - Tue, 01 Feb 2022 00:24:26 GMT
+      x-amzn-RequestId:
+      - 668ad0af-f6c2-474b-8abf-f27fadc9a7b1
+      x-powered-by:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1

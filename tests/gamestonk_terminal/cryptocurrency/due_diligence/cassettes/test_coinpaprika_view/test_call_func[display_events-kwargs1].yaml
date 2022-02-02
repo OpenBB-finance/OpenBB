@@ -1,0 +1,120 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: GET
+    uri: https://api.coinpaprika.com/v1/coins/btc-bitcoin/events/
+  response:
+    body:
+      string: '<a href="/v1/coins/btc-bitcoin/events">Moved Permanently</a>.
+
+
+        '
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      CF-Cache-Status:
+      - EXPIRED
+      CF-RAY:
+      - 6d5ccbdcddd73a29-CDG
+      Cache-Control:
+      - public, max-age=60, s-maxage=60, stale-while-revalidate=10, stale-if-error=600
+      Connection:
+      - keep-alive
+      Content-Type:
+      - text/html; charset=utf-8
+      Date:
+      - Sun, 30 Jan 2022 18:34:47 GMT
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Location:
+      - /v1/coins/btc-bitcoin/events
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      alt-svc:
+      - h3=":443"; ma=86400, h3-29=":443"; ma=86400
+    status:
+      code: 301
+      message: Moved Permanently
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: GET
+    uri: https://api.coinpaprika.com/v1/coins/btc-bitcoin/events
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAA/7SV227bRhCGX2VA9FIjUZRFiwKMwBbUJEibFDHbID3AGO6OyK3IXWJ3KdUpCuQd
+        etXXy5MUpM622xhOa8AXIufw7/cPZ3/6PVAymAbxaDwco2OB7Be4Is1iiZKFcsrooBdI8hxMgygc
+        TjA8x2GYDqNpGE7D8Mft2xtvgqluyrIXaKra4Ov5DGGefg0/kJ6LJRyXYyesqn37axoEvUC5G2H0
+        gi1rwcF0QaXjXlAqvQymQeF97aaDwXq97ndpRhuvhCLXF6YaVGwFSYMrKo1lN2hPkCkvjNLoLXnS
+        WBunMlUqSZIdUqbYenKDoBfU1pjFjaoo55tNu/YMf/R2XKJkPEbX1GzxSOAdIAlGkzQKHwCyDxiF
+        6TA+BOwQtYVhdlL4BM2rdy9nPXilvChYswWEd+TZlsb04M3rHsxIk6Q+RAlcc+25ytj2oG16H6q3
+        zX2mWWnEUhSkdHfIQ3yH9kFA+1znySvRb0HXVFu1pC7JeWMp54GQesAr1n6T7QZnZ5M4Gfd/rfPg
+        AHh8Nk7woAKpqvfuHdSgWyv/gW1JWt6hPwwxTNIw+Uf6m4Dh5B79q31X+LkJwyiGq03jI0fg+rTx
+        iTtpweBYGC3hIBWMzUmrDywhu4XrSpWM899qA8JUNelbUBqes+YV9cAXDPPGmppJw0Jpz6KAosn6
+        0JY+qrlWZQlUOgMLJt9Y7lIlV+aD0dyHR7p9RLGfiX7njhs8a3x140xjBV/U9uab9xsa7dOKpWqq
+        i1I5r3R+eC6oqknl+uKO+f/twMRxGCXj5HRikihKEvQFo7C3tTeYky/YKp0fD0Y0xHCE0VkaTh4e
+        jG1AnEaje4ORvpjD7O3779I38PwyfTF/+/L18y/aWpapXHXLrzuw5QXbZ7l1iwsdx+vEfX4RJVF8
+        Ptp9GA6bWphK6Rw9tYkemzq3JBlJS1wXt6g8VuQ9W4cLYztcmv3a2OVdSuN2m4cPLa+Tbb79ND59
+        /MvBrjukm+6w7Q6kJayLW1Aett1hYWw3q0fdn4Sxbe655NxSXXQUNa/dYLcqvhTJZ/Gfx2Mkt0Qu
+        0VG5ImlsV4bkSglG0WSErnE1a+lQmrIki4JcgZLb28c7VBoz0kuHsmH0BhuHjrRoObi7psQ4HD7C
+        lEu3hHkJ11tBHeyNoCnMmoxgpwg2iqBVBDtF7SbqFIFsGLyB76/hRNHT5913DmWNU5qdG4yjOIrH
+        D0JyJxwecSW3Vpyj0Yxm0ZlolSjY+f2tsS6o5A53odrVcouZafLC43A0Cbu/zgovkColsSK7ZI++
+        sZVRJZI1OjPuqY680Qxm0U38242u/aXyrtPVQn+x0QVXnS74ajia9MIwbP/b11fpDC4rJeHbThqk
+        G2nw6eOfcGmNvtrKe5I9u/N1Bv1fFAdJGI7+xctf/g4AAP///qv74XgKAAA=
+    headers:
+      Accept-Ranges:
+      - bytes
+      Access-Control-Allow-Origin:
+      - '*'
+      CF-Cache-Status:
+      - EXPIRED
+      CF-RAY:
+      - 6d5ccbdd6edf3a29-CDG
+      Cache-Control:
+      - public, max-age=60, s-maxage=60, stale-while-revalidate=10, stale-if-error=600
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '1070'
+      Content-Type:
+      - application/json
+      Date:
+      - Sun, 30 Jan 2022 18:34:47 GMT
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Last-Modified:
+      - Sun, 30 Jan 2022 18:32:42 GMT
+      Server:
+      - cloudflare
+      Vary:
+      - Accept-Encoding
+      alt-svc:
+      - h3=":443"; ma=86400, h3-29=":443"; ma=86400
+    status:
+      code: 200
+      message: OK
+version: 1

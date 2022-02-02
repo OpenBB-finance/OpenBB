@@ -1,23 +1,28 @@
 """Investpy View"""
 __docformat__ = "numpy"
 
+import logging
 import os
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from gamestonk_terminal.rich_config import console
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_plot import PLOT_DPI
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
     export_data,
     plot_autoscale,
     print_rich_table,
 )
 from gamestonk_terminal.mutual_funds import investpy_model
+from gamestonk_terminal.rich_config import console
+
+logger = logging.getLogger(__name__)
 
 
+@log_start_end(log=logger)
 def display_search(
     by: str = "name",
     value: str = "",
@@ -65,6 +70,7 @@ def display_search(
     console.print("\n")
 
 
+@log_start_end(log=logger)
 def display_overview(country: str = "united states", limit: int = 10, export: str = ""):
     """Displays an overview of the main funds from a country.
 
@@ -92,6 +98,7 @@ def display_overview(country: str = "united states", limit: int = 10, export: st
     console.print("\n")
 
 
+@log_start_end(log=logger)
 def display_fund_info(fund_name: str, country: str = "united states"):
     """Display fund infomration.  Finds name from symbol first if name is false
 
@@ -117,6 +124,7 @@ def display_fund_info(fund_name: str, country: str = "united states"):
     console.print("\n")
 
 
+@log_start_end(log=logger)
 def display_historical(data: pd.DataFrame, fund: str = "", export: str = ""):
     """
 

@@ -1,10 +1,17 @@
 """Finviz Model"""
 __docformat__ = "numpy"
 
+import logging
+
 import finviz
 import pandas as pd
 
+from gamestonk_terminal.decorators import log_start_end
 
+logger = logging.getLogger(__name__)
+
+
+@log_start_end(log=logger)
 def get_data(ticker: str) -> pd.DataFrame:
     """Get fundamental data from finviz
 

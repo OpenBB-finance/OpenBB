@@ -1,12 +1,20 @@
 """Eclect.us model"""
 __docformat__ = "numpy"
 
+import logging
 from collections import OrderedDict
+
 import requests
+
+from gamestonk_terminal.decorators import log_start_end
 
 # pylint: disable=R1718
 
 
+logger = logging.getLogger(__name__)
+
+
+@log_start_end(log=logger)
 def get_filings_analysis(ticker: str) -> str:
     """Save time reading SEC filings with the help of machine learning. [Source: https://eclect.us]
 

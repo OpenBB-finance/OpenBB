@@ -1,23 +1,22 @@
 """CoinGecko view"""
 __docformat__ = "numpy"
-# pylint: disable=C0209
+
+import logging
 import os
 from typing import Union
 from pandas.plotting import register_matplotlib_converters
-from gamestonk_terminal.helper_funcs import (
-    export_data,
-    print_rich_table,
-)
 import gamestonk_terminal.cryptocurrency.due_diligence.pycoingecko_model as gecko
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import wrap_text_in_df
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.rich_config import console
+
+logger = logging.getLogger(__name__)
 
 register_matplotlib_converters()
 
-# pylint: disable=inconsistent-return-statements
-# pylint: disable=R0904, C0302
 
-
+@log_start_end(log=logger)
 def display_coin_potential_returns(
     main_coin: str,
     vs: Union[str, None] = None,
@@ -41,11 +40,13 @@ def display_coin_potential_returns(
         Export dataframe data to csv,json,xlsx file
     """
     df = gecko.get_coin_potential_returns(main_coin, vs, top, price)
+
     df["Potential Market Cap ($)"] = df.apply(
-        lambda x: "{:,}".format(int(x["Potential Market Cap ($)"])), axis=1
+        lambda x: f"{int(x['Potential Market Cap ($)']):n}", axis=1
     )
+
     df["Current Market Cap ($)"] = df.apply(
-        lambda x: "{:,}".format(int(x["Current Market Cap ($)"])), axis=1
+        lambda x: f"{int(x['Current Market Cap ($)']):n}", axis=1
     )
 
     print_rich_table(
@@ -61,6 +62,7 @@ def display_coin_potential_returns(
     )
 
 
+@log_start_end(log=logger)
 def display_info(symbol: str, export: str) -> None:
     """Shows basic information about loaded coin. [Source: CoinGecko]
 
@@ -74,7 +76,7 @@ def display_info(symbol: str, export: str) -> None:
 
     coin = gecko.Coin(symbol)
 
-    df = wrap_text_in_df(coin.get_base_info, w=80)
+    df = wrap_text_in_df(coin.get_base_info(), w=80)
 
     print_rich_table(
         df, headers=list(df.columns), show_index=False, title="Basic Coin Information"
@@ -89,6 +91,7 @@ def display_info(symbol: str, export: str) -> None:
     )
 
 
+@log_start_end(log=logger)
 def display_web(symbol: str, export: str) -> None:
     """Shows found websites corresponding to loaded coin. [Source: CoinGecko]
 
@@ -102,7 +105,7 @@ def display_web(symbol: str, export: str) -> None:
 
     coin = gecko.Coin(symbol)
 
-    df = coin.get_websites
+    df = coin.get_websites()
 
     print_rich_table(
         df, headers=list(df.columns), show_index=False, title="Websites for Loaded Coin"
@@ -117,6 +120,7 @@ def display_web(symbol: str, export: str) -> None:
     )
 
 
+@log_start_end(log=logger)
 def display_social(symbol: str, export: str) -> None:
     """Shows social media corresponding to loaded coin. [Source: CoinGecko]
 
@@ -128,7 +132,7 @@ def display_social(symbol: str, export: str) -> None:
         Export dataframe data to csv,json,xlsx file
     """
     coin = gecko.Coin(symbol)
-    df = coin.get_social_media
+    df = coin.get_social_media()
 
     print_rich_table(
         df,
@@ -146,6 +150,7 @@ def display_social(symbol: str, export: str) -> None:
     )
 
 
+@log_start_end(log=logger)
 def display_dev(symbol: str, export: str) -> None:
     """Shows developers data for loaded coin. [Source: CoinGecko]
 
@@ -158,7 +163,7 @@ def display_dev(symbol: str, export: str) -> None:
     """
     coin = gecko.Coin(symbol)
 
-    df = coin.get_developers_data
+    df = coin.get_developers_data()
 
     print_rich_table(
         df,
@@ -176,6 +181,7 @@ def display_dev(symbol: str, export: str) -> None:
     )
 
 
+@log_start_end(log=logger)
 def display_ath(symbol: str, currency: str, export: str) -> None:
     """Shows all time high data for loaded coin. [Source: CoinGecko]
 
@@ -204,6 +210,7 @@ def display_ath(symbol: str, currency: str, export: str) -> None:
     )
 
 
+@log_start_end(log=logger)
 def display_atl(symbol: str, currency: str, export: str) -> None:
     """Shows all time low data for loaded coin. [Source: CoinGecko]
 
@@ -232,6 +239,7 @@ def display_atl(symbol: str, currency: str, export: str) -> None:
     )
 
 
+@log_start_end(log=logger)
 def display_score(symbol: str, export: str) -> None:
     """Shows different kind of scores for loaded coin. [Source: CoinGecko]
 
@@ -244,7 +252,7 @@ def display_score(symbol: str, export: str) -> None:
     """
     coin = gecko.Coin(symbol)
 
-    df = coin.get_scores
+    df = coin.get_scores()
 
     print_rich_table(
         df,
@@ -262,6 +270,7 @@ def display_score(symbol: str, export: str) -> None:
     )
 
 
+@log_start_end(log=logger)
 def display_bc(symbol: str, export: str) -> None:
     """Shows urls to blockchain explorers. [Source: CoinGecko]
 
@@ -274,7 +283,7 @@ def display_bc(symbol: str, export: str) -> None:
     """
     coin = gecko.Coin(symbol)
 
-    df = coin.get_blockchain_explorers
+    df = coin.get_blockchain_explorers()
 
     print_rich_table(
         df, headers=list(df.columns), show_index=False, title="Blockchain URLs"
@@ -289,6 +298,7 @@ def display_bc(symbol: str, export: str) -> None:
     )
 
 
+@log_start_end(log=logger)
 def display_market(symbol: str, export: str) -> None:
     """Shows market data for loaded coin. [Source: CoinGecko]
 
@@ -301,7 +311,7 @@ def display_market(symbol: str, export: str) -> None:
     """
     coin = gecko.Coin(symbol)
 
-    df = coin.get_market_data
+    df = coin.get_market_data()
 
     print_rich_table(
         df, headers=list(df.columns), show_index=False, title="Market Data"

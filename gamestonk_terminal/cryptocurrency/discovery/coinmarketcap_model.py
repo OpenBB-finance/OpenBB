@@ -1,13 +1,20 @@
 """CoinMarketCap model"""
 __docformat__ = "numpy"
 
+import logging
+
 import pandas as pd
 from coinmarketcapapi import CoinMarketCapAPI
+
 import gamestonk_terminal.config_terminal as cfg
+from gamestonk_terminal.decorators import log_start_end
+
+logger = logging.getLogger(__name__)
 
 FILTERS = ["Symbol", "CMC_Rank", "LastPrice", "DayPctChange", "MarketCap"]
 
 
+@log_start_end(log=logger)
 def get_cmc_top_n() -> pd.DataFrame:
     """Shows top n coins. [Source: CoinMarketCap]
 

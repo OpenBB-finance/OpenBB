@@ -1,15 +1,20 @@
 """ARK View"""
 __docformat__ = "numpy"
 
+import logging
 import os
 
 import pandas as pd
 
-from gamestonk_terminal.stocks.due_diligence import ark_model
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.stocks.due_diligence import ark_model
+
+logger = logging.getLogger(__name__)
 
 
+@log_start_end(log=logger)
 def display_ark_trades(
     ticker: str, num: int = 20, export: str = "", show_ticker: bool = False
 ):

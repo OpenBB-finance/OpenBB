@@ -1,14 +1,21 @@
 """Monte Carlo Model"""
 __docformat__ = "numpy"
 
+import logging
 from typing import Union
-import pandas as pd
+
 import numpy as np
+import pandas as pd
 from scipy.stats import norm
+
+from gamestonk_terminal.decorators import log_start_end
+
+logger = logging.getLogger(__name__)
 
 DISTRIBUTIONS = ["normal", "lognormal"]
 
 
+@log_start_end(log=logger)
 def get_mc_brownian(
     data: Union[pd.Series, np.ndarray], n_future: int, n_sims: int, use_log=True
 ) -> np.ndarray:

@@ -1,17 +1,20 @@
 """CoinPaprika view"""
 __docformat__ = "numpy"
 
+import logging
 import os
+
 from pandas.plotting import register_matplotlib_converters
-from gamestonk_terminal.helper_funcs import (
-    export_data,
-    print_rich_table,
-)
-from gamestonk_terminal.cryptocurrency.due_diligence import coinpaprika_model
+
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
     long_number_format_with_type_check,
 )
+from gamestonk_terminal.cryptocurrency.due_diligence import coinpaprika_model
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.rich_config import console
+
+logger = logging.getLogger(__name__)
 
 register_matplotlib_converters()
 
@@ -79,8 +82,13 @@ CURRENCIES = [
 ]
 
 
+@log_start_end(log=logger)
 def display_twitter(
-    coin_id: str, top: int, sortby: str, descend: bool, export: str
+    coin_id: str = "btc-bitcoin",
+    top: int = 10,
+    sortby: str = "date",
+    descend: bool = False,
+    export: str = "",
 ) -> None:
     """Get twitter timeline for given coin id. Not more than last 50 tweets [Source: CoinPaprika]
 
@@ -125,8 +133,14 @@ def display_twitter(
     )
 
 
+@log_start_end(log=logger)
 def display_events(
-    coin_id: str, top: int, sortby: str, descend: bool, links: bool, export: str
+    coin_id: str = "btc-bitcoin",
+    top: int = 10,
+    sortby: str = "date",
+    descend: bool = False,
+    links: bool = False,
+    export: str = "",
 ) -> None:
     """Get all events for given coin id. [Source: CoinPaprika]
 
@@ -174,8 +188,13 @@ def display_events(
     )
 
 
+@log_start_end(log=logger)
 def display_exchanges(
-    coin_id: str, top: int, sortby: str, descend: bool, export: str
+    coin_id: str = "btc-bitcoin",
+    top: int = 10,
+    sortby: str = "adjusted_volume_24h_share",
+    descend: bool = False,
+    export: str = "",
 ) -> None:
     """Get all exchanges for given coin id. [Source: CoinPaprika]
 
@@ -214,13 +233,14 @@ def display_exchanges(
     )
 
 
+@log_start_end(log=logger)
 def display_markets(
-    coin_id: str,
-    currency: str,
-    top: int,
-    sortby: str,
-    descend: bool,
-    links: bool,
+    coin_id: str = "btc-bitcoin",
+    currency: str = "USD",
+    top: int = 20,
+    sortby: str = "pct_volume_share",
+    descend: bool = False,
+    links: bool = False,
     export: str = "",
 ) -> None:
     """Get all markets for given coin id. [Source: CoinPaprika]
@@ -274,7 +294,12 @@ def display_markets(
     )
 
 
-def display_price_supply(coin_id: str, currency: str, export: str) -> None:
+@log_start_end(log=logger)
+def display_price_supply(
+    coin_id: str = "btc-bitcoin",
+    currency: str = "USD",
+    export: str = "",
+) -> None:
     """Get ticker information for single coin [Source: CoinPaprika]
 
     Parameters
@@ -309,7 +334,11 @@ def display_price_supply(coin_id: str, currency: str, export: str) -> None:
     )
 
 
-def display_basic(coin_id: str, export: str) -> None:
+@log_start_end(log=logger)
+def display_basic(
+    coin_id: str = "btc-bitcoin",
+    export: str = "",
+) -> None:
     """Get basic information for coin. Like:
         name, symbol, rank, type, description, platform, proof_type, contract, tags, parent.  [Source: CoinPaprika]
 

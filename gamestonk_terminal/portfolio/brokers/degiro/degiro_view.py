@@ -1,8 +1,9 @@
 # IMPORTATION THIRDPARTY
+import logging
 from argparse import Namespace
+
 import pandas as pd
 from degiro_connector.core.helpers import pb_handler
-
 from degiro_connector.trading.models.trading_pb2 import (
     Credentials,
     LatestNews,
@@ -13,11 +14,16 @@ from degiro_connector.trading.models.trading_pb2 import (
     Update,
 )
 
+from gamestonk_terminal.decorators import log_start_end
+
 # IMPORTATION INTERNAL
 from gamestonk_terminal.portfolio.brokers.degiro.degiro_model import DegiroModel
 from gamestonk_terminal.rich_config import console
 
 # pylint: disable=no-member
+
+
+logger = logging.getLogger(__name__)
 
 
 class DegiroView:
@@ -38,10 +44,12 @@ class DegiroView:
         "stop-loss": Order.OrderType.STOP_LOSS,
     }
 
+    @log_start_end(log=logger)
     def __init__(self):
         self.__degiro_model = DegiroModel()
 
     @staticmethod
+    @log_start_end(log=logger)
     def help_display():
         console.print(
             "\nDegiro:\n"
@@ -61,6 +69,7 @@ class DegiroView:
             "   topnews      view top news preview\n"
         )
 
+    @log_start_end(log=logger)
     def cancel(self, ns_parser: Namespace):
         # GET ATTRIBUTES
         degiro_model = self.__degiro_model
@@ -75,13 +84,16 @@ class DegiroView:
             DegiroView.__cancel_display_fail(order_id=order_id)
 
     @staticmethod
+    @log_start_end(log=logger)
     def __cancel_display_success(order_id: str):
         console.print(f"Following `Order` was canceled : {order_id}")
 
     @staticmethod
+    @log_start_end(log=logger)
     def __cancel_display_fail(order_id: str):
         console.print(f"Following `Order` cancellation failed : {order_id}")
 
+    @log_start_end(log=logger)
     def companynews(self, ns_parser: Namespace):
         # GET ATTRIBUTES
         degiro_model = self.__degiro_model
@@ -93,6 +105,7 @@ class DegiroView:
         DegiroView.__companynews_display(news_by_company=news_by_company)
 
     @staticmethod
+    @log_start_end(log=logger)
     def __companynews_display(news_by_company: NewsByCompany):
         news_dict = pb_handler.message_to_dict(
             message=news_by_company,
@@ -104,6 +117,7 @@ class DegiroView:
             console.print("isins", article["isins"])
             console.print("---")
 
+    @log_start_end(log=logger)
     def create(self, ns_parser: Namespace):
         # GET CONSTANTS
         ORDER_ACTION = self.ORDER_ACTION
@@ -160,10 +174,12 @@ class DegiroView:
             DegiroView.__create_display_canceled()
 
     @staticmethod
+    @log_start_end(log=logger)
     def __create_display_canceled():
         console.print("`Order` creation canceled.\n")
 
     @staticmethod
+    @log_start_end(log=logger)
     def __create_display_check(
         order: Order,
         checking_response: Order.CheckingResponse,
@@ -193,6 +209,7 @@ class DegiroView:
         )
 
     @staticmethod
+    @log_start_end(log=logger)
     def __create_display_created_order(order: Order):
         order_dict = pb_handler.message_to_dict(message=order)
         order_df = pd.DataFrame([order_dict])
@@ -212,9 +229,11 @@ class DegiroView:
         )
 
     @staticmethod
+    @log_start_end(log=logger)
     def __create_message_ask_confirmation():
         return "\nDo you confirm this `Order`?\n"
 
+    @log_start_end(log=logger)
     def hold(self, ns_parser: Namespace):
         _ = ns_parser
 
@@ -230,10 +249,12 @@ class DegiroView:
             DegiroView.__hold_display_positions(positions=positions)
 
     @staticmethod
+    @log_start_end(log=logger)
     def __hold_display_no_position():
         console.print("0 position found.")
 
     @staticmethod
+    @log_start_end(log=logger)
     def __hold_display_positions(positions: pd.DataFrame):
         selected_columns = [
             "id",
@@ -261,6 +282,7 @@ class DegiroView:
 
         console.print(fmt_positions)
 
+    @log_start_end(log=logger)
     def lastnews(self, ns_parser: Namespace):
         # GET ATTRIBUTES
         degiro_model = self.__degiro_model
@@ -270,6 +292,7 @@ class DegiroView:
         DegiroView.__lastnews_display(latest_news=latest_news)
 
     @staticmethod
+    @log_start_end(log=logger)
     def __lastnews_display(latest_news: LatestNews):
         news_dict = pb_handler.message_to_dict(
             message=latest_news,
@@ -280,6 +303,7 @@ class DegiroView:
             console.print("content", article["content"])
             console.print("---")
 
+    @log_start_end(log=logger)
     def login(self, ns_parser: Namespace):
         # GET ATTRIBUTES
         degiro_model = self.__degiro_model
@@ -304,9 +328,11 @@ class DegiroView:
         DegiroView.__login_display_success()
 
     @staticmethod
+    @log_start_end(log=logger)
     def __login_display_success():
         console.print("You are now logged in !")
 
+    @log_start_end(log=logger)
     def logout(self, ns_parser: Namespace):
         _ = ns_parser
 
@@ -320,13 +346,16 @@ class DegiroView:
             DegiroView.__logout_display_fail()
 
     @staticmethod
+    @log_start_end(log=logger)
     def __logout_display_fail():
         console.print("Logged out failed.")
 
     @staticmethod
+    @log_start_end(log=logger)
     def __logout_display_success():
         console.print("You are now logged out !")
 
+    @log_start_end(log=logger)
     def lookup(self, ns_parser: Namespace):
         # GET ATTRIBUTES
         degiro_model = self.__degiro_model
@@ -345,6 +374,7 @@ class DegiroView:
             DegiroView.__lookup_display_no_result()
 
     @staticmethod
+    @log_start_end(log=logger)
     def __lookup_display(product_search: ProductSearch):
         products_dict = pb_handler.message_to_dict(
             message=product_search,
@@ -365,9 +395,11 @@ class DegiroView:
         console.print(products_selected)
 
     @staticmethod
+    @log_start_end(log=logger)
     def __lookup_display_no_result():
         console.print("0 result found.")
 
+    @log_start_end(log=logger)
     def pending(self, ns_parser: Namespace):
         _ = ns_parser
 
@@ -384,6 +416,7 @@ class DegiroView:
             DegiroView.__pending_display_no_result()
 
     @staticmethod
+    @log_start_end(log=logger)
     def __pending_display(orders: Update.Orders):
         orders_dict = pb_handler.message_to_dict(message=orders)
         orders_df = pd.DataFrame(orders_dict["values"])
@@ -402,9 +435,11 @@ class DegiroView:
         console.print(orders_df[orders_df.columns.intersection(fields)])
 
     @staticmethod
+    @log_start_end(log=logger)
     def __pending_display_no_result():
         console.print("No pending orders.")
 
+    @log_start_end(log=logger)
     def topnews(self, ns_parser: Namespace):
         _ = ns_parser
 
@@ -418,6 +453,7 @@ class DegiroView:
         DegiroView.__topnews_display(top_news=top_news)
 
     @staticmethod
+    @log_start_end(log=logger)
     def __topnews_display(top_news: TopNewsPreview):
         news_dict = pb_handler.message_to_dict(
             message=top_news,
@@ -430,6 +466,7 @@ class DegiroView:
             console.print("brief", article["brief"])
             console.print("---")
 
+    @log_start_end(log=logger)
     def update(self, ns_parser: Namespace):
         # GET ATTRIBUTES
         degiro_model = self.__degiro_model
@@ -451,13 +488,16 @@ class DegiroView:
                 DegiroView.__update_display_fail()
 
     @staticmethod
+    @log_start_end(log=logger)
     def __update_display_fail():
         console.print("`Order` update failed.")
 
     @staticmethod
+    @log_start_end(log=logger)
     def __update_display_not_found(order_id: str):
         console.print("The following `order` was not found:", order_id)
 
     @staticmethod
+    @log_start_end(log=logger)
     def __update_display_success():
         console.print("`Order` updated .")

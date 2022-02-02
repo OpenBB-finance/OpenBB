@@ -1,14 +1,21 @@
-import json
 import datetime as dt
+import json
+import logging
+
 import pandas as pd
 import requests
+
 from gamestonk_terminal import config_terminal as cfg
+from gamestonk_terminal.decorators import log_start_end
+
+logger = logging.getLogger(__name__)
 
 api_url = "https://open-api.coinglass.com/api/pro/v1/"
 
 INTERVALS = [0, 1, 2, 4]
 
 
+@log_start_end(log=logger)
 def get_open_interest_per_exchange(symbol: str, interval: int) -> pd.DataFrame:
     """Returns open interest by exchange for a certain symbol
     [Source: https://coinglass.github.io/API-Reference/]
