@@ -75,13 +75,16 @@ rich = "^10.16.1"
 investpy = "^1.0.7"
 dnspython = "^2.1.0"
 numpy = "1.21.2"
-discord = {version = "^1.7.3", optional = true}
-discord-components = {version = "^2.1.2", optional = true}
 pyimgur = {version = "^0.6.0", optional = true}
-python-dotenv = {version = "^0.19.2", optional = true}
+python-dotenv = "^0.19.2"
 Pygments = "2.11.2"
 libclang = {version = "<12.0.0", optional = true}
 tensorflow = {version = "^2.7.0", optional = true}
+df2img = {version = "^0.2.4", optional = true}
+fastapi = {version = "^0.73.0", optional = true}
+uvicorn = {version = "^0.17.1", optional = true}
+disnake = {version = "^2.3.0", optional = true}
+PyNaCl = {version = "^1.5.0", optional = true}
 
 
 
@@ -112,7 +115,7 @@ pandas-market-calendars = "^3.2"
 
 [tool.poetry.extras]
 prediction = ["tensorflow"]
-discord = ["discord", "discord_components", "pyimgur", "python-dotenv"]
+discord = ["pyimgur", "df2img", "fastapi", "uvicorn", "disnake", "PyNaCl"]
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
