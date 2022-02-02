@@ -235,7 +235,6 @@ class Portfolio:
         self.empty = True
         self.rf = rf
         if not trades.empty.to_list():
-            print(trades.Name)
             if "cash" not in trades.Name:
                 console.print(
                     "[red]No initial cash deposit.  Calculations may be off as this assumes trading from a "
