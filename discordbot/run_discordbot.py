@@ -1,11 +1,10 @@
-import asyncio
 import difflib
 import os
 import sys
 import traceback
 
 import disnake
-import disnake.ext.commands as commands
+from disnake.ext import commands
 from fastapi import FastAPI
 
 import config_discordbot as cfg
@@ -19,7 +18,10 @@ async def read_root():
     return {"Hello": str(gst_bot.user)}
 
 
-activity = disnake.Activity(type=disnake.ActivityType.watching, name="Gamestonk Terminal: https://github.com/GamestonkTerminal/GamestonkTerminal")
+activity = disnake.Activity(
+    type=disnake.ActivityType.watching,
+    name="Gamestonk Terminal: https://github.com/GamestonkTerminal/GamestonkTerminal",
+)
 
 
 def fancy_traceback(exc: Exception) -> str:
@@ -95,10 +97,9 @@ class GSTBot(commands.Bot):
             color=disnake.Color.red(),
         )
         if inter.response._responded:
-            send = inter.channel.send
+            await inter.channel.send(embed=embed, delete_after=30.0)
         else:
-            send = inter.response.send_message
-        await send(embed=embed, delete_after=30.0)
+            await inter.response.send_message(embed=embed, delete_after=30.0)
 
     async def on_user_command_error(
         self,
@@ -111,10 +112,9 @@ class GSTBot(commands.Bot):
             color=disnake.Color.red(),
         )
         if inter.response._responded:
-            send = inter.channel.send
+            await inter.channel.send(embed=embed, delete_after=30.0)
         else:
-            send = inter.response.send_message
-        await send(embed=embed, delete_after=30.0)
+            await inter.response.send_message(embed=embed, delete_after=30.0)
 
     async def on_message_command_error(
         self,
@@ -127,10 +127,9 @@ class GSTBot(commands.Bot):
             color=disnake.Color.red(),
         )
         if inter.response._responded:
-            send = inter.channel.send
+            await inter.channel.send(embed=embed, delete_after=30.0)
         else:
-            send = inter.response.send_message
-        await send(embed=embed, delete_after=30.0)
+            await inter.response.send_message(embed=embed, delete_after=30.0)
 
     async def on_ready(self):
         # fmt: off
@@ -153,7 +152,7 @@ print(f"disnake: {disnake.__version__}\n")
 
 
 gst_bot = GSTBot()
-gst_bot.load_all_extensions("cogs")
+gst_bot.load_all_extensions("cmds")
 
 
 # Runs the bot
