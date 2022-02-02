@@ -30,7 +30,7 @@ async def historical_command(ctx, signal: str = "", start=""):
             logger.debug("!stocks.scr.historical %s %s", signal, start)
 
         # Check for argument
-        if signal == "" or signal not in list(so.d_signals_desc.keys):
+        if signal not in so.d_signals_desc:
             raise Exception("Invalid preset selected!")
 
         register_matplotlib_converters()

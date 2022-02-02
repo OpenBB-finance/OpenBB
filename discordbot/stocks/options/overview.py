@@ -52,7 +52,7 @@ async def overview_command(
         if not dates:
             raise Exception("Stock ticker is invalid")
 
-        options = yfinance_model.get_option_chain(ticker, expiry)
+        options = yfinance_model.get_option_chain(ticker, str(expiry))
         calls = options.calls
         puts = options.puts
         current_price = yfinance_model.get_price(ticker)
@@ -224,7 +224,7 @@ async def overview_command(
                 colour=cfg.COLOR,
             ),
         ]
-        optionss = [
+        choices = [
             disnake.SelectOption(
                 label=f"{ticker.upper()} Overview", value="0", emoji="🟢"
             ),
@@ -274,7 +274,7 @@ async def overview_command(
         # Add Calls page field
         i, page, puts_page = 2, 0, 3
         i3 = i2 + 2
-        optionss.append(
+        choices.append(
             disnake.SelectOption(label="Calls Page 1", value="2", emoji="🟢"),
         )
         for i in range(2, i3):
@@ -326,7 +326,7 @@ async def overview_command(
         i, page = 0, 0
         puts_page -= 1
         i2 += 2
-        optionss.append(
+        choices.append(
             disnake.SelectOption(label="Puts Page 1", value=f"{puts_page}", emoji="🟢"),
         )
         for i in range(puts_page, i2):
@@ -347,11 +347,11 @@ async def overview_command(
 
         # Set images to Pages
         i = 0
-        img = 0
+        img_i = 0
         embeds[1].set_image(url=image_link_oi)
         for i in range(2, i2):
-            embeds[i].set_image(url=embeds_img[img])
-            img += 1
+            embeds[i].set_image(url=embeds_img[img_i])
+            img_i += 1
             i += 1
 
         if url:
@@ -399,7 +399,7 @@ async def overview_command(
         embeds[0].set_footer(text=f"Page 1 of {len(embeds)}")
         executionTime2 = time.time() - startTime2
         print(f"\n> {__name__} is finished: time in seconds: {executionTime2}\n")
-        await ctx.send(embed=embeds[0], view=Menu(embeds, optionss))
+        await ctx.send(embed=embeds[0], view=Menu(embeds, choices))
 
     except Exception as e:
         embed = disnake.Embed(

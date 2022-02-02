@@ -1,15 +1,14 @@
 import os
+
+import df2img
+import discordbot.config_discordbot as cfg
 import disnake
-from PIL import Image
 import numpy as np
 import pandas as pd
-import df2img
-from discordbot.helpers import autocrop_image
-
-from gamestonk_terminal.economy import finviz_model
-
-import discordbot.config_discordbot as cfg
 from discordbot.config_discordbot import logger
+from discordbot.helpers import autocrop_image
+from gamestonk_terminal.economy import finviz_model
+from PIL import Image
 
 
 async def performance_command(ctx, economy_group="sector"):
@@ -77,8 +76,8 @@ async def performance_command(ctx, economy_group="sector"):
             "Change": "{:.2f}",
             "Volume": "{:.0f}M",
         }
-        for col, f in formats.items():
-            df[col] = df[col].map(lambda x: f.format(x))
+        for col, value in formats.items():
+            df[col] = df[col].map(lambda x: value.format(x))
 
         df = df.set_axis(
             [

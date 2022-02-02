@@ -10,6 +10,7 @@ from gamestonk_terminal.config_terminal import TRADIER_TOKEN
 from gamestonk_terminal.stocks.options import tradier_model
 import discordbot.config_discordbot as cfg
 import random
+
 startTime = time.time()
 
 
@@ -52,7 +53,10 @@ async def hist_command(
         df_hist = tradier_model.get_historical_options(
             ticker, expiry, strike, put, chain_id
         )
-        plt_title = [f"\n{ticker.upper()} {strike} {opt_type} expiring {expiry} Historical", "Volume"]
+        plt_title = [
+            f"\n{ticker.upper()} {strike} {opt_type} expiring {expiry} Historical",
+            "Volume",
+        ]
         title = f"\n{ticker.upper()} {strike} {opt_type} expiring {expiry} Historical"
 
         fig = make_subplots(
@@ -98,14 +102,14 @@ async def hist_command(
                 rangeslider=dict(visible=False),
                 type="date",
             ),
-            dragmode='pan',
+            dragmode="pan",
         )
         fig.update_xaxes(
             rangebreaks=[
                 dict(bounds=["sat", "mon"]),
             ],
         )
-        config = dict({'scrollZoom': True})
+        config = dict({"scrollZoom": True})
         imagefile = "opt_hist.png"
         fig.write_image(imagefile)
 
@@ -123,11 +127,11 @@ async def hist_command(
 
         # Paste fig onto background img and autocrop background
         img = img.resize((w, h), Image.ANTIALIAS)
-        x1 = int(.5 * im_bg.size[0]) - int(.5 * img.size[0])
-        y1 = int(.5 * im_bg.size[1]) - int(.5 * img.size[1])
-        x2 = int(.5 * im_bg.size[0]) + int(.5 * img.size[0])
-        y2 = int(.5 * im_bg.size[1]) + int(.5 * img.size[1])
-        img = img.convert('RGB')
+        x1 = int(0.5 * im_bg.size[0]) - int(0.5 * img.size[0])
+        y1 = int(0.5 * im_bg.size[1]) - int(0.5 * img.size[1])
+        x2 = int(0.5 * im_bg.size[0]) + int(0.5 * img.size[0])
+        y2 = int(0.5 * im_bg.size[1]) + int(0.5 * img.size[1])
+        img = img.convert("RGB")
         im_bg.paste(img, box=(x1 - 5, y1, x2 - 5, y2))
         im_bg.save(imagefile, "PNG", quality=100)
         image = Image.open(imagefile)
@@ -138,11 +142,7 @@ async def hist_command(
         if cfg.DEBUG:
             print(f"Image: {imagefile}")
         title = f"{ticker.upper()} {strike} {opt_type} expiring {expiry} Historical"
-        embed = disnake.Embed(
-            title=title,
-            description=plt_link,
-            colour=cfg.COLOR
-        )
+        embed = disnake.Embed(title=title, description=plt_link, colour=cfg.COLOR)
         embed.set_image(url=f"attachment://{imagefile}")
         embed.set_author(
             name=cfg.AUTHOR_NAME,
@@ -165,5 +165,6 @@ async def hist_command(
 
         await ctx.send(embed=embed, delete_after=30.0)
 
-executionTime = (time.time() - startTime)
+
+executionTime = time.time() - startTime
 print(f"> Extension {__name__} is ready: time in seconds: {str(executionTime)}\n")

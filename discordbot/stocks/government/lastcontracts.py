@@ -34,7 +34,7 @@ async def lastcontracts_command(ctx, past_transactions_days: int = 2, num: int =
         ]
 
         df_contracts = df_contracts[["Date", "Ticker", "Amount", "Agency"]][:num]
-        optionss = [
+        choices = [
             disnake.SelectOption(label="Overview", value="0", emoji="🟢"),
         ]
         initial_str = "Overview"
@@ -42,7 +42,7 @@ async def lastcontracts_command(ctx, past_transactions_days: int = 2, num: int =
         for col_name in df_contracts["Ticker"].values:
             menu = f"\nPage {i}: {col_name}"
             initial_str += f"\nPage {i}: {col_name}"
-            optionss.append(
+            choices.append(
                 disnake.SelectOption(label=menu, value=f"{i}", emoji="🟢"),
             )
             i += 1
@@ -72,7 +72,7 @@ async def lastcontracts_command(ctx, past_transactions_days: int = 2, num: int =
                 )
             )
 
-        await ctx.send(embed=columns[0], view=Menu(columns, optionss))
+        await ctx.send(embed=columns[0], view=Menu(columns, choices))
 
     except Exception as e:
         embed = disnake.Embed(

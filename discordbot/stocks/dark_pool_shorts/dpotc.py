@@ -51,7 +51,7 @@ async def dpotc_command(ctx, ticker: str = ""):
         plt.style.use("seaborn")
         plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
         if ats.empty and otc.empty:
-            embed = embed.set_description("No data found.")  # pylint: disable=no-member
+            raise Exception("Stock ticker is invalid")
         _, _ = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
         plt.subplot(3, 1, (1, 2))

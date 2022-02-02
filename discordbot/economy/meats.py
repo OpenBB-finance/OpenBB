@@ -1,15 +1,13 @@
 import os
-import disnake
-from PIL import Image
-import pandas as pd
+
 import df2img
-from discordbot.helpers import autocrop_image
-
-
-from gamestonk_terminal.economy import finviz_model
-
 import discordbot.config_discordbot as cfg
+import disnake
+import pandas as pd
 from discordbot.config_discordbot import logger
+from discordbot.helpers import autocrop_image
+from gamestonk_terminal.economy import finviz_model
+from PIL import Image
 
 
 async def meats_command(ctx):
@@ -33,8 +31,8 @@ async def meats_command(ctx):
         df = df.sort_values(by="ticker", ascending=False)
 
         formats = {"last": "${:.2f}", "prevClose": "${:.2f}"}
-        for col, f in formats.items():
-            df[col] = df[col].map(lambda x: f.format(x))
+        for col, value in formats.items():
+            df[col] = df[col].map(lambda x: value.format(x))
 
         # Debug user output
         if cfg.DEBUG:

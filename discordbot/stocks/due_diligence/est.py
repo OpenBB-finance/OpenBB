@@ -134,7 +134,7 @@ async def est_command(ctx, ticker: str = ""):
         embeds[1].set_image(url=link_earnings)
         embeds[2].set_image(url=link_revenues)
         # Output data
-        optionss = [
+        choices = [
             disnake.SelectOption(
                 label=f"{ticker.upper()} Year Estimates", value="0", emoji="🟢"
             ),
@@ -146,7 +146,7 @@ async def est_command(ctx, ticker: str = ""):
             ),
         ]
 
-        await ctx.send(embed=embeds[0], view=Menu(embeds, optionss))
+        await ctx.send(embed=embeds[0], view=Menu(embeds, choices))
     except Exception as e:
         embed = disnake.Embed(
             title="ERROR Stocks: [Business Insider] Earning Estimates",

@@ -1,14 +1,13 @@
 import os
-import disnake
-from PIL import Image
-import pandas as pd
+
 import df2img
-from discordbot.helpers import autocrop_image
-
-from gamestonk_terminal.economy import wsj_model
-
 import discordbot.config_discordbot as cfg
+import disnake
+import pandas as pd
 from discordbot.config_discordbot import logger
+from discordbot.helpers import autocrop_image
+from gamestonk_terminal.economy import wsj_model
+from PIL import Image
 
 
 async def currencies_command(ctx):
@@ -30,9 +29,11 @@ async def currencies_command(ctx):
         df["Last"] = pd.to_numeric(df["Last"].astype(float))
         df["Chng"] = pd.to_numeric(df["Chng"].astype(float))
         df["%Chng"] = pd.to_numeric(df["%Chng"].astype(float))
+
         formats = {"Last": "{:.2f}", "Chng": "{:.2f}", "%Chng": "{:.2f}%"}
-        for col, f in formats.items():
-            df[col] = df[col].map(lambda x: f.format(x))
+        for col, value in formats.items():
+            df[col] = df[col].map(lambda x: value.format(x))
+
         df = df.fillna("")
         df.set_index(" ", inplace=True)
 

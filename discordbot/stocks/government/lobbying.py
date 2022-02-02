@@ -29,7 +29,7 @@ async def lobbying_command(ctx, ticker="", num: int = 10):
 
         # Output Data
         report = ""
-        optionss = [
+        choices = [
             disnake.SelectOption(label="Overview", value="0", emoji="🟢"),
         ]
         for _, row in (
@@ -78,7 +78,7 @@ async def lobbying_command(ctx, ticker="", num: int = 10):
                 str_start += 4000
                 i += 1
 
-            await ctx.send(embed=columns[0], view=Menu(columns, optionss))
+            await ctx.send(embed=columns[0], view=Menu(columns, choices))
 
     except Exception as e:
         embed = disnake.Embed(

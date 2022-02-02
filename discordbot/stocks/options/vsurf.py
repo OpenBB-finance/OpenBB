@@ -8,8 +8,8 @@ import numpy as np
 import plotly.graph_objects as go
 from discordbot.helpers import autocrop_image
 from gamestonk_terminal.stocks.options import yfinance_model
-from scipy.spatial import Delaunay
 from PIL import Image
+from scipy.spatial import Delaunay
 
 startTime = time.time()
 

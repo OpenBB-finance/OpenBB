@@ -1,21 +1,20 @@
 from __future__ import annotations
 
 import disnake
-import disnake.ext.commands as commands
 import pandas as pd
 from cachetools import TTLCache, cached
-
 from discordbot.config_discordbot import logger
-from discordbot.stocks.government.lasttrades import lasttrades_command
-from discordbot.stocks.government.topbuys import topbuys_command
-from discordbot.stocks.government.topsells import topsells_command
-from discordbot.stocks.government.lastcontracts import lastcontracts_command
-from discordbot.stocks.government.qtrcontracts import qtrcontracts_command
-from discordbot.stocks.government.toplobbying import toplobbying_command
-from discordbot.stocks.government.gtrades import gtrades_command
 from discordbot.stocks.government.contracts import contracts_command
+from discordbot.stocks.government.gtrades import gtrades_command
 from discordbot.stocks.government.histcont import histcont_command
+from discordbot.stocks.government.lastcontracts import lastcontracts_command
+from discordbot.stocks.government.lasttrades import lasttrades_command
 from discordbot.stocks.government.lobbying import lobbying_command
+from discordbot.stocks.government.qtrcontracts import qtrcontracts_command
+from discordbot.stocks.government.topbuys import topbuys_command
+from discordbot.stocks.government.toplobbying import toplobbying_command
+from discordbot.stocks.government.topsells import topsells_command
+from disnake.ext import commands
 
 
 def default_completion(inter: disnake.AppCmdInter) -> list[str]:
@@ -80,7 +79,7 @@ class GovernmentCommands(commands.Cog):
         gov_type: Government Type
         past_transactions_months: Positive number of past transaction months
         num: Number of most sold stocks to retrieve
-        raw: If raw data should be outputed
+        raw: If raw data should be outputted
         """
         await ctx.response.defer()
         logger.info("gov-topbuys")
@@ -102,7 +101,7 @@ class GovernmentCommands(commands.Cog):
         gov_type: Government Type
         past_transactions_months: Positive number of past transaction months
         num: Number of most sold stocks to retrieve
-        raw: If raw data should be outputed
+        raw: If raw data should be outputted
         """
         await ctx.response.defer()
         logger.info("gov-topsells")
@@ -150,7 +149,7 @@ class GovernmentCommands(commands.Cog):
         Parameters
         -----------
         num: Number to show
-        raw: If raw data should be outputed
+        raw: If raw data should be outputted
         """
         await ctx.response.defer()
         logger.info("gov-toplobbying")
@@ -172,7 +171,7 @@ class GovernmentCommands(commands.Cog):
         ticker: Stock Ticker
         gov_type: Government Type
         past_transactions_months: Positive number of past transaction months
-        raw: If raw data should be outputed
+        raw: If raw data should be outputted
         """
         await ctx.response.defer()
         logger.info("gov-gtrades")
@@ -192,7 +191,7 @@ class GovernmentCommands(commands.Cog):
         -----------
         ticker: Stock Ticker
         past_transaction_days: Number of past transaction months
-        raw: If raw data should be outputed
+        raw: If raw data should be outputted
         """
         await ctx.response.defer()
         logger.info("gov-contracts")

@@ -24,8 +24,6 @@ async def arktrades_command(ctx, ticker: str = "", num: int = 10):
             ark_holdings = ark_holdings.drop(
                 columns=["ticker", "everything.profile.companyName"]
             )
-        else:
-            ark_holdings = ark_model.get_ark_trades_by_ticker()
 
         if ark_holdings.empty:
             raise Exception(

@@ -37,7 +37,7 @@ async def chain_command(
         if not dates:
             raise Exception("Stock ticker is invalid")
 
-        options = yfinance_model.get_option_chain(ticker, expiry)
+        options = yfinance_model.get_option_chain(ticker, str(expiry))
         calls_df = options.calls
         puts_df = options.puts
 

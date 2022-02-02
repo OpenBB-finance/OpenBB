@@ -1,15 +1,15 @@
-from datetime import datetime, timedelta
 import os
+import random
+from datetime import datetime, timedelta
 
 import discordbot.config_discordbot as cfg
-from discordbot.config_discordbot import logger
 import disnake
 import plotly.graph_objects as go
 import yfinance as yf
+from discordbot.config_discordbot import logger
 from discordbot.helpers import autocrop_image
 from PIL import Image
 from plotly.subplots import make_subplots
-import random
 
 
 async def candle_command(

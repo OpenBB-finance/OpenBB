@@ -55,7 +55,7 @@ async def pos_command(ctx, sort="dpp_dollar", num: int = 10):
         df.columns = future_column_name
         df.drop("Ticker")
         columns = []
-        optionss = [
+        choices = [
             disnake.SelectOption(label="Overview", value="0", emoji="🟢"),
         ]
         initial_str = "Overview"
@@ -64,11 +64,11 @@ async def pos_command(ctx, sort="dpp_dollar", num: int = 10):
             menu = f"\nPage {i}: {col_name}"
             initial_str += f"\nPage {i}: {col_name}"
             if i < 19:
-                optionss.append(
+                choices.append(
                     disnake.SelectOption(label=menu, value=f"{i}", emoji="🟢"),
                 )
             if i == 20:
-                optionss.append(
+                choices.append(
                     disnake.SelectOption(label="Max Reached", value=f"{i}", emoji="🟢"),
                 )
             i += 1
@@ -98,7 +98,7 @@ async def pos_command(ctx, sort="dpp_dollar", num: int = 10):
                 )
             )
 
-        await ctx.send(embed=columns[0], view=Menu(columns, optionss))
+        await ctx.send(embed=columns[0], view=Menu(columns, choices))
 
     except Exception as e:
         embed = disnake.Embed(

@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import pickle
 import time
-from typing import Optional
 
 import disnake
 import disnake.ext.commands as commands
@@ -85,8 +84,8 @@ class SlashCommands(commands.Cog):
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
         expiry: str = commands.Param(autocomplete=expiry_autocomp),
         opt_type: str = commands.Param(choices=["Calls", "Puts"]),
-        min_sp: Optional[float] = None,
-        max_sp: Optional[float] = None,
+        min_sp: float = None,
+        max_sp: float = None,
     ):
         """Open Interest
 
@@ -108,8 +107,8 @@ class SlashCommands(commands.Cog):
         inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
         expiry: str = commands.Param(autocomplete=expiry_autocomp),
-        min_sp: Optional[float] = None,
-        max_sp: Optional[float] = None,
+        min_sp: float = None,
+        max_sp: float = None,
     ):
         """Open Interest
 
@@ -214,8 +213,8 @@ class SlashCommands(commands.Cog):
         inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
         expiry: str = commands.Param(autocomplete=expiry_autocomp),
-        min_sp: Optional[float] = None,
-        max_sp: Optional[float] = None,
+        min_sp: float = None,
+        max_sp: float = None,
     ):
         """Options Overview
 

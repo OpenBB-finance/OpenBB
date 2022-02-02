@@ -1,16 +1,19 @@
 import time
 from typing import List
 
-import disnake
-import disnake.ext.commands as commands
 import config_discordbot as cfg
+
+import disnake
+from disnake.ext import commands
 
 bot = commands.Bot()
 startTime = time.time()
 
 
 class Menu(disnake.ui.View):
-    def __init__(self, embeds: List[disnake.Embed], options: List[disnake.SelectOption]):
+    def __init__(
+        self, embeds: List[disnake.Embed], options: List[disnake.SelectOption]
+    ):
         super().__init__(timeout=None)
 
         # Sets the embed list variable.
@@ -30,7 +33,10 @@ class Menu(disnake.ui.View):
         for opt in options:
             self.selector.append_option(opt)
         for i, embed in enumerate(self.embeds):
-            embed.set_footer(text=f"Page {i + 1} of {len(self.embeds)}", icon_url=cfg.AUTHOR_ICON_URL,)
+            embed.set_footer(
+                text=f"Page {i + 1} of {len(self.embeds)}",
+                icon_url=cfg.AUTHOR_ICON_URL,
+            )
 
     def set_link_button(self) -> None:
         if not hasattr(self, "link_button"):
@@ -72,9 +78,11 @@ class Menu(disnake.ui.View):
         label="Previous page",
         emoji="<a:leftarrow:929686892339937371>",
         style=disnake.ButtonStyle.red,
-        custom_id="persistent_view:prevpage"
+        custom_id="persistent_view:prevpage",
     )
-    async def prev_page(self, button: disnake.ui.Button, interaction: disnake.MessageInteraction):
+    async def prev_page(
+        self, button: disnake.ui.Button, interaction: disnake.MessageInteraction
+    ):
         # Decrements the embed count.
         self.embed_count -= 1
 
@@ -92,9 +100,11 @@ class Menu(disnake.ui.View):
         label="Next page",
         emoji="<a:rightarrow:929686891891155006>",
         style=disnake.ButtonStyle.red,
-        custom_id="persistent_view:nextpage"
+        custom_id="persistent_view:nextpage",
     )
-    async def next_page(self, button: disnake.ui.Button, interaction: disnake.MessageInteraction):
+    async def next_page(
+        self, button: disnake.ui.Button, interaction: disnake.MessageInteraction
+    ):
         # Increments the embed count.
         self.embed_count += 1
 
