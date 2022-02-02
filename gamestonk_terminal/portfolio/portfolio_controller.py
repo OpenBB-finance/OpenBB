@@ -230,28 +230,44 @@ class PortfolioController(BaseController):
 
         console.print()
         inputs: Dict[str, Union[str, float, int]] = {}
-        type_ = input("Type (stock, cash): ")
+        type_ = input("Type (stock, cash): \n")
         if type_ not in ["stock", "cash"]:
             console.print("[red]Currently only stocks or cash supported.[/red]\n")
-            return
+            type_ = input("Type (stock, cash): \n")
+            if type_ not in ["stock", "cash"]:
+                console.print("[red]Two unsuccessful attempts.  Exiting add.[/red]\n")
+                return
+
         inputs["Type"] = type_.lower()
-        action = input("Action: (buy,sell, deposit, withdraw): ").lower()
-        if type == "cash":
+        action = input("Action: (buy, sell, deposit, withdraw): \n").lower()
+
+        if type_ == "cash":
             if action not in ["deposit", "withdraw"]:
                 console.print("Cash can only be deposit or withdraw\n")
-                return
-        elif type == "stock":
+                action = input("Action: (buy, sell, deposit, withdraw): \n").lower()
+                if action not in ["deposit", "withdraw"]:
+                    console.print(
+                        "[red]Two unsuccessful attempts.  Exiting add.[/red]\n"
+                    )
+                    return
+
+        elif type_ == "stock":
             if action not in ["buy", "sell"]:
                 console.print("Stock can only be buy or sell\n")
-                return
+                if action not in ["buy", "sell"]:
+                    console.print(
+                        "[red]Two unsuccessful attempts.  Exiting add.[/red]\n"
+                    )
+                    return
+
         inputs["Side"] = action.lower()
-        inputs["Name"] = input("Name (stock ticker or cash): ")
-        inputs["Date"] = valid_date(input("Purchase date (YYYY-MM-DD): ")).strftime(
+        inputs["Name"] = input("Name (ticker or cash [if depositing cash]):\n")
+        inputs["Date"] = valid_date(input("Purchase date (YYYY-MM-DD): \n")).strftime(
             "%Y-%m-%d"
         )
-        inputs["Quantity"] = float(input("Quantity: "))
-        inputs["Price"] = float(input("Price per share: "))
-        inputs["Fees"] = float(input("Fees: "))
+        inputs["Quantity"] = float(input("Quantity: \n"))
+        inputs["Price"] = float(input("Price per share: \n"))
+        inputs["Fees"] = float(input("Fees: \n"))
         inputs["Premium"] = ""
         if self.portfolio.empty:
             self.portfolio = portfolio_model.Portfolio(
