@@ -38,6 +38,7 @@ def fear_and_greed_index(indicator: str, export: str):
 
     console.print(report)
 
+    # TODO: Reformat to new layout?
     if indicator:
         plt.imshow(im)
 
