@@ -11,7 +11,6 @@ import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 
 from gamestonk_terminal.config_terminal import theme
-import gamestonk_terminal.feature_flags as gtff
 from gamestonk_terminal.common.technical_analysis import overlap_model
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.decorators import log_start_end
@@ -76,7 +75,7 @@ def view_ma(
         price_df = price_df.join(df_ta)
 
     # This plot has 1 axis
-    if not external_axes:
+    if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     else:
         if len(external_axes) != 1:
@@ -94,7 +93,7 @@ def view_ma(
     ax.legend(l_legend)
     theme.style_primary_axis(ax)
 
-    if not external_axes:
+    if external_axes is None:
         theme.visualize_output()
 
     export_data(
@@ -112,6 +111,7 @@ def view_vwap(
     offset: int = 0,
     s_interval: str = "",
     export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots EMA technical indicator
 
@@ -127,46 +127,57 @@ def view_vwap(
         Interval of data
     export : str
         Format to export data
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (3 axes are expected in the list), by default None
     """
 
     df_stock.index = df_stock.index.tz_localize(None)
     df_stock["Day"] = [idx.date() for idx in df_stock.index]
-
     day_df = df_stock[df_stock.Day == df_stock.Day[-1]]
-
     df_vwap = overlap_model.vwap(day_df, offset)
 
-    addplot_result = mpf.make_addplot(df_vwap)
-
-    if gtff.USE_ION:
-        plt.ion()
-
-    fig, _ = mpf.plot(
-        day_df,
-        type="candle",
-        style=theme.mpf_style,
-        volume=True,
-        addplot=addplot_result,
-        xrotation=10,
-        figratio=(10, 7),
-        figscale=1.10,
-        scale_padding={"left": 0.3, "right": 1.2, "top": 0.8, "bottom": 0.8},
-        figsize=(plot_autoscale()),
-        update_width_config=dict(
-            candle_linewidth=0.6,
-            candle_width=0.8,
-            volume_linewidth=0.8,
-            volume_width=0.8,
-        ),
-        returnfig=True,
-    )
-    fig.suptitle(
-        f"{s_ticker} {s_interval} VWAP",
-        x=0.055,
-        y=0.965,
-        horizontalalignment="left",
-    )
-    console.print("")
+    candle_chart_kwargs = {
+        "type": "candle",
+        "style": theme.mpf_style,
+        "volume": True,
+        "xrotation": theme.xticks_rotation,
+        "scale_padding": {"left": 0.3, "right": 1.2, "top": 0.8, "bottom": 0.8},
+        "update_width_config": {
+            "candle_linewidth": 0.6,
+            "candle_width": 0.8,
+            "volume_linewidth": 0.8,
+            "volume_width": 0.8,
+        },
+        "warn_too_much_data": 10000,
+    }
+    # This plot has 2 axes
+    if external_axes is None:
+        candle_chart_kwargs["returnfig"] = True
+        candle_chart_kwargs["figratio"] = (10, 7)
+        candle_chart_kwargs["figscale"] = 1.10
+        candle_chart_kwargs["figsize"] = plot_autoscale()
+        candle_chart_kwargs["addplot"] = mpf.make_addplot(
+            df_vwap, width=theme.linewidth
+        )
+        fig, _ = mpf.plot(day_df, **candle_chart_kwargs)
+        fig.suptitle(
+            f"{s_ticker} {s_interval} VWAP",
+            x=0.055,
+            y=0.965,
+            horizontalalignment="left",
+        )
+        theme.visualize_output(force_tight_layout=False)
+    else:
+        if len(external_axes) != 3:
+            console.print("[red]Expected list of 3 axis items./n[/red]")
+            return
+        (ax1, ax2, ax3) = external_axes
+        candle_chart_kwargs["ax"] = ax1
+        candle_chart_kwargs["volume"] = ax2
+        candle_chart_kwargs["addplot"] = mpf.make_addplot(
+            df_vwap, width=theme.linewidth, ax=ax3
+        )
+        mpf.plot(day_df, **candle_chart_kwargs)
 
     export_data(
         export,
