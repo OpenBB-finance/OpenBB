@@ -111,6 +111,7 @@ class TerminalStyle:
 
     xticks_rotation: str = ""
     tight_layout_padding: int = 0
+    linewidth: float = 1.3
 
     def __init__(
         self,
@@ -224,6 +225,7 @@ class TerminalStyle:
         self.mpf_style["mavcolors"] = plt.rcParams["axes.prop_cycle"].by_key()["color"]
         self.down_color = self.mpf_style["marketcolors"]["volume"]["down"]
         self.up_color = self.mpf_style["marketcolors"]["volume"]["up"]
+        self.linewidth = plt.rcParams["lines.linewidth"]
 
     def get_colors(self, reverse: bool = False) -> List:
         """Get hex color sequence from the stylesheet."""
