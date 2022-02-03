@@ -304,7 +304,7 @@ def create_dataframe(ticker: str, statement: str, period: str = "annual"):
     if columns is None:
         return pd.DataFrame(), None
 
-    years = [x.get_text().strip() for x in columns if "-" not in x.get_text().strip()]
+    years = [x.get_text().strip() for x in columns]
     len_data = len(years) - 1
 
     phrase = soup.find("div", attrs={"class": "text-sm text-gray-600 block lg:hidden"})
@@ -331,12 +331,12 @@ def create_dataframe(ticker: str, statement: str, period: str = "annual"):
     ]
 
     df = pd.DataFrame(data=all_data)
-    df = df.loc[:, ~(df == "Upgrade").any()]
     df = df.set_index(0)
     n = df.shape[1] - len_data
     if n > 0:
         df = df.iloc[:, :-n]
     df.columns = years[1 : len(df.columns) + 1]
+    df = df.loc[:, ~(df == "Upgrade").any()]
 
     for ignore in ignores:
         if ignore in df.index:
