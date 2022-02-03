@@ -1,11 +1,13 @@
 """ Alpha Vantage View """
 __docformat__ = "numpy"
 
+from typing import Optional, List
 import logging
 import os
 
 import matplotlib.pyplot as plt
 
+from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal import config_plot as cfp
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.decorators import log_start_end
@@ -21,7 +23,11 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def realtime_performance_sector(raw: bool, export: str):
+def realtime_performance_sector(
+    raw: bool,
+    export: str,
+    external_axes: Optional[List[plt.Axes]] = None,
+):
     """Display Real-Time Performance sector. [Source: AlphaVantage]
 
     Parameters
@@ -30,6 +36,8 @@ def realtime_performance_sector(raw: bool, export: str):
         Output only raw data
     export : str
         Export dataframe data to csv,json,xlsx file
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (3 axes are expected in the list), by default None
     """
     df_sectors = alphavantage_model.get_sector_data()
 
@@ -45,12 +53,9 @@ def realtime_performance_sector(raw: bool, export: str):
         )
 
     else:
+        # TODO: Refactor pandas.plot
         df_rtp.plot(kind="bar")
         plt.title("Real Time Performance (%) per Sector")
-        plt.tight_layout()
-        plt.grid()
-
-    console.print("")
 
     export_data(
         export,
@@ -59,15 +64,17 @@ def realtime_performance_sector(raw: bool, export: str):
         df_sectors,
     )
 
-    if not raw:
-        if gtff.USE_ION:
-            plt.ion()
-        plt.show()
+    if not external_axes:
+        theme.visualize_output()
 
 
 @log_start_end(log=logger)
 def display_real_gdp(
-    interval: str, start_year: int = 2010, raw: bool = False, export: str = ""
+    interval: str,
+    start_year: int = 2010,
+    raw: bool = False,
+    export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display US GDP from AlphaVantage
 
@@ -81,6 +88,8 @@ def display_real_gdp(
         Flag to show raw data, by default False
     export : str, optional
         Format to export data, by default ""
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (3 axes are expected in the list), by default None
     """
     gdp_full = alphavantage_model.get_real_gdp(interval)
     if gdp_full.empty:
@@ -89,16 +98,26 @@ def display_real_gdp(
     gdp = gdp_full[gdp_full.date >= f"{start_year}-01-01"]
     int_string = "Annual" if interval == "a" else "Quarterly"
     year_str = str(start_year) if interval == "a" else str(list(gdp.date)[-1].year)
-    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-    ax.plot(gdp.date, gdp.GDP, marker="o", c="dodgerblue")
-    ax.set_xlabel("Date")
-    ax.set_title(f"{int_string} US GDP ($B) from {year_str}")
-    ax.set_ylabel("US GDP ($B) ")
-    ax.grid("on")
-    fig.tight_layout()
-    if gtff.USE_ION:
-        plt.ion()
-    plt.show()
+
+    if not external_axes:
+        _, ax = plt.subplots(
+            2, 1, sharex=True, figsize=plot_autoscale(), dpi=cfp.PLOT_DPI
+        )
+        ax1, ax2 = ax
+        ax3 = ax2.twinx()
+
+    else:
+        if len(external_axes) != 3:
+            console.print("[red]Expected list of 3 axis items./n[/red]")
+            return
+        (ax1,) = external_axes
+
+    ax1.plot(gdp.date, gdp.GDP, marker="o")
+    ax1.set_title(f"{int_string} US GDP ($B) from {year_str}")
+    ax1.set_ylabel("US GDP ($B) ")
+    theme.style_primary_axis(ax1)
+    if not external_axes:
+        theme.visualize_output()
 
     export_data(
         export,
@@ -110,7 +129,6 @@ def display_real_gdp(
         print_rich_table(
             gdp.head(20), headers=["Date", "GDP"], show_index=False, title="US GDP"
         )
-    console.print("")
 
 
 @log_start_end(log=logger)
