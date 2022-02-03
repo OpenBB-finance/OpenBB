@@ -1,14 +1,21 @@
 """Terra Engineer model"""
 __docformat__ = "numpy"
 
-import requests
+import logging
+
 import pandas as pd
+import requests
+
+from gamestonk_terminal.decorators import log_start_end
+
+logger = logging.getLogger(__name__)
 
 api_url = "https://terra.engineer/en"
 
 ASSETS = ["ust", "luna", "sdt"]
 
 
+@log_start_end(log=logger)
 def get_history_asset_from_terra_address(
     asset: str = "ust", address: str = ""
 ) -> pd.DataFrame:

@@ -6,16 +6,30 @@ import argparse
 import re
 import os
 import difflib
+import logging
+
 from typing import Union, List, Dict, Any
+from datetime import datetime, timedelta
 
 from prompt_toolkit.completion import NestedCompleter
 from rich.markdown import Markdown
+import pandas as pd
+import numpy as np
+
+from gamestonk_terminal.decorators import log_start_end
 
 from gamestonk_terminal.menu import session
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.decorators import try_except
-from gamestonk_terminal.helper_funcs import system_clear, get_flair
+from gamestonk_terminal.helper_funcs import (
+    system_clear,
+    get_flair,
+    valid_date,
+    parse_known_args_and_warn,
+)
 from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.stocks import stocks_helper
+
+logger = logging.getLogger(__name__)
 
 
 controllers: Dict[str, Any] = {}
@@ -104,7 +118,7 @@ class BaseController(metaclass=ABCMeta):
     def print_help(self) -> None:
         raise NotImplementedError("Must override print_help")
 
-    @try_except
+    @log_start_end(log=logger)
     def switch(self, an_input: str) -> List[str]:
         """Process and dispatch input
 
@@ -116,69 +130,77 @@ class BaseController(metaclass=ABCMeta):
         # Empty command
         if not an_input:
             console.print("")
-            return self.queue
 
-        # Navigation slash is being used
-        if "/" in an_input:
+        # Navigation slash is being used first split commands
+        elif "/" in an_input:
             actions = an_input.split("/")
 
             # Absolute path is specified
             if not actions[0]:
-                an_input = "home"
-            # Relative path so execute first instruction
-            else:
-                an_input = actions[0]
+                actions[0] = "home"
 
             # Add all instructions to the queue
-            for cmd in actions[1:][::-1]:
+            for cmd in actions[::-1]:
                 if cmd:
                     self.queue.insert(0, cmd)
 
-        (known_args, other_args) = self.parser.parse_known_args(an_input.split())
+        # Single command fed, process
+        else:
+            (known_args, other_args) = self.parser.parse_known_args(an_input.split())
 
-        # Redirect commands to their correct functions
-        if known_args.cmd:
-            if known_args.cmd in ("..", "q"):
-                known_args.cmd = "quit"
-            elif known_args.cmd in ("?", "h"):
-                known_args.cmd = "help"
-            elif known_args.cmd == "r":
-                known_args.cmd = "reset"
+            # Redirect commands to their correct functions
+            if known_args.cmd:
+                if known_args.cmd in ("..", "q"):
+                    known_args.cmd = "quit"
+                elif known_args.cmd in ("?", "h"):
+                    known_args.cmd = "help"
+                elif known_args.cmd == "r":
+                    known_args.cmd = "reset"
 
-        getattr(
-            self,
-            "call_" + known_args.cmd,
-            lambda _: "Command not recognized!",
-        )(other_args)
+            # This is what mutes portfolio issue
+            getattr(
+                self,
+                "call_" + known_args.cmd,
+                lambda _: "Command not recognized!",
+            )(other_args)
+
+        logger.info("remaining queue: %s", "/".join(self.queue))
 
         return self.queue
 
+    @log_start_end(log=logger)
     def call_cls(self, _) -> None:
         """Process cls command"""
         system_clear()
 
+    @log_start_end(log=logger)
     def call_home(self, _) -> None:
         """Process home command"""
         self.save_class()
+        console.print("")
         for _ in range(self.PATH.count("/") - 1):
             self.queue.insert(0, "quit")
 
+    @log_start_end(log=logger)
     def call_help(self, _) -> None:
         """Process help command"""
         self.print_help()
 
+    @log_start_end(log=logger)
     def call_quit(self, _) -> None:
         """Process quit menu command"""
         self.save_class()
         console.print("")
         self.queue.insert(0, "quit")
 
+    @log_start_end(log=logger)
     def call_exit(self, _) -> None:
         # Not sure how to handle controller loading here
         """Process exit terminal command"""
         for _ in range(self.PATH.count("/")):
             self.queue.insert(0, "quit")
 
+    @log_start_end(log=logger)
     def call_reset(self, _) -> None:
         """Process reset command. If you would like to have customization in the
         reset process define a methom `custom_reset` in the child class.
@@ -193,6 +215,7 @@ class BaseController(metaclass=ABCMeta):
             for _ in range(len(self.path)):
                 self.queue.insert(0, "quit")
 
+    @log_start_end(log=logger)
     def call_resources(self, _) -> None:
         """Process resources command"""
         if os.path.isfile(self.FILE_PATH):
@@ -210,7 +233,6 @@ class BaseController(metaclass=ABCMeta):
             if self.queue and len(self.queue) > 0:
                 # If the command is quitting the menu we want to return in here
                 if self.queue[0] in ("q", "..", "quit"):
-                    console.print("")
                     # Go back to the root in order to go to the right directory because
                     # there was a jump between indirect menus
                     if custom_path_menu_above:
@@ -228,7 +250,11 @@ class BaseController(metaclass=ABCMeta):
                 self.queue = self.queue[1:]
 
                 # Print location because this was an instruction and we want user to know the action
-                if an_input and an_input.split(" ")[0] in self.controller_choices:
+                if (
+                    an_input
+                    and an_input != "home"
+                    and an_input.split(" ")[0] in self.controller_choices
+                ):
                     console.print(f"{get_flair()} {self.PATH} $ {an_input}")
 
             # Get input command from user
@@ -285,3 +311,129 @@ class BaseController(metaclass=ABCMeta):
                     self.queue.insert(0, an_input)
                 else:
                     console.print("\n")
+
+
+class StockController(BaseController, metaclass=ABCMeta):
+    def __init__(self, queue):
+        """
+        This is a base class for Stock Controllers that use a load function.
+        """
+        super().__init__(queue)
+        self.stock = pd.DataFrame()
+        self.interval = "1440min"
+        self.ticker = ""
+        self.start = ""
+        self.suffix = ""  # To hold suffix for Yahoo Finance
+        self.add_info = stocks_helper.additional_info_about_ticker("")
+
+    def call_load(self, other_args: List[str]):
+        """Process load command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="load",
+            description="Load stock ticker to perform analysis on. When the data source"
+            + " is syf', an Indian ticker can be"
+            + " loaded by using '.NS' at the end, e.g. 'SBIN.NS'. See available market in"
+            + " https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html.",
+        )
+        parser.add_argument(
+            "-t",
+            "--ticker",
+            action="store",
+            dest="ticker",
+            required="-h" not in other_args,
+            help="Stock ticker",
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            type=valid_date,
+            default=(datetime.now() - timedelta(days=1100)).strftime("%Y-%m-%d"),
+            dest="start",
+            help="The starting date (format YYYY-MM-DD) of the stock",
+        )
+        parser.add_argument(
+            "-e",
+            "--end",
+            type=valid_date,
+            default=datetime.now().strftime("%Y-%m-%d"),
+            dest="end",
+            help="The ending date (format YYYY-MM-DD) of the stock",
+        )
+        parser.add_argument(
+            "-i",
+            "--interval",
+            action="store",
+            dest="interval",
+            type=int,
+            default=1440,
+            choices=[1, 5, 15, 30, 60],
+            help="Intraday stock minutes",
+        )
+        parser.add_argument(
+            "--source",
+            action="store",
+            dest="source",
+            choices=["yf", "av", "iex"] if "-i" not in other_args else ["yf"],
+            default="yf",
+            help="Source of historical data.",
+        )
+        parser.add_argument(
+            "-p",
+            "--prepost",
+            action="store_true",
+            default=False,
+            dest="prepost",
+            help="Pre/After market hours. Only works for 'yf' source, and intraday data",
+        )
+        parser.add_argument(
+            "-r",
+            "--iexrange",
+            dest="iexrange",
+            help="Range for using the iexcloud api.  Note that longer range requires more tokens in account",
+            choices=["ytd", "1y", "2y", "5y", "6m"],
+            type=str,
+            default="ytd",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-t")
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            df_stock_candidate = stocks_helper.load(
+                ns_parser.ticker,
+                ns_parser.start,
+                ns_parser.interval,
+                ns_parser.end,
+                ns_parser.prepost,
+                ns_parser.source,
+            )
+            if not df_stock_candidate.empty:
+                self.stock = df_stock_candidate
+                self.add_info = stocks_helper.additional_info_about_ticker(
+                    ns_parser.ticker
+                )
+                console.print(self.add_info)
+                if "." in ns_parser.ticker:
+                    self.ticker, self.suffix = ns_parser.ticker.upper().split(".")
+                else:
+                    self.ticker = ns_parser.ticker.upper()
+                    self.suffix = ""
+
+                if ns_parser.source == "iex":
+                    self.start = self.stock.index[0].strftime("%Y-%m-%d")
+                else:
+                    self.start = ns_parser.start
+                self.interval = f"{ns_parser.interval}min"
+
+                if self.PATH in ["/stocks/qa/", "/stocks/pred/"]:
+                    self.stock["Returns"] = self.stock["Adj Close"].pct_change()
+                    self.stock["LogRet"] = np.log(self.stock["Adj Close"]) - np.log(
+                        self.stock["Adj Close"].shift(1)
+                    )
+                    self.stock["LogPrice"] = np.log(self.stock["Adj Close"])
+                    self.stock = self.stock.rename(columns={"Adj Close": "AdjClose"})
+                    self.stock = self.stock.dropna()
+                    self.stock.columns = [x.lower() for x in self.stock.columns]
+                    console.print("")

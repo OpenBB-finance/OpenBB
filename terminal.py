@@ -74,11 +74,6 @@ class TerminalController(BaseController):
         self.queue: List[str] = list()
 
         if jobs_cmds:
-            # close the eyes if the user forgets the initial `/`
-            if len(jobs_cmds) > 0:
-                if jobs_cmds[0][0] != "/":
-                    jobs_cmds[0] = f"/{jobs_cmds[0]}"
-
             self.queue = " ".join(jobs_cmds).split("/")
 
         self.update_succcess = False
@@ -224,6 +219,7 @@ def terminal(jobs_cmds: List[str] = None):
 
     if not jobs_cmds:
         bootup()
+        t_controller.print_help()
 
     while ret_code:
         if gtff.ENABLE_QUICK_EXIT:
@@ -250,10 +246,6 @@ def terminal(jobs_cmds: List[str] = None):
 
         # Get input command from user
         else:
-            # Display help menu when entering on this menu from a level above
-            if not an_input:
-                t_controller.print_help()
-
             # Get input from user using auto-completion
             if session and gtff.USE_PROMPT_TOOLKIT:
                 try:
@@ -278,9 +270,7 @@ def terminal(jobs_cmds: List[str] = None):
 
             # Check if the user wants to reset application
             if an_input in ("r", "reset") or t_controller.update_succcess:
-                ret_code = reset(
-                    t_controller.queue if len(t_controller.queue) > 0 else []
-                )
+                ret_code = reset(t_controller.queue if t_controller.queue else [])
                 if ret_code != 0:
                     print_goodbye()
                     break
@@ -324,13 +314,19 @@ if __name__ == "__main__":
             if os.path.isfile(sys.argv[1]):
                 with open(sys.argv[1]) as fp:
                     simulate_argv = f"/{'/'.join([line.rstrip() for line in fp])}"
-                    terminal(simulate_argv.replace("//", "/home/").split())
+                    file_cmds = simulate_argv.replace("//", "/home/").split()
+                    # close the eyes if the user forgets the initial `/`
+                    if len(file_cmds) > 0:
+                        if file_cmds[0][0] != "/":
+                            file_cmds[0] = f"/{file_cmds[0]}"
+                    terminal(file_cmds)
             else:
                 console.print(
                     f"The file '{sys.argv[1]}' doesn't exist. Launching terminal without any configuration.\n"
                 )
                 terminal()
         else:
-            terminal(sys.argv[1:])
+            argv_cmds = list([" ".join(sys.argv[1:]).replace(" /", "/home/")])
+            terminal(argv_cmds)
     else:
         terminal()

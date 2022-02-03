@@ -8,6 +8,7 @@ import pytest
 
 # IMPORTATION INTERNAL
 from gamestonk_terminal.stocks.behavioural_analysis import ba_controller
+from gamestonk_terminal import parent_classes
 
 # pylint: disable=E1101
 # pylint: disable=W0603
@@ -154,8 +155,8 @@ def test_print_help():
     "an_input, expected_queue",
     [
         ("", []),
-        ("/help", ["quit", "quit", "help"]),
-        ("help/help", ["help"]),
+        ("/help", ["home", "help"]),
+        ("help/help", ["help", "help"]),
         ("q", ["quit"]),
         ("h", []),
         ("r", ["quit", "quit", "reset", "stocks", "ba"]),
@@ -421,6 +422,23 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             ),
         ),
         (
+            "call_trend",
+            [
+                "--start=2020-12-01",
+                "--hour=9",
+                "--export=csv",
+                "--number=20",
+            ],
+            "sentimentinvestor_view.display_trending",
+            [],
+            dict(
+                start=datetime(2020, 12, 1),
+                hour=9,
+                export="csv",
+                number=20,
+            ),
+        ),
+        (
             "call_popular",
             ["--num=1", "--limit=2", "--sub=MOCK_SUB"],
             "reddit_view.display_popular_tickers",
@@ -481,7 +499,6 @@ def test_call_func(
 @pytest.mark.parametrize(
     "func",
     [
-        "call_load",
         "call_watchlist",
         "call_spac",
         "call_spac_c",
@@ -500,6 +517,7 @@ def test_call_func(
         "call_headlines",
         "call_stats",
         "call_hist",
+        "call_trend",
         "call_popular",
         "call_getdd",
     ],
@@ -556,7 +574,7 @@ def test_call_func_no_ticker(func, mocker):
 
 @pytest.mark.vcr
 def test_call_load(mocker):
-    yf_download = ba_controller.stocks_helper.yf.download
+    yf_download = parent_classes.stocks_helper.yf.download
 
     def mock_yf_download(*args, **kwargs):
         kwargs["threads"] = False

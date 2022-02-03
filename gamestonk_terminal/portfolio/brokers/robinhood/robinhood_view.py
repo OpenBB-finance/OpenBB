@@ -1,10 +1,14 @@
 """Robinhood View"""
 __docformat__ = "numpy"
 
+import logging
 import os
+
 import matplotlib.pyplot as plt
 import mplfinance as mpf
+
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
     export_data,
     plot_autoscale,
@@ -13,6 +17,7 @@ from gamestonk_terminal.helper_funcs import (
 from gamestonk_terminal.portfolio.brokers.robinhood import robinhood_model
 from gamestonk_terminal.rich_config import console
 
+logger = logging.getLogger(__name__)
 
 span_title_dict = {
     "day": "Day",
@@ -25,6 +30,7 @@ span_title_dict = {
 }
 
 
+@log_start_end(log=logger)
 def display_holdings(export: str = ""):
     """Display stock holdings in robinhood
 
@@ -46,6 +52,7 @@ def display_holdings(export: str = ""):
     )
 
 
+@log_start_end(log=logger)
 def display_historical(interval: str = "day", span: str = "3month", export: str = ""):
     """Display historical portfolio
 

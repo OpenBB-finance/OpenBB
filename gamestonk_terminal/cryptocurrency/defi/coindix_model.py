@@ -1,10 +1,15 @@
 """Coindix model"""
 __docformat__ = "numpy"
 
+import logging
 from typing import Optional
 
-import requests
 import pandas as pd
+import requests
+
+from gamestonk_terminal.decorators import log_start_end
+
+logger = logging.getLogger(__name__)
 
 VAULTS_FILTERS = ["name", "chain", "protocol", "apy", "tvl", "risk", "link"]
 CHAINS = [
@@ -65,6 +70,7 @@ VAULT_KINDS = [
 ]
 
 
+@log_start_end(log=logger)
 def _risk_mapper(risk_level: int) -> str:
     """Helper methods
     Parameters
@@ -81,6 +87,7 @@ def _risk_mapper(risk_level: int) -> str:
     return mappings.get(risk_level, "Non Eligible")
 
 
+@log_start_end(log=logger)
 def _prepare_params(**kwargs) -> dict:
     """Helper method, which handles preparation of parameters for requests to coindix api.
 
@@ -103,6 +110,7 @@ def _prepare_params(**kwargs) -> dict:
     return {k: v.lower() for k, v in params.items()}
 
 
+@log_start_end(log=logger)
 def get_defi_vaults(
     chain: Optional[str] = None,
     protocol: Optional[str] = None,

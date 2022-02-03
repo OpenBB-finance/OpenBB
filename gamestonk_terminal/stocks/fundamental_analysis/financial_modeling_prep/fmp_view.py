@@ -1,17 +1,22 @@
 """ Financial Modeling Prep View """
 __docformat__ = "numpy"
 
+import logging
 import os
 
 import pandas as pd
 
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import export_data, print_rich_table
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.stocks.fundamental_analysis.financial_modeling_prep import (
     fmp_model,
 )
-from gamestonk_terminal.rich_config import console
+
+logger = logging.getLogger(__name__)
 
 
+@log_start_end(log=logger)
 def valinvest_score(ticker: str):
     """Value investing tool based on Warren Buffett, Joseph Piotroski and Benjamin Graham thoughts [Source: FMP]
 
@@ -27,6 +32,7 @@ def valinvest_score(ticker: str):
     console.print("")
 
 
+@log_start_end(log=logger)
 def display_profile(ticker: str):
     """Financial Modeling Prep ticker profile
 
@@ -47,6 +53,7 @@ def display_profile(ticker: str):
     console.print("")
 
 
+@log_start_end(log=logger)
 def display_quote(ticker: str):
     """Financial Modeling Prep ticker quote
 
@@ -61,6 +68,7 @@ def display_quote(ticker: str):
     console.print("")
 
 
+@log_start_end(log=logger)
 def display_enterprise(
     ticker: str, number: int, quarterly: bool = False, export: str = ""
 ):
@@ -84,6 +92,7 @@ def display_enterprise(
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "enterprise", df_fa)
 
 
+@log_start_end(log=logger)
 def display_discounted_cash_flow(
     ticker: str, number: int, quarterly: bool = False, export: str = ""
 ):
@@ -108,6 +117,7 @@ def display_discounted_cash_flow(
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "dcf", dcf)
 
 
+@log_start_end(log=logger)
 def display_income_statement(
     ticker: str, number: int, quarterly: bool = False, export: str = ""
 ):
@@ -141,6 +151,7 @@ def display_income_statement(
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "income", income)
 
 
+@log_start_end(log=logger)
 def display_balance_sheet(
     ticker: str, number: int, quarterly: bool = False, export: str = ""
 ):
@@ -174,6 +185,7 @@ def display_balance_sheet(
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "balance", balance)
 
 
+@log_start_end(log=logger)
 def display_cash_flow(
     ticker: str, number: int, quarterly: bool = False, export: str = ""
 ):
@@ -207,6 +219,7 @@ def display_cash_flow(
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "cash", cash)
 
 
+@log_start_end(log=logger)
 def display_key_metrics(
     ticker: str, number: int, quarterly: bool = False, export: str = ""
 ):
@@ -234,6 +247,7 @@ def display_key_metrics(
     )
 
 
+@log_start_end(log=logger)
 def display_financial_ratios(
     ticker: str, number: int, quarterly: bool = False, export: str = ""
 ):
@@ -259,6 +273,7 @@ def display_financial_ratios(
     )
 
 
+@log_start_end(log=logger)
 def display_financial_statement_growth(
     ticker: str, number: int, quarterly: bool = False, export: str = ""
 ):

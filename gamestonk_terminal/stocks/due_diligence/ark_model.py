@@ -2,13 +2,20 @@
 __docformat__ = "numpy"
 
 import json
-import requests
-from bs4 import BeautifulSoup
+import logging
+
 import pandas as pd
+import requests
 import yfinance as yf
+from bs4 import BeautifulSoup
+
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import get_user_agent
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def get_ark_trades_by_ticker(ticker: str) -> pd.DataFrame:
     """Gets a dataframe of ARK trades for ticker
 

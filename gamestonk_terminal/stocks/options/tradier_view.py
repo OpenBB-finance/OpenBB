@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 import argparse
+import logging
 import os
 from bisect import bisect_left
 from typing import List
@@ -14,18 +15,22 @@ import seaborn as sns
 
 from gamestonk_terminal import config_plot as cfp
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
     export_data,
     patch_pandas_text_adjustment,
     plot_autoscale,
     print_rich_table,
 )
-from gamestonk_terminal.stocks.options import op_helpers, tradier_model
 from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.stocks.options import op_helpers, tradier_model
+
+logger = logging.getLogger(__name__)
 
 column_map = {"mid_iv": "iv", "open_interest": "oi", "volume": "vol"}
 
 
+@log_start_end(log=logger)
 def red_highlight(val) -> str:
     """Red highlight
 
@@ -42,6 +47,7 @@ def red_highlight(val) -> str:
     return f"[red]{val}[/red]"
 
 
+@log_start_end(log=logger)
 def green_highlight(val) -> str:
     """Green highlight
 
@@ -58,6 +64,7 @@ def green_highlight(val) -> str:
     return f"[green]{val}[/green]"
 
 
+@log_start_end(log=logger)
 def check_valid_option_chains_headers(headers: str) -> List[str]:
     """Check valid option chains headers
 
@@ -80,6 +87,7 @@ def check_valid_option_chains_headers(headers: str) -> List[str]:
     return columns
 
 
+@log_start_end(log=logger)
 def display_chains(
     ticker: str,
     expiry: str,
@@ -176,6 +184,7 @@ def display_chains(
     )
 
 
+@log_start_end(log=logger)
 def plot_oi(
     ticker: str,
     expiry: str,
@@ -280,6 +289,7 @@ def plot_oi(
     console.print("")
 
 
+@log_start_end(log=logger)
 def plot_vol(
     ticker: str,
     expiry: str,
@@ -376,6 +386,7 @@ def plot_vol(
     console.print("")
 
 
+@log_start_end(log=logger)
 def plot_volume_open_interest(
     ticker: str,
     expiry: str,
@@ -564,6 +575,7 @@ def plot_volume_open_interest(
     console.print("")
 
 
+@log_start_end(log=logger)
 def display_historical(
     ticker: str,
     expiry: str,

@@ -1,10 +1,15 @@
-from datetime import datetime
+import logging
 import os
-from matplotlib import pyplot as plt, dates as mdates, ticker
+from datetime import datetime
+
 import matplotlib
 import numpy as np
-from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
+from matplotlib import dates as mdates
+from matplotlib import pyplot as plt
+from matplotlib import ticker
+
 from gamestonk_terminal import config_plot as cfgPlot
+from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.cryptocurrency.due_diligence.glassnode_model import (
     get_active_addresses,
     get_close_price,
@@ -13,10 +18,14 @@ from gamestonk_terminal.cryptocurrency.due_diligence.glassnode_model import (
     get_hashrate,
     get_non_zero_addresses,
 )
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
 from gamestonk_terminal.rich_config import console
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def display_btc_rainbow(since: int, until: int, export: str = ""):
     """Displays bitcoin rainbow chart
     [Price data from source: https://glassnode.com]
@@ -110,7 +119,7 @@ def display_btc_rainbow(since: int, until: int, export: str = ""):
             [datetime(2012, 11, 28), datetime(2016, 7, 9), datetime(2020, 5, 11)]
         )
         sample_dates = mdates.date2num(sample_dates)
-        ax.vlines(x=sample_dates, ymin=0, ymax=10 ** 5, color="grey")
+        ax.vlines(x=sample_dates, ymin=0, ymax=10**5, color="grey")
         for i, x in enumerate(sample_dates):
             ax.text(x, 1, f"Halving {i+1}", rotation=-90, verticalalignment="center")
 
@@ -136,6 +145,7 @@ def display_btc_rainbow(since: int, until: int, export: str = ""):
         )
 
 
+@log_start_end(log=logger)
 def display_active_addresses(
     asset: str, since: int, until: int, interval: str, export: str = ""
 ) -> None:
@@ -190,6 +200,7 @@ def display_active_addresses(
     )
 
 
+@log_start_end(log=logger)
 def display_non_zero_addresses(
     asset: str, since: int, until: int, interval: str, export: str = ""
 ) -> None:
@@ -244,6 +255,7 @@ def display_non_zero_addresses(
     )
 
 
+@log_start_end(log=logger)
 def display_exchange_net_position_change(
     asset: str, exchange: str, since: int, until: int, interval: str, export: str = ""
 ) -> None:
@@ -315,6 +327,7 @@ def display_exchange_net_position_change(
     )
 
 
+@log_start_end(log=logger)
 def display_exchange_balances(
     asset: str,
     exchange: str,
@@ -386,6 +399,7 @@ def display_exchange_balances(
     )
 
 
+@log_start_end(log=logger)
 def display_hashrate(
     asset: str,
     since: int,

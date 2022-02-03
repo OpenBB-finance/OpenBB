@@ -1,7 +1,9 @@
 """Rekt view"""
+import logging
 import os
 
 from gamestonk_terminal.cryptocurrency.overview import rekt_model
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
     export_data,
     long_number_format,
@@ -9,7 +11,10 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal.rich_config import console
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def display_crypto_hacks(
     top: int, sortby: str, descend: bool, slug: str, export: str = ""
 ) -> None:

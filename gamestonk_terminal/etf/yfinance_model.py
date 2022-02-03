@@ -1,10 +1,17 @@
 """Yahoo Finance model"""
 __docformat__ = "numpy"
 
+import logging
 from typing import Dict
+
 import yfinance as yf
 
+from gamestonk_terminal.decorators import log_start_end
 
+logger = logging.getLogger(__name__)
+
+
+@log_start_end(log=logger)
 def get_etf_sector_weightings(name: str) -> Dict:
     """Return sector weightings allocation of ETF. [Source: Yahoo Finance]
 
@@ -33,6 +40,7 @@ def get_etf_sector_weightings(name: str) -> Dict:
     return dict()
 
 
+@log_start_end(log=logger)
 def get_etf_summary_description(name: str) -> str:
     """Return summary description of ETF. [Source: Yahoo Finance]
 

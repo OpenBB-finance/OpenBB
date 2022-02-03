@@ -1,21 +1,28 @@
 """CoinGecko view"""
 __docformat__ = "numpy"
 
+import logging
 import os
+
+from matplotlib import pyplot as plt
+from matplotlib import ticker
 from pandas.plotting import register_matplotlib_converters
-from matplotlib import pyplot as plt, ticker
+
+import gamestonk_terminal.cryptocurrency.overview.pycoingecko_model as gecko
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
     long_number_format_with_type_check,
 )
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
     export_data,
     plot_autoscale,
     print_rich_table,
 )
-import gamestonk_terminal.cryptocurrency.overview.pycoingecko_model as gecko
 from gamestonk_terminal.rich_config import console
+
+logger = logging.getLogger(__name__)
 
 register_matplotlib_converters()
 
@@ -23,6 +30,7 @@ register_matplotlib_converters()
 # pylint: disable=R0904, C0302
 
 
+@log_start_end(log=logger)
 def display_holdings_overview(coin: str, show_bar: bool, export: str, top: int) -> None:
     """Shows overview of public companies that holds ethereum or bitcoin. [Source: CoinGecko]
 
@@ -75,6 +83,7 @@ def display_holdings_overview(coin: str, show_bar: bool, export: str, top: int) 
         )
 
 
+@log_start_end(log=logger)
 def display_exchange_rates(sortby: str, descend: bool, top: int, export: str) -> None:
     """Shows  list of crypto, fiats, commodity exchange rates. [Source: CoinGecko]
 
@@ -113,6 +122,7 @@ def display_exchange_rates(sortby: str, descend: bool, top: int, export: str) ->
         console.print("")
 
 
+@log_start_end(log=logger)
 def display_global_market_info(pie: bool, export: str) -> None:
     """Shows global statistics about crypto. [Source: CoinGecko]
         - market cap change
@@ -176,6 +186,7 @@ def display_global_market_info(pie: bool, export: str) -> None:
         console.print("")
 
 
+@log_start_end(log=logger)
 def display_global_defi_info(export: str) -> None:
     """Shows global statistics about Decentralized Finances. [Source: CoinGecko]
 
@@ -208,6 +219,7 @@ def display_global_defi_info(export: str) -> None:
         console.print("")
 
 
+@log_start_end(log=logger)
 def display_stablecoins(
     top: int, export: str, sortby: str, descend: bool, pie: bool
 ) -> None:
@@ -293,6 +305,7 @@ First {top} stablecoins have a total {long_number_format_with_type_check(total_m
         console.print("\nUnable to retrieve data from CoinGecko.\n")
 
 
+@log_start_end(log=logger)
 def display_categories(sortby: str, top: int, export: str, pie: bool) -> None:
     """Shows top cryptocurrency categories by market capitalization
 
@@ -352,6 +365,7 @@ def display_categories(sortby: str, top: int, export: str, pie: bool) -> None:
         console.print("\nUnable to retrieve data from CoinGecko.\n")
 
 
+@log_start_end(log=logger)
 def display_exchanges(
     sortby: str, descend: bool, top: int, links: bool, export: str
 ) -> None:
@@ -401,6 +415,7 @@ def display_exchanges(
         console.print("")
 
 
+@log_start_end(log=logger)
 def display_platforms(sortby: str, descend: bool, top: int, export: str) -> None:
     """Shows list of financial platforms. [Source: CoinGecko]
 
@@ -441,6 +456,7 @@ def display_platforms(sortby: str, descend: bool, top: int, export: str) -> None
         console.print("")
 
 
+@log_start_end(log=logger)
 def display_products(sortby: str, descend: bool, top: int, export: str) -> None:
     """Shows list of financial products. [Source: CoinGecko]
 
@@ -481,6 +497,7 @@ def display_products(sortby: str, descend: bool, top: int, export: str) -> None:
         console.print("")
 
 
+@log_start_end(log=logger)
 def display_indexes(sortby: str, descend: bool, top: int, export: str) -> None:
     """Shows list of crypto indexes. [Source: CoinGecko]
 
@@ -520,6 +537,7 @@ def display_indexes(sortby: str, descend: bool, top: int, export: str) -> None:
         console.print("")
 
 
+@log_start_end(log=logger)
 def display_derivatives(sortby: str, descend: bool, top: int, export: str) -> None:
     """Shows  list of crypto derivatives. [Source: CoinGecko]
 

@@ -1,15 +1,20 @@
 """ Alpha Vantage View """
 __docformat__ = "numpy"
 
+import logging
 import os
 
 import numpy as np
 
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import export_data, print_rich_table
-from gamestonk_terminal.stocks.fundamental_analysis import av_model
 from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.stocks.fundamental_analysis import av_model
+
+logger = logging.getLogger(__name__)
 
 
+@log_start_end(log=logger)
 def display_overview(ticker: str):
     """Alpha Vantage stock ticker overview
 
@@ -31,6 +36,7 @@ def display_overview(ticker: str):
     console.print("")
 
 
+@log_start_end(log=logger)
 def display_key(ticker: str):
     """Alpha Vantage key metrics
 
@@ -44,11 +50,12 @@ def display_key(ticker: str):
         console.print("No API calls left. Try me later", "\n")
         return
 
-    print_rich_table(df_key, headers=[], title="Ticker Key Metrics")
+    print_rich_table(df_key, headers=[], title="Ticker Key Metrics", show_index=True)
 
     console.print("")
 
 
+@log_start_end(log=logger)
 def display_income_statement(
     ticker: str, limit: int, quarterly: bool = False, export: str = ""
 ):
@@ -78,6 +85,7 @@ def display_income_statement(
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "income", df_income)
 
 
+@log_start_end(log=logger)
 def display_balance_sheet(
     ticker: str, limit: int, quarterly: bool = False, export: str = ""
 ):
@@ -109,6 +117,7 @@ def display_balance_sheet(
     )
 
 
+@log_start_end(log=logger)
 def display_cash_flow(
     ticker: str, limit: int, quarterly: bool = False, export: str = ""
 ):
@@ -138,6 +147,7 @@ def display_cash_flow(
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "cash", df_cash)
 
 
+@log_start_end(log=logger)
 def display_earnings(ticker: str, limit: int, quarterly: bool = False):
     """Alpha Vantage earnings
 
@@ -164,6 +174,7 @@ def display_earnings(ticker: str, limit: int, quarterly: bool = False):
     console.print("")
 
 
+@log_start_end(log=logger)
 def display_fraud(ticker: str):
     """Fraud indicators for given ticker
     Parameters
@@ -171,19 +182,18 @@ def display_fraud(ticker: str):
     ticker : str
         Fundamental analysis ticker symbol
     """
-    ratios, zscore = av_model.get_fraud_ratios(ticker)
+    ratios, zscore, mckee = av_model.get_fraud_ratios(ticker)
 
     if ratios["MSCORE"] > -1.78:
-        chanceM = "high"
+        chance_m = "high"
     elif ratios["MSCORE"] > -2.22:
-        chanceM = "moderate"
+        chance_m = "moderate"
     else:
-        chanceM = "low"
+        chance_m = "low"
 
-    if zscore < 0.5:
-        chanceZ = "high"
-    else:
-        chanceZ = "low"
+    chance_z = "high" if zscore < 0.5 else "low"
+
+    chance_mcke = "low" if mckee < 0.5 else "high"
 
     if np.isnan(ratios["MSCORE"]) or np.isnan(zscore):
         console.print("Data incomplete for this ticker. Unable to calculate risk")
@@ -196,8 +206,10 @@ def display_fraud(ticker: str):
 
     console.print(
         "\n" + "MSCORE: ",
-        f"{ratios['MSCORE']:.2f} ({chanceM} chance of fraud)",
+        f"{ratios['MSCORE']:.2f} ({chance_m} chance of fraud)",
     )
 
-    console.print("ZSCORE: ", f"{zscore:.2f} ({chanceZ} chance of bankruptcy)", "\n")
+    console.print("ZSCORE: ", f"{zscore:.2f} ({chance_z} chance of bankruptcy)", "\n")
+
+    console.print("McKee: ", f"{mckee:.2f} ({chance_mcke} chance of bankruptcy)", "\n")
     return

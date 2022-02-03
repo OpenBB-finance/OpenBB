@@ -1,12 +1,18 @@
 """Stocktwits Model"""
 __docformat__ = "numpy"
 
-from typing import Tuple, List, Dict
+import logging
+from typing import Dict, List, Tuple
 
 import pandas as pd
 import requests
 
+from gamestonk_terminal.decorators import log_start_end
 
+logger = logging.getLogger(__name__)
+
+
+@log_start_end(log=logger)
 def get_bullbear(ticker: str) -> Tuple[int, int, int, int]:
     """Gets bullbear sentiment for ticker [Source: stocktwits]
 
@@ -44,6 +50,7 @@ def get_bullbear(ticker: str) -> Tuple[int, int, int, int]:
     return 0, 0, 0, 0
 
 
+@log_start_end(log=logger)
 def get_messages(ticker: str, limit: int = 30) -> List[str]:
     """Get last messages for a given ticker [Source: stocktwits]
 
@@ -71,6 +78,7 @@ def get_messages(ticker: str, limit: int = 30) -> List[str]:
     return messages
 
 
+@log_start_end(log=logger)
 def get_trending() -> pd.DataFrame:
     """Get trending tickers from stocktwits [Source: stocktwits]
 
@@ -95,6 +103,7 @@ def get_trending() -> pd.DataFrame:
     return pd.DataFrame()
 
 
+@log_start_end(log=logger)
 def get_stalker(user: str, limit: int = 30) -> List[Dict]:
     """Gets messages from given user [Source: stocktwits]
 

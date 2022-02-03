@@ -1,17 +1,22 @@
 """The BitQuery view"""
 __docformat__ = "numpy"
 
+import logging
 import os
 
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
-    very_long_number_formatter,
     prettify_column_names,
+    very_long_number_formatter,
 )
 from gamestonk_terminal.cryptocurrency.onchain import bitquery_model
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.rich_config import console
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def display_dex_trades(
     trade_amount_currency: str = "USD",
     kind: str = "dex",
@@ -44,35 +49,39 @@ def display_dex_trades(
 
     if kind == "time":
         df = bitquery_model.get_dex_trades_monthly(trade_amount_currency, days)
-        df = df.sort_values(by="date", ascending=descend)
+        if not df.empty:
+            df = df.sort_values(by="date", ascending=descend)
     else:
         df = bitquery_model.get_dex_trades_by_exchange(trade_amount_currency, days)
-        df = df.sort_values(by=sortby, ascending=descend)
+        if not df.empty:
+            df = df.sort_values(by=sortby, ascending=descend)
 
-    df_data = df.copy()
+    if not df.empty:
+        df_data = df.copy()
 
-    df[["tradeAmount", "trades"]] = df[["tradeAmount", "trades"]].applymap(
-        lambda x: very_long_number_formatter(x)
-    )
+        df[["tradeAmount", "trades"]] = df[["tradeAmount", "trades"]].applymap(
+            lambda x: very_long_number_formatter(x)
+        )
 
-    df.columns = prettify_column_names(df.columns)
+        df.columns = prettify_column_names(df.columns)
 
-    print_rich_table(
-        df.head(top),
-        headers=list(df.columns),
-        show_index=False,
-        title="Trades on Decentralized Exchanges",
-    )
-    console.print("")
+        print_rich_table(
+            df.head(top),
+            headers=list(df.columns),
+            show_index=False,
+            title="Trades on Decentralized Exchanges",
+        )
+        console.print("")
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "lt",
-        df_data,
-    )
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "lt",
+            df_data,
+        )
 
 
+@log_start_end(log=logger)
 def display_daily_volume_for_given_pair(
     token: str = "WBTC",
     vs: str = "USDT",
@@ -137,6 +146,7 @@ def display_daily_volume_for_given_pair(
     )
 
 
+@log_start_end(log=logger)
 def display_dex_volume_for_token(
     token: str = "WBTC",
     trade_amount_currency: str = "USD",
@@ -168,33 +178,35 @@ def display_dex_volume_for_token(
     """
 
     df = bitquery_model.get_token_volume_on_dexes(
-        token=token,
-        trade_amount_currency=trade_amount_currency,
-    ).sort_values(by=sortby, ascending=descend)
-
-    df_data = df.copy()
-    df[["tradeAmount", "trades"]] = df[["tradeAmount", "trades"]].applymap(
-        lambda x: very_long_number_formatter(x)
+        token=token, trade_amount_currency=trade_amount_currency
     )
+    if not df.empty:
+        df = df.sort_values(by=sortby, ascending=descend)
 
-    df.columns = prettify_column_names(df.columns)
+        df_data = df.copy()
+        df[["tradeAmount", "trades"]] = df[["tradeAmount", "trades"]].applymap(
+            lambda x: very_long_number_formatter(x)
+        )
 
-    print_rich_table(
-        df.head(top),
-        headers=list(df.columns),
-        show_index=False,
-        title="Token Volume on Exchanges",
-    )
-    console.print("")
+        df.columns = prettify_column_names(df.columns)
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "tv",
-        df_data,
-    )
+        print_rich_table(
+            df.head(top),
+            headers=list(df.columns),
+            show_index=False,
+            title="Token Volume on Exchanges",
+        )
+        console.print("")
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "tv",
+            df_data,
+        )
 
 
+@log_start_end(log=logger)
 def display_ethereum_unique_senders(
     interval: str = "days",
     limit: int = 10,
@@ -226,33 +238,35 @@ def display_ethereum_unique_senders(
         Number of unique ethereum addresses which made a transaction in given time interval
     """
 
-    df = bitquery_model.get_ethereum_unique_senders(interval, limit).sort_values(
-        by=sortby, ascending=descend
-    )
+    df = bitquery_model.get_ethereum_unique_senders(interval, limit)
+    if not df.empty:
 
-    df[["uniqueSenders", "transactions", "maximumGasPrice"]] = df[
-        ["uniqueSenders", "transactions", "maximumGasPrice"]
-    ].applymap(lambda x: very_long_number_formatter(x))
+        df = df.sort_values(by=sortby, ascending=descend)
 
-    df_data = df.copy()
-    df.columns = prettify_column_names(df.columns)
+        df[["uniqueSenders", "transactions", "maximumGasPrice"]] = df[
+            ["uniqueSenders", "transactions", "maximumGasPrice"]
+        ].applymap(lambda x: very_long_number_formatter(x))
 
-    print_rich_table(
-        df,
-        headers=list(df.columns),
-        show_index=False,
-        title="Unique Ethereum Addresses",
-    )
-    console.print("")
+        df_data = df.copy()
+        df.columns = prettify_column_names(df.columns)
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "ueat",
-        df_data,
-    )
+        print_rich_table(
+            df,
+            headers=list(df.columns),
+            show_index=False,
+            title="Unique Ethereum Addresses",
+        )
+        console.print("")
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "ueat",
+            df_data,
+        )
 
 
+@log_start_end(log=logger)
 def display_most_traded_pairs(
     exchange="Uniswap",
     days: int = 10,
@@ -282,31 +296,32 @@ def display_most_traded_pairs(
         Most traded crypto pairs on given decentralized exchange in chosen time period.
     """
 
-    df = bitquery_model.get_most_traded_pairs(
-        exchange=exchange, limit=days
-    ).sort_values(by=sortby, ascending=descend)
-    df_data = df.copy()
-    df[["tradeAmount", "trades"]] = df[["tradeAmount", "trades"]].applymap(
-        lambda x: very_long_number_formatter(x)
-    )
-    df.columns = prettify_column_names(df.columns)
+    df = bitquery_model.get_most_traded_pairs(exchange=exchange, limit=days)
+    if not df.empty:
+        df = df.sort_values(by=sortby, ascending=descend)
+        df_data = df.copy()
+        df[["tradeAmount", "trades"]] = df[["tradeAmount", "trades"]].applymap(
+            lambda x: very_long_number_formatter(x)
+        )
+        df.columns = prettify_column_names(df.columns)
 
-    print_rich_table(
-        df.head(top),
-        headers=list(df.columns),
-        show_index=False,
-        title="Most Traded Crypto Pairs",
-    )
-    console.print("")
+        print_rich_table(
+            df.head(top),
+            headers=list(df.columns),
+            show_index=False,
+            title="Most Traded Crypto Pairs",
+        )
+        console.print("")
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "ttcp",
-        df_data,
-    )
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "ttcp",
+            df_data,
+        )
 
 
+@log_start_end(log=logger)
 def display_spread_for_crypto_pair(
     token="ETH",
     vs="USDC",
@@ -339,23 +354,23 @@ def display_spread_for_crypto_pair(
         Average bid and ask prices, spread for given crypto pair for chosen time period
     """
 
-    df = bitquery_model.get_spread_for_crypto_pair(
-        token=token, vs=vs, limit=days
-    ).sort_values(by=sortby, ascending=descend)
+    df = bitquery_model.get_spread_for_crypto_pair(token=token, vs=vs, limit=days)
+    if not df.empty:
+        df = df.sort_values(by=sortby, ascending=descend)
 
-    df.columns = prettify_column_names(df.columns)
+        df.columns = prettify_column_names(df.columns)
 
-    print_rich_table(
-        df,
-        headers=list(df.columns),
-        show_index=False,
-        title="Average Spread for Given Crypto",
-    )
-    console.print("")
+        print_rich_table(
+            df,
+            headers=list(df.columns),
+            show_index=False,
+            title="Average Spread for Given Crypto",
+        )
+        console.print("")
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "baas",
-        df,
-    )
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "baas",
+            df,
+        )

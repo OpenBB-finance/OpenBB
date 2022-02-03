@@ -1,0 +1,79 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: GET
+    uri: https://api.coingecko.com/api/v3/search/trending
+  response:
+    body:
+      string: !!binary |
+        H4sIADmE9WEAA5zWW2/aMBQA4Pf+iirPEHyL7fAyVVM7bWthAqY9TBUywYOUXFAS1E0V/32+pGlS
+        QFA/tUpOzjnxl2P8cuVFeZyV3vD694sXVzL1hurv0ht6oqyKvHwWW69nYub6KuQc0p6XiVSqkBsd
+        MrUh5b90kSf64nQ2GasLqSg2sppHYjsvRLbxhpTznletd+lCRa2ralsOBwNRlrIqfV1gJaNNrv5L
+        B6alQZyKlSwHpuTAPDcwPfnbbPUJUowDQHkAdO1UJIlDUvPcqaSJKFbSIal57mSnyW71bm23RRzJ
+        +aKKvCHyIcEhBQHjkCCCoewDtdpllBeqE7Df994ZPefZUhaJyJZdJIjekH61Yxql2deH22NIkGE3
+        JFWyRqriVPo/Rl/0mwOKYEigo5HOaY2O53Qh0jkt0Yk+rVBnZVtEwAcQQkwDRAMYhoQSwhsheCj0
+        R2RVnrZ1CACwwbl7vd3A3M0ejrmg0IVF16pVbCX7RQYBBzAAkDq5mKSW5VTSj8OYpNblZKdWplnR
+        lkrgU0wUIcABDgjEWA1O0LCgQ5YkzzdlIdTdlgxC5uuvae51yMSGNDr34/H36dG5AcAFyJSshaK4
+        iBLZXyQi2vRRQOvdg0AVAqnbPmfzW6zz+T/OZvNbtwv6t4Ltxe+OlvoIUAgRU5sgJ5CDgJBGER8q
+        FnkWZx1BlSFsBCf17UZvMh4dtaPEyU4Xq+2SfJXPi3yXLedJvFpX/tNWmpfH6n3UF+yGZwpYvAsK
+        OOiZAlbvkjewfK+r3qJjPlZzakYVhYCxsDN/5FCukkUh+skuE20+jjhp9GY6pDN7P0c3x/icdkZd
+        6tVOdaE2GoYQIwxSiuuthzJIGGDIyc7kr+nO5/84nclfy13Qv5XrrPq7yVO/aVRPHqcY6Rl8G7zg
+        kE9mT3Gm++kcOyBAjd6tjrj+nHcH8Hb07ejJ0IlQ16sJTT99fbevv+N6AdTbq5MX426nD53dAp7N
+        7nAO0dkt3/neLd5bXBeP+GqXJIqbMIYI4rwze3S/f+xdefJvtBaqGXPQf7za/wcAAP//AwDv3M4d
+        +AsAAA==
+    headers:
+      Access-Control-Allow-Headers:
+      - Origin, X-Requested-With, Content-Type, Accept, Authorization
+      Access-Control-Allow-Methods:
+      - POST, PUT, DELETE, GET, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Expose-Headers:
+      - link, per-page, total
+      Access-Control-Request-Method:
+      - '*'
+      Age:
+      - '31'
+      Alternate-Protocol:
+      - 443:npn-spdy/2
+      CF-Cache-Status:
+      - HIT
+      CF-RAY:
+      - 6d5472c72bc63322-CDG
+      Cache-Control:
+      - max-age=30, public, must-revalidate, s-maxage=600
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sat, 29 Jan 2022 18:15:52 GMT
+      ETag:
+      - W/"ef77ba29cb5a2d2cd2b4a73fc135acb3"
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding, Origin
+      X-Request-Id:
+      - 1b8b8bfc-295c-4d0e-982a-287a86302baf
+      X-Runtime:
+      - '0.016249'
+    status:
+      code: 200
+      message: OK
+version: 1

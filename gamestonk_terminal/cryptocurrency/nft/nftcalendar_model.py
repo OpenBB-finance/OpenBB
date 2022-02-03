@@ -1,12 +1,19 @@
 """ nftcalendar.io Model """
 __docformat__ = "numpy"
 
+import logging
+
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
+
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import get_user_agent
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def get_nft_drops(url: str) -> pd.DataFrame:
     """Get NFT drops [Source: nftcalendar.io]
 
@@ -56,6 +63,7 @@ def get_nft_drops(url: str) -> pd.DataFrame:
     )
 
 
+@log_start_end(log=logger)
 def get_nft_today_drops() -> pd.DataFrame:
     """Get NFT today drops [Source: nftcalendar.io]
 
@@ -67,6 +75,7 @@ def get_nft_today_drops() -> pd.DataFrame:
     return get_nft_drops("https://nftcalendar.io/")
 
 
+@log_start_end(log=logger)
 def get_nft_upcoming_drops() -> pd.DataFrame:
     """Get NFT upcoming drops [Source: nftcalendar.io]
 
@@ -78,6 +87,7 @@ def get_nft_upcoming_drops() -> pd.DataFrame:
     return get_nft_drops("https://nftcalendar.io/events")
 
 
+@log_start_end(log=logger)
 def get_nft_ongoing_drops() -> pd.DataFrame:
     """Get NFT ongoing drops [Source: nftcalendar.io]
 
@@ -89,6 +99,7 @@ def get_nft_ongoing_drops() -> pd.DataFrame:
     return get_nft_drops("https://nftcalendar.io/events/ongoing/")
 
 
+@log_start_end(log=logger)
 def get_nft_newest_drops() -> pd.DataFrame:
     """Get NFT newest drops [Source: nftcalendar.io]
 
