@@ -24,5 +24,5 @@ from .technical_analysis import ta_api as ta
 
 try:
     from .prediction_techniques import pred_api as pred
-finally:
-    pass
+except Exception as e:
+    _ = e
