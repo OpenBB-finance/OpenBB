@@ -3,7 +3,7 @@ from . import (
     dark_pool_shorts,
     due_diligence,
     government,
+    options,
     screener,
     technical_analysis,
-    options,
 )

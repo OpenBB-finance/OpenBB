@@ -1,6 +1,7 @@
 """ Alpha Vantage View """
 __docformat__ = "numpy"
 
+from typing import List, Optional
 import logging
 import os
 
@@ -45,6 +46,7 @@ def realtime_performance_sector(raw: bool, export: str):
         )
 
     else:
+        # TODO: convert to mpl
         df_rtp.plot(kind="bar")
         plt.title("Real Time Performance (%) per Sector")
         plt.tight_layout()
@@ -114,7 +116,12 @@ def display_real_gdp(
 
 
 @log_start_end(log=logger)
-def display_gdp_capita(start_year: int = 2010, raw: bool = False, export: str = ""):
+def display_gdp_capita(
+    start_year: int = 2010,
+    raw: bool = False,
+    export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
+):
     """Display US GDP per Capita from AlphaVantage
 
     Parameters
@@ -124,23 +131,28 @@ def display_gdp_capita(start_year: int = 2010, raw: bool = False, export: str = 
     raw : bool, optional
         Flag to show raw data, by default False
     export : str, optional
-        Format to export data, by default ""
+        Format to export data, by default
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
     gdp_capita = alphavantage_model.get_gdp_capita()
     if gdp_capita.empty:
         console.print("Error getting data.  Check API Key")
         return
     gdp = gdp_capita[gdp_capita.date >= f"{start_year}-01-01"]
-    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-    ax.plot(gdp.date, gdp.GDP, marker="o", c="dodgerblue")
-    ax.set_xlabel("Date")
+
+    # This plot has 1 axis
+    if not external_axes:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
+    else:
+        if len(external_axes) != 1:
+            console.print("[red]Expected list of one axis item./n[/red]")
+            return
+        (ax,) = external_axes
+
+    ax.plot(gdp.date, gdp.GDP, marker="o")
     ax.set_title(f"US GDP per Capita (Chained 2012 USD) from {start_year}")
     ax.set_ylabel("US GDP (Chained 2012 USD)  ")
-    ax.grid("on")
-    fig.tight_layout()
-    if gtff.USE_ION:
-        plt.ion()
-    plt.show()
 
     export_data(
         export,
@@ -155,7 +167,7 @@ def display_gdp_capita(start_year: int = 2010, raw: bool = False, export: str = 
             show_index=False,
             title="US GDP Per Capita",
         )
-    console.print("")
+        console.print("")
 
 
 @log_start_end(log=logger)

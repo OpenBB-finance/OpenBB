@@ -1,16 +1,17 @@
 import os
 from datetime import datetime, timedelta
-import discord
-from matplotlib import pyplot as plt
-import numpy as np
 
-from gamestonk_terminal.helper_funcs import plot_autoscale
-from gamestonk_terminal.common.technical_analysis import momentum_model
-from gamestonk_terminal.config_plot import PLOT_DPI
+import disnake
+import numpy as np
+from matplotlib import pyplot as plt
+from PIL import Image
 
 import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import gst_imgur, logger
 import discordbot.helpers
+from discordbot.config_discordbot import gst_imgur, logger
+from gamestonk_terminal.common.technical_analysis import momentum_model
+from gamestonk_terminal.config_plot import PLOT_DPI
+from gamestonk_terminal.helper_funcs import plot_autoscale
 
 
 async def cg_command(ctx, ticker="", length="14", start="", end=""):
@@ -58,6 +59,7 @@ async def cg_command(ctx, ticker="", length="14", start="", end=""):
         df_ta = momentum_model.cg(df_close, length)
 
         # Output Data
+        plt.style.use("seaborn")
         fig, axes = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
         ax = axes[0]
         ax.set_title(f"{ticker} Centre of Gravity")
@@ -80,12 +82,33 @@ async def cg_command(ctx, ticker="", length="14", start="", end=""):
         plt.legend()
 
         plt.savefig("ta_cg.png")
+        imagefile = "ta_cg.png"
+
+        img = Image.open(imagefile)
+        print(img.size)
+        im_bg = Image.open(cfg.IMG_BG)
+        h = img.height + 240
+        w = img.width + 520
+
+        img = img.resize((w, h), Image.ANTIALIAS)
+        x1 = int(0.5 * im_bg.size[0]) - int(0.5 * img.size[0])
+        y1 = int(0.5 * im_bg.size[1]) - int(0.5 * img.size[1])
+        x2 = int(0.5 * im_bg.size[0]) + int(0.5 * img.size[0])
+        y2 = int(0.5 * im_bg.size[1]) + int(0.5 * img.size[1])
+        img = img.convert("RGB")
+        im_bg.paste(img, box=(x1 - 5, y1, x2 - 5, y2))
+        im_bg.save(imagefile, "PNG", quality=100)
+
+        image = Image.open(imagefile)
+        image = discordbot.helpers.autocrop_image(image, 0)
+        image.save(imagefile, "PNG", quality=100)
+
         uploaded_image = gst_imgur.upload_image("ta_cg.png", title="something")
         image_link = uploaded_image.link
         if cfg.DEBUG:
             logger.debug("Image URL: %s", image_link)
         title = "Stocks: Center-of-Gravity " + ticker
-        embed = discord.Embed(title=title, colour=cfg.COLOR)
+        embed = disnake.Embed(title=title, colour=cfg.COLOR)
         embed.set_author(
             name=cfg.AUTHOR_NAME,
             icon_url=cfg.AUTHOR_ICON_URL,
@@ -96,7 +119,7 @@ async def cg_command(ctx, ticker="", length="14", start="", end=""):
         await ctx.send(embed=embed)
 
     except Exception as e:
-        embed = discord.Embed(
+        embed = disnake.Embed(
             title="ERROR Stocks: Center-of-Gravity",
             colour=cfg.COLOR,
             description=e,
@@ -106,4 +129,4 @@ async def cg_command(ctx, ticker="", length="14", start="", end=""):
             icon_url=cfg.AUTHOR_ICON_URL,
         )
 
-        await ctx.send(embed=embed)
+        await ctx.send(embed=embed, delete_after=30.0)
