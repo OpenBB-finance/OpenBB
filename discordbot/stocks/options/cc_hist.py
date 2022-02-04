@@ -101,7 +101,7 @@ async def cc_hist_command(
             margin=dict(l=0, r=0, t=25, b=5),
             template=cfg.PLT_CANDLE_STYLE_TEMPLATE,
             showlegend=False,
-            yaxis_title="Price ($)",
+            yaxis_title="Premium",
             xaxis=dict(
                 rangeslider=dict(visible=False),
                 type="date",
