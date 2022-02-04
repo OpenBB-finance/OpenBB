@@ -157,7 +157,7 @@ def view_vwap(
         candle_chart_kwargs["figscale"] = 1.10
         candle_chart_kwargs["figsize"] = plot_autoscale()
         candle_chart_kwargs["addplot"] = mpf.make_addplot(
-            df_vwap, width=theme.linewidth
+            df_vwap, width=theme.line_width
         )
         fig, _ = mpf.plot(day_df, **candle_chart_kwargs)
         fig.suptitle(
@@ -175,7 +175,7 @@ def view_vwap(
         candle_chart_kwargs["ax"] = ax1
         candle_chart_kwargs["volume"] = ax2
         candle_chart_kwargs["addplot"] = mpf.make_addplot(
-            df_vwap, width=theme.linewidth, ax=ax3
+            df_vwap, width=theme.line_width, ax=ax3
         )
         mpf.plot(day_df, **candle_chart_kwargs)
 

@@ -111,7 +111,8 @@ class TerminalStyle:
 
     xticks_rotation: str = ""
     tight_layout_padding: int = 0
-    linewidth: float = 1.3
+    line_width: float = 1.5
+    volume_bar_width: float = 0.8
 
     def __init__(
         self,
@@ -167,6 +168,8 @@ class TerminalStyle:
         else:
             with open(self.console_styles_available["dark"]) as stylesheet:
                 self.console_style = json.load(stylesheet)
+
+        self.applyMPLstyle()
 
     def load_custom_fonts_from_folder(self, folder: str) -> None:
         """Load custom fonts form folder.
@@ -225,7 +228,8 @@ class TerminalStyle:
         self.mpf_style["mavcolors"] = plt.rcParams["axes.prop_cycle"].by_key()["color"]
         self.down_color = self.mpf_style["marketcolors"]["volume"]["down"]
         self.up_color = self.mpf_style["marketcolors"]["volume"]["up"]
-        self.linewidth = plt.rcParams["lines.linewidth"]
+        self.line_width = plt.rcParams["lines.linewidth"]
+        self.volume_bar_width = self.mpl_rcparams["volume_bar_width"]
 
     def get_colors(self, reverse: bool = False) -> List:
         """Get hex color sequence from the stylesheet."""
