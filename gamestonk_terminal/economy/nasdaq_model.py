@@ -33,12 +33,12 @@ def check_country_code_type(list_of_codes: str) -> List[str]:
 
 
 @log_start_end(log=logger)
-def get_big_mac_index(count_code: str) -> pd.DataFrame:
+def get_big_mac_index(country_code: str) -> pd.DataFrame:
     """Gets the Big Mac index calculated by the Economist
 
     Parameters
     ----------
-    count_code : str
+    country_code : str
         ISO-3 letter country code to retrieve
 
     Returns
@@ -46,9 +46,9 @@ def get_big_mac_index(count_code: str) -> pd.DataFrame:
     pd.DataFrame
         Dataframe with Big Mac index converted to USD equivalent.
     """
-    r = requests.get(
-        f"https://data.nasdaq.com/api/v3/datasets/ECONOMIST/BIGMAC_{count_code}?column_index=3&api_key={API_KEY_QUANDL}"
-    )
+    URL = f"https://data.nasdaq.com/api/v3/datasets/ECONOMIST/BIGMAC_{country_code}"
+    URL += f"?column_index=3&api_key={API_KEY_QUANDL}"
+    r = requests.get(URL)
     if r.status_code != 200:
         return pd.DataFrame()
 
