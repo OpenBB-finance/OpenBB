@@ -305,26 +305,29 @@ def terminal(jobs_cmds: List[str] = None):
                 console.print("\n")
 
 
+def run_scripts(test_mode: bool = False):
+    if os.path.isfile(sys.argv[1]):
+        with open(sys.argv[1]) as fp:
+            simulate_argv = f"/{'/'.join([line.rstrip() for line in fp])}"
+            file_cmds = simulate_argv.replace("//", "/home/").split()
+            # close the eyes if the user forgets the initial `/`
+            if len(file_cmds) > 0:
+                if file_cmds[0][0] != "/":
+                    file_cmds[0] = f"/{file_cmds[0]}"
+            terminal(file_cmds)
+    else:
+        console.print(f"File '{sys.argv[1]}' doesn't exist. Launching base terminal.\n")
+        if not test_mode:
+            terminal()
+
+
 if __name__ == "__main__":
     if len(sys.argv) > 1:
         if "--debug" in sys.argv:
             os.environ["DEBUG_MODE"] = "true"
             sys.argv.remove("--debug")
         if len(sys.argv) > 1 and ".gst" in sys.argv[1]:
-            if os.path.isfile(sys.argv[1]):
-                with open(sys.argv[1]) as fp:
-                    simulate_argv = f"/{'/'.join([line.rstrip() for line in fp])}"
-                    file_cmds = simulate_argv.replace("//", "/home/").split()
-                    # close the eyes if the user forgets the initial `/`
-                    if len(file_cmds) > 0:
-                        if file_cmds[0][0] != "/":
-                            file_cmds[0] = f"/{file_cmds[0]}"
-                    terminal(file_cmds)
-            else:
-                console.print(
-                    f"The file '{sys.argv[1]}' doesn't exist. Launching terminal without any configuration.\n"
-                )
-                terminal()
+            run_scripts()
         else:
             argv_cmds = list([" ".join(sys.argv[1:]).replace(" /", "/home/")])
             terminal(argv_cmds)
