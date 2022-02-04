@@ -344,15 +344,7 @@ def show_candles(
         "warn_too_much_data": 10000,
     }
     # This plot has 2 axes
-    if external_axes is not None:
-        if len(external_axes) != 2:
-            console.print("[red]Expected list of 2 axis items./n[/red]")
-            return
-        ax, volume = external_axes
-        candle_chart_kwargs["ax"] = ax
-        candle_chart_kwargs["volume"] = volume
-        mpf.plot(df_candles, **candle_chart_kwargs)
-    else:
+    if external_axes is None:
         candle_chart_kwargs["returnfig"] = True
         candle_chart_kwargs["figratio"] = (10, 7)
         candle_chart_kwargs["figscale"] = 1.10
@@ -372,6 +364,14 @@ def show_candles(
         for i in range(0, len(subplot_legends), 2):
             ax[subplot_legends[i]].legend(subplot_legends[i + 1])
         theme.visualize_output(force_tight_layout=False)
+    else:
+        if len(external_axes) != 2:
+            console.print("[red]Expected list of 2 axis items./n[/red]")
+            return
+        ax, volume = external_axes
+        candle_chart_kwargs["ax"] = ax
+        candle_chart_kwargs["volume"] = volume
+        mpf.plot(df_candles, **candle_chart_kwargs)
 
 
 @log_start_end(log=logger)
@@ -396,6 +396,7 @@ def calendar(instrument: str, days: int):
 
 
 # Utilities
+
 
 @log_start_end(log=logger)
 def add_plots(df: pd.DataFrame, additional_charts: Dict[str, bool]):
