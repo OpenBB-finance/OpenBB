@@ -6,7 +6,7 @@ from importlib import machinery, util
 from typing import Union, List, Dict, Optional
 import matplotlib
 import matplotlib.pyplot as plt
-from matplotlib import font_manager
+from matplotlib import font_manager, ticker
 
 
 class LineAnnotateDrawer:
@@ -239,7 +239,12 @@ class TerminalStyle:
             colors.reverse()
         return colors
 
-    def style_primary_axis(self, ax: plt.Axes):
+    def style_primary_axis(
+        self,
+        ax: plt.Axes,
+        data_index: Optional[List[int]] = None,
+        tick_labels: Optional[List[str]] = None,
+    ):
         """Apply styling to a primary axis.
 
         Parameters
@@ -249,6 +254,19 @@ class TerminalStyle:
         """
         ax.yaxis.set_label_position("right")
         ax.grid(axis="both", visible=True, zorder=0)
+        if (
+            all([data_index, tick_labels])
+            and isinstance(data_index, list)
+            and isinstance(tick_labels, list)
+        ):
+            ax.xaxis.set_major_formatter(
+                ticker.FuncFormatter(
+                    lambda value, _: tick_labels[int(value)]
+                    if int(value) in data_index
+                    else ""
+                )
+            )
+            ax.xaxis.set_major_locator(ticker.MaxNLocator(6, integer=True))
         ax.tick_params(axis="x", labelrotation=self.xticks_rotation)
 
     def style_twin_axis(self, ax: plt.Axes):
