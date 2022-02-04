@@ -4,13 +4,12 @@ import time
 
 import disnake
 import plotly.graph_objects as go
+import yfinance as yf
 from PIL import Image
 from plotly.subplots import make_subplots
 
 import discordbot.config_discordbot as cfg
 from discordbot.helpers import autocrop_image
-from gamestonk_terminal.config_terminal import TRADIER_TOKEN
-from gamestonk_terminal.stocks.options import tradier_model
 
 startTime = time.time()
 
@@ -36,24 +35,28 @@ async def cc_hist_command(
 
         # Debug
         if cfg.DEBUG:
-            print(f"opt-cc-hist {ticker} {strike} {opt_type} {expiry}")
-
-        if TRADIER_TOKEN == "REPLACE_ME":
-            raise Exception("Tradier Token is required")
+            print(f"opt-hist {ticker} {strike} {opt_type} {expiry}")
 
         # Check for argument
         if ticker is None:
             raise Exception("Stock ticker is required")
+        yf_ticker = yf.Ticker(ticker)
+        dates = list(yf_ticker.options)
 
-        if opt_type == "Puts":
-            put = bool(True)
+        if not dates:
+            raise Exception("Stock ticker is invalid")
+
+        options = yf.Ticker(ticker).option_chain(expiry)
+
         if opt_type == "Calls":
-            put = bool(False)
-        chain_id = None
+            options = options.calls
+        if opt_type == "Puts":
+            options = options.puts
 
-        df_hist = tradier_model.get_historical_options(
-            ticker, expiry, strike, put, chain_id
-        )
+        chain_id = options.loc[options.strike == strike, "contractSymbol"].values[0]
+        df_hist = yf.download(chain_id)
+        df_hist.index.name = "date"
+
         plt_title = [
             f"\n{ticker.upper()} {strike} {opt_type} expiring {expiry} Historical",
             "Volume",
@@ -71,23 +74,23 @@ async def cc_hist_command(
         fig.add_trace(
             go.Candlestick(
                 x=df_hist.index,
-                open=df_hist.open,
-                high=df_hist.high,
-                low=df_hist.low,
-                close=df_hist.close,
+                open=df_hist.Open,
+                high=df_hist.High,
+                low=df_hist.Low,
+                close=df_hist.Close,
                 name="OHLC",
             ),
             row=1,
             col=1,
         )
         colors = [
-            "green" if row.open < row["close"] else "red"
+            "green" if row.Open < row["Close"] else "red"
             for _, row in df_hist.iterrows()  # pylint: disable=E1120
         ]
         fig.add_trace(
             go.Bar(
                 x=df_hist.index,
-                y=df_hist.volume,
+                y=df_hist.Volume,
                 name="Volume",
                 marker_color=colors,
             ),
