@@ -86,9 +86,16 @@ async def overview_command(
             for column in df_screen.columns.values:
                 menu = f"\nPage {i}: {column}"
                 initial_str += f"\nPage {i}: {column}"
-                choices.append(
-                    disnake.SelectOption(label=menu, value=f"{i}", emoji="🟢"),
-                )
+                if i < 19:
+                    choices.append(
+                        disnake.SelectOption(label=menu, value=f"{i}", emoji="🟢"),
+                    )
+                if i == 20:
+                    choices.append(
+                        disnake.SelectOption(
+                            label="Max Reached", value=f"{i}", emoji="🟢"
+                        ),
+                    )
                 i += 1
             columns.append(
                 disnake.Embed(

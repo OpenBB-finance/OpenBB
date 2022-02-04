@@ -11,6 +11,7 @@ from plotly.subplots import make_subplots
 import discordbot.config_discordbot as cfg
 from discordbot.config_discordbot import logger
 from discordbot.helpers import autocrop_image
+from gamestonk_terminal.common.technical_analysis import overlap_model
 
 
 async def candle_command(
@@ -92,6 +93,9 @@ async def candle_command(
         df_stock_candidate.index = df_stock_candidate.index.tz_localize(None)
         df_stock_candidate.index.name = "date"
         df_stock = df_stock_candidate
+        price_df = df_stock.loc[(df_stock.index >= start) & (df_stock.index < end)]
+
+        df_vwap = overlap_model.vwap(price_df, 0)
 
         plt_title = [f"{ticker.upper()} Intraday {interval}min", "Volume"]
         title = f"Intraday {interval}min Chart for {ticker.upper()}"
@@ -115,6 +119,7 @@ async def candle_command(
                 low=df_stock.Low,
                 close=df_stock.Close,
                 name="OHLC",
+                showlegend=False,
             ),
             row=1,
             col=1,
@@ -129,6 +134,7 @@ async def candle_command(
                 y=df_stock.Volume,
                 name="Volume",
                 marker_color=colors,
+                showlegend=False,
             ),
             row=2,
             col=1,
@@ -136,19 +142,33 @@ async def candle_command(
         fig.update_layout(
             margin=dict(l=0, r=0, t=25, b=20),
             template=cfg.PLT_CANDLE_STYLE_TEMPLATE,
-            showlegend=False,
             yaxis_title="Stock Price ($)",
             yaxis=dict(
                 fixedrange=False,
+                showspikes=True,
             ),
             xaxis=dict(
                 rangeslider=dict(visible=False),
                 type="date",
+                showspikes=True,
+            ),
+            legend=dict(
+                orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1
             ),
             dragmode="pan",
             hovermode="x unified",
         )
         if interval != 1440:
+            fig.add_trace(
+                go.Scatter(
+                    name="VWAP",
+                    x=df_stock.index,
+                    y=df_vwap["VWAP_D"],
+                    opacity=1,
+                    line=dict(color="#d81aea", width=2),
+                    showlegend=True,
+                ),
+            )
             if futures in ticker.upper():
                 fig.update_xaxes(
                     rangebreaks=[
@@ -164,14 +184,14 @@ async def candle_command(
                     ],
                 )
         config = dict({"scrollZoom": True})
-        imagefile = "candle.png"
+        rand = random.randint(69, 69420)
+        imagefile = f"candle{rand}.png"
 
         # Check if interactive settings are enabled
         plt_link = ""
         if cfg.INTERACTIVE:
-            html_ran = random.randint(69, 69420)
-            fig.write_html(f"in/candle_{html_ran}.html", config=config)
-            plt_link = f"[Interactive]({cfg.INTERACTIVE_URL}/candle_{html_ran}.html)"
+            fig.write_html(f"in/candle_{rand}.html", config=config)
+            plt_link = f"[Interactive]({cfg.INTERACTIVE_URL}/candle_{rand}.html)"
 
         fig.update_layout(
             width=800,
@@ -180,7 +200,6 @@ async def candle_command(
         fig.write_image(imagefile)
 
         img = Image.open(imagefile)
-        print(img.size)
         im_bg = Image.open(cfg.IMG_BG)
         h = img.height + 240
         w = img.width + 520

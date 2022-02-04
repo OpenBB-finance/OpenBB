@@ -10,7 +10,9 @@ import pandas as pd
 from discordbot.config_discordbot import logger
 from discordbot.stocks.candle import candle_command
 from discordbot.stocks.disc.ford import ford_command
+from discordbot.stocks.disc.upcoming import earnings_command
 from discordbot.stocks.insider.lins import lins_command
+from discordbot.stocks.options.cc_hist import cc_hist_command
 from discordbot.stocks.options.hist import hist_command
 from discordbot.stocks.options.iv import iv_command
 from discordbot.stocks.options.oi import oi_command
@@ -67,7 +69,7 @@ def expiry_autocomp(inter: disnake.AppCmdInter, tickerr: str):
     file.close()
     print(data)
     dates = yfinance_model.option_expirations(data[-1])
-    return dates
+    return [dates for dates in dates][:24]
 
 
 class SlashCommands(commands.Cog):
@@ -338,6 +340,40 @@ class SlashCommands(commands.Cog):
         expiry: str = commands.Param(autocomplete=expiry_autocomp),
         strike: float = commands.Param(),
         opt_type: str = commands.Param(choices=["Calls", "Puts"]),
+        greek: str = commands.Param(
+            default="",
+            choices=[
+                "iv",
+                "gamma",
+                "delta",
+                "theta",
+                "rho",
+                "vega",
+            ],
+        ),
+    ):
+        """Options Price History
+
+        Parameters
+        ----------
+        ticker: Stock Ticker
+        expiry: Expiration Date
+        strike: Options Strike Price
+        type: Calls or Puts
+        greek: Greek variable to plot
+        """
+        await inter.response.defer()
+        logger.info("opt-hist")
+        await hist_command(inter, ticker, expiry, strike, opt_type, greek)
+
+    @commands.slash_command(name="opt-cc-hist")
+    async def cc_history(
+        self,
+        inter: disnake.AppCmdInter,
+        ticker: str = commands.Param(autocomplete=ticker_autocomp),
+        expiry: str = commands.Param(autocomplete=expiry_autocomp),
+        strike: float = commands.Param(),
+        opt_type: str = commands.Param(choices=["Calls", "Puts"]),
     ):
         """Options Price History
 
@@ -349,8 +385,8 @@ class SlashCommands(commands.Cog):
         type: Calls or Puts
         """
         await inter.response.defer()
-        logger.info("opt-hist")
-        await hist_command(inter, ticker, expiry, strike, opt_type)
+        logger.info("opt-cc-hist")
+        await cc_hist_command(inter, ticker, expiry, strike, opt_type)
 
 
 def setup(bot):

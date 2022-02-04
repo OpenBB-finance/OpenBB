@@ -87,9 +87,16 @@ async def lasttrades_command(ctx, gov_type="", past_days: int = 5, representativ
             for col_name in df_gov_rep["Ticker"].values:
                 menu = f"\nPage {i}: {col_name}"
                 initial_str += f"\nPage {i}: {col_name}"
-                choices.append(
-                    disnake.SelectOption(label=menu, value=f"{i}", emoji="🟢"),
-                )
+                if i < 19:
+                    choices.append(
+                        disnake.SelectOption(label=menu, value=f"{i}", emoji="🟢"),
+                    )
+                if i == 20:
+                    choices.append(
+                        disnake.SelectOption(
+                            label="Max Reached", value=f"{i}", emoji="🟢"
+                        ),
+                    )
                 i += 1
 
             columns = []
@@ -128,9 +135,16 @@ async def lasttrades_command(ctx, gov_type="", past_days: int = 5, representativ
             for col_name in df_gov["Ticker"].values:
                 menu = f"\nPage {i}: {col_name}"
                 initial_str += f"\nPage {i}: {col_name}"
-                choices.append(
-                    disnake.SelectOption(label=menu, value=f"{i}", emoji="🟢"),
-                )
+                if i < 19:
+                    choices.append(
+                        disnake.SelectOption(label=menu, value=f"{i}", emoji="🟢"),
+                    )
+                if i == 20:
+                    choices.append(
+                        disnake.SelectOption(
+                            label="Max Reached", value=f"{i}", emoji="🟢"
+                        ),
+                    )
                 i += 1
 
             columns = []
