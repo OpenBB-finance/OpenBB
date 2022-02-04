@@ -53,8 +53,10 @@ class ConsoleAndPanel:
     def __init__(self):
         self.console = Console(theme=CUSTOM_THEME, highlight=False, soft_wrap=True)
 
+    """
     def capture(self):
         return self.console.capture()
+    """
 
     @staticmethod
     def filter_rich_tags(text):

@@ -386,21 +386,21 @@ if __name__ == "__main__":
             for file in files:
                 if file.endswith(".gst"):
                     if ns_parser.scripts is None or ns_parser.scripts in file:
-                        try:
-                            with console.capture() as capture:
+                        with console.capture() as capture:
+                            try:
                                 run_scripts(f"scripts/{file}", test_mode=True)
-                            SUCCESSES += 1
-                        except Exception as e:
-                            console.print(e)
-                            FAILURES += 1
+                                SUCCESSES += 1
+                            except Exception as e:
+                                console.print(e)
+                                FAILURES += 1
             console.print(
                 f"Integration Tests Ran: [green]Successes: {SUCCESSES} [/green] [red]Failures: {FAILURES}[/red]"
             )
         else:
             if ns_parser.debug:
                 os.environ["DEBUG_MODE"] = "true"
-            if ".gst" in ns_parser.path:
-                run_scripts(ns_parser.path)
+            if ns_parser.path[0].endswith(".gst"):
+                run_scripts(ns_parser.path[0])
             elif ns_parser.path:
                 argv_cmds = list([" ".join(ns_parser.path).replace(" /", "/home/")])
                 terminal(argv_cmds)
