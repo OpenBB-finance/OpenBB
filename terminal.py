@@ -6,6 +6,7 @@ import os
 import difflib
 import logging
 import sys
+import argparse
 from typing import List
 import pytz
 
@@ -305,9 +306,9 @@ def terminal(jobs_cmds: List[str] = None):
                 console.print("\n")
 
 
-def run_scripts(test_mode: bool = False):
-    if os.path.isfile(sys.argv[1]):
-        with open(sys.argv[1]) as fp:
+def run_scripts(path: str, test_mode: bool = False):
+    if os.path.isfile(path):
+        with open(path) as fp:
             simulate_argv = f"/{'/'.join([line.rstrip() for line in fp])}"
             file_cmds = simulate_argv.replace("//", "/home/").split()
             # close the eyes if the user forgets the initial `/`
@@ -316,20 +317,69 @@ def run_scripts(test_mode: bool = False):
                     file_cmds[0] = f"/{file_cmds[0]}"
             terminal(file_cmds)
     else:
-        console.print(f"File '{sys.argv[1]}' doesn't exist. Launching base terminal.\n")
+        console.print(f"File '{path}' doesn't exist. Launching base terminal.\n")
         if not test_mode:
             terminal()
 
 
 if __name__ == "__main__":
-    if len(sys.argv) > 1:
-        if "--debug" in sys.argv:
-            os.environ["DEBUG_MODE"] = "true"
-            sys.argv.remove("--debug")
-        if len(sys.argv) > 1 and ".gst" in sys.argv[1]:
-            run_scripts()
+    parser = argparse.ArgumentParser(
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        prog="terminal",
+        description="The gamestonk terminal.",
+    )
+    parser.add_argument(
+        "-d",
+        "--debug",
+        dest="debug",
+        action="store_true",
+        default=False,
+        help="Runs the terminal in debug mode.",
+    )
+    parser.add_argument(
+        "-p",
+        "--path",
+        help="The path or .gst file to run.",
+        dest="path",
+        nargs="+",
+        default="",
+        type=str,
+    )
+    parser.add_argument(
+        "-s",
+        "--scripts",
+        help="Runs all .gst files in /scripts. Send keywords to filter files ran.",
+        dest="scripts",
+        nargs="?",
+        default="",
+        type=str,
+    )
+
+    if sys.argv[1:] and "-" not in sys.argv[1][0]:
+        sys.argv.insert(1, "-p")
+    ns_parser = parser.parse_args()
+
+    if ns_parser:
+        if ns_parser.scripts != "":
+            folder = os.path.join(
+                os.path.abspath(os.path.dirname(__file__)), "scripts/"
+            )
+            files = [
+                name
+                for name in os.listdir(folder)
+                if os.path.isfile(os.path.join(folder, name))
+            ]
+            for file in files:
+                if file[-4:] == ".gst":
+                    if ns_parser.scripts is None or ns_parser.scripts in file:
+                        run_scripts(f"scripts/{file}")
         else:
-            argv_cmds = list([" ".join(sys.argv[1:]).replace(" /", "/home/")])
-            terminal(argv_cmds)
-    else:
-        terminal()
+            if ns_parser.debug:
+                os.environ["DEBUG_MODE"] = "true"
+            if ".gst" in ns_parser.path:
+                run_scripts(ns_parser.path)
+            elif ns_parser.path:
+                argv_cmds = list([" ".join(ns_parser.path).replace(" /", "/home/")])
+                terminal(argv_cmds)
+            else:
+                terminal()
