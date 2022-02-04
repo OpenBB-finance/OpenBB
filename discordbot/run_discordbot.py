@@ -1,30 +1,37 @@
+import asyncio
 import difflib
-import logging
 import os
 import sys
-
-import discord
-import discord_components
-import pyimgur
+import traceback
 
 import config_discordbot as cfg
+import disnake
+from config_discordbot import logger
+from disnake.ext import commands
+from fastapi import FastAPI
 
-# Logging
-logger = logging.getLogger("discord")
-logging.basicConfig(level=logging.INFO)  # DEBUG/INFO/WARNING/ERROR/CRITICAL
-handler = logging.StreamHandler(sys.stdout)
-handler.setFormatter(
-    logging.Formatter("%(asctime)s:%(levelname)s:%(name)s: %(message)s")
+app = FastAPI()
+
+
+# For next update
+@app.get("/")
+async def read_root():
+    return {"Hello": str(gst_bot.user)}
+
+
+activity = disnake.Activity(
+    type=disnake.ActivityType.watching,
+    name="Gamestonk Terminal: https://github.com/GamestonkTerminal/GamestonkTerminal",
 )
-logger.addHandler(handler)
 
 
-activity = discord.Game(
-    name="Gamestonk Terminal: https://github.com/GamestonkTerminal/GamestonkTerminal"
-)
+def fancy_traceback(exc: Exception) -> str:
+    """May not fit the message content limit"""
+    text = "".join(traceback.format_exception(type(exc), exc, exc.__traceback__))
+    return f"```py\n{text[-4086:]}\n```"
 
 
-class GSTHelpCommand(discord.ext.commands.MinimalHelpCommand):
+class GSTHelpCommand(commands.MinimalHelpCommand):
     """Custom Help Command."""
 
     def get_command_signature(self, command):
@@ -35,23 +42,106 @@ class GSTHelpCommand(discord.ext.commands.MinimalHelpCommand):
             `{command_syntax} {command_usage}`"""
         return signature_text
 
-    def add_bot_commands_formatting(self, commands, heading):
+    def add_bot_commands_formatting(self, command, heading):
         """Add a minified bot heading with commands to the output."""
-        if commands:
+        if command:
             menu_header = heading.replace("Commands", " category")
             self.paginator.add_line(
-                f"__**{menu_header}**__ " + f"contains {len(commands)} commands."
+                f"__**{menu_header}**__ " + f"contains {len(command)} command."
             )
             self.paginator.add_line(f"\t\t`!help {heading}` for info and options.")
 
 
-gst_bot = discord.ext.commands.Bot(
-    command_prefix=cfg.COMMAND_PREFIX,
-    help_command=GSTHelpCommand(sort_commands=False, commands_heading="list:"),
-    intents=discord.Intents.all(),
-    activity=activity,
-)
-discord_components.DiscordComponents(gst_bot)
+class GSTBot(commands.Bot):
+    def __init__(self):
+        super().__init__(
+            command_prefix=cfg.COMMAND_PREFIX,
+            intents=disnake.Intents.all(),
+            help_command=GSTHelpCommand(sort_commands=False, commands_heading="list:"),
+            sync_commands_debug=True,
+            sync_permissions=True,
+            activity=activity,
+            test_guilds=cfg.SLASH_TESTING_SERVERS,
+        )
+
+    def load_all_extensions(self, folder: str) -> None:
+        folder_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), folder)
+        for name in os.listdir(folder_path):
+            if name.endswith(".py") and os.path.isfile(f"{folder_path}/{name}"):
+                self.load_extension(f"{folder}.{name[:-3]}")
+
+    async def on_command_error(
+        self, ctx: commands.Context, error: commands.CommandError
+    ) -> None:
+        # Get all command names
+        all_cmds = gst_bot.all_commands.keys()
+        if isinstance(error, commands.CommandNotFound):
+            cmd = str(error).split('"')[1]
+            similar_cmd = difflib.get_close_matches(cmd, all_cmds, n=1, cutoff=0.7)
+
+            if similar_cmd:
+                error_help = f"Did you mean '**!{similar_cmd[0]}**'?"
+            else:
+                # TODO: This can be improved by triggering help menu
+                error_help = f"**Possible commands are:** {', '.join(all_cmds)}"
+
+            await ctx.send(f"_{error}_\n{error_help}\n", delete_after=30.0)
+
+    async def on_slash_command_error(
+        self,
+        inter: disnake.AppCmdInter,
+        error: commands.CommandError,
+    ) -> None:
+        embed = disnake.Embed(
+            title=f"Slash command `{inter.data.name}` failed due to `{error}`",
+            description=fancy_traceback(error),
+            color=disnake.Color.red(),
+        )
+        if inter.response._responded:  # pylint: disable=W0212
+            await inter.channel.send(embed=embed, delete_after=30.0)
+        else:
+            await inter.response.send_message(embed=embed, delete_after=30.0)
+
+    async def on_user_command_error(
+        self,
+        inter: disnake.AppCmdInter,
+        error: commands.CommandError,
+    ) -> None:
+        embed = disnake.Embed(
+            title=f"User command `{inter.data.name}` failed due to `{error}`",
+            description=fancy_traceback(error),
+            color=disnake.Color.red(),
+        )
+        if inter.response._responded:  # pylint: disable=W0212
+            await inter.channel.send(embed=embed, delete_after=30.0)
+        else:
+            await inter.response.send_message(embed=embed, delete_after=30.0)
+
+    async def on_message_command_error(
+        self,
+        inter: disnake.AppCmdInter,
+        error: commands.CommandError,
+    ) -> None:
+        embed = disnake.Embed(
+            title=f"Message command `{inter.data.name}` failed due to `{error}`",
+            description=fancy_traceback(error),
+            color=disnake.Color.red(),
+        )
+        if inter.response._responded:  # pylint: disable=W0212
+            await inter.channel.send(embed=embed, delete_after=30.0)
+        else:
+            await inter.response.send_message(embed=embed, delete_after=30.0)
+
+    async def on_ready(self):
+        # fmt: off
+        logger.info(
+            f"\n"
+            f"The bot is ready.\n"
+            f"User: {self.user}\n"
+            f"ID: {self.user.id}\n"
+        )
+        # fmt: on
+
 
 if cfg.IMGUR_CLIENT_ID == "REPLACE_ME" or cfg.DISCORD_BOT_TOKEN == "REPLACE_ME":
     logger.info(
@@ -59,47 +149,18 @@ if cfg.IMGUR_CLIENT_ID == "REPLACE_ME" or cfg.DISCORD_BOT_TOKEN == "REPLACE_ME":
         os.path.join("discordbot", "config_discordbot"),
     )
     sys.exit()
+print(f"disnake: {disnake.__version__}\n")
 
 
-async def on_ready():
-    logger.info("GST Discord Bot Ready to Gamestonk!")
+gst_bot = GSTBot()
+gst_bot.load_all_extensions("cmds")
 
 
-gst_imgur = pyimgur.Imgur(cfg.IMGUR_CLIENT_ID)
-
-# Loads the commands (Cogs) from each "context"
-gst_bot.load_extension("generic_commands")
-gst_bot.load_extension("economy.economy_menu")
-gst_bot.load_extension("stocks.dark_pool_shorts.dps_menu")
-gst_bot.load_extension("stocks.technical_analysis.ta_menu")
-gst_bot.load_extension("stocks.due_diligence.dd_menu")
-gst_bot.load_extension("stocks.government.gov_menu")
-gst_bot.load_extension("stocks.screener.screener_menu")
-gst_bot.load_extension("stocks.options.options_menu")
+async def run():
+    try:
+        await gst_bot.start(cfg.DISCORD_BOT_TOKEN)
+    except KeyboardInterrupt:
+        await gst_bot.logout()
 
 
-# Get all command names
-all_cmds = gst_bot.all_commands.keys()
-
-# In case the user inserts a wrong command we check for similarity with
-# available commands, and if there is we suggest one, otherwise we
-# report list of all commands available
-
-
-@gst_bot.event
-async def on_command_error(ctx, error):
-    if isinstance(error, discord.ext.commands.CommandNotFound):
-        cmd = str(error).split('"')[1]
-        similar_cmd = difflib.get_close_matches(cmd, all_cmds, n=1, cutoff=0.7)
-
-        if similar_cmd:
-            error_help = f"Did you mean '**!{similar_cmd[0]}**'?"
-        else:
-            # TODO: This can be improved by triggering help menu
-            error_help = f"**Possible commands are:** {', '.join(all_cmds)}"
-
-        await ctx.send(f"_{error}_\n{error_help}\n")
-
-
-# Runs the bot
-gst_bot.run(cfg.DISCORD_BOT_TOKEN)
+asyncio.create_task(run())

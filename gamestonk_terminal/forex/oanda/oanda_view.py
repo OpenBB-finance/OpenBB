@@ -397,7 +397,6 @@ def calendar(instrument: str, days: int):
 
 # Utilities
 
-
 @log_start_end(log=logger)
 def add_plots(df: pd.DataFrame, additional_charts: Dict[str, bool]):
     """Add additional plots to the candle chart.

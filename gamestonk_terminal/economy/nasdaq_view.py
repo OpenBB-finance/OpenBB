@@ -42,22 +42,31 @@ def display_big_mac_index(
     big_mac = pd.DataFrame(columns=df_cols)
     for country in country_codes:
         df1 = nasdaq_model.get_big_mac_index(country)
-        big_mac[country] = df1["dollar_price"]
-        big_mac["Date"] = df1["Date"]
+        if not df1.empty:
+            big_mac[country] = df1["dollar_price"]
+            big_mac["Date"] = df1["Date"]
     big_mac.set_index("Date", inplace=True)
-    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    big_mac.plot(ax=ax, marker="o")
-    ax.legend(bbox_to_anchor=(1, 1))
-    ax.set_title("Big Mac Index (USD)")
-    ax.set_ylabel("Price of Big Mac in USD")
-    ax.grid("on")
-    if gtff.USE_ION:
-        plt.ion()
-    fig.tight_layout()
-    plt.show()
 
-    if raw:
-        print_rich_table(big_mac, headers=list(big_mac.columns), title="Big Mac Index")
+    if not big_mac.empty:
+        fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        big_mac.plot(ax=ax, marker="o")
+        ax.legend(bbox_to_anchor=(1, 1))
+        ax.set_title("Big Mac Index (USD)")
+        ax.set_ylabel("Price of Big Mac in USD")
+        ax.grid("on")
+        if gtff.USE_ION:
+            plt.ion()
+        fig.tight_layout()
+        plt.show()
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "bigmac", big_mac)
-    console.print("")
+        if raw:
+            print_rich_table(
+                big_mac, headers=list(big_mac.columns), title="Big Mac Index"
+            )
+
+        export_data(
+            export, os.path.dirname(os.path.abspath(__file__)), "bigmac", big_mac
+        )
+        console.print("")
+    else:
+        console.print("[red]Unable to get big mac data[/red]\n")

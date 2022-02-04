@@ -1,18 +1,20 @@
 import os
 
-import discord
+import disnake
 import matplotlib.dates as mdates
 import yfinance as yf
 from matplotlib import pyplot as plt
-
-from gamestonk_terminal.config_plot import PLOT_DPI
-from gamestonk_terminal.stocks.dark_pool_shorts import finra_model
+from PIL import Image
 
 import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import gst_imgur, logger
+from discordbot.config_discordbot import gst_imgur, logger
+from discordbot.helpers import autocrop_image
+from gamestonk_terminal.config_plot import PLOT_DPI
+from gamestonk_terminal.helper_funcs import plot_autoscale
+from gamestonk_terminal.stocks.dark_pool_shorts import finra_model
 
 
-async def dpotc_command(ctx, ticker=""):
+async def dpotc_command(ctx, ticker: str = ""):
     """Dark pools (ATS) vs OTC data [FINRA]"""
 
     try:
@@ -40,15 +42,17 @@ async def dpotc_command(ctx, ticker=""):
 
         # Output data
         title = f"Stocks: [FINRA] Dark Pools (ATS) vs OTC {ticker}"
-        embed = discord.Embed(title=title, colour=cfg.COLOR)
+        embed = disnake.Embed(title=title, colour=cfg.COLOR)
         embed.set_author(
             name=cfg.AUTHOR_NAME,
             icon_url=cfg.AUTHOR_ICON_URL,
         )
 
+        plt.style.use("seaborn")
+        plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
         if ats.empty and otc.empty:
-            embed = embed.set_description("No data found.")  # pylint: disable=no-member
-        _, _ = plt.subplots(dpi=PLOT_DPI)
+            raise Exception("Stock ticker is invalid")
+        _, _ = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
         plt.subplot(3, 1, (1, 2))
         if not ats.empty and not otc.empty:
@@ -118,6 +122,27 @@ async def dpotc_command(ctx, ticker=""):
         plt.xlabel("Weeks")
         file_name = ticker + "_dpotc.png"
         plt.savefig(file_name)
+        imagefile = file_name
+
+        img = Image.open(imagefile)
+        print(img.size)
+        im_bg = Image.open(cfg.IMG_BG)
+        h = img.height + 240
+        w = img.width + 520
+
+        img = img.resize((w, h), Image.ANTIALIAS)
+        x1 = int(0.5 * im_bg.size[0]) - int(0.5 * img.size[0])
+        y1 = int(0.5 * im_bg.size[1]) - int(0.5 * img.size[1])
+        x2 = int(0.5 * im_bg.size[0]) + int(0.5 * img.size[0])
+        y2 = int(0.5 * im_bg.size[1]) + int(0.5 * img.size[1])
+        img = img.convert("RGB")
+        im_bg.paste(img, box=(x1 - 5, y1, x2 - 5, y2))
+        im_bg.save(imagefile, "PNG", quality=100)
+
+        image = Image.open(imagefile)
+        image = autocrop_image(image, 0)
+        image.save(imagefile, "PNG", quality=100)
+
         plt.close("all")
         uploaded_image = gst_imgur.upload_image(file_name, title="something")
         image_link = uploaded_image.link
@@ -127,7 +152,7 @@ async def dpotc_command(ctx, ticker=""):
         await ctx.send(embed=embed)
 
     except Exception as e:
-        embed = discord.Embed(
+        embed = disnake.Embed(
             title=f"ERROR Stocks: [FINRA] Dark Pools (ATS) vs OTC {ticker}",
             colour=cfg.COLOR,
             description=e,
@@ -137,4 +162,4 @@ async def dpotc_command(ctx, ticker=""):
             icon_url=cfg.AUTHOR_ICON_URL,
         )
 
-        await ctx.send(embed=embed)
+        await ctx.send(embed=embed, delete_after=30.0)
