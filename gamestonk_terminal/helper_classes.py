@@ -288,4 +288,4 @@ class TerminalStyle:
         if gtff.USE_ION:
             plt.ion()
         plt.show()
-        console.print("")
+        console.print()
