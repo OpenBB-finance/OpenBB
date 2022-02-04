@@ -434,6 +434,7 @@ class CryptoController(CryptoBaseController):
                         self.coin,
                         self.current_df,
                         self.queue,
+                    )
             except ImportError:
                 console.print("[red]Run pip install tensorflow to continue[/red]")
         else:
@@ -463,7 +464,7 @@ class CryptoController(CryptoBaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""
-            Find similar coin by coin name,symbol or id. If you don't remember exact name or id of the Coin at CoinGecko,
+            Find similar coin by name,symbol or id. If you don't remember exact name or id of the Coin at CoinGecko,
             Binance, Coinbase or CoinPaprika you can use this command to display coins with similar name, symbol or id
             to your search query.
             Example of usage: coin name is something like "polka". So I can try: find -c polka -k name -t 25
