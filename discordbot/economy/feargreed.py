@@ -1,19 +1,22 @@
 import datetime
 import os
 
-import discord
+import disnake
 import matplotlib.pyplot as plt
 
-from gamestonk_terminal.economy import cnn_model, cnn_view
-
 import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import gst_imgur, logger
+from discordbot.config_discordbot import gst_imgur, logger
+from gamestonk_terminal.economy import cnn_model, cnn_view
 
 
 async def feargreed_command(ctx, indicator=""):
     """CNN Fear and Greed Index [CNN]"""
 
     try:
+        # Debug user input
+        if cfg.DEBUG:
+            logger.debug("econ-futures")
+
         # Check for argument
         possible_indicators = ("", "jbd", "mv", "pco", "mm", "sps", "spb", "shd")
 
@@ -49,7 +52,7 @@ async def feargreed_command(ctx, indicator=""):
             )
             i += 1
 
-        embed = discord.Embed(
+        embed = disnake.Embed(
             title="Economy: [CNN] Fear Geed Index",
             description=report,
             colour=cfg.COLOR,
@@ -72,7 +75,7 @@ async def feargreed_command(ctx, indicator=""):
 
     except Exception as e:
         logger.error("ERROR Economy: [CNN] Feargreed. %s", e)
-        embed = discord.Embed(
+        embed = disnake.Embed(
             title="ERROR Economy: [CNN] Feargreed",
             colour=cfg.COLOR,
             description=e,
@@ -82,4 +85,4 @@ async def feargreed_command(ctx, indicator=""):
             icon_url=cfg.AUTHOR_ICON_URL,
         )
 
-        await ctx.send(embed=embed)
+        await ctx.send(embed=embed, delete_after=30.0)

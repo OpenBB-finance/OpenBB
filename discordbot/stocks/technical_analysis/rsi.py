@@ -1,15 +1,17 @@
 import os
+import random
 from datetime import datetime, timedelta
-import discord
-from matplotlib import pyplot as plt
 
-from gamestonk_terminal.helper_funcs import plot_autoscale
-from gamestonk_terminal.common.technical_analysis import momentum_model
-from gamestonk_terminal.config_plot import PLOT_DPI
+import disnake
+import plotly.graph_objects as go
+from PIL import Image
+from plotly.subplots import make_subplots
 
 import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import gst_imgur, logger
 import discordbot.helpers
+from discordbot.config_discordbot import logger
+from discordbot.helpers import autocrop_image
+from gamestonk_terminal.common.technical_analysis import momentum_model
 
 
 async def rsi_command(
@@ -66,49 +68,147 @@ async def rsi_command(
         df_ta = momentum_model.rsi(df_stock["Adj Close"], length, scalar, drift)
 
         # Output Data
-        fig, axes = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
-        ax = axes[0]
-        ax.plot(df_stock.index, df_stock["Adj Close"].values, "k", lw=2)
-        ax.set_title(f" {ticker} RSI{length} ")
-        ax.set_xlim(df_stock.index[0], df_stock.index[-1])
-        ax.set_ylabel("Share Price ($)")
-        ax.grid(b=True, which="major", color="#666666", linestyle="-")
+        fig = make_subplots(
+            rows=2,
+            cols=1,
+            shared_xaxes=True,
+            vertical_spacing=0.07,
+            row_width=[0.5, 0.6],
+        )
+        fig.add_trace(
+            go.Scatter(
+                name=ticker,
+                x=df_stock.index,
+                y=df_stock["Adj Close"].values,
+                line=dict(color="#fdc708", width=2),
+                opacity=1,
+                showlegend=False,
+            ),
+            row=1,
+            col=1,
+        )
+        for i in range(0, df_ta.shape[1]):
+            trace_name = df_ta.columns[i].replace("_", " ")
+            fig.add_trace(
+                go.Scatter(
+                    name=trace_name,
+                    x=df_ta.index,
+                    y=df_ta.iloc[:, i],
+                    opacity=1,
+                ),
+                row=2,
+                col=1,
+            )
+        fig.add_hrect(
+            y0=70,
+            y1=100,
+            fillcolor="red",
+            opacity=0.2,
+            layer="below",
+            line_width=0,
+            row=2,
+            col=1,
+        )
+        fig.add_hrect(
+            y0=0,
+            y1=30,
+            fillcolor="green",
+            opacity=0.2,
+            layer="below",
+            line_width=0,
+            row=2,
+            col=1,
+        )
+        fig.add_hline(
+            y=70,
+            fillcolor="green",
+            opacity=1,
+            layer="below",
+            line_width=3,
+            line=dict(color="red", dash="dash"),
+            row=2,
+            col=1,
+        )
+        fig.add_hline(
+            y=30,
+            fillcolor="green",
+            opacity=1,
+            layer="below",
+            line_width=3,
+            line=dict(color="green", dash="dash"),
+            row=2,
+            col=1,
+        )
+        fig.update_layout(
+            margin=dict(l=0, r=20, t=30, b=20),
+            template=cfg.PLT_TA_STYLE_TEMPLATE,
+            colorway=cfg.PLT_TA_COLORWAY,
+            title=f"{ticker} {trace_name}",
+            title_x=0.5,
+            yaxis_title="Stock Price ($)",
+            yaxis=dict(
+                fixedrange=False,
+            ),
+            xaxis=dict(
+                rangeslider=dict(visible=False),
+                type="date",
+            ),
+            dragmode="pan",
+            legend=dict(yanchor="top", y=0.99, xanchor="left", x=0.01),
+        )
+        config = dict({"scrollZoom": True})
+        imagefile = "ta_rsi.png"
 
-        ax2 = axes[1]
-        ax2.plot(df_ta.index, df_ta.values, "b", lw=2)
-        ax2.set_xlim(df_stock.index[0], df_stock.index[-1])
-        ax2.axhspan(70, 100, facecolor="r", alpha=0.2)
-        ax2.axhspan(0, 30, facecolor="g", alpha=0.2)
-        ax2.axhline(70, linewidth=3, color="r", ls="--")
-        ax2.axhline(30, linewidth=3, color="g", ls="--")
-        ax2.grid(b=True, which="major", color="#666666", linestyle="-")
-        ax2.set_ylim([0, 100])
-        ax3 = ax2.twinx()
-        ax3.set_ylim(ax2.get_ylim())
-        ax3.set_yticks([30, 70])
-        ax3.set_yticklabels(["OVERSOLD", "OVERBOUGHT"])
+        # Check if interactive settings are enabled
+        plt_link = ""
+        if cfg.INTERACTIVE:
+            html_ran = random.randint(69, 69420)
+            fig.write_html(f"in/rsi_{html_ran}.html", config=config)
+            plt_link = f"[Interactive]({cfg.INTERACTIVE_URL}/rsi_{html_ran}.html)"
 
-        plt.gcf().autofmt_xdate()
-        fig.tight_layout(pad=1)
+        fig.update_layout(
+            width=800,
+            height=500,
+        )
+        fig.write_image(imagefile)
 
-        plt.savefig("ta_rsi.png")
-        uploaded_image = gst_imgur.upload_image("ta_rsi.png", title="something")
-        image_link = uploaded_image.link
+        img = Image.open(imagefile)
+        print(img.size)
+        im_bg = Image.open(cfg.IMG_BG)
+        h = img.height + 240
+        w = img.width + 520
+
+        # Paste fig onto background img and autocrop background
+        img = img.resize((w, h), Image.ANTIALIAS)
+        x1 = int(0.5 * im_bg.size[0]) - int(0.5 * img.size[0])
+        y1 = int(0.5 * im_bg.size[1]) - int(0.5 * img.size[1])
+        x2 = int(0.5 * im_bg.size[0]) + int(0.5 * img.size[0])
+        y2 = int(0.5 * im_bg.size[1]) + int(0.5 * img.size[1])
+        img = img.convert("RGB")
+        im_bg.paste(img, box=(x1 - 5, y1, x2 - 5, y2))
+        im_bg.save(imagefile, "PNG", quality=100)
+        image = Image.open(imagefile)
+        image = autocrop_image(image, 0)
+        image.save(imagefile, "PNG", quality=100)
+
+        image = disnake.File(imagefile)
+
+        print(f"Image {imagefile}")
         if cfg.DEBUG:
-            logger.debug("Image URL: %s", image_link)
-        title = "Stocks: Relative-Strength-Index " + ticker
-        embed = discord.Embed(title=title, colour=cfg.COLOR)
+            logger.debug("Image: %s", imagefile)
+        title = f"Stocks: Relative-Strength-Index {ticker}"
+        embed = disnake.Embed(title=title, description=plt_link, colour=cfg.COLOR)
+        embed.set_image(url=f"attachment://{imagefile}")
         embed.set_author(
             name=cfg.AUTHOR_NAME,
             icon_url=cfg.AUTHOR_ICON_URL,
         )
-        embed.set_image(url=image_link)
-        os.remove("ta_rsi.png")
+        os.remove(imagefile)
 
-        await ctx.send(embed=embed)
+        await ctx.send(embed=embed, file=image)
 
     except Exception as e:
-        embed = discord.Embed(
+        embed = disnake.Embed(
             title="ERROR Stocks: Relative-Strength-Index",
             colour=cfg.COLOR,
             description=e,
@@ -118,4 +218,4 @@ async def rsi_command(
             icon_url=cfg.AUTHOR_ICON_URL,
         )
 
-        await ctx.send(embed=embed)
+        await ctx.send(embed=embed, delete_after=30.0)

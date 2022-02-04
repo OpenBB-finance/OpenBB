@@ -1,27 +1,27 @@
+import configparser
 import os
 import random
 from datetime import datetime, timedelta
-import configparser
 
-import discord
-from matplotlib import pyplot as plt
+import disnake
 import yfinance as yf
-from pandas.plotting import register_matplotlib_converters
 from finvizfinance.screener import ticker
-
-from gamestonk_terminal.config_plot import PLOT_DPI
-from gamestonk_terminal.stocks.screener import finviz_model
-from gamestonk_terminal.helper_funcs import plot_autoscale
+from matplotlib import pyplot as plt
+from pandas.plotting import register_matplotlib_converters
+from PIL import Image
 
 import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import logger
-from discordbot.run_discordbot import gst_imgur
+from discordbot.config_discordbot import gst_imgur, logger
+from discordbot.helpers import autocrop_image
 from discordbot.stocks.screener import screener_options as so
+from gamestonk_terminal.config_plot import PLOT_DPI
+from gamestonk_terminal.helper_funcs import plot_autoscale
+from gamestonk_terminal.stocks.screener import finviz_model
 
 # pylint:disable=no-member
 
 
-async def historical_command(ctx, signal="", start=""):
+async def historical_command(ctx, signal: str = "", start=""):
     """Displays historical price comparison between similar companies [Yahoo Finance]"""
     try:
 
@@ -30,7 +30,7 @@ async def historical_command(ctx, signal="", start=""):
             logger.debug("!stocks.scr.historical %s %s", signal, start)
 
         # Check for argument
-        if signal == "" or signal not in list(so.d_signals_desc.keys):
+        if signal not in so.d_signals_desc:
             raise Exception("Invalid preset selected!")
 
         register_matplotlib_converters()
@@ -79,6 +79,7 @@ async def historical_command(ctx, signal="", start=""):
             description = description + (", ".join(l_stocks))
             logger.debug(description)
 
+        plt.style.use("seaborn")
         plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
         while l_stocks:
@@ -105,7 +106,7 @@ async def historical_command(ctx, signal="", start=""):
                         f"{e}\nDisregard previous error, which is due to API Rate limits from Yahoo Finance. "
                         f"Because we like '{symbol}', and we won't leave without getting data from it."
                     )
-                    embed = discord.Embed(
+                    embed = disnake.Embed(
                         title="ERROR Stocks: [Yahoo Finance] Historical Screener",
                         colour=cfg.COLOR,
                         description=error,
@@ -115,7 +116,7 @@ async def historical_command(ctx, signal="", start=""):
                         icon_url=cfg.AUTHOR_ICON_URL,
                     )
 
-                    await ctx.send(embed=embed)
+                    await ctx.send(embed=embed, delete_after=30.0)
 
             for parsed_stock in l_parsed_stocks:
                 l_stocks.remove(parsed_stock)
@@ -137,12 +138,33 @@ async def historical_command(ctx, signal="", start=""):
         plt.xlim([max(l_min), df_similar_stock.index[-1]])
 
         plt.savefig("scr_historical.png")
+        imagefile = "scr_historical.png"
+
+        img = Image.open(imagefile)
+        print(img.size)
+        im_bg = Image.open(cfg.IMG_BG)
+        h = img.height + 240
+        w = img.width + 520
+
+        img = img.resize((w, h), Image.ANTIALIAS)
+        x1 = int(0.5 * im_bg.size[0]) - int(0.5 * img.size[0])
+        y1 = int(0.5 * im_bg.size[1]) - int(0.5 * img.size[1])
+        x2 = int(0.5 * im_bg.size[0]) + int(0.5 * img.size[0])
+        y2 = int(0.5 * im_bg.size[1]) + int(0.5 * img.size[1])
+        img = img.convert("RGB")
+        im_bg.paste(img, box=(x1 - 5, y1, x2 - 5, y2))
+        im_bg.save(imagefile, "PNG", quality=100)
+
+        image = Image.open(imagefile)
+        image = autocrop_image(image, 0)
+        image.save(imagefile, "PNG", quality=100)
+
         uploaded_image = gst_imgur.upload_image("scr_historical.png", title="something")
         image_link = uploaded_image.link
         if cfg.DEBUG:
             logger.debug("Image URL: %s", image_link)
         title = "Stocks: [Yahoo Finance] Historical Screener"
-        embed = discord.Embed(title=title, description=description, colour=cfg.COLOR)
+        embed = disnake.Embed(title=title, description=description, colour=cfg.COLOR)
         embed.set_author(
             name=cfg.AUTHOR_NAME,
             icon_url=cfg.AUTHOR_ICON_URL,
@@ -153,7 +175,7 @@ async def historical_command(ctx, signal="", start=""):
         await ctx.send(embed=embed)
 
     except Exception as e:
-        embed = discord.Embed(
+        embed = disnake.Embed(
             title="ERROR Stocks: [Yahoo Finance] Historical Screener",
             colour=cfg.COLOR,
             description=e,
@@ -163,4 +185,4 @@ async def historical_command(ctx, signal="", start=""):
             icon_url=cfg.AUTHOR_ICON_URL,
         )
 
-        await ctx.send(embed=embed)
+        await ctx.send(embed=embed, delete_after=30.0)
