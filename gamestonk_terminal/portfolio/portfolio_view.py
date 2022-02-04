@@ -134,7 +134,7 @@ def display_allocation(portfolio: portfolio_model.Portfolio, export: str = ""):
         if gtff.USE_ION:
             plt.ion()
     except Exception as e:
-        print(e)
+        console.print(e)
     plt.show()
     export_data(
         export,

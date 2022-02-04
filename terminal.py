@@ -394,7 +394,7 @@ if __name__ == "__main__":
                                 console.print(e)
                                 FAILURES += 1
             console.print(
-                f"Integration Tests Ran: [green]Successes: {SUCCESSES} [/green] [red]Failures: {FAILURES}[/red]"
+                f"Integration Tests: [green]Successes: {SUCCESSES} [/green] [red]Failures: {FAILURES}[/red]"
             )
         else:
             if ns_parser.debug:
@@ -405,5 +405,4 @@ if __name__ == "__main__":
                 argv_cmds = list([" ".join(ns_parser.path).replace(" /", "/home/")])
                 terminal(argv_cmds)
             else:
-                print(os.environ.get("DEBUG_MODE"))
                 terminal()
