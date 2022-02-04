@@ -370,7 +370,7 @@ if __name__ == "__main__":
                 if os.path.isfile(os.path.join(folder, name))
             ]
             for file in files:
-                if file[-4:] == ".gst":
+                if file.endswith(".gst"):
                     if ns_parser.scripts is None or ns_parser.scripts in file:
                         run_scripts(f"scripts/{file}")
         else:
