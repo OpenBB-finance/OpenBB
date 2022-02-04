@@ -387,9 +387,11 @@ if __name__ == "__main__":
                 if file.endswith(".gst"):
                     if ns_parser.scripts is None or ns_parser.scripts in file:
                         try:
-                            run_scripts(f"scripts/{file}", test_mode=True)
+                            with console.capture() as capture:
+                                run_scripts(f"scripts/{file}", test_mode=True)
                             SUCCESSES += 1
-                        except Exception:
+                        except Exception as e:
+                            console.print(e)
                             FAILURES += 1
             console.print(
                 f"Integration Tests Ran: [green]Successes: {SUCCESSES} [/green] [red]Failures: {FAILURES}[/red]"
