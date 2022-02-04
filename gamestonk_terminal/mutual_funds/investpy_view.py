@@ -146,7 +146,7 @@ def display_historical(
         External axes to plot on
     """
     console.print()
-    if not external_axes:
+    if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     else:
         ax = external_axes[0]
@@ -155,7 +155,6 @@ def display_historical(
     ax.set_xlabel("Date")
     ax.set_ylabel("Close Price")
     ax.set_title(f"{fund.title()} Price History")
-    ax.yaxis.set_label_position("right")
     theme.style_primary_axis(ax)
     if not external_axes:
         theme.visualize_output()

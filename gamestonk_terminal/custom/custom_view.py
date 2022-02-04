@@ -11,7 +11,6 @@ import pandas as pd
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
-from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.config_terminal import theme
 
 logger = logging.getLogger(__name__)
@@ -43,7 +42,7 @@ def custom_plot(
     external_axes: Optional[List[plt.Axes]]:
         External axes for plot
     """
-    if not external_axes:
+    if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     else:
         ax = external_axes[0]
@@ -55,9 +54,8 @@ def custom_plot(
 
     if kind in ["scatter", "line"]:
         theme.style_primary_axis(ax)
+        theme.visualize_output()
 
-    theme.visualize_output()
-    console.print()
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
