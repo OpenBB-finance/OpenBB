@@ -713,7 +713,7 @@ class TechnicalAnalysisController(BaseController):
         if ns_parser:
             trend_indicators_view.display_adx(
                 s_ticker=self.ticker,
-                df_stock=self.data,
+                ohlc=self.data,
                 length=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
                 drift=ns_parser.n_drift,
@@ -768,7 +768,7 @@ class TechnicalAnalysisController(BaseController):
         if ns_parser:
             trend_indicators_view.display_aroon(
                 s_ticker=self.ticker,
-                df_stock=self.data,
+                ohlc=self.data,
                 length=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
                 export=ns_parser.export,
