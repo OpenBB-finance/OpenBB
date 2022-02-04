@@ -10,7 +10,6 @@ import pandas as pd
 from discordbot.config_discordbot import logger
 from discordbot.stocks.candle import candle_command
 from discordbot.stocks.disc.ford import ford_command
-from discordbot.stocks.disc.upcoming import earnings_command
 from discordbot.stocks.insider.lins import lins_command
 from discordbot.stocks.options.cc_hist import cc_hist_command
 from discordbot.stocks.options.hist import hist_command
