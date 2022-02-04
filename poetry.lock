@@ -3624,14 +3624,6 @@ optional = false
 python-versions = "*"
 
 [[package]]
-name = "types-tabulate"
-version = "0.8.5"
-description = "Typing stubs for tabulate"
-category = "dev"
-optional = false
-python-versions = "*"
-
-[[package]]
 name = "types-urllib3"
 version = "1.26.8"
 description = "Typing stubs for urllib3"
@@ -3941,7 +3933,7 @@ prediction = ["tensorflow"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8,<3.10"
-content-hash = "c3c959621bfc38efd63d6bebf7c3dd85f70df783827df2622e877bf55a1e1bb3"
+content-hash = "a3de247df897704bab5ab2fb1af8679e6a53304136a5995f8e687b964e540b90"
 
 [metadata.files]
 absl-py = [
@@ -6415,10 +6407,6 @@ types-requests = [
 types-setuptools = [
     {file = "types-setuptools-57.4.8.tar.gz", hash = "sha256:d5545f2ab3dad24f5cb1c01ba74c1acb7407ab31b2618d423158fc84085160f1"},
     {file = "types_setuptools-57.4.8-py3-none-any.whl", hash = "sha256:af8480491f9894e6081fb568811978fd7ac87434cab122a0605a32be08d98dbe"},
-]
-types-tabulate = [
-    {file = "types-tabulate-0.8.5.tar.gz", hash = "sha256:03f283bf384ea121b7b6a58afb38f4def97f30704fca13a0da686936b0f392ac"},
-    {file = "types_tabulate-0.8.5-py3-none-any.whl", hash = "sha256:a7289b809220dfbb6d8816a8dcc25bdf82b91b47288225afb2c3f296e0417c7f"},
 ]
 types-urllib3 = [
     {file = "types-urllib3-1.26.8.tar.gz", hash = "sha256:aa0de26893f138523d5552bbb023826c0cc7ea5749d80c1693c57aab7b55f469"},

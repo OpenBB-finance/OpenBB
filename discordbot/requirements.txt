@@ -241,7 +241,7 @@ stack-data==0.1.4; python_version >= "3.8"
 starlette==0.17.1; python_version >= "3.6" and python_full_version >= "3.6.1"
 statsmodels==0.12.2; python_version >= "3.6"
 stevedore==3.5.0; python_version >= "3.7"
-tabulate==0.8.9
+tabulate==0.8.9; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0"
 temporal-cache==0.1.4
 tenacity==8.0.1; python_version >= "3.8" and python_version < "4.0"
 terminado==0.13.1; python_version >= "3.7"
@@ -262,7 +262,6 @@ types-pytz==2021.3.4
 types-pyyaml==6.0.3
 types-requests==2.27.7
 types-setuptools==57.4.8
-types-tabulate==0.8.5
 types-urllib3==1.26.8
 typing-extensions==4.0.1; python_version < "3.10" and python_full_version >= "3.8.0" and python_version >= "3.6"
 tzdata==2021.5; platform_system == "Windows" and python_version >= "3.6" and (python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.6")
