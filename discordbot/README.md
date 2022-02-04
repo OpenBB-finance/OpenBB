@@ -107,7 +107,7 @@ Now, you should be ready to invoke the discord bot from server using something l
 /cc
 ```
 
-<img width="1211" alt="Screenshot 2021-10-18 at 00 21 30" src="https://user-images.githubusercontent.com/61340027/152454075-bdf50245-c978-44b3-9abc-64e5e4254326.png">
+<img width="600" alt="Screenshot 2021-10-18 at 00 21 30" src="https://user-images.githubusercontent.com/61340027/152454075-bdf50245-c978-44b3-9abc-64e5e4254326.png">
 
 Global slash commands can take up to 1 hour to show up after registration
 
