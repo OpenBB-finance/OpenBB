@@ -31,4 +31,9 @@ def test_call_func(func, kwargs, mocker):
         target="gamestonk_terminal.cryptocurrency.defi.terramoney_fcd_view.export_data"
     )
 
+    # MOCK VISUALIZE_OUTPUT
+    mocker.patch(
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
+    )
+
     getattr(terramoney_fcd_view, func)(**kwargs)

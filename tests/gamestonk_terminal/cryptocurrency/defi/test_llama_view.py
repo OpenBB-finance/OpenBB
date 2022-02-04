@@ -75,6 +75,11 @@ def test_display_defi_tvl(mocker):
     # MOCK EXPORT_DATA
     mocker.patch(target="gamestonk_terminal.cryptocurrency.defi.llama_view.export_data")
 
+    # MOCK VISUALIZE_OUTPUT
+    mocker.patch(
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
+    )
+
     llama_view.display_defi_tvl(20)
 
 
@@ -84,6 +89,11 @@ def test_display_grouped_defi_protocols(mocker):
     # MOCK EXPORT_DATA
     mocker.patch(target="gamestonk_terminal.cryptocurrency.defi.llama_view.export_data")
 
+    # MOCK VISUALIZE_OUTPUT
+    mocker.patch(
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
+    )
+
     llama_view.display_grouped_defi_protocols(20)
 
 
@@ -92,5 +102,10 @@ def test_display_grouped_defi_protocols(mocker):
 def test_display_historical_tvl(mocker):
     # MOCK EXPORT_DATA
     mocker.patch(target="gamestonk_terminal.cryptocurrency.defi.llama_view.export_data")
+
+    # MOCK VISUALIZE_OUTPUT
+    mocker.patch(
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
+    )
 
     llama_view.display_historical_tvl("anchor")
