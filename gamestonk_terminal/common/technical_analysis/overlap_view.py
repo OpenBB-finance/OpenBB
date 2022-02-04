@@ -113,7 +113,7 @@ def view_ma(
 @log_start_end(log=logger)
 def view_vwap(
     s_ticker: str,
-    df_stock: pd.DataFrame,
+    ohlc: pd.DataFrame,
     offset: int = 0,
     s_interval: str = "",
     export: str = "",
@@ -125,7 +125,7 @@ def view_vwap(
     ----------
     s_ticker : str
         Ticker
-    df_stock : pd.DataFrame
+    ohlc : pd.DataFrame
         Dataframe of prices
     offset : int
         Offset variable
@@ -137,9 +137,9 @@ def view_vwap(
         External axes (3 axes are expected in the list), by default None
     """
 
-    df_stock.index = df_stock.index.tz_localize(None)
-    df_stock["Day"] = [idx.date() for idx in df_stock.index]
-    day_df = df_stock[df_stock.Day == df_stock.Day[-1]]
+    ohlc.index = ohlc.index.tz_localize(None)
+    ohlc["Day"] = [idx.date() for idx in ohlc.index]
+    day_df = ohlc[ohlc.Day == ohlc.Day[-1]]
     df_vwap = overlap_model.vwap(day_df, offset)
 
     candle_chart_kwargs = {

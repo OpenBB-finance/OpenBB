@@ -386,7 +386,7 @@ class TechnicalAnalysisController(BaseController):
             overlap_view.view_vwap(
                 s_ticker=self.ticker,
                 s_interval=self.interval,
-                df_stock=self.stock,
+                ohlc=self.stock,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
             )
