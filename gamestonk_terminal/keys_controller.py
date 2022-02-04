@@ -5,6 +5,7 @@ import os
 import argparse
 import logging
 from typing import List, Dict
+from pathlib import Path
 import dotenv
 
 import praw
@@ -67,7 +68,13 @@ class KeysController(BaseController):
     key_dict: Dict = {}
     cfg_dict: Dict = {}
     env_file = ".env"
-    dotenv.load_dotenv(env_file)
+    env_files = [f for f in os.listdir() if f.endswith(".env")]
+    if env_files:
+        env_file = env_files[0]
+        dotenv.load_dotenv(env_file)
+    else:
+        # create env file
+        Path(".env")
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
