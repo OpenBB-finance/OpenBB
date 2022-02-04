@@ -3,8 +3,6 @@ import unittest
 from contextlib import contextmanager
 from unittest.mock import patch
 
-import vcr
-
 from gamestonk_terminal import terminal_helper
 from tests.helpers.helpers import check_print
 
