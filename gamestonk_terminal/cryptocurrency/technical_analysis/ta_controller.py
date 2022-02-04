@@ -948,7 +948,7 @@ class TechnicalAnalysisController(BaseController):
         if ns_parser:
             volume_view.display_ad(
                 s_ticker=self.ticker,
-                df_stock=self.stock,
+                ohlc=self.stock,
                 use_open=ns_parser.b_use_open,
                 export=ns_parser.export,
             )
@@ -976,7 +976,7 @@ class TechnicalAnalysisController(BaseController):
         if ns_parser:
             volume_view.display_obv(
                 s_ticker=self.ticker,
-                df_stock=self.stock,
+                ohlc=self.stock,
                 export=ns_parser.export,
             )
 
