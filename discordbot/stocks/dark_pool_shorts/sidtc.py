@@ -1,13 +1,12 @@
-import discord
-
-from gamestonk_terminal.stocks.dark_pool_shorts import stockgrid_model
+import disnake
+from menus.menu import Menu
 
 import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import logger
-from discordbot.helpers import pagination
+from discordbot.config_discordbot import logger
+from gamestonk_terminal.stocks.dark_pool_shorts import stockgrid_model
 
 
-async def sidtc_command(ctx, sort="float", num="10"):
+async def sidtc_command(ctx, sort="float", num: int = 10):
     """Short interest and days to cover [Stockgrid]"""
 
     try:
@@ -20,11 +19,6 @@ async def sidtc_command(ctx, sort="float", num="10"):
 
         if sort not in possible_sorts:
             raise Exception(f"The possible sorts are: {', '.join(possible_sorts)}")
-
-        if not num.lstrip("-").isnumeric():
-            raise Exception("Number has to be an integer")
-
-        num = int(num)
 
         if num < 0:
             raise Exception("Number has to be above 0")
@@ -53,13 +47,25 @@ async def sidtc_command(ctx, sort="float", num="10"):
         df.columns = future_column_name
         df.drop("Ticker")
         columns = []
-        initial_str = "Page 0: Overview"
+        choices = [
+            disnake.SelectOption(label="Overview", value="0", emoji="🟢"),
+        ]
+        initial_str = "Overview"
         i = 1
-        for column in df.columns.values:
-            initial_str = initial_str + "\nPage " + str(i) + ": " + column
+        for col_name in df.columns.values:
+            menu = f"\nPage {i}: {col_name}"
+            initial_str += f"\nPage {i}: {col_name}"
+            if i < 19:
+                choices.append(
+                    disnake.SelectOption(label=menu, value=f"{i}", emoji="🟢"),
+                )
+            if i == 20:
+                choices.append(
+                    disnake.SelectOption(label="Max Reached", value=f"{i}", emoji="🟢"),
+                )
             i += 1
         columns.append(
-            discord.Embed(
+            disnake.Embed(
                 title="Dark Pool Shorts", description=initial_str, colour=cfg.COLOR
             ).set_author(
                 name=cfg.AUTHOR_NAME,
@@ -68,7 +74,7 @@ async def sidtc_command(ctx, sort="float", num="10"):
         )
         for column in df.columns.values:
             columns.append(
-                discord.Embed(
+                disnake.Embed(
                     title="Stocks: [Stockgrid] Short Interest and Days to Cover",
                     description="```The following data corresponds to the date: "
                     + dp_date
@@ -82,10 +88,10 @@ async def sidtc_command(ctx, sort="float", num="10"):
                 )
             )
 
-        await pagination(columns, ctx)
+        await ctx.send(embed=columns[0], view=Menu(columns, choices))
 
     except Exception as e:
-        embed = discord.Embed(
+        embed = disnake.Embed(
             title="ERROR Stocks: [Stockgrid] Short Interest and Days to Cover",
             colour=cfg.COLOR,
             description=e,
@@ -95,4 +101,4 @@ async def sidtc_command(ctx, sort="float", num="10"):
             icon_url=cfg.AUTHOR_ICON_URL,
         )
 
-        await ctx.send(embed=embed)
+        await ctx.send(embed=embed, delete_after=30.0)

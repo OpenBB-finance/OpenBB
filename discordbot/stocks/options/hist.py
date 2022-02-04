@@ -1,18 +1,26 @@
-import asyncio
 import os
+import random
+import time
 
-import discord
-import mplfinance as mpf
-
-from gamestonk_terminal.config_terminal import TRADIER_TOKEN
-from gamestonk_terminal.stocks.options import tradier_model
+import disnake
+import plotly.graph_objects as go
+from PIL import Image
+from plotly.subplots import make_subplots
 
 import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import logger
+from discordbot.helpers import autocrop_image
+from gamestonk_terminal.stocks.options import syncretism_model
+
+startTime = time.time()
 
 
 async def hist_command(
-    ctx, ticker: str = None, expiry: str = "", strike: float = None, put: bool = False
+    ctx,
+    ticker: str = None,
+    expiry: str = "",
+    strike: float = 10,
+    opt_type: str = "",
+    greek: str = "",
 ):
     """Plot historical option prices
 
@@ -21,114 +29,180 @@ async def hist_command(
     ticker: str
         Stock ticker
     expiry: str
-        accepts 0-9
-        0 being weeklies
-        1+ for weeks out
-        prompts reaction helper if empty
+        expiration date
     strike: float
         Option strike price
     put: bool
-        c for call
-        p for put
+        Calls for call
+        Puts for put
     """
+    try:
 
-    async with ctx.typing():
-        await asyncio.sleep(0.2)
-        try:
+        # Debug
+        if cfg.DEBUG:
+            print(f"opt-hist {ticker} {strike} {opt_type} {expiry} {greek}")
 
-            # Debug
-            if cfg.DEBUG:
-                logger.debug(
-                    "!stocks.opt.hist %s %s %s %s", ticker, strike, put, expiry
-                )
+        # Check for argument
+        if ticker is None:
+            raise Exception("Stock ticker is required")
 
-            error = ""
-            if TRADIER_TOKEN == "REPLACE_ME":  # nosec
-                raise Exception("Tradier Token is required")
+        if opt_type == "Puts":
+            put = bool(True)
+        if opt_type == "Calls":
+            put = bool(False)
+        chain_id = ""
 
-            # Check for argument
-            if ticker is None:
-                raise Exception("Stock ticker is required")
+        df_hist = syncretism_model.get_historical_greeks(
+            ticker, expiry, chain_id, strike, put
+        )
+        title = f"\n{ticker.upper()} {strike} {opt_type} expiring {expiry} Historical {greek.upper()}"
+        # Output data
+        fig = make_subplots(shared_xaxes=True, specs=[[{"secondary_y": True}]])
 
-            if strike is None or put == "":
-                raise Exception(
-                    'A strike and c/p is required\n```bash\n"!stocks.opt.hist {ticker} {strike} {c/p}"```'
-                )
-
-            chain_id = None
-
-            df_hist = tradier_model.get_historical_options(
-                ticker, expiry, strike, put, chain_id
-            )
-
-            op_type = ["call", "put"][put]
-
-            mc = mpf.make_marketcolors(
-                up="green",
-                down="red",
-                edge="black",
-                wick="black",
-                volume="in",
-                ohlc="i",
-            )
-
-            s = mpf.make_mpf_style(
-                base_mpl_style="seaborn",
-                marketcolors=mc,
-                gridstyle=":",
-                y_on_right=True,
-            )
-
-            mpf.plot(
-                df_hist,
-                type="candle",
-                volume=True,
-                title=f"\n{ticker.upper()} {strike} {op_type} expiring {expiry} Historical",
-                tight_layout=True,
-                style=s,
-                figratio=(10, 7),
-                figscale=1.10,
-                figsize=(12, 5),
-                update_width_config=dict(
-                    candle_linewidth=1.0, candle_width=0.8, volume_linewidth=1.0
+        fig.add_trace(
+            go.Scatter(
+                name=ticker.upper(),
+                x=df_hist.index,
+                y=df_hist.price,
+                line=dict(color="#fdc708", width=2),
+                opacity=1,
+            ),
+        )
+        fig.add_trace(
+            go.Scatter(
+                name="Premium",
+                x=df_hist.index,
+                y=df_hist["premium"],
+                opacity=1,
+                yaxis="y2",
+            ),
+        )
+        if greek:
+            fig.add_trace(
+                go.Scatter(
+                    name=f"{greek.upper()}",
+                    x=df_hist.index,
+                    y=df_hist[greek],
+                    opacity=1,
+                    yaxis="y3",
                 ),
-                savefig="opt_hist.png",
             )
+        fig.update_layout(
+            margin=dict(l=10, r=10, t=30, b=20),
+            template=cfg.PLT_TA_STYLE_TEMPLATE,
+            colorway=cfg.PLT_TA_COLORWAY,
+            title=title,
+            title_x=0.03,
+            yaxis_title="<b>Stock Price</b> ($)",
+            yaxis=dict(
+                side="right",
+                fixedrange=False,
+                titlefont=dict(color="#fdc708"),
+                tickfont=dict(color="#fdc708"),
+                position=0.02,
+                nticks=20,
+            ),
+            xaxis=dict(
+                rangeslider=dict(visible=False),
+                type="date",
+                fixedrange=False,
+                domain=[0.037, 1],
+            ),
+            xaxis2=dict(
+                rangeslider=dict(visible=False),
+                type="date",
+                fixedrange=False,
+            ),
+            xaxis3=dict(
+                rangeslider=dict(visible=False),
+                type="date",
+                fixedrange=False,
+            ),
+            dragmode="pan",
+            legend=dict(
+                orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1
+            ),
+            yaxis2=dict(
+                side="left",
+                fixedrange=False,
+                anchor="x",
+                overlaying="y",
+                titlefont=dict(color="#d81aea"),
+                tickfont=dict(color="#d81aea"),
+                nticks=20,
+            ),
+            yaxis3=dict(
+                side="left",
+                position=0,
+                fixedrange=False,
+                overlaying="y",
+                titlefont=dict(color="#00e6c3"),
+                tickfont=dict(color="#00e6c3"),
+                nticks=20,
+            ),
+            hovermode="x unified",
+        )
+        config = dict({"scrollZoom": True})
+        rand = random.randint(69, 69420)
+        imagefile = f"opt_hist{rand}.png"
 
-            imagefile = "opt_hist.png"
-            image = discord.File(imagefile)
+        # Check if interactive settings are enabled
+        plt_link = ""
+        if cfg.INTERACTIVE:
+            fig.write_html(f"in/hist_{rand}.html", config=config)
+            plt_link = f"[Interactive]({cfg.INTERACTIVE_URL}/hist_{rand}.html)"
 
-            if cfg.DEBUG:
-                logger.debug("Image: %s", imagefile)
-            title = f"{ticker.upper()} {strike} {op_type} expiring {expiry} Historical"
-            embed = discord.Embed(title=title, colour=cfg.COLOR)
-            embed.set_image(url="attachment://opt_hist.png")
-            embed.set_author(
-                name=cfg.AUTHOR_NAME,
-                icon_url=cfg.AUTHOR_ICON_URL,
-            )
-            os.remove("opt_hist.png")
+        fig.update_layout(
+            width=800,
+            height=500,
+        )
+        fig.write_image(imagefile)
 
-            await ctx.send(embed=embed, file=image)
+        img = Image.open(imagefile)
+        im_bg = Image.open(cfg.IMG_BG)
+        h = img.height + 240
+        w = img.width + 520
 
-        except TypeError:
-            error = (
-                'Invalid format.\n\nUse:\n```bash\n"!stocks.opt.hist {ticker} {strike} {c/p}"```'
-                '```bash\n"!stocks.opt {ticker} {expiration} {strike} {c/p}"```'
-            )
-        except Exception as e:
-            error = str(e)
+        # Paste fig onto background img and autocrop background
+        img = img.resize((w, h), Image.ANTIALIAS)
+        x1 = int(0.5 * im_bg.size[0]) - int(0.5 * img.size[0])
+        y1 = int(0.5 * im_bg.size[1]) - int(0.5 * img.size[1])
+        x2 = int(0.5 * im_bg.size[0]) + int(0.5 * img.size[0])
+        y2 = int(0.5 * im_bg.size[1]) + int(0.5 * img.size[1])
+        img = img.convert("RGB")
+        im_bg.paste(img, box=(x1 - 5, y1, x2 - 5, y2))
+        im_bg.save(imagefile, "PNG", quality=100)
+        image = Image.open(imagefile)
+        image = autocrop_image(image, 0)
+        image.save(imagefile, "PNG", quality=100)
 
-        finally:
-            if error != "":
-                embed = discord.Embed(
-                    title="ERROR Options: History",
-                    colour=cfg.COLOR,
-                    description=error,
-                )
-                embed.set_author(
-                    name=cfg.AUTHOR_NAME,
-                    icon_url=cfg.AUTHOR_ICON_URL,
-                )
+        image = disnake.File(imagefile)
+        if cfg.DEBUG:
+            print(f"Image: {imagefile}")
+        title = f"{ticker.upper()} {strike} {opt_type} expiring {expiry} Historical"
+        embed = disnake.Embed(title=title, description=plt_link, colour=cfg.COLOR)
+        embed.set_image(url=f"attachment://{imagefile}")
+        embed.set_author(
+            name=cfg.AUTHOR_NAME,
+            icon_url=cfg.AUTHOR_ICON_URL,
+        )
+        os.remove(imagefile)
 
-                await ctx.send(embed=embed, delete_after=30.0)
+        await ctx.send(embed=embed, file=image)
+
+    except Exception as e:
+        embed = disnake.Embed(
+            title="ERROR Options: History",
+            colour=cfg.COLOR,
+            description=e,
+        )
+        embed.set_author(
+            name=cfg.AUTHOR_NAME,
+            icon_url=cfg.AUTHOR_ICON_URL,
+        )
+
+        await ctx.send(embed=embed, delete_after=30.0)
+
+
+executionTime = time.time() - startTime
+print(f"> Extension {__name__} is ready: time in seconds: {str(executionTime)}\n")

@@ -1,15 +1,17 @@
 import os
+import random
 from datetime import datetime, timedelta
-import discord
-from matplotlib import pyplot as plt
 
-from gamestonk_terminal.helper_funcs import plot_autoscale
-from gamestonk_terminal.common.technical_analysis import momentum_model
-from gamestonk_terminal.config_plot import PLOT_DPI
+import disnake
+import plotly.graph_objects as go
+from PIL import Image
+from plotly.subplots import make_subplots
 
 import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import gst_imgur, logger
 import discordbot.helpers
+from discordbot.config_discordbot import logger
+from discordbot.helpers import autocrop_image
+from gamestonk_terminal.common.technical_analysis import momentum_model
 
 
 async def stoch_command(
@@ -72,56 +74,158 @@ async def stoch_command(
             slow_k,
         )
 
-        # Output Data
-        fig, axes = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
-        ax = axes[0]
-        ax.plot(df_stock.index, df_stock["Adj Close"].values, "k", lw=2)
-        ax.set_title(f"Stochastic Relative Strength Index (STOCH RSI) on {ticker}")
-        ax.set_xlim(df_stock.index[0], df_stock.index[-1])
-        ax.set_xticklabels([])
-        ax.set_ylabel("Share Price ($)")
-        ax.grid(b=True, which="major", color="#666666", linestyle="-")
-
-        ax2 = axes[1]
-        ax2.plot(df_ta.index, df_ta.iloc[:, 0].values, "k", lw=2)
-        ax2.plot(df_ta.index, df_ta.iloc[:, 1].values, "b", lw=2, ls="--")
-        ax2.set_xlim(df_stock.index[0], df_stock.index[-1])
-        ax2.axhspan(80, 100, facecolor="r", alpha=0.2)
-        ax2.axhspan(0, 20, facecolor="g", alpha=0.2)
-        ax2.axhline(80, linewidth=3, color="r", ls="--")
-        ax2.axhline(20, linewidth=3, color="g", ls="--")
-        ax2.grid(b=True, which="major", color="#666666", linestyle="-")
-        ax2.set_ylim([0, 100])
-
-        ax3 = ax2.twinx()
-        ax3.set_ylim(ax2.get_ylim())
-        ax3.set_yticks([20, 80])
-        ax3.set_yticklabels(["OVERSOLD", "OVERBOUGHT"])
-        ax2.legend(
-            [f"%K {df_ta.columns[0]}", f"%D {df_ta.columns[1]}"], loc="lower left"
+        fig = make_subplots(
+            rows=2,
+            cols=1,
+            shared_xaxes=True,
+            vertical_spacing=0.07,
+            row_width=[0.5, 0.7],
         )
+        fig.add_trace(
+            go.Scatter(
+                x=df_stock.index,
+                y=df_stock["Adj Close"].values,
+                line=dict(color="#fdc708", width=2),
+                opacity=1,
+                showlegend=False,
+            ),
+            row=1,
+            col=1,
+        )
+        K = df_ta.columns[0].replace("_", " ")
+        D = df_ta.columns[1].replace("_", " ")
+        fig.add_trace(
+            go.Scatter(
+                name=f"%K {K}",
+                x=df_stock.index,
+                y=df_ta.iloc[:, 0].values,
+                line=dict(width=1.8),
+                opacity=1,
+            ),
+            row=2,
+            col=1,
+        )
+        fig.add_trace(
+            go.Scatter(
+                name=f"%D {D}",
+                x=df_stock.index,
+                y=df_ta.iloc[:, 1].values,
+                line=dict(width=1.8, dash="dash"),
+                opacity=1,
+            ),
+            row=2,
+            col=1,
+        )
+        fig.add_hrect(
+            y0=80,
+            y1=100,
+            fillcolor="red",
+            opacity=0.2,
+            layer="below",
+            line_width=0,
+            row=2,
+            col=1,
+        )
+        fig.add_hrect(
+            y0=0,
+            y1=20,
+            fillcolor="green",
+            opacity=0.2,
+            layer="below",
+            line_width=0,
+            row=2,
+            col=1,
+        )
+        fig.add_hline(
+            y=80,
+            fillcolor="green",
+            opacity=1,
+            layer="below",
+            line_width=3,
+            line=dict(color="red", dash="dash"),
+            row=2,
+            col=1,
+        )
+        fig.add_hline(
+            y=20,
+            fillcolor="green",
+            opacity=1,
+            layer="below",
+            line_width=3,
+            line=dict(color="green", dash="dash"),
+            row=2,
+            col=1,
+        )
+        fig.update_layout(
+            margin=dict(l=0, r=0, t=40, b=20),
+            template=cfg.PLT_TA_STYLE_TEMPLATE,
+            colorway=cfg.PLT_TA_COLORWAY,
+            title=f"Stochastic Relative Strength Index (STOCH RSI) on {ticker}",
+            title_x=0.5,
+            yaxis_title="Stock Price ($)",
+            yaxis=dict(
+                fixedrange=False,
+            ),
+            xaxis=dict(
+                rangeslider=dict(visible=False),
+                type="date",
+            ),
+            dragmode="pan",
+            legend=dict(yanchor="top", y=0.99, xanchor="left", x=0.01),
+        )
+        config = dict({"scrollZoom": True})
+        imagefile = "ta_stoch.png"
 
-        plt.gcf().autofmt_xdate()
-        fig.tight_layout(pad=1)
+        # Check if interactive settings are enabled
+        plt_link = ""
+        if cfg.INTERACTIVE:
+            html_ran = random.randint(69, 69420)
+            fig.write_html(f"in/stoch_{html_ran}.html", config=config)
+            plt_link = f"[Interactive]({cfg.INTERACTIVE_URL}/stoch_{html_ran}.html)"
 
-        plt.savefig("ta_stoch.png")
-        uploaded_image = gst_imgur.upload_image("ta_stoch.png", title="something")
-        image_link = uploaded_image.link
-        if cfg.DEBUG:
-            logger.debug("Image URL: %s", image_link)
-        title = "Stocks: Stochastic-Relative-Strength-Index " + ticker
-        embed = discord.Embed(title=title, colour=cfg.COLOR)
+        fig.update_layout(
+            width=800,
+            height=500,
+        )
+        fig.write_image(imagefile)
+
+        img = Image.open(imagefile)
+        im_bg = Image.open(cfg.IMG_BG)
+        h = img.height + 240
+        w = img.width + 520
+
+        # Paste fig onto background img and autocrop background
+        img = img.resize((w, h), Image.ANTIALIAS)
+        x1 = int(0.5 * im_bg.size[0]) - int(0.5 * img.size[0])
+        y1 = int(0.5 * im_bg.size[1]) - int(0.5 * img.size[1])
+        x2 = int(0.5 * im_bg.size[0]) + int(0.5 * img.size[0])
+        y2 = int(0.5 * im_bg.size[1]) + int(0.5 * img.size[1])
+        img = img.convert("RGB")
+        im_bg.paste(img, box=(x1 - 5, y1, x2 - 5, y2))
+        im_bg.save(imagefile, "PNG", quality=100)
+        image = Image.open(imagefile)
+        image = autocrop_image(image, 0)
+        image.save(imagefile, "PNG", quality=100)
+
+        image = disnake.File(imagefile)
+
+        print(f"Image {imagefile}")
+        embed = disnake.Embed(
+            title=f"Stocks: Stochastic-Relative-Strength-Index {ticker}",
+            description=plt_link,
+            colour=cfg.COLOR,
+        )
+        embed.set_image(url=f"attachment://{imagefile}")
         embed.set_author(
             name=cfg.AUTHOR_NAME,
             icon_url=cfg.AUTHOR_ICON_URL,
         )
-        embed.set_image(url=image_link)
-        os.remove("ta_stoch.png")
+        os.remove(imagefile)
 
-        await ctx.send(embed=embed)
+        await ctx.send(embed=embed, file=image)
 
     except Exception as e:
-        embed = discord.Embed(
+        embed = disnake.Embed(
             title="ERROR Stocks: Stochastic-Relative-Strength-Index",
             colour=cfg.COLOR,
             description=e,
@@ -131,4 +235,4 @@ async def stoch_command(
             icon_url=cfg.AUTHOR_ICON_URL,
         )
 
-        await ctx.send(embed=embed)
+        await ctx.send(embed=embed, delete_after=30.0)
