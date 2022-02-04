@@ -984,7 +984,7 @@ class TechnicalAnalysisController(BaseController):
         if ns_parser:
             volume_view.display_ad(
                 s_ticker=self.ticker,
-                df_stock=self.data,
+                ohlc=self.data,
                 use_open=ns_parser.b_use_open,
                 export=ns_parser.export,
             )
@@ -1037,7 +1037,7 @@ class TechnicalAnalysisController(BaseController):
         if ns_parser:
             volume_view.display_adosc(
                 s_ticker=self.ticker,
-                df_stock=self.data,
+                ohlc=self.data,
                 use_open=ns_parser.b_use_open,
                 fast=ns_parser.n_length_fast,
                 slow=ns_parser.n_length_slow,
@@ -1067,7 +1067,7 @@ class TechnicalAnalysisController(BaseController):
         if ns_parser:
             volume_view.display_obv(
                 s_ticker=self.ticker,
-                df_stock=self.data,
+                ohlc=self.data,
                 export=ns_parser.export,
             )
 
@@ -1111,7 +1111,7 @@ class TechnicalAnalysisController(BaseController):
         if ns_parser:
             custom_indicators_view.fibonacci_retracement(
                 s_ticker=self.ticker,
-                df_stock=self.data,
+                ohlc=self.data,
                 period=ns_parser.period,
                 start_date=ns_parser.start,
                 end_date=ns_parser.end,

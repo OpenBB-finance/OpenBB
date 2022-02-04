@@ -1274,7 +1274,7 @@ class TechnicalAnalysisController(StockController):
         if ns_parser:
             custom_indicators_view.fibonacci_retracement(
                 s_ticker=self.ticker,
-                df_stock=self.stock,
+                ohlc=self.stock,
                 period=ns_parser.period,
                 start_date=ns_parser.start,
                 end_date=ns_parser.end,
