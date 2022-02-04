@@ -61,14 +61,13 @@ class KeysController(BaseController):
         "glassnode",
         "coinglass",
         "cpanic",
+        "ethplorer",
     ]
     PATH = "/keys/"
     key_dict: Dict = {}
     cfg_dict: Dict = {}
-    env_files = [f for f in os.listdir() if f.endswith(".env")]
-    if env_files:
-        env_file = os.path.join("gamestonk_terminal", env_files[0])
-        dotenv.load_dotenv(env_file)
+    env_file = ".env"
+    dotenv.load_dotenv(env_file)
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
@@ -100,7 +99,8 @@ class KeysController(BaseController):
         """Check Financial Modeling Prep key"""
         self.cfg_dict["FINANCIAL_MODELING_PREP"] = "fmp"
         if (
-            cfg.API_KEY_FINANCIALMODELINGPREP == "REPLACE_ME"
+            cfg.API_KEY_FINANCIALMODELINGPREP
+            == "REPLACE_ME"  # pragma: allowlist secret
         ):  # pragma: allowlist secret
             self.key_dict["FINANCIAL_MODELING_PREP"] = "not defined"
         else:
@@ -133,7 +133,7 @@ class KeysController(BaseController):
                     qopts={"columns": ["ticker", "per_end_date"]},
                 )
                 self.key_dict["QUANDL"] = "defined, test passed"
-            except quandl.errors.quandl_error.ForbiddenError:
+            except Exception as _:  # noqa: F841
                 self.key_dict["QUANDL"] = "defined, test failed"
 
         if show_output:
@@ -536,6 +536,26 @@ class KeysController(BaseController):
         if show_output:
             console.print(self.key_dict["COINGLASS"] + "\n")
 
+    def check_ethplorer_key(self, show_output: bool = False) -> None:
+        """Check ethplorer key"""
+        self.cfg_dict["ETHPLORER"] = "ethplorer"
+        if "REPLACE_ME" == cfg.API_ETHPLORER_KEY:
+            self.key_dict["ETHPLORER"] = "not defined"
+        else:
+            ethplorer_url = "https://api.ethplorer.io/getTokenInfo/0x1f9840a85d5af5bf1d1762f925bdaddc4201f984?apiKey="
+            ethplorer_url += cfg.API_ETHPLORER_KEY
+            response = requests.get(ethplorer_url)
+            try:
+                if response.status_code == 200:
+                    self.key_dict["ETHPLORER"] = "defined, test passed"
+                else:
+                    self.key_dict["ETHPLORER"] = "defined, test unsuccessful"
+            except Exception as _:  # noqa: F841
+                self.key_dict["ETHPLORER"] = "defined, test unsuccessful"
+
+        if show_output:
+            console.print(self.key_dict["ETHPLORER"] + "\n")
+
     def check_keys_status(self) -> None:
         """Check keys status"""
         self.check_av_key()
@@ -561,6 +581,7 @@ class KeysController(BaseController):
         self.check_glassnode_key()
         self.check_coinglass_key()
         self.check_cpanic_key()
+        self.check_ethplorer_key()
 
     def print_help(self):
         """Print help"""
@@ -628,7 +649,7 @@ class KeysController(BaseController):
                 self.env_file, "GT_API_KEY_FINANCIALMODELINGPREP", ns_parser.key
             )
             cfg.API_KEY_FINANCIALMODELINGPREP = ns_parser.key
-            self.check_av_key(show_output=True)
+            self.check_fmp_key(show_output=True)
 
     def call_quandl(self, other_args: List[str]):
         """Process quandl command"""
@@ -652,7 +673,7 @@ class KeysController(BaseController):
             os.environ["GT_API_KEY_QUANDL"] = ns_parser.key
             dotenv.set_key(self.env_file, "GT_API_KEY_QUANDL", ns_parser.key)
             cfg.API_KEY_QUANDL = ns_parser.key
-            self.check_av_key(show_output=True)
+            self.check_quandl_key(show_output=True)
 
     def call_polygon(self, other_args: List[str]):
         """Process polygon command"""
@@ -676,7 +697,7 @@ class KeysController(BaseController):
             os.environ["GT_API_POLYGON_KEY"] = ns_parser.key
             dotenv.set_key(self.env_file, "GT_API_POLYGON_KEY", ns_parser.key)
             cfg.API_POLYGON_KEY = ns_parser.key
-            self.check_av_key(show_output=True)
+            self.check_polygon_key(show_output=True)
 
     def call_fred(self, other_args: List[str]):
         """Process FRED command"""
@@ -700,7 +721,7 @@ class KeysController(BaseController):
             os.environ["GT_API_FRED_KEY"] = ns_parser.key
             dotenv.set_key(self.env_file, "GT_API_FRED_KEY", ns_parser.key)
             cfg.API_FRED_KEY = ns_parser.key
-            self.check_av_key(show_output=True)
+            self.check_fred_key(show_output=True)
 
     def call_news(self, other_args: List[str]):
         """Process News API command"""
@@ -724,7 +745,7 @@ class KeysController(BaseController):
             os.environ["GT_API_NEWS_TOKEN"] = ns_parser.key
             dotenv.set_key(self.env_file, "GT_API_NEWS_TOKEN", ns_parser.key)
             cfg.API_NEWS_TOKEN = ns_parser.key
-            self.check_av_key(show_output=True)
+            self.check_news_key(show_output=True)
 
     def call_tradier(self, other_args: List[str]):
         """Process Tradier API command"""
@@ -748,7 +769,7 @@ class KeysController(BaseController):
             os.environ["GT_API_TRADIER_TOKEN"] = ns_parser.key
             dotenv.set_key(self.env_file, "GT_API_TRADIER_TOKEN", ns_parser.key)
             cfg.TRADIER_TOKEN = ns_parser.key
-            self.check_av_key(show_output=True)
+            self.check_tradier_key(show_output=True)
 
     def call_cmc(self, other_args: List[str]):
         """Process CoinMarketCap API command"""
@@ -772,7 +793,7 @@ class KeysController(BaseController):
             os.environ["GT_API_CMC_KEY"] = ns_parser.key
             dotenv.set_key(self.env_file, "GT_API_CMC_KEY", ns_parser.key)
             cfg.API_CMC_KEY = ns_parser.key
-            self.check_av_key(show_output=True)
+            self.check_cmc_key(show_output=True)
 
     def call_finhub(self, other_args: List[str]):
         """Process Finhub API command"""
@@ -796,7 +817,7 @@ class KeysController(BaseController):
             os.environ["GT_API_FINNHUB_KEY"] = ns_parser.key
             dotenv.set_key(self.env_file, "GT_API_FINNHUB_KEY", ns_parser.key)
             cfg.API_FINNHUB_KEY = ns_parser.key
-            self.check_av_key(show_output=True)
+            self.check_finhub_key(show_output=True)
 
     def call_iex(self, other_args: List[str]):
         """Process iex command"""
@@ -976,7 +997,7 @@ class KeysController(BaseController):
             dotenv.set_key(self.env_file, "GT_RH_PASSWORD", ns_parser.password)
             cfg.RH_PASSWORD = ns_parser.password
 
-            self.check_twitter_key(show_output=True)
+            self.check_rh_key(show_output=True)
 
     def call_degiro(self, other_args: List[str]):
         """Process degiro command"""
@@ -1304,3 +1325,28 @@ class KeysController(BaseController):
             cfg.API_CRYPTO_PANIC_KEY = ns_parser.key
 
             self.check_cpanic_key(show_output=True)
+
+    def call_ethplorer(self, other_args: List[str]):
+        """Process ethplorer command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="ethplorer",
+            description="Set Ethplorer API key.",
+        )
+        parser.add_argument(
+            "-k",
+            "--key",
+            type=str,
+            dest="key",
+            help="key",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-k")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            os.environ["GT_API_ETHPLORER_KEY"] = ns_parser.key
+            dotenv.set_key(self.env_file, "GT_API_ETHPLORER_KEY", ns_parser.key)
+            cfg.API_ETHPLORER_KEY = ns_parser.key
+
+            self.check_ethplorer_key(show_output=True)
