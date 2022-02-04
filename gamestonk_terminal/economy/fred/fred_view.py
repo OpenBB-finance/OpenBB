@@ -112,50 +112,53 @@ def display_fred_series(
     data = data.dropna()
     # Try to get everything onto the same 0-10 scale.
     # To do so, think in scientific notation.  Divide the data by whatever the E would be
-    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    if len(series_ids) == 1:
-        s_id = series_ids[0]
-        sub_dict: Dict = d_series[s_id]
-        title = f"{sub_dict['title']} ({sub_dict['units']})"
-        ax.plot(data.index, data, label="\n".join(textwrap.wrap(title, 80)))
-    else:
-        for s_id, sub_dict in d_series.items():
-            data_to_plot = data[s_id].dropna()
-            exponent = int(np.log10(data_to_plot.max()))
-            data_to_plot /= 10**exponent
-            multiplier = f"x {format_units(10**exponent)}" if exponent > 0 else ""
-            title = f"{sub_dict['title']} ({sub_dict['units']}) {'['+multiplier+']' if multiplier else ''}"
-            ax.plot(
-                data_to_plot.index,
-                data_to_plot,
-                label="\n".join(textwrap.wrap(title, 80))
-                if len(series_ids) < 5
-                else title,
+    if not data.empty:
+        fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        if len(series_ids) == 1:
+            s_id = series_ids[0]
+            sub_dict: Dict = d_series[s_id]
+            title = f"{sub_dict['title']} ({sub_dict['units']})"
+            ax.plot(data.index, data, label="\n".join(textwrap.wrap(title, 80)))
+        else:
+            for s_id, sub_dict in d_series.items():
+                data_to_plot = data[s_id].dropna()
+                exponent = int(np.log10(data_to_plot.max()))
+                data_to_plot /= 10**exponent
+                multiplier = f"x {format_units(10**exponent)}" if exponent > 0 else ""
+                title = f"{sub_dict['title']} ({sub_dict['units']}) {'['+multiplier+']' if multiplier else ''}"
+                ax.plot(
+                    data_to_plot.index,
+                    data_to_plot,
+                    label="\n".join(textwrap.wrap(title, 80))
+                    if len(series_ids) < 5
+                    else title,
+                )
+
+        ax.legend(prop={"size": 10}, bbox_to_anchor=(0, 1), loc="lower left")
+        ax.grid()
+        ax.set_xlim(data.index[0], data.index[-1])
+        ax.spines["top"].set_visible(False)
+        ax.spines["right"].set_visible(False)
+        plt.gcf().autofmt_xdate()
+        fig.tight_layout()
+        if gtff.USE_ION:
+            plt.ion()
+
+        plt.show()
+        data.index = [x.strftime("%Y-%m-%d") for x in data.index]
+        if raw:
+            print_rich_table(
+                data.tail(limit),
+                headers=list(data.columns),
+                show_index=True,
+                index_name="Date",
             )
-
-    ax.legend(prop={"size": 10}, bbox_to_anchor=(0, 1), loc="lower left")
-    ax.grid()
-    ax.set_xlim(data.index[0], data.index[-1])
-    ax.spines["top"].set_visible(False)
-    ax.spines["right"].set_visible(False)
-    plt.gcf().autofmt_xdate()
-    fig.tight_layout()
-    if gtff.USE_ION:
-        plt.ion()
-
-    plt.show()
-    data.index = [x.strftime("%Y-%m-%d") for x in data.index]
-    if raw:
-        print_rich_table(
-            data.tail(limit),
-            headers=list(data.columns),
-            show_index=True,
-            index_name="Date",
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "plot",
+            data,
         )
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "plot",
-        data,
-    )
-    console.print("")
+        console.print("")
+    else:
+        console.print("[red]Unable to get data for the fred series [/red]\n")
