@@ -1,9 +1,8 @@
-import discord
-
-from gamestonk_terminal.stocks.due_diligence import marketwatch_model
+import disnake
 
 import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import logger
+from discordbot.config_discordbot import logger
+from gamestonk_terminal.stocks.due_diligence import marketwatch_model
 
 
 async def sec_command(ctx, ticker=""):
@@ -26,11 +25,13 @@ async def sec_command(ctx, ticker=""):
         if cfg.DEBUG:
             logger.debug(df_financials.to_string())
 
+        df = df_financials
+        df.loc[:, "Link"] = "[Link Source](" + df.loc[:, "Link"].astype(str)
+        df.loc[:, "Link"] = df.loc[:, "Link"] + ")"
         # Output data
-        report = "```" + df_financials.to_string() + "```"
-        embed = discord.Embed(
+        embed = disnake.Embed(
             title="Stocks: [Market Watch] SEC Filings",
-            description=report,
+            description=df.to_string(),
             colour=cfg.COLOR,
         )
         embed.set_author(
@@ -41,7 +42,7 @@ async def sec_command(ctx, ticker=""):
         await ctx.send(embed=embed)
 
     except Exception as e:
-        embed = discord.Embed(
+        embed = disnake.Embed(
             title="ERROR Stocks: [Market Watch] SEC Filings",
             colour=cfg.COLOR,
             description=e,
@@ -51,4 +52,4 @@ async def sec_command(ctx, ticker=""):
             icon_url=cfg.AUTHOR_ICON_URL,
         )
 
-        await ctx.send(embed=embed)
+        await ctx.send(embed=embed, delete_after=30.0)

@@ -1,14 +1,17 @@
 import os
+import random
+import time
 
-import discord
-import matplotlib.pyplot as plt
-
-from gamestonk_terminal import config_plot as cfp
-from gamestonk_terminal.helper_funcs import plot_autoscale
-from gamestonk_terminal.stocks.options import yfinance_model
+import disnake as discord
+import pandas as pd
+import plotly.graph_objects as go
+from PIL import Image
 
 import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import logger
+from discordbot.helpers import autocrop_image
+from gamestonk_terminal.stocks.options import yfinance_model
+
+startTime = time.time()
 
 
 async def vol_command(
@@ -24,7 +27,7 @@ async def vol_command(
 
         # Debug
         if cfg.DEBUG:
-            logger.debug("!stocks.opt.vol %s %s %s %s", ticker, expiry, min_sp, max_sp)
+            print(f"opt-vol {ticker} {expiry} {min_sp} {max_sp}")
 
         # Check for argument
         if ticker is None:
@@ -52,53 +55,97 @@ async def vol_command(
         puts = options.puts
         call_v = calls.set_index("strike")["volume"] / 1000
         put_v = puts.set_index("strike")["volume"] / 1000
-        plt.style.use("seaborn")
-        fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
 
-        put_v.plot(
-            x="strike",
-            y="volume",
-            label="Puts",
-            ax=ax,
-            marker="o",
-            ls="-",
-            c="r",
-        )
-        call_v.plot(
-            x="strike",
-            y="volume",
-            label="Calls",
-            ax=ax,
-            marker="o",
-            ls="-",
-            c="g",
-        )
-        ax.axvline(
-            current_price, lw=2, c="k", ls="--", label="Current Price", alpha=0.7
-        )
-        ax.grid("on")
-        ax.set_xlabel("Strike Price")
-        ax.set_ylabel("Volume (1k) ")
-        ax.set_xlim(min_strike, max_strike)
+        df_opt = pd.merge(put_v, call_v, left_index=True, right_index=True)
+        dmax = df_opt.values.max()
 
-        ax.set_title(f"Volume for {ticker.upper()} expiring {expiry}")
-        plt.legend(loc=0)
-        fig.tight_layout(pad=1)
-
+        fig = go.Figure()
+        fig.add_trace(
+            go.Scatter(
+                x=call_v.index,
+                y=call_v.values,
+                name="Calls",
+                mode="lines+markers",
+                line=dict(color="green", width=3),
+            )
+        )
+        fig.add_trace(
+            go.Scatter(
+                x=put_v.index,
+                y=put_v.values,
+                name="Puts",
+                mode="lines+markers",
+                line=dict(color="red", width=3),
+            )
+        )
+        fig.add_trace(
+            go.Scatter(
+                x=[current_price, current_price],
+                y=[0, dmax],
+                mode="lines",
+                line=dict(color="gold", width=2),
+                name="Current Price",
+            )
+        )
+        fig.update_xaxes(
+            range=[min_strike, max_strike],
+            constrain="domain",
+        )
+        fig.update_layout(
+            margin=dict(l=0, r=0, t=60, b=20),
+            template=cfg.PLT_SCAT_STYLE_TEMPLATE,
+            title=f"Volume for {ticker.upper()} expiring {expiry}",
+            title_x=0.5,
+            legend_title="",
+            xaxis_title="Strike",
+            yaxis_title="Volume (1k)",
+            xaxis=dict(
+                rangeslider=dict(visible=False),
+            ),
+            legend=dict(yanchor="top", y=0.99, xanchor="left", x=0.01),
+            dragmode="pan",
+        )
+        config = dict({"scrollZoom": True})
         imagefile = "opt_vol.png"
-        plt.savefig("opt_vol.png")
+        fig.write_image(imagefile)
+
+        # Check if interactive settings are enabled
+        plt_link = ""
+        if cfg.INTERACTIVE:
+            html_ran = random.randint(69, 69420)
+            fig.write_html(f"in/vol_{html_ran}.html", config=config)
+            plt_link = f"[Interactive]({cfg.INTERACTIVE_URL}/vol_{html_ran}.html)"
+
+        img = Image.open(imagefile)
+        im_bg = Image.open(cfg.IMG_BG)
+        h = img.height + 240
+        w = img.width + 520
+
+        # Paste fig onto background img and autocrop background
+        img = img.resize((w, h), Image.ANTIALIAS)
+        x1 = int(0.5 * im_bg.size[0]) - int(0.5 * img.size[0])
+        y1 = int(0.5 * im_bg.size[1]) - int(0.5 * img.size[1])
+        x2 = int(0.5 * im_bg.size[0]) + int(0.5 * img.size[0])
+        y2 = int(0.5 * im_bg.size[1]) + int(0.5 * img.size[1])
+        img = img.convert("RGB")
+        im_bg.paste(img, box=(x1 - 5, y1, x2 - 5, y2))
+        im_bg.save(imagefile, "PNG", quality=100)
+        image = Image.open(imagefile)
+        image = autocrop_image(image, 0)
+        image.save(imagefile, "PNG", quality=100)
+
         image = discord.File(imagefile)
 
         if cfg.DEBUG:
-            logger.debug("Image: %s", imagefile)
+            print(f"Image: {imagefile}")
         title = f"Volume for {ticker.upper()} expiring {expiry}"
-        embed = discord.Embed(title=title, colour=cfg.COLOR)
-        embed.set_image(url="attachment://opt_vol.png")
+        embed = discord.Embed(title=title, description=plt_link, colour=cfg.COLOR)
+        embed.set_image(url=f"attachment://{imagefile}")
         embed.set_author(
             name=cfg.AUTHOR_NAME,
             icon_url=cfg.AUTHOR_ICON_URL,
         )
-        os.remove("opt_vol.png")
+        os.remove(imagefile)
 
         await ctx.send(embed=embed, file=image)
 
@@ -113,4 +160,8 @@ async def vol_command(
             icon_url=cfg.AUTHOR_ICON_URL,
         )
 
-        await ctx.send(embed=embed)
+        await ctx.send(embed=embed, delete_after=30.0)
+
+
+executionTime = time.time() - startTime
+print(f"> Extension {__name__} is ready: time in seconds: {str(executionTime)}\n")

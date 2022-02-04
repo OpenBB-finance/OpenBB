@@ -324,14 +324,16 @@ def show_candles(
         ),
     )
 
-    ax[0].set_title(f"{instrument} {granularity}")
-    if len(legends) > 0:
-        ax[0].legend(legends)
-    # pylint: disable=C0200
-    for i in range(0, len(subplot_legends), 2):
-        ax[subplot_legends[i]].legend(subplot_legends[i + 1])
+        ax[0].set_title(f"{instrument} {granularity}")
+        if len(legends) > 0:
+            ax[0].legend(legends)
+        # pylint: disable=C0200
+        for i in range(0, len(subplot_legends), 2):
+            ax[subplot_legends[i]].legend(subplot_legends[i + 1])
 
-    console.print("")
+        console.print("")
+    else:
+        console.print("[red]Could not retrieve the data[/red]\n")
 
 
 @log_start_end(log=logger)
