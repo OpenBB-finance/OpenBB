@@ -573,7 +573,7 @@ class TechnicalAnalysisController(StockController):
         if ns_parser:
             momentum_view.display_cci(
                 s_ticker=self.ticker,
-                df=self.stock,
+                ohlc=self.stock,
                 length=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
                 export=ns_parser.export,
@@ -630,7 +630,7 @@ class TechnicalAnalysisController(StockController):
         if ns_parser:
             momentum_view.display_macd(
                 s_ticker=self.ticker,
-                values=self.stock["Adj Close"],
+                series=self.stock["Adj Close"],
                 n_fast=ns_parser.n_fast,
                 n_slow=ns_parser.n_slow,
                 n_signal=ns_parser.n_signal,
@@ -689,7 +689,7 @@ class TechnicalAnalysisController(StockController):
         if ns_parser:
             momentum_view.display_rsi(
                 s_ticker=self.ticker,
-                prices=self.stock["Adj Close"],
+                series=self.stock["Adj Close"],
                 length=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
                 drift=ns_parser.n_drift,
@@ -744,7 +744,7 @@ class TechnicalAnalysisController(StockController):
         if ns_parser:
             momentum_view.display_stoch(
                 s_ticker=self.ticker,
-                df_stock=self.stock,
+                ohlc=self.stock,
                 fastkperiod=ns_parser.n_fastkperiod,
                 slowdperiod=ns_parser.n_slowdperiod,
                 slowkperiod=ns_parser.n_slowkperiod,
@@ -784,7 +784,7 @@ class TechnicalAnalysisController(StockController):
         if ns_parser:
             momentum_view.display_fisher(
                 s_ticker=self.ticker,
-                df_stock=self.stock,
+                ohlc=self.stock,
                 length=ns_parser.n_length,
                 export=ns_parser.export,
             )
@@ -822,7 +822,7 @@ class TechnicalAnalysisController(StockController):
         if ns_parser:
             momentum_view.display_cg(
                 s_ticker=self.ticker,
-                values=self.stock["Adj Close"],
+                series=self.stock["Adj Close"],
                 length=ns_parser.n_length,
                 export=ns_parser.export,
             )

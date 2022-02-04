@@ -165,7 +165,7 @@ class TechnicalAnalysisController(BaseController):
             overlap_view.view_ma(
                 ma_type="EMA",
                 s_ticker=self.ticker,
-                values=self.data["Adj Close"],
+                series=self.data["Adj Close"],
                 length=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
@@ -216,7 +216,7 @@ class TechnicalAnalysisController(BaseController):
             overlap_view.view_ma(
                 ma_type="SMA",
                 s_ticker=self.ticker,
-                values=self.data["Adj Close"],
+                series=self.data["Adj Close"],
                 length=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
@@ -264,7 +264,7 @@ class TechnicalAnalysisController(BaseController):
             overlap_view.view_ma(
                 ma_type="WMA",
                 s_ticker=self.ticker,
-                values=self.data["Adj Close"],
+                series=self.data["Adj Close"],
                 length=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
@@ -312,7 +312,7 @@ class TechnicalAnalysisController(BaseController):
             overlap_view.view_ma(
                 ma_type="HMA",
                 s_ticker=self.ticker,
-                values=self.data["Adj Close"],
+                series=self.data["Adj Close"],
                 length=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
@@ -363,7 +363,7 @@ class TechnicalAnalysisController(BaseController):
             overlap_view.view_ma(
                 ma_type="ZLMA",
                 s_ticker=self.ticker,
-                values=self.data["Adj Close"],
+                series=self.data["Adj Close"],
                 length=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
@@ -410,7 +410,7 @@ class TechnicalAnalysisController(BaseController):
         if ns_parser:
             momentum_view.display_cci(
                 s_ticker=self.ticker,
-                df=self.data,
+                ohlc=self.data,
                 length=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
                 export=ns_parser.export,
@@ -467,7 +467,7 @@ class TechnicalAnalysisController(BaseController):
         if ns_parser:
             momentum_view.display_macd(
                 s_ticker=self.ticker,
-                values=self.data["Adj Close"],
+                series=self.data["Adj Close"],
                 n_fast=ns_parser.n_fast,
                 n_slow=ns_parser.n_slow,
                 n_signal=ns_parser.n_signal,
@@ -526,7 +526,7 @@ class TechnicalAnalysisController(BaseController):
         if ns_parser:
             momentum_view.display_rsi(
                 s_ticker=self.ticker,
-                prices=self.data["Adj Close"],
+                series=self.data["Adj Close"],
                 length=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
                 drift=ns_parser.n_drift,
@@ -581,7 +581,7 @@ class TechnicalAnalysisController(BaseController):
         if ns_parser:
             momentum_view.display_stoch(
                 s_ticker=self.ticker,
-                df_stock=self.data,
+                ohlc=self.data,
                 fastkperiod=ns_parser.n_fastkperiod,
                 slowdperiod=ns_parser.n_slowdperiod,
                 slowkperiod=ns_parser.n_slowkperiod,
@@ -621,7 +621,7 @@ class TechnicalAnalysisController(BaseController):
         if ns_parser:
             momentum_view.display_fisher(
                 s_ticker=self.ticker,
-                df_stock=self.data,
+                ohlc=self.data,
                 length=ns_parser.n_length,
                 export=ns_parser.export,
             )
@@ -659,7 +659,7 @@ class TechnicalAnalysisController(BaseController):
         if ns_parser:
             momentum_view.display_cg(
                 s_ticker=self.ticker,
-                values=self.data["Adj Close"],
+                series=self.data["Adj Close"],
                 length=ns_parser.n_length,
                 export=ns_parser.export,
             )
