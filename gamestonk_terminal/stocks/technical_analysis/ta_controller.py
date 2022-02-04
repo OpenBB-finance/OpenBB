@@ -993,7 +993,7 @@ class TechnicalAnalysisController(StockController):
         if ns_parser:
             volatility_view.display_bbands(
                 ticker=self.ticker,
-                df_stock=self.stock,
+                ohlc=self.stock,
                 length=ns_parser.n_length,
                 n_std=ns_parser.n_std,
                 mamode=ns_parser.s_mamode,
@@ -1040,7 +1040,7 @@ class TechnicalAnalysisController(StockController):
         if ns_parser:
             volatility_view.display_donchian(
                 ticker=self.ticker,
-                df_stock=self.stock,
+                ohlc=self.stock,
                 upper_length=ns_parser.n_length_upper,
                 lower_length=ns_parser.n_length_lower,
                 export=ns_parser.export,
@@ -1106,7 +1106,7 @@ class TechnicalAnalysisController(StockController):
         if ns_parser:
             volatility_view.view_kc(
                 s_ticker=self.ticker,
-                df_stock=self.stock,
+                ohlc=self.stock,
                 length=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
                 mamode=ns_parser.s_mamode,
