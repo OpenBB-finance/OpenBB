@@ -1,15 +1,17 @@
 import os
+import random
 from datetime import datetime, timedelta
-import discord
-from matplotlib import pyplot as plt
 
-from gamestonk_terminal.helper_funcs import plot_autoscale
-from gamestonk_terminal.common.technical_analysis import trend_indicators_model
-from gamestonk_terminal.config_plot import PLOT_DPI
+import disnake
+import plotly.graph_objects as go
+from PIL import Image
+from plotly.subplots import make_subplots
 
 import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import gst_imgur, logger
 import discordbot.helpers
+from discordbot.config_discordbot import logger
+from discordbot.helpers import autocrop_image
+from gamestonk_terminal.common.technical_analysis import trend_indicators_model
 
 
 async def aroon_command(ctx, ticker="", length="25", scalar="100", start="", end=""):
@@ -61,56 +63,140 @@ async def aroon_command(ctx, ticker="", length="25", scalar="100", start="", end
             df_stock["High"], df_stock["Low"], length, scalar
         )
 
-        fig, ax = plt.subplots(3, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
-        ax0 = ax[0]
-        ax0.plot(df_stock.index, df_stock["Adj Close"].values, "k", lw=2)
+        # Output Data
+        aadown = df_ta.columns[0].replace("_", " ")
+        aaup = df_ta.columns[1].replace("_", " ")
+        aaosc = df_ta.columns[2].replace("_", " ")
 
-        ax0.set_title(f"Aroon on {ticker}")
-        ax0.set_xlim(df_stock.index[0], df_stock.index[-1])
-        ax0.set_ylabel("Share Price ($)")
-        ax0.grid(b=True, which="major", color="#666666", linestyle="-")
-
-        ax1 = ax[1]
-        ax1.plot(df_ta.index, df_ta.iloc[:, 0].values, "r", lw=2)
-        ax1.plot(df_ta.index, df_ta.iloc[:, 1].values, "g", lw=2)
-        ax1.set_xlim(df_stock.index[0], df_stock.index[-1])
-        ax1.axhline(50, linewidth=1, color="k", ls="--")
-        ax1.legend(
-            [f"Aroon DOWN ({df_ta.columns[0]})", f"Aroon UP ({df_ta.columns[1]})"],
-            loc="upper left",
+        fig = make_subplots(
+            rows=3,
+            cols=1,
+            shared_xaxes=True,
+            vertical_spacing=0.07,
+            row_width=[0.2, 0.2, 0.2],
         )
-        ax1.grid(b=True, which="major", color="#666666", linestyle="-")
-        ax1.set_ylim([0, 100])
+        fig.add_trace(
+            go.Scatter(
+                name=ticker,
+                x=df_stock.index,
+                y=df_stock["Adj Close"].values,
+                line=dict(color="#fdc708", width=2),
+                opacity=1,
+                showlegend=False,
+            ),
+            row=1,
+            col=1,
+        )
+        fig.add_trace(
+            go.Scatter(
+                name=f"Aroon DOWN ({aadown})",
+                x=df_ta.index,
+                y=df_ta.iloc[:, 0].values,
+                opacity=1,
+            ),
+            row=2,
+            col=1,
+        )
+        fig.add_trace(
+            go.Scatter(
+                name=f"Aroon UP ({aaup})",
+                x=df_ta.index,
+                y=df_ta.iloc[:, 1].values,
+                opacity=1,
+            ),
+            row=2,
+            col=1,
+        )
+        fig.add_trace(
+            go.Scatter(
+                name=f"Aroon OSC ({aaosc})",
+                x=df_ta.index,
+                y=df_ta.iloc[:, 2].values,
+                opacity=1,
+            ),
+            row=3,
+            col=1,
+        )
+        fig.add_hline(
+            y=50,
+            fillcolor="grey",
+            opacity=1,
+            layer="below",
+            line_width=3,
+            line=dict(color="grey", dash="dash"),
+            row=2,
+            col=1,
+        )
+        fig.update_layout(
+            margin=dict(l=0, r=20, t=30, b=20),
+            template=cfg.PLT_TA_STYLE_TEMPLATE,
+            colorway=cfg.PLT_TA_COLORWAY,
+            title=f"Aroon on {ticker}",
+            title_x=0.5,
+            yaxis_title="Stock Price ($)",
+            yaxis=dict(
+                fixedrange=False,
+            ),
+            xaxis=dict(
+                rangeslider=dict(visible=False),
+                type="date",
+            ),
+            dragmode="pan",
+            legend=dict(yanchor="top", y=0.99, xanchor="left", x=0.01),
+        )
+        config = dict({"scrollZoom": True})
+        imagefile = "ta_aroon.png"
 
-        ax2 = ax[2]
-        ax2.plot(df_ta.index, df_ta.iloc[:, 2].values, "b", lw=2)
-        ax2.set_xlim(df_stock.index[0], df_stock.index[-1])
-        ax2.set_xlabel("Time")
-        ax2.legend([f"Aroon OSC ({df_ta.columns[2]})"], loc="upper left")
-        ax2.grid(b=True, which="major", color="#666666", linestyle="-")
-        ax2.set_ylim([-100, 100])
+        # Check if interactive settings are enabled
+        plt_link = ""
+        if cfg.INTERACTIVE:
+            html_ran = random.randint(69, 69420)
+            fig.write_html(f"in/aroon_{html_ran}.html", config=config)
+            plt_link = f"[Interactive]({cfg.INTERACTIVE_URL}/aroon_{html_ran}.html)"
 
-        fig.tight_layout(pad=1)
-        plt.gcf().autofmt_xdate()
+        fig.update_layout(
+            width=800,
+            height=500,
+        )
+        fig.write_image(imagefile)
 
-        plt.savefig("ta_aroon.png")
-        uploaded_image = gst_imgur.upload_image("ta_aroon.png", title="something")
-        image_link = uploaded_image.link
+        img = Image.open(imagefile)
+        print(img.size)
+        im_bg = Image.open(cfg.IMG_BG)
+        h = img.height + 240
+        w = img.width + 520
+
+        # Paste fig onto background img and autocrop background
+        img = img.resize((w, h), Image.ANTIALIAS)
+        x1 = int(0.5 * im_bg.size[0]) - int(0.5 * img.size[0])
+        y1 = int(0.5 * im_bg.size[1]) - int(0.5 * img.size[1])
+        x2 = int(0.5 * im_bg.size[0]) + int(0.5 * img.size[0])
+        y2 = int(0.5 * im_bg.size[1]) + int(0.5 * img.size[1])
+        img = img.convert("RGB")
+        im_bg.paste(img, box=(x1 - 5, y1, x2 - 5, y2))
+        im_bg.save(imagefile, "PNG", quality=100)
+        image = Image.open(imagefile)
+        image = autocrop_image(image, 0)
+        image.save(imagefile, "PNG", quality=100)
+
+        image = disnake.File(imagefile)
+
+        print(f"Image {imagefile}")
         if cfg.DEBUG:
-            logger.debug("Image URL: %s", image_link)
-        title = "Stocks: Aroon-Indicator " + ticker
-        embed = discord.Embed(title=title, colour=cfg.COLOR)
+            logger.debug("Image: %s", imagefile)
+        title = f"Stocks: Aroon-Indicator {ticker}"
+        embed = disnake.Embed(title=title, description=plt_link, colour=cfg.COLOR)
+        embed.set_image(url=f"attachment://{imagefile}")
         embed.set_author(
             name=cfg.AUTHOR_NAME,
             icon_url=cfg.AUTHOR_ICON_URL,
         )
-        embed.set_image(url=image_link)
-        os.remove("ta_aroon.png")
+        os.remove(imagefile)
 
-        await ctx.send(embed=embed)
+        await ctx.send(embed=embed, file=image)
 
     except Exception as e:
-        embed = discord.Embed(
+        embed = disnake.Embed(
             title="ERROR Stocks: Aroon-Indicator",
             colour=cfg.COLOR,
             description=e,
@@ -120,4 +206,4 @@ async def aroon_command(ctx, ticker="", length="25", scalar="100", start="", end
             icon_url=cfg.AUTHOR_ICON_URL,
         )
 
-        await ctx.send(embed=embed)
+        await ctx.send(embed=embed, delete_after=30.0)

@@ -53,7 +53,6 @@ def display_big_mac_index(
     big_mac.set_index("Date", inplace=True)
 
     if not big_mac.empty:
-
         if external_axes is None:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
@@ -80,5 +79,6 @@ def display_big_mac_index(
         export_data(
             export, os.path.dirname(os.path.abspath(__file__)), "bigmac", big_mac
         )
+        console.print("")
     else:
         console.print("[red]Unable to get big mac data[/red]\n")

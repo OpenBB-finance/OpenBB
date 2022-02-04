@@ -1,7 +1,7 @@
 """ Alpha Vantage View """
 __docformat__ = "numpy"
 
-from typing import Optional, List
+from typing import List, Optional
 import logging
 import os
 
@@ -52,7 +52,7 @@ def realtime_performance_sector(
         )
 
     else:
-        # TODO: Refactor pandas.plot
+        # TODO: convert to mpl
         df_rtp.plot(kind="bar")
         plt.title("Real Time Performance (%) per Sector")
 
@@ -142,9 +142,9 @@ def display_gdp_capita(
     raw : bool, optional
         Flag to show raw data, by default False
     export : str, optional
-        Format to export data, by default ""
+        Format to export data, by default
     external_axes : Optional[List[plt.Axes]], optional
-        External axes (3 axes are expected in the list), by default None
+        External axes (1 axis is expected in the list), by default None
     """
     gdp_capita = alphavantage_model.get_gdp_capita()
     if gdp_capita.empty:
@@ -152,18 +152,18 @@ def display_gdp_capita(
         return
     gdp = gdp_capita[gdp_capita.date >= f"{start_year}-01-01"]
 
-    if external_axes is None:
+    # This plot has 1 axis
+    if not external_axes:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-
     else:
-        if len(external_axes) != 3:
-            console.print("[red]Expected list of 3 axis items./n[/red]")
+        if len(external_axes) != 1:
+            console.print("[red]Expected list of one axis item./n[/red]")
             return
         (ax,) = external_axes
 
     ax.plot(gdp.date, gdp.GDP, marker="o")
     ax.set_title(f"US GDP per Capita (Chained 2012 USD) from {start_year}")
-    ax.set_ylabel("US GDP (Chained 2012 USD)")
+    ax.set_ylabel("US GDP (Chained 2012 USD) ")
     theme.style_primary_axis(ax)
     if external_axes is None:
         theme.visualize_output()
