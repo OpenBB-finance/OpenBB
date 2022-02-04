@@ -14,7 +14,7 @@ from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal.common.technical_analysis import overlap_model
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.decorators import log_start_end
-from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
+from gamestonk_terminal.helper_funcs import export_data, plot_autoscale, reindex_dates
 from gamestonk_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -24,7 +24,7 @@ register_matplotlib_converters()
 
 @log_start_end(log=logger)
 def view_ma(
-    values: pd.Series,
+    series: pd.Series,
     length: List[int] = None,
     offset: int = 0,
     ma_type: str = "EMA",
@@ -36,7 +36,7 @@ def view_ma(
 
     Parameters
     ----------
-    values : pd.Series
+    series : pd.Series
         Series of prices
     length : List[int]
         Length of EMA window
@@ -49,8 +49,8 @@ def view_ma(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    # Define a dataframe for adding EMA values to it
-    price_df = pd.DataFrame(values)
+    # Define a dataframe for adding EMA series to it
+    price_df = pd.DataFrame(series)
 
     l_legend = [s_ticker]
     if not length:
@@ -58,21 +58,23 @@ def view_ma(
 
     for win in length:
         if ma_type == "EMA":
-            df_ta = overlap_model.ema(values, win, offset)
+            df_ta = overlap_model.ema(series, win, offset)
             l_legend.append(f"EMA {win}")
         elif ma_type == "SMA":
-            df_ta = overlap_model.sma(values, win, offset)
+            df_ta = overlap_model.sma(series, win, offset)
             l_legend.append(f"SMA {win}")
         elif ma_type == "WMA":
-            df_ta = overlap_model.wma(values, win, offset)
+            df_ta = overlap_model.wma(series, win, offset)
             l_legend.append(f"WMA {win}")
         elif ma_type == "HMA":
-            df_ta = overlap_model.hma(values, win, offset)
+            df_ta = overlap_model.hma(series, win, offset)
             l_legend.append(f"HMA {win}")
         elif ma_type == "ZLMA":
-            df_ta = overlap_model.zlma(values, win, offset)
+            df_ta = overlap_model.zlma(series, win, offset)
             l_legend.append(f"ZLMA {win}")
         price_df = price_df.join(df_ta)
+
+    plot_data = reindex_dates(price_df)
 
     # This plot has 1 axis
     if external_axes is None:
@@ -83,15 +85,19 @@ def view_ma(
             return
         (ax,) = external_axes
 
-    ax.plot(values.index, values.values)
-    ax.set_xlim([price_df.index[0], price_df.index[-1]])
+    ax.plot(plot_data.index, plot_data.iloc[:, 1].values)
+    ax.set_xlim([plot_data.index[0], plot_data.index[-1]])
     ax.set_ylabel(f"{s_ticker} Price")
-    for idx in range(1, price_df.shape[1]):
-        ax.plot(price_df.iloc[:, idx])
+    for idx in range(2, plot_data.shape[1]):
+        ax.plot(plot_data.iloc[:, idx])
 
     ax.set_title(f"{s_ticker} {ma_type.upper()}")
     ax.legend(l_legend)
-    theme.style_primary_axis(ax)
+    theme.style_primary_axis(
+        ax,
+        data_index=plot_data.index.to_list(),
+        tick_labels=plot_data["date"].to_list(),
+    )
 
     if external_axes is None:
         theme.visualize_output()
