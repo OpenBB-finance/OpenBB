@@ -436,7 +436,8 @@ class CryptoController(CryptoBaseController):
                         self.queue,
                     )
             except ImportError:
-                console.print("[red]Run pip install tensorflow to continue[/red]")
+                console.print("[red]Run pip install tensorflow to continue[/red]\n")
+
         else:
             console.print(
                 "No coin selected. Use 'load' to load the coin you want to look at.\n"
