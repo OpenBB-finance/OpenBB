@@ -546,7 +546,7 @@ Loaded {self.current_coin} against {self.current_currency} from {CRYPTO_SOURCES[
                         self.queue,
                     )
             except ImportError:
-                console.print("[red]Run pip install tensorflow to continue[/red]")
+                console.print("[red]Run pip install tensorflow to continue[/red]\n")
 
         else:
             console.print(
