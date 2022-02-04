@@ -2,7 +2,7 @@ __pycache__/
 logs/
 *.pyc
 .DS_Store
-*.env
+.env
 .venv
 .vscode
 *.ipynb
