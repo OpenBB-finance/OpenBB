@@ -28,14 +28,6 @@ def replace_stdin(target):
 
 
 class TestMainHelper(unittest.TestCase):
-    @check_print(assert_in="ALPHA")
-    @vcr.use_cassette(
-        "tests/gamestonk_terminal/cassettes/test_terminal_helper/test_check_api_keys.yaml",
-        record_mode="new_episodes",
-    )
-    def test_check_api_keys(self):
-        terminal_helper.check_api_keys()
-
     @check_print(length=0)
     def test_print_goodbye(self):
         terminal_helper.print_goodbye()
