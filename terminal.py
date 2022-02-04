@@ -391,15 +391,15 @@ if __name__ == "__main__":
                                 run_scripts(f"scripts/{file}", test_mode=True)
                                 SUCCESSES += 1
                             except Exception as e:
-                                console.print(e)
+                                console.print(f"Error: {e}")
                                 FAILURES += 1
             console.print(
-                f"Integration Tests: [green]Successes: {SUCCESSES} [/green] [red]Failures: {FAILURES}[/red]"
+                f"Integration Tests: [green]Successes: {SUCCESSES}[/green] [red]Failures: {FAILURES}[/red]"
             )
         else:
             if ns_parser.debug:
                 os.environ["DEBUG_MODE"] = "true"
-            if ns_parser.path[0].endswith(".gst"):
+            if isinstance(ns_parser.path, list) and ns_parser.path[0].endswith(".gst"):
                 run_scripts(ns_parser.path[0])
             elif ns_parser.path:
                 argv_cmds = list([" ".join(ns_parser.path).replace(" /", "/home/")])
