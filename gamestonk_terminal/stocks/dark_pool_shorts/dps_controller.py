@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.rich_config import console
-from gamestonk_terminal.parent_classes import StockController
+from gamestonk_terminal.parent_classes import StockBaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.helper_funcs import (
@@ -29,7 +29,7 @@ from gamestonk_terminal.stocks.dark_pool_shorts import (
 )
 
 
-class DarkPoolShortsController(StockController):
+class DarkPoolShortsController(StockBaseController):
     """Dark Pool Shorts Controller class"""
 
     CHOICES_COMMANDS = [
