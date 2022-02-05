@@ -24,7 +24,6 @@ from gamestonk_terminal.menu import session
 from gamestonk_terminal.terminal_helper import (
     about_us,
     bootup,
-    check_api_keys,
     print_goodbye,
     reset,
     update_terminal,
@@ -100,8 +99,8 @@ class TerminalController(BaseController):
 
     about           about us
     update          update terminal automatically
-    keys            check for status of API keys
-    tz              set different timezone[/cmds]
+    tz              set different timezone[/cmds][menu]
+>   keys            set API keys and check their validity[/menu]
 
 [param]Timezone:[/param] {get_user_timezone_or_invalid()}
 [menu]
@@ -125,7 +124,9 @@ class TerminalController(BaseController):
 
     def call_keys(self, _):
         """Process keys command"""
-        check_api_keys()
+        from gamestonk_terminal.keys_controller import KeysController
+
+        self.queue = self.load_class(KeysController, self.queue)
 
     def call_about(self, _):
         """Process about command"""

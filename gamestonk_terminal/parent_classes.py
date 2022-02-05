@@ -25,14 +25,24 @@ from gamestonk_terminal.helper_funcs import (
     get_flair,
     valid_date,
     parse_known_args_and_warn,
+    valid_date_in_past,
 )
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.stocks import stocks_helper
+from gamestonk_terminal.cryptocurrency import cryptocurrency_helpers
+from gamestonk_terminal.cryptocurrency.pycoingecko_helpers import calc_change
 
 logger = logging.getLogger(__name__)
 
 
 controllers: Dict[str, Any] = {}
+
+CRYPTO_SOURCES = {
+    "bin": "Binance",
+    "cg": "CoinGecko",
+    "cp": "CoinPaprika",
+    "cb": "Coinbase",
+}
 
 
 class BaseController(metaclass=ABCMeta):
@@ -313,7 +323,7 @@ class BaseController(metaclass=ABCMeta):
                     console.print("\n")
 
 
-class StockController(BaseController, metaclass=ABCMeta):
+class StockBaseController(BaseController, metaclass=ABCMeta):
     def __init__(self, queue):
         """
         This is a base class for Stock Controllers that use a load function.
@@ -437,3 +447,126 @@ class StockController(BaseController, metaclass=ABCMeta):
                     self.stock = self.stock.dropna()
                     self.stock.columns = [x.lower() for x in self.stock.columns]
                     console.print("")
+
+
+class CryptoBaseController(BaseController, metaclass=ABCMeta):
+    def __init__(self, queue):
+        """
+        This is a base class for Crypto Controllers that use a load function.
+        """
+        super().__init__(queue)
+
+        self.symbol = ""
+        self.current_df = pd.DataFrame()
+        self.current_currency = ""
+        self.source = ""
+        self.coin_map_df = pd.DataFrame()
+        self.current_interval = ""
+        self.price_str = ""
+        self.resolution = "1D"
+        self.coin = ""
+
+    def call_load(self, other_args):
+        """Process load command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="load",
+            description="Load crypto currency to perform analysis on."
+            "Available data sources are CoinGecko, CoinPaprika, Binance, Coinbase"
+            "By default main source used for analysis is CoinGecko (cg). To change it use --source flag",
+        )
+        parser.add_argument(
+            "-c",
+            "--coin",
+            help="Coin to get",
+            dest="coin",
+            type=str,
+            required="-h" not in other_args,
+        )
+        parser.add_argument(
+            "--source",
+            help="Source of data",
+            dest="source",
+            choices=("cp", "cg", "bin", "cb"),
+            default="cg",
+            required=False,
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            type=valid_date_in_past,
+            default=(datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
+            dest="start",
+            help="The starting date (format YYYY-MM-DD) of the crypto",
+        )
+        parser.add_argument(
+            "--vs",
+            help="Quote currency (what to view coin vs)",
+            dest="vs",
+            default="usd",
+            type=str,
+        )
+        parser.add_argument(
+            "-i",
+            "--interval",
+            help="Interval to get data (Only available on binance/coinbase)",
+            dest="interval",
+            default="1day",
+            type=str,
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-c")
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        delta = (datetime.now() - ns_parser.start).days
+        if ns_parser:
+            source = ns_parser.source
+            for arg in ["--source", source]:
+                if arg in other_args:
+                    other_args.remove(arg)
+
+            res = ns_parser.resolution if delta < 90 else "1D"
+            self.resolution = res
+
+            # TODO: protections in case None is returned
+            (
+                self.coin,
+                self.source,
+                self.symbol,
+                self.coin_map_df,
+                self.current_df,
+                self.current_currency,
+            ) = cryptocurrency_helpers.load(
+                coin=ns_parser.coin,
+                source=ns_parser.source,
+                should_load_ta_data=True,
+                days=delta,
+                interval=ns_parser.interval,
+                vs=ns_parser.vs,
+            )
+            if self.symbol:
+                self.current_interval = ns_parser.interval
+                first_price = self.current_df["Close"].iloc[0]
+                last_price = self.current_df["Close"].iloc[-1]
+                second_last_price = self.current_df["Close"].iloc[-2]
+                interval_change = calc_change(last_price, second_last_price)
+                since_start_change = calc_change(last_price, first_price)
+                if isinstance(self.current_currency, str) and self.PATH == "/crypto/":
+                    col = "green" if interval_change > 0 else "red"
+                    self.price_str = f"""Current Price: {round(last_price,2)} {self.current_currency.upper()}
+Performance in interval ({self.current_interval}): [{col}]{round(interval_change,2)}%[/{col}]
+Performance since {ns_parser.start.strftime('%Y-%m-%d')}: [{col}]{round(since_start_change,2)}%[/{col}]"""  # noqa
+
+                    console.print(
+                        f"""
+Loaded {self.coin} against {self.current_currency} from {CRYPTO_SOURCES[self.source]} source
+
+{self.price_str}
+"""
+                    )  # noqa
+                else:
+                    console.print(
+                        f"{delta} Days of {self.coin} vs {self.current_currency} loaded with {res} resolution.\n"
+                    )
