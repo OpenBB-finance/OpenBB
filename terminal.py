@@ -40,6 +40,7 @@ class TerminalController(BaseController):
         "update",
         "about",
         "keys",
+        "settings",
         "tz",
     ]
     CHOICES_MENUS = [
@@ -99,6 +100,7 @@ class TerminalController(BaseController):
     about           about us
     update          update terminal automatically
     tz              set different timezone[/cmds][menu]
+>   settings        set feature flags and style charts
 >   keys            set API keys and check their validity[/menu]
 
 [param]Timezone:[/param] {get_user_timezone_or_invalid()}
@@ -126,6 +128,12 @@ class TerminalController(BaseController):
         from gamestonk_terminal.keys_controller import KeysController
 
         self.queue = self.load_class(KeysController, self.queue)
+
+    def call_settings(self, _):
+        """Process settings command"""
+        from gamestonk_terminal.settings_controller import SettingsController
+
+        self.queue = self.load_class(SettingsController, self.queue)
 
     def call_about(self, _):
         """Process about command"""
