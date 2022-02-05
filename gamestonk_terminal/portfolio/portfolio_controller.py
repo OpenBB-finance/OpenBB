@@ -86,10 +86,10 @@ class PortfolioController(BaseController):
 
     def print_help(self):
         """Print help"""
+        # >   pa          portfolio analysis, \t\t analyse portfolios
         help_text = f"""[menu]
 >   bro         brokers holdings, \t\t supports: robinhood, ally, degiro, coinbase
->   po          portfolio optimization, \t optimal portfolio weights from pyportfolioopt
->   pa          portfolio analysis, \t\t analyse portfolios[/menu]
+>   po          portfolio optimization, \t optimal portfolio weights from pyportfolioopt[/menu]
 
 [info]Portfolio:[/info][cmds]
     load        load data into the portfolio
@@ -127,13 +127,13 @@ Loaded:[/info] {self.portfolio_name or None}
             po_controller.PortfolioOptimization, [], self.queue
         )
 
-    def call_pa(self, _):
-        """Process pa command"""
-        from gamestonk_terminal.portfolio.portfolio_analysis import pa_controller
-
-        self.queue = self.queue = self.load_class(
-            pa_controller.PortfolioAnalysis, self.queue
-        )
+    # def call_pa(self, _):
+    #     """Process pa command"""
+    #     from gamestonk_terminal.portfolio.portfolio_analysis import pa_controller
+    #
+    #     self.queue = self.queue = self.load_class(
+    #         pa_controller.PortfolioAnalysis, self.queue
+    #     )
 
     def call_init(self, other_args: List[str]):
         """Process reset command"""

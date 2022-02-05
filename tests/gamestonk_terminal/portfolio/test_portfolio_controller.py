@@ -206,13 +206,6 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             dict(),
         ),
         (
-            "call_pa",
-            [],
-            "PortfolioController.load_class",
-            [],
-            dict(),
-        ),
-        (
             "call_save",
             ["MOCK_NAME.csv"],
             "portfolio_model.save_df",
