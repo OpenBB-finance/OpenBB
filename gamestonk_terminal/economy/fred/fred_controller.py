@@ -176,11 +176,11 @@ class FredController(BaseController):
                 self.current_series = {}
                 self.long_id = 0
                 console.print("")
-
-            self.current_series.pop(ns_parser.series_id)
-            console.print(
-                f"Current Series Ids: [blue]{', '.join(self.current_series.keys()) or None}[/blue]\n"
-            )
+            else:
+                self.current_series.pop(ns_parser.series_id)
+                console.print(
+                    f"Current Series Ids: [blue]{', '.join(self.current_series.keys()) or None}[/blue]\n"
+                )
 
     def call_plot(self, other_args):
         """Process plot command"""
