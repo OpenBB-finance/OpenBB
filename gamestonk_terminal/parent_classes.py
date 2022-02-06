@@ -167,6 +167,9 @@ class BaseController(metaclass=ABCMeta):
                 elif known_args.cmd == "r":
                     known_args.cmd = "reset"
 
+            if self.queue:
+                logger.info("QUEUE|'%s'||", "/".join(self.queue))
+
             # This is what mutes portfolio issue
             getattr(
                 self,
@@ -174,7 +177,8 @@ class BaseController(metaclass=ABCMeta):
                 lambda _: "Command not recognized!",
             )(other_args)
 
-        logger.info("|%s|", "/".join(self.queue))
+        if self.queue:
+            logger.info("QUEUE|'%s'||", "/".join(self.queue))
 
         return self.queue
 

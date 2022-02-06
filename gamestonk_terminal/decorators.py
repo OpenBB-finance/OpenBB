@@ -31,7 +31,7 @@ def log_start_end(func=None, log=None):
 
             logging_name = ""
 
-            args_passed_in_function = [repr(a) for a in args]
+            args_passed_in_function = [repr(a) for a in args if a]
 
             if len(args) == 2 and (
                 "__main__.TerminalController" in args_passed_in_function[0]
@@ -62,7 +62,10 @@ def log_start_end(func=None, log=None):
 
             if not kwargs_passed_in_function:
                 kwargs_passed_in_function = ""
-            args_passed_in_function = ";".join(args_passed_in_function)
+
+            args_passed_in_function = (
+                " ".join(args_passed_in_function) if args_passed_in_function else ""
+            )
 
             logger_used.info(
                 f"START|{args_passed_in_function}|{str(kwargs_passed_in_function)}|",
