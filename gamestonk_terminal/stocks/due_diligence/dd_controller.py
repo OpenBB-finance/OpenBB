@@ -7,7 +7,7 @@ from pandas.core.frame import DataFrame
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.rich_config import console
 
-from gamestonk_terminal.parent_classes import StockController
+from gamestonk_terminal.parent_classes import StockBaseController
 from gamestonk_terminal.stocks.due_diligence import (
     fmp_view,
     business_insider_view,
@@ -27,7 +27,7 @@ from gamestonk_terminal.menu import session
 from gamestonk_terminal.stocks import stocks_helper
 
 
-class DueDiligenceController(StockController):
+class DueDiligenceController(StockBaseController):
     """Due Diligence Controller class"""
 
     CHOICES_COMMANDS = [

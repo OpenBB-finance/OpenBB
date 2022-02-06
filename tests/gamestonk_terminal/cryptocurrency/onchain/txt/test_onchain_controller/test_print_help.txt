@@ -1,0 +1,32 @@
+
+[Glassnode]
+    hr               check blockchain hashrate over time (BTC or ETH)
+[Blockchain]
+    btccp            displays BTC circulating supply
+    btcct            displays BTC confirmed transactions
+[Eth Gas Station]
+    gwei             check current eth gas fees
+[Whale Alert]
+    whales           check crypto wales transactions
+[BitQuery]
+    lt               last trades by dex or month
+    dvcp             daily volume for crypto pair
+    tv               token volume on DEXes
+    ueat             unique ethereum addresses which made a transaction
+    ttcp             top traded crypto pairs on given decentralized exchange
+    baas             bid, ask prices, average spread for given crypto pair
+
+Ethereum address: 
+Address type: 
+
+[Ethplorer] Ethereum:
+    address         load ethereum address of token, account or transaction
+    top             top ERC20 tokens[unvl]
+    balance         check ethereum balance
+    hist            ethereum balance history (transactions)[unvl][unvl]
+    info            ERC20 token info
+    holders         top ERC20 token holders
+    th              ERC20 token history
+    prices          ERC20 token historical prices[unvl][unvl]
+    tx              ethereum blockchain transaction info[unvl]
+    

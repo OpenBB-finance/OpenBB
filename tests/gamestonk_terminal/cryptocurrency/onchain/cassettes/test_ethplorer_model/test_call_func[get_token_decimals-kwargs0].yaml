@@ -1,0 +1,44 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: GET
+    uri: https://api.ethplorer.io/getTokenInfo/0x1f9840a85d5af5bf1d1762f925bdaddc4201f984?apiKey=freekey
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA3VSy27bMBD8lYBnV+Zbj1sRJ0UPbQ+JgRZFD7RI2YT1AknFCYL8e4eO0wYFSkAQ
+        l7uzOzu7z8RYG1yMpCH0kXV1JamplFWmU7uOWVZq3tVc7SziWsnpOYSsiHWtH0yfcayCPZrB4b4d
+        fTyZGQ/TaXThnBVGfBp2U5/9Xz/DTFMy/d0yz/1TxtP/nxwczBg7F+L1tIyJNEJQIZhekd7EtJ2t
+        Sc6ShmkptC45UyviY1zM2Lo3BF2Rw9Tbdyko5YKvSDv5ce/a4wQWyx/mJ7eLPuVuDinNsVmvL75i
+        CvtM6ORTOvf2t1tosc+I9fkS1+jzTcxiHjMqOGs96L8DuXS4/6c5UJ2Db5HqmQR0hsZYUUrBWS15
+        RTVjNXhb33WkqQslXu8lBKiLCtQwj4sSZYVcgwlHl67NvI0IKUXFkItVZSGlrLMC5sH43ux69zYN
+        zStVa041qkqOb0Uepn4ZHJcH0oBGhSS0LCrG4X4tLyiSfxCs0ALDqZmmijENbkBu4GekkbKQXOft
+        YkCqGlO6OEvSaFUIpfAsqOalwmgvPkFRUqBNHF1KKhlFCcxtCcGNbV6e7d2GvEC0Zdf79t7sIcBP
+        srn5DsVvHtuDwXyv7qejG/Gwcbcev0/TgwtjXhAYP7zr7dWtCQNWAfbHJU1DXqmrL2ft8Dti1r/y
+        smD9vs0ocNnAl9+aF/IqPQMAAA==
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 31 Jan 2022 22:31:47 GMT
+      Transfer-Encoding:
+      - chunked
+    status:
+      code: 200
+      message: OK
+version: 1

@@ -2,11 +2,17 @@
 __docformat__ = "numpy"
 
 import configparser
+import logging
 import os
 
 import pandas as pd
 
+from gamestonk_terminal.decorators import log_start_end
 
+logger = logging.getLogger(__name__)
+
+
+@log_start_end(log=logger)
 def etf_screener(preset: str):
     """
     Screens the etfs pulled from my repo (https://github.com/jmaslek/etf_scraper),

@@ -1,39 +1,44 @@
 """Neural Network Prediction Models"""
 __docformat__ = "numpy"
 
-from typing import List, Any, Union, Tuple
-import pandas as pd
+import logging
+from typing import Any, List, Tuple, Union
+
 import numpy as np
+import pandas as pd
 from tensorflow.keras.callbacks import EarlyStopping
-from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import (
     LSTM,
-    SimpleRNN,
+    AvgPool1D,
+    Conv1D,
     Dense,
     Dropout,
-    Conv1D,
-    MaxPool1D,
-    AvgPool1D,
     Flatten,
+    MaxPool1D,
+    SimpleRNN,
 )
+from tensorflow.keras.models import Sequential
 from tensorflow.keras.optimizers import (
+    SGD,
+    Adadelta,
+    Adagrad,
     Adam,
     Adamax,
-    Adagrad,
-    Adadelta,
     Ftrl,
     Nadam,
     RMSprop,
-    SGD,
 )
-from gamestonk_terminal.helper_funcs import get_next_stock_market_days
-from gamestonk_terminal.common.prediction_techniques.pred_helper import (
-    prepare_scale_train_valid_test,
-    forecast,
-)
+
 from gamestonk_terminal import config_neural_network_models as cfg_nn_models
+from gamestonk_terminal.common.prediction_techniques.pred_helper import (
+    forecast,
+    prepare_scale_train_valid_test,
+)
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_funcs import get_next_stock_market_days
 from gamestonk_terminal.rich_config import console
 
+logger = logging.getLogger(__name__)
 
 optimizers = {
     "Adam": Adam,
@@ -56,6 +61,7 @@ else:
 # pylint:disable=too-many-arguments
 
 
+@log_start_end(log=logger)
 def build_neural_network_model(
     Layers: List[Any], n_inputs: int, n_days: int
 ) -> Sequential:
@@ -136,6 +142,7 @@ def build_neural_network_model(
     return model
 
 
+@log_start_end(log=logger)
 def mlp_model(
     data: Union[pd.Series, pd.DataFrame],
     n_input: int,
@@ -256,6 +263,7 @@ def mlp_model(
     return forecast_data_df, preds, y_valid, y_dates_valid, scaler
 
 
+@log_start_end(log=logger)
 def rnn_model(
     data: Union[pd.Series, pd.DataFrame],
     n_input: int,
@@ -369,6 +377,7 @@ def rnn_model(
     return forecast_data_df, preds, y_valid, y_dates_valid, scaler
 
 
+@log_start_end(log=logger)
 def lstm_model(
     data: Union[pd.Series, pd.DataFrame],
     n_input: int,
@@ -482,6 +491,7 @@ def lstm_model(
     return forecast_data_df, preds, y_valid, y_dates_valid, scaler
 
 
+@log_start_end(log=logger)
 def conv1d_model(
     data: Union[pd.Series, pd.DataFrame],
     n_input: int,

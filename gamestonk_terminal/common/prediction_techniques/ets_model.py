@@ -1,16 +1,22 @@
 """ETS Prediction Model"""
 __docformat__ = "numpy"
 
+import logging
 from typing import Union
 
 import numpy as np
 import pandas as pd
 from statsmodels.tsa.holtwinters import ExponentialSmoothing
 
+from gamestonk_terminal.decorators import log_start_end
+
+logger = logging.getLogger(__name__)
+
 TRENDS = ["N", "A", "Ad"]
 SEASONS = ["N", "A", "M"]
 
 
+@log_start_end(log=logger)
 def get_exponential_smoothing_model(
     data: Union[pd.Series, np.ndarray],
     trend: str = "N",

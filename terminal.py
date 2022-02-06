@@ -23,7 +23,6 @@ from gamestonk_terminal.menu import session
 from gamestonk_terminal.terminal_helper import (
     about_us,
     bootup,
-    check_api_keys,
     print_goodbye,
     reset,
     update_terminal,
@@ -33,8 +32,6 @@ from gamestonk_terminal.terminal_helper import (
 
 logger = logging.getLogger(__name__)
 
-DEBUG_MODE = False
-
 
 class TerminalController(BaseController):
     """Terminal Controller class"""
@@ -43,6 +40,7 @@ class TerminalController(BaseController):
         "update",
         "about",
         "keys",
+        "settings",
         "tz",
     ]
     CHOICES_MENUS = [
@@ -74,13 +72,7 @@ class TerminalController(BaseController):
         self.queue: List[str] = list()
 
         if jobs_cmds:
-            # close the eyes if the user forgets the initial `/`
-            jobs_cmds = [
-                job_cmd if job_cmd.startswith("/") else f"/{job_cmd}"
-                for job_cmd in jobs_cmds
-            ]
-
-            self.queue = self.switch(" ".join(jobs_cmds))
+            self.queue = " ".join(jobs_cmds).split("/")
 
         self.update_succcess = False
 
@@ -107,8 +99,9 @@ class TerminalController(BaseController):
 
     about           about us
     update          update terminal automatically
-    keys            check for status of API keys
-    tz              set different timezone[/cmds]
+    tz              set different timezone[/cmds][menu]
+>   settings        set feature flags and style charts
+>   keys            set API keys and check their validity[/menu]
 
 [param]Timezone:[/param] {get_user_timezone_or_invalid()}
 [menu]
@@ -132,7 +125,15 @@ class TerminalController(BaseController):
 
     def call_keys(self, _):
         """Process keys command"""
-        check_api_keys()
+        from gamestonk_terminal.keys_controller import KeysController
+
+        self.queue = self.load_class(KeysController, self.queue)
+
+    def call_settings(self, _):
+        """Process settings command"""
+        from gamestonk_terminal.settings_controller import SettingsController
+
+        self.queue = self.load_class(SettingsController, self.queue)
 
     def call_about(self, _):
         """Process about command"""
@@ -225,8 +226,7 @@ def terminal(jobs_cmds: List[str] = None):
 
     if not jobs_cmds:
         bootup()
-
-    t_controller.print_help()
+        t_controller.print_help()
 
     while ret_code:
         if gtff.ENABLE_QUICK_EXIT:
@@ -277,9 +277,7 @@ def terminal(jobs_cmds: List[str] = None):
 
             # Check if the user wants to reset application
             if an_input in ("r", "reset") or t_controller.update_succcess:
-                ret_code = reset(
-                    t_controller.queue if len(t_controller.queue) > 0 else []
-                )
+                ret_code = reset(t_controller.queue if t_controller.queue else [])
                 if ret_code != 0:
                     print_goodbye()
                     break
@@ -323,13 +321,19 @@ if __name__ == "__main__":
             if os.path.isfile(sys.argv[1]):
                 with open(sys.argv[1]) as fp:
                     simulate_argv = f"/{'/'.join([line.rstrip() for line in fp])}"
-                    terminal(simulate_argv.replace("//", "/home/").split())
+                    file_cmds = simulate_argv.replace("//", "/home/").split()
+                    # close the eyes if the user forgets the initial `/`
+                    if len(file_cmds) > 0:
+                        if file_cmds[0][0] != "/":
+                            file_cmds[0] = f"/{file_cmds[0]}"
+                    terminal(file_cmds)
             else:
                 console.print(
                     f"The file '{sys.argv[1]}' doesn't exist. Launching terminal without any configuration.\n"
                 )
                 terminal()
         else:
-            terminal(sys.argv[1:])
+            argv_cmds = list([" ".join(sys.argv[1:]).replace(" /", "/home/")])
+            terminal(argv_cmds)
     else:
         terminal()

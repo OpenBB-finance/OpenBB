@@ -1,16 +1,22 @@
 """ Seeking Alpha Model """
 __docformat__ = "numpy"
 
-from typing import List, Dict
+import logging
+from typing import Dict, List
+
+import pandas as pd
 import requests
 from bs4 import BeautifulSoup
-import pandas as pd
 from pandas.core.frame import DataFrame
 
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import get_user_agent
 from gamestonk_terminal.rich_config import console
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def get_earnings_html(url_next_earnings: str) -> str:
     """Wraps HTTP requests.get for testibility
 
@@ -31,6 +37,7 @@ def get_earnings_html(url_next_earnings: str) -> str:
     return earnings_html
 
 
+@log_start_end(log=logger)
 def get_next_earnings(pages: int) -> DataFrame:
     """Returns a DataFrame with upcoming earnings
 
@@ -70,6 +77,7 @@ def get_next_earnings(pages: int) -> DataFrame:
     return df_earnings
 
 
+@log_start_end(log=logger)
 def get_articles_html(url_articles: str) -> str:
     """Wraps HTTP requests.get for testibility
 
@@ -90,6 +98,7 @@ def get_articles_html(url_articles: str) -> str:
     return articles_html
 
 
+@log_start_end(log=logger)
 def get_trending_list(num: int) -> list:
     """Returns a list of trending articles
 
@@ -129,6 +138,7 @@ def get_trending_list(num: int) -> list:
     return articles[:num]
 
 
+@log_start_end(log=logger)
 def get_article_data(article_id: int) -> dict:
     """Returns an article
 
@@ -159,6 +169,7 @@ def get_article_data(article_id: int) -> dict:
     return article
 
 
+@log_start_end(log=logger)
 def get_news_html(news_type: str = "Top-News") -> dict:
     """Gets news. [Source: SeekingAlpha]
 
@@ -186,6 +197,7 @@ def get_news_html(news_type: str = "Top-News") -> dict:
     return articles_html
 
 
+@log_start_end(log=logger)
 def get_news(news_type: str = "Top-News", num: int = 5) -> List:
     """Gets news. [Source: SeekingAlpha]
 

@@ -27,16 +27,6 @@ def test_prepare_df_financials(quarter, recorder):
     recorder.capture(result_df)
 
 
-@pytest.mark.vcr(record_mode="none")
-def test_prepare_df_financials_wrong_statement():
-    with pytest.raises(ValueError):
-        market_watch_model.prepare_df_financials(
-            ticker="AAPL",
-            statement="INVALID_STATEMENT",
-            quarter=False,
-        )
-
-
 @pytest.mark.vcr
 @pytest.mark.parametrize(
     "debug",

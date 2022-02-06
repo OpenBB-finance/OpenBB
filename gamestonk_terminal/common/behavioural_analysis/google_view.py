@@ -1,21 +1,27 @@
 """Google View"""
 __docformat__ = "numpy"
 
+import logging
 import os
 from datetime import datetime
 
 import matplotlib.pyplot as plt
 
+from gamestonk_terminal import config_plot as cfp
+from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.common.behavioural_analysis import google_model
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
-    plot_autoscale,
     export_data,
+    plot_autoscale,
     print_rich_table,
 )
-from gamestonk_terminal.common.behavioural_analysis import google_model
-from gamestonk_terminal import config_plot as cfp, feature_flags as gtff
 from gamestonk_terminal.rich_config import console
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def display_mentions(ticker: str, start: datetime, export: str = ""):
     """Plot weekly bars of stock's interest over time. other users watchlist. [Source: Google]
 
@@ -64,6 +70,7 @@ def display_mentions(ticker: str, start: datetime, export: str = ""):
     )
 
 
+@log_start_end(log=logger)
 def display_regions(ticker: str, num: int = 5, export: str = ""):
     """Plot bars of regions based on stock's interest. [Source: Google]
 
@@ -98,6 +105,7 @@ def display_regions(ticker: str, num: int = 5, export: str = ""):
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "regions", df)
 
 
+@log_start_end(log=logger)
 def display_queries(ticker: str, num: int = 5, export: str = ""):
     """Print top related queries with this stock's query. [Source: Google]
 
@@ -126,6 +134,7 @@ def display_queries(ticker: str, num: int = 5, export: str = ""):
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "queries", df)
 
 
+@log_start_end(log=logger)
 def display_rise(ticker: str, num: int, export: str = ""):
     """Print top rising related queries with this stock's query. [Source: Google]
 

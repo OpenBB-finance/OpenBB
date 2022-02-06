@@ -2,20 +2,24 @@
 __docformat__ = "numpy"
 
 import copy
+import logging
 import math
 from typing import List
 
 import matplotlib.pyplot as plt
-from matplotlib.lines import Line2D
 import numpy as np
 import pandas as pd
+from matplotlib.lines import Line2D
 from pypfopt import plotting
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_plot import PLOT_DPI
-from gamestonk_terminal.helper_funcs import plot_autoscale, get_rf, print_rich_table
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_funcs import get_rf, plot_autoscale, print_rich_table
 from gamestonk_terminal.portfolio.portfolio_optimization import optimizer_model
 from gamestonk_terminal.rich_config import console
+
+logger = logging.getLogger(__name__)
 
 d_period = {
     "1d": "[1 Day]",
@@ -34,6 +38,7 @@ d_period = {
 # pylint:disable=no-member
 
 
+@log_start_end(log=logger)
 def display_weights(weights: dict, market_neutral: bool = False):
     """Print weights in a nice format
 
@@ -69,6 +74,7 @@ def display_weights(weights: dict, market_neutral: bool = False):
     console.print("")
 
 
+@log_start_end(log=logger)
 def display_equal_weight(stocks: List[str], value: float, pie: bool = False):
     """Equally weighted portfolio, where weight = 1/# of stocks
 
@@ -88,6 +94,7 @@ def display_equal_weight(stocks: List[str], value: float, pie: bool = False):
     display_weights(values)
 
 
+@log_start_end(log=logger)
 def display_property_weighting(
     stocks: List[str], s_property: str, value: float = 1.0, pie: bool = False
 ):
@@ -112,6 +119,7 @@ def display_property_weighting(
         display_weights(values)
 
 
+@log_start_end(log=logger)
 def display_max_sharpe(
     stocks: List[str],
     period: str,
@@ -147,6 +155,7 @@ def display_max_sharpe(
     console.print("")
 
 
+@log_start_end(log=logger)
 def display_min_volatility(
     stocks: List[str], period: str = "3mo", value: float = 1.0, pie: bool = False
 ):
@@ -175,6 +184,7 @@ def display_min_volatility(
     console.print("")
 
 
+@log_start_end(log=logger)
 def display_max_quadratic_utility(
     stocks: List[str],
     period: str = "3mo",
@@ -218,6 +228,7 @@ def display_max_quadratic_utility(
     console.print("")
 
 
+@log_start_end(log=logger)
 def display_efficient_risk(
     stocks: List[str],
     period: str = "3mo",
@@ -261,6 +272,7 @@ def display_efficient_risk(
     console.print("")
 
 
+@log_start_end(log=logger)
 def display_efficient_return(
     stocks: List[str],
     period: str = "3mo",
@@ -304,6 +316,7 @@ def display_efficient_return(
     console.print("")
 
 
+@log_start_end(log=logger)
 def display_ef(
     stocks: List[str],
     period: str = "3mo",
@@ -363,6 +376,7 @@ def display_ef(
     console.print("")
 
 
+@log_start_end(log=logger)
 def my_autopct(x):
     """Function for autopct of plt.pie.  This results in values not being printed in the pie if they are 'too small'"""
     if x > 4:
@@ -371,6 +385,7 @@ def my_autopct(x):
     return ""
 
 
+@log_start_end(log=logger)
 def pie_chart_weights(weights: dict, title_opt: str):
     """Show a pie chart of holdings
 

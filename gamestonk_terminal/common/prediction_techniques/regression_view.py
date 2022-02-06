@@ -1,35 +1,39 @@
 """ Regression View"""
 __docformat__ = "numpy"
 
-from typing import Union
+import logging
 import os
+from typing import Union
+
 import matplotlib.pyplot as plt
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 
-from gamestonk_terminal.helper_funcs import (
-    patch_pandas_text_adjustment,
-    get_next_stock_market_days,
-    plot_autoscale,
-    export_data,
-)
-
+from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.common.prediction_techniques import regression_model
 from gamestonk_terminal.common.prediction_techniques.pred_helper import (
-    print_pretty_prediction,
     price_prediction_backtesting_color,
     print_prediction_kpis,
+    print_pretty_prediction,
 )
-
-from gamestonk_terminal.common.prediction_techniques import regression_model
 from gamestonk_terminal.config_plot import PLOT_DPI
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_funcs import (
+    export_data,
+    get_next_stock_market_days,
+    patch_pandas_text_adjustment,
+    plot_autoscale,
+)
 from gamestonk_terminal.rich_config import console
+
+logger = logging.getLogger(__name__)
 
 register_matplotlib_converters()
 
 # pylint:disable=too-many-arguments
 
 
+@log_start_end(log=logger)
 def display_regression(
     dataset: str,
     values: Union[pd.Series, pd.DataFrame],
