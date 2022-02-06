@@ -278,13 +278,15 @@ class TerminalStyle:
         )
 
     # pylint: disable=import-outside-toplevel
-    def visualize_output(self):
+    def visualize_output(self, force_tight_layout: bool = True):
+        """Show chart in an interactive widget."""
         from gamestonk_terminal.rich_config import console
 
         """Show chart in an interactive widget."""
         if gtff.USE_WATERMARK:
             self.add_label(plt.gcf())
-        plt.tight_layout(pad=self.tight_layout_padding)
+        if force_tight_layout:
+            plt.tight_layout(pad=self.tight_layout_padding)
         if gtff.USE_ION:
             plt.ion()
         plt.show()

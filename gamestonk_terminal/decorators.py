@@ -69,9 +69,9 @@ def log_start_end(func=None, log=None):
                 log.info("END", extra={"func_name_override": func.__name__})
                 return value
             except Exception as e:
-                console.print(f"[red]Error: {e}[/red]")
+                console.print(f"[red]Error: {e}\n[/red]")
                 log.exception("Exception", extra={"func_name_override": func.__name__})
-                return None
+                return []
 
         return wrapper
 

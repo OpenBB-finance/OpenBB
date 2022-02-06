@@ -9,7 +9,7 @@ import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.rich_config import console
 
-from gamestonk_terminal.parent_classes import StockController
+from gamestonk_terminal.parent_classes import StockBaseController
 from gamestonk_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     parse_known_args_and_warn,
@@ -32,7 +32,7 @@ presets_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets
 #       - unification of model return types (now some return dataframes other records list)
 
 
-class InsiderController(StockController):
+class InsiderController(StockBaseController):
     """Screener Controller class"""
 
     CHOICES_COMMANDS = [
