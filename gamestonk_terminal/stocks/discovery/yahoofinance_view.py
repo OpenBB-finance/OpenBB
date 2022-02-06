@@ -15,7 +15,6 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-@log_start_end(log=logger)
 def display_gainers(num_stocks: int, export: str) -> None:
     """Display gainers. [Source: Yahoo Finance]
 
@@ -50,7 +49,6 @@ def display_gainers(num_stocks: int, export: str) -> None:
     )
 
 
-@log_start_end(log=logger)
 @log_start_end(log=logger)
 def display_losers(num_stocks: int, export: str) -> None:
     """Display losers. [Source: Yahoo Finance]
@@ -87,7 +85,6 @@ def display_losers(num_stocks: int, export: str) -> None:
 
 
 @log_start_end(log=logger)
-@log_start_end(log=logger)
 def display_ugs(num_stocks: int, export: str) -> None:
     """Display most undervalued growth stock. [Source: Yahoo Finance]
 
@@ -122,7 +119,6 @@ def display_ugs(num_stocks: int, export: str) -> None:
     )
 
 
-@log_start_end(log=logger)
 @log_start_end(log=logger)
 def display_gtech(num_stocks: int, export: str) -> None:
     """Display growth technology stocks. [Source: Yahoo Finance]
@@ -159,7 +155,6 @@ def display_gtech(num_stocks: int, export: str) -> None:
 
 
 @log_start_end(log=logger)
-@log_start_end(log=logger)
 def display_active(num_stocks: int, export: str) -> None:
     """Display most active stocks. [Source: Yahoo Finance]
 
@@ -195,7 +190,6 @@ def display_active(num_stocks: int, export: str) -> None:
 
 
 @log_start_end(log=logger)
-@log_start_end(log=logger)
 def display_ulc(num_stocks: int, export: str) -> None:
     """Display potentially undervalued large cap stocks. [Source: Yahoo Finance]
 
@@ -230,7 +224,6 @@ def display_ulc(num_stocks: int, export: str) -> None:
     )
 
 
-@log_start_end(log=logger)
 @log_start_end(log=logger)
 def display_asc(num_stocks: int, export: str) -> None:
     """Display small cap stocks with earnings growth rates better than 25%. [Source: Yahoo Finance]
