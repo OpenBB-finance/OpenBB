@@ -1,33 +1,18 @@
-import discord
+import disnake
 import pandas as pd
-
-from gamestonk_terminal.stocks.government import quiverquant_model
+from menus.menu import Menu
 
 import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import logger
-from discordbot.helpers import pagination
+from discordbot.config_discordbot import logger
+from gamestonk_terminal.stocks.government import quiverquant_model
 
 
-async def lastcontracts_command(ctx, past_transactions_days="", num=""):
+async def lastcontracts_command(ctx, past_transactions_days: int = 2, num: int = 20):
     """Displays last government contracts [quiverquant.com]"""
     try:
         # Debug user input
         if cfg.DEBUG:
             logger.debug("!stocks.gov.lastcontracts %s %s", past_transactions_days, num)
-
-        if past_transactions_days == "":
-            past_transactions_days = 2
-        else:
-            if not past_transactions_days.lstrip("-").isnumeric():
-                raise Exception("Number has to be an integer")
-            past_transactions_days = float(past_transactions_days)
-
-        if num == "":
-            num = 20
-        else:
-            if not num.lstrip("-").isnumeric():
-                raise Exception("Number has to be an integer")
-            num = int(num)
 
         df_contracts = quiverquant_model.get_government_trading("contracts")
 
@@ -48,17 +33,23 @@ async def lastcontracts_command(ctx, past_transactions_days="", num=""):
         ]
 
         df_contracts = df_contracts[["Date", "Ticker", "Amount", "Agency"]][:num]
-
-        initial_str = "Page 0: Overview"
+        choices = [
+            disnake.SelectOption(label="Overview", value="0", emoji="🟢"),
+        ]
+        initial_str = "Overview"
         i = 1
         for col_name in df_contracts["Ticker"].values:
+            menu = f"\nPage {i}: {col_name}"
             initial_str += f"\nPage {i}: {col_name}"
+            choices.append(
+                disnake.SelectOption(label=menu, value=f"{i}", emoji="🟢"),
+            )
             i += 1
 
         columns = []
         df_contracts = df_contracts.T
         columns.append(
-            discord.Embed(
+            disnake.Embed(
                 title="Stocks: [quiverquant.com] Top buy government trading",
                 description=initial_str,
                 colour=cfg.COLOR,
@@ -69,7 +60,7 @@ async def lastcontracts_command(ctx, past_transactions_days="", num=""):
         )
         for column in df_contracts.columns.values:
             columns.append(
-                discord.Embed(
+                disnake.Embed(
                     description="```"
                     + df_contracts[column].fillna("").to_string()
                     + "```",
@@ -80,10 +71,10 @@ async def lastcontracts_command(ctx, past_transactions_days="", num=""):
                 )
             )
 
-        await pagination(columns, ctx)
+        await ctx.send(embed=columns[0], view=Menu(columns, choices))
 
     except Exception as e:
-        embed = discord.Embed(
+        embed = disnake.Embed(
             title="ERROR Stocks: [quiverquant.com] Top buy government trading",
             colour=cfg.COLOR,
             description=e,
@@ -93,4 +84,4 @@ async def lastcontracts_command(ctx, past_transactions_days="", num=""):
             icon_url=cfg.AUTHOR_ICON_URL,
         )
 
-        await ctx.send(embed=embed)
+        await ctx.send(embed=embed, delete_after=30.0)

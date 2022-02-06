@@ -9,7 +9,7 @@ from datetime import datetime
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.rich_config import console
-from gamestonk_terminal.parent_classes import StockController
+from gamestonk_terminal.parent_classes import StockBaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -41,7 +41,7 @@ from gamestonk_terminal.common.technical_analysis import (
 from gamestonk_terminal.stocks import stocks_helper
 
 
-class TechnicalAnalysisController(StockController):
+class TechnicalAnalysisController(StockBaseController):
     """Technical Analysis Controller class"""
 
     CHOICES_COMMANDS = [
