@@ -41,8 +41,8 @@ class TestMainHelper(unittest.TestCase):
         terminal_helper.about_us()
 
     @check_print(assert_in="Welcome to Gamestonk Terminal Beta")
-    def test_bootup(self):
-        terminal_helper.bootup()
+    def test_welcome_message(self):
+        terminal_helper.welcome_message()
 
     @check_print(assert_in="Unfortunately, resetting wasn't")
     @patch("subprocess.run", side_effect=return_val)
