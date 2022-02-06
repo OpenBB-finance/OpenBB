@@ -1,12 +1,11 @@
 import os
-
-from dotenv import load_dotenv
+import dotenv
 
 from .helper_classes import TerminalStyle as _TerminalStyle
 
 env_files = [f for f in os.listdir() if f.endswith(".env")]
 if env_files:
-    load_dotenv(env_files[0])
+    dotenv.load_dotenv(env_files[0])
 
 # Terminal UX section
 theme = _TerminalStyle(

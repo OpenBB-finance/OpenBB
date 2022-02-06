@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.rich_config import console
 
-from gamestonk_terminal.parent_classes import StockController
+from gamestonk_terminal.parent_classes import StockBaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -32,7 +32,7 @@ from gamestonk_terminal.common.behavioural_analysis import (
 # pylint:disable=R0904,C0302
 
 
-class BehaviouralAnalysisController(StockController):
+class BehaviouralAnalysisController(StockBaseController):
     """Behavioural Analysis Controller class"""
 
     CHOICES_COMMANDS = [

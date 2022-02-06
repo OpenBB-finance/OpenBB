@@ -2,13 +2,13 @@
 __docformat__ = "numpy"
 
 import logging
+from typing import Optional, List
 
 import matplotlib.pyplot as plt
 import mplfinance as mpf
 import pandas as pd
 
 from gamestonk_terminal.config_terminal import theme
-from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.forex import av_model
 from gamestonk_terminal.helper_funcs import plot_autoscale, print_rich_table
@@ -46,7 +46,12 @@ def display_quote(to_symbol: str, from_symbol: str):
 
 
 @log_start_end(log=logger)
-def display_candle(data: pd.DataFrame, to_symbol: str, from_symbol: str):
+def display_candle(
+    data: pd.DataFrame,
+    to_symbol: str,
+    from_symbol: str,
+    external_axes: Optional[List[plt.Axes]] = None,
+):
     """Show candle plot for fx data.
 
     Parameters
@@ -58,27 +63,39 @@ def display_candle(data: pd.DataFrame, to_symbol: str, from_symbol: str):
     from_symbol : str
         From forex symbol
     """
-    if gtff.USE_ION:
-        plt.ion()
-
-    mpf.plot(
-        data,
-        type="candle",
-        style=theme.mpf_style,
-        mav=(20, 50),
-        volume=False,
-        title=f"\n{from_symbol}/{to_symbol}",
-        xrotation=10,
-        figratio=(10, 7),
-        figscale=1.10,
-        scale_padding={"left": 0.3, "right": 1, "top": 0.8, "bottom": 0.8},
-        figsize=(plot_autoscale()),
-        update_width_config=dict(
-            candle_linewidth=0.6,
-            candle_width=0.8,
-            volume_linewidth=0.8,
-            volume_width=0.8,
-        ),
-    )
-
-    console.print("")
+    candle_chart_kwargs = {
+        "type": "candle",
+        "style": theme.mpf_style,
+        "mav": (20, 50),
+        "volume": False,
+        "xrotation": theme.xticks_rotation,
+        "scale_padding": {"left": 0.3, "right": 1, "top": 0.8, "bottom": 0.8},
+        "update_width_config": {
+            "candle_linewidth": 0.6,
+            "candle_width": 0.8,
+            "volume_linewidth": 0.8,
+            "volume_width": 0.8,
+        },
+        "warn_too_much_data": 10000,
+    }
+    # This plot has 2 axes
+    if not external_axes:
+        candle_chart_kwargs["returnfig"] = True
+        candle_chart_kwargs["figratio"] = (10, 7)
+        candle_chart_kwargs["figscale"] = 1.10
+        candle_chart_kwargs["figsize"] = plot_autoscale()
+        fig, _ = mpf.plot(data, **candle_chart_kwargs)
+        fig.suptitle(
+            f"{from_symbol}/{to_symbol}",
+            x=0.055,
+            y=0.965,
+            horizontalalignment="left",
+        )
+        theme.visualize_output(force_tight_layout=False)
+    else:
+        if len(external_axes) != 1:
+            console.print("[red]Expected list of 1 axis items./n[/red]")
+            return
+        (ax1,) = external_axes
+        candle_chart_kwargs["ax"] = ax1
+        mpf.plot(data, **candle_chart_kwargs)

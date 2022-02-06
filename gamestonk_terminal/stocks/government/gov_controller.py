@@ -6,7 +6,7 @@ from typing import List
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.rich_config import console
 
-from gamestonk_terminal.parent_classes import StockController
+from gamestonk_terminal.parent_classes import StockBaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.stocks.government import quiverquant_view
@@ -20,7 +20,7 @@ from gamestonk_terminal.helper_funcs import (
 )
 
 
-class GovController(StockController):
+class GovController(StockBaseController):
     """Gov Controller class"""
 
     CHOICES_COMMANDS = [
