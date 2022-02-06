@@ -35,7 +35,7 @@ def fear_and_greed_index(
     export : str
         Export plot to png,jpg,pdf file
     external_axes : Optional[List[plt.Axes]], optional
-        External axes (3 axes are expected in the list), by default None
+        External axes (1 axis is expected in the list), by default None
     """
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 

@@ -36,7 +36,7 @@ def realtime_performance_sector(
     export : str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
-        External axes (3 axes are expected in the list), by default None
+        External axes (1 axis is expected in the list), by default None
     """
     df_sectors = alphavantage_model.get_sector_data()
 
@@ -89,7 +89,7 @@ def display_real_gdp(
     export : str, optional
         Format to export data, by default ""
     external_axes : Optional[List[plt.Axes]], optional
-        External axes (3 axes are expected in the list), by default None
+        External axes (1 axis is expected in the list), by default None
     """
     gdp_full = alphavantage_model.get_real_gdp(interval)
     if gdp_full.empty:
@@ -203,7 +203,7 @@ def display_inflation(
     export : str, optional
         Format to export data, by default ""
     external_axes : Optional[List[plt.Axes]], optional
-        External axes (3 axes are expected in the list), by default None
+        External axes (1 axis is expected in the list), by default None
     """
     inflation = alphavantage_model.get_inflation()
     if inflation.empty:
@@ -264,7 +264,7 @@ def display_cpi(
     export : str, optional
         Format to export data, by default ""
     external_axes : Optional[List[plt.Axes]], optional
-        External axes (3 axes are expected in the list), by default None
+        External axes (1 axis is expected in the list), by default None
     """
     cpi_full = alphavantage_model.get_cpi(interval)
     if cpi_full.empty:
@@ -327,7 +327,7 @@ def display_treasury_yield(
     export : str, optional
         Format to export data, by default ""
     external_axes : Optional[List[plt.Axes]], optional
-        External axes (3 axes are expected in the list), by default None
+        External axes (1 axis is expected in the list), by default None
     """
     d_maturity = {"3m": "3month", "5y": "5year", "10y": "10year", "30y": "30year"}
     yields = alphavantage_model.get_treasury_yield(interval, maturity)
@@ -385,7 +385,7 @@ def display_unemployment(
     export : str, optional
         Format to export data, by default ""
     external_axes : Optional[List[plt.Axes]], optional
-        External axes (3 axes are expected in the list), by default None
+        External axes (1 axis is expected in the list), by default None
     """
 
     unemp = alphavantage_model.get_unemployment()
