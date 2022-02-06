@@ -459,6 +459,8 @@ main:
         sub:
           - name: view
             ref: "/common/technical_analysis/view"
+          - name: tv
+            ref: "/common/technical_analysis/tv"
           - name: summary
             ref: "/common/technical_analysis/summary"
           - name: recom
@@ -1239,18 +1241,18 @@ main:
   - name: jupyter
     ref: "/jupyter"
     sub:
-        - name: "dashboards"
-          ref: "/jupyter/dashboards"
-          sub:
-            - name: "stocks"
-              ref: "/jupyter/dashboards/stocks"
-            - name: "correlation"
-              ref: "/jupyter/dashboards/correlations"
-            - name: "vsurf"
-              ref: "/jupyter/dashboards/vsurf"
-            - name: "chains"
-              ref: "/jupyter/dashboards/chains"
-            - name: "shortdata"
-              ref: "jupyter/dashboards/shortdata"
-        - name: "reports"
-          ref: "/jupyter/reports"
+      - name: "dashboards"
+        ref: "/jupyter/dashboards"
+        sub:
+          - name: "stocks"
+            ref: "/jupyter/dashboards/stocks"
+          - name: "correlation"
+            ref: "/jupyter/dashboards/correlations"
+          - name: "vsurf"
+            ref: "/jupyter/dashboards/vsurf"
+          - name: "chains"
+            ref: "/jupyter/dashboards/chains"
+          - name: "shortdata"
+            ref: "jupyter/dashboards/shortdata"
+      - name: "reports"
+        ref: "/jupyter/reports"
