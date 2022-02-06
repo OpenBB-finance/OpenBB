@@ -88,17 +88,20 @@ def log_start_end(func=None, log=None):
             args_passed_in_function = ";".join(args_passed_in_function)
 
             logger_used.info(
-                f"START|{args_passed_in_function}|{str(kwargs_passed_in_function)}",
+                f"START|{args_passed_in_function}|{str(kwargs_passed_in_function)}|",
                 extra={"func_name_override": func.__name__},
             )
 
             try:
                 value = func(*args, **kwargs)
-                logger_used.info("END||", extra={"func_name_override": func.__name__})
+                logger_used.info("END|||", extra={"func_name_override": func.__name__})
                 return value
-            except Exception:
+            except Exception as e:
+                console.print(f"[red]Error: {e}\n[/red]")
                 logger_used.exception(
-                    "Exception", extra={"func_name_override": func.__name__}
+                    "Exception|||%s",
+                    str(e),
+                    extra={"func_name_override": func.__name__},
                 )
                 return None
 

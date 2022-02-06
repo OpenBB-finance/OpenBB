@@ -155,7 +155,7 @@ class CustomFormatterWithExceptions(logging.Formatter):
                 + "|"
             )
         else:
-            s = f"{prefix}|{cfg.LOGGING_VERSION}|{self.LOGGING_ID}|{self.SESSION_ID}|{s}||"
+            s = f"{prefix}|{cfg.LOGGING_VERSION}|{self.LOGGING_ID}|{self.SESSION_ID}|{s}|"
 
         return s
 
