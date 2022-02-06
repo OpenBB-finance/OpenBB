@@ -128,6 +128,10 @@ class BaseController(metaclass=ABCMeta):
     def print_help(self) -> None:
         raise NotImplementedError("Must override print_help")
 
+    def log_queue(self, message: str) -> None:
+        if self.queue:
+            logger.info("%s|'%s'||", message, "/".join(self.queue))
+
     @log_start_end(log=logger)
     def switch(self, an_input: str) -> List[str]:
         """Process and dispatch input
@@ -137,6 +141,7 @@ class BaseController(metaclass=ABCMeta):
         List[str]
             List of commands in the queue to execute
         """
+
         # Empty command
         if not an_input:
             console.print("")
@@ -167,8 +172,7 @@ class BaseController(metaclass=ABCMeta):
                 elif known_args.cmd == "r":
                     known_args.cmd = "reset"
 
-            if self.queue:
-                logger.info("QUEUE|'%s'||", "/".join(self.queue))
+            self.log_queue("QUEUE")
 
             # This is what mutes portfolio issue
             getattr(
@@ -177,8 +181,7 @@ class BaseController(metaclass=ABCMeta):
                 lambda _: "Command not recognized!",
             )(other_args)
 
-        if self.queue:
-            logger.info("QUEUE|'%s'||", "/".join(self.queue))
+        self.log_queue("QUEUE")
 
         return self.queue
 
