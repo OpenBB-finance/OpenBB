@@ -6,6 +6,7 @@ import pytest
 
 # IMPORTATION INTERNAL
 from gamestonk_terminal.economy import alphavantage_view
+from gamestonk_terminal import helper_classes
 
 
 @pytest.fixture(scope="module")
@@ -30,9 +31,9 @@ def vcr_config():
 def test_realtime_performance_sector(mocker, raw, tab):
     # MOCK GTFF
     mocker.patch.object(
-        target=alphavantage_view.gtff, attribute="USE_TABULATE_DF", new=tab
+        target=helper_classes.gtff, attribute="USE_TABULATE_DF", new=tab
     )
-    mocker.patch.object(target=alphavantage_view.gtff, attribute="USE_ION", new=True)
+    mocker.patch.object(target=helper_classes.gtff, attribute="USE_ION", new=True)
 
     # MOCK ION + SHOW
     mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.plt.ion")
@@ -60,9 +61,9 @@ def test_realtime_performance_sector(mocker, raw, tab):
 def test_display_real_gdp(mocker, raw, tab):
     # MOCK GTFF
     mocker.patch.object(
-        target=alphavantage_view.gtff, attribute="USE_TABULATE_DF", new=tab
+        target=helper_classes.gtff, attribute="USE_TABULATE_DF", new=tab
     )
-    mocker.patch.object(target=alphavantage_view.gtff, attribute="USE_ION", new=True)
+    mocker.patch.object(target=helper_classes.gtff, attribute="USE_ION", new=True)
 
     # MOCK ION + SHOW
     mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.plt.ion")
@@ -109,9 +110,9 @@ def test_display_real_gdp_no_data(mocker):
 def test_display_gdp_capita(mocker, raw, tab):
     # MOCK GTFF
     mocker.patch.object(
-        target=alphavantage_view.gtff, attribute="USE_TABULATE_DF", new=tab
+        target=helper_classes.gtff, attribute="USE_TABULATE_DF", new=tab
     )
-    mocker.patch.object(target=alphavantage_view.gtff, attribute="USE_ION", new=True)
+    mocker.patch.object(target=helper_classes.gtff, attribute="USE_ION", new=True)
 
     # MOCK ION + SHOW
     mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.plt.ion")
@@ -156,9 +157,9 @@ def test_display_gdp_capita_no_data(mocker):
 def test_display_inflation(mocker, raw, tab):
     # MOCK GTFF
     mocker.patch.object(
-        target=alphavantage_view.gtff, attribute="USE_TABULATE_DF", new=tab
+        target=helper_classes.gtff, attribute="USE_TABULATE_DF", new=tab
     )
-    mocker.patch.object(target=alphavantage_view.gtff, attribute="USE_ION", new=True)
+    mocker.patch.object(target=helper_classes.gtff, attribute="USE_ION", new=True)
 
     # MOCK ION + SHOW
     mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.plt.ion")
@@ -203,9 +204,9 @@ def test_display_inflation_capita_no_data(mocker):
 def test_display_cpi(mocker, raw, tab):
     # MOCK GTFF
     mocker.patch.object(
-        target=alphavantage_view.gtff, attribute="USE_TABULATE_DF", new=tab
+        target=helper_classes.gtff, attribute="USE_TABULATE_DF", new=tab
     )
-    mocker.patch.object(target=alphavantage_view.gtff, attribute="USE_ION", new=True)
+    mocker.patch.object(target=helper_classes.gtff, attribute="USE_ION", new=True)
 
     # MOCK ION + SHOW
     mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.plt.ion")
@@ -252,9 +253,9 @@ def test_display_cpi_capita_no_data(mocker):
 def test_display_treasury_yield(mocker, raw, tab):
     # MOCK GTFF
     mocker.patch.object(
-        target=alphavantage_view.gtff, attribute="USE_TABULATE_DF", new=tab
+        target=helper_classes.gtff, attribute="USE_TABULATE_DF", new=tab
     )
-    mocker.patch.object(target=alphavantage_view.gtff, attribute="USE_ION", new=True)
+    mocker.patch.object(target=helper_classes.gtff, attribute="USE_ION", new=True)
 
     # MOCK ION + SHOW
     mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.plt.ion")
@@ -303,9 +304,9 @@ def test_display_treasury_yield_capita_no_data(mocker):
 def test_display_unemployment(mocker, raw, tab):
     # MOCK GTFF
     mocker.patch.object(
-        target=alphavantage_view.gtff, attribute="USE_TABULATE_DF", new=tab
+        target=helper_classes.gtff, attribute="USE_TABULATE_DF", new=tab
     )
-    mocker.patch.object(target=alphavantage_view.gtff, attribute="USE_ION", new=True)
+    mocker.patch.object(target=helper_classes.gtff, attribute="USE_ION", new=True)
 
     # MOCK ION + SHOW
     mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.plt.ion")

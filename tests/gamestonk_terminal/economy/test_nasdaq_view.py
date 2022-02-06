@@ -5,6 +5,7 @@ import pytest
 
 # IMPORTATION INTERNAL
 from gamestonk_terminal.economy import nasdaq_view
+from gamestonk_terminal import helper_classes
 
 
 @pytest.fixture(scope="module")
@@ -27,8 +28,10 @@ def vcr_config():
 @pytest.mark.record_stdout
 def test_display_big_mac_index(mocker, raw, tab):
     # MOCK GTFF
-    mocker.patch.object(target=nasdaq_view.gtff, attribute="USE_TABULATE_DF", new=tab)
-    mocker.patch.object(target=nasdaq_view.gtff, attribute="USE_ION", new=True)
+    mocker.patch.object(
+        target=helper_classes.gtff, attribute="USE_TABULATE_DF", new=tab
+    )
+    mocker.patch.object(target=helper_classes.gtff, attribute="USE_ION", new=True)
 
     # MOCK ION + SHOW
     mocker.patch(target="gamestonk_terminal.economy.nasdaq_view.plt.ion")

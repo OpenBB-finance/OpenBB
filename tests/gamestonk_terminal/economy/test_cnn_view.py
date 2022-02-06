@@ -5,13 +5,14 @@ import pytest
 
 # IMPORTATION INTERNAL
 from gamestonk_terminal.economy import cnn_view
+from gamestonk_terminal import helper_classes
 
 
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_get_feargreed_report(mocker):
     # MOCK GTFF
-    mocker.patch.object(target=cnn_view.gtff, attribute="USE_ION", new=True)
+    mocker.patch.object(target=helper_classes.gtff, attribute="USE_ION", new=True)
 
     # MOCK IMSHOW
     mocker.patch(target="matplotlib.pyplot.imshow")
