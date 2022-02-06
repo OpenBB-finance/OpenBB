@@ -217,8 +217,10 @@ class TerminalController(BaseController):
 def terminal(jobs_cmds: List[str] = None):
     """Terminal Menu"""
     setup_logging()
-
     logger.info("START||")
+
+    if jobs_cmds is not None and jobs_cmds:
+        logger.info("TERMINAL INPUT|'%s'||", "/".join(jobs_cmds))
 
     ret_code = 1
     t_controller = TerminalController(jobs_cmds)
@@ -312,6 +314,14 @@ def terminal(jobs_cmds: List[str] = None):
                 console.print("\n")
 
 
+def insert_start_slash(cmds: List[str]) -> List[str]:
+    if not cmds[0].startswith("/"):
+        cmds[0] = f"/{cmds[0]}"
+    if cmds[0].startswith("/home"):
+        cmds[0] = f"/{cmds[0][5:]}"
+    return cmds
+
+
 if __name__ == "__main__":
     if len(sys.argv) > 1:
         if "--debug" in sys.argv:
@@ -323,9 +333,9 @@ if __name__ == "__main__":
                     simulate_argv = f"/{'/'.join([line.rstrip() for line in fp])}"
                     file_cmds = simulate_argv.replace("//", "/home/").split()
                     # close the eyes if the user forgets the initial `/`
-                    if len(file_cmds) > 0:
-                        if file_cmds[0][0] != "/":
-                            file_cmds[0] = f"/{file_cmds[0]}"
+                    file_cmds = (
+                        insert_start_slash(file_cmds) if file_cmds else file_cmds
+                    )
                     terminal(file_cmds)
             else:
                 console.print(
@@ -334,6 +344,7 @@ if __name__ == "__main__":
                 terminal()
         else:
             argv_cmds = list([" ".join(sys.argv[1:]).replace(" /", "/home/")])
+            argv_cmds = insert_start_slash(argv_cmds) if argv_cmds else argv_cmds
             terminal(argv_cmds)
     else:
         terminal()

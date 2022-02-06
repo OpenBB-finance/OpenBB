@@ -144,7 +144,8 @@ class BaseController(metaclass=ABCMeta):
 
         # Empty command
         if not an_input:
-            console.print("")
+            pass
+        #    console.print("")
 
         # Navigation slash is being used first split commands
         elif "/" in an_input:
@@ -214,6 +215,7 @@ class BaseController(metaclass=ABCMeta):
     def call_exit(self, _) -> None:
         # Not sure how to handle controller loading here
         """Process exit terminal command"""
+        console.print("")
         for _ in range(self.PATH.count("/")):
             self.queue.insert(0, "quit")
 
