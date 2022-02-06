@@ -157,7 +157,7 @@ class TechnicalAnalysisController(StockBaseController):
     # SPECIFIC
 
     def call_tv(self, _):
-        """Process macroaxis command"""
+        """Process tv command"""
         webbrowser.open(f"https://www.tradingview.com/chart/?symbol={self.ticker}")
         console.print("")
 
