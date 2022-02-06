@@ -146,8 +146,6 @@ def display_fred_series(
 
     ax.legend(prop={"size": 10}, bbox_to_anchor=(0, 1), loc="lower left")
     ax.set_xlim(data.index[0], data.index[-1])
-    ax.spines["top"].set_visible(False)
-    ax.spines["right"].set_visible(False)
     if external_axes is None:
         theme.visualize_output()
 

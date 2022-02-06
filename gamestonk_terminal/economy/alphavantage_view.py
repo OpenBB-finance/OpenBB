@@ -52,9 +52,13 @@ def realtime_performance_sector(
         )
 
     else:
-        # TODO: convert to mpl
-        df_rtp.plot(kind="bar")
-        plt.title("Real Time Performance (%) per Sector")
+        ax = df_rtp.plot(kind="bar")
+        theme.style_primary_axis(ax)
+        ax.set_title("Real Time Performance (%) per Sector")
+        ax.tick_params(axis="x", labelrotation=90)
+
+        if external_axes is None:
+            theme.visualize_output()
 
     export_data(
         export,
@@ -62,9 +66,6 @@ def realtime_performance_sector(
         "rtps",
         df_sectors,
     )
-
-    if not external_axes:
-        theme.visualize_output()
 
 
 @log_start_end(log=logger)
@@ -102,8 +103,8 @@ def display_real_gdp(
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
 
     else:
-        if len(external_axes) != 3:
-            console.print("[red]Expected list of 3 axis items./n[/red]")
+        if len(external_axes) != 1:
+            console.print("[red]Expected list of 1 axis items./n[/red]")
             return
         (ax,) = external_axes
 
@@ -214,8 +215,8 @@ def display_inflation(
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
 
     else:
-        if len(external_axes) != 3:
-            console.print("[red]Expected list of 3 axis items./n[/red]")
+        if len(external_axes) != 1:
+            console.print("[red]Expected list of 1 axis items./n[/red]")
             return
         (ax,) = external_axes
 
@@ -277,8 +278,8 @@ def display_cpi(
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
 
     else:
-        if len(external_axes) != 3:
-            console.print("[red]Expected list of 3 axis items./n[/red]")
+        if len(external_axes) != 1:
+            console.print("[red]Expected list of 1 axis items./n[/red]")
             return
         (ax,) = external_axes
 
@@ -338,8 +339,8 @@ def display_treasury_yield(
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
     else:
-        if len(external_axes) != 3:
-            console.print("[red]Expected list of 3 axis items./n[/red]")
+        if len(external_axes) != 1:
+            console.print("[red]Expected list of 1 axis items./n[/red]")
             return
         (ax,) = external_axes
 
@@ -399,8 +400,8 @@ def display_unemployment(
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
 
     else:
-        if len(external_axes) != 3:
-            console.print("[red]Expected list of 3 axis items./n[/red]")
+        if len(external_axes) != 1:
+            console.print("[red]Expected list of 1 axis items./n[/red]")
             return
         (ax,) = external_axes
 
