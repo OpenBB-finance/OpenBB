@@ -52,15 +52,26 @@ def log_start_end(func=None, log=None):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
 
+            logging_name = ""
+
             args_passed_in_function = [repr(a) for a in args]
+
+            if len(args) == 2 and (
+                "__main__.TerminalController" in args_passed_in_function[0]
+                or (
+                    "gamestonk_terminal." in args_passed_in_function[0]
+                    and "_controller" in args_passed_in_function[0]
+                )
+            ):
+                logging_name = args_passed_in_function[0].split()[0][1:]
+                args_passed_in_function = args_passed_in_function[1:]
+
+            logger_used = logging.getLogger(logging_name) if logging_name else log
+
             # view files have parameters that are usually small given they are input by the user
-            if "_view" in log.name:
+            if "_view" in log.name or "_controller" in log.name:
                 kwargs_passed_in_function = kwargs
-            # we are only interested in the other_args from controller methods
-            elif "_controller" in log.name:
-                # check len of args is 2 because of (self, other_args: List[str])
-                if len(args) == 2:
-                    args_passed_in_function = args[1]
+
             # other files can have as parameters big variables, therefore adds logic to only add small ones
             else:
                 kwargs_passed_in_function = {
@@ -76,17 +87,19 @@ def log_start_end(func=None, log=None):
                 kwargs_passed_in_function = ""
             args_passed_in_function = ";".join(args_passed_in_function)
 
-            log.info(
+            logger_used.info(
                 f"START|{args_passed_in_function}|{str(kwargs_passed_in_function)}",
                 extra={"func_name_override": func.__name__},
             )
 
             try:
                 value = func(*args, **kwargs)
-                log.info("END||", extra={"func_name_override": func.__name__})
+                logger_used.info("END||", extra={"func_name_override": func.__name__})
                 return value
             except Exception:
-                log.exception("Exception", extra={"func_name_override": func.__name__})
+                logger_used.exception(
+                    "Exception", extra={"func_name_override": func.__name__}
+                )
                 return None
 
         return wrapper
