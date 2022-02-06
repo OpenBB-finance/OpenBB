@@ -219,6 +219,6 @@ def setup_logging() -> None:
 
     library_loggers(int(cfg.LOGGING_VERBOSITY))
 
-    logger.info("Logging configuration finished||")
-    logger.info("Logging set to %s||", cfg.LOGGING_HANDLERS)
-    logger.info("Verbosity set to %s||", verbosity)
+    logger.info("Logging configuration finished|||")
+    logger.info("Logging set to %s|||", cfg.LOGGING_HANDLERS)
+    logger.info("Verbosity set to %s|||", verbosity)
