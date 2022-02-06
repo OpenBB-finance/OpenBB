@@ -8,6 +8,7 @@ appdirs==1.4.4; python_full_version >= "3.6.2" and python_version >= "3.8"
 appnope==0.1.2; platform_system == "Darwin" and python_version >= "3.8" and sys_platform == "darwin"
 argon2-cffi-bindings==21.2.0; python_version >= "3.7"
 argon2-cffi==21.3.0; python_version >= "3.7"
+ascii-magic==1.6; python_version >= "3.5"
 astroid==2.9.3; python_full_version >= "3.6.2"
 asttokens==2.0.5; python_version >= "3.8"
 astunparse==1.6.3

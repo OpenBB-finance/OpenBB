@@ -84,7 +84,7 @@ fastapi = {version = "^0.73.0", optional = true}
 uvicorn = {version = "^0.17.1", optional = true}
 disnake = {version = "^2.3.0", optional = true}
 PyNaCl = {version = "^1.5.0", optional = true}
-
+ascii-magic = "^1.6"
 
 
 [tool.poetry.dev-dependencies]
