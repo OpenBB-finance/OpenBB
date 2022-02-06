@@ -5,6 +5,7 @@ import pytest
 
 # IMPORTATION INTERNAL
 from gamestonk_terminal.etf import yfinance_view
+from gamestonk_terminal import helper_classes
 
 
 @pytest.fixture(scope="module")
@@ -22,7 +23,7 @@ def vcr_config():
 )
 def test_display_etf_weightings(name, mocker):
     mocker.patch.object(
-        target=yfinance_view.gtff, attribute="USE_TABULATE_DF", new=False
+        target=helper_classes.gtff, attribute="USE_TABULATE_DF", new=False
     )
     yfinance_view.display_etf_weightings(
         name, raw=True, min_pct_to_display=5, export=""
@@ -37,6 +38,6 @@ def test_display_etf_weightings(name, mocker):
 )
 def test_display_etf_description(name, mocker):
     mocker.patch.object(
-        target=yfinance_view.gtff, attribute="USE_TABULATE_DF", new=False
+        target=helper_classes.gtff, attribute="USE_TABULATE_DF", new=False
     )
     yfinance_view.display_etf_description(name)
