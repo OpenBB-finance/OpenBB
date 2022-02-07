@@ -5,7 +5,7 @@ import argparse
 import logging
 import os
 from bisect import bisect_left
-from typing import List
+from typing import List, Optional
 
 import matplotlib.pyplot as plt
 import mplfinance as mpf
@@ -194,6 +194,7 @@ def plot_oi(
     calls_only: bool,
     puts_only: bool,
     export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot open interest
 
@@ -213,6 +214,8 @@ def plot_oi(
         Show puts only
     export: str
         Format to export file
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
 
     options = tradier_model.get_option_chains(ticker, expiry)
@@ -243,8 +246,13 @@ def plot_oi(
     )
 
     max_pain = op_helpers.calculate_max_pain(df_opt)
-    plt.style.use("classic")
-    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
+    if not external_axes:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
+    else:
+        if len(external_axes) != 1:
+            console.print("[red]Expected list of one axis item./n[/red]")
+            return
+        (ax,) = external_axes
 
     if not calls_only:
         put_oi.plot(
@@ -254,7 +262,6 @@ def plot_oi(
             ax=ax,
             marker="o",
             ls="-",
-            c="r",
         )
     if not puts_only:
         call_oi.plot(
@@ -264,30 +271,26 @@ def plot_oi(
             ax=ax,
             marker="o",
             ls="-",
-            c="g",
         )
-    ax.axvline(current_price, lw=2, c="k", ls="--", label="Current Price", alpha=0.7)
-    ax.axvline(max_pain, lw=3, c="k", label=f"Max Pain: {max_pain}", alpha=0.7)
-    ax.grid("on")
+    ax.axvline(current_price, lw=2, ls="--", label="Current Price", alpha=0.7)
+    ax.axvline(max_pain, lw=3, label=f"Max Pain: {max_pain}", alpha=0.7)
     ax.set_xlabel("Strike Price")
     ax.set_ylabel("Open Interest (1k) ")
     ax.set_xlim(min_strike, max_strike)
 
-    if gtff.USE_ION:
-        plt.ion()
-
     ax.set_title(f"Open Interest for {ticker.upper()} expiring {expiry}")
-    plt.legend(loc=0)
-    fig.tight_layout(pad=1)
 
-    plt.show()
+    theme.style_primary_axis(ax)
+
+    if not external_axes:
+        theme.visualize_output()
+
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "oi_tr",
         options,
     )
-    console.print("")
 
 
 @log_start_end(log=logger)
