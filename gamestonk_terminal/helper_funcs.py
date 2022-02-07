@@ -104,6 +104,14 @@ def print_rich_table(
     else:
         console.print(df.to_string())
 
+    directory = "C:\gst"
+    if os.path.exists(directory):
+        path = os.path.join(directory, "tmp.csv")
+        """ path = os.path.join(directory, "tmp.txt")
+        with open(path, 'w') as file:
+            file.write(table) """
+        df.to_csv(path)
+
 
 def check_int_range(mini: int, maxi: int):
     """

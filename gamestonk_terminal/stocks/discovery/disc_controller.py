@@ -588,6 +588,14 @@ class DiscoveryController(BaseController):
             dest="fund",
             choices=self.arkord_fund_choices,
         )
+        parser.add_argument(
+            "-d",
+            "--directory",
+            dest="directory",
+            nargs="+",
+            help="Save outputted table to local directory",
+            default="",
+        )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
@@ -602,6 +610,7 @@ class DiscoveryController(BaseController):
                 sells_only=ns_parser.sells_only,
                 fund=ns_parser.fund,
                 export=ns_parser.export,
+                directory=ns_parser.directory
             )
 
     def call_upcoming(self, other_args: List[str]):
