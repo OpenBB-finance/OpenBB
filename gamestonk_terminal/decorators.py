@@ -6,9 +6,6 @@ import os
 
 from gamestonk_terminal.rich_config import console
 
-SUCCESSES = 0
-FAILURES = 0
-
 logger = logging.getLogger(__name__)
 
 

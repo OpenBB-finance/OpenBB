@@ -2,6 +2,8 @@
 """Main Terminal Module"""
 __docformat__ = "numpy"
 
+from contextlib import contextmanager
+from unittest.mock import patch
 import os
 import difflib
 import logging
@@ -313,6 +315,7 @@ def terminal(jobs_cmds: List[str] = None):
                 console.print("\n")
 
 
+# TODO: if test_mode is true add exit to the end
 def run_scripts(path: str, test_mode: bool = False):
     """Runs a given .gst scripts
 
@@ -339,6 +342,33 @@ def run_scripts(path: str, test_mode: bool = False):
         console.print(f"File '{path}' doesn't exist. Launching base terminal.\n")
         if not test_mode:
             terminal()
+
+
+@contextmanager
+def suppress_stdout():
+    with open(os.devnull, "w") as devnull:
+        old_stdout = sys.stdout
+        sys.stdout = devnull
+        try:
+            yield
+        finally:
+            sys.stdout = old_stdout
+
+
+class Unbuffered(object):
+    def __init__(self, stream):
+        self.stream = stream
+
+    def write(self, data):
+        self.stream.write(data)
+        self.stream.flush()
+
+    def writelines(self, data):
+        self.stream.writelines(data)
+        self.stream.flush()
+
+    def __getattr__(self, attr):
+        return getattr(self.stream, attr)
 
 
 if __name__ == "__main__":
@@ -392,16 +422,22 @@ if __name__ == "__main__":
             ]
             SUCCESSES = 0
             FAILURES = 0
+            # mocker.patch(target="gamestonk_terminal.feature_flags.USE_PROMPT_TOOLKIT",new=True,)
+
+            # with suppress_stdout():
+            sys.stdout = sys.stdout = Unbuffered(sys.stdout)
+            sys.stderr = sys.stdout = Unbuffered(sys.stderr)
+            # with console.capture() as capture:
+            # with patch.object(console, "print", return_value=None) as mock_method:
             for file in files:
                 if file.endswith(".gst"):
                     if ns_parser.scripts is None or ns_parser.scripts in file:
-                        with console.capture() as capture:
-                            try:
-                                run_scripts(f"scripts/{file}", test_mode=True)
-                                SUCCESSES += 1
-                            except Exception as e:
-                                console.print(f"Error: {e}")
-                                FAILURES += 1
+                        try:
+                            run_scripts(f"scripts/{file}", test_mode=True)
+                            SUCCESSES += 1
+                        except Exception as e:
+                            console.print(f"Error: {e}")
+                            FAILURES += 1
             console.print(
                 f"Integration Tests: [green]Successes: {SUCCESSES}[/green] [red]Failures: {FAILURES}[/red]"
             )
