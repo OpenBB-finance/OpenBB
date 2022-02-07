@@ -9,8 +9,6 @@ import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib import font_manager
 
-import gamestonk_terminal.feature_flags as gtff
-
 
 class LineAnnotateDrawer:
     """Line drawing class."""
@@ -282,6 +280,7 @@ class TerminalStyle:
     # pylint: disable=import-outside-toplevel
     def visualize_output(self, force_tight_layout: bool = True):
         """Show chart in an interactive widget."""
+        import gamestonk_terminal.feature_flags as gtff
         from gamestonk_terminal.rich_config import console
 
         if gtff.USE_WATERMARK:
