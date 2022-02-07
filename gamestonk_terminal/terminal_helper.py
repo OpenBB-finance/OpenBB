@@ -1,5 +1,7 @@
 """Terminal helper"""
 __docformat__ = "numpy"
+
+from contextlib import contextmanager
 import hashlib
 import logging
 import os
@@ -162,3 +164,14 @@ def reset(queue: List[str] = None):
         console.print("Unfortunately, resetting wasn't possible!\n")
 
     return completed_process.returncode
+
+
+@contextmanager
+def suppress_stdout():
+    with open(os.devnull, "w") as devnull:
+        old_stdout = sys.stdout
+        sys.stdout = devnull
+        try:
+            yield
+        finally:
+            sys.stdout = old_stdout

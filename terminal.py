@@ -2,7 +2,6 @@
 """Main Terminal Module"""
 __docformat__ = "numpy"
 
-from contextlib import contextmanager
 import sys
 import os
 import difflib
@@ -30,6 +29,7 @@ from gamestonk_terminal.terminal_helper import (
     print_goodbye,
     reset,
     update_terminal,
+    suppress_stdout,
 )
 
 # pylint: disable=too-many-public-methods,import-outside-toplevel
@@ -336,7 +336,11 @@ def run_scripts(path: str, test_mode: bool = False):
             # The other option is more complicated because if we try to leave it in we have to use
             # environment variables, and every reset starts the tests over, leading to an infinite loop.
             lines = [x for x in fp if not test_mode or "reset" not in x]
-            print(lines)
+
+            # If we run in debug_mode scripts must end in exit, otherwise scripts get stuck
+            if test_mode and "exit" not in lines[-1]:
+                lines.append("exit")
+
             simulate_argv = f"/{'/'.join([line.rstrip() for line in lines])}"
             file_cmds = simulate_argv.replace("//", "/home/").split()
 
@@ -349,17 +353,6 @@ def run_scripts(path: str, test_mode: bool = False):
         console.print(f"File '{path}' doesn't exist. Launching base terminal.\n")
         if not test_mode:
             terminal()
-
-
-@contextmanager
-def suppress_stdout():
-    with open(os.devnull, "w") as devnull:
-        old_stdout = sys.stdout
-        sys.stdout = devnull
-        try:
-            yield
-        finally:
-            sys.stdout = old_stdout
 
 
 if __name__ == "__main__":
@@ -409,23 +402,29 @@ if __name__ == "__main__":
                 name
                 for name in os.listdir(folder)
                 if os.path.isfile(os.path.join(folder, name))
+                and name.endswith(".gst")
+                and (
+                    ns_parser.scripts is None or ns_parser.scripts in f"{folder}/{name}"
+                )
             ]
             SUCCESSES = 0
             FAILURES = 0
             fails = {}
-
-            with suppress_stdout():
-                for file in files:
-                    if file.endswith(".gst"):
-                        if ns_parser.scripts is None or ns_parser.scripts in file:
-                            try:
-                                run_scripts(f"scripts/{file}", test_mode=True)
-                                SUCCESSES += 1
-                            except Exception as e:
-                                fails[f"scripts/{file}"] = e
-                                FAILURES += 1
-            for fail in fails:
-                console.print(f"{fail}: {fails[fail]}\n")
+            length = len(files)
+            i = 1
+            console.print("[green]Gamestonk Terminal Integrated Tests:\n[/green]")
+            for file in files:
+                console.print(f"[green]{i} / {length}[/green]")
+                try:
+                    with suppress_stdout():
+                        run_scripts(f"scripts/{file}", test_mode=True)
+                    SUCCESSES += 1
+                except Exception as e:
+                    fails[f"scripts/{file}"] = e
+                    FAILURES += 1
+                i += 1
+            for key, value in fails.items():
+                console.print(f"{key}: {value}\n")
             console.print(
                 f"Integration Tests: [green]Successes: {SUCCESSES}[/green] [red]Failures: {FAILURES}[/red]"
             )
