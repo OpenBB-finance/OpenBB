@@ -23,6 +23,7 @@ from gamestonk_terminal.menu import session
 from gamestonk_terminal.terminal_helper import (
     about_us,
     bootup,
+    welcome_message,
     print_goodbye,
     reset,
     update_terminal,
@@ -224,8 +225,9 @@ def terminal(jobs_cmds: List[str] = None):
     t_controller = TerminalController(jobs_cmds)
     an_input = ""
 
+    bootup()
     if not jobs_cmds:
-        bootup()
+        welcome_message()
         t_controller.print_help()
 
     while ret_code:
