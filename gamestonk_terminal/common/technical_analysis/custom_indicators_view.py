@@ -96,9 +96,9 @@ def fibonacci_retracement(
         tick_labels=plot_data["date"].to_list(),
     )
 
-    ax2.set_ylabel("Price")
     ax2.set_ylim(ax1.get_ylim())
-    theme.style_twin_axis(ax2)
+    ax2.set_ylabel("Price")
+    theme.style_primary_axis(ax2)
 
     if external_axes is None:
         theme.visualize_output()
