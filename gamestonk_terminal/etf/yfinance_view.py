@@ -87,9 +87,9 @@ def display_etf_weightings(
         ax.pie(
             values,
             labels=leg,
-            wedgeprops={"linewidth": 0.5, "edgecolor": "white"},
-            labeldistance=1.05,
-            startangle=90,
+            wedgeprops=theme.pie_wedgeprops,
+            colors=theme.get_colors(),
+            startangle=theme.pie_startangle,
         )
         ax.set_title(title)
         theme.style_primary_axis(ax)
