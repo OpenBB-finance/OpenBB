@@ -3,6 +3,7 @@ import logging
 import os
 import sys
 
+
 import disnake
 import pyimgur
 
