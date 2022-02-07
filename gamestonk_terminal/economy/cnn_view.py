@@ -37,7 +37,14 @@ def fear_and_greed_index(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    if external_axes is None:
+        fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+
+    else:
+        if len(external_axes) != 1:
+            console.print("[red]Expected list of 1 axis items./n[/red]")
+            return
+        (ax,) = external_axes
 
     report, im = cnn_model.get_feargreed_report(indicator, fig)
 
