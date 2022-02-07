@@ -197,3 +197,25 @@ def suppress_stdout():
         finally:
             sys.stdout = old_stdout
             sys.stderr = old_stderr
+
+
+def is_reset(command: str) -> bool:
+    """Test whether a command is a reset command
+
+    Parameters
+    ----------
+    command : str
+        The command to test
+
+    Returns
+    ----------
+    answer : bool
+        Whether the command is a reset command
+    """
+    if "reset" in command:
+        return True
+    if command == "r":
+        return True
+    if command == "r\n":
+        return True
+    return False

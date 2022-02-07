@@ -31,6 +31,7 @@ from gamestonk_terminal.terminal_helper import (
     reset,
     update_terminal,
     suppress_stdout,
+    is_reset,
 )
 
 # pylint: disable=too-many-public-methods,import-outside-toplevel
@@ -326,9 +327,6 @@ def run_scripts(path: str, test_mode: bool = False):
     ----------
     path : str
         The location of the .gst file
-
-    Returns
-    ----------
     test_mode : bool
         Whether the terminal is in test mode
     """
@@ -337,7 +335,7 @@ def run_scripts(path: str, test_mode: bool = False):
             # Colin's idea: the reset ruins integrated tests. I propose removing it when testing.
             # The other option is more complicated because if we try to leave it in we have to use
             # environment variables, and every reset starts the tests over, leading to an infinite loop.
-            lines = [x for x in fp if not test_mode or "reset" not in x]
+            lines = [x for x in fp if not test_mode or not is_reset(x)]
 
             # If we run in debug_mode scripts must end in exit, otherwise scripts get stuck
             if test_mode and "exit" not in lines[-1]:
