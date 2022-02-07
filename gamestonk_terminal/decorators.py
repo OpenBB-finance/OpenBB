@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 import functools
 import logging
 import os
+import pandas as pd
 
 from gamestonk_terminal.rich_config import console
 
@@ -31,7 +32,9 @@ def log_start_end(func=None, log=None):
 
             logging_name = ""
 
-            args_passed_in_function = [repr(a) for a in args if a]
+            args_passed_in_function = [
+                repr(a) for a in args if isinstance(a, (pd.DataFrame, pd.Series)) or a
+            ]
 
             if len(args) == 2 and (
                 "__main__.TerminalController" in args_passed_in_function[0]
