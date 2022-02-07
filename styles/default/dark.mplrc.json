@@ -1,4 +1,5 @@
 {
     "xticks_rotation": 10,
-    "tight_layout_padding": 2
+    "tight_layout_padding": 2,
+    "volume_bar_width": 0.5
 }
