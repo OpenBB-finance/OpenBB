@@ -21,6 +21,7 @@ from gamestonk_terminal.stocks.sector_industry_analysis import (
     financedatabase_model,
     financedatabase_view,
 )
+from gamestonk_terminal.stocks.sector_industry_analysis import stockanalysis_view
 from gamestonk_terminal.stocks.comparison_analysis import ca_controller
 
 
@@ -38,6 +39,7 @@ class SectorIndustryAnalysisController(BaseController):
         "country",
         "mktcap",
         "exchange",
+        "period",
         "cps",
         "cpic",
         "cpis",
@@ -45,6 +47,10 @@ class SectorIndustryAnalysisController(BaseController):
         "cpci",
         "sama",
         "metric",
+        "bs",
+        "cf",
+        "is",
+        "visualise",
     ]
     CHOICES_MENUS = [
         "ca",
@@ -119,8 +125,135 @@ class SectorIndustryAnalysisController(BaseController):
         "ev": ("defaultKeyStatistics", "enterpriseValue"),
         "fpe": ("defaultKeyStatistics", "forwardPE"),
     }
+
+    visualise_choices = [
+        "ce",
+        "sti",
+        "cce",
+        "rec",
+        "inv",
+        "oca",
+        "tca",
+        "ppe",
+        "lti",
+        "gai",
+        "olta",
+        "tlta",
+        "ta",
+        "ap",
+        "dr",
+        "cd",
+        "ocl",
+        "tcl",
+        "ltd",
+        "oltl",
+        "tltl",
+        "tl",
+        "ret",
+        "ci",
+        "se",
+        "tle",
+        "re",
+        "cr",
+        "gp",
+        "sga",
+        "rd",
+        "ooe",
+        "oi",
+        "ie",
+        "oe",
+        "it",
+        "ni",
+        "pd",
+        "ninc",
+        "da",
+        "sbc",
+        "ooa",
+        "ocf",
+        "cex",
+        "acq",
+        "cii",
+        "oia",
+        "icf",
+        "dp",
+        "si",
+        "di",
+        "ofa",
+        "fcf",
+        "ncf",
+    ]
+    sa_keys = {
+        "BS": {
+            "ce": "Cash & Equivalents",
+            "sti": "Short-Term Investments",
+            "cce": "Cash & Cash Equivalents",
+            "rec": "Receivables",
+            "inv": "Inventory",
+            "oca": "Other Current Assets",
+            "tca": "Total Current Assets",
+            "ppe": "Property, Plant & Equipment",
+            "lti": "Long-Term Investments",
+            "gai": "Goodwill and Intangibles",
+            "olta": "Other Long-Term Assets",
+            "tlta": "Total Long-Term Assets",
+            "ta": "Total Assets",
+            "ap": "Accounts Payable",
+            "dr": "Deferred Revenue",
+            "cd": "Current Debt",
+            "ocl": "Other Current Liabilities",
+            "tcl": "Total Current Liabilities",
+            "ltd": "Long-Term Debt",
+            "oltl": "Other Long-Term Liabilities",
+            "tltl": "Total Long-Term Liabilities",
+            "tl": "Total Liabilities",
+            "ret": "Retained Earnings",
+            "ci": "Comprehensive Income",
+            "se": "Shareholders' Equity",
+            "tle": "Total Liabilities and Equity",
+        },
+        "IS": {
+            "re": "Revenue",
+            "cr": "Cost of Revenue",
+            "gp": "Gross Profit",
+            "sga": "Selling, Genera & Admin",
+            "rd": "Research & Development",
+            "ooe": "Other Operating Expenses",
+            "oi": "Operating Income",
+            "ie": "Interest Expense / Income",
+            "oe": "Other Expense / Income",
+            "it": "Income Tax",
+            "ni": "Net Income",
+            "pd": "Preferred Dividends",
+        },
+        "CF": {
+            "ninc": "Net Income",
+            "da": "Depreciation & Amortization",
+            "sbc": "Share-Based Compensation",
+            "ooa": "Other Operating Activities",
+            "ocf": "Operating Cash Flow",
+            "cex": "Capital Expenditures",
+            "acq": "Acquisitions",
+            "cii": "Change in Investments",
+            "oia": "Other Investing Activities",
+            "icf": "Investing Cash Flow",
+            "dp": "Dividends Paid",
+            "si": "Share Insurance / Repurchase",
+            "di": "Debt Issued / Paid",
+            "ofa": "Other Financing Activities",
+            "fcf": "Financing Cash Flow",
+            "ncf": "Net Cash Flow",
+        },
+    }
     mktcap_choices = ["Small", "Mid", "Large", "small", "mid", "large"]
     clear_choices = ["industry", "sector", "country", "mktcap"]
+    period_choices = [
+        "Annual",
+        "Quarterly",
+        "Trailing",
+        "annual",
+        "quarterly",
+        "trailing",
+    ]
     PATH = "/stocks/sia/"
 
     def __init__(
@@ -136,6 +269,7 @@ class SectorIndustryAnalysisController(BaseController):
         self.industry = "Financial Data & Stock Exchanges"
         self.mktcap = "Large"
         self.exclude_exchanges = True
+        self.period = "Annual"
 
         self.ticker = ticker
 
@@ -188,6 +322,7 @@ class SectorIndustryAnalysisController(BaseController):
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["mktcap"] = {c: None for c in self.mktcap_choices}
+            choices["period"] = {c: None for c in self.period_choices}
             choices["clear"] = {c: None for c in self.clear_choices}
             choices["metric"] = {c: None for c in self.metric_choices}
             # This menu contains dynamic choices that may change during runtime
@@ -244,6 +379,7 @@ class SectorIndustryAnalysisController(BaseController):
 [param]Country           : [/param]{self.country}
 [param]Market Cap        : [/param]{self.mktcap}
 [param]Exclude Exchanges : [/param]{self.exclude_exchanges}
+[param]Period            : [/param]{self.period}
 
 [info]Statistics[/info]{c}[cmds]
     cps           companies per Sector based on Country{c_}{m} and Market Cap{m_}{c}
@@ -252,9 +388,14 @@ class SectorIndustryAnalysisController(BaseController):
     cpcs          companies per Country based on Sector{s_}{m} and Market Cap{m_}{i}
     cpci          companies per Country based on Industry{i_}{m} and Market Cap{m_}[/cmds]
 
-[info]Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}[/info][cmds]
+[info]Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}[/info] [src][Yahoo Finance][/src] [cmds]
     sama          see all metrics available
     metric        visualise financial metric across filters selected[/cmds]
+[info]Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}[/info] [src][StockAnalyis][/src] [cmds]
+    bs            see all balance sheet items available
+    cf            see all cash flow statement items available
+    is            see all income statement items available
+    visualise     visualise financial metric across filters selected[/cmds]
 {has_no_tickers}
 [param]Returned tickers: [/param]{', '.join(self.tickers)}
 [menu]>   ca            take these to comparison analysis menu[/menu]
@@ -621,6 +762,34 @@ class SectorIndustryAnalysisController(BaseController):
             self.stocks_data = {}
             console.print("")
 
+    def call_period(self, other_args: List[str]):
+        """Process period command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="period",
+            description="Set period between annual, quarterly and trailing",
+        )
+        parser.add_argument(
+            "-n",
+            "--name",
+            type=str,
+            dest="name",
+            choices=self.period_choices,
+            help="period to select",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-n")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            if ns_parser.name:
+                self.period = ns_parser.name.capitalize()
+            else:
+                console.print("Select between period: Annual, Quarterly and Trailing")
+
+            self.stocks_data = {}
+            console.print("")
+
     def call_sama(self, other_args: List[str]):
         """Process sama command"""
         parser = argparse.ArgumentParser(
@@ -716,6 +885,169 @@ class SectorIndustryAnalysisController(BaseController):
                 self.country,
                 self.sector,
                 self.industry,
+                self.mktcap,
+                self.exclude_exchanges,
+                ns_parser.limit,
+                ns_parser.export,
+                ns_parser.raw,
+                self.stocks_data,
+            )
+
+    def call_bs(self, other_args: List[str]):
+        """Process bs command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="bs",
+            description="See all balance sheet statement metrics available",
+        )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            help_text = """
+        ce            cash & equivalents
+        sti           short-term investments
+        cce           cash & cash equivalents (ce + sti)
+        rec           receivables
+        inv           inventory
+        oca           other current assets
+        tca           total current assets (rec + inv + oca)
+        ppe           property, plant & equipment
+        lti           long-term investments
+        gai           goodwill and intangibles
+        olta          other long-term assets
+        tlta          total long-term assets (lti + gai + olta)
+        ta            total assets (tca + tlta)
+        ap            accounts payable
+        dr            deferred revenue
+        cd            current debt
+        ocl           other current liabilities
+        tcl           total current liabilities (ac + dr + cd + ocl + tcl)
+        ltd           long-term debt
+        oltl          other long-term liabilities
+        tltl          total long-term liabilities (ltd + oltl)
+        tl            total liabilities (tltl + tcl)
+        ret           retained earnings
+        ci            comprehensive income
+        se            stakeholders' equity
+        tle           total liabilities and equity (tl + re + ci + se)
+            """
+            console.print(help_text)
+
+    def call_is(self, other_args: List[str]):
+        """Process is command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="is",
+            description="See all income statement metrics available",
+        )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            help_text = """
+        re           revenue
+        cr           cost of revenue
+        gp           gross profit (re - cr)
+        sga          selling, general and administrative
+        rd           research & development
+        ooe          other operating expenses
+        oi           operating income (gp - sga - rd - ooe)
+        ie           interest expense / income
+        oe           other expenses / income
+        it           income tax
+        ni           net income (oi - ie - oe - it)
+        pd           preferred dividends
+            """
+            console.print(help_text)
+
+    def call_cf(self, other_args: List[str]):
+        """Process cf command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="cf",
+            description="See all cash flow statement metrics available",
+        )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            help_text = """
+        ninc         net income
+        da           depreciation & amortization
+        sbc          share-based compensation
+        ooa          other operating activities
+        ocf          operating cashflow (ni + da + sbc + ooa)
+        cex          cash expenditures
+        acq          acquisitions
+        cii          change in investments
+        oia          other investing activities
+        icf          investing cashflow (cex + acq + cii + oia)
+        dp           dividends paid
+        si           share issuance / repurchase
+        di           debt issued / paid
+        ofa          other financing activities
+        fcf          financing cashflow (dp + si + di + ofa)
+        ncf          net cashflow (ocf + icf + fcf)
+            """
+            console.print(help_text)
+
+    def call_visualise(self, other_args: List[str]):
+        """Process visualise command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="visualise",
+            description="Visualize a particular metric with the filters selected",
+        )
+        parser.add_argument(
+            "-m",
+            "--metric",
+            dest="metric",
+            required="-h" not in other_args,
+            help="Metric to visualize",
+            choices=self.visualise_choices,
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            dest="limit",
+            default=10,
+            help="Limit number of companies to display",
+            type=check_positive,
+        )
+
+        parser.add_argument(
+            "-p",
+            "--period",
+            dest="period",
+            default=12,
+            help="Limit number of periods to display",
+            type=check_positive,
+        )
+        parser.add_argument(
+            "-r",
+            "--raw",
+            action="store_true",
+            dest="raw",
+            default=False,
+            help="Output all raw data",
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-m")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if ns_parser:
+            (
+                self.stocks_data,
+                self.tickers,
+            ) = stockanalysis_view.display_plots_financials(
+                ns_parser.metric,
+                self.sa_keys,
+                self.country,
+                self.sector,
+                self.industry,
+                self.period,
+                ns_parser.period,
                 self.mktcap,
                 self.exclude_exchanges,
                 ns_parser.limit,
