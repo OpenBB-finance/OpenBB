@@ -38,11 +38,7 @@ def test_view_available_presets(preset):
 @pytest.mark.default_cassette("test_view_screener_output")
 @pytest.mark.vcr
 @pytest.mark.record_stdout
-@pytest.mark.parametrize(
-    "tab",
-    [True, False],
-)
-def test_view_screener_output(mocker, tab):
+def test_view_screener_output(mocker):
     # MOCK VISUALIZE_OUTPUT
     mocker.patch(
         target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
