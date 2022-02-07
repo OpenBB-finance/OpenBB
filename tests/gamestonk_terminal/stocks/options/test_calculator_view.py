@@ -5,6 +5,7 @@ import pytest
 
 # IMPORTATION INTERNAL
 from gamestonk_terminal.stocks.options import calculator_view
+from gamestonk_terminal import helper_classes
 
 
 @pytest.mark.vcr
@@ -15,7 +16,7 @@ from gamestonk_terminal.stocks.options import calculator_view
 )
 def test_view_calculator(mocker, sell):
     # MOCK CHARTS
-    mocker.patch.object(target=calculator_view.gtff, attribute="USE_ION", new=True)
+    mocker.patch.object(target=helper_classes.gtff, attribute="USE_ION", new=True)
     mocker.patch(target="gamestonk_terminal.stocks.backtesting.bt_view.plt.ion")
     mocker.patch(target="gamestonk_terminal.stocks.backtesting.bt_view.plt.show")
 

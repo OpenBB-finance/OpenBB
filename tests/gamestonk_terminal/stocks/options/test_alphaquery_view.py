@@ -7,12 +7,13 @@ import pytest
 
 # IMPORTATION INTERNAL
 from gamestonk_terminal.stocks.options import alphaquery_view
+from gamestonk_terminal import helper_classes
 
 
 @pytest.mark.vcr
 def test_display_put_call_ratio(mocker):
     # MOCK CHARTS
-    mocker.patch.object(target=alphaquery_view.gtff, attribute="USE_ION", new=True)
+    mocker.patch.object(target=helper_classes.gtff, attribute="USE_ION", new=True)
     mocker.patch(target="gamestonk_terminal.stocks.backtesting.bt_view.plt.ion")
     mocker.patch(target="gamestonk_terminal.stocks.backtesting.bt_view.plt.show")
 
