@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 
 import os
 import json
-from typing import Tuple, Any, Optional
+from typing import Tuple, Any, Optional, List
 import difflib
 import pandas as pd
 import numpy as np
@@ -32,6 +32,7 @@ from gamestonk_terminal.cryptocurrency.due_diligence.binance_model import (
     plot_candles,
 )
 
+from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal.cryptocurrency.due_diligence import coinbase_model
 import gamestonk_terminal.config_terminal as cfg
 from gamestonk_terminal.feature_flags import USE_ION as ion
@@ -1012,7 +1013,12 @@ def plot_chart(
             console.print("")
 
 
-def plot_order_book(bids: np.ndarray, asks: np.ndarray, coin: str) -> None:
+def plot_order_book(
+    bids: np.ndarray,
+    asks: np.ndarray,
+    coin: str,
+    external_axes: Optional[List[plt.Axes]] = None,
+) -> None:
     """
     Plots Bid/Ask. Can be used for Coinbase and Binance
 
@@ -1024,21 +1030,33 @@ def plot_order_book(bids: np.ndarray, asks: np.ndarray, coin: str) -> None:
         array of asks with columns: price, size, cumulative size
     coin : str
         Coin being plotted
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
+    # This plot has 1 axis
+    if not external_axes:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    else:
+        if len(external_axes) != 1:
+            console.print("[red]Expected list of one axis item./n[/red]")
+            return
+        (ax,) = external_axes
 
-    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     ax.plot(bids[:, 0], bids[:, 2], "g", label="bids")
     ax.fill_between(bids[:, 0], bids[:, 2], color="g", alpha=0.4)
+
     ax.plot(asks[:, 0], asks[:, 2], "r", label="asks")
     ax.fill_between(asks[:, 0], asks[:, 2], color="r", alpha=0.4)
-    plt.grid(b=True, which="major", color="#666666", linestyle="-")
-    plt.minorticks_on()
-    plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+
+    # plt.grid(b=True, which="major", color="#666666", linestyle="-")
+    # plt.minorticks_on()
+    # plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
     plt.legend(loc=0)
     plt.xlabel("Price")
     plt.ylabel("Size (Coins) ")
     plt.title(f"Order Book for {coin}")
-    if ion:
-        plt.ion()
-    plt.show()
-    console.print("")
+
+    theme.style_primary_axis(ax)
+
+    if not external_axes:
+        theme.visualize_output()
