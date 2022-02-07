@@ -17,6 +17,7 @@ from gamestonk_terminal.helper_funcs import (
     plot_autoscale,
     print_rich_table,
     reindex_dates,
+    is_intraday,
 )
 from gamestonk_terminal.rich_config import console
 
@@ -78,7 +79,21 @@ def fibonacci_retracement(
         ax1, ax2 = external_axes
 
     ax1.plot(plot_data["Adj Close"])
-    ax1.plot([min_date, max_date], [min_pr, max_pr])
+
+    if is_intraday(ohlc):
+        date_format = "%b %d %H:%M"
+    else:
+        date_format = "%Y-%m-%d"
+    min_date_index = plot_data[
+        plot_data["date"] == min_date.strftime(date_format)
+    ].index
+    max_date_index = plot_data[
+        plot_data["date"] == max_date.strftime(date_format)
+    ].index
+    ax1.plot(
+        [min_date_index, max_date_index],
+        [min_pr, max_pr],
+    )
 
     for i in levels:
         ax1.axhline(y=i, alpha=0.5)
