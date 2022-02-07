@@ -7,7 +7,6 @@ import pandas as pd
 
 # IMPORTATION INTERNAL
 from gamestonk_terminal.stocks.options import syncretism_view
-from gamestonk_terminal import helper_classes
 
 
 @pytest.fixture(scope="module")
@@ -44,11 +43,9 @@ def test_view_available_presets(preset):
     [True, False],
 )
 def test_view_screener_output(mocker, tab):
-    # MOCK CHARTS
-    mocker.patch.object(
-        target=helper_classes.gtff,
-        attribute="USE_TABULATE_DF",
-        new=tab,
+    # MOCK VISUALIZE_OUTPUT
+    mocker.patch(
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
     )
     presets_path = os.path.join(os.path.dirname(syncretism_view.__file__), "presets/")
     syncretism_view.view_screener_output(
@@ -77,10 +74,10 @@ def test_view_screener_output_error(mocker):
 
 @pytest.mark.vcr
 def test_view_historical_greeks(mocker):
-    # MOCK CHARTS
-    mocker.patch.object(target=helper_classes.gtff, attribute="USE_ION", new=True)
-    mocker.patch(target="gamestonk_terminal.stocks.backtesting.bt_view.plt.ion")
-    mocker.patch(target="gamestonk_terminal.stocks.backtesting.bt_view.plt.show")
+    # MOCK VISUALIZE_OUTPUT
+    mocker.patch(
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
+    )
 
     syncretism_view.view_historical_greeks(
         ticker="PM",
