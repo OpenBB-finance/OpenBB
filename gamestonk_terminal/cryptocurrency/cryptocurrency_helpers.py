@@ -1048,13 +1048,10 @@ def plot_order_book(
     ax.plot(asks[:, 0], asks[:, 2], "r", label="asks")
     ax.fill_between(asks[:, 0], asks[:, 2], color="r", alpha=0.4)
 
-    # plt.grid(b=True, which="major", color="#666666", linestyle="-")
-    # plt.minorticks_on()
-    # plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-    plt.legend(loc=0)
-    plt.xlabel("Price")
-    plt.ylabel("Size (Coins) ")
-    plt.title(f"Order Book for {coin}")
+    ax.legend(loc=0)
+    ax.xlabel("Price")
+    ax.ylabel("Size (Coins) ")
+    ax.title(f"Order Book for {coin}")
 
     theme.style_primary_axis(ax)
 
