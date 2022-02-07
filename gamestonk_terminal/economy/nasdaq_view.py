@@ -63,7 +63,7 @@ def display_big_mac_index(
             (ax,) = external_axes
 
         big_mac.plot(ax=ax, marker="o")
-        ax.legend(bbox_to_anchor=(1, 1))
+        ax.legend()
         ax.set_title("Big Mac Index (USD)")
         ax.set_ylabel("Price of Big Mac in USD")
         theme.style_primary_axis(ax)
