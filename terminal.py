@@ -413,10 +413,10 @@ if __name__ == "__main__":
             FAILURES = 0
             fails = {}
             length = len(files)
-            i = 1
+            i = 0
             console.print("[green]Gamestonk Terminal Integrated Tests:\n[/green]")
             for file in files:
-                console.print(f"[green]{i} / {length}[/green]")
+                console.print(f"{file}  {((i/length)*100):.1f}%")
                 try:
                     with suppress_stdout():
                         run_scripts(f"scripts/{file}", test_mode=True)
@@ -425,10 +425,12 @@ if __name__ == "__main__":
                     fails[f"scripts/{file}"] = e
                     FAILURES += 1
                 i += 1
-            for key, value in fails.items():
-                console.print(f"{key}: {value}\n")
+            if fails:
+                console.print("\n[red]Failures:[/red]\n")
+                for key, value in fails.items():
+                    console.print(f"{key}: {value}\n")
             console.print(
-                f"Integration Tests: [green]Successes: {SUCCESSES}[/green] [red]Failures: {FAILURES}[/red]"
+                f"Summary: [green]Successes: {SUCCESSES}[/green] [red]Failures: {FAILURES}[/red]"
             )
         else:
             if ns_parser.debug:
