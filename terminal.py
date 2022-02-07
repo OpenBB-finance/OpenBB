@@ -381,10 +381,10 @@ if __name__ == "__main__":
         type=str,
     )
     parser.add_argument(
-        "-s",
-        "--scripts",
+        "-t",
+        "--test",
         help="Runs all .gst files in /scripts. Send keywords to filter files ran.",
-        dest="scripts",
+        dest="tests",
         nargs="?",
         default="",
         type=str,
@@ -395,7 +395,7 @@ if __name__ == "__main__":
     ns_parser = parser.parse_args()
 
     if ns_parser:
-        if ns_parser.scripts != "":
+        if ns_parser.tests != "":
             os.environ["DEBUG_MODE"] = "true"
             folder = os.path.join(
                 os.path.abspath(os.path.dirname(__file__)), "scripts/"
@@ -405,10 +405,9 @@ if __name__ == "__main__":
                 for name in os.listdir(folder)
                 if os.path.isfile(os.path.join(folder, name))
                 and name.endswith(".gst")
-                and (
-                    ns_parser.scripts is None or ns_parser.scripts in f"{folder}/{name}"
-                )
+                and (ns_parser.tests is None or ns_parser.tests in f"{folder}/{name}")
             ]
+            files.sort()
             SUCCESSES = 0
             FAILURES = 0
             fails = {}
