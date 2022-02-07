@@ -6,6 +6,7 @@ import argparse
 from typing import List
 from datetime import datetime
 
+import webbrowser
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.rich_config import console
@@ -70,6 +71,7 @@ class TechnicalAnalysisController(StockBaseController):
         "adosc",
         "obv",
         "fib",
+        "tv",
     ]
     PATH = "/stocks/ta/"
 
@@ -111,6 +113,7 @@ class TechnicalAnalysisController(StockBaseController):
         help_text = f"""
 [param]Stock: [/param]{stock_str}[cmds]
 
+    tv          open interactive chart on [src][TradingView][/src]
     view        view historical data and trendlines [src][Finviz][/src]
     summary     technical summary report [src][FinBrain][/src]
     recom       recommendation based on Technical Indicators [src][Tradingview][/src]
@@ -152,6 +155,19 @@ class TechnicalAnalysisController(StockBaseController):
         return []
 
     # SPECIFIC
+
+    def call_tv(self, other_args):
+        """Process tv command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="tv",
+            description="""View TradingView for technical analysis. [Source: TradingView]""",
+        )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            webbrowser.open(f"https://www.tradingview.com/chart/?symbol={self.ticker}")
+            console.print("")
 
     def call_view(self, other_args: List[str]):
         """Process view command"""

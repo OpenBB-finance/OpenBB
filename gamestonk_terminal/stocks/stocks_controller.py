@@ -88,8 +88,7 @@ class StocksController(StockBaseController):
     load        load a specific stock ticker and additional info for analysis[/cmds][param]
 
 Stock: [/param]{stock_text}
-{self.add_info}
-[cmds]
+{self.add_info}[cmds]
     quote       view the current price for a specific stock ticker
     candle      view a candle chart for a specific stock ticker
     news        latest news of the company[/cmds] [src][News API][/src]
