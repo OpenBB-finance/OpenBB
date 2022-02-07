@@ -124,6 +124,18 @@ dev = ["pytest", "cogapp", "pre-commit", "wheel"]
 tests = ["pytest"]
 
 [[package]]
+name = "ascii-magic"
+version = "1.6"
+description = "Converts pictures into ASCII art"
+category = "main"
+optional = false
+python-versions = ">=3.5"
+
+[package.dependencies]
+colorama = "*"
+Pillow = "*"
+
+[[package]]
 name = "asgiref"
 version = "3.5.0"
 description = "ASGI specs, helper code, and adapters"
@@ -3933,7 +3945,7 @@ prediction = ["tensorflow"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8,<3.10"
-content-hash = "a3de247df897704bab5ab2fb1af8679e6a53304136a5995f8e687b964e540b90"
+content-hash = "6442e535280a7bf7c0be6c6e857d0f5e6c7ee8765602c52b43b2c2190cad42d7"
 
 [metadata.files]
 absl-py = [
@@ -4029,6 +4041,10 @@ argon2-cffi-bindings = [
     {file = "argon2_cffi_bindings-21.2.0-pp38-pypy38_pp73-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:20ef543a89dee4db46a1a6e206cd015360e5a75822f76df533845c3cbaf72670"},
     {file = "argon2_cffi_bindings-21.2.0-pp38-pypy38_pp73-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:ed2937d286e2ad0cc79a7087d3c272832865f779430e0cc2b4f3718d3159b0cb"},
     {file = "argon2_cffi_bindings-21.2.0-pp38-pypy38_pp73-win_amd64.whl", hash = "sha256:5e00316dabdaea0b2dd82d141cc66889ced0cdcbfa599e8b471cf22c620c329a"},
+]
+ascii-magic = [
+    {file = "ascii_magic-1.6-py3-none-any.whl", hash = "sha256:937447d8677b7428856729c298c0264afd62fc2b8e7ff90c82000492cdc5f8d4"},
+    {file = "ascii_magic-1.6.tar.gz", hash = "sha256:7da5518f7368e73f11e2151a0c060804aa149e267b369b7ee7653fbd7b046a51"},
 ]
 asgiref = [
     {file = "asgiref-3.5.0-py3-none-any.whl", hash = "sha256:88d59c13d634dcffe0510be048210188edd79aeccb6a6c9028cdad6f31d730a9"},

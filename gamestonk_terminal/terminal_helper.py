@@ -10,6 +10,7 @@ import subprocess  # nosec
 import sys
 from datetime import datetime
 from typing import List
+import ascii_magic
 
 import matplotlib.pyplot as plt
 
@@ -92,6 +93,22 @@ def update_terminal():
 
 def about_us():
     """Prints an about us section"""
+    if console.console.width > 200:
+        gst_logo = ascii_magic.from_image_file(
+            "images/gst_logo_lockup_rGreen_with_letters.png",
+            columns=console.console.width,
+            width_ratio=2,
+        )
+    elif console.console.width < 100:
+        gst_logo = ascii_magic.from_image_file(
+            "images/gst_logo_green_white_background.png", columns=50, width_ratio=2
+        )
+    else:
+        gst_logo = ascii_magic.from_image_file(
+            "images/gst_letters.png", columns=console.console.width, width_ratio=2
+        )
+    ascii_magic.to_terminal(gst_logo)
+
     console.print(
         "[green]Thanks for using Gamestonk Terminal. This is our way![/green]\n"
         "\n"
@@ -99,7 +116,7 @@ def about_us():
         "[cyan]Follow our twitter for updates: [/cyan]https://twitter.com/gamestonkt\n"
         "[cyan]Access our landing page: [/cyan]https://gamestonkterminal.github.io/GamestonkTerminal/\n"
         "\n"
-        "[yellow]Partnerships:[/yellow]]\n"
+        "[yellow]Partnerships:[/yellow]\n"
         "[cyan]FinBrain: [/cyan]https://finbrain.tech\n"
         "[cyan]Quiver Quantitative: [/cyan]https://www.quiverquant.com\n"
         "[cyan]SentimentInvestor: [/cyan]https://sentimentinvestor.com\n"
@@ -129,6 +146,8 @@ def bootup():
         logger.exception("%s", type(e).__name__)
         console.print(e, "\n")
 
+
+def welcome_message():
     # Print first welcome message and help
     console.print("\nWelcome to Gamestonk Terminal Beta\n")
 
