@@ -3,9 +3,7 @@
 __docformat__ = "numpy"
 
 from contextlib import contextmanager
-import io
 import sys
-from unittest.mock import patch
 import os
 import difflib
 import logging
@@ -334,8 +332,14 @@ def run_scripts(path: str, test_mode: bool = False):
     """
     if os.path.isfile(path):
         with open(path) as fp:
-            simulate_argv = f"/{'/'.join([line.rstrip() for line in fp])}"
+            # Colin's idea: the reset ruins integrated tests. I propose removing it when testing.
+            # The other option is more complicated because if we try to leave it in we have to use
+            # environment variables, and every reset starts the tests over, leading to an infinite loop.
+            lines = [x for x in fp if not test_mode or "reset" not in x]
+            print(lines)
+            simulate_argv = f"/{'/'.join([line.rstrip() for line in lines])}"
             file_cmds = simulate_argv.replace("//", "/home/").split()
+
             # close the eyes if the user forgets the initial `/`
             if len(file_cmds) > 0:
                 if file_cmds[0][0] != "/":
@@ -356,22 +360,6 @@ def suppress_stdout():
             yield
         finally:
             sys.stdout = old_stdout
-
-
-class Unbuffered(object):
-    def __init__(self, stream):
-        self.stream = stream
-
-    def write(self, data):
-        self.stream.write(data)
-        self.stream.flush()
-
-    def writelines(self, data):
-        self.stream.writelines(data)
-        self.stream.flush()
-
-    def __getattr__(self, attr):
-        return getattr(self.stream, attr)
 
 
 if __name__ == "__main__":
@@ -412,12 +400,7 @@ if __name__ == "__main__":
     ns_parser = parser.parse_args()
 
     if ns_parser:
-        #
         if ns_parser.scripts != "":
-            console.print("[yellow]----------\nScripts\n----------[/yellow]")
-            capturedOutput = io.StringIO()
-            sys.stdout = capturedOutput
-            # If I move the captured output here it no longer works
             os.environ["DEBUG_MODE"] = "true"
             folder = os.path.join(
                 os.path.abspath(os.path.dirname(__file__)), "scripts/"
@@ -429,27 +412,24 @@ if __name__ == "__main__":
             ]
             SUCCESSES = 0
             FAILURES = 0
-            # mocker.patch(target="gamestonk_terminal.feature_flags.USE_PROMPT_TOOLKIT",new=True,)
+            fails = {}
 
-            # with suppress_stdout():
-            # sys.stdout = sys.stdout = Unbuffered(sys.stdout)
-            # sys.stderr = sys.stdout = Unbuffered(sys.stderr)
-            # with console.capture() as capture:
-            # with patch.object(console, "print", return_value=None) as mock_method:
-            for file in files:
-                if file.endswith(".gst"):
-                    if ns_parser.scripts is None or ns_parser.scripts in file:
-                        try:
-                            run_scripts(f"scripts/{file}", test_mode=True)
-                            SUCCESSES += 1
-                        except Exception as e:
-                            console.print(f"Error: {e}")
-                            FAILURES += 1
+            with suppress_stdout():
+                for file in files:
+                    if file.endswith(".gst"):
+                        if ns_parser.scripts is None or ns_parser.scripts in file:
+                            try:
+                                run_scripts(f"scripts/{file}", test_mode=True)
+                                SUCCESSES += 1
+                            except Exception as e:
+                                fails[f"scripts/{file}"] = e
+                                FAILURES += 1
+            for fail in fails:
+                console.print(f"{fail}: {fails[fail]}\n")
             console.print(
                 f"Integration Tests: [green]Successes: {SUCCESSES}[/green] [red]Failures: {FAILURES}[/red]"
             )
         else:
-            console.print("[yellow]----------\nElse\n----------[/yellow]")
             if ns_parser.debug:
                 os.environ["DEBUG_MODE"] = "true"
             if isinstance(ns_parser.path, list) and ns_parser.path[0].endswith(".gst"):
