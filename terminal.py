@@ -3,11 +3,12 @@
 __docformat__ = "numpy"
 
 from contextlib import contextmanager
+import io
+import sys
 from unittest.mock import patch
 import os
 import difflib
 import logging
-import sys
 import argparse
 from typing import List
 import pytz
@@ -21,8 +22,10 @@ from gamestonk_terminal.helper_funcs import (
     get_user_timezone_or_invalid,
     replace_user_timezone,
 )
+
 from gamestonk_terminal.loggers import setup_logging
 from gamestonk_terminal.menu import session
+
 from gamestonk_terminal.terminal_helper import (
     about_us,
     bootup,
@@ -409,8 +412,12 @@ if __name__ == "__main__":
     ns_parser = parser.parse_args()
 
     if ns_parser:
+        #
         if ns_parser.scripts != "":
-
+            console.print("[yellow]----------\nScripts\n----------[/yellow]")
+            capturedOutput = io.StringIO()
+            sys.stdout = capturedOutput
+            # If I move the captured output here it no longer works
             os.environ["DEBUG_MODE"] = "true"
             folder = os.path.join(
                 os.path.abspath(os.path.dirname(__file__)), "scripts/"
@@ -425,8 +432,8 @@ if __name__ == "__main__":
             # mocker.patch(target="gamestonk_terminal.feature_flags.USE_PROMPT_TOOLKIT",new=True,)
 
             # with suppress_stdout():
-            sys.stdout = sys.stdout = Unbuffered(sys.stdout)
-            sys.stderr = sys.stdout = Unbuffered(sys.stderr)
+            # sys.stdout = sys.stdout = Unbuffered(sys.stdout)
+            # sys.stderr = sys.stdout = Unbuffered(sys.stderr)
             # with console.capture() as capture:
             # with patch.object(console, "print", return_value=None) as mock_method:
             for file in files:
@@ -442,6 +449,7 @@ if __name__ == "__main__":
                 f"Integration Tests: [green]Successes: {SUCCESSES}[/green] [red]Failures: {FAILURES}[/red]"
             )
         else:
+            console.print("[yellow]----------\nElse\n----------[/yellow]")
             if ns_parser.debug:
                 os.environ["DEBUG_MODE"] = "true"
             if isinstance(ns_parser.path, list) and ns_parser.path[0].endswith(".gst"):
