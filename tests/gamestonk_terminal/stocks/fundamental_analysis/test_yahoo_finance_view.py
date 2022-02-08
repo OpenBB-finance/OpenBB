@@ -35,8 +35,11 @@ def vcr_config():
     "use_tab",
     [True, False],
 )
-def test_call_func(func, monkeypatch, use_tab):
-    monkeypatch.setattr(yahoo_finance_view.gtff, "USE_TABULATE_DF", use_tab)
+def test_call_func(func, mocker):
+    # MOCK VISUALIZE_OUTPUT
+    mocker.patch(
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
+    )
     getattr(yahoo_finance_view, func)(ticker="PM")
 
 

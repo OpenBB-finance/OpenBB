@@ -38,10 +38,13 @@ def test_price_target_from_analysts_raw():
 @pytest.mark.vcr
 @pytest.mark.parametrize("start", [datetime.strptime("2021-12-05", "%Y-%m-%d")])
 @pytest.mark.parametrize("interval", [1440])
-def test_price_target_from_analysts_plt(capsys, interval, mocker, start, monkeypatch):
+def test_price_target_from_analysts_plt(capsys, interval, mocker, start):
     mock_show = mocker.Mock()
-    mocker.patch(target="matplotlib.pyplot.show", new=mock_show)
-    monkeypatch.setattr(business_insider_view.gtff, "USE_ION", False)
+
+    # MOCK VISUALIZE_OUTPUT
+    mocker.patch(
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
+    )
 
     ticker = "TSLA"
     stock = load(ticker=ticker, start=start, interval=interval)

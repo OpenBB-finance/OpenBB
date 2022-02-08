@@ -2,8 +2,9 @@
 __docformat__ = "numpy"
 import os
 import json
-from importlib import machinery, util
 from typing import Union, List, Dict, Optional
+
+from importlib import machinery, util
 import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib import font_manager
@@ -294,14 +295,15 @@ class TerminalStyle:
         )
 
     # pylint: disable=import-outside-toplevel
-    def visualize_output(self):
+    def visualize_output(self, force_tight_layout: bool = True):
         """Show chart in an interactive widget."""
         import gamestonk_terminal.feature_flags as gtff
         from gamestonk_terminal.rich_config import console
 
         if gtff.USE_WATERMARK:
             self.add_label(plt.gcf())
-        plt.tight_layout(pad=self.tight_layout_padding)
+        if force_tight_layout:
+            plt.tight_layout(pad=self.tight_layout_padding)
         if gtff.USE_ION:
             plt.ion()
         plt.show()

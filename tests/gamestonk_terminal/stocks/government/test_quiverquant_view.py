@@ -70,15 +70,12 @@ def vcr_config():
         ),
     ],
 )
-def test_call_func(func, kwargs_dict, mocker, use_tab):
-    mocker.patch.object(target=quiverquant_view.gtff, attribute="USE_ION", new=True)
-    mocker.patch(target="gamestonk_terminal.stocks.government.quiverquant_view.plt.ion")
+def test_call_func(func, kwargs_dict, mocker):
+    # MOCK VISUALIZE_OUTPUT
     mocker.patch(
-        target="gamestonk_terminal.stocks.government.quiverquant_view.plt.show"
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
     )
-    mocker.patch.object(
-        target=quiverquant_view.gtff, attribute="USE_TABULATE_DF", new=use_tab
-    )
+
     getattr(quiverquant_view, func)(**kwargs_dict)
 
 
