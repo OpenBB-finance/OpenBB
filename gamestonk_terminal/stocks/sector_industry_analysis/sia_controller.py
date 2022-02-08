@@ -244,7 +244,20 @@ class SectorIndustryAnalysisController(BaseController):
             "ncf": "Net Cash Flow",
         },
     }
-    mktcap_choices = ["Small", "Mid", "Large", "small", "mid", "large"]
+    mktcap_choices = [
+        "Nano",
+        "Micro",
+        "Small",
+        "Mid",
+        "Large",
+        "Mega",
+        "nano",
+        "micro",
+        "small",
+        "mid",
+        "large",
+        "mega",
+    ]
     clear_choices = ["industry", "sector", "country", "mktcap"]
     period_choices = [
         "Annual",
