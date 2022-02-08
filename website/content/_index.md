@@ -61,7 +61,7 @@ The MIT Open Source license allows any user to endlessly customize the suite for
 
 ### Jupyter Labs Enabled
 
-Work in developer mode with Jupyter Labs, or share reports and customized tools with .ipynb Notebook files. Run multiple dashboards or terminals in parralel. 
+Work in developer mode with Jupyter Labs, or share reports and customized tools with .ipynb Notebook files. Run multiple dashboards or terminals in parallel. 
 
 {{< /columns >}}
 
