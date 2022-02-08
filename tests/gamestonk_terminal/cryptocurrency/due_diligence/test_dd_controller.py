@@ -320,7 +320,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             dict(),
         ),
         (
-            "call_book",
+            "call_binbook",
             [],
             "binance_view.display_order_book",
             [],
