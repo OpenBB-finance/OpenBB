@@ -1048,7 +1048,7 @@ def plot_order_book(
     ax.plot(asks[:, 0], asks[:, 2], "r", label="asks")
     ax.fill_between(asks[:, 0], asks[:, 2], color="r", alpha=0.4)
 
-    ax.legend(loc=0)
+    ax.legend(loc="best")
     ax.xlabel("Price")
     ax.ylabel("Size (Coins) ")
     ax.title(f"Order Book for {coin}")
