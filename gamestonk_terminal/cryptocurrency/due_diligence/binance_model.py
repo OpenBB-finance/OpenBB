@@ -6,16 +6,12 @@ import logging
 from collections import defaultdict
 from typing import List, Tuple, Union
 
-import matplotlib.pyplot as plt
-import mplfinance as mpf
 import pandas as pd
 from binance.client import Client
 from binance.exceptions import BinanceAPIException
 
 import gamestonk_terminal.config_terminal as cfg
 from gamestonk_terminal.decorators import log_start_end
-from gamestonk_terminal.feature_flags import USE_ION as ion
-from gamestonk_terminal.helper_funcs import plot_autoscale
 from gamestonk_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -132,40 +128,3 @@ def show_available_pairs_for_given_symbol(
             return k, v
     console.print(f"Couldn't find anything for symbol {symbol_upper}\n")
     return None, []
-
-
-@log_start_end(log=logger)
-def plot_candles(candles_df: pd.DataFrame, title: str) -> None:
-    """Plot candle chart from dataframe. [Source: Binance]
-
-    Parameters
-    ----------
-    candles_df: pd.DataFrame
-        Dataframe containing time and OHLCV
-    title: str
-        title of graph
-    """
-
-    if ion:
-        plt.ion()
-
-    mpf.plot(
-        candles_df,
-        type="candle",
-        style=cfg.theme.mpf_style,
-        volume=True,
-        title=f"\n{title}",
-        xrotation=10,
-        figratio=(10, 7),
-        figscale=1.10,
-        scale_padding={"left": 0.3, "right": 1, "top": 0.8, "bottom": 0.8},
-        figsize=(plot_autoscale()),
-        update_width_config=dict(
-            candle_linewidth=0.6,
-            candle_width=0.8,
-            volume_linewidth=0.8,
-            volume_width=0.8,
-        ),
-    )
-
-    console.print("")

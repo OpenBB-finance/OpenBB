@@ -827,7 +827,8 @@ class OverviewController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""Shows list of crypto indexes from CoinGecko.
-            Each crypto index is made up of a selection of cryptocurrencies, grouped together and weighted by market cap.
+            Each crypto index is made up of a selection of cryptocurrencies,
+            grouped together and weighted by market cap.
             You can display only N number of indexes with --limit parameter.
             You can sort data by Rank, Name, Id, Market, Last, MultiAsset with --sort
             and also with --descend flag to sort descending.
@@ -887,7 +888,8 @@ class OverviewController(BaseController):
                You can sort by Rank, Market, Symbol, Price, Pct_Change_24h, Contract_Type, Basis, Spread, Funding_Rate,
                Volume_24h with --sort and also with --descend flag to set it to sort descending.
                Displays:
-                   Rank, Market, Symbol, Price, Pct_Change_24h, Contract_Type, Basis, Spread, Funding_Rate, Volume_24h""",
+                   Rank, Market, Symbol, Price, Pct_Change_24h, Contract_Type, Basis, Spread, Funding_Rate, Volume_24h
+                   """,
         )
 
         parser.add_argument(
