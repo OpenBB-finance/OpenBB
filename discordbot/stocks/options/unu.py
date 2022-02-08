@@ -1,13 +1,14 @@
-import discord
+import df2img
+import disnake
 import numpy as np
 import pandas as pd
 import requests
-from tabulate import tabulate
-
-from gamestonk_terminal.helper_funcs import get_user_agent
+from PIL import Image
 
 import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import logger
+from discordbot.config_discordbot import logger
+from discordbot.helpers import autocrop_image
+from gamestonk_terminal.helper_funcs import get_user_agent
 
 
 async def unu_command(ctx, num: int = None):
@@ -73,32 +74,40 @@ async def unu_command(ctx, num: int = None):
         )
 
         df = df.replace({"2021-", "2022-"}, "", regex=True)
-
-        report = (
-            "```"
-            + tabulate(
-                df,
-                headers=["T", "Exp", "ST", "C/P", "V/O", "Vol", "OI"],
-                tablefmt="fancy_grid",
-                showindex=False,
-                floatfmt=["", "", ".1f", "", ".1f", ".0f", ".0f", ".2f", ".2f"],
-            )
-            + "```"
+        df.set_index("Ticker", inplace=True)
+        dindex = len(df.index)
+        fig = df2img.plot_dataframe(
+            df,
+            fig_size=(800, (40 + (40 * dindex))),
+            col_width=[3, 3, 3, 3, 3, 3, 3],
+            tbl_cells=dict(
+                align="left",
+                height=35,
+            ),
+            template="plotly_dark",
+            font=dict(
+                family="Consolas",
+                size=20,
+            ),
+            paper_bgcolor="rgba(0, 0, 0, 0)",
         )
-        embed = discord.Embed(
-            title="Unusual Options",
-            description=report,
-            colour=cfg.COLOR,
-        )
+        imagefile = "opt-unu.png"
+        df2img.save_dataframe(fig=fig, filename=imagefile)
+        image = Image.open(imagefile)
+        image = autocrop_image(image, 0)
+        image.save(imagefile, "PNG", quality=100)
+        image = disnake.File(imagefile)
+        title = "Unusual Options"
+        embed = disnake.Embed(title=title, colour=cfg.COLOR)
+        embed.set_image(url=f"attachment://{imagefile}")
         embed.set_author(
             name=cfg.AUTHOR_NAME,
             icon_url=cfg.AUTHOR_ICON_URL,
         )
-
-        await ctx.send(embed=embed)
+        await ctx.send(embed=embed, file=image)
 
     except Exception as e:
-        embed = discord.Embed(
+        embed = disnake.Embed(
             title="ERROR Unusual Options",
             colour=cfg.COLOR,
             description=e,
@@ -108,4 +117,4 @@ async def unu_command(ctx, num: int = None):
             icon_url=cfg.AUTHOR_ICON_URL,
         )
 
-        await ctx.send(embed=embed)
+        await ctx.send(embed=embed, delete_after=30.0)

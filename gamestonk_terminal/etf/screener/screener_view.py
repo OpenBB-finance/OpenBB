@@ -41,7 +41,7 @@ def view_screener(
 
     print_rich_table(
         screened_data.head(num_to_show).fillna(""),
-        headers=screened_data.columns,
+        headers=list(screened_data.columns),
         show_index=True,
         title="Display Screener Output",
     )

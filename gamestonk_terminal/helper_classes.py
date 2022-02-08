@@ -2,12 +2,13 @@
 __docformat__ = "numpy"
 import os
 import json
+from importlib import machinery, util
 from typing import Union, List, Dict, Optional
 
 from importlib import machinery, util
 import matplotlib
 import matplotlib.pyplot as plt
-from matplotlib import font_manager
+from matplotlib import font_manager, ticker
 
 
 class LineAnnotateDrawer:
@@ -112,6 +113,8 @@ class TerminalStyle:
 
     xticks_rotation: str = ""
     tight_layout_padding: int = 0
+    line_width: float = 1.5
+    volume_bar_width: float = 0.8
 
     def __init__(
         self,
@@ -167,6 +170,8 @@ class TerminalStyle:
         else:
             with open(self.console_styles_available["dark"]) as stylesheet:
                 self.console_style = json.load(stylesheet)
+
+        self.applyMPLstyle()
 
     def load_custom_fonts_from_folder(self, folder: str) -> None:
         """Load custom fonts form folder.
@@ -225,6 +230,8 @@ class TerminalStyle:
         self.mpf_style["mavcolors"] = plt.rcParams["axes.prop_cycle"].by_key()["color"]
         self.down_color = self.mpf_style["marketcolors"]["volume"]["down"]
         self.up_color = self.mpf_style["marketcolors"]["volume"]["up"]
+        self.line_width = plt.rcParams["lines.linewidth"]
+        self.volume_bar_width = self.mpl_rcparams["volume_bar_width"]
 
     def get_colors(self, reverse: bool = False) -> List:
         """Get hex color sequence from the stylesheet."""
@@ -234,7 +241,12 @@ class TerminalStyle:
             colors.reverse()
         return colors
 
-    def style_primary_axis(self, ax: plt.Axes):
+    def style_primary_axis(
+        self,
+        ax: plt.Axes,
+        data_index: Optional[List[int]] = None,
+        tick_labels: Optional[List[str]] = None,
+    ):
         """Apply styling to a primary axis.
 
         Parameters
@@ -244,6 +256,19 @@ class TerminalStyle:
         """
         ax.yaxis.set_label_position("right")
         ax.grid(axis="both", visible=True, zorder=0)
+        if (
+            all([data_index, tick_labels])
+            and isinstance(data_index, list)
+            and isinstance(tick_labels, list)
+        ):
+            ax.xaxis.set_major_formatter(
+                ticker.FuncFormatter(
+                    lambda value, _: tick_labels[int(value)]
+                    if int(value) in data_index
+                    else ""
+                )
+            )
+            ax.xaxis.set_major_locator(ticker.MaxNLocator(6, integer=True))
         ax.tick_params(axis="x", labelrotation=self.xticks_rotation)
 
     def style_twin_axis(self, ax: plt.Axes):
@@ -307,4 +332,4 @@ class TerminalStyle:
         if gtff.USE_ION:
             plt.ion()
         plt.show()
-        console.print("")
+        console.print()

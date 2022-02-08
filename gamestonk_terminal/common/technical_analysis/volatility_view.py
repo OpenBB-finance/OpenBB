@@ -3,79 +3,95 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import Optional, List
 
 import matplotlib.pyplot as plt
 import pandas as pd
-from pandas.plotting import register_matplotlib_converters
 
 from gamestonk_terminal.config_terminal import theme
-from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.common.technical_analysis import volatility_model
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.decorators import log_start_end
-from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
+from gamestonk_terminal.helper_funcs import export_data, plot_autoscale, reindex_dates
 from gamestonk_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
-register_matplotlib_converters()
-
 
 @log_start_end(log=logger)
 def display_bbands(
-    df_stock: pd.DataFrame,
+    ohlc: pd.DataFrame,
+    ticker: str = "",
     length: int = 15,
     n_std: float = 2,
     mamode: str = "sma",
-    ticker: str = "",
     export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Show bollinger bands
 
     Parameters
     ----------
+    ohlc : pd.DataFrame
+        Dataframe of stock prices
     ticker : str
         Ticker
-    df_stock : pd.DataFrame
-        Dataframe of stock prices
     length : int
         Length of window to calculate BB
     n_std : float
         Number of standard deviations to show
     mamode : str
         Method of calculating average
-    s_interval : str
-        Interval of stock data
     export : str
         Format of export file
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
-    df_ta = volatility_model.bbands(df_stock["Adj Close"], length, n_std, mamode)
+    df_ta = volatility_model.bbands(ohlc["Adj Close"], length, n_std, mamode)
+    plot_data = pd.merge(ohlc, df_ta, how="outer", left_index=True, right_index=True)
+    plot_data = reindex_dates(plot_data)
 
-    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    # This plot has 2 axes
+    if not external_axes:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    else:
+        if len(external_axes) != 1:
+            console.print("[red]Expected list of 2 axis items./n[/red]")
+            return
+        (ax,) = external_axes
+
     ax.plot(
-        df_stock.index,
-        df_stock["Adj Close"].values,
+        plot_data.index,
+        plot_data["Adj Close"].values,
     )
-    ax.plot(df_ta.index, df_ta.iloc[:, 0].values, theme.down_color, linewidth=0.7)
-    ax.plot(df_ta.index, df_ta.iloc[:, 1].values, ls="--", linewidth=0.7)
-    ax.plot(df_ta.index, df_ta.iloc[:, 2].values, theme.up_color, linewidth=0.7)
+    ax.plot(
+        plot_data.index,
+        plot_data[df_ta.columns[0]].values,
+        theme.down_color,
+        linewidth=0.7,
+    )
+    ax.plot(plot_data.index, plot_data[df_ta.columns[1]].values, ls="--", linewidth=0.7)
+    ax.plot(
+        plot_data.index,
+        plot_data[df_ta.columns[2]].values,
+        theme.up_color,
+        linewidth=0.7,
+    )
     ax.set_title(f"{ticker} Bollinger Bands")
-    ax.set_xlim(df_stock.index[0], df_stock.index[-1])
+    ax.set_xlim(plot_data.index[0], plot_data.index[-1])
     ax.set_ylabel("Share Price ($)")
-    ax.yaxis.set_label_position("right")
-    ax.grid(visible=True, zorder=0)
-    ax.tick_params(axis="x", rotation=10)
-
     ax.legend([ticker, df_ta.columns[0], df_ta.columns[1], df_ta.columns[2]])
     ax.fill_between(
         df_ta.index, df_ta.iloc[:, 0].values, df_ta.iloc[:, 2].values, alpha=0.1
     )
+    theme.style_primary_axis(
+        ax,
+        data_index=plot_data.index.to_list(),
+        tick_labels=plot_data["date"].to_list(),
+    )
 
-    if gtff.USE_ION:
-        plt.ion()
-    fig.tight_layout(pad=1)
-    plt.show()
-    console.print("")
+    if external_axes is None:
+        theme.visualize_output()
 
     export_data(
         export,
@@ -87,57 +103,77 @@ def display_bbands(
 
 @log_start_end(log=logger)
 def display_donchian(
-    df_stock: pd.DataFrame,
+    ohlc: pd.DataFrame,
+    ticker: str = "",
     upper_length: int = 20,
     lower_length: int = 20,
-    ticker: str = "",
     export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Show donchian channels
 
     Parameters
     ----------
+    ohlc : pd.DataFrame
+        Dataframe of stock prices
     ticker : str
         Ticker
-    df_stock : pd.DataFrame
-        Dataframe of stock prices
     upper_length : int
         Length of window to calculate upper channel
     lower_length : int
         Length of window to calculate lower channel
-    s_interval : str
-        Interval of stock data
     export : str
         Format of export file
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
     df_ta = volatility_model.donchian(
-        df_stock["High"], df_stock["Low"], upper_length, lower_length
+        ohlc["High"], ohlc["Low"], upper_length, lower_length
     )
+    plot_data = pd.merge(ohlc, df_ta, how="outer", left_index=True, right_index=True)
+    plot_data = reindex_dates(plot_data)
 
-    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    ax.plot(df_stock.index, df_stock["Adj Close"].values)
-    ax.plot(df_ta.index, df_ta.iloc[:, 0].values, linewidth=0.7, label="Upper")
-    ax.plot(df_ta.index, df_ta.iloc[:, 1].values, linewidth=0.7, ls="--")
-    ax.plot(df_ta.index, df_ta.iloc[:, 2].values, linewidth=0.7, label="Lower")
-    ax.set_title(f"{ticker} donchian")
-    ax.set_xlim(df_stock.index[0], df_stock.index[-1])
-    ax.set_ylabel("Price ($)")
-    ax.yaxis.set_label_position("right")
-    ax.grid(visible=True, zorder=0)
-    ax.tick_params(axis="x", rotation=10)
+    # This plot has 1 axis
+    if external_axes is None:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    else:
+        if len(external_axes) != 1:
+            console.print("[red]Expected list of 1 axis item./n[/red]")
+            return
+        (ax,) = external_axes
 
-    ax.legend([ticker, df_ta.columns[0], df_ta.columns[1], df_ta.columns[2]])
+    ax.plot(plot_data.index, plot_data["Adj Close"].values)
+    ax.plot(
+        plot_data.index,
+        plot_data[df_ta.columns[0]].values,
+        linewidth=0.7,
+        label="Upper",
+    )
+    ax.plot(plot_data.index, plot_data[df_ta.columns[1]].values, linewidth=0.7, ls="--")
+    ax.plot(
+        plot_data.index,
+        plot_data[df_ta.columns[2]].values,
+        linewidth=0.7,
+        label="Lower",
+    )
     ax.fill_between(
-        df_ta.index, df_ta.iloc[:, 0].values, df_ta.iloc[:, 2].values, alpha=0.1
+        plot_data.index,
+        plot_data[df_ta.columns[0]].values,
+        plot_data[df_ta.columns[2]].values,
+        alpha=0.1,
+    )
+    ax.set_title(f"{ticker} donchian")
+    ax.set_xlim(plot_data.index[0], plot_data.index[-1])
+    ax.set_ylabel("Price ($)")
+    ax.legend([ticker, df_ta.columns[0], df_ta.columns[1], df_ta.columns[2]])
+    theme.style_primary_axis(
+        ax,
+        data_index=plot_data.index.to_list(),
+        tick_labels=plot_data["date"].to_list(),
     )
 
-    if gtff.USE_ION:
-        plt.ion()
-
-    fig.tight_layout(pad=1)
-    plt.legend()
-    plt.show()
-    console.print("")
+    if external_axes is None:
+        theme.visualize_output()
 
     export_data(
         export,
@@ -149,20 +185,21 @@ def display_donchian(
 
 @log_start_end(log=logger)
 def view_kc(
-    df_stock: pd.DataFrame,
+    ohlc: pd.DataFrame,
     length: int = 20,
     scalar: float = 2,
     mamode: str = "ema",
     offset: int = 0,
     s_ticker: str = "",
     export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """View Keltner Channels Indicator
 
     Parameters
     ----------
 
-    df_stock : pd.DataFrame
+    ohlc : pd.DataFrame
         Dataframe of stock prices
     length : int
         Length of window
@@ -174,40 +211,63 @@ def view_kc(
         Ticker
     export : str
         Format to export data
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (2 axes are expected in the list), by default None
     """
     df_ta = volatility_model.kc(
-        df_stock["High"],
-        df_stock["Low"],
-        df_stock["Adj Close"],
+        ohlc["High"],
+        ohlc["Low"],
+        ohlc["Adj Close"],
         length,
         scalar,
         mamode,
         offset,
     )
-    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    ax.plot(df_stock.index, df_stock["Adj Close"].values)
-    ax.plot(df_ta.index, df_ta.iloc[:, 0].values, linewidth=0.7, label="Upper")
-    ax.plot(df_ta.index, df_ta.iloc[:, 1].values, linewidth=0.7, ls="--")
-    ax.plot(df_ta.index, df_ta.iloc[:, 2].values, linewidth=0.7, label="Lower")
-    ax.set_title(f"{s_ticker} Keltner Channels")
-    ax.set_xlim(df_stock.index[0], df_stock.index[-1])
-    ax.set_ylabel("Price")
-    ax.yaxis.set_label_position("right")
-    ax.grid(visible=True, zorder=0)
-    ax.tick_params(axis="x", rotation=10)
+    plot_data = pd.merge(ohlc, df_ta, how="outer", left_index=True, right_index=True)
+    plot_data = reindex_dates(plot_data)
 
-    ax.legend([s_ticker, df_ta.columns[0], df_ta.columns[1], df_ta.columns[2]])
+    # This plot has 1 axis
+    if external_axes is None:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    else:
+        if len(external_axes) != 1:
+            console.print("[red]Expected list of 1 axis item./n[/red]")
+            return
+        (ax,) = external_axes
+
+    ax.plot(plot_data.index, plot_data["Adj Close"].values)
+    ax.plot(
+        plot_data.index,
+        plot_data[df_ta.columns[0]].values,
+        linewidth=0.7,
+        label="Upper",
+    )
+    ax.plot(plot_data.index, plot_data[df_ta.columns[1]].values, linewidth=0.7, ls="--")
+    ax.plot(
+        plot_data.index,
+        plot_data[df_ta.columns[2]].values,
+        linewidth=0.7,
+        label="Lower",
+    )
     ax.fill_between(
-        df_ta.index, df_ta.iloc[:, 0].values, df_ta.iloc[:, 2].values, alpha=0.1
+        plot_data.index,
+        plot_data[df_ta.columns[0]].values,
+        plot_data[df_ta.columns[2]].values,
+        alpha=0.1,
+    )
+    ax.set_title(f"{s_ticker} Keltner Channels")
+    ax.set_xlim(plot_data.index[0], plot_data.index[-1])
+    ax.set_ylabel("Price")
+    ax.legend([s_ticker, df_ta.columns[0], df_ta.columns[1], df_ta.columns[2]])
+    theme.style_primary_axis(
+        ax,
+        data_index=plot_data.index.to_list(),
+        tick_labels=plot_data["date"].to_list(),
     )
 
-    if gtff.USE_ION:
-        plt.ion()
-    fig.tight_layout(pad=1)
-    plt.legend()
-    plt.show()
+    if external_axes is None:
+        theme.visualize_output()
 
-    console.print("")
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),

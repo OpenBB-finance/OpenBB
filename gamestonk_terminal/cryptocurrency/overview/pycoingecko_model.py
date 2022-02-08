@@ -144,9 +144,11 @@ SORT_VALUES = [
 def coin_formatter(n):
     # TODO: can be improved
     coins = []
+    re_str = "small/(.*)(.jpg|.png|.JPG|.PNG)"
     for coin in n:
-        coin_stripped = re.search("small/(.*)(.jpg|.png|.JPG|.PNG)", coin).group(1)
-        coins.append(coin_stripped)
+        if re.search(re_str, coin):
+            coin_stripped = re.search(re_str, coin).group(1)
+            coins.append(coin_stripped)
     return ",".join(coins)
 
 

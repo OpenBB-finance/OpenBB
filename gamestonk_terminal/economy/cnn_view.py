@@ -1,13 +1,14 @@
 """ CNN View """
 __docformat__ = "numpy"
 
+from typing import Optional, List
 import logging
 import os
 
 import matplotlib.pyplot as plt
 from pandas.plotting import register_matplotlib_converters
 
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.economy import cnn_model
@@ -20,7 +21,9 @@ register_matplotlib_converters()
 
 
 @log_start_end(log=logger)
-def fear_and_greed_index(indicator: str, export: str):
+def fear_and_greed_index(
+    indicator: str, export: str, external_axes: Optional[List[plt.Axes]] = None
+):
     """Display CNN Fear And Greed Index. [Source: CNN Business]
 
     Parameters
@@ -31,22 +34,31 @@ def fear_and_greed_index(indicator: str, export: str):
         Safe Heaven Demand, and Index.
     export : str
         Export plot to png,jpg,pdf file
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
-    fig = plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    if external_axes is None:
+        fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+
+    else:
+        if len(external_axes) != 1:
+            console.print("[red]Expected list of 1 axis items./n[/red]")
+            return
+        (ax,) = external_axes
 
     report, im = cnn_model.get_feargreed_report(indicator, fig)
 
     console.print(report)
 
+    # TODO: Reformat to new layout?
+    theme.style_primary_axis(ax)
+    if external_axes is None:
+        theme.visualize_output()
     if indicator:
-        plt.imshow(im)
+        ax.imshow(im)
 
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "feargreed",
     )
-
-    if gtff.USE_ION:
-        plt.ion()
-    plt.show()

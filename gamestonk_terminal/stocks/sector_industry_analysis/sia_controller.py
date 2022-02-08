@@ -227,8 +227,8 @@ class SectorIndustryAnalysisController(BaseController):
         i_ = "[/unvl]" if not self.industry else ""
         c_ = "[/unvl]" if not self.country else ""
         m_ = "[/unvl]" if not self.mktcap else ""
-        has_no_tickers = "[unvl]" if len(self.tickers) == 0 else ""
-        has_no_tickers_ = "[unvl/]" if len(self.tickers) == 0 else ""
+        has_no_tickers = "[unvl]" if len(self.tickers) == 0 else "[menu]"
+        has_no_tickers_ = "[unvl/]" if len(self.tickers) == 0 else "[/menu]"
         help_text = f"""[cmds]
     load          load a specific ticker and all it's corresponding parameters
 
@@ -257,7 +257,7 @@ class SectorIndustryAnalysisController(BaseController):
     metric        visualise financial metric across filters selected[/cmds]
 {has_no_tickers}
 [param]Returned tickers: [/param]{', '.join(self.tickers)}
-[menu]>   ca            take these to comparison analysis menu[/menu]
+>   ca            take these to comparison analysis menu
 {has_no_tickers_}"""
         console.print(text=help_text, menu="Stocks - Sector and Industry Analysis")
 

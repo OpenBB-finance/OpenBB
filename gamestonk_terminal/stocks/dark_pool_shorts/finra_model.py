@@ -274,15 +274,18 @@ def getATSdata(num_tickers_to_filter: int, tier_ats: str) -> Tuple[pd.DataFrame,
         .sort_values()[-num_tickers_to_filter:]
         .index
     ):
-        slope = stats.linregress(
-            df_ats[df_ats["issueSymbolIdentifier"] == symbol][
-                "weekStartDateInt"
-            ].values,
-            df_ats[df_ats["issueSymbolIdentifier"] == symbol][
-                "totalWeeklyShareQuantity"
-            ].values,
-        )[0]
-        d_ats_reg[symbol] = slope
+        try:
+            slope = stats.linregress(
+                df_ats[df_ats["issueSymbolIdentifier"] == symbol][
+                    "weekStartDateInt"
+                ].values,
+                df_ats[df_ats["issueSymbolIdentifier"] == symbol][
+                    "totalWeeklyShareQuantity"
+                ].values,
+            )[0]
+            d_ats_reg[symbol] = slope
+        except Exception:
+            pass
 
     return df_ats, d_ats_reg
 

@@ -221,6 +221,7 @@ def darkpool_otc(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
+    # TODO: Improve command logic to be faster and more useful
     df_ats, d_ats_reg = finra_model.getATSdata(num, tier)
 
     top_ats_tickers = list(

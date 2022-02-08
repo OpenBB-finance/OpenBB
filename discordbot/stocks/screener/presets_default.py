@@ -1,7 +1,7 @@
-import discord
+import disnake
 
 import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import logger
+from discordbot.config_discordbot import logger
 from discordbot.stocks.screener import screener_options as so
 
 
@@ -16,7 +16,7 @@ async def presets_default_command(ctx):
         description = ""
         for signame, sigdesc in so.d_signals_desc.items():
             description += f"**{signame}:** *{sigdesc}*\n"
-        embed = discord.Embed(
+        embed = disnake.Embed(
             title="Stocks: Screener Default Presets",
             description=description,
             colour=cfg.COLOR,
@@ -29,7 +29,7 @@ async def presets_default_command(ctx):
         await ctx.send(embed=embed)
 
     except Exception as e:
-        embed = discord.Embed(
+        embed = disnake.Embed(
             title="ERROR Stocks: Screener Presets",
             colour=cfg.COLOR,
             description=e,
@@ -39,4 +39,4 @@ async def presets_default_command(ctx):
             icon_url=cfg.AUTHOR_ICON_URL,
         )
 
-        await ctx.send(embed=embed)
+        await ctx.send(embed=embed, delete_after=30.0)

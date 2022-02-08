@@ -3,12 +3,12 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import List, Optional
 
 import matplotlib.pyplot as plt
-from matplotlib import dates as mdates
 from matplotlib import ticker
 
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import read_data_file
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
@@ -28,7 +28,9 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_grouped_defi_protocols(num: int = 50, export: str = "") -> None:
+def display_grouped_defi_protocols(
+    num: int = 50, export: str = "", external_axes: Optional[List[plt.Axes]] = None
+) -> None:
     """Display top dApps (in terms of TVL) grouped by chain.
     [Source: https://docs.llama.fi/api]
 
@@ -38,33 +40,53 @@ def display_grouped_defi_protocols(num: int = 50, export: str = "") -> None:
         Number of top dApps to display
     export : str
         Export dataframe data to csv,json,xlsx file
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
     df = llama_model.get_defi_protocols()
-    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-
     df = df.sort_values("tvl", ascending=False).head(num)
-    df = df.set_index("name")
 
+    df = df.set_index("name")
     chains = df.groupby("chain").size().index.values.tolist()
+
+    # This plot has 1 axis
+    if not external_axes:
+        _, ax = plt.subplots(figsize=(14, 8), dpi=PLOT_DPI)
+    else:
+        if len(external_axes) != 1:
+            console.print("[red]Expected list of one axis item./n[/red]")
+            return
+        (ax,) = external_axes
+
+    colors = iter(cfg.theme.get_colors(reverse=True))
 
     for chain in chains:
         chain_filter = df.loc[df.chain == chain]
-        ax.bar(x=chain_filter.index, height=chain_filter.tvl, label=chain)
+        ax.barh(
+            y=chain_filter.index,
+            width=chain_filter.tvl,
+            label=chain,
+            height=0.5,
+            color=next(colors),
+        )
 
-    ax.set_ylabel("Total Value Locked ($)")
-    ax.set_xlabel("dApp name")
-    ax.get_yaxis().set_major_formatter(
+    ax.set_xlabel("Total Value Locked ($)")
+    ax.set_ylabel("dApp name")
+    ax.get_xaxis().set_major_formatter(
         ticker.FuncFormatter(lambda x, _: long_number_format(x))
     )
-    fig.tight_layout(pad=8)
-    ax.legend(ncol=2)
+
     ax.set_title(f"Top {num} dApp TVL grouped by chain")
-    ax.grid(alpha=0.5)
-    ax.tick_params(axis="x", labelrotation=90)
-    if gtff.USE_ION:
-        plt.ion()
-    plt.show()
-    print("")
+    cfg.theme.style_primary_axis(ax)
+    ax.tick_params(axis="y", labelsize=8)
+
+    ax.yaxis.set_label_position("left")
+    ax.yaxis.set_ticks_position("left")
+    ax.legend(loc="best")
+
+    if not external_axes:
+        cfg.theme.visualize_output()
+
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
@@ -138,7 +160,11 @@ def display_defi_protocols(
 
 
 @log_start_end(log=logger)
-def display_historical_tvl(dapps: str = "", export: str = ""):
+def display_historical_tvl(
+    dapps: str = "",
+    export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
+):
     """Displays historical TVL of different dApps
     [Source: https://docs.llama.fi/api]
 
@@ -148,10 +174,21 @@ def display_historical_tvl(dapps: str = "", export: str = ""):
         dApps to search historical TVL. Should be split by , e.g.: anchor,sushiswap,pancakeswap
     export : str
         Export dataframe data to csv,json,xlsx file
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
 
-    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    # This plot has 1 axis
+    if not external_axes:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    else:
+        if len(external_axes) != 1:
+            console.print("[red]Expected list of one axis item./n[/red]")
+            return
+        (ax,) = external_axes
+
     available_protocols = read_data_file("defillama_dapps.json")
+
     if isinstance(available_protocols, dict):
         for dapp in dapps.split(","):
             if dapp in available_protocols.keys():
@@ -162,24 +199,15 @@ def display_historical_tvl(dapps: str = "", export: str = ""):
                 print(f"{dapp} not found\n")
 
         ax.set_ylabel("Total Value Locked ($)")
-        ax.set_xlabel("Time")
-        dateFmt = mdates.DateFormatter("%m/%d/%Y")
-
-        ax.xaxis.set_major_formatter(dateFmt)
         ax.get_yaxis().set_major_formatter(
             ticker.FuncFormatter(lambda x, _: long_number_format(x))
         )
+        cfg.theme.style_primary_axis(ax)
         ax.legend()
-
         ax.set_title("TVL in dApps")
-        ax.grid(alpha=0.5)
-        ax.tick_params(axis="x", labelrotation=45)
-        fig.tight_layout(pad=2)
 
-        if gtff.USE_ION:
-            plt.ion()
-        plt.show()
-        print("")
+        if not external_axes:
+            cfg.theme.visualize_output()
 
         export_data(
             export,
@@ -190,7 +218,11 @@ def display_historical_tvl(dapps: str = "", export: str = ""):
 
 
 @log_start_end(log=logger)
-def display_defi_tvl(top: int, export: str = "") -> None:
+def display_defi_tvl(
+    top: int,
+    export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
+) -> None:
     """Displays historical values of the total sum of TVLs from all listed protocols.
     [Source: https://docs.llama.fi/api]
 
@@ -200,36 +232,35 @@ def display_defi_tvl(top: int, export: str = "") -> None:
         Number of records to display
     export : str
         Export dataframe data to csv,json,xlsx file
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
+
+    # This plot has 1 axis
+    if not external_axes:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    else:
+        if len(external_axes) != 1:
+            console.print("[red]Expected list of one axis item./n[/red]")
+            return
+        (ax,) = external_axes
 
     df = llama_model.get_defi_tvl()
     df_data = df.copy()
-
     df = df.tail(top)
 
-    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    ax.plot(df["date"], df["totalLiquidityUSD"], ms=2)
+    # ax.set_xlim(df["date"].iloc[0], df["date"].iloc[-1])
 
-    ax.plot(df["date"], df["totalLiquidityUSD"], "-ok", ms=2)
-    ax.set_xlabel("Time")
-    ax.set_xlim(df["date"].iloc[0], df["date"].iloc[-1])
-    dateFmt = mdates.DateFormatter("%m/%d/%Y")
-
-    ax.xaxis.set_major_formatter(dateFmt)
-    ax.tick_params(axis="x", labelrotation=45)
     ax.set_ylabel("Total Value Locked ($)")
-    ax.grid(b=True, which="major", color="#666666", linestyle="-")
-    ax.minorticks_on()
-    ax.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
     ax.set_title("Total Value Locked in DeFi")
     ax.get_yaxis().set_major_formatter(
         ticker.FuncFormatter(lambda x, _: long_number_format(x))
     )
-    fig.tight_layout(pad=2)
+    cfg.theme.style_primary_axis(ax)
 
-    if gtff.USE_ION:
-        plt.ion()
-    plt.show()
-    console.print("")
+    if not external_axes:
+        cfg.theme.visualize_output()
 
     export_data(
         export,
