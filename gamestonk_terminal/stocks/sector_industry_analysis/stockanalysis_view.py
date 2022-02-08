@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
+import copy
 
 import numpy as np
 import pandas as pd
@@ -102,7 +103,7 @@ def display_plots_financials(
             company_tickers, finance_key, sa_keys, already_loaded_stocks_data, period
         )
 
-    stocks_data_statement = stocks_data[used_statement]
+    stocks_data_statement = copy.deepcopy(stocks_data[used_statement])
     company_tickers = list(stocks_data[used_statement].keys())
 
     if len(company_tickers) > limit:
