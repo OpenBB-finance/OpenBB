@@ -13,7 +13,6 @@ theme = _TerminalStyle(
     os.getenv("GT_MPFSTYLE") or "boring",
     os.getenv("GT_RICHSTYLE") or "boring",
 )
-theme.applyMPLstyle()
 
 # Set to True to see full stack traces for debugging/error reporting
 DEBUG_MODE = False

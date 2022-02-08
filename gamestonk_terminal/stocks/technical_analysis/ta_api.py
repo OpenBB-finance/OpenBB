@@ -7,6 +7,7 @@ from gamestonk_terminal.helper_classes import ModelsNamespace as _models
 
 # Menu commands
 from gamestonk_terminal.common.technical_analysis.overlap_view import view_ma as ma
+from gamestonk_terminal.common.technical_analysis.overlap_view import view_vwap as vwap
 from gamestonk_terminal.common.technical_analysis.momentum_view import (
     display_cci as cci,
 )

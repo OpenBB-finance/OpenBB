@@ -1,0 +1,4 @@
+Empty DataFrame
+Columns: [date, GDP]
+Index: []
+

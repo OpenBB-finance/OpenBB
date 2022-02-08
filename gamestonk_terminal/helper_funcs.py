@@ -496,6 +496,52 @@ def get_next_stock_market_days(last_stock_day, n_next_days) -> list:
     return l_pred_days
 
 
+def is_intraday(df: pd.DataFrame) -> bool:
+    """Check if the data granularity is intraday.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        Price data
+
+    Returns
+    -------
+    bool
+        True if data is intraday
+    """
+    granularity = df.index[1] - df.index[0]
+    if granularity >= timedelta(days=1):
+        intraday = False
+    else:
+        intraday = True
+    return intraday
+
+
+def reindex_dates(df: pd.DataFrame) -> pd.DataFrame:
+    """Reindex dataframe to exclude non-trading days.
+
+    Resets the index of a df to an integer and prepares the 'date' column to become
+    x tick labels on a plot.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        Source dataframe
+
+    Returns
+    -------
+    pd.DataFrame
+        Reindexed dataframe
+    """
+    if is_intraday(df):
+        date_format = "%b %d %H:%M"
+    else:
+        date_format = "%Y-%m-%d"
+    reindexed_df = df.reset_index()
+    reindexed_df["date"] = reindexed_df["date"].dt.strftime(date_format)
+    return reindexed_df
+
+
 def get_data(tweet):
     """Gets twitter data from API request"""
     if "+" in tweet["created_at"]:

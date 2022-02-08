@@ -168,7 +168,7 @@ class TechnicalAnalysisController(CryptoBaseController):
             overlap_view.view_ma(
                 ma_type="EMA",
                 s_ticker=self.coin,
-                values=self.stock["Close"],
+                series=self.stock["Close"],
                 length=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
@@ -220,7 +220,7 @@ class TechnicalAnalysisController(CryptoBaseController):
             overlap_view.view_ma(
                 ma_type="SMA",
                 s_ticker=self.coin,
-                values=self.stock["Close"],
+                series=self.stock["Close"],
                 length=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
@@ -273,7 +273,7 @@ class TechnicalAnalysisController(CryptoBaseController):
             overlap_view.view_ma(
                 ma_type="ZLMA",
                 s_ticker=self.coin,
-                values=self.stock["Close"],
+                series=self.stock["Close"],
                 length=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
@@ -311,7 +311,7 @@ class TechnicalAnalysisController(CryptoBaseController):
             overlap_view.view_vwap(
                 s_ticker=self.coin,
                 s_interval=self.interval,
-                df_stock=self.stock,
+                ohlc=self.stock,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
             )
@@ -357,7 +357,7 @@ class TechnicalAnalysisController(CryptoBaseController):
         if ns_parser:
             momentum_view.display_cci(
                 s_ticker=self.coin,
-                df=self.stock,
+                ohlc=self.stock,
                 length=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
                 export=ns_parser.export,
@@ -414,7 +414,7 @@ class TechnicalAnalysisController(CryptoBaseController):
         if ns_parser:
             momentum_view.display_macd(
                 s_ticker=self.coin,
-                values=self.stock["Adj Close"],
+                series=self.stock["Adj Close"],
                 n_fast=ns_parser.n_fast,
                 n_slow=ns_parser.n_slow,
                 n_signal=ns_parser.n_signal,
@@ -473,7 +473,7 @@ class TechnicalAnalysisController(CryptoBaseController):
         if ns_parser:
             momentum_view.display_rsi(
                 s_ticker=self.coin,
-                prices=self.stock["Adj Close"],
+                series=self.stock["Adj Close"],
                 length=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
                 drift=ns_parser.n_drift,
@@ -528,7 +528,7 @@ class TechnicalAnalysisController(CryptoBaseController):
         if ns_parser:
             momentum_view.display_stoch(
                 s_ticker=self.coin,
-                df_stock=self.stock,
+                ohlc=self.stock,
                 fastkperiod=ns_parser.n_fastkperiod,
                 slowdperiod=ns_parser.n_slowdperiod,
                 slowkperiod=ns_parser.n_slowkperiod,
@@ -568,7 +568,7 @@ class TechnicalAnalysisController(CryptoBaseController):
         if ns_parser:
             momentum_view.display_fisher(
                 s_ticker=self.coin,
-                df_stock=self.stock,
+                ohlc=self.stock,
                 length=ns_parser.n_length,
                 export=ns_parser.export,
             )
@@ -606,7 +606,7 @@ class TechnicalAnalysisController(CryptoBaseController):
         if ns_parser:
             momentum_view.display_cg(
                 s_ticker=self.coin,
-                values=self.stock["Adj Close"],
+                series=self.stock["Adj Close"],
                 length=ns_parser.n_length,
                 export=ns_parser.export,
             )
@@ -660,7 +660,7 @@ class TechnicalAnalysisController(CryptoBaseController):
         if ns_parser:
             trend_indicators_view.display_adx(
                 s_ticker=self.coin,
-                df_stock=self.stock,
+                ohlc=self.stock,
                 length=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
                 drift=ns_parser.n_drift,
@@ -723,7 +723,7 @@ class TechnicalAnalysisController(CryptoBaseController):
         if ns_parser:
             trend_indicators_view.display_aroon(
                 s_ticker=self.coin,
-                df_stock=self.stock,
+                ohlc=self.stock,
                 length=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
                 export=ns_parser.export,
@@ -784,7 +784,7 @@ class TechnicalAnalysisController(CryptoBaseController):
         if ns_parser:
             volatility_view.display_bbands(
                 ticker=self.coin,
-                df_stock=self.stock,
+                ohlc=self.stock,
                 length=ns_parser.n_length,
                 n_std=ns_parser.n_std,
                 mamode=ns_parser.s_mamode,
@@ -833,7 +833,7 @@ class TechnicalAnalysisController(CryptoBaseController):
         if ns_parser:
             volatility_view.display_donchian(
                 ticker=self.coin,
-                df_stock=self.stock,
+                ohlc=self.stock,
                 upper_length=ns_parser.n_length_upper,
                 lower_length=ns_parser.n_length_lower,
                 export=ns_parser.export,
@@ -873,7 +873,7 @@ class TechnicalAnalysisController(CryptoBaseController):
         if ns_parser:
             volume_view.display_ad(
                 s_ticker=self.coin,
-                df_stock=self.stock,
+                ohlc=self.stock,
                 use_open=ns_parser.b_use_open,
                 export=ns_parser.export,
             )
@@ -901,7 +901,7 @@ class TechnicalAnalysisController(CryptoBaseController):
         if ns_parser:
             volume_view.display_obv(
                 s_ticker=self.coin,
-                df_stock=self.stock,
+                ohlc=self.stock,
                 export=ns_parser.export,
             )
 
@@ -945,7 +945,7 @@ class TechnicalAnalysisController(CryptoBaseController):
         if ns_parser:
             custom_indicators_view.fibonacci_retracement(
                 s_ticker=self.coin,
-                df_stock=self.stock,
+                ohlc=self.stock,
                 period=ns_parser.period,
                 start_date=ns_parser.start,
                 end_date=ns_parser.end,

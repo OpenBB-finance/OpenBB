@@ -3,4 +3,5 @@
     "tight_layout_padding": 2,
     "pie_wedgeprops": {"linewidth": 0.5, "edgecolor": "#FFFFFF"},
     "pie_startangle": 90
+    "volume_bar_width": 0.5
 }
