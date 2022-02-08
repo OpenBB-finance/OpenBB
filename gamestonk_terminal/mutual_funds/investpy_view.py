@@ -3,12 +3,12 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import Optional, List
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
@@ -18,6 +18,7 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal.mutual_funds import investpy_model
 from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.config_terminal import theme
 
 logger = logging.getLogger(__name__)
 
@@ -100,7 +101,7 @@ def display_overview(country: str = "united states", limit: int = 10, export: st
 
 @log_start_end(log=logger)
 def display_fund_info(fund_name: str, country: str = "united states"):
-    """Display fund infomration.  Finds name from symbol first if name is false
+    """Display fund information.  Finds name from symbol first if name is false
 
     Parameters
     ----------
@@ -125,8 +126,13 @@ def display_fund_info(fund_name: str, country: str = "united states"):
 
 
 @log_start_end(log=logger)
-def display_historical(data: pd.DataFrame, fund: str = "", export: str = ""):
-    """
+def display_historical(
+    data: pd.DataFrame,
+    fund: str = "",
+    export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
+):
+    """Display historical fund price
 
     Parameters
     ----------
@@ -136,19 +142,21 @@ def display_historical(data: pd.DataFrame, fund: str = "", export: str = ""):
         Fund symbol or name
     export: str
         Format to export data
+    external_axes:Optional[List[plt.Axes]]:
+        External axes to plot on
     """
-    console.print("")
-    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    ax.plot(data.index, data.Close, "-g")
-    ax.grid("on")
+    console.print()
+    if external_axes is None:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    else:
+        ax = external_axes[0]
+    ax.plot(data.index, data.Close)
     ax.set_xlim([data.index[0], data.index[-1]])
     ax.set_xlabel("Date")
     ax.set_ylabel("Close Price")
     ax.set_title(f"{fund.title()} Price History")
-    fig.autofmt_xdate()
-    fig.tight_layout(pad=1)
-    if gtff.USE_ION:
-        plt.ion()
-    plt.show()
+    theme.style_primary_axis(ax)
+    if external_axes is None:
+        theme.visualize_output()
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "historical", data)
