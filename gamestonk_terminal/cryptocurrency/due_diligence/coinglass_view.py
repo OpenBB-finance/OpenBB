@@ -69,7 +69,7 @@ def plot_data(
         ax1, ax2 = external_axes
 
     df_price = df[["price"]].copy()
-    df_without_price = df.drop("price", 1)
+    df_without_price = df.drop("price", axis=1)
 
     ax1.stackplot(
         df_without_price.index,
