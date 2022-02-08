@@ -1256,5 +1256,5 @@ main:
   - name: bot
     ref: "/bot"
     sub:
-      - name: "commands"
-        ref: "/bot/commands"
+      - name: "discord"
+        ref: "/bot/discord"
