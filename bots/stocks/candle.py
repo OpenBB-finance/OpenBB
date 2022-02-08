@@ -8,9 +8,9 @@ import yfinance as yf
 from PIL import Image
 from plotly.subplots import make_subplots
 
-import discordbot.config_discordbot as cfg
-from discordbot.config_discordbot import logger
-from discordbot.helpers import autocrop_image
+import bots.config_discordbot as cfg
+from bots.config_discordbot import logger
+from bots.helpers import autocrop_image
 from gamestonk_terminal.common.technical_analysis import overlap_model
 
 

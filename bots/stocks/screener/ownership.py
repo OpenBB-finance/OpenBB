@@ -4,9 +4,9 @@ import disnake
 import pandas as pd
 from menus.menu import Menu
 
-import discordbot.config_discordbot as cfg
-from discordbot.config_discordbot import logger
-from discordbot.stocks.screener import screener_options as so
+import bots.config_discordbot as cfg
+from bots.config_discordbot import logger
+from bots.stocks.screener import screener_options as so
 from gamestonk_terminal.stocks.screener.finviz_model import get_screener_data
 
 
