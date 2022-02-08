@@ -4,7 +4,7 @@ https://discord.com/oauth2/authorize?client_id=927232119346962513&permissions=51
 
 <img width="1400" alt="Discord Bot on GST Discord Server" src="https://user-images.githubusercontent.com/85772166/153071762-9da3845d-da06-47af-a147-bea5488524a3.png">
 
-Users can interact with the bot through both direct messges and the server. Alternatively, the bot can be run locally on a private server using the installation instructions found here: https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/discordbot#readme
+Users can interact with the bot through both direct messages and the server. Alternatively, the bot can be run locally on a private server using the installation instructions found here: https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/discordbot#readme
 
 The bot is called by using the slash key - / - in the server or in a direct message to the bot. To explore the commands, click on the bot's avatar.
 
