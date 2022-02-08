@@ -45,7 +45,9 @@ def display_profile(ticker: str):
     """
     profile = fmp_model.get_profile(ticker)
     print_rich_table(
-        profile.drop(index=["description", "image"]), headers=[], title="Ticker Profile"
+        profile.drop(index=["description", "image"]),
+        headers=[],
+        title=f"{ticker} Profile",
     )
 
     console.print(f"\nImage: {profile.loc['image'][0]}")
@@ -64,7 +66,7 @@ def display_quote(ticker: str):
     """
 
     quote = fmp_model.get_quote(ticker)
-    print_rich_table(quote, headers=[], title="Ticker Quote")
+    print_rich_table(quote, headers=[], title=f"{ticker} Quote")
     console.print("")
 
 
@@ -87,7 +89,7 @@ def display_enterprise(
     """
     df_fa = fmp_model.get_enterprise(ticker, number, quarterly)
     df_fa = df_fa[df_fa.columns[::-1]]
-    print_rich_table(df_fa, headers=list(df_fa.columns), title="Ticker Enterprise")
+    print_rich_table(df_fa, headers=list(df_fa.columns), title=f"{ticker} Enterprise")
     console.print("")
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "enterprise", df_fa)
 
@@ -139,7 +141,8 @@ def display_income_statement(
     print_rich_table(
         income.drop(index=["Final link", "Link"]),
         headers=list(income.columns),
-        title="Ticker Income Statement",
+        title=f"{ticker} Income Statement",
+        show_index=True,
     )
 
     pd.set_option("display.max_colwidth", None)
@@ -173,7 +176,8 @@ def display_balance_sheet(
     print_rich_table(
         balance.drop(index=["Final link", "Link"]),
         headers=list(balance.columns),
-        title="Ticker Balance SHeet",
+        title=f"{ticker} Balance Sheet",
+        show_index=True,
     )
 
     pd.set_option("display.max_colwidth", None)
@@ -207,7 +211,8 @@ def display_cash_flow(
     print_rich_table(
         cash.drop(index=["Final link", "Link"]),
         headers=list(cash.columns),
-        title="Ticker Cash Flow",
+        title=f"{ticker} Cash Flow",
+        show_index=True,
     )
 
     pd.set_option("display.max_colwidth", None)
@@ -239,7 +244,10 @@ def display_key_metrics(
     key_metrics = fmp_model.get_key_metrics(ticker, number, quarterly)
     key_metrics = key_metrics[key_metrics.columns[::-1]]
     print_rich_table(
-        key_metrics, headers=list(key_metrics.columns), title="Ticker Key Metrics"
+        key_metrics,
+        headers=list(key_metrics.columns),
+        title=f"{ticker} Key Metrics",
+        show_index=True,
     )
     console.print("")
     export_data(
@@ -266,7 +274,9 @@ def display_financial_ratios(
     """
     ratios = fmp_model.get_key_ratios(ticker, number, quarterly)
     ratios = ratios[ratios.columns[::-1]]
-    print_rich_table(ratios, headers=list(ratios.columns), title="Ticker Ratios")
+    print_rich_table(
+        ratios, headers=list(ratios.columns), title=f"{ticker} Ratios", show_index=True
+    )
     console.print("")
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "grratiosowth", ratios
@@ -292,6 +302,8 @@ def display_financial_statement_growth(
     """
     growth = fmp_model.get_financial_growth(ticker, number, quarterly)
     growth = growth[growth.columns[::-1]]
-    print_rich_table(growth, headers=list(growth.columns), title="Ticker Growth")
+    print_rich_table(
+        growth, headers=list(growth.columns), title=f"{ticker} Growth", show_index=True
+    )
     console.print("")
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "growth", growth)
