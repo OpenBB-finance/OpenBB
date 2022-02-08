@@ -7,6 +7,7 @@ import os
 
 import pandas as pd
 from matplotlib import pyplot as plt
+import mplfinance as mpf
 
 from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal.config_plot import PLOT_DPI
@@ -18,6 +19,7 @@ from gamestonk_terminal.helper_funcs import (
     print_rich_table,
 )
 from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.stocks import stocks_helper
 
 logger = logging.getLogger(__name__)
 
@@ -118,3 +120,83 @@ def display_etf_description(
         return
 
     console.print(description, "\n")
+
+
+@log_start_end(log=logger)
+def display_candle(
+    etf_name: str,
+    etf_data: pd.DataFrame,
+    export: str,
+    external_axes: Optional[List[plt.Axes]] = None,
+):
+    """Display ETF candle. [Source: Yahoo Finance]
+
+    Parameters
+    ----------
+    etf_name: str
+        ETF name
+    etf_data: pd.DataFrame
+        The ETF's dataframe
+    export: str
+        Where to export to
+    external_axes: Optional[List[plt.Axes]]
+        External axes (1 axis are expected in the list), by default None
+    """
+    if etf_name:
+        data = stocks_helper.process_candle(etf_data)
+        df_etf = stocks_helper.find_trendline(data, "OC_High", "high")
+        df_etf = stocks_helper.find_trendline(data, "OC_Low", "low")
+
+        ap0 = []
+
+        if "OC_High_trend" in df_etf.columns:
+            ap0.append(
+                mpf.make_addplot(df_etf["OC_High_trend"], color="g"),
+            )
+
+        if "OC_Low_trend" in df_etf.columns:
+            ap0.append(
+                mpf.make_addplot(df_etf["OC_Low_trend"], color="b"),
+            )
+
+        candle_chart_kwargs = {
+            "type": "candle",
+            "style": theme.mpf_style,  # mpf.make_mpf_style(marketcolors=mc, gridstyle=":", y_on_right=True)
+            "mav": (20, 50),
+            "volume": True,
+            "xrotation": theme.xticks_rotation,
+            "update_width_config": {
+                "candle_linewidth": 1.0,
+                "candle_width": 0.8,
+                "volume_linewidth": 1.0,
+                "volume_width": 0.8,
+            },
+            "title": f"\nETF: {etf_name}",
+            "addplot": ap0,
+        }
+
+        # This plot has 2 axes
+        if not external_axes:
+            candle_chart_kwargs["returnfig"] = True
+            candle_chart_kwargs["figratio"] = (10, 7)
+            candle_chart_kwargs["figscale"] = 1.10
+            candle_chart_kwargs["figsize"] = plot_autoscale()
+            _, _ = mpf.plot(data, **candle_chart_kwargs)
+            theme.visualize_output(force_tight_layout=False)
+        else:
+            if len(external_axes) != 1:
+                console.print("[red]Expected list of 1 axis items./n[/red]")
+                return
+            (ax1,) = external_axes
+            candle_chart_kwargs["ax"] = ax1
+            mpf.plot(data, **candle_chart_kwargs)
+
+        export_data(
+            export,
+            os.path.join(os.path.dirname(os.path.abspath(__file__)), "candle"),
+            f"{etf_name}",
+            etf_data,
+        )
+
+    else:
+        console.print("No ticker loaded. First use `load {ticker}`\n")
