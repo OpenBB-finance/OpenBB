@@ -1009,7 +1009,7 @@ def plot_candles(
             x=0.05,
             y=1,
         )
-        theme.visualize_output()
+        theme.visualize_output(force_tight_layout=False)
     else:
         nr_external_axes = 2 if volume else 1
 

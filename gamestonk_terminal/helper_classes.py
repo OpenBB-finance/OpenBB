@@ -281,9 +281,6 @@ class TerminalStyle:
         """Show chart in an interactive widget."""
         import gamestonk_terminal.feature_flags as gtff
         from gamestonk_terminal.rich_config import console
-        import warnings
-
-        warnings.filterwarnings("ignore")
 
         if gtff.USE_WATERMARK:
             self.add_label(plt.gcf())
