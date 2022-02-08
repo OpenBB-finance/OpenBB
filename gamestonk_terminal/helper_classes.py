@@ -255,6 +255,23 @@ class TerminalStyle:
         """
         ax.yaxis.set_label_position("left")
 
+    def style_twin_axes(self, ax1: plt.Axes, ax2: plt.Axes):
+        """Apply styling to a twin axes
+
+        Parameters
+        ----------
+        ax1 : plt.Axes
+            Primary matplolib axis
+        ax2 : plt.Axes
+            Twinx matplolib axis
+
+        """
+
+        ax1.tick_params(axis="x", labelrotation=self.xticks_rotation)
+        ax1.grid(axis="both", visible=True, zorder=0)
+
+        ax2.grid(visible=False)
+
     def add_label(
         self,
         fig: plt.figure,

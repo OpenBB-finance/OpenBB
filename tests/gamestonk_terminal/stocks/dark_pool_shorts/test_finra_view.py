@@ -12,8 +12,11 @@ from gamestonk_terminal.stocks.dark_pool_shorts import finra_view
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_plot_dark_pools(mocker):
-    mocker.patch.object(target=finra_view.gtff, attribute="USE_ION", new=False)
-    mocker.patch("matplotlib.pyplot.show")
+
+    # MOCK VISUALIZE_OUTPUT
+    mocker.patch(
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
+    )
 
     finra_view.darkpool_ats_otc(
         ticker="RIVN",
@@ -33,8 +36,10 @@ def filter_test_darkpool_otc(response):
 @pytest.mark.vcr(before_record_response=filter_test_darkpool_otc)
 @pytest.mark.record_stdout
 def test_darkpool_otc(mocker):
-    mocker.patch.object(target=finra_view.gtff, attribute="USE_ION", new=False)
-    mocker.patch("matplotlib.pyplot.show")
+    # MOCK VISUALIZE_OUTPUT
+    mocker.patch(
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
+    )
 
     finra_view.darkpool_otc(
         num=2,
