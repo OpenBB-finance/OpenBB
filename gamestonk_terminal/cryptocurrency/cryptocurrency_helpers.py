@@ -1051,7 +1051,7 @@ def plot_order_book(
         External axes (1 axis is expected in the list), by default None
     """
     # This plot has 1 axis
-    if not external_axes:
+    if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     else:
         if len(external_axes) != 1:
@@ -1065,12 +1065,12 @@ def plot_order_book(
     ax.plot(asks[:, 0], asks[:, 2], color=theme.down_color, label="asks")
     ax.fill_between(asks[:, 0], asks[:, 2], color=theme.down_color, alpha=0.4)
 
-    ax.legend(loc="best")
-    ax.xlabel("Price")
-    ax.ylabel("Size (Coins) ")
-    ax.title(f"Order Book for {coin}")
+    ax.legend()
+    ax.set_xlabel("Price")
+    ax.set_ylabel("Size (Coins)")
+    ax.set_title(f"Order Book for {coin}")
 
     theme.style_primary_axis(ax)
 
-    if not external_axes:
+    if external_axes is None:
         theme.visualize_output(force_tight_layout=False)
