@@ -101,7 +101,7 @@ def display_overview(country: str = "united states", limit: int = 10, export: st
 
 @log_start_end(log=logger)
 def display_fund_info(fund_name: str, country: str = "united states"):
-    """Display fund infomration.  Finds name from symbol first if name is false
+    """Display fund information.  Finds name from symbol first if name is false
 
     Parameters
     ----------
@@ -156,7 +156,7 @@ def display_historical(
     ax.set_ylabel("Close Price")
     ax.set_title(f"{fund.title()} Price History")
     theme.style_primary_axis(ax)
-    if not external_axes:
+    if external_axes is None:
         theme.visualize_output()
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "historical", data)
