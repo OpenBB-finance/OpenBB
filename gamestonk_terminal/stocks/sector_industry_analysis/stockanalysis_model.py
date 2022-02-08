@@ -19,26 +19,29 @@ logger = logging.getLogger(__name__)
 def get_stocks_data(
     stocks: list, finance_key: str, sa_keys: dict, stocks_data: dict, period: str
 ):
-    """Get stocks data based on country, sector, industry, market cap and exclude exchanges. [Source: Finance Database]
+    """Get stocks data based on a list of stocks and the finance key. The function searches for the correct
+     financial statement automatically. [Source: StockAnalysis]
 
     Parameters
     ----------
-    country: str
-        Search by country to find stocks matching the criteria.
-    sector : str
-        Search by sector to find stocks matching the criteria.
-    industry : str
-        Search by industry to find stocks matching the criteria.
-    marketcap : str
-        Select stocks based on the market cap.
-    exclude_exchanges: bool
-        When you wish to include different exchanges use this boolean.
-    period
+    stocks: list
+        A list of tickers that will be used to collect data for.
+    finance_key: str
+        The finance key used to search within the sa_keys for the correct name of item
+        on the financial statement
+    sa_keys: dict
+        A dictionary that includes BS, IS and CF, the abbreviations and names of items
+        on the financial statements. I.e: {"BS": {"ce": "Cash & Equivalents"}}
+    stocks_data : dict
+        A dictionary that is empty on initialisation but filled once data is collected
+        for the first time.
+    period : str
+        Whether you want annually, quarterly or trailing financial statements.
 
     Returns
     -------
     dict
-        Dictionary of filtered stocks data
+        Dictionary of filtered stocks data separated by financial statement
     """
     for symbol in tqdm(stocks):
         for statement in sa_keys.keys():
