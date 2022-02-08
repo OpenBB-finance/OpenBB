@@ -93,6 +93,11 @@ def display_plots_financials(
         company_tickers = filter_stocks(
             country, sector, industry, marketcap, exclude_exchanges
         )
+
+        if len(company_tickers) <= 1:
+            console.print("No information is available for the selected market cap. \n")
+            return dict(), list()
+
         stocks_data = stockanalysis_model.get_stocks_data(
             company_tickers, finance_key, sa_keys, already_loaded_stocks_data, period
         )

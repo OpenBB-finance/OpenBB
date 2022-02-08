@@ -40,9 +40,6 @@ def get_stocks_data(
     dict
         Dictionary of filtered stocks data
     """
-    if len(stocks) <= 1:
-        raise ValueError("No information is available for the selected market cap.")
-
     for symbol in tqdm(stocks):
         for statement in sa_keys.keys():
             if finance_key in sa_keys[statement]:
