@@ -332,12 +332,8 @@ def run_scripts(path: str, test_mode: bool = False):
     """
     if os.path.isfile(path):
         with open(path) as fp:
-            # Colin's idea: the reset ruins integrated tests. I propose removing it when testing.
-            # The other option is more complicated because if we try to leave it in we have to use
-            # environment variables, and every reset starts the tests over, leading to an infinite loop.
             lines = [x for x in fp if not test_mode or not is_reset(x)]
 
-            # If we run in debug_mode scripts must end in exit, otherwise scripts get stuck
             if test_mode and "exit" not in lines[-1]:
                 lines.append("exit")
 
@@ -381,9 +377,16 @@ if __name__ == "__main__":
     parser.add_argument(
         "-t",
         "--test",
-        help="Runs all .gst files in /scripts. Send keywords to filter files ran.",
-        dest="tests",
-        nargs="?",
+        help="The path of the tests to run.",
+        dest="test",
+        default="",
+        type=str,
+    )
+    parser.add_argument(
+        "-f",
+        "--filter",
+        help="Send a keyword to filter in file name",
+        dest="filter",
         default="",
         type=str,
     )
@@ -393,17 +396,17 @@ if __name__ == "__main__":
     ns_parser = parser.parse_args()
 
     if ns_parser:
-        if ns_parser.tests != "":
+        if ns_parser.test:
             os.environ["DEBUG_MODE"] = "true"
             folder = os.path.join(
-                os.path.abspath(os.path.dirname(__file__)), "scripts/"
+                os.path.abspath(os.path.dirname(__file__)), ns_parser.test
             )
             files = [
                 name
                 for name in os.listdir(folder)
                 if os.path.isfile(os.path.join(folder, name))
                 and name.endswith(".gst")
-                and (ns_parser.tests is None or ns_parser.tests in f"{folder}/{name}")
+                and (ns_parser.filter in f"{folder}/{name}")
             ]
             files.sort()
             SUCCESSES = 0
@@ -416,10 +419,10 @@ if __name__ == "__main__":
                 console.print(f"{file}  {((i/length)*100):.1f}%")
                 try:
                     with suppress_stdout():
-                        run_scripts(f"scripts/{file}", test_mode=True)
+                        run_scripts(f"{ns_parser.test}/{file}", test_mode=True)
                     SUCCESSES += 1
                 except Exception as e:
-                    fails[f"scripts/{file}"] = e
+                    fails[f"{ns_parser.test}/{file}"] = e
                     FAILURES += 1
                 i += 1
             if fails:
