@@ -5,7 +5,6 @@ import json
 from importlib import machinery, util
 from typing import Union, List, Dict, Optional
 
-from importlib import machinery, util
 import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib import font_manager, ticker

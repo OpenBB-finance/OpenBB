@@ -70,12 +70,18 @@ def vcr_config():
         ),
     ],
 )
-def test_call_func(func, kwargs_dict, mocker):
+def test_call_func(func, kwargs_dict, mocker, use_tab):
+    # MOCK USE_TABULATE_DF
+    mocker.patch.object(
+        target="gamestonk_terminal.helper_funcs.gtff",
+        attribute="USE_TABULATE_DF",
+        new=use_tab,
+    )
+
     # MOCK VISUALIZE_OUTPUT
     mocker.patch(
         target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
     )
-
     getattr(quiverquant_view, func)(**kwargs_dict)
 
 
