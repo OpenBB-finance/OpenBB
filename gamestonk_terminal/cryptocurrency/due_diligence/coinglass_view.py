@@ -88,12 +88,10 @@ def plot_data(
     ax2.legend([f"{symbol} price"])
     ax2.set_ylabel(f"{symbol} Price [$]")
     ax2.set_xlim([df_price.index[0], df_price.index[-1]])
+    ax2.set_ylim(bottom=0.0)
 
     theme.style_primary_axis(ax1)
     theme.style_primary_axis(ax2)
-
-    ax1.tick_params(axis="x", labelrotation=10)
-    ax2.set_ylim(bottom=0.0)
 
     if not external_axes:
         theme.visualize_output()

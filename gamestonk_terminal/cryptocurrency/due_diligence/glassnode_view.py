@@ -109,7 +109,7 @@ def display_btc_rainbow(
         ax.fill_between(df_data.index, y6, y7, color="indigo", alpha=0.7)
         ax.fill_between(df_data.index, y7, y8, color="purple", alpha=0.7)
 
-        ax.semilogy(df_data.index, df_data["v"].values, c="k", lw=1.2)
+        ax.semilogy(df_data.index, df_data["v"].values)
         ax.set_xlim(df_data.index[0], df_data.index[-1])
         ax.set_title("Bitcoin Rainbow Chart")
         ax.set_ylabel("Price ($)")
@@ -126,7 +126,7 @@ def display_btc_rainbow(
                 "Basically a Fire Sale",
                 "Bitcoin Price",
             ],
-            prop={"size": 6},
+            prop={"size": 8},
         )
 
         sample_dates = np.array(
