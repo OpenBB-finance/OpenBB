@@ -16,8 +16,6 @@ main:
       - name: discovery
         ref: "/stocks/discovery"
         sub:
-          - name: rtearn
-            ref: "/stocks/discovery/rtearn"
           - name: pipo
             ref: "/stocks/discovery/pipo"
           - name: fipo
