@@ -1,15 +1,21 @@
 """Stockanalysis.com/etf Model"""
 __docformat__ = "numpy"
 
-from typing import List, Tuple
 import json
+import logging
+from typing import List, Tuple
 
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup as bs
+
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import get_user_agent
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def get_all_names_symbols() -> Tuple[List[str], List[str]]:
     """Gets all etf names and symbols
 
@@ -32,6 +38,7 @@ def get_all_names_symbols() -> Tuple[List[str], List[str]]:
     return etf_symbols, etf_names
 
 
+@log_start_end(log=logger)
 def get_etf_overview(etf_symbol: str) -> pd.DataFrame:
     """Get overview data for selected etf
 
@@ -65,6 +72,7 @@ def get_etf_overview(etf_symbol: str) -> pd.DataFrame:
     return df
 
 
+@log_start_end(log=logger)
 def get_etf_holdings(symbol: str) -> pd.DataFrame:
     """Get ETF holdings
 
@@ -101,6 +109,7 @@ def get_etf_holdings(symbol: str) -> pd.DataFrame:
     return pd.DataFrame()
 
 
+@log_start_end(log=logger)
 def compare_etfs(symbols: List[str]) -> pd.DataFrame:
     """Compare selected ETFs
 
@@ -122,6 +131,7 @@ def compare_etfs(symbols: List[str]) -> pd.DataFrame:
     return df_compare
 
 
+@log_start_end(log=logger)
 def get_etfs_by_name(name_to_search: str) -> pd.DataFrame:
     """Get an ETF symbol and name based on ETF string to search. [Source: StockAnalysis]
 

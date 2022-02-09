@@ -1,21 +1,26 @@
 import os
 from datetime import datetime, timedelta
 
-import discord
-import pandas as pd
+import disnake
 import matplotlib.dates as mdates
+import pandas as pd
 from matplotlib import pyplot as plt
+from PIL import Image
 
+import discordbot.config_discordbot as cfg
+from discordbot.config_discordbot import gst_imgur, logger
+from discordbot.helpers import autocrop_image
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.helper_funcs import plot_autoscale
 from gamestonk_terminal.stocks.government import quiverquant_model
 
-import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import gst_imgur, logger
-
 
 async def gtrades_command(
-    ctx, ticker="", gov_type="", past_transactions_months="", raw=""
+    ctx,
+    ticker: str = "",
+    gov_type="",
+    past_transactions_months: int = 10,
+    raw: bool = False,
 ):
     """Displays government trades [quiverquant.com]"""
     try:
@@ -28,22 +33,6 @@ async def gtrades_command(
                 past_transactions_months,
                 raw,
             )
-
-        if past_transactions_months == "":
-            past_transactions_months = 10
-        else:
-            if not past_transactions_months.lstrip("-").isnumeric():
-                raise Exception("Number has to be an integer")
-            past_transactions_months = float(past_transactions_months)
-
-        if raw in ["false", "False", "FALSE", ""]:
-            raw = False
-
-        if raw in ["true", "True", "TRUE"]:
-            raw = True
-
-        if raw not in [True, False]:
-            raise Exception("raw argument has to be true or false")
 
         if ticker == "":
             raise Exception("A ticker is required")
@@ -98,6 +87,7 @@ async def gtrades_command(
         )
 
         df_gov = df_gov.sort_values("TransactionDate", ascending=True)
+        plt.style.use("seaborn")
 
         fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
@@ -122,6 +112,27 @@ async def gtrades_command(
         fig.tight_layout()
 
         plt.savefig("gov_gtrades.png")
+        imagefile = "gov_gtrades.png"
+
+        img = Image.open(imagefile)
+        print(img.size)
+        im_bg = Image.open(cfg.IMG_BG)
+        h = img.height + 240
+        w = img.width + 520
+
+        img = img.resize((w, h), Image.ANTIALIAS)
+        x1 = int(0.5 * im_bg.size[0]) - int(0.5 * img.size[0])
+        y1 = int(0.5 * im_bg.size[1]) - int(0.5 * img.size[1])
+        x2 = int(0.5 * im_bg.size[0]) + int(0.5 * img.size[0])
+        y2 = int(0.5 * im_bg.size[1]) + int(0.5 * img.size[1])
+        img = img.convert("RGB")
+        im_bg.paste(img, box=(x1 - 5, y1, x2 - 5, y2))
+        im_bg.save(imagefile, "PNG", quality=100)
+
+        image = Image.open(imagefile)
+        image = autocrop_image(image, 0)
+        image.save(imagefile, "PNG", quality=100)
+
         uploaded_image = gst_imgur.upload_image("gov_gtrades.png", title="something")
         image_link = uploaded_image.link
         if cfg.DEBUG:
@@ -129,11 +140,11 @@ async def gtrades_command(
         title = "Stocks: [quiverquant.com] Government Trades"
         if raw:
             description = df_gov.to_string()
-            embed = discord.Embed(
+            embed = disnake.Embed(
                 title=title, description=description, colour=cfg.COLOR
             )
         else:
-            embed = discord.Embed(title=title, colour=cfg.COLOR)
+            embed = disnake.Embed(title=title, colour=cfg.COLOR)
         embed.set_author(
             name=cfg.AUTHOR_NAME,
             icon_url=cfg.AUTHOR_ICON_URL,
@@ -144,7 +155,7 @@ async def gtrades_command(
         await ctx.send(embed=embed)
 
     except Exception as e:
-        embed = discord.Embed(
+        embed = disnake.Embed(
             title="ERROR Stocks: [quiverquant.com] Government Trades",
             colour=cfg.COLOR,
             description=e,
@@ -154,4 +165,4 @@ async def gtrades_command(
             icon_url=cfg.AUTHOR_ICON_URL,
         )
 
-        await ctx.send(embed=embed)
+        await ctx.send(embed=embed, delete_after=30.0)

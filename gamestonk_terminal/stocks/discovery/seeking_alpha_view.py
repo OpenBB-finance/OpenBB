@@ -1,15 +1,21 @@
 """ Seeking Alpha View """
 __docformat__ = "numpy"
 
-from typing import List
+import logging
 import os
+from typing import List
+
 import pandas as pd
 
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import export_data, print_rich_table
-from gamestonk_terminal.stocks.discovery import seeking_alpha_model
 from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.stocks.discovery import seeking_alpha_model
+
+logger = logging.getLogger(__name__)
 
 
+@log_start_end(log=logger)
 def upcoming_earning_release_dates(num_pages: int, num_earnings: int, export: str):
     """Displays upcoming earnings release dates
 
@@ -74,6 +80,7 @@ def upcoming_earning_release_dates(num_pages: int, num_earnings: int, export: st
         )
 
 
+@log_start_end(log=logger)
 def news(article_id: int, num: int, export: str):
     """Prints the latest news article list. [Source: Seeking Alpha]
 
@@ -135,6 +142,7 @@ def news(article_id: int, num: int, export: str):
         )
 
 
+@log_start_end(log=logger)
 def display_news(news_type: str = "Top-News", num: int = 5, export: str = ""):
     """Display news. [Source: SeekingAlpha]
 

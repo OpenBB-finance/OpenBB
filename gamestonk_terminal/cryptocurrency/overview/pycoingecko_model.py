@@ -3,17 +3,23 @@ __docformat__ = "numpy"
 
 # pylint: disable=C0301, E1101
 
-from typing import Any, List
+import logging
 import re
-import pandas as pd
+from typing import Any, List
+
 import numpy as np
+import pandas as pd
 from pycoingecko import CoinGeckoAPI
-from gamestonk_terminal.cryptocurrency.discovery.pycoingecko_model import get_coins
+
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
     create_df_index,
     long_number_format_with_type_check,
     replace_underscores_in_column_names,
 )
+from gamestonk_terminal.cryptocurrency.discovery.pycoingecko_model import get_coins
+from gamestonk_terminal.decorators import log_start_end
+
+logger = logging.getLogger(__name__)
 
 HOLD_COINS = ["ethereum", "bitcoin"]
 
@@ -90,6 +96,7 @@ COINS_COLUMNS = [
 ]
 
 
+@log_start_end(log=logger)
 def get_holdings_overview(endpoint: str = "bitcoin") -> List[Any]:
     """Returns public companies that holds ethereum or bitcoin [Source: CoinGecko]
 
@@ -133,15 +140,19 @@ SORT_VALUES = [
 ]
 
 
+@log_start_end(log=logger)
 def coin_formatter(n):
     # TODO: can be improved
     coins = []
+    re_str = "small/(.*)(.jpg|.png|.JPG|.PNG)"
     for coin in n:
-        coin_stripped = re.search("small/(.*)(.jpg|.png|.JPG|.PNG)", coin).group(1)
-        coins.append(coin_stripped)
+        if re.search(re_str, coin):
+            coin_stripped = re.search(re_str, coin).group(1)
+            coins.append(coin_stripped)
     return ",".join(coins)
 
 
+@log_start_end(log=logger)
 def get_top_crypto_categories(sort_filter: str = SORT_VALUES[0]) -> pd.DataFrame:
     """Returns top crypto categories [Source: CoinGecko]
 
@@ -167,6 +178,7 @@ def get_top_crypto_categories(sort_filter: str = SORT_VALUES[0]) -> pd.DataFrame
 
 
 # TODO: add string with overview
+@log_start_end(log=logger)
 def get_stable_coins(top: int = 20) -> pd.DataFrame:
     """Returns top stable coins [Source: CoinGecko]
 
@@ -180,6 +192,7 @@ def get_stable_coins(top: int = 20) -> pd.DataFrame:
     return df[COINS_COLUMNS]
 
 
+@log_start_end(log=logger)
 def get_exchanges() -> pd.DataFrame:
     """Get list of top exchanges from CoinGecko API [Source: CoinGecko]
 
@@ -216,6 +229,7 @@ def get_exchanges() -> pd.DataFrame:
     return df
 
 
+@log_start_end(log=logger)
 def get_financial_platforms() -> pd.DataFrame:
     """Get list of financial platforms from CoinGecko API [Source: CoinGecko]
 
@@ -233,6 +247,7 @@ def get_financial_platforms() -> pd.DataFrame:
     return df
 
 
+@log_start_end(log=logger)
 def get_finance_products() -> pd.DataFrame:
     """Get list of financial products from CoinGecko API
 
@@ -257,6 +272,7 @@ def get_finance_products() -> pd.DataFrame:
     return df
 
 
+@log_start_end(log=logger)
 def get_indexes() -> pd.DataFrame:
     """Get list of crypto indexes from CoinGecko API [Source: CoinGecko]
 
@@ -273,6 +289,7 @@ def get_indexes() -> pd.DataFrame:
     return df
 
 
+@log_start_end(log=logger)
 def get_derivatives() -> pd.DataFrame:
     """Get list of crypto derivatives from CoinGecko API [Source: CoinGecko]
 
@@ -311,6 +328,7 @@ def get_derivatives() -> pd.DataFrame:
     return df
 
 
+@log_start_end(log=logger)
 def get_exchange_rates() -> pd.DataFrame:
     """Get list of crypto, fiats, commodity exchange rates from CoinGecko API [Source: CoinGecko]
 
@@ -328,6 +346,7 @@ def get_exchange_rates() -> pd.DataFrame:
     return df
 
 
+@log_start_end(log=logger)
 def get_global_info() -> pd.DataFrame:
     """Get global statistics about crypto from CoinGecko API like:
         - market cap change
@@ -361,6 +380,7 @@ def get_global_info() -> pd.DataFrame:
     return df
 
 
+@log_start_end(log=logger)
 def get_global_markets_info() -> pd.DataFrame:
     """Get global statistics about crypto markets from CoinGecko API like:
         Market_Cap, Volume, Market_Cap_Percentage
@@ -389,6 +409,7 @@ def get_global_markets_info() -> pd.DataFrame:
     return df.reset_index()
 
 
+@log_start_end(log=logger)
 def get_global_defi_info() -> pd.DataFrame:
     """Get global statistics about Decentralized Finances [Source: CoinGecko]
 

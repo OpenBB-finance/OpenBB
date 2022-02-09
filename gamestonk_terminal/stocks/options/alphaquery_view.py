@@ -1,19 +1,24 @@
 """AlphaQuery View"""
 __docforma__ = "numpy"
 
-from datetime import datetime, timedelta
+import logging
 import os
+from datetime import datetime, timedelta
 
-import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
+import matplotlib.pyplot as plt
 
-from gamestonk_terminal.stocks.options import alphaquery_model
-from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
-from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.config_plot import PLOT_DPI
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
 from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.stocks.options import alphaquery_model
+
+logger = logging.getLogger(__name__)
 
 
+@log_start_end(log=logger)
 def display_put_call_ratio(
     ticker: str,
     window: int = 30,

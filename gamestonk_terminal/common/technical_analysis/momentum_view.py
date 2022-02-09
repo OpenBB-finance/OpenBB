@@ -1,6 +1,7 @@
 """Momentum View"""
 __docformat__ = "numpy"
 
+import logging
 import os
 
 import matplotlib.pyplot as plt
@@ -11,12 +12,16 @@ from pandas.plotting import register_matplotlib_converters
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.common.technical_analysis import momentum_model
 from gamestonk_terminal.config_plot import PLOT_DPI
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
 from gamestonk_terminal.rich_config import console
+
+logger = logging.getLogger(__name__)
 
 register_matplotlib_converters()
 
 
+@log_start_end(log=logger)
 def display_cci(
     df: pd.DataFrame,
     length: int = 14,
@@ -81,6 +86,7 @@ def display_cci(
     )
 
 
+@log_start_end(log=logger)
 def display_macd(
     values: pd.Series,
     n_fast: int = 12,
@@ -147,6 +153,7 @@ def display_macd(
     )
 
 
+@log_start_end(log=logger)
 def display_rsi(
     prices: pd.Series,
     length: int = 14,
@@ -212,6 +219,7 @@ def display_rsi(
     )
 
 
+@log_start_end(log=logger)
 def display_stoch(
     df_stock: pd.DataFrame,
     fastkperiod: int = 14,
@@ -289,6 +297,7 @@ def display_stoch(
     )
 
 
+@log_start_end(log=logger)
 def display_fisher(
     df_stock: pd.DataFrame,
     length: int = 14,
@@ -367,6 +376,7 @@ def display_fisher(
     )
 
 
+@log_start_end(log=logger)
 def display_cg(
     values: pd.Series,
     length: int = 14,

@@ -1,13 +1,20 @@
 """Overlap Technical Analysis"""
 ___docformat__ = "numpy"
 
+import logging
+
 import pandas as pd
 import pandas_ta as ta
+
+from gamestonk_terminal.decorators import log_start_end
+
+logger = logging.getLogger(__name__)
 
 WINDOW_LENGTHS = [20, 50]
 WINDOW_LENGTHS2 = [10, 20]
 
 
+@log_start_end(log=logger)
 def ema(values: pd.DataFrame, length: int, offset: int) -> pd.DataFrame:
     """Gets exponential moving average (EMA) for stock
 
@@ -28,6 +35,7 @@ def ema(values: pd.DataFrame, length: int, offset: int) -> pd.DataFrame:
     return pd.DataFrame(ta.ema(values, length=length, offset=offset)).dropna()
 
 
+@log_start_end(log=logger)
 def sma(values: pd.DataFrame, length: int, offset: int) -> pd.DataFrame:
     """Gets simple moving average (EMA) for stock
 
@@ -48,6 +56,7 @@ def sma(values: pd.DataFrame, length: int, offset: int) -> pd.DataFrame:
     return pd.DataFrame(ta.sma(values, length=length, offset=offset)).dropna()
 
 
+@log_start_end(log=logger)
 def wma(values: pd.DataFrame, length: int, offset: int) -> pd.DataFrame:
     """Gets weighted moving average (WMA) for stock
 
@@ -68,6 +77,7 @@ def wma(values: pd.DataFrame, length: int, offset: int) -> pd.DataFrame:
     return pd.DataFrame(ta.wma(values, length=length, offset=offset)).dropna()
 
 
+@log_start_end(log=logger)
 def hma(values: pd.DataFrame, length: int, offset: int) -> pd.DataFrame:
     """Gets hull moving average (HMA) for stock
 
@@ -88,6 +98,7 @@ def hma(values: pd.DataFrame, length: int, offset: int) -> pd.DataFrame:
     return pd.DataFrame(ta.hma(values, length=length, offset=offset)).dropna()
 
 
+@log_start_end(log=logger)
 def zlma(values: pd.DataFrame, length: int, offset: int) -> pd.DataFrame:
     """Gets zero-lagged exponential moving average (ZLEMA) for stock
 
@@ -108,6 +119,7 @@ def zlma(values: pd.DataFrame, length: int, offset: int) -> pd.DataFrame:
     return pd.DataFrame(ta.zlma(values, length=length, offset=offset)).dropna()
 
 
+@log_start_end(log=logger)
 def vwap(day_df: pd.DataFrame, offset: int) -> pd.DataFrame:
     """Gets volume weighted average price (VWAP)
 

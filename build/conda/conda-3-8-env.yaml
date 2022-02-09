@@ -10,5 +10,5 @@ dependencies:
   - pytest
   - black=21.7b0
   - sphinx=4.1.1
-  - charset-normalizer=2.0.10
+  - charset-normalizer=2.0.11
   - rich=10.16.2

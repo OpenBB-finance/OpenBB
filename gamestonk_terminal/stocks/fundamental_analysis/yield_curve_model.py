@@ -1,17 +1,21 @@
 """ Fundamental Analysis Yield Curve Model """
 __docformat__ = "numpy"
 
+import logging
 from datetime import datetime
-from bs4 import BeautifulSoup
+
 import pandas as pd
-from pandas.core.frame import DataFrame
 import requests
+from bs4 import BeautifulSoup
+from pandas.core.frame import DataFrame
 
-from gamestonk_terminal.helper_funcs import (
-    get_user_agent,
-)
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_funcs import get_user_agent
+
+logger = logging.getLogger(__name__)
 
 
+@log_start_end(log=logger)
 def get_yield_curve(start: datetime, end: datetime) -> DataFrame:
     """Returns a US Treasury Yield Curve from start date to end date
 
@@ -45,6 +49,7 @@ def get_yield_curve(start: datetime, end: datetime) -> DataFrame:
     return df_yield_curve[start:end]  # type: ignore
 
 
+@log_start_end(log=logger)
 def get_yield_curve_year(year: str) -> DataFrame:
     """Returns a US Treasury Yield Curve for a given year
 
