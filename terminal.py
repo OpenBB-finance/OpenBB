@@ -377,10 +377,10 @@ if __name__ == "__main__":
     parser.add_argument(
         "-t",
         "--test",
-        help="The path of the tests to run.",
         dest="test",
-        default="",
-        type=str,
+        action="store_true",
+        default=False,
+        help="Whether to run in test mode.",
     )
     parser.add_argument(
         "-f",
@@ -399,7 +399,7 @@ if __name__ == "__main__":
         if ns_parser.test:
             os.environ["DEBUG_MODE"] = "true"
             folder = os.path.join(
-                os.path.abspath(os.path.dirname(__file__)), ns_parser.test
+                os.path.abspath(os.path.dirname(__file__)), ns_parser.path[0]
             )
             files = [
                 name
@@ -419,10 +419,10 @@ if __name__ == "__main__":
                 console.print(f"{file}  {((i/length)*100):.1f}%")
                 try:
                     with suppress_stdout():
-                        run_scripts(f"{ns_parser.test}/{file}", test_mode=True)
+                        run_scripts(f"{ns_parser.path[0]}/{file}", test_mode=True)
                     SUCCESSES += 1
                 except Exception as e:
-                    fails[f"{ns_parser.test}/{file}"] = e
+                    fails[f"{ns_parser.path[0]}/{file}"] = e
                     FAILURES += 1
                 i += 1
             if fails:
