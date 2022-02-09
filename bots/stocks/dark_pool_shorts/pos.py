@@ -1,8 +1,8 @@
 import disnake
 from menus.menu import Menu
 
-import discordbot.config_discordbot as cfg
-from discordbot.config_discordbot import logger
+import bots.config_discordbot as cfg
+from bots.config_discordbot import logger
 from gamestonk_terminal.stocks.dark_pool_shorts import stockgrid_model
 
 

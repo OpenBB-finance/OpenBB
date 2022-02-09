@@ -6,9 +6,9 @@ import numpy as np
 from matplotlib import pyplot as plt
 from PIL import Image
 
-import discordbot.config_discordbot as cfg
-import discordbot.helpers
-from discordbot.config_discordbot import gst_imgur, logger
+import bots.config_discordbot as cfg
+import bots.helpers
+from bots.config_discordbot import gst_imgur, logger
 from gamestonk_terminal.common.technical_analysis import momentum_model
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.helper_funcs import plot_autoscale
@@ -48,7 +48,7 @@ async def cg_command(ctx, ticker="", length="14", start="", end=""):
         length = float(length)
 
         ticker = ticker.upper()
-        df_stock = discordbot.helpers.load(ticker, start)
+        df_stock = bots.helpers.load(ticker, start)
         if df_stock.empty:
             raise Exception("Stock ticker is invalid")
 
@@ -100,7 +100,7 @@ async def cg_command(ctx, ticker="", length="14", start="", end=""):
         im_bg.save(imagefile, "PNG", quality=100)
 
         image = Image.open(imagefile)
-        image = discordbot.helpers.autocrop_image(image, 0)
+        image = bots.helpers.autocrop_image(image, 0)
         image.save(imagefile, "PNG", quality=100)
 
         uploaded_image = gst_imgur.upload_image("ta_cg.png", title="something")

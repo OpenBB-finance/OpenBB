@@ -11,9 +11,9 @@ import yfinance as yf
 from menus.menu import Menu
 from PIL import Image
 
-import discordbot.config_discordbot as cfg
-from discordbot.config_discordbot import gst_imgur
-from discordbot.helpers import autocrop_image
+import bots.config_discordbot as cfg
+from bots.config_discordbot import gst_imgur
+from bots.helpers import autocrop_image
 from gamestonk_terminal.stocks.options import op_helpers, yfinance_model
 from gamestonk_terminal.stocks.options.barchart_model import get_options_info
 

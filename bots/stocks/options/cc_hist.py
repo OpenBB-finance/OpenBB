@@ -8,8 +8,8 @@ import yfinance as yf
 from PIL import Image
 from plotly.subplots import make_subplots
 
-import discordbot.config_discordbot as cfg
-from discordbot.helpers import autocrop_image
+import bots.config_discordbot as cfg
+from bots.helpers import autocrop_image
 
 startTime = time.time()
 

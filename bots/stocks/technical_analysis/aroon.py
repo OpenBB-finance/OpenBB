@@ -7,10 +7,10 @@ import plotly.graph_objects as go
 from PIL import Image
 from plotly.subplots import make_subplots
 
-import discordbot.config_discordbot as cfg
-import discordbot.helpers
-from discordbot.config_discordbot import logger
-from discordbot.helpers import autocrop_image
+import bots.config_discordbot as cfg
+import bots.helpers
+from bots.config_discordbot import logger
+from bots.helpers import autocrop_image
 from gamestonk_terminal.common.technical_analysis import trend_indicators_model
 
 
@@ -52,7 +52,7 @@ async def aroon_command(ctx, ticker="", length="25", scalar="100", start="", end
         scalar = float(scalar)
 
         ticker = ticker.upper()
-        df_stock = discordbot.helpers.load(ticker, start)
+        df_stock = bots.helpers.load(ticker, start)
         if df_stock.empty:
             raise Exception("Stock ticker is invalid")
 

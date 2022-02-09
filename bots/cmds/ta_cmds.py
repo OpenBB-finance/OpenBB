@@ -5,30 +5,30 @@ import disnake
 import pandas as pd
 from disnake.ext import commands
 
-from discordbot.config_discordbot import logger
-from discordbot.stocks.technical_analysis.ad import ad_command
-from discordbot.stocks.technical_analysis.adosc import adosc_command
-from discordbot.stocks.technical_analysis.adx import adx_command
-from discordbot.stocks.technical_analysis.aroon import aroon_command
-from discordbot.stocks.technical_analysis.bbands import bbands_command
-from discordbot.stocks.technical_analysis.cci import cci_command
-from discordbot.stocks.technical_analysis.cg import cg_command
-from discordbot.stocks.technical_analysis.donchian import donchian_command
-from discordbot.stocks.technical_analysis.ema import ema_command
-from discordbot.stocks.technical_analysis.fib import fib_command
-from discordbot.stocks.technical_analysis.fisher import fisher_command
-from discordbot.stocks.technical_analysis.hma import hma_command
-from discordbot.stocks.technical_analysis.kc import kc_command
-from discordbot.stocks.technical_analysis.macd import macd_command
-from discordbot.stocks.technical_analysis.obv import obv_command
-from discordbot.stocks.technical_analysis.recom import recom_command
-from discordbot.stocks.technical_analysis.rsi import rsi_command
-from discordbot.stocks.technical_analysis.sma import sma_command
-from discordbot.stocks.technical_analysis.stoch import stoch_command
-from discordbot.stocks.technical_analysis.summary import summary_command
-from discordbot.stocks.technical_analysis.view import view_command
-from discordbot.stocks.technical_analysis.wma import wma_command
-from discordbot.stocks.technical_analysis.zlma import zlma_command
+from bots.config_discordbot import logger
+from bots.stocks.technical_analysis.ad import ad_command
+from bots.stocks.technical_analysis.adosc import adosc_command
+from bots.stocks.technical_analysis.adx import adx_command
+from bots.stocks.technical_analysis.aroon import aroon_command
+from bots.stocks.technical_analysis.bbands import bbands_command
+from bots.stocks.technical_analysis.cci import cci_command
+from bots.stocks.technical_analysis.cg import cg_command
+from bots.stocks.technical_analysis.donchian import donchian_command
+from bots.stocks.technical_analysis.ema import ema_command
+from bots.stocks.technical_analysis.fib import fib_command
+from bots.stocks.technical_analysis.fisher import fisher_command
+from bots.stocks.technical_analysis.hma import hma_command
+from bots.stocks.technical_analysis.kc import kc_command
+from bots.stocks.technical_analysis.macd import macd_command
+from bots.stocks.technical_analysis.obv import obv_command
+from bots.stocks.technical_analysis.recom import recom_command
+from bots.stocks.technical_analysis.rsi import rsi_command
+from bots.stocks.technical_analysis.sma import sma_command
+from bots.stocks.technical_analysis.stoch import stoch_command
+from bots.stocks.technical_analysis.summary import summary_command
+from bots.stocks.technical_analysis.view import view_command
+from bots.stocks.technical_analysis.wma import wma_command
+from bots.stocks.technical_analysis.zlma import zlma_command
 
 possible_ma = [
     "dema",

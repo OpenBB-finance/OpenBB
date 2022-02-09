@@ -3,7 +3,7 @@ import disnake
 from disnake.ext import commands
 from menus.menu import Menu
 
-import discordbot.config_discordbot as cfg
+import bots.config_discordbot as cfg
 
 
 class CmdsCommands(commands.Cog):

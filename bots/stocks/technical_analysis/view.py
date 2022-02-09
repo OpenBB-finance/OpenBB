@@ -5,9 +5,9 @@ import disnake
 import matplotlib.pyplot as plt
 from PIL import Image
 
-import discordbot.config_discordbot as cfg
-from discordbot.config_discordbot import gst_imgur, logger
-from discordbot.helpers import autocrop_image
+import bots.config_discordbot as cfg
+from bots.config_discordbot import gst_imgur, logger
+from bots.helpers import autocrop_image
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.helper_funcs import plot_autoscale
 from gamestonk_terminal.stocks.technical_analysis import finviz_model

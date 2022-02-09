@@ -5,9 +5,9 @@ import disnake
 from matplotlib import pyplot as plt
 from PIL import Image
 
-import discordbot.config_discordbot as cfg
-import discordbot.helpers
-from discordbot.config_discordbot import gst_imgur, logger
+import bots.config_discordbot as cfg
+import bots.helpers
+from bots.config_discordbot import gst_imgur, logger
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.helper_funcs import plot_autoscale
 from gamestonk_terminal.stocks.due_diligence import business_insider_model
@@ -33,7 +33,7 @@ async def pt_command(ctx, ticker: str = "", raw: bool = False, start=""):
         raise Exception("raw argument has to be true or false")
 
     df_analyst_data = business_insider_model.get_price_target_from_analysts(ticker)
-    stock = discordbot.helpers.load(ticker, start)
+    stock = bots.helpers.load(ticker, start)
     print(df_analyst_data)
     if df_analyst_data.empty or stock.empty:
         raise Exception("Enter valid ticker")
@@ -90,7 +90,7 @@ async def pt_command(ctx, ticker: str = "", raw: bool = False, start=""):
         im_bg.save(imagefile, "PNG", quality=100)
 
         image = Image.open(imagefile)
-        image = discordbot.helpers.autocrop_image(image, 0)
+        image = bots.helpers.autocrop_image(image, 0)
         image.save(imagefile, "PNG", quality=100)
 
         uploaded_image = gst_imgur.upload_image("ta_pt.png", title="something")

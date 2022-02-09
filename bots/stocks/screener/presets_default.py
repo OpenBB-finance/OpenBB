@@ -1,8 +1,8 @@
 import disnake
 
-import discordbot.config_discordbot as cfg
-from discordbot.config_discordbot import logger
-from discordbot.stocks.screener import screener_options as so
+import bots.config_discordbot as cfg
+from bots.config_discordbot import logger
+from bots.stocks.screener import screener_options as so
 
 
 async def presets_default_command(ctx):

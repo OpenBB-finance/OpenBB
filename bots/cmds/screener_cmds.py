@@ -4,16 +4,16 @@ import disnake
 import pandas as pd
 from disnake.ext import commands
 
-from discordbot.config_discordbot import logger
-from discordbot.stocks.screener.financial import financial_command
-from discordbot.stocks.screener.historical import historical_command
-from discordbot.stocks.screener.overview import overview_command
-from discordbot.stocks.screener.ownership import ownership_command
-from discordbot.stocks.screener.performance import performance_command
-from discordbot.stocks.screener.presets_custom import presets_custom_command
-from discordbot.stocks.screener.presets_default import presets_default_command
-from discordbot.stocks.screener.technical import technical_command
-from discordbot.stocks.screener.valuation import valuation_command
+from bots.config_discordbot import logger
+from bots.stocks.screener.financial import financial_command
+from bots.stocks.screener.historical import historical_command
+from bots.stocks.screener.overview import overview_command
+from bots.stocks.screener.ownership import ownership_command
+from bots.stocks.screener.performance import performance_command
+from bots.stocks.screener.presets_custom import presets_custom_command
+from bots.stocks.screener.presets_default import presets_default_command
+from bots.stocks.screener.technical import technical_command
+from bots.stocks.screener.valuation import valuation_command
 
 presets_custom = [
     "potential_reversals",

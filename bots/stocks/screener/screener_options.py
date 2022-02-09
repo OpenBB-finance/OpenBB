@@ -1,6 +1,6 @@
 import os
 
-import discordbot.config_discordbot as cfg
+import bots.config_discordbot as cfg
 
 presets_path = os.path.join(
     cfg.GST_PATH, "gamestonk_terminal", "stocks", "screener", "presets", ""

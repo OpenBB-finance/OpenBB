@@ -4,8 +4,8 @@ import os
 import disnake
 import matplotlib.pyplot as plt
 
-import discordbot.config_discordbot as cfg
-from discordbot.config_discordbot import gst_imgur, logger
+import bots.config_discordbot as cfg
+from bots.config_discordbot import gst_imgur, logger
 from gamestonk_terminal.economy import cnn_model, cnn_view
 
 

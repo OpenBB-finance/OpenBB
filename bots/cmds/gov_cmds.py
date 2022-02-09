@@ -4,17 +4,17 @@ import disnake
 import pandas as pd
 from disnake.ext import commands
 
-from discordbot.config_discordbot import logger
-from discordbot.stocks.government.contracts import contracts_command
-from discordbot.stocks.government.gtrades import gtrades_command
-from discordbot.stocks.government.histcont import histcont_command
-from discordbot.stocks.government.lastcontracts import lastcontracts_command
-from discordbot.stocks.government.lasttrades import lasttrades_command
-from discordbot.stocks.government.lobbying import lobbying_command
-from discordbot.stocks.government.qtrcontracts import qtrcontracts_command
-from discordbot.stocks.government.topbuys import topbuys_command
-from discordbot.stocks.government.toplobbying import toplobbying_command
-from discordbot.stocks.government.topsells import topsells_command
+from bots.config_discordbot import logger
+from bots.stocks.government.contracts import contracts_command
+from bots.stocks.government.gtrades import gtrades_command
+from bots.stocks.government.histcont import histcont_command
+from bots.stocks.government.lastcontracts import lastcontracts_command
+from bots.stocks.government.lasttrades import lasttrades_command
+from bots.stocks.government.lobbying import lobbying_command
+from bots.stocks.government.qtrcontracts import qtrcontracts_command
+from bots.stocks.government.topbuys import topbuys_command
+from bots.stocks.government.toplobbying import toplobbying_command
+from bots.stocks.government.topsells import topsells_command
 
 
 def default_completion(inter: disnake.AppCmdInter) -> list[str]:

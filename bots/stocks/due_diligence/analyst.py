@@ -5,9 +5,9 @@ import disnake
 import numpy as np
 from PIL import Image
 
-import discordbot.config_discordbot as cfg
-from discordbot.config_discordbot import logger
-from discordbot.helpers import autocrop_image
+import bots.config_discordbot as cfg
+from bots.config_discordbot import logger
+from bots.helpers import autocrop_image
 from gamestonk_terminal.stocks.due_diligence import finviz_model
 
 

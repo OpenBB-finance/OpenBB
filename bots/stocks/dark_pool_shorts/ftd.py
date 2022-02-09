@@ -7,10 +7,10 @@ import plotly.graph_objects as go
 from PIL import Image
 from plotly.subplots import make_subplots
 
-import discordbot.config_discordbot as cfg
-import discordbot.helpers
-from discordbot.config_discordbot import logger
-from discordbot.helpers import autocrop_image
+import bots.config_discordbot as cfg
+import bots.helpers
+from bots.config_discordbot import logger
+from bots.helpers import autocrop_image
 from gamestonk_terminal.stocks.dark_pool_shorts import sec_model
 
 
@@ -44,7 +44,7 @@ async def ftd_command(ctx, ticker: str = "", start="", end=""):
         if cfg.DEBUG:
             logger.debug(ftds_data.to_string())
 
-        stock = discordbot.helpers.load(ticker, start)
+        stock = bots.helpers.load(ticker, start)
         stock_ftd = stock[stock.index > start]
         stock_ftd = stock_ftd[stock_ftd.index < end]
 

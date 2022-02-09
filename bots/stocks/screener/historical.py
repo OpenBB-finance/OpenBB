@@ -10,10 +10,10 @@ from matplotlib import pyplot as plt
 from pandas.plotting import register_matplotlib_converters
 from PIL import Image
 
-import discordbot.config_discordbot as cfg
-from discordbot.config_discordbot import gst_imgur, logger
-from discordbot.helpers import autocrop_image
-from discordbot.stocks.screener import screener_options as so
+import bots.config_discordbot as cfg
+from bots.config_discordbot import gst_imgur, logger
+from bots.helpers import autocrop_image
+from bots.stocks.screener import screener_options as so
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.helper_funcs import plot_autoscale
 from gamestonk_terminal.stocks.screener import finviz_model

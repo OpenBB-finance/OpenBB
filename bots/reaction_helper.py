@@ -4,8 +4,8 @@ import discord
 from gamestonk_terminal.config_terminal import TRADIER_TOKEN
 from gamestonk_terminal.stocks.options import tradier_model, yfinance_model
 
-import discordbot.config_discordbot as cfg
-from discordbot.run_discordbot import gst_bot, logger
+import bots.config_discordbot as cfg
+from bots.run_discordbot import gst_bot, logger
 
 
 async def expiry_dates_reaction(ctx, ticker, expiry, func_cmd, call_arg: tuple = None):

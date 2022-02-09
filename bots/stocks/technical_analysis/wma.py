@@ -7,10 +7,10 @@ import pandas as pd
 import plotly.graph_objects as go
 from PIL import Image
 
-import discordbot.config_discordbot as cfg
-import discordbot.helpers
-from discordbot.config_discordbot import logger
-from discordbot.helpers import autocrop_image
+import bots.config_discordbot as cfg
+import bots.helpers
+from bots.config_discordbot import logger
+from bots.helpers import autocrop_image
 from gamestonk_terminal.common.technical_analysis import overlap_model
 
 
@@ -60,7 +60,7 @@ async def wma_command(ctx, ticker="", window="", offset="", start="", end=""):
             offset = 0
 
         ticker = ticker.upper()
-        stock = discordbot.helpers.load(ticker, start)
+        stock = bots.helpers.load(ticker, start)
         if stock.empty:
             raise Exception("Stock ticker is invalid")
 

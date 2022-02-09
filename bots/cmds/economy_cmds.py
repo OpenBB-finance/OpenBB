@@ -3,21 +3,21 @@ from __future__ import annotations
 import disnake
 from disnake.ext import commands
 
-from discordbot.config_discordbot import logger
-from discordbot.economy.currencies import currencies_command
-from discordbot.economy.energy import energy_command
-from discordbot.economy.feargreed import feargreed_command
-from discordbot.economy.futures import futures_command
-from discordbot.economy.glbonds import glbonds_command
-from discordbot.economy.grains import grains_command
-from discordbot.economy.indices import indices_command
-from discordbot.economy.meats import meats_command
-from discordbot.economy.metals import metals_command
-from discordbot.economy.overview import overview_command
-from discordbot.economy.performance import performance_command
-from discordbot.economy.softs import softs_command
-from discordbot.economy.usbonds import usbonds_command
-from discordbot.economy.valuation import valuation_command
+from bots.config_discordbot import logger
+from bots.economy.currencies import currencies_command
+from bots.economy.energy import energy_command
+from bots.economy.feargreed import feargreed_command
+from bots.economy.futures import futures_command
+from bots.economy.glbonds import glbonds_command
+from bots.economy.grains import grains_command
+from bots.economy.indices import indices_command
+from bots.economy.meats import meats_command
+from bots.economy.metals import metals_command
+from bots.economy.overview import overview_command
+from bots.economy.performance import performance_command
+from bots.economy.softs import softs_command
+from bots.economy.usbonds import usbonds_command
+from bots.economy.valuation import valuation_command
 
 group = [
     "basic_materials",

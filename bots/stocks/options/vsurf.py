@@ -8,8 +8,8 @@ import plotly.graph_objects as go
 from PIL import Image
 from scipy.spatial import Delaunay
 
-import discordbot.config_discordbot as cfg
-from discordbot.helpers import autocrop_image
+import bots.config_discordbot as cfg
+from bots.helpers import autocrop_image
 from gamestonk_terminal.stocks.options import yfinance_model
 
 startTime = time.time()
