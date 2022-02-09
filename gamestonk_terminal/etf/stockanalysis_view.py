@@ -31,7 +31,12 @@ def view_overview(symbol: str, export: str = ""):
 
     data = stockanalysis_model.get_etf_overview(symbol)
 
-    print_rich_table(data, headers=list(data.columns), title="ETF Overview Information")
+    print_rich_table(
+        data,
+        headers=list(data.columns),
+        title="ETF Overview Information",
+        show_index=True,
+    )
     console.print("")
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "overview", data)

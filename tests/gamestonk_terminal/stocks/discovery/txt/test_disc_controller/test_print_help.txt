@@ -1,6 +1,4 @@
 
-[Geek of Wall St]
-    rtearn         realtime earnings from and expected moves
 [Finnhub]
     pipo           past IPOs dates
     fipo           future IPOs dates
