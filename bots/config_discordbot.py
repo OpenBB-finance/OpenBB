@@ -32,7 +32,7 @@ DISCORD_BOT_TOKEN = os.getenv("GT_DISCORD_BOT_TOKEN") or "REPLACE_ME"
 IMGUR_CLIENT_ID = os.getenv("GT_IMGUR_CLIENT_ID") or "REPLACE_ME"
 
 # Settings
-SLASH_TESTING_SERVERS: List[int] = []  # Test server IDs
+SLASH_TESTING_SERVERS: List[int] = [936333632317046844]  # Test server IDs
 COMMAND_PREFIX = "!"
 DATE_FORMAT = "%Y-%m-%d"
 COLOR = disnake.Color.from_rgb(255, 0, 0)

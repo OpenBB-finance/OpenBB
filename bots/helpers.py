@@ -1,7 +1,13 @@
+import os
+
 import pandas as pd
 import yfinance as yf
-from numpy.core.fromnumeric import transpose
+import df2img
+import disnake
 from PIL import Image
+from numpy.core.fromnumeric import transpose
+
+import bots.config_discordbot as cfg
 
 presets_custom = [
     "potential_reversals",
@@ -173,3 +179,43 @@ def signals_autocomp(inter, signal: str):  # pylint: disable=W0613
     print(f"signal_autocomp [signal]: {signal}")
     slow = signal.lower()
     return [signal for signal in df if signal.lower().startswith(slow)][:24]
+
+
+def save_image(file, fig):
+    imagefile = file
+    df2img.save_dataframe(fig=fig, filename=imagefile)
+    image = Image.open(imagefile)
+    image = autocrop_image(image, 0)
+    image.save(imagefile, "PNG", quality=100)
+    return imagefile
+
+
+class ShowView:
+    async def discord(self, func, ctx):
+        try:
+            data = func()
+
+            image = disnake.File(data["imagefile"])
+
+            title = data["title"]
+            embed = disnake.Embed(title=title, colour=cfg.COLOR)
+            embed.set_image(url=f"attachment://{data['imagefile']}")
+            embed.set_author(
+                name=cfg.AUTHOR_NAME,
+                icon_url=cfg.AUTHOR_ICON_URL,
+            )
+            os.remove(data["imagefile"])
+
+            await ctx.send(embed=embed, file=image)
+        except Exception as e:
+            embed = disnake.Embed(
+                title=f"ERROR {data['title']}",
+                colour=cfg.COLOR,
+                description=e,
+            )
+            embed.set_author(
+                name=cfg.AUTHOR_NAME,
+                icon_url=cfg.AUTHOR_ICON_URL,
+            )
+
+            await ctx.send(embed=embed, delete_after=30.0)

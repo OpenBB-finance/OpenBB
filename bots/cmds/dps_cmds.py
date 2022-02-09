@@ -3,7 +3,7 @@ from __future__ import annotations
 import disnake
 from disnake.ext import commands
 
-from discordbot.config_discordbot import logger
+from bots.config_discordbot import logger
 from bots.helpers import ticker_autocomp
 from bots.stocks.dark_pool_shorts.dpotc import dpotc_command
 from bots.stocks.dark_pool_shorts.ftd import ftd_command

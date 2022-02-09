@@ -3,6 +3,7 @@ from __future__ import annotations
 import disnake
 from disnake.ext import commands
 
+from bots.helpers import ShowView
 from bots.config_discordbot import logger
 from bots.economy.currencies import currencies_command
 from bots.economy.energy import energy_command
@@ -143,7 +144,7 @@ class EconomyCommands(commands.Cog):
         """Currencies overview [Wall St. Journal]"""
         await ctx.response.defer()
         logger.info("econ-currencies")
-        await currencies_command(ctx)
+        await ShowView().discord(currencies_command, ctx)
 
     @commands.slash_command(name="econ-valuation")
     async def valuation(
