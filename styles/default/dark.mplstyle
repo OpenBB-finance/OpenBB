@@ -2,7 +2,7 @@
 
 # LINES
 # http://matplotlib.org/api/artist_api.html#module-matplotlib.lines
-lines.linewidth: 1.3
+lines.linewidth: 1.1
 lines.color: F5EFF3
 lines.linestyle: -
 lines.marker: None
@@ -15,7 +15,8 @@ lines.solid_capstyle: projecting
 lines.antialiased: True
 
 patch.edgecolor: F5EFF3
-patch.facecolor: aqua
+patch.facecolor: 00aaff
+patch.linewidth: 1
 
 # TEXT
 # http://matplotlib.org/api/font_manager_api.html
@@ -77,6 +78,7 @@ legend.loc: upper left
 
 figure.facecolor: black
 figure.edgecolor: black
+figure.subplot.hspace: 0.2
 
 savefig.facecolor: black
 savefig.edgecolor: black
@@ -87,3 +89,6 @@ boxplot.capprops.color: F5EFF3
 boxplot.flierprops.color: F5EFF3
 boxplot.flierprops.markeredgecolor: F5EFF3
 boxplot.whiskerprops.color: F5EFF3
+boxplot.medianprops.color: F5EFF3
+boxplot.meanprops.markeredgecolor: F5EFF3
+boxplot.meanprops.color: F5EFF3
