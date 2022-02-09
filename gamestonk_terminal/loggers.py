@@ -151,7 +151,7 @@ class CustomFormatterWithExceptions(logging.Formatter):
                 + "|"
                 + self.SESSION_ID
                 + "|"
-                + s.replace("\n", "|")
+                + s.replace("\n", " - ")
                 + "|"
             )
         else:
