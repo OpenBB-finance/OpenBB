@@ -10,6 +10,7 @@ import pandas as pd
 from tqdm import tqdm
 
 from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.stocks.fundamental_analysis.dcf_model import create_dataframe
 
 logger = logging.getLogger(__name__)
@@ -43,6 +44,7 @@ def get_stocks_data(
     dict
         Dictionary of filtered stocks data separated by financial statement
     """
+    no_data = []
     for symbol in tqdm(stocks):
         for statement in sa_keys.keys():
             if finance_key in sa_keys[statement]:
@@ -50,6 +52,11 @@ def get_stocks_data(
                     stocks_data[statement] = {}
                 used_statement = statement
                 symbol_statement = create_dataframe(symbol, statement, period.lower())
+
+                if symbol_statement[0].empty:
+                    no_data.append(symbol)
+                    continue
+
                 stocks_data[statement][symbol] = (
                     change_type_dataframes(symbol_statement[0]) * symbol_statement[1]
                 )
@@ -63,6 +70,11 @@ def get_stocks_data(
             )
 
     stocks_data[used_statement] = match_length_dataframes(stocks_data[used_statement])
+
+    if no_data:
+        console.print(
+            f"No data available for {', '.join(str(symbol) for symbol in no_data)}"
+        )
 
     return stocks_data
 

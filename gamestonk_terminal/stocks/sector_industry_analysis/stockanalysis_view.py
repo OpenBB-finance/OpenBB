@@ -2,9 +2,9 @@
 __docformat__ = "numpy"
 # pylint:disable=too-many-arguments, too-many-lines
 
+import copy
 import logging
 import os
-import copy
 
 import numpy as np
 import pandas as pd
@@ -123,22 +123,18 @@ def display_plots_financials(
     df = pd.DataFrame(
         np.nan,
         columns=stocks_data_statement[company_tickers[0]].columns,
-        index=company_tickers,
+        index=stocks_data_statement.keys(),
     )
 
-    for company in company_tickers:
-        try:
-            df.loc[company] = stocks_data_statement[company].loc[item_name]
-        except KeyError:
-            del df[company]
-            continue
+    for company in stocks_data_statement:
+        df.loc[company] = stocks_data_statement[company].loc[item_name]
 
     if raw:
         print_rich_table(df, headers=list(df.columns), show_index=True, title=item_name)
     else:
         plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
-        for company in company_tickers:
+        for company in stocks_data_statement:
             plt.plot(df.loc[company], ls="-", marker="o", label=company)
 
         plt.legend(loc="lower right")
