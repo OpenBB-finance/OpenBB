@@ -1,10 +1,8 @@
 from __future__ import annotations
 
 import disnake
-import pandas as pd
-from disnake.ext import commands
-
 from bots.config_discordbot import logger
+from bots.helpers import ticker_autocomp
 from bots.stocks.dark_pool_shorts.dpotc import dpotc_command
 from bots.stocks.dark_pool_shorts.ftd import ftd_command
 from bots.stocks.dark_pool_shorts.hsi import hsi_command
@@ -13,30 +11,16 @@ from bots.stocks.dark_pool_shorts.psi import psi_command
 from bots.stocks.dark_pool_shorts.shorted import shorted_command
 from bots.stocks.dark_pool_shorts.sidtc import sidtc_command
 from bots.stocks.dark_pool_shorts.spos import spos_command
+from disnake.ext import commands
 
-pos_choices = [
-    "Short Vol (1M)",
-    "Short Vol %",
-    "Net Short Vol (1M)",
-    "Net Short Vol ($100M)",
-    "DP Position (1M)",
-    "DP Position ($1B)",
-]
-
-
-def default_completion(inter: disnake.AppCmdInter) -> list[str]:
-    return ["Start Typing", "for a", "stock ticker"]
-
-
-def ticker_autocomp(inter: disnake.AppCmdInter, ticker: str):
-    if not ticker:
-        return default_completion(inter)
-    print(f"ticker_autocomp [ticker]: {ticker}")
-    tlow = ticker.lower()
-    col_list = ["Name"]
-    df = pd.read_csv("files/tickers.csv", usecols=col_list)
-    df = df["Name"]
-    return [ticker for ticker in df if ticker.lower().startswith(tlow)][:24]
+pos_choices = {
+    "Short Vol (1M)": "sv",
+    "Short Vol %": "sv_pct",
+    "Net Short Vol (1M)": "nsv",
+    "Net Short Vol ($100M)": "nsv_dollar",
+    "DP Position (1M)": "dpp",
+    "DP Position ($1B)": "dpp_dollar",
+}
 
 
 class DarkPoolShortsCommands(commands.Cog):
@@ -89,20 +73,6 @@ class DarkPoolShortsCommands(commands.Cog):
         """
         await ctx.response.defer()
         logger.info("dps-pos")
-
-        if str(sort) == "Short Vol (1M)":
-            sort = "sv"
-        if str(sort) == "Short Vol %":
-            sort = "sv_pct"
-        if str(sort) == "Net Short Vol (1M)":
-            sort = "nsv"
-        if str(sort) == "Net Short Vol ($100M)":
-            sort = "nsv_dollar"
-        if str(sort) == "DP Position (1M)":
-            sort = "dpp"
-        if str(sort) == "DP Position ($1B)":
-            sort = "dpp_dollar"
-
         await pos_command(ctx, sort, num)
 
     @commands.slash_command(name="dps-sidtc")
@@ -110,7 +80,11 @@ class DarkPoolShortsCommands(commands.Cog):
         self,
         ctx: disnake.AppCmdInter,
         sort: str = commands.Param(
-            choices=["Float Short %", "Days to Cover", "Short Interest"]
+            choices={
+                "Float Short %": "float",
+                "Days to Cover": "dtc",
+                "Short Interest": "si",
+            }
         ),
         num: int = 10,
     ):
@@ -123,14 +97,6 @@ class DarkPoolShortsCommands(commands.Cog):
         """
         await ctx.response.defer()
         logger.info("dps-sidtc")
-
-        if str(sort) == "Float Short %":
-            sort = "float"
-        if str(sort) == "Days to Cover":
-            sort = "dtc"
-        if str(sort) == "Short Interest":
-            sort = "si"
-
         await sidtc_command(ctx, sort, num)
 
     @commands.slash_command(name="dps-ftd")

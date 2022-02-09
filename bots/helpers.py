@@ -1,11 +1,131 @@
-from PIL import Image
+import pandas as pd
 import yfinance as yf
+from numpy.core.fromnumeric import transpose
+from PIL import Image
+
+presets_custom = [
+    "potential_reversals",
+    "golden_cross_penny",
+    "rosenwald_gtfo",
+    "golden_cross",
+    "bull_runs_over_10pct",
+    "recent_growth_and_support",
+    "heavy_inst_ins",
+    "short_squeeze_scan",
+    "under_15dol_stocks",
+    "top_performers_healthcare",
+    "oversold_under_3dol",
+    "value_stocks",
+    "cheap_dividend",
+    "death_cross",
+    "top_performers_tech",
+    "unusual_volume",
+    "cheap_oversold",
+    "undervalue",
+    "high_vol_and_low_debt",
+    "simplistic_momentum_scanner_under_7dol",
+    "5pct_above_low",
+    "growth_stocks",
+    "cheap_bottom_dividend",
+    "analyst_strong_buy",
+    "oversold",
+    "rosenwald",
+    "weak_support_and_top_performers",
+    "channel_up_and_low_debt_and_sma_50and200",
+    "template",
+    "modified_neff",
+    "buffett_like",
+    "oversold_under_5dol",
+    "sexy_year",
+    "news_scanner",
+    "top_performers_all",
+    "stocks_strong_support_levels",
+    "continued_momentum_scan",
+    "modified_dreman",
+    "break_out_stocks",
+]
+signals = [
+    "top_gainers",
+    "top_losers",
+    "new_high",
+    "new_low",
+    "most_volatile",
+    "most_active",
+    "unusual_volume",
+    "overbought",
+    "oversold",
+    "downgrades",
+    "upgrades",
+    "earnings_before",
+    "earnings_after",
+    "recent_insider_buying",
+    "recent_insider_selling",
+    "major_news",
+    "horizontal_sr",
+    "tl_resistance",
+    "tl_support",
+    "wedge_up",
+    "wedge_down",
+    "wedge",
+    "triangle_ascending",
+    "triangle_descending",
+    "channel_up",
+    "channel_down",
+    "channel",
+    "double_top",
+    "double_bottom",
+    "multiple_top",
+    "multiple_bottom",
+    "head_shoulders",
+    "head_shoulders_inverse",
+]
 
 
 def load(ticker, start_date):
     df_stock_candidate = yf.download(ticker, start=start_date, progress=False)
     df_stock_candidate.index.name = "date"
     return df_stock_candidate
+
+
+def quote(ticker):
+    ticker = yf.Ticker(ticker)
+    quote_df = pd.DataFrame(
+        [
+            {
+                "Symbol": ticker.info["symbol"],
+                "Name": ticker.info["shortName"],
+                "Price": ticker.info["regularMarketPrice"],
+                "Open": ticker.info["regularMarketOpen"],
+                "High": ticker.info["dayHigh"],
+                "Low": ticker.info["dayLow"],
+                "Previous Close": ticker.info["previousClose"],
+                "Volume": ticker.info["volume"],
+                "52 Week High": ticker.info["fiftyTwoWeekHigh"],
+                "52 Week Low": ticker.info["fiftyTwoWeekLow"],
+            }
+        ]
+    )
+    quote_df["Change"] = quote_df["Price"] - quote_df["Previous Close"]
+    quote_df["Change %"] = quote_df.apply(
+        lambda x: f'{((x["Change"] / x["Previous Close"]) * 100):.2f}%',
+        axis="columns",
+    )
+    for c in [
+        "Price",
+        "Open",
+        "High",
+        "Low",
+        "Previous Close",
+        "52 Week High",
+        "52 Week Low",
+        "Change",
+    ]:
+        quote_df[c] = quote_df[c].apply(lambda x: f"{x:.2f}")
+    quote_df["Volume"] = quote_df["Volume"].apply(lambda x: f"{x:,}")
+
+    quote_df = quote_df.set_index("Symbol")
+    quote_data = transpose(quote_df)
+    return quote_data
 
 
 def autocrop_image(image, border=0):
@@ -17,3 +137,39 @@ def autocrop_image(image, border=0):
     cropped_image = Image.new("RGBA", (width, height), (0, 0, 0, 0))
     cropped_image.paste(image, (border, border))
     return cropped_image
+
+
+def ticker_autocomp(inter, ticker: str):
+    if not ticker:
+        return ["Start Typing", "for a", "stock ticker"]
+    print(f"ticker_autocomp [ticker]: {ticker}")
+    tlow = ticker.lower()
+    col_list = ["Name"]
+    df = pd.read_csv("files/tickers.csv", usecols=col_list)
+    df = df["Name"]
+    return [ticker for ticker in df if ticker.lower().startswith(tlow)][:24]
+
+
+def expiry_autocomp(inter, ticker: str):
+    data = inter.filled_options["ticker"]
+    yf_ticker = yf.Ticker(data)
+    dates = list(yf_ticker.options)
+    return [dates for dates in dates][:24]
+
+
+def presets_custom_autocomp(inter, preset: str):
+    df = presets_custom
+    if not preset:
+        return df[:24]
+    plow = preset.lower()
+    print(f"preset_custom_autocomp [preset]: {preset}")
+    return [preset for preset in df if preset.lower().startswith(plow)][:24]
+
+
+def signals_autocomp(inter, signal: str):
+    df = signals
+    if not signal:
+        return df[:24]
+    print(f"signal_autocomp [signal]: {signal}")
+    slow = signal.lower()
+    return [signal for signal in df if signal.lower().startswith(slow)][:24]

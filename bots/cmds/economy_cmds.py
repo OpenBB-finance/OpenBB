@@ -1,8 +1,6 @@
 from __future__ import annotations
 
 import disnake
-from disnake.ext import commands
-
 from bots.config_discordbot import logger
 from bots.economy.currencies import currencies_command
 from bots.economy.energy import energy_command
@@ -18,6 +16,7 @@ from bots.economy.performance import performance_command
 from bots.economy.softs import softs_command
 from bots.economy.usbonds import usbonds_command
 from bots.economy.valuation import valuation_command
+from disnake.ext import commands
 
 group = [
     "basic_materials",
@@ -36,15 +35,16 @@ group = [
     "technology",
     "utilities",
 ]
-fgind = [
-    "Junk Bond Demand",
-    "Market Volatility",
-    "Put and Call Options",
-    "Market Momentum",
-    "Stock Price Strength",
-    "Stock Price Breadth",
-    "Safe Heaven Demand",
-]
+
+fgind = {
+    "Junk Bond Demand": "jbd",
+    "Market Volatility": "mv",
+    "Put and Call Options": "pco",
+    "Market Momentum": "mm",
+    "Stock Price Strength": "sps",
+    "Stock Price Breadth": "spb",
+    "Safe Heaven Demand": "shd",
+}
 
 
 class EconomyCommands(commands.Cog):
@@ -65,20 +65,6 @@ class EconomyCommands(commands.Cog):
         """
         await ctx.response.defer()
         logger.info("econ-feargreed")
-        if indicator == "Junk Bond Demand":
-            indicator = "jbd"
-        if indicator == "Market Volatility":
-            indicator = "mv"
-        if indicator == "Put and Call Options":
-            indicator = "pco"
-        if indicator == "Market Momentum":
-            indicator = "mm"
-        if indicator == "Stock Price Strength":
-            indicator = "sps"
-        if indicator == "Stock Price Breadth":
-            indicator = "spb"
-        if indicator == "Safe Heaven Demand":
-            indicator = "shd"
         await feargreed_command(ctx, indicator)
 
     @commands.slash_command(name="econ-overview")

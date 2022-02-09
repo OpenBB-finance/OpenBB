@@ -54,8 +54,8 @@ async def overview_command(
             raise Exception("Stock ticker is invalid")
 
         options = yfinance_model.get_option_chain(ticker, str(expiry))
-        calls = options.calls
-        puts = options.puts
+        calls = options.calls.fillna(0)
+        puts = options.puts.fillna(0)
         current_price = yfinance_model.get_price(ticker)
 
         min_strike2 = np.percentile(calls["strike"], 1)

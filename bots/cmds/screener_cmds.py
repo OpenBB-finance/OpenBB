@@ -1,10 +1,8 @@
 from __future__ import annotations
 
 import disnake
-import pandas as pd
-from disnake.ext import commands
-
 from bots.config_discordbot import logger
+from bots.helpers import presets_custom_autocomp, signals_autocomp
 from bots.stocks.screener.financial import financial_command
 from bots.stocks.screener.historical import historical_command
 from bots.stocks.screener.overview import overview_command
@@ -14,83 +12,8 @@ from bots.stocks.screener.presets_custom import presets_custom_command
 from bots.stocks.screener.presets_default import presets_default_command
 from bots.stocks.screener.technical import technical_command
 from bots.stocks.screener.valuation import valuation_command
+from disnake.ext import commands
 
-presets_custom = [
-    "potential_reversals",
-    "golden_cross_penny",
-    "rosenwald_gtfo",
-    "golden_cross",
-    "bull_runs_over_10pct",
-    "recent_growth_and_support",
-    "heavy_inst_ins",
-    "short_squeeze_scan",
-    "under_15dol_stocks",
-    "top_performers_healthcare",
-    "oversold_under_3dol",
-    "value_stocks",
-    "cheap_dividend",
-    "death_cross",
-    "top_performers_tech",
-    "unusual_volume",
-    "cheap_oversold",
-    "undervalue",
-    "high_vol_and_low_debt",
-    "simplistic_momentum_scanner_under_7dol",
-    "5pct_above_low",
-    "growth_stocks",
-    "cheap_bottom_dividend",
-    "analyst_strong_buy",
-    "oversold",
-    "rosenwald",
-    "weak_support_and_top_performers",
-    "channel_up_and_low_debt_and_sma_50and200",
-    "template",
-    "modified_neff",
-    "buffett_like",
-    "oversold_under_5dol",
-    "sexy_year",
-    "news_scanner",
-    "top_performers_all",
-    "stocks_strong_support_levels",
-    "continued_momentum_scan",
-    "modified_dreman",
-    "break_out_stocks",
-]
-signals = [
-    "top_gainers",
-    "top_losers",
-    "new_high",
-    "new_low",
-    "most_volatile",
-    "most_active",
-    "unusual_volume",
-    "overbought",
-    "oversold",
-    "downgrades",
-    "upgrades",
-    "earnings_before",
-    "earnings_after",
-    "recent_insider_buying",
-    "recent_insider_selling",
-    "major_news",
-    "horizontal_sr",
-    "tl_resistance",
-    "tl_support",
-    "wedge_up",
-    "wedge_down",
-    "wedge",
-    "triangle_ascending",
-    "triangle_descending",
-    "channel_up",
-    "channel_down",
-    "channel",
-    "double_top",
-    "double_bottom",
-    "multiple_top",
-    "multiple_bottom",
-    "head_shoulders",
-    "head_shoulders_inverse",
-]
 sort = {
     "overview": [
         "Ticker",
@@ -193,39 +116,6 @@ sort = {
     ],
 }
 # pylint: disable=R0912
-
-
-def default_completion(inter: disnake.AppCmdInter) -> list[str]:
-    return ["Start Typing", "for a", "stock ticker"]
-
-
-def presets_custom_autocomp(inter: disnake.AppCmdInter, preset: str):
-    df = presets_custom
-    if not preset:
-        return df[:24]
-    plow = preset.lower()
-    print(f"preset_custom_autocomp [preset]: {preset}")
-    return [preset for preset in df if preset.lower().startswith(plow)][:24]
-
-
-def signals_autocomp(inter: disnake.AppCmdInter, signal: str):
-    df = signals
-    if not signal:
-        return df[:24]
-    print(f"signal_autocomp [signal]: {signal}")
-    slow = signal.lower()
-    return [signal for signal in df if signal.lower().startswith(slow)][:24]
-
-
-def ticker_autocomp(inter: disnake.AppCmdInter, ticker: str):
-    if not ticker:
-        return default_completion(inter)
-    print(f"ticker_autocomp [ticker]: {ticker}")
-    tlow = ticker.lower()
-    col_list = ["Name"]
-    df = pd.read_csv("files/tickers.csv", usecols=col_list)
-    df = df["Name"]
-    return [ticker for ticker in df if ticker.lower().startswith(tlow)][:24]
 
 
 class ScreenerCommands(commands.Cog):

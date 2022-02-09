@@ -1,10 +1,8 @@
 from __future__ import annotations
 
 import disnake
-import pandas as pd
-from disnake.ext import commands
-
 from bots.config_discordbot import logger
+from bots.helpers import ticker_autocomp
 from bots.stocks.government.contracts import contracts_command
 from bots.stocks.government.gtrades import gtrades_command
 from bots.stocks.government.histcont import histcont_command
@@ -15,21 +13,7 @@ from bots.stocks.government.qtrcontracts import qtrcontracts_command
 from bots.stocks.government.topbuys import topbuys_command
 from bots.stocks.government.toplobbying import toplobbying_command
 from bots.stocks.government.topsells import topsells_command
-
-
-def default_completion(inter: disnake.AppCmdInter) -> list[str]:
-    return ["Start Typing", "for a", "stock ticker"]
-
-
-def ticker_autocomp(inter: disnake.AppCmdInter, ticker: str):
-    if not ticker:
-        return default_completion(inter)
-    print(f"ticker_autocomp [ticker]: {ticker}")
-    tlow = ticker.lower()
-    col_list = ["Name"]
-    df = pd.read_csv("files/tickers.csv", usecols=col_list)
-    df = df["Name"]
-    return [ticker for ticker in df if ticker.lower().startswith(tlow)][:24]
+from disnake.ext import commands
 
 
 class GovernmentCommands(commands.Cog):

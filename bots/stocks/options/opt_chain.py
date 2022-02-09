@@ -39,8 +39,8 @@ async def chain_command(
             raise Exception("Stock ticker is invalid")
 
         options = yfinance_model.get_option_chain(ticker, str(expiry))
-        calls_df = options.calls
-        puts_df = options.puts
+        calls_df = options.calls.fillna(0)
+        puts_df = options.puts.fillna(0)
 
         column_map = {"openInterest": "oi", "volume": "vol", "impliedVolatility": "iv"}
         columns = [
@@ -80,7 +80,7 @@ async def chain_command(
         title = f"Stocks: {opt_type} Option Chain for {ticker.upper()} on {expiry} [yfinance]"
 
         embeds: list = []
-        # Weekly Calls Pages
+        # Output
         i, i2, end = 0, 0, 20
         df_pg = []
         embeds_img = []

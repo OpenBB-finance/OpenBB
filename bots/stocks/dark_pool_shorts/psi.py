@@ -1,17 +1,15 @@
 import os
-from datetime import timedelta
-
-import disnake
-import yfinance as yf
-from matplotlib import pyplot as plt
-from PIL import Image
+import random
 
 import bots.config_discordbot as cfg
-from bots.config_discordbot import gst_imgur, logger
+import disnake
+import plotly.graph_objects as go
+import yfinance as yf
+from bots.config_discordbot import logger
 from bots.helpers import autocrop_image
-from gamestonk_terminal.config_plot import PLOT_DPI
-from gamestonk_terminal.helper_funcs import plot_autoscale
 from gamestonk_terminal.stocks.dark_pool_shorts import stockgrid_model
+from PIL import Image
+from plotly.subplots import make_subplots
 
 
 async def psi_command(ctx, ticker: str = ""):
@@ -40,80 +38,130 @@ async def psi_command(ctx, ticker: str = ""):
             logger.debug(df.to_string())
 
         # Output data
-        title = f"Stocks: [Stockgrid] Price vs Short Interest Volume {ticker}"
-        embed = disnake.Embed(title=title, colour=cfg.COLOR)
-        embed.set_author(
-            name=cfg.AUTHOR_NAME,
-            icon_url=cfg.AUTHOR_ICON_URL,
+        fig = make_subplots(
+            rows=2,
+            cols=1,
+            shared_xaxes=True,
+            vertical_spacing=0.06,
+            row_width=[0.3, 0.6],
+            specs=[[{"secondary_y": True}], [{"secondary_y": False}]],
         )
-        plt.style.use("seaborn")
-        _, axes = plt.subplots(
-            2,
-            1,
-            figsize=plot_autoscale(),
-            dpi=PLOT_DPI,
-            gridspec_kw={"height_ratios": [2, 1]},
+        fig.add_trace(
+            go.Scatter(
+                name=ticker,
+                x=df["date"].values,
+                y=prices[len(prices) - len(df) :],
+                line=dict(color="#fdc708", width=2),
+                opacity=1,
+                showlegend=False,
+            ),
+            row=1,
+            col=1,
+            secondary_y=False,
         )
-
-        axes[0].bar(
-            df["date"],
-            df["total_volume"] / 1_000_000,
-            width=timedelta(days=1),
-            color="b",
-            alpha=0.4,
-            label="Total Volume",
+        fig.add_trace(
+            go.Bar(
+                x=df["date"],
+                y=df["total_volume"] / 1_000_000,
+                name="Total Volume",
+                yaxis="y2",
+            ),
+            row=1,
+            col=1,
+            secondary_y=True,
         )
-        axes[0].bar(
-            df["date"],
-            df["short_volume"] / 1_000_000,
-            width=timedelta(days=1),
-            color="r",
-            alpha=0.4,
-            label="Short Volume",
+        fig.add_trace(
+            go.Bar(
+                x=df["date"],
+                y=df["short_volume"] / 1_000_000,
+                name="Short Volume",
+                yaxis="y2",
+            ),
+            row=1,
+            col=1,
+            secondary_y=True,
         )
-
-        axes[0].set_ylabel("Volume (1M)")
-        ax2 = axes[0].twinx()
-        ax2.plot(
-            df["date"].values,
-            prices[len(prices) - len(df) :],  # noqa: E203
-            c="k",
-            label="Price",
+        fig.add_trace(
+            go.Scatter(
+                name="Short Vol. %",
+                x=df["date"].values,
+                y=100 * df["short_volume%"],
+                line=dict(width=2),
+                opacity=1,
+                showlegend=False,
+            ),
+            row=2,
+            col=1,
+            secondary_y=False,
         )
-        ax2.set_ylabel("Price ($)")
-
-        lines, labels = axes[0].get_legend_handles_labels()
-        lines2, labels2 = ax2.get_legend_handles_labels()
-        ax2.legend(lines + lines2, labels + labels2, loc="upper left")
-
-        axes[0].grid()
-        axes[0].ticklabel_format(style="plain", axis="y")
-        plt.title(f"Price vs Short Volume Interest for {ticker}")
-        plt.gcf().autofmt_xdate()
-
-        axes[1].plot(
-            df["date"].values,
-            100 * df["short_volume%"],
-            c="green",
-            label="Short Vol. %",
+        fig.update_traces(hovertemplate="%{y:.2f}")
+        fig.update_xaxes(showspikes=True, spikesnap="cursor", spikemode="across")
+        fig.update_yaxes(showspikes=True, spikethickness=2)
+        fig.update_layout(
+            margin=dict(l=10, r=0, t=40, b=20),
+            template=cfg.PLT_TA_STYLE_TEMPLATE,
+            colorway=cfg.PLT_TA_COLORWAY,
+            title=f"Price vs Short Volume Interest for {ticker}",
+            title_x=0.45,
+            yaxis_title="Stock Price ($)",
+            yaxis2_title="FINRA Volume [M]",
+            yaxis3_title="Short Vol. %",
+            yaxis=dict(
+                side="right",
+                fixedrange=False,
+                titlefont=dict(color="#fdc708"),
+                tickfont=dict(color="#fdc708"),
+                nticks=20,
+            ),
+            yaxis2=dict(
+                side="left",
+                fixedrange=False,
+                anchor="x",
+                overlaying="y",
+                titlefont=dict(color="#d81aea"),
+                tickfont=dict(color="#d81aea"),
+                nticks=20,
+            ),
+            yaxis3=dict(
+                fixedrange=False,
+                titlefont=dict(color="#9467bd"),
+                tickfont=dict(color="#9467bd"),
+                nticks=20,
+            ),
+            xaxis=dict(
+                rangeslider=dict(visible=False),
+                type="date",
+            ),
+            dragmode="pan",
+            legend=dict(
+                orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1
+            ),
+            hovermode="x unified",
+            spikedistance=1000,
+            hoverdistance=100,
         )
+        config = dict({"scrollZoom": True})
+        rand = random.randint(69, 69420)
+        imagefile = f"dps_psi{rand}.png"
 
-        axes[1].set_ylabel("Short Vol. %")
+        # Check if interactive settings are enabled
+        plt_link = ""
+        if cfg.INTERACTIVE:
+            fig.write_html(f"in/psi_{rand}.html", config=config)
+            plt_link = f"[Interactive]({cfg.INTERACTIVE_URL}/psi_{rand}.html)"
 
-        axes[1].grid(axis="y")
-        lines, labels = axes[1].get_legend_handles_labels()
-        axes[1].legend(lines, labels, loc="upper left")
-        axes[1].set_ylim([0, 100])
-        file_name = ticker + "_psi.png"
-        plt.savefig(file_name)
-        imagefile = file_name
+        fig.update_layout(
+            width=800,
+            height=500,
+        )
+        fig.write_image(imagefile)
 
         img = Image.open(imagefile)
-        print(img.size)
         im_bg = Image.open(cfg.IMG_BG)
         h = img.height + 240
         w = img.width + 520
 
+        # Paste fig onto background img and autocrop background
         img = img.resize((w, h), Image.ANTIALIAS)
         x1 = int(0.5 * im_bg.size[0]) - int(0.5 * img.size[0])
         y1 = int(0.5 * im_bg.size[1]) - int(0.5 * img.size[1])
@@ -122,17 +170,23 @@ async def psi_command(ctx, ticker: str = ""):
         img = img.convert("RGB")
         im_bg.paste(img, box=(x1 - 5, y1, x2 - 5, y2))
         im_bg.save(imagefile, "PNG", quality=100)
-
         image = Image.open(imagefile)
         image = autocrop_image(image, 0)
         image.save(imagefile, "PNG", quality=100)
-        plt.close("all")
-        uploaded_image = gst_imgur.upload_image(file_name, title="something")
-        image_link = uploaded_image.link
-        embed.set_image(url=image_link)
-        os.remove(file_name)
 
-        await ctx.send(embed=embed)
+        image = disnake.File(imagefile)
+        if cfg.DEBUG:
+            print(f"Image: {imagefile}")
+        title = f"Stocks: [Stockgrid] Price vs Short Interest Volume {ticker}"
+        embed = disnake.Embed(title=title, description=plt_link, colour=cfg.COLOR)
+        embed.set_image(url=f"attachment://{imagefile}")
+        embed.set_author(
+            name=cfg.AUTHOR_NAME,
+            icon_url=cfg.AUTHOR_ICON_URL,
+        )
+        os.remove(imagefile)
+
+        await ctx.send(embed=embed, file=image)
 
     except Exception as e:
         embed = disnake.Embed(

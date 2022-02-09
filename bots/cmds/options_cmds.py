@@ -1,13 +1,11 @@
 from __future__ import annotations
 
-import pickle
 import time
 
 import disnake
 import disnake.ext.commands as commands
-import pandas as pd
-
 from bots.config_discordbot import logger
+from bots.helpers import expiry_autocomp, ticker_autocomp
 from bots.stocks.candle import candle_command
 from bots.stocks.disc.ford import ford_command
 from bots.stocks.insider.lins import lins_command
@@ -20,55 +18,9 @@ from bots.stocks.options.overview import overview_command
 from bots.stocks.options.unu import unu_command
 from bots.stocks.options.vol import vol_command
 from bots.stocks.options.vsurf import vsurf_command
-from gamestonk_terminal.stocks.options import yfinance_model
+from bots.stocks.quote import quote_command
 
 startTime = time.time()
-data = []
-
-
-class Ticker:
-    def __init__(self, ticker):
-        super().__init__()
-        global tickerr
-        self._ticker = ticker
-        tickerr = ticker
-
-    @property
-    def ticker(self):
-        return self._ticker
-
-    def __repr__(self) -> str:
-        data.append(f"{self._ticker}")
-        file = open("ticker", "wb")
-        pickle.dump(data, file)
-        file.close()
-        return f"{self._ticker}"
-
-
-def default_completion(inter: disnake.AppCmdInter) -> list[str]:
-    return ["Start Typing", "for a", "stock ticker"]
-
-
-def ticker_autocomp(inter: disnake.AppCmdInter, ticker: str):
-    if not ticker:
-        return default_completion(inter)
-    if ticker:
-        ticker = str(Ticker(ticker))
-    print(f"ticker_autocomp [ticker]: {ticker}")
-    tlow = ticker.lower()
-    col_list = ["Name"]
-    df = pd.read_csv("files/tickers.csv", usecols=col_list)
-    df = df["Name"]
-    return [ticker for ticker in df if ticker.lower().startswith(tlow)][:24]
-
-
-def expiry_autocomp(inter: disnake.AppCmdInter, tickerr: str):
-    file = open("ticker", "rb")
-    data = pickle.load(file)
-    file.close()
-    print(data)
-    dates = yfinance_model.option_expirations(data[-1])
-    return [dates for dates in dates][:24]
 
 
 class SlashCommands(commands.Cog):
@@ -137,6 +89,22 @@ class SlashCommands(commands.Cog):
         await inter.response.defer()
         logger.info("opt-iv")
         await iv_command(inter, ticker)
+
+    @commands.slash_command(name="q")
+    async def quote(
+        self,
+        inter: disnake.AppCmdInter,
+        ticker: str = commands.Param(autocomplete=ticker_autocomp),
+    ):
+        """Displays ticker quote [yFinance]
+
+        Parameters
+        -----------
+        ticker: Stock Ticker
+        """
+        await inter.response.defer()
+        logger.info("quote")
+        await quote_command(inter, ticker)
 
     @commands.slash_command(name="disc-ford")
     async def ford(self, inter: disnake.AppCmdInter):

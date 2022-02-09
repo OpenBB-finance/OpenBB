@@ -1,10 +1,8 @@
 from __future__ import annotations
 
 import disnake
-import pandas as pd
-from disnake.ext import commands
-
 from bots.config_discordbot import logger
+from bots.helpers import ticker_autocomp
 from bots.stocks.due_diligence.analyst import analyst_command
 from bots.stocks.due_diligence.arktrades import arktrades_command
 from bots.stocks.due_diligence.customer import customer_command
@@ -12,21 +10,7 @@ from bots.stocks.due_diligence.est import est_command
 from bots.stocks.due_diligence.pt import pt_command
 from bots.stocks.due_diligence.sec import sec_command
 from bots.stocks.due_diligence.supplier import supplier_command
-
-
-def default_completion(inter: disnake.AppCmdInter) -> list[str]:
-    return ["Start Typing", "If you want", "to", "Live"]
-
-
-def ticker_autocomp(inter: disnake.AppCmdInter, ticker: str):
-    if not ticker:
-        return default_completion(inter)
-    print(f"ticker_autocomp [ticker]: {ticker}")
-    tlow = ticker.lower()
-    col_list = ["Name"]
-    df = pd.read_csv("files/tickers.csv", usecols=col_list)
-    df = df["Name"]
-    return [ticker for ticker in df if ticker.lower().startswith(tlow)][:24]
+from disnake.ext import commands
 
 
 class DueDiligenceCommands(commands.Cog):

@@ -2,16 +2,15 @@ import os
 import random
 from datetime import datetime, timedelta
 
+import discordbot.config_discordbot as cfg
 import disnake
 import plotly.graph_objects as go
 import yfinance as yf
+from discordbot.config_discordbot import logger
+from discordbot.helpers import autocrop_image
+from gamestonk_terminal.common.technical_analysis import overlap_model
 from PIL import Image
 from plotly.subplots import make_subplots
-
-import bots.config_discordbot as cfg
-from bots.config_discordbot import logger
-from bots.helpers import autocrop_image
-from gamestonk_terminal.common.technical_analysis import overlap_model
 
 
 async def candle_command(
@@ -50,7 +49,8 @@ async def candle_command(
         else:
             end = datetime.strptime(end, cfg.DATE_FORMAT)
 
-        futures = "=F"
+        futures = "=F" or "^"
+        crypto = "-USD"
         if interval == 1440:
             df_stock_candidate = yf.download(
                 ticker,
@@ -104,12 +104,10 @@ async def candle_command(
             title = f"Daily Chart for {ticker.upper()}"
 
         fig = make_subplots(
-            rows=2,
-            cols=1,
             shared_xaxes=True,
-            vertical_spacing=0.06,
+            vertical_spacing=0.09,
             subplot_titles=plt_title,
-            row_width=[0.2, 0.7],
+            specs=[[{"secondary_y": True}]],
         )
         fig.add_trace(
             go.Candlestick(
@@ -121,31 +119,54 @@ async def candle_command(
                 name="OHLC",
                 showlegend=False,
             ),
-            row=1,
-            col=1,
+            secondary_y=True,
         )
-        colors = [
-            "green" if row.Open < row["Adj Close"] else "red"
-            for _, row in df_stock.iterrows()
-        ]
         fig.add_trace(
             go.Bar(
                 x=df_stock.index,
                 y=df_stock.Volume,
                 name="Volume",
-                marker_color=colors,
+                yaxis="y2",
+                marker_color="#d81aea",
+                opacity=0.4,
                 showlegend=False,
             ),
-            row=2,
-            col=1,
+            secondary_y=False,
         )
+        if interval != 1440:
+            fig.add_trace(
+                go.Scatter(
+                    name="VWAP",
+                    x=df_stock.index,
+                    y=df_vwap["VWAP_D"],
+                    opacity=0.65,
+                    line=dict(color="#fdc708", width=2),
+                    showlegend=True,
+                ),
+                secondary_y=True,
+            )
+        fig.update_xaxes(showspikes=True, spikesnap="cursor", spikemode="across")
+        fig.update_yaxes(showspikes=True, spikethickness=2)
         fig.update_layout(
-            margin=dict(l=0, r=0, t=25, b=20),
+            margin=dict(l=0, r=0, t=40, b=20),
             template=cfg.PLT_CANDLE_STYLE_TEMPLATE,
-            yaxis_title="Stock Price ($)",
+            yaxis2_title="Price ($)",
+            yaxis_title="Volume",
             yaxis=dict(
+                showgrid=False,
                 fixedrange=False,
-                showspikes=True,
+                side="left",
+                titlefont=dict(color="#d81aea"),
+                tickfont=dict(color="#d81aea"),
+                nticks=20,
+            ),
+            yaxis2=dict(
+                side="right",
+                fixedrange=False,
+                anchor="x",
+                layer="above traces",
+                overlaying="y",
+                nticks=20,
             ),
             xaxis=dict(
                 rangeslider=dict(visible=False),
@@ -157,32 +178,23 @@ async def candle_command(
             ),
             dragmode="pan",
             hovermode="x unified",
+            spikedistance=1000,
+            hoverdistance=100,
         )
-        if interval != 1440:
-            fig.add_trace(
-                go.Scatter(
-                    name="VWAP",
-                    x=df_stock.index,
-                    y=df_vwap["VWAP_D"],
-                    opacity=1,
-                    line=dict(color="#d81aea", width=2),
-                    showlegend=True,
-                ),
+        if futures in ticker.upper():
+            fig.update_xaxes(
+                rangebreaks=[
+                    dict(bounds=["sat", "sun"]),
+                    dict(bounds=[17, 17.30], pattern="hour"),
+                ],
             )
-            if futures in ticker.upper():
-                fig.update_xaxes(
-                    rangebreaks=[
-                        dict(bounds=["fri", "sun"]),
-                        dict(bounds=[17, 17.5], pattern="hour"),
-                    ],
-                )
-            else:
-                fig.update_xaxes(
-                    rangebreaks=[
-                        dict(bounds=["sat", "mon"]),
-                        dict(bounds=[19, 9.5], pattern="hour"),
-                    ],
-                )
+        elif crypto not in ticker.upper() and interval != 1440:
+            fig.update_xaxes(
+                rangebreaks=[
+                    dict(bounds=["sat", "mon"]),
+                    dict(bounds=[20, 9.30], pattern="hour"),
+                ],
+            )
         config = dict({"scrollZoom": True})
         rand = random.randint(69, 69420)
         imagefile = f"candle{rand}.png"
