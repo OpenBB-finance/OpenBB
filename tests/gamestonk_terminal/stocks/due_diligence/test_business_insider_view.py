@@ -22,7 +22,12 @@ def vcr_config():
 
 @pytest.mark.vcr
 @pytest.mark.record_stdout
-def test_price_target_from_analysts_raw():
+def test_price_target_from_analysts_raw(mocker):
+    # MOCK VISUALIZE_OUTPUT
+    mocker.patch(
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
+    )
+
     business_insider_view.price_target_from_analysts(
         ticker="TSLA",
         start=None,

@@ -19,10 +19,10 @@ def vcr_config():
 @pytest.mark.default_cassette("test_display_top_retail")
 @pytest.mark.vcr
 @pytest.mark.record_stdout
-def test_display_top_retail(mocker):
-    # MOCK VISUALIZE_OUTPUT
-    mocker.patch(
-        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
+@pytest.mark.parametrize("use_tab", [True, False])
+def test_display_top_retail(mocker, use_tab):
+    mocker.patch.object(
+        target=helper_funcs.gtff, attribute="USE_TABULATE_DF", new=use_tab
     )
 
     nasdaq_view.display_top_retail(n_days=3, export="")

@@ -139,7 +139,9 @@ def plot_pattern_recognition(
             y=0.965,
             horizontalalignment="left",
         )
+
         theme.visualize_output(force_tight_layout=False)
+
     else:
         if len(external_axes) != 1:
             console.print("[red]Expected list of 1 axis items./n[/red]")

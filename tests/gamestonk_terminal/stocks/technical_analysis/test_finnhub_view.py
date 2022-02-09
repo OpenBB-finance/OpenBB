@@ -139,6 +139,11 @@ def test_plot_pattern_recognition(mocker):
         return_value=(mocker.MagicMock(), mocker.MagicMock()),
     )
 
+    # MOCK VISUALIZE_OUTPUT
+    mocker.patch(
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
+    )
+
     # MOCK EXPORT_DATA
     mocker.patch(
         target="gamestonk_terminal.stocks.technical_analysis.finnhub_view.export_data"
