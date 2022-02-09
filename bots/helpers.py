@@ -191,9 +191,9 @@ def save_image(file, fig):
 
 
 class ShowView:
-    async def discord(self, func, ctx):
+    async def discord(self, func, ctx, *args, **kwargs):
         try:
-            data = func()
+            data = func(*args, **kwargs)
 
             image = disnake.File(data["imagefile"])
 

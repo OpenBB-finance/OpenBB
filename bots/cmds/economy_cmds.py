@@ -67,7 +67,7 @@ class EconomyCommands(commands.Cog):
         """
         await ctx.response.defer()
         logger.info("econ-feargreed")
-        await feargreed_command(ctx, indicator)
+        await ShowView().discord(feargreed_command, ctx, indicator)
 
     @commands.slash_command(name="econ-overview")
     async def overview(self, ctx: disnake.AppCmdInter):
@@ -109,7 +109,7 @@ class EconomyCommands(commands.Cog):
         """Displays energy futures data [Finviz]"""
         await ctx.response.defer()
         logger.info("econ-energy")
-        await energy_command(ctx)
+        await ShowView().discord(energy_command, ctx)
 
     @commands.slash_command(name="econ-metals")
     async def metals(self, ctx: disnake.AppCmdInter):
