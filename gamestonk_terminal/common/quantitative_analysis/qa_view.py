@@ -8,7 +8,6 @@ from datetime import datetime
 from typing import Any, Optional, List
 
 import matplotlib
-import matplotlib.dates as mdates
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
 import numpy as np
@@ -21,7 +20,6 @@ from statsmodels.graphics.gofplots import qqplot
 from pandas.plotting import register_matplotlib_converters
 
 from gamestonk_terminal.config_terminal import theme
-from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.common.quantitative_analysis import qa_model
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.decorators import log_start_end
@@ -883,6 +881,7 @@ def display_line(
     log_y: bool = True,
     draw: bool = False,
     export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display line plot of data
 
@@ -898,9 +897,20 @@ def display_line(
         Flag for drawing lines and annotating on the plot
     export: str
         Format to export data
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
-    console.print("")
-    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    # This plot has 1 axis
+    if external_axes is None:
+        _, ax = plt.subplots(
+            figsize=plot_autoscale(),
+            dpi=PLOT_DPI,
+        )
+    else:
+        if len(external_axes) != 1:
+            console.print("[red]Expected list of 1 axis items./n[/red]")
+            return
+        (ax,) = external_axes
 
     if log_y:
         ax.semilogy(data.index, data.values)
@@ -912,33 +922,16 @@ def display_line(
 
     else:
         ax.plot(data.index, data.values)
+    ax.set_xlim(data.index[0], data.index[-1])
 
-    ax.grid("on")
-    dateFmt = mdates.DateFormatter("%Y-%m-%d")
-    ax.xaxis.set_major_formatter(dateFmt)
-    ax.tick_params(axis="x", labelrotation=45)
-    ax.set_xlabel("Date")
     if title:
-        fig.suptitle(title)
-    fig.tight_layout(pad=2)
-
-    if gtff.USE_ION:
-        plt.ion()
-    if gtff.USE_WATERMARK:
-        ax.text(
-            0.73,
-            0.025,
-            "Gamestonk Terminal",
-            transform=ax.transAxes,
-            fontsize=12,
-            color="gray",
-            alpha=0.5,
-        )
-
+        ax.set_title(title)
     if draw:
         LineAnnotateDrawer(ax).draw_lines_and_annotate()
+    theme.style_primary_axis(ax)
 
-    plt.show()
+    if external_axes is None:
+        theme.visualize_output()
 
     export_data(
         export,
