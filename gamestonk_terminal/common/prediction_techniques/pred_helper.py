@@ -43,7 +43,7 @@ simplefilter(action="ignore", category=FutureWarning)
 ORIGINAL_TF_XLA_FLAGS = os.environ.get("TF_XLA_FLAGS")
 ORIGINAL_TF_FORCE_GPU_ALLOW_GROWTH = os.environ.get("TF_FORCE_GPU_ALLOW_GROWTH")
 
-PREPROCESSER = cfg.Preprocess
+PREPROCESSOR = cfg.Preprocess
 
 
 def check_valid_frac(num) -> float:
@@ -260,20 +260,20 @@ def prepare_scale_train_valid_test(
     dates_test: np.ndarray
         Array of dates after specified end date
     scaler:
-        Fitted preprocesser
+        Fitted PREPROCESSOR
     """
 
     # Pre-process data
-    if PREPROCESSER == "standardization":
+    if PREPROCESSOR == "standardization":
         scaler = StandardScaler()
 
-    elif PREPROCESSER == "minmax":
+    elif PREPROCESSOR == "minmax":
         scaler = MinMaxScaler()
 
-    elif PREPROCESSER == "normalization":
+    elif PREPROCESSOR == "normalization":
         scaler = Normalizer()
 
-    elif (PREPROCESSER == "none") or (PREPROCESSER is None):
+    elif (PREPROCESSOR == "none") or (PREPROCESSOR is None):
         scaler = None
     # Test data is used for forecasting.  Takes the last n_input_days data points.
     # These points are not fed into training
@@ -319,13 +319,17 @@ def prepare_scale_train_valid_test(
     next_n_day_dates = []
 
     for idx in range(len(prices) - n_input_days - n_predict_days):
-        input_prices.append(prices[idx : idx + n_input_days])
-        input_dates.append(dates[idx : idx + n_input_days])
+        input_prices.append(prices[idx : idx + n_input_days])  # noqa: E203
+        input_dates.append(dates[idx : idx + n_input_days])  # noqa: E203
         next_n_day_prices.append(
-            prices[idx + n_input_days : idx + n_input_days + n_predict_days]
+            prices[
+                idx + n_input_days : idx + n_input_days + n_predict_days  # noqa: E203
+            ]
         )
         next_n_day_dates.append(
-            dates[idx + n_input_days : idx + n_input_days + n_predict_days]
+            dates[
+                idx + n_input_days : idx + n_input_days + n_predict_days  # noqa: E203
+            ]
         )
 
     input_dates = np.asarray(input_dates)  # type: ignore
@@ -380,7 +384,7 @@ def forecast(
     model: Sequential
         Pretrained model
     scaler:
-        Fit scaler to be used to 'unscale' the data
+        Fit scaler to be used to 'un-scale' the data
 
     Returns
     -------
