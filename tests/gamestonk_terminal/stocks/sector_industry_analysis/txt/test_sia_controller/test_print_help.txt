@@ -13,6 +13,7 @@ Sector            : Financial Services
 Country           : United States
 Market Cap        : Large
 Exclude Exchanges : True
+Period            : Annual
 
 Statistics
     cps           companies per Sector based on Country and Market Cap
@@ -21,9 +22,14 @@ Statistics
     cpcs          companies per Country based on Sector and Market Cap
     cpci          companies per Country based on Industry and Market Cap
 
-Financials 
+Financials  [Yahoo Finance] 
     sama          see all metrics available
     metric        visualise financial metric across filters selected
+Financials  [StockAnalyis] 
+    bs            see all balance sheet items available
+    cf            see all cash flow statement items available
+    is            see all income statement items available
+    visualise     visualise financial metric across filters selected
 [unvl]
 Returned tickers: 
 >   ca            take these to comparison analysis menu

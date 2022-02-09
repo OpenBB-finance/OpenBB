@@ -127,7 +127,11 @@ def display_plots_financials(
     )
 
     for company in company_tickers:
-        df.loc[company] = stocks_data_statement[company].loc[item_name]
+        try:
+            df.loc[company] = stocks_data_statement[company].loc[item_name]
+        except KeyError:
+            del df[company]
+            continue
 
     if raw:
         print_rich_table(df, headers=list(df.columns), show_index=True, title=item_name)
