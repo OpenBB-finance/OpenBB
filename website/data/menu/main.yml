@@ -612,7 +612,6 @@ main:
             ref: "/common/prediction_techniques/conv1d"
           - name: mc
             ref: "/common/prediction_techniques/mc"
-
   - name: cryptocurrency
     ref: "/cryptocurrency"
     sub:
@@ -1254,3 +1253,8 @@ main:
             ref: "jupyter/dashboards/shortdata"
       - name: "reports"
         ref: "/jupyter/reports"
+  - name: bot
+    ref: "/bot"
+    sub:
+      - name: "discord"
+        ref: "/bot/discord"
