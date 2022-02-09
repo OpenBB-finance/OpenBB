@@ -139,7 +139,7 @@ def autocrop_image(image, border=0):
     return cropped_image
 
 
-def ticker_autocomp(inter, ticker: str):
+def ticker_autocomp(inter, ticker: str):  # pylint: disable=W0613
     if not ticker:
         return ["Start Typing", "for a", "stock ticker"]
     print(f"ticker_autocomp [ticker]: {ticker}")
@@ -150,14 +150,14 @@ def ticker_autocomp(inter, ticker: str):
     return [ticker for ticker in df if ticker.lower().startswith(tlow)][:24]
 
 
-def expiry_autocomp(inter, ticker: str):
+def expiry_autocomp(inter, ticker: str):  # pylint: disable=W0613
     data = inter.filled_options["ticker"]
     yf_ticker = yf.Ticker(data)
     dates = list(yf_ticker.options)
-    return [dates for dates in dates][:24]
+    return dates[:24]
 
 
-def presets_custom_autocomp(inter, preset: str):
+def presets_custom_autocomp(inter, preset: str):  # pylint: disable=W0613
     df = presets_custom
     if not preset:
         return df[:24]
@@ -166,7 +166,7 @@ def presets_custom_autocomp(inter, preset: str):
     return [preset for preset in df if preset.lower().startswith(plow)][:24]
 
 
-def signals_autocomp(inter, signal: str):
+def signals_autocomp(inter, signal: str):  # pylint: disable=W0613
     df = signals
     if not signal:
         return df[:24]
