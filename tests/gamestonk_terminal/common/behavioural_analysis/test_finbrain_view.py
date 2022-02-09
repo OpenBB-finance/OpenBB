@@ -44,9 +44,7 @@ def test_display_sentiment_analysis_empty_df(mocker):
     )
 
     # MOCK GTFF
-    mocker.patch.object(
-        target="gamestonk_terminal.helper_funcs.gtff", attribute="USE_ION", new=True
-    )
+    mocker.patch.object(target=finbrain_view.gtff, attribute="USE_ION", new=True)
 
     # MOCK GET_SENTIMENT
     mocker.patch(
