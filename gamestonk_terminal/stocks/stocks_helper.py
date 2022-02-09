@@ -628,9 +628,7 @@ def load_ticker(
     else:
         df_data = yf.download(ticker, start=start_date, progress=False)
 
-    df_data["date_id"] = (df_data.index.date - df_data.index.date.min()).astype(
-        "timedelta64[D]"
-    )
+    df_data["date_id"] = (df_data.index - df_data.index.min).astype("timedelta64[D]")
     df_data["date_id"] = df_data["date_id"].dt.days + 1
 
     df_data["OC_High"] = df_data[["Open", "Close"]].max(axis=1)
