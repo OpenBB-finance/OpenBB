@@ -422,7 +422,7 @@ if __name__ == "__main__":
                         run_scripts(f"{ns_parser.path[0]}/{file}", test_mode=True)
                     SUCCESSES += 1
                 except Exception as e:
-                    fails[f"{ns_parser.path[0]}/{file}"] = e
+                    fails[f"{ns_parser.path[0]}{file}"] = e
                     FAILURES += 1
                 i += 1
             if fails:
