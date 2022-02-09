@@ -22,12 +22,9 @@ def test_display_sentiment_analysis(color, mocker):
     mocker.patch.object(target=finbrain_view.gtff, attribute="USE_ION", new=True)
     mocker.patch.object(target=finbrain_view.gtff, attribute="USE_COLOR", new=color)
 
-    # MOCK ION + SHOW
+    # MOCK VISUALIZE_OUTPUT
     mocker.patch(
-        target="gamestonk_terminal.common.behavioural_analysis.finbrain_view.plt.ion"
-    )
-    mocker.patch(
-        target="gamestonk_terminal.common.behavioural_analysis.finbrain_view.plt.show"
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
     )
 
     finbrain_view.display_sentiment_analysis(
@@ -47,14 +44,13 @@ def test_display_sentiment_analysis_empty_df(mocker):
     )
 
     # MOCK GTFF
-    mocker.patch.object(target=finbrain_view.gtff, attribute="USE_ION", new=True)
-
-    # MOCK ION + SHOW
-    mocker.patch(
-        target="gamestonk_terminal.common.behavioural_analysis.finbrain_view.plt.ion"
+    mocker.patch.object(
+        target="gamestonk_terminal.helper_funcs.gtff", attribute="USE_ION", new=True
     )
+
+    # MOCK VISUALIZE_OUTPUT
     mocker.patch(
-        target="gamestonk_terminal.common.behavioural_analysis.finbrain_view.plt.show"
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
     )
 
     # MOCK GET_SENTIMENT

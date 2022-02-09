@@ -31,18 +31,9 @@ def vcr_config():
         "display_dividends",
     ],
 )
-@pytest.mark.parametrize(
-    "use_tab",
-    [True, False],
-)
-def test_call_func(func, mocker, use_tab):
-    # MOCK USE_TABULATE_DF
-    mocker.patch.object(
-        target="gamestonk_terminal.helper_funcs.gtff",
-        attribute="USE_TABULATE_DF",
-        new=use_tab,
-    )
-
+@pytest.mark.vcr
+@pytest.mark.record_stdout
+def test_call_func(func, mocker):
     # MOCK VISUALIZE_OUTPUT
     mocker.patch(
         target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"

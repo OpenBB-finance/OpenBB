@@ -132,7 +132,7 @@ def plot_pattern_recognition(
         candle_chart_kwargs["figratio"] = (10, 7)
         candle_chart_kwargs["figscale"] = 1.10
         candle_chart_kwargs["figsize"] = plot_autoscale()
-        fig, _ = mpf.plot(df_stock, **candle_chart_kwargs)
+        (fig, ax) = mpf.plot(df_stock, **candle_chart_kwargs)
         fig.suptitle(
             f"\n{ticker}",
             x=0.055,

@@ -91,10 +91,10 @@ def test_display_sean_seah_warnings_empty_df(mocker):
     "debug",
     [True, False],
 )
-@pytest.mark.parametrize(
-    "use_tab",
-    [True, False],
-)
-def test_display_sean_seah_warnings(debug, monkeypatch, use_tab):
-    monkeypatch.setattr(market_watch_view.gtff, "USE_TABULATE_DF", use_tab)
+def test_display_sean_seah_warnings(debug, mocker):
+    # MOCK VISUALIZE_OUTPUT
+    mocker.patch(
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
+    )
+
     market_watch_view.display_sean_seah_warnings(ticker="GME", debug=debug)

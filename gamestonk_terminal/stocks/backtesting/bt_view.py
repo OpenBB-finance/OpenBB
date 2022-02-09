@@ -154,6 +154,8 @@ def display_simple_ema(
     if not external_axes:
         theme.visualize_output()
 
+    console.print(res.display(), "\n")
+
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "simple_ema", res.stats
     )

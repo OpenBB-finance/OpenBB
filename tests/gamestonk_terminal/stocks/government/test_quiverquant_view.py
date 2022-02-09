@@ -18,10 +18,6 @@ def vcr_config():
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
-    "use_tab",
-    [True, False],
-)
-@pytest.mark.parametrize(
     "func, kwargs_dict",
     [
         (
@@ -70,14 +66,7 @@ def vcr_config():
         ),
     ],
 )
-def test_call_func(func, kwargs_dict, mocker, use_tab):
-    # MOCK USE_TABULATE_DF
-    mocker.patch.object(
-        target="gamestonk_terminal.helper_funcs.gtff",
-        attribute="USE_TABULATE_DF",
-        new=use_tab,
-    )
-
+def test_call_func(func, kwargs_dict, mocker):
     # MOCK VISUALIZE_OUTPUT
     mocker.patch(
         target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"

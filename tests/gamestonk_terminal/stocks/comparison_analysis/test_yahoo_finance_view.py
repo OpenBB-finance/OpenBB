@@ -35,7 +35,6 @@ def test_display_historical(mocker):
         target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
     )
 
-    mock_show = mocker.Mock()
     yahoo_finance_view.display_historical(
         similar_tickers=["TSLA", "GM"],
         start=datetime.strptime("2020-12-21", "%Y-%m-%d"),
@@ -43,8 +42,6 @@ def test_display_historical(mocker):
         normalize=True,
         export="",
     )
-
-    mock_show.assert_called_once()
 
 
 @pytest.mark.vcr

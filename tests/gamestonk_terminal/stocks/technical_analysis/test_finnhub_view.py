@@ -135,7 +135,8 @@ def test_plot_pattern_recognition(mocker):
 
     # MOCK PLOT
     mocker.patch(
-        target="gamestonk_terminal.stocks.technical_analysis.finnhub_view.mpf.plot"
+        target="gamestonk_terminal.stocks.technical_analysis.finnhub_view.mpf.plot",
+        return_value=(mocker.MagicMock(), mocker.MagicMock()),
     )
 
     # MOCK EXPORT_DATA

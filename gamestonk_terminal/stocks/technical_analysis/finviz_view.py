@@ -46,9 +46,7 @@ def view(ticker: str, external_axes: Optional[List[plt.Axes]] = None):
 
     ax.set_axis_off()
     fig.subplots_adjust(left=0, right=1, top=1, bottom=0)
-
     ax.imshow(im)
-
     # added for the watermark
     if not external_axes:
         theme.visualize_output()
