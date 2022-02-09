@@ -81,6 +81,7 @@ class ModelsNamespace:
                     pass
 
 
+# pylint: disable=R0902
 class TerminalStyle:
     """The class that helps with handling of style configurations.
 
