@@ -198,7 +198,9 @@ class ShowView:
             image = disnake.File(data["imagefile"])
 
             title = data["title"]
-            embed = disnake.Embed(title=title, colour=cfg.COLOR)
+            embed = disnake.Embed(
+                title=title, colour=cfg.COLOR, description=data.get("description", None)
+            )
             embed.set_image(url=f"attachment://{data['imagefile']}")
             embed.set_author(
                 name=cfg.AUTHOR_NAME,
