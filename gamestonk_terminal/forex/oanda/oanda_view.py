@@ -300,27 +300,29 @@ def show_candles(
             df_candles, additional_charts
         )
 
-    if gtff.USE_ION:
-        plt.ion()
+        if gtff.USE_ION:
+            plt.ion()
 
-    _, ax = mpf.plot(
-        df_candles,
-        type="candle",
-        style="charles",
-        volume=True,
-        scale_padding={"left": 0.3, "right": 1, "top": 0.8, "bottom": 0.8},
-        returnfig=True,
-        addplot=plots_to_add,
-    )
+        _, ax = mpf.plot(
+            df_candles,
+            type="candle",
+            style="charles",
+            volume=True,
+            scale_padding={"left": 0.3, "right": 1, "top": 0.8, "bottom": 0.8},
+            returnfig=True,
+            addplot=plots_to_add,
+        )
 
-    ax[0].set_title(f"{instrument} {granularity}")
-    if len(legends) > 0:
-        ax[0].legend(legends)
-    # pylint: disable=C0200
-    for i in range(0, len(subplot_legends), 2):
-        ax[subplot_legends[i]].legend(subplot_legends[i + 1])
+        ax[0].set_title(f"{instrument} {granularity}")
+        if len(legends) > 0:
+            ax[0].legend(legends)
+        # pylint: disable=C0200
+        for i in range(0, len(subplot_legends), 2):
+            ax[subplot_legends[i]].legend(subplot_legends[i + 1])
 
-    console.print("")
+        console.print("")
+    else:
+        console.print("[red]Could not retrieve the data[/red]\n")
 
 
 @log_start_end(log=logger)

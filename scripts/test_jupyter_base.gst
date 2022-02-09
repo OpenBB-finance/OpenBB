@@ -1,3 +1,4 @@
+jupyter
 reports
 h
 help

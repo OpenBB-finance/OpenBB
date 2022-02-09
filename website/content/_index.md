@@ -33,55 +33,55 @@ resources:
 
 <!-- markdownlint-restore -->
 
-**A modern investment research tool for Everyone.**
+### **High Quality FOSS Investment Research Tools For Everyone**
 
 <!--{{< img name="GST" lazy=false >}}-->
 
-Gamestonk Terminal provides a modern Python-based integrated environment for investment research, that allows the average joe retail trader to leverage state-of-the-art Data Science and Machine Learning technologies.
+Gamestonk Terminal provides a modern, and fully customizable, Python-based integrated environment for investment research. Leveraging state-of-the-art data science and machine learning, the individual trader can now harness technologies used by institutions and professionals around the world to make better financial decisions.
 
-As a modern Python-based environment, GamestonkTerminal opens access to numerous Python data libraries in Data Science (Pandas, Numpy, Scipy, Jupyter), Machine Learning (Pytorch, Tensorflow, Sklearn, Flair), and Data Acquisition (Beautiful Soup, and numerous third-party APIs).
+As a modern Python-based environment, GamestonkTerminal opens access to numerous Python data libraries in data science (Pandas, Numpy, Scipy, Jupyter), machine learning (Pytorch, Tensorflow, Sklearn, Flair), and data acquisition (Beautiful Soup, and numerous third-party APIs).
 
 <!--{{< button size="large" relref="stocks/" >}}Getting Started{{< /button >}}-->
 
-## Feature overview
+### Feature overview
 
 {{< columns >}}
 
-### Clean and simple design
+### Ad-Free Experience
 
-Stay focused on exploring the content and don't get overwhelmed by a complex design.
-
-<--->
-
-### Light and mobile-friendly
-
-The theme is powered by less than 1 MB and looks impressive on mobile devices as well as on a regular Desktop.
+Don't let your research be influenced algorithmic advertisements. Gamestonk Terminal provides a fast workflow that is ad-free and uncompromising.
 
 <--->
 
-### Easy customization
+### Fully Customizable
 
-The look and feel can be easily customized by CSS custom properties (variables), features can be adjusted by Hugo parameters.
+The MIT Open Source license allows any user to endlessly customize the suite for their specific needs. 
+
+<--->
+
+### Jupyter Labs Enabled
+
+Work in developer mode with Jupyter Labs, or share reports and customized tools with .ipynb Notebook files. Run multiple dashboards or terminals in parallel. 
 
 {{< /columns >}}
 
 {{< columns >}}
 
-### Zero initial configuration
+### Discord Bot
 
-Getting started in minutes. The theme is shipped with a default configuration and works out of the box.
-
-<--->
-
-### Handy shortcodes
-
-We included some (hopefully) useful custom shortcodes so you don't have to and can focus on writing amazing docs.
+A powerful and interactive Discord Bot, complete with a Plotly charting library, for anyone to install and use in public or private servers; without limits.
 
 <--->
 
-### Dark mode
+### Simple Scripts For Automated Processes
 
-Powerful dark mode that detects your system preferences or can be controlled by a toggle switch.
+Generate automated reports, charts, and more using the unique simple script batch command for repetitive or scheduled tasks.
+
+<--->
+
+### Import Your Own Data Sets To Plot, Analyze, Or Predict
+
+Statisticians and data scientists can harness the power of Tensorflow and quantitative analysis by importing CSV data sets in the custom menu.
 
 {{< /columns >}}
 
