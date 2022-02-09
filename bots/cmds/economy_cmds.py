@@ -88,7 +88,7 @@ class EconomyCommands(commands.Cog):
         """Futures and commodities overview [Wall St. Journal]"""
         await ctx.response.defer()
         logger.info("econ-futures")
-        await futures_command(ctx)
+        await ShowView().discord(futures_command, ctx)
 
     @commands.slash_command(name="econ-usbonds")
     async def usbonds(self, ctx: disnake.AppCmdInter):
@@ -102,7 +102,7 @@ class EconomyCommands(commands.Cog):
         """Global bonds overview [Wall St. Journal]"""
         await ctx.response.defer()
         logger.info("econ-glbonds")
-        await glbonds_command(ctx)
+        await ShowView().discord(glbonds_command, ctx)
 
     @commands.slash_command(name="econ-energy")
     async def energy(self, ctx: disnake.AppCmdInter):
@@ -130,7 +130,7 @@ class EconomyCommands(commands.Cog):
         """Displays grains futures data [Finviz]"""
         await ctx.response.defer()
         logger.info("econ-grains")
-        await grains_command(ctx)
+        await ShowView().discord(grains_command, ctx)
 
     @commands.slash_command(name="econ-softs")
     async def softs(self, ctx: disnake.AppCmdInter):
