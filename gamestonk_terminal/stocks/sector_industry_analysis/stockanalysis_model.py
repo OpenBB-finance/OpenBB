@@ -1,4 +1,4 @@
-"""Finance Database Model"""
+"""StockAnalysis Model"""
 __docformat__ = "numpy"
 # pylint:disable=too-many-arguments,unexpected-keyword-arg
 

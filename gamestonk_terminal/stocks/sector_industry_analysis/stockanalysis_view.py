@@ -1,4 +1,4 @@
-"""Stock Analysis View"""
+"""StockAnalysis View"""
 __docformat__ = "numpy"
 # pylint:disable=too-many-arguments, too-many-lines
 
