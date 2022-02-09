@@ -21,6 +21,12 @@ exchange
 mktcap Large
 country United States
 industry Financial Data & Stock Exchanges
+bs
+cf
+is
+visualise se
+visualise ninc
+visualise re
 cps
 cpic
 cpis
