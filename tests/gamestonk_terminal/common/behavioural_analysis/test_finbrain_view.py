@@ -33,7 +33,7 @@ def test_display_sentiment_analysis(color, mocker):
     )
 
 
-@pytest.mark.vcr(record_mode="none")
+@pytest.mark.vcr()
 @pytest.mark.record_stdout
 def test_display_sentiment_analysis_empty_df(mocker):
     view = "gamestonk_terminal.common.behavioural_analysis.finbrain_view"
