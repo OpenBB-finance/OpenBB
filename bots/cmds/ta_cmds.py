@@ -2,6 +2,8 @@
 from __future__ import annotations
 
 import disnake
+from disnake.ext import commands
+
 from bots.config_discordbot import logger
 from bots.helpers import ticker_autocomp
 from bots.stocks.technical_analysis.ad import ad_command
@@ -27,7 +29,6 @@ from bots.stocks.technical_analysis.summary import summary_command
 from bots.stocks.technical_analysis.view import view_command
 from bots.stocks.technical_analysis.wma import wma_command
 from bots.stocks.technical_analysis.zlma import zlma_command
-from disnake.ext import commands
 
 possible_ma = [
     "dema",

@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import disnake
+from disnake.ext import commands
+
 from bots.config_discordbot import logger
 from bots.helpers import presets_custom_autocomp, signals_autocomp
 from bots.stocks.screener.financial import financial_command
@@ -12,7 +14,6 @@ from bots.stocks.screener.presets_custom import presets_custom_command
 from bots.stocks.screener.presets_default import presets_default_command
 from bots.stocks.screener.technical import technical_command
 from bots.stocks.screener.valuation import valuation_command
-from disnake.ext import commands
 
 sort = {
     "overview": [

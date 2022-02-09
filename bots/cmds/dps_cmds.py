@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 import disnake
-from bots.config_discordbot import logger
+from disnake.ext import commands
+
+from discordbot.config_discordbot import logger
 from bots.helpers import ticker_autocomp
 from bots.stocks.dark_pool_shorts.dpotc import dpotc_command
 from bots.stocks.dark_pool_shorts.ftd import ftd_command
@@ -11,7 +13,6 @@ from bots.stocks.dark_pool_shorts.psi import psi_command
 from bots.stocks.dark_pool_shorts.shorted import shorted_command
 from bots.stocks.dark_pool_shorts.sidtc import sidtc_command
 from bots.stocks.dark_pool_shorts.spos import spos_command
-from disnake.ext import commands
 
 pos_choices = {
     "Short Vol (1M)": "sv",

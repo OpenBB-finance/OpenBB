@@ -1,15 +1,16 @@
 import os
 import random
 
-import bots.config_discordbot as cfg
 import disnake
 import plotly.graph_objects as go
 import yfinance as yf
+from PIL import Image
+from plotly.subplots import make_subplots
+
+import bots.config_discordbot as cfg
 from bots.config_discordbot import logger
 from bots.helpers import autocrop_image
 from gamestonk_terminal.stocks.dark_pool_shorts import finra_model
-from PIL import Image
-from plotly.subplots import make_subplots
 
 
 async def dpotc_command(ctx, ticker: str = ""):

@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import disnake
+from disnake.ext import commands
+
 from bots.config_discordbot import logger
 from bots.helpers import ticker_autocomp
 from bots.stocks.government.contracts import contracts_command
@@ -13,7 +15,6 @@ from bots.stocks.government.qtrcontracts import qtrcontracts_command
 from bots.stocks.government.topbuys import topbuys_command
 from bots.stocks.government.toplobbying import toplobbying_command
 from bots.stocks.government.topsells import topsells_command
-from disnake.ext import commands
 
 
 class GovernmentCommands(commands.Cog):
