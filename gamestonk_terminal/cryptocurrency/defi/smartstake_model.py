@@ -5,6 +5,8 @@ from typing import Union, Dict
 import requests
 import pandas as pd
 
+from gamestonk_terminal import config_terminal as cfg
+
 
 def get_luna_supply_stats(supply_type: str, days: int) -> pd.DataFrame:
     """Get supply history of the Terra ecosystem
@@ -24,11 +26,15 @@ def get_luna_supply_stats(supply_type: str, days: int) -> pd.DataFrame:
         Dataframe of supply history data
     """
 
-    payload: Dict[str, Union[int, str]] = {"type": "history", "dayCount": days}
+    payload: Dict[str, Union[int, str]] = {
+        "type": "history",
+        "dayCount": days,
+        "key": cfg.API_SMARTSTAKE_KEY,
+        "token": cfg.API_SMARTSTAKE_TOKEN,
+    }
 
     response = requests.get(
-        "https://prod.smartstakeapi.com/"
-        "listData?key=2mwTEDr9zXJH323M&token=1643550425&app=TERRA",
+        "https://prod.smartstakeapi.com/listData?app=TERRA",
         params=payload,
     )
 

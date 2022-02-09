@@ -2,12 +2,20 @@
 __docformat__ = "numpy"
 
 import os
+from typing import Optional, List
+
 import matplotlib.dates as mdates
 from matplotlib import pyplot as plt
 
 from gamestonk_terminal.cryptocurrency.defi import smartstake_model
-from gamestonk_terminal.helper_funcs import export_data, print_rich_table
+from gamestonk_terminal.helper_funcs import (
+    export_data,
+    plot_autoscale,
+    print_rich_table,
+)
+from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.rich_config import console
 
 # pylint: disable=E1101
 
@@ -19,6 +27,7 @@ def display_luna_circ_supply_change(
     export: str,
     supply_type: str = LUNA_CIR_SUPPLY_CHANGE,
     limit: int = 5,
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display Luna circulating supply stats
 
@@ -33,6 +42,8 @@ def display_luna_circ_supply_change(
     limit: int
         Number of results display on the terminal
         Default: 5
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     Returns
         None
     -------
@@ -43,32 +54,44 @@ def display_luna_circ_supply_change(
     if df.empty:
         print("Error in SmartStake request")
     else:
-        _, ax1 = plt.subplots(figsize=(25, 7))
-        ax1.plot(
-            df.index, df["circulatingSupplyInMil"], c="k", label="Circulating Supply"
+
+        # This plot has 1 axis
+        if not external_axes:
+            _, ax = plt.subplots(figsize=plot_autoscale, dpi=PLOT_DPI)
+        else:
+            if len(external_axes) != 1:
+                console.print("[red]Expected list of one axis item./n[/red]")
+                return
+            (ax,) = external_axes
+
+        ax.plot(
+            df.index,
+            df["circulatingSupplyInMil"],
+            c="black",
+            label="Circulating Supply",
         )
-        ax1.plot(
+        ax.plot(
             df.index,
             df["liquidCircSupplyInMil"],
-            c="r",
+            c="red",
             label="Liquid Circulating Supply",
         )
-        ax1.plot(
-            df.index, df["stakeFromCircSupplyInMil"], c="g", label="Stake of Supply"
+        ax.plot(
+            df.index, df["stakeFromCircSupplyInMil"], c="green", label="Stake of Supply"
         )
-        ax1.plot(
+        ax.plot(
             df.index,
             df["recentTotalLunaBurntInMil"],
-            c="b",
+            c="blue",
             label="Supply Reduction (Luna Burnt)",
         )
 
-        ax1.grid()
-        ax1.set_ylabel("Millions")
-        ax1.set_xlabel("Time")
-        ax1.set_title("Luna Circulating Supply Changes (In Millions)")
-        ax1.set_xlim(df.index[0], df.index[-1])
-        ax1.legend(loc="upper left")
+        ax.grid()
+        ax.set_ylabel("Millions")
+        ax.set_xlabel("Time")
+        ax.set_title("Luna Circulating Supply Changes (In Millions)")
+        ax.set_xlim(df.index[0], df.index[-1])
+        ax.legend(loc="best")
 
         plt.gca().xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m-%d"))
         plt.gcf().autofmt_xdate()
