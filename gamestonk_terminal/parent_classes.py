@@ -130,7 +130,7 @@ class BaseController(metaclass=ABCMeta):
 
     def log_queue(self, message: str) -> None:
         if self.queue:
-            logger.info("%s|'%s'||", message, "/".join(self.queue))
+            logger.info("%s: '%s'", message, "/".join(self.queue))
 
     @log_start_end(log=logger)
     def switch(self, an_input: str) -> List[str]:

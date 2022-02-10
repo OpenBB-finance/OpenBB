@@ -217,10 +217,10 @@ class TerminalController(BaseController):
 def terminal(jobs_cmds: List[str] = None):
     """Terminal Menu"""
     setup_logging()
-    logger.info("START||")
+    logger.info("START")
 
     if jobs_cmds is not None and jobs_cmds:
-        logger.info("TERMINAL INPUT|'%s'||", "/".join(jobs_cmds))
+        logger.info("INPUT: '%s'", "/".join(jobs_cmds))
 
     ret_code = 1
     t_controller = TerminalController(jobs_cmds)
