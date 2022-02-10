@@ -20,7 +20,6 @@ from scipy.stats import binom
 
 from gamestonk_terminal.config_terminal import theme
 import gamestonk_terminal.config_plot as cfp
-import gamestonk_terminal.feature_flags as gtff
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
     excel_columns,
@@ -110,7 +109,7 @@ def plot_oi(
     )
 
     max_pain = op_helpers.calculate_max_pain(df_opt)
-    if not external_axes:
+    if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
     else:
         if len(external_axes) != 1:
@@ -146,7 +145,7 @@ def plot_oi(
 
     theme.style_primary_axis(ax)
 
-    if not external_axes:
+    if external_axes is None:
         theme.visualize_output()
 
 
@@ -203,7 +202,7 @@ def plot_vol(
 
     call_v = calls.set_index("strike")["volume"] / 1000
     put_v = puts.set_index("strike")["volume"] / 1000
-    if not external_axes:
+    if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
     else:
         if len(external_axes) != 1:
@@ -237,7 +236,7 @@ def plot_vol(
     ax.set_title(f"Volume for {ticker.upper()} expiring {expiry}")
     theme.style_primary_axis(ax)
 
-    if not external_axes:
+    if external_axes is None:
         theme.visualize_output()
     export_data(
         export,
@@ -343,7 +342,7 @@ def plot_volume_open_interest(
         return
 
     # Initialize the matplotlib figure
-    if not external_axes:
+    if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
     else:
         if len(external_axes) != 1:
@@ -429,7 +428,7 @@ def plot_volume_open_interest(
     sns.despine(left=True, bottom=True)
 
     theme.style_primary_axis(ax)
-    if not external_axes:
+    if external_axes is None:
         theme.visualize_output()
 
     export_data(
@@ -496,7 +495,7 @@ def plot_plot(
     chain = yfinance_model.get_option_chain(ticker, expiration)
     values = chain.puts if put else chain.calls
 
-    if not external_axes:
+    if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
     else:
         if len(external_axes) != 1:
@@ -525,7 +524,7 @@ def plot_plot(
         ax.get_yaxis().set_major_formatter(varis[y]["format"])
     theme.style_primary_axis(ax)
 
-    if not external_axes:
+    if external_axes is None:
         theme.visualize_output()
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "plot")
 
@@ -542,7 +541,7 @@ def plot_payoff(
     """Generate a graph showing the option payoff diagram"""
     x, yb, ya = generate_data(current_price, options, underlying)
 
-    if not external_axes:
+    if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
     else:
         if len(external_axes) != 1:
@@ -562,7 +561,7 @@ def plot_payoff(
     ax.yaxis.set_major_formatter("${x:.2f}")
     theme.style_primary_axis(ax)
 
-    if not external_axes:
+    if external_axes is None:
         theme.visualize_output()
 
 
@@ -763,7 +762,7 @@ def plot_expected_prices(
     up_moves = list(range(len(und_vals[-1])))
     up_moves.reverse()
     probs = [binom.pmf(r, len(up_moves), p) for r in up_moves]
-    if not external_axes:
+    if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
     else:
         if len(external_axes) != 1:
@@ -777,7 +776,7 @@ def plot_expected_prices(
     ax.plot(und_vals[-1], probs)
     theme.style_primary_axis(ax)
 
-    if not external_axes:
+    if external_axes is None:
         theme.visualize_output()
 
 
@@ -958,7 +957,12 @@ def show_binom(
 
 
 @log_start_end(log=logger)
-def display_vol_surface(ticker: str, export: str = "", z: str = "IV"):
+def display_vol_surface(
+    ticker: str,
+    export: str = "",
+    z: str = "IV",
+    external_axes: Optional[List[plt.Axes]] = None,
+):
     """Display vol surface
 
     Parameters
@@ -985,17 +989,20 @@ def display_vol_surface(ticker: str, export: str = "", z: str = "IV"):
     elif z == "LP":
         Z = data.lastPrice
         label = "Last Price"
-    fig = plt.figure()
-    ax = plt.axes(projection="3d")
-    ax.plot_trisurf(X, Y, Z, cmap="jet", linewidth=0.2)
+    if external_axes is None:
+        fig = plt.figure()
+        ax = plt.axes(projection="3d")
+    else:
+        ax = external_axes[0]
+    ax.plot_trisurf(X, Y, Z, linewidth=0.2)
     ax.set_xlabel("DTE")
     ax.set_ylabel("Strike")
     ax.set_zlabel(z)
-    fig.tight_layout()
-    fig.suptitle(f"{label} Surface for {ticker.upper()}")
-    if gtff.USE_ION:
-        plt.ion()
-    plt.show()
+
+    if external_axes is None:
+        fig.suptitle(f"{label} Surface for {ticker.upper()}")
+        theme.visualize_output(force_tight_layout=False)
+
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
