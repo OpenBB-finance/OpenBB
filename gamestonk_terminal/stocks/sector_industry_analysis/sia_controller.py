@@ -817,30 +817,26 @@ class SectorIndustryAnalysisController(BaseController):
 
         help_text = ""
         statement_string = {
-            "BS": "Balance Sheet Statement \n",
-            "IS": "Income Statement \n",
-            "CF": "Cash Flow Statement \n",
+            "BS": "Balance Sheet Statement",
+            "IS": "Income Statement",
+            "CF": "Cash Flow Statement",
         }
 
         if ns_parser.statement:
             ns_parser.statement = str(ns_parser.statement).upper()
-            if ns_parser.statement == "BS":
-                help_text += statement_string[ns_parser.statement]
-                for k, v in stockanalysis_model.sa_keys[ns_parser.statement].items():
-                    help_text += f"  {k} {(20 - len(k)) * ' '} {v} \n"
-            elif ns_parser.statement == "IS":
-                help_text += statement_string[ns_parser.statement]
-                for k, v in stockanalysis_model.sa_keys[ns_parser.statement].items():
-                    help_text += f"  {k} {(20 - len(k)) * ' '} {v} \n"
-            else:
-                help_text += statement_string[ns_parser.statement]
-                for k, v in stockanalysis_model.sa_keys[ns_parser.statement].items():
-                    help_text += f"  {k} {(20 - len(k)) * ' '} {v} \n"
+
+            if ns_parser.statement not in ("IS", "BS", "CF"):
+                console.print(f"{ns_parser.statement} is not a valid option.")
+
+            help_text += f"\n{statement_string[ns_parser.statement]}\n"
+            for k, v in stockanalysis_model.sa_keys[ns_parser.statement].items():
+                help_text += f"  {k} {(10 - len(k)) * ' '} {v} \n"
+
         else:
             for statement, statement_value in stockanalysis_model.sa_keys.items():
-                help_text += statement_string[statement]
+                help_text += f"\n{statement_string[statement]}\n"
                 for k, v in statement_value.items():
-                    help_text += f"  {k} {(20 - len(k)) * ' '} {v} \n"
+                    help_text += f"  {k} {(10 - len(k)) * ' '} {v} \n"
 
         console.print(help_text)
 

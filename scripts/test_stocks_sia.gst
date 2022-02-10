@@ -21,12 +21,13 @@ exchange
 mktcap Large
 country United States
 industry Financial Data & Stock Exchanges
-bs
-cf
-is
-visualise se
-visualise ninc
-visualise re
+satma
+satma is
+satma bs
+satma cf
+vis se
+vis ninc
+vis re
 cps
 cpic
 cpis
