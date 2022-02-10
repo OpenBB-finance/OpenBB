@@ -808,9 +808,11 @@ class SectorIndustryAnalysisController(BaseController):
             "--statement",
             dest="statement",
             help="See all metrics available for the given choice",
-            choices=["BS", "bs", "IS", "is", "CF", "cf"],
+            choices=["BS", "bs", "IS", "is", "CF", "cf", ""],
         )
 
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-s")
         ns_parser = parse_known_args_and_warn(parser, other_args)
 
         help_text = ""
