@@ -1,7 +1,11 @@
-PLOT_DPI = 100
+import os
+
+PLOT_DPI = int(os.getenv("GTFF_PLOT_DPI", "100"))
 
 # Backend to use for plotting
-BACKEND = None
+BACKEND = os.getenv("GTFF_BACKEND", "None")
+if BACKEND == "None":
+    BACKEND = None  # type: ignore
 # Examples:
 # "tkAgg" - This uses the tkinter library.  If unsure, set to this
 # "module://backend_interagg" - This is what pycharm defaults to in Scientific Mode
@@ -10,16 +14,16 @@ BACKEND = None
 # See more: https://matplotlib.org/stable/tutorials/introductory/usage.html#the-builtin-backends
 
 # Used when USE_PLOT_AUTOSCALING is set to False
-PLOT_HEIGHT = 500
-PLOT_WIDTH = 800
+PLOT_HEIGHT = int(os.getenv("GTFF_PLOT_HEIGHT", "500"))
+PLOT_WIDTH = int(os.getenv("GTFF_PLOT_WIDTH", "800"))
 
 # Used when USE_PLOT_AUTOSCALING is set to True
-PLOT_HEIGHT_PERCENTAGE = 50
-PLOT_WIDTH_PERCENTAGE = 70
+PLOT_HEIGHT_PERCENTAGE = float(os.getenv("GTFF_PLOT_HEIGHT_PERCENTAGE", "50.00"))
+PLOT_WIDTH_PERCENTAGE = float(os.getenv("GTFF_PLOT_WIDTH_PERCENTAGE", "70.00"))
 
 # When autoscaling is True, choose which monitor to scale to
 # Primary monitor = 0, secondary monitor use 1
-MONITOR = 0
+MONITOR = int(os.getenv("GTFF_MONITOR", "0"))
 
 # Color for `view` command data.  All pyplot colors listed at:
 # https://matplotlib.org/stable/gallery/color/named_colors.html

@@ -12,7 +12,33 @@ interactions:
     uri: https://query2.finance.yahoo.com/v8/finance/chart/TSLA?events=div%2Csplits&includePrePost=False&interval=1d&period1=1598220000&period2=1635980400
   response:
     body:
-      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"TSLA","exchangeName":"NMS","instrumentType":"EQUITY","firstTradeDate":1277818200,"regularMarketTime":1639774808,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":932.57,"chartPreviousClose":932.57,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","end":1639751400,"start":1639731600,"gmtoffset":-18000},"regular":{"timezone":"EST","end":1639774800,"start":1639751400,"gmtoffset":-18000},"post":{"timezone":"EST","end":1639789200,"start":1639774800,"gmtoffset":-18000}},"dataGranularity":"1d","range":"","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1639751400,1639774808],"indicators":{"quote":[{"volume":[33479100,33626772],"low":[909.0399780273438,909.0401000976562],"open":[914.77001953125,914.77001953125],"high":[960.6599731445312,960.659912109375],"close":[932.5700073242188,932.5700073242188]}],"adjclose":[{"adjclose":[932.5700073242188,932.5700073242188]}]}}],"error":null}}'
+      string: !!binary |
+        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
     headers:
       Age:
       - '0'
@@ -32,12 +58,14 @@ interactions:
       - 1; mode=block
       cache-control:
       - public, max-age=10, stale-while-revalidate=20
+      content-encoding:
+      - gzip
       content-length:
-      - '1045'
+      - '1472'
       content-type:
       - application/json;charset=utf-8
       date:
-      - Sun, 19 Dec 2021 08:29:15 GMT
+      - Sat, 05 Feb 2022 21:22:27 GMT
       server:
       - ATS
       vary:
@@ -45,13 +73,13 @@ interactions:
       x-envoy-decorator-operation:
       - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '5'
+      - '4'
       x-request-id:
-      - 137a4bdd-9b38-4657-8604-f48ffb2f2e21
+      - 0bda0342-3949-4905-a63d-83647b4307b8
       x-yahoo-request-id:
-      - 3gme57hgrtrar
+      - fl0b0t1gvtqkj
       y-rid:
-      - 3gme57hgrtrar
+      - fl0b0t1gvtqkj
     status:
       code: 200
       message: OK

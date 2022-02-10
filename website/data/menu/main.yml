@@ -16,8 +16,6 @@ main:
       - name: discovery
         ref: "/stocks/discovery"
         sub:
-          - name: rtearn
-            ref: "/stocks/discovery/rtearn"
           - name: pipo
             ref: "/stocks/discovery/pipo"
           - name: fipo
@@ -459,6 +457,8 @@ main:
         sub:
           - name: view
             ref: "/common/technical_analysis/view"
+          - name: tv
+            ref: "/common/technical_analysis/tv"
           - name: summary
             ref: "/common/technical_analysis/summary"
           - name: recom
@@ -612,7 +612,6 @@ main:
             ref: "/common/prediction_techniques/conv1d"
           - name: mc
             ref: "/common/prediction_techniques/mc"
-
   - name: cryptocurrency
     ref: "/cryptocurrency"
     sub:
@@ -1239,18 +1238,23 @@ main:
   - name: jupyter
     ref: "/jupyter"
     sub:
-        - name: "dashboards"
-          ref: "/jupyter/dashboards"
-          sub:
-            - name: "stocks"
-              ref: "/jupyter/dashboards/stocks"
-            - name: "correlation"
-              ref: "/jupyter/dashboards/correlations"
-            - name: "vsurf"
-              ref: "/jupyter/dashboards/vsurf"
-            - name: "chains"
-              ref: "/jupyter/dashboards/chains"
-            - name: "shortdata"
-              ref: "jupyter/dashboards/shortdata"
-        - name: "reports"
-          ref: "/jupyter/reports"
+      - name: "dashboards"
+        ref: "/jupyter/dashboards"
+        sub:
+          - name: "stocks"
+            ref: "/jupyter/dashboards/stocks"
+          - name: "correlation"
+            ref: "/jupyter/dashboards/correlations"
+          - name: "vsurf"
+            ref: "/jupyter/dashboards/vsurf"
+          - name: "chains"
+            ref: "/jupyter/dashboards/chains"
+          - name: "shortdata"
+            ref: "jupyter/dashboards/shortdata"
+      - name: "reports"
+        ref: "/jupyter/reports"
+  - name: bot
+    ref: "/bot"
+    sub:
+      - name: "discord"
+        ref: "/bot/discord"
