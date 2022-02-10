@@ -40,7 +40,7 @@ def display_btc_rainbow(since: int, until: int, export: str = ""):
     """
     df_data = get_close_price("BTC", "24h", since, until)
     if df_data.empty:
-        print("Error in glassnode request\n")
+        console.print("Error in glassnode request\n")
     else:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
 
@@ -135,7 +135,7 @@ def display_btc_rainbow(since: int, until: int, export: str = ""):
         if gtff.USE_ION:
             plt.ion()
         plt.show()
-        print("")
+        console.print("")
 
         export_data(
             export,

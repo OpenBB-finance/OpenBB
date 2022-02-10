@@ -105,7 +105,7 @@ class OandaController(BaseController):
             "-n",
             "--name",
             help="To currency",
-            required=True,
+            required="-h" not in other_args,
             type=av_model.check_valid_forex_currency,
             dest="to_symbol",
         )
@@ -138,7 +138,7 @@ class OandaController(BaseController):
             "-n",
             "--name",
             help="From currency",
-            required=True,
+            required="-h" not in other_args,
             type=av_model.check_valid_forex_currency,
             dest="from_symbol",
         )
