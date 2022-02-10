@@ -149,7 +149,7 @@ def display_income_statement(
             income.drop(index=["Final link", "Link"]),
             headers=list(income.columns),
             title="Ticker Income Statement",
-            show_index=True
+            show_index=True,
         )
 
         pd.set_option("display.max_colwidth", None)
@@ -190,7 +190,7 @@ def display_balance_sheet(
             balance.drop(index=["Final link", "Link"]),
             headers=list(balance.columns),
             title="Ticker Balance Sheet",
-            show_index=True
+            show_index=True,
         )
 
         pd.set_option("display.max_colwidth", None)
@@ -267,7 +267,9 @@ def display_key_metrics(
     if not key_metrics.empty:
         key_metrics = key_metrics[key_metrics.columns[::-1]]
         print_rich_table(
-            key_metrics, headers=list(key_metrics.columns), title="Ticker Key Metrics",
+            key_metrics,
+            headers=list(key_metrics.columns),
+            title="Ticker Key Metrics",
             show_index=True,
         )
         console.print("")
@@ -299,8 +301,12 @@ def display_financial_ratios(
 
     if not ratios.empty:
         ratios = ratios[ratios.columns[::-1]]
-        print_rich_table(ratios, headers=list(ratios.columns), title="Ticker Ratios",
-                        show_index=True,)
+        print_rich_table(
+            ratios,
+            headers=list(ratios.columns),
+            title="Ticker Ratios",
+            show_index=True,
+        )
         console.print("")
         export_data(
             export, os.path.dirname(os.path.abspath(__file__)), "grratiosowth", ratios
@@ -330,8 +336,9 @@ def display_financial_statement_growth(
 
     if not growth.empty:
         growth = growth[growth.columns[::-1]]
-        print_rich_table(growth, headers=list(growth.columns), title="Ticker Growth",
-                        show_index=True)
+        print_rich_table(
+            growth, headers=list(growth.columns), title="Ticker Growth", show_index=True
+        )
         console.print("")
         export_data(
             export, os.path.dirname(os.path.abspath(__file__)), "growth", growth
