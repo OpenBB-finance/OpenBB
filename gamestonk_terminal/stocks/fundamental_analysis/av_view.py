@@ -29,7 +29,10 @@ def display_overview(ticker: str):
         return
 
     print_rich_table(
-        df_fa.drop(index=["Description"]), headers=[], title="Ticker Overview"
+        df_fa.drop(index=["Description"]),
+        headers=[""],
+        title=f"{ticker} Overview",
+        show_index=True,
     )
 
     console.print(f"\nCompany Description:\n\n{df_fa.loc['Description'][0]}")
@@ -50,7 +53,9 @@ def display_key(ticker: str):
         console.print("No API calls left. Try me later", "\n")
         return
 
-    print_rich_table(df_key, headers=[], title="Ticker Key Metrics", show_index=True)
+    print_rich_table(
+        df_key, headers=[""], title=f"{ticker} Key Metrics", show_index=True
+    )
 
     console.print("")
 
@@ -78,7 +83,10 @@ def display_income_statement(
         return
 
     print_rich_table(
-        df_income, headers=list(df_income.columns), title="Ticker Income Statement"
+        df_income,
+        headers=list(df_income.columns),
+        title=f"{ticker} Income Statement",
+        show_index=True,
     )
 
     console.print("")
@@ -108,7 +116,10 @@ def display_balance_sheet(
         return
 
     print_rich_table(
-        df_balance, headers=list(df_balance.columns), title="Ticker Balance Sheet"
+        df_balance,
+        headers=list(df_balance.columns),
+        title=f"{ticker} Balance Sheet",
+        show_index=True,
     )
 
     console.print("")
@@ -140,7 +151,10 @@ def display_cash_flow(
         return
 
     print_rich_table(
-        df_cash, headers=list(df_cash.columns), title="Ticker Balance Sheet"
+        df_cash,
+        headers=list(df_cash.columns),
+        title=f"{ticker} Balance Sheet",
+        show_index=True,
     )
 
     console.print("")
@@ -168,7 +182,7 @@ def display_earnings(ticker: str, limit: int, quarterly: bool = False):
         df_fa.head(limit),
         headers=list(df_fa.columns),
         show_index=False,
-        title="Ticker Earnings",
+        title=f"{ticker} Earnings",
     )
 
     console.print("")
