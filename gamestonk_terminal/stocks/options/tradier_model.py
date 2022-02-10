@@ -74,7 +74,7 @@ def get_historical_options(
             ].values[0]
         except IndexError:
             console.print(f"Strike: {strike}, Option type: {op_type} not not found \n")
-            return pd.DataFrame
+            return pd.DataFrame()
     else:
         symbol = chain_id
 
