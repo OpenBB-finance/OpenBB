@@ -15,10 +15,73 @@ from gamestonk_terminal.stocks.fundamental_analysis.dcf_model import create_data
 
 logger = logging.getLogger(__name__)
 
+sa_keys = {
+    "BS": {
+        "ce": "Cash & Equivalents",
+        "sti": "Short-Term Investments",
+        "cce": "Cash & Cash Equivalents",
+        "rec": "Receivables",
+        "inv": "Inventory",
+        "oca": "Other Current Assets",
+        "tca": "Total Current Assets",
+        "ppe": "Property, Plant & Equipment",
+        "lti": "Long-Term Investments",
+        "gai": "Goodwill and Intangibles",
+        "olta": "Other Long-Term Assets",
+        "tlta": "Total Long-Term Assets",
+        "ta": "Total Assets",
+        "ap": "Accounts Payable",
+        "dr": "Deferred Revenue",
+        "cd": "Current Debt",
+        "ocl": "Other Current Liabilities",
+        "tcl": "Total Current Liabilities",
+        "ltd": "Long-Term Debt",
+        "oltl": "Other Long-Term Liabilities",
+        "tltl": "Total Long-Term Liabilities",
+        "tl": "Total Liabilities",
+        "ret": "Retained Earnings",
+        "ci": "Comprehensive Income",
+        "se": "Shareholders' Equity",
+        "tle": "Total Liabilities and Equity",
+    },
+    "IS": {
+        "re": "Revenue",
+        "cr": "Cost of Revenue",
+        "gp": "Gross Profit",
+        "sga": "Selling, Genera & Admin",
+        "rd": "Research & Development",
+        "ooe": "Other Operating Expenses",
+        "oi": "Operating Income",
+        "ie": "Interest Expense / Income",
+        "oe": "Other Expense / Income",
+        "it": "Income Tax",
+        "ni": "Net Income",
+        "pd": "Preferred Dividends",
+    },
+    "CF": {
+        "ninc": "Net Income",
+        "da": "Depreciation & Amortization",
+        "sbc": "Share-Based Compensation",
+        "ooa": "Other Operating Activities",
+        "ocf": "Operating Cash Flow",
+        "cex": "Capital Expenditures",
+        "acq": "Acquisitions",
+        "cii": "Change in Investments",
+        "oia": "Other Investing Activities",
+        "icf": "Investing Cash Flow",
+        "dp": "Dividends Paid",
+        "si": "Share Insurance / Repurchase",
+        "di": "Debt Issued / Paid",
+        "ofa": "Other Financing Activities",
+        "fcf": "Financing Cash Flow",
+        "ncf": "Net Cash Flow",
+    },
+}
+
 
 @log_start_end(log=logger)
 def get_stocks_data(
-    stocks: list, finance_key: str, sa_keys: dict, stocks_data: dict, period: str
+    stocks: list, finance_key: str, sa_dict: dict, stocks_data: dict, period: str
 ):
     """Get stocks data based on a list of stocks and the finance key. The function searches for the correct
      financial statement automatically. [Source: StockAnalysis]
@@ -28,9 +91,9 @@ def get_stocks_data(
     stocks: list
         A list of tickers that will be used to collect data for.
     finance_key: str
-        The finance key used to search within the sa_keys for the correct name of item
+        The finance key used to search within the sa_dict for the correct name of item
         on the financial statement
-    sa_keys: dict
+    sa_dict: dict
         A dictionary that includes BS, IS and CF, the abbreviations and names of items
         on the financial statements. I.e: {"BS": {"ce": "Cash & Equivalents"}}
     stocks_data : dict
@@ -46,8 +109,8 @@ def get_stocks_data(
     """
     no_data = []
     for symbol in tqdm(stocks):
-        for statement in sa_keys.keys():
-            if finance_key in sa_keys[statement]:
+        for statement in sa_dict.keys():
+            if finance_key in sa_dict[statement]:
                 if statement not in stocks_data:
                     stocks_data[statement] = {}
                 used_statement = statement
