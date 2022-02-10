@@ -115,26 +115,23 @@ def display_allocation(portfolio: portfolio_model.Portfolio, export: str = ""):
     export: str
         Format to export plot
     """
-    try:
-        portfolio.generate_holdings_from_trades()
-        all_holdings = pd.concat(
-            [
-                portfolio.portfolio["StockHoldings"],
-                portfolio.portfolio["ETFHoldings"],
-                portfolio.portfolio["CryptoHoldings"],
-            ],
-            axis=1,
-        )
-        all_holdings = all_holdings.drop(columns=["temp"])
-        fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        all_holdings.plot(ax=ax)
-        ax.set_title("Individual Holdings")
-        ax.legend(loc="upper left")
-        fig.tight_layout(pad=2)
-        if gtff.USE_ION:
-            plt.ion()
-    except Exception as e:
-        print(e)
+    portfolio.generate_holdings_from_trades()
+    all_holdings = pd.concat(
+        [
+            portfolio.portfolio["StockHoldings"],
+            portfolio.portfolio["ETFHoldings"],
+            portfolio.portfolio["CryptoHoldings"],
+        ],
+        axis=1,
+    )
+    all_holdings = all_holdings.drop(columns=["temp"])
+    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    all_holdings.plot(ax=ax)
+    ax.set_title("Individual Holdings")
+    ax.legend(loc="upper left")
+    fig.tight_layout(pad=2)
+    if gtff.USE_ION:
+        plt.ion()
     plt.show()
     export_data(
         export,

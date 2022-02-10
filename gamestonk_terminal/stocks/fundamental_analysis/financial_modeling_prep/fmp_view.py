@@ -44,14 +44,19 @@ def display_profile(ticker: str):
         Fundamental analysis ticker symbol
     """
     profile = fmp_model.get_profile(ticker)
-    print_rich_table(
-        profile.drop(index=["description", "image"]),
-        headers=[],
-        title=f"{ticker} Profile",
-    )
 
-    console.print(f"\nImage: {profile.loc['image'][0]}")
-    console.print(f"\nDescription: {profile.loc['description'][0]}")
+    if not profile.empty:
+        print_rich_table(
+            profile.drop(index=["description", "image"]),
+            headers=[],
+            title="Ticker Profile",
+        )
+
+        console.print(f"\nImage: {profile.loc['image'][0]}")
+        console.print(f"\nDescription: {profile.loc['description'][0]}")
+    else:
+        console.print("[red]Unable to get data[/red]")
+
     console.print("")
 
 
@@ -137,21 +142,27 @@ def display_income_statement(
         Format to export data
     """
     income = fmp_model.get_income(ticker, number, quarterly)
-    income = income[income.columns[::-1]]
-    print_rich_table(
-        income.drop(index=["Final link", "Link"]),
-        headers=list(income.columns),
-        title=f"{ticker} Income Statement",
-        show_index=True,
-    )
 
-    pd.set_option("display.max_colwidth", None)
-    console.print("")
-    console.print(income.loc["Final link"].to_frame().to_string())
-    console.print("")
-    console.print(income.loc["Link"].to_frame().to_string())
-    console.print("")
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "income", income)
+    if not income.empty:
+        income = income[income.columns[::-1]]
+        print_rich_table(
+            income.drop(index=["Final link", "Link"]),
+            headers=list(income.columns),
+            title="Ticker Income Statement",
+            show_index=True
+        )
+
+        pd.set_option("display.max_colwidth", None)
+        console.print("")
+        console.print(income.loc["Final link"].to_frame().to_string())
+        console.print("")
+        console.print(income.loc["Link"].to_frame().to_string())
+        console.print("")
+        export_data(
+            export, os.path.dirname(os.path.abspath(__file__)), "income", income
+        )
+    else:
+        console.print("[red]Could not get data[/red]\n")
 
 
 @log_start_end(log=logger)
@@ -172,21 +183,27 @@ def display_balance_sheet(
         Format to export data
     """
     balance = fmp_model.get_balance(ticker, number, quarterly)
-    balance = balance[balance.columns[::-1]]
-    print_rich_table(
-        balance.drop(index=["Final link", "Link"]),
-        headers=list(balance.columns),
-        title=f"{ticker} Balance Sheet",
-        show_index=True,
-    )
 
-    pd.set_option("display.max_colwidth", None)
-    console.print("")
-    console.print(balance.loc["Final link"].to_frame().to_string())
-    console.print("")
-    console.print(balance.loc["Link"].to_frame().to_string())
-    console.print("")
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "balance", balance)
+    if not balance.empty:
+        balance = balance[balance.columns[::-1]]
+        print_rich_table(
+            balance.drop(index=["Final link", "Link"]),
+            headers=list(balance.columns),
+            title="Ticker Balance Sheet",
+            show_index=True
+        )
+
+        pd.set_option("display.max_colwidth", None)
+        console.print("")
+        console.print(balance.loc["Final link"].to_frame().to_string())
+        console.print("")
+        console.print(balance.loc["Link"].to_frame().to_string())
+        console.print("")
+        export_data(
+            export, os.path.dirname(os.path.abspath(__file__)), "balance", balance
+        )
+    else:
+        console.print("[red]Could not get data[/red]\n")
 
 
 @log_start_end(log=logger)
@@ -207,21 +224,25 @@ def display_cash_flow(
         Format to export data
     """
     cash = fmp_model.get_cash(ticker, number, quarterly)
-    cash = cash[cash.columns[::-1]]
-    print_rich_table(
-        cash.drop(index=["Final link", "Link"]),
-        headers=list(cash.columns),
-        title=f"{ticker} Cash Flow",
-        show_index=True,
-    )
 
-    pd.set_option("display.max_colwidth", None)
-    console.print("")
-    console.print(cash.loc["Final link"].to_frame().to_string())
-    console.print("")
-    console.print(cash.loc["Link"].to_frame().to_string())
-    console.print("")
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "cash", cash)
+    if not cash.empty:
+        cash = cash[cash.columns[::-1]]
+        print_rich_table(
+            cash.drop(index=["Final link", "Link"]),
+            headers=list(cash.columns),
+            title="Ticker Cash Flow",
+            show_index=True,
+        )
+
+        pd.set_option("display.max_colwidth", None)
+        console.print("")
+        console.print(cash.loc["Final link"].to_frame().to_string())
+        console.print("")
+        console.print(cash.loc["Link"].to_frame().to_string())
+        console.print("")
+        export_data(export, os.path.dirname(os.path.abspath(__file__)), "cash", cash)
+    else:
+        console.print("[red]Could not get data[/red]\n")
 
 
 @log_start_end(log=logger)
@@ -242,17 +263,19 @@ def display_key_metrics(
         Format to export data
     """
     key_metrics = fmp_model.get_key_metrics(ticker, number, quarterly)
-    key_metrics = key_metrics[key_metrics.columns[::-1]]
-    print_rich_table(
-        key_metrics,
-        headers=list(key_metrics.columns),
-        title=f"{ticker} Key Metrics",
-        show_index=True,
-    )
-    console.print("")
-    export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), "metrics", key_metrics
-    )
+
+    if not key_metrics.empty:
+        key_metrics = key_metrics[key_metrics.columns[::-1]]
+        print_rich_table(
+            key_metrics, headers=list(key_metrics.columns), title="Ticker Key Metrics",
+            show_index=True,
+        )
+        console.print("")
+        export_data(
+            export, os.path.dirname(os.path.abspath(__file__)), "metrics", key_metrics
+        )
+    else:
+        console.print("[red]Could not get data[/red]\n")
 
 
 @log_start_end(log=logger)
@@ -273,14 +296,17 @@ def display_financial_ratios(
         Format to export data
     """
     ratios = fmp_model.get_key_ratios(ticker, number, quarterly)
-    ratios = ratios[ratios.columns[::-1]]
-    print_rich_table(
-        ratios, headers=list(ratios.columns), title=f"{ticker} Ratios", show_index=True
-    )
-    console.print("")
-    export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), "grratiosowth", ratios
-    )
+
+    if not ratios.empty:
+        ratios = ratios[ratios.columns[::-1]]
+        print_rich_table(ratios, headers=list(ratios.columns), title="Ticker Ratios",
+                        show_index=True,)
+        console.print("")
+        export_data(
+            export, os.path.dirname(os.path.abspath(__file__)), "grratiosowth", ratios
+        )
+    else:
+        console.print("[red]Could not get data[/red]\n")
 
 
 @log_start_end(log=logger)
@@ -301,9 +327,14 @@ def display_financial_statement_growth(
         Format to export data
     """
     growth = fmp_model.get_financial_growth(ticker, number, quarterly)
-    growth = growth[growth.columns[::-1]]
-    print_rich_table(
-        growth, headers=list(growth.columns), title=f"{ticker} Growth", show_index=True
-    )
-    console.print("")
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "growth", growth)
+
+    if not growth.empty:
+        growth = growth[growth.columns[::-1]]
+        print_rich_table(growth, headers=list(growth.columns), title="Ticker Growth",
+                        show_index=True)
+        console.print("")
+        export_data(
+            export, os.path.dirname(os.path.abspath(__file__)), "growth", growth
+        )
+    else:
+        console.print("[red]Could not get data[/red]\n")
