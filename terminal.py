@@ -398,16 +398,20 @@ if __name__ == "__main__":
     if ns_parser:
         if ns_parser.test:
             os.environ["DEBUG_MODE"] = "true"
-            folder = os.path.join(
-                os.path.abspath(os.path.dirname(__file__)), ns_parser.path[0]
-            )
-            files = [
-                name
-                for name in os.listdir(folder)
-                if os.path.isfile(os.path.join(folder, name))
-                and name.endswith(".gst")
-                and (ns_parser.filter in f"{folder}/{name}")
-            ]
+
+            if "gst" in ns_parser.path[0]:
+                files = ns_parser.path
+            else:
+                folder = os.path.join(
+                    os.path.abspath(os.path.dirname(__file__)), ns_parser.path[0]
+                )
+                files = [
+                    name
+                    for name in os.listdir(folder)
+                    if os.path.isfile(os.path.join(folder, name))
+                    and name.endswith(".gst")
+                    and (ns_parser.filter in f"{folder}/{name}")
+                ]
             files.sort()
             SUCCESSES = 0
             FAILURES = 0
