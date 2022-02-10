@@ -22,6 +22,7 @@ def vcr_config():
 @pytest.mark.parametrize(
     "func",
     [
+        "get_info",
         "get_sustainability",
         "get_calendar_earnings",
         "get_website",
@@ -30,19 +31,6 @@ def vcr_config():
     ],
 )
 def test_call_func(func, recorder):
-    result = getattr(yahoo_finance_model, func)(ticker="GME")
-
-    recorder.capture(result)
-
-
-@pytest.mark.vcr
-@pytest.mark.parametrize(
-    "func",
-    [
-        "get_info",
-    ],
-)
-def test_get_info(func, recorder):
     result = getattr(yahoo_finance_model, func)(ticker="AAPL")
 
     recorder.capture(result)
@@ -51,7 +39,7 @@ def test_get_info(func, recorder):
 @pytest.mark.vcr
 def test_get_shareholders(recorder):
     major_df, institutional_df, mutual_df = yahoo_finance_model.get_shareholders(
-        ticker="GME"
+        ticker="AAPL"
     )
     result_list = [major_df, institutional_df, mutual_df]
 
