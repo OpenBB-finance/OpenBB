@@ -9,14 +9,13 @@
 
 
 
-    <meta name="description" content="usage: bs [-h] See all balance sheet statement metrics available [source: StockAnalysis]
-optional arguments: -h, --help show this help message (default: False) The current list of available options is:
- ce cash &amp; equivalents sti short-term investments cce cash &amp; cash equivalents (ce &#43; sti) rec receivables inv inventory oca other current assets tca total current assets (rec &#43; inv &#43; oca) ppe property, plant &amp; equipment lti long-term investments gai goodwill and intangibles olta other long-term assets tlta total long-term assets (lti &#43; gai &#43; olta) ta total assets (tca &#43; tlta) ap accounts payable dr deferred revenue cd current debt ocl other current liabilities tcl total current liabilities (ac &#43; dr &#43; cd &#43; ocl &#43; tcl) ltd long-term debt oltl other long-term liabilities tltl total long-term liabilities (ltd &#43; oltl) tl total liabilities (tltl &#43; tcl) ret retained earnings ci comprehensive income se stakeholders&#39; equity tle total liabilities and equity (tl &#43; re &#43; ci &#43; se) ">
+    <meta name="description" content="usage: vis [-m {ce,sti,cce,rec,inv,oca,tca,ppe,lti,gai,olta,tlta,ta,ap,dr,cd,ocl,tcl,ltd,oltl,tltl,tl,ret,ci,se,tle,ninc,da,sbc,ooa,ocf,cex,acq,cii,oia,icf,dp,si,di,ofa,fcf,ncf,re,cr,gp,sga,rd,ooe,oi,ie,oe,it,ni,pd}] [-l LIMIT] [-p PERIOD] [-r] [-h] [--export {csv,json,xlsx,png,jpg,pdf,svg}] Visualize a particular metric with the filters selected [source: StockAnalysis]
+optional arguments: -m {ce,sti,cce,rec,inv,oca,tca,ppe,lti,gai,olta,tlta,ta,ap,dr,cd,ocl,tcl,ltd,oltl,tltl,tl,ret,ci,se,tle,ninc,da,sbc,ooa,ocf,cex,acq,cii,oia,icf,dp,si,di,ofa,fcf,ncf,re,cr,gp,sga,rd,ooe,oi,ie,oe,it,ni,pd}, --metric {ce,sti,cce,rec,inv,oca,tca,ppe,lti,gai,olta,tlta,ta,ap,dr,cd,ocl,tcl,ltd,oltl,tltl,tl,ret,ci,se,tle,ninc,da,sbc,ooa,ocf,cex,acq,cii,oia,icf,dp,si,di,ofa,fcf,ncf,re,cr,gp,sga,rd,ooe,oi,ie,oe,it,ni,pd} Metric to visualize (default: None) -l LIMIT, --limit LIMIT Limit number of companies to display (default: 10) -p PERIOD, --period PERIOD Limit number of periods to display (default: 12) -r, --raw Output all raw data (default: False) -h, --help show this help message (default: False) --export {csv,json,xlsx,png,jpg,pdf,svg} Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg (default: ) ">
 
 
 
     <title>
-      Bs | Gamestonk Terminal
+      Vis | Gamestonk Terminal
     </title>
 
     <link rel="icon" href="/GamestonkTerminal/favicon/favicon-32x32.png" type="image/x-icon">
@@ -37,7 +36,7 @@ optional arguments: -h, --help show this help message (default: False) The curre
 <link rel="preload" href="/GamestonkTerminal/custom.css" as="style">
 <link rel="stylesheet" href="/GamestonkTerminal/custom.css" media="all">
 
-<link rel="alternate" type="application/rss+xml" href="https://gamestonkterminal.github.io/GamestonkTerminal/stocks/sia/bs/index.xml" title="Gamestonk Terminal" />
+<link rel="alternate" type="application/rss+xml" href="https://gamestonkterminal.github.io/GamestonkTerminal/stocks/sia/vis/index.xml" title="Gamestonk Terminal" />
 
 
 <!-- Made with Geekdoc theme https://github.com/thegeeklab/hugo-geekdoc -->
@@ -19788,7 +19787,7 @@ optional arguments: -h, --help show this help message (default: False) The curre
         
     
     
-        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/GamestonkTerminal/' href='/GamestonkTerminal/'><span itemprop='name'>Gamestonk Terminal</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/GamestonkTerminal/stocks/' href='/GamestonkTerminal/stocks/'><span itemprop='name'>Stocks</span></a><meta itemprop='position' content='3' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/GamestonkTerminal/stocks/sia/' href='/GamestonkTerminal/stocks/sia/'><span itemprop='name'>Sia</span></a><meta itemprop='position' content='4' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>Bs</span><meta itemprop='position' content='5' /></li>
+        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/GamestonkTerminal/' href='/GamestonkTerminal/'><span itemprop='name'>Gamestonk Terminal</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/GamestonkTerminal/stocks/' href='/GamestonkTerminal/stocks/'><span itemprop='name'>Stocks</span></a><meta itemprop='position' content='3' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/GamestonkTerminal/stocks/sia/' href='/GamestonkTerminal/stocks/sia/'><span itemprop='name'>Sia</span></a><meta itemprop='position' content='4' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>Vis</span><meta itemprop='position' content='5' /></li>
     
 
     
@@ -19804,7 +19803,7 @@ optional arguments: -h, --help show this help message (default: False) The curre
     <div>
         <span class="editpage">
             <svg class="icon gdoc_code" style="color: #C7C7C7;"><use xlink:href="#gdoc_code"></use></svg>
-            <a href="https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/website//content/stocks/sia/bs/_index.md" style="color: #C7C7C7;">
+            <a href="https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/website//content/stocks/sia/vis/_index.md" style="color: #C7C7C7;">
                 Edit this page
             </a>
         </span>
@@ -19813,39 +19812,22 @@ optional arguments: -h, --help show this help message (default: False) The curre
 </div>
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
-        <h1>Bs</h1>
-        <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">usage: bs [-h]
-</code></pre></div><p>See all balance sheet statement metrics available [source: StockAnalysis]</p>
+        <h1>Vis</h1>
+        <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">usage: vis [-m {ce,sti,cce,rec,inv,oca,tca,ppe,lti,gai,olta,tlta,ta,ap,dr,cd,ocl,tcl,ltd,oltl,tltl,tl,ret,ci,se,tle,ninc,da,sbc,ooa,ocf,cex,acq,cii,oia,icf,dp,si,di,ofa,fcf,ncf,re,cr,gp,sga,rd,ooe,oi,ie,oe,it,ni,pd}] [-l LIMIT]
+           [-p PERIOD] [-r] [-h] [--export {csv,json,xlsx,png,jpg,pdf,svg}]
+</code></pre></div><p>Visualize a particular metric with the filters selected [source: StockAnalysis]</p>
 <pre><code>optional arguments:
-  -h, --help  show this help message (default: False)
-</code></pre><p>The current list of available options is:</p>
-<pre><code>    ce            cash &amp; equivalents
-    sti           short-term investments
-    cce           cash &amp; cash equivalents (ce + sti)
-    rec           receivables
-    inv           inventory
-    oca           other current assets
-    tca           total current assets (rec + inv + oca)
-    ppe           property, plant &amp; equipment
-    lti           long-term investments
-    gai           goodwill and intangibles
-    olta          other long-term assets
-    tlta          total long-term assets (lti + gai + olta)
-    ta            total assets (tca + tlta)
-    ap            accounts payable
-    dr            deferred revenue
-    cd            current debt
-    ocl           other current liabilities
-    tcl           total current liabilities (ac + dr + cd + ocl + tcl)
-    ltd           long-term debt
-    oltl          other long-term liabilities
-    tltl          total long-term liabilities (ltd + oltl)
-    tl            total liabilities (tltl + tcl)
-    ret           retained earnings
-    ci            comprehensive income
-    se            stakeholders' equity
-    tle           total liabilities and equity (tl + re + ci + se)</code></pre>
-
+  -m {ce,sti,cce,rec,inv,oca,tca,ppe,lti,gai,olta,tlta,ta,ap,dr,cd,ocl,tcl,ltd,oltl,tltl,tl,ret,ci,se,tle,ninc,da,sbc,ooa,ocf,cex,acq,cii,oia,icf,dp,si,di,ofa,fcf,ncf,re,cr,gp,sga,rd,ooe,oi,ie,oe,it,ni,pd}, --metric {ce,sti,cce,rec,inv,oca,tca,ppe,lti,gai,olta,tlta,ta,ap,dr,cd,ocl,tcl,ltd,oltl,tltl,tl,ret,ci,se,tle,ninc,da,sbc,ooa,ocf,cex,acq,cii,oia,icf,dp,si,di,ofa,fcf,ncf,re,cr,gp,sga,rd,ooe,oi,ie,oe,it,ni,pd}
+                        Metric to visualize (default: None)
+  -l LIMIT, --limit LIMIT
+                        Limit number of companies to display (default: 10)
+  -p PERIOD, --period PERIOD
+                        Limit number of periods to display (default: 12)
+  -r, --raw             Output all raw data (default: False)
+  -h, --help            show this help message (default: False)
+  --export {csv,json,xlsx,png,jpg,pdf,svg}
+                        Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg (default: )
+</code></pre>
     </article>
  
 
