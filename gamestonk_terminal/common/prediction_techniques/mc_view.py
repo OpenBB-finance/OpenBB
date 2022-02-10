@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Union, List, Optional
+from typing import List, Optional
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_mc_forecast(
-    data: Union[pd.Series, np.ndarray],
+    data: pd.DataFrame,
     n_future: int,
     n_sims: int,
     use_log=True,
@@ -73,7 +73,9 @@ def display_mc_forecast(
 
     ax1.plot(data)
     ax1.plot(future_index, predicted_values, alpha=0.3)
-    ax1.set_xlim(data.index[0], future_index[-1])
+    start_timestamp = data.index[0]
+    end_timestamp = future_index[-1]
+    ax1.set_xlim(start_timestamp, end_timestamp)
     ax1.set_title("Data Predictions")
 
     sns.histplot(predicted_values[-1, :], ax=ax2, kde=True)
