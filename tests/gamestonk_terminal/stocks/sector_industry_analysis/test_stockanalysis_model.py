@@ -7,35 +7,32 @@ import pytest
 
 # IMPORTATION INTERNAL
 from gamestonk_terminal.stocks.sector_industry_analysis import stockanalysis_model
-from gamestonk_terminal.stocks.sector_industry_analysis.sia_controller import (
-    SectorIndustryAnalysisController,
-)
 
 
 @pytest.mark.vcr
 @pytest.mark.parametrize(
     "stocks, finance_key, sa_keys, period, statement",
     [
-        (["AAPL"], "re", SectorIndustryAnalysisController.sa_keys, "annual", "IS"),
-        (["AAPL"], "rec", SectorIndustryAnalysisController.sa_keys, "quarterly", "BS"),
+        (["AAPL"], "re", stockanalysis_model.sa_keys, "annual", "IS"),
+        (["AAPL"], "rec", stockanalysis_model.sa_keys, "quarterly", "BS"),
         (
             ["FB", "TSLA", "MSFT"],
             "ncf",
-            SectorIndustryAnalysisController.sa_keys,
+            stockanalysis_model.sa_keys,
             "annual",
             "CF",
         ),
         (
             ["FB", "TSLA", "MSFT"],
             "ni",
-            SectorIndustryAnalysisController.sa_keys,
+            stockanalysis_model.sa_keys,
             "quarterly",
             "IS",
         ),
         (
             ["FB", "TSLA", "MSFT"],
             "tle",
-            SectorIndustryAnalysisController.sa_keys,
+            stockanalysis_model.sa_keys,
             "trailing",
             "BS",
         ),
@@ -45,7 +42,7 @@ def test_get_stocks_data(recorder, stocks, finance_key, sa_keys, period, stateme
     result = stockanalysis_model.get_stocks_data(
         stocks=stocks,
         finance_key=finance_key,
-        sa_keys=sa_keys,
+        sa_dict=sa_keys,
         stocks_data=dict(),
         period=period,
     )

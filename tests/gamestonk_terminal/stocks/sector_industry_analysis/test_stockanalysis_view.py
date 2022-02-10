@@ -4,9 +4,9 @@
 import pytest
 
 # IMPORTATION INTERNAL
-from gamestonk_terminal.stocks.sector_industry_analysis import stockanalysis_view
-from gamestonk_terminal.stocks.sector_industry_analysis.sia_controller import (
-    SectorIndustryAnalysisController,
+from gamestonk_terminal.stocks.sector_industry_analysis import (
+    stockanalysis_view,
+    stockanalysis_model,
 )
 
 
@@ -16,7 +16,7 @@ from gamestonk_terminal.stocks.sector_industry_analysis.sia_controller import (
     [
         (
             "re",
-            SectorIndustryAnalysisController.sa_keys,
+            stockanalysis_model.sa_keys,
             "United States",
             None,
             "Credit Services",
@@ -27,7 +27,7 @@ from gamestonk_terminal.stocks.sector_industry_analysis.sia_controller import (
         ),
         (
             "rec",
-            SectorIndustryAnalysisController.sa_keys,
+            stockanalysis_model.sa_keys,
             "Germany",
             "Technology",
             None,
@@ -38,7 +38,7 @@ from gamestonk_terminal.stocks.sector_industry_analysis.sia_controller import (
         ),
         (
             "ncf",
-            SectorIndustryAnalysisController.sa_keys,
+            stockanalysis_model.sa_keys,
             "Netherlands",
             "Technology",
             None,
@@ -63,7 +63,7 @@ def test_display_plots_financials(
 ):
     stocks_data, company_tickers = stockanalysis_view.display_plots_financials(
         finance_key=finance_key,
-        sa_keys=sa_keys,
+        sa_dict=sa_keys,
         country=country,
         sector=sector,
         industry=industry,

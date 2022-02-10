@@ -5,8 +5,9 @@
     industry      see existing industries, or set industry if arg specified
     sector        see existing sectors, or set sector if arg specified
     country       see existing countries, or set country if arg specified
-    mktcap        set mktcap between small, mid or large
+    mktcap        set mktcap between nano, micro, small, mid, large or mega
     exchange      revert exclude international exchanges flag
+    period        set period between annual, quarterly or trailing [StockAnalyis]
 
 Industry          : Financial Data & Stock Exchanges
 Sector            : Financial Services
@@ -26,10 +27,8 @@ Financials  [Yahoo Finance]
     sama          see all metrics available
     metric        visualise financial metric across filters selected
 Financials  [StockAnalyis] 
-    bs            see all balance sheet items available
-    cf            see all cash flow statement items available
-    is            see all income statement items available
-    visualise     visualise financial metric across filters selected
+    satma         see all metrics available over time
+    vis           visualise financial metric across filters selected
 [unvl]
 Returned tickers: 
 >   ca            take these to comparison analysis menu
