@@ -117,7 +117,7 @@ class DegiroController(BaseController):
             "-p",
             "--price",
             help="Price wanted.",
-            required=True,
+            required="-h" not in other_args,
             type=float,
         )
         size_group = parser.add_mutually_exclusive_group(required=True)
@@ -313,7 +313,7 @@ class DegiroController(BaseController):
             "-p",
             "--price",
             help="Price wanted.",
-            required=True,
+            required="-h" not in other_args,
             type=float,
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)

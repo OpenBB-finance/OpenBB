@@ -26,4 +26,11 @@ def get_rating(ticker: str) -> pd.DataFrame:
     pd.DataFrame
         Rating data
     """
-    return fa.rating(ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
+    if cfg.API_KEY_FINANCIALMODELINGPREP:
+        try:
+            df = fa.rating(ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
+        except ValueError:
+            df = pd.DataFrame()
+    else:
+        df = pd.DataFrame()
+    return df

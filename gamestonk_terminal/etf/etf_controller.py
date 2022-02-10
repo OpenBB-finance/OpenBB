@@ -622,7 +622,9 @@ class ETFController(BaseController):
                 self.etf_holdings, self.queue
             ).menu(custom_path_menu_above="/stocks/")
         else:
-            print("Load a ticker with major holdings to compare them on this menu\n")
+            console.print(
+                "Load a ticker with major holdings to compare them on this menu\n"
+            )
 
     def call_scr(self, _):
         """Process scr command"""
