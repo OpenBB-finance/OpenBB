@@ -1,96 +1,67 @@
-import os
-
 import df2img
-import disnake
 import pandas as pd
-from PIL import Image
 
 import bots.config_discordbot as cfg
 from bots.config_discordbot import logger
-from bots.helpers import autocrop_image
+from bots.helpers import save_image
 from gamestonk_terminal.economy import wsj_model
 
 
-async def indices_command(ctx):
+def indices_command():
     """US indices overview [Wall St. Journal]"""
+    # Debug user input
+    if cfg.DEBUG:
+        logger.debug("econ-indices")
 
-    try:
-        # Debug user input
-        if cfg.DEBUG:
-            logger.debug("econ-indices")
+    # Retrieve data
+    df = wsj_model.us_indices()
 
-        # Retrieve data
-        df = wsj_model.us_indices()
+    # Check for argument
+    if df.empty:
+        raise Exception("No available data found")
 
-        # Check for argument
-        if df.empty:
-            raise Exception("No available data found")
+    df["Price"] = pd.to_numeric(df["Price"].astype(float))
+    df["Chg"] = pd.to_numeric(df["Chg"].astype(float))
+    df["%Chg"] = pd.to_numeric(df["%Chg"].astype(float))
 
-        df["Price"] = pd.to_numeric(df["Price"].astype(float))
-        df["Chg"] = pd.to_numeric(df["Chg"].astype(float))
-        df["%Chg"] = pd.to_numeric(df["%Chg"].astype(float))
+    formats = {"Price": "${:.2f}", "Chg": "${:.2f}", "%Chg": "{:.2f}%"}
+    for col, value in formats.items():
+        # pylint: disable=W0640
+        df[col] = df[col].map(lambda x: value.format(x))
 
-        formats = {"Price": "${:.2f}", "Chg": "${:.2f}", "%Chg": "{:.2f}%"}
-        for col, value in formats.items():
-            df[col] = df[col].map(lambda x: value.format(x))  # pylint: disable=W0640
+    # Debug user output
+    if cfg.DEBUG:
+        logger.debug(df)
 
-        # Debug user output
-        if cfg.DEBUG:
-            logger.debug(df)
-
-        df = df[
-            [
-                "Price",
-                "Chg",
-                "%Chg",
-            ]
+    df = df[
+        [
+            "Price",
+            "Chg",
+            "%Chg",
         ]
+    ]
 
-        df = df.fillna("")
-        df.set_index(" ", inplace=True)
+    df = df.fillna("")
+    df.set_index(" ", inplace=True)
 
-        dindex = len(df.index)
-        fig = df2img.plot_dataframe(
-            df,
-            fig_size=(800, (40 + (40 * dindex))),
-            col_width=[8, 3, 3],
-            tbl_cells=dict(
-                align=["left", "center"],
-                height=35,
-            ),
-            template="plotly_dark",
-            font=dict(
-                family="Consolas",
-                size=20,
-            ),
-            paper_bgcolor="rgba(0, 0, 0, 0)",
-        )
-        imagefile = "econ-indices.png"
-        df2img.save_dataframe(fig=fig, filename=imagefile)
-        image = Image.open(imagefile)
-        image = autocrop_image(image, 0)
-        image.save(imagefile, "PNG", quality=100)
-        image = disnake.File(imagefile)
-        title = "Economy: [WSJ] US Indices"
-        embed = disnake.Embed(title=title, colour=cfg.COLOR)
-        embed.set_image(url=f"attachment://{imagefile}")
-        embed.set_author(
-            name=cfg.AUTHOR_NAME,
-            icon_url=cfg.AUTHOR_ICON_URL,
-        )
-        os.remove(imagefile)
-
-        await ctx.send(embed=embed, file=image)
-
-    except Exception as e:
-        embed = disnake.Embed(
-            title="ERROR Economy: [WSJ] US Indices",
-            colour=cfg.COLOR,
-            description=e,
-        )
-        embed.set_author(
-            name=cfg.AUTHOR_NAME,
-            icon_url=cfg.AUTHOR_ICON_URL,
-        )
-
-        await ctx.send(embed=embed, delete_after=30.0)
+    dindex = len(df.index)
+    fig = df2img.plot_dataframe(
+        df,
+        fig_size=(800, (40 + (40 * dindex))),
+        col_width=[8, 3, 3],
+        tbl_cells=dict(
+            align=["left", "center"],
+            height=35,
+        ),
+        template="plotly_dark",
+        font=dict(
+            family="Consolas",
+            size=20,
+        ),
+        paper_bgcolor="rgba(0, 0, 0, 0)",
+    )
+    imagefile = save_image("econ-indices", fig)
+    return {
+        "title": "Economy: [WSJ] US Indices",
+        "imagefile": imagefile,
+    }
