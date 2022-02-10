@@ -6,7 +6,7 @@ from typing import List
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.rich_config import console
 
-from gamestonk_terminal.parent_classes import StockController
+from gamestonk_terminal.parent_classes import StockBaseController
 from gamestonk_terminal.stocks.fundamental_analysis.financial_modeling_prep import (
     fmp_controller,
     fmp_view,
@@ -32,7 +32,7 @@ from gamestonk_terminal.menu import session
 # pylint: disable=inconsistent-return-statements
 
 
-class FundamentalAnalysisController(StockController):
+class FundamentalAnalysisController(StockBaseController):
     """Fundamental Analysis Controller class"""
 
     CHOICES_COMMANDS = [

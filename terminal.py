@@ -23,7 +23,7 @@ from gamestonk_terminal.menu import session
 from gamestonk_terminal.terminal_helper import (
     about_us,
     bootup,
-    check_api_keys,
+    welcome_message,
     print_goodbye,
     reset,
     update_terminal,
@@ -33,8 +33,6 @@ from gamestonk_terminal.terminal_helper import (
 
 logger = logging.getLogger(__name__)
 
-DEBUG_MODE = False
-
 
 class TerminalController(BaseController):
     """Terminal Controller class"""
@@ -43,6 +41,7 @@ class TerminalController(BaseController):
         "update",
         "about",
         "keys",
+        "settings",
         "tz",
     ]
     CHOICES_MENUS = [
@@ -101,8 +100,9 @@ class TerminalController(BaseController):
 
     about           about us
     update          update terminal automatically
-    keys            check for status of API keys
-    tz              set different timezone[/cmds]
+    tz              set different timezone[/cmds][menu]
+>   settings        set feature flags and style charts
+>   keys            set API keys and check their validity[/menu]
 
 [param]Timezone:[/param] {get_user_timezone_or_invalid()}
 [menu]
@@ -126,7 +126,15 @@ class TerminalController(BaseController):
 
     def call_keys(self, _):
         """Process keys command"""
-        check_api_keys()
+        from gamestonk_terminal.keys_controller import KeysController
+
+        self.queue = self.load_class(KeysController, self.queue)
+
+    def call_settings(self, _):
+        """Process settings command"""
+        from gamestonk_terminal.settings_controller import SettingsController
+
+        self.queue = self.load_class(SettingsController, self.queue)
 
     def call_about(self, _):
         """Process about command"""
@@ -217,8 +225,9 @@ def terminal(jobs_cmds: List[str] = None):
     t_controller = TerminalController(jobs_cmds)
     an_input = ""
 
+    bootup()
     if not jobs_cmds:
-        bootup()
+        welcome_message()
         t_controller.print_help()
 
     while ret_code:
