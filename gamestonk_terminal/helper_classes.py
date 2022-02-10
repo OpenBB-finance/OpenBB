@@ -81,6 +81,7 @@ class ModelsNamespace:
                     pass
 
 
+# pylint: disable=R0902
 class TerminalStyle:
     """The class that helps with handling of style configurations.
 
@@ -112,6 +113,8 @@ class TerminalStyle:
 
     xticks_rotation: str = ""
     tight_layout_padding: int = 0
+    pie_wedgeprops: Dict = {}
+    pie_startangle: int = 0
     line_width: float = 1.5
     volume_bar_width: float = 0.8
 
@@ -226,6 +229,8 @@ class TerminalStyle:
         plt.style.use(self.mpl_style)
         self.xticks_rotation = self.mpl_rcparams["xticks_rotation"]
         self.tight_layout_padding = self.mpl_rcparams["tight_layout_padding"]
+        self.pie_wedgeprops = self.mpl_rcparams["pie_wedgeprops"]
+        self.pie_startangle = self.mpl_rcparams["pie_startangle"]
         self.mpf_style["mavcolors"] = plt.rcParams["axes.prop_cycle"].by_key()["color"]
         self.down_color = self.mpf_style["marketcolors"]["volume"]["down"]
         self.up_color = self.mpf_style["marketcolors"]["volume"]["up"]
