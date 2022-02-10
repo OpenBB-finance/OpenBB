@@ -140,7 +140,7 @@ def display_candle(
     export: str
         Where to export to
     external_axes: Optional[List[plt.Axes]]
-        External axes (1 axis are expected in the list), by default None
+        External axes (2 axes are expected in the list), by default None
     """
     if etf_name:
         data = stocks_helper.process_candle(etf_data)
@@ -149,46 +149,54 @@ def display_candle(
 
         ap0 = []
 
+        colors = iter(theme.get_colors(reverse=True))
         if "OC_High_trend" in df_etf.columns:
             ap0.append(
-                mpf.make_addplot(df_etf["OC_High_trend"], color="g"),
+                mpf.make_addplot(df_etf["OC_High_trend"], color=next(colors)),
             )
 
         if "OC_Low_trend" in df_etf.columns:
             ap0.append(
-                mpf.make_addplot(df_etf["OC_Low_trend"], color="b"),
+                mpf.make_addplot(df_etf["OC_Low_trend"], color=next(colors)),
             )
 
         candle_chart_kwargs = {
             "type": "candle",
-            "style": theme.mpf_style,  # mpf.make_mpf_style(marketcolors=mc, gridstyle=":", y_on_right=True)
+            "style": theme.mpf_style,
             "mav": (20, 50),
             "volume": True,
             "xrotation": theme.xticks_rotation,
+            "scale_padding": {"left": 0.3, "right": 1.2, "top": 0.8, "bottom": 0.8},
             "update_width_config": {
-                "candle_linewidth": 1.0,
+                "candle_linewidth": 0.6,
                 "candle_width": 0.8,
-                "volume_linewidth": 1.0,
+                "volume_linewidth": 0.8,
                 "volume_width": 0.8,
             },
-            "title": f"\nETF: {etf_name}",
             "addplot": ap0,
         }
 
         # This plot has 2 axes
-        if not external_axes:
+        if external_axes is None:
             candle_chart_kwargs["returnfig"] = True
             candle_chart_kwargs["figratio"] = (10, 7)
             candle_chart_kwargs["figscale"] = 1.10
             candle_chart_kwargs["figsize"] = plot_autoscale()
-            _, _ = mpf.plot(data, **candle_chart_kwargs)
+            fig, _ = mpf.plot(data, **candle_chart_kwargs)
+            fig.suptitle(
+                f"ETF: {etf_name}",
+                x=0.055,
+                y=0.965,
+                horizontalalignment="left",
+            )
             theme.visualize_output(force_tight_layout=False)
         else:
-            if len(external_axes) != 1:
-                console.print("[red]Expected list of 1 axis items./n[/red]")
+            if len(external_axes) != 2:
+                console.print("[red]Expected list of 2 axis items./n[/red]")
                 return
-            (ax1,) = external_axes
+            (ax1, ax2) = external_axes
             candle_chart_kwargs["ax"] = ax1
+            candle_chart_kwargs["volume"] = ax2
             mpf.plot(data, **candle_chart_kwargs)
 
         export_data(
