@@ -69,8 +69,7 @@ def display_mc_forecast(
         if len(external_axes) != 2:
             console.print("[red]Expected list of one axis item./n[/red]")
             return
-        (ax1,ax2) = external_axes
-
+        (ax1, ax2) = external_axes
 
     ax1.plot(data)
     ax1.plot(future_index, predicted_values, alpha=0.3)
@@ -91,5 +90,5 @@ def display_mc_forecast(
     theme.style_primary_axis(ax2)
     if external_axes is None:
         theme.visualize_output()
-        
+
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "mc")
