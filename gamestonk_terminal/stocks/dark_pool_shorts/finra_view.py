@@ -191,6 +191,7 @@ def plot_dark_pools_ats(
     ax.set_ylabel("Total Weekly Shares [Million]")
     ax.set_title("Dark Pool (ATS) growing tickers")
     ax.set_xlabel("Weeks")
+    theme.style_primary_axis(ax)
 
     if not external_axes:
         theme.visualize_output()
