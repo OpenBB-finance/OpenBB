@@ -49,7 +49,7 @@ def print_goodbye():
         goodbye_msg[random.randint(0, len(goodbye_msg) - 1)] + goodbye_msg_time + "\n"
     )
 
-    logger.info("END|||")
+    logger.info("END")
 
 
 def sha256sum(filename):
@@ -124,7 +124,7 @@ def bootup():
             # pylint: disable=E1101
             sys.stdout.reconfigure(encoding="utf-8")
     except Exception as e:
-        logger.exception("Exception|||%s", str(e))
+        logger.exception("Exception: %s", str(e))
         console.print(e, "\n")
 
     # Print first welcome message and help
@@ -138,7 +138,7 @@ def bootup():
         try:
             thought.get_thought_of_the_day()
         except Exception as e:
-            logger.exception("Exception|||%s", str(e))
+            logger.exception("Exception: %s", str(e))
             console.print(e)
         console.print("")
 
