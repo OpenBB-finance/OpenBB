@@ -22,7 +22,6 @@ def vcr_config():
 @pytest.mark.parametrize(
     "func",
     [
-        "get_info",
         "get_sustainability",
         "get_calendar_earnings",
         "get_website",
@@ -32,6 +31,19 @@ def vcr_config():
 )
 def test_call_func(func, recorder):
     result = getattr(yahoo_finance_model, func)(ticker="GME")
+
+    recorder.capture(result)
+
+
+@pytest.mark.vcr
+@pytest.mark.parametrize(
+    "func",
+    [
+        "get_info",
+    ],
+)
+def test_get_info(func, recorder):
+    result = getattr(yahoo_finance_model, func)(ticker="AAPL")
 
     recorder.capture(result)
 
