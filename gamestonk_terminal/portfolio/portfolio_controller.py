@@ -86,10 +86,11 @@ class PortfolioController(BaseController):
 
     def print_help(self):
         """Print help"""
+        # NOTE: See comment at `call_pa` definition
+        # >   pa          portfolio analysis, \t\t analyse portfolios
         help_text = f"""[menu]
 >   bro         brokers holdings, \t\t supports: robinhood, ally, degiro, coinbase
->   po          portfolio optimization, \t optimal portfolio weights from pyportfolioopt
->   pa          portfolio analysis, \t\t analyse portfolios[/menu]
+>   po          portfolio optimization, \t optimal portfolio weights from pyportfolioopt[/menu]
 
 [info]Portfolio:[/info][cmds]
     load        load data into the portfolio
@@ -127,13 +128,17 @@ Loaded:[/info] {self.portfolio_name or None}
             po_controller.PortfolioOptimization, [], self.queue
         )
 
-    def call_pa(self, _):
-        """Process pa command"""
-        from gamestonk_terminal.portfolio.portfolio_analysis import pa_controller
-
-        self.queue = self.queue = self.load_class(
-            pa_controller.PortfolioAnalysis, self.queue
-        )
+    # BUG: The commands in pa menu throw errors. First one says that it's related to
+    #      string formatting and the second one has something to do with None being used
+    #      instead of [] in the queue (assumption) what throws errors on the logger.
+    # TODO: This submenu is disabled until the bug is fixed.
+    # def call_pa(self, _):
+    #     """Process pa command"""
+    #     from gamestonk_terminal.portfolio.portfolio_analysis import pa_controller
+    #
+    #     self.queue = self.queue = self.load_class(
+    #         pa_controller.PortfolioAnalysis, self.queue
+    #     )
 
     def call_init(self, other_args: List[str]):
         """Process reset command"""

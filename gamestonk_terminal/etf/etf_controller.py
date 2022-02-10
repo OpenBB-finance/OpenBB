@@ -6,8 +6,6 @@ import os
 from datetime import datetime, timedelta
 from typing import List
 import yfinance as yf
-import matplotlib.pyplot as plt
-import mplfinance as mpf
 
 from prompt_toolkit.completion import NestedCompleter
 from thepassiveinvestor import create_ETF_report
@@ -29,11 +27,8 @@ from gamestonk_terminal.helper_funcs import (
     check_positive,
     valid_date,
     parse_known_args_and_warn,
-    plot_autoscale,
-    export_data,
 )
 from gamestonk_terminal.menu import session
-from gamestonk_terminal.stocks import stocks_helper
 from gamestonk_terminal.etf.technical_analysis import ta_controller
 from gamestonk_terminal.stocks.comparison_analysis import ca_controller
 from gamestonk_terminal.etf.screener import screener_controller
@@ -413,67 +408,7 @@ class ETFController(BaseController):
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            if self.etf_name:
-                # TODO: Should be done in one function
-                data = stocks_helper.process_candle(self.etf_data)
-                df_etf = stocks_helper.find_trendline(data, "OC_High", "high")
-                df_etf = stocks_helper.find_trendline(data, "OC_Low", "low")
-
-                # TODO: Move plot into a view
-
-                mc = mpf.make_marketcolors(
-                    up="green",
-                    down="red",
-                    edge="black",
-                    wick="black",
-                    volume="in",
-                    ohlc="i",
-                )
-
-                s = mpf.make_mpf_style(marketcolors=mc, gridstyle=":", y_on_right=True)
-
-                ap0 = []
-
-                if "OC_High_trend" in df_etf.columns:
-                    ap0.append(
-                        mpf.make_addplot(df_etf["OC_High_trend"], color="g"),
-                    )
-
-                if "OC_Low_trend" in df_etf.columns:
-                    ap0.append(
-                        mpf.make_addplot(df_etf["OC_Low_trend"], color="b"),
-                    )
-
-                if gtff.USE_ION:
-                    plt.ion()
-
-                mpf.plot(
-                    df_etf,
-                    type="candle",
-                    mav=(20, 50),
-                    volume=True,
-                    title=f"\nETF: {self.etf_name}",
-                    addplot=ap0,
-                    xrotation=10,
-                    style=s,
-                    figratio=(10, 7),
-                    figscale=1.10,
-                    figsize=(plot_autoscale()),
-                    update_width_config=dict(
-                        candle_linewidth=1.0, candle_width=0.8, volume_linewidth=1.0
-                    ),
-                )
-                console.print("")
-
-                export_data(
-                    ns_parser.export,
-                    os.path.join(os.path.dirname(os.path.abspath(__file__)), "candle"),
-                    f"{self.etf_name}",
-                    self.etf_data,
-                )
-
-            else:
-                console.print("No ticker loaded. First use `load {ticker}`\n")
+            yfinance_view.display_candle(self.etf_name, self.etf_data, ns_parser.export)
 
     def call_pir(self, other_args):
         """Process pir command"""

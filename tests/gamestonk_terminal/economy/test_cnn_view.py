@@ -10,11 +10,10 @@ from gamestonk_terminal.economy import cnn_view
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_get_feargreed_report(mocker):
-    # MOCK GTFF
-    mocker.patch.object(target=cnn_view.gtff, attribute="USE_ION", new=True)
-
-    # MOCK IMSHOW
-    mocker.patch(target="matplotlib.pyplot.imshow")
+    # MOCK VISUALIZE_OUTPUT
+    mocker.patch(
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
+    )
 
     # MOCK PLOT_AUTOSCALE
     mocker.patch(

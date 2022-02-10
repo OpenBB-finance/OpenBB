@@ -84,7 +84,7 @@ fastapi = {version = "^0.73.0", optional = true}
 uvicorn = {version = "^0.17.1", optional = true}
 disnake = {version = "^2.3.0", optional = true}
 PyNaCl = {version = "^1.5.0", optional = true}
-
+ascii-magic = "^1.6"
 
 
 [tool.poetry.dev-dependencies]
@@ -110,6 +110,7 @@ types-python-dateutil = "^2.8.3"
 types-setuptools = "^57.4.7"
 pre-commit = "^2.16.0"
 pandas-market-calendars = "^3.2"
+pytest-cov = "^3.0.0"
 
 [tool.poetry.extras]
 prediction = ["tensorflow"]
