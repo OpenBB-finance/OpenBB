@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import List, Optional
+from typing import List, Optional, Union
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_mc_forecast(
-    data: pd.DataFrame,
+    data: Union[pd.DataFrame, pd.Series],
     n_future: int,
     n_sims: int,
     use_log=True,
@@ -64,7 +64,7 @@ def display_mc_forecast(
 
     # This plot has 1 axis
     if external_axes is None:
-        fig, (ax1, ax2) = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
+        _, (ax1, ax2) = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
     else:
         if len(external_axes) != 2:
             console.print("[red]Expected list of one axis item./n[/red]")
@@ -76,17 +76,16 @@ def display_mc_forecast(
     start_timestamp = data.index[0]
     end_timestamp = future_index[-1]
     ax1.set_xlim(start_timestamp, end_timestamp)
-    ax1.set_title("Data Predictions")
+    ax1.set_title(f"{fig_title} Data Predictions")
 
     sns.histplot(predicted_values[-1, :], ax=ax2, kde=True)
     ax2.set_xlabel("Final Value")
-    ax2.axvline(x=data.values[-1], c=theme.down_color, label="Last Value", lw=3, ls="-")  # type: ignore
+    ax2.axvline(
+        x=data.values[-1], color=theme.down_color, label="Last Value", linestyle="-"
+    )
     ax2.set_title(f"Distribution of final values after {n_future} steps.")
     ax2.set_xlim(np.min(predicted_values[-1, :]), np.max(predicted_values[-1, :]))
     ax2.legend()
-
-    if fig_title:
-        fig.suptitle(fig_title)
 
     theme.style_primary_axis(ax1)
     theme.style_primary_axis(ax2)
