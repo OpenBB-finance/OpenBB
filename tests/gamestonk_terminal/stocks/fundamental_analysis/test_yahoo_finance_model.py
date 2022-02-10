@@ -22,7 +22,7 @@ def vcr_config():
 @pytest.mark.parametrize(
     "func",
     [
-        "get_info",
+        # "get_info",  CHECK HOW TO MOCK TIMEZONE
         "get_sustainability",
         "get_calendar_earnings",
         "get_website",
