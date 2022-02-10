@@ -246,7 +246,7 @@ def plot_oi(
     )
 
     max_pain = op_helpers.calculate_max_pain(df_opt)
-    if not external_axes:
+    if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
     else:
         if len(external_axes) != 1:
@@ -282,7 +282,7 @@ def plot_oi(
 
     theme.style_primary_axis(ax)
 
-    if not external_axes:
+    if external_axes is None:
         theme.visualize_output()
 
     export_data(
@@ -302,6 +302,7 @@ def plot_vol(
     calls_only: bool,
     puts_only: bool,
     export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot volume
 
@@ -321,6 +322,8 @@ def plot_vol(
         Show puts only
     export: str
         Format to export file
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
 
     options = tradier_model.get_option_chains(ticker, expiry)
@@ -344,8 +347,11 @@ def plot_vol(
     puts = options[options.option_type == "put"][["strike", "volume"]]
     call_v = calls.set_index("strike")["volume"] / 1000
     put_v = puts.set_index("strike")["volume"] / 1000
-    plt.style.use("classic")
-    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
+
+    if external_axes is None:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
+    else:
+        ax = external_axes[0]
 
     if not calls_only:
         put_v.plot(
@@ -372,15 +378,13 @@ def plot_vol(
     ax.set_xlabel("Strike Price")
     ax.set_ylabel("Volume (1k) ")
     ax.set_xlim(min_strike, max_strike)
-
-    if gtff.USE_ION:
-        plt.ion()
-
     ax.set_title(f"Volume for {ticker.upper()} expiring {expiry}")
-    plt.legend(loc=0)
-    fig.tight_layout(pad=1)
 
-    plt.show()
+    theme.style_primary_axis(ax)
+
+    if external_axes is None:
+        theme.visualize_output()
+
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
@@ -398,6 +402,7 @@ def plot_volume_open_interest(
     max_sp: float,
     min_vol: float,
     export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot volume and open interest
 
@@ -415,6 +420,8 @@ def plot_volume_open_interest(
         Min volume to consider
     export: str
         Format for exporting data
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
     current_price = tradier_model.last_price(ticker)
     options = tradier_model.get_option_chains(ticker, expiry)
@@ -485,13 +492,14 @@ def plot_volume_open_interest(
         return
 
     # Initialize the matplotlib figure
-    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
+    if external_axes is None:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
+    else:
+        ax = external_axes[0]
 
     # make x axis symmetric
     axis_origin = max(abs(max(df_puts["oi+v"])), abs(max(df_calls["oi+v"])))
     ax.set_xlim(-axis_origin, +axis_origin)
-
-    sns.set_style(style="darkgrid")
 
     g = sns.barplot(
         x="oi+v",
@@ -532,20 +540,20 @@ def plot_volume_open_interest(
     # draw spot line
     s = [float(strike.get_text()) for strike in ax.get_yticklabels()]
     spot_index = bisect_left(s, current_price)  # find where the spot is on the graph
-    spot_line = ax.axhline(spot_index, ls="--", color="dodgerblue", alpha=0.3)
+    spot_line = ax.axhline(spot_index, ls="--", alpha=0.3)
 
     # draw max pain line
     max_pain_index = bisect_left(s, max_pain)
-    max_pain_line = ax.axhline(max_pain_index, ls="-", color="black", alpha=0.3)
-    max_pain_line.set_linewidth(3)
+    max_pain_line = ax.axhline(max_pain_index, ls="-", alpha=0.3, color="red")
+    max_pain_line.set_linewidth(5)
 
     # format ticklabels without - for puts
     g.set_xticks(g.get_xticks())
     xlabels = [f"{x:,.0f}".replace("-", "") for x in g.get_xticks()]
     g.set_xticklabels(xlabels)
 
-    plt.title(
-        f"{ticker} volumes for {expiry} (open interest displayed only during market hours)"
+    ax.set_title(
+        f"{ticker} volumes for {expiry}\n(open interest displayed only during market hours)"
     )
     ax.invert_yaxis()
 
@@ -564,19 +572,19 @@ def plot_volume_open_interest(
         f"Max pain = {max_pain}",
     ]
 
-    plt.legend(handles=handles[:], labels=labels)
+    ax.legend(handles=handles[:], labels=labels, loc="lower left")
     sns.despine(left=True, bottom=True)
+    theme.style_primary_axis(ax)
 
-    if gtff.USE_ION:
-        plt.ion()
-    plt.show()
+    if external_axes is None:
+        theme.visualize_output()
+
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "voi_tr",
         options,
     )
-    console.print("")
 
 
 @log_start_end(log=logger)
@@ -588,6 +596,7 @@ def display_historical(
     raw: bool,
     chain_id: str,
     export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot historical option prices
 
@@ -607,6 +616,8 @@ def display_historical(
         OCC option symbol
     export: str
         Format of export file
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
 
     df_hist = tradier_model.get_historical_options(
@@ -622,29 +633,42 @@ def display_historical(
 
     op_type = ["call", "put"][put]
 
-    if gtff.USE_ION:
-        plt.ion()
+    candle_chart_kwargs = {
+        "type": "candle",
+        "style": theme.mpf_style,
+        "volume": True,
+        "xrotation": theme.xticks_rotation,
+        "scale_padding": {"left": 0.3, "right": 1.2, "top": 0.8, "bottom": 0.8},
+        "update_width_config": {
+            "candle_linewidth": 0.6,
+            "candle_width": 0.8,
+            "volume_linewidth": 0.8,
+            "volume_width": 0.8,
+        },
+    }
+    if external_axes is None:
+        candle_chart_kwargs["returnfig"] = True
+        candle_chart_kwargs["figratio"] = (10, 7)
+        candle_chart_kwargs["figscale"] = 1.10
+        candle_chart_kwargs["figsize"] = plot_autoscale()
+        fig, _ = mpf.plot(df_hist, **candle_chart_kwargs)
+        fig.suptitle(
+            f"Historical {strike} {op_type.title()}",
+            x=0.055,
+            y=0.965,
+            horizontalalignment="left",
+        )
+        theme.visualize_output(force_tight_layout=False)
+    else:
+        if len(external_axes) != 2:
+            console.print("[red]Expected list of 2 axis items./n[/red]")
+            return
+        (ax1, ax2) = external_axes
+        candle_chart_kwargs["ax"] = ax1
+        candle_chart_kwargs["volume"] = ax2
+        mpf.plot(df_hist, **candle_chart_kwargs)
 
-    mpf.plot(
-        df_hist,
-        type="candle",
-        style=theme.mpf_style,
-        volume=True,
-        title=f"\n{ticker.upper()} {strike} {op_type} expiring {expiry} Historical",
-        xrotation=10,
-        figratio=(10, 7),
-        figscale=1.10,
-        scale_padding={"left": 0.3, "right": 1, "top": 0.8, "bottom": 0.8},
-        figsize=(plot_autoscale()),
-        update_width_config=dict(
-            candle_linewidth=0.6,
-            candle_width=0.8,
-            volume_linewidth=0.8,
-            volume_width=0.8,
-        ),
-    )
-
-    console.print("")
+    console.print()
 
     if export:
         export_data(

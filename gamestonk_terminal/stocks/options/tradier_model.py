@@ -96,9 +96,8 @@ def get_historical_options(
         console.print("No historical data available")
         return pd.DataFrame()
 
-    df_hist = pd.DataFrame(data["day"], index=[data["day"]["date"]]).drop(
-        ["date"], axis=1
-    )
+    df_hist = pd.DataFrame(data["day"])
+    df_hist = df_hist.set_index("date")
     df_hist.index = pd.DatetimeIndex(df_hist.index)
     return df_hist
 

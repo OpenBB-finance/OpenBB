@@ -397,16 +397,16 @@ def plot_volume_open_interest(
 
     # draw max pain line
     max_pain_index = bisect_left(s, max_pain)
-    max_pain_line = ax.axhline(max_pain_index, ls="-", alpha=0.3)
-    max_pain_line.set_linewidth(3)
+    max_pain_line = ax.axhline(max_pain_index, ls="-", alpha=0.3, color="red")
+    max_pain_line.set_linewidth(5)
 
     # format ticklabels without - for puts
     g.set_xticks(g.get_xticks())
     xlabels = [f"{x:,.0f}".replace("-", "") for x in g.get_xticks()]
     g.set_xticklabels(xlabels)
 
-    plt.title(
-        f"{ticker} volumes for {expiry} (open interest displayed only during market hours)"
+    ax.set_title(
+        f"{ticker} volumes for {expiry} \n(open interest displayed only during market hours)",
     )
     ax.invert_yaxis()
 
@@ -424,10 +424,10 @@ def plot_volume_open_interest(
         f"Max pain = {max_pain}",
     ]
 
-    ax.legend(handles=handles[:], labels=labels)
+    ax.legend(handles=handles[:], labels=labels, loc="lower left")
     sns.despine(left=True, bottom=True)
-
     theme.style_primary_axis(ax)
+
     if external_axes is None:
         theme.visualize_output()
 
@@ -666,7 +666,7 @@ def show_parity(
         "parity",
         show,
     )
-    console.print("")
+    console.print()
 
 
 @log_start_end(log=logger)
@@ -733,7 +733,7 @@ def risk_neutral_vals(
         show_index=False,
         title="Risk Neutral Values",
     )
-    console.print("")
+    console.print()
 
 
 @log_start_end(log=logger)
@@ -994,7 +994,7 @@ def display_vol_surface(
         ax = plt.axes(projection="3d")
     else:
         ax = external_axes[0]
-    ax.plot_trisurf(X, Y, Z, linewidth=0.2)
+    ax.plot_trisurf(X, Y, Z, cmap="jet", linewidth=0.2)
     ax.set_xlabel("DTE")
     ax.set_ylabel("Strike")
     ax.set_zlabel(z)
@@ -1009,7 +1009,6 @@ def display_vol_surface(
         "vsurf",
         data,
     )
-    console.print("")
 
 
 @log_start_end(log=logger)
@@ -1096,5 +1095,5 @@ def show_greeks(
         columns += ["Rho", "Phi", "Charm", "Vanna", "Vomma"]
     df = pd.DataFrame(strikes, columns=columns)
     print_rich_table(df, headers=list(df.columns), show_index=False, title="Greeks")
-    console.print("")
+    console.print()
     return None
