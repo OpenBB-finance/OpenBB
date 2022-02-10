@@ -18,6 +18,7 @@ from gamestonk_terminal.helper_funcs import (
     long_number_format,
     plot_autoscale,
 )
+from gamestonk_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -60,7 +61,7 @@ def display_btc_circulating_supply(since: int, until: int, export: str) -> None:
     if gtff.USE_ION:
         plt.ion()
     plt.show()
-    print("")
+    console.print("")
 
     export_data(
         export,
@@ -109,7 +110,7 @@ def display_btc_confirmed_transactions(since: int, until: int, export: str) -> N
     if gtff.USE_ION:
         plt.ion()
     plt.show()
-    print("")
+    console.print("")
 
     export_data(
         export,
