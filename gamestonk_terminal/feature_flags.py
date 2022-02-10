@@ -57,3 +57,9 @@ ENABLE_RICH = strtobool(os.getenv("GTFF_ENABLE_RICH", "True"))
 
 # Use the colorful rich terminal
 ENABLE_RICH_PANEL = strtobool(os.getenv("GTFF_ENABLE_RICH_PANEL", "True"))
+
+# Autosave tables and images to 'downloads' directory
+ENABLE_AUTOSAVE = strtobool(os.getenv("GTFF_ENABLE_AUTOSAVE", "False"))
+
+# Autosave directory for figures
+AUTOSAVE_DIRECTORY = os.getenv("GTFF_AUTOSAVE_DIRECTORY", os.path.abspath("downloads/"))

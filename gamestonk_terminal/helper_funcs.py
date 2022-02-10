@@ -104,14 +104,7 @@ def print_rich_table(
     else:
         console.print(df.to_string())
 
-    directory = "C:\gst"
-    if os.path.exists(directory):
-        path = os.path.join(directory, "tmp.csv")
-        """ path = os.path.join(directory, "tmp.txt")
-        with open(path, 'w') as file:
-            file.write(table) """
-        df.to_csv(path)
-
+    local_download(df, "csv")
 
 def check_int_range(mini: int, maxi: int):
     """
@@ -361,6 +354,9 @@ def plot_view_stock(df: pd.DataFrame, symbol: str, interval: str):
 
     plt.show()
     console.print("")
+
+    local_download(df, "png")
+
 
 
 def us_market_holidays(years) -> list:
@@ -1053,3 +1049,41 @@ def excel_columns() -> List[str]:
         + [f"{x}{y}{z}" for x in letters for y in letters for z in letters]
     )
     return opts
+
+def local_download(df: pd.DataFrame, exp_type: str) -> None:
+    """
+    Downloads outputted file to autosave directory
+    set in environment file
+    """
+    if not gtff.ENABLE_AUTOSAVE:
+        return
+
+    # check if path is valid
+    if not os.path.exists(gtff.AUTOSAVE_DIRECTORY):
+        return
+
+    # avoid accessing .name if df is empty
+    try:
+        figure_name = df.name
+    except AttributeError:
+        figure_name = "DataFrame"
+
+    curr_time = datetime.now().strftime('%Y%m%d_%H%M%S')
+    path = os.path.join(gtff.AUTOSAVE_DIRECTORY, figure_name + "_" + curr_time + "." + exp_type)
+
+    if exp_type == "csv":
+        df.to_csv(path)
+    elif exp_type == "json":
+        df.to_json(path)
+    elif exp_type in "xlsx":
+        df.to_excel(path, index=True, header=True)
+    elif exp_type == "png":
+        plt.savefig(path)
+    elif exp_type == "jpg":
+        plt.savefig(path)
+    elif exp_type == "pdf":
+        plt.savefig(path)
+    elif exp_type == "svg":
+        plt.savefig(path)
+    else:
+        console.print("Wrong export file specified.\n")

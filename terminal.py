@@ -69,6 +69,9 @@ class TerminalController(BaseController):
             choices["tz"] = {c: None for c in self.all_timezones}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
+        if not os.path.exists("downloads"):
+            os.mkdir("downloads")
+
         self.queue: List[str] = list()
 
         if jobs_cmds:
