@@ -47,6 +47,6 @@ def get_defipulse_index() -> pd.DataFrame:
             "1 Day (%)",
         ],
     )
-    df["Rank"] = df["Rank"].apply(lambda x: int(x.replace(".", "")))
+    df["Rank"] = df.index
 
     return df
