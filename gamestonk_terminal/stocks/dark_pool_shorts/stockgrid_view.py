@@ -211,7 +211,11 @@ def short_interest_volume(
 
         ax.set_ylabel("Volume (1M)")
 
-        ax2.plot(df["date"].values, prices[len(prices) - len(df) :], label="Price")
+        ax2.plot(
+            df["date"].values,
+            prices[len(prices) - len(df) :],  # noqa: E203
+            label="Price",
+        )
         ax2.set_ylabel("Price ($)")
 
         lines, labels = ax.get_legend_handles_labels()
