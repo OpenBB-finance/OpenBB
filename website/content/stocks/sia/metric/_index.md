@@ -2,7 +2,7 @@
 usage: metric [-m {roa,roe,cr,qr,de,tc,tcs,tr,rps,rg,eg,pm,gp,gm,ocf,om,fcf,td,ebitda,ebitdam,rec,mc,fte,er,bv,ss,pb,beta,fs,peg,ev,fpe}] [-l LIMIT] [-r] [-h] [--export {csv,json,xlsx,png,jpg,pdf,svg}]
 ```
 
-Visualise a particular metric with the filters selected
+Visualise a particular metric with the filters selected [source: Yahoo Finance]
 
 ```
 optional arguments:

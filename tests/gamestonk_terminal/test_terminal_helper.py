@@ -3,8 +3,6 @@ import unittest
 from contextlib import contextmanager
 from unittest.mock import patch
 
-import vcr
-
 from gamestonk_terminal import terminal_helper
 from tests.helpers.helpers import check_print
 
@@ -28,14 +26,6 @@ def replace_stdin(target):
 
 
 class TestMainHelper(unittest.TestCase):
-    @check_print(assert_in="ALPHA")
-    @vcr.use_cassette(
-        "tests/gamestonk_terminal/cassettes/test_terminal_helper/test_check_api_keys.yaml",
-        record_mode="new_episodes",
-    )
-    def test_check_api_keys(self):
-        terminal_helper.check_api_keys()
-
     @check_print(length=0)
     def test_print_goodbye(self):
         terminal_helper.print_goodbye()
@@ -51,8 +41,8 @@ class TestMainHelper(unittest.TestCase):
         terminal_helper.about_us()
 
     @check_print(assert_in="Welcome to Gamestonk Terminal Beta")
-    def test_bootup(self):
-        terminal_helper.bootup()
+    def test_welcome_message(self):
+        terminal_helper.welcome_message()
 
     @check_print(assert_in="Unfortunately, resetting wasn't")
     @patch("subprocess.run", side_effect=return_val)

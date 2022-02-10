@@ -61,7 +61,7 @@ class NFTController(BaseController):
             type=str,
             help="Opensea collection slug (e.g., mutant-ape-yacht-club)",
             dest="slug",
-            required=True,
+            required="-h" not in other_args,
         )
         if other_args and not other_args[0][0] == "-":
             other_args.insert(0, "--slug")

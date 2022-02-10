@@ -254,11 +254,10 @@ def load(
     s_intraday = (f"Intraday {s_interval}", "Daily")[interval == 1440]
 
     console.print(
-        f"Loading {s_intraday} {ticker.upper()} stock "
+        f"\nLoading {s_intraday} {ticker.upper()} stock "
         f"with starting period {s_start.strftime('%Y-%m-%d')} for analysis.",
     )
 
-    console.print("")
     return df_stock_candidate
 
 
@@ -521,7 +520,7 @@ def quote(other_args: List[str], s_ticker: str):
             "--ticker",
             action="store",
             dest="s_ticker",
-            required=True,
+            required="-h" not in other_args,
             help="Stock ticker",
         )
 
@@ -822,4 +821,4 @@ def additional_info_about_ticker(ticker: str) -> str:
         extra_info += "\n[param]Market: [/param]"
         extra_info += "\n[param]Currency: [/param]"
 
-    return extra_info
+    return extra_info + "\n"

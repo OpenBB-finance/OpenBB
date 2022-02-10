@@ -188,6 +188,7 @@ def darkpool_otc(num: int, promising: int, tier: str, export: str):
     export : str
         Export dataframe data to csv,json,xlsx file
     """
+    # TODO: Improve command logic to be faster and more useful
     df_ats, d_ats_reg = finra_model.getATSdata(num, tier)
 
     top_ats_tickers = list(
