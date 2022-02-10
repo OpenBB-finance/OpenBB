@@ -49,7 +49,7 @@ As a modern Python-based environment, GamestonkTerminal opens access to numerous
 
 ### Ad-Free Experience
 
-Don't let your research be influenced algorithmic advertisements. Gamestonk Terminal provides a fast workflow that is ad-free and uncompromising.
+Don't let your research be influenced by algorithmic advertisements. Gamestonk Terminal provides a fast workflow that is ad-free and uncompromising.
 
 <--->
 
@@ -81,7 +81,7 @@ Generate automated reports, charts, and more using the unique simple script batc
 
 ### Import Your Own Data Sets To Plot, Analyze, Or Predict
 
-Statisticians and data scientists can harness the power of Tensorflow and quantitative analysis by importing CSV data sets in the custom menu.
+Statisticians and data scientists can harness the power of Tensorflow and quantitative analytics by importing CSV data sets in the custom menu.
 
 {{< /columns >}}
 
