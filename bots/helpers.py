@@ -215,23 +215,24 @@ def image_border(file):
 
 class ShowView:
     async def discord(self, func, ctx, *args, **kwargs):
-        try:
-            data = func(*args, **kwargs)
+        # try:
+        data = func(*args, **kwargs)
 
-            image = disnake.File(data["imagefile"])
+        image = disnake.File(data["imagefile"])
 
-            title = data["title"]
-            embed = disnake.Embed(
-                title=title, colour=cfg.COLOR, description=data.get("description", None)
-            )
-            embed.set_image(url=f"attachment://{data['imagefile']}")
-            embed.set_author(
-                name=cfg.AUTHOR_NAME,
-                icon_url=cfg.AUTHOR_ICON_URL,
-            )
-            os.remove(data["imagefile"])
+        title = data["title"]
+        embed = disnake.Embed(
+            title=title, colour=cfg.COLOR, description=data.get("description", None)
+        )
+        embed.set_image(url=f"attachment://{data['imagefile']}")
+        embed.set_author(
+            name=cfg.AUTHOR_NAME,
+            icon_url=cfg.AUTHOR_ICON_URL,
+        )
+        os.remove(data["imagefile"])
 
-            await ctx.send(embed=embed, file=image)
+        await ctx.send(embed=embed, file=image)
+        """
         except Exception as e:
             embed = disnake.Embed(
                 title=f"ERROR {data['title']}",
@@ -244,3 +245,4 @@ class ShowView:
             )
 
             await ctx.send(embed=embed, delete_after=30.0)
+            """

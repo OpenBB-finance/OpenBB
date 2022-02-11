@@ -57,8 +57,9 @@ class EconomyCommands(commands.Cog):
 
     @commands.slash_command(name="econ-feargreed")
     async def feargreed(
-        self, ctx: disnake.AppCmdInter, indicator: str = commands.Param(choices=fgind)
+        self, ctx: disnake.AppCmdInter, indicator: str = commands.Param(choices=group)
     ):
+
         """CNN Fear and Greed Index [CNN]
 
         Parameters
@@ -74,14 +75,14 @@ class EconomyCommands(commands.Cog):
         """Market data overview [Wall St. Journal]"""
         await ctx.response.defer()
         logger.info("econ-overview")
-        await overview_command(ctx)
+        await ShowView().discord(overview_command, ctx)
 
     @commands.slash_command(name="econ-indices")
     async def indices(self, ctx: disnake.AppCmdInter):
         """US indices overview [Wall St. Journal]"""
         await ctx.response.defer()
         logger.info("econ-indices")
-        await indices_command(ctx)
+        await ShowView().discord(indices_command, ctx)
 
     @commands.slash_command(name="econ-futures")
     async def futures(self, ctx: disnake.AppCmdInter):
@@ -95,7 +96,7 @@ class EconomyCommands(commands.Cog):
         """US bonds overview [Wall St. Journal]"""
         await ctx.response.defer()
         logger.info("econ-usbonds")
-        await usbonds_command(ctx)
+        await ShowView().discord(usbonds_command, ctx)
 
     @commands.slash_command(name="econ-glbonds")
     async def glbonds(self, ctx: disnake.AppCmdInter):
@@ -116,14 +117,14 @@ class EconomyCommands(commands.Cog):
         """Displays metals futures data [Finviz]"""
         await ctx.response.defer()
         logger.info("econ-metals")
-        await metals_command(ctx)
+        await ShowView().discord(metals_command, ctx)
 
     @commands.slash_command(name="econ-meats")
     async def meats(self, ctx: disnake.AppCmdInter):
         """Displays meats futures data [Finviz]"""
         await ctx.response.defer()
         logger.info("econ-meats")
-        await meats_command(ctx)
+        await ShowView().discord(meats_command, ctx)
 
     @commands.slash_command(name="econ-grains")
     async def grains(self, ctx: disnake.AppCmdInter):
@@ -137,7 +138,7 @@ class EconomyCommands(commands.Cog):
         """Displays softs futures data [Finviz]"""
         await ctx.response.defer()
         logger.info("econ-softs")
-        await softs_command(ctx)
+        await ShowView().discord(softs_command, ctx)
 
     @commands.slash_command(name="econ-currencies")
     async def currencies(self, ctx: disnake.AppCmdInter):
@@ -160,7 +161,7 @@ class EconomyCommands(commands.Cog):
         """
         await ctx.response.defer()
         logger.info("econ-valuation")
-        await valuation_command(ctx, economy_group)
+        await ShowView().discord(valuation_command, ctx, economy_group)
 
     @commands.slash_command(name="econ-performance")
     async def performance(
@@ -176,7 +177,7 @@ class EconomyCommands(commands.Cog):
         """
         await ctx.response.defer()
         logger.info("econ-performance")
-        await performance_command(ctx, economy_group)
+        await ShowView().discord(performance_command, ctx, economy_group)
 
 
 def setup(bot: commands.Bot):
