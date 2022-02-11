@@ -6,6 +6,7 @@ import pytest
 
 # IMPORTATION INTERNAL
 from gamestonk_terminal.stocks import stocks_helper
+from gamestonk_terminal import helper_funcs
 
 
 @pytest.fixture(scope="module")
@@ -35,7 +36,7 @@ def test_quote():
 )
 def test_search(mocker, use_tab):
     mocker.patch.object(
-        target=stocks_helper.gtff, attribute="USE_TABULATE_DF", new=use_tab
+        target=helper_funcs.gtff, attribute="USE_TABULATE_DF", new=use_tab
     )
     stocks_helper.search(query="pharma", amount=5)
 
@@ -73,8 +74,12 @@ def test_load(interval, recorder, source):
     [True, False],
 )
 def test_display_candle(mocker, use_matplotlib):
-    mocker.patch.object(target=stocks_helper.gtff, attribute="USE_ION", new=False)
-    mocker.patch("matplotlib.pyplot.show")
+
+    # MOCK VISUALIZE_OUTPUT
+    mocker.patch(
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
+    )
+
     mocker.patch("plotly.basedatatypes.BaseFigure.show")
 
     # LOAD DATA

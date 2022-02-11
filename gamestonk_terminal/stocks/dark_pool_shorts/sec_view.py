@@ -71,9 +71,11 @@ def fails_to_deliver(
     ax1.bar(
         ftds_data["SETTLEMENT DATE"],
         ftds_data["QUANTITY (FAILS)"] / 1000,
+        label="Fail Quantity",
     )
     ax1.set_ylabel("Shares [K]")
     ax1.set_title(f"Fails-to-deliver Data for {ticker}")
+    ax1.legend(loc="upper left")
 
     if num > 0:
         stock_ftd = stock[stock.index > (datetime.now() - timedelta(days=num + 31))]
@@ -81,8 +83,11 @@ def fails_to_deliver(
         stock_ftd = stock[stock.index > start]
         stock_ftd = stock_ftd[stock_ftd.index < end]
 
-    ax2.plot(stock_ftd.index, stock_ftd["Adj Close"], color="tab:orange")
+    ax2.plot(
+        stock_ftd.index, stock_ftd["Adj Close"], color="tab:orange", label="Share Price"
+    )
     ax2.set_ylabel("Share Price [$]")
+    ax2.legend(loc="upper right")
 
     theme.style_twin_axes(ax1, ax2)
 

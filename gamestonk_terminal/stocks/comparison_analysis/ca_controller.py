@@ -213,7 +213,7 @@ class ComparisonAnalysisController(BaseController):
                 self.similar = yahoo_finance_model.get_sp500_comps_tsne(
                     self.ticker,
                     lr=ns_parser.lr,
-                    no_plot=ns_parser.no_plot,
+                    no_plot=ns_parser.no_plotb,
                     num_tickers=ns_parser.limit,
                 )
 
