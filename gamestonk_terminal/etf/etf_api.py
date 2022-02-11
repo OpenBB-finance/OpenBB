@@ -6,12 +6,12 @@ from gamestonk_terminal.helper_classes import ModelsNamespace as _models
 # pylint: disable=unused-import
 
 # Context menus
+from gamestonk_terminal.stocks.stocks_helper import display_candle as candle
 from gamestonk_terminal.common.newsapi_view import news
 from .financedatabase_view import display_etf_by_name as ln
 from .financedatabase_view import display_etf_by_description as ld
 from .stockanalysis_view import view_overview as overview
 from .stockanalysis_view import view_holdings as holdings
-from .yfinance_view import display_candle as candle
 from .yfinance_view import display_etf_weightings as weights
 from .yfinance_view import display_etf_description as summary
 from .technical_analysis import ta_api as ta

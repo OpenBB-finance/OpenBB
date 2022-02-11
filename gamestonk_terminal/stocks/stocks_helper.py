@@ -268,6 +268,7 @@ def display_candle(
     intraday: bool = False,
     add_trend: bool = False,
     ma: Optional[Tuple[int, ...]] = None,
+    asset_type: str = "Stock",
 ):
     """Shows candle plot of loaded ticker. [Source: Yahoo Finance, IEX Cloud or Alpha Vantage]
 
@@ -285,6 +286,8 @@ def display_candle(
         Flag to add high and low trends to chart
     mov_avg: Tuple[int]
         Moving averages to add to the candle
+    asset_type_: str
+        String to include in title
     """
     if add_trend:
         if (df_stock.index[1] - df_stock.index[0]).total_seconds() >= 86400:
@@ -330,7 +333,7 @@ def display_candle(
             **kwargs,
         )
         fig.suptitle(
-            f"Stock {s_ticker}",
+            f"{asset_type} {s_ticker}",
             x=0.055,
             y=0.965,
             horizontalalignment="left",

@@ -9,6 +9,8 @@ import yfinance as yf
 
 from prompt_toolkit.completion import NestedCompleter
 from thepassiveinvestor import create_ETF_report
+
+from gamestonk_terminal.stocks import stocks_helper
 from gamestonk_terminal.rich_config import console
 
 from gamestonk_terminal.parent_classes import BaseController
@@ -20,6 +22,7 @@ from gamestonk_terminal.etf import (
     yfinance_view,
 )
 from gamestonk_terminal.common import newsapi_view
+from gamestonk_terminal.common.quantitative_analysis import qa_view
 from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
@@ -27,6 +30,7 @@ from gamestonk_terminal.helper_funcs import (
     check_positive,
     valid_date,
     parse_known_args_and_warn,
+    export_data,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.etf.technical_analysis import ta_controller
@@ -419,11 +423,112 @@ class ETFController(BaseController):
             prog="candle",
             description="Shows historic data for an ETF",
         )
+        parser.add_argument(
+            "-p",
+            "--plotly",
+            dest="plotly",
+            action="store_false",
+            default=True,
+            help="Flag to show interactive plotly chart.",
+        )
+        parser.add_argument(
+            "--sort",
+            choices=[
+                "AdjClose",
+                "Open",
+                "Close",
+                "High",
+                "Low",
+                "Volume",
+                "Returns",
+                "LogRet",
+            ],
+            default="",
+            type=str,
+            dest="sort",
+            help="Choose a column to sort by",
+        )
+        parser.add_argument(
+            "-d",
+            "--descending",
+            action="store_false",
+            dest="descending",
+            default=True,
+            help="Sort selected column descending",
+        )
+        parser.add_argument(
+            "--raw",
+            action="store_true",
+            dest="raw",
+            default=False,
+            help="Shows raw data instead of chart",
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            type=check_positive,
+            help="Number to show if raw selected",
+            dest="num",
+            default=20,
+        )
+        parser.add_argument(
+            "-t",
+            "--trend",
+            action="store_true",
+            default=False,
+            help="Flag to add high and low trends to candle.",
+            dest="trendlines",
+        )
+        parser.add_argument(
+            "--ma",
+            dest="mov_avg",
+            type=str,
+            help="Add moving averaged to plot",
+            default="",
+        )
+
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            yfinance_view.display_candle(self.etf_name, self.etf_data, ns_parser.export)
+            if self.etf_name:
+                export_data(
+                    ns_parser.export,
+                    os.path.join(
+                        os.path.dirname(os.path.abspath(__file__)), "raw_data"
+                    ),
+                    f"{self.etf_name}",
+                    self.etf_data,
+                )
+
+                if ns_parser.raw:
+                    qa_view.display_raw(
+                        df=self.etf_data,
+                        sort=ns_parser.sort,
+                        des=ns_parser.descending,
+                        num=ns_parser.num,
+                    )
+
+                else:
+
+                    data = stocks_helper.process_candle(self.etf_data)
+                    mov_avgs = (
+                        tuple(int(num) for num in ns_parser.mov_avg.split(","))
+                        if ns_parser.mov_avg
+                        else None
+                    )
+
+                    stocks_helper.display_candle(
+                        s_ticker=self.etf_name,
+                        df_stock=data,
+                        use_matplotlib=ns_parser.plotly,
+                        intraday=False,
+                        add_trend=ns_parser.trendlines,
+                        ma=mov_avgs,
+                        asset_type="ETF",
+                    )
+            else:
+                console.print("No ticker loaded. First use `load {ticker}`\n")
 
     def call_pir(self, other_args):
         """Process pir command"""
