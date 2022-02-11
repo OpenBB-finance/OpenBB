@@ -1,5 +1,7 @@
 """Terminal helper"""
 __docformat__ = "numpy"
+
+from contextlib import contextmanager
 import hashlib
 import logging
 import os
@@ -8,6 +10,7 @@ import subprocess  # nosec
 import sys
 from datetime import datetime
 from typing import List
+import ascii_magic
 
 import matplotlib.pyplot as plt
 
@@ -90,6 +93,22 @@ def update_terminal():
 
 def about_us():
     """Prints an about us section"""
+    if console.console.width > 200:
+        gst_logo = ascii_magic.from_image_file(
+            "images/gst_logo_lockup_rGreen_with_letters.png",
+            columns=console.console.width,
+            width_ratio=2,
+        )
+    elif console.console.width < 100:
+        gst_logo = ascii_magic.from_image_file(
+            "images/gst_logo_green_white_background.png", columns=50, width_ratio=2
+        )
+    else:
+        gst_logo = ascii_magic.from_image_file(
+            "images/gst_letters.png", columns=console.console.width, width_ratio=2
+        )
+    ascii_magic.to_terminal(gst_logo)
+
     console.print(
         "[green]Thanks for using Gamestonk Terminal. This is our way![/green]\n"
         "\n"
@@ -97,7 +116,7 @@ def about_us():
         "[cyan]Follow our twitter for updates: [/cyan]https://twitter.com/gamestonkt\n"
         "[cyan]Access our landing page: [/cyan]https://gamestonkterminal.github.io/GamestonkTerminal/\n"
         "\n"
-        "[yellow]Partnerships:[/yellow]]\n"
+        "[yellow]Partnerships:[/yellow]\n"
         "[cyan]FinBrain: [/cyan]https://finbrain.tech\n"
         "[cyan]Quiver Quantitative: [/cyan]https://www.quiverquant.com\n"
         "[cyan]SentimentInvestor: [/cyan]https://sentimentinvestor.com\n"
@@ -127,6 +146,8 @@ def bootup():
         logger.exception("Exception: %s", str(e))
         console.print(e, "\n")
 
+
+def welcome_message():
     # Print first welcome message and help
     console.print("\nWelcome to Gamestonk Terminal Beta\n")
 
@@ -162,3 +183,39 @@ def reset(queue: List[str] = None):
         console.print("Unfortunately, resetting wasn't possible!\n")
 
     return completed_process.returncode
+
+
+@contextmanager
+def suppress_stdout():
+    with open(os.devnull, "w") as devnull:
+        old_stdout = sys.stdout
+        old_stderr = sys.stderr
+        sys.stdout = devnull
+        sys.stderr = devnull
+        try:
+            yield
+        finally:
+            sys.stdout = old_stdout
+            sys.stderr = old_stderr
+
+
+def is_reset(command: str) -> bool:
+    """Test whether a command is a reset command
+
+    Parameters
+    ----------
+    command : str
+        The command to test
+
+    Returns
+    ----------
+    answer : bool
+        Whether the command is a reset command
+    """
+    if "reset" in command:
+        return True
+    if command == "r":
+        return True
+    if command == "r\n":
+        return True
+    return False

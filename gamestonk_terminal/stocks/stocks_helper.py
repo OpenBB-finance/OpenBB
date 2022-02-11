@@ -520,7 +520,7 @@ def quote(other_args: List[str], s_ticker: str):
             "--ticker",
             action="store",
             dest="s_ticker",
-            required=True,
+            required="-h" not in other_args,
             help="Stock ticker",
         )
 
@@ -628,6 +628,7 @@ def load_ticker(
     else:
         df_data = yf.download(ticker, start=start_date, progress=False)
 
+    df_data.index = pd.to_datetime(df_data.index)
     df_data["date_id"] = (df_data.index.date - df_data.index.date.min()).astype(
         "timedelta64[D]"
     )

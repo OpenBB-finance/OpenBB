@@ -2,10 +2,11 @@
 """Main Terminal Module"""
 __docformat__ = "numpy"
 
+import sys
 import os
 import difflib
 import logging
-import sys
+import argparse
 from typing import List
 import pytz
 
@@ -18,14 +19,19 @@ from gamestonk_terminal.helper_funcs import (
     get_user_timezone_or_invalid,
     replace_user_timezone,
 )
+
 from gamestonk_terminal.loggers import setup_logging
 from gamestonk_terminal.menu import session
+
 from gamestonk_terminal.terminal_helper import (
     about_us,
     bootup,
+    welcome_message,
     print_goodbye,
     reset,
     update_terminal,
+    suppress_stdout,
+    is_reset,
 )
 
 # pylint: disable=too-many-public-methods,import-outside-toplevel
@@ -226,8 +232,9 @@ def terminal(jobs_cmds: List[str] = None):
     t_controller = TerminalController(jobs_cmds)
     an_input = ""
 
+    bootup()
     if not jobs_cmds:
-        bootup()
+        welcome_message()
         t_controller.print_help()
 
     while ret_code:
@@ -314,37 +321,137 @@ def terminal(jobs_cmds: List[str] = None):
                 console.print("\n")
 
 
+
 def insert_start_slash(cmds: List[str]) -> List[str]:
     if not cmds[0].startswith("/"):
         cmds[0] = f"/{cmds[0]}"
     if cmds[0].startswith("/home"):
         cmds[0] = f"/{cmds[0][5:]}"
     return cmds
+  
+  
+# TODO: if test_mode is true add exit to the end
+def run_scripts(path: str, test_mode: bool = False):
+    """Runs a given .gst scripts
+
+    Parameters
+    ----------
+    path : str
+        The location of the .gst file
+    test_mode : bool
+        Whether the terminal is in test mode
+    """
+    if os.path.isfile(path):
+        with open(path) as fp:
+            lines = [x for x in fp if not test_mode or not is_reset(x)]
+
+            if test_mode and "exit" not in lines[-1]:
+                lines.append("exit")
+
+            simulate_argv = f"/{'/'.join([line.rstrip() for line in lines])}"
+            file_cmds = simulate_argv.replace("//", "/home/").split()
+
+            file_cmds = insert_start_slash(file_cmds) if file_cmds else file_cmds
+            terminal(file_cmds)
+    else:
+        console.print(f"File '{path}' doesn't exist. Launching base terminal.\n")
+        if not test_mode:
+            terminal()
 
 
 if __name__ == "__main__":
-    if len(sys.argv) > 1:
-        if "--debug" in sys.argv:
+    parser = argparse.ArgumentParser(
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        prog="terminal",
+        description="The gamestonk terminal.",
+    )
+    parser.add_argument(
+        "-d",
+        "--debug",
+        dest="debug",
+        action="store_true",
+        default=False,
+        help="Runs the terminal in debug mode.",
+    )
+    parser.add_argument(
+        "-p",
+        "--path",
+        help="The path or .gst file to run.",
+        dest="path",
+        nargs="+",
+        default="",
+        type=str,
+    )
+    parser.add_argument(
+        "-t",
+        "--test",
+        dest="test",
+        action="store_true",
+        default=False,
+        help="Whether to run in test mode.",
+    )
+    parser.add_argument(
+        "-f",
+        "--filter",
+        help="Send a keyword to filter in file name",
+        dest="filter",
+        default="",
+        type=str,
+    )
+
+    if sys.argv[1:] and "-" not in sys.argv[1][0]:
+        sys.argv.insert(1, "-p")
+    ns_parser = parser.parse_args()
+
+    if ns_parser:
+        if ns_parser.test:
             os.environ["DEBUG_MODE"] = "true"
-            sys.argv.remove("--debug")
-        if len(sys.argv) > 1 and ".gst" in sys.argv[1]:
-            if os.path.isfile(sys.argv[1]):
-                with open(sys.argv[1]) as fp:
-                    simulate_argv = f"/{'/'.join([line.rstrip() for line in fp])}"
-                    file_cmds = simulate_argv.replace("//", "/home/").split()
-                    # close the eyes if the user forgets the initial `/`
-                    file_cmds = (
-                        insert_start_slash(file_cmds) if file_cmds else file_cmds
-                    )
-                    terminal(file_cmds)
+
+            if "gst" in ns_parser.path[0]:
+                files = ns_parser.path
             else:
-                console.print(
-                    f"The file '{sys.argv[1]}' doesn't exist. Launching terminal without any configuration.\n"
+                folder = os.path.join(
+                    os.path.abspath(os.path.dirname(__file__)), ns_parser.path[0]
                 )
-                terminal()
+                files = [
+                    name
+                    for name in os.listdir(folder)
+                    if os.path.isfile(os.path.join(folder, name))
+                    and name.endswith(".gst")
+                    and (ns_parser.filter in f"{folder}/{name}")
+                ]
+            files.sort()
+            SUCCESSES = 0
+            FAILURES = 0
+            fails = {}
+            length = len(files)
+            i = 0
+            console.print("[green]Gamestonk Terminal Integrated Tests:\n[/green]")
+            for file in files:
+                console.print(f"{file}  {((i/length)*100):.1f}%")
+                try:
+                    with suppress_stdout():
+                        run_scripts(f"{ns_parser.path[0]}/{file}", test_mode=True)
+                    SUCCESSES += 1
+                except Exception as e:
+                    fails[f"{ns_parser.path[0]}{file}"] = e
+                    FAILURES += 1
+                i += 1
+            if fails:
+                console.print("\n[red]Failures:[/red]\n")
+                for key, value in fails.items():
+                    console.print(f"{key}: {value}\n")
+            console.print(
+                f"Summary: [green]Successes: {SUCCESSES}[/green] [red]Failures: {FAILURES}[/red]"
+            )
         else:
-            argv_cmds = list([" ".join(sys.argv[1:]).replace(" /", "/home/")])
-            argv_cmds = insert_start_slash(argv_cmds) if argv_cmds else argv_cmds
-            terminal(argv_cmds)
-    else:
-        terminal()
+            if ns_parser.debug:
+                os.environ["DEBUG_MODE"] = "true"
+            if isinstance(ns_parser.path, list) and ns_parser.path[0].endswith(".gst"):
+                run_scripts(ns_parser.path[0])
+            elif ns_parser.path:
+                argv_cmds = list([" ".join(ns_parser.path).replace(" /", "/home/")])
+                argv_cmds = insert_start_slash(argv_cmds) if argv_cmds else argv_cmds
+                terminal(argv_cmds)
+            else:
+                terminal()

@@ -68,7 +68,7 @@ read below.
 ## Discord Configs
 
 In order to config the discord bot you will need to edit the
-[config_discordbot.py](gamestonk_terminal/config_discordbot.py) file.
+[config_discordbot.py](config_discordbot.py) file.
 
 1. Edit the path to the terminal by changing the variable `GST_PATH`. E.g.
 
@@ -122,7 +122,7 @@ To get your server ID:
 
 ## Contributing
 
-See more in [CONTRIBUTING.md](discordbot/CONTRIBUTING.md).
+See more in [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Bugs
 
@@ -134,7 +134,7 @@ ssl.SSLError: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed
 
 The solution is to browse to `Applications/Python 3.x` and double-click `Install Certificates.command`.
 
-If an error occurs, use `DEBUG=True` on the [config_discordbot.py](gamestonk_terminal/config_discordbot.py) file.
+If an error occurs, use `DEBUG=True` on the [config_discordbot.py](config_discordbot.py) file.
 
 Then, report what is the issue with the console output attached either by:
 
