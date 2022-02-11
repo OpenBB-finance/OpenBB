@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import logging
 import os
 from datetime import datetime, timedelta
-from typing import List
+from typing import List, Optional
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -13,7 +13,7 @@ import seaborn as sns
 from pandas.plotting import register_matplotlib_converters
 from sklearn.preprocessing import MinMaxScaler
 
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
@@ -41,6 +41,7 @@ def display_historical(
     candle_type: str = "a",
     normalize: bool = True,
     export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display historical stock prices. [Source: Yahoo Finance]
 
@@ -56,6 +57,9 @@ def display_historical(
         Boolean to normalize all stock prices using MinMax defaults True
     export : str, optional
         Format to export historical prices, by default ""
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
+
     """
     df_similar = yahoo_finance_model.get_historical(similar_tickers, start, candle_type)
     df_similar = df_similar[similar_tickers]
@@ -66,7 +70,7 @@ def display_historical(
             f"NaN values found in: {', '.join(nan_tickers)}.  Replacing with zeros."
         )
         df_similar = df_similar.fillna(0)
-    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+
     # This puts everything on 0-1 scale for visualizing
     if normalize:
         mm_scale = MinMaxScaler()
@@ -75,18 +79,27 @@ def display_historical(
             columns=df_similar.columns,
             index=df_similar.index,
         )
-    df_similar.plot(ax=ax)
+
+    # This plot has 1 axis
+    if not external_axes:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    else:
+        if len(external_axes) != 1:
+            console.print("[red]Expected list of one axis item./n[/red]")
+            return
+        (ax,) = external_axes
+
+    ax.plot(df_similar)
     ax.set_title("Historical price of similar companies")
-    ax.set_xlabel("Time")
     ax.set_ylabel(f"{['','Normalized'][normalize]} Share Price {['($)',''][normalize]}")
-    ax.grid(b=True, which="major", color="#666666", linestyle="-")
     # ensures that the historical data starts from same datapoint
     ax.set_xlim([df_similar.index[0], df_similar.index[-1]])
-    plt.gcf().autofmt_xdate()
-    fig.tight_layout()
-    if gtff.USE_ION:
-        plt.ion()
-    plt.show()
+
+    theme.style_primary_axis(ax)
+
+    if not external_axes:
+        theme.visualize_output()
+
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "historical", df_similar
     )
@@ -98,6 +111,7 @@ def display_volume(
     similar_tickers: List[str],
     start: str = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
     export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display volume stock prices. [Source: Yahoo Finance]
 
@@ -109,26 +123,34 @@ def display_volume(
         Start date of comparison, by default 1 year ago
     export : str, optional
         Format to export historical prices, by default ""
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
     df_similar = yahoo_finance_model.get_historical(similar_tickers, start, "v")
     df_similar = df_similar[similar_tickers]
 
-    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    # This plot has 1 axis
+    if not external_axes:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    else:
+        if len(external_axes) != 1:
+            console.print("[red]Expected list of one axis item./n[/red]")
+            return
+        (ax,) = external_axes
+
     df_similar = df_similar.div(1_000_000)
 
-    df_similar.plot(ax=ax)
+    ax.plot(df_similar)
     ax.set_title("Historical volume of similar companies")
-    # ax.plot(df_similar.index, df_similar[ticker].values/1_000_000)
-    ax.set_xlabel("Date")
     ax.set_ylabel("Volume [M]")
-    ax.grid(b=True, which="major", color="#666666", linestyle="-")
     # ensures that the historical data starts from same datapoint
     ax.set_xlim([df_similar.index[0], df_similar.index[-1]])
-    plt.gcf().autofmt_xdate()
-    fig.tight_layout()
-    if gtff.USE_ION:
-        plt.ion()
-    plt.show()
+
+    theme.style_primary_axis(ax)
+
+    if not external_axes:
+        theme.visualize_output()
+
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "volume", df_similar
     )
@@ -140,6 +162,7 @@ def display_correlation(
     similar_tickers: List[str],
     start: str = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
     candle_type: str = "a",
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """
     Correlation heatmap based on historical price comparison
@@ -153,6 +176,9 @@ def display_correlation(
         Start date of comparison, by default 1 year ago
     candle_type : str, optional
         OHLCA column to use, by default "a" for Adjusted Close
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
+
     """
     df_similar = yahoo_finance_model.get_historical(similar_tickers, start, candle_type)
     df_similar = df_similar[similar_tickers]
@@ -169,7 +195,14 @@ def display_correlation(
     mask = np.zeros((df_similar.shape[1], df_similar.shape[1]), dtype=bool)
     mask[np.triu_indices(len(mask))] = True
 
-    plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    # This plot has 1 axis
+    if not external_axes:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    else:
+        if len(external_axes) != 1:
+            console.print("[red]Expected list of one axis item./n[/red]")
+            return
+        (ax,) = external_axes
 
     sns.heatmap(
         df_similar.corr(),
@@ -180,9 +213,11 @@ def display_correlation(
         vmin=-1,
         vmax=1,
         mask=mask,
+        ax=ax,
     )
-    plt.title(f"Correlation Heatmap of similar companies from {start}")
-    if gtff.USE_ION:
-        plt.ion()
-    plt.show()
+    ax.set_title(f"Correlation Heatmap of similar companies from {start}")
+
+    if not external_axes:
+        theme.visualize_output()
+
     console.print("")

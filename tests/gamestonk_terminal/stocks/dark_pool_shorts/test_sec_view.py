@@ -39,8 +39,12 @@ def vcr_config():
     [True, False],
 )
 def test_fails_to_deliver(mocker, raw):
-    mocker.patch.object(target=sec_view.gtff, attribute="USE_ION", new=False)
-    mocker.patch("matplotlib.pyplot.show")
+
+    # MOCK VISUALIZE_OUTPUT
+    mocker.patch(
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
+    )
+
     mocker.patch(
         target="gamestonk_terminal.stocks.dark_pool_shorts.sec_model.get_fails_to_deliver",
         new=mocker.Mock(return_value=df_fails_to_deliver.copy()),

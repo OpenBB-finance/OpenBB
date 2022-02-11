@@ -3,17 +3,20 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import List, Optional
 
 import matplotlib.pyplot as plt
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.config_terminal import theme
+from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
     export_data,
     get_next_stock_market_days,
     print_rich_table,
+    plot_autoscale,
 )
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.stocks.insider import businessinsider_model
@@ -32,6 +35,7 @@ def insider_activity(
     num: int,
     raw: bool,
     export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display insider activity. [Source: Business Insider]
 
@@ -51,12 +55,15 @@ def insider_activity(
         Print to console
     export : str
         Export dataframe data to csv,json,xlsx file
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
     df_ins = businessinsider_model.get_insider_activity(ticker)
 
     if df_ins.empty:
         console.print("[red]The insider activity on the ticker does not exist.\n[/red]")
     else:
+
         if start:
             df_insider = df_ins[start:].copy()  # type: ignore
         else:
@@ -73,26 +80,30 @@ def insider_activity(
                 show_index=True,
                 title="Insider Activity",
             )
-
         else:
-            _, ax = plt.subplots()
+            # This plot has 1 axis
+            if not external_axes:
+                _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+            else:
+                if len(external_axes) != 1:
+                    console.print("[red]Expected list of one axis item./n[/red]")
+                    return
+                (ax,) = external_axes
 
             if interval == "1440min":
-                plt.plot(stock.index, stock["Adj Close"].values, lw=3)
+                ax.plot(stock.index, stock["Adj Close"].values, lw=3)
             else:  # Intraday
-                plt.plot(stock.index, stock["Close"].values, lw=3)
+                ax.plot(stock.index, stock["Close"].values, lw=3)
 
-            plt.title(f"{ticker.upper()} (Time Series) and Price Target")
-
-            plt.xlabel("Time")
-            plt.ylabel("Share Price")
+            ax.set_title(f"{ticker.upper()}'s Insider Trading Activity & Share Price")
+            ax.set_ylabel("Share Price")
 
             df_insider["Trade"] = df_insider.apply(
                 lambda row: (1, -1)[row.Type == "Sell"]
                 * float(row["Shares Traded"].replace(",", "")),
                 axis=1,
             )
-            plt.xlim(df_insider.index[0], stock.index[-1])
+            ax.set_xlim(df_insider.index[0], stock.index[-1])
             min_price, max_price = ax.get_ylim()
 
             price_range = max_price - min_price
@@ -125,7 +136,7 @@ def insider_activity(
                 else:
                     n_stock_price = stock["Close"][ind_dt]
 
-                plt.vlines(
+                bar_1 = ax.vlines(
                     x=ind_dt,
                     ymin=n_stock_price
                     + n_proportion
@@ -135,7 +146,7 @@ def insider_activity(
                         .sum()["Trade"][ind]
                     ),
                     ymax=n_stock_price,
-                    colors="red",
+                    colors=theme.down_color,
                     ls="-",
                     lw=5,
                 )
@@ -154,7 +165,7 @@ def insider_activity(
                 else:
                     n_stock_price = stock["Close"][ind_dt]
 
-                plt.vlines(
+                bar_2 = ax.vlines(
                     x=ind_dt,
                     ymin=n_stock_price,
                     ymax=n_stock_price
@@ -164,20 +175,20 @@ def insider_activity(
                         .groupby(by=["Date"])
                         .sum()["Trade"][ind]
                     ),
-                    colors="green",
+                    colors=theme.up_color,
                     ls="-",
                     lw=5,
                 )
 
-            plt.grid(b=True, which="major", color="#666666", linestyle="-")
-            plt.gcf().autofmt_xdate()
+            ax.legend(
+                handles=[bar_1, bar_2],
+                labels=["Insider Selling", "Insider Buying"],
+                loc="best",
+            )
+            theme.style_primary_axis(ax)
 
-            if gtff.USE_ION:
-                plt.ion()
-
-            plt.show()
-
-        console.print("")
+            if not external_axes:
+                theme.visualize_output()
 
         export_data(
             export,

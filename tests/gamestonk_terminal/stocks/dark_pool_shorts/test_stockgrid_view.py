@@ -35,8 +35,10 @@ def test_short_interest_days_to_cover():
     [True, False],
 )
 def test_short_interest_volume(mocker, raw):
-    mocker.patch.object(target=stockgrid_view, attribute="USE_ION", new=False)
-    mocker.patch("matplotlib.pyplot.show")
+    # MOCK VISUALIZE_OUTPUT
+    mocker.patch(
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
+    )
 
     stockgrid_view.short_interest_volume(
         ticker="PM",
@@ -53,8 +55,10 @@ def test_short_interest_volume(mocker, raw):
     [True, False],
 )
 def test_net_short_position(mocker, raw):
-    mocker.patch.object(target=stockgrid_view, attribute="USE_ION", new=False)
-    mocker.patch("matplotlib.pyplot.show")
+    # MOCK VISUALIZE_OUTPUT
+    mocker.patch(
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
+    )
 
     stockgrid_view.net_short_position(
         ticker="PM",
