@@ -74,7 +74,7 @@ def get_historical_options(
             ].values[0]
         except IndexError:
             console.print(f"Strike: {strike}, Option type: {op_type} not not found \n")
-            return pd.DataFrame
+            return pd.DataFrame()
     else:
         symbol = chain_id
 
@@ -96,9 +96,8 @@ def get_historical_options(
         console.print("No historical data available")
         return pd.DataFrame()
 
-    df_hist = pd.DataFrame(data["day"], index=[data["day"]["date"]]).drop(
-        ["date"], axis=1
-    )
+    df_hist = pd.DataFrame(data["day"])
+    df_hist = df_hist.set_index("date")
     df_hist.index = pd.DatetimeIndex(df_hist.index)
     return df_hist
 

@@ -3,15 +3,16 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import List, Optional
+
 import textwrap
 from datetime import datetime, timedelta
 
-import matplotlib.dates as mdates
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
 
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
@@ -123,6 +124,7 @@ def display_government_buys(
     num: int = 10,
     raw: bool = False,
     export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Top buy government trading [Source: quiverquant.com]
 
@@ -138,6 +140,9 @@ def display_government_buys(
         Display raw data
     export: str
         Format to export data
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
+
     """
     df_gov = quiverquant_model.get_government_trading(gov_type)
 
@@ -188,7 +193,15 @@ def display_government_buys(
         print_rich_table(
             df, headers=["Amount ($1k)"], show_index=True, title="Top Government Buys"
         )
-    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+
+    # This plot has 1 axis
+    if not external_axes:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    else:
+        if len(external_axes) != 1:
+            console.print("[red]Expected list of one axis item./n[/red]")
+            return
+        (ax,) = external_axes
 
     df_gov.groupby("Ticker")["upper"].sum().div(1000).sort_values(ascending=False).head(
         n=num
@@ -199,12 +212,15 @@ def display_government_buys(
         f"Top {num} purchased stocks over last {past_transactions_months} "
         f"months (upper bound) for {gov_type.upper()}"
     )
-    plt.gcf().axes[0].yaxis.get_major_formatter().set_scientific(False)
-    if gtff.USE_ION:
-        plt.ion()
-    fig.tight_layout()
-    plt.show()
+    # plt.gcf().axes[0].yaxis.get_major_formatter().set_scientific(False)
+
+    theme.style_primary_axis(ax)
+
+    if not external_axes:
+        theme.visualize_output()
+
     console.print("")
+
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "topbuys", df_gov)
 
 
@@ -215,6 +231,7 @@ def display_government_sells(
     num: int = 10,
     raw: bool = False,
     export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Top buy government trading [Source: quiverquant.com]
 
@@ -230,6 +247,8 @@ def display_government_sells(
         Display raw data
     export: str
         Format to export data
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
     df_gov = quiverquant_model.get_government_trading(gov_type)
 
@@ -292,7 +311,15 @@ def display_government_sells(
         print_rich_table(
             df, headers=["Amount ($1k)"], show_index=True, title="Top Government Trades"
         )
-    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+
+    # This plot has 1 axis
+    if not external_axes:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    else:
+        if len(external_axes) != 1:
+            console.print("[red]Expected list of one axis item./n[/red]")
+            return
+        (ax,) = external_axes
 
     df_gov.groupby("Ticker")["upper"].sum().div(1000).sort_values().abs().head(
         n=num
@@ -302,11 +329,13 @@ def display_government_sells(
         f"{num} most sold stocks over last {past_transactions_months} months"
         f" (upper bound) for {gov_type}"
     )
-    plt.gcf().axes[0].yaxis.get_major_formatter().set_scientific(False)
-    if gtff.USE_ION:
-        plt.ion()
-    fig.tight_layout()
-    plt.show()
+    # plt.gcf().axes[0].yaxis.get_major_formatter().set_scientific(False)
+
+    theme.style_primary_axis(ax)
+
+    if not external_axes:
+        theme.visualize_output()
+
     console.print("")
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "topsells", df_gov)
 
@@ -317,6 +346,7 @@ def display_last_contracts(
     num: int = 20,
     sum_contracts: bool = False,
     export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Last government contracts [Source: quiverquant.com]
 
@@ -330,6 +360,8 @@ def display_last_contracts(
         Flag to show total amount of contracts given out.
     export: str
         Format to export data
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
     df_contracts = quiverquant_model.get_government_trading("contracts")
 
@@ -360,22 +392,37 @@ def display_last_contracts(
         title="Last Government Contracts",
     )
     if sum_contracts:
-        fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+
+        # This plot has 1 axis
+        if not external_axes:
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        else:
+            if len(external_axes) != 1:
+                console.print("[red]Expected list of one axis item./n[/red]")
+                return
+            (ax,) = external_axes
+
         df["Date"] = pd.to_datetime(df["Date"]).dt.date
         df.groupby("Date").sum().div(1000).plot(kind="bar", rot=0, ax=ax)
         ax.set_ylabel("Amount ($1k)")
         ax.set_title("Total amount of government contracts given")
 
-        if gtff.USE_ION:
-            plt.ion()
-        fig.tight_layout()
-        plt.show()
+        theme.style_primary_axis(ax)
+
+        if not external_axes:
+            theme.visualize_output()
+
     console.print("")
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "lastcontracts", df)
 
 
 @log_start_end(log=logger)
-def plot_government(government: pd.DataFrame, ticker: str, gov_type: str):
+def plot_government(
+    government: pd.DataFrame,
+    ticker: str,
+    gov_type: str,
+    external_axes: Optional[List[plt.Axes]] = None,
+):
     """Helper for plotting government trading
 
     Parameters
@@ -386,8 +433,17 @@ def plot_government(government: pd.DataFrame, ticker: str, gov_type: str):
         Ticker to plot government trading
     gov_type: str
         Type of government data between: congress, senate and house
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
-    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    # This plot has 1 axis
+    if not external_axes:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    else:
+        if len(external_axes) != 1:
+            console.print("[red]Expected list of one axis item./n[/red]")
+            return
+        (ax,) = external_axes
 
     ax.fill_between(
         government["TransactionDate"].unique(),
@@ -401,17 +457,13 @@ def plot_government(government: pd.DataFrame, ticker: str, gov_type: str):
             government["TransactionDate"].values[-1],
         ]
     )
-    ax.grid()
     ax.set_title(f"{gov_type.capitalize()} trading on {ticker}")
-    ax.set_xlabel("Date")
     ax.set_ylabel("Amount ($1k)")
-    plt.gca().xaxis.set_major_formatter(mdates.DateFormatter("%Y/%m/%d"))
-    plt.gcf().autofmt_xdate()
-    fig.tight_layout()
-    if gtff.USE_ION:
-        plt.ion()
 
-    plt.show()
+    theme.style_primary_axis(ax)
+
+    if not external_axes:
+        theme.visualize_output()
 
 
 @log_start_end(log=logger)
@@ -421,6 +473,7 @@ def display_government_trading(
     past_transactions_months: int = 6,
     raw: bool = False,
     export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Government trading for specific ticker [Source: quiverquant.com]
 
@@ -436,6 +489,8 @@ def display_government_trading(
         Show raw output of trades
     export: str
         Format to export data
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
     df_gov = quiverquant_model.get_government_trading(gov_type, ticker)
 
@@ -487,7 +542,7 @@ def display_government_trading(
             title=f"Government Trading for {ticker.upper()}",
         )
     else:
-        plot_government(df_gov, ticker, gov_type)
+        plot_government(df_gov, ticker, gov_type, external_axes)
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "gtrades", df_gov)
     console.print("")
@@ -495,7 +550,11 @@ def display_government_trading(
 
 @log_start_end(log=logger)
 def display_contracts(
-    ticker: str, past_transaction_days: int, raw: bool, export: str = ""
+    ticker: str,
+    past_transaction_days: int,
+    raw: bool,
+    export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Show government contracts for ticker [Source: quiverquant.com]
 
@@ -509,6 +568,8 @@ def display_contracts(
         Flag to display raw data
     export: str
         Format to export data
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
     df_contracts = quiverquant_model.get_government_trading("contracts", ticker)
 
@@ -533,16 +594,24 @@ def display_contracts(
         )
 
     else:
-        fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+
+        # This plot has 1 axis
+        if not external_axes:
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        else:
+            if len(external_axes) != 1:
+                console.print("[red]Expected list of one axis item./n[/red]")
+                return
+            (ax,) = external_axes
+
         df_contracts.groupby("Date").sum().div(1000).plot(kind="bar", rot=0, ax=ax)
         ax.set_ylabel("Amount ($1k)")
         ax.set_title(f"Sum of latest government contracts to {ticker}")
-        plt.gca().xaxis.set_major_formatter(mdates.DateFormatter("%Y/%m/%d"))
-        plt.gcf().autofmt_xdate()
-        fig.tight_layout()
-        if gtff.USE_ION:
-            plt.ion()
-        plt.show()
+
+        theme.style_primary_axis(ax)
+
+        if not external_axes:
+            theme.visualize_output()
 
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "contracts", df_contracts
@@ -551,7 +620,13 @@ def display_contracts(
 
 
 @log_start_end(log=logger)
-def display_qtr_contracts(analysis: str, num: int, raw: bool = False, export: str = ""):
+def display_qtr_contracts(
+    analysis: str,
+    num: int,
+    raw: bool = False,
+    export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
+):
     """Quarterly contracts [Source: quiverquant.com]
 
     Parameters
@@ -564,6 +639,8 @@ def display_qtr_contracts(analysis: str, num: int, raw: bool = False, export: st
         Flag to display raw data
     export: str
         Format to export data
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
     df_contracts = quiverquant_model.get_government_trading("quarter-contracts")
 
@@ -581,7 +658,15 @@ def display_qtr_contracts(analysis: str, num: int, raw: bool = False, export: st
                 title="Quarterly Contracts",
             )
         else:
-            fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+            # This plot has 1 axis
+            if not external_axes:
+                _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+            else:
+                if len(external_axes) != 1:
+                    console.print("[red]Expected list of one axis item./n[/red]")
+                    return
+                (ax,) = external_axes
+
             max_amount = 0
             quarter_ticks = []
             for symbol in tickers:
@@ -615,20 +700,16 @@ def display_qtr_contracts(analysis: str, num: int, raw: bool = False, export: st
             ax.set_xlim([-0.5, max_amount - 0.5])
             ax.set_xticks(np.arange(0, max_amount))
             ax.set_xticklabels(quarter_ticks)
-            ax.grid()
             ax.legend(tickers)
             titles = {
                 "upmom": "Highest increasing quarterly Government Contracts",
                 "downmom": "Highest decreasing quarterly Government Contracts",
             }
             ax.set_title(titles[analysis])
-            ax.set_xlabel("Date")
             ax.set_ylabel("Amount ($1M)")
-            fig.tight_layout()
-            if gtff.USE_ION:
-                plt.ion()
 
-            plt.show()
+            if not external_axes:
+                theme.visualize_output()
 
     elif analysis == "total":
         print_rich_table(tickers, headers=["Total"], title="Quarterly Contracts")
@@ -640,7 +721,12 @@ def display_qtr_contracts(analysis: str, num: int, raw: bool = False, export: st
 
 
 @log_start_end(log=logger)
-def display_hist_contracts(ticker: str, raw: bool = False, export: str = ""):
+def display_hist_contracts(
+    ticker: str,
+    raw: bool = False,
+    export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
+):
     """Show historical quarterly government contracts [Source: quiverquant.com]
 
     Parameters
@@ -651,6 +737,8 @@ def display_hist_contracts(ticker: str, raw: bool = False, export: str = ""):
         Flag to display raw data
     export: str
         Format to export data
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
     df_contracts = quiverquant_model.get_government_trading(
         "quarter-contracts", ticker=ticker
@@ -677,29 +765,41 @@ def display_hist_contracts(ticker: str, raw: bool = False, export: str = ""):
         )
 
     else:
-        fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+
+        # This plot has 1 axis
+        if not external_axes:
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        else:
+            if len(external_axes) != 1:
+                console.print("[red]Expected list of one axis item./n[/red]")
+                return
+            (ax,) = external_axes
 
         ax.plot(np.arange(0, len(amounts)), amounts / 1000, "-*", lw=2, ms=15)
 
         ax.set_xlim([-0.5, len(amounts) - 0.5])
         ax.set_xticks(np.arange(0, len(amounts)))
         ax.set_xticklabels(quarter_ticks)
-        ax.grid()
-        ax.set_title(f"Historical Quarterly Government Contracts for {ticker.upper()}")
-        ax.set_xlabel("Date")
-        ax.set_ylabel("Amount ($1k)")
-        fig.tight_layout()
-        if gtff.USE_ION:
-            plt.ion()
 
-        plt.show()
+        ax.set_title(f"Historical Quarterly Government Contracts for {ticker.upper()}")
+        ax.set_ylabel("Amount ($1k)")
+
+        theme.style_primary_axis(ax)
+
+        if not external_axes:
+            theme.visualize_output()
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "histcont")
     console.print("")
 
 
 @log_start_end(log=logger)
-def display_top_lobbying(num: int, raw: bool = False, export: str = ""):
+def display_top_lobbying(
+    num: int,
+    raw: bool = False,
+    export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
+):
     """Top lobbying tickers based on total spent
 
     Parameters
@@ -710,6 +810,9 @@ def display_top_lobbying(num: int, raw: bool = False, export: str = ""):
         Show raw data
     export:
         Format to export data
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
+
     """
     df_lobbying = quiverquant_model.get_government_trading("corporate-lobbying")
 
@@ -731,16 +834,26 @@ def display_top_lobbying(num: int, raw: bool = False, export: str = ""):
             title="Top Lobbying Tickers",
         )
     else:
-        fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+
+        # This plot has 1 axis
+        if not external_axes:
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        else:
+            if len(external_axes) != 1:
+                console.print("[red]Expected list of one axis item./n[/red]")
+                return
+            (ax,) = external_axes
+
         lobbying_by_ticker.head(num).plot(kind="bar", ax=ax)
         ax.set_xlabel("Ticker")
         ax.set_ylabel("Total Amount ($100k)")
         ax.set_title(f"Corporate Lobbying Spent since {df_lobbying['Date'].min()}")
-        fig.tight_layout()
-        if gtff.USE_ION:
-            plt.ion()
 
-        plt.show()
+        theme.style_primary_axis(ax)
+
+        if not external_axes:
+            theme.visualize_output()
+
     console.print("")
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "lobbying", df_lobbying

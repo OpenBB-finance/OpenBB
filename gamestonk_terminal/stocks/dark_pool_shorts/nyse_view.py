@@ -4,14 +4,15 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import List, Optional
 
 import matplotlib.pyplot as plt
 import seaborn as sns
 from plotly import express as px
 
+from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.decorators import log_start_end
-from gamestonk_terminal.feature_flags import USE_ION
 from gamestonk_terminal.helper_funcs import (
     export_data,
     plot_autoscale,
@@ -31,6 +32,7 @@ def display_short_by_exchange(
     asc: bool = False,
     mpl: bool = False,
     export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display short data by exchange
 
@@ -48,14 +50,15 @@ def display_short_by_exchange(
         Flag to display using matplotlib
     export : str, optional
         Format  of export data
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
+
     """
     volume_by_exchange = nyse_model.get_short_data_by_exchange(ticker).sort_values(
         by="Date"
     )
     if volume_by_exchange.empty:
-        console.print(
-            "No short data found.  Ping @terp340 on discord if you believe this is an error."
-        )
+        console.print("No short data found. Please send us a question on discord")
 
     if sort:
         if sort in volume_by_exchange.columns:
@@ -66,16 +69,29 @@ def display_short_by_exchange(
             )
 
     if mpl:
-        fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+
+        # This plot has 1 axis
+        if not external_axes:
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        else:
+            if len(external_axes) != 1:
+                console.print("[red]Expected list of one axis item./n[/red]")
+                return
+            (ax,) = external_axes
+
         sns.lineplot(
             data=volume_by_exchange, x="Date", y="NetShort", hue="Exchange", ax=ax
         )
-        ax.set_title(f"Net Short Volume for {ticker}")
-        if USE_ION:
-            plt.ion()
 
-        fig.tight_layout()
-        plt.show()
+        # remove the scientific notion on the left hand side
+        ax.ticklabel_format(style="plain", axis="y")
+
+        ax.set_title(f"Net Short Volume for {ticker}")
+        theme.style_primary_axis(ax)
+
+        if not external_axes:
+            theme.visualize_output()
+
     else:
         fig = px.line(
             volume_by_exchange,
@@ -94,6 +110,7 @@ def display_short_by_exchange(
             headers=list(volume_by_exchange.columns),
         )
     console.print("")
+
     if export:
         export_data(
             export,

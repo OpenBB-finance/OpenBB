@@ -34,10 +34,10 @@ def test_historical(mocker):
         side_effect=mock_yf_download,
     )
 
-    # MOCK CHARTS
-    mocker.patch.object(target=yahoofinance_view.gtff, attribute="USE_ION", new=True)
-    mocker.patch(target="gamestonk_terminal.stocks.screener.yahoofinance_view.plt.ion")
-    mocker.patch(target="gamestonk_terminal.stocks.screener.yahoofinance_view.plt.show")
+    # MOCK VISUALIZE_OUTPUT
+    mocker.patch(
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
+    )
 
     # MOCK EXPORT_DATA
     mocker.patch(
@@ -79,10 +79,10 @@ def test_historical_no_d_signals(mocker):
         side_effect=mock_yf_download,
     )
 
-    # MOCK CHARTS
-    mocker.patch.object(target=yahoofinance_view.gtff, attribute="USE_ION", new=True)
-    mocker.patch(target="gamestonk_terminal.stocks.screener.yahoofinance_view.plt.ion")
-    mocker.patch(target="gamestonk_terminal.stocks.screener.yahoofinance_view.plt.show")
+    # MOCK VISUALIZE_OUTPUT
+    mocker.patch(
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
+    )
 
     # MOCK EXPORT_DATA
     mocker.patch(

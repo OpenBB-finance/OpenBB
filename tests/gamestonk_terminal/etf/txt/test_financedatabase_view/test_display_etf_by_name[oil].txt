@@ -3,5 +3,5 @@ XOP            SPDR S&P Oil & Gas Exploration & Production ETF  SPDR State Stree
 USO                                 United States Oil Fund, LP                   USCF Investments                            None  3074.400256
 OIH                            VanEck Vectors Oil Services ETF                             VanEck                   Equity Energy   1194.70848
 UCO                        ProShares Ultra Bloomberg Crude Oil                          ProShares  Trading--Leveraged Commodities  1127.778048
-GUSH  Direxion Daily S&P Oil & Gas Exp. & Prod. Bull 2X Shares                     Direxion Funds       Trading--Leveraged Equity   752.131328 
+GUSH  Direxion Daily S&P Oil & Gas Exp. & Prod. Bull 2X Shares                     Direxion Funds       Trading--Leveraged Equity   752.131328
 

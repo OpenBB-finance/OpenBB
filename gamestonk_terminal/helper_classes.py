@@ -2,9 +2,9 @@
 __docformat__ = "numpy"
 import os
 import json
-
 from importlib import machinery, util
 from typing import Union, List, Dict, Optional
+
 import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib import font_manager, ticker
@@ -81,6 +81,7 @@ class ModelsNamespace:
                     pass
 
 
+# pylint: disable=R0902
 class TerminalStyle:
     """The class that helps with handling of style configurations.
 
@@ -112,6 +113,8 @@ class TerminalStyle:
 
     xticks_rotation: str = ""
     tight_layout_padding: int = 0
+    pie_wedgeprops: Dict = {}
+    pie_startangle: int = 0
     line_width: float = 1.5
     volume_bar_width: float = 0.8
 
@@ -226,6 +229,8 @@ class TerminalStyle:
         plt.style.use(self.mpl_style)
         self.xticks_rotation = self.mpl_rcparams["xticks_rotation"]
         self.tight_layout_padding = self.mpl_rcparams["tight_layout_padding"]
+        self.pie_wedgeprops = self.mpl_rcparams["pie_wedgeprops"]
+        self.pie_startangle = self.mpl_rcparams["pie_startangle"]
         self.mpf_style["mavcolors"] = plt.rcParams["axes.prop_cycle"].by_key()["color"]
         self.down_color = self.mpf_style["marketcolors"]["volume"]["down"]
         self.up_color = self.mpf_style["marketcolors"]["volume"]["up"]
@@ -279,6 +284,23 @@ class TerminalStyle:
             A matplolib axis
         """
         ax.yaxis.set_label_position("left")
+
+    def style_twin_axes(self, ax1: plt.Axes, ax2: plt.Axes):
+        """Apply styling to a twin axes
+
+        Parameters
+        ----------
+        ax1 : plt.Axes
+            Primary matplolib axis
+        ax2 : plt.Axes
+            Twinx matplolib axis
+
+        """
+
+        ax1.tick_params(axis="x", labelrotation=self.xticks_rotation)
+        ax1.grid(axis="both", visible=True, zorder=0)
+
+        ax2.grid(visible=False)
 
     def add_label(
         self,
