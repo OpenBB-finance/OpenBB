@@ -321,15 +321,14 @@ def terminal(jobs_cmds: List[str] = None):
                 console.print("\n")
 
 
-
 def insert_start_slash(cmds: List[str]) -> List[str]:
     if not cmds[0].startswith("/"):
         cmds[0] = f"/{cmds[0]}"
     if cmds[0].startswith("/home"):
         cmds[0] = f"/{cmds[0][5:]}"
     return cmds
-  
-  
+
+
 # TODO: if test_mode is true add exit to the end
 def run_scripts(path: str, test_mode: bool = False):
     """Runs a given .gst scripts
