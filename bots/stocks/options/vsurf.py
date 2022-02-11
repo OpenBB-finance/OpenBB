@@ -1,5 +1,3 @@
-import random
-
 import numpy as np
 import plotly.graph_objects as go
 from scipy.spatial import Delaunay
@@ -112,7 +110,7 @@ async def vsurf_command(
     # Check if interactive settings are enabled
     plt_link = ""
     if cfg.INTERACTIVE:
-        html_ran = random.randint(70000)
+        html_ran = np.random.randint(70000)
         fig.write_html(f"in/vsurf_{html_ran}.html", config=config)
         plt_link = f"[Interactive]({cfg.INTERACTIVE_URL}/vsurf_{html_ran}.html)"
 

@@ -1,4 +1,4 @@
-import random
+import numpy as np
 
 import plotly.graph_objects as go
 import yfinance as yf
@@ -105,7 +105,7 @@ async def cc_hist_command(
         ],
     )
     config = dict({"scrollZoom": True})
-    rand = random.randint(70000)
+    rand = np.random.randint(70000)
     imagefile = f"opt_hist{rand}.png"
     fig.write_image(imagefile)
     imagefile = image_border(imagefile)

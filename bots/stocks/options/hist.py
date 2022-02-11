@@ -1,5 +1,5 @@
-import random
 import time
+import numpy as np
 
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
@@ -136,7 +136,7 @@ async def hist_command(
         hovermode="x unified",
     )
     config = dict({"scrollZoom": True})
-    rand = random.randint(70000)
+    rand = np.random.randint(70000)
     imagefile = f"opt_hist{rand}.png"
 
     # Check if interactive settings are enabled

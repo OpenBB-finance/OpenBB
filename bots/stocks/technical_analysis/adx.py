@@ -1,4 +1,4 @@
-import random
+import numpy as np
 from datetime import datetime, timedelta
 
 import plotly.graph_objects as go
@@ -162,7 +162,7 @@ async def adx_command(
     # Check if interactive settings are enabled
     plt_link = ""
     if cfg.INTERACTIVE:
-        html_ran = random.randint(69, 69420)
+        html_ran = np.random.randint(70000)
         fig.write_html(f"in/adx_{html_ran}.html", config=config)
         plt_link = f"[Interactive]({cfg.INTERACTIVE_URL}/adx_{html_ran}.html)"
 

@@ -1,5 +1,5 @@
-import random
 import time
+import numpy as np
 
 import pandas as pd
 import plotly.graph_objects as go
@@ -108,7 +108,7 @@ async def vol_command(
     # Check if interactive settings are enabled
     plt_link = ""
     if cfg.INTERACTIVE:
-        html_ran = random.randint(70000)
+        html_ran = np.random.randint(70000)
         fig.write_html(f"in/vol_{html_ran}.html", config=config)
         plt_link = f"[Interactive]({cfg.INTERACTIVE_URL}/vol_{html_ran}.html)"
 

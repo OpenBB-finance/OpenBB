@@ -1,5 +1,4 @@
 import os
-import random
 
 import df2img
 import disnake
@@ -143,7 +142,7 @@ async def overview_command(
 
     plt_link = ""
     if cfg.INTERACTIVE:
-        html_ran = random.randint(69, 69420)
+        html_ran = np.random.randint(70000)
         fig.write_html(f"in/oi_{html_ran}.html", config=config)
         plt_link = f"[Interactive]({cfg.INTERACTIVE_URL}/oi_{html_ran}.html)"
 
