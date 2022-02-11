@@ -951,8 +951,9 @@ def show_binom(
     if plot:
         plot_expected_prices(und_vals, prob_up, ticker, expiration)
 
+    option = "put" if put else "call"
     console.print(
-        f"{ticker} {'put' if put else 'call'} at ${strike:.2f} expiring {expiration} is worth ${opt_vals[0][0]:.2f}\n"
+        f"{ticker} {option} at ${strike:.2f} expiring on {expiration} is worth ${opt_vals[0][0]:.2f}\n"
     )
 
 
@@ -976,7 +977,7 @@ def display_vol_surface(
     """
     data = yfinance_model.get_iv_surface(ticker)
     if data.empty:
-        print(f"No options data found for {ticker}.\n")
+        console.print(f"No options data found for {ticker}.\n")
         return
     X = data.dte
     Y = data.strike

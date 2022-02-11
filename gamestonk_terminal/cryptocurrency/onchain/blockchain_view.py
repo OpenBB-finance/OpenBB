@@ -19,6 +19,7 @@ from gamestonk_terminal.helper_funcs import (
     long_number_format,
     plot_autoscale,
 )
+from gamestonk_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -65,8 +66,6 @@ def display_btc_circulating_supply(
     ax.get_yaxis().set_major_formatter(
         ticker.FuncFormatter(lambda x, _: long_number_format(x))
     )
-
-    theme.style_primary_axis(ax)
 
     if not external_axes:
         theme.visualize_output()

@@ -278,6 +278,21 @@ class ETFController(BaseController):
                 console.print("No company holdings found!\n")
             else:
                 self.etf_holdings = holdings.index[: ns_parser.limit].tolist()
+
+                if "n/a" in self.etf_holdings:
+                    na_tix_idx = []
+                    for idx, item in enumerate(self.etf_holdings):
+                        if item == "n/a":
+                            na_tix_idx.append(str(idx))
+
+                    console.print(
+                        f"n/a tickers found at position {','.join(na_tix_idx)}.  Dropping these from holdings.\n"
+                    )
+
+                self.etf_holdings = list(
+                    filter(lambda x: x != "n/a", self.etf_holdings)
+                )
+
                 console.print(
                     f"Top company holdings found: {', '.join(self.etf_holdings)}\n"
                 )
@@ -559,7 +574,9 @@ class ETFController(BaseController):
                 self.etf_holdings, self.queue
             ).menu(custom_path_menu_above="/stocks/")
         else:
-            print("Load a ticker with major holdings to compare them on this menu\n")
+            console.print(
+                "Load a ticker with major holdings to compare them on this menu\n"
+            )
 
     def call_scr(self, _):
         """Process scr command"""

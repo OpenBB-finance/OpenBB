@@ -49,7 +49,7 @@ def display_btc_rainbow(
     df_data = get_close_price("BTC", "24h", since, until)
 
     if df_data.empty:
-        print("Error in glassnode request\n")
+        console.print("Error in glassnode request\n")
     else:
 
         # This plot has 1 axis

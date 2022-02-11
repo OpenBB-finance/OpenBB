@@ -178,6 +178,18 @@ def display_trending(
             df,
         )
 
+        RAW_COLS = [
+            "total",
+            "twitter",
+            "stocktwits",
+            "yahoo",
+            "likes",
+            "RHI",
+            "AHI",
+        ]
+
+        RAW_COLS = [col for col in RAW_COLS if col in df.columns.tolist()]
+
         df.ticker = df.ticker.str.upper()
         df = df.set_index("ticker")
 
@@ -185,8 +197,9 @@ def display_trending(
         timestamp = df.timestamp_date[0].strftime("%Y-%m-%d %H:%M")
 
         print_rich_table(
-            df.head(limit),
+            df[RAW_COLS].head(limit),
+            headers=[col.upper() for col in RAW_COLS],
             show_index=True,
-            index_name="Ticker",
+            index_name="TICKER",
             title=f"Most trending stocks at {timestamp}",
         )

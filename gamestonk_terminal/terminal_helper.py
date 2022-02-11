@@ -1,5 +1,7 @@
 """Terminal helper"""
 __docformat__ = "numpy"
+
+from contextlib import contextmanager
 import hashlib
 import logging
 import os
@@ -181,3 +183,39 @@ def reset(queue: List[str] = None):
         console.print("Unfortunately, resetting wasn't possible!\n")
 
     return completed_process.returncode
+
+
+@contextmanager
+def suppress_stdout():
+    with open(os.devnull, "w") as devnull:
+        old_stdout = sys.stdout
+        old_stderr = sys.stderr
+        sys.stdout = devnull
+        sys.stderr = devnull
+        try:
+            yield
+        finally:
+            sys.stdout = old_stdout
+            sys.stderr = old_stderr
+
+
+def is_reset(command: str) -> bool:
+    """Test whether a command is a reset command
+
+    Parameters
+    ----------
+    command : str
+        The command to test
+
+    Returns
+    ----------
+    answer : bool
+        Whether the command is a reset command
+    """
+    if "reset" in command:
+        return True
+    if command == "r":
+        return True
+    if command == "r\n":
+        return True
+    return False
