@@ -11,18 +11,18 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - python-requests/2.26.0
+      - python-requests/2.27.1
     method: GET
-    uri: https://sandbox.tradier.com/v1/markets/quotes?symbols=PM&includeAllRoots=true&strikes=false
+    uri: https://sandbox.tradier.com/v1/markets/quotes?symbols=AAPL&includeAllRoots=true&strikes=false
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAAG1Ry26DMBD8lWjPFsLmnT/oIVUvPSPHWMHCwdQ2pGnEv3cNhFZqbzO7np3Z9QM+
-        RuOlg+NjRQG4+/VsNBzh7QQEGumEVYNXpg+lVmk1HE7GWuUOL72XtuehxzUyge/lp2jx4StCfx9w
-        IDhvRIdUc+fhWOVRmRMQLe8v2KURTQhMRo/XwBKWxnFKwAwS7aosKgoCrbq0i7DCjja3pZGhTGjj
-        UNWPWhM4q2afzl234vLpVA/SCtl7vplig0/SIq2f5mnJGEuTNehepXGMm1jeyLrh4UA0T2lCGUtY
-        XFYEBiunLUeIi/KblF2dsXqNTeM8yuhPdclflFGSLpGd+gozF7yd7h0W9tcuJMHNdgniX9dG9r/E
-        GuPr9VPd+qvzPH8D1T8MP/oBAAA=
+        H4sIAAAAAAAAAG1RwW6EIBT8leadKRFEXb3tcZOmaa+9GFbJamSFCrrdbvz3PtRNm7a3mXlvmAFu
+        8D4arxwUtxUF4K7no9FQwH7/8gQEauWqobW+NX0QrdXq4dBXOFEfVYPSK0J/tWgG503VIdXSeShY
+        FtMoJ1A1sj/h+DGmDOlk9HhGmoooz6KUETBW9WFdUCYINO2pCSyhYodHmUsgnMYZnqSNQ2c/ak3g
+        2NZbBq5J1/0OLK0aKtV7uWQzusMkOakBeXnvwCLOcxGn0dr5h46KH2StylqGd2GpEAkXPE6SlBOw
+        g5q2MixLKccGF6W6MuHlVn/HaS6+1fUaDFfZ0ty1n+iNF7y94zMs7E9gFLrg/VZLvuDN8gYL+98y
+        GOPL9Tfd/Tvnef4CZHQu3PUBAAA=
     headers:
       Access-Control-Allow-Headers:
       - accept, authorization
@@ -37,17 +37,17 @@ interactions:
       Content-Type:
       - application/json;charset=UTF-8
       Date:
-      - Tue, 04 Jan 2022 16:18:53 GMT
+      - Thu, 10 Feb 2022 20:32:15 GMT
       Transfer-Encoding:
       - chunked
       X-Ratelimit-Allowed:
       - '200'
       X-Ratelimit-Available:
-      - '193'
+      - '198'
       X-Ratelimit-Expiry:
-      - '1641313140000'
+      - '1644525180000'
       X-Ratelimit-Used:
-      - '7'
+      - '2'
     status:
       code: 200
       message: OK
