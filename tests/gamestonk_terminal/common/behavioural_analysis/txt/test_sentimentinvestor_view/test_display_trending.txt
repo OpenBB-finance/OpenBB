@@ -1,12 +1,12 @@
-                     id  sentiment_count            timestamp_date  total  twitter  stocktwits  reddit_comment  reddit_post  yahoo  likes  retweets  user_followers  user_tweet_count     RHI     AHI  SGP  sentiment
-ticker                                                                                                                                                                                                               
-BTC.X   hist_21_9_btc.x               22 2021-12-21 09:00:00+00:00     40        0          40               0            0      0     25         0               0                 0  3.4728  3.3006    0        NaN
-AMC       hist_21_9_amc               33 2021-12-21 09:00:00+00:00     40        0          40               0            0      0     57         0               0                 0  0.4931  0.5699    0        NaN
-TSLA     hist_21_9_tsla               19 2021-12-21 09:00:00+00:00     33        0          31               0            0      2     30         0               0                 0  0.4169  0.5384    1     7.8684
-MRNA     hist_21_9_mrna               11 2021-12-21 09:00:00+00:00     15        0           8               0            0      7      4         0               0                 0  0.7673  0.6587    0        NaN
-BTC       hist_21_9_btc                9 2021-12-21 09:00:00+00:00     12        0           0               0            0     12      0         0               0                 0  0.4879  0.4465    1    16.9798
-AAPL     hist_21_9_aapl                9 2021-12-21 09:00:00+00:00     10        0           8               0            0      2     10         0               0                 0  0.3676  0.4111    0        NaN
-LCID     hist_21_9_lcid                8 2021-12-21 09:00:00+00:00     10        0           9               0            0      1     23         0               0                 0  0.4674  0.5561    0        NaN
-AMD       hist_21_9_amd                6 2021-12-21 09:00:00+00:00      9        0           3               0            0      6      3         0               0                 0  0.4516  0.5424    0        NaN
-NKE       hist_21_9_nke                4 2021-12-21 09:00:00+00:00      6        0           4               0            0      2      1         0               0                 0  1.3136  2.0879    0        NaN
-T           hist_21_9_t                4 2021-12-21 09:00:00+00:00      6        0           3               0            0      3      0         0               0                 0  0.4844  0.6866    0        NaN
+        total  twitter  stocktwits  yahoo  likes     RHI     AHI
+ticker                                                          
+BTC.X      40        0          40      0     25  3.4728  3.3006
+AMC        40        0          40      0     57  0.4931  0.5699
+TSLA       33        0          31      2     30  0.4169  0.5384
+MRNA       15        0           8      7      4  0.7673  0.6587
+BTC        12        0           0     12      0  0.4879  0.4465
+AAPL       10        0           8      2     10  0.3676  0.4111
+LCID       10        0           9      1     23  0.4674  0.5561
+AMD         9        0           3      6      3  0.4516  0.5424
+NKE         6        0           4      2      1  1.3136  2.0879
+T           6        0           3      3      0  0.4844  0.6866
