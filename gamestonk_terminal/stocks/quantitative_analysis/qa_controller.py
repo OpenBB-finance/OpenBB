@@ -739,10 +739,11 @@ class QaController(StockBaseController):
             type=float,
             default=99.9,
             help="""
-                Percentile used for VaR calculations, for example input 99.9 equals a 99.9% VaR
+                Percentile used for VaR calculations, for example input 99.9 equals a 99.9 Percent VaR
             """,
         )
-
+        print(parser)
+        print(other_args)
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             qa_view.display_var(
