@@ -52,9 +52,14 @@ def get_historical(
     """
     # To avoid having to recursively append, just do a single yfinance call.  This will give dataframe
     # where all tickers are columns.
-    return yf.download(similar_tickers, start=start, progress=False, threads=False)[
-        d_candle_types[candle_type]
-    ][similar_tickers]
+    similar_tickers_dataframe = yf.download(
+        similar_tickers, start=start, progress=False, threads=False
+    )[d_candle_types[candle_type]]
+    return (
+        similar_tickers_dataframe
+        if similar_tickers_dataframe.empty
+        else similar_tickers_dataframe[similar_tickers]
+    )
 
 
 @log_start_end(log=logger)
