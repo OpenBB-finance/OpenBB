@@ -15,7 +15,9 @@ def contracts_command(
     """Displays contracts associated with tickers [quiverquant.com]"""
     # Debug user input
     if cfg.DEBUG:
-        logger.debug( "!stocks.gov.contracts %s %s %s", ticker, past_transaction_days, raw)
+        logger.debug(
+            "!stocks.gov.contracts %s %s %s", ticker, past_transaction_days, raw
+        )
 
     if ticker == "":
         raise Exception("A ticker is required")
@@ -34,7 +36,6 @@ def contracts_command(
     ]
 
     df_contracts.drop_duplicates(inplace=True)
-    plt.style.use("seaborn")
 
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
