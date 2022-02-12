@@ -3,6 +3,7 @@ from __future__ import annotations
 import disnake
 from disnake.ext import commands
 
+from bots.helpers import ShowView
 from bots.config_discordbot import logger
 from bots.helpers import ticker_autocomp
 from bots.stocks.government.contracts import contracts_command
@@ -45,7 +46,9 @@ class GovernmentCommands(commands.Cog):
         """
         await ctx.response.defer()
         logger.info("gov-lasttrades")
-        await lasttrades_command(ctx, gov_type, past_days, representative)
+        await ShowView().discord(
+            lasttrades_command, ctx, gov_type, past_days, representative
+        )
 
     @commands.slash_command(name="gov-topbuys")
     async def topbuys(
@@ -67,7 +70,9 @@ class GovernmentCommands(commands.Cog):
         """
         await ctx.response.defer()
         logger.info("gov-topbuys")
-        await topbuys_command(ctx, gov_type, past_transactions_months, num, raw)
+        await ShowView().discord(
+            topbuys_command, ctx, gov_type, past_transactions_months, num, raw
+        )
 
     @commands.slash_command(name="gov-topsells")
     async def topsells(
@@ -89,7 +94,9 @@ class GovernmentCommands(commands.Cog):
         """
         await ctx.response.defer()
         logger.info("gov-topsells")
-        await topsells_command(ctx, gov_type, past_transactions_months, num, raw)
+        await ShowView().discord(
+            topsells_command, ctx, gov_type, past_transactions_months, num, raw
+        )
 
     @commands.slash_command(name="gov-lastcontracts")
     async def lastcontracts(
@@ -104,7 +111,9 @@ class GovernmentCommands(commands.Cog):
         """
         await ctx.response.defer()
         logger.info("gov-lastcontracts")
-        await lastcontracts_command(ctx, past_transactions_days, num)
+        await ShowView().discord(
+            lastcontracts_command, ctx, past_transactions_days, num
+        )
 
     @commands.slash_command(name="gov-qtrcontracts")
     async def qtrcontracts(
@@ -122,7 +131,7 @@ class GovernmentCommands(commands.Cog):
         """
         await ctx.response.defer()
         logger.info("gov-qtrcontracts")
-        await qtrcontracts_command(ctx, num, analysis)
+        await ShowView().discord(qtrcontracts_command, ctx, num, analysis)
 
     @commands.slash_command(name="gov-toplobbying")
     async def toplobbying(
@@ -137,7 +146,7 @@ class GovernmentCommands(commands.Cog):
         """
         await ctx.response.defer()
         logger.info("gov-toplobbying")
-        await toplobbying_command(ctx, num, raw)
+        await ShowView().discord(toplobbying_command, ctx, num, raw)
 
     @commands.slash_command(name="gov-gtrades")
     async def gtrades(
@@ -159,7 +168,9 @@ class GovernmentCommands(commands.Cog):
         """
         await ctx.response.defer()
         logger.info("gov-gtrades")
-        await gtrades_command(ctx, ticker, gov_type, past_transactions_months, raw)
+        await ShowView().discord(
+            gtrades_command, ctx, ticker, gov_type, past_transactions_months, raw
+        )
 
     @commands.slash_command(name="gov-contracts")
     async def contracts(
@@ -179,7 +190,9 @@ class GovernmentCommands(commands.Cog):
         """
         await ctx.response.defer()
         logger.info("gov-contracts")
-        await contracts_command(ctx, ticker, past_transaction_days, raw)
+        await ShowView().discord(
+            contracts_command, ctx, ticker, past_transaction_days, raw
+        )
 
     @commands.slash_command(name="gov-histcont")
     async def histcont(
@@ -195,7 +208,7 @@ class GovernmentCommands(commands.Cog):
         """
         await ctx.response.defer()
         logger.info("gov-histcont")
-        await histcont_command(ctx, ticker)
+        await ShowView().discord(histcont_command, ctx, ticker)
 
     @commands.slash_command(name="gov-lobbying")
     async def lobbying(
@@ -213,7 +226,7 @@ class GovernmentCommands(commands.Cog):
         """
         await ctx.response.defer()
         logger.info("gov-lobbying")
-        await lobbying_command(ctx, ticker, num)
+        await ShowView().discord(lobbying_command, ctx, ticker, num)
 
 
 def setup(bot: commands.Bot):

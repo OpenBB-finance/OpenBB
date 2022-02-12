@@ -49,7 +49,9 @@ def vsurf_command(
     tri = Delaunay(points2D)
     I, J, K = tri.simplices.T
 
-    lighting_effects = dict(ambient=0.5, diffuse=0.5, roughness=0.5, specular=0.4, fresnel=0.4)
+    lighting_effects = dict(
+        ambient=0.5, diffuse=0.5, roughness=0.5, specular=0.4, fresnel=0.4
+    )
     fig = go.Figure(
         data=[
             go.Mesh3d(
@@ -61,7 +63,9 @@ def vsurf_command(
                 k=K,
                 intensity=Z,
                 colorscale=cfg.PLT_3DMESH_COLORSCALE,
-                hovertemplate="<b>DTE</b>: %{y} <br><b>Strike</b>: %{x} <br><b>" + z + "</b>: %{z}<extra></extra>",
+                hovertemplate="<b>DTE</b>: %{y} <br><b>Strike</b>: %{x} <br><b>"
+                + z
+                + "</b>: %{z}<extra></extra>",
                 showscale=False,
                 flatshading=True,
                 lighting=lighting_effects,

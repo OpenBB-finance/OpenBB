@@ -7,8 +7,7 @@ import bots.helpers
 from bots.config_discordbot import logger
 from bots.helpers import image_border
 from gamestonk_terminal import config_plot as cfp
-from gamestonk_terminal.common.technical_analysis import \
-    custom_indicators_model
+from gamestonk_terminal.common.technical_analysis import custom_indicators_model
 from gamestonk_terminal.helper_funcs import plot_autoscale
 
 

@@ -71,7 +71,9 @@ def overview_command(
     put_oi = puts.set_index("strike")["openInterest"] / 1000
 
     df_opt = pd.merge(call_oi, put_oi, left_index=True, right_index=True)
-    df_opt = df_opt.rename(columns={"openInterest_x": "OI_call", "openInterest_y": "OI_put"})
+    df_opt = df_opt.rename(
+        columns={"openInterest_x": "OI_call", "openInterest_y": "OI_put"}
+    )
 
     max_pain = op_helpers.calculate_max_pain(df_opt)
     fig = go.Figure()
@@ -171,7 +173,9 @@ def overview_command(
 
     formats = {"iv": "{:.2f}"}
     for col, f in formats.items():
-        calls_df[col] = calls_df[col].map(lambda x: f.format(x))  # pylint: disable=W0640
+        calls_df[col] = calls_df[col].map(
+            lambda x: f.format(x)
+        )  # pylint: disable=W0640
         puts_df[col] = puts_df[col].map(lambda x: f.format(x))  # pylint: disable=W0640
 
     calls_df.set_index("strike", inplace=True)
@@ -322,7 +326,9 @@ def overview_command(
     # Overview Section
     embeds[0].add_field(name=f"{df.iloc[0, 0]}", value=iv, inline=False)
 
-    embeds[0].add_field(name=f"•{df.iloc[1, 0]}", value=f"```css\n{df.iloc[1, 1]}\n```", inline=True)
+    embeds[0].add_field(
+        name=f"•{df.iloc[1, 0]}", value=f"```css\n{df.iloc[1, 1]}\n```", inline=True
+    )
     for N in range(2, 6):
         embeds[0].add_field(
             name=f"_ _ _ _ _ _ _ _ _ _ •{df.iloc[N, 0]}",

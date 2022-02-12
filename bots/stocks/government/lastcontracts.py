@@ -1,13 +1,12 @@
 import disnake
 import pandas as pd
-from menus.menu import Menu
 
 import bots.config_discordbot as cfg
 from bots.config_discordbot import logger
 from gamestonk_terminal.stocks.government import quiverquant_model
 
 
-async def lastcontracts_command(ctx, past_transactions_days: int = 2, num: int = 20):
+def lastcontracts_command(past_transactions_days: int = 2, num: int = 20):
     """Displays last government contracts [quiverquant.com]"""
     try:
         # Debug user input
@@ -71,7 +70,7 @@ async def lastcontracts_command(ctx, past_transactions_days: int = 2, num: int =
                 )
             )
 
-        await ctx.send(embed=columns[0], view=Menu(columns, choices))
+    # await ctx.send(embed=columns[0], view=Menu(columns, choices))
 
     except Exception as e:
         embed = disnake.Embed(
@@ -84,4 +83,4 @@ async def lastcontracts_command(ctx, past_transactions_days: int = 2, num: int =
             icon_url=cfg.AUTHOR_ICON_URL,
         )
 
-        await ctx.send(embed=embed, delete_after=30.0)
+    # await ctx.send(embed=embed, delete_after=30.0)

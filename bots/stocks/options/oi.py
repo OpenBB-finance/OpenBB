@@ -50,7 +50,9 @@ def oi_command(
     put_oi = puts.set_index("strike")["openInterest"] / 1000
 
     df_opt = pd.merge(call_oi, put_oi, left_index=True, right_index=True)
-    df_opt = df_opt.rename(columns={"openInterest_x": "OI_call", "openInterest_y": "OI_put"})
+    df_opt = df_opt.rename(
+        columns={"openInterest_x": "OI_call", "openInterest_y": "OI_put"}
+    )
 
     max_pain = op_helpers.calculate_max_pain(df_opt)
     fig = go.Figure()
