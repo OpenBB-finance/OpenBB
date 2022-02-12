@@ -168,4 +168,6 @@ def display_plots_financials(
     if not export:
         console.print("")
 
+
+
     return stocks_data, company_tickers
