@@ -48,6 +48,18 @@ fgind = {
     "Safe Heaven Demand": "shd",
 }
 
+methods = {
+    "feargreed": {"name":"econ-feargreed", "command": feargreed_command}
+}
+
+def factory(data):
+    @commands.slash_command(name=data["name"])
+    async def f(*args, **kwargs):
+        await args[1].response.defer()
+        logger.info("")
+        await ShowView().discord(data["command"], *args, **kwargs)
+    return f
+
 
 class EconomyCommands(commands.Cog):
     """Economy Commands menu"""
@@ -55,20 +67,9 @@ class EconomyCommands(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    @commands.slash_command(name="econ-feargreed")
-    async def feargreed(
-        self, ctx: disnake.AppCmdInter, indicator: str = commands.Param(choices=group)
-    ):
-
-        """CNN Fear and Greed Index [CNN]
-
-        Parameters
-        ----------
-        indicator: Select an Indicator
-        """
-        await ctx.response.defer()
-        logger.info("econ-feargreed")
-        await ShowView().discord(feargreed_command, ctx, indicator)
+        for _, value in methods.items():
+            func = factory(value)
+            setattr(self, value["name"],func)
 
     @commands.slash_command(name="econ-overview")
     async def overview(self, ctx: disnake.AppCmdInter):
