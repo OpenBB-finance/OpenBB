@@ -3,11 +3,11 @@ import os
 import df2img
 import disnake
 import numpy as np
-from bots.menus.menu import Menu
 
 import bots.config_discordbot as cfg
 from bots.config_discordbot import gst_imgur, logger
 from bots.helpers import save_image
+from bots.menus.menu import Menu
 from gamestonk_terminal.stocks.due_diligence import business_insider_model
 
 
@@ -28,7 +28,11 @@ def est_command(ticker: str = ""):
         df_quarter_revenues,
     ) = business_insider_model.get_estimates(ticker)
 
-    if df_quarter_revenues.empty and df_year_estimates.empty and df_quarter_earnings.empty:
+    if (
+        df_quarter_revenues.empty
+        and df_year_estimates.empty
+        and df_quarter_earnings.empty
+    ):
         raise Exception("Enter a valid ticker")
 
     # Debug user output
@@ -118,9 +122,15 @@ def est_command(ticker: str = ""):
     embeds[2].set_image(url=link_revenues)
     # Output data
     choices = [
-        disnake.SelectOption(label=f"{ticker.upper()} Year Estimates", value="0", emoji="🟢"),
-        disnake.SelectOption(label=f"{ticker.upper()} Quarter Earnings", value="1", emoji="🟢"),
-        disnake.SelectOption(label=f"{ticker.upper()} Quarter Revenues", value="2", emoji="🟢"),
+        disnake.SelectOption(
+            label=f"{ticker.upper()} Year Estimates", value="0", emoji="🟢"
+        ),
+        disnake.SelectOption(
+            label=f"{ticker.upper()} Quarter Earnings", value="1", emoji="🟢"
+        ),
+        disnake.SelectOption(
+            label=f"{ticker.upper()} Quarter Revenues", value="2", emoji="🟢"
+        ),
     ]
 
     return {

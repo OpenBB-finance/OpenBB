@@ -117,7 +117,7 @@ def wma_command(ticker="", window="", offset="", start="", end=""):
         legend=dict(yanchor="top", y=0.99, xanchor="left", x=0.01),
     )
     config = dict({"scrollZoom": True})
-    imagefile = "ta_wma.png"
+    imagefile = f"ta_wma{np.random.randint(70000)}.png"
 
     # Check if interactive settings are enabled
     plt_link = ""

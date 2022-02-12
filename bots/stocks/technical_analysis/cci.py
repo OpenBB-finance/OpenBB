@@ -150,7 +150,7 @@ def cci_command(ticker="", length="14", scalar="0.015", start="", end=""):
         legend=dict(yanchor="top", y=0.99, xanchor="left", x=0.01),
     )
     config = dict({"scrollZoom": True})
-    imagefile = "ta_cci.png"
+    imagefile = f"ta_cci{np.random.randint(70000)}.png"
 
     # Check if interactive settings are enabled
     plt_link = ""

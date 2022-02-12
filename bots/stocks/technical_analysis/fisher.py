@@ -146,7 +146,7 @@ def fisher_command(ticker="", length="14", start="", end=""):
         legend=dict(yanchor="top", y=0.99, xanchor="left", x=0.01),
     )
     config = dict({"scrollZoom": True})
-    imagefile = "ta_fisher.png"
+    imagefile = f"ta_fisher{np.random.randint(70000)}.png"
 
     # Check if interactive settings are enabled
     plt_link = ""

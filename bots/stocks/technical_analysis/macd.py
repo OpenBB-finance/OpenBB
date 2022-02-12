@@ -131,7 +131,7 @@ def macd_command(ticker="", fast="12", slow="26", signal="9", start="", end=""):
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
     )
     config = dict({"scrollZoom": True})
-    imagefile = "ta_macd.png"
+    imagefile = f"ta_macd{np.random.randint(70000)}.png"
 
     # Check if interactive settings are enabled
     plt_link = ""

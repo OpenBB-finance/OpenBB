@@ -114,7 +114,7 @@ def hma_command(ticker="", window="", offset="", start="", end=""):
         legend=dict(yanchor="top", y=0.99, xanchor="left", x=0.01),
     )
     config = dict({"scrollZoom": True})
-    imagefile = "ta_hma.png"
+    imagefile = f"ta_hma.png{np.random.randint(70000)}"
 
     # Check if interactive settings are enabled
     plt_link = ""

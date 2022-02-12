@@ -1,14 +1,14 @@
 from datetime import datetime, timedelta
 
 from matplotlib import pyplot as plt
+import numpy as np
 
 import bots.config_discordbot as cfg
 import bots.helpers
 from bots.config_discordbot import logger
 from bots.helpers import image_border
 from gamestonk_terminal import config_plot as cfp
-from gamestonk_terminal.common.technical_analysis import \
-    custom_indicators_model
+from gamestonk_terminal.common.technical_analysis import custom_indicators_model
 from gamestonk_terminal.helper_funcs import plot_autoscale
 
 
@@ -86,7 +86,7 @@ def fib_command(ticker="", start="", end=""):
     fig.tight_layout(pad=1)
 
     plt.savefig("ta_fib.png")
-    imagefile = "ta_fib.png"
+    imagefile = f"ta_fib{np.random.randint(70000)}.png"
     imagefile = image_border(imagefile)
 
     return {

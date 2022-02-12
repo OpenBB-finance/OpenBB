@@ -148,7 +148,7 @@ def bbands_command(ticker="", length="5", n_std="2", mamode="sma", start="", end
         legend=dict(yanchor="top", y=0.99, xanchor="left", x=0.01),
     )
     config = dict({"scrollZoom": True})
-    imagefile = "ta_bbands.png"
+    imagefile = f"ta_bbands{np.random.randint(70000)}.png"
 
     # Check if interactive settings are enabled
     plt_link = ""

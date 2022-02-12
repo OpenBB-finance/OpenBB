@@ -2,6 +2,7 @@ import io
 
 import matplotlib.pyplot as plt
 from PIL import Image
+import numpy as np
 
 import bots.config_discordbot as cfg
 from bots.config_discordbot import logger
@@ -33,7 +34,7 @@ def view_command(ticker=""):
     plt.imshow(im)
 
     plt.savefig("ta_view.png")
-    imagefile = "ta_view.png"
+    imagefile = f"ta_view.png{np.random.randint(70000)}"
 
     imagefile = image_border(imagefile)
 

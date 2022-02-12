@@ -68,7 +68,7 @@ def pt_command(ticker: str = "", raw: bool = False, start=""):
 
         imagefile = bots.helpers.image_border("ta_pt.png")
 
-    return {
-        "title": f"Stocks: [Business Insider] Price Targets {ticker}",
-        "imagefile": imagefile,
-    }
+        return {
+            "title": f"Stocks: [Business Insider] Price Targets {ticker}",
+            "imagefile": imagefile,
+        }

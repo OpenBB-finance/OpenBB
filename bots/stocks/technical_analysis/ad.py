@@ -129,7 +129,7 @@ def ad_command(ticker="", is_open="False", start="", end=""):
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
     )
     config = dict({"scrollZoom": True})
-    imagefile = "ta_ad.png"
+    imagefile = f"ta_ad{np.random.randint(70000)}.png"
 
     # Check if interactive settings are enabled
     plt_link = ""

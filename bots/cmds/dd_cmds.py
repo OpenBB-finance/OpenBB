@@ -4,7 +4,7 @@ import disnake
 from disnake.ext import commands
 
 from bots.config_discordbot import logger
-from bots.helpers import ticker_autocomp, ShowView
+from bots.helpers import ShowView, ticker_autocomp
 from bots.stocks.due_diligence.analyst import analyst_command
 from bots.stocks.due_diligence.arktrades import arktrades_command
 from bots.stocks.due_diligence.customer import customer_command

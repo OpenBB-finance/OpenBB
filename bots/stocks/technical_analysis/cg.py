@@ -78,7 +78,7 @@ def cg_command(ticker="", length="14", start="", end=""):
     plt.legend()
 
     plt.savefig("ta_cg.png")
-    imagefile = "ta_cg.png"
+    imagefile = f"ta_cg{np.random.randint(70000)}.png"
     imagefile = image_border(imagefile)
 
     return {

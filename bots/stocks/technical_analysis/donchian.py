@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 
 from matplotlib import pyplot as plt
+import numpy as np
 
 import bots.config_discordbot as cfg
 import bots.helpers
@@ -88,7 +89,7 @@ def donchian_command(
     plt.legend()
 
     plt.savefig("ta_donchian.png")
-    imagefile = "ta_donchian.png"
+    imagefile = f"ta_donchian{np.random.randint(70000)}.png"
 
     imagefile = image_border(imagefile)
 

@@ -1,11 +1,11 @@
 import os
 
-import pandas as pd
-import yfinance as yf
 import df2img
 import disnake
-from PIL import Image
+import pandas as pd
+import yfinance as yf
 from numpy.core.fromnumeric import transpose
+from PIL import Image
 
 import bots.config_discordbot as cfg
 
@@ -225,7 +225,9 @@ class ShowView:
 
         else:
             title = data["title"]
-            embed = disnake.Embed(title=title, colour=cfg.COLOR, description=data.get("description", ""))
+            embed = disnake.Embed(
+                title=title, colour=cfg.COLOR, description=data.get("description", "")
+            )
             embed.set_author(
                 name=cfg.AUTHOR_NAME,
                 icon_url=cfg.AUTHOR_ICON_URL,

@@ -4,11 +4,11 @@ import df2img
 import disnake
 import numpy as np
 import pandas as pd
-from bots.menus.menu import Menu
 
 import bots.config_discordbot as cfg
 from bots.config_discordbot import gst_imgur, logger
 from bots.helpers import save_image
+from bots.menus.menu import Menu
 from gamestonk_terminal.stocks.insider import finviz_model
 
 

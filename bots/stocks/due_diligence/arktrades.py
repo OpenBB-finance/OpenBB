@@ -3,12 +3,12 @@ import os
 import df2img
 import disnake
 import pandas as pd
-from bots.menus.menu import Menu
 from PIL import Image
 
 import bots.config_discordbot as cfg
 from bots.config_discordbot import gst_imgur, logger
 from bots.helpers import autocrop_image
+from bots.menus.menu import Menu
 from gamestonk_terminal.stocks.due_diligence import ark_model
 
 
@@ -21,15 +21,21 @@ def arktrades_command(ticker: str = "", num: int = 10):
 
     if ticker:
         ark_holdings = ark_model.get_ark_trades_by_ticker(ticker)
-        ark_holdings = ark_holdings.drop(columns=["ticker", "everything.profile.companyName"])
+        ark_holdings = ark_holdings.drop(
+            columns=["ticker", "everything.profile.companyName"]
+        )
 
     if ark_holdings.empty:
-        raise Exception("Issue getting data from cathiesark.com. Likely no trades found.\n")
+        raise Exception(
+            "Issue getting data from cathiesark.com. Likely no trades found.\n"
+        )
 
     ark_holdings["Total"] = ark_holdings["Total"] / 1_000_000
     ark_holdings.rename(columns={"direction": "B/S", "weight": "F %"}, inplace=True)
 
-    ark_holdings.index = pd.Series(ark_holdings.index).apply(lambda x: x.strftime("%Y-%m-%d"))
+    ark_holdings.index = pd.Series(ark_holdings.index).apply(
+        lambda x: x.strftime("%Y-%m-%d")
+    )
 
     df = ark_holdings.head(num)
     dindex = len(df.head(num).index)
