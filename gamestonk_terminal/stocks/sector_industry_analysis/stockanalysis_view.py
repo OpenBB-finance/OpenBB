@@ -137,9 +137,9 @@ def display_plots_financials(
     if len(company_tickers) > limit:
         console.print(f"Limiting the amount of companies displayed to {limit}.")
         df = df[df.columns[:limit]]
-        
+
     maximum_value = df.max().max()
-            
+
     if maximum_value > 1_000_000_000:
         df = df / 1_000_000_000
         denomination = "[$ Billions]"
@@ -149,9 +149,16 @@ def display_plots_financials(
     elif 1_000_000 > maximum_value:
         df = df / 1_000
         denomination = "[$ Thousands]"
-        
+    else:
+        denomination = ""
+
     if raw:
-        print_rich_table(df.fillna('-'), headers=list(df.columns), show_index=True, title=f"{item_name} {denomination}")
+        print_rich_table(
+            df.fillna("-"),
+            headers=list(df.columns),
+            show_index=True,
+            title=f"{item_name} {denomination}",
+        )
     else:
         plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
@@ -167,7 +174,5 @@ def display_plots_financials(
 
     if not export:
         console.print("")
-
-
 
     return stocks_data, company_tickers
