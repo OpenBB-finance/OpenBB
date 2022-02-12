@@ -12,7 +12,9 @@ from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.helper_funcs import plot_autoscale
 
 
-def donchian_command(ticker="", upper_length="25", lower_length="100", start="", end=""):
+def donchian_command(
+    ticker="", upper_length="25", lower_length="100", start="", end=""
+):
     """Displays chart with donchian channel [Yahoo Finance]"""
 
     # Debug
@@ -55,7 +57,9 @@ def donchian_command(ticker="", upper_length="25", lower_length="100", start="",
     # Retrieve Data
     df_stock = df_stock.loc[(df_stock.index >= start) & (df_stock.index < end)]
 
-    df_ta = volatility_model.donchian(df_stock["High"], df_stock["Low"], upper_length, lower_length)
+    df_ta = volatility_model.donchian(
+        df_stock["High"], df_stock["Low"], upper_length, lower_length
+    )
 
     # Output Data
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
