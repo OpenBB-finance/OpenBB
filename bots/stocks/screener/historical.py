@@ -79,7 +79,6 @@ async def historical_command(ctx, signal: str = "", start=""):
             description = description + (", ".join(l_stocks))
             logger.debug(description)
 
-        plt.style.use("seaborn")
         plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
         while l_stocks:
@@ -122,9 +121,7 @@ async def historical_command(ctx, signal: str = "", start=""):
                 l_stocks.remove(parsed_stock)
 
         if signal:
-            plt.title(
-                f"Screener Historical Price using {finviz_model.d_signals[signal]} signal"
-            )
+            plt.title(f"Screener Historical Price using {finviz_model.d_signals[signal]} signal")
         else:
             plt.title(f"Screener Historical Price using {signal} preset")
 

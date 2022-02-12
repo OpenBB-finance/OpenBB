@@ -116,7 +116,7 @@ def obv_command(ticker="", start="", end=""):
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
     )
     config = dict({"scrollZoom": True})
-    imagefile = "ta_obv.png"
+    imagefile = f"ta_obv{np.random.randint(70000)}.png"
 
     # Check if interactive settings are enabled
     plt_link = ""

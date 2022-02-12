@@ -125,7 +125,7 @@ def adosc_command(ticker="", is_open="False", fast="3", slow="10", start="", end
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
     )
     config = dict({"scrollZoom": True})
-    imagefile = "ta_adosc.png"
+    imagefile = f"ta_adosc{np.random.randint(70000)}.png"
 
     # Check if interactive settings are enabled
     plt_link = ""

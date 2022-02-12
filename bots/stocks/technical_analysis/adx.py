@@ -155,7 +155,7 @@ def adx_command(ticker="", length="14", scalar="100", drift="1", start="", end="
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
     )
     config = dict({"scrollZoom": True})
-    imagefile = "ta_adx.png"
+    imagefile = f"ta_adx{np.random.randint(70000)}.png"
 
     # Check if interactive settings are enabled
     plt_link = ""

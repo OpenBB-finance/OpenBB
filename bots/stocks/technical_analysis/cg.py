@@ -55,7 +55,6 @@ def cg_command(ticker="", length="14", start="", end=""):
     df_ta = momentum_model.cg(df_close, length)
 
     # Output Data
-    plt.style.use("seaborn")
     fig, axes = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
     ax = axes[0]
     ax.set_title(f"{ticker} Centre of Gravity")
@@ -76,9 +75,9 @@ def cg_command(ticker="", length="14", start="", end=""):
     plt.gcf().autofmt_xdate()
     fig.tight_layout(pad=1)
     plt.legend()
+    imagefile = f"ta_cg{np.random.randint(70000)}.png"
+    plt.savefig(imagefile)
 
-    plt.savefig("ta_cg.png")
-    imagefile = "ta_cg.png"
     imagefile = image_border(imagefile)
 
     return {

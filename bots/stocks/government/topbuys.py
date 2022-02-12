@@ -90,7 +90,6 @@ async def topbuys_command(
             )
             description = "```" + df.to_string() + "```"
 
-        plt.style.use("seaborn")
         fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
         df_gov.groupby("Ticker")["upper"].sum().div(1000).sort_values(

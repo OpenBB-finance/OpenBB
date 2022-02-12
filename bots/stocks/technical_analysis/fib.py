@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 
 from matplotlib import pyplot as plt
+import numpy as np
 
 import bots.config_discordbot as cfg
 import bots.helpers
@@ -60,7 +61,6 @@ def fib_command(ticker="", start="", end=""):
     ) = custom_indicators_model.calculate_fib_levels(df_stock, 120, f_start, f_end)
 
     levels = df_fib.Price
-    plt.style.use("seaborn")
     fig, ax = plt.subplots(figsize=(plot_autoscale()), dpi=cfp.PLOT_DPI)
 
     ax.plot(df_stock["Adj Close"], "b")
@@ -83,9 +83,9 @@ def fib_command(ticker="", start="", end=""):
 
     plt.gcf().autofmt_xdate()
     fig.tight_layout(pad=1)
+    imagefile = f"ta_fib{np.random.randint(70000)}.png"
+    plt.savefig(imagefile)
 
-    plt.savefig("ta_fib.png")
-    imagefile = "ta_fib.png"
     imagefile = image_border(imagefile)
 
     return {

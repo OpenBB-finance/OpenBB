@@ -4,7 +4,7 @@ import disnake
 from disnake.ext import commands
 
 from bots.config_discordbot import logger
-from bots.helpers import presets_custom_autocomp, signals_autocomp
+from bots.helpers import ShowView, presets_custom_autocomp, signals_autocomp
 from bots.stocks.screener.financial import financial_command
 from bots.stocks.screener.historical import historical_command
 from bots.stocks.screener.overview import overview_command
@@ -129,13 +129,13 @@ class ScreenerCommands(commands.Cog):
     async def presets_default(self, ctx: disnake.AppCmdInter):
         """Displays every available preset"""
         logger.info("scr-presets_default")
-        await presets_default_command(ctx)
+        await ShowView().discord(presets_default_command, ctx)
 
     @commands.slash_command(name="scr-presets_custom")
     async def presets_custom(self, ctx: disnake.AppCmdInter):
         """Displays every available preset"""
         logger.info("scr-presets_custom")
-        await presets_custom_command(ctx)
+        await ShowView().discord(presets_custom_command, ctx)
 
     @commands.slash_command(name="scr-historical")
     async def historical(
@@ -153,7 +153,7 @@ class ScreenerCommands(commands.Cog):
         """
         await ctx.response.defer()
         logger.info("scr-historical")
-        await historical_command(ctx, signal, start)
+        await ShowView().discord(historical_command, ctx, signal, start)
 
     @commands.slash_command(name="scr-overview")
     async def overview(
@@ -175,7 +175,7 @@ class ScreenerCommands(commands.Cog):
         """
         await ctx.response.defer()
         logger.info("scr-overview")
-        await overview_command(ctx, preset, sort, limit, ascend)
+        await ShowView().discord(overview_command, ctx, preset, sort, limit, ascend)
 
     @commands.slash_command(name="scr-valuation")
     async def valuation(
@@ -197,7 +197,7 @@ class ScreenerCommands(commands.Cog):
         """
         await ctx.response.defer()
         logger.info("scr-valuation")
-        await valuation_command(ctx, preset, sort, limit, ascend)
+        await ShowView().discord(valuation_command, ctx, preset, sort, limit, ascend)
 
     @commands.slash_command(name="scr-financial")
     async def financial(
@@ -219,7 +219,7 @@ class ScreenerCommands(commands.Cog):
         """
         await ctx.response.defer()
         logger.info("scr-financial")
-        await financial_command(ctx, preset, sort, limit, ascend)
+        await ShowView().discord(financial_command, ctx, preset, sort, limit, ascend)
 
     @commands.slash_command(name="scr-ownership")
     async def ownership(
@@ -241,7 +241,7 @@ class ScreenerCommands(commands.Cog):
         """
         await ctx.response.defer()
         logger.info("scr-ownership")
-        await ownership_command(ctx, preset, sort, limit, ascend)
+        await ShowView().discord(ownership_command, ctx, preset, sort, limit, ascend)
 
     @commands.slash_command(name="scr-performance")
     async def performance(
@@ -263,7 +263,7 @@ class ScreenerCommands(commands.Cog):
         """
         await ctx.response.defer()
         logger.info("scr-performance")
-        await performance_command(ctx, preset, sort, limit, ascend)
+        await ShowView().discord(performance_command, ctx, preset, sort, limit, ascend)
 
     @commands.slash_command(name="scr-technical")
     async def technical(
@@ -285,7 +285,7 @@ class ScreenerCommands(commands.Cog):
         """
         await ctx.response.defer()
         logger.info("scr-technical")
-        await technical_command(ctx, preset, sort, limit, ascend)
+        await ShowView().discord(technical_command, ctx, preset, sort, limit, ascend)
 
 
 def setup(bot: commands.Bot):

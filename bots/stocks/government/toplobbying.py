@@ -31,7 +31,6 @@ async def toplobbying_command(ctx, num: int = 10, raw: bool = False):
         lobbying_by_ticker = pd.DataFrame(
             df_lobbying.groupby("Ticker")["Amount"].agg("sum")
         ).sort_values(by="Amount", ascending=False)
-        plt.style.use("seaborn")
         fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
         lobbying_by_ticker.head(num).plot(kind="bar", ax=ax)
         ax.set_xlabel("Ticker")

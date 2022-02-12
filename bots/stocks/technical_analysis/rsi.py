@@ -150,7 +150,7 @@ def rsi_command(ticker="", length="14", scalar="100", drift="1", start="", end="
         legend=dict(yanchor="top", y=0.99, xanchor="left", x=0.01),
     )
     config = dict({"scrollZoom": True})
-    imagefile = "ta_rsi.png"
+    imagefile = f"ta_rsi{np.random.randint(70000)}.png"
 
     # Check if interactive settings are enabled
     plt_link = ""

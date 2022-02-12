@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 
 from matplotlib import pyplot as plt
+import numpy as np
 
 import bots.config_discordbot as cfg
 import bots.helpers
@@ -11,9 +12,7 @@ from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.helper_funcs import plot_autoscale
 
 
-def donchian_command(
-    ticker="", upper_length="25", lower_length="100", start="", end=""
-):
+def donchian_command(ticker="", upper_length="25", lower_length="100", start="", end=""):
     """Displays chart with donchian channel [Yahoo Finance]"""
 
     # Debug
@@ -56,12 +55,9 @@ def donchian_command(
     # Retrieve Data
     df_stock = df_stock.loc[(df_stock.index >= start) & (df_stock.index < end)]
 
-    df_ta = volatility_model.donchian(
-        df_stock["High"], df_stock["Low"], upper_length, lower_length
-    )
+    df_ta = volatility_model.donchian(df_stock["High"], df_stock["Low"], upper_length, lower_length)
 
     # Output Data
-    plt.style.use("seaborn")
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     ax.plot(df_stock.index, df_stock["Adj Close"].values, color="k", lw=3)
     ax.plot(df_ta.index, df_ta.iloc[:, 0].values, "b", lw=1.5, label="upper")
@@ -86,9 +82,8 @@ def donchian_command(
     fig.tight_layout(pad=1)
 
     plt.legend()
-
-    plt.savefig("ta_donchian.png")
-    imagefile = "ta_donchian.png"
+    imagefile = f"ta_donchian{np.random.randint(70000)}.png"
+    plt.savefig(imagefile)
 
     imagefile = image_border(imagefile)
 
