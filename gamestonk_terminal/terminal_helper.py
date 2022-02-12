@@ -167,6 +167,7 @@ def welcome_message():
 def reset(queue: List[str] = None):
     """Resets the terminal.  Allows for checking code or keys without quitting"""
     console.print("resetting...")
+    logger.info("resetting")
     plt.close("all")
 
     if queue and len(queue) > 0:

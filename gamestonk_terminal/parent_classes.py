@@ -173,6 +173,7 @@ class BaseController(metaclass=ABCMeta):
                 elif known_args.cmd == "r":
                     known_args.cmd = "reset"
 
+            logger.info("CMD: '%s'", an_input)
             self.log_queue("QUEUE")
 
             # This is what mutes portfolio issue
