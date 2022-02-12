@@ -1,6 +1,6 @@
-import numpy as np
 from datetime import datetime, timedelta
 
+import numpy as np
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
@@ -11,7 +11,7 @@ from bots.helpers import image_border
 from gamestonk_terminal.common.technical_analysis import volume_model
 
 
-async def obv_command(ticker="", start="", end=""):
+def obv_command(ticker="", start="", end=""):
     """Displays chart with on balance volume [Yahoo Finance]"""
 
     # Debug

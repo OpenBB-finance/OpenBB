@@ -6,7 +6,7 @@ from bots.helpers import save_image
 from gamestonk_terminal.stocks.options import barchart_model
 
 
-async def iv_command(ticker: str = None):
+def iv_command(ticker: str = None):
     """Options IV"""
 
     # Debug

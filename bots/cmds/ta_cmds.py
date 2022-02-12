@@ -5,7 +5,7 @@ import disnake
 from disnake.ext import commands
 
 from bots.config_discordbot import logger
-from bots.helpers import ticker_autocomp
+from bots.helpers import ShowView, ticker_autocomp
 from bots.stocks.technical_analysis.ad import ad_command
 from bots.stocks.technical_analysis.adosc import adosc_command
 from bots.stocks.technical_analysis.adx import adx_command
@@ -79,7 +79,7 @@ class TechnicalAnalysisCommands(commands.Cog):
         """
         await ctx.response.defer()
         logger.info("ta-ema")
-        await ema_command(ctx, ticker, window, offset, start, end)
+        await ShowView().discord(ema_command, ctx, ticker, window, offset, start, end)
 
     @commands.slash_command(name="ta-sma")
     async def sma(
@@ -103,7 +103,7 @@ class TechnicalAnalysisCommands(commands.Cog):
         """
         await ctx.response.defer()
         logger.info("ta-sma")
-        await sma_command(ctx, ticker, window, offset, start, end)
+        await ShowView().discord(sma_command, ctx, ticker, window, offset, start, end)
 
     @commands.slash_command(name="ta-wma")
     async def wma(
@@ -127,7 +127,7 @@ class TechnicalAnalysisCommands(commands.Cog):
         """
         await ctx.response.defer()
         logger.info("ta-wma")
-        await wma_command(ctx, ticker, window, offset, start, end)
+        await ShowView().discord(wma_command, ctx, ticker, window, offset, start, end)
 
     @commands.slash_command(name="ta-hma")
     async def hma(
@@ -151,7 +151,7 @@ class TechnicalAnalysisCommands(commands.Cog):
         """
         await ctx.response.defer()
         logger.info("ta-hma")
-        await hma_command(ctx, ticker, window, offset, start, end)
+        await ShowView().discord(hma_command, ctx, ticker, window, offset, start, end)
 
     @commands.slash_command(name="ta-zlma")
     async def zlma(
@@ -175,7 +175,7 @@ class TechnicalAnalysisCommands(commands.Cog):
         """
         await ctx.response.defer()
         logger.info("ta-zlma")
-        await zlma_command(ctx, ticker, window, offset, start, end)
+        await ShowView().discord(zlma_command, ctx, ticker, window, offset, start, end)
 
     @commands.slash_command(name="ta-cci")
     async def cci(
@@ -199,7 +199,7 @@ class TechnicalAnalysisCommands(commands.Cog):
         """
         await ctx.response.defer()
         logger.info("ta-cci")
-        await cci_command(ctx, ticker, length, scalar, start, end)
+        await ShowView().discord(cci_command, ctx, ticker, length, scalar, start, end)
 
     @commands.slash_command(name="ta-macd")
     async def macd(
@@ -225,7 +225,9 @@ class TechnicalAnalysisCommands(commands.Cog):
         """
         await ctx.response.defer()
         logger.info("ta-macd")
-        await macd_command(ctx, ticker, fast, slow, signal, start, end)
+        await ShowView().discord(
+            macd_command, ctx, ticker, fast, slow, signal, start, end
+        )
 
     @commands.slash_command(name="ta-rsi")
     async def rsi(
@@ -251,7 +253,9 @@ class TechnicalAnalysisCommands(commands.Cog):
         """
         await ctx.response.defer()
         logger.info("ta-rsi")
-        await rsi_command(ctx, ticker, length, scalar, drift, start, end)
+        await ShowView().discord(
+            rsi_command, ctx, ticker, length, scalar, drift, start, end
+        )
 
     @commands.slash_command(name="ta-stoch")
     async def stoch(
@@ -277,7 +281,9 @@ class TechnicalAnalysisCommands(commands.Cog):
         """
         await ctx.response.defer()
         logger.info("ta-stoch")
-        await stoch_command(ctx, ticker, fast_k, slow_d, slow_k, start, end)
+        await ShowView().discord(
+            stoch_command, ctx, ticker, fast_k, slow_d, slow_k, start, end
+        )
 
     @commands.slash_command(name="ta-fisher")
     async def fisher(
@@ -299,7 +305,7 @@ class TechnicalAnalysisCommands(commands.Cog):
         """
         await ctx.response.defer()
         logger.info("ta-fisher")
-        await fisher_command(ctx, ticker, length, start, end)
+        await ShowView().discord(fisher_command, ctx, ticker, length, start, end)
 
     @commands.slash_command(name="ta-cg")
     async def cg(
@@ -321,7 +327,7 @@ class TechnicalAnalysisCommands(commands.Cog):
         """
         await ctx.response.defer()
         logger.info("ta-cg")
-        await cg_command(ctx, ticker, length, start, end)
+        await ShowView().discord(cg_command, ctx, ticker, length, start, end)
 
     @commands.slash_command(name="ta-adx")
     async def adx(
@@ -347,7 +353,9 @@ class TechnicalAnalysisCommands(commands.Cog):
         """
         await ctx.response.defer()
         logger.info("ta-adx")
-        await adx_command(ctx, ticker, length, scalar, drift, start, end)
+        await ShowView().discord(
+            adx_command, ctx, ticker, length, scalar, drift, start, end
+        )
 
     @commands.slash_command(name="ta-aroon")
     async def aroon(
@@ -371,7 +379,7 @@ class TechnicalAnalysisCommands(commands.Cog):
         """
         await ctx.response.defer()
         logger.info("ta-aroon")
-        await aroon_command(ctx, ticker, length, scalar, start, end)
+        await ShowView().discord(aroon_command, ctx, ticker, length, scalar, start, end)
 
     @commands.slash_command(name="ta-bbands")
     async def bbands(
@@ -398,7 +406,9 @@ class TechnicalAnalysisCommands(commands.Cog):
         await ctx.response.defer()
         logger.info("ta-bbands")
         ma_mode = str(ma_mode)
-        await bbands_command(ctx, ticker, length, std, ma_mode, start, end)
+        await ShowView().discord(
+            bbands_command, ctx, ticker, length, std, ma_mode, start, end
+        )
 
     @commands.slash_command(name="ta-donchian")
     async def donchian(
@@ -422,7 +432,9 @@ class TechnicalAnalysisCommands(commands.Cog):
         """
         await ctx.response.defer()
         logger.info("ta-donchian")
-        await donchian_command(ctx, ticker, upper_length, lower_length, start, end)
+        await ShowView().discord(
+            donchian_command, ctx, ticker, upper_length, lower_length, start, end
+        )
 
     # pylint: disable=too-many-arguments
     @commands.slash_command(name="ta-kc")
@@ -452,7 +464,9 @@ class TechnicalAnalysisCommands(commands.Cog):
         await ctx.response.defer()
         logger.info("ta-kc")
         ma_mode = str(ma_mode)
-        await kc_command(ctx, ticker, length, scalar, ma_mode, offset, start, end)
+        await ShowView().discord(
+            kc_command, ctx, ticker, length, scalar, ma_mode, offset, start, end
+        )
 
     @commands.slash_command(name="ta-ad")
     async def ad(
@@ -474,7 +488,7 @@ class TechnicalAnalysisCommands(commands.Cog):
         """
         await ctx.response.defer()
         logger.info("ta-ad")
-        await ad_command(ctx, ticker, is_open, start, end)
+        await ShowView().discord(ad_command, ctx, ticker, is_open, start, end)
 
     @commands.slash_command(name="ta-adosc")
     async def adosc(
@@ -500,7 +514,9 @@ class TechnicalAnalysisCommands(commands.Cog):
         """
         await ctx.response.defer()
         logger.info("ta-adosc")
-        await adosc_command(ctx, ticker, is_open, fast, slow, start, end)
+        await ShowView().discord(
+            adosc_command, ctx, ticker, is_open, fast, slow, start, end
+        )
 
     @commands.slash_command(name="ta-obv")
     async def obv(
@@ -520,7 +536,7 @@ class TechnicalAnalysisCommands(commands.Cog):
         """
         await ctx.response.defer()
         logger.info("ta-obv")
-        await obv_command(ctx, ticker, start, end)
+        await ShowView().discord(obv_command, ctx, ticker, start, end)
 
     @commands.slash_command(name="ta-fib")
     async def fib(
@@ -540,7 +556,7 @@ class TechnicalAnalysisCommands(commands.Cog):
         """
         await ctx.response.defer()
         logger.info("ta-fib")
-        await fib_command(ctx, ticker, start, end)
+        await ShowView().discord(fib_command, ctx, ticker, start, end)
 
     @commands.slash_command(name="ta-view")
     async def view(
@@ -556,7 +572,7 @@ class TechnicalAnalysisCommands(commands.Cog):
         """
         await ctx.response.defer()
         logger.info("ta-view")
-        await view_command(ctx, ticker)
+        await ShowView().discord(view_command, ctx, ticker)
 
     @commands.slash_command(name="ta-summary")
     async def summary(
@@ -572,7 +588,7 @@ class TechnicalAnalysisCommands(commands.Cog):
         """
         await ctx.response.defer()
         logger.info("ta-summary")
-        await summary_command(ctx, ticker)
+        await ShowView().discord(summary_command, ctx, ticker)
 
     @commands.slash_command(name="ta-recom")
     async def recom(
@@ -588,7 +604,7 @@ class TechnicalAnalysisCommands(commands.Cog):
         """
         await ctx.response.defer()
         logger.info("ta-recom")
-        await recom_command(ctx, ticker)
+        await ShowView().discord(recom_command, ctx, ticker)
 
 
 def setup(bot: commands.Bot):

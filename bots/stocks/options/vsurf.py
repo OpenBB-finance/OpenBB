@@ -8,7 +8,7 @@ from bots.helpers import image_border
 from gamestonk_terminal.stocks.options import yfinance_model
 
 
-async def vsurf_command(
+def vsurf_command(
     ticker: str = "",
     z: str = "IV",
 ):
@@ -22,7 +22,7 @@ async def vsurf_command(
 
     # Debug
     if cfg.DEBUG:
-        logger.debug(f"!stocks.opt.oi {ticker} {z}")
+        logger.debug("opt-oi %s %s", ticker, z)
 
     # Check for argument
     if ticker == "":
@@ -49,9 +49,7 @@ async def vsurf_command(
     tri = Delaunay(points2D)
     I, J, K = tri.simplices.T
 
-    lighting_effects = dict(
-        ambient=0.5, diffuse=0.5, roughness=0.5, specular=0.4, fresnel=0.4
-    )
+    lighting_effects = dict(ambient=0.5, diffuse=0.5, roughness=0.5, specular=0.4, fresnel=0.4)
     fig = go.Figure(
         data=[
             go.Mesh3d(
@@ -63,9 +61,7 @@ async def vsurf_command(
                 k=K,
                 intensity=Z,
                 colorscale=cfg.PLT_3DMESH_COLORSCALE,
-                hovertemplate="<b>DTE</b>: %{y} <br><b>Strike</b>: %{x} <br><b>"
-                + z
-                + "</b>: %{z}<extra></extra>",
+                hovertemplate="<b>DTE</b>: %{y} <br><b>Strike</b>: %{x} <br><b>" + z + "</b>: %{z}<extra></extra>",
                 showscale=False,
                 flatshading=True,
                 lighting=lighting_effects,
@@ -89,8 +85,6 @@ async def vsurf_command(
     )
     fig.update_layout(
         margin=dict(l=0, r=0, t=40, b=20),
-        width=1320,
-        height=740,
         template=cfg.PLT_3DMESH_STYLE_TEMPLATE,
         title=f"{label} Surface for {ticker.upper()}",
         title_x=0.5,

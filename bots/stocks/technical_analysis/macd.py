@@ -1,6 +1,6 @@
-import numpy as np
 from datetime import datetime, timedelta
 
+import numpy as np
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
@@ -11,7 +11,7 @@ from bots.helpers import image_border
 from gamestonk_terminal.common.technical_analysis import momentum_model
 
 
-async def macd_command(ticker="", fast="12", slow="26", signal="9", start="", end=""):
+def macd_command(ticker="", fast="12", slow="26", signal="9", start="", end=""):
     """Displays chart with moving average convergence/divergence [Yahoo Finance]"""
 
     # Debug

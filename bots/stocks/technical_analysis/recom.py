@@ -3,7 +3,7 @@ from bots.config_discordbot import logger
 from gamestonk_terminal.stocks.technical_analysis import tradingview_model
 
 
-async def recom_command(ticker=""):
+def recom_command(ticker=""):
     """Displays text of a given stocks recommendation based on ta [Tradingview API]"""
 
     # Debug

@@ -1,12 +1,12 @@
 import disnake
-from bots.menus.menu import Menu
 
 import bots.config_discordbot as cfg
 from bots.config_discordbot import logger
+from bots.menus.menu import Menu
 from gamestonk_terminal.stocks.dark_pool_shorts import stockgrid_model
 
 
-async def pos_command(sort="dpp_dollar", num: int = 10):
+def pos_command(sort="dpp_dollar", num: int = 10):
     """Dark pool short position [Stockgrid]"""
 
     # Debug user input

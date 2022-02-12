@@ -1,6 +1,6 @@
-import numpy as np
 from datetime import datetime, timedelta
 
+import numpy as np
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
@@ -11,9 +11,7 @@ from bots.helpers import image_border
 from gamestonk_terminal.common.technical_analysis import momentum_model
 
 
-async def stoch_command(
-    ticker="", fast_k="14", slow_d="3", slow_k="3", start="", end=""
-):
+def stoch_command(ticker="", fast_k="14", slow_d="3", slow_k="3", start="", end=""):
     """Displays chart with stochastic relative strength average [Yahoo Finance]"""
 
     # Debug

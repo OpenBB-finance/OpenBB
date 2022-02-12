@@ -1,6 +1,4 @@
-import time
 import numpy as np
-
 import pandas as pd
 import plotly.graph_objects as go
 
@@ -9,10 +7,8 @@ from bots.config_discordbot import logger
 from bots.helpers import image_border
 from gamestonk_terminal.stocks.options import op_helpers, yfinance_model
 
-startTime = time.time()
 
-
-async def oi_command(
+def oi_command(
     ticker: str = None,
     expiry: str = "",
     min_sp: float = None,
@@ -22,7 +18,7 @@ async def oi_command(
 
     # Debug
     if cfg.DEBUG:
-        logger.debug(f"!stocks.opt.oi {ticker} {expiry} {min_sp} {max_sp}")
+        logger.debug("opt-oi %s %s %s %s", ticker, expiry, min_sp, max_sp)
 
     # Check for argument
     if ticker is None:
@@ -54,9 +50,7 @@ async def oi_command(
     put_oi = puts.set_index("strike")["openInterest"] / 1000
 
     df_opt = pd.merge(call_oi, put_oi, left_index=True, right_index=True)
-    df_opt = df_opt.rename(
-        columns={"openInterest_x": "OI_call", "openInterest_y": "OI_put"}
-    )
+    df_opt = df_opt.rename(columns={"openInterest_x": "OI_call", "openInterest_y": "OI_put"})
 
     max_pain = op_helpers.calculate_max_pain(df_opt)
     fig = go.Figure()

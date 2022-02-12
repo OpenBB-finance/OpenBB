@@ -1,6 +1,4 @@
-import time
 import numpy as np
-
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
@@ -8,10 +6,8 @@ import bots.config_discordbot as cfg
 from bots.helpers import image_border
 from gamestonk_terminal.stocks.options import syncretism_model
 
-startTime = time.time()
 
-
-async def hist_command(
+def hist_command(
     ticker: str = None,
     expiry: str = "",
     strike: float = 10,

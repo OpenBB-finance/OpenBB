@@ -1,6 +1,6 @@
-import numpy as np
 from datetime import datetime, timedelta
 
+import numpy as np
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
@@ -11,7 +11,7 @@ from bots.helpers import image_border
 from gamestonk_terminal.common.technical_analysis import momentum_model
 
 
-async def cci_command(ticker="", length="14", scalar="0.015", start="", end=""):
+def cci_command(ticker="", length="14", scalar="0.015", start="", end=""):
     """Displays chart with commodity channel index [Yahoo Finance]"""
 
     # Debug

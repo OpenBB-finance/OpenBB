@@ -1,6 +1,4 @@
-import time
 import numpy as np
-
 import pandas as pd
 import plotly.graph_objects as go
 
@@ -9,10 +7,8 @@ from bots.config_discordbot import logger
 from bots.helpers import image_border
 from gamestonk_terminal.stocks.options import yfinance_model
 
-startTime = time.time()
 
-
-async def vol_command(
+def vol_command(
     ticker: str = None,
     expiry: str = "",
     min_sp: float = None,
@@ -22,7 +18,7 @@ async def vol_command(
 
     # Debug
     if cfg.DEBUG:
-        logger.debug(f"opt-vol {ticker} {expiry} {min_sp} {max_sp}")
+        logger.debug("opt-vol %s %s %s %s", ticker, expiry, min_sp, max_sp)
 
     # Check for argument
     if ticker is None:

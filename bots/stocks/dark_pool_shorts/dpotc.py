@@ -9,7 +9,7 @@ from bots.helpers import image_border
 from gamestonk_terminal.stocks.dark_pool_shorts import finra_model
 
 
-async def dpotc_command(ticker: str = ""):
+def dpotc_command(ticker: str = ""):
     """Dark pools (ATS) vs OTC data [FINRA]"""
 
     # Debug user input

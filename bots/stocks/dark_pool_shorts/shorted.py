@@ -1,12 +1,12 @@
 import disnake
-from bots.menus.menu import Menu
 
 import bots.config_discordbot as cfg
 from bots.config_discordbot import logger
+from bots.menus.menu import Menu
 from gamestonk_terminal.stocks.dark_pool_shorts import yahoofinance_model
 
 
-async def shorted_command(num: int = 10):
+def shorted_command(num: int = 10):
     """Show most shorted stocks [Yahoo Finance]"""
 
     # Debug user input

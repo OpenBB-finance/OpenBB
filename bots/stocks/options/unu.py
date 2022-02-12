@@ -9,7 +9,7 @@ from bots.helpers import save_image
 from gamestonk_terminal.helper_funcs import get_user_agent
 
 
-async def unu_command(num: int = None):
+def unu_command(num: int = None):
     """Unusual Options"""
 
     # Debug

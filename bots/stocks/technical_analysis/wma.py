@@ -1,6 +1,6 @@
-import numpy as np
 from datetime import datetime, timedelta
 
+import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
 
@@ -11,7 +11,7 @@ from bots.helpers import image_border
 from gamestonk_terminal.common.technical_analysis import overlap_model
 
 
-async def wma_command(ticker="", window="", offset="", start="", end=""):
+def wma_command(ticker="", window="", offset="", start="", end=""):
     """Displays chart with weighted moving average [Yahoo Finance]"""
 
     # Debug

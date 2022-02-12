@@ -12,7 +12,7 @@ from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.helper_funcs import plot_autoscale
 
 
-async def cg_command(ticker="", length="14", start="", end=""):
+def cg_command(ticker="", length="14", start="", end=""):
     """Displays chart with centre of gravity [Yahoo Finance]"""
 
     # Debug

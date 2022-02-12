@@ -3,7 +3,7 @@ from bots.config_discordbot import logger
 from gamestonk_terminal.stocks.technical_analysis import finbrain_model
 
 
-async def summary_command(ticker=""):
+def summary_command(ticker=""):
     """Displays text of a given stocks ta summary [FinBrain API]"""
 
     # Debug

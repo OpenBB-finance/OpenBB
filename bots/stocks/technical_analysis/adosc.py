@@ -1,6 +1,6 @@
-import numpy as np
 from datetime import datetime, timedelta
 
+import numpy as np
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
@@ -11,9 +11,7 @@ from bots.helpers import image_border
 from gamestonk_terminal.common.technical_analysis import volume_model
 
 
-async def adosc_command(
-    ticker="", is_open="False", fast="3", slow="10", start="", end=""
-):
+def adosc_command(ticker="", is_open="False", fast="3", slow="10", start="", end=""):
     """Displays chart with chaikin oscillator [Yahoo Finance]"""
 
     # Debug

@@ -12,7 +12,7 @@ from bots.menus.menu import Menu
 from gamestonk_terminal.stocks.options import yfinance_model
 
 
-async def chain_command(
+def chain_command(
     ticker: str = None,
     expiry: str = None,
     opt_type: str = None,

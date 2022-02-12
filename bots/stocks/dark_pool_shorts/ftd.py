@@ -11,7 +11,7 @@ from bots.helpers import image_border
 from gamestonk_terminal.stocks.dark_pool_shorts import sec_model
 
 
-async def ftd_command(ticker: str = "", start="", end=""):
+def ftd_command(ticker: str = "", start="", end=""):
     """Fails-to-deliver data [SEC]"""
 
     # Debug user input

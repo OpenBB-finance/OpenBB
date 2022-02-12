@@ -11,7 +11,7 @@ from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.helper_funcs import plot_autoscale
 
 
-async def donchian_command(
+def donchian_command(
     ticker="", upper_length="25", lower_length="100", start="", end=""
 ):
     """Displays chart with donchian channel [Yahoo Finance]"""

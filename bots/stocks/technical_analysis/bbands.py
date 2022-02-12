@@ -1,6 +1,6 @@
-import numpy as np
 from datetime import datetime, timedelta
 
+import numpy as np
 import plotly.graph_objects as go
 
 import bots.config_discordbot as cfg
@@ -10,9 +10,7 @@ from bots.helpers import image_border
 from gamestonk_terminal.common.technical_analysis import volatility_model
 
 
-async def bbands_command(
-    ticker="", length="5", n_std="2", mamode="sma", start="", end=""
-):
+def bbands_command(ticker="", length="5", n_std="2", mamode="sma", start="", end=""):
     """Displays chart with bollinger bands [Yahoo Finance]"""
 
     # Debug

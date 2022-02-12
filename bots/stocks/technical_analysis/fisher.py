@@ -1,6 +1,6 @@
-import numpy as np
 from datetime import datetime, timedelta
 
+import numpy as np
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
@@ -11,7 +11,7 @@ from bots.helpers import image_border
 from gamestonk_terminal.common.technical_analysis import momentum_model
 
 
-async def fisher_command(ticker="", length="14", start="", end=""):
+def fisher_command(ticker="", length="14", start="", end=""):
     """Displays chart with fisher transformation [Yahoo Finance]"""
 
     # Debug

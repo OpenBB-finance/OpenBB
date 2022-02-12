@@ -1,6 +1,6 @@
-import numpy as np
 from datetime import datetime, timedelta
 
+import numpy as np
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
@@ -11,7 +11,7 @@ from bots.helpers import image_border
 from gamestonk_terminal.common.technical_analysis import trend_indicators_model
 
 
-async def aroon_command(ticker="", length="25", scalar="100", start="", end=""):
+def aroon_command(ticker="", length="25", scalar="100", start="", end=""):
     """Displays chart with aroon indicator [Yahoo Finance]"""
 
     # Debug

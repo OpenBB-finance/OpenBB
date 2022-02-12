@@ -1,6 +1,6 @@
-import numpy as np
 from datetime import datetime, timedelta
 
+import numpy as np
 import plotly.graph_objects as go
 
 import bots.config_discordbot as cfg
@@ -10,7 +10,7 @@ from bots.helpers import image_border
 from gamestonk_terminal.common.technical_analysis import volatility_model
 
 
-async def kc_command(
+def kc_command(
     ticker="", length="20", scalar="2", mamode="sma", offset="0", start="", end=""
 ):
     """Displays chart with keltner channel [Yahoo Finance]"""

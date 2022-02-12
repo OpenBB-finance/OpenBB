@@ -3,10 +3,10 @@ import numpy as np
 
 import bots.config_discordbot as cfg
 from bots.config_discordbot import logger
-from bots.helpers import save_image, quote
+from bots.helpers import quote, save_image
 
 
-async def quote_command(ticker: str = None):
+def quote_command(ticker: str = None):
     """Ticker Quote"""
 
     # Debug

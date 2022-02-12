@@ -1,5 +1,4 @@
 import numpy as np
-
 import plotly.graph_objects as go
 import yfinance as yf
 from plotly.subplots import make_subplots
@@ -8,7 +7,7 @@ import bots.config_discordbot as cfg
 from bots.helpers import image_border
 
 
-async def cc_hist_command(
+def cc_hist_command(
     ticker: str = None, expiry: str = "", strike: float = 10, opt_type: str = ""
 ):
     """Plot historical option prices

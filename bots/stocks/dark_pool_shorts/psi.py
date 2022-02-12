@@ -9,7 +9,7 @@ from bots.helpers import image_border
 from gamestonk_terminal.stocks.dark_pool_shorts import stockgrid_model
 
 
-async def psi_command(ticker: str = ""):
+def psi_command(ticker: str = ""):
     """Price vs short interest volume [Stockgrid]"""
 
     # Debug user input

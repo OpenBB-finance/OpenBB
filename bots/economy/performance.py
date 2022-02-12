@@ -1,6 +1,7 @@
 import df2img
-import pandas as pd
 import numpy as np
+import pandas as pd
+
 import bots.config_discordbot as cfg
 from bots.config_discordbot import logger
 from bots.helpers import save_image

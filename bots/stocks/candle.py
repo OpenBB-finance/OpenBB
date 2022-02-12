@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
-import numpy as np
 
+import numpy as np
 import plotly.graph_objects as go
 import yfinance as yf
 from plotly.subplots import make_subplots
@@ -11,7 +11,7 @@ from bots.helpers import image_border
 from gamestonk_terminal.common.technical_analysis import overlap_model
 
 
-async def candle_command(
+def candle_command(
     ticker: str = "",
     interval: int = 15,
     past_days: int = 1,

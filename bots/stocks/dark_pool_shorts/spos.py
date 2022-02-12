@@ -9,7 +9,7 @@ from bots.helpers import image_border
 from gamestonk_terminal.stocks.dark_pool_shorts import stockgrid_model
 
 
-async def spos_command(ticker: str = ""):
+def spos_command(ticker: str = ""):
     """Net short vs position [Stockgrid]"""
 
     # Debug user input

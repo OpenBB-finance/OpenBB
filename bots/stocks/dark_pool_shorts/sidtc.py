@@ -1,12 +1,12 @@
 import disnake
-from bots.menus.menu import Menu
 
 import bots.config_discordbot as cfg
 from bots.config_discordbot import logger
+from bots.menus.menu import Menu
 from gamestonk_terminal.stocks.dark_pool_shorts import stockgrid_model
 
 
-async def sidtc_command(sort="float", num: int = 10):
+def sidtc_command(sort="float", num: int = 10):
     """Short interest and days to cover [Stockgrid]"""
 
     # Debug

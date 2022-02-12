@@ -1,12 +1,10 @@
 from __future__ import annotations
 
-import time
-
 import disnake
 import disnake.ext.commands as commands
 
 from bots.config_discordbot import logger
-from bots.helpers import expiry_autocomp, ticker_autocomp
+from bots.helpers import ShowView, expiry_autocomp, ticker_autocomp
 from bots.stocks.candle import candle_command
 from bots.stocks.disc.ford import ford_command
 from bots.stocks.insider.lins import lins_command
@@ -21,7 +19,11 @@ from bots.stocks.options.vol import vol_command
 from bots.stocks.options.vsurf import vsurf_command
 from bots.stocks.quote import quote_command
 
-startTime = time.time()
+vsurf_choices = {
+    "Volatility": "IV",
+    "Open Interest": "OI",
+    "Last Price": "LP",
+}
 
 
 class SlashCommands(commands.Cog):
@@ -51,7 +53,9 @@ class SlashCommands(commands.Cog):
         """
         await inter.response.defer()
         logger.info("opt-chain")
-        await chain_command(inter, ticker, expiry, opt_type, min_sp, max_sp)
+        await ShowView().discord(
+            chain_command, inter, ticker, expiry, opt_type, min_sp, max_sp
+        )
 
     @commands.slash_command(name="opt-oi")
     async def open_interest(
@@ -73,7 +77,7 @@ class SlashCommands(commands.Cog):
         """
         await inter.response.defer()
         logger.info("opt-oi")
-        await oi_command(inter, ticker, expiry, min_sp, max_sp)
+        await ShowView().discord(oi_command, inter, ticker, expiry, min_sp, max_sp)
 
     @commands.slash_command(name="opt-iv")
     async def iv(
@@ -89,7 +93,7 @@ class SlashCommands(commands.Cog):
         """
         await inter.response.defer()
         logger.info("opt-iv")
-        await iv_command(inter, ticker)
+        await ShowView().discord(iv_command, inter, ticker)
 
     @commands.slash_command(name="q")
     async def quote(
@@ -105,7 +109,7 @@ class SlashCommands(commands.Cog):
         """
         await inter.response.defer()
         logger.info("quote")
-        await quote_command(inter, ticker)
+        await ShowView().discord(quote_command, inter, ticker)
 
     @commands.slash_command(name="disc-ford")
     async def ford(self, inter: disnake.AppCmdInter):
@@ -117,14 +121,14 @@ class SlashCommands(commands.Cog):
         """
         await inter.response.defer()
         logger.info("disc-ford")
-        await ford_command(inter)
+        await ShowView().discord(ford_command, inter)
 
     @commands.slash_command(name="opt-unu")
     async def unu(self, inter: disnake.AppCmdInter):
         """Unusual Options"""
         await inter.response.defer()
         logger.info("disc-ford")
-        await unu_command(inter)
+        await ShowView().discord(unu_command, inter)
 
     @commands.slash_command(name="ins-last")
     async def lins(
@@ -166,7 +170,9 @@ class SlashCommands(commands.Cog):
         """
         await inter.response.defer()
         logger.info("cc")
-        await candle_command(inter, ticker, interval, past_days, start, end)
+        await ShowView().discord(
+            candle_command, inter, ticker, interval, past_days, start, end
+        )
 
     @commands.slash_command(name="btc")
     async def btc(
@@ -188,7 +194,9 @@ class SlashCommands(commands.Cog):
         """
         await inter.response.defer()
         logger.info("btc")
-        await candle_command(inter, "btc-usd", interval, past_days, start, end)
+        await ShowView().discord(
+            candle_command, inter, "btc-usd", interval, past_days, start, end
+        )
 
     @commands.slash_command(name="eth")
     async def eth(
@@ -210,7 +218,9 @@ class SlashCommands(commands.Cog):
         """
         await inter.response.defer()
         logger.info("eth")
-        await candle_command(inter, "eth-usd", interval, past_days, start, end)
+        await ShowView().discord(
+            candle_command, inter, "eth-usd", interval, past_days, start, end
+        )
 
     @commands.slash_command(name="sol")
     async def sol(
@@ -232,7 +242,9 @@ class SlashCommands(commands.Cog):
         """
         await inter.response.defer()
         logger.info("sol")
-        await candle_command(inter, "sol-usd", interval, past_days, start, end)
+        await ShowView().discord(
+            candle_command, inter, "sol-usd", interval, past_days, start, end
+        )
 
     @commands.slash_command(name="opt-overview")
     async def overview(
@@ -254,7 +266,9 @@ class SlashCommands(commands.Cog):
         """
         await inter.response.defer()
         logger.info("opt-overview")
-        await overview_command(inter, ticker, expiry, min_sp, max_sp)
+        await ShowView().discord(
+            overview_command, inter, ticker, expiry, min_sp, max_sp
+        )
 
     @commands.slash_command(name="opt-vol")
     async def volume(
@@ -272,14 +286,14 @@ class SlashCommands(commands.Cog):
         """
         await inter.response.defer()
         logger.info("opt-vol")
-        await vol_command(inter, ticker, expiry)
+        await ShowView().discord(vol_command, inter, ticker, expiry)
 
     @commands.slash_command(name="opt-vsurf")
     async def vsurf(
         self,
         inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
-        z: str = commands.Param(choices=["Volatility", "Open Interest", "Last Price"]),
+        z: str = commands.Param(choices=vsurf_choices),
     ):
         """Display Volatility Surface
 
@@ -290,15 +304,7 @@ class SlashCommands(commands.Cog):
         """
         await inter.response.defer()
         logger.info("opt-vsurf")
-
-        if z == "Volatility":
-            z = "IV"
-        if z == "Open Interest":
-            z = "OI"
-        if z == "Last Price":
-            z = "LP"
-
-        await vsurf_command(inter, ticker, z)
+        await ShowView().discord(vsurf_command, inter, ticker, z)
 
     @commands.slash_command(name="opt-hist")
     async def history(
@@ -327,12 +333,14 @@ class SlashCommands(commands.Cog):
         ticker: Stock Ticker
         expiry: Expiration Date
         strike: Options Strike Price
-        type: Calls or Puts
+        opt_type: Calls or Puts
         greek: Greek variable to plot
         """
         await inter.response.defer()
         logger.info("opt-hist")
-        await hist_command(inter, ticker, expiry, strike, opt_type, greek)
+        await ShowView().discord(
+            hist_command, inter, ticker, expiry, strike, opt_type, greek
+        )
 
     @commands.slash_command(name="opt-cc-hist")
     async def cc_history(
@@ -350,14 +358,14 @@ class SlashCommands(commands.Cog):
         ticker: Stock Ticker
         expiry: Expiration Date
         strike: Options Strike Price
-        type: Calls or Puts
+        opt_type: Calls or Puts
         """
         await inter.response.defer()
         logger.info("opt-cc-hist")
-        await cc_hist_command(inter, ticker, expiry, strike, opt_type)
+        await ShowView().discord(
+            cc_hist_command, inter, ticker, expiry, strike, opt_type
+        )
 
 
 def setup(bot):
     bot.add_cog(SlashCommands(bot))
-    executionTime = time.time() - startTime
-    print(f"> Extension {__name__} is ready: time in seconds: {str(executionTime)}\n")
