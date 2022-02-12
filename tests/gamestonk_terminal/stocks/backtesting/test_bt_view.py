@@ -31,9 +31,10 @@ def test_display_simple_ema(mocker):
 
     mocker.patch("yfinance.download", side_effect=mock_yf_download)
 
-    mocker.patch.object(target=bt_view.gtff, attribute="USE_ION", new=True)
-    mocker.patch(target="gamestonk_terminal.stocks.backtesting.bt_view.plt.ion")
-    mocker.patch(target="gamestonk_terminal.stocks.backtesting.bt_view.plt.show")
+    # MOCK VISUALIZE_OUTPUT
+    mocker.patch(
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
+    )
 
     ticker = "PM"
     start = datetime.strptime("2020-12-01", "%Y-%m-%d")
@@ -60,9 +61,10 @@ def test_display_ema_cross(mocker):
 
     mocker.patch("yfinance.download", side_effect=mock_yf_download)
 
-    mocker.patch.object(target=bt_view.gtff, attribute="USE_ION", new=True)
-    mocker.patch(target="gamestonk_terminal.stocks.backtesting.bt_view.plt.ion")
-    mocker.patch(target="gamestonk_terminal.stocks.backtesting.bt_view.plt.show")
+    # MOCK VISUALIZE_OUTPUT
+    mocker.patch(
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
+    )
 
     ticker = "PM"
     start = datetime.strptime("2020-12-01", "%Y-%m-%d")
@@ -91,9 +93,10 @@ def test_display_rsi_strategy(mocker):
 
     mocker.patch("yfinance.download", side_effect=mock_yf_download)
 
-    mocker.patch.object(target=bt_view.gtff, attribute="USE_ION", new=True)
-    mocker.patch(target="gamestonk_terminal.stocks.backtesting.bt_view.plt.ion")
-    mocker.patch(target="gamestonk_terminal.stocks.backtesting.bt_view.plt.show")
+    # MOCK VISUALIZE_OUTPUT
+    mocker.patch(
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
+    )
 
     ticker = "PM"
     start = datetime.strptime("2020-12-01", "%Y-%m-%d")

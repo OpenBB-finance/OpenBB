@@ -3,19 +3,21 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Any
+from typing import Optional, Union, List
 
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from gamestonk_terminal import config_plot as cfp
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal.common.technical_analysis import custom_indicators_model
+from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
     export_data,
     plot_autoscale,
     print_rich_table,
+    reindex_dates,
+    is_intraday,
 )
 from gamestonk_terminal.rich_config import console
 
@@ -24,29 +26,32 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def fibonacci_retracement(
-    df_stock: pd.DataFrame,
+    ohlc: pd.DataFrame,
     period: int = 120,
-    start_date: Any = None,
-    end_date: Any = None,
+    start_date: Optional[Union[str, None]] = None,
+    end_date: Optional[Union[str, None]] = None,
     s_ticker: str = "",
     export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Calculate fibonacci retracement levels
 
     Parameters
     ----------
-    df_stock: pd.DataFrame
+    ohlc: pd.DataFrame
         Stock data
     period: int
         Days to lookback
-    start_date: Any
+    start_date: Optional[str, None]
         User picked date for starting retracement
-    end_date: Any
+    end_date: Optional[str, None]
         User picked date for ending retracement
     s_ticker:str
         Stock ticker
     export: str
         Format to export data
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (2 axis is expected in the list), by default None
     """
     (
         df_fib,
@@ -54,45 +59,71 @@ def fibonacci_retracement(
         max_date,
         min_pr,
         max_pr,
-    ) = custom_indicators_model.calculate_fib_levels(
-        df_stock, period, start_date, end_date
-    )
+    ) = custom_indicators_model.calculate_fib_levels(ohlc, period, start_date, end_date)
 
     levels = df_fib.Price
-    fig, ax = plt.subplots(figsize=(plot_autoscale()), dpi=cfp.PLOT_DPI)
 
-    ax.plot(df_stock["Adj Close"], "b")
-    ax.plot([min_date, max_date], [min_pr, max_pr], c="k")
+    plot_data = reindex_dates(ohlc)
+
+    # This plot has 1 axes
+    if external_axes is None:
+        _, ax1 = plt.subplots(
+            figsize=plot_autoscale(),
+            dpi=PLOT_DPI,
+        )
+        ax2 = ax1.twinx()
+    else:
+        if len(external_axes) != 1:
+            console.print("[red]Expected list of 1 axis item./n[/red]")
+            return
+        ax1, ax2 = external_axes
+
+    ax1.plot(plot_data["Adj Close"])
+
+    if is_intraday(ohlc):
+        date_format = "%b %d %H:%M"
+    else:
+        date_format = "%Y-%m-%d"
+    min_date_index = plot_data[
+        plot_data["date"] == min_date.strftime(date_format)
+    ].index
+    max_date_index = plot_data[
+        plot_data["date"] == max_date.strftime(date_format)
+    ].index
+    ax1.plot(
+        [min_date_index, max_date_index],
+        [min_pr, max_pr],
+    )
 
     for i in levels:
-        ax.axhline(y=i, c="g", alpha=0.5)
+        ax1.axhline(y=i, alpha=0.5)
 
     for i in range(5):
-        ax.fill_between(df_stock.index, levels[i], levels[i + 1], alpha=0.6)
+        ax1.fill_between(plot_data.index, levels[i], levels[i + 1], alpha=0.15)
 
-    ax.set_ylabel("Price")
-    ax.set_title(f"Fibonacci Support for {s_ticker.upper()}")
-    ax.set_xlim(df_stock.index[0], df_stock.index[-1])
-
-    ax1 = ax.twinx()
-    ax1.set_ylim(ax.get_ylim())
+    ax1.set_xlim(plot_data.index[0], plot_data.index[-1])
+    ax1.set_title(f"Fibonacci Support for {s_ticker.upper()}")
     ax1.set_yticks(levels)
     ax1.set_yticklabels([0, 0.235, 0.382, 0.5, 0.618, 1])
-
-    plt.gcf().autofmt_xdate()
-    fig.tight_layout(pad=1)
-
-    if gtff.USE_ION:
-        plt.ion()
-    plt.show()
-
-    print_rich_table(
-        df_fib,
-        headers=["Fib Level", "Price"],
-        show_index=False,
-        title="Fibonacci retractment levels",
+    theme.style_primary_axis(
+        ax1,
+        data_index=plot_data.index.to_list(),
+        tick_labels=plot_data["date"].to_list(),
     )
-    console.print("")
+
+    ax2.set_ylim(ax1.get_ylim())
+    ax2.set_ylabel("Price")
+    theme.style_primary_axis(ax2)
+
+    if external_axes is None:
+        theme.visualize_output()
+        print_rich_table(
+            df_fib,
+            headers=["Fib Level", "Price"],
+            show_index=False,
+            title="Fibonacci retracement levels",
+        )
+        console.print("")
 
     export_data(
         export,

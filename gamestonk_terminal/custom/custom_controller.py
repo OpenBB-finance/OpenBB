@@ -143,7 +143,7 @@ class CustomDataController(BaseController):
         parser.add_argument(
             "-k",
             "--kind",
-            default="scatter",
+            default="line",
             help="Type of plot for data",
             choices=self.pandas_plot_choices,
         )

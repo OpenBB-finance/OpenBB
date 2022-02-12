@@ -1,1 +1,2 @@
-Error in Sentiment Investor request
+[red]Error in Sentiment Investor request.
+[/red]

@@ -412,13 +412,8 @@ def test_call_candle(mocker):
 
     mocker.patch("yfinance.download", side_effect=mock_yf_download)
 
-    # MOCK GTFF
-    mocker.patch.object(target=etf_controller.gtff, attribute="USE_ION", new=True)
-
-    # MOCK CHARTS
-    mocker.patch(target="gamestonk_terminal.etf.etf_controller.plt.ion")
-    mocker.patch(target="gamestonk_terminal.etf.etf_controller.plt.show")
-    mocker.patch(target="gamestonk_terminal.etf.etf_controller.mpf.plot")
+    # MOCK CANDLE
+    mocker.patch(target="gamestonk_terminal.stocks.stocks_helper.display_candle")
 
     controller = etf_controller.ETFController(queue=None)
     other_args = ["ARKW", "--start=2021-12-15", "--end=2021-12-18", "--limit=5"]

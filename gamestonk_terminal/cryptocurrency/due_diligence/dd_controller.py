@@ -673,7 +673,7 @@ class DueDiligenceController(CryptoBaseController):
         if ns_parser:
             pycoingecko_view.display_bc(self.coin_map_df["CoinGecko"], ns_parser.export)
 
-    def call_book(self, other_args):
+    def call_binbook(self, other_args):
         """Process book command"""
         parser = argparse.ArgumentParser(
             prog="binbook",

@@ -30,8 +30,10 @@ def test_display_historical(mocker):
 
     mocker.patch("yfinance.download", side_effect=mock_yf_download)
 
-    mock_show = mocker.Mock()
-    mocker.patch("matplotlib.pyplot.show", new=mock_show)
+    # MOCK VISUALIZE_OUTPUT
+    mocker.patch(
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
+    )
 
     yahoo_finance_view.display_historical(
         similar_tickers=["TSLA", "GM"],
@@ -40,8 +42,6 @@ def test_display_historical(mocker):
         normalize=True,
         export="",
     )
-
-    mock_show.assert_called_once()
 
 
 @pytest.mark.vcr
@@ -55,16 +55,16 @@ def test_display_volume(mocker):
 
     mocker.patch("yfinance.download", side_effect=mock_yf_download)
 
-    mock_show = mocker.Mock()
-    mocker.patch("matplotlib.pyplot.show", new=mock_show)
+    # MOCK VISUALIZE_OUTPUT
+    mocker.patch(
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
+    )
 
     yahoo_finance_view.display_volume(
         similar_tickers=["TSLA", "GM"],
         start=datetime.strptime("2020-12-21", "%Y-%m-%d"),
         export="",
     )
-
-    mock_show.assert_called_once()
 
 
 @pytest.mark.vcr
@@ -78,13 +78,13 @@ def test_display_correlation(mocker):
 
     mocker.patch("yfinance.download", side_effect=mock_yf_download)
 
-    mock_show = mocker.Mock()
-    mocker.patch("matplotlib.pyplot.show", new=mock_show)
+    # MOCK VISUALIZE_OUTPUT
+    mocker.patch(
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
+    )
 
     yahoo_finance_view.display_correlation(
         similar_tickers=["TSLA", "GM"],
         start=datetime.strptime("2020-12-21", "%Y-%m-%d"),
         candle_type="o",
     )
-
-    mock_show.assert_called_once()

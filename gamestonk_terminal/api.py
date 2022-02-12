@@ -10,3 +10,5 @@ from .etf import etf_api as etf
 from .forex import forex_api as forex
 from .mutual_funds import mutual_fund_api as funds
 from .portfolio import portfolio_api as portfolio
+
+from .config_terminal import theme

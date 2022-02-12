@@ -3,5 +3,5 @@ XLF   Financial Select Sector SPDR Fund  SPDR State Street Global Advisors  Fina
 KRE       SPDR S&P Regional Banking ETF  SPDR State Street Global Advisors  Financial    5101.42464
 KBE                   SPDR S&P Bank ETF  SPDR State Street Global Advisors  Financial   3664.192512
 KBWB               Invesco KBW Bank ETF                            Invesco  Financial   2707.920128
-IAT     iShares U.S. Regional Banks ETF                            iShares  Financial    443.543616 
+IAT     iShares U.S. Regional Banks ETF                            iShares  Financial    443.543616
 
