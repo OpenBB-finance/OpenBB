@@ -1,2 +1,2 @@
-Ticker AAPL not supported. Please try another one!
+[red]Ticker AAPL not supported. Please try another one![/red]
 

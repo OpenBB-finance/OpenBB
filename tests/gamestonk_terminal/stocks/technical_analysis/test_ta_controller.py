@@ -359,7 +359,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             dict(
                 ma_type="EMA",
                 s_ticker="MOCK_TICKER",
-                values=MOCK_STOCK_DF["Adj Close"],
+                series=MOCK_STOCK_DF["Adj Close"],
                 length=[1, 2],
                 offset=2,
                 export="csv",
@@ -377,7 +377,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             dict(
                 ma_type="SMA",
                 s_ticker="MOCK_TICKER",
-                values=MOCK_STOCK_DF["Adj Close"],
+                series=MOCK_STOCK_DF["Adj Close"],
                 length=[1, 2],
                 offset=2,
                 export="csv",
@@ -395,7 +395,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             dict(
                 ma_type="WMA",
                 s_ticker="MOCK_TICKER",
-                values=MOCK_STOCK_DF["Adj Close"],
+                series=MOCK_STOCK_DF["Adj Close"],
                 length=[1, 2],
                 offset=2,
                 export="csv",
@@ -413,7 +413,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             dict(
                 ma_type="HMA",
                 s_ticker="MOCK_TICKER",
-                values=MOCK_STOCK_DF["Adj Close"],
+                series=MOCK_STOCK_DF["Adj Close"],
                 length=[1, 2],
                 offset=2,
                 export="csv",
@@ -429,7 +429,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [],
             dict(
                 s_ticker="MOCK_TICKER",
-                df_stock=MOCK_STOCK_DF,
+                ohlc=MOCK_STOCK_DF,
                 s_interval="MOCK_INTERVAL",
                 offset=2,
                 export="csv",
@@ -447,7 +447,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             dict(
                 ma_type="ZLMA",
                 s_ticker="MOCK_TICKER",
-                values=MOCK_STOCK_DF["Adj Close"],
+                series=MOCK_STOCK_DF["Adj Close"],
                 length=[1, 2],
                 offset=2,
                 export="csv",
@@ -464,7 +464,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [],
             dict(
                 s_ticker="MOCK_TICKER",
-                df=MOCK_STOCK_DF,
+                ohlc=MOCK_STOCK_DF,
                 length=1,
                 scalar=2,
                 export="csv",
@@ -482,7 +482,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [],
             dict(
                 s_ticker="MOCK_TICKER",
-                values=MOCK_STOCK_DF["Adj Close"],
+                series=MOCK_STOCK_DF["Adj Close"],
                 n_fast=1,
                 n_slow=2,
                 n_signal=3,
@@ -501,7 +501,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [],
             dict(
                 s_ticker="MOCK_TICKER",
-                prices=MOCK_STOCK_DF["Adj Close"],
+                series=MOCK_STOCK_DF["Adj Close"],
                 length=1,
                 scalar=2,
                 drift=3,
@@ -520,7 +520,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [],
             dict(
                 s_ticker="MOCK_TICKER",
-                df_stock=MOCK_STOCK_DF,
+                ohlc=MOCK_STOCK_DF,
                 fastkperiod=1,
                 slowdperiod=2,
                 slowkperiod=3,
@@ -537,7 +537,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [],
             dict(
                 s_ticker="MOCK_TICKER",
-                df_stock=MOCK_STOCK_DF,
+                ohlc=MOCK_STOCK_DF,
                 length=1,
                 export="csv",
             ),
@@ -552,7 +552,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [],
             dict(
                 s_ticker="MOCK_TICKER",
-                values=MOCK_STOCK_DF["Adj Close"],
+                series=MOCK_STOCK_DF["Adj Close"],
                 length=1,
                 export="csv",
             ),
@@ -569,7 +569,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [],
             dict(
                 s_ticker="MOCK_TICKER",
-                df_stock=MOCK_STOCK_DF,
+                ohlc=MOCK_STOCK_DF,
                 length=1,
                 scalar=2,
                 drift=3,
@@ -587,7 +587,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [],
             dict(
                 s_ticker="MOCK_TICKER",
-                df_stock=MOCK_STOCK_DF,
+                ohlc=MOCK_STOCK_DF,
                 length=1,
                 scalar=2,
                 export="csv",
@@ -605,7 +605,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [],
             dict(
                 ticker="MOCK_TICKER",
-                df_stock=MOCK_STOCK_DF,
+                ohlc=MOCK_STOCK_DF,
                 length=1,
                 n_std=2,
                 mamode="MOCK_MAMODE",
@@ -623,7 +623,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [],
             dict(
                 ticker="MOCK_TICKER",
-                df_stock=MOCK_STOCK_DF,
+                ohlc=MOCK_STOCK_DF,
                 upper_length=1,
                 lower_length=2,
                 export="csv",
@@ -642,7 +642,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [],
             dict(
                 s_ticker="MOCK_TICKER",
-                df_stock=MOCK_STOCK_DF,
+                ohlc=MOCK_STOCK_DF,
                 length=1,
                 scalar=2,
                 mamode="sma",
@@ -660,7 +660,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [],
             dict(
                 s_ticker="MOCK_TICKER",
-                df_stock=MOCK_STOCK_DF,
+                ohlc=MOCK_STOCK_DF,
                 use_open=True,
                 export="csv",
             ),
@@ -677,7 +677,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [],
             dict(
                 s_ticker="MOCK_TICKER",
-                df_stock=MOCK_STOCK_DF,
+                ohlc=MOCK_STOCK_DF,
                 use_open=True,
                 fast=1,
                 slow=2,
@@ -693,7 +693,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [],
             dict(
                 s_ticker="MOCK_TICKER",
-                df_stock=MOCK_STOCK_DF,
+                ohlc=MOCK_STOCK_DF,
                 export="csv",
             ),
         ),
@@ -709,7 +709,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [],
             dict(
                 s_ticker="MOCK_TICKER",
-                df_stock=MOCK_STOCK_DF,
+                ohlc=MOCK_STOCK_DF,
                 period=1,
                 start_date=datetime.strptime("2021-12-01", "%Y-%m-%d"),
                 end_date=datetime.strptime("2021-12-02", "%Y-%m-%d"),

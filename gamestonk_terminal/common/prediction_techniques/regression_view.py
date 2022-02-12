@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Union
+from typing import Union, Optional, List
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -17,6 +17,7 @@ from gamestonk_terminal.common.prediction_techniques.pred_helper import (
     print_pretty_prediction,
 )
 from gamestonk_terminal.config_plot import PLOT_DPI
+from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
     export_data,
@@ -44,6 +45,7 @@ def display_regression(
     s_end_date: str = "",
     export: str = "",
     time_res: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display predications for regression models
 
@@ -67,6 +69,8 @@ def display_regression(
         Format for exporting figures
     time_res : str
         Resolution for data, allowing for predicting outside of standard market days
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
     # BACKTESTING
     if s_end_date:
@@ -79,7 +83,7 @@ def display_regression(
                 s_end_date, periods=n_predict + 1, freq=time_res
             )[1:]
 
-        df_future = values[future_index[0] : future_index[-1]]
+        df_future = values[future_index[0] : future_index[-1]]  # noqa: E203
         values = values[:s_end_date]  # type: ignore
 
     l_predictions, _ = regression_model.get_regression_model(
@@ -99,142 +103,141 @@ def display_regression(
     df_pred = pd.Series(l_predictions, index=l_pred_days, name="Price")
 
     # Plotting
-    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    ax.plot(values.index, values, lw=2)
+
+    # This plot has 1 axes
+    if external_axes is None:
+        _, ax1 = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    else:
+        if (not s_end_date and len(external_axes) != 1) or (
+            s_end_date and len(external_axes) != 3
+        ):
+            console.print(
+                "[red]Expected list of 1 axis or 3 axes when backtesting./n[/red]"
+            )
+            return
+        ax1 = external_axes[0]
+
+    ax1.plot(values.index, values)
     # BACKTESTING
     if s_end_date:
-        ax.set_title(
-            f"BACKTESTING: Regression (polynomial {poly_order}) on {dataset} - {n_predict} step prediction"
+        ax1.set_title(
+            f"BACKTESTING: Regression (polynomial {poly_order}) on {dataset} - {n_predict} step prediction",
+            fontsize=12,
         )
     else:
-        ax.set_title(
+        ax1.set_title(
             f"Regression (polynomial {poly_order}) on {dataset} - {n_predict} step prediction"
         )
-    ax.set_xlim(values.index[0], l_pred_days[-1])
-    ax.set_xlabel("Time")
-    ax.set_ylabel("Value")
-    ax.grid(b=True, which="major", color="#666666", linestyle="-")
-    ax.minorticks_on()
-    ax.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-    ax.plot(
+    ax1.set_xlim(values.index[0], l_pred_days[-1])
+    ax1.set_ylabel("Value")
+    ax1.plot(
         [values.index[-1], df_pred.index[0]],
         [values.values[-1], df_pred.values[0]],
-        lw=1,
-        c="tab:green",
+        color=theme.down_color,
         linestyle="--",
     )
-    ax.plot(df_pred.index, df_pred, lw=2, c="tab:green")
-    ax.axvspan(values.index[-1], df_pred.index[-1], facecolor="tab:orange", alpha=0.2)
+    ax1.plot(df_pred.index, df_pred, color=theme.down_color)
+    ax1.axvspan(values.index[-1], df_pred.index[-1], alpha=0.2)
     _, _, ymin, ymax = plt.axis()
-    ax.vlines(values.index[-1], ymin, ymax, linewidth=1, linestyle="--", color="k")
+    ax1.vlines(values.index[-1], ymin, ymax, linestyle="--")
 
     # BACKTESTING
     if s_end_date:
-        ax.plot(
+        ax1.plot(
             df_future.index,
             df_future,
-            lw=2,
-            c="tab:blue",
-            ls="--",
+            color=theme.up_color,
+            linestyle="--",
         )
-        ax.plot(
+        ax1.plot(
             [values.index[-1], df_future.index[0]],
             [
                 values.values[-1],
                 df_future.values[0],
             ],
-            lw=1,
-            c="tab:blue",
+            color=theme.up_color,
             linestyle="--",
         )
-    fig.tight_layout()
-    if gtff.USE_ION:
-        plt.ion()
 
-    plt.show()
+    theme.style_primary_axis(ax1)
+
+    if external_axes is None:
+        theme.visualize_output()
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "regression")
     console.print("")
 
     # BACKTESTING
     if s_end_date:
-        fig, ax = plt.subplots(1, 2, figsize=plot_autoscale(), dpi=PLOT_DPI)
-        ax0 = ax[0]
-        ax0.plot(
+        # This plot has 1 axes
+        if external_axes is None:
+            _, axes = plt.subplots(
+                2, 1, sharex=True, figsize=plot_autoscale(), dpi=PLOT_DPI
+            )
+            (ax2, ax3) = axes
+        else:
+            if len(external_axes) != 3:
+                console.print("[red]Expected list of 3 axis items./n[/red]")
+                return
+            (_, ax2, ax3) = external_axes
+
+        ax2.plot(
             df_future.index,
             df_future,
-            lw=2,
-            c="tab:blue",
-            ls="--",
+            color=theme.up_color,
+            linestyle="--",
         )
-        ax0.plot(df_pred.index, df_pred, lw=2, c="green")
-        ax0.scatter(df_future.index, df_future, c="tab:blue", lw=3)
-        ax0.plot(
+        ax2.plot(df_pred.index, df_pred, color=theme.down_color, marker="o")
+        ax2.plot(
             [values.index[-1], df_future.index[0]],
             [
                 values.values[-1],
                 df_future.values[0],
             ],
-            lw=2,
-            c="tab:blue",
-            ls="--",
+            color=theme.up_color,
+            linestyle="--",
         )
-        ax0.scatter(df_pred.index, df_pred, c="green", lw=3)
-        ax0.plot(
+        ax2.plot(
             [values.index[-1], df_pred.index[0]],
             [values.values[-1], df_pred.values[0]],
-            lw=2,
-            c="green",
-            ls="--",
+            color=theme.down_color,
+            linestyle="--",
+            marker="o",
         )
-        ax0.set_title("BACKTESTING: Real data vs Prediction")
-        ax0.set_xlim(values.index[-1], df_pred.index[-1])
-        ax0.set_xticks([values.index[-1], df_pred.index[-1]])
-        ax0.set_ylabel("Value")
-        ax0.grid(b=True, which="major", color="#666666", linestyle="-")
-        ax0.minorticks_on()
-        ax0.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-        ax0.legend(["Real data", "Prediction data"])
-        ax0.set_xticks([])
+        ax2.set_title("BACKTESTING: Real data vs Prediction", fontsize=12)
+        ax2.set_xlim(values.index[-1], df_pred.index[-1])
+        ax2.set_ylabel("Value")
+        ax2.legend(["Real data", "Prediction data"])
 
-        ax1 = ax[1]
-        ax1.axhline(y=0, color="k", linestyle="--", linewidth=2)
-        ax1.plot(
+        ax3.axhline(y=0, linestyle="--", color=theme.up_color)
+        ax3.plot(
             df_future.index,
             100 * (df_pred.values - df_future.values) / df_future.values,
-            lw=2,
-            c="red",
+            color=theme.down_color,
+            marker="o",
         )
-        ax1.scatter(
-            df_future.index,
-            100 * (df_pred.values - df_future.values) / df_future.values,
-            c="red",
-            lw=5,
+        ax3.set_title(
+            "BACKTESTING: Error between Real data and Prediction [%]", fontsize=12
         )
-        ax1.set_title("BACKTESTING: Error between Real data and Prediction [%]")
-        ax1.plot(
+        ax3.plot(
             [values.index[-1], df_future.index[0]],
             [
                 0,
                 100 * (df_pred.values[0] - df_future.values[0]) / df_future.values[0],
             ],
-            lw=2,
-            ls="--",
-            c="red",
+            linestyle="--",
+            color=theme.down_color,
         )
-        ax1.set_xlim(values.index[-1], df_pred.index[-1])
-        ax1.set_xticks([values.index[-1], df_pred.index[-1]])
-        ax1.set_xlabel("Time")
-        ax1.set_ylabel("Prediction Error (%)")
-        ax1.grid(b=True, which="major", color="#666666", linestyle="-")
-        ax1.minorticks_on()
-        ax1.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-        ax1.legend(["Real data", "Prediction data"])
-        fig.tight_layout()
-        if gtff.USE_ION:
-            plt.ion()
+        ax3.set_xlim(values.index[-1], df_pred.index[-1])
+        ax3.set_xlabel("Time")
+        ax3.set_ylabel("Error (%)")
+        ax3.legend(["Real data", "Prediction data"])
 
-        plt.show()
+        theme.style_primary_axis(ax2)
+        theme.style_primary_axis(ax3)
+
+        if external_axes is None:
+            theme.visualize_output()
 
         # Refactor prediction dataframe for backtesting print
         df_pred.name = "Prediction"

@@ -3,12 +3,12 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import Optional, List
 
-import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
 import pandas as pd
 
-import gamestonk_terminal.feature_flags as gtff
+from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal.alternative.covid import covid_model
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.decorators import log_start_end
@@ -24,7 +24,11 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_covid_ov(
-    country, raw: bool = False, limit: int = 10, export: str = ""
+    country,
+    raw: bool = False,
+    limit: int = 10,
+    export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Show historical cases and deaths by country
 
@@ -38,38 +42,45 @@ def display_covid_ov(
         Number of raw data to show
     export: str
         Format to export data
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (2 axis is expected in the list), by default None
     """
-    console.print("")
     cases = covid_model.get_global_cases(country) / 1_000
     deaths = covid_model.get_global_deaths(country)
     ov = pd.concat([cases, deaths], axis=1)
     ov.columns = ["Cases", "Deaths"]
 
-    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    # This plot has 2 axes
+    if external_axes is None:
+        _, ax1 = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        ax2 = ax1.twinx()
+    else:
+        if len(external_axes) != 2:
+            console.print("[red]Expected list of 1 axis item./n[/red]")
+            return
+        ax1, ax2 = external_axes
 
-    ax.plot(cases.index, cases, alpha=0.2, c="b")
-    ax.plot(cases.index, cases.rolling(7).mean(), lw=4, c="b")
-    ax.set_ylabel("Cases (1k)", color="blue")
-    ax.tick_params(axis="y", labelcolor="blue")
+    ax1.plot(cases.index, cases, color=theme.up_color, alpha=0.2)
+    ax1.plot(cases.index, cases.rolling(7).mean(), color=theme.up_color)
+    ax1.set_ylabel("Cases (1k)")
+    theme.style_primary_axis(ax1)
+    ax1.yaxis.set_label_position("left")
 
-    ax2 = ax.twinx()
-    ax2.plot(deaths.index, deaths, "r", alpha=0.2)
-    ax2.plot(deaths.index, deaths.rolling(7).mean(), "r", lw=4)
-    ax2.grid()
+    ax2.plot(deaths.index, deaths, color=theme.down_color, alpha=0.2)
+    ax2.plot(deaths.index, deaths.rolling(7).mean(), color=theme.down_color)
     ax2.set_title(f"Overview for {country.upper()}")
     ax2.set_xlabel("Date")
-    ax2.set_ylabel("Deaths", color="red")
-    ax2.tick_params(axis="y", labelcolor="red")
+    ax2.set_ylabel("Deaths")
+    theme.style_twin_axis(ax2)
+    ax2.yaxis.set_label_position("right")
 
-    dateFmt = mdates.DateFormatter("%Y-%m-%d")
-    ax.xaxis.set_major_formatter(dateFmt)
-    ax.tick_params(axis="x", labelrotation=45)
-    ax.set_xlim(ov.index[0], ov.index[-1])
+    ax1.set_xlim(ov.index[0], ov.index[-1])
+    legend = ax2.legend(ov.columns)
+    legend.legendHandles[1].set_color(theme.down_color)
+    legend.legendHandles[0].set_color(theme.up_color)
 
-    fig.tight_layout(pad=2)
-    if gtff.USE_ION:
-        plt.ion()
-    plt.show()
+    if external_axes is None:
+        theme.visualize_output()
 
     if raw:
         ov.index = [x.strftime("%Y-%m-%d") for x in ov.index]
@@ -80,7 +91,6 @@ def display_covid_ov(
             index_name="Date",
             title=f"[bold]{country} COVID Numbers[/bold]",
         )
-
         console.print("")
 
     if export:
@@ -89,7 +99,12 @@ def display_covid_ov(
 
 @log_start_end(log=logger)
 def display_covid_stat(
-    country, stat: str = "cases", raw: bool = False, limit: int = 10, export: str = ""
+    country,
+    stat: str = "cases",
+    raw: bool = False,
+    limit: int = 10,
+    export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Show historical cases and deaths by country
 
@@ -105,6 +120,8 @@ def display_covid_stat(
         Number of raw data to show
     export: str
         Format to export data
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
     console.print("")
     if stat == "cases":
@@ -119,27 +136,33 @@ def display_covid_stat(
         console.print("Invalid stat selected.\n")
         return
 
-    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-
-    ax.plot(data.index, data, alpha=0.2, c="b")
-    ax.plot(data.index, data.rolling(7).mean(), lw=4, c="b")
-    if stat == "cases":
-        ax.set_ylabel(stat.title() + " (1k)", color="blue")
+    # This plot has 1 axes
+    if external_axes is None:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     else:
-        ax.set_ylabel(stat.title(), color="blue")
-    ax.tick_params(axis="y", labelcolor="blue")
-    ax.grid("on")
-    dateFmt = mdates.DateFormatter("%Y-%m-%d")
-    ax.xaxis.set_major_formatter(dateFmt)
-    ax.tick_params(axis="x", labelrotation=45)
-    ax.spines["right"].set_visible(False)
-    ax.spines["top"].set_visible(False)
+        if len(external_axes) != 1:
+            console.print("[red]Expected list of 1 axis item./n[/red]")
+            return
+        (ax,) = external_axes
+
+    if stat == "cases":
+        ax.set_ylabel(stat.title() + " (1k)")
+        color = theme.up_color
+    elif stat == "deaths":
+        ax.set_ylabel(stat.title())
+        color = theme.down_color
+    else:
+        ax.set_ylabel(stat.title() + " (Deaths/Cases)")
+        color = theme.get_colors(reverse=True)[0]
+
+    ax.plot(data.index, data, color=color, alpha=0.2)
+    ax.plot(data.index, data.rolling(7).mean(), color=color)
     ax.set_title(f"{country} COVID {stat}")
     ax.set_xlim(data.index[0], data.index[-1])
-    fig.tight_layout(pad=2)
-    if gtff.USE_ION:
-        plt.ion()
-    plt.show()
+    theme.style_primary_axis(ax)
+
+    if external_axes is None:
+        theme.visualize_output()
 
     if raw:
         data.index = [x.strftime("%Y-%m-%d") for x in data.index]
@@ -150,7 +173,6 @@ def display_covid_stat(
             index_name="Date",
             title=f"[bold]{country} COVID {stat}[/bold]",
         )
-
         console.print("")
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), stat, data)
