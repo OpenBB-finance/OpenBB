@@ -3,17 +3,20 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import List, Optional
 
 import matplotlib.ticker
 import pandas as pd
 from matplotlib import pyplot as plt
 
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.helper_funcs import (
     export_data,
     long_number_format,
     print_rich_table,
+    plot_autoscale,
 )
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.stocks.dark_pool_shorts import quandl_model
@@ -22,7 +25,12 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def plot_short_interest(ticker: str, nyse: bool, df_short_interest: pd.DataFrame):
+def plot_short_interest(
+    ticker: str,
+    nyse: bool,
+    df_short_interest: pd.DataFrame,
+    external_axes: Optional[List[plt.Axes]] = None,
+):
     """Plots the short interest of a stock. This corresponds to the
     number of shares that have been sold short but have not yet been
     covered or closed out. Either NASDAQ or NYSE [Source: Quandl]
@@ -37,40 +45,53 @@ def plot_short_interest(ticker: str, nyse: bool, df_short_interest: pd.DataFrame
         data from NYSE if true, otherwise NASDAQ
     df_short_interest: pd.DataFrame
         Short interest dataframe
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (2 axis is expected in the list), by default None
+
     """
-    _, ax = plt.subplots()
-    ax.bar(df_short_interest.index, df_short_interest["Short Volume"], 0.3, color="r")
-    ax.bar(
+
+    # This plot has 2 axis
+    if not external_axes:
+        _, ax1 = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        ax2 = ax1.twinx()
+    else:
+        if len(external_axes) != 2:
+            console.print("[red]Expected list of one axis item./n[/red]")
+            return
+        (ax1, ax2) = external_axes
+
+    ax1.bar(
+        df_short_interest.index,
+        df_short_interest["Short Volume"],
+        0.3,
+        color=theme.down_color,
+    )
+    ax1.bar(
         df_short_interest.index,
         df_short_interest["Total Volume"] - df_short_interest["Short Volume"],
         0.3,
         bottom=df_short_interest["Short Volume"],
-        color="b",
+        color=theme.up_color,
     )
-    ax.set_ylabel("Shares")
-    ax.set_xlabel("Date")
-    ax.set_title(f"{('NASDAQ', 'NYSE')[nyse]} Short Interest on {ticker}")
+    ax1.set_ylabel("Shares")
+    ax1.set_title(f"{('NASDAQ', 'NYSE')[nyse]} Short Interest on {ticker}")
 
-    ax.legend(labels=["Short Volume", "Total Volume"], loc="best")
-    ax.tick_params(axis="both", which="major")
-    ax.yaxis.set_major_formatter(matplotlib.ticker.EngFormatter())
-    ax_twin = ax.twinx()
-    ax_twin.tick_params(axis="y", colors="green")
-    ax_twin.set_ylabel("Percentage of Volume Shorted", color="green")
-    ax_twin.plot(
+    ax1.legend(labels=["Short Volume", "Total Volume"], loc="best")
+    ax1.yaxis.set_major_formatter(matplotlib.ticker.EngFormatter())
+
+    ax2.tick_params(axis="y")
+    ax2.set_ylabel("Percentage of Volume Shorted")
+    ax2.plot(
         df_short_interest.index,
         df_short_interest["% of Volume Shorted"],
-        color="green",
     )
-    ax_twin.tick_params(axis="y", which="major", color="green")
-    ax_twin.yaxis.set_major_formatter(matplotlib.ticker.FormatStrFormatter("%.0f%%"))
-    plt.xlim([df_short_interest.index[0], df_short_interest.index[-1]])
-    plt.gcf().autofmt_xdate()
+    ax2.tick_params(axis="y", which="major")
+    ax2.yaxis.set_major_formatter(matplotlib.ticker.FormatStrFormatter("%.0f%%"))
 
-    if gtff.USE_ION:
-        plt.ion()
+    theme.style_twin_axes(ax1, ax2)
 
-    plt.show()
+    if not external_axes:
+        theme.visualize_output()
 
 
 @log_start_end(log=logger)
@@ -101,6 +122,7 @@ def short_interest(ticker: str, nyse: bool, days: int, raw: bool, export: str):
         for idx in df_short_interest.columns.tolist()
     ]
     pd.options.mode.chained_assignment = None
+
     vol_pct = (
         100
         * df_short_interest["Short Volume"].values

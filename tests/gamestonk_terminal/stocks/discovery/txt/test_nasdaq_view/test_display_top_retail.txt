@@ -1,0 +1,36 @@
+  Ticker  Activity  Sentiment
+0   TSLA    0.0445          2
+1   TQQQ    0.0233          4
+2    SPY    0.0258          3
+3    QQQ    0.0330          2
+4   NVDA    0.0384          1
+5   MSFT    0.0155          4
+6   LCID    0.0146         -4
+7      F    0.0117          3
+8    AMD    0.0447          1
+9   AAPL    0.0400         -1
+
+  Ticker  Activity  Sentiment
+0   TSLA    0.0548          2
+1   TQQQ    0.0268          6
+2    SPY    0.0275          4
+3    QQQ    0.0292          4
+4   NVDA    0.0389          2
+5   MSFT    0.0174          4
+6   LCID    0.0121         -3
+7      F    0.0136          3
+8    AMD    0.0423          2
+9   AAPL    0.0394          0
+
+  Ticker  Activity  Sentiment
+0    TSM    0.0158          7
+1   TSLA    0.0542          2
+2   TQQQ    0.0210          6
+3    SPY    0.0283          5
+4    QQQ    0.0368          4
+5   NVDA    0.0433          1
+6   MSFT    0.0230          6
+7      F    0.0233          0
+8    AMD    0.0383          2
+9   AAPL    0.0347          2
+

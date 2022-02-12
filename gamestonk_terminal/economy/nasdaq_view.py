@@ -3,12 +3,12 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import List
+from typing import List, Optional
 
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.economy import nasdaq_model
@@ -24,7 +24,10 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_big_mac_index(
-    country_codes: List[str], raw: bool = False, export: str = ""
+    country_codes: List[str],
+    raw: bool = False,
+    export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display Big Mac Index for given countries
 
@@ -36,6 +39,8 @@ def display_big_mac_index(
         Flag to display raw data, by default False
     export : str, optional
         Format data, by default ""
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (3 axes are expected in the list), by default None
     """
     df_cols = ["Date"]
     df_cols.extend(country_codes)
@@ -48,21 +53,28 @@ def display_big_mac_index(
     big_mac.set_index("Date", inplace=True)
 
     if not big_mac.empty:
-        fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        if external_axes is None:
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+
+        else:
+            if len(external_axes) != 3:
+                console.print("[red]Expected list of 3 axis items./n[/red]")
+                return
+            (ax,) = external_axes
+
         big_mac.plot(ax=ax, marker="o")
-        ax.legend(bbox_to_anchor=(1, 1))
+        ax.legend()
         ax.set_title("Big Mac Index (USD)")
         ax.set_ylabel("Price of Big Mac in USD")
-        ax.grid("on")
-        if gtff.USE_ION:
-            plt.ion()
-        fig.tight_layout()
-        plt.show()
+        theme.style_primary_axis(ax)
+        if external_axes is None:
+            theme.visualize_output()
 
         if raw:
             print_rich_table(
                 big_mac, headers=list(big_mac.columns), title="Big Mac Index"
             )
+            console.print("")
 
         export_data(
             export, os.path.dirname(os.path.abspath(__file__)), "bigmac", big_mac

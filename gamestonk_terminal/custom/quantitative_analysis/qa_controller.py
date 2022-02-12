@@ -191,8 +191,8 @@ class QaController(BaseController):
             """,
         )
         parser.add_argument(
-            "-l",
-            "--limit",
+            "-w",
+            "--window",
             help="Number to show",
             type=check_positive,
             default=20,
@@ -424,8 +424,8 @@ class QaController(BaseController):
             """,
         )
         parser.add_argument(
-            "-l",
-            "--lags",
+            "-w",
+            "--window",
             dest="lags",
             type=check_positive,
             default=15,
@@ -451,10 +451,10 @@ class QaController(BaseController):
             """,
         )
         parser.add_argument(
-            "-l",
-            "--length",
+            "-w",
+            "--window",
             action="store",
-            dest="n_length",
+            dest="n_window",
             type=check_positive,
             default=14,
             help="Window length",
@@ -467,7 +467,7 @@ class QaController(BaseController):
                 name=self.ticker,
                 df=self.df,
                 target=self.target,
-                length=ns_parser.n_length,
+                window=ns_parser.n_window,
                 export=ns_parser.export,
             )
 
@@ -481,10 +481,10 @@ class QaController(BaseController):
             """,
         )
         parser.add_argument(
-            "-l",
-            "--length",
+            "-w",
+            "--window",
             action="store",
-            dest="n_length",
+            dest="n_window",
             type=check_positive,
             default=14,
             help="Window length",
@@ -497,7 +497,7 @@ class QaController(BaseController):
                 name=self.ticker,
                 df=self.df,
                 target=self.target,
-                length=ns_parser.n_length,
+                window=ns_parser.n_window,
                 export=ns_parser.export,
             )
 
@@ -519,8 +519,8 @@ class QaController(BaseController):
             """,
         )
         parser.add_argument(
-            "-l",
-            "--length",
+            "-w",
+            "--window",
             action="store",
             dest="n_length",
             type=check_positive,
@@ -544,7 +544,7 @@ class QaController(BaseController):
                 name=self.ticker,
                 df=self.df,
                 target=self.target,
-                length=ns_parser.n_length,
+                window=ns_parser.n_window,
                 quantile=ns_parser.f_quantile,
                 export=ns_parser.export,
             )
@@ -565,8 +565,8 @@ class QaController(BaseController):
             """,
         )
         parser.add_argument(
-            "-l",
-            "--length",
+            "-w",
+            "--window",
             action="store",
             dest="n_length",
             type=check_positive,
@@ -581,7 +581,7 @@ class QaController(BaseController):
                 name=self.ticker,
                 df=self.df,
                 target=self.target,
-                length=ns_parser.n_length,
+                window=ns_parser.n_length,
                 export=ns_parser.export,
             )
 
@@ -601,8 +601,8 @@ class QaController(BaseController):
             """,
         )
         parser.add_argument(
-            "-l",
-            "--length",
+            "-w",
+            "--window",
             action="store",
             dest="n_length",
             type=check_positive,
@@ -617,7 +617,7 @@ class QaController(BaseController):
                 name=self.ticker,
                 df=self.df,
                 target=self.target,
-                length=ns_parser.n_length,
+                window=ns_parser.n_length,
                 export=ns_parser.export,
             )
 

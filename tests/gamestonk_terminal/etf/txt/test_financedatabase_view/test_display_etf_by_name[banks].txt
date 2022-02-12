@@ -2,5 +2,5 @@
 IAT                                iShares U.S. Regional Banks ETF         iShares                  Financial   443.543616
 DPST                  Direxion Daily Regional Banks Bull 3X Shares  Direxion Funds  Trading--Leveraged Equity   363.291776
 BNKU           MicroSectors U.S. Big Banks Index 3X Leveraged ETNs    Microsectors  Trading--Leveraged Equity    86.868064
-BNKD  MicroSectors U.S. Big Banks Index -3X Inverse Leveraged ETNs    Microsectors    Trading--Inverse Equity     8.537872 
+BNKD  MicroSectors U.S. Big Banks Index -3X Inverse Leveraged ETNs    Microsectors    Trading--Inverse Equity     8.537872
 

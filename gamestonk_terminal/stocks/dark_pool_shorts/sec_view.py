@@ -3,15 +3,20 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import List, Optional
 from datetime import datetime, timedelta
 
-import matplotlib.dates as mdates
 import pandas as pd
 from matplotlib import pyplot as plt
 
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal.decorators import log_start_end
-from gamestonk_terminal.helper_funcs import export_data, print_rich_table
+from gamestonk_terminal.helper_funcs import (
+    export_data,
+    print_rich_table,
+    plot_autoscale,
+)
+from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.stocks.dark_pool_shorts import sec_model
 
@@ -27,6 +32,7 @@ def fails_to_deliver(
     num: int,
     raw: bool,
     export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display fails-to-deliver data for a given ticker. [Source: SEC]
 
@@ -46,36 +52,42 @@ def fails_to_deliver(
         Print raw data
     export : str
         Export dataframe data to csv,json,xlsx file
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (2 axis is expected in the list), by default None
+
     """
     ftds_data = sec_model.get_fails_to_deliver(ticker, start, end, num)
 
-    plt.bar(
+    # This plot has 2 axis
+    if not external_axes:
+        _, ax1 = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        ax2 = ax1.twinx()
+    else:
+        if len(external_axes) != 2:
+            console.print("[red]Expected list of one axis item./n[/red]")
+            return
+        (ax1, ax2) = external_axes
+
+    ax1.bar(
         ftds_data["SETTLEMENT DATE"],
         ftds_data["QUANTITY (FAILS)"] / 1000,
     )
-    plt.ylabel("Shares [K]")
-    plt.title(f"Fails-to-deliver Data for {ticker}")
-    plt.grid(b=True, which="major", color="#666666", linestyle="-", alpha=0.2)
-    plt.gca().xaxis.set_major_formatter(mdates.DateFormatter("%Y/%m/%d"))
-    plt.gca().xaxis.set_major_locator(mdates.DayLocator(interval=7))
-    plt.gcf().autofmt_xdate()
-    plt.xlabel("Days")
-
-    _ = plt.gca().twinx()
+    ax1.set_ylabel("Shares [K]")
+    ax1.set_title(f"Fails-to-deliver Data for {ticker}")
 
     if num > 0:
         stock_ftd = stock[stock.index > (datetime.now() - timedelta(days=num + 31))]
     else:
         stock_ftd = stock[stock.index > start]
         stock_ftd = stock_ftd[stock_ftd.index < end]
-    plt.plot(stock_ftd.index, stock_ftd["Adj Close"], color="tab:orange")
-    plt.ylabel("Share Price [$]")
 
-    if gtff.USE_ION:
-        plt.ion()
+    ax2.plot(stock_ftd.index, stock_ftd["Adj Close"], color="tab:orange")
+    ax2.set_ylabel("Share Price [$]")
 
-    plt.show()
-    console.print("")
+    theme.style_twin_axes(ax1, ax2)
+
+    if not external_axes:
+        theme.visualize_output()
 
     if raw:
         print_rich_table(

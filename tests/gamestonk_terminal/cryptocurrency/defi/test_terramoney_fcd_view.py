@@ -14,7 +14,9 @@ from gamestonk_terminal.cryptocurrency.defi import terramoney_fcd_view
     [
         (
             "display_account_staking_info",
-            dict(address="terra1jvwelvs7rdk6j3mqdztq5tya99w8lxk6l9hcqg"),
+            dict(
+                address="terra1jvwelvs7rdk6j3mqdztq5tya99w8lxk6l9hcqg"  # pragma: allowlist secret
+            ),
         ),
         ("display_validators", dict()),
         ("display_gov_proposals", dict()),
@@ -29,15 +31,9 @@ def test_call_func(func, kwargs, mocker):
         target="gamestonk_terminal.cryptocurrency.defi.terramoney_fcd_view.export_data"
     )
 
-    # MOCK GTFF
-    mocker.patch.object(target=terramoney_fcd_view.gtff, attribute="USE_ION", new=True)
-
-    # MOCK ION + SHOW
+    # MOCK VISUALIZE_OUTPUT
     mocker.patch(
-        target="gamestonk_terminal.cryptocurrency.defi.terramoney_fcd_view.plt.ion"
-    )
-    mocker.patch(
-        target="gamestonk_terminal.cryptocurrency.defi.terramoney_fcd_view.plt.show"
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
     )
 
     getattr(terramoney_fcd_view, func)(**kwargs)
