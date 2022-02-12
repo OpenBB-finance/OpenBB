@@ -4,11 +4,12 @@ __docformat__ = "numpy"
 import logging
 import os
 import webbrowser
+from typing import List, Optional
 
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
@@ -143,7 +144,11 @@ def display_calendar_earnings(ticker: str):
 
 @log_start_end(log=logger)
 def display_dividends(
-    ticker: str, limit: int = 12, plot: bool = False, export: str = ""
+    ticker: str,
+    limit: int = 12,
+    plot: bool = False,
+    export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display historical dividends
     Parameters
@@ -156,6 +161,8 @@ def display_dividends(
         Plots hitsorical data
     export: str
         Format to export data
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
     div_history = yahoo_finance_model.get_dividends(ticker)
     if div_history.empty:
@@ -164,9 +171,16 @@ def display_dividends(
     div_history["Dif"] = div_history.diff()
     div_history = div_history[::-1]
     if plot:
-        fig, ax = plt.subplots(
-            figsize=plot_autoscale(), constrained_layout=False, dpi=PLOT_DPI
-        )
+
+        # This plot has 1 axis
+        if not external_axes:
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        else:
+            if len(external_axes) != 1:
+                console.print("[red]Expected list of one axis item./n[/red]")
+                return
+            (ax,) = external_axes
+
         ax.plot(
             div_history.index,
             div_history["Dividends"],
@@ -174,19 +188,19 @@ def display_dividends(
             linewidth=0.75,
             marker=".",
             markersize=4,
-            mfc="k",
-            mec="k",
-            c="k",
+            mfc=theme.down_color,
+            mec=theme.down_color,
             alpha=1,
         )
-        ax.set_xlabel("Date")
         ax.set_ylabel("Amount ($)")
         ax.set_title(f"Dividend History for {ticker}")
         ax.set_xlim(div_history.index[-1], div_history.index[0])
-        if gtff.USE_ION:
-            plt.ion()
-        fig.tight_layout()
-        plt.show()
+
+        theme.style_primary_axis(ax)
+
+        if not external_axes:
+            theme.visualize_output()
+
     else:
         div_history.index = pd.to_datetime(div_history.index, format="%Y%m%d").strftime(
             "%Y-%m-%d"

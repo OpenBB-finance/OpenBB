@@ -14,7 +14,8 @@ from .stockgrid_view import short_interest_days_to_cover as call_sidtc
 from .finra_view import darkpool_ats_otc as dpotc
 from .sec_view import fails_to_deliver as ftd
 from .stockgrid_view import net_short_position as spos
-from .quandl_view import short_interest as psi
+from .quandl_view import short_interest as psi_q
+from .stockgrid_view import short_interest_volume as psi_sg
 from .nyse_view import display_short_by_exchange as volexch
 
 # Models

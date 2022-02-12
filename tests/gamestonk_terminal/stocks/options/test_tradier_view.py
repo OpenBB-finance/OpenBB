@@ -51,8 +51,8 @@ def test_display_chains(calls_only, max_sp, min_sp, mocker, puts_only):
     mocker.patch.object(target=tradier_view.gtff, attribute="USE_COLOR", new=True)
 
     tradier_view.display_chains(
-        ticker="PM",
-        expiry="2022-01-07",
+        ticker="AAPL",
+        expiry="2022-02-25",
         to_display=["volume"],
         min_sp=min_sp,
         max_sp=max_sp,
@@ -77,9 +77,9 @@ def test_display_chains(calls_only, max_sp, min_sp, mocker, puts_only):
 )
 def test_plot_oi(calls_only, max_sp, min_sp, mocker, puts_only):
     # MOCK CHARTS
-    mocker.patch.object(target=tradier_view.gtff, attribute="USE_ION", new=True)
-    mocker.patch(target="gamestonk_terminal.stocks.options.tradier_view.plt.ion")
-    mocker.patch(target="gamestonk_terminal.stocks.options.tradier_view.plt.show")
+    mocker.patch(
+        target="gamestonk_terminal.stocks.options.tradier_view.theme.visualize_output"
+    )
 
     # MOCK EXPORT_DATA
     mocker.patch(target="gamestonk_terminal.stocks.options.tradier_view.export_data")
@@ -88,8 +88,8 @@ def test_plot_oi(calls_only, max_sp, min_sp, mocker, puts_only):
     mocker.patch.object(target=tradier_view.gtff, attribute="USE_COLOR", new=True)
 
     tradier_view.plot_oi(
-        ticker="PM",
-        expiry="2022-01-07",
+        ticker="AAPL",
+        expiry="2022-02-25",
         min_sp=min_sp,
         max_sp=max_sp,
         calls_only=calls_only,
@@ -113,9 +113,9 @@ def test_plot_oi(calls_only, max_sp, min_sp, mocker, puts_only):
 )
 def test_plot_vol(calls_only, max_sp, min_sp, mocker, puts_only):
     # MOCK CHARTS
-    mocker.patch.object(target=tradier_view.gtff, attribute="USE_ION", new=True)
-    mocker.patch(target="gamestonk_terminal.stocks.options.tradier_view.plt.ion")
-    mocker.patch(target="gamestonk_terminal.stocks.options.tradier_view.plt.show")
+    mocker.patch(
+        target="gamestonk_terminal.stocks.options.tradier_view.theme.visualize_output"
+    )
 
     # MOCK EXPORT_DATA
     mocker.patch(target="gamestonk_terminal.stocks.options.tradier_view.export_data")
@@ -124,8 +124,8 @@ def test_plot_vol(calls_only, max_sp, min_sp, mocker, puts_only):
     mocker.patch.object(target=tradier_view.gtff, attribute="USE_COLOR", new=True)
 
     tradier_view.plot_vol(
-        ticker="PM",
-        expiry="2022-01-07",
+        ticker="AAPL",
+        expiry="2022-02-25",
         min_sp=min_sp,
         max_sp=max_sp,
         calls_only=calls_only,
@@ -145,9 +145,9 @@ def test_plot_vol(calls_only, max_sp, min_sp, mocker, puts_only):
 )
 def test_plot_volume_open_interest(max_sp, min_sp, min_vol, mocker):
     # MOCK CHARTS
-    mocker.patch.object(target=tradier_view.gtff, attribute="USE_ION", new=True)
-    mocker.patch(target="gamestonk_terminal.stocks.options.tradier_view.plt.ion")
-    mocker.patch(target="gamestonk_terminal.stocks.options.tradier_view.plt.show")
+    mocker.patch(
+        target="gamestonk_terminal.stocks.options.tradier_view.theme.visualize_output"
+    )
 
     # MOCK EXPORT_DATA
     mocker.patch(target="gamestonk_terminal.stocks.options.tradier_view.export_data")
@@ -156,8 +156,8 @@ def test_plot_volume_open_interest(max_sp, min_sp, min_vol, mocker):
     mocker.patch.object(target=tradier_view.gtff, attribute="USE_COLOR", new=True)
 
     tradier_view.plot_volume_open_interest(
-        ticker="PM",
-        expiry="2022-01-07",
+        ticker="AAPL",
+        expiry="2022-02-25",
         min_sp=min_sp,
         max_sp=max_sp,
         min_vol=min_vol,
@@ -169,9 +169,9 @@ def test_plot_volume_open_interest(max_sp, min_sp, min_vol, mocker):
 @pytest.mark.record_stdout
 def test_display_historical(mocker):
     # MOCK CHARTS
-    mocker.patch.object(target=tradier_view.gtff, attribute="USE_ION", new=True)
-    mocker.patch(target="gamestonk_terminal.stocks.options.tradier_view.plt.ion")
-    mocker.patch(target="gamestonk_terminal.stocks.options.tradier_view.plt.show")
+    mocker.patch(
+        target="gamestonk_terminal.stocks.options.tradier_view.theme.visualize_output"
+    )
 
     # MOCK EXPORT_DATA
     mocker.patch(target="gamestonk_terminal.stocks.options.tradier_view.export_data")
@@ -180,9 +180,9 @@ def test_display_historical(mocker):
     mocker.patch.object(target=tradier_view.gtff, attribute="USE_COLOR", new=True)
 
     tradier_view.display_historical(
-        ticker="PM",
-        expiry="2022-01-07",
-        strike=90.0,
+        ticker="AAPL",
+        expiry="2022-02-25",
+        strike=180.0,
         put=True,
         export="csv",
         raw=True,

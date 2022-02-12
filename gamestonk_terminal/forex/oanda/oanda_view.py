@@ -2,7 +2,7 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Dict, Union
+from typing import Dict, Union, Optional, List
 
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
@@ -11,8 +11,8 @@ import pandas as pd
 import pandas_ta as ta
 import seaborn as sns
 
-from gamestonk_terminal import config_plot as cfgPlot
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.config_terminal import theme
+from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.forex.oanda.oanda_model import (
     account_summary_request,
@@ -74,7 +74,11 @@ def get_account_summary(accountID: str):
 
 
 @log_start_end(log=logger)
-def get_order_book(accountID: str, instrument: str):
+def get_order_book(
+    accountID: str,
+    instrument: str,
+    external_axes: Optional[List[plt.Axes]] = None,
+):
     """
     Plot the orderbook for the instrument if Oanda provides one.
 
@@ -84,6 +88,8 @@ def get_order_book(accountID: str, instrument: str):
         Oanda user account ID
     instrument : str
         The loaded currency pair
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
     df_orderbook_data = orderbook_plot_data_request(
         accountID=accountID, instrument=instrument
@@ -96,14 +102,18 @@ def get_order_book(accountID: str, instrument: str):
         # help is needed to figure out the rationale behind these or
         # refactor it to not include the magic numbers.
         df_orderbook_data = df_orderbook_data.take(range(527, 727, 1))
-        book_plot(df_orderbook_data, instrument, "Order Book")
+        book_plot(
+            df_orderbook_data, instrument, "Order Book", external_axes=external_axes
+        )
         console.print("")
     else:
         console.print("No data was retrieved.\n")
 
 
 @log_start_end(log=logger)
-def get_position_book(accountID: str, instrument: str):
+def get_position_book(
+    accountID: str, instrument: str, external_axes: Optional[List[plt.Axes]] = None
+):
     """Plot a position book for an instrument if Oanda provides one.
 
     Parameters
@@ -112,6 +122,8 @@ def get_position_book(accountID: str, instrument: str):
         Oanda user account ID
     instrument : str
         The loaded currency pair
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
     df_positionbook_data = positionbook_plot_data_request(
         accountID=accountID, instrument=instrument
@@ -124,7 +136,12 @@ def get_position_book(accountID: str, instrument: str):
         # help is needed to figure out the rationale behind these or
         # refactor it to not include the magic numbers.
         df_positionbook_data = df_positionbook_data.take(range(219, 300, 1))
-        book_plot(df_positionbook_data, instrument, "Position Book")
+        book_plot(
+            df_positionbook_data,
+            instrument,
+            "Position Book",
+            external_axes=external_axes,
+        )
         console.print("")
     else:
         console.print("No data was retrieved.\n")
@@ -279,9 +296,12 @@ def show_candles(
     instrument: str,
     granularity: str,
     candlecount: int,
-    additional_charts: Dict[str, bool],
+    additional_charts: Optional[Dict[str, bool]] = None,
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Show candle chart.
+
+    Note that additional plots (ta indicators) not supported in external axis mode.
 
     Parameters
     ----------
@@ -293,36 +313,65 @@ def show_candles(
         Limit for the number of data points
     additional_charts : Dict[str, bool]
         A dictionary of flags to include additional charts
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (2 axes are expected in the list), by default None
     """
     df_candles = get_candles_dataframe(instrument, granularity, candlecount)
-    if df_candles is not False and not df_candles.empty:
+    if (
+        df_candles is not False
+        and not df_candles.empty
+        and additional_charts is not None
+    ):
         plots_to_add, legends, subplot_legends = add_plots(
             df_candles, additional_charts
         )
+    else:
+        plots_to_add, legends, subplot_legends = None, [], []
 
-        if gtff.USE_ION:
-            plt.ion()
-
-        _, ax = mpf.plot(
-            df_candles,
-            type="candle",
-            style="charles",
-            volume=True,
-            scale_padding={"left": 0.3, "right": 1, "top": 0.8, "bottom": 0.8},
-            returnfig=True,
-            addplot=plots_to_add,
+    candle_chart_kwargs = {
+        "type": "candle",
+        "style": theme.mpf_style,
+        "mav": (20, 50),
+        "volume": True,
+        "xrotation": theme.xticks_rotation,
+        "scale_padding": {"left": 0.3, "right": 1, "top": 0.8, "bottom": 0.8},
+        "update_width_config": {
+            "candle_linewidth": 0.6,
+            "candle_width": 0.8,
+            "volume_linewidth": 0.8,
+            "volume_width": 0.8,
+        },
+        "warn_too_much_data": 10000,
+    }
+    # This plot has 2 axes
+    if external_axes is not None:
+        if len(external_axes) != 2:
+            console.print("[red]Expected list of 2 axis items./n[/red]")
+            return
+        ax, volume = external_axes
+        candle_chart_kwargs["ax"] = ax
+        candle_chart_kwargs["volume"] = volume
+        mpf.plot(df_candles, **candle_chart_kwargs)
+    else:
+        candle_chart_kwargs["returnfig"] = True
+        candle_chart_kwargs["figratio"] = (10, 7)
+        candle_chart_kwargs["figscale"] = 1.10
+        candle_chart_kwargs["figsize"] = plot_autoscale()
+        if plots_to_add:
+            candle_chart_kwargs["addplot"] = plots_to_add
+        fig, ax = mpf.plot(df_candles, **candle_chart_kwargs)
+        fig.suptitle(
+            f"{instrument} {granularity}",
+            x=0.055,
+            y=0.965,
+            horizontalalignment="left",
         )
-
-        ax[0].set_title(f"{instrument} {granularity}")
         if len(legends) > 0:
             ax[0].legend(legends)
         # pylint: disable=C0200
         for i in range(0, len(subplot_legends), 2):
             ax[subplot_legends[i]].legend(subplot_legends[i + 1])
-
-        console.print("")
-    else:
-        console.print("[red]Could not retrieve the data[/red]\n")
+        theme.visualize_output(force_tight_layout=False)
 
 
 @log_start_end(log=logger)
@@ -429,7 +478,12 @@ def add_plots(df: pd.DataFrame, additional_charts: Dict[str, bool]):
 
 
 @log_start_end(log=logger)
-def book_plot(df: pd.DataFrame, instrument: str, book_type: str):
+def book_plot(
+    df: pd.DataFrame,
+    instrument: str,
+    book_type: str,
+    external_axes: Optional[List[plt.Axes]] = None,
+):
     """Plot the order book for a given instrument.
 
     Parameters
@@ -440,23 +494,32 @@ def book_plot(df: pd.DataFrame, instrument: str, book_type: str):
         The loaded currency pair
     book_type : str
         Order book type
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis are expected in the list), by default None
     """
-    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
     df = df.apply(pd.to_numeric)
     df["shortCountPercent"] = df["shortCountPercent"] * -1
     axis_origin = max(
         abs(max(df["longCountPercent"])), abs(max(df["shortCountPercent"]))
     )
-    ax.set_xlim(-axis_origin, +axis_origin)
 
-    sns.set_style(style="darkgrid")
+    # This plot has 1 axis
+    if not external_axes:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    else:
+        if len(external_axes) != 1:
+            console.print("[red]Expected list of one axis item./n[/red]")
+            return
+        (ax,) = external_axes
+
+    ax.set_xlim(-axis_origin, +axis_origin)
 
     sns.barplot(
         x="longCountPercent",
         y="price",
         data=df,
         label="Count Percent",
-        color="green",
+        color=theme.up_color,
         orient="h",
     )
 
@@ -465,16 +528,17 @@ def book_plot(df: pd.DataFrame, instrument: str, book_type: str):
         y="price",
         data=df,
         label="Prices",
-        color="red",
+        color=theme.down_color,
         orient="h",
     )
 
     ax.invert_yaxis()
-    plt.title(f"{instrument} {book_type}")
-    plt.xlabel("Count Percent")
-    plt.ylabel("Price")
-    sns.despine(left=True, bottom=True)
-    ax.yaxis.set_major_locator(mticker.MultipleLocator(5))
-    if gtff.USE_ION:
-        plt.ion()
-    plt.show()
+    ax.yaxis.set_major_locator(mticker.MultipleLocator(10))
+    ax.set_xlabel("Count Percent")
+    ax.set_ylabel("Price")
+    ax.set_title(f"{instrument} {book_type}")
+
+    theme.style_primary_axis(ax)
+
+    if not external_axes:
+        theme.visualize_output()

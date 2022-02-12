@@ -124,7 +124,7 @@ class CovidController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="rates",
-            description="Show historical rates country.",
+            description="Show historical death/cases rates for a country.",
         )
         ns_parser = parse_known_args_and_warn(
             parser,

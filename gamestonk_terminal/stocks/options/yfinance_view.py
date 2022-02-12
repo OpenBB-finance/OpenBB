@@ -6,7 +6,7 @@ import math
 import os
 from bisect import bisect_left
 from datetime import date, datetime, timedelta
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
@@ -18,8 +18,8 @@ import yfinance as yf
 from openpyxl import Workbook
 from scipy.stats import binom
 
+from gamestonk_terminal.config_terminal import theme
 import gamestonk_terminal.config_plot as cfp
-import gamestonk_terminal.feature_flags as gtff
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
     excel_columns,
@@ -52,6 +52,7 @@ def plot_oi(
     calls_only: bool,
     puts_only: bool,
     export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot open interest
 
@@ -71,6 +72,8 @@ def plot_oi(
         Show puts only
     export: str
         Format to export file
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
     options = yfinance_model.get_option_chain(ticker, expiry)
     export_data(
@@ -106,8 +109,13 @@ def plot_oi(
     )
 
     max_pain = op_helpers.calculate_max_pain(df_opt)
-    plt.style.use("classic")
-    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
+    if external_axes is None:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
+    else:
+        if len(external_axes) != 1:
+            console.print("[red]Expected list of one axis item./n[/red]")
+            return
+        (ax,) = external_axes
 
     if not calls_only:
         put_oi.plot(
@@ -117,7 +125,6 @@ def plot_oi(
             ax=ax,
             marker="o",
             ls="-",
-            c="r",
         )
     if not puts_only:
         call_oi.plot(
@@ -127,24 +134,19 @@ def plot_oi(
             ax=ax,
             marker="o",
             ls="-",
-            c="g",
         )
-    ax.axvline(current_price, lw=2, c="k", ls="--", label="Current Price", alpha=0.7)
-    ax.axvline(max_pain, lw=3, c="k", label=f"Max Pain: {max_pain}", alpha=0.7)
-    ax.grid("on")
+    ax.axvline(current_price, lw=2, ls="--", label="Current Price", alpha=0.7)
+    ax.axvline(max_pain, lw=3, label=f"Max Pain: {max_pain}", alpha=0.7)
     ax.set_xlabel("Strike Price")
     ax.set_ylabel("Open Interest (1k) ")
     ax.set_xlim(min_strike, max_strike)
-
-    if gtff.USE_ION:
-        plt.ion()
-
+    ax.legend()
     ax.set_title(f"Open Interest for {ticker.upper()} expiring {expiry}")
-    plt.legend(loc=0)
-    fig.tight_layout(pad=1)
 
-    plt.show()
-    console.print("")
+    theme.style_primary_axis(ax)
+
+    if external_axes is None:
+        theme.visualize_output()
 
 
 @log_start_end(log=logger)
@@ -156,6 +158,7 @@ def plot_vol(
     calls_only: bool,
     puts_only: bool,
     export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot volume
 
@@ -175,6 +178,8 @@ def plot_vol(
         Show puts only
     export: str
         Format to export file
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
     options = yfinance_model.get_option_chain(ticker, expiry)
     calls = options.calls
@@ -197,8 +202,13 @@ def plot_vol(
 
     call_v = calls.set_index("strike")["volume"] / 1000
     put_v = puts.set_index("strike")["volume"] / 1000
-    plt.style.use("classic")
-    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
+    if external_axes is None:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
+    else:
+        if len(external_axes) != 1:
+            console.print("[red]Expected list of one axis item./n[/red]")
+            return
+        (ax,) = external_axes
 
     if not calls_only:
         put_v.plot(
@@ -208,7 +218,6 @@ def plot_vol(
             ax=ax,
             marker="o",
             ls="-",
-            c="r",
         )
     if not puts_only:
         call_v.plot(
@@ -218,29 +227,23 @@ def plot_vol(
             ax=ax,
             marker="o",
             ls="-",
-            c="g",
         )
-    ax.axvline(current_price, lw=2, c="k", ls="--", label="Current Price", alpha=0.7)
-    ax.grid("on")
+    ax.axvline(current_price, lw=2, ls="--", label="Current Price", alpha=0.7)
     ax.set_xlabel("Strike Price")
     ax.set_ylabel("Volume (1k) ")
     ax.set_xlim(min_strike, max_strike)
-
-    if gtff.USE_ION:
-        plt.ion()
-
+    ax.legend()
     ax.set_title(f"Volume for {ticker.upper()} expiring {expiry}")
-    plt.legend(loc=0)
-    fig.tight_layout(pad=1)
+    theme.style_primary_axis(ax)
 
-    plt.show()
+    if external_axes is None:
+        theme.visualize_output()
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "vol_yf",
         options,
     )
-    console.print("")
 
 
 @log_start_end(log=logger)
@@ -251,6 +254,7 @@ def plot_volume_open_interest(
     max_sp: float,
     min_vol: float,
     export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot volume and open interest
 
@@ -268,6 +272,8 @@ def plot_volume_open_interest(
         Min volume to consider
     export: str
         Format for exporting data
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
 
     options = yfinance_model.get_option_chain(ticker, expiry)
@@ -336,13 +342,17 @@ def plot_volume_open_interest(
         return
 
     # Initialize the matplotlib figure
-    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
+    if external_axes is None:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
+    else:
+        if len(external_axes) != 1:
+            console.print("[red]Expected list of one axis item./n[/red]")
+            return
+        (ax,) = external_axes
 
     # make x axis symmetric
     axis_origin = max(abs(max(df_puts["oi+v"])), abs(max(df_calls["oi+v"])))
     ax.set_xlim(-axis_origin, +axis_origin)
-
-    sns.set_style(style="darkgrid")
 
     g = sns.barplot(
         x="oi+v",
@@ -383,24 +393,23 @@ def plot_volume_open_interest(
     # draw spot line
     s = [float(strike.get_text()) for strike in ax.get_yticklabels()]
     spot_index = bisect_left(s, current_price)  # find where the spot is on the graph
-    spot_line = ax.axhline(spot_index, ls="--", color="dodgerblue", alpha=0.3)
+    spot_line = ax.axhline(spot_index, ls="--", alpha=0.3)
 
     # draw max pain line
     max_pain_index = bisect_left(s, max_pain)
-    max_pain_line = ax.axhline(max_pain_index, ls="-", color="black", alpha=0.3)
-    max_pain_line.set_linewidth(3)
+    max_pain_line = ax.axhline(max_pain_index, ls="-", alpha=0.3, color="red")
+    max_pain_line.set_linewidth(5)
 
     # format ticklabels without - for puts
     g.set_xticks(g.get_xticks())
     xlabels = [f"{x:,.0f}".replace("-", "") for x in g.get_xticks()]
     g.set_xticklabels(xlabels)
 
-    plt.title(
-        f"{ticker} volumes for {expiry} (open interest displayed only during market hours)"
+    ax.set_title(
+        f"{ticker} volumes for {expiry} \n(open interest displayed only during market hours)",
     )
     ax.invert_yaxis()
 
-    _ = ax.legend()
     handles, _ = ax.get_legend_handles_labels()
     handles.append(spot_line)
     handles.append(max_pain_line)
@@ -415,24 +424,31 @@ def plot_volume_open_interest(
         f"Max pain = {max_pain}",
     ]
 
-    plt.legend(handles=handles[:], labels=labels)
+    ax.legend(handles=handles[:], labels=labels, loc="lower left")
     sns.despine(left=True, bottom=True)
+    theme.style_primary_axis(ax)
 
-    if gtff.USE_ION:
-        plt.ion()
-    plt.show()
+    if external_axes is None:
+        theme.visualize_output()
+
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "voi_yf",
         options,
     )
-    console.print("")
 
 
 @log_start_end(log=logger)
 def plot_plot(
-    ticker: str, expiration: str, put: bool, x: str, y: str, custom: str, export: str
+    ticker: str,
+    expiration: str,
+    put: bool,
+    x: str,
+    y: str,
+    custom: str,
+    export: str,
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Generate a graph custom graph based on user input
 
@@ -454,6 +470,8 @@ def plot_plot(
         type of plot
     export: str
         type of data to export
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
     convert = {
         "ltd": "lastTradeDate",
@@ -467,41 +485,48 @@ def plot_plot(
         "oi": "openInterest",
         "iv": "impliedVolatility",
     }
-
-    x = convert[x]
-    y = convert[y]
-    varis = op_helpers.opt_chain_cols
-    chain = yfinance_model.get_option_chain(ticker, expiration)
-    values = chain.puts if put else chain.calls
-    _, ax = plt.subplots()
     if custom == "smile":
         x = "strike"
         y = "impliedVolatility"
+    else:
+        x = convert[x]
+        y = convert[y]
+    varis = op_helpers.opt_chain_cols
+    chain = yfinance_model.get_option_chain(ticker, expiration)
+    values = chain.puts if put else chain.calls
+
+    if external_axes is None:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
+    else:
+        if len(external_axes) != 1:
+            console.print("[red]Expected list of one axis item./n[/red]")
+            return
+        (ax,) = external_axes
+
     x_data = values[x]
     y_data = values[y]
     ax.plot(x_data, y_data, "--bo")
-    word = "puts" if put else "calls"
+    option = "puts" if put else "calls"
     ax.set_title(
-        f"{varis[y]['label']} vs. {varis[x]['label']} for {ticker} {word} on {expiration}"
+        f"{varis[y]['label']} vs. {varis[x]['label']} for {ticker} {option} on {expiration}"
     )
     ax.set_ylabel(varis[y]["label"])
     ax.set_xlabel(varis[x]["label"])
     if varis[x]["format"] == "date":
-        plt.gca().xaxis.set_major_formatter(mdates.DateFormatter("%Y/%m/%d"))
-        plt.gca().xaxis.set_major_locator(mdates.DayLocator(interval=1))
-        plt.gcf().autofmt_xdate()
+        ax.get_xaxis().set_major_formatter(mdates.DateFormatter("%Y/%m/%d"))
+        ax.get_xaxis().set_major_locator(mdates.DayLocator(interval=1))
     elif varis[x]["format"]:
-        ax.xaxis.set_major_formatter(varis[x]["format"])
+        ax.get_xaxis().set_major_formatter(varis[x]["format"])
     if varis[y]["format"] == "date":
-        plt.gca().yaxis.set_major_formatter(mdates.DateFormatter("%Y/%m/%d"))
-        plt.gca().yaxis.set_major_locator(mdates.DayLocator(interval=1))
+        ax.get_yaxis().set_major_formatter(mdates.DateFormatter("%Y/%m/%d"))
+        ax.get_yaxis().set_major_locator(mdates.DayLocator(interval=1))
     elif varis[y]["format"]:
-        ax.yaxis.set_major_formatter(varis[y]["format"])
-    if gtff.USE_ION:
-        plt.ion()
-    plt.show()
+        ax.get_yaxis().set_major_formatter(varis[y]["format"])
+    theme.style_primary_axis(ax)
+
+    if external_axes is None:
+        theme.visualize_output()
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "plot")
-    console.print("")
 
 
 @log_start_end(log=logger)
@@ -511,10 +536,19 @@ def plot_payoff(
     underlying: int,
     ticker: str,
     expiration: str,
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Generate a graph showing the option payoff diagram"""
     x, yb, ya = generate_data(current_price, options, underlying)
-    _, ax = plt.subplots()
+
+    if external_axes is None:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
+    else:
+        if len(external_axes) != 1:
+            console.print("[red]Expected list of one axis item./n[/red]")
+            return
+        (ax,) = external_axes
+
     if ya:
         ax.plot(x, yb, label="Payoff Before Premium")
         ax.plot(x, ya, label="Payoff After Premium")
@@ -525,11 +559,10 @@ def plot_payoff(
     ax.set_xlabel("Underlying Asset Price at Expiration")
     ax.xaxis.set_major_formatter("${x:.2f}")
     ax.yaxis.set_major_formatter("${x:.2f}")
-    plt.legend()
-    if gtff.USE_ION:
-        plt.ion()
-    plt.show()
-    console.print("")
+    theme.style_primary_axis(ax)
+
+    if external_axes is None:
+        theme.visualize_output()
 
 
 @log_start_end(log=logger)
@@ -633,7 +666,7 @@ def show_parity(
         "parity",
         show,
     )
-    console.print("")
+    console.print()
 
 
 @log_start_end(log=logger)
@@ -700,12 +733,16 @@ def risk_neutral_vals(
         show_index=False,
         title="Risk Neutral Values",
     )
-    console.print("")
+    console.print()
 
 
 @log_start_end(log=logger)
 def plot_expected_prices(
-    und_vals: List[List[float]], p: float, ticker: str, expiration: str
+    und_vals: List[List[float]],
+    p: float,
+    ticker: str,
+    expiration: str,
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Plot expected prices of the underlying asset at expiration
 
@@ -719,19 +756,28 @@ def plot_expected_prices(
         The ticker of the option's underlying asset
     expiration : str
         The expiration for the option
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
     up_moves = list(range(len(und_vals[-1])))
     up_moves.reverse()
     probs = [binom.pmf(r, len(up_moves), p) for r in up_moves]
-    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
+    if external_axes is None:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
+    else:
+        if len(external_axes) != 1:
+            console.print("[red]Expected list of one axis item./n[/red]")
+            return
+        (ax,) = external_axes
+
     ax.set_title(f"Probabilities for ending prices of {ticker} on {expiration}")
     ax.xaxis.set_major_formatter("${x:1.2f}")
     ax.yaxis.set_major_formatter(mtick.PercentFormatter())
-    plt.plot(und_vals[-1], probs)
-    fig.tight_layout()
-    if gtff.USE_ION:
-        plt.ion()
-    plt.show()
+    ax.plot(und_vals[-1], probs)
+    theme.style_primary_axis(ax)
+
+    if external_axes is None:
+        theme.visualize_output()
 
 
 @log_start_end(log=logger)
@@ -912,7 +958,12 @@ def show_binom(
 
 
 @log_start_end(log=logger)
-def display_vol_surface(ticker: str, export: str = "", z: str = "IV"):
+def display_vol_surface(
+    ticker: str,
+    export: str = "",
+    z: str = "IV",
+    external_axes: Optional[List[plt.Axes]] = None,
+):
     """Display vol surface
 
     Parameters
@@ -939,24 +990,26 @@ def display_vol_surface(ticker: str, export: str = "", z: str = "IV"):
     elif z == "LP":
         Z = data.lastPrice
         label = "Last Price"
-    fig = plt.figure()
-    ax = plt.axes(projection="3d")
+    if external_axes is None:
+        fig = plt.figure()
+        ax = plt.axes(projection="3d")
+    else:
+        ax = external_axes[0]
     ax.plot_trisurf(X, Y, Z, cmap="jet", linewidth=0.2)
     ax.set_xlabel("DTE")
     ax.set_ylabel("Strike")
     ax.set_zlabel(z)
-    fig.tight_layout()
-    fig.suptitle(f"{label} Surface for {ticker.upper()}")
-    if gtff.USE_ION:
-        plt.ion()
-    plt.show()
+
+    if external_axes is None:
+        fig.suptitle(f"{label} Surface for {ticker.upper()}")
+        theme.visualize_output(force_tight_layout=False)
+
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "vsurf",
         data,
     )
-    console.print("")
 
 
 @log_start_end(log=logger)
@@ -1043,5 +1096,5 @@ def show_greeks(
         columns += ["Rho", "Phi", "Charm", "Vanna", "Vomma"]
     df = pd.DataFrame(strikes, columns=columns)
     print_rich_table(df, headers=list(df.columns), show_index=False, title="Greeks")
-    console.print("")
+    console.print()
     return None

@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 import logging
 import os
 from datetime import datetime
+from typing import List, Optional
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -11,7 +12,7 @@ import pandas as pd
 import yfinance as yf
 from pandas.plotting import register_matplotlib_converters
 
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
@@ -114,6 +115,7 @@ def display_simple_ema(
     spy_bt: bool = True,
     no_bench: bool = False,
     export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Strategy where stock is bought when Price > EMA(l)
 
@@ -131,17 +133,29 @@ def display_simple_ema(
         Boolean to not show buy and hold comparison
     export : bool
         Format to export backtest results
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (3 axes are expected in the list), by default None
     """
+
+    # This plot has 1 axis
+    if not external_axes:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    else:
+        if len(external_axes) != 1:
+            console.print("[red]Expected list of one axis item./n[/red]")
+            return
+        (ax,) = external_axes
+
     res = bt_model.ema_strategy(ticker, df_stock, ema_length, spy_bt, no_bench)
-    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     res.plot(title=f"Equity for EMA({ema_length})", ax=ax)
-    ax.grid(b=True, which="major", color="#666666", linestyle="-")
-    ax.set_xlim([df_stock.index[0], df_stock.index[-1]])
-    fig.tight_layout()
-    if gtff.USE_ION:
-        plt.ion()
-    plt.show()
+
+    theme.style_primary_axis(ax)
+
+    if not external_axes:
+        theme.visualize_output()
+
     console.print(res.display(), "\n")
+
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "simple_ema", res.stats
     )
@@ -157,7 +171,8 @@ def display_ema_cross(
     no_bench: bool = False,
     shortable: bool = True,
     export: str = "",
-):
+    external_axes: Optional[List[plt.Axes]] = None,
+):  # pylint: disable=R0913
     """Strategy where we go long/short when EMA(short) is greater than/less than EMA(short)
 
     Parameters
@@ -178,19 +193,28 @@ def display_ema_cross(
         Boolean to allow for selling of the stock at cross
     export : str
         Format to export data
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (3 axes are expected in the list), by default None
     """
+    # This plot has 1 axis
+    if not external_axes:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    else:
+        if len(external_axes) != 1:
+            console.print("[red]Expected list of one axis item./n[/red]")
+            return
+        (ax,) = external_axes
+
     res = bt_model.ema_cross_strategy(
         ticker, df_stock, short_ema, long_ema, spy_bt, no_bench, shortable
     )
-    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     res.plot(title=f"EMA Cross for EMA({short_ema})/EMA({long_ema})", ax=ax)
-    ax.grid(b=True, which="major", color="#666666", linestyle="-")
-    ax.set_xlim([df_stock.index[0], df_stock.index[-1]])
-    fig.tight_layout()
-    if gtff.USE_ION:
-        plt.ion()
-    plt.show()
-    console.print(res.display(), "\n")
+
+    theme.style_primary_axis(ax)
+
+    if not external_axes:
+        theme.visualize_output()
+
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "ema_cross", res.stats
     )
@@ -208,6 +232,7 @@ def display_rsi_strategy(
     no_bench: bool = False,
     shortable: bool = True,
     export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Strategy that buys when the stock is less than a threshold and shorts when it exceeds a threshold.
 
@@ -221,7 +246,7 @@ def display_rsi_strategy(
         Number of periods for RSI calculation
     low_rsi : int
         Low RSI value to buy
-    hirh_rsi : int
+    high_rsi : int
         High RSI value to sell
     spy_bt : bool
         Boolean to add spy comparison
@@ -231,19 +256,29 @@ def display_rsi_strategy(
         Boolean to allow for selling of the stock at cross
     export : str
         Format to export backtest results
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (3 axes are expected in the list), by default None
     """
+    # This plot has 1 axis
+    if not external_axes:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    else:
+        if len(external_axes) != 1:
+            console.print("[red]Expected list of one axis item./n[/red]")
+            return
+        (ax,) = external_axes
+
     res = bt_model.rsi_strategy(
         ticker, df_stock, periods, low_rsi, high_rsi, spy_bt, no_bench, shortable
     )
-    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+
     res.plot(title=f"RSI Strategy between ({low_rsi}, {high_rsi})", ax=ax)
-    ax.grid(b=True, which="major", color="#666666", linestyle="-")
-    ax.set_xlim([df_stock.index[0], df_stock.index[-1]])
-    fig.tight_layout()
-    if gtff.USE_ION:
-        plt.ion()
-    plt.show()
-    console.print(res.display(), "\n")
+
+    theme.style_primary_axis(ax)
+
+    if not external_axes:
+        theme.visualize_output()
+
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "rsi_corss", res.stats
     )

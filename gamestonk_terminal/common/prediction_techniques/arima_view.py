@@ -5,11 +5,10 @@ __docformat__ = "numpy"
 import datetime
 import logging
 import os
-from typing import Union
+from typing import Union, Optional, List
 
 import matplotlib.pyplot as plt
 import pandas as pd
-from pandas.plotting import register_matplotlib_converters
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.common.prediction_techniques import arima_model
@@ -17,6 +16,7 @@ from gamestonk_terminal.common.prediction_techniques.pred_helper import (
     print_prediction_kpis,
     print_pretty_prediction,
 )
+from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
@@ -29,9 +29,12 @@ from gamestonk_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
-register_matplotlib_converters()
+# pylint:disable=too-many-arguments,too-many-branches
 
-# pylint:disable=too-many-arguments
+# TODO: HELP WANTED! The logic of this view is pretty convoluted and it overlaps with
+#       other views of this submenu. It would be great to refactor it in a way the
+#       `pylint:disable` flag above can be removed and the backtesting related code is
+#       reused by multiple views.
 
 
 @log_start_end(log=logger)
@@ -46,6 +49,7 @@ def display_arima(
     s_end_date: str = "",
     export: str = "",
     time_res: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """View fit ARIMA model
 
@@ -71,6 +75,8 @@ def display_arima(
         Format to export image
     time_res : str
         Resolution for data, allowing for predicting outside of standard market days
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
 
     if arima_order:
@@ -91,7 +97,7 @@ def display_arima(
             )
             return
 
-        df_future = values[future_index[0] : future_index[-1]]
+        df_future = values[future_index[0] : future_index[-1]]  # noqa: E203
         values = values[:s_end_date]  # type: ignore
 
     l_predictions, model = arima_model.get_arima_model(
@@ -115,9 +121,21 @@ def display_arima(
         console.print(model.summary())
         console.print("")
 
-    # Plotting
-    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    ax.plot(values.index, values, lw=2)
+    # This plot has 1 axes
+    if external_axes is None:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    else:
+        if (not s_end_date and len(external_axes) != 1) or (
+            s_end_date and len(external_axes) != 3
+        ):
+            console.print(
+                "[red]Expected list of 1 axis item "
+                + "or 3 axis items when backtesting./n[/red]"
+            )
+            return
+        ax = external_axes[0]
+
+    ax.plot(values.index, values)
 
     # pylint:disable=no-member
 
@@ -140,132 +158,121 @@ def display_arima(
         else:
             plt.title(f"ARIMA {model.order} on {dataset} - {n_predict} step prediction")
     ax.set_xlim(values.index[0], l_pred_days[-1])
-    ax.set_xlabel("Time")
     ax.set_ylabel("Value")
-    ax.grid(b=True, which="major", color="#666666", linestyle="-")
-    ax.minorticks_on()
-    ax.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
     ax.plot(
         [values.index[-1], df_pred.index[0]],
         [values.values[-1], df_pred.values[0]],
-        lw=1,
-        c="tab:green",
+        color=theme.up_color,
         linestyle="--",
     )
-    ax.plot(df_pred.index, df_pred, lw=2, c="tab:green")
-    ax.axvspan(values.index[-1], df_pred.index[-1], facecolor="tab:orange", alpha=0.2)
+    ax.plot(df_pred.index, df_pred, color=theme.up_color)
+    ax.axvspan(values.index[-1], df_pred.index[-1], alpha=0.2)
     _, _, ymin, ymax = plt.axis()
-    ax.vlines(values.index[-1], ymin, ymax, linewidth=1, linestyle="--", color="k")
+    ax.vlines(values.index[-1], ymin, ymax, linestyle="--")
 
     # BACKTESTING
     if s_end_date:
         ax.plot(
             df_future.index,
-            df_future.values,
-            lw=2,
-            c="tab:blue",
-            ls="--",
+            df_future,
+            color=theme.up_color,
+            linestyle="--",
         )
-        plt.plot(
+        ax.plot(
             [values.index[-1], df_future.index[0]],
             [
                 values.values[-1],
                 df_future.values[0],
             ],
-            lw=1,
-            c="tab:blue",
+            color=theme.up_color,
             linestyle="--",
         )
 
-    fig.tight_layout()
-    if gtff.USE_ION:
-        plt.ion()
+    theme.style_primary_axis(ax)
 
-    plt.show()
+    if external_axes is None:
+        theme.visualize_output()
 
     # BACKTESTING
     if s_end_date:
-        fig, ax = plt.subplots(1, 2, figsize=plot_autoscale(), dpi=PLOT_DPI)
-        ax0 = ax[0]
-        ax0.plot(
+        # This plot has 1 axes
+        if external_axes is None:
+            _, axes = plt.subplots(
+                2, 1, sharex=True, figsize=plot_autoscale(), dpi=PLOT_DPI
+            )
+            (ax2, ax3) = axes
+        else:
+            if len(external_axes) != 3:
+                console.print("[red]Expected list of 1 axis item./n[/red]")
+                return
+            (_, ax2, ax3) = external_axes
+
+        ax2.plot(
             df_future.index,
-            df_future.values,
-            lw=2,
-            c="tab:blue",
-            ls="--",
+            df_future,
+            color=theme.up_color,
+            linestyle="--",
         )
-        ax0.plot(df_pred.index, df_pred, lw=2, c="green")
-        ax0.scatter(df_future.index, df_future, c="tab:blue", lw=3)
-        ax0.plot(
+        ax2.plot(df_pred.index, df_pred)
+        ax2.scatter(
+            df_future.index,
+            df_future,
+            color=theme.up_color,
+        )
+        ax2.plot(
             [values.index[-1], df_future.index[0]],
             [
                 values.values[-1],
                 df_future.values[0],
             ],
-            lw=2,
-            c="tab:blue",
-            ls="--",
+            color=theme.up_color,
+            linestyle="--",
         )
-        ax0.scatter(df_pred.index, df_pred, c="green", lw=3)
-        ax0.plot(
+        ax2.scatter(df_pred.index, df_pred)
+        ax2.plot(
             [values.index[-1], df_pred.index[0]],
             [values.values[-1], df_pred.values[0]],
-            lw=2,
-            c="green",
-            ls="--",
+            linestyle="--",
         )
-        ax0.set_title("BACKTESTING: Real data Prediction")
-        ax0.set_xlim(values.index[-1], df_pred.index[-1] + datetime.timedelta(days=1))
-        ax0.set_xticks(
-            [values.index[-1], df_pred.index[-1] + datetime.timedelta(days=1)]
+        ax2.set_title("BACKTESTING: Values")
+        ax2.set_xlim(
+            values.index[-1],
+            df_pred.index[-1] + datetime.timedelta(days=1),
         )
-        ax0.set_ylabel("Value")
-        ax0.grid(b=True, which="major", color="#666666", linestyle="-")
-        ax0.minorticks_on()
-        ax0.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-        ax0.legend(["Real data", "Prediction data"])
-        ax0.set_xticks([])
+        ax2.set_ylabel("Value")
+        ax2.legend(["Real data", "Prediction data"])
+        theme.style_primary_axis(ax2)
 
-        ax1 = ax[1]
-        ax1.axhline(y=0, color="k", linestyle="--", linewidth=2)
-        ax1.plot(
+        ax3.axhline(y=0, linestyle="--")
+        ax3.plot(
             df_future.index,
             100 * (df_pred.values - df_future.values) / df_future.values,
-            lw=2,
-            c="red",
+            color=theme.down_color,
         )
-        ax1.scatter(
+        ax3.scatter(
             df_future.index,
             100 * (df_pred.values - df_future.values) / df_future.values,
-            c="red",
-            lw=5,
+            color=theme.down_color,
         )
-        ax1.set_title("BACKTESTING: Error between Real data and Prediction [%]")
-        ax1.plot(
+        ax3.set_title("BACKTESTING: % Error")
+        ax3.plot(
             [values.index[-1], df_future.index[0]],
             [
                 0,
                 100 * (df_pred.values[0] - df_future.values[0]) / df_future.values[0],
             ],
-            lw=2,
             ls="--",
-            c="red",
+            color=theme.down_color,
         )
-        ax1.set_xlim(values.index[-1], df_pred.index[-1] + datetime.timedelta(days=1))
-        ax1.set_xticks(
-            [values.index[-1], df_pred.index[-1] + datetime.timedelta(days=1)]
+        ax3.set_xlim(
+            values.index[-1],
+            df_pred.index[-1] + datetime.timedelta(days=1),
         )
-        ax1.set_xlabel("Time")
-        ax1.set_ylabel("Prediction Error (%)")
-        ax1.grid(b=True, which="major", color="#666666", linestyle="-")
-        ax1.minorticks_on()
-        ax1.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-        ax1.legend(["Real data", "Prediction data"])
-        fig.tight_layout()
-        if gtff.USE_ION:
-            plt.ion()
+        ax3.set_ylabel("Prediction Error (%)")
+        theme.style_primary_axis(ax3)
 
-        plt.show()
+        if external_axes is None:
+            theme.visualize_output()
 
         # Refactor prediction dataframe for backtesting print
         df_pred.name = "Prediction"
@@ -278,7 +285,8 @@ def display_arima(
             df_pred["Dif"] = 100 * (df_pred.Prediction - df_pred.Real) / df_pred.Real
             print_rich_table(
                 df_pred,
-                headers=["Date", "Predicted", "Actual", "% Difference"],
+                headers=["Predicted", "Actual", "% Difference"],
+                index_name="Date",
                 show_index=True,
                 title="ARIMA Model",
             )

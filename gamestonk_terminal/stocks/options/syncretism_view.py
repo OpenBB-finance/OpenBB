@@ -4,12 +4,12 @@ __docformat__ = "numpy"
 import configparser
 import logging
 import os
-from typing import List
+from typing import List, Optional
 
 import matplotlib.pyplot as plt
 
+from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal import config_plot as cfp
-from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
     export_data,
@@ -114,6 +114,7 @@ def view_historical_greeks(
     raw: bool,
     n_show: int,
     export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots historical greeks for a given option
 
@@ -137,6 +138,8 @@ def view_historical_greeks(
         Number of rows to show in raw
     export: str
         Format to export data
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
     df = syncretism_model.get_historical_greeks(ticker, expiry, chain_id, strike, put)
 
@@ -145,31 +148,35 @@ def view_historical_greeks(
             df.tail(n_show), headers=list(df.columns), title="Historical Greeks"
         )
 
-    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-    im1 = ax.plot(df.index, df[greek], c="firebrick", label=greek)
+    if not external_axes:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
+    else:
+        if len(external_axes) != 1:
+            console.print("[red]Expected list of one axis item./n[/red]")
+            return
+        (ax,) = external_axes
+
+    # Theo I am sorry but I don't know how to get different line colors and move the delta
+    im1 = ax.plot(df.index, df[greek], label=greek.title())
     ax.set_ylabel(greek)
     ax1 = ax.twinx()
-    im2 = ax1.plot(df.index, df.price, c="dodgerblue", label="Stock Price")
+    im2 = ax1.plot(df.index, df.price, label="Stock Price")
     ax1.set_ylabel(f"{ticker} Price")
-    ax1.set_xlabel("Date")
-    ax.grid("on")
     ax.set_title(
         f"{greek} historical for {ticker.upper()} {strike} {['Call','Put'][put]}"
     )
-    plt.gcf().autofmt_xdate()
-
-    if gtff.USE_ION:
-        plt.ion()
 
     ims = im1 + im2
     labels = [lab.get_label() for lab in ims]
-    plt.legend(ims, labels, loc=0)
-    fig.tight_layout(pad=1)
-    plt.show()
+    ax.legend(ims, labels, loc=0)
+    theme.style_primary_axis(ax)
+
+    if not external_axes:
+        theme.visualize_output()
+
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "grhist",
         df,
     )
-    console.print("")

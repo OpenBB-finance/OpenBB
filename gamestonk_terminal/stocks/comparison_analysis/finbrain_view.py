@@ -3,16 +3,15 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import List
+from typing import List, Optional
 
-import matplotlib.dates as mdates
 import numpy as np
 import pandas as pd
 import seaborn as sns
 from matplotlib import pyplot as plt
 from pandas.plotting import register_matplotlib_converters
 
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
@@ -29,7 +28,12 @@ register_matplotlib_converters()
 
 
 @log_start_end(log=logger)
-def display_sentiment_compare(similar: List[str], raw: bool = False, export: str = ""):
+def display_sentiment_compare(
+    similar: List[str],
+    raw: bool = False,
+    export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
+):
     """Display sentiment for all ticker. [Source: FinBrain]
 
     Parameters
@@ -40,18 +44,28 @@ def display_sentiment_compare(similar: List[str], raw: bool = False, export: str
         Output raw values, by default False
     export : str, optional
         Format to export data
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
     df_sentiment = finbrain_model.get_sentiments(similar)
     if df_sentiment.empty:
         console.print("No sentiments found.")
 
     else:
-        fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+
+        # This plot has 1 axis
+        if not external_axes:
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        else:
+            if len(external_axes) != 1:
+                console.print("[red]Expected list of one axis item./n[/red]")
+                return
+            (ax,) = external_axes
 
         for idx, tick in enumerate(similar):
             offset = 2 * idx
-            ax.axhline(y=offset, color="k", linestyle="--", lw=2)
-            ax.axhline(y=offset + 1, color="k", linestyle="--", lw=1)
+            ax.axhline(y=offset, color="grey", linestyle="--", lw=2)
+            ax.axhline(y=offset + 1, color="grey", linestyle="--", lw=1)
 
             senValues = np.array(pd.to_numeric(df_sentiment[tick].values))
             senNone = np.array(0 * len(df_sentiment))
@@ -61,7 +75,7 @@ def display_sentiment_compare(similar: List[str], raw: bool = False, export: str
                 offset,
                 where=(senValues < senNone),
                 alpha=0.60,
-                color="red",
+                color=theme.down_color,
                 interpolate=True,
             )
 
@@ -71,25 +85,23 @@ def display_sentiment_compare(similar: List[str], raw: bool = False, export: str
                 offset,
                 where=(senValues >= senNone),
                 alpha=0.60,
-                color="green",
+                color=theme.up_color,
                 interpolate=True,
             )
 
-        ax.set_xlabel("Time")
         ax.set_ylabel("Sentiment")
-        ax.axhline(y=-1, color="k", linestyle="--", lw=1)
-        ax.grid(b=True, which="major", color="#666666", linestyle="-")
-        ax.minorticks_on()
+        ax.axhline(y=-1, color="grey", linestyle="--", lw=1)
         ax.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+        ax.minorticks_on()
         ax.set_yticks(np.arange(len(similar)) * 2)
         ax.set_yticklabels(similar)
+        ax.set_xlim(df_sentiment.index[0], df_sentiment.index[-1])
         ax.set_title(f"FinBrain's Sentiment Analysis since {df_sentiment.index[0]}")
-        plt.gca().xaxis.set_major_locator(mdates.DayLocator(interval=1))
-        plt.gcf().autofmt_xdate()
-        fig.tight_layout()
-        if gtff.USE_ION:
-            plt.ion()
-        plt.show()
+
+        theme.style_primary_axis(ax)
+
+        if not external_axes:
+            theme.visualize_output()
 
         if raw:
             print_rich_table(
@@ -110,7 +122,10 @@ def display_sentiment_compare(similar: List[str], raw: bool = False, export: str
 
 @log_start_end(log=logger)
 def display_sentiment_correlation(
-    similar: List[str], raw: bool = False, export: str = ""
+    similar: List[str],
+    raw: bool = False,
+    export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot correlation sentiments heatmap across similar companies. [Source: FinBrain]
 
@@ -122,14 +137,25 @@ def display_sentiment_correlation(
         Output raw values, by default False
     export : str, optional
         Format to export data
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
     df_sentiment = finbrain_model.get_sentiments(similar)
     corrs = df_sentiment.corr()
+
     if df_sentiment.empty:
         console.print("No sentiments found.")
 
     else:
-        fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+
+        # This plot has 1 axis
+        if not external_axes:
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        else:
+            if len(external_axes) != 1:
+                console.print("[red]Expected list of one axis item./n[/red]")
+                return
+            (ax,) = external_axes
 
         mask = np.zeros((len(similar), len(similar)), dtype=bool)
         mask[np.triu_indices(len(mask))] = True
@@ -145,10 +171,11 @@ def display_sentiment_correlation(
             mask=mask,
             ax=ax,
         )
-        fig.tight_layout()
-        if gtff.USE_ION:
-            plt.ion()
-        plt.show()
+        similar_string = ",".join(similar)
+        ax.set_title(f"Correlation heatmap across {similar_string}")
+
+        if not external_axes:
+            theme.visualize_output()
 
         if raw:
             print_rich_table(
