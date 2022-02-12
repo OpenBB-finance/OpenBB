@@ -1,6 +1,6 @@
-import random
 from datetime import datetime, timedelta
 
+import numpy as np
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
@@ -11,7 +11,7 @@ from bots.helpers import image_border
 from gamestonk_terminal.common.technical_analysis import momentum_model
 
 
-async def macd_command(ticker="", fast="12", slow="26", signal="9", start="", end=""):
+def macd_command(ticker="", fast="12", slow="26", signal="9", start="", end=""):
     """Displays chart with moving average convergence/divergence [Yahoo Finance]"""
 
     # Debug
@@ -136,7 +136,7 @@ async def macd_command(ticker="", fast="12", slow="26", signal="9", start="", en
     # Check if interactive settings are enabled
     plt_link = ""
     if cfg.INTERACTIVE:
-        html_ran = random.randint(69, 69420)
+        html_ran = np.random.randint(70000)
         fig.write_html(f"in/macd_{html_ran}.html", config=config)
         plt_link = f"[Interactive]({cfg.INTERACTIVE_URL}/macd_{html_ran}.html)"
 

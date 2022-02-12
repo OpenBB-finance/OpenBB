@@ -1,6 +1,6 @@
-import random
 from datetime import datetime, timedelta
 
+import numpy as np
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
@@ -11,7 +11,7 @@ from bots.helpers import image_border
 from gamestonk_terminal.common.technical_analysis import trend_indicators_model
 
 
-async def aroon_command(ticker="", length="25", scalar="100", start="", end=""):
+def aroon_command(ticker="", length="25", scalar="100", start="", end=""):
     """Displays chart with aroon indicator [Yahoo Finance]"""
 
     # Debug
@@ -145,7 +145,7 @@ async def aroon_command(ticker="", length="25", scalar="100", start="", end=""):
     # Check if interactive settings are enabled
     plt_link = ""
     if cfg.INTERACTIVE:
-        html_ran = random.randint(69, 69420)
+        html_ran = np.random.randint(70000)
         fig.write_html(f"in/aroon_{html_ran}.html", config=config)
         plt_link = f"[Interactive]({cfg.INTERACTIVE_URL}/aroon_{html_ran}.html)"
 

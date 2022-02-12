@@ -1,6 +1,6 @@
-import random
 from datetime import datetime, timedelta
 
+import numpy as np
 import plotly.graph_objects as go
 
 import bots.config_discordbot as cfg
@@ -10,7 +10,7 @@ from bots.helpers import image_border
 from gamestonk_terminal.common.technical_analysis import volatility_model
 
 
-async def kc_command(
+def kc_command(
     ticker="", length="20", scalar="2", mamode="sma", offset="0", start="", end=""
 ):
     """Displays chart with keltner channel [Yahoo Finance]"""
@@ -147,7 +147,7 @@ async def kc_command(
     # Check if interactive settings are enabled
     plt_link = ""
     if cfg.INTERACTIVE:
-        html_ran = random.randint(69, 69420)
+        html_ran = np.random.randint(70000)
         fig.write_html(f"in/kc_{html_ran}.html", config=config)
         plt_link = f"[Interactive]({cfg.INTERACTIVE_URL}/kc_{html_ran}.html)"
 

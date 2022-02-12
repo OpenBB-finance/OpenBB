@@ -1,6 +1,6 @@
-import random
 from datetime import datetime, timedelta
 
+import numpy as np
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
@@ -11,7 +11,7 @@ from bots.helpers import image_border
 from gamestonk_terminal.common.technical_analysis import momentum_model
 
 
-async def fisher_command(ticker="", length="14", start="", end=""):
+def fisher_command(ticker="", length="14", start="", end=""):
     """Displays chart with fisher transformation [Yahoo Finance]"""
 
     # Debug
@@ -151,7 +151,7 @@ async def fisher_command(ticker="", length="14", start="", end=""):
     # Check if interactive settings are enabled
     plt_link = ""
     if cfg.INTERACTIVE:
-        html_ran = random.randint(69, 69420)
+        html_ran = np.random.randint(70000)
         fig.write_html(f"in/fisher_{html_ran}.html", config=config)
         plt_link = f"[Interactive]({cfg.INTERACTIVE_URL}/fisher_{html_ran}.html)"
 

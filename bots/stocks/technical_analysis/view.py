@@ -11,7 +11,7 @@ from gamestonk_terminal.helper_funcs import plot_autoscale
 from gamestonk_terminal.stocks.technical_analysis import finviz_model
 
 
-async def view_command(ticker=""):
+def view_command(ticker=""):
     """Displays image from Finviz [Finviz]"""
 
     # Debug

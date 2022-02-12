@@ -1,6 +1,6 @@
-import random
 from datetime import datetime, timedelta
 
+import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
 
@@ -11,7 +11,7 @@ from bots.helpers import image_border
 from gamestonk_terminal.common.technical_analysis import overlap_model
 
 
-async def wma_command(ticker="", window="", offset="", start="", end=""):
+def wma_command(ticker="", window="", offset="", start="", end=""):
     """Displays chart with weighted moving average [Yahoo Finance]"""
 
     # Debug
@@ -122,7 +122,7 @@ async def wma_command(ticker="", window="", offset="", start="", end=""):
     # Check if interactive settings are enabled
     plt_link = ""
     if cfg.INTERACTIVE:
-        html_ran = random.randint(69, 69420)
+        html_ran = np.random.randint(70000)
         fig.write_html(f"in/wma_{html_ran}.html", config=config)
         plt_link = f"[Interactive]({cfg.INTERACTIVE_URL}/wma_{html_ran}.html)"
 

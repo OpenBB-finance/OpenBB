@@ -1,11 +1,11 @@
 import os
 
-import pandas as pd
-import yfinance as yf
 import df2img
 import disnake
-from PIL import Image
+import pandas as pd
+import yfinance as yf
 from numpy.core.fromnumeric import transpose
+from PIL import Image
 
 import bots.config_discordbot as cfg
 
@@ -193,7 +193,6 @@ def save_image(file, fig):
 def image_border(file):
     imagefile = file
     img = Image.open(imagefile)
-    print(img.size)
     im_bg = Image.open(cfg.IMG_BG)
     h = img.height + 240
     w = img.width + 520
@@ -218,20 +217,27 @@ class ShowView:
         # try:
         data = func(*args, **kwargs)
 
-        image = disnake.File(data["imagefile"])
+        if "view" in data:
+            await ctx.send(
+                embed=data["embed"][0],
+                view=data["view"](data["embed"], data["choices"]),
+            )
 
-        title = data["title"]
-        embed = disnake.Embed(
-            title=title, colour=cfg.COLOR, description=data.get("description", None)
-        )
-        embed.set_image(url=f"attachment://{data['imagefile']}")
-        embed.set_author(
-            name=cfg.AUTHOR_NAME,
-            icon_url=cfg.AUTHOR_ICON_URL,
-        )
-        os.remove(data["imagefile"])
+        else:
+            image = disnake.File(data["imagefile"])
 
-        await ctx.send(embed=embed, file=image)
+            title = data["title"]
+            embed = disnake.Embed(
+                title=title, colour=cfg.COLOR, description=data.get("description", "")
+            )
+            embed.set_image(url=f"attachment://{data['imagefile']}")
+            embed.set_author(
+                name=cfg.AUTHOR_NAME,
+                icon_url=cfg.AUTHOR_ICON_URL,
+            )
+            os.remove(data["imagefile"])
+
+            await ctx.send(embed=embed, file=image)
         """
         except Exception as e:
             embed = disnake.Embed(

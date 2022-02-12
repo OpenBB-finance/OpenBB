@@ -1,6 +1,6 @@
-import random
 from datetime import datetime, timedelta
 
+import numpy as np
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
@@ -11,9 +11,7 @@ from bots.helpers import image_border
 from gamestonk_terminal.common.technical_analysis import volume_model
 
 
-async def adosc_command(
-    ticker="", is_open="False", fast="3", slow="10", start="", end=""
-):
+def adosc_command(ticker="", is_open="False", fast="3", slow="10", start="", end=""):
     """Displays chart with chaikin oscillator [Yahoo Finance]"""
 
     # Debug
@@ -132,7 +130,7 @@ async def adosc_command(
     # Check if interactive settings are enabled
     plt_link = ""
     if cfg.INTERACTIVE:
-        html_ran = random.randint(69, 69420)
+        html_ran = np.random.randint(70000)
         fig.write_html(f"in/adosc_{html_ran}.html", config=config)
         plt_link = f"[Interactive]({cfg.INTERACTIVE_URL}/adosc_{html_ran}.html)"
 

@@ -1,6 +1,6 @@
-import random
 from datetime import datetime, timedelta
 
+import numpy as np
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
@@ -11,7 +11,7 @@ from bots.helpers import image_border
 from gamestonk_terminal.common.technical_analysis import volume_model
 
 
-async def obv_command(ticker="", start="", end=""):
+def obv_command(ticker="", start="", end=""):
     """Displays chart with on balance volume [Yahoo Finance]"""
 
     # Debug
@@ -121,7 +121,7 @@ async def obv_command(ticker="", start="", end=""):
     # Check if interactive settings are enabled
     plt_link = ""
     if cfg.INTERACTIVE:
-        html_ran = random.randint(69, 69420)
+        html_ran = np.random.randint(70000)
         fig.write_html(f"in/obv_{html_ran}.html", config=config)
         plt_link = f"[Interactive]({cfg.INTERACTIVE_URL}/obv_{html_ran}.html)"
 

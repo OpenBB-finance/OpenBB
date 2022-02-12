@@ -1,6 +1,6 @@
-import random
 from datetime import datetime, timedelta
 
+import numpy as np
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
@@ -11,12 +11,12 @@ from bots.helpers import image_border
 from gamestonk_terminal.common.technical_analysis import volume_model
 
 
-async def ad_command(ticker="", is_open="False", start="", end=""):
+def ad_command(ticker="", is_open="False", start="", end=""):
     """Displays chart with accumulation/distribution line [Yahoo Finance]"""
 
     # Debug
     if cfg.DEBUG:
-        logger.debug("!stocks.ta.ad %s %s %s %s", ticker, is_open, start, end)
+        logger.debug("ta-ad %s %s %s %s", ticker, is_open, start, end)
 
     # Check for argument
     if ticker == "":
@@ -134,7 +134,7 @@ async def ad_command(ticker="", is_open="False", start="", end=""):
     # Check if interactive settings are enabled
     plt_link = ""
     if cfg.INTERACTIVE:
-        html_ran = random.randint(69, 69420)
+        html_ran = np.random.randint(70000)
         fig.write_html(f"in/ad_{html_ran}.html", config=config)
         plt_link = f"[Interactive]({cfg.INTERACTIVE_URL}/ad_{html_ran}.html)"
 

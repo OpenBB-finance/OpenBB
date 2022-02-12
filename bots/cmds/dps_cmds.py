@@ -4,7 +4,7 @@ import disnake
 from disnake.ext import commands
 
 from bots.config_discordbot import logger
-from bots.helpers import ticker_autocomp
+from bots.helpers import ShowView, ticker_autocomp
 from bots.stocks.dark_pool_shorts.dpotc import dpotc_command
 from bots.stocks.dark_pool_shorts.ftd import ftd_command
 from bots.stocks.dark_pool_shorts.hsi import hsi_command
@@ -44,7 +44,7 @@ class DarkPoolShortsCommands(commands.Cog):
         """
         await ctx.response.defer()
         logger.info("dps-shorted")
-        await shorted_command(ctx, num)
+        await ShowView().discord(shorted_command, ctx, num)
 
     @commands.slash_command(name="dps-hsi")
     async def hsi(self, ctx: disnake.AppCmdInter, num: int = 10):
@@ -56,7 +56,7 @@ class DarkPoolShortsCommands(commands.Cog):
         """
         await ctx.response.defer()
         logger.info("dps-hsi")
-        await hsi_command(ctx, num)
+        await ShowView().discord(hsi_command, ctx, num)
 
     @commands.slash_command(name="dps-pos")
     async def pos(
@@ -74,7 +74,7 @@ class DarkPoolShortsCommands(commands.Cog):
         """
         await ctx.response.defer()
         logger.info("dps-pos")
-        await pos_command(ctx, sort, num)
+        await ShowView().discord(pos_command, ctx, sort, num)
 
     @commands.slash_command(name="dps-sidtc")
     async def sidtc(
@@ -98,7 +98,7 @@ class DarkPoolShortsCommands(commands.Cog):
         """
         await ctx.response.defer()
         logger.info("dps-sidtc")
-        await sidtc_command(ctx, sort, num)
+        await ShowView().discord(sidtc_command, ctx, sort, num)
 
     @commands.slash_command(name="dps-ftd")
     async def ftd(
@@ -118,7 +118,7 @@ class DarkPoolShortsCommands(commands.Cog):
         """
         await ctx.response.defer()
         logger.info("dps-ftd")
-        await ftd_command(ctx, ticker, start, end)
+        await ShowView().discord(ftd_command, ctx, ticker, start, end)
 
     @commands.slash_command(name="dps-dpotc")
     async def dpotc(
@@ -134,7 +134,7 @@ class DarkPoolShortsCommands(commands.Cog):
         """
         await ctx.response.defer()
         logger.info("dps-dpotc")
-        await dpotc_command(ctx, ticker)
+        await ShowView().discord(dpotc_command, ctx, ticker)
 
     @commands.slash_command(name="dps-spos")
     async def spos(
@@ -150,7 +150,7 @@ class DarkPoolShortsCommands(commands.Cog):
         """
         await ctx.response.defer()
         logger.info("dps-spos")
-        await spos_command(ctx, ticker)
+        await ShowView().discord(spos_command, ctx, ticker)
 
     @commands.slash_command(name="dps-psi")
     async def psi(
@@ -166,7 +166,7 @@ class DarkPoolShortsCommands(commands.Cog):
         """
         await ctx.response.defer()
         logger.info("dps-psi")
-        await psi_command(ctx, ticker)
+        await ShowView().discord(psi_command, ctx, ticker)
 
 
 def setup(bot: commands.Bot):
