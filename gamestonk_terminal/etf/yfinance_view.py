@@ -1,13 +1,14 @@
 """Yahoo Finance view"""
 __docformat__ = "numpy"
 
+from typing import Optional, List
 import logging
 import os
 
 import pandas as pd
 from matplotlib import pyplot as plt
 
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.etf import yfinance_model
@@ -27,6 +28,7 @@ def display_etf_weightings(
     raw: bool = False,
     min_pct_to_display: float = 5,
     export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display sector weightings allocation of ETF. [Source: Yahoo Finance]
 
@@ -40,6 +42,8 @@ def display_etf_weightings(
         Minimum percentage to display sector
     export: str
         Type of format to export data
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
     sectors = yfinance_model.get_etf_sector_weightings(name)
     if not sectors:
@@ -71,19 +75,26 @@ def display_etf_weightings(
         legend, values = zip(*main_holdings.items())
         leg = [f"{le}\n{round(v,2)}%" for le, v in zip(legend, values)]
 
-        plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        plt.pie(
+        if external_axes is None:
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+
+        else:
+            if len(external_axes) != 1:
+                console.print("[red]Expected list of 1 axis items./n[/red]")
+                return
+            (ax,) = external_axes
+
+        ax.pie(
             values,
             labels=leg,
-            wedgeprops={"linewidth": 0.5, "edgecolor": "white"},
-            labeldistance=1.05,
-            startangle=90,
+            wedgeprops=theme.pie_wedgeprops,
+            colors=theme.get_colors(),
+            startangle=theme.pie_startangle,
         )
-        plt.title(title)
-        plt.tight_layout()
-        if gtff.USE_ION:
-            plt.ion()
-        plt.show()
+        ax.set_title(title)
+        theme.style_primary_axis(ax)
+        if external_axes is None:
+            theme.visualize_output()
 
         console.print("")
 

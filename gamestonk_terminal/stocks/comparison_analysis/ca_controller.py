@@ -156,7 +156,7 @@ class ComparisonAnalysisController(BaseController):
             "--ticker",
             dest="ticker",
             type=str,
-            required=True,
+            required="-h" not in other_args,
             help="Ticker get similar tickers from",
         )
         if other_args and "-" not in other_args[0][0]:

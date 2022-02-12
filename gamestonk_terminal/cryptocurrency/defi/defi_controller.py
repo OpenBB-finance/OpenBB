@@ -15,6 +15,7 @@ from gamestonk_terminal.cryptocurrency.defi import (
     terraengineer_view,
     terramoney_fcd_view,
     terramoney_fcd_model,
+    smartstake_view,
 )
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
@@ -65,6 +66,7 @@ class DefiController(BaseController):
         "gacc",
         "sratio",
         "sreturn",
+        "lcsc",
     ]
 
     PATH = "/crypto/defi/"
@@ -126,7 +128,10 @@ class DefiController(BaseController):
     govp          Displays terra blockchain governance proposals list
     gacc          Displays terra blockchain account growth history
     sratio        Displays terra blockchain staking ratio history
-    sreturn       Displays terra blockchain staking returns history[/cmds]
+    sreturn       Displays terra blockchain staking returns history
+
+[src][Smartstake][/src]
+    lcsc         Displays Luna circulating supply changes[/cmds]
 """
         console.print(text=help_text, menu="Cryptocurrency - Decentralized Finance")
 
@@ -153,7 +158,7 @@ class DefiController(BaseController):
             dest="address",
             type=check_terra_address_format,
             help="Terra address. Valid terra addresses start with 'terra'",
-            required=True,
+            required="-h" not in other_args,
         )
 
         if other_args and not other_args[0][0] == "-":
@@ -1145,5 +1150,37 @@ class DefiController(BaseController):
                 sortby=ns_parser.sortby,
                 descend=ns_parser.descend,
                 link=ns_parser.link,
+                export=ns_parser.export,
+            )
+
+    def call_lcsc(self, other_args: List[str]):
+        """Process lcsc command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="lcsc",
+            description="""
+                Display Luna circulating supply changes stats.
+                [Source: Smartstake.io]
+            """,
+        )
+
+        parser.add_argument(
+            "-d",
+            "--days",
+            dest="days",
+            type=check_positive,
+            help="Number of days to display. Default: 30 days",
+            default=30,
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, limit=5
+        )
+
+        if ns_parser:
+            smartstake_view.display_luna_circ_supply_change(
+                days=ns_parser.days,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )

@@ -145,12 +145,12 @@ class PredictionTechniquesController(CryptoBaseController):
                 Trend='N',  Seasonal='N': Simple Exponential Smoothing
                 Trend='N',  Seasonal='A': Exponential Smoothing
                 Trend='N',  Seasonal='M': Exponential Smoothing
-                Trend='A',  Seasonal='N': Holt’s linear method
-                Trend='A',  Seasonal='A': Additive Holt-Winters’ method
-                Trend='A',  Seasonal='M': Multiplicative Holt-Winters’ method
+                Trend='A',  Seasonal='N': Holt's linear method
+                Trend='A',  Seasonal='A': Additive Holt-Winters' method
+                Trend='A',  Seasonal='M': Multiplicative Holt-Winters' method
                 Trend='Ad', Seasonal='N': Additive damped trend method
                 Trend='Ad', Seasonal='A': Exponential Smoothing
-                Trend='Ad', Seasonal='M': Holt-Winters’ damped method
+                Trend='Ad', Seasonal='M': Holt-Winters' damped method
                 Trend component: N: None, A: Additive, Ad: Additive Damped
                 Seasonality component: N: None, A: Additive, M: Multiplicative
             """,

@@ -62,6 +62,8 @@ def display_candle(
         To forex symbol
     from_symbol : str
         From forex symbol
+    external_axes: Optional[List[plt.Axes]]
+        External axes (1 axis are expected in the list), by default None
     """
     candle_chart_kwargs = {
         "type": "candle",

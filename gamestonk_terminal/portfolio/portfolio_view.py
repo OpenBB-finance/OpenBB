@@ -120,6 +120,7 @@ def display_allocation(
         axis=1,
     )
     all_holdings = all_holdings.drop(columns=["temp"])
+
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     else:

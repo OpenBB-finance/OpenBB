@@ -5,14 +5,16 @@
     industry      see existing industries, or set industry if arg specified
     sector        see existing sectors, or set sector if arg specified
     country       see existing countries, or set country if arg specified
-    mktcap        set mktcap between small, mid or large
+    mktcap        set mktcap between nano, micro, small, mid, large or mega
     exchange      revert exclude international exchanges flag
+    period        set period between annual, quarterly or trailing [StockAnalyis]
 
 Industry          : Financial Data & Stock Exchanges
 Sector            : Financial Services
 Country           : United States
 Market Cap        : Large
 Exclude Exchanges : True
+Period            : Annual
 
 Statistics
     cps           companies per Sector based on Country and Market Cap
@@ -21,9 +23,12 @@ Statistics
     cpcs          companies per Country based on Sector and Market Cap
     cpci          companies per Country based on Industry and Market Cap
 
-Financials 
+Financials  [Yahoo Finance] 
     sama          see all metrics available
     metric        visualise financial metric across filters selected
+Financials  [StockAnalyis] 
+    satma         see all metrics available over time
+    vis           visualise financial metric across filters selected
 [unvl]
 Returned tickers: 
 >   ca            take these to comparison analysis menu

@@ -38,6 +38,8 @@ def display_ad(
         Ticker
     export: str
         Format to export data as
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (3 axes is expected in the list), by default None
     """
     divisor = 1_000_000
     df_vol = ohlc["Volume"] / divisor

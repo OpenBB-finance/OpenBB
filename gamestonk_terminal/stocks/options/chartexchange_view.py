@@ -50,4 +50,4 @@ def display_raw(
         title=f"{ticker.upper()} raw data",
     )
 
-    console.print("")
+    console.print()

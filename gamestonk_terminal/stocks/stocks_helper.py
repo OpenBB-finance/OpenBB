@@ -269,6 +269,7 @@ def display_candle(
     add_trend: bool = False,
     ma: Optional[Tuple[int, ...]] = None,
     external_axes: Optional[List[plt.Axes]] = None,
+    asset_type: str = "Stock",
 ):
     """Shows candle plot of loaded ticker. [Source: Yahoo Finance, IEX Cloud or Alpha Vantage]
 
@@ -288,6 +289,8 @@ def display_candle(
         Moving averages to add to the candle
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
+    asset_type_: str
+        String to include in title
     """
     if add_trend:
         if (df_stock.index[1] - df_stock.index[0]).total_seconds() >= 86400:
@@ -532,7 +535,7 @@ def quote(other_args: List[str], s_ticker: str):
             "--ticker",
             action="store",
             dest="s_ticker",
-            required=True,
+            required="-h" not in other_args,
             help="Stock ticker",
         )
 
@@ -640,6 +643,7 @@ def load_ticker(
     else:
         df_data = yf.download(ticker, start=start_date, progress=False)
 
+    df_data.index = pd.to_datetime(df_data.index)
     df_data["date_id"] = (df_data.index.date - df_data.index.date.min()).astype(
         "timedelta64[D]"
     )
