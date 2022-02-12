@@ -41,12 +41,11 @@ def pt_command(ticker: str = "", raw: bool = False, start=""):
         df_analyst_data.sort_index(ascending=False)
         report = "```" + df_analyst_data.to_string() + "```"
 
-        return {
+        output = {
             "title": f"Stocks: [Business Insider] Price Targets {ticker}",
             "description": report,
         }
     else:
-        plt.style.use("seaborn")
         plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
         if start:
             df_analyst_data = df_analyst_data[start:]
@@ -59,7 +58,7 @@ def pt_command(ticker: str = "", raw: bool = False, start=""):
 
         plt.legend(["Closing Price", "Average Price Target", "Price Target"])
 
-        plt.title(f"{ticker} (Time Series) and Price Target")
+        plt.title(f"{ticker.upper} (Time Series) and Price Target")
         plt.xlim(stock.index[0], stock.index[-1])
         plt.xlabel("Time")
         plt.ylabel("Share Price")
@@ -68,7 +67,9 @@ def pt_command(ticker: str = "", raw: bool = False, start=""):
 
         imagefile = bots.helpers.image_border("ta_pt.png")
 
-        return {
+        output = {
             "title": f"Stocks: [Business Insider] Price Targets {ticker}",
             "imagefile": imagefile,
         }
+
+    return output

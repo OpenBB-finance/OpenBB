@@ -35,7 +35,6 @@ async def qtrcontracts_command(ctx, num: int = 20, analysis=""):
             raise Exception("No quarterly government contracts found")
 
         tickers = quiverquant_model.analyze_qtr_contracts(analysis, num)
-        plt.style.use("seaborn")
 
         # Output Data
         if analysis in {"upmom", "downmom"}:

@@ -25,16 +25,14 @@ def view_command(ticker=""):
     image_data = finviz_model.get_finviz_image(ticker)
     dataBytesIO = io.BytesIO(image_data)
     im = Image.open(dataBytesIO)
-    plt.style.use("seaborn")
 
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     ax.set_axis_off()
     fig.subplots_adjust(left=0, right=1, top=1, bottom=0)
 
     plt.imshow(im)
-
-    plt.savefig("ta_view.png")
     imagefile = f"ta_view.png{np.random.randint(70000)}"
+    plt.savefig(imagefile)
 
     imagefile = image_border(imagefile)
 

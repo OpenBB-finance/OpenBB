@@ -41,7 +41,6 @@ async def histcont_command(ctx, ticker=""):
         quarter_ticks = [
             f"{quarter[0]}" if quarter[1] == 1 else "" for quarter in zip(year, qtr)
         ]
-        plt.style.use("seaborn")
 
         fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 

@@ -37,9 +37,7 @@ async def topsells_command(
         if gov_type == "":
             gov_type = "congress"
         elif gov_type not in possible_args:
-            raise Exception(
-                "Enter a valid government argument, options are: congress, senate and house"
-            )
+            raise Exception("Enter a valid government argument, options are: congress, senate and house")
 
         # Retrieve Data
         df_gov = quiverquant_model.get_government_trading(gov_type)
@@ -56,63 +54,38 @@ async def topsells_command(
 
         df_gov = df_gov[df_gov["TransactionDate"] > start_date].dropna()
 
-        df_gov["Range"] = df_gov["Range"].apply(
-            lambda x: "$5,000,001-$5,000,001" if x == ">$5,000,000" else x
-        )
+        df_gov["Range"] = df_gov["Range"].apply(lambda x: "$5,000,001-$5,000,001" if x == ">$5,000,000" else x)
 
         df_gov["min"] = df_gov["Range"].apply(
-            lambda x: x.split("-")[0]
-            .strip("$")
-            .replace(",", "")
-            .strip()
-            .replace(">$", "")
-            .strip()
+            lambda x: x.split("-")[0].strip("$").replace(",", "").strip().replace(">$", "").strip()
         )
         df_gov["max"] = df_gov["Range"].apply(
-            lambda x: x.split("-")[1]
-            .replace(",", "")
-            .strip()
-            .strip("$")
-            .replace(">$", "")
-            .strip()
+            lambda x: x.split("-")[1].replace(",", "").strip().strip("$").replace(">$", "").strip()
             if "-" in x
             else x.strip("$").replace(",", "").replace(">$", "").strip()
         )
 
         df_gov["lower"] = df_gov[["min", "max", "Transaction"]].apply(
-            lambda x: float(x["min"])
-            if x["Transaction"] == "Purchase"
-            else -float(x["max"]),
+            lambda x: float(x["min"]) if x["Transaction"] == "Purchase" else -float(x["max"]),
             axis=1,
         )
         df_gov["upper"] = df_gov[["min", "max", "Transaction"]].apply(
-            lambda x: float(x["max"])
-            if x["Transaction"] == "Purchase"
-            else -float(x["min"]),
+            lambda x: float(x["max"]) if x["Transaction"] == "Purchase" else -float(x["min"]),
             axis=1,
         )
 
         df_gov = df_gov.sort_values("TransactionDate", ascending=True)
         if raw:
             df = pd.DataFrame(
-                df_gov.groupby("Ticker")["upper"]
-                .sum()
-                .div(1000)
-                .sort_values(ascending=True)
-                .abs()
-                .head(n=num)
+                df_gov.groupby("Ticker")["upper"].sum().div(1000).sort_values(ascending=True).abs().head(n=num)
             )
             description = "```" + df.to_string() + "```"
-        plt.style.use("seaborn")
         fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
-        df_gov.groupby("Ticker")["upper"].sum().div(1000).sort_values().abs().head(
-            n=num
-        ).plot(kind="bar", rot=0, ax=ax)
+        df_gov.groupby("Ticker")["upper"].sum().div(1000).sort_values().abs().head(n=num).plot(kind="bar", rot=0, ax=ax)
         ax.set_ylabel("Amount ($1k)")
         ax.set_title(
-            f"{num} most sold stocks over last {past_transactions_months} months"
-            f" (upper bound) for {gov_type}"
+            f"{num} most sold stocks over last {past_transactions_months} months" f" (upper bound) for {gov_type}"
         )
         plt.gcf().axes[0].yaxis.get_major_formatter().set_scientific(False)
         fig.tight_layout()
@@ -145,9 +118,7 @@ async def topsells_command(
             logger.debug("Image URL: %s", image_link)
         title = f"Stocks: [quiverquant.com] Top sells for {gov_type.upper()}"
         if raw:
-            embed = disnake.Embed(
-                title=title, description=description, colour=cfg.COLOR
-            )
+            embed = disnake.Embed(title=title, description=description, colour=cfg.COLOR)
         else:
             embed = disnake.Embed(title=title, colour=cfg.COLOR)
         embed.set_author(

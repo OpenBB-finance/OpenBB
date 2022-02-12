@@ -87,7 +87,6 @@ async def gtrades_command(
         )
 
         df_gov = df_gov.sort_values("TransactionDate", ascending=True)
-        plt.style.use("seaborn")
 
         fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 

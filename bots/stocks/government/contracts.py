@@ -43,7 +43,6 @@ async def contracts_command(
         ]
 
         df_contracts.drop_duplicates(inplace=True)
-        plt.style.use("seaborn")
 
         fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
