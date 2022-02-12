@@ -19,7 +19,11 @@ def vcr_config():
 @pytest.mark.default_cassette("test_rating_over_time_TSLA")
 @pytest.mark.vcr
 @pytest.mark.record_stdout
-def test_rating_over_time():
+def test_rating_over_time(mocker):
+    # MOCK VISUALIZE_OUTPUT
+    mocker.patch(
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
+    )
     finnhub_view.rating_over_time(
         ticker="TSLA",
         num=10,
@@ -31,8 +35,12 @@ def test_rating_over_time():
 @pytest.mark.default_cassette("test_rating_over_time_TSLA")
 @pytest.mark.vcr(mode="none")
 def test_rating_over_time_plt(capsys, mocker):
-    mock_show = mocker.Mock()
-    mocker.patch(target="matplotlib.pyplot.show", new=mock_show)
+
+    # MOCK VISUALIZE_OUTPUT
+    mocker.patch(
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
+    )
+
     finnhub_view.rating_over_time(
         ticker="TSLA",
         num=10,
@@ -42,12 +50,16 @@ def test_rating_over_time_plt(capsys, mocker):
 
     capsys.readouterr()
 
-    mock_show.assert_called_once()
-
 
 @pytest.mark.vcr
 @pytest.mark.record_stdout
-def test_rating_over_time_invalid_ticker():
+def test_rating_over_time_invalid_ticker(mocker):
+
+    # MOCK VISUALIZE_OUTPUT
+    mocker.patch(
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
+    )
+
     finnhub_view.rating_over_time(
         ticker="INVALID_TICKER",
         num=10,
@@ -58,7 +70,11 @@ def test_rating_over_time_invalid_ticker():
 
 @pytest.mark.vcr
 @pytest.mark.record_stdout
-def test_rating_over_time_invalid_token():
+def test_rating_over_time_invalid_token(mocker):
+    # MOCK VISUALIZE_OUTPUT
+    mocker.patch(
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
+    )
     finnhub_view.rating_over_time(
         ticker="TSLA",
         num=10,

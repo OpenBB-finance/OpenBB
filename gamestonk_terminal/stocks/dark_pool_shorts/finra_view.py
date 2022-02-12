@@ -3,13 +3,13 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import List
+from typing import List, Optional
 
 import matplotlib.dates as mdates
 import pandas as pd
 from matplotlib import pyplot as plt
 
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
@@ -20,7 +20,12 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def plot_dark_pools(ticker: str, ats: pd.DataFrame, otc: pd.DataFrame):
+def plot_dark_pools(
+    ticker: str,
+    ats: pd.DataFrame,
+    otc: pd.DataFrame,
+    external_axes: Optional[List[plt.Axes]] = None,
+):
     """Plots ATS and NON-ATS data
 
     Parameters
@@ -31,76 +36,85 @@ def plot_dark_pools(ticker: str, ats: pd.DataFrame, otc: pd.DataFrame):
         Dark Pools (ATS) Data
     otc : pd.DataFrame
         OTC (Non-ATS) Data
-    """
-    _, _ = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (2 axis is expected in the list), by default None
 
-    plt.subplot(3, 1, (1, 2))
+    """
+
+    # This plot has 1 axis
+    if not external_axes:
+        _, (ax1, ax2) = plt.subplots(
+            2, 1, sharex=True, figsize=plot_autoscale(), dpi=PLOT_DPI
+        )
+    else:
+        if len(external_axes) != 1:
+            console.print("[red]Expected list of one axis item./n[/red]")
+            return
+        (ax1, ax2) = external_axes
+
     if not ats.empty and not otc.empty:
-        plt.bar(
+        ax1.bar(
             ats.index,
             (ats["totalWeeklyShareQuantity"] + otc["totalWeeklyShareQuantity"])
             / 1_000_000,
-            color="tab:orange",
+            color=theme.down_color,
         )
-        plt.bar(
-            otc.index, otc["totalWeeklyShareQuantity"] / 1_000_000, color="tab:blue"
+        ax1.bar(
+            otc.index, otc["totalWeeklyShareQuantity"] / 1_000_000, color=theme.up_color
         )
-        plt.legend(["ATS", "OTC"])
+        ax1.legend(["ATS", "OTC"])
 
     elif not ats.empty:
-        plt.bar(
+        ax1.bar(
             ats.index,
             ats["totalWeeklyShareQuantity"] / 1_000_000,
-            color="tab:orange",
+            color=theme.down_color,
         )
-        plt.legend(["ATS"])
+        ax1.legend(["ATS"])
 
     elif not otc.empty:
-        plt.bar(
-            otc.index, otc["totalWeeklyShareQuantity"] / 1_000_000, color="tab:blue"
+        ax1.bar(
+            otc.index, otc["totalWeeklyShareQuantity"] / 1_000_000, color=theme.up_color
         )
-        plt.legend(["OTC"])
+        ax1.legend(["OTC"])
 
-    plt.ylabel("Total Weekly Shares [Million]")
-    plt.grid(b=True, which="major", color="#666666", linestyle="-", alpha=0.2)
-    plt.title(f"Dark Pools (ATS) vs OTC (Non-ATS) Data for {ticker}")
+    ax1.set_ylabel("Total Weekly Shares [Million]")
+    ax1.set_title(f"Dark Pools (ATS) vs OTC (Non-ATS) Data for {ticker}")
 
-    plt.subplot(313)
     if not ats.empty:
-        plt.plot(
+        ax2.plot(
             ats.index,
             ats["totalWeeklyShareQuantity"] / ats["totalWeeklyTradeCount"],
-            color="tab:orange",
+            color=theme.down_color,
         )
-        plt.legend(["ATS"])
+        ax2.legend(["ATS"])
 
         if not otc.empty:
-            plt.plot(
+            ax2.plot(
                 otc.index,
                 otc["totalWeeklyShareQuantity"] / otc["totalWeeklyTradeCount"],
-                color="tab:blue",
+                color=theme.up_color,
             )
-            plt.legend(["ATS", "OTC"])
+            ax2.legend(["ATS", "OTC"])
 
     else:
-        plt.plot(
+        ax2.plot(
             otc.index,
             otc["totalWeeklyShareQuantity"] / otc["totalWeeklyTradeCount"],
-            color="tab:blue",
+            color=theme.up_color,
         )
-        plt.legend(["OTC"])
+        ax2.legend(["OTC"])
 
-    plt.ylabel("Shares per Trade")
-    plt.grid(b=True, which="major", color="#666666", linestyle="-", alpha=0.2)
-    plt.gcf().autofmt_xdate()
-    plt.gca().xaxis.set_major_formatter(mdates.DateFormatter("%m/%d"))
-    plt.gca().xaxis.set_major_locator(mdates.DayLocator(interval=4))
-    plt.xlabel("Weeks")
+    ax2.set_ylabel("Shares per Trade")
+    ax2.xaxis.set_major_formatter(mdates.DateFormatter("%m/%d"))
+    ax2.xaxis.set_major_locator(mdates.DayLocator(interval=4))
+    ax2.set_xlabel("Weeks")
 
-    if gtff.USE_ION:
-        plt.ion()
+    theme.style_primary_axis(ax1)
+    theme.style_primary_axis(ax2)
 
-    plt.show()
+    if not external_axes:
+        theme.visualize_output()
 
 
 @log_start_end(log=logger)
@@ -137,7 +151,11 @@ def darkpool_ats_otc(ticker: str, export: str):
 
 
 @log_start_end(log=logger)
-def plot_dark_pools_ats(ats: pd.DataFrame, top_ats_tickers: List):
+def plot_dark_pools_ats(
+    ats: pd.DataFrame,
+    top_ats_tickers: List,
+    external_axes: Optional[List[plt.Axes]] = None,
+):
     """Plots promising tickers based on growing ATS data
 
     Parameters
@@ -146,11 +164,22 @@ def plot_dark_pools_ats(ats: pd.DataFrame, top_ats_tickers: List):
         Dark Pools (ATS) Data
     top_ats_tickers : List
         List of tickers from most promising with better linear regression slope
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
+
     """
-    plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
+
+    # This plot has 1 axis
+    if not external_axes:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    else:
+        if len(external_axes) != 1:
+            console.print("[red]Expected list of one axis item./n[/red]")
+            return
+        (ax,) = external_axes
 
     for symbol in top_ats_tickers:
-        plt.plot(
+        ax.plot(
             pd.to_datetime(
                 ats[ats["issueSymbolIdentifier"] == symbol]["weekStartDate"]
             ),
@@ -158,21 +187,24 @@ def plot_dark_pools_ats(ats: pd.DataFrame, top_ats_tickers: List):
             / 1_000_000,
         )
 
-    plt.legend(top_ats_tickers)
-    plt.ylabel("Total Weekly Shares [Million]")
-    plt.grid(b=True, which="major", color="#666666", linestyle="-", alpha=0.2)
-    plt.title("Dark Pool (ATS) growing tickers")
-    plt.gcf().autofmt_xdate()
-    plt.xlabel("Weeks")
+    ax.legend(top_ats_tickers)
+    ax.set_ylabel("Total Weekly Shares [Million]")
+    ax.set_title("Dark Pool (ATS) growing tickers")
+    ax.set_xlabel("Weeks")
+    theme.style_primary_axis(ax)
 
-    if gtff.USE_ION:
-        plt.ion()
-
-    plt.show()
+    if not external_axes:
+        theme.visualize_output()
 
 
 @log_start_end(log=logger)
-def darkpool_otc(num: int, promising: int, tier: str, export: str):
+def darkpool_otc(
+    num: int,
+    promising: int,
+    tier: str,
+    export: str,
+    external_axes: Optional[List[plt.Axes]] = None,
+):
     """Display dark pool (ATS) data of tickers with growing trades activity. [Source: FINRA]
 
     Parameters
@@ -187,6 +219,8 @@ def darkpool_otc(num: int, promising: int, tier: str, export: str):
         Tier to process data from
     export : str
         Export dataframe data to csv,json,xlsx file
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
     # TODO: Improve command logic to be faster and more useful
     df_ats, d_ats_reg = finra_model.getATSdata(num, tier)
@@ -195,7 +229,7 @@ def darkpool_otc(num: int, promising: int, tier: str, export: str):
         dict(sorted(d_ats_reg.items(), key=lambda item: item[1], reverse=True)).keys()
     )[:promising]
 
-    plot_dark_pools_ats(df_ats, top_ats_tickers)
+    plot_dark_pools_ats(df_ats, top_ats_tickers, external_axes)
     console.print("")
 
     export_data(

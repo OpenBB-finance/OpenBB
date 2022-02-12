@@ -1,14 +1,14 @@
 """AlphaQuery View"""
 __docforma__ = "numpy"
 
+from typing import Optional, List
 import logging
 import os
 from datetime import datetime, timedelta
 
-import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
 
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
@@ -24,6 +24,7 @@ def display_put_call_ratio(
     window: int = 30,
     start_date: str = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
     export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display put call ratio [Source: AlphaQuery.com]
 
@@ -37,25 +38,29 @@ def display_put_call_ratio(
         Starting date for data, by default (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d")
     export : str, optional
         Format to export data, by default ""
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
     pcr = alphaquery_model.get_put_call_ratio(ticker, window, start_date)
     if pcr.empty:
         console.print("No data found.\n")
         return
-    dateFmt = mdates.DateFormatter("%m/%d/%Y")
-    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+
+    if not external_axes:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    else:
+        if len(external_axes) != 1:
+            console.print("[red]Expected list of one axis item./n[/red]")
+            return
+        (ax,) = external_axes
 
     ax.plot(pcr.index, pcr.values)
-    ax.xaxis.set_major_formatter(dateFmt)
-    ax.tick_params(axis="x", labelrotation=45)
-    ax.grid("on")
-    ax.axhline(y=1, lw=2, c="k")
     ax.set_title(f"Put Call Ratio for {ticker.upper()}")
-    fig.tight_layout()
-    if gtff.USE_ION:
-        plt.ion()
-    plt.show()
-    console.print("")
+    theme.style_primary_axis(ax)
+
+    if not external_axes:
+        theme.visualize_output()
+
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),

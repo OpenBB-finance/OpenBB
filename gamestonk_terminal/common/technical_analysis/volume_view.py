@@ -3,35 +3,34 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import Optional, List
 
 import matplotlib.pyplot as plt
 import pandas as pd
-from pandas.plotting import register_matplotlib_converters
 
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal.common.technical_analysis import volume_model
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.decorators import log_start_end
-from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
+from gamestonk_terminal.helper_funcs import export_data, plot_autoscale, reindex_dates
 from gamestonk_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
-register_matplotlib_converters()
-
 
 @log_start_end(log=logger)
 def display_ad(
-    df_stock: pd.DataFrame,
+    ohlc: pd.DataFrame,
     use_open: bool = False,
     s_ticker: str = "",
     export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot AD technical indicator
 
     Parameters
     ----------
-    df_stock : pd.DataFrame
+    ohlc : pd.DataFrame
         Dataframe of prices
     use_open : bool
         Whether to use open prices in calculation
@@ -39,59 +38,81 @@ def display_ad(
         Ticker
     export: str
         Format to export data as
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (3 axes is expected in the list), by default None
     """
-
-    bar_colors = ["r" if x[1].Open < x[1].Close else "g" for x in df_stock.iterrows()]
-    bar_width = df_stock.index[1] - df_stock.index[0]
     divisor = 1_000_000
-    df_vol = df_stock["Volume"].dropna()
-    df_vol = df_vol.values / divisor
-    df_ta = volume_model.ad(df_stock, use_open)
-    df_cal = df_ta.values
-    df_cal = df_cal / divisor
+    df_vol = ohlc["Volume"] / divisor
+    df_vol.name = "Adj Volume"
+    df_ta = volume_model.ad(ohlc, use_open)
+    df_cal = df_ta["AD"] / divisor
+    df_cal.name = "Adj AD"
 
-    fig, axes = plt.subplots(
-        3,
-        1,
-        gridspec_kw={"height_ratios": [2, 1, 1]},
-        figsize=plot_autoscale(),
-        dpi=PLOT_DPI,
+    plot_data = pd.merge(ohlc, df_vol, how="outer", left_index=True, right_index=True)
+    plot_data = pd.merge(
+        plot_data, df_ta, how="outer", left_index=True, right_index=True
     )
-    ax = axes[0]
-    ax.plot(df_stock.index, df_stock["Adj Close"].values, "k", lw=2)
-    ax.set_title(f"{s_ticker} AD")
-    ax.set_xlim(df_stock.index[0], df_stock.index[-1])
-    ax.set_ylabel("Price")
-    ax.grid(b=True, which="major", color="#666666", linestyle="-")
+    plot_data = pd.merge(
+        plot_data, df_cal, how="outer", left_index=True, right_index=True
+    )
+    plot_data = reindex_dates(plot_data)
 
-    ax2 = axes[1]
+    # This plot has 3 axes
+    if external_axes is None:
+        _, axes = plt.subplots(
+            3,
+            1,
+            sharex=True,
+            figsize=plot_autoscale(),
+            dpi=PLOT_DPI,
+        )
+        ax1, ax2, ax3 = axes
+    else:
+        if len(external_axes) != 3:
+            console.print("[red]Expected list of 3 axis items./n[/red]")
+            return
+        (ax1, ax2, ax3) = external_axes
+
+    ax1.plot(plot_data.index, plot_data["Adj Close"].values)
+    ax1.set_title(f"{s_ticker} AD", x=0.08, y=1)
+    ax1.set_xlim(plot_data.index[0], plot_data.index[-1])
+    ax1.set_ylabel("Price")
+    theme.style_primary_axis(
+        ax1,
+        data_index=plot_data.index.to_list(),
+        tick_labels=plot_data["date"].to_list(),
+    )
+
     ax2.set_ylabel("Volume [M]")
-
+    bar_colors = [
+        theme.down_color if x[1].Open < x[1].Close else theme.up_color
+        for x in plot_data.iterrows()
+    ]
     ax2.bar(
-        df_stock.index,
-        df_vol,
+        plot_data.index,
+        plot_data["Adj Volume"].values,
         color=bar_colors,
-        alpha=0.8,
-        width=bar_width,
+        width=theme.volume_bar_width,
     )
-    ax2.set_xlim(df_stock.index[0], df_stock.index[-1])
+    ax2.set_xlim(plot_data.index[0], plot_data.index[-1])
+    theme.style_primary_axis(
+        ax2,
+        data_index=plot_data.index.to_list(),
+        tick_labels=plot_data["date"].to_list(),
+    )
 
-    ax3 = axes[2]
     ax3.set_ylabel("A/D [M]")
-    ax3.set_xlabel("Time")
-    ax3.plot(df_ta.index, df_cal, "b", lw=1)
-    ax3.set_xlim(df_stock.index[0], df_stock.index[-1])
-    ax3.axhline(0, linewidth=2, color="k", ls="--")
-    ax3.grid(b=True, which="major", color="#666666", linestyle="-")
+    ax3.plot(plot_data.index, plot_data["Adj AD"])
+    ax3.set_xlim(plot_data.index[0], plot_data.index[-1])
+    ax3.axhline(0, linestyle="--")
+    theme.style_primary_axis(
+        ax3,
+        data_index=plot_data.index.to_list(),
+        tick_labels=plot_data["date"].to_list(),
+    )
 
-    if gtff.USE_ION:
-        plt.ion()
-
-    plt.gcf().autofmt_xdate()
-    fig.tight_layout(pad=1)
-
-    plt.show()
-    console.print("")
+    if external_axes is None:
+        theme.visualize_output()
 
     export_data(
         export,
@@ -103,18 +124,19 @@ def display_ad(
 
 @log_start_end(log=logger)
 def display_adosc(
-    df_stock: pd.DataFrame,
+    ohlc: pd.DataFrame,
     fast: int = 3,
     slow: int = 10,
     use_open: bool = False,
     s_ticker: str = "",
     export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display AD Osc Indicator
 
     Parameters
     ----------
-    df_stock : pd.DataFrame
+    ohlc : pd.DataFrame
         Dataframe of prices
     use_open : bool
         Whether to use open prices in calculation
@@ -126,58 +148,80 @@ def display_adosc(
         Stock ticker
     export : str
         Format to export data
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (3 axes is expected in the list), by default None
     """
-    bar_colors = ["r" if x[1].Open < x[1].Close else "g" for x in df_stock.iterrows()]
-
-    bar_width = df_stock.index[1] - df_stock.index[0]
-
     divisor = 1_000_000
-    df_vol = df_stock["Volume"].dropna()
-    df_vol = df_vol.values / divisor
-    df_ta = volume_model.adosc(df_stock, use_open, fast, slow)
-    df_cal = df_ta.values
-    df_cal = df_cal / divisor
+    df_vol = ohlc["Volume"] / divisor
+    df_vol.name = "Adj Volume"
+    df_ta = volume_model.adosc(ohlc, use_open, fast, slow)
+    df_cal = df_ta[df_ta.columns[0]] / divisor
+    df_cal.name = "Adj ADOSC"
 
-    fig, axes = plt.subplots(
-        3,
-        1,
-        figsize=plot_autoscale(),
-        dpi=PLOT_DPI,
+    plot_data = pd.merge(ohlc, df_vol, how="outer", left_index=True, right_index=True)
+    plot_data = pd.merge(
+        plot_data, df_ta, how="outer", left_index=True, right_index=True
     )
-    ax = axes[0]
-    ax.set_title(f"{s_ticker} AD Oscillator")
-    ax.plot(df_stock.index, df_stock["Adj Close"].values, "fuchsia", lw=1)
-    ax.set_xlim(df_stock.index[0], df_stock.index[-1])
-    ax.set_ylabel("Price")
-    ax.grid(b=True, which="major", color="#666666", linestyle="-")
+    plot_data = pd.merge(
+        plot_data, df_cal, how="outer", left_index=True, right_index=True
+    )
+    plot_data = reindex_dates(plot_data)
 
-    ax1 = axes[1]
-    ax1.set_ylabel("Volume [M]")
+    # This plot has 3 axes
+    if external_axes is None:
+        _, axes = plt.subplots(
+            3,
+            1,
+            sharex=True,
+            figsize=plot_autoscale(),
+            dpi=PLOT_DPI,
+        )
+        ax1, ax2, ax3 = axes
+    else:
+        if len(external_axes) != 3:
+            console.print("[red]Expected list of 3 axis items./n[/red]")
+            return
+        (ax1, ax2, ax3) = external_axes
 
-    ax1.bar(
-        df_stock.index,
-        df_vol,
+    ax1.set_title(f"{s_ticker} AD Oscillator")
+    ax1.plot(plot_data.index, plot_data["Adj Close"].values)
+    ax1.set_xlim(plot_data.index[0], plot_data.index[-1])
+    ax1.set_ylabel("Price")
+    theme.style_primary_axis(
+        ax1,
+        data_index=plot_data.index.to_list(),
+        tick_labels=plot_data["date"].to_list(),
+    )
+
+    ax2.set_ylabel("Volume [M]")
+    bar_colors = [
+        theme.down_color if x[1].Open < x[1].Close else theme.up_color
+        for x in plot_data.iterrows()
+    ]
+    ax2.bar(
+        plot_data.index,
+        plot_data["Adj Volume"],
         color=bar_colors,
-        alpha=0.8,
-        width=bar_width,
+        width=theme.volume_bar_width,
     )
-    ax1.set_xlim(df_stock.index[0], df_stock.index[-1])
+    ax2.set_xlim(plot_data.index[0], plot_data.index[-1])
+    theme.style_primary_axis(
+        ax2,
+        data_index=plot_data.index.to_list(),
+        tick_labels=plot_data["date"].to_list(),
+    )
 
-    ax2 = axes[2]
-    ax2.set_ylabel("AD Osc [M]")
-    ax2.set_xlabel("Time")
-    ax2.plot(df_ta.index, df_cal, "b", lw=2, label="AD Osc")
-    ax2.set_xlim(df_stock.index[0], df_stock.index[-1])
-    ax2.grid(b=True, which="major", color="#666666", linestyle="-")
+    ax3.set_ylabel("AD Osc [M]")
+    ax3.plot(plot_data.index, plot_data["Adj ADOSC"], label="AD Osc")
+    ax3.set_xlim(plot_data.index[0], plot_data.index[-1])
+    theme.style_primary_axis(
+        ax3,
+        data_index=plot_data.index.to_list(),
+        tick_labels=plot_data["date"].to_list(),
+    )
 
-    if gtff.USE_ION:
-        plt.ion()
-
-    plt.gcf().autofmt_xdate()
-    fig.tight_layout(pad=1)
-    plt.legend()
-    plt.show()
-    console.print("")
+    if external_axes is None:
+        theme.visualize_output()
 
     export_data(
         export,
@@ -188,71 +232,97 @@ def display_adosc(
 
 
 @log_start_end(log=logger)
-def display_obv(df_stock: pd.DataFrame, s_ticker: str = "", export: str = ""):
+def display_obv(
+    ohlc: pd.DataFrame,
+    s_ticker: str = "",
+    export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
+):
     """Plot OBV technical indicator
 
     Parameters
     ----------
-    df_stock : pd.DataFrame
+    ohlc : pd.DataFrame
         Dataframe of prices
     s_ticker : str
         Ticker
     export: str
         Format to export data as
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
-    bar_colors = ["r" if x[1].Open < x[1].Close else "g" for x in df_stock.iterrows()]
-
-    bar_width = df_stock.index[1] - df_stock.index[0]
-
     divisor = 1_000_000
-    df_vol = df_stock["Volume"].dropna()
-    df_vol = df_vol.values / divisor
-    df_ta = volume_model.obv(df_stock)
-    df_cal = df_ta.values
-    df_cal = df_cal / divisor
+    df_vol = ohlc["Volume"] / divisor
+    df_vol.name = "Adj Volume"
+    df_ta = volume_model.obv(ohlc)
+    df_cal = df_ta[df_ta.columns[0]] / divisor
+    df_cal.name = "Adj OBV"
 
-    fig, axes = plt.subplots(
-        3,
-        1,
-        gridspec_kw={"height_ratios": [2, 1, 1]},
-        figsize=plot_autoscale(),
-        dpi=PLOT_DPI,
+    plot_data = pd.merge(ohlc, df_vol, how="outer", left_index=True, right_index=True)
+    plot_data = pd.merge(
+        plot_data, df_ta, how="outer", left_index=True, right_index=True
     )
-    ax = axes[0]
-    ax.plot(df_stock.index, df_stock["Adj Close"].values, "k", lw=2)
-    ax.set_title(f"{s_ticker} OBV")
-    ax.set_xlim(df_stock.index[0], df_stock.index[-1])
-    ax.set_ylabel("Price")
-    ax.grid(b=True, which="major", color="#666666", linestyle="-")
-    ax.minorticks_on()
-    ax.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-    ax2 = axes[1]
-    ax2.set_xlim(df_stock.index[0], df_stock.index[-1])
+    plot_data = pd.merge(
+        plot_data, df_cal, how="outer", left_index=True, right_index=True
+    )
+    plot_data = reindex_dates(plot_data)
+
+    # This plot has 3 axes
+    if external_axes is None:
+        _, axes = plt.subplots(
+            3,
+            1,
+            sharex=True,
+            figsize=plot_autoscale(),
+            dpi=PLOT_DPI,
+        )
+        ax1, ax2, ax3 = axes
+    else:
+        if len(external_axes) != 3:
+            console.print("[red]Expected list of 3 axis items./n[/red]")
+            return
+        (ax1, ax2, ax3) = external_axes
+
+    ax1.plot(plot_data.index, plot_data["Adj Close"].values)
+    ax1.set_title(f"{s_ticker} OBV")
+    ax1.set_xlim(plot_data.index[0], plot_data.index[-1])
+    ax1.set_ylabel("Price")
+    theme.style_primary_axis(
+        ax1,
+        data_index=plot_data.index.to_list(),
+        tick_labels=plot_data["date"].to_list(),
+    )
+
+    ax2.set_xlim(plot_data.index[0], plot_data.index[-1])
     ax2.set_ylabel("Volume [M]")
+    bar_colors = [
+        theme.down_color if x[1].Open < x[1].Close else theme.up_color
+        for x in plot_data.iterrows()
+    ]
     ax2.bar(
-        df_stock.index,
-        df_vol,
+        plot_data.index,
+        plot_data["Adj Volume"],
         color=bar_colors,
         alpha=0.8,
-        width=bar_width,
+        width=theme.volume_bar_width,
     )
-    ax3 = axes[2]
+    theme.style_primary_axis(
+        ax2,
+        data_index=plot_data.index.to_list(),
+        tick_labels=plot_data["date"].to_list(),
+    )
+
     ax3.set_ylabel("OBV [M]")
-    ax3.set_xlabel("Time")
-    ax3.plot(df_ta.index, df_cal, "b", lw=1)
-    ax3.set_xlim(df_stock.index[0], df_stock.index[-1])
-    ax3.grid(b=True, which="major", color="#666666", linestyle="-")
-    ax3.minorticks_on()
-    ax3.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+    ax3.plot(plot_data.index, plot_data["Adj OBV"])
+    ax3.set_xlim(plot_data.index[0], plot_data.index[-1])
+    theme.style_primary_axis(
+        ax3,
+        data_index=plot_data.index.to_list(),
+        tick_labels=plot_data["date"].to_list(),
+    )
 
-    if gtff.USE_ION:
-        plt.ion()
-
-    plt.gcf().autofmt_xdate()
-    fig.tight_layout(pad=1)
-
-    plt.show()
-    console.print("")
+    if external_axes is None:
+        theme.visualize_output()
 
     export_data(
         export,

@@ -3,29 +3,13 @@ __docformat__ = "numpy"
 
 from rich import panel
 from rich.console import Console, Theme
+from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal import feature_flags as gtff
 
 # https://rich.readthedocs.io/en/stable/appendix/colors.html#appendix-colors
 # https://rich.readthedocs.io/en/latest/highlighting.html#custom-highlighters
 
-CUSTOM_THEME = Theme(
-    {
-        # information provided to the user
-        "info": "rgb(224,131,48)",
-        # triggers a command
-        "cmds": "rgb(70,156,222)",
-        # configurable parameter
-        "param": "rgb(247,206,70)",
-        # goes into a new menu
-        "menu": "rgb(50,115,185)",
-        # data sources,
-        "src": "rgb(216,90,64)",
-        # print help,
-        "help": "green",
-        # unavailable command/parameter
-        "unvl": "grey30",
-    }
-)
+CUSTOM_THEME = Theme(cfg.theme.console_style)
 
 RICH_TAGS = [
     "[menu]",

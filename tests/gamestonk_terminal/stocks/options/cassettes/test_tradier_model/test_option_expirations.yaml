@@ -11,14 +11,15 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - python-requests/2.26.0
+      - python-requests/2.27.1
     method: GET
-    uri: https://sandbox.tradier.com/v1/markets/options/expirations?symbol=PM&includeAllRoots=true&strikes=false
+    uri: https://sandbox.tradier.com/v1/markets/options/expirations?symbol=AAPL&includeAllRoots=true&strikes=false
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAAKtWSq0oyCxKLMnMzytWsqpWSkksSVWyilYyMjAy0jUw1DUwV9KBcwxNkDhGhsgc
-        CzgHiEyQOIaGyByEMmNkjpmuIdQeY7BpBhCOCdhSS6XY2loAlY3qmqkAAAA=
+        H4sIAAAAAAAAAE3OsQ6CQBCE4XfZ2kl29uAOeBVjQSIFjRqlMCG8u0J0b8uv2H9nlen9mJ/jMt9v
+        LxlWuY7LJMNZTM2gBlJOFV2AtY4EbQLCTYo3Kd40UAawBlqYOjJYHAWsgQ7sHT2Y/6DCPE36gu9K
+        ejod24ojeyAdtd+ffeX+57JtH7XI0fUrAQAA
     headers:
       Access-Control-Allow-Headers:
       - accept, authorization
@@ -33,17 +34,17 @@ interactions:
       Content-Type:
       - application/json;charset=UTF-8
       Date:
-      - Tue, 04 Jan 2022 16:18:52 GMT
+      - Thu, 10 Feb 2022 20:32:15 GMT
       Transfer-Encoding:
       - chunked
       X-Ratelimit-Allowed:
       - '200'
       X-Ratelimit-Available:
-      - '194'
+      - '199'
       X-Ratelimit-Expiry:
-      - '1641313140000'
+      - '1644525180000'
       X-Ratelimit-Used:
-      - '6'
+      - '1'
     status:
       code: 200
       message: OK
