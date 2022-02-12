@@ -37,29 +37,36 @@ def get_score(ticker: str) -> np.number:
 @log_start_end(log=logger)
 def get_profile(ticker: str) -> pd.DataFrame:
     """Get ticker profile from FMP"""
-    return fa.profile(ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
+    try:
+        df = fa.profile(ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
+    except ValueError:
+        df = pd.DataFrame()
+    return df
 
 
 @log_start_end(log=logger)
 def get_quote(ticker) -> pd.DataFrame:
     """Gets ticker quote from FMP"""
-    df_fa = fa.quote(ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
+    try:
+        df_fa = fa.quote(ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
+    except ValueError:
+        df_fa = pd.DataFrame()
 
-    clean_df_index(df_fa)
-
-    df_fa.loc["Market cap"][0] = long_number_format(df_fa.loc["Market cap"][0])
-    df_fa.loc["Shares outstanding"][0] = long_number_format(
-        df_fa.loc["Shares outstanding"][0]
-    )
-    df_fa.loc["Volume"][0] = long_number_format(df_fa.loc["Volume"][0])
-    # Check if there is a valid earnings announcement
-    if df_fa.loc["Earnings announcement"][0]:
-        earning_announcement = datetime.strptime(
-            df_fa.loc["Earnings announcement"][0][0:19], "%Y-%m-%dT%H:%M:%S"
+    if not df_fa.empty:
+        clean_df_index(df_fa)
+        df_fa.loc["Market cap"][0] = long_number_format(df_fa.loc["Market cap"][0])
+        df_fa.loc["Shares outstanding"][0] = long_number_format(
+            df_fa.loc["Shares outstanding"][0]
         )
-        df_fa.loc["Earnings announcement"][
-            0
-        ] = f"{earning_announcement.date()} {earning_announcement.time()}"
+        df_fa.loc["Volume"][0] = long_number_format(df_fa.loc["Volume"][0])
+        # Check if there is a valid earnings announcement
+        if df_fa.loc["Earnings announcement"][0]:
+            earning_announcement = datetime.strptime(
+                df_fa.loc["Earnings announcement"][0][0:19], "%Y-%m-%dT%H:%M:%S"
+            )
+            df_fa.loc["Earnings announcement"][
+                0
+            ] = f"{earning_announcement.date()} {earning_announcement.time()}"
     return df_fa
 
 
@@ -81,15 +88,17 @@ def get_enterprise(ticker: str, number: int, quarterly: bool = False) -> pd.Data
     pd.DataFrame:
         Dataframe of enterprise information
     """
-
-    if quarterly:
-        df_fa = fa.enterprise(
-            ticker, cfg.API_KEY_FINANCIALMODELINGPREP, period="quarter"
-        )
-    else:
-        df_fa = fa.enterprise(ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
-
-    df_fa = clean_metrics_df(df_fa, num=number, mask=False)
+    try:
+        if quarterly:
+            df_fa = fa.enterprise(
+                ticker, cfg.API_KEY_FINANCIALMODELINGPREP, period="quarter"
+            )
+        else:
+            df_fa = fa.enterprise(ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
+    except ValueError:
+        df_fa = pd.DataFrame()
+    if not df_fa.empty:
+        df_fa = clean_metrics_df(df_fa, num=number, mask=False)
     return df_fa
 
 
@@ -111,14 +120,16 @@ def get_dcf(ticker: str, number: int, quarterly: bool = False) -> pd.DataFrame:
     pd.DataFrame
         Dataframe of dcf data
     """
-    if quarterly:
-        df_fa = fa.discounted_cash_flow(
-            ticker, cfg.API_KEY_FINANCIALMODELINGPREP, period="quarter"
-        )
-    else:
-        df_fa = fa.discounted_cash_flow(ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
-
-    df_fa = clean_metrics_df(df_fa, num=number, mask=False)
+    try:
+        if quarterly:
+            df_fa = fa.discounted_cash_flow(
+                ticker, cfg.API_KEY_FINANCIALMODELINGPREP, period="quarter"
+            )
+        else:
+            df_fa = fa.discounted_cash_flow(ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
+        df_fa = clean_metrics_df(df_fa, num=number, mask=False)
+    except ValueError:
+        df_fa = pd.DataFrame()
     return df_fa
 
 
@@ -140,14 +151,16 @@ def get_income(ticker: str, number: int, quarterly: bool = False) -> pd.DataFram
     pd.DataFrame
         Dataframe of income statements
     """
-    if quarterly:
-        df_fa = fa.income_statement(
-            ticker, cfg.API_KEY_FINANCIALMODELINGPREP, period="quarter"
-        )
-    else:
-        df_fa = fa.income_statement(ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
-
-    df_fa = clean_metrics_df(df_fa, num=number)
+    try:
+        if quarterly:
+            df_fa = fa.income_statement(
+                ticker, cfg.API_KEY_FINANCIALMODELINGPREP, period="quarter"
+            )
+        else:
+            df_fa = fa.income_statement(ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
+        df_fa = clean_metrics_df(df_fa, num=number)
+    except ValueError:
+        df_fa = pd.DataFrame()
     return df_fa
 
 
@@ -169,14 +182,20 @@ def get_balance(ticker: str, number: int, quarterly: bool = False) -> pd.DataFra
     pd.DataFrame
         Dataframe of balance sheets
     """
-    if quarterly:
-        df_fa = fa.balance_sheet_statement(
-            ticker, cfg.API_KEY_FINANCIALMODELINGPREP, period="quarter"
-        )
-    else:
-        df_fa = fa.balance_sheet_statement(ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
+    try:
+        if quarterly:
+            df_fa = fa.balance_sheet_statement(
+                ticker, cfg.API_KEY_FINANCIALMODELINGPREP, period="quarter"
+            )
+        else:
+            df_fa = fa.balance_sheet_statement(
+                ticker, cfg.API_KEY_FINANCIALMODELINGPREP
+            )
 
-    df_fa = clean_metrics_df(df_fa, num=number)
+        df_fa = clean_metrics_df(df_fa, num=number)
+    except ValueError:
+        df_fa = pd.DataFrame()
+
     return df_fa
 
 
@@ -198,14 +217,17 @@ def get_cash(ticker: str, number: int, quarterly: bool = False) -> pd.DataFrame:
     pd.DataFrame
         Dataframe of company cash flow
     """
-    if quarterly:
-        df_fa = fa.cash_flow_statement(
-            ticker, cfg.API_KEY_FINANCIALMODELINGPREP, period="quarter"
-        )
-    else:
-        df_fa = fa.cash_flow_statement(ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
+    try:
+        if quarterly:
+            df_fa = fa.cash_flow_statement(
+                ticker, cfg.API_KEY_FINANCIALMODELINGPREP, period="quarter"
+            )
+        else:
+            df_fa = fa.cash_flow_statement(ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
 
-    df_fa = clean_metrics_df(df_fa, num=number)
+        df_fa = clean_metrics_df(df_fa, num=number)
+    except ValueError:
+        df_fa = pd.DataFrame()
     return df_fa
 
 
@@ -227,14 +249,17 @@ def get_key_metrics(ticker: str, number: int, quarterly: bool = False) -> pd.Dat
     pd.DataFrame
         Dataframe of key metrics
     """
-    if quarterly:
-        df_fa = fa.key_metrics(
-            ticker, cfg.API_KEY_FINANCIALMODELINGPREP, period="quarter"
-        )
-    else:
-        df_fa = fa.key_metrics(ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
+    try:
+        if quarterly:
+            df_fa = fa.key_metrics(
+                ticker, cfg.API_KEY_FINANCIALMODELINGPREP, period="quarter"
+            )
+        else:
+            df_fa = fa.key_metrics(ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
 
-    df_fa = clean_metrics_df(df_fa, num=number)
+        df_fa = clean_metrics_df(df_fa, num=number)
+    except ValueError:
+        df_fa = pd.DataFrame()
     return df_fa
 
 
@@ -256,14 +281,17 @@ def get_key_ratios(ticker: str, number: int, quarterly: bool = False) -> pd.Data
     pd.DataFrame
         Dataframe of key ratios
     """
-    if quarterly:
-        df_fa = fa.financial_ratios(
-            ticker, cfg.API_KEY_FINANCIALMODELINGPREP, period="quarter"
-        )
-    else:
-        df_fa = fa.financial_ratios(ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
+    try:
+        if quarterly:
+            df_fa = fa.financial_ratios(
+                ticker, cfg.API_KEY_FINANCIALMODELINGPREP, period="quarter"
+            )
+        else:
+            df_fa = fa.financial_ratios(ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
 
-    df_fa = clean_metrics_df(df_fa, num=number)
+        df_fa = clean_metrics_df(df_fa, num=number)
+    except ValueError:
+        df_fa = pd.DataFrame()
     return df_fa
 
 
@@ -287,14 +315,19 @@ def get_financial_growth(
     pd.DataFrame
         Dataframe of financial statement growth
     """
-    if quarterly:
-        df_fa = fa.financial_statement_growth(
-            ticker, cfg.API_KEY_FINANCIALMODELINGPREP, period="quarter"
-        )
-    else:
-        df_fa = fa.financial_statement_growth(ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
+    try:
+        if quarterly:
+            df_fa = fa.financial_statement_growth(
+                ticker, cfg.API_KEY_FINANCIALMODELINGPREP, period="quarter"
+            )
+        else:
+            df_fa = fa.financial_statement_growth(
+                ticker, cfg.API_KEY_FINANCIALMODELINGPREP
+            )
 
-    df_fa = clean_metrics_df(df_fa, num=number)
+        df_fa = clean_metrics_df(df_fa, num=number)
+    except ValueError:
+        df_fa = pd.DataFrame()
     return df_fa
 
 

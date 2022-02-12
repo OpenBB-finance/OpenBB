@@ -74,7 +74,7 @@ def print_rich_table(
         if show_index:
             table.add_column(index_name)
 
-        if headers:
+        if headers is not None:
             if isinstance(headers, pd.Index):
                 headers = list(headers)
             if len(headers) != len(df.columns):
