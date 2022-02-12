@@ -1,24 +1,21 @@
-import os
 from datetime import datetime, timedelta
 
-import disnake
 from matplotlib import pyplot as plt
-from PIL import Image
 
 import bots.config_discordbot as cfg
 import bots.helpers
-from bots.config_discordbot import gst_imgur, logger
+from bots.config_discordbot import logger
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.helper_funcs import plot_autoscale
 from gamestonk_terminal.stocks.due_diligence import business_insider_model
 
 
-async def pt_command(ctx, ticker: str = "", raw: bool = False, start=""):
+def pt_command(ticker: str = "", raw: bool = False, start=""):
     """Displays price targets [Business Insider]"""
 
     # Debug
     if cfg.DEBUG:
-        logger.debug("!stocks.dd.pt %s", ticker)
+        logger.debug("dd-pt %s", ticker)
 
     # Check for argument
     if ticker == "":
@@ -43,15 +40,11 @@ async def pt_command(ctx, ticker: str = "", raw: bool = False, start=""):
     if raw:
         df_analyst_data.sort_index(ascending=False)
         report = "```" + df_analyst_data.to_string() + "```"
-        embed = disnake.Embed(
-            title="Stocks: [Business Insider] Price Targets",
-            description=report,
-            colour=cfg.COLOR,
-        ).set_author(
-            name=cfg.AUTHOR_NAME,
-            icon_url=cfg.AUTHOR_ICON_URL,
-        )
-        ctx.send(embed=embed)
+
+        return {
+            "title": f"Stocks: [Business Insider] Price Targets {ticker}",
+            "description": report,
+        }
     else:
         plt.style.use("seaborn")
         plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -72,38 +65,10 @@ async def pt_command(ctx, ticker: str = "", raw: bool = False, start=""):
         plt.ylabel("Share Price")
         plt.grid(b=True, which="major", color="#666666", linestyle="-")
         plt.savefig("ta_pt.png")
-        imagefile = "ta_pt.png"
 
-        img = Image.open(imagefile)
-        print(img.size)
-        im_bg = Image.open(cfg.IMG_BG)
-        h = img.height + 240
-        w = img.width + 520
+        imagefile = bots.helpers.image_border("ta_pt.png")
 
-        img = img.resize((w, h), Image.ANTIALIAS)
-        x1 = int(0.5 * im_bg.size[0]) - int(0.5 * img.size[0])
-        y1 = int(0.5 * im_bg.size[1]) - int(0.5 * img.size[1])
-        x2 = int(0.5 * im_bg.size[0]) + int(0.5 * img.size[0])
-        y2 = int(0.5 * im_bg.size[1]) + int(0.5 * img.size[1])
-        img = img.convert("RGB")
-        im_bg.paste(img, box=(x1 - 5, y1, x2 - 5, y2))
-        im_bg.save(imagefile, "PNG", quality=100)
-
-        image = Image.open(imagefile)
-        image = bots.helpers.autocrop_image(image, 0)
-        image.save(imagefile, "PNG", quality=100)
-
-        uploaded_image = gst_imgur.upload_image("ta_pt.png", title="something")
-        image_link = uploaded_image.link
-        if cfg.DEBUG:
-            logger.debug("Image URL: %s", image_link)
-        title = "Stocks: [Business Insider] Price Targets " + ticker
-        embed = disnake.Embed(title=title, colour=cfg.COLOR)
-        embed.set_author(
-            name=cfg.AUTHOR_NAME,
-            icon_url=cfg.AUTHOR_ICON_URL,
-        )
-        embed.set_image(url=image_link)
-        os.remove("ta_pt.png")
-
-        await ctx.send(embed=embed)
+    return {
+        "title": f"Stocks: [Business Insider] Price Targets {ticker}",
+        "imagefile": imagefile,
+    }

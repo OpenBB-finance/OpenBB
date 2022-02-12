@@ -1,11 +1,11 @@
 import os
 
-import df2img
-import disnake
 import pandas as pd
 import yfinance as yf
-from numpy.core.fromnumeric import transpose
+import df2img
+import disnake
 from PIL import Image
+from numpy.core.fromnumeric import transpose
 
 import bots.config_discordbot as cfg
 
@@ -224,20 +224,19 @@ class ShowView:
             )
 
         else:
-            image = disnake.File(data["imagefile"])
-
             title = data["title"]
-            embed = disnake.Embed(
-                title=title, colour=cfg.COLOR, description=data.get("description", "")
-            )
-            embed.set_image(url=f"attachment://{data['imagefile']}")
+            embed = disnake.Embed(title=title, colour=cfg.COLOR, description=data.get("description", ""))
             embed.set_author(
                 name=cfg.AUTHOR_NAME,
                 icon_url=cfg.AUTHOR_ICON_URL,
             )
-            os.remove(data["imagefile"])
-
-            await ctx.send(embed=embed, file=image)
+            if "imagefile" in data:
+                image = disnake.File(data["imagefile"])
+                embed.set_image(url=f"attachment://{data['imagefile']}")
+                os.remove(data["imagefile"])
+                await ctx.send(embed=embed, file=image)
+            else:
+                await ctx.send(embed=embed)
         """
         except Exception as e:
             embed = disnake.Embed(

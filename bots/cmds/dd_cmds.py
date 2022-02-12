@@ -4,7 +4,7 @@ import disnake
 from disnake.ext import commands
 
 from bots.config_discordbot import logger
-from bots.helpers import ticker_autocomp
+from bots.helpers import ticker_autocomp, ShowView
 from bots.stocks.due_diligence.analyst import analyst_command
 from bots.stocks.due_diligence.arktrades import arktrades_command
 from bots.stocks.due_diligence.customer import customer_command
@@ -33,7 +33,7 @@ class DueDiligenceCommands(commands.Cog):
         """
         await ctx.response.defer()
         logger.info("dd-analyst")
-        await analyst_command(ctx, ticker)
+        await ShowView().discord(analyst_command, ctx, ticker)
 
     @commands.slash_command(name="dd-pt")
     async def pt(
@@ -52,7 +52,7 @@ class DueDiligenceCommands(commands.Cog):
         """
         await ctx.response.defer()
         logger.info("dd-pt")
-        await pt_command(ctx, ticker, raw, start)
+        await ShowView().discord(pt_command, ctx, ticker, raw, start)
 
     @commands.slash_command(name="dd-est")
     async def est(
@@ -67,7 +67,7 @@ class DueDiligenceCommands(commands.Cog):
         """
         await ctx.response.defer()
         logger.info("dd-est")
-        await est_command(ctx, ticker)
+        await ShowView().discord(est_command, ctx, ticker)
 
     @commands.slash_command(name="dd-sec")
     async def sec(
@@ -82,7 +82,7 @@ class DueDiligenceCommands(commands.Cog):
         """
         await ctx.response.defer()
         logger.info("dd-sec")
-        await sec_command(ctx, ticker)
+        await ShowView().discord(sec_command, ctx, ticker)
 
     @commands.slash_command(name="dd-supplier")
     async def supplier(
@@ -97,7 +97,7 @@ class DueDiligenceCommands(commands.Cog):
         """
         await ctx.response.defer()
         logger.info("dd-supplier")
-        await supplier_command(ctx, ticker)
+        await ShowView().discord(supplier_command, ctx, ticker)
 
     @commands.slash_command(name="dd-customer")
     async def customer(
@@ -112,7 +112,7 @@ class DueDiligenceCommands(commands.Cog):
         """
         await ctx.response.defer()
         logger.info("dd-customer")
-        await customer_command(ctx, ticker)
+        await ShowView().discord(customer_command, ctx, ticker)
 
     @commands.slash_command(name="dd-arktrades")
     async def arktrades(
@@ -129,7 +129,7 @@ class DueDiligenceCommands(commands.Cog):
         """
         await ctx.response.defer()
         logger.info("dd-arktrades")
-        await arktrades_command(ctx, ticker, num)
+        await ShowView().discord(arktrades_command, ctx, ticker, num)
 
 
 def setup(bot: commands.Bot):
