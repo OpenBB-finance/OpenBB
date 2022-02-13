@@ -106,9 +106,6 @@ def display_plots_financials(
     stocks_data_statement = copy.deepcopy(stocks_data[used_statement])
     company_tickers = list(stocks_data[used_statement].keys())
 
-    if len(company_tickers) > limit:
-        console.print(f"Limiting the amount of companies displayed to {limit}.")
-        company_tickers = company_tickers[:limit]
     if len(stocks_data_statement[company_tickers[0]].columns) > period_length:
         console.print(
             f"Limiting the amount of periods to the last {period_length} periods."
@@ -122,27 +119,13 @@ def display_plots_financials(
 
     df = pd.DataFrame(
         np.nan,
-        columns=stocks_data_statement[company_tickers[0]].columns,
-        index=stocks_data_statement.keys(),
+        columns=stocks_data_statement.keys(),
+        index=stocks_data_statement[company_tickers[0]].columns,
     )
+    df.index.name = "Date"
 
     for company in stocks_data_statement:
-        df.loc[company] = stocks_data_statement[company].loc[item_name]
-
-    if raw:
-        print_rich_table(df, headers=list(df.columns), show_index=True, title=item_name)
-    else:
-        plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-
-        for company in stocks_data_statement:
-            plt.plot(df.loc[company], ls="-", marker="o", label=company)
-
-        plt.legend(loc="lower right")
-        plt.title(item_name)
-        if gtff.USE_ION:
-            plt.ion()
-        plt.tight_layout()
-        plt.show()
+        df[company] = stocks_data_statement[company].loc[item_name]
 
     export_data(
         export,
@@ -150,6 +133,44 @@ def display_plots_financials(
         item_name,
         df,
     )
+
+    if len(company_tickers) > limit:
+        console.print(f"Limiting the amount of companies displayed to {limit}.")
+        df = df[df.columns[:limit]]
+
+    maximum_value = df.max().max()
+
+    if maximum_value > 1_000_000_000:
+        df = df / 1_000_000_000
+        denomination = "[$ Billions]"
+    elif 1_000_000_000 > maximum_value:
+        df = df / 1_000_000
+        denomination = "[$ Millions]"
+    elif 1_000_000 > maximum_value:
+        df = df / 1_000
+        denomination = "[$ Thousands]"
+    else:
+        denomination = ""
+
+    if raw:
+        print_rich_table(
+            df.fillna("-"),
+            headers=list(df.columns),
+            show_index=True,
+            title=f"{item_name} {denomination}",
+        )
+    else:
+        plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+
+        for company in df.columns:
+            plt.plot(df[company], ls="-", marker="o", label=company)
+
+        plt.title(f"{item_name} {denomination}")
+        plt.legend(loc="upper left")
+        if gtff.USE_ION:
+            plt.ion()
+        plt.tight_layout()
+        plt.show()
 
     if not export:
         console.print("")
