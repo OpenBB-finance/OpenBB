@@ -5,6 +5,16 @@ import pytest
 from gamestonk_terminal.cryptocurrency.defi import smartstake_view
 
 
+@pytest.fixture(scope="module")
+def vcr_config():
+    return {
+        "filter_query_parameters": [
+            ("token", "MOCK_TOKEN"),
+            ("key", "MOCK_API_KEY"),
+        ]
+    }
+
+
 @pytest.mark.vcr()
 @pytest.mark.record_stdout
 def test_display_luna_circ_supply_change(mocker):
