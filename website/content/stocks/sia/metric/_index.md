@@ -16,5 +16,4 @@ optional arguments:
                         Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg (default: )
 ```
 
-
-<img width="1400" alt="Feature Screenshot - metric" src="https://user-images.githubusercontent.com/85772166/145095318-25f4cffd-9d55-4f5e-87cd-3b35a4ce6e1c.png">
+![metric](https://user-images.githubusercontent.com/46355364/153871438-dcd1c84e-eff1-4842-9ad6-e7bdaf2b6e1f.png)
