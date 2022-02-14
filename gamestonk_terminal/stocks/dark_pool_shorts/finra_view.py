@@ -192,7 +192,7 @@ def plot_dark_pools_ats(
     ax.set_ylabel("Total Weekly Shares [Million]")
     ax.set_title("Dark Pool (ATS) growing tickers")
     ax.set_xlabel("Weeks")
-    ax.set_xlim(ats["weekStartDate"][0], ats["weekStartDate"][-1])
+    ax.set_xlim(ats["weekStartDate"].iloc[0], ats["weekStartDate"].iloc[-1])
     theme.style_primary_axis(ax)
 
     if not external_axes:
