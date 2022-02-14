@@ -4,12 +4,12 @@ __docformat__ = "numpy"
 import logging
 import os
 from datetime import datetime
+from typing import List, Optional
 
 import matplotlib.pyplot as plt
-from matplotlib import dates as mdates
 from matplotlib import ticker
 
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.cryptocurrency.onchain import blockchain_model
 from gamestonk_terminal.decorators import log_start_end
@@ -24,7 +24,12 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_btc_circulating_supply(since: int, until: int, export: str) -> None:
+def display_btc_circulating_supply(
+    since: int,
+    until: int,
+    export: str,
+    external_axes: Optional[List[plt.Axes]] = None,
+) -> None:
     """Returns BTC circulating supply [Source: https://api.blockchain.info/]
 
     Parameters
@@ -35,6 +40,8 @@ def display_btc_circulating_supply(since: int, until: int, export: str) -> None:
         End date timestamp (e.g., 1_641_588_030)
     export : str
         Export dataframe data to csv,json,xlsx file
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
 
     df = blockchain_model.get_btc_circulating_supply()
@@ -42,26 +49,25 @@ def display_btc_circulating_supply(since: int, until: int, export: str) -> None:
         (df["x"] > datetime.fromtimestamp(since))
         & (df["x"] < datetime.fromtimestamp(until))
     ]
-    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+
+    # This plot has 1 axis
+    if not external_axes:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    else:
+        if len(external_axes) != 1:
+            console.print("[red]Expected list of one axis item./n[/red]")
+            return
+        (ax,) = external_axes
 
     ax.plot(df["x"], df["y"])
-    ax.set_xlabel("Time")
-    ax.tick_params(axis="x", labelrotation=45)
-    ax.set_xlim(df["x"].iloc[0], df["x"].iloc[-1])
-    dateFmt = mdates.DateFormatter("%m/%d/%Y")
-    fig.tight_layout(pad=4)
-    ax.xaxis.set_major_formatter(dateFmt)
     ax.set_ylabel("BTC")
-    ax.grid(alpha=0.5)
     ax.set_title("BTC Circulating Supply")
     ax.get_yaxis().set_major_formatter(
         ticker.FuncFormatter(lambda x, _: long_number_format(x))
     )
 
-    if gtff.USE_ION:
-        plt.ion()
-    plt.show()
-    console.print("")
+    if not external_axes:
+        theme.visualize_output()
 
     export_data(
         export,
@@ -72,7 +78,12 @@ def display_btc_circulating_supply(since: int, until: int, export: str) -> None:
 
 
 @log_start_end(log=logger)
-def display_btc_confirmed_transactions(since: int, until: int, export: str) -> None:
+def display_btc_confirmed_transactions(
+    since: int,
+    until: int,
+    export: str,
+    external_axes: Optional[List[plt.Axes]] = None,
+) -> None:
     """Returns BTC confirmed transactions [Source: https://api.blockchain.info/]
 
     Parameters
@@ -83,6 +94,8 @@ def display_btc_confirmed_transactions(since: int, until: int, export: str) -> N
         End date timestamp (e.g., 1_641_588_030)
     export : str
         Export dataframe data to csv,json,xlsx file
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
 
     df = blockchain_model.get_btc_confirmed_transactions()
@@ -91,26 +104,26 @@ def display_btc_confirmed_transactions(since: int, until: int, export: str) -> N
         & (df["x"] < datetime.fromtimestamp(until))
     ]
 
-    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    # This plot has 1 axis
+    if not external_axes:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    else:
+        if len(external_axes) != 1:
+            console.print("[red]Expected list of one axis item./n[/red]")
+            return
+        (ax,) = external_axes
 
     ax.plot(df["x"], df["y"], lw=0.8)
-    ax.set_xlabel("Time")
-    ax.tick_params(axis="x", labelrotation=45)
-    ax.set_xlim(df["x"].iloc[0], df["x"].iloc[-1])
-    dateFmt = mdates.DateFormatter("%m/%d/%Y")
-    fig.tight_layout(pad=4)
-    ax.xaxis.set_major_formatter(dateFmt)
     ax.set_ylabel("Transactions")
-    ax.grid(alpha=0.5)
     ax.set_title("BTC Confirmed Transactions")
     ax.get_yaxis().set_major_formatter(
         ticker.FuncFormatter(lambda x, _: long_number_format(x))
     )
 
-    if gtff.USE_ION:
-        plt.ion()
-    plt.show()
-    console.print("")
+    theme.style_primary_axis(ax)
+
+    if not external_axes:
+        theme.visualize_output()
 
     export_data(
         export,

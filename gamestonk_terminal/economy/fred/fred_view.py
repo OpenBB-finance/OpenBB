@@ -4,14 +4,14 @@ __docformat__ = "numpy"
 import logging
 import os
 import textwrap
-from typing import Dict
+from typing import Dict, Optional, List
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.economy.fred import fred_model
@@ -80,6 +80,7 @@ def display_fred_series(
     raw: bool = False,
     export: str = "",
     limit: int = 10,
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display (multiple) series from https://fred.stlouisfed.org. [Source: FRED]
 
@@ -95,6 +96,8 @@ def display_fred_series(
         Export data to csv,json,xlsx or png,jpg,pdf,svg file
     limit: int
         Number of raw data rows to show
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (3 axes are expected in the list), by default None
     """
     series_ids = list(d_series.keys())
     data = pd.DataFrame()
@@ -112,53 +115,53 @@ def display_fred_series(
     data = data.dropna()
     # Try to get everything onto the same 0-10 scale.
     # To do so, think in scientific notation.  Divide the data by whatever the E would be
-    if not data.empty:
-        fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        if len(series_ids) == 1:
-            s_id = series_ids[0]
-            sub_dict: Dict = d_series[s_id]
-            title = f"{sub_dict['title']} ({sub_dict['units']})"
-            ax.plot(data.index, data, label="\n".join(textwrap.wrap(title, 80)))
-        else:
-            for s_id, sub_dict in d_series.items():
-                data_to_plot = data[s_id].dropna()
-                exponent = int(np.log10(data_to_plot.max()))
-                data_to_plot /= 10**exponent
-                multiplier = f"x {format_units(10**exponent)}" if exponent > 0 else ""
-                title = f"{sub_dict['title']} ({sub_dict['units']}) {'['+multiplier+']' if multiplier else ''}"
-                ax.plot(
-                    data_to_plot.index,
-                    data_to_plot,
-                    label="\n".join(textwrap.wrap(title, 80))
-                    if len(series_ids) < 5
-                    else title,
-                )
+    if external_axes is None:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
-        ax.legend(prop={"size": 10}, bbox_to_anchor=(0, 1), loc="lower left")
-        ax.grid()
-        ax.set_xlim(data.index[0], data.index[-1])
-        ax.spines["top"].set_visible(False)
-        ax.spines["right"].set_visible(False)
-        plt.gcf().autofmt_xdate()
-        fig.tight_layout()
-        if gtff.USE_ION:
-            plt.ion()
+    else:
+        if len(external_axes) != 3:
+            console.print("[red]Expected list of 3 axis items./n[/red]")
+            return
+        (ax,) = external_axes
 
-        plt.show()
-        data.index = [x.strftime("%Y-%m-%d") for x in data.index]
-        if raw:
-            print_rich_table(
-                data.tail(limit),
-                headers=list(data.columns),
-                show_index=True,
-                index_name="Date",
+    if len(series_ids) == 1:
+        s_id = series_ids[0]
+        sub_dict: Dict = d_series[s_id]
+        title = f"{sub_dict['title']} ({sub_dict['units']})"
+        ax.plot(data.index, data, label="\n".join(textwrap.wrap(title, 80)))
+    else:
+        for s_id, sub_dict in d_series.items():
+            data_to_plot = data[s_id].dropna()
+            exponent = int(np.log10(data_to_plot.max()))
+            data_to_plot /= 10**exponent
+            multiplier = f"x {format_units(10**exponent)}" if exponent > 0 else ""
+            title = f"{sub_dict['title']} ({sub_dict['units']}) {'['+multiplier+']' if multiplier else ''}"
+            ax.plot(
+                data_to_plot.index,
+                data_to_plot,
+                label="\n".join(textwrap.wrap(title, 80))
+                if len(series_ids) < 5
+                else title,
             )
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            "plot",
-            data,
+
+    ax.legend(prop={"size": 10}, bbox_to_anchor=(0, 1), loc="lower left")
+    ax.set_xlim(data.index[0], data.index[-1])
+    theme.style_primary_axis(ax)
+    if external_axes is None:
+        theme.visualize_output()
+
+    data.index = [x.strftime("%Y-%m-%d") for x in data.index]
+    if raw:
+        print_rich_table(
+            data.tail(limit),
+            headers=list(data.columns),
+            show_index=True,
+            index_name="Date",
         )
         console.print("")
-    else:
-        console.print("[red]Unable to get data for the fred series [/red]\n")
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "plot",
+        data,
+    )

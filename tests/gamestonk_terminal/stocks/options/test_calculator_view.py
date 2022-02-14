@@ -14,10 +14,10 @@ from gamestonk_terminal.stocks.options import calculator_view
     [True, False],
 )
 def test_view_calculator(mocker, sell):
-    # MOCK CHARTS
-    mocker.patch.object(target=calculator_view.gtff, attribute="USE_ION", new=True)
-    mocker.patch(target="gamestonk_terminal.stocks.backtesting.bt_view.plt.ion")
-    mocker.patch(target="gamestonk_terminal.stocks.backtesting.bt_view.plt.show")
+    # MOCK VISUALIZE_OUTPUT
+    mocker.patch(
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
+    )
 
     calculator_view.view_calculator(
         strike=10,

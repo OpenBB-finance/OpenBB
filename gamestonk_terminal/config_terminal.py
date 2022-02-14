@@ -1,15 +1,30 @@
 import os
 import dotenv
 
+from .helper_classes import TerminalStyle as _TerminalStyle
+
 env_files = [f for f in os.listdir() if f.endswith(".env")]
 if env_files:
     dotenv.load_dotenv(env_files[0])
 
+# Terminal UX section
+theme = _TerminalStyle(
+    os.getenv("GT_MPLSTYLE") or "boring",
+    os.getenv("GT_MPFSTYLE") or "boring",
+    os.getenv("GT_RICHSTYLE") or "boring",
+)
+
+# Set to True to see full stack traces for debugging/error reporting
+DEBUG_MODE = False
+
 # By default the jupyter notebook will be run on port 8888
-PAPERMILL_NOTEBOOK_REPORT_PORT = "8888"
+PAPERMILL_NOTEBOOK_REPORT_PORT = (
+    "8888"  # This setting is deprecated and seems to be unused
+)
+
+# Logging section
 
 # Logging settings
-
 # 0 - INFO
 # 1 - DEBUG for terminal, INFO for libraries
 # 2 - DEBUG for terminal, DEBUG for libraries
@@ -31,6 +46,8 @@ LOGGING_ID = os.getenv("GT_LOGGING_ID") or None
 LOGGING_FILE = ""
 
 LOGGING_VERSION = os.getenv("GT_LOGGING_VERSION") or "ver:1.0.0"
+
+# API Keys section
 
 # https://www.alphavantage.co
 API_KEY_ALPHAVANTAGE = os.getenv("GT_API_KEY_ALPHAVANTAGE") or "REPLACE_ME"
