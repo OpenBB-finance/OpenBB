@@ -7,6 +7,16 @@ from gamestonk_terminal.cryptocurrency.defi import smartstake_model
 LUNA_CIR_SUPPLY_CHANGE = "lunaSupplyChallengeStats"
 
 
+@pytest.fixture(scope="module")
+def vcr_config():
+    return {
+        "filter_query_parameters": [
+            ("token", "MOCK_TOKEN"),
+            ("key", "MOCK_API_KEY"),
+        ]
+    }
+
+
 @pytest.mark.vcr
 @pytest.mark.parametrize(
     "days",
