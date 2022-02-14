@@ -64,8 +64,8 @@ def display_sentiment_compare(
 
         for idx, tick in enumerate(similar):
             offset = 2 * idx
-            ax.axhline(y=offset, color="grey", linestyle="--", lw=2)
-            ax.axhline(y=offset + 1, color="grey", linestyle="--", lw=1)
+            ax.axhline(y=offset, color="white", linestyle="--", lw=1)
+            ax.axhline(y=offset + 1, color="white", linestyle="--", lw=1)
 
             senValues = np.array(pd.to_numeric(df_sentiment[tick].values))
             senNone = np.array(0 * len(df_sentiment))
@@ -74,7 +74,6 @@ def display_sentiment_compare(
                 pd.to_numeric(df_sentiment[tick].values) + offset,
                 offset,
                 where=(senValues < senNone),
-                alpha=0.60,
                 color=theme.down_color,
                 interpolate=True,
             )
@@ -84,15 +83,13 @@ def display_sentiment_compare(
                 pd.to_numeric(df_sentiment[tick].values) + offset,
                 offset,
                 where=(senValues >= senNone),
-                alpha=0.60,
                 color=theme.up_color,
                 interpolate=True,
             )
 
         ax.set_ylabel("Sentiment")
-        ax.axhline(y=-1, color="grey", linestyle="--", lw=1)
-        ax.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-        ax.minorticks_on()
+
+        ax.axhline(y=-1, color="white", linestyle="--", lw=1)
         ax.set_yticks(np.arange(len(similar)) * 2)
         ax.set_yticklabels(similar)
         ax.set_xlim(df_sentiment.index[0], df_sentiment.index[-1])
@@ -172,7 +169,9 @@ def display_sentiment_correlation(
             ax=ax,
         )
         similar_string = ",".join(similar)
-        ax.set_title(f"Correlation heatmap across {similar_string}")
+        ax.set_title(
+            f"Sentiment correlation heatmap across \n{similar_string}", fontsize=11
+        )
 
         if not external_axes:
             theme.visualize_output()

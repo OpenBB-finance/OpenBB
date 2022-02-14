@@ -108,6 +108,7 @@ def plot_dark_pools(
     ax2.set_ylabel("Shares per Trade")
     ax2.xaxis.set_major_formatter(mdates.DateFormatter("%m/%d"))
     ax2.xaxis.set_major_locator(mdates.DayLocator(interval=4))
+    ax2.set_xlim(otc.index[0], otc.index[-1])
     ax2.set_xlabel("Weeks")
 
     theme.style_primary_axis(ax1)
@@ -191,6 +192,7 @@ def plot_dark_pools_ats(
     ax.set_ylabel("Total Weekly Shares [Million]")
     ax.set_title("Dark Pool (ATS) growing tickers")
     ax.set_xlabel("Weeks")
+    ax.set_xlim(ats["weekStartDate"][0], ats["weekStartDate"][-1])
     theme.style_primary_axis(ax)
 
     if not external_axes:

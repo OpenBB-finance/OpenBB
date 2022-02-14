@@ -91,12 +91,16 @@ def price_target_from_analysts(
             ax.plot(stock.index, stock["Close"].values, lw=3)
 
         if start:
-            ax.plot(df_analyst_data.groupby(by=["Date"]).mean()[start:])  # type: ignore
+            ax.plot(df_analyst_data.groupby(by=["Date"]).mean()[start:], lw=5)  # type: ignore
         else:
-            ax.plot(df_analyst_data.groupby(by=["Date"]).mean())
+            ax.plot(df_analyst_data.groupby(by=["Date"]).mean(), lw=5)
 
         ax.scatter(
-            df_analyst_data.index, df_analyst_data["Price Target"], c="red", s=40
+            df_analyst_data.index,
+            df_analyst_data["Price Target"],
+            c="red",
+            s=40,
+            zorder=2,
         )
 
         ax.legend(["Closing Price", "Average Price Target", "Price Target"])
