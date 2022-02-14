@@ -70,6 +70,7 @@ class QaController(StockBaseController):
         """Constructor"""
         super().__init__(queue)
 
+        # TODO: Move these calculations to a model
         stock["Returns"] = stock["Adj Close"].pct_change()
         stock["LogRet"] = np.log(stock["Adj Close"]) - np.log(
             stock["Adj Close"].shift(1)
@@ -447,10 +448,10 @@ class QaController(StockBaseController):
             """,
         )
         parser.add_argument(
-            "-l",
-            "--length",
+            "-w",
+            "--window",
             action="store",
-            dest="n_length",
+            dest="n_window",
             type=check_positive,
             default=14,
             help="Window length",
@@ -463,7 +464,7 @@ class QaController(StockBaseController):
                 name=self.ticker,
                 df=self.stock,
                 target=self.target,
-                length=ns_parser.n_length,
+                window=ns_parser.n_window,
                 export=ns_parser.export,
             )
 
@@ -477,10 +478,10 @@ class QaController(StockBaseController):
             """,
         )
         parser.add_argument(
-            "-l",
-            "--length",
+            "-w",
+            "--window",
             action="store",
-            dest="n_length",
+            dest="n_window",
             type=check_positive,
             default=14,
             help="Window length",
@@ -493,7 +494,7 @@ class QaController(StockBaseController):
                 name=self.ticker,
                 df=self.stock,
                 target=self.target,
-                length=ns_parser.n_length,
+                window=ns_parser.n_window,
                 export=ns_parser.export,
             )
 
@@ -515,13 +516,13 @@ class QaController(StockBaseController):
             """,
         )
         parser.add_argument(
-            "-l",
-            "--length",
+            "-w",
+            "--window",
             action="store",
-            dest="n_length",
+            dest="n_window",
             type=check_positive,
             default=14,
-            help="length",
+            help="window length",
         )
         parser.add_argument(
             "-q",
@@ -540,7 +541,7 @@ class QaController(StockBaseController):
                 name=self.ticker,
                 df=self.stock,
                 target=self.target,
-                length=ns_parser.n_length,
+                window=ns_parser.n_window,
                 quantile=ns_parser.f_quantile,
                 export=ns_parser.export,
             )
@@ -561,13 +562,13 @@ class QaController(StockBaseController):
             """,
         )
         parser.add_argument(
-            "-l",
-            "--length",
+            "-w",
+            "--window",
             action="store",
-            dest="n_length",
+            dest="n_window",
             type=check_positive,
             default=14,
-            help="length",
+            help="window length",
         )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -577,7 +578,7 @@ class QaController(StockBaseController):
                 name=self.ticker,
                 df=self.stock,
                 target=self.target,
-                length=ns_parser.n_length,
+                window=ns_parser.n_window,
                 export=ns_parser.export,
             )
 
@@ -597,13 +598,13 @@ class QaController(StockBaseController):
             """,
         )
         parser.add_argument(
-            "-l",
-            "--length",
+            "-w",
+            "--window",
             action="store",
-            dest="n_length",
+            dest="n_window",
             type=check_positive,
             default=14,
-            help="length",
+            help="window length",
         )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -613,7 +614,7 @@ class QaController(StockBaseController):
                 name=self.ticker,
                 df=self.stock,
                 target=self.target,
-                length=ns_parser.n_length,
+                window=ns_parser.n_window,
                 export=ns_parser.export,
             )
 

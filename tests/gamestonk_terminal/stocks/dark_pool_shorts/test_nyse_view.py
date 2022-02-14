@@ -104,8 +104,11 @@ df_get_short_data_by_exchange = pd.DataFrame(
     [True, False],
 )
 def test_display_short_by_exchange(mocker, toggle):
-    mocker.patch.object(target=nyse_view, attribute="USE_ION", new=False)
-    mocker.patch("matplotlib.pyplot.show")
+    # MOCK VISUALIZE_OUTPUT
+    mocker.patch(
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
+    )
+
     mocker.patch("plotly.basedatatypes.BaseFigure.show")
     mocker.patch(
         target="gamestonk_terminal.stocks.dark_pool_shorts.nyse_model.get_short_data_by_exchange",

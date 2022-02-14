@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import copy
 import logging
 import math
-from typing import List
+from typing import List, Optional
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -12,12 +12,12 @@ import pandas as pd
 from matplotlib.lines import Line2D
 from pypfopt import plotting
 
-from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import get_rf, plot_autoscale, print_rich_table
 from gamestonk_terminal.portfolio.portfolio_optimization import optimizer_model
 from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.config_terminal import theme
 
 logger = logging.getLogger(__name__)
 
@@ -75,7 +75,12 @@ def display_weights(weights: dict, market_neutral: bool = False):
 
 
 @log_start_end(log=logger)
-def display_equal_weight(stocks: List[str], value: float, pie: bool = False):
+def display_equal_weight(
+    stocks: List[str],
+    value: float,
+    pie: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
+):
     """Equally weighted portfolio, where weight = 1/# of stocks
 
     Parameters
@@ -86,17 +91,23 @@ def display_equal_weight(stocks: List[str], value: float, pie: bool = False):
         Amount of money to allocate. 1 indicates percentage of portfolio
     pie : bool, optional
         Display a pie chart of values
+    external_axes: Optional[List[plt.Axes]]
+        Optional axes to plot data on
     """
     values = optimizer_model.get_equal_weights(stocks, value)
     if pie:
-        pie_chart_weights(values, "Equally Weighted Portfolio")
+        pie_chart_weights(values, "Equally Weighted Portfolio", external_axes)
 
     display_weights(values)
 
 
 @log_start_end(log=logger)
 def display_property_weighting(
-    stocks: List[str], s_property: str, value: float = 1.0, pie: bool = False
+    stocks: List[str],
+    s_property: str,
+    value: float = 1.0,
+    pie: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display portfolio weighted by selected property
 
@@ -110,11 +121,15 @@ def display_property_weighting(
         Amount to allocate.  Returns percentages if set to 1.
     pie : bool, optional
         Display weights as a pie chart
+    external_axes: Optional[List[plt.Axes]]
+        Optional axes to plot data on
     """
     values = optimizer_model.get_property_weights(stocks, s_property, value)
 
     if pie:
-        pie_chart_weights(values, "Weighted Portfolio based on " + s_property)
+        pie_chart_weights(
+            values, "Weighted Portfolio based on " + s_property, external_axes
+        )
     else:
         display_weights(values)
 
@@ -126,6 +141,7 @@ def display_max_sharpe(
     value: float,
     rfrate: float,
     pie: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display portfolio that maximizes Sharpe Ratio over stocks
 
@@ -141,13 +157,15 @@ def display_max_sharpe(
         Risk Free Rate, by default current US T-Bill rate
     pie : bool, optional
         Boolean to show weights as a pie chart, by default False
+    external_axes: Optional[List[plt.Axes]]
+        Optional axes to plot data on
     """
     p = d_period[period]
-    s_title = f"{p} Weights that maximize Sharpe ratio with risk free level of {rfrate*100:.2f}%"
+    s_title = f"{p} Weights that maximize Sharpe ratio"
     ef_opt, ef = optimizer_model.get_maxsharpe_portfolio(stocks, period, rfrate)
     weights = {key: value * round(port_value, 5) for key, port_value in ef_opt.items()}
     if pie:
-        pie_chart_weights(weights, s_title)
+        pie_chart_weights(weights, s_title, external_axes)
     else:
         console.print("\n", s_title)
         display_weights(weights)
@@ -157,7 +175,11 @@ def display_max_sharpe(
 
 @log_start_end(log=logger)
 def display_min_volatility(
-    stocks: List[str], period: str = "3mo", value: float = 1.0, pie: bool = False
+    stocks: List[str],
+    period: str = "3mo",
+    value: float = 1.0,
+    pie: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display portfolio with minimum volatility
 
@@ -171,12 +193,14 @@ def display_min_volatility(
         Amount to allocate to portfolio, by default 1.0
     pie : bool, optional
         Boolean to show weights as a pie chart, by default False
+    external_axes: Optional[List[plt.Axes]]
+        Optional axes to plot data on
     """
     s_title = f"{d_period[period]} Weights that minimize volatility"
     ef_opt, ef = optimizer_model.get_minvol_portfolio(stocks, period)
     weights = {key: value * round(port_value, 5) for key, port_value in ef_opt.items()}
     if pie:
-        pie_chart_weights(weights, s_title)
+        pie_chart_weights(weights, s_title, external_axes)
     else:
         console.print("\n", s_title)
         display_weights(weights)
@@ -192,6 +216,7 @@ def display_max_quadratic_utility(
     risk_aversion: float = 1.0,
     market_neutral: bool = False,
     pie: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display portfolio weights that maximize utility function given some risk aversion
 
@@ -209,15 +234,17 @@ def display_max_quadratic_utility(
         Boolean to allow for shorting, by default False
     pie : bool, optional
         Boolean to display weights as pie chart by default False
+    external_axes: Optional[List[plt.Axes]]
+        Optional axes to plot data on
     """
-    s_title = f"{d_period[period]} Weights that maximise the quadratic utility with risk aversion of {risk_aversion}"
+    s_title = f"{d_period[period]} Weights that maximise quadratic utility with risk aversion: {risk_aversion}"
     ef_opt, ef = optimizer_model.get_maxquadutil_portfolio(
         stocks, period, risk_aversion, market_neutral
     )
     weights = {key: value * round(port_value, 5) for key, port_value in ef_opt.items()}
 
     if not market_neutral and pie:
-        pie_chart_weights(weights, s_title)
+        pie_chart_weights(weights, s_title, external_axes)
         ef.portfolio_performance(verbose=True)
         console.print("")
         return
@@ -236,6 +263,7 @@ def display_efficient_risk(
     target_volatility: float = 1.0,
     market_neutral: bool = False,
     pie: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Displays portfolio that maximizes returns at given volatility
 
@@ -253,6 +281,8 @@ def display_efficient_risk(
         Boolean to allow for shorting, by default False
     pie : bool, optional
         Boolean to display weights as pie chart by default False
+    external_axes: Optional[List[plt.Axes]]
+        Optional axes to plot data on
     """
     s_title = f"{d_period[period]} Weights that maximise returns at target volatility: {target_volatility}"
     ef_opt, ef = optimizer_model.get_efficient_risk_portfolio(
@@ -261,7 +291,7 @@ def display_efficient_risk(
     weights = {key: value * round(port_value, 5) for key, port_value in ef_opt.items()}
 
     if not market_neutral and pie:
-        pie_chart_weights(weights, s_title)
+        pie_chart_weights(weights, s_title, external_axes)
         ef.portfolio_performance(verbose=True)
         console.print("")
         return
@@ -280,6 +310,7 @@ def display_efficient_return(
     target_return: float = 1.0,
     market_neutral: bool = False,
     pie: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Displays portfolio that minimizes volatility at given return
 
@@ -297,6 +328,8 @@ def display_efficient_return(
         Boolean to allow for shorting, by default False
     pie : bool, optional
         Boolean to display weights as pie chart by default False
+    external_axes: Optional[List[plt.Axes]]
+        Optional axes to plot data on
     """
     s_title = f"{d_period[period]} Weights that minimizes volatility at target return: {target_return}"
     ef_opt, ef = optimizer_model.get_efficient_return_portfolio(
@@ -305,7 +338,7 @@ def display_efficient_return(
     weights = {key: value * round(port_value, 5) for key, port_value in ef_opt.items()}
 
     if not market_neutral and pie:
-        pie_chart_weights(weights, s_title)
+        pie_chart_weights(weights, s_title, external_axes)
         ef.portfolio_performance(verbose=True)
         console.print("")
         return
@@ -322,6 +355,7 @@ def display_ef(
     period: str = "3mo",
     n_portfolios: int = 300,
     risk_free: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display efficient frontier
 
@@ -329,10 +363,17 @@ def display_ef(
     ----------
     stocks : List[str]
         List of the stocks to be included in the weights
-    other_args : List[str]
-        argparse other args
+    period : str
+        Time period to get returns for
+    n_portfolios: int
+        Number of portfolios to simulate
+    external_axes: Optional[List[plt.Axes]]
+        Optional axes to plot on
     """
-    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    if external_axes is None:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    else:
+        ax = external_axes[0]
     ef, rets, stds = optimizer_model.generate_random_portfolios(
         stocks, period, n_portfolios
     )
@@ -340,12 +381,13 @@ def display_ef(
     ef2 = copy.deepcopy(ef)
 
     sharpes = rets / stds
-    ax.scatter(stds, rets, marker=".", c=sharpes, cmap="viridis_r")
+    ax.scatter(stds, rets, marker=".", c=sharpes)
+    plotting.plot_efficient_frontier(ef, ax=ax, show_assets=True)
     for ticker, ret, std in zip(
         ef.tickers, ef.expected_returns, np.sqrt(np.diag(ef.cov_matrix))
     ):
+        ax.scatter(std, ret, s=50, marker=".", c="w")
         ax.annotate(ticker, (std * 1.01, ret))
-    plotting.plot_efficient_frontier(ef, ax=ax, show_assets=True)
     # Find the tangency portfolio
     rfrate = get_rf()
     ef2.max_sharpe(risk_free_rate=rfrate)
@@ -361,19 +403,13 @@ def display_ef(
         x2 = (y - b) / m
         x = [0, x2]
         y = [b, y]
-        line = Line2D(x, y, color="#FF0000", label="Capital Allocation Line")
+        line = Line2D(x, y, label="Capital Allocation Line")
         ax.set_xlim(xmin=min(stds) * 0.8)
         ax.add_line(line)
     ax.set_title(f"Efficient Frontier simulating {n_portfolios} portfolios")
-    ax.legend()
-    fig.tight_layout()
-    ax.grid(b=True, which="major", color="#666666", linestyle="-")
-
-    if gtff.USE_ION:
-        plt.ion()
-
-    plt.show()
-    console.print("")
+    theme.style_primary_axis(ax)
+    if external_axes is None:
+        theme.visualize_output()
 
 
 @log_start_end(log=logger)
@@ -386,7 +422,9 @@ def my_autopct(x):
 
 
 @log_start_end(log=logger)
-def pie_chart_weights(weights: dict, title_opt: str):
+def pie_chart_weights(
+    weights: dict, title_opt: str, external_axes: Optional[List[plt.Axes]]
+):
     """Show a pie chart of holdings
 
     Parameters
@@ -395,6 +433,8 @@ def pie_chart_weights(weights: dict, title_opt: str):
         Weights to display, where keys are tickers, and values are either weights or values if -v specified
     title: str
         Title to be used on the plot title
+    external_axes:Optiona[List[plt.Axes]]
+        Optional external axes to plot data on
     """
     if not weights:
         return
@@ -410,10 +450,13 @@ def pie_chart_weights(weights: dict, title_opt: str):
 
     total_size = np.sum(sizes)
 
-    plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    if external_axes is None:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    else:
+        ax = external_axes[0]
 
     if math.isclose(sum(sizes), 1, rel_tol=0.1):
-        wedges, _, autotexts = plt.pie(
+        wedges, _, autotexts = ax.pie(
             sizes,
             labels=stocks,
             autopct=my_autopct,
@@ -423,7 +466,7 @@ def pie_chart_weights(weights: dict, title_opt: str):
         )
         plt.setp(autotexts, color="white", fontweight="bold")
     else:
-        wedges, _, autotexts = plt.pie(
+        wedges, _, autotexts = ax.pie(
             sizes,
             labels=stocks,
             autopct="",
@@ -438,9 +481,9 @@ def pie_chart_weights(weights: dict, title_opt: str):
             else:
                 a.set_text("")
 
-    plt.axis("equal")
+    ax.axis("equal")
 
-    leg1 = plt.legend(
+    leg1 = ax.legend(
         wedges,
         [str(s) for s in stocks],
         title="  Ticker",
@@ -448,7 +491,7 @@ def pie_chart_weights(weights: dict, title_opt: str):
         bbox_to_anchor=(0.80, 0, 0.5, 1),
         frameon=False,
     )
-    leg2 = plt.legend(
+    leg2 = ax.legend(
         wedges,
         [
             f"{' ' if ((100*s/total_size) < 10) else ''}{100*s/total_size:.2f}%"
@@ -460,17 +503,12 @@ def pie_chart_weights(weights: dict, title_opt: str):
         bbox_to_anchor=(0.91, 0, 0.5, 1),
         frameon=False,
     )
-    plt.gca().add_artist(leg1)
-    plt.gca().add_artist(leg2)
+    ax.add_artist(leg1)
+    ax.add_artist(leg2)
 
     plt.setp(autotexts, size=8, weight="bold")
 
-    plt.gca().set_title(title_opt, pad=20)
+    ax.set_title(title_opt, pad=20)
 
-    if gtff.USE_ION:
-        plt.ion()
-
-    plt.tight_layout()
-
-    plt.show()
-    console.print("")
+    if external_axes is None:
+        theme.visualize_output()

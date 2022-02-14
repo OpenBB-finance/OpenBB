@@ -1,14 +1,14 @@
-"""Google View"""
+"""Google View."""
 __docformat__ = "numpy"
 
 import logging
 import os
-from datetime import datetime
+from typing import Optional, List
 
 import matplotlib.pyplot as plt
 
-from gamestonk_terminal import config_plot as cfp
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.config_terminal import theme
+from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.common.behavioural_analysis import google_model
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
@@ -22,21 +22,36 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_mentions(ticker: str, start: datetime, export: str = ""):
+def display_mentions(
+    ticker: str,
+    start: str,
+    export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
+):
     """Plot weekly bars of stock's interest over time. other users watchlist. [Source: Google]
 
     Parameters
     ----------
     ticker : str
         Ticker
-    start : datetime
-        Start date
+    start : str
+        Start date as YYYY-MM-DD string
     export: str
         Format to export data
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
     df_interest = google_model.get_mentions(ticker)
 
-    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
+    # This plot has 1 axis
+    if external_axes is None:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    else:
+        if len(external_axes) != 1:
+            console.print("[red]Expected list of one axis item./n[/red]")
+            return
+        (ax,) = external_axes
+
     ax.set_title(f"Interest over time on {ticker}")
     if start:
         df_interest = df_interest[start:]  # type: ignore
@@ -44,34 +59,34 @@ def display_mentions(ticker: str, start: datetime, export: str = ""):
         ax.bar(
             df_interest.index[-1],
             df_interest[ticker].values[-1],
-            color="tab:orange",
-            width=2,
+            width=theme.volume_bar_width,
         )
     else:
         ax.bar(df_interest.index, df_interest[ticker], width=1)
         ax.bar(
             df_interest.index[-1],
             df_interest[ticker].values[-1],
-            color="tab:orange",
-            width=1,
+            width=theme.volume_bar_width,
         )
-
-    ax.grid(b=True, which="major", color="#666666", linestyle="-")
     ax.set_ylabel("Interest [%]")
-    ax.set_xlabel("Time")
+    ax.set_xlim(df_interest.index[0], df_interest.index[-1])
+    theme.style_primary_axis(ax)
 
-    if gtff.USE_ION:
-        plt.ion()
-    fig.tight_layout()
-    plt.show()
-    console.print("")
+    if external_axes is None:
+        theme.visualize_output()
+
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "mentions", df_interest
     )
 
 
 @log_start_end(log=logger)
-def display_regions(ticker: str, num: int = 5, export: str = ""):
+def display_regions(
+    ticker: str,
+    num: int = 5,
+    export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
+):
     """Plot bars of regions based on stock's interest. [Source: Google]
 
     Parameters
@@ -82,26 +97,41 @@ def display_regions(ticker: str, num: int = 5, export: str = ""):
         Number of regions to show
     export: str
         Format to export data
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
     df_interest_region = google_model.get_regions(ticker)
-    if not df_interest_region.empty:
-        df_interest_region = df_interest_region.sort_values(
-            [ticker], ascending=False
-        ).head(num)
-        df = df_interest_region.copy()
-        fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-        ax.set_title(f"Top's regions interest on {ticker}")
-        ax.bar(df_interest_region.index, df_interest_region[ticker], width=0.8)
-        ax.grid(b=True, which="major", color="#666666", linestyle="-")
-        ax.set_ylabel("Interest [%]")
-        ax.set_xlabel("Region")
-        if gtff.USE_ION:
-            plt.ion()
-        fig.tight_layout()
-        plt.show()
+
+    # This plot has 1 axis
+    if external_axes is None:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     else:
+        if len(external_axes) != 1:
+            console.print("[red]Expected list of one axis item./n[/red]")
+            return
+        (ax,) = external_axes
+
+    if df_interest_region.empty:
         console.print("No region data found.")
-    console.print("")
+        console.print("")
+        return
+
+    df_interest_region = df_interest_region.sort_values([ticker], ascending=False).head(
+        num
+    )
+    df = df_interest_region.sort_values([ticker], ascending=True)
+
+    ax.set_title(f"Top's regions interest on {ticker}")
+    ax.barh(
+        y=df.index, width=df[ticker], color=theme.get_colors(reverse=True), zorder=3
+    )
+    ax.set_xlabel("Interest [%]")
+    ax.set_ylabel("Region")
+    theme.style_primary_axis(ax)
+
+    if external_axes is None:
+        theme.visualize_output()
+
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "regions", df)
 
 

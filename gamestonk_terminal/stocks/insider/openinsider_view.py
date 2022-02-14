@@ -51,7 +51,7 @@ d_notes = {
     "A": "A: Amended filing",
     "D": "D: Derivative transaction in filing (usually option exercise)",
     "E": "E: Error detected in filing",
-    "M": "M: Multiple transactions in filing; earliest reported transaction date and weighted average transaction price",
+    "M": "M: Multiple transactions in filing; earliest reported transaction date & weighted average transaction price",
 }
 
 d_trade_types = {

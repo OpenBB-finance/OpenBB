@@ -268,6 +268,7 @@ def display_candle(
     intraday: bool = False,
     add_trend: bool = False,
     ma: Optional[Tuple[int, ...]] = None,
+    asset_type: str = "Stock",
 ):
     """Shows candle plot of loaded ticker. [Source: Yahoo Finance, IEX Cloud or Alpha Vantage]
 
@@ -285,6 +286,8 @@ def display_candle(
         Flag to add high and low trends to chart
     mov_avg: Tuple[int]
         Moving averages to add to the candle
+    asset_type_: str
+        String to include in title
     """
     if add_trend:
         if (df_stock.index[1] - df_stock.index[0]).total_seconds() >= 86400:
@@ -292,17 +295,6 @@ def display_candle(
             df_stock = find_trendline(df_stock, "OC_Low", "low")
 
     if use_matplotlib:
-        mc = mpf.make_marketcolors(
-            up="green",
-            down="red",
-            edge="black",
-            wick="black",
-            volume="in",
-            ohlc="i",
-        )
-
-        s = mpf.make_mpf_style(marketcolors=mc, gridstyle=":", y_on_right=True)
-
         ap0 = []
         if add_trend:
             if "OC_High_trend" in df_stock.columns:
@@ -319,22 +311,32 @@ def display_candle(
             plt.ion()
         kwargs = {"mav": ma} if ma else {}
 
-        mpf.plot(
+        fig, _ = mpf.plot(
             df_stock,
             type="candle",
+            style=cfg.theme.mpf_style,
             volume=True,
-            title=f"\nStock {s_ticker}",
             addplot=ap0,
             xrotation=10,
-            style=s,
             figratio=(10, 7),
             figscale=1.10,
+            scale_padding={"left": 0.3, "right": 1.1, "top": 0.8, "bottom": 0.8},
             figsize=(plot_autoscale()),
             update_width_config=dict(
-                candle_linewidth=1.0, candle_width=0.8, volume_linewidth=1.0
+                candle_linewidth=0.6,
+                candle_width=0.8,
+                volume_linewidth=0.8,
+                volume_width=0.8,
             ),
             warn_too_much_data=10000,
+            returnfig=True,
             **kwargs,
+        )
+        fig.suptitle(
+            f"{asset_type} {s_ticker}",
+            x=0.055,
+            y=0.965,
+            horizontalalignment="left",
         )
     else:
         fig = make_subplots(
