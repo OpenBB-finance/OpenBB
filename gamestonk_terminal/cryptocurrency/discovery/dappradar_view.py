@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
+import numpy as np
 
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
     lambda_very_long_number_formatter,
@@ -37,7 +38,12 @@ def display_top_nfts(top: int = 10, sortby: str = "", export: str = "") -> None:
             df = df.sort_values(by=sortby, ascending=False)
         for col in ["Floor Price [$]", "Avg Price [$]", "Market Cap [$]", "Volume [$]"]:
             if col in df.columns:
-                df[col] = df[col].apply(lambda x: lambda_very_long_number_formatter(x))
+                df[col] = (
+                    df[col]
+                    .fillna(-1)
+                    .apply(lambda x: lambda_very_long_number_formatter(x))
+                    .replace(-1, np.nan)
+                )
         print_rich_table(
             df.head(top),
             headers=list(df.columns),
