@@ -86,6 +86,11 @@ def display_short_by_exchange(
         # remove the scientific notion on the left hand side
         ax.ticklabel_format(style="plain", axis="y")
 
+        ax.set_xlim(
+            volume_by_exchange.Date.iloc[0],
+            volume_by_exchange.Date.iloc[-1],
+        )
+
         ax.set_title(f"Net Short Volume for {ticker}")
         theme.style_primary_axis(ax)
 
