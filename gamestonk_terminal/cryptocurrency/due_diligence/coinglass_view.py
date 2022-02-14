@@ -1,17 +1,22 @@
 import logging
 import os
+from typing import List, Optional
 
 import pandas as pd
-from matplotlib import dates as mdates
 from matplotlib import pyplot as plt
+from matplotlib import ticker
 
+from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal import config_plot as cfgPlot
-from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.cryptocurrency.due_diligence.coinglass_model import (
     get_open_interest_per_exchange,
 )
 from gamestonk_terminal.decorators import log_start_end
-from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
+from gamestonk_terminal.helper_funcs import (
+    export_data,
+    long_number_format,
+    plot_autoscale,
+)
 from gamestonk_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -46,31 +51,47 @@ def display_open_interest(symbol: str, interval: int, export: str) -> None:
 
 
 @log_start_end(log=logger)
-def plot_data(df: pd.DataFrame, symbol: str):
+def plot_data(
+    df: pd.DataFrame,
+    symbol: str,
+    external_axes: Optional[List[plt.Axes]] = None,
+):
+
+    # This plot has 2 axis
+    if not external_axes:
+        _, (ax1, ax2) = plt.subplots(
+            2, 1, sharex=True, figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI
+        )
+    else:
+        if len(external_axes) != 2:
+            console.print("[red]Expected list of two axis item./n[/red]")
+            return
+        ax1, ax2 = external_axes
+
     df_price = df[["price"]].copy()
+    df_without_price = df.drop("price", axis=1)
 
-    df_without_price = df.drop("price", 1)
-    _, ax1 = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
-    plt.plot(df_without_price.index, df_without_price / 1e9)
-    plt.legend(df_without_price.columns)
-    ax2 = ax1.twinx()
-    plt.grid()
-    plt.plot(df_price.index, df_price, lw=3, c="k")
-    plt.legend([f"{symbol} price"], loc=1)
-
-    ax1.set_ylabel(
-        "Estimated notional value of all open futures positions [$ billions]"
+    ax1.stackplot(
+        df_without_price.index,
+        df_without_price.transpose().to_numpy(),
+        labels=df_without_price.columns.tolist(),
     )
+
+    ax1.get_yaxis().set_major_formatter(
+        ticker.FuncFormatter(lambda x, _: long_number_format(x))
+    )
+    ax1.legend(df_without_price.columns, fontsize="x-small", ncol=2)
+    ax1.set_title(f"Exchange {symbol} Futures Open Interest")
+    ax1.set_ylabel("Open futures value[$B]")
+
+    ax2.plot(df_price.index, df_price)
+    ax2.legend([f"{symbol} price"])
     ax2.set_ylabel(f"{symbol} Price [$]")
+    ax2.set_xlim([df_price.index[0], df_price.index[-1]])
+    ax2.set_ylim(bottom=0.0)
 
-    plt.xlim([df_price.index[0], df_price.index[-1]])
-    plt.title(f"Exchange {symbol} Futures Open Interest")
+    theme.style_primary_axis(ax1)
+    theme.style_primary_axis(ax2)
 
-    plt.gca().xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m-%d"))
-    plt.gca().xaxis.set_major_locator(mdates.MonthLocator(interval=1))
-    plt.gcf().autofmt_xdate()
-
-    if gtff.USE_ION:
-        plt.ion()
-
-    plt.show()
+    if not external_axes:
+        theme.visualize_output()

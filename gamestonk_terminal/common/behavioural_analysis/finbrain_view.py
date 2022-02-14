@@ -3,14 +3,14 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import Optional, List
 
-import matplotlib.dates as mdates
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
-from pandas.plotting import register_matplotlib_converters
 
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal.common.behavioural_analysis import finbrain_model
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.decorators import log_start_end
@@ -23,8 +23,6 @@ from gamestonk_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
-register_matplotlib_converters()
-
 
 @log_start_end(log=logger)
 def sentiment_coloring(val: float, last_val: float) -> str:
@@ -34,7 +32,9 @@ def sentiment_coloring(val: float, last_val: float) -> str:
 
 
 @log_start_end(log=logger)
-def plot_sentiment(sentiment: pd.DataFrame, ticker: str) -> None:
+def plot_sentiment(
+    sentiment: pd.DataFrame, ticker: str, external_axes: Optional[List[plt.Axes]] = None
+) -> None:
     """Plot Sentiment analysis provided by FinBrain's API
 
     Parameters
@@ -44,25 +44,31 @@ def plot_sentiment(sentiment: pd.DataFrame, ticker: str) -> None:
     ticker : str
         Ticker to get the sentiment analysis from
     """
-    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    # This plot has 1 axis
+    if external_axes is None:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    else:
+        if len(external_axes) != 1:
+            console.print("[red]Expected list of one axis item./n[/red]")
+            return
+        (ax,) = external_axes
+
     for index, row in sentiment.iterrows():
         if float(row["Sentiment Analysis"]) >= 0:
-            ax.scatter(index, float(row["Sentiment Analysis"]), s=100, c="green")
+            ax.scatter(
+                index, float(row["Sentiment Analysis"]), s=100, color=theme.up_color
+            )
         else:
-            ax.scatter(index, float(row["Sentiment Analysis"]), s=100, c="red")
-    ax.axhline(y=0, color="k", linestyle="--", lw=2)
+            ax.scatter(
+                index, float(row["Sentiment Analysis"]), s=100, color=theme.down_color
+            )
+    ax.axhline(y=0, linestyle="--")
     ax.set_xlabel("Time")
     ax.set_ylabel("Sentiment")
-    ax.grid(b=True, which="major", color="#666666", linestyle="-")
-    ax.minorticks_on()
-    ax.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
     start_date = sentiment.index[-1].strftime("%Y/%m/%d")
     ax.set_title(
         f"FinBrain's Sentiment Analysis for {ticker.upper()} since {start_date}"
     )
-    plt.gca().xaxis.set_major_formatter(mdates.DateFormatter("%Y/%m/%d"))
-    plt.gca().xaxis.set_major_locator(mdates.DayLocator(interval=1))
-    plt.gcf().autofmt_xdate()
     ax.set_ylim([-1.1, 1.1])
     senValues = np.array(pd.to_numeric(sentiment["Sentiment Analysis"].values))
     senNone = np.array(0 * len(sentiment))
@@ -72,7 +78,7 @@ def plot_sentiment(sentiment: pd.DataFrame, ticker: str) -> None:
         0,
         where=(senValues < senNone),
         alpha=0.30,
-        color="red",
+        color=theme.down_color,
         interpolate=True,
     )
     ax.fill_between(
@@ -81,17 +87,19 @@ def plot_sentiment(sentiment: pd.DataFrame, ticker: str) -> None:
         0,
         where=(senValues >= senNone),
         alpha=0.30,
-        color="green",
+        color=theme.up_color,
         interpolate=True,
     )
-    if gtff.USE_ION:
-        plt.ion()
-    fig.tight_layout()
-    plt.show()
+    theme.style_primary_axis(ax)
+
+    if external_axes is None:
+        theme.visualize_output()
 
 
 @log_start_end(log=logger)
-def display_sentiment_analysis(ticker: str, export: str = ""):
+def display_sentiment_analysis(
+    ticker: str, export: str = "", external_axes: Optional[List[plt.Axes]] = None
+):
     """Sentiment analysis from FinBrain
 
     Parameters
@@ -106,7 +114,7 @@ def display_sentiment_analysis(ticker: str, export: str = ""):
         console.print("No sentiment data found.\n")
         return
 
-    plot_sentiment(df_sentiment, ticker)
+    plot_sentiment(sentiment=df_sentiment, ticker=ticker, external_axes=external_axes)
 
     df_sentiment.sort_index(ascending=True, inplace=True)
 

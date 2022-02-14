@@ -30,11 +30,9 @@ def vcr_config():
     ],
 )
 def test_plot_oi(calls_only, max_sp, min_sp, mocker, puts_only):
-    # MOCK CHARTS
-    mocker.patch.object(target=yfinance_view.gtff, attribute="USE_ION", new=True)
-    mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.plt.ion")
-    mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.plt.show")
-
+    mocker.patch(
+        target="gamestonk_terminal.stocks.options.yfinance_view.theme.visualize_output"
+    )
     # MOCK EXPORT_DATA
     mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.export_data")
 
@@ -60,9 +58,9 @@ def test_plot_oi(calls_only, max_sp, min_sp, mocker, puts_only):
 )
 def test_plot_vol(calls_only, max_sp, min_sp, mocker, puts_only):
     # MOCK CHARTS
-    mocker.patch.object(target=yfinance_view.gtff, attribute="USE_ION", new=True)
-    mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.plt.ion")
-    mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.plt.show")
+    mocker.patch(
+        target="gamestonk_terminal.stocks.options.yfinance_view.theme.visualize_output"
+    )
 
     # MOCK EXPORT_DATA
     mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.export_data")
@@ -89,9 +87,9 @@ def test_plot_vol(calls_only, max_sp, min_sp, mocker, puts_only):
 )
 def test_plot_volume_open_interest(max_sp, min_sp, min_vol, mocker):
     # MOCK CHARTS
-    mocker.patch.object(target=yfinance_view.gtff, attribute="USE_ION", new=True)
-    mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.plt.ion")
-    mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.plt.show")
+    mocker.patch(
+        target="gamestonk_terminal.stocks.options.yfinance_view.theme.visualize_output"
+    )
 
     # MOCK EXPORT_DATA
     mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.export_data")
@@ -110,9 +108,9 @@ def test_plot_volume_open_interest(max_sp, min_sp, min_vol, mocker):
 @pytest.mark.vcr
 def test_plot_plot(mocker):
     # MOCK CHARTS
-    mocker.patch.object(target=yfinance_view.gtff, attribute="USE_ION", new=True)
-    mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.plt.ion")
-    mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.plt.show")
+    mocker.patch(
+        target="gamestonk_terminal.stocks.options.yfinance_view.theme.visualize_output"
+    )
 
     # MOCK EXPORT_DATA
     mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.export_data")
@@ -132,9 +130,9 @@ def test_plot_plot(mocker):
 @pytest.mark.vcr
 def test_plot_payoff(mocker):
     # MOCK CHARTS
-    mocker.patch.object(target=yfinance_view.gtff, attribute="USE_ION", new=True)
-    mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.plt.ion")
-    mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.plt.show")
+    mocker.patch(
+        target="gamestonk_terminal.stocks.options.yfinance_view.theme.visualize_output"
+    )
 
     # MOCK EXPORT_DATA
     mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.export_data")
@@ -152,9 +150,9 @@ def test_plot_payoff(mocker):
 @pytest.mark.vcr
 def test_show_parity(mocker):
     # MOCK CHARTS
-    mocker.patch.object(target=yfinance_view.gtff, attribute="USE_ION", new=True)
-    mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.plt.ion")
-    mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.plt.show")
+    mocker.patch(
+        target="gamestonk_terminal.stocks.options.yfinance_view.theme.visualize_output"
+    )
 
     # MOCK EXPORT_DATA
     mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.export_data")
@@ -174,9 +172,9 @@ def test_show_parity(mocker):
 @pytest.mark.vcr
 def test_risk_neutral_vals(mocker):
     # MOCK CHARTS
-    mocker.patch.object(target=yfinance_view.gtff, attribute="USE_ION", new=True)
-    mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.plt.ion")
-    mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.plt.show")
+    mocker.patch(
+        target="gamestonk_terminal.stocks.options.yfinance_view.theme.visualize_output"
+    )
 
     # MOCK EXPORT_DATA
     mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.export_data")
@@ -196,9 +194,9 @@ def test_risk_neutral_vals(mocker):
 @pytest.mark.vcr
 def test_show_binom(mocker):
     # MOCK CHARTS
-    mocker.patch.object(target=yfinance_view.gtff, attribute="USE_ION", new=True)
-    mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.plt.ion")
-    mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.plt.show")
+    mocker.patch(
+        target="gamestonk_terminal.stocks.options.yfinance_view.theme.visualize_output"
+    )
 
     # MOCK EXPORT_DATA
     mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.export_data")

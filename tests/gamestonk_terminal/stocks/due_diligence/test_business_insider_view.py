@@ -22,7 +22,12 @@ def vcr_config():
 
 @pytest.mark.vcr
 @pytest.mark.record_stdout
-def test_price_target_from_analysts_raw():
+def test_price_target_from_analysts_raw(mocker):
+    # MOCK VISUALIZE_OUTPUT
+    mocker.patch(
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
+    )
+
     business_insider_view.price_target_from_analysts(
         ticker="TSLA",
         start=None,
@@ -38,10 +43,11 @@ def test_price_target_from_analysts_raw():
 @pytest.mark.vcr
 @pytest.mark.parametrize("start", [datetime.strptime("2021-12-05", "%Y-%m-%d")])
 @pytest.mark.parametrize("interval", [1440])
-def test_price_target_from_analysts_plt(capsys, interval, mocker, start, monkeypatch):
-    mock_show = mocker.Mock()
-    mocker.patch(target="matplotlib.pyplot.show", new=mock_show)
-    monkeypatch.setattr(business_insider_view.gtff, "USE_ION", False)
+def test_price_target_from_analysts_plt(capsys, interval, mocker, start):
+    # MOCK VISUALIZE_OUTPUT
+    mocker.patch(
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
+    )
 
     ticker = "TSLA"
     stock = load(ticker=ticker, start=start, interval=interval)
@@ -56,8 +62,6 @@ def test_price_target_from_analysts_plt(capsys, interval, mocker, start, monkeyp
         export=None,
     )
     capsys.readouterr()
-
-    mock_show.assert_called_once()
 
 
 @pytest.mark.vcr

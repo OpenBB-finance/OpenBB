@@ -4,11 +4,14 @@ __docformat__ = "numpy"
 import logging
 import math
 import os
-from datetime import datetime
+from typing import List, Optional
 
+from datetime import datetime
 import mplfinance as mpf
 import yfinance as yf
+from matplotlib import pyplot as plt
 
+from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
 from gamestonk_terminal.rich_config import console
@@ -18,7 +21,12 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def plot_pattern_recognition(ticker: str, resolution: str, export: str):
+def plot_pattern_recognition(
+    ticker: str,
+    resolution: str,
+    export: str,
+    external_axes: Optional[List[plt.Axes]] = None,
+):
     """Plot pattern recognition signal
 
     Parameters
@@ -29,6 +37,8 @@ def plot_pattern_recognition(ticker: str, resolution: str, export: str):
         Resolution of data to get pattern recognition from
     export: str
         Format of export file
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
 
     pattern = finnhub_model.get_pattern_recognition(ticker, resolution)
@@ -101,27 +111,44 @@ def plot_pattern_recognition(ticker: str, resolution: str, export: str):
     df_stock["OC_High"] = df_stock[["Open", "Close"]].max(axis=1)
     df_stock["OC_Low"] = df_stock[["Open", "Close"]].min(axis=1)
 
-    mc = mpf.make_marketcolors(
-        up="green", down="red", edge="black", wick="black", volume="in", ohlc="i"
-    )
+    candle_chart_kwargs = {
+        "type": "candle",
+        "style": theme.mpf_style,
+        "volume": False,
+        "alines": l_segments,
+        "xrotation": theme.xticks_rotation,
+        "scale_padding": {"left": 0.3, "right": 1, "top": 0.8, "bottom": 0.8},
+        "update_width_config": {
+            "candle_linewidth": 0.6,
+            "candle_width": 0.8,
+            "volume_linewidth": 0.8,
+            "volume_width": 0.8,
+        },
+        "warn_too_much_data": 10000,
+    }
+    # This plot has 2 axes
+    if not external_axes:
+        candle_chart_kwargs["returnfig"] = True
+        candle_chart_kwargs["figratio"] = (10, 7)
+        candle_chart_kwargs["figscale"] = 1.10
+        candle_chart_kwargs["figsize"] = plot_autoscale()
+        (fig, ax) = mpf.plot(df_stock, **candle_chart_kwargs)
+        fig.suptitle(
+            f"\n{ticker}",
+            x=0.055,
+            y=0.965,
+            horizontalalignment="left",
+        )
 
-    s = mpf.make_mpf_style(marketcolors=mc, gridstyle=":", y_on_right=False)
+        theme.visualize_output(force_tight_layout=False)
 
-    mpf.plot(
-        df_stock,
-        type="candle",
-        volume=False,
-        title=f"\n{ticker}",
-        alines=l_segments,
-        xrotation=10,
-        style=s,
-        figratio=(10, 7),
-        figscale=1.10,
-        figsize=plot_autoscale(),
-        update_width_config=dict(
-            candle_linewidth=1.0, candle_width=0.8, volume_linewidth=1.0
-        ),
-    )
+    else:
+        if len(external_axes) != 1:
+            console.print("[red]Expected list of 1 axis items./n[/red]")
+            return
+        (ax,) = external_axes
+        candle_chart_kwargs["ax"] = ax
+        mpf.plot(df_stock, **candle_chart_kwargs)
 
     for ix in range(len(pattern.columns)):
         console.print(f"From {l_segments[ix][0][0]} to {l_segments[ix][-1][0]}")

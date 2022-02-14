@@ -51,6 +51,7 @@ from gamestonk_terminal.stocks.sector_industry_analysis import (
 )
 def test_display_plots_financials(
     recorder,
+    mocker,
     finance_key,
     sa_keys,
     country,
@@ -61,6 +62,12 @@ def test_display_plots_financials(
     marketcap,
     statement,
 ):
+    mocker.patch(
+        target="gamestonk_terminal.stocks.sector_industry_analysis.stockanalysis_view.plt.show"
+    )
+    mocker.patch(
+        target="gamestonk_terminal.stocks.sector_industry_analysis.stockanalysis_view.export_data"
+    )
     stocks_data, company_tickers = stockanalysis_view.display_plots_financials(
         finance_key=finance_key,
         sa_dict=sa_keys,

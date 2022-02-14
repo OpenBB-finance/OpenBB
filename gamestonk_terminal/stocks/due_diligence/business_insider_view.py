@@ -3,12 +3,13 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import List, Optional
 
 import matplotlib.pyplot as plt
 from pandas.core.frame import DataFrame
 from pandas.plotting import register_matplotlib_converters
 
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
@@ -33,6 +34,7 @@ def price_target_from_analysts(
     num: int,
     raw: bool,
     export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display analysts' price targets for a given stock. [Source: Business Insider]
 
@@ -52,6 +54,8 @@ def price_target_from_analysts(
         Display raw data only
     export : str
         Export dataframe data to csv,json,xlsx file
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
 
     df_analyst_data = business_insider_model.get_price_target_from_analysts(ticker)
@@ -66,37 +70,46 @@ def price_target_from_analysts(
         )
 
     else:
-        plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+
+        # This plot has 1 axis
+        if not external_axes:
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        else:
+            if len(external_axes) != 1:
+                console.print("[red]Expected list of one axis item./n[/red]")
+                return
+            (ax,) = external_axes
 
         # Slice start of ratings
         if start:
             df_analyst_data = df_analyst_data[start:]  # type: ignore
 
         if interval == "1440min":
-            plt.plot(stock.index, stock["Adj Close"].values, lw=3)
+            ax.plot(stock.index, stock["Adj Close"].values, lw=3)
         # Intraday
         else:
-            plt.plot(stock.index, stock["Close"].values, lw=3)
+            ax.plot(stock.index, stock["Close"].values, lw=3)
 
         if start:
-            plt.plot(df_analyst_data.groupby(by=["Date"]).mean()[start:])  # type: ignore
+            ax.plot(df_analyst_data.groupby(by=["Date"]).mean()[start:])  # type: ignore
         else:
-            plt.plot(df_analyst_data.groupby(by=["Date"]).mean())
+            ax.plot(df_analyst_data.groupby(by=["Date"]).mean())
 
-        plt.scatter(df_analyst_data.index, df_analyst_data["Price Target"], c="r", s=40)
+        ax.scatter(
+            df_analyst_data.index, df_analyst_data["Price Target"], c="red", s=40
+        )
 
-        plt.legend(["Closing Price", "Average Price Target", "Price Target"])
+        ax.legend(["Closing Price", "Average Price Target", "Price Target"])
 
-        plt.title(f"{ticker} (Time Series) and Price Target")
-        plt.xlim(stock.index[0], stock.index[-1])
-        plt.xlabel("Time")
-        plt.ylabel("Share Price")
-        plt.grid(b=True, which="major", color="#666666", linestyle="-")
+        ax.set_title(f"{ticker} (Time Series) and Price Target")
+        ax.set_xlim(stock.index[0], stock.index[-1])
+        ax.set_ylabel("Share Price")
 
-        if gtff.USE_ION:
-            plt.ion()
-        plt.gcf().autofmt_xdate()
-        plt.show()
+        theme.style_primary_axis(ax)
+
+        if not external_axes:
+            theme.visualize_output()
+
     console.print("")
 
     export_data(

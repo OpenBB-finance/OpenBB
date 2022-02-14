@@ -2,10 +2,10 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Union
+from typing import Union, Optional, List
 
 import pandas as pd
-from pandas.plotting import register_matplotlib_converters
+from matplotlib import pyplot as plt
 
 from gamestonk_terminal.common.prediction_techniques import knn_model
 from gamestonk_terminal.common.prediction_techniques.pred_helper import (
@@ -16,8 +16,6 @@ from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
-
-register_matplotlib_converters()
 
 # pylint:disable=too-many-arguments
 
@@ -33,6 +31,7 @@ def display_k_nearest_neighbors(
     end_date: str = "",
     no_shuffle: bool = True,
     time_res: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display predictions using knn
 
@@ -43,7 +42,7 @@ def display_k_nearest_neighbors(
     data : Union[pd.DataFrame, pd.Series]
         Data to use for ML
     n_neighbors : int
-        Number of neighborns for knn
+        Number of neighbors for knn
     n_input_days : int
         Length of input sequences
     n_predict_days : int
@@ -56,6 +55,8 @@ def display_k_nearest_neighbors(
         Flag to shuffle data randomly, by default True
     time_res : str
         Resolution for data, allowing for predicting outside of standard market days
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
     (
         forecast_data_df,
@@ -77,14 +78,15 @@ def display_k_nearest_neighbors(
         )[1:]
     print_pretty_prediction(forecast_data_df[0], data.values[-1])
     plot_data_predictions(
-        data,
-        preds,
-        y_valid,
-        y_dates_valid,
-        scaler,
-        f"KNN Model with {n_neighbors} Neighbors on {ticker}",
-        forecast_data_df,
-        1,
-        time_res,
+        data=data,
+        preds=preds,
+        y_valid=y_valid,
+        y_dates_valid=y_dates_valid,
+        scaler=scaler,
+        title=f"KNN Model with {n_neighbors} Neighbors on {ticker}",
+        forecast_data=forecast_data_df,
+        n_loops=1,
+        time_str=time_res,
+        external_axes=external_axes,
     )
     console.print("")

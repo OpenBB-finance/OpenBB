@@ -18,8 +18,8 @@ def vcr_config():
 @pytest.mark.vcr
 def test_get_historical_options(recorder):
     result_df = tradier_model.get_historical_options(
-        ticker="PM",
-        expiry="2022-01-07",
+        ticker="AAPL",
+        expiry="2022-02-25",
         strike=90.0,
         put=True,
         chain_id="",
@@ -34,8 +34,8 @@ def test_get_historical_options_invalid_status(mocker):
     mocker.patch(target="requests.get", new=mocker.Mock(return_value=mock_response))
 
     result_df = tradier_model.get_historical_options(
-        ticker="PM",
-        expiry="2022-01-07",
+        ticker="AAPL",
+        expiry="2022-02-25",
         strike=90.0,
         put=True,
         chain_id="MOCK_CHAIN_ID",
@@ -56,8 +56,8 @@ def test_get_historical_options_no_data(mocker):
     mocker.patch(target="requests.get", new=mocker.Mock(return_value=mock_response))
 
     result_df = tradier_model.get_historical_options(
-        ticker="PM",
-        expiry="2022-01-07",
+        ticker="AAPL",
+        expiry="2022-02-25",
         strike=90.0,
         put=True,
         chain_id="MOCK_CHAIN_ID",
@@ -68,7 +68,7 @@ def test_get_historical_options_no_data(mocker):
 
 @pytest.mark.vcr
 def test_option_expirations(recorder):
-    result_list = tradier_model.option_expirations(ticker="PM")
+    result_list = tradier_model.option_expirations(ticker="AAPL")
     recorder.capture(result_list)
 
 
@@ -83,7 +83,7 @@ def test_option_expirations_json_error(mocker):
     )
     mocker.patch(target="requests.get", new=mocker.Mock(return_value=mock_response))
 
-    result_list = tradier_model.option_expirations(ticker="PM")
+    result_list = tradier_model.option_expirations(ticker="AAPL")
 
     assert result_list == []
 
@@ -94,14 +94,14 @@ def test_option_expirations_invalid_status(mocker):
     mock_response.status_code = 400
     mocker.patch(target="requests.get", new=mocker.Mock(return_value=mock_response))
 
-    result_list = tradier_model.option_expirations(ticker="PM")
+    result_list = tradier_model.option_expirations(ticker="AAPL")
 
     assert result_list == []
 
 
 @pytest.mark.vcr
 def test_get_option_chains(recorder):
-    result_df = tradier_model.get_option_chains(symbol="PM", expiry="2022-01-07")
+    result_df = tradier_model.get_option_chains(symbol="AAPL", expiry="2022-02-25")
     recorder.capture(result_df)
 
 
@@ -111,14 +111,14 @@ def test_get_option_chains_invalid_status(mocker):
     mock_response.status_code = 400
     mocker.patch(target="requests.get", new=mocker.Mock(return_value=mock_response))
 
-    result_df = tradier_model.get_option_chains(symbol="PM", expiry="2022-01-07")
+    result_df = tradier_model.get_option_chains(symbol="AAPL", expiry="2022-02-25")
 
     assert result_df.empty
 
 
 @pytest.mark.vcr
 def test_last_price(recorder):
-    result = tradier_model.last_price(ticker="PM")
+    result = tradier_model.last_price(ticker="AAPL")
     recorder.capture(result)
 
 
@@ -128,6 +128,6 @@ def test_get_historical_greeks_invalid_status(mocker):
     mock_response.status_code = 400
     mocker.patch(target="requests.get", new=mocker.Mock(return_value=mock_response))
 
-    result = tradier_model.last_price(ticker="PM")
+    result = tradier_model.last_price(ticker="AAPL")
 
     assert result is None

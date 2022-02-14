@@ -5,22 +5,21 @@ import logging
 import os
 import warnings
 from datetime import datetime
-from typing import Any
+from typing import Any, Optional, List
 
 import matplotlib
-import matplotlib.dates as mdates
+import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
 import statsmodels.api as sm
-from detecta import detect_cusum
-from matplotlib import gridspec
-from pandas.plotting import register_matplotlib_converters
 from scipy import stats
+from detecta import detect_cusum
 from statsmodels.graphics.gofplots import qqplot
+from pandas.plotting import register_matplotlib_converters
 
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal.common.quantitative_analysis import qa_model
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.decorators import log_start_end
@@ -29,6 +28,8 @@ from gamestonk_terminal.helper_funcs import (
     export_data,
     plot_autoscale,
     print_rich_table,
+    reindex_dates,
+    long_number_format,
 )
 from gamestonk_terminal.rich_config import console
 
@@ -83,6 +84,7 @@ def display_hist(
     df: pd.DataFrame,
     target: str,
     bins: int,
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Generate of histogram of data
 
@@ -93,31 +95,57 @@ def display_hist(
     df : pd.DataFrame
         Dataframe to look at
     target : str
-        Data column to get histogram of
+        Data column to get histogram of the dataframe
     bins : int
         Number of bins in histogram
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
-    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     data = df[target]
 
-    sns.histplot(data, bins=bins, kde=True, ax=ax, stat="proportion")
-    sns.rugplot(data, c="r", ax=ax)
+    # This plot has 1 axis
+    if external_axes is None:
+        _, ax = plt.subplots(
+            figsize=plot_autoscale(),
+            dpi=PLOT_DPI,
+        )
+    else:
+        if len(external_axes) != 1:
+            console.print("[red]Expected list of 1 axis items./n[/red]")
+            return
+        (ax,) = external_axes
+
+    sns.histplot(
+        data,
+        color=theme.up_color,
+        bins=bins,
+        kde=True,
+        ax=ax,
+        stat="proportion",
+        legend=True,
+    )
+    sns.rugplot(data, color=theme.down_color, ax=ax, legend=True)
 
     if isinstance(df.index[0], datetime):
         start = df.index[0]
-
         ax.set_title(f"Histogram of {name} {target} from {start.strftime('%Y-%m-%d')}")
     else:
         ax.set_title(f"Histogram of {name} {target}")
 
     ax.set_xlabel("Value")
-    ax.grid(True)
+    theme.style_primary_axis(ax)
 
-    if gtff.USE_ION:
-        plt.ion()
-    fig.tight_layout()
-    plt.show()
-    console.print("")
+    # Manually construct the chart legend
+    proportion_legend = mpatches.Patch(
+        color=theme.up_color, label="Univariate distribution"
+    )
+    marginal_legend = mpatches.Patch(
+        color=theme.down_color, label="Marginal distributions"
+    )
+    ax.legend(handles=[proportion_legend, marginal_legend])
+
+    if external_axes is None:
+        theme.visualize_output()
 
 
 @log_start_end(log=logger)
@@ -126,6 +154,7 @@ def display_cdf(
     df: pd.DataFrame,
     target: str,
     export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot Cumulative Distribution Function
 
@@ -139,18 +168,32 @@ def display_cdf(
         Data column
     export : str
         Format to export data
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
-    plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
     data = df[target]
     start = df.index[0]
-
     cdf = data.value_counts().sort_index().div(len(data)).cumsum()
-    cdf.plot(lw=2)
-    plt.title(
-        f"Cumulative Distribution Function of {name} {target} from {start.strftime('%Y-%m-%d')}"
+
+    # This plot has 1 axis
+    if external_axes is None:
+        _, ax = plt.subplots(
+            figsize=plot_autoscale(),
+            dpi=PLOT_DPI,
+        )
+    else:
+        if len(external_axes) != 1:
+            console.print("[red]Expected list of 1 axis items./n[/red]")
+            return
+        (ax,) = external_axes
+
+    cdf.plot(ax=ax)
+    ax.set_title(
+        f"Cumulative Distribution Function of {name} {target}\nfrom {start.strftime('%Y-%m-%d')}"
     )
-    plt.ylabel("Probability")
-    plt.xlabel(target)
+    ax.set_ylabel("Probability")
+    ax.set_xlabel(target)
+
     minVal = data.values.min()
     q25 = np.quantile(data.values, 0.25)
     medianVal = np.quantile(data.values, 0.5)
@@ -158,41 +201,51 @@ def display_cdf(
     labels = [
         (minVal, q25),
         (0.25, 0.25),
-        "r",
+        theme.down_color,
         (q25, q25),
         (0, 0.25),
-        "r",
+        theme.down_color,
         (minVal, medianVal),
         (0.5, 0.5),
-        "r",
+        theme.down_color,
         (medianVal, medianVal),
         (0, 0.5),
-        "r",
+        theme.down_color,
         (minVal, q75),
         (0.75, 0.75),
-        "r",
+        theme.down_color,
         (q75, q75),
         (0, 0.75),
-        "r",
+        theme.down_color,
     ]
-    plt.plot(*labels, ls="--")
-    plt.text(minVal + (q25 - minVal) / 2, 0.27, "Q1", color="r", fontweight="bold")
-    plt.text(
+    ax.plot(*labels, ls="--")
+    ax.text(
+        minVal + (q25 - minVal) / 2,
+        0.27,
+        "Q1",
+        color=theme.down_color,
+        fontweight="bold",
+    )
+    ax.text(
         minVal + (medianVal - minVal) / 2,
         0.52,
         "Median",
-        color="r",
+        color=theme.down_color,
         fontweight="bold",
     )
-    plt.text(minVal + (q75 - minVal) / 2, 0.77, "Q3", color="r", fontweight="bold")
-    plt.xlim(cdf.index[0], cdf.index[-1])
-    plt.grid(True)
+    ax.text(
+        minVal + (q75 - minVal) / 2,
+        0.77,
+        "Q3",
+        color=theme.down_color,
+        fontweight="bold",
+    )
+    ax.set_xlim(cdf.index[0], cdf.index[-1])
+    theme.style_primary_axis(ax)
 
-    if gtff.USE_ION:
-        plt.ion()
+    if external_axes is None:
+        theme.visualize_output()
 
-    plt.show()
-    console.print("")
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
@@ -207,6 +260,7 @@ def display_bw(
     df: pd.DataFrame,
     target: str,
     yearly: bool,
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Show box and whisker plots
 
@@ -220,20 +274,49 @@ def display_bw(
         Data column to look at
     yearly : bool
         Flag to indicate yearly accumulation
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
-    plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
     data = df[target]
     start = df.index[0]
-    sns.set(style="whitegrid")
-    if yearly:
-        box_plot = sns.boxplot(x=data.index.year, y=data)
+
+    # This plot has 1 axis
+    if external_axes is None:
+        _, ax = plt.subplots(
+            figsize=plot_autoscale(),
+            dpi=PLOT_DPI,
+        )
     else:
-        box_plot = sns.boxplot(x=data.index.month, y=data)
+        if len(external_axes) != 1:
+            console.print("[red]Expected list of 1 axis items./n[/red]")
+            return
+        (ax,) = external_axes
+
+    color = theme.get_colors()[0]
+    if yearly:
+        x_data = data.index.year
+    else:
+        x_data = data.index.month
+    box_plot = sns.boxplot(
+        x=x_data,
+        y=data,
+        ax=ax,
+        zorder=3,
+        boxprops=dict(edgecolor=color),
+        flierprops=dict(
+            linestyle="--",
+            color=color,
+            markerfacecolor=theme.up_color,
+            markeredgecolor=theme.up_color,
+        ),
+        whiskerprops=dict(color=color),
+        capprops=dict(color=color),
+    )
 
     box_plot.set(
-        xlabel=["Month", "Year"][yearly],
+        xlabel=["Monthly", "Yearly"][yearly],
         ylabel=target,
-        title=f"{['Month','Year'][yearly]} BoxPlot of {name} {target} from {start.strftime('%Y-%m-%d')}",
+        title=f"{['Monthly','Yearly'][yearly]} box plot of {name} {target} from {start.strftime('%Y-%m-%d')}",
     )
     l_months = [
         "Jan",
@@ -255,15 +338,26 @@ def display_bw(
             l_ticks.append(l_months[int(val.get_text()) - 1])
         box_plot.set_xticklabels(l_ticks)
 
-    if gtff.USE_ION:
-        plt.ion()
+    # remove the scientific notion on the left hand side
+    ax.ticklabel_format(style="plain", axis="y")
+    ax.get_yaxis().set_major_formatter(
+        matplotlib.ticker.FuncFormatter(lambda x, _: long_number_format(x))
+    )
 
-    plt.show()
-    console.print("")
+    theme.style_primary_axis(ax)
+
+    if external_axes is None:
+        theme.visualize_output()
 
 
 @log_start_end(log=logger)
-def display_acf(name: str, df: pd.DataFrame, target: str, lags: int):
+def display_acf(
+    name: str,
+    df: pd.DataFrame,
+    target: str,
+    lags: int,
+    external_axes: Optional[List[plt.Axes]] = None,
+):
     """Show Auto and Partial Auto Correlation of returns and change in returns
 
     Parameters
@@ -276,45 +370,131 @@ def display_acf(name: str, df: pd.DataFrame, target: str, lags: int):
         Data column to look at
     lags : int
         Max number of lags to look at
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (4 axes are expected in the list), by default None
     """
     df = df[target]
     start = df.index[0]
-    fig = plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI, constrained_layout=True)
-    spec = gridspec.GridSpec(ncols=2, nrows=2, figure=fig)
+
+    # This plot has 4 axes
+    if external_axes is None:
+        fig, axes = plt.subplots(
+            nrows=2,
+            ncols=2,
+            figsize=plot_autoscale(),
+            dpi=PLOT_DPI,
+        )
+        (ax1, ax2), (ax3, ax4) = axes
+    else:
+        if len(external_axes) != 4:
+            console.print("[red]Expected list of 1 axis items./n[/red]")
+            return
+        (ax1, ax2, ax3, ax4) = external_axes
 
     # Diff Auto-correlation function for original time series
-    ax_acf = fig.add_subplot(spec[0, 0])
-    sm.graphics.tsa.plot_acf(np.diff(np.diff(df.values)), lags=lags, ax=ax_acf)
-    plt.title(f"{name} Returns Auto-Correlation from {start.strftime('%Y-%m-%d')}")
+    sm.graphics.tsa.plot_acf(np.diff(np.diff(df.values)), lags=lags, ax=ax1)
+    ax1.set_title(f"{name} Returns Auto-Correlation", fontsize=9)
     # Diff Partial auto-correlation function for original time series
-    ax_pacf = fig.add_subplot(spec[0, 1])
-    sm.graphics.tsa.plot_pacf(np.diff(np.diff(df.values)), lags=lags, ax=ax_pacf)
-    plt.title(
-        f"{name} Returns Partial Auto-Correlation from {start.strftime('%Y-%m-%d')}"
+    sm.graphics.tsa.plot_pacf(np.diff(np.diff(df.values)), lags=lags, ax=ax2)
+    ax2.set_title(
+        f"{name} Returns Partial Auto-Correlation",
+        fontsize=9,
     )
 
     # Diff Diff Auto-correlation function for original time series
-    ax_acf = fig.add_subplot(spec[1, 0])
-    sm.graphics.tsa.plot_acf(np.diff(np.diff(df.values)), lags=lags, ax=ax_acf)
-    plt.title(
-        f"Change in {name} Returns Auto-Correlation from {start.strftime('%Y-%m-%d')}"
+    sm.graphics.tsa.plot_acf(np.diff(np.diff(df.values)), lags=lags, ax=ax3)
+    ax3.set_title(
+        f"Change in {name} Returns Auto-Correlation",
+        fontsize=9,
     )
     # Diff Diff Partial auto-correlation function for original time series
-    ax_pacf = fig.add_subplot(spec[1, 1])
-    sm.graphics.tsa.plot_pacf(np.diff(np.diff(df.values)), lags=lags, ax=ax_pacf)
-    plt.title(
-        f"Change in {name}) Returns Partial Auto-Correlation from {start.strftime('%Y-%m-%d')}"
+    sm.graphics.tsa.plot_pacf(np.diff(np.diff(df.values)), lags=lags, ax=ax4)
+    ax4.set_title(
+        f"Change in {name} Returns Partial Auto-Correlation",
+        fontsize=9,
     )
 
-    if gtff.USE_ION:
-        plt.ion()
+    fig.suptitle(
+        f"ACF differentials starting from {start.strftime('%Y-%m-%d')}",
+        fontsize=15,
+        x=0.042,
+        y=0.95,
+        horizontalalignment="left",
+        verticalalignment="top",
+    )
+    theme.style_primary_axis(ax1)
+    theme.style_primary_axis(ax2)
+    theme.style_primary_axis(ax3)
+    theme.style_primary_axis(ax4)
 
-    plt.show()
-    console.print("")
+    if external_axes is None:
+        theme.visualize_output(force_tight_layout=True)
 
 
 @log_start_end(log=logger)
-def display_cusum(df: pd.DataFrame, target: str, threshold: float, drift: float):
+def display_qqplot(
+    name: str,
+    df: pd.DataFrame,
+    target: str,
+    external_axes: Optional[List[plt.Axes]] = None,
+):
+    """Show QQ plot for data against normal quantiles
+
+    Parameters
+    ----------
+    name : str
+        Stock ticker
+    df : pd.DataFrame
+        Dataframe
+    target : str
+        Column in data to look at
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
+    """
+    # Statsmodels has a UserWarning for marker kwarg-- which we don't use
+    warnings.filterwarnings(category=UserWarning, action="ignore")
+    data = df[target]
+
+    # This plot has 1 axis
+    if external_axes is None:
+        _, ax = plt.subplots(
+            figsize=plot_autoscale(),
+            dpi=PLOT_DPI,
+        )
+    else:
+        if len(external_axes) != 1:
+            console.print("[red]Expected list of 1 axis items./n[/red]")
+            return
+        (ax,) = external_axes
+
+    qqplot(
+        data,
+        stats.distributions.norm,
+        fit=True,
+        line="45",
+        color=theme.down_color,
+        ax=ax,
+    )
+    ax.get_lines()[1].set_color(theme.up_color)
+
+    ax.set_title(f"Q-Q plot for {name} {target}")
+    ax.set_ylabel("Sample quantiles")
+    ax.set_xlabel("Theoretical quantiles")
+
+    theme.style_primary_axis(ax)
+
+    if external_axes is None:
+        theme.visualize_output()
+
+
+@log_start_end(log=logger)
+def display_cusum(
+    df: pd.DataFrame,
+    target: str,
+    threshold: float,
+    drift: float,
+    external_axes: Optional[List[plt.Axes]] = None,
+):
     """Cumulative sum algorithm (CUSUM) to detect abrupt changes in data
 
     Parameters
@@ -327,12 +507,113 @@ def display_cusum(df: pd.DataFrame, target: str, threshold: float, drift: float)
         Threshold value
     drift : float
         Drift parameter
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (2 axes are expected in the list), by default None
     """
-    detect_cusum(df[target].values, threshold, drift, True, True)
-    if gtff.USE_ION:
-        plt.ion()
-    plt.show()
-    console.print("")
+    target_series = df[target].values
+
+    # The code for this plot was adapted from detecta's sources because at the
+    # time of writing this detect_cusum had a bug related to external axes support.
+    # see https://github.com/demotu/detecta/pull/3
+    tap, tan = 0, 0
+    ta, tai, taf, _ = detect_cusum(
+        x=target_series,
+        threshold=threshold,
+        drift=drift,
+        ending=True,
+        show=False,
+    )
+    # Thus some variable names are left unchanged and unreadable...
+    gp, gn = np.zeros(target_series.size), np.zeros(target_series.size)
+    for i in range(1, target_series.size):
+        s = target_series[i] - target_series[i - 1]
+        gp[i] = gp[i - 1] + s - drift  # cumulative sum for + change
+        gn[i] = gn[i - 1] - s - drift  # cumulative sum for - change
+        if gp[i] < 0:
+            gp[i], tap = 0, i
+        if gn[i] < 0:
+            gn[i], tan = 0, i
+        if gp[i] > threshold or gn[i] > threshold:  # change detected!
+            ta = np.append(ta, i)  # alarm index
+            tai = np.append(tai, tap if gp[i] > threshold else tan)  # start
+            gp[i], gn[i] = 0, 0  # reset alarm
+
+    if external_axes is None:
+        _, axes = plt.subplots(
+            2,
+            1,
+            sharex=True,
+            figsize=plot_autoscale(),
+            dpi=PLOT_DPI,
+        )
+        (ax1, ax2) = axes
+    else:
+        if len(external_axes) != 2:
+            console.print("[red]Expected list of 2 axis items./n[/red]")
+            return
+        (ax1, ax2) = external_axes
+
+    target_series_indexes = range(df[target].size)
+    ax1.plot(target_series_indexes, target_series)
+    if len(ta):
+        ax1.plot(
+            tai,
+            target_series[tai],
+            ">",
+            markerfacecolor=theme.up_color,
+            markersize=5,
+            label="Start",
+        )
+        ax1.plot(
+            taf,
+            target_series[taf],
+            "<",
+            markerfacecolor=theme.down_color,
+            markersize=5,
+            label="Ending",
+        )
+        ax1.plot(
+            ta,
+            target_series[ta],
+            "o",
+            markerfacecolor=theme.get_colors()[-1],
+            markeredgecolor=theme.get_colors()[-2],
+            markeredgewidth=1,
+            markersize=3,
+            label="Alarm",
+        )
+        ax1.legend()
+    ax1.set_xlim(-0.01 * target_series.size, target_series.size * 1.01 - 1)
+    ax1.set_ylabel("Amplitude")
+    ymin, ymax = (
+        target_series[np.isfinite(target_series)].min(),
+        target_series[np.isfinite(target_series)].max(),
+    )
+    y_range = ymax - ymin if ymax > ymin else 1
+    ax1.set_ylim(ymin - 0.1 * y_range, ymax + 0.1 * y_range)
+    ax1.set_title(
+        "Time series and detected changes "
+        + f"(threshold= {threshold:.3g}, drift= {drift:.3g}): N changes = {len(tai)}",
+        fontsize=10,
+    )
+    theme.style_primary_axis(ax1)
+
+    ax2.plot(target_series_indexes, gp, label="+")
+    ax2.plot(target_series_indexes, gn, label="-")
+    ax2.set_xlim(-0.01 * target_series.size, target_series.size * 1.01 - 1)
+    ax2.set_xlabel("Data points")
+    ax2.set_ylim(-0.01 * threshold, 1.1 * threshold)
+    ax2.axhline(threshold)
+    theme.style_primary_axis(ax2)
+
+    ax2.set_title(
+        "Time series of the cumulative sums of positive and negative changes",
+        fontsize=10,
+    )
+    ax2.legend()
+
+    if external_axes is None:
+        theme.visualize_output()
 
 
 @log_start_end(log=logger)
@@ -342,6 +623,7 @@ def display_seasonal(
     target: str,
     multiplicative: bool = False,
     export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display seasonal decomposition data
 
@@ -357,50 +639,113 @@ def display_seasonal(
         Boolean to indicate multiplication instead of addition
     export : str
         Format to export trend and cycle df
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (6 axes are expected in the list), by default None
     """
     data = df[target]
-    fig = plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI, constrained_layout=True)
-    spec = gridspec.GridSpec(ncols=4, nrows=5, figure=fig)
-    fig.add_subplot(spec[0, :])
-    plt.plot(data.index, data.values)
-    plt.title(name + " (Time-Series)")
-
     result, cycle, trend = qa_model.get_seasonal_decomposition(data, multiplicative)
 
+    plot_data = pd.merge(
+        data,
+        result.trend,
+        how="outer",
+        left_index=True,
+        right_index=True,
+        suffixes=("", "_result.trend"),
+    )
+    plot_data = pd.merge(
+        plot_data,
+        result.seasonal,
+        how="outer",
+        left_index=True,
+        right_index=True,
+        suffixes=("", "_result.seasonal"),
+    )
+    plot_data = pd.merge(
+        plot_data,
+        result.resid,
+        how="outer",
+        left_index=True,
+        right_index=True,
+        suffixes=("", "_result.resid"),
+    )
+    plot_data = pd.merge(
+        plot_data,
+        cycle,
+        how="outer",
+        left_index=True,
+        right_index=True,
+        suffixes=("", "_cycle"),
+    )
+    plot_data = pd.merge(
+        plot_data,
+        trend,
+        how="outer",
+        left_index=True,
+        right_index=True,
+        suffixes=("", "_trend"),
+    )
+    plot_data = reindex_dates(plot_data)
+
+    # This plot has 1 axis
+    if external_axes is None:
+        fig, axes = plt.subplots(
+            4,
+            1,
+            sharex=True,
+            figsize=plot_autoscale(),
+            dpi=PLOT_DPI,
+        )
+        (ax1, ax2, ax3, ax4) = axes
+    else:
+        if len(external_axes) != 4:
+            console.print("[red]Expected list of 1 axis items./n[/red]")
+            return
+        (ax1, ax2, ax3, ax4) = external_axes
+
+    colors = iter(theme.get_colors())
+
+    ax1.set_title(f"{name} (Time-Series) {target} seasonal decomposition")
+    ax1.plot(
+        plot_data.index, plot_data[target].values, color=next(colors), label="Values"
+    )
+    ax1.set_xlim([plot_data.index[0], plot_data.index[-1]])
+    ax1.legend()
+
     # Multiplicative model
-    fig.add_subplot(spec[1, :4])
-    plt.plot(result.trend, lw=2, c="purple")
-    plt.xlim([data.index[0], data.index[-1]])
-    plt.title("Cyclic-Trend")
+    ax2.plot(plot_data["trend"], color=theme.down_color, label="Cyclic-Trend")
+    ax2.plot(
+        plot_data["trend_cycle"],
+        color=theme.up_color,
+        linestyle="--",
+        label="Cycle component",
+    )
+    ax2.legend()
 
-    fig.add_subplot(spec[2, 0:2])
-    plt.plot(trend, lw=2, c="tab:blue")
-    plt.xlim([data.index[0], data.index[-1]])
-    plt.title("Trend component")
+    ax3.plot(plot_data["trend_trend"], color=next(colors), label="Trend component")
+    ax3.plot(plot_data["seasonal"], color=next(colors), label="Seasonal effect")
+    ax3.legend()
 
-    fig.add_subplot(spec[2, 2:])
-    plt.plot(cycle, lw=2, c="green")
-    plt.xlim([data.index[0], data.index[-1]])
-    plt.title("Cycle component")
+    ax4.plot(plot_data["resid"], color=next(colors), label="Residuals")
+    ax4.legend()
 
-    fig.add_subplot(spec[3, :])
-    plt.plot(result.seasonal, lw=2, c="orange")
-    plt.xlim([data.index[0], data.index[-1]])
-    plt.title("Seasonal effect")
+    theme.style_primary_axis(ax1)
+    theme.style_primary_axis(ax2)
+    theme.style_primary_axis(ax3)
+    theme.style_primary_axis(
+        ax4,
+        data_index=plot_data.index.to_list(),
+        tick_labels=plot_data["date"].to_list(),
+    )
 
-    fig.add_subplot(spec[4, :])
-    plt.plot(result.resid, lw=2, c="red")
-    plt.xlim([data.index[0], data.index[-1]])
-    plt.title("Residuals")
-
-    if gtff.USE_ION:
-        plt.ion()
-
-    plt.show()
-    console.print("")
+    if external_axes is None:
+        fig.tight_layout(pad=theme.tight_layout_padding)
+        fig.subplots_adjust(
+            hspace=0.1,
+        )
+        theme.visualize_output(force_tight_layout=False)
 
     # From  # https://otexts.com/fpp2/seasonal-strength.html
-
     console.print("Time-Series Level is " + str(round(data.mean(), 2)))
 
     Ft = max(0, 1 - np.var(result.resid)) / np.var(result.trend + result.resid)
@@ -453,36 +798,6 @@ def display_normality(df: pd.DataFrame, target: str, export: str = ""):
         "normality",
         normal,
     )
-
-
-@log_start_end(log=logger)
-def display_qqplot(name: str, df: pd.DataFrame, target: str):
-    """Show QQ plot for data against normal quantiles
-
-    Parameters
-    ----------
-    name : str
-        Stock ticker
-    df : pd.DataFrame
-        Dataframe
-    target : str
-        Column in data to look at
-    """
-    # Statsmodels has a UserWarning for marker kwarg-- which we don't use
-    warnings.filterwarnings(category=UserWarning, action="ignore")
-    data = df[target]
-    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    qqplot(data, stats.distributions.norm, fit=True, line="45", ax=ax)
-    ax.set_title(f"Q-Q plot for {name} {target}")
-    ax.set_ylabel("Sample quantiles")
-    ax.set_xlabel("Theoretical quantiles")
-    ax.grid(True)
-
-    if gtff.USE_ION:
-        plt.ion()
-    fig.tight_layout(pad=1)
-    plt.show()
-    console.print("")
 
 
 @log_start_end(log=logger)
@@ -573,6 +888,7 @@ def display_line(
     log_y: bool = True,
     draw: bool = False,
     export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display line plot of data
 
@@ -588,9 +904,20 @@ def display_line(
         Flag for drawing lines and annotating on the plot
     export: str
         Format to export data
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
-    console.print("")
-    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    # This plot has 1 axis
+    if external_axes is None:
+        _, ax = plt.subplots(
+            figsize=plot_autoscale(),
+            dpi=PLOT_DPI,
+        )
+    else:
+        if len(external_axes) != 1:
+            console.print("[red]Expected list of 1 axis items./n[/red]")
+            return
+        (ax,) = external_axes
 
     if log_y:
         ax.semilogy(data.index, data.values)
@@ -602,33 +929,16 @@ def display_line(
 
     else:
         ax.plot(data.index, data.values)
+    ax.set_xlim(data.index[0], data.index[-1])
 
-    ax.grid("on")
-    dateFmt = mdates.DateFormatter("%Y-%m-%d")
-    ax.xaxis.set_major_formatter(dateFmt)
-    ax.tick_params(axis="x", labelrotation=45)
-    ax.set_xlabel("Date")
     if title:
-        fig.suptitle(title)
-    fig.tight_layout(pad=2)
-
-    if gtff.USE_ION:
-        plt.ion()
-    if gtff.USE_WATERMARK:
-        ax.text(
-            0.73,
-            0.025,
-            "Gamestonk Terminal",
-            transform=ax.transAxes,
-            fontsize=12,
-            color="gray",
-            alpha=0.5,
-        )
-
+        ax.set_title(title)
     if draw:
         LineAnnotateDrawer(ax).draw_lines_and_annotate()
+    theme.style_primary_axis(ax)
 
-    plt.show()
+    if external_axes is None:
+        theme.visualize_output()
 
     export_data(
         export,

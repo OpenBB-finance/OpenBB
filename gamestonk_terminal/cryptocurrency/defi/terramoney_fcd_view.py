@@ -3,12 +3,12 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import List, Optional
 
 import matplotlib.pyplot as plt
-from matplotlib import dates as mdates
 from matplotlib import ticker
 
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
     prettify_column_names,
@@ -150,7 +150,11 @@ def display_gov_proposals(
 
 @log_start_end(log=logger)
 def display_account_growth(
-    kind: str = "total", cumulative: bool = False, top: int = 90, export: str = ""
+    kind: str = "total",
+    cumulative: bool = False,
+    top: int = 90,
+    export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Display terra blockchain account growth history [Source: https://fcd.terra.dev/swagger]
 
@@ -164,6 +168,8 @@ def display_account_growth(
         Flag to show cumulative or discrete values. For active accounts only discrete value are available.
     export : str
         Export dataframe data to csv,json,xlsx file
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
 
     df = terramoney_fcd_model.get_account_growth(cumulative)
@@ -174,33 +180,35 @@ def display_account_growth(
     opt = options[kind]
     label = "Cumulative" if cumulative and opt == "total" else "Daily"
 
-    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    # This plot has 1 axis
+    if not external_axes:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    else:
+        if len(external_axes) != 1:
+            console.print("[red]Expected list of one axis item./n[/red]")
+            return
+        (ax,) = external_axes
 
     df = df.sort_values("date", ascending=False).head(top)
     df = df.set_index("date")
 
     start, end = df.index[-1], df.index[0]
+
     if cumulative:
         ax.plot(df[opt], label=df[opt])
     else:
         ax.bar(x=df.index, height=df[opt], label=df[opt])
 
     ax.set_ylabel(f"{opt}")
-    ax.set_xlabel("Date")
-    dateFmt = mdates.DateFormatter("%m/%d/%Y")
-    ax.xaxis.set_major_formatter(dateFmt)
-
     ax.get_yaxis().set_major_formatter(
         ticker.FuncFormatter(lambda x, _: long_number_format(x))
     )
-    fig.tight_layout(pad=8)
     ax.set_title(f"{label} number of {opt.lower()} in period from {start} to {end}")
-    ax.grid(alpha=0.5)
-    ax.tick_params(axis="x", labelrotation=45)
-    if gtff.USE_ION:
-        plt.ion()
-    plt.show()
-    print("")
+    cfg.theme.style_primary_axis(ax)
+
+    if not external_axes:
+        cfg.theme.visualize_output()
+
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
@@ -210,7 +218,11 @@ def display_account_growth(
 
 
 @log_start_end(log=logger)
-def display_staking_ratio_history(top: int = 90, export: str = "") -> None:
+def display_staking_ratio_history(
+    top: int = 90,
+    export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
+) -> None:
     """Display terra blockchain staking ratio history [Source: https://fcd.terra.dev/v1]
 
     Parameters
@@ -219,30 +231,35 @@ def display_staking_ratio_history(top: int = 90, export: str = "") -> None:
         Number of records to display
     export : str
         Export dataframe data to csv,json,xlsx file
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
+
     """
 
     df = terramoney_fcd_model.get_staking_ratio_history()
-
-    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     df = df.sort_values("date", ascending=False).head(top)
     df = df.set_index("date")
 
     start, end = df.index[-1], df.index[0]
 
+    # This plot has 1 axis
+    if not external_axes:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    else:
+        if len(external_axes) != 1:
+            console.print("[red]Expected list of one axis item./n[/red]")
+            return
+        (ax,) = external_axes
+
     ax.plot(df, label=df["stakingRatio"])
     ax.set_ylabel("Staking ratio [%]")
-    ax.set_xlabel("Date")
-    dateFmt = mdates.DateFormatter("%m/%d/%Y")
-    ax.xaxis.set_major_formatter(dateFmt)
+    ax.set_title(f"Staking ratio from {start} to {end}")
 
-    fig.tight_layout(pad=8)
-    ax.set_title(f"Staking ratio in period from {start} to {end}")
-    ax.grid(alpha=0.5)
-    ax.tick_params(axis="x", labelrotation=45)
-    if gtff.USE_ION:
-        plt.ion()
-    plt.show()
-    print("")
+    cfg.theme.style_primary_axis(ax)
+
+    if not external_axes:
+        cfg.theme.visualize_output()
+
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
@@ -252,7 +269,11 @@ def display_staking_ratio_history(top: int = 90, export: str = "") -> None:
 
 
 @log_start_end(log=logger)
-def display_staking_returns_history(top: int = 90, export: str = "") -> None:
+def display_staking_returns_history(
+    top: int = 90,
+    export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
+) -> None:
     """Display terra blockchain staking returns history [Source: https://fcd.terra.dev/swagger]
 
     Parameters
@@ -261,11 +282,21 @@ def display_staking_returns_history(top: int = 90, export: str = "") -> None:
         Number of records to display
     export : str
         Export dataframe data to csv,json,xlsx file
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
+
     """
+    # This plot has 1 axis
+    if not external_axes:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    else:
+        if len(external_axes) != 1:
+            console.print("[red]Expected list of one axis item./n[/red]")
+            return
+        (ax,) = external_axes
 
     df = terramoney_fcd_model.get_staking_returns_history()
 
-    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     df = df.sort_values("date", ascending=False).head(top)
     df = df.set_index("date")
 
@@ -273,18 +304,13 @@ def display_staking_returns_history(top: int = 90, export: str = "") -> None:
 
     ax.plot(df, label=df["annualizedReturn"])
     ax.set_ylabel("Staking returns [%]")
-    ax.set_xlabel("Date")
-    dateFmt = mdates.DateFormatter("%m/%d/%Y")
-    ax.xaxis.set_major_formatter(dateFmt)
+    ax.set_title(f"Staking returns from {start} to {end}")
 
-    fig.tight_layout(pad=8)
-    ax.set_title(f"Staking returns in period from {start} to {end}")
-    ax.grid(alpha=0.5)
-    ax.tick_params(axis="x", labelrotation=45)
-    if gtff.USE_ION:
-        plt.ion()
-    plt.show()
-    print("")
+    cfg.theme.style_primary_axis(ax)
+
+    if not external_axes:
+        cfg.theme.visualize_output()
+
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),

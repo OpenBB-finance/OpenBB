@@ -18,10 +18,6 @@ def vcr_config():
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
-    "use_tab",
-    [True, False],
-)
-@pytest.mark.parametrize(
     "func, kwargs_dict",
     [
         (
@@ -70,14 +66,10 @@ def vcr_config():
         ),
     ],
 )
-def test_call_func(func, kwargs_dict, mocker, use_tab):
-    mocker.patch.object(target=quiverquant_view.gtff, attribute="USE_ION", new=True)
-    mocker.patch(target="gamestonk_terminal.stocks.government.quiverquant_view.plt.ion")
+def test_call_func(func, kwargs_dict, mocker):
+    # MOCK VISUALIZE_OUTPUT
     mocker.patch(
-        target="gamestonk_terminal.stocks.government.quiverquant_view.plt.show"
-    )
-    mocker.patch.object(
-        target=quiverquant_view.gtff, attribute="USE_TABULATE_DF", new=use_tab
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
     )
     getattr(quiverquant_view, func)(**kwargs_dict)
 

@@ -5,14 +5,13 @@ import datetime
 import logging
 import os
 import warnings
-from typing import Union
+from typing import Union, Optional, List
 
-import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from pandas.plotting import register_matplotlib_converters
 
+from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.common.prediction_techniques import ets_model
 from gamestonk_terminal.common.prediction_techniques.pred_helper import (
@@ -32,8 +31,6 @@ from gamestonk_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
-register_matplotlib_converters()
-
 warnings.filterwarnings("ignore")
 # pylint:disable=too-many-arguments
 
@@ -49,6 +46,7 @@ def display_exponential_smoothing(
     s_end_date: str = "",
     export: str = "",
     time_res: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Perform exponential smoothing
 
@@ -72,6 +70,8 @@ def display_exponential_smoothing(
         Format to export data, by default ""
     time_res : str
         Resolution for data, allowing for predicting outside of standard market days
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
     if s_end_date:
         if not time_res:
@@ -85,11 +85,12 @@ def display_exponential_smoothing(
 
         if future_index[-1] > datetime.datetime.now():
             console.print(
-                "Backtesting not allowed, since End Date + Prediction days is in the future\n"
+                "Backtesting not allowed,"
+                + " since End Date + Prediction days is in the future\n"
             )
             return
 
-        df_future = values[future_index[0] : future_index[-1]]
+        df_future = values[future_index[0] : future_index[-1]]  # noqa: E203
         values = values[:s_end_date]  # type: ignore
 
     # Get ETS model
@@ -128,165 +129,159 @@ def display_exponential_smoothing(
     console.print(f"SSE: {round(model.sse, 2)}\n")
 
     # Plotting
-    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    ax.plot(values.index, values.values, lw=2)
+
+    # This plot has 1 axes
+    if external_axes is None:
+        _, ax1 = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    else:
+        if (not s_end_date and len(external_axes) != 1) or (
+            s_end_date and len(external_axes) != 3
+        ):
+            console.print(
+                "[red]Expected list of 1 axis item "
+                + "or 3 axis items when backtesting./n[/red]"
+            )
+            return
+        ax1 = external_axes[0]
+
+    ax1.plot(values.index, values.values)
+
     # BACKTESTING
     if s_end_date:
-        ax.set_title(f"BACKTESTING: {title} on {ticker}")
+        ax1.set_title(f"BACKTESTING: {title} on {ticker}", fontsize=12)
     else:
-        ax.set_title(f"{title} on {ticker}")
+        ax1.set_title(f"{title} on {ticker}", fontsize=12)
 
-    ax.set_xlim(
+    ax1.set_xlim(
         values.index[0],
         get_next_stock_market_days(df_pred.index[-1], 1)[-1],
     )
-    ax.set_xlabel("Time")
-    ax.set_ylabel("Share Price ($)")
-    ax.grid(b=True, which="major", color="#666666", linestyle="-")
-    ax.minorticks_on()
-    ax.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-    ax.plot(
+    ax1.set_ylabel("Value")
+    ax1.plot(
         [values.index[-1], df_pred.index[0]],
         [values.values[-1], df_pred.values[0]],
-        lw=1,
-        c="tab:green",
+        color=theme.down_color,
         linestyle="--",
     )
-    ax.plot(df_pred.index, df_pred, lw=2, c="tab:green")
-    ax.axvspan(
+    ax1.plot(df_pred.index, df_pred, color=theme.down_color)
+    ax1.axvspan(
         values.index[-1],
         df_pred.index[-1],
-        facecolor="tab:orange",
+        facecolor=theme.down_color,
         alpha=0.2,
     )
     _, _, ymin, ymax = plt.axis()
-    ax.vlines(
+    ax1.vlines(
         values.index[-1],
         ymin,
         ymax,
-        linewidth=1,
         linestyle="--",
-        color="k",
+        color=theme.get_colors(reverse=True)[0],
     )
-    dateFmt = mdates.DateFormatter("%m/%d/%Y")
-    ax.xaxis.set_major_formatter(dateFmt)
-    ax.tick_params(axis="x", labelrotation=45)
 
     # BACKTESTING
     if s_end_date:
-        ax.plot(
+        ax1.plot(
             df_future.index,
             df_future,
-            lw=2,
-            c="tab:blue",
-            ls="--",
+            color=theme.up_color,
+            linestyle="--",
         )
-        ax.plot(
+        ax1.plot(
             [values.index[-1], df_future.index[0]],
             [
                 values.values[-1],
                 df_future.values[0],
             ],
-            lw=1,
-            c="tab:blue",
+            color=theme.up_color,
             linestyle="--",
         )
 
-    if gtff.USE_ION:
-        plt.ion()
+    theme.style_primary_axis(ax1)
 
-    fig.tight_layout()
-    plt.show()
+    if external_axes is None:
+        theme.visualize_output()
 
     # BACKTESTING
     if s_end_date:
-        dateFmt = mdates.DateFormatter("%m-%d")
-        fig, ax = plt.subplots(1, 2, figsize=plot_autoscale(), dpi=PLOT_DPI)
-        ax0 = ax[0]
-        ax0.plot(
+        # This plot has 1 axes
+        if external_axes is None:
+            _, axes = plt.subplots(
+                2, 1, sharex=True, figsize=plot_autoscale(), dpi=PLOT_DPI
+            )
+            (ax2, ax3) = axes
+        else:
+            if len(external_axes) != 3:
+                console.print("[red]Expected list of 1 axis item./n[/red]")
+                return
+            (_, ax2, ax3) = external_axes
+
+        ax2.plot(
             df_future.index,
             df_future,
-            lw=2,
-            c="tab:blue",
-            ls="--",
+            color=theme.up_color,
+            linestyle="--",
         )
-        ax0.plot(df_pred.index, df_pred, lw=2, c="green")
-        ax0.scatter(
+        ax2.plot(df_pred.index, df_pred)
+        ax2.scatter(
             df_future.index,
             df_future,
-            c="tab:blue",
-            lw=3,
+            color=theme.up_color,
         )
-        ax0.plot(
+        ax2.plot(
             [values.index[-1], df_future.index[0]],
             [
                 values.values[-1],
                 df_future.values[0],
             ],
-            lw=2,
-            c="tab:blue",
-            ls="--",
+            color=theme.up_color,
+            linestyle="--",
         )
-        ax0.scatter(df_pred.index, df_pred, c="green", lw=3)
-        ax0.plot(
+        ax2.scatter(df_pred.index, df_pred)
+        ax2.plot(
             [values.index[-1], df_pred.index[0]],
             [values.values[-1], df_pred.values[0]],
-            lw=2,
-            c="green",
-            ls="--",
+            linestyle="--",
         )
-        ax0.set_title("BACKTESTING: Prices")
-        ax0.set_xlim(
+        ax2.set_title("BACKTESTING: Values")
+        ax2.set_xlim(
             values.index[-1],
             df_pred.index[-1] + datetime.timedelta(days=1),
         )
-        ax0.set_ylabel("Share Price ($)")
-        ax0.grid(b=True, which="major", color="#666666", linestyle="-")
-        ax0.legend(["Real data", "Prediction data"])
+        ax2.set_ylabel("Value")
+        ax2.legend(["Real data", "Prediction data"])
+        theme.style_primary_axis(ax2)
 
-        ax1 = ax[1]
-        ax1.axhline(y=0, color="k", linestyle="--", linewidth=2)
-        ax1.plot(
+        ax3.axhline(y=0, linestyle="--")
+        ax3.plot(
             df_future.index,
             100 * (df_pred.values - df_future.values) / df_future.values,
-            lw=2,
-            c="red",
+            color=theme.down_color,
         )
-        ax1.scatter(
+        ax3.scatter(
             df_future.index,
             100 * (df_pred.values - df_future.values) / df_future.values,
-            c="red",
-            lw=5,
+            color=theme.down_color,
         )
-        ax1.set_title("BACKTESTING: % Error")
-        ax1.plot(
+        ax3.set_title("BACKTESTING: % Error")
+        ax3.plot(
             [values.index[-1], df_future.index[0]],
             [
                 0,
                 100 * (df_pred.values[0] - df_future.values[0]) / df_future.values[0],
             ],
-            lw=2,
             ls="--",
-            c="red",
+            color=theme.down_color,
         )
-        ax1.set_xlim(
+        ax3.set_xlim(
             values.index[-1],
             df_pred.index[-1] + datetime.timedelta(days=1),
         )
-        ax1.set_xlabel("Time")
-        ax1.set_ylabel("Prediction Error (%)")
-        ax1.grid(b=True, which="major", color="#666666", linestyle="-")
-        ax1.legend(["Real data", "Prediction data"])
+        ax3.set_ylabel("Prediction Error (%)")
+        theme.style_primary_axis(ax3)
 
-        ax0.xaxis.set_major_formatter(dateFmt)
-        ax0.tick_params(axis="x", labelrotation=45)
-        ax1.xaxis.set_major_formatter(dateFmt)
-        ax1.tick_params(axis="x", labelrotation=45)
-
-        if gtff.USE_ION:
-            plt.ion()
-        fig.tight_layout()
-        plt.show()
+        if external_axes is None:
+            theme.visualize_output()
 
         # Refactor prediction dataframe for backtesting print
         df_pred.name = "Prediction"
@@ -311,5 +306,3 @@ def display_exponential_smoothing(
         # Print prediction data
         print_pretty_prediction(df_pred, values.values[-1])
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "ets")
-
-    console.print("")
