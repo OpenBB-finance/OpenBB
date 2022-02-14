@@ -18,4 +18,4 @@ optional arguments:
                         Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg
 ```
 
-![historical](https://user-images.githubusercontent.com/46355364/153874688-4c5b1992-1b2b-4c73-8f05-a76806c9c910.png)
+![historical](https://user-images.githubusercontent.com/46355364/153897343-65a26523-0fb1-4b92-8988-85eb84e92c33.png)
