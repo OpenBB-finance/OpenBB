@@ -17,7 +17,8 @@ def vcr_config():
     }
 
 
-@pytest.skip("Skipping as there's no a way to specify the input date")
+# Skipping as there's no a way to specify the input date
+@pytest.mark.skip
 @pytest.mark.vcr
 @pytest.mark.parametrize(
     "days",
