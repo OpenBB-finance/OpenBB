@@ -114,6 +114,7 @@ def check_api_key(source):
 
             if console_message is not None:
                 console.print(console_message)
+                console.print("\n")
             else:
                 func(*args, **kwargs)
 
