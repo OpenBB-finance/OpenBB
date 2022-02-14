@@ -1,6 +1,7 @@
 """Custom Data Controller Module"""
 __docformat__ = "numpy"
 # pylint: disable=too-many-function-args
+# pylint: disable=inconsistent-return-statements
 
 import argparse
 import logging
@@ -15,6 +16,7 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     EXPORT_ONLY_FIGURES_ALLOWED,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
+    EXPORT_BOTH_RAW_DATA_AND_FIGURES,
 )
 from gamestonk_terminal.helper_funcs import (
     print_rich_table,
@@ -100,23 +102,23 @@ class StatisticsController(BaseController):
     def print_help(self):
         """Print help"""
         help_text = f"""[cmds]
-            load            load in custom data sets
-            clear           remove a dataset[/cmds]
+    load            load in custom data sets
+    clear           remove a dataset[/cmds]
 
-        [param]Current file:[/param]    {self.files or None}[cmds]
+[param]Current file:[/param]    {self.files or None}[cmds]
 
-        Dataset Discovery
-            show            show portion of loaded data
-            plot            plot data from a dataset
-            info            show descriptive statistics
+Dataset Discovery
+    show            show portion of loaded data
+    plot            plot data from a dataset
+    info            show descriptive statistics
 
-        General Tests
-            norm            perform normality tests on a column of a dataset
-            root            perform unitroot tests (ADF & KPSS) on a column of a dataset
+General Tests
+    norm            perform normality tests on a column of a dataset
+    root            perform unitroot tests (ADF & KPSS) on a column of a dataset
 
-        Regression Analysis
-            ols             fit a (multi) linear regression model
-            auto            perform autocorrelation test on the residuals of the regression[/cmds]
+Regression Analysis
+    ols             fit a (multi) linear regression model
+    auto            perform autocorrelation test on the residuals of the regression[/cmds]
         """
         console.print(text=help_text, menu="Statistics")
 
@@ -354,25 +356,26 @@ class StatisticsController(BaseController):
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-c")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
 
         if ns_parser and ns_parser.column:
             column, dataset = self.choices["norm"][ns_parser.column].keys()
 
-            if isinstance(self.datasets[dataset], pd.Series):
-                data = self.datasets[dataset]
-            elif isinstance(self.datasets[dataset], pd.DataFrame):
-                data = self.datasets[dataset][column]
+            if dataset in self.datasets:
+                if isinstance(self.datasets[dataset], pd.Series):
+                    data = self.datasets[dataset]
+                elif isinstance(self.datasets[dataset], pd.DataFrame):
+                    data = self.datasets[dataset][column]
+                else:
+                    return console.print(
+                        f"The type of {dataset} ({type(dataset)} is not an option."
+                    )
+            else:
+                return console.print(f"Can not find {dataset}. Did you load the data?")
 
-            df = statistics_model.get_normality(data)
-            print_rich_table(
-                df,
-                headers=list(df.columns),
-                show_index=True,
-                title=f"Normality Test [Column: {column} | Dataset: {dataset}]",
-            )
-
-        console.print("")
+            statistics_view.display_norm(data, dataset, column, ns_parser.export)
 
     def call_root(self, other_args: List[str]):
         """Process unitroot command"""

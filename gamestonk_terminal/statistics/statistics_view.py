@@ -17,6 +17,9 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.statistics import statistics_model
+from gamestonk_terminal.helper_funcs import (
+    print_rich_table,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -63,6 +66,58 @@ def custom_plot(
         os.path.dirname(os.path.abspath(__file__)),
         "custom_plot",
     )
+
+
+@log_start_end(log=logger)
+def display_norm(
+    data: pd.DataFrame,
+    dataset: str,
+    column: str,
+    export: str = "",
+):
+    """Plot custom data
+
+    Parameters
+    ----------
+    log
+    data: pd.DataFrame
+        Dataframe of custom data
+    dataset: str
+        Dataset name
+    column: str
+        Column for y data
+    kind : str
+        Kind of plot to pass to pandas plot function
+    export: str
+        Format to export image
+    """
+
+    results = statistics_model.get_normality(data)
+
+    print_rich_table(
+        results,
+        headers=list(results.columns),
+        show_index=True,
+        title=f"Normality Test [Column: {column} | Dataset: {dataset}]",
+    )
+
+    plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+
+    plt.hist(data, bins=100)
+
+    plt.title(f"Histogram of {column} data from dataset {dataset}")
+    if gtff.USE_ION:
+        plt.ion()
+    plt.tight_layout()
+    plt.show()
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "custom_plot",
+    )
+
+    console.print("")
 
 
 @log_start_end(log=logger)
