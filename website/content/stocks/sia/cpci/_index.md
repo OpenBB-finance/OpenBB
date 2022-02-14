@@ -16,4 +16,4 @@ optional arguments:
                         Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg (default: )
 ```
 
-![CPCI](https://user-images.githubusercontent.com/46355364/153868570-176e4374-b5ea-475d-bb24-cc2821fa8f72.png)
+![CPCI](https://user-images.githubusercontent.com/46355364/153896041-d66b4002-554d-47af-91d8-9a79824a6ccd.png)
