@@ -16,7 +16,7 @@ def no_suppress():
         (True, False, None, None),
         (False, False, None, ["scripts/test_alt_covid.gst"]),
         (False, True, "alt_covid", ["scripts/"]),
-    ]
+    ],
 )
 def test_menu(mocker, debug, test, filtert, path):
 
@@ -24,7 +24,5 @@ def test_menu(mocker, debug, test, filtert, path):
         target="gamestonk_terminal.feature_flags.USE_DATETIME",
         new=False,
     )
-    mocker.patch(target="terminal.suppress_stdout",
-    side_effect=no_suppress
-     )
+    mocker.patch(target="terminal.suppress_stdout", side_effect=no_suppress)
     main(debug, test, filtert, path)
