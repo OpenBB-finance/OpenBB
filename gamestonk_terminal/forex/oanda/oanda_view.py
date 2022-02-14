@@ -359,19 +359,22 @@ def show_candles(
         candle_chart_kwargs["figsize"] = plot_autoscale()
         if plots_to_add:
             candle_chart_kwargs["addplot"] = plots_to_add
-        fig, ax = mpf.plot(df_candles, **candle_chart_kwargs)
-        fig.suptitle(
-            f"{instrument} {granularity}",
-            x=0.055,
-            y=0.965,
-            horizontalalignment="left",
-        )
-        if len(legends) > 0:
-            ax[0].legend(legends)
-        # pylint: disable=C0200
-        for i in range(0, len(subplot_legends), 2):
-            ax[subplot_legends[i]].legend(subplot_legends[i + 1])
-        theme.visualize_output(force_tight_layout=False)
+        if isinstance(df_candles, pd.DataFrame):
+            fig, ax = mpf.plot(df_candles, **candle_chart_kwargs)
+            fig.suptitle(
+                f"{instrument} {granularity}",
+                x=0.055,
+                y=0.965,
+                horizontalalignment="left",
+            )
+            if len(legends) > 0:
+                ax[0].legend(legends)
+            # pylint: disable=C0200
+            for i in range(0, len(subplot_legends), 2):
+                ax[subplot_legends[i]].legend(subplot_legends[i + 1])
+            theme.visualize_output(force_tight_layout=False)
+        else:
+            console.print("[red]Data not found[/red]\n")
 
 
 @log_start_end(log=logger)
