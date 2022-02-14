@@ -155,7 +155,7 @@ def check_int_range(mini: int, maxi: int):
         num = int(num)
         if num < mini or num > maxi:
             log_and_raise(
-                argparse.ArgumentTypeError(f"must be in range [{mini},{maxi}]")
+                argparse.ArgumentTypeError(f"Argument must be in range [{mini},{maxi}]")
             )
         return num
 
