@@ -1,4 +1,4 @@
-from __future__ import annotations
+from functools import wraps
 
 import disnake
 from disnake.ext import commands
@@ -49,8 +49,18 @@ fgind = {
 }
 
 methods = {
-    "feargreed": {"name":"econ-feargreed", "command": feargreed_command}
+    "feargreed": {"name":"econ-feargreed", "command": feargreed_command},
+    "overview": {"name":"econ-overview", "command": overview_command}
 }
+def add_method(cls):
+    def decorator(func):
+        @wraps(func)
+        def wrapper(self, *args, **kwargs):
+            return func(*args, **kwargs)
+        setattr(cls, "Test", wrapper)
+        # Note we are not binding func, but wrapper which accepts self but does exactly the same as func
+        return func # returning func means func can still be used normally
+    return decorator
 
 def factory(data):
     @commands.slash_command(name=data["name"])
@@ -67,9 +77,6 @@ class EconomyCommands(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-        for _, value in methods.items():
-            func = factory(value)
-            setattr(self, value["name"],func)
 
     @commands.slash_command(name="econ-overview")
     async def overview(self, ctx: disnake.AppCmdInter):
@@ -182,4 +189,7 @@ class EconomyCommands(commands.Cog):
 
 
 def setup(bot: commands.Bot):
+    for _, value in methods.items():
+        func = factory(value)
+        add_method(EconomyCommands)(func)
     bot.add_cog(EconomyCommands(bot))
