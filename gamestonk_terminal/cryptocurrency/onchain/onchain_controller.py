@@ -15,6 +15,7 @@ from gamestonk_terminal.cryptocurrency.due_diligence.glassnode_model import (
     GLASSNODE_SUPPORTED_HASHRATE_ASSETS,
     INTERVALS_HASHRATE,
 )
+from gamestonk_terminal.decorators import check_api_key
 from gamestonk_terminal.cryptocurrency.due_diligence.glassnode_view import (
     display_hashrate,
 )
@@ -252,9 +253,9 @@ class OnchainController(BaseController):
                 export=ns_parser.export,
             )
 
+    @check_api_key(source="glassnode")
     def call_hr(self, other_args: List[str]):
         """Process hr command"""
-
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
