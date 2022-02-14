@@ -73,7 +73,6 @@ def get_watchlists(
     n_flair_posts_found = 0
     for sub in submissions:
         submission = praw_api.submission(id=sub.id)
-        print(submission)
         if submission:
             if (
                 not submission.removed_by_category
