@@ -191,11 +191,12 @@ def display_dividends(
             mfc=theme.down_color,
             mec=theme.down_color,
             alpha=1,
+            label="Dividends Payout",
         )
         ax.set_ylabel("Amount ($)")
         ax.set_title(f"Dividend History for {ticker}")
         ax.set_xlim(div_history.index[-1], div_history.index[0])
-
+        ax.legend()
         theme.style_primary_axis(ax)
 
         if not external_axes:

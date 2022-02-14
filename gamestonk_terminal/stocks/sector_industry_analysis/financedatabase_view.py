@@ -296,8 +296,8 @@ def display_companies_per_sector_in_country(
     df["Number of companies"] = df["Number of companies"].astype(int)
 
     title = mktcap + " cap companies " if mktcap else "Companies "
-    title += f"in {country}"
-    title += " excl. exchanges" if exclude_exchanges else " incl. exchanges"
+    title += f"in {country}\n"
+    title += "excl. exchanges" if exclude_exchanges else " incl. exchanges"
 
     if raw:
         print_rich_table(df, headers=list(df.columns), show_index=True, title=title)
@@ -357,7 +357,7 @@ def display_companies_per_sector_in_country(
                 colors=colors,
                 wedgeprops={"linewidth": 0.5, "edgecolor": "white"},
                 labeldistance=1.05,
-                startangle=90,
+                startangle=45,
             )
             ax.set_title(title, fontsize=14)
 
@@ -439,8 +439,8 @@ def display_companies_per_industry_in_country(
     df["Number of companies"] = df["Number of companies"].astype(int)
 
     title = mktcap + " cap companies " if mktcap else "Companies "
-    title += f"in {country}"
-    title += " excl. exchanges" if exclude_exchanges else " incl. exchanges"
+    title += f"in {country}\n"
+    title += "excl. exchanges" if exclude_exchanges else " incl. exchanges"
 
     if raw:
         print_rich_table(df, headers=list(df.columns), show_index=True, title=title)
@@ -507,7 +507,7 @@ def display_companies_per_industry_in_country(
                 colors=colors,
                 wedgeprops={"linewidth": 0.5, "edgecolor": "white"},
                 labeldistance=1.05,
-                startangle=90,
+                startangle=45,
             )
 
             ax.set_title(title, fontsize=14)
@@ -587,8 +587,8 @@ def display_companies_per_industry_in_sector(
     df["Number of companies"] = df["Number of companies"].astype(int)
 
     title = mktcap + " cap companies " if mktcap else "Companies "
-    title += f"in {sector} sector"
-    title += " excl. exchanges" if exclude_exchanges else " incl. exchanges"
+    title += f"in {sector} sector\n"
+    title += "excl. exchanges" if exclude_exchanges else " incl. exchanges"
 
     if raw:
         print_rich_table(
@@ -660,7 +660,7 @@ def display_companies_per_industry_in_sector(
                 colors=colors,
                 wedgeprops={"linewidth": 0.5, "edgecolor": "white"},
                 labeldistance=1.05,
-                startangle=90,
+                startangle=45,
             )
             ax.set_title(title, fontsize=14)
 
@@ -739,8 +739,8 @@ def display_companies_per_country_in_sector(
     df["Number of companies"] = df["Number of companies"].astype(int)
 
     title = mktcap + " cap companies " if mktcap else "Companies "
-    title += f"in {sector} sector"
-    title += " excl. exchanges" if exclude_exchanges else " incl. exchanges"
+    title += f"in {sector} sector\n"
+    title += "excl. exchanges" if exclude_exchanges else " incl. exchanges"
 
     if raw:
         print_rich_table(df, headers=list(df.columns), show_index=True, title=title)
@@ -805,7 +805,7 @@ def display_companies_per_country_in_sector(
                 colors=colors,
                 wedgeprops={"linewidth": 0.5, "edgecolor": "white"},
                 labeldistance=1.05,
-                startangle=90,
+                startangle=45,
             )
             ax.set_title(title, fontsize=14)
 
@@ -884,8 +884,8 @@ def display_companies_per_country_in_industry(
     df["Number of companies"] = df["Number of companies"].astype(int)
 
     title = mktcap + " cap companies " if mktcap else "Companies "
-    title += f"per country in {industry} industry"
-    title += " excl. exchanges" if exclude_exchanges else " incl. exchanges"
+    title += f"per country in {industry} industry\n"
+    title += "excl. exchanges" if exclude_exchanges else " incl. exchanges"
 
     if raw:
         print_rich_table(df, headers=list(df.columns), show_index=True, title=title)
@@ -950,7 +950,7 @@ def display_companies_per_country_in_industry(
                 colors=colors,
                 wedgeprops={"linewidth": 0.5, "edgecolor": "white"},
                 labeldistance=1.05,
-                startangle=90,
+                startangle=45,
             )
             ax.set_title(title, fontsize=14)
 
