@@ -13,4 +13,4 @@ optional arguments:
                         Number of entries to show in data. (default: 10)
 ```
 
-![cases](https://user-images.githubusercontent.com/18151143/148297650-1f4bf956-0ede-4118-bef5-195685e5a137.png)
+![cases](https://user-images.githubusercontent.com/46355364/153892087-cc24dd42-d41e-4a0b-a268-ed34cf47067e.png)
