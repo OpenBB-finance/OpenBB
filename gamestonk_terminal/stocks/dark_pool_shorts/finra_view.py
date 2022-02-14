@@ -192,6 +192,7 @@ def plot_dark_pools_ats(
     ax.set_ylabel("Total Weekly Shares [Million]")
     ax.set_title("Dark Pool (ATS) growing tickers")
     ax.set_xlabel("Weeks")
+    ats["weekStartDate"] = pd.to_datetime(ats["weekStartDate"])
     ax.set_xlim(ats["weekStartDate"].iloc[0], ats["weekStartDate"].iloc[-1])
     theme.style_primary_axis(ax)
 
