@@ -26,8 +26,7 @@ logger = logging.getLogger(__name__)
 register_matplotlib_converters()
 
 
-@log_start_end(log=logger)
-def sentiment_coloring(val: float, last_val: float) -> str:
+def lambda_sentiment_coloring(val: float, last_val: float) -> str:
     if float(val) > last_val:
         return f"[green]{val}[/green]"
     return f"[red]{val}[/red]"
@@ -112,7 +111,7 @@ def display_sentiment_analysis(ticker: str, export: str = ""):
 
     if gtff.USE_COLOR:
         color_df = df_sentiment["Sentiment Analysis"].apply(
-            sentiment_coloring, last_val=0
+            lambda_sentiment_coloring, last_val=0
         )
         color_df = pd.DataFrame(
             data=color_df.values,

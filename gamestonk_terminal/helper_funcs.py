@@ -438,7 +438,7 @@ def us_market_holidays(years) -> list:
     return valid_holidays
 
 
-def long_number_format(num) -> str:
+def lambda_long_number_format(num) -> str:
     """Format a long number"""
     if isinstance(num, float):
         magnitude = 0
@@ -461,7 +461,7 @@ def long_number_format(num) -> str:
     return num
 
 
-def clean_data_values_to_float(val: str) -> float:
+def lambda_clean_data_values_to_float(val: str) -> float:
     """Cleans data to float based on string ending"""
     # Remove any leading or trailing parentheses and spaces
     val = val.strip("( )")
@@ -480,7 +480,7 @@ def clean_data_values_to_float(val: str) -> float:
     return float(val)
 
 
-def int_or_round_float(x) -> str:
+def lambda_int_or_round_float(x) -> str:
     """Format int or round float"""
     if (x - int(x) < -sys.float_info.epsilon) or (x - int(x) > sys.float_info.epsilon):
         return " " + str(round(x, 2))
@@ -729,7 +729,7 @@ def parse_known_args_and_warn(
     return ns_parser
 
 
-def financials_colored_values(val: str) -> str:
+def lambda_financials_colored_values(val: str) -> str:
     """Add a color to a value"""
     if val == "N/A" or str(val) == "nan":
         val = "[yellow]N/A[/yellow]"

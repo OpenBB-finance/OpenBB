@@ -8,7 +8,7 @@ from gamestonk_terminal.cryptocurrency.overview import coinbase_model
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
     export_data,
-    long_number_format,
+    lambda_long_number_format,
     print_rich_table,
 )
 from gamestonk_terminal.rich_config import console
@@ -41,7 +41,7 @@ def display_trading_pairs(top: int, sortby: str, descend: bool, export: str) -> 
         "min_market_funds",
         "max_market_funds",
     ]:
-        df[col] = df[col].apply(lambda x: long_number_format(x))
+        df[col] = df[col].apply(lambda x: lambda_long_number_format(x))
 
     df = df.sort_values(by=sortby, ascending=descend).head(top)
 

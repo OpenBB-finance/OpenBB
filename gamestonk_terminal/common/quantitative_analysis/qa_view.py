@@ -40,8 +40,7 @@ register_matplotlib_converters()
 # df_stock should be replaced with a generic df and a column variable
 
 
-@log_start_end(log=logger)
-def color_red(val: Any) -> str:
+def lambda_color_red(val: Any) -> str:
     """Adds red to dataframe value"""
     if val > 0.05:
         return f"[red]{round(val,4)}[/red]"
@@ -436,7 +435,7 @@ def display_normality(df: pd.DataFrame, target: str, export: str = ""):
     data = df[target]
     normal = qa_model.get_normality(data)
     stats1 = normal.copy().T
-    stats1.iloc[:, 1] = stats1.iloc[:, 1].apply(lambda x: color_red(x))
+    stats1.iloc[:, 1] = stats1.iloc[:, 1].apply(lambda x: lambda_color_red(x))
 
     print_rich_table(
         stats1,

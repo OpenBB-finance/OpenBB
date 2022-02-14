@@ -12,7 +12,7 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
     export_data,
-    long_number_format,
+    lambda_long_number_format,
     print_rich_table,
 )
 from gamestonk_terminal.rich_config import console
@@ -113,7 +113,7 @@ def short_interest(ticker: str, nyse: bool, days: int, raw: bool, export: str):
             "% of Volume Shorted"
         ].apply(lambda x: f"{x/100:.2%}")
         df_short_interest = df_short_interest.applymap(
-            lambda x: long_number_format(x)
+            lambda x: lambda_long_number_format(x)
         ).sort_index(ascending=False)
 
         df_short_interest.index = df_short_interest.index.date

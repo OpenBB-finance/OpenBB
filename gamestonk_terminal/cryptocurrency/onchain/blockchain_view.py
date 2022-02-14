@@ -15,7 +15,7 @@ from gamestonk_terminal.cryptocurrency.onchain import blockchain_model
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
     export_data,
-    long_number_format,
+    lambda_long_number_format,
     plot_autoscale,
 )
 from gamestonk_terminal.rich_config import console
@@ -55,7 +55,7 @@ def display_btc_circulating_supply(since: int, until: int, export: str) -> None:
     ax.grid(alpha=0.5)
     ax.set_title("BTC Circulating Supply")
     ax.get_yaxis().set_major_formatter(
-        ticker.FuncFormatter(lambda x, _: long_number_format(x))
+        ticker.FuncFormatter(lambda x, _: lambda_long_number_format(x))
     )
 
     if gtff.USE_ION:
@@ -104,7 +104,7 @@ def display_btc_confirmed_transactions(since: int, until: int, export: str) -> N
     ax.grid(alpha=0.5)
     ax.set_title("BTC Confirmed Transactions")
     ax.get_yaxis().set_major_formatter(
-        ticker.FuncFormatter(lambda x, _: long_number_format(x))
+        ticker.FuncFormatter(lambda x, _: lambda_long_number_format(x))
     )
 
     if gtff.USE_ION:

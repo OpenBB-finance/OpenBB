@@ -24,7 +24,7 @@ def vcr_config():
     ],
 )
 def test_buy_sell_ratio_color_red_green(val, recorder):
-    result_txt = fidelity_view.buy_sell_ratio_color_red_green(val=val)
+    result_txt = fidelity_view.lambda_buy_sell_ratio_color_red_green(val=val)
     recorder.capture(result_txt)
 
 
@@ -34,7 +34,7 @@ def test_buy_sell_ratio_color_red_green(val, recorder):
     ["-8.20 (-18.3363%)", "+8.20 (+18.3363%)"],
 )
 def test_dprice_change_color_red_green(val, recorder):
-    result_txt = fidelity_view.price_change_color_red_green(val=val)
+    result_txt = fidelity_view.lambda_price_change_color_red_green(val=val)
     recorder.capture(result_txt)
 
 

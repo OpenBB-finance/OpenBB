@@ -12,13 +12,13 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
     prettify_column_names,
-    very_long_number_formatter,
+    lambda_very_long_number_formatter,
 )
 from gamestonk_terminal.cryptocurrency.defi import terramoney_fcd_model
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
     export_data,
-    long_number_format,
+    lambda_long_number_format,
     plot_autoscale,
     print_rich_table,
 )
@@ -80,7 +80,7 @@ def display_validators(
     df_data = df.copy()
     df = df.sort_values(by=sortby, ascending=descend)
     df["tokensAmount"] = df["tokensAmount"].apply(
-        lambda x: very_long_number_formatter(x)
+        lambda x: lambda_very_long_number_formatter(x)
     )
     df.columns = [
         x if x not in ["Voting power", "Commission rate", "Uptime"] else f"{x} %"
@@ -191,7 +191,7 @@ def display_account_growth(
     ax.xaxis.set_major_formatter(dateFmt)
 
     ax.get_yaxis().set_major_formatter(
-        ticker.FuncFormatter(lambda x, _: long_number_format(x))
+        ticker.FuncFormatter(lambda x, _: lambda_long_number_format(x))
     )
     fig.tight_layout(pad=8)
     ax.set_title(f"{label} number of {opt.lower()} in period from {start} to {end}")
