@@ -578,7 +578,7 @@ class SectorIndustryAnalysisController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="mktcap",
-            description="Set mktcap between small, mid or large",
+            description="Set mktcap to nano, micro, small, mid, large or mega",
         )
         parser.add_argument(
             "-n",
@@ -595,7 +595,7 @@ class SectorIndustryAnalysisController(BaseController):
             if ns_parser.name:
                 self.mktcap = ns_parser.name.capitalize()
             else:
-                console.print("Select between market cap: Small, Mid and Large")
+                console.print("Select between market cap: Nano, Micro, Small, Mid, Large and Mega")
 
             self.stocks_data = {}
             console.print("")
