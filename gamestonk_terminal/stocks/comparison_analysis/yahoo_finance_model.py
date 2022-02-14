@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 from datetime import datetime, timedelta
-from typing import List
+from typing import List, Optional
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -11,10 +11,11 @@ import yfinance as yf
 from sklearn.manifold import TSNE
 from sklearn.preprocessing import normalize
 
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import plot_autoscale
+from gamestonk_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -84,7 +85,11 @@ def get_1y_sp500() -> pd.DataFrame:
 
 @log_start_end(log=logger)
 def get_sp500_comps_tsne(
-    ticker: str, lr: int = 200, no_plot: bool = False, num_tickers: int = 10
+    ticker: str,
+    lr: int = 200,
+    no_plot: bool = False,
+    num_tickers: int = 10,
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> List[str]:
     """
     Runs TSNE on SP500 tickers (along with ticker if not in SP500).
@@ -125,20 +130,61 @@ def get_sp500_comps_tsne(
     xs = tsne_features[:, 0]
     ys = tsne_features[:, 1]
     if not no_plot:
-        fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        ax.scatter(xs, ys, alpha=0.5)
-        for x, y, company in zip(xs, ys, rets.index):
-            if company != ticker:
-                ax.annotate(company, (x, y), fontsize=9, alpha=0.75)
-            else:
-                ax.scatter(x, y, s=50, c="r")
-                ax.annotate(company, (x, y), fontsize=9, alpha=1)
-        fig.tight_layout()
-        if gtff.USE_ION:
-            plt.ion()
-        plt.show()
-    data = pd.DataFrame({"X": xs, "Y": ys}, index=rets.index)
-    x0, y0 = data.loc[ticker]
-    data["dist"] = (data.X - x0) ** 2 + (data.Y - y0) ** 2
-    data = data.sort_values(by="dist")
-    return data.iloc[1 : num_tickers + 1].index.to_list()
+        # This plot has 1 axis
+        if not external_axes:
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        else:
+            if len(external_axes) != 1:
+                console.print("[red]Expected list of one axis item./n[/red]")
+                return []
+            (ax,) = external_axes
+
+        data = pd.DataFrame({"X": xs, "Y": ys}, index=rets.index)
+        x0, y0 = data.loc[ticker]
+        data["dist"] = (data.X - x0) ** 2 + (data.Y - y0) ** 2
+        data = data.sort_values(by="dist")
+        ticker_df = data[data.index == ticker]
+
+        top_n = data.iloc[1 : (num_tickers + 1)]
+        top_n_name = top_n.index.to_list()
+
+        top_100 = data[(num_tickers + 1) : 101]
+
+        ax.scatter(
+            top_n.X,
+            top_n.Y,
+            alpha=0.8,
+            c=theme.up_color,
+            label=f"Top {num_tickers} closest tickers",
+        )
+        ax.scatter(
+            top_100.X, top_100.Y, alpha=0.5, c="grey", label="Top 100 closest tickers"
+        )
+
+        for x, y, company in zip(top_n.X, top_n.Y, top_n.index):
+            ax.annotate(company, (x, y), fontsize=9, alpha=0.9)
+
+        for x, y, company in zip(top_100.X, top_100.Y, top_100.index):
+            ax.annotate(company, (x, y), fontsize=9, alpha=0.75)
+
+        ax.scatter(
+            ticker_df.X,
+            ticker_df.Y,
+            s=50,
+            c=theme.down_color,
+        )
+        ax.annotate(ticker, (ticker_df.X, ticker_df.Y), fontsize=9, alpha=1)
+        ax.legend()
+
+        ax.set_title(
+            f"Top 100 closest stocks on S&P500 to {ticker} using TSNE algorithm",
+            fontsize=11,
+        )
+        ax.set_xlabel("Dimension 1")
+        ax.set_ylabel("Dimension 2")
+        theme.style_primary_axis(ax)
+
+        if not external_axes:
+            theme.visualize_output()
+
+    return top_n_name
