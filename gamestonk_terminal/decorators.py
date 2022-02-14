@@ -78,3 +78,45 @@ def log_start_end(func=None, log=None):
         return wrapper
 
     return decorator(func) if callable(func) else decorator
+
+
+# pylint: disable=import-outside-toplevel
+def check_api_key(source):
+    """
+    Wrap around the call function in the menu controller and
+    print message statement to the console on the status of key and token.
+
+    An extension of the KeysController class
+    """
+
+    def decorator(func):
+        @functools.wraps(func)
+        def wrapper_decorator(*args, **kwargs):
+            # import inside the func due to circular import
+            from gamestonk_terminal.keys_controller import KeysController
+
+            key_controller = KeysController(menu_usage=False)
+
+            # construct the check_key method
+            method_to_call = "check_" + str(source) + "_key"
+            check_single_key = getattr(key_controller, method_to_call)
+
+            check_single_key()
+
+            msg_map = {
+                "not defined": "Missing API Keys. Set it in the keys menu or in your .env file",
+                "defined, test failed": """API Keys set but returns an error. Check again to make sure it's correct""",
+                "defined, test unsuccessful": "API Keys set but returns an error. Check again to make sure it's correct",
+            }
+
+            # get the error message from the msg_map
+            console_message = msg_map.get(key_controller.key_dict["GLASSNODE"])
+
+            if console_message is not None:
+                console.print(console_message)
+            else:
+                func(*args, **kwargs)
+
+        return wrapper_decorator
+
+    return decorator
