@@ -4,7 +4,7 @@ usage: set
            [-h]
 ```
 
-Set preset from under [presets folder](/gamestonk_terminal/screener/presets/).
+Set preset from custom and default ones.
 
 ```
 optional arguments:
