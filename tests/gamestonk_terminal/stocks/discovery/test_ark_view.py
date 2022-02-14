@@ -24,7 +24,7 @@ def vcr_config():
     "val",
     ["Buy", "Sell", "Mocked Value"],
 )
-def test_direction_color_red_green(val, recorder):
+def test_lambda_direction_color_red_green(val, recorder):
     result_txt = ark_view.lambda_direction_color_red_green(val=val)
     recorder.capture(result_txt)
 

@@ -18,7 +18,7 @@ from gamestonk_terminal.stocks.due_diligence import finviz_view
         ("Reiterated", "[yellow]Reiterated[/yellow]"),
     ],
 )
-def test_category_color_red_green(val, expected):
+def test_lambda_category_color_red_green(val, expected):
     result = finviz_view.lambda_category_color_red_green(val=val)
     assert result == expected
 
