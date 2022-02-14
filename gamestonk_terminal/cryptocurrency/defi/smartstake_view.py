@@ -4,7 +4,6 @@ __docformat__ = "numpy"
 import os
 from typing import Optional, List
 
-import matplotlib.dates as mdates
 from matplotlib import pyplot as plt
 
 from gamestonk_terminal.cryptocurrency.defi import smartstake_model
@@ -13,8 +12,8 @@ from gamestonk_terminal.helper_funcs import (
     plot_autoscale,
     print_rich_table,
 )
+from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal.config_plot import PLOT_DPI
-from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.rich_config import console
 
 # pylint: disable=E1101
@@ -57,7 +56,7 @@ def display_luna_circ_supply_change(
 
         # This plot has 1 axis
         if not external_axes:
-            _, ax = plt.subplots(figsize=plot_autoscale, dpi=PLOT_DPI)
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
         else:
             if len(external_axes) != 1:
                 console.print("[red]Expected list of one axis item./n[/red]")
@@ -93,13 +92,10 @@ def display_luna_circ_supply_change(
         ax.set_xlim(df.index[0], df.index[-1])
         ax.legend(loc="best")
 
-        plt.gca().xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m-%d"))
-        plt.gcf().autofmt_xdate()
+        theme.style_primary_axis(ax)
 
-        if gtff.USE_ION:
-            plt.ion()
-
-        plt.show()
+        if external_axes is None:
+            theme.visualize_output()
 
         RAW_COLS = [
             "circulatingSupplyInMil",
