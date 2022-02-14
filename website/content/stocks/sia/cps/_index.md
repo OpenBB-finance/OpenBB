@@ -15,4 +15,4 @@ optional arguments:
   --export {csv,json,xlsx,png,jpg,pdf,svg}
                         Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg (default: )
 ```
-<img width="1400" alt="Feature Screenshot - spi" src="https://user-images.githubusercontent.com/85772166/144727672-d5d0b841-5e84-4be0-95a5-f8a3ddc48600.png">
+![CPS](https://user-images.githubusercontent.com/46355364/153869762-1f89ab2a-7901-49fd-ab4e-6f8a5d4b1a69.png)
