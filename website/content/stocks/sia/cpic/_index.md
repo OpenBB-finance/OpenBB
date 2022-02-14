@@ -15,5 +15,4 @@ optional arguments:
   --export {csv,json,xlsx,png,jpg,pdf,svg}
                         Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg (default: )
 ```
-
-![CPIC](https://user-images.githubusercontent.com/46355364/153869143-4e3e74d3-0dfb-435a-b5c2-9292b514b972.png)
+![CPIC](https://user-images.githubusercontent.com/46355364/153896804-87ae9eb1-b252-4c8f-a089-b653920372fc.png)
