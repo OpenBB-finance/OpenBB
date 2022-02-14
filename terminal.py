@@ -7,8 +7,10 @@ import os
 import difflib
 import logging
 import argparse
+import platform
 from typing import List
 import pytz
+
 
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.rich_config import console
@@ -224,6 +226,7 @@ def terminal(jobs_cmds: List[str] = None):
     """Terminal Menu"""
     setup_logging()
     logger.info("START")
+    logger.info("Running Python %s on %s", platform.python_version(), platform.system())
 
     if jobs_cmds is not None and jobs_cmds:
         logger.info("INPUT: '%s'", "/".join(jobs_cmds))
