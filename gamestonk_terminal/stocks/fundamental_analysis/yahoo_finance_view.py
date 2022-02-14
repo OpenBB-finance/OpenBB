@@ -61,8 +61,12 @@ def display_info(ticker: str):
         summary = df_info.loc["Long business summary"].values[0]
         df_info = df_info.drop(index=["Long business summary"])
 
-    print_rich_table(df_info, headers=[], show_index=True, title="Ticker Info")
-
+    if not df_info.empty:
+        print_rich_table(
+            df_info, headers=list(df_info.columns), show_index=True, title="Ticker Info"
+        )
+    else:
+        console.print("[red]Invalid data[/red]\n")
     if summary:
         console.print("Business Summary:")
         console.print(summary)
@@ -112,13 +116,16 @@ def display_sustainability(ticker: str):
         console.print("No sustainability data found.", "\n")
         return
 
-    print_rich_table(
-        df_sustainability,
-        headers=[],
-        title="Ticker Sustainability",
-        show_index=True,
-    )
-    console.print("")
+    if not df_sustainability.empty:
+        print_rich_table(
+            df_sustainability,
+            headers=list(df_sustainability),
+            title="Ticker Sustainability",
+            show_index=True,
+        )
+        console.print("")
+    else:
+        console.print("[red]Invalid data[/red]\n")
 
 
 @log_start_end(log=logger)
