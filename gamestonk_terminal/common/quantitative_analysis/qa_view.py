@@ -29,7 +29,7 @@ from gamestonk_terminal.helper_funcs import (
     plot_autoscale,
     print_rich_table,
     reindex_dates,
-    long_number_format,
+    lambda_long_number_format,
 )
 from gamestonk_terminal.rich_config import console
 
@@ -340,7 +340,7 @@ def display_bw(
     # remove the scientific notion on the left hand side
     ax.ticklabel_format(style="plain", axis="y")
     ax.get_yaxis().set_major_formatter(
-        matplotlib.ticker.FuncFormatter(lambda x, _: long_number_format(x))
+        matplotlib.ticker.FuncFormatter(lambda x, _: lambda_long_number_format(x))
     )
 
     theme.style_primary_axis(ax)
