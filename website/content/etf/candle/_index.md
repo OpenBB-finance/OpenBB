@@ -18,5 +18,4 @@ optional arguments:
                         Export raw data into csv, json, xlsx (default: )
 ```
 
-Example:
 ![candle](https://user-images.githubusercontent.com/46355364/154031063-090a4419-c3b1-4707-8f8e-b41c872a783a.png)
