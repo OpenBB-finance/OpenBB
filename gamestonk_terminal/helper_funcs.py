@@ -995,13 +995,7 @@ def export_data(
                     df.to_json(saved_path)
                 elif exp_type in "xlsx":
                     df.to_excel(saved_path, index=True, header=True)
-                elif exp_type == "png":
-                    plt.savefig(saved_path)
-                elif exp_type == "jpg":
-                    plt.savefig(saved_path)
-                elif exp_type == "pdf":
-                    plt.savefig(saved_path)
-                elif exp_type == "svg":
+                elif exp_type in ["png", "jpg", "pdf", "svg"]:
                     plt.savefig(saved_path)
                 else:
                     console.print("Wrong export file specified.\n")
