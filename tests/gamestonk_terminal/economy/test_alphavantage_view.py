@@ -19,24 +19,15 @@ def vcr_config():
 @pytest.mark.default_cassette("test_realtime_performance_sector")
 @pytest.mark.vcr
 @pytest.mark.parametrize(
-    "raw, tab",
-    [
-        (True, True),
-        (True, False),
-        (False, False),
-    ],
+    "raw",
+    [True, True, False],
 )
 @pytest.mark.record_stdout
-def test_realtime_performance_sector(mocker, raw, tab):
-    # MOCK GTFF
-    mocker.patch.object(
-        target=alphavantage_view.gtff, attribute="USE_TABULATE_DF", new=tab
+def test_realtime_performance_sector(mocker, raw):
+    # MOCK VISUALIZE_OUTPUT
+    mocker.patch(
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
     )
-    mocker.patch.object(target=alphavantage_view.gtff, attribute="USE_ION", new=True)
-
-    # MOCK ION + SHOW
-    mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.plt.ion")
-    mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.plt.show")
 
     # MOCK EXPORT_DATA
     mocker.patch(target="gamestonk_terminal.economy.alphavantage_view.export_data")
@@ -50,23 +41,15 @@ def test_realtime_performance_sector(mocker, raw, tab):
 @pytest.mark.default_cassette("test_display_real_gdp")
 @pytest.mark.vcr
 @pytest.mark.parametrize(
-    "raw, tab",
-    [
-        (True, True),
-        (True, False),
-    ],
+    "raw",
+    [True, True],
 )
 @pytest.mark.record_stdout
-def test_display_real_gdp(mocker, raw, tab):
-    # MOCK GTFF
-    mocker.patch.object(
-        target=alphavantage_view.gtff, attribute="USE_TABULATE_DF", new=tab
+def test_display_real_gdp(mocker, raw):
+    # MOCK VISUALIZE_OUTPUT
+    mocker.patch(
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
     )
-    mocker.patch.object(target=alphavantage_view.gtff, attribute="USE_ION", new=True)
-
-    # MOCK ION + SHOW
-    mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.plt.ion")
-    mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.plt.show")
 
     # MOCK EXPORT_DATA
     mocker.patch(target="gamestonk_terminal.economy.alphavantage_view.export_data")
@@ -99,23 +82,15 @@ def test_display_real_gdp_no_data(mocker):
 @pytest.mark.default_cassette("test_display_gdp_capita")
 @pytest.mark.vcr
 @pytest.mark.parametrize(
-    "raw, tab",
-    [
-        (True, True),
-        (True, False),
-    ],
+    "raw",
+    [True, True],
 )
 @pytest.mark.record_stdout
-def test_display_gdp_capita(mocker, raw, tab):
-    # MOCK GTFF
-    mocker.patch.object(
-        target=alphavantage_view.gtff, attribute="USE_TABULATE_DF", new=tab
+def test_display_gdp_capita(mocker, raw):
+    # MOCK VISUALIZE_OUTPUT
+    mocker.patch(
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
     )
-    mocker.patch.object(target=alphavantage_view.gtff, attribute="USE_ION", new=True)
-
-    # MOCK ION + SHOW
-    mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.plt.ion")
-    mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.plt.show")
 
     # MOCK EXPORT_DATA
     mocker.patch(target="gamestonk_terminal.economy.alphavantage_view.export_data")
@@ -146,23 +121,15 @@ def test_display_gdp_capita_no_data(mocker):
 @pytest.mark.default_cassette("test_display_inflation")
 @pytest.mark.vcr
 @pytest.mark.parametrize(
-    "raw, tab",
-    [
-        (True, True),
-        (True, False),
-    ],
+    "raw",
+    [True, True],
 )
 @pytest.mark.record_stdout
-def test_display_inflation(mocker, raw, tab):
-    # MOCK GTFF
-    mocker.patch.object(
-        target=alphavantage_view.gtff, attribute="USE_TABULATE_DF", new=tab
+def test_display_inflation(mocker, raw):
+    # MOCK VISUALIZE_OUTPUT
+    mocker.patch(
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
     )
-    mocker.patch.object(target=alphavantage_view.gtff, attribute="USE_ION", new=True)
-
-    # MOCK ION + SHOW
-    mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.plt.ion")
-    mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.plt.show")
 
     # MOCK EXPORT_DATA
     mocker.patch(target="gamestonk_terminal.economy.alphavantage_view.export_data")
@@ -193,23 +160,15 @@ def test_display_inflation_capita_no_data(mocker):
 @pytest.mark.default_cassette("test_display_cpi")
 @pytest.mark.vcr
 @pytest.mark.parametrize(
-    "raw, tab",
-    [
-        (True, True),
-        (True, False),
-    ],
+    "raw",
+    [True, True],
 )
 @pytest.mark.record_stdout
-def test_display_cpi(mocker, raw, tab):
-    # MOCK GTFF
-    mocker.patch.object(
-        target=alphavantage_view.gtff, attribute="USE_TABULATE_DF", new=tab
+def test_display_cpi(mocker, raw):
+    # MOCK VISUALIZE_OUTPUT
+    mocker.patch(
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
     )
-    mocker.patch.object(target=alphavantage_view.gtff, attribute="USE_ION", new=True)
-
-    # MOCK ION + SHOW
-    mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.plt.ion")
-    mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.plt.show")
 
     # MOCK EXPORT_DATA
     mocker.patch(target="gamestonk_terminal.economy.alphavantage_view.export_data")
@@ -242,23 +201,15 @@ def test_display_cpi_capita_no_data(mocker):
 @pytest.mark.default_cassette("test_display_treasury_yield")
 @pytest.mark.vcr
 @pytest.mark.parametrize(
-    "raw, tab",
-    [
-        (True, True),
-        (True, False),
-    ],
+    "raw",
+    [True, True],
 )
 @pytest.mark.record_stdout
-def test_display_treasury_yield(mocker, raw, tab):
-    # MOCK GTFF
-    mocker.patch.object(
-        target=alphavantage_view.gtff, attribute="USE_TABULATE_DF", new=tab
+def test_display_treasury_yield(mocker, raw):
+    # MOCK VISUALIZE_OUTPUT
+    mocker.patch(
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
     )
-    mocker.patch.object(target=alphavantage_view.gtff, attribute="USE_ION", new=True)
-
-    # MOCK ION + SHOW
-    mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.plt.ion")
-    mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.plt.show")
 
     # MOCK EXPORT_DATA
     mocker.patch(target="gamestonk_terminal.economy.alphavantage_view.export_data")
@@ -293,23 +244,15 @@ def test_display_treasury_yield_capita_no_data(mocker):
 @pytest.mark.default_cassette("test_display_unemployment")
 @pytest.mark.vcr
 @pytest.mark.parametrize(
-    "raw, tab",
-    [
-        (True, True),
-        (True, False),
-    ],
+    "raw",
+    [True, True],
 )
 @pytest.mark.record_stdout
-def test_display_unemployment(mocker, raw, tab):
-    # MOCK GTFF
-    mocker.patch.object(
-        target=alphavantage_view.gtff, attribute="USE_TABULATE_DF", new=tab
+def test_display_unemployment(mocker, raw):
+    # MOCK VISUALIZE_OUTPUT
+    mocker.patch(
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
     )
-    mocker.patch.object(target=alphavantage_view.gtff, attribute="USE_ION", new=True)
-
-    # MOCK ION + SHOW
-    mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.plt.ion")
-    mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.plt.show")
 
     # MOCK EXPORT_DATA
     mocker.patch(target="gamestonk_terminal.economy.alphavantage_view.export_data")

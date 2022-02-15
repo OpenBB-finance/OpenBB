@@ -24,7 +24,6 @@ from gamestonk_terminal.stocks.discovery import (
     shortinterest_view,
     yahoofinance_view,
     finnhub_view,
-    geekofwallstreet_view,
     nasdaq_view,
 )
 
@@ -51,7 +50,6 @@ class DiscoveryController(BaseController):
         "trending",
         "lowfloat",
         "hotpenny",
-        "rtearn",
         "cnews",
         "rtat",
         "divcal",
@@ -129,8 +127,6 @@ class DiscoveryController(BaseController):
     def print_help(self):
         """Print help"""
         help_text = """[cmds]
-[src][Geek of Wall St][/src]
-    rtearn         realtime earnings from and expected moves
 [src][Finnhub][/src]
     pipo           past IPOs dates
     fipo           future IPOs dates
@@ -211,22 +207,6 @@ class DiscoveryController(BaseController):
                 limit=ns_parser.limit,
                 export=ns_parser.export,
             )
-
-    def call_rtearn(self, other_args: List[str]):
-        """Process rtearn command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="rtearn",
-            description="""
-                Realtime earnings data and expected moves. [Source: https://thegeekofwallstreet.com]
-            """,
-        )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            geekofwallstreet_view.display_realtime_earnings(ns_parser.export)
 
     def call_pipo(self, other_args: List[str]):
         """Process pipo command"""

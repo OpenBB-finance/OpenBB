@@ -32,7 +32,7 @@ def get_similar_companies(
     ticker : str
         Ticker to find comparisons for
     compare_list : List[str]
-        List of fields to comparse
+        List of fields to compare, ["Sector", "Industry", "Country"]
 
     Returns
     -------

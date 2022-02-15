@@ -3,12 +3,13 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import List, Optional
 
 import pandas as pd
 from matplotlib import pyplot as plt
 from pandas.plotting import register_matplotlib_converters
 
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
@@ -25,7 +26,11 @@ register_matplotlib_converters()
 
 
 @log_start_end(log=logger)
-def plot_rating_over_time(df_rot: pd.DataFrame, ticker: str):
+def plot_rating_over_time(
+    df_rot: pd.DataFrame,
+    ticker: str,
+    external_axes: Optional[List[plt.Axes]] = None,
+):
     """Plot rating over time
 
     Parameters
@@ -34,30 +39,38 @@ def plot_rating_over_time(df_rot: pd.DataFrame, ticker: str):
         Rating over time
     ticker : str
         Ticker associated with ratings
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
+    external_axes: Optional[List[plt.Axes]] = None,
+
     """
-    plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    # This plot has 1 axis
+    if not external_axes:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    else:
+        if len(external_axes) != 1:
+            console.print("[red]Expected list of one axis item./n[/red]")
+            return
+        (ax,) = external_axes
 
     rot = df_rot.sort_values("period")
-    plt.plot(pd.to_datetime(rot["period"]), rot["strongBuy"], c="green", lw=3)
-    plt.plot(pd.to_datetime(rot["period"]), rot["buy"], c="lightgreen", lw=3)
-    plt.plot(pd.to_datetime(rot["period"]), rot["hold"], c="grey", lw=3)
-    plt.plot(pd.to_datetime(rot["period"]), rot["sell"], c="pink", lw=3)
-    plt.plot(pd.to_datetime(rot["period"]), rot["strongSell"], c="red", lw=3)
-    plt.xlim(
+    ax.plot(pd.to_datetime(rot["period"]), rot["strongBuy"], c="green", lw=3)
+    ax.plot(pd.to_datetime(rot["period"]), rot["buy"], c="lightgreen", lw=3)
+    ax.plot(pd.to_datetime(rot["period"]), rot["hold"], c="grey", lw=3)
+    ax.plot(pd.to_datetime(rot["period"]), rot["sell"], c="pink", lw=3)
+    ax.plot(pd.to_datetime(rot["period"]), rot["strongSell"], c="red", lw=3)
+    ax.set_xlim(
         pd.to_datetime(rot["period"].values[0]),
         pd.to_datetime(rot["period"].values[-1]),
     )
-    plt.grid()
-    plt.title(f"{ticker}'s ratings over time")
-    plt.xlabel("Time")
-    plt.ylabel("Rating")
-    plt.legend(["Strong Buy", "Buy", "Hold", "Sell", "Strong Sell"])
-    plt.gcf().autofmt_xdate()
+    ax.set_title(f"{ticker}'s ratings over time")
+    ax.set_ylabel("Rating")
+    ax.legend(["Strong Buy", "Buy", "Hold", "Sell", "Strong Sell"])
 
-    if gtff.USE_ION:
-        plt.ion()
+    theme.style_primary_axis(ax)
 
-    plt.show()
+    if not external_axes:
+        theme.visualize_output()
 
 
 @log_start_end(log=logger)

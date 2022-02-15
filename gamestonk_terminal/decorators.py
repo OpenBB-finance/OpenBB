@@ -38,7 +38,9 @@ def log_start_end(func=None, log=None):
             elif "_controller" in log.name:
                 # check len of args is 2 because of (self, other_args: List[str])
                 if len(args) == 2:
-                    args_passed_in_function = args[1]
+                    args_passed_in_function = (
+                        args[1] if isinstance(args[1], list) else [args[1]]
+                    )
             # other files can have as parameters big variables, therefore adds logic to only add small ones
             else:
                 for k, v in kwargs.items():
