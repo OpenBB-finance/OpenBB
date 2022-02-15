@@ -97,7 +97,7 @@ class KeysController(BaseController):
                 key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas"
             ).get_intraday(symbol="AAPL")
             if df[0].empty:
-                logger.exception("Alpha Vantage key defined, test failed")
+                logger.warning("Alpha Vantage key defined, test failed")
                 self.key_dict["ALPHA_VANTAGE"] = "defined, test failed"
             else:
                 logger.info("Alpha Vantage key defined, test passed")
@@ -120,15 +120,13 @@ class KeysController(BaseController):
                 f"https://financialmodelingprep.com/api/v3/profile/AAPL?apikey={cfg.API_KEY_FINANCIALMODELINGPREP}"
             )
             if r.status_code in [403, 401]:
-                logger.exception("Financial Modeling Prep key defined, test failed")
+                logger.warning("Financial Modeling Prep key defined, test failed")
                 self.key_dict["FINANCIAL_MODELING_PREP"] = "defined, test failed"
             elif r.status_code == 200:
                 logger.info("Financial Modeling Prep key defined, test passed")
                 self.key_dict["FINANCIAL_MODELING_PREP"] = "defined, test passed"
             else:
-                logger.exception(
-                    "Financial Modeling Prep key defined, test inconclusive"
-                )
+                logger.warning("Financial Modeling Prep key defined, test inconclusive")
                 self.key_dict["FINANCIAL_MODELING_PREP"] = "defined, test inconclusive"
 
         if show_output:
@@ -150,10 +148,10 @@ class KeysController(BaseController):
                     per_end_date={"gte": "2015-01-01"},
                     qopts={"columns": ["ticker", "per_end_date"]},
                 )
-                logger.info("Quandl key defined, test failed")
+                logger.info("Quandl key defined, test passed")
                 self.key_dict["QUANDL"] = "defined, test passed"
             except Exception as _:  # noqa: F841
-                logger.exception("Quandl key defined, test failed")
+                logger.warning("Quandl key defined, test failed")
                 self.key_dict["QUANDL"] = "defined, test failed"
 
         if show_output:
@@ -171,13 +169,13 @@ class KeysController(BaseController):
                 f"?apiKey={cfg.API_POLYGON_KEY}"
             )
             if r.status_code in [403, 401]:
-                logger.exception("Polygon key defined, test failed")
+                logger.warning("Polygon key defined, test failed")
                 self.key_dict["POLYGON"] = "defined, test failed"
             elif r.status_code == 200:
                 logger.info("Polygon key defined, test passed")
                 self.key_dict["POLYGON"] = "defined, test passed"
             else:
-                logger.exception("Polygon key defined, test inconclusive")
+                logger.warning("Polygon key defined, test inconclusive")
                 self.key_dict["POLYGON"] = "defined, test inconclusive"
 
         if show_output:
@@ -194,13 +192,13 @@ class KeysController(BaseController):
                 f"https://api.stlouisfed.org/fred/series?series_id=GNPCA&api_key={cfg.API_FRED_KEY}"
             )
             if r.status_code in [403, 401, 400]:
-                logger.exception("FRED key defined, test failed")
+                logger.warning("FRED key defined, test failed")
                 self.key_dict["FRED"] = "defined, test failed"
             elif r.status_code == 200:
                 logger.info("FRED key defined, test passed")
                 self.key_dict["FRED"] = "defined, test passed"
             else:
-                logger.exception("FRED key defined, test inconclusive")
+                logger.warning("FRED key defined, test inconclusive")
                 self.key_dict["FRED"] = "defined, test inconclusive"
 
         if show_output:
@@ -217,13 +215,13 @@ class KeysController(BaseController):
                 f"https://newsapi.org/v2/everything?q=keyword&apiKey={cfg.API_NEWS_TOKEN}"
             )
             if r.status_code in [401, 403]:
-                logger.exception("News API key defined, test failed")
+                logger.warning("News API key defined, test failed")
                 self.key_dict["NEWSAPI"] = "defined, test failed"
             elif r.status_code == 200:
                 logger.info("News API key defined, test passed")
                 self.key_dict["NEWSAPI"] = "defined, test passed"
             else:
-                logger.exception("News API key defined, test inconclusive")
+                logger.warning("News API key defined, test inconclusive")
                 self.key_dict["NEWSAPI"] = "defined, test inconclusive"
 
         if show_output:
@@ -245,13 +243,13 @@ class KeysController(BaseController):
                 },
             )
             if r.status_code in [401, 403]:
-                logger.exception("Tradier key not defined, test failed")
+                logger.warning("Tradier key not defined, test failed")
                 self.key_dict["TRADIER"] = "defined, test failed"
             elif r.status_code == 200:
                 logger.info("Tradier key not defined, test passed")
                 self.key_dict["TRADIER"] = "defined, test passed"
             else:
-                logger.exception("Tradier key not defined, test inconclusive")
+                logger.warning("Tradier key not defined, test inconclusive")
                 self.key_dict["TRADIER"] = "defined, test inconclusive"
 
         if show_output:
@@ -270,7 +268,7 @@ class KeysController(BaseController):
                 logger.info("Coinmarketcap key defined, test passed")
                 self.key_dict["COINMARKETCAP"] = "defined, test passed"
             except CoinMarketCapAPIError:
-                logger.exception("Coinmarketcap key defined, test failed")
+                logger.warning("Coinmarketcap key defined, test failed")
                 self.key_dict["COINMARKETCAP"] = "defined, test failed"
 
         if show_output:
@@ -287,13 +285,13 @@ class KeysController(BaseController):
                 f"https://finnhub.io/api/v1/quote?symbol=AAPL&token={cfg.API_FINNHUB_KEY}"
             )
             if r.status_code in [403, 401, 400]:
-                logger.exception("Finhub key defined, test failed")
+                logger.warning("Finhub key defined, test failed")
                 self.key_dict["FINNHUB"] = "defined, test failed"
             elif r.status_code == 200:
                 logger.info("Finhub key defined, test passed")
                 self.key_dict["FINNHUB"] = "defined, test passed"
             else:
-                logger.exception("Finhub key defined, test inconclusive")
+                logger.warning("Finhub key defined, test inconclusive")
                 self.key_dict["FINNHUB"] = "defined, test inconclusive"
 
         if show_output:
@@ -311,7 +309,7 @@ class KeysController(BaseController):
                 logger.info("IEX Cloud key defined, test passed")
                 self.key_dict["IEXCLOUD"] = "defined, test passed"
             except PyEXception:
-                logger.exception("IEX Cloud key defined, test failed")
+                logger.warning("IEX Cloud key defined, test failed")
                 self.key_dict["IEXCLOUD"] = "defined, test failed"
 
         if show_output:
@@ -344,7 +342,7 @@ class KeysController(BaseController):
                 logger.info("Reddit key defined, test passed")
                 self.key_dict["REDDIT"] = "defined, test passed"
             except ResponseException:
-                logger.exception("Reddit key defined, test passed")
+                logger.warning("Reddit key defined, test passed")
                 self.key_dict["REDDIT"] = "defined, test failed"
 
         if show_output:
@@ -376,10 +374,10 @@ class KeysController(BaseController):
                 logger.info("Twitter key defined, test passed")
                 self.key_dict["TWITTER"] = "defined, test passed"
             elif r.status_code in [401, 403]:
-                logger.exception("Twitter key defined, test failed")
+                logger.warning("Twitter key defined, test failed")
                 self.key_dict["TWITTER"] = "defined, test failed"
             else:
-                logger.exception("Twitter key defined, test failed")
+                logger.warning("Twitter key defined, test failed")
                 self.key_dict["TWITTER"] = "defined, test inconclusive"
 
         if show_output:
@@ -465,7 +463,7 @@ class KeysController(BaseController):
                 logger.info("Bitquery key defined, test passed")
                 self.key_dict["BITQUERY"] = "defined, test passed"
             else:
-                logger.exception("Bitquery key defined, test failed")
+                logger.warning("Bitquery key defined, test failed")
                 self.key_dict["BITQUERY"] = "defined, test failed"
 
         if show_output:
@@ -487,7 +485,7 @@ class KeysController(BaseController):
                 logger.info("Sentiment Investor key defined, test passed")
                 self.key_dict["SENTIMENT_INVESTOR"] = "defined, test passed"
             else:
-                logger.exception("Sentiment Investor key defined, test failed")
+                logger.warning("Sentiment Investor key defined, test failed")
                 self.key_dict["SENTIMENT_INVESTOR"] = "defined, test unsuccessful"
 
         if show_output:
@@ -511,7 +509,7 @@ class KeysController(BaseController):
             )
             resp = make_coinbase_request("/accounts", auth=auth)
             if not resp:
-                logger.exception("Coinbase key defined, test failed")
+                logger.warning("Coinbase key defined, test failed")
                 self.key_dict["COINBASE"] = "defined, test unsuccessful"
             else:
                 logger.info("Coinbase key defined, test passed")
@@ -534,13 +532,13 @@ class KeysController(BaseController):
             response = requests.get(url)
 
             if not 200 <= response.status_code < 300:
-                logger.exception("Walert key defined, test failed")
+                logger.warning("Walert key defined, test failed")
                 self.key_dict["WHALE_ALERT"] = "defined, test unsuccessful"
             try:
                 logger.info("Walert key defined, test passed")
                 self.key_dict["WHALE_ALERT"] = "defined, test passed"
             except Exception:
-                logger.exception("Walert key defined, test failed")
+                logger.warning("Walert key defined, test failed")
                 self.key_dict["WHALE_ALERT"] = "defined, test unsuccessful"
 
         if show_output:
@@ -568,7 +566,7 @@ class KeysController(BaseController):
                 logger.info("Glassnode key defined, test passed")
                 self.key_dict["GLASSNODE"] = "defined, test passed"
             else:
-                logger.exception("Glassnode key defined, test failed")
+                logger.warning("Glassnode key defined, test failed")
                 self.key_dict["GLASSNODE"] = "defined, test unsuccessful"
 
         if show_output:
@@ -591,7 +589,7 @@ class KeysController(BaseController):
                 logger.info("Coinglass key defined, test passed")
                 self.key_dict["COINGLASS"] = "defined, test passed"
             else:
-                logger.exception("Coinglass key defined, test failed")
+                logger.warning("Coinglass key defined, test failed")
                 self.key_dict["COINGLASS"] = "defined, test unsuccessful"
 
         if show_output:
@@ -608,13 +606,13 @@ class KeysController(BaseController):
             response = requests.get(crypto_panic_url)
 
             if not 200 <= response.status_code < 300:
-                logger.exception("cpanic key defined, test failed")
+                logger.warning("cpanic key defined, test failed")
                 self.key_dict["CRYPTO_PANIC"] = "defined, test unsuccessful"
             try:
                 logger.info("cpanic key defined, test passed")
                 self.key_dict["CRYPTO_PANIC"] = "defined, test passed"
             except Exception as _:  # noqa: F841
-                logger.exception("cpanic key defined, test failed")
+                logger.warning("cpanic key defined, test failed")
                 self.key_dict["CRYPTO_PANIC"] = "defined, test unsuccessful"
 
         if show_output:
@@ -635,10 +633,10 @@ class KeysController(BaseController):
                     logger.info("ethplorer key defined, test passed")
                     self.key_dict["ETHPLORER"] = "defined, test passed"
                 else:
-                    logger.exception("ethplorer key defined, test failed")
+                    logger.warning("ethplorer key defined, test failed")
                     self.key_dict["ETHPLORER"] = "defined, test unsuccessful"
             except Exception as _:  # noqa: F841
-                logger.exception("ethplorer key defined, test failed")
+                logger.warning("ethplorer key defined, test failed")
                 self.key_dict["ETHPLORER"] = "defined, test unsuccessful"
 
         if show_output:
