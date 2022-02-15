@@ -9,7 +9,10 @@ optional arguments:
   -h, --help  show this help message (default: False)
 ```
 
+![sector](https://user-images.githubusercontent.com/46355364/154026261-1e0ec083-d311-4388-b8a5-25fd73b494e7.png)
+
 ```
+
 2022 Feb 15, 03:48 (✨) /funds/ $ sector
         VFIAX Sector Weightings
 ┌────────────────────────┬────────────┐
