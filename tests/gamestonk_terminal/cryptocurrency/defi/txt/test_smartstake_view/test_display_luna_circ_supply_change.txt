@@ -1,0 +1,7 @@
+                circulatingSupplyInMil  liquidCircSupplyInMil  circSupplyChangeInMil  recentTotalLunaBurntInMil
+timestamp_date                                                                                                 
+2022-02-14                      396.92                 151.67                  -0.23                      87.13
+2022-02-13                      397.15                 151.91                  -1.43                      86.90
+2022-02-12                      398.58                 153.36                  -1.52                      85.47
+2022-02-11                      400.11                 154.70                  -1.27                      83.95
+2022-02-10                      401.38                 155.98                   0.02                      82.68
