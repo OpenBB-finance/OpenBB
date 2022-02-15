@@ -153,7 +153,7 @@ class DefiController(BaseController):
             dest="address",
             type=check_terra_address_format,
             help="Terra address. Valid terra addresses start with 'terra'",
-            required=True,
+            required="-h" not in other_args,
         )
 
         if other_args and not other_args[0][0] == "-":

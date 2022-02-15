@@ -294,12 +294,6 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             {"n_days": 5, "export": "csv"},
         ),
         (
-            "call_rtearn",
-            "geekofwallstreet_view.display_realtime_earnings",
-            ["--export=csv"],
-            ["csv"],
-        ),
-        (
             "call_trending",
             "seeking_alpha_view.news",
             [
@@ -367,7 +361,6 @@ def test_call_func(tested_func, mocked_func, other_args, called_with, mocker):
         "call_lowfloat",
         "call_pipo",
         "call_rtat",
-        "call_rtearn",
         "call_trending",
         "call_ugs",
         "call_ulc",

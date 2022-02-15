@@ -21,8 +21,8 @@ from numpy.core.fromnumeric import transpose
 from plotly.subplots import make_subplots
 from scipy import stats
 
+from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal import config_terminal as cfg
-from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     plot_autoscale,
@@ -268,6 +268,8 @@ def display_candle(
     intraday: bool = False,
     add_trend: bool = False,
     ma: Optional[Tuple[int, ...]] = None,
+    asset_type: str = "Stock",
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Shows candle plot of loaded ticker. [Source: Yahoo Finance, IEX Cloud or Alpha Vantage]
 
@@ -285,6 +287,12 @@ def display_candle(
         Flag to add high and low trends to chart
     mov_avg: Tuple[int]
         Moving averages to add to the candle
+    asset_type_: str
+        String to include in title
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (2 axes are expected in the list), by default None
+    asset_type_: str
+        String to include in title
     """
     if add_trend:
         if (df_stock.index[1] - df_stock.index[0]).total_seconds() >= 86400:
@@ -292,50 +300,58 @@ def display_candle(
             df_stock = find_trendline(df_stock, "OC_Low", "low")
 
     if use_matplotlib:
-        mc = mpf.make_marketcolors(
-            up="green",
-            down="red",
-            edge="black",
-            wick="black",
-            volume="in",
-            ohlc="i",
-        )
-
-        s = mpf.make_mpf_style(marketcolors=mc, gridstyle=":", y_on_right=True)
-
         ap0 = []
         if add_trend:
             if "OC_High_trend" in df_stock.columns:
                 ap0.append(
-                    mpf.make_addplot(df_stock["OC_High_trend"], color="g"),
+                    mpf.make_addplot(df_stock["OC_High_trend"], color=theme.up_color),
                 )
 
             if "OC_Low_trend" in df_stock.columns:
                 ap0.append(
-                    mpf.make_addplot(df_stock["OC_Low_trend"], color="b"),
+                    mpf.make_addplot(df_stock["OC_Low_trend"], color=theme.down_color),
                 )
 
-        if gtff.USE_ION:
-            plt.ion()
+        candle_chart_kwargs = {
+            "type": "candle",
+            "style": theme.mpf_style,
+            "volume": True,
+            "addplot": ap0,
+            "xrotation": theme.xticks_rotation,
+            "scale_padding": {"left": 0.3, "right": 1, "top": 0.8, "bottom": 0.8},
+            "update_width_config": {
+                "candle_linewidth": 0.6,
+                "candle_width": 0.8,
+                "volume_linewidth": 0.8,
+                "volume_width": 0.8,
+            },
+            "warn_too_much_data": 10000,
+        }
+
         kwargs = {"mav": ma} if ma else {}
 
-        mpf.plot(
-            df_stock,
-            type="candle",
-            volume=True,
-            title=f"\nStock {s_ticker}",
-            addplot=ap0,
-            xrotation=10,
-            style=s,
-            figratio=(10, 7),
-            figscale=1.10,
-            figsize=(plot_autoscale()),
-            update_width_config=dict(
-                candle_linewidth=1.0, candle_width=0.8, volume_linewidth=1.0
-            ),
-            warn_too_much_data=10000,
-            **kwargs,
-        )
+        if external_axes is None:
+            candle_chart_kwargs["returnfig"] = True
+            candle_chart_kwargs["figratio"] = (10, 7)
+            candle_chart_kwargs["figscale"] = 1.10
+            candle_chart_kwargs["figsize"] = plot_autoscale()
+            fig, _ = mpf.plot(df_stock, **candle_chart_kwargs, **kwargs)
+            fig.suptitle(
+                f"{asset_type} {s_ticker}",
+                x=0.055,
+                y=0.965,
+                horizontalalignment="left",
+            )
+
+            theme.visualize_output(force_tight_layout=False)
+        else:
+            if len(external_axes) != 1:
+                console.print("[red]Expected list of 1 axis items./n[/red]")
+                return
+            (ax1,) = external_axes
+            candle_chart_kwargs["ax"] = ax1
+            mpf.plot(df_stock, **candle_chart_kwargs)
+
     else:
         fig = make_subplots(
             rows=2,
@@ -520,7 +536,7 @@ def quote(other_args: List[str], s_ticker: str):
             "--ticker",
             action="store",
             dest="s_ticker",
-            required=True,
+            required="-h" not in other_args,
             help="Stock ticker",
         )
 
@@ -628,6 +644,7 @@ def load_ticker(
     else:
         df_data = yf.download(ticker, start=start_date, progress=False)
 
+    df_data.index = pd.to_datetime(df_data.index)
     df_data["date_id"] = (df_data.index.date - df_data.index.date.min()).astype(
         "timedelta64[D]"
     )
