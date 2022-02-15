@@ -27,6 +27,7 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     valid_date_in_past,
 )
+from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.stocks import stocks_helper
 from gamestonk_terminal.cryptocurrency import cryptocurrency_helpers
@@ -93,6 +94,8 @@ class BaseController(metaclass=ABCMeta):
             add_help=False, prog=self.path[-1] if self.PATH != "/" else "terminal"
         )
         self.parser.add_argument("cmd", choices=self.controller_choices)
+
+        theme.applyMPLstyle()
 
     def check_path(self) -> None:
         path = self.PATH

@@ -11,6 +11,7 @@ from datetime import datetime, timedelta
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
+import matplotlib
 
 from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal.config_plot import PLOT_DPI
@@ -203,9 +204,10 @@ def display_government_buys(
             return
         (ax,) = external_axes
 
+    colors = theme.get_colors()
     df_gov.groupby("Ticker")["upper"].sum().div(1000).sort_values(ascending=False).head(
         n=num
-    ).plot(kind="bar", rot=0, ax=ax)
+    ).plot(kind="bar", rot=0, ax=ax, color=colors)
 
     ax.set_ylabel("Amount [1k $]")
     ax.set_title(
@@ -321,15 +323,15 @@ def display_government_sells(
             return
         (ax,) = external_axes
 
+    colors = theme.get_colors()
     df_gov.groupby("Ticker")["upper"].sum().div(1000).sort_values().abs().head(
         n=num
-    ).plot(kind="bar", rot=0, ax=ax)
+    ).plot(kind="bar", rot=0, ax=ax, color=colors)
     ax.set_ylabel("Amount ($1k)")
     ax.set_title(
         f"{num} most sold stocks over last {past_transactions_months} months"
         f" (upper bound) for {gov_type}"
     )
-    # plt.gcf().axes[0].yaxis.get_major_formatter().set_scientific(False)
 
     theme.style_primary_axis(ax)
 
@@ -608,6 +610,8 @@ def display_contracts(
         ax.set_ylabel("Amount ($1k)")
         ax.set_title(f"Sum of latest government contracts to {ticker}")
 
+        ax.xaxis.set_major_locator(matplotlib.ticker.MultipleLocator(4))
+
         theme.style_primary_axis(ax)
 
         if not external_axes:
@@ -775,7 +779,14 @@ def display_hist_contracts(
                 return
             (ax,) = external_axes
 
-        ax.plot(np.arange(0, len(amounts)), amounts / 1000, "-*", lw=2, ms=15)
+        ax.plot(
+            np.arange(0, len(amounts)),
+            amounts / 1000,
+            marker=".",
+            markerfacecolor=theme.down_color,
+            lw=2,
+            ms=15,
+        )
 
         ax.set_xlim([-0.5, len(amounts) - 0.5])
         ax.set_xticks(np.arange(0, len(amounts)))
@@ -844,7 +855,8 @@ def display_top_lobbying(
                 return
             (ax,) = external_axes
 
-        lobbying_by_ticker.head(num).plot(kind="bar", ax=ax)
+        colors = theme.get_colors()
+        lobbying_by_ticker.head(num).plot(kind="bar", ax=ax, color=colors)
         ax.set_xlabel("Ticker")
         ax.set_ylabel("Total Amount ($100k)")
         ax.set_title(f"Corporate Lobbying Spent since {df_lobbying['Date'].min()}")
