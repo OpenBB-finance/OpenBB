@@ -11,7 +11,7 @@ optional arguments:
   -h, --help            show this help message (default: False)
 ```
 
-Period:
+Example:
 ```
 2022 Feb 15, 07:49 (✨) /crypto/dd/ $ web
             Websites for Loaded Coin
