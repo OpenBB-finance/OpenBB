@@ -2,33 +2,34 @@
 __docformat__ = "numpy"
 
 import argparse
+import logging
 import os
 from os import listdir
 from os.path import isfile, join
-from typing import List, Dict, Union
+from typing import Dict, List, Union
 
-from prompt_toolkit.completion import NestedCompleter
 import pandas as pd
-from gamestonk_terminal.rich_config import console
-from gamestonk_terminal.parent_classes import BaseController
+from prompt_toolkit.completion import NestedCompleter
+
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
-    valid_date,
-    check_positive_float,
-    check_positive,
     EXPORT_ONLY_FIGURES_ALLOWED,
+    check_positive,
+    check_positive_float,
+    parse_known_args_and_warn,
     print_rich_table,
+    valid_date,
 )
 from gamestonk_terminal.menu import session
-
+from gamestonk_terminal.parent_classes import BaseController
+from gamestonk_terminal.portfolio import portfolio_model, portfolio_view
 from gamestonk_terminal.portfolio.portfolio_optimization import po_controller
-from gamestonk_terminal.portfolio import (
-    portfolio_view,
-    portfolio_model,
-)
-from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
+from gamestonk_terminal.rich_config import console
 
 # pylint: disable=R1710,E1101,C0415
+
+logger = logging.getLogger(__name__)
 
 portfolios_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "portfolios")
 
@@ -114,6 +115,7 @@ Loaded:[/info] {self.portfolio_name or None}
         #    ar          annual report for performance of a given portfolio
         console.print(text=help_text, menu="Portfolio")
 
+    @log_start_end(log=logger)
     def call_bro(self, _):
         """Process bro command"""
         from gamestonk_terminal.portfolio.brokers.bro_controller import (
@@ -122,6 +124,7 @@ Loaded:[/info] {self.portfolio_name or None}
 
         self.queue = self.load_class(BrokersController, self.queue)
 
+    @log_start_end(log=logger)
     def call_po(self, _):
         """Process po command"""
         self.queue = self.load_class(
@@ -140,6 +143,7 @@ Loaded:[/info] {self.portfolio_name or None}
     #         pa_controller.PortfolioAnalysis, self.queue
     #     )
 
+    @log_start_end(log=logger)
     def call_init(self, other_args: List[str]):
         """Process reset command"""
         parser = argparse.ArgumentParser(
@@ -153,6 +157,7 @@ Loaded:[/info] {self.portfolio_name or None}
             self.portfolio = portfolio_model.Portfolio()
         console.print()
 
+    @log_start_end(log=logger)
     def call_load(self, other_args: List[str]):
         """Process load command"""
         path = os.path.dirname(os.path.abspath(__file__))
@@ -184,6 +189,7 @@ Loaded:[/info] {self.portfolio_name or None}
             self.portfolio_name = ns_parser.name
             console.print()
 
+    @log_start_end(log=logger)
     def call_save(self, other_args: List[str]):
         """Process save command"""
         parser = argparse.ArgumentParser(
@@ -216,6 +222,7 @@ Loaded:[/info] {self.portfolio_name or None}
                     "Please submit as 'filename.filetype' with filetype being csv, xlsx, or json\n"
                 )
 
+    @log_start_end(log=logger)
     def call_show(self, _):
         """Process show command"""
         if self.portfolio.empty:
@@ -224,6 +231,7 @@ Loaded:[/info] {self.portfolio_name or None}
         print_rich_table(self.portfolio.trades, show_index=False)
         console.print()
 
+    @log_start_end(log=logger)
     def call_add(self, other_args: List[str]):
         """Process add command"""
         parser = argparse.ArgumentParser(
@@ -290,6 +298,7 @@ Loaded:[/info] {self.portfolio_name or None}
 
         console.print(f"{inputs['Name']} successfully added\n")
 
+    @log_start_end(log=logger)
     def call_build(self, other_args: List[str]):
         """Process build command"""
         parser = argparse.ArgumentParser(
@@ -354,6 +363,7 @@ Loaded:[/info] {self.portfolio_name or None}
             )
         console.print()
 
+    @log_start_end(log=logger)
     def call_al(self, other_args: List[str]):
         """Process al command"""
         parser = argparse.ArgumentParser(
@@ -396,6 +406,7 @@ Loaded:[/info] {self.portfolio_name or None}
     #         else:
     #             console.print("Please add items to the portfolio\n")
 
+    @log_start_end(log=logger)
     def call_rmr(self, other_args: List[str]):
         """Process rmr command"""
         parser = argparse.ArgumentParser(
@@ -422,6 +433,7 @@ Loaded:[/info] {self.portfolio_name or None}
                 console.print("[red]No portfolio loaded.[/red]")
         console.print()
 
+    @log_start_end(log=logger)
     def call_dd(self, other_args: List[str]):
         """Process dd command"""
         parser = argparse.ArgumentParser(
@@ -441,6 +453,7 @@ Loaded:[/info] {self.portfolio_name or None}
             else:
                 console.print("[red]No portfolio loaded.\n[/red]")
 
+    @log_start_end(log=logger)
     def call_rolling(self, other_args: List[str]):
         """Process rolling command"""
         parser = argparse.ArgumentParser(

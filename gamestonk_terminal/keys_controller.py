@@ -1,13 +1,13 @@
 """Keys Controller Module"""
 __docformat__ = "numpy"
 
-import os
 import argparse
 import logging
-from typing import List, Dict
+import os
 from pathlib import Path
-import dotenv
+from typing import Dict, List
 
+import dotenv
 import praw
 import pyEX
 import quandl
@@ -15,19 +15,20 @@ import requests
 from alpha_vantage.timeseries import TimeSeries
 from coinmarketcapapi import CoinMarketCapAPI, CoinMarketCapAPIError
 from prawcore.exceptions import ResponseException
+from prompt_toolkit.completion import NestedCompleter
 from pyEX.common.exception import PyEXception
 
-from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.rich_config import console
+from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.parent_classes import BaseController
-from gamestonk_terminal.menu import session
-from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 from gamestonk_terminal.cryptocurrency.coinbase_helpers import (
     CoinbaseProAuth,
     make_coinbase_request,
 )
-from gamestonk_terminal import config_terminal as cfg
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
+from gamestonk_terminal.menu import session
+from gamestonk_terminal.parent_classes import BaseController
+from gamestonk_terminal.rich_config import console
 
 # pylint: disable=too-many-lines,no-member,too-many-public-methods,C0302
 
@@ -688,6 +689,7 @@ class KeysController(BaseController):
 
         console.print(text=help_text, menu="Keys")
 
+    @log_start_end(log=logger)
     def call_av(self, other_args: List[str]):
         """Process av command"""
         parser = argparse.ArgumentParser(
@@ -712,6 +714,7 @@ class KeysController(BaseController):
             cfg.API_KEY_ALPHAVANTAGE = ns_parser.key
             self.check_av_key(show_output=True)
 
+    @log_start_end(log=logger)
     def call_fmp(self, other_args: List[str]):
         """Process fmp command"""
         parser = argparse.ArgumentParser(
@@ -738,6 +741,7 @@ class KeysController(BaseController):
             cfg.API_KEY_FINANCIALMODELINGPREP = ns_parser.key
             self.check_fmp_key(show_output=True)
 
+    @log_start_end(log=logger)
     def call_quandl(self, other_args: List[str]):
         """Process quandl command"""
         parser = argparse.ArgumentParser(
@@ -762,6 +766,7 @@ class KeysController(BaseController):
             cfg.API_KEY_QUANDL = ns_parser.key
             self.check_quandl_key(show_output=True)
 
+    @log_start_end(log=logger)
     def call_polygon(self, other_args: List[str]):
         """Process polygon command"""
         parser = argparse.ArgumentParser(
@@ -786,6 +791,7 @@ class KeysController(BaseController):
             cfg.API_POLYGON_KEY = ns_parser.key
             self.check_polygon_key(show_output=True)
 
+    @log_start_end(log=logger)
     def call_fred(self, other_args: List[str]):
         """Process FRED command"""
         parser = argparse.ArgumentParser(
@@ -810,6 +816,7 @@ class KeysController(BaseController):
             cfg.API_FRED_KEY = ns_parser.key
             self.check_fred_key(show_output=True)
 
+    @log_start_end(log=logger)
     def call_news(self, other_args: List[str]):
         """Process News API command"""
         parser = argparse.ArgumentParser(
@@ -834,6 +841,7 @@ class KeysController(BaseController):
             cfg.API_NEWS_TOKEN = ns_parser.key
             self.check_news_key(show_output=True)
 
+    @log_start_end(log=logger)
     def call_tradier(self, other_args: List[str]):
         """Process Tradier API command"""
         parser = argparse.ArgumentParser(
@@ -858,6 +866,7 @@ class KeysController(BaseController):
             cfg.TRADIER_TOKEN = ns_parser.key
             self.check_tradier_key(show_output=True)
 
+    @log_start_end(log=logger)
     def call_cmc(self, other_args: List[str]):
         """Process CoinMarketCap API command"""
         parser = argparse.ArgumentParser(
@@ -882,6 +891,7 @@ class KeysController(BaseController):
             cfg.API_CMC_KEY = ns_parser.key
             self.check_cmc_key(show_output=True)
 
+    @log_start_end(log=logger)
     def call_finhub(self, other_args: List[str]):
         """Process Finhub API command"""
         parser = argparse.ArgumentParser(
@@ -906,6 +916,7 @@ class KeysController(BaseController):
             cfg.API_FINNHUB_KEY = ns_parser.key
             self.check_finhub_key(show_output=True)
 
+    @log_start_end(log=logger)
     def call_iex(self, other_args: List[str]):
         """Process iex command"""
         parser = argparse.ArgumentParser(
@@ -930,6 +941,7 @@ class KeysController(BaseController):
             cfg.API_IEX_TOKEN = ns_parser.key
             self.check_iex_key(show_output=True)
 
+    @log_start_end(log=logger)
     def call_reddit(self, other_args: List[str]):
         """Process reddit command"""
         parser = argparse.ArgumentParser(
@@ -1003,6 +1015,7 @@ class KeysController(BaseController):
 
             self.check_reddit_key(show_output=True)
 
+    @log_start_end(log=logger)
     def call_twitter(self, other_args: List[str]):
         """Process twitter command"""
         parser = argparse.ArgumentParser(
@@ -1052,6 +1065,7 @@ class KeysController(BaseController):
 
             self.check_twitter_key(show_output=True)
 
+    @log_start_end(log=logger)
     def call_rh(self, other_args: List[str]):
         """Process rh command"""
         parser = argparse.ArgumentParser(
@@ -1086,6 +1100,7 @@ class KeysController(BaseController):
 
             self.check_rh_key(show_output=True)
 
+    @log_start_end(log=logger)
     def call_degiro(self, other_args: List[str]):
         """Process degiro command"""
         parser = argparse.ArgumentParser(
@@ -1131,6 +1146,7 @@ class KeysController(BaseController):
 
             self.check_degiro_key(show_output=True)
 
+    @log_start_end(log=logger)
     def call_oanda(self, other_args: List[str]):
         """Process oanda command"""
         parser = argparse.ArgumentParser(
@@ -1178,6 +1194,7 @@ class KeysController(BaseController):
 
             self.check_oanda_key(show_output=True)
 
+    @log_start_end(log=logger)
     def call_binance(self, other_args: List[str]):
         """Process binance command"""
         parser = argparse.ArgumentParser(
@@ -1212,6 +1229,7 @@ class KeysController(BaseController):
 
             self.check_binance_key(show_output=True)
 
+    @log_start_end(log=logger)
     def call_bitquery(self, other_args: List[str]):
         """Process bitquery command"""
         parser = argparse.ArgumentParser(
@@ -1237,6 +1255,7 @@ class KeysController(BaseController):
 
             self.check_bitquery_key(show_output=True)
 
+    @log_start_end(log=logger)
     def call_si(self, other_args: List[str]):
         """Process si command"""
         parser = argparse.ArgumentParser(
@@ -1264,6 +1283,7 @@ class KeysController(BaseController):
 
             self.check_si_key(show_output=True)
 
+    @log_start_end(log=logger)
     def call_coinbase(self, other_args: List[str]):
         """Process coinbase command"""
         parser = argparse.ArgumentParser(
@@ -1313,6 +1333,7 @@ class KeysController(BaseController):
 
             self.check_coinbase_key(show_output=True)
 
+    @log_start_end(log=logger)
     def call_walert(self, other_args: List[str]):
         """Process walert command"""
         parser = argparse.ArgumentParser(
@@ -1338,6 +1359,7 @@ class KeysController(BaseController):
 
             self.check_walert_key(show_output=True)
 
+    @log_start_end(log=logger)
     def call_glassnode(self, other_args: List[str]):
         """Process glassnode command"""
         parser = argparse.ArgumentParser(
@@ -1363,6 +1385,7 @@ class KeysController(BaseController):
 
             self.check_glassnode_key(show_output=True)
 
+    @log_start_end(log=logger)
     def call_coinglass(self, other_args: List[str]):
         """Process coinglass command"""
         parser = argparse.ArgumentParser(
@@ -1388,6 +1411,7 @@ class KeysController(BaseController):
 
             self.check_coinglass_key(show_output=True)
 
+    @log_start_end(log=logger)
     def call_cpanic(self, other_args: List[str]):
         """Process cpanic command"""
         parser = argparse.ArgumentParser(
@@ -1413,6 +1437,7 @@ class KeysController(BaseController):
 
             self.check_cpanic_key(show_output=True)
 
+    @log_start_end(log=logger)
     def call_ethplorer(self, other_args: List[str]):
         """Process ethplorer command"""
         parser = argparse.ArgumentParser(

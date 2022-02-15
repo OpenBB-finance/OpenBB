@@ -11,8 +11,6 @@ from gamestonk_terminal.stocks.discovery import yahoofinance_model
 
 logger = logging.getLogger(__name__)
 
-logger = logging.getLogger(__name__)
-
 
 @log_start_end(log=logger)
 def display_gainers(num_stocks: int, export: str) -> None:

@@ -2,14 +2,14 @@
 __docformat__ = "numpy"
 
 import argparse
-from typing import List, Dict
+import logging
+from typing import Dict, List
 
 from prompt_toolkit.completion import NestedCompleter
 
-from gamestonk_terminal.rich_config import console
-from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.economy.fred import fred_view, fred_model
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.economy.fred import fred_model, fred_view
 from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     check_positive,
@@ -17,8 +17,13 @@ from gamestonk_terminal.helper_funcs import (
     valid_date,
 )
 from gamestonk_terminal.menu import session
+from gamestonk_terminal.parent_classes import BaseController
+from gamestonk_terminal.rich_config import console
 
 # pylint: disable=import-outside-toplevel
+
+
+logger = logging.getLogger(__name__)
 
 
 class FredController(BaseController):
@@ -62,6 +67,7 @@ class FredController(BaseController):
         """
         console.print(text=help_text, menu="Economy - Federal Reserve Economic Data")
 
+    @log_start_end(log=logger)
     def call_search(self, other_args: List[str]):
         """Process search command"""
         parser = argparse.ArgumentParser(
@@ -99,6 +105,7 @@ class FredController(BaseController):
                 num=ns_parser.num,
             )
 
+    @log_start_end(log=logger)
     def call_add(self, other_args: List[str]):
         """Process add command"""
         parser = argparse.ArgumentParser(
@@ -134,6 +141,7 @@ class FredController(BaseController):
                 f"Current Series:[blue] {', '.join(self.current_series.keys()) .upper() or None}[/blue]\n"
             )
 
+    @log_start_end(log=logger)
     def call_rmv(self, other_args: List[str]):
         """Process rmv command"""
         parser = argparse.ArgumentParser(
@@ -182,6 +190,7 @@ class FredController(BaseController):
                     f"Current Series Ids: [blue]{', '.join(self.current_series.keys()) or None}[/blue]\n"
                 )
 
+    @log_start_end(log=logger)
     def call_plot(self, other_args):
         """Process plot command"""
         parser = argparse.ArgumentParser(
@@ -224,6 +233,7 @@ class FredController(BaseController):
                 ns_parser.limit,
             )
 
+    @log_start_end(log=logger)
     def call_pred(self, _):
         """Process pred command"""
         if not self.current_series:

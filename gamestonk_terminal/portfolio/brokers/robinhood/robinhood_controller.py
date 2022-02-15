@@ -2,21 +2,26 @@
 __docformat__ = "numpy"
 
 import argparse
+import logging
 from typing import List
 
 from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.rich_config import console
+
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.menu import session
-from gamestonk_terminal.portfolio.brokers.robinhood import (
-    robinhood_view,
-    robinhood_model,
-)
-from gamestonk_terminal.parent_classes import BaseController
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
-    parse_known_args_and_warn,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
+    parse_known_args_and_warn,
 )
+from gamestonk_terminal.menu import session
+from gamestonk_terminal.parent_classes import BaseController
+from gamestonk_terminal.portfolio.brokers.robinhood import (
+    robinhood_model,
+    robinhood_view,
+)
+from gamestonk_terminal.rich_config import console
+
+logger = logging.getLogger(__name__)
 
 
 class RobinhoodController(BaseController):
@@ -48,10 +53,12 @@ class RobinhoodController(BaseController):
 [/cmds]"""
         console.print(text=help_text, menu="Portfolio - Brokers - Robinhood")
 
+    @log_start_end(log=logger)
     def call_login(self, _):
         """Process login"""
         robinhood_model.login()
 
+    @log_start_end(log=logger)
     def call_holdings(self, other_args: List[str]):
         """Process holdings command"""
         parser = argparse.ArgumentParser(
@@ -66,6 +73,7 @@ class RobinhoodController(BaseController):
         if ns_parser:
             robinhood_view.display_holdings(export=ns_parser.export)
 
+    @log_start_end(log=logger)
     def call_history(self, other_args: List[str]):
         """Process history command"""
         parser = argparse.ArgumentParser(

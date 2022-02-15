@@ -2,34 +2,40 @@
 __docformat__ = "numpy"
 
 import argparse
+import logging
 from typing import List
-from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.rich_config import console
 
+from prompt_toolkit.completion import NestedCompleter
+
+from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_funcs import (
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
+    check_positive,
+    parse_known_args_and_warn,
+)
+from gamestonk_terminal.menu import session
 from gamestonk_terminal.parent_classes import StockBaseController
+from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.stocks import stocks_helper
+from gamestonk_terminal.stocks.fundamental_analysis import (
+    av_view,
+    business_insider_view,
+    dcf_view,
+    eclect_us_view,
+    finviz_view,
+    market_watch_view,
+    yahoo_finance_view,
+)
 from gamestonk_terminal.stocks.fundamental_analysis.financial_modeling_prep import (
     fmp_controller,
     fmp_view,
 )
-from gamestonk_terminal.stocks.fundamental_analysis import (
-    eclect_us_view,
-    finviz_view,
-    yahoo_finance_view,
-    av_view,
-    business_insider_view,
-    dcf_view,
-    market_watch_view,
-)
-from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import (
-    EXPORT_ONLY_RAW_DATA_ALLOWED,
-    parse_known_args_and_warn,
-    check_positive,
-)
-from gamestonk_terminal.stocks import stocks_helper
-from gamestonk_terminal.menu import session
 
 # pylint: disable=inconsistent-return-statements
+
+
+logger = logging.getLogger(__name__)
 
 
 class FundamentalAnalysisController(StockBaseController):
@@ -129,6 +135,7 @@ Ticker: [/param] {self.ticker} [cmds]
             return ["stocks", f"load {self.ticker}", "fa"]
         return []
 
+    @log_start_end(log=logger)
     def call_analysis(self, other_args: List[str]):
         """Process analysis command."""
         parser = argparse.ArgumentParser(
@@ -143,6 +150,7 @@ Ticker: [/param] {self.ticker} [cmds]
         if ns_parser:
             eclect_us_view.display_analysis(self.ticker)
 
+    @log_start_end(log=logger)
     def call_mgmt(self, other_args: List[str]):
         """Process mgmt command."""
         parser = argparse.ArgumentParser(
@@ -163,6 +171,7 @@ Ticker: [/param] {self.ticker} [cmds]
                 ticker=self.ticker, export=ns_parser.export
             )
 
+    @log_start_end(log=logger)
     def call_data(self, other_args: List[str]):
         """Process screener command."""
         parser = argparse.ArgumentParser(
@@ -190,6 +199,7 @@ Ticker: [/param] {self.ticker} [cmds]
         if ns_parser:
             finviz_view.display_screen_data(self.ticker)
 
+    @log_start_end(log=logger)
     def call_score(self, other_args: List[str]):
         """Process score command."""
         parser = argparse.ArgumentParser(
@@ -207,6 +217,7 @@ Ticker: [/param] {self.ticker} [cmds]
         if ns_parser:
             fmp_view.valinvest_score(self.ticker)
 
+    @log_start_end(log=logger)
     def call_info(self, other_args: List[str]):
         """Process info command."""
         parser = argparse.ArgumentParser(
@@ -240,6 +251,7 @@ Ticker: [/param] {self.ticker} [cmds]
         if ns_parser:
             yahoo_finance_view.display_info(self.ticker)
 
+    @log_start_end(log=logger)
     def call_shrs(self, other_args: List[str]):
         """Process shrs command."""
         parser = argparse.ArgumentParser(
@@ -258,6 +270,7 @@ Ticker: [/param] {self.ticker} [cmds]
         else:
             console.print("Only US tickers are recognized.", "\n")
 
+    @log_start_end(log=logger)
     def call_sust(self, other_args: List[str]):
         """Process sust command."""
         parser = argparse.ArgumentParser(
@@ -282,6 +295,7 @@ Ticker: [/param] {self.ticker} [cmds]
         else:
             console.print("Only US tickers are recognized.", "\n")
 
+    @log_start_end(log=logger)
     def call_cal(self, other_args: List[str]):
         """Process cal command."""
         parser = argparse.ArgumentParser(
@@ -302,6 +316,7 @@ Ticker: [/param] {self.ticker} [cmds]
         else:
             console.print("Only US tickers are recognized.", "\n")
 
+    @log_start_end(log=logger)
     def call_web(self, other_args: List[str]):
         """Process web command."""
         parser = argparse.ArgumentParser(
@@ -321,6 +336,7 @@ Ticker: [/param] {self.ticker} [cmds]
         else:
             console.print("Only US tickers are recognized.", "\n")
 
+    @log_start_end(log=logger)
     def call_hq(self, other_args: List[str]):
         """Process hq command."""
         parser = argparse.ArgumentParser(
@@ -340,6 +356,7 @@ Ticker: [/param] {self.ticker} [cmds]
         else:
             console.print("Only US tickers are recognized.", "\n")
 
+    @log_start_end(log=logger)
     def call_divs(self, other_args: List[str]):
         """Process divs command."""
         parser = argparse.ArgumentParser(
@@ -378,6 +395,7 @@ Ticker: [/param] {self.ticker} [cmds]
         else:
             console.print("Only US tickers are recognized.", "\n")
 
+    @log_start_end(log=logger)
     def call_overview(self, other_args: List[str]):
         """Process overview command."""
         parser = argparse.ArgumentParser(
@@ -408,6 +426,7 @@ Ticker: [/param] {self.ticker} [cmds]
         if ns_parser:
             av_view.display_overview(self.ticker)
 
+    @log_start_end(log=logger)
     def call_key(self, other_args: List[str]):
         """Process overview command."""
         parser = argparse.ArgumentParser(
@@ -428,6 +447,7 @@ Ticker: [/param] {self.ticker} [cmds]
         if ns_parser:
             av_view.display_key(self.ticker)
 
+    @log_start_end(log=logger)
     def call_income(self, other_args: List[str]):
         """Process income command."""
         parser = argparse.ArgumentParser(
@@ -473,6 +493,7 @@ Ticker: [/param] {self.ticker} [cmds]
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_balance(self, other_args: List[str]):
         """Process balance command."""
         parser = argparse.ArgumentParser(
@@ -524,6 +545,7 @@ Ticker: [/param] {self.ticker} [cmds]
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_cash(self, other_args: List[str]):
         """Process cash command."""
         parser = argparse.ArgumentParser(
@@ -573,6 +595,7 @@ Ticker: [/param] {self.ticker} [cmds]
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_earnings(self, other_args: List[str]):
         """Process earnings command."""
         parser = argparse.ArgumentParser(
@@ -611,6 +634,7 @@ Ticker: [/param] {self.ticker} [cmds]
                 quarterly=ns_parser.b_quarter,
             )
 
+    @log_start_end(log=logger)
     def call_fraud(self, other_args: List[str]):
         """Process fraud command."""
         parser = argparse.ArgumentParser(
@@ -663,6 +687,7 @@ Ticker: [/param] {self.ticker} [cmds]
         if ns_parser:
             av_view.display_fraud(self.ticker)
 
+    @log_start_end(log=logger)
     def call_dcf(self, other_args: List[str]):
         """Process dcf command."""
         parser = argparse.ArgumentParser(
@@ -739,6 +764,7 @@ Ticker: [/param] {self.ticker} [cmds]
             )
             dcf.create_workbook()
 
+    @log_start_end(log=logger)
     def call_warnings(self, other_args: List[str]):
         """Process warnings command."""
         parser = argparse.ArgumentParser(
@@ -768,6 +794,7 @@ Ticker: [/param] {self.ticker} [cmds]
                 ticker=self.ticker, debug=ns_parser.b_debug
             )
 
+    @log_start_end(log=logger)
     def call_fmp(self, _):
         """Process fmp command."""
         self.queue = self.load_class(
