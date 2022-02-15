@@ -1,6 +1,7 @@
 """Dataframe helpers"""
 __docformat__ = "numpy"
 
+import math
 import re
 from typing import Union, Any, Optional
 import textwrap
@@ -108,6 +109,8 @@ def very_long_number_formatter(num: Union[str, int, float]) -> str:
             return str(num)
 
     if isinstance(num, (int, float)):
+        if math.isnan(num):
+            num = 0
         num = int(num)
         magnitude = 0
         while abs(num) >= 1000 and magnitude <= 3:
