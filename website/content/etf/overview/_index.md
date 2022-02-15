@@ -11,6 +11,7 @@ optional arguments:
                         Export raw data into csv, json, xlsx (default: )
 ```
 
+Example:
 ```
 2022 Feb 15, 04:14 (✨) /etf/ $ overview
    ETF Overview Information
