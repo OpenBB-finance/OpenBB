@@ -146,3 +146,7 @@ API_CRYPTO_PANIC_KEY = os.getenv("GT_API_CRYPTO_PANIC_KEY") or "REPLACE_ME"
 
 # https://bitquery.io/pricing
 API_BITQUERY_KEY = os.getenv("GT_API_BITQUERY_KEY") or "REPLACE_ME"
+
+# https://terra.smartstake.io/
+API_SMARTSTAKE_KEY = os.getenv("GT_API_SMARTSTAKE_KEY") or "REPLACE_ME"
+API_SMARTSTAKE_TOKEN = os.getenv("GT_API_SMARTSTAKE_TOKEN") or "REPLACE_ME"

@@ -85,10 +85,12 @@ def price_target_from_analysts(
             df_analyst_data = df_analyst_data[start:]  # type: ignore
 
         if interval == "1440min":
-            ax.plot(stock.index, stock["Adj Close"].values, lw=3)
+            ax.plot(stock.index, stock["Adj Close"].values)
+            legend_price_label = "Adjusted closing price"
         # Intraday
         else:
-            ax.plot(stock.index, stock["Close"].values, lw=3)
+            ax.plot(stock.index, stock["Close"].values)
+            legend_price_label = "Closing price"
 
         if start:
             ax.plot(df_analyst_data.groupby(by=["Date"]).mean()[start:])  # type: ignore
@@ -96,10 +98,14 @@ def price_target_from_analysts(
             ax.plot(df_analyst_data.groupby(by=["Date"]).mean())
 
         ax.scatter(
-            df_analyst_data.index, df_analyst_data["Price Target"], c="red", s=40
+            df_analyst_data.index,
+            df_analyst_data["Price Target"],
+            color=theme.down_color,
+            edgecolors=theme.up_color,
+            zorder=2,
         )
 
-        ax.legend(["Closing Price", "Average Price Target", "Price Target"])
+        ax.legend([legend_price_label, "Average Price Target", "Price Target"])
 
         ax.set_title(f"{ticker} (Time Series) and Price Target")
         ax.set_xlim(stock.index[0], stock.index[-1])
