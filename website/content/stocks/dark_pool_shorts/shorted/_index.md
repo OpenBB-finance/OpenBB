@@ -2,7 +2,7 @@
 usage: shorted [-n NUM] [--export {csv,json,xlsx}] [-h]
 ```
 
-Request a list of up to 25 stocks that have accumulated the most short interest. Source: https://finance.yahoo.com/screener/predefined/most_shorted_stocks/
+Request a list of up to 25 stocks that have accumulated the most short interest. [Source: Yahoo Finance]
 
 ```
 optional arguments:
