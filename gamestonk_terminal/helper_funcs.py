@@ -106,6 +106,7 @@ def print_rich_table(
 
     local_download(df, "csv")
 
+
 def check_int_range(mini: int, maxi: int):
     """
     Checks if argparse argument is an int between 2 values.
@@ -356,7 +357,6 @@ def plot_view_stock(df: pd.DataFrame, symbol: str, interval: str):
     console.print("")
 
     local_download(df, "png")
-
 
 
 def us_market_holidays(years) -> list:
@@ -882,12 +882,12 @@ def plot_autoscale():
 
     if gtff.USE_PLOT_AUTOSCALING:
         x, y = get_screeninfo()  # Get screen size
-        x = ((x) * cfgPlot.PLOT_WIDTH_PERCENTAGE * 10**-2) / (
+        x = ((x) * cfgPlot.PLOT_WIDTH_PERCENTAGE * 10 ** -2) / (
             cfgPlot.PLOT_DPI
         )  # Calculate width
         if cfgPlot.PLOT_HEIGHT_PERCENTAGE == 100:  # If full height
             y = y - 60  # Remove the height of window toolbar
-        y = ((y) * cfgPlot.PLOT_HEIGHT_PERCENTAGE * 10**-2) / (cfgPlot.PLOT_DPI)
+        y = ((y) * cfgPlot.PLOT_HEIGHT_PERCENTAGE * 10 ** -2) / (cfgPlot.PLOT_DPI)
     else:  # If not autoscale, use size defined in config_plot.py
         x = cfgPlot.PLOT_WIDTH / (cfgPlot.PLOT_DPI)
         y = cfgPlot.PLOT_HEIGHT / (cfgPlot.PLOT_DPI)
@@ -1050,6 +1050,7 @@ def excel_columns() -> List[str]:
     )
     return opts
 
+
 def local_download(df: pd.DataFrame, exp_type: str) -> None:
     """
     Downloads outputted file to autosave directory
@@ -1068,8 +1069,10 @@ def local_download(df: pd.DataFrame, exp_type: str) -> None:
     except AttributeError:
         figure_name = "DataFrame"
 
-    curr_time = datetime.now().strftime('%Y%m%d_%H%M%S')
-    path = os.path.join(gtff.AUTOSAVE_DIRECTORY, figure_name + "_" + curr_time + "." + exp_type)
+    curr_time = datetime.now().strftime("%Y%m%d_%H%M%S")
+    path = os.path.join(
+        gtff.AUTOSAVE_DIRECTORY, figure_name + "_" + curr_time + "." + exp_type
+    )
 
     if exp_type == "csv":
         df.to_csv(path)
