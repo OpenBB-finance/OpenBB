@@ -226,10 +226,11 @@ def terminal(jobs_cmds: List[str] = None):
     """Terminal Menu"""
     setup_logging()
     logger.info("START")
-    logger.info("Running Python %s on %s", platform.python_version(), platform.system())
+    logger.info("Python: %s", platform.python_version())
+    logger.info("OS: %s", platform.system())
 
     if jobs_cmds is not None and jobs_cmds:
-        logger.info("INPUT: '%s'", "/".join(jobs_cmds))
+        logger.info("INPUT: %s", "/".join(jobs_cmds))
 
     ret_code = 1
     t_controller = TerminalController(jobs_cmds)

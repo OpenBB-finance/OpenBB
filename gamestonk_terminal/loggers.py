@@ -12,7 +12,8 @@ import git
 import gamestonk_terminal.config_terminal as cfg
 
 logger = logging.getLogger(__name__)
-LOGFORMAT = "%(asctime)s|%(levelname)s|%(name)s|%(funcName)s|%(lineno)s|%(message)s"
+LOGFORMAT = "%(asctime)s|%(name)s|%(funcName)s|%(lineno)s|%(message)s"
+LOGPREFIXFORMAT = "%(levelname)s|%(version)s|%(loggingId)s|%(sessionId)s|"
 DATEFORMAT = "%Y-%m-%dT%H:%M:%S%z"
 
 
@@ -97,8 +98,11 @@ class CustomFormatterWithExceptions(logging.Formatter):
         validate=True,
     ) -> None:
         super().__init__(fmt=fmt, datefmt=datefmt, style=style, validate=validate)
-        self.LOGGING_ID = logging_id
-        self.SESSION_ID = session_id
+        self.logPrefixDict = {
+            "loggingId": logging_id,
+            "sessionId": session_id,
+            "version": cfg.LOGGING_VERSION,
+        }
 
     def formatException(self, ei) -> str:
         """Exception formatting handler
@@ -115,10 +119,6 @@ class CustomFormatterWithExceptions(logging.Formatter):
         """
         result = super().formatException(ei)
         return repr(result)
-
-    def set_ids(self, logging_id: str, session_id: str) -> None:
-        self.LOGGING_ID = logging_id
-        self.SESSION_ID = session_id
 
     def format(self, record: logging.LogRecord) -> str:
         """Log formatter
@@ -138,30 +138,24 @@ class CustomFormatterWithExceptions(logging.Formatter):
             record.lineno = 0
         s = super().format(record)
         if record.levelname:
-            prefix = record.levelname[0]
+            self.logPrefixDict["levelname"] = record.levelname[0]
         else:
-            prefix = "U"
+            self.logPrefixDict["levelname"] = "U"
 
         if record.exc_text:
+            self.logPrefixDict["levelname"] = "X"
+            logPrefix = LOGPREFIXFORMAT % self.logPrefixDict
             s = (
-                "X|"
-                + cfg.LOGGING_VERSION
-                + "|"
-                + self.LOGGING_ID
-                + "|"
-                + self.SESSION_ID
-                + "|"
-                + s.replace("\n", " - ")
+                s.replace("\n", " - ")
                 .replace("\t", " ")
                 .replace("\r", "")
                 .replace("'", "`")
                 .replace('"', "`")
-                + "|"
             )
-        else:
-            s = f"{prefix}|{cfg.LOGGING_VERSION}|{self.LOGGING_ID}|{self.SESSION_ID}|{s}|"
 
-        return s
+        else:
+            logPrefix = LOGPREFIXFORMAT % self.logPrefixDict
+        return f"{logPrefix}{s}"
 
 
 def get_commit_hash() -> None:
@@ -226,3 +220,6 @@ def setup_logging() -> None:
     logger.info("Logging configuration finished")
     logger.info("Logging set to %s", cfg.LOGGING_HANDLERS)
     logger.info("Verbosity set to %s", verbosity)
+    logger.info(
+        "FORMAT: %s%s", LOGPREFIXFORMAT.replace("|", "-"), LOGFORMAT.replace("|", "-")
+    )
