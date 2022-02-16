@@ -103,7 +103,7 @@ def insider_activity(
                 * float(row["Shares Traded"].replace(",", "")),
                 axis=1,
             )
-            ax.set_xlim(df_insider.index[0], stock.index[-1])
+            ax.set_xlim(right=stock.index[-1])
             min_price, max_price = ax.get_ylim()
 
             price_range = max_price - min_price

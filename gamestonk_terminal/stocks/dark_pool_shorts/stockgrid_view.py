@@ -197,7 +197,6 @@ def short_interest_volume(
             df["total_volume"] / 1_000_000,
             width=timedelta(days=1),
             color=theme.up_color,
-            alpha=0.4,
             label="Total Volume",
         )
         ax.bar(
@@ -205,7 +204,6 @@ def short_interest_volume(
             df["short_volume"] / 1_000_000,
             width=timedelta(days=1),
             color=theme.down_color,
-            alpha=0.4,
             label="Short Volume",
         )
 
@@ -327,7 +325,6 @@ def net_short_position(
             df["dates"],
             df["dollar_net_volume"] / 1_000,
             color=theme.down_color,
-            alpha=0.4,
             label="Net Short Vol. (1k $)",
         )
         ax1.set_ylabel("Net Short Vol. (1k $)")
