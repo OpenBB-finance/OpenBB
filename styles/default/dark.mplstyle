@@ -54,6 +54,7 @@ xtick.major.size: 2
 xtick.minor.size: 1
 xtick.labelsize: small
 xtick.alignment: center
+xtick.major.width: 0.2
 
 ytick.major.size: 2
 ytick.minor.size: 1
@@ -63,6 +64,7 @@ ytick.left: False
 ytick.labelleft: False
 ytick.right: True
 ytick.labelright: True
+ytick.major.width: 0.2
 
 grid.color: F5EFF3
 grid.linewidth: 0.4

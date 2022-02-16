@@ -89,12 +89,14 @@ def display_historical(
             return
         (ax,) = external_axes
 
-    ax.plot(df_similar)
+    # breakpoint()
+    companies_names = df_similar.columns.to_list()
+    ax.plot(df_similar, label=companies_names)
     ax.set_title("Historical price of similar companies")
     ax.set_ylabel(f"{['','Normalized'][normalize]} Share Price {['($)',''][normalize]}")
     # ensures that the historical data starts from same datapoint
     ax.set_xlim([df_similar.index[0], df_similar.index[-1]])
-
+    ax.legend(loc="best")
     theme.style_primary_axis(ax)
 
     if not external_axes:
@@ -139,13 +141,15 @@ def display_volume(
         (ax,) = external_axes
 
     df_similar = df_similar.div(1_000_000)
+    companies_names = df_similar.columns.to_list()
 
-    ax.plot(df_similar)
+    ax.plot(df_similar, label=companies_names)
     ax.set_title("Historical volume of similar companies")
     ax.set_ylabel("Volume [M]")
     # ensures that the historical data starts from same datapoint
     ax.set_xlim([df_similar.index[0], df_similar.index[-1]])
 
+    ax.legend()
     theme.style_primary_axis(ax)
 
     if not external_axes:

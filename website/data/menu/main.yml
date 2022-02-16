@@ -902,6 +902,9 @@ main:
             ref: "/cryptocurrency/defi/sratio"
           - name: sreturn
             ref: "/cryptocurrency/defi/sreturn"
+          - name: lcsc
+            ref: "/cryptocurrency/defi/lcsc"
+
   - name: economy
     ref: "/economy"
     sub:
