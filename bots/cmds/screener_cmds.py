@@ -3,7 +3,6 @@ from __future__ import annotations
 import disnake
 from disnake.ext import commands
 
-from bots.config_discordbot import logger
 from bots.helpers import ShowView, presets_custom_autocomp, signals_autocomp
 from bots.stocks.screener.financial import financial_command
 from bots.stocks.screener.historical import historical_command
@@ -126,21 +125,19 @@ class ScreenerCommands(commands.Cog):
         self.bot = bot
 
     @commands.slash_command(name="scr-presets_default")
-    async def presets_default(self, ctx: disnake.AppCmdInter):
+    async def presets_default(self, inter: disnake.AppCmdInter):
         """Displays every available preset"""
-        logger.info("scr-presets_default")
-        await ShowView().discord(presets_default_command, ctx)
+        await ShowView().discord(presets_default_command, inter, "scr-presets_default")
 
     @commands.slash_command(name="scr-presets_custom")
-    async def presets_custom(self, ctx: disnake.AppCmdInter):
+    async def presets_custom(self, inter: disnake.AppCmdInter):
         """Displays every available preset"""
-        logger.info("scr-presets_custom")
-        await ShowView().discord(presets_custom_command, ctx)
+        await ShowView().discord(presets_custom_command, inter, "scr-presets_custom")
 
     @commands.slash_command(name="scr-historical")
     async def historical(
         self,
-        ctx: disnake.AppCmdInter,
+        inter: disnake.AppCmdInter,
         signal: str = commands.Param(autocomplete=signals_autocomp),
         start="",
     ):
@@ -151,14 +148,14 @@ class ScreenerCommands(commands.Cog):
         signal: Signal. Default: most_volatile
         start: Starting date in YYYY-MM-DD format
         """
-        await ctx.response.defer()
-        logger.info("scr-historical")
-        await ShowView().discord(historical_command, ctx, signal, start)
+        await ShowView().discord(
+            historical_command, inter, "scr-historical", signal, start
+        )
 
     @commands.slash_command(name="scr-overview")
     async def overview(
         self,
-        ctx: disnake.AppCmdInter,
+        inter: disnake.AppCmdInter,
         preset: str = commands.Param(autocomplete=presets_custom_autocomp),
         sort: str = commands.Param(choices=sort["overview"]),
         limit: int = 5,
@@ -173,14 +170,14 @@ class ScreenerCommands(commands.Cog):
         limit: number of stocks to display
         ascend: whether it's sorted by ascending order or not. Default: False
         """
-        await ctx.response.defer()
-        logger.info("scr-overview")
-        await ShowView().discord(overview_command, ctx, preset, sort, limit, ascend)
+        await ShowView().discord(
+            overview_command, inter, "scr-overview", preset, sort, limit, ascend
+        )
 
     @commands.slash_command(name="scr-valuation")
     async def valuation(
         self,
-        ctx: disnake.AppCmdInter,
+        inter: disnake.AppCmdInter,
         preset: str = commands.Param(autocomplete=presets_custom_autocomp),
         sort: str = commands.Param(choices=sort["valuation"]),
         limit: int = 5,
@@ -195,14 +192,14 @@ class ScreenerCommands(commands.Cog):
         limit: number of stocks to display
         ascend: whether it's sorted by ascending order or not. Default: False
         """
-        await ctx.response.defer()
-        logger.info("scr-valuation")
-        await ShowView().discord(valuation_command, ctx, preset, sort, limit, ascend)
+        await ShowView().discord(
+            valuation_command, inter, "scr-valuation", preset, sort, limit, ascend
+        )
 
     @commands.slash_command(name="scr-financial")
     async def financial(
         self,
-        ctx: disnake.AppCmdInter,
+        inter: disnake.AppCmdInter,
         preset: str = commands.Param(autocomplete=presets_custom_autocomp),
         sort: str = commands.Param(choices=sort["financial"]),
         limit: int = 5,
@@ -217,14 +214,14 @@ class ScreenerCommands(commands.Cog):
         limit: number of stocks to display
         ascend: whether it's sorted by ascending order or not. Default: False
         """
-        await ctx.response.defer()
-        logger.info("scr-financial")
-        await ShowView().discord(financial_command, ctx, preset, sort, limit, ascend)
+        await ShowView().discord(
+            financial_command, inter, "scr-financial", preset, sort, limit, ascend
+        )
 
     @commands.slash_command(name="scr-ownership")
     async def ownership(
         self,
-        ctx: disnake.AppCmdInter,
+        inter: disnake.AppCmdInter,
         preset: str = commands.Param(autocomplete=presets_custom_autocomp),
         sort: str = commands.Param(choices=sort["ownership"]),
         limit: int = 5,
@@ -239,14 +236,14 @@ class ScreenerCommands(commands.Cog):
         limit: number of stocks to display
         ascend: whether it's sorted by ascending order or not. Default: False
         """
-        await ctx.response.defer()
-        logger.info("scr-ownership")
-        await ShowView().discord(ownership_command, ctx, preset, sort, limit, ascend)
+        await ShowView().discord(
+            ownership_command, inter, "scr-ownership", preset, sort, limit, ascend
+        )
 
     @commands.slash_command(name="scr-performance")
     async def performance(
         self,
-        ctx: disnake.AppCmdInter,
+        inter: disnake.AppCmdInter,
         preset: str = commands.Param(autocomplete=presets_custom_autocomp),
         sort: str = commands.Param(choices=sort["performance"]),
         limit: int = 5,
@@ -261,14 +258,14 @@ class ScreenerCommands(commands.Cog):
         limit: number of stocks to display
         ascend: whether it's sorted by ascending order or not. Default: False
         """
-        await ctx.response.defer()
-        logger.info("scr-performance")
-        await ShowView().discord(performance_command, ctx, preset, sort, limit, ascend)
+        await ShowView().discord(
+            performance_command, inter, "scr-performance", preset, sort, limit, ascend
+        )
 
     @commands.slash_command(name="scr-technical")
     async def technical(
         self,
-        ctx: disnake.AppCmdInter,
+        inter: disnake.AppCmdInter,
         preset: str = commands.Param(autocomplete=presets_custom_autocomp),
         sort: str = commands.Param(choices=sort["technical"]),
         limit: int = 5,
@@ -283,9 +280,9 @@ class ScreenerCommands(commands.Cog):
         limit: number of stocks to display
         ascend: whether it's sorted by ascending order or not. Default: False
         """
-        await ctx.response.defer()
-        logger.info("scr-technical")
-        await ShowView().discord(technical_command, ctx, preset, sort, limit, ascend)
+        await ShowView().discord(
+            technical_command, inter, "scr-technical", preset, sort, limit, ascend
+        )
 
 
 def setup(bot: commands.Bot):

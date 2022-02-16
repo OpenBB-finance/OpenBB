@@ -213,12 +213,11 @@ def image_border(file):
 
 
 class ShowView:
-    async def discord(self, func, ctx, *args, **kwargs):
-        # try:
+    async def run_discord(self, func, inter, *args, **kwargs):
         data = func(*args, **kwargs)
 
         if "view" in data:
-            await ctx.send(
+            await inter.send(
                 embed=data["embed"][0],
                 view=data["view"](data["embed"], data["choices"]),
             )
@@ -236,20 +235,27 @@ class ShowView:
                 image = disnake.File(data["imagefile"])
                 embed.set_image(url=f"attachment://{data['imagefile']}")
                 os.remove(data["imagefile"])
-                await ctx.send(embed=embed, file=image)
+                await inter.send(embed=embed, file=image)
             else:
-                await ctx.send(embed=embed)
-        """
-        except Exception as e:
-            embed = disnake.Embed(
-                title=f"ERROR {data['title']}",
-                colour=cfg.COLOR,
-                description=e,
-            )
-            embed.set_author(
-                name=cfg.AUTHOR_NAME,
-                icon_url=cfg.AUTHOR_ICON_URL,
-            )
+                await inter.send(embed=embed)
 
-            await ctx.send(embed=embed, delete_after=30.0)
-            """
+    async def discord(self, func, inter, name, *args, **kwargs):
+        await inter.response.defer()
+        cfg.logger.info(name)
+        if os.environ.get("DEBUG_MODE") == "true":
+            self.run_discord(func, inter, *args, **kwargs)
+        else:
+            try:
+                self.run_discord(func, inter, *args, **kwargs)
+            except Exception as e:
+                embed = disnake.Embed(
+                    title=name,
+                    colour=cfg.COLOR,
+                    description=e,
+                )
+                embed.set_author(
+                    name=cfg.AUTHOR_NAME,
+                    icon_url=cfg.AUTHOR_ICON_URL,
+                )
+
+                await inter.send(embed=embed, delete_after=30.0)

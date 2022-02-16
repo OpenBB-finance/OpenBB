@@ -3,7 +3,6 @@ from __future__ import annotations
 import disnake
 from disnake.ext import commands
 
-from bots.config_discordbot import logger
 from bots.helpers import ShowView, ticker_autocomp
 from bots.stocks.due_diligence.analyst import analyst_command
 from bots.stocks.due_diligence.arktrades import arktrades_command
@@ -22,7 +21,7 @@ class DueDiligenceCommands(commands.Cog):
 
     @commands.slash_command(name="dd-analyst")
     async def analyst(
-        ctx: disnake.AppCmdInter,
+        inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
     ):
         """Displays analyst recommendations [Finviz]
@@ -31,13 +30,11 @@ class DueDiligenceCommands(commands.Cog):
         -----------
         ticker: Stock Ticker
         """
-        await ctx.response.defer()
-        logger.info("dd-analyst")
-        await ShowView().discord(analyst_command, ctx, ticker)
+        await ShowView().discord(analyst_command, inter, "dd-analyst", ticker)
 
     @commands.slash_command(name="dd-pt")
     async def pt(
-        ctx: disnake.AppCmdInter,
+        inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
         raw: bool = False,
         start="",
@@ -50,13 +47,11 @@ class DueDiligenceCommands(commands.Cog):
         raw: True or false
         start: YYYY-MM-DD format
         """
-        await ctx.response.defer()
-        logger.info("dd-pt")
-        await ShowView().discord(pt_command, ctx, ticker, raw, start)
+        await ShowView().discord(pt_command, inter, "dd-pt", ticker, raw, start)
 
     @commands.slash_command(name="dd-est")
     async def est(
-        ctx: disnake.AppCmdInter,
+        inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
     ):
         """Displays earning estimates [Business Insider]
@@ -65,13 +60,11 @@ class DueDiligenceCommands(commands.Cog):
         -----------
         ticker: Stock Ticker
         """
-        await ctx.response.defer()
-        logger.info("dd-est")
-        await ShowView().discord(est_command, ctx, ticker)
+        await ShowView().discord(est_command, inter, "dd-est", ticker)
 
     @commands.slash_command(name="dd-sec")
     async def sec(
-        ctx: disnake.AppCmdInter,
+        inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
     ):
         """Displays sec filings [Market Watch]
@@ -80,13 +73,11 @@ class DueDiligenceCommands(commands.Cog):
         -----------
         ticker: Stock Ticker
         """
-        await ctx.response.defer()
-        logger.info("dd-sec")
-        await ShowView().discord(sec_command, ctx, ticker)
+        await ShowView().discord(sec_command, inter, "dd-sec", ticker)
 
     @commands.slash_command(name="dd-supplier")
     async def supplier(
-        ctx: disnake.AppCmdInter,
+        inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
     ):
         """Displays suppliers of the company [CSIMarket]
@@ -95,13 +86,11 @@ class DueDiligenceCommands(commands.Cog):
         -----------
         ticker: Stock Ticker
         """
-        await ctx.response.defer()
-        logger.info("dd-supplier")
-        await ShowView().discord(supplier_command, ctx, ticker)
+        await ShowView().discord(supplier_command, inter, "dd-supplier", ticker)
 
     @commands.slash_command(name="dd-customer")
     async def customer(
-        ctx: disnake.AppCmdInter,
+        inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
     ):
         """Displays customers of the company [CSIMarket]
@@ -110,13 +99,11 @@ class DueDiligenceCommands(commands.Cog):
         -----------
         ticker: Stock Ticker
         """
-        await ctx.response.defer()
-        logger.info("dd-customer")
-        await ShowView().discord(customer_command, ctx, ticker)
+        await ShowView().discord(customer_command, inter, "dd-customer", ticker)
 
     @commands.slash_command(name="dd-arktrades")
     async def arktrades(
-        ctx: disnake.AppCmdInter,
+        inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
         num: int = 10,
     ):
@@ -127,9 +114,7 @@ class DueDiligenceCommands(commands.Cog):
         ticker: Stock Ticker
         num: number of rows displayed
         """
-        await ctx.response.defer()
-        logger.info("dd-arktrades")
-        await ShowView().discord(arktrades_command, ctx, ticker, num)
+        await ShowView().discord(arktrades_command, inter, "dd-arktrades", ticker, num)
 
 
 def setup(bot: commands.Bot):

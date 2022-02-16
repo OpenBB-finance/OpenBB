@@ -1,9 +1,6 @@
-from functools import wraps
-
 import disnake
 from disnake.ext import commands
 
-from bots.config_discordbot import logger
 from bots.economy.currencies import currencies_command
 from bots.economy.energy import energy_command
 from bots.economy.feargreed import feargreed_command
@@ -48,28 +45,6 @@ fgind = {
     "Safe Heaven Demand": "shd",
 }
 
-methods = {
-    "feargreed": {"name":"econ-feargreed", "command": feargreed_command},
-    "overview": {"name":"econ-overview", "command": overview_command}
-}
-def add_method(cls):
-    def decorator(func):
-        @wraps(func)
-        def wrapper(self, *args, **kwargs):
-            return func(*args, **kwargs)
-        setattr(cls, "Test", wrapper)
-        # Note we are not binding func, but wrapper which accepts self but does exactly the same as func
-        return func # returning func means func can still be used normally
-    return decorator
-
-def factory(data):
-    @commands.slash_command(name=data["name"])
-    async def f(*args, **kwargs):
-        await args[1].response.defer()
-        logger.info("")
-        await ShowView().discord(data["command"], *args, **kwargs)
-    return f
-
 
 class EconomyCommands(commands.Cog):
     """Economy Commands menu"""
@@ -77,88 +52,70 @@ class EconomyCommands(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
+    @commands.slash_command(name="econ-feargreed")
+    async def feargreed(self, inter: disnake.AppCmdInter):
+        """Feargreed command [CNN]"""
+        await ShowView().discord(feargreed_command, inter, "econ-feargreed")
 
     @commands.slash_command(name="econ-overview")
-    async def overview(self, ctx: disnake.AppCmdInter):
+    async def overview(self, inter: disnake.AppCmdInter):
         """Market data overview [Wall St. Journal]"""
-        await ctx.response.defer()
-        logger.info("econ-overview")
-        await ShowView().discord(overview_command, ctx)
+        await ShowView().discord(overview_command, inter, "econ-overview")
 
     @commands.slash_command(name="econ-indices")
-    async def indices(self, ctx: disnake.AppCmdInter):
+    async def indices(self, inter: disnake.AppCmdInter):
         """US indices overview [Wall St. Journal]"""
-        await ctx.response.defer()
-        logger.info("econ-indices")
-        await ShowView().discord(indices_command, ctx)
+        await ShowView().discord(indices_command, inter, "econ-indices")
 
     @commands.slash_command(name="econ-futures")
-    async def futures(self, ctx: disnake.AppCmdInter):
+    async def futures(self, inter: disnake.AppCmdInter):
         """Futures and commodities overview [Wall St. Journal]"""
-        await ctx.response.defer()
-        logger.info("econ-futures")
-        await ShowView().discord(futures_command, ctx)
+        await ShowView().discord(futures_command, inter, "econ-futures")
 
     @commands.slash_command(name="econ-usbonds")
-    async def usbonds(self, ctx: disnake.AppCmdInter):
+    async def usbonds(self, inter: disnake.AppCmdInter):
         """US bonds overview [Wall St. Journal]"""
-        await ctx.response.defer()
-        logger.info("econ-usbonds")
-        await ShowView().discord(usbonds_command, ctx)
+        await ShowView().discord(usbonds_command, inter, "econ-usbonds")
 
     @commands.slash_command(name="econ-glbonds")
-    async def glbonds(self, ctx: disnake.AppCmdInter):
+    async def glbonds(self, inter: disnake.AppCmdInter):
         """Global bonds overview [Wall St. Journal]"""
-        await ctx.response.defer()
-        logger.info("econ-glbonds")
-        await ShowView().discord(glbonds_command, ctx)
+        await ShowView().discord(glbonds_command, inter, "econ-glbonds")
 
     @commands.slash_command(name="econ-energy")
-    async def energy(self, ctx: disnake.AppCmdInter):
+    async def energy(self, inter: disnake.AppCmdInter):
         """Displays energy futures data [Finviz]"""
-        await ctx.response.defer()
-        logger.info("econ-energy")
-        await ShowView().discord(energy_command, ctx)
+        await ShowView().discord(energy_command, inter, "econ-energy")
 
     @commands.slash_command(name="econ-metals")
-    async def metals(self, ctx: disnake.AppCmdInter):
+    async def metals(self, inter: disnake.AppCmdInter):
         """Displays metals futures data [Finviz]"""
-        await ctx.response.defer()
-        logger.info("econ-metals")
-        await ShowView().discord(metals_command, ctx)
+        await ShowView().discord(metals_command, inter, "econ-metals")
 
     @commands.slash_command(name="econ-meats")
-    async def meats(self, ctx: disnake.AppCmdInter):
+    async def meats(self, inter: disnake.AppCmdInter):
         """Displays meats futures data [Finviz]"""
-        await ctx.response.defer()
-        logger.info("econ-meats")
-        await ShowView().discord(meats_command, ctx)
+        await ShowView().discord(meats_command, inter, "econ-meats")
 
     @commands.slash_command(name="econ-grains")
-    async def grains(self, ctx: disnake.AppCmdInter):
+    async def grains(self, inter: disnake.AppCmdInter):
         """Displays grains futures data [Finviz]"""
-        await ctx.response.defer()
-        logger.info("econ-grains")
-        await ShowView().discord(grains_command, ctx)
+        await ShowView().discord(grains_command, inter, "econ-grains")
 
     @commands.slash_command(name="econ-softs")
-    async def softs(self, ctx: disnake.AppCmdInter):
+    async def softs(self, inter: disnake.AppCmdInter):
         """Displays softs futures data [Finviz]"""
-        await ctx.response.defer()
-        logger.info("econ-softs")
-        await ShowView().discord(softs_command, ctx)
+        await ShowView().discord(softs_command, inter, "econ-softs")
 
     @commands.slash_command(name="econ-currencies")
-    async def currencies(self, ctx: disnake.AppCmdInter):
+    async def currencies(self, inter: disnake.AppCmdInter):
         """Currencies overview [Wall St. Journal]"""
-        await ctx.response.defer()
-        logger.info("econ-currencies")
-        await ShowView().discord(currencies_command, ctx)
+        await ShowView().discord(currencies_command, inter, "econ-currencies")
 
     @commands.slash_command(name="econ-valuation")
     async def valuation(
         self,
-        ctx: disnake.AppCmdInter,
+        inter: disnake.AppCmdInter,
         economy_group: str = commands.Param(choices=group),
     ):
         """Valuation of sectors, industry, country [Finviz]
@@ -167,14 +124,14 @@ class EconomyCommands(commands.Cog):
         -----------
         economy_group: Economy Group
         """
-        await ctx.response.defer()
-        logger.info("econ-valuation")
-        await ShowView().discord(valuation_command, ctx, economy_group)
+        await ShowView().discord(
+            valuation_command, inter, "econ-valuation", economy_group
+        )
 
     @commands.slash_command(name="econ-performance")
     async def performance(
         self,
-        ctx: disnake.AppCmdInter,
+        inter: disnake.AppCmdInter,
         economy_group: str = commands.Param(choices=group),
     ):
         """Performance of sectors, industry, country [Finviz]
@@ -183,13 +140,10 @@ class EconomyCommands(commands.Cog):
         -----------
         economy_group: Economy Group
         """
-        await ctx.response.defer()
-        logger.info("econ-performance")
-        await ShowView().discord(performance_command, ctx, economy_group)
+        await ShowView().discord(
+            performance_command, inter, "econ-performance", economy_group
+        )
 
 
 def setup(bot: commands.Bot):
-    for _, value in methods.items():
-        func = factory(value)
-        add_method(EconomyCommands)(func)
     bot.add_cog(EconomyCommands(bot))

@@ -3,7 +3,6 @@ from __future__ import annotations
 import disnake
 from disnake.ext import commands
 
-from bots.config_discordbot import logger
 from bots.helpers import ShowView, ticker_autocomp
 from bots.stocks.dark_pool_shorts.dpotc import dpotc_command
 from bots.stocks.dark_pool_shorts.ftd import ftd_command
@@ -35,33 +34,29 @@ class DarkPoolShortsCommands(commands.Cog):
         self.bot.help_command = None
 
     @commands.slash_command(name="dps-shorted")
-    async def shorted(self, ctx: disnake.AppCmdInter, num: int = 10):
+    async def shorted(self, inter: disnake.AppCmdInter, num: int = 10):
         """Show most shorted stocks [Yahoo Finance]
 
         Parameters
         -----------
         num: Number of the most shorted stocks to retrieve
         """
-        await ctx.response.defer()
-        logger.info("dps-shorted")
-        await ShowView().discord(shorted_command, ctx, num)
+        await ShowView().discord(shorted_command, inter, "dps-shorted", num)
 
     @commands.slash_command(name="dps-hsi")
-    async def hsi(self, ctx: disnake.AppCmdInter, num: int = 10):
+    async def hsi(self, inter: disnake.AppCmdInter, num: int = 10):
         """Show top high short interest stocks of over 20% ratio [shortinterest.com]
 
         Parameters
         -----------
         num: Number of top stocks to print
         """
-        await ctx.response.defer()
-        logger.info("dps-hsi")
-        await ShowView().discord(hsi_command, ctx, num)
+        await ShowView().discord(hsi_command, inter, "dps-hsi", num)
 
     @commands.slash_command(name="dps-pos")
     async def pos(
         self,
-        ctx: disnake.AppCmdInter,
+        inter: disnake.AppCmdInter,
         sort: str = commands.Param(choices=pos_choices),
         num: int = 10,
     ):
@@ -72,14 +67,12 @@ class DarkPoolShortsCommands(commands.Cog):
         sort: Field for which to sort.
         num: Number of top tickers to show
         """
-        await ctx.response.defer()
-        logger.info("dps-pos")
-        await ShowView().discord(pos_command, ctx, sort, num)
+        await ShowView().discord(pos_command, inter, "dps-pos", sort, num)
 
     @commands.slash_command(name="dps-sidtc")
     async def sidtc(
         self,
-        ctx: disnake.AppCmdInter,
+        inter: disnake.AppCmdInter,
         sort: str = commands.Param(
             choices={
                 "Float Short %": "float",
@@ -96,14 +89,12 @@ class DarkPoolShortsCommands(commands.Cog):
         sort: Field for which to sort. Possible are: `float`, `dtc`, `si`.
         num: Number of top tickers to show
         """
-        await ctx.response.defer()
-        logger.info("dps-sidtc")
-        await ShowView().discord(sidtc_command, ctx, sort, num)
+        await ShowView().discord(sidtc_command, inter, "dps-sidtc", sort, num)
 
     @commands.slash_command(name="dps-ftd")
     async def ftd(
         self,
-        ctx: disnake.AppCmdInter,
+        inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
         start="",
         end="",
@@ -116,14 +107,12 @@ class DarkPoolShortsCommands(commands.Cog):
         start: YYYY-MM-DD format
         end: YYYY-MM-DD format
         """
-        await ctx.response.defer()
-        logger.info("dps-ftd")
-        await ShowView().discord(ftd_command, ctx, ticker, start, end)
+        await ShowView().discord(ftd_command, inter, "dps-ftd", ticker, start, end)
 
     @commands.slash_command(name="dps-dpotc")
     async def dpotc(
         self,
-        ctx: disnake.AppCmdInter,
+        inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
     ):
         """Dark pools (ATS) vs OTC data [FINRA]
@@ -132,14 +121,12 @@ class DarkPoolShortsCommands(commands.Cog):
         ----------
         ticker: Stock Ticker
         """
-        await ctx.response.defer()
-        logger.info("dps-dpotc")
-        await ShowView().discord(dpotc_command, ctx, ticker)
+        await ShowView().discord(dpotc_command, inter, "dps-dpotc", ticker)
 
     @commands.slash_command(name="dps-spos")
     async def spos(
         self,
-        ctx: disnake.AppCmdInter,
+        inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
     ):
         """Net short vs position [Stockgrid]
@@ -148,14 +135,12 @@ class DarkPoolShortsCommands(commands.Cog):
         ----------
         ticker: Stock Ticker
         """
-        await ctx.response.defer()
-        logger.info("dps-spos")
-        await ShowView().discord(spos_command, ctx, ticker)
+        await ShowView().discord(spos_command, inter, "dps-spos", ticker)
 
     @commands.slash_command(name="dps-psi")
     async def psi(
         self,
-        ctx: disnake.AppCmdInter,
+        inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
     ):
         """Price vs short interest volume [Stockgrid]
@@ -164,9 +149,7 @@ class DarkPoolShortsCommands(commands.Cog):
         ----------
         ticker: Stock Ticker
         """
-        await ctx.response.defer()
-        logger.info("dps-psi")
-        await ShowView().discord(psi_command, ctx, ticker)
+        await ShowView().discord(psi_command, inter, "dps-psi", ticker)
 
 
 def setup(bot: commands.Bot):
