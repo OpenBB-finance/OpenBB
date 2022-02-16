@@ -30,15 +30,16 @@ def display_management(ticker: str, export: str = ""):
         lambda x: "\n".join(textwrap.wrap(x, width=30)) if isinstance(x, str) else x
     )
 
-    names = ["Name"] + list(df_new.columns)
     if not df_new.empty:
         print_rich_table(
             df_new,
             title="Company Managers",
-            headers=names,
+            headers=list(df_new.columns),
+            show_index=True,
+            index_name="Name",
         )
 
-        console.print("")
+        console.print()
         export_data(
             export, os.path.dirname(os.path.abspath(__file__)), "mgmt", df_management
         )
