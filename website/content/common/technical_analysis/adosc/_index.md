@@ -15,4 +15,5 @@ optional arguments:
                         Export dataframe data to csv,json,xlsx file (default: )
   -h, --help            show this help message (default: False)
 ```
-<img size="1400" alt="Feature Screenshot - adosc" src="https://user-images.githubusercontent.com/85772166/143980871-6e658d3e-39a7-4192-8477-4e0e79dd8ca5.png">
+
+![adosc](https://user-images.githubusercontent.com/46355364/154309482-31c027ab-e80f-4145-9c63-392a74cf69c7.png)
