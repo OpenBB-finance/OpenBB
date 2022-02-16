@@ -590,7 +590,6 @@ class DiscoveryController(BaseController):
                 sells_only=ns_parser.sells_only,
                 fund=ns_parser.fund,
                 export=ns_parser.export,
-                directory=ns_parser.directory,
             )
 
     def call_upcoming(self, other_args: List[str]):
