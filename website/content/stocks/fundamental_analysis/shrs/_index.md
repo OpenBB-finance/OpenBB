@@ -11,7 +11,7 @@ optional arguments:
                         Export raw data into csv, json, xlsx (default: )
 ```
 
-Example:
+Example (ticker is TSLA):
 ```
 2022 Feb 16, 07:08 (✨) /stocks/fa/ $ shrs
 
