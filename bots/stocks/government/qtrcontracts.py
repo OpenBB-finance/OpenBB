@@ -19,7 +19,9 @@ def qtrcontracts_command(num: int = 20, analysis=""):
     if analysis == "":
         analysis = "total"
     elif analysis not in possible_args:
-        raise Exception("Enter a valid analysis argument, options are: total, upmom and downmom")
+        raise Exception(
+            "Enter a valid analysis argument, options are: total, upmom and downmom"
+        )
 
     # Retrieve Data
     df_contracts = quiverquant_model.get_government_trading("quarter-contracts")
