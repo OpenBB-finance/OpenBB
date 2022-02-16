@@ -15,4 +15,4 @@ optional arguments:
   -h, --help            show this help message (default: False)
 ```
 
-<img size="1400" alt="Feature Screenshot - cusum" src="https://user-images.githubusercontent.com/25267873/112729206-ef37be80-8f22-11eb-9a53-8e8e55c4caf0.png">
+![cusum](https://user-images.githubusercontent.com/46355364/154306207-d68f53f4-2f9a-4c1a-8e0e-b83d49938759.png)
