@@ -1,13 +1,16 @@
 ```
-usage: blos [-n NUM] [-h]
+usage: blos [-l LIMIT] [-h] [--export {csv,json,xlsx}]
 ```
 
 Print big latest officer sales ($100k+) Source: https://Openinsider.com
 
 ```
 optional arguments:
-  -n NUM, --num NUM  Number of datarows to display (default: 20)
-  -h, --help         show this help message (default: False)
+  -l LIMIT, --limit LIMIT
+                        Limit of datarows to display (default: 10)
+  -h, --help            show this help message (default: False)
+  --export {csv,json,xlsx}
+                        Export raw data into csv, json, xlsx (default: )
 ```
 
 Example:
