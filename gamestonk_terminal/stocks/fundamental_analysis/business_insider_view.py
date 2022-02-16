@@ -26,17 +26,21 @@ def display_management(ticker: str, export: str = ""):
     """
     df_management = business_insider_model.get_management(ticker)
 
-    names = ["Name"] + list(df_management.columns)
-
-    print_rich_table(
-        df_management.applymap(
-            lambda x: "\n".join(textwrap.wrap(x, width=30)) if isinstance(x, str) else x
-        ),
-        title="Company Managers",
-        headers=names,
+    df_new = df_management.applymap(
+        lambda x: "\n".join(textwrap.wrap(x, width=30)) if isinstance(x, str) else x
     )
 
-    console.print("")
-    export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), "mgmt", df_management
-    )
+    names = ["Name"] + list(df_new.columns)
+    if not df_new.empty:
+        print_rich_table(
+            df_new,
+            title="Company Managers",
+            headers=names,
+        )
+
+        console.print("")
+        export_data(
+            export, os.path.dirname(os.path.abspath(__file__)), "mgmt", df_management
+        )
+    else:
+        console.print("[red]Data not available[/red]\n")
