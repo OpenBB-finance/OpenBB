@@ -1,5 +1,5 @@
 ```
-usage: contracts [-p PAST_TRANSACTION_DAYS] [--raw] [-h] [--export {png,jpg,pdf,svg,csv,json,xlsx}]
+usage: contracts [-p PAST_TRANSACTION_DAYS] [--raw] [-h] [--export {csv,json,xlsx,png,jpg,pdf,svg}]
 ```
 
 Contracts associated with the loaded ticker. [Source: www.quiverquant.com]
@@ -10,8 +10,8 @@ optional arguments:
                         Past transaction days (default: 10)
   --raw                 Print raw data. (default: False)
   -h, --help            show this help message (default: False)
-  --export {png,jpg,pdf,svg,csv,json,xlsx}
-                        Export plot to png,jpg,pdf,svg file or export dataframe to csv,json,xlsx (default: )
+  --export {csv,json,xlsx,png,jpg,pdf,svg}
+                        Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg (default: )
 ```
 
-<img size ="1400" alt="contracts" src="https://user-images.githubusercontent.com/25267873/119065405-59c22380-b9d5-11eb-9a34-9cad288b22de.png">
+![contracts](https://user-images.githubusercontent.com/46355364/154263066-0ff61349-4fe5-4eac-9e60-23fa075a9e9f.png)
