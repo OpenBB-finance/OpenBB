@@ -63,6 +63,7 @@ class KeysController(BaseController):
         "coinglass",
         "cpanic",
         "ethplorer",
+        "smartstake",
     ]
     PATH = "/keys/"
     key_dict: Dict = {}
@@ -563,6 +564,36 @@ class KeysController(BaseController):
         if show_output:
             console.print(self.key_dict["ETHPLORER"] + "\n")
 
+    def check_smartstake_key(self, show_output: bool = False) -> None:
+        """Check Smartstake key"""
+        self.cfg_dict["SMARTSTAKE"] = "smartstake"
+        if "REPLACE_ME" in [
+            cfg.API_SMARTSTAKE_TOKEN,
+            cfg.API_SMARTSTAKE_KEY,
+        ]:
+            self.key_dict["SMARTSTAKE"] = "not defined"
+        else:
+            payload = {
+                "type": "history",
+                "dayCount": 30,
+                "key": cfg.API_SMARTSTAKE_KEY,
+                "token": cfg.API_SMARTSTAKE_TOKEN,
+            }
+
+            smartstake_url = "https://prod.smartstakeapi.com/listData?app=TERRA"
+            response = requests.get(smartstake_url, params=payload)  # type: ignore
+
+            try:
+                if response.status_code == 200:
+                    self.key_dict["SMARTSTAKE"] = "defined, test passed"
+                else:
+                    self.key_dict["SMARTSTAKE"] = "defined, test unsuccessful"
+            except Exception as _:  # noqa: F841
+                self.key_dict["SMARTSTAKE"] = "defined, test unsuccessful"
+
+        if show_output:
+            console.print(self.key_dict["SMARTSTAKE"] + "\n")
+
     def check_keys_status(self) -> None:
         """Check keys status"""
         self.check_av_key()
@@ -589,6 +620,7 @@ class KeysController(BaseController):
         self.check_coinglass_key()
         self.check_cpanic_key()
         self.check_ethplorer_key()
+        self.check_smartstake_key()
 
     def print_help(self):
         """Print help"""
@@ -1350,6 +1382,50 @@ class KeysController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            os.environ["GT_API_ETHPLORER_KEY"] = ns_parser.key
+            dotenv.set_key(self.env_file, "GT_API_ETHPLORER_KEY", ns_parser.key)
+            cfg.API_ETHPLORER_KEY = ns_parser.key
+
+            self.check_ethplorer_key(show_output=True)
+
+    def call_smartstake(self, other_args: List[str]):
+        """Process smartstake command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="smartstake",
+            description="Set Smartstake Key and Token.",
+        )
+        parser.add_argument(
+            "-k",
+            "--key",
+            type=str,
+            dest="key",
+            help="Key",
+        )
+        parser.add_argument(
+            "-t",
+            "--token",
+            type=str,
+            dest="token",
+            help="Token",
+        )
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+
+        if ns_parser:
+            os.environ["GT_API_SMARTSTAKE_TOKEN"] = ns_parser.token
+            dotenv.set_key(self.env_file, "GT_API_SMARTSTAKE_TOKEN", ns_parser.token)
+            cfg.API_SMARTSTAKE_TOKEN = ns_parser.token
+
+            os.environ["GT_API_SMARTSTAKE_KEY"] = ns_parser.key
+            dotenv.set_key(self.env_file, "GT_API_SMARTSTAKE_KEY", ns_parser.key)
+            cfg.API_SMARTSTAKE_KEY = ns_parser.key
+
+            self.check_smartstake_key(show_output=True)
+
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             os.environ["GT_API_ETHPLORER_KEY"] = ns_parser.key

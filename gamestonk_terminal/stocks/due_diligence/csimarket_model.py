@@ -34,9 +34,9 @@ def get_suppliers(ticker: str) -> str:
 
     l_supplier = list()
     for supplier in text_supplier_chain.findAll(
-        "td", {"class": "plavat svjetlirub dae al"}
+        "td", {"class": "svjetlirub11 block al"}
     ):
-        l_supplier.append(supplier.text)
+        l_supplier.append(supplier.text.replace("\n", "").strip())
 
     if l_supplier:
         return f"List of Suppliers: {', '.join(l_supplier)}\n"
