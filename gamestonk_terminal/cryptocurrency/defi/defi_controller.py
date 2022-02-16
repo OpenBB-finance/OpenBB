@@ -15,6 +15,7 @@ from gamestonk_terminal.cryptocurrency.defi import (
     terraengineer_view,
     terramoney_fcd_view,
     terramoney_fcd_model,
+    smartstake_view,
 )
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
@@ -65,6 +66,7 @@ class DefiController(BaseController):
         "gacc",
         "sratio",
         "sreturn",
+        "lcsc",
     ]
 
     PATH = "/crypto/defi/"
@@ -126,7 +128,10 @@ class DefiController(BaseController):
     govp          Displays terra blockchain governance proposals list
     gacc          Displays terra blockchain account growth history
     sratio        Displays terra blockchain staking ratio history
-    sreturn       Displays terra blockchain staking returns history[/cmds]
+    sreturn       Displays terra blockchain staking returns history
+
+[src][Smartstake][/src]
+    lcsc         Displays Luna circulating supply changes[/cmds]
 """
         console.print(text=help_text, menu="Cryptocurrency - Decentralized Finance")
 
@@ -1145,5 +1150,46 @@ class DefiController(BaseController):
                 sortby=ns_parser.sortby,
                 descend=ns_parser.descend,
                 link=ns_parser.link,
+                export=ns_parser.export,
+            )
+
+    def call_lcsc(self, other_args: List[str]):
+        """Process lcsc command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="lcsc",
+            description="""
+                Display Luna circulating supply changes stats.
+                [Source: Smartstake.io]
+
+                Follow these steps to get the key token:
+                1. Head to https://terra.smartstake.io/
+                2. Right click on your browser and choose Inspect
+                3. Select Network tab (by clicking on the expand button next to Source tab)
+                4. Go to Fetch/XHR tab, and refresh the page
+                5. Get the option looks similar to the following: `listData?type=history&dayCount=30`
+                6. Extract the key and token out of the URL
+
+            """,
+        )
+
+        parser.add_argument(
+            "-d",
+            "--days",
+            dest="days",
+            type=check_positive,
+            help="Number of days to display. Default: 30 days",
+            default=30,
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, limit=5
+        )
+
+        if ns_parser:
+            smartstake_view.display_luna_circ_supply_change(
+                days=ns_parser.days,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
