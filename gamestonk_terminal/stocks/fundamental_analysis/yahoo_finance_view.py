@@ -210,6 +210,7 @@ def display_dividends(
             div_history.head(limit),
             headers=["Amount Paid ($)", "Change"],
             title="Ticker Historical Dividends",
+            show_index=True
         )
     console.print("")
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "divs", div_history)
