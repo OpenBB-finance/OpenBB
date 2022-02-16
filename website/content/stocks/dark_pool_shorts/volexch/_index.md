@@ -1,19 +1,19 @@
 ```
-usage: volexch [--raw] [-s {,NetShort,Date,TotalVolume,PctShort}] [-a] [-m] [-h] [--export {png,jpg,pdf,svg}]
+usage: volexch [-r] [-s {,NetShort,Date,TotalVolume,PctShort}] [-a] [-p] [-h] [--export {csv,json,xlsx,png,jpg,pdf,svg}]
 ```
 
 Displays short volume across lit NYSE venues. This data is updated nightly, this command may not not be available during updates.
 
 ```
 optional arguments:
-  --raw                 Display raw data
+  -r, --raw             Display raw data
   -s {,NetShort,Date,TotalVolume,PctShort}, --sort {,NetShort,Date,TotalVolume,PctShort}
                         Column to sort by
   -a, --asc             Sort in ascending order
-  -m, --mpl             Display plot using matplotlb.
+  -p, --plotly          Display plot using interactive plotly.
   -h, --help            show this help message
-  --export {png,jpg,pdf,svg}
-                        Export or figure into png, jpg, pdf, svg
+  --export {csv,json,xlsx,png,jpg,pdf,svg}
+                        Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg
 ```
-<img size="1400" alt="Feature Screenshot - volexch" src="https://user-images.githubusercontent.com/85772166/144008682-e5ddf0b3-b99b-4bb0-9e7d-1eb235f89f21.png">
 
+![volexch](https://user-images.githubusercontent.com/46355364/154225329-3e3d82a5-8bf4-4fbe-b1c5-d76a8c04a0a0.png)
