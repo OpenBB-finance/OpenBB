@@ -73,32 +73,35 @@ def get_watchlists(
     n_flair_posts_found = 0
     for sub in submissions:
         submission = praw_api.submission(id=sub.id)
-        if (
-            not submission.removed_by_category
-            and submission.selftext
-            and submission.link_flair_text not in ["Yolo", "Meme"]
-            and submission.author.name not in l_watchlist_author
-        ):
-            l_tickers_found = find_tickers(submission)
+        if submission:
+            if (
+                not submission.removed_by_category
+                and submission.selftext
+                and submission.link_flair_text not in ["Yolo", "Meme"]
+                and submission.author.name not in l_watchlist_author
+            ):
+                l_tickers_found = find_tickers(submission)
 
-            if l_tickers_found:
-                # Add another author's name to the parsed watchlists
-                l_watchlist_author.append(submission.author.name)
+                if l_tickers_found:
+                    # Add another author's name to the parsed watchlists
+                    l_watchlist_author.append(submission.author.name)
 
-                # Lookup stock tickers within a watchlist
-                for key in l_tickers_found:
-                    if key in d_watchlist_tickers:
-                        # Increment stock ticker found
-                        d_watchlist_tickers[key] += 1
-                    else:
-                        # Initialize stock ticker found
-                        d_watchlist_tickers[key] = 1
+                    # Lookup stock tickers within a watchlist
+                    for key in l_tickers_found:
+                        if key in d_watchlist_tickers:
+                            # Increment stock ticker found
+                            d_watchlist_tickers[key] += 1
+                        else:
+                            # Initialize stock ticker found
+                            d_watchlist_tickers[key] = 1
 
-                # Increment count of valid posts found
-                n_flair_posts_found += 1
-                subs.append(submission)
-        if n_flair_posts_found > n_to_get - 1:
-            break
+                    # Increment count of valid posts found
+                    n_flair_posts_found += 1
+                    subs.append(submission)
+            if n_flair_posts_found > n_to_get - 1:
+                break
+        else:
+            console.print("[red]Invalid submission[/red]\n")
     return subs, d_watchlist_tickers, n_flair_posts_found
 
 
@@ -416,13 +419,16 @@ def get_wsb_community(
         submissions = praw_api.subreddit("wallstreetbets").hot(limit=limit)
 
     subs = []
-    for submission in submissions:
-        submission = praw_api.submission(id=submission.id)
-        # Ensure that the post hasn't been removed  by moderator in the meanwhile,
-        # that there is a description and it's not just an image, that the flair is
-        # meaningful, and that we aren't re-considering same author's watchlist
-        if not submission.removed_by_category:
-            subs.append(submission)
+    try:
+        for submission in submissions:
+            submission = praw_api.submission(id=submission.id)
+            # Ensure that the post hasn't been removed  by moderator in the meanwhile,
+            # that there is a description and it's not just an image, that the flair is
+            # meaningful, and that we aren't re-considering same author's watchlist
+            if not submission.removed_by_category:
+                subs.append(submission)
+    except ResponseException:
+        console.print("[red]Invalid response[/red]\n")
     return subs
 
 

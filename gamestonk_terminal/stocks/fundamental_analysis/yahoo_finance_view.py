@@ -61,8 +61,15 @@ def display_info(ticker: str):
         summary = df_info.loc["Long business summary"].values[0]
         df_info = df_info.drop(index=["Long business summary"])
 
-    print_rich_table(df_info, headers=[], show_index=True, title="Ticker Info")
-
+    if not df_info.empty:
+        print_rich_table(
+            df_info,
+            headers=list(df_info.columns),
+            show_index=True,
+            title=f"{ticker.upper()} Info",
+        )
+    else:
+        console.print("[red]Invalid data[/red]\n")
     if summary:
         console.print("Business Summary:")
         console.print(summary)
@@ -83,16 +90,24 @@ def display_shareholders(ticker: str):
         df_institutional_shareholders,
         df_mutualfund_shareholders,
     ) = yahoo_finance_model.get_shareholders(ticker)
-
+    df_major_holders.columns = ["", ""]
     dfs = [df_major_holders, df_institutional_shareholders, df_mutualfund_shareholders]
-    titles = ["Major Holders:\n", "Institutuinal Holders:\n", "Mutual Fund Holders:\n"]
-    console.print("")
+    titles = ["Major Holders:\n", "Institutional Holders:\n", "Mutual Fund Holders:\n"]
+    console.print()
+
     for df, title in zip(dfs, titles):
         console.print(title)
+        if "Date Reported" in df.columns:
+            df["Date Reported"] = df["Date Reported"].apply(
+                lambda x: x.strftime("%Y-%m-%d")
+            )
         print_rich_table(
-            df, headers=list(df.columns), show_index=False, title="Ticker Shareholders"
+            df,
+            headers=list(df.columns),
+            show_index=False,
+            title=f"{ticker.upper()} Shareholders",
         )
-        console.print("")
+        console.print()
 
 
 @log_start_end(log=logger)
@@ -112,13 +127,16 @@ def display_sustainability(ticker: str):
         console.print("No sustainability data found.", "\n")
         return
 
-    print_rich_table(
-        df_sustainability,
-        headers=[],
-        title="Ticker Sustainability",
-        show_index=True,
-    )
-    console.print("")
+    if not df_sustainability.empty:
+        print_rich_table(
+            df_sustainability,
+            headers=list(df_sustainability),
+            title=f"{ticker.upper()} Sustainability",
+            show_index=True,
+        )
+        console.print("")
+    else:
+        console.print("[red]Invalid data[/red]\n")
 
 
 @log_start_end(log=logger)
@@ -137,7 +155,7 @@ def display_calendar_earnings(ticker: str):
         df_calendar,
         show_index=False,
         headers=list(df_calendar.columns),
-        title="Ticker Calendar Earnings",
+        title=f"{ticker.upper()} Calendar Earnings",
     )
     console.print("")
 
@@ -209,7 +227,7 @@ def display_dividends(
         print_rich_table(
             div_history.head(limit),
             headers=["Amount Paid ($)", "Change"],
-            title="Ticker Historical Dividends",
+            title=f"{ticker.upper()} Historical Dividends",
         )
     console.print("")
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "divs", div_history)
