@@ -1,6 +1,7 @@
-```text
-usage: overview [-h]
 ```
+usage: overview [-h] [--export {csv,json,xlsx}]
+```
+
 Prints an overview about the company. Also, the C i k field corresponds to Central Index Key, which can be used to search a company on https://www.sec.gov/edgar/searchedgar/cik.htm [Source: Alpha Vantage]
 
 ```
