@@ -716,7 +716,9 @@ def display_qtr_contracts(
                 theme.visualize_output()
 
     elif analysis == "total":
-        print_rich_table(tickers, headers=["Total"], title="Quarterly Contracts", show_index=True)
+        print_rich_table(
+            tickers, headers=["Total"], title="Quarterly Contracts", show_index=True
+        )
 
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "qtrcontracts", df_contracts

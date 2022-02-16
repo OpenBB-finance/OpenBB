@@ -94,7 +94,12 @@ def display_enterprise(
     """
     df_fa = fmp_model.get_enterprise(ticker, number, quarterly)
     df_fa = df_fa[df_fa.columns[::-1]]
-    print_rich_table(df_fa, headers=list(df_fa.columns), title=f"{ticker} Enterprise", show_index=True)
+    print_rich_table(
+        df_fa,
+        headers=list(df_fa.columns),
+        title=f"{ticker} Enterprise",
+        show_index=True,
+    )
     console.print("")
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "enterprise", df_fa)
 
