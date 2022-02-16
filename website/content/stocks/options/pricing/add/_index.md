@@ -1,13 +1,31 @@
 ```
-usage: add [-p] [-c] [-h]
+usage: add [-p PRICE] [-c CHANCE] [-h]
 ```
 
 Add price and probability points to the list
 
 ```
 optional arguments:
-  -p PRICE, --PRICE     the estimated finishing price of the asset
-  -c CHANCE, --CHANCE   the chance of the asset ending at the given price
+  -p PRICE, --price PRICE
+                        Projected price of the stock at the expiration date (default: None)
+  -c CHANCE, --chance CHANCE
+                        Chance that the stock is at a given projected price (default: None)
   -h, --help            show this help message (default: False)
 ```
-<img size="1400" alt="Feature Screenshot - add" src="https://user-images.githubusercontent.com/85772166/142504068-e778e258-cb68-42f4-99d4-b8437068b8d7.png">
+
+Example:
+```
+2022 Feb 16, 09:42 (✨) /stocks/options/pricing/ $ add -p 175 -c 0.5
+
+2022 Feb 16, 09:43 (✨) /stocks/options/pricing/ $ add -p 165 -c 0.5
+
+2022 Feb 16, 09:43 (✨) /stocks/options/pricing/ $ show
+Estimated price(s) of AAPL at 2022-05-20
+┏━━━━━━━━┳━━━━━━━━┓
+┃ Price  ┃ Chance ┃
+┡━━━━━━━━╇━━━━━━━━┩
+│ 165.00 │ 0.50   │
+├────────┼────────┤
+│ 175.00 │ 0.50   │
+└────────┴────────┘
+```
