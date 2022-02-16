@@ -243,10 +243,10 @@ class ShowView:
         await inter.response.defer()
         cfg.logger.info(name)
         if os.environ.get("DEBUG_MODE") == "true":
-            self.run_discord(func, inter, *args, **kwargs)
+            await self.run_discord(func, inter, *args, **kwargs)
         else:
             try:
-                self.run_discord(func, inter, *args, **kwargs)
+                await self.run_discord(func, inter, *args, **kwargs)
             except Exception as e:
                 embed = disnake.Embed(
                     title=name,
