@@ -18,4 +18,4 @@ optional arguments:
   -h, --help            show this help message (default: False)
 ```
 
-![kurtosis](https://user-images.githubusercontent.com/46355364/154307100-ab359737-a269-4f7e-8161-b6cd2ebc3b2c.png)
+![kurtosis](https://user-images.githubusercontent.com/46355364/154307174-68671146-9551-4c2f-a179-db1d4b20b992.png)
