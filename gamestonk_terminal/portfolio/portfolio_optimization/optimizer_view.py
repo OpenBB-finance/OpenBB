@@ -382,7 +382,8 @@ def display_ef(
 
     sharpes = rets / stds
     ax.scatter(stds, rets, marker=".", c=sharpes)
-    plotting.plot_efficient_frontier(ef, ax=ax, show_assets=True)
+    plotting.plot_efficient_frontier(ef, ax=ax, show_assets=False)
+
     for ticker, ret, std in zip(
         ef.tickers, ef.expected_returns, np.sqrt(np.diag(ef.cov_matrix))
     ):
@@ -407,6 +408,9 @@ def display_ef(
         ax.set_xlim(xmin=min(stds) * 0.8)
         ax.add_line(line)
     ax.set_title(f"Efficient Frontier simulating {n_portfolios} portfolios")
+
+    ax.legend(loc="best", scatterpoints=1)
+
     theme.style_primary_axis(ax)
     if external_axes is None:
         theme.visualize_output()
