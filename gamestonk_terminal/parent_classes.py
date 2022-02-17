@@ -131,6 +131,10 @@ class BaseController(metaclass=ABCMeta):
     def print_help(self) -> None:
         raise NotImplementedError("Must override print_help")
 
+    def log_queue(self, message: str) -> None:
+        if self.queue:
+            logger.info("%s: %s", message, "/".join(self.queue))
+
     @log_start_end(log=logger)
     def switch(self, an_input: str) -> List[str]:
         """Process and dispatch input
@@ -140,9 +144,11 @@ class BaseController(metaclass=ABCMeta):
         List[str]
             List of commands in the queue to execute
         """
+
         # Empty command
         if not an_input:
-            console.print("")
+            pass
+        #    console.print("")
 
         # Navigation slash is being used first split commands
         elif "/" in an_input:
@@ -170,6 +176,9 @@ class BaseController(metaclass=ABCMeta):
                 elif known_args.cmd == "r":
                     known_args.cmd = "reset"
 
+            logger.info("CMD: %s", an_input)
+            self.log_queue("QUEUE")
+
             # This is what mutes portfolio issue
             getattr(
                 self,
@@ -177,7 +186,7 @@ class BaseController(metaclass=ABCMeta):
                 lambda _: "Command not recognized!",
             )(other_args)
 
-        logger.info("remaining queue: %s", "/".join(self.queue))
+        self.log_queue("QUEUE")
 
         return self.queue
 
@@ -210,6 +219,7 @@ class BaseController(metaclass=ABCMeta):
     def call_exit(self, _) -> None:
         # Not sure how to handle controller loading here
         """Process exit terminal command"""
+        console.print("")
         for _ in range(self.PATH.count("/")):
             self.queue.insert(0, "quit")
 

@@ -2,28 +2,30 @@
 __docformat__ = "numpy"
 
 import argparse
-from typing import List
+import logging
 from datetime import datetime
+from typing import List
 
 import numpy as np
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.rich_config import console
-from gamestonk_terminal.parent_classes import StockBaseController
-from gamestonk_terminal.common.quantitative_analysis import (
-    qa_view,
-    rolling_view,
-)
+
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.common.quantitative_analysis import qa_view, rolling_view
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
-    EXPORT_ONLY_RAW_DATA_ALLOWED,
     EXPORT_ONLY_FIGURES_ALLOWED,
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
     check_proportion_range,
     parse_known_args_and_warn,
 )
 from gamestonk_terminal.menu import session
+from gamestonk_terminal.parent_classes import StockBaseController
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.stocks.quantitative_analysis.factors_view import capm_view
+
+logger = logging.getLogger(__name__)
 
 
 class QaController(StockBaseController):
@@ -145,6 +147,7 @@ class QaController(StockBaseController):
             return ["stocks", f"load {self.ticker}", "qa"]
         return []
 
+    @log_start_end(log=logger)
     def call_pick(self, other_args: List[str]):
         """Process pick command"""
         parser = argparse.ArgumentParser(
@@ -171,6 +174,7 @@ class QaController(StockBaseController):
             self.target = ns_parser.target
         console.print("")
 
+    @log_start_end(log=logger)
     def call_raw(self, other_args: List[str]):
         parser = argparse.ArgumentParser(
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -209,6 +213,7 @@ class QaController(StockBaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_summary(self, other_args: List[str]):
         """Process summary command"""
         parser = argparse.ArgumentParser(
@@ -225,6 +230,7 @@ class QaController(StockBaseController):
         if ns_parser:
             qa_view.display_summary(df=self.stock, export=ns_parser.export)
 
+    @log_start_end(log=logger)
     def call_line(self, other_args: List[str]):
         """Process line command"""
         parser = argparse.ArgumentParser(
@@ -260,6 +266,7 @@ class QaController(StockBaseController):
                 draw=ns_parser.draw,
             )
 
+    @log_start_end(log=logger)
     def call_hist(self, other_args: List[str]):
         """Process hist command"""
         parser = argparse.ArgumentParser(
@@ -282,6 +289,7 @@ class QaController(StockBaseController):
                 bins=ns_parser.n_bins,
             )
 
+    @log_start_end(log=logger)
     def call_cdf(self, other_args: List[str]):
         """Process cdf command"""
         parser = argparse.ArgumentParser(
@@ -303,6 +311,7 @@ class QaController(StockBaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_bw(self, other_args: List[str]):
         """Process bwy command"""
         parser = argparse.ArgumentParser(
@@ -330,6 +339,7 @@ class QaController(StockBaseController):
                 yearly=ns_parser.year,
             )
 
+    @log_start_end(log=logger)
     def call_decompose(self, other_args: List[str]):
         """Process decompose command"""
         parser = argparse.ArgumentParser(
@@ -362,6 +372,7 @@ class QaController(StockBaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_cusum(self, other_args: List[str]):
         """Process cusum command"""
         parser = argparse.ArgumentParser(
@@ -405,6 +416,7 @@ class QaController(StockBaseController):
                 drift=ns_parser.drift,
             )
 
+    @log_start_end(log=logger)
     def call_acf(self, other_args: List[str]):
         """Process acf command"""
         parser = argparse.ArgumentParser(
@@ -437,6 +449,7 @@ class QaController(StockBaseController):
                 lags=ns_parser.lags,
             )
 
+    @log_start_end(log=logger)
     def call_rolling(self, other_args: List[str]):
         """Process rolling command"""
         parser = argparse.ArgumentParser(
@@ -468,6 +481,7 @@ class QaController(StockBaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_spread(self, other_args: List[str]):
         """Process spread command"""
         parser = argparse.ArgumentParser(
@@ -498,6 +512,7 @@ class QaController(StockBaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_quantile(self, other_args: List[str]):
         """Process quantile command"""
         parser = argparse.ArgumentParser(
@@ -546,6 +561,7 @@ class QaController(StockBaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_skew(self, other_args: List[str]):
         """Process skew command"""
         parser = argparse.ArgumentParser(
@@ -582,6 +598,7 @@ class QaController(StockBaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_kurtosis(self, other_args: List[str]):
         """Process kurtosis command"""
         parser = argparse.ArgumentParser(
@@ -618,6 +635,7 @@ class QaController(StockBaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_normality(self, other_args: List[str]):
         """Process normality command"""
         parser = argparse.ArgumentParser(
@@ -636,6 +654,7 @@ class QaController(StockBaseController):
                 df=self.stock, target=self.target, export=ns_parser.export
             )
 
+    @log_start_end(log=logger)
     def call_qqplot(self, other_args: List[str]):
         """Process qqplot command"""
         parser = argparse.ArgumentParser(
@@ -650,6 +669,7 @@ class QaController(StockBaseController):
         if ns_parser:
             qa_view.display_qqplot(name=self.ticker, df=self.stock, target=self.target)
 
+    @log_start_end(log=logger)
     def call_unitroot(self, other_args: List[str]):
         """Process unitroot command"""
         parser = argparse.ArgumentParser(
@@ -690,6 +710,7 @@ class QaController(StockBaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_capm(self, other_args: List[str]):
         """Process capm command"""
         parser = argparse.ArgumentParser(
@@ -704,6 +725,7 @@ class QaController(StockBaseController):
         if ns_parser:
             capm_view(self.ticker)
 
+    @log_start_end(log=logger)
     def call_var(self, other_args: List[str]):
         """Process var command"""
         parser = argparse.ArgumentParser(

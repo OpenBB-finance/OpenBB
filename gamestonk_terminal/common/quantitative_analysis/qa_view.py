@@ -29,7 +29,7 @@ from gamestonk_terminal.helper_funcs import (
     plot_autoscale,
     print_rich_table,
     reindex_dates,
-    long_number_format,
+    lambda_long_number_format,
 )
 from gamestonk_terminal.rich_config import console
 
@@ -41,8 +41,7 @@ register_matplotlib_converters()
 # df_stock should be replaced with a generic df and a column variable
 
 
-@log_start_end(log=logger)
-def color_red(val: Any) -> str:
+def lambda_color_red(val: Any) -> str:
     """Adds red to dataframe value"""
     if val > 0.05:
         return f"[red]{round(val,4)}[/red]"
@@ -341,7 +340,7 @@ def display_bw(
     # remove the scientific notion on the left hand side
     ax.ticklabel_format(style="plain", axis="y")
     ax.get_yaxis().set_major_formatter(
-        matplotlib.ticker.FuncFormatter(lambda x, _: long_number_format(x))
+        matplotlib.ticker.FuncFormatter(lambda x, _: lambda_long_number_format(x))
     )
 
     theme.style_primary_axis(ax)
@@ -781,7 +780,7 @@ def display_normality(df: pd.DataFrame, target: str, export: str = ""):
     data = df[target]
     normal = qa_model.get_normality(data)
     stats1 = normal.copy().T
-    stats1.iloc[:, 1] = stats1.iloc[:, 1].apply(lambda x: color_red(x))
+    stats1.iloc[:, 1] = stats1.iloc[:, 1].apply(lambda x: lambda_color_red(x))
 
     print_rich_table(
         stats1,

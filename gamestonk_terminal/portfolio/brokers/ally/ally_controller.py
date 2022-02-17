@@ -2,17 +2,23 @@
 __docformat__ = "numpy"
 
 import argparse
+import logging
 from typing import List
+
 from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.rich_config import console
-from gamestonk_terminal.parent_classes import BaseController
+
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.menu import session
-from gamestonk_terminal.portfolio.brokers.ally import ally_view
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
-    parse_known_args_and_warn,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
+    parse_known_args_and_warn,
 )
+from gamestonk_terminal.menu import session
+from gamestonk_terminal.parent_classes import BaseController
+from gamestonk_terminal.portfolio.brokers.ally import ally_view
+from gamestonk_terminal.rich_config import console
+
+logger = logging.getLogger(__name__)
 
 
 class AllyController(BaseController):
@@ -52,6 +58,7 @@ class AllyController(BaseController):
 """
         console.print(text=help_text, menu="Portfolio - Brokers")
 
+    @log_start_end(log=logger)
     def call_holdings(self, other_args: List[str]):
         """Process holdings command"""
         parser = argparse.ArgumentParser(
@@ -66,6 +73,7 @@ class AllyController(BaseController):
         if ns_parser:
             ally_view.display_holdings(export=ns_parser.export)
 
+    @log_start_end(log=logger)
     def call_history(self, other_args: List[str]):
         """Process history command"""
         parser = argparse.ArgumentParser(
@@ -90,6 +98,7 @@ class AllyController(BaseController):
                 n_to_show=ns_parser.limit, export=ns_parser.export
             )
 
+    @log_start_end(log=logger)
     def call_balances(self, other_args: List[str]):
         """Process balances command"""
         parser = argparse.ArgumentParser(
@@ -104,6 +113,7 @@ class AllyController(BaseController):
         if ns_parser:
             ally_view.display_balances(export=ns_parser.export)
 
+    @log_start_end(log=logger)
     def call_quote(self, other_args: List[str]):
         """Process balances command"""
         parser = argparse.ArgumentParser(
@@ -126,6 +136,7 @@ class AllyController(BaseController):
         if ns_parser:
             ally_view.display_stock_quote(ns_parser.ticker)
 
+    @log_start_end(log=logger)
     def call_movers(self, other_args: List[str]):
         """Process movers command"""
         parser = argparse.ArgumentParser(

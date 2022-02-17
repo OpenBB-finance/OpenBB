@@ -12,7 +12,7 @@ from pandas.plotting import register_matplotlib_converters
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.common.prediction_techniques import regression_model
 from gamestonk_terminal.common.prediction_techniques.pred_helper import (
-    price_prediction_backtesting_color,
+    lambda_price_prediction_backtesting_color,
     print_prediction_kpis,
     print_pretty_prediction,
 )
@@ -250,7 +250,9 @@ def display_regression(
 
             console.print("Time         Real [$]  x  Prediction [$]")
             console.print(
-                df_pred.apply(price_prediction_backtesting_color, axis=1).to_string()
+                df_pred.apply(
+                    lambda_price_prediction_backtesting_color, axis=1
+                ).to_string()
             )
         else:
             console.print(df_pred[["Real", "Prediction"]].round(2).to_string())

@@ -2,33 +2,39 @@
 __docformat__ = "numpy"
 
 import argparse
+import logging
 from datetime import datetime
 from typing import List
+
 from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.rich_config import console
-from gamestonk_terminal.parent_classes import BaseController
+
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
-    parse_known_args_and_warn,
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
+    check_int_range,
     check_non_negative,
     check_positive,
-    check_int_range,
-    EXPORT_ONLY_RAW_DATA_ALLOWED,
+    parse_known_args_and_warn,
     valid_date,
 )
 from gamestonk_terminal.menu import session
+from gamestonk_terminal.parent_classes import BaseController
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.stocks.discovery import (
     ark_view,
     fidelity_view,
+    finnhub_view,
+    nasdaq_view,
     seeking_alpha_view,
     shortinterest_view,
     yahoofinance_view,
-    finnhub_view,
-    nasdaq_view,
 )
 
-
 # pylint:disable=C0302
+
+
+logger = logging.getLogger(__name__)
 
 
 class DiscoveryController(BaseController):
@@ -157,6 +163,7 @@ class DiscoveryController(BaseController):
         console.print(text=help_text, menu="Stocks - Discovery")
 
     # TODO Add flag for adding last price to the following table
+    @log_start_end(log=logger)
     def call_divcal(self, other_args: List[str]):
         """Process divcal command"""
         parser = argparse.ArgumentParser(
@@ -208,6 +215,7 @@ class DiscoveryController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_pipo(self, other_args: List[str]):
         """Process pipo command"""
         parser = argparse.ArgumentParser(
@@ -238,6 +246,7 @@ class DiscoveryController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_fipo(self, other_args: List[str]):
         """Process fipo command"""
         parser = argparse.ArgumentParser(
@@ -268,6 +277,7 @@ class DiscoveryController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_gainers(self, other_args: List[str]):
         """Process gainers command"""
         parser = argparse.ArgumentParser(
@@ -296,6 +306,7 @@ class DiscoveryController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_losers(self, other_args: List[str]):
         """Process losers command"""
         parser = argparse.ArgumentParser(
@@ -324,6 +335,7 @@ class DiscoveryController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_ugs(self, other_args: List[str]):
         """Process ugs command"""
         parser = argparse.ArgumentParser(
@@ -355,6 +367,7 @@ class DiscoveryController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_gtech(self, other_args: List[str]):
         """Process gtech command"""
         parser = argparse.ArgumentParser(
@@ -384,6 +397,7 @@ class DiscoveryController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_active(self, other_args: List[str]):
         """Process active command"""
         parser = argparse.ArgumentParser(
@@ -414,6 +428,7 @@ class DiscoveryController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_ulc(self, other_args: List[str]):
         """Process ulc command"""
         parser = argparse.ArgumentParser(
@@ -444,6 +459,7 @@ class DiscoveryController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_asc(self, other_args: List[str]):
         """Process asc command"""
         parser = argparse.ArgumentParser(
@@ -474,6 +490,7 @@ class DiscoveryController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_ford(self, other_args: List[str]):
         """Process ford command"""
         parser = argparse.ArgumentParser(
@@ -507,6 +524,7 @@ class DiscoveryController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_arkord(self, other_args: List[str]):
         """Process arkord command"""
         parser = argparse.ArgumentParser(
@@ -584,6 +602,7 @@ class DiscoveryController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_upcoming(self, other_args: List[str]):
         # TODO: switch to nasdaq
         """Process upcoming command"""
@@ -623,6 +642,7 @@ class DiscoveryController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_trending(self, other_args: List[str]):
         """Process trending command"""
         parser = argparse.ArgumentParser(
@@ -670,6 +690,7 @@ class DiscoveryController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_lowfloat(self, other_args: List[str]):
         """Process lowfloat command"""
         parser = argparse.ArgumentParser(
@@ -704,6 +725,7 @@ class DiscoveryController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_cnews(self, other_args: List[str]):
         """Process cnews command"""
         parser = argparse.ArgumentParser(
@@ -743,6 +765,7 @@ class DiscoveryController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_hotpenny(self, other_args: List[str]):
         """Process hotpenny command"""
         parser = argparse.ArgumentParser(
@@ -780,6 +803,7 @@ class DiscoveryController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_rtat(self, other_args: List[str]):
         """Process fds command"""
         parser = argparse.ArgumentParser(

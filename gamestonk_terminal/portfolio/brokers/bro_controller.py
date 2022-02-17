@@ -2,18 +2,22 @@ __docformat__ = "numpy"
 
 # pylint: disable=R1710
 
+import logging
 from typing import List, Set
+
 from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.rich_config import console
 
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.parent_classes import BaseController
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.menu import session
-
+from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal.portfolio.brokers.ally import ally_controller
+from gamestonk_terminal.portfolio.brokers.coinbase import coinbase_controller
 from gamestonk_terminal.portfolio.brokers.degiro import degiro_controller
 from gamestonk_terminal.portfolio.brokers.robinhood import robinhood_controller
-from gamestonk_terminal.portfolio.brokers.coinbase import coinbase_controller
+from gamestonk_terminal.rich_config import console
+
+logger = logging.getLogger(__name__)
 
 
 class BrokersController(BaseController):
@@ -44,20 +48,24 @@ class BrokersController(BaseController):
     """
         console.print(text=help_text, menu="Portfolio - Brokers")
 
+    @log_start_end(log=logger)
     def call_degiro(self, _):
         """Process degiro command."""
         self.queue = self.load_class(degiro_controller.DegiroController, self.queue)
 
+    @log_start_end(log=logger)
     def call_ally(self, _):
         """Process ally command."""
         self.queue = self.load_class(ally_controller.AllyController, self.queue)
 
+    @log_start_end(log=logger)
     def call_rh(self, _):
         """Process rh command."""
         self.queue = self.load_class(
             robinhood_controller.RobinhoodController, self.queue
         )
 
+    @log_start_end(log=logger)
     def call_cb(self, _):
         """Process coinbase command."""
         self.queue = self.load_class(coinbase_controller.CoinbaseController, self.queue)
