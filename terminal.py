@@ -228,6 +228,7 @@ def terminal(jobs_cmds: List[str] = None):
     logger.info("START")
     logger.info("Python: %s", platform.python_version())
     logger.info("OS: %s", platform.system())
+    log_settings()
 
     if jobs_cmds is not None and jobs_cmds:
         logger.info("INPUT: %s", "/".join(jobs_cmds))
@@ -331,6 +332,39 @@ def insert_start_slash(cmds: List[str]) -> List[str]:
     if cmds[0].startswith("/home"):
         cmds[0] = f"/{cmds[0][5:]}"
     return cmds
+
+
+def log_settings() -> None:
+    """Log settings"""
+    settings_dict = {}
+    settings_dict["tab"] = "activated" if gtff.USE_TABULATE_DF else "deactivated"
+    settings_dict["cls"] = "activated" if gtff.USE_CLEAR_AFTER_CMD else "deactivated"
+    settings_dict["color"] = "activated" if gtff.USE_COLOR else "deactivated"
+    settings_dict["promptkit"] = (
+        "activated" if gtff.USE_PROMPT_TOOLKIT else "deactivated"
+    )
+    settings_dict["predict"] = "activated" if gtff.ENABLE_PREDICT else "deactivated"
+    settings_dict["thoughts"] = (
+        "activated" if gtff.ENABLE_THOUGHTS_DAY else "deactivated"
+    )
+    settings_dict["reporthtml"] = (
+        "activated" if gtff.OPEN_REPORT_AS_HTML else "deactivated"
+    )
+    settings_dict["exithelp"] = (
+        "activated" if gtff.ENABLE_EXIT_AUTO_HELP else "deactivated"
+    )
+    settings_dict["rcontext"] = "activated" if gtff.REMEMBER_CONTEXTS else "deactivated"
+    settings_dict["rich"] = "activated" if gtff.ENABLE_RICH else "deactivated"
+    settings_dict["richpanel"] = (
+        "activated" if gtff.ENABLE_RICH_PANEL else "deactivated"
+    )
+    settings_dict["ion"] = "activated" if gtff.USE_ION else "deactivated"
+    settings_dict["watermark"] = "activated" if gtff.USE_WATERMARK else "deactivated"
+    settings_dict["autoscaling"] = (
+        "activated" if gtff.USE_PLOT_AUTOSCALING else "deactivated"
+    )
+    settings_dict["dt"] = "activated" if gtff.USE_DATETIME else "deactivated"
+    logger.info("SETTINGS: %s ", str(settings_dict))
 
 
 # TODO: if test_mode is true add exit to the end
