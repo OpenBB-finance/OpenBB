@@ -477,6 +477,7 @@ if __name__ == "__main__":
             if fails:
                 console.print("\n[red]Failures:[/red]\n")
                 for key, value in fails.items():
+                    logger.exception("%s: %s failed", key, value)
                     console.print(f"{key}: {value}\n")
             console.print(
                 f"Summary: [green]Successes: {SUCCESSES}[/green] [red]Failures: {FAILURES}[/red]"

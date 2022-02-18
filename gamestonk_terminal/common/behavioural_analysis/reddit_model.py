@@ -101,6 +101,7 @@ def get_watchlists(
             if n_flair_posts_found > n_to_get - 1:
                 break
         else:
+            logger.exception("Invalid submission")
             console.print("[red]Invalid submission[/red]\n")
     return subs, d_watchlist_tickers, n_flair_posts_found
 

@@ -152,6 +152,7 @@ class PredictionTechniquesController(BaseController):
                     ns_parser.series_id, ns_parser.start_date
                 ).dropna()
             else:
+                logger.exception("%s not found", str(ns_parser.series_id))
                 console.print(f"[red]{ns_parser.series_id} not found[/red].")
             console.print(
                 f"Current Series: {', '.join(self.current_series.keys()).upper() or None}\n"
@@ -336,6 +337,7 @@ class PredictionTechniquesController(BaseController):
         )
         if ns_parser:
             if ns_parser.n_inputs > len(self.data):
+                logger.exception("Number of inputs exceeds number of data samples")
                 console.print(
                     f"[red]Data only contains {len(self.data)} samples and the model is trying "
                     f"to use {ns_parser.n_inputs} inputs.  Either use less inputs or load with"
@@ -448,6 +450,7 @@ class PredictionTechniquesController(BaseController):
 
             try:
                 if ns_parser.n_inputs > len(self.data):
+                    logger.exception("Number of inputs exceeds number of data samples")
                     console.print(
                         f"[red]Data only contains {len(self.data)} samples and the model is trying "
                         f"to use {ns_parser.n_inputs} inputs.  Either use less inputs or load with"
@@ -588,6 +591,7 @@ class PredictionTechniquesController(BaseController):
             )
             if ns_parser:
                 if ns_parser.n_inputs > len(self.data):
+                    logger.exception("Number of inputs exceeds number of data samples")
                     console.print(
                         f"[red]Data only contains {len(self.data)} samples and the model is trying "
                         f"to use {ns_parser.n_inputs} inputs.  Either use less inputs or load with"
@@ -625,6 +629,7 @@ class PredictionTechniquesController(BaseController):
             )
             if ns_parser:
                 if ns_parser.n_inputs > len(self.data):
+                    logger.exception("Number of inputs exceeds number of data samples")
                     console.print(
                         f"[red]Data only contains {len(self.data)} samples and the model is trying "
                         f"to use {ns_parser.n_inputs} inputs.  Either use less inputs or load with"
@@ -663,6 +668,7 @@ class PredictionTechniquesController(BaseController):
             )
             if ns_parser:
                 if ns_parser.n_inputs > len(self.data):
+                    logger.exception("Number of inputs exceeds number of data samples")
                     console.print(
                         f"[red]Data only contains {len(self.data)} samples and the model is trying "
                         f"to use {ns_parser.n_inputs} inputs.  Either use less inputs or load with"
@@ -701,6 +707,7 @@ class PredictionTechniquesController(BaseController):
             )
             if ns_parser:
                 if ns_parser.n_inputs > len(self.data):
+                    logger.exception("Number of inputs exceeds number of data samples")
                     console.print(
                         f"[red]Data only contains {len(self.data)} samples and the model is trying "
                         f"to use {ns_parser.n_inputs} inputs.  Either use less inputs or load with"

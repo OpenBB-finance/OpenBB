@@ -110,6 +110,7 @@ def display_hist(
         )
     else:
         if len(external_axes) != 1:
+            logger.exception("Expected list of one axis item.")
             console.print("[red]Expected list of 1 axis items./n[/red]")
             return
         (ax,) = external_axes
@@ -182,6 +183,7 @@ def display_cdf(
         )
     else:
         if len(external_axes) != 1:
+            logger.exception("Expected list of one axis item.")
             console.print("[red]Expected list of 1 axis items./n[/red]")
             return
         (ax,) = external_axes
@@ -287,6 +289,7 @@ def display_bw(
         )
     else:
         if len(external_axes) != 1:
+            logger.exception("Expected list of one axis item.")
             console.print("[red]Expected list of 1 axis items./n[/red]")
             return
         (ax,) = external_axes
@@ -386,7 +389,8 @@ def display_acf(
         (ax1, ax2), (ax3, ax4) = axes
     else:
         if len(external_axes) != 4:
-            console.print("[red]Expected list of 1 axis items./n[/red]")
+            logger.exception("Expected list of four axis items.")
+            console.print("[red]Expected list of 4 axis items./n[/red]")
             return
         (ax1, ax2, ax3, ax4) = external_axes
 
@@ -462,6 +466,7 @@ def display_qqplot(
         )
     else:
         if len(external_axes) != 1:
+            logger.exception("Expected list of one axis item.")
             console.print("[red]Expected list of 1 axis items./n[/red]")
             return
         (ax,) = external_axes
@@ -548,6 +553,7 @@ def display_cusum(
         (ax1, ax2) = axes
     else:
         if len(external_axes) != 2:
+            logger.exception("Expected list of two axis items.")
             console.print("[red]Expected list of 2 axis items./n[/red]")
             return
         (ax1, ax2) = external_axes
@@ -698,7 +704,8 @@ def display_seasonal(
         (ax1, ax2, ax3, ax4) = axes
     else:
         if len(external_axes) != 4:
-            console.print("[red]Expected list of 1 axis items./n[/red]")
+            logger.exception("Expected list of four axis items.")
+            console.print("[red]Expected list of 4 axis items./n[/red]")
             return
         (ax1, ax2, ax3, ax4) = external_axes
 
@@ -914,6 +921,7 @@ def display_line(
         )
     else:
         if len(external_axes) != 1:
+            logger.exception("Expected list of one axis item.")
             console.print("[red]Expected list of 1 axis items./n[/red]")
             return
         (ax,) = external_axes

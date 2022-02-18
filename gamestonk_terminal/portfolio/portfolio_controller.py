@@ -226,6 +226,7 @@ Loaded:[/info] {self.portfolio_name or None}
     def call_show(self, _):
         """Process show command"""
         if self.portfolio.empty:
+            logger.warning("No portfolio loaded")
             console.print("[red]No portfolio loaded.[/red]\n")
             return
         print_rich_table(self.portfolio.trades, show_index=False)
@@ -249,9 +250,11 @@ Loaded:[/info] {self.portfolio_name or None}
         inputs: Dict[str, Union[str, float, int]] = {}
         type_ = input("Type (stock, cash): \n")
         if type_ not in ["stock", "cash"]:
+            logger.warning("Currently only stocks or cash supported.")
             console.print("[red]Currently only stocks or cash supported.[/red]\n")
             type_ = input("Type (stock, cash): \n")
             if type_ not in ["stock", "cash"]:
+                logger.exception("Two unsuccessful attempts.  Exiting add")
                 console.print("[red]Two unsuccessful attempts.  Exiting add.[/red]\n")
                 return
 
@@ -263,6 +266,7 @@ Loaded:[/info] {self.portfolio_name or None}
                 console.print("Cash can only be deposit or withdraw\n")
                 action = input("Action: (buy, sell, deposit, withdraw): \n").lower()
                 if action not in ["deposit", "withdraw"]:
+                    logger.exception("Two unsuccessful attempts.  Exiting add")
                     console.print(
                         "[red]Two unsuccessful attempts.  Exiting add.[/red]\n"
                     )
@@ -272,6 +276,7 @@ Loaded:[/info] {self.portfolio_name or None}
             if action not in ["buy", "sell"]:
                 console.print("Stock can only be buy or sell\n")
                 if action not in ["buy", "sell"]:
+                    logger.exception("Two unsuccessful attempts.  Exiting add")
                     console.print(
                         "[red]Two unsuccessful attempts.  Exiting add.[/red]\n"
                     )
@@ -430,6 +435,7 @@ Loaded:[/info] {self.portfolio_name or None}
                     self.portfolio, ns_parser.market
                 )
             else:
+                logger.warning("No portfolio loaded")
                 console.print("[red]No portfolio loaded.[/red]")
         console.print()
 
@@ -451,6 +457,7 @@ Loaded:[/info] {self.portfolio_name or None}
                 self.portfolio.add_benchmark("SPY")
                 portfolio_view.display_drawdown(self.portfolio.portfolio_value)
             else:
+                logger.warning("No portfolio loaded")
                 console.print("[red]No portfolio loaded.\n[/red]")
 
     @log_start_end(log=logger)
@@ -491,6 +498,7 @@ Loaded:[/info] {self.portfolio_name or None}
         )
         if ns_parser:
             if self.portfolio.empty:
+                logger.warning("No portfolio loaded")
                 console.print("[red]No portfolio loaded[/red].\n")
                 return
             portfolio_view.display_rolling_stats(

@@ -349,6 +349,7 @@ def display_candle(
             theme.visualize_output(force_tight_layout=False)
         else:
             if len(external_axes) != 1:
+                logger.exception("Expected list of one axis item.")
                 console.print("[red]Expected list of 1 axis items./n[/red]")
                 return
             (ax1,) = external_axes
