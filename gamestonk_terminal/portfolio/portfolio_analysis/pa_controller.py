@@ -1,22 +1,26 @@
 """Portfolio Analysis Controller"""
 __docformat__ = "numpy"
 
-from typing import List
 import argparse
+import logging
 import os
+from typing import List
 
-from prompt_toolkit.completion import NestedCompleter
 import pandas as pd
-from gamestonk_terminal.rich_config import console
-from gamestonk_terminal.parent_classes import BaseController
+from prompt_toolkit.completion import NestedCompleter
+
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
+from gamestonk_terminal.menu import session
+from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal.portfolio.portfolio_analysis import (
     portfolio_model,
     portfolio_view,
 )
-from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
-from gamestonk_terminal.menu import session
+from gamestonk_terminal.rich_config import console
 
+logger = logging.getLogger(__name__)
 
 portfolios_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "portfolios")
 possible_paths = [
@@ -59,6 +63,7 @@ class PortfolioAnalysis(BaseController):
         """
         console.print(text=help_text, menu="Portfolio - Portfolio Analysis")
 
+    @log_start_end(log=logger)
     def call_load(self, other_args):
         """Process load command"""
         parser = argparse.ArgumentParser(
@@ -124,6 +129,7 @@ class PortfolioAnalysis(BaseController):
             if not self.portfolio.empty:
                 console.print(f"Successfully loaded: {self.portfolio_name}\n")
 
+    @log_start_end(log=logger)
     def call_group(self, other_args):
         """Process group command"""
         parser = argparse.ArgumentParser(
@@ -181,6 +187,7 @@ class PortfolioAnalysis(BaseController):
                     "Either add manually or load without --no_last_price flag\n"
                 )
 
+    @log_start_end(log=logger)
     def call_view(self, other_args):
         parser = argparse.ArgumentParser(
             prog="view",

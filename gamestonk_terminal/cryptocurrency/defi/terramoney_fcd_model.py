@@ -12,7 +12,7 @@ import requests
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
     denominate_number,
     prettify_column_names,
-    replace_unicode,
+    lambda_replace_unicode,
 )
 from gamestonk_terminal.decorators import log_start_end
 
@@ -121,7 +121,9 @@ def get_staking_account_info(address: str = "") -> Tuple[pd.DataFrame, str]:
     df = pd.DataFrame(results["myDelegations"])
 
     try:
-        df["validatorName"] = df["validatorName"].apply(lambda x: replace_unicode(x))
+        df["validatorName"] = df["validatorName"].apply(
+            lambda x: lambda_replace_unicode(x)
+        )
         df.columns = prettify_column_names(list(df.columns))
     except KeyError:
         df = pd.DataFrame()

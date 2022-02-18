@@ -6,7 +6,7 @@ import re
 from typing import Union, Any, Optional
 import textwrap
 import pandas as pd
-from gamestonk_terminal.helper_funcs import long_number_format
+from gamestonk_terminal.helper_funcs import lambda_long_number_format
 
 
 def wrap_text_in_df(df: pd.DataFrame, w: int = 55) -> pd.DataFrame:  # pragma: no cover
@@ -67,7 +67,7 @@ def create_df_index(df: pd.DataFrame, name: str = "rank") -> None:
     df.rename(columns={"index": name}, inplace=True)
 
 
-def long_number_format_with_type_check(x: Union[int, float]) -> Union[str, Any]:
+def lambda_long_number_format_with_type_check(x: Union[int, float]) -> Union[str, Any]:
     """Helper which checks if type of x is int or float and it's smaller then 10^18.
     If yes it apply long_num_format
 
@@ -81,15 +81,15 @@ def long_number_format_with_type_check(x: Union[int, float]) -> Union[str, Any]:
     """
 
     if isinstance(x, (int, float)) and x < 10**18:
-        return long_number_format(x)
+        return lambda_long_number_format(x)
     return x
 
 
-def replace_underscores_in_column_names(string: str) -> str:
+def lambda_replace_underscores_in_column_names(string: str) -> str:
     return string.title().replace("_", " ")
 
 
-def very_long_number_formatter(num: Union[str, int, float]) -> str:
+def lambda_very_long_number_formatter(num: Union[str, int, float]) -> str:
     """Apply nice string format for very big numbers like Trillions, Quadrillions, Billions etc.
 
     Parameters
@@ -166,7 +166,7 @@ def denominate_number(
     return round(float(number) / divider)
 
 
-def replace_unicode(x: Any) -> Any:
+def lambda_replace_unicode(x: Any) -> Any:
     """Replace unicode characters to ?
 
     Parameters

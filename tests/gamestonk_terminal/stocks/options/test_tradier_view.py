@@ -13,14 +13,14 @@ def vcr_config():
 
 
 @pytest.mark.vcr(record_mode="none")
-def test_red_highlight(recorder):
-    result = tradier_view.red_highlight(val="MOCK TEXT")
+def test_lambda_red_highlight(recorder):
+    result = tradier_view.lambda_red_highlight(val="MOCK TEXT")
     recorder.capture(result)
 
 
 @pytest.mark.vcr(record_mode="none")
-def test_green_highlight(recorder):
-    result = tradier_view.green_highlight(val="MOCK TEXT")
+def test_lambda_green_highlight(recorder):
+    result = tradier_view.lambda_green_highlight(val="MOCK TEXT")
     recorder.capture(result)
 
 

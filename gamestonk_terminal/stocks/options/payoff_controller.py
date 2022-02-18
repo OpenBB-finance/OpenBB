@@ -2,21 +2,27 @@
 __docformat__ = "numpy"
 
 import argparse
-from typing import List, Dict
+import logging
+from typing import Dict, List
+
 from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.rich_config import console
+
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.parent_classes import BaseController
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
     check_non_negative,
     parse_known_args_and_warn,
 )
 from gamestonk_terminal.menu import session
+from gamestonk_terminal.parent_classes import BaseController
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.stocks.options.yfinance_model import get_option_chain, get_price
 from gamestonk_terminal.stocks.options.yfinance_view import plot_payoff
 
-
 # pylint: disable=R0902
+
+
+logger = logging.getLogger(__name__)
 
 
 class PayoffController(BaseController):
@@ -111,6 +117,7 @@ Underlying Asset: [/param]{('Short', 'None', 'Long')[self.underlying+1]}
             return ["stocks", f"load {self.ticker}", "options", "payoff"]
         return []
 
+    @log_start_end(log=logger)
     def call_list(self, other_args):
         """Lists available calls and puts"""
         parser = argparse.ArgumentParser(
@@ -128,6 +135,7 @@ Underlying Asset: [/param]{('Short', 'None', 'Long')[self.underlying+1]}
                 console.print(f"{i}\t{call}\t{put}")
             console.print("")
 
+    @log_start_end(log=logger)
     def call_add(self, other_args: List[str]):
         """Process add command"""
         parser = argparse.ArgumentParser(
@@ -194,6 +202,7 @@ Underlying Asset: [/param]{('Short', 'None', 'Long')[self.underlying+1]}
             else:
                 console.print("Please use a valid index\n")
 
+    @log_start_end(log=logger)
     def call_rmv(self, other_args: List[str]):
         """Process rmv command"""
         parser = argparse.ArgumentParser(
@@ -244,6 +253,7 @@ Underlying Asset: [/param]{('Short', 'None', 'Long')[self.underlying+1]}
                 "No options have been selected, removing them is not possible\n"
             )
 
+    @log_start_end(log=logger)
     def call_pick(self, other_args: List[str]):
         """Process pick command"""
         parser = argparse.ArgumentParser(
@@ -274,6 +284,7 @@ Underlying Asset: [/param]{('Short', 'None', 'Long')[self.underlying+1]}
 
         console.print("")
 
+    @log_start_end(log=logger)
     def call_sop(self, other_args):
         """Process sop command"""
         parser = argparse.ArgumentParser(
@@ -290,6 +301,7 @@ Underlying Asset: [/param]{('Short', 'None', 'Long')[self.underlying+1]}
                 console.print(f"{i}\t{o['type']}\t{sign}\t{o['strike']}\t{o['cost']}")
             console.print("")
 
+    @log_start_end(log=logger)
     def call_plot(self, other_args):
         """Process plot command"""
         parser = argparse.ArgumentParser(

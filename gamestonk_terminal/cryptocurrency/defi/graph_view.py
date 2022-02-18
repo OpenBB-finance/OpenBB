@@ -5,7 +5,7 @@ import logging
 import os
 
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
-    very_long_number_formatter,
+    lambda_very_long_number_formatter,
 )
 from gamestonk_terminal.cryptocurrency.defi import graph_model
 from gamestonk_terminal.decorators import log_start_end
@@ -47,7 +47,7 @@ def display_uni_tokens(
 
     df[["totalLiquidity", "tradeVolumeUSD"]] = df[
         ["totalLiquidity", "tradeVolumeUSD"]
-    ].applymap(lambda x: very_long_number_formatter(x))
+    ].applymap(lambda x: lambda_very_long_number_formatter(x))
 
     print_rich_table(
         df.head(limit),
@@ -141,7 +141,7 @@ def display_recently_added(
     df = df.sort_values(by=sortby, ascending=descend)
 
     df[["volumeUSD", "totalSupply"]] = df[["volumeUSD", "totalSupply"]].applymap(
-        lambda x: very_long_number_formatter(x)
+        lambda x: lambda_very_long_number_formatter(x)
     )
 
     print_rich_table(
@@ -182,7 +182,9 @@ def display_uni_pools(
     """
 
     df = graph_model.get_uni_pools_by_volume().sort_values(by=sortby, ascending=descend)
-    df["volumeUSD"] = df["volumeUSD"].apply(lambda x: very_long_number_formatter(x))
+    df["volumeUSD"] = df["volumeUSD"].apply(
+        lambda x: lambda_very_long_number_formatter(x)
+    )
     df_data = df.copy()
 
     print_rich_table(
@@ -222,7 +224,9 @@ def display_last_uni_swaps(
     df = graph_model.get_last_uni_swaps(limit=top).sort_values(
         by=sortby, ascending=descend
     )
-    df["amountUSD"] = df["amountUSD"].apply(lambda x: very_long_number_formatter(x))
+    df["amountUSD"] = df["amountUSD"].apply(
+        lambda x: lambda_very_long_number_formatter(x)
+    )
     df_data = df.copy()
 
     print_rich_table(

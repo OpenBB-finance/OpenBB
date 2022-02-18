@@ -2,15 +2,17 @@
 __docformat__ = "numpy"
 
 import argparse
+import logging
 import os
 from datetime import datetime, timedelta
 from typing import List
+
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.rich_config import console
-from gamestonk_terminal.parent_classes import BaseController
+
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_terminal import TRADIER_TOKEN
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_FIGURES_ALLOWED,
@@ -19,20 +21,22 @@ from gamestonk_terminal.helper_funcs import (
     valid_date,
 )
 from gamestonk_terminal.menu import session
+from gamestonk_terminal.parent_classes import BaseController
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.stocks.options import (
+    alphaquery_view,
     barchart_view,
     calculator_view,
+    chartexchange_view,
     fdscanner_view,
+    payoff_controller,
+    pricing_controller,
+    screener_controller,
     syncretism_view,
     tradier_model,
     tradier_view,
     yfinance_model,
     yfinance_view,
-    alphaquery_view,
-    chartexchange_view,
-    payoff_controller,
-    pricing_controller,
-    screener_controller,
 )
 
 # pylint: disable=R1710,C0302,R0916
@@ -41,6 +45,9 @@ from gamestonk_terminal.stocks.options import (
 #       - At the moment there's too much logic in the controller to implement an
 #         API wrapper. Please refactor functions like 'call_exp'
 #       - The separate controllers and related models/views should be moved to subfolders
+
+
+logger = logging.getLogger(__name__)
 
 
 class OptionsController(BaseController):
@@ -211,6 +218,7 @@ Expiry: [/param]{self.selected_date or None}
             return ["stocks", f"load {self.ticker}", "options"]
         return []
 
+    @log_start_end(log=logger)
     def call_calc(self, other_args: List[str]):
         """Process calc command"""
         parser = argparse.ArgumentParser(
@@ -282,6 +290,7 @@ Expiry: [/param]{self.selected_date or None}
                 **pars,
             )
 
+    @log_start_end(log=logger)
     def call_unu(self, other_args: List[str]):
         """Process unu command"""
         parser = argparse.ArgumentParser(
@@ -351,6 +360,7 @@ Expiry: [/param]{self.selected_date or None}
                     puts_only=ns_parser.puts_only,
                 )
 
+    @log_start_end(log=logger)
     def call_pcr(self, other_args: List[str]):
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -390,6 +400,7 @@ Expiry: [/param]{self.selected_date or None}
             else:
                 console.print("No ticker loaded.\n")
 
+    @log_start_end(log=logger)
     def call_info(self, other_args: List[str]):
         """Process info command"""
         parser = argparse.ArgumentParser(
@@ -409,6 +420,7 @@ Expiry: [/param]{self.selected_date or None}
             else:
                 console.print("No ticker loaded.\n")
 
+    @log_start_end(log=logger)
     def call_grhist(self, other_args: List[str]):
         """Process grhist command"""
         parser = argparse.ArgumentParser(
@@ -503,6 +515,7 @@ Expiry: [/param]{self.selected_date or None}
             else:
                 console.print("No ticker loaded. First use `load <ticker>` \n")
 
+    @log_start_end(log=logger)
     def call_load(self, other_args: List[str]):
         """Process load command"""
         parser = argparse.ArgumentParser(
@@ -545,6 +558,7 @@ Expiry: [/param]{self.selected_date or None}
                     self.ticker, self.selected_date
                 )
 
+    @log_start_end(log=logger)
     def call_exp(self, other_args: List[str]):
         """Process exp command"""
         parser = argparse.ArgumentParser(
@@ -605,6 +619,7 @@ Expiry: [/param]{self.selected_date or None}
             else:
                 console.print("Please load a ticker using `load <ticker>`.\n")
 
+    @log_start_end(log=logger)
     def call_hist(self, other_args: List[str]):
         """Process hist command"""
         parser = argparse.ArgumentParser(
@@ -705,6 +720,7 @@ Expiry: [/param]{self.selected_date or None}
             else:
                 console.print("No ticker loaded. First use `load <ticker>`\n")
 
+    @log_start_end(log=logger)
     def call_chains(self, other_args: List[str]):
         """Process chains command"""
         parser = argparse.ArgumentParser(
@@ -778,6 +794,7 @@ Expiry: [/param]{self.selected_date or None}
             else:
                 console.print("No ticker loaded. First use `load <ticker>`\n")
 
+    @log_start_end(log=logger)
     def call_vol(self, other_args: List[str]):
         """Process vol command"""
         parser = argparse.ArgumentParser(
@@ -861,6 +878,7 @@ Expiry: [/param]{self.selected_date or None}
             else:
                 console.print("No ticker loaded. First use `load <ticker>`\n")
 
+    @log_start_end(log=logger)
     def call_voi(self, other_args: List[str]):
         """Process voi command"""
         parser = argparse.ArgumentParser(
@@ -934,6 +952,7 @@ Expiry: [/param]{self.selected_date or None}
             else:
                 console.print("No ticker loaded. First use `load <ticker>`\n")
 
+    @log_start_end(log=logger)
     def call_oi(self, other_args: List[str]):
         """Process oi command"""
         parser = argparse.ArgumentParser(
@@ -1017,6 +1036,7 @@ Expiry: [/param]{self.selected_date or None}
             else:
                 console.print("No ticker loaded. First use `load <ticker>`\n")
 
+    @log_start_end(log=logger)
     def call_plot(self, other_args: List[str]):
         """Process plot command"""
         parser = argparse.ArgumentParser(
@@ -1094,6 +1114,7 @@ Expiry: [/param]{self.selected_date or None}
             else:
                 console.print("No ticker loaded. First use `load <ticker>`\n")
 
+    @log_start_end(log=logger)
     def call_vsurf(self, other_args: List[str]):
         """Process vol command"""
         parser = argparse.ArgumentParser(
@@ -1120,6 +1141,7 @@ Expiry: [/param]{self.selected_date or None}
                 self.ticker, export=ns_parser.export, z=ns_parser.z
             )
 
+    @log_start_end(log=logger)
     def call_greeks(self, other_args: List[str]):
         """Process greeks command"""
         parser = argparse.ArgumentParser(
@@ -1197,6 +1219,7 @@ Expiry: [/param]{self.selected_date or None}
                     show_all=ns_parser.all,
                 )
 
+    @log_start_end(log=logger)
     def call_parity(self, other_args: List[str]):
         """Process parity command"""
         parser = argparse.ArgumentParser(
@@ -1257,6 +1280,7 @@ Expiry: [/param]{self.selected_date or None}
             else:
                 console.print("No ticker loaded. First use `load <ticker>`\n")
 
+    @log_start_end(log=logger)
     def call_binom(self, other_args: List[str]):
         """Process binom command"""
         parser = argparse.ArgumentParser(
@@ -1333,6 +1357,7 @@ Expiry: [/param]{self.selected_date or None}
             else:
                 console.print("No ticker loaded. First use `load <ticker>`\n")
 
+    @log_start_end(log=logger)
     def call_payoff(self, _):
         """Process payoff command"""
         if self.ticker:
@@ -1349,6 +1374,7 @@ Expiry: [/param]{self.selected_date or None}
         else:
             console.print("No ticker loaded. First use `load <ticker>`\n")
 
+    @log_start_end(log=logger)
     def call_pricing(self, _):
         """Process pricing command"""
         if self.ticker:
@@ -1366,6 +1392,7 @@ Expiry: [/param]{self.selected_date or None}
         else:
             console.print("No ticker loaded. First use `load <ticker>`\n")
 
+    @log_start_end(log=logger)
     def call_screen(self, _):
         """Process screen command"""
         self.queue = screener_controller.ScreenerController(self.queue).menu()
