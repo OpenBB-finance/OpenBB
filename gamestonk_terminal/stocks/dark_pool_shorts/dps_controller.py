@@ -2,31 +2,37 @@
 __docformat__ = "numpy"
 
 import argparse
-from typing import List
+import logging
 from datetime import datetime, timedelta
+from typing import List
+
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.rich_config import console
-from gamestonk_terminal.parent_classes import StockBaseController
+
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.menu import session
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
-    parse_known_args_and_warn,
-    check_positive,
-    valid_date,
-    check_int_range,
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
+    check_int_range,
+    check_positive,
+    parse_known_args_and_warn,
+    valid_date,
 )
+from gamestonk_terminal.menu import session
+from gamestonk_terminal.parent_classes import StockBaseController
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.stocks.dark_pool_shorts import (
-    yahoofinance_view,
-    stockgrid_view,
-    shortinterest_view,
-    quandl_view,
-    sec_view,
     finra_view,
     nyse_view,
+    quandl_view,
+    sec_view,
+    shortinterest_view,
+    stockgrid_view,
+    yahoofinance_view,
 )
+
+logger = logging.getLogger(__name__)
 
 
 class DarkPoolShortsController(StockBaseController):
@@ -99,6 +105,7 @@ class DarkPoolShortsController(StockBaseController):
 {has_ticker_end}"""
         console.print(text=help_text, menu="Stocks - Dark Pool and Short data")
 
+    @log_start_end(log=logger)
     def call_shorted(self, other_args: List[str]):
         """Process shorted command"""
         parser = argparse.ArgumentParser(
@@ -127,6 +134,7 @@ class DarkPoolShortsController(StockBaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_hsi(self, other_args: List[str]):
         """Process hsi command"""
         parser = argparse.ArgumentParser(
@@ -159,6 +167,7 @@ class DarkPoolShortsController(StockBaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_prom(self, other_args: List[str]):
         """Process prom command"""
         parser = argparse.ArgumentParser(
@@ -208,6 +217,7 @@ class DarkPoolShortsController(StockBaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_pos(self, other_args: List[str]):
         """Process pos command"""
         parser = argparse.ArgumentParser(
@@ -255,6 +265,7 @@ class DarkPoolShortsController(StockBaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_sidtc(self, other_args: List[str]):
         """Process sidtc command"""
         parser = argparse.ArgumentParser(
@@ -291,6 +302,7 @@ class DarkPoolShortsController(StockBaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_dpotc(self, other_args: List[str]):
         """Process dpotc command"""
         parser = argparse.ArgumentParser(
@@ -311,6 +323,7 @@ class DarkPoolShortsController(StockBaseController):
             else:
                 console.print("No ticker loaded.\n")
 
+    @log_start_end(log=logger)
     def call_ftd(self, other_args: List[str]):
         """Process ftd command"""
         parser = argparse.ArgumentParser(
@@ -369,6 +382,7 @@ class DarkPoolShortsController(StockBaseController):
             else:
                 console.print("No ticker loaded.\n")
 
+    @log_start_end(log=logger)
     def call_spos(self, other_args: List[str]):
         """Process spos command"""
         parser = argparse.ArgumentParser(
@@ -406,6 +420,7 @@ class DarkPoolShortsController(StockBaseController):
             else:
                 console.print("No ticker loaded.\n")
 
+    @log_start_end(log=logger)
     def call_psi(self, other_args: List[str]):
         """Process psi command"""
         parser = argparse.ArgumentParser(
@@ -467,6 +482,7 @@ class DarkPoolShortsController(StockBaseController):
             else:
                 console.print("No ticker loaded.\n")
 
+    @log_start_end(log=logger)
     def call_volexch(self, other_args: List[str]):
         """Process volexch command"""
         parser = argparse.ArgumentParser(

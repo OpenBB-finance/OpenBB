@@ -174,7 +174,6 @@ def match_length_dataframes(dataframes: Dict[pd.DataFrame, Any]):
     return dataframes
 
 
-@log_start_end(log=logger)
 def change_type_dataframes(dataframe) -> pd.DataFrame:
     """
     Adjusts comma-seperated strings to floats

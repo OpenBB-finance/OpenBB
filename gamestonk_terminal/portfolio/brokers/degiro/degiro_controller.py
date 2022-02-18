@@ -1,16 +1,18 @@
 import argparse
+import logging
 from typing import List
 
 from prompt_toolkit.completion import NestedCompleter
-import gamestonk_terminal.config_terminal as config
 
+import gamestonk_terminal.config_terminal as config
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.parent_classes import BaseController
-from gamestonk_terminal.helper_funcs import (
-    parse_known_args_and_warn,
-)
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 from gamestonk_terminal.menu import session
+from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal.portfolio.brokers.degiro.degiro_view import DegiroView
+
+logger = logging.getLogger(__name__)
 
 
 class DegiroController(BaseController):
@@ -45,6 +47,7 @@ class DegiroController(BaseController):
         """Print help."""
         DegiroView.help_display()
 
+    @log_start_end(log=logger)
     def call_cancel(self, other_args: List[str]):
         """Cancel an order using the `id`."""
 
@@ -62,6 +65,7 @@ class DegiroController(BaseController):
 
         self.__degiro_view.cancel(ns_parser=ns_parser)
 
+    @log_start_end(log=logger)
     def call_companynews(self, other_args: List[str]):
         """Display news related to a company using its ISIN."""
 
@@ -79,6 +83,7 @@ class DegiroController(BaseController):
 
         self.__degiro_view.companynews(ns_parser=ns_parser)
 
+    @log_start_end(log=logger)
     def call_create(self, other_args: List[str]):
         """Create an order."""
 
@@ -157,6 +162,7 @@ class DegiroController(BaseController):
 
         self.__degiro_view.create(ns_parser=ns_parser)
 
+    @log_start_end(log=logger)
     def call_hold(self, other_args):
         """Display held products."""
 
@@ -169,6 +175,7 @@ class DegiroController(BaseController):
 
         self.__degiro_view.hold(ns_parser=ns_parser)
 
+    @log_start_end(log=logger)
     def call_lastnews(self, other_args: List[str]):
         """Display latest news."""
 
@@ -189,6 +196,7 @@ class DegiroController(BaseController):
 
         self.__degiro_view.lastnews(ns_parser=ns_parser)
 
+    @log_start_end(log=logger)
     def call_login(self, other_args: List[str]):
         """Connect to Degiro's API."""
 
@@ -229,6 +237,7 @@ class DegiroController(BaseController):
 
         self.__degiro_view.login(ns_parser=ns_parser)
 
+    @log_start_end(log=logger)
     def call_logout(self, other_args: List[str]):
         """Log out from Degiro's API."""
 
@@ -241,6 +250,7 @@ class DegiroController(BaseController):
 
         self.__degiro_view.logout(ns_parser=ns_parser)
 
+    @log_start_end(log=logger)
     def call_lookup(self, other_args: List[str]):
         """Search for products by their name."""
 
@@ -272,6 +282,7 @@ class DegiroController(BaseController):
 
         self.__degiro_view.lookup(ns_parser=ns_parser)
 
+    @log_start_end(log=logger)
     def call_pending(self, other_args: List[str]):
         """Display pending orders."""
 
@@ -284,6 +295,7 @@ class DegiroController(BaseController):
 
         self.__degiro_view.pending(ns_parser=ns_parser)
 
+    @log_start_end(log=logger)
     def call_topnews(self, other_args: List[str]):
         """Display top news."""
 
@@ -296,6 +308,7 @@ class DegiroController(BaseController):
 
         self.__degiro_view.topnews(ns_parser=ns_parser)
 
+    @log_start_end(log=logger)
     def call_update(self, other_args: List[str]):
         """Update an order."""
 

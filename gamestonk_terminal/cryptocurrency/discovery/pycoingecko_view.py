@@ -7,7 +7,7 @@ import os
 from pandas.plotting import register_matplotlib_converters
 
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
-    very_long_number_formatter,
+    lambda_very_long_number_formatter,
 )
 from gamestonk_terminal.cryptocurrency.discovery import pycoingecko_model
 from gamestonk_terminal.decorators import log_start_end
@@ -73,7 +73,7 @@ def display_coins(
             ].sort_values(by=sortby, ascending=False)
         for col in ["Volume [$]", "Market Cap [$]"]:
             if col in df.columns:
-                df[col] = df[col].apply(lambda x: very_long_number_formatter(x))
+                df[col] = df[col].apply(lambda x: lambda_very_long_number_formatter(x))
         print_rich_table(
             df.head(top),
             headers=list(df.columns),
@@ -117,7 +117,7 @@ def display_gainers(
             ].sort_values(by=sortby, ascending=False)
         for col in ["Volume [$]", "Market Cap [$]"]:
             if col in df.columns:
-                df[col] = df[col].apply(lambda x: very_long_number_formatter(x))
+                df[col] = df[col].apply(lambda x: lambda_very_long_number_formatter(x))
         print_rich_table(
             df.head(top),
             headers=list(df.columns),
@@ -161,7 +161,7 @@ def display_losers(
             ].sort_values(by=sortby, ascending=False)
         for col in ["Volume [$]", "Market Cap [$]"]:
             if col in df.columns:
-                df[col] = df[col].apply(lambda x: very_long_number_formatter(x))
+                df[col] = df[col].apply(lambda x: lambda_very_long_number_formatter(x))
         print_rich_table(
             df.head(top),
             headers=list(df.columns),

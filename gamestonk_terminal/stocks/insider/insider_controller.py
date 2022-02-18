@@ -1,27 +1,32 @@
 """Insider Controller Module"""
 __docformat__ = "numpy"
 
-import os
 import argparse
 import configparser
+import logging
+import os
 from typing import List
+
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.rich_config import console
 
-from gamestonk_terminal.parent_classes import StockBaseController
+from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
-    parse_known_args_and_warn,
     check_positive,
+    parse_known_args_and_warn,
 )
 from gamestonk_terminal.menu import session
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.parent_classes import StockBaseController
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.stocks.insider import (
-    openinsider_view,
     businessinsider_view,
     finviz_view,
+    openinsider_view,
 )
+
+logger = logging.getLogger(__name__)
 
 presets_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
 
@@ -149,6 +154,7 @@ class InsiderController(StockBaseController):
             return ["stocks", f"load {self.ticker}", "ins"]
         return []
 
+    @log_start_end(log=logger)
     def call_view(self, other_args: List[str]):
         """Process view command"""
         parser = argparse.ArgumentParser(
@@ -214,6 +220,7 @@ class InsiderController(StockBaseController):
                     )
                 console.print("")
 
+    @log_start_end(log=logger)
     def call_set(self, other_args: List[str]):
         """Process set command"""
         parser = argparse.ArgumentParser(
@@ -238,6 +245,7 @@ class InsiderController(StockBaseController):
             self.preset = ns_parser.preset
             console.print("")
 
+    @log_start_end(log=logger)
     def call_filter(self, other_args: List[str]):
         """Process filter command"""
         parser = argparse.ArgumentParser(
@@ -277,6 +285,7 @@ class InsiderController(StockBaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_stats(self, other_args: List[str]):
         """Process stats command"""
         parser = argparse.ArgumentParser(
@@ -319,6 +328,7 @@ class InsiderController(StockBaseController):
             else:
                 console.print("Please use `load <ticker>` before.\n")
 
+    @log_start_end(log=logger)
     def call_lcb(self, other_args: List[str]):
         """Process latest-cluster-buys"""
         parser = argparse.ArgumentParser(
@@ -346,6 +356,7 @@ class InsiderController(StockBaseController):
                 "lcb", ns_parser.limit, ns_parser.export
             )
 
+    @log_start_end(log=logger)
     def call_lpsb(self, other_args: List[str]):
         """Process latest-penny-stock-buys"""
         parser = argparse.ArgumentParser(
@@ -373,6 +384,7 @@ class InsiderController(StockBaseController):
                 "lpsb", ns_parser.limit, ns_parser.export
             )
 
+    @log_start_end(log=logger)
     def call_lit(self, other_args: List[str]):
         """Process latest-insider-trading"""
         parser = argparse.ArgumentParser(
@@ -400,6 +412,7 @@ class InsiderController(StockBaseController):
                 "lit", ns_parser.limit, ns_parser.export
             )
 
+    @log_start_end(log=logger)
     def call_lip(self, other_args: List[str]):
         """Process insider-purchases"""
         parser = argparse.ArgumentParser(
@@ -427,6 +440,7 @@ class InsiderController(StockBaseController):
                 "lip", ns_parser.limit, ns_parser.export
             )
 
+    @log_start_end(log=logger)
     def call_blip(self, other_args: List[str]):
         """Process latest-insider-purchases-25k"""
         parser = argparse.ArgumentParser(
@@ -454,6 +468,7 @@ class InsiderController(StockBaseController):
                 "blip", ns_parser.limit, ns_parser.export
             )
 
+    @log_start_end(log=logger)
     def call_blop(self, other_args: List[str]):
         """Process latest-officer-purchases-25k"""
         parser = argparse.ArgumentParser(
@@ -481,6 +496,7 @@ class InsiderController(StockBaseController):
                 "blop", ns_parser.limit, ns_parser.export
             )
 
+    @log_start_end(log=logger)
     def call_blcp(self, other_args: List[str]):
         """Process latest-ceo-cfo-purchases-25k"""
         parser = argparse.ArgumentParser(
@@ -508,6 +524,7 @@ class InsiderController(StockBaseController):
                 "blcp", ns_parser.limit, ns_parser.export
             )
 
+    @log_start_end(log=logger)
     def call_lis(self, other_args: List[str]):
         """Process insider-sales"""
         parser = argparse.ArgumentParser(
@@ -535,6 +552,7 @@ class InsiderController(StockBaseController):
                 "lis", ns_parser.limit, ns_parser.export
             )
 
+    @log_start_end(log=logger)
     def call_blis(self, other_args: List[str]):
         """Process latest-insider-sales-100k"""
         parser = argparse.ArgumentParser(
@@ -562,6 +580,7 @@ class InsiderController(StockBaseController):
                 "blis", ns_parser.limit, ns_parser.export
             )
 
+    @log_start_end(log=logger)
     def call_blos(self, other_args: List[str]):
         """Process latest-officer-sales-100k"""
         parser = argparse.ArgumentParser(
@@ -589,6 +608,7 @@ class InsiderController(StockBaseController):
                 "blos", ns_parser.limit, ns_parser.export
             )
 
+    @log_start_end(log=logger)
     def call_blcs(self, other_args: List[str]):
         """Process latest-ceo-cfo-sales-100k"""
         parser = argparse.ArgumentParser(
@@ -616,6 +636,7 @@ class InsiderController(StockBaseController):
                 "blcs", ns_parser.limit, ns_parser.export
             )
 
+    @log_start_end(log=logger)
     def call_topt(self, other_args: List[str]):
         """Process top-officer-purchases-of-the-day"""
         parser = argparse.ArgumentParser(
@@ -643,6 +664,7 @@ class InsiderController(StockBaseController):
                 "topt", ns_parser.limit, ns_parser.export
             )
 
+    @log_start_end(log=logger)
     def call_toppw(self, other_args: List[str]):
         """Process top-officer-purchases-of-the-week"""
         parser = argparse.ArgumentParser(
@@ -670,6 +692,7 @@ class InsiderController(StockBaseController):
                 "toppw", ns_parser.limit, ns_parser.export
             )
 
+    @log_start_end(log=logger)
     def call_toppm(self, other_args: List[str]):
         """Process top-officer-purchases-of-the-month"""
         parser = argparse.ArgumentParser(
@@ -697,6 +720,7 @@ class InsiderController(StockBaseController):
                 "toppm", ns_parser.limit, ns_parser.export
             )
 
+    @log_start_end(log=logger)
     def call_tipt(self, other_args: List[str]):
         """Process top-insider-purchases-of-the-day"""
         parser = argparse.ArgumentParser(
@@ -724,6 +748,7 @@ class InsiderController(StockBaseController):
                 "tipt", ns_parser.limit, ns_parser.export
             )
 
+    @log_start_end(log=logger)
     def call_tippw(self, other_args: List[str]):
         """Process top-insider-purchases-of-the-week"""
         parser = argparse.ArgumentParser(
@@ -751,6 +776,7 @@ class InsiderController(StockBaseController):
                 "tippw", ns_parser.limit, ns_parser.export
             )
 
+    @log_start_end(log=logger)
     def call_tippm(self, other_args: List[str]):
         """Process top-insider-purchases-of-the-month"""
         parser = argparse.ArgumentParser(
@@ -778,6 +804,7 @@ class InsiderController(StockBaseController):
                 "tippm", ns_parser.limit, ns_parser.export
             )
 
+    @log_start_end(log=logger)
     def call_tist(self, other_args: List[str]):
         """Process top-insider-sales-of-the-day"""
         parser = argparse.ArgumentParser(
@@ -805,6 +832,7 @@ class InsiderController(StockBaseController):
                 "tist", ns_parser.limit, ns_parser.export
             )
 
+    @log_start_end(log=logger)
     def call_tispw(self, other_args: List[str]):
         """Process top-insider-sales-of-the-week"""
         parser = argparse.ArgumentParser(
@@ -832,6 +860,7 @@ class InsiderController(StockBaseController):
                 "tispw", ns_parser.limit, ns_parser.export
             )
 
+    @log_start_end(log=logger)
     def call_tispm(self, other_args: List[str]):
         """Process top-insider-sales-of-the-month"""
         parser = argparse.ArgumentParser(
@@ -859,6 +888,7 @@ class InsiderController(StockBaseController):
                 "tispm", ns_parser.limit, ns_parser.export
             )
 
+    @log_start_end(log=logger)
     def call_act(self, other_args: List[str]):
         """Process act command"""
         parser = argparse.ArgumentParser(
@@ -901,6 +931,7 @@ class InsiderController(StockBaseController):
             else:
                 console.print("No ticker loaded. First use `load {ticker}`\n")
 
+    @log_start_end(log=logger)
     def call_lins(self, other_args: List[str]):
         """Process lins command"""
         parser = argparse.ArgumentParser(

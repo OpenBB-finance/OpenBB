@@ -3,20 +3,24 @@ __docformat__ = "numpy"
 
 # pylint: disable=R0904, C0302, W0622
 import argparse
+import logging
 from typing import List
+
 from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.rich_config import console
-from gamestonk_terminal.parent_classes import BaseController
+
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.menu import session
-from gamestonk_terminal.portfolio.brokers.coinbase import (
-    coinbase_view,
-)
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
-    parse_known_args_and_warn,
-    check_positive,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
+    check_positive,
+    parse_known_args_and_warn,
 )
+from gamestonk_terminal.menu import session
+from gamestonk_terminal.parent_classes import BaseController
+from gamestonk_terminal.portfolio.brokers.coinbase import coinbase_view
+from gamestonk_terminal.rich_config import console
+
+logger = logging.getLogger(__name__)
 
 
 class CoinbaseController(BaseController):
@@ -61,6 +65,7 @@ class CoinbaseController(BaseController):
 [/cmds]"""
         console.print(text=help_text, menu="Portfolio - Brokers - Coinbase")
 
+    @log_start_end(log=logger)
     def call_account(self, other_args):
         """Process account command"""
         parser = argparse.ArgumentParser(
@@ -98,6 +103,7 @@ class CoinbaseController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_history(self, other_args):
         """Process account command"""
         parser = argparse.ArgumentParser(
@@ -136,6 +142,7 @@ class CoinbaseController(BaseController):
                 ns_parser.account, ns_parser.export, ns_parser.limit
             )
 
+    @log_start_end(log=logger)
     def call_orders(self, other_args):
         """Process orders command"""
         parser = argparse.ArgumentParser(
@@ -180,6 +187,7 @@ class CoinbaseController(BaseController):
                 ns_parser.limit, ns_parser.sortby, ns_parser.descend, ns_parser.export
             )
 
+    @log_start_end(log=logger)
     def call_deposits(self, other_args):
         """Process deposits command"""
         parser = argparse.ArgumentParser(
