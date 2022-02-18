@@ -638,7 +638,7 @@ def display_line(
 
 
 def display_var(
-    data: pd.DataFrame, use_mean: bool, ticker: str, adjusted_var: bool, percentile: int
+    data: pd.DataFrame, use_mean: bool, ticker: str, adjusted_var: bool, student_t, percentile: int, portfolio: bool
 ):
     """Displays VaR of dataframe
 
@@ -652,16 +652,23 @@ def display_var(
         ticker of the stock
     adjusted_var: bool
         if one should have VaR adjusted for skew and kurtosis (Cornish-Fisher-Expansion)
+    student_t: bool
+        If one should use the student-t distribution
     percentile: int
         var percentile
+    portfolio: bool
+        If the data is a portfolio
     """
-    var_list, hist_var_list = qa_model.get_var(data, use_mean, adjusted_var, percentile)
+    var_list, hist_var_list = qa_model.get_var(data, use_mean, adjusted_var, student_t, percentile, portfolio)
 
     str_hist_label = "Historical VaR:"
 
     if adjusted_var:
-        str_var_label = "Adjusted Var:"
+        str_var_label = "Adjusted VaR:"
         str_title = "Adjusted "
+    elif student_t:
+        str_var_label = "Student-t VaR"
+        str_title = "Student-t "
     else:
         str_var_label = "VaR:"
         str_title = ""
@@ -676,6 +683,47 @@ def display_var(
         show_index=True,
         headers=list(data.columns),
         title=f"[bold]{ticker} {str_title}Value at Risk[/bold]",
+        floatfmt=".4f",
+    )
+    console.print("")
+
+
+def display_es(data: pd.DataFrame, use_mean: bool, ticker: str, distribution: str, percentile: int, portfolio: bool):
+    """
+
+    Parameters
+    ----------
+    data
+    use_mean
+    ticker
+    distribution
+    percentile
+    portfolio
+    """
+    es_list, hist_es_list = qa_model.get_es(data, use_mean, distribution, percentile, portfolio)
+
+    str_hist_label = "Historical ES:"
+
+    if distribution == "laplace":
+        str_es_label = "Laplace ES:"
+        str_title = "Laplace "
+    elif distribution == "student_t":
+        str_es_label = "Student-t ES"
+        str_title = "Student-t "
+    else:
+        str_es_label = "ES:"
+        str_title = ""
+
+    data_dictionary = {str_es_label: es_list, str_hist_label: hist_es_list}
+    data = pd.DataFrame(
+        data_dictionary, index=["90.0%", "95.0%", "99.0%", f"{percentile*100}%"]
+    )
+
+    print_rich_table(
+        data,
+        show_index=True,
+        headers=list(data.columns),
+        title=f"[bold]{ticker} {str_title}Expected Shortfall[/bold]",
         floatfmt=".4f",
     )
     console.print("")

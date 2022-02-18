@@ -48,6 +48,7 @@ class PortfolioController(BaseController):
         "al",
         "dd",
         "rolling",
+        "var",
     ]
     CHOICES_MENUS = [
         "bro",
@@ -390,6 +391,73 @@ Loaded:[/info] {self.portfolio_name or None}
     #             ).generate_report()
     #         else:
     #             console.print("Please add items to the portfolio\n")
+
+    def call_var(self, other_args: List[str]):
+        """Process var command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="var",
+            description="""
+                Provides value at risk (short: VaR) of the selected portfolio.
+            """,
+        )
+        parser.add_argument(
+            "-m",
+            "--mean",
+            action="store_true",
+            default=False,
+            dest="use_mean",
+            help="If one should use the mean of the portfolio return",
+        )
+        parser.add_argument(
+            "-a",
+            "--adjusted",
+            action="store_true",
+            default=False,
+            dest="adjusted",
+            help="""
+                If the VaR should be adjusted for skew and kurtosis (Cornish-Fisher-Expansion)
+            """,
+        )
+        parser.add_argument(
+            "-s",
+            "--student",
+            action="store_true",
+            default=False,
+            dest="student_t",
+            help="""
+                If one should use the student-t distribution
+            """,
+        )
+        parser.add_argument(
+            "-p",
+            "--percentile",
+            action="store",
+            dest="percentile",
+            type=float,
+            default=99.9,
+            help="""
+                Percentile used for VaR calculations, for example input 99.9 equals a 99.9% VaR
+            """,
+        )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            if ns_parser.adjusted and ns_parser.student_t:
+                console.print("Select the adjusted or the student_t parameter.\n")
+            else:
+                from gamestonk_terminal.common.quantitative_analysis import qa_view
+                self.portfolio.generate_holdings_from_trades()
+                console.print(self.portfolio.returns)
+                qa_view.display_var(
+                    self.portfolio.returns,
+                    ns_parser.use_mean,
+                    "Portfolio",
+                    ns_parser.adjusted,
+                    ns_parser.student_t,
+                    ns_parser.percentile / 100,
+                    True,
+                )
 
     def call_rmr(self, other_args: List[str]):
         """Process rmr command"""
