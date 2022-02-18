@@ -231,7 +231,7 @@ Stock: [/param]{stock_text}
             "--ma",
             dest="mov_avg",
             type=str,
-            help="Add moving average in number of days to plot and separate by a coma. Example: 20,30,50",
+            help="Add moving average in number of days to plot and separate by a comma. Example: 20,30,50",
             default="20,50",
         )
 
