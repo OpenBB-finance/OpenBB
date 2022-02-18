@@ -30,7 +30,7 @@ from gamestonk_terminal.helper_funcs import (
     plot_autoscale,
     get_user_timezone_or_invalid,
     print_rich_table,
-    long_number_format,
+    lambda_long_number_format,
 )
 from gamestonk_terminal.rich_config import console
 
@@ -349,7 +349,9 @@ def display_candle(
             fig, ax = mpf.plot(df_stock, **candle_chart_kwargs, **kwargs)
 
             ax[2].get_yaxis().set_major_formatter(
-                matplotlib.ticker.FuncFormatter(lambda x, _: long_number_format(x))
+                matplotlib.ticker.FuncFormatter(
+                    lambda x, _: lambda_long_number_format(x)
+                )
             )
 
             fig.suptitle(
