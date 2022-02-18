@@ -307,12 +307,20 @@ def display_candle(
         if add_trend:
             if "OC_High_trend" in df_stock.columns:
                 ap0.append(
-                    mpf.make_addplot(df_stock["OC_High_trend"], color=theme.up_color),
+                    mpf.make_addplot(
+                        df_stock["OC_High_trend"],
+                        color=theme.up_color,
+                        secondary_y=False,
+                    ),
                 )
 
             if "OC_Low_trend" in df_stock.columns:
                 ap0.append(
-                    mpf.make_addplot(df_stock["OC_Low_trend"], color=theme.down_color),
+                    mpf.make_addplot(
+                        df_stock["OC_Low_trend"],
+                        color=theme.down_color,
+                        secondary_y=False,
+                    ),
                 )
 
         candle_chart_kwargs = {
@@ -359,7 +367,7 @@ def display_candle(
                     colors.append(theme.get_colors()[i])
 
                 lines = [Line2D([0], [0], color=c) for c in colors]
-                labels = [str(label) for label in ma]
+                labels = ["MA " + str(label) for label in ma]
                 ax[0].legend(lines, labels)
 
             theme.visualize_output(force_tight_layout=False)
