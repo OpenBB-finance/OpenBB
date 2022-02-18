@@ -170,11 +170,15 @@ class ScreenerController(BaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            self.screen_tickers = syncretism_view.view_screener_output(
-                preset=ns_parser.preset,
-                presets_path=self.presets_path,
-                n_show=ns_parser.limit,
-                export=ns_parser.export,
+            self.screen_tickers = list(
+                set(
+                    syncretism_view.view_screener_output(
+                        preset=ns_parser.preset,
+                        presets_path=self.presets_path,
+                        n_show=ns_parser.limit,
+                        export=ns_parser.export,
+                    )
+                )
             )
 
     @log_start_end(log=logger)
