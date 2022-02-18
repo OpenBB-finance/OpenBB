@@ -12,13 +12,13 @@ from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import read_data_file
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
-    replace_underscores_in_column_names,
+    lambda_replace_underscores_in_column_names,
 )
 from gamestonk_terminal.cryptocurrency.defi import llama_model
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
     export_data,
-    long_number_format,
+    lambda_long_number_format,
     plot_autoscale,
     print_rich_table,
 )
@@ -70,10 +70,10 @@ def display_grouped_defi_protocols(
             color=next(colors),
         )
 
-    ax.set_xlabel("Total Value Locked ($)")
-    ax.set_ylabel("dApp name")
-    ax.get_xaxis().set_major_formatter(
-        ticker.FuncFormatter(lambda x, _: long_number_format(x))
+    ax.set_ylabel("Total Value Locked ($)")
+    ax.set_xlabel("dApp name")
+    ax.get_yaxis().set_major_formatter(
+        ticker.FuncFormatter(lambda x, _: lambda_long_number_format(x))
     )
 
     ax.set_title(f"Top {num} dApp TVL grouped by chain")
@@ -122,7 +122,7 @@ def display_defi_protocols(
     df = df.sort_values(by=sortby, ascending=descend)
     df = df.drop(columns="chain")
 
-    df["tvl"] = df["tvl"].apply(lambda x: long_number_format(x))
+    df["tvl"] = df["tvl"].apply(lambda x: lambda_long_number_format(x))
 
     if not description:
         df.drop(["description", "url"], axis=1, inplace=True)
@@ -137,7 +137,7 @@ def display_defi_protocols(
             ]
         ]
 
-    df.columns = [replace_underscores_in_column_names(val) for val in df.columns]
+    df.columns = [lambda_replace_underscores_in_column_names(val) for val in df.columns]
     df.rename(
         columns={
             "Change 1H": "Change 1H (%)",
@@ -200,7 +200,7 @@ def display_historical_tvl(
 
         ax.set_ylabel("Total Value Locked ($)")
         ax.get_yaxis().set_major_formatter(
-            ticker.FuncFormatter(lambda x, _: long_number_format(x))
+            ticker.FuncFormatter(lambda x, _: lambda_long_number_format(x))
         )
         cfg.theme.style_primary_axis(ax)
         ax.legend()
@@ -255,7 +255,7 @@ def display_defi_tvl(
     ax.set_ylabel("Total Value Locked ($)")
     ax.set_title("Total Value Locked in DeFi")
     ax.get_yaxis().set_major_formatter(
-        ticker.FuncFormatter(lambda x, _: long_number_format(x))
+        ticker.FuncFormatter(lambda x, _: lambda_long_number_format(x))
     )
     cfg.theme.style_primary_axis(ax)
 

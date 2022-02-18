@@ -13,8 +13,8 @@ from pycoingecko import CoinGeckoAPI
 
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
     create_df_index,
-    long_number_format_with_type_check,
-    replace_underscores_in_column_names,
+    lambda_long_number_format_with_type_check,
+    lambda_replace_underscores_in_column_names,
 )
 from gamestonk_terminal.cryptocurrency.discovery.pycoingecko_model import get_coins
 from gamestonk_terminal.decorators import log_start_end
@@ -114,13 +114,13 @@ def get_holdings_overview(endpoint: str = "bitcoin") -> List[Any]:
     cg = CoinGeckoAPI()
     data = cg.get_companies_public_treasury_by_coin_id(coin_id=endpoint)
 
-    stats_str = f"""{len(data["companies"])} companies hold a total of {long_number_format_with_type_check(data["total_holdings"])} {endpoint} ({data["market_cap_dominance"]}% of market cap dominance) with the current value of {long_number_format_with_type_check(int(data["total_value_usd"]))} USD dollars"""  # noqa
+    stats_str = f"""{len(data["companies"])} companies hold a total of {lambda_long_number_format_with_type_check(data["total_holdings"])} {endpoint} ({data["market_cap_dominance"]}% of market cap dominance) with the current value of {lambda_long_number_format_with_type_check(int(data["total_value_usd"]))} USD dollars"""  # noqa
 
     df = pd.json_normalize(data, record_path=["companies"])
 
     df.columns = list(
         map(
-            lambda x: replace_underscores_in_column_names(x)
+            lambda x: lambda_replace_underscores_in_column_names(x)
             if isinstance(x, str)
             else x,
             df.columns,
@@ -140,8 +140,7 @@ SORT_VALUES = [
 ]
 
 
-@log_start_end(log=logger)
-def coin_formatter(n):
+def lambda_coin_formatter(n):
     # TODO: can be improved
     coins = []
     re_str = "small/(.*)(.jpg|.png|.JPG|.PNG)"
@@ -168,9 +167,11 @@ def get_top_crypto_categories(sort_filter: str = SORT_VALUES[0]) -> pd.DataFrame
         del df["id"]
         del df["content"]
         del df["updated_at"]
-        df["top_3_coins"] = df["top_3_coins"].apply(coin_formatter)
+        df["top_3_coins"] = df["top_3_coins"].apply(lambda_coin_formatter)
         df.columns = [
-            replace_underscores_in_column_names(col) if isinstance(col, str) else col
+            lambda_replace_underscores_in_column_names(col)
+            if isinstance(col, str)
+            else col
             for col in df.columns
         ]
         return df
@@ -375,7 +376,9 @@ def get_global_info() -> pd.DataFrame:
     df = pd.Series(results).reset_index()
     df.columns = ["Metric", "Value"]
     df["Metric"] = df["Metric"].apply(
-        lambda x: replace_underscores_in_column_names(x) if isinstance(x, str) else x
+        lambda x: lambda_replace_underscores_in_column_names(x)
+        if isinstance(x, str)
+        else x
     )
     return df
 
@@ -430,6 +433,8 @@ def get_global_defi_info() -> pd.DataFrame:
     df = pd.Series(results).reset_index()
     df.columns = ["Metric", "Value"]
     df["Metric"] = df["Metric"].apply(
-        lambda x: replace_underscores_in_column_names(x) if isinstance(x, str) else x
+        lambda x: lambda_replace_underscores_in_column_names(x)
+        if isinstance(x, str)
+        else x
     )
     return df

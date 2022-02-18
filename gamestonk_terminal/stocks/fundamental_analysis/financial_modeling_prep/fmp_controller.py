@@ -2,20 +2,26 @@
 __docformat__ = "numpy"
 
 import argparse
+import logging
 from typing import List
+
 from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.rich_config import console
+
+from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_funcs import (
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
+    check_positive,
+    parse_known_args_and_warn,
+)
+from gamestonk_terminal.menu import session
 from gamestonk_terminal.parent_classes import BaseController
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.stocks.fundamental_analysis.financial_modeling_prep import (
     fmp_view,
 )
-from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import (
-    parse_known_args_and_warn,
-    check_positive,
-    EXPORT_ONLY_RAW_DATA_ALLOWED,
-)
-from gamestonk_terminal.menu import session
+
+logger = logging.getLogger(__name__)
 
 
 class FinancialModelingPrepController(BaseController):
@@ -80,6 +86,7 @@ class FinancialModelingPrepController(BaseController):
             return ["stocks", f"load {self.ticker}", "fa", "fmp"]
         return []
 
+    @log_start_end(log=logger)
     def call_profile(self, other_args: List[str]):
         """Process profile command"""
         parser = argparse.ArgumentParser(
@@ -99,6 +106,7 @@ class FinancialModelingPrepController(BaseController):
         if ns_parser:
             fmp_view.display_profile(self.ticker)
 
+    @log_start_end(log=logger)
     def call_quote(self, other_args: List[str]):
         """Process quote command"""
         parser = argparse.ArgumentParser(
@@ -118,6 +126,7 @@ class FinancialModelingPrepController(BaseController):
         if ns_parser:
             fmp_view.display_quote(self.ticker)
 
+    @log_start_end(log=logger)
     def call_enterprise(self, other_args: List[str]):
         """Process income command"""
         parser = argparse.ArgumentParser(
@@ -159,6 +168,7 @@ class FinancialModelingPrepController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_dcf(self, other_args: List[str]):
         """Process dcf command"""
         parser = argparse.ArgumentParser(
@@ -199,6 +209,7 @@ class FinancialModelingPrepController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_income(self, other_args: List[str]):
         """Process income command"""
         parser = argparse.ArgumentParser(
@@ -245,6 +256,7 @@ class FinancialModelingPrepController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_balance(self, other_args: List[str]):
         """Process balance command"""
         parser = argparse.ArgumentParser(
@@ -296,6 +308,7 @@ class FinancialModelingPrepController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_cash(self, other_args: List[str]):
         """Process cash command"""
         parser = argparse.ArgumentParser(
@@ -345,6 +358,7 @@ class FinancialModelingPrepController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_metrics(self, other_args: List[str]):
         """Process metrics command"""
         parser = argparse.ArgumentParser(
@@ -399,6 +413,7 @@ class FinancialModelingPrepController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_ratios(self, other_args: List[str]):
         """Process cash command"""
         parser = argparse.ArgumentParser(
@@ -454,6 +469,7 @@ class FinancialModelingPrepController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_growth(self, other_args: List[str]):
         """Process cash command"""
         parser = argparse.ArgumentParser(

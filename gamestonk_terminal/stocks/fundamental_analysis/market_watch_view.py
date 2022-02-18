@@ -14,7 +14,7 @@ import pandas as pd
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
-    financials_colored_values,
+    lambda_financials_colored_values,
     parse_known_args_and_warn,
     patch_pandas_text_adjustment,
     print_rich_table,
@@ -80,7 +80,7 @@ def income(other_args: List[str], ticker: str):
     df_financials = mwm.prepare_df_financials(ticker, "income", ns_parser.b_quarter)
 
     if gtff.USE_COLOR:
-        df_financials = df_financials.applymap(financials_colored_values)
+        df_financials = df_financials.applymap(lambda_financials_colored_values)
 
         patch_pandas_text_adjustment()
         pd.set_option("display.max_colwidth", None)
@@ -157,7 +157,7 @@ def balance(other_args: List[str], ticker: str):
     df_financials = mwm.prepare_df_financials(ticker, "balance", ns_parser.b_quarter)
 
     if gtff.USE_COLOR:
-        df_financials = df_financials.applymap(financials_colored_values)
+        df_financials = df_financials.applymap(lambda_financials_colored_values)
 
         patch_pandas_text_adjustment()
         pd.set_option("display.max_colwidth", None)
@@ -230,7 +230,7 @@ def cash(other_args: List[str], ticker: str):
     df_financials = mwm.prepare_df_financials(ticker, "cashflow", ns_parser.b_quarter)
 
     if gtff.USE_COLOR:
-        df_financials = df_financials.applymap(financials_colored_values)
+        df_financials = df_financials.applymap(lambda_financials_colored_values)
 
         patch_pandas_text_adjustment()
         pd.set_option("display.max_colwidth", None)

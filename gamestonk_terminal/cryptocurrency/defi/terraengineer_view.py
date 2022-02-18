@@ -15,7 +15,7 @@ from gamestonk_terminal.cryptocurrency.defi import terraengineer_model
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
     export_data,
-    long_number_format,
+    lambda_long_number_format,
     plot_autoscale,
 )
 
@@ -64,7 +64,7 @@ def display_terra_asset_history(
     ax.set_ylabel(f"{asset.upper()} Amount")
     ax.set_title(f"{asset.upper()} Amount in {address}")
     ax.get_yaxis().set_major_formatter(
-        ticker.FuncFormatter(lambda x, _: long_number_format(x))
+        ticker.FuncFormatter(lambda x, _: lambda_long_number_format(x))
     )
 
     cfg.theme.style_primary_axis(ax)
@@ -112,7 +112,7 @@ def display_anchor_yield_reserve(
     ax.set_ylabel("UST Amount")
     ax.set_title("Anchor UST Yield Reserve")
     ax.get_yaxis().set_major_formatter(
-        ticker.FuncFormatter(lambda x, _: long_number_format(x))
+        ticker.FuncFormatter(lambda x, _: lambda_long_number_format(x))
     )
 
     cfg.theme.style_primary_axis(ax)

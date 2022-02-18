@@ -4,22 +4,14 @@ __docformat__ = "numpy"
 # pylint:disable=R0904,C0201
 
 import argparse
-from typing import List
+import logging
 from datetime import datetime
+from typing import List
 
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.rich_config import console
-from gamestonk_terminal.parent_classes import BaseController
+
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import (
-    EXPORT_BOTH_RAW_DATA_AND_FIGURES,
-    parse_known_args_and_warn,
-    check_positive_list,
-    check_positive,
-    valid_date,
-)
-from gamestonk_terminal.menu import session
 from gamestonk_terminal.common.technical_analysis import (
     custom_indicators_view,
     momentum_view,
@@ -30,6 +22,19 @@ from gamestonk_terminal.common.technical_analysis import (
     volatility_view,
     volume_view,
 )
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_funcs import (
+    EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+    check_positive,
+    check_positive_list,
+    parse_known_args_and_warn,
+    valid_date,
+)
+from gamestonk_terminal.menu import session
+from gamestonk_terminal.parent_classes import BaseController
+from gamestonk_terminal.rich_config import console
+
+logger = logging.getLogger(__name__)
 
 
 class TechnicalAnalysisController(BaseController):
@@ -119,6 +124,7 @@ class TechnicalAnalysisController(BaseController):
             return ["etf", f"load {self.ticker}", "ta"]
         return []
 
+    @log_start_end(log=logger)
     def call_ema(self, other_args: List[str]):
         """Process ema command"""
         parser = argparse.ArgumentParser(
@@ -171,6 +177,7 @@ class TechnicalAnalysisController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_sma(self, other_args: List[str]):
         """Process sma command"""
         parser = argparse.ArgumentParser(
@@ -222,6 +229,7 @@ class TechnicalAnalysisController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_wma(self, other_args: List[str]):
         """Process wma command"""
         parser = argparse.ArgumentParser(
@@ -270,6 +278,7 @@ class TechnicalAnalysisController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_hma(self, other_args: List[str]):
         """Process hma command"""
         parser = argparse.ArgumentParser(
@@ -318,6 +327,7 @@ class TechnicalAnalysisController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_zlma(self, other_args: List[str]):
         """Process zlma command"""
         parser = argparse.ArgumentParser(
@@ -369,6 +379,7 @@ class TechnicalAnalysisController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_cci(self, other_args: List[str]):
         """Process cci command"""
 
@@ -416,6 +427,7 @@ class TechnicalAnalysisController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_macd(self, other_args: List[str]):
         """Process macd command"""
         parser = argparse.ArgumentParser(
@@ -474,6 +486,7 @@ class TechnicalAnalysisController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_rsi(self, other_args: List[str]):
         """Process rsi command"""
         parser = argparse.ArgumentParser(
@@ -533,6 +546,7 @@ class TechnicalAnalysisController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_stoch(self, other_args: List[str]):
         """Process stoch command"""
         parser = argparse.ArgumentParser(
@@ -588,6 +602,7 @@ class TechnicalAnalysisController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_fisher(self, other_args: List[str]):
         """Process fisher command"""
         parser = argparse.ArgumentParser(
@@ -626,6 +641,7 @@ class TechnicalAnalysisController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_cg(self, other_args: List[str]):
         """Process cg command"""
         parser = argparse.ArgumentParser(
@@ -664,6 +680,7 @@ class TechnicalAnalysisController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_adx(self, other_args: List[str]):
         """Process adx command"""
         parser = argparse.ArgumentParser(
@@ -720,6 +737,7 @@ class TechnicalAnalysisController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_aroon(self, other_args: List[str]):
         """Process aroon command"""
         parser = argparse.ArgumentParser(
@@ -774,6 +792,7 @@ class TechnicalAnalysisController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_bbands(self, other_args: List[str]):
         """Process bbands command"""
         parser = argparse.ArgumentParser(
@@ -837,6 +856,7 @@ class TechnicalAnalysisController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_donchian(self, other_args: List[str]):
         """Process donchian command"""
         parser = argparse.ArgumentParser(
@@ -883,6 +903,7 @@ class TechnicalAnalysisController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_kc(self, other_args: List[str]):
         """Process kc command"""
         parser = argparse.ArgumentParser(
@@ -951,6 +972,7 @@ class TechnicalAnalysisController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_ad(self, other_args: List[str]):
         """Process ad command"""
         parser = argparse.ArgumentParser(
@@ -989,6 +1011,7 @@ class TechnicalAnalysisController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_adosc(self, other_args: List[str]):
         """Process adosc command"""
         parser = argparse.ArgumentParser(
@@ -1044,6 +1067,7 @@ class TechnicalAnalysisController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_obv(self, other_args: List[str]):
         """Process obv command"""
         parser = argparse.ArgumentParser(
@@ -1071,6 +1095,7 @@ class TechnicalAnalysisController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_fib(self, other_args: List[str]):
         """Process fib command"""
         parser = argparse.ArgumentParser(

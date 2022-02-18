@@ -14,7 +14,7 @@ from gamestonk_terminal.cryptocurrency.due_diligence.coinglass_model import (
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
     export_data,
-    long_number_format,
+    lambda_long_number_format,
     plot_autoscale,
 )
 from gamestonk_terminal.rich_config import console
@@ -78,7 +78,7 @@ def plot_data(
     )
 
     ax1.get_yaxis().set_major_formatter(
-        ticker.FuncFormatter(lambda x, _: long_number_format(x))
+        ticker.FuncFormatter(lambda x, _: lambda_long_number_format(x))
     )
     ax1.legend(df_without_price.columns, fontsize="x-small", ncol=2)
     ax1.set_title(f"Exchange {symbol} Futures Open Interest")

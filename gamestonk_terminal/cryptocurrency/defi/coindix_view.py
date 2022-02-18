@@ -9,7 +9,7 @@ from gamestonk_terminal.cryptocurrency.defi import coindix_model
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
     export_data,
-    long_number_format,
+    lambda_long_number_format,
     print_rich_table,
 )
 from gamestonk_terminal.rich_config import console
@@ -71,7 +71,7 @@ def display_defi_vaults(
         return
 
     df = df.sort_values(by=sortby, ascending=descend)
-    df["tvl"] = df["tvl"].apply(lambda x: long_number_format(x))
+    df["tvl"] = df["tvl"].apply(lambda x: lambda_long_number_format(x))
     df["apy"] = df["apy"].apply(
         lambda x: f"{str(round(x * 100, 2))} %" if isinstance(x, (int, float)) else x
     )

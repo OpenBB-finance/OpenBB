@@ -1,13 +1,13 @@
 
 Major Holders:
 
-        0                                          1
+                                                    
 0   0.19%   Percentage of Shares Held by All Insider
 1  76.24%  Percentage of Shares Held by Institutions
 2  76.39%   Percentage of Float Held by Institutions
 3    2322      Number of Institutions Holding Shares
 
-Institutuinal Holders:
+Institutional Holders:
 
                               Holder     Shares Date Reported   Stake     Value
 0         Vanguard Group, Inc. (The)  125.443 M    2021-09-29  8.06 %  11.891 B

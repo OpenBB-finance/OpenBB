@@ -65,8 +65,7 @@ d_trade_types = {
 }
 
 
-@log_start_end(log=logger)
-def red_highlight(values) -> List[str]:
+def lambda_red_highlight(values) -> List[str]:
     """Red highlight
 
     Parameters
@@ -82,8 +81,7 @@ def red_highlight(values) -> List[str]:
     return [f"[red]{val}[/red]" for val in values]
 
 
-@log_start_end(log=logger)
-def yellow_highlight(values) -> List[str]:
+def lambda_yellow_highlight(values) -> List[str]:
     """Yellow highlight
 
     Parameters
@@ -99,8 +97,7 @@ def yellow_highlight(values) -> List[str]:
     return [f"[yellow]{val}[/yellow]" for val in values]
 
 
-@log_start_end(log=logger)
-def magenta_highlight(values):
+def lambda_magenta_highlight(values):
     """Magenta highlight
 
     Parameters
@@ -116,8 +113,7 @@ def magenta_highlight(values):
     return [f"[magenta]{val}[/magenta]" for val in values]
 
 
-@log_start_end(log=logger)
-def green_highlight(values):
+def lambda_green_highlight(values):
     """Green highlight
 
     Parameters
@@ -267,19 +263,19 @@ def print_insider_filter(
         if not df_insider[df_insider["Trade Type"] == "S - Sale"].empty:
             df_insider[df_insider["Trade Type"] == "S - Sale"] = df_insider[
                 df_insider["Trade Type"] == "S - Sale"
-            ].apply(red_highlight)
+            ].apply(lambda_red_highlight)
         if not df_insider[df_insider["Trade Type"] == "S - Sale+OE"].empty:
             df_insider[df_insider["Trade Type"] == "S - Sale+OE"] = df_insider[
                 df_insider["Trade Type"] == "S - Sale+OE"
-            ].apply(yellow_highlight)
+            ].apply(lambda_yellow_highlight)
         if not df_insider[df_insider["Trade Type"] == "F - Tax"].empty:
             df_insider[df_insider["Trade Type"] == "F - Tax"] = df_insider[
                 df_insider["Trade Type"] == "F - Tax"
-            ].apply(magenta_highlight)
+            ].apply(lambda_magenta_highlight)
         if not df_insider[df_insider["Trade Type"] == "P - Purchase"].empty:
             df_insider[df_insider["Trade Type"] == "P - Purchase"] = df_insider[
                 df_insider["Trade Type"] == "P - Purchase"
-            ].apply(green_highlight)
+            ].apply(lambda_green_highlight)
 
         patch_pandas_text_adjustment()
         pd.set_option("display.max_colwidth", 0)

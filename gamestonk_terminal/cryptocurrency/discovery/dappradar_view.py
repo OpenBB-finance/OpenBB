@@ -3,9 +3,10 @@ __docformat__ = "numpy"
 
 import logging
 import os
+import numpy as np
 
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
-    very_long_number_formatter,
+    lambda_very_long_number_formatter,
 )
 from gamestonk_terminal.cryptocurrency.discovery import dappradar_model
 from gamestonk_terminal.decorators import log_start_end
@@ -37,7 +38,12 @@ def display_top_nfts(top: int = 10, sortby: str = "", export: str = "") -> None:
             df = df.sort_values(by=sortby, ascending=False)
         for col in ["Floor Price [$]", "Avg Price [$]", "Market Cap [$]", "Volume [$]"]:
             if col in df.columns:
-                df[col] = df[col].apply(lambda x: very_long_number_formatter(x))
+                df[col] = (
+                    df[col]
+                    .fillna(-1)
+                    .apply(lambda x: lambda_very_long_number_formatter(x))
+                    .replace(-1, np.nan)
+                )
         print_rich_table(
             df.head(top),
             headers=list(df.columns),
@@ -76,7 +82,7 @@ def display_top_games(top: int = 10, export: str = "", sortby: str = "") -> None
         df = df.sort_values(by=sortby, ascending=False)
     for col in ["Daily Users", "Daily Volume [$]"]:
         if col in df.columns:
-            df[col] = df[col].apply(lambda x: very_long_number_formatter(x))
+            df[col] = df[col].apply(lambda x: lambda_very_long_number_formatter(x))
     print_rich_table(
         df.head(top),
         headers=list(df.columns),
@@ -115,7 +121,7 @@ def display_top_dexes(top: int = 10, export: str = "", sortby: str = "") -> None
         df = df.sort_values(by=sortby, ascending=False)
     for col in ["Daily Users", "Daily Volume [$]"]:
         if col in df.columns:
-            df[col] = df[col].apply(lambda x: very_long_number_formatter(x))
+            df[col] = df[col].apply(lambda x: lambda_very_long_number_formatter(x))
     print_rich_table(
         df.head(top),
         headers=list(df.columns),
@@ -154,7 +160,7 @@ def display_top_dapps(top: int = 10, export: str = "", sortby: str = "") -> None
         df = df.sort_values(by=sortby, ascending=False)
     for col in ["Daily Users", "Daily Volume [$]"]:
         if col in df.columns:
-            df[col] = df[col].apply(lambda x: very_long_number_formatter(x))
+            df[col] = df[col].apply(lambda x: lambda_very_long_number_formatter(x))
     print_rich_table(
         df.head(top),
         headers=list(df.columns),

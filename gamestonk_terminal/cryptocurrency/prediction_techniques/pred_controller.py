@@ -2,22 +2,14 @@
 __docformat__ = "numpy"
 # pylint: disable=R0902
 import argparse
+import logging
 from typing import List
 
-import pandas as pd
 import numpy as np
+import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.rich_config import console
-from gamestonk_terminal.parent_classes import CryptoBaseController
+
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import (
-    parse_known_args_and_warn,
-    check_positive,
-    valid_date,
-    get_next_stock_market_days,
-    EXPORT_ONLY_FIGURES_ALLOWED,
-)
-from gamestonk_terminal.menu import session
 from gamestonk_terminal.common.prediction_techniques import (
     arima_model,
     arima_view,
@@ -25,12 +17,25 @@ from gamestonk_terminal.common.prediction_techniques import (
     ets_view,
     knn_view,
     mc_model,
-    neural_networks_view,
-    regression_view,
-    pred_helper,
     mc_view,
+    neural_networks_view,
+    pred_helper,
+    regression_view,
 )
 from gamestonk_terminal.cryptocurrency import cryptocurrency_helpers as c_help
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_funcs import (
+    EXPORT_ONLY_FIGURES_ALLOWED,
+    check_positive,
+    get_next_stock_market_days,
+    parse_known_args_and_warn,
+    valid_date,
+)
+from gamestonk_terminal.menu import session
+from gamestonk_terminal.parent_classes import CryptoBaseController
+from gamestonk_terminal.rich_config import console
+
+logger = logging.getLogger(__name__)
 
 
 class PredictionTechniquesController(CryptoBaseController):
@@ -108,6 +113,7 @@ class PredictionTechniquesController(CryptoBaseController):
             return ["crypto", f"load {self.coin}", "pred"]
         return []
 
+    @log_start_end(log=logger)
     def call_pick(self, other_args: List[str]):
         """Process pick command"""
         parser = argparse.ArgumentParser(
@@ -133,6 +139,7 @@ class PredictionTechniquesController(CryptoBaseController):
             self.target = ns_parser.target
             console.print("")
 
+    @log_start_end(log=logger)
     def call_ets(self, other_args: List[str]):
         """Process ets command"""
         parser = argparse.ArgumentParser(
@@ -233,6 +240,7 @@ class PredictionTechniquesController(CryptoBaseController):
                 time_res=self.resolution,
             )
 
+    @log_start_end(log=logger)
     def call_knn(self, other_args: List[str]):
         """Process knn command"""
         parser = argparse.ArgumentParser(
@@ -321,6 +329,7 @@ class PredictionTechniquesController(CryptoBaseController):
                 time_res=self.resolution,
             )
 
+    @log_start_end(log=logger)
     def call_regression(self, other_args: List[str]):
         """Process linear command"""
         parser = argparse.ArgumentParser(
@@ -419,6 +428,7 @@ class PredictionTechniquesController(CryptoBaseController):
                 time_res=self.resolution,
             )
 
+    @log_start_end(log=logger)
     def call_arima(self, other_args: List[str]):
         """Process arima command"""
         parser = argparse.ArgumentParser(
@@ -524,6 +534,7 @@ class PredictionTechniquesController(CryptoBaseController):
                 time_res=self.resolution,
             )
 
+    @log_start_end(log=logger)
     def call_mlp(self, other_args: List[str]):
         """Process mlp command"""
         try:
@@ -552,6 +563,7 @@ class PredictionTechniquesController(CryptoBaseController):
         finally:
             pred_helper.restore_env()
 
+    @log_start_end(log=logger)
     def call_rnn(self, other_args: List[str]):
         """Process rnn command"""
         try:
@@ -581,6 +593,7 @@ class PredictionTechniquesController(CryptoBaseController):
         finally:
             pred_helper.restore_env()
 
+    @log_start_end(log=logger)
     def call_lstm(self, other_args: List[str]):
         """Process lstm command"""
         try:
@@ -610,6 +623,7 @@ class PredictionTechniquesController(CryptoBaseController):
         finally:
             pred_helper.restore_env()
 
+    @log_start_end(log=logger)
     def call_conv1d(self, other_args: List[str]):
         """Process conv1d command"""
         try:
@@ -639,6 +653,7 @@ class PredictionTechniquesController(CryptoBaseController):
         finally:
             pred_helper.restore_env()
 
+    @log_start_end(log=logger)
     def call_mc(self, other_args: List[str]):
         """Process mc command"""
         parser = argparse.ArgumentParser(

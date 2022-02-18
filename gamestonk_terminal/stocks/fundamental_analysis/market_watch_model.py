@@ -12,9 +12,9 @@ from bs4 import BeautifulSoup
 
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
-    clean_data_values_to_float,
+    lambda_clean_data_values_to_float,
     get_user_agent,
-    int_or_round_float,
+    lambda_int_or_round_float,
 )
 from gamestonk_terminal.rich_config import console
 
@@ -250,7 +250,7 @@ def get_sean_seah_warnings(
     )
 
     # Clean these metrics by parsing their values to float
-    df_sean_seah = df_sean_seah.applymap(lambda x: clean_data_values_to_float(x))
+    df_sean_seah = df_sean_seah.applymap(lambda x: lambda_clean_data_values_to_float(x))
 
     # Add additional necessary metrics
     series = (
@@ -280,11 +280,11 @@ def get_sean_seah_warnings(
         if debug:
             sa_eps = np.array2string(
                 df_sean_seah.loc["EPS (Basic)"].values,
-                formatter={"float_kind": lambda x: int_or_round_float(x)},
+                formatter={"float_kind": lambda x: lambda_int_or_round_float(x)},
             )
             sa_growth = np.array2string(
                 df_sean_seah.loc["EPS (Basic)"].diff().dropna().values,
-                formatter={"float_kind": lambda x: int_or_round_float(x)},
+                formatter={"float_kind": lambda x: lambda_int_or_round_float(x)},
             )
             debugged_warnings.append(f"\tEPS: {sa_eps}\n\tGrowth: {sa_growth} < 0")
 
@@ -294,7 +294,7 @@ def get_sean_seah_warnings(
         if debug:
             sa_roe = np.array2string(
                 df_sean_seah.loc["ROE"].values,
-                formatter={"float_kind": lambda x: int_or_round_float(x)},
+                formatter={"float_kind": lambda x: lambda_int_or_round_float(x)},
             )
             debugged_warnings.append(f"\tROE: {sa_roe} < 0.15")
 
@@ -304,7 +304,7 @@ def get_sean_seah_warnings(
         if debug:
             sa_roa = np.array2string(
                 df_sean_seah.loc["ROA"].values,
-                formatter={"float_kind": lambda x: int_or_round_float(x)},
+                formatter={"float_kind": lambda x: lambda_int_or_round_float(x)},
             )
             debugged_warnings.append(f"\tROA: {sa_roa} < 0.07")
 
@@ -317,11 +317,11 @@ def get_sean_seah_warnings(
         if debug:
             sa_5_net_income = np.array2string(
                 5 * df_sean_seah.loc["Net Income"].values,
-                formatter={"float_kind": lambda x: int_or_round_float(x)},
+                formatter={"float_kind": lambda x: lambda_int_or_round_float(x)},
             )
             sa_long_term_debt = np.array2string(
                 df_sean_seah.loc["Long-Term Debt"].values,
-                formatter={"float_kind": lambda x: int_or_round_float(x)},
+                formatter={"float_kind": lambda x: lambda_int_or_round_float(x)},
             )
             debugged_warnings.append(
                 f"\t5x NET Income: {sa_5_net_income}\n\tlower than Long-Term Debt: {sa_long_term_debt}"
@@ -333,7 +333,7 @@ def get_sean_seah_warnings(
         if debug:
             sa_interest_coverage_ratio = np.array2string(
                 100 * df_sean_seah.loc["Interest Coverage Ratio"].values,
-                formatter={"float_kind": lambda x: int_or_round_float(x)},
+                formatter={"float_kind": lambda x: lambda_int_or_round_float(x)},
             )
             debugged_warnings.append(
                 f"\tInterest Coverage Ratio: {sa_interest_coverage_ratio} < 3"
@@ -341,7 +341,7 @@ def get_sean_seah_warnings(
 
     console.print("")
     return (
-        df_sean_seah.applymap(lambda x: int_or_round_float(x)),
+        df_sean_seah.applymap(lambda x: lambda_int_or_round_float(x)),
         warnings,
         debugged_warnings,
     )
