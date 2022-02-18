@@ -450,6 +450,7 @@ class CryptoController(CryptoBaseController):
                         self.queue,
                     )
             except ImportError:
+                logger.warning("Tensorflow not available")
                 console.print("[red]Run pip install tensorflow to continue[/red]\n")
 
         else:

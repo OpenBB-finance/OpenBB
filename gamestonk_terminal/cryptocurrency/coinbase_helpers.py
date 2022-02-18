@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import argparse
 import binascii
+import logging
 
 from typing import Optional, Any, Union
 import hmac
@@ -13,6 +14,8 @@ import requests
 from requests.auth import AuthBase
 import gamestonk_terminal.config_terminal as cfg
 from gamestonk_terminal.rich_config import console
+
+logger = logging.getLogger(__name__)
 
 
 class CoinbaseProAuth(AuthBase):
@@ -32,7 +35,8 @@ class CoinbaseProAuth(AuthBase):
             hmac_key = base64.b64decode(self.secret_key)
             signature = hmac.new(hmac_key, message, hashlib.sha256)
             signature_b64 = base64.b64encode(signature.digest())
-        except binascii.Error:
+        except binascii.Error as e:
+            logger.exception(str(e))
             signature_b64 = ""
 
         request.headers.update(
@@ -122,6 +126,7 @@ def make_coinbase_request(
     try:
         return response.json()
     except ValueError as e:
+        logger.exception(str(e))
         raise CoinbaseRequestException(f"Invalid Response: {response.text}") from e
 
 

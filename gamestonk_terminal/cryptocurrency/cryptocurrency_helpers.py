@@ -6,6 +6,7 @@ import os
 import json
 from typing import Tuple, Any, Optional, List
 import difflib
+import logging
 import pandas as pd
 import numpy as np
 from binance.client import Client
@@ -35,6 +36,8 @@ from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal.cryptocurrency.due_diligence import coinbase_model
 import gamestonk_terminal.config_terminal as cfg
 from gamestonk_terminal.rich_config import console
+
+logger = logging.getLogger(__name__)
 
 INTERVALS = ["1H", "3H", "6H", "1D"]
 
@@ -634,6 +637,7 @@ def display_all_coins(
     try:
         df = df[skip : skip + top]  # noqa
     except Exception as e:
+        logger.exception(str(e))
         console.print(e)
 
     print_rich_table(

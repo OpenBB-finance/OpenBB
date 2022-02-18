@@ -62,6 +62,7 @@ def make_request(params: Optional[dict] = None) -> dict:
     try:
         return response.json()
     except Exception as e:
+        logger.exception("Invalid Response: %s", str(e))
         raise ValueError(f"Invalid Response: {response.text}") from e
 
 

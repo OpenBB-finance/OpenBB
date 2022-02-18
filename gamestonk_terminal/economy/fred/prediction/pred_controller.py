@@ -355,6 +355,7 @@ class PredictionTechniquesController(BaseController):
                     time_res=self.resolution,
                 )
             except ValueError:
+                logger.exception("The loaded data does not have enough data")
                 console.print("The loaded data does not have enough data")
 
     @log_start_end(log=logger)
@@ -465,6 +466,7 @@ class PredictionTechniquesController(BaseController):
                     time_res=self.resolution,
                 )
             except ValueError as e:
+                logger.exception(str(e))
                 console.print(e)
 
     @log_start_end(log=logger)
@@ -606,6 +608,7 @@ class PredictionTechniquesController(BaseController):
                     time_res=self.resolution,
                 )
         except Exception as e:
+            logger.exception(str(e))
             console.print(e, "\n")
 
         finally:
@@ -643,6 +646,7 @@ class PredictionTechniquesController(BaseController):
                 )
 
         except Exception as e:
+            logger.exception(str(e))
             console.print(e)
 
         finally:
@@ -680,6 +684,7 @@ class PredictionTechniquesController(BaseController):
                 )
 
         except Exception as e:
+            logger.exception(str(e))
             console.print(e, "\n")
 
         finally:
@@ -717,6 +722,7 @@ class PredictionTechniquesController(BaseController):
                 )
 
         except Exception as e:
+            logger.exception(str(e))
             console.print(e, "\n")
 
         finally:
