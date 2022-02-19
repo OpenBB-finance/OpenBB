@@ -1,5 +1,5 @@
 ```
-usage: infer [-n N_NUM] [-h]
+usage: infer [-l LIMIT] [-h] [--export {csv,json,xlsx,png,jpg,pdf,svg}]
 ```
 
 Displays a quick sentiment inference from last tweets that contain the ticker. This model splits the text into character-level tokens and uses vader
@@ -7,9 +7,11 @@ sentiment analysis. Source: https://Twitter.com
 
 ```
 optional arguments:
-  -n N_NUM, --num N_NUM
-                        num of latest tweets to infer from. (default: 100)
+  -l LIMIT, --limit LIMIT
+                        limit of latest tweets to infer from. (default: 100)
   -h, --help            show this help message (default: False)
+  --export {csv,json,xlsx,png,jpg,pdf,svg}
+                        Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg (default: )
 ```
 
 Example:
