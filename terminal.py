@@ -397,6 +397,7 @@ def main(debug: bool, test: bool, filtert: str, path: List[str]):
             run_scripts(path[0])
         elif path:
             argv_cmds = list([" ".join(path).replace(" /", "/home/")])
+            argv_cmds = insert_start_slash(argv_cmds) if argv_cmds else argv_cmds
             terminal(argv_cmds)
         else:
             terminal()
