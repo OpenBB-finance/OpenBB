@@ -320,7 +320,8 @@ class SectorIndustryAnalysisController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="load",
-            description="Load stock ticker and alter the industry, sector, country and market cap accordingly for this ticker.",
+            description="Load stock ticker and alter the industry, sector, country and market cap "
+            "accordingly for this ticker.",
         )
         parser.add_argument(
             "-t",
