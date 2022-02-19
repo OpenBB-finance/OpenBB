@@ -29,7 +29,7 @@ def valinvest_score(ticker: str):
     """
     score = fmp_model.get_score(ticker)
     console.print(f"Score: {score:.2f}".rstrip("0").rstrip(".") + " %")
-    console.print("")
+    console.print()
 
 
 @log_start_end(log=logger)
@@ -48,8 +48,9 @@ def display_profile(ticker: str):
     if not profile.empty:
         print_rich_table(
             profile.drop(index=["description", "image"]),
-            headers=[],
-            title="Ticker Profile",
+            headers=[""],
+            title=f"{ticker.upper()} Profile",
+            show_index=True,
         )
 
         console.print(f"\nImage: {profile.loc['image'][0]}")
@@ -57,7 +58,7 @@ def display_profile(ticker: str):
     else:
         console.print("[red]Unable to get data[/red]")
 
-    console.print("")
+    console.print()
 
 
 @log_start_end(log=logger)
@@ -71,8 +72,8 @@ def display_quote(ticker: str):
     """
 
     quote = fmp_model.get_quote(ticker)
-    print_rich_table(quote, headers=[], title=f"{ticker} Quote")
-    console.print("")
+    print_rich_table(quote, headers=[""], title=f"{ticker} Quote", show_index=True)
+    console.print()
 
 
 @log_start_end(log=logger)
@@ -100,7 +101,7 @@ def display_enterprise(
         title=f"{ticker} Enterprise",
         show_index=True,
     )
-    console.print("")
+    console.print()
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "enterprise", df_fa)
 
 
@@ -123,9 +124,9 @@ def display_discounted_cash_flow(
     """
     dcf = fmp_model.get_dcf(ticker, number, quarterly)
     dcf = dcf[dcf.columns[::-1]]
-    print_rich_table(dcf, headers=[], title="Discounted Cash Flow")
+    print_rich_table(dcf, headers=[""], title="Discounted Cash Flow", show_index=True)
 
-    console.print("")
+    console.print()
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "dcf", dcf)
 
 
@@ -153,16 +154,16 @@ def display_income_statement(
         print_rich_table(
             income.drop(index=["Final link", "Link"]),
             headers=list(income.columns),
-            title="Ticker Income Statement",
+            title=f"{ticker.upper()} Income Statement",
             show_index=True,
         )
 
         pd.set_option("display.max_colwidth", None)
-        console.print("")
+        console.print()
         console.print(income.loc["Final link"].to_frame().to_string())
-        console.print("")
+        console.print()
         console.print(income.loc["Link"].to_frame().to_string())
-        console.print("")
+        console.print()
         export_data(
             export, os.path.dirname(os.path.abspath(__file__)), "income", income
         )
@@ -194,16 +195,16 @@ def display_balance_sheet(
         print_rich_table(
             balance.drop(index=["Final link", "Link"]),
             headers=list(balance.columns),
-            title="Ticker Balance Sheet",
+            title=f"{ticker.upper()} Balance Sheet",
             show_index=True,
         )
 
         pd.set_option("display.max_colwidth", None)
-        console.print("")
+        console.print()
         console.print(balance.loc["Final link"].to_frame().to_string())
-        console.print("")
+        console.print()
         console.print(balance.loc["Link"].to_frame().to_string())
-        console.print("")
+        console.print()
         export_data(
             export, os.path.dirname(os.path.abspath(__file__)), "balance", balance
         )
@@ -235,16 +236,16 @@ def display_cash_flow(
         print_rich_table(
             cash.drop(index=["Final link", "Link"]),
             headers=list(cash.columns),
-            title="Ticker Cash Flow",
+            title=f"{ticker.upper()} Cash Flow",
             show_index=True,
         )
 
         pd.set_option("display.max_colwidth", None)
-        console.print("")
+        console.print()
         console.print(cash.loc["Final link"].to_frame().to_string())
-        console.print("")
+        console.print()
         console.print(cash.loc["Link"].to_frame().to_string())
-        console.print("")
+        console.print()
         export_data(export, os.path.dirname(os.path.abspath(__file__)), "cash", cash)
     else:
         console.print("[red]Could not get data[/red]\n")
@@ -274,10 +275,10 @@ def display_key_metrics(
         print_rich_table(
             key_metrics,
             headers=list(key_metrics.columns),
-            title="Ticker Key Metrics",
+            title=f"{ticker.upper()} Key Metrics",
             show_index=True,
         )
-        console.print("")
+        console.print()
         export_data(
             export, os.path.dirname(os.path.abspath(__file__)), "metrics", key_metrics
         )
@@ -309,10 +310,10 @@ def display_financial_ratios(
         print_rich_table(
             ratios,
             headers=list(ratios.columns),
-            title="Ticker Ratios",
+            title=f"{ticker.upper()} Ratios",
             show_index=True,
         )
-        console.print("")
+        console.print()
         export_data(
             export, os.path.dirname(os.path.abspath(__file__)), "grratiosowth", ratios
         )
@@ -342,9 +343,12 @@ def display_financial_statement_growth(
     if not growth.empty:
         growth = growth[growth.columns[::-1]]
         print_rich_table(
-            growth, headers=list(growth.columns), title="Ticker Growth", show_index=True
+            growth,
+            headers=list(growth.columns),
+            title=f"{ticker.upper()} Growth",
+            show_index=True,
         )
-        console.print("")
+        console.print()
         export_data(
             export, os.path.dirname(os.path.abspath(__file__)), "growth", growth
         )

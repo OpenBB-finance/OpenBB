@@ -2,41 +2,46 @@
 __docformat__ = "numpy"
 # pylint: disable=R0904, C0302, R1710, W0622, C0201, C0301
 
-import os
 import argparse
+import logging
+import os
 from typing import List
 
-from prompt_toolkit.completion import NestedCompleter
 from binance.client import Client
-from gamestonk_terminal.rich_config import console
-from gamestonk_terminal.parent_classes import CryptoBaseController
-from gamestonk_terminal.cryptocurrency.due_diligence import pycoingecko_model
+from prompt_toolkit.completion import NestedCompleter
+
+import gamestonk_terminal.config_terminal as cfg
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import (
-    EXPORT_BOTH_RAW_DATA_AND_FIGURES,
-    EXPORT_ONLY_RAW_DATA_ALLOWED,
-    parse_known_args_and_warn,
-    check_positive,
-)
-from gamestonk_terminal.menu import session
-from gamestonk_terminal.cryptocurrency.due_diligence import (
-    coinpaprika_view,
-    binance_view,
-    pycoingecko_view,
-    finbrain_crypto_view,
-    binance_model,
-    coinbase_model,
-)
 from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import (
     FIND_KEYS,
     display_all_coins,
     find,
     plot_chart,
 )
-import gamestonk_terminal.config_terminal as cfg
+from gamestonk_terminal.cryptocurrency.due_diligence import (
+    binance_model,
+    binance_view,
+    coinbase_model,
+    coinpaprika_view,
+    finbrain_crypto_view,
+    pycoingecko_model,
+    pycoingecko_view,
+)
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_funcs import (
+    EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
+    check_positive,
+    parse_known_args_and_warn,
+)
+from gamestonk_terminal.menu import session
+from gamestonk_terminal.parent_classes import CryptoBaseController
+from gamestonk_terminal.rich_config import console
 
 # pylint: disable=import-outside-toplevel
 
+
+logger = logging.getLogger(__name__)
 
 CRYPTO_SOURCES = {
     "bin": "Binance",
@@ -108,6 +113,7 @@ class CryptoController(CryptoBaseController):
 """
         console.print(text=help_text, menu="Cryptocurrency")
 
+    @log_start_end(log=logger)
     def call_prt(self, other_args):
         """Process prt command"""
         if self.coin:
@@ -119,11 +125,14 @@ class CryptoController(CryptoBaseController):
                 "Tool to check returns if loaded coin reaches provided price or other crypto market cap"
                 "Uses CoinGecko to grab coin data (price and market cap).",
             )
-            group = parser.add_mutually_exclusive_group(required=True)
-            group.add_argument(
-                "--vs", help="Coin to compare with", dest="vs", type=str, default=None
+            parser.add_argument(
+                "--vs",
+                help="Coin to compare with",
+                dest="vs",
+                type=str,
+                required="-h" not in other_args,
             )
-            group.add_argument(
+            parser.add_argument(
                 "-p",
                 "--price",
                 help="Desired price",
@@ -131,7 +140,7 @@ class CryptoController(CryptoBaseController):
                 type=int,
                 default=None,
             )
-            group.add_argument(
+            parser.add_argument(
                 "-t",
                 "--top",
                 help="Compare with top N coins",
@@ -154,18 +163,19 @@ class CryptoController(CryptoBaseController):
                             f"VS Coin '{ns_parser.vs}' not found in CoinGecko\n"
                         )
                         return
-                pycoingecko_view.display_coin_potential_returns(
-                    self.coin_map_df["CoinGecko"],
-                    coin_found,
-                    ns_parser.top,
-                    ns_parser.price,
-                )
+                    pycoingecko_view.display_coin_potential_returns(
+                        self.coin_map_df["CoinGecko"],
+                        coin_found,
+                        ns_parser.top,
+                        ns_parser.price,
+                    )
 
-        else:
-            console.print(
-                "No coin selected. Use 'load' to load the coin you want to look at.\n"
-            )
+                else:
+                    console.print(
+                        "No coin selected. Use 'load' to load the coin you want to look at.\n"
+                    )
 
+    @log_start_end(log=logger)
     def call_chart(self, other_args):
         """Process chart command"""
         if self.coin:
@@ -324,6 +334,7 @@ class CryptoController(CryptoBaseController):
                     source=self.source,
                 )
 
+    @log_start_end(log=logger)
     def call_ta(self, _):
         """Process ta command"""
         from gamestonk_terminal.cryptocurrency.technical_analysis.ta_controller import (
@@ -345,6 +356,7 @@ class CryptoController(CryptoBaseController):
         else:
             console.print("No coin selected. Use 'load' to load a coin.\n")
 
+    @log_start_end(log=logger)
     def call_disc(self, _):
         """Process disc command"""
         from gamestonk_terminal.cryptocurrency.discovery.discovery_controller import (
@@ -353,6 +365,7 @@ class CryptoController(CryptoBaseController):
 
         self.queue = self.load_class(DiscoveryController, self.queue)
 
+    @log_start_end(log=logger)
     def call_ov(self, _):
         """Process ov command"""
         from gamestonk_terminal.cryptocurrency.overview.overview_controller import (
@@ -361,6 +374,7 @@ class CryptoController(CryptoBaseController):
 
         self.queue = self.load_class(OverviewController, self.queue)
 
+    @log_start_end(log=logger)
     def call_defi(self, _):
         """Process defi command"""
         from gamestonk_terminal.cryptocurrency.defi.defi_controller import (
@@ -369,6 +383,7 @@ class CryptoController(CryptoBaseController):
 
         self.queue = self.load_class(DefiController, self.queue)
 
+    @log_start_end(log=logger)
     def call_headlines(self, other_args):
         """Process sentiment command"""
         parser = argparse.ArgumentParser(
@@ -400,6 +415,7 @@ class CryptoController(CryptoBaseController):
                 coin=ns_parser.coin, export=ns_parser.export
             )
 
+    @log_start_end(log=logger)
     def call_dd(self, _):
         """Process dd command"""
         if self.coin:
@@ -418,6 +434,7 @@ class CryptoController(CryptoBaseController):
         else:
             console.print("No coin selected. Use 'load' to load a coin.\n")
 
+    @log_start_end(log=logger)
     def call_pred(self, _):
         """Process pred command"""
         if self.coin:
@@ -443,6 +460,7 @@ class CryptoController(CryptoBaseController):
                 "No coin selected. Use 'load' to load the coin you want to look at.\n"
             )
 
+    @log_start_end(log=logger)
     def call_onchain(self, _):
         """Process onchain command"""
         from gamestonk_terminal.cryptocurrency.onchain.onchain_controller import (
@@ -451,6 +469,7 @@ class CryptoController(CryptoBaseController):
 
         self.queue = self.load_class(OnchainController, self.queue)
 
+    @log_start_end(log=logger)
     def call_nft(self, _):
         """Process nft command"""
         from gamestonk_terminal.cryptocurrency.nft.nft_controller import NFTController
@@ -458,6 +477,7 @@ class CryptoController(CryptoBaseController):
         self.queue = self.load_class(NFTController, self.queue)
 
     # TODO: merge the two views that this command calls. (find + previously called coins)
+    @log_start_end(log=logger)
     def call_find(self, other_args):
         """Process find command"""
         parser = argparse.ArgumentParser(

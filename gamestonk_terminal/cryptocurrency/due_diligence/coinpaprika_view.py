@@ -7,7 +7,7 @@ import os
 from pandas.plotting import register_matplotlib_converters
 
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
-    long_number_format_with_type_check,
+    lambda_long_number_format_with_type_check,
 )
 from gamestonk_terminal.cryptocurrency.due_diligence import coinpaprika_model
 from gamestonk_terminal.decorators import log_start_end
@@ -319,7 +319,7 @@ def display_price_supply(
         console.print("No data found", "\n")
         return
 
-    df = df.applymap(lambda x: long_number_format_with_type_check(x))
+    df = df.applymap(lambda x: lambda_long_number_format_with_type_check(x))
 
     print_rich_table(
         df, headers=list(df.columns), show_index=False, title="Coin Information"

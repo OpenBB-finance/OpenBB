@@ -7,8 +7,10 @@ import os
 import difflib
 import logging
 import argparse
+import platform
 from typing import List
 import pytz
+
 
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.rich_config import console
@@ -223,8 +225,12 @@ class TerminalController(BaseController):
 def terminal(jobs_cmds: List[str] = None):
     """Terminal Menu"""
     setup_logging()
+    logger.info("START")
+    logger.info("Python: %s", platform.python_version())
+    logger.info("OS: %s", platform.system())
 
-    logger.info("Terminal started")
+    if jobs_cmds is not None and jobs_cmds:
+        logger.info("INPUT: %s", "/".join(jobs_cmds))
 
     ret_code = 1
     t_controller = TerminalController(jobs_cmds)
@@ -319,6 +325,14 @@ def terminal(jobs_cmds: List[str] = None):
                 console.print("\n")
 
 
+def insert_start_slash(cmds: List[str]) -> List[str]:
+    if not cmds[0].startswith("/"):
+        cmds[0] = f"/{cmds[0]}"
+    if cmds[0].startswith("/home"):
+        cmds[0] = f"/{cmds[0][5:]}"
+    return cmds
+
+
 # TODO: if test_mode is true add exit to the end
 def run_scripts(path: str, test_mode: bool = False):
     """Runs a given .gst scripts
@@ -340,10 +354,7 @@ def run_scripts(path: str, test_mode: bool = False):
             simulate_argv = f"/{'/'.join([line.rstrip() for line in lines])}"
             file_cmds = simulate_argv.replace("//", "/home/").split()
 
-            # close the eyes if the user forgets the initial `/`
-            if len(file_cmds) > 0:
-                if file_cmds[0][0] != "/":
-                    file_cmds[0] = f"/{file_cmds[0]}"
+            file_cmds = insert_start_slash(file_cmds) if file_cmds else file_cmds
             terminal(file_cmds)
     else:
         console.print(f"File '{path}' doesn't exist. Launching base terminal.\n")
@@ -443,6 +454,7 @@ if __name__ == "__main__":
                 run_scripts(ns_parser.path[0])
             elif ns_parser.path:
                 argv_cmds = list([" ".join(ns_parser.path).replace(" /", "/home/")])
+                argv_cmds = insert_start_slash(argv_cmds) if argv_cmds else argv_cmds
                 terminal(argv_cmds)
             else:
                 terminal()

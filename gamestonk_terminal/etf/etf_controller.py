@@ -2,43 +2,47 @@
 __docformat__ = "numpy"
 
 import argparse
+import logging
 import os
 from datetime import datetime, timedelta
 from typing import List
-import yfinance as yf
 
+import yfinance as yf
 from prompt_toolkit.completion import NestedCompleter
 from thepassiveinvestor import create_ETF_report
 
-from gamestonk_terminal.stocks import stocks_helper
-from gamestonk_terminal.rich_config import console
-
-from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.etf import (
-    stockanalysis_view,
-    financedatabase_view,
-    stockanalysis_model,
-    yfinance_view,
-)
 from gamestonk_terminal.common import newsapi_view
 from gamestonk_terminal.common.quantitative_analysis import qa_view
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.etf import (
+    financedatabase_view,
+    stockanalysis_model,
+    stockanalysis_view,
+    yfinance_view,
+)
+from gamestonk_terminal.etf.discovery import disc_controller
+from gamestonk_terminal.etf.screener import screener_controller
+from gamestonk_terminal.etf.technical_analysis import ta_controller
 from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_non_negative_float,
     check_positive,
-    valid_date,
-    parse_known_args_and_warn,
     export_data,
+    parse_known_args_and_warn,
+    valid_date,
 )
 from gamestonk_terminal.menu import session
-from gamestonk_terminal.etf.technical_analysis import ta_controller
+from gamestonk_terminal.parent_classes import BaseController
+from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.stocks import stocks_helper
 from gamestonk_terminal.stocks.comparison_analysis import ca_controller
-from gamestonk_terminal.etf.screener import screener_controller
-from gamestonk_terminal.etf.discovery import disc_controller
 
 # pylint: disable=C0415,C0302
+
+
+logger = logging.getLogger(__name__)
 
 
 class ETFController(BaseController):
@@ -119,6 +123,7 @@ class ETFController(BaseController):
             return ["etf", f"load {self.etf_name}"]
         return []
 
+    @log_start_end(log=logger)
     def call_ln(self, other_args: List[str]):
         """Process ln command"""
         parser = argparse.ArgumentParser(
@@ -177,6 +182,7 @@ class ETFController(BaseController):
             else:
                 console.print("Wrong source choice!\n")
 
+    @log_start_end(log=logger)
     def call_ld(self, other_args: List[str]):
         """Process ld command"""
         parser = argparse.ArgumentParser(
@@ -217,6 +223,7 @@ class ETFController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_load(self, other_args: List[str]):
         """Process load command"""
         parser = argparse.ArgumentParser(
@@ -303,6 +310,7 @@ class ETFController(BaseController):
 
             console.print("")
 
+    @log_start_end(log=logger)
     def call_overview(self, other_args: List[str]):
         """Process overview command"""
         parser = argparse.ArgumentParser(
@@ -320,6 +328,7 @@ class ETFController(BaseController):
                 symbol=self.etf_name, export=ns_parser.export
             )
 
+    @log_start_end(log=logger)
     def call_holdings(self, other_args: List[str]):
         """Process holdings command"""
         parser = argparse.ArgumentParser(
@@ -349,6 +358,7 @@ class ETFController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_news(self, other_args: List[str]):
         """Process news command"""
         parser = argparse.ArgumentParser(
@@ -415,6 +425,7 @@ class ETFController(BaseController):
             else:
                 console.print("Use 'load <ticker>' prior to this command!", "\n")
 
+    @log_start_end(log=logger)
     def call_candle(self, other_args: List[str]):
         """Process candle command"""
         parser = argparse.ArgumentParser(
@@ -530,6 +541,7 @@ class ETFController(BaseController):
             else:
                 console.print("No ticker loaded. First use `load {ticker}`\n")
 
+    @log_start_end(log=logger)
     def call_pir(self, other_args):
         """Process pir command"""
         parser = argparse.ArgumentParser(
@@ -574,6 +586,7 @@ class ETFController(BaseController):
                     f"Created ETF report as {ns_parser.filename} in folder {ns_parser.folder} \n"
                 )
 
+    @log_start_end(log=logger)
     def call_weights(self, other_args: List[str]):
         """Process weights command"""
         parser = argparse.ArgumentParser(
@@ -610,6 +623,7 @@ class ETFController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_summary(self, other_args: List[str]):
         """Process summary command"""
         parser = argparse.ArgumentParser(
@@ -627,6 +641,7 @@ class ETFController(BaseController):
                 name=self.etf_name,
             )
 
+    @log_start_end(log=logger)
     def call_ta(self, _):
         """Process ta command"""
         if self.etf_name and not self.etf_data.empty:
@@ -640,6 +655,7 @@ class ETFController(BaseController):
         else:
             console.print("Use 'load <ticker>' prior to this command!", "\n")
 
+    @log_start_end(log=logger)
     def call_pred(self, _):
         """Process pred command"""
         if gtff.ENABLE_PREDICT:
@@ -672,6 +688,7 @@ class ETFController(BaseController):
                 "\n",
             )
 
+    @log_start_end(log=logger)
     def call_ca(self, _):
         """Process ca command"""
         if len(self.etf_holdings) > 0:
@@ -683,14 +700,17 @@ class ETFController(BaseController):
                 "Load a ticker with major holdings to compare them on this menu\n"
             )
 
+    @log_start_end(log=logger)
     def call_scr(self, _):
         """Process scr command"""
         self.queue = self.load_class(screener_controller.ScreenerController, self.queue)
 
+    @log_start_end(log=logger)
     def call_disc(self, _):
         """Process disc command"""
         self.queue = self.load_class(disc_controller.DiscoveryController, self.queue)
 
+    @log_start_end(log=logger)
     def call_compare(self, other_args):
         """Process compare command"""
         parser = argparse.ArgumentParser(
