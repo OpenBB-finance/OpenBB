@@ -280,7 +280,7 @@ def test_call_func(
             mock.assert_called_once()
     else:
         controller = fred_controller.FredController(queue=None)
-        controller.current_series = {"MOCK_DICT_KEY_1": "MOCK_DICT_VALUE_1"}
+        controller.current_series = {"mock_dict_key1": "MOCK_DICT_VALUE_1"}
 
         getattr(controller, tested_func)(other_args)
 
