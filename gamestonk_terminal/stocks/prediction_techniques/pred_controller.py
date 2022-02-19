@@ -405,7 +405,7 @@ class PredictionTechniquesController(BaseController):
             default=1,
             help="polynomial associated with regression.",
         )
-        if (
+        if not (
             other_args
             and "-h" not in other_args
             and ("-p" not in other_args or "--polynomial" not in other_args)
