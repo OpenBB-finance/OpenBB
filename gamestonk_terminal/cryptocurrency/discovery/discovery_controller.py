@@ -3,27 +3,33 @@ __docformat__ = "numpy"
 
 # pylint: disable=R0904, C0302, W0622, C0201
 import argparse
+import logging
 from typing import List
+
 from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.rich_config import console
-from gamestonk_terminal.parent_classes import BaseController
+
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import (
-    EXPORT_ONLY_RAW_DATA_ALLOWED,
-    parse_known_args_and_warn,
-    check_positive,
-)
-from gamestonk_terminal.menu import session
 from gamestonk_terminal.cryptocurrency.discovery import (
     coinmarketcap_model,
+    coinmarketcap_view,
     coinpaprika_model,
+    coinpaprika_view,
     dappradar_model,
     dappradar_view,
     pycoingecko_model,
     pycoingecko_view,
-    coinpaprika_view,
-    coinmarketcap_view,
 )
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_funcs import (
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
+    check_positive,
+    parse_known_args_and_warn,
+)
+from gamestonk_terminal.menu import session
+from gamestonk_terminal.parent_classes import BaseController
+from gamestonk_terminal.rich_config import console
+
+logger = logging.getLogger(__name__)
 
 
 class DiscoveryController(BaseController):
@@ -99,6 +105,7 @@ class DiscoveryController(BaseController):
 """
         console.print(text=help_text, menu="Cryptocurrency - Discovery")
 
+    @log_start_end(log=logger)
     def call_cgtop(self, other_args):
         """Process cgtop command"""
         parser = argparse.ArgumentParser(
@@ -153,6 +160,7 @@ class DiscoveryController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_drdapps(self, other_args):
         """Process drdapps command"""
         parser = argparse.ArgumentParser(
@@ -192,6 +200,7 @@ class DiscoveryController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_drgames(self, other_args):
         """Process drgames command"""
         parser = argparse.ArgumentParser(
@@ -231,6 +240,7 @@ class DiscoveryController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_drdex(self, other_args):
         """Process drdex command"""
         parser = argparse.ArgumentParser(
@@ -270,6 +280,7 @@ class DiscoveryController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_drnft(self, other_args):
         """Process drnft command"""
         parser = argparse.ArgumentParser(
@@ -310,6 +321,7 @@ class DiscoveryController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_cggainers(self, other_args):
         """Process gainers command"""
         parser = argparse.ArgumentParser(
@@ -363,6 +375,7 @@ class DiscoveryController(BaseController):
                 sortby=" ".join(ns_parser.sortby),
             )
 
+    @log_start_end(log=logger)
     def call_cglosers(self, other_args):
         """Process losers command"""
         parser = argparse.ArgumentParser(
@@ -417,6 +430,7 @@ class DiscoveryController(BaseController):
                 sortby=" ".join(ns_parser.sortby),
             )
 
+    @log_start_end(log=logger)
     def call_cgtrending(self, other_args):
         """Process trending command"""
         parser = argparse.ArgumentParser(
@@ -436,6 +450,7 @@ class DiscoveryController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_cmctop(self, other_args):
         """Process cmctop command"""
         parser = argparse.ArgumentParser(
@@ -483,6 +498,7 @@ class DiscoveryController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_cpsearch(self, other_args):
         """Process search command"""
         parser = argparse.ArgumentParser(

@@ -6,7 +6,7 @@ from gamestonk_terminal.cryptocurrency.overview import rekt_model
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
     export_data,
-    long_number_format,
+    lambda_long_number_format,
     print_rich_table,
 )
 from gamestonk_terminal.rich_config import console
@@ -53,7 +53,9 @@ def display_crypto_hacks(
         else:
             if sortby in rekt_model.HACKS_COLUMNS:
                 df = df.sort_values(by=sortby, ascending=descend)
-            df["Amount [$]"] = df["Amount [$]"].apply(lambda x: long_number_format(x))
+            df["Amount [$]"] = df["Amount [$]"].apply(
+                lambda x: lambda_long_number_format(x)
+            )
             df["Date"] = df["Date"].dt.date
 
             print_rich_table(

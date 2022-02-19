@@ -2,24 +2,30 @@
 __docformat__ = "numpy"
 
 import argparse
+import logging
 import os
 from typing import List
 
 from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.rich_config import console
-from gamestonk_terminal.parent_classes import BaseController
+
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
     parse_known_args_and_warn,
 )
 from gamestonk_terminal.menu import session
+from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal.portfolio.portfolio_optimization import po_controller
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.stocks.comparison_analysis import ca_controller
 from gamestonk_terminal.stocks.options import syncretism_view
 
 # pylint: disable=E1121
+
+
+logger = logging.getLogger(__name__)
 
 
 class ScreenerController(BaseController):
@@ -68,6 +74,7 @@ class ScreenerController(BaseController):
         """
         console.print(text=help_text, menu="Stocks - Options - Screener")
 
+    @log_start_end(log=logger)
     def call_view(self, other_args: List[str]):
         """Process view command"""
         parser = argparse.ArgumentParser(
@@ -99,6 +106,7 @@ class ScreenerController(BaseController):
                     console.print(preset)
                 console.print("")
 
+    @log_start_end(log=logger)
     def call_set(self, other_args: List[str]):
         """Process set command"""
         parser = argparse.ArgumentParser(
@@ -123,6 +131,7 @@ class ScreenerController(BaseController):
             self.preset = ns_parser.preset
         console.print("")
 
+    @log_start_end(log=logger)
     def call_scr(self, other_args: List[str]):
         """Process scr command"""
         parser = argparse.ArgumentParser(
@@ -168,6 +177,7 @@ class ScreenerController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_po(self, _):
         """Call the portfolio optimization menu with selected tickers"""
         if self.screen_tickers:
@@ -179,6 +189,7 @@ class ScreenerController(BaseController):
                 "Some tickers must be screened first through one of the presets!\n"
             )
 
+    @log_start_end(log=logger)
     def call_ca(self, _):
         """Call the comparison analysis menu with selected tickers"""
         if self.screen_tickers:

@@ -4,38 +4,41 @@ __docformat__ = "numpy"
 # pylint: disable=C0302
 
 import argparse
-
+import logging
 from typing import List
-from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.rich_config import console
-from gamestonk_terminal.cryptocurrency.defi import (
-    graph_model,
-    coindix_model,
-    terraengineer_model,
-    terraengineer_view,
-    terramoney_fcd_view,
-    terramoney_fcd_model,
-)
-from gamestonk_terminal.parent_classes import BaseController
-from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.menu import session
-from gamestonk_terminal.helper_funcs import (
-    parse_known_args_and_warn,
-    check_positive,
-    check_terra_address_format,
-    EXPORT_ONLY_RAW_DATA_ALLOWED,
-    EXPORT_BOTH_RAW_DATA_AND_FIGURES,
-)
 
+from prompt_toolkit.completion import NestedCompleter
+
+from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.cryptocurrency.defi import (
-    defirate_view,
+    coindix_model,
+    coindix_view,
     defipulse_view,
+    defirate_view,
+    graph_model,
+    graph_view,
     llama_model,
     llama_view,
     substack_view,
-    graph_view,
-    coindix_view,
+    terraengineer_model,
+    terraengineer_view,
+    terramoney_fcd_model,
+    terramoney_fcd_view,
+    smartstake_view,
 )
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_funcs import (
+    EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
+    check_positive,
+    check_terra_address_format,
+    parse_known_args_and_warn,
+)
+from gamestonk_terminal.menu import session
+from gamestonk_terminal.parent_classes import BaseController
+from gamestonk_terminal.rich_config import console
+
+logger = logging.getLogger(__name__)
 
 
 class DefiController(BaseController):
@@ -65,6 +68,7 @@ class DefiController(BaseController):
         "gacc",
         "sratio",
         "sreturn",
+        "lcsc",
     ]
 
     PATH = "/crypto/defi/"
@@ -126,10 +130,14 @@ class DefiController(BaseController):
     govp          Displays terra blockchain governance proposals list
     gacc          Displays terra blockchain account growth history
     sratio        Displays terra blockchain staking ratio history
-    sreturn       Displays terra blockchain staking returns history[/cmds]
+    sreturn       Displays terra blockchain staking returns history
+
+[src][Smartstake][/src]
+    lcsc         Displays Luna circulating supply changes[/cmds]
 """
         console.print(text=help_text, menu="Cryptocurrency - Decentralized Finance")
 
+    @log_start_end(log=logger)
     def call_aterra(self, other_args: List[str]):
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -170,6 +178,7 @@ class DefiController(BaseController):
                 asset=ns_parser.asset,
             )
 
+    @log_start_end(log=logger)
     def call_ayr(self, other_args: List[str]):
         """Process ayr command"""
         parser = argparse.ArgumentParser(
@@ -193,6 +202,7 @@ class DefiController(BaseController):
         if ns_parser:
             terraengineer_view.display_anchor_yield_reserve(export=ns_parser.export)
 
+    @log_start_end(log=logger)
     def call_sinfo(self, other_args: List[str]):
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -232,6 +242,7 @@ class DefiController(BaseController):
                 export=ns_parser.export, address=ns_parser.address, top=ns_parser.limit
             )
 
+    @log_start_end(log=logger)
     def call_validators(self, other_args: List[str]):
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -286,6 +297,7 @@ class DefiController(BaseController):
                 top=ns_parser.limit,
             )
 
+    @log_start_end(log=logger)
     def call_govp(self, other_args: List[str]):
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -342,6 +354,7 @@ class DefiController(BaseController):
                 top=ns_parser.limit,
             )
 
+    @log_start_end(log=logger)
     def call_gacc(self, other_args: List[str]):
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -396,6 +409,7 @@ class DefiController(BaseController):
                 top=ns_parser.limit,
             )
 
+    @log_start_end(log=logger)
     def call_sratio(self, other_args: List[str]):
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -424,6 +438,7 @@ class DefiController(BaseController):
                 export=ns_parser.export, top=ns_parser.limit
             )
 
+    @log_start_end(log=logger)
     def call_sreturn(self, other_args: List[str]):
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -452,6 +467,7 @@ class DefiController(BaseController):
                 export=ns_parser.export, top=ns_parser.limit
             )
 
+    @log_start_end(log=logger)
     def call_dpi(self, other_args: List[str]):
         """Process dpi command"""
         parser = argparse.ArgumentParser(
@@ -503,6 +519,7 @@ class DefiController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_gdapps(self, other_args: List[str]):
         """Process gdapps command"""
         parser = argparse.ArgumentParser(
@@ -530,6 +547,7 @@ class DefiController(BaseController):
         if ns_parser:
             llama_view.display_grouped_defi_protocols(num=ns_parser.limit)
 
+    @log_start_end(log=logger)
     def call_dtvl(self, other_args: List[str]):
         """Process dtvl command"""
         parser = argparse.ArgumentParser(
@@ -559,6 +577,7 @@ class DefiController(BaseController):
         if ns_parser:
             llama_view.display_historical_tvl(dapps=ns_parser.dapps)
 
+    @log_start_end(log=logger)
     def call_ldapps(self, other_args: List[str]):
         """Process ldapps command"""
         parser = argparse.ArgumentParser(
@@ -619,6 +638,7 @@ class DefiController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_stvl(self, other_args: List[str]):
         """Process stvl command"""
         parser = argparse.ArgumentParser(
@@ -647,6 +667,7 @@ class DefiController(BaseController):
         if ns_parser:
             llama_view.display_defi_tvl(top=ns_parser.limit, export=ns_parser.export)
 
+    @log_start_end(log=logger)
     def call_funding(self, other_args: List[str]):
         """Process funding command"""
         parser = argparse.ArgumentParser(
@@ -685,6 +706,7 @@ class DefiController(BaseController):
                 top=ns_parser.limit, current=ns_parser.current, export=ns_parser.export
             )
 
+    @log_start_end(log=logger)
     def call_borrow(self, other_args: List[str]):
         """Process borrow command"""
         parser = argparse.ArgumentParser(
@@ -723,6 +745,7 @@ class DefiController(BaseController):
                 top=ns_parser.limit, current=ns_parser.current, export=ns_parser.export
             )
 
+    @log_start_end(log=logger)
     def call_lending(self, other_args: List[str]):
         """Process lending command"""
         parser = argparse.ArgumentParser(
@@ -761,6 +784,7 @@ class DefiController(BaseController):
                 top=ns_parser.limit, current=ns_parser.current, export=ns_parser.export
             )
 
+    @log_start_end(log=logger)
     def call_newsletter(self, other_args: List[str]):
         """Process newsletter command"""
         parser = argparse.ArgumentParser(
@@ -791,6 +815,7 @@ class DefiController(BaseController):
                 top=ns_parser.limit, export=ns_parser.export
             )
 
+    @log_start_end(log=logger)
     def call_tokens(self, other_args: List[str]):
         """Process tokens command"""
         parser = argparse.ArgumentParser(
@@ -850,6 +875,7 @@ class DefiController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_stats(self, other_args: List[str]):
         """Process stats command"""
         parser = argparse.ArgumentParser(
@@ -869,6 +895,7 @@ class DefiController(BaseController):
         if ns_parser:
             graph_view.display_uni_stats(export=ns_parser.export)
 
+    @log_start_end(log=logger)
     def call_pairs(self, other_args: List[str]):
         """Process pairs command"""
         parser = argparse.ArgumentParser(
@@ -949,6 +976,7 @@ class DefiController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_pools(self, other_args: List[str]):
         """Process pools command"""
         parser = argparse.ArgumentParser(
@@ -1000,6 +1028,7 @@ class DefiController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_swaps(self, other_args: List[str]):
         """Process swaps command"""
         parser = argparse.ArgumentParser(
@@ -1051,6 +1080,7 @@ class DefiController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_vaults(self, other_args: List[str]):
         """Process swaps command"""
         parser = argparse.ArgumentParser(
@@ -1145,5 +1175,46 @@ class DefiController(BaseController):
                 sortby=ns_parser.sortby,
                 descend=ns_parser.descend,
                 link=ns_parser.link,
+                export=ns_parser.export,
+            )
+
+    def call_lcsc(self, other_args: List[str]):
+        """Process lcsc command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="lcsc",
+            description="""
+                Display Luna circulating supply changes stats.
+                [Source: Smartstake.io]
+
+                Follow these steps to get the key token:
+                1. Head to https://terra.smartstake.io/
+                2. Right click on your browser and choose Inspect
+                3. Select Network tab (by clicking on the expand button next to Source tab)
+                4. Go to Fetch/XHR tab, and refresh the page
+                5. Get the option looks similar to the following: `listData?type=history&dayCount=30`
+                6. Extract the key and token out of the URL
+
+            """,
+        )
+
+        parser.add_argument(
+            "-d",
+            "--days",
+            dest="days",
+            type=check_positive,
+            help="Number of days to display. Default: 30 days",
+            default=30,
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, limit=5
+        )
+
+        if ns_parser:
+            smartstake_view.display_luna_circ_supply_change(
+                days=ns_parser.days,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )

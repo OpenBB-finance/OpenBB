@@ -4,16 +4,16 @@ __docformat__ = "numpy"
 import argparse
 import logging
 import os
+from datetime import datetime, timedelta
 from typing import List
 
-from datetime import datetime, timedelta
 import yfinance as yf
 from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.rich_config import console
 
-from gamestonk_terminal.parent_classes import StockBaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.common import newsapi_view
+from gamestonk_terminal.common.quantitative_analysis import qa_view
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
@@ -22,9 +22,9 @@ from gamestonk_terminal.helper_funcs import (
     valid_date,
 )
 from gamestonk_terminal.menu import session
+from gamestonk_terminal.parent_classes import StockBaseController
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.stocks import stocks_helper
-
-from gamestonk_terminal.common.quantitative_analysis import qa_view
 
 # pylint: disable=R1710,import-outside-toplevel
 
@@ -123,6 +123,7 @@ Stock: [/param]{stock_text}
             ]
         return []
 
+    @log_start_end(log=logger)
     def call_search(self, other_args: List[str]):
         """Process search command"""
         parser = argparse.ArgumentParser(
@@ -154,12 +155,14 @@ Stock: [/param]{stock_text}
         if ns_parser:
             stocks_helper.search(query=ns_parser.query, amount=ns_parser.amount)
 
+    @log_start_end(log=logger)
     def call_quote(self, other_args: List[str]):
         """Process quote command"""
         stocks_helper.quote(
             other_args, self.ticker + "." + self.suffix if self.suffix else self.ticker
         )
 
+    @log_start_end(log=logger)
     def call_candle(self, other_args: List[str]):
         """Process candle command"""
         parser = argparse.ArgumentParser(
@@ -274,6 +277,7 @@ Stock: [/param]{stock_text}
             else:
                 console.print("No ticker loaded. First use `load {ticker}`\n")
 
+    @log_start_end(log=logger)
     def call_news(self, other_args: List[str]):
         """Process news command"""
         if not self.ticker:
@@ -340,6 +344,7 @@ Stock: [/param]{stock_text}
                 sources=",".join(sources),
             )
 
+    @log_start_end(log=logger)
     def call_disc(self, _):
         """Process disc command"""
         from gamestonk_terminal.stocks.discovery.disc_controller import (
@@ -348,6 +353,7 @@ Stock: [/param]{stock_text}
 
         self.queue = self.load_class(DiscoveryController, self.queue)
 
+    @log_start_end(log=logger)
     def call_dps(self, _):
         """Process dps command"""
         from gamestonk_terminal.stocks.dark_pool_shorts.dps_controller import (
@@ -358,6 +364,7 @@ Stock: [/param]{stock_text}
             DarkPoolShortsController, self.ticker, self.start, self.stock, self.queue
         )
 
+    @log_start_end(log=logger)
     def call_scr(self, _):
         """Process scr command"""
         from gamestonk_terminal.stocks.screener.screener_controller import (
@@ -366,6 +373,7 @@ Stock: [/param]{stock_text}
 
         self.queue = self.load_class(ScreenerController, self.queue)
 
+    @log_start_end(log=logger)
     def call_sia(self, _):
         """Process ins command"""
         from gamestonk_terminal.stocks.sector_industry_analysis.sia_controller import (
@@ -376,6 +384,7 @@ Stock: [/param]{stock_text}
             SectorIndustryAnalysisController, self.ticker, self.queue
         )
 
+    @log_start_end(log=logger)
     def call_ins(self, _):
         """Process ins command"""
         from gamestonk_terminal.stocks.insider.insider_controller import (
@@ -391,12 +400,14 @@ Stock: [/param]{stock_text}
             self.queue,
         )
 
+    @log_start_end(log=logger)
     def call_gov(self, _):
         """Process gov command"""
         from gamestonk_terminal.stocks.government.gov_controller import GovController
 
         self.queue = self.load_class(GovController, self.ticker, self.queue)
 
+    @log_start_end(log=logger)
     def call_options(self, _):
         """Process options command"""
         from gamestonk_terminal.stocks.options.options_controller import (
@@ -405,6 +416,7 @@ Stock: [/param]{stock_text}
 
         self.queue = self.load_class(OptionsController, self.ticker, self.queue)
 
+    @log_start_end(log=logger)
     def call_res(self, _):
         """Process res command"""
         if self.ticker:
@@ -418,6 +430,7 @@ Stock: [/param]{stock_text}
         else:
             console.print("Use 'load <ticker>' prior to this command!", "\n")
 
+    @log_start_end(log=logger)
     def call_dd(self, _):
         """Process dd command"""
         if self.ticker:
@@ -434,6 +447,7 @@ Stock: [/param]{stock_text}
         else:
             console.print("Use 'load <ticker>' prior to this command!", "\n")
 
+    @log_start_end(log=logger)
     def call_ca(self, _):
         """Process ca command"""
 
@@ -445,6 +459,7 @@ Stock: [/param]{stock_text}
             self.queue,
         )
 
+    @log_start_end(log=logger)
     def call_fa(self, _):
         """Process fa command"""
         if self.ticker:
@@ -461,6 +476,7 @@ Stock: [/param]{stock_text}
         else:
             console.print("Use 'load <ticker>' prior to this command!", "\n")
 
+    @log_start_end(log=logger)
     def call_bt(self, _):
         """Process bt command"""
         if self.ticker:
@@ -472,6 +488,7 @@ Stock: [/param]{stock_text}
         else:
             console.print("Use 'load <ticker>' prior to this command!", "\n")
 
+    @log_start_end(log=logger)
     def call_ta(self, _):
         """Process ta command"""
         if self.ticker:
@@ -488,6 +505,7 @@ Stock: [/param]{stock_text}
         else:
             console.print("Use 'load <ticker>' prior to this command!", "\n")
 
+    @log_start_end(log=logger)
     def call_ba(self, _):
         """Process ba command"""
         from gamestonk_terminal.stocks.behavioural_analysis import ba_controller
@@ -499,6 +517,7 @@ Stock: [/param]{stock_text}
             self.queue,
         )
 
+    @log_start_end(log=logger)
     def call_qa(self, _):
         """Process qa command"""
         if self.ticker:
@@ -520,6 +539,7 @@ Stock: [/param]{stock_text}
         else:
             console.print("Use 'load <ticker>' prior to this command!", "\n")
 
+    @log_start_end(log=logger)
     def call_pred(self, _):
         """Process pred command"""
         if gtff.ENABLE_PREDICT:

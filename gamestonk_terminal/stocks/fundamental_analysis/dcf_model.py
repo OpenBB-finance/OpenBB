@@ -43,7 +43,6 @@ def string_float(string: str) -> float:
     return float(string.strip().replace(",", "").replace("-", ""))
 
 
-@log_start_end(log=logger)
 def insert_row(
     name: str, index: str, df: pd.DataFrame, row_v: List[str]
 ) -> pd.DataFrame:
@@ -255,7 +254,6 @@ def others_in_sector(
     return similars
 
 
-@log_start_end(log=logger)
 def create_dataframe(ticker: str, statement: str, period: str = "annual"):
     """
     Creates a df financial statement for a given ticker

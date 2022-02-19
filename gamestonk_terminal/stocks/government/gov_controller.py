@@ -2,22 +2,25 @@
 __docformat__ = "numpy"
 
 import argparse
+import logging
 from typing import List
-from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.rich_config import console
 
-from gamestonk_terminal.parent_classes import StockBaseController
+from prompt_toolkit.completion import NestedCompleter
+
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.menu import session
-from gamestonk_terminal.stocks.government import quiverquant_view
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
-    parse_known_args_and_warn,
-    check_positive,
-)
-from gamestonk_terminal.helper_funcs import (
-    EXPORT_ONLY_RAW_DATA_ALLOWED,
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
+    check_positive,
+    parse_known_args_and_warn,
 )
+from gamestonk_terminal.menu import session
+from gamestonk_terminal.parent_classes import StockBaseController
+from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.stocks.government import quiverquant_view
+
+logger = logging.getLogger(__name__)
 
 
 class GovController(StockBaseController):
@@ -94,6 +97,7 @@ class GovController(StockBaseController):
             return ["stocks", f"load {self.ticker}", "gov"]
         return []
 
+    @log_start_end(log=logger)
     def call_lasttrades(self, other_args: List[str]):
         """Process lasttrades command"""
         parser = argparse.ArgumentParser(
@@ -141,6 +145,7 @@ class GovController(StockBaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_topbuys(self, other_args: List[str]):
         """Process topbuys command"""
         parser = argparse.ArgumentParser(
@@ -196,6 +201,7 @@ class GovController(StockBaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_topsells(self, other_args: List[str]):
         """Process topsells command"""
         parser = argparse.ArgumentParser(
@@ -251,6 +257,7 @@ class GovController(StockBaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_lastcontracts(self, other_args: List[str]):
         """Process lastcontracts command"""
         parser = argparse.ArgumentParser(
@@ -298,6 +305,7 @@ class GovController(StockBaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_qtrcontracts(self, other_args: List[str]):
         """Process qtrcontracts command"""
         parser = argparse.ArgumentParser(
@@ -346,6 +354,7 @@ class GovController(StockBaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_toplobbying(self, other_args: List[str]):
         """Process toplobbying command"""
         parser = argparse.ArgumentParser(
@@ -378,6 +387,7 @@ class GovController(StockBaseController):
                 num=ns_parser.limit, raw=ns_parser.raw, export=ns_parser.export
             )
 
+    @log_start_end(log=logger)
     def call_gtrades(self, other_args: List[str]):
         """Process gtrades command"""
         parser = argparse.ArgumentParser(
@@ -427,6 +437,7 @@ class GovController(StockBaseController):
             else:
                 console.print("No ticker loaded. Use `load <ticker>` first.\n")
 
+    @log_start_end(log=logger)
     def call_contracts(self, other_args: List[str]):
         """Process contracts command"""
         parser = argparse.ArgumentParser(
@@ -467,6 +478,7 @@ class GovController(StockBaseController):
             else:
                 console.print("No ticker loaded. Use `load <ticker>` first.\n")
 
+    @log_start_end(log=logger)
     def call_histcont(self, other_args: List[str]):
         """Process histcont command"""
         parser = argparse.ArgumentParser(
@@ -493,6 +505,7 @@ class GovController(StockBaseController):
             else:
                 console.print("No ticker loaded. Use `load <ticker>` first.\n")
 
+    @log_start_end(log=logger)
     def call_lobbying(self, other_args: List[str]):
         """Process lobbying command"""
         parser = argparse.ArgumentParser(

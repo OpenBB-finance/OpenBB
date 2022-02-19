@@ -546,7 +546,7 @@ def plot_data_predictions(
         theme.visualize_output()
 
 
-def price_prediction_color(val: float, last_val: float) -> str:
+def lambda_price_prediction_color(val: float, last_val: float) -> str:
     """Set prediction to be a colored string"""
     if float(val) > last_val:
         return f"[green]{val:.2f} $[/green]"
@@ -560,7 +560,7 @@ def print_pretty_prediction(df_pred: pd.DataFrame, last_price: float):
         df_pred = pd.DataFrame(df_pred)
         df_pred.columns = ["pred"]
         df_pred["pred"] = df_pred["pred"].apply(
-            lambda x: price_prediction_color(x, last_val=last_price)
+            lambda x: lambda_price_prediction_color(x, last_val=last_price)
         )
         print_rich_table(
             df_pred,
@@ -590,7 +590,7 @@ def print_pretty_prediction_nn(df_pred: pd.DataFrame, last_price: float):
         console.print("Prediction:")
         console.print(
             df_pred.applymap(
-                lambda x: price_prediction_color(x, last_val=last_price)
+                lambda x: lambda_price_prediction_color(x, last_val=last_price)
             ).to_string()
         )
     else:
@@ -624,7 +624,7 @@ def print_prediction_kpis(real: np.ndarray, pred: np.ndarray):
     )
 
 
-def price_prediction_backtesting_color(val: list) -> str:
+def lambda_price_prediction_backtesting_color(val: list) -> str:
     """Add color to backtest data"""
     err_pct = 100 * (val[0] - val[1]) / val[1]
     if val[0] > val[1]:

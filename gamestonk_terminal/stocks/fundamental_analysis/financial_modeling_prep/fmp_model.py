@@ -10,7 +10,7 @@ import valinvest
 
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal.decorators import log_start_end
-from gamestonk_terminal.helper_funcs import long_number_format
+from gamestonk_terminal.helper_funcs import lambda_long_number_format
 from gamestonk_terminal.stocks.fundamental_analysis.fa_helper import clean_df_index
 
 logger = logging.getLogger(__name__)
@@ -54,11 +54,13 @@ def get_quote(ticker) -> pd.DataFrame:
 
     if not df_fa.empty:
         clean_df_index(df_fa)
-        df_fa.loc["Market cap"][0] = long_number_format(df_fa.loc["Market cap"][0])
-        df_fa.loc["Shares outstanding"][0] = long_number_format(
+        df_fa.loc["Market cap"][0] = lambda_long_number_format(
+            df_fa.loc["Market cap"][0]
+        )
+        df_fa.loc["Shares outstanding"][0] = lambda_long_number_format(
             df_fa.loc["Shares outstanding"][0]
         )
-        df_fa.loc["Volume"][0] = long_number_format(df_fa.loc["Volume"][0])
+        df_fa.loc["Volume"][0] = lambda_long_number_format(df_fa.loc["Volume"][0])
         # Check if there is a valid earnings announcement
         if df_fa.loc["Earnings announcement"][0]:
             earning_announcement = datetime.strptime(
@@ -354,7 +356,7 @@ def clean_metrics_df(df_fa: pd.DataFrame, num: int, mask: bool = True) -> pd.Dat
     if mask:
         df_fa = df_fa.mask(df_fa.astype(object).eq(num * ["None"])).dropna()
         df_fa = df_fa.mask(df_fa.astype(object).eq(num * ["0"])).dropna()
-    df_fa = df_fa.applymap(lambda x: long_number_format(x))
+    df_fa = df_fa.applymap(lambda x: lambda_long_number_format(x))
     clean_df_index(df_fa)
     df_fa.columns.name = "Fiscal Date Ending"
     df_fa = df_fa.rename(

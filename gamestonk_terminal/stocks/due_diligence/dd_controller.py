@@ -2,29 +2,34 @@
 __docformat__ = "numpy"
 
 import argparse
+import logging
 from typing import List
+
 from pandas.core.frame import DataFrame
 from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.rich_config import console
 
-from gamestonk_terminal.parent_classes import StockBaseController
-from gamestonk_terminal.stocks.due_diligence import (
-    fmp_view,
-    business_insider_view,
-    finviz_view,
-    marketwatch_view,
-    finnhub_view,
-    csimarket_view,
-    ark_view,
-)
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
-    parse_known_args_and_warn,
-    check_positive,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
+    check_positive,
+    parse_known_args_and_warn,
 )
 from gamestonk_terminal.menu import session
+from gamestonk_terminal.parent_classes import StockBaseController
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.stocks import stocks_helper
+from gamestonk_terminal.stocks.due_diligence import (
+    ark_view,
+    business_insider_view,
+    csimarket_view,
+    finnhub_view,
+    finviz_view,
+    fmp_view,
+    marketwatch_view,
+)
+
+logger = logging.getLogger(__name__)
 
 
 class DueDiligenceController(StockBaseController):
@@ -96,6 +101,7 @@ class DueDiligenceController(StockBaseController):
             return ["stocks", f"load {self.ticker}", "dd"]
         return []
 
+    @log_start_end(log=logger)
     def call_analyst(self, other_args: List[str]):
         """Process analyst command"""
         parser = argparse.ArgumentParser(
@@ -113,6 +119,7 @@ class DueDiligenceController(StockBaseController):
         if ns_parser:
             finviz_view.analyst(ticker=self.ticker, export=ns_parser.export)
 
+    @log_start_end(log=logger)
     def call_pt(self, other_args: List[str]):
         """Process pt command"""
         parser = argparse.ArgumentParser(
@@ -152,6 +159,7 @@ class DueDiligenceController(StockBaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_est(self, other_args: List[str]):
         """Process est command"""
         parser = argparse.ArgumentParser(
@@ -169,6 +177,7 @@ class DueDiligenceController(StockBaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_rot(self, other_args: List[str]):
         """Process rot command"""
         parser = argparse.ArgumentParser(
@@ -208,6 +217,7 @@ class DueDiligenceController(StockBaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_rating(self, other_args: List[str]):
         """Process rating command"""
         parser = argparse.ArgumentParser(
@@ -242,6 +252,7 @@ class DueDiligenceController(StockBaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_sec(self, other_args: List[str]):
         """Process sec command"""
         parser = argparse.ArgumentParser(
@@ -275,6 +286,7 @@ class DueDiligenceController(StockBaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_supplier(self, other_args: List[str]):
         """Process supplier command"""
         parser = argparse.ArgumentParser(
@@ -292,6 +304,7 @@ class DueDiligenceController(StockBaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_customer(self, other_args: List[str]):
         """Process customer command"""
         parser = argparse.ArgumentParser(
@@ -309,6 +322,7 @@ class DueDiligenceController(StockBaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_arktrades(self, other_args):
         """Process arktrades command"""
         parser = argparse.ArgumentParser(

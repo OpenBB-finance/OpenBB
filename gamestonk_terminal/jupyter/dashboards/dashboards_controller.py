@@ -1,19 +1,25 @@
 """Dashboards Module"""
 __docformat__ = "numpy"
 
-import os
 import argparse
+import logging
+import os
 import subprocess
 from typing import List
 
 from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.rich_config import console
-from gamestonk_terminal.parent_classes import BaseController
+
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 from gamestonk_terminal.menu import session
+from gamestonk_terminal.parent_classes import BaseController
+from gamestonk_terminal.rich_config import console
 
 # pylint: disable=consider-using-with
+
+
+logger = logging.getLogger(__name__)
 
 
 class DashboardsController(BaseController):
@@ -41,22 +47,27 @@ class DashboardsController(BaseController):
         """
         console.print(text=help_text, menu="Jupyter - Dashboards")
 
+    @log_start_end(log=logger)
     def call_stocks(self, other_args: List[str]):
         """Process stocks command"""
         create_call(other_args, "stocks", "stocks")
 
+    @log_start_end(log=logger)
     def call_correlation(self, other_args: List[str]):
         """Process correlation command"""
         create_call(other_args, "correlation", "correlation")
 
+    @log_start_end(log=logger)
     def call_vsurf(self, other_args: List[str]):
         """Process vsurf command"""
         create_call(other_args, "vsurf", "")
 
+    @log_start_end(log=logger)
     def call_chains(self, other_args: List[str]):
         """Process vsurf command"""
         create_call(other_args, "chains", "")
 
+    @log_start_end(log=logger)
     def call_shortdata(self, other_args: List[str]):
         """Process vsurf command"""
         create_call(other_args, "shortdata", "")

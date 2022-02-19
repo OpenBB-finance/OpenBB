@@ -6,7 +6,7 @@ import os
 
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
     prettify_column_names,
-    very_long_number_formatter,
+    lambda_very_long_number_formatter,
 )
 from gamestonk_terminal.cryptocurrency.onchain import bitquery_model
 from gamestonk_terminal.decorators import log_start_end
@@ -60,7 +60,7 @@ def display_dex_trades(
         df_data = df.copy()
 
         df[["tradeAmount", "trades"]] = df[["tradeAmount", "trades"]].applymap(
-            lambda x: very_long_number_formatter(x)
+            lambda x: lambda_very_long_number_formatter(x)
         )
 
         df.columns = prettify_column_names(df.columns)
@@ -126,7 +126,7 @@ def display_daily_volume_for_given_pair(
     df_data = df.copy()
 
     df[["tradeAmount", "trades"]] = df[["tradeAmount", "trades"]].applymap(
-        lambda x: very_long_number_formatter(x)
+        lambda x: lambda_very_long_number_formatter(x)
     )
     df.columns = prettify_column_names(df.columns)
 
@@ -185,7 +185,7 @@ def display_dex_volume_for_token(
 
         df_data = df.copy()
         df[["tradeAmount", "trades"]] = df[["tradeAmount", "trades"]].applymap(
-            lambda x: very_long_number_formatter(x)
+            lambda x: lambda_very_long_number_formatter(x)
         )
 
         df.columns = prettify_column_names(df.columns)
@@ -245,7 +245,7 @@ def display_ethereum_unique_senders(
 
         df[["uniqueSenders", "transactions", "maximumGasPrice"]] = df[
             ["uniqueSenders", "transactions", "maximumGasPrice"]
-        ].applymap(lambda x: very_long_number_formatter(x))
+        ].applymap(lambda x: lambda_very_long_number_formatter(x))
 
         df_data = df.copy()
         df.columns = prettify_column_names(df.columns)
@@ -301,7 +301,7 @@ def display_most_traded_pairs(
         df = df.sort_values(by=sortby, ascending=descend)
         df_data = df.copy()
         df[["tradeAmount", "trades"]] = df[["tradeAmount", "trades"]].applymap(
-            lambda x: very_long_number_formatter(x)
+            lambda x: lambda_very_long_number_formatter(x)
         )
         df.columns = prettify_column_names(df.columns)
 

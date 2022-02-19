@@ -67,4 +67,4 @@ def get_ark_trades_by_ticker(ticker: str) -> pd.DataFrame:
     df_orders.index = pd.DatetimeIndex(df_orders.index)
     df_orders = df_orders.join(prices)
     df_orders["Total"] = df_orders["Close"] * df_orders["shares"]
-    return df_orders
+    return df_orders.sort_index(ascending=False)
