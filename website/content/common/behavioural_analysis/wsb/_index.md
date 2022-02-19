@@ -21,7 +21,7 @@ https://old.reddit.com/r/wallstreetbets/comments/stt7n0/daily_discussion_thread_
 2022-02-12 11:45:28 - Most Anticipated Earnings Releases for the week beginning February 14th, 2022
 https://old.reddit.com/r/wallstreetbets/comments/sqpscq/most_anticipated_earnings_releases_for_the_week/
 
-2022-02-16 14:01:48 - Since loosing money is cool here.
+2022-02-16 14:01:48 - Since losing money is cool here.
 https://old.reddit.com/r/wallstreetbets/comments/stwml0/since_loosing_money_is_cool_here/
 
 2022-02-16 11:42:50 - How to become a WSB mod 🌈🌈🌈
