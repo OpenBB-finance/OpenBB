@@ -18,11 +18,6 @@ optional arguments:
 Example:
 ```
 2022 Feb 16, 10:44 (✨) /stocks/ba/ $ stalker
-------------------------------------------------------------------------------
-2022-02-16 15:45:07
-Global Beverage Industry Expected to Continue to Expand and Possibly Reach $1.961 Trillion In 2024  $ACI $KR $PEP $SBEV $WMT
-
-https://newsfilter.io/a/235568344c8b78a6f81b4a1c35bb6c18
 
 ------------------------------------------------------------------------------
 2022-02-16 15:44:24

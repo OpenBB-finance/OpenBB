@@ -1,4 +1,4 @@
-Select is seperated in two options, "from" and "to":
+Select is separated in two options, "from" and "to":
 
 ```
 usage: from [-n FROM_SYMBOL] [-h]
