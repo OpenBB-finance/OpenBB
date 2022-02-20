@@ -61,7 +61,7 @@ def lastcontracts_command(past_transactions_days: int = 2, num: int = 20):
         )
     )
     for column in df_contracts.columns.values:
-        description = ("```" + df_contracts[column].fillna("").to_string() + "```",)
+        description = "```" + df_contracts[column].fillna("").to_string() + "```"
         embeds.append(
             disnake.Embed(description=description, colour=cfg.COLOR,).set_author(
                 name=cfg.AUTHOR_NAME,

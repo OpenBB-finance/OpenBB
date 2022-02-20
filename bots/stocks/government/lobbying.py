@@ -44,7 +44,7 @@ def lobbying_command(ticker="", num: int = 10):
         report += "\n"
 
     if len(report) <= 4000:
-        description = (f"```{report}```",)
+        description = f"```{report}```"
         embed = disnake.Embed(
             title=title,
             description=description,

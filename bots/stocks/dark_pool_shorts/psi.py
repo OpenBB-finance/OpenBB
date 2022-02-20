@@ -134,7 +134,7 @@ def psi_command(ticker: str = ""):
         hoverdistance=100,
     )
     config = dict({"scrollZoom": True})
-    imagefile = "dps_psi"
+    imagefile = "dps_psi.png"
 
     # Check if interactive settings are enabled
     plt_link = ""

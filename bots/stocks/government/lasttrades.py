@@ -110,7 +110,7 @@ def lasttrades_command(gov_type="", past_days: int = 5, representative=""):
         )
         reports = [f"{initial_str}"]
         for column in df_gov_rep.columns.values:
-            description = ("```" + df_gov_rep[column].fillna("").to_string() + "```",)
+            description = "```" + df_gov_rep[column].fillna("").to_string() + "```"
             embeds.append(
                 disnake.Embed(description=description, colour=cfg.COLOR,).set_author(
                     name=cfg.AUTHOR_NAME,
@@ -161,7 +161,7 @@ def lasttrades_command(gov_type="", past_days: int = 5, representative=""):
         )
         reports = [f"{initial_str}"]
         for column in df_gov.columns.values:
-            description = ("```" + df_gov[column].fillna("").to_string() + "```",)
+            description = "```" + df_gov[column].fillna("").to_string() + "```"
             embeds.append(
                 disnake.Embed(description=description, colour=cfg.COLOR,).set_author(
                     name=cfg.AUTHOR_NAME,
