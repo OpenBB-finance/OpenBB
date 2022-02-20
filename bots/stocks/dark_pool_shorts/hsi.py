@@ -26,6 +26,8 @@ def hsi_command(num: int = 10):
         logger.debug(df.to_string())
 
     # Output data
+    title = "Stocks: [highshortinterest.com] Top High Short Interest"
+
     future_column_name = df["Ticker"]
     df = df.transpose()
     df.columns = future_column_name
@@ -43,9 +45,11 @@ def hsi_command(num: int = 10):
             disnake.SelectOption(label=menu, value=f"{i}", emoji="🟢"),
         )
         i += 1
+
+    reports = [f"{initial_str}"]
     embeds.append(
         disnake.Embed(
-            title="Stocks: [highshortinterest.com] Top High Short Interest",
+            title=title,
             description=initial_str,
             colour=cfg.COLOR,
         ).set_author(
@@ -54,19 +58,23 @@ def hsi_command(num: int = 10):
         )
     )
     for column in df.columns.values:
+        description = "```" + df[column].fillna("").to_string() + "```"
         embeds.append(
             disnake.Embed(
-                title="Stocks: [highshortinterest.com] Top High Short Interest",
-                description="```" + df[column].fillna("").to_string() + "```",
+                title=title,
+                description=description,
                 colour=cfg.COLOR,
             ).set_author(
                 name=cfg.AUTHOR_NAME,
                 icon_url=cfg.AUTHOR_ICON_URL,
             )
         )
+        reports.append(f"{description}")
 
     return {
         "view": Menu,
+        "title": title,
+        "description": reports,
         "embed": embeds,
         "choices": choices,
     }

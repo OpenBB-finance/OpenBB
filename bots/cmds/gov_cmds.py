@@ -3,8 +3,7 @@ from __future__ import annotations
 import disnake
 from disnake.ext import commands
 
-from bots.helpers import ShowView
-from bots.helpers import ticker_autocomp
+from bots.helpers import ShowView, ticker_autocomp
 from bots.stocks.government.contracts import contracts_command
 from bots.stocks.government.gtrades import gtrades_command
 from bots.stocks.government.histcont import histcont_command

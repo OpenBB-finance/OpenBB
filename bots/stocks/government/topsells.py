@@ -21,7 +21,7 @@ def topsells_command(
     # Debug user input
     if cfg.DEBUG:
         logger.debug(
-            "!stocks.gov.topsells %s %s %s %s",
+            "gov-topsells %s %s %s %s",
             gov_type,
             past_transactions_months,
             num,

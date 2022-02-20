@@ -1,7 +1,6 @@
 from datetime import datetime, timedelta
 
 from matplotlib import pyplot as plt
-import numpy as np
 
 import bots.config_discordbot as cfg
 import bots.helpers
@@ -18,7 +17,7 @@ def fib_command(ticker="", start="", end=""):
     # Debug
     if cfg.DEBUG:
         logger.debug(
-            "!stocks.ta.fib %s %s %s",
+            "ta-fib %s %s %s",
             ticker,
             start,
             end,
@@ -83,7 +82,7 @@ def fib_command(ticker="", start="", end=""):
 
     plt.gcf().autofmt_xdate()
     fig.tight_layout(pad=1)
-    imagefile = f"ta_fib{np.random.randint(70000)}.png"
+    imagefile = "ta_fib.png"
     plt.savefig(imagefile)
 
     imagefile = image_border(imagefile)

@@ -31,7 +31,7 @@ def pt_command(ticker: str = "", raw: bool = False, start=""):
 
     df_analyst_data = business_insider_model.get_price_target_from_analysts(ticker)
     stock = bots.helpers.load(ticker, start)
-    print(df_analyst_data)
+    title = f"Stocks: [Business Insider] Price Targets {ticker}"
     if df_analyst_data.empty or stock.empty:
         raise Exception("Enter valid ticker")
 
@@ -42,7 +42,7 @@ def pt_command(ticker: str = "", raw: bool = False, start=""):
         report = "```" + df_analyst_data.to_string() + "```"
 
         output = {
-            "title": f"Stocks: [Business Insider] Price Targets {ticker}",
+            "title": title,
             "description": report,
         }
     else:
@@ -68,7 +68,7 @@ def pt_command(ticker: str = "", raw: bool = False, start=""):
         imagefile = bots.helpers.image_border("ta_pt.png")
 
         output = {
-            "title": f"Stocks: [Business Insider] Price Targets {ticker}",
+            "title": title,
             "imagefile": imagefile,
         }
 

@@ -4,7 +4,7 @@ from scipy.spatial import Delaunay
 
 import bots.config_discordbot as cfg
 from bots.config_discordbot import logger
-from bots.helpers import image_border
+from bots import helpers
 from gamestonk_terminal.stocks.options import yfinance_model
 
 
@@ -102,15 +102,20 @@ def vsurf_command(
     )
     config = dict({"scrollZoom": True})
     imagefile = "opt-vsurf.png"
-    fig.write_image(imagefile)
-    imagefile = image_border(imagefile)
 
     # Check if interactive settings are enabled
     plt_link = ""
     if cfg.INTERACTIVE:
-        html_ran = np.random.randint(70000)
+        html_ran = helpers.uuid_get()
         fig.write_html(f"in/vsurf_{html_ran}.html", config=config)
         plt_link = f"[Interactive]({cfg.INTERACTIVE_URL}/vsurf_{html_ran}.html)"
+
+    fig.update_layout(
+        width=800,
+        height=500,
+    )
+
+    imagefile = helpers.image_border(imagefile, fig=fig)
 
     return {
         "title": f"{label} Surface for {ticker.upper()}",

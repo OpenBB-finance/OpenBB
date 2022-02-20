@@ -14,7 +14,7 @@ def unu_command(num: int = None):
 
     # Debug
     if cfg.DEBUG:
-        logger.debug("!stocks.opt.unu %s", num)
+        logger.debug("opt-unu %s", num)
 
     # Check for argument
     if num is None:

@@ -60,7 +60,7 @@ def indices_command():
         ),
         paper_bgcolor="rgba(0, 0, 0, 0)",
     )
-    imagefile = save_image("econ-indices", fig)
+    imagefile = save_image("econ-indices.png", fig)
     return {
         "title": "Economy: [WSJ] US Indices",
         "imagefile": imagefile,

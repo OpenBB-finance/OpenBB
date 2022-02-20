@@ -1,4 +1,5 @@
 import os
+import uuid
 
 import df2img
 import disnake
@@ -134,6 +135,11 @@ def quote(ticker):
     return quote_data
 
 
+def uuid_get():
+    rand = str(uuid.uuid1()).replace("-", "")
+    return rand
+
+
 def autocrop_image(image, border=0):
     bbox = image.getbbox()
     image = image.crop(bbox)
@@ -182,7 +188,7 @@ def signals_autocomp(inter, signal: str):  # pylint: disable=W0613
 
 
 def save_image(file, fig):
-    imagefile = file
+    imagefile = f"{file.replace('.png', '')}_{uuid_get()}.png"
     df2img.save_dataframe(fig=fig, filename=imagefile)
     image = Image.open(imagefile)
     image = autocrop_image(image, 0)
@@ -190,9 +196,12 @@ def save_image(file, fig):
     return imagefile
 
 
-def image_border(file):
-    imagefile = file
-    img = Image.open(imagefile)
+def image_border(file, **kwargs):
+    imagefile = f"{file.replace('.png', '')}_{uuid_get()}.png"
+    if "fig" in kwargs:
+        fig = kwargs["fig"]
+        fig.write_image(imagefile)
+    img = Image.open(file)
     im_bg = Image.open(cfg.IMG_BG)
     h = img.height + 240
     w = img.width + 520
@@ -205,10 +214,11 @@ def image_border(file):
     y2 = int(0.5 * im_bg.size[1]) + int(0.5 * img.size[1])
     img = img.convert("RGB")
     im_bg.paste(img, box=(x1 - 5, y1, x2 - 5, y2))
-    im_bg.save(imagefile, "PNG", quality=100)
-    image = Image.open(imagefile)
+    im_bg.save(file, "PNG", quality=100)
+    image = Image.open(file)
     image = autocrop_image(image, 0)
     image.save(imagefile, "PNG", quality=100)
+    os.remove(file)
     return imagefile
 
 
@@ -223,7 +233,7 @@ class ShowView:
             )
 
         else:
-            title = data["title"]
+            title = data.get("title", "")
             embed = disnake.Embed(
                 title=title, colour=cfg.COLOR, description=data.get("description", "")
             )

@@ -18,7 +18,7 @@ def cg_command(ticker="", length="14", start="", end=""):
     # Debug
     if cfg.DEBUG:
         logger.debug(
-            "!stocks.ta.cg %s %s %s %s",
+            "ta-cg %s %s %s %s",
             ticker,
             length,
             start,
@@ -75,7 +75,7 @@ def cg_command(ticker="", length="14", start="", end=""):
     plt.gcf().autofmt_xdate()
     fig.tight_layout(pad=1)
     plt.legend()
-    imagefile = f"ta_cg{np.random.randint(70000)}.png"
+    imagefile = "ta_cg.png"
     plt.savefig(imagefile)
 
     imagefile = image_border(imagefile)

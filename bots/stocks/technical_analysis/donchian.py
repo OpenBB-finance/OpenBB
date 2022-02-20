@@ -1,7 +1,6 @@
 from datetime import datetime, timedelta
 
 from matplotlib import pyplot as plt
-import numpy as np
 
 import bots.config_discordbot as cfg
 import bots.helpers
@@ -20,7 +19,7 @@ def donchian_command(
     # Debug
     if cfg.DEBUG:
         logger.debug(
-            "!stocks.ta.donchian %s %s %s %s %s",
+            "ta donchian %s %s %s %s %s",
             ticker,
             upper_length,
             lower_length,
@@ -86,7 +85,7 @@ def donchian_command(
     fig.tight_layout(pad=1)
 
     plt.legend()
-    imagefile = f"ta_donchian{np.random.randint(70000)}.png"
+    imagefile = "ta_donchian.png"
     plt.savefig(imagefile)
 
     imagefile = image_border(imagefile)

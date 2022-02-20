@@ -2,7 +2,6 @@ import os
 
 import df2img
 import disnake
-import numpy as np
 
 import bots.config_discordbot as cfg
 from bots.config_discordbot import gst_imgur, logger
@@ -16,7 +15,7 @@ def est_command(ticker: str = ""):
 
     # Debug
     if cfg.DEBUG:
-        logger.debug("!stocks.dd.est %s", ticker)
+        logger.debug("dd-est %s", ticker)
 
     # Check for argument
     if ticker == "":
@@ -56,7 +55,7 @@ def est_command(ticker: str = ""):
         template="plotly_dark",
         paper_bgcolor="rgba(0, 0, 0, 0)",
     )
-    imagefile = save_image(f"estimates{np.random.randint(70000)}.png", fig)
+    imagefile = save_image("estimates.png", fig)
 
     uploaded_image = gst_imgur.upload_image(imagefile, title="something")
     link_estimates = uploaded_image.link
@@ -77,7 +76,7 @@ def est_command(ticker: str = ""):
         template="plotly_dark",
         paper_bgcolor="rgba(0, 0, 0, 0)",
     )
-    imagefile = save_image(f"earnings{np.random.randint(70000)}.png", fig)
+    imagefile = save_image("earnings.png", fig)
 
     uploaded_image = gst_imgur.upload_image(imagefile, title="something")
     link_earnings = uploaded_image.link
@@ -97,7 +96,7 @@ def est_command(ticker: str = ""):
         template="plotly_dark",
         paper_bgcolor="rgba(0, 0, 0, 0)",
     )
-    imagefile = save_image(f"revenues{np.random.randint(70000)}.png", fig)
+    imagefile = save_image("revenues.png", fig)
 
     uploaded_image = gst_imgur.upload_image(imagefile, title="something")
     link_revenues = uploaded_image.link
@@ -120,6 +119,16 @@ def est_command(ticker: str = ""):
     embeds[0].set_image(url=link_estimates)
     embeds[1].set_image(url=link_earnings)
     embeds[2].set_image(url=link_revenues)
+    titles = [
+        f"**{ticker.upper()} Year Estimates**",
+        f"**{ticker.upper()} Quarter Earnings**",
+        f"**{ticker.upper()} Quarter Revenues**",
+    ]
+    embeds_img = [
+        f"{link_estimates}",
+        f"{link_earnings}",
+        f"{link_revenues}",
+    ]
     # Output data
     choices = [
         disnake.SelectOption(
@@ -135,6 +144,8 @@ def est_command(ticker: str = ""):
 
     return {
         "view": Menu,
+        "titles": titles,
         "embed": embeds,
         "choices": choices,
+        "embeds_img": embeds_img,
     }

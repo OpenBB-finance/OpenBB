@@ -34,9 +34,10 @@ def financial_command(preset="template", sort="", limit: int = 5, ascend: bool =
     )
 
     description = ""
+    title = "Stocks: [Finviz] Financial Screener"
     if isinstance(df_screen, pd.DataFrame):
         if df_screen.empty:
-            return []
+            raise Exception("No data found.")
 
         df_screen = df_screen.dropna(axis="columns", how="all")
 
@@ -90,9 +91,10 @@ def financial_command(preset="template", sort="", limit: int = 5, ascend: bool =
                     disnake.SelectOption(label="Max Reached", value=f"{i}", emoji="🟢"),
                 )
             i += 1
+        reports = [f"{initial_str}"]
         embeds.append(
             disnake.Embed(
-                title="Stocks: [Finviz] Financial Screener",
+                title=title,
                 description=initial_str,
                 colour=cfg.COLOR,
             ).set_author(
@@ -101,22 +103,23 @@ def financial_command(preset="template", sort="", limit: int = 5, ascend: bool =
             )
         )
         for column in df_screen.columns.values:
+            description = f"```{df_screen[column].fillna('')}```"
             embeds.append(
                 disnake.Embed(
-                    title="Stocks: [Finviz] Financial Screener",
-                    description="```"
-                    + df_screen[column].fillna("").to_string()
-                    + "```",
+                    title=title,
+                    description=description,
                     colour=cfg.COLOR,
                 ).set_author(
                     name=cfg.AUTHOR_NAME,
                     icon_url=cfg.AUTHOR_ICON_URL,
                 )
             )
+            reports.append(f"{description}")
 
-        return {
-            "title": "Stocks: [Finviz] Financial Screener",
-            "view": Menu,
-            "embed": embeds,
-            "choices": choices,
-        }
+    return {
+        "view": Menu,
+        "title": title,
+        "description": reports,
+        "embed": embeds,
+        "choices": choices,
+    }

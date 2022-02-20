@@ -1,11 +1,10 @@
-import numpy as np
 import plotly.graph_objects as go
 import yfinance as yf
 from plotly.subplots import make_subplots
 
 import bots.config_discordbot as cfg
 from bots.config_discordbot import logger
-from bots.helpers import image_border
+from bots import helpers
 from gamestonk_terminal.stocks.dark_pool_shorts import finra_model
 
 
@@ -186,21 +185,21 @@ def dpotc_command(ticker: str = ""):
         hoverdistance=100,
     )
     config = dict({"scrollZoom": True})
-    rand = np.random.randint(70000)
-    imagefile = f"dps_dpotc{rand}.png"
+    imagefile = "dps_dpotc.png"
 
     # Check if interactive settings are enabled
     plt_link = ""
     if cfg.INTERACTIVE:
-        fig.write_html(f"in/dpotc_{rand}.html", config=config)
-        plt_link = f"[Interactive]({cfg.INTERACTIVE_URL}/dpotc_{rand}.html)"
+        html_ran = helpers.uuid_get()
+        fig.write_html(f"in/dpotc_{html_ran}.html", config=config)
+        plt_link = f"[Interactive]({cfg.INTERACTIVE_URL}/dpotc_{html_ran}.html)"
 
     fig.update_layout(
         width=800,
         height=500,
     )
-    fig.write_image(imagefile)
-    imagefile = image_border(imagefile)
+
+    imagefile = helpers.image_border(imagefile, fig=fig)
 
     return {
         "title": title,

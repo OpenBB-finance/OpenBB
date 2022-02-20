@@ -1,9 +1,9 @@
 import numpy as np
 from matplotlib import pyplot as plt
 
+import bots.config_discordbot as cfg
 from bots.config_discordbot import logger
 from bots.helpers import image_border
-import bots.config_discordbot as cfg
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.helper_funcs import plot_autoscale
 from gamestonk_terminal.stocks.government import quiverquant_model
@@ -13,7 +13,7 @@ def qtrcontracts_command(num: int = 20, analysis=""):
     """Displays a look at government contracts [quiverquant.com]"""
     # Debug user input
     if cfg.DEBUG:
-        logger.debug("!stocks.gov.qtrcontracts %s %s", num, analysis)
+        logger.debug("gov-qtrcontracts %s %s", num, analysis)
 
     possible_args = ["total", "upmom", "downmom"]
     if analysis == "":
@@ -81,7 +81,7 @@ def qtrcontracts_command(num: int = 20, analysis=""):
         imagefile = "gov_qtrcontracts.png"
 
         imagefile = image_border(imagefile)
-        return {
+        output = {
             "title": "Stocks: [quiverquant.com] Government Contracts",
             "imagefile": imagefile,
             "description": description,
@@ -93,7 +93,9 @@ def qtrcontracts_command(num: int = 20, analysis=""):
         tickers[:] = [str(round(val[0] / 1e9, 2)) for val in tickers.values]
         tickers.columns = ["Amount [M]"]
 
-        return {
+        output = {
             "title": "Stocks: [quiverquant.com] Government Contracts",
             "description": tickers.to_string(),
         }
+
+    return output

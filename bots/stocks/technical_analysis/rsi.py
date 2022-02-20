@@ -1,13 +1,11 @@
 from datetime import datetime, timedelta
 
-import numpy as np
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
 import bots.config_discordbot as cfg
-import bots.helpers
 from bots.config_discordbot import logger
-from bots.helpers import image_border
+from bots import helpers
 from gamestonk_terminal.common.technical_analysis import momentum_model
 
 
@@ -18,7 +16,7 @@ def rsi_command(ticker="", length="14", scalar="100", drift="1", start="", end="
     if cfg.DEBUG:
         # pylint: disable=logging-too-many-args
         logger.debug(
-            "!stocks.ta.rsi %s %s %s %s %s %s",
+            "ta-rsi %s %s %s %s %s %s",
             ticker,
             length,
             scalar,
@@ -52,7 +50,7 @@ def rsi_command(ticker="", length="14", scalar="100", drift="1", start="", end="
     drift = float(drift)
 
     ticker = ticker.upper()
-    df_stock = bots.helpers.load(ticker, start)
+    df_stock = helpers.load(ticker, start)
     if df_stock.empty:
         raise Exception("Stock ticker is invalid")
 
@@ -150,12 +148,12 @@ def rsi_command(ticker="", length="14", scalar="100", drift="1", start="", end="
         legend=dict(yanchor="top", y=0.99, xanchor="left", x=0.01),
     )
     config = dict({"scrollZoom": True})
-    imagefile = f"ta_rsi{np.random.randint(70000)}.png"
+    imagefile = "ta_rsi.png"
 
     # Check if interactive settings are enabled
     plt_link = ""
     if cfg.INTERACTIVE:
-        html_ran = np.random.randint(70000)
+        html_ran = helpers.uuid_get()
         fig.write_html(f"in/rsi_{html_ran}.html", config=config)
         plt_link = f"[Interactive]({cfg.INTERACTIVE_URL}/rsi_{html_ran}.html)"
 
@@ -163,8 +161,8 @@ def rsi_command(ticker="", length="14", scalar="100", drift="1", start="", end="
         width=800,
         height=500,
     )
-    fig.write_image(imagefile)
-    imagefile = image_border(imagefile)
+
+    imagefile = helpers.image_border(imagefile, fig=fig)
 
     return {
         "title": f"Stocks: Relative-Strength-Index {ticker}",

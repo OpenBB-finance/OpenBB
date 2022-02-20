@@ -8,7 +8,7 @@ import plotly.graph_objects as go
 import yfinance as yf
 
 import bots.config_discordbot as cfg
-import bots.helpers
+from bots import helpers
 from bots.config_discordbot import gst_imgur, logger
 from bots.menus.menu import Menu
 from gamestonk_terminal.stocks.options import op_helpers, yfinance_model
@@ -137,14 +137,19 @@ def overview_command(
     )
     config = dict({"scrollZoom": True})
     imagefile = "opt_oi.png"
-    fig.write_image(imagefile)
-    imagefile = bots.helpers.image_border(imagefile)
 
     plt_link = ""
     if cfg.INTERACTIVE:
-        html_ran = np.random.randint(70000)
+        html_ran = helpers.uuid_get()
         fig.write_html(f"in/oi_{html_ran}.html", config=config)
         plt_link = f"[Interactive]({cfg.INTERACTIVE_URL}/oi_{html_ran}.html)"
+
+    fig.update_layout(
+        width=800,
+        height=500,
+    )
+
+    imagefile = helpers.image_border(imagefile, fig=fig)
 
     uploaded_image_oi = gst_imgur.upload_image(imagefile, title="something")
     image_link_oi = uploaded_image_oi.link
@@ -174,8 +179,8 @@ def overview_command(
     formats = {"iv": "{:.2f}"}
     for col, f in formats.items():
         calls_df[col] = calls_df[col].map(
-            lambda x: f.format(x)
-        )  # pylint: disable=W0640
+            lambda x: f.format(x)  # pylint: disable=W0640
+        )
         puts_df[col] = puts_df[col].map(lambda x: f.format(x))  # pylint: disable=W0640
 
     calls_df.set_index("strike", inplace=True)
@@ -191,6 +196,7 @@ def overview_command(
         pfix = f"{ticker.upper()} Weekly "
         sfix = ""
 
+    titles = [f"{ticker.upper()} Overview", f"{pfix}Open Interest{sfix}"]
     embeds = [
         disnake.Embed(
             title=f"{ticker.upper()} Overview",
@@ -223,12 +229,13 @@ def overview_command(
             template=cfg.PLT_TBL_STYLE_TEMPLATE,
             paper_bgcolor="rgba(0, 0, 0, 0)",
         )
-        imagefile = bots.helpers.save_image(f"opt-calls{i}.png", figc)
+        imagefile = helpers.save_image("opt-calls.png", figc)
         uploaded_image = gst_imgur.upload_image(imagefile, title="something")
         image_link = uploaded_image.link
         embeds_img.append(
             f"{image_link}",
         )
+        titles.append(f"{pfix}Calls{sfix}")
         embeds.append(
             disnake.Embed(
                 title=f"{pfix}Calls{sfix}",
@@ -269,12 +276,13 @@ def overview_command(
             template=cfg.PLT_TBL_STYLE_TEMPLATE,
             paper_bgcolor="rgba(0, 0, 0, 0)",
         )
-        imagefile = bots.helpers.save_image(f"opt-puts{i}.png", figp)
+        imagefile = helpers.save_image("opt-puts.png", figp)
         uploaded_image = gst_imgur.upload_image(imagefile, title="something")
         image_link = uploaded_image.link
         embeds_img.append(
             f"{image_link}",
         )
+        titles.append(f"{pfix}Puts{sfix}")
         embeds.append(
             disnake.Embed(
                 title=f"{pfix}Puts{sfix}",
@@ -365,6 +373,7 @@ def overview_command(
 
     return {
         "view": Menu,
+        "titles": titles,
         "embed": embeds,
         "choices": choices,
         "embeds_img": embeds_img,

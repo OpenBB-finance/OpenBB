@@ -1,5 +1,4 @@
 import df2img
-import numpy as np
 
 import bots.config_discordbot as cfg
 from bots.config_discordbot import logger
@@ -49,7 +48,7 @@ def ford_command():
         ),
         paper_bgcolor="rgba(0, 0, 0, 0)",
     )
-    imagefile = save_image(f"disc-ford{np.random.randint(70000)}.png", fig)
+    imagefile = save_image("disc-ford.png", fig)
 
     return {
         "title": "Fidelity Customer Orders",

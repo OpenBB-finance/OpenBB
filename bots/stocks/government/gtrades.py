@@ -22,7 +22,7 @@ def gtrades_command(
     # Debug user input
     if cfg.DEBUG:
         logger.debug(
-            "!stocks.gov.gtrades %s %s %s %s",
+            "gov-gtrades %s %s %s %s",
             ticker,
             gov_type,
             past_transactions_months,
@@ -57,7 +57,7 @@ def gtrades_command(
 
     if df_gov.empty:
         logger.debug("No recent %s trading data found", gov_type)
-        return
+        raise Exception(f"No recent {gov_type} trading data found")
 
     df_gov["min"] = df_gov["Range"].apply(
         lambda x: x.split("-")[0].strip("$").replace(",", "").strip()

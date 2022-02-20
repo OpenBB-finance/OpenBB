@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 
-from matplotlib import pyplot as plt
 import pandas as pd
+from matplotlib import pyplot as plt
 
 import bots.config_discordbot as cfg
 from bots.config_discordbot import logger
@@ -21,7 +21,7 @@ def topbuys_command(
     # Debug user input
     if cfg.DEBUG:
         logger.debug(
-            "!stocks.gov.topbuys %s %s %s %s",
+            "gov-topbuys %s %s %s %s",
             gov_type,
             past_transactions_months,
             num,
@@ -41,7 +41,7 @@ def topbuys_command(
 
     if df_gov.empty:
         logger.debug("No %s trading data found", gov_type)
-        return
+        raise Exception("No trading data found")
 
     df_gov = df_gov.sort_values("TransactionDate", ascending=False)
     start_date = datetime.now() - timedelta(days=past_transactions_months * 30)

@@ -11,7 +11,7 @@ def iv_command(ticker: str = None):
 
     # Debug
     if cfg.DEBUG:
-        logger.debug("!stocks.opt.iv %s", ticker)
+        logger.debug("opt-iv %s", ticker)
 
     # Check for argument
     if ticker is None:

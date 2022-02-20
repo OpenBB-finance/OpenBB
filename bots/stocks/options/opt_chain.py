@@ -144,6 +144,7 @@ def chain_command(
 
     return {
         "view": Menu,
+        "title": title,
         "embed": embeds,
         "choices": choices,
         "embeds_img": embeds_img,

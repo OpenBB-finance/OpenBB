@@ -1,13 +1,11 @@
 from datetime import datetime, timedelta
 
-import numpy as np
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
 import bots.config_discordbot as cfg
-import bots.helpers
 from bots.config_discordbot import logger
-from bots.helpers import image_border
+from bots import helpers
 from gamestonk_terminal.common.technical_analysis import volume_model
 
 
@@ -18,7 +16,7 @@ def adosc_command(ticker="", is_open="False", fast="3", slow="10", start="", end
     if cfg.DEBUG:
         # pylint: disable=logging-too-many-args
         logger.debug(
-            "!stocks.ta.adosc %s %s %s %s %s",
+            "ta-adosc %s %s %s %s %s",
             ticker,
             is_open,
             fast,
@@ -49,7 +47,7 @@ def adosc_command(ticker="", is_open="False", fast="3", slow="10", start="", end
     slow = float(slow)
 
     ticker = ticker.upper()
-    df_stock = bots.helpers.load(ticker, start)
+    df_stock = helpers.load(ticker, start)
     if df_stock.empty:
         raise Exception("Stock ticker is invalid")
 
@@ -125,12 +123,12 @@ def adosc_command(ticker="", is_open="False", fast="3", slow="10", start="", end
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
     )
     config = dict({"scrollZoom": True})
-    imagefile = f"ta_adosc{np.random.randint(70000)}.png"
+    imagefile = "ta_adosc.png"
 
     # Check if interactive settings are enabled
     plt_link = ""
     if cfg.INTERACTIVE:
-        html_ran = np.random.randint(70000)
+        html_ran = helpers.uuid_get()
         fig.write_html(f"in/adosc_{html_ran}.html", config=config)
         plt_link = f"[Interactive]({cfg.INTERACTIVE_URL}/adosc_{html_ran}.html)"
 
@@ -138,8 +136,7 @@ def adosc_command(ticker="", is_open="False", fast="3", slow="10", start="", end
         width=800,
         height=500,
     )
-    fig.write_image(imagefile)
-    imagefile = image_border(imagefile)
+    imagefile = helpers.image_border(imagefile, fig=fig)
 
     return {
         "title": f"Stocks: Accumulation/Distribution Oscillator {ticker}",

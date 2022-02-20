@@ -47,7 +47,7 @@ def analyst_command(ticker=""):
         template="plotly_dark",
         paper_bgcolor="rgba(0, 0, 0, 0)",
     )
-    imagefile = save_image(f"dd-analyst{np.random.randint(70000)}.png", fig)
+    imagefile = save_image("dd-analyst.png", fig)
 
     return {
         "title": f"Stocks: [Finviz] Analyst Recommendations {ticker.upper()}",

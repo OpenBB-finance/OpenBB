@@ -8,7 +8,7 @@ def summary_command(ticker=""):
 
     # Debug
     if cfg.DEBUG:
-        logger.debug("!stocks.ta.summary %s", ticker)
+        logger.debug("ta-summary %s", ticker)
 
     # Check for argument
     if ticker == "":

@@ -2,7 +2,6 @@ import os
 
 import df2img
 import disnake
-import numpy as np
 import pandas as pd
 
 import bots.config_discordbot as cfg
@@ -71,8 +70,7 @@ def lins_command(ticker: str = "", num: int = 10):
             template="plotly_dark",
             paper_bgcolor="rgba(0, 0, 0, 0)",
         )
-        imagefile = f"disc-insider{i}.png"
-        imagefile = save_image(f"quote{i}{np.random.randint(70000)}.png", fig)
+        imagefile = save_image(f"disc-insider{i}.png", fig)
 
         uploaded_image = gst_imgur.upload_image(imagefile, title="something")
         image_link = uploaded_image.link
@@ -114,6 +112,8 @@ def lins_command(ticker: str = "", num: int = 10):
 
     return {
         "view": Menu,
+        "title": title,
         "embed": embeds,
         "choices": choices,
+        "embeds_img": embeds_img,
     }

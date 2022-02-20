@@ -2,10 +2,10 @@ import difflib
 
 import disnake
 import pandas as pd
-from bots.menus.menu import Menu
 
 import bots.config_discordbot as cfg
 from bots.config_discordbot import logger
+from bots.menus.menu import Menu
 from bots.stocks.screener import screener_options as so
 from gamestonk_terminal.stocks.screener.finviz_model import get_screener_data
 
@@ -56,10 +56,10 @@ def performance_command(
     }
 
     description = ""
-
+    title = "Stocks: [Finviz] Performance Screener"
     if isinstance(df_screen, pd.DataFrame):
         if df_screen.empty:
-            return []
+            raise Exception("No data found.")
 
         df_screen = df_screen.dropna(axis="columns", how="all")
 
@@ -114,9 +114,10 @@ def performance_command(
                     disnake.SelectOption(label="Max Reached", value=f"{i}", emoji="🟢"),
                 )
             i += 1
+        reports = [f"{initial_str}"]
         embeds.append(
             disnake.Embed(
-                title="Stocks: [Finviz] Performance Screener",
+                title=title,
                 description=initial_str,
                 colour=cfg.COLOR,
             ).set_author(
@@ -125,22 +126,23 @@ def performance_command(
             )
         )
         for column in df_screen.columns.values:
+            description = f"```{df_screen[column].fillna('')}```"
             embeds.append(
                 disnake.Embed(
-                    title="Stocks: [Finviz] Performance Screener",
-                    description="```"
-                    + df_screen[column].fillna("").to_string()
-                    + "```",
+                    title=title,
+                    description=description,
                     colour=cfg.COLOR,
                 ).set_author(
                     name=cfg.AUTHOR_NAME,
                     icon_url=cfg.AUTHOR_ICON_URL,
                 )
             )
+            reports.append(f"{description}")
 
-        return {
-            "title": "Stocks: [Finviz] Performance Screener",
-            "view": Menu,
-            "embed": embeds,
-            "choices": choices,
-        }
+    return {
+        "view": Menu,
+        "title": title,
+        "description": reports,
+        "embed": embeds,
+        "choices": choices,
+    }

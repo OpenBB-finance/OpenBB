@@ -3,11 +3,10 @@ import os
 import df2img
 import disnake
 import pandas as pd
-from PIL import Image
 
 import bots.config_discordbot as cfg
 from bots.config_discordbot import gst_imgur, logger
-from bots.helpers import autocrop_image
+from bots.helpers import save_image
 from bots.menus.menu import Menu
 from gamestonk_terminal.stocks.due_diligence import ark_model
 
@@ -21,9 +20,6 @@ def arktrades_command(ticker: str = "", num: int = 10):
 
     if ticker:
         ark_holdings = ark_model.get_ark_trades_by_ticker(ticker)
-        ark_holdings = ark_holdings.drop(
-            columns=["ticker", "everything.profile.companyName"]
-        )
 
     if ark_holdings.empty:
         raise Exception(
@@ -32,12 +28,16 @@ def arktrades_command(ticker: str = "", num: int = 10):
 
     ark_holdings["Total"] = ark_holdings["Total"] / 1_000_000
     ark_holdings.rename(columns={"direction": "B/S", "weight": "F %"}, inplace=True)
+    ark_holdings = ark_holdings.drop(
+        columns=["ticker", "everything.profile.companyName"]
+    )
 
     ark_holdings.index = pd.Series(ark_holdings.index).apply(
         lambda x: x.strftime("%Y-%m-%d")
     )
 
     df = ark_holdings.head(num)
+    df = df.fillna(0)
     dindex = len(df.head(num).index)
     formats = {"Close": "{:.2f}", "Total": "{:.2f}"}
     for col, f in formats.items():
@@ -68,12 +68,8 @@ def arktrades_command(ticker: str = "", num: int = 10):
             template="plotly_dark",
             paper_bgcolor="rgba(0, 0, 0, 0)",
         )
-        imagefile = f"disc-insider{i}.png"
+        imagefile = save_image(f"dd-arktrades{i}.png", fig)
 
-        df2img.save_dataframe(fig=fig, filename=imagefile)
-        image = Image.open(imagefile)
-        image = autocrop_image(image, 0)
-        image.save(imagefile, "PNG", quality=100)
         uploaded_image = gst_imgur.upload_image(imagefile, title="something")
         image_link = uploaded_image.link
         embeds_img.append(
@@ -113,8 +109,9 @@ def arktrades_command(ticker: str = "", num: int = 10):
     ]
 
     return {
-        "title": title,
         "view": Menu,
+        "title": title,
         "embed": embeds,
         "choices": choices,
+        "embeds_img": embeds_img,
     }

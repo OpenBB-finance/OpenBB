@@ -25,6 +25,7 @@ def shorted_command(num: int = 10):
         logger.debug(df.to_string())
 
     # Output data
+    title = "Stocks: [Yahoo Finance] Most Shorted"
     df.dropna(how="all", axis=1, inplace=True)
     df = df.replace(float("NaN"), "")
     future_column_name = df["Symbol"]
@@ -50,9 +51,10 @@ def shorted_command(num: int = 10):
             )
         i += 1
 
+    reports = [f"{initial_str}"]
     embeds.append(
         disnake.Embed(
-            title="Stocks: [Yahoo Finance] Most Shorted",
+            title=title,
             description=initial_str,
             colour=cfg.COLOR,
         ).set_author(
@@ -61,18 +63,19 @@ def shorted_command(num: int = 10):
         )
     )
     for column in df.columns.values:
+        description = "```" + df[column].fillna("").to_string() + "```"
         embeds.append(
-            disnake.Embed(
-                description="```" + df[column].fillna("").to_string() + "```",
-                colour=cfg.COLOR,
-            ).set_author(
+            disnake.Embed(description=description, colour=cfg.COLOR,).set_author(
                 name=cfg.AUTHOR_NAME,
                 icon_url=cfg.AUTHOR_ICON_URL,
             )
         )
+        reports.append(f"{description}")
 
     return {
         "view": Menu,
+        "title": title,
+        "description": reports,
         "embed": embeds,
         "choices": choices,
     }

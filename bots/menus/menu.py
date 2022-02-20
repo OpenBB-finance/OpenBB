@@ -1,10 +1,10 @@
 import time
 from typing import List
 
-import config_discordbot as cfg
-
 import disnake
 from disnake.ext import commands
+
+import bots.config_discordbot as cfg
 
 bot = commands.Bot()
 startTime = time.time()
@@ -40,7 +40,7 @@ class Menu(disnake.ui.View):
 
     def set_link_button(self) -> None:
         if not hasattr(self, "link_button"):
-            self.link_button = disnake.ui.Button(
+            self.link_button: disnake.ui.Button = disnake.ui.Button(
                 style=disnake.ButtonStyle.url,
                 url="https://github.com/GamestonkTerminal/GamestonkTerminal",
                 label="Site",

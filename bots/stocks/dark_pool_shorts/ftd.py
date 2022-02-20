@@ -1,13 +1,11 @@
 from datetime import datetime, timedelta
 
-import numpy as np
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
 import bots.config_discordbot as cfg
-import bots.helpers
 from bots.config_discordbot import logger
-from bots.helpers import image_border
+from bots import helpers
 from gamestonk_terminal.stocks.dark_pool_shorts import sec_model
 
 
@@ -41,7 +39,7 @@ def ftd_command(ticker: str = "", start="", end=""):
     if cfg.DEBUG:
         logger.debug(ftds_data.to_string())
 
-    stock = bots.helpers.load(ticker, start)
+    stock = helpers.load(ticker, start)
     stock_ftd = stock[stock.index > start]
     stock_ftd = stock_ftd[stock_ftd.index < end]
 
@@ -106,7 +104,7 @@ def ftd_command(ticker: str = "", start="", end=""):
     # Check if interactive settings are enabled
     plt_link = ""
     if cfg.INTERACTIVE:
-        html_ran = np.random.randint(70000)
+        html_ran = helpers.uuid_get()
         fig.write_html(f"in/ftds_{html_ran}.html", config=config)
         plt_link = f"[Interactive]({cfg.INTERACTIVE_URL}/ftds_{html_ran}.html)"
 
@@ -114,8 +112,8 @@ def ftd_command(ticker: str = "", start="", end=""):
         width=800,
         height=500,
     )
-    fig.write_image(imagefile)
-    imagefile = image_border(imagefile)
+
+    imagefile = helpers.image_border(imagefile, fig=fig)
 
     return {
         "title": f"Stocks: [SEC] Failure-to-deliver {ticker}",

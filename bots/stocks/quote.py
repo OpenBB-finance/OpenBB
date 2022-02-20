@@ -1,5 +1,4 @@
 import df2img
-import numpy as np
 
 import bots.config_discordbot as cfg
 from bots.config_discordbot import logger
@@ -33,7 +32,7 @@ def quote_command(ticker: str = None):
         ),
         paper_bgcolor="rgba(0, 0, 0, 0)",
     )
-    imagefile = save_image(f"quote{np.random.randint(70000)}.png", fig)
+    imagefile = save_image("quote.png", fig)
 
     return {
         "title": f"{ticker.upper()} Quote",

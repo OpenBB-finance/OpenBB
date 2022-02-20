@@ -31,6 +31,8 @@ def pos_command(sort="dpp_dollar", num: int = 10):
         logger.debug(df.to_string())
 
     # Output data
+    title = "Stocks: [Stockgrid] Dark Pool Short Position"
+
     dp_date = df["Date"].values[0]
     df = df.drop(columns=["Date"])
     df["Net Short Volume $"] = df["Net Short Volume $"] / 100_000_000
@@ -70,9 +72,11 @@ def pos_command(sort="dpp_dollar", num: int = 10):
                 disnake.SelectOption(label="Max Reached", value=f"{i}", emoji="🟢"),
             )
         i += 1
+
+    reports = [f"{initial_str}"]
     embeds.append(
         disnake.Embed(
-            title="Stocks: [Stockgrid] Dark Pool Short Position",
+            title=title,
             description=initial_str,
             colour=cfg.COLOR,
         ).set_author(
@@ -81,23 +85,29 @@ def pos_command(sort="dpp_dollar", num: int = 10):
         )
     )
     for column in df.columns.values:
+        description = (
+            "```The following data corresponds to the date: "
+            + dp_date
+            + "\n\n"
+            + df[column].fillna("").to_string()
+            + "```",
+        )
         embeds.append(
             disnake.Embed(
-                title="High Short Interest",
-                description="```The following data corresponds to the date: "
-                + dp_date
-                + "\n\n"
-                + df[column].fillna("").to_string()
-                + "```",
+                title=title,
+                description=description,
                 colour=cfg.COLOR,
             ).set_author(
                 name=cfg.AUTHOR_NAME,
                 icon_url=cfg.AUTHOR_ICON_URL,
             )
         )
+        reports.append(f"{description}")
 
     return {
         "view": Menu,
+        "title": title,
+        "description": reports,
         "embed": embeds,
         "choices": choices,
     }

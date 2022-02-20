@@ -13,7 +13,7 @@ def histcont_command(ticker=""):
     """Displays historical quarterly-contracts [quiverquant.com]"""
     # Debug user input
     if cfg.DEBUG:
-        logger.debug("!stocks.gov.histcont %s", ticker)
+        logger.debug("gov-histcont %s", ticker)
 
     if ticker == "":
         raise Exception("A ticker is required")
@@ -25,7 +25,7 @@ def histcont_command(ticker=""):
 
     if df_contracts.empty:
         logger.debug("No quarterly government contracts found")
-        return
+        raise Exception("No quarterly government contracts found")
 
     # Output Data
     amounts = df_contracts.sort_values(by=["Year", "Qtr"])["Amount"].values

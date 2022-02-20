@@ -31,6 +31,7 @@ def sidtc_command(sort="float", num: int = 10):
         logger.debug(df.to_string())
 
     # Output data
+    title = "Stocks: [Stockgrid] Short Interest and Days to Cover"
     dp_date = df["Date"].values[0]
     df = df.drop(columns=["Date"])
     df["Short Interest"] = df["Short Interest"] / 1_000_000
@@ -63,6 +64,8 @@ def sidtc_command(sort="float", num: int = 10):
                 disnake.SelectOption(label="Max Reached", value=f"{i}", emoji="🟢"),
             )
         i += 1
+
+    reports = [f"{initial_str}"]
     embeds.append(
         disnake.Embed(
             title="Dark Pool Shorts", description=initial_str, colour=cfg.COLOR
@@ -71,24 +74,31 @@ def sidtc_command(sort="float", num: int = 10):
             icon_url=cfg.AUTHOR_ICON_URL,
         )
     )
+
     for column in df.columns.values:
+        description = (
+            "```The following data corresponds to the date: "
+            + dp_date
+            + "\n\n"
+            + df[column].fillna("").to_string()
+            + "```",
+        )
         embeds.append(
             disnake.Embed(
-                title="Stocks: [Stockgrid] Short Interest and Days to Cover",
-                description="```The following data corresponds to the date: "
-                + dp_date
-                + "\n\n"
-                + df[column].fillna("").to_string()
-                + "```",
+                title=title,
+                description=description,
                 colour=cfg.COLOR,
             ).set_author(
                 name=cfg.AUTHOR_NAME,
                 icon_url=cfg.AUTHOR_ICON_URL,
             )
         )
+        reports.append(f"{description}")
 
     return {
         "view": Menu,
+        "title": title,
+        "description": reports,
         "embed": embeds,
         "choices": choices,
     }

@@ -13,7 +13,7 @@ def toplobbying_command(num: int = 10, raw: bool = False):
     """Displays top lobbying firms [quiverquant.com]"""
     # Debug user input
     if cfg.DEBUG:
-        logger.debug("!stocks.gov.toplobbying %s %s", num, raw)
+        logger.debug("gov-toplobbying %s %s", num, raw)
 
     # Retrieve Data
     df_lobbying = quiverquant_model.get_government_trading("corporate-lobbying")

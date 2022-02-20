@@ -1,12 +1,10 @@
 from datetime import datetime, timedelta
 
-import numpy as np
 import plotly.graph_objects as go
 
 import bots.config_discordbot as cfg
-import bots.helpers
 from bots.config_discordbot import logger
-from bots.helpers import image_border
+from bots import helpers
 from gamestonk_terminal.common.technical_analysis import volatility_model
 
 
@@ -17,7 +15,7 @@ def bbands_command(ticker="", length="5", n_std="2", mamode="sma", start="", end
     if cfg.DEBUG:
         # pylint: disable=logging-too-many-args
         logger.debug(
-            "!stocks.ta.bbands %s %s %s %s %s %s",
+            "ta-bbands %s %s %s %s %s %s",
             ticker,
             length,
             n_std,
@@ -71,7 +69,7 @@ def bbands_command(ticker="", length="5", n_std="2", mamode="sma", start="", end
         raise Exception("Invalid ma entered")
 
     ticker = ticker.upper()
-    df_stock = bots.helpers.load(ticker, start)
+    df_stock = helpers.load(ticker, start)
     if df_stock.empty:
         raise Exception("Stock ticker is invalid")
 
@@ -148,12 +146,12 @@ def bbands_command(ticker="", length="5", n_std="2", mamode="sma", start="", end
         legend=dict(yanchor="top", y=0.99, xanchor="left", x=0.01),
     )
     config = dict({"scrollZoom": True})
-    imagefile = f"ta_bbands{np.random.randint(70000)}.png"
+    imagefile = "ta_bbands.png"
 
     # Check if interactive settings are enabled
     plt_link = ""
     if cfg.INTERACTIVE:
-        html_ran = np.random.randint(70000)
+        html_ran = helpers.uuid_get()
         fig.write_html(f"in/bbands_{html_ran}.html", config=config)
         plt_link = f"[Interactive]({cfg.INTERACTIVE_URL}/bbands_{html_ran}.html)"
 
@@ -161,8 +159,8 @@ def bbands_command(ticker="", length="5", n_std="2", mamode="sma", start="", end
         width=800,
         height=500,
     )
-    fig.write_image(imagefile)
-    imagefile = image_border(imagefile)
+
+    imagefile = helpers.image_border(imagefile, fig=fig)
 
     return {
         "title": f"Stocks: Bollinger-Bands {ticker}",

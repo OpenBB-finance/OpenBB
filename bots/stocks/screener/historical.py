@@ -2,7 +2,6 @@ import configparser
 import random
 from datetime import datetime, timedelta
 
-import numpy as np
 import yfinance as yf
 from finvizfinance.screener import ticker
 from matplotlib import pyplot as plt
@@ -127,7 +126,7 @@ def historical_command(signal: str = "", start=""):
     # ensures that the historical data starts from same datapoint
     plt.xlim([max(l_min), df_similar_stock.index[-1]])
 
-    imagefile = f"scr_historical{np.random.randint(70000)}.png"
+    imagefile = "scr_historical.png"
     plt.savefig(imagefile)
     imagefile = image_border(imagefile)
 
