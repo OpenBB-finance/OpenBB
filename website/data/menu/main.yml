@@ -83,8 +83,12 @@ main:
             ref: "/stocks/sia/cpci"
           - name: sama
             ref: "/stocks/sia/sama"
+          - name: satma
+            ref: "/stocks/sia/satma"
           - name: metric
             ref: "/stocks/sia/metric"
+          - name: vis
+            ref: "/stocks/sia/vis"
       - name: dark pool shorts
         ref: "/stocks/dark_pool_shorts"
         sub:
@@ -129,8 +133,6 @@ main:
             ref: "/stocks/screener/performance"
           - name: technical
             ref: "/stocks/screener/technical"
-          - name: signals
-            ref: "/stocks/screener/signals"
       - name: insider trading
         ref: "/stocks/insider"
         sub:
@@ -336,10 +338,6 @@ main:
       - name: comparison analysis
         ref: "/stocks/comparison_analysis"
         sub:
-          - name: load
-            ref: "/stocks/comparison_analysis/load"
-          - name: select
-            ref: "/stocks/comparison_analysis/select"
           - name: add
             ref: "/stocks/comparison_analysis/add"
           - name: tsne
@@ -392,8 +390,6 @@ main:
       - name: options
         ref: "/stocks/options"
         sub:
-          - name: disp
-            ref: "/stocks/options/disp"
           - name: scr
             ref: "/stocks/options/scr"
           - name: unu
@@ -587,8 +583,6 @@ main:
             ref: "/common/quantitative_analysis/cusum"
           - name: capm
             ref: "/common/quantitative_analysis/capm"
-          - name: data
-            ref: "/common/quantitative_analysis/data"
           - name: line
             ref: "/common/quantitative_analysis/line"
       - name: prediction techniques
@@ -746,8 +740,8 @@ main:
             ref: "/cryptocurrency/due_diligence/twitter"
           - name: events
             ref: "/cryptocurrency/due_diligence/events"
-          - name: book
-            ref: "/cryptocurrency/due_diligence/book"
+          - name: cbbook
+            ref: "/cryptocurrency/due_diligence/cbbook"
           - name: balance
             ref: "/cryptocurrency/due_diligence/balance"
           - name: trades
@@ -910,8 +904,6 @@ main:
     sub:
       - name: feargreed
         ref: "/economy/feargreed"
-      - name: events
-        ref: "/economy/events"
       - name: overview
         ref: "/economy/overview"
       - name: indices
@@ -1124,11 +1116,11 @@ main:
         ref: "/portfolio/show"
       - name: add
         ref: "/portfolio/add"
-      - name: ar
-        ref: "/portfolio/ar"
+      - name: al
+        ref: "/portfolio/al"
       - name: rmr
         ref: "/portfolio/rmr"
-      - name: mdd
+      - name: dd
         ref: "portfolio/dd"
       - name: build
         ref: "portfolio/build"
