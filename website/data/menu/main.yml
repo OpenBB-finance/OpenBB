@@ -1205,8 +1205,6 @@ main:
             ref: "/common/quantitative_analysis/cusum"
           - name: capm
             ref: "/common/quantitative_analysis/capm"
-          - name: data
-            ref: "/common/quantitative_analysis/data"
           - name: line
             ref: "/common/quantitative_analysis/line"
       - name: prediction techniques
