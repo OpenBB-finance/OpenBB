@@ -83,8 +83,12 @@ main:
             ref: "/stocks/sia/cpci"
           - name: sama
             ref: "/stocks/sia/sama"
+          - name: satma
+            ref: "/stocks/sia/satma"
           - name: metric
             ref: "/stocks/sia/metric"
+          - name: vis
+            ref: "/stocks/sia/vis"
       - name: dark pool shorts
         ref: "/stocks/dark_pool_shorts"
         sub:
