@@ -9,8 +9,9 @@
 
 
 
-    <meta name="description" content="usage: arktrades [-n NUM] [-s] [-h] [--export {csv,json,xlsx}] See how ARK is flipping shares in a stock across all ARK funds.
-optional arguments: -n NUM, --num NUM Number of rows to show -s, --show_ticker Flag to show ticker in table -h, --help show this help message --export {csv,json,xlsx} Export raw data into csv, json, xlsx ">
+    <meta name="description" content="usage: arktrades [-l LIMIT] [-s] [-h] [--export {csv,json,xlsx}] Get trades for the loaded ticker across all ARK funds.
+optional arguments: -l LIMIT, --limit LIMIT Limit of rows to show -s, --show_ticker Flag to show ticker in table -h, --help show this help message --export {csv,json,xlsx} Export raw data into csv, json, xlsx Example:
+2022 Feb 16, 04:23 (✨) /stocks/dd/ $ arktrades ARK Trades ┏━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━┓ ┃ ┃ shares ┃ weight ┃ fund ┃ direction ┃ everything.">
 
 
 
@@ -1428,9 +1429,71 @@ optional arguments: -n NUM, --num NUM Number of rows to show -s, --show_ticker F
             
             <span class="flex">
                 
+                <a href="/GamestonkTerminal/stocks/sia/satma/"
+                    class="gdoc-nav__entry ">
+                    satma
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
                 <a href="/GamestonkTerminal/stocks/sia/metric/"
                     class="gdoc-nav__entry ">
                     metric
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/GamestonkTerminal/stocks/sia/vis/"
+                    class="gdoc-nav__entry ">
+                    vis
                 </a>
             </span>
             
@@ -2114,37 +2177,6 @@ optional arguments: -n NUM, --num NUM Number of rows to show -s, --show_ticker F
                 <a href="/GamestonkTerminal/stocks/screener/technical/"
                     class="gdoc-nav__entry ">
                     technical
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/stocks/screener/signals/"
-                    class="gdoc-nav__entry ">
-                    signals
                 </a>
             </span>
             
@@ -5354,68 +5386,6 @@ optional arguments: -n NUM, --num NUM Number of rows to show -s, --show_ticker F
             
             <span class="flex">
                 
-                <a href="/GamestonkTerminal/stocks/comparison_analysis/load/"
-                    class="gdoc-nav__entry ">
-                    load
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/stocks/comparison_analysis/select/"
-                    class="gdoc-nav__entry ">
-                    select
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
                 <a href="/GamestonkTerminal/stocks/comparison_analysis/add/"
                     class="gdoc-nav__entry ">
                     add
@@ -6203,37 +6173,6 @@ optional arguments: -n NUM, --num NUM Number of rows to show -s, --show_ticker F
 
 
 <ul class="gdoc-nav__list">
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/stocks/options/disp/"
-                    class="gdoc-nav__entry ">
-                    disp
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
 
     
     
@@ -9248,37 +9187,6 @@ optional arguments: -n NUM, --num NUM Number of rows to show -s, --show_ticker F
             
             <span class="flex">
                 
-                <a href="/GamestonkTerminal/common/quantitative_analysis/data/"
-                    class="gdoc-nav__entry ">
-                    data
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
                 <a href="/GamestonkTerminal/common/quantitative_analysis/line/"
                     class="gdoc-nav__entry ">
                     line
@@ -11715,9 +11623,9 @@ optional arguments: -n NUM, --num NUM Number of rows to show -s, --show_ticker F
             
             <span class="flex">
                 
-                <a href="/GamestonkTerminal/cryptocurrency/due_diligence/book/"
+                <a href="/GamestonkTerminal/cryptocurrency/due_diligence/cbbook/"
                     class="gdoc-nav__entry ">
-                    book
+                    cbbook
                 </a>
             </span>
             
@@ -14222,37 +14130,6 @@ optional arguments: -n NUM, --num NUM Number of rows to show -s, --show_ticker F
                 <a href="/GamestonkTerminal/economy/feargreed/"
                     class="gdoc-nav__entry ">
                     feargreed
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/economy/events/"
-                    class="gdoc-nav__entry ">
-                    events
                 </a>
             </span>
             
@@ -17552,9 +17429,9 @@ optional arguments: -n NUM, --num NUM Number of rows to show -s, --show_ticker F
             
             <span class="flex">
                 
-                <a href="/GamestonkTerminal/portfolio/ar/"
+                <a href="/GamestonkTerminal/portfolio/al/"
                     class="gdoc-nav__entry ">
-                    ar
+                    al
                 </a>
             </span>
             
@@ -17616,7 +17493,7 @@ optional arguments: -n NUM, --num NUM Number of rows to show -s, --show_ticker F
                 
                 <a href="/GamestonkTerminal/portfolio/dd/"
                     class="gdoc-nav__entry ">
-                    mdd
+                    dd
                 </a>
             </span>
             
@@ -18928,37 +18805,6 @@ optional arguments: -n NUM, --num NUM Number of rows to show -s, --show_ticker F
             
             <span class="flex">
                 
-                <a href="/GamestonkTerminal/common/quantitative_analysis/data/"
-                    class="gdoc-nav__entry ">
-                    data
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
                 <a href="/GamestonkTerminal/common/quantitative_analysis/line/"
                     class="gdoc-nav__entry ">
                     line
@@ -19867,16 +19713,42 @@ optional arguments: -n NUM, --num NUM Number of rows to show -s, --show_ticker F
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Arktrades</h1>
-        <pre><code>usage: arktrades [-n NUM] [-s] [-h] [--export {csv,json,xlsx}]
-</code></pre><p>See how ARK is flipping shares in a stock across all ARK funds.</p>
+        <pre><code>usage: arktrades [-l LIMIT] [-s] [-h] [--export {csv,json,xlsx}]
+</code></pre><p>Get trades for the loaded ticker across all ARK funds.</p>
 <pre><code>optional arguments:
-  -n NUM, --num NUM     Number of rows to show
+  -l LIMIT, --limit LIMIT
+                        Limit of rows to show
   -s, --show_ticker     Flag to show ticker in table
   -h, --help            show this help message
   --export {csv,json,xlsx}
                         Export raw data into csv, json, xlsx
-</code></pre><img size="1400" alt="Feature Screenshot - arktrades" src="https://user-images.githubusercontent.com/85772166/140870497-e711feee-bf14-45fd-9a26-7cb794eb2b8c.png">
-
+</code></pre><p>Example:</p>
+<pre><code>2022 Feb 16, 04:23 (✨) /stocks/dd/ $ arktrades
+                                                  ARK Trades
+┏━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━┓
+┃            ┃ shares ┃ weight ┃ fund ┃ direction ┃ everything.profile.companyName ┃ Close ($) ┃ Total ($1M) ┃
+┡━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━┩
+│ 2020-08-24 │ 9891   │ 0.18   │ ARKQ │ Sell      │ Apple Inc.                     │ 125.86    │ 1.24        │
+├────────────┼────────┼────────┼──────┼───────────┼────────────────────────────────┼───────────┼─────────────┤
+│ 2020-08-24 │ 14278  │ 0.25   │ ARKW │ Sell      │ Apple Inc.                     │ 125.86    │ 1.80        │
+├────────────┼────────┼────────┼──────┼───────────┼────────────────────────────────┼───────────┼─────────────┤
+│ 2020-08-25 │ 27722  │ 0.50   │ ARKF │ Sell      │ Apple Inc.                     │ 124.82    │ 3.46        │
+├────────────┼────────┼────────┼──────┼───────────┼────────────────────────────────┼───────────┼─────────────┤
+│ 2020-09-08 │ 14631  │ 0.20   │ ARKQ │ Sell      │ Apple Inc.                     │ 112.82    │ 1.65        │
+├────────────┼────────┼────────┼──────┼───────────┼────────────────────────────────┼───────────┼─────────────┤
+│ 2020-09-08 │ 90983  │ 0.82   │ ARKW │ Sell      │ Apple Inc.                     │ 112.82    │ 10.26       │
+├────────────┼────────┼────────┼──────┼───────────┼────────────────────────────────┼───────────┼─────────────┤
+│ 2020-09-09 │ 34120  │ 0.18   │ ARKW │ Sell      │ Apple Inc.                     │ 117.32    │ 4.00        │
+├────────────┼────────┼────────┼──────┼───────────┼────────────────────────────────┼───────────┼─────────────┤
+│ 2020-09-09 │ 24678  │ 0.51   │ ARKF │ Sell      │ Apple Inc.                     │ 117.32    │ 2.90        │
+├────────────┼────────┼────────┼──────┼───────────┼────────────────────────────────┼───────────┼─────────────┤
+│ 2020-09-28 │ 8397   │ 0.15   │ ARKQ │ Sell      │ Apple Inc.                     │ 114.96    │ 0.97        │
+├────────────┼────────┼────────┼──────┼───────────┼────────────────────────────────┼───────────┼─────────────┤
+│ 2020-10-14 │ 125517 │ 0.52   │ ARKG │ Buy       │ Apple Inc.                     │ 121.19    │ 15.21       │
+├────────────┼────────┼────────┼──────┼───────────┼────────────────────────────────┼───────────┼─────────────┤
+│ 2020-10-30 │ 128557 │ 0.50   │ ARKG │ Sell      │ Apple Inc.                     │ 108.86    │ 13.99       │
+└────────────┴────────┴────────┴──────┴───────────┴────────────────────────────────┴───────────┴─────────────┘
+</code></pre>
     </article>
  
 
@@ -20685,6 +20557,44 @@ optional arguments: -n NUM, --num NUM Number of rows to show -s, --show_ticker F
         
         
     
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
 
         
     
@@ -20926,25 +20836,6 @@ optional arguments: -n NUM, --num NUM Number of rows to show -s, --show_ticker F
     
     
 
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
     
         
         
@@ -23414,44 +23305,6 @@ optional arguments: -n NUM, --num NUM Number of rows to show -s, --show_ticker F
         
         
     
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
 
         
     
@@ -23578,26 +23431,7 @@ optional arguments: -n NUM, --num NUM Number of rows to show -s, --show_ticker F
             
     
     
-
-    
-        
-        
 
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
     
         
         
@@ -25439,25 +25273,6 @@ optional arguments: -n NUM, --num NUM Number of rows to show -s, --show_ticker F
         
         
     
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
 
         
     
@@ -28435,27 +28250,8 @@ optional arguments: -n NUM, --num NUM Number of rows to show -s, --show_ticker F
         
             
     
-    
-
     
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
 
-        
-        
     
         
         
@@ -30946,26 +30742,7 @@ optional arguments: -n NUM, --num NUM Number of rows to show -s, --show_ticker F
             
     
     
-
-    
-        
-        
 
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
     
         
         

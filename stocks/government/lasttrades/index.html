@@ -9,8 +9,9 @@
 
 
 
-    <meta name="description" content="usage: lasttrades [-g {congress,senate,house}] [-p PAST_TRANSACTIONS_DAYS] [-r REPRESENTATIVE] [-h] [--export {png,jpg,pdf,svg,csv,json,xlsx}] Latest government representative trading, searchable by representative. [Source: www.quiverquant.com]
-optional arguments: -g {congress,senate,house}, --govtype {congress,senate,house} -p PAST_TRANSACTIONS_DAYS, --past_transactions_days PAST_TRANSACTIONS_DAYS Past transaction days (default: 5) -r REPRESENTATIVE, --representative REPRESENTATIVE Representative (default: ) -h, --help show this help message (default: False) --export {png,jpg,pdf,svg,csv,json,xlsx} Export plot to png,jpg,pdf,svg file or export dataframe to csv,json,xlsx (default: ) ">
+    <meta name="description" content="usage: lasttrades [-g {congress,senate,house}] [-p PAST_TRANSACTIONS_DAYS] [-r REPRESENTATIVE] [-h] [--export {csv,json,xlsx}] Latest government representative trading, searchable by representative. [Source: www.quiverquant.com]
+optional arguments: -g {congress,senate,house}, --govtype {congress,senate,house} -p PAST_TRANSACTIONS_DAYS, --past_transactions_days PAST_TRANSACTIONS_DAYS Past transaction days (default: 5) -r REPRESENTATIVE, --representative REPRESENTATIVE Representative (default: ) -h, --help show this help message (default: False) --export {csv,json,xlsx} Export raw data into csv, json, xlsx (default: ) Example:
+2022 Feb 16, 07:24 (✨) /stocks/gov/ $ lasttrades Last transactions for CONGRESS Representative Trading ┏━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┓ ┃ Transaction Date ┃ Ticker ┃ Representative ┃ Transaction ┃ Range ┃ House ┃ Report Date ┃ ┡━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━┩ │ 2022-02-09 │ AM │ Mark Dr Green │ Sale │ $1,000,001-$5,000,000 │ Representatives │ 2022-02-14 │ ├──────────────────┼────────┼───────────────────────────┼─────────────┼───────────────────────┼─────────────────┼─────────────┤ │ 2022-02-09 │ QQQ │ Pete Sessions │ Purchase │ $1,001-$15,000 │ Representatives │ 2022-02-11 │ ├──────────────────┼────────┼───────────────────────────┼─────────────┼───────────────────────┼─────────────────┼─────────────┤ │ 2022-02-09 │ ET │ Mark Dr Green │ Purchase │ $500,001 │ Representatives │ 2022-02-14 │ ├──────────────────┼────────┼───────────────────────────┼─────────────┼───────────────────────┼─────────────────┼─────────────┤ │ 2022-02-09 │ ENLC │ Mark Dr Green │ Purchase │ $500,001 │ Representatives │ 2022-02-14 │ ├──────────────────┼────────┼───────────────────────────┼─────────────┼───────────────────────┼─────────────────┼─────────────┤ │ 2022-02-07 │ ET │ Mark Dr Green │ Purchase │ $250,001-$1,000,000 │ Representatives │ 2022-02-14 │ ├──────────────────┼────────┼───────────────────────────┼─────────────┼───────────────────────┼─────────────────┼─────────────┤ │ 2022-02-07 │ AM │ Mark Dr Green │ Purchase │ $100,001-250,000 │ Representatives │ 2022-02-14 │ ├──────────────────┼────────┼───────────────────────────┼─────────────┼───────────────────────┼─────────────────┼─────────────┤ │ 2022-02-04 │ BNS │ Pete Sessions │ Purchase │ $1,001-$15,000 │ Representatives │ 2022-02-11 │ ├──────────────────┼────────┼───────────────────────────┼─────────────┼───────────────────────┼─────────────────┼─────────────┤ │ 2022-02-02 │ GOOGL │ Bob Gibbs │ Purchase │ $15,001-$50,000 │ Representatives │ 2022-02-06 │ ├──────────────────┼────────┼───────────────────────────┼─────────────┼───────────────────────┼─────────────────┼─────────────┤ │ 2022-01-31 │ FSP │ Virginia Foxx │ Sale │ $50,001-$100,000 │ Representatives │ 2022-02-04 │ ├──────────────────┼────────┼───────────────────────────┼─────────────┼───────────────────────┼─────────────────┼─────────────┤ │ 2022-01-31 │ FIMKX │ Thomas R.">
 
 
 
@@ -1428,9 +1429,71 @@ optional arguments: -g {congress,senate,house}, --govtype {congress,senate,house
             
             <span class="flex">
                 
+                <a href="/GamestonkTerminal/stocks/sia/satma/"
+                    class="gdoc-nav__entry ">
+                    satma
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
                 <a href="/GamestonkTerminal/stocks/sia/metric/"
                     class="gdoc-nav__entry ">
                     metric
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/GamestonkTerminal/stocks/sia/vis/"
+                    class="gdoc-nav__entry ">
+                    vis
                 </a>
             </span>
             
@@ -2114,37 +2177,6 @@ optional arguments: -g {congress,senate,house}, --govtype {congress,senate,house
                 <a href="/GamestonkTerminal/stocks/screener/technical/"
                     class="gdoc-nav__entry ">
                     technical
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/stocks/screener/signals/"
-                    class="gdoc-nav__entry ">
-                    signals
                 </a>
             </span>
             
@@ -5354,68 +5386,6 @@ optional arguments: -g {congress,senate,house}, --govtype {congress,senate,house
             
             <span class="flex">
                 
-                <a href="/GamestonkTerminal/stocks/comparison_analysis/load/"
-                    class="gdoc-nav__entry ">
-                    load
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/stocks/comparison_analysis/select/"
-                    class="gdoc-nav__entry ">
-                    select
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
                 <a href="/GamestonkTerminal/stocks/comparison_analysis/add/"
                     class="gdoc-nav__entry ">
                     add
@@ -6203,37 +6173,6 @@ optional arguments: -g {congress,senate,house}, --govtype {congress,senate,house
 
 
 <ul class="gdoc-nav__list">
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/stocks/options/disp/"
-                    class="gdoc-nav__entry ">
-                    disp
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
 
     
     
@@ -9248,37 +9187,6 @@ optional arguments: -g {congress,senate,house}, --govtype {congress,senate,house
             
             <span class="flex">
                 
-                <a href="/GamestonkTerminal/common/quantitative_analysis/data/"
-                    class="gdoc-nav__entry ">
-                    data
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
                 <a href="/GamestonkTerminal/common/quantitative_analysis/line/"
                     class="gdoc-nav__entry ">
                     line
@@ -11715,9 +11623,9 @@ optional arguments: -g {congress,senate,house}, --govtype {congress,senate,house
             
             <span class="flex">
                 
-                <a href="/GamestonkTerminal/cryptocurrency/due_diligence/book/"
+                <a href="/GamestonkTerminal/cryptocurrency/due_diligence/cbbook/"
                     class="gdoc-nav__entry ">
-                    book
+                    cbbook
                 </a>
             </span>
             
@@ -14222,37 +14130,6 @@ optional arguments: -g {congress,senate,house}, --govtype {congress,senate,house
                 <a href="/GamestonkTerminal/economy/feargreed/"
                     class="gdoc-nav__entry ">
                     feargreed
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/economy/events/"
-                    class="gdoc-nav__entry ">
-                    events
                 </a>
             </span>
             
@@ -17552,9 +17429,9 @@ optional arguments: -g {congress,senate,house}, --govtype {congress,senate,house
             
             <span class="flex">
                 
-                <a href="/GamestonkTerminal/portfolio/ar/"
+                <a href="/GamestonkTerminal/portfolio/al/"
                     class="gdoc-nav__entry ">
-                    ar
+                    al
                 </a>
             </span>
             
@@ -17616,7 +17493,7 @@ optional arguments: -g {congress,senate,house}, --govtype {congress,senate,house
                 
                 <a href="/GamestonkTerminal/portfolio/dd/"
                     class="gdoc-nav__entry ">
-                    mdd
+                    dd
                 </a>
             </span>
             
@@ -18928,37 +18805,6 @@ optional arguments: -g {congress,senate,house}, --govtype {congress,senate,house
             
             <span class="flex">
                 
-                <a href="/GamestonkTerminal/common/quantitative_analysis/data/"
-                    class="gdoc-nav__entry ">
-                    data
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
                 <a href="/GamestonkTerminal/common/quantitative_analysis/line/"
                     class="gdoc-nav__entry ">
                     line
@@ -19867,8 +19713,7 @@ optional arguments: -g {congress,senate,house}, --govtype {congress,senate,house
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Lasttrades</h1>
-        <pre><code>usage: lasttrades [-g {congress,senate,house}] [-p PAST_TRANSACTIONS_DAYS] [-r REPRESENTATIVE] [-h]
-                   [--export {png,jpg,pdf,svg,csv,json,xlsx}]
+        <pre><code>usage: lasttrades [-g {congress,senate,house}] [-p PAST_TRANSACTIONS_DAYS] [-r REPRESENTATIVE] [-h] [--export {csv,json,xlsx}]
 </code></pre><p>Latest government representative trading, searchable by representative. [Source: www.quiverquant.com]</p>
 <pre><code>optional arguments:
   -g {congress,senate,house}, --govtype {congress,senate,house}
@@ -19877,10 +19722,108 @@ optional arguments: -g {congress,senate,house}, --govtype {congress,senate,house
   -r REPRESENTATIVE, --representative REPRESENTATIVE
                         Representative (default: )
   -h, --help            show this help message (default: False)
-  --export {png,jpg,pdf,svg,csv,json,xlsx}
-                        Export plot to png,jpg,pdf,svg file or export dataframe to csv,json,xlsx (default: )
-</code></pre><img size="1400" alt="Feature Screenshot - lasttrades" src="https://user-images.githubusercontent.com/85772166/141689036-49a7e6ac-a978-435e-a59f-953f476af5f1.png">
+  --export {csv,json,xlsx}
+                        Export raw data into csv, json, xlsx (default: )
+</code></pre><p>Example:</p>
+<pre><code>2022 Feb 16, 07:24 (✨) /stocks/gov/ $ lasttrades
 
+Last transactions for CONGRESS
+
+                                                    Representative Trading
+┏━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┓
+┃ Transaction Date ┃ Ticker ┃ Representative            ┃ Transaction ┃ Range                 ┃ House           ┃ Report Date ┃
+┡━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━┩
+│ 2022-02-09       │ AM     │ Mark Dr Green             │ Sale        │ $1,000,001-$5,000,000 │ Representatives │ 2022-02-14  │
+├──────────────────┼────────┼───────────────────────────┼─────────────┼───────────────────────┼─────────────────┼─────────────┤
+│ 2022-02-09       │ QQQ    │ Pete Sessions             │ Purchase    │ $1,001-$15,000        │ Representatives │ 2022-02-11  │
+├──────────────────┼────────┼───────────────────────────┼─────────────┼───────────────────────┼─────────────────┼─────────────┤
+│ 2022-02-09       │ ET     │ Mark Dr Green             │ Purchase    │ $500,001              │ Representatives │ 2022-02-14  │
+├──────────────────┼────────┼───────────────────────────┼─────────────┼───────────────────────┼─────────────────┼─────────────┤
+│ 2022-02-09       │ ENLC   │ Mark Dr Green             │ Purchase    │ $500,001              │ Representatives │ 2022-02-14  │
+├──────────────────┼────────┼───────────────────────────┼─────────────┼───────────────────────┼─────────────────┼─────────────┤
+│ 2022-02-07       │ ET     │ Mark Dr Green             │ Purchase    │ $250,001-$1,000,000   │ Representatives │ 2022-02-14  │
+├──────────────────┼────────┼───────────────────────────┼─────────────┼───────────────────────┼─────────────────┼─────────────┤
+│ 2022-02-07       │ AM     │ Mark Dr Green             │ Purchase    │ $100,001-250,000      │ Representatives │ 2022-02-14  │
+├──────────────────┼────────┼───────────────────────────┼─────────────┼───────────────────────┼─────────────────┼─────────────┤
+│ 2022-02-04       │ BNS    │ Pete Sessions             │ Purchase    │ $1,001-$15,000        │ Representatives │ 2022-02-11  │
+├──────────────────┼────────┼───────────────────────────┼─────────────┼───────────────────────┼─────────────────┼─────────────┤
+│ 2022-02-02       │ GOOGL  │ Bob Gibbs                 │ Purchase    │ $15,001-$50,000       │ Representatives │ 2022-02-06  │
+├──────────────────┼────────┼───────────────────────────┼─────────────┼───────────────────────┼─────────────────┼─────────────┤
+│ 2022-01-31       │ FSP    │ Virginia Foxx             │ Sale        │ $50,001-$100,000      │ Representatives │ 2022-02-04  │
+├──────────────────┼────────┼───────────────────────────┼─────────────┼───────────────────────┼─────────────────┼─────────────┤
+│ 2022-01-31       │ FIMKX  │ Thomas R. Carper          │ Sale        │ $1,001 - $15,000      │ Senate          │ 2022-02-03  │
+├──────────────────┼────────┼───────────────────────────┼─────────────┼───────────────────────┼─────────────────┼─────────────┤
+│ 2022-01-31       │ CEF    │ Thomas R. Carper          │ Sale        │ $1,001 - $15,000      │ Senate          │ 2022-02-03  │
+├──────────────────┼────────┼───────────────────────────┼─────────────┼───────────────────────┼─────────────────┼─────────────┤
+│ 2022-01-31       │ PTMC   │ Thomas R. Carper          │ Sale        │ $1,001 - $15,000      │ Senate          │ 2022-02-03  │
+├──────────────────┼────────┼───────────────────────────┼─────────────┼───────────────────────┼─────────────────┼─────────────┤
+│ 2022-01-31       │ MOO    │ Thomas R. Carper          │ Purchase    │ $1,001 - $15,000      │ Senate          │ 2022-02-03  │
+├──────────────────┼────────┼───────────────────────────┼─────────────┼───────────────────────┼─────────────────┼─────────────┤
+│ 2022-01-31       │ ITA    │ Thomas R. Carper          │ Purchase    │ $1,001 - $15,000      │ Senate          │ 2022-02-03  │
+├──────────────────┼────────┼───────────────────────────┼─────────────┼───────────────────────┼─────────────────┼─────────────┤
+│ 2022-01-31       │ JHMM   │ Thomas R. Carper          │ Purchase    │ $1,001 - $15,000      │ Senate          │ 2022-02-03  │
+├──────────────────┼────────┼───────────────────────────┼─────────────┼───────────────────────┼─────────────────┼─────────────┤
+│ 2022-01-31       │ GNR    │ Thomas R. Carper          │ Purchase    │ $1,001 - $15,000      │ Senate          │ 2022-02-03  │
+├──────────────────┼────────┼───────────────────────────┼─────────────┼───────────────────────┼─────────────────┼─────────────┤
+│ 2022-01-31       │ WIW    │ Thomas R. Carper          │ Purchase    │ $1,001 - $15,000      │ Senate          │ 2022-02-03  │
+├──────────────────┼────────┼───────────────────────────┼─────────────┼───────────────────────┼─────────────────┼─────────────┤
+│ 2022-01-31       │ XAR    │ Thomas R. Carper          │ Sale        │ $1,001 - $15,000      │ Senate          │ 2022-02-03  │
+├──────────────────┼────────┼───────────────────────────┼─────────────┼───────────────────────┼─────────────────┼─────────────┤
+│ 2022-01-31       │ SI     │ Thomas R. Carper          │ Purchase    │ $1,001 - $15,000      │ Senate          │ 2022-02-03  │
+├──────────────────┼────────┼───────────────────────────┼─────────────┼───────────────────────┼─────────────────┼─────────────┤
+│ 2022-01-31       │ LUBFX  │ Thomas R. Carper          │ Sale        │ $1,001 - $15,000      │ Senate          │ 2022-02-03  │
+├──────────────────┼────────┼───────────────────────────┼─────────────┼───────────────────────┼─────────────────┼─────────────┤
+│ 2022-01-31       │ GEMIX  │ Thomas R. Carper          │ Sale        │ $1,001 - $15,000      │ Senate          │ 2022-02-03  │
+├──────────────────┼────────┼───────────────────────────┼─────────────┼───────────────────────┼─────────────────┼─────────────┤
+│ 2022-01-31       │ D      │ Pete Sessions             │ Sale        │ $1,001-$15,000        │ Representatives │ 2022-02-11  │
+├──────────────────┼────────┼───────────────────────────┼─────────────┼───────────────────────┼─────────────────┼─────────────┤
+│ 2022-01-31       │ CYRX   │ Donald Sternoff Beyer Jr. │ Sale        │ $1,001-$15,000        │ Representatives │ 2022-02-01  │
+├──────────────────┼────────┼───────────────────────────┼─────────────┼───────────────────────┼─────────────────┼─────────────┤
+│ 2022-01-31       │ TRNO   │ Donald Sternoff Beyer Jr. │ Purchase    │ $1,001-$15,000        │ Representatives │ 2022-02-01  │
+├──────────────────┼────────┼───────────────────────────┼─────────────┼───────────────────────┼─────────────────┼─────────────┤
+│ 2022-01-31       │ PEP    │ Donald Sternoff Beyer Jr. │ Purchase    │ $1,001-$15,000        │ Representatives │ 2022-02-01  │
+├──────────────────┼────────┼───────────────────────────┼─────────────┼───────────────────────┼─────────────────┼─────────────┤
+│ 2022-01-31       │ COST   │ Donald Sternoff Beyer Jr. │ Purchase    │ $1,001-$15,000        │ Representatives │ 2022-02-01  │
+├──────────────────┼────────┼───────────────────────────┼─────────────┼───────────────────────┼─────────────────┼─────────────┤
+│ 2022-01-31       │ JPM    │ Kevin Hern                │ Purchase    │ $1,001-$15,000        │ Representatives │ 2022-02-02  │
+├──────────────────┼────────┼───────────────────────────┼─────────────┼───────────────────────┼─────────────────┼─────────────┤
+│ 2022-01-31       │ NVDA   │ Thomas R. Carper          │ Purchase    │ $1,001 - $15,000      │ Senate          │ 2022-02-03  │
+└──────────────────┴────────┴───────────────────────────┴─────────────┴───────────────────────┴─────────────────┴─────────────┘
+</code></pre><pre><code>2022 Feb 16, 07:25 (✨) /stocks/gov/ $ lasttrades -r Thomas R. Carper
+
+Last transactions for CONGRESS
+
+                                         Representative Trading
+┏━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━┓
+┃ Transaction Date ┃ Ticker ┃ Representative   ┃ Transaction ┃ Range            ┃ House  ┃ Report Date ┃
+┡━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━┩
+│ 2022-01-31       │ FIMKX  │ Thomas R. Carper │ Sale        │ $1,001 - $15,000 │ Senate │ 2022-02-03  │
+├──────────────────┼────────┼──────────────────┼─────────────┼──────────────────┼────────┼─────────────┤
+│ 2022-01-31       │ CEF    │ Thomas R. Carper │ Sale        │ $1,001 - $15,000 │ Senate │ 2022-02-03  │
+├──────────────────┼────────┼──────────────────┼─────────────┼──────────────────┼────────┼─────────────┤
+│ 2022-01-31       │ PTMC   │ Thomas R. Carper │ Sale        │ $1,001 - $15,000 │ Senate │ 2022-02-03  │
+├──────────────────┼────────┼──────────────────┼─────────────┼──────────────────┼────────┼─────────────┤
+│ 2022-01-31       │ MOO    │ Thomas R. Carper │ Purchase    │ $1,001 - $15,000 │ Senate │ 2022-02-03  │
+├──────────────────┼────────┼──────────────────┼─────────────┼──────────────────┼────────┼─────────────┤
+│ 2022-01-31       │ ITA    │ Thomas R. Carper │ Purchase    │ $1,001 - $15,000 │ Senate │ 2022-02-03  │
+├──────────────────┼────────┼──────────────────┼─────────────┼──────────────────┼────────┼─────────────┤
+│ 2022-01-31       │ JHMM   │ Thomas R. Carper │ Purchase    │ $1,001 - $15,000 │ Senate │ 2022-02-03  │
+├──────────────────┼────────┼──────────────────┼─────────────┼──────────────────┼────────┼─────────────┤
+│ 2022-01-31       │ GNR    │ Thomas R. Carper │ Purchase    │ $1,001 - $15,000 │ Senate │ 2022-02-03  │
+├──────────────────┼────────┼──────────────────┼─────────────┼──────────────────┼────────┼─────────────┤
+│ 2022-01-31       │ WIW    │ Thomas R. Carper │ Purchase    │ $1,001 - $15,000 │ Senate │ 2022-02-03  │
+├──────────────────┼────────┼──────────────────┼─────────────┼──────────────────┼────────┼─────────────┤
+│ 2022-01-31       │ XAR    │ Thomas R. Carper │ Sale        │ $1,001 - $15,000 │ Senate │ 2022-02-03  │
+├──────────────────┼────────┼──────────────────┼─────────────┼──────────────────┼────────┼─────────────┤
+│ 2022-01-31       │ SI     │ Thomas R. Carper │ Purchase    │ $1,001 - $15,000 │ Senate │ 2022-02-03  │
+├──────────────────┼────────┼──────────────────┼─────────────┼──────────────────┼────────┼─────────────┤
+│ 2022-01-31       │ LUBFX  │ Thomas R. Carper │ Sale        │ $1,001 - $15,000 │ Senate │ 2022-02-03  │
+├──────────────────┼────────┼──────────────────┼─────────────┼──────────────────┼────────┼─────────────┤
+│ 2022-01-31       │ GEMIX  │ Thomas R. Carper │ Sale        │ $1,001 - $15,000 │ Senate │ 2022-02-03  │
+├──────────────────┼────────┼──────────────────┼─────────────┼──────────────────┼────────┼─────────────┤
+│ 2022-01-31       │ NVDA   │ Thomas R. Carper │ Purchase    │ $1,001 - $15,000 │ Senate │ 2022-02-03  │
+└──────────────────┴────────┴──────────────────┴─────────────┴──────────────────┴────────┴─────────────┘
+</code></pre>
     </article>
  
 
@@ -20689,6 +20632,44 @@ optional arguments: -g {congress,senate,house}, --govtype {congress,senate,house
         
         
     
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
 
         
     
@@ -20930,25 +20911,6 @@ optional arguments: -g {congress,senate,house}, --govtype {congress,senate,house
     
     
 
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
     
         
         
@@ -23418,44 +23380,6 @@ optional arguments: -g {congress,senate,house}, --govtype {congress,senate,house
         
         
     
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
 
         
     
@@ -23582,26 +23506,7 @@ optional arguments: -g {congress,senate,house}, --govtype {congress,senate,house
             
     
     
-
-    
-        
-        
 
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
     
         
         
@@ -25443,25 +25348,6 @@ optional arguments: -g {congress,senate,house}, --govtype {congress,senate,house
         
         
     
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
 
         
     
@@ -28439,27 +28325,8 @@ optional arguments: -g {congress,senate,house}, --govtype {congress,senate,house
         
             
     
-    
-
     
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
 
-        
-        
     
         
         
@@ -30950,26 +30817,7 @@ optional arguments: -g {congress,senate,house}, --govtype {congress,senate,house
             
     
     
-
-    
-        
-        
 
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
     
         
         

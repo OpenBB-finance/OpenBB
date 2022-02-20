@@ -9,13 +9,14 @@
 
 
 
-    <meta name="description" content="usage: history [-p PERIOD] [-t TIMEFRAME] [--export {csv,json,xlsx}] [-h] Historical Portfolio Info
-optional arguments: -p PERIOD, --period PERIOD Duration of data (&lt;number&gt; &#43; &lt;unit&gt;) (default: 1M) -t TIMEFRAME, --timeframe TIMEFRAME Resolution of data (&lt;number&gt; &#43; &lt;unit&gt;) (default: 1D) --export {csv,json,xlsx} Export dataframe data to csv,json,xlsx file (default: ) -h, --help show this help message (default: False) Example Output:">
+    <meta name="description" content="usage: raw [-n NUM] [-d] [-h] [--export {csv,json,xlsx}] Shows historical daily value for the target value.
+optional arguments: -n NUM, --num NUM Number to show (default: 20) -d, --descend Sort in descending order (default: False) -h, --help show this help message (default: False) --export {csv,json,xlsx} Export raw data into csv, json, xlsx (default: ) Example:
+2022 Feb 16, 11:05 (✨) /stocks/qa/ $ raw Raw Data ┏━━━━━━━━━━━━┳━━━━━━━━━━┓ ┃ ┃ Adjclose ┃ ┡━━━━━━━━━━━━╇━━━━━━━━━━┩ │ 2022-01-19 │ 995.">
 
 
 
     <title>
-      History | Gamestonk Terminal
+      Raw | Gamestonk Terminal
     </title>
 
     <link rel="icon" href="/GamestonkTerminal/favicon/favicon-32x32.png" type="image/x-icon">
@@ -36,7 +37,7 @@ optional arguments: -p PERIOD, --period PERIOD Duration of data (&lt;number&gt; 
 <link rel="preload" href="/GamestonkTerminal/custom.css" as="style">
 <link rel="stylesheet" href="/GamestonkTerminal/custom.css" media="all">
 
-<link rel="alternate" type="application/rss+xml" href="https://gamestonkterminal.github.io/GamestonkTerminal/portfolio/brokers/alpaca/history/index.xml" title="Gamestonk Terminal" />
+<link rel="alternate" type="application/rss+xml" href="https://gamestonkterminal.github.io/GamestonkTerminal/common/quantitative_analysis/raw/index.xml" title="Gamestonk Terminal" />
 
 
 <!-- Made with Geekdoc theme https://github.com/thegeeklab/hugo-geekdoc -->
@@ -1428,9 +1429,71 @@ optional arguments: -p PERIOD, --period PERIOD Duration of data (&lt;number&gt; 
             
             <span class="flex">
                 
+                <a href="/GamestonkTerminal/stocks/sia/satma/"
+                    class="gdoc-nav__entry ">
+                    satma
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
                 <a href="/GamestonkTerminal/stocks/sia/metric/"
                     class="gdoc-nav__entry ">
                     metric
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/GamestonkTerminal/stocks/sia/vis/"
+                    class="gdoc-nav__entry ">
+                    vis
                 </a>
             </span>
             
@@ -2114,37 +2177,6 @@ optional arguments: -p PERIOD, --period PERIOD Duration of data (&lt;number&gt; 
                 <a href="/GamestonkTerminal/stocks/screener/technical/"
                     class="gdoc-nav__entry ">
                     technical
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/stocks/screener/signals/"
-                    class="gdoc-nav__entry ">
-                    signals
                 </a>
             </span>
             
@@ -5354,68 +5386,6 @@ optional arguments: -p PERIOD, --period PERIOD Duration of data (&lt;number&gt; 
             
             <span class="flex">
                 
-                <a href="/GamestonkTerminal/stocks/comparison_analysis/load/"
-                    class="gdoc-nav__entry ">
-                    load
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/stocks/comparison_analysis/select/"
-                    class="gdoc-nav__entry ">
-                    select
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
                 <a href="/GamestonkTerminal/stocks/comparison_analysis/add/"
                     class="gdoc-nav__entry ">
                     add
@@ -6203,37 +6173,6 @@ optional arguments: -p PERIOD, --period PERIOD Duration of data (&lt;number&gt; 
 
 
 <ul class="gdoc-nav__list">
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/stocks/options/disp/"
-                    class="gdoc-nav__entry ">
-                    disp
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
 
     
     
@@ -8647,7 +8586,7 @@ optional arguments: -p PERIOD, --period PERIOD Duration of data (&lt;number&gt; 
             
 
             
-            <input type="checkbox" id="navtree-26786688" class="gdoc-nav__toggle" >
+            <input type="checkbox" id="navtree-26786688" class="gdoc-nav__toggle" checked>
             <label for="navtree-26786688" class="flex justify-between">
             
             <span class="flex">
@@ -9220,37 +9159,6 @@ optional arguments: -p PERIOD, --period PERIOD Duration of data (&lt;number&gt; 
                 <a href="/GamestonkTerminal/common/quantitative_analysis/capm/"
                     class="gdoc-nav__entry ">
                     capm
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/common/quantitative_analysis/data/"
-                    class="gdoc-nav__entry ">
-                    data
                 </a>
             </span>
             
@@ -11715,9 +11623,9 @@ optional arguments: -p PERIOD, --period PERIOD Duration of data (&lt;number&gt; 
             
             <span class="flex">
                 
-                <a href="/GamestonkTerminal/cryptocurrency/due_diligence/book/"
+                <a href="/GamestonkTerminal/cryptocurrency/due_diligence/cbbook/"
                     class="gdoc-nav__entry ">
-                    book
+                    cbbook
                 </a>
             </span>
             
@@ -14250,37 +14158,6 @@ optional arguments: -p PERIOD, --period PERIOD Duration of data (&lt;number&gt; 
             
             <span class="flex">
                 
-                <a href="/GamestonkTerminal/economy/events/"
-                    class="gdoc-nav__entry ">
-                    events
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
                 <a href="/GamestonkTerminal/economy/overview/"
                     class="gdoc-nav__entry ">
                     overview
@@ -16427,7 +16304,7 @@ optional arguments: -p PERIOD, --period PERIOD Duration of data (&lt;number&gt; 
             
 
             
-            <input type="checkbox" id="navtree-6e363e55" class="gdoc-nav__toggle" checked>
+            <input type="checkbox" id="navtree-6e363e55" class="gdoc-nav__toggle" >
             <label for="navtree-6e363e55" class="flex justify-between">
             
             <span class="flex">
@@ -16468,7 +16345,7 @@ optional arguments: -p PERIOD, --period PERIOD Duration of data (&lt;number&gt; 
             
 
             
-            <input type="checkbox" id="navtree-280d9e73" class="gdoc-nav__toggle" checked>
+            <input type="checkbox" id="navtree-280d9e73" class="gdoc-nav__toggle" >
             <label for="navtree-280d9e73" class="flex justify-between">
             
             <span class="flex">
@@ -17552,9 +17429,9 @@ optional arguments: -p PERIOD, --period PERIOD Duration of data (&lt;number&gt; 
             
             <span class="flex">
                 
-                <a href="/GamestonkTerminal/portfolio/ar/"
+                <a href="/GamestonkTerminal/portfolio/al/"
                     class="gdoc-nav__entry ">
-                    ar
+                    al
                 </a>
             </span>
             
@@ -17616,7 +17493,7 @@ optional arguments: -p PERIOD, --period PERIOD Duration of data (&lt;number&gt; 
                 
                 <a href="/GamestonkTerminal/portfolio/dd/"
                     class="gdoc-nav__entry ">
-                    mdd
+                    dd
                 </a>
             </span>
             
@@ -18327,7 +18204,7 @@ optional arguments: -p PERIOD, --period PERIOD Duration of data (&lt;number&gt; 
             
 
             
-            <input type="checkbox" id="navtree-26786688" class="gdoc-nav__toggle" >
+            <input type="checkbox" id="navtree-26786688" class="gdoc-nav__toggle" checked>
             <label for="navtree-26786688" class="flex justify-between">
             
             <span class="flex">
@@ -18900,37 +18777,6 @@ optional arguments: -p PERIOD, --period PERIOD Duration of data (&lt;number&gt; 
                 <a href="/GamestonkTerminal/common/quantitative_analysis/capm/"
                     class="gdoc-nav__entry ">
                     capm
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/common/quantitative_analysis/data/"
-                    class="gdoc-nav__entry ">
-                    data
                 </a>
             </span>
             
@@ -19841,15 +19687,7 @@ optional arguments: -p PERIOD, --period PERIOD Duration of data (&lt;number&gt; 
         
     
     
-        
-        
-        
-        
-    
-    
-        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/GamestonkTerminal/' href='/GamestonkTerminal/'><span itemprop='name'>Gamestonk Terminal</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/GamestonkTerminal/portfolio/' href='/GamestonkTerminal/portfolio/'><span itemprop='name'>Portfolio</span></a><meta itemprop='position' content='3' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/GamestonkTerminal/portfolio/brokers/' href='/GamestonkTerminal/portfolio/brokers/'><span itemprop='name'>Brokers</span></a><meta itemprop='position' content='4' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/GamestonkTerminal/portfolio/brokers/alpaca/' href='/GamestonkTerminal/portfolio/brokers/alpaca/'><span itemprop='name'>Alpaca</span></a><meta itemprop='position' content='5' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>History</span><meta itemprop='position' content='6' /></li>
-    
-
+        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/GamestonkTerminal/' href='/GamestonkTerminal/'><span itemprop='name'>Gamestonk Terminal</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/GamestonkTerminal/common/' href='/GamestonkTerminal/common/'><span itemprop='name'>Common</span></a><meta itemprop='position' content='3' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/GamestonkTerminal/common/quantitative_analysis/' href='/GamestonkTerminal/common/quantitative_analysis/'><span itemprop='name'>Quantitative Analysis</span></a><meta itemprop='position' content='4' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>Raw</span><meta itemprop='position' content='5' /></li>
     
 
     
@@ -19865,7 +19703,7 @@ optional arguments: -p PERIOD, --period PERIOD Duration of data (&lt;number&gt; 
     <div>
         <span class="editpage">
             <svg class="icon gdoc_code" style="color: #C7C7C7;"><use xlink:href="#gdoc_code"></use></svg>
-            <a href="https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/website//content/portfolio/brokers/alpaca/history/_index.md" style="color: #C7C7C7;">
+            <a href="https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/website//content/common/quantitative_analysis/raw/_index.md" style="color: #C7C7C7;">
                 Edit this page
             </a>
         </span>
@@ -19874,20 +19712,62 @@ optional arguments: -p PERIOD, --period PERIOD Duration of data (&lt;number&gt; 
 </div>
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
-        <h1>History</h1>
-        <pre><code>usage: history [-p PERIOD] [-t TIMEFRAME] [--export {csv,json,xlsx}] [-h]
-</code></pre><p>Historical Portfolio Info</p>
+        <h1>Raw</h1>
+        <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">usage: raw [-n NUM] [-d] [-h] [--export {csv,json,xlsx}]
+</code></pre></div><p>Shows historical daily value for the target value.</p>
 <pre><code>optional arguments:
-  -p PERIOD, --period PERIOD
-                        Duration of data (&lt;number&gt; + &lt;unit&gt;) (default: 1M)
-  -t TIMEFRAME, --timeframe TIMEFRAME
-                        Resolution of data (&lt;number&gt; + &lt;unit&gt;) (default: 1D)
-  --export {csv,json,xlsx}
-                        Export dataframe data to csv,json,xlsx file (default: )
+  -n NUM, --num NUM     Number to show (default: 20)
+  -d, --descend         Sort in descending order (default: False)
   -h, --help            show this help message (default: False)
-</code></pre><p>Example Output:</p>
-<p><img src="https://user-images.githubusercontent.com/18151143/134233417-fab329bb-7741-48e5-ad2d-976026ce9581.png" alt="AlpacaHist"  /></p>
-
+  --export {csv,json,xlsx}
+                        Export raw data into csv, json, xlsx (default: )
+</code></pre><p>Example:</p>
+<pre><code>2022 Feb 16, 11:05 (✨) /stocks/qa/ $ raw
+        Raw Data
+┏━━━━━━━━━━━━┳━━━━━━━━━━┓
+┃            ┃ Adjclose ┃
+┡━━━━━━━━━━━━╇━━━━━━━━━━┩
+│ 2022-01-19 │ 995.650  │
+├────────────┼──────────┤
+│ 2022-01-20 │ 996.270  │
+├────────────┼──────────┤
+│ 2022-01-21 │ 943.900  │
+├────────────┼──────────┤
+│ 2022-01-24 │ 930.000  │
+├────────────┼──────────┤
+│ 2022-01-25 │ 918.400  │
+├────────────┼──────────┤
+│ 2022-01-26 │ 937.410  │
+├────────────┼──────────┤
+│ 2022-01-27 │ 829.100  │
+├────────────┼──────────┤
+│ 2022-01-28 │ 846.350  │
+├────────────┼──────────┤
+│ 2022-01-31 │ 936.720  │
+├────────────┼──────────┤
+│ 2022-02-01 │ 931.250  │
+├────────────┼──────────┤
+│ 2022-02-02 │ 905.660  │
+├────────────┼──────────┤
+│ 2022-02-03 │ 891.140  │
+├────────────┼──────────┤
+│ 2022-02-04 │ 923.320  │
+├────────────┼──────────┤
+│ 2022-02-07 │ 907.340  │
+├────────────┼──────────┤
+│ 2022-02-08 │ 922.000  │
+├────────────┼──────────┤
+│ 2022-02-09 │ 932.000  │
+├────────────┼──────────┤
+│ 2022-02-10 │ 904.550  │
+├────────────┼──────────┤
+│ 2022-02-11 │ 860.000  │
+├────────────┼──────────┤
+│ 2022-02-14 │ 875.760  │
+├────────────┼──────────┤
+│ 2022-02-15 │ 922.430  │
+└────────────┴──────────┘
+</code></pre>
     </article>
  
 
@@ -20696,8 +20576,24 @@ optional arguments: -p PERIOD, --period PERIOD Duration of data (&lt;number&gt; 
         
         
     
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
 
         
+        
     
         
         
@@ -20717,10 +20613,9 @@ optional arguments: -p PERIOD, --period PERIOD Duration of data (&lt;number&gt; 
 
         
         
-            
-    
     
 
+        
     
         
         
@@ -20740,6 +20635,10 @@ optional arguments: -p PERIOD, --period PERIOD Duration of data (&lt;number&gt; 
 
         
         
+            
+    
+    
+
     
         
         
@@ -20909,10 +20808,7 @@ optional arguments: -p PERIOD, --period PERIOD Duration of data (&lt;number&gt; 
             
         
 
-        
         
-    
-
         
     
         
@@ -20933,10 +20829,9 @@ optional arguments: -p PERIOD, --period PERIOD Duration of data (&lt;number&gt; 
 
         
         
-            
     
-    
 
+        
     
         
         
@@ -20956,7 +20851,11 @@ optional arguments: -p PERIOD, --period PERIOD Duration of data (&lt;number&gt; 
 
         
         
+            
+    
     
+
+    
         
         
 
@@ -23054,47 +22953,9 @@ optional arguments: -p PERIOD, --period PERIOD Duration of data (&lt;number&gt; 
         
         
             
-    
-    
-
     
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
     
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
 
-        
-        
     
         
         
@@ -23582,27 +23443,8 @@ optional arguments: -p PERIOD, --period PERIOD Duration of data (&lt;number&gt; 
         
             
     
-    
-
     
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
 
-        
-        
     
         
         
@@ -25079,28 +24921,9 @@ optional arguments: -p PERIOD, --period PERIOD Duration of data (&lt;number&gt; 
         
         
             
-    
     
-
     
-        
-        
-
-        
-        
-            
-            
-            
 
-            
-
-            
-
-            
-        
-
-        
-        
     
         
         
@@ -28439,28 +28262,9 @@ optional arguments: -p PERIOD, --period PERIOD Duration of data (&lt;number&gt; 
         
         
             
-    
     
-
     
-        
-        
-
-        
-        
-            
-            
-            
 
-            
-
-            
-
-            
-        
-
-        
-        
     
         
         
@@ -30952,25 +30756,6 @@ optional arguments: -p PERIOD, --period PERIOD Duration of data (&lt;number&gt; 
     
     
 
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
     
         
         
