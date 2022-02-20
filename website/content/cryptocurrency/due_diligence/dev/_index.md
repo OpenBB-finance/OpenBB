@@ -10,3 +10,28 @@ optional arguments:
                         Export dataframe data to csv,json,xlsx file (default: )
   -h, --help            show this help message (default: False)
 ```
+
+Example:
+```
+2022 Feb 15, 07:13 (✨) /crypto/dd/ $ dev
+   Developers Data for Loaded Coin
+┌───────────────────────────┬───────┐
+│ Metric                    │ Value │
+├───────────────────────────┼───────┤
+│ Forks                     │ 31593 │
+├───────────────────────────┼───────┤
+│ Stars                     │ 61894 │
+├───────────────────────────┼───────┤
+│ Subscribers               │ 3904  │
+├───────────────────────────┼───────┤
+│ Total Issues              │ 6729  │
+├───────────────────────────┼───────┤
+│ Closed Issues             │ 6114  │
+├───────────────────────────┼───────┤
+│ Pull Requests Merged      │ 9418  │
+├───────────────────────────┼───────┤
+│ Pull Request Contributors │ 771   │
+├───────────────────────────┼───────┤
+│ Commit Count 4 Weeks      │ 266   │
+└───────────────────────────┴───────┘
+```

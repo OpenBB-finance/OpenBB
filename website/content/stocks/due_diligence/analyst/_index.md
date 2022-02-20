@@ -1,13 +1,31 @@
-```text
-usage: analyst [--export {csv,json,xlsx}] [-h]
+```
+usage: analyst [-h] [--export {csv,json,xlsx}]
 ```
 
-Analysts' price targets and ratings status of the company. Source: https://finviz.com/help/screener.ashx
+Print analyst prices and ratings of the company. The following fields are expected: date, analyst, category, price from, price to, and rating. [Source: Finviz]
+
 ```
 optional arguments:
-  --export {csv,json,xlsx}
-                        Export dataframe data to csv,json,xlsx file
   -h, --help            show this help message
+  --export {csv,json,xlsx}
+                        Export raw data into csv, json, xlsx
 ```
-<img width="1400" alt="Feature Screenshot - analyst" src="https://user-images.githubusercontent.com/85772166/140869227-6fb4b178-95c0-4342-90e6-25c0a088056c.png">
 
+Example:
+```
+2022 Feb 16, 04:20 (✨) /stocks/dd/ $ analyst
+                                         Display Analyst Ratings
+┏━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━┓
+┃            ┃ category   ┃ analyst         ┃ rating                ┃ target  ┃ target_from ┃ target_to ┃
+┡━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━┩
+│ 2022-01-31 │ Upgrade    │ Credit Suisse   │ Neutral -> Outperform │ 1025.00 │ nan         │ nan       │
+├────────────┼────────────┼─────────────────┼───────────────────────┼─────────┼─────────────┼───────────┤
+│ 2022-01-27 │ Reiterated │ Wells Fargo     │ Equal Weight          │ nan     │ 860.00      │ 910.00    │
+├────────────┼────────────┼─────────────────┼───────────────────────┼─────────┼─────────────┼───────────┤
+│ 2022-01-27 │ Reiterated │ Robert W. Baird │ Outperform            │ nan     │ 888.00      │ 1108.00   │
+├────────────┼────────────┼─────────────────┼───────────────────────┼─────────┼─────────────┼───────────┤
+│ 2022-01-27 │ Reiterated │ Oppenheimer     │ Outperform            │ nan     │ 1080.00     │ 1103.00   │
+├────────────┼────────────┼─────────────────┼───────────────────────┼─────────┼─────────────┼───────────┤
+│ 2022-01-27 │ Reiterated │ JP Morgan       │ Underweight           │ nan     │ 295.00      │ 325.00    │
+└────────────┴────────────┴─────────────────┴───────────────────────┴─────────┴─────────────┴───────────┘
+```

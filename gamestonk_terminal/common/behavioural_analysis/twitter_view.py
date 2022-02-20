@@ -192,7 +192,7 @@ def display_sentiment(
     ax1.set_title(
         f"Twitter's {ticker} total compound sentiment over time is {round(np.sum(df_tweets['sentiment']), 2)}"
     )
-    ax1.legend()
+
     theme.style_primary_axis(ax1)
 
     ax2.set_ylabel("VADER Polarity Scores")

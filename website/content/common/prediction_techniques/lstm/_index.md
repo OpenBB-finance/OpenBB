@@ -40,13 +40,6 @@ optional arguments:
   --no_shuffle          Specify if shuffling validation inputs.
   -h, --help            show this help message
 ```
+![LSTM](https://user-images.githubusercontent.com/18151143/154814043-79fc59f2-635b-4264-8f74-215bb2621201.png)
 
-![lstm](https://user-images.githubusercontent.com/25267873/108604943-d2025400-73a8-11eb-83c5-edb4a2121cba.png)
 
-#### Backtesting Example
-
-![appl_pred](https://user-images.githubusercontent.com/25267873/111053156-4173dc80-8459-11eb-9fcb-e81211961743.png)
-
-![apple_error](https://user-images.githubusercontent.com/25267873/111053157-420c7300-8459-11eb-8c37-fb1b5208d635.png)
-
-<img width="992" alt="Captura de ecrã 2021-03-14, às 00 06 51" src="https://user-images.githubusercontent.com/25267873/111053158-420c7300-8459-11eb-993b-6d9c26f98af9.png">

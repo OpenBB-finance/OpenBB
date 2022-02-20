@@ -1,5 +1,5 @@
 ```
-usage: cpsearch [-q QUERY] [-c {currencies,exchanges,icos,people,tags,all}] [-l N] [-s {category,id,name}] [--descend] [--export {csv,json,xlsx}] [-h]
+usage: cpsearch [-q QUERY [QUERY ...]] [-c {currencies,exchanges,icos,people,tags,all}] [-l LIMIT] [-s {category,id,name}] [--descend] [-h] [--export {csv,json,xlsx}]
 ```
 
 Search over CoinPaprika API You can display only top N number of results with --top parameter. You can sort data by id, name , category --sort
@@ -8,15 +8,45 @@ categories: currencies|exchanges|icos|people|tags|all Displays: id, name, catego
 
 ```
 optional arguments:
-  -q QUERY, --query QUERY
+  -q QUERY [QUERY ...], --query QUERY [QUERY ...]
                         phrase for search (default: None)
   -c {currencies,exchanges,icos,people,tags,all}, --cat {currencies,exchanges,icos,people,tags,all}
                         Categories to search: currencies|exchanges|icos|people|tags|all. Default: all (default: all)
-  -l N, --limit N       display N records (default: 10)
+  -l LIMIT, --limit LIMIT
+                        Limit of records (default: 10)
   -s {category,id,name}, --sort {category,id,name}
                         Sort by given column. Default: id (default: id)
   --descend             Flag to sort in descending order (lowest first) (default: True)
-  --export {csv,json,xlsx}
-                        Export dataframe data to csv,json,xlsx file (default: )
   -h, --help            show this help message (default: False)
+  --export {csv,json,xlsx}
+                        Export raw data into csv, json, xlsx (default: )
+```
+
+Example:
+```
+2022 Feb 15, 06:51 (✨) /crypto/disc/ $ cpsearch -q bitcoin
+                      CoinPaprika Results
+┌─────────────────────────┬──────────────────────┬────────────┐
+│ id                      │ name                 │ category   │
+├─────────────────────────┼──────────────────────┼────────────┤
+│ bbtc-baby-bitcoin       │ Baby Bitcoin         │ currencies │
+├─────────────────────────┼──────────────────────┼────────────┤
+│ bc-bitcoin-confidential │ Bitcoin Confidential │ currencies │
+├─────────────────────────┼──────────────────────┼────────────┤
+│ bca-bitcoin-atom        │ Bitcoin Atom         │ currencies │
+├─────────────────────────┼──────────────────────┼────────────┤
+│ bcd-bitcoin-diamond     │ Bitcoin Diamond      │ currencies │
+├─────────────────────────┼──────────────────────┼────────────┤
+│ bcf-bitcoin-fast        │ Bitcoin Fast         │ currencies │
+├─────────────────────────┼──────────────────────┼────────────┤
+│ bch-bitcoin-cash        │ Bitcoin Cash         │ currencies │
+├─────────────────────────┼──────────────────────┼────────────┤
+│ bch-bitcoin-cash-token  │ Bitcoin Cash Token   │ currencies │
+├─────────────────────────┼──────────────────────┼────────────┤
+│ bci-bitcoin-interest    │ Bitcoin Interest     │ currencies │
+├─────────────────────────┼──────────────────────┼────────────┤
+│ bcr-bitcoinrock         │ BITCOINROCK          │ currencies │
+├─────────────────────────┼──────────────────────┼────────────┤
+│ bct-bitcointrust        │ BitcoinTrust         │ currencies │
+└─────────────────────────┴──────────────────────┴────────────┘
 ```

@@ -1,5 +1,31 @@
-```text
-usage: fraud [-h]
+```
+usage: fraud [-h] [--export {csv,json,xlsx}]
+```
+
+```
+optional arguments:
+  -h, --help            show this help message
+  --export {csv,json,xlsx}
+                        Export raw data into csv, json, xlsx
+```
+
+Example (ticker is MSFT):
+```
+2022 Feb 16, 05:42 (✨) /stocks/fa/ $ fraud
+AMscore Sub Stats:
+   DSRI : 1.03
+   GMI : 0.98
+   AQI : 0.50
+   SGI : 1.18
+   DEPI : 1.07
+   SGAI : 0.86
+   LVGI : 0.95
+   TATA : -0.05
+
+MSCORE:  -2.62 (low chance of fraud)
+ZSCORE:  -1.89 (high chance of bankruptcy)
+
+McKee:  0.86 (high chance of bankruptcy)
 ```
 
 Mscore:
@@ -38,8 +64,3 @@ McKee Score:
 ------------------------------------------------
 The McKee Score is a bankruptcy model used to predict a firm's bankruptcy in one year. It looks at a companie's size, profitability, and liquidity to determine the probability. This model is 80% accurate in predicting bankruptcy.
 [Source: McKee and Lensberg](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.619.594&rep=rep1&type=pdf)
-
-```
-optional arguments:
-  -h, --help  show this help message
-```
