@@ -1,9 +1,7 @@
 ```text
 usage: acf [-l LAGS] [-h]
 ```
-Auto-Correlation and Partial Auto-Correlation Functions for diff and diff diff stock data
-
-http://sciencedirect.com/topics/chemistry/autocorrelation-function
+Auto-Correlation and Partial Auto-Correlation Functions for diff and diff diff stock data, see source: http://sciencedirect.com/topics/chemistry/autocorrelation-function
 
 The autocorrelation function (ACF) defines how data points in a time series are related, on average, to the preceding data points (Box, Jenkins, & Reinsel, 1994).
 
@@ -12,7 +10,7 @@ A positive autocorrelation value for a particular lag τ can be interpreted as a
 ```
 optional arguments:
   -l LAGS, --lags LAGS  maximum lags to display in plots (default: 15)
-  -h, --help            show this help message (default: False)
+  -h, --help            show this help message (default: False
 ```
 
-<img size="1400" alt="Feature Screenshot - acf" src="https://user-images.githubusercontent.com/25267873/112733336-637c5d00-8f37-11eb-9aae-38e75dff9ad2.png">
+![acf](https://user-images.githubusercontent.com/46355364/154305242-176c3ba1-ebfc-43e7-a027-46251fb02463.png)

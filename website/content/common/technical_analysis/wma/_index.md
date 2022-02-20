@@ -15,4 +15,5 @@ optional arguments:
                         Export dataframe data to csv,json,xlsx file (default: )
   -h, --help            show this help message (default: False)
 ```
-<img width="1400" alt="Feature Screenshot - wma" src="https://user-images.githubusercontent.com/85772166/144016751-16fc0da2-488f-4ca2-bb3c-eb2e65e8b149.png">
+
+![wma](https://user-images.githubusercontent.com/46355364/154312618-43430406-97c1-4740-87be-2414de9a1c06.png)

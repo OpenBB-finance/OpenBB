@@ -1,17 +1,43 @@
 ```
-usage: ford [-n N_NUM] [--export {csv,json,xlsx}] [-h]
+usage: ford [-l LIMIT] [-h] [--export {csv,json,xlsx}]
 ```
 
-Orders by Fidelity customers. Information shown in the table below is based on the volume of orders entered on the "as of" date shown. Securities
-identified are not recommended or endorsed by Fidelity and are displayed for informational purposes only. Source: https://eresearch.fidelity.com/eresearch/gotoBL/fidelityTopOrders.jhtml
+Orders by Fidelity customers. Information shown in the table below is based on the volume of orders entered on the "as of" date shown. Securities identified are not recommended or endorsed by Fidelity and are displayed for informational purposes only. [Source: Fidelity]
 
 ```
 optional arguments:
-  -n N_NUM, --num N_NUM
-                        Number of top ordered stocks to be printed. (default: 10)
-  --export {csv,json,xlsx}
-                        Export dataframe data to csv,json,xlsx file (default: )
+  -l LIMIT, --limit LIMIT
+                        Limit of stocks to display. (default: 5)
   -h, --help            show this help message (default: False)
+  --export {csv,json,xlsx}
+                        Export raw data into csv, json, xlsx (default: )
 ```
-<img width="1400" alt="Feature Screenshot - ford" src="https://user-images.githubusercontent.com/85772166/140247181-582bc077-f463-4a49-a3ab-7fb32af71982.png">
 
+Example:
+```
+2022 Feb 16, 04:01 (✨) /stocks/disc/ $ ford -l 10
+                                                         As of  02/15/22:
+┏━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┓
+┃ Symbol ┃ Buy / Sell Ratio    ┃ Price Change       ┃ Company                                     ┃ # Buy Orders ┃ # Sell Orders ┃
+┡━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━┩
+│ TCEHY  │ 50% Buys, 50% Sells │ +0.93 (+1.546392%) │ TENCENT HOLDINGS LTD                        │ 8,233        │ 8,126         │
+├────────┼─────────────────────┼────────────────────┼─────────────────────────────────────────────┼──────────────┼───────────────┤
+│ TSLA   │ 35% Buys, 65% Sells │ +46.67 (+5.33%)    │ TESLA INC                                   │ 4,865        │ 8,958         │
+├────────┼─────────────────────┼────────────────────┼─────────────────────────────────────────────┼──────────────┼───────────────┤
+│ NVDA   │ 43% Buys, 57% Sells │ +22.28 (+9.18%)    │ NVIDIA CORP                                 │ 5,269        │ 6,860         │
+├────────┼─────────────────────┼────────────────────┼─────────────────────────────────────────────┼──────────────┼───────────────┤
+│ AMD    │ 50% Buys, 50% Sells │ +7.20 (+6.30%)     │ ADVANCED MICRO DEVICES INC                  │ 5,772        │ 5,832         │
+├────────┼─────────────────────┼────────────────────┼─────────────────────────────────────────────┼──────────────┼───────────────┤
+│ SPCE   │ 44% Buys, 56% Sells │ +2.60 (+31.94%)    │ VIRGIN GALACTIC HOLDINGS INC                │ 3,559        │ 4,518         │
+├────────┼─────────────────────┼────────────────────┼─────────────────────────────────────────────┼──────────────┼───────────────┤
+│ FB     │ 63% Buys, 37% Sells │ +3.30 (+1.52%)     │ META PLATFORMS INC                          │ 4,413        │ 2,639         │
+├────────┼─────────────────────┼────────────────────┼─────────────────────────────────────────────┼──────────────┼───────────────┤
+│ KAVL   │ 49% Buys, 51% Sells │ +0.37 (+13.86%)    │ KAIVAL BRANDS INNOVATIONS GROUP INC         │ 3,382        │ 3,555         │
+├────────┼─────────────────────┼────────────────────┼─────────────────────────────────────────────┼──────────────┼───────────────┤
+│ TQQQ   │ 41% Buys, 59% Sells │ +3.87 (+7.24%)     │ PROSHARES ULTRAPRO QQQ                      │ 2,808        │ 4,031         │
+├────────┼─────────────────────┼────────────────────┼─────────────────────────────────────────────┼──────────────┼───────────────┤
+│ AAPL   │ 47% Buys, 53% Sells │ +3.91 (+2.32%)     │ APPLE INC                                   │ 2,589        │ 2,971         │
+├────────┼─────────────────────┼────────────────────┼─────────────────────────────────────────────┼──────────────┼───────────────┤
+│ SOXL   │ 34% Buys, 66% Sells │ +6.42 (+16.22%)    │ DIREXION DAILY SEMICONDUCTOR BULL 3X SHARES │ 1,805        │ 3,532         │
+└────────┴─────────────────────┴────────────────────┴─────────────────────────────────────────────┴──────────────┴───────────────┘
+```

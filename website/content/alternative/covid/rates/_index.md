@@ -12,4 +12,4 @@ optional arguments:
                         Number of entries to show in data. (default: 10)
 ```
 
-![rates](https://user-images.githubusercontent.com/18151143/148297759-b4baba6f-3556-4da4-babf-846a9754ab4b.png)
+![rates](https://user-images.githubusercontent.com/46355364/153898007-a051dc1c-4b03-4c3c-ae72-c61da8f732ff.png)

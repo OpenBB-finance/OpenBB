@@ -1,15 +1,17 @@
 ```
-usage: toplobbying [-n NUM] [--raw] [--export {png,jpg,pdf,svg,csv,json,xlsx}] [-h]
+usage: toplobbying [-l LIMIT] [--raw] [-h] [--export {csv,json,xlsx,png,jpg,pdf,svg}]
 ```
 
 Shows companies responsible for the most amount of US governement lobbying. [Source: www.quiverquant.com]
 
 ```
 optional arguments:
-  -n NUM, --num NUM     Number to show (default: 10)
+  -l LIMIT, --limit LIMIT
+                        Limit of stocks to display (default: 10)
   --raw                 Print raw data. (default: False)
-  --export {png,jpg,pdf,svg,csv,json,xlsx}
-                        Export plot to png,jpg,pdf,svg file or export dataframe to csv,json,xlsx (default: )
   -h, --help            show this help message (default: False)
+  --export {csv,json,xlsx,png,jpg,pdf,svg}
+                        Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg (default: )
   ```
-<img size="1400" alt="top_lobbying" src="https://user-images.githubusercontent.com/25267873/120707733-9e0ff200-c4b2-11eb-9430-552d92f3fc74.png">
+
+![toplobbying](https://user-images.githubusercontent.com/46355364/154266510-5e46cafe-f4b6-4fa2-9b87-6ae5e1f1a726.png)

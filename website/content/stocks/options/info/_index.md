@@ -1,13 +1,45 @@
 ```
-usage: info [--export {csv,json,xlsx}] [-h]
+usage: info [-h] [--export {csv,json,xlsx}]
 ```
 
-An options summary for the selected ticker. 
+Display option data [Source: Barchart.com]
 
 ```
 optional arguments:
-  --export {csv,json,xlsx}
-                        Export dataframe data to csv,json,xlsx file (default: )
   -h, --help            show this help message (default: False)
+  --export {csv,json,xlsx}
+                        Export raw data into csv, json, xlsx (default: )
 ```
-<img size="1400" alt="Feature Screenshot - info" src="https://user-images.githubusercontent.com/85772166/142366119-09d713e2-3be7-4e30-a486-f0ccecd0c98d.png">
+
+Example:
+```
+2022 Feb 16, 09:09 (✨) /stocks/options/ $ info
+                Options Information
+┏━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃                       ┃                         ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Implied Volatility    │   31.27%  (  -3.04%)    │
+├───────────────────────┼─────────────────────────┤
+│ Historical Volatility │   54.71%                │
+├───────────────────────┼─────────────────────────┤
+│ IV Percentile         │   81%                   │
+├───────────────────────┼─────────────────────────┤
+│ IV Rank               │   37.04%                │
+├───────────────────────┼─────────────────────────┤
+│ IV High               │   53.44% on 02/03/22    │
+├───────────────────────┼─────────────────────────┤
+│ IV Low                │   18.22% on 08/27/21    │
+├───────────────────────┼─────────────────────────┤
+│ Put/Call Vol Ratio    │  0.85                   │
+├───────────────────────┼─────────────────────────┤
+│ Today's Volume        │  143,740                │
+├───────────────────────┼─────────────────────────┤
+│ Volume Avg (30-Day)   │  241,667                │
+├───────────────────────┼─────────────────────────┤
+│ Put/Call OI Ratio     │  0.98                   │
+├───────────────────────┼─────────────────────────┤
+│ Today's Open Interest │  582,975                │
+├───────────────────────┼─────────────────────────┤
+│ Open Int (30-Day)     │  721,047                │
+└───────────────────────┴─────────────────────────┘
+```
