@@ -11,4 +11,26 @@ optional arguments:
   --pie                 Display a pie chart for weights (default: False)
   -h, --help            show this help message (default: False)
 ```
-<img size="1400" alt="Feature Screenshot - mktcap" src="https://user-images.githubusercontent.com/85772166/147147744-327d7db7-dcc2-4fa7-94dc-ff83d91a6cc6.png">
+
+Example:
+```
+2022 Feb 14, 11:19 (✨) /portfolio/po/ $ mktcap
+      Weights
+┌────────┬─────────┐
+│        │ Value   │
+├────────┼─────────┤
+│ BNS.TO │ 15.70 % │
+├────────┼─────────┤
+│ BMO.TO │ 13.48 % │
+├────────┼─────────┤
+│ TD.TO  │ 27.06 % │
+├────────┼─────────┤
+│ CM.TO  │ 10.16 % │
+├────────┼─────────┤
+│ NA.TO  │  4.84 % │
+├────────┼─────────┤
+│ RY.TO  │ 28.73 % │
+└────────┴─────────
+```
+
+![mktcap](https://user-images.githubusercontent.com/46355364/153903395-45f4b424-cab3-41ac-91ee-745eddff7e71.png)

@@ -18,5 +18,5 @@ optional arguments:
                         Export dataframe data to csv,json,xlsx file (default: )
   -h, --help            show this help message (default: False)
 ```
-<img size="1400" alt="Feature Screenshot - quantile" src="https://user-images.githubusercontent.com/85772166/143656349-0951294b-1095-4b62-bd62-b6c04d74252a.png">
-  
+
+![quantile](https://user-images.githubusercontent.com/46355364/154307976-868e98e1-5a30-43c7-92fc-f221d09c5bd2.png)

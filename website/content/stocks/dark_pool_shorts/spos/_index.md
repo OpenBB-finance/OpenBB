@@ -12,5 +12,5 @@ optional arguments:
                         Export dataframe data to csv,json,xlsx file
   -h, --help            show this help message
 ```
-<img width ="1400" alt="Feature Screenshot - spos" src="https://user-images.githubusercontent.com/85772166/140654648-2f06971d-ce64-422e-baaf-679bac783d79.png">
-<img width ="1400" alt="Feature Screeshot - spos raw" src="https://user-images.githubusercontent.com/85772166/140654701-e831c2d7-a1c3-4840-9683-57a11b47ec93.png">
+
+![spos](https://user-images.githubusercontent.com/46355364/154101511-fd2d65e9-69a6-46f3-aa78-77c032c6900d.png)

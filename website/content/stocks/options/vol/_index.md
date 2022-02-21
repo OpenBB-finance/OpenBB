@@ -1,8 +1,8 @@
 ```
-usage: vol [-m MIN] [-M MAX] [-c] [-p] [-s {tr,yf}] [--export {csv,json,xlsx}] [-h]
+usage: vol [-m MIN] [-M MAX] [-c] [-p] [-s {tr,yf}] [-h] [--export {csv,json,xlsx,png,jpg,pdf,svg}]
 ```
 
-Plot volume against strike prioce. Volume refers to the number of contracts traded today.
+Plot volume. Volume refers to the number of contracts traded today.
 
 ```
 optional arguments:
@@ -12,8 +12,9 @@ optional arguments:
   -p, --puts            Flag to plot put options only (default: False)
   -s {tr,yf}, --source {tr,yf}
                         Source to get data from (default: tr)
-  --export {csv,json,xlsx}
-                        Export dataframe data to csv,json,xlsx file (default: )
   -h, --help            show this help message (default: False)
+  --export {csv,json,xlsx,png,jpg,pdf,svg}
+                        Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg (default: )
 ```
-<img size-="1400" alt="Feature Screenshot - vol" src="https://user-images.githubusercontent.com/85772166/144265560-1558aca5-c2a5-4c62-931d-580554453bf8.png">
+
+![vol](https://user-images.githubusercontent.com/46355364/154291303-c23edf53-4242-4d9b-a45e-22ce8a633aa8.png)

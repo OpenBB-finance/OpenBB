@@ -13,4 +13,5 @@ optional arguments:
                         Export dataframe data to csv,json,xlsx file (default: )
   -h, --help            show this help message (default: False)
 ```
-<img size="1400" alt="Feature Screenshot - skew" src="https://user-images.githubusercontent.com/85772166/143657512-75d98777-d7c0-4c2b-a39e-30b226b1578d.png">
+
+![skew](https://user-images.githubusercontent.com/46355364/154308298-7528be2a-05f5-44b8-a479-d4716b2a6c6e.png)

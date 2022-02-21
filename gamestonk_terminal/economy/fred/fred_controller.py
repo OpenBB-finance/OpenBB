@@ -161,7 +161,7 @@ class FredController(BaseController):
             "-i",
             "--id",
             type=lambda x: x.lower(),
-            choices=self.current_series.keys(),
+            choices=[key.lower() for key in self.current_series],
             required="-h" not in other_args
             and "-a" not in other_args
             and "--all" not in other_args,
@@ -187,7 +187,7 @@ class FredController(BaseController):
             else:
                 self.current_series.pop(ns_parser.series_id)
                 console.print(
-                    f"Current Series Ids: [blue]{', '.join(self.current_series.keys()) or None}[/blue]\n"
+                    f"Current Series Ids: [blue]{', '.join(self.current_series.keys()) .upper() or None}[/blue]\n"
                 )
 
     @log_start_end(log=logger)

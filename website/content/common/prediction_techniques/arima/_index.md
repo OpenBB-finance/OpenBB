@@ -26,5 +26,4 @@ optional arguments:
   --export {png,jpg,pdf,svg}
                         Export figure into png, jpg, pdf, svg (default: )
 ```
-
-![arima](https://user-images.githubusercontent.com/25267873/108604947-d3cc1780-73a8-11eb-9dbb-53b959ae7947.png)
+![ArimaImg](https://user-images.githubusercontent.com/18151143/154813853-8cd8f9e4-9d99-4d53-8fe0-8110c13eac21.png)

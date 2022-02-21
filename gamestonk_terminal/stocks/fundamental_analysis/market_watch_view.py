@@ -261,7 +261,10 @@ def display_sean_seah_warnings(ticker: str, debug: bool = False):
         return
 
     print_rich_table(
-        financials, headers=list(financials.columns), title="Sean Seah Warnings"
+        financials,
+        headers=list(financials.columns),
+        title="Sean Seah Warnings",
+        show_index=True,
     )
 
     if not warnings:

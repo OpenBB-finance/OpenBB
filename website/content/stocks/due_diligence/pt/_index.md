@@ -1,19 +1,17 @@
-```text
-usage: pt [--raw] [-n N_NUM] [--export {csv,json,xlsx}] [-h]
+```
+usage: pt [--raw] [-l LIMIT] [-h] [--export {csv,json,xlsx}]
 ```
 
-Prints price target from analysts. Source: (https://markets.businessinsider.com)
+Prints price target from analysts. [Source: Business Insider]
 
 ```
 optional arguments:
   --raw                 Only output raw data
-  -n N_NUM, --num N_NUM
-                        Number of latest price targets from analysts to print.
-  --export {csv,json,xlsx}
-                        Export dataframe data to csv,json,xlsx file
+  -l LIMIT, --limit LIMIT
+                        Limit of latest price targets from analysts to print.
   -h, --help            show this help message
+  --export {csv,json,xlsx}
+                        Export raw data into csv, json, xlsx
 ```
 
-<img width="1400" alt="pt" src="https://user-images.githubusercontent.com/25267873/108609888-fec66380-73c8-11eb-8c2f-04ceaac6f3f5.png">
-
-<img width="1400" alt="pt2" src="https://user-images.githubusercontent.com/25267873/108609914-3af9c400-73c9-11eb-8820-0abfa9e57119.png">
+![pt](https://user-images.githubusercontent.com/46355364/154235470-58ed232e-116e-442a-bffe-8e855eba3bda.png)
