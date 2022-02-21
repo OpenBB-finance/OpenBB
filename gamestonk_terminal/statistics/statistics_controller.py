@@ -527,6 +527,15 @@ Regression Analysis
             default=False,
         )
 
+        parser.add_argument(
+            "-s",
+            "--significant",
+            help="Show only companies that have p-values lower than this percentage",
+            dest="significant",
+            type=float,
+            default=0,
+        )
+
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-ts")
 
@@ -542,7 +551,7 @@ Regression Analysis
                 datasets[stock] = self.datasets[dataset][column]
 
             statistics_view.display_cointegration_test(
-                datasets, ns_parser.plot, ns_parser.export
+                datasets, ns_parser.significant, ns_parser.plot, ns_parser.export
             )
 
     def call_ols(self, other_args: List[str]):

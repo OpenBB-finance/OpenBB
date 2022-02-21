@@ -234,6 +234,7 @@ def display_granger(
 @log_start_end(log=logger)
 def display_cointegration_test(
     datasets: Dict[pd.Series, Any],
+    significant: bool = False,
     plot: bool = False,
     export: str = "",
 ):
@@ -260,6 +261,8 @@ def display_cointegration_test(
     ----------
     datasets: Dict[pd.Series, Any]
         All time series to perform co-integration tests on.
+    significant: float
+        Show only companies that have p-values lower than this percentage
     plot: bool
         Whether you wish to plot the z-values of all pairs.
     export : str
@@ -289,6 +292,13 @@ def display_cointegration_test(
         orient="index",
         columns=["Constant", "Gamma", "Alpha", "Dickey-Fuller", "P Value"],
     )
+
+    if significant:
+        console.print(
+            f"Only showing pairs that are statistically significant ({significant} > p-value)."
+        )
+        df = df[significant > df["P Value"]]
+        console.print("")
 
     print_rich_table(
         df,
