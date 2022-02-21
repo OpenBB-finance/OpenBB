@@ -248,7 +248,7 @@ def display_cointegration_test(
 
     with z the found residuals of the first equation.
 
-    Then tests cointegration by Dickey-Fuller phi=1 vs phi < 1 in
+    Then tests co-integration with the Dickey-Fuller phi=1 vs phi < 1 in
         z_t = phi * z_(t-1) + eta_t
 
     If this implies phi < 1, the z series is stationary is concluded to be
@@ -267,8 +267,8 @@ def display_cointegration_test(
     """
 
     pairs = list(combinations(datasets.keys(), 2))
-    result = {}
-    z_values = {}
+    result: Dict[str, list] = dict()
+    z_values: Dict[str, pd.Series] = dict()
 
     for x, y in pairs:
         (
@@ -299,20 +299,13 @@ def display_cointegration_test(
     )
 
     if plot:
-        if len(pairs) > 1:
-            _, axes = plt.subplots(
-                len(pairs), 1, figsize=plot_autoscale(), dpi=PLOT_DPI
-            )
+        plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
-            pair = 0
-            for ax in axes:
-                pair_name = df.index[pair]
-                ax.set_title(f"Z-Values of Pair {pair_name}")
-                ax.plot(z_values[pair_name])
-                pair += 1
-        else:
-            plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-            plt.plot(df.values)
+        for pair, values in z_values.items():
+            plt.plot(values, label=pair)
+
+        plt.legend()
+        plt.title("Error correction terms")
 
         plt.tight_layout()
 
