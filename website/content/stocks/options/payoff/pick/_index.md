@@ -6,7 +6,32 @@ Select the status of the underlying: long, short, none.
 
 ```
 optional arguments:
-  -t, --type            choose the action you want to perform
+  -t {long,short,none}, --type {long,short,none}
+                        Choose what you would like to do with the underlying asset (default: None)
   -h, --help            show this help message (default: False)
 ```
-<img size="1400" alt="Feature Screenshot - pick" src="https://user-images.githubusercontent.com/85772166/142493959-cfc15530-fa6a-49f1-821c-88f58b4dcd2d.png">
+
+Example:
+```
+2022 Feb 16, 09:25 (✨) /stocks/options/payoff/ $ pick -t long
+
+2022 Feb 16, 09:25 (✨) /stocks/options/payoff/ $ ?
+╭───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── Stocks - Options - Payoff ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│                                                                                                                                                                                                                                                                              │
+│ Ticker: TSLA                                                                                                                                                                                                                                                                 │
+│ Expiry: 2022-03-25                                                                                                                                                                                                                                                           │
+│                                                                                                                                                                                                                                                                              │
+│     pick          long, short, or none (default) underlying asset                                                                                                                                                                                                            │
+│                                                                                                                                                                                                                                                                              │
+│ Underlying Asset: Long                                                                                                                                                                                                                                                       │
+│                                                                                                                                                                                                                                                                              │
+│     list          list available strike prices for calls and puts                                                                                                                                                                                                            │
+│                                                                                                                                                                                                                                                                              │
+│     add           add option to the list of the options to be plotted                                                                                                                                                                                                        │
+│     rmv           remove option from the list of the options to be plotted                                                                                                                                                                                                   │
+│                                                                                                                                                                                                                                                                              │
+│     sop           selected options                                                                                                                                                                                                                                           │
+│     plot          show the option payoff diagram                                                                                                                                                                                                                             │
+│                                                                                                                                                                                                                                                                              │
+╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── Gamestonk Terminal ─╯
+```

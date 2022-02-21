@@ -1,17 +1,44 @@
 ```
-usage: holdings [-e NAME] [-l LIMIT] [--export {csv,json,xlsx}] [-h]
+usage: holdings [-l LIMIT] [-h] [--export {csv,json,xlsx}]
 ```
 
 See what is inside an ETF holdings.
 
 ```
 optional arguments:
-  -e NAME, --etf NAME   ETF to get holdings for (default: None)
   -l LIMIT, --limit LIMIT
-                        Number of holdings to get (default: 20)
-  --export {csv,json,xlsx}
-                        Export dataframe data to csv,json,xlsx file (default: )
+                        Number of holdings to get (default: 10)
   -h, --help            show this help message (default: False)
+  --export {csv,json,xlsx}
+                        Export raw data into csv, json, xlsx (default: )
 ```
-<img size="1400" alt="Feature Screenshot - holdings" src="https://user-images.githubusercontent.com/85772166/142275111-47d73588-6634-46c7-aab6-896b96ec9ec2.png">
+
+Example:
+```
+2022 Feb 15, 04:15 (✨) /etf/ $ holdings
+           ETF Holdings
+┌───────┬──────────┬─────────────┐
+│       │ % Of Etf │ Shares      │
+├───────┼──────────┼─────────────┤
+│ AAPL  │ 6.83%    │ 329,111,779 │
+├───────┼──────────┼─────────────┤
+│ MSFT  │ 6.23%    │ 158,536,434 │
+├───────┼──────────┼─────────────┤
+│ AMZN  │ 3.59%    │ 9,209,552   │
+├───────┼──────────┼─────────────┤
+│ GOOGL │ 2.15%    │ 6,351,744   │
+├───────┼──────────┼─────────────┤
+│ TSLA  │ 2.12%    │ 17,176,682  │
+├───────┼──────────┼─────────────┤
+│ GOOG  │ 2.00%    │ 5,904,299   │
+├───────┼──────────┼─────────────┤
+│ FB    │ 1.96%    │ 49,965,809  │
+├───────┼──────────┼─────────────┤
+│ NVDA  │ 1.81%    │ 52,789,400  │
+├───────┼──────────┼─────────────┤
+│ BRK.B │ 1.35%    │ 38,670,223  │
+├───────┼──────────┼─────────────┤
+│ UNH   │ 1.17%    │ 19,887,839  │
+└───────┴──────────┴─────────────┘
+```
 

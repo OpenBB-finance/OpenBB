@@ -1,16 +1,42 @@
 ```
-usage: funding [-l N] [--current] [--export {csv,json,xlsx}] [-h]
+usage: funding [-l LIMIT] [--current] [-h] [--export {csv,json,xlsx}]
 ```
 
 Display Funding rates. [Source: https://defirate.com/]
 
 ```
 optional arguments:
-  -l N, --limit N       display N records (default: 10)
-  --current             Show Current Funding Rates or Last 30 Days Average
-                        (default: True)
-  --export {csv,json,xlsx}
-                        Export dataframe data to csv,json,xlsx file (default:
-                        )
+  -l LIMIT, --limit LIMIT
+                        Number of records to display (default: 10)
+  --current             Show Current Funding Rates or Last 30 Days Average (default: True)
   -h, --help            show this help message (default: False)
+  --export {csv,json,xlsx}
+                        Export raw data into csv, json, xlsx (default: )
+```
+Example:
+```
+2022 Feb 15, 06:17 (✨) /crypto/defi/ $ funding
+┌────────┬────────────┬──────────────┬──────────┬─────────┐
+│ Symbol │ Binance    │ dYdX         │ FTX      │ BitMEX  │
+├────────┼────────────┼──────────────┼──────────┼─────────┤
+│ BTC    │ -0.00776%  │ -0.00333104% │ 0.0072%  │ 0.01%   │
+├────────┼────────────┼──────────────┼──────────┼─────────┤
+│ ETH    │ 0.004572%  │ -0.010064%   │ 0.0008%  │ 0.0344% │
+├────────┼────────────┼──────────────┼──────────┼─────────┤
+│ XRP    │ -0.013315% │ –            │ 0.004%   │ 0.0379% │
+├────────┼────────────┼──────────────┼──────────┼─────────┤
+│ BCH    │ 0.004671%  │ 0.00792408%  │ -0.0008% │ 0.01%   │
+├────────┼────────────┼──────────────┼──────────┼─────────┤
+│ COMP   │ 0.01%      │ 0.00780392%  │ -0.0032% │ –       │
+├────────┼────────────┼──────────────┼──────────┼─────────┤
+│ KNC    │ 0.007689%  │ –            │ 0.0192%  │ –       │
+├────────┼────────────┼──────────────┼──────────┼─────────┤
+│ LINK   │ -0.005376% │ -0.00611336% │ -0.0048% │ 0.0298% │
+├────────┼────────────┼──────────────┼──────────┼─────────┤
+│ XTZ    │ 0.01%      │ –            │ -0.004%  │ –       │
+├────────┼────────────┼──────────────┼──────────┼─────────┤
+│ BNB    │ 0%         │ –            │ -0.0152% │ 0.01%   │
+├────────┼────────────┼──────────────┼──────────┼─────────┤
+│ LTC    │ -0.005634% │ 0.00883664%  │ 0.0008%  │ 0.0168% │
+└────────┴────────────┴──────────────┴──────────┴─────────┘
 ```

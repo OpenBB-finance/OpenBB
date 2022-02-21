@@ -1,19 +1,20 @@
 ```
-usage: gdp [-i {a,q}] [-s START] [--raw] [-h] [--export {png,jpg,pdf,svg}]
+usage: gdp [-i {annual,quarter}] [-s START] [--raw] [-h] [--export {csv,json,xlsx,png,jpg,pdf,svg}]
 ```
 
-US Real GDP, on either annual or quarterly intervals. https://www.alphavantage.co/documentation/
+US Real GDP, on either annual or quarterly intervals. [Source: Alpha Vantage]
 
 ```
 optional arguments:
-  -i {a,q}, --interval {a,q}
-                        Interval for GDP data (default: a)
+  -i {annual,quarter}, --interval {annual,quarter}
+                        Interval for GDP data (default: annual)
   -s START, --start START
                         Start year. Quarterly only goes back to 2002. (default: 2010)
   --raw                 Display raw data (default: False)
   -h, --help            show this help message (default: False)
-  --export {png,jpg,pdf,svg}
-                        Export or figure into png, jpg, pdf, svg (default: )
+  --export {csv,json,xlsx,png,jpg,pdf,svg}
+                        Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg (default: )
 ```
 
-<img size="1400" alt="Feature Screenshot - gdp" src="https://user-images.githubusercontent.com/85772166/141943253-2cca4fb9-82d1-4ac1-98c9-179128cc2d60.png">
+Example:
+![gdp](https://user-images.githubusercontent.com/46355364/154037947-b2464523-9dd3-497d-abd5-5ac403f92788.png)

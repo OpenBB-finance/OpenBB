@@ -7,6 +7,7 @@ usage: btcrb    [-s INITIAL_DATE]
 Displays bitcoin rainbow chart. It also includes halving dates.
 
 [Price data from source: https://glassnode.com]
+
 [Inspired by: https://blockchaincenter.net]
 
 ```
@@ -16,3 +17,5 @@ arguments:
   --export {csv,json,xlsx}      Export dataframe data to csv,json,xlsx file (default: )
   -h, --help                    show this help message (default: False)
 ```
+
+![btcrb](https://user-images.githubusercontent.com/46355364/154068553-f40e8a63-dd69-4508-a0f1-d91cfd5e6e9b.png)

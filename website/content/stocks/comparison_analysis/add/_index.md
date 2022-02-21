@@ -11,4 +11,10 @@ optional arguments:
   -h, --help            show this help message (default: False)
 ```
 
-<img size="1400" alt="Feature Screenshot - add" src="https://user-images.githubusercontent.com/85772166/142893897-cd7e924e-1a4e-4b44-848f-2b51e8b709bd.png">
+Example:
+```
+2022 Feb 15, 08:33 (✨) /stocks/ca/ $ add AAPL
+[Custom] Similar Companies: AAPL, TSLA
+
+2022 Feb 15, 08:33 (✨) /stocks/ca/ $
+```

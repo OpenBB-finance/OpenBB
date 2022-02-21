@@ -702,7 +702,7 @@ Ticker: [/param] {self.ticker} [cmds]
                 We predict the future expected cash flows by prediciting what the financial
                 statements will look like in the future, and then using this to determine the
                 cash the company will have in the future. This cash is paid to share holders.
-                We us linear regression to predict the future financial statements.\n\n
+                We use linear regression to predict the future financial statements.\n\n
 
                 Once we have our predicted financial statements we need to determine how much the
                 cash flows are worth today. This is done with a discount factor. Our DCF allows

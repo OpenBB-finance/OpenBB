@@ -23,5 +23,5 @@ optional arguments:
   --no_shuffle          Specify if shuffling validation inputs.
   -h, --help            show this help message
 ```
+![KNN](https://user-images.githubusercontent.com/18151143/154814016-f9589028-38c0-4468-a97d-b4cc7f2a7366.png)
 
-![knn](https://user-images.githubusercontent.com/25267873/108604942-d169bd80-73a8-11eb-9021-6f787cbd41e3.png)

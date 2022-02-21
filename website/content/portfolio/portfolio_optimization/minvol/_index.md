@@ -13,4 +13,14 @@ optional arguments:
   --pie                 Display a pie chart for weights (default: False)
   -h, --help            show this help message (default: False)
 ```
-<img width="1400" alt="Feature Screenshot - minvol" src="https://user-images.githubusercontent.com/85772166/147485096-cac6c072-6bcc-4bbf-b0f6-85e899fe1ac9.png">
+
+Example:
+```
+2022 Feb 14, 11:19 (✨) /portfolio/po/ $ minvol --pie
+
+Expected annual return: 43.1%
+Annual volatility: 10.2%
+Sharpe Ratio: 4.03
+```
+
+![minvol](https://user-images.githubusercontent.com/46355364/153903170-177a82b7-81d6-4c86-a43b-72ac238de62b.png)
