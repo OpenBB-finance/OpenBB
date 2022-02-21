@@ -1,21 +1,23 @@
 """Reports Controller Module."""
 __docformat__ = "numpy"
 
+import logging
+
 # pylint: disable=R1732
 import os
-from typing import List
 import webbrowser
-from datetime import datetime
-import logging
 from ast import literal_eval
-from prompt_toolkit.completion import NestedCompleter
-import papermill as pm
+from datetime import datetime
+from typing import List
 
-from gamestonk_terminal.rich_config import console
-from gamestonk_terminal.decorators import log_start_end
-from gamestonk_terminal.parent_classes import BaseController
+import papermill as pm
+from prompt_toolkit.completion import NestedCompleter
+
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.menu import session
+from gamestonk_terminal.parent_classes import BaseController
+from gamestonk_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 

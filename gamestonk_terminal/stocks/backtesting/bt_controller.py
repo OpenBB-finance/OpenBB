@@ -3,32 +3,35 @@ __docformat__ = "numpy"
 
 import argparse
 from typing import List
-
+import logging
 import matplotlib as mpl
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.rich_config import console
 
-from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_non_negative_float,
     check_positive,
     parse_known_args_and_warn,
-    EXPORT_ONLY_RAW_DATA_ALLOWED,
     valid_date,
 )
 from gamestonk_terminal.menu import session
-
+from gamestonk_terminal.parent_classes import BaseController
+from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.decorators import log_start_end
 
 # This code below aims to fix an issue with the fnn module, used by bt module
 # which forces matplotlib backend to be 'agg' which doesn't allow to plot
 # Save current matplotlib backend
 default_backend = mpl.get_backend()
+# Restore backend matplotlib used
+
 # pylint: disable=wrong-import-position
 from gamestonk_terminal.stocks.backtesting import bt_view  # noqa: E402
 
-# Restore backend matplotlib used
+logger = logging.getLogger(__name__)
+
 mpl.use(default_backend)
 
 
@@ -68,6 +71,7 @@ class BacktestingController(BaseController):
             return ["stocks", f"load {self.ticker}", "bt"]
         return []
 
+    @log_start_end(log=logger)
     def call_whatif(self, other_args: List[str]):
         """Call whatif"""
         parser = argparse.ArgumentParser(
@@ -102,6 +106,7 @@ class BacktestingController(BaseController):
                 date_shares_acquired=ns_parser.date_shares_acquired,
             )
 
+    @log_start_end(log=logger)
     def call_ema(self, other_args: List[str]):
         """Call EMA strategy"""
         parser = argparse.ArgumentParser(
@@ -145,6 +150,7 @@ class BacktestingController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_ema_cross(self, other_args: List[str]):
         """Call EMA Cross strategy"""
         parser = argparse.ArgumentParser(
@@ -210,6 +216,7 @@ class BacktestingController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_rsi(self, other_args: List[str]):
         """Call RSI Strategy"""
         parser = argparse.ArgumentParser(

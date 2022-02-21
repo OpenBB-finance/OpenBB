@@ -1,14 +1,21 @@
 ```text
-usage: candle [-h] [--export {csv,json,xlsx,png,jpg,pdf,svg}]
+usage: candle [-p] [--sort {AdjClose,Open,Close,High,Low,Volume,Returns,LogRet}] [-d] [--raw] [-n NUM] [-t] [--ma MOV_AVG] [-h] [--export {csv,json,xlsx}]
 ```
 
-Display a candle chart of the loaded ETF
-
+Shows historic data for an ETF
 ```
 optional arguments:
+  -p, --plotly          Flag to show interactive plotly chart. (default: True)
+  --sort {AdjClose,Open,Close,High,Low,Volume,Returns,LogRet}
+                        Choose a column to sort by (default: )
+  -d, --descending      Sort selected column descending (default: True)
+  --raw                 Shows raw data instead of chart (default: False)
+  -n NUM, --num NUM     Number to show if raw selected (default: 20)
+  -t, --trend           Flag to add high and low trends to candle. (default: False)
+  --ma MOV_AVG          Add moving averaged to plot (default: )
   -h, --help            show this help message (default: False)
-  --export {csv,json,xlsx,png,jpg,pdf,svg}
-                        Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg (default: )
+  --export {csv,json,xlsx}
+                        Export raw data into csv, json, xlsx (default: )
 ```
 
-<img size="1400" alt="Feature Screenshot - candle" src="https://user-images.githubusercontent.com/85772166/150072306-7ba35b40-49af-4d90-8b42-68bb1c65cdf2.png">
+![candle](https://user-images.githubusercontent.com/46355364/154031063-090a4419-c3b1-4707-8f8e-b41c872a783a.png)

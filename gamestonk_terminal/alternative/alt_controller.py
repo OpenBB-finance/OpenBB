@@ -5,10 +5,12 @@ import logging
 from typing import List
 
 from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.rich_config import console
+
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.parent_classes import BaseController
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.menu import session
+from gamestonk_terminal.parent_classes import BaseController
+from gamestonk_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 # pylint:disable=import-outside-toplevel
@@ -36,6 +38,7 @@ class AlternativeDataController(BaseController):
         """
         console.print(text=help_text, menu="Alternative")
 
+    @log_start_end(log=logger)
     def call_covid(self, _):
         """Process covid command"""
         from gamestonk_terminal.alternative.covid.covid_controller import (

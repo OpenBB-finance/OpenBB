@@ -10,6 +10,7 @@ import mplfinance as mpf
 from gamestonk_terminal.stocks import stocks_helper
 
 
+# TODO: Is this chart not used and can be removed?
 # pylint: disable=too-many-arguments
 def draw_graph(
     ticker: str,

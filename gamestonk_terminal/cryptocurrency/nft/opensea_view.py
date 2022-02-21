@@ -18,7 +18,8 @@ def display_collection_stats(slug: str, export: str):
     Parameters
     ----------
     slug: str
-        Opensea collection slug. If the name of the collection is Mutant Ape Yacht Club the slug is mutant-ape-yacht-club
+        Opensea collection slug.
+        If the name of the collection is Mutant Ape Yacht Club the slug is mutant-ape-yacht-club
     export : str
         Export dataframe data to csv,json,xlsx file
     """

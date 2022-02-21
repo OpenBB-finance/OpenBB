@@ -1,13 +1,39 @@
 ```
-usage: overview [--export {csv,json,xlsx}] [-h]
+usage: overview [-h] [--export {csv,json,xlsx}]
 ```
 
-Market overview from the [Wall Street Journal](https://www.wsj.com/market-data)
+Market overview. [Source: Wall St. Journal]
 
 ```
 optional arguments:
-  --export {csv,json,xlsx}
-                        Export dataframe data to csv,json,xlsx file (default: )
   -h, --help            show this help message (default: False)
+  --export {csv,json,xlsx}
+                        Export raw data into csv, json, xlsx (default: )
 ```
-<img size="1400" alt="Feature Screenshot - overview" src="https://user-images.githubusercontent.com/85772166/141920575-8230bfd0-b9af-4ba4-993e-4b26210a3a7e.png">
+
+Example:
+```
+2022 Feb 15, 05:25 (✨) /economy/ $ overview
+                 Market Overview
+┌───────────────────┬──────────┬─────────┬───────┐
+│                   │ Price    │ Chg     │ %Chg  │
+├───────────────────┼──────────┼─────────┼───────┤
+│ DJIA              │ 34566.17 │ -171.89 │ -0.49 │
+├───────────────────┼──────────┼─────────┼───────┤
+│ S&P 500           │ 4401.67  │ -16.97  │ -0.38 │
+├───────────────────┼──────────┼─────────┼───────┤
+│ Nasdaq Composite  │ 13790.92 │ -0.24   │ 0.00  │
+├───────────────────┼──────────┼─────────┼───────┤
+│ Japan: Nikkei 225 │ 26865.19 │ -214.40 │ -0.79 │
+├───────────────────┼──────────┼─────────┼───────┤
+│ UK: FTSE 100      │ 7574.76  │ 43.17   │ 0.57  │
+├───────────────────┼──────────┼─────────┼───────┤
+│ Crude Oil Futures │ 92.64    │ -2.82   │ -2.95 │
+├───────────────────┼──────────┼─────────┼───────┤
+│ Gold Futures      │ 1856.50  │ -12.90  │ -0.69 │
+├───────────────────┼──────────┼─────────┼───────┤
+│ Yen               │ 115.55   │ 0.01    │ 0.01  │
+├───────────────────┼──────────┼─────────┼───────┤
+│ Euro              │ 1.1342   │ 0.0035  │ 0.31  │
+└───────────────────┴──────────┴─────────┴───────┘
+```

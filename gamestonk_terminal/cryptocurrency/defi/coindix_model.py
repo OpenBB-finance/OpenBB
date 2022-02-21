@@ -70,8 +70,7 @@ VAULT_KINDS = [
 ]
 
 
-@log_start_end(log=logger)
-def _risk_mapper(risk_level: int) -> str:
+def _lambda_risk_mapper(risk_level: int) -> str:
     """Helper methods
     Parameters
     ----------
@@ -153,7 +152,7 @@ def get_defi_vaults(
         if len(data) == 0:
             return pd.DataFrame()
         df = pd.DataFrame(data)[VAULTS_FILTERS].fillna("NA")
-        df["risk"] = df["risk"].apply(lambda x: _risk_mapper(x))
+        df["risk"] = df["risk"].apply(lambda x: _lambda_risk_mapper(x))
         return df
     except Exception as e:
         raise ValueError(f"Invalid Response: {response.text}") from e

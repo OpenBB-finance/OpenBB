@@ -25,7 +25,10 @@ def vcr_config():
     [True, False],
 )
 def test_short_interest(mocker, nyse, raw):
-    mocker.patch("matplotlib.pyplot.show")
+    # MOCK VISUALIZE_OUTPUT
+    mocker.patch(
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
+    )
 
     quandl_view.short_interest(
         ticker="PM",

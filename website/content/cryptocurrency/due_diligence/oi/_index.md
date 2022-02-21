@@ -22,4 +22,4 @@ optional arguments:
   -h, --help                    show this help message (default: False)
 ```
 
-<img width="1014" alt="Open Interest across crypto exchanges" src="https://user-images.githubusercontent.com/43375532/138989466-bfda67c8-74fd-497a-add8-67bab1149fa8.png">
+![oi](https://user-images.githubusercontent.com/46355364/154086745-17c2b33a-e1bf-40b1-8ac8-3422fe081e96.png)

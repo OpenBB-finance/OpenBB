@@ -6,7 +6,7 @@
 3  [red][/red]  [red]2021-05-24[/red]  [red]PM[/red]  [red]De Wilde Frederic[/red]  [red]Pres, European Union Region[/red]   [red]$97.76[/red]  [red]-10,000[/red]  [red]186,628[/red]   [red]-5%[/red]    [red]-$977,600[/red]
 4  [red][/red]  [red]2021-05-10[/red]  [red]PM[/red]    [red]Masseroli Mario[/red]  [red]Pres, Latin America, Canada[/red]   [red]$98.31[/red]   [red]-1,734[/red]   [red]14,710[/red]  [red]-11%[/red]    [red]-$170,470[/red]
 
-M: Multiple transactions in filing; earliest reported transaction date and weighted average transaction price
+M: Multiple transactions in filing; earliest reported transaction date & weighted average transaction price
 
 [red]S - Sale: Sale of securities on an exchange or to another person[/red]
 

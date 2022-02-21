@@ -4,22 +4,14 @@ __docformat__ = "numpy"
 # pylint:disable=R0904,C0201
 
 import argparse
-from typing import List
+import logging
 from datetime import datetime
+from typing import List
 
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.rich_config import console
-from gamestonk_terminal.parent_classes import BaseController
+
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import (
-    EXPORT_BOTH_RAW_DATA_AND_FIGURES,
-    parse_known_args_and_warn,
-    check_positive_list,
-    check_positive,
-    valid_date,
-)
-from gamestonk_terminal.menu import session
 from gamestonk_terminal.common.technical_analysis import (
     custom_indicators_view,
     momentum_view,
@@ -30,6 +22,19 @@ from gamestonk_terminal.common.technical_analysis import (
     volatility_view,
     volume_view,
 )
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_funcs import (
+    EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+    check_positive,
+    check_positive_list,
+    parse_known_args_and_warn,
+    valid_date,
+)
+from gamestonk_terminal.menu import session
+from gamestonk_terminal.parent_classes import BaseController
+from gamestonk_terminal.rich_config import console
+
+logger = logging.getLogger(__name__)
 
 
 class TechnicalAnalysisController(BaseController):
@@ -119,6 +124,7 @@ class TechnicalAnalysisController(BaseController):
             return ["etf", f"load {self.ticker}", "ta"]
         return []
 
+    @log_start_end(log=logger)
     def call_ema(self, other_args: List[str]):
         """Process ema command"""
         parser = argparse.ArgumentParser(
@@ -165,12 +171,13 @@ class TechnicalAnalysisController(BaseController):
             overlap_view.view_ma(
                 ma_type="EMA",
                 s_ticker=self.ticker,
-                values=self.data["Adj Close"],
+                series=self.data["Adj Close"],
                 length=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_sma(self, other_args: List[str]):
         """Process sma command"""
         parser = argparse.ArgumentParser(
@@ -216,12 +223,13 @@ class TechnicalAnalysisController(BaseController):
             overlap_view.view_ma(
                 ma_type="SMA",
                 s_ticker=self.ticker,
-                values=self.data["Adj Close"],
+                series=self.data["Adj Close"],
                 length=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_wma(self, other_args: List[str]):
         """Process wma command"""
         parser = argparse.ArgumentParser(
@@ -264,12 +272,13 @@ class TechnicalAnalysisController(BaseController):
             overlap_view.view_ma(
                 ma_type="WMA",
                 s_ticker=self.ticker,
-                values=self.data["Adj Close"],
+                series=self.data["Adj Close"],
                 length=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_hma(self, other_args: List[str]):
         """Process hma command"""
         parser = argparse.ArgumentParser(
@@ -312,12 +321,13 @@ class TechnicalAnalysisController(BaseController):
             overlap_view.view_ma(
                 ma_type="HMA",
                 s_ticker=self.ticker,
-                values=self.data["Adj Close"],
+                series=self.data["Adj Close"],
                 length=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_zlma(self, other_args: List[str]):
         """Process zlma command"""
         parser = argparse.ArgumentParser(
@@ -363,12 +373,13 @@ class TechnicalAnalysisController(BaseController):
             overlap_view.view_ma(
                 ma_type="ZLMA",
                 s_ticker=self.ticker,
-                values=self.data["Adj Close"],
+                series=self.data["Adj Close"],
                 length=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_cci(self, other_args: List[str]):
         """Process cci command"""
 
@@ -410,12 +421,13 @@ class TechnicalAnalysisController(BaseController):
         if ns_parser:
             momentum_view.display_cci(
                 s_ticker=self.ticker,
-                df=self.data,
+                ohlc=self.data,
                 length=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_macd(self, other_args: List[str]):
         """Process macd command"""
         parser = argparse.ArgumentParser(
@@ -467,13 +479,14 @@ class TechnicalAnalysisController(BaseController):
         if ns_parser:
             momentum_view.display_macd(
                 s_ticker=self.ticker,
-                values=self.data["Adj Close"],
+                series=self.data["Adj Close"],
                 n_fast=ns_parser.n_fast,
                 n_slow=ns_parser.n_slow,
                 n_signal=ns_parser.n_signal,
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_rsi(self, other_args: List[str]):
         """Process rsi command"""
         parser = argparse.ArgumentParser(
@@ -526,13 +539,14 @@ class TechnicalAnalysisController(BaseController):
         if ns_parser:
             momentum_view.display_rsi(
                 s_ticker=self.ticker,
-                prices=self.data["Adj Close"],
+                series=self.data["Adj Close"],
                 length=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
                 drift=ns_parser.n_drift,
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_stoch(self, other_args: List[str]):
         """Process stoch command"""
         parser = argparse.ArgumentParser(
@@ -581,13 +595,14 @@ class TechnicalAnalysisController(BaseController):
         if ns_parser:
             momentum_view.display_stoch(
                 s_ticker=self.ticker,
-                df_stock=self.data,
+                ohlc=self.data,
                 fastkperiod=ns_parser.n_fastkperiod,
                 slowdperiod=ns_parser.n_slowdperiod,
                 slowkperiod=ns_parser.n_slowkperiod,
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_fisher(self, other_args: List[str]):
         """Process fisher command"""
         parser = argparse.ArgumentParser(
@@ -621,11 +636,12 @@ class TechnicalAnalysisController(BaseController):
         if ns_parser:
             momentum_view.display_fisher(
                 s_ticker=self.ticker,
-                df_stock=self.data,
+                ohlc=self.data,
                 length=ns_parser.n_length,
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_cg(self, other_args: List[str]):
         """Process cg command"""
         parser = argparse.ArgumentParser(
@@ -659,11 +675,12 @@ class TechnicalAnalysisController(BaseController):
         if ns_parser:
             momentum_view.display_cg(
                 s_ticker=self.ticker,
-                values=self.data["Adj Close"],
+                series=self.data["Adj Close"],
                 length=ns_parser.n_length,
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_adx(self, other_args: List[str]):
         """Process adx command"""
         parser = argparse.ArgumentParser(
@@ -713,13 +730,14 @@ class TechnicalAnalysisController(BaseController):
         if ns_parser:
             trend_indicators_view.display_adx(
                 s_ticker=self.ticker,
-                df_stock=self.data,
+                ohlc=self.data,
                 length=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
                 drift=ns_parser.n_drift,
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_aroon(self, other_args: List[str]):
         """Process aroon command"""
         parser = argparse.ArgumentParser(
@@ -768,12 +786,13 @@ class TechnicalAnalysisController(BaseController):
         if ns_parser:
             trend_indicators_view.display_aroon(
                 s_ticker=self.ticker,
-                df_stock=self.data,
+                ohlc=self.data,
                 length=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_bbands(self, other_args: List[str]):
         """Process bbands command"""
         parser = argparse.ArgumentParser(
@@ -830,13 +849,14 @@ class TechnicalAnalysisController(BaseController):
         if ns_parser:
             volatility_view.display_bbands(
                 ticker=self.ticker,
-                df_stock=self.data,
+                ohlc=self.data,
                 length=ns_parser.n_length,
                 n_std=ns_parser.n_std,
                 mamode=ns_parser.s_mamode,
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_donchian(self, other_args: List[str]):
         """Process donchian command"""
         parser = argparse.ArgumentParser(
@@ -877,12 +897,13 @@ class TechnicalAnalysisController(BaseController):
         if ns_parser:
             volatility_view.display_donchian(
                 ticker=self.ticker,
-                df_stock=self.data,
+                ohlc=self.data,
                 upper_length=ns_parser.n_length_upper,
                 lower_length=ns_parser.n_length_lower,
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_kc(self, other_args: List[str]):
         """Process kc command"""
         parser = argparse.ArgumentParser(
@@ -943,7 +964,7 @@ class TechnicalAnalysisController(BaseController):
         if ns_parser:
             volatility_view.view_kc(
                 s_ticker=self.ticker,
-                df_stock=self.data,
+                ohlc=self.data,
                 length=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
                 mamode=ns_parser.s_mamode,
@@ -951,6 +972,7 @@ class TechnicalAnalysisController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_ad(self, other_args: List[str]):
         """Process ad command"""
         parser = argparse.ArgumentParser(
@@ -984,11 +1006,12 @@ class TechnicalAnalysisController(BaseController):
         if ns_parser:
             volume_view.display_ad(
                 s_ticker=self.ticker,
-                df_stock=self.data,
+                ohlc=self.data,
                 use_open=ns_parser.b_use_open,
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_adosc(self, other_args: List[str]):
         """Process adosc command"""
         parser = argparse.ArgumentParser(
@@ -1037,13 +1060,14 @@ class TechnicalAnalysisController(BaseController):
         if ns_parser:
             volume_view.display_adosc(
                 s_ticker=self.ticker,
-                df_stock=self.data,
+                ohlc=self.data,
                 use_open=ns_parser.b_use_open,
                 fast=ns_parser.n_length_fast,
                 slow=ns_parser.n_length_slow,
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_obv(self, other_args: List[str]):
         """Process obv command"""
         parser = argparse.ArgumentParser(
@@ -1067,10 +1091,11 @@ class TechnicalAnalysisController(BaseController):
         if ns_parser:
             volume_view.display_obv(
                 s_ticker=self.ticker,
-                df_stock=self.data,
+                ohlc=self.data,
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_fib(self, other_args: List[str]):
         """Process fib command"""
         parser = argparse.ArgumentParser(
@@ -1111,7 +1136,7 @@ class TechnicalAnalysisController(BaseController):
         if ns_parser:
             custom_indicators_view.fibonacci_retracement(
                 s_ticker=self.ticker,
-                df_stock=self.data,
+                ohlc=self.data,
                 period=ns_parser.period,
                 start_date=ns_parser.start,
                 end_date=ns_parser.end,

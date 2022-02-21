@@ -2,19 +2,24 @@
 __docformat__ = "numpy"
 
 import argparse
+import logging
 from typing import List
 
 from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.rich_config import console
-from gamestonk_terminal.parent_classes import BaseController
+
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.etf.discovery import wsj_view
 from gamestonk_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
-    parse_known_args_and_warn,
     check_positive,
+    parse_known_args_and_warn,
 )
 from gamestonk_terminal.menu import session
-from gamestonk_terminal.etf.discovery import wsj_view
+from gamestonk_terminal.parent_classes import BaseController
+from gamestonk_terminal.rich_config import console
+
+logger = logging.getLogger(__name__)
 
 
 class DiscoveryController(BaseController):
@@ -45,6 +50,7 @@ class DiscoveryController(BaseController):
 """
         console.print(text=help_text, menu="ETF - Discovery")
 
+    @log_start_end(log=logger)
     def call_gainers(self, other_args):
         """Process gainers command"""
         parser = argparse.ArgumentParser(
@@ -68,6 +74,7 @@ class DiscoveryController(BaseController):
         if ns_parser:
             wsj_view.show_top_mover("gainers", ns_parser.limit, ns_parser.export)
 
+    @log_start_end(log=logger)
     def call_decliners(self, other_args):
         """Process decliners command"""
         parser = argparse.ArgumentParser(
@@ -91,6 +98,7 @@ class DiscoveryController(BaseController):
         if ns_parser:
             wsj_view.show_top_mover("decliners", ns_parser.limit, ns_parser.export)
 
+    @log_start_end(log=logger)
     def call_active(self, other_args):
         """Process gainers command"""
         parser = argparse.ArgumentParser(

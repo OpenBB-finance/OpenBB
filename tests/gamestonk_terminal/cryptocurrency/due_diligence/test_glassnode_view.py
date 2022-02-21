@@ -13,8 +13,11 @@ def vcr_config():
     }
 
 
-@pytest.mark.skip("Hangs on Windows")
 @pytest.mark.vcr
 @pytest.mark.record_stdout
-def test_display_btc_rainbow():
+def test_display_btc_rainbow(mocker):
+    # MOCK VISUALIZE_OUTPUT
+    mocker.patch(
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
+    )
     glassnode_view.display_btc_rainbow(since=1_325_376_000, until=1_641_641_877)

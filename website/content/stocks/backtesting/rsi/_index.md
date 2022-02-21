@@ -1,8 +1,8 @@
 ```
-usage: rsi [-p PERIODS] [-u HIGH] [-l LOW] [--spy] [--no_bench] [--no_short] [--export {csv,json,xlsx}] [-h]
+usage: rsi [-p PERIODS] [-u HIGH] [-l LOW] [--spy] [--no_bench] [--no_short] [-h] [--export {csv,json,xlsx}]
 ```
 
-A long-short equity strategy that buys when the price is below a defined threshold and shorts when it exceeds an upper bound threshold.
+Strategy that buys when the stock is less than a threshold and shorts when it exceeds a threshold.
 
 ```
 optional arguments:
@@ -13,9 +13,9 @@ optional arguments:
   --spy                 Flag to add spy hold comparison (default: False)
   --no_bench            Flag to not show buy and hold comparison (default: False)
   --no_short            Flag that disables the short sell (default: True)
-  --export {csv,json,xlsx}
-                        Export dataframe data to csv,json,xlsx file (default: )
   -h, --help            show this help message (default: False)
+  --export {csv,json,xlsx}
+                        Export raw data into csv, json, xlsx (default: )
 ```
-<img size="1400" alt="rsi" src="https://user-images.githubusercontent.com/25267873/116769576-19eec880-aa35-11eb-9e60-f77a31e51db0.png">
-<img size="1400" alt="rsi2" src="https://user-images.githubusercontent.com/25267873/116769579-1c512280-aa35-11eb-928b-aa4e8b90c1ec.png">
+
+![rsi](https://user-images.githubusercontent.com/46355364/154292682-4a666507-dfc6-440d-a719-c7f734f55aee.png)

@@ -26,10 +26,10 @@ def vcr_config():
     [True, False],
 )
 def test_insider_activity(mocker, raw):
-    mocker.patch.object(
-        target=businessinsider_view.gtff, attribute="USE_ION", new=False
+    # MOCK VISUALIZE_OUTPUT
+    mocker.patch(
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
     )
-    mocker.patch("matplotlib.pyplot.show")
 
     yf_download = stocks_helper.yf.download
 

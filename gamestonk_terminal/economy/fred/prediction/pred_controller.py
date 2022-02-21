@@ -2,22 +2,12 @@
 __docformat__ = "numpy"
 
 import argparse
-from typing import List, Dict
 import logging
+from typing import Dict, List
 
 from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.rich_config import console
 
-from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import (
-    parse_known_args_and_warn,
-    check_positive,
-    valid_date,
-    get_next_stock_market_days,
-    EXPORT_ONLY_FIGURES_ALLOWED,
-)
-from gamestonk_terminal.menu import session
 from gamestonk_terminal.common.prediction_techniques import (
     arima_model,
     arima_view,
@@ -25,12 +15,23 @@ from gamestonk_terminal.common.prediction_techniques import (
     ets_view,
     knn_view,
     mc_model,
-    neural_networks_view,
-    regression_view,
-    pred_helper,
     mc_view,
+    neural_networks_view,
+    pred_helper,
+    regression_view,
 )
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.economy.fred import fred_model
+from gamestonk_terminal.helper_funcs import (
+    EXPORT_ONLY_FIGURES_ALLOWED,
+    check_positive,
+    get_next_stock_market_days,
+    parse_known_args_and_warn,
+    valid_date,
+)
+from gamestonk_terminal.menu import session
+from gamestonk_terminal.parent_classes import BaseController
+from gamestonk_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -111,6 +112,7 @@ class PredictionTechniquesController(BaseController):
             ]
         return []
 
+    @log_start_end(log=logger)
     def call_load(self, other_args: List[str]):
         """Process add command"""
         parser = argparse.ArgumentParser(
@@ -155,6 +157,7 @@ class PredictionTechniquesController(BaseController):
                 f"Current Series: {', '.join(self.current_series.keys()).upper() or None}\n"
             )
 
+    @log_start_end(log=logger)
     def call_ets(self, other_args: List[str]):
         """Process ets command"""
         parser = argparse.ArgumentParser(
@@ -255,6 +258,7 @@ class PredictionTechniquesController(BaseController):
                 time_res=self.resolution,
             )
 
+    @log_start_end(log=logger)
     def call_knn(self, other_args: List[str]):
         """Process knn command"""
         parser = argparse.ArgumentParser(
@@ -353,6 +357,7 @@ class PredictionTechniquesController(BaseController):
             except ValueError:
                 console.print("The loaded data does not have enough data")
 
+    @log_start_end(log=logger)
     def call_regression(self, other_args: List[str]):
         """Process linear command"""
         parser = argparse.ArgumentParser(
@@ -462,6 +467,7 @@ class PredictionTechniquesController(BaseController):
             except ValueError as e:
                 console.print(e)
 
+    @log_start_end(log=logger)
     def call_arima(self, other_args: List[str]):
         """Process arima command"""
         parser = argparse.ArgumentParser(
@@ -569,6 +575,7 @@ class PredictionTechniquesController(BaseController):
                 time_res=self.resolution,
             )
 
+    @log_start_end(log=logger)
     def call_mlp(self, other_args: List[str]):
         """Process mlp command"""
         try:
@@ -604,6 +611,7 @@ class PredictionTechniquesController(BaseController):
         finally:
             pred_helper.restore_env()
 
+    @log_start_end(log=logger)
     def call_rnn(self, other_args: List[str]):
         """Process rnn command"""
         try:
@@ -640,6 +648,7 @@ class PredictionTechniquesController(BaseController):
         finally:
             pred_helper.restore_env()
 
+    @log_start_end(log=logger)
     def call_lstm(self, other_args: List[str]):
         """Process lstm command"""
         try:
@@ -676,6 +685,7 @@ class PredictionTechniquesController(BaseController):
         finally:
             pred_helper.restore_env()
 
+    @log_start_end(log=logger)
     def call_conv1d(self, other_args: List[str]):
         """Process conv1d command"""
         try:
@@ -712,6 +722,7 @@ class PredictionTechniquesController(BaseController):
         finally:
             pred_helper.restore_env()
 
+    @log_start_end(log=logger)
     def call_mc(self, other_args: List[str]):
         """Process mc command"""
         parser = argparse.ArgumentParser(

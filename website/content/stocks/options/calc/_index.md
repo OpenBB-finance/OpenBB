@@ -16,4 +16,16 @@ optional arguments:
   -M MAX, --max MAX     Max price to look at (default: -1)
   -h, --help            show this help message (default: False)
 ```
-<img size="1400" alt-="Feature Screenshot - calc" src="https://user-images.githubusercontent.com/85772166/142339731-f34e5549-fd57-4e2c-9b60-983c4ab152d8.png">
+
+Example:
+```
+2022 Feb 16, 08:45 (✨) /stocks/options/ $ calc -s 30 -p 6 -m 1 -M 50
+
+Strike: $30.0
+Premium: $6.0
+Breakeven price: $36.0
+Max profit: Unlimited
+Max loss: $-600.0
+```
+
+![calc](https://user-images.githubusercontent.com/46355364/154277755-a6640bee-8621-4a7d-9fc6-9c197daca0e1.png)

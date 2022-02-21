@@ -2,18 +2,21 @@
 __docformat__ = "numpy"
 
 import argparse
+import logging
 from typing import List
+
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.rich_config import console
+
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.parent_classes import BaseController
-from gamestonk_terminal.helper_funcs import (
-    parse_known_args_and_warn,
-    print_rich_table,
-)
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_funcs import parse_known_args_and_warn, print_rich_table
 from gamestonk_terminal.menu import session
+from gamestonk_terminal.parent_classes import BaseController
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.stocks.options import yfinance_view
+
+logger = logging.getLogger(__name__)
 
 
 class PricingController(BaseController):
@@ -73,6 +76,7 @@ class PricingController(BaseController):
             return ["stocks", f"load {self.ticker}", "options", "payoff"]
         return []
 
+    @log_start_end(log=logger)
     def call_add(self, other_args: List[str]):
         """Process add command"""
         parser = argparse.ArgumentParser(
@@ -111,6 +115,7 @@ class PricingController(BaseController):
             self.prices = df.sort_values("Price")
             console.print("")
 
+    @log_start_end(log=logger)
     def call_rmv(self, other_args: List[str]):
         """Process rmv command"""
         parser = argparse.ArgumentParser(
@@ -145,6 +150,7 @@ class PricingController(BaseController):
                 self.prices = self.prices[(self.prices["Price"] != ns_parser.price)]
             console.print("")
 
+    @log_start_end(log=logger)
     def call_show(self, other_args):
         """Process show command"""
         parser = argparse.ArgumentParser(
@@ -162,6 +168,7 @@ class PricingController(BaseController):
                 title=f"Estimated price(s) of {self.ticker} at {self.selected_date}",
             )
 
+    @log_start_end(log=logger)
     def call_rnval(self, other_args: List[str]):
         """Process rnval command"""
         parser = argparse.ArgumentParser(

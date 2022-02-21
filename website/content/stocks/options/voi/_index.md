@@ -1,5 +1,5 @@
 ```
-usage: voi [-v MIN_VOL] [-m MIN_SP] [-M MAX_SP] [-s {tr,yf}] [--export {csv,json,xlsx}] [-h]
+usage: voi [-v MIN_VOL] [-m MIN_SP] [-M MAX_SP] [-s {tr,yf}] [-h] [--export {csv,json,xlsx,png,jpg,pdf,svg}]
 ```
 
 Plots volume and open interest of calls vs puts for the selected expiration date.
@@ -14,8 +14,9 @@ optional arguments:
                         maximum strike price to consider in the plot. (default: -1)
   -s {tr,yf}, --source {tr,yf}
                         Source to get data from (default: tr)
-  --export {csv,json,xlsx}
-                        Export dataframe data to csv,json,xlsx file (default: )
   -h, --help            show this help message (default: False)
+  --export {csv,json,xlsx,png,jpg,pdf,svg}
+                        Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg (default: )
 ```
-<img size="1400" alt="Feature Screenshot - voi" src="https://user-images.githubusercontent.com/85772166/142511153-b0aa45ba-0692-45f5-8e52-447dbf08ef74.png">
+
+![voi](https://user-images.githubusercontent.com/46355364/154290408-ae5d50ff-74ea-4705-b8ea-e4eebc842bb6.png)

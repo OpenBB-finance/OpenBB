@@ -20,4 +20,4 @@ optional arguments:
   -h, --help            show this help message (default: False)
 ```
 
-![Fib1](https://user-images.githubusercontent.com/18151143/127217240-0b4cd88b-8fd3-484f-941e-b02a0efe08dd.png)
+![fib](https://user-images.githubusercontent.com/46355364/154310727-81a1eab3-5565-42c7-8b47-4f80288dd700.png)

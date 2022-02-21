@@ -3,26 +3,29 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import Optional, List
 
 import matplotlib.pyplot as plt
 import pandas as pd
-from pandas.plotting import register_matplotlib_converters
 
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal.common.quantitative_analysis import rolling_model
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.decorators import log_start_end
-from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
+from gamestonk_terminal.helper_funcs import export_data, plot_autoscale, reindex_dates
 from gamestonk_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
-register_matplotlib_converters()
-
 
 @log_start_end(log=logger)
 def display_mean_std(
-    name: str, df: pd.DataFrame, target: str, length: int, export: str = ""
+    name: str,
+    df: pd.DataFrame,
+    target: str,
+    window: int,
+    export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """View rolling spread
 
@@ -34,66 +37,105 @@ def display_mean_std(
         Dataframe
     target : str
         Column in data to look at
-    length : int
+    window : int
         Length of window
     export : str
         Format to export data
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (2 axes are expected in the list), by default None
     """
     data = df[target]
-    rolling_mean, rolling_std = rolling_model.get_rolling_avg(data, length)
-    fig, axMean = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    axMean.plot(
-        data.index,
-        data.values,
-        label=name,
-        linewidth=2,
-        color="black",
+    rolling_mean, rolling_std = rolling_model.get_rolling_avg(data, window)
+    plot_data = pd.merge(
+        data,
+        rolling_mean,
+        how="outer",
+        left_index=True,
+        right_index=True,
+        suffixes=("", "_mean"),
     )
-    axMean.plot(rolling_mean, linestyle="--", linewidth=3, color="blue")
-    axMean.set_xlabel("Time")
-    axMean.set_ylabel("Values", color="blue")
-    axMean.legend(["Real values", "Rolling Mean"], loc=2)
-    axMean.tick_params(axis="y", labelcolor="blue")
-    axStd = axMean.twinx()
-    axStd.plot(
+    plot_data = pd.merge(
+        plot_data,
         rolling_std,
-        label="Rolling std",
-        linestyle="--",
-        color="green",
-        linewidth=3,
-        alpha=0.6,
+        how="outer",
+        left_index=True,
+        right_index=True,
+        suffixes=("", "_std"),
     )
-    axStd.set_ylabel("Std Deviation")
-    axStd.legend(["Rolling std"], loc=1)
-    axStd.set_ylabel(f"{target} standard deviation", color="green")
-    axStd.tick_params(axis="y", labelcolor="green")
-    axMean.set_title(
-        "Rolling mean and std with window "
-        + str(length)
-        + " applied to "
-        + name
-        + target
-    )
-    axMean.set_xlim([data.index[0], data.index[-1]])
-    axMean.grid(b=True, which="major", color="#666666", linestyle="-")
+    plot_data = reindex_dates(plot_data)
 
-    if gtff.USE_ION:
-        plt.ion()
-    fig.tight_layout(pad=1)
-    plt.gcf().autofmt_xdate()
-    plt.show()
-    console.print("")
+    # This plot has 2 axes
+    if external_axes is None:
+        _, axes = plt.subplots(
+            2,
+            1,
+            sharex=True,
+            figsize=plot_autoscale(),
+            dpi=PLOT_DPI,
+        )
+        ax1, ax2 = axes
+    else:
+        if len(external_axes) != 2:
+            console.print("[red]Expected list of 2 axis items./n[/red]")
+            return
+        (ax1, ax2) = external_axes
+
+    ax1.plot(
+        plot_data.index,
+        plot_data[target].values,
+        label=name,
+    )
+    ax1.plot(
+        plot_data.index,
+        plot_data[target + "_mean"].values,
+    )
+    ax1.set_ylabel(
+        "Values",
+    )
+    ax1.legend(["Real Values", "Rolling Mean"])
+    ax1.set_title(f"Rolling mean and std (window {str(window)}) of {name} {target}")
+    ax1.set_xlim([plot_data.index[0], plot_data.index[-1]])
+
+    ax2.plot(
+        plot_data.index,
+        plot_data[target + "_std"].values,
+        label="Rolling std",
+    )
+    ax2.legend(["Rolling std"])
+    ax2.set_ylabel(
+        f"{target} Std Deviation",
+    )
+
+    theme.style_primary_axis(
+        ax1,
+        data_index=plot_data.index.to_list(),
+        tick_labels=plot_data["date"].to_list(),
+    )
+    theme.style_primary_axis(
+        ax2,
+        data_index=plot_data.index.to_list(),
+        tick_labels=plot_data["date"].to_list(),
+    )
+
+    if external_axes is None:
+        theme.visualize_output()
+
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "rolling",
-        rolling_mean.join(rolling_std, lsuffix="_mean", rsuffix="_sd"),
+        rolling_mean.join(rolling_std, lsuffix="_mean", rsuffix="_std"),
     )
 
 
 @log_start_end(log=logger)
 def display_spread(
-    name: str, df: pd.DataFrame, target: str, length: int, export: str = ""
+    name: str,
+    df: pd.DataFrame,
+    target: str,
+    window: int,
+    export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """View rolling spread
 
@@ -105,46 +147,88 @@ def display_spread(
         Dataframe
     target: str
         Column in data to look at
-    length : int
+    window : int
         Length of window
     export : str
         Format to export data
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (3 axes are expected in the list), by default None
     """
     data = df[target]
-    df_sd, df_var = rolling_model.get_spread(data, length)
-    fig, axes = plt.subplots(3, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
-    ax = axes[0]
-    ax.set_title(f"{name} Spread")
-    ax.plot(data.index, data.values, "fuchsia", lw=1)
-    ax.set_xlim(data.index[0], data.index[-1])
-    ax.set_ylabel("Value")
-    ax.set_title(f"Spread of {name} {target}")
-    ax.yaxis.set_label_position("right")
-    ax.grid(b=True, which="major", color="#666666", linestyle="-")
-    ax.minorticks_on()
-    ax.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-    ax1 = axes[1]
-    ax1.plot(df_sd.index, df_sd.values, "b", lw=1, label="stdev")
-    ax1.set_xlim(data.index[0], data.index[-1])
-    ax1.set_ylabel("Stdev")
-    ax1.yaxis.set_label_position("right")
-    ax1.grid(b=True, which="major", color="#666666", linestyle="-")
-    ax1.minorticks_on()
-    ax1.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-    ax2 = axes[2]
-    ax2.plot(df_var.index, df_var.values, "g", lw=1, label="variance")
-    ax2.set_xlim(data.index[0], data.index[-1])
-    ax2.set_ylabel("Variance")
-    ax2.yaxis.set_label_position("right")
-    ax2.grid(b=True, which="major", color="#666666", linestyle="-")
+    df_sd, df_var = rolling_model.get_spread(data, window)
 
-    if gtff.USE_ION:
-        plt.ion()
+    plot_data = pd.merge(
+        data,
+        df_sd,
+        how="outer",
+        left_index=True,
+        right_index=True,
+        suffixes=("", "_sd"),
+    )
+    plot_data = pd.merge(
+        plot_data,
+        df_var,
+        how="outer",
+        left_index=True,
+        right_index=True,
+        suffixes=("", "_var"),
+    )
+    plot_data = reindex_dates(plot_data)
 
-    plt.gcf().autofmt_xdate()
-    fig.tight_layout(pad=1)
-    plt.show()
-    console.print("")
+    # This plot has 1 axis
+    if external_axes is None:
+        _, axes = plt.subplots(
+            3,
+            1,
+            sharex=True,
+            figsize=plot_autoscale(),
+            dpi=PLOT_DPI,
+        )
+        (ax1, ax2, ax3) = axes
+    else:
+        if len(external_axes) != 3:
+            console.print("[red]Expected list of 1 axis items./n[/red]")
+            return
+        (ax1, ax2, ax3) = external_axes
+
+    ax1.plot(plot_data.index, plot_data[target].values)
+    ax1.set_xlim(plot_data.index[0], plot_data.index[-1])
+    ax1.set_ylabel("Value")
+    ax1.set_title(f"Spread of {name} {target}")
+
+    ax2.plot(
+        plot_data[f"STDEV_{window}"].index,
+        plot_data[f"STDEV_{window}"].values,
+        label="Stdev",
+    )
+    ax2.set_ylabel("Stdev")
+
+    ax3.plot(
+        plot_data[f"VAR_{window}"].index,
+        plot_data[f"VAR_{window}"].values,
+        label="Variance",
+    )
+    ax3.set_ylabel("Variance")
+
+    theme.style_primary_axis(
+        ax1,
+        data_index=plot_data.index.to_list(),
+        tick_labels=plot_data["date"].to_list(),
+    )
+    theme.style_primary_axis(
+        ax2,
+        data_index=plot_data.index.to_list(),
+        tick_labels=plot_data["date"].to_list(),
+    )
+    theme.style_primary_axis(
+        ax3,
+        data_index=plot_data.index.to_list(),
+        tick_labels=plot_data["date"].to_list(),
+    )
+
+    if external_axes is None:
+        theme.visualize_output()
+
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
@@ -158,9 +242,10 @@ def display_quantile(
     name: str,
     df: pd.DataFrame,
     target: str,
-    length: int,
+    window: int,
     quantile: float,
     export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """View rolling quantile
 
@@ -172,36 +257,75 @@ def display_quantile(
         Dataframe
     target : str
         Column in data to look at
-    length : int
+    window : int
         Length of window
-    quantle : float
-        Quantil eto get
+    quantile : float
+        Quantile to get
     export : str
         Format to export data
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
     data = df[target]
-    df_med, df_quantile = rolling_model.get_quantile(data, length, quantile)
-    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    ax.plot(data.index, data.values, color="fuchsia")
-    ax.set_title(f"{name} Median & Quantile")
-    ax.plot(df_med.index, df_med.values, "g", lw=1, label="median")
-    ax.plot(df_quantile.index, df_quantile.values, "b", lw=1, label="quantile")
+    df_med, df_quantile = rolling_model.get_quantile(data, window, quantile)
 
-    ax.set_title(f"Median & Quantile on {name}")
-    ax.set_xlim(data.index[0], data.index[-1])
-    ax.set_xlabel("Time")
+    plot_data = pd.merge(
+        data,
+        df_med,
+        how="outer",
+        left_index=True,
+        right_index=True,
+        suffixes=("", "_med"),
+    )
+    plot_data = pd.merge(
+        plot_data,
+        df_quantile,
+        how="outer",
+        left_index=True,
+        right_index=True,
+        suffixes=("", "_quantile"),
+    )
+    plot_data = reindex_dates(plot_data)
+
+    # This plot has 1 axis
+    if external_axes is None:
+        _, ax = plt.subplots(
+            figsize=plot_autoscale(),
+            dpi=PLOT_DPI,
+        )
+    else:
+        if len(external_axes) != 1:
+            console.print("[red]Expected list of 1 axis items./n[/red]")
+            return
+        (ax,) = external_axes
+
+    ax.set_title(f"{name} {target} Median & Quantile")
+    ax.plot(plot_data.index, plot_data[target].values, label=target)
+    ax.plot(
+        plot_data.index,
+        plot_data[f"MEDIAN_{window}"].values,
+        label=f"Median w={window}",
+    )
+    ax.plot(
+        plot_data.index,
+        plot_data[f"QTL_{window}_{quantile}"].values,
+        label=f"Quantile q={quantile}",
+        linestyle="--",
+    )
+
+    ax.set_xlim(plot_data.index[0], plot_data.index[-1])
     ax.set_ylabel(f"{name} Value")
-    ax.grid(b=True, which="major", color="#666666", linestyle="-")
+    ax.legend()
 
-    if gtff.USE_ION:
-        plt.ion()
+    theme.style_primary_axis(
+        ax,
+        data_index=plot_data.index.to_list(),
+        tick_labels=plot_data["date"].to_list(),
+    )
 
-    plt.gcf().autofmt_xdate()
-    fig.tight_layout(pad=1)
+    if external_axes is None:
+        theme.visualize_output()
 
-    plt.legend()
-    plt.show()
-    console.print("")
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
@@ -212,7 +336,12 @@ def display_quantile(
 
 @log_start_end(log=logger)
 def display_skew(
-    name: str, df: pd.DataFrame, target: str, length: int, export: str = ""
+    name: str,
+    df: pd.DataFrame,
+    target: str,
+    window: int,
+    export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """View rolling skew
 
@@ -224,36 +353,62 @@ def display_skew(
         Dataframe
     target : str
         Column in data to look at
-    length : int
+    window : int
         Length of window
     export : str
         Format to export data
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (2 axes are expected in the list), by default None
     """
     data = df[target]
-    df_skew = rolling_model.get_skew(data, length)
-    fig, axes = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
-    ax = axes[0]
-    ax.set_title(f"{name} Skewness Indicator")
-    ax.plot(data.index, data.values, "fuchsia", lw=1)
-    ax.set_xlim(data.index[0], data.index[-1])
-    ax.set_ylabel(f"{target}")
-    ax.grid(b=True, which="major", color="#666666", linestyle="-")
-    ax.minorticks_on()
-    ax.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-    ax2 = axes[1]
-    ax2.plot(df_skew.index, df_skew.values, "b", lw=2, label="skew")
+    df_skew = rolling_model.get_skew(data, window)
 
-    ax2.set_xlim(data.index[0], data.index[-1])
-    ax2.grid(b=True, which="major", color="#666666", linestyle="-")
+    plot_data = pd.merge(
+        data,
+        df_skew,
+        how="outer",
+        left_index=True,
+        right_index=True,
+    )
+    plot_data = reindex_dates(plot_data)
 
-    if gtff.USE_ION:
-        plt.ion()
+    # This plot has 1 axis
+    if external_axes is None:
+        _, axes = plt.subplots(
+            2,
+            1,
+            sharex=True,
+            figsize=plot_autoscale(),
+            dpi=PLOT_DPI,
+        )
+        (ax1, ax2) = axes
+    else:
+        if len(external_axes) != 2:
+            console.print("[red]Expected list of 2 axis items./n[/red]")
+            return
+        (ax1, ax2) = external_axes
 
-    plt.gcf().autofmt_xdate()
-    fig.tight_layout(pad=1)
+    ax1.set_title(f"{name} Skewness Indicator")
+    ax1.plot(plot_data.index, plot_data[target].values)
+    ax1.set_xlim(plot_data.index[0], plot_data.index[-1])
+    ax1.set_ylabel(f"{target}")
 
-    plt.legend()
-    plt.show()
+    ax2.plot(plot_data.index, plot_data[f"SKEW_{window}"].values, label="Skew")
+    ax2.set_ylabel("Indicator")
+
+    theme.style_primary_axis(
+        ax1,
+        data_index=plot_data.index.to_list(),
+        tick_labels=plot_data["date"].to_list(),
+    )
+    theme.style_primary_axis(
+        ax2,
+        data_index=plot_data.index.to_list(),
+        tick_labels=plot_data["date"].to_list(),
+    )
+
+    if external_axes is None:
+        theme.visualize_output()
 
     console.print("")
     export_data(
@@ -266,7 +421,12 @@ def display_skew(
 
 @log_start_end(log=logger)
 def display_kurtosis(
-    name: str, df: pd.DataFrame, target: str, length: int, export: str = ""
+    name: str,
+    df: pd.DataFrame,
+    target: str,
+    window: int,
+    export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """View rolling kurtosis
 
@@ -276,36 +436,65 @@ def display_kurtosis(
         Ticker
     df : pd.DataFrame
         Dataframe of stock prices
-    length : int
+    window : int
         Length of window
     export : str
         Format to export data
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (2 axes are expected in the list), by default None
     """
     data = df[target]
-    df_kurt = rolling_model.get_kurtosis(data, length)
-    fig, axes = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
-    ax = axes[0]
-    ax.set_title(f"{name} Kurtosis Indicator")
-    ax.plot(data.index, data.values, "fuchsia", lw=1)
-    ax.set_xlim(data.index[0], data.index[-1])
-    ax.set_ylabel(f"{target}")
-    ax.grid(b=True, which="major", color="#666666", linestyle="-")
-    ax.minorticks_on()
-    ax.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-    ax2 = axes[1]
-    ax2.plot(df_kurt.index, df_kurt.values, "b", lw=2, label="kurtosis")
+    df_kurt = rolling_model.get_kurtosis(data, window)
 
-    ax2.set_xlim(df.index[0], df.index[-1])
-    ax2.grid(b=True, which="major", color="#666666", linestyle="-")
+    plot_data = pd.merge(
+        data,
+        df_kurt,
+        how="outer",
+        left_index=True,
+        right_index=True,
+    )
+    plot_data = reindex_dates(plot_data)
 
-    if gtff.USE_ION:
-        plt.ion()
+    # This plot has 1 axis
+    if external_axes is None:
+        _, axes = plt.subplots(
+            2,
+            1,
+            sharex=True,
+            figsize=plot_autoscale(),
+            dpi=PLOT_DPI,
+        )
+        (ax1, ax2) = axes
+    else:
+        if len(external_axes) != 2:
+            console.print("[red]Expected list of 2 axis items./n[/red]")
+            return
+        (ax1, ax2) = external_axes
 
-    plt.gcf().autofmt_xdate()
-    fig.tight_layout(pad=1)
+    ax1.set_title(f"{name} {target} Kurtosis Indicator (window {str(window)})")
+    ax1.plot(plot_data.index, plot_data[target].values)
+    ax1.set_xlim(plot_data.index[0], plot_data.index[-1])
+    ax1.set_ylabel(f"{target}")
 
-    plt.legend()
-    plt.show()
+    ax2.plot(
+        plot_data.index,
+        plot_data[f"KURT_{window}"].values,
+    )
+    ax2.set_ylabel("Indicator")
+
+    theme.style_primary_axis(
+        ax1,
+        data_index=plot_data.index.to_list(),
+        tick_labels=plot_data["date"].to_list(),
+    )
+    theme.style_primary_axis(
+        ax2,
+        data_index=plot_data.index.to_list(),
+        tick_labels=plot_data["date"].to_list(),
+    )
+
+    if external_axes is None:
+        theme.visualize_output()
 
     console.print("")
     export_data(

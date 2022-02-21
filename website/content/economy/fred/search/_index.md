@@ -12,31 +12,78 @@ optional arguments:
   -h, --help            show this help message (default: False)
 ```
 
-Sample usage:
-```python
-(✨) (economy)(fred)> search gdp -n 3
-╒═════════════════╤═════════════════════════════╤══════════════════════════════════════════════════════════════════════════════════════════════════════╕
-│ Series ID       │ Title                       │ Description                                                                                          │
-╞═════════════════╪═════════════════════════════╪══════════════════════════════════════════════════════════════════════════════════════════════════════╡
-│ GDPC1           │ Real Gross Domestic Product │ BEA Account Code: A191RX  Real gross domestic product is the inflation adjusted value of the goods   │
-│                 │                             │ and services produced by labor and property located in the United States.For more information see    │
-│                 │                             │ the Guide to the National Income and Product Accounts of the United States (NIPA). For more          │
-│                 │                             │ information, please visit the Bureau of Economic Analysis                                            │
-│                 │                             │ (http://www.bea.gov/national/pdf/nipaguid.pdf).                                                      │
-├─────────────────┼─────────────────────────────┼──────────────────────────────────────────────────────────────────────────────────────────────────────┤
-│ A191RL1Q225SBEA │ Real Gross Domestic Product │ BEA Account Code: A191RL  Gross domestic product (GDP) is the value of the goods and services        │
-│                 │                             │ produced by the nation's economy less the value of the goods and services used up in production. GDP │
-│                 │                             │ is also equal to the sum of personal consumption expenditures, gross private domestic investment,    │
-│                 │                             │ net exports of goods and services, and government consumption expenditures and gross investment.     │
-│                 │                             │ Real values are inflation-adjusted estimates—that is, estimates that exclude the effects of price    │
-│                 │                             │ changes.  For more information about this series, please visit the Bureau of Economic Analysis       │
-│                 │                             │ (http://www.bea.gov/national/).                                                                      │
-├─────────────────┼─────────────────────────────┼──────────────────────────────────────────────────────────────────────────────────────────────────────┤
-│ GDP             │ Gross Domestic Product      │ BEA Account Code: A191RC  Gross domestic product (GDP), the featured measure of U.S. output, is the  │
-│                 │                             │ market value of the goods and services produced by labor and property located in the United          │
-│                 │                             │ States.For more information, see the Guide to the National Income and Product Accounts of the United │
-│                 │                             │ States (NIPA) and the Bureau of Economic Analysis (http://www.bea.gov/national/pdf/nipaguid.pdf).    │
-╘═════════════════╧═════════════════════════════╧══════════════════════════════════════════════════════════════════════════════════════════════════════╛
-
-
+Example:
+```
+2022 Feb 16, 03:36 (✨) /economy/fred/ $ search inflation -n 10
+                                                                        Search results for inflation
+┏━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Series ID      ┃ Title                                             ┃ Description                                                                                          ┃
+┡━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ DFII10         │ Market Yield on U.S. Treasury Securities at       │ For further information regarding treasury constant maturity data, please refer to the Board of      │
+│                │ 10-Year Constant Maturity, Inflation-Indexed      │ Governors ( http://www.federalreserve.gov/releases/h15/current/h15.pdf) and the Treasury             │
+│                │                                                   │ (http://www.treasury.gov/resource-center/data-chart-center/interest-rates/Pages/yieldmethod.aspx).   │
+├────────────────┼───────────────────────────────────────────────────┼──────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ T10YIE         │ 10-Year Breakeven Inflation Rate                  │ The breakeven inflation rate represents a measure of expected inflation derived from 10-Year         │
+│                │                                                   │ Treasury Constant Maturity Securities (BC_10YEAR) and 10-Year Treasury Inflation-Indexed Constant    │
+│                │                                                   │ Maturity Securities (TC_10YEAR). The latest value implies what market participants expect inflation  │
+│                │                                                   │ to be in the next 10 years, on average. Starting with the update on June 21, 2019, the Treasury bond │
+│                │                                                   │ data used in calculating interest rate spreads is obtained directly from the U.S. Treasury           │
+│                │                                                   │ Department (https://www.treasury.gov/resource-center/data-chart-center/interest-                     │
+│                │                                                   │ rates/Pages/TextView.aspx?data=yield).                                                               │
+├────────────────┼───────────────────────────────────────────────────┼──────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ FII10          │ Market Yield on U.S. Treasury Securities at       │ For further information regarding treasury constant maturity data, please refer to                   │
+│                │ 10-Year Constant Maturity, Inflation-Indexed      │ http://www.federalreserve.gov/releases/h15/current/h15.pdf and http://www.treasury.gov/resource-     │
+│                │                                                   │ center/data-chart-center/interest-rates/Pages/yieldmethod.aspx.                                      │
+├────────────────┼───────────────────────────────────────────────────┼──────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ WFII10         │ Market Yield on U.S. Treasury Securities at       │ For further information regarding treasury constant maturity data, please refer to                   │
+│                │ 10-Year Constant Maturity, Inflation-Indexed      │ http://www.federalreserve.gov/releases/h15/current/h15.pdf and http://www.treasury.gov/resource-     │
+│                │                                                   │ center/data-chart-center/interest-rates/Pages/yieldmethod.aspx.                                      │
+├────────────────┼───────────────────────────────────────────────────┼──────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ T10YIEM        │ 10-Year Breakeven Inflation Rate                  │ The breakeven inflation rate represents a measure of expected inflation derived from 10-Year         │
+│                │                                                   │ Treasury Constant Maturity Securities (BC_10YEARM) and 10-Year Treasury Inflation-Indexed Constant   │
+│                │                                                   │ Maturity Securities (TC_10YEARM). The latest value implies what market participants expect inflation │
+│                │                                                   │ to be in the next 10 years, on average. Starting with the update on June 21, 2019, the Treasury bond │
+│                │                                                   │ data used in calculating interest rate spreads is obtained directly from the U.S. Treasury           │
+│                │                                                   │ Department (https://www.treasury.gov/resource-center/data-chart-center/interest-                     │
+│                │                                                   │ rates/Pages/TextView.aspx?data=yield).                                                               │
+├────────────────┼───────────────────────────────────────────────────┼──────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ T5YIE          │ 5-Year Breakeven Inflation Rate                   │ The breakeven inflation rate represents a measure of expected inflation derived from 5-Year Treasury │
+│                │                                                   │ Constant Maturity Securities (BC_5YEAR) and 5-Year Treasury Inflation-Indexed Constant Maturity      │
+│                │                                                   │ Securities (TC_5YEAR). The latest value implies what market participants expect inflation to be in   │
+│                │                                                   │ the next 5 years, on average. Starting with the update on June 21, 2019, the Treasury bond data used │
+│                │                                                   │ in calculating interest rate spreads is obtained directly from the U.S. Treasury Department          │
+│                │                                                   │ (https://www.treasury.gov/resource-center/data-chart-center/interest-                                │
+│                │                                                   │ rates/Pages/TextView.aspx?data=yield).                                                               │
+├────────────────┼───────────────────────────────────────────────────┼──────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ T5YIFR         │ 5-Year, 5-Year Forward Inflation Expectation Rate │ This series is a measure of expected inflation (on average) over the five-year period that begins    │
+│                │                                                   │ five years from today.  This series is constructed as: (((((1+((BC_10YEAR-                           │
+│                │                                                   │ TC_10YEAR)/100))^10)/((1+((BC_5YEAR-TC_5YEAR)/100))^5))^0.2)-1)*100  where BC10_YEAR, TC_10YEAR,     │
+│                │                                                   │ BC_5YEAR, and TC_5YEAR are the 10 year and 5 year nominal and inflation adjusted Treasury            │
+│                │                                                   │ securities. All of those are the actual series IDs in FRED. Starting with the update on June 21,     │
+│                │                                                   │ 2019, the Treasury bond data used in calculating interest rate spreads is obtained directly from the │
+│                │                                                   │ U.S. Treasury Department (https://www.treasury.gov/resource-center/data-chart-center/interest-       │
+│                │                                                   │ rates/Pages/TextView.aspx?data=yield).                                                               │
+├────────────────┼───────────────────────────────────────────────────┼──────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ FPCPITOTLZGUSA │ Inflation, consumer prices for the United States  │ Inflation as measured by the consumer price index reflects the annual percentage change in the cost  │
+│                │                                                   │ to the average consumer of acquiring a basket of goods and services that may be fixed or changed at  │
+│                │                                                   │ specified intervals, such as yearly. The Laspeyres formula is generally used.  International         │
+│                │                                                   │ Monetary Fund, International Financial Statistics and data files.                                    │
+├────────────────┼───────────────────────────────────────────────────┼──────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ T5YIEM         │ 5-Year Breakeven Inflation Rate                   │ The breakeven inflation rate represents a measure of expected inflation derived from 5-Year Treasury │
+│                │                                                   │ Constant Maturity Securities (BC_5YEAR) and 5-Year Treasury Inflation-Indexed Constant Maturity      │
+│                │                                                   │ Securities (TC_5YEAR). The latest value implies what market participants expect inflation to be in   │
+│                │                                                   │ the next 5 years, on average. Starting with the update on June 21, 2019, the Treasury bond data used │
+│                │                                                   │ in calculating interest rate spreads is obtained directly from the U.S. Treasury Department          │
+│                │                                                   │ (https://www.treasury.gov/resource-center/data-chart-center/interest-                                │
+│                │                                                   │ rates/Pages/TextView.aspx?data=yield).                                                               │
+├────────────────┼───────────────────────────────────────────────────┼──────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ T5YIFRM        │ 5-Year, 5-Year Forward Inflation Expectation Rate │ This series is a measure of expected inflation (on average) over the five-year period that begins    │
+│                │                                                   │ five years from today.  This series is constructed as: (((((1+((BC_10YEAR-                           │
+│                │                                                   │ TC_10YEAR)/100))^10)/((1+((BC_5YEAR-TC_5YEAR)/100))^5))^0.2)-1)*100  where BC10_YEAR, TC_10YEAR,     │
+│                │                                                   │ BC_5YEAR, and TC_5YEAR are the 10 year and 5 year nominal and inflation adjusted Treasury            │
+│                │                                                   │ securities. All of those are the actual series IDs in FRED. Starting with the update on June 21,     │
+│                │                                                   │ 2019, the Treasury bond data used in calculating interest rate spreads is obtained directly from the │
+│                │                                                   │ U.S. Treasury Department (https://www.treasury.gov/resource-center/data-chart-center/interest-       │
+│                │                                                   │ rates/Pages/TextView.aspx?data=yield).                                                               │
+└────────────────┴───────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
