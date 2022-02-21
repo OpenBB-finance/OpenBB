@@ -231,8 +231,8 @@ Stock: [/param]{stock_text}
             "--ma",
             dest="mov_avg",
             type=str,
-            help="Add moving averaged to plot",
-            default="",
+            help="Add moving average in number of days to plot and separate by a comma. Example: 20,30,50",
+            default="20,50",
         )
 
         ns_parser = parse_known_args_and_warn(
@@ -260,11 +260,19 @@ Stock: [/param]{stock_text}
                 else:
 
                     data = stocks_helper.process_candle(self.stock)
-                    mov_avgs = (
-                        tuple(int(num) for num in ns_parser.mov_avg.split(","))
-                        if ns_parser.mov_avg
-                        else None
-                    )
+
+                    if ns_parser.mov_avg:
+
+                        mov_list = (num for num in ns_parser.mov_avg.split(","))
+                        mov_avgs = []
+
+                        for num in mov_list:
+                            try:
+                                mov_avgs.append(int(num))
+                            except ValueError:
+                                console.print(
+                                    f"{num} is not valid moving average, must be integer"
+                                )
 
                     stocks_helper.display_candle(
                         s_ticker=self.ticker,

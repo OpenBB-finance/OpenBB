@@ -293,7 +293,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 "--descending",
                 "--num=1",
                 "--trend",
-                "--ma=2",
+                "--ma=20,30",
             ],
             "stocks_helper.display_candle",
             [],
@@ -303,7 +303,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 use_matplotlib=False,
                 intraday=False,
                 add_trend=True,
-                ma=(2,),
+                ma=[20, 30],
             ),
         ),
         (
