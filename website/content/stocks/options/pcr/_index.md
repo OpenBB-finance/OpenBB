@@ -1,18 +1,18 @@
 ```
-usage: pcr [-l {10,20,30,60,90,120,150,180}] [-s START] [-h] [--export {png,jpg,pdf,svg}]
+usage: pcr [-l {10,20,30,60,90,120,150,180}] [-s START] [-h] [--export {csv,json,xlsx,png,jpg,pdf,svg}]
 ```
 
-Display the put/call ratio for the loaded stock. https://AlphaQuery.com
+Display put to call ratio for ticker [Source: AlphaQuery.com]
 
 ```
 optional arguments:
   -l {10,20,30,60,90,120,150,180}, -length {10,20,30,60,90,120,150,180}
                         Window length to get (default: 30)
-  -s START, --start-date START
-                        Start date for plot (default: 2020-10-25 15:15:36.908882)
+  -s START, --start START
+                        Start date for plot (default: 2021-02-15 15:33:46.387854)
   -h, --help            show this help message (default: False)
-  --export {png,jpg,pdf,svg}
-                        Export or figure into png, jpg, pdf, svg (default: )
+  --export {csv,json,xlsx,png,jpg,pdf,svg}
+                        Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg (default: )
 ```
 
-<img size="1400" alt="Feature Screenshot - pcr" src="https://user-images.githubusercontent.com/18151143/138947156-9bbee8e0-0ea2-4ff7-8c6b-dd1d24cd7693.png">
+![pcr](https://user-images.githubusercontent.com/46355364/154286299-19ea423d-28e7-48d7-a5f3-621f0428fd4a.png)

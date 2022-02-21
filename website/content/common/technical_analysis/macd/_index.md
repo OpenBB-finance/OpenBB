@@ -17,4 +17,4 @@ optional arguments:
   -h, --help            show this help message (default: False)
 ```
 
-![macd](https://user-images.githubusercontent.com/25267873/108602739-92813b00-739b-11eb-8a4e-8fa7ed66b2b6.png)
+![macd](https://user-images.githubusercontent.com/46355364/154311220-d18eb93e-76b3-4abb-b9c6-86484f462c55.png)

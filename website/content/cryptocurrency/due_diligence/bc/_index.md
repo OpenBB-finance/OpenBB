@@ -11,3 +11,18 @@ optional arguments:
                         Export dataframe data to csv,json,xlsx file (default: )
   -h, --help            show this help message (default: False)
 ```
+
+Example:
+```
+2022 Feb 15, 07:10 (✨) /crypto/dd/ $ bc
+              Blockchain URLs
+┌────────┬─────────────────────────────────┐
+│ Metric │ Value                           │
+├────────┼─────────────────────────────────┤
+│ 0      │ https://blockchair.com/bitcoin/ │
+├────────┼─────────────────────────────────┤
+│ 1      │ https://btc.com/                │
+├────────┼─────────────────────────────────┤
+│ 2      │ https://btc.tokenview.com/      │
+└────────┴─────────────────────────────────┘
+```

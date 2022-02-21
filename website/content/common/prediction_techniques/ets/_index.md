@@ -23,4 +23,4 @@ optional arguments:
   -h, --help            show this help message
 ```
 
-![ets_pltr](https://user-images.githubusercontent.com/25267873/110266847-97a6d280-7fb6-11eb-997e-0b598abc713b.png)
+![ETS](https://user-images.githubusercontent.com/18151143/154813959-6868dcce-cd35-4b89-b298-12954de21541.png)

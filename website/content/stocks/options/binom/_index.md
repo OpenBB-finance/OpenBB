@@ -1,5 +1,5 @@
 ```
-usage: binom [-s STRIKE] [-p] [-e] [-E] [-P] [-v VOLATILITY] [-h]
+usage: binom [-s STRIKE] [-p] [-e] [-x] [--plot] [-v VOLATILITY] [-h]
 ```
 
 Shows the value of an option using binomial option pricing. Can also show raw data and provide a graph with predicted underlying asset ending values. The binomial options model calculates how big an up step or down step in the next time period will likely be. Then it creates a tree doing this at each period. The end results of this is a tree with possible asset values at each "step". For our calculations we use a day as our "step" time period. We then take all of the expected values at the finishing date and use this to begin a tree of option values at each step. The ending results is the value of the option today.
@@ -12,14 +12,30 @@ down_step = 1 / up_step
 
 prob_up = (e ^ ((risk_free - div_yield) * delta_t) - down_step) / (up_step - down_step)
 prob_down = 1 - prob_up
+
 ```
 optional arguments:
   -s STRIKE, --strike STRIKE
-                        strike price for the option (default: 0)
-  -p, --put             value the option as a put (default: False)
-  -e, --european        value the option as a European option (default: False)
-  --export              export the binomial trees (default: False)
-  -P, --plot            plots the expected underlying asset ending prices (default: False)
-  -v, --volatility      sets the volatility for the underlying asset(default: None)
+                        Strike price for option shown (default: 0)
+  -p, --put             Value a put instead of a call (default: False)
+  -e, --european        Value a European option instead of an American one (default: False)
+  -x, --xlsx            Export an excel spreadsheet with binomial pricing data (default: False)
+  --plot                Plot expected ending values (default: False)
+  -v VOLATILITY, --volatility VOLATILITY
+                        Underlying asset annualized volatility (default: None)
   -h, --help            show this help message (default: False)
 ```
+
+Example:
+```
+2022 Feb 16, 08:40 (✨) /stocks/options/ $ binom -s 3100 -e --plot
+
+AMZN call at $3100.00 expiring on 2022-03-25 is worth $136.85
+
+2022 Feb 16, 08:41 (✨) /stocks/options/ $ binom -s 3500 -p --plot
+
+AMZN put at $3500.00 expiring on 2022-03-25 is worth $389.72
+```
+![binom](https://user-images.githubusercontent.com/46355364/154276789-b6786517-3bea-4aa7-9d2e-e6669dd82587.png)
+
+
