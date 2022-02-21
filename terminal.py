@@ -297,6 +297,10 @@ def terminal(jobs_cmds: List[str] = None):
                     break
 
         except SystemExit:
+            logger.warning(
+                "The command '%s' doesn't exist on the / menu.",
+                an_input,
+            )
             console.print(
                 f"\nThe command '{an_input}' doesn't exist on the / menu", end=""
             )
