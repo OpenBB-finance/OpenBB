@@ -50,24 +50,32 @@ def custom_plot(
     export: str
         Format to export image
     """
-    plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    if isinstance(data.index, pd.MultiIndex):
+        console.print(
+            "The index appears to be a multi-index. "
+            "Therefore, it is not possible to plot the data."
+        )
+    else:
+        plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
-    if isinstance(data, pd.Series):
-        plt.plot(data)
-    elif isinstance(data, pd.DataFrame):
-        plt.plot(data[column])
+        if isinstance(data, pd.Series):
+            plt.plot(data)
+        elif isinstance(data, pd.DataFrame):
+            plt.plot(data[column])
 
-    plt.title(f"{column} data from dataset {dataset}")
-    if gtff.USE_ION:
-        plt.ion()
-    plt.tight_layout()
-    plt.show()
-    console.print()
+        plt.title(f"{column} data from dataset {dataset}")
+        if gtff.USE_ION:
+            plt.ion()
+        plt.tight_layout()
+        plt.show()
+
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "custom_plot",
     )
+
+    console.print("")
 
 
 @log_start_end(log=logger)
@@ -112,48 +120,6 @@ def display_norm(
         plt.ion()
     plt.tight_layout()
     plt.show()
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "custom_plot",
-    )
-
-    console.print("")
-
-
-@log_start_end(log=logger)
-def display_auto(
-    dependent_variable: pd.Series, residual: pd.DataFrame, export: str = ""
-):
-    """Show autocorrelation tests
-
-    Parameters
-    ----------
-    model : OLS Model
-        Model containing residual values.
-    export : str
-        Format to export data
-    """
-    autocorrelation = statistics_model.get_autocorrelation(residual)
-
-    if 1.5 < autocorrelation < 2.5:
-        console.print(
-            f"The result {autocorrelation} is within the range 1.5 and 2.5 which therefore indicates "
-            f"autocorrelation not to be problematic."
-        )
-    else:
-        console.print(
-            f"The result {autocorrelation} is outside the range 1.5 and 2.5 and therefore autocorrelation "
-            f"can be problematic. Please consider lags of the dependent or independent variable."
-        )
-
-    plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    plt.scatter(dependent_variable, residual)
-    plt.axhline(y=0, color="r", linestyle="-")
-    plt.ylabel("Residual")
-    plt.xlabel(dependent_variable.name.capitalize())
-    plt.title("Plot of Residuals")
 
     export_data(
         export,

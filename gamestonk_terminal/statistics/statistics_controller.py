@@ -11,6 +11,8 @@ from typing import List, Dict, Any
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 
+import gamestonk_terminal.statistics.regression_model
+import gamestonk_terminal.statistics.regression_view
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
@@ -37,6 +39,7 @@ class StatisticsController(BaseController):
 
     CHOICES_COMMANDS: List[str] = [
         "load",
+        "index",
         "clear",
         "plot",
         "show",
@@ -94,7 +97,7 @@ class StatisticsController(BaseController):
 
             for feature in ["plot", "norm", "root", "granger", "cointegration", "ols"]:
                 self.choices[feature] = dataset_columns
-            for feature in ["show", "info", "clear"]:
+            for feature in ["index", "show", "info", "clear"]:
                 self.choices[feature] = {c: None for c in self.files}
 
         self.completer = NestedCompleter.from_nested_dict(self.choices)
@@ -103,6 +106,7 @@ class StatisticsController(BaseController):
         """Print help"""
         help_text = f"""[cmds]
     load            load in custom data sets
+    index           set (multi)index based on columns
     clear           remove a dataset[/cmds]
 
 [param]Current file:[/param]    {self.files or None}[cmds]
@@ -175,6 +179,61 @@ Regression Analysis
                 self.update_runtime_choices()
 
                 console.print("")
+
+    def call_index(self, other_args: List[str]):
+        """Process index"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="index",
+            description="Set (multi)index for the dataset",
+        )
+        parser.add_argument(
+            "-n",
+            "--name",
+            type=str,
+            dest="name",
+            nargs="+",
+            help="The first argument is the name of the database, further arguments are "
+            "the columns you wish to set a index",
+        )
+
+        parser.add_argument(
+            "-i",
+            "--index",
+            help="Save the original index as a column",
+            action="store_true",
+            dest="index",
+            default=False,
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-n")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+
+        if ns_parser.name:
+            name = ns_parser.name[0]
+            columns = ns_parser.name[1:]
+
+            print(columns)
+
+            dataset = self.datasets[name]
+
+            for column in columns:
+                if column not in dataset.columns:
+                    return console.print(
+                        f"The column '{column}' is not available in the dataset {name}."
+                        f"Please choose one of the following: {', '.join(dataset.columns)}"
+                    )
+
+            if ns_parser.index:
+                dataset = dataset.reset_index()
+
+            self.datasets[name] = dataset.set_index(columns)
+
+            self.update_runtime_choices()
+
+            console.print("")
 
     def call_clear(self, other_args: List[str]):
         """Process clear"""
@@ -585,7 +644,7 @@ Regression Analysis
                 self.regression["dependent"],
                 self.regression["independent"],
                 self.regression["model"],
-            ) = statistics_model.get_ols(
+            ) = gamestonk_terminal.statistics.regression_model.get_ols(
                 ns_parser.regression, self.datasets, self.choices["ols"]
             )
 
@@ -607,6 +666,6 @@ Regression Analysis
         if ns_parser:
             dependent_variable = self.regression["data"][self.regression["dependent"]]
 
-            statistics_view.display_auto(
+            gamestonk_terminal.statistics.regression_view.display_auto(
                 dependent_variable, self.regression["model"].resid, ns_parser.export
             )
