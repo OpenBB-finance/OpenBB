@@ -12,7 +12,7 @@ from pandas import DataFrame
 from scipy import stats
 from statsmodels.formula.api import ols
 from statsmodels.stats.stattools import durbin_watson
-from statsmodels.tsa.stattools import adfuller, kpss
+from statsmodels.tsa.stattools import adfuller, kpss, grangercausalitytests
 
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.rich_config import console
@@ -213,3 +213,14 @@ def get_autocorrelation(residual: pd.DataFrame) -> pd.DataFrame:
     result = durbin_watson(residual)
 
     return round(result, 2)
+
+
+@log_start_end(log=logger)
+def get_granger_causality(time_series_y, time_series_x, lags):
+    """
+    """
+    granger_set = pd.concat([time_series_y, time_series_x], axis=1)
+
+    granger = grangercausalitytests(granger_set, [lags], verbose=False)
+
+    return granger

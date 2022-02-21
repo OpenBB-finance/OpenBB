@@ -43,6 +43,7 @@ class StatisticsController(BaseController):
         "info",
         "norm",
         "root",
+        "granger",
         "ols",
         "auto",
     ]
@@ -92,6 +93,7 @@ class StatisticsController(BaseController):
             self.choices["plot"] = dataset_columns
             self.choices["norm"] = dataset_columns
             self.choices["root"] = dataset_columns
+            self.choices["granger"] = dataset_columns
             self.choices["ols"] = dataset_columns
             self.choices["show"] = {c: None for c in self.files}
             self.choices["info"] = {c: None for c in self.files}
@@ -115,6 +117,7 @@ Dataset Discovery
 General Tests
     norm            perform normality tests on a column of a dataset
     root            perform unitroot tests (ADF & KPSS) on a column of a dataset
+    granger         perform granger causality tests on two timeseries.
 
 Regression Analysis
     ols             fit a (multi) linear regression model
@@ -437,6 +440,60 @@ Regression Analysis
             )
 
         console.print("")
+
+    def call_granger(self, other_args: List[str]):
+        """Process granger command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="granger",
+            description="Show unit root tests of a column of a dataset",
+        )
+
+        parser.add_argument(
+            "-y",
+            "--time_series_y",
+            help="The time series that is assumed to be Granger-caused by x",
+            choices=self.choices["granger"],
+            dest="y",
+        )
+
+        parser.add_argument(
+            "-x",
+            "--time_series_x",
+            help="The time series that is assumed to Granger-cause y",
+            choices=self.choices["granger"],
+            dest="x",
+        )
+        parser.add_argument(
+            "-l",
+            "--lags",
+            help="How many lags should be included",
+            type=int,
+            dest="lags",
+            default=3
+        )
+
+        parser.add_argument(
+            "-cl",
+            "--confidence",
+            help="Set the confidence level",
+            type=int,
+            dest="confidence",
+            default=0.05
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-y")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+
+        if ns_parser and ns_parser.y and ns_parser.x:
+            column_y, dataset_y = self.choices["granger"][ns_parser.y].keys()
+            column_x, dataset_x = self.choices["granger"][ns_parser.x].keys()
+
+            statistics_view.display_granger(
+                self.datasets[dataset_y][column_y], self.datasets[dataset_x][column_x], ns_parser.lags,
+                ns_parser.confidence)
 
     def call_ols(self, other_args: List[str]):
         """Process unitroot command"""

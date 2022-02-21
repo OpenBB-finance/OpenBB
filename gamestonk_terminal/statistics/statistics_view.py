@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
+import numpy as np
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -121,7 +122,7 @@ def display_norm(
 
 
 @log_start_end(log=logger)
-def display_auto(dependent_variable: pd.Series, residual: pd.DataFrame):
+def display_auto(dependent_variable: pd.Series, residual: pd.DataFrame, export: str = ""):
     """Show autocorrelation tests
 
     Parameters
@@ -150,5 +151,41 @@ def display_auto(dependent_variable: pd.Series, residual: pd.DataFrame):
     plt.ylabel("Residual")
     plt.xlabel(dependent_variable.name.capitalize())
     plt.title("Plot of Residuals")
+
+    console.print("")
+
+
+@log_start_end(log=logger)
+def display_granger(time_series_y, time_series_x, lags, confidence_level, export: str = ""):
+    """
+    """
+
+    granger = statistics_model.get_granger_causality(time_series_y, time_series_x, lags)
+
+    for test in granger[lags][0]:
+        # As ssr_chi2test and lrtest have one less value in the tuple, we fill
+        # this value with a '-' to allow the conversion to a DataFrame
+        if len(granger[lags][0][test]) != 4:
+            pars = granger[lags][0][test]
+            granger[lags][0][test] = (pars[0], pars[1], "-", pars[2])
+
+    granger_df = pd.DataFrame(granger[lags][0], index=['F-test', 'P-value', 'Count', 'Lags']).T
+
+    print_rich_table(
+        granger_df,
+        headers=list(granger_df.columns),
+        show_index=True,
+        title=f"Granger Causality Test [Y: {time_series_y.name} | X: {time_series_x.name} | Lags: {lags}]",
+    )
+
+    result_ftest = round(granger[lags][0]['params_ftest'][1], 3)
+
+    if result_ftest > confidence_level:
+        console.print(f"As the p-value of the F-test is {result_ftest}, we can not reject the null hypothesis at "
+                      f"the {confidence_level} confidence level.")
+    else:
+        console.print(f"As the p-value of the F-test is {result_ftest}, we can reject the null hypothesis at "
+                      f"the {confidence_level} confidence level and find the Series '{time_series_x.name}' "
+                      f"to Granger-cause the Series '{time_series_y.name}'")
 
     console.print("")
