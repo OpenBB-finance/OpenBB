@@ -1,6 +1,0 @@
-2022 Feb 21, 11:36 (✨) /alternative/ $ covid
-2022 Feb 21, 11:36 (✨) /alternative/covid/ $ country Australia
-[cyan]Australia[/cyan] loaded
-
-2022 Feb 21, 11:36 (✨) /alternative/covid/ $ reset
-resetting...

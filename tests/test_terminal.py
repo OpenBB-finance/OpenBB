@@ -53,6 +53,6 @@ def no_suppress():
     ],
 )
 def test_menu(mocker, debug, test, filtert, path):
-
+    mocker.patch(target="terminal.terminal")
     mocker.patch(target="terminal.suppress_stdout", side_effect=no_suppress)
     terminal.main(debug, test, filtert, path)
