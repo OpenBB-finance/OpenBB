@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 
 import logging
 import os
-import numpy as np
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -122,7 +121,9 @@ def display_norm(
 
 
 @log_start_end(log=logger)
-def display_auto(dependent_variable: pd.Series, residual: pd.DataFrame, export: str = ""):
+def display_auto(
+    dependent_variable: pd.Series, residual: pd.DataFrame, export: str = ""
+):
     """Show autocorrelation tests
 
     Parameters
@@ -152,12 +153,37 @@ def display_auto(dependent_variable: pd.Series, residual: pd.DataFrame, export: 
     plt.xlabel(dependent_variable.name.capitalize())
     plt.title("Plot of Residuals")
 
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "custom_plot",
+    )
+
     console.print("")
 
 
 @log_start_end(log=logger)
-def display_granger(time_series_y, time_series_x, lags, confidence_level, export: str = ""):
-    """
+def display_granger(
+    time_series_y: pd.Series,
+    time_series_x: pd.Series,
+    lags: int = 3,
+    confidence_level: float = 0.05,
+    export: str = "",
+):
+    """Show granger tests
+
+    Parameters
+    ----------
+    time_series_y : Series
+        The series you want to test Granger Causality for.
+    time_series_x : Series
+        The series that you want to test whether it Granger-causes time_series_y
+    lags : int
+        The amoiunt of lags for the Granger test. By default, this is set to 3.
+    confidence_level: float
+        The confidence level you wish to use. By default, this is set to 0.05.
+    export : str
+        Format to export data
     """
 
     granger = statistics_model.get_granger_causality(time_series_y, time_series_x, lags)
@@ -169,7 +195,9 @@ def display_granger(time_series_y, time_series_x, lags, confidence_level, export
             pars = granger[lags][0][test]
             granger[lags][0][test] = (pars[0], pars[1], "-", pars[2])
 
-    granger_df = pd.DataFrame(granger[lags][0], index=['F-test', 'P-value', 'Count', 'Lags']).T
+    granger_df = pd.DataFrame(
+        granger[lags][0], index=["F-test", "P-value", "Count", "Lags"]
+    ).T
 
     print_rich_table(
         granger_df,
@@ -178,14 +206,24 @@ def display_granger(time_series_y, time_series_x, lags, confidence_level, export
         title=f"Granger Causality Test [Y: {time_series_y.name} | X: {time_series_x.name} | Lags: {lags}]",
     )
 
-    result_ftest = round(granger[lags][0]['params_ftest'][1], 3)
+    result_ftest = round(granger[lags][0]["params_ftest"][1], 3)
 
     if result_ftest > confidence_level:
-        console.print(f"As the p-value of the F-test is {result_ftest}, we can not reject the null hypothesis at "
-                      f"the {confidence_level} confidence level.")
+        console.print(
+            f"As the p-value of the F-test is {result_ftest}, we can not reject the null hypothesis at "
+            f"the {confidence_level} confidence level."
+        )
     else:
-        console.print(f"As the p-value of the F-test is {result_ftest}, we can reject the null hypothesis at "
-                      f"the {confidence_level} confidence level and find the Series '{time_series_x.name}' "
-                      f"to Granger-cause the Series '{time_series_y.name}'")
+        console.print(
+            f"As the p-value of the F-test is {result_ftest}, we can reject the null hypothesis at "
+            f"the {confidence_level} confidence level and find the Series '{time_series_x.name}' "
+            f"to Granger-cause the Series '{time_series_y.name}'"
+        )
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "custom_plot",
+    )
 
     console.print("")

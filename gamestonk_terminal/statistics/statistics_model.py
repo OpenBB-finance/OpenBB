@@ -217,7 +217,16 @@ def get_autocorrelation(residual: pd.DataFrame) -> pd.DataFrame:
 
 @log_start_end(log=logger)
 def get_granger_causality(time_series_y, time_series_x, lags):
-    """
+    """Calculate granger tests
+
+    Parameters
+    ----------
+    time_series_y : Series
+        The series you want to test Granger Causality for.
+    time_series_x : Series
+        The series that you want to test whether it Granger-causes time_series_y
+    lags : int
+        The amoiunt of lags for the Granger test. By default, this is set to 3.
     """
     granger_set = pd.concat([time_series_y, time_series_x], axis=1)
 

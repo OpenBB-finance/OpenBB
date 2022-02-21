@@ -471,7 +471,7 @@ Regression Analysis
             help="How many lags should be included",
             type=int,
             dest="lags",
-            default=3
+            default=3,
         )
 
         parser.add_argument(
@@ -480,7 +480,7 @@ Regression Analysis
             help="Set the confidence level",
             type=int,
             dest="confidence",
-            default=0.05
+            default=0.05,
         )
 
         if other_args and "-" not in other_args[0][0]:
@@ -492,8 +492,11 @@ Regression Analysis
             column_x, dataset_x = self.choices["granger"][ns_parser.x].keys()
 
             statistics_view.display_granger(
-                self.datasets[dataset_y][column_y], self.datasets[dataset_x][column_x], ns_parser.lags,
-                ns_parser.confidence)
+                self.datasets[dataset_y][column_y],
+                self.datasets[dataset_x][column_x],
+                ns_parser.lags,
+                ns_parser.confidence,
+            )
 
     def call_ols(self, other_args: List[str]):
         """Process unitroot command"""
