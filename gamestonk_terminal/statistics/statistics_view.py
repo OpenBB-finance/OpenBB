@@ -3,6 +3,8 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import Dict, Any
+from itertools import combinations
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -219,6 +221,100 @@ def display_granger(
             f"the {confidence_level} confidence level and find the Series '{time_series_x.name}' "
             f"to Granger-cause the Series '{time_series_y.name}'"
         )
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "custom_plot",
+    )
+
+    console.print("")
+
+
+@log_start_end(log=logger)
+def display_cointegration_test(
+    datasets: Dict[pd.Series, Any],
+    plot: bool = False,
+    export: str = "",
+):
+    """Estimates long-run and short-run cointegration relationship for series y and x and apply
+    the two-step Engle & Granger test for cointegration.
+
+    Uses a 2-step process to first estimate coefficients for the long-run relationship
+        y_t = c + gamma * x_t + z_t
+
+    and then the short-term relationship,
+        y_t - y_(t-1) = alpha * z_(t-1) + epsilon_t,
+
+    with z the found residuals of the first equation.
+
+    Then tests cointegration by Dickey-Fuller phi=1 vs phi < 1 in
+        z_t = phi * z_(t-1) + eta_t
+
+    If this implies phi < 1, the z series is stationary is concluded to be
+    stationary, and thus the series y and x are concluded to be cointegrated.
+
+    Parameters
+
+    Parameters
+    ----------
+    datasets: Dict[pd.Series, Any]
+        All time series to perform co-integration tests on.
+    plot: bool
+        Whether you wish to plot the z-values of all pairs.
+    export : str
+        Format to export data
+    """
+
+    pairs = list(combinations(datasets.keys(), 2))
+    result = {}
+    z_values = {}
+
+    for x, y in pairs:
+        (
+            c,
+            gamma,
+            alpha,
+            z,
+            adfstat,
+            pvalue,
+        ) = statistics_model.get_engle_granger_two_step_cointegration_test(
+            datasets[x], datasets[y]
+        )
+        result[f"{x}/{y}"] = [c, gamma, alpha, adfstat, pvalue]
+        z_values[f"{x}/{y}"] = z
+
+    df = pd.DataFrame.from_dict(
+        result,
+        orient="index",
+        columns=["Constant", "Gamma", "Alpha", "Dickey-Fuller", "P Value"],
+    )
+
+    print_rich_table(
+        df,
+        headers=list(df.columns),
+        show_index=True,
+        index_name="Pairs",
+        title="Cointegration Tests",
+    )
+
+    if plot:
+        if len(pairs) > 1:
+            _, axes = plt.subplots(
+                len(pairs), 1, figsize=plot_autoscale(), dpi=PLOT_DPI
+            )
+
+            pair = 0
+            for ax in axes:
+                pair_name = df.index[pair]
+                ax.set_title(f"Z-Values of Pair {pair_name}")
+                ax.plot(z_values[pair_name])
+                pair += 1
+        else:
+            plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+            plt.plot(df.values)
+
+        plt.tight_layout()
 
     export_data(
         export,

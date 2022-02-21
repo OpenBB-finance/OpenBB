@@ -44,6 +44,7 @@ class StatisticsController(BaseController):
         "norm",
         "root",
         "granger",
+        "coint",
         "ols",
         "auto",
     ]
@@ -90,14 +91,11 @@ class StatisticsController(BaseController):
                 for dataset, dataframe in self.datasets.items()
                 for column in dataframe.columns
             }
-            self.choices["plot"] = dataset_columns
-            self.choices["norm"] = dataset_columns
-            self.choices["root"] = dataset_columns
-            self.choices["granger"] = dataset_columns
-            self.choices["ols"] = dataset_columns
-            self.choices["show"] = {c: None for c in self.files}
-            self.choices["info"] = {c: None for c in self.files}
-            self.choices["clear"] = {c: None for c in self.files}
+
+            for feature in ["plot", "norm", "root", "granger", "cointegration", "ols"]:
+                self.choices[feature] = dataset_columns
+            for feature in ["show", "info", "clear"]:
+                self.choices[feature] = {c: None for c in self.files}
 
         self.completer = NestedCompleter.from_nested_dict(self.choices)
 
@@ -118,6 +116,7 @@ General Tests
     norm            perform normality tests on a column of a dataset
     root            perform unitroot tests (ADF & KPSS) on a column of a dataset
     granger         perform granger causality tests on two timeseries.
+    coint           perform co-integration test on two timeseries
 
 Regression Analysis
     ols             fit a (multi) linear regression model
@@ -447,7 +446,7 @@ Regression Analysis
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="granger",
-            description="Show unit root tests of a column of a dataset",
+            description="Show Granger causality between two timeseries",
         )
 
         parser.add_argument(
@@ -485,7 +484,9 @@ Regression Analysis
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-y")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
 
         if ns_parser and ns_parser.y and ns_parser.x:
             column_y, dataset_y = self.choices["granger"][ns_parser.y].keys()
@@ -496,6 +497,52 @@ Regression Analysis
                 self.datasets[dataset_x][column_x],
                 ns_parser.lags,
                 ns_parser.confidence,
+                ns_parser.export,
+            )
+
+    def call_coint(self, other_args: List[str]):
+        """Process coint command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="coint",
+            description="Show co-integration between two timeseries",
+        )
+
+        parser.add_argument(
+            "-ts",
+            "--time_series",
+            help="The first time series",
+            choices=self.choices["cointegration"],
+            dest="ts",
+            nargs="+",
+        )
+
+        parser.add_argument(
+            "-p",
+            "--plot",
+            help="Plot Z-Values",
+            dest="plot",
+            action="store_true",
+            default=False,
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-ts")
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+
+        if ns_parser and ns_parser.ts:
+
+            datasets = {}
+            for stock in ns_parser.ts:
+                column, dataset = self.choices["cointegration"][stock].keys()
+                datasets[stock] = self.datasets[dataset][column]
+
+            statistics_view.display_cointegration_test(
+                datasets, ns_parser.plot, ns_parser.export
             )
 
     def call_ols(self, other_args: List[str]):
