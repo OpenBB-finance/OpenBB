@@ -1,18 +1,56 @@
 ```
-usage: cglosers [-p {14d,1h,1y,200d,24h,30d,7d}] [-l N] [-s {Symbol,Name,Price [$],Market Cap [$],Market Cap Rank,Volume [$]}] [--descend] [-l] [--export {csv,json,xlsx}] [-h]
+usage: cglosers [-p {14d,1h,1y,200d,24h,30d,7d}] [-l LIMIT] [-s SORTBY [SORTBY ...]] [-h] [--export {csv,json,xlsx}]
 ```
 
-Shows Largest Losers - coins which price dropped the most in given period You can use parameter --period to set which timeframe are you interested
-in: {14d,1h,1y,200d,24h,30d,7d} You can look on only top N number of records with --top, You can sort by {Symbol,Name,Price [$],Market Cap [$],Market Cap Rank,Volume [$]} with --sort
+Shows Largest Losers - coins which price dropped the most in given period You can use parameter --period to set which timeframe are you interested in: {14d,1h,1y,200d,24h,30d,7d} You can look on only N number of records with --limit. You can sort by {Symbol,Name,Price [$],Market Cap [$],Market Cap Rank,Volume [$]} with --sort.
 
 ```
 optional arguments:
   -p {14d,1h,1y,200d,24h,30d,7d}, --period {14d,1h,1y,200d,24h,30d,7d}
                         time period, one from {14d,1h,1y,200d,24h,30d,7d} (default: 1h)
-  -l N, --limit N       display N records (default: 15)
-  -s {Symbol,Name,Price [$],Market Cap [$],Market Cap Rank,Volume [$]}, --sort {Symbol,Name,Price [$],Market Cap [$],Market Cap Rank,Volume [$]}
-                        Sort by given column. (default: Market Cap Rank)
-  --export {csv,json,xlsx}
-                        Export dataframe data to csv,json,xlsx file (default: )
+  -l LIMIT, --limit LIMIT
+                        Number of records to display (default: 15)
+  -s SORTBY [SORTBY ...], --sort SORTBY [SORTBY ...]
+                        Sort by given column. Default: Market Cap Rank (default: Market Cap Rank)
   -h, --help            show this help message (default: False)
+  --export {csv,json,xlsx}
+                        Export raw data into csv, json, xlsx (default: )
+```
+
+Example:
+```
+2022 Feb 15, 06:43 (✨) /crypto/disc/ $ cglosers
+┌────────┬─────────────────┬───────────┬────────────────┬─────────────────┬────────────┬───────────────┐
+│ Symbol │ Name            │ Price [$] │ Market Cap [$] │ Market Cap Rank │ Volume [$] │ Change 1h [%] │
+├────────┼─────────────────┼───────────┼────────────────┼─────────────────┼────────────┼───────────────┤
+│ cro    │ Crypto.com Coin │ 0.50      │ 12.5B          │ 15              │ 200.8M     │ -1.21         │
+├────────┼─────────────────┼───────────┼────────────────┼─────────────────┼────────────┼───────────────┤
+│ sol    │ Solana          │ 102.75    │ 32.7B          │ 8               │ 1.8B       │ -0.76         │
+├────────┼─────────────────┼───────────┼────────────────┼─────────────────┼────────────┼───────────────┤
+│ doge   │ Dogecoin        │ 0.15      │ 19.9B          │ 12              │ 604.3M     │ -0.50         │
+├────────┼─────────────────┼───────────┼────────────────┼─────────────────┼────────────┼───────────────┤
+│ AVAX   │ Avalanche       │ 88.66     │ 21.7B          │ 10              │ 899.9M     │ -0.38         │
+├────────┼─────────────────┼───────────┼────────────────┼─────────────────┼────────────┼───────────────┤
+│ ada    │ Cardano         │ 1.09      │ 34.9B          │ 7               │ 1B         │ -0.31         │
+├────────┼─────────────────┼───────────┼────────────────┼─────────────────┼────────────┼───────────────┤
+│ shib   │ Shiba Inu       │ 0.00      │ 17.2B          │ 14              │ 1.1B       │ -0.26         │
+├────────┼─────────────────┼───────────┼────────────────┼─────────────────┼────────────┼───────────────┤
+│ eth    │ Ethereum        │ 3100.92   │ 370.6B         │ 2               │ 14.4B      │ -0.24         │
+├────────┼─────────────────┼───────────┼────────────────┼─────────────────┼────────────┼───────────────┤
+│ dot    │ Polkadot        │ 19.79     │ 21.4B          │ 11              │ 672.9M     │ -0.12         │
+├────────┼─────────────────┼───────────┼────────────────┼─────────────────┼────────────┼───────────────┤
+│ busd   │ Binance USD     │ 1.00      │ 17.6B          │ 13              │ 3B         │ -0.06         │
+├────────┼─────────────────┼───────────┼────────────────┼─────────────────┼────────────┼───────────────┤
+│ bnb    │ Binance Coin    │ 429.57    │ 72.2B          │ 4               │ 1.8B       │ 0.05          │
+├────────┼─────────────────┼───────────┼────────────────┼─────────────────┼────────────┼───────────────┤
+│ usdt   │ Tether          │ 1.00      │ 78.5B          │ 3               │ 43.3B      │ 0.08          │
+├────────┼─────────────────┼───────────┼────────────────┼─────────────────┼────────────┼───────────────┤
+│ luna   │ Terra           │ 56.47     │ 22.4B          │ 9               │ 1B         │ 0.08          │
+├────────┼─────────────────┼───────────┼────────────────┼─────────────────┼────────────┼───────────────┤
+│ btc    │ Bitcoin         │ 44275.00  │ 838.8B         │ 1               │ 20.6B      │ 0.11          │
+├────────┼─────────────────┼───────────┼────────────────┼─────────────────┼────────────┼───────────────┤
+│ usdc   │ USD Coin        │ 1.00      │ 52.6B          │ 5               │ 3B         │ 0.12          │
+├────────┼─────────────────┼───────────┼────────────────┼─────────────────┼────────────┼───────────────┤
+│ xrp    │ XRP             │ 0.84      │ 39.9B          │ 6               │ 3.2B       │ 0.29          │
+└────────┴─────────────────┴───────────┴────────────────┴─────────────────┴────────────┴───────────────┘
 ```

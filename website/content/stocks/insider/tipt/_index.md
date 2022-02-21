@@ -1,13 +1,27 @@
 ```
-usage: tipt [-n NUM] [-h]
+usage: tipt [-l LIMIT] [-h] [--export {csv,json,xlsx}]
 ```
 
-The top insider acquisitions today. Source: http://openinsider.com
+Print top insider purchases of the day. [Source: OpenInsider]
 
 ```
 optional arguments:
-  -n NUM, --num NUM  Number of datarows to display (default: 20)
-  -h, --help         show this help message (default: False)
+  -l LIMIT, --limit LIMIT
+                        Limit of datarows to display (default: 10)
+  -h, --help            show this help message (default: False)
+  --export {csv,json,xlsx}
+                        Export raw data into csv, json, xlsx (default: )
 ```
 
-<img width="1400" alt="tipt" src="https://user-images.githubusercontent.com/25267873/125373745-99760d80-e37d-11eb-99c4-eadd0bb095cd.png">
+Example:
+```
+2022 Feb 16, 08:18 (✨) /stocks/ins/ $ tipt
+                                                                          Insider Data
+┏━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━┓
+┃ X ┃ Filing Date ┃ Trade Date ┃ Ticker ┃ Company Name     ┃ Insider Name         ┃ Title    ┃ Trade Type   ┃ Price ┃ Qty     ┃ Owned   ┃ Diff Own ┃ Value     ┃
+┡━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━┩
+│ M │ 2022-02-16  │ 2022-02-09 │ ZIVO   │ Zivo Bioscience, │ Maggiore Christopher │ Dir, 10% │ P - Purchase │ $3.72 │ +91,334 │ 803,105 │ +13%     │ +$340,098 │
+│   │ 06:02:09    │            │        │ Inc.             │ D.                   │          │              │       │         │         │          │           │
+└───┴─────────────┴────────────┴────────┴──────────────────┴──────────────────────┴──────────┴──────────────┴───────┴─────────┴─────────┴──────────┴───────────┘
+M: Multiple transactions in filing; earliest reported transaction date & weighted average transaction price
+```

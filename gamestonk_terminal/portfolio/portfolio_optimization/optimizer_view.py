@@ -285,9 +285,13 @@ def display_efficient_risk(
         Optional axes to plot data on
     """
     s_title = f"{d_period[period]} Weights that maximise returns at target volatility: {target_volatility}"
-    ef_opt, ef = optimizer_model.get_efficient_risk_portfolio(
-        stocks, period, target_volatility, market_neutral
-    )
+    try:
+        ef_opt, ef = optimizer_model.get_efficient_risk_portfolio(
+            stocks, period, target_volatility, market_neutral
+        )
+    except ValueError as e:
+        console.print(f"[red]{e}[/red]\n")
+        return
     weights = {key: value * round(port_value, 5) for key, port_value in ef_opt.items()}
 
     if not market_neutral and pie:
@@ -332,9 +336,15 @@ def display_efficient_return(
         Optional axes to plot data on
     """
     s_title = f"{d_period[period]} Weights that minimizes volatility at target return: {target_return}"
-    ef_opt, ef = optimizer_model.get_efficient_return_portfolio(
-        stocks, period, target_return, market_neutral
-    )
+    try:
+        ef_opt, ef = optimizer_model.get_efficient_return_portfolio(
+            stocks, period, target_return, market_neutral
+        )
+    except ValueError as e:
+        # This means optimization failed
+        console.print(f"[red]{e}[/red]\n")
+        return
+
     weights = {key: value * round(port_value, 5) for key, port_value in ef_opt.items()}
 
     if not market_neutral and pie:
@@ -382,7 +392,8 @@ def display_ef(
 
     sharpes = rets / stds
     ax.scatter(stds, rets, marker=".", c=sharpes)
-    plotting.plot_efficient_frontier(ef, ax=ax, show_assets=True)
+    plotting.plot_efficient_frontier(ef, ax=ax, show_assets=False)
+
     for ticker, ret, std in zip(
         ef.tickers, ef.expected_returns, np.sqrt(np.diag(ef.cov_matrix))
     ):
@@ -407,6 +418,9 @@ def display_ef(
         ax.set_xlim(xmin=min(stds) * 0.8)
         ax.add_line(line)
     ax.set_title(f"Efficient Frontier simulating {n_portfolios} portfolios")
+
+    ax.legend(loc="best", scatterpoints=1)
+
     theme.style_primary_axis(ax)
     if external_axes is None:
         theme.visualize_output()

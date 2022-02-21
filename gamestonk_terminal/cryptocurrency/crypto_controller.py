@@ -125,11 +125,14 @@ class CryptoController(CryptoBaseController):
                 "Tool to check returns if loaded coin reaches provided price or other crypto market cap"
                 "Uses CoinGecko to grab coin data (price and market cap).",
             )
-            group = parser.add_mutually_exclusive_group(required=True)
-            group.add_argument(
-                "--vs", help="Coin to compare with", dest="vs", type=str, default=None
+            parser.add_argument(
+                "--vs",
+                help="Coin to compare with",
+                dest="vs",
+                type=str,
+                required="-h" not in other_args,
             )
-            group.add_argument(
+            parser.add_argument(
                 "-p",
                 "--price",
                 help="Desired price",
@@ -137,7 +140,7 @@ class CryptoController(CryptoBaseController):
                 type=int,
                 default=None,
             )
-            group.add_argument(
+            parser.add_argument(
                 "-t",
                 "--top",
                 help="Compare with top N coins",
@@ -160,17 +163,17 @@ class CryptoController(CryptoBaseController):
                             f"VS Coin '{ns_parser.vs}' not found in CoinGecko\n"
                         )
                         return
-                pycoingecko_view.display_coin_potential_returns(
-                    self.coin_map_df["CoinGecko"],
-                    coin_found,
-                    ns_parser.top,
-                    ns_parser.price,
-                )
+                    pycoingecko_view.display_coin_potential_returns(
+                        self.coin_map_df["CoinGecko"],
+                        coin_found,
+                        ns_parser.top,
+                        ns_parser.price,
+                    )
 
-        else:
-            console.print(
-                "No coin selected. Use 'load' to load the coin you want to look at.\n"
-            )
+                else:
+                    console.print(
+                        "No coin selected. Use 'load' to load the coin you want to look at.\n"
+                    )
 
     @log_start_end(log=logger)
     def call_chart(self, other_args):

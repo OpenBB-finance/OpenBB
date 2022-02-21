@@ -12,4 +12,5 @@ optional arguments:
                         Export figure into png, jpg, pdf, svg (default: )
 ```
 
-![Line](https://user-images.githubusercontent.com/18151143/148131730-1182c04b-d4e6-4e5b-96be-f531652b14d2.png)
+![line](https://user-images.githubusercontent.com/46355364/154307397-9c2e9325-bce6-494d-994f-a6d7db798798.png)
+

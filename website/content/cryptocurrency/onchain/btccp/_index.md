@@ -13,3 +13,5 @@ arguments:
   --export {csv,json,xlsx}      Export dataframe data to csv,json,xlsx file (default: )
   -h, --help                    show this help message (default: False)
 ```
+
+![btccp](https://user-images.githubusercontent.com/46355364/154067527-0916ab9d-4690-4077-9037-a2665f9fc593.png)

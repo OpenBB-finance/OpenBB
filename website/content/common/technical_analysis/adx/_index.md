@@ -18,4 +18,4 @@ optional arguments:
   -h, --help            show this help message (default: False)
 ```
 
-![adx](https://user-images.githubusercontent.com/25267873/108602991-2bfd1c80-739d-11eb-973f-b836c1b839e6.png)
+![adx](https://user-images.githubusercontent.com/46355364/154309667-c67f6078-822f-452d-9853-ffffa9172670.png)

@@ -658,7 +658,7 @@ def display_qtr_contracts(
             print_rich_table(
                 pd.DataFrame(tickers.values),
                 headers=["tickers"],
-                show_index=False,
+                show_index=True,
                 title="Quarterly Contracts",
             )
         else:
@@ -716,7 +716,9 @@ def display_qtr_contracts(
                 theme.visualize_output()
 
     elif analysis == "total":
-        print_rich_table(tickers, headers=["Total"], title="Quarterly Contracts")
+        print_rich_table(
+            tickers, headers=["Total"], title="Quarterly Contracts", show_index=True
+        )
 
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "qtrcontracts", df_contracts

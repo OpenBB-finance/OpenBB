@@ -14,5 +14,4 @@ optional arguments:
   -h, --help            show this help message (default: False)
 ```
 
-<img size="1400" alt="Feature Screenshot - historical" src="https://user-images.githubusercontent.com/25267873/110699590-ef2b8500-81e6-11eb-95e3-144793a83a80.png">
-<img size="1400" alt="Feature Screenshot - historical normalized" src="https://user-images.githubusercontent.com/85772166/142901215-3cfd699c-adb2-4651-ab99-96cfc9ae807f.png">
+![historical](https://user-images.githubusercontent.com/46355364/154073378-935eddd4-167e-48e8-9e3d-34029e5ba42f.png)

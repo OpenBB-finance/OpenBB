@@ -9,4 +9,18 @@ optional arguments:
                         Select variable to analyze (default: None)
   -h, --help            show this help message (default: False)
 ```
-<img size="1400" al="Feature Screenshot - pick" src="https://user-images.githubusercontent.com/85772166/143324188-4b074d4c-521a-4d81-9fce-4ed9b7219d99.png">
+
+Example:
+```
+2022 Feb 16, 11:12 (✨) /stocks/qa/ $ load tsla
+
+Loading Daily TSLA stock with starting period 2019-02-11 for analysis.
+
+Datetime: 2022 Feb 16 11:12
+Timezone: America/New_York
+Currency: USD
+Market:   CLOSED
+
+
+2022 Feb 16, 11:12 (✨) /stocks/qa/ $ pick adjclose
+```

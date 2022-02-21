@@ -10,4 +10,4 @@ optional arguments:
   -h, --help            show this help message (default: False)
 ```
 
-<img size="1400" alt="Feature Screenshot - dist" src="https://user-images.githubusercontent.com/85772166/143519569-9e67546d-5aef-4223-9b25-ede6a7c9cc23.png">
+![hist](https://user-images.githubusercontent.com/46355364/154306947-aaba936a-ac07-40e2-a5a6-bf1fab460cd0.png)

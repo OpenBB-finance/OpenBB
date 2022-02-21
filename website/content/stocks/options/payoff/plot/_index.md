@@ -6,6 +6,7 @@ Shows the options payoff diagram using the variables entered in to the 'pick' an
 
 ```
 optional arguments:
-  -h, --help            show this help message (default: False)
+  -h, --help  show this help message (default: False)
 ```
-<img size="1400" alt="Feature Screenshot - plot" src="https://user-images.githubusercontent.com/85772166/142497205-3199ea14-b0ed-4685-8b8a-2799f6e7049e.png">
+
+![plot](https://user-images.githubusercontent.com/46355364/154285124-a4da8509-bf76-4865-aaa1-0dd871fe7c0a.png)
