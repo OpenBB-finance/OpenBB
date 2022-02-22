@@ -227,14 +227,35 @@ class DiscoveryController(BaseController):
             """,
         )
         parser.add_argument(
+            "-d",
+            "--days",
+            action="store",
+            dest="days",
+            type=check_non_negative,
+            default=5,
+            help="Number of past days to look for IPOs.",
+        )
+
+        parser.add_argument(
+            "-s",
+            "--start",
+            type=valid_date,
+            default=None,
+            dest="start",
+            help="""The starting date (format YYYY-MM-DD) to look for IPOs.
+            When set, start date will override --days argument""",
+        )
+
+        parser.add_argument(
             "-l",
             "--limit",
             action="store",
             dest="limit",
             type=check_non_negative,
-            default=5,
-            help="Limit of past days to look for IPOs.",
+            default=20,
+            help="Limit number of IPOs to display.",
         )
+
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
@@ -242,7 +263,9 @@ class DiscoveryController(BaseController):
         )
         if ns_parser:
             finnhub_view.past_ipo(
-                num_days_behind=ns_parser.limit,
+                num_days_behind=ns_parser.days,
+                limit=ns_parser.limit,
+                start_date=ns_parser.start,
                 export=ns_parser.export,
             )
 
