@@ -1,21 +1,21 @@
 ```
-usage: historical [--start START] [-t TYPE_CANDLE]
-                  [-s {top_gainers,top_losers,new_high,new_low,most_volatile,most_active,unusual_volume,overbought,oversold,downgrades,upgrades,earnings_before,earnings_after,recent_insider_buying,recent_insider_selling,major_news,horizontal_sr,tl_resistance,tl_support,wedge_up,wedge_down,wedge,triangle_ascending,triangle_descending,channel_up,channel_down,channel,double_top,double_bottom,multiple_top,multiple_bottom,head_shoulders,head_shoulders_inverse}]
-                  [-h]
+usage: historical [-l LIMIT] [-n] [-s START] [-t {o,h,l,c,a}] [-h] [--export {csv,json,xlsx,png,jpg,pdf,svg}]
 ```
 
 Historical price comparison between similar companies [Source: Yahoo Finance]
 
 ```
 optional arguments:
-  --start START         The starting date (format YYYY-MM-DD) of the historical price to plot
-  -t TYPE_CANDLE, --type TYPE_CANDLE
+  -l LIMIT, --limit LIMIT
+                        Limit of the most shorted stocks to retrieve.
+  -n, --no-scale        Flag to not put all prices on same 0-1 scale
+  -s START, --start START
+                        The starting date (format YYYY-MM-DD) of the historical price to plot
+  -t {o,h,l,c,a}, --type {o,h,l,c,a}
                         type of candles: o-open, h-high, l-low, c-close, a-adjusted close.
-  -s {top_gainers,top_losers,new_high,new_low,most_volatile,most_active,unusual_volume,overbought,oversold,downgrades,upgrades,earnings_before,earnings_after,recent_insider_buying,recent_insider_selling,major_news,horizontal_sr,tl_resistance,tl_support,wedge_up,wedge_down,wedge,triangle_ascending,triangle_descending,channel_up,channel_down,channel,double_top,double_bottom,multiple_top,multiple_bottom,head_shoulders,head_shoulders_inverse}, --signal {top_gainers,top_losers,new_high,new_low,most_volatile,most_active,unusual_volume,overbought,oversold,downgrades,upgrades,earnings_before,earnings_after,recent_insider_buying,recent_insider_selling,major_news,horizontal_sr,tl_resistance,tl_support,wedge_up,wedge_down,wedge,triangle_ascending,triangle_descending,channel_up,channel_down,channel,double_top,double_bottom,multiple_top,multiple_bottom,head_shoulders,head_shoulders_inverse}
-                        Signal
   -h, --help            show this help message
+  --export {csv,json,xlsx,png,jpg,pdf,svg}
+                        Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg
 ```
 
-![screener_view](https://user-images.githubusercontent.com/25267873/113784557-8bd13c00-972d-11eb-9776-0e192bb83515.png)
-
-![top_gainers](https://user-images.githubusercontent.com/25267873/113784834-f97d6800-972d-11eb-8112-6c80f4e2cf5e.png)
+![historical](https://user-images.githubusercontent.com/46355364/153897343-65a26523-0fb1-4b92-8988-85eb84e92c33.png)

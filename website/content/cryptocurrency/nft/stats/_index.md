@@ -1,6 +1,10 @@
 ```
 usage: stats [-s SLUG] [-h] [--export {csv,json,xlsx}]
+```
 
+Display the statistics of a certain opensea collection [Source: opensea.io]
+
+```
 optional arguments:
   -s SLUG, --slug SLUG  Opensea collection slug to check stats (e.g., mutant-ape-yacht-club)
   -h, --help            show this help message (default: False)
@@ -8,4 +12,47 @@ optional arguments:
                         Export raw data into csv, json, xlsx (default: )
 ```
 
-Display the statistics of a certain opensea collection [Source: opensea.io]
+Example:
+```
+2022 Feb 15, 07:56 (✨) /crypto/nft/ $ stats mutant-ape-yacht-club
+                     Collection Stats
+┌────────────────────────────────┬───────────────────────┐
+│ Metric                         │ Value                 │
+├────────────────────────────────┼───────────────────────┤
+│ Name                           │ Mutant Ape Yacht Club │
+├────────────────────────────────┼───────────────────────┤
+│ Floor Price (ETH)              │ 20.00                 │
+├────────────────────────────────┼───────────────────────┤
+│ Number of Owners               │ 11739.00              │
+├────────────────────────────────┼───────────────────────┤
+│ Market Cap (ETH)               │ 394162.01             │
+├────────────────────────────────┼───────────────────────┤
+│ Average Price ETH              │ 9.41                  │
+├────────────────────────────────┼───────────────────────┤
+│ One day volume (ETH)           │ 529.62                │
+├────────────────────────────────┼───────────────────────┤
+│ One day change (%)             │ 3.65                  │
+├────────────────────────────────┼───────────────────────┤
+│ One day sales (ETH)            │ 24.00                 │
+├────────────────────────────────┼───────────────────────┤
+│ One day average price (ETH)    │ 22.07                 │
+├────────────────────────────────┼───────────────────────┤
+│ Thirty day volume (ETH)        │ 50336.61              │
+├────────────────────────────────┼───────────────────────┤
+│ Thirty day change (%)          │ -19.89                │
+├────────────────────────────────┼───────────────────────┤
+│ Thirty day sales (ETH)         │ 2269.00               │
+├────────────────────────────────┼───────────────────────┤
+│ Thirty day average price (ETH) │ 22.18                 │
+├────────────────────────────────┼───────────────────────┤
+│ Total Supply (ETH)             │ 17958.00              │
+├────────────────────────────────┼───────────────────────┤
+│ Total Sales (ETH)              │ 25728.00              │
+├────────────────────────────────┼───────────────────────┤
+│ Total Volume (ETH)             │ 242008.36             │
+├────────────────────────────────┼───────────────────────┤
+│ Creation Date                  │ Aug 29, 2021          │
+├────────────────────────────────┼───────────────────────┤
+│ URL                            │ -                     │
+└────────────────────────────────┴───────────────────────┘
+```

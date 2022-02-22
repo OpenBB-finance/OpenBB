@@ -326,6 +326,7 @@ def test_call_func(
         )
 
         controller = po_controller.PortfolioOptimization(queue=None)
+        controller.tickers = ["AAPL", "MSFT"]
 
         getattr(controller, tested_func)(other_args)
 

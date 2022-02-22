@@ -45,4 +45,4 @@ optional arguments:
   -h, --help            show this help message
 ```
 
-![rnn](https://user-images.githubusercontent.com/25267873/108604940-d0d12700-73a8-11eb-837e-a5aa128942d9.png)
+![RNN](https://user-images.githubusercontent.com/18151143/154814291-4bb741d3-8eea-4020-8224-1d42d0adc77c.png)

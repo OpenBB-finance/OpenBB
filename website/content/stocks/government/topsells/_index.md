@@ -1,7 +1,7 @@
 ```
-usage: top_sells [-g {congress,senate,house}] [-p PAST_TRANSACTIONS_MONTHS] [-n NUM] [--raw]
-                 [--export {png,jpg,pdf,svg,csv,json,xlsx}] [-h]
+usage: topsells [-g {congress,senate,house}] [-p PAST_TRANSACTIONS_MONTHS] [-l LIMIT] [--raw] [-h] [--export {csv,json,xlsx,png,jpg,pdf,svg}]
 ```
+
 Companies experiencing the most stock sales by US governement representatives. [Source: www.quiverquant.com]
 
 ```
@@ -9,10 +9,12 @@ optional arguments:
   -g {congress,senate,house}, --govtype {congress,senate,house}
   -p PAST_TRANSACTIONS_MONTHS, --past_transactions_months PAST_TRANSACTIONS_MONTHS
                         Past transaction months (default: 6)
-  -n NUM, --num NUM     Number of top tickers (default: 10)
+  -l LIMIT, --limit LIMIT
+                        Limit of top tickers to display (default: 10)
   --raw                 Print raw data. (default: False)
-  --export {png,jpg,pdf,svg,csv,json,xlsx}
-                        Export plot to png,jpg,pdf,svg file or export dataframe to csv,json,xlsx (default: )
   -h, --help            show this help message (default: False)
+  --export {csv,json,xlsx,png,jpg,pdf,svg}
+                        Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg (default: )
 ```
-<img size="1400" alt="Feature Screenshot - topsells" src="https://user-images.githubusercontent.com/85772166/141689505-724180df-98e1-4edc-899a-acabebaa685c.png">
+
+![topsells](https://user-images.githubusercontent.com/46355364/154266942-4ee9c83a-39be-4aab-8a06-01b6850f5bd9.png)

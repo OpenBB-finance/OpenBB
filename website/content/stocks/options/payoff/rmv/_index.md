@@ -6,9 +6,32 @@ Remove one or all of the options from the diagram.
 
 ```
 optional arguments:
-  -k RMV_STRIKE, --strike RMV_STRIKE
-                        remove option from diagram
-  -a, --all             remove all options
+  -i RMV_STRIKE, --index RMV_STRIKE
+                        index of the option to remove
+  -a, --all             remove all of the options
   -h, --help            show this help message
 ```
-<img size="1400" alt="Feature Screenshot - rmv" src="https://user-images.githubusercontent.com/85772166/142498067-a7264b07-5f32-4dee-a406-0759a6500b96.png">
+
+Example:
+```
+2022 Feb 16, 09:28 (✨) /stocks/options/payoff/ $ rmv 0
+#       Type    Hold    Strike  Cost
+0       call    Long    780.0   141.96
+1       call    Long    850.0   102.0
+2       call    Long    875.0   89.4
+3       call    Long    600.0   320.73
+4       call    Long    700.0   226.06
+
+2022 Feb 16, 09:28 (✨) /stocks/options/payoff/ $ rmv 3
+#       Type    Hold    Strike  Cost
+0       call    Long    780.0   141.96
+1       call    Long    850.0   102.0
+2       call    Long    875.0   89.4
+3       call    Long    700.0   226.06
+
+2022 Feb 16, 09:28 (✨) /stocks/options/payoff/ $ rmv 2
+#       Type    Hold    Strike  Cost
+0       call    Long    780.0   141.96
+1       call    Long    850.0   102.0
+2       call    Long    700.0   226.06
+```

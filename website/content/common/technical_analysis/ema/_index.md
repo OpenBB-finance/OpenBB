@@ -18,5 +18,4 @@ optional arguments:
   -h, --help            show this help message (default: False)
 ```
 
-
-![ema](https://user-images.githubusercontent.com/25267873/108602300-33bac200-7399-11eb-971a-f23f7097aba3.png)
+![ema](https://user-images.githubusercontent.com/46355364/154310578-6f4a51a8-3667-497c-9c50-7ff16e256fb6.png)
