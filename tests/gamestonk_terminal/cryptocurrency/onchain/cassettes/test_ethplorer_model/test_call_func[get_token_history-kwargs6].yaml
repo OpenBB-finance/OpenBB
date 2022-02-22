@@ -11,7 +11,7 @@ interactions:
       User-Agent:
       - python-requests/2.27.1
     method: GET
-    uri: https://api.ethplorer.io/getTokenHistory/0x1f9840a85d5af5bf1d1762f925bdaddc4201f984?apiKey=freekey&limit=1000
+    uri: https://api.ethplorer.io/getTokenHistory/0x1f9840a85d5af5bf1d1762f925bdaddc4201f984?apiKey=MOCK_API_KEY&limit=1000
   response:
     body:
       string: !!binary |
