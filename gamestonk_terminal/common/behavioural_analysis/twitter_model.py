@@ -75,7 +75,9 @@ def load_analyze_tweets(
         return pd.DataFrame()
     elif response.status_code == 400:
         console.print(
-            "Status Code 400.  This means you are requesting data from beyond the API's 7 day limit"
+            """
+            Status Code 400.
+            This means you are requesting data from beyond the API's 7 day limit"""
         )
         return pd.DataFrame()
 
