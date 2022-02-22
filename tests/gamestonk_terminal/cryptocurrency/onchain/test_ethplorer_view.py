@@ -7,6 +7,13 @@ import pytest
 from gamestonk_terminal.cryptocurrency.onchain import ethplorer_view
 
 
+@pytest.fixture(scope="module")
+def vcr_config():
+    return {
+        "filter_query_parameters": [("apiKey", "MOCK_API_KEY")],
+    }
+
+
 @pytest.mark.vcr
 @pytest.mark.parametrize(
     "func, kwargs",
