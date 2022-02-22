@@ -2,12 +2,15 @@
 __docformat__ = "numpy"
 # pylint: disable=too-many-function-args
 # pylint: disable=inconsistent-return-statements
+# pylint: disable=too-many-lines
 
 import argparse
 import logging
 from pathlib import Path
 from typing import List, Dict, Any
+import os
 
+import numpy as np
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 
@@ -19,6 +22,7 @@ from gamestonk_terminal.helper_funcs import (
     EXPORT_ONLY_FIGURES_ALLOWED,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+    export_data,
 )
 from gamestonk_terminal.helper_funcs import (
     print_rich_table,
@@ -39,17 +43,26 @@ class StatisticsController(BaseController):
 
     CHOICES_COMMANDS: List[str] = [
         "load",
-        "index",
+        "export",
         "clear",
         "plot",
         "show",
         "info",
+        "index",
+        "clean",
         "norm",
         "root",
         "granger",
         "coint",
         "ols",
-        "auto",
+        "dwat",
+        "pols",
+        "bols",
+        "re",
+        "fe",
+        "compare",
+        "fdols",
+        "bgod",
     ]
     CHOICES_MENUS: List[str] = ["qa", "pred"]
     pandas_plot_choices = [
@@ -71,7 +84,16 @@ class StatisticsController(BaseController):
         super().__init__(queue)
         self.files: List[str] = list()
         self.datasets: Dict[pd.DataFrame, Any] = dict()
-        self.regression: Dict[pd.DataFrame, Any] = dict()
+        self.regression: Dict[Any[Dict, Any], Any] = dict()
+
+        for regression in ["OLS", "POLS", "BOLS", "RE", "FE", "FDOLS"]:
+            self.regression[regression] = {
+                "data": {},
+                "independent": {},
+                "dependent": {},
+                "model": {},
+            }
+
         self.file_types = ["csv", "xlsx"]
         self.DATA_FILES = {
             filepath.name: filepath
@@ -95,9 +117,17 @@ class StatisticsController(BaseController):
                 for column in dataframe.columns
             }
 
-            for feature in ["plot", "norm", "root", "granger", "cointegration", "ols"]:
+            for feature in [
+                "plot",
+                "norm",
+                "root",
+                "granger",
+                "cointegration",
+                "ols",
+                "pols",
+            ]:
                 self.choices[feature] = dataset_columns
-            for feature in ["index", "show", "info", "clear"]:
+            for feature in ["export", "show", "info", "clear", "index"]:
                 self.choices[feature] = {c: None for c in self.files}
 
         self.completer = NestedCompleter.from_nested_dict(self.choices)
@@ -106,25 +136,37 @@ class StatisticsController(BaseController):
         """Print help"""
         help_text = f"""[cmds]
     load            load in custom data sets
-    index           set (multi)index based on columns
+    export          export a dataset
     clear           remove a dataset[/cmds]
 
-[param]Current file:[/param]    {self.files or None}[cmds]
+[param]Current file:[/param]    {", ".join(self.files) or None}[cmds]
 
 Dataset Discovery
     show            show portion of loaded data
     plot            plot data from a dataset
     info            show descriptive statistics
+    index           set (multi)index based on columns
+    clean           clean the dataset by filling or dropping NaNs
 
 General Tests
     norm            perform normality tests on a column of a dataset
     root            perform unitroot tests (ADF & KPSS) on a column of a dataset
+
+Timeseries
+    ols             fit a (multi) linear regression model
+    dwat            perform Durbin-Watson autocorrelation test on the residuals of the regression
     granger         perform granger causality tests on two timeseries.
     coint           perform co-integration test on two timeseries
 
-Regression Analysis
-    ols             fit a (multi) linear regression model
-    auto            perform autocorrelation test on the residuals of the regression[/cmds]
+Panel Data
+    pols            Estimate model based on Pooled OLS
+    bols            Estimate model based on Between Estimator
+    re              Estimate model based on Random Effects
+    fe              Estimate model based on Fixed Effects
+    fdols           Estimate model based on First Differences
+    compare         Compare results of all estimated models
+    bgod            perform Breusch-Godfrey autocorrelation tests on the regression model [Disabled]
+[/cmds]
         """
         console.print(text=help_text, menu="Statistics")
 
@@ -165,7 +207,7 @@ Regression Analysis
             if not data.empty:
                 data.columns = data.columns.map(lambda x: x.lower())
                 for col in data.columns:
-                    if col in ["date", "time", "timestamp"]:  # Could be others?
+                    if col in ["date", "time", "timestamp", "quarter"]:
                         data[col] = pd.to_datetime(data[col])
                         data = data.set_index(col)
 
@@ -180,60 +222,45 @@ Regression Analysis
 
                 console.print("")
 
-    def call_index(self, other_args: List[str]):
-        """Process index"""
+    def call_export(self, other_args: List[str]):
+        """Process export command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="index",
-            description="Set (multi)index for the dataset",
-        )
-        parser.add_argument(
-            "-n",
-            "--name",
-            type=str,
-            dest="name",
-            nargs="+",
-            help="The first argument is the name of the database, further arguments are "
-            "the columns you wish to set a index",
+            prog="export",
+            description="Export dataset to Excel",
         )
 
         parser.add_argument(
-            "-i",
-            "--index",
-            help="Save the original index as a column",
-            action="store_true",
-            dest="index",
-            default=False,
+            "-n",
+            "--name",
+            help="The name of the dataset",
+            type=str,
+        )
+
+        parser.add_argument(
+            "-t",
+            "--type",
+            help="The file type",
+            choices=["csv", "json", "xlsx"],
+            type=str,
+            default="xlsx",
         )
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
 
-        if ns_parser.name:
-            name = ns_parser.name[0]
-            columns = ns_parser.name[1:]
+        export_data(
+            ns_parser.type,
+            os.path.dirname(os.path.abspath(__file__)),
+            ns_parser.name,
+            self.datasets[ns_parser.name],
+        )
 
-            print(columns)
-
-            dataset = self.datasets[name]
-
-            for column in columns:
-                if column not in dataset.columns:
-                    return console.print(
-                        f"The column '{column}' is not available in the dataset {name}."
-                        f"Please choose one of the following: {', '.join(dataset.columns)}"
-                    )
-
-            if ns_parser.index:
-                dataset = dataset.reset_index()
-
-            self.datasets[name] = dataset.set_index(columns)
-
-            self.update_runtime_choices()
-
-            console.print("")
+        console.print("")
 
     def call_clear(self, other_args: List[str]):
         """Process clear"""
@@ -394,6 +421,131 @@ Regression Analysis
                 print_rich_table(
                     df, headers=list(df.columns), show_index=True, title=ns_parser.name
                 )
+
+        console.print("")
+
+    def call_index(self, other_args: List[str]):
+        """Process index"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="index",
+            description="Set (multi)index for the dataset",
+        )
+        parser.add_argument(
+            "-n",
+            "--name",
+            type=str,
+            dest="name",
+            nargs="+",
+            help="The first argument is the name of the database, further arguments are "
+            "the columns you wish to set a index",
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-n")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+
+        if ns_parser.name:
+            name = ns_parser.name[0]
+            columns = ns_parser.name[1:]
+
+            dataset = self.datasets[name]
+
+            if not pd.Index(np.arange(0, len(dataset))).equals(dataset.index):
+                console.print("As an index has been set, resetting the current index.")
+                dataset = dataset.reset_index()
+
+            for column in columns:
+                if column not in dataset.columns:
+                    return console.print(
+                        f"The column '{column}' is not available in the dataset {name}."
+                        f"Please choose one of the following: {', '.join(dataset.columns)}"
+                    )
+
+            if len(columns) > 1 and dataset[columns[0]].isnull().any:
+                console.print(
+                    f"The column '{columns[0]}' has NaN values. As is assumed this column usually "
+                    f"represents companies (over time), the NaN values are forward filled."
+                )
+                dataset[columns[0]] = dataset[columns[0]].fillna(method="ffill")
+            if not isinstance(dataset[columns[-1]], pd.DatetimeIndex):
+                dataset[columns[-1]] = pd.DatetimeIndex(dataset[columns[-1]])
+
+                if dataset[columns[-1]].isnull().any():
+                    # This checks whether NaT exists within the DataFrame
+                    null_values = dataset[dataset[columns[-1]].isnull()]
+                    console.print(
+                        f"The time index '{columns[-1]}' contains {len(null_values)} "
+                        f"NaTs which are removed from the dataset."
+                    )
+                    dataset = dataset[dataset[columns[-1]].notnull()]
+
+            self.datasets[name] = dataset.set_index(columns)
+
+            self.update_runtime_choices()
+
+            console.print("")
+
+    def call_clean(self, other_args: List[str]):
+        """Process clean"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="clean",
+            description="Clean a dataset",
+        )
+
+        parser.add_argument(
+            "-n",
+            "--name",
+            help="The name of the dataset you want to clean up",
+            dest="name",
+            type=str,
+        )
+
+        parser.add_argument(
+            "-f",
+            "--fill",
+            help="The method of filling NaNs",
+            dest="fill",
+            choices=["rfill", "cfill", "rbfill", "cbfill", "rffill", "bffill"],
+            default="",
+        )
+
+        parser.add_argument(
+            "-d",
+            "--drop",
+            help="The method of dropping NaNs",
+            dest="drop",
+            choices=["rdrop", "cdrop"],
+            default="",
+        )
+
+        parser.add_argument(
+            "-l",
+            "--limit",
+            help="The max amount of columns/rows backward filled or forward filled that have NaNs or "
+            "the max amount of columns/rows that have NaNs before being dropped.",
+            dest="limit",
+            type=int,
+            default=5,
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-n")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+
+        if ns_parser:
+            print(self.datasets[ns_parser.name].shape)
+            self.datasets[ns_parser.name] = statistics_model.clean(
+                self.datasets[ns_parser.name],
+                ns_parser.fill,
+                ns_parser.drop,
+                ns_parser.limit,
+            )
+
+            print(self.datasets[ns_parser.name].shape)
 
         console.print("")
 
@@ -614,11 +766,11 @@ Regression Analysis
             )
 
     def call_ols(self, other_args: List[str]):
-        """Process unitroot command"""
+        """Process ols command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="root",
+            prog="ols",
             description="Show unit root tests of a column of a dataset",
         )
 
@@ -640,23 +792,208 @@ Regression Analysis
 
         if ns_parser and ns_parser.regression:
             (
-                self.regression["data"],
-                self.regression["dependent"],
-                self.regression["independent"],
-                self.regression["model"],
+                self.regression["OLS"]["data"],
+                self.regression["OLS"]["dependent"],
+                self.regression["OLS"]["independent"],
+                self.regression["OLS"]["model"],
             ) = gamestonk_terminal.statistics.regression_model.get_ols(
                 ns_parser.regression, self.datasets, self.choices["ols"]
             )
 
-            print(self.regression["model"].summary())
+            print(self.regression["OLS"]["model"].summary())
 
-    def call_auto(self, other_args: List[str]):
-        """Process unitroot command"""
+    def call_pols(self, other_args: List[str]):
+        """Process pols command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="root",
+            prog="pols",
             description="Show unit root tests of a column of a dataset",
+        )
+
+        parser.add_argument(
+            "-r",
+            "--regression",
+            nargs="+",
+            type=str,
+            choices=self.choices["ols"],
+            dest="regression",
+            help="The regression you would like to perform",
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-r")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        if ns_parser and ns_parser.regression:
+            (
+                self.regression["POLS"]["data"],
+                self.regression["POLS"]["dependent"],
+                self.regression["POLS"]["independent"],
+                self.regression["POLS"]["model"],
+            ) = gamestonk_terminal.statistics.regression_model.get_pols(
+                ns_parser.regression, self.datasets, self.choices["ols"]
+            )
+
+            print(self.regression["POLS"]["model"])
+
+    def call_bols(self, other_args: List[str]):
+        """Process pols command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="bols",
+            description="Show unit root tests of a column of a dataset",
+        )
+
+        parser.add_argument(
+            "-r",
+            "--regression",
+            nargs="+",
+            type=str,
+            choices=self.choices["ols"],
+            dest="regression",
+            help="The regression you would like to perform",
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-r")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        if ns_parser and ns_parser.regression:
+            (
+                self.regression["BOLS"]["data"],
+                self.regression["BOLS"]["dependent"],
+                self.regression["BOLS"]["independent"],
+                self.regression["BOLS"]["model"],
+            ) = gamestonk_terminal.statistics.regression_model.get_bols(
+                ns_parser.regression, self.datasets, self.choices["ols"]
+            )
+
+            print(self.regression["BOLS"]["model"])
+
+    def call_fdols(self, other_args: List[str]):
+        """Process fdols command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="fdols",
+            description="Show unit root tests of a column of a dataset",
+        )
+
+        parser.add_argument(
+            "-r",
+            "--regression",
+            nargs="+",
+            type=str,
+            choices=self.choices["ols"],
+            dest="regression",
+            help="The regression you would like to perform",
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-r")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        if ns_parser and ns_parser.regression:
+            (
+                self.regression["FDOLS"]["data"],
+                self.regression["FDOLS"]["dependent"],
+                self.regression["FDOLS"]["independent"],
+                self.regression["FDOLS"]["model"],
+            ) = gamestonk_terminal.statistics.regression_model.get_fdols(
+                ns_parser.regression, self.datasets, self.choices["ols"]
+            )
+
+            print(self.regression["FDOLS"]["model"])
+
+    def call_re(self, other_args: List[str]):
+        """Process re command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="re",
+            description="Show unit root tests of a column of a dataset",
+        )
+
+        parser.add_argument(
+            "-r",
+            "--regression",
+            nargs="+",
+            type=str,
+            choices=self.choices["ols"],
+            dest="regression",
+            help="The regression you would like to perform",
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-r")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        if ns_parser and ns_parser.regression:
+            (
+                self.regression["RE"]["data"],
+                self.regression["RE"]["dependent"],
+                self.regression["RE"]["independent"],
+                self.regression["RE"]["model"],
+            ) = gamestonk_terminal.statistics.regression_model.get_re(
+                ns_parser.regression, self.datasets, self.choices["ols"]
+            )
+
+            print(self.regression["RE"]["model"])
+
+    def call_fe(self, other_args: List[str]):
+        """Process fe command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="fe",
+            description="Show unit root tests of a column of a dataset",
+        )
+
+        parser.add_argument(
+            "-r",
+            "--regression",
+            nargs="+",
+            type=str,
+            choices=self.choices["ols"],
+            dest="regression",
+            help="The regression you would like to perform",
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-r")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        if ns_parser and ns_parser.regression:
+            (
+                self.regression["FE"]["data"],
+                self.regression["FE"]["dependent"],
+                self.regression["FE"]["independent"],
+                self.regression["FE"]["model"],
+            ) = gamestonk_terminal.statistics.regression_model.get_fe(
+                ns_parser.regression, self.datasets, self.choices["ols"]
+            )
+
+            print(self.regression["FE"]["model"])
+
+    def call_compare(self, other_args: List[str]):
+        """Process compare command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="compare",
+            description="Compare results between all activated regression models",
         )
 
         ns_parser = parse_known_args_and_warn(
@@ -664,8 +1001,67 @@ Regression Analysis
         )
 
         if ns_parser:
-            dependent_variable = self.regression["data"][self.regression["dependent"]]
-
-            gamestonk_terminal.statistics.regression_view.display_auto(
-                dependent_variable, self.regression["model"].resid, ns_parser.export
+            comparison_result = (
+                gamestonk_terminal.statistics.regression_model.get_comparison(
+                    self.regression
+                )
             )
+
+            print(comparison_result)
+
+    def call_dwat(self, other_args: List[str]):
+        """Process unitroot command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="dwat",
+            description="Show autocorrelation tests from Durbin-Watson",
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        if self.regression["OLS"]["model"]:
+            console.print(
+                "Please perform an OLS regression before estimating the Durbin-Watson statistic."
+            )
+        else:
+            dependent_variable = self.regression["OLS"]["data"][
+                self.regression["OLS"]["dependent"]
+            ]
+
+            gamestonk_terminal.statistics.regression_view.display_dwat(
+                dependent_variable,
+                self.regression["OLS"]["model"].resid,
+                ns_parser.export,
+            )
+
+    def call_bgod(self):
+        # TODO: Make the functionality of Statsmodels compatible with Linearmodels.
+        console.print("The functionality is currently disabled.")
+        # """Process bgod command"""
+        # parser = argparse.ArgumentParser(
+        #     add_help=False,
+        #     formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        #     prog="bgod",
+        #     description="Show unit root tests of a column of a dataset",
+        # )
+        #
+        # parser.add_argument(
+        #     "-l",
+        #     "--lags",
+        #     type=int,
+        #     dest="lags",
+        #     help="The lags for the Breusch-Godfrey test",
+        #     default=3
+        # )
+        #
+        # ns_parser = parse_known_args_and_warn(
+        #     parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        # )
+        #
+        # if ns_parser:
+        #     gamestonk_terminal.statistics.regression_view.display_bgod(
+        #         self.regression["model"], ns_parser.lags, ns_parser.export
+        #     )

@@ -51,6 +51,48 @@ def load(file: str, file_types: list) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
+def clean(dataset: pd.DataFrame, fill: str, drop: str, limit: int) -> pd.DataFrame:
+    """Load custom file into dataframe.
+
+    Parameters
+    ----------
+    file: str
+        Path to file
+    file_types: list
+        Supported file types
+
+    Returns
+    -------
+    pd.DataFrame:
+        Dataframe with custom data
+    """
+    print(dataset.shape)
+    if fill:
+        if fill == "rfill":
+            dataset = dataset.fillna(axis="index", value=0)
+        if fill == "cfill":
+            dataset = dataset.fillna(axis="columns", value=0)
+        elif fill == "rbfill":
+            dataset = dataset.fillna(axis="index", method="bfill", limit=limit)
+        elif fill == "cbfill":
+            dataset = dataset.fillna(axis="columns", method="bfill", limit=limit)
+        elif fill == "rffill":
+            dataset = dataset.fillna(axis="index", method="ffill", limit=limit)
+        elif fill == "cffill":
+            dataset = dataset.fillna(axis="columns", method="ffill", limit=limit)
+
+    if drop:
+        if drop == "rdrop":
+            dataset = dataset.dropna(how="any", axis="index")
+        elif drop == "cdrop":
+            dataset = dataset.dropna(how="any", axis="columns")
+
+    print(dataset.shape)
+
+    return dataset
+
+
+@log_start_end(log=logger)
 def get_normality(data: pd.DataFrame) -> pd.DataFrame:
     """
     Look at the distribution of returns and generate statistics on the relation to the normal curve.
