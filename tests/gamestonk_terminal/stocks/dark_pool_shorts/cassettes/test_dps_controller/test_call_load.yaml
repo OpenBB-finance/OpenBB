@@ -12,81 +12,39 @@ interactions:
     uri: https://query2.finance.yahoo.com/v8/finance/chart/TSLA?events=div%2Csplits&includePrePost=False&interval=1d&period1=1598220000&period2=1635980400
   response:
     body:
-      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"TSLA","exchangeName":"NMS","instrumentType":"EQUITY","firstTradeDate":1277818200,"regularMarketTime":1640034002,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":899.94,"chartPreviousClose":926.92,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1640077200,"end":1640097000,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1640097000,"end":1640120400,"gmtoffset":-18000},"post":{"timezone":"EST","start":1640120400,"end":1640134800,"gmtoffset":-18000}},"dataGranularity":"1d","range":"","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1639751400,1640010600],"indicators":{"quote":[{"high":[960.6599731445312,921.6900024414062],"volume":[33479100,18757200],"close":[932.5700073242188,899.9400024414062],"low":[909.0399780273438,893.3900146484375],"open":[914.77001953125,910.7000122070312]}],"adjclose":[{"adjclose":[932.5700073242188,899.9400024414062]}]}}],"error":null}}'
-    headers:
-      Age:
-      - '1'
-      Connection:
-      - keep-alive
-      Expect-CT:
-      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
-      Referrer-Policy:
-      - no-referrer-when-downgrade
-      Strict-Transport-Security:
-      - max-age=15552000
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-XSS-Protection:
-      - 1; mode=block
-      cache-control:
-      - public, max-age=10, stale-while-revalidate=20
-      content-length:
-      - '1048'
-      content-type:
-      - application/json;charset=utf-8
-      date:
-      - Tue, 21 Dec 2021 11:53:05 GMT
-      server:
-      - ATS
-      vary:
-      - Origin,Accept-Encoding
-      x-envoy-decorator-operation:
-      - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
-      x-envoy-upstream-service-time:
-      - '3'
-      x-request-id:
-      - 35a95bb2-f5d5-4d5f-8a8e-d2985687f112
-      x-yahoo-request-id:
-      - 3gnf69dgs3g12
-      y-rid:
-      - 3gnf69dgs3g12
-    status:
-      code: 200
-      message: OK
-- request:
-    body: null
-    headers:
-      Accept:
-      - '*/*'
-      Accept-Encoding:
-      - gzip, deflate, br
-      Connection:
-      - keep-alive
-    method: GET
-    uri: https://query2.finance.yahoo.com/v8/finance/chart/TSLA?events=div%2Csplits&includePrePost=False&interval=1d&period1=1598220000&period2=1635980400
-  response:
-    body:
       string: !!binary |
-        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
+        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
+        x+KLFAAA
     headers:
       Age:
       - '0'
@@ -109,25 +67,25 @@ interactions:
       content-encoding:
       - gzip
       content-length:
-      - '1006'
+      - '1773'
       content-type:
       - application/json;charset=utf-8
       date:
-      - Tue, 11 Jan 2022 14:18:05 GMT
+      - Tue, 22 Feb 2022 08:08:54 GMT
       server:
       - ATS
       vary:
       - Origin,Accept-Encoding
       x-envoy-decorator-operation:
-      - finance-chart-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '7'
+      - '4'
       x-request-id:
-      - c802524f-3331-431e-861d-3dc2527dc85a
+      - 06ea0e14-2d52-4652-86a5-2974a504a71c
       x-yahoo-request-id:
-      - 0t6pcklgtr4ct
+      - 7smvs8dh196gm
       y-rid:
-      - 0t6pcklgtr4ct
+      - 7smvs8dh196gm
     status:
       code: 200
       message: OK
