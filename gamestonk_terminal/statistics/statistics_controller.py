@@ -155,7 +155,7 @@ Timeseries
 Panel Data
     panel           Estimate model based on various regression techniques.
     compare         Compare results of all estimated models
-    bgod            perform Breusch-Godfrey autocorrelation tests on the regression model [red][Disabled][/red]
+    bgod            perform Breusch-Godfrey autocorrelation tests on an OLS regression model
 [/cmds]
         """
         console.print(text=help_text, menu="Statistics")
@@ -1011,31 +1011,34 @@ Panel Data
 
             console.print(comparison_result)
 
-    def call_bgod(self):
-        # TODO: Make the functionality of Statsmodels compatible with Linearmodels.
-        console.print("The functionality is currently disabled.")
-        # """Process bgod command"""
-        # parser = argparse.ArgumentParser(
-        #     add_help=False,
-        #     formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        #     prog="bgod",
-        #     description="Show unit root tests of a column of a dataset",
-        # )
-        #
-        # parser.add_argument(
-        #     "-l",
-        #     "--lags",
-        #     type=int,
-        #     dest="lags",
-        #     help="The lags for the Breusch-Godfrey test",
-        #     default=3
-        # )
-        #
-        # ns_parser = parse_known_args_and_warn(
-        #     parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        # )
-        #
-        # if ns_parser:
-        #     gamestonk_terminal.statistics.regression_view.display_bgod(
-        #         self.regression["model"], ns_parser.lags, ns_parser.export
-        #     )
+    def call_bgod(self, other_args):
+        """Process bgod command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="bgod",
+            description="Show unit root tests of a column of a dataset",
+        )
+
+        parser.add_argument(
+            "-l",
+            "--lags",
+            type=int,
+            dest="lags",
+            help="The lags for the Breusch-Godfrey test",
+            default=3,
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        if ns_parser:
+            if not self.regression["OLS"]["model"]:
+                console.print(
+                    "Please perform an OLS regression before estimating the Breusch-Godfrey statistic."
+                )
+            else:
+                gamestonk_terminal.statistics.regression_view.display_bgod(
+                    self.regression["OLS"]["model"], ns_parser.lags, ns_parser.export
+                )
