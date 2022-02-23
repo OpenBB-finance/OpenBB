@@ -1,0 +1,4 @@
+[green]Gamestonk Terminal Integrated Tests:
+[/green]
+test_alt_covid.gst  0.0%
+Summary: [green]Successes: 1[/green] [red]Failures: 0[/red]
