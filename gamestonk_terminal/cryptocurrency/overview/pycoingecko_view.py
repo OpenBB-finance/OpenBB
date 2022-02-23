@@ -3,11 +3,11 @@ __docformat__ = "numpy"
 
 import logging
 import os
-
+import squarify
 from matplotlib import pyplot as plt
 from matplotlib import ticker
+from matplotlib import cm
 from pandas.plotting import register_matplotlib_converters
-
 import gamestonk_terminal.cryptocurrency.overview.pycoingecko_model as gecko
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_plot import PLOT_DPI
@@ -28,6 +28,56 @@ register_matplotlib_converters()
 
 # pylint: disable=inconsistent-return-statements
 # pylint: disable=R0904, C0302
+
+
+@log_start_end(log=logger)
+def display_crypto_heatmap(category: str, top: int, export: str) -> None:
+    """Shows cryptocurrencies heatmap [Source: CoinGecko]
+
+    Parameters
+    ----------
+    caterogy: str
+        Category (e.g., stablecoins). Empty for no category (default: )
+    top: int
+        Number of top cryptocurrencies to display
+    export: str
+        Export dataframe data to csv,json,xlsx
+    """
+    df = gecko.get_coins(top, category)
+    if df.empty:
+        console.print("\nNo cryptocurrencies found\n")
+    else:
+        max_abs = max(
+            -df.price_change_percentage_24h_in_currency.min(),
+            df.price_change_percentage_24h_in_currency.max(),
+        )
+        cmapred = cm.get_cmap("Reds", 100)
+        cmapgreen = cm.get_cmap("Greens", 100)
+        colors = list()
+        for val in df.price_change_percentage_24h_in_currency / max_abs:
+            if val > 0:
+                colors.append(cmapgreen(round(val * 100)))
+            else:
+                colors.append(cmapred(-round(val * 100)))
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        category_str = f"[{category}]" if category else ""
+        ax.set_title(f"Top {top} Cryptocurrencies {category_str}")
+
+        squarify.plot(
+            df["market_cap"],
+            label=df.symbol,
+            alpha=0.8,
+            color=colors,
+            text_kwargs={"color": "black", "size": 8},
+        )
+        ax.set_axis_off()
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "hm",
+            df,
+        )
 
 
 @log_start_end(log=logger)
