@@ -59,12 +59,14 @@ def display_dwat(
 
 @log_start_end(log=logger)
 def display_bgod(model: pd.DataFrame, lags: int, export: str = ""):
-    """Show autocorrelation tests
+    """Show Breusch-Godfret autocorrelation test used with Panel Data
 
     Parameters
     ----------
     model : OLS Model
         Model containing residual values.
+    lags : int
+        The amount of lags included.
     export : str
         Format to export data
     """

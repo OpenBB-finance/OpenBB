@@ -4,7 +4,8 @@ __docformat__ = "numpy"
 # pylint: disable=too-many-function-args
 # pylint: disable=inconsistent-return-statements
 # pylint: disable=too-many-lines
-# pylint:disable=import-outside-toplevel
+# pylint: disable=import-outside-toplevel
+# pylint: disable=too-many-lines
 
 import argparse
 import logging
@@ -50,6 +51,7 @@ class StatisticsController(BaseController):
         "info",
         "index",
         "clean",
+        "modify",
         "norm",
         "root",
         "granger",
@@ -114,6 +116,7 @@ class StatisticsController(BaseController):
             }
 
             for feature in [
+                "general",
                 "plot",
                 "norm",
                 "root",
@@ -143,6 +146,7 @@ Exploration
     info            show descriptive statistics
     index           set (multi)index based on columns
     clean           clean the dataset by filling or dropping NaNs
+    modify          combine columns of datasets and delete or rename columns
 
 Timeseries
     ols             fit a (multi) linear regression model
@@ -609,7 +613,6 @@ Panel Data
         ns_parser = parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
-            print(self.datasets[ns_parser.name].shape)
             self.datasets[ns_parser.name] = statistics_model.clean(
                 self.datasets[ns_parser.name],
                 ns_parser.fill,
@@ -617,7 +620,151 @@ Panel Data
                 ns_parser.limit,
             )
 
-            print(self.datasets[ns_parser.name].shape)
+        console.print("")
+
+    def call_modify(self, other_args: List[str]):
+        """Process modify"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="modify",
+            description="Modify a dataset by adding, removing or renaming columns. This also has the "
+            "possibility to combine DataFrames together.",
+        )
+
+        parser.add_argument(
+            "-a",
+            "--add",
+            help="Add columns to your dataframe with the option to use formulas. "
+            "Use format: <column>-<dataset> <column>-<dataset> <sign> <criteria>. An example could "
+            "be: high_revenue-thesis revenue-thesis > 1000",
+            dest="add",
+            nargs=4,
+            type=str,
+        )
+
+        parser.add_argument(
+            "-d",
+            "--delete",
+            help="The columns you want to delete from a dataset. Use format: <column>-<dataset>.",
+            dest="delete",
+            nargs="+",
+            type=str,
+        )
+
+        parser.add_argument(
+            "-c",
+            "--combine",
+            help="The columns you want to add to a dataset, the first argument is the dataset that you wish "
+            "to place these columns in. Use format: <dataset> <column-dataset2> <column-<dataset3>",
+            dest="combine",
+            nargs="+",
+            type=str,
+        )
+
+        parser.add_argument(
+            "-r",
+            "--rename",
+            help="The columns you want to rename from a dataset. "
+            "Use format: dataset OLD_COLUMN NEW_COLUMN",
+            dest="rename",
+            nargs=3,
+            type=str,
+        )
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+
+        if ns_parser:
+            if ns_parser.add:
+                new_column, dataset = ns_parser.add[0].split("-")
+                existing_column, dataset2 = ns_parser.add[1].split("-")
+
+                if dataset not in self.datasets:
+                    console.print(
+                        f"Not able to find the dataset {dataset}. Please choose one of "
+                        f"the following: {', '.join(self.datasets)}"
+                    )
+                elif dataset2 not in self.datasets:
+                    console.print(
+                        f"Not able to find the dataset {dataset2}. Please choose one of "
+                        f"the following: {', '.join(self.datasets)}"
+                    )
+                elif existing_column not in self.datasets[dataset2]:
+                    console.print(
+                        f"Not able to find the column {existing_column}. Please choose one of "
+                        f"the following: {', '.join(self.datasets[dataset2].columns)}"
+                    )
+                else:
+                    pd.eval(
+                        f"{new_column} = self.datasets[dataset2][existing_column] "
+                        f"{ns_parser.add[2]} {ns_parser.add[3]}",
+                        target=self.datasets[dataset],
+                        inplace=True,
+                    )
+
+            if ns_parser.delete:
+                for option in ns_parser.delete:
+                    column, dataset = option.split("-")
+
+                    if dataset not in self.datasets:
+                        console.print(
+                            f"Not able to find the dataset {dataset}. Please choose one of "
+                            f"the following: {', '.join(self.datasets)}"
+                        )
+                    elif column not in self.datasets[dataset]:
+                        console.print(
+                            f"Not able to find the column {column}. Please choose one of "
+                            f"the following: {', '.join(self.datasets[dataset].columns)}"
+                        )
+                    else:
+                        del self.datasets[dataset][column]
+
+            if ns_parser.combine:
+                if ns_parser.combine[0] not in self.datasets:
+                    console.print(
+                        f"Not able to find the dataset {ns_parser.combine[0]}. Please choose one of "
+                        f"the following: {', '.join(self.datasets)}"
+                    )
+                else:
+                    data = self.datasets[ns_parser.combine[0]]
+
+                    for option in ns_parser.combine[1:]:
+                        column, dataset = self.choices["general"][option].keys()
+
+                        if dataset not in self.datasets:
+                            console.print(
+                                f"Not able to find the dataset {dataset}. Please choose one of "
+                                f"the following: {', '.join(self.datasets)}"
+                            )
+                        elif column not in self.datasets[dataset]:
+                            console.print(
+                                f"Not able to find the column {column}. Please choose one of "
+                                f"the following: {', '.join(self.datasets[dataset].columns)}"
+                            )
+                        else:
+                            data[f"{column}_{dataset}"] = self.datasets[dataset][column]
+
+            if ns_parser.rename:
+                dataset = ns_parser.rename[0]
+                column_old = ns_parser.rename[1]
+                column_new = ns_parser.rename[2]
+
+                if dataset not in self.datasets:
+                    console.print(
+                        f"Not able to find the dataset {dataset}. Please choose one of "
+                        f"the following: {', '.join(self.datasets)}"
+                    )
+                elif column_old not in self.datasets[dataset]:
+                    console.print(
+                        f"Not able to find the column {column_old}. Please choose one of "
+                        f"the following: {', '.join(self.datasets[dataset].columns)}"
+                    )
+                else:
+                    self.datasets[dataset] = self.datasets[dataset].rename(
+                        columns={column_old: column_new}
+                    )
+
+            self.update_runtime_choices()
 
         console.print("")
 
@@ -1017,7 +1164,7 @@ Panel Data
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="bgod",
-            description="Show unit root tests of a column of a dataset",
+            description="Show Breusch-Godfrey autocorrelation test results.",
         )
 
         parser.add_argument(

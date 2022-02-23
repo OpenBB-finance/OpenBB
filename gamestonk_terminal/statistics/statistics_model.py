@@ -66,7 +66,6 @@ def clean(dataset: pd.DataFrame, fill: str, drop: str, limit: int) -> pd.DataFra
     pd.DataFrame:
         Dataframe with custom data
     """
-    print(dataset.shape)
     if fill:
         if fill == "rfill":
             dataset = dataset.fillna(axis="index", value=0)
@@ -86,8 +85,6 @@ def clean(dataset: pd.DataFrame, fill: str, drop: str, limit: int) -> pd.DataFra
             dataset = dataset.dropna(how="any", axis="index")
         elif drop == "cdrop":
             dataset = dataset.dropna(how="any", axis="columns")
-
-    print(dataset.shape)
 
     return dataset
 
