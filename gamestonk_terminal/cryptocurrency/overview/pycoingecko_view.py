@@ -3,11 +3,13 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import List, Optional
 import squarify
 from matplotlib import pyplot as plt
 from matplotlib import ticker
 from matplotlib import cm
 from pandas.plotting import register_matplotlib_converters
+from gamestonk_terminal import config_terminal as cfg
 import gamestonk_terminal.cryptocurrency.overview.pycoingecko_model as gecko
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_plot import PLOT_DPI
@@ -31,7 +33,12 @@ register_matplotlib_converters()
 
 
 @log_start_end(log=logger)
-def display_crypto_heatmap(category: str, top: int, export: str) -> None:
+def display_crypto_heatmap(
+    category: str,
+    top: int,
+    export: str,
+    external_axes: Optional[List[plt.Axes]] = None,
+) -> None:
     """Shows cryptocurrencies heatmap [Source: CoinGecko]
 
     Parameters
@@ -42,6 +49,8 @@ def display_crypto_heatmap(category: str, top: int, export: str) -> None:
         Number of top cryptocurrencies to display
     export: str
         Export dataframe data to csv,json,xlsx
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
     df = gecko.get_coins(top, category)
     if df.empty:
@@ -59,9 +68,17 @@ def display_crypto_heatmap(category: str, top: int, export: str) -> None:
                 colors.append(cmapgreen(round(val * 100)))
             else:
                 colors.append(cmapred(-round(val * 100)))
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+
+        # This plot has 2 axes
+        if external_axes is None:
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        else:
+            if len(external_axes) != 1:
+                console.print("[red]Expected list of 1 axis item./n[/red]")
+                return
+            (ax,) = external_axes
+
         category_str = f"[{category}]" if category else ""
-        ax.set_title(f"Top {top} Cryptocurrencies {category_str}")
 
         squarify.plot(
             df["market_cap"],
@@ -70,7 +87,13 @@ def display_crypto_heatmap(category: str, top: int, export: str) -> None:
             color=colors,
             text_kwargs={"color": "black", "size": 8},
         )
+        ax.set_title(f"Top {top} Cryptocurrencies {category_str}")
         ax.set_axis_off()
+
+        cfg.theme.style_primary_axis(ax)
+
+        if not external_axes:
+            cfg.theme.visualize_output()
 
         export_data(
             export,

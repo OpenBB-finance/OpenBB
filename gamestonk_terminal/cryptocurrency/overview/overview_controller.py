@@ -137,8 +137,6 @@ class OverviewController(BaseController):
                 c: None for c in coinpaprika_model.CONTRACTS_FILTERS
             }
             choices["hm"] = {c: None for c in get_categories_keys()}
-            choices["hm"]["--category"] = {c: None for c in get_categories_keys()}
-            choices["hm"]["-c"] = {c: None for c in get_categories_keys()}
             choices["cpinfo"]["-s"] = {c: None for c in coinpaprika_model.INFO_FILTERS}
             choices["cbpairs"]["-s"] = {c: None for c in coinbase_model.PAIRS_FILTERS}
             choices["news"]["-k"] = {c: None for c in cryptopanic_model.CATEGORIES}
