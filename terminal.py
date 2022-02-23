@@ -362,36 +362,65 @@ def run_scripts(path: str, test_mode: bool = False):
             terminal()
 
 
-def main(debug: bool, test: bool, filtert: str, path: List[str]):
+def main(debug: bool, test: bool, filtert: str, paths: List[str], verbose: bool):
+    """
+    Runs the terminal with various options
+
+    Parameters
+    ----------
+    debug : bool
+        Whether to run the terminal in debug mode
+    test : bool
+        Whether to run the terminal in integrated test mode
+    filtert : str
+        Filter test files with given string in name
+    paths : List[str]
+        The paths to run for scripts or to test
+    verbose : bool
+        Whether to show output from tests
+    """
+
     if test:
         os.environ["DEBUG_MODE"] = "true"
 
-        if "gst" in path[0]:
-            files = path
-        else:
-            folder = os.path.join(os.path.abspath(os.path.dirname(__file__)), path[0])
-            files = [
-                name
-                for name in os.listdir(folder)
-                if os.path.isfile(os.path.join(folder, name))
-                and name.endswith(".gst")
-                and (filtert in f"{folder}/{name}")
-            ]
-        files.sort()
+        if paths == []:
+            console.print("Please send a path when using test mode")
+            return
+        test_files = []
+        for path in paths:
+            if "gst" in path:
+                file = os.path.join(os.path.abspath(os.path.dirname(__file__)), path)
+                test_files.append(file)
+            else:
+                folder = os.path.join(os.path.abspath(os.path.dirname(__file__)), path)
+                files = [
+                    f"{folder}/{name}"
+                    for name in os.listdir(folder)
+                    if os.path.isfile(os.path.join(folder, name))
+                    and name.endswith(".gst")
+                    and (filtert in f"{folder}/{name}")
+                ]
+                test_files += files
+        test_files.sort()
         SUCCESSES = 0
         FAILURES = 0
         fails = {}
-        length = len(files)
+        length = len(test_files)
         i = 0
         console.print("[green]Gamestonk Terminal Integrated Tests:\n[/green]")
-        for file in files:
+        for file in test_files:
             console.print(f"{file}  {((i/length)*100):.1f}%")
             try:
-                with suppress_stdout():
-                    run_scripts(f"{path[0]}/{file}", test_mode=True)
-                SUCCESSES += 1
+                if not os.path.isfile(file):
+                    raise ValueError("Given file does not exist")
+                if verbose:
+                    run_scripts(file, test_mode=True)
+                else:
+                    with suppress_stdout():
+                        run_scripts(file, test_mode=True)
+                    SUCCESSES += 1
             except Exception as e:
-                fails[f"{path[0]}{file}"] = e
+                fails[file] = e
                 FAILURES += 1
             i += 1
         if fails:
@@ -404,8 +433,8 @@ def main(debug: bool, test: bool, filtert: str, path: List[str]):
     else:
         if debug:
             os.environ["DEBUG_MODE"] = "true"
-        if isinstance(path, list) and path[0].endswith(".gst"):
-            run_scripts(path[0])
+        if isinstance(path, list) and path.endswith(".gst"):
+            run_scripts(path)
         elif path:
             argv_cmds = list([" ".join(path).replace(" /", "/home/")])
             argv_cmds = insert_start_slash(argv_cmds) if argv_cmds else argv_cmds
@@ -454,10 +483,17 @@ if __name__ == "__main__":
         default="",
         type=str,
     )
+    parser.add_argument(
+        "-v", "--verbose", dest="verbose", action="store_true", default=False
+    )
 
     if sys.argv[1:] and "-" not in sys.argv[1][0]:
         sys.argv.insert(1, "-p")
     ns_parser = parser.parse_args()
-
-    if ns_parser:
-        main(ns_parser.debug, ns_parser.test, ns_parser.filtert, ns_parser.path)
+    main(
+        ns_parser.debug,
+        ns_parser.test,
+        ns_parser.filtert,
+        ns_parser.path,
+        ns_parser.verbose,
+    )
