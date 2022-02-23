@@ -209,7 +209,14 @@ def calculate_adjusted_var(
     return real_return
 
 
-def get_var(data: pd.DataFrame, use_mean: bool, adjusted_var: bool, student_t: bool, percentile: int, portfolio: bool):
+def get_var(
+    data: pd.DataFrame,
+    use_mean: bool,
+    adjusted_var: bool,
+    student_t: bool,
+    percentile: int,
+    portfolio: bool,
+):
     """Gets value at risk for specified stock dataframe
 
     Parameters
@@ -287,10 +294,10 @@ def get_var(data: pd.DataFrame, use_mean: bool, adjusted_var: bool, student_t: b
 
     else:
         # Regular Var
-        var_90 = 2.7182818 ** (mean + percentile_90 * std) - 1
-        var_95 = 2.7182818 ** (mean + percentile_95 * std) - 1
-        var_99 = 2.7182818 ** (mean + percentile_99 * std) - 1
-        var_custom = 2.7182818 ** (mean + percentile_custom * std) - 1
+        var_90 = np.exp(mean + percentile_90 * std) - 1
+        var_95 = np.exp(mean + percentile_95 * std) - 1
+        var_99 = np.exp(mean + percentile_99 * std) - 1
+        var_custom = np.exp(mean + percentile_custom * std) - 1
 
     if not portfolio:
         data.sort_values("return", inplace=True, ascending=True)
@@ -310,7 +317,13 @@ def get_var(data: pd.DataFrame, use_mean: bool, adjusted_var: bool, student_t: b
     return var_list, hist_var_list
 
 
-def get_es(data: pd.DataFrame, use_mean: bool, distribution: str, percentile: int, portfolio: bool):
+def get_es(
+    data: pd.DataFrame,
+    use_mean: bool,
+    distribution: str,
+    percentile: int,
+    portfolio: bool,
+):
     """Gets Expected Shortfall for specified stock dataframe
 
     Parameters
@@ -363,23 +376,23 @@ def get_es(data: pd.DataFrame, use_mean: bool, distribution: str, percentile: in
         # Fitting b (scale parameter) to the variance of the data
         # Since variance of the Laplace dist.: var = 2*b**2
         # Thus:
-        b = np.sqrt(std**2/2)
+        b = np.sqrt(std**2 / 2)
 
         # Calculation
-        es_90 = b * 0.1 / 0.9 * (1 - np.log(2 * 0.1))
-        es_95 = b * 0.05 / 0.95 * (1 - np.log(2 * 0.05))
-        es_99 = b * 0.01 / 0.99 * (1 - np.log(2 * 0.01))
+        es_90 = -b * (1 - np.log(2 * 0.1)) + mean
+        es_95 = -b * (1 - np.log(2 * 0.05)) + mean
+        es_99 = -b * (1 - np.log(2 * 0.01)) + mean
 
         if (1 - percentile) < 0.5:
-            es_custom = b * (1 - percentile) / percentile * (1 - np.log(2 * (1 - percentile))) + mean
+            es_custom = -b * (1 - np.log(2 * (1 - percentile))) + mean
         else:
-            es_custom = b * (1 - np.log(2 * percentile)) + mean
+            es_custom = 0
 
     elif distribution == "student_t":
         # Calculating ES based on the Student-t distribution
 
         # Fitting student-t parameters to the data
-        v, _, _ = stats.t.fit(data_return.fillna(0))
+        v, _, scale = stats.t.fit(data_return.fillna(0))
         if not use_mean:
             mean = 0
 
@@ -390,10 +403,38 @@ def get_es(data: pd.DataFrame, use_mean: bool, distribution: str, percentile: in
         percentile_custom = stats.t.ppf(1 - percentile, v)
 
         # Calculation
-        es_90 = std * (v + percentile_90 ** 2) / (v - 1) * stats.t.pdf(percentile_90, v) / 0.9 + mean
-        es_95 = std * (v + percentile_95 ** 2) / (v - 1) * stats.t.pdf(percentile_95, v) / 0.95 + mean
-        es_99 = std * (v + percentile_99 ** 2) / (v - 1) * stats.t.pdf(percentile_99, v) / 0.99 + mean
-        es_custom = std * (v + percentile_custom ** 2) / (v - 1) * stats.t.pdf(percentile_custom, v) / percentile + mean
+        es_90 = (
+            -scale
+            * (v + percentile_90**2)
+            / (v - 1)
+            * stats.t.pdf(percentile_90, v)
+            / 0.1
+            + mean
+        )
+        es_95 = (
+            -scale
+            * (v + percentile_95**2)
+            / (v - 1)
+            * stats.t.pdf(percentile_95, v)
+            / 0.05
+            + mean
+        )
+        es_99 = (
+            -scale
+            * (v + percentile_99**2)
+            / (v - 1)
+            * stats.t.pdf(percentile_99, v)
+            / 0.01
+            + mean
+        )
+        es_custom = (
+            -scale
+            * (v + percentile_custom**2)
+            / (v - 1)
+            * stats.t.pdf(percentile_custom, v)
+            / (1 - percentile)
+            + mean
+        )
 
     elif distribution == "logistic":
         # Logistic distribution
@@ -402,21 +443,21 @@ def get_es(data: pd.DataFrame, use_mean: bool, distribution: str, percentile: in
         # Fitting s (scale parameter) to the variance of the data
         # Since variance of the Logistic dist.: var = s**2*pi**2/3
         # Thus:
-        s = np.sqrt(3*std**2/np.pi**2)
+        s = np.sqrt(3 * std**2 / np.pi**2)
 
         # Calculation
         a = 1 - percentile
-        es_90 = s * (-0.1 * np.log(0.1) - 0.9 * np.log(0.9)) / 0.9 + mean
-        es_95 = s * (-0.05 * np.log(0.05) - 0.95 * np.log(0.95)) / 0.95 + mean
-        es_99 = s * (-0.01 * np.log(0.01) - 0.99 * np.log(0.99)) / 0.99 + mean
-        es_custom = s * (-a * np.log(a) - (1 - a) * np.log(1 - a))/(1 - a) + mean
+        es_90 = -s * np.log((0.9 ** (1 - 1 / 0.1)) / 0.1) + mean
+        es_95 = -s * np.log((0.95 ** (1 - 1 / 0.05)) / 0.05) + mean
+        es_99 = -s * np.log((0.99 ** (1 - 1 / 0.01)) / 0.01) + mean
+        es_custom = -s * np.log((percentile ** (1 - 1 / a)) / a) + mean
 
     elif distribution == "normal":
         # Regular Expected Shortfall
-        es_90 = std * - stats.norm.pdf(percentile_90) / 0.1 + mean
-        es_95 = std * - stats.norm.pdf(percentile_95) / 0.05 + mean
-        es_99 = std * - stats.norm.pdf(percentile_99) / 0.01 + mean
-        es_custom = std * - stats.norm.pdf(percentile_custom) / (1 - percentile) + mean
+        es_90 = std * -stats.norm.pdf(percentile_90) / 0.1 + mean
+        es_95 = std * -stats.norm.pdf(percentile_95) / 0.05 + mean
+        es_99 = std * -stats.norm.pdf(percentile_99) / 0.01 + mean
+        es_custom = std * -stats.norm.pdf(percentile_custom) / (1 - percentile) + mean
 
     # Historical Expected Shortfall
     _, hist_var_list = get_var(data, use_mean, False, False, percentile, False)

@@ -638,7 +638,13 @@ def display_line(
 
 
 def display_var(
-    data: pd.DataFrame, use_mean: bool, ticker: str, adjusted_var: bool, student_t, percentile: int, portfolio: bool
+    data: pd.DataFrame,
+    use_mean: bool,
+    ticker: str,
+    adjusted_var: bool,
+    student_t,
+    percentile: int,
+    portfolio: bool,
 ):
     """Displays VaR of dataframe
 
@@ -659,7 +665,9 @@ def display_var(
     portfolio: bool
         If the data is a portfolio
     """
-    var_list, hist_var_list = qa_model.get_var(data, use_mean, adjusted_var, student_t, percentile, portfolio)
+    var_list, hist_var_list = qa_model.get_var(
+        data, use_mean, adjusted_var, student_t, percentile, portfolio
+    )
 
     str_hist_label = "Historical VaR:"
 
@@ -688,7 +696,14 @@ def display_var(
     console.print("")
 
 
-def display_es(data: pd.DataFrame, use_mean: bool, ticker: str, distribution: str, percentile: int, portfolio: bool):
+def display_es(
+    data: pd.DataFrame,
+    use_mean: bool,
+    ticker: str,
+    distribution: str,
+    percentile: int,
+    portfolio: bool,
+):
     """
 
     Parameters
@@ -700,7 +715,9 @@ def display_es(data: pd.DataFrame, use_mean: bool, ticker: str, distribution: st
     percentile
     portfolio
     """
-    es_list, hist_es_list = qa_model.get_es(data, use_mean, distribution, percentile, portfolio)
+    es_list, hist_es_list = qa_model.get_es(
+        data, use_mean, distribution, percentile, portfolio
+    )
 
     str_hist_label = "Historical ES:"
 

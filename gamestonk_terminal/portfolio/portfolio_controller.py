@@ -447,6 +447,7 @@ Loaded:[/info] {self.portfolio_name or None}
                 console.print("Select the adjusted or the student_t parameter.\n")
             else:
                 from gamestonk_terminal.common.quantitative_analysis import qa_view
+
                 self.portfolio.generate_holdings_from_trades()
                 console.print(self.portfolio.returns)
                 qa_view.display_var(
