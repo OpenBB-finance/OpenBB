@@ -80,7 +80,7 @@ def future_ipo(
     ----------
     num_days_ahead: int
         Number of days to look ahead for IPOs dates
-    end_date: str
+    end_date: datetime
         The end date (format YYYY-MM-DD) to look for IPOs from today onwards
     export : str
         Export dataframe data to csv,json,xlsx file
