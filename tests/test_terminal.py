@@ -50,6 +50,7 @@ def no_suppress():
         (True, False, False, None, None),
         (False, False, None, ["scripts/test_alt_covid.gst"]),
         (False, True, False, "alt_covid", ["scripts/"]),
+        (False, True, True, "alt_covid", ["scripts/"]),
     ],
 )
 def test_menu(mocker, debug, test, filtert, path, verbose):
