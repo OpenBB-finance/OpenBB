@@ -1,3 +1,4 @@
+import warnings
 from typing import List, Tuple, Dict, Any
 
 import pandas as pd
@@ -17,7 +18,48 @@ from statsmodels.stats.diagnostic import acorr_breusch_godfrey
 from statsmodels.stats.stattools import durbin_watson
 
 from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.statistics.statistics_model import logger
+
+
+def get_regressions_results(
+    regression_type: str,
+    regression_variables: List[Tuple],
+    data: Dict[pd.DataFrame, Any],
+    datasets: Dict[pd.DataFrame, Any],
+) -> Tuple[DataFrame, Any, List[Any], Any]:
+    """Based on the regression type, this function decides what regression to run.
+
+    Parameters
+    ----------
+    regression_type: str
+        The type of regression you wish to execute.
+    regression_variables : list
+        The regressions variables entered where the first variable is
+        the dependent variable.
+    data : dict
+        A dictionary containing the datasets.
+    datasets: dict
+        A dictionary containing the column and dataset names of
+        each column/dataset combination.
+
+    Returns
+    -------
+    The dataset used, the dependent variable, the independent variable and
+    the regression model.
+    """
+    if regression_type == "pols":
+        return get_pols(regression_variables, data, datasets)
+    if regression_type == "re":
+        return get_re(regression_variables, data, datasets)
+    if regression_type == "bols":
+        return get_bols(regression_variables, data, datasets)
+    if regression_type == "fe":
+        return get_fe(regression_variables, data, datasets)
+    if regression_type == "fdols":
+        return get_fdols(regression_variables, data, datasets)
+
+    return console.print(f"{regression_type} is not an option.")
 
 
 def get_regression_data(
@@ -25,7 +67,8 @@ def get_regression_data(
     data: Dict[pd.DataFrame, Any],
     datasets: Dict[pd.DataFrame, Any],
 ) -> Tuple[DataFrame, Any, List[Any]]:
-    """Calculate test statistics for autocorrelation
+    """This function creates a DataFrame with the required regression data as
+    well sets up the dependent and independent variables.
 
     Parameters
     ----------
@@ -45,6 +88,8 @@ def get_regression_data(
     """
 
     regression = {}
+    independent_variables = []
+    dependent_variable = None
 
     for variable in regression_variables:
         column, dataset = datasets[variable].keys()
@@ -52,9 +97,7 @@ def get_regression_data(
 
         if variable == regression_variables[0]:
             dependent_variable = column
-        elif variable == regression_variables[1]:
-            independent_variables = [column]
-        else:
+        elif variable in regression_variables[1:]:
             independent_variables.append(column)
 
     regression_df = pd.DataFrame(regression)
@@ -68,7 +111,7 @@ def get_ols(
     data: Dict[pd.DataFrame, Any],
     datasets: Dict[pd.DataFrame, Any],
 ) -> Tuple[DataFrame, Any, List[Any], Any]:
-    """Calculate test statistics for autocorrelation
+    """Performs an OLS regression on timeseries data. [Source: Statsmodels]
 
     Parameters
     ----------
@@ -91,11 +134,18 @@ def get_ols(
         regression_variables, data, datasets
     )
 
-    ols_regression_string = (
-        f"{dependent_variable} ~ {' + '.join(independent_variables)}"
-    )
+    with warnings.catch_warnings(record=True) as warning_messages:
+        ols_regression_string = (
+            f"{dependent_variable} ~ {' + '.join(independent_variables)}"
+        )
 
-    model = ols(ols_regression_string, data=regression_df).fit()
+        model = ols(ols_regression_string, data=regression_df).fit()
+        console.print(model.summary())
+
+        if len(warning_messages) > 0:
+            console.print("Warnings:")
+            for warning in warning_messages:
+                console.print(f"[red]{warning.message}[/red]".replace("\n", ""))
 
     return regression_df, dependent_variable, independent_variables, model
 
@@ -106,7 +156,8 @@ def get_pols(
     data: Dict[pd.DataFrame, Any],
     datasets: Dict[pd.DataFrame, Any],
 ) -> Tuple[DataFrame, Any, List[Any], Any]:
-    """Calculate test statistics for autocorrelation
+    """PooledOLS is just plain OLS that understands that various panel data structures.
+    It is useful as a base model. [Source: LinearModels]
 
     Parameters
     ----------
@@ -122,86 +173,22 @@ def get_pols(
     Returns
     -------
     The dataset used, the dependent variable, the independent variable and
-    the OLS model.
+    the Pooled OLS model.
     """
 
     regression_df, dependent_variable, independent_variables = get_regression_data(
         regression_variables, data, datasets
     )
 
-    exogenous = add_constant(regression_df[independent_variables])
-    model = PooledOLS(regression_df[dependent_variable], exogenous).fit()
+    with warnings.catch_warnings(record=True) as warning_messages:
+        exogenous = add_constant(regression_df[independent_variables])
+        model = PooledOLS(regression_df[dependent_variable], exogenous).fit()
+        console.print(model)
 
-    return regression_df, dependent_variable, independent_variables, model
-
-
-@log_start_end(log=logger)
-def get_bols(
-    regression_variables: List[Tuple],
-    data: Dict[pd.DataFrame, Any],
-    datasets: Dict[pd.DataFrame, Any],
-) -> Tuple[DataFrame, Any, List[Any], Any]:
-    """Calculate test statistics for autocorrelation
-
-    Parameters
-    ----------
-    regression_variables : list
-        The regressions variables entered where the first variable is
-        the dependent variable.
-    data : dict
-        A dictionary containing the datasets.
-    datasets: dict
-        A dictionary containing the column and dataset names of
-        each column/dataset combination.
-
-    Returns
-    -------
-    The dataset used, the dependent variable, the independent variable and
-    the OLS model.
-    """
-
-    regression_df, dependent_variable, independent_variables = get_regression_data(
-        regression_variables, data, datasets
-    )
-
-    exogenous = add_constant(regression_df[independent_variables])
-    model = BetweenOLS(regression_df[dependent_variable], exogenous).fit()
-
-    return regression_df, dependent_variable, independent_variables, model
-
-
-@log_start_end(log=logger)
-def get_fdols(
-    regression_variables: List[Tuple],
-    data: Dict[pd.DataFrame, Any],
-    datasets: Dict[pd.DataFrame, Any],
-) -> Tuple[DataFrame, Any, List[Any], Any]:
-    """Calculate test statistics for autocorrelation
-
-    Parameters
-    ----------
-    regression_variables : list
-        The regressions variables entered where the first variable is
-        the dependent variable.
-    data : dict
-        A dictionary containing the datasets.
-    datasets: dict
-        A dictionary containing the column and dataset names of
-        each column/dataset combination.
-
-    Returns
-    -------
-    The dataset used, the dependent variable, the independent variable and
-    the OLS model.
-    """
-
-    regression_df, dependent_variable, independent_variables = get_regression_data(
-        regression_variables, data, datasets
-    )
-
-    model = FirstDifferenceOLS(
-        regression_df[dependent_variable], regression_df[independent_variables]
-    ).fit()
+        if len(warning_messages) > 0:
+            console.print("Warnings:")
+            for warning in warning_messages:
+                console.print(f"[red]{warning.message}[/red]".replace("\n", ""))
 
     return regression_df, dependent_variable, independent_variables, model
 
@@ -212,7 +199,9 @@ def get_re(
     data: Dict[pd.DataFrame, Any],
     datasets: Dict[pd.DataFrame, Any],
 ) -> Tuple[DataFrame, Any, List[Any], Any]:
-    """Calculate test statistics for autocorrelation
+    """The random effects model is virtually identical to the pooled OLS model except that is accounts for the
+    structure of the model and so is more efficient. Random effects uses a quasi-demeaning strategy which
+    subtracts the time average of the within entity values to account for the common shock. [Source: LinearModels]
 
     Parameters
     ----------
@@ -228,15 +217,66 @@ def get_re(
     Returns
     -------
     The dataset used, the dependent variable, the independent variable and
-    the OLS model.
+    the RandomEffects model.
     """
 
     regression_df, dependent_variable, independent_variables = get_regression_data(
         regression_variables, data, datasets
     )
 
-    exogenous = add_constant(regression_df[independent_variables])
-    model = RandomEffects(regression_df[dependent_variable], exogenous).fit()
+    with warnings.catch_warnings(record=True) as warning_messages:
+        exogenous = add_constant(regression_df[independent_variables])
+        model = RandomEffects(regression_df[dependent_variable], exogenous).fit()
+        console.print(model)
+
+        if len(warning_messages) > 0:
+            console.print("Warnings:")
+            for warning in warning_messages:
+                console.print(f"[red]{warning.message}[/red]".replace("\n", ""))
+
+    return regression_df, dependent_variable, independent_variables, model
+
+
+@log_start_end(log=logger)
+def get_bols(
+    regression_variables: List[Tuple],
+    data: Dict[pd.DataFrame, Any],
+    datasets: Dict[pd.DataFrame, Any],
+) -> Tuple[DataFrame, Any, List[Any], Any]:
+    """The between estimator is an alternative, usually less efficient estimator, can can be used to
+     estimate model parameters. It is particular simple since it first computes the time averages of
+     y and x and then runs a simple regression using these averages. [Source: LinearModels]
+
+    Parameters
+    ----------
+    regression_variables : list
+        The regressions variables entered where the first variable is
+        the dependent variable.
+    data : dict
+        A dictionary containing the datasets.
+    datasets: dict
+        A dictionary containing the column and dataset names of
+        each column/dataset combination.
+
+    Returns
+    -------
+    The dataset used, the dependent variable, the independent variable and
+    the Between OLS model.
+    """
+
+    regression_df, dependent_variable, independent_variables = get_regression_data(
+        regression_variables, data, datasets
+    )
+
+    with warnings.catch_warnings(record=True) as warning_messages:
+        exogenous = add_constant(regression_df[independent_variables])
+        model = BetweenOLS(regression_df[dependent_variable], exogenous).fit()
+        console.print(model)
+
+        if len(warning_messages) > 0:
+            console.print("Warnings:")
+            for warning in warning_messages:
+                console.print(f"[red]{warning.message}[/red]".replace("\n", ""))
 
     return regression_df, dependent_variable, independent_variables, model
 
@@ -247,7 +287,9 @@ def get_fe(
     data: Dict[pd.DataFrame, Any],
     datasets: Dict[pd.DataFrame, Any],
 ) -> Tuple[DataFrame, Any, List[Any], Any]:
-    """Calculate test statistics for autocorrelation
+    """When effects are correlated with the regressors the RE and BE estimators are not consistent.
+    The usual solution is to use Fixed Effects which are called entity_effects when applied to
+    entities and time_effects when applied to the time dimension. [Source: LinearModels]
 
     Parameters
     ----------
@@ -270,17 +312,71 @@ def get_fe(
         regression_variables, data, datasets
     )
 
-    exogenous = add_constant(regression_df[independent_variables])
-    model = PanelOLS(
-        regression_df[dependent_variable], exogenous, entity_effects=True
-    ).fit()
+    with warnings.catch_warnings(record=True) as warning_messages:
+        exogenous = add_constant(regression_df[independent_variables])
+        model = PanelOLS(
+            regression_df[dependent_variable], exogenous, entity_effects=True
+        ).fit()
+        console.print(model)
+
+        if len(warning_messages) > 0:
+            console.print("Warnings:")
+            for warning in warning_messages:
+                console.print(f"[red]{warning.message}[/red]".replace("\n", ""))
+
+    return regression_df, dependent_variable, independent_variables, model
+
+
+@log_start_end(log=logger)
+def get_fdols(
+    regression_variables: List[Tuple],
+    data: Dict[pd.DataFrame, Any],
+    datasets: Dict[pd.DataFrame, Any],
+) -> Tuple[DataFrame, Any, List[Any], Any]:
+    """First differencing is an alternative to using fixed effects when there might be correlation.
+    When using first differences, time-invariant variables must be excluded. Additionally,
+    only one linear time-trending variable can be included since this will look like a constant.
+    This variable will soak up all time-trends in the data, and so interpretations of
+    these variable can be challenging. [Source: LinearModels]
+
+    Parameters
+    ----------
+    regression_variables : list
+        The regressions variables entered where the first variable is
+        the dependent variable.
+    data : dict
+        A dictionary containing the datasets.
+    datasets: dict
+        A dictionary containing the column and dataset names of
+        each column/dataset combination.
+
+    Returns
+    -------
+    The dataset used, the dependent variable, the independent variable and
+    the OLS model.
+    """
+
+    regression_df, dependent_variable, independent_variables = get_regression_data(
+        regression_variables, data, datasets
+    )
+
+    with warnings.catch_warnings(record=True) as warning_messages:
+        model = FirstDifferenceOLS(
+            regression_df[dependent_variable], regression_df[independent_variables]
+        ).fit()
+        console.print(model)
+
+        if len(warning_messages) > 0:
+            console.print("Warnings:")
+            for warning in warning_messages:
+                console.print(f"[red]{warning.message}[/red]".replace("\n", ""))
 
     return regression_df, dependent_variable, independent_variables, model
 
 
 @log_start_end(log=logger)
 def get_comparison(regressions: Dict[Dict, Any]) -> PanelModelComparison:
-    """Calculate test statistics for autocorrelation
+    """Compare regression results between Panel Data regressions.
 
     Parameters
     ----------

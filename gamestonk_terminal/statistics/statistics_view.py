@@ -85,21 +85,18 @@ def display_norm(
     column: str,
     export: str = "",
 ):
-    """Plot custom data
+    """Determine the normality of a timeseries.
 
     Parameters
     ----------
-    log
     data: pd.DataFrame
         Dataframe of custom data
     dataset: str
         Dataset name
     column: str
         Column for y data
-    kind : str
-        Kind of plot to pass to pandas plot function
     export: str
-        Format to export image
+        Format to export data.
     """
 
     results = statistics_model.get_normality(data)
@@ -124,7 +121,7 @@ def display_norm(
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "custom_plot",
+        f"{dataset}_norm",
     )
 
     console.print("")
@@ -147,7 +144,7 @@ def display_granger(
     time_series_x : Series
         The series that you want to test whether it Granger-causes time_series_y
     lags : int
-        The amoiunt of lags for the Granger test. By default, this is set to 3.
+        The amount of lags for the Granger test. By default, this is set to 3.
     confidence_level: float
         The confidence level you wish to use. By default, this is set to 0.05.
     export : str
@@ -220,8 +217,6 @@ def display_cointegration_test(
 
     If this implies phi < 1, the z series is stationary is concluded to be
     stationary, and thus the series y and x are concluded to be cointegrated.
-
-    Parameters
 
     Parameters
     ----------

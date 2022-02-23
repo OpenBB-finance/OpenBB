@@ -1,8 +1,10 @@
-"""Custom Data Controller Module"""
+"""Statistics Controller Module"""
 __docformat__ = "numpy"
+
 # pylint: disable=too-many-function-args
 # pylint: disable=inconsistent-return-statements
 # pylint: disable=too-many-lines
+# pylint:disable=import-outside-toplevel
 
 import argparse
 import logging
@@ -35,16 +37,14 @@ from gamestonk_terminal.statistics import statistics_model, statistics_view
 logger = logging.getLogger(__name__)
 
 
-# pylint:disable=import-outside-toplevel
-
-
 class StatisticsController(BaseController):
     """Statistics class"""
 
     CHOICES_COMMANDS: List[str] = [
         "load",
         "export",
-        "clear",
+        "remove",
+        "options",
         "plot",
         "show",
         "info",
@@ -56,12 +56,8 @@ class StatisticsController(BaseController):
         "coint",
         "ols",
         "dwat",
-        "pols",
-        "bols",
-        "re",
-        "fe",
+        "panel",
         "compare",
-        "fdols",
         "bgod",
     ]
     CHOICES_MENUS: List[str] = ["qa", "pred"]
@@ -123,11 +119,10 @@ class StatisticsController(BaseController):
                 "root",
                 "granger",
                 "cointegration",
-                "ols",
-                "pols",
+                "regressions",
             ]:
                 self.choices[feature] = dataset_columns
-            for feature in ["export", "show", "info", "clear", "index"]:
+            for feature in ["export", "options", "show", "info", "clear", "index"]:
                 self.choices[feature] = {c: None for c in self.files}
 
         self.completer = NestedCompleter.from_nested_dict(self.choices)
@@ -137,35 +132,30 @@ class StatisticsController(BaseController):
         help_text = f"""[cmds]
     load            load in custom data sets
     export          export a dataset
-    clear           remove a dataset[/cmds]
+    remove          remove a dataset
+    options         show available column-dataset options[/cmds]
 
-[param]Current file:[/param]    {", ".join(self.files) or None}[cmds]
+[param]Loaded files:[/param]    {", ".join(self.files) or None}[cmds]
 
-Dataset Discovery
+Exploration
     show            show portion of loaded data
     plot            plot data from a dataset
     info            show descriptive statistics
     index           set (multi)index based on columns
     clean           clean the dataset by filling or dropping NaNs
 
-General Tests
-    norm            perform normality tests on a column of a dataset
-    root            perform unitroot tests (ADF & KPSS) on a column of a dataset
-
 Timeseries
     ols             fit a (multi) linear regression model
+    norm            perform normality tests on a column of a dataset
+    root            perform unitroot tests (ADF & KPSS) on a column of a dataset
     dwat            perform Durbin-Watson autocorrelation test on the residuals of the regression
     granger         perform granger causality tests on two timeseries.
     coint           perform co-integration test on two timeseries
 
 Panel Data
-    pols            Estimate model based on Pooled OLS
-    bols            Estimate model based on Between Estimator
-    re              Estimate model based on Random Effects
-    fe              Estimate model based on Fixed Effects
-    fdols           Estimate model based on First Differences
+    panel           Estimate model based on various regression techniques.
     compare         Compare results of all estimated models
-    bgod            perform Breusch-Godfrey autocorrelation tests on the regression model [Disabled]
+    bgod            perform Breusch-Godfrey autocorrelation tests on the regression model [red][Disabled][/red]
 [/cmds]
         """
         console.print(text=help_text, menu="Statistics")
@@ -181,14 +171,8 @@ Panel Data
         parser.add_argument(
             "-f",
             "--file",
-            help="File to load in",
-            type=str,
-        )
-
-        parser.add_argument(
-            "-n",
-            "--name",
-            help="The name or abbreviation you want to give to the database",
+            help="File to load in and the alias you wish to give to the dataset",
+            nargs="+",
             type=str,
         )
 
@@ -197,30 +181,34 @@ Panel Data
         ns_parser = parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
-            if ns_parser.file in self.DATA_FILES:
-                file = self.DATA_FILES[ns_parser.file]
+            if len(ns_parser.file) == 1:
+                console.print(
+                    f"Please provide an alias to the dataset (format: <file> <alias>). For example: "
+                    f"'load {ns_parser.file[0] if len(ns_parser.file) > 0 else 'TSLA.xlsx'} dataset'"
+                )
             else:
-                file = ns_parser.file
+                file, alias = ns_parser.file
 
-            data = statistics_model.load(file, self.file_types)
+                if file in self.DATA_FILES:
+                    file = self.DATA_FILES[file]
 
-            if not data.empty:
-                data.columns = data.columns.map(lambda x: x.lower())
-                for col in data.columns:
-                    if col in ["date", "time", "timestamp", "quarter"]:
-                        data[col] = pd.to_datetime(data[col])
-                        data = data.set_index(col)
+                data = statistics_model.load(file, self.file_types)
 
-                if ns_parser.name:
-                    self.files.append(ns_parser.name)
-                    self.datasets[ns_parser.name] = data
-                else:
-                    self.files.append(ns_parser.file)
-                    self.datasets[ns_parser.file] = data
+                if not data.empty:
+                    data.columns = data.columns.map(
+                        lambda x: x.lower().replace(" ", "_")
+                    )
+                    for col in data.columns:
+                        if col in ["date", "time", "timestamp", "quarter"]:
+                            data[col] = pd.to_datetime(data[col])
+                            data = data.set_index(col)
 
-                self.update_runtime_choices()
+                    self.files.append(alias)
+                    self.datasets[alias] = data
 
-                console.print("")
+                    self.update_runtime_choices()
+
+                    console.print("")
 
     def call_export(self, other_args: List[str]):
         """Process export command"""
@@ -234,15 +222,15 @@ Panel Data
         parser.add_argument(
             "-n",
             "--name",
-            help="The name of the dataset",
+            help="The name of the dataset you wish to export",
             type=str,
         )
 
         parser.add_argument(
             "-t",
             "--type",
-            help="The file type",
-            choices=["csv", "json", "xlsx"],
+            help="The file type you wish to export to",
+            choices=self.file_types,
             type=str,
             default="xlsx",
         )
@@ -262,19 +250,19 @@ Panel Data
 
         console.print("")
 
-    def call_clear(self, other_args: List[str]):
+    def call_remove(self, other_args: List[str]):
         """Process clear"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="clear",
-            description="Remove a dataset from the list",
+            prog="remove",
+            description="Remove a dataset from the loaded dataset list",
         )
 
         parser.add_argument(
             "-n",
             "--name",
-            help="The name of the dataset you want to clear",
+            help="The name of the dataset you want to remove",
             type=str,
         )
 
@@ -288,9 +276,63 @@ Panel Data
                 self.files.remove(ns_parser.name)
             else:
                 console.print(f"{ns_parser.name} is not a loaded dataset.")
+
             self.update_runtime_choices()
 
         console.print("")
+
+    def call_options(self, other_args: List[str]):
+        """Process options command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="options",
+            description="Show the column-dataset combination that can be entered within the functions.",
+        )
+
+        parser.add_argument(
+            "-n",
+            "--name",
+            type=str,
+            choices=self.files,
+            dest="name",
+            help="The dataset you would like to show the options for",
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-n")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+
+        if ns_parser:
+            option_tables = {}
+            if ns_parser.name:
+                columns = self.datasets[ns_parser.name].columns
+                option_tables[ns_parser.name] = pd.DataFrame(
+                    {
+                        "dataset": [ns_parser.name] * len(columns),
+                        "column": columns,
+                        "option": [f"{column}-{ns_parser.name}" for column in columns],
+                    }
+                )
+            else:
+                for dataset, data_values in self.datasets.items():
+                    columns = data_values.columns
+                    option_tables[dataset] = pd.DataFrame(
+                        {
+                            "dataset": [dataset] * len(columns),
+                            "column": columns,
+                            "option": [f"{column}-{dataset}" for column in columns],
+                        }
+                    )
+
+            for dataset, data_values in option_tables.items():
+                print_rich_table(
+                    data_values,
+                    headers=list(data_values.columns),
+                    show_index=False,
+                    title=f"Options for {dataset}",
+                )
+                console.print("")
 
     def call_plot(self, other_args: List[str]):
         """Process plot command"""
@@ -298,12 +340,12 @@ Panel Data
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="plot",
-            description="Plot 2 columns of loaded data",
+            description="Plot data based on the index.ind",
         )
         parser.add_argument(
             "-c",
             "--column",
-            help="Column to plot along y",
+            help="Column to plot along the index",
             dest="column",
             type=str,
             choices=self.choices["plot"],
@@ -334,7 +376,7 @@ Panel Data
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="show",
-            description="Show loaded dataframe",
+            description="Show a portion of the DataFrame",
         )
 
         parser.add_argument(
@@ -356,10 +398,21 @@ Panel Data
         )
 
         parser.add_argument(
-            "-s", "--sortcol", nargs="+", type=str, dest="sortcol", default=""
+            "-s",
+            "--sortcol",
+            help="Sort based on a column in the DataFrame",
+            nargs="+",
+            type=str,
+            dest="sortcol",
+            default="",
         )
         parser.add_argument(
-            "-a", "--ascend", action="store_true", default=False, dest="ascend"
+            "-a",
+            "--ascend",
+            help="Use this argument to sort in a descending order",
+            action="store_true",
+            default=False,
+            dest="ascend",
         )
 
         if other_args and "-" not in other_args[0][0]:
@@ -397,7 +450,7 @@ Panel Data
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="info",
-            description="Show information of custom data.",
+            description="Show the descriptive statistics of the dataset",
         )
 
         parser.add_argument(
@@ -406,7 +459,7 @@ Panel Data
             type=str,
             choices=self.files,
             dest="name",
-            help="The name of the database you want to show data for",
+            help="The name of the database you want to show the descriptive statistics for",
         )
 
         if other_args and "-" not in other_args[0][0]:
@@ -430,7 +483,7 @@ Panel Data
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="index",
-            description="Set (multi)index for the dataset",
+            description="Set a (multi) index for the dataset",
         )
         parser.add_argument(
             "-n",
@@ -439,7 +492,17 @@ Panel Data
             dest="name",
             nargs="+",
             help="The first argument is the name of the database, further arguments are "
-            "the columns you wish to set a index",
+            "the columns you wish to set as index",
+        )
+
+        parser.add_argument(
+            "-i",
+            "--ignore",
+            help="Whether to allow for making adjustments to the dataset to align it with the use case for "
+            "Timeseries and Panel Data regressions",
+            dest="ignore",
+            action="store_true",
+            default=False,
         )
 
         if other_args and "-" not in other_args[0][0]:
@@ -463,21 +526,27 @@ Panel Data
                         f"Please choose one of the following: {', '.join(dataset.columns)}"
                     )
 
-            if len(columns) > 1 and dataset[columns[0]].isnull().any:
+            if (
+                len(columns) > 1
+                and dataset[columns[0]].isnull().any()
+                and not ns_parser.ignore
+            ):
+                null_values = dataset[dataset[columns[0]].isnull()]
                 console.print(
-                    f"The column '{columns[0]}' has NaN values. As is assumed this column usually "
-                    f"represents companies (over time), the NaN values are forward filled."
+                    f"The column '{columns[0]}' contains {len(null_values)} NaN values. As multiple columns are "
+                    f"provided, it is assumed this column represents entities (i), the NaN values are "
+                    f"forward filled. Use the -i argument to disable this."
                 )
                 dataset[columns[0]] = dataset[columns[0]].fillna(method="ffill")
             if not isinstance(dataset[columns[-1]], pd.DatetimeIndex):
                 dataset[columns[-1]] = pd.DatetimeIndex(dataset[columns[-1]])
 
-                if dataset[columns[-1]].isnull().any():
+                if dataset[columns[-1]].isnull().any() and not ns_parser.ignore:
                     # This checks whether NaT exists within the DataFrame
                     null_values = dataset[dataset[columns[-1]].isnull()]
                     console.print(
                         f"The time index '{columns[-1]}' contains {len(null_values)} "
-                        f"NaTs which are removed from the dataset."
+                        f"NaTs which are removed from the dataset. Use the -i argument to disable this."
                     )
                     dataset = dataset[dataset[columns[-1]].notnull()]
 
@@ -493,7 +562,7 @@ Panel Data
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="clean",
-            description="Clean a dataset",
+            description="Clean a dataset by filling and dropping NaN values.",
         )
 
         parser.add_argument(
@@ -507,7 +576,9 @@ Panel Data
         parser.add_argument(
             "-f",
             "--fill",
-            help="The method of filling NaNs",
+            help="The method of filling NaNs. This has options to fill rows (rfill, rbfill, rffill) or fill "
+            "columns (cfill, cbfill, cffill). Furthermore, it has the option to forward fill and backward fill "
+            "(up to --limit) which refer to how many rows/columns can be set equal to the last non-NaN value",
             dest="fill",
             choices=["rfill", "cfill", "rbfill", "cbfill", "rffill", "bffill"],
             default="",
@@ -516,7 +587,8 @@ Panel Data
         parser.add_argument(
             "-d",
             "--drop",
-            help="The method of dropping NaNs",
+            help="The method of dropping NaNs. This either has the option rdrop (drop rows that contain NaNs) "
+            "or cdrop (drop columns that contain NaNs)",
             dest="drop",
             choices=["rdrop", "cdrop"],
             default="",
@@ -555,7 +627,7 @@ Panel Data
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="norm",
-            description="Show information of custom data.",
+            description="Test whether the used data is normally distributed.",
         )
 
         parser.add_argument(
@@ -564,7 +636,7 @@ Panel Data
             type=str,
             choices=self.choices["norm"],
             dest="column",
-            help="The column and name of the database you want test normality for",
+            help="The column and name of the database you want to test normality for",
         )
 
         if other_args and "-" not in other_args[0][0]:
@@ -575,6 +647,12 @@ Panel Data
 
         if ns_parser and ns_parser.column:
             column, dataset = self.choices["norm"][ns_parser.column].keys()
+
+            if isinstance(self.datasets[dataset][column].index, pd.MultiIndex):
+                console.print(
+                    f"The column {column} from the dataset {dataset} is a MultiIndex. To test for normality in a "
+                    f"timeseries, make sure to set a singular time index."
+                )
 
             if dataset in self.datasets:
                 if isinstance(self.datasets[dataset], pd.Series):
@@ -590,8 +668,50 @@ Panel Data
 
             statistics_view.display_norm(data, dataset, column, ns_parser.export)
 
+        console.print("")
+
+    def call_ols(self, other_args: List[str]):
+        """Process ols command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="ols",
+            description="Performs an OLS regression on timeseries data.",
+        )
+
+        parser.add_argument(
+            "-r",
+            "--regression",
+            nargs="+",
+            type=str,
+            choices=self.choices["regressions"],
+            dest="regression",
+            help="The regression you would like to perform",
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-r")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        if ns_parser and ns_parser.regression:
+            if len(ns_parser.regression) < 2:
+                return console.print(
+                    "Please provide both a dependent and independent variable."
+                )
+
+            (
+                self.regression["OLS"]["data"],
+                self.regression["OLS"]["dependent"],
+                self.regression["OLS"]["independent"],
+                self.regression["OLS"]["model"],
+            ) = gamestonk_terminal.statistics.regression_model.get_ols(
+                ns_parser.regression, self.datasets, self.choices["regressions"]
+            )
+
     def call_root(self, other_args: List[str]):
-        """Process unitroot command"""
+        """Process unit root command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -605,13 +725,13 @@ Panel Data
             type=str,
             choices=self.choices["root"],
             dest="column",
-            help="The column and name of the database you want test unitroot for",
+            help="The column and name of the database you want test unit root for",
         )
 
         parser.add_argument(
             "-r",
             "--fuller_reg",
-            help="Type of regression. Can be ‘c’,’ct’,’ctt’,’nc’ 'c' - Constant and t - trend order",
+            help="Type of regression. Can be ‘c’,’ct’,’ctt’,’nc’. c - Constant and t - trend order",
             choices=["c", "ct", "ctt", "nc"],
             default="c",
             type=str,
@@ -620,7 +740,7 @@ Panel Data
         parser.add_argument(
             "-k",
             "--kps_reg",
-            help="Type of regression. Can be ‘c’,’ct'",
+            help="Type of regression. Can be ‘c’,’ct'. c - Constant and t - trend order",
             choices=["c", "ct"],
             type=str,
             dest="kpss_reg",
@@ -634,22 +754,56 @@ Panel Data
         if ns_parser and ns_parser.column:
             column, dataset = self.choices["root"][ns_parser.column].keys()
 
-            if isinstance(self.datasets[dataset], pd.Series):
-                data = self.datasets[dataset]
-            elif isinstance(self.datasets[dataset], pd.DataFrame):
-                data = self.datasets[dataset][column]
+            if isinstance(self.datasets[dataset][column].index, pd.MultiIndex):
+                console.print(
+                    f"The column {column} from the dataset {dataset} is a MultiIndex. To test for unitroot in a "
+                    f"timeseries, make sure to set a singular time index."
+                )
+            else:
+                if isinstance(self.datasets[dataset], pd.Series):
+                    data = self.datasets[dataset]
+                elif isinstance(self.datasets[dataset], pd.DataFrame):
+                    data = self.datasets[dataset][column]
 
-            df = statistics_model.get_unitroot(
-                data, ns_parser.fuller_reg, ns_parser.kpss_reg
-            )
-            print_rich_table(
-                df,
-                headers=list(df.columns),
-                show_index=True,
-                title=f"Unitroot Test [Column: {column} | Dataset: {dataset}]",
-            )
+                df = statistics_model.get_unitroot(
+                    data, ns_parser.fuller_reg, ns_parser.kpss_reg
+                )
+                print_rich_table(
+                    df,
+                    headers=list(df.columns),
+                    show_index=True,
+                    title=f"Unitroot Test [Column: {column} | Dataset: {dataset}]",
+                )
 
         console.print("")
+
+    def call_dwat(self, other_args: List[str]):
+        """Process unitroot command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="dwat",
+            description="Show autocorrelation tests from Durbin-Watson",
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        if not self.regression["OLS"]["model"]:
+            console.print(
+                "Please perform an OLS regression before estimating the Durbin-Watson statistic."
+            )
+        else:
+            dependent_variable = self.regression["OLS"]["data"][
+                self.regression["OLS"]["dependent"]
+            ]
+
+            gamestonk_terminal.statistics.regression_view.display_dwat(
+                dependent_variable,
+                self.regression["OLS"]["model"].resid,
+                ns_parser.export,
+            )
 
     def call_granger(self, other_args: List[str]):
         """Process granger command"""
@@ -661,20 +815,15 @@ Panel Data
         )
 
         parser.add_argument(
-            "-y",
-            "--time_series_y",
-            help="The time series that is assumed to be Granger-caused by x",
+            "-ts",
+            "--timeseries",
             choices=self.choices["granger"],
-            dest="y",
+            help="Requires two time series, the first time series is assumed to be Granger-caused "
+            "by the second time series.",
+            nargs=2,
+            dest="ts",
         )
 
-        parser.add_argument(
-            "-x",
-            "--time_series_x",
-            help="The time series that is assumed to Granger-cause y",
-            choices=self.choices["granger"],
-            dest="x",
-        )
         parser.add_argument(
             "-l",
             "--lags",
@@ -694,22 +843,30 @@ Panel Data
         )
 
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-y")
+            other_args.insert(0, "-ts")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
 
-        if ns_parser and ns_parser.y and ns_parser.x:
-            column_y, dataset_y = self.choices["granger"][ns_parser.y].keys()
-            column_x, dataset_x = self.choices["granger"][ns_parser.x].keys()
+        if ns_parser and ns_parser.ts:
+            if len(ns_parser.ts) == 2:
+                column_y, dataset_y = self.choices["granger"][ns_parser.ts[0]].keys()
+                column_x, dataset_x = self.choices["granger"][ns_parser.ts[1]].keys()
 
-            statistics_view.display_granger(
-                self.datasets[dataset_y][column_y],
-                self.datasets[dataset_x][column_x],
-                ns_parser.lags,
-                ns_parser.confidence,
-                ns_parser.export,
-            )
+                statistics_view.display_granger(
+                    self.datasets[dataset_y][column_y],
+                    self.datasets[dataset_x][column_x],
+                    ns_parser.lags,
+                    ns_parser.confidence,
+                    ns_parser.export,
+                )
+            else:
+                console.print(
+                    "Please provide two time series for this function, "
+                    "for example: granger <TS1> <TS2>"
+                )
+
+        console.print("")
 
     def call_coint(self, other_args: List[str]):
         """Process coint command"""
@@ -723,7 +880,7 @@ Panel Data
         parser.add_argument(
             "-ts",
             "--time_series",
-            help="The first time series",
+            help="The time series you wish to test co-integration on. Can hold multiple timeseries.",
             choices=self.choices["cointegration"],
             dest="ts",
             nargs="+",
@@ -765,13 +922,14 @@ Panel Data
                 datasets, ns_parser.significant, ns_parser.plot, ns_parser.export
             )
 
-    def call_ols(self, other_args: List[str]):
-        """Process ols command"""
+    def call_panel(self, other_args: List[str]):
+        """Process panel command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="ols",
-            description="Show unit root tests of a column of a dataset",
+            prog="panel",
+            description="Performs regression analysis on Panel Data. There are a multitude of options to select "
+            "from to fit the needs of restrictions of the dataset.",
         )
 
         parser.add_argument(
@@ -779,9 +937,21 @@ Panel Data
             "--regression",
             nargs="+",
             type=str,
-            choices=self.choices["ols"],
+            choices=self.choices["regressions"],
             dest="regression",
-            help="The regression you would like to perform",
+            help="The regression you would like to perform, first variable is the dependent variable, "
+            "consecutive variables the independent variables.",
+        )
+
+        parser.add_argument(
+            "-t",
+            "--type",
+            type=str,
+            choices=["pols", "re", "bols", "fe", "fdols"],
+            dest="type",
+            help="The type of regression you wish to perform. This can be either pols (Pooled OLS), "
+            "re (Random Effects), bols (Between OLS), fe (Fixed Effects) or fdols (First Difference OLS)",
+            default="pols",
         )
 
         if other_args and "-" not in other_args[0][0]:
@@ -791,201 +961,33 @@ Panel Data
         )
 
         if ns_parser and ns_parser.regression:
+            if len(ns_parser.regression) < 2:
+                return console.print(
+                    "Please provide both a dependent and independent variable."
+                )
+            for variable in ns_parser.regression:
+                column, dataset = self.choices["regressions"][variable].keys()
+                if not isinstance(self.datasets[dataset][column].index, pd.MultiIndex):
+                    return console.print(
+                        f"The column {column} from the dataset {dataset} is not a MultiIndex. Make sure you set "
+                        f"the index correctly with the index command where the first level is the entity "
+                        f"(e.g. Tesla Inc.) and the second level the date (e.g. 2021-03-31)"
+                    )
+
+            regression_type = ns_parser.type.upper()
             (
-                self.regression["OLS"]["data"],
-                self.regression["OLS"]["dependent"],
-                self.regression["OLS"]["independent"],
-                self.regression["OLS"]["model"],
-            ) = gamestonk_terminal.statistics.regression_model.get_ols(
-                ns_parser.regression, self.datasets, self.choices["ols"]
+                self.regression[regression_type]["data"],
+                self.regression[regression_type]["dependent"],
+                self.regression[regression_type]["independent"],
+                self.regression[regression_type]["model"],
+            ) = gamestonk_terminal.statistics.regression_model.get_regressions_results(
+                ns_parser.type,
+                ns_parser.regression,
+                self.datasets,
+                self.choices["regressions"],
             )
 
-            print(self.regression["OLS"]["model"].summary())
-
-    def call_pols(self, other_args: List[str]):
-        """Process pols command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="pols",
-            description="Show unit root tests of a column of a dataset",
-        )
-
-        parser.add_argument(
-            "-r",
-            "--regression",
-            nargs="+",
-            type=str,
-            choices=self.choices["ols"],
-            dest="regression",
-            help="The regression you would like to perform",
-        )
-
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-r")
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-
-        if ns_parser and ns_parser.regression:
-            (
-                self.regression["POLS"]["data"],
-                self.regression["POLS"]["dependent"],
-                self.regression["POLS"]["independent"],
-                self.regression["POLS"]["model"],
-            ) = gamestonk_terminal.statistics.regression_model.get_pols(
-                ns_parser.regression, self.datasets, self.choices["ols"]
-            )
-
-            print(self.regression["POLS"]["model"])
-
-    def call_bols(self, other_args: List[str]):
-        """Process pols command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="bols",
-            description="Show unit root tests of a column of a dataset",
-        )
-
-        parser.add_argument(
-            "-r",
-            "--regression",
-            nargs="+",
-            type=str,
-            choices=self.choices["ols"],
-            dest="regression",
-            help="The regression you would like to perform",
-        )
-
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-r")
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-
-        if ns_parser and ns_parser.regression:
-            (
-                self.regression["BOLS"]["data"],
-                self.regression["BOLS"]["dependent"],
-                self.regression["BOLS"]["independent"],
-                self.regression["BOLS"]["model"],
-            ) = gamestonk_terminal.statistics.regression_model.get_bols(
-                ns_parser.regression, self.datasets, self.choices["ols"]
-            )
-
-            print(self.regression["BOLS"]["model"])
-
-    def call_fdols(self, other_args: List[str]):
-        """Process fdols command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="fdols",
-            description="Show unit root tests of a column of a dataset",
-        )
-
-        parser.add_argument(
-            "-r",
-            "--regression",
-            nargs="+",
-            type=str,
-            choices=self.choices["ols"],
-            dest="regression",
-            help="The regression you would like to perform",
-        )
-
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-r")
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-
-        if ns_parser and ns_parser.regression:
-            (
-                self.regression["FDOLS"]["data"],
-                self.regression["FDOLS"]["dependent"],
-                self.regression["FDOLS"]["independent"],
-                self.regression["FDOLS"]["model"],
-            ) = gamestonk_terminal.statistics.regression_model.get_fdols(
-                ns_parser.regression, self.datasets, self.choices["ols"]
-            )
-
-            print(self.regression["FDOLS"]["model"])
-
-    def call_re(self, other_args: List[str]):
-        """Process re command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="re",
-            description="Show unit root tests of a column of a dataset",
-        )
-
-        parser.add_argument(
-            "-r",
-            "--regression",
-            nargs="+",
-            type=str,
-            choices=self.choices["ols"],
-            dest="regression",
-            help="The regression you would like to perform",
-        )
-
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-r")
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-
-        if ns_parser and ns_parser.regression:
-            (
-                self.regression["RE"]["data"],
-                self.regression["RE"]["dependent"],
-                self.regression["RE"]["independent"],
-                self.regression["RE"]["model"],
-            ) = gamestonk_terminal.statistics.regression_model.get_re(
-                ns_parser.regression, self.datasets, self.choices["ols"]
-            )
-
-            print(self.regression["RE"]["model"])
-
-    def call_fe(self, other_args: List[str]):
-        """Process fe command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="fe",
-            description="Show unit root tests of a column of a dataset",
-        )
-
-        parser.add_argument(
-            "-r",
-            "--regression",
-            nargs="+",
-            type=str,
-            choices=self.choices["ols"],
-            dest="regression",
-            help="The regression you would like to perform",
-        )
-
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-r")
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-
-        if ns_parser and ns_parser.regression:
-            (
-                self.regression["FE"]["data"],
-                self.regression["FE"]["dependent"],
-                self.regression["FE"]["independent"],
-                self.regression["FE"]["model"],
-            ) = gamestonk_terminal.statistics.regression_model.get_fe(
-                ns_parser.regression, self.datasets, self.choices["ols"]
-            )
-
-            print(self.regression["FE"]["model"])
+        console.print("")
 
     def call_compare(self, other_args: List[str]):
         """Process compare command"""
@@ -1007,35 +1009,7 @@ Panel Data
                 )
             )
 
-            print(comparison_result)
-
-    def call_dwat(self, other_args: List[str]):
-        """Process unitroot command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="dwat",
-            description="Show autocorrelation tests from Durbin-Watson",
-        )
-
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-
-        if self.regression["OLS"]["model"]:
-            console.print(
-                "Please perform an OLS regression before estimating the Durbin-Watson statistic."
-            )
-        else:
-            dependent_variable = self.regression["OLS"]["data"][
-                self.regression["OLS"]["dependent"]
-            ]
-
-            gamestonk_terminal.statistics.regression_view.display_dwat(
-                dependent_variable,
-                self.regression["OLS"]["model"].resid,
-                ns_parser.export,
-            )
+            console.print(comparison_result)
 
     def call_bgod(self):
         # TODO: Make the functionality of Statsmodels compatible with Linearmodels.
