@@ -9,7 +9,7 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
     export_data,
-    financials_colored_values,
+    lambda_financials_colored_values,
     patch_pandas_text_adjustment,
     print_rich_table,
 )
@@ -52,7 +52,7 @@ def display_income_comparison(
 
     if gtff.USE_COLOR:
         df_financials_compared = df_financials_compared.applymap(
-            financials_colored_values
+            lambda_financials_colored_values
         )
         patch_pandas_text_adjustment()
 
@@ -101,7 +101,7 @@ def display_balance_comparison(
 
     if gtff.USE_COLOR:
         df_financials_compared = df_financials_compared.applymap(
-            financials_colored_values
+            lambda_financials_colored_values
         )
         patch_pandas_text_adjustment()
 
@@ -153,7 +153,7 @@ def display_cashflow_comparison(
 
     if gtff.USE_COLOR:
         df_financials_compared = df_financials_compared.applymap(
-            financials_colored_values
+            lambda_financials_colored_values
         )
         patch_pandas_text_adjustment()
 

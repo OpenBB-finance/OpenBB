@@ -315,7 +315,7 @@ class DegiroView:
         credentials.password = ns_parser.password
 
         if "REPLACE_ME" in (credentials.username, credentials.username):
-            print("You didn't provide me with Degiro's credentials. Login failed.")
+            console.print("No Degiro's credentials provided. Login failed.")
             return
 
         if ns_parser.otp is not None:

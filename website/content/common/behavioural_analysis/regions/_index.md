@@ -1,14 +1,16 @@
 ```
-usage: regions [-n N_NUM] [-h]
+usage: regions [-l LIMIT] [-h] [--export {csv,json,xlsx,png,jpg,pdf,svg}]
 ```
 
-Shows a bar graph of the interest in the stock by country using Google metrics.
+Plot bars of regions based on stock's interest. [Source: Google]
 
 ```
 optional arguments:
-  -n N_NUM, --num N_NUM
-                        number of regions to plot that show highest interest. (default: 10)
+  -l LIMIT, --limit LIMIT
+                        limit of regions to plot that show highest interest. (default: 10)
   -h, --help            show this help message (default: False)
+  --export {csv,json,xlsx,png,jpg,pdf,svg}
+                        Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg (default: )
 ```
 
-<img size="1400" alt="Feature Screenshot - regions" src="https://user-images.githubusercontent.com/25267873/108776889-e8e8a800-755a-11eb-8bcc-fcf7b6156f50.png">
+![regions](https://user-images.githubusercontent.com/46355364/154300386-f6b1924c-8f73-44c5-bbae-52ef33d88061.png)

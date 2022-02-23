@@ -320,7 +320,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             dict(),
         ),
         (
-            "call_book",
+            "call_binbook",
             [],
             "binance_view.display_order_book",
             [],
@@ -438,11 +438,3 @@ def test_call_func(
         controller.current_coin = CURRENT_COIN
         controller.symbol = SYMBOL
         getattr(controller, tested_func)(other_args)
-
-
-@pytest.mark.vcr
-@pytest.mark.record_stdout
-def test_call_load():
-    controller = dd_controller.DueDiligenceController()
-    other_args = [SYMBOL]
-    controller.call_load(other_args=other_args)

@@ -2,12 +2,14 @@
 <div
   class="gdoc-search"
   style="
-    background: #242428;
-    border-radius: 100px;
+    background: #373737;
+    border-radius: 8px;
     padding: 0.5rem;
     padding-left: 2rem;
+    padding-right: 2rem;
     margin-top: 30px;
     margin-bottom: 30px;
+    height: 33px;
   "
 >
   <svg class="icon gdoc_search"><use xlink:href="#gdoc_search"></use></svg>
@@ -20,6 +22,10 @@
     maxlength="64"
   />
   <div class="gdoc-search__spinner spinner hidden"></div>
-  <ul id="gdoc-search-results" class="gdoc-search__list"></ul>
+  <ul
+    id="gdoc-search-results"
+    class="gdoc-search__list"
+    style="background-color: #373737; border-radius: 8px"
+  ></ul>
 </div>
 {{ end }}

@@ -334,7 +334,7 @@ def brotli_check():
     installed_packages = pkg_resources.working_set
     for item in list(installed_packages):
         if "brotli" in str(item).lower():
-            pytest.exit("Uninstall brotli before running tests")
+            pytest.exit("Uninstall brotli and brotlipy before running tests")
 
 
 def disable_rich():

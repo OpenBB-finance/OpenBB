@@ -8,7 +8,7 @@ from pandas.plotting import register_matplotlib_converters
 
 import gamestonk_terminal.cryptocurrency.overview.coinpaprika_model as paprika
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
-    long_number_format_with_type_check,
+    lambda_long_number_format_with_type_check,
 )
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import export_data, print_rich_table
@@ -85,7 +85,9 @@ def display_global_market(export: str) -> None:
 
     df = paprika.get_global_market()
     df_data = df.copy()
-    df["Value"] = df["Value"].apply(lambda x: long_number_format_with_type_check(x))
+    df["Value"] = df["Value"].apply(
+        lambda x: lambda_long_number_format_with_type_check(x)
+    )
 
     print_rich_table(
         df, headers=list(df.columns), show_index=False, title="Global Crypto Statistics"
@@ -133,7 +135,7 @@ def display_all_coins_market_info(
         return
 
     cols = [col for col in df.columns if col != "rank"]
-    df[cols] = df[cols].applymap(lambda x: long_number_format_with_type_check(x))
+    df[cols] = df[cols].applymap(lambda x: lambda_long_number_format_with_type_check(x))
 
     console.print(f"\nDisplaying data vs {currency}")
 
@@ -186,7 +188,7 @@ def display_all_coins_info(
         return
 
     cols = [col for col in df.columns if col != "rank"]
-    df[cols] = df[cols].applymap(lambda x: long_number_format_with_type_check(x))
+    df[cols] = df[cols].applymap(lambda x: lambda_long_number_format_with_type_check(x))
 
     console.print(f"\nDisplaying data vs {currency}")
 
@@ -239,7 +241,7 @@ def display_all_exchanges(
         return
 
     cols = [col for col in df.columns if col != "rank"]
-    df[cols] = df[cols].applymap(lambda x: long_number_format_with_type_check(x))
+    df[cols] = df[cols].applymap(lambda x: lambda_long_number_format_with_type_check(x))
     console.print(f"\nDisplaying data vs {currency}")
 
     print_rich_table(

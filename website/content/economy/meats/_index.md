@@ -1,14 +1,29 @@
 ```
-usage: meats [--export {csv,json,xlsx}] [-h]
+usage: meats [-s {ticker,last,change,prevClose}] [-a] [-h] [--export {csv,json,xlsx}]
 ```
 
-Meat futures overview. https://finviz.com
+Meats future overview. [Source: Finviz]
 
 ```
 optional arguments:
-  --export {csv,json,xlsx}
-                        Export dataframe data to csv,json,xlsx file (default: )
+  -s {ticker,last,change,prevClose}, --sortby {ticker,last,change,prevClose}
+  -a, -ascend           Flag to sort in ascending order (default: False)
   -h, --help            show this help message (default: False)
+  --export {csv,json,xlsx}
+                        Export raw data into csv, json, xlsx (default: )
 ```
-<img size="1400" alt="Feature Screenshot - meats" src="https://user-images.githubusercontent.com/85772166/141899612-f6a289b2-df07-4263-a753-653685507959.png">
 
+Example:
+```
+2022 Feb 15, 05:24 (✨) /economy/ $ meats
+                   Future Table
+┌───────────────┬───────────┬────────┬────────────┐
+│               │ prevClose │ last   │ change (%) │
+├───────────────┼───────────┼────────┼────────────┤
+│ Lean Hogs     │ 102.22    │ 102.22 │ 0.00       │
+├───────────────┼───────────┼────────┼────────────┤
+│ Live Cattle   │ 146.18    │ 146.38 │ 0.14       │
+├───────────────┼───────────┼────────┼────────────┤
+│ Feeder Cattle │ 166.22    │ 166.97 │ 0.45       │
+└───────────────┴───────────┴────────┴────────────┘
+```

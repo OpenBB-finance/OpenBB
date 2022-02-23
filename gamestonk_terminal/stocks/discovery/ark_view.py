@@ -13,8 +13,7 @@ from gamestonk_terminal.stocks.discovery import ark_model
 logger = logging.getLogger(__name__)
 
 
-@log_start_end(log=logger)
-def direction_color_red_green(val: str) -> str:
+def lambda_direction_color_red_green(val: str) -> str:
     """Adds color tags to the Direction information: Buy -> Green, Sell -> Red
 
     Parameters
@@ -76,7 +75,9 @@ def ark_orders_view(
     if sort_col:
         df_orders = df_orders.sort_values(by=sort_col, ascending=ascending)
     if gtff.USE_COLOR:
-        df_orders["direction"] = df_orders["direction"].apply(direction_color_red_green)
+        df_orders["direction"] = df_orders["direction"].apply(
+            lambda_direction_color_red_green
+        )
 
     print_rich_table(
         df_orders,

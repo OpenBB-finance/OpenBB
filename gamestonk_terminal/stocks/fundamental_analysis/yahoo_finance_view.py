@@ -4,11 +4,12 @@ __docformat__ = "numpy"
 import logging
 import os
 import webbrowser
+from typing import List, Optional
 
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
@@ -60,8 +61,15 @@ def display_info(ticker: str):
         summary = df_info.loc["Long business summary"].values[0]
         df_info = df_info.drop(index=["Long business summary"])
 
-    print_rich_table(df_info, headers=[], show_index=True, title="Ticker Info")
-
+    if not df_info.empty:
+        print_rich_table(
+            df_info,
+            headers=list(df_info.columns),
+            show_index=True,
+            title=f"{ticker.upper()} Info",
+        )
+    else:
+        console.print("[red]Invalid data[/red]\n")
     if summary:
         console.print("Business Summary:")
         console.print(summary)
@@ -82,16 +90,24 @@ def display_shareholders(ticker: str):
         df_institutional_shareholders,
         df_mutualfund_shareholders,
     ) = yahoo_finance_model.get_shareholders(ticker)
-
+    df_major_holders.columns = ["", ""]
     dfs = [df_major_holders, df_institutional_shareholders, df_mutualfund_shareholders]
-    titles = ["Major Holders:\n", "Institutuinal Holders:\n", "Mutual Fund Holders:\n"]
-    console.print("")
+    titles = ["Major Holders:\n", "Institutional Holders:\n", "Mutual Fund Holders:\n"]
+    console.print()
+
     for df, title in zip(dfs, titles):
         console.print(title)
+        if "Date Reported" in df.columns:
+            df["Date Reported"] = df["Date Reported"].apply(
+                lambda x: x.strftime("%Y-%m-%d")
+            )
         print_rich_table(
-            df, headers=list(df.columns), show_index=False, title="Ticker Shareholders"
+            df,
+            headers=list(df.columns),
+            show_index=False,
+            title=f"{ticker.upper()} Shareholders",
         )
-        console.print("")
+        console.print()
 
 
 @log_start_end(log=logger)
@@ -111,13 +127,16 @@ def display_sustainability(ticker: str):
         console.print("No sustainability data found.", "\n")
         return
 
-    print_rich_table(
-        df_sustainability,
-        headers=[],
-        title="Ticker Sustainability",
-        show_index=True,
-    )
-    console.print("")
+    if not df_sustainability.empty:
+        print_rich_table(
+            df_sustainability,
+            headers=list(df_sustainability),
+            title=f"{ticker.upper()} Sustainability",
+            show_index=True,
+        )
+        console.print("")
+    else:
+        console.print("[red]Invalid data[/red]\n")
 
 
 @log_start_end(log=logger)
@@ -136,14 +155,18 @@ def display_calendar_earnings(ticker: str):
         df_calendar,
         show_index=False,
         headers=list(df_calendar.columns),
-        title="Ticker Calendar Earnings",
+        title=f"{ticker.upper()} Calendar Earnings",
     )
     console.print("")
 
 
 @log_start_end(log=logger)
 def display_dividends(
-    ticker: str, limit: int = 12, plot: bool = False, export: str = ""
+    ticker: str,
+    limit: int = 12,
+    plot: bool = False,
+    export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display historical dividends
     Parameters
@@ -156,6 +179,8 @@ def display_dividends(
         Plots hitsorical data
     export: str
         Format to export data
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
     div_history = yahoo_finance_model.get_dividends(ticker)
     if div_history.empty:
@@ -164,9 +189,16 @@ def display_dividends(
     div_history["Dif"] = div_history.diff()
     div_history = div_history[::-1]
     if plot:
-        fig, ax = plt.subplots(
-            figsize=plot_autoscale(), constrained_layout=False, dpi=PLOT_DPI
-        )
+
+        # This plot has 1 axis
+        if not external_axes:
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        else:
+            if len(external_axes) != 1:
+                console.print("[red]Expected list of one axis item./n[/red]")
+                return
+            (ax,) = external_axes
+
         ax.plot(
             div_history.index,
             div_history["Dividends"],
@@ -174,19 +206,20 @@ def display_dividends(
             linewidth=0.75,
             marker=".",
             markersize=4,
-            mfc="k",
-            mec="k",
-            c="k",
+            mfc=theme.down_color,
+            mec=theme.down_color,
             alpha=1,
+            label="Dividends Payout",
         )
-        ax.set_xlabel("Date")
         ax.set_ylabel("Amount ($)")
         ax.set_title(f"Dividend History for {ticker}")
         ax.set_xlim(div_history.index[-1], div_history.index[0])
-        if gtff.USE_ION:
-            plt.ion()
-        fig.tight_layout()
-        plt.show()
+        ax.legend()
+        theme.style_primary_axis(ax)
+
+        if not external_axes:
+            theme.visualize_output()
+
     else:
         div_history.index = pd.to_datetime(div_history.index, format="%Y%m%d").strftime(
             "%Y-%m-%d"
@@ -194,7 +227,8 @@ def display_dividends(
         print_rich_table(
             div_history.head(limit),
             headers=["Amount Paid ($)", "Change"],
-            title="Ticker Historical Dividends",
+            title=f"{ticker.upper()} Historical Dividends",
+            show_index=True,
         )
-    console.print("")
+    console.print()
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "divs", div_history)

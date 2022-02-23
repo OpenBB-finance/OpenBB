@@ -56,13 +56,13 @@ def get_option_history(ticker: str, date: str, call: bool, price: str) -> pd.Dat
 
     df = pd.DataFrame()
     df["Date"] = [x[0] for x in clean_rows]
-    df["Open"] = [convert(x[1], ",") for x in clean_rows]
-    df["High"] = [convert(x[2], ",") for x in clean_rows]
-    df["Low"] = [convert(x[3], ",") for x in clean_rows]
-    df["Close"] = [convert(x[4], ",") for x in clean_rows]
-    df["Change"] = [convert(x[5], "%") for x in clean_rows]
-    df["Volume"] = [convert(x[6], ",") for x in clean_rows]
-    df["Open Interest"] = [convert(x[7], ",") for x in clean_rows]
-    df["Change Since"] = [convert(x[8], "%") for x in clean_rows]
+    df["Open"] = [convert(x[2], ",") for x in clean_rows]
+    df["High"] = [convert(x[3], ",") for x in clean_rows]
+    df["Low"] = [convert(x[4], ",") for x in clean_rows]
+    df["Close"] = [convert(x[5], ",") for x in clean_rows]
+    df["Change"] = [convert(x[6], "%") for x in clean_rows]
+    df["Volume"] = [convert(x[7], ",") for x in clean_rows]
+    df["Open Interest"] = [convert(x[8], ",") for x in clean_rows]
+    df["Change Since"] = [convert(x[9], "%") for x in clean_rows]
 
     return df

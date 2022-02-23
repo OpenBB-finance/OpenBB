@@ -12,21 +12,22 @@ optional arguments:
 Search for a company's stock ticker symbol with keywords.
 
 ```
-╒════════════════════════════════╤══════════╕
-│ Company                        │ Ticker   │
-╞════════════════════════════════╪══════════╡
-│ Apple Inc.                     │ AAPL     │
-├────────────────────────────────┼──────────┤
-│ APPLE GREEN HOLDING INC        │ AGPL     │
-├────────────────────────────────┼──────────┤
-│ Apple Hospitality REIT, Inc.   │ APLE     │
-├────────────────────────────────┼──────────┤
-│ APPLE RUSH COMPANY INC         │ APRU     │
-├────────────────────────────────┼──────────┤
-│ GOLDEN APPLE OIL & GAS INC     │ GAPJ     │
-├────────────────────────────────┼──────────┤
-│ Maui Land & Pineapple Company, │ MLP      │
-├────────────────────────────────┼──────────┤
-│ PINEAPPLE EXPRESS INC          │ PNPL     │
-╘════════════════════════════════╧══════════╛ 
+               Search Results
+┌─────────────────────────────────┬────────┐
+│ Company                         │ Ticker │
+├─────────────────────────────────┼────────┤
+│ Apple Inc.                      │ AAPL   │
+├─────────────────────────────────┼────────┤
+│ APPLE GREEN HOLDING INC         │ AGPL   │
+├─────────────────────────────────┼────────┤
+│ Apple Hospitality REIT, Inc.    │ APLE   │
+├─────────────────────────────────┼────────┤
+│ APPLE RUSH COMPANY INC          │ APRU   │
+├─────────────────────────────────┼────────┤
+│ GOLDEN APPLE OIL & GAS INC      │ GAPJ   │
+├─────────────────────────────────┼────────┤
+│ Maui Land & Pineapple Company,  │ MLP    │
+├─────────────────────────────────┼────────┤
+│ PINEAPPLE EXPRESS INC           │ PNPL   │
+└─────────────────────────────────┴────────┘
 ```

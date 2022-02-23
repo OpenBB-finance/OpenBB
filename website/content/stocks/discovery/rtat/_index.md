@@ -1,17 +1,93 @@
 ```
-usage: rtat [-n N_DAYS] [-h] [--export {csv,json,xlsx}]
+usage: rtat [-l LIMIT] [-h] [--export {csv,json,xlsx}]
 ```
 
-Tracking over $30B USD/day of individual investors trades, RTAT gives a daily view into retail activity and sentiment for over 9,500 US traded stocks, ADRs, and ETPs
-
-Source: https://data.nasdaq.com/retailtradingactivitytracker
+Tracking over $30B USD/day of individual investors trades, RTAT gives a daily view into retail activity and sentiment for over 9,500 US traded stocks, ADRs, and ETPs [Source: https://data.nasdaq.com/retailtradingactivitytracker]
 
 ```
 optional arguments:
-  -n N_DAYS, --num N_DAYS
-                        Number of days to show (default: 3)
+  -l LIMIT, --limit LIMIT
+                        limit of days to display (default: 3)
   -h, --help            show this help message (default: False)
   --export {csv,json,xlsx}
                         Export raw data into csv, json, xlsx (default: )
 ```
-<img size="1400" alt="Feature Screenshot - rtat" src="https://user-images.githubusercontent.com/85772166/141815224-7fa5421d-c6cc-4a5e-ab1f-a2cf43c993db.png">
+
+Example:
+```
+2022 Feb 16, 04:12 (✨) /stocks/disc/ $ rtat
+     2022-02-11 Top Retail:
+┏━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━┓
+┃ Ticker ┃ Activity ┃ Sentiment ┃
+┡━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━┩
+│ TSLA   │ 0.04     │ 1         │
+├────────┼──────────┼───────────┤
+│ TQQQ   │ 0.02     │ 6         │
+├────────┼──────────┼───────────┤
+│ SQQQ   │ 0.02     │ 6         │
+├────────┼──────────┼───────────┤
+│ SPY    │ 0.03     │ 2         │
+├────────┼──────────┼───────────┤
+│ QQQ    │ 0.03     │ 0         │
+├────────┼──────────┼───────────┤
+│ NVDA   │ 0.04     │ 3         │
+├────────┼──────────┼───────────┤
+│ MSFT   │ 0.02     │ 2         │
+├────────┼──────────┼───────────┤
+│ FB     │ 0.02     │ 2         │
+├────────┼──────────┼───────────┤
+│ AMD    │ 0.06     │ 1         │
+├────────┼──────────┼───────────┤
+│ AAPL   │ 0.03     │ -1        │
+└────────┴──────────┴───────────┘
+
+     2022-02-14 Top Retail:
+┏━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━┓
+┃ Ticker ┃ Activity ┃ Sentiment ┃
+┡━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━┩
+│ TSLA   │ 0.04     │ 0         │
+├────────┼──────────┼───────────┤
+│ TQQQ   │ 0.02     │ 2         │
+├────────┼──────────┼───────────┤
+│ SQQQ   │ 0.02     │ 9         │
+├────────┼──────────┼───────────┤
+│ SPY    │ 0.03     │ 2         │
+├────────┼──────────┼───────────┤
+│ QQQ    │ 0.03     │ -1        │
+├────────┼──────────┼───────────┤
+│ NVDA   │ 0.03     │ 2         │
+├────────┼──────────┼───────────┤
+│ MSFT   │ 0.02     │ 1         │
+├────────┼──────────┼───────────┤
+│ FB     │ 0.02     │ 1         │
+├────────┼──────────┼───────────┤
+│ AMD    │ 0.08     │ -1        │
+├────────┼──────────┼───────────┤
+│ AAPL   │ 0.03     │ -3        │
+└────────┴──────────┴───────────┘
+
+     2022-02-15 Top Retail:
+┏━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━┓
+┃ Ticker ┃ Activity ┃ Sentiment ┃
+┡━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━┩
+│ TSLA   │ 0.04     │ 0         │
+├────────┼──────────┼───────────┤
+│ TQQQ   │ 0.01     │ 5         │
+├────────┼──────────┼───────────┤
+│ SPY    │ 0.03     │ 2         │
+├────────┼──────────┼───────────┤
+│ SPCE   │ 0.01     │ 8         │
+├────────┼──────────┼───────────┤
+│ QQQ    │ 0.03     │ 1         │
+├────────┼──────────┼───────────┤
+│ NVDA   │ 0.07     │ 2         │
+├────────┼──────────┼───────────┤
+│ MSFT   │ 0.02     │ 1         │
+├────────┼──────────┼───────────┤
+│ FB     │ 0.03     │ 1         │
+├────────┼──────────┼───────────┤
+│ AMD    │ 0.08     │ -2        │
+├────────┼──────────┼───────────┤
+│ AAPL   │ 0.03     │ -2        │
+└────────┴──────────┴───────────┘
+```

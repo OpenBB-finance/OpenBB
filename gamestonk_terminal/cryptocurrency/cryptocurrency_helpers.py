@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 
 import os
 import json
-from typing import Tuple, Any, Optional
+from typing import Tuple, Any, Optional, List
 import difflib
 import pandas as pd
 import numpy as np
@@ -29,12 +29,11 @@ from gamestonk_terminal.cryptocurrency.overview.coinpaprika_model import (
 from gamestonk_terminal.cryptocurrency.due_diligence.binance_model import (
     check_valid_binance_str,
     show_available_pairs_for_given_symbol,
-    plot_candles,
 )
 
+from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal.cryptocurrency.due_diligence import coinbase_model
 import gamestonk_terminal.config_terminal as cfg
-from gamestonk_terminal.feature_flags import USE_ION as ion
 from gamestonk_terminal.rich_config import console
 
 INTERVALS = ["1H", "3H", "6H", "1D"]
@@ -288,7 +287,8 @@ def load(
             coin_map_df.iloc[0]
             if isinstance(coin_map_df, pd.DataFrame)
             else coin_map_df
-        )  # TODO: improve to choose the row that matches better; if it is dataframe, it means that found more than 1 coin
+        )  # TODO: improve to choose the row that matches better;
+        # if it is dataframe, it means that found more than 1 coin
         if should_load_ta_data:
             df_prices, currency = load_ta_data(
                 coin_map_df=coin_map_df,
@@ -632,7 +632,7 @@ def display_all_coins(
         console.print("")
 
     try:
-        df = df[skip : skip + top]
+        df = df[skip : skip + top]  # noqa
     except Exception as e:
         console.print(e)
 
@@ -866,10 +866,12 @@ def plot_chart(
                 pd.to_datetime(candles_df["date"], unit="ms")
             ).drop("date", axis=1)
 
+            title = f"{symbol_binance + currency} from {df_coin.index[0].strftime('%Y/%m/%d')} to {df_coin.index[-1].strftime('%Y/%m/%d')}"  # noqa: E501
+
             plot_candles(
-                df_coin,
-                f"{symbol_binance + currency} from {df_coin.index[0].strftime('%Y/%m/%d')} to "
-                f"{df_coin.index[-1].strftime('%Y/%m/%d')}",
+                candles_df=df_coin,
+                title=title,
+                volume=True,
             )
 
     if source == "cp":
@@ -892,29 +894,18 @@ def plot_chart(
             "Volume",
         ]
         df = df.set_index(pd.to_datetime(df["date"])).drop("date", axis=1)
-        title = (
-            f"\n{symbol_coinpaprika}/{currency} from {df.index[0].strftime('%Y/%m/%d')} to {df.index[-1].strftime('%Y/%m/%d')}",  # noqa: E501
-        )
+
+        title = f"{symbol_coinpaprika}/{currency} from {df.index[0].strftime('%Y/%m/%d')} to {df.index[-1].strftime('%Y/%m/%d')}"  # noqa: E501
+
         df["Volume"] = df["Volume"] / 1_000_000
-        mpf.plot(
-            df,
-            type="candle",
+
+        plot_candles(
+            candles_df=df,
+            title=title,
             volume=True,
-            ylabel_lower="Volume [1M]",
-            title=str(title[0]) if isinstance(title, tuple) else title,
-            xrotation=20,
-            style="binance",
-            figratio=(10, 7),
-            figscale=1.10,
-            figsize=(plot_autoscale()),
-            update_width_config=dict(
-                candle_linewidth=1.0, candle_width=0.8, volume_linewidth=1.0
-            ),
+            ylabel="Volume [1M]",
         )
 
-        if ion:
-            plt.ion()
-        plt.show()
         console.print("")
 
     if source == "cg":
@@ -930,29 +921,15 @@ def plot_chart(
             "Close",
         ]
 
-        title = (
-            f"\n{symbol_coingecko}/{currency} from {df.index[0].strftime('%Y/%m/%d')} "
-            f"to {df.index[-1].strftime('%Y/%m/%d')}",
-        )
+        title = f"{symbol_coingecko}/{currency} from {df.index[0].strftime('%Y/%m/%d')} to {df.index[-1].strftime('%Y/%m/%d')}"  # noqa: E501
 
-        mpf.plot(
-            df,
-            type="candle",
+        plot_candles(
+            candles_df=df,
+            title=title,
             volume=False,
-            title=str(title[0]) if isinstance(title, tuple) else title,
-            xrotation=20,
-            style="binance",
-            figratio=(10, 7),
-            figscale=1.10,
-            figsize=(plot_autoscale()),
-            update_width_config=dict(
-                candle_linewidth=1.0, candle_width=0.8, volume_linewidth=1.0
-            ),
+            ylabel="Volume [1M]",
         )
 
-        if ion:
-            plt.ion()
-        plt.show()
         console.print("")
 
     if source == "cb":
@@ -961,7 +938,6 @@ def plot_chart(
         pair = f"{coin}-{currency}"
 
         if coinbase_model.check_validity_of_product(pair):
-            # console.print(f"{coin} loaded vs {currency}")
 
             df = coinbase_model.get_candles(
                 product_id=pair,
@@ -971,33 +947,95 @@ def plot_chart(
             df.sort_values(by="date", inplace=True, ascending=True)
             df = df.set_index(pd.to_datetime(df["date"], unit="s")).drop("date", axis=1)
 
-            title = (
-                f"\n{coin}/{currency} from {df.index[0].strftime('%Y/%m/%d')} to {df.index[-1].strftime('%Y/%m/%d')}",
-            )
+            title = f"{coin}/{currency} from {df.index[0].strftime('%Y/%m/%d')} to {df.index[-1].strftime('%Y/%m/%d')}"  # noqa: E501
+
             df["Volume"] = df["Volume"] / 1_000
-            mpf.plot(
-                df,
-                type="candle",
+
+            plot_candles(
+                candles_df=df,
+                title=title,
                 volume=True,
-                ylabel_lower="Volume [1K]",
-                title=str(title[0]) if isinstance(title, tuple) else title,
-                xrotation=20,
-                style="binance",
-                figratio=(10, 7),
-                figscale=1.10,
-                figsize=(plot_autoscale()),
-                update_width_config=dict(
-                    candle_linewidth=1.0, candle_width=0.8, volume_linewidth=1.0
-                ),
+                ylabel="Volume [1K]",
             )
 
-            if ion:
-                plt.ion()
-            plt.show()
             console.print("")
 
 
-def plot_order_book(bids: np.ndarray, asks: np.ndarray, coin: str) -> None:
+def plot_candles(
+    candles_df: pd.DataFrame,
+    volume: bool,
+    ylabel: str = "",
+    title: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
+) -> None:
+    """Plot candle chart from dataframe. [Source: Binance]
+
+    Parameters
+    ----------
+    candles_df: pd.DataFrame
+        Dataframe containing time and OHLCV
+    title: str
+        title of graph
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
+    """
+    candle_chart_kwargs = {
+        "type": "candle",
+        "style": theme.mpf_style,
+        "volume": volume,
+        "xrotation": theme.xticks_rotation,
+        "ylabel_lower": ylabel,
+        "scale_padding": {"left": 0.3, "right": 1, "top": 0.8, "bottom": 0.8},
+        "update_width_config": {
+            "candle_linewidth": 0.6,
+            "candle_width": 0.8,
+            "volume_linewidth": 0.8,
+            "volume_width": 0.8,
+        },
+        "warn_too_much_data": 10000,
+    }
+
+    # This plot has 2 axes
+    if not external_axes:
+        candle_chart_kwargs["returnfig"] = True
+        candle_chart_kwargs["figratio"] = (10, 7)
+        candle_chart_kwargs["figscale"] = 1.10
+        candle_chart_kwargs["figsize"] = plot_autoscale()
+        fig, _ = mpf.plot(candles_df, **candle_chart_kwargs)
+        fig.suptitle(
+            f"\n{title}",
+            horizontalalignment="left",
+            verticalalignment="top",
+            x=0.05,
+            y=1,
+        )
+        theme.visualize_output(force_tight_layout=False)
+    else:
+        nr_external_axes = 2 if volume else 1
+
+        if len(external_axes) != nr_external_axes:
+            console.print(
+                f"[red]Expected list of {nr_external_axes} axis items./n[/red]"
+            )
+            return
+
+        if volume:
+            (ax, volume) = external_axes
+            candle_chart_kwargs["volume"] = volume
+        else:
+            ax = external_axes
+
+        candle_chart_kwargs["ax"] = ax
+
+        mpf.plot(candles_df, **candle_chart_kwargs)
+
+
+def plot_order_book(
+    bids: np.ndarray,
+    asks: np.ndarray,
+    coin: str,
+    external_axes: Optional[List[plt.Axes]] = None,
+) -> None:
     """
     Plots Bid/Ask. Can be used for Coinbase and Binance
 
@@ -1009,21 +1047,30 @@ def plot_order_book(bids: np.ndarray, asks: np.ndarray, coin: str) -> None:
         array of asks with columns: price, size, cumulative size
     coin : str
         Coin being plotted
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
+    # This plot has 1 axis
+    if external_axes is None:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    else:
+        if len(external_axes) != 1:
+            console.print("[red]Expected list of one axis item./n[/red]")
+            return
+        (ax,) = external_axes
 
-    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    ax.plot(bids[:, 0], bids[:, 2], "g", label="bids")
-    ax.fill_between(bids[:, 0], bids[:, 2], color="g", alpha=0.4)
-    ax.plot(asks[:, 0], asks[:, 2], "r", label="asks")
-    ax.fill_between(asks[:, 0], asks[:, 2], color="r", alpha=0.4)
-    plt.grid(b=True, which="major", color="#666666", linestyle="-")
-    plt.minorticks_on()
-    plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-    plt.legend(loc=0)
-    plt.xlabel("Price")
-    plt.ylabel("Size (Coins) ")
-    plt.title(f"Order Book for {coin}")
-    if ion:
-        plt.ion()
-    plt.show()
-    console.print("")
+    ax.plot(bids[:, 0], bids[:, 2], color=theme.up_color, label="bids")
+    ax.fill_between(bids[:, 0], bids[:, 2], color=theme.up_color, alpha=0.4)
+
+    ax.plot(asks[:, 0], asks[:, 2], color=theme.down_color, label="asks")
+    ax.fill_between(asks[:, 0], asks[:, 2], color=theme.down_color, alpha=0.4)
+
+    ax.legend()
+    ax.set_xlabel("Price")
+    ax.set_ylabel("Size (Coins)")
+    ax.set_title(f"Order Book for {coin}")
+
+    theme.style_primary_axis(ax)
+
+    if external_axes is None:
+        theme.visualize_output(force_tight_layout=False)

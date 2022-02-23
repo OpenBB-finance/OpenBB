@@ -3,28 +3,36 @@ __docformat__ = "numpy"
 
 import argparse
 import difflib
+import logging
 from typing import List
+
 import yfinance as yf
 from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.rich_config import console
-from gamestonk_terminal.parent_classes import BaseController
+
+from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
-    parse_known_args_and_warn,
     check_positive,
     check_proportion_range,
+    parse_known_args_and_warn,
 )
-from gamestonk_terminal.stocks import stocks_helper
 from gamestonk_terminal.menu import session
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.parent_classes import BaseController
+from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.stocks import stocks_helper
+from gamestonk_terminal.stocks.comparison_analysis import ca_controller
 from gamestonk_terminal.stocks.sector_industry_analysis import (
     financedatabase_model,
     financedatabase_view,
+    stockanalysis_model,
+    stockanalysis_view,
 )
-from gamestonk_terminal.stocks.comparison_analysis import ca_controller
-
 
 # pylint: disable=inconsistent-return-statements,C0302,R0902
+
+
+logger = logging.getLogger(__name__)
 
 
 class SectorIndustryAnalysisController(BaseController):
@@ -38,6 +46,7 @@ class SectorIndustryAnalysisController(BaseController):
         "country",
         "mktcap",
         "exchange",
+        "period",
         "cps",
         "cpic",
         "cpis",
@@ -45,6 +54,8 @@ class SectorIndustryAnalysisController(BaseController):
         "cpci",
         "sama",
         "metric",
+        "satma",
+        "vis",
     ]
     CHOICES_MENUS = [
         "ca",
@@ -119,8 +130,36 @@ class SectorIndustryAnalysisController(BaseController):
         "ev": ("defaultKeyStatistics", "enterpriseValue"),
         "fpe": ("defaultKeyStatistics", "forwardPE"),
     }
-    mktcap_choices = ["Small", "Mid", "Large", "small", "mid", "large"]
+
+    vis_choices = (
+        list(stockanalysis_model.sa_keys["BS"].keys())
+        + list(stockanalysis_model.sa_keys["CF"].keys())
+        + list(stockanalysis_model.sa_keys["IS"].keys())
+    )
+
+    mktcap_choices = [
+        "Nano",
+        "Micro",
+        "Small",
+        "Mid",
+        "Large",
+        "Mega",
+        "nano",
+        "micro",
+        "small",
+        "mid",
+        "large",
+        "mega",
+    ]
     clear_choices = ["industry", "sector", "country", "mktcap"]
+    period_choices = [
+        "Annual",
+        "Quarterly",
+        "Trailing",
+        "annual",
+        "quarterly",
+        "trailing",
+    ]
     PATH = "/stocks/sia/"
 
     def __init__(
@@ -136,6 +175,7 @@ class SectorIndustryAnalysisController(BaseController):
         self.industry = "Financial Data & Stock Exchanges"
         self.mktcap = "Large"
         self.exclude_exchanges = True
+        self.period = "Annual"
 
         self.ticker = ticker
 
@@ -188,6 +228,7 @@ class SectorIndustryAnalysisController(BaseController):
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["mktcap"] = {c: None for c in self.mktcap_choices}
+            choices["period"] = {c: None for c in self.period_choices}
             choices["clear"] = {c: None for c in self.clear_choices}
             choices["metric"] = {c: None for c in self.metric_choices}
             # This menu contains dynamic choices that may change during runtime
@@ -227,8 +268,8 @@ class SectorIndustryAnalysisController(BaseController):
         i_ = "[/unvl]" if not self.industry else ""
         c_ = "[/unvl]" if not self.country else ""
         m_ = "[/unvl]" if not self.mktcap else ""
-        has_no_tickers = "[unvl]" if len(self.tickers) == 0 else ""
-        has_no_tickers_ = "[unvl/]" if len(self.tickers) == 0 else ""
+        has_no_tickers = "[unvl]" if len(self.tickers) == 0 else "[menu]"
+        has_no_tickers_ = "[unvl/]" if len(self.tickers) == 0 else "[/menu]"
         help_text = f"""[cmds]
     load          load a specific ticker and all it's corresponding parameters
 
@@ -236,14 +277,16 @@ class SectorIndustryAnalysisController(BaseController):
     industry      see existing industries, or set industry if arg specified
     sector        see existing sectors, or set sector if arg specified
     country       see existing countries, or set country if arg specified
-    mktcap        set mktcap between small, mid or large
+    mktcap        set mktcap between nano, micro, small, mid, large or mega
     exchange      revert exclude international exchanges flag
+    period        set period between annual, quarterly or trailing [src][StockAnalyis][/src]
 [/cmds]
 [param]Industry          : [/param]{self.industry}
 [param]Sector            : [/param]{self.sector}
 [param]Country           : [/param]{self.country}
 [param]Market Cap        : [/param]{self.mktcap}
 [param]Exclude Exchanges : [/param]{self.exclude_exchanges}
+[param]Period            : [/param]{self.period}
 
 [info]Statistics[/info]{c}[cmds]
     cps           companies per Sector based on Country{c_}{m} and Market Cap{m_}{c}
@@ -252,12 +295,15 @@ class SectorIndustryAnalysisController(BaseController):
     cpcs          companies per Country based on Sector{s_}{m} and Market Cap{m_}{i}
     cpci          companies per Country based on Industry{i_}{m} and Market Cap{m_}[/cmds]
 
-[info]Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}[/info][cmds]
+[info]Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}[/info] [src][Yahoo Finance][/src] [cmds]
     sama          see all metrics available
     metric        visualise financial metric across filters selected[/cmds]
+[info]Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}[/info] [src][StockAnalyis][/src] [cmds]
+    satma         see all metrics available over time
+    vis           visualise financial metric across filters selected[/cmds]
 {has_no_tickers}
 [param]Returned tickers: [/param]{', '.join(self.tickers)}
-[menu]>   ca            take these to comparison analysis menu[/menu]
+>   ca            take these to comparison analysis menu
 {has_no_tickers_}"""
         console.print(text=help_text, menu="Stocks - Sector and Industry Analysis")
 
@@ -267,16 +313,15 @@ class SectorIndustryAnalysisController(BaseController):
             return ["stocks", f"load {self.ticker}", "sia"]
         return []
 
+    @log_start_end(log=logger)
     def call_load(self, other_args: List[str]):
         """Process load command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="load",
-            description="Load stock ticker to perform analysis on. When the data source"
-            + " is 'yf', an Indian ticker can be loaded by using '.NS' at the end,"
-            + " e.g. 'SBIN.NS'. See available market in"
-            + " https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html.",
+            description="Load stock ticker and alter the industry, sector, country and market cap "
+            "accordingly for this ticker.",
         )
         parser.add_argument(
             "-t",
@@ -350,6 +395,7 @@ class SectorIndustryAnalysisController(BaseController):
                 self.stocks_data = {}
                 self.update_runtime_choices()
 
+    @log_start_end(log=logger)
     def call_industry(self, other_args: List[str]):
         """Process industry command"""
         parser = argparse.ArgumentParser(
@@ -416,6 +462,7 @@ class SectorIndustryAnalysisController(BaseController):
             self.stocks_data = {}
             console.print("")
 
+    @log_start_end(log=logger)
     def call_sector(self, other_args: List[str]):
         """Process sector command"""
         parser = argparse.ArgumentParser(
@@ -476,6 +523,7 @@ class SectorIndustryAnalysisController(BaseController):
             self.stocks_data = {}
             console.print("")
 
+    @log_start_end(log=logger)
     def call_country(self, other_args: List[str]):
         """Process country command"""
         parser = argparse.ArgumentParser(
@@ -533,13 +581,14 @@ class SectorIndustryAnalysisController(BaseController):
             self.stocks_data = {}
             console.print("")
 
+    @log_start_end(log=logger)
     def call_mktcap(self, other_args: List[str]):
         """Process mktcap command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="mktcap",
-            description="Set mktcap between small, mid or large",
+            description="Set mktcap to nano, micro, small, mid, large or mega",
         )
         parser.add_argument(
             "-n",
@@ -556,12 +605,15 @@ class SectorIndustryAnalysisController(BaseController):
             if ns_parser.name:
                 self.mktcap = ns_parser.name.capitalize()
             else:
-                console.print("Select between market cap: Small, Mid and Large")
+                console.print(
+                    "Select between market cap: Nano, Micro, Small, Mid, Large and Mega"
+                )
 
             self.stocks_data = {}
             console.print("")
 
     # pylint:disable=attribute-defined-outside-init
+    @log_start_end(log=logger)
     def call_exchange(self, other_args: List[str]):
         """Process exchange command"""
         parser = argparse.ArgumentParser(
@@ -581,6 +633,7 @@ class SectorIndustryAnalysisController(BaseController):
         self.stocks_data = {}
         console.print("")
 
+    @log_start_end(log=logger)
     def call_clear(self, other_args: List[str]):
         """Process clear command"""
         parser = argparse.ArgumentParser(
@@ -621,6 +674,36 @@ class SectorIndustryAnalysisController(BaseController):
             self.stocks_data = {}
             console.print("")
 
+    @log_start_end(log=logger)
+    def call_period(self, other_args: List[str]):
+        """Process period command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="period",
+            description="Set period between annual, quarterly and trailing",
+        )
+        parser.add_argument(
+            "-n",
+            "--name",
+            type=str,
+            dest="name",
+            choices=self.period_choices,
+            help="period to select",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-n")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            if ns_parser.name:
+                self.period = ns_parser.name.capitalize()
+            else:
+                console.print("Select between period: Annual, Quarterly and Trailing")
+
+            self.stocks_data = {}
+            console.print("")
+
+    @log_start_end(log=logger)
     def call_sama(self, other_args: List[str]):
         """Process sama command"""
         parser = argparse.ArgumentParser(
@@ -668,6 +751,7 @@ class SectorIndustryAnalysisController(BaseController):
             """
             console.print(help_text)
 
+    @log_start_end(log=logger)
     def call_metric(self, other_args: List[str]):
         """Process metric command"""
         parser = argparse.ArgumentParser(
@@ -724,6 +808,122 @@ class SectorIndustryAnalysisController(BaseController):
                 self.stocks_data,
             )
 
+    @log_start_end(log=logger)
+    def call_satma(self, other_args: List[str]):
+        """Process satma command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="satma",
+            description="See all metrics available",
+        )
+
+        parser.add_argument(
+            "-s",
+            "--statement",
+            dest="statement",
+            help="See all metrics available for the given choice",
+            choices=["BS", "bs", "IS", "is", "CF", "cf", ""],
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-s")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+
+        help_text = ""
+        statement_string = {
+            "BS": "Balance Sheet Statement",
+            "IS": "Income Statement",
+            "CF": "Cash Flow Statement",
+        }
+
+        if ns_parser.statement:
+            ns_parser.statement = str(ns_parser.statement).upper()
+
+            if ns_parser.statement not in ("IS", "BS", "CF"):
+                console.print(f"{ns_parser.statement} is not a valid option.")
+
+            help_text += f"\n{statement_string[ns_parser.statement]}\n"
+            for k, v in stockanalysis_model.sa_keys[ns_parser.statement].items():
+                help_text += f"  {k} {(10 - len(k)) * ' '} {v} \n"
+
+        else:
+            for statement, statement_value in stockanalysis_model.sa_keys.items():
+                help_text += f"\n{statement_string[statement]}\n"
+                for k, v in statement_value.items():
+                    help_text += f"  {k} {(10 - len(k)) * ' '} {v} \n"
+
+        console.print(help_text)
+
+    @log_start_end(log=logger)
+    def call_vis(self, other_args: List[str]):
+        """Process vis command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="vis",
+            description="Visualize a particular metric with the filters selected",
+        )
+        parser.add_argument(
+            "-m",
+            "--metric",
+            dest="metric",
+            required="-h" not in other_args,
+            help="Metric to visualize",
+            choices=self.vis_choices,
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            dest="limit",
+            default=10,
+            help="Limit number of companies to display",
+            type=check_positive,
+        )
+
+        parser.add_argument(
+            "-p",
+            "--period",
+            dest="period",
+            default=12,
+            help="Limit number of periods to display",
+            type=check_positive,
+        )
+        parser.add_argument(
+            "-r",
+            "--raw",
+            action="store_true",
+            dest="raw",
+            default=False,
+            help="Output all raw data",
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-m")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if ns_parser:
+            (
+                self.stocks_data,
+                self.tickers,
+            ) = stockanalysis_view.display_plots_financials(
+                ns_parser.metric,
+                stockanalysis_model.sa_keys,
+                self.country,
+                self.sector,
+                self.industry,
+                self.period,
+                ns_parser.period,
+                self.mktcap,
+                self.exclude_exchanges,
+                ns_parser.limit,
+                ns_parser.export,
+                ns_parser.raw,
+                self.stocks_data,
+            )
+
+    @log_start_end(log=logger)
     def call_cps(self, other_args: List[str]):
         """Process cps command"""
         parser = argparse.ArgumentParser(
@@ -774,6 +974,7 @@ class SectorIndustryAnalysisController(BaseController):
                     ns_parser.min_pct_to_display_sector,
                 )
 
+    @log_start_end(log=logger)
     def call_cpic(self, other_args: List[str]):
         """Process cpic command"""
         parser = argparse.ArgumentParser(
@@ -824,6 +1025,7 @@ class SectorIndustryAnalysisController(BaseController):
                     ns_parser.min_pct_to_display_industry,
                 )
 
+    @log_start_end(log=logger)
     def call_cpis(self, other_args: List[str]):
         """Process cpis command"""
         parser = argparse.ArgumentParser(
@@ -874,6 +1076,7 @@ class SectorIndustryAnalysisController(BaseController):
                     ns_parser.min_pct_to_display_industry,
                 )
 
+    @log_start_end(log=logger)
     def call_cpcs(self, other_args: List[str]):
         """Process cpcs command"""
         parser = argparse.ArgumentParser(
@@ -924,6 +1127,7 @@ class SectorIndustryAnalysisController(BaseController):
                     ns_parser.min_pct_to_display_country,
                 )
 
+    @log_start_end(log=logger)
     def call_cpci(self, other_args: List[str]):
         """Process cpci command"""
         parser = argparse.ArgumentParser(
@@ -974,6 +1178,7 @@ class SectorIndustryAnalysisController(BaseController):
                     ns_parser.min_pct_to_display_country,
                 )
 
+    @log_start_end(log=logger)
     def call_ca(self, _):
         """Call the comparison analysis menu with selected tickers"""
         if self.tickers:

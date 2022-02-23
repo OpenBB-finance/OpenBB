@@ -8,17 +8,14 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
-      User-Agent:
-      - Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML,
-        like Gecko) Chrome/39.0.2171.95 Safari/537.36
     method: GET
-    uri: https://query2.finance.yahoo.com/v8/finance/chart/TSLA?period1=MOCK_PERIOD_1&period2=MOCK_PERIOD_2&interval=1d&includePrePost=False&events=div%2Csplits
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/TSLA?events=div%2Csplits&includePrePost=False&interval=1d&period1=MOCK_PERIOD_1&period2=MOCK_PERIOD_2
   response:
     body:
-      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"TSLA","exchangeName":"NMS","instrumentType":"EQUITY","firstTradeDate":1277818200,"regularMarketTime":1641330002,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":1149.59,"chartPreviousClose":926.92,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1641373200,"end":1641393000,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1641393000,"end":1641416400,"gmtoffset":-18000},"post":{"timezone":"EST","start":1641416400,"end":1641430800,"gmtoffset":-18000}},"dataGranularity":"1d","range":"","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1639665000,1639751400],"indicators":{"quote":[{"volume":[27590500,33479100],"open":[994.5,914.77001953125],"close":[926.9199829101562,932.5700073242188],"high":[994.97998046875,960.6599731445312],"low":[921.8499755859375,909.0399780273438]}],"adjclose":[{"adjclose":[926.9199829101562,932.5700073242188]}]}}],"error":null}}'
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"TSLA","exchangeName":"NMS","instrumentType":"EQUITY","firstTradeDate":1277818200,"regularMarketTime":1645218003,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":856.98,"chartPreviousClose":926.92,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1645520400,"end":1645540200,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1645540200,"end":1645563600,"gmtoffset":-18000},"post":{"timezone":"EST","start":1645563600,"end":1645578000,"gmtoffset":-18000}},"dataGranularity":"1d","range":"","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1639665000,1639751400],"indicators":{"quote":[{"high":[994.97998046875,960.6599731445312],"close":[926.9199829101562,932.5700073242188],"open":[994.5,914.77001953125],"volume":[27590500,33479100],"low":[921.8499755859375,909.0399780273438]}],"adjclose":[{"adjclose":[926.9199829101562,932.5700073242188]}]}}],"error":null}}'
     headers:
       Age:
-      - '2'
+      - '1'
       Connection:
       - keep-alive
       Expect-CT:
@@ -36,11 +33,11 @@ interactions:
       cache-control:
       - public, max-age=10, stale-while-revalidate=20
       content-length:
-      - '1035'
+      - '1034'
       content-type:
       - application/json;charset=utf-8
       date:
-      - Wed, 05 Jan 2022 11:45:24 GMT
+      - Tue, 22 Feb 2022 08:09:06 GMT
       server:
       - ATS
       vary:
@@ -48,13 +45,13 @@ interactions:
       x-envoy-decorator-operation:
       - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '3'
+      - '4'
       x-request-id:
-      - ccc14cc5-af7c-40ac-ac28-44d081fd5beb
+      - 67ef4d73-f108-4a33-ad9c-5cbaa225b964
       x-yahoo-request-id:
-      - 0gsv07dgtb16k
+      - 9fml999h196h3
       y-rid:
-      - 0gsv07dgtb16k
+      - 9fml999h196h3
     status:
       code: 200
       message: OK

@@ -2,23 +2,28 @@
 __docformat__ = "numpy"
 # pylint:disable=R0904,C0201
 
-import os
 import argparse
 import configparser
+import logging
+import os
 from typing import List
 
 from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.rich_config import console
-from gamestonk_terminal.parent_classes import BaseController
+
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.etf import financedatabase_model, financedatabase_view
+from gamestonk_terminal.etf.screener import screener_view
 from gamestonk_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
-    parse_known_args_and_warn,
     check_positive,
+    parse_known_args_and_warn,
 )
 from gamestonk_terminal.menu import session
-from gamestonk_terminal.etf.screener import screener_view
-from gamestonk_terminal.etf import financedatabase_view, financedatabase_model
+from gamestonk_terminal.parent_classes import BaseController
+from gamestonk_terminal.rich_config import console
+
+logger = logging.getLogger(__name__)
 
 presets_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
 
@@ -87,6 +92,7 @@ class ScreenerController(BaseController):
 """
         console.print(text=help_text, menu="ETF - Screener")
 
+    @log_start_end(log=logger)
     def call_view(self, other_args: List[str]):
         """Process view command"""
         parser = argparse.ArgumentParser(
@@ -157,6 +163,7 @@ class ScreenerController(BaseController):
                     )
                 console.print("")
 
+    @log_start_end(log=logger)
     def call_set(self, other_args: List[str]):
         """Process set command"""
         parser = argparse.ArgumentParser(
@@ -181,6 +188,7 @@ class ScreenerController(BaseController):
             self.preset = ns_parser.preset
         console.print("")
 
+    @log_start_end(log=logger)
     def call_screen(self, other_args):
         """Process screen command"""
         parser = argparse.ArgumentParser(
@@ -227,6 +235,7 @@ class ScreenerController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_sbc(self, other_args: List[str]):
         """Process sbc command"""
         parser = argparse.ArgumentParser(

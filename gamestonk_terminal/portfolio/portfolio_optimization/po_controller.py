@@ -2,26 +2,30 @@
 __docformat__ = "numpy"
 
 import argparse
+import logging
 from typing import List
 
 from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.rich_config import console
+
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.parent_classes import BaseController
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
-    parse_known_args_and_warn,
     check_non_negative,
+    get_rf,
+    parse_known_args_and_warn,
 )
 from gamestonk_terminal.menu import session
+from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal.portfolio.portfolio_optimization import (
-    optimizer_view,
     optimizer_helper,
+    optimizer_view,
 )
-
-from gamestonk_terminal.helper_funcs import get_rf
-
+from gamestonk_terminal.rich_config import console
 
 # pylint: disable=C0302
+
+
+logger = logging.getLogger(__name__)
 
 
 class PortfolioOptimization(BaseController):
@@ -196,19 +200,23 @@ class PortfolioOptimization(BaseController):
     """
         console.print(text=help_text, menu="Portfolio - Portfolio Optimization")
 
+    @log_start_end(log=logger)
     def call_select(self, other_args: List[str]):
         """Process select command"""
         self.tickers = []
         self.add_stocks(other_args)
 
+    @log_start_end(log=logger)
     def call_add(self, other_args: List[str]):
         """Process add command"""
         self.add_stocks(other_args)
 
+    @log_start_end(log=logger)
     def call_rmv(self, other_args: List[str]):
         """Process rmv command"""
         self.rmv_stocks(other_args)
 
+    @log_start_end(log=logger)
     def call_equal(self, other_args: List[str]):
         """Process equal command"""
         parser = argparse.ArgumentParser(
@@ -239,11 +247,13 @@ class PortfolioOptimization(BaseController):
                 console.print(
                     "Please have at least 2 loaded tickers to calculate weights.\n"
                 )
+                return
 
             optimizer_view.display_equal_weight(
                 stocks=self.tickers, value=ns_parser.value, pie=ns_parser.pie
             )
 
+    @log_start_end(log=logger)
     def call_mktcap(self, other_args: List[str]):
         """Process mktcap command"""
         parser = argparse.ArgumentParser(
@@ -273,6 +283,7 @@ class PortfolioOptimization(BaseController):
                 console.print(
                     "Please have at least 2 stocks selected to perform calculations."
                 )
+                return
 
             optimizer_view.display_property_weighting(
                 self.tickers,
@@ -281,6 +292,7 @@ class PortfolioOptimization(BaseController):
                 pie=ns_parser.pie,
             )
 
+    @log_start_end(log=logger)
     def call_dividend(self, other_args: List[str]):
         """Process dividend command"""
         parser = argparse.ArgumentParser(
@@ -310,6 +322,7 @@ class PortfolioOptimization(BaseController):
                 console.print(
                     "Please have at least 2 stocks selected to perform calculations."
                 )
+                return
 
             optimizer_view.display_property_weighting(
                 self.tickers,
@@ -318,6 +331,7 @@ class PortfolioOptimization(BaseController):
                 pie=ns_parser.pie,
             )
 
+    @log_start_end(log=logger)
     def call_property(self, other_args: List[str]):
         """Process property command"""
         parser = argparse.ArgumentParser(
@@ -356,6 +370,7 @@ class PortfolioOptimization(BaseController):
                 console.print(
                     "Please have at least 2 stocks selected to perform calculations."
                 )
+                return
 
             optimizer_view.display_property_weighting(
                 self.tickers,
@@ -364,6 +379,7 @@ class PortfolioOptimization(BaseController):
                 pie=ns_parser.pie,
             )
 
+    @log_start_end(log=logger)
     def call_maxsharpe(self, other_args: List[str]):
         """Process maxsharpe command"""
         parser = argparse.ArgumentParser(
@@ -411,6 +427,7 @@ class PortfolioOptimization(BaseController):
                 console.print(
                     "Please have at least 2 loaded tickers to calculate weights.\n"
                 )
+                return
 
             optimizer_view.display_max_sharpe(
                 stocks=self.tickers,
@@ -420,6 +437,7 @@ class PortfolioOptimization(BaseController):
                 pie=ns_parser.pie,
             )
 
+    @log_start_end(log=logger)
     def call_minvol(self, other_args: List[str]):
         """Process minvol command"""
         parser = argparse.ArgumentParser(
@@ -458,6 +476,7 @@ class PortfolioOptimization(BaseController):
                 console.print(
                     "Please have at least 2 loaded tickers to calculate weights.\n"
                 )
+                return
 
             optimizer_view.display_min_volatility(
                 stocks=self.tickers,
@@ -466,6 +485,7 @@ class PortfolioOptimization(BaseController):
                 pie=ns_parser.pie,
             )
 
+    @log_start_end(log=logger)
     def call_maxquadutil(self, other_args: List[str]):
         """Process maxquadutil command"""
         parser = argparse.ArgumentParser(
@@ -521,6 +541,7 @@ class PortfolioOptimization(BaseController):
                 console.print(
                     "Please have at least 2 loaded tickers to calculate weights.\n"
                 )
+                return
 
             if ns_parser.pie and ns_parser.market_neutral:
                 console.print(
@@ -536,6 +557,7 @@ class PortfolioOptimization(BaseController):
                 pie=ns_parser.pie,
             )
 
+    @log_start_end(log=logger)
     def call_effrisk(self, other_args: List[str]):
         """Process effrisk command"""
         parser = argparse.ArgumentParser(
@@ -596,11 +618,13 @@ class PortfolioOptimization(BaseController):
                 console.print(
                     "Please have at least 2 loaded tickers to calculate weights.\n"
                 )
+                return
 
             if ns_parser.pie and ns_parser.market_neutral:
                 console.print(
                     "Cannot show pie chart for market neutral due to negative weights."
                 )
+                return
 
             optimizer_view.display_efficient_risk(
                 stocks=self.tickers,
@@ -611,6 +635,7 @@ class PortfolioOptimization(BaseController):
                 pie=ns_parser.pie,
             )
 
+    @log_start_end(log=logger)
     def call_effret(self, other_args: List[str]):
         """Process effret command"""
         parser = argparse.ArgumentParser(
@@ -669,11 +694,13 @@ class PortfolioOptimization(BaseController):
                 console.print(
                     "Please have at least 2 loaded tickers to calculate weights.\n"
                 )
+                return
 
             if ns_parser.pie and ns_parser.market_neutral:
                 console.print(
                     "Cannot show pie chart for market neutral due to negative weights."
                 )
+                return
 
             optimizer_view.display_efficient_return(
                 stocks=self.tickers,
@@ -684,6 +711,7 @@ class PortfolioOptimization(BaseController):
                 pie=ns_parser.pie,
             )
 
+    @log_start_end(log=logger)
     def call_ef(self, other_args):
         """Process ef command"""
         parser = argparse.ArgumentParser(
@@ -726,6 +754,7 @@ class PortfolioOptimization(BaseController):
                 console.print(
                     "Please have at least 2 loaded tickers to calculate weights.\n"
                 )
+                return
 
             optimizer_view.display_ef(
                 stocks=self.tickers,
@@ -734,6 +763,7 @@ class PortfolioOptimization(BaseController):
                 risk_free=ns_parser.risk_free,
             )
 
+    @log_start_end(log=logger)
     def call_yolo(self, _):
         # Easter egg :)
         console.print("DFV YOLO")

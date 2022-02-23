@@ -9,7 +9,7 @@ import pandas as pd
 import yfinance as yf
 
 from gamestonk_terminal.decorators import log_start_end
-from gamestonk_terminal.helper_funcs import long_number_format
+from gamestonk_terminal.helper_funcs import lambda_long_number_format
 from gamestonk_terminal.stocks.fundamental_analysis.fa_helper import clean_df_index
 
 logger = logging.getLogger(__name__)
@@ -42,7 +42,7 @@ def get_info(ticker: str) -> pd.DataFrame:
 
     df_info = df_info.mask(df_info["Value"].astype(str).eq("[]")).dropna()
     df_info[df_info.index != "Zip"] = df_info[df_info.index != "Zip"].applymap(
-        lambda x: long_number_format(x)
+        lambda x: lambda_long_number_format(x)
     )
 
     df_info = df_info.rename(
@@ -92,10 +92,10 @@ def get_shareholders(ticker: str) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFr
     )
     df_institutional_shareholders["Shares"] = df_institutional_shareholders[
         "Shares"
-    ].apply(lambda x: long_number_format(x))
+    ].apply(lambda x: lambda_long_number_format(x))
     df_institutional_shareholders["Value"] = df_institutional_shareholders[
         "Value"
-    ].apply(lambda x: long_number_format(x))
+    ].apply(lambda x: lambda_long_number_format(x))
     df_institutional_shareholders["Stake"] = df_institutional_shareholders[
         "Stake"
     ].apply(lambda x: str(f"{100 * x:.2f}") + " %")
@@ -106,10 +106,10 @@ def get_shareholders(ticker: str) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFr
         "% Out", "Stake"
     )
     df_mutualfund_shareholders["Shares"] = df_mutualfund_shareholders["Shares"].apply(
-        lambda x: long_number_format(x)
+        lambda x: lambda_long_number_format(x)
     )
     df_mutualfund_shareholders["Value"] = df_mutualfund_shareholders["Value"].apply(
-        lambda x: long_number_format(x)
+        lambda x: lambda_long_number_format(x)
     )
     df_mutualfund_shareholders["Stake"] = df_mutualfund_shareholders["Stake"].apply(
         lambda x: str(f"{100 * x:.2f}") + " %"
@@ -184,7 +184,7 @@ def get_calendar_earnings(ticker: str) -> pd.DataFrame:
     )
 
     df_calendar.iloc[1:, :] = df_calendar.iloc[1:, :].applymap(
-        lambda x: long_number_format(x)
+        lambda x: lambda_long_number_format(x)
     )
 
     return df_calendar

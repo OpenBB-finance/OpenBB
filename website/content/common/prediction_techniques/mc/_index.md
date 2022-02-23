@@ -17,4 +17,4 @@ optional arguments:
                         Export figure into png, jpg, pdf, svg (default: )
 ```
 
-![MC_fig](https://user-images.githubusercontent.com/18151143/138540365-55a253f4-e02f-406d-9398-984d988888d7.png)
+![MC](https://user-images.githubusercontent.com/18151143/154814179-0cfe9c43-9395-41df-8d15-b8a1de1a8121.png)

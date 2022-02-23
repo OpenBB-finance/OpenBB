@@ -1,0 +1,56 @@
+
+Last transactions for CONGRESS
+
+    Transaction Date Ticker             Representative Transaction             Range            House Report Date
+1         2022-02-02  GOOGL                  Bob Gibbs    Purchase   $15,001-$50,000  Representatives  2022-02-06
+108       2022-01-31    CEF           Thomas R. Carper        Sale  $1,001 - $15,000           Senate  2022-02-03
+63        2022-01-31    XAR           Thomas R. Carper        Sale  $1,001 - $15,000           Senate  2022-02-03
+49        2022-01-31   NVDA           Thomas R. Carper    Purchase  $1,001 - $15,000           Senate  2022-02-03
+53        2022-01-31   PTMC           Thomas R. Carper        Sale  $1,001 - $15,000           Senate  2022-02-03
+54        2022-01-31    MOO           Thomas R. Carper    Purchase  $1,001 - $15,000           Senate  2022-02-03
+56        2022-01-31  FIMKX           Thomas R. Carper        Sale  $1,001 - $15,000           Senate  2022-02-03
+57        2022-01-31  LUBFX           Thomas R. Carper        Sale  $1,001 - $15,000           Senate  2022-02-03
+59        2022-01-31  GEMIX           Thomas R. Carper        Sale  $1,001 - $15,000           Senate  2022-02-03
+60        2022-01-31    GNR           Thomas R. Carper    Purchase  $1,001 - $15,000           Senate  2022-02-03
+61        2022-01-31    ITA           Thomas R. Carper    Purchase  $1,001 - $15,000           Senate  2022-02-03
+62        2022-01-31     SI           Thomas R. Carper    Purchase  $1,001 - $15,000           Senate  2022-02-03
+64        2022-01-31   JHMM           Thomas R. Carper    Purchase  $1,001 - $15,000           Senate  2022-02-03
+27        2022-01-31    FSP              Virginia Foxx        Sale  $50,001-$100,000  Representatives  2022-02-04
+65        2022-01-31    WIW           Thomas R. Carper    Purchase  $1,001 - $15,000           Senate  2022-02-03
+123       2022-01-31    JPM                 Kevin Hern    Purchase    $1,001-$15,000  Representatives  2022-02-02
+126       2022-01-31   TRNO  Donald Sternoff Beyer Jr.    Purchase    $1,001-$15,000  Representatives  2022-02-01
+127       2022-01-31   COST  Donald Sternoff Beyer Jr.    Purchase    $1,001-$15,000  Representatives  2022-02-01
+128       2022-01-31    PEP  Donald Sternoff Beyer Jr.    Purchase    $1,001-$15,000  Representatives  2022-02-01
+142       2022-01-31   CYRX  Donald Sternoff Beyer Jr.        Sale    $1,001-$15,000  Representatives  2022-02-01
+129       2022-01-28    BBH  Donald Sternoff Beyer Jr.        Sale    $1,001-$15,000  Representatives  2022-02-01
+136       2022-01-28  BRK.B  Donald Sternoff Beyer Jr.    Purchase    $1,001-$15,000  Representatives  2022-02-01
+29        2022-01-28    NHI              Virginia Foxx        Sale  $50,001-$100,000  Representatives  2022-02-04
+0         2022-01-28    NWN            Earl Blumenauer        Sale   $15,001-$50,000  Representatives  2022-02-07
+110       2022-01-27   WYNN                  Susie Lee    Purchase   $15,001-$50,000  Representatives  2022-02-03
+111       2022-01-27   WYNN                  Susie Lee    Purchase   $15,001-$50,000  Representatives  2022-02-03
+28        2022-01-27   ILPT              Virginia Foxx        Sale  $50,001-$100,000  Representatives  2022-02-04
+124       2022-01-27     VZ  Donald Sternoff Beyer Jr.    Purchase    $1,001-$15,000  Representatives  2022-02-01
+132       2022-01-27   AXTE  Donald Sternoff Beyer Jr.        Sale    $1,001-$15,000  Representatives  2022-02-01
+140       2022-01-27    NVS  Donald Sternoff Beyer Jr.    Purchase    $1,001-$15,000  Representatives  2022-02-01
+143       2022-01-27   AXHE  Donald Sternoff Beyer Jr.        Sale    $1,001-$15,000  Representatives  2022-02-01
+109       2022-01-27    BAC                  Susie Lee        Sale    $1,001-$15,000  Representatives  2022-02-03
+40        2022-01-26   IVOO           Thomas R. Carper        Sale  $1,001 - $15,000           Senate  2022-02-03
+114       2022-01-26    SPY            Daniel Crenshaw        Sale    $1,001-$15,000  Representatives  2022-02-02
+25        2022-01-26    MSI              Virginia Foxx        Sale   $15,001-$50,000  Representatives  2022-02-04
+47        2022-01-26  GEMIX           Thomas R. Carper        Sale  $1,001 - $15,000           Senate  2022-02-03
+46        2022-01-26    ITA           Thomas R. Carper    Purchase  $1,001 - $15,000           Senate  2022-02-03
+147       2022-01-26    ALL                   Judy Chu        Sale   $15,001-$50,000  Representatives  2022-01-29
+42        2022-01-26   GBIL           Thomas R. Carper        Sale  $1,001 - $15,000           Senate  2022-02-03
+41        2022-01-26   SRVR           Thomas R. Carper    Purchase  $1,001 - $15,000           Senate  2022-02-03
+48        2022-01-26    XAR           Thomas R. Carper        Sale  $1,001 - $15,000           Senate  2022-02-03
+39        2022-01-26    MOO           Thomas R. Carper    Purchase  $1,001 - $15,000           Senate  2022-02-03
+32        2022-01-26   CIBR           Thomas R. Carper        Sale  $1,001 - $15,000           Senate  2022-02-03
+26        2022-01-26      T              Virginia Foxx    Purchase   $15,001-$50,000  Representatives  2022-02-04
+37        2022-01-26   JHMM           Thomas R. Carper    Purchase  $1,001 - $15,000           Senate  2022-02-03
+30        2022-01-26    KBA           Thomas R. Carper        Sale  $1,001 - $15,000           Senate  2022-02-03
+36        2022-01-26    KRE           Thomas R. Carper    Purchase  $1,001 - $15,000           Senate  2022-02-03
+34        2022-01-26  FIMKX           Thomas R. Carper    Purchase  $1,001 - $15,000           Senate  2022-02-03
+38        2022-01-26    WIW           Thomas R. Carper    Purchase  $1,001 - $15,000           Senate  2022-02-03
+31        2022-01-26    FDN           Thomas R. Carper        Sale  $1,001 - $15,000           Senate  2022-02-03
+33        2022-01-26    GLD           Thomas R. Carper        Sale  $1,001 - $15,000           Senate  2022-02-03
+

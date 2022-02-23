@@ -1,5 +1,5 @@
-```text
-usage: analysis [-h]
+```
+usage: analysis [-h] [--export {csv,json,xlsx}]
 ```
 
 Display analysis of SEC filings based on NLP model. Source: https://eclect.us
@@ -8,7 +8,9 @@ For an explanation on how the NLP model is trained, refer to the example here: h
 
 ```
 optional arguments:
-  -h, --help  show this help message (default: False)
+  -h, --help            show this help message (default: False)
+  --export {csv,json,xlsx}
+                        Export raw data into csv, json, xlsx (default: )
 ```
 
 Sample of output using MSFT as the loaded ticker:

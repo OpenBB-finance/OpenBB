@@ -18,4 +18,6 @@ Another common use of Q–Q plots is to compare the distribution of a sample to 
 optional arguments:
   -h, --help  show this help message (default: False)
 ```
-<image size="1400" alt="Feature Screenshot - qqplot" alt=-"https://user-images.githubusercontent.com/85772166/143624197-126ceb66-6859-4e01-b22a-0185e704c777.png">
+
+![qqplot](https://user-images.githubusercontent.com/46355364/154307858-acd1a7d0-bb40-4639-a69c-c316749a90ab.png)
+

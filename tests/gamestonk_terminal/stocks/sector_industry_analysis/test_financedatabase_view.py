@@ -6,6 +6,8 @@ import pytest
 # IMPORTATION INTERNAL
 from gamestonk_terminal.stocks.sector_industry_analysis import financedatabase_view
 
+# pylint: disable=C0302
+
 GET_STOCKS_DATA_DICT = {
     "CGEO.L": {
         "defaultKeyStatistics": {
@@ -827,20 +829,14 @@ GET_STOCKS_DATA_DICT = {
 
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.parametrize(
-    "raw, tab",
-    [(True, True), (True, False), (False, False)],
+    "raw",
+    [True, False],
 )
-def test_display_bars_financials(mocker, raw, tab):
-
-    # MOCK GTFF
-    mocker.patch.object(
-        target=financedatabase_view.gtff, attribute="USE_TABULATE_DF", new=tab
+def test_display_bars_financials(mocker, raw):
+    # MOCK VISUALIZE_OUTPUT
+    mocker.patch(
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
     )
-    mocker.patch.object(target=financedatabase_view.gtff, attribute="USE_ION", new=True)
-
-    # MOCK CHARTS
-    mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.plt.ion")
-    mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.plt.show")
 
     # MOCK EXPORT_DATA
     mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.export_data")
@@ -866,12 +862,10 @@ def test_display_bars_financials(mocker, raw, tab):
 
 @pytest.mark.vcr
 def test_display_bars_financials_load_data(mocker):
-    # MOCK GTFF
-    mocker.patch.object(target=financedatabase_view.gtff, attribute="USE_ION", new=True)
-
-    # MOCK CHARTS
-    mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.plt.ion")
-    mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.plt.show")
+    # MOCK VISUALIZE_OUTPUT
+    mocker.patch(
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
+    )
 
     # MOCK EXPORT_DATA
     mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.export_data")
@@ -897,24 +891,18 @@ def test_display_bars_financials_load_data(mocker):
 
 @pytest.mark.vcr
 @pytest.mark.parametrize(
-    "mktcap, raw, tab",
+    "mktcap, raw",
     [
-        ("", True, True),
-        ("", True, False),
-        ("", False, False),
-        ("Small Cap", False, False),
+        ("", True),
+        ("", False),
+        ("Small Cap", False),
     ],
 )
-def test_display_companies_per_sector_in_country(mktcap, mocker, raw, tab):
-    # MOCK GTFF
-    mocker.patch.object(
-        target=financedatabase_view.gtff, attribute="USE_TABULATE_DF", new=tab
+def test_display_companies_per_sector_in_country(mktcap, mocker, raw):
+    # MOCK VISUALIZE_OUTPUT
+    mocker.patch(
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
     )
-    mocker.patch.object(target=financedatabase_view.gtff, attribute="USE_ION", new=True)
-
-    # MOCK CHARTS
-    mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.plt.ion")
-    mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.plt.show")
 
     # MOCK EXPORT_DATA
     mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.export_data")
@@ -932,24 +920,18 @@ def test_display_companies_per_sector_in_country(mktcap, mocker, raw, tab):
 
 @pytest.mark.vcr
 @pytest.mark.parametrize(
-    "exclude_exchanges, raw, tab",
+    "exclude_exchanges, raw",
     [
-        (True, True, True),
-        (True, True, False),
-        (False, True, False),
-        (True, False, False),
+        (True, True),
+        (False, True),
+        (True, False),
     ],
 )
-def test_display_companies_per_industry_in_sector(exclude_exchanges, mocker, raw, tab):
-    # MOCK GTFF
-    mocker.patch.object(
-        target=financedatabase_view.gtff, attribute="USE_TABULATE_DF", new=tab
+def test_display_companies_per_industry_in_sector(exclude_exchanges, mocker, raw):
+    # MOCK VISUALIZE_OUTPUT
+    mocker.patch(
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
     )
-    mocker.patch.object(target=financedatabase_view.gtff, attribute="USE_ION", new=True)
-
-    # MOCK CHARTS
-    mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.plt.ion")
-    mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.plt.show")
 
     # MOCK EXPORT_DATA
     mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.export_data")
@@ -968,24 +950,18 @@ def test_display_companies_per_industry_in_sector(exclude_exchanges, mocker, raw
 @pytest.mark.default_cassette("test_display_companies_per_country_in_sector")
 @pytest.mark.vcr
 @pytest.mark.parametrize(
-    "exclude_exchanges, raw, tab",
+    "exclude_exchanges, raw",
     [
-        (True, True, True),
-        (True, True, False),
-        (False, True, False),
-        (True, False, False),
+        (True, True),
+        (False, True),
+        (True, False),
     ],
 )
-def test_display_companies_per_country_in_sector(exclude_exchanges, mocker, raw, tab):
-    # MOCK GTFF
-    mocker.patch.object(
-        target=financedatabase_view.gtff, attribute="USE_TABULATE_DF", new=tab
+def test_display_companies_per_country_in_sector(exclude_exchanges, mocker, raw):
+    # MOCK VISUALIZE_OUTPUT
+    mocker.patch(
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
     )
-    mocker.patch.object(target=financedatabase_view.gtff, attribute="USE_ION", new=True)
-
-    # MOCK CHARTS
-    mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.plt.ion")
-    mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.plt.show")
 
     # MOCK EXPORT_DATA
     mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.export_data")
@@ -1004,24 +980,18 @@ def test_display_companies_per_country_in_sector(exclude_exchanges, mocker, raw,
 @pytest.mark.default_cassette("test_display_companies_per_country_in_industry")
 @pytest.mark.vcr
 @pytest.mark.parametrize(
-    "exclude_exchanges, raw, tab",
+    "exclude_exchanges, raw",
     [
-        (True, True, True),
-        (True, True, False),
-        (False, True, False),
-        (False, False, False),
+        (True, True),
+        (False, True),
+        (False, False),
     ],
 )
-def test_display_companies_per_country_in_industry(exclude_exchanges, mocker, raw, tab):
-    # MOCK GTFF
-    mocker.patch.object(
-        target=financedatabase_view.gtff, attribute="USE_TABULATE_DF", new=tab
+def test_display_companies_per_country_in_industry(exclude_exchanges, mocker, raw):
+    # MOCK VISUALIZE_OUTPUT
+    mocker.patch(
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
     )
-    mocker.patch.object(target=financedatabase_view.gtff, attribute="USE_ION", new=True)
-
-    # MOCK CHARTS
-    mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.plt.ion")
-    mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.plt.show")
 
     # MOCK EXPORT_DATA
     mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.export_data")

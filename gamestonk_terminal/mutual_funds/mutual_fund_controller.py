@@ -2,21 +2,21 @@
 __docformat__ = "numpy"
 
 import argparse
+import logging
+import os
 from datetime import datetime, timedelta
 from typing import List
-import os
 
 import investpy
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.rich_config import console
 
-from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
+    EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_FIGURES_ALLOWED,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
-    EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     check_non_negative_float,
     check_positive,
     parse_known_args_and_warn,
@@ -24,6 +24,10 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.mutual_funds import investpy_model, investpy_view, yfinance_view
+from gamestonk_terminal.parent_classes import BaseController
+from gamestonk_terminal.rich_config import console
+
+logger = logging.getLogger(__name__)
 
 
 class FundController(BaseController):
@@ -119,6 +123,7 @@ class FundController(BaseController):
             return ["funds", f"load {self.fund_name} --name"]
         return []
 
+    @log_start_end(log=logger)
     def call_country(self, other_args: List[str]):
         """Process country command"""
         parser = argparse.ArgumentParser(
@@ -149,6 +154,7 @@ class FundController(BaseController):
         console.print("")
         return self.queue
 
+    @log_start_end(log=logger)
     def call_search(self, other_args: List[str]):
         """Process country command"""
         parser = argparse.ArgumentParser(
@@ -213,6 +219,7 @@ class FundController(BaseController):
             )
         return self.queue
 
+    @log_start_end(log=logger)
     def call_overview(self, other_args: List[str]):
         """Process country command"""
         parser = argparse.ArgumentParser(
@@ -238,6 +245,7 @@ class FundController(BaseController):
             )
         return self.queue
 
+    @log_start_end(log=logger)
     def call_info(self, other_args: List[str]):
         """Process country command"""
         parser = argparse.ArgumentParser(
@@ -256,6 +264,7 @@ class FundController(BaseController):
             investpy_view.display_fund_info(self.fund_name, country=self.country)
         return self.queue
 
+    @log_start_end(log=logger)
     def call_load(self, other_args: List[str]):
         """Process country command"""
         parser = argparse.ArgumentParser(
@@ -326,6 +335,7 @@ Potential errors
         console.print("")
         return self.queue
 
+    @log_start_end(log=logger)
     def call_plot(self, other_args: List[str]):
         """Process country command"""
         parser = argparse.ArgumentParser(
@@ -349,6 +359,7 @@ Potential errors
             )
         return self.queue
 
+    @log_start_end(log=logger)
     def call_sector(self, other_args: List[str]):
         """Process sector command"""
         parser = argparse.ArgumentParser(
@@ -388,6 +399,7 @@ Potential errors
 
         return self.queue
 
+    @log_start_end(log=logger)
     def call_equity(self, other_args: List[str]):
         """Process sector command"""
         parser = argparse.ArgumentParser(

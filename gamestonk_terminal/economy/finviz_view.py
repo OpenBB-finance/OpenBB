@@ -115,7 +115,10 @@ def display_valuation(
         Export data to csv,json,xlsx or png,jpg,pdf,svg file
     """
     df_group = finviz_model.get_valuation_performance_data(s_group, "valuation")
-    df_group["Market Cap"] = df_group["Market Cap"].apply(lambda x: float(x.strip("B")))
+    df_group["Market Cap"] = df_group["Market Cap"].apply(
+        lambda x: float(x.strip("B")) if x.endswith("B") else float(x.strip("M")) / 1000
+    )
+
     df_group.columns = [col.replace(" ", "") for col in df_group.columns]
     df_group = df_group.sort_values(by=sort_col, ascending=ascending)
     df_group["Volume"] = df_group["Volume"] / 1_000_000
@@ -128,7 +131,7 @@ def display_valuation(
         title="Group Valuation Data",
     )
 
-    console.print("")
+    console.print()
 
     export_data(
         export,

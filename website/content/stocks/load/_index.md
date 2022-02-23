@@ -1,8 +1,8 @@
 ```
-usage: load [-t S_TICKER] [-s S_START_DATE] [-e S_END_DATE] [-i {1,5,15,30,60}] [--source {yf,av,iex}] [-p] [-h]
+usage: load [-t TICKER] [-s START] [-e END] [-i {1,5,15,30,60}] [--source {yf,av,iex}] [-p] [-r {ytd,1y,2y,5y,6m}] [-h]
 ```
 
-Load a symbol to perform analysis using the string above as a template. Optional arguments and their descriptions are listed above. 
+Load a symbol to perform analysis using the string above as a template. Optional arguments and their descriptions are listed below. 
 
 The default source is, yFinance (https://pypi.org/project/yfinance/). Alternatively, one may select either AlphaVantage (https://www.alphavantage.co/documentation/) or IEX Cloud (https://iexcloud.io/docs/api/) as the data source for the analysis. Please note that certain analytical features are exclusive to the source. 
 
@@ -18,17 +18,46 @@ Certain features, such as the Prediction menu, require the symbol to be loaded a
 
 ```
 optional arguments:
-  -t S_TICKER, --ticker S_TICKER
+  -t TICKER, --ticker TICKER
                         Stock ticker (default: None)
-  -s S_START_DATE, --start S_START_DATE
-                        The starting date (format YYYY-MM-DD) of the stock (default: 2020-11-07)
-  -e S_END_DATE, --end S_END_DATE
-                        The ending date (format YYYY-MM-DD) of the stock (default: 2021-11-08)
+  -s START, --start START
+                        The starting date (format YYYY-MM-DD) of the stock (default: 2019-02-12)
+  -e END, --end END     The ending date (format YYYY-MM-DD) of the stock (default: 2022-02-16)
   -i {1,5,15,30,60}, --interval {1,5,15,30,60}
                         Intraday stock minutes (default: 1440)
   --source {yf,av,iex}  Source of historical data. (default: yf)
   -p, --prepost         Pre/After market hours. Only works for 'yf' source, and intraday data (default: False)
+  -r {ytd,1y,2y,5y,6m}, --iexrange {ytd,1y,2y,5y,6m}
+                        Range for using the iexcloud api. Note that longer range requires more tokens in account (default: ytd)
   -h, --help            show this help message (default: False)
 ```
-<img width="1400" alt="Feature Screenshot - Load" src="https://user-images.githubusercontent.com/85772166/139967994-82e42c75-3ff5-4a04-80a2-c9c9b870934c.png">
-<img width="1400" alt="Feature Screenshot - Load" src="https://user-images.githubusercontent.com/85772166/139967994-82e42c75-3ff5-4a04-80a2-c9c9b870934c.png">
+
+Example:
+```
+2022 Feb 16, 08:29 (✨) /stocks/ $ load TSLA
+
+Loading Daily TSLA stock with starting period 2019-02-11 for analysis.
+
+Datetime: 2022 Feb 16 08:30
+Timezone: America/New_York
+Currency: USD
+Market:   OPEN
+
+2022 Feb 16, 08:30 (✨) /stocks/ $ load AAPL
+
+Loading Daily AAPL stock with starting period 2019-02-11 for analysis.
+
+Datetime: 2022 Feb 16 08:30
+Timezone: America/New_York
+Currency: USD
+Market:   OPEN
+
+2022 Feb 16, 08:30 (✨) /stocks/ $ load AMZN
+
+Loading Daily AMZN stock with starting period 2019-02-11 for analysis.
+
+Datetime: 2022 Feb 16 08:30
+Timezone: America/New_York
+Currency: USD
+Market:   OPEN
+```

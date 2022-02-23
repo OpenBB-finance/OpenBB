@@ -2,44 +2,47 @@
 __docformat__ = "numpy"
 
 import argparse
+import logging
 import os
 from datetime import datetime, timedelta
 from typing import List
-import yfinance as yf
-import matplotlib.pyplot as plt
-import mplfinance as mpf
 
+import yfinance as yf
 from prompt_toolkit.completion import NestedCompleter
 from thepassiveinvestor import create_ETF_report
-from gamestonk_terminal.rich_config import console
 
-from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.common import newsapi_view
+from gamestonk_terminal.common.quantitative_analysis import qa_view
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.etf import (
-    stockanalysis_view,
     financedatabase_view,
     stockanalysis_model,
+    stockanalysis_view,
     yfinance_view,
 )
-from gamestonk_terminal.common import newsapi_view
+from gamestonk_terminal.etf.discovery import disc_controller
+from gamestonk_terminal.etf.screener import screener_controller
+from gamestonk_terminal.etf.technical_analysis import ta_controller
 from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_non_negative_float,
     check_positive,
-    valid_date,
-    parse_known_args_and_warn,
-    plot_autoscale,
     export_data,
+    parse_known_args_and_warn,
+    valid_date,
 )
 from gamestonk_terminal.menu import session
+from gamestonk_terminal.parent_classes import BaseController
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.stocks import stocks_helper
-from gamestonk_terminal.etf.technical_analysis import ta_controller
 from gamestonk_terminal.stocks.comparison_analysis import ca_controller
-from gamestonk_terminal.etf.screener import screener_controller
-from gamestonk_terminal.etf.discovery import disc_controller
 
 # pylint: disable=C0415,C0302
+
+
+logger = logging.getLogger(__name__)
 
 
 class ETFController(BaseController):
@@ -120,6 +123,7 @@ class ETFController(BaseController):
             return ["etf", f"load {self.etf_name}"]
         return []
 
+    @log_start_end(log=logger)
     def call_ln(self, other_args: List[str]):
         """Process ln command"""
         parser = argparse.ArgumentParser(
@@ -178,6 +182,7 @@ class ETFController(BaseController):
             else:
                 console.print("Wrong source choice!\n")
 
+    @log_start_end(log=logger)
     def call_ld(self, other_args: List[str]):
         """Process ld command"""
         parser = argparse.ArgumentParser(
@@ -218,6 +223,7 @@ class ETFController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_load(self, other_args: List[str]):
         """Process load command"""
         parser = argparse.ArgumentParser(
@@ -283,12 +289,28 @@ class ETFController(BaseController):
                 console.print("No company holdings found!\n")
             else:
                 self.etf_holdings = holdings.index[: ns_parser.limit].tolist()
+
+                if "n/a" in self.etf_holdings:
+                    na_tix_idx = []
+                    for idx, item in enumerate(self.etf_holdings):
+                        if item == "n/a":
+                            na_tix_idx.append(str(idx))
+
+                    console.print(
+                        f"n/a tickers found at position {','.join(na_tix_idx)}.  Dropping these from holdings.\n"
+                    )
+
+                self.etf_holdings = list(
+                    filter(lambda x: x != "n/a", self.etf_holdings)
+                )
+
                 console.print(
                     f"Top company holdings found: {', '.join(self.etf_holdings)}\n"
                 )
 
             console.print("")
 
+    @log_start_end(log=logger)
     def call_overview(self, other_args: List[str]):
         """Process overview command"""
         parser = argparse.ArgumentParser(
@@ -306,6 +328,7 @@ class ETFController(BaseController):
                 symbol=self.etf_name, export=ns_parser.export
             )
 
+    @log_start_end(log=logger)
     def call_holdings(self, other_args: List[str]):
         """Process holdings command"""
         parser = argparse.ArgumentParser(
@@ -335,6 +358,7 @@ class ETFController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_news(self, other_args: List[str]):
         """Process news command"""
         parser = argparse.ArgumentParser(
@@ -401,6 +425,7 @@ class ETFController(BaseController):
             else:
                 console.print("Use 'load <ticker>' prior to this command!", "\n")
 
+    @log_start_end(log=logger)
     def call_candle(self, other_args: List[str]):
         """Process candle command"""
         parser = argparse.ArgumentParser(
@@ -409,70 +434,114 @@ class ETFController(BaseController):
             prog="candle",
             description="Shows historic data for an ETF",
         )
+        parser.add_argument(
+            "-p",
+            "--plotly",
+            dest="plotly",
+            action="store_false",
+            default=True,
+            help="Flag to show interactive plotly chart.",
+        )
+        parser.add_argument(
+            "--sort",
+            choices=[
+                "AdjClose",
+                "Open",
+                "Close",
+                "High",
+                "Low",
+                "Volume",
+                "Returns",
+                "LogRet",
+            ],
+            default="",
+            type=str,
+            dest="sort",
+            help="Choose a column to sort by",
+        )
+        parser.add_argument(
+            "-d",
+            "--descending",
+            action="store_false",
+            dest="descending",
+            default=True,
+            help="Sort selected column descending",
+        )
+        parser.add_argument(
+            "--raw",
+            action="store_true",
+            dest="raw",
+            default=False,
+            help="Shows raw data instead of chart",
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            type=check_positive,
+            help="Number to show if raw selected",
+            dest="num",
+            default=20,
+        )
+        parser.add_argument(
+            "-t",
+            "--trend",
+            action="store_true",
+            default=False,
+            help="Flag to add high and low trends to candle.",
+            dest="trendlines",
+        )
+        parser.add_argument(
+            "--ma",
+            dest="mov_avg",
+            type=str,
+            help="Add moving averaged to plot",
+            default="",
+        )
+
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
             if self.etf_name:
-                # TODO: Should be done in one function
-                data = stocks_helper.process_candle(self.etf_data)
-                df_etf = stocks_helper.find_trendline(data, "OC_High", "high")
-                df_etf = stocks_helper.find_trendline(data, "OC_Low", "low")
-
-                mc = mpf.make_marketcolors(
-                    up="green",
-                    down="red",
-                    edge="black",
-                    wick="black",
-                    volume="in",
-                    ohlc="i",
-                )
-
-                s = mpf.make_mpf_style(marketcolors=mc, gridstyle=":", y_on_right=True)
-
-                ap0 = []
-
-                if "OC_High_trend" in df_etf.columns:
-                    ap0.append(
-                        mpf.make_addplot(df_etf["OC_High_trend"], color="g"),
-                    )
-
-                if "OC_Low_trend" in df_etf.columns:
-                    ap0.append(
-                        mpf.make_addplot(df_etf["OC_Low_trend"], color="b"),
-                    )
-
-                if gtff.USE_ION:
-                    plt.ion()
-
-                mpf.plot(
-                    df_etf,
-                    type="candle",
-                    mav=(20, 50),
-                    volume=True,
-                    title=f"\nETF: {self.etf_name}",
-                    addplot=ap0,
-                    xrotation=10,
-                    style=s,
-                    figratio=(10, 7),
-                    figscale=1.10,
-                    figsize=(plot_autoscale()),
-                    update_width_config=dict(
-                        candle_linewidth=1.0, candle_width=0.8, volume_linewidth=1.0
-                    ),
-                )
-                console.print("")
-
                 export_data(
                     ns_parser.export,
-                    os.path.join(os.path.dirname(os.path.abspath(__file__)), "candle"),
+                    os.path.join(
+                        os.path.dirname(os.path.abspath(__file__)), "raw_data"
+                    ),
                     f"{self.etf_name}",
                     self.etf_data,
                 )
 
+                if ns_parser.raw:
+                    qa_view.display_raw(
+                        df=self.etf_data,
+                        sort=ns_parser.sort,
+                        des=ns_parser.descending,
+                        num=ns_parser.num,
+                    )
+
+                else:
+
+                    data = stocks_helper.process_candle(self.etf_data)
+                    mov_avgs = (
+                        tuple(int(num) for num in ns_parser.mov_avg.split(","))
+                        if ns_parser.mov_avg
+                        else None
+                    )
+
+                    stocks_helper.display_candle(
+                        s_ticker=self.etf_name,
+                        df_stock=data,
+                        use_matplotlib=ns_parser.plotly,
+                        intraday=False,
+                        add_trend=ns_parser.trendlines,
+                        ma=mov_avgs,
+                        asset_type="ETF",
+                    )
             else:
                 console.print("No ticker loaded. First use `load {ticker}`\n")
 
+    @log_start_end(log=logger)
     def call_pir(self, other_args):
         """Process pir command"""
         parser = argparse.ArgumentParser(
@@ -517,6 +586,7 @@ class ETFController(BaseController):
                     f"Created ETF report as {ns_parser.filename} in folder {ns_parser.folder} \n"
                 )
 
+    @log_start_end(log=logger)
     def call_weights(self, other_args: List[str]):
         """Process weights command"""
         parser = argparse.ArgumentParser(
@@ -553,6 +623,7 @@ class ETFController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_summary(self, other_args: List[str]):
         """Process summary command"""
         parser = argparse.ArgumentParser(
@@ -570,6 +641,7 @@ class ETFController(BaseController):
                 name=self.etf_name,
             )
 
+    @log_start_end(log=logger)
     def call_ta(self, _):
         """Process ta command"""
         if self.etf_name and not self.etf_data.empty:
@@ -583,6 +655,7 @@ class ETFController(BaseController):
         else:
             console.print("Use 'load <ticker>' prior to this command!", "\n")
 
+    @log_start_end(log=logger)
     def call_pred(self, _):
         """Process pred command"""
         if gtff.ENABLE_PREDICT:
@@ -615,6 +688,7 @@ class ETFController(BaseController):
                 "\n",
             )
 
+    @log_start_end(log=logger)
     def call_ca(self, _):
         """Process ca command"""
         if len(self.etf_holdings) > 0:
@@ -622,16 +696,21 @@ class ETFController(BaseController):
                 self.etf_holdings, self.queue
             ).menu(custom_path_menu_above="/stocks/")
         else:
-            print("Load a ticker with major holdings to compare them on this menu\n")
+            console.print(
+                "Load a ticker with major holdings to compare them on this menu\n"
+            )
 
+    @log_start_end(log=logger)
     def call_scr(self, _):
         """Process scr command"""
         self.queue = self.load_class(screener_controller.ScreenerController, self.queue)
 
+    @log_start_end(log=logger)
     def call_disc(self, _):
         """Process disc command"""
         self.queue = self.load_class(disc_controller.DiscoveryController, self.queue)
 
+    @log_start_end(log=logger)
     def call_compare(self, other_args):
         """Process compare command"""
         parser = argparse.ArgumentParser(
