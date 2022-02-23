@@ -305,8 +305,8 @@ def create_dataframe(ticker: str, statement: str, period: str = "annual"):
     years = [x.get_text().strip() for x in columns]
     len_data = len(years) - 1
 
-    phrase = soup.find("div", attrs={"class": "text-sm text-gray-600 block lg:hidden"})
-    phrase = phrase.get_text().lower()
+    phrase = soup.find("div", attrs={"class": "block text-sm text-gray-600 lg:hidden"})
+    phrase = phrase.get_text().lower() if phrase else ""
 
     if "thousand" in phrase:
         rounding = 1_000
