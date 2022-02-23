@@ -112,7 +112,7 @@ Loaded:[/info] {self.portfolio_name or None}
     
 [info]Risk Metrics:[/info][cmds]
     var         display value at risk
-    es          display expected shortfall
+    es          display expected shortfall[/cmds]
         """
         # TODO: Clean up the reports inputs
         # TODO: Edit the allocation to allow the different asset classes
