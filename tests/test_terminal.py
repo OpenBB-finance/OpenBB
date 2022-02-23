@@ -1,10 +1,9 @@
+from contextlib import contextmanager
 import pytest
 import terminal
 
 
-pytest.skip(allow_module_level=True)
-
-
+@pytest.mark.skip
 @pytest.mark.block_network
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.record_stdout
@@ -18,6 +17,7 @@ def test_terminal_quick_exit(mocker, monkeypatch):
     terminal.terminal()
 
 
+@pytest.mark.skip
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.record_stdout
 def test_terminal_quit(mocker, monkeypatch):
@@ -35,3 +35,24 @@ def test_terminal_quit(mocker, monkeypatch):
     terminal.terminal()
 
     spy_print_goodbye.assert_called_once()
+
+
+@contextmanager
+def no_suppress():
+    yield
+
+
+@pytest.mark.vcr(record_mode="none")
+@pytest.mark.record_stdout
+@pytest.mark.parametrize(
+    "debug, test, filtert, path",
+    [
+        (True, False, None, None),
+        (False, False, None, ["scripts/test_alt_covid.gst"]),
+        (False, True, "alt_covid", ["scripts/"]),
+    ],
+)
+def test_menu(mocker, debug, test, filtert, path):
+    mocker.patch(target="terminal.terminal")
+    mocker.patch(target="terminal.suppress_stdout", side_effect=no_suppress)
+    terminal.main(debug, test, filtert, path)

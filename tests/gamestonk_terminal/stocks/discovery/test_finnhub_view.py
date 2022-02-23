@@ -33,7 +33,7 @@ def test_past_ipo(func, mocker):
         return_value=ipo_df,
     )
 
-    getattr(finnhub_view, func)(2, "")
+    getattr(finnhub_view, func)(2, 20, "", None)
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -45,4 +45,4 @@ def test_func_empty_df(func, mocker):
         return_value=pd.DataFrame(),
     )
 
-    getattr(finnhub_view, func)(2, "")
+    getattr(finnhub_view, func)(2, 20, "", None)
