@@ -704,16 +704,22 @@ def display_es(
     percentile: int,
     portfolio: bool,
 ):
-    """
+    """Displays expected shortfall
 
     Parameters
     ----------
-    data
-    use_mean
-    ticker
-    distribution
-    percentile
-    portfolio
+    data: pd.DataFrame
+        stock dataframe
+    use_mean:
+        if one should use the stocks mean return
+    ticker: str
+        ticker of the stock
+    distribution: str
+        choose distribution to use: logistic, laplace, normal
+    percentile: int
+        es percentile
+    portfolio: bool
+        If the data is a portfolio
     """
     es_list, hist_es_list = qa_model.get_es(
         data, use_mean, distribution, percentile, portfolio
@@ -727,6 +733,9 @@ def display_es(
     elif distribution == "student_t":
         str_es_label = "Student-t ES"
         str_title = "Student-t "
+    elif distribution == "logistic":
+        str_es_label = "Logistic ES"
+        str_title = "Logistic "
     else:
         str_es_label = "ES:"
         str_title = ""

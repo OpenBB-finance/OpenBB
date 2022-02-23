@@ -452,7 +452,7 @@ def get_es(
         es_99 = -s * np.log((0.99 ** (1 - 1 / 0.01)) / 0.01) + mean
         es_custom = -s * np.log((percentile ** (1 - 1 / a)) / a) + mean
 
-    elif distribution == "normal":
+    else:
         # Regular Expected Shortfall
         es_90 = std * -stats.norm.pdf(percentile_90) / 0.1 + mean
         es_95 = std * -stats.norm.pdf(percentile_95) / 0.05 + mean
@@ -460,7 +460,7 @@ def get_es(
         es_custom = std * -stats.norm.pdf(percentile_custom) / (1 - percentile) + mean
 
     # Historical Expected Shortfall
-    _, hist_var_list = get_var(data, use_mean, False, False, percentile, False)
+    _, hist_var_list = get_var(data, use_mean, False, False, percentile, True)
     hist_es_90 = data_return[data_return <= hist_var_list[0]].mean()
     hist_es_95 = data_return[data_return <= hist_var_list[1]].mean()
     hist_es_99 = data_return[data_return <= hist_var_list[2]].mean()
