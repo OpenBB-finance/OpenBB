@@ -48,7 +48,7 @@ def no_suppress():
     "debug, test, verbose, filtert, path",
     [
         (True, False, False, None, None),
-        (False, False, None, ["scripts/test_alt_covid.gst"]),
+        (False, False, False, None, ["scripts/test_alt_covid.gst"]),
         (False, True, False, "alt_covid", ["scripts/"]),
         (False, True, True, "alt_covid", ["scripts/"]),
     ],

@@ -439,10 +439,10 @@ def main(debug: bool, test: bool, filtert: str, paths: List[str], verbose: bool)
     else:
         if debug:
             os.environ["DEBUG_MODE"] = "true"
-        if isinstance(path, list) and path.endswith(".gst"):
-            run_scripts(path)
-        elif path:
-            argv_cmds = list([" ".join(path).replace(" /", "/home/")])
+        if isinstance(paths, list) and paths[0].endswith(".gst"):
+            run_scripts(paths[0])
+        elif paths:
+            argv_cmds = list([" ".join(paths).replace(" /", "/home/")])
             argv_cmds = insert_start_slash(argv_cmds) if argv_cmds else argv_cmds
             terminal(argv_cmds)
         else:
