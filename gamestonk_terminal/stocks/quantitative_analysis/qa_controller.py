@@ -129,8 +129,8 @@ class QaController(StockController):
     skew        rolling skewness of distribution of prices
     kurtosis    rolling kurtosis of distribution of prices
 [info]Risk:[/info]
-    var         value at risk
-    es          expected shortfall
+    var         display value at risk
+    es          display expected shortfall
 [info]Other:[/info]
     raw         print raw data
     decompose   decomposition in cyclic-trend, season, and residuals of prices
