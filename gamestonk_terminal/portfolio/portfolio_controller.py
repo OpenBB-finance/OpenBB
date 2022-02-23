@@ -109,7 +109,7 @@ Loaded:[/info] {self.portfolio_name or None}
     rmr         graph your returns versus the market's returns
     dd          display portfolio drawdown
     al          display allocation to given assets over period[/cmds]
-    
+
 [info]Risk Metrics:[/info][cmds]
     var         display value at risk
     es          display expected shortfall[/cmds]
