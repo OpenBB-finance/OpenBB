@@ -480,7 +480,7 @@ Loaded:[/info] {self.portfolio_name or None}
                     ns_parser.percentile / 100,
                     True,
                 )
-    
+
     @log_start_end(log=logger)
     def call_es(self, other_args: List[str]):
         """Process es command"""
