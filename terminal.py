@@ -333,8 +333,7 @@ def insert_start_slash(cmds: List[str]) -> List[str]:
     return cmds
 
 
-# TODO: if test_mode is true add exit to the end
-def run_scripts(path: str, test_mode: bool = False):
+def run_scripts(path: str, test_mode: bool = False, verbose: bool = False):
     """Runs a given .gst scripts
 
     Parameters
@@ -343,6 +342,8 @@ def run_scripts(path: str, test_mode: bool = False):
         The location of the .gst file
     test_mode : bool
         Whether the terminal is in test mode
+    verbose : bool
+        Whether to run tests in verbose mode
     """
     if os.path.isfile(path):
         with open(path) as fp:
@@ -355,7 +356,15 @@ def run_scripts(path: str, test_mode: bool = False):
             file_cmds = simulate_argv.replace("//", "/home/").split()
 
             file_cmds = insert_start_slash(file_cmds) if file_cmds else file_cmds
-            terminal(file_cmds)
+            if not test_mode:
+                terminal(file_cmds)
+                # TODO: Add way to track how many commands are tested
+            else:
+                if verbose:
+                    terminal(file_cmds)
+                else:
+                    with suppress_stdout():
+                        terminal(file_cmds)
     else:
         console.print(f"File '{path}' doesn't exist. Launching base terminal.\n")
         if not test_mode:
@@ -409,16 +418,13 @@ def main(debug: bool, test: bool, filtert: str, paths: List[str], verbose: bool)
         i = 0
         console.print("[green]Gamestonk Terminal Integrated Tests:\n[/green]")
         for file in test_files:
+            file = file.replace("//", "/")
             console.print(f"{file}  {((i/length)*100):.1f}%")
             try:
                 if not os.path.isfile(file):
                     raise ValueError("Given file does not exist")
-                if verbose:
-                    run_scripts(file, test_mode=True)
-                else:
-                    with suppress_stdout():
-                        run_scripts(file, test_mode=True)
-                    SUCCESSES += 1
+                run_scripts(file, test_mode=True, verbose=verbose)
+                SUCCESSES += 1
             except Exception as e:
                 fails[file] = e
                 FAILURES += 1
