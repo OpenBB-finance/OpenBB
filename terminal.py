@@ -432,8 +432,8 @@ def main(debug: bool, test: bool, filtert: str, paths: List[str], verbose: bool)
             i += 1
         if fails:
             console.print("\n[red]Failures:[/red]\n")
-            file_name = file[file.rfind("GamestonkTerminal") :].replace("\\", "/")
             for key, value in fails.items():
+                file_name = key[key.rfind("GamestonkTerminal") :].replace("\\", "/")
                 console.print(f"{file_name}: {value}\n")
         console.print(
             f"Summary: [green]Successes: {SUCCESSES}[/green] [red]Failures: {FAILURES}[/red]"
