@@ -48,5 +48,9 @@ Notes:
 strong multicollinearity or other numerical problems.
 
 2022 Feb 24, 06:00 (✨) /statistics/ $ dwat
-The result 0.04 is outside the range 1.5 and 2.5 and therefore autocorrelation can be problematic. Please consider lags of the dependent or independent variable.
+The result 0.04 is outside the range 1.5 and 2.5 and therefore autocorrelation can be problematic.
+Please consider lags of the dependent or independent variable.
 ```
+
+![durbin_watson example](https://user-images.githubusercontent.com/46355364/155514788-caaa65a2-1f5f-41d0-8db2-06e682d5a53e.png)
+
