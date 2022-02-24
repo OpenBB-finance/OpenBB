@@ -419,10 +419,8 @@ def main(debug: bool, test: bool, filtert: str, paths: List[str], verbose: bool)
         console.print("[green]Gamestonk Terminal Integrated Tests:\n[/green]")
         for file in test_files:
             file = file.replace("//", "/")
-            file_name = file[file.rfind('GamestonkTerminal'):].replace("\\","/")
-            console.print(
-                f"{file_name}  {((i/length)*100):.1f}%"
-            )
+            file_name = file[file.rfind("GamestonkTerminal") :].replace("\\", "/")
+            console.print(f"{file_name}  {((i/length)*100):.1f}%")
             try:
                 if not os.path.isfile(file):
                     raise ValueError("Given file does not exist")
@@ -434,7 +432,7 @@ def main(debug: bool, test: bool, filtert: str, paths: List[str], verbose: bool)
             i += 1
         if fails:
             console.print("\n[red]Failures:[/red]\n")
-            file_name = file[file.rfind('GamestonkTerminal'):].replace("\\","/")
+            file_name = file[file.rfind("GamestonkTerminal") :].replace("\\", "/")
             for key, value in fails.items():
                 console.print(f"{file_name}: {value}\n")
         console.print(
