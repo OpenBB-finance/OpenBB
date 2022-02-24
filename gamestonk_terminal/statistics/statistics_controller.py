@@ -6,6 +6,7 @@ __docformat__ = "numpy"
 # pylint: disable=too-many-lines
 # pylint: disable=import-outside-toplevel
 # pylint: disable=too-many-lines
+# pylint: disable=too-many-branches
 
 import argparse
 import logging
@@ -91,6 +92,15 @@ class StatisticsController(BaseController):
                 "dependent": {},
                 "model": {},
             }
+
+        self.signs: Dict[Any, Any] = {
+            "div": "/",
+            "mul": "*",
+            "add": "+",
+            "sub": "-",
+            "mod": "%",
+            "pow": "**",
+        }
 
         self.file_types = ["csv", "xlsx"]
         self.DATA_FILES = {
@@ -635,9 +645,10 @@ Panel Data
         parser.add_argument(
             "-a",
             "--add",
-            help="Add columns to your dataframe with the option to use formulas. "
-            "Use format: <column>-<dataset> <column>-<dataset> <sign> <criteria>. An example could "
-            "be: high_revenue-thesis revenue-thesis > 1000",
+            help="Add columns to your dataframe with the option to use formulas. Use format: "
+            "<column>-<dataset> <column-dataset> <sign> <criteria or column-dataset>. "
+            "Two examples: high_revenue-thesis revenue-thesis > 1000 or debt_ratio-dataset "
+            "debt-dataset div assets-dataset2",
             dest="add",
             nargs=4,
             type=str,
@@ -646,7 +657,7 @@ Panel Data
         parser.add_argument(
             "-d",
             "--delete",
-            help="The columns you want to delete from a dataset. Use format: <column>-<dataset>.",
+            help="The columns you want to delete from a dataset. Use format: <column-dataset>.",
             dest="delete",
             nargs="+",
             type=str,
@@ -679,6 +690,10 @@ Panel Data
                 new_column, dataset = ns_parser.add[0].split("-")
                 existing_column, dataset2 = ns_parser.add[1].split("-")
 
+                for sign, operator in self.signs.items():
+                    if sign == ns_parser.add[2]:
+                        ns_parser.add[2] = operator
+
                 if dataset not in self.datasets:
                     console.print(
                         f"Not able to find the dataset {dataset}. Please choose one of "
@@ -694,6 +709,27 @@ Panel Data
                         f"Not able to find the column {existing_column}. Please choose one of "
                         f"the following: {', '.join(self.datasets[dataset2].columns)}"
                     )
+                elif len(ns_parser.add[3].split("-")) > 1:
+                    existing_column2, dataset3 = ns_parser.add[3].split("-")
+
+                    if dataset3 not in self.datasets:
+                        console.print(
+                            f"Not able to find the dataset {dataset3}. Please choose one of "
+                            f"the following: {', '.join(self.datasets)}"
+                        )
+
+                    elif existing_column2 not in self.datasets[dataset3]:
+                        console.print(
+                            f"Not able to find the column {existing_column2}. Please choose one of "
+                            f"the following: {', '.join(self.datasets[dataset3].columns)}"
+                        )
+                    else:
+                        pd.eval(
+                            f"{new_column} = self.datasets[dataset2][existing_column] "
+                            f"{ns_parser.add[2]} self.datasets[dataset3][existing_column2]",
+                            target=self.datasets[dataset],
+                            inplace=True,
+                        )
                 else:
                     pd.eval(
                         f"{new_column} = self.datasets[dataset2][existing_column] "
