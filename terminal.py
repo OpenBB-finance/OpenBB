@@ -362,7 +362,60 @@ def run_scripts(path: str, test_mode: bool = False):
             terminal()
 
 
+def main(debug: bool, test: bool, filtert: str, path: List[str]):
+    if test:
+        os.environ["DEBUG_MODE"] = "true"
+
+        if "gst" in path[0]:
+            files = path
+        else:
+            folder = os.path.join(os.path.abspath(os.path.dirname(__file__)), path[0])
+            files = [
+                name
+                for name in os.listdir(folder)
+                if os.path.isfile(os.path.join(folder, name))
+                and name.endswith(".gst")
+                and (filtert in f"{folder}/{name}")
+            ]
+        files.sort()
+        SUCCESSES = 0
+        FAILURES = 0
+        fails = {}
+        length = len(files)
+        i = 0
+        console.print("[green]Gamestonk Terminal Integrated Tests:\n[/green]")
+        for file in files:
+            console.print(f"{file}  {((i/length)*100):.1f}%")
+            try:
+                with suppress_stdout():
+                    run_scripts(f"{path[0]}/{file}", test_mode=True)
+                SUCCESSES += 1
+            except Exception as e:
+                fails[f"{path[0]}{file}"] = e
+                FAILURES += 1
+            i += 1
+        if fails:
+            console.print("\n[red]Failures:[/red]\n")
+            for key, value in fails.items():
+                console.print(f"{key}: {value}\n")
+        console.print(
+            f"Summary: [green]Successes: {SUCCESSES}[/green] [red]Failures: {FAILURES}[/red]"
+        )
+    else:
+        if debug:
+            os.environ["DEBUG_MODE"] = "true"
+        if isinstance(path, list) and path[0].endswith(".gst"):
+            run_scripts(path[0])
+        elif path:
+            argv_cmds = list([" ".join(path).replace(" /", "/home/")])
+            argv_cmds = insert_start_slash(argv_cmds) if argv_cmds else argv_cmds
+            terminal(argv_cmds)
+        else:
+            terminal()
+
+
 if __name__ == "__main__":
+
     parser = argparse.ArgumentParser(
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="terminal",
@@ -397,7 +450,7 @@ if __name__ == "__main__":
         "-f",
         "--filter",
         help="Send a keyword to filter in file name",
-        dest="filter",
+        dest="filtert",
         default="",
         type=str,
     )
@@ -407,54 +460,4 @@ if __name__ == "__main__":
     ns_parser = parser.parse_args()
 
     if ns_parser:
-        if ns_parser.test:
-            os.environ["DEBUG_MODE"] = "true"
-
-            if "gst" in ns_parser.path[0]:
-                files = ns_parser.path
-            else:
-                folder = os.path.join(
-                    os.path.abspath(os.path.dirname(__file__)), ns_parser.path[0]
-                )
-                files = [
-                    name
-                    for name in os.listdir(folder)
-                    if os.path.isfile(os.path.join(folder, name))
-                    and name.endswith(".gst")
-                    and (ns_parser.filter in f"{folder}/{name}")
-                ]
-            files.sort()
-            SUCCESSES = 0
-            FAILURES = 0
-            fails = {}
-            length = len(files)
-            i = 0
-            console.print("[green]Gamestonk Terminal Integrated Tests:\n[/green]")
-            for file in files:
-                console.print(f"{file}  {((i/length)*100):.1f}%")
-                try:
-                    with suppress_stdout():
-                        run_scripts(f"{ns_parser.path[0]}/{file}", test_mode=True)
-                    SUCCESSES += 1
-                except Exception as e:
-                    fails[f"{ns_parser.path[0]}{file}"] = e
-                    FAILURES += 1
-                i += 1
-            if fails:
-                console.print("\n[red]Failures:[/red]\n")
-                for key, value in fails.items():
-                    console.print(f"{key}: {value}\n")
-            console.print(
-                f"Summary: [green]Successes: {SUCCESSES}[/green] [red]Failures: {FAILURES}[/red]"
-            )
-        else:
-            if ns_parser.debug:
-                os.environ["DEBUG_MODE"] = "true"
-            if isinstance(ns_parser.path, list) and ns_parser.path[0].endswith(".gst"):
-                run_scripts(ns_parser.path[0])
-            elif ns_parser.path:
-                argv_cmds = list([" ".join(ns_parser.path).replace(" /", "/home/")])
-                argv_cmds = insert_start_slash(argv_cmds) if argv_cmds else argv_cmds
-                terminal(argv_cmds)
-            else:
-                terminal()
+        main(ns_parser.debug, ns_parser.test, ns_parser.filtert, ns_parser.path)
