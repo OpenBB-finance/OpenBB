@@ -81,40 +81,29 @@ def log_start_end(func=None, log=None):
 
 
 # pylint: disable=import-outside-toplevel
-def check_api_key(source):
+def check_api_key(api_keys):
     """
-    Wrap around the call function in the menu controller and
-    print message statement to the console on the status of key and token.
-
-    An extension of the KeysController class
+    Wrapper around model function and
+    print message statement to the console if API keys are not yet defined.
     """
 
     def decorator(func):
         @functools.wraps(func)
         def wrapper_decorator(*args, **kwargs):
-            # import inside the func due to circular import
-            from gamestonk_terminal.keys_controller import KeysController
+            import gamestonk_terminal.config_terminal as cfg
 
-            key_controller = KeysController(menu_usage=False)
+            undefined_apis = []
+            for key in api_keys:
+                # Get value of the API Keys
+                if getattr(cfg, key) == "REPLACE_ME":
+                    undefined_apis.append(key)
 
-            # construct the check_key method
-            method_to_call = "check_" + str(source) + "_key"
-            check_single_key = getattr(key_controller, method_to_call)
-
-            check_single_key()
-
-            msg_map = {
-                "not defined": "Missing API Keys. Set it in the keys menu or in your .env file",
-                "defined, test failed": """API Keys set but returns an error. Check again to make sure it's correct""",
-                "defined, test unsuccessful": "API Keys set but returns an error. Check again to make sure it's correct",
-            }
-
-            # get the error message from the msg_map
-            console_message = msg_map.get(key_controller.key_dict["GLASSNODE"])
-
-            if console_message is not None:
-                console.print(console_message)
-                console.print("\n")
+            if undefined_apis:
+                undefined_apis_name = ", ".join(undefined_apis)
+                console.print(
+                    f"[red]{undefined_apis_name} not defined"
+                    "Set API Keys in config_terminal.py or under keys menu[/red]\n"
+                )  # pragma: allowlist secret
             else:
                 func(*args, **kwargs)
 
