@@ -420,7 +420,7 @@ def main(debug: bool, test: bool, filtert: str, paths: List[str], verbose: bool)
         for file in test_files:
             file = file.replace("//", "/")
             console.print(
-                f"{file[file.find('GamestonkTerminal'):]}  {((i/length)*100):.1f}%"
+                f"{file[file.rfind('GamestonkTerminal'):]}  {((i/length)*100):.1f}%"
             )
             try:
                 if not os.path.isfile(file):
@@ -434,7 +434,7 @@ def main(debug: bool, test: bool, filtert: str, paths: List[str], verbose: bool)
         if fails:
             console.print("\n[red]Failures:[/red]\n")
             for key, value in fails.items():
-                console.print(f"{key[key.find('GamestonkTerminal'):]}: {value}\n")
+                console.print(f"{key[key.rfind('GamestonkTerminal'):]}: {value}\n")
         console.print(
             f"Summary: [green]Successes: {SUCCESSES}[/green] [red]Failures: {FAILURES}[/red]"
         )
