@@ -23,6 +23,7 @@ import gamestonk_terminal.statistics.regression_view
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
+    NO_EXPORT,
     EXPORT_ONLY_FIGURES_ALLOWED,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -239,6 +240,7 @@ Tests
         parser.add_argument(
             "-n",
             "--name",
+            dest="name",
             help="The name of the dataset you wish to export",
             type=str,
         )
@@ -247,6 +249,7 @@ Tests
             "-t",
             "--type",
             help="The file type you wish to export to",
+            dest="type",
             choices=self.file_types,
             type=str,
             default="xlsx",
@@ -255,17 +258,16 @@ Tests
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, export_allowed=NO_EXPORT
         )
 
-        export_data(
-            ns_parser.type,
-            os.path.dirname(os.path.abspath(__file__)),
-            ns_parser.name,
-            self.datasets[ns_parser.name],
-        )
-
-        console.print("")
+        if ns_parser and ns_parser.name:
+            export_data(
+                ns_parser.type,
+                os.path.dirname(os.path.abspath(__file__)),
+                ns_parser.name,
+                self.datasets[ns_parser.name],
+            )
 
     def call_remove(self, other_args: List[str]):
         """Process clear"""
@@ -280,6 +282,7 @@ Tests
             "-n",
             "--name",
             help="The name of the dataset you want to remove",
+            dest="name",
             type=str,
         )
 
@@ -526,7 +529,7 @@ Tests
             other_args.insert(0, "-n")
         ns_parser = parse_known_args_and_warn(parser, other_args)
 
-        if ns_parser.name:
+        if ns_parser and ns_parser.name:
             name = ns_parser.name[0]
             columns = ns_parser.name[1:]
 
@@ -571,7 +574,7 @@ Tests
 
             self.update_runtime_choices()
 
-            console.print("")
+        console.print("")
 
     def call_clean(self, other_args: List[str]):
         """Process clean"""
@@ -847,6 +850,8 @@ Tests
                 ns_parser.regression, self.datasets, self.choices["regressions"]
             )
 
+        console.print("")
+
     def call_norm(self, other_args: List[str]):
         """Process normality command"""
         parser = argparse.ArgumentParser(
@@ -1052,6 +1057,8 @@ Tests
 
             console.print(comparison_result)
 
+        console.print("")
+
     def call_dwat(self, other_args: List[str]):
         """Process unitroot command"""
         parser = argparse.ArgumentParser(
@@ -1079,6 +1086,8 @@ Tests
                 self.regression["OLS"]["model"].resid,
                 ns_parser.export,
             )
+
+        console.print("")
 
     def call_bgod(self, other_args):
         """Process bgod command"""
@@ -1112,6 +1121,8 @@ Tests
                     self.regression["OLS"]["model"], ns_parser.lags, ns_parser.export
                 )
 
+        console.print("")
+
     def call_bpag(self, other_args):
         """Process bpag command"""
         parser = argparse.ArgumentParser(
@@ -1134,6 +1145,8 @@ Tests
                 gamestonk_terminal.statistics.regression_view.display_bpag(
                     self.regression["OLS"]["model"], ns_parser.export
                 )
+
+        console.print("")
 
     def call_granger(self, other_args: List[str]):
         """Process granger command"""
@@ -1251,3 +1264,5 @@ Tests
             statistics_view.display_cointegration_test(
                 datasets, ns_parser.significant, ns_parser.plot, ns_parser.export
             )
+
+        console.print("")

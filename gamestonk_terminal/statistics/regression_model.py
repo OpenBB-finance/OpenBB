@@ -94,12 +94,12 @@ def get_regression_data(
 
     for variable in regression_variables:
         column, dataset = datasets[variable].keys()
-        regression[column] = data[dataset][column]
+        regression[f"{column}_{dataset}"] = data[dataset][column]
 
         if variable == regression_variables[0]:
-            dependent_variable = column
+            dependent_variable = f"{column}_{dataset}"
         elif variable in regression_variables[1:]:
-            independent_variables.append(column)
+            independent_variables.append(f"{column}_{dataset}")
 
     regression_df = pd.DataFrame(regression)
 
