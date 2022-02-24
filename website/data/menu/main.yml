@@ -1264,7 +1264,7 @@ main:
             ref: "/bot/discord/price"
               sub:
                 - name: "quote"
-                  ref: "/bot/discord/price/quoute"
+                  ref: "/bot/discord/price/quote"
                 - name: "candle"
                   ref: "/bot/discord/price/candle"
                 - name: "btc"
