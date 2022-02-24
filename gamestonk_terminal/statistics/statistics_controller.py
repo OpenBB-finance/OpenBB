@@ -172,7 +172,7 @@ Tests
     dwat            perform Durbin-Watson autocorrelation test on the residuals of the regression
     bgod            perform Breusch-Godfrey autocorrelation tests with lags on the residuals of the regression
     bpag            perform Breusch-Pagan heteroscedasticity test on the residuals of the regression
-    granger         perform granger causality tests on two columns
+    granger         perform Granger causality tests on two columns
     coint           perform co-integration test on two columns[/cmds]
         """
         console.print(text=help_text, menu="Statistics")
