@@ -8,4 +8,20 @@ Shows the list of prices and probabilities entered using the add command.
 optional arguments:
   -h, --help            show this help message (default: False)
 ```
-<img size="1400" alt="Feature Screenshot - show" src="https://user-images.githubusercontent.com/85772166/142503889-1e67f204-3d4e-4d71-b07a-1ac5d5394f48.png">
+
+Example:
+```
+2022 Feb 16, 09:45 (✨) /stocks/options/pricing/ $ add -p 100 -c 0.5
+
+2022 Feb 16, 09:46 (✨) /stocks/options/pricing/ $ add -p 200 -c 0.5
+
+2022 Feb 16, 09:46 (✨) /stocks/options/pricing/ $ show
+Estimated price(s) of AAPL at 2022-05-20
+┏━━━━━━━━┳━━━━━━━━┓
+┃ Price  ┃ Chance ┃
+┡━━━━━━━━╇━━━━━━━━┩
+│ 100.00 │ 0.50   │
+├────────┼────────┤
+│ 200.00 │ 0.50   │
+└────────┴────────┘
+```

@@ -10,7 +10,7 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.common.behavioural_analysis.finbrain_model import get_sentiment
 from gamestonk_terminal.common.behavioural_analysis.finbrain_view import (
     plot_sentiment,
-    sentiment_coloring,
+    lambda_sentiment_coloring,
 )
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import export_data
@@ -60,7 +60,7 @@ def display_crypto_sentiment_analysis(coin: str, export: str) -> None:
     if gtff.USE_COLOR:
         console.print(
             df_sentiment["Sentiment Analysis"]
-            .apply(sentiment_coloring, last_val=0)
+            .apply(lambda_sentiment_coloring, last_val=0)
             .to_string(),
             "\n",
         )

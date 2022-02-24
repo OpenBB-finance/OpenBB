@@ -8,7 +8,7 @@ from gamestonk_terminal.cryptocurrency.onchain import whale_alert_model
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
     export_data,
-    long_number_format,
+    lambda_long_number_format,
     print_rich_table,
 )
 from gamestonk_terminal.rich_config import console
@@ -44,6 +44,11 @@ def display_whales_transactions(
     """
 
     df = whale_alert_model.get_whales_transactions(min_value)
+
+    if df.empty:
+        console.print("Error with Whale Alert requests\n")
+        return
+
     df_data = df.copy()
 
     df = df.sort_values(by=sortby, ascending=descend)
@@ -54,7 +59,7 @@ def display_whales_transactions(
         df = df.drop(["from", "to", "blockchain"], axis=1)
 
     for col in ["amount_usd", "amount"]:
-        df[col] = df[col].apply(lambda x: long_number_format(x))
+        df[col] = df[col].apply(lambda x: lambda_long_number_format(x))
 
     print_rich_table(
         df.head(top),

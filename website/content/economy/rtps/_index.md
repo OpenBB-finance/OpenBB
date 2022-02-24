@@ -1,14 +1,15 @@
 ```
-usage: rtps [--raw] [--export {png,jpg,pdf,svg}] [-h]
+usage: rtps [--raw] [-h] [--export {csv,json,xlsx,png,jpg,pdf,svg}]
 ```
 
-Plots real-time and historical sector performances. https://www.alphavantage.co/documentation/
+Real-time and historical sector performances calculated from S&P500 incumbents. [Source: Alpha Vantage]
 
 ```
 optional arguments:
   --raw                 Only output raw data (default: False)
-  --export {png,jpg,pdf,svg}
-                        Export data to csv,json,xlsx or png,jpg,pdf,svg file (default: )
   -h, --help            show this help message (default: False)
+  --export {csv,json,xlsx,png,jpg,pdf,svg}
+                        Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg (default: )
 ```
-<img size="1400" alt="Feature Screenshot - rtps" src="https://user-images.githubusercontent.com/85772166/141941074-55a54902-a61d-4452-8456-8130160d149e.png">
+
+![rtps](https://user-images.githubusercontent.com/46355364/154043579-737ffb6d-2b9f-433e-82f9-52ebaa203e72.png)

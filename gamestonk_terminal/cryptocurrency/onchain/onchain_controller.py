@@ -5,12 +5,13 @@ __docformat__ = "numpy"
 
 import argparse
 import difflib
+import logging
 from datetime import datetime, timedelta
 from typing import List
 
 from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.rich_config import console
-from gamestonk_terminal.parent_classes import BaseController
+
+from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.cryptocurrency.due_diligence.glassnode_model import (
     GLASSNODE_SUPPORTED_HASHRATE_ASSETS,
     INTERVALS_HASHRATE,
@@ -19,28 +20,30 @@ from gamestonk_terminal.decorators import check_api_key
 from gamestonk_terminal.cryptocurrency.due_diligence.glassnode_view import (
     display_hashrate,
 )
-
-from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.menu import session
-from gamestonk_terminal.helper_funcs import (
-    EXPORT_BOTH_RAW_DATA_AND_FIGURES,
-    parse_known_args_and_warn,
-    check_positive,
-    check_int_range,
-    EXPORT_ONLY_RAW_DATA_ALLOWED,
-    valid_date,
-)
-
 from gamestonk_terminal.cryptocurrency.onchain import (
+    bitquery_model,
+    bitquery_view,
     blockchain_view,
     ethgasstation_view,
     ethplorer_model,
+    ethplorer_view,
     whale_alert_model,
     whale_alert_view,
-    ethplorer_view,
-    bitquery_view,
-    bitquery_model,
 )
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_funcs import (
+    EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
+    check_int_range,
+    check_positive,
+    parse_known_args_and_warn,
+    valid_date,
+)
+from gamestonk_terminal.menu import session
+from gamestonk_terminal.parent_classes import BaseController
+from gamestonk_terminal.rich_config import console
+
+logger = logging.getLogger(__name__)
 
 
 class OnchainController(BaseController):
@@ -173,6 +176,7 @@ class OnchainController(BaseController):
     """
         console.print(text=help_text, menu="Cryptocurrency - Onchain")
 
+    @log_start_end(log=logger)
     def call_btcct(self, other_args: List[str]):
         """Process btcct command"""
         parser = argparse.ArgumentParser(
@@ -213,6 +217,7 @@ class OnchainController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_btccp(self, other_args: List[str]):
         """Process btccp command"""
         parser = argparse.ArgumentParser(
@@ -253,7 +258,8 @@ class OnchainController(BaseController):
                 export=ns_parser.export,
             )
 
-    @check_api_key(source="glassnode")
+
+    @log_start_end(log=logger)
     def call_hr(self, other_args: List[str]):
         """Process hr command"""
         parser = argparse.ArgumentParser(
@@ -320,6 +326,7 @@ class OnchainController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_gwei(self, other_args: List[str]):
         """Process gwei command"""
         parser = argparse.ArgumentParser(
@@ -339,6 +346,7 @@ class OnchainController(BaseController):
         if ns_parser:
             ethgasstation_view.display_gwei_fees(export=ns_parser.export)
 
+    @log_start_end(log=logger)
     def call_whales(self, other_args: List[str]):
         """Process whales command"""
         parser = argparse.ArgumentParser(
@@ -409,6 +417,7 @@ class OnchainController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_address(self, other_args: List[str]):
         """Process address command"""
         parser = argparse.ArgumentParser(
@@ -484,6 +493,7 @@ class OnchainController(BaseController):
             self.address = ns_parser.address
             self.address_type = address_type
 
+    @log_start_end(log=logger)
     def call_balance(self, other_args: List[str]):
         """Process balance command"""
         parser = argparse.ArgumentParser(
@@ -538,6 +548,7 @@ class OnchainController(BaseController):
         else:
             console.print("You need to set an ethereum address\n")
 
+    @log_start_end(log=logger)
     def call_hist(self, other_args: List[str]):
         """Process hist command"""
         parser = argparse.ArgumentParser(
@@ -593,6 +604,7 @@ class OnchainController(BaseController):
         else:
             console.print("You need to set an ethereum address\n")
 
+    @log_start_end(log=logger)
     def call_holders(self, other_args: List[str]):
         """Process holders command"""
         parser = argparse.ArgumentParser(
@@ -647,6 +659,7 @@ class OnchainController(BaseController):
         else:
             console.print("You need to set an ethereum address\n")
 
+    @log_start_end(log=logger)
     def call_top(self, other_args: List[str]):
         """Process top command"""
         parser = argparse.ArgumentParser(
@@ -698,6 +711,7 @@ class OnchainController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_info(self, other_args: List[str]):
         """Process info command"""
         parser = argparse.ArgumentParser(
@@ -731,6 +745,7 @@ class OnchainController(BaseController):
         else:
             console.print("You need to set an ethereum address\n")
 
+    @log_start_end(log=logger)
     def call_th(self, other_args: List[str]):
         """Process th command"""
         parser = argparse.ArgumentParser(
@@ -795,6 +810,7 @@ class OnchainController(BaseController):
         else:
             console.print("You need to set an ethereum address\n")
 
+    @log_start_end(log=logger)
     def call_tx(self, other_args: List[str]):
         """Process tx command"""
         parser = argparse.ArgumentParser(
@@ -820,6 +836,7 @@ class OnchainController(BaseController):
         else:
             console.print("You need to set an ethereum address\n")
 
+    @log_start_end(log=logger)
     def call_prices(self, other_args: List[str]):
         """Process prices command"""
         parser = argparse.ArgumentParser(
@@ -874,6 +891,7 @@ class OnchainController(BaseController):
         else:
             console.print("You need to set an ethereum address\n")
 
+    @log_start_end(log=logger)
     def call_lt(self, other_args: List[str]):
         """Process lt command"""
         parser = argparse.ArgumentParser(
@@ -957,6 +975,7 @@ class OnchainController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_dvcp(self, other_args: List[str]):
         """Process dvcp command"""
         parser = argparse.ArgumentParser(
@@ -1035,6 +1054,7 @@ class OnchainController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_tv(self, other_args: List[str]):
         """Process tv command"""
         parser = argparse.ArgumentParser(
@@ -1109,6 +1129,7 @@ class OnchainController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_ueat(self, other_args: List[str]):
         """Process ueat command"""
         parser = argparse.ArgumentParser(
@@ -1174,6 +1195,7 @@ class OnchainController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_ttcp(self, other_args: List[str]):
         """Process ttcp command"""
         parser = argparse.ArgumentParser(
@@ -1282,6 +1304,7 @@ class OnchainController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_baas(self, other_args: List[str]):
         """Process baas command"""
         parser = argparse.ArgumentParser(

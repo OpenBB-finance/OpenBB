@@ -18,5 +18,5 @@ optional arguments:
                         Export dataframe data to csv,json,xlsx file (default: )
   -h, --help            show this help message (default: False)
 ```
-<img width="1400" alt="Feature Screenshot - dpotc Graph" src="https://user-images.githubusercontent.com/85772166/140554969-47e63298-6f25-4432-9795-7ee0d9870926.png">
-<img width="1400" alt="Feature Screenshot - dpotc export" src="https://user-images.githubusercontent.com/85772166/140562944-c8b2c01a-ac74-44a0-904e-f6b3138bdf6c.png">
+
+![Figure_2](https://user-images.githubusercontent.com/46355364/154075026-dad50459-0e0b-478f-94ad-c478bf66ce1a.png)

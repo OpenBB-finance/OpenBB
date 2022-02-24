@@ -1,15 +1,51 @@
 ```
-usage: compare [-e NAMES] [--export {csv,json,xlsx}] [-h]
+usage: compare [-e NAMES] [-h] [--export {csv,json,xlsx}]
 ```
 
-Compare the fundamentals of multiple ETFs.
+Compare selected ETFs [Source: StockAnalysis]
 
 ```
 optional arguments:
   -e NAMES, --etfs NAMES
                         Symbols to compare (default: None)
-  --export {csv,json,xlsx}
-                        Export dataframe data to csv,json,xlsx file (default: )
   -h, --help            show this help message (default: False)
+  --export {csv,json,xlsx}
+                        Export raw data into csv, json, xlsx (default: )
 ```
-<img size="1400" alt="Feature Screenshot - compare" src="https://user-images.githubusercontent.com/85772166/142043975-65a7da44-a3db-47fb-89d4-62ab4d49b444.png">
+
+Example:
+```
+2022 Feb 15, 04:24 (✨) /etf/ $ compare VOO,SPY
+               ETF Comparisons
+┌────────────────┬────────────┬─────────────┐
+│                │ VOO        │ SPY         │
+├────────────────┼────────────┼─────────────┤
+│ Assets         │ $283.52B   │ $407.71B    │
+├────────────────┼────────────┼─────────────┤
+│ NAV            │ $413.03    │ $449.25     │
+├────────────────┼────────────┼─────────────┤
+│ Expense Ratio  │ 0.03%      │ 0.09%       │
+├────────────────┼────────────┼─────────────┤
+│ PE Ratio       │ 24.90      │ 22.23       │
+├────────────────┼────────────┼─────────────┤
+│ Shares Out     │ 686.44M    │ 907.53M     │
+├────────────────┼────────────┼─────────────┤
+│ Dividend (ttm) │ $5.44      │ $5.72       │
+├────────────────┼────────────┼─────────────┤
+│ Dividend Yield │ 1.35%      │ 1.30%       │
+├────────────────┼────────────┼─────────────┤
+│ Volume         │ 10,167,584 │ 123,006,262 │
+├────────────────┼────────────┼─────────────┤
+│ Open           │ 404.43     │ 439.92      │
+├────────────────┼────────────┼─────────────┤
+│ Previous Close │ 404.94     │ 440.46      │
+├────────────────┼────────────┼─────────────┤
+│ 52-Week Low    │ 341.92     │ 371.88      │
+├────────────────┼────────────┼─────────────┤
+│ 52-Week High   │ 341.92     │ 371.88      │
+├────────────────┼────────────┼─────────────┤
+│ Beta           │ 0.99       │ 0.99        │
+├────────────────┼────────────┼─────────────┤
+│ Holdings       │ 510        │ 507         │
+└────────────────┴────────────┴─────────────┘
+```

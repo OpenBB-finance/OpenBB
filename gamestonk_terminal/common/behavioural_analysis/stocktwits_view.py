@@ -50,7 +50,7 @@ def display_messages(ticker: str, limit: int = 30):
 
     print_rich_table(
         pd.DataFrame(messages),
-        headers=[],
+        headers=["MESSAGES"],
         show_index=False,
         title="Last Messages on Board",
     )

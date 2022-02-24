@@ -1,5 +1,5 @@
 ```
-usage: grhist [-s STRIKE] [--put] [-g {iv,gamma,theta,vega,delta,rho,premium}] [--chain CHAIN_ID] [--raw] [-n,--num NUM] [--export {csv,json,xlsx}] [-h]
+usage: grhist [-s STRIKE] [-p] [-g {iv,gamma,theta,vega,delta,rho,premium}] [-c CHAIN_ID] [-r] [-l LIMIT] [-h] [--export {csv,json,xlsx,png,jpg,pdf,svg}]
 ```
 
 Plot historical option greeks by strike price for the loaded ticker.
@@ -8,14 +8,18 @@ Plot historical option greeks by strike price for the loaded ticker.
 optional arguments:
   -s STRIKE, --strike STRIKE
                         Strike price to look at (default: None)
-  --put                 Flag for showing put option (default: False)
+  -p, --put             Flag for showing put option (default: False)
   -g {iv,gamma,theta,vega,delta,rho,premium}, --greek {iv,gamma,theta,vega,delta,rho,premium}
                         Greek column to select (default: delta)
-  --chain CHAIN_ID      OCC option symbol (default: )
-  --raw                 Display raw data (default: False)
-  -n,--num NUM          Number of raw data rows to show (default: 20)
-  --export {csv,json,xlsx}
-                        Export dataframe data to csv,json,xlsx file (default: )
+  -c CHAIN_ID, --chain CHAIN_ID
+                        OCC option symbol (default: )
+  -r, --raw             Display raw data (default: False)
+  -l LIMIT, --limit LIMIT
+                        Limit of raw data rows to display (default: 20)
   -h, --help            show this help message (default: False)
+  --export {csv,json,xlsx,png,jpg,pdf,svg}
+                        Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg (default: )
 ```
-<img size="1400" alt="Feature Screenshot - grhist" src="https://user-images.githubusercontent.com/85772166/142360722-4419e2eb-af2d-4437-874c-716eec49be23.png">
+
+![grhist](https://user-images.githubusercontent.com/46355364/154278932-086a0005-be71-4493-843d-3f9100a60905.png)
+

@@ -93,7 +93,6 @@ def get_x_values(current_price: float, options: List[Dict[str, int]]) -> List[fl
     return [(x / 100) * num_range + mini for x in x_list]
 
 
-@log_start_end(log=logger)
 def get_y_values(
     base: float,
     price: float,

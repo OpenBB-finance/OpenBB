@@ -3,32 +3,36 @@ __docformat__ = "numpy"
 
 import argparse
 import difflib
+import logging
 from typing import List
+
 import yfinance as yf
 from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.rich_config import console
-from gamestonk_terminal.parent_classes import BaseController
+
+from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
-    parse_known_args_and_warn,
     check_positive,
     check_proportion_range,
+    parse_known_args_and_warn,
 )
-from gamestonk_terminal.stocks import stocks_helper
 from gamestonk_terminal.menu import session
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.parent_classes import BaseController
+from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.stocks import stocks_helper
+from gamestonk_terminal.stocks.comparison_analysis import ca_controller
 from gamestonk_terminal.stocks.sector_industry_analysis import (
     financedatabase_model,
     financedatabase_view,
-)
-from gamestonk_terminal.stocks.sector_industry_analysis import (
-    stockanalysis_view,
     stockanalysis_model,
+    stockanalysis_view,
 )
-from gamestonk_terminal.stocks.comparison_analysis import ca_controller
-
 
 # pylint: disable=inconsistent-return-statements,C0302,R0902
+
+
+logger = logging.getLogger(__name__)
 
 
 class SectorIndustryAnalysisController(BaseController):
@@ -309,16 +313,15 @@ class SectorIndustryAnalysisController(BaseController):
             return ["stocks", f"load {self.ticker}", "sia"]
         return []
 
+    @log_start_end(log=logger)
     def call_load(self, other_args: List[str]):
         """Process load command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="load",
-            description="Load stock ticker to perform analysis on. When the data source"
-            + " is 'yf', an Indian ticker can be loaded by using '.NS' at the end,"
-            + " e.g. 'SBIN.NS'. See available market in"
-            + " https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html.",
+            description="Load stock ticker and alter the industry, sector, country and market cap "
+            "accordingly for this ticker.",
         )
         parser.add_argument(
             "-t",
@@ -392,6 +395,7 @@ class SectorIndustryAnalysisController(BaseController):
                 self.stocks_data = {}
                 self.update_runtime_choices()
 
+    @log_start_end(log=logger)
     def call_industry(self, other_args: List[str]):
         """Process industry command"""
         parser = argparse.ArgumentParser(
@@ -458,6 +462,7 @@ class SectorIndustryAnalysisController(BaseController):
             self.stocks_data = {}
             console.print("")
 
+    @log_start_end(log=logger)
     def call_sector(self, other_args: List[str]):
         """Process sector command"""
         parser = argparse.ArgumentParser(
@@ -518,6 +523,7 @@ class SectorIndustryAnalysisController(BaseController):
             self.stocks_data = {}
             console.print("")
 
+    @log_start_end(log=logger)
     def call_country(self, other_args: List[str]):
         """Process country command"""
         parser = argparse.ArgumentParser(
@@ -575,13 +581,14 @@ class SectorIndustryAnalysisController(BaseController):
             self.stocks_data = {}
             console.print("")
 
+    @log_start_end(log=logger)
     def call_mktcap(self, other_args: List[str]):
         """Process mktcap command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="mktcap",
-            description="Set mktcap between small, mid or large",
+            description="Set mktcap to nano, micro, small, mid, large or mega",
         )
         parser.add_argument(
             "-n",
@@ -598,12 +605,15 @@ class SectorIndustryAnalysisController(BaseController):
             if ns_parser.name:
                 self.mktcap = ns_parser.name.capitalize()
             else:
-                console.print("Select between market cap: Small, Mid and Large")
+                console.print(
+                    "Select between market cap: Nano, Micro, Small, Mid, Large and Mega"
+                )
 
             self.stocks_data = {}
             console.print("")
 
     # pylint:disable=attribute-defined-outside-init
+    @log_start_end(log=logger)
     def call_exchange(self, other_args: List[str]):
         """Process exchange command"""
         parser = argparse.ArgumentParser(
@@ -623,6 +633,7 @@ class SectorIndustryAnalysisController(BaseController):
         self.stocks_data = {}
         console.print("")
 
+    @log_start_end(log=logger)
     def call_clear(self, other_args: List[str]):
         """Process clear command"""
         parser = argparse.ArgumentParser(
@@ -663,6 +674,7 @@ class SectorIndustryAnalysisController(BaseController):
             self.stocks_data = {}
             console.print("")
 
+    @log_start_end(log=logger)
     def call_period(self, other_args: List[str]):
         """Process period command"""
         parser = argparse.ArgumentParser(
@@ -691,6 +703,7 @@ class SectorIndustryAnalysisController(BaseController):
             self.stocks_data = {}
             console.print("")
 
+    @log_start_end(log=logger)
     def call_sama(self, other_args: List[str]):
         """Process sama command"""
         parser = argparse.ArgumentParser(
@@ -738,6 +751,7 @@ class SectorIndustryAnalysisController(BaseController):
             """
             console.print(help_text)
 
+    @log_start_end(log=logger)
     def call_metric(self, other_args: List[str]):
         """Process metric command"""
         parser = argparse.ArgumentParser(
@@ -794,6 +808,7 @@ class SectorIndustryAnalysisController(BaseController):
                 self.stocks_data,
             )
 
+    @log_start_end(log=logger)
     def call_satma(self, other_args: List[str]):
         """Process satma command"""
         parser = argparse.ArgumentParser(
@@ -840,6 +855,7 @@ class SectorIndustryAnalysisController(BaseController):
 
         console.print(help_text)
 
+    @log_start_end(log=logger)
     def call_vis(self, other_args: List[str]):
         """Process vis command"""
         parser = argparse.ArgumentParser(
@@ -907,6 +923,7 @@ class SectorIndustryAnalysisController(BaseController):
                 self.stocks_data,
             )
 
+    @log_start_end(log=logger)
     def call_cps(self, other_args: List[str]):
         """Process cps command"""
         parser = argparse.ArgumentParser(
@@ -957,6 +974,7 @@ class SectorIndustryAnalysisController(BaseController):
                     ns_parser.min_pct_to_display_sector,
                 )
 
+    @log_start_end(log=logger)
     def call_cpic(self, other_args: List[str]):
         """Process cpic command"""
         parser = argparse.ArgumentParser(
@@ -1007,6 +1025,7 @@ class SectorIndustryAnalysisController(BaseController):
                     ns_parser.min_pct_to_display_industry,
                 )
 
+    @log_start_end(log=logger)
     def call_cpis(self, other_args: List[str]):
         """Process cpis command"""
         parser = argparse.ArgumentParser(
@@ -1057,6 +1076,7 @@ class SectorIndustryAnalysisController(BaseController):
                     ns_parser.min_pct_to_display_industry,
                 )
 
+    @log_start_end(log=logger)
     def call_cpcs(self, other_args: List[str]):
         """Process cpcs command"""
         parser = argparse.ArgumentParser(
@@ -1107,6 +1127,7 @@ class SectorIndustryAnalysisController(BaseController):
                     ns_parser.min_pct_to_display_country,
                 )
 
+    @log_start_end(log=logger)
     def call_cpci(self, other_args: List[str]):
         """Process cpci command"""
         parser = argparse.ArgumentParser(
@@ -1157,6 +1178,7 @@ class SectorIndustryAnalysisController(BaseController):
                     ns_parser.min_pct_to_display_country,
                 )
 
+    @log_start_end(log=logger)
     def call_ca(self, _):
         """Call the comparison analysis menu with selected tickers"""
         if self.tickers:
