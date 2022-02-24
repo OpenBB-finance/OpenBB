@@ -236,11 +236,8 @@ def test_call_func_expect_queue(expected_queue, queue, func):
         (
             "call_fipo",
             "finnhub_view.future_ipo",
-            [
-                "--limit=5",
-                "--export=csv",
-            ],
-            {"num_days_ahead": 5, "export": "csv"},
+            ["--days=5", "--limit=20", "--export=csv"],
+            {"num_days_ahead": 5, "end_date": None, "limit": 20, "export": "csv"},
         ),
         (
             "call_ford",
@@ -284,8 +281,8 @@ def test_call_func_expect_queue(expected_queue, queue, func):
         (
             "call_pipo",
             "finnhub_view.past_ipo",
-            ["--limit=5", "--export=csv"],
-            {"num_days_behind": 5, "export": "csv"},
+            ["--days=5", "--limit=20", "--export=csv"],
+            {"num_days_behind": 5, "start_date": None, "limit": 20, "export": "csv"},
         ),
         (
             "call_rtat",

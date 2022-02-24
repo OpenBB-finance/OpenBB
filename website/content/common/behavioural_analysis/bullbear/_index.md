@@ -9,4 +9,12 @@ optional arguments:
   -h, --help            show this help message (default: False)
 ```
 
-<img width="1400" alt="sentiment" src="https://user-images.githubusercontent.com/25267873/108612307-42c46300-73df-11eb-9cec-253c8fb6d62f.png">
+Example:
+```
+2022 Feb 16, 10:07 (✨) /stocks/ba/ $ bullbear
+Watchlist count: 381324
+
+Last 16 sentiment messages:
+Bullish 87.5%
+Bearish 12.5%
+```

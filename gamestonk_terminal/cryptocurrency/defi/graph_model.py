@@ -8,7 +8,7 @@ import pandas as pd
 import requests
 
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
-    very_long_number_formatter,
+    lambda_very_long_number_formatter,
 )
 from gamestonk_terminal.decorators import log_start_end
 
@@ -146,7 +146,7 @@ def get_uniswap_stats() -> pd.DataFrame:
         return pd.DataFrame()
     df = pd.Series(data["uniswapFactory"]).reset_index()
     df.columns = ["Metric", "Value"]
-    df["Value"] = df["Value"].apply(lambda x: very_long_number_formatter(x))
+    df["Value"] = df["Value"].apply(lambda x: lambda_very_long_number_formatter(x))
     return df
 
 

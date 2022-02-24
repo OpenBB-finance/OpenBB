@@ -35,11 +35,7 @@ The cumulative distribution function (CDF) of random variable X is defined as:
   <mo>.</mo>
 </math>
 
-Contextual Example: 
-
-I toss a coin twice. Let X be the number of observed heads. Find the CDF of X
-
-
+Contextual Example:  I toss a coin twice. Let X be the number of observed heads. Find the CDF of X
 
 ```
 optional arguments:
@@ -48,4 +44,6 @@ optional arguments:
   -h, --help            show this help message (default: False)
 ```
 
-<img size="1400" alt="Feature Screenshot - cdf" src="https://user-images.githubusercontent.com/25267873/112729910-75a1cf80-8f26-11eb-801a-2b44b193022b.png">
+![cdf](https://user-images.githubusercontent.com/46355364/154306055-cb3bb1ef-0e61-40c9-bf51-d095bed8dc1b.png)
+
+

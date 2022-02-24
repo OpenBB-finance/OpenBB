@@ -12,7 +12,7 @@ import gamestonk_terminal.cryptocurrency.overview.pycoingecko_model as gecko
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
-    long_number_format_with_type_check,
+    lambda_long_number_format_with_type_check,
 )
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
@@ -59,14 +59,16 @@ def display_holdings_overview(coin: str, show_bar: bool, export: str, top: int) 
 
             ax.set_ylabel("BTC Number")
             ax.get_yaxis().set_major_formatter(
-                ticker.FuncFormatter(lambda x, _: long_number_format_with_type_check(x))
+                ticker.FuncFormatter(
+                    lambda x, _: lambda_long_number_format_with_type_check(x)
+                )
             )
             ax.set_xlabel("Company Symbol")
             fig.tight_layout(pad=8)
             ax.set_title("Total BTC Holdings per company")
             ax.tick_params(axis="x", labelrotation=90)
         console.print(f"\n{stats_string}\n")
-        df = df.applymap(lambda x: long_number_format_with_type_check(x))
+        df = df.applymap(lambda x: lambda_long_number_format_with_type_check(x))
         print_rich_table(
             df,
             headers=list(df.columns),
@@ -259,7 +261,7 @@ def display_stablecoins(
             axis=1,
             inplace=False,
         )
-        df = df.applymap(lambda x: long_number_format_with_type_check(x))
+        df = df.applymap(lambda x: lambda_long_number_format_with_type_check(x))
         if pie:
             stables_to_display = df_data[df_data[f"Percentage [%] of top {top}"] >= 1]
             other_stables = df_data[df_data[f"Percentage [%] of top {top}"] < 1]
@@ -284,7 +286,7 @@ def display_stablecoins(
             plt.show()
         console.print(
             f"""
-First {top} stablecoins have a total {long_number_format_with_type_check(total_market_cap)} dollars of market cap.
+First {top} stablecoins have a total {lambda_long_number_format_with_type_check(total_market_cap)} dollars of market cap.
 """
         )
         print_rich_table(
@@ -346,7 +348,7 @@ def display_categories(sortby: str, top: int, export: str, pie: bool) -> None:
             if gtff.USE_ION:
                 plt.ion()
             plt.show()
-        df = df.applymap(lambda x: long_number_format_with_type_check(x))
+        df = df.applymap(lambda x: lambda_long_number_format_with_type_check(x))
         print_rich_table(
             df.head(top),
             headers=list(df.columns),

@@ -43,7 +43,6 @@ def string_float(string: str) -> float:
     return float(string.strip().replace(",", "").replace("-", ""))
 
 
-@log_start_end(log=logger)
 def insert_row(
     name: str, index: str, df: pd.DataFrame, row_v: List[str]
 ) -> pd.DataFrame:
@@ -255,7 +254,6 @@ def others_in_sector(
     return similars
 
 
-@log_start_end(log=logger)
 def create_dataframe(ticker: str, statement: str, period: str = "annual"):
     """
     Creates a df financial statement for a given ticker
@@ -307,8 +305,8 @@ def create_dataframe(ticker: str, statement: str, period: str = "annual"):
     years = [x.get_text().strip() for x in columns]
     len_data = len(years) - 1
 
-    phrase = soup.find("div", attrs={"class": "text-sm text-gray-600 block lg:hidden"})
-    phrase = phrase.get_text().lower()
+    phrase = soup.find("div", attrs={"class": "block text-sm text-gray-600 lg:hidden"})
+    phrase = phrase.get_text().lower() if phrase else ""
 
     if "thousand" in phrase:
         rounding = 1_000

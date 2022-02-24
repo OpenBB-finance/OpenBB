@@ -90,7 +90,9 @@ def view_comparisons(symbols: List[str], export: str):
     if data.empty:
         console.print("No data found for given ETFs\n")
         return
-    print_rich_table(data, headers=list(data.columns), title="ETF Comparisons")
+    print_rich_table(
+        data, headers=list(data.columns), title="ETF Comparisons", show_index=True
+    )
     console.print("")
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "overview", data)
 

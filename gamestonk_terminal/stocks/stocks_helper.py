@@ -4,9 +4,11 @@ __docformat__ = "numpy"
 import argparse
 import json
 from datetime import datetime, timedelta
-from typing import List, Union, Tuple, Optional
+from typing import List, Union, Optional, Iterable
 
 import matplotlib.pyplot as plt
+import matplotlib
+from matplotlib.lines import Line2D
 import mplfinance as mpf
 import numpy as np
 import pandas as pd
@@ -28,6 +30,7 @@ from gamestonk_terminal.helper_funcs import (
     plot_autoscale,
     get_user_timezone_or_invalid,
     print_rich_table,
+    lambda_long_number_format,
 )
 from gamestonk_terminal.rich_config import console
 
@@ -267,7 +270,7 @@ def display_candle(
     use_matplotlib: bool,
     intraday: bool = False,
     add_trend: bool = False,
-    ma: Optional[Tuple[int, ...]] = None,
+    ma: Optional[Iterable[int]] = None,
     asset_type: str = "Stock",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -304,12 +307,20 @@ def display_candle(
         if add_trend:
             if "OC_High_trend" in df_stock.columns:
                 ap0.append(
-                    mpf.make_addplot(df_stock["OC_High_trend"], color=theme.up_color),
+                    mpf.make_addplot(
+                        df_stock["OC_High_trend"],
+                        color=theme.up_color,
+                        secondary_y=False,
+                    ),
                 )
 
             if "OC_Low_trend" in df_stock.columns:
                 ap0.append(
-                    mpf.make_addplot(df_stock["OC_Low_trend"], color=theme.down_color),
+                    mpf.make_addplot(
+                        df_stock["OC_Low_trend"],
+                        color=theme.down_color,
+                        secondary_y=False,
+                    ),
                 )
 
         candle_chart_kwargs = {
@@ -335,13 +346,31 @@ def display_candle(
             candle_chart_kwargs["figratio"] = (10, 7)
             candle_chart_kwargs["figscale"] = 1.10
             candle_chart_kwargs["figsize"] = plot_autoscale()
-            fig, _ = mpf.plot(df_stock, **candle_chart_kwargs, **kwargs)
+            fig, ax = mpf.plot(df_stock, **candle_chart_kwargs, **kwargs)
+
+            ax[2].get_yaxis().set_major_formatter(
+                matplotlib.ticker.FuncFormatter(
+                    lambda x, _: lambda_long_number_format(x)
+                )
+            )
+
             fig.suptitle(
                 f"{asset_type} {s_ticker}",
                 x=0.055,
                 y=0.965,
                 horizontalalignment="left",
             )
+
+            if ma:
+                # Manually construct the chart legend
+                colors = []
+
+                for i, _ in enumerate(ma):
+                    colors.append(theme.get_colors()[i])
+
+                lines = [Line2D([0], [0], color=c) for c in colors]
+                labels = ["MA " + str(label) for label in ma]
+                ax[0].legend(lines, labels)
 
             theme.visualize_output(force_tight_layout=False)
         else:

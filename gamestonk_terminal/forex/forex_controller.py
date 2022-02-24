@@ -2,22 +2,20 @@
 __docformat__ = "numpy"
 
 import argparse
-from datetime import timedelta, datetime
-import os
-from typing import List
 import logging
+import os
+from datetime import datetime, timedelta
+from typing import List
 
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.parent_classes import BaseController
-from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.forex import av_view, av_model
 
-from gamestonk_terminal.helper_funcs import (
-    parse_known_args_and_warn,
-    valid_date,
-)
+from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.forex import av_model, av_view
+from gamestonk_terminal.helper_funcs import parse_known_args_and_warn, valid_date
 from gamestonk_terminal.menu import session
+from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal.rich_config import console
 
 # pylint: disable=R1710,import-outside-toplevel
@@ -68,6 +66,7 @@ class ForexController(BaseController):
  """
         console.print(text=help_text, menu="Forex")
 
+    @log_start_end(log=logger)
     def call_to(self, other_args: List[str]):
         """Process 'to' command."""
         parser = argparse.ArgumentParser(
@@ -100,6 +99,7 @@ class ForexController(BaseController):
                 f"\nSelected pair\nFrom: {self.from_symbol}\nTo:   {self.to_symbol}\n\n"
             )
 
+    @log_start_end(log=logger)
     def call_from(self, other_args: List[str]):
         """Process 'from' command."""
         parser = argparse.ArgumentParser(
@@ -131,6 +131,7 @@ class ForexController(BaseController):
                 f"\nSelected pair\nFrom: {self.from_symbol}\nTo:   {self.to_symbol}\n\n"
             )
 
+    @log_start_end(log=logger)
     def call_load(self, other_args: List[str]):
         """Process select command."""
         parser = argparse.ArgumentParser(
@@ -183,6 +184,7 @@ class ForexController(BaseController):
                     "\n[red]Make sure both a to symbol and a from symbol are supplied.[/red]\n"
                 )
 
+    @log_start_end(log=logger)
     def call_candle(self, other_args: List[str]):
         """Process quote command."""
         parser = argparse.ArgumentParser(
@@ -200,6 +202,7 @@ class ForexController(BaseController):
                     "[red]No forex historical data loaded.  Load first using <load>.[/red]\n"
                 )
 
+    @log_start_end(log=logger)
     def call_quote(self, other_args: List[str]):
         """Process quote command."""
         parser = argparse.ArgumentParser(
@@ -218,6 +221,7 @@ class ForexController(BaseController):
                 )
 
     # MENUS
+    @log_start_end(log=logger)
     def call_oanda(self, _):
         """Enter Oanda menu."""
         from gamestonk_terminal.forex.oanda.oanda_controller import OandaController

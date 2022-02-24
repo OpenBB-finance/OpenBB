@@ -1,13 +1,15 @@
 ```
-usage: histcont [-h] [--export {png,jpg,pdf,svg,csv,json,xlsx}]
+usage: histcont [--raw] [-h] [--export {csv,json,xlsx,png,jpg,pdf,svg}]
 ```
 
 Shows the value of quarterly-contracts granted by the US governement. [Source: www.quiverquant.com]
 
 ```
 optional arguments:
+  --raw                 Print raw data. (default: False)
   -h, --help            show this help message (default: False)
-  --export {png,jpg,pdf,svg,csv,json,xlsx}
-                        Export plot to png,jpg,pdf,svg file or export dataframe to csv,json,xlsx (default: )
+  --export {csv,json,xlsx,png,jpg,pdf,svg}
+                        Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg (default: )
 ```
-<img size="1400" alt="Feature Screenshot - histcont" src="https://user-images.githubusercontent.com/85772166/141688848-294976af-7883-4abc-9105-15d60d636c2d.png">
+
+![histcont](https://user-images.githubusercontent.com/46355364/154263545-a210b65d-5dac-45df-b378-692563a5c950.png)

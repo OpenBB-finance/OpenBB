@@ -1,20 +1,48 @@
 ```
-usage: performance
-                   [-g {sector,industry,basic materials,communication services,consumer cyclical,consumer defensive,energy,financial,healthcare,industrials,real Estate,technology,utilities,country,capitalization}]
-                   [-s {Name,Week,Month,3Month,6Month,1Year,YTD,Recom,AvgVolume,RelVolume,Change,Volume}] [-a] [--export {csv,json,xlsx}] [-h]
+usage: performance [-g GROUP [GROUP ...]] [-s {Name,Week,Month,3Month,6Month,1Year,YTD,Recom,AvgVolume,RelVolume,Change,Volume}] [-a] [-h] [--export {csv,json,xlsx}]
 ```
 
-View group (sectors, industry or country) performance data. https://finviz.com
+View group (sectors, industry or country) performance data. [Source: Finviz]
 
 ```
 optional arguments:
-  -g {sector,industry,basic materials,communication services,consumer cyclical,consumer defensive,energy,financial,healthcare,industrials,real Estate,technology,utilities,country,capitalization}, --group {sector,industry,basic materials,communication services,consumer cyclical,consumer defensive,energy,financial,healthcare,industrials,real Estate,technology,utilities,country,capitalization}
-                        Data group (sector, industry or country) (default: Sector)
+  -g GROUP [GROUP ...], --group GROUP [GROUP ...]
+                        Data group (sector, industry or country) (default: sector)
   -s {Name,Week,Month,3Month,6Month,1Year,YTD,Recom,AvgVolume,RelVolume,Change,Volume}, --sortby {Name,Week,Month,3Month,6Month,1Year,YTD,Recom,AvgVolume,RelVolume,Change,Volume}
                         Column to sort by (default: Name)
   -a, -ascend           Flag to sort in ascending order (default: False)
-  --export {csv,json,xlsx}
-                        Export dataframe data to csv,json,xlsx file (default: )
   -h, --help            show this help message (default: False)
+  --export {csv,json,xlsx}
+                        Export raw data into csv, json, xlsx (default: )
 ```
-<img size="1400" alt="Feature Screenshot - performance" src="https://user-images.githubusercontent.com/85772166/141923981-609641aa-cac2-4677-b356-3fbba9a2e4c9.png">
+
+Example:
+```
+2022 Feb 15, 05:25 (✨) /economy/ $ performance
+                                                         Group Performance Data
+┌────────────────────────┬───────┬───────┬────────┬────────┬───────┬───────┬───────┬────────────────┬───────────┬────────┬─────────────┐
+│ Name                   │ Week  │ Month │ 3Month │ 6Month │ 1Year │ YTD   │ Recom │ AvgVolume (1M) │ RelVolume │ Change │ Volume (1M) │
+├────────────────────────┼───────┼───────┼────────┼────────┼───────┼───────┼───────┼────────────────┼───────────┼────────┼─────────────┤
+│ Utilities              │ -0.02 │ -0.04 │ -0.01  │ -0.03  │ 0.04  │ -0.07 │ 2.33  │ 148.49         │ 1.10      │ -0.01  │ 163.32      │
+├────────────────────────┼───────┼───────┼────────┼────────┼───────┼───────┼───────┼────────────────┼───────────┼────────┼─────────────┤
+│ Technology             │ -0.02 │ -0.07 │ -0.13  │ -0.05  │ 0.01  │ -0.13 │ 1.98  │ 1590.00        │ 0.91      │ -0.00  │ 1440.00     │
+├────────────────────────┼───────┼───────┼────────┼────────┼───────┼───────┼───────┼────────────────┼───────────┼────────┼─────────────┤
+│ Real Estate            │ -0.02 │ -0.08 │ -0.08  │ -0.04  │ 0.07  │ -0.12 │ 2.22  │ 331.13         │ 1.13      │ -0.01  │ 373.51      │
+├────────────────────────┼───────┼───────┼────────┼────────┼───────┼───────┼───────┼────────────────┼───────────┼────────┼─────────────┤
+│ Industrials            │ -0.01 │ -0.07 │ -0.09  │ -0.06  │ 0.06  │ -0.08 │ 2.26  │ 627.31         │ 0.97      │ -0.00  │ 611.51      │
+├────────────────────────┼───────┼───────┼────────┼────────┼───────┼───────┼───────┼────────────────┼───────────┼────────┼─────────────┤
+│ Healthcare             │ -0.02 │ -0.04 │ -0.10  │ -0.11  │ -0.05 │ -0.10 │ 2.05  │ 1600.00        │ 0.79      │ -0.01  │ 1260.00     │
+├────────────────────────┼───────┼───────┼────────┼────────┼───────┼───────┼───────┼────────────────┼───────────┼────────┼─────────────┤
+│ Financial              │ -0.01 │ -0.03 │ -0.02  │ 0.01   │ 0.14  │ 0.01  │ 2.20  │ 969.06         │ 1.05      │ -0.01  │ 1020.00     │
+├────────────────────────┼───────┼───────┼────────┼────────┼───────┼───────┼───────┼────────────────┼───────────┼────────┼─────────────┤
+│ Energy                 │ -0.01 │ 0.07  │ 0.16   │ 0.34   │ 0.43  │ 0.20  │ 2.24  │ 675.13         │ 1.09      │ -0.02  │ 738.17      │
+├────────────────────────┼───────┼───────┼────────┼────────┼───────┼───────┼───────┼────────────────┼───────────┼────────┼─────────────┤
+│ Consumer Defensive     │ -0.01 │ -0.03 │ -0.00  │ -0.01  │ 0.04  │ -0.03 │ 2.23  │ 443.50         │ 0.97      │ -0.00  │ 432.15      │
+├────────────────────────┼───────┼───────┼────────┼────────┼───────┼───────┼───────┼────────────────┼───────────┼────────┼─────────────┤
+│ Consumer Cyclical      │ -0.00 │ -0.08 │ -0.15  │ -0.07  │ -0.12 │ -0.10 │ 2.05  │ 1250.00        │ 0.83      │ 0.00   │ 1040.00     │
+├────────────────────────┼───────┼───────┼────────┼────────┼───────┼───────┼───────┼────────────────┼───────────┼────────┼─────────────┤
+│ Communication Services │ -0.01 │ -0.07 │ -0.16  │ -0.14  │ -0.05 │ -0.10 │ 1.88  │ 731.80         │ 0.94      │ 0.00   │ 690.29      │
+├────────────────────────┼───────┼───────┼────────┼────────┼───────┼───────┼───────┼────────────────┼───────────┼────────┼─────────────┤
+│ Basic Materials        │ 0.02  │ -0.03 │ -0.01  │ -0.03  │ 0.06  │ -0.02 │ 2.21  │ 461.26         │ 1.11      │ -0.01  │ 514.01      │
+└────────────────────────┴───────┴───────┴────────┴────────┴───────┴───────┴───────┴────────────────┴───────────┴────────┴─────────────┘
+```

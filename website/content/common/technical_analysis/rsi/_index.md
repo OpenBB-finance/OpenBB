@@ -17,4 +17,4 @@ optional arguments:
   -h, --help            show this help message (default: False)
 ```
 
-![rsi](https://user-images.githubusercontent.com/25267873/108602743-957c2b80-739b-11eb-9d0d-6f530b3abb91.png)
+![rsi](https://user-images.githubusercontent.com/46355364/154311651-99e67e12-1677-43a9-92d9-5998d99fd0db.png)

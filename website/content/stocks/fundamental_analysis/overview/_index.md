@@ -1,11 +1,116 @@
-```text
-usage: overview [-h]
+```
+usage: overview [-h] [--export {csv,json,xlsx}]
 ```
 
-Displays a detailed overview of the selected company. Source: https://www.alphavantage.co/documentation
+Prints an overview about the company. Also, the C i k field corresponds to Central Index Key, which can be used to search a company on https://www.sec.gov/edgar/searchedgar/cik.htm [Source: Alpha Vantage]
 
 ```
 optional arguments:
-  -h, --help  show this help message (default: False)
+  -h, --help            show this help message (default: False)
+  --export {csv,json,xlsx}
+                        Export raw data into csv, json, xlsx (default: )
 ```
-<img size="1400" alt="Feature Screenshot - overview" src="https://user-images.githubusercontent.com/85772166/141413005-10b076a1-e16d-4f2f-9742-bcc0d1db8dad.png">
+
+Example:
+```
+2022 Feb 16, 07:03 (✨) /stocks/fa/ $ overview
+                              TSLA Overview
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃                               ┃                                       ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Symbol                        │ TSLA                                  │
+├───────────────────────────────┼───────────────────────────────────────┤
+│ Asset type                    │ Common Stock                          │
+├───────────────────────────────┼───────────────────────────────────────┤
+│ Name                          │ Tesla Inc                             │
+├───────────────────────────────┼───────────────────────────────────────┤
+│ C i k                         │ 1318605                               │
+├───────────────────────────────┼───────────────────────────────────────┤
+│ Exchange                      │ NASDAQ                                │
+├───────────────────────────────┼───────────────────────────────────────┤
+│ Currency                      │ USD                                   │
+├───────────────────────────────┼───────────────────────────────────────┤
+│ Country                       │ USA                                   │
+├───────────────────────────────┼───────────────────────────────────────┤
+│ Sector                        │ MANUFACTURING                         │
+├───────────────────────────────┼───────────────────────────────────────┤
+│ Industry                      │ MOTOR VEHICLES & PASSENGER CAR BODIES │
+├───────────────────────────────┼───────────────────────────────────────┤
+│ Address                       │ 3500 DEER CREEK RD, PALO ALTO, CA, US │
+├───────────────────────────────┼───────────────────────────────────────┤
+│ Fiscal year end               │ December                              │
+├───────────────────────────────┼───────────────────────────────────────┤
+│ Latest quarter                │ 2021-12-31                            │
+├───────────────────────────────┼───────────────────────────────────────┤
+│ Market capitalization         │ 953.341 B                             │
+├───────────────────────────────┼───────────────────────────────────────┤
+│ EBITDA                        │ 9.333 B                               │
+├───────────────────────────────┼───────────────────────────────────────┤
+│ PE ratio                      │ 188.21                                │
+├───────────────────────────────┼───────────────────────────────────────┤
+│ PEG ratio                     │ 2.587                                 │
+├───────────────────────────────┼───────────────────────────────────────┤
+│ Book value                    │ 29.23                                 │
+├───────────────────────────────┼───────────────────────────────────────┤
+│ Dividend per share            │ 0                                     │
+├───────────────────────────────┼───────────────────────────────────────┤
+│ Dividend yield                │ 0                                     │
+├───────────────────────────────┼───────────────────────────────────────┤
+│ EPS                           │ 4.901                                 │
+├───────────────────────────────┼───────────────────────────────────────┤
+│ Revenue per share TTM         │ 54.59                                 │
+├───────────────────────────────┼───────────────────────────────────────┤
+│ Profit margin                 │ 0.102                                 │
+├───────────────────────────────┼───────────────────────────────────────┤
+│ Operating margin TTM          │ 0.121                                 │
+├───────────────────────────────┼───────────────────────────────────────┤
+│ Return on assets TTM          │ 0.0714                                │
+├───────────────────────────────┼───────────────────────────────────────┤
+│ Return on equity TTM          │ 0.204                                 │
+├───────────────────────────────┼───────────────────────────────────────┤
+│ Revenue TTM                   │ 53.823 B                              │
+├───────────────────────────────┼───────────────────────────────────────┤
+│ Gross profit TTM              │ 13.606 B                              │
+├───────────────────────────────┼───────────────────────────────────────┤
+│ Diluted EPS TTM               │ 4.901                                 │
+├───────────────────────────────┼───────────────────────────────────────┤
+│ Quarterly earnings growth YOY │ 7.54                                  │
+├───────────────────────────────┼───────────────────────────────────────┤
+│ Quarterly revenue growth YOY  │ 0.649                                 │
+├───────────────────────────────┼───────────────────────────────────────┤
+│ Analyst target price          │ 965.99                                │
+├───────────────────────────────┼───────────────────────────────────────┤
+│ Trailing PE                   │ 188.21                                │
+├───────────────────────────────┼───────────────────────────────────────┤
+│ Forward PE                    │ 88.5                                  │
+├───────────────────────────────┼───────────────────────────────────────┤
+│ Price to sales ratio TTM      │ 17.71                                 │
+├───────────────────────────────┼───────────────────────────────────────┤
+│ Price to book ratio           │ 29.98                                 │
+├───────────────────────────────┼───────────────────────────────────────┤
+│ EV to revenue                 │ 16.65                                 │
+├───────────────────────────────┼───────────────────────────────────────┤
+│ EV to EBITDA                  │ 93.12                                 │
+├───────────────────────────────┼───────────────────────────────────────┤
+│ Beta                          │ 2.006                                 │
+├───────────────────────────────┼───────────────────────────────────────┤
+│ 52 week high                  │ 1243.49                               │
+├───────────────────────────────┼───────────────────────────────────────┤
+│ 52 week low                   │ 539.49                                │
+├───────────────────────────────┼───────────────────────────────────────┤
+│ 50 day moving average         │ 989.85                                │
+├───────────────────────────────┼───────────────────────────────────────┤
+│ 200 day moving average        │ 824.84                                │
+├───────────────────────────────┼───────────────────────────────────────┤
+│ Shares outstanding            │ 1.034 B                               │
+├───────────────────────────────┼───────────────────────────────────────┤
+│ Dividend date                 │ None                                  │
+├───────────────────────────────┼───────────────────────────────────────┤
+│ Ex dividend date              │ None                                  │
+└───────────────────────────────┴───────────────────────────────────────┘
+```
+```
+Company Description:
+
+Tesla, Inc. is an American electric vehicle and clean energy company based in Palo Alto, California. Tesla's current products include electric cars, battery energy storage from home to grid-scale, solar panels and solar roof tiles, as well as other related products and services. In 2020, Tesla had the highest sales in the plug-in and battery electric passenger car segments, capturing 16% of the plug-in market (which includes plug-in hybrids) and 23% of the battery-electric (purely electric) market. Through its subsidiary Tesla Energy, the company develops and is a major installer of solar photovoltaic energy generation systems in the United States. Tesla Energy is also one of the largest global suppliers of battery energy storage systems, with 3 GWh of battery storage supplied in 2020.
+```

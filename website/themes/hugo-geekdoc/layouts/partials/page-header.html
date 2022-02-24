@@ -20,7 +20,7 @@
 
 {{ $showBreadcrumb := (and (default true .Page.Params.GeekdocBreadcrumb) (default true .Site.Params.GeekdocBreadcrumb)) }}
 {{ $showEdit := (and ($.Scratch.Get "geekdocFilePath") $geekdocRepo $geekdocEditPath) }}
-<div style="background: #151515;border-radius: 8px;" class="gdoc-page__header flex flex-wrap
+<div style="background: #151515;border-radius: 8px; margin-top: 29px;" class="gdoc-page__header flex flex-wrap
     {{ if $showBreadcrumb }} justify-between {{ else }} justify-end {{ end }}
     {{ if not $showEdit }} hidden-mobile {{ end }}
     {{ if (and (not $showBreadcrumb) (not $showEdit)) }} hidden {{ end }}" itemprop="breadcrumb">
