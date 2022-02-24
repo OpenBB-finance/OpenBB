@@ -28,6 +28,9 @@ Example for stock data (which is not normally distributed):
 └───────────┴──────────┴──────────┴─────────────┴──────────────┴────────────────────┘
 ```
 
+![histogram_adj_close_tsla](https://user-images.githubusercontent.com/46355364/155514663-90cb210a-002a-49fe-b7d3-29d9f2aeb5ac.png)
+
+
 Example for returns (which is usually normally distributed):
 ```
 2022 Feb 24, 05:36 (✨) /statistics/ $ norm return-msft
@@ -40,3 +43,6 @@ Example for returns (which is usually normally distributed):
 │ p-value   │ 0.00     │ 0.00     │ 0.00        │ 0.00         │ 0.00               │
 └───────────┴──────────┴──────────┴─────────────┴──────────────┴────────────────────┘
 ```
+
+![histogram_returns_msft](https://user-images.githubusercontent.com/46355364/155514702-f46da473-b340-4d68-b31e-f96606c4ed00.png)
+
