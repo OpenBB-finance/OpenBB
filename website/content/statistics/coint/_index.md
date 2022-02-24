@@ -39,3 +39,6 @@ Example:
 │ adj_close-tsla/adj_close-googl │ -505.14  │ 0.51  │ -0.01 │ -2.28         │ 0.18    │
 └────────────────────────────────┴──────────┴───────┴───────┴───────────────┴─────────┘
 ```
+![error_terms_cointegrations](https://user-images.githubusercontent.com/46355364/155514964-dd75cf17-91ae-4326-96e8-45d9a2c7b24a.png)
+
+
