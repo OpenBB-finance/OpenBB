@@ -59,7 +59,7 @@ def display_dwat(
 
 @log_start_end(log=logger)
 def display_bgod(model: pd.DataFrame, lags: int, export: str = ""):
-    """Show Breusch-Godfret autocorrelation test used with Panel Data
+    """Show Breusch-Godfrey autocorrelation test
 
     Parameters
     ----------
@@ -71,37 +71,81 @@ def display_bgod(model: pd.DataFrame, lags: int, export: str = ""):
         Format to export data
     """
     (
-        t_stat,
+        lm_stat,
         p_value,
         f_stat,
         fp_value,
     ) = gamestonk_terminal.statistics.regression_model.get_bgod(model, lags)
 
     df = pd.DataFrame(
-        [t_stat, p_value, f_stat, fp_value],
-        index=["t-stat", "p-value", "f-stat", "fp-value"],
+        [lm_stat, p_value, f_stat, fp_value],
+        index=["LM-stat", "p-value", "f-stat", "fp-value"],
     )
 
     print_rich_table(
         df,
-        headers=list(["Breusch-Godfrey Test"]),
+        headers=list(["Breusch-Godfrey"]),
         show_index=True,
-        title=f"Breusch Godfrey Test Causality [Lags: {lags}]",
+        title=f"Breusch-Godfrey autocorrelation test [Lags: {lags}]",
     )
 
     if p_value > 0.05:
         console.print(
-            f"The result {p_value} indicates the existence of autocorrelation. Consider re-estimating with clustered "
-            "standard errors and applying the Random Effects or Fixed Effects model."
+            f"The result {round(p_value, 2)} indicates the existence of autocorrelation. Consider re-estimating "
+            f"with clustered standard errors and applying the Random Effects or Fixed Effects model."
         )
     else:
         console.print(
-            f"The result {p_value} indicates no existence of autocorrelation. Therefore, a Pooled OLS model can be "
-            "used for the statistical analysis."
+            f"The result {round(p_value, 2)} indicates no existence of autocorrelation."
         )
 
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "Breusch_Godfrey", df
     )
+
+    console.print("")
+
+
+@log_start_end(log=logger)
+def display_bpag(model: pd.DataFrame, export: str = ""):
+    """Show Breusch-Pagan heteroscedasticity test
+
+    Parameters
+    ----------
+    model : OLS Model
+        Model containing residual values.
+    export : str
+        Format to export data
+    """
+    (
+        lm_stat,
+        p_value,
+        f_stat,
+        fp_value,
+    ) = gamestonk_terminal.statistics.regression_model.get_bpag(model)
+
+    df = pd.DataFrame(
+        [lm_stat, p_value, f_stat, fp_value],
+        index=["lm-stat", "p-value", "f-stat", "fp-value"],
+    )
+
+    print_rich_table(
+        df,
+        headers=list(["Breusch-Pagan"]),
+        show_index=True,
+        title="Breusch-Pagan heteroscedasticity test",
+    )
+
+    if p_value > 0.05:
+        console.print(
+            f"The result {round(p_value, 2)} indicates the existence of heteroscedasticity. Consider taking the log "
+            f"or a rate for the dependent variable."
+        )
+    else:
+        console.print(
+            f"The result {round(p_value, 2)} indicates no existence of heteroscedasticity."
+        )
+
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), "Breusch_Pagan", df)
 
     console.print("")

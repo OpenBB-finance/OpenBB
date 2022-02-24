@@ -264,7 +264,7 @@ def get_engle_granger_two_step_cointegration_test(y, x):
     assert y.index.equals(x.index), "The two input series do not have the same index."
 
     warnings.simplefilter(action="ignore", category=FutureWarning)
-    long_run_ols = OLS(y, add_constant(x), has_const=True)
+    long_run_ols = OLS(y, add_constant(x))
     warnings.simplefilter(action="default", category=FutureWarning)
 
     long_run_ols_fit = long_run_ols.fit()

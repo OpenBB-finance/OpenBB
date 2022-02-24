@@ -283,7 +283,7 @@ def display_cointegration_test(
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "custom_plot",
+        "cointegration",
     )
 
     console.print("")

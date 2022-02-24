@@ -53,15 +53,16 @@ class StatisticsController(BaseController):
         "index",
         "clean",
         "modify",
+        "ols",
         "norm",
         "root",
-        "granger",
-        "coint",
-        "ols",
-        "dwat",
         "panel",
         "compare",
+        "dwat",
         "bgod",
+        "bpag",
+        "granger",
+        "coint",
     ]
     CHOICES_MENUS: List[str] = ["qa", "pred"]
     pandas_plot_choices = [
@@ -151,26 +152,28 @@ class StatisticsController(BaseController):
 [param]Loaded files:[/param]    {", ".join(self.files) or None}[cmds]
 
 Exploration
-    show            show portion of loaded data
+    show            show a portion of a loaded dataset
     plot            plot data from a dataset
-    info            show descriptive statistics
-    index           set (multi)index based on columns
-    clean           clean the dataset by filling or dropping NaNs
+    info            show descriptive statistics of a dataset
+    index           set (multi) index based on columns
+    clean           clean a dataset by filling or dropping NaNs
     modify          combine columns of datasets and delete or rename columns
 
 Timeseries
     ols             fit a (multi) linear regression model
     norm            perform normality tests on a column of a dataset
     root            perform unitroot tests (ADF & KPSS) on a column of a dataset
-    dwat            perform Durbin-Watson autocorrelation test on the residuals of the regression
-    granger         perform granger causality tests on two timeseries.
-    coint           perform co-integration test on two timeseries
 
 Panel Data
-    panel           Estimate model based on various regression techniques.
+    panel           Estimate model based on various regression techniques
     compare         Compare results of all estimated models
-    bgod            perform Breusch-Godfrey autocorrelation tests on an OLS regression model
-[/cmds]
+
+Tests
+    dwat            perform Durbin-Watson autocorrelation test on the residuals of the regression
+    bgod            perform Breusch-Godfrey autocorrelation tests with lags on the residuals of the regression
+    bpag            perform Breusch-Pagan heteroscedasticity test on the residuals of the regression
+    granger         perform granger causality tests on two columns
+    coint           perform co-integration test on two columns[/cmds]
         """
         console.print(text=help_text, menu="Statistics")
 
@@ -804,55 +807,6 @@ Panel Data
 
         console.print("")
 
-    def call_norm(self, other_args: List[str]):
-        """Process normality command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="norm",
-            description="Test whether the used data is normally distributed.",
-        )
-
-        parser.add_argument(
-            "-c",
-            "--column",
-            type=str,
-            choices=self.choices["norm"],
-            dest="column",
-            help="The column and name of the database you want to test normality for",
-        )
-
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-c")
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-
-        if ns_parser and ns_parser.column:
-            column, dataset = self.choices["norm"][ns_parser.column].keys()
-
-            if isinstance(self.datasets[dataset][column].index, pd.MultiIndex):
-                console.print(
-                    f"The column {column} from the dataset {dataset} is a MultiIndex. To test for normality in a "
-                    f"timeseries, make sure to set a singular time index."
-                )
-
-            if dataset in self.datasets:
-                if isinstance(self.datasets[dataset], pd.Series):
-                    data = self.datasets[dataset]
-                elif isinstance(self.datasets[dataset], pd.DataFrame):
-                    data = self.datasets[dataset][column]
-                else:
-                    return console.print(
-                        f"The type of {dataset} ({type(dataset)} is not an option."
-                    )
-            else:
-                return console.print(f"Can not find {dataset}. Did you load the data?")
-
-            statistics_view.display_norm(data, dataset, column, ns_parser.export)
-
-        console.print("")
-
     def call_ols(self, other_args: List[str]):
         """Process ols command"""
         parser = argparse.ArgumentParser(
@@ -892,6 +846,55 @@ Panel Data
             ) = gamestonk_terminal.statistics.regression_model.get_ols(
                 ns_parser.regression, self.datasets, self.choices["regressions"]
             )
+
+    def call_norm(self, other_args: List[str]):
+        """Process normality command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="norm",
+            description="Test whether the used data is normally distributed.",
+        )
+
+        parser.add_argument(
+            "-c",
+            "--column",
+            type=str,
+            choices=self.choices["norm"],
+            dest="column",
+            help="The column and name of the database you want to test normality for",
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-c")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+
+        if ns_parser and ns_parser.column:
+            column, dataset = self.choices["norm"][ns_parser.column].keys()
+
+            if isinstance(self.datasets[dataset][column].index, pd.MultiIndex):
+                return console.print(
+                    f"The column {column} from the dataset {dataset} is a MultiIndex. To test for normality in a "
+                    f"timeseries, make sure to set a singular time index."
+                )
+
+            if dataset in self.datasets:
+                if isinstance(self.datasets[dataset], pd.Series):
+                    data = self.datasets[dataset]
+                elif isinstance(self.datasets[dataset], pd.DataFrame):
+                    data = self.datasets[dataset][column]
+                else:
+                    return console.print(
+                        f"The type of {dataset} ({type(dataset)} is not an option."
+                    )
+            else:
+                return console.print(f"Can not find {dataset}. Did you load the data?")
+
+            statistics_view.display_norm(data, dataset, column, ns_parser.export)
+
+        console.print("")
 
     def call_root(self, other_args: List[str]):
         """Process unit root command"""
@@ -960,6 +963,95 @@ Panel Data
 
         console.print("")
 
+    def call_panel(self, other_args: List[str]):
+        """Process panel command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="panel",
+            description="Performs regression analysis on Panel Data. There are a multitude of options to select "
+            "from to fit the needs of restrictions of the dataset.",
+        )
+
+        parser.add_argument(
+            "-r",
+            "--regression",
+            nargs="+",
+            type=str,
+            choices=self.choices["regressions"],
+            dest="regression",
+            help="The regression you would like to perform, first variable is the dependent variable, "
+            "consecutive variables the independent variables.",
+        )
+
+        parser.add_argument(
+            "-t",
+            "--type",
+            type=str,
+            choices=["pols", "re", "bols", "fe", "fdols"],
+            dest="type",
+            help="The type of regression you wish to perform. This can be either pols (Pooled OLS), "
+            "re (Random Effects), bols (Between OLS), fe (Fixed Effects) or fdols (First Difference OLS)",
+            default="pols",
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-r")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        if ns_parser and ns_parser.regression:
+            if len(ns_parser.regression) < 2:
+                return console.print(
+                    "Please provide both a dependent and independent variable."
+                )
+            for variable in ns_parser.regression:
+                column, dataset = self.choices["regressions"][variable].keys()
+                if not isinstance(self.datasets[dataset][column].index, pd.MultiIndex):
+                    return console.print(
+                        f"The column {column} from the dataset {dataset} is not a MultiIndex. Make sure you set "
+                        f"the index correctly with the index command where the first level is the entity "
+                        f"(e.g. Tesla Inc.) and the second level the date (e.g. 2021-03-31)"
+                    )
+
+            regression_type = ns_parser.type.upper()
+            (
+                self.regression[regression_type]["data"],
+                self.regression[regression_type]["dependent"],
+                self.regression[regression_type]["independent"],
+                self.regression[regression_type]["model"],
+            ) = gamestonk_terminal.statistics.regression_model.get_regressions_results(
+                ns_parser.type,
+                ns_parser.regression,
+                self.datasets,
+                self.choices["regressions"],
+            )
+
+        console.print("")
+
+    def call_compare(self, other_args: List[str]):
+        """Process compare command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="compare",
+            description="Compare results between all activated regression models",
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        if ns_parser:
+            comparison_result = (
+                gamestonk_terminal.statistics.regression_model.get_comparison(
+                    self.regression
+                )
+            )
+
+            console.print(comparison_result)
+
     def call_dwat(self, other_args: List[str]):
         """Process unitroot command"""
         parser = argparse.ArgumentParser(
@@ -987,6 +1079,61 @@ Panel Data
                 self.regression["OLS"]["model"].resid,
                 ns_parser.export,
             )
+
+    def call_bgod(self, other_args):
+        """Process bgod command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="bgod",
+            description="Show Breusch-Godfrey autocorrelation test results.",
+        )
+
+        parser.add_argument(
+            "-l",
+            "--lags",
+            type=int,
+            dest="lags",
+            help="The lags for the Breusch-Godfrey test",
+            default=3,
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        if ns_parser:
+            if not self.regression["OLS"]["model"]:
+                console.print(
+                    "Please perform an OLS regression before estimating the Breusch-Godfrey statistic."
+                )
+            else:
+                gamestonk_terminal.statistics.regression_view.display_bgod(
+                    self.regression["OLS"]["model"], ns_parser.lags, ns_parser.export
+                )
+
+    def call_bpag(self, other_args):
+        """Process bpag command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="bpag",
+            description="Show Breusch-Pagan heteroscedasticity test results.",
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        if ns_parser:
+            if not self.regression["OLS"]["model"]:
+                console.print(
+                    "Please perform an OLS regression before estimating the Breusch-Pagan statistic."
+                )
+            else:
+                gamestonk_terminal.statistics.regression_view.display_bpag(
+                    self.regression["OLS"]["model"], ns_parser.export
+                )
 
     def call_granger(self, other_args: List[str]):
         """Process granger command"""
@@ -1104,124 +1251,3 @@ Panel Data
             statistics_view.display_cointegration_test(
                 datasets, ns_parser.significant, ns_parser.plot, ns_parser.export
             )
-
-    def call_panel(self, other_args: List[str]):
-        """Process panel command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="panel",
-            description="Performs regression analysis on Panel Data. There are a multitude of options to select "
-            "from to fit the needs of restrictions of the dataset.",
-        )
-
-        parser.add_argument(
-            "-r",
-            "--regression",
-            nargs="+",
-            type=str,
-            choices=self.choices["regressions"],
-            dest="regression",
-            help="The regression you would like to perform, first variable is the dependent variable, "
-            "consecutive variables the independent variables.",
-        )
-
-        parser.add_argument(
-            "-t",
-            "--type",
-            type=str,
-            choices=["pols", "re", "bols", "fe", "fdols"],
-            dest="type",
-            help="The type of regression you wish to perform. This can be either pols (Pooled OLS), "
-            "re (Random Effects), bols (Between OLS), fe (Fixed Effects) or fdols (First Difference OLS)",
-            default="pols",
-        )
-
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-r")
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-
-        if ns_parser and ns_parser.regression:
-            if len(ns_parser.regression) < 2:
-                return console.print(
-                    "Please provide both a dependent and independent variable."
-                )
-            for variable in ns_parser.regression:
-                column, dataset = self.choices["regressions"][variable].keys()
-                if not isinstance(self.datasets[dataset][column].index, pd.MultiIndex):
-                    return console.print(
-                        f"The column {column} from the dataset {dataset} is not a MultiIndex. Make sure you set "
-                        f"the index correctly with the index command where the first level is the entity "
-                        f"(e.g. Tesla Inc.) and the second level the date (e.g. 2021-03-31)"
-                    )
-
-            regression_type = ns_parser.type.upper()
-            (
-                self.regression[regression_type]["data"],
-                self.regression[regression_type]["dependent"],
-                self.regression[regression_type]["independent"],
-                self.regression[regression_type]["model"],
-            ) = gamestonk_terminal.statistics.regression_model.get_regressions_results(
-                ns_parser.type,
-                ns_parser.regression,
-                self.datasets,
-                self.choices["regressions"],
-            )
-
-        console.print("")
-
-    def call_compare(self, other_args: List[str]):
-        """Process compare command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="compare",
-            description="Compare results between all activated regression models",
-        )
-
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-
-        if ns_parser:
-            comparison_result = (
-                gamestonk_terminal.statistics.regression_model.get_comparison(
-                    self.regression
-                )
-            )
-
-            console.print(comparison_result)
-
-    def call_bgod(self, other_args):
-        """Process bgod command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="bgod",
-            description="Show Breusch-Godfrey autocorrelation test results.",
-        )
-
-        parser.add_argument(
-            "-l",
-            "--lags",
-            type=int,
-            dest="lags",
-            help="The lags for the Breusch-Godfrey test",
-            default=3,
-        )
-
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-
-        if ns_parser:
-            if not self.regression["OLS"]["model"]:
-                console.print(
-                    "Please perform an OLS regression before estimating the Breusch-Godfrey statistic."
-                )
-            else:
-                gamestonk_terminal.statistics.regression_view.display_bgod(
-                    self.regression["OLS"]["model"], ns_parser.lags, ns_parser.export
-                )

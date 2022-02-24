@@ -16,6 +16,7 @@ from statsmodels.api import add_constant
 from statsmodels.formula.api import ols
 from statsmodels.stats.diagnostic import acorr_breusch_godfrey
 from statsmodels.stats.stattools import durbin_watson
+from statsmodels.stats.api import het_breuschpagan
 
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.rich_config import console
@@ -437,6 +438,25 @@ def get_bgod(model: pd.DataFrame, lags) -> tuple:
     Test results from the Breusch-Godfrey Test
     """
 
-    t_stat, p_value, f_stat, fp_value = acorr_breusch_godfrey(model, nlags=lags)
+    lm_stat, p_value, f_stat, fp_value = acorr_breusch_godfrey(model, nlags=lags)
 
-    return t_stat, p_value, f_stat, fp_value
+    return lm_stat, p_value, f_stat, fp_value
+
+
+@log_start_end(log=logger)
+def get_bpag(model: pd.DataFrame) -> tuple:
+    """Calculate test statistics for heteroscedasticity
+
+    Parameters
+    ----------
+    model : OLS Model
+        Model containing residual values.
+
+    Returns
+    -------
+    Test results from the Breusch-Pagan Test
+    """
+
+    lm_stat, p_value, f_stat, fp_value = het_breuschpagan(model.resid, model.model.exog)
+
+    return lm_stat, p_value, f_stat, fp_value
