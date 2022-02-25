@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import warnings
-from typing import Any, Tuple
+from typing import Any, Tuple, Union, List
 import pandas as pd
 import statsmodels.api as sm
 from scipy import stats
@@ -214,7 +214,7 @@ def get_var(
     use_mean: bool,
     adjusted_var: bool,
     student_t: bool,
-    percentile: int,
+    percentile: Union[int, float],
     portfolio: bool,
 ):
     """Gets value at risk for specified stock dataframe
@@ -229,7 +229,7 @@ def get_var(
         If one should return VaR adjusted for skew and kurtosis
     student_t: bool
         If one should use the student-t distribution
-    percentile: int
+    percentile: Union[int,float]
         VaR percentile
     portfolio: bool
         If the data is a portfolio
@@ -321,9 +321,9 @@ def get_es(
     data: pd.DataFrame,
     use_mean: bool,
     distribution: str,
-    percentile: int,
+    percentile: Union[float, int],
     portfolio: bool,
-):
+) -> Tuple[List[float], List[float]]:
     """Gets Expected Shortfall for specified stock dataframe
 
     Parameters
@@ -334,7 +334,7 @@ def get_es(
         If one should use the stocks mean for calculation
     distribution: str
         Type of distribution, options: laplace, student_t, normal
-    percentile: int
+    percentile: Union[float,int]
         VaR percentile
     portfolio: bool
         If the data is a portfolio

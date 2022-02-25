@@ -465,6 +465,9 @@ Loaded:[/info] {self.portfolio_name or None}
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
+            if self.portfolio.empty:
+                console.print("[red]No portfolio loaded.[/red]\n")
+                return
             if ns_parser.adjusted and ns_parser.student_t:
                 console.print("Select the adjusted or the student_t parameter.\n")
             else:
@@ -525,6 +528,9 @@ Loaded:[/info] {self.portfolio_name or None}
         if ns_parser:
             from gamestonk_terminal.common.quantitative_analysis import qa_view
 
+            if self.portfolio.empty:
+                console.print("[red]No portfolio loaded.[/red]\n")
+                return
             self.portfolio.generate_holdings_from_trades()
             qa_view.display_es(
                 self.portfolio.returns,
