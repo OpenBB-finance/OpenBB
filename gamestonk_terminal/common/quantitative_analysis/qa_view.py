@@ -948,12 +948,12 @@ def display_line(
 
 def display_var(
     data: pd.DataFrame,
-    use_mean: bool,
     ticker: str,
-    adjusted_var: bool,
-    student_t,
-    percentile: int,
-    portfolio: bool,
+    use_mean: bool = False,
+    adjusted_var: bool = False,
+    student_t: bool = False,
+    percentile: int = 0.999,
+    portfolio: bool = False,
 ):
     """Displays VaR of dataframe
 
@@ -1007,11 +1007,11 @@ def display_var(
 
 def display_es(
     data: pd.DataFrame,
-    use_mean: bool,
     ticker: str,
-    distribution: str,
-    percentile: int,
-    portfolio: bool,
+    use_mean: bool = False,
+    distribution: str = "normal",
+    percentile: int = 0.999,
+    portfolio: bool = False,
 ):
     """Displays expected shortfall
 

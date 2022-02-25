@@ -460,7 +460,7 @@ def get_es(
         es_custom = std * -stats.norm.pdf(percentile_custom) / (1 - percentile) + mean
 
     # Historical Expected Shortfall
-    _, hist_var_list = get_var(data, use_mean, False, False, percentile, True)
+    _, hist_var_list = get_var(data, use_mean, False, False, percentile, portfolio)
     hist_es_90 = data_return[data_return <= hist_var_list[0]].mean()
     hist_es_95 = data_return[data_return <= hist_var_list[1]].mean()
     hist_es_99 = data_return[data_return <= hist_var_list[2]].mean()

@@ -785,8 +785,8 @@ class QaController(StockBaseController):
             else:
                 qa_view.display_var(
                     self.stock,
-                    ns_parser.use_mean,
                     self.ticker,
+                    ns_parser.use_mean,
                     ns_parser.adjusted,
                     ns_parser.student_t,
                     ns_parser.percentile / 100,
@@ -800,7 +800,7 @@ class QaController(StockBaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="es",
             description="""
-                Provides expected shortfall (short: ES) of the selected stock.
+                Provides Expected Shortfall (short: ES) of the selected stock.
             """,
         )
         parser.add_argument(
@@ -829,7 +829,7 @@ class QaController(StockBaseController):
             type=float,
             default=99.9,
             help="""
-                Percentile used for ES calculations, for example input 99.9 equals a 99.9% ES
+                Percentile used for ES calculations, for example input 99.9 equals a 99.9 Percent Expected Shortfall
             """,
         )
 
@@ -837,8 +837,8 @@ class QaController(StockBaseController):
         if ns_parser:
             qa_view.display_es(
                 self.stock,
-                ns_parser.use_mean,
                 self.ticker,
+                ns_parser.use_mean,
                 ns_parser.distributions,
                 ns_parser.percentile / 100,
                 False,

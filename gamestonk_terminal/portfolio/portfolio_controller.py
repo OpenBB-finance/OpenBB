@@ -460,7 +460,7 @@ Loaded:[/info] {self.portfolio_name or None}
             type=float,
             default=99.9,
             help="""
-                Percentile used for VaR calculations, for example input 99.9 equals a 99.9% VaR
+                Percentile used for VaR calculations, for example input 99.9 equals a 99.9 Percent VaR
             """,
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -473,8 +473,8 @@ Loaded:[/info] {self.portfolio_name or None}
                 self.portfolio.generate_holdings_from_trades()
                 qa_view.display_var(
                     self.portfolio.returns,
-                    ns_parser.use_mean,
                     "Portfolio",
+                    ns_parser.use_mean,
                     ns_parser.adjusted,
                     ns_parser.student_t,
                     ns_parser.percentile / 100,
@@ -489,7 +489,7 @@ Loaded:[/info] {self.portfolio_name or None}
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="es",
             description="""
-                Provides expected shortfall (short: ES) of the selected portfolio.
+                Provides Expected Shortfall (short: ES) of the selected portfolio.
             """,
         )
         parser.add_argument(
@@ -518,7 +518,7 @@ Loaded:[/info] {self.portfolio_name or None}
             type=float,
             default=99.9,
             help="""
-                Percentile used for ES calculations, for example input 99.9 equals a 99.9% ES
+                Percentile used for ES calculations, for example input 99.9 equals a 99.9 Percent Expected Shortfall
             """,
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -528,8 +528,8 @@ Loaded:[/info] {self.portfolio_name or None}
             self.portfolio.generate_holdings_from_trades()
             qa_view.display_es(
                 self.portfolio.returns,
-                ns_parser.use_mean,
                 "Portfolio",
+                ns_parser.use_mean,
                 ns_parser.distributions,
                 ns_parser.percentile / 100,
                 True,
