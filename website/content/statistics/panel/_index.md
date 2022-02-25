@@ -1,5 +1,5 @@
 ```
-usage: panel [-r OPTIONS] [-t {pols,re,bols,fe,fdols}] [-h] [--export {csv,json,xlsx}]
+usage: usage: panel [-r {OPTIONS} [{OPTIONS} ...]] [-t {pols,re,bols,fe,fdols,POLS,RE,BOLS,FE,FDOLS}] [-ee] [-te] [-h] [--export {csv,json,xlsx}]]
 ```
 
 Performs regression analysis on Panel Data. There are a multitude of options to select from to fit the needs of restrictions of the dataset.
@@ -7,16 +7,19 @@ Performs regression analysis on Panel Data. There are a multitude of options to 
 Panel data includes observations on multiple entities – individuals, firms, countries – over multiple time periods. In most classical applications of panel data the number of entities, N, is large and the number of time periods, T, is small (often between 2 and 5). Most asymptotic theory for these estimators has been developed under an assumption that N will diverge while T is fixed. [Source: LinearModels]
 
 Please refer to the documentation of [LinearModels](https://bashtage.github.io/linearmodels/panel/introduction.html) (or any Econometrics Textbook) to understand the difference between the models.
+
 ```
 optional arguments:
   -r {OPTIONS}, --regression {OPTIONS}
-                        The regression you would like to perform, first variable is the dependent variable, consecutive variables the independent variables. (default: None)
-  -t {pols,re,bols,fe,fdols}, --type {pols,re,bols,fe,fdols}
-                        The type of regression you wish to perform. This can be either pols (Pooled OLS), re (Random Effects), bols (Between OLS), fe (Fixed Effects) or fdols (First Difference OLS) (default: pols)
+                        The regression you would like to perform, first variable is the dependent variable, consecutive variables the independent variables.
+  -t {pols,re,bols,fe,fdols,POLS,RE,BOLS,FE,FDOLS}, --type {pols,re,bols,fe,fdols,POLS,RE,BOLS,FE,FDOLS}
+                        The type of regression you wish to perform. This can be either pols (Pooled OLS), re (Random Effects), bols (Between OLS), fe (Fixed Effects) or fdols (First Difference OLS) (default: pols)Effects) or fdols (First Difference OLS) (default: pols)
+  -ee, --entity_effects
+                        Using this command creates entity effects, which is equivalent to including dummies for each entity. This is only used within Fixed Effects estimations (when type is set to 'fe') (default: False)
+  -te, --time_effects   Using this command creates time effects, which is equivalent to including dummies for each time. This is only used within Fixed Effects estimations (when type is set to 'fe') (default: False)
   -h, --help            show this help message (default: False)
   --export {csv,json,xlsx}
                         Export raw data into csv, json, xlsx (default: )
-
 ```
 
 Below you can find examples of the dataset from Vella and M. Verbeek (1998), “Whose Wages Do Unions Raise? A Dynamic Model of Unionism and Wage Rate Determination for Young Men,” Journal of Applied Econometrics 13, 163-183. This is a well-known dataset also used within Chapter 14 of Introduction to Econometrics by Jeffrey Wooldridge. For these regressions, [LinearModels](https://bashtage.github.io/linearmodels/panel/examples/examples.html) is used.
@@ -88,7 +91,7 @@ Below you can find examples of the dataset from Vella and M. Verbeek (1998), “
 **Pooled OLS Estimation:**
 
 ```
-2022 Feb 25, 08:10 (✨) /statistics/ $ panel lwage-wp black-wp hisp-wp exper-wp expersq-wp married-wp educ-wp union-wp year-wp
+2022 Feb 25, 08:51 (✨) /statistics/ $ panel lwage-wp black-wp hisp-wp exper-wp expersq-wp married-wp educ-wp union-wp year-wp
 
                           PooledOLS Estimation Summary
 ================================================================================
@@ -96,7 +99,7 @@ Dep. Variable:               lwage_wp   R-squared:                        0.1893
 Estimator:                  PooledOLS   R-squared (Between):              0.2066
 No. Observations:                4360   R-squared (Within):               0.1692
 Date:                Fri, Feb 25 2022   R-squared (Overall):              0.1893
-Time:                        14:12:14   Log-likelihood                   -2982.0
+Time:                        14:51:08   Log-likelihood                   -2982.0
 Cov. Estimator:            Unadjusted
                                         F-statistic:                      72.459
 Entities:                         545   P-value                           0.0000
@@ -131,10 +134,48 @@ year_wp.1987     0.1738     0.0494     3.5165     0.0004      0.0769      0.2707
 ================================================================================
 ```
 
+**Between OLS Estimation:**
+
+```
+2022 Feb 25, 08:51 (✨) /statistics/ $ panel lwage-wp black-wp hisp-wp exper-wp married-wp educ-wp union-wp -t bols
+
+                         BetweenOLS Estimation Summary
+================================================================================
+Dep. Variable:               lwage_wp   R-squared:                        0.2155
+Estimator:                 BetweenOLS   R-squared (Between):              0.2155
+No. Observations:                 545   R-squared (Within):               0.1141
+Date:                Fri, Feb 25 2022   R-squared (Overall):              0.1686
+Time:                        14:51:15   Log-likelihood                   -194.54
+Cov. Estimator:            Unadjusted
+                                        F-statistic:                      24.633
+Entities:                         545   P-value                           0.0000
+Avg Obs:                       8.0000   Distribution:                   F(6,538)
+Min Obs:                       8.0000
+Max Obs:                       8.0000   F-statistic (robust):             24.633
+                                        P-value                           0.0000
+Time periods:                       8   Distribution:                   F(6,538)
+Avg Obs:                       545.00
+Min Obs:                       545.00
+Max Obs:                       545.00
+
+                             Parameter Estimates
+==============================================================================
+            Parameter  Std. Err.     T-stat    P-value    Lower CI    Upper CI
+------------------------------------------------------------------------------
+const          0.2836     0.1784     1.5897     0.1125     -0.0668      0.6340
+black_wp      -0.1414     0.0489    -2.8915     0.0040     -0.2375     -0.0453
+hisp_wp        0.0100     0.0426     0.2355     0.8139     -0.0737      0.0938
+exper_wp       0.0278     0.0113     2.4538     0.0144      0.0055      0.0501
+married_wp     0.1416     0.0412     3.4346     0.0006      0.0606      0.2226
+educ_wp        0.0913     0.0107     8.5159     0.0000      0.0702      0.1123
+union_wp       0.2587     0.0460     5.6214     0.0000      0.1683      0.3491
+==============================================================================
+```
+
 **Random Effects Estimation:**
 
 ```
-2022 Feb 25, 08:12 (✨) /statistics/ $ panel lwage-wp black-wp hisp-wp exper-wp expersq-wp married-wp educ-wp union-wp year-wp -t re
+2022 Feb 25, 08:53 (✨) /statistics/ $ panel lwage-wp black-wp hisp-wp exper-wp expersq-wp married-wp educ-wp union-wp year-wp -t re
 
                         RandomEffects Estimation Summary
 ================================================================================
@@ -142,7 +183,7 @@ Dep. Variable:               lwage_wp   R-squared:                        0.1806
 Estimator:              RandomEffects   R-squared (Between):              0.1853
 No. Observations:                4360   R-squared (Within):               0.1799
 Date:                Fri, Feb 25 2022   R-squared (Overall):              0.1828
-Time:                        14:18:06   Log-likelihood                   -1622.5
+Time:                        14:56:19   Log-likelihood                   -1622.5
 Cov. Estimator:            Unadjusted
                                         F-statistic:                      68.409
 Entities:                         545   P-value                           0.0000
@@ -175,52 +216,56 @@ year_wp.1985     0.0577     0.0615     0.9383     0.3482     -0.0629      0.1782
 year_wp.1986     0.0918     0.0716     1.2834     0.1994     -0.0485      0.2321
 year_wp.1987     0.1348     0.0817     1.6504     0.0989     -0.0253      0.2950
 ================================================================================
+
+2022 Feb 25, 08:56 (✨) /statistics/ $
 ```
-**Between OLS Estimation:**
+
+**Fixed Effects Estimation (no effects):**
 
 ```
+2022 Feb 25, 08:51 (✨) /statistics/ $ panel lwage-wp expersq-wp union-wp married-wp  year-wp -t fe
 
-2022 Feb 25, 08:18 (✨) /statistics/ $ panel lwage-wp black-wp hisp-wp exper-wp married-wp educ-wp union-wp -t bols
-
-                         BetweenOLS Estimation Summary
+                          PanelOLS Estimation Summary
 ================================================================================
-Dep. Variable:               lwage_wp   R-squared:                        0.2155
-Estimator:                 BetweenOLS   R-squared (Between):              0.2155
-No. Observations:                 545   R-squared (Within):               0.1141
-Date:                Fri, Feb 25 2022   R-squared (Overall):              0.1686
-Time:                        14:20:02   Log-likelihood                   -194.54
+Dep. Variable:               lwage_wp   R-squared:                        0.1246
+Estimator:                   PanelOLS   R-squared (Between):              0.0902
+No. Observations:                4360   R-squared (Within):               0.1646
+Date:                Fri, Feb 25 2022   R-squared (Overall):              0.1246
+Time:                        14:51:21   Log-likelihood                   -3149.2
 Cov. Estimator:            Unadjusted
-                                        F-statistic:                      24.633
+                                        F-statistic:                      61.920
 Entities:                         545   P-value                           0.0000
-Avg Obs:                       8.0000   Distribution:                   F(6,538)
+Avg Obs:                       8.0000   Distribution:                 F(10,4349)
 Min Obs:                       8.0000
-Max Obs:                       8.0000   F-statistic (robust):             24.633
+Max Obs:                       8.0000   F-statistic (robust):             61.920
                                         P-value                           0.0000
-Time periods:                       8   Distribution:                   F(6,538)
+Time periods:                       8   Distribution:                 F(10,4349)
 Avg Obs:                       545.00
 Min Obs:                       545.00
 Max Obs:                       545.00
 
-                             Parameter Estimates
-==============================================================================
-            Parameter  Std. Err.     T-stat    P-value    Lower CI    Upper CI
-------------------------------------------------------------------------------
-const          0.2836     0.1784     1.5897     0.1125     -0.0668      0.6340
-black_wp      -0.1414     0.0489    -2.8915     0.0040     -0.2375     -0.0453
-hisp_wp        0.0100     0.0426     0.2355     0.8139     -0.0737      0.0938
-exper_wp       0.0278     0.0113     2.4538     0.0144      0.0055      0.0501
-married_wp     0.1416     0.0412     3.4346     0.0006      0.0606      0.2226
-educ_wp        0.0913     0.0107     8.5159     0.0000      0.0702      0.1123
-union_wp       0.2587     0.0460     5.6214     0.0000      0.1683      0.3491
-==============================================================================
-
-2022 Feb 25, 08:20 (✨) /statistics/ $
+                              Parameter Estimates
+================================================================================
+              Parameter  Std. Err.     T-stat    P-value    Lower CI    Upper CI
+--------------------------------------------------------------------------------
+const            1.3454     0.0222     60.606     0.0000      1.3019      1.3889
+expersq_wp      -0.0021     0.0003    -7.5081     0.0000     -0.0026     -0.0015
+union_wp         0.1768     0.0176     10.032     0.0000      0.1423      0.2114
+married_wp       0.1521     0.0159     9.5417     0.0000      0.1209      0.1834
+year_wp.1981     0.1187     0.0303     3.9144     0.0001      0.0592      0.1781
+year_wp.1982     0.1843     0.0306     6.0168     0.0000      0.1243      0.2444
+year_wp.1983     0.2431     0.0313     7.7581     0.0000      0.1817      0.3046
+year_wp.1984     0.3322     0.0324     10.236     0.0000      0.2685      0.3958
+year_wp.1985     0.4112     0.0341     12.048     0.0000      0.3443      0.4781
+year_wp.1986     0.5039     0.0365     13.806     0.0000      0.4323      0.5754
+year_wp.1987     0.5952     0.0396     15.026     0.0000      0.5176      0.6729
+================================================================================
 ```
 
-**Fixed Effects Estimation:**
+**Fixed Effects Estimation (entity effects):**
 
 ```
-2022 Feb 25, 08:22 (✨) /statistics/ $ panel lwage-wp expersq-wp union-wp married-wp  year-wp -t fe
+2022 Feb 25, 08:51 (✨) /statistics/ $ panel lwage-wp expersq-wp union-wp married-wp  year-wp -t fe -ee
 
                           PanelOLS Estimation Summary
 ================================================================================
@@ -228,7 +273,7 @@ Dep. Variable:               lwage_wp   R-squared:                        0.1806
 Estimator:                   PanelOLS   R-squared (Between):             -0.0052
 No. Observations:                4360   R-squared (Within):               0.1806
 Date:                Fri, Feb 25 2022   R-squared (Overall):              0.0807
-Time:                        14:22:51   Log-likelihood                   -1324.8
+Time:                        14:52:24   Log-likelihood                   -1324.8
 Cov. Estimator:            Unadjusted
                                         F-statistic:                      83.851
 Entities:                         545   P-value                           0.0000
@@ -265,10 +310,92 @@ Distribution: F(544,3805)
 Included effects: Entity
 ```
 
+**Fixed Effects Estimation (time effects):**
+
+```
+2022 Feb 25, 08:52 (✨) /statistics/ $ panel lwage-wp expersq-wp union-wp married-wp  -t fe -te
+
+                          PanelOLS Estimation Summary
+================================================================================
+Dep. Variable:               lwage_wp   R-squared:                        0.0535
+Estimator:                   PanelOLS   R-squared (Between):              0.0902
+No. Observations:                4360   R-squared (Within):              -0.1037
+Date:                Fri, Feb 25 2022   R-squared (Overall):              0.0005
+Time:                        14:52:45   Log-likelihood                   -3149.2
+Cov. Estimator:            Unadjusted
+                                        F-statistic:                      81.891
+Entities:                         545   P-value                           0.0000
+Avg Obs:                       8.0000   Distribution:                  F(3,4349)
+Min Obs:                       8.0000
+Max Obs:                       8.0000   F-statistic (robust):             81.891
+                                        P-value                           0.0000
+Time periods:                       8   Distribution:                  F(3,4349)
+Avg Obs:                       545.00
+Min Obs:                       545.00
+Max Obs:                       545.00
+
+                             Parameter Estimates
+==============================================================================
+            Parameter  Std. Err.     T-stat    P-value    Lower CI    Upper CI
+------------------------------------------------------------------------------
+const          1.6440     0.0173     94.902     0.0000      1.6100      1.6779
+expersq_wp    -0.0021     0.0003    -7.5081     0.0000     -0.0026     -0.0015
+union_wp       0.1768     0.0176     10.032     0.0000      0.1423      0.2114
+married_wp     0.1521     0.0159     9.5417     0.0000      0.1209      0.1834
+==============================================================================
+
+F-test for Poolability: 39.988
+P-value: 0.0000
+Distribution: F(7,4349)
+
+Included effects: Time
+```
+
+**Fixed Effects Estimation (entity and time effects):**
+
+```
+2022 Feb 25, 08:52 (✨) /statistics/ $ panel lwage-wp expersq-wp union-wp married-wp  -t fe -te -ee
+
+                          PanelOLS Estimation Summary
+================================================================================
+Dep. Variable:               lwage_wp   R-squared:                        0.0216
+Estimator:                   PanelOLS   R-squared (Between):             -0.0052
+No. Observations:                4360   R-squared (Within):              -0.4809
+Date:                Fri, Feb 25 2022   R-squared (Overall):             -0.2253
+Time:                        14:52:53   Log-likelihood                   -1324.8
+Cov. Estimator:            Unadjusted
+                                        F-statistic:                      27.959
+Entities:                         545   P-value                           0.0000
+Avg Obs:                       8.0000   Distribution:                  F(3,3805)
+Min Obs:                       8.0000
+Max Obs:                       8.0000   F-statistic (robust):             27.959
+                                        P-value                           0.0000
+Time periods:                       8   Distribution:                  F(3,3805)
+Avg Obs:                       545.00
+Min Obs:                       545.00
+Max Obs:                       545.00
+
+                             Parameter Estimates
+==============================================================================
+            Parameter  Std. Err.     T-stat    P-value    Lower CI    Upper CI
+------------------------------------------------------------------------------
+const          1.8706     0.0378     49.430     0.0000      1.7964      1.9448
+expersq_wp    -0.0052     0.0007    -7.3612     0.0000     -0.0066     -0.0038
+union_wp       0.0800     0.0193     4.1430     0.0000      0.0421      0.1179
+married_wp     0.0467     0.0183     2.5494     0.0108      0.0108      0.0826
+==============================================================================
+
+F-test for Poolability: 10.067
+P-value: 0.0000
+Distribution: F(551,3805)
+
+Included effects: Entity, Time
+```
+
 **First Difference OLS Estimation:**
 
 ```
-2022 Feb 25, 08:24 (✨) /statistics/ $ panel lwage-wp exper-wp expersq-wp union-wp married-wp -t fdols
+2022 Feb 25, 08:52 (✨) /statistics/ $ panel lwage-wp exper-wp expersq-wp union-wp married-wp -t fdols
 
                      FirstDifferenceOLS Estimation Summary
 ================================================================================
@@ -276,7 +403,7 @@ Dep. Variable:               lwage_wp   R-squared:                        0.0268
 Estimator:         FirstDifferenceOLS   R-squared (Between):              0.5491
 No. Observations:                3815   R-squared (Within):               0.1763
 Date:                Fri, Feb 25 2022   R-squared (Overall):              0.5328
-Time:                        14:24:50   Log-likelihood                   -2305.5
+Time:                        14:53:16   Log-likelihood                   -2305.5
 Cov. Estimator:            Unadjusted
                                         F-statistic:                      26.208
 Entities:                         545   P-value                           0.0000
