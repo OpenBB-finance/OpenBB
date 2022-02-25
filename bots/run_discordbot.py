@@ -8,15 +8,24 @@ import config_discordbot as cfg
 import disnake
 from config_discordbot import logger
 from disnake.ext import commands
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+
+from bots.groupme.run_groupme import handle_groupme
 
 app = FastAPI()
 
 
-# For next update
 @app.get("/")
 async def read_root():
     return {"Hello": str(gst_bot.user)}
+
+
+@app.post("/")
+async def write_root(request: Request):
+    # TODO: Make this work for more bots
+    req_info = await request.body()
+    value = handle_groupme(req_info)
+    return {"Worked": value}
 
 
 activity = disnake.Activity(

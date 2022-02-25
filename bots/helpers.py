@@ -9,6 +9,7 @@ from numpy.core.fromnumeric import transpose
 from PIL import Image
 
 import bots.config_discordbot as cfg
+from bots.groupme.groupme_helpers import send_image
 
 presets_custom = [
     "potential_reversals",
@@ -269,3 +270,9 @@ class ShowView:
                 )
 
                 await inter.send(embed=embed, delete_after=30.0)
+
+    def groupme(self, func, group_id, name, *args, **kwargs):
+        data = func(*args, **kwargs)
+
+        if "imagefile" in data:
+            send_image(data["imagefile"], group_id, data.get("description", ""))
