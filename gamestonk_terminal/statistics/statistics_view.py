@@ -1,10 +1,10 @@
-"""Statistics Controller View"""
+"""Statistics View"""
 __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Dict, Any
 from itertools import combinations
+from typing import Dict, Any
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -17,11 +17,11 @@ from gamestonk_terminal.helper_funcs import (
     export_data,
     plot_autoscale,
 )
-from gamestonk_terminal.rich_config import console
-from gamestonk_terminal.statistics import statistics_model
 from gamestonk_terminal.helper_funcs import (
     print_rich_table,
 )
+from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.statistics import statistics_model
 
 logger = logging.getLogger(__name__)
 
@@ -29,13 +29,52 @@ register_matplotlib_converters()
 
 
 @log_start_end(log=logger)
-def custom_plot(
+def show_options(
+    datasets: Dict[pd.DataFrame, Any],
+    dataset_name: str = None,
+    export: str = "",
+):
+    """Plot custom data
+
+    Parameters
+    ----------
+    data: pd.DataFrame
+        Dataframe of custom data
+    dataset: str
+        Dataset name
+    column: str
+        Column for y data
+    kind : str
+        Kind of plot to pass to pandas plot function
+    export: str
+        Format to export image
+    """
+    option_tables = statistics_model.get_options(datasets, dataset_name)
+
+    for dataset, data_values in option_tables.items():
+        print_rich_table(
+            data_values,
+            headers=list(data_values.columns),
+            show_index=False,
+            title=f"Options for {dataset}",
+        )
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            f"{dataset}_options",
+            data_values.set_index("column"),
+        )
+
+
+@log_start_end(log=logger)
+def get_plot(
     data: pd.DataFrame,
     dataset: str,
     column: str,
     export: str = "",
 ):
-    """Plot custom data
+    """Plot data from a dataset
 
     Parameters
     ----------
@@ -72,10 +111,8 @@ def custom_plot(
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "custom_plot",
+        f"{column}_{dataset}_plot",
     )
-
-    console.print("")
 
 
 @log_start_end(log=logger)
@@ -118,13 +155,62 @@ def display_norm(
     plt.tight_layout()
     plt.show()
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        f"{dataset}_norm",
+    if export:
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            f"{column}_{dataset}_norm",
+            results,
+        )
+    else:
+        console.print("")
+
+
+@log_start_end(log=logger)
+def display_root(
+    df: pd.DataFrame,
+    dataset_name: str,
+    column_name: str,
+    fuller_reg: str,
+    kpss_reg: str,
+    export: str = "",
+):
+    """Determine the normality of a timeseries.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        DataFrame of target variable
+    dataset_name: str
+        Name of the dataset
+    column_name: str
+        Name of the column
+    fuller_reg : str
+        Type of regression of ADF test
+    kpss_reg : str
+        Type of regression for KPSS test
+    export: str
+        Format to export data.
+    """
+
+    results = statistics_model.get_root(df, fuller_reg, kpss_reg)
+
+    print_rich_table(
+        results,
+        headers=list(results.columns),
+        show_index=True,
+        title=f"Unitroot Test [Column: {column_name} | Dataset: {dataset_name}]",
     )
 
-    console.print("")
+    if export:
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            f"{column_name}_{dataset_name}_root",
+            results,
+        )
+    else:
+        console.print("")
 
 
 @log_start_end(log=logger)
@@ -185,13 +271,15 @@ def display_granger(
             f"to Granger-cause the Series '{time_series_y.name}'"
         )
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "custom_plot",
-    )
-
-    console.print("")
+    if export:
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            f"{time_series_y.name}_{time_series_x.name}_granger",
+            granger_df,
+        )
+    else:
+        console.print("")
 
 
 @log_start_end(log=logger)
@@ -280,10 +368,12 @@ def display_cointegration_test(
 
         plt.tight_layout()
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "cointegration",
-    )
-
-    console.print("")
+    if export:
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "results_cointegration",
+            df,
+        )
+    else:
+        console.print("")

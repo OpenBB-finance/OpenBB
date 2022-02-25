@@ -1,3 +1,6 @@
+"""Regression View"""
+__docformat__ = "numpy"
+
 import os
 
 import pandas as pd
@@ -27,6 +30,8 @@ def display_dwat(
         The dependent variable.
     residual : OLS Model
         The residual of an OLS model.
+    export : str
+        Format to export data
     """
     autocorrelation = gamestonk_terminal.statistics.regression_model.get_dwat(residual)
 
@@ -51,7 +56,8 @@ def display_dwat(
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "durbin_watson",
+        f"{dependent_variable.name}_dwat",
+        autocorrelation,
     )
 
     console.print("")
@@ -99,9 +105,7 @@ def display_bgod(model: pd.DataFrame, lags: int, export: str = ""):
             f"The result {round(p_value, 2)} indicates no existence of autocorrelation."
         )
 
-    export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), "Breusch_Godfrey", df
-    )
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), "results_bgod", df)
 
     console.print("")
 
@@ -146,6 +150,6 @@ def display_bpag(model: pd.DataFrame, export: str = ""):
             f"The result {round(p_value, 2)} indicates no existence of heteroscedasticity."
         )
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "Breusch_Pagan", df)
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), "results_bpag", df)
 
     console.print("")

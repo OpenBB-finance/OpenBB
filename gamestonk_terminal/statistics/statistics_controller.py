@@ -1,18 +1,13 @@
 """Statistics Controller Module"""
 __docformat__ = "numpy"
 
-# pylint: disable=too-many-function-args
-# pylint: disable=inconsistent-return-statements
-# pylint: disable=too-many-lines
-# pylint: disable=import-outside-toplevel
-# pylint: disable=too-many-lines
-# pylint: disable=too-many-branches
+# pylint: disable=too-many-lines, too-many-branches, inconsistent-return-statements
 
 import argparse
 import logging
+import os
 from pathlib import Path
 from typing import List, Dict, Any
-import os
 
 import numpy as np
 import pandas as pd
@@ -86,6 +81,37 @@ class StatisticsController(BaseController):
         self.files: List[str] = list()
         self.datasets: Dict[pd.DataFrame, Any] = dict()
         self.regression: Dict[Any[Dict, Any], Any] = dict()
+
+        self.DATA_EXAMPLES: Dict[str, str] = {
+            "anes96": "American National Election Survey 1996",
+            "cancer": "Breast Cancer Data",
+            "ccard": "Bill Greene’s credit scoring data.",
+            "cancer_china": "Smoking and lung cancer in eight cities in China.",
+            "co2": "Mauna Loa Weekly Atmospheric CO2 Data",
+            "committee": "First 100 days of the US House of Representatives 1995",
+            "copper": "World Copper Market 1951-1975 Dataset",
+            "cpunish": "US Capital Punishment dataset.",
+            "danish_data": "Danish Money Demand Data",
+            "elnino": "El Nino - Sea Surface Temperatures",
+            "engel": "Engel (1857) food expenditure data",
+            "fair": "Affairs dataset",
+            "fertility": "World Bank Fertility Data",
+            "grunfeld": "Grunfeld (1950) Investment Data",
+            "health": "Transplant Survival Data",
+            "interest_inflation": "(West) German interest and inflation rate 1972-1998",
+            "longley": "Longley dataset",
+            "macrodata": "United States Macroeconomic data",
+            "modechoice": "Travel Mode Choice",
+            "nile": "Nile River flows at Ashwan 1871-1970",
+            "randhie": "RAND Health Insurance Experiment Data",
+            "scotland": "Taxation Powers Vote for the Scottish Parliament 1997",
+            "spector": "Spector and Mazzeo (1980) - Program Effectiveness Data",
+            "stackloss": "Stack loss data",
+            "star98": "Star98 Educational Dataset",
+            "statecrim": "Statewide Crime Data 2009",
+            "strikes": "U.S. Strike Duration Data",
+            "sunspots": "Yearly sunspots data 1700-2008",
+        }
 
         for regression in ["OLS", "POLS", "BOLS", "RE", "FE", "FDOLS"]:
             self.regression[regression] = {
@@ -194,12 +220,30 @@ Tests
             type=str,
         )
 
+        parser.add_argument(
+            "-ex",
+            "--examples",
+            help="Use this argument to show examples of Statsmodels to load in",
+            action="store_true",
+            default=False,
+            dest="examples",
+        )
+
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-f")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args, NO_EXPORT)
 
         if ns_parser:
-            if len(ns_parser.file) == 1:
+            if ns_parser.examples:
+                df = pd.DataFrame.from_dict(self.DATA_EXAMPLES, orient="index")
+                print_rich_table(
+                    df,
+                    headers=list(["description"]),
+                    show_index=True,
+                    index_name="file name",
+                    title="Examples from Statsmodels",
+                )
+            elif len(ns_parser.file) == 1:
                 console.print(
                     f"Please provide an alias to the dataset (format: <file> <alias>). For example: "
                     f"'load {ns_parser.file[0] if len(ns_parser.file) > 0 else 'TSLA.xlsx'} dataset'"
@@ -207,10 +251,9 @@ Tests
             else:
                 file, alias = ns_parser.file
 
-                if file in self.DATA_FILES:
-                    file = self.DATA_FILES[file]
-
-                data = statistics_model.load(file, self.file_types)
+                data = statistics_model.load(
+                    file, self.file_types, self.DATA_FILES, self.DATA_EXAMPLES
+                )
 
                 if not data.empty:
                     data.columns = data.columns.map(
@@ -288,7 +331,7 @@ Tests
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args, NO_EXPORT)
 
         if ns_parser:
             if ns_parser.name in self.datasets:
@@ -317,42 +360,21 @@ Tests
             choices=self.files,
             dest="name",
             help="The dataset you would like to show the options for",
+            default=None,
         )
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
 
         if ns_parser:
-            option_tables = {}
-            if ns_parser.name:
-                columns = self.datasets[ns_parser.name].columns
-                option_tables[ns_parser.name] = pd.DataFrame(
-                    {
-                        "dataset": [ns_parser.name] * len(columns),
-                        "column": columns,
-                        "option": [f"{column}-{ns_parser.name}" for column in columns],
-                    }
-                )
-            else:
-                for dataset, data_values in self.datasets.items():
-                    columns = data_values.columns
-                    option_tables[dataset] = pd.DataFrame(
-                        {
-                            "dataset": [dataset] * len(columns),
-                            "column": columns,
-                            "option": [f"{column}-{dataset}" for column in columns],
-                        }
-                    )
+            statistics_view.show_options(
+                self.datasets, ns_parser.name, ns_parser.export
+            )
 
-            for dataset, data_values in option_tables.items():
-                print_rich_table(
-                    data_values,
-                    headers=list(data_values.columns),
-                    show_index=False,
-                    title=f"Options for {dataset}",
-                )
-                console.print("")
+        console.print("")
 
     def call_plot(self, other_args: List[str]):
         """Process plot command"""
@@ -381,14 +403,12 @@ Tests
             column, dataset = self.choices["plot"][ns_parser.column].keys()
             data = self.datasets[dataset]
 
-            statistics_view.custom_plot(
+            statistics_view.get_plot(
                 data,
                 dataset,
                 column,
-                export=ns_parser.export,
+                ns_parser.export,
             )
-
-        console.print("")
 
     def call_show(self, other_args: List[str]):
         """Process show command"""
@@ -437,7 +457,9 @@ Tests
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
 
         if ns_parser and ns_parser.name:
             df = self.datasets[ns_parser.name]
@@ -462,6 +484,13 @@ Tests
                 title=ns_parser.name,
             )
 
+            export_data(
+                ns_parser.export,
+                os.path.dirname(os.path.abspath(__file__)),
+                f"{ns_parser.name}_show",
+                df.head(ns_parser.limit),
+            )
+
         return console.print("")
 
     def call_info(self, other_args: List[str]):
@@ -484,7 +513,9 @@ Tests
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
 
         if ns_parser and ns_parser.name:
             if ns_parser.name in self.datasets and self.datasets[ns_parser.name].empty:
@@ -493,6 +524,13 @@ Tests
                 df = self.datasets[ns_parser.name].describe()
                 print_rich_table(
                     df, headers=list(df.columns), show_index=True, title=ns_parser.name
+                )
+
+                export_data(
+                    ns_parser.export,
+                    os.path.dirname(os.path.abspath(__file__)),
+                    f"{ns_parser.name}_info",
+                    df,
                 )
 
         console.print("")
@@ -516,6 +554,27 @@ Tests
         )
 
         parser.add_argument(
+            "-f",
+            "--format",
+            type=str,
+            choices=[
+                "%Y",
+                "%m",
+                "%d",
+                "%m-%d",
+                "%Y-%m",
+                "%Y-%d",
+                "%Y-%m-%d",
+                "%Y-%d-%m",
+                None,
+            ],
+            dest="format",
+            default=None,
+            help="Set the format of the date index. This can be: '%Y', '%M', '%D', '%m-%d', '%Y-%m', '%Y-%d',"
+            "'%Y-%m-%d', '%Y-%d-%m'. By default, this command attempts to figure it out itself.",
+        )
+
+        parser.add_argument(
             "-i",
             "--ignore",
             help="Whether to allow for making adjustments to the dataset to align it with the use case for "
@@ -527,7 +586,7 @@ Tests
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args, NO_EXPORT)
 
         if ns_parser and ns_parser.name:
             name = ns_parser.name[0]
@@ -559,10 +618,12 @@ Tests
                 )
                 dataset[columns[0]] = dataset[columns[0]].fillna(method="ffill")
             if not isinstance(dataset[columns[-1]], pd.DatetimeIndex):
-                dataset[columns[-1]] = pd.DatetimeIndex(dataset[columns[-1]])
+                dataset[columns[-1]] = pd.to_datetime(
+                    dataset[columns[-1]], format=ns_parser.format
+                )
 
                 if dataset[columns[-1]].isnull().any() and not ns_parser.ignore:
-                    # This checks whether NaT exists within the DataFrame
+                    # This checks whether NaT (missing values) exists within the DataFrame
                     null_values = dataset[dataset[columns[-1]].isnull()]
                     console.print(
                         f"The time index '{columns[-1]}' contains {len(null_values)} "
@@ -574,7 +635,7 @@ Tests
 
             self.update_runtime_choices()
 
-        console.print("")
+        return console.print("")
 
     def call_clean(self, other_args: List[str]):
         """Process clean"""
@@ -626,7 +687,7 @@ Tests
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args, NO_EXPORT)
 
         if ns_parser:
             self.datasets[ns_parser.name] = statistics_model.clean(
@@ -689,7 +750,7 @@ Tests
             type=str,
         )
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args, NO_EXPORT)
 
         if ns_parser:
             if ns_parser.add:
@@ -837,20 +898,21 @@ Tests
 
         if ns_parser and ns_parser.regression:
             if len(ns_parser.regression) < 2:
-                return console.print(
-                    "Please provide both a dependent and independent variable."
+                console.print(
+                    "Please provide both dependent and independent variables."
                 )
-
-            (
-                self.regression["OLS"]["data"],
-                self.regression["OLS"]["dependent"],
-                self.regression["OLS"]["independent"],
-                self.regression["OLS"]["model"],
-            ) = gamestonk_terminal.statistics.regression_model.get_ols(
-                ns_parser.regression, self.datasets, self.choices["regressions"]
-            )
-
-        console.print("")
+            else:
+                (
+                    self.regression["OLS"]["data"],
+                    self.regression["OLS"]["dependent"],
+                    self.regression["OLS"]["independent"],
+                    self.regression["OLS"]["model"],
+                ) = gamestonk_terminal.statistics.regression_model.get_ols(
+                    ns_parser.regression,
+                    self.datasets,
+                    self.choices["regressions"],
+                    export=ns_parser.export,
+                )
 
     def call_norm(self, other_args: List[str]):
         """Process normality command"""
@@ -897,9 +959,7 @@ Tests
             else:
                 return console.print(f"Can not find {dataset}. Did you load the data?")
 
-            statistics_view.display_norm(data, dataset, column, ns_parser.export)
-
-        console.print("")
+            return statistics_view.display_norm(data, dataset, column, ns_parser.export)
 
     def call_root(self, other_args: List[str]):
         """Process unit root command"""
@@ -940,7 +1000,9 @@ Tests
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-c")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
 
         if ns_parser and ns_parser.column:
             column, dataset = self.choices["root"][ns_parser.column].keys()
@@ -956,17 +1018,14 @@ Tests
                 elif isinstance(self.datasets[dataset], pd.DataFrame):
                     data = self.datasets[dataset][column]
 
-                df = statistics_model.get_unitroot(
-                    data, ns_parser.fuller_reg, ns_parser.kpss_reg
+                statistics_view.display_root(
+                    data,
+                    dataset,
+                    column,
+                    ns_parser.fuller_reg,
+                    ns_parser.kpss_reg,
+                    ns_parser.export,
                 )
-                print_rich_table(
-                    df,
-                    headers=list(df.columns),
-                    show_index=True,
-                    title=f"Unitroot Test [Column: {column} | Dataset: {dataset}]",
-                )
-
-        console.print("")
 
     def call_panel(self, other_args: List[str]):
         """Process panel command"""
@@ -993,7 +1052,18 @@ Tests
             "-t",
             "--type",
             type=str,
-            choices=["pols", "re", "bols", "fe", "fdols"],
+            choices=[
+                "pols",
+                "re",
+                "bols",
+                "fe",
+                "fdols",
+                "POLS",
+                "RE",
+                "BOLS",
+                "FE",
+                "FDOLS",
+            ],
             dest="type",
             help="The type of regression you wish to perform. This can be either pols (Pooled OLS), "
             "re (Random Effects), bols (Between OLS), fe (Fixed Effects) or fdols (First Difference OLS)",
@@ -1009,7 +1079,7 @@ Tests
         if ns_parser and ns_parser.regression:
             if len(ns_parser.regression) < 2:
                 return console.print(
-                    "Please provide both a dependent and independent variable."
+                    "Please provide both dependent and independent variables."
                 )
             for variable in ns_parser.regression:
                 column, dataset = self.choices["regressions"][variable].keys()
@@ -1020,20 +1090,36 @@ Tests
                         f"(e.g. Tesla Inc.) and the second level the date (e.g. 2021-03-31)"
                     )
 
-            regression_type = ns_parser.type.upper()
-            (
-                self.regression[regression_type]["data"],
-                self.regression[regression_type]["dependent"],
-                self.regression[regression_type]["independent"],
-                self.regression[regression_type]["model"],
-            ) = gamestonk_terminal.statistics.regression_model.get_regressions_results(
-                ns_parser.type,
-                ns_parser.regression,
-                self.datasets,
-                self.choices["regressions"],
-            )
+            # Ensure that OLS is always ran to be able to perform tests
+            regression_types = ["OLS", ns_parser.type.upper()]
 
-        console.print("")
+            for regression in regression_types:
+                (
+                    self.regression[regression]["data"],
+                    self.regression[regression]["dependent"],
+                    self.regression[regression]["independent"],
+                    self.regression[regression]["model"],
+                ) = gamestonk_terminal.statistics.regression_model.get_regressions_results(
+                    regression,
+                    ns_parser.regression,
+                    self.datasets,
+                    self.choices["regressions"],
+                )
+
+            if ns_parser.export:
+                results_as_html = (
+                    self.regression[regression]["model"].summary.tables[1].as_html()
+                )
+                df = pd.read_html(results_as_html, header=0, index_col=0)[0]
+
+                export_data(
+                    ns_parser.export,
+                    os.path.dirname(os.path.abspath(__file__)),
+                    f"{self.regression[regression]['dependent']}_{regression}_regression",
+                    df,
+                )
+            else:
+                return console.print("")
 
     def call_compare(self, other_args: List[str]):
         """Process compare command"""
@@ -1057,7 +1143,18 @@ Tests
 
             console.print(comparison_result)
 
-        console.print("")
+            if ns_parser.export:
+                results_as_html = comparison_result.summary.tables[0].as_html()
+                df = pd.read_html(results_as_html, header=0, index_col=0)[0]
+
+                export_data(
+                    ns_parser.export,
+                    os.path.dirname(os.path.abspath(__file__)),
+                    "regressions_compare",
+                    df,
+                )
+            else:
+                console.print("")
 
     def call_dwat(self, other_args: List[str]):
         """Process unitroot command"""
@@ -1087,7 +1184,7 @@ Tests
                 ns_parser.export,
             )
 
-        console.print("")
+            console.print("")
 
     def call_bgod(self, other_args):
         """Process bgod command"""
@@ -1206,7 +1303,7 @@ Tests
             else:
                 console.print(
                     "Please provide two time series for this function, "
-                    "for example: granger <TS1> <TS2>"
+                    "for example: granger adj_close-aapl adj_close-tsla"
                 )
 
         console.print("")

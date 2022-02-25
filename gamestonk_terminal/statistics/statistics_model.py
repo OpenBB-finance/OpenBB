@@ -1,13 +1,17 @@
-"""Custom Controller Model"""
+"""Statistics Model"""
 __docformat__ = "numpy"
+
+# pylint: disable=eval-used
 
 import logging
 from pathlib import Path
 import warnings
+from typing import Dict, Union, Any
 
 import pandas as pd
+from pandas import DataFrame
 from scipy import stats
-from statsmodels.api import OLS, add_constant
+import statsmodels.api as sm
 from statsmodels.tsa.stattools import adfuller, kpss, grangercausalitytests
 
 from gamestonk_terminal.decorators import log_start_end
@@ -17,7 +21,12 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def load(file: str, file_types: list) -> pd.DataFrame:
+def load(
+    file: str,
+    file_types: list,
+    data_files: Dict[Any, Any],
+    data_examples: Dict[Any, Any],
+) -> pd.DataFrame:
     """Load custom file into dataframe.
 
     Parameters
@@ -32,6 +41,12 @@ def load(file: str, file_types: list) -> pd.DataFrame:
     pd.DataFrame:
         Dataframe with custom data
     """
+    if file in data_examples:
+        return eval(f"sm.datasets.{file}.load_pandas().data")
+
+    if file in data_files:
+        file = data_files[file]
+
     if not Path(file).exists():
         console.print(f"[red]Can not find the file {file}[/red]\n")
         return pd.DataFrame()
@@ -44,10 +59,54 @@ def load(file: str, file_types: list) -> pd.DataFrame:
         data = pd.read_csv(file)
     else:
         return console.print(
-            f"The file type {file_type} is not supported. Please choose one of the following: {', '.join(file_types)}"
+            f"The file type {file_type} is not supported. Please choose one of the following: "
+            f"{', '.join(file_types)}"
         )
 
     return data
+
+
+@log_start_end(log=logger)
+def get_options(
+    datasets: Dict[pd.DataFrame, Any], dataset_name: str = None
+) -> Dict[Union[str, Any], DataFrame]:
+    """Load custom file into dataframe.
+
+    Parameters
+    ----------
+    datasets: dict
+        The available datasets.
+    dataset_name: str
+        The dataset you wish to show the options for.
+
+    Returns
+    -------
+    pd.DataFrame:
+        Dataframe with custom data
+    """
+    option_tables = {}
+
+    if dataset_name:
+        columns = datasets[dataset_name].columns
+        option_tables[dataset_name] = pd.DataFrame(
+            {
+                "dataset": [dataset_name] * len(columns),
+                "column": columns,
+                "option": [f"{column}-{dataset_name}" for column in columns],
+            }
+        )
+    else:
+        for dataset, data_values in datasets.items():
+            columns = data_values.columns
+            option_tables[dataset] = pd.DataFrame(
+                {
+                    "dataset": [dataset] * len(columns),
+                    "column": columns,
+                    "option": [f"{column}-{dataset}" for column in columns],
+                }
+            )
+
+    return option_tables
 
 
 @log_start_end(log=logger)
@@ -140,7 +199,7 @@ def get_normality(data: pd.DataFrame) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_unitroot(df: pd.DataFrame, fuller_reg: str, kpss_reg: str) -> pd.DataFrame:
+def get_root(df: pd.DataFrame, fuller_reg: str, kpss_reg: str) -> pd.DataFrame:
     """Calculate test statistics for unit roots
 
     Parameters
@@ -264,7 +323,7 @@ def get_engle_granger_two_step_cointegration_test(y, x):
     assert y.index.equals(x.index), "The two input series do not have the same index."
 
     warnings.simplefilter(action="ignore", category=FutureWarning)
-    long_run_ols = OLS(y, add_constant(x))
+    long_run_ols = sm.OLS(y, sm.add_constant(x))
     warnings.simplefilter(action="default", category=FutureWarning)
 
     long_run_ols_fit = long_run_ols.fit()
@@ -272,7 +331,7 @@ def get_engle_granger_two_step_cointegration_test(y, x):
     c, gamma = long_run_ols_fit.params
     z = long_run_ols_fit.resid
 
-    short_run_ols = OLS(y.diff().iloc[1:], (z.shift().iloc[1:]))
+    short_run_ols = sm.OLS(y.diff().iloc[1:], (z.shift().iloc[1:]))
     short_run_ols_fit = short_run_ols.fit()
 
     alpha = short_run_ols_fit.params[0]

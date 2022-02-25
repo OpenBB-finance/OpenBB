@@ -1,3 +1,7 @@
+"""Regression Model"""
+__docformat__ = "numpy"
+
+import os
 import warnings
 from typing import List, Tuple, Dict, Any
 
@@ -14,11 +18,12 @@ from linearmodels.panel.results import PanelModelComparison
 from pandas import DataFrame
 from statsmodels.api import add_constant
 from statsmodels.formula.api import ols
+from statsmodels.stats.api import het_breuschpagan
 from statsmodels.stats.diagnostic import acorr_breusch_godfrey
 from statsmodels.stats.stattools import durbin_watson
-from statsmodels.stats.api import het_breuschpagan
 
 from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_funcs import export_data
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.statistics.statistics_model import logger
 
@@ -49,15 +54,17 @@ def get_regressions_results(
     The dataset used, the dependent variable, the independent variable and
     the regression model.
     """
-    if regression_type == "pols":
+    if regression_type == "OLS":
+        return get_ols(regression_variables, data, datasets, False)
+    if regression_type == "POLS":
         return get_pols(regression_variables, data, datasets)
-    if regression_type == "re":
+    if regression_type == "RE":
         return get_re(regression_variables, data, datasets)
-    if regression_type == "bols":
+    if regression_type == "BOLS":
         return get_bols(regression_variables, data, datasets)
-    if regression_type == "fe":
+    if regression_type == "FE":
         return get_fe(regression_variables, data, datasets)
-    if regression_type == "fdols":
+    if regression_type == "FDOLS":
         return get_fdols(regression_variables, data, datasets)
 
     return console.print(f"{regression_type} is not an option.")
@@ -111,6 +118,8 @@ def get_ols(
     regression_variables: List[Tuple],
     data: Dict[pd.DataFrame, Any],
     datasets: Dict[pd.DataFrame, Any],
+    show_regression: bool = True,
+    export: str = "",
 ) -> Tuple[DataFrame, Any, List[Any], Any]:
     """Performs an OLS regression on timeseries data. [Source: Statsmodels]
 
@@ -124,6 +133,10 @@ def get_ols(
     datasets: dict
         A dictionary containing the column and dataset names of
         each column/dataset combination.
+    show_regression: bool
+        Whether to show the regression results table.
+    export: str
+        Format to export data
 
     Returns
     -------
@@ -141,12 +154,27 @@ def get_ols(
         )
 
         model = ols(ols_regression_string, data=regression_df).fit()
-        console.print(model.summary())
 
+        if show_regression:
+            console.print(model.summary())
+            console.print("")
         if len(warning_messages) > 0:
             console.print("Warnings:")
             for warning in warning_messages:
                 console.print(f"[red]{warning.message}[/red]".replace("\n", ""))
+
+    if export:
+        results_as_html = model.summary().tables[1].as_html()
+        df = pd.read_html(results_as_html, header=0, index_col=0)[0]
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            f"{dependent_variable}_ols_regression",
+            df,
+        )
+    else:
+        console.print("")
 
     return regression_df, dependent_variable, independent_variables, model
 
@@ -170,6 +198,8 @@ def get_pols(
     datasets: dict
         A dictionary containing the column and dataset names of
         each column/dataset combination.
+    export: str
+        Format to export data
 
     Returns
     -------
