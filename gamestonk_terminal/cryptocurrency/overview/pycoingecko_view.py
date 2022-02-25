@@ -146,8 +146,7 @@ def display_holdings_overview(coin: str, show_bar: bool, export: str, top: int) 
             ax.set_title("Total BTC Holdings per company")
             ax.tick_params(axis="x", labelrotation=90)
         console.print(f"\n{stats_string}\n")
-        df = df.applymap(
-            lambda x: lambda_long_number_format_with_type_check(x))
+        df = df.applymap(lambda x: lambda_long_number_format_with_type_check(x))
         print_rich_table(
             df,
             headers=list(df.columns),
@@ -226,13 +225,11 @@ def display_global_market_info(pie: bool, export: str) -> None:
             ax.pie(
                 [
                     round(
-                        df.loc[df["Metric"] ==
-                               "Btc Market Cap In Pct"]["Value"].item(),
+                        df.loc[df["Metric"] == "Btc Market Cap In Pct"]["Value"].item(),
                         2,
                     ),
                     round(
-                        df.loc[df["Metric"] ==
-                               "Eth Market Cap In Pct"]["Value"].item(),
+                        df.loc[df["Metric"] == "Eth Market Cap In Pct"]["Value"].item(),
                         2,
                     ),
                     round(
@@ -324,8 +321,7 @@ def display_stablecoins(
 
     if not df.empty:
         total_market_cap = int(df["market_cap"].sum())
-        df[f"Percentage [%] of top {top}"] = (
-            df["market_cap"] / total_market_cap) * 100
+        df[f"Percentage [%] of top {top}"] = (df["market_cap"] / total_market_cap) * 100
         df_data = df
         df = df.sort_values(by=sortby, ascending=descend).head(top)
         df = df.set_axis(
@@ -343,16 +339,14 @@ def display_stablecoins(
             axis=1,
             inplace=False,
         )
-        df = df.applymap(
-            lambda x: lambda_long_number_format_with_type_check(x))
+        df = df.applymap(lambda x: lambda_long_number_format_with_type_check(x))
         if pie:
             stables_to_display = df_data[df_data[f"Percentage [%] of top {top}"] >= 1]
             other_stables = df_data[df_data[f"Percentage [%] of top {top}"] < 1]
             values_list = list(
                 stables_to_display[f"Percentage [%] of top {top}"].values
             )
-            values_list.append(
-                other_stables[f"Percentage [%] of top {top}"].sum())
+            values_list.append(other_stables[f"Percentage [%] of top {top}"].sum())
             labels_list = list(stables_to_display["name"].values)
             labels_list.append("Others")
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -416,8 +410,7 @@ def display_categories(sortby: str, top: int, export: str, pie: bool) -> None:
             ) * 100
             stables_to_display = df_data[df_data[f"% relative to top {top}"] >= 1]
             other_stables = df_data[df_data[f"% relative to top {top}"] < 1]
-            values_list = list(
-                stables_to_display[f"% relative to top {top}"].values)
+            values_list = list(stables_to_display[f"% relative to top {top}"].values)
             values_list.append(other_stables[f"% relative to top {top}"].sum())
             labels_list = list(stables_to_display["Name"].values)
             labels_list.append("Others")
@@ -429,13 +422,11 @@ def display_categories(sortby: str, top: int, export: str, pie: bool) -> None:
                 autopct="%1.0f%%",
                 startangle=90,
             )
-            ax.set_title(
-                f"Market Cap distribution of top {top} crypto categories")
+            ax.set_title(f"Market Cap distribution of top {top} crypto categories")
             if gtff.USE_ION:
                 plt.ion()
             plt.show()
-        df = df.applymap(
-            lambda x: lambda_long_number_format_with_type_check(x))
+        df = df.applymap(lambda x: lambda_long_number_format_with_type_check(x))
         print_rich_table(
             df.head(top),
             headers=list(df.columns),
