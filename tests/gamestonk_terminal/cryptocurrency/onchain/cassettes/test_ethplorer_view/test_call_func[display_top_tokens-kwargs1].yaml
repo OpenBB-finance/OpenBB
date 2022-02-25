@@ -11,7 +11,7 @@ interactions:
       User-Agent:
       - python-requests/2.27.1
     method: GET
-    uri: https://api.ethplorer.io/getTopTokens?apiKey=freekey
+    uri: https://api.ethplorer.io/getTopTokens?apiKey=MOCK_API_KEY
   response:
     body:
       string: !!binary |

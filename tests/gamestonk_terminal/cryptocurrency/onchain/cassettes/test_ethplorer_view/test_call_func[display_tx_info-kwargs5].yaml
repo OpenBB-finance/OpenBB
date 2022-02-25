@@ -11,7 +11,7 @@ interactions:
       User-Agent:
       - python-requests/2.27.1
     method: GET
-    uri: https://api.ethplorer.io/getTxInfo/0x9dc7b43ad4288c624fdd236b2ecb9f2b81c93e706b2ffd1d19b112c1df7849e6?apiKey=freekey
+    uri: https://api.ethplorer.io/getTxInfo/0x9dc7b43ad4288c624fdd236b2ecb9f2b81c93e706b2ffd1d19b112c1df7849e6?apiKey=MOCK_API_KEY
   response:
     body:
       string: !!binary |
