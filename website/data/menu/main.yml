@@ -1349,7 +1349,7 @@ main:
               - name: "scr presets_default"
                 ref: "/bot/discord/screener/presets_default"
               - name: "scr presets_custom"
-                ref: "/bot/discord/screener/custom"
+                ref: "/bot/discord/screener/presets_custom"
               - name: "scr historical"
                 ref: "/bot/discord/screener/historical"
               - name: "scr overview"
