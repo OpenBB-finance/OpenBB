@@ -45,7 +45,8 @@ class StatisticsController(BaseController):
         "options",
         "plot",
         "show",
-        "info",
+        "type",
+        "desc",
         "index",
         "clean",
         "modify",
@@ -111,9 +112,34 @@ class StatisticsController(BaseController):
             "statecrim": "Statewide Crime Data 2009",
             "strikes": "U.S. Strike Duration Data",
             "sunspots": "Yearly sunspots data 1700-2008",
+            "wage_panel": "Veila and M. Verbeek (1998): Whose Wages Do Unions Raise?",
         }
 
-        for regression in ["OLS", "POLS", "BOLS", "RE", "FE", "FDOLS"]:
+        self.DATES = {
+            "Y": "%Y",
+            "m": "%m",
+            "d": "%d",
+            "m-d": "%m-%d",
+            "Y-m": "%Y-%m",
+            "Y-d": "%Y-%d",
+            "Y-m-d": "%Y-%m-%d",
+            "Y-d-m": "%Y-%d-%m",
+            "default": None,
+        }
+
+        self.DATA_TYPES: List[str] = ["int", "float", "str", "bool", "date", "category"]
+
+        for regression in [
+            "OLS",
+            "POLS",
+            "BOLS",
+            "RE",
+            "FE",
+            "FE_EE",
+            "FE_IE",
+            "FE_EE_IE",
+            "FDOLS",
+        ]:
             self.regression[regression] = {
                 "data": {},
                 "independent": {},
@@ -155,6 +181,7 @@ class StatisticsController(BaseController):
 
             for feature in [
                 "general",
+                "type",
                 "plot",
                 "norm",
                 "root",
@@ -163,7 +190,7 @@ class StatisticsController(BaseController):
                 "regressions",
             ]:
                 self.choices[feature] = dataset_columns
-            for feature in ["export", "options", "show", "info", "clear", "index"]:
+            for feature in ["export", "options", "show", "desc", "clear", "index"]:
                 self.choices[feature] = {c: None for c in self.files}
 
         self.completer = NestedCompleter.from_nested_dict(self.choices)
@@ -181,7 +208,8 @@ class StatisticsController(BaseController):
 Exploration
     show            show a portion of a loaded dataset
     plot            plot data from a dataset
-    info            show descriptive statistics of a dataset
+    type            change types of the columns or display their types
+    desc            show descriptive statistics of a dataset
     index           set (multi) index based on columns
     clean           clean a dataset by filling or dropping NaNs
     modify          combine columns of datasets and delete or rename columns
@@ -223,7 +251,8 @@ Tests
         parser.add_argument(
             "-ex",
             "--examples",
-            help="Use this argument to show examples of Statsmodels to load in",
+            help="Use this argument to show examples of Statsmodels to load in. "
+            "See: https://www.statsmodels.org/devel/datasets/index.html",
             action="store_true",
             default=False,
             dest="examples",
@@ -259,10 +288,6 @@ Tests
                     data.columns = data.columns.map(
                         lambda x: x.lower().replace(" ", "_")
                     )
-                    for col in data.columns:
-                        if col in ["date", "time", "timestamp", "quarter"]:
-                            data[col] = pd.to_datetime(data[col])
-                            data = data.set_index(col)
 
                     self.files.append(alias)
                     self.datasets[alias] = data
@@ -382,7 +407,7 @@ Tests
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="plot",
-            description="Plot data based on the index.ind",
+            description="Plot data based on the index",
         )
         parser.add_argument(
             "-c",
@@ -493,12 +518,12 @@ Tests
 
         return console.print("")
 
-    def call_info(self, other_args: List[str]):
-        """Process info command"""
+    def call_desc(self, other_args: List[str]):
+        """Process desc command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="info",
+            prog="desc",
             description="Show the descriptive statistics of the dataset",
         )
 
@@ -529,11 +554,75 @@ Tests
                 export_data(
                     ns_parser.export,
                     os.path.dirname(os.path.abspath(__file__)),
-                    f"{ns_parser.name}_info",
+                    f"{ns_parser.name}_desc",
                     df,
                 )
 
         console.print("")
+
+    def call_type(self, other_args: List[str]):
+        """Process type"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="type",
+            description="Show the type of the columns of the dataset and/or change the type of the column",
+        )
+        parser.add_argument(
+            "-n",
+            "--name",
+            type=str,
+            nargs=2,
+            dest="name",
+            help="The first argument is the column and name of the dataset (format: <column-dataset>). The second "
+            f"argument is the preferred type. This can be: {', '.join(self.DATA_TYPES)}",
+        )
+
+        parser.add_argument(
+            "-d",
+            "--dateformat",
+            type=str,
+            choices=self.DATES.keys(),
+            dest="dateformat",
+            default="default",
+            help="Set the format of the date. This can be: 'Y', 'M', 'D', 'm-d', 'Y-m', 'Y-d',"
+            "'Y-m-d', 'Y-d-m'",
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-n")
+        ns_parser = parse_known_args_and_warn(parser, other_args, NO_EXPORT)
+
+        if ns_parser:
+            if ns_parser.name:
+                column, dataset = ns_parser.name[0].split("-")
+                data_type = ns_parser.name[1]
+
+                if data_type not in self.DATA_TYPES:
+                    console.print(
+                        f"{data_type} is not an option. Please choose between: {', '.join(self.DATA_TYPES)}"
+                    )
+                else:
+                    if data_type == "date":
+                        self.datasets[dataset][column] = pd.to_datetime(
+                            self.datasets[dataset][column],
+                            format=self.DATES[ns_parser.dateformat],
+                        )
+                    else:
+                        self.datasets[dataset][column] = self.datasets[dataset][
+                            column
+                        ].astype(data_type)
+            else:
+                for dataset_name, data in self.datasets.items():
+                    print_rich_table(
+                        pd.DataFrame(data.dtypes),
+                        headers=list(["dtype"]),
+                        show_index=True,
+                        index_name="column",
+                        title=dataset_name,
+                    )
+
+            console.print("")
 
     def call_index(self, other_args: List[str]):
         """Process index"""
@@ -554,32 +643,20 @@ Tests
         )
 
         parser.add_argument(
-            "-f",
-            "--format",
-            type=str,
-            choices=[
-                "%Y",
-                "%m",
-                "%d",
-                "%m-%d",
-                "%Y-%m",
-                "%Y-%d",
-                "%Y-%m-%d",
-                "%Y-%d-%m",
-                None,
-            ],
-            dest="format",
-            default=None,
-            help="Set the format of the date index. This can be: '%Y', '%M', '%D', '%m-%d', '%Y-%m', '%Y-%d',"
-            "'%Y-%m-%d', '%Y-%d-%m'. By default, this command attempts to figure it out itself.",
+            "-a",
+            "--adjustment",
+            help="Whether to allow for making adjustments to the dataset to align it with the use case for "
+            "Timeseries and Panel Data regressions",
+            dest="adjustment",
+            action="store_true",
+            default=False,
         )
 
         parser.add_argument(
-            "-i",
-            "--ignore",
-            help="Whether to allow for making adjustments to the dataset to align it with the use case for "
-            "Timeseries and Panel Data regressions",
-            dest="ignore",
+            "-d",
+            "--drop",
+            help="Whether to drop the column(s) the index is set for.",
+            dest="drop",
             action="store_true",
             default=False,
         )
@@ -605,33 +682,25 @@ Tests
                         f"Please choose one of the following: {', '.join(dataset.columns)}"
                     )
 
-            if (
-                len(columns) > 1
-                and dataset[columns[0]].isnull().any()
-                and not ns_parser.ignore
-            ):
-                null_values = dataset[dataset[columns[0]].isnull()]
-                console.print(
-                    f"The column '{columns[0]}' contains {len(null_values)} NaN values. As multiple columns are "
-                    f"provided, it is assumed this column represents entities (i), the NaN values are "
-                    f"forward filled. Use the -i argument to disable this."
-                )
-                dataset[columns[0]] = dataset[columns[0]].fillna(method="ffill")
-            if not isinstance(dataset[columns[-1]], pd.DatetimeIndex):
-                dataset[columns[-1]] = pd.to_datetime(
-                    dataset[columns[-1]], format=ns_parser.format
-                )
-
-                if dataset[columns[-1]].isnull().any() and not ns_parser.ignore:
+            if ns_parser.adjustment:
+                if len(columns) > 1 and dataset[columns[0]].isnull().any():
+                    null_values = dataset[dataset[columns[0]].isnull()]
+                    console.print(
+                        f"The column '{columns[0]}' contains {len(null_values)} NaN values. As multiple columns are "
+                        f"provided, it is assumed this column represents entities (i), the NaN values are "
+                        f"forward filled. Remove the -a argument to disable this."
+                    )
+                    dataset[columns[0]] = dataset[columns[0]].fillna(method="ffill")
+                if dataset[columns[-1]].isnull().any():
                     # This checks whether NaT (missing values) exists within the DataFrame
                     null_values = dataset[dataset[columns[-1]].isnull()]
                     console.print(
                         f"The time index '{columns[-1]}' contains {len(null_values)} "
-                        f"NaTs which are removed from the dataset. Use the -i argument to disable this."
+                        f"NaTs which are removed from the dataset. Remove the -a argument to disable this."
                     )
-                    dataset = dataset[dataset[columns[-1]].notnull()]
+                dataset = dataset[dataset[columns[-1]].notnull()]
 
-            self.datasets[name] = dataset.set_index(columns)
+            self.datasets[name] = dataset.set_index(columns, drop=ns_parser.drop)
 
             self.update_runtime_choices()
 
@@ -1070,6 +1139,26 @@ Tests
             default="pols",
         )
 
+        parser.add_argument(
+            "-ee",
+            "--entity_effects",
+            dest="entity_effects",
+            help="Using this command creates entity effects, which is equivalent to including dummies for each entity. "
+            "This is only used within Fixed Effects estimations (when type is set to 'fe')",
+            action="store_true",
+            default=False,
+        )
+
+        parser.add_argument(
+            "-te",
+            "--time_effects",
+            dest="time_effects",
+            help="Using this command creates time effects, which is equivalent to including dummies for each time. "
+            "This is only used within Fixed Effects estimations (when type is set to 'fe')",
+            action="store_true",
+            default=False,
+        )
+
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-r")
         ns_parser = parse_known_args_and_warn(
@@ -1094,28 +1183,39 @@ Tests
             regression_types = ["OLS", ns_parser.type.upper()]
 
             for regression in regression_types:
+                regression_name = regression
+                if regression == "FE":
+                    if ns_parser.entity_effects:
+                        regression_name = regression_name + "_EE"
+                    if ns_parser.time_effects:
+                        regression_name = regression_name + "_IE"
+
                 (
-                    self.regression[regression]["data"],
-                    self.regression[regression]["dependent"],
-                    self.regression[regression]["independent"],
-                    self.regression[regression]["model"],
+                    self.regression[regression_name]["data"],
+                    self.regression[regression_name]["dependent"],
+                    self.regression[regression_name]["independent"],
+                    self.regression[regression_name]["model"],
                 ) = gamestonk_terminal.statistics.regression_model.get_regressions_results(
                     regression,
                     ns_parser.regression,
                     self.datasets,
                     self.choices["regressions"],
+                    ns_parser.entity_effects,
+                    ns_parser.time_effects,
                 )
 
             if ns_parser.export:
                 results_as_html = (
-                    self.regression[regression]["model"].summary.tables[1].as_html()
+                    self.regression[regression_name]["model"]
+                    .summary.tables[1]
+                    .as_html()
                 )
                 df = pd.read_html(results_as_html, header=0, index_col=0)[0]
 
                 export_data(
                     ns_parser.export,
                     os.path.dirname(os.path.abspath(__file__)),
-                    f"{self.regression[regression]['dependent']}_{regression}_regression",
+                    f"{self.regression[regression_name]['dependent']}_{regression_name}_regression",
                     df,
                 )
             else:

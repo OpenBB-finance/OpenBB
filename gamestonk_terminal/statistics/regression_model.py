@@ -17,7 +17,7 @@ from linearmodels.panel import (
 from linearmodels.panel.results import PanelModelComparison
 from pandas import DataFrame
 from statsmodels.api import add_constant
-from statsmodels.formula.api import ols
+import statsmodels.api as sm
 from statsmodels.stats.api import het_breuschpagan
 from statsmodels.stats.diagnostic import acorr_breusch_godfrey
 from statsmodels.stats.stattools import durbin_watson
@@ -33,6 +33,8 @@ def get_regressions_results(
     regression_variables: List[Tuple],
     data: Dict[pd.DataFrame, Any],
     datasets: Dict[pd.DataFrame, Any],
+    entity_effects: bool = False,
+    time_effects: bool = False,
 ) -> Tuple[DataFrame, Any, List[Any], Any]:
     """Based on the regression type, this function decides what regression to run.
 
@@ -48,6 +50,10 @@ def get_regressions_results(
     datasets: dict
         A dictionary containing the column and dataset names of
         each column/dataset combination.
+    entity_effects: bool
+        Whether to apply Fixed Effects on entities.
+    time_effects: bool
+        Whether to apply Fixed Effects on time.
 
     Returns
     -------
@@ -63,7 +69,9 @@ def get_regressions_results(
     if regression_type == "BOLS":
         return get_bols(regression_variables, data, datasets)
     if regression_type == "FE":
-        return get_fe(regression_variables, data, datasets)
+        return get_fe(
+            regression_variables, data, datasets, entity_effects, time_effects
+        )
     if regression_type == "FDOLS":
         return get_fdols(regression_variables, data, datasets)
 
@@ -149,11 +157,9 @@ def get_ols(
     )
 
     with warnings.catch_warnings(record=True) as warning_messages:
-        ols_regression_string = (
-            f"{dependent_variable} ~ {' + '.join(independent_variables)}"
-        )
-
-        model = ols(ols_regression_string, data=regression_df).fit()
+        model = sm.OLS(
+            regression_df[dependent_variable], regression_df[independent_variables]
+        ).fit()
 
         if show_regression:
             console.print(model.summary())
@@ -317,6 +323,8 @@ def get_fe(
     regression_variables: List[Tuple],
     data: Dict[pd.DataFrame, Any],
     datasets: Dict[pd.DataFrame, Any],
+    entity_effects: bool = False,
+    time_effects: bool = False,
 ) -> Tuple[DataFrame, Any, List[Any], Any]:
     """When effects are correlated with the regressors the RE and BE estimators are not consistent.
     The usual solution is to use Fixed Effects which are called entity_effects when applied to
@@ -346,7 +354,10 @@ def get_fe(
     with warnings.catch_warnings(record=True) as warning_messages:
         exogenous = add_constant(regression_df[independent_variables])
         model = PanelOLS(
-            regression_df[dependent_variable], exogenous, entity_effects=True
+            regression_df[dependent_variable],
+            exogenous,
+            entity_effects=entity_effects,
+            time_effects=time_effects,
         ).fit()
         console.print(model)
 

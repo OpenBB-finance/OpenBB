@@ -13,6 +13,7 @@ from pandas import DataFrame
 from scipy import stats
 import statsmodels.api as sm
 from statsmodels.tsa.stattools import adfuller, kpss, grangercausalitytests
+from linearmodels.datasets import wage_panel
 
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.rich_config import console
@@ -42,6 +43,8 @@ def load(
         Dataframe with custom data
     """
     if file in data_examples:
+        if file == "wage_panel":
+            return wage_panel.load()
         return eval(f"sm.datasets.{file}.load_pandas().data")
 
     if file in data_files:
