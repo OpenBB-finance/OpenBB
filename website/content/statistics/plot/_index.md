@@ -20,4 +20,9 @@ optional arguments:
 
 Example:
 ```
+2022 Feb 25, 08:59 (✨) /statistics/ $ load TSLA_20220221_101033.xlsx tsla
+
+2022 Feb 25, 09:04 (✨) /statistics/ $ plot adj_close-tsla
 ```
+
+![adj_close_plot_tesla](https://user-images.githubusercontent.com/46355364/155728528-a1ae641b-fad3-4ae4-be3f-98abcdbf08e8.png)
