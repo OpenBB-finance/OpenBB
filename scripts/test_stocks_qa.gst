@@ -27,4 +27,6 @@ raw
 decompose
 cusum
 capm
+var
+es
 exit
