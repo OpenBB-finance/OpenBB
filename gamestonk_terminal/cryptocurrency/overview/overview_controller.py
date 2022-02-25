@@ -29,6 +29,9 @@ from gamestonk_terminal.cryptocurrency.overview import (
     withdrawalfees_model,
     withdrawalfees_view,
 )
+from gamestonk_terminal.cryptocurrency.discovery.pycoingecko_model import (
+    get_categories_keys,
+)
 from gamestonk_terminal.cryptocurrency.overview.blockchaincenter_model import DAYS
 from gamestonk_terminal.cryptocurrency.overview.coinpaprika_model import (
     get_all_contract_platforms,
@@ -37,6 +40,7 @@ from gamestonk_terminal.cryptocurrency.overview.coinpaprika_view import CURRENCI
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+    EXPORT_ONLY_FIGURES_ALLOWED,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
     parse_known_args_and_warn,
@@ -53,6 +57,7 @@ class OverviewController(BaseController):
     """Overview Controller class"""
 
     CHOICES_COMMANDS = [
+        "hm",
         "cgglobal",
         "cgdefi",
         "cgstables",
@@ -131,6 +136,7 @@ class OverviewController(BaseController):
             choices["cpcontracts"]["-s"] = {
                 c: None for c in coinpaprika_model.CONTRACTS_FILTERS
             }
+            choices["hm"] = {c: None for c in get_categories_keys()}
             choices["cpinfo"]["-s"] = {c: None for c in coinpaprika_model.INFO_FILTERS}
             choices["cbpairs"]["-s"] = {c: None for c in coinbase_model.PAIRS_FILTERS}
             choices["news"]["-k"] = {c: None for c in cryptopanic_model.CATEGORIES}
@@ -156,6 +162,7 @@ class OverviewController(BaseController):
     cgderivatives     crypto derivatives
     cgcategories      crypto categories
     cghold            ethereum, bitcoin holdings overview statistics
+    hm                crypto heatmap
 [src][CoinPaprika][/src]
     cpglobal          global crypto market info
     cpinfo            basic info about all coins available
@@ -179,6 +186,48 @@ class OverviewController(BaseController):
     ch                lists major crypto-related hacks
 """
         console.print(text=help_text, menu="Cryptocurrency - Overview")
+
+    @log_start_end(log=logger)
+    def call_hm(self, other_args):
+        """Process hm command"""
+        parser = argparse.ArgumentParser(
+            prog="hm",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="""Display cryptocurrencies heatmap [Source: https://coingecko.com]
+            Accepts --category or -c to display only coins of a certain category
+            (default no category to display all coins ranked by market cap).
+            You can look on only top N number of records with --limit.
+            """,
+        )
+
+        parser.add_argument(
+            "-l",
+            "--limit",
+            dest="limit",
+            type=int,
+            help="Display N items",
+            default=10,
+        )
+        parser.add_argument(
+            "-c",
+            "--category",
+            default="",
+            dest="category",
+            help="Category (e.g., stablecoins). Empty for no category",
+        )
+        if other_args and not other_args[0][0] == "-":
+            other_args.insert(0, "-c")
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_FIGURES_ALLOWED
+        )
+        if ns_parser:
+            pycoingecko_view.display_crypto_heatmap(
+                category=ns_parser.category,
+                top=ns_parser.limit,
+                export=ns_parser.export,
+            )
 
     @log_start_end(log=logger)
     def call_ch(self, other_args):
