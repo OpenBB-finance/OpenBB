@@ -948,11 +948,11 @@ def display_line(
 
 def display_var(
     data: pd.DataFrame,
-    ticker: str,
+    ticker: str = "",
     use_mean: bool = False,
     adjusted_var: bool = False,
     student_t: bool = False,
-    percentile: int = 0.999,
+    percentile: float = 0.999,
     portfolio: bool = False,
 ):
     """Displays VaR of dataframe
@@ -990,6 +990,9 @@ def display_var(
         str_var_label = "VaR:"
         str_title = ""
 
+    if ticker != "":
+        ticker += " "
+
     data_dictionary = {str_var_label: var_list, str_hist_label: hist_var_list}
     data = pd.DataFrame(
         data_dictionary, index=["90.0%", "95.0%", "99.0%", f"{percentile*100}%"]
@@ -999,7 +1002,7 @@ def display_var(
         data,
         show_index=True,
         headers=list(data.columns),
-        title=f"[bold]{ticker} {str_title}Value at Risk[/bold]",
+        title=f"[bold]{ticker}{str_title}Value at Risk[/bold]",
         floatfmt=".4f",
     )
     console.print("")
@@ -1007,10 +1010,10 @@ def display_var(
 
 def display_es(
     data: pd.DataFrame,
-    ticker: str,
+    ticker: str = "",
     use_mean: bool = False,
     distribution: str = "normal",
-    percentile: int = 0.999,
+    percentile: float = 0.999,
     portfolio: bool = False,
 ):
     """Displays expected shortfall
@@ -1049,6 +1052,9 @@ def display_es(
         str_es_label = "ES:"
         str_title = ""
 
+    if ticker != "":
+        ticker += " "
+
     data_dictionary = {str_es_label: es_list, str_hist_label: hist_es_list}
     data = pd.DataFrame(
         data_dictionary, index=["90.0%", "95.0%", "99.0%", f"{percentile*100}%"]
@@ -1058,7 +1064,7 @@ def display_es(
         data,
         show_index=True,
         headers=list(data.columns),
-        title=f"[bold]{ticker} {str_title}Expected Shortfall[/bold]",
+        title=f"[bold]{ticker}{str_title}Expected Shortfall[/bold]",
         floatfmt=".4f",
     )
     console.print("")
