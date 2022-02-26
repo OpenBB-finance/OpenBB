@@ -568,6 +568,10 @@ Stock: [/param]{stock_text}
                             self.queue,
                         )
                     except ModuleNotFoundError as e:
+                        logger.exception(
+                            "One of the optional packages seems to be missing: %s",
+                            str(e),
+                        )
                         console.print(
                             "One of the optional packages seems to be missing: ",
                             e,

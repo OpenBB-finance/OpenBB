@@ -104,6 +104,7 @@ def display_real_gdp(
 
     else:
         if len(external_axes) != 1:
+            logger.error("Expected list of one axis item.")
             console.print("[red]Expected list of 1 axis items./n[/red]")
             return
         (ax,) = external_axes
@@ -158,6 +159,7 @@ def display_gdp_capita(
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
     else:
         if len(external_axes) != 1:
+            logger.error("Expected list of one axis item.")
             console.print("[red]Expected list of one axis item./n[/red]")
             return
         (ax,) = external_axes
@@ -216,7 +218,8 @@ def display_inflation(
 
     else:
         if len(external_axes) != 1:
-            console.print("[red]Expected list of 1 axis items./n[/red]")
+            logger.error("Expected list of one axis item.")
+            console.print("[red]Expected list of 1 axis item./n[/red]")
             return
         (ax,) = external_axes
 
@@ -279,7 +282,8 @@ def display_cpi(
 
     else:
         if len(external_axes) != 1:
-            console.print("[red]Expected list of 1 axis items./n[/red]")
+            logger.error("Expected list of one axis item.")
+            console.print("[red]Expected list of 1 axis item./n[/red]")
             return
         (ax,) = external_axes
 
@@ -340,7 +344,8 @@ def display_treasury_yield(
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
     else:
         if len(external_axes) != 1:
-            console.print("[red]Expected list of 1 axis items./n[/red]")
+            logger.error("Expected list of one axis item.")
+            console.print("[red]Expected list of 1 axis item./n[/red]")
             return
         (ax,) = external_axes
 
@@ -401,7 +406,8 @@ def display_unemployment(
 
     else:
         if len(external_axes) != 1:
-            console.print("[red]Expected list of 1 axis items./n[/red]")
+            logger.error("Expected list of one axis item.")
+            console.print("[red]Expected list of 1 axis item./n[/red]")
             return
         (ax,) = external_axes
 

@@ -101,6 +101,7 @@ def get_watchlists(
             if n_flair_posts_found > n_to_get - 1:
                 break
         else:
+            logger.error("Invalid submission")
             console.print("[red]Invalid submission[/red]\n")
     return subs, d_watchlist_tickers, n_flair_posts_found
 
@@ -183,8 +184,11 @@ def get_popular_tickers(
                                 d_watchlist_tickers[key] = 1
 
             except ResponseException:
+                logger.exception(
+                    "Received a response from Reddit with an authorization error. Check your token."
+                )
                 console.print(
-                    "Received a response from Reddit with an authorization error. check your token.\n"
+                    "Received a response from Reddit with an authorization error. Check your token.\n"
                 )
                 return pd.DataFrame()
 
@@ -219,8 +223,10 @@ def get_popular_tickers(
                 n_top_stocks += 1
             except HTTPError as e:
                 if e.response.status_code != 404:
+                    logger.exception("Unexpected exception from Finviz: %s", str(e))
                     console.print(f"Unexpected exception from Finviz: {e}")
             except Exception as e:
+                logger.exception(str(e))
                 console.print(e, "\n")
                 return
 
@@ -427,7 +433,8 @@ def get_wsb_community(
             # meaningful, and that we aren't re-considering same author's watchlist
             if not submission.removed_by_category:
                 subs.append(submission)
-    except ResponseException:
+    except ResponseException as e:
+        logger.exception("Invalid response: %s", str(e))
         console.print("[red]Invalid response[/red]\n")
     return subs
 

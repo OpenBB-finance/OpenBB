@@ -47,6 +47,7 @@ def get_similar_companies(
         )
         user = "Finviz"
     except Exception as e:
+        logger.exception(str(e))
         console.print(e)
         similar = [""]
         user = "Error"

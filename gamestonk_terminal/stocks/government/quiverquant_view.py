@@ -200,6 +200,7 @@ def display_government_buys(
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     else:
         if len(external_axes) != 1:
+            logger.error("Expected list of one axis item.")
             console.print("[red]Expected list of one axis item./n[/red]")
             return
         (ax,) = external_axes
@@ -319,6 +320,7 @@ def display_government_sells(
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     else:
         if len(external_axes) != 1:
+            logger.error("Expected list of one axis item.")
             console.print("[red]Expected list of one axis item./n[/red]")
             return
         (ax,) = external_axes
@@ -400,6 +402,7 @@ def display_last_contracts(
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
         else:
             if len(external_axes) != 1:
+                logger.error("Expected list of one axis item.")
                 console.print("[red]Expected list of one axis item./n[/red]")
                 return
             (ax,) = external_axes
@@ -443,6 +446,7 @@ def plot_government(
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     else:
         if len(external_axes) != 1:
+            logger.error("Expected list of one axis item.")
             console.print("[red]Expected list of one axis item./n[/red]")
             return
         (ax,) = external_axes
@@ -602,6 +606,7 @@ def display_contracts(
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
         else:
             if len(external_axes) != 1:
+                logger.error("Expected list of one axis item.")
                 console.print("[red]Expected list of one axis item./n[/red]")
                 return
             (ax,) = external_axes
@@ -667,6 +672,7 @@ def display_qtr_contracts(
                 _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
             else:
                 if len(external_axes) != 1:
+                    logger.error("Expected list of one axis item.")
                     console.print("[red]Expected list of one axis item./n[/red]")
                     return
                 (ax,) = external_axes
@@ -777,6 +783,7 @@ def display_hist_contracts(
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
         else:
             if len(external_axes) != 1:
+                logger.error("Expected list of one axis item.")
                 console.print("[red]Expected list of one axis item./n[/red]")
                 return
             (ax,) = external_axes
@@ -853,6 +860,7 @@ def display_top_lobbying(
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
         else:
             if len(external_axes) != 1:
+                logger.error("Expected list of one axis item.")
                 console.print("[red]Expected list of one axis item./n[/red]")
                 return
             (ax,) = external_axes

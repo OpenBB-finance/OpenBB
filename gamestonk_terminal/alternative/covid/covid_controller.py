@@ -90,11 +90,13 @@ class CovidController(BaseController):
             if ns_parser.country:
                 country = " ".join(ns_parser.country)
                 if country not in self.COUNTRY_LIST:
+                    logger.error("%s not a valid selection", country)
                     console.print(f"[red]{country} not a valid selection.[/red]\n")
                     return
                 self.country = country
                 console.print(f"[cyan]{country}[/cyan] loaded\n")
             else:
+                logger.error("No country provided")
                 console.print("[red]Please input a country.[/red]\n")
 
     @log_start_end(log=logger)

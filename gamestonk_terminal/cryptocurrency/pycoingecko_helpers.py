@@ -7,6 +7,7 @@ import datetime as dt
 from datetime import timezone
 from typing import Sequence, Optional, Any, Dict, Tuple, Union, List
 import textwrap
+import logging
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
@@ -16,6 +17,7 @@ from urllib3.util.retry import Retry
 from gamestonk_terminal.helper_funcs import get_user_agent
 from gamestonk_terminal.rich_config import console
 
+logger = logging.getLogger(__name__)
 
 GECKO_BASE_URL = "https://www.coingecko.com"
 
@@ -114,6 +116,7 @@ def scrape_gecko_data(url: str) -> BeautifulSoup:
     try:
         req = session.get(url, headers=headers, timeout=5)
     except Exception as error:
+        logger.exception(error)
         console.print(error)
         raise RetryError(
             "Connection error. Couldn't connect to CoinGecko and scrape the data. "

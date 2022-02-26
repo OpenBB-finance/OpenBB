@@ -557,6 +557,7 @@ class Coin:
                 single_stats["circulating_supply"] / single_stats["total_supply"]
             )
         except (ZeroDivisionError, TypeError) as e:
+            logger.exception(str(e))
             console.print(e)
         df = pd.Series(single_stats).to_frame().reset_index()
         df.columns = ["Metric", "Value"]
