@@ -236,10 +236,13 @@ class PredictionTechniquesController(BaseController):
                         "Backtesting not allowed, since End Date is older than Start Date of historical data\n"
                     )
 
-                if ns_parser.s_end_date < get_next_stock_market_days(
-                    last_stock_day=self.data.index[0],
-                    n_next_days=5 + ns_parser.n_days,
-                )[-1]:
+                if (
+                    ns_parser.s_end_date
+                    < get_next_stock_market_days(
+                        last_stock_day=self.data.index[0],
+                        n_next_days=5 + ns_parser.n_days,
+                    )[-1]
+                ):
                     console.print(
                         "Backtesting not allowed, since End Date is too close to Start Date to train model\n"
                     )
@@ -433,10 +436,13 @@ class PredictionTechniquesController(BaseController):
                     )
                     return
 
-                if ns_parser.s_end_date < get_next_stock_market_days(
-                    last_stock_day=self.data.index[0],
-                    n_next_days=5 + ns_parser.n_days,
-                )[-1]:
+                if (
+                    ns_parser.s_end_date
+                    < get_next_stock_market_days(
+                        last_stock_day=self.data.index[0],
+                        n_next_days=5 + ns_parser.n_days,
+                    )[-1]
+                ):
                     console.print(
                         "Backtesting not allowed, since End Date is too close to Start Date to train model\n"
                     )
@@ -549,10 +555,13 @@ class PredictionTechniquesController(BaseController):
                     )
                     return
 
-                if ns_parser.s_end_date < get_next_stock_market_days(
-                    last_stock_day=self.data.index[0],
-                    n_next_days=5 + ns_parser.n_days,
-                )[-1]:
+                if (
+                    ns_parser.s_end_date
+                    < get_next_stock_market_days(
+                        last_stock_day=self.data.index[0],
+                        n_next_days=5 + ns_parser.n_days,
+                    )[-1]
+                ):
                     console.print(
                         "Backtesting not allowed, since End Date is too close to Start Date to train model\n"
                     )
