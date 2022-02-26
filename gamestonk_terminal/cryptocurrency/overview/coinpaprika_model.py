@@ -93,6 +93,7 @@ def get_global_market() -> pd.DataFrame:
             try:
                 global_markets[key] = parser.parse(date).strftime("%Y-%m-%d %H:%M:%S")
             except (KeyError, ValueError, TypeError) as e:
+                logger.exception(str(e))
                 console.print(e)
     df = pd.Series(global_markets).to_frame().reset_index()
     df.columns = ["Metric", "Value"]
@@ -181,6 +182,7 @@ def _get_coins_info_helper(quotes: str = "USD") -> pd.DataFrame:
         ]
         data.columns = [col.replace("percent", "pct") for col in list(data.columns)]
     except KeyError as e:
+        logger.exception(str(e))
         console.print(e)
     data.rename(
         columns={
@@ -280,6 +282,7 @@ def get_list_of_exchanges(quotes: str = "USD") -> pd.DataFrame:
             col.replace(f"quotes.{quotes}.", "") for col in df.columns.tolist()
         ]
     except KeyError as e:
+        logger.exception(str(e))
         console.print(e)
     df = df[df["active"]]
     cols = [

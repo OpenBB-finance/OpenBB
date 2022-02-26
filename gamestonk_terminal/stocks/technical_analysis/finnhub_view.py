@@ -144,6 +144,7 @@ def plot_pattern_recognition(
 
     else:
         if len(external_axes) != 1:
+            logger.error("Expected list of one axis item.")
             console.print("[red]Expected list of 1 axis items./n[/red]")
             return
         (ax,) = external_axes

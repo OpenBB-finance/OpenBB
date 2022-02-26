@@ -137,6 +137,9 @@ def display_exponential_smoothing(
         if (not s_end_date and len(external_axes) != 1) or (
             s_end_date and len(external_axes) != 3
         ):
+            logger.error(
+                "Expected list of 1 axis item or 3 axis items when backtesting"
+            )
             console.print(
                 "[red]Expected list of 1 axis item "
                 + "or 3 axis items when backtesting./n[/red]"

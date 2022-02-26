@@ -152,7 +152,7 @@ class KeysController(BaseController):
                 logger.info("Quandl key defined, test passed")
                 self.key_dict["QUANDL"] = "defined, test passed"
             except Exception as _:  # noqa: F841
-                logger.warning("Quandl key defined, test failed")
+                logger.exception("Quandl key defined, test failed")
                 self.key_dict["QUANDL"] = "defined, test failed"
 
         if show_output:
@@ -269,7 +269,7 @@ class KeysController(BaseController):
                 logger.info("Coinmarketcap key defined, test passed")
                 self.key_dict["COINMARKETCAP"] = "defined, test passed"
             except CoinMarketCapAPIError:
-                logger.warning("Coinmarketcap key defined, test failed")
+                logger.exception("Coinmarketcap key defined, test failed")
                 self.key_dict["COINMARKETCAP"] = "defined, test failed"
 
         if show_output:
@@ -310,7 +310,7 @@ class KeysController(BaseController):
                 logger.info("IEX Cloud key defined, test passed")
                 self.key_dict["IEXCLOUD"] = "defined, test passed"
             except PyEXception:
-                logger.warning("IEX Cloud key defined, test failed")
+                logger.exception("IEX Cloud key defined, test failed")
                 self.key_dict["IEXCLOUD"] = "defined, test failed"
 
         if show_output:
@@ -539,7 +539,7 @@ class KeysController(BaseController):
                 logger.info("Walert key defined, test passed")
                 self.key_dict["WHALE_ALERT"] = "defined, test passed"
             except Exception:
-                logger.warning("Walert key defined, test failed")
+                logger.exception("Walert key defined, test failed")
                 self.key_dict["WHALE_ALERT"] = "defined, test unsuccessful"
 
         if show_output:
@@ -637,7 +637,7 @@ class KeysController(BaseController):
                     logger.warning("ethplorer key defined, test failed")
                     self.key_dict["ETHPLORER"] = "defined, test unsuccessful"
             except Exception as _:  # noqa: F841
-                logger.warning("ethplorer key defined, test failed")
+                logger.exception("ethplorer key defined, test failed")
                 self.key_dict["ETHPLORER"] = "defined, test unsuccessful"
 
         if show_output:

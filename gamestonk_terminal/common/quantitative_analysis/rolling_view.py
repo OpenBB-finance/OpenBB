@@ -76,6 +76,7 @@ def display_mean_std(
         ax1, ax2 = axes
     else:
         if len(external_axes) != 2:
+            logger.error("Expected list of two axis items.")
             console.print("[red]Expected list of 2 axis items./n[/red]")
             return
         (ax1, ax2) = external_axes
@@ -187,6 +188,7 @@ def display_spread(
         (ax1, ax2, ax3) = axes
     else:
         if len(external_axes) != 3:
+            logger.error("Expected list of one axis item.")
             console.print("[red]Expected list of 1 axis items./n[/red]")
             return
         (ax1, ax2, ax3) = external_axes
@@ -295,6 +297,7 @@ def display_quantile(
         )
     else:
         if len(external_axes) != 1:
+            logger.error("Expected list of one axis item.")
             console.print("[red]Expected list of 1 axis items./n[/red]")
             return
         (ax,) = external_axes
@@ -384,6 +387,7 @@ def display_skew(
         (ax1, ax2) = axes
     else:
         if len(external_axes) != 2:
+            logger.error("Expected list of two axis items.")
             console.print("[red]Expected list of 2 axis items./n[/red]")
             return
         (ax1, ax2) = external_axes
@@ -467,6 +471,7 @@ def display_kurtosis(
         (ax1, ax2) = axes
     else:
         if len(external_axes) != 2:
+            logger.error("Expected list of two axis items.")
             console.print("[red]Expected list of 2 axis items./n[/red]")
             return
         (ax1, ax2) = external_axes

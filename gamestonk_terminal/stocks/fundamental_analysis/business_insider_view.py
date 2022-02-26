@@ -44,4 +44,5 @@ def display_management(ticker: str, export: str = ""):
             export, os.path.dirname(os.path.abspath(__file__)), "mgmt", df_management
         )
     else:
+        logger.error("Data not available")
         console.print("[red]Data not available[/red]\n")

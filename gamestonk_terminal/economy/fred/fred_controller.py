@@ -135,6 +135,7 @@ class FredController(BaseController):
                     }
                     self.long_id = max(self.long_id, len(s_id))
                 else:
+                    logger.error("%s not found", str(s_id))
                     console.print(f"[red]{s_id} not found[/red].")
 
             console.print(

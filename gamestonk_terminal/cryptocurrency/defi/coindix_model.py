@@ -155,4 +155,5 @@ def get_defi_vaults(
         df["risk"] = df["risk"].apply(lambda x: _lambda_risk_mapper(x))
         return df
     except Exception as e:
+        logger.exception(e)
         raise ValueError(f"Invalid Response: {response.text}") from e

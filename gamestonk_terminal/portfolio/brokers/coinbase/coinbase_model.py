@@ -134,6 +134,7 @@ def get_account_history(account: str) -> pd.DataFrame:
             for col in df.columns
         ]
     except Exception as e:
+        logger.exception(str(e))
         console.print(e)
 
     return df

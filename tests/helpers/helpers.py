@@ -1,7 +1,10 @@
 import functools
+import logging
 import sys
 import io
 from typing import Union
+
+logger = logging.getLogger(__name__)
 
 
 def calc_change(current: Union[float, int], previous: Union[float, int]):
@@ -11,6 +14,7 @@ def calc_change(current: Union[float, int], previous: Union[float, int]):
     try:
         return ((current - previous) / previous) * 100.0
     except ZeroDivisionError:
+        logging.exception("zero division")
         return float("inf")
 
 

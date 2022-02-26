@@ -69,6 +69,7 @@ def display_info(ticker: str):
             title=f"{ticker.upper()} Info",
         )
     else:
+        logger.error("Invalid data")
         console.print("[red]Invalid data[/red]\n")
     if summary:
         console.print("Business Summary:")
@@ -136,6 +137,7 @@ def display_sustainability(ticker: str):
         )
         console.print("")
     else:
+        logger.error("Invalid data")
         console.print("[red]Invalid data[/red]\n")
 
 
@@ -195,6 +197,7 @@ def display_dividends(
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
         else:
             if len(external_axes) != 1:
+                logger.error("Expected list of one axis item.")
                 console.print("[red]Expected list of one axis item./n[/red]")
                 return
             (ax,) = external_axes

@@ -6,6 +6,7 @@ from pathlib import Path
 import sys
 import time
 import uuid
+from math import floor, ceil
 
 import git
 
@@ -26,15 +27,8 @@ def library_loggers(verbosity: int = 0) -> None:
         Log level verbosity, by default 0
     """
 
-    logging.getLogger("requests").setLevel(
-        logging.INFO if verbosity <= 1 else logging.DEBUG
-    )
-    logging.getLogger("urllib3").setLevel(
-        logging.INFO if verbosity <= 1 else logging.DEBUG
-    )
-    logging.getLogger("ccxt.base.exchange").setLevel(
-        logging.INFO if verbosity <= 2 else logging.DEBUG
-    )
+    logging.getLogger("requests").setLevel(verbosity)
+    logging.getLogger("urllib3").setLevel(verbosity)
 
 
 def setup_file_logger(session_id: str) -> None:
@@ -177,13 +171,10 @@ def setup_logging() -> None:
     START_TIME = int(time.time())
     LOGGING_ID = cfg.LOGGING_ID if cfg.LOGGING_ID else ""
 
-    if int(cfg.LOGGING_VERBOSITY) < 1:
-        verbosity = logging.INFO
-    else:
-        verbosity = logging.DEBUG
-
+    verbosity_terminal = floor(cfg.LOGGING_VERBOSITY / 10) * 10
+    verbosity_libraries = ceil(cfg.LOGGING_VERBOSITY / 10) * 10
     logging.basicConfig(
-        level=verbosity, format=LOGFORMAT, datefmt=DATEFORMAT, handlers=[]
+        level=verbosity_terminal, format=LOGFORMAT, datefmt=DATEFORMAT, handlers=[]
     )
 
     get_commit_hash()
@@ -215,11 +206,11 @@ def setup_logging() -> None:
         else:
             logger.debug("Unknown loghandler")
 
-    library_loggers(int(cfg.LOGGING_VERBOSITY))
+    library_loggers(verbosity_libraries)
 
     logger.info("Logging configuration finished")
     logger.info("Logging set to %s", cfg.LOGGING_HANDLERS)
-    logger.info("Verbosity set to %s", verbosity)
+    logger.info("Verbosity set to %s", verbosity_libraries)
     logger.info(
         "FORMAT: %s%s", LOGPREFIXFORMAT.replace("|", "-"), LOGFORMAT.replace("|", "-")
     )

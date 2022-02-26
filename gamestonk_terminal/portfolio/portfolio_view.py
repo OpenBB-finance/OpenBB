@@ -173,6 +173,7 @@ def display_rolling_stats(
         _, ax = plt.subplots(4, 1, figsize=(8, 8), dpi=PLOT_DPI, sharex=True)
     else:
         if len(external_axes) != 4:
+            logger.error("Expected list of four axis items.")
             console.print("[red]4 axes expected./n[/red]")
             return
         ax = external_axes
