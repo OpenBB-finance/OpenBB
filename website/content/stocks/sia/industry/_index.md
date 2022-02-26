@@ -13,9 +13,6 @@ optional arguments:
 Available Industries to select:
 
 ```
-(✨) (stocks)>(sia)> industry
-
-Advertising Agencies
 Aerospace & Defense
 Aerospace Defense - Major Diversified
 Aerospace Defense Products & Services

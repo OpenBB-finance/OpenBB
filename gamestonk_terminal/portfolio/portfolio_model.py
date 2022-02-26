@@ -453,6 +453,7 @@ class Portfolio:
         ]
         self.benchmark_returns = self.benchmark.pct_change().dropna()
 
+    # pylint:disable=no-member
     @classmethod
     @log_start_end(log=logger)
     def from_csv(cls, csv_path: str):
@@ -472,9 +473,12 @@ class Portfolio:
         trades = pd.read_csv(csv_path)
         # Convert the date to what pandas understands
         trades.Date = pd.to_datetime(trades.Date)
+        # Sort by date to make more sense of trades
+        trades = trades.sort_values(by="Date")
         # Build the portfolio object
         return cls(trades)
 
+    # pylint:enable=no-member
     @classmethod
     @log_start_end(log=logger)
     def from_custom_inputs_and_weights(

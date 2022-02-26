@@ -247,6 +247,7 @@ class PortfolioOptimization(BaseController):
                 console.print(
                     "Please have at least 2 loaded tickers to calculate weights.\n"
                 )
+                return
 
             optimizer_view.display_equal_weight(
                 stocks=self.tickers, value=ns_parser.value, pie=ns_parser.pie
@@ -282,6 +283,7 @@ class PortfolioOptimization(BaseController):
                 console.print(
                     "Please have at least 2 stocks selected to perform calculations."
                 )
+                return
 
             optimizer_view.display_property_weighting(
                 self.tickers,
@@ -320,6 +322,7 @@ class PortfolioOptimization(BaseController):
                 console.print(
                     "Please have at least 2 stocks selected to perform calculations."
                 )
+                return
 
             optimizer_view.display_property_weighting(
                 self.tickers,
@@ -367,6 +370,7 @@ class PortfolioOptimization(BaseController):
                 console.print(
                     "Please have at least 2 stocks selected to perform calculations."
                 )
+                return
 
             optimizer_view.display_property_weighting(
                 self.tickers,
@@ -423,6 +427,7 @@ class PortfolioOptimization(BaseController):
                 console.print(
                     "Please have at least 2 loaded tickers to calculate weights.\n"
                 )
+                return
 
             optimizer_view.display_max_sharpe(
                 stocks=self.tickers,
@@ -471,6 +476,7 @@ class PortfolioOptimization(BaseController):
                 console.print(
                     "Please have at least 2 loaded tickers to calculate weights.\n"
                 )
+                return
 
             optimizer_view.display_min_volatility(
                 stocks=self.tickers,
@@ -535,6 +541,7 @@ class PortfolioOptimization(BaseController):
                 console.print(
                     "Please have at least 2 loaded tickers to calculate weights.\n"
                 )
+                return
 
             if ns_parser.pie and ns_parser.market_neutral:
                 console.print(
@@ -611,11 +618,13 @@ class PortfolioOptimization(BaseController):
                 console.print(
                     "Please have at least 2 loaded tickers to calculate weights.\n"
                 )
+                return
 
             if ns_parser.pie and ns_parser.market_neutral:
                 console.print(
                     "Cannot show pie chart for market neutral due to negative weights."
                 )
+                return
 
             optimizer_view.display_efficient_risk(
                 stocks=self.tickers,
@@ -685,11 +694,13 @@ class PortfolioOptimization(BaseController):
                 console.print(
                     "Please have at least 2 loaded tickers to calculate weights.\n"
                 )
+                return
 
             if ns_parser.pie and ns_parser.market_neutral:
                 console.print(
                     "Cannot show pie chart for market neutral due to negative weights."
                 )
+                return
 
             optimizer_view.display_efficient_return(
                 stocks=self.tickers,
@@ -743,6 +754,7 @@ class PortfolioOptimization(BaseController):
                 console.print(
                     "Please have at least 2 loaded tickers to calculate weights.\n"
                 )
+                return
 
             optimizer_view.display_ef(
                 stocks=self.tickers,

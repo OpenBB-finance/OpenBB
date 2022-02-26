@@ -19,4 +19,4 @@ optional arguments:
   -h, --help            show this help message (default: False)
 ```
 
-![stoch](https://user-images.githubusercontent.com/25267873/108602744-9614c200-739b-11eb-8e4d-2cdc9981cb67.png)
+![stoch](https://user-images.githubusercontent.com/46355364/154311913-d58e58bb-d116-44dd-ae4b-44e59c25f22a.png)

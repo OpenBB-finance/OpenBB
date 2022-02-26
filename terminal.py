@@ -370,9 +370,7 @@ def log_settings() -> None:
     settings_dict["dt"] = "activated" if gtff.USE_DATETIME else "deactivated"
     logger.info("SETTINGS: %s ", str(settings_dict))
 
-
-# TODO: if test_mode is true add exit to the end
-def run_scripts(path: str, test_mode: bool = False):
+def run_scripts(path: str, test_mode: bool = False, verbose: bool = False):
     """Runs a given .gst scripts
 
     Parameters
@@ -381,6 +379,8 @@ def run_scripts(path: str, test_mode: bool = False):
         The location of the .gst file
     test_mode : bool
         Whether the terminal is in test mode
+    verbose : bool
+        Whether to run tests in verbose mode
     """
     if os.path.isfile(path):
         with open(path) as fp:
@@ -393,14 +393,104 @@ def run_scripts(path: str, test_mode: bool = False):
             file_cmds = simulate_argv.replace("//", "/home/").split()
 
             file_cmds = insert_start_slash(file_cmds) if file_cmds else file_cmds
-            terminal(file_cmds)
+            if not test_mode:
+                terminal(file_cmds)
+                # TODO: Add way to track how many commands are tested
+            else:
+                if verbose:
+                    terminal(file_cmds)
+                else:
+                    with suppress_stdout():
+                        terminal(file_cmds)
     else:
         console.print(f"File '{path}' doesn't exist. Launching base terminal.\n")
         if not test_mode:
             terminal()
 
 
+def main(debug: bool, test: bool, filtert: str, paths: List[str], verbose: bool):
+    """
+    Runs the terminal with various options
+
+    Parameters
+    ----------
+    debug : bool
+        Whether to run the terminal in debug mode
+    test : bool
+        Whether to run the terminal in integrated test mode
+    filtert : str
+        Filter test files with given string in name
+    paths : List[str]
+        The paths to run for scripts or to test
+    verbose : bool
+        Whether to show output from tests
+    """
+
+    if test:
+        os.environ["DEBUG_MODE"] = "true"
+
+        if paths == []:
+            console.print("Please send a path when using test mode")
+            return
+        test_files = []
+        for path in paths:
+            if "gst" in path:
+                file = os.path.join(os.path.abspath(os.path.dirname(__file__)), path)
+                test_files.append(file)
+            else:
+                folder = os.path.join(os.path.abspath(os.path.dirname(__file__)), path)
+                files = [
+                    f"{folder}/{name}"
+                    for name in os.listdir(folder)
+                    if os.path.isfile(os.path.join(folder, name))
+                    and name.endswith(".gst")
+                    and (filtert in f"{folder}/{name}")
+                ]
+                test_files += files
+        test_files.sort()
+        SUCCESSES = 0
+        FAILURES = 0
+        fails = {}
+        length = len(test_files)
+        i = 0
+        console.print("[green]Gamestonk Terminal Integrated Tests:\n[/green]")
+        for file in test_files:
+            file = file.replace("//", "/")
+            file_name = file[file.rfind("GamestonkTerminal") :].replace("\\", "/")
+            console.print(f"{file_name}  {((i/length)*100):.1f}%")
+            try:
+                if not os.path.isfile(file):
+                    raise ValueError("Given file does not exist")
+                run_scripts(file, test_mode=True, verbose=verbose)
+                SUCCESSES += 1
+            except Exception as e:
+                fails[file] = e
+                FAILURES += 1
+            i += 1
+        if fails:
+            console.print("\n[red]Failures:[/red]\n")
+            for key, value in fails.items():
+                file_name = key[key.rfind("GamestonkTerminal") :].replace("\\", "/")
+                logger.error("%s: %s failed", file_name, value)
+                console.print(f"{file_name}: {value}\n")
+        console.print(
+            f"Summary: [green]Successes: {SUCCESSES}[/green] [red]Failures: {FAILURES}[/red]"
+        )
+    else:
+        if debug:
+            os.environ["DEBUG_MODE"] = "true"
+        if isinstance(paths, list) and paths[0].endswith(".gst"):
+            run_scripts(paths[0])
+        elif paths:
+            argv_cmds = list([" ".join(paths).replace(" /", "/home/")])
+            argv_cmds = insert_start_slash(argv_cmds) if argv_cmds else argv_cmds
+            terminal(argv_cmds)
+        else:
+            terminal()
+
+
 if __name__ == "__main__":
+
     parser = argparse.ArgumentParser(
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="terminal",
@@ -435,65 +525,21 @@ if __name__ == "__main__":
         "-f",
         "--filter",
         help="Send a keyword to filter in file name",
-        dest="filter",
+        dest="filtert",
         default="",
         type=str,
+    )
+    parser.add_argument(
+        "-v", "--verbose", dest="verbose", action="store_true", default=False
     )
 
     if sys.argv[1:] and "-" not in sys.argv[1][0]:
         sys.argv.insert(1, "-p")
     ns_parser = parser.parse_args()
-
-    if ns_parser:
-        if ns_parser.test:
-            os.environ["DEBUG_MODE"] = "true"
-
-            if "gst" in ns_parser.path[0]:
-                files = ns_parser.path
-            else:
-                folder = os.path.join(
-                    os.path.abspath(os.path.dirname(__file__)), ns_parser.path[0]
-                )
-                files = [
-                    name
-                    for name in os.listdir(folder)
-                    if os.path.isfile(os.path.join(folder, name))
-                    and name.endswith(".gst")
-                    and (ns_parser.filter in f"{folder}/{name}")
-                ]
-            files.sort()
-            SUCCESSES = 0
-            FAILURES = 0
-            fails = {}
-            length = len(files)
-            i = 0
-            console.print("[green]Gamestonk Terminal Integrated Tests:\n[/green]")
-            for file in files:
-                console.print(f"{file}  {((i/length)*100):.1f}%")
-                try:
-                    with suppress_stdout():
-                        run_scripts(f"{ns_parser.path[0]}/{file}", test_mode=True)
-                    SUCCESSES += 1
-                except Exception as e:
-                    fails[f"{ns_parser.path[0]}{file}"] = e
-                    FAILURES += 1
-                i += 1
-            if fails:
-                console.print("\n[red]Failures:[/red]\n")
-                for key, value in fails.items():
-                    logger.error("%s: %s failed", key, value)
-                    console.print(f"{key}: {value}\n")
-            console.print(
-                f"Summary: [green]Successes: {SUCCESSES}[/green] [red]Failures: {FAILURES}[/red]"
-            )
-        else:
-            if ns_parser.debug:
-                os.environ["DEBUG_MODE"] = "true"
-            if isinstance(ns_parser.path, list) and ns_parser.path[0].endswith(".gst"):
-                run_scripts(ns_parser.path[0])
-            elif ns_parser.path:
-                argv_cmds = list([" ".join(ns_parser.path).replace(" /", "/home/")])
-                argv_cmds = insert_start_slash(argv_cmds) if argv_cmds else argv_cmds
-                terminal(argv_cmds)
-            else:
-                terminal()
+    main(
+        ns_parser.debug,
+        ns_parser.test,
+        ns_parser.filtert,
+        ns_parser.path,
+        ns_parser.verbose,
+    )

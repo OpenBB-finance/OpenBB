@@ -9,4 +9,12 @@ optional arguments:
   -h, --help  show this help message (default: False)
 ```
 
-<img width="976" alt="Captura de ecrã 2021-03-29, às 00 31 29" src="https://user-images.githubusercontent.com/25267873/112772089-db758080-9026-11eb-93d5-9fd7a4b40380.png">
+Example:
+```
+2022 Feb 16, 11:33 (✨) /stocks/ta/ $ summary
+GOOGL price has changed -1.45% in the last 3 days and 0.80% yesterday.
+RSI is currently neutral but close to the overbought area and the indicator is pointing downwards.
+MACD is in the Bullish area and the histogram is moving downwards.
+GOOGL price is trading below the 200-day SMA line and the SMA is trending up.
+The asset price is between the Upper and the Middle Bollinger Bands.
+```

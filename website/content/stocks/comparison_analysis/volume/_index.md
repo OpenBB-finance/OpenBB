@@ -11,4 +11,5 @@ optional arguments:
                         Export dataframe data to csv,json,xlsx file (default: )
   -h, --help            show this help message (default: False)
 ```
-<img size="1400" alt="Feature Screenshot - volume" src="https://user-images.githubusercontent.com/85772166/142951100-d08b68f3-b3b4-4da9-88a3-83d8c0e00f95.png">
+
+![volume](https://user-images.githubusercontent.com/46355364/154074657-72976b1a-fc27-4917-8d43-95f5b54da32e.png)

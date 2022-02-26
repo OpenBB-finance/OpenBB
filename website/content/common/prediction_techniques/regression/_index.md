@@ -24,4 +24,4 @@ optional arguments:
                         Export figure into png, jpg, pdf, svg
 ```
 
-![regression](https://user-images.githubusercontent.com/25267873/108604946-d3338100-73a8-11eb-9e99-fa526fb56672.png)
+![Regression](https://user-images.githubusercontent.com/18151143/154814693-779e8610-7694-43d8-b1cc-a853458fee2f.png)

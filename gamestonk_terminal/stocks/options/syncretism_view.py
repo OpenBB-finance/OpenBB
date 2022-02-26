@@ -97,7 +97,7 @@ def view_screener_output(
     )
     console.print("")
 
-    return df_res["S"].values.tolist()
+    return list(set(df_res["S"].values.tolist()))
 
 
 # pylint:disable=too-many-arguments

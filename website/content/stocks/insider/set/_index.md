@@ -1,14 +1,14 @@
 ```
-usage: set [-p {template,whales}] [-h]
+usage: set
+           [-p {Gold-Silver,Personal-Credit,Business-Services,Furniture,Mining,Brokers,Wholesale-Trade,Manufacturing,Nondurable-Goods,Legal,template,Construction,Retail-Trade,Hotels,Professional-Services,Guided-Missiles,Durable-Goods,Insurance-Agents,whales,Building-Materials,Closed-End-Funds,Utility-Communications,Ground-Freight,Lumber,Grocery,Electronics,Tobacco,Agriculture,Real-Estate,Agro-Chemicals,Credit-Industry,Railroads,Retail-Stores,Apparel,Insurance-Carriers,Investment-Offices,Banks,Restaurants,Pharmaceuticals,Health,Air-Transportation,Utility-Gas,Mortgages}]
+           [-h]
 ```
 
 Set the preset from the available list of user-generated presets. Use the template file, save as the desired name for the new preset in the same directory.
 
 ```
 optional arguments:
-  -p {template,whales}, --preset {template,whales}
+  -p {Gold-Silver,Personal-Credit,Business-Services,Furniture,Mining,Brokers,Wholesale-Trade,Manufacturing,Nondurable-Goods,Legal,template,Construction,Retail-Trade,Hotels,Professional-Services,Guided-Missiles,Durable-Goods,Insurance-Agents,whales,Building-Materials,Closed-End-Funds,Utility-Communications,Ground-Freight,Lumber,Grocery,Electronics,Tobacco,Agriculture,Real-Estate,Agro-Chemicals,Credit-Industry,Railroads,Retail-Stores,Apparel,Insurance-Carriers,Investment-Offices,Banks,Restaurants,Pharmaceuticals,Health,Air-Transportation,Utility-Gas,Mortgages}, --preset {Gold-Silver,Personal-Credit,Business-Services,Furniture,Mining,Brokers,Wholesale-Trade,Manufacturing,Nondurable-Goods,Legal,template,Construction,Retail-Trade,Hotels,Professional-Services,Guided-Missiles,Durable-Goods,Insurance-Agents,whales,Building-Materials,Closed-End-Funds,Utility-Communications,Ground-Freight,Lumber,Grocery,Electronics,Tobacco,Agriculture,Real-Estate,Agro-Chemicals,Credit-Industry,Railroads,Retail-Stores,Apparel,Insurance-Carriers,Investment-Offices,Banks,Restaurants,Pharmaceuticals,Health,Air-Transportation,Utility-Gas,Mortgages}
                         Filter presets
   -h, --help            show this help message
 ```
-<img width="1400" alt="Feature Screenshot - ins filter" src="https://user-images.githubusercontent.com/85772166/140690415-a5813b89-d600-445b-b2d6-db2d82420d36.png">
-<img width="1400" alt="Feature Screenshot - ins view" src="https://user-images.githubusercontent.com/85772166/140690464-07d506ae-fbdc-424c-b437-037eff8fb5df.png">

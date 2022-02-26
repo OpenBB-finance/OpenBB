@@ -17,4 +17,7 @@ Graphs:
     rmr         graph your returns versus the market's returns
     dd          display portfolio drawdown
     al          display allocation to given assets over period
-        
+
+Risk Metrics:
+    var         display value at risk
+    es          display expected shortfall

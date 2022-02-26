@@ -144,7 +144,7 @@ def get_coins(top: int = 250, category: str = "") -> pd.DataFrame:
             df = df.append(pd.DataFrame(data), ignore_index=True)
             top -= 250
             p += 1
-    return df
+    return df.head(top)
 
 
 GAINERS_LOSERS_COLUMNS = [

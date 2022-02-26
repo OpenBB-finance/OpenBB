@@ -320,10 +320,8 @@ class SectorIndustryAnalysisController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="load",
-            description="Load stock ticker to perform analysis on. When the data source"
-            + " is 'yf', an Indian ticker can be loaded by using '.NS' at the end,"
-            + " e.g. 'SBIN.NS'. See available market in"
-            + " https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html.",
+            description="Load stock ticker and alter the industry, sector, country and market cap "
+            "accordingly for this ticker.",
         )
         parser.add_argument(
             "-t",
@@ -590,7 +588,7 @@ class SectorIndustryAnalysisController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="mktcap",
-            description="Set mktcap between small, mid or large",
+            description="Set mktcap to nano, micro, small, mid, large or mega",
         )
         parser.add_argument(
             "-n",
@@ -607,7 +605,9 @@ class SectorIndustryAnalysisController(BaseController):
             if ns_parser.name:
                 self.mktcap = ns_parser.name.capitalize()
             else:
-                console.print("Select between market cap: Small, Mid and Large")
+                console.print(
+                    "Select between market cap: Nano, Micro, Small, Mid, Large and Mega"
+                )
 
             self.stocks_data = {}
             console.print("")

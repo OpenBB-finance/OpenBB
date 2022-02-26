@@ -17,6 +17,7 @@ from gamestonk_terminal.helper_funcs import (
     check_positive,
     parse_known_args_and_warn,
     valid_date,
+    valid_date_in_past,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.parent_classes import BaseController
@@ -227,14 +228,35 @@ class DiscoveryController(BaseController):
             """,
         )
         parser.add_argument(
+            "-d",
+            "--days",
+            action="store",
+            dest="days",
+            type=check_non_negative,
+            default=5,
+            help="Number of past days to look for IPOs.",
+        )
+
+        parser.add_argument(
+            "-s",
+            "--start",
+            type=valid_date_in_past,
+            default=None,
+            dest="start",
+            help="""The starting date (format YYYY-MM-DD) to look for IPOs.
+            When set, start date will override --days argument""",
+        )
+
+        parser.add_argument(
             "-l",
             "--limit",
             action="store",
             dest="limit",
             type=check_non_negative,
-            default=5,
-            help="Limit of past days to look for IPOs.",
+            default=20,
+            help="Limit number of IPOs to display.",
         )
+
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
@@ -242,7 +264,9 @@ class DiscoveryController(BaseController):
         )
         if ns_parser:
             finnhub_view.past_ipo(
-                num_days_behind=ns_parser.limit,
+                num_days_behind=ns_parser.days,
+                limit=ns_parser.limit,
+                start_date=ns_parser.start,
                 export=ns_parser.export,
             )
 
@@ -257,23 +281,48 @@ class DiscoveryController(BaseController):
                 Future IPOs dates. [Source: https://finnhub.io]
             """,
         )
+
+        parser.add_argument(
+            "-d",
+            "--days",
+            action="store",
+            dest="days",
+            type=check_non_negative,
+            default=5,
+            help="Number of days in the future to look for IPOs.",
+        )
+
+        parser.add_argument(
+            "-s",
+            "--end",
+            type=valid_date,
+            default=None,
+            dest="end",
+            help="""The end date (format YYYY-MM-DD) to look for IPOs, starting from today.
+            When set, end date will override --days argument""",
+        )
+
         parser.add_argument(
             "-l",
             "--limit",
             action="store",
             dest="limit",
             type=check_non_negative,
-            default=5,
-            help="Limit of future days to look for IPOs.",
+            default=20,
+            help="Limit number of IPOs to display.",
         )
+
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
+
         if ns_parser:
             finnhub_view.future_ipo(
-                num_days_ahead=ns_parser.limit,
+                num_days_ahead=ns_parser.days,
+                limit=ns_parser.limit,
+                end_date=ns_parser.end,
                 export=ns_parser.export,
             )
 

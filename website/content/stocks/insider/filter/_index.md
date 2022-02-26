@@ -1,23 +1,47 @@
 ```
-usage: filter [-n NUM] [-t TICKER] [-l] [-h]
+usage: filter [-l LIMIT] [-u] [-h] [--export {csv,json,xlsx}]
 ```
 
-Print open insider filtered data using loaded preset, or selected ticker. Source: http://openinsider.com
+Print open insider filtered data using loaded preset. [Source: OpenInsider]
+
 
 ```
 optional arguments:
-  -n NUM, --num NUM     Number of datarows to display (default: 20)
-  -t TICKER, --ticker TICKER
-                        Filter latest insiders from this ticker (default: )
-  -l, --links           Flag to show hyperlinks (default: False)
+  -l LIMIT, --limit LIMIT
+                        Limit of datarows to display (default: 10)
+  -u, --urls            Flag to show hyperlinks (default: False)
   -h, --help            show this help message (default: False)
+  --export {csv,json,xlsx}
+                        Export raw data into csv, json, xlsx (default: )
 ```
 
-<img width="1400" alt="Feature Screenshot - ins filter" src="https://user-images.githubusercontent.com/85772166/140686442-ff3234b8-9c4e-4716-998f-ce36b109c5bd.png">
+Example:
+```
+2022 Feb 16, 07:51 (✨) /stocks/ins/ $ filter
+                                                                                  Insider filtered
+┏━━━┳━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ X ┃ Trading Date ┃ Ticker ┃ Insider               ┃ Title                        ┃ Price   ┃ Quantity    ┃ Owned       ┃ Delta Own ┃ Value           ┃ Company                    ┃
+┡━━━╇━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│   │ 2022-02-14   │ MGM    │ Meister Keith A.      │ Dir                          │ $45.00  │ -4,500,000  │ 6,673,778   │ -40%      │ -$202,500,000   │ Mgm Resorts International  │
+├───┼──────────────┼────────┼───────────────────────┼──────────────────────────────┼─────────┼─────────────┼─────────────┼───────────┼─────────────────┼────────────────────────────┤
+│ M │ 2022-02-10   │ MA     │ Mastercard Foundation │ 10%                          │ $375.58 │ -465,180    │ 104,471,071 │ 0%        │ -$174,712,785   │ Mastercard Inc             │
+├───┼──────────────┼────────┼───────────────────────┼──────────────────────────────┼─────────┼─────────────┼─────────────┼───────────┼─────────────────┼────────────────────────────┤
+│ D │ 2022-02-10   │ EL     │ Lauder Ronald S       │ COB, Clinique Labs, LLC, 10% │ $307.08 │ -700,000    │ 6,364       │ -99%      │ -$214,956,000   │ Estee Lauder Companies Inc │
+├───┼──────────────┼────────┼───────────────────────┼──────────────────────────────┼─────────┼─────────────┼─────────────┼───────────┼─────────────────┼────────────────────────────┤
+│ M │ 2022-02-07   │ MA     │ Mastercard Foundation │ 10%                          │ $378.65 │ -465,180    │ 104,936,251 │ 0%        │ -$176,139,632   │ Mastercard Inc             │
+├───┼──────────────┼────────┼───────────────────────┼──────────────────────────────┼─────────┼─────────────┼─────────────┼───────────┼─────────────────┼────────────────────────────┤
+│   │ 2022-02-04   │ VIRT   │ Gic Private Ltd       │ 10%                          │ $31.04  │ -4,027,062  │ 8,731,144   │ -32%      │ -$125,000,004   │ Virtu Financial, Inc.      │
+├───┼──────────────┼────────┼───────────────────────┼──────────────────────────────┼─────────┼─────────────┼─────────────┼───────────┼─────────────────┼────────────────────────────┤
+│ D │ 2022-02-04   │ BKR    │ General Electric Co   │ 10%                          │ $25.98  │ -50,097,840 │ 116,548,079 │ -30%      │ -$1,301,541,883 │ Baker Hughes Co            │
+├───┼──────────────┼────────┼───────────────────────┼──────────────────────────────┼─────────┼─────────────┼─────────────┼───────────┼─────────────────┼────────────────────────────┤
+│ D │ 2022-02-03   │ MGY    │ Enervest, Ltd.        │ Dir, 10%                     │ $21.00  │ -7,455,815  │ 16,282,900  │ -31%      │ -$156,572,115   │ Magnolia Oil & Gas Corp    │
+├───┼──────────────┼────────┼───────────────────────┼──────────────────────────────┼─────────┼─────────────┼─────────────┼───────────┼─────────────────┼────────────────────────────┤
+│ D │ 2022-02-03   │ MGY    │ Walker John B         │ Dir, 10%                     │ $21.00  │ -7,455,815  │ 16,879,220  │ -31%      │ -$156,572,115   │ Magnolia Oil & Gas Corp    │
+└───┴──────────────┴────────┴───────────────────────┴──────────────────────────────┴─────────┴─────────────┴─────────────┴───────────┴─────────────────┴────────────────────────────┘
 
-<img width="1400" alt="Feature Screenshot - ins view" src="https://user-images.githubusercontent.com/85772166/140686900-b557f606-c7a0-4462-a393-1487f2243896.png">
+D: Derivative transaction in filing (usually option exercise)
+M: Multiple transactions in filing; earliest reported transaction date & weighted average transaction price
 
-
-<img width="1400" alt="Captura de ecrã 2021-07-23, às 21 41 57" src="https://user-images.githubusercontent.com/25267873/126839373-a4376c84-77a9-4abc-b7ed-aec11e6469a3.png">
-
-<img width="1400" alt="Captura de ecrã 2021-07-23, às 21 42 18" src="https://user-images.githubusercontent.com/25267873/126839376-a5dd8502-1d5e-4038-932c-55b9c2d77233.png">
+S - Sale: Sale of securities on an exchange or to another person
+S - Sale+OE: Sale of securities on an exchange or to another person (after option exercise)
+```
