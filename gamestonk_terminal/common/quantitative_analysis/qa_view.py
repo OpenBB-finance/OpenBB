@@ -1,6 +1,9 @@
 """Quantitative Analysis View"""
 __docformat__ = "numpy"
 
+# pylint: disable=too-many-lines
+
+
 import logging
 import os
 import warnings
@@ -947,7 +950,13 @@ def display_line(
 
 
 def display_var(
-    data: pd.DataFrame, use_mean: bool, ticker: str, adjusted_var: bool, percentile: int
+    data: pd.DataFrame,
+    ticker: str = "",
+    use_mean: bool = False,
+    adjusted_var: bool = False,
+    student_t: bool = False,
+    percentile: float = 0.999,
+    portfolio: bool = False,
 ):
     """Displays VaR of dataframe
 
@@ -961,19 +970,31 @@ def display_var(
         ticker of the stock
     adjusted_var: bool
         if one should have VaR adjusted for skew and kurtosis (Cornish-Fisher-Expansion)
+    student_t: bool
+        If one should use the student-t distribution
     percentile: int
         var percentile
+    portfolio: bool
+        If the data is a portfolio
     """
-    var_list, hist_var_list = qa_model.get_var(data, use_mean, adjusted_var, percentile)
+    var_list, hist_var_list = qa_model.get_var(
+        data, use_mean, adjusted_var, student_t, percentile, portfolio
+    )
 
     str_hist_label = "Historical VaR:"
 
     if adjusted_var:
-        str_var_label = "Adjusted Var:"
+        str_var_label = "Adjusted VaR:"
         str_title = "Adjusted "
+    elif student_t:
+        str_var_label = "Student-t VaR"
+        str_title = "Student-t "
     else:
         str_var_label = "VaR:"
         str_title = ""
+
+    if ticker != "":
+        ticker += " "
 
     data_dictionary = {str_var_label: var_list, str_hist_label: hist_var_list}
     data = pd.DataFrame(
@@ -984,7 +1005,69 @@ def display_var(
         data,
         show_index=True,
         headers=list(data.columns),
-        title=f"[bold]{ticker} {str_title}Value at Risk[/bold]",
+        title=f"[bold]{ticker}{str_title}Value at Risk[/bold]",
+        floatfmt=".4f",
+    )
+    console.print("")
+
+
+def display_es(
+    data: pd.DataFrame,
+    ticker: str = "",
+    use_mean: bool = False,
+    distribution: str = "normal",
+    percentile: float = 0.999,
+    portfolio: bool = False,
+):
+    """Displays expected shortfall
+
+    Parameters
+    ----------
+    data: pd.DataFrame
+        stock dataframe
+    use_mean:
+        if one should use the stocks mean return
+    ticker: str
+        ticker of the stock
+    distribution: str
+        choose distribution to use: logistic, laplace, normal
+    percentile: int
+        es percentile
+    portfolio: bool
+        If the data is a portfolio
+    """
+    es_list, hist_es_list = qa_model.get_es(
+        data, use_mean, distribution, percentile, portfolio
+    )
+
+    str_hist_label = "Historical ES:"
+
+    if distribution == "laplace":
+        str_es_label = "Laplace ES:"
+        str_title = "Laplace "
+    elif distribution == "student_t":
+        str_es_label = "Student-t ES"
+        str_title = "Student-t "
+    elif distribution == "logistic":
+        str_es_label = "Logistic ES"
+        str_title = "Logistic "
+    else:
+        str_es_label = "ES:"
+        str_title = ""
+
+    if ticker != "":
+        ticker += " "
+
+    data_dictionary = {str_es_label: es_list, str_hist_label: hist_es_list}
+    data = pd.DataFrame(
+        data_dictionary, index=["90.0%", "95.0%", "99.0%", f"{percentile*100}%"]
+    )
+
+    print_rich_table(
+        data,
+        show_index=True,
+        headers=list(data.columns),
+        title=f"[bold]{ticker}{str_title}Expected Shortfall[/bold]",
         floatfmt=".4f",
     )
     console.print("")
