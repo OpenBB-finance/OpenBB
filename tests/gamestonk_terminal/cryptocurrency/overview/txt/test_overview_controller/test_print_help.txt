@@ -11,6 +11,7 @@
     cgderivatives     crypto derivatives
     cgcategories      crypto categories
     cghold            ethereum, bitcoin holdings overview statistics
+    hm                crypto heatmap
 [CoinPaprika]
     cpglobal          global crypto market info
     cpinfo            basic info about all coins available

@@ -14,4 +14,6 @@ select aapl,msft,sbux,gme
 add ge,tsla
 equal
 mktcap
+es
+var
 exit

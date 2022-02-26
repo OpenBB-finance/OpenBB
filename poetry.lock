@@ -962,7 +962,7 @@ python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
 
 [[package]]
 name = "gast"
-version = "0.4.0"
+version = "0.5.3"
 description = "Python AST that abstracts the underlying Python version"
 category = "main"
 optional = true
@@ -1092,7 +1092,7 @@ python-dateutil = "*"
 
 [[package]]
 name = "identify"
-version = "2.4.10"
+version = "2.4.11"
 description = "File identification library for Python"
 category = "dev"
 optional = false
@@ -2234,11 +2234,11 @@ testing = ["pytest", "pytest-benchmark"]
 
 [[package]]
 name = "pmdarima"
-version = "1.8.4"
+version = "1.8.5"
 description = "Python's forecast::auto.arima equivalent"
 category = "main"
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.7"
 
 [package.dependencies]
 Cython = ">=0.29,<0.29.18 || >0.29.18"
@@ -3289,6 +3289,14 @@ lint = ["flake8", "mypy", "docutils-stubs"]
 test = ["pytest"]
 
 [[package]]
+name = "squarify"
+version = "0.4.3"
+description = "Pure Python implementation of the squarify treemap layout algorithm"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "sseclient"
 version = "0.0.27"
 description = "Python client library for reading Server Sent Event streams."
@@ -3651,7 +3659,7 @@ python-versions = "*"
 
 [[package]]
 name = "types-requests"
-version = "2.27.10"
+version = "2.27.11"
 description = "Typing stubs for requests"
 category = "dev"
 optional = false
@@ -3834,7 +3842,7 @@ testing = ["coverage (>=4)", "coverage-enable-subprocess (>=1)", "flaky (>=3)", 
 
 [[package]]
 name = "voila"
-version = "0.3.1"
+version = "0.3.2"
 description = "Voilà turns Jupyter notebooks into standalone web applications"
 category = "main"
 optional = false
@@ -3843,14 +3851,16 @@ python-versions = ">=3.7"
 [package.dependencies]
 jupyter-client = ">=6.1.3,<8"
 jupyter-server = ">=0.3.0,<2.0.0"
+jupyterlab-server = ">=2.3.0,<3"
 nbclient = ">=0.4.0,<0.6"
-nbconvert = ">=6.0.0,<7"
+nbconvert = ">=6.4.2,<7"
 traitlets = ">=5.0.3,<6"
 websockets = ">=9.0"
 
 [package.extras]
 dev = ["black", "bump2version", "jupyter-releaser (>=0.6,<1.0)"]
-test = ["ipywidgets", "mock", "matplotlib", "pandas", "pytest", "pytest-tornasync"]
+test = ["numpy", "pandas", "ipywidgets", "matplotlib", "mock", "pytest", "pytest-tornasync"]
+visual_test = ["jupyterlab (>=3.0,<4.0)", "bqplot", "scipy", "ipympl (==0.8.7)", "ipyvolume", "jupyterlab-miami-nights (==0.3.2)"]
 
 [[package]]
 name = "wcwidth"
@@ -3978,7 +3988,7 @@ prediction = ["tensorflow"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8,<3.10"
-content-hash = "e8143756781efec1a6fea138e07f00f76925edbecb1f22bd6c1b3659fae6ae98"
+content-hash = "9c4b1ab073be95f2bbabdc2c1309ec600cf0fe5309a00f35a7d927eecd4c12a9"
 
 [metadata.files]
 absl-py = [
@@ -4661,8 +4671,8 @@ future = [
     {file = "future-0.18.2.tar.gz", hash = "sha256:b1bead90b70cf6ec3f0710ae53a525360fa360d306a86583adc6bf83a4db537d"},
 ]
 gast = [
-    {file = "gast-0.4.0-py3-none-any.whl", hash = "sha256:b7adcdd5adbebf1adf17378da5ba3f543684dbec47b1cda1f3997e573cd542c4"},
-    {file = "gast-0.4.0.tar.gz", hash = "sha256:40feb7b8b8434785585ab224d1568b857edb18297e5a3047f1ba012bc83b42c1"},
+    {file = "gast-0.5.3-py3-none-any.whl", hash = "sha256:211aac1e58c167b25d3504998f2db694454a24bb1fb1225bce99420166f21d6a"},
+    {file = "gast-0.5.3.tar.gz", hash = "sha256:cfbea25820e653af9c7d1807f659ce0a0a9c64f2439421a7bba4f0983f532dea"},
 ]
 gitdb = [
     {file = "gitdb-4.0.9-py3-none-any.whl", hash = "sha256:8033ad4e853066ba6ca92050b9df2f89301b8fc8bf7e9324d412a63f8bf1a8fd"},
@@ -4762,8 +4772,8 @@ holidays = [
     {file = "holidays-0.11.3.1.tar.gz", hash = "sha256:4855afe0ebf428efbcf848477828b889f8515be7f4f15ae26682919369d92774"},
 ]
 identify = [
-    {file = "identify-2.4.10-py2.py3-none-any.whl", hash = "sha256:7d10baf6ba6f1912a0a49f4c1c2c49fa1718765c3a37d72d13b07779567c5b85"},
-    {file = "identify-2.4.10.tar.gz", hash = "sha256:e12b2aea3cf108de73ae055c2260783bde6601de09718f6768cf8e9f6f6322a6"},
+    {file = "identify-2.4.11-py2.py3-none-any.whl", hash = "sha256:fd906823ed1db23c7a48f9b176a1d71cb8abede1e21ebe614bac7bdd688d9213"},
+    {file = "identify-2.4.11.tar.gz", hash = "sha256:2986942d3974c8f2e5019a190523b0b0e2a07cb8e89bf236727fb4b26f27f8fd"},
 ]
 idna = [
     {file = "idna-3.3-py3-none-any.whl", hash = "sha256:84d9dd047ffa80596e0f246e2eab0b391788b0503584e8945f2368256d2735ff"},
@@ -5479,23 +5489,22 @@ pluggy = [
     {file = "pluggy-1.0.0.tar.gz", hash = "sha256:4224373bacce55f955a878bf9cfa763c1e360858e330072059e10bad68531159"},
 ]
 pmdarima = [
-    {file = "pmdarima-1.8.4-cp36-cp36m-macosx_10_15_x86_64.whl", hash = "sha256:d40a1280826f6b05e572c6af3d495ccad78ed265be8871601b89cbed18b02adf"},
-    {file = "pmdarima-1.8.4-cp36-cp36m-manylinux_2_17_x86_64.manylinux2014_x86_64.manylinux_2_24_x86_64.whl", hash = "sha256:6b43b0e5b32ccea545786a5b6da6f34062c37b2aee00d4a3b688906db2477761"},
-    {file = "pmdarima-1.8.4-cp36-cp36m-win32.whl", hash = "sha256:9c217e98a90c5df6c418172d5ce91a9ed2cc6e844dfdb14de9c53d3d68a8cba3"},
-    {file = "pmdarima-1.8.4-cp36-cp36m-win_amd64.whl", hash = "sha256:c5703bb9e31e9ba48d524ed2029ce74d310836144f4b25bc0451a9dd03836162"},
-    {file = "pmdarima-1.8.4-cp37-cp37m-macosx_10_15_x86_64.whl", hash = "sha256:d83e4b9bfdaa0e4fdf211c5caab679038627455141a145ae258c4e16a52953b6"},
-    {file = "pmdarima-1.8.4-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.manylinux_2_24_x86_64.whl", hash = "sha256:2c9e7719f0786bfbff6242f6be4f7ea42cb7f799dda7b319b3dfccd5bd81dc35"},
-    {file = "pmdarima-1.8.4-cp37-cp37m-win32.whl", hash = "sha256:e4b89cd4ca6b4ae24cbbb6b768260792ed02958d5f698514cc908aa394159490"},
-    {file = "pmdarima-1.8.4-cp37-cp37m-win_amd64.whl", hash = "sha256:3886acff6a202e374e7b652842eb36f1b8b57c3b118ed7b926a513f0d2ed2870"},
-    {file = "pmdarima-1.8.4-cp38-cp38-macosx_10_15_x86_64.whl", hash = "sha256:6e8a936e63062af0c3e8544b72a06e5d960b2f889b121533326f4214a2517242"},
-    {file = "pmdarima-1.8.4-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.manylinux_2_24_x86_64.whl", hash = "sha256:a6273e2fb18f10cb101d9a9971a6f24ad2130002f814e6ea6c86d1c9ebe7d5c0"},
-    {file = "pmdarima-1.8.4-cp38-cp38-win32.whl", hash = "sha256:ee077bae483042ff5f9f11ed9a5f42deda4ed78fa60cfd821a824bee88e8f32b"},
-    {file = "pmdarima-1.8.4-cp38-cp38-win_amd64.whl", hash = "sha256:758cca8c4d29d19c7a2023205dbf747d148a39e054c3c93222b0a33ce899ef74"},
-    {file = "pmdarima-1.8.4-cp39-cp39-macosx_10_15_x86_64.whl", hash = "sha256:e6baf5a15dabda580c7069f84fa8cbc2fab560a28706b531032185e60f957948"},
-    {file = "pmdarima-1.8.4-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.manylinux_2_24_x86_64.whl", hash = "sha256:0fb10394973c22f880575da2a47994581af4ccdbe07914d1d5214c605aad7393"},
-    {file = "pmdarima-1.8.4-cp39-cp39-win32.whl", hash = "sha256:adf5e6fed4a4c9546c32ee3ad5d9341a019cffa54fd4a941eee1f3b9ba693735"},
-    {file = "pmdarima-1.8.4-cp39-cp39-win_amd64.whl", hash = "sha256:6bf387471a65079b2d5d439438d8c09519b27ef06ae3c0e7f2933495648153f8"},
-    {file = "pmdarima-1.8.4.tar.gz", hash = "sha256:92b17c5baf2f0952f69f0cfae0511ff396bb281387ff315f162cb8f919859b0f"},
+    {file = "pmdarima-1.8.5-cp310-cp310-macosx_10_15_x86_64.whl", hash = "sha256:cffaeb8c7fa51f8e6ddcf417a5ce6eceae5d9fe88d9bf093a2272c9120562346"},
+    {file = "pmdarima-1.8.5-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.manylinux_2_24_x86_64.whl", hash = "sha256:9a2a332796bc5932332908c3fa9b20378cba182002a7232efec5bdf179e1009e"},
+    {file = "pmdarima-1.8.5-cp310-cp310-win_amd64.whl", hash = "sha256:b5eff0d65282d7b76ada8aa12cfb60140b6bbd9a6977a8c3b8fae81224dda684"},
+    {file = "pmdarima-1.8.5-cp37-cp37m-macosx_10_15_x86_64.whl", hash = "sha256:eeb93bdb18ed054de34ec27a50207727c76f9ca6805c040316e3c2f6434d5148"},
+    {file = "pmdarima-1.8.5-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.manylinux_2_24_x86_64.whl", hash = "sha256:067b08bd515118ad61a16bec03d94ebb83f2704733bd928c051cab71d78abb6d"},
+    {file = "pmdarima-1.8.5-cp37-cp37m-win32.whl", hash = "sha256:b3406734f132b343c737b4cf24de9305276414dbc64b84729e6be60decdcea92"},
+    {file = "pmdarima-1.8.5-cp37-cp37m-win_amd64.whl", hash = "sha256:fb26531ac291b59d6b8d8a396839686f5d2673775febb41995781114bec45123"},
+    {file = "pmdarima-1.8.5-cp38-cp38-macosx_10_15_x86_64.whl", hash = "sha256:069648fc214aeb17f04ef2e2ecb731625a935f781649b38f7bed65e88bd15995"},
+    {file = "pmdarima-1.8.5-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.manylinux_2_24_x86_64.whl", hash = "sha256:04a491d0a712a715beceb20c8576ad339446cbe4b022896935970fbe7326bf4d"},
+    {file = "pmdarima-1.8.5-cp38-cp38-win32.whl", hash = "sha256:e2d0e99fb6608df1c62720baf3703f9fb151adcf3617356e3bf9d91634ddde51"},
+    {file = "pmdarima-1.8.5-cp38-cp38-win_amd64.whl", hash = "sha256:9b0eceb8b71c2972d7c64f77ee0765f15802f9a97f78b1af3f50d91f79872871"},
+    {file = "pmdarima-1.8.5-cp39-cp39-macosx_10_15_x86_64.whl", hash = "sha256:2ad0aefbff88a49592b70e70ac9283775dc65484e7a07e95db4e93504d5139fd"},
+    {file = "pmdarima-1.8.5-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.manylinux_2_24_x86_64.whl", hash = "sha256:af449c9076e942ad00c348ee291c23935ff3ae2871f812146be7b57ee25fa2ec"},
+    {file = "pmdarima-1.8.5-cp39-cp39-win32.whl", hash = "sha256:8cafb3760bde70753452ad22996b5e84e40129e0c18557b40376045612d2207a"},
+    {file = "pmdarima-1.8.5-cp39-cp39-win_amd64.whl", hash = "sha256:645b692b927965b0fb562ab5a8f1dffdd6cfbca84b3ca797796ada245738109d"},
+    {file = "pmdarima-1.8.5.tar.gz", hash = "sha256:090a7e195e849059e6b7f9908d80539f63c0771d8f9c5da44472960f17fcc9fa"},
 ]
 praw = [
     {file = "praw-7.5.0-py3-none-any.whl", hash = "sha256:28f66a750ffb2aa5c46378942037dfbf9640bc02cd132d4da8a0e9b836581a8e"},
@@ -6324,6 +6333,10 @@ sphinxcontrib-serializinghtml = [
     {file = "sphinxcontrib-serializinghtml-1.1.5.tar.gz", hash = "sha256:aa5f6de5dfdf809ef505c4895e51ef5c9eac17d0f287933eb49ec495280b6952"},
     {file = "sphinxcontrib_serializinghtml-1.1.5-py2.py3-none-any.whl", hash = "sha256:352a9a00ae864471d3a7ead8d7d79f5fc0b57e8b3f95e9867eb9eb28999b92fd"},
 ]
+squarify = [
+    {file = "squarify-0.4.3-py3-none-any.whl", hash = "sha256:bec7011e0c7f4103fe57a1c16a7c091d9dc1be0f23d774e1c568b748a6f818f6"},
+    {file = "squarify-0.4.3.tar.gz", hash = "sha256:54091f6ad175f7f201f8934574e647ce1b50dedc478c5fd968688eb7d7469f95"},
+]
 sseclient = [
     {file = "sseclient-0.0.27.tar.gz", hash = "sha256:b2fe534dcb33b1d3faad13d60c5a7c718e28f85987f2a034ecf5ec279918c11c"},
 ]
@@ -6528,8 +6541,8 @@ types-pyyaml = [
     {file = "types_PyYAML-6.0.4-py3-none-any.whl", hash = "sha256:693b01c713464a6851f36ff41077f8adbc6e355eda929addfb4a97208aea9b4b"},
 ]
 types-requests = [
-    {file = "types-requests-2.27.10.tar.gz", hash = "sha256:5dcb088fcaa778efeee6b7fc46967037e983fbfb9fec02594578bd33fd75e555"},
-    {file = "types_requests-2.27.10-py3-none-any.whl", hash = "sha256:6cb4fb0bbcbc585c57eeee6ffe5a47638dc89706b8d290ec89a77213fc5bad1a"},
+    {file = "types-requests-2.27.11.tar.gz", hash = "sha256:6a7ed24b21780af4a5b5e24c310b2cd885fb612df5fd95584d03d87e5f2a195a"},
+    {file = "types_requests-2.27.11-py3-none-any.whl", hash = "sha256:506279bad570c7b4b19ac1f22e50146538befbe0c133b2cea66a9b04a533a859"},
 ]
 types-setuptools = [
     {file = "types-setuptools-57.4.9.tar.gz", hash = "sha256:536ef74744f8e1e4be4fc719887f886e74e4cf3c792b4a06984320be4df450b5"},
@@ -6639,8 +6652,8 @@ virtualenv = [
     {file = "virtualenv-20.13.1.tar.gz", hash = "sha256:e0621bcbf4160e4e1030f05065c8834b4e93f4fcc223255db2a823440aca9c14"},
 ]
 voila = [
-    {file = "voila-0.3.1-py3-none-any.whl", hash = "sha256:962b759c958dfc40ed0ca69813f259f2b23e573ff108f5a81d8d88b0d7178846"},
-    {file = "voila-0.3.1.tar.gz", hash = "sha256:060687415f6a311dc45825e5bcd61a88ac24ef2ede36a896358c66fde02393be"},
+    {file = "voila-0.3.2-py3-none-any.whl", hash = "sha256:ac29ac7278df2f5979b8a91c19655c8e450fa9077fa4b8134dc1e44f2befbbb5"},
+    {file = "voila-0.3.2.tar.gz", hash = "sha256:ecee8a12a991f8534ff802592c5bd6acb4acdbc420b229d740e732db2312a66f"},
 ]
 wcwidth = [
     {file = "wcwidth-0.2.5-py2.py3-none-any.whl", hash = "sha256:beb4802a9cebb9144e99086eff703a642a13d6a0052920003a230f3294bbe784"},
