@@ -70,12 +70,24 @@ def get_series_notes(series_term: str) -> pd.DataFrame:
     fred.key(cfg.API_FRED_KEY)
     d_series = fred.search(series_term)
 
-    if "seriess" not in d_series:
-        return pd.DataFrame()
-    if not d_series["seriess"]:
-        return pd.DataFrame()
-    df_fred = pd.DataFrame(d_series["seriess"])
-    df_fred["notes"] = df_fred["notes"].fillna("No description provided.")
+    df_fred = pd.DataFrame()
+
+    if "error_message" in d_series:
+        if "api_key" in d_series["error_message"]:
+            console.print("[red]Invalid API Key[/red]\n")
+        else:
+            console.print(d_series["error_message"])
+    else:
+
+        if "seriess" in d_series:
+            if d_series["seriess"]:
+                df_fred = pd.DataFrame(d_series["seriess"])
+                df_fred["notes"] = df_fred["notes"].fillna("No description provided.")
+            else:
+                console.print("No matches found. \n")
+        else:
+            console.print("No matches found. \n")
+
     return df_fred
 
 
@@ -100,7 +112,10 @@ def get_series_ids(series_term: str, num: int) -> Tuple[List[str], List[str]]:
 
     # Cover invalid api and empty search terms
     if "error_message" in d_series:
-        console.print(d_series["error_message"])
+        if "api_key" in d_series["error_message"]:
+            console.print("[red]Invalid API Key[/red]\n")
+        else:
+            console.print(d_series["error_message"])
         return [], []
 
     if "seriess" not in d_series:

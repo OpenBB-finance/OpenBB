@@ -57,8 +57,8 @@ def notes(series_term: str, num: int):
         Maximum number of series notes to display
     """
     df_search = fred_model.get_series_notes(series_term)
+
     if df_search.empty:
-        console.print("No matches found. \n")
         return
     df_search["notes"] = df_search["notes"].apply(
         lambda x: "\n".join(textwrap.wrap(x, width=100)) if isinstance(x, str) else x
