@@ -27,7 +27,7 @@ from gamestonk_terminal.portfolio import portfolio_model, portfolio_view
 from gamestonk_terminal.portfolio.portfolio_optimization import po_controller
 from gamestonk_terminal.rich_config import console
 
-# pylint: disable=R1710,E1101,C0415
+# pylint: disable=R1710,E1101,C0415,W0212
 
 logger = logging.getLogger(__name__)
 
