@@ -236,11 +236,8 @@ def test_call_func_expect_queue(expected_queue, queue, func):
         (
             "call_fipo",
             "finnhub_view.future_ipo",
-            [
-                "--limit=5",
-                "--export=csv",
-            ],
-            {"num_days_ahead": 5, "export": "csv"},
+            ["--days=5", "--limit=20", "--export=csv"],
+            {"num_days_ahead": 5, "end_date": None, "limit": 20, "export": "csv"},
         ),
         (
             "call_ford",
@@ -284,20 +281,14 @@ def test_call_func_expect_queue(expected_queue, queue, func):
         (
             "call_pipo",
             "finnhub_view.past_ipo",
-            ["--limit=5", "--export=csv"],
-            {"num_days_behind": 5, "export": "csv"},
+            ["--days=5", "--limit=20", "--export=csv"],
+            {"num_days_behind": 5, "start_date": None, "limit": 20, "export": "csv"},
         ),
         (
             "call_rtat",
             "nasdaq_view.display_top_retail",
             ["--limit=5", "--export=csv"],
             {"n_days": 5, "export": "csv"},
-        ),
-        (
-            "call_rtearn",
-            "geekofwallstreet_view.display_realtime_earnings",
-            ["--export=csv"],
-            ["csv"],
         ),
         (
             "call_trending",
@@ -367,7 +358,6 @@ def test_call_func(tested_func, mocked_func, other_args, called_with, mocker):
         "call_lowfloat",
         "call_pipo",
         "call_rtat",
-        "call_rtearn",
         "call_trending",
         "call_ugs",
         "call_ulc",

@@ -11,7 +11,7 @@ from alpha_vantage.fundamentaldata import FundamentalData
 
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal.decorators import log_start_end
-from gamestonk_terminal.helper_funcs import long_number_format
+from gamestonk_terminal.helper_funcs import lambda_long_number_format
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.stocks.fundamental_analysis.fa_helper import clean_df_index
 
@@ -47,7 +47,7 @@ def get_overview(ticker: str) -> pd.DataFrame:
 
         # Keep json data sorting in dataframe
         df_fa = df_fa[list(result.json().keys())].T
-        df_fa.iloc[5:] = df_fa.iloc[5:].applymap(lambda x: long_number_format(x))
+        df_fa.iloc[5:] = df_fa.iloc[5:].applymap(lambda x: lambda_long_number_format(x))
         clean_df_index(df_fa)
         df_fa = df_fa.rename(
             index={
@@ -97,7 +97,7 @@ def get_key_metrics(ticker: str) -> pd.DataFrame:
     if result.status_code == 200:
         df_fa = pd.json_normalize(result.json())
         df_fa = df_fa[list(result.json().keys())].T
-        df_fa = df_fa.applymap(lambda x: long_number_format(x))
+        df_fa = df_fa.applymap(lambda x: lambda_long_number_format(x))
         clean_df_index(df_fa)
         df_fa = df_fa.rename(
             index={
@@ -165,7 +165,7 @@ def get_income_statements(
 
         df_fa = df_fa.set_index("fiscalDateEnding")
         df_fa = df_fa.head(number)
-        df_fa = df_fa.applymap(lambda x: long_number_format(x))
+        df_fa = df_fa.applymap(lambda x: lambda_long_number_format(x))
         return df_fa[::-1].T
     return pd.DataFrame()
 
@@ -207,7 +207,7 @@ def get_balance_sheet(
 
         df_fa = df_fa.set_index("fiscalDateEnding")
         df_fa = df_fa.head(number)
-        df_fa = df_fa.applymap(lambda x: long_number_format(x))
+        df_fa = df_fa.applymap(lambda x: lambda_long_number_format(x))
         return df_fa[::-1].T
     return pd.DataFrame()
 
@@ -247,7 +247,7 @@ def get_cash_flow(ticker: str, number: int, quarterly: bool = False) -> pd.DataF
 
         df_fa = df_fa.set_index("fiscalDateEnding")
         df_fa = df_fa.head(number)
-        df_fa = df_fa.applymap(lambda x: long_number_format(x))
+        df_fa = df_fa.applymap(lambda x: lambda_long_number_format(x))
         return df_fa[::-1].T
     return pd.DataFrame()
 

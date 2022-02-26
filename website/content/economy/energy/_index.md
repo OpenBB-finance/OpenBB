@@ -10,4 +10,24 @@ optional arguments:
                         Export dataframe data to csv,json,xlsx file (default: )
   -h, --help            show this help message (default: False)
 ```
-<img size="1400" alt="Feature Screenshot - energy" src="https://user-images.githubusercontent.com/85772166/141885634-5ab1d1b5-07fa-42cd-9ea2-d9e65ec74478.png">
+
+Example:
+```
+2022 Feb 15, 04:49 (✨) /economy/ $ energy
+                    Future Table
+┌─────────────────┬───────────┬───────┬────────────┐
+│                 │ prevClose │ last  │ change (%) │
+├─────────────────┼───────────┼───────┼────────────┤
+│ Ethanol         │ 2.16      │ 2.22  │ 2.78       │
+├─────────────────┼───────────┼───────┼────────────┤
+│ Gasoline RBOB   │ 2.78      │ 2.72  │ -2.23      │
+├─────────────────┼───────────┼───────┼────────────┤
+│ Crude Oil Brent │ 96.48     │ 94.15 │ -2.42      │
+├─────────────────┼───────────┼───────┼────────────┤
+│ Natural Gas     │ 4.20      │ 4.42  │ 5.29       │
+├─────────────────┼───────────┼───────┼────────────┤
+│ Heating Oil     │ 2.96      │ 2.89  │ -2.46      │
+├─────────────────┼───────────┼───────┼────────────┤
+│ Crude Oil WTI   │ 95.46     │ 92.84 │ -2.74      │
+└─────────────────┴───────────┴───────┴────────────┘
+```

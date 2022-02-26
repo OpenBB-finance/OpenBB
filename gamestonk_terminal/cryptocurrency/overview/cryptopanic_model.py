@@ -95,12 +95,14 @@ def make_request(**kwargs: Any) -> Optional[dict]:
     response = requests.get(url)
 
     if not 200 <= response.status_code < 300:
+        logger.warning("Invalid authentication: %s", response.text)
         console.print(f"[red]Invalid Authentication: {response.text}[/red]")
         return None
 
     try:
         return response.json()
-    except Exception as _:  # noqa: F841
+    except Exception as e:  # noqa: F841
+        logger.exception("Invalid Response: %s", str(e))
         console.print(f"[red]Invalid Response: {response.text}[/red]")
         return None
 
@@ -185,7 +187,8 @@ def get_news(
                 for post in res["results"]:
                     results.append(_parse_post(post))
                 next_page = res.get("next")
-            except Exception as _:  # noqa: F841
+            except Exception as e:  # noqa: F841
+                logger.exception(str(e))
                 console.print(
                     "[red]Something went wrong while fetching news from API[/red]\n"
                 )
@@ -199,7 +202,8 @@ def get_news(
                 else x
             )
             return df
-        except Exception as _:  # noqa: F841
+        except Exception as e:  # noqa: F841
+            logger.exception(str(e))
             console.print("[red]Something went wrong with DataFrame creation[/red]\n")
             return pd.DataFrame()
     return pd.DataFrame()

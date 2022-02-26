@@ -60,7 +60,8 @@ def _make_request(url: str) -> Optional[dict]:
         return None
     try:
         return response.json()
-    except Exception as _:  # noqa: F841
+    except Exception as e:  # noqa: F841
+        logger.exception("Invalid Response: %s", str(e))
         console.print(f"[red]Invalid Response:: {response.text}[/red]")
         return None
 

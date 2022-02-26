@@ -7,6 +7,7 @@ import os
 import matplotlib.pyplot as plt
 import mplfinance as mpf
 
+from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
@@ -66,21 +67,23 @@ def display_historical(interval: str = "day", span: str = "3month", export: str 
         Format to export data
     """
     hist = robinhood_model.get_historical(interval, span)
-    mc = mpf.make_marketcolors(
-        up="green", down="red", edge="black", wick="black", ohlc="i"
-    )
-    s = mpf.make_mpf_style(marketcolors=mc, gridstyle=":", y_on_right=False)
 
     mpf.plot(
         hist,
         type="candle",
-        style=s,
+        style=theme.mpf_style,
         title=f"\nPortfolio for {span_title_dict[span]}",
         ylabel="Equity ($)",
+        xrotation=10,
+        figratio=(10, 7),
+        figscale=1.10,
+        scale_padding={"left": 0.3, "right": 1, "top": 0.8, "bottom": 0.8},
         figsize=(plot_autoscale()),
         update_width_config=dict(
-            candle_linewidth=1.0,
+            candle_linewidth=0.6,
             candle_width=0.8,
+            volume_linewidth=0.8,
+            volume_width=0.8,
         ),
     )
     if gtff.USE_ION:

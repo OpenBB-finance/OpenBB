@@ -179,6 +179,7 @@ def query_graph(url: str, query: str) -> dict:
             url, json={"query": query}, headers=headers, timeout=timeout
         )
     except requests.Timeout as e:
+        logger.exception("BitQuery timeout")
         raise BitQueryTimeoutException(
             f"BitQuery API didn't respond within {timeout} seconds.\n"
         ) from e
@@ -196,6 +197,7 @@ def query_graph(url: str, query: str) -> dict:
         if "error" in data:
             raise ValueError(f"Invalid Response: {data['error']}\n")
     except Exception as e:
+        logger.exception("Invalid Response: %s", str(e))
         raise ValueError(f"Invalid Response: {response.text}\n") from e
     return data["data"]
 
@@ -301,6 +303,7 @@ def get_dex_trades_by_exchange(
     try:
         data = query_graph(BQ_URL, query)
     except BitQueryApiKeyException:
+        logger.exception("Invalid API Key")
         console.print("[red]Invalid API Key[/red]\n")
 
     df = _extract_dex_trades(data)
@@ -358,6 +361,7 @@ def get_dex_trades_monthly(
     try:
         data = query_graph(BQ_URL, query)
     except BitQueryApiKeyException:
+        logger.exception("Invalid API Key")
         console.print("[red]Invalid API Key[/red]\n")
         return pd.DataFrame()
     if not data:
@@ -438,6 +442,7 @@ def get_daily_dex_volume_for_given_pair(
     try:
         data = query_graph(BQ_URL, query)
     except BitQueryApiKeyException:
+        logger.exception("Invalid API Key")
         console.print("[red]Invalid API Key[/red]\n")
         return pd.DataFrame()
 
@@ -524,6 +529,7 @@ def get_token_volume_on_dexes(
     try:
         data = query_graph(BQ_URL, query)
     except BitQueryApiKeyException:
+        logger.exception("Invalid API Key")
         console.print("[red]Invalid API Key[/red]\n")
         return pd.DataFrame()
 
@@ -587,6 +593,7 @@ def get_ethereum_unique_senders(interval: str = "day", limit: int = 90) -> pd.Da
     try:
         data = query_graph(BQ_URL, query)
     except BitQueryApiKeyException:
+        logger.exception("Invalid API Key")
         console.print("[red]Invalid API Key[/red]\n")
         return pd.DataFrame()
     if not data:
@@ -641,6 +648,7 @@ def get_most_traded_pairs(
     try:
         data = query_graph(BQ_URL, query)
     except BitQueryApiKeyException:
+        logger.exception("Invalid API Key")
         console.print("[red]Invalid API Key[/red]\n")
         return pd.DataFrame()
     if not data:
@@ -703,6 +711,7 @@ def get_spread_for_crypto_pair(
     try:
         data = query_graph(BQ_URL, query)
     except BitQueryApiKeyException:
+        logger.exception("Invalid API Key")
         console.print("[red]Invalid API Key[/red]\n")
         return pd.DataFrame()
     if not data:

@@ -32,7 +32,7 @@ def get_similar_companies(
     ticker : str
         Ticker to find comparisons for
     compare_list : List[str]
-        List of fields to comparse
+        List of fields to compare, ["Sector", "Industry", "Country"]
 
     Returns
     -------
@@ -47,6 +47,7 @@ def get_similar_companies(
         )
         user = "Finviz"
     except Exception as e:
+        logger.exception(str(e))
         console.print(e)
         similar = [""]
         user = "Error"

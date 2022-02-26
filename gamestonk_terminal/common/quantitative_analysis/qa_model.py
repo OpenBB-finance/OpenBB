@@ -3,10 +3,11 @@ __docformat__ = "numpy"
 
 import logging
 import warnings
-from typing import Any, Tuple
+from typing import Any, Tuple, Union, List
 import pandas as pd
 import statsmodels.api as sm
 from scipy import stats
+import numpy as np
 from statsmodels.tsa.seasonal import seasonal_decompose
 from statsmodels.tsa.stattools import adfuller, kpss
 
@@ -193,9 +194,10 @@ def calculate_adjusted_var(
     # Derived from Cornish-Fisher-Expansion
     # Formula for quantile from "Finance Compact Plus" by Zimmerman; Part 1, page 130-131
     # More material/resources:
-    #       "Numerical Methods and Optimization in Finance" by Gilli, Maringer & Schumann;
-    #       https://www.value-at-risk.net/the-cornish-fisher-expansion/;
-    #       "Risk Management and Financial Institutions" by John C. Hull
+    #     - "Numerical Methods and Optimization in Finance" by Gilli, Maringer & Schumann;
+    #     - https://www.value-at-risk.net/the-cornish-fisher-expansion/;
+    #     - https://www.diva-portal.org/smash/get/diva2:442078/FULLTEXT01.pdf, Section 2.4.2, p.18;
+    #     - "Risk Management and Financial Institutions" by John C. Hull
 
     skew_component = skew / 6 * (ndp**2 - 1) ** 2 - skew**2 / 36 * ndp * (
         2 * ndp**2 - 5
@@ -207,19 +209,30 @@ def calculate_adjusted_var(
     return real_return
 
 
-def get_var(data: pd.DataFrame, use_mean: bool, adjusted_var: bool, percentile: int):
+def get_var(
+    data: pd.DataFrame,
+    use_mean: bool,
+    adjusted_var: bool,
+    student_t: bool,
+    percentile: Union[int, float],
+    portfolio: bool,
+):
     """Gets value at risk for specified stock dataframe
 
     Parameters
     ----------
     data: pd.DataFrame
-        Dataframe of a stock
+        Dataframe of a stock/portfolio
     use_mean: bool
         If one should use the stocks mean for calculation
     adjusted_var: bool
         If one should return VaR adjusted for skew and kurtosis
-    percentile: int
+    student_t: bool
+        If one should use the student-t distribution
+    percentile: Union[int,float]
         VaR percentile
+    portfolio: bool
+        If the data is a portfolio
 
     Returns
     -------
@@ -228,8 +241,13 @@ def get_var(data: pd.DataFrame, use_mean: bool, adjusted_var: bool, percentile: 
     list
         list of historical VaR
     """
-    data = data[["adjclose"]].copy()
-    data.loc[:, "return"] = data.adjclose.pct_change()
+    if not portfolio:
+        data = data[["adjclose"]].copy()
+        data.loc[:, "return"] = data.adjclose.pct_change()
+        data_return = data["return"]
+    else:
+        data = data[1:].copy()
+        data_return = data
 
     # Distribution percentages
     percentile_90 = -1.282
@@ -239,22 +257,22 @@ def get_var(data: pd.DataFrame, use_mean: bool, adjusted_var: bool, percentile: 
 
     # Mean
     if use_mean:
-        mean = data["return"].mean()
+        mean = data_return.mean()
     else:
         mean = 0
 
     # Standard Deviation
-    std = data["return"].std(axis=0)
+    std = data_return.std(axis=0)
 
     if adjusted_var:
 
         # Kurtosis
         # Measures height and sharpness of the central peak relative to that of a standard bell curve
-        k = data["return"].kurtosis(axis=0)
+        k = data_return.kurtosis(axis=0)
 
         # Skewness
         # Measure of the asymmetry of the probability distribution of a random variable about its mean
-        s = data["return"].skew(axis=0)
+        s = data_return.skew(axis=0)
 
         # Adjusted VaR
         var_90 = calculate_adjusted_var(k, s, percentile_90, std, mean)
@@ -262,21 +280,192 @@ def get_var(data: pd.DataFrame, use_mean: bool, adjusted_var: bool, percentile: 
         var_99 = calculate_adjusted_var(k, s, percentile_99, std, mean)
         var_custom = calculate_adjusted_var(k, s, percentile_custom, std, mean)
 
+    elif student_t:
+        # Calculating VaR based on the Student-t distribution
+
+        # Fitting student-t parameters to the data
+        v, _, _ = stats.t.fit(data_return.fillna(0))
+        if not use_mean:
+            mean = 0
+        var_90 = np.sqrt((v - 2) / v) * stats.t.ppf(0.1, v) * std + mean
+        var_95 = np.sqrt((v - 2) / v) * stats.t.ppf(0.05, v) * std + mean
+        var_99 = np.sqrt((v - 2) / v) * stats.t.ppf(0.01, v) * std + mean
+        var_custom = np.sqrt((v - 2) / v) * stats.t.ppf(1 - percentile, v) * std + mean
+
     else:
         # Regular Var
-        var_90 = 2.7182818 ** (mean + percentile_90 * std) - 1
-        var_95 = 2.7182818 ** (mean + percentile_95 * std) - 1
-        var_99 = 2.7182818 ** (mean + percentile_99 * std) - 1
-        var_custom = 2.7182818 ** (mean + percentile_custom * std) - 1
+        var_90 = np.exp(mean + percentile_90 * std) - 1
+        var_95 = np.exp(mean + percentile_95 * std) - 1
+        var_99 = np.exp(mean + percentile_99 * std) - 1
+        var_custom = np.exp(mean + percentile_custom * std) - 1
 
-    data.sort_values("return", inplace=True, ascending=True)
+    if not portfolio:
+        data.sort_values("return", inplace=True, ascending=True)
+        data_return = data["return"]
+    else:
+        data.sort_values(inplace=True, ascending=True)
+        data_return = data
 
     # Historical VaR
-    hist_var_90 = data["return"].quantile(0.1)
-    hist_var_95 = data["return"].quantile(0.05)
-    hist_var_99 = data["return"].quantile(0.01)
-    hist_var_custom = data["return"].quantile(1 - percentile)
+    hist_var_90 = data_return.quantile(0.1)
+    hist_var_95 = data_return.quantile(0.05)
+    hist_var_99 = data_return.quantile(0.01)
+    hist_var_custom = data_return.quantile(1 - percentile)
 
     var_list = [var_90, var_95, var_99, var_custom]
     hist_var_list = [hist_var_90, hist_var_95, hist_var_99, hist_var_custom]
     return var_list, hist_var_list
+
+
+def get_es(
+    data: pd.DataFrame,
+    use_mean: bool,
+    distribution: str,
+    percentile: Union[float, int],
+    portfolio: bool,
+) -> Tuple[List[float], List[float]]:
+    """Gets Expected Shortfall for specified stock dataframe
+
+    Parameters
+    ----------
+    data: pd.DataFrame
+        Dataframe of a stock
+    use_mean: bool
+        If one should use the stocks mean for calculation
+    distribution: str
+        Type of distribution, options: laplace, student_t, normal
+    percentile: Union[float,int]
+        VaR percentile
+    portfolio: bool
+        If the data is a portfolio
+
+    Returns
+    -------
+    list
+        list of ES
+    list
+        list of historical ES
+    """
+    if not portfolio:
+        data = data[["adjclose"]].copy()
+        data.loc[:, "return"] = data.adjclose.pct_change()
+        data_return = data["return"]
+    else:
+        data = data[1:].copy()
+        data_return = data
+
+    # Distribution percentages
+    percentile_90 = -1.282
+    percentile_95 = -1.645
+    percentile_99 = -2.326
+    percentile_custom = stats.norm.ppf(1 - percentile)
+
+    # Mean
+    if use_mean:
+        mean = data_return.mean()
+    else:
+        mean = 0
+
+    # Standard Deviation
+    std = data_return.std(axis=0)
+
+    if distribution == "laplace":
+        # Calculating ES based on Laplace distribution
+        # For formula see: https://en.wikipedia.org/wiki/Expected_shortfall#Laplace_distribution
+
+        # Fitting b (scale parameter) to the variance of the data
+        # Since variance of the Laplace dist.: var = 2*b**2
+        # Thus:
+        b = np.sqrt(std**2 / 2)
+
+        # Calculation
+        es_90 = -b * (1 - np.log(2 * 0.1)) + mean
+        es_95 = -b * (1 - np.log(2 * 0.05)) + mean
+        es_99 = -b * (1 - np.log(2 * 0.01)) + mean
+
+        if (1 - percentile) < 0.5:
+            es_custom = -b * (1 - np.log(2 * (1 - percentile))) + mean
+        else:
+            es_custom = 0
+
+    elif distribution == "student_t":
+        # Calculating ES based on the Student-t distribution
+
+        # Fitting student-t parameters to the data
+        v, _, scale = stats.t.fit(data_return.fillna(0))
+        if not use_mean:
+            mean = 0
+
+        # Student T Distribution percentages
+        percentile_90 = stats.t.ppf(0.1, v)
+        percentile_95 = stats.t.ppf(0.05, v)
+        percentile_99 = stats.t.ppf(0.01, v)
+        percentile_custom = stats.t.ppf(1 - percentile, v)
+
+        # Calculation
+        es_90 = (
+            -scale
+            * (v + percentile_90**2)
+            / (v - 1)
+            * stats.t.pdf(percentile_90, v)
+            / 0.1
+            + mean
+        )
+        es_95 = (
+            -scale
+            * (v + percentile_95**2)
+            / (v - 1)
+            * stats.t.pdf(percentile_95, v)
+            / 0.05
+            + mean
+        )
+        es_99 = (
+            -scale
+            * (v + percentile_99**2)
+            / (v - 1)
+            * stats.t.pdf(percentile_99, v)
+            / 0.01
+            + mean
+        )
+        es_custom = (
+            -scale
+            * (v + percentile_custom**2)
+            / (v - 1)
+            * stats.t.pdf(percentile_custom, v)
+            / (1 - percentile)
+            + mean
+        )
+
+    elif distribution == "logistic":
+        # Logistic distribution
+        # For formula see: https://en.wikipedia.org/wiki/Expected_shortfall#Logistic_distribution
+
+        # Fitting s (scale parameter) to the variance of the data
+        # Since variance of the Logistic dist.: var = s**2*pi**2/3
+        # Thus:
+        s = np.sqrt(3 * std**2 / np.pi**2)
+
+        # Calculation
+        a = 1 - percentile
+        es_90 = -s * np.log((0.9 ** (1 - 1 / 0.1)) / 0.1) + mean
+        es_95 = -s * np.log((0.95 ** (1 - 1 / 0.05)) / 0.05) + mean
+        es_99 = -s * np.log((0.99 ** (1 - 1 / 0.01)) / 0.01) + mean
+        es_custom = -s * np.log((percentile ** (1 - 1 / a)) / a) + mean
+
+    else:
+        # Regular Expected Shortfall
+        es_90 = std * -stats.norm.pdf(percentile_90) / 0.1 + mean
+        es_95 = std * -stats.norm.pdf(percentile_95) / 0.05 + mean
+        es_99 = std * -stats.norm.pdf(percentile_99) / 0.01 + mean
+        es_custom = std * -stats.norm.pdf(percentile_custom) / (1 - percentile) + mean
+
+    # Historical Expected Shortfall
+    _, hist_var_list = get_var(data, use_mean, False, False, percentile, portfolio)
+    hist_es_90 = data_return[data_return <= hist_var_list[0]].mean()
+    hist_es_95 = data_return[data_return <= hist_var_list[1]].mean()
+    hist_es_99 = data_return[data_return <= hist_var_list[2]].mean()
+    hist_es_custom = data_return[data_return <= hist_var_list[3]].mean()
+
+    es_list = [es_90, es_95, es_99, es_custom]
+    hist_es_list = [hist_es_90, hist_es_95, hist_es_99, hist_es_custom]
+    return es_list, hist_es_list

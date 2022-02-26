@@ -1,8 +1,8 @@
 ```
-usage: oi [-m MIN] [-M MAX] [-c] [-p] [-s {tr,yf}] [--export {csv,json,xlsx}] [-h]
+usage: oi [-m MIN] [-M MAX] [-c] [-p] [-s {tr,yf}] [-h] [--export {csv,json,xlsx,png,jpg,pdf,svg}]
 ```
 
-Plot of the open interest aross a selected chain. Open interest is the number of outstanding contracts, which typically represent one hundred shares. 
+Plot open interest. Open interest is the number of outstanding contracts, which typically represent one hundred shares. 
 
 ```
 optional arguments:
@@ -12,8 +12,19 @@ optional arguments:
   -p, --puts            Flag to plot put options only (default: False)
   -s {tr,yf}, --source {tr,yf}
                         Source to get data from (default: tr)
-  --export {csv,json,xlsx}
-                        Export dataframe data to csv,json,xlsx file (default: )
   -h, --help            show this help message (default: False)
+  --export {csv,json,xlsx,png,jpg,pdf,svg}
+                        Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg (default: )
 ```
-<img size="1400" alt="Feature Screenshot - oi" src="https://user-images.githubusercontent.com/85772166/142368338-403b2d8d-00ea-4052-a643-683f5ee79711.png">
+
+Example:
+```
+2022 Feb 16, 09:13 (✨) /stocks/options/ $ load SPY
+
+2022 Feb 16, 09:14 (✨) /stocks/options/ $ exp 10
+Expiration set to 2022-03-11
+
+2022 Feb 16, 09:14 (✨) /stocks/options/ $ oi
+```
+
+![oi](https://user-images.githubusercontent.com/46355364/154282811-b8b7d36b-2e4e-44c0-8026-b244d97a8608.png)

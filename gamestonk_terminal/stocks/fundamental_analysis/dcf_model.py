@@ -43,7 +43,6 @@ def string_float(string: str) -> float:
     return float(string.strip().replace(",", "").replace("-", ""))
 
 
-@log_start_end(log=logger)
 def insert_row(
     name: str, index: str, df: pd.DataFrame, row_v: List[str]
 ) -> pd.DataFrame:
@@ -255,8 +254,7 @@ def others_in_sector(
     return similars
 
 
-@log_start_end(log=logger)
-def create_dataframe(ticker: str, statement: str):
+def create_dataframe(ticker: str, statement: str, period: str = "annual"):
     """
     Creates a df financial statement for a given ticker
 
@@ -266,6 +264,8 @@ def create_dataframe(ticker: str, statement: str):
         The ticker to create a dataframe for
     statement : str
         The financial statement dataframe to create
+    period : str
+        Whether to look at annual, quarterly, or trailing
 
     Returns
     -------
@@ -274,8 +274,16 @@ def create_dataframe(ticker: str, statement: str):
     rounding : int
         The amount of rounding to use
     """
+    if statement not in ["BS", "CF", "IS"]:
+        raise ValueError("statement variable must be 'BS','CF', or 'IS'")
+    if period not in ["annual", "quarterly", "trailing"]:
+        raise ValueError(
+            "statement variable must be 'annual','quarterly', or 'trailing'"
+        )
+    per_url = f"{period}/" if period != "annual" else ""
+
     URL = f"https://stockanalysis.com/stocks/{ticker}/financials/"
-    URL += dcf_static.statement_url[statement]
+    URL += dcf_static.statement_url[statement] + per_url
     ignores = dcf_static.statement_ignore[statement]
 
     r = requests.get(URL, headers=dcf_static.headers)
@@ -294,11 +302,11 @@ def create_dataframe(ticker: str, statement: str):
     if columns is None:
         return pd.DataFrame(), None
 
-    years = [x.get_text().strip() for x in columns if "-" not in x.get_text().strip()]
+    years = [x.get_text().strip() for x in columns]
     len_data = len(years) - 1
 
-    phrase = soup.find("div", attrs={"class": "text-sm text-gray-600 block lg:hidden"})
-    phrase = phrase.get_text().lower()
+    phrase = soup.find("div", attrs={"class": "block text-sm text-gray-600 lg:hidden"})
+    phrase = phrase.get_text().lower() if phrase else ""
 
     if "thousand" in phrase:
         rounding = 1_000
@@ -321,12 +329,12 @@ def create_dataframe(ticker: str, statement: str):
     ]
 
     df = pd.DataFrame(data=all_data)
-    df = df.loc[:, ~(df == "Upgrade").any()]
     df = df.set_index(0)
     n = df.shape[1] - len_data
     if n > 0:
         df = df.iloc[:, :-n]
     df.columns = years[1 : len(df.columns) + 1]
+    df = df.loc[:, ~(df == "Upgrade").any()]
 
     for ignore in ignores:
         if ignore in df.index:

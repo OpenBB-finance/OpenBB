@@ -1,14 +1,49 @@
 ```
-usage: overview [-e NAME] [--export {csv,json,xlsx}] [-h]
+usage: overview [-h] [--export {csv,json,xlsx}]
 ```
 
-Show overview statistics of a chosen ETF.
+Get overview data for selected etf
 
 ```
 optional arguments:
-  -e NAME, --etf NAME   Symbol to look for (default: None)
-  --export {csv,json,xlsx}
-                        Export dataframe data to csv,json,xlsx file (default: )
   -h, --help            show this help message (default: False)
+  --export {csv,json,xlsx}
+                        Export raw data into csv, json, xlsx (default: )
 ```
-<img size="1400" alt="Feature Screenshot - overview" src="https://user-images.githubusercontent.com/85772166/142275613-a58e7e39-927e-410f-91f0-b95c2a713a97.png">
+
+Example:
+```
+2022 Feb 15, 04:14 (✨) /etf/ $ overview
+   ETF Overview Information
+┌────────────────┬────────────┐
+│                │ VOO        │
+├────────────────┼────────────┤
+│ Assets         │ $283.52B   │
+├────────────────┼────────────┤
+│ NAV            │ $413.03    │
+├────────────────┼────────────┤
+│ Expense Ratio  │ 0.03%      │
+├────────────────┼────────────┤
+│ PE Ratio       │ 24.90      │
+├────────────────┼────────────┤
+│ Shares Out     │ 686.44M    │
+├────────────────┼────────────┤
+│ Dividend (ttm) │ $5.44      │
+├────────────────┼────────────┤
+│ Dividend Yield │ 1.35%      │
+├────────────────┼────────────┤
+│ Volume         │ 10,167,584 │
+├────────────────┼────────────┤
+│ Open           │ 404.43     │
+├────────────────┼────────────┤
+│ Previous Close │ 404.94     │
+├────────────────┼────────────┤
+│ 52-Week Low    │ 341.92     │
+├────────────────┼────────────┤
+│ 52-Week High   │ 341.92     │
+├────────────────┼────────────┤
+│ Beta           │ 0.99       │
+├────────────────┼────────────┤
+│ Holdings       │ 510        │
+└────────────────┴────────────┘
+```

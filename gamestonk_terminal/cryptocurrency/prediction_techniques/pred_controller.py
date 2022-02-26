@@ -2,24 +2,14 @@
 __docformat__ = "numpy"
 # pylint: disable=R0902
 import argparse
-from datetime import datetime, timedelta
+import logging
 from typing import List
 
-import pandas as pd
 import numpy as np
+import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.rich_config import console
-from gamestonk_terminal.parent_classes import BaseController
+
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import (
-    parse_known_args_and_warn,
-    check_positive,
-    valid_date,
-    get_next_stock_market_days,
-    EXPORT_ONLY_FIGURES_ALLOWED,
-    valid_date_in_past,
-)
-from gamestonk_terminal.menu import session
 from gamestonk_terminal.common.prediction_techniques import (
     arima_model,
     arima_view,
@@ -27,15 +17,28 @@ from gamestonk_terminal.common.prediction_techniques import (
     ets_view,
     knn_view,
     mc_model,
-    neural_networks_view,
-    regression_view,
-    pred_helper,
     mc_view,
+    neural_networks_view,
+    pred_helper,
+    regression_view,
 )
 from gamestonk_terminal.cryptocurrency import cryptocurrency_helpers as c_help
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_funcs import (
+    EXPORT_ONLY_FIGURES_ALLOWED,
+    check_positive,
+    get_next_stock_market_days,
+    parse_known_args_and_warn,
+    valid_date,
+)
+from gamestonk_terminal.menu import session
+from gamestonk_terminal.parent_classes import CryptoBaseController
+from gamestonk_terminal.rich_config import console
+
+logger = logging.getLogger(__name__)
 
 
-class PredictionTechniquesController(BaseController):
+class PredictionTechniquesController(CryptoBaseController):
     """Prediction Techniques Controller class"""
 
     CHOICES_COMMANDS = [
@@ -70,14 +73,7 @@ class PredictionTechniquesController(BaseController):
 
         self.data = data
         self.coin = coin
-        self.resolution = "1D"
         self.target = "Close"
-        self.symbol = ""
-        self.current_currency = ""
-        self.source = ""
-        self.coin_map_df = pd.DataFrame()
-        self.current_interval = ""
-        self.price_str = ""
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
@@ -117,90 +113,7 @@ class PredictionTechniquesController(BaseController):
             return ["crypto", f"load {self.coin}", "pred"]
         return []
 
-    def call_load(self, other_args: List[str]):
-        """Process load command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="load",
-            description="Load crypto currency to perform analysis on."
-            "Available data sources are CoinGecko, CoinPaprika, Binance, Coinbase"
-            "By default main source used for analysis is CoinGecko (cg). To change it use --source flag",
-        )
-        parser.add_argument(
-            "-c",
-            "--coin",
-            help="Coin to get",
-            dest="coin",
-            type=str,
-            required="-h" not in other_args,
-        )
-        parser.add_argument(
-            "--source",
-            help="Source of data",
-            dest="source",
-            choices=("cp", "cg", "bin", "cb"),
-            default="cg",
-            required=False,
-        )
-        parser.add_argument(
-            "-s",
-            "--start",
-            type=valid_date_in_past,
-            default=(datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
-            dest="start",
-            help="The starting date (format YYYY-MM-DD) of the crypto",
-        )
-        parser.add_argument(
-            "--vs",
-            help="Quote currency (what to view coin vs)",
-            dest="vs",
-            default="usd",
-            type=str,
-        )
-        parser.add_argument(
-            "-r",
-            "--resolution",
-            default="1D",
-            type=str,
-            dest="resolution",
-            help="How often to resample data.",
-            choices=c_help.INTERVALS,
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-c")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        delta = (datetime.now() - ns_parser.start).days
-        if ns_parser:
-            source = ns_parser.source
-            for arg in ["--source", source]:
-                if arg in other_args:
-                    other_args.remove(arg)
-
-            # self.data = c_help.load_cg_coin_data(
-            #   ns_parser.coin, ns_parser.currency, ns_parser.days, ns_parser.resolution
-            # )
-            res = ns_parser.resolution if delta < 90 else "1D"
-            self.resolution = res
-            (
-                self.coin,
-                self.source,
-                self.symbol,
-                self.coin_map_df,
-                self.data,
-                self.current_currency,
-            ) = c_help.load(
-                coin=ns_parser.coin,
-                source=ns_parser.source,
-                should_load_ta_data=True,
-                days=delta,
-                interval="1day",
-                vs=ns_parser.vs,
-            )
-            console.print(
-                f"{delta} Days of {self.coin} vs {self.current_currency} loaded with {res} resolution.\n"
-            )
-
+    @log_start_end(log=logger)
     def call_pick(self, other_args: List[str]):
         """Process pick command"""
         parser = argparse.ArgumentParser(
@@ -226,6 +139,7 @@ class PredictionTechniquesController(BaseController):
             self.target = ns_parser.target
             console.print("")
 
+    @log_start_end(log=logger)
     def call_ets(self, other_args: List[str]):
         """Process ets command"""
         parser = argparse.ArgumentParser(
@@ -238,12 +152,12 @@ class PredictionTechniquesController(BaseController):
                 Trend='N',  Seasonal='N': Simple Exponential Smoothing
                 Trend='N',  Seasonal='A': Exponential Smoothing
                 Trend='N',  Seasonal='M': Exponential Smoothing
-                Trend='A',  Seasonal='N': Holt’s linear method
-                Trend='A',  Seasonal='A': Additive Holt-Winters’ method
-                Trend='A',  Seasonal='M': Multiplicative Holt-Winters’ method
+                Trend='A',  Seasonal='N': Holt's linear method
+                Trend='A',  Seasonal='A': Additive Holt-Winters' method
+                Trend='A',  Seasonal='M': Multiplicative Holt-Winters' method
                 Trend='Ad', Seasonal='N': Additive damped trend method
                 Trend='Ad', Seasonal='A': Exponential Smoothing
-                Trend='Ad', Seasonal='M': Holt-Winters’ damped method
+                Trend='Ad', Seasonal='M': Holt-Winters' damped method
                 Trend component: N: None, A: Additive, Ad: Additive Damped
                 Seasonality component: N: None, A: Additive, M: Multiplicative
             """,
@@ -326,6 +240,7 @@ class PredictionTechniquesController(BaseController):
                 time_res=self.resolution,
             )
 
+    @log_start_end(log=logger)
     def call_knn(self, other_args: List[str]):
         """Process knn command"""
         parser = argparse.ArgumentParser(
@@ -414,6 +329,7 @@ class PredictionTechniquesController(BaseController):
                 time_res=self.resolution,
             )
 
+    @log_start_end(log=logger)
     def call_regression(self, other_args: List[str]):
         """Process linear command"""
         parser = argparse.ArgumentParser(
@@ -512,6 +428,7 @@ class PredictionTechniquesController(BaseController):
                 time_res=self.resolution,
             )
 
+    @log_start_end(log=logger)
     def call_arima(self, other_args: List[str]):
         """Process arima command"""
         parser = argparse.ArgumentParser(
@@ -617,6 +534,7 @@ class PredictionTechniquesController(BaseController):
                 time_res=self.resolution,
             )
 
+    @log_start_end(log=logger)
     def call_mlp(self, other_args: List[str]):
         """Process mlp command"""
         try:
@@ -640,11 +558,13 @@ class PredictionTechniquesController(BaseController):
                     time_res=self.resolution,
                 )
         except Exception as e:
+            logger.exception(str(e))
             console.print(e, "\n")
 
         finally:
             pred_helper.restore_env()
 
+    @log_start_end(log=logger)
     def call_rnn(self, other_args: List[str]):
         """Process rnn command"""
         try:
@@ -669,11 +589,13 @@ class PredictionTechniquesController(BaseController):
                 )
 
         except Exception as e:
+            logger.exception(str(e))
             console.print(e, "\n")
 
         finally:
             pred_helper.restore_env()
 
+    @log_start_end(log=logger)
     def call_lstm(self, other_args: List[str]):
         """Process lstm command"""
         try:
@@ -698,11 +620,13 @@ class PredictionTechniquesController(BaseController):
                 )
 
         except Exception as e:
+            logger.exception(str(e))
             console.print(e, "\n")
 
         finally:
             pred_helper.restore_env()
 
+    @log_start_end(log=logger)
     def call_conv1d(self, other_args: List[str]):
         """Process conv1d command"""
         try:
@@ -727,11 +651,13 @@ class PredictionTechniquesController(BaseController):
                 )
 
         except Exception as e:
+            logger.exception(str(e))
             console.print(e, "\n")
 
         finally:
             pred_helper.restore_env()
 
+    @log_start_end(log=logger)
     def call_mc(self, other_args: List[str]):
         """Process mc command"""
         parser = argparse.ArgumentParser(

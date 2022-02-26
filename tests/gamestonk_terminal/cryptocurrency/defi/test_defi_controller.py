@@ -193,7 +193,10 @@ def test_call_func_expect_queue(expected_queue, func, queue):
     [
         (
             "call_aterra",
-            ["ust", "--address=terra1wg2mlrxdmnnkkykgqg4znky86nyrtc45q336yv"],
+            [
+                "ust",
+                "--address=terra1wg2mlrxdmnnkkykgqg4znky86nyrtc45q336yv",  # pragma: allowlist secret
+            ],
             "terraengineer_view.display_terra_asset_history",
             [],
             dict(),
@@ -349,6 +352,13 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             "call_vaults",
             [],
             "coindix_view.display_defi_vaults",
+            [],
+            dict(),
+        ),
+        (
+            "call_lcsc",
+            [],
+            "smartstake_view.display_luna_circ_supply_change",
             [],
             dict(),
         ),

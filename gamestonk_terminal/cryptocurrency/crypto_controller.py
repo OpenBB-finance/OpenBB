@@ -2,45 +2,46 @@
 __docformat__ = "numpy"
 # pylint: disable=R0904, C0302, R1710, W0622, C0201, C0301
 
-import os
 import argparse
+import logging
+import os
 from typing import List
-from datetime import datetime, timedelta
-import pandas as pd
-from prompt_toolkit.completion import NestedCompleter
+
 from binance.client import Client
-from gamestonk_terminal.rich_config import console
-from gamestonk_terminal.parent_classes import BaseController
-from gamestonk_terminal.cryptocurrency.pycoingecko_helpers import calc_change
-from gamestonk_terminal.cryptocurrency.due_diligence import pycoingecko_model
+from prompt_toolkit.completion import NestedCompleter
+
+import gamestonk_terminal.config_terminal as cfg
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import (
-    EXPORT_BOTH_RAW_DATA_AND_FIGURES,
-    EXPORT_ONLY_RAW_DATA_ALLOWED,
-    parse_known_args_and_warn,
-    check_positive,
-    valid_date_in_past,
-)
-from gamestonk_terminal.menu import session
-from gamestonk_terminal.cryptocurrency.due_diligence import (
-    coinpaprika_view,
-    binance_view,
-    pycoingecko_view,
-    finbrain_crypto_view,
-    binance_model,
-    coinbase_model,
-)
 from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import (
     FIND_KEYS,
     display_all_coins,
-    load,
     find,
     plot_chart,
 )
-import gamestonk_terminal.config_terminal as cfg
+from gamestonk_terminal.cryptocurrency.due_diligence import (
+    binance_model,
+    binance_view,
+    coinbase_model,
+    coinpaprika_view,
+    finbrain_crypto_view,
+    pycoingecko_model,
+    pycoingecko_view,
+)
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_funcs import (
+    EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
+    check_positive,
+    parse_known_args_and_warn,
+)
+from gamestonk_terminal.menu import session
+from gamestonk_terminal.parent_classes import CryptoBaseController
+from gamestonk_terminal.rich_config import console
 
 # pylint: disable=import-outside-toplevel
 
+
+logger = logging.getLogger(__name__)
 
 CRYPTO_SOURCES = {
     "bin": "Binance",
@@ -50,7 +51,7 @@ CRYPTO_SOURCES = {
 }
 
 
-class CryptoController(BaseController):
+class CryptoController(CryptoBaseController):
     """Crypto Controller"""
 
     CHOICES_COMMANDS = [
@@ -75,15 +76,6 @@ class CryptoController(BaseController):
         """Constructor"""
         super().__init__(queue)
 
-        self.symbol = ""
-        self.current_coin = ""
-        self.current_df = pd.DataFrame()
-        self.current_currency = ""
-        self.source = ""
-        self.coin_map_df = pd.DataFrame()
-        self.current_interval = ""
-        self.price_str = ""
-
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["load"]["--source"] = {c: {} for c in CRYPTO_SOURCES.keys()}
@@ -96,13 +88,13 @@ class CryptoController(BaseController):
     def print_help(self):
         """Print help"""
         source_txt = CRYPTO_SOURCES.get(self.source, "?") if self.source != "" else ""
-        has_ticker_start = "" if self.current_coin else "[unvl]"
-        has_ticker_end = "" if self.current_coin else "[/unvl]"
+        has_ticker_start = "" if self.coin else "[unvl]"
+        has_ticker_end = "" if self.coin else "[/unvl]"
         help_text = f"""[cmds]
     load        load a specific cryptocurrency for analysis
     find        find coins[/cmds]
 
-[param]Coin: [/param]{self.current_coin}
+[param]Coin: [/param]{self.coin}
 [param]Source: [/param]{source_txt}
 [cmds]
     headlines   crypto sentiment from 15+ major news headlines [src][Finbrain][/src]{has_ticker_start}
@@ -121,9 +113,10 @@ class CryptoController(BaseController):
 """
         console.print(text=help_text, menu="Cryptocurrency")
 
+    @log_start_end(log=logger)
     def call_prt(self, other_args):
         """Process prt command"""
-        if self.current_coin:
+        if self.coin:
             parser = argparse.ArgumentParser(
                 add_help=False,
                 formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -132,11 +125,14 @@ class CryptoController(BaseController):
                 "Tool to check returns if loaded coin reaches provided price or other crypto market cap"
                 "Uses CoinGecko to grab coin data (price and market cap).",
             )
-            group = parser.add_mutually_exclusive_group(required=True)
-            group.add_argument(
-                "--vs", help="Coin to compare with", dest="vs", type=str, default=None
+            parser.add_argument(
+                "--vs",
+                help="Coin to compare with",
+                dest="vs",
+                type=str,
+                required="-h" not in other_args,
             )
-            group.add_argument(
+            parser.add_argument(
                 "-p",
                 "--price",
                 help="Desired price",
@@ -144,7 +140,7 @@ class CryptoController(BaseController):
                 type=int,
                 default=None,
             )
-            group.add_argument(
+            parser.add_argument(
                 "-t",
                 "--top",
                 help="Compare with top N coins",
@@ -167,118 +163,22 @@ class CryptoController(BaseController):
                             f"VS Coin '{ns_parser.vs}' not found in CoinGecko\n"
                         )
                         return
-                pycoingecko_view.display_coin_potential_returns(
-                    self.coin_map_df["CoinGecko"],
-                    coin_found,
-                    ns_parser.top,
-                    ns_parser.price,
-                )
+                    pycoingecko_view.display_coin_potential_returns(
+                        self.coin_map_df["CoinGecko"],
+                        coin_found,
+                        ns_parser.top,
+                        ns_parser.price,
+                    )
 
-        else:
-            console.print(
-                "No coin selected. Use 'load' to load the coin you want to look at.\n"
-            )
-
-    def call_load(self, other_args):
-        """Process load command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="load",
-            description="Load crypto currency to perform analysis on."
-            "Available data sources are CoinGecko, CoinPaprika, Binance, Coinbase"
-            "By default main source used for analysis is CoinGecko (cg). To change it use --source flag",
-        )
-        parser.add_argument(
-            "-c",
-            "--coin",
-            help="Coin to get",
-            dest="coin",
-            type=str,
-            required="-h" not in other_args,
-        )
-        parser.add_argument(
-            "--source",
-            help="Source of data",
-            dest="source",
-            choices=("cp", "cg", "bin", "cb"),
-            default="cg",
-            required=False,
-        )
-        parser.add_argument(
-            "-s",
-            "--start",
-            type=valid_date_in_past,
-            default=(datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
-            dest="start",
-            help="The starting date (format YYYY-MM-DD) of the crypto",
-        )
-        parser.add_argument(
-            "--vs",
-            help="Quote currency (what to view coin vs)",
-            dest="vs",
-            default="usd",
-            type=str,
-        )
-        parser.add_argument(
-            "-i",
-            "--interval",
-            help="Interval to get data (Only available on binance/coinbase)",
-            dest="interval",
-            default="1day",
-            type=str,
-        )
-
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-c")
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        delta = (datetime.now() - ns_parser.start).days
-        if ns_parser:
-            source = ns_parser.source
-            for arg in ["--source", source]:
-                if arg in other_args:
-                    other_args.remove(arg)
-
-            # TODO: protections in case None is returned
-            (
-                self.current_coin,
-                self.source,
-                self.symbol,
-                self.coin_map_df,
-                self.current_df,
-                self.current_currency,
-            ) = load(
-                coin=ns_parser.coin,
-                source=ns_parser.source,
-                should_load_ta_data=True,
-                days=delta,
-                interval=ns_parser.interval,
-                vs=ns_parser.vs,
-            )
-            if self.symbol:
-                self.current_interval = ns_parser.interval
-                first_price = self.current_df["Close"].iloc[0]
-                last_price = self.current_df["Close"].iloc[-1]
-                second_last_price = self.current_df["Close"].iloc[-2]
-                interval_change = calc_change(last_price, second_last_price)
-                since_start_change = calc_change(last_price, first_price)
-                if isinstance(self.current_currency, str):
-                    self.price_str = f"""Current Price: {round(last_price,2)} {self.current_currency.upper()}
-Performance in interval ({self.current_interval}): {'[green]' if interval_change > 0 else "[red]"}{round(interval_change,2)}%{'[/green]' if interval_change > 0 else "[/red]"}
-Performance since {ns_parser.start.strftime('%Y-%m-%d')}: {'[green]' if since_start_change > 0 else "[red]"}{round(since_start_change,2)}%{'[/green]' if since_start_change > 0 else "[/red]"}"""  # noqa
-
+                else:
                     console.print(
-                        f"""
-Loaded {self.current_coin} against {self.current_currency} from {CRYPTO_SOURCES[self.source]} source
+                        "No coin selected. Use 'load' to load the coin you want to look at.\n"
+                    )
 
-{self.price_str}
-"""
-                    )  # noqa
-
+    @log_start_end(log=logger)
     def call_chart(self, other_args):
         """Process chart command"""
-        if self.current_coin:
+        if self.coin:
             parser = argparse.ArgumentParser(
                 add_help=False,
                 formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -338,7 +238,7 @@ Loaded {self.current_coin} against {self.current_currency} from {CRYPTO_SOURCES[
                 }
 
                 _, quotes = binance_model.show_available_pairs_for_given_symbol(
-                    self.current_coin
+                    self.coin
                 )
 
                 parser.add_argument(
@@ -379,11 +279,11 @@ Loaded {self.current_coin} against {self.current_currency} from {CRYPTO_SOURCES[
                 }
 
                 _, quotes = coinbase_model.show_available_pairs_for_given_symbol(
-                    self.current_coin
+                    self.coin
                 )
                 if len(quotes) < 0:
                     console.print(
-                        f"Couldn't find any quoted coins for provided symbol {self.current_coin}"
+                        f"Couldn't find any quoted coins for provided symbol {self.coin}"
                     )
                     return
                 parser.add_argument(
@@ -434,6 +334,7 @@ Loaded {self.current_coin} against {self.current_currency} from {CRYPTO_SOURCES[
                     source=self.source,
                 )
 
+    @log_start_end(log=logger)
     def call_ta(self, _):
         """Process ta command"""
         from gamestonk_terminal.cryptocurrency.technical_analysis.ta_controller import (
@@ -441,12 +342,12 @@ Loaded {self.current_coin} against {self.current_currency} from {CRYPTO_SOURCES[
         )
 
         # TODO: Play with this to get correct usage
-        if self.current_coin:
+        if self.coin:
             if self.current_currency != "" and not self.current_df.empty:
                 self.queue = self.load_class(
                     TechnicalAnalysisController,
                     stock=self.current_df,
-                    ticker=self.current_coin,
+                    coin=self.coin,
                     start=self.current_df.index[0],
                     interval="",
                     queue=self.queue,
@@ -455,6 +356,7 @@ Loaded {self.current_coin} against {self.current_currency} from {CRYPTO_SOURCES[
         else:
             console.print("No coin selected. Use 'load' to load a coin.\n")
 
+    @log_start_end(log=logger)
     def call_disc(self, _):
         """Process disc command"""
         from gamestonk_terminal.cryptocurrency.discovery.discovery_controller import (
@@ -463,6 +365,7 @@ Loaded {self.current_coin} against {self.current_currency} from {CRYPTO_SOURCES[
 
         self.queue = self.load_class(DiscoveryController, self.queue)
 
+    @log_start_end(log=logger)
     def call_ov(self, _):
         """Process ov command"""
         from gamestonk_terminal.cryptocurrency.overview.overview_controller import (
@@ -471,6 +374,7 @@ Loaded {self.current_coin} against {self.current_currency} from {CRYPTO_SOURCES[
 
         self.queue = self.load_class(OverviewController, self.queue)
 
+    @log_start_end(log=logger)
     def call_defi(self, _):
         """Process defi command"""
         from gamestonk_terminal.cryptocurrency.defi.defi_controller import (
@@ -479,6 +383,7 @@ Loaded {self.current_coin} against {self.current_currency} from {CRYPTO_SOURCES[
 
         self.queue = self.load_class(DefiController, self.queue)
 
+    @log_start_end(log=logger)
     def call_headlines(self, other_args):
         """Process sentiment command"""
         parser = argparse.ArgumentParser(
@@ -510,16 +415,17 @@ Loaded {self.current_coin} against {self.current_currency} from {CRYPTO_SOURCES[
                 coin=ns_parser.coin, export=ns_parser.export
             )
 
+    @log_start_end(log=logger)
     def call_dd(self, _):
         """Process dd command"""
-        if self.current_coin:
+        if self.coin:
             from gamestonk_terminal.cryptocurrency.due_diligence.dd_controller import (
                 DueDiligenceController,
             )
 
             self.queue = self.load_class(
                 DueDiligenceController,
-                self.current_coin,
+                self.coin,
                 self.source,
                 self.symbol,
                 self.coin_map_df,
@@ -528,9 +434,10 @@ Loaded {self.current_coin} against {self.current_currency} from {CRYPTO_SOURCES[
         else:
             console.print("No coin selected. Use 'load' to load a coin.\n")
 
+    @log_start_end(log=logger)
     def call_pred(self, _):
         """Process pred command"""
-        if self.current_coin:
+        if self.coin:
             try:
                 from gamestonk_terminal.cryptocurrency.prediction_techniques import (
                     pred_controller,
@@ -541,18 +448,20 @@ Loaded {self.current_coin} against {self.current_currency} from {CRYPTO_SOURCES[
                 else:
                     self.queue = self.load_class(
                         pred_controller.PredictionTechniquesController,
-                        self.current_coin,
+                        self.coin,
                         self.current_df,
                         self.queue,
                     )
             except ImportError:
-                console.print("[red]Run pip install tensorflow to continue[/red]")
+                logger.exception("Tensorflow not available")
+                console.print("[red]Run pip install tensorflow to continue[/red]\n")
 
         else:
             console.print(
                 "No coin selected. Use 'load' to load the coin you want to look at.\n"
             )
 
+    @log_start_end(log=logger)
     def call_onchain(self, _):
         """Process onchain command"""
         from gamestonk_terminal.cryptocurrency.onchain.onchain_controller import (
@@ -561,6 +470,7 @@ Loaded {self.current_coin} against {self.current_currency} from {CRYPTO_SOURCES[
 
         self.queue = self.load_class(OnchainController, self.queue)
 
+    @log_start_end(log=logger)
     def call_nft(self, _):
         """Process nft command"""
         from gamestonk_terminal.cryptocurrency.nft.nft_controller import NFTController
@@ -568,6 +478,7 @@ Loaded {self.current_coin} against {self.current_currency} from {CRYPTO_SOURCES[
         self.queue = self.load_class(NFTController, self.queue)
 
     # TODO: merge the two views that this command calls. (find + previously called coins)
+    @log_start_end(log=logger)
     def call_find(self, other_args):
         """Process find command"""
         parser = argparse.ArgumentParser(
@@ -575,7 +486,7 @@ Loaded {self.current_coin} against {self.current_currency} from {CRYPTO_SOURCES[
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""
-            Find similar coin by coin name,symbol or id. If you don't remember exact name or id of the Coin at CoinGecko,
+            Find similar coin by name, symbol, or id. If you don't remember exact name or id of the Coin at CoinGecko,
             Binance, Coinbase or CoinPaprika you can use this command to display coins with similar name, symbol or id
             to your search query.
             Example of usage: coin name is something like "polka". So I can try: find -c polka -k name -t 25

@@ -1,8 +1,8 @@
 ```
-usage: unemp [-s START] [--raw] [-h] [--export {png,jpg,pdf,svg}]
+usage: unemp [-s START] [--raw] [-h] [--export {csv,json,xlsx,png,jpg,pdf,svg}]
 ```
 
-Display US unemployment data. https://www.alphavantage.co/documentation
+Get United States Unemployment data [Source: Alpha Vantage]
 
 ```
 optional arguments:
@@ -10,7 +10,8 @@ optional arguments:
                         Start year. (default: 2015)
   --raw                 Display raw data (default: False)
   -h, --help            show this help message (default: False)
-  --export {png,jpg,pdf,svg}
-                        Export or figure into png, jpg, pdf, svg (default: )
+  --export {csv,json,xlsx,png,jpg,pdf,svg}
+                        Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg (default: )
 ```
-<img size="1400" alt="Feature Screenshot - unemp" src="https://user-images.githubusercontent.com/85772166/142019318-4e90fb99-ab95-4549-ab52-1dcf10001494.png">
+
+![unemp](https://user-images.githubusercontent.com/46355364/154045855-f8342f3e-d9c5-4b77-9a76-862cd45a4e59.png)

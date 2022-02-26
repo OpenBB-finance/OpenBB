@@ -1,7 +1,5 @@
 ```
-usage: tokens [--skip SKIP] [--limit LIMIT]
-              [-s {index,symbol,name,tradeVolumeUSD,totalLiquidity,txCount}]
-              [--descend] [--export {csv,json,xlsx}] [-h]
+usage: tokens [--skip SKIP] [--limit LIMIT] [-s {index,symbol,name,tradeVolumeUSD,totalLiquidity,txCount}] [--descend] [-h] [--export {csv,json,xlsx}]
 ```
 Display tokens trade-able on Uniswap DEX [Source: https://thegraph.com/en/]
 
@@ -11,10 +9,57 @@ optional arguments:
   --limit LIMIT         Number of records to display (default: 20)
   -s {index,symbol,name,tradeVolumeUSD,totalLiquidity,txCount}, --sort {index,symbol,name,tradeVolumeUSD,totalLiquidity,txCount}
                         Sort by given column. Default: index (default: index)
-  --descend             Flag to sort in descending order (lowest first)
-                        (default: True)
-  --export {csv,json,xlsx}
-                        Export dataframe data to csv,json,xlsx file (default:
-                        )
+  --descend             Flag to sort in descending order (lowest first) (default: True)
   -h, --help            show this help message (default: False)
+  --export {csv,json,xlsx}
+                        Export raw data into csv, json, xlsx (default: )
+```
+
+Example:
+```
+2022 Feb 15, 06:36 (✨) /crypto/defi/ $ tokens
+                                 UniSwarp DEX Trade-able Tokens
+┌───────┬──────────────┬────────────────────────────┬────────────────┬────────────────┬─────────┐
+│ index │ symbol       │ name                       │ tradeVolumeUSD │ totalLiquidity │ txCount │
+├───────┼──────────────┼────────────────────────────┼────────────────┼────────────────┼─────────┤
+│ 0     │ BID          │ TopBidder                  │ 17.9M          │ 1.9M           │ 2496    │
+├───────┼──────────────┼────────────────────────────┼────────────────┼────────────────┼─────────┤
+│ 1     │ CHI          │ Chi Gastoken by 1inch      │ 19.4M          │ 25K            │ 75833   │
+├───────┼──────────────┼────────────────────────────┼────────────────┼────────────────┼─────────┤
+│ 2     │ XDEX         │ XDEFI Governance Token     │ 18.7M          │ 6.1M           │ 4316    │
+├───────┼──────────────┼────────────────────────────┼────────────────┼────────────────┼─────────┤
+│ 3     │ TUSD         │ TrueUSD                    │ 176.2M         │ 71.5K          │ 46582   │
+├───────┼──────────────┼────────────────────────────┼────────────────┼────────────────┼─────────┤
+│ 4     │ LON          │ Tokenlon                   │ 504M           │ 2.3M           │ 56107   │
+├───────┼──────────────┼────────────────────────────┼────────────────┼────────────────┼─────────┤
+│ 5     │ dDai         │ Dharma Dai                 │ 0              │ 4              │ 1       │
+├───────┼──────────────┼────────────────────────────┼────────────────┼────────────────┼─────────┤
+│ 6     │ STRIP        │ StripInu2                  │ 0              │ 0              │ 614     │
+├───────┼──────────────┼────────────────────────────┼────────────────┼────────────────┼─────────┤
+│ 7     │ GST2         │ Gastoken.io                │ 2.1M           │ 142            │ 10888   │
+├───────┼──────────────┼────────────────────────────┼────────────────┼────────────────┼─────────┤
+│ 8     │ XGME         │ GameStonk.online           │ 0              │ 35.7K          │ 65      │
+├───────┼──────────────┼────────────────────────────┼────────────────┼────────────────┼─────────┤
+│ 9     │ SHKOOBYSHNAX │ SHKOOBY INU SHNAX          │ 0              │ 0              │ 47      │
+├───────┼──────────────┼────────────────────────────┼────────────────┼────────────────┼─────────┤
+│ 10    │ PORN         │ Porn DAO                   │ 2.3M           │ 1.9K           │ 321     │
+├───────┼──────────────┼────────────────────────────┼────────────────┼────────────────┼─────────┤
+│ 11    │ TGBP         │ TrueGBP                    │ 24.1K          │ 4.1K           │ 740     │
+├───────┼──────────────┼────────────────────────────┼────────────────┼────────────────┼─────────┤
+│ 12    │ $STEALTH     │ Stealth Standard           │ 9.2M           │ 165.5M         │ 1622    │
+├───────┼──────────────┼────────────────────────────┼────────────────┼────────────────┼─────────┤
+│ 13    │ ADIDAS       │ Adidas Originals Metaverse │ 4.5M           │ 0              │ 488     │
+├───────┼──────────────┼────────────────────────────┼────────────────┼────────────────┼─────────┤
+│ 14    │ Nike         │ Nike RTFKT Studio          │ 75.8K          │ 0              │ 15      │
+├───────┼──────────────┼────────────────────────────┼────────────────┼────────────────┼─────────┤
+│ 15    │ DLTA         │ delta.theta                │ 3.1M           │ 2M             │ 2611    │
+├───────┼──────────────┼────────────────────────────┼────────────────┼────────────────┼─────────┤
+│ 16    │ Nike         │ Nike Metaverse             │ 4.5M           │ 0              │ 669     │
+├───────┼──────────────┼────────────────────────────┼────────────────┼────────────────┼─────────┤
+│ 17    │ Nike         │ Nike RTFKT Studio          │ 131.6K         │ 0              │ 35      │
+├───────┼──────────────┼────────────────────────────┼────────────────┼────────────────┼─────────┤
+│ 18    │ PRADA        │ Prada Metaverse            │ 894.8K         │ 0              │ 196     │
+├───────┼──────────────┼────────────────────────────┼────────────────┼────────────────┼─────────┤
+│ 19    │ TCAD         │ TrueCAD                    │ 6.5K           │ 599            │ 141     │
+└───────┴──────────────┴────────────────────────────┴────────────────┴────────────────┴─────────┘
 ```

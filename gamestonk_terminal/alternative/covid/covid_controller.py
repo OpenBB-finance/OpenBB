@@ -8,18 +8,19 @@ from typing import List
 
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.rich_config import console
 
-from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.alternative.covid import covid_view
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
-    parse_known_args_and_warn,
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
+    parse_known_args_and_warn,
 )
 from gamestonk_terminal.menu import session
+from gamestonk_terminal.parent_classes import BaseController
+from gamestonk_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -65,6 +66,7 @@ class CovidController(BaseController):
         """Class specific component of reset command"""
         return ["alternative", "covid", f"country {self.country}"]
 
+    @log_start_end(log=logger)
     def call_country(self, other_args: List[str]):
         """Process country command"""
         parser = argparse.ArgumentParser(
@@ -88,13 +90,16 @@ class CovidController(BaseController):
             if ns_parser.country:
                 country = " ".join(ns_parser.country)
                 if country not in self.COUNTRY_LIST:
+                    logger.error("%s not a valid selection", country)
                     console.print(f"[red]{country} not a valid selection.[/red]\n")
                     return
                 self.country = country
                 console.print(f"[cyan]{country}[/cyan] loaded\n")
             else:
+                logger.error("No country provided")
                 console.print("[red]Please input a country.[/red]\n")
 
+    @log_start_end(log=logger)
     def call_ov(self, other_args: List[str]):
         """Process hist command"""
         parser = argparse.ArgumentParser(
@@ -118,13 +123,14 @@ class CovidController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_rates(self, other_args: List[str]):
         """Process hist command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="rates",
-            description="Show historical rates country.",
+            description="Show historical death/cases rates for a country.",
         )
         ns_parser = parse_known_args_and_warn(
             parser,
@@ -142,6 +148,7 @@ class CovidController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_deaths(self, other_args: List[str]):
         """Process deaths command"""
         parser = argparse.ArgumentParser(
@@ -166,6 +173,7 @@ class CovidController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_cases(self, other_args: List[str]):
         """Process cases command"""
         parser = argparse.ArgumentParser(
@@ -190,6 +198,7 @@ class CovidController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_slopes(self, other_args: List[str]):
         """Process cases command"""
         parser = argparse.ArgumentParser(

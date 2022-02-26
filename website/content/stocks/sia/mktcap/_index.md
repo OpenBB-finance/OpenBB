@@ -1,12 +1,12 @@
 ``` text
-usage: mktcap [-n {Small,Mid,Large,small,mid,large}] [-h]
+usage: mktcap [-n {Nano,Micro,Small,Mid,Large,Mega,nano,micro,small,mid,large,mega}] [-h]
 ```
 
-Set market cap limit to: small, mid or large.
+Set mktcap to nano, micro, small, mid, large or mega.
 
 ```
-Optional arguments:
-  -n {Small,Mid,Large,small,mid,large}, --name {Small,Mid,Large,small,mid,large}
+optional arguments:
+  -n {Nano,Micro,Small,Mid,Large,Mega,nano,micro,small,mid,large,mega}, --name {Nano,Micro,Small,Mid,Large,Mega,nano,micro,small,mid,large,mega}
                         market cap to select (default: None)
   -h, --help            show this help message (default: False)
 ```

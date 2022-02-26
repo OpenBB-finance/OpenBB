@@ -61,7 +61,6 @@ def getFINRAweeks(tier: str, is_ats: bool) -> List:
     return response.json() if response.status_code == 200 else list()
 
 
-@log_start_end(log=logger)
 def getFINRAdata_offset(
     weekStartDate: str, tier: str, ticker: str, is_ats: bool, offset: int
 ) -> requests.Response:
@@ -133,7 +132,6 @@ def getFINRAdata_offset(
     )
 
 
-@log_start_end(log=logger)
 def getFINRAdata(
     weekStartDate: str, tier: str, ticker: str, is_ats: bool
 ) -> Tuple[int, List]:
@@ -274,15 +272,18 @@ def getATSdata(num_tickers_to_filter: int, tier_ats: str) -> Tuple[pd.DataFrame,
         .sort_values()[-num_tickers_to_filter:]
         .index
     ):
-        slope = stats.linregress(
-            df_ats[df_ats["issueSymbolIdentifier"] == symbol][
-                "weekStartDateInt"
-            ].values,
-            df_ats[df_ats["issueSymbolIdentifier"] == symbol][
-                "totalWeeklyShareQuantity"
-            ].values,
-        )[0]
-        d_ats_reg[symbol] = slope
+        try:
+            slope = stats.linregress(
+                df_ats[df_ats["issueSymbolIdentifier"] == symbol][
+                    "weekStartDateInt"
+                ].values,
+                df_ats[df_ats["issueSymbolIdentifier"] == symbol][
+                    "totalWeeklyShareQuantity"
+                ].values,
+            )[0]
+            d_ats_reg[symbol] = slope
+        except Exception:
+            pass
 
     return df_ats, d_ats_reg
 

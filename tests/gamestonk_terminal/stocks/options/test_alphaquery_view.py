@@ -11,10 +11,10 @@ from gamestonk_terminal.stocks.options import alphaquery_view
 
 @pytest.mark.vcr
 def test_display_put_call_ratio(mocker):
-    # MOCK CHARTS
-    mocker.patch.object(target=alphaquery_view.gtff, attribute="USE_ION", new=True)
-    mocker.patch(target="gamestonk_terminal.stocks.backtesting.bt_view.plt.ion")
-    mocker.patch(target="gamestonk_terminal.stocks.backtesting.bt_view.plt.show")
+    # MOCK VISUALIZE_OUTPUT
+    mocker.patch(
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
+    )
 
     alphaquery_view.display_put_call_ratio(
         ticker="PM",

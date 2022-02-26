@@ -2,7 +2,7 @@
 usage: metric [-m {roa,roe,cr,qr,de,tc,tcs,tr,rps,rg,eg,pm,gp,gm,ocf,om,fcf,td,ebitda,ebitdam,rec,mc,fte,er,bv,ss,pb,beta,fs,peg,ev,fpe}] [-l LIMIT] [-r] [-h] [--export {csv,json,xlsx,png,jpg,pdf,svg}]
 ```
 
-Visualise a particular metric with the filters selected
+Visualise a particular metric with the filters selected [source: Yahoo Finance]
 
 ```
 optional arguments:
@@ -16,5 +16,4 @@ optional arguments:
                         Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg (default: )
 ```
 
-
-<img width="1400" alt="Feature Screenshot - metric" src="https://user-images.githubusercontent.com/85772166/145095318-25f4cffd-9d55-4f5e-87cd-3b35a4ce6e1c.png">
+![metric](https://user-images.githubusercontent.com/46355364/153897033-51c922b5-094d-44ad-87ef-52db51e2cf03.png)

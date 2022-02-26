@@ -13,19 +13,19 @@ optional arguments:
   -h, --help            show this help message (default: False)
 ```
 
+Example:
 ```
+2022 Feb 16, 10:05 (✨) /stocks/bt/ $ whatif -d 2020-01-01 -n 100
+If you had acquired 100 shares of MSFT on 2020-01-01 with a cost of 15761.51.
+These would be worth 29462.01. Which represents an increase of 86.92%.
 
-(✨) /stocks/bt/ $ whatif -n 2
-IPO date selected by default.
-If you had acquired 2 shares of TSLA on 2010-06-29 with a cost of 9.56.
-These would be worth 2129.58. Which represents an increase of 22285.28%. 
+2022 Feb 16, 10:05 (✨) /stocks/bt/ $ whatif -d 2010-01-01 -n 100
+If you had acquired 100 shares of MSFT on 2010-01-01 with a cost of 2390.50.
+These would be worth 29444.00. Which represents an increase of 1131.71%.
 
-(✨) /stocks/bt/ $ whatif 2021-01-01
-If you had acquired 1 share of TSLA on 2021-01-01 with a cost of 729.77.
-This would be worth 1065.45. Which represents an increase of 146.00%. 
+2022 Feb 16, 10:05 (✨) /stocks/bt/ $ whatif -d 2000-01-01 -n 100
+If you had acquired 100 shares of MSFT on 2000-01-01 with a cost of 3679.42.
+These would be worth 29450.00. Which represents an increase of 700.40%.
 
-(✨) /stocks/bt/ $ whatif
-IPO date selected by default.
-If you had acquired 1 share of TSLA on 2010-06-29 with a cost of 4.78.
-This would be worth 1065.28. Which represents an increase of 22295.52%. 
+2022 Feb 16, 10:05 (✨) /stocks/bt/ $
 ```

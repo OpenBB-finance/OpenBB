@@ -9,7 +9,7 @@ import regex as re
 from pycoingecko import CoinGeckoAPI
 
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
-    replace_underscores_in_column_names,
+    lambda_replace_underscores_in_column_names,
 )
 from gamestonk_terminal.cryptocurrency.discovery.pycoingecko_model import read_file_data
 from gamestonk_terminal.cryptocurrency.pycoingecko_helpers import (
@@ -352,7 +352,7 @@ class Coin:
         df = pd.Series(dev).to_frame().reset_index()
         df.columns = ["Metric", "Value"]
         df["Metric"] = df["Metric"].apply(
-            lambda x: replace_underscores_in_column_names(x)
+            lambda x: lambda_replace_underscores_in_column_names(x)
             if isinstance(x, str)
             else x
         )
@@ -376,7 +376,7 @@ class Coin:
             df = pd.Series(dct).to_frame().reset_index()
             df.columns = ["Metric", "Value"]
             df["Metric"] = df["Metric"].apply(
-                lambda x: replace_underscores_in_column_names(x)
+                lambda x: lambda_replace_underscores_in_column_names(x)
                 if isinstance(x, str)
                 else x
             )
@@ -411,7 +411,7 @@ class Coin:
         df = pd.Series(dct).to_frame().reset_index()
         df.columns = ["Metric", "Value"]
         df["Metric"] = df["Metric"].apply(
-            lambda x: replace_underscores_in_column_names(x)
+            lambda x: lambda_replace_underscores_in_column_names(x)
             if isinstance(x, str)
             else x
         )
@@ -437,7 +437,7 @@ class Coin:
         df.columns = ["Metric", "Value"]
         df["Value"] = df["Value"].apply(lambda x: ",".join(x))
         df["Metric"] = df["Metric"].apply(
-            lambda x: replace_underscores_in_column_names(x)
+            lambda x: lambda_replace_underscores_in_column_names(x)
             if isinstance(x, str)
             else x
         )
@@ -505,7 +505,7 @@ class Coin:
         df = pd.Series(results).to_frame().reset_index()
         df.columns = ["Metric", "Value"]
         df["Metric"] = df["Metric"].apply(
-            lambda x: replace_underscores_in_column_names(x)
+            lambda x: lambda_replace_underscores_in_column_names(x)
             if isinstance(x, str)
             else x
         )
@@ -557,11 +557,12 @@ class Coin:
                 single_stats["circulating_supply"] / single_stats["total_supply"]
             )
         except (ZeroDivisionError, TypeError) as e:
+            logger.exception(str(e))
             console.print(e)
         df = pd.Series(single_stats).to_frame().reset_index()
         df.columns = ["Metric", "Value"]
         df["Metric"] = df["Metric"].apply(
-            lambda x: replace_underscores_in_column_names(x)
+            lambda x: lambda_replace_underscores_in_column_names(x)
             if isinstance(x, str)
             else x
         )
@@ -595,7 +596,7 @@ class Coin:
         df = pd.Series(results).to_frame().reset_index()
         df.columns = ["Metric", "Value"]
         df["Metric"] = df["Metric"].apply(
-            lambda x: replace_underscores_in_column_names(x)
+            lambda x: lambda_replace_underscores_in_column_names(x)
             if isinstance(x, str)
             else x
         )
@@ -631,7 +632,7 @@ class Coin:
         df = pd.Series(results).to_frame().reset_index()
         df.columns = ["Metric", "Value"]
         df["Metric"] = df["Metric"].apply(
-            lambda x: replace_underscores_in_column_names(x)
+            lambda x: lambda_replace_underscores_in_column_names(x)
             if isinstance(x, str)
             else x
         )
@@ -678,7 +679,7 @@ class Coin:
 
         # pylint: disable=unsupported-assignment-operation
         df["Metric"] = df["Metric"].apply(
-            lambda x: replace_underscores_in_column_names(x)
+            lambda x: lambda_replace_underscores_in_column_names(x)
             if isinstance(x, str)
             else x
         )

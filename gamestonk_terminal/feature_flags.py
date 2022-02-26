@@ -8,7 +8,7 @@ if env_files:
     load_dotenv(env_files[0])
 
 # Use tabulate to print dataframes
-USE_TABULATE_DF = strtobool(os.getenv("GTFF_USE_CLEAR_AFTER_CMD", "True"))
+USE_TABULATE_DF = strtobool(os.getenv("GTFF_USE_TABULATE_DF", "True"))
 
 # Use clear console after each command
 USE_CLEAR_AFTER_CMD = strtobool(os.getenv("GTFF_USE_CLEAR_AFTER_CMD", "False"))

@@ -186,7 +186,8 @@ def filter_stocks(
 
         return list(data.keys())
 
-    except ValueError:
+    except ValueError as e:
+        logger.exception(str(e))
         return list()
 
 
@@ -263,8 +264,8 @@ def get_companies_per_sector_in_country(
                     )
 
                 companies_per_sector[sector] = len(companies)
-            except ValueError:
-                pass
+            except ValueError as e:
+                logger.exception(str(e))
 
     return companies_per_sector
 
@@ -306,8 +307,8 @@ def get_companies_per_industry_in_country(
 
                 companies_per_industry[industry] = len(companies)
 
-            except ValueError:
-                pass
+            except ValueError as e:
+                logger.exception(str(e))
 
     return companies_per_industry
 
@@ -348,8 +349,8 @@ def get_companies_per_industry_in_sector(
 
                 companies_per_industry[industry] = len(companies)
 
-            except ValueError:
-                pass
+            except ValueError as e:
+                logger.exception(str(e))
 
     return companies_per_industry
 
@@ -390,8 +391,8 @@ def get_companies_per_country_in_sector(
 
                 companies_per_country[country] = len(companies)
 
-            except ValueError:
-                pass
+            except ValueError as e:
+                logger.exception(str(e))
 
     return companies_per_country
 
@@ -432,7 +433,7 @@ def get_companies_per_country_in_industry(
 
                 companies_per_country[country] = len(companies)
 
-            except ValueError:
-                pass
+            except ValueError as e:
+                logger.exception(str(e))
 
     return companies_per_country

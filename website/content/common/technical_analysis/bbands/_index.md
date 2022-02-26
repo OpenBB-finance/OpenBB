@@ -17,4 +17,4 @@ optional arguments:
   -h, --help            show this help message (default: False)
 ```
 
-![bbands](https://user-images.githubusercontent.com/25267873/108602984-28699580-739d-11eb-9b82-2683a9840145.png)
+![bbands](https://user-images.githubusercontent.com/46355364/154309951-116f3c31-342d-4ceb-b489-8b0ba78eb3a0.png)

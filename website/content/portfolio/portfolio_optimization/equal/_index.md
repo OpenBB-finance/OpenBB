@@ -11,4 +11,27 @@ optional arguments:
   --pie                 Display a pie chart for weights (default: False)
   -h, --help            show this help message (default: False)
 ```
-<img width="1400" alt="Feature Screenshot - equal" src="https://user-images.githubusercontent.com/85772166/147146034-a52c3d56-1665-4339-92a8-915937f56f67.png">
+
+Example:
+```
+2022 Feb 14, 11:15 (✨) /portfolio/po/ $ equal --pie
+
+      Weights
+┌────────┬─────────┐
+│        │ Value   │
+├────────┼─────────┤
+│ BNS.TO │ 16.66 % │
+├────────┼─────────┤
+│ BMO.TO │ 16.66 % │
+├────────┼─────────┤
+│ TD.TO  │ 16.66 % │
+├────────┼─────────┤
+│ CM.TO  │ 16.66 % │
+├────────┼─────────┤
+│ NA.TO  │ 16.66 % │
+├────────┼─────────┤
+│ RY.TO  │ 16.66 % │
+└────────┴─────────┘
+```
+
+![equal](https://user-images.githubusercontent.com/46355364/153902518-74f2818f-b844-4b0b-925f-7255898b51f4.png)

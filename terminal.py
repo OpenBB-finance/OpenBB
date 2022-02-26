@@ -2,12 +2,15 @@
 """Main Terminal Module"""
 __docformat__ = "numpy"
 
+import sys
 import os
 import difflib
 import logging
-import sys
+import argparse
+import platform
 from typing import List
 import pytz
+
 
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.rich_config import console
@@ -18,22 +21,24 @@ from gamestonk_terminal.helper_funcs import (
     get_user_timezone_or_invalid,
     replace_user_timezone,
 )
+
 from gamestonk_terminal.loggers import setup_logging
 from gamestonk_terminal.menu import session
+
 from gamestonk_terminal.terminal_helper import (
     about_us,
     bootup,
-    check_api_keys,
+    welcome_message,
     print_goodbye,
     reset,
     update_terminal,
+    suppress_stdout,
+    is_reset,
 )
 
 # pylint: disable=too-many-public-methods,import-outside-toplevel
 
 logger = logging.getLogger(__name__)
-
-DEBUG_MODE = False
 
 
 class TerminalController(BaseController):
@@ -43,6 +48,7 @@ class TerminalController(BaseController):
         "update",
         "about",
         "keys",
+        "settings",
         "tz",
     ]
     CHOICES_MENUS = [
@@ -101,8 +107,9 @@ class TerminalController(BaseController):
 
     about           about us
     update          update terminal automatically
-    keys            check for status of API keys
-    tz              set different timezone[/cmds]
+    tz              set different timezone[/cmds][menu]
+>   settings        set feature flags and style charts
+>   keys            set API keys and check their validity[/menu]
 
 [param]Timezone:[/param] {get_user_timezone_or_invalid()}
 [menu]
@@ -126,7 +133,15 @@ class TerminalController(BaseController):
 
     def call_keys(self, _):
         """Process keys command"""
-        check_api_keys()
+        from gamestonk_terminal.keys_controller import KeysController
+
+        self.queue = self.load_class(KeysController, self.queue)
+
+    def call_settings(self, _):
+        """Process settings command"""
+        from gamestonk_terminal.settings_controller import SettingsController
+
+        self.queue = self.load_class(SettingsController, self.queue)
 
     def call_about(self, _):
         """Process about command"""
@@ -210,15 +225,21 @@ class TerminalController(BaseController):
 def terminal(jobs_cmds: List[str] = None):
     """Terminal Menu"""
     setup_logging()
+    logger.info("START")
+    logger.info("Python: %s", platform.python_version())
+    logger.info("OS: %s", platform.system())
+    log_settings()
 
-    logger.info("Terminal started")
+    if jobs_cmds is not None and jobs_cmds:
+        logger.info("INPUT: %s", "/".join(jobs_cmds))
 
     ret_code = 1
     t_controller = TerminalController(jobs_cmds)
     an_input = ""
 
+    bootup()
     if not jobs_cmds:
-        bootup()
+        welcome_message()
         t_controller.print_help()
 
     while ret_code:
@@ -276,6 +297,10 @@ def terminal(jobs_cmds: List[str] = None):
                     break
 
         except SystemExit:
+            logger.exception(
+                "The command '%s' doesn't exist on the / menu.",
+                an_input,
+            )
             console.print(
                 f"\nThe command '{an_input}' doesn't exist on the / menu", end=""
             )
@@ -305,28 +330,217 @@ def terminal(jobs_cmds: List[str] = None):
                 console.print("\n")
 
 
-if __name__ == "__main__":
-    if len(sys.argv) > 1:
-        if "--debug" in sys.argv:
-            os.environ["DEBUG_MODE"] = "true"
-            sys.argv.remove("--debug")
-        if len(sys.argv) > 1 and ".gst" in sys.argv[1]:
-            if os.path.isfile(sys.argv[1]):
-                with open(sys.argv[1]) as fp:
-                    simulate_argv = f"/{'/'.join([line.rstrip() for line in fp])}"
-                    file_cmds = simulate_argv.replace("//", "/home/").split()
-                    # close the eyes if the user forgets the initial `/`
-                    if len(file_cmds) > 0:
-                        if file_cmds[0][0] != "/":
-                            file_cmds[0] = f"/{file_cmds[0]}"
-                    terminal(file_cmds)
+def insert_start_slash(cmds: List[str]) -> List[str]:
+    if not cmds[0].startswith("/"):
+        cmds[0] = f"/{cmds[0]}"
+    if cmds[0].startswith("/home"):
+        cmds[0] = f"/{cmds[0][5:]}"
+    return cmds
+
+
+def log_settings() -> None:
+    """Log settings"""
+    settings_dict = {}
+    settings_dict["tab"] = "activated" if gtff.USE_TABULATE_DF else "deactivated"
+    settings_dict["cls"] = "activated" if gtff.USE_CLEAR_AFTER_CMD else "deactivated"
+    settings_dict["color"] = "activated" if gtff.USE_COLOR else "deactivated"
+    settings_dict["promptkit"] = (
+        "activated" if gtff.USE_PROMPT_TOOLKIT else "deactivated"
+    )
+    settings_dict["predict"] = "activated" if gtff.ENABLE_PREDICT else "deactivated"
+    settings_dict["thoughts"] = (
+        "activated" if gtff.ENABLE_THOUGHTS_DAY else "deactivated"
+    )
+    settings_dict["reporthtml"] = (
+        "activated" if gtff.OPEN_REPORT_AS_HTML else "deactivated"
+    )
+    settings_dict["exithelp"] = (
+        "activated" if gtff.ENABLE_EXIT_AUTO_HELP else "deactivated"
+    )
+    settings_dict["rcontext"] = "activated" if gtff.REMEMBER_CONTEXTS else "deactivated"
+    settings_dict["rich"] = "activated" if gtff.ENABLE_RICH else "deactivated"
+    settings_dict["richpanel"] = (
+        "activated" if gtff.ENABLE_RICH_PANEL else "deactivated"
+    )
+    settings_dict["ion"] = "activated" if gtff.USE_ION else "deactivated"
+    settings_dict["watermark"] = "activated" if gtff.USE_WATERMARK else "deactivated"
+    settings_dict["autoscaling"] = (
+        "activated" if gtff.USE_PLOT_AUTOSCALING else "deactivated"
+    )
+    settings_dict["dt"] = "activated" if gtff.USE_DATETIME else "deactivated"
+    logger.info("SETTINGS: %s ", str(settings_dict))
+
+
+def run_scripts(path: str, test_mode: bool = False, verbose: bool = False):
+    """Runs a given .gst scripts
+
+    Parameters
+    ----------
+    path : str
+        The location of the .gst file
+    test_mode : bool
+        Whether the terminal is in test mode
+    verbose : bool
+        Whether to run tests in verbose mode
+    """
+    if os.path.isfile(path):
+        with open(path) as fp:
+            lines = [x for x in fp if not test_mode or not is_reset(x)]
+
+            if test_mode and "exit" not in lines[-1]:
+                lines.append("exit")
+
+            simulate_argv = f"/{'/'.join([line.rstrip() for line in lines])}"
+            file_cmds = simulate_argv.replace("//", "/home/").split()
+
+            file_cmds = insert_start_slash(file_cmds) if file_cmds else file_cmds
+            if not test_mode:
+                terminal(file_cmds)
+                # TODO: Add way to track how many commands are tested
             else:
-                console.print(
-                    f"The file '{sys.argv[1]}' doesn't exist. Launching terminal without any configuration.\n"
-                )
-                terminal()
-        else:
-            argv_cmds = list([" ".join(sys.argv[1:]).replace(" /", "/home/")])
-            terminal(argv_cmds)
+                if verbose:
+                    terminal(file_cmds)
+                else:
+                    with suppress_stdout():
+                        terminal(file_cmds)
     else:
-        terminal()
+        console.print(f"File '{path}' doesn't exist. Launching base terminal.\n")
+        if not test_mode:
+            terminal()
+
+
+def main(debug: bool, test: bool, filtert: str, paths: List[str], verbose: bool):
+    """
+    Runs the terminal with various options
+
+    Parameters
+    ----------
+    debug : bool
+        Whether to run the terminal in debug mode
+    test : bool
+        Whether to run the terminal in integrated test mode
+    filtert : str
+        Filter test files with given string in name
+    paths : List[str]
+        The paths to run for scripts or to test
+    verbose : bool
+        Whether to show output from tests
+    """
+
+    if test:
+        os.environ["DEBUG_MODE"] = "true"
+
+        if paths == []:
+            console.print("Please send a path when using test mode")
+            return
+        test_files = []
+        for path in paths:
+            if "gst" in path:
+                file = os.path.join(os.path.abspath(os.path.dirname(__file__)), path)
+                test_files.append(file)
+            else:
+                folder = os.path.join(os.path.abspath(os.path.dirname(__file__)), path)
+                files = [
+                    f"{folder}/{name}"
+                    for name in os.listdir(folder)
+                    if os.path.isfile(os.path.join(folder, name))
+                    and name.endswith(".gst")
+                    and (filtert in f"{folder}/{name}")
+                ]
+                test_files += files
+        test_files.sort()
+        SUCCESSES = 0
+        FAILURES = 0
+        fails = {}
+        length = len(test_files)
+        i = 0
+        console.print("[green]Gamestonk Terminal Integrated Tests:\n[/green]")
+        for file in test_files:
+            file = file.replace("//", "/")
+            file_name = file[file.rfind("GamestonkTerminal") :].replace("\\", "/")
+            console.print(f"{file_name}  {((i/length)*100):.1f}%")
+            try:
+                if not os.path.isfile(file):
+                    raise ValueError("Given file does not exist")
+                run_scripts(file, test_mode=True, verbose=verbose)
+                SUCCESSES += 1
+            except Exception as e:
+                fails[file] = e
+                FAILURES += 1
+            i += 1
+        if fails:
+            console.print("\n[red]Failures:[/red]\n")
+            for key, value in fails.items():
+                file_name = key[key.rfind("GamestonkTerminal") :].replace("\\", "/")
+                logger.error("%s: %s failed", file_name, value)
+                console.print(f"{file_name}: {value}\n")
+        console.print(
+            f"Summary: [green]Successes: {SUCCESSES}[/green] [red]Failures: {FAILURES}[/red]"
+        )
+    else:
+        if debug:
+            os.environ["DEBUG_MODE"] = "true"
+        if isinstance(paths, list) and paths[0].endswith(".gst"):
+            run_scripts(paths[0])
+        elif paths:
+            argv_cmds = list([" ".join(paths).replace(" /", "/home/")])
+            argv_cmds = insert_start_slash(argv_cmds) if argv_cmds else argv_cmds
+            terminal(argv_cmds)
+        else:
+            terminal()
+
+
+if __name__ == "__main__":
+
+    parser = argparse.ArgumentParser(
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        prog="terminal",
+        description="The gamestonk terminal.",
+    )
+    parser.add_argument(
+        "-d",
+        "--debug",
+        dest="debug",
+        action="store_true",
+        default=False,
+        help="Runs the terminal in debug mode.",
+    )
+    parser.add_argument(
+        "-p",
+        "--path",
+        help="The path or .gst file to run.",
+        dest="path",
+        nargs="+",
+        default="",
+        type=str,
+    )
+    parser.add_argument(
+        "-t",
+        "--test",
+        dest="test",
+        action="store_true",
+        default=False,
+        help="Whether to run in test mode.",
+    )
+    parser.add_argument(
+        "-f",
+        "--filter",
+        help="Send a keyword to filter in file name",
+        dest="filtert",
+        default="",
+        type=str,
+    )
+    parser.add_argument(
+        "-v", "--verbose", dest="verbose", action="store_true", default=False
+    )
+
+    if sys.argv[1:] and "-" not in sys.argv[1][0]:
+        sys.argv.insert(1, "-p")
+    ns_parser = parser.parse_args()
+    main(
+        ns_parser.debug,
+        ns_parser.test,
+        ns_parser.filtert,
+        ns_parser.path,
+        ns_parser.verbose,
+    )

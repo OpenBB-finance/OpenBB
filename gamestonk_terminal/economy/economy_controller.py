@@ -2,32 +2,34 @@
 __docformat__ = "numpy"
 # pylint:disable=too-many-lines,R1710,R0904,C0415
 import argparse
-from datetime import datetime, timedelta
-import os
-from typing import List
 import logging
+import os
+from datetime import datetime, timedelta
+from typing import List
 
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.rich_config import console
-from gamestonk_terminal.parent_classes import BaseController
+
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.economy import (
     alphavantage_view,
     cnn_view,
     finviz_view,
     nasdaq_model,
-    wsj_view,
     nasdaq_view,
+    wsj_view,
 )
 from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
-    EXPORT_ONLY_RAW_DATA_ALLOWED,
     EXPORT_ONLY_FIGURES_ALLOWED,
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
     parse_known_args_and_warn,
     valid_date,
 )
 from gamestonk_terminal.menu import session
+from gamestonk_terminal.parent_classes import BaseController
+from gamestonk_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -201,6 +203,7 @@ class EconomyController(BaseController):
 """
         console.print(text=help_text, menu="Economy")
 
+    @log_start_end(log=logger)
     def call_feargreed(self, other_args: List[str]):
         """Process feargreed command"""
         parser = argparse.ArgumentParser(
@@ -235,6 +238,7 @@ class EconomyController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_overview(self, other_args: List[str]):
         """Process overview command"""
         parser = argparse.ArgumentParser(
@@ -252,6 +256,7 @@ class EconomyController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_indices(self, other_args: List[str]):
         """Process indices command"""
         parser = argparse.ArgumentParser(
@@ -268,6 +273,7 @@ class EconomyController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_futures(self, other_args: List[str]):
         """Process futures command"""
         parser = argparse.ArgumentParser(
@@ -284,6 +290,7 @@ class EconomyController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_usbonds(self, other_args: List[str]):
         """Process usbonds command"""
         parser = argparse.ArgumentParser(
@@ -300,6 +307,7 @@ class EconomyController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_glbonds(self, other_args: List[str]):
         """Process glbonds command"""
         parser = argparse.ArgumentParser(
@@ -316,6 +324,7 @@ class EconomyController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_currencies(self, other_args: List[str]):
         """Process currencies command"""
         parser = argparse.ArgumentParser(
@@ -333,6 +342,7 @@ class EconomyController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_energy(self, other_args: List[str]):
         """Process energy command"""
         parser = argparse.ArgumentParser(
@@ -368,6 +378,7 @@ class EconomyController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_metals(self, other_args: List[str]):
         """Process metals command"""
         parser = argparse.ArgumentParser(
@@ -403,6 +414,7 @@ class EconomyController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_meats(self, other_args: List[str]):
         """Process meats command"""
         parser = argparse.ArgumentParser(
@@ -438,6 +450,7 @@ class EconomyController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_grains(self, other_args: List[str]):
         """Process grains command"""
         parser = argparse.ArgumentParser(
@@ -473,6 +486,7 @@ class EconomyController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_softs(self, other_args: List[str]):
         """Process softs command"""
         parser = argparse.ArgumentParser(
@@ -508,6 +522,7 @@ class EconomyController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_map(self, other_args: List[str]):
         """Process map command"""
         parser = argparse.ArgumentParser(
@@ -546,6 +561,7 @@ class EconomyController(BaseController):
                 map_type=ns_parser.s_type,
             )
 
+    @log_start_end(log=logger)
     def call_valuation(self, other_args: List[str]):
         """Process valuation command"""
         parser = argparse.ArgumentParser(
@@ -601,6 +617,7 @@ class EconomyController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_performance(self, other_args: List[str]):
         """Process performance command"""
         parser = argparse.ArgumentParser(
@@ -654,6 +671,7 @@ class EconomyController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_spectrum(self, other_args: List[str]):
         """Process spectrum command"""
         parser = argparse.ArgumentParser(
@@ -691,6 +709,7 @@ class EconomyController(BaseController):
         # after saving it and displaying it to the user
         os.remove(self.d_GROUPS[group] + ".jpg")
 
+    @log_start_end(log=logger)
     def call_rtps(self, other_args: List[str]):
         """Process rtps command"""
         parser = argparse.ArgumentParser(
@@ -717,6 +736,7 @@ class EconomyController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_gdp(self, other_args: List[str]):
         """Process gdp command"""
         parser = argparse.ArgumentParser(
@@ -765,6 +785,7 @@ class EconomyController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_gdpc(self, other_args: List[str]):
         """Process gdpc command"""
         parser = argparse.ArgumentParser(
@@ -800,6 +821,7 @@ class EconomyController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_inf(self, other_args: List[str]):
         """Process inf command"""
         parser = argparse.ArgumentParser(
@@ -835,6 +857,7 @@ class EconomyController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_cpi(self, other_args: List[str]):
         """Process cpi command"""
         parser = argparse.ArgumentParser(
@@ -879,6 +902,7 @@ class EconomyController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_tyld(self, other_args: List[str]):
         """Process tyld command"""
         parser = argparse.ArgumentParser(
@@ -935,6 +959,7 @@ class EconomyController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_unemp(self, other_args: List[str]):
         """Process unemp command"""
         parser = argparse.ArgumentParser(
@@ -970,6 +995,7 @@ class EconomyController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_bigmac(self, other_args: List[str]):
         """Process bigmac command"""
         parser = argparse.ArgumentParser(
@@ -1020,6 +1046,7 @@ class EconomyController(BaseController):
                     export=ns_parser.export,
                 )
 
+    @log_start_end(log=logger)
     def call_fred(self, _):
         """Process fred command"""
         from gamestonk_terminal.economy.fred.fred_controller import FredController

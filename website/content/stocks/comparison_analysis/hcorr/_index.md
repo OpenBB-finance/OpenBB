@@ -1,5 +1,5 @@
 ```text
-usage: corr [-t {o,h,l,c,a}] [-h]
+usage: hcorr [-t {o,h,l,c,a}] [-s START] [-h]
 ```
 
 A correlation heatmap for the selected tickers, using optional arguments described below. Scores range from +1 to -1 with 0 being completely neutral. 
@@ -8,7 +8,9 @@ A correlation heatmap for the selected tickers, using optional arguments describ
 optional arguments:
   -t {o,h,l,c,a}, --type {o,h,l,c,a}
                         Candle data to use: o-open, h-high, l-low, c-close, a-adjusted close. (default: a)
+  -s START, --start START
+                        The starting date (format YYYY-MM-DD) of the stock (default: 2021-02-14)
   -h, --help            show this help message (default: False)
 ```
 
-<img size="1400" alt="Feature Screenshot - corr" src="https://user-images.githubusercontent.com/25267873/110699596-efc41b80-81e6-11eb-924f-8739058aa54e.png">
+![hcorr](https://user-images.githubusercontent.com/46355364/154073186-45336f5f-85e1-4cb9-9307-9694295b1f80.png)

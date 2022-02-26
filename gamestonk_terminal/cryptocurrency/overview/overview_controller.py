@@ -4,49 +4,60 @@ __docformat__ = "numpy"
 # pylint: disable=R0904, C0302, W0622
 import argparse
 import difflib
+import logging
 from datetime import datetime, timedelta
 from typing import List
+
 from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.rich_config import console
-from gamestonk_terminal.parent_classes import BaseController
+
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.cryptocurrency.overview.blockchaincenter_model import DAYS
-from gamestonk_terminal.helper_funcs import (
-    EXPORT_BOTH_RAW_DATA_AND_FIGURES,
-    EXPORT_ONLY_RAW_DATA_ALLOWED,
-    parse_known_args_and_warn,
-    check_positive,
-    valid_date,
+from gamestonk_terminal.cryptocurrency.due_diligence.glassnode_view import (
+    display_btc_rainbow,
 )
-from gamestonk_terminal.menu import session
 from gamestonk_terminal.cryptocurrency.overview import (
+    blockchaincenter_view,
+    coinbase_model,
+    coinbase_view,
+    coinpaprika_model,
+    coinpaprika_view,
     cryptopanic_model,
+    cryptopanic_view,
     pycoingecko_model,
     pycoingecko_view,
-    coinpaprika_view,
-    cryptopanic_view,
     rekt_model,
     rekt_view,
     withdrawalfees_model,
     withdrawalfees_view,
-    coinpaprika_model,
-    coinbase_model,
-    coinbase_view,
-    blockchaincenter_view,
 )
-from gamestonk_terminal.cryptocurrency.overview.coinpaprika_view import CURRENCIES
+from gamestonk_terminal.cryptocurrency.discovery.pycoingecko_model import (
+    get_categories_keys,
+)
+from gamestonk_terminal.cryptocurrency.overview.blockchaincenter_model import DAYS
 from gamestonk_terminal.cryptocurrency.overview.coinpaprika_model import (
     get_all_contract_platforms,
 )
-from gamestonk_terminal.cryptocurrency.due_diligence.glassnode_view import (
-    display_btc_rainbow,
+from gamestonk_terminal.cryptocurrency.overview.coinpaprika_view import CURRENCIES
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_funcs import (
+    EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+    EXPORT_ONLY_FIGURES_ALLOWED,
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
+    check_positive,
+    parse_known_args_and_warn,
+    valid_date,
 )
+from gamestonk_terminal.menu import session
+from gamestonk_terminal.parent_classes import BaseController
+from gamestonk_terminal.rich_config import console
+
+logger = logging.getLogger(__name__)
 
 
 class OverviewController(BaseController):
     """Overview Controller class"""
 
     CHOICES_COMMANDS = [
+        "hm",
         "cgglobal",
         "cgdefi",
         "cgstables",
@@ -125,6 +136,7 @@ class OverviewController(BaseController):
             choices["cpcontracts"]["-s"] = {
                 c: None for c in coinpaprika_model.CONTRACTS_FILTERS
             }
+            choices["hm"] = {c: None for c in get_categories_keys()}
             choices["cpinfo"]["-s"] = {c: None for c in coinpaprika_model.INFO_FILTERS}
             choices["cbpairs"]["-s"] = {c: None for c in coinbase_model.PAIRS_FILTERS}
             choices["news"]["-k"] = {c: None for c in cryptopanic_model.CATEGORIES}
@@ -150,6 +162,7 @@ class OverviewController(BaseController):
     cgderivatives     crypto derivatives
     cgcategories      crypto categories
     cghold            ethereum, bitcoin holdings overview statistics
+    hm                crypto heatmap
 [src][CoinPaprika][/src]
     cpglobal          global crypto market info
     cpinfo            basic info about all coins available
@@ -174,6 +187,49 @@ class OverviewController(BaseController):
 """
         console.print(text=help_text, menu="Cryptocurrency - Overview")
 
+    @log_start_end(log=logger)
+    def call_hm(self, other_args):
+        """Process hm command"""
+        parser = argparse.ArgumentParser(
+            prog="hm",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="""Display cryptocurrencies heatmap [Source: https://coingecko.com]
+            Accepts --category or -c to display only coins of a certain category
+            (default no category to display all coins ranked by market cap).
+            You can look on only top N number of records with --limit.
+            """,
+        )
+
+        parser.add_argument(
+            "-l",
+            "--limit",
+            dest="limit",
+            type=int,
+            help="Display N items",
+            default=10,
+        )
+        parser.add_argument(
+            "-c",
+            "--category",
+            default="",
+            dest="category",
+            help="Category (e.g., stablecoins). Empty for no category",
+        )
+        if other_args and not other_args[0][0] == "-":
+            other_args.insert(0, "-c")
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_FIGURES_ALLOWED
+        )
+        if ns_parser:
+            pycoingecko_view.display_crypto_heatmap(
+                category=ns_parser.category,
+                top=ns_parser.limit,
+                export=ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
     def call_ch(self, other_args):
         """Process ch command"""
         parser = argparse.ArgumentParser(
@@ -236,6 +292,7 @@ class OverviewController(BaseController):
                 descend=ns_parser.descend,
             )
 
+    @log_start_end(log=logger)
     def call_btcrb(self, other_args: List[str]):
         """Process btcrb command"""
         parser = argparse.ArgumentParser(
@@ -273,6 +330,7 @@ class OverviewController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_altindex(self, other_args: List[str]):
         """Process altindex command"""
         parser = argparse.ArgumentParser(
@@ -330,6 +388,7 @@ class OverviewController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_wf(self, other_args: List[str]):
         """Process wf command"""
         parser = argparse.ArgumentParser(
@@ -360,6 +419,7 @@ class OverviewController(BaseController):
                 top=ns_parser.limit, export=ns_parser.export
             )
 
+    @log_start_end(log=logger)
     def call_ewf(self, other_args: List[str]):
         """Process ewf command"""
         parser = argparse.ArgumentParser(
@@ -381,6 +441,7 @@ class OverviewController(BaseController):
                 export=ns_parser.export
             )
 
+    @log_start_end(log=logger)
     def call_wfpe(self, other_args: List[str]):
         """Process wfpe command"""
         parser = argparse.ArgumentParser(
@@ -444,6 +505,7 @@ class OverviewController(BaseController):
                     f"Please choose one from list: {withdrawalfees_model.POSSIBLE_CRYPTOS}\n"
                 )
 
+    @log_start_end(log=logger)
     def call_cghold(self, other_args):
         """Process hold command"""
         parser = argparse.ArgumentParser(
@@ -496,6 +558,7 @@ class OverviewController(BaseController):
                 top=ns_parser.limit,
             )
 
+    @log_start_end(log=logger)
     def call_cgcategories(self, other_args):
         """Process top_categories command"""
         parser = argparse.ArgumentParser(
@@ -546,6 +609,7 @@ class OverviewController(BaseController):
             )
 
     # TODO: solve sort (similar to cglosers from discovery)
+    @log_start_end(log=logger)
     def call_cgstables(self, other_args):
         """Process stables command"""
         parser = argparse.ArgumentParser(
@@ -606,6 +670,7 @@ class OverviewController(BaseController):
                 pie=ns_parser.pie,
             )
 
+    @log_start_end(log=logger)
     def call_cgproducts(self, other_args):
         """Process products command"""
         parser = argparse.ArgumentParser(
@@ -657,6 +722,7 @@ class OverviewController(BaseController):
                 descend=ns_parser.descend,
             )
 
+    @log_start_end(log=logger)
     def call_cgplatforms(self, other_args):
         """Process platforms command"""
         parser = argparse.ArgumentParser(
@@ -709,6 +775,7 @@ class OverviewController(BaseController):
                 descend=ns_parser.descend,
             )
 
+    @log_start_end(log=logger)
     def call_cgexchanges(self, other_args):
         """Process exchanges command"""
         parser = argparse.ArgumentParser(
@@ -770,6 +837,7 @@ class OverviewController(BaseController):
                 links=ns_parser.urls,
             )
 
+    @log_start_end(log=logger)
     def call_cgexrates(self, other_args):
         """Process exchange_rates command"""
         parser = argparse.ArgumentParser(
@@ -820,6 +888,7 @@ class OverviewController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_cgindexes(self, other_args):
         """Process indexes command"""
         parser = argparse.ArgumentParser(
@@ -827,7 +896,8 @@ class OverviewController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""Shows list of crypto indexes from CoinGecko.
-            Each crypto index is made up of a selection of cryptocurrencies, grouped together and weighted by market cap.
+            Each crypto index is made up of a selection of cryptocurrencies,
+            grouped together and weighted by market cap.
             You can display only N number of indexes with --limit parameter.
             You can sort data by Rank, Name, Id, Market, Last, MultiAsset with --sort
             and also with --descend flag to sort descending.
@@ -873,6 +943,7 @@ class OverviewController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_cgderivatives(self, other_args):
         """Process derivatives command"""
         parser = argparse.ArgumentParser(
@@ -887,7 +958,8 @@ class OverviewController(BaseController):
                You can sort by Rank, Market, Symbol, Price, Pct_Change_24h, Contract_Type, Basis, Spread, Funding_Rate,
                Volume_24h with --sort and also with --descend flag to set it to sort descending.
                Displays:
-                   Rank, Market, Symbol, Price, Pct_Change_24h, Contract_Type, Basis, Spread, Funding_Rate, Volume_24h""",
+                   Rank, Market, Symbol, Price, Pct_Change_24h, Contract_Type, Basis, Spread, Funding_Rate, Volume_24h
+                   """,
         )
 
         parser.add_argument(
@@ -928,6 +1000,7 @@ class OverviewController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_cgglobal(self, other_args):
         """Process global command"""
         parser = argparse.ArgumentParser(
@@ -953,6 +1026,7 @@ class OverviewController(BaseController):
                 export=ns_parser.export, pie=ns_parser.pie
             )
 
+    @log_start_end(log=logger)
     def call_cgdefi(self, other_args):
         """Process defi command"""
         parser = argparse.ArgumentParser(
@@ -972,6 +1046,7 @@ class OverviewController(BaseController):
         if ns_parser:
             pycoingecko_view.display_global_defi_info(export=ns_parser.export)
 
+    @log_start_end(log=logger)
     def call_cpglobal(self, other_args):
         """Process global command"""
 
@@ -989,6 +1064,7 @@ class OverviewController(BaseController):
         if ns_parser:
             coinpaprika_view.display_global_market(export=ns_parser.export)
 
+    @log_start_end(log=logger)
     def call_cpmarkets(self, other_args):
         """Process markets command"""
         parser = argparse.ArgumentParser(
@@ -1053,6 +1129,7 @@ class OverviewController(BaseController):
                 sortby=ns_parser.sortby,
             )
 
+    @log_start_end(log=logger)
     def call_cpexmarkets(self, other_args):
         """Process exmarkets command"""
         parser = argparse.ArgumentParser(
@@ -1131,6 +1208,7 @@ class OverviewController(BaseController):
                 links=ns_parser.urls,
             )
 
+    @log_start_end(log=logger)
     def call_cpinfo(self, other_args):
         """Process info command"""
         parser = argparse.ArgumentParser(
@@ -1195,6 +1273,7 @@ class OverviewController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_cpexchanges(self, other_args):
         """Process coins_market command"""
         parser = argparse.ArgumentParser(
@@ -1259,6 +1338,7 @@ class OverviewController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_cpplatforms(self, other_args):
         """Process platforms command"""
         parser = argparse.ArgumentParser(
@@ -1274,6 +1354,7 @@ class OverviewController(BaseController):
         if ns_parser:
             coinpaprika_view.display_all_platforms(export=ns_parser.export)
 
+    @log_start_end(log=logger)
     def call_cpcontracts(self, other_args):
         """Process contracts command"""
         platforms = get_all_contract_platforms()["platform_id"].tolist()
@@ -1345,6 +1426,7 @@ class OverviewController(BaseController):
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_cbpairs(self, other_args):
         """Process news command"""
         parser = argparse.ArgumentParser(
@@ -1392,6 +1474,7 @@ class OverviewController(BaseController):
                 descend=ns_parser.descend,
             )
 
+    @log_start_end(log=logger)
     def call_news(self, other_args):
         """Process news command"""
         parser = argparse.ArgumentParser(

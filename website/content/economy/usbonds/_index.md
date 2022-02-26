@@ -1,13 +1,41 @@
 ```
-usage: usbonds [--export {csv,json,xlsx}] [-h]
+usage: usbonds [-h] [--export {csv,json,xlsx}]
 ```
 
-An overview of the US bond rates. https://wsj.com
+An overview of the US bond rates. [Source: Wall St. Journal]
 
 ```
 optional arguments:
-  --export {csv,json,xlsx}
-                        Export dataframe data to csv,json,xlsx file (default: )
   -h, --help            show this help message (default: False)
+  --export {csv,json,xlsx}
+                        Export raw data into csv, json, xlsx (default: )
 ```
-<img size="1400" alt="Feature Screenshot - usbonds" src="https://user-images.githubusercontent.com/85772166/141938762-868da0ee-3f99-4201-b83a-1833de408e00.png">
+
+Example:
+```
+2022 Feb 15, 05:42 (✨) /economy/ $ usbonds
+                     US Bonds
+┌──────────────┬──────────┬─────────┬─────────────┐
+│              │ Rate (%) │ Yld (%) │ Yld Chg (%) │
+├──────────────┼──────────┼─────────┼─────────────┤
+│ 30-Year Bond │ 2.25     │ 2.330   │ 0.043       │
+├──────────────┼──────────┼─────────┼─────────────┤
+│ 10-Year Note │ 1.88     │ 2.033   │ 0.045       │
+├──────────────┼──────────┼─────────┼─────────────┤
+│ 7-Year Note  │ 1.75     │ 2.032   │ 0.044       │
+├──────────────┼──────────┼─────────┼─────────────┤
+│ 5-Year Note  │ 1.50     │ 1.944   │ 0.032       │
+├──────────────┼──────────┼─────────┼─────────────┤
+│ 3-Year Note  │ 1.50     │ 1.810   │ 0.014       │
+├──────────────┼──────────┼─────────┼─────────────┤
+│ 2-Year Note  │ 0.88     │ 1.592   │ 0.009       │
+├──────────────┼──────────┼─────────┼─────────────┤
+│ 1-Year Bill  │ 0.00     │ 1.091   │ 0.026       │
+├──────────────┼──────────┼─────────┼─────────────┤
+│ 6-Month Bill │ 0.00     │ 0.774   │ -0.005      │
+├──────────────┼──────────┼─────────┼─────────────┤
+│ 3-Month Bill │ 0.00     │ 0.416   │ 0.006       │
+├──────────────┼──────────┼─────────┼─────────────┤
+│ 1-Month Bill │ 0.00     │ 0.025   │ -0.010      │
+└──────────────┴──────────┴─────────┴─────────────┘
+```

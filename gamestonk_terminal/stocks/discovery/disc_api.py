@@ -6,7 +6,6 @@ from gamestonk_terminal.helper_classes import ModelsNamespace as _models
 # pylint: disable=unused-import
 
 # Menu commands
-from .geekofwallstreet_view import display_realtime_earnings as rtearn
 from .finnhub_view import past_ipo as pipo
 from .finnhub_view import future_ipo as fipo
 from .yahoofinance_view import display_gainers as gainers

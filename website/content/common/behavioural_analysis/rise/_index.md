@@ -1,14 +1,43 @@
 ```
-usage: rise [-n N_NUM] [-h]
+usage: rise [-l LIMIT] [-h] [--export {csv,json,xlsx,png,jpg,pdf,svg}]
 ```
 
-The terms searched along with the loaded ticker that are rising the fastest on Google.
+Print top rising related queries with this stock's query. [Source: Google]
 
 ```
 optional arguments:
-  -n N_NUM, --num N_NUM
-                        number of top rising related queries to print. (default: 10)
+  -l LIMIT, --limit LIMIT
+                        limit of top rising related queries to print. (default: 10)
   -h, --help            show this help message (default: False)
+  --export {csv,json,xlsx,png,jpg,pdf,svg}
+                        Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg (default: )
 ```
 
-<img width="1400" alt="Feature Screenshot - rise" src="https://user-images.githubusercontent.com/25267873/108777814-4f21fa80-755c-11eb-96da-0327c9a0da57.png">
+Example:
+```
+2022 Feb 16, 10:40 (✨) /stocks/ba/ $ rise
+Top rising AAPL's related queries
+┏━━━━━━━━━━━━━━━━━┳━━━━━━━━┓
+┃ query           ┃ value  ┃
+┡━━━━━━━━━━━━━━━━━╇━━━━━━━━┩
+│ nio stock       │ 227850 │
+├─────────────────┼────────┤
+│ nio             │ 183950 │
+├─────────────────┼────────┤
+│ pltr            │ 103100 │
+├─────────────────┼────────┤
+│ pltr stock      │ 82800  │
+├─────────────────┼────────┤
+│ mrna stock      │ 75050  │
+├─────────────────┼────────┤
+│ zm stock        │ 67850  │
+├─────────────────┼────────┤
+│ nio stock price │ 64000  │
+├─────────────────┼────────┤
+│ zm              │ 63500  │
+├─────────────────┼────────┤
+│ bynd            │ 61450  │
+├─────────────────┼────────┤
+│ bynd stock      │ 47450  │
+└─────────────────┴────────┘
+```

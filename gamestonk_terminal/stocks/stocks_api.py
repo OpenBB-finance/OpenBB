@@ -11,6 +11,7 @@ from .stocks_helper import display_candle as candle
 from .backtesting import bt_api as bt
 from .behavioural_analysis import ba_api as ba
 from .comparison_analysis import ca_api as ca
+from .dark_pool_shorts import dps_api as dps  # This API throws and warning on import!
 from .discovery import disc_api as disc
 from .due_diligence import dd_api as dd
 from .fundamental_analysis import fa_api as fa
@@ -24,6 +25,5 @@ from .technical_analysis import ta_api as ta
 
 try:
     from .prediction_techniques import pred_api as pred
-except Exception:
-    # print("Prediction API is not available.")
-    pass
+except Exception as e:
+    _ = e

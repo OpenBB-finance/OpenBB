@@ -26,4 +26,25 @@ optional arguments:
   --pie                 Display a pie chart for weights (default: False)
   -h, --help            show this help message (default: False)
 ```
-<img size="1400" alt="Feature Screenshot - property" src="https://user-images.githubusercontent.com/85772166/147179496-6d1f9ef4-c42e-4bdf-b438-f877169d1de8.png">
+Example:
+```
+2022 Feb 14, 11:22 (✨) /portfolio/po/ $ property -p trailingEps
+      Weights
+┌────────┬─────────┐
+│        │ Value   │
+├────────┼─────────┤
+│ BNS.TO │ 12.63 % │
+├────────┼─────────┤
+│ BMO.TO │ 18.99 % │
+├────────┼─────────┤
+│ TD.TO  │ 12.66 % │
+├────────┼─────────┤
+│ CM.TO  │ 22.85 % │
+├────────┼─────────┤
+│ NA.TO  │ 14.70 % │
+├────────┼─────────┤
+│ RY.TO  │ 18.14 % │
+└────────┴─────────┘
+```
+
+![property](https://user-images.githubusercontent.com/46355364/153903858-80e67d54-e2f7-46cc-8958-201b198db9e2.png)

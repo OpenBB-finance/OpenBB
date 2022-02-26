@@ -1,7 +1,7 @@
      Rank                    Name     Chain       Sector     TVL 1 Day (%)
-131   132  Robo-Advisor for Yield  Ethereum      Lending   $1.4K   -11.56%
-130   131                 Olympus  Ethereum       Assets  $17.9K    -0.39%
-129   130               Primitive  Ethereum  Derivatives  $19.7K   -18.52%
-128   129                 DeFireX  Ethereum       Assets  $35.6K    -0.21%
-127   128               S Finance  Ethereum        DEXes  $99.1K     0.54%
+131   131  Robo-Advisor for Yield  Ethereum      Lending   $1.4K   -11.56%
+130   130                 Olympus  Ethereum       Assets  $17.9K    -0.39%
+129   129               Primitive  Ethereum  Derivatives  $19.7K   -18.52%
+128   128                 DeFireX  Ethereum       Assets  $35.6K    -0.21%
+127   127               S Finance  Ethereum        DEXes  $99.1K     0.54%
 

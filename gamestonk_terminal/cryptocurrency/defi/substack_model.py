@@ -75,6 +75,7 @@ def get_newsletters() -> pd.DataFrame:
             try:
                 newsletters.append(pd.DataFrame(newsletter))
             except KeyError as e:
+                logger.exception(str(e))
                 console.print(e, "\n")
                 continue
 
