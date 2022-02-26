@@ -64,6 +64,7 @@ def make_request(params: Optional[dict] = None) -> Tuple[int, Any]:
 
     return response.status_code, response.json()
 
+
 @log_start_end(log=logger)
 def get_whales_transactions(min_value: int = 800000, limit: int = 100) -> pd.DataFrame:
     """Whale Alert's API allows you to retrieve live and historical transaction data from major blockchains.

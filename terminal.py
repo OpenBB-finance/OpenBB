@@ -370,6 +370,7 @@ def log_settings() -> None:
     settings_dict["dt"] = "activated" if gtff.USE_DATETIME else "deactivated"
     logger.info("SETTINGS: %s ", str(settings_dict))
 
+
 def run_scripts(path: str, test_mode: bool = False, verbose: bool = False):
     """Runs a given .gst scripts
 
