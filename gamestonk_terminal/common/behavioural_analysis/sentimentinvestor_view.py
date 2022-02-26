@@ -64,7 +64,7 @@ def display_historical(
 
     # Check to see if the ticker is supported
     if not supported_ticker:
-        logger.exception("Ticker not supported")
+        logger.error("Ticker not supported")
         console.print(
             f"[red]Ticker {ticker} not supported. Please try another one![/red]\n"
         )
@@ -82,7 +82,7 @@ def display_historical(
         ax2 = ax1.twinx()
     else:
         if len(external_axes) != 2:
-            logger.exception("Expected list of two axis items.")
+            logger.error("Expected list of two axis items.")
             console.print("[red]Expected list of 2 axis item.[/red]\n")
             return
         (ax1, ax2) = external_axes
@@ -171,7 +171,7 @@ def display_trending(
     df = sentimentinvestor_model.get_trending(start, hour, number)
 
     if df.empty:
-        logger.exception("Error in Sentiment Investor request.")
+        logger.error("Error in Sentiment Investor request.")
         console.print("[red]Error in Sentiment Investor request.\n[/red]")
 
     else:

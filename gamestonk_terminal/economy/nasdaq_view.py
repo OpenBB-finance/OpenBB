@@ -58,7 +58,7 @@ def display_big_mac_index(
 
         else:
             if len(external_axes) != 3:
-                logger.exception("Expected list of 3 axis items.")
+                logger.error("Expected list of 3 axis items.")
                 console.print("[red]Expected list of 3 axis items./n[/red]")
                 return
             (ax,) = external_axes
@@ -82,5 +82,5 @@ def display_big_mac_index(
         )
         console.print("")
     else:
-        logger.exception("Unable to get big mac data")
+        logger.error("Unable to get big mac data")
         console.print("[red]Unable to get big mac data[/red]\n")

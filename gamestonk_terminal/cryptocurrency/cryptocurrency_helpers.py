@@ -1018,7 +1018,7 @@ def plot_candles(
         nr_external_axes = 2 if volume else 1
 
         if len(external_axes) != nr_external_axes:
-            logger.exception("Expected list of %s axis items.", str(nr_external_axes))
+            logger.error("Expected list of %s axis items.", str(nr_external_axes))
             console.print(
                 f"[red]Expected list of {nr_external_axes} axis items./n[/red]"
             )
@@ -1060,7 +1060,7 @@ def plot_order_book(
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     else:
         if len(external_axes) != 1:
-            logger.exception("Expected list of one axis item.")
+            logger.error("Expected list of one axis item.")
             console.print("[red]Expected list of one axis item./n[/red]")
             return
         (ax,) = external_axes

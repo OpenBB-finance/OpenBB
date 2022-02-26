@@ -101,7 +101,7 @@ def get_watchlists(
             if n_flair_posts_found > n_to_get - 1:
                 break
         else:
-            logger.exception("Invalid submission")
+            logger.error("Invalid submission")
             console.print("[red]Invalid submission[/red]\n")
     return subs, d_watchlist_tickers, n_flair_posts_found
 
@@ -184,7 +184,7 @@ def get_popular_tickers(
                                 d_watchlist_tickers[key] = 1
 
             except ResponseException:
-                logger.warning(
+                logger.exception(
                     "Received a response from Reddit with an authorization error. Check your token."
                 )
                 console.print(

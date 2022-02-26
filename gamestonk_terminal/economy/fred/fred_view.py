@@ -120,7 +120,7 @@ def display_fred_series(
 
     else:
         if len(external_axes) != 3:
-            logger.exception("Expected list of 3 axis items")
+            logger.error("Expected list of 3 axis items")
             console.print("[red]Expected list of 3 axis items./n[/red]")
             return
         (ax,) = external_axes
@@ -134,7 +134,7 @@ def display_fred_series(
         for s_id, sub_dict in d_series.items():
             data_to_plot = data[s_id].dropna()
             exponent = int(np.log10(data_to_plot.max()))
-            data_to_plot /= 10**exponent
+            data_to_plot /= 10 ** exponent
             multiplier = f"x {format_units(10**exponent)}" if exponent > 0 else ""
             title = f"{sub_dict['title']} ({sub_dict['units']}) {'['+multiplier+']' if multiplier else ''}"
             ax.plot(
@@ -147,7 +147,7 @@ def display_fred_series(
 
     ax.legend(prop={"size": 10}, bbox_to_anchor=(0, 1), loc="lower left")
     if data.empty:
-        logger.exception("No data")
+        logger.error("No data")
         console.print("[red]No data[/red]\n")
     else:
         ax.set_xlim(data.index[0], data.index[-1])

@@ -152,7 +152,7 @@ class PredictionTechniquesController(BaseController):
                     ns_parser.series_id, ns_parser.start_date
                 ).dropna()
             else:
-                logger.exception("%s not found", str(ns_parser.series_id))
+                logger.error("%s not found", str(ns_parser.series_id))
                 console.print(f"[red]{ns_parser.series_id} not found[/red].")
             console.print(
                 f"Current Series: {', '.join(self.current_series.keys()).upper() or None}\n"
@@ -236,13 +236,10 @@ class PredictionTechniquesController(BaseController):
                         "Backtesting not allowed, since End Date is older than Start Date of historical data\n"
                     )
 
-                if (
-                    ns_parser.s_end_date
-                    < get_next_stock_market_days(
-                        last_stock_day=self.data.index[0],
-                        n_next_days=5 + ns_parser.n_days,
-                    )[-1]
-                ):
+                if ns_parser.s_end_date < get_next_stock_market_days(
+                    last_stock_day=self.data.index[0],
+                    n_next_days=5 + ns_parser.n_days,
+                )[-1]:
                     console.print(
                         "Backtesting not allowed, since End Date is too close to Start Date to train model\n"
                     )
@@ -337,7 +334,7 @@ class PredictionTechniquesController(BaseController):
         )
         if ns_parser:
             if ns_parser.n_inputs > len(self.data):
-                logger.exception("Number of inputs exceeds number of data samples")
+                logger.error("Number of inputs exceeds number of data samples")
                 console.print(
                     f"[red]Data only contains {len(self.data)} samples and the model is trying "
                     f"to use {ns_parser.n_inputs} inputs.  Either use less inputs or load with"
@@ -436,13 +433,10 @@ class PredictionTechniquesController(BaseController):
                     )
                     return
 
-                if (
-                    ns_parser.s_end_date
-                    < get_next_stock_market_days(
-                        last_stock_day=self.data.index[0],
-                        n_next_days=5 + ns_parser.n_days,
-                    )[-1]
-                ):
+                if ns_parser.s_end_date < get_next_stock_market_days(
+                    last_stock_day=self.data.index[0],
+                    n_next_days=5 + ns_parser.n_days,
+                )[-1]:
                     console.print(
                         "Backtesting not allowed, since End Date is too close to Start Date to train model\n"
                     )
@@ -450,7 +444,7 @@ class PredictionTechniquesController(BaseController):
 
             try:
                 if ns_parser.n_inputs > len(self.data):
-                    logger.exception("Number of inputs exceeds number of data samples")
+                    logger.error("Number of inputs exceeds number of data samples")
                     console.print(
                         f"[red]Data only contains {len(self.data)} samples and the model is trying "
                         f"to use {ns_parser.n_inputs} inputs.  Either use less inputs or load with"
@@ -555,13 +549,10 @@ class PredictionTechniquesController(BaseController):
                     )
                     return
 
-                if (
-                    ns_parser.s_end_date
-                    < get_next_stock_market_days(
-                        last_stock_day=self.data.index[0],
-                        n_next_days=5 + ns_parser.n_days,
-                    )[-1]
-                ):
+                if ns_parser.s_end_date < get_next_stock_market_days(
+                    last_stock_day=self.data.index[0],
+                    n_next_days=5 + ns_parser.n_days,
+                )[-1]:
                     console.print(
                         "Backtesting not allowed, since End Date is too close to Start Date to train model\n"
                     )
@@ -591,7 +582,7 @@ class PredictionTechniquesController(BaseController):
             )
             if ns_parser:
                 if ns_parser.n_inputs > len(self.data):
-                    logger.exception("Number of inputs exceeds number of data samples")
+                    logger.error("Number of inputs exceeds number of data samples")
                     console.print(
                         f"[red]Data only contains {len(self.data)} samples and the model is trying "
                         f"to use {ns_parser.n_inputs} inputs.  Either use less inputs or load with"
@@ -629,7 +620,7 @@ class PredictionTechniquesController(BaseController):
             )
             if ns_parser:
                 if ns_parser.n_inputs > len(self.data):
-                    logger.exception("Number of inputs exceeds number of data samples")
+                    logger.error("Number of inputs exceeds number of data samples")
                     console.print(
                         f"[red]Data only contains {len(self.data)} samples and the model is trying "
                         f"to use {ns_parser.n_inputs} inputs.  Either use less inputs or load with"
@@ -668,7 +659,7 @@ class PredictionTechniquesController(BaseController):
             )
             if ns_parser:
                 if ns_parser.n_inputs > len(self.data):
-                    logger.exception("Number of inputs exceeds number of data samples")
+                    logger.error("Number of inputs exceeds number of data samples")
                     console.print(
                         f"[red]Data only contains {len(self.data)} samples and the model is trying "
                         f"to use {ns_parser.n_inputs} inputs.  Either use less inputs or load with"
@@ -707,7 +698,7 @@ class PredictionTechniquesController(BaseController):
             )
             if ns_parser:
                 if ns_parser.n_inputs > len(self.data):
-                    logger.exception("Number of inputs exceeds number of data samples")
+                    logger.error("Number of inputs exceeds number of data samples")
                     console.print(
                         f"[red]Data only contains {len(self.data)} samples and the model is trying "
                         f"to use {ns_parser.n_inputs} inputs.  Either use less inputs or load with"

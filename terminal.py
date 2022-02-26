@@ -297,7 +297,7 @@ def terminal(jobs_cmds: List[str] = None):
                     break
 
         except SystemExit:
-            logger.warning(
+            logger.exception(
                 "The command '%s' doesn't exist on the / menu.",
                 an_input,
             )
@@ -481,7 +481,7 @@ if __name__ == "__main__":
             if fails:
                 console.print("\n[red]Failures:[/red]\n")
                 for key, value in fails.items():
-                    logger.exception("%s: %s failed", key, value)
+                    logger.error("%s: %s failed", key, value)
                     console.print(f"{key}: {value}\n")
             console.print(
                 f"Summary: [green]Successes: {SUCCESSES}[/green] [red]Failures: {FAILURES}[/red]"

@@ -254,7 +254,7 @@ Loaded:[/info] {self.portfolio_name or None}
             console.print("[red]Currently only stocks or cash supported.[/red]\n")
             type_ = input("Type (stock, cash): \n")
             if type_ not in ["stock", "cash"]:
-                logger.exception("Two unsuccessful attempts.  Exiting add")
+                logger.error("Two unsuccessful attempts.  Exiting add")
                 console.print("[red]Two unsuccessful attempts.  Exiting add.[/red]\n")
                 return
 
@@ -266,7 +266,7 @@ Loaded:[/info] {self.portfolio_name or None}
                 console.print("Cash can only be deposit or withdraw\n")
                 action = input("Action: (buy, sell, deposit, withdraw): \n").lower()
                 if action not in ["deposit", "withdraw"]:
-                    logger.exception("Two unsuccessful attempts.  Exiting add")
+                    logger.error("Two unsuccessful attempts.  Exiting add")
                     console.print(
                         "[red]Two unsuccessful attempts.  Exiting add.[/red]\n"
                     )
@@ -276,7 +276,7 @@ Loaded:[/info] {self.portfolio_name or None}
             if action not in ["buy", "sell"]:
                 console.print("Stock can only be buy or sell\n")
                 if action not in ["buy", "sell"]:
-                    logger.exception("Two unsuccessful attempts.  Exiting add")
+                    logger.error("Two unsuccessful attempts.  Exiting add")
                     console.print(
                         "[red]Two unsuccessful attempts.  Exiting add.[/red]\n"
                     )

@@ -349,7 +349,7 @@ def display_candle(
             theme.visualize_output(force_tight_layout=False)
         else:
             if len(external_axes) != 1:
-                logger.exception("Expected list of one axis item.")
+                logger.error("Expected list of one axis item.")
                 console.print("[red]Expected list of 1 axis items./n[/red]")
                 return
             (ax1,) = external_axes
@@ -618,7 +618,7 @@ def quote(other_args: List[str], s_ticker: str):
         print_rich_table(quote_data, title="Ticker Quote", show_index=True)
 
     except KeyError:
-        logger.warning("Invalid stock ticker")
+        logger.exception("Invalid stock ticker")
         console.print(f"Invalid stock ticker: {ns_parser.s_ticker}")
 
     console.print("")

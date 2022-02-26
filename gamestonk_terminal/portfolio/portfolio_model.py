@@ -507,7 +507,7 @@ class Portfolio:
             Class instance
         """
         if not np.isclose(np.sum(list_of_weights), 1, 0.03):
-            logger.exception("Weights do not add to 1")
+            logger.error("Weights do not add to 1")
             console.print("[red]Weights do not add to 1[/red].")
             return cls()
         list_of_amounts = [weight * amount for weight in list_of_weights]

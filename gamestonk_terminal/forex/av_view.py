@@ -31,7 +31,7 @@ def display_quote(to_symbol: str, from_symbol: str):
     quote = av_model.get_quote(to_symbol, from_symbol)
 
     if not quote:
-        logger.exception("Quote not pulled from AlphaVantage.  Check API key.")
+        logger.error("Quote not pulled from AlphaVantage.  Check API key.")
         console.print("[red]Quote not pulled from AlphaVantage.  Check API key.[/red]")
         return
 
@@ -97,7 +97,7 @@ def display_candle(
         theme.visualize_output(force_tight_layout=False)
     else:
         if len(external_axes) != 1:
-            logger.exception("Expected list of 1 axis items.")
+            logger.error("Expected list of 1 axis items.")
             console.print("[red]Expected list of 1 axis items./n[/red]")
             return
         (ax1,) = external_axes

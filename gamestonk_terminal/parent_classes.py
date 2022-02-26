@@ -306,7 +306,7 @@ class BaseController(metaclass=ABCMeta):
                 self.queue = self.switch(an_input)
 
             except SystemExit:
-                logger.warning(
+                logger.exception(
                     "The command '%s' doesn't exist on the %s menu.",
                     an_input,
                     self.PATH,

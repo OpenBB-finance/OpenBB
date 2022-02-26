@@ -69,7 +69,7 @@ def display_adx(
         ax1, ax2 = axes
     else:
         if len(external_axes) != 2:
-            logger.exception("Expected list of two axis items.")
+            logger.error("Expected list of two axis items.")
             console.print("[red]Expected list of 2 axis items./n[/red]")
             return
         ax1, ax2 = external_axes
@@ -159,7 +159,7 @@ def display_aroon(
         ax1, ax2, ax3 = axes
     else:
         if len(external_axes) != 3:
-            logger.exception("Expected list of three axis items.")
+            logger.error("Expected list of three axis items.")
             console.print("[red]Expected list of 3 axis items./n[/red]")
             return
         ax1, ax2, ax3 = external_axes

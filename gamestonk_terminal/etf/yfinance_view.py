@@ -80,7 +80,7 @@ def display_etf_weightings(
 
         else:
             if len(external_axes) != 1:
-                logger.exception("Expected list of 1 axis items.")
+                logger.error("Expected list of 1 axis items.")
                 console.print("[red]Expected list of 1 axis items./n[/red]")
                 return
             (ax,) = external_axes

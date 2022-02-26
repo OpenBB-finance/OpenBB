@@ -56,7 +56,7 @@ def display_covid_ov(
         ax2 = ax1.twinx()
     else:
         if len(external_axes) != 2:
-            logger.exception("Expected list of two axis items.")
+            logger.error("Expected list of two axis items.")
             console.print("[red]Expected list of 2 axis item./n[/red]")
             return
         ax1, ax2 = external_axes
@@ -142,7 +142,7 @@ def display_covid_stat(
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     else:
         if len(external_axes) != 1:
-            logger.exception("Expected list of one axis item.")
+            logger.error("Expected list of one axis item.")
             console.print("[red]Expected list of 1 axis item./n[/red]")
             return
         (ax,) = external_axes

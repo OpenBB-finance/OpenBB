@@ -69,7 +69,7 @@ def display_ad(
         ax1, ax2, ax3 = axes
     else:
         if len(external_axes) != 3:
-            logger.exception("Expected list of three axis items.")
+            logger.error("Expected list of three axis items.")
             console.print("[red]Expected list of 3 axis items./n[/red]")
             return
         (ax1, ax2, ax3) = external_axes
@@ -180,7 +180,7 @@ def display_adosc(
         ax1, ax2, ax3 = axes
     else:
         if len(external_axes) != 3:
-            logger.exception("Expected list of three axis items.")
+            logger.error("Expected list of three axis items.")
             console.print("[red]Expected list of 3 axis items./n[/red]")
             return
         (ax1, ax2, ax3) = external_axes
@@ -281,7 +281,7 @@ def display_obv(
         ax1, ax2, ax3 = axes
     else:
         if len(external_axes) != 3:
-            logger.exception("Expected list of three axis items.")
+            logger.error("Expected list of three axis items.")
             console.print("[red]Expected list of 3 axis items./n[/red]")
             return
         (ax1, ax2, ax3) = external_axes

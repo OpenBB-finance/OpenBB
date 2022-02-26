@@ -57,7 +57,7 @@ def display_btc_rainbow(
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
         else:
             if len(external_axes) != 1:
-                logger.exception("Expected list of one axis item.")
+                logger.error("Expected list of one axis item.")
                 console.print("[red]Expected list of one axis item./n[/red]")
                 return
             (ax,) = external_axes
@@ -134,7 +134,7 @@ def display_btc_rainbow(
             [datetime(2012, 11, 28), datetime(2016, 7, 9), datetime(2020, 5, 11)]
         )
         sample_dates = mdates.date2num(sample_dates)
-        ax.vlines(x=sample_dates, ymin=0, ymax=10**5, color="grey")
+        ax.vlines(x=sample_dates, ymin=0, ymax=10 ** 5, color="grey")
         for i, x in enumerate(sample_dates):
             ax.text(x, 1, f"Halving {i+1}", rotation=-90, verticalalignment="center")
 
@@ -198,7 +198,7 @@ def display_active_addresses(
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
         else:
             if len(external_axes) != 1:
-                logger.exception("Expected list of one axis item.")
+                logger.error("Expected list of one axis item.")
                 console.print("[red]Expected list of one axis item./n[/red]")
                 return
             (ax,) = external_axes
@@ -261,7 +261,7 @@ def display_non_zero_addresses(
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
         else:
             if len(external_axes) != 1:
-                logger.exception("Expected list of one axis item.")
+                logger.error("Expected list of one axis item.")
                 console.print("[red]Expected list of one axis item./n[/red]")
                 return
             (ax,) = external_axes
@@ -329,7 +329,7 @@ def display_exchange_net_position_change(
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
         else:
             if len(external_axes) != 1:
-                logger.exception("Expected list of one axis item.")
+                logger.error("Expected list of one axis item.")
                 console.print("[red]Expected list of one axis item./n[/red]")
                 return
             (ax,) = external_axes
@@ -415,7 +415,7 @@ def display_exchange_balances(
 
         else:
             if len(external_axes) != 1:
-                logger.exception("Expected list of one axis item.")
+                logger.error("Expected list of one axis item.")
                 console.print("[red]Expected list of one axis item./n[/red]")
                 return
             (ax1, ax2) = external_axes
@@ -489,7 +489,7 @@ def display_hashrate(
 
         else:
             if len(external_axes) != 1:
-                logger.exception("Expected list of one axis item.")
+                logger.error("Expected list of one axis item.")
                 console.print("[red]Expected list of one axis item./n[/red]")
                 return
             (ax1, ax2) = external_axes

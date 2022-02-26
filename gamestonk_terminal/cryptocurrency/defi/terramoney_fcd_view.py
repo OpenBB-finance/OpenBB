@@ -185,7 +185,7 @@ def display_account_growth(
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     else:
         if len(external_axes) != 1:
-            logger.exception("Expected list of one axis item.")
+            logger.error("Expected list of one axis item.")
             console.print("[red]Expected list of one axis item./n[/red]")
             return
         (ax,) = external_axes
@@ -248,7 +248,7 @@ def display_staking_ratio_history(
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     else:
         if len(external_axes) != 1:
-            logger.exception("Expected list of one axis item.")
+            logger.error("Expected list of one axis item.")
             console.print("[red]Expected list of one axis item./n[/red]")
             return
         (ax,) = external_axes
@@ -293,7 +293,7 @@ def display_staking_returns_history(
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     else:
         if len(external_axes) != 1:
-            logger.exception("Expected list of one axis item.")
+            logger.error("Expected list of one axis item.")
             console.print("[red]Expected list of one axis item./n[/red]")
             return
         (ax,) = external_axes

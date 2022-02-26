@@ -180,7 +180,7 @@ class ForexController(BaseController):
                     f"Loaded historic data from {self.from_symbol} to {self.to_symbol}"
                 )
             else:
-                logger.exception(
+                logger.error(
                     "Make sure both a to symbol and a from symbol are supplied."
                 )
                 console.print(
@@ -201,7 +201,7 @@ class ForexController(BaseController):
             if not self.data.empty:
                 av_view.display_candle(self.data, self.to_symbol, self.from_symbol)
             else:
-                logger.exception(
+                logger.error(
                     "No forex historical data loaded.  Load first using <load>."
                 )
                 console.print(
@@ -222,7 +222,7 @@ class ForexController(BaseController):
             if self.to_symbol and self.from_symbol:
                 av_view.display_quote(self.to_symbol, self.from_symbol)
             else:
-                logger.exception(
+                logger.error(
                     "Make sure both a 'to' symbol and a 'from' symbol are selected."
                 )
                 console.print(
