@@ -45,8 +45,11 @@ def check_series_id(series_id: str) -> Tuple[bool, Dict]:
         payload = {}
     # cover invalid api keys & series does not exist
     elif r.status_code == 400:
-        console.print(r.json()["error_message"])
         payload = {}
+        if "api_key" in r.json()["error_message"]:
+            console.print("[red]Invalid API Key[/red]\n")
+        else:
+            console.print(r.json()["error_message"])
 
     return r.status_code == 200, payload
 
@@ -125,10 +128,13 @@ def get_series_data(series_id: str, start: str) -> pd.DataFrame:
     pd.DataFrame
         Series data
     """
+    df = pd.DataFrame()
+
     try:
         fredapi_client = Fred(cfg.API_FRED_KEY)
+        df = fredapi_client.get_series(series_id, start)
     # Series does not exist & invalid api keys
     except HTTPError as e:
         console.print(e)
 
-    return fredapi_client.get_series(series_id, start)
+    return df
