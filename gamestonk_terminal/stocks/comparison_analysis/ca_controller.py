@@ -340,9 +340,8 @@ class ComparisonAnalysisController(BaseController):
                         f"The limit of stocks to compare are {ns_parser.limit}. The subsample will occur randomly.\n",
                     )
 
-                self.similar = [self.ticker] + self.similar
-
                 if self.similar:
+                    self.similar = [self.ticker] + self.similar
                     console.print(
                         f"[{self.user}] Similar Companies: {', '.join(self.similar)}",
                         "\n",

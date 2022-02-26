@@ -33,7 +33,7 @@ def get_similar_companies(ticker: str, us_only: bool) -> Tuple[List[str], str]:
         f"https://api.polygon.io/v1/meta/symbols/{ticker.upper()}/company?&apiKey={cfg.API_POLYGON_KEY}"
     )
 
-    similar = [""]
+    similar = []
     source = "Error"
 
     if result.status_code == 200:
