@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 from typing import Dict, List, Tuple
+from requests import HTTPError
 
 import fred
 import pandas as pd
@@ -12,6 +13,7 @@ from fredapi import Fred
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import get_user_agent
+from gamestonk_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -36,9 +38,17 @@ def check_series_id(series_id: str) -> Tuple[bool, Dict]:
     r = requests.get(url, headers={"User-Agent": get_user_agent()})
     # The above returns 200 if series is found
     # There seems to be an occasional bug giving a 503 response where the json decoding fails
-    if r.status_code >= 500:
-        return False, {}
-    return r.status_code == 200, r.json()
+    if r.status_code == 200:
+        payload = r.json()
+
+    elif r.status_code >= 500:
+        payload = {}
+    # cover invalid api keys & series does not exist
+    elif r.status_code == 400:
+        console.print(r.json()["error_message"])
+        payload = {}
+
+    return r.status_code == 200, payload
 
 
 @log_start_end(log=logger)
@@ -85,6 +95,11 @@ def get_series_ids(series_term: str, num: int) -> Tuple[List[str], List[str]]:
     fred.key(cfg.API_FRED_KEY)
     d_series = fred.search(series_term)
 
+    # Cover invalid api and empty search terms
+    if "error_message" in d_series:
+        console.print(d_series["error_message"])
+        return [], []
+
     if "seriess" not in d_series:
         return [], []
 
@@ -110,5 +125,10 @@ def get_series_data(series_id: str, start: str) -> pd.DataFrame:
     pd.DataFrame
         Series data
     """
-    fredapi_client = Fred(cfg.API_FRED_KEY)
+    try:
+        fredapi_client = Fred(cfg.API_FRED_KEY)
+    # Series does not exist & invalid api keys
+    except HTTPError as e:
+        console.print(e)
+
     return fredapi_client.get_series(series_id, start)

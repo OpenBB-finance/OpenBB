@@ -27,6 +27,10 @@ def display_top_retail(n_days: int = 3, export: str = ""):
         Format to export data, by default ""
     """
     retails = nasdaq_model.get_retail_tickers()
+
+    if retails.empty:
+        return
+
     for date, df in retails.head(n_days * 10).groupby("Date"):
         df = df.drop(columns=["Date"])
         df = df.reset_index(drop=True)
