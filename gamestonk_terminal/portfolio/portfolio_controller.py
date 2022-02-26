@@ -137,7 +137,11 @@ Loaded:[/info] {self.portfolio_name or None}
         if self.portfolio.empty:
             tickers = []
         else:
-            tickers = self.portfolio._stock_tickers + self.portfolio._etf_tickers + self.portfolio._crypto_tickers
+            tickers = (
+                self.portfolio._stock_tickers
+                + self.portfolio._etf_tickers
+                + self.portfolio._crypto_tickers
+            )
         self.queue = self.load_class(
             po_controller.PortfolioOptimization, tickers, self.queue
         )

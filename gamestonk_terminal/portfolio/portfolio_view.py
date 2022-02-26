@@ -128,9 +128,9 @@ def display_allocation(
     all_holdings.plot(ax=ax)
     ax.set_title("Individual Asset Holdings")
     if len(all_holdings.columns) > 10:
-        legend_columns = round(len(all_holdings.columns)/5)
+        legend_columns = round(len(all_holdings.columns) / 5)
     elif len(all_holdings.columns) > 40:
-        legend_columns = round(len(all_holdings.columns)/10)
+        legend_columns = round(len(all_holdings.columns) / 10)
     else:
         legend_columns = 1
     ax.legend(loc="upper left", ncol=legend_columns)
