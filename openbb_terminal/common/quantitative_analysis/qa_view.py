@@ -1127,3 +1127,25 @@ def display_es(
         floatfmt=".4f",
     )
     console.print("")
+
+
+def display_omega(data: pd.DataFrame, threshold_start: float = 0, threshold_end: float = 1.5):
+    threshold = np.linspace(threshold_start, threshold_end, 50)
+    omega_list = []
+
+    for i in threshold:
+        omega_list.append(qa_model.get_omega(data, i))
+
+    # Plotting
+    fig, ax = plt.subplots()
+    ax.plot(threshold, omega_list)
+    ax.set_title(f"Omega Curve - over last {len(data)}'s period")
+    ax.set_ylabel("Omega Ratio")
+    ax.set_xlabel("Threshold (%)")
+    fig.legend()
+    ax.set_ylim(threshold_start, threshold_end)
+
+    theme.style_primary_axis(ax)
+    theme.visualize_output()
+
+    console.print("")

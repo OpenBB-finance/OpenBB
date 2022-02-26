@@ -473,3 +473,36 @@ def get_es(
     es_list = [es_90, es_95, es_99, es_custom]
     hist_es_list = [hist_es_90, hist_es_95, hist_es_99, hist_es_custom]
     return es_list, hist_es_list
+
+
+def sortino(data: pd.DataFrame, target_return: float, period: float, adjusted: bool):
+    data_return = data[0]/data[-period]
+
+    # Sortino Ratio
+    # For method & terminology see:
+    # http://www.redrockcapital.com/Sortino__A__Sharper__Ratio_Red_Rock_Capital.pdf
+    target_downside_deviation = np.sqrt((data[data.pct_change() < 0] ** 2).sum() / len(data))
+    sortino_ratio = (data_return - target_return) / target_downside_deviation
+
+    if adjusted:
+        # Adjusting the sortino ratio inorder to compare it to sharpe ratio
+        # Thus if the deviation is neutral then it's equal to the sharpe ratio
+        sortino_ratio = sortino_ratio / np.sqrt(2)
+
+    return sortino_ratio
+
+
+def get_omega(data: pd.DataFrame, threshold: float):
+    # Calculating daily threshold from annualised threshold value
+    daily_threshold = (threshold + 1) ** np.sqrt(1 / 252) - 1
+
+    # Get excess return
+    data_excess = data - daily_threshold
+
+    # Values excess return
+    data_positive_sum = data_excess[data_excess > 0].sum()
+    data_negative_sum = data_excess[data_excess < 0].sum()
+
+    omega_ratio = data_positive_sum / (-data_negative_sum)
+
+    return omega_ratio
