@@ -188,7 +188,8 @@ def short_interest_volume(
             ax2 = ax.twinx()
         else:
             if len(external_axes) != 3:
-                console.print("[red]Expected list of three axis item./n[/red]")
+                logger.error("Expected list of three axis items.")
+                console.print("[red]Expected list of three axis items./n[/red]")
                 return
             (ax, ax1, ax2) = external_axes
 
@@ -317,6 +318,7 @@ def net_short_position(
             ax2 = ax1.twinx()
         else:
             if len(external_axes) != 2:
+                logger.error("Expected list of one axis item.")
                 console.print("[red]Expected list of one axis item./n[/red]")
                 return
             (ax1, ax2) = external_axes

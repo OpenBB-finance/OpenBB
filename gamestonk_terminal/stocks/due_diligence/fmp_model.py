@@ -29,7 +29,8 @@ def get_rating(ticker: str) -> pd.DataFrame:
     if cfg.API_KEY_FINANCIALMODELINGPREP:
         try:
             df = fa.rating(ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
-        except ValueError:
+        except ValueError as e:
+            logger.exception(str(e))
             df = pd.DataFrame()
     else:
         df = pd.DataFrame()

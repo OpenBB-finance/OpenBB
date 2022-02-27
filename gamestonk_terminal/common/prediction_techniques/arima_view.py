@@ -128,6 +128,9 @@ def display_arima(
         if (not s_end_date and len(external_axes) != 1) or (
             s_end_date and len(external_axes) != 3
         ):
+            logger.error(
+                "Expected list of 1 axis item or 3 axis items when backtesting"
+            )
             console.print(
                 "[red]Expected list of 1 axis item "
                 + "or 3 axis items when backtesting./n[/red]"
@@ -203,6 +206,7 @@ def display_arima(
             (ax2, ax3) = axes
         else:
             if len(external_axes) != 3:
+                logger.error("Expected list of one axis item.")
                 console.print("[red]Expected list of 1 axis item./n[/red]")
                 return
             (_, ax2, ax3) = external_axes

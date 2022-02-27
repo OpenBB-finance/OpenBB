@@ -558,6 +558,7 @@ class PredictionTechniquesController(CryptoBaseController):
                     time_res=self.resolution,
                 )
         except Exception as e:
+            logger.exception(str(e))
             console.print(e, "\n")
 
         finally:
@@ -588,6 +589,7 @@ class PredictionTechniquesController(CryptoBaseController):
                 )
 
         except Exception as e:
+            logger.exception(str(e))
             console.print(e, "\n")
 
         finally:
@@ -618,6 +620,7 @@ class PredictionTechniquesController(CryptoBaseController):
                 )
 
         except Exception as e:
+            logger.exception(str(e))
             console.print(e, "\n")
 
         finally:
@@ -648,6 +651,7 @@ class PredictionTechniquesController(CryptoBaseController):
                 )
 
         except Exception as e:
+            logger.exception(str(e))
             console.print(e, "\n")
 
         finally:

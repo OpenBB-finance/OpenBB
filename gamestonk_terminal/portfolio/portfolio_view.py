@@ -127,7 +127,13 @@ def display_allocation(
         ax = external_axes
     all_holdings.plot(ax=ax)
     ax.set_title("Individual Asset Holdings")
-    ax.legend(loc="upper left")
+    if len(all_holdings.columns) > 10:
+        legend_columns = round(len(all_holdings.columns) / 5)
+    elif len(all_holdings.columns) > 40:
+        legend_columns = round(len(all_holdings.columns) / 10)
+    else:
+        legend_columns = 1
+    ax.legend(loc="upper left", ncol=legend_columns)
     ax.set_ylabel("Holdings ($)")
     theme.style_primary_axis(ax)
     if external_axes is None:
@@ -173,6 +179,7 @@ def display_rolling_stats(
         _, ax = plt.subplots(4, 1, figsize=(8, 8), dpi=PLOT_DPI, sharex=True)
     else:
         if len(external_axes) != 4:
+            logger.error("Expected list of four axis items.")
             console.print("[red]4 axes expected./n[/red]")
             return
         ax = external_axes

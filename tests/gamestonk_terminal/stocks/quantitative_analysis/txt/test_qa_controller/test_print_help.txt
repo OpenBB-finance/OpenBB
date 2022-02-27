@@ -23,7 +23,8 @@ Rolling Metrics:
     skew        rolling skewness of distribution of prices
     kurtosis    rolling kurtosis of distribution of prices
 Risk:
-    var         value at risk
+    var         display value at risk
+    es          display expected shortfall
 Other:
     raw         print raw data
     decompose   decomposition in cyclic-trend, season, and residuals of prices

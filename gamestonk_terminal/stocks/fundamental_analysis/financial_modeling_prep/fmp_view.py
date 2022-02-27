@@ -56,6 +56,7 @@ def display_profile(ticker: str):
         console.print(f"\nImage: {profile.loc['image'][0]}")
         console.print(f"\nDescription: {profile.loc['description'][0]}")
     else:
+        logger.error("Could not get data")
         console.print("[red]Unable to get data[/red]")
 
     console.print()
@@ -168,6 +169,7 @@ def display_income_statement(
             export, os.path.dirname(os.path.abspath(__file__)), "income", income
         )
     else:
+        logger.error("Could not get data")
         console.print("[red]Could not get data[/red]\n")
 
 
@@ -209,6 +211,7 @@ def display_balance_sheet(
             export, os.path.dirname(os.path.abspath(__file__)), "balance", balance
         )
     else:
+        logger.error("Could not get data")
         console.print("[red]Could not get data[/red]\n")
 
 
@@ -248,6 +251,7 @@ def display_cash_flow(
         console.print()
         export_data(export, os.path.dirname(os.path.abspath(__file__)), "cash", cash)
     else:
+        logger.error("Could not get data")
         console.print("[red]Could not get data[/red]\n")
 
 
@@ -283,6 +287,7 @@ def display_key_metrics(
             export, os.path.dirname(os.path.abspath(__file__)), "metrics", key_metrics
         )
     else:
+        logger.error("Could not get data")
         console.print("[red]Could not get data[/red]\n")
 
 
@@ -318,6 +323,7 @@ def display_financial_ratios(
             export, os.path.dirname(os.path.abspath(__file__)), "grratiosowth", ratios
         )
     else:
+        logger.error("Could not get data")
         console.print("[red]Could not get data[/red]\n")
 
 
@@ -353,4 +359,5 @@ def display_financial_statement_growth(
             export, os.path.dirname(os.path.abspath(__file__)), "growth", growth
         )
     else:
+        logger.error("Could not get data")
         console.print("[red]Could not get data[/red]\n")
