@@ -9,7 +9,7 @@ from numpy.core.fromnumeric import transpose
 from PIL import Image
 
 import bots.config_discordbot as cfg
-from bots.groupme.groupme_helpers import send_image
+from bots.groupme.groupme_helpers import send_image, send_message
 
 presets_custom = [
     "potential_reversals",
@@ -273,6 +273,12 @@ class ShowView:
 
     def groupme(self, func, group_id, name, *args, **kwargs):
         data = func(*args, **kwargs)
-
+        print(data["description"])
         if "imagefile" in data:
-            send_image(data["imagefile"], group_id, data.get("description", ""))
+            send_image(data["imagefile"], group_id, data.get("description", ""), True)
+        elif "description" in data:
+            title = data.get("title", "")
+            # TODO: Allow navigation through pages
+            description = data.get("description", [])[0].replace("Page ", "")
+            message = f"{title}\n{description}"
+            send_message(message, group_id)

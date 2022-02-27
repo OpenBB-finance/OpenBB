@@ -26,7 +26,7 @@ def upload_image(image: str, local: bool) -> requests.Response:
     url = "https://image.groupme.com/pictures"
     headers = {
         "Content-Type": "image/jpeg",
-        "X-Access-Token": "85w8CudYavVwkN7YAdOQwSyzXyCYDx7SV9aLBoRL",
+        "X-Access-Token": os.getenv("X-Access-Token"),
     }
     if local:
         path_string = pathlib.Path(__file__).parent.parent.resolve()
@@ -45,7 +45,8 @@ def send_message(message: str, group_id: str) -> requests.Response:
 def send_image(
     image: str, group_id: str, text: str = None, local: bool = False
 ) -> requests.Response:
-    image_url = upload_image(image, local).json()["payload"]["picture_url"]
+    response = upload_image(image, local).json()
+    image_url = response["payload"]["picture_url"]
     mid = "/bots/post"
     bot_id = group_to_bot[group_id]
     data = {
