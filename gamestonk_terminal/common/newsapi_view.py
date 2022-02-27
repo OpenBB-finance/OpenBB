@@ -3,9 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 
-import requests
-
-from gamestonk_terminal import config_terminal as cfg
+from gamestonk_terminal.common import newsapi_model
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.rich_config import console
 
@@ -13,14 +11,14 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def news(
+def display_news(
     term: str,
     num: int,
     s_from: str,
     show_newest: bool,
     sources: str,
 ):
-    """Display news for a given title. [Source: NewsAPI]
+    """Display news for a given term. [Source: NewsAPI]
 
     Parameters
     ----------
@@ -35,36 +33,9 @@ def news(
     sources: str
         sources to exclusively show news from
     """
-    link = (
-        f"https://newsapi.org/v2/everything?q={term}&from={s_from}&sortBy=publishedAt&language=en"
-        f"&apiKey={cfg.API_NEWS_TOKEN}"
-    )
+    articles = newsapi_model.get_news(term, s_from, show_newest, sources)
 
-    if sources:
-        link += f"&domains={sources}"
-
-    response = requests.get(link)
-
-    # Check that the API response was successful
-    if response.status_code == 426:
-        console.print(f"Error in request: {response.json()['message']}", "\n")
-
-    elif response.status_code != 200:
-        console.print(
-            f"Error in request {response.status_code}. Check News API token", "\n"
-        )
-
-    else:
-        console.print(
-            f"{response.json()['totalResults']} news articles for {term} were found since {s_from}\n"
-        )
-
-        if show_newest:
-            articles = response.json()["articles"]
-
-        else:
-            articles = response.json()["articles"][::-1]
-
+    if articles:
         for idx, article in enumerate(articles):
             console.print(
                 article["publishedAt"].replace("T", " ").replace("Z", ""),

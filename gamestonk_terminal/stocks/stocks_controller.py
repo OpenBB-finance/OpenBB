@@ -342,7 +342,7 @@ Stock: [/param]{stock_text}
 
             d_stock = yf.Ticker(self.ticker).info
 
-            newsapi_view.news(
+            newsapi_view.display_news(
                 term=d_stock["shortName"].replace(" ", "+")
                 if "shortName" in d_stock
                 else self.ticker,
