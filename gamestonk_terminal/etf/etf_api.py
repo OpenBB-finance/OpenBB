@@ -7,7 +7,8 @@ from gamestonk_terminal.helper_classes import ModelsNamespace as _models
 
 # Context menus
 from gamestonk_terminal.stocks.stocks_helper import display_candle as candle
-from gamestonk_terminal.common.newsapi_view import news
+from gamestonk_terminal.common.newsapi_view import display_news
+from gamestonk_terminal.common.newsapi_model import get_news
 from .financedatabase_view import display_etf_by_name as ln
 from .financedatabase_view import display_etf_by_description as ld
 from .stockanalysis_view import view_overview as overview
