@@ -97,7 +97,7 @@ def display_historical(
     ax.set_ylabel(f"{['','Normalized'][normalize]} Share Price {['($)',''][normalize]}")
     # ensures that the historical data starts from same datapoint
     ax.set_xlim([df_similar.index[0], df_similar.index[-1]])
-    ax.legend(loc="best")
+    ax.legend()
     theme.style_primary_axis(ax)
 
     if not external_axes:
