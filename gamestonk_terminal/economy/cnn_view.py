@@ -42,7 +42,8 @@ def fear_and_greed_index(
 
     else:
         if len(external_axes) != 1:
-            console.print("[red]Expected list of 1 axis items./n[/red]")
+            logger.error("Expected list of one axis item.")
+            console.print("[red]Expected list of 1 axis item./n[/red]")
             return
         (ax,) = external_axes
 

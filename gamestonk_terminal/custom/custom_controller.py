@@ -157,6 +157,7 @@ class CustomDataController(BaseController):
         )
         if ns_parser:
             if self.data.empty:
+                logger.error("No data loaded")
                 console.print("[red]No data loaded.[/red]\n")
                 return
             custom_view.custom_plot(
@@ -186,11 +187,15 @@ class CustomDataController(BaseController):
         ns_parser = parse_known_args_and_warn(parser, other_args, limit=5)
         if ns_parser:
             if self.data.empty:
+                logger.error("No data loaded")
                 console.print("[red]No data loaded.[/red]\n")
                 return
             if ns_parser.sortcol:
                 sort_column = " ".join(ns_parser.sortcol)
                 if sort_column not in self.data.columns:
+                    logger.warning(
+                        "%s is not a valid column. Showing without sorting", sort_column
+                    )
                     console.print(
                         f"[red]{sort_column} not a valid column.  Showing without sorting.\n[/red]"
                     )
@@ -219,6 +224,7 @@ class CustomDataController(BaseController):
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if self.data.empty:
+                logger.error("No data loaded.")
                 console.print("[red]No data loaded.[/red]\n")
                 return
             console.print(self.data.info())

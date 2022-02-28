@@ -92,5 +92,6 @@ def get_dividend_cal(date: str) -> pd.DataFrame:
             console.print(r.text)
 
     except requests.exceptions.ReadTimeout:
+        logger.exception("Request timed out")
         return pd.DataFrame()
     return df

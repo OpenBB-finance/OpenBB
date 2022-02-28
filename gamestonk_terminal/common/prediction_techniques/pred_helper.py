@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 import argparse
 from typing import List, Union, Optional
 import os
+import logging
 from warnings import simplefilter
 from datetime import timedelta
 import numpy as np
@@ -32,6 +33,7 @@ from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.rich_config import console
 
+logger = logging.getLogger(__name__)
 
 register_matplotlib_converters()
 
@@ -432,7 +434,8 @@ def plot_data_predictions(
         )
     else:
         if len(external_axes) != 1:
-            console.print("[red]Expected list of 1 axis items./n[/red]")
+            logger.error("Expected list of one axis item")
+            console.print("[red]Expected list of 1 axis item./n[/red]")
             return
         (ax,) = external_axes
 

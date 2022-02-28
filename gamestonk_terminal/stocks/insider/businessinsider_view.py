@@ -61,6 +61,7 @@ def insider_activity(
     df_ins = businessinsider_model.get_insider_activity(ticker)
 
     if df_ins.empty:
+        logger.warning("The insider activity on the ticker does not exist")
         console.print("[red]The insider activity on the ticker does not exist.\n[/red]")
     else:
 
@@ -86,6 +87,7 @@ def insider_activity(
                 _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
             else:
                 if len(external_axes) != 1:
+                    logger.error("Expected list of one axis item.")
                     console.print("[red]Expected list of one axis item./n[/red]")
                     return
                 (ax,) = external_axes

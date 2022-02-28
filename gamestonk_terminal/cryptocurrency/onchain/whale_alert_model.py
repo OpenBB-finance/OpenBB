@@ -59,6 +59,7 @@ def make_request(params: Optional[dict] = None) -> Tuple[int, Any]:
     response = requests.get(url, params=params)
 
     if not 200 <= response.status_code < 300:
+        logger.error("Invalid Authentication: %s", response.text)
         console.print(f"Invalid Authentication: {response.text}")
 
     return response.status_code, response.json()

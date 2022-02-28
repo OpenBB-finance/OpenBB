@@ -361,7 +361,8 @@ def get_token_info(address) -> pd.DataFrame:
     ]:
         try:
             response.pop(name)
-        except KeyError:
+        except KeyError as e:
+            logger.exception(str(e))
             continue
 
     enrich_social_media(response)
@@ -435,7 +436,8 @@ def get_tx_info(tx_hash) -> pd.DataFrame:
 
         df = df.to_frame().reset_index()
         df.columns = ["Metric", "Value"]
-    except KeyError:
+    except KeyError as e:
+        logger.exception(str(e))
         return pd.DataFrame()
     return df
 
@@ -466,7 +468,8 @@ def get_token_history(address) -> pd.DataFrame:
             first_row.get("balance"),
         )
         decimals = first_row.get("decimals")
-    except Exception:
+    except Exception as e:
+        logger.exception(str(e))
         name, symbol = "", ""
         decimals = None
 

@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 import os
+import logging
 from typing import Optional, List
 
 from matplotlib import pyplot as plt
@@ -15,10 +16,16 @@ from gamestonk_terminal.helper_funcs import (
 from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.decorators import log_start_end
+
 
 # pylint: disable=E1101
 
+logger = logging.getLogger(__name__)
+
 LUNA_CIR_SUPPLY_CHANGE = "lunaSupplyChallengeStats"
+
+log_start_end(log=logger)
 
 
 def display_luna_circ_supply_change(
@@ -59,6 +66,7 @@ def display_luna_circ_supply_change(
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
         else:
             if len(external_axes) != 1:
+                logger.error("Expected list of one axis item.")
                 console.print("[red]Expected list of one axis item./n[/red]")
                 return
             (ax,) = external_axes

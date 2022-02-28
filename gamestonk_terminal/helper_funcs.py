@@ -277,6 +277,30 @@ def valid_date_in_past(s: str) -> datetime:
         raise argparse.ArgumentTypeError(f"Not a valid date: {s}") from value_error
 
 
+def check_list_dates(str_dates: str) -> List[datetime]:
+    """Argparse type to check list of dates provided have a valid format
+
+    Parameters
+    ----------
+    str_dates: str
+        string with dates separated by ","
+
+    Returns
+    -------
+    list_dates: List[datetime]
+        List of valid dates
+    """
+    list_dates = list()
+    if str_dates:
+        if "," in str_dates:
+            for dt_marker in str_dates.split(","):
+                list_dates.append(valid_date(dt_marker))
+        else:
+            list_dates.append(valid_date(str_dates))
+
+    return list_dates
+
+
 def valid_date(s: str) -> datetime:
     """Argparse type to check date is in valid format"""
     try:

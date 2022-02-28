@@ -66,6 +66,7 @@ def get_defi_protocols() -> pd.DataFrame:
         return df[columns]
 
     except Exception as e:
+        logger.exception("Wrong response type: %s", str(e))
         raise ValueError("Wrong response type\n") from e
 
 
@@ -107,4 +108,5 @@ def get_defi_tvl() -> pd.DataFrame:
         df["date"] = df["date"].apply(lambda x: datetime.fromtimestamp(int(x)).date())
         return df
     except Exception as e:
+        logger.exception("Wrong response data: %s", str(e))
         raise ValueError("Wrong response data") from e

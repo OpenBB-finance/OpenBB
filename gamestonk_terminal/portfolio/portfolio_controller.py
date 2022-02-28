@@ -27,7 +27,7 @@ from gamestonk_terminal.portfolio import portfolio_model, portfolio_view
 from gamestonk_terminal.portfolio.portfolio_optimization import po_controller
 from gamestonk_terminal.rich_config import console
 
-# pylint: disable=R1710,E1101,C0415
+# pylint: disable=R1710,E1101,C0415,W0212
 
 logger = logging.getLogger(__name__)
 
@@ -134,8 +134,16 @@ Loaded:[/info] {self.portfolio_name or None}
     @log_start_end(log=logger)
     def call_po(self, _):
         """Process po command"""
+        if self.portfolio.empty:
+            tickers = []
+        else:
+            tickers = (
+                self.portfolio._stock_tickers
+                + self.portfolio._etf_tickers
+                + self.portfolio._crypto_tickers
+            )
         self.queue = self.load_class(
-            po_controller.PortfolioOptimization, [], self.queue
+            po_controller.PortfolioOptimization, tickers, self.queue
         )
 
     # BUG: The commands in pa menu throw errors. First one says that it's related to
@@ -233,6 +241,7 @@ Loaded:[/info] {self.portfolio_name or None}
     def call_show(self, _):
         """Process show command"""
         if self.portfolio.empty:
+            logger.warning("No portfolio loaded")
             console.print("[red]No portfolio loaded.[/red]\n")
             return
         print_rich_table(self.portfolio.trades, show_index=False)
@@ -256,9 +265,11 @@ Loaded:[/info] {self.portfolio_name or None}
         inputs: Dict[str, Union[str, float, int]] = {}
         type_ = input("Type (stock, cash): \n")
         if type_ not in ["stock", "cash"]:
+            logger.warning("Currently only stocks or cash supported.")
             console.print("[red]Currently only stocks or cash supported.[/red]\n")
             type_ = input("Type (stock, cash): \n")
             if type_ not in ["stock", "cash"]:
+                logger.error("Two unsuccessful attempts.  Exiting add")
                 console.print("[red]Two unsuccessful attempts.  Exiting add.[/red]\n")
                 return
 
@@ -270,6 +281,7 @@ Loaded:[/info] {self.portfolio_name or None}
                 console.print("Cash can only be deposit or withdraw\n")
                 action = input("Action: (buy, sell, deposit, withdraw): \n").lower()
                 if action not in ["deposit", "withdraw"]:
+                    logger.error("Two unsuccessful attempts.  Exiting add")
                     console.print(
                         "[red]Two unsuccessful attempts.  Exiting add.[/red]\n"
                     )
@@ -279,6 +291,7 @@ Loaded:[/info] {self.portfolio_name or None}
             if action not in ["buy", "sell"]:
                 console.print("Stock can only be buy or sell\n")
                 if action not in ["buy", "sell"]:
+                    logger.error("Two unsuccessful attempts.  Exiting add")
                     console.print(
                         "[red]Two unsuccessful attempts.  Exiting add.[/red]\n"
                     )
@@ -383,8 +396,10 @@ Loaded:[/info] {self.portfolio_name or None}
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
         if ns_parser:
+            if self.portfolio.empty:
+                console.print("[red]No portfolio loaded.[/red]\n")
+                return
             portfolio_view.display_allocation(self.portfolio, ns_parser.export)
-        console.print()
 
     # def call_ar(self, other_args: List[str]):
     #     """Process ar command"""
@@ -565,8 +580,8 @@ Loaded:[/info] {self.portfolio_name or None}
                     self.portfolio, ns_parser.market
                 )
             else:
+                logger.warning("No portfolio loaded")
                 console.print("[red]No portfolio loaded.[/red]")
-        console.print()
 
     @log_start_end(log=logger)
     def call_dd(self, other_args: List[str]):
@@ -586,6 +601,7 @@ Loaded:[/info] {self.portfolio_name or None}
                 self.portfolio.add_benchmark("SPY")
                 portfolio_view.display_drawdown(self.portfolio.portfolio_value)
             else:
+                logger.warning("No portfolio loaded")
                 console.print("[red]No portfolio loaded.\n[/red]")
 
     @log_start_end(log=logger)
@@ -626,6 +642,7 @@ Loaded:[/info] {self.portfolio_name or None}
         )
         if ns_parser:
             if self.portfolio.empty:
+                logger.warning("No portfolio loaded")
                 console.print("[red]No portfolio loaded[/red].\n")
                 return
             portfolio_view.display_rolling_stats(
@@ -634,4 +651,3 @@ Loaded:[/info] {self.portfolio_name or None}
                 benchmark=ns_parser.benchmark,
                 risk_free_rate=ns_parser.rf,
             )
-        console.print()

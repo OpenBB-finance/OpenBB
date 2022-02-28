@@ -67,7 +67,8 @@ def display_mc_forecast(
         _, (ax1, ax2) = plt.subplots(1, 2, figsize=plot_autoscale(), dpi=PLOT_DPI)
     else:
         if len(external_axes) != 2:
-            console.print("[red]Expected list of one axis item./n[/red]")
+            logger.error("Expected list of two axis items")
+            console.print("[red]Expected list of two axis items./n[/red]")
             return
         (ax1, ax2) = external_axes
 
