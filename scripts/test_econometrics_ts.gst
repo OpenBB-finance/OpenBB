@@ -1,4 +1,4 @@
-statistics
+econometrics
 load longley ll
 load longley ll2
 options

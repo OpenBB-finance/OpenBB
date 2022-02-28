@@ -1,4 +1,4 @@
-statistics
+econometrics
 load wage_panel wp
 options
 options wp
