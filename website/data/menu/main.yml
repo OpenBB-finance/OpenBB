@@ -1448,6 +1448,8 @@ main:
                 ref: "/bot/discord/econ/overview"
               - name: "econ feargreed"
                 ref: "/bot/discord/econ/feargreed"
+              - name: "econ cpi"
+                ref: "/bot/discord/econ/cpi"
               - name: "econ currencies"
                 ref: "/bot/discord/econ/currencies"
               - name: "econ valuation"
