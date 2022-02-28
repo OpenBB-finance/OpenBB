@@ -16,8 +16,8 @@ logger = logging.getLogger(__name__)
 def get_news(
     term: str,
     s_from: str,
-    show_newest: bool,
-    sources: str,
+    show_newest: bool = True,
+    sources: str = "",
 ) -> Dict:
     """Get news for a given term. [Source: NewsAPI]
 
@@ -43,7 +43,7 @@ def get_news(
     )
 
     if sources:
-        link += f"&domains={sources}"
+        link += f"&domain={sources}"
 
     response = requests.get(link)
 

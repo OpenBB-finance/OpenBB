@@ -11,7 +11,7 @@ import yfinance as yf
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.common import newsapi_view
+from gamestonk_terminal.common import newsapi_view, newsapi_model
 from gamestonk_terminal.common.quantitative_analysis import qa_view
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
@@ -26,7 +26,7 @@ from gamestonk_terminal.parent_classes import StockBaseController
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.stocks import stocks_helper
 
-# pylint: disable=R1710,import-outside-toplevel
+# pylint: disable=R1710,import-outside-toplevel,R0913,R1702
 
 logger = logging.getLogger(__name__)
 
@@ -234,6 +234,13 @@ Stock: [/param]{stock_text}
             help="Add moving average in number of days to plot and separate by a comma. Example: 20,30,50",
             default="20,50",
         )
+        parser.add_argument(
+            "--news",
+            action="store_true",
+            default=False,
+            help="Flag to flag when certain news occurrend.",
+            dest="news",
+        )
 
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -262,7 +269,6 @@ Stock: [/param]{stock_text}
                     data = stocks_helper.process_candle(self.stock)
 
                     if ns_parser.mov_avg:
-
                         mov_list = (num for num in ns_parser.mov_avg.split(","))
                         mov_avgs = []
 
@@ -271,8 +277,45 @@ Stock: [/param]{stock_text}
                                 mov_avgs.append(int(num))
                             except ValueError:
                                 console.print(
-                                    f"{num} is not valid moving average, must be integer"
+                                    f"{num} is not a valid moving average, must be integer"
                                 )
+
+                    markers_news = list()
+                    if ns_parser.news:
+                        articles = newsapi_model.get_news(
+                            self.ticker, self.start, show_newest=False
+                        )
+
+                        if articles:
+                            start_stock = self.stock.index[0].date()
+                            end_stock = self.stock.index[-1].date()
+
+                            last_date_used = None
+                            for article in articles:
+                                if article["source"]["name"] == "Seeking Alpha":
+                                    date_article = datetime.strptime(
+                                        article["publishedAt"]
+                                        .replace("T", " ")
+                                        .replace("Z", ""),
+                                        "%Y-%m-%d %H:%M:%S",
+                                    ).date()
+                                    if start_stock <= date_article <= end_stock:
+                                        s_date_article = article["publishedAt"].split(
+                                            "T"
+                                        )[0]
+
+                                        if last_date_used:
+                                            if date_article != last_date_used:
+                                                console.print(f"\n{s_date_article}")
+                                                markers_news.append(date_article)
+                                        else:
+                                            console.print(f"\n{s_date_article}")
+                                            markers_news.append(s_date_article)
+
+                                        last_date_used = date_article
+                                        console.print(
+                                            f"\n   {article['title']}\n{article['url']}"
+                                        )
 
                     stocks_helper.display_candle(
                         s_ticker=self.ticker,
@@ -281,6 +324,7 @@ Stock: [/param]{stock_text}
                         intraday=self.interval != "1440min",
                         add_trend=ns_parser.trendlines,
                         ma=mov_avgs,
+                        markers_news=markers_news,
                     )
             else:
                 console.print("No ticker loaded. First use `load {ticker}`\n")
@@ -300,13 +344,13 @@ Stock: [/param]{stock_text}
             """,
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="n_num",
+            dest="limit",
             type=check_positive,
             default=5,
-            help="Number of latest news being printed.",
+            help="Limit of latest news being printed.",
         )
         parser.add_argument(
             "-d",
@@ -332,7 +376,8 @@ Stock: [/param]{stock_text}
             nargs="+",
             help="Show news only from the sources specified (e.g bbc yahoo.com)",
         )
-
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             sources = ns_parser.sources
@@ -346,7 +391,7 @@ Stock: [/param]{stock_text}
                 term=d_stock["shortName"].replace(" ", "+")
                 if "shortName" in d_stock
                 else self.ticker,
-                num=ns_parser.n_num,
+                num=ns_parser.limit,
                 s_from=ns_parser.n_start_date.strftime("%Y-%m-%d"),
                 show_newest=ns_parser.n_oldest,
                 sources=",".join(sources),

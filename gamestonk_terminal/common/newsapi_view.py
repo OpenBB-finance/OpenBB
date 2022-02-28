@@ -13,10 +13,10 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 def display_news(
     term: str,
-    num: int,
     s_from: str,
-    show_newest: bool,
-    sources: str,
+    num: int = 5,
+    show_newest: bool = True,
+    sources: str = "",
 ):
     """Display news for a given term. [Source: NewsAPI]
 
@@ -24,10 +24,10 @@ def display_news(
     ----------
     term : str
         term to search on the news articles
-    num : int
-        number of articles to display
     s_from: str
         date to start searching articles from formatted YYYY-MM-DD
+    num : int
+        number of articles to display
     show_newest: bool
         flag to show newest articles first
     sources: str
