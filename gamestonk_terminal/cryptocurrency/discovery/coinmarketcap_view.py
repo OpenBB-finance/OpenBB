@@ -47,6 +47,7 @@ def display_cmc_top_coins(
     df = coinmarketcap_model.get_cmc_top_n()
 
     if df.empty:
+        console.print("No Data Found\n")
         return
 
     df = df.sort_values(by=sort_map[sortby], ascending=descend)
