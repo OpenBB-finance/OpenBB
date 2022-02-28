@@ -4,7 +4,7 @@ Dep. Variable:         TOTEMP_longley   R-squared (uncentered):                 
 Model:                            OLS   Adj. R-squared (uncentered):              1.000
 Method:                 Least Squares   F-statistic:                          2.200e+04
 Date:                Mon, 28 Feb 2022   Prob (F-statistic):                    2.48e-24
-Time:                        20:26:21   Log-Likelihood:                         -131.85
+Time:                        20:52:40   Log-Likelihood:                         -131.85
 No. Observations:                  16   AIC:                                      269.7
 Df Residuals:                      13   BIC:                                      272.0
 Df Model:                           3                                                  

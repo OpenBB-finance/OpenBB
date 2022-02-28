@@ -43,7 +43,6 @@ def test_get_regression_data(recorder, regression_variables, data, datasets):
 
 
 @pytest.mark.vcr()
-@pytest.mark.record_stdout
 @pytest.mark.parametrize(
     "regression_variables, data, datasets, show_regression",
     [
@@ -79,17 +78,18 @@ def test_get_regression_data(recorder, regression_variables, data, datasets):
         ),
     ],
 )
-def test_get_ols(regression_variables, data, datasets, show_regression):
-    regression_model.get_ols(
+def test_get_ols(recorder, regression_variables, data, datasets, show_regression):
+    _, _, _, model = regression_model.get_ols(
         regression_variables=regression_variables,
         data=data,
         datasets=datasets,
         show_regression=show_regression,
     )
 
+    recorder.capture(pd.DataFrame([model.params]))
+
 
 @pytest.mark.vcr()
-@pytest.mark.record_stdout
 @pytest.mark.parametrize(
     "regression_variables, data, datasets",
     [
@@ -116,16 +116,17 @@ def test_get_ols(regression_variables, data, datasets, show_regression):
         )
     ],
 )
-def test_get_pols(regression_variables, data, datasets):
-    regression_model.get_pols(
+def test_get_pols(recorder, regression_variables, data, datasets):
+    _, _, _, model = regression_model.get_pols(
         regression_variables=regression_variables,
         data=data,
         datasets=datasets,
     )
 
+    recorder.capture(pd.DataFrame([model.params]))
+
 
 @pytest.mark.vcr()
-@pytest.mark.record_stdout
 @pytest.mark.parametrize(
     "regression_variables, data, datasets",
     [
@@ -152,16 +153,17 @@ def test_get_pols(regression_variables, data, datasets):
         )
     ],
 )
-def test_get_re(regression_variables, data, datasets):
-    regression_model.get_re(
+def test_get_re(recorder, regression_variables, data, datasets):
+    _, _, _, model = regression_model.get_re(
         regression_variables=regression_variables,
         data=data,
         datasets=datasets,
     )
 
+    recorder.capture(pd.DataFrame([model.params]))
+
 
 @pytest.mark.vcr()
-@pytest.mark.record_stdout
 @pytest.mark.parametrize(
     "regression_variables, data, datasets",
     [
@@ -188,16 +190,17 @@ def test_get_re(regression_variables, data, datasets):
         )
     ],
 )
-def test_get_bols(regression_variables, data, datasets):
-    regression_model.get_bols(
+def test_get_bols(recorder, regression_variables, data, datasets):
+    _, _, _, model = regression_model.get_bols(
         regression_variables=regression_variables,
         data=data,
         datasets=datasets,
     )
 
+    recorder.capture(pd.DataFrame([model.params]))
+
 
 @pytest.mark.vcr()
-@pytest.mark.record_stdout
 @pytest.mark.parametrize(
     "regression_variables, data, datasets",
     [
@@ -224,16 +227,17 @@ def test_get_bols(regression_variables, data, datasets):
         )
     ],
 )
-def test_get_fe(regression_variables, data, datasets):
-    regression_model.get_fe(
+def test_get_fe(recorder, regression_variables, data, datasets):
+    _, _, _, model = regression_model.get_fe(
         regression_variables=regression_variables,
         data=data,
         datasets=datasets,
     )
 
+    recorder.capture(pd.DataFrame([model.params]))
+
 
 @pytest.mark.vcr()
-@pytest.mark.record_stdout
 @pytest.mark.parametrize(
     "regression_variables, data, datasets",
     [
@@ -251,12 +255,14 @@ def test_get_fe(regression_variables, data, datasets):
         )
     ],
 )
-def test_get_fdols(regression_variables, data, datasets):
-    regression_model.get_fdols(
+def test_get_fdols(recorder, regression_variables, data, datasets):
+    _, _, _, model = regression_model.get_fdols(
         regression_variables=regression_variables,
         data=data,
         datasets=datasets,
     )
+
+    recorder.capture(pd.DataFrame([model.params]))
 
 
 @pytest.mark.vcr()

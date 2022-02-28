@@ -4,7 +4,7 @@ Dep. Variable:        educ_wage_panel   R-squared:                        0.1051
 Estimator:                  PooledOLS   R-squared (Between):              0.1330
 No. Observations:                4360   R-squared (Within):               0.0000
 Date:                Mon, Feb 28 2022   R-squared (Overall):              0.1051
-Time:                        20:26:21   Log-likelihood                   -8374.4
+Time:                        20:52:40   Log-likelihood                   -8374.4
 Cov. Estimator:            Unadjusted                                           
                                         F-statistic:                      127.85
 Entities:                         545   P-value                           0.0000

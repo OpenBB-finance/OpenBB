@@ -27,7 +27,7 @@ from gamestonk_terminal.statistics import (
                 "ARMED-longley": {"ARMED": None, "longley": None},
                 "POP-longley": {"POP": None, "longley": None},
             },
-            True,
+            False,
             1,
         ),
         (
@@ -77,7 +77,7 @@ def test_display_bgod(regression_variables, data, datasets, show_regression, lag
                 "ARMED-longley": {"ARMED": None, "longley": None},
                 "POP-longley": {"POP": None, "longley": None},
             },
-            True,
+            False,
         ),
         (
             ["GNP-longley", "ARMED-longley", "POP-longley"],
