@@ -1,4 +1,4 @@
-"""Statistics Controller Module"""
+"""Econometrics Controller Module"""
 __docformat__ = "numpy"
 
 # pylint: disable=too-many-lines, too-many-branches, inconsistent-return-statements
@@ -13,8 +13,8 @@ import numpy as np
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 
-import gamestonk_terminal.statistics.regression_model
-import gamestonk_terminal.statistics.regression_view
+import gamestonk_terminal.econometrics.regression_model
+import gamestonk_terminal.econometrics.regression_view
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
@@ -30,13 +30,13 @@ from gamestonk_terminal.helper_funcs import (
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal.rich_config import console
-from gamestonk_terminal.statistics import statistics_model, statistics_view
+from gamestonk_terminal.econometrics import econometrics_model, econometrics_view
 
 logger = logging.getLogger(__name__)
 
 
-class StatisticsController(BaseController):
-    """Statistics class"""
+class EconometricsController(BaseController):
+    """Econometrics class"""
 
     CHOICES_COMMANDS: List[str] = [
         "load",
@@ -74,7 +74,7 @@ class StatisticsController(BaseController):
         "pie",
         "hexbin",
     ]
-    PATH = "/statistics/"
+    PATH = "/econometrics/"
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
@@ -230,7 +230,7 @@ Tests
     granger         perform Granger causality tests on two columns
     coint           perform co-integration test on a multitude of columns[/cmds]
         """
-        console.print(text=help_text, menu="Statistics")
+        console.print(text=help_text, menu="Econometrics")
 
     def call_load(self, other_args: List[str]):
         """Process load"""
@@ -280,7 +280,7 @@ Tests
             else:
                 file, alias = ns_parser.file
 
-                data = statistics_model.load(
+                data = econometrics_model.load(
                     file, self.file_types, self.DATA_FILES, self.DATA_EXAMPLES
                 )
 
@@ -395,7 +395,7 @@ Tests
         )
 
         if ns_parser:
-            statistics_view.show_options(
+            econometrics_view.show_options(
                 self.datasets, ns_parser.name, ns_parser.export
             )
 
@@ -428,7 +428,7 @@ Tests
             column, dataset = self.choices["plot"][ns_parser.column].keys()
             data = self.datasets[dataset]
 
-            statistics_view.get_plot(
+            econometrics_view.get_plot(
                 data,
                 dataset,
                 column,
@@ -759,7 +759,7 @@ Tests
         ns_parser = parse_known_args_and_warn(parser, other_args, NO_EXPORT)
 
         if ns_parser:
-            self.datasets[ns_parser.name] = statistics_model.clean(
+            self.datasets[ns_parser.name] = econometrics_model.clean(
                 self.datasets[ns_parser.name],
                 ns_parser.fill,
                 ns_parser.drop,
@@ -976,7 +976,7 @@ Tests
                     self.regression["OLS"]["dependent"],
                     self.regression["OLS"]["independent"],
                     self.regression["OLS"]["model"],
-                ) = gamestonk_terminal.statistics.regression_model.get_ols(
+                ) = gamestonk_terminal.econometrics.regression_model.get_ols(
                     ns_parser.regression,
                     self.datasets,
                     self.choices["regressions"],
@@ -1037,7 +1037,7 @@ Tests
             else:
                 return console.print(f"Can not find {dataset}. Did you load the data?")
 
-            return statistics_view.display_norm(
+            return econometrics_view.display_norm(
                 data, dataset, column, ns_parser.plot, ns_parser.export
             )
 
@@ -1098,7 +1098,7 @@ Tests
                 elif isinstance(self.datasets[dataset], pd.DataFrame):
                     data = self.datasets[dataset][column]
 
-                statistics_view.display_root(
+                econometrics_view.display_root(
                     data,
                     dataset,
                     column,
@@ -1206,7 +1206,7 @@ Tests
                     self.regression[regression_name]["dependent"],
                     self.regression[regression_name]["independent"],
                     self.regression[regression_name]["model"],
-                ) = gamestonk_terminal.statistics.regression_model.get_regressions_results(
+                ) = gamestonk_terminal.econometrics.regression_model.get_regressions_results(
                     regression,
                     ns_parser.regression,
                     self.datasets,
@@ -1247,7 +1247,7 @@ Tests
 
         if ns_parser:
             comparison_result = (
-                gamestonk_terminal.statistics.regression_model.get_comparison(
+                gamestonk_terminal.econometrics.regression_model.get_comparison(
                     self.regression
                 )
             )
@@ -1289,7 +1289,7 @@ Tests
                 self.regression["OLS"]["dependent"]
             ]
 
-            gamestonk_terminal.statistics.regression_view.display_dwat(
+            gamestonk_terminal.econometrics.regression_view.display_dwat(
                 dependent_variable,
                 self.regression["OLS"]["model"].resid,
                 ns_parser.export,
@@ -1325,7 +1325,7 @@ Tests
                     "Please perform an OLS regression before estimating the Breusch-Godfrey statistic."
                 )
             else:
-                gamestonk_terminal.statistics.regression_view.display_bgod(
+                gamestonk_terminal.econometrics.regression_view.display_bgod(
                     self.regression["OLS"]["model"], ns_parser.lags, ns_parser.export
                 )
 
@@ -1350,7 +1350,7 @@ Tests
                     "Please perform an OLS regression before estimating the Breusch-Pagan statistic."
                 )
             else:
-                gamestonk_terminal.statistics.regression_view.display_bpag(
+                gamestonk_terminal.econometrics.regression_view.display_bpag(
                     self.regression["OLS"]["model"], ns_parser.export
                 )
 
@@ -1404,7 +1404,7 @@ Tests
                 column_y, dataset_y = self.choices["granger"][ns_parser.ts[0]].keys()
                 column_x, dataset_x = self.choices["granger"][ns_parser.ts[1]].keys()
 
-                statistics_view.display_granger(
+                econometrics_view.display_granger(
                     self.datasets[dataset_y][column_y],
                     self.datasets[dataset_x][column_x],
                     ns_parser.lags,
@@ -1469,7 +1469,7 @@ Tests
                 column, dataset = self.choices["cointegration"][stock].keys()
                 datasets[stock] = self.datasets[dataset][column]
 
-            statistics_view.display_cointegration_test(
+            econometrics_view.display_cointegration_test(
                 datasets, ns_parser.significant, ns_parser.plot, ns_parser.export
             )
 

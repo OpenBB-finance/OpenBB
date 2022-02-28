@@ -1,4 +1,4 @@
-"""Statistics View"""
+"""Econometrics View"""
 __docformat__ = "numpy"
 
 import logging
@@ -21,7 +21,7 @@ from gamestonk_terminal.helper_funcs import (
     print_rich_table,
 )
 from gamestonk_terminal.rich_config import console
-from gamestonk_terminal.statistics import statistics_model
+from gamestonk_terminal.econometrics import econometrics_model
 
 logger = logging.getLogger(__name__)
 
@@ -49,7 +49,7 @@ def show_options(
     export: str
         Format to export image
     """
-    option_tables = statistics_model.get_options(datasets, dataset_name)
+    option_tables = econometrics_model.get_options(datasets, dataset_name)
 
     for dataset, data_values in option_tables.items():
         print_rich_table(
@@ -139,7 +139,7 @@ def display_norm(
         Format to export data.
     """
 
-    results = statistics_model.get_normality(data)
+    results = econometrics_model.get_normality(data)
 
     print_rich_table(
         results,
@@ -197,7 +197,7 @@ def display_root(
         Format to export data.
     """
 
-    results = statistics_model.get_root(df, fuller_reg, kpss_reg)
+    results = econometrics_model.get_root(df, fuller_reg, kpss_reg)
 
     print_rich_table(
         results,
@@ -241,7 +241,9 @@ def display_granger(
         Format to export data
     """
 
-    granger = statistics_model.get_granger_causality(time_series_y, time_series_x, lags)
+    granger = econometrics_model.get_granger_causality(
+        time_series_y, time_series_x, lags
+    )
 
     for test in granger[lags][0]:
         # As ssr_chi2test and lrtest have one less value in the tuple, we fill
@@ -334,7 +336,7 @@ def display_cointegration_test(
             z,
             adfstat,
             pvalue,
-        ) = statistics_model.get_engle_granger_two_step_cointegration_test(
+        ) = econometrics_model.get_engle_granger_two_step_cointegration_test(
             datasets[x], datasets[y]
         )
         result[f"{x}/{y}"] = [c, gamma, alpha, adfstat, pvalue]

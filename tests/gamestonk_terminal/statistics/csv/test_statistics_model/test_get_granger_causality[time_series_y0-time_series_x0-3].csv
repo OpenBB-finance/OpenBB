@@ -1,5 +1,0 @@
-,3
-0,"{'ssr_ftest': (2.6699112772747107, 0.04881548582406517, 193.0, 3), 'ssr_chi2test': (8.300242312771124, 0.04019751584434199, 3), 'lrtest': (8.132629001127953, 0.043348732322255806, 3), 'params_ftest': (2.669911277269288, 0.048815485824407916, 193.0, 3.0)}"
-1,"[<statsmodels.regression.linear_model.RegressionResultsWrapper object at 0x7fe4784b6f10>, <statsmodels.regression.linear_model.RegressionResultsWrapper object at 0x7fe4784b63d0>, array([[0., 0., 0., 1., 0., 0., 0.],
-       [0., 0., 0., 0., 1., 0., 0.],
-       [0., 0., 0., 0., 0., 1., 0.]])]"

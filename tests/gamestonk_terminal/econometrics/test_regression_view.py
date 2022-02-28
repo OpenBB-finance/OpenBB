@@ -2,9 +2,9 @@
 import pytest
 
 # IMPORTATION INTERNAL
-from gamestonk_terminal.statistics import (
+from gamestonk_terminal.econometrics import (
     regression_model,
-    statistics_model,
+    econometrics_model,
     regression_view,
 )
 
@@ -17,7 +17,7 @@ from gamestonk_terminal.statistics import (
         (
             ["TOTEMP-longley", "GNP-longley", "ARMED-longley", "POP-longley"],
             {
-                "longley": statistics_model.load(
+                "longley": econometrics_model.load(
                     "longley", ["csv", "xlsx"], {}, {"longley": "longley"}
                 )
             },
@@ -33,7 +33,7 @@ from gamestonk_terminal.statistics import (
         (
             ["TOTEMP-longley", "GNP-longley", "ARMED-longley", "POP-longley"],
             {
-                "longley": statistics_model.load(
+                "longley": econometrics_model.load(
                     "longley", ["csv", "xlsx"], {}, {"longley": "longley"}
                 )
             },
@@ -67,7 +67,7 @@ def test_display_bgod(regression_variables, data, datasets, show_regression, lag
         (
             ["TOTEMP-longley", "ARMED-longley", "POP-longley"],
             {
-                "longley": statistics_model.load(
+                "longley": econometrics_model.load(
                     "longley", ["csv", "xlsx"], {}, {"longley": "longley"}
                 )
             },
@@ -82,7 +82,7 @@ def test_display_bgod(regression_variables, data, datasets, show_regression, lag
         (
             ["GNP-longley", "ARMED-longley", "POP-longley"],
             {
-                "longley": statistics_model.load(
+                "longley": econometrics_model.load(
                     "longley", ["csv", "xlsx"], {}, {"longley": "longley"}
                 )
             },

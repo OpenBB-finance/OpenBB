@@ -1157,51 +1157,51 @@ main:
             ref: "/alternative/covid/cases"
           - name: rates
             ref: "/alternative/covid/rates"
-  - name: statistics
-    ref: "/statistics"
+  - name: econometrics
+    ref: "/econometrics"
     sub:
       - name: load
-        ref: "/statistics/load"
+        ref: "/econometrics/load"
       - name: export
-        ref: "/statistics/show"
+        ref: "/econometrics/show"
       - name: remove
-        ref: "/statistics/remove"
+        ref: "/econometrics/remove"
       - name: options
-        ref: "/statistics/options"
+        ref: "/econometrics/options"
       - name: show
-        ref: "/statistics/show"
+        ref: "/econometrics/show"
       - name: plot
-        ref: "/statistics/plot"
+        ref: "/econometrics/plot"
       - name: type
-        ref: "/statistics/type"
+        ref: "/econometrics/type"
       - name: desc
-        ref: "/statistics/desc"
+        ref: "/econometrics/desc"
       - name: index
-        ref: "/statistics/index"
+        ref: "/econometrics/index"
       - name: clean
-        ref: "/statistics/clean"
+        ref: "/econometrics/clean"
       - name: modify
-        ref: "/statistics/modify"
+        ref: "/econometrics/modify"
       - name: ols
-        ref: "/statistics/ols"
+        ref: "/econometrics/ols"
       - name: norm
-        ref: "/statistics/norm"
+        ref: "/econometrics/norm"
       - name: root
-        ref: "/statistics/root"
+        ref: "/econometrics/root"
       - name: panel
-        ref: "/statistics/panel"
+        ref: "/econometrics/panel"
       - name: compare
-        ref: "/statistics/compare"
+        ref: "/econometrics/compare"
       - name: dwat
-        ref: "/statistics/dwat"
+        ref: "/econometrics/dwat"
       - name: bgod
-        ref: "/statistics/bgod"
+        ref: "/econometrics/bgod"
       - name: bpag
-        ref: "/statistics/bpag"
+        ref: "/econometrics/bpag"
       - name: granger
-        ref: "/statistics/granger"
+        ref: "/econometrics/granger"
       - name: coint
-        ref: "/statistics/coint"
+        ref: "/econometrics/coint"
   - name: jupyter
     ref: "/jupyter"
     sub:

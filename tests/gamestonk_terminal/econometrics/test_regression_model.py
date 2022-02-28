@@ -5,7 +5,7 @@ import pandas as pd
 import pytest
 
 # IMPORTATION INTERNAL
-from gamestonk_terminal.statistics import regression_model, statistics_model
+from gamestonk_terminal.econometrics import regression_model, econometrics_model
 
 
 @pytest.mark.vcr()
@@ -15,7 +15,7 @@ from gamestonk_terminal.statistics import regression_model, statistics_model
         (
             ["TOTEMP-longley", "GNP-longley", "ARMED-longley", "POP-longley"],
             {
-                "longley": statistics_model.load(
+                "longley": econometrics_model.load(
                     "longley", ["csv", "xlsx"], {}, {"longley": "longley"}
                 )
             },
@@ -49,7 +49,7 @@ def test_get_regression_data(recorder, regression_variables, data, datasets):
         (
             ["TOTEMP-longley", "GNP-longley", "ARMED-longley", "POP-longley"],
             {
-                "longley": statistics_model.load(
+                "longley": econometrics_model.load(
                     "longley", ["csv", "xlsx"], {}, {"longley": "longley"}
                 )
             },
@@ -64,7 +64,7 @@ def test_get_regression_data(recorder, regression_variables, data, datasets):
         (
             ["TOTEMP-longley", "GNP-longley", "ARMED-longley", "POP-longley"],
             {
-                "longley": statistics_model.load(
+                "longley": econometrics_model.load(
                     "longley", ["csv", "xlsx"], {}, {"longley": "longley"}
                 )
             },
@@ -102,7 +102,7 @@ def test_get_ols(recorder, regression_variables, data, datasets, show_regression
                 "black-wage_panel",
             ],
             {
-                "wage_panel": statistics_model.load(
+                "wage_panel": econometrics_model.load(
                     "wage_panel", ["csv", "xlsx"], {}, {"wage_panel": "wage_panel"}
                 ).set_index(["nr", "year"])
             },
@@ -139,7 +139,7 @@ def test_get_pols(recorder, regression_variables, data, datasets):
                 "black-wage_panel",
             ],
             {
-                "wage_panel": statistics_model.load(
+                "wage_panel": econometrics_model.load(
                     "wage_panel", ["csv", "xlsx"], {}, {"wage_panel": "wage_panel"}
                 ).set_index(["nr", "year"])
             },
@@ -176,7 +176,7 @@ def test_get_re(recorder, regression_variables, data, datasets):
                 "black-wage_panel",
             ],
             {
-                "wage_panel": statistics_model.load(
+                "wage_panel": econometrics_model.load(
                     "wage_panel", ["csv", "xlsx"], {}, {"wage_panel": "wage_panel"}
                 ).set_index(["nr", "year"])
             },
@@ -213,7 +213,7 @@ def test_get_bols(recorder, regression_variables, data, datasets):
                 "black-wage_panel",
             ],
             {
-                "wage_panel": statistics_model.load(
+                "wage_panel": econometrics_model.load(
                     "wage_panel", ["csv", "xlsx"], {}, {"wage_panel": "wage_panel"}
                 ).set_index(["nr", "year"])
             },
@@ -244,7 +244,7 @@ def test_get_fe(recorder, regression_variables, data, datasets):
         (
             ["lwage-wage_panel", "married-wage_panel"],
             {
-                "wage_panel": statistics_model.load(
+                "wage_panel": econometrics_model.load(
                     "wage_panel", ["csv", "xlsx"], {}, {"wage_panel": "wage_panel"}
                 ).set_index(["nr", "year"])
             },
@@ -278,7 +278,7 @@ def test_get_fdols(recorder, regression_variables, data, datasets):
                 "black-wage_panel",
             ],
             {
-                "wage_panel": statistics_model.load(
+                "wage_panel": econometrics_model.load(
                     "wage_panel", ["csv", "xlsx"], {}, {"wage_panel": "wage_panel"}
                 ).set_index(["nr", "year"])
             },
@@ -319,7 +319,7 @@ def test_get_comparison(recorder, regression_variables, data, datasets):
         (
             ["TOTEMP-longley", "GNP-longley", "ARMED-longley", "POP-longley"],
             {
-                "longley": statistics_model.load(
+                "longley": econometrics_model.load(
                     "longley", ["csv", "xlsx"], {}, {"longley": "longley"}
                 )
             },
@@ -334,7 +334,7 @@ def test_get_comparison(recorder, regression_variables, data, datasets):
         (
             ["GNP-longley", "ARMED-longley", "POP-longley"],
             {
-                "longley": statistics_model.load(
+                "longley": econometrics_model.load(
                     "longley", ["csv", "xlsx"], {}, {"longley": "longley"}
                 )
             },
@@ -368,7 +368,7 @@ def test_get_dwat(recorder, regression_variables, data, datasets, show_regressio
         (
             ["ARMED-longley", "GNP-longley", "TOTEMP-longley", "POP-longley"],
             {
-                "longley": statistics_model.load(
+                "longley": econometrics_model.load(
                     "longley", ["csv", "xlsx"], {}, {"longley": "longley"}
                 )
             },
@@ -384,7 +384,7 @@ def test_get_dwat(recorder, regression_variables, data, datasets, show_regressio
         (
             ["GNP-longley", "POP-longley"],
             {
-                "longley": statistics_model.load(
+                "longley": econometrics_model.load(
                     "longley", ["csv", "xlsx"], {}, {"longley": "longley"}
                 )
             },
@@ -421,7 +421,7 @@ def test_get_bgod(
         (
             ["GNP-longley", "TOTEMP-longley", "POP-longley"],
             {
-                "longley": statistics_model.load(
+                "longley": econometrics_model.load(
                     "longley", ["csv", "xlsx"], {}, {"longley": "longley"}
                 )
             },
@@ -436,7 +436,7 @@ def test_get_bgod(
         (
             ["POP-longley", "GNP-longley"],
             {
-                "longley": statistics_model.load(
+                "longley": econometrics_model.load(
                     "longley", ["csv", "xlsx"], {}, {"longley": "longley"}
                 )
             },

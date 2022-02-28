@@ -1,4 +1,4 @@
-"""Statistics Model"""
+"""Econometrics Model"""
 __docformat__ = "numpy"
 
 # pylint: disable=eval-used

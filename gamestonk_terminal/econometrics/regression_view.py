@@ -2,20 +2,20 @@
 __docformat__ = "numpy"
 
 import os
-
+import logging
 import pandas as pd
 from matplotlib import pyplot as plt
 
-import gamestonk_terminal.statistics
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import plot_autoscale, export_data
 from gamestonk_terminal.rich_config import console
-from gamestonk_terminal.statistics.statistics_view import logger
-import gamestonk_terminal.statistics.regression_model
+from gamestonk_terminal.econometrics import regression_model
 from gamestonk_terminal.helper_funcs import (
     print_rich_table,
 )
+
+logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
@@ -33,7 +33,7 @@ def display_dwat(
     export : str
         Format to export data
     """
-    autocorrelation = gamestonk_terminal.statistics.regression_model.get_dwat(residual)
+    autocorrelation = regression_model.get_dwat(residual)
 
     if 1.5 < autocorrelation < 2.5:
         console.print(
@@ -81,7 +81,7 @@ def display_bgod(model: pd.DataFrame, lags: int, export: str = ""):
         p_value,
         f_stat,
         fp_value,
-    ) = gamestonk_terminal.statistics.regression_model.get_bgod(model, lags)
+    ) = regression_model.get_bgod(model, lags)
 
     df = pd.DataFrame(
         [lm_stat, p_value, f_stat, fp_value],
@@ -126,7 +126,7 @@ def display_bpag(model: pd.DataFrame, export: str = ""):
         p_value,
         f_stat,
         fp_value,
-    ) = gamestonk_terminal.statistics.regression_model.get_bpag(model)
+    ) = regression_model.get_bpag(model)
 
     df = pd.DataFrame(
         [lm_stat, p_value, f_stat, fp_value],

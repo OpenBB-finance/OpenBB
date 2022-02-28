@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import os
 import warnings
+import logging
 from typing import List, Tuple, Dict, Any
 
 import pandas as pd
@@ -25,7 +26,8 @@ from statsmodels.stats.stattools import durbin_watson
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import export_data
 from gamestonk_terminal.rich_config import console
-from gamestonk_terminal.statistics.statistics_model import logger
+
+logger = logging.getLogger(__name__)
 
 
 def get_regressions_results(
