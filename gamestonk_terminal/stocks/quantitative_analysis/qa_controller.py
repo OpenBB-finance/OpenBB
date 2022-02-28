@@ -241,7 +241,7 @@ class QaController(StockBaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             add_help=False,
             prog="line",
-            description="Show line plot of selected data",
+            description="Show line plot of selected data and allow to draw lines or highlight specific datetimes.",
         )
         parser.add_argument(
             "--log",
