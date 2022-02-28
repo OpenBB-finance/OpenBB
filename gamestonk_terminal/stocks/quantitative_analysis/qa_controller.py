@@ -19,6 +19,7 @@ from gamestonk_terminal.helper_funcs import (
     check_positive,
     check_proportion_range,
     parse_known_args_and_warn,
+    check_list_dates,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.parent_classes import StockBaseController
@@ -240,7 +241,7 @@ class QaController(StockBaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             add_help=False,
             prog="line",
-            description="Show line plot of selected data",
+            description="Show line plot of selected data and allow to draw lines or highlight specific datetimes.",
         )
         parser.add_argument(
             "--log",
@@ -257,6 +258,20 @@ class QaController(StockBaseController):
             action="store_true",
             default=False,
         )
+        parser.add_argument(
+            "--ml",
+            help="Draw vertical line markers to highlight certain events",
+            dest="ml",
+            type=check_list_dates,
+            default="",
+        )
+        parser.add_argument(
+            "--ms",
+            help="Draw scatter markers to highlight certain events",
+            dest="ms",
+            type=check_list_dates,
+            default="",
+        )
 
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
@@ -267,6 +282,8 @@ class QaController(StockBaseController):
                 title=f"{self.ticker} {self.target}",
                 log_y=ns_parser.log,
                 draw=ns_parser.draw,
+                markers_lines=ns_parser.ml,
+                markers_scatter=ns_parser.ms,
             )
 
     @log_start_end(log=logger)

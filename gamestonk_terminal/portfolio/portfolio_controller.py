@@ -27,7 +27,7 @@ from gamestonk_terminal.portfolio import portfolio_model, portfolio_view
 from gamestonk_terminal.portfolio.portfolio_optimization import po_controller
 from gamestonk_terminal.rich_config import console
 
-# pylint: disable=R1710,E1101,C0415
+# pylint: disable=R1710,E1101,C0415,W0212
 
 logger = logging.getLogger(__name__)
 
@@ -134,8 +134,16 @@ Loaded:[/info] {self.portfolio_name or None}
     @log_start_end(log=logger)
     def call_po(self, _):
         """Process po command"""
+        if self.portfolio.empty:
+            tickers = []
+        else:
+            tickers = (
+                self.portfolio._stock_tickers
+                + self.portfolio._etf_tickers
+                + self.portfolio._crypto_tickers
+            )
         self.queue = self.load_class(
-            po_controller.PortfolioOptimization, [], self.queue
+            po_controller.PortfolioOptimization, tickers, self.queue
         )
 
     # BUG: The commands in pa menu throw errors. First one says that it's related to
@@ -388,8 +396,10 @@ Loaded:[/info] {self.portfolio_name or None}
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
         if ns_parser:
+            if self.portfolio.empty:
+                console.print("[red]No portfolio loaded.[/red]\n")
+                return
             portfolio_view.display_allocation(self.portfolio, ns_parser.export)
-        console.print()
 
     # def call_ar(self, other_args: List[str]):
     #     """Process ar command"""
@@ -572,7 +582,6 @@ Loaded:[/info] {self.portfolio_name or None}
             else:
                 logger.warning("No portfolio loaded")
                 console.print("[red]No portfolio loaded.[/red]")
-        console.print()
 
     @log_start_end(log=logger)
     def call_dd(self, other_args: List[str]):
@@ -642,4 +651,3 @@ Loaded:[/info] {self.portfolio_name or None}
                 benchmark=ns_parser.benchmark,
                 risk_free_rate=ns_parser.rf,
             )
-        console.print()
