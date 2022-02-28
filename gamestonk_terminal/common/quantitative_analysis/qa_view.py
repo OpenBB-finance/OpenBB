@@ -13,6 +13,7 @@ from typing import Any, Optional, List
 import matplotlib
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
 import numpy as np
 import pandas as pd
 import seaborn as sns
@@ -951,13 +952,32 @@ def display_line(
             ax.vlines(markers_lines, ymin, ymax, color="#00AAFF")
 
         if markers_scatter:
-            for marker_date in markers_scatter:
+            for n, marker_date in enumerate(markers_scatter):
+                price_location_idx = data.index.get_loc(marker_date, method="nearest")
+                # algo to improve text placement of highlight event number
+                if (
+                    0 < price_location_idx < (len(data) - 1)
+                    and data.iloc[price_location_idx - 1]
+                    > data.iloc[price_location_idx]
+                    and data.iloc[price_location_idx + 1]
+                    > data.iloc[price_location_idx]
+                ):
+                    text_loc = (0, -20)
+                else:
+                    text_loc = (0, 10)
+                ax.annotate(
+                    str(n),
+                    (mdates.date2num(marker_date), data.iloc[price_location_idx]),
+                    xytext=text_loc,
+                    textcoords="offset points",
+                )
                 ax.scatter(
                     marker_date,
-                    data.iloc[data.index.get_loc(marker_date, method="nearest")],
+                    data.iloc[price_location_idx],
                     color="#00AAFF",
                     s=200,
                 )
+
     ax.set_xlim(data.index[0], data.index[-1])
 
     if title:
