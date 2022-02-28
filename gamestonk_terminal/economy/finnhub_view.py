@@ -2,6 +2,7 @@ import logging
 import os
 
 from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.decorators import check_api_key
 from gamestonk_terminal.economy import finnhub_model
 from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.rich_config import console
@@ -10,6 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_FINNHUB_KEY"])
 def economy_calendar_events(country: str, num: int, impact: str, export: str):
     """Output economy calendar impact events. [Source: Finnhub]
 

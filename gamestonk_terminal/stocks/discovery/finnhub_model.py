@@ -30,7 +30,7 @@ def get_ipo_calendar(from_date: str, to_date: str) -> pd.DataFrame:
         f"https://finnhub.io/api/v1/calendar/ipo?from={from_date}&to={to_date}&token={cfg.API_FINNHUB_KEY}"
     )
 
-    d_refactor_columns = pd.DataFrame()
+    df = pd.DataFrame()
 
     if response.status_code == 200:
         d_data = response.json()

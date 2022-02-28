@@ -196,14 +196,24 @@ def load(
 
         # IEX Cloud Source
         elif source == "iex":
-            client = pyEX.Client(api_token=cfg.API_IEX_TOKEN, version="v1")
 
-            df_stock_candidate = client.chartDF(ticker, timeframe=iexrange)
+            df_stock_candidate = pd.DataFrame()
 
-            # Check that loading a stock was not successful
-            if df_stock_candidate.empty:
-                console.print("")
-                return pd.DataFrame()
+            try:
+                client = pyEX.Client(api_token=cfg.API_IEX_TOKEN, version="v1")
+
+                df_stock_candidate = client.chartDF(ticker, timeframe=iexrange)
+
+                # Check that loading a stock was not successful
+                if df_stock_candidate.empty:
+                    console.print("No data found.\n")
+            except Exception as e:
+                if "The API key provided is not valid" in str(e):
+                    console.print("[red]Invalid API Key[/red]\n")
+                else:
+                    console.print(e)
+
+                return df_stock_candidate
 
             df_stock_candidate = df_stock_candidate[
                 ["close", "fHigh", "fLow", "fOpen", "fClose", "volume"]

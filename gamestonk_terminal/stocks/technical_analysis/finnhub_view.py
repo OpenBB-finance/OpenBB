@@ -12,6 +12,7 @@ import yfinance as yf
 from matplotlib import pyplot as plt
 
 from gamestonk_terminal.config_terminal import theme
+from gamestonk_terminal.decorators import check_api_key
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
 from gamestonk_terminal.rich_config import console
@@ -21,6 +22,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_FINNHUB_KEY"])
 def plot_pattern_recognition(
     ticker: str,
     resolution: str,

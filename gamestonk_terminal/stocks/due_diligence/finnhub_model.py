@@ -36,7 +36,7 @@ def get_rating_over_time(ticker: str) -> pd.DataFrame:
         if response.json():
             df = pd.DataFrame(response.json())
         else:
-            console.print("Response is empty")
+            console.print("No ratings over time found", "\n")
     elif response.status_code == 401:
         console.print("[red]Invalid API Key[/red]\n")
     elif response.status_code == 403:

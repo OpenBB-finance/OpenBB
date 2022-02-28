@@ -32,6 +32,7 @@ def get_cmc_top_n() -> pd.DataFrame:
         ratings = cmc.cryptocurrency_listings_latest().data
 
         symbol, rank, price, pchange1d, mkt_cap = [], [], [], [], []
+
         for coin in ratings:
             symbol.append(coin["symbol"])
             rank.append(coin["cmc_rank"])
