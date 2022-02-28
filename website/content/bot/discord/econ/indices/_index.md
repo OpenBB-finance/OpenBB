@@ -5,3 +5,5 @@ econ indices - US Index Summary
 ```
 /econ indices
 ```
+
+![Screen Shot 2022-02-27 at 8 34 16 PM](https://user-images.githubusercontent.com/85772166/155924725-9eb43f47-f813-492c-8ffb-45fe60b3814a.png)
