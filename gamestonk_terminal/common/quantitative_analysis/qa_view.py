@@ -896,6 +896,8 @@ def display_line(
     title: str = "",
     log_y: bool = True,
     draw: bool = False,
+    markers_lines: Optional[List[datetime]] = None,
+    markers_scatter: Optional[List[datetime]] = None,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -911,6 +913,10 @@ def display_line(
         Flag for showing y on log scale
     draw: bool
         Flag for drawing lines and annotating on the plot
+    markers_lines: Optional[List[datetime]]
+        List of dates to highlight using vertical lines
+    markers_scatter: Optional[List[datetime]]
+        List of dates to highlight using scatter
     export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
@@ -939,6 +945,19 @@ def display_line(
 
     else:
         ax.plot(data.index, data.values)
+
+        if markers_lines:
+            ymin, ymax = ax.get_ylim()
+            ax.vlines(markers_lines, ymin, ymax, color="#00AAFF")
+
+        if markers_scatter:
+            for marker_date in markers_scatter:
+                ax.scatter(
+                    marker_date,
+                    data.iloc[data.index.get_loc(marker_date, method="nearest")],
+                    color="#00AAFF",
+                    s=200,
+                )
     ax.set_xlim(data.index[0], data.index[-1])
 
     if title:
