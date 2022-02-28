@@ -1,75 +1,101 @@
 ```
-usage: options [-n {}] [-h]
+usage: options [-n {NAME}] [-h] [--export {csv,json,xlsx}]
 ```
 
-Show the column-dataset combination that can be entered within the functions.
+Show the column-dataset combination that can be entered within the different functions.
 
 ```
 optional arguments:
-  -n {}, --name {}  The dataset you would like to show the options for (default: None)
-  -h, --help        show this help message (default: False)
+  -n {NAME}, --name {NAME} 
+                        The dataset you would like to show the options for (default: None)
+  -h, --help            show this help message (default: False)
+  --export {csv,json,xlsx}
+                        Export raw data into csv, json, xlsx (default: )
 ```
 
 Example:
 ```
-2022 Feb 24, 04:40 (✨) /statistics/ $ options
-            Options for aapl            
+2022 Feb 28, 04:26 (✨) /statistics/ $ options
+            Options for msft
 ┏━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓
 ┃ dataset ┃ column    ┃ option         ┃
 ┡━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━┩
-│ aapl    │ open      │ open-aapl      │
+│ msft    │ date      │ date-msft      │
 ├─────────┼───────────┼────────────────┤
-│ aapl    │ high      │ high-aapl      │
+│ msft    │ open      │ open-msft      │
 ├─────────┼───────────┼────────────────┤
-│ aapl    │ low       │ low-aapl       │
+│ msft    │ high      │ high-msft      │
 ├─────────┼───────────┼────────────────┤
-│ aapl    │ close     │ close-aapl     │
+│ msft    │ low       │ low-msft       │
 ├─────────┼───────────┼────────────────┤
-│ aapl    │ adj_close │ adj_close-aapl │
+│ msft    │ close     │ close-msft     │
 ├─────────┼───────────┼────────────────┤
-│ aapl    │ volume    │ volume-aapl    │
+│ msft    │ adj_close │ adj_close-msft │
+├─────────┼───────────┼────────────────┤
+│ msft    │ volume    │ volume-msft    │
 └─────────┴───────────┴────────────────┘
+          Options for ll
+┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┓
+┃ dataset ┃ column  ┃ option     ┃
+┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━┩
+│ ll      │ totemp  │ totemp-ll  │
+├─────────┼─────────┼────────────┤
+│ ll      │ gnpdefl │ gnpdefl-ll │
+├─────────┼─────────┼────────────┤
+│ ll      │ gnp     │ gnp-ll     │
+├─────────┼─────────┼────────────┤
+│ ll      │ unemp   │ unemp-ll   │
+├─────────┼─────────┼────────────┤
+│ ll      │ armed   │ armed-ll   │
+├─────────┼─────────┼────────────┤
+│ ll      │ pop     │ pop-ll     │
+├─────────┼─────────┼────────────┤
+│ ll      │ year    │ year-ll    │
+└─────────┴─────────┴────────────┘
+           Options for a96
+┏━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━━┓
+┃ dataset ┃ column   ┃ option       ┃
+┡━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━━━━┩
+│ a96     │ popul    │ popul-a96    │
+├─────────┼──────────┼──────────────┤
+│ a96     │ tvnews   │ tvnews-a96   │
+├─────────┼──────────┼──────────────┤
+│ a96     │ selflr   │ selflr-a96   │
+├─────────┼──────────┼──────────────┤
+│ a96     │ clinlr   │ clinlr-a96   │
+├─────────┼──────────┼──────────────┤
+│ a96     │ dolelr   │ dolelr-a96   │
+├─────────┼──────────┼──────────────┤
+│ a96     │ pid      │ pid-a96      │
+├─────────┼──────────┼──────────────┤
+│ a96     │ age      │ age-a96      │
+├─────────┼──────────┼──────────────┤
+│ a96     │ educ     │ educ-a96     │
+├─────────┼──────────┼──────────────┤
+│ a96     │ income   │ income-a96   │
+├─────────┼──────────┼──────────────┤
+│ a96     │ vote     │ vote-a96     │
+├─────────┼──────────┼──────────────┤
+│ a96     │ logpopul │ logpopul-a96 │
+└─────────┴──────────┴──────────────┘
 
-                      Options for thesis                      
-┏━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-┃ dataset ┃ column              ┃ option                     ┃
-┡━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-│ thesis  │ company             │ company-thesis             │
-├─────────┼─────────────────────┼────────────────────────────┤
-│ thesis  │ current_assets      │ current_assets-thesis      │
-├─────────┼─────────────────────┼────────────────────────────┤
-│ thesis  │ assets              │ assets-thesis              │
-├─────────┼─────────────────────┼────────────────────────────┤
-│ thesis  │ debt                │ debt-thesis                │
-├─────────┼─────────────────────┼────────────────────────────┤
-│ thesis  │ depr_amor           │ depr_amor-thesis           │
-├─────────┼─────────────────────┼────────────────────────────┤
-│ thesis  │ income              │ income-thesis              │
-├─────────┼─────────────────────┼────────────────────────────┤
-│ thesis  │ current_liabilities │ current_liabilities-thesis │
-├─────────┼─────────────────────┼────────────────────────────┤
-│ thesis  │ revenue             │ revenue-thesis             │
-├─────────┼─────────────────────┼────────────────────────────┤
-│ thesis  │ equity              │ equity-thesis              │
-├─────────┼─────────────────────┼────────────────────────────┤
-│ thesis  │ interest_expense    │ interest_expense-thesis    │
-└─────────┴─────────────────────┴────────────────────────────┘
-
-2022 Feb 24, 04:40 (✨) /statistics/ $ options aapl
-            Options for aapl            
-┏━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓
-┃ dataset ┃ column    ┃ option         ┃
-┡━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━┩
-│ aapl    │ open      │ open-aapl      │
-├─────────┼───────────┼────────────────┤
-│ aapl    │ high      │ high-aapl      │
-├─────────┼───────────┼────────────────┤
-│ aapl    │ low       │ low-aapl       │
-├─────────┼───────────┼────────────────┤
-│ aapl    │ close     │ close-aapl     │
-├─────────┼───────────┼────────────────┤
-│ aapl    │ adj_close │ adj_close-aapl │
-├─────────┼───────────┼────────────────┤
-│ aapl    │ volume    │ volume-aapl    │
-└─────────┴───────────┴────────────────┘
+2022 Feb 28, 04:27 (✨) /statistics/ $ options ll
+          Options for ll
+┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┓
+┃ dataset ┃ column  ┃ option     ┃
+┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━┩
+│ ll      │ totemp  │ totemp-ll  │
+├─────────┼─────────┼────────────┤
+│ ll      │ gnpdefl │ gnpdefl-ll │
+├─────────┼─────────┼────────────┤
+│ ll      │ gnp     │ gnp-ll     │
+├─────────┼─────────┼────────────┤
+│ ll      │ unemp   │ unemp-ll   │
+├─────────┼─────────┼────────────┤
+│ ll      │ armed   │ armed-ll   │
+├─────────┼─────────┼────────────┤
+│ ll      │ pop     │ pop-ll     │
+├─────────┼─────────┼────────────┤
+│ ll      │ year    │ year-ll    │
+└─────────┴─────────┴────────────┘
 ```

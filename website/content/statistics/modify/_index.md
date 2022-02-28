@@ -6,7 +6,7 @@ Modify a dataset by adding, removing or renaming columns. This also has the poss
 
 `--add` can be used to create new columns for your dataset. It can use any operator and allows for creating specific 
 dummy variables or ratios. For example: `modify -a debt_ratio-dataset debt-dataset div assets-dataset2` will create a 
-new column with the name 'debt_ratio' which is the debt column divided by the assets column.
+new column with the name 'debt_ratio' which is the 'debt' column divided by the 'assets' column.
 
 `--delete` allows you to remove any column from your dataset. For example `modify -d debt-thesis assets-thesis`
 

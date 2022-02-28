@@ -1,6 +1,5 @@
 ```
-usage: root [-c {OPTIONS}] [-r {c,ct,ctt,nc}] [-k {c,ct}] [-h]
-
+usage: root [-c {OPTIONS}] [-r {c,ct,ctt,nc}] [-k {c,ct}] [-h] [--export {csv,json,xlsx}]
 ```
 
 Show unit root tests of a column of a dataset.
@@ -16,6 +15,8 @@ optional arguments:
   -k {c,ct}, --kps_reg {c,ct}
                         Type of regression. Can be ‘c’,’ct'. c - Constant and t - trend order (default: c)
   -h, --help            show this help message (default: False)
+   --export {csv,json,xlsx}
+                        Export raw data into csv, json, xlsx (default: )
 ```
 
 Example:

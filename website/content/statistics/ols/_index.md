@@ -1,5 +1,5 @@
 ```
-usage: ols [-r OPTIONS [OPTIONS ...]] [-h]
+usage: ols [-r OPTIONS [OPTIONS ...]] [-h] [-h] [--export {csv,json,xlsx}]
 ```
 
 Performs an OLS regression.

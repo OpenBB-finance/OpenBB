@@ -98,7 +98,7 @@ class StatisticsController(BaseController):
             "fair": "Affairs dataset",
             "fertility": "World Bank Fertility Data",
             "grunfeld": "Grunfeld (1950) Investment Data",
-            "health": "Transplant Survival Data",
+            "heart": "Transplant Survival Data",
             "interest_inflation": "(West) German interest and inflation rate 1972-1998",
             "longley": "Longley dataset",
             "macrodata": "United States Macroeconomic data",

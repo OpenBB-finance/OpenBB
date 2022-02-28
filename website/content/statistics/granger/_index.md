@@ -8,7 +8,7 @@ The Granger causality test is a statistical hypothesis test for determining whet
 
 ```
 optional arguments:ols 
-  -ts {OPTIONS, --timeseries {OPTIONS}
+  -ts {OPTIONS}, --timeseries {OPTIONS}
                         Requires two time series, the first time series is assumed to be Granger-caused by the second time series. (default: None)
   -l LAGS, --lags LAGS  How many lags should be included (default: 3)
   -cl CONFIDENCE, --confidence CONFIDENCE
