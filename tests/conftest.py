@@ -346,8 +346,10 @@ def disable_rich():
 
     helper_funcs.print_rich_table = effect
 
+
 def disable_check_api():
     decorators.disable_check_api()
+
 
 def enable_debug():
     os.environ["DEBUG_MODE"] = "true"
