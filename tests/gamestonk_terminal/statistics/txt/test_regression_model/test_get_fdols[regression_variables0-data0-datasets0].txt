@@ -1,0 +1,25 @@
+                     FirstDifferenceOLS Estimation Summary                      
+================================================================================
+Dep. Variable:       lwage_wage_panel   R-squared:                        0.0034
+Estimator:         FirstDifferenceOLS   R-squared (Between):              0.0423
+No. Observations:                3815   R-squared (Within):               0.0265
+Date:                Mon, Feb 28 2022   R-squared (Overall):              0.0416
+Time:                        20:26:21   Log-likelihood                   -2350.7
+Cov. Estimator:            Unadjusted                                           
+                                        F-statistic:                      13.141
+Entities:                         545   P-value                           0.0003
+Avg Obs:                       8.0000   Distribution:                  F(1,3814)
+Min Obs:                       8.0000                                           
+Max Obs:                       8.0000   F-statistic (robust):             13.141
+                                        P-value                           0.0003
+Time periods:                       8   Distribution:                  F(1,3814)
+Avg Obs:                       545.00                                           
+Min Obs:                       545.00                                           
+Max Obs:                       545.00                                           
+                                                                                
+                                 Parameter Estimates                                  
+======================================================================================
+                    Parameter  Std. Err.     T-stat    P-value    Lower CI    Upper CI
+--------------------------------------------------------------------------------------
+married_wage_panel     0.0823     0.0227     3.6251     0.0003      0.0378      0.1268
+======================================================================================

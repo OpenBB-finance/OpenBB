@@ -120,6 +120,7 @@ def display_norm(
     data: pd.DataFrame,
     dataset: str,
     column: str,
+    plot: bool = False,
     export: str = "",
 ):
     """Determine the normality of a timeseries.
@@ -132,6 +133,8 @@ def display_norm(
         Dataset name
     column: str
         Column for y data
+    plot : bool
+        Whether you wish to plot a histogram
     export: str
         Format to export data.
     """
@@ -145,15 +148,16 @@ def display_norm(
         title=f"Normality Test [Column: {column} | Dataset: {dataset}]",
     )
 
-    plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    if plot:
+        plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
-    plt.hist(data, bins=100)
+        plt.hist(data, bins=100)
 
-    plt.title(f"Histogram of {column} data from dataset {dataset}")
-    if gtff.USE_ION:
-        plt.ion()
-    plt.tight_layout()
-    plt.show()
+        plt.title(f"Histogram of {column} data from dataset {dataset}")
+        if gtff.USE_ION:
+            plt.ion()
+        plt.tight_layout()
+        plt.show()
 
     if export:
         export_data(

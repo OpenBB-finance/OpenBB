@@ -1001,6 +1001,15 @@ Tests
             help="The column and name of the database you want to test normality for",
         )
 
+        parser.add_argument(
+            "-p",
+            "--plot",
+            dest="plot",
+            help="Whether you wish to plot a histogram to visually depict normality",
+            action="store_true",
+            default=False,
+        )
+
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-c")
         ns_parser = parse_known_args_and_warn(
@@ -1028,7 +1037,9 @@ Tests
             else:
                 return console.print(f"Can not find {dataset}. Did you load the data?")
 
-            return statistics_view.display_norm(data, dataset, column, ns_parser.export)
+            return statistics_view.display_norm(
+                data, dataset, column, ns_parser.plot, ns_parser.export
+            )
 
     def call_root(self, other_args: List[str]):
         """Process unit root command"""

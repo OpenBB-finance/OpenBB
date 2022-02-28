@@ -73,7 +73,7 @@ def load(
 def get_options(
     datasets: Dict[pd.DataFrame, Any], dataset_name: str = None
 ) -> Dict[Union[str, Any], DataFrame]:
-    """Load custom file into dataframe.
+    """Obtain columns-dataset combinations from loaded in datasets that can be used in other commands
 
     Parameters
     ----------
@@ -84,8 +84,8 @@ def get_options(
 
     Returns
     -------
-    pd.DataFrame:
-        Dataframe with custom data
+    option_tables: dict
+        A dictionary with a DataFrame for each option. With dataset_name set, only shows one options table.
     """
     option_tables = {}
 
@@ -114,19 +114,23 @@ def get_options(
 
 @log_start_end(log=logger)
 def clean(dataset: pd.DataFrame, fill: str, drop: str, limit: int) -> pd.DataFrame:
-    """Load custom file into dataframe.
+    """Clean up NaNs from the dataset
 
     Parameters
     ----------
-    file: str
-        Path to file
-    file_types: list
-        Supported file types
+    dataset : pd.DataFrame
+        The dataset you wish to clean
+    fill : str
+        The method of filling Nans
+    drop : str
+        The method of dropping NaNs
+    limit : int
+        The maximum limit you wish to apply that can be forward or backward filled
 
     Returns
     -------
     pd.DataFrame:
-        Dataframe with custom data
+        Dataframe with cleaned up data
     """
     if fill:
         if fill == "rfill":
@@ -152,7 +156,7 @@ def clean(dataset: pd.DataFrame, fill: str, drop: str, limit: int) -> pd.DataFra
 
 
 @log_start_end(log=logger)
-def get_normality(data: pd.DataFrame) -> pd.DataFrame:
+def get_normality(data: pd.Series) -> pd.DataFrame:
     """
     Look at the distribution of returns and generate statistics on the relation to the normal curve.
     This function calculates skew and kurtosis (the third and fourth moments) and performs both
@@ -160,8 +164,8 @@ def get_normality(data: pd.DataFrame) -> pd.DataFrame:
 
     Parameters
     ----------
-    df : pd.DataFrame
-        Dataframe of targeted data
+    data : pd.Series
+        A series or column of a DataFrame to test normality for
 
     Returns
     -------
@@ -202,13 +206,13 @@ def get_normality(data: pd.DataFrame) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_root(df: pd.DataFrame, fuller_reg: str, kpss_reg: str) -> pd.DataFrame:
+def get_root(df: pd.Series, fuller_reg: str, kpss_reg: str) -> pd.DataFrame:
     """Calculate test statistics for unit roots
 
     Parameters
     ----------
-    df : pd.DataFrame
-        DataFrame of target variable
+    df : pd.Series
+        Series or column of DataFrame of target variable
     fuller_reg : str
         Type of regression of ADF test
     kpss_reg : str

@@ -466,13 +466,15 @@ def get_dwat(residual: pd.DataFrame) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_bgod(model: pd.DataFrame, lags) -> tuple:
+def get_bgod(model: pd.DataFrame, lags: int) -> tuple:
     """Calculate test statistics for autocorrelation
 
     Parameters
     ----------
     model : OLS Model
         Model containing residual values.
+    lags : int
+        The amount of lags.
 
     Returns
     -------

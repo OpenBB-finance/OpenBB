@@ -1,0 +1,37 @@
+                                 OLS Regression Results                                
+=======================================================================================
+Dep. Variable:         TOTEMP_longley   R-squared (uncentered):                   1.000
+Model:                            OLS   Adj. R-squared (uncentered):              1.000
+Method:                 Least Squares   F-statistic:                          2.909e+04
+Date:                Mon, 28 Feb 2022   Prob (F-statistic):                    4.66e-26
+Time:                        20:26:14   Log-Likelihood:                         -133.46
+No. Observations:                  16   AIC:                                      270.9
+Df Residuals:                      14   BIC:                                      272.5
+Df Model:                           2                                                  
+Covariance Type:            nonrobust                                                  
+=================================================================================
+                    coef    std err          t      P>|t|      [0.025      0.975]
+---------------------------------------------------------------------------------
+ARMED_longley     0.4961      0.427      1.162      0.265      -0.420       1.412
+POP_longley       0.5450      0.010     55.742      0.000       0.524       0.566
+==============================================================================
+Omnibus:                        0.980   Durbin-Watson:                   1.346
+Prob(Omnibus):                  0.613   Jarque-Bera (JB):                0.840
+Skew:                          -0.324   Prob(JB):                        0.657
+Kurtosis:                       2.084   Cond. No.                         185.
+==============================================================================
+
+Notes:
+[1] R² is computed without centering (uncentered) since the model does not contain a constant.
+[2] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+
+Warnings:
+[red]kurtosistest only valid for n>=20 ... continuing anyway, n=16[/red]
+
+                 0
+lm-stat   8.266655
+p-value   0.004038
+f-stat    7.482736
+fp-value  0.006162
+The result 0.0 indicates no existence of heteroscedasticity.
+

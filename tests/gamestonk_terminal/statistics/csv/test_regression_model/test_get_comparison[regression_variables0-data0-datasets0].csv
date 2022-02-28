@@ -1,0 +1,29 @@
+,0
+0,"                     Model Comparison                    
+=========================================================
+                                     RE                FE
+---------------------------------------------------------
+Dep. Variable           educ_wage_panel   educ_wage_panel
+Estimator                 RandomEffects          PanelOLS
+No. Observations                   4360              4360
+Cov. Est.                    Unadjusted        Unadjusted
+R-squared                       -28.700            0.1051
+R-Squared (Within)               0.0000            0.0000
+R-Squared (Between)             -45.420            0.1330
+R-Squared (Overall)             -45.420            0.1051
+F-statistic                     -1052.1            127.85
+P-value (F-stat)                 1.0000            0.0000
+===================== ================= =================
+const                         2.887e-59            10.654
+                            (1.424e-58)          (125.72)
+married_wage_panel            1.059e-30           -0.1334
+                            (5.802e-15)         (-2.5713)
+lwage_wage_panel              1.879e-29            0.8226
+                            (1.153e-13)          (17.089)
+hisp_wage_panel               4.212e-60           -0.9749
+                            (8.721e-60)         (-13.951)
+black_wage_panel              3.046e-60           -0.2851
+                            (5.559e-60)         (-3.5590)
+---------------------------------------------------------
+
+T-stats reported in parentheses"

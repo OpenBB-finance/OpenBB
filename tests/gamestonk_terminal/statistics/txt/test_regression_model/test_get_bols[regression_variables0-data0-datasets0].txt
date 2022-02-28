@@ -1,0 +1,29 @@
+                         BetweenOLS Estimation Summary                          
+================================================================================
+Dep. Variable:        educ_wage_panel   R-squared:                        0.1572
+Estimator:                 BetweenOLS   R-squared (Between):              0.1572
+No. Observations:                 545   R-squared (Within):               0.0000
+Date:                Mon, Feb 28 2022   R-squared (Overall):              0.0599
+Time:                        20:26:21   Log-likelihood                   -1030.5
+Cov. Estimator:            Unadjusted                                           
+                                        F-statistic:                      25.181
+Entities:                         545   P-value                           0.0000
+Avg Obs:                       8.0000   Distribution:                   F(4,540)
+Min Obs:                       8.0000                                           
+Max Obs:                       8.0000   F-statistic (robust):             25.181
+                                        P-value                           0.0000
+Time periods:                       8   Distribution:                   F(4,540)
+Avg Obs:                       545.00                                           
+Min Obs:                       545.00                                           
+Max Obs:                       545.00                                           
+                                                                                
+                                 Parameter Estimates                                  
+======================================================================================
+                    Parameter  Std. Err.     T-stat    P-value    Lower CI    Upper CI
+--------------------------------------------------------------------------------------
+const                  9.5010     0.3110     30.553     0.0000      8.8901      10.112
+married_wage_panel    -0.2164     0.1893    -1.1433     0.2534     -0.5881      0.1554
+lwage_wage_panel       1.5340     0.1811     8.4719     0.0000      1.1783      1.8896
+hisp_wage_panel       -0.9381     0.1927    -4.8681     0.0000     -1.3166     -0.5595
+black_wage_panel      -0.1942     0.2227    -0.8719     0.3837     -0.6317      0.2433
+======================================================================================
