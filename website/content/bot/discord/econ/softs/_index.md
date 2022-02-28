@@ -1,4 +1,4 @@
-econ softs - CBOE Softs Futures
+econ softs - Softs catagory of futures.
 
 ![Screen Shot 2022-02-27 at 5 58 15 PM](https://user-images.githubusercontent.com/85772166/155911921-23f24c6c-807f-42c6-8ad4-75a988dca9ef.png)
 
