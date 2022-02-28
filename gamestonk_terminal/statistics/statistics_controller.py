@@ -228,7 +228,7 @@ Tests
     bgod            perform Breusch-Godfrey autocorrelation tests with lags on the residuals of the regression
     bpag            perform Breusch-Pagan heteroscedasticity test on the residuals of the regression
     granger         perform Granger causality tests on two columns
-    coint           perform co-integration test on two columns[/cmds]
+    coint           perform co-integration test on a multitude of columns[/cmds]
         """
         console.print(text=help_text, menu="Statistics")
 
