@@ -7,7 +7,7 @@
     country       see existing countries, or set country if arg specified
     mktcap        set mktcap between nano, micro, small, mid, large or mega
     exchange      revert exclude international exchanges flag
-    period        set period between annual, quarterly or trailing [StockAnalyis]
+    period        set period between annual, quarterly or trailing [StockAnalysis]
 
 Industry          : Financial Data & Stock Exchanges
 Sector            : Financial Services
@@ -25,10 +25,10 @@ Statistics
 
 Financials  [Yahoo Finance] 
     sama          see all metrics available
-    metric        visualise financial metric across filters selected
-Financials  [StockAnalyis] 
+    metric        visualize financial metric across filters selected
+Financials  [StockAnalysis] 
     satma         see all metrics available over time
-    vis           visualise financial metric across filters selected
+    vis           visualize financial metric across filters selected
 [unvl]
 Returned tickers: 
 >   ca            take these to comparison analysis menu
