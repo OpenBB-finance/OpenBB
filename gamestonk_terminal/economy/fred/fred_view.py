@@ -120,6 +120,7 @@ def display_fred_series(
 
     else:
         if len(external_axes) != 3:
+            logger.error("Expected list of 3 axis items")
             console.print("[red]Expected list of 3 axis items./n[/red]")
             return
         (ax,) = external_axes
@@ -146,6 +147,7 @@ def display_fred_series(
 
     ax.legend(prop={"size": 10}, bbox_to_anchor=(0, 1), loc="lower left")
     if data.empty:
+        logger.error("No data")
         console.print("[red]No data[/red]\n")
     else:
         ax.set_xlim(data.index[0], data.index[-1])

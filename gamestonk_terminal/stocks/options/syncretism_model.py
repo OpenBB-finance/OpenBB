@@ -317,5 +317,6 @@ def check_presets(preset_dict: dict) -> str:
         elif key == "order-by":
             if value.replace('"', "") not in accepted_orders:
                 error += f"{key} : {value} not accepted ordering\n"
-
+    if error:
+        logging.exception(error)
     return error

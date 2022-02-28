@@ -62,5 +62,6 @@ def get_dividend_cal(date: str) -> pd.DataFrame:
         if r.status_code == 200:
             return pd.DataFrame(r.json()["data"]["calendar"]["rows"])
     except requests.exceptions.ReadTimeout:
+        logger.exception("Request timed out")
         return pd.DataFrame()
     return pd.DataFrame()

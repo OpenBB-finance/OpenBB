@@ -97,6 +97,7 @@ def check_valid_binance_str(symbol: str) -> str:
         client.get_avg_price(symbol=symbol.upper())
         return symbol.upper()
     except BinanceAPIException as e:
+        logger.exception("%s is not a valid binance symbol", str(symbol))
         raise argparse.ArgumentTypeError(
             f"{symbol} is not a valid binance symbol"
         ) from e

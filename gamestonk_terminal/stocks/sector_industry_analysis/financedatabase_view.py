@@ -145,6 +145,7 @@ def display_bars_financials(
                 _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
             else:
                 if len(external_axes) != 1:
+                    logger.error("Expected list of one axis item.")
                     console.print("[red]Expected list of one axis item./n[/red]")
                     # set returns statement to be compatible with others
                     return dict(), list()
@@ -347,6 +348,7 @@ def display_companies_per_sector_in_country(
                 _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
             else:
                 if len(external_axes) != 1:
+                    logger.error("Expected list of one axis item.")
                     console.print("[red]Expected list of one axis item./n[/red]")
                     return
                 (ax,) = external_axes
@@ -497,6 +499,7 @@ def display_companies_per_industry_in_country(
                 _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
             else:
                 if len(external_axes) != 1:
+                    logger.error("Expected list of one axis item.")
                     console.print("[red]Expected list of one axis item./n[/red]")
                     return
                 (ax,) = external_axes
@@ -650,6 +653,7 @@ def display_companies_per_industry_in_sector(
                 _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
             else:
                 if len(external_axes) != 1:
+                    logger.error("Expected list of one axis item.")
                     console.print("[red]Expected list of one axis item./n[/red]")
                     return
                 (ax,) = external_axes
@@ -795,6 +799,7 @@ def display_companies_per_country_in_sector(
                 _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
             else:
                 if len(external_axes) != 1:
+                    logger.error("Expected list of one axis item.")
                     console.print("[red]Expected list of one axis item./n[/red]")
                     return
                 (ax,) = external_axes
@@ -940,6 +945,7 @@ def display_companies_per_country_in_industry(
                 _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
             else:
                 if len(external_axes) != 1:
+                    logger.error("Expected list of one axis item.")
                     console.print("[red]Expected list of one axis item./n[/red]")
                     return
                 (ax,) = external_axes

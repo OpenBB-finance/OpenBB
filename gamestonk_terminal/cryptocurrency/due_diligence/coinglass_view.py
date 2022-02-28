@@ -64,7 +64,8 @@ def plot_data(
         )
     else:
         if len(external_axes) != 2:
-            console.print("[red]Expected list of two axis item./n[/red]")
+            logger.error("Expected list of two axis items.")
+            console.print("[red]Expected list of two axis items./n[/red]")
             return
         ax1, ax2 = external_axes
 

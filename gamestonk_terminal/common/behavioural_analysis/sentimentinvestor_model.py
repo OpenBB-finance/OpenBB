@@ -95,7 +95,7 @@ def check_supported_ticker(ticker: str) -> bool:
 
         # if ticker is not valid, payload doesn't have result key
         except KeyError:
-            pass
+            logger.warning("KeyError: Ticker possibly not valid")
 
     return False
 

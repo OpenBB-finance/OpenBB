@@ -306,6 +306,11 @@ class BaseController(metaclass=ABCMeta):
                 self.queue = self.switch(an_input)
 
             except SystemExit:
+                logger.exception(
+                    "The command '%s' doesn't exist on the %s menu.",
+                    an_input,
+                    self.PATH,
+                )
                 console.print(
                     f"\nThe command '{an_input}' doesn't exist on the {self.PATH} menu.",
                     end="",
@@ -329,7 +334,7 @@ class BaseController(metaclass=ABCMeta):
                         an_input = candidate_input
                     else:
                         an_input = similar_cmd[0]
-
+                    logger.warning("Replacing by %s", an_input)
                     console.print(f" Replacing by '{an_input}'.")
                     self.queue.insert(0, an_input)
                 else:

@@ -32,7 +32,8 @@ def search_funds(by: str = "name", value: str = "") -> pd.DataFrame:
     """
     try:
         return investpy.funds.search_funds(by=by, value=value)
-    except RuntimeError:
+    except RuntimeError as e:
+        logger.exception(str(e))
         return pd.DataFrame()
 
 
@@ -163,13 +164,15 @@ def get_fund_historical(
         fund_name = fund
         try:
             fund_symbol, matching_country = get_fund_symbol_from_name(fund)
-        except RuntimeError:
+        except RuntimeError as e:
+            logger.exception(str(e))
             return pd.DataFrame(), fund, "", country
     else:
         fund_symbol = fund
         try:
             fund_name, matching_country = get_fund_name_from_symbol(fund)
-        except RuntimeError:
+        except RuntimeError as e:
+            logger.exception(str(e))
             return pd.DataFrame(), "", fund, country
 
     # Note that dates for investpy need to be in the format dd/mm/yyyy
@@ -185,5 +188,6 @@ def get_fund_historical(
             fund_symbol,
             matching_country,
         )
-    except RuntimeError:
+    except RuntimeError as e:
+        logger.exception(str(e))
         return pd.DataFrame(), fund_name, fund_symbol, search_country
