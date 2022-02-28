@@ -1446,7 +1446,7 @@ main:
                 ref: "/bot/discord/econ/indices"
               - name: "econ overview"
                 ref: "/bot/discord/econ/overview"
-              - name: "econ feargree"
+              - name: "econ feargreed"
                 ref: "/bot/discord/econ/feargreed"
               - name: "econ currencies"
                 ref: "/bot/discord/econ/currencies"
