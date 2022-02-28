@@ -5,6 +5,7 @@ import logging
 
 import requests
 
+from gamestonk_terminal.decorators import check_api_key
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.rich_config import console
@@ -13,6 +14,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_NEWS_TOKEN"])
 def news(
     term: str,
     num: int,
@@ -49,10 +51,16 @@ def news(
     if response.status_code == 426:
         console.print(f"Error in request: {response.json()['message']}", "\n")
 
-    elif response.status_code != 200:
+    elif response.status_code == 401:
+        console.print("[red]Invalid API Key[/red]\n")
+
+    elif response.status_code == 429:
         console.print(
-            f"Error in request {response.status_code}. Check News API token", "\n"
+            "Too many requests within a window of time. Back off for a while.\n"
         )
+
+    elif response.status_code != 200:
+        console.print(f"Error in request: {response.json()['message']}", "\n")
 
     else:
         console.print(

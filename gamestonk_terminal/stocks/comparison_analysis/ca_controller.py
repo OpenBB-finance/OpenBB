@@ -324,6 +324,7 @@ class ComparisonAnalysisController(BaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(parser, other_args)
+
         if ns_parser:
             if self.ticker:
                 self.similar, self.user = polygon_model.get_similar_companies(
@@ -388,9 +389,9 @@ class ComparisonAnalysisController(BaseController):
                         f"The limit of stocks to compare are {ns_parser.limit}. The subsample will occur randomly.\n",
                     )
 
-                self.similar = [self.ticker] + self.similar
-
                 if self.similar:
+
+                    self.similar = [self.ticker] + self.similar
                     console.print(
                         f"[{self.user}] Similar Companies: {', '.join(self.similar)}",
                         "\n",

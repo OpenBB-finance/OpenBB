@@ -124,6 +124,7 @@ class FredController(BaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-i")
         ns_parser = parse_known_args_and_warn(parser, other_args)
+
         if ns_parser:
             # Loop through entries.  If it exists, save title in dictionary
             for s_id in ns_parser.series_id.split(","):

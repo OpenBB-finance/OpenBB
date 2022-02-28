@@ -27,7 +27,6 @@ def economy_calendar_events(country: str, num: int, impact: str, export: str):
     df_events = finnhub_model.get_economy_calendar_events()
 
     if df_events.empty:
-        console.print("No latest economy calendar events found\n")
         return
 
     df_econ_calendar = df_events[df_events["country"] == country].sort_values(

@@ -29,6 +29,9 @@ def display_sentiment_stats(ticker: str, export: str = ""):
     """
     d_stats = finnhub_model.get_sentiment_stats(ticker)
 
+    if d_stats.empty:
+        return
+
     if d_stats:
         console.print(
             f"""
