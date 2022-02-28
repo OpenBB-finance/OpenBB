@@ -15,7 +15,7 @@ optional arguments:
 
 Example:
 ```
-2022 Feb 28, 04:12 (✨) /statistics/ $ desc aapl
+2022 Feb 28, 04:12 (✨) /econometrics/ $ desc aapl
                                   aapl
 ┏━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━┓
 ┃       ┃ open   ┃ high   ┃ low    ┃ close  ┃ adj_close ┃ volume       ┃
@@ -37,7 +37,7 @@ Example:
 │ max   │ 182.63 │ 182.94 │ 179.12 │ 182.01 │ 181.78    │ 426510000.00 │
 └───────┴────────┴────────┴────────┴────────┴───────────┴──────────────┘
 
-2022 Feb 28, 04:12 (✨) /statistics/ $ desc thesis
+2022 Feb 28, 04:12 (✨) /econometrics/ $ desc thesis
                                                                    thesis
 ┏━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┓
 ┃       ┃ current_assets ┃ assets     ┃ debt       ┃ depr_amor ┃ income    ┃ current_liabilities ┃ revenue   ┃ equity    ┃ interest_expense ┃

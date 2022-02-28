@@ -12,5 +12,5 @@ optional arguments:
 
 Example:
 ```
-2022 Feb 24, 04:37 (✨) /statistics/ $ remove thesis
+2022 Feb 24, 04:37 (✨) /econometrics/ $ remove thesis
 ```

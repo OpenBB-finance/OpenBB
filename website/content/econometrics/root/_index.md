@@ -21,7 +21,7 @@ optional arguments:
 
 Example:
 ```
-2022 Feb 24, 05:37 (✨) /statistics/ $ root return-msft
+2022 Feb 24, 05:37 (✨) /econometrics/ $ root return-msft
 Unitroot Test [Column: return | Dataset: msft]
 ┏━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━┓
 ┃                ┃ ADF      ┃ KPSS ┃
@@ -37,7 +37,7 @@ Unitroot Test [Column: return | Dataset: msft]
 │ ICBest         │ -3902.73 │      │
 └────────────────┴──────────┴──────┘
 
-2022 Feb 24, 05:38 (✨) /statistics/ $ root adj_close-aapl
+2022 Feb 24, 05:38 (✨) /econometrics/ $ root adj_close-aapl
 Unitroot Test [Column: adj_close | Dataset: aapl]
 ┏━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┓
 ┃                ┃ ADF     ┃ KPSS ┃

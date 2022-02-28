@@ -29,7 +29,7 @@ optional arguments:
 
 Example:
 ```
-2022 Feb 24, 05:01 (✨) /statistics/ $ show thesis
+2022 Feb 24, 05:01 (✨) /econometrics/ $ show thesis
                                                                                             thesis                                                                                            
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┓
 ┃                                                                   ┃ current_assets ┃ assets   ┃ debt     ┃ depr_amor ┃ income ┃ current_liabilities ┃ revenue ┃ equity  ┃ interest_expense ┃
@@ -56,16 +56,16 @@ Example:
 └───────────────────────────────────────────────────────────────────┴────────────────┴──────────┴──────────┴───────────┴────────┴─────────────────────┴─────────┴─────────┴──────────────────┘
 ```
 ```
-2022 Feb 24, 05:08 (✨) /statistics/ $ modify -a debt_ratio-thesis debt-thesis div assets-thesis
+2022 Feb 24, 05:08 (✨) /econometrics/ $ modify -a debt_ratio-thesis debt-thesis div assets-thesis
 
-2022 Feb 24, 05:08 (✨) /statistics/ $ modify -d debt-thesis assets-thesis
+2022 Feb 24, 05:08 (✨) /econometrics/ $ modify -d debt-thesis assets-thesis
 
-2022 Feb 24, 05:10 (✨) /statistics/ $ modify -c thesis debt-thesis2
+2022 Feb 24, 05:10 (✨) /econometrics/ $ modify -c thesis debt-thesis2
 
-2022 Feb 24, 05:11 (✨) /statistics/ $ modify -r thesis revenue GAINS
+2022 Feb 24, 05:11 (✨) /econometrics/ $ modify -r thesis revenue GAINS
 ```
 ```
-2022 Feb 24, 05:11 (✨) /statistics/ $ show thesis
+2022 Feb 24, 05:11 (✨) /econometrics/ $ show thesis
                                                                                                thesis                                                                                               
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━┓
 ┃                                                                   ┃ current_assets ┃ depr_amor ┃ income ┃ current_liabilities ┃ GAINS   ┃ equity  ┃ interest_expense ┃ debt_ratio ┃ debt_thesis2 ┃

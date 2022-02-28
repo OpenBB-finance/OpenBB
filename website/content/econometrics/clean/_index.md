@@ -19,7 +19,7 @@ optional arguments:
 
 Example:
 ```
-2022 Feb 24, 04:58 (✨) /statistics/ $ show thesis
+2022 Feb 24, 04:58 (✨) /econometrics/ $ show thesis
                                                                                 thesis                                                                                 
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━┓
 ┃                                                ┃ current_assets ┃ assets  ┃ debt   ┃ depr_amor ┃ income ┃ current_liabilities ┃ revenue ┃ equity ┃ interest_expense ┃
@@ -46,9 +46,9 @@ Example:
 └────────────────────────────────────────────────┴────────────────┴─────────┴────────┴───────────┴────────┴─────────────────────┴─────────┴────────┴──────────────────┘
 ```
 ```
-2022 Feb 24, 04:58 (✨) /statistics/ $ clean thesis -f rfill
+2022 Feb 24, 04:58 (✨) /econometrics/ $ clean thesis -f rfill
 
-2022 Feb 24, 04:59 (✨) /statistics/ $ show thesis
+2022 Feb 24, 04:59 (✨) /econometrics/ $ show thesis
                                                                                 thesis                                                                                 
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━┓
 ┃                                                ┃ current_assets ┃ assets  ┃ debt   ┃ depr_amor ┃ income ┃ current_liabilities ┃ revenue ┃ equity ┃ interest_expense ┃
@@ -75,9 +75,9 @@ Example:
 └────────────────────────────────────────────────┴────────────────┴─────────┴────────┴───────────┴────────┴─────────────────────┴─────────┴────────┴──────────────────┘
 ```
 ```
-2022 Feb 24, 04:59 (✨) /statistics/ $ clean thesis -d rdrop
+2022 Feb 24, 04:59 (✨) /econometrics/ $ clean thesis -d rdrop
 
-2022 Feb 24, 05:00 (✨) /statistics/ $ show thesis
+2022 Feb 24, 05:00 (✨) /econometrics/ $ show thesis
                                                                                             thesis                                                                                            
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┓
 ┃                                                                   ┃ current_assets ┃ assets   ┃ debt     ┃ depr_amor ┃ income ┃ current_liabilities ┃ revenue ┃ equity  ┃ interest_expense ┃

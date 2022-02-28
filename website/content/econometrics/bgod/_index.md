@@ -15,7 +15,7 @@ optional arguments:
 
 Example:
 ```
-2022 Feb 24, 06:00 (✨) /statistics/ $ ols adj_close-msft adj_close-aapl adj_close-googl adj_close-tsla
+2022 Feb 24, 06:00 (✨) /econometrics/ $ ols adj_close-msft adj_close-aapl adj_close-googl adj_close-tsla
                             OLS Regression Results                            
 ==============================================================================
 Dep. Variable:         adj_close_msft   R-squared:                       0.977
@@ -46,7 +46,7 @@ Notes:
 [2] The condition number is large, 1.16e+04. This might indicate that there are
 strong multicollinearity or other numerical problems.
 
-2022 Feb 24, 06:01 (✨) /statistics/ $ bgod
+2022 Feb 24, 06:01 (✨) /econometrics/ $ bgod
 Breusch-Godfrey autocorrelation test [Lags: 3]
 ┏━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┓
 ┃          ┃ Breusch-Godfrey ┃

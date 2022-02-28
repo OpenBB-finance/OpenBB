@@ -20,9 +20,9 @@ optional arguments:
 
 Example:
 ```
-2022 Feb 28, 04:42 (✨) /statistics/ $ load wage_panel wp
+2022 Feb 28, 04:42 (✨) /econometrics/ $ load wage_panel wp
 
-2022 Feb 28, 04:42 (✨) /statistics/ $ show wp
+2022 Feb 28, 04:42 (✨) /econometrics/ $ show wp
                                                        wp
 ┏━━━┳━━━━━━━┳━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┓
 ┃   ┃ nr    ┃ year    ┃ black ┃ exper ┃ hisp ┃ hours   ┃ married ┃ educ  ┃ union ┃ lwage ┃ expersq ┃ occupation ┃
@@ -49,11 +49,11 @@ Example:
 └───┴───────┴─────────┴───────┴───────┴──────┴─────────┴─────────┴───────┴───────┴───────┴─────────┴────────────┘
 ```
 ``````
-2022 Feb 28, 04:42 (✨) /statistics/ $ load longley ll
+2022 Feb 28, 04:42 (✨) /econometrics/ $ load longley ll
 
-2022 Feb 28, 04:42 (✨) /statistics/ $ index longley year -d
+2022 Feb 28, 04:42 (✨) /econometrics/ $ index longley year -d
 
-2022 Feb 28, 04:42 (✨) /statistics/ $ show ll -s unemp
+2022 Feb 28, 04:42 (✨) /econometrics/ $ show ll -s unemp
                                     ll
 ┏━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━┓
 ┃        ┃ totemp   ┃ gnpdefl ┃ gnp       ┃ unemp   ┃ armed   ┃ pop       ┃

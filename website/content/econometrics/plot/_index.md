@@ -20,11 +20,11 @@ optional arguments:
 
 Example:
 ```
-2022 Feb 28, 04:37 (✨) /statistics/ $ load macrodata us_macro
+2022 Feb 28, 04:37 (✨) /econometrics/ $ load macrodata us_macro
 
-2022 Feb 28, 04:38 (✨) /statistics/ $ index us_macro year -d
+2022 Feb 28, 04:38 (✨) /econometrics/ $ index us_macro year -d
 
-2022 Feb 28, 04:38 (✨) /statistics/ $ show us_macro
+2022 Feb 28, 04:38 (✨) /econometrics/ $ show us_macro
                                                                us_macro
 ┏━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━━━┓
 ┃        ┃ quarter ┃ realgdp ┃ realcons ┃ realinv ┃ realgovt ┃ realdpi ┃ cpi   ┃ m1     ┃ tbilrate ┃ unemp ┃ pop    ┃ infl  ┃ realint ┃
@@ -50,5 +50,5 @@ Example:
 │ 1961.0 │ 2.00    │ 2872.01 │ 1814.30  │ 286.25  │ 480.33   │ 2014.40 │ 29.92 │ 142.90 │ 2.29     │ 7.00  │ 183.69 │ 1.47  │ 0.81    │
 └────────┴─────────┴─────────┴──────────┴─────────┴──────────┴─────────┴───────┴────────┴──────────┴───────┴────────┴───────┴─────────┘
 
-2022 Feb 28, 04:38 (✨) /statistics/ $ plot unemp-us_macro
+2022 Feb 28, 04:38 (✨) /econometrics/ $ plot unemp-us_macro
 ```

@@ -20,7 +20,7 @@ optional arguments:ols
 
 Example:
 ```
-2022 Feb 24, 05:54 (✨) /statistics/ $ granger adj_close-msft adj_close-aapl
+2022 Feb 24, 05:54 (✨) /econometrics/ $ granger adj_close-msft adj_close-aapl
 Granger Causality Test [Y: adj_close | X: adj_close | Lags: 3]
 ┏━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━┳━━━━━━━━┳━━━━━━┓
 ┃              ┃ F-test ┃ P-value ┃ Count  ┃ Lags ┃

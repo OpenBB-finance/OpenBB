@@ -21,7 +21,7 @@ optional arguments:
 
 Example:
 ```
-2022 Feb 24, 06:03 (✨) /statistics/ $ coint adj_close-msft adj_close-aapl adj_close-tsla adj_close-googl -p
+2022 Feb 24, 06:03 (✨) /econometrics/ $ coint adj_close-msft adj_close-aapl adj_close-tsla adj_close-googl -p
                                   Cointegration Tests                                  
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━━┓
 ┃ Pairs                          ┃ Constant ┃ Gamma ┃ Alpha ┃ Dickey-Fuller ┃ P Value ┃

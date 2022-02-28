@@ -16,7 +16,7 @@ optional arguments:
 
 Example:
 ```
-2022 Feb 24, 05:44 (✨) /statistics/ $ ols return-msft adj_close-aapl
+2022 Feb 24, 05:44 (✨) /econometrics/ $ ols return-msft adj_close-aapl
                             OLS Regression Results                            
 ==============================================================================
 Dep. Variable:            return_msft   R-squared:                       0.000
@@ -43,7 +43,7 @@ Kurtosis:                       6.212   Cond. No.                         290.
 Notes:
 [1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
 
-2022 Feb 24, 05:45 (✨) /statistics/ $ dwat
+2022 Feb 24, 05:45 (✨) /econometrics/ $ dwat
 The result 2.14 is within the range 1.5 and 2.5 which therefore indicates autocorrelation not to be problematic.
 
 ```

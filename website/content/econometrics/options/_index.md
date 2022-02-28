@@ -15,7 +15,7 @@ optional arguments:
 
 Example:
 ```
-2022 Feb 28, 04:26 (✨) /statistics/ $ options
+2022 Feb 28, 04:26 (✨) /econometrics/ $ options
             Options for msft
 ┏━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓
 ┃ dataset ┃ column    ┃ option         ┃
@@ -79,7 +79,7 @@ Example:
 │ a96     │ logpopul │ logpopul-a96 │
 └─────────┴──────────┴──────────────┘
 
-2022 Feb 28, 04:27 (✨) /statistics/ $ options ll
+2022 Feb 28, 04:27 (✨) /econometrics/ $ options ll
           Options for ll
 ┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┓
 ┃ dataset ┃ column  ┃ option     ┃

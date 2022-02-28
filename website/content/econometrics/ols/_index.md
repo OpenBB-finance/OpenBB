@@ -18,9 +18,9 @@ optional arguments:
 Example (based on [Longley's Dataset](https://www.statsmodels.org/dev/datasets/generated/longley.html)):
 
 ```
-2022 Feb 25, 06:58 (✨) /statistics/ $ load longley ll
+2022 Feb 25, 06:58 (✨) /econometrics/ $ load longley ll
 
-2022 Feb 25, 06:58 (✨) /statistics/ $ info ll
+2022 Feb 25, 06:58 (✨) /econometrics/ $ info ll
                                          ll
 ┏━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┓
 ┃       ┃ totemp   ┃ gnpdefl ┃ gnp       ┃ unemp   ┃ armed   ┃ pop       ┃ year    ┃
@@ -42,7 +42,7 @@ Example (based on [Longley's Dataset](https://www.statsmodels.org/dev/datasets/g
 │ max   │ 70551.00 │ 116.90  │ 554894.00 │ 4806.00 │ 3594.00 │ 130081.00 │ 1962.00 │
 └───────┴──────────┴─────────┴───────────┴─────────┴─────────┴───────────┴─────────┘
 
-2022 Feb 25, 06:59 (✨) /statistics/ $ ols totemp-ll gnpdefl-ll gnp-ll unemp-ll armed-ll pop-ll year-ll
+2022 Feb 25, 06:59 (✨) /econometrics/ $ ols totemp-ll gnpdefl-ll gnp-ll unemp-ll armed-ll pop-ll year-ll
                                  OLS Regression Results
 =======================================================================================
 Dep. Variable:              totemp_ll   R-squared (uncentered):                   1.000
