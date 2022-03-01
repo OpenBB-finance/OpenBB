@@ -5,12 +5,13 @@ __docformat__ = "numpy"
 import copy
 import logging
 import os
+from typing import Dict, Optional, List, Tuple
 
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
 
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
@@ -40,9 +41,10 @@ def display_plots_financials(
     exclude_exchanges: bool = True,
     limit: int = 10,
     export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
     raw: bool = False,
     already_loaded_stocks_data=None,
-):
+) -> Tuple[Dict, List]:
     """Display financials bars comparing sectors, industry, analysis, countries, market cap and excluding exchanges.
 
     Parameters
@@ -73,6 +75,8 @@ def display_plots_financials(
         Output all raw data
     already_loaded_stocks_data: Dict
         Dictionary of filtered stocks data that has been loaded before
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
 
     Returns
     -------
@@ -127,13 +131,6 @@ def display_plots_financials(
     for company in stocks_data_statement:
         df[company] = stocks_data_statement[company].loc[item_name]
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        item_name,
-        df,
-    )
-
     if len(company_tickers) > limit:
         console.print(f"Limiting the amount of companies displayed to {limit}.")
         df = df[df.columns[:limit]]
@@ -160,19 +157,30 @@ def display_plots_financials(
             title=f"{item_name} {denomination}",
         )
     else:
-        plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        # This plot has 1 axis
+        if external_axes is None:
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        else:
+            if len(external_axes) != 1:
+                console.print("[red]Expected list of one axis item./n[/red]")
+                return stocks_data, company_tickers
+            (ax,) = external_axes
 
         for company in df.columns:
-            plt.plot(df[company], ls="-", marker="o", label=company)
+            ax.plot(df[company], ls="-", marker="o", label=company)
 
-        plt.title(f"{item_name} {denomination}")
-        plt.legend(loc="upper left")
-        if gtff.USE_ION:
-            plt.ion()
-        plt.tight_layout()
-        plt.show()
+        ax.set_title(f"{item_name} {denomination}")
+        ax.legend()
+        theme.style_primary_axis(ax)
 
-    if not export:
-        console.print("")
+        if external_axes is None:
+            theme.visualize_output()
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        item_name,
+        df,
+    )
 
     return stocks_data, company_tickers
