@@ -352,3 +352,33 @@ def test_function(recorder):
     recorder.record_mode = "rewrite"
     recorder.capture(some_text)
 ```
+
+
+**EXTRA ARGUMENTS - PD.TO_CSV**
+If you capture a DataFrame it will be exported as a CSV using the function `pandas.DataFrame.to_csv`.
+
+This function contains arguments that can be useful to the test builder.
+
+Everything you pass as extra `kwargs` to the `capture` function will be passed to this `to_csv` function.
+
+Example :
+```python
+import random
+
+def test_function(recorder):
+    table_of_floats = pd.DataFrame(
+        np.random.uniform(low=1, high=10, size=(5,)),
+        columns=["numbers"],
+    )
+
+    recorder.capture(table_of_floats, float_format="%.2f")
+    # This will truncate the numbers
+```
+
+
+**EXTRA ARGUMENTS - JSON.DUMPS**
+If you capture a TUPLE, LIST, DICT... it will be exported as a json using the function `json.dumps`.
+
+This function contains arguments that can be useful to the test builder.
+
+Everything you pass as extra `kwargs` to the `capture` function will be passed to this `dumps` function.
