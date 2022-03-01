@@ -1,6 +1,6 @@
 ,ADF,KPSS
-Test Statistic,-2.83778,0.11583078961759764
+Test Statistic,-2.83778,0.11583
 P-Value,0.05308,0.1
-NLags,8.0,7
-Nobs,300.0,
-ICBest,2430.50034,
+NLags,8.0,7.0
+Nobs,300.0,0.0
+ICBest,2430.50034,0.0

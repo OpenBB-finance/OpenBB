@@ -323,6 +323,8 @@ def test_get_engle_granger_two_step_cointegration_test(recorder, y, x):
         pvalue,
     ) = econometrics_model.get_engle_granger_two_step_cointegration_test(y=y, x=x)
 
-    result = pd.DataFrame([c, gamma, alpha, z, adfstat, pvalue]).round(5)
+    result = pd.DataFrame([c, gamma, alpha, adfstat, pvalue]).round(5)
+    z_values = z.round(5)
 
     recorder.capture(result)
+    recorder.capture(z_values)

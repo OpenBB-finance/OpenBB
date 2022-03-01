@@ -136,7 +136,6 @@ def test_get_pols(recorder, regression_variables, data, datasets):
     [
         (
             [
-                "educ-wage_panel",
                 "married-wage_panel",
                 "lwage-wage_panel",
                 "hisp-wage_panel",
@@ -283,7 +282,6 @@ def test_get_fdols(recorder, regression_variables, data, datasets):
     [
         (
             [
-                "educ-wage_panel",
                 "married-wage_panel",
                 "lwage-wage_panel",
                 "hisp-wage_panel",
@@ -321,7 +319,7 @@ def test_get_comparison(recorder, regression_variables, data, datasets):
 
     comparison_result = regression_model.get_comparison(regressions)
 
-    result = pd.DataFrame([comparison_result]).round(5)
+    result = comparison_result.params.round(5)
 
     recorder.capture(result)
 
