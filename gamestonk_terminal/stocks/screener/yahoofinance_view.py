@@ -137,7 +137,7 @@ def historical(
 
         if limit_random_stocks:
             ax.set_title(
-                f"Screener Historical Price with {preset_loaded} on 10 random stocks"
+                f"Screener Historical Price with {preset_loaded}\non 10 random stocks"
             )
         else:
             ax.set_title(f"Screener Historical Price with {preset_loaded}")
@@ -145,7 +145,7 @@ def historical(
         ax.set_ylabel(
             f"{['','Normalized'][normalize]} Share Price {['($)',''][normalize]}"
         )
-        ax.legend(l_stocks, bbox_to_anchor=(1.04, 1), loc="upper left")
+        ax.legend()
         # ensures that the historical data starts from same datapoint
         ax.set_xlim([df_screener.index[0], df_screener.index[-1]])
 
