@@ -80,7 +80,7 @@ class EconometricsController(BaseController):
         """Constructor"""
         super().__init__(queue)
         self.files: List[str] = list()
-        self.datasets: Dict[pd.DataFrame, Any] = dict()
+        self.datasets: Dict[str, pd.DataFrame] = dict()
         self.regression: Dict[Any[Dict, Any], Any] = dict()
 
         self.DATA_EXAMPLES: Dict[str, str] = {
@@ -619,7 +619,7 @@ Tests
                         headers=list(["dtype"]),
                         show_index=True,
                         index_name="column",
-                        title=dataset_name,
+                        title=str(dataset_name),
                     )
 
             console.print("")
@@ -1097,6 +1097,10 @@ Tests
                     data = self.datasets[dataset]
                 elif isinstance(self.datasets[dataset], pd.DataFrame):
                     data = self.datasets[dataset][column]
+                else:
+                    return console.print(
+                        "Can not select data due to the data not being a DataFrame or Series."
+                    )
 
                 econometrics_view.display_root(
                     data,

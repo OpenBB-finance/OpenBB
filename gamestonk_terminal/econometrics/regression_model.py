@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import os
 import warnings
 import logging
-from typing import List, Tuple, Dict, Any
+from typing import List, Tuple, Dict, Any, Union
 
 import pandas as pd
 from linearmodels import PooledOLS
@@ -15,7 +15,12 @@ from linearmodels.panel import (
     FirstDifferenceOLS,
     compare,
 )
-from linearmodels.panel.results import PanelModelComparison
+from linearmodels.panel.results import (
+    PanelModelComparison,
+    PanelEffectsResults,
+    PanelResults,
+    RandomEffectsResults,
+)
 from pandas import DataFrame
 from statsmodels.api import add_constant
 import statsmodels.api as sm
@@ -33,7 +38,7 @@ logger = logging.getLogger(__name__)
 def get_regressions_results(
     regression_type: str,
     regression_variables: List[Tuple],
-    data: Dict[pd.DataFrame, Any],
+    data: Dict[str, pd.DataFrame],
     datasets: Dict[pd.DataFrame, Any],
     entity_effects: bool = False,
     time_effects: bool = False,
@@ -81,8 +86,8 @@ def get_regressions_results(
 
 
 def get_regression_data(
-    regression_variables: List[Tuple],
-    data: Dict[pd.DataFrame, Any],
+    regression_variables: List[tuple],
+    data: Dict[str, pd.DataFrame],
     datasets: Dict[pd.DataFrame, Any],
 ) -> Tuple[DataFrame, Any, List[Any]]:
     """This function creates a DataFrame with the required regression data as
@@ -126,7 +131,7 @@ def get_regression_data(
 @log_start_end(log=logger)
 def get_ols(
     regression_variables: List[Tuple],
-    data: Dict[pd.DataFrame, Any],
+    data: Dict[str, pd.DataFrame],
     datasets: Dict[pd.DataFrame, Any],
     show_regression: bool = True,
     export: str = "",
@@ -190,7 +195,7 @@ def get_ols(
 @log_start_end(log=logger)
 def get_pols(
     regression_variables: List[Tuple],
-    data: Dict[pd.DataFrame, Any],
+    data: Dict[str, pd.DataFrame],
     datasets: Dict[pd.DataFrame, Any],
 ) -> Tuple[DataFrame, Any, List[Any], Any]:
     """PooledOLS is just plain OLS that understands that various panel data structures.
@@ -206,8 +211,6 @@ def get_pols(
     datasets: dict
         A dictionary containing the column and dataset names of
         each column/dataset combination.
-    export: str
-        Format to export data
 
     Returns
     -------
@@ -235,7 +238,7 @@ def get_pols(
 @log_start_end(log=logger)
 def get_re(
     regression_variables: List[Tuple],
-    data: Dict[pd.DataFrame, Any],
+    data: Dict[str, pd.DataFrame],
     datasets: Dict[pd.DataFrame, Any],
 ) -> Tuple[DataFrame, Any, List[Any], Any]:
     """The random effects model is virtually identical to the pooled OLS model except that is accounts for the
@@ -279,7 +282,7 @@ def get_re(
 @log_start_end(log=logger)
 def get_bols(
     regression_variables: List[Tuple],
-    data: Dict[pd.DataFrame, Any],
+    data: Dict[str, pd.DataFrame],
     datasets: Dict[pd.DataFrame, Any],
 ) -> Tuple[DataFrame, Any, List[Any], Any]:
     """The between estimator is an alternative, usually less efficient estimator, can can be used to
@@ -323,7 +326,7 @@ def get_bols(
 @log_start_end(log=logger)
 def get_fe(
     regression_variables: List[Tuple],
-    data: Dict[pd.DataFrame, Any],
+    data: Dict[str, pd.DataFrame],
     datasets: Dict[pd.DataFrame, Any],
     entity_effects: bool = False,
     time_effects: bool = False,
@@ -342,6 +345,10 @@ def get_fe(
     datasets: dict
         A dictionary containing the column and dataset names of
         each column/dataset combination.
+    entity_effects : bool
+        Whether to include entity effects
+    time_effects : bool
+        Whether to include time effects
 
     Returns
     -------
@@ -374,7 +381,7 @@ def get_fe(
 @log_start_end(log=logger)
 def get_fdols(
     regression_variables: List[Tuple],
-    data: Dict[pd.DataFrame, Any],
+    data: Dict[str, pd.DataFrame],
     datasets: Dict[pd.DataFrame, Any],
 ) -> Tuple[DataFrame, Any, List[Any], Any]:
     """First differencing is an alternative to using fixed effects when there might be correlation.
@@ -419,7 +426,11 @@ def get_fdols(
 
 
 @log_start_end(log=logger)
-def get_comparison(regressions: Dict[Dict, Any]) -> PanelModelComparison:
+def get_comparison(
+    regressions: Dict[
+        str, Union[PanelEffectsResults, PanelResults, RandomEffectsResults]
+    ]
+) -> PanelModelComparison:
     """Compare regression results between Panel Data regressions.
 
     Parameters

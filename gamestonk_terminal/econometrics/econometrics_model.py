@@ -36,6 +36,10 @@ def load(
         Path to file
     file_types: list
         Supported file types
+    data_files: dict
+        Contains all available data files within the Export folder
+    data_examples: dict
+        Contains all available examples from Statsmodels
 
     Returns
     -------
@@ -71,7 +75,7 @@ def load(
 
 @log_start_end(log=logger)
 def get_options(
-    datasets: Dict[pd.DataFrame, Any], dataset_name: str = None
+    datasets: Dict[str, pd.DataFrame], dataset_name: str = None
 ) -> Dict[Union[str, Any], DataFrame]:
     """Obtain columns-dataset combinations from loaded in datasets that can be used in other commands
 
@@ -344,7 +348,7 @@ def get_engle_granger_two_step_cointegration_test(y, x):
     alpha = short_run_ols_fit.params[0]
 
     # NOTE: The p-value returned by the adfuller function assumes we do not estimate z first, but test
-    # stationarity of an unestimated series directly. This assumption should have limited effect for high N however.
+    # stationarity of an unestimated series directly. This assumption should have limited effect for high N, however.
     # Critical values taking this into account more accurately are provided in e.g. McKinnon (1990) and
     # Engle & Yoo (1987).
 

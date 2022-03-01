@@ -30,7 +30,7 @@ register_matplotlib_converters()
 
 @log_start_end(log=logger)
 def show_options(
-    datasets: Dict[pd.DataFrame, Any],
+    datasets: Dict[str, pd.DataFrame],
     dataset_name: str = None,
     export: str = "",
 ):
@@ -38,14 +38,10 @@ def show_options(
 
     Parameters
     ----------
-    data: pd.DataFrame
-        Dataframe of custom data
-    dataset: str
-        Dataset name
-    column: str
-        Column for y data
-    kind : str
-        Kind of plot to pass to pandas plot function
+    datasets: dict
+        The loaded in datasets
+    dataset_name: str
+        The name of the dataset you wish to show options for
     export: str
         Format to export image
     """
@@ -84,8 +80,6 @@ def get_plot(
         Dataset name
     column: str
         Column for y data
-    kind : str
-        Kind of plot to pass to pandas plot function
     export: str
         Format to export image
     """
@@ -117,7 +111,7 @@ def get_plot(
 
 @log_start_end(log=logger)
 def display_norm(
-    data: pd.DataFrame,
+    data: pd.Series,
     dataset: str,
     column: str,
     plot: bool = False,
@@ -127,8 +121,8 @@ def display_norm(
 
     Parameters
     ----------
-    data: pd.DataFrame
-        Dataframe of custom data
+    data: pd.Series
+        Series of custom data
     dataset: str
         Dataset name
     column: str
@@ -172,7 +166,7 @@ def display_norm(
 
 @log_start_end(log=logger)
 def display_root(
-    df: pd.DataFrame,
+    df: pd.Series,
     dataset_name: str,
     column_name: str,
     fuller_reg: str,
@@ -183,8 +177,8 @@ def display_root(
 
     Parameters
     ----------
-    df : pd.DataFrame
-        DataFrame of target variable
+    df : pd.Series
+        Series of target variable
     dataset_name: str
         Name of the dataset
     column_name: str
