@@ -52,7 +52,7 @@ class DegiroView:
     @log_start_end(log=logger)
     def help_display():
         console.print(
-            "\nDegiro:\n"
+            "\n[cmds]"
             "   login        connect to degiro's api\n"
             "   logout       disconnect from degiro's api\n"
             "\n"
@@ -66,7 +66,7 @@ class DegiroView:
             "\n"
             "   companynews  view news about a company with it's isin\n"
             "   lastnews     view latest news\n"
-            "   topnews      view top news preview\n"
+            "   topnews      view top news preview[/cmds]\n"
         )
 
     @log_start_end(log=logger)

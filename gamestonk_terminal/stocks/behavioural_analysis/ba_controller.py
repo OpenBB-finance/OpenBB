@@ -117,7 +117,6 @@ class BehaviouralAnalysisController(StockBaseController):
 [src][SentimentInvestor][/src]
     trend         most talked about tickers within the last hour{has_ticker_start}
     hist          plot historical RHI and AHI data by hour{has_ticker_end}[/cmds]
-
         """
         console.print(text=help_text, menu="Stocks - Behavioural Analysis")
 
