@@ -1,6 +1,8 @@
 """ Financial Modeling Prep Model"""
 __docformat__ = "numpy"
 import logging
+from typing import Optional
+
 from datetime import datetime
 from requests.exceptions import HTTPError
 
@@ -19,7 +21,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def get_score(ticker: str) -> np.number:
+def get_score(ticker: str) -> Optional[np.number]:
     """Gets value score from fmp
 
     Parameters
@@ -32,7 +34,8 @@ def get_score(ticker: str) -> np.number:
     np.number
         Value score
     """
-    value_score = 0
+
+    value_score = None
 
     try:
         valstock = valinvest.Fundamental(ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
