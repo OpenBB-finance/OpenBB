@@ -57,3 +57,6 @@ ENABLE_RICH = strtobool(os.getenv("GTFF_ENABLE_RICH", "True"))
 
 # Use the colorful rich terminal
 ENABLE_RICH_PANEL = strtobool(os.getenv("GTFF_ENABLE_RICH_PANEL", "True"))
+
+# Send logs to data lake
+ALLOW_LOG_COLLECTION = strtobool(os.getenv("GTFF_ALLOW_LOG_COLLECTION", "True"))
