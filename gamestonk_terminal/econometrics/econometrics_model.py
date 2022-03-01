@@ -239,7 +239,7 @@ def get_root(df: pd.Series, fuller_reg: str, kpss_reg: str) -> pd.DataFrame:
         warnings.simplefilter("ignore")
         res2 = kpss(df, regression=kpss_reg, nlags="auto")
 
-    vals2 = [res2[0], res2[1], res2[2], "", ""]
+    vals2 = [res2[0], res2[1], res2[2], 0, 0]
     data["KPSS"] = vals2
 
     return data
