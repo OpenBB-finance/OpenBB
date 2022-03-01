@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import os
 import warnings
 import logging
-from typing import List, Tuple, Dict, Any, Union
+from typing import List, Tuple, Dict, Any, Union, SupportsIndex
 
 import pandas as pd
 from linearmodels import PooledOLS
@@ -17,9 +17,7 @@ from linearmodels.panel import (
 )
 from linearmodels.panel.results import (
     PanelModelComparison,
-    PanelEffectsResults,
-    PanelResults,
-    RandomEffectsResults,
+    PanelModelResults,
 )
 from pandas import DataFrame
 from statsmodels.api import add_constant
@@ -427,9 +425,7 @@ def get_fdols(
 
 @log_start_end(log=logger)
 def get_comparison(
-    regressions: Dict[
-        str, Union[PanelEffectsResults, PanelResults, RandomEffectsResults]
-    ]
+    regressions: Union[List[PanelModelResults], Dict[SupportsIndex, PanelModelResults]]
 ) -> PanelModelComparison:
     """Compare regression results between Panel Data regressions.
 
@@ -444,11 +440,11 @@ def get_comparison(
     """
     comparison = {}
 
-    for regression_type, data in regressions.items():
+    for regression_type in regressions:
         if regression_type == "OLS":
             continue
-        if data["model"]:
-            comparison[regression_type] = data["model"]
+        if regressions[regression_type]["model"]:
+            comparison[regression_type] = regressions[regression_type]["model"]
 
     comparison_result = compare(comparison)
 
