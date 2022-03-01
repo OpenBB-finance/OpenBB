@@ -32,16 +32,17 @@ def get_score(ticker: str) -> np.number:
     np.number
         Value score
     """
+    value_score = 0
+
     try:
         valstock = valinvest.Fundamental(ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
-        return 100 * (valstock.fscore() / 9)
+        value_score = 100 * (valstock.fscore() / 9)
     except KeyError:
         console.print("[red]Invalid API Key[/red]\n")
-        return None
     # Invalid ticker (Ticker should be a NASDAQ 100 ticker or SP 500 ticker)
     except ValueError as e:
         console.print(e, "\n")
-        return None
+    return value_score
 
 
 @log_start_end(log=logger)
