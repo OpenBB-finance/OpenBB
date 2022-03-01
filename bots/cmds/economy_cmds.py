@@ -16,34 +16,7 @@ from bots.economy.softs import softs_command
 from bots.economy.usbonds import usbonds_command
 from bots.economy.valuation import valuation_command
 from bots.helpers import ShowView
-
-group = [
-    "basic_materials",
-    "capitalization",
-    "communication_services",
-    "consumer_cyclical",
-    "consumer_defensive",
-    "country",
-    "energy",
-    "financial",
-    "healthcare",
-    "industry",
-    "industrials",
-    "real_estate",
-    "sector",
-    "technology",
-    "utilities",
-]
-
-fgind = {
-    "Junk Bond Demand": "jbd",
-    "Market Volatility": "mv",
-    "Put and Call Options": "pco",
-    "Market Momentum": "mm",
-    "Stock Price Strength": "sps",
-    "Stock Price Breadth": "spb",
-    "Safe Heaven Demand": "shd",
-}
+from bots.common import commands_dict
 
 
 class EconomyCommands(commands.Cog):
@@ -116,7 +89,7 @@ class EconomyCommands(commands.Cog):
     async def valuation(
         self,
         inter: disnake.AppCmdInter,
-        economy_group: str = commands.Param(choices=group),
+        economy_group: str = commands.Param(choices=commands_dict.econ_group),
     ):
         """Valuation of sectors, industry, country [Finviz]
 
@@ -132,7 +105,7 @@ class EconomyCommands(commands.Cog):
     async def performance(
         self,
         inter: disnake.AppCmdInter,
-        economy_group: str = commands.Param(choices=group),
+        economy_group: str = commands.Param(choices=commands_dict.econ_group),
     ):
         """Performance of sectors, industry, country [Finviz]
 

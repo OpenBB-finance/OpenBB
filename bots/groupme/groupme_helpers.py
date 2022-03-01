@@ -54,4 +54,5 @@ def send_image(
         "text": text,
         "attachments": [{"type": "image", "url": image_url}],
     }
+    os.remove(image_url)
     return requests.post(base + mid + end, data=json.dumps(data))

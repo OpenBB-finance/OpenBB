@@ -98,6 +98,15 @@ re_window = re.compile(r"(?s).*")
 
 gov_type = ["congress", "senate", "house"]
 
+dps_pos_choices = {
+    "Short Vol (1M)": "sv",
+    "Short Vol %": "sv_pct",
+    "Net Short Vol (1M)": "nsv",
+    "Net Short Vol ($100M)": "nsv_dollar",
+    "DP Position (1M)": "dpp",
+    "DP Position ($1B)": "dpp_dollar",
+}
+
 econ_group = [
     "basic_materials",
     "capitalization",
@@ -375,9 +384,7 @@ commands = {
     "dps-hsi": {"function": hsi_command, "optional": {"num": re_int}},
     "dps-pos": {
         "function": pos_command,
-        "required": {
-            "sort": ["sv", "sv_pct", "nsv", "nsv_dollar", "dpp", "dpp_dollar"]
-        },
+        "required": {"sort": dps_pos_choices.values()},
         "optional": {"num": re_int},
     },
     "dps-sidtc": {
