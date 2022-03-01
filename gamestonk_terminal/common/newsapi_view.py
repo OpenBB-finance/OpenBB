@@ -55,9 +55,7 @@ def news(
         console.print("[red]Invalid API Key[/red]\n")
 
     elif response.status_code == 429:
-        console.print(
-            "Too many requests within a window of time. Back off for a while.\n"
-        )
+        console.print("[red]Exceeded number of calls per minute[/red]\n")
 
     elif response.status_code != 200:
         console.print(f"Error in request: {response.json()['message']}", "\n")

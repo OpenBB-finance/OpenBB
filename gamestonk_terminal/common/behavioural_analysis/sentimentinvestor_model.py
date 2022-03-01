@@ -157,7 +157,7 @@ def get_trending(start: datetime, hour: int, number: int) -> pd.DataFrame:
         if response.json()["results"]:
             df = pd.DataFrame(response.json()["results"])
         else:
-            console.print(f"No data found for start date of {str(start_timestamp)}")
+            console.print(f"No data found for start date of {str(start_timestamp)}.\n")
 
     elif "error" in response.json():
         if "Authorization error" in response.json()["error"]:
