@@ -194,9 +194,7 @@ def test_clean(recorder, dataset, fill, drop, limit):
 def test_get_normality(recorder, data):
     result = econometrics_model.get_normality(data=data)
 
-    result_rounded = result.round(5)
-
-    recorder.capture(result_rounded)
+    recorder.capture(result, float_format="%.5f")
 
 
 @pytest.mark.vcr()
@@ -245,9 +243,7 @@ def test_get_root(recorder, df, fuller_reg, kpss_reg):
         df=df, fuller_reg=fuller_reg, kpss_reg=kpss_reg
     )
 
-    result_rounded = result.round(5)
-
-    recorder.capture(result_rounded)
+    recorder.capture(result, float_format="%.5f")
 
 
 @pytest.mark.vcr()
@@ -323,8 +319,7 @@ def test_get_engle_granger_two_step_cointegration_test(recorder, y, x):
         pvalue,
     ) = econometrics_model.get_engle_granger_two_step_cointegration_test(y=y, x=x)
 
-    result = pd.DataFrame([c, gamma, alpha, adfstat, pvalue]).round(5)
-    z_values = z.round(5)
+    result = pd.DataFrame([c, gamma, alpha, adfstat, pvalue])
 
-    recorder.capture(result)
-    recorder.capture(z_values)
+    recorder.capture(result, float_format="%.5f")
+    recorder.capture(z, float_format="%.5f")

@@ -86,9 +86,9 @@ def test_get_ols(recorder, regression_variables, data, datasets, show_regression
         show_regression=show_regression,
     )
 
-    result = pd.DataFrame([model.params]).round(5)
+    result = pd.DataFrame([model.params])
 
-    recorder.capture(result)
+    recorder.capture(result, float_format="%.5f")
 
 
 @pytest.mark.vcr()
@@ -125,9 +125,9 @@ def test_get_pols(recorder, regression_variables, data, datasets):
         datasets=datasets,
     )
 
-    result = pd.DataFrame([model.params]).round(5)
+    result = pd.DataFrame([model.params])
 
-    recorder.capture(result)
+    recorder.capture(result, float_format="%.5f")
 
 
 @pytest.mark.vcr()
@@ -163,9 +163,9 @@ def test_get_re(recorder, regression_variables, data, datasets):
         datasets=datasets,
     )
 
-    result = pd.DataFrame([model.params]).round(5)
+    result = pd.DataFrame([model.params])
 
-    recorder.capture(result)
+    recorder.capture(result, float_format="%.5f")
 
 
 @pytest.mark.vcr()
@@ -202,9 +202,9 @@ def test_get_bols(recorder, regression_variables, data, datasets):
         datasets=datasets,
     )
 
-    result = pd.DataFrame([model.params]).round(5)
+    result = pd.DataFrame([model.params])
 
-    recorder.capture(result)
+    recorder.capture(result, float_format="%.5f")
 
 
 @pytest.mark.vcr()
@@ -241,9 +241,9 @@ def test_get_fe(recorder, regression_variables, data, datasets):
         datasets=datasets,
     )
 
-    result = pd.DataFrame([model.params]).round(5)
+    result = pd.DataFrame([model.params])
 
-    recorder.capture(result)
+    recorder.capture(result, float_format="%.5f")
 
 
 @pytest.mark.vcr()
@@ -271,9 +271,9 @@ def test_get_fdols(recorder, regression_variables, data, datasets):
         datasets=datasets,
     )
 
-    result = pd.DataFrame([model.params]).round(5)
+    result = pd.DataFrame([model.params])
 
-    recorder.capture(result)
+    recorder.capture(result, float_format="%.5f")
 
 
 @pytest.mark.vcr()
@@ -319,9 +319,7 @@ def test_get_comparison(recorder, regression_variables, data, datasets):
 
     comparison_result = regression_model.get_comparison(regressions)
 
-    result = comparison_result.params.round(5)
-
-    recorder.capture(result)
+    recorder.capture(comparison_result.params, float_format="%.5f")
 
 
 @pytest.mark.vcr()
@@ -368,11 +366,9 @@ def test_get_dwat(recorder, regression_variables, data, datasets, show_regressio
         show_regression=show_regression,
     )
 
-    result = regression_model.get_dwat(model.resid)
+    result = regression_model.get_dwat(model.resid).round(5)
 
-    result_rounded = result.round(5)
-
-    recorder.capture(result_rounded)
+    recorder.capture(result)
 
 
 @pytest.mark.vcr()
@@ -425,9 +421,9 @@ def test_get_bgod(
 
     lm_stat, p_value, f_stat, fp_value = regression_model.get_bgod(model, lags)
 
-    result = pd.DataFrame([lm_stat, p_value, f_stat, fp_value]).round(5)
+    result = pd.DataFrame([lm_stat, p_value, f_stat, fp_value])
 
-    recorder.capture(result)
+    recorder.capture(result, float_format="%.5f")
 
 
 @pytest.mark.vcr()
@@ -476,6 +472,6 @@ def test_get_bpag(recorder, regression_variables, data, datasets, show_regressio
 
     lm_stat, p_value, f_stat, fp_value = regression_model.get_bpag(model)
 
-    result = pd.DataFrame([lm_stat, p_value, f_stat, fp_value]).round(5)
+    result = pd.DataFrame([lm_stat, p_value, f_stat, fp_value])
 
-    recorder.capture(result)
+    recorder.capture(result, float_format="%.5f")
