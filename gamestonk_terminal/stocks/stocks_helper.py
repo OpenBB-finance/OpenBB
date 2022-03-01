@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import argparse
 import json
+import logging
 from datetime import datetime, timedelta
 from typing import List, Union, Optional, Iterable
 
@@ -33,6 +34,8 @@ from gamestonk_terminal.helper_funcs import (
     lambda_long_number_format,
 )
 from gamestonk_terminal.rich_config import console
+
+logger = logging.getLogger(__name__)
 
 # pylint: disable=no-member,too-many-branches,C0302
 
@@ -375,6 +378,7 @@ def display_candle(
             theme.visualize_output(force_tight_layout=False)
         else:
             if len(external_axes) != 1:
+                logger.error("Expected list of one axis item.")
                 console.print("[red]Expected list of 1 axis items./n[/red]")
                 return
             (ax1,) = external_axes
@@ -643,6 +647,7 @@ def quote(other_args: List[str], s_ticker: str):
         print_rich_table(quote_data, title="Ticker Quote", show_index=True)
 
     except KeyError:
+        logger.exception("Invalid stock ticker")
         console.print(f"Invalid stock ticker: {ns_parser.s_ticker}")
 
     console.print("")

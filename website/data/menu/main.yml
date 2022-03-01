@@ -645,6 +645,8 @@ main:
       - name: overview
         ref: "/cryptocurrency/overview"
         sub:
+          - name: hm
+            ref: "/cryptocurrency/overview/hm"
           - name: ch
             ref: "/cryptocurrency/overview/ch"
           - name: btcrb

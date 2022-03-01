@@ -70,6 +70,7 @@ def _make_request(url: str) -> Union[BeautifulSoup, None]:
     try:
         req = session.get(url, headers=headers, timeout=5)
     except Exception as error:
+        logger.exception(str(error))
         console.print(error)
         raise RetryError(
             "Connection error. Couldn't connect to CoinGecko and scrape the data. "

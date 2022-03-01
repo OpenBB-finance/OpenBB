@@ -306,6 +306,7 @@ def get_tickers_info_for_coin(
             try:
                 tickers[key] = parser.parse(date).strftime("%Y-%m-%d %H:%M:%S")
             except (KeyError, ValueError, TypeError) as e:
+                logger.exception(str(e))
                 console.print(e)
         if key == "quotes":
             try:
@@ -313,6 +314,7 @@ def get_tickers_info_for_coin(
                     tickers[key][quotes]["ath_date"]
                 ).strftime("%Y-%m-%d %H:%M:%S")
             except (KeyError, ValueError, TypeError) as e:
+                logger.exception(str(e))
                 console.print(e)
 
     df = pd.json_normalize(tickers)
@@ -320,6 +322,7 @@ def get_tickers_info_for_coin(
         df.columns = [col.replace("quotes.", "") for col in list(df.columns)]
         df.columns = [col.replace(".", "_").lower() for col in list(df.columns)]
     except KeyError as e:
+        logger.exception(str(e))
         console.print(e)
     df = df.T.reset_index()
     df.columns = ["Metric", "Value"]

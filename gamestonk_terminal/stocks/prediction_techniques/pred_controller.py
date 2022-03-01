@@ -569,6 +569,7 @@ class PredictionTechniquesController(BaseController):
                     no_shuffle=ns_parser.no_shuffle,
                 )
         except Exception as e:
+            logger.exception(str(e))
             console.print(e, "\n")
 
         finally:
@@ -598,6 +599,7 @@ class PredictionTechniquesController(BaseController):
                 )
 
         except Exception as e:
+            logger.exception(str(e))
             console.print(e, "\n")
 
         finally:
@@ -627,6 +629,7 @@ class PredictionTechniquesController(BaseController):
                 )
 
         except Exception as e:
+            logger.exception(str(e))
             console.print(e, "\n")
 
         finally:
@@ -656,6 +659,7 @@ class PredictionTechniquesController(BaseController):
                 )
 
         except Exception as e:
+            logger.exception(str(e))
             console.print(e, "\n")
 
         finally:

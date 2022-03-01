@@ -1,6 +1,9 @@
 """Quantitative Analysis View"""
 __docformat__ = "numpy"
 
+# pylint: disable=too-many-lines
+
+
 import logging
 import os
 import warnings
@@ -10,6 +13,7 @@ from typing import Any, Optional, List
 import matplotlib
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
 import numpy as np
 import pandas as pd
 import seaborn as sns
@@ -110,6 +114,7 @@ def display_hist(
         )
     else:
         if len(external_axes) != 1:
+            logger.error("Expected list of one axis item.")
             console.print("[red]Expected list of 1 axis items./n[/red]")
             return
         (ax,) = external_axes
@@ -182,6 +187,7 @@ def display_cdf(
         )
     else:
         if len(external_axes) != 1:
+            logger.error("Expected list of one axis item.")
             console.print("[red]Expected list of 1 axis items./n[/red]")
             return
         (ax,) = external_axes
@@ -287,6 +293,7 @@ def display_bw(
         )
     else:
         if len(external_axes) != 1:
+            logger.error("Expected list of one axis item.")
             console.print("[red]Expected list of 1 axis items./n[/red]")
             return
         (ax,) = external_axes
@@ -386,7 +393,8 @@ def display_acf(
         (ax1, ax2), (ax3, ax4) = axes
     else:
         if len(external_axes) != 4:
-            console.print("[red]Expected list of 1 axis items./n[/red]")
+            logger.error("Expected list of four axis items.")
+            console.print("[red]Expected list of 4 axis items./n[/red]")
             return
         (ax1, ax2, ax3, ax4) = external_axes
 
@@ -462,6 +470,7 @@ def display_qqplot(
         )
     else:
         if len(external_axes) != 1:
+            logger.error("Expected list of one axis item.")
             console.print("[red]Expected list of 1 axis items./n[/red]")
             return
         (ax,) = external_axes
@@ -548,6 +557,7 @@ def display_cusum(
         (ax1, ax2) = axes
     else:
         if len(external_axes) != 2:
+            logger.error("Expected list of two axis items.")
             console.print("[red]Expected list of 2 axis items./n[/red]")
             return
         (ax1, ax2) = external_axes
@@ -698,7 +708,8 @@ def display_seasonal(
         (ax1, ax2, ax3, ax4) = axes
     else:
         if len(external_axes) != 4:
-            console.print("[red]Expected list of 1 axis items./n[/red]")
+            logger.error("Expected list of four axis items.")
+            console.print("[red]Expected list of 4 axis items./n[/red]")
             return
         (ax1, ax2, ax3, ax4) = external_axes
 
@@ -886,6 +897,8 @@ def display_line(
     title: str = "",
     log_y: bool = True,
     draw: bool = False,
+    markers_lines: Optional[List[datetime]] = None,
+    markers_scatter: Optional[List[datetime]] = None,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -901,6 +914,10 @@ def display_line(
         Flag for showing y on log scale
     draw: bool
         Flag for drawing lines and annotating on the plot
+    markers_lines: Optional[List[datetime]]
+        List of dates to highlight using vertical lines
+    markers_scatter: Optional[List[datetime]]
+        List of dates to highlight using scatter
     export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
@@ -914,6 +931,7 @@ def display_line(
         )
     else:
         if len(external_axes) != 1:
+            logger.error("Expected list of one axis item.")
             console.print("[red]Expected list of 1 axis items./n[/red]")
             return
         (ax,) = external_axes
@@ -928,6 +946,38 @@ def display_line(
 
     else:
         ax.plot(data.index, data.values)
+
+        if markers_lines:
+            ymin, ymax = ax.get_ylim()
+            ax.vlines(markers_lines, ymin, ymax, color="#00AAFF")
+
+        if markers_scatter:
+            for n, marker_date in enumerate(markers_scatter):
+                price_location_idx = data.index.get_loc(marker_date, method="nearest")
+                # algo to improve text placement of highlight event number
+                if (
+                    0 < price_location_idx < (len(data) - 1)
+                    and data.iloc[price_location_idx - 1]
+                    > data.iloc[price_location_idx]
+                    and data.iloc[price_location_idx + 1]
+                    > data.iloc[price_location_idx]
+                ):
+                    text_loc = (0, -20)
+                else:
+                    text_loc = (0, 10)
+                ax.annotate(
+                    str(n),
+                    (mdates.date2num(marker_date), data.iloc[price_location_idx]),
+                    xytext=text_loc,
+                    textcoords="offset points",
+                )
+                ax.scatter(
+                    marker_date,
+                    data.iloc[price_location_idx],
+                    color="#00AAFF",
+                    s=200,
+                )
+
     ax.set_xlim(data.index[0], data.index[-1])
 
     if title:
@@ -947,7 +997,13 @@ def display_line(
 
 
 def display_var(
-    data: pd.DataFrame, use_mean: bool, ticker: str, adjusted_var: bool, percentile: int
+    data: pd.DataFrame,
+    ticker: str = "",
+    use_mean: bool = False,
+    adjusted_var: bool = False,
+    student_t: bool = False,
+    percentile: float = 0.999,
+    portfolio: bool = False,
 ):
     """Displays VaR of dataframe
 
@@ -961,19 +1017,31 @@ def display_var(
         ticker of the stock
     adjusted_var: bool
         if one should have VaR adjusted for skew and kurtosis (Cornish-Fisher-Expansion)
+    student_t: bool
+        If one should use the student-t distribution
     percentile: int
         var percentile
+    portfolio: bool
+        If the data is a portfolio
     """
-    var_list, hist_var_list = qa_model.get_var(data, use_mean, adjusted_var, percentile)
+    var_list, hist_var_list = qa_model.get_var(
+        data, use_mean, adjusted_var, student_t, percentile, portfolio
+    )
 
     str_hist_label = "Historical VaR:"
 
     if adjusted_var:
-        str_var_label = "Adjusted Var:"
+        str_var_label = "Adjusted VaR:"
         str_title = "Adjusted "
+    elif student_t:
+        str_var_label = "Student-t VaR"
+        str_title = "Student-t "
     else:
         str_var_label = "VaR:"
         str_title = ""
+
+    if ticker != "":
+        ticker += " "
 
     data_dictionary = {str_var_label: var_list, str_hist_label: hist_var_list}
     data = pd.DataFrame(
@@ -984,7 +1052,69 @@ def display_var(
         data,
         show_index=True,
         headers=list(data.columns),
-        title=f"[bold]{ticker} {str_title}Value at Risk[/bold]",
+        title=f"[bold]{ticker}{str_title}Value at Risk[/bold]",
+        floatfmt=".4f",
+    )
+    console.print("")
+
+
+def display_es(
+    data: pd.DataFrame,
+    ticker: str = "",
+    use_mean: bool = False,
+    distribution: str = "normal",
+    percentile: float = 0.999,
+    portfolio: bool = False,
+):
+    """Displays expected shortfall
+
+    Parameters
+    ----------
+    data: pd.DataFrame
+        stock dataframe
+    use_mean:
+        if one should use the stocks mean return
+    ticker: str
+        ticker of the stock
+    distribution: str
+        choose distribution to use: logistic, laplace, normal
+    percentile: int
+        es percentile
+    portfolio: bool
+        If the data is a portfolio
+    """
+    es_list, hist_es_list = qa_model.get_es(
+        data, use_mean, distribution, percentile, portfolio
+    )
+
+    str_hist_label = "Historical ES:"
+
+    if distribution == "laplace":
+        str_es_label = "Laplace ES:"
+        str_title = "Laplace "
+    elif distribution == "student_t":
+        str_es_label = "Student-t ES"
+        str_title = "Student-t "
+    elif distribution == "logistic":
+        str_es_label = "Logistic ES"
+        str_title = "Logistic "
+    else:
+        str_es_label = "ES:"
+        str_title = ""
+
+    if ticker != "":
+        ticker += " "
+
+    data_dictionary = {str_es_label: es_list, str_hist_label: hist_es_list}
+    data = pd.DataFrame(
+        data_dictionary, index=["90.0%", "95.0%", "99.0%", f"{percentile*100}%"]
+    )
+
+    print_rich_table(
+        data,
+        show_index=True,
+        headers=list(data.columns),
+        title=f"[bold]{ticker}{str_title}Expected Shortfall[/bold]",
         floatfmt=".4f",
     )
     console.print("")

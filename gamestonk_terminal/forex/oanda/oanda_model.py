@@ -64,6 +64,7 @@ def fx_price_request(
         response = client.request(request)
         return response
     except V20Error as e:
+        logger.exception(str(e))
         d_error = json.loads(e.msg)
         console.print(d_error["errorMessage"], "\n")
         return False
@@ -126,6 +127,7 @@ def account_summary_request(accountID: str = account) -> Union[pd.DataFrame, boo
         )
         return df_summary
     except V20Error as e:
+        logger.exception(str(e))
         d_error = json.loads(e.msg)
         console.print(d_error["errorMessage"], "\n")
         return False
@@ -170,6 +172,7 @@ def orderbook_plot_data_request(
         df_orderbook_data = pd.DataFrame.from_dict(response["orderBook"]["buckets"])
         return df_orderbook_data
     except V20Error as e:
+        logger.exception(str(e))
         d_error = json.loads(e.msg)
         console.print(d_error["errorMessage"], "\n")
         return False
@@ -212,6 +215,7 @@ def positionbook_plot_data_request(
         )
         return df_positionbook_data
     except V20Error as e:
+        logger.exception(str(e))
         d_error = json.loads(e.msg)
         console.print(d_error["errorMessage"], "\n")
         return False
@@ -252,9 +256,11 @@ def order_history_request(
         ]
         return df_order_list
     except KeyError:
+        logger.exception("No orders were found")
         console.print("No orders were found\n")
         return False
     except V20Error as e:
+        logger.exception(str(e))
         d_error = json.loads(e.msg)
         console.print(d_error["errorMessage"], "\n")
         return False
@@ -326,10 +332,12 @@ def create_order_request(
         df_orders = pd.DataFrame.from_dict(order_data)
         return df_orders
     except V20Error as e:
+        logger.exception(str(e))
         d_error = json.loads(e.msg)
         console.print(d_error["errorMessage"], "\n")
         return False
     except Exception as e:
+        logger.exception(str(e))
         console.print(e)
         return False
 
@@ -360,6 +368,7 @@ def cancel_pending_order_request(
         order_id = response["orderCancelTransaction"]["orderID"]
         return order_id
     except V20Error as e:
+        logger.exception(str(e))
         d_error = json.loads(e.msg)
         console.print(d_error["errorMessage"], "\n")
         return False
@@ -404,6 +413,7 @@ def open_positions_request(accountID: str = account) -> Union[pd.DataFrame, bool
         df_positions = pd.DataFrame.from_dict(position_data)
         return df_positions
     except V20Error as e:
+        logger.exception(str(e))
         d_error = json.loads(e.msg)
         console.print(d_error["errorMessage"], "\n")
         return False
@@ -452,6 +462,7 @@ def pending_orders_request(accountID: str = account) -> Union[pd.DataFrame, bool
         df_pending = pd.DataFrame.from_dict(pending_data)
         return df_pending
     except V20Error as e:
+        logger.exception(str(e))
         d_error = json.loads(e.msg)
         console.print(d_error["errorMessage"], "\n")
         return False
@@ -507,6 +518,7 @@ def open_trades_request(accountID: str = account) -> Union[pd.DataFrame, bool]:
             df_trades = pd.DataFrame()
         return df_trades
     except V20Error as e:
+        logger.exception(str(e))
         d_error = json.loads(e.msg)
         console.print(d_error["errorMessage"], "\n")
         return False
@@ -561,6 +573,7 @@ def close_trades_request(
         df_trades = pd.DataFrame.from_dict(close_data)
         return df_trades
     except V20Error as e:
+        logger.exception(str(e))
         d_error = json.loads(e.msg)
         console.print(d_error["errorMessage"], "\n")
         return False
@@ -624,6 +637,7 @@ def get_candles_dataframe(
             df_candles.index = pd.to_datetime(df_candles.index)
         return df_candles
     except V20Error as e:
+        logger.exception(str(e))
         d_error = json.loads(e.msg)
         console.print(d_error["errorMessage"], "\n")
         return False
@@ -715,6 +729,7 @@ def get_calendar_request(
             df_calendar = pd.DataFrame(l_data)
         return df_calendar
     except V20Error as e:
+        logger.exception(str(e))
         d_error = json.loads(e.msg)
         console.print(d_error["message"], "\n")
         return False

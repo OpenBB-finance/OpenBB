@@ -25,18 +25,20 @@ PAPERMILL_NOTEBOOK_REPORT_PORT = (
 # Logging section
 
 # Logging settings
-# 0 - INFO
-# 1 - DEBUG for terminal, INFO for libraries
-# 2 - DEBUG for terminal, DEBUG for libraries
+# 0 - NOTSET
+# 10 - DEBUG for terminal, DEBUG for libraries
+# 15 - DEBUG for terminal, INFO for libraries
+# 20 - INFO
 
-LOGGING_VERBOSITY = 0
+
+LOGGING_VERBOSITY = 20
 
 if tmp_verbosity := os.getenv("GT_LOGGING_VERBOSITY"):
     print(f"Setting verbosity to {tmp_verbosity}")
     try:
         LOGGING_VERBOSITY = int(tmp_verbosity)
     except ValueError:
-        LOGGING_VERBOSITY = 2
+        LOGGING_VERBOSITY = 20
 
 # stdout, stderr, file, noop
 LOGGING_HANDLERS = os.getenv("GT_LOGGING_HANDLERS") or "file"

@@ -85,6 +85,7 @@ def display_historical(
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     else:
         if len(external_axes) != 1:
+            logger.error("Expected list of one axis item.")
             console.print("[red]Expected list of one axis item./n[/red]")
             return
         (ax,) = external_axes
@@ -96,7 +97,7 @@ def display_historical(
     ax.set_ylabel(f"{['','Normalized'][normalize]} Share Price {['($)',''][normalize]}")
     # ensures that the historical data starts from same datapoint
     ax.set_xlim([df_similar.index[0], df_similar.index[-1]])
-    ax.legend(loc="best")
+    ax.legend()
     theme.style_primary_axis(ax)
 
     if not external_axes:
@@ -136,6 +137,7 @@ def display_volume(
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     else:
         if len(external_axes) != 1:
+            logger.error("Expected list of one axis item.")
             console.print("[red]Expected list of one axis item./n[/red]")
             return
         (ax,) = external_axes
@@ -204,6 +206,7 @@ def display_correlation(
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     else:
         if len(external_axes) != 1:
+            logger.error("Expected list of one axis item.")
             console.print("[red]Expected list of one axis item./n[/red]")
             return
         (ax,) = external_axes

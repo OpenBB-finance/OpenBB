@@ -8,6 +8,7 @@ import numpy as np
 from matplotlib import dates as mdates
 from matplotlib import pyplot as plt
 from matplotlib import ticker
+from matplotlib.lines import Line2D
 
 from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal import config_plot as cfgPlot
@@ -57,6 +58,7 @@ def display_btc_rainbow(
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
         else:
             if len(external_axes) != 1:
+                logger.error("Expected list of one axis item.")
                 console.print("[red]Expected list of one axis item./n[/red]")
                 return
             (ax,) = external_axes
@@ -197,6 +199,7 @@ def display_active_addresses(
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
         else:
             if len(external_axes) != 1:
+                logger.error("Expected list of one axis item.")
                 console.print("[red]Expected list of one axis item./n[/red]")
                 return
             (ax,) = external_axes
@@ -259,6 +262,7 @@ def display_non_zero_addresses(
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
         else:
             if len(external_axes) != 1:
+                logger.error("Expected list of one axis item.")
                 console.print("[red]Expected list of one axis item./n[/red]")
                 return
             (ax,) = external_axes
@@ -326,6 +330,7 @@ def display_exchange_net_position_change(
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
         else:
             if len(external_axes) != 1:
+                logger.error("Expected list of one axis item.")
                 console.print("[red]Expected list of one axis item./n[/red]")
                 return
             (ax,) = external_axes
@@ -411,6 +416,7 @@ def display_exchange_balances(
 
         else:
             if len(external_axes) != 1:
+                logger.error("Expected list of one axis item.")
                 console.print("[red]Expected list of one axis item./n[/red]")
                 return
             (ax1, ax2) = external_axes
@@ -484,6 +490,7 @@ def display_hashrate(
 
         else:
             if len(external_axes) != 1:
+                logger.error("Expected list of one axis item.")
                 console.print("[red]Expected list of one axis item./n[/red]")
                 return
             (ax1, ax2) = external_axes
@@ -494,7 +501,6 @@ def display_hashrate(
         ax1.yaxis.set_major_formatter(ticker.StrMethodFormatter("{x:.0f}T"))
         ax1.set_ylabel(f"{asset} hashrate (Terahashes/second)")
         ax1.set_title(f"{asset}: Mean hashrate")
-        ax1.legend(["Hash Rate"], loc="best")
         ax1.tick_params(axis="x", labelrotation=10)
 
         ax2.set_xlim(left=df.index[0])
@@ -502,7 +508,14 @@ def display_hashrate(
         ax2.plot(df.index, df["price"] / 1_000, color=theme.up_color, lw=0.8)
         ax2.yaxis.set_major_formatter(ticker.StrMethodFormatter("${x:.1f}k"))
         ax2.set_ylabel(f"{asset} price [$]")
-        ax2.legend(["Price"], loc="best")
+
+        # Manually construct the chart legend
+        lines = [
+            Line2D([0], [0], color=color)
+            for color in [theme.up_color, theme.down_color]
+        ]
+        labels = ["Hash Rate", "Price"]
+        ax2.legend(lines, labels)
 
         if not external_axes:
             theme.visualize_output()

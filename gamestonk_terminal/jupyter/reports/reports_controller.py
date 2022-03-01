@@ -135,7 +135,7 @@ Select one of the following reports:[/info][cmds]
 
         if not other_args and an_input in ("1", "3", "4"):
             console.print("[red]Error: No ticker provided\n[/red]")
-            logger.exception("Exception|||No ticker provided")
+            logger.error("Exception: No ticker provided")
             return self.queue
 
         # Redirect commands to their correct functions

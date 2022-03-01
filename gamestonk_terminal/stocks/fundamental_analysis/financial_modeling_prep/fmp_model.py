@@ -39,7 +39,8 @@ def get_profile(ticker: str) -> pd.DataFrame:
     """Get ticker profile from FMP"""
     try:
         df = fa.profile(ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
-    except ValueError:
+    except ValueError as e:
+        logger.exception(str(e))
         df = pd.DataFrame()
     return df
 
@@ -49,7 +50,8 @@ def get_quote(ticker) -> pd.DataFrame:
     """Gets ticker quote from FMP"""
     try:
         df_fa = fa.quote(ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
-    except ValueError:
+    except ValueError as e:
+        logger.exception(str(e))
         df_fa = pd.DataFrame()
 
     if not df_fa.empty:
@@ -97,7 +99,8 @@ def get_enterprise(ticker: str, number: int, quarterly: bool = False) -> pd.Data
             )
         else:
             df_fa = fa.enterprise(ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
-    except ValueError:
+    except ValueError as e:
+        logger.exception(str(e))
         df_fa = pd.DataFrame()
     if not df_fa.empty:
         df_fa = clean_metrics_df(df_fa, num=number, mask=False)
@@ -130,7 +133,8 @@ def get_dcf(ticker: str, number: int, quarterly: bool = False) -> pd.DataFrame:
         else:
             df_fa = fa.discounted_cash_flow(ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
         df_fa = clean_metrics_df(df_fa, num=number, mask=False)
-    except ValueError:
+    except ValueError as e:
+        logger.exception(str(e))
         df_fa = pd.DataFrame()
     return df_fa
 
@@ -161,7 +165,8 @@ def get_income(ticker: str, number: int, quarterly: bool = False) -> pd.DataFram
         else:
             df_fa = fa.income_statement(ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
         df_fa = clean_metrics_df(df_fa, num=number)
-    except ValueError:
+    except ValueError as e:
+        logger.exception(str(e))
         df_fa = pd.DataFrame()
     return df_fa
 
@@ -195,7 +200,8 @@ def get_balance(ticker: str, number: int, quarterly: bool = False) -> pd.DataFra
             )
 
         df_fa = clean_metrics_df(df_fa, num=number)
-    except ValueError:
+    except ValueError as e:
+        logger.exception(str(e))
         df_fa = pd.DataFrame()
 
     return df_fa
@@ -228,7 +234,8 @@ def get_cash(ticker: str, number: int, quarterly: bool = False) -> pd.DataFrame:
             df_fa = fa.cash_flow_statement(ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
 
         df_fa = clean_metrics_df(df_fa, num=number)
-    except ValueError:
+    except ValueError as e:
+        logger.exception(str(e))
         df_fa = pd.DataFrame()
     return df_fa
 
@@ -260,7 +267,8 @@ def get_key_metrics(ticker: str, number: int, quarterly: bool = False) -> pd.Dat
             df_fa = fa.key_metrics(ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
 
         df_fa = clean_metrics_df(df_fa, num=number)
-    except ValueError:
+    except ValueError as e:
+        logger.exception(str(e))
         df_fa = pd.DataFrame()
     return df_fa
 
@@ -292,7 +300,8 @@ def get_key_ratios(ticker: str, number: int, quarterly: bool = False) -> pd.Data
             df_fa = fa.financial_ratios(ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
 
         df_fa = clean_metrics_df(df_fa, num=number)
-    except ValueError:
+    except ValueError as e:
+        logger.exception(str(e))
         df_fa = pd.DataFrame()
     return df_fa
 
@@ -328,7 +337,8 @@ def get_financial_growth(
             )
 
         df_fa = clean_metrics_df(df_fa, num=number)
-    except ValueError:
+    except ValueError as e:
+        logger.exception(str(e))
         df_fa = pd.DataFrame()
     return df_fa
 

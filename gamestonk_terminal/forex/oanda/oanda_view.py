@@ -346,6 +346,7 @@ def show_candles(
     # This plot has 2 axes
     if external_axes is not None:
         if len(external_axes) != 2:
+            logger.error("Expected list of 2 axis items")
             console.print("[red]Expected list of 2 axis items./n[/red]")
             return
         ax, volume = external_axes
@@ -374,6 +375,7 @@ def show_candles(
                 ax[subplot_legends[i]].legend(subplot_legends[i + 1])
             theme.visualize_output(force_tight_layout=False)
         else:
+            logger.error("Data not found")
             console.print("[red]Data not found[/red]\n")
 
 
@@ -511,6 +513,7 @@ def book_plot(
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     else:
         if len(external_axes) != 1:
+            logger.error("Expected list of one axis item.")
             console.print("[red]Expected list of one axis item./n[/red]")
             return
         (ax,) = external_axes

@@ -19,6 +19,7 @@ from gamestonk_terminal.helper_funcs import (
     check_positive,
     check_proportion_range,
     parse_known_args_and_warn,
+    check_list_dates,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.parent_classes import StockBaseController
@@ -55,10 +56,12 @@ class QaController(StockBaseController):
         "unitroot",
         "capm",
         "var",
+        "es",
     ]
 
     stock_interval = [1, 5, 15, 30, 60]
     stock_sources = ["yf", "av", "iex"]
+    distributions = ["laplace", "student_t", "logistic", "normal"]
     PATH = "/stocks/qa/"
 
     def __init__(
@@ -130,7 +133,8 @@ class QaController(StockBaseController):
     skew        rolling skewness of distribution of prices
     kurtosis    rolling kurtosis of distribution of prices
 [info]Risk:[/info]
-    var         value at risk
+    var         display value at risk
+    es          display expected shortfall
 [info]Other:[/info]
     raw         print raw data
     decompose   decomposition in cyclic-trend, season, and residuals of prices
@@ -237,7 +241,7 @@ class QaController(StockBaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             add_help=False,
             prog="line",
-            description="Show line plot of selected data",
+            description="Show line plot of selected data and allow to draw lines or highlight specific datetimes.",
         )
         parser.add_argument(
             "--log",
@@ -254,6 +258,20 @@ class QaController(StockBaseController):
             action="store_true",
             default=False,
         )
+        parser.add_argument(
+            "--ml",
+            help="Draw vertical line markers to highlight certain events",
+            dest="ml",
+            type=check_list_dates,
+            default="",
+        )
+        parser.add_argument(
+            "--ms",
+            help="Draw scatter markers to highlight certain events",
+            dest="ms",
+            type=check_list_dates,
+            default="",
+        )
 
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
@@ -264,6 +282,8 @@ class QaController(StockBaseController):
                 title=f"{self.ticker} {self.target}",
                 log_y=ns_parser.log,
                 draw=ns_parser.draw,
+                markers_lines=ns_parser.ml,
+                markers_scatter=ns_parser.ms,
             )
 
     @log_start_end(log=logger)
@@ -755,6 +775,16 @@ class QaController(StockBaseController):
             """,
         )
         parser.add_argument(
+            "-s",
+            "--student",
+            action="store_true",
+            default=False,
+            dest="student_t",
+            help="""
+                If one should use the student-t distribution
+            """,
+        )
+        parser.add_argument(
             "-p",
             "--percentile",
             action="store",
@@ -767,10 +797,66 @@ class QaController(StockBaseController):
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            qa_view.display_var(
+            if ns_parser.adjusted and ns_parser.student_t:
+                console.print("Select the adjusted or the student_t parameter.\n")
+            else:
+                qa_view.display_var(
+                    self.stock,
+                    self.ticker,
+                    ns_parser.use_mean,
+                    ns_parser.adjusted,
+                    ns_parser.student_t,
+                    ns_parser.percentile / 100,
+                    False,
+                )
+
+    def call_es(self, other_args: List[str]):
+        """Process es command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="es",
+            description="""
+                Provides Expected Shortfall (short: ES) of the selected stock.
+            """,
+        )
+        parser.add_argument(
+            "-m",
+            "--mean",
+            action="store_true",
+            default=False,
+            dest="use_mean",
+            help="If one should use the mean of the stocks return",
+        )
+        parser.add_argument(
+            "-d",
+            "--dist",
+            "--distributions",
+            dest="distributions",
+            type=str,
+            choices=self.distributions,
+            default="normal",
+            help="Distribution used for the calculations",
+        )
+        parser.add_argument(
+            "-p",
+            "--percentile",
+            action="store",
+            dest="percentile",
+            type=float,
+            default=99.9,
+            help="""
+                Percentile used for ES calculations, for example input 99.9 equals a 99.9 Percent Expected Shortfall
+            """,
+        )
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            qa_view.display_es(
                 self.stock,
-                ns_parser.use_mean,
                 self.ticker,
-                ns_parser.adjusted,
+                ns_parser.use_mean,
+                ns_parser.distributions,
                 ns_parser.percentile / 100,
+                False,
             )

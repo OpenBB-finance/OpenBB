@@ -27,7 +27,7 @@ from gamestonk_terminal.portfolio import portfolio_model, portfolio_view
 from gamestonk_terminal.portfolio.portfolio_optimization import po_controller
 from gamestonk_terminal.rich_config import console
 
-# pylint: disable=R1710,E1101,C0415
+# pylint: disable=R1710,E1101,C0415,W0212
 
 logger = logging.getLogger(__name__)
 
@@ -49,12 +49,15 @@ class PortfolioController(BaseController):
         "al",
         "dd",
         "rolling",
+        "var",
+        "es",
     ]
     CHOICES_MENUS = [
         "bro",
         "po",
         "pa",
     ]
+    distributions = ["laplace", "student_t", "logistic", "normal"]
     PATH = "/portfolio/"
 
     def __init__(self, queue: List[str] = None):
@@ -108,6 +111,10 @@ Loaded:[/info] {self.portfolio_name or None}
     rmr         graph your returns versus the market's returns
     dd          display portfolio drawdown
     al          display allocation to given assets over period[/cmds]
+
+[info]Risk Metrics:[/info][cmds]
+    var         display value at risk
+    es          display expected shortfall[/cmds]
         """
         # TODO: Clean up the reports inputs
         # TODO: Edit the allocation to allow the different asset classes
@@ -127,8 +134,16 @@ Loaded:[/info] {self.portfolio_name or None}
     @log_start_end(log=logger)
     def call_po(self, _):
         """Process po command"""
+        if self.portfolio.empty:
+            tickers = []
+        else:
+            tickers = (
+                self.portfolio._stock_tickers
+                + self.portfolio._etf_tickers
+                + self.portfolio._crypto_tickers
+            )
         self.queue = self.load_class(
-            po_controller.PortfolioOptimization, [], self.queue
+            po_controller.PortfolioOptimization, tickers, self.queue
         )
 
     # BUG: The commands in pa menu throw errors. First one says that it's related to
@@ -226,6 +241,7 @@ Loaded:[/info] {self.portfolio_name or None}
     def call_show(self, _):
         """Process show command"""
         if self.portfolio.empty:
+            logger.warning("No portfolio loaded")
             console.print("[red]No portfolio loaded.[/red]\n")
             return
         print_rich_table(self.portfolio.trades, show_index=False)
@@ -249,9 +265,11 @@ Loaded:[/info] {self.portfolio_name or None}
         inputs: Dict[str, Union[str, float, int]] = {}
         type_ = input("Type (stock, cash): \n")
         if type_ not in ["stock", "cash"]:
+            logger.warning("Currently only stocks or cash supported.")
             console.print("[red]Currently only stocks or cash supported.[/red]\n")
             type_ = input("Type (stock, cash): \n")
             if type_ not in ["stock", "cash"]:
+                logger.error("Two unsuccessful attempts.  Exiting add")
                 console.print("[red]Two unsuccessful attempts.  Exiting add.[/red]\n")
                 return
 
@@ -263,6 +281,7 @@ Loaded:[/info] {self.portfolio_name or None}
                 console.print("Cash can only be deposit or withdraw\n")
                 action = input("Action: (buy, sell, deposit, withdraw): \n").lower()
                 if action not in ["deposit", "withdraw"]:
+                    logger.error("Two unsuccessful attempts.  Exiting add")
                     console.print(
                         "[red]Two unsuccessful attempts.  Exiting add.[/red]\n"
                     )
@@ -272,6 +291,7 @@ Loaded:[/info] {self.portfolio_name or None}
             if action not in ["buy", "sell"]:
                 console.print("Stock can only be buy or sell\n")
                 if action not in ["buy", "sell"]:
+                    logger.error("Two unsuccessful attempts.  Exiting add")
                     console.print(
                         "[red]Two unsuccessful attempts.  Exiting add.[/red]\n"
                     )
@@ -376,8 +396,10 @@ Loaded:[/info] {self.portfolio_name or None}
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
         if ns_parser:
+            if self.portfolio.empty:
+                console.print("[red]No portfolio loaded.[/red]\n")
+                return
             portfolio_view.display_allocation(self.portfolio, ns_parser.export)
-        console.print()
 
     # def call_ar(self, other_args: List[str]):
     #     """Process ar command"""
@@ -407,6 +429,134 @@ Loaded:[/info] {self.portfolio_name or None}
     #             console.print("Please add items to the portfolio\n")
 
     @log_start_end(log=logger)
+    def call_var(self, other_args: List[str]):
+        """Process var command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="var",
+            description="""
+                Provides value at risk (short: VaR) of the selected portfolio.
+            """,
+        )
+        parser.add_argument(
+            "-m",
+            "--mean",
+            action="store_true",
+            default=False,
+            dest="use_mean",
+            help="If one should use the mean of the portfolio return",
+        )
+        parser.add_argument(
+            "-a",
+            "--adjusted",
+            action="store_true",
+            default=False,
+            dest="adjusted",
+            help="""
+                If the VaR should be adjusted for skew and kurtosis (Cornish-Fisher-Expansion)
+            """,
+        )
+        parser.add_argument(
+            "-s",
+            "--student",
+            action="store_true",
+            default=False,
+            dest="student_t",
+            help="""
+                If one should use the student-t distribution
+            """,
+        )
+        parser.add_argument(
+            "-p",
+            "--percentile",
+            action="store",
+            dest="percentile",
+            type=float,
+            default=99.9,
+            help="""
+                Percentile used for VaR calculations, for example input 99.9 equals a 99.9 Percent VaR
+            """,
+        )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            if self.portfolio.empty:
+                console.print("[red]No portfolio loaded.[/red]\n")
+                return
+            if ns_parser.adjusted and ns_parser.student_t:
+                console.print("Select the adjusted or the student_t parameter.\n")
+            else:
+                from gamestonk_terminal.common.quantitative_analysis import qa_view
+
+                self.portfolio.generate_holdings_from_trades()
+                qa_view.display_var(
+                    self.portfolio.returns,
+                    "Portfolio",
+                    ns_parser.use_mean,
+                    ns_parser.adjusted,
+                    ns_parser.student_t,
+                    ns_parser.percentile / 100,
+                    True,
+                )
+
+    @log_start_end(log=logger)
+    def call_es(self, other_args: List[str]):
+        """Process es command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="es",
+            description="""
+                Provides Expected Shortfall (short: ES) of the selected portfolio.
+            """,
+        )
+        parser.add_argument(
+            "-m",
+            "--mean",
+            action="store_true",
+            default=False,
+            dest="use_mean",
+            help="If one should use the mean of the portfolios return",
+        )
+        parser.add_argument(
+            "-d",
+            "--dist",
+            "--distributions",
+            dest="distributions",
+            type=str,
+            choices=self.distributions,
+            default="normal",
+            help="Distribution used for the calculations",
+        )
+        parser.add_argument(
+            "-p",
+            "--percentile",
+            action="store",
+            dest="percentile",
+            type=float,
+            default=99.9,
+            help="""
+                Percentile used for ES calculations, for example input 99.9 equals a 99.9 Percent Expected Shortfall
+            """,
+        )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            from gamestonk_terminal.common.quantitative_analysis import qa_view
+
+            if self.portfolio.empty:
+                console.print("[red]No portfolio loaded.[/red]\n")
+                return
+            self.portfolio.generate_holdings_from_trades()
+            qa_view.display_es(
+                self.portfolio.returns,
+                "Portfolio",
+                ns_parser.use_mean,
+                ns_parser.distributions,
+                ns_parser.percentile / 100,
+                True,
+            )
+
+    @log_start_end(log=logger)
     def call_rmr(self, other_args: List[str]):
         """Process rmr command"""
         parser = argparse.ArgumentParser(
@@ -430,8 +580,8 @@ Loaded:[/info] {self.portfolio_name or None}
                     self.portfolio, ns_parser.market
                 )
             else:
+                logger.warning("No portfolio loaded")
                 console.print("[red]No portfolio loaded.[/red]")
-        console.print()
 
     @log_start_end(log=logger)
     def call_dd(self, other_args: List[str]):
@@ -451,6 +601,7 @@ Loaded:[/info] {self.portfolio_name or None}
                 self.portfolio.add_benchmark("SPY")
                 portfolio_view.display_drawdown(self.portfolio.portfolio_value)
             else:
+                logger.warning("No portfolio loaded")
                 console.print("[red]No portfolio loaded.\n[/red]")
 
     @log_start_end(log=logger)
@@ -491,6 +642,7 @@ Loaded:[/info] {self.portfolio_name or None}
         )
         if ns_parser:
             if self.portfolio.empty:
+                logger.warning("No portfolio loaded")
                 console.print("[red]No portfolio loaded[/red].\n")
                 return
             portfolio_view.display_rolling_stats(
@@ -499,4 +651,3 @@ Loaded:[/info] {self.portfolio_name or None}
                 benchmark=ns_parser.benchmark,
                 risk_free_rate=ns_parser.rf,
             )
-        console.print()

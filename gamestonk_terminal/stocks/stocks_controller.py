@@ -543,7 +543,8 @@ Stock: [/param]{stock_text}
                     self.queue,
                 )
             # TODO: This menu should work regardless of data being daily or not!
-            console.print("Load daily data to use this menu!", "\n")
+            else:
+                console.print("Load daily data to use this menu!", "\n")
         else:
             console.print("Use 'load <ticker>' prior to this command!", "\n")
 
@@ -567,6 +568,10 @@ Stock: [/param]{stock_text}
                             self.queue,
                         )
                     except ModuleNotFoundError as e:
+                        logger.exception(
+                            "One of the optional packages seems to be missing: %s",
+                            str(e),
+                        )
                         console.print(
                             "One of the optional packages seems to be missing: ",
                             e,
@@ -574,7 +579,8 @@ Stock: [/param]{stock_text}
                         )
 
                 # TODO: This menu should work regardless of data being daily or not!
-                console.print("Load daily data to use this menu!", "\n")
+                else:
+                    console.print("Load daily data to use this menu!", "\n")
             else:
                 console.print("Use 'load <ticker>' prior to this command!", "\n")
         else:

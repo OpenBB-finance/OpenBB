@@ -73,7 +73,9 @@ def get_historical_options(
                 "symbol"
             ].values[0]
         except IndexError:
-            console.print(f"Strike: {strike}, Option type: {op_type} not not found \n")
+            error = f"Strike: {strike}, Option type: {op_type} not not found"
+            logging.exception(error)
+            console.print(f"{error}\n")
             return pd.DataFrame()
     else:
         symbol = chain_id
@@ -132,6 +134,7 @@ def option_expirations(ticker: str) -> List[str]:
             dates = r.json()["expirations"]["date"]
             return dates
         except TypeError:
+            logging.exception("Error in tradier JSON response.  Check loaded ticker.")
             console.print("Error in tradier JSON response.  Check loaded ticker.\n")
             return []
     else:
