@@ -52,3 +52,4 @@ Example:
 
 2022 Feb 28, 04:38 (✨) /econometrics/ $ plot unemp-us_macro
 ```
+![unemp_data_us](https://user-images.githubusercontent.com/46355364/156058283-3888c6a8-a9a7-41c6-a091-b94b7946679b.png)
