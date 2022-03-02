@@ -1,4 +1,4 @@
-This group of commands are the primary methods for requesting price information, using the symbol and exchange structures followed by yFinance. Crypto, FX, Indexes, and Futures are also callable whereever the input variable is a ticker.
+This group of commands are the primary methods for requesting price information, using the symbol and exchange structures followed by yFinance. Crypto, FX, Indexes, and Futures are also callable wherever the input variable is a ticker.
 
 A list of supported exchanges can be downloaded here: 
 
