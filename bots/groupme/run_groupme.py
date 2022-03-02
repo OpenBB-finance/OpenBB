@@ -62,6 +62,7 @@ def handle_groupme(request):
                     if group == command[: len(group)]:
                         show_cmds.append(command)
                 message = "Valid commands: "
+                show_cmds.sort()
                 message += ", ".join(show_cmds)
                 send_message(message, group_id)
                 return False

@@ -39,6 +39,9 @@ def upload_image(image: str, local: bool) -> requests.Response:
 def send_message(message: str, group_id: str) -> requests.Response:
     mid = "/bots/post"
     bot_id = group_to_bot[group_id]
+    # TODO: make the cutoff algorithm better
+    if len(message) > 990:
+        message = f"{message[:990]}..."
     return requests.post(url=f"{base+mid}?bot_id={bot_id}&text={message}")
 
 

@@ -1,4 +1,5 @@
 import os
+from typing import List
 import uuid
 
 import df2img
@@ -284,6 +285,10 @@ class ShowView:
         elif "description" in data:
             title = data.get("title", "")
             # TODO: Allow navigation through pages
-            description = data.get("description", [])[0].replace("Page ", "")
-            message = f"{title}\n{description}"
+            description = data.get("description").replace("Page ", "")
+            if isinstance(description, List):
+                clean_desc = description[0]
+            else:
+                clean_desc = description
+            message = f"{title}\n{clean_desc}"
             send_message(message, group_id)
