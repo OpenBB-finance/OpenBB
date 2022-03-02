@@ -105,6 +105,7 @@ def display_stock_price_headlines_sentiment(
             color="#E4003A",
             width=0.01,
         )
+        ax[1].yaxis.set_label_position("right")
         ax[1].set_ylabel("Headline Sentiment")
 
         if external_axes is None:

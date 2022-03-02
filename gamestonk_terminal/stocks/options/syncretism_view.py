@@ -116,7 +116,7 @@ def view_historical_greeks(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Plots historical greeks for a given option
+    """Plots historical greeks for a given option. [Source: Syncretism]
 
     Parameters
     ----------
@@ -157,19 +157,15 @@ def view_historical_greeks(
             return
         (ax,) = external_axes
 
-    # Theo I am sorry but I don't know how to get different line colors and move the delta
-    im1 = ax.plot(df.index, df[greek], label=greek.title())
-    ax.set_ylabel(greek)
+    ax.plot(df.index, df[greek], label=greek.title(), color="#00AAFF")
     ax1 = ax.twinx()
-    im2 = ax1.plot(df.index, df.price, label="Stock Price")
+    ax1.plot(df.index, df.price)
     ax1.set_ylabel(f"{ticker} Price")
     ax.set_title(
         f"{greek} historical for {ticker.upper()} {strike} {['Call','Put'][put]}"
     )
 
-    ims = im1 + im2
-    labels = [lab.get_label() for lab in ims]
-    ax.legend(ims, labels, loc=0)
+    ax.legend()
     theme.style_primary_axis(ax)
 
     if not external_axes:
