@@ -31,6 +31,7 @@ def upload_image(image: str, local: bool) -> requests.Response:
     if local:
         path_string = pathlib.Path(__file__).parent.parent.resolve()
         path = os.path.join(path_string, image)
+        print(path)
         return requests.post(url, data=open(path, "rb").read(), headers=headers)
     with urllib.urlopen(image) as data:
         return requests.post(url, data=io.BytesIO(data.read()), headers=headers)
@@ -45,7 +46,9 @@ def send_message(message: str, group_id: str) -> requests.Response:
 def send_image(
     image: str, group_id: str, text: str = None, local: bool = False
 ) -> requests.Response:
-    response = upload_image(image, local).json()
+    response = upload_image(image, local)
+    print(response)
+    response = response.json()
     image_url = response["payload"]["picture_url"]
     mid = "/bots/post"
     bot_id = group_to_bot[group_id]
