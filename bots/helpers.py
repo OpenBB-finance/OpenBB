@@ -285,10 +285,10 @@ class ShowView:
         elif "description" in data:
             title = data.get("title", "")
             # TODO: Allow navigation through pages
-            description = data.get("description").replace("Page ", "")
+            description = data.get("description")
             if isinstance(description, List):
-                clean_desc = description[0]
+                clean_desc = description[0].replace("Page ", "")
             else:
-                clean_desc = description
+                clean_desc = description.replace("Page ", "")
             message = f"{title}\n{clean_desc}"
             send_message(message, group_id)
