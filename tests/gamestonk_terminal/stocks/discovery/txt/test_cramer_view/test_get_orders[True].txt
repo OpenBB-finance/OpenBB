@@ -1,0 +1,12 @@
+
+                      Company Symbol   Price  LastPrice  Change (%) Recommendation InverseCramer
+0  Academy Sports and Outdoo     ASO   30.65      30.65         0.0            Buy          Sell
+1                 Salesforce     CRM  208.89     208.89         0.0            Buy          Sell
+2             Coterra Energy    CTRA   24.36      24.36         0.0            Buy          Sell
+3             Domino's Pizza     DPZ  432.21     432.21         0.0            Buy          Sell
+4                        Nio     NIO   21.87      21.87         0.0           Sell           Buy
+5           Origin Materials    ORGN    5.51       5.51         0.0           Sell           Buy
+6              Rent-A-Center    RCII   27.08      27.08         0.0           Sell           Buy
+7         B. Riley Financial    RILY   59.07      59.07         0.0           Sell           Buy
+8                       Stem    STEM    9.33       9.33         0.0           Sell           Buy
+

@@ -1,0 +1,2296 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://madmoney.thestreet.com/screener/index.cfm
+  response:
+    body:
+      string: "\n\n\n\n\n\n\t\n\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t \n\t \n\t
+        \n\t\n\t\n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n
+        \   \n    \n    \n    \n    \n    \n    \n\n\t\n    \n        \n        \n
+        \   \n\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html
+        xmlns=\"http://www.w3.org/1999/xhtml\">\n<head>\n<meta http-equiv=\"Content-Type\"
+        content=\"text/html; charset=iso-8859-1\" />\n<title>Mad Money Stock Screener</title>\n<link
+        rel=\"stylesheet\" type=\"text/css\" href=\"css/stock.css\">\n<link rel=\"stylesheet\"
+        type=\"text/css\" href=\"/09/style.css\">\n\n\n\n<script type=\"text/javascript\">\ndocument.domain=\"thestreet.com\";\ntry
+        {\nwindow.parent.fireAdsAndReporting();\n}catch(e){}\n \n</script>\n\n\n\n
+        \   <script type=\"text/javascript\">\n\t function resize() {\n     var height
+        = document.getElementsByTagName(\"html\")[0].scrollHeight;\n    window.parent.postMessage([\"setHeight\",
+        height], \"*\"); \n\t}\n    </script>\n    \n</head>\n\n<body>\n\n\n\n\n\n<div
+        id=\"stockScreener\">\n\n\t<div id=\"leftPanel\">\n        <a href=\"index.cfm?showview=stocks\"><img
+        id=\"madMoneyLogo\" src=\"images/madMoneyStockScreener.gif\" width=\"309\"
+        height=\"19\" border=\"0\" alt=\"Exclusive Mad Money Stock Screener\" /></a>\n\t\t<p><strong>Cramer's
+        Calls For:</strong> 03/01/2022</p>\n\t\t<br />\n\t\t<table cellpadding=\"0\"
+        cellspacing=\"0\" border=\"0\" id=\"stockTable\">\n\t\t\t<tr>\n\t\t\t\t<th>Company</th><th>Date<th>Segment</th><th>Call</th><th>Price</th><th>Portfolio</th>\n\t\t\t</tr>\n
+        \           \n            \n            \n            \n            <tr class=\"odd\"><td>Academy
+        Sports and Outdoo (<a href=\"https://www.thestreet.com/quote/ASO.html?omorig=header\"
+        target=\"_blank\">ASO</a>)</td><td>03/01</td><td align=\"center\"><img src=\"/09/img/icons/L.gif\"
+        width=\"14\" height=\"16\" alt=\"L\"  /> </td><td align=\"center\"><img src=\"/09/img/icons/5.gif\"
+        width=\"14\" height=\"16\" alt=\"5\" /> </td><td>$30.65</td><td align=\"center\"><a
+        href=\"index.cfm?showview=portfolio&add=Y&symbol=ASO\">add</a> </td>\n\t\t\t</tr>\n
+        \           \n            <tr>\n\t\t\t\t<td>Salesforce (<a href=\"https://www.thestreet.com/quote/CRM.html?omorig=header\"
+        target=\"_blank\">CRM</a>)</td><td>03/01</td><td align=\"center\"><img src=\"/09/img/icons/I.gif\"
+        width=\"14\" height=\"16\" alt=\"I\"  /> </td><td align=\"center\"><img src=\"/09/img/icons/5.gif\"
+        width=\"14\" height=\"16\" alt=\"5\" /> </td><td>$208.89</td><td align=\"center\"><a
+        href=\"index.cfm?showview=portfolio&add=Y&symbol=CRM\">add</a> </td>\n\t\t\t</tr>\n
+        \           \n            <tr class=\"odd\"><td>Coterra Energy (<a href=\"https://www.thestreet.com/quote/CTRA.html?omorig=header\"
+        target=\"_blank\">CTRA</a>)</td><td>03/01</td><td align=\"center\"><img src=\"/09/img/icons/I.gif\"
+        width=\"14\" height=\"16\" alt=\"I\"  /> </td><td align=\"center\"><img src=\"/09/img/icons/5.gif\"
+        width=\"14\" height=\"16\" alt=\"5\" /> </td><td>$24.36</td><td align=\"center\"><a
+        href=\"index.cfm?showview=portfolio&add=Y&symbol=CTRA\">add</a> </td>\n\t\t\t</tr>\n
+        \           \n            <tr>\n\t\t\t\t<td>Domino's Pizza (<a href=\"https://www.thestreet.com/quote/DPZ.html?omorig=header\"
+        target=\"_blank\">DPZ</a>)</td><td>03/01</td><td align=\"center\"><img src=\"/09/img/icons/I.gif\"
+        width=\"14\" height=\"16\" alt=\"I\"  /> </td><td align=\"center\"><img src=\"/09/img/icons/5.gif\"
+        width=\"14\" height=\"16\" alt=\"5\" /> </td><td>$432.21</td><td align=\"center\"><a
+        href=\"index.cfm?showview=portfolio&add=Y&symbol=DPZ\">add</a> </td>\n\t\t\t</tr>\n
+        \           \n            <tr class=\"odd\"><td>Nio (<a href=\"https://www.thestreet.com/quote/NIO.html?omorig=header\"
+        target=\"_blank\">NIO</a>)</td><td>03/01</td><td align=\"center\"><img src=\"/09/img/icons/L.gif\"
+        width=\"14\" height=\"16\" alt=\"L\"  /> </td><td align=\"center\"><img src=\"/09/img/icons/1.gif\"
+        width=\"14\" height=\"16\" alt=\"1\" /> </td><td>$21.87</td><td align=\"center\"><a
+        href=\"index.cfm?showview=portfolio&add=Y&symbol=NIO\">add</a> </td>\n\t\t\t</tr>\n
+        \           \n            <tr>\n\t\t\t\t<td>Origin Materials (<a href=\"https://www.thestreet.com/quote/ORGN.html?omorig=header\"
+        target=\"_blank\">ORGN</a>)</td><td>03/01</td><td align=\"center\"><img src=\"/09/img/icons/L.gif\"
+        width=\"14\" height=\"16\" alt=\"L\"  /> </td><td align=\"center\"><img src=\"/09/img/icons/2.gif\"
+        width=\"14\" height=\"16\" alt=\"2\" /> </td><td>$5.51</td><td align=\"center\"><a
+        href=\"index.cfm?showview=portfolio&add=Y&symbol=ORGN\">add</a> </td>\n\t\t\t</tr>\n
+        \           \n            <tr class=\"odd\"><td>Rent-A-Center (<a href=\"https://www.thestreet.com/quote/RCII.html?omorig=header\"
+        target=\"_blank\">RCII</a>)</td><td>03/01</td><td align=\"center\"><img src=\"/09/img/icons/L.gif\"
+        width=\"14\" height=\"16\" alt=\"L\"  /> </td><td align=\"center\"><img src=\"/09/img/icons/1.gif\"
+        width=\"14\" height=\"16\" alt=\"1\" /> </td><td>$27.08</td><td align=\"center\"><a
+        href=\"index.cfm?showview=portfolio&add=Y&symbol=RCII\">add</a> </td>\n\t\t\t</tr>\n
+        \           \n            <tr>\n\t\t\t\t<td>B. Riley Financial (<a href=\"https://www.thestreet.com/quote/RILY.html?omorig=header\"
+        target=\"_blank\">RILY</a>)</td><td>03/01</td><td align=\"center\"><img src=\"/09/img/icons/L.gif\"
+        width=\"14\" height=\"16\" alt=\"L\"  /> </td><td align=\"center\"><img src=\"/09/img/icons/2.gif\"
+        width=\"14\" height=\"16\" alt=\"2\" /> </td><td>$59.07</td><td align=\"center\"><a
+        href=\"index.cfm?showview=portfolio&add=Y&symbol=RILY\">add</a> </td>\n\t\t\t</tr>\n
+        \           \n            <tr class=\"odd\"><td>Stem (<a href=\"https://www.thestreet.com/quote/STEM.html?omorig=header\"
+        target=\"_blank\">STEM</a>)</td><td>03/01</td><td align=\"center\"><img src=\"/09/img/icons/L.gif\"
+        width=\"14\" height=\"16\" alt=\"L\"  /> </td><td align=\"center\"><img src=\"/09/img/icons/2.gif\"
+        width=\"14\" height=\"16\" alt=\"2\" /> </td><td>$9.33</td><td align=\"center\"><a
+        href=\"index.cfm?showview=portfolio&add=Y&symbol=STEM\">add</a> </td>\n\t\t\t</tr>\n
+        \           \t\t\t\t\n            \n            \n            \t\n            \n
+        \           \n            \n\t\t\t\t\n\t\t</table>\n        \n\t\t\n        \n
+        \       \t\n\t\t\t\n            \t<a href=\"index.cfm?showview=stocks&showrows=500\"
+        class=\"expandLink showAll\" onclick=\"resize()\">Show All</a>\n        \n\t\t\n\t\t<a
+        href=\"index.cfm?showview=portfolio\" class=\"expandLink\" onclick=\"resize()\">View
+        Portfolio &amp; Email Alerts</a>\n\t\t<a href=\"index.cfm?showview=help\"
+        class=\"expandLink\" onclick=\"resize()\">How to Read Our Charts</a>\n\t\t\n\t\t\n\t</div>\n\t\n\t<div
+        id=\"rightPanel\">\n    \n    \t<table width=\"100%\"><tr><td align=\"right\"
+        style=\"padding-right:5px;\">\n       \n       <iframe src=\"https://www.facebook.com/plugins/like.php?href=http%253A%252F%252Fwww.thestreet.com%252Fmad-money%252Findex.html&amp;layout=standard&amp;show_faces=true&amp;width=150&amp;action=like&amp;font&amp;colorscheme=light&amp;height=80\"
+        scrolling=\"no\" frameborder=\"0\" style=\"border:none;\noverflow:hidden;
+        width:190px; height:28px;\" allowtransparency=\"true\"></iframe>\n        \n
+        \       </td></tr></table>\n\t\t\n\t\t<div class=\"note secondNote\">Search
+        Criteria</div>\n        <form name=\"stocksForm\" method=\"post\" action=\"index.cfm\"
+        onsubmit=\"resize()\">\n\t\t<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\"
+        id=\"searchCritaria\">\n\n\t\t\t<tr><td align=\"right\" class=\"aslabel\">Stock
+        Symbol: </td><td align=\"right\">\n\t\t\t\t<input type=\"text\" name=\"symbol\"
+        class=\"symbolText\" tabindex=\"1\" value=\"\"/><input type=\"image\" src=\"images/searchBtn.gif\"
+        width=\"50\" height=\"22\" alt=\"Search\" id=\"searchBtn\" />\n\t\t\t</td></tr>\n
+        \           \n            \t\t\t<tr><td align=\"right\" class=\"aslabel\">Showdate:
+        </td><td align=\"right\">\n\t\t\t\t<select id=\"airdate\" name=\"airdate\"
+        tabindex=\"2\" class=\"selectBox\" onchange=\"this.form.submit();\">\n\t\t\t\t<option
+        value=\"%\">All\n                <option value=\"07\">Last Week\n                <option
+        value=\"30\">Last Month\n                <option value=\"180\">Last Quarter\n
+        \               <option selected value=\"2022-03-01\">03/01 - Tue\r\n<option
+        value=\"2022-02-28\">02/28 - Mon\r\n<option value=\"2022-02-25\">02/25 - Fri\r\n<option
+        value=\"2022-02-24\">02/24 - Thu\r\n<option value=\"2022-02-23\">02/23 - Wed\r\n<option
+        value=\"2022-02-22\">02/22 - Tue\r\n<option value=\"2022-02-04\">02/04 - Fri\r\n<option
+        value=\"2022-02-03\">02/03 - Thu\r\n<option value=\"2022-02-02\">02/02 - Wed\r\n<option
+        value=\"2022-02-01\">02/01 - Tue\r\n<option value=\"2022-01-31\">01/31 - Mon\r\n<option
+        value=\"2022-01-28\">01/28 - Fri\r\n<option value=\"2022-01-27\">01/27 - Thu\r\n<option
+        value=\"2022-01-26\">01/26 - Wed\r\n<option value=\"2022-01-25\">01/25 - Tue\r\n<option
+        value=\"2022-01-24\">01/24 - Mon\r\n<option value=\"2022-01-21\">01/21 - Fri\r\n<option
+        value=\"2022-01-20\">01/20 - Thu\r\n<option value=\"2022-01-19\">01/19 - Wed\r\n<option
+        value=\"2022-01-18\">01/18 - Tue\r\n<option value=\"2022-01-12\">01/12 - Wed\r\n<option
+        value=\"2022-01-11\">01/11 - Tue\r\n<option value=\"2022-01-10\">01/10 - Mon\r\n<option
+        value=\"2022-01-07\">01/07 - Fri\r\n<option value=\"2022-01-06\">01/06 - Thu\r\n<option
+        value=\"2022-01-05\">01/05 - Wed\r\n<option value=\"2022-01-04\">01/04 - Tue\r\n<option
+        value=\"2022-01-03\">01/03 - Mon\r\n<option value=\"2021-12-22\">12/22 - Wed\r\n<option
+        value=\"2021-12-21\">12/21 - Tue\r\n<option value=\"2021-12-20\">12/20 - Mon\r\n<option
+        value=\"2021-12-17\">12/17 - Fri\r\n<option value=\"2021-12-16\">12/16 - Thu\r\n<option
+        value=\"2021-12-15\">12/15 - Wed\r\n<option value=\"2021-12-14\">12/14 - Tue\r\n<option
+        value=\"2021-12-13\">12/13 - Mon\r\n<option value=\"2021-12-10\">12/10 - Fri\r\n<option
+        value=\"2021-12-09\">12/09 - Thu\r\n<option value=\"2021-12-08\">12/08 - Wed\r\n<option
+        value=\"2021-12-07\">12/07 - Tue\r\n<option value=\"2021-12-06\">12/06 - Mon\r\n<option
+        value=\"2021-12-03\">12/03 - Fri\r\n<option value=\"2021-12-02\">12/02 - Thu\r\n<option
+        value=\"2021-12-01\">12/01 - Wed\r\n<option value=\"2021-11-30\">11/30 - Tue\r\n<option
+        value=\"2021-11-29\">11/29 - Mon\r\n<option value=\"2021-11-22\">11/22 - Mon\r\n<option
+        value=\"2021-11-19\">11/19 - Fri\r\n<option value=\"2021-11-18\">11/18 - Thu\r\n<option
+        value=\"2021-11-17\">11/17 - Wed\r\n<option value=\"2021-11-16\">11/16 - Tue\r\n<option
+        value=\"2021-11-15\">11/15 - Mon\r\n<option value=\"2021-11-12\">11/12 - Fri\r\n<option
+        value=\"2021-11-11\">11/11 - Thu\r\n<option value=\"2021-11-10\">11/10 - Wed\r\n<option
+        value=\"2021-11-09\">11/09 - Tue\r\n<option value=\"2021-11-08\">11/08 - Mon\r\n<option
+        value=\"2021-11-05\">11/05 - Fri\r\n<option value=\"2021-11-04\">11/04 - Thu\r\n<option
+        value=\"2021-11-03\">11/03 - Wed\r\n<option value=\"2021-11-02\">11/02 - Tue\r\n<option
+        value=\"2021-11-01\">11/01 - Mon\r\n<option value=\"2021-10-29\">10/29 - Fri\r\n<option
+        value=\"2021-10-28\">10/28 - Thu\r\n<option value=\"2021-10-27\">10/27 - Wed\r\n<option
+        value=\"2021-10-26\">10/26 - Tue\r\n<option value=\"2021-10-21\">10/21 - Thu\r\n<option
+        value=\"2021-10-20\">10/20 - Wed\r\n<option value=\"2021-10-19\">10/19 - Tue\r\n<option
+        value=\"2021-10-18\">10/18 - Mon\r\n<option value=\"2021-10-15\">10/15 - Fri\r\n<option
+        value=\"2021-10-14\">10/14 - Thu\r\n<option value=\"2021-10-13\">10/13 - Wed\r\n<option
+        value=\"2021-10-12\">10/12 - Tue\r\n<option value=\"2021-10-11\">10/11 - Mon\r\n<option
+        value=\"2021-10-08\">10/08 - Fri\r\n<option value=\"2021-10-07\">10/07 - Thu\r\n<option
+        value=\"2021-10-06\">10/06 - Wed\r\n<option value=\"2021-10-05\">10/05 - Tue\r\n<option
+        value=\"2021-10-04\">10/04 - Mon\r\n<option value=\"2021-10-01\">10/01 - Fri\r\n<option
+        value=\"2021-09-29\">09/29 - Wed\r\n<option value=\"2021-09-28\">09/28 - Tue\r\n<option
+        value=\"2021-09-27\">09/27 - Mon\r\n<option value=\"2021-09-23\">09/23 - Thu\r\n<option
+        value=\"2021-09-22\">09/22 - Wed\r\n<option value=\"2021-09-21\">09/21 - Tue\r\n<option
+        value=\"2021-09-20\">09/20 - Mon\r\n<option value=\"2021-09-17\">09/17 - Fri\r\n<option
+        value=\"2021-09-15\">09/15 - Wed\r\n<option value=\"2021-09-14\">09/14 - Tue\r\n<option
+        value=\"2021-09-13\">09/13 - Mon\r\n<option value=\"2021-09-10\">09/10 - Fri\r\n<option
+        value=\"2021-09-09\">09/09 - Thu\r\n<option value=\"2021-09-08\">09/08 - Wed\r\n<option
+        value=\"2021-08-25\">08/25 - Wed\r\n<option value=\"2021-08-24\">08/24 - Tue\r\n<option
+        value=\"2021-08-23\">08/23 - Mon\r\n<option value=\"2021-08-19\">08/19 - Thu\r\n<option
+        value=\"2021-08-18\">08/18 - Wed\r\n<option value=\"2021-08-17\">08/17 - Tue\r\n<option
+        value=\"2021-08-16\">08/16 - Mon\r\n<option value=\"2021-08-12\">08/12 - Thu\r\n<option
+        value=\"2021-08-11\">08/11 - Wed\r\n<option value=\"2021-08-10\">08/10 - Tue\r\n<option
+        value=\"2021-08-09\">08/09 - Mon\r\n<option value=\"2021-08-05\">08/05 - Thu\r\n<option
+        value=\"2021-08-04\">08/04 - Wed\r\n<option value=\"2021-08-03\">08/03 - Tue\r\n<option
+        value=\"2021-08-02\">08/02 - Mon\r\n<option value=\"2021-07-29\">07/29 - Thu\r\n<option
+        value=\"2021-07-28\">07/28 - Wed\r\n<option value=\"2021-07-27\">07/27 - Tue\r\n<option
+        value=\"2021-07-26\">07/26 - Mon\r\n<option value=\"2021-07-23\">07/23 - Fri\r\n<option
+        value=\"2021-07-22\">07/22 - Thu\r\n<option value=\"2021-07-21\">07/21 - Wed\r\n<option
+        value=\"2021-07-20\">07/20 - Tue\r\n<option value=\"2021-07-19\">07/19 - Mon\r\n<option
+        value=\"2021-07-15\">07/15 - Thu\r\n<option value=\"2021-07-14\">07/14 - Wed\r\n<option
+        value=\"2021-07-13\">07/13 - Tue\r\n<option value=\"2021-07-12\">07/12 - Mon\r\n<option
+        value=\"2021-07-09\">07/09 - Fri\r\n<option value=\"2021-07-08\">07/08 - Thu\r\n<option
+        value=\"2021-07-07\">07/07 - Wed\r\n<option value=\"2021-07-06\">07/06 - Tue\r\n<option
+        value=\"2021-06-30\">06/30 - Wed\r\n<option value=\"2021-06-29\">06/29 - Tue\r\n<option
+        value=\"2021-06-28\">06/28 - Mon\r\n<option value=\"2021-06-25\">06/25 - Fri\r\n<option
+        value=\"2021-06-24\">06/24 - Thu\r\n<option value=\"2021-06-23\">06/23 - Wed\r\n<option
+        value=\"2021-06-22\">06/22 - Tue\r\n<option value=\"2021-06-21\">06/21 - Mon\r\n<option
+        value=\"2021-06-18\">06/18 - Fri\r\n<option value=\"2021-06-17\">06/17 - Thu\r\n<option
+        value=\"2021-06-16\">06/16 - Wed\r\n<option value=\"2021-06-15\">06/15 - Tue\r\n<option
+        value=\"2021-06-14\">06/14 - Mon\r\n<option value=\"2021-06-11\">06/11 - Fri\r\n<option
+        value=\"2021-06-10\">06/10 - Thu\r\n<option value=\"2021-06-09\">06/09 - Wed\r\n<option
+        value=\"2021-06-08\">06/08 - Tue\r\n<option value=\"2021-06-07\">06/07 - Mon\r\n<option
+        value=\"2021-05-27\">05/27 - Thu\r\n<option value=\"2021-05-26\">05/26 - Wed\r\n<option
+        value=\"2021-05-25\">05/25 - Tue\r\n<option value=\"2021-05-24\">05/24 - Mon\r\n<option
+        value=\"2021-05-21\">05/21 - Fri\r\n<option value=\"2021-05-20\">05/20 - Thu\r\n<option
+        value=\"2021-05-19\">05/19 - Wed\r\n<option value=\"2021-05-18\">05/18 - Tue\r\n<option
+        value=\"2021-05-17\">05/17 - Mon\r\n<option value=\"2021-05-14\">05/14 - Fri\r\n<option
+        value=\"2021-05-13\">05/13 - Thu\r\n<option value=\"2021-05-12\">05/12 - Wed\r\n<option
+        value=\"2021-05-11\">05/11 - Tue\r\n<option value=\"2021-05-10\">05/10 - Mon\r\n<option
+        value=\"2021-05-07\">05/07 - Fri\r\n<option value=\"2021-05-06\">05/06 - Thu\r\n<option
+        value=\"2021-05-05\">05/05 - Wed\r\n<option value=\"2021-05-04\">05/04 - Tue\r\n<option
+        value=\"2021-05-03\">05/03 - Mon\r\n<option value=\"2021-04-30\">04/30 - Fri\r\n<option
+        value=\"2021-04-29\">04/29 - Thu\r\n<option value=\"2021-04-28\">04/28 - Wed\r\n<option
+        value=\"2021-04-27\">04/27 - Tue\r\n<option value=\"2021-04-26\">04/26 - Mon\r\n<option
+        value=\"2021-04-23\">04/23 - Fri\r\n<option value=\"2021-04-22\">04/22 - Thu\r\n<option
+        value=\"2021-04-21\">04/21 - Wed\r\n<option value=\"2021-04-19\">04/19 - Mon\r\n<option
+        value=\"2021-04-16\">04/16 - Fri\r\n<option value=\"2021-04-15\">04/15 - Thu\r\n<option
+        value=\"2021-04-14\">04/14 - Wed\r\n<option value=\"2021-04-13\">04/13 - Tue\r\n<option
+        value=\"2021-04-12\">04/12 - Mon\r\n<option value=\"2021-04-08\">04/08 - Thu\r\n<option
+        value=\"2021-04-07\">04/07 - Wed\r\n<option value=\"2021-04-06\">04/06 - Tue\r\n<option
+        value=\"2021-04-05\">04/05 - Mon\r\n<option value=\"2021-04-01\">04/01 - Thu\r\n<option
+        value=\"2021-03-31\">03/31 - Wed\r\n<option value=\"2021-03-30\">03/30 - Tue\r\n<option
+        value=\"2021-03-29\">03/29 - Mon\r\n<option value=\"2021-03-25\">03/25 - Thu\r\n<option
+        value=\"2021-03-24\">03/24 - Wed\r\n<option value=\"2021-03-23\">03/23 - Tue\r\n<option
+        value=\"2021-03-22\">03/22 - Mon\r\n<option value=\"2021-03-19\">03/19 - Fri\r\n<option
+        value=\"2021-03-18\">03/18 - Thu\r\n<option value=\"2021-03-17\">03/17 - Wed\r\n<option
+        value=\"2021-03-16\">03/16 - Tue\r\n<option value=\"2021-03-15\">03/15 - Mon\r\n<option
+        value=\"2021-03-05\">03/05 - Fri\r\n<option value=\"2021-03-04\">03/04 - Thu\r\n<option
+        value=\"2021-03-03\">03/03 - Wed\r\n<option value=\"2021-03-02\">03/02 - Tue\r\n<option
+        value=\"2021-03-01\">03/01 - Mon\r\n<option value=\"2021-02-26\">02/26 - Fri\r\n<option
+        value=\"2021-02-25\">02/25 - Thu\r\n<option value=\"2021-02-24\">02/24 - Wed\r\n<option
+        value=\"2021-02-23\">02/23 - Tue\r\n<option value=\"2021-02-22\">02/22 - Mon\r\n<option
+        value=\"2021-02-12\">02/12 - Fri\r\n<option value=\"2021-02-11\">02/11 - Thu\r\n<option
+        value=\"2021-02-10\">02/10 - Wed\r\n<option value=\"2021-02-09\">02/09 - Tue\r\n<option
+        value=\"2021-02-08\">02/08 - Mon\r\n<option value=\"2021-02-05\">02/05 - Fri\r\n<option
+        value=\"2021-02-04\">02/04 - Thu\r\n<option value=\"2021-02-03\">02/03 - Wed\r\n<option
+        value=\"2021-02-02\">02/02 - Tue\r\n<option value=\"2021-02-01\">02/01 - Mon\r\n<option
+        value=\"2021-01-25\">01/25 - Mon\r\n<option value=\"2021-01-22\">01/22 - Fri\r\n<option
+        value=\"2021-01-21\">01/21 - Thu\r\n<option value=\"2021-01-20\">01/20 - Wed\r\n<option
+        value=\"2021-01-19\">01/19 - Tue\r\n<option value=\"2021-01-15\">01/15 - Fri\r\n<option
+        value=\"2021-01-14\">01/14 - Thu\r\n<option value=\"2021-01-13\">01/13 - Wed\r\n<option
+        value=\"2021-01-12\">01/12 - Tue\r\n<option value=\"2021-01-11\">01/11 - Mon\r\n<option
+        value=\"2021-01-08\">01/08 - Fri\r\n<option value=\"2021-01-07\">01/07 - Thu\r\n<option
+        value=\"2021-01-05\">01/05 - Tue\r\n<option value=\"2021-01-04\">01/04 - Mon\r\n<option
+        value=\"2020-12-22\">12/22 - Tue\r\n<option value=\"2020-12-21\">12/21 - Mon\r\n<option
+        value=\"2020-12-18\">12/18 - Fri\r\n<option value=\"2020-12-17\">12/17 - Thu\r\n<option
+        value=\"2020-12-16\">12/16 - Wed\r\n<option value=\"2020-12-15\">12/15 - Tue\r\n<option
+        value=\"2020-12-14\">12/14 - Mon\r\n<option value=\"2020-12-11\">12/11 - Fri\r\n<option
+        value=\"2020-12-10\">12/10 - Thu\r\n<option value=\"2020-12-09\">12/09 - Wed\r\n<option
+        value=\"2020-12-08\">12/08 - Tue\r\n<option value=\"2020-12-07\">12/07 - Mon\r\n<option
+        value=\"2020-12-02\">12/02 - Wed\r\n<option value=\"2020-12-01\">12/01 - Tue\r\n<option
+        value=\"2020-11-30\">11/30 - Mon\r\n<option value=\"2020-11-24\">11/24 - Tue\r\n<option
+        value=\"2020-11-23\">11/23 - Mon\r\n<option value=\"2020-11-20\">11/20 - Fri\r\n<option
+        value=\"2020-11-19\">11/19 - Thu\r\n<option value=\"2020-11-18\">11/18 - Wed\r\n<option
+        value=\"2020-11-17\">11/17 - Tue\r\n<option value=\"2020-11-16\">11/16 - Mon\r\n<option
+        value=\"2020-11-13\">11/13 - Fri\r\n<option value=\"2020-11-12\">11/12 - Thu\r\n<option
+        value=\"2020-11-11\">11/11 - Wed\r\n<option value=\"2020-11-10\">11/10 - Tue\r\n<option
+        value=\"2020-11-09\">11/09 - Mon\r\n<option value=\"2020-11-06\">11/06 - Fri\r\n<option
+        value=\"2020-11-04\">11/04 - Wed\r\n<option value=\"2020-11-03\">11/03 - Tue\r\n<option
+        value=\"2020-11-02\">11/02 - Mon\r\n<option value=\"2020-10-30\">10/30 - Fri\r\n<option
+        value=\"2020-10-29\">10/29 - Thu\r\n<option value=\"2020-10-28\">10/28 - Wed\r\n<option
+        value=\"2020-10-27\">10/27 - Tue\r\n<option value=\"2020-10-26\">10/26 - Mon\r\n<option
+        value=\"2020-10-23\">10/23 - Fri\r\n<option value=\"2020-10-22\">10/22 - Thu\r\n<option
+        value=\"2020-10-21\">10/21 - Wed\r\n<option value=\"2020-10-20\">10/20 - Tue\r\n<option
+        value=\"2020-10-19\">10/19 - Mon\r\n<option value=\"2020-10-15\">10/15 - Thu\r\n<option
+        value=\"2020-10-14\">10/14 - Wed\r\n<option value=\"2020-10-13\">10/13 - Tue\r\n<option
+        value=\"2020-10-12\">10/12 - Mon\r\n<option value=\"2020-10-09\">10/09 - Fri\r\n<option
+        value=\"2020-10-08\">10/08 - Thu\r\n<option value=\"2020-10-07\">10/07 - Wed\r\n<option
+        value=\"2020-10-06\">10/06 - Tue\r\n<option value=\"2020-10-05\">10/05 - Mon\r\n<option
+        value=\"2020-09-25\">09/25 - Fri\r\n<option value=\"2020-09-23\">09/23 - Wed\r\n<option
+        value=\"2020-09-22\">09/22 - Tue\r\n<option value=\"2020-09-21\">09/21 - Mon\r\n<option
+        value=\"2020-09-18\">09/18 - Fri\r\n<option value=\"2020-09-17\">09/17 - Thu\r\n<option
+        value=\"2020-09-16\">09/16 - Wed\r\n<option value=\"2020-09-15\">09/15 - Tue\r\n<option
+        value=\"2020-09-14\">09/14 - Mon\r\n<option value=\"2020-09-11\">09/11 - Fri\r\n<option
+        value=\"2020-09-10\">09/10 - Thu\r\n<option value=\"2020-09-09\">09/09 - Wed\r\n<option
+        value=\"2020-09-08\">09/08 - Tue\r\n<option value=\"2020-08-27\">08/27 - Thu\r\n<option
+        value=\"2020-08-26\">08/26 - Wed\r\n<option value=\"2020-08-25\">08/25 - Tue\r\n<option
+        value=\"2020-08-24\">08/24 - Mon\r\n<option value=\"2020-08-20\">08/20 - Thu\r\n<option
+        value=\"2020-08-19\">08/19 - Wed\r\n<option value=\"2020-08-18\">08/18 - Tue\r\n<option
+        value=\"2020-08-17\">08/17 - Mon\r\n<option value=\"2020-08-13\">08/13 - Thu\r\n<option
+        value=\"2020-08-12\">08/12 - Wed\r\n<option value=\"2020-08-11\">08/11 - Tue\r\n<option
+        value=\"2020-08-10\">08/10 - Mon\r\n<option value=\"2020-08-06\">08/06 - Thu\r\n<option
+        value=\"2020-08-05\">08/05 - Wed\r\n<option value=\"2020-08-04\">08/04 - Tue\r\n<option
+        value=\"2020-08-03\">08/03 - Mon\r\n<option value=\"2020-07-30\">07/30 - Thu\r\n<option
+        value=\"2020-07-29\">07/29 - Wed\r\n<option value=\"2020-07-28\">07/28 - Tue\r\n<option
+        value=\"2020-07-27\">07/27 - Mon\r\n<option value=\"2020-07-23\">07/23 - Thu\r\n<option
+        value=\"2020-07-22\">07/22 - Wed\r\n<option value=\"2020-07-21\">07/21 - Tue\r\n<option
+        value=\"2020-07-20\">07/20 - Mon\r\n<option value=\"2020-07-17\">07/17 - Fri\r\n<option
+        value=\"2020-07-16\">07/16 - Thu\r\n<option value=\"2020-07-15\">07/15 - Wed\r\n<option
+        value=\"2020-07-14\">07/14 - Tue\r\n<option value=\"2020-07-13\">07/13 - Mon\r\n<option
+        value=\"2020-07-02\">07/02 - Thu\r\n<option value=\"2020-07-01\">07/01 - Wed\r\n<option
+        value=\"2020-06-30\">06/30 - Tue\r\n<option value=\"2020-06-29\">06/29 - Mon\r\n<option
+        value=\"2020-06-25\">06/25 - Thu\r\n<option value=\"2020-06-24\">06/24 - Wed\r\n<option
+        value=\"2020-06-23\">06/23 - Tue\r\n<option value=\"2020-06-22\">06/22 - Mon\r\n<option
+        value=\"2020-06-18\">06/18 - Thu\r\n<option value=\"2020-06-17\">06/17 - Wed\r\n<option
+        value=\"2020-06-16\">06/16 - Tue\r\n<option value=\"2020-06-15\">06/15 - Mon\r\n<option
+        value=\"2020-06-12\">06/12 - Fri\r\n<option value=\"2020-06-11\">06/11 - Thu\r\n<option
+        value=\"2020-06-10\">06/10 - Wed\r\n<option value=\"2020-06-09\">06/09 - Tue\r\n<option
+        value=\"2020-06-08\">06/08 - Mon\r\n<option value=\"2020-06-04\">06/04 - Thu\r\n<option
+        value=\"2020-06-03\">06/03 - Wed\r\n<option value=\"2020-06-02\">06/02 - Tue\r\n<option
+        value=\"2020-06-01\">06/01 - Mon\r\n<option value=\"2020-05-29\">05/29 - Fri\r\n<option
+        value=\"2020-05-28\">05/28 - Thu\r\n<option value=\"2020-05-27\">05/27 - Wed\r\n<option
+        value=\"2020-05-26\">05/26 - Tue\r\n<option value=\"2020-05-21\">05/21 - Thu\r\n<option
+        value=\"2020-05-20\">05/20 - Wed\r\n<option value=\"2020-05-19\">05/19 - Tue\r\n<option
+        value=\"2020-05-18\">05/18 - Mon\r\n<option value=\"2020-05-15\">05/15 - Fri\r\n<option
+        value=\"2020-05-14\">05/14 - Thu\r\n<option value=\"2020-05-13\">05/13 - Wed\r\n<option
+        value=\"2020-05-12\">05/12 - Tue\r\n<option value=\"2020-05-11\">05/11 - Mon\r\n<option
+        value=\"2020-05-07\">05/07 - Thu\r\n<option value=\"2020-05-06\">05/06 - Wed\r\n<option
+        value=\"2020-05-05\">05/05 - Tue\r\n<option value=\"2020-05-04\">05/04 - Mon\r\n<option
+        value=\"2020-05-01\">05/01 - Fri\r\n<option value=\"2020-04-30\">04/30 - Thu\r\n<option
+        value=\"2020-04-29\">04/29 - Wed\r\n<option value=\"2020-04-28\">04/28 - Tue\r\n<option
+        value=\"2020-04-27\">04/27 - Mon\r\n<option value=\"2020-04-26\">04/26 - Sun\r\n<option
+        value=\"2020-04-24\">04/24 - Fri\r\n<option value=\"2020-04-23\">04/23 - Thu\r\n<option
+        value=\"2020-04-22\">04/22 - Wed\r\n<option value=\"2020-04-21\">04/21 - Tue\r\n<option
+        value=\"2020-04-20\">04/20 - Mon\r\n<option value=\"2020-04-16\">04/16 - Thu\r\n<option
+        value=\"2020-04-15\">04/15 - Wed\r\n<option value=\"2020-04-14\">04/14 - Tue\r\n<option
+        value=\"2020-04-13\">04/13 - Mon\r\n<option value=\"2020-04-09\">04/09 - Thu\r\n<option
+        value=\"2020-04-08\">04/08 - Wed\r\n<option value=\"2020-04-07\">04/07 - Tue\r\n<option
+        value=\"2020-04-06\">04/06 - Mon\r\n<option value=\"2020-04-03\">04/03 - Fri\r\n<option
+        value=\"2020-04-02\">04/02 - Thu\r\n<option value=\"2020-04-01\">04/01 - Wed\r\n<option
+        value=\"2020-03-31\">03/31 - Tue\r\n<option value=\"2020-03-30\">03/30 - Mon\r\n<option
+        value=\"2020-03-27\">03/27 - Fri\r\n<option value=\"2020-03-26\">03/26 - Thu\r\n<option
+        value=\"2020-03-25\">03/25 - Wed\r\n<option value=\"2020-03-24\">03/24 - Tue\r\n<option
+        value=\"2020-03-20\">03/20 - Fri\r\n<option value=\"2020-03-19\">03/19 - Thu\r\n<option
+        value=\"2020-03-18\">03/18 - Wed\r\n<option value=\"2020-03-17\">03/17 - Tue\r\n<option
+        value=\"2020-03-16\">03/16 - Mon\r\n<option value=\"2020-03-12\">03/12 - Thu\r\n<option
+        value=\"2020-03-11\">03/11 - Wed\r\n<option value=\"2020-03-10\">03/10 - Tue\r\n<option
+        value=\"2020-03-09\">03/09 - Mon\r\n<option value=\"2020-03-05\">03/05 - Thu\r\n<option
+        value=\"2020-03-04\">03/04 - Wed\r\n<option value=\"2020-03-03\">03/03 - Tue\r\n<option
+        value=\"2020-03-02\">03/02 - Mon\r\n<option value=\"2020-02-28\">02/28 - Fri\r\n<option
+        value=\"2020-02-27\">02/27 - Thu\r\n<option value=\"2020-02-25\">02/25 - Tue\r\n<option
+        value=\"2020-02-24\">02/24 - Mon\r\n<option value=\"2020-02-21\">02/21 - Fri\r\n<option
+        value=\"2020-02-20\">02/20 - Thu\r\n<option value=\"2020-02-19\">02/19 - Wed\r\n<option
+        value=\"2020-02-18\">02/18 - Tue\r\n<option value=\"2020-02-14\">02/14 - Fri\r\n<option
+        value=\"2020-02-13\">02/13 - Thu\r\n<option value=\"2020-02-12\">02/12 - Wed\r\n<option
+        value=\"2020-02-11\">02/11 - Tue\r\n<option value=\"2020-02-10\">02/10 - Mon\r\n<option
+        value=\"2020-02-07\">02/07 - Fri\r\n<option value=\"2020-02-06\">02/06 - Thu\r\n<option
+        value=\"2020-02-05\">02/05 - Wed\r\n<option value=\"2020-02-04\">02/04 - Tue\r\n<option
+        value=\"2020-02-03\">02/03 - Mon\r\n<option value=\"2020-01-31\">01/31 - Fri\r\n<option
+        value=\"2020-01-30\">01/30 - Thu\r\n<option value=\"2020-01-29\">01/29 - Wed\r\n<option
+        value=\"2020-01-28\">01/28 - Tue\r\n<option value=\"2020-01-27\">01/27 - Mon\r\n<option
+        value=\"2020-01-24\">01/24 - Fri\r\n<option value=\"2020-01-23\">01/23 - Thu\r\n<option
+        value=\"2020-01-22\">01/22 - Wed\r\n<option value=\"2020-01-21\">01/21 - Tue\r\n<option
+        value=\"2020-01-16\">01/16 - Thu\r\n<option value=\"2020-01-15\">01/15 - Wed\r\n<option
+        value=\"2020-01-14\">01/14 - Tue\r\n<option value=\"2020-01-13\">01/13 - Mon\r\n<option
+        value=\"2020-01-10\">01/10 - Fri\r\n<option value=\"2020-01-09\">01/09 - Thu\r\n<option
+        value=\"2020-01-08\">01/08 - Wed\r\n<option value=\"2020-01-07\">01/07 - Tue\r\n<option
+        value=\"2020-01-06\">01/06 - Mon\r\n<option value=\"2020-01-03\">01/03 - Fri\r\n<option
+        value=\"2019-12-20\">12/20 - Fri\r\n<option value=\"2019-12-19\">12/19 - Thu\r\n<option
+        value=\"2019-12-18\">12/18 - Wed\r\n<option value=\"2019-12-17\">12/17 - Tue\r\n<option
+        value=\"2019-12-16\">12/16 - Mon\r\n<option value=\"2019-12-13\">12/13 - Fri\r\n<option
+        value=\"2019-12-12\">12/12 - Thu\r\n<option value=\"2019-12-11\">12/11 - Wed\r\n<option
+        value=\"2019-12-10\">12/10 - Tue\r\n<option value=\"2019-12-09\">12/09 - Mon\r\n<option
+        value=\"2019-12-06\">12/06 - Fri\r\n<option value=\"2019-12-05\">12/05 - Thu\r\n<option
+        value=\"2019-12-04\">12/04 - Wed\r\n<option value=\"2019-12-03\">12/03 - Tue\r\n<option
+        value=\"2019-12-02\">12/02 - Mon\r\n<option value=\"2019-11-26\">11/26 - Tue\r\n<option
+        value=\"2019-11-25\">11/25 - Mon\r\n<option value=\"2019-11-22\">11/22 - Fri\r\n<option
+        value=\"2019-11-21\">11/21 - Thu\r\n<option value=\"2019-11-20\">11/20 - Wed\r\n<option
+        value=\"2019-11-19\">11/19 - Tue\r\n<option value=\"2019-11-18\">11/18 - Mon\r\n<option
+        value=\"2019-11-15\">11/15 - Fri\r\n<option value=\"2019-11-14\">11/14 - Thu\r\n<option
+        value=\"2019-11-13\">11/13 - Wed\r\n<option value=\"2019-11-12\">11/12 - Tue\r\n<option
+        value=\"2019-11-11\">11/11 - Mon\r\n<option value=\"2019-11-08\">11/08 - Fri\r\n<option
+        value=\"2019-11-07\">11/07 - Thu\r\n<option value=\"2019-11-06\">11/06 - Wed\r\n<option
+        value=\"2019-11-05\">11/05 - Tue\r\n<option value=\"2019-11-04\">11/04 - Mon\r\n<option
+        value=\"2019-11-01\">11/01 - Fri\r\n<option value=\"2019-10-31\">10/31 - Thu\r\n<option
+        value=\"2019-10-30\">10/30 - Wed\r\n<option value=\"2019-10-29\">10/29 - Tue\r\n<option
+        value=\"2019-10-28\">10/28 - Mon\r\n<option value=\"2019-10-25\">10/25 - Fri\r\n<option
+        value=\"2019-10-24\">10/24 - Thu\r\n<option value=\"2019-10-23\">10/23 - Wed\r\n<option
+        value=\"2019-10-22\">10/22 - Tue\r\n<option value=\"2019-10-21\">10/21 - Mon\r\n<option
+        value=\"2019-10-18\">10/18 - Fri\r\n<option value=\"2019-10-17\">10/17 - Thu\r\n<option
+        value=\"2019-10-16\">10/16 - Wed\r\n<option value=\"2019-10-11\">10/11 - Fri\r\n<option
+        value=\"2019-10-10\">10/10 - Thu\r\n<option value=\"2019-10-08\">10/08 - Tue\r\n<option
+        value=\"2019-10-07\">10/07 - Mon\r\n<option value=\"2019-10-04\">10/04 - Fri\r\n<option
+        value=\"2019-09-27\">09/27 - Fri\r\n<option value=\"2019-09-26\">09/26 - Thu\r\n<option
+        value=\"2019-09-25\">09/25 - Wed\r\n<option value=\"2019-09-24\">09/24 - Tue\r\n<option
+        value=\"2019-09-23\">09/23 - Mon\r\n<option value=\"2019-09-20\">09/20 - Fri\r\n<option
+        value=\"2019-09-19\">09/19 - Thu\r\n<option value=\"2019-09-18\">09/18 - Wed\r\n<option
+        value=\"2019-09-17\">09/17 - Tue\r\n<option value=\"2019-09-16\">09/16 - Mon\r\n<option
+        value=\"2019-09-13\">09/13 - Fri\r\n<option value=\"2019-09-11\">09/11 - Wed\r\n<option
+        value=\"2019-09-10\">09/10 - Tue\r\n<option value=\"2019-09-09\">09/09 - Mon\r\n<option
+        value=\"2019-09-06\">09/06 - Fri\r\n<option value=\"2019-09-05\">09/05 - Thu\r\n<option
+        value=\"2019-08-27\">08/27 - Tue\r\n<option value=\"2019-08-26\">08/26 - Mon\r\n<option
+        value=\"2019-08-22\">08/22 - Thu\r\n<option value=\"2019-08-21\">08/21 - Wed\r\n<option
+        value=\"2019-08-20\">08/20 - Tue\r\n<option value=\"2019-08-19\">08/19 - Mon\r\n<option
+        value=\"2019-08-15\">08/15 - Thu\r\n<option value=\"2019-08-14\">08/14 - Wed\r\n<option
+        value=\"2019-08-13\">08/13 - Tue\r\n<option value=\"2019-08-12\">08/12 - Mon\r\n<option
+        value=\"2019-08-08\">08/08 - Thu\r\n<option value=\"2019-08-07\">08/07 - Wed\r\n<option
+        value=\"2019-08-06\">08/06 - Tue\r\n<option value=\"2019-08-05\">08/05 - Mon\r\n<option
+        value=\"2019-08-01\">08/01 - Thu\r\n<option value=\"2019-07-31\">07/31 - Wed\r\n<option
+        value=\"2019-07-30\">07/30 - Tue\r\n<option value=\"2019-07-29\">07/29 - Mon\r\n<option
+        value=\"2019-07-25\">07/25 - Thu\r\n<option value=\"2019-07-24\">07/24 - Wed\r\n<option
+        value=\"2019-07-23\">07/23 - Tue\r\n<option value=\"2019-07-22\">07/22 - Mon\r\n<option
+        value=\"2019-07-18\">07/18 - Thu\r\n<option value=\"2019-07-17\">07/17 - Wed\r\n<option
+        value=\"2019-07-16\">07/16 - Tue\r\n<option value=\"2019-07-15\">07/15 - Mon\r\n<option
+        value=\"2019-07-11\">07/11 - Thu\r\n<option value=\"2019-07-10\">07/10 - Wed\r\n<option
+        value=\"2019-07-09\">07/09 - Tue\r\n<option value=\"2019-06-21\">06/21 - Fri\r\n<option
+        value=\"2019-06-20\">06/20 - Thu\r\n<option value=\"2019-06-19\">06/19 - Wed\r\n<option
+        value=\"2019-06-18\">06/18 - Tue\r\n<option value=\"2019-06-17\">06/17 - Mon\r\n<option
+        value=\"2019-06-14\">06/14 - Fri\r\n<option value=\"2019-06-13\">06/13 - Thu\r\n<option
+        value=\"2019-06-12\">06/12 - Wed\r\n<option value=\"2019-06-11\">06/11 - Tue\r\n<option
+        value=\"2019-06-10\">06/10 - Mon\r\n<option value=\"2019-06-07\">06/07 - Fri\r\n<option
+        value=\"2019-06-05\">06/05 - Wed\r\n<option value=\"2019-06-04\">06/04 - Tue\r\n<option
+        value=\"2019-06-03\">06/03 - Mon\r\n<option value=\"2019-05-31\">05/31 - Fri\r\n<option
+        value=\"2019-05-23\">05/23 - Thu\r\n<option value=\"2019-05-22\">05/22 - Wed\r\n<option
+        value=\"2019-05-21\">05/21 - Tue\r\n<option value=\"2019-05-20\">05/20 - Mon\r\n<option
+        value=\"2019-05-17\">05/17 - Fri\r\n<option value=\"2019-05-16\">05/16 - Thu\r\n<option
+        value=\"2019-05-15\">05/15 - Wed\r\n<option value=\"2019-05-14\">05/14 - Tue\r\n<option
+        value=\"2019-05-13\">05/13 - Mon\r\n<option value=\"2019-05-10\">05/10 - Fri\r\n<option
+        value=\"2019-05-09\">05/09 - Thu\r\n<option value=\"2019-05-08\">05/08 - Wed\r\n<option
+        value=\"2019-05-07\">05/07 - Tue\r\n<option value=\"2019-05-06\">05/06 - Mon\r\n<option
+        value=\"2019-05-03\">05/03 - Fri\r\n<option value=\"2019-05-02\">05/02 - Thu\r\n<option
+        value=\"2019-05-01\">05/01 - Wed\r\n<option value=\"2019-04-30\">04/30 - Tue\r\n<option
+        value=\"2019-04-29\">04/29 - Mon\r\n<option value=\"2019-04-25\">04/25 - Thu\r\n<option
+        value=\"2019-04-24\">04/24 - Wed\r\n<option value=\"2019-04-23\">04/23 - Tue\r\n<option
+        value=\"2019-04-18\">04/18 - Thu\r\n<option value=\"2019-04-17\">04/17 - Wed\r\n<option
+        value=\"2019-04-16\">04/16 - Tue\r\n<option value=\"2019-04-15\">04/15 - Mon\r\n<option
+        value=\"2019-04-12\">04/12 - Fri\r\n<option value=\"2019-04-11\">04/11 - Thu\r\n<option
+        value=\"2019-04-10\">04/10 - Wed\r\n<option value=\"2019-04-09\">04/09 - Tue\r\n<option
+        value=\"2019-04-08\">04/08 - Mon\r\n<option value=\"2019-04-05\">04/05 - Fri\r\n<option
+        value=\"2019-04-04\">04/04 - Thu\r\n<option value=\"2019-04-03\">04/03 - Wed\r\n<option
+        value=\"2019-04-02\">04/02 - Tue\r\n<option value=\"2019-04-01\">04/01 - Mon\r\n<option
+        value=\"2019-03-29\">03/29 - Fri\r\n<option value=\"2019-03-28\">03/28 - Thu\r\n<option
+        value=\"2019-03-27\">03/27 - Wed\r\n<option value=\"2019-03-26\">03/26 - Tue\r\n<option
+        value=\"2019-03-25\">03/25 - Mon\r\n<option value=\"2019-03-22\">03/22 - Fri\r\n<option
+        value=\"2019-03-21\">03/21 - Thu\r\n<option value=\"2019-03-20\">03/20 - Wed\r\n<option
+        value=\"2019-03-19\">03/19 - Tue\r\n<option value=\"2019-03-14\">03/14 - Thu\r\n<option
+        value=\"2019-03-13\">03/13 - Wed\r\n<option value=\"2019-03-12\">03/12 - Tue\r\n<option
+        value=\"2019-03-11\">03/11 - Mon\r\n<option value=\"2019-03-08\">03/08 - Fri\r\n<option
+        value=\"2019-03-07\">03/07 - Thu\r\n<option value=\"2019-03-06\">03/06 - Wed\r\n<option
+        value=\"2019-03-05\">03/05 - Tue\r\n<option value=\"2019-03-04\">03/04 - Mon\r\n<option
+        value=\"2019-03-01\">03/01 - Fri\r\n<option value=\"2019-02-28\">02/28 - Thu\r\n<option
+        value=\"2019-02-27\">02/27 - Wed\r\n<option value=\"2019-02-26\">02/26 - Tue\r\n<option
+        value=\"2019-02-25\">02/25 - Mon\r\n<option value=\"2019-02-15\">02/15 - Fri\r\n<option
+        value=\"2019-02-14\">02/14 - Thu\r\n<option value=\"2019-02-08\">02/08 - Fri\r\n<option
+        value=\"2019-02-07\">02/07 - Thu\r\n<option value=\"2019-02-06\">02/06 - Wed\r\n<option
+        value=\"2019-02-05\">02/05 - Tue\r\n<option value=\"2019-02-04\">02/04 - Mon\r\n<option
+        value=\"2019-02-01\">02/01 - Fri\r\n<option value=\"2019-01-31\">01/31 - Thu\r\n<option
+        value=\"2019-01-30\">01/30 - Wed\r\n<option value=\"2019-01-29\">01/29 - Tue\r\n<option
+        value=\"2019-01-28\">01/28 - Mon\r\n<option value=\"2019-01-25\">01/25 - Fri\r\n<option
+        value=\"2019-01-24\">01/24 - Thu\r\n<option value=\"2019-01-23\">01/23 - Wed\r\n<option
+        value=\"2019-01-22\">01/22 - Tue\r\n<option value=\"2019-01-18\">01/18 - Fri\r\n<option
+        value=\"2019-01-17\">01/17 - Thu\r\n<option value=\"2019-01-16\">01/16 - Wed\r\n<option
+        value=\"2019-01-15\">01/15 - Tue\r\n<option value=\"2019-01-14\">01/14 - Mon\r\n<option
+        value=\"2019-01-11\">01/11 - Fri\r\n<option value=\"2019-01-10\">01/10 - Thu\r\n<option
+        value=\"2019-01-09\">01/09 - Wed\r\n<option value=\"2019-01-08\">01/08 - Tue\r\n<option
+        value=\"2019-01-07\">01/07 - Mon\r\n<option value=\"2019-01-04\">01/04 - Fri\r\n<option
+        value=\"2019-01-03\">01/03 - Thu\r\n<option value=\"2018-12-20\">12/20 - Thu\r\n<option
+        value=\"2018-12-19\">12/19 - Wed\r\n<option value=\"2018-12-18\">12/18 - Tue\r\n<option
+        value=\"2018-12-17\">12/17 - Mon\r\n<option value=\"2018-12-14\">12/14 - Fri\r\n<option
+        value=\"2018-12-13\">12/13 - Thu\r\n<option value=\"2018-12-12\">12/12 - Wed\r\n<option
+        value=\"2018-12-11\">12/11 - Tue\r\n<option value=\"2018-12-10\">12/10 - Mon\r\n<option
+        value=\"2018-12-06\">12/06 - Thu\r\n<option value=\"2018-12-04\">12/04 - Tue\r\n<option
+        value=\"2018-12-03\">12/03 - Mon\r\n<option value=\"2018-11-30\">11/30 - Fri\r\n<option
+        value=\"2018-11-29\">11/29 - Thu\r\n<option value=\"2018-11-28\">11/28 - Wed\r\n<option
+        value=\"2018-11-27\">11/27 - Tue\r\n<option value=\"2018-11-26\">11/26 - Mon\r\n<option
+        value=\"2018-11-20\">11/20 - Tue\r\n<option value=\"2018-11-19\">11/19 - Mon\r\n<option
+        value=\"2018-11-16\">11/16 - Fri\r\n<option value=\"2018-11-15\">11/15 - Thu\r\n<option
+        value=\"2018-11-14\">11/14 - Wed\r\n<option value=\"2018-11-13\">11/13 - Tue\r\n<option
+        value=\"2018-11-12\">11/12 - Mon\r\n<option value=\"2018-11-09\">11/09 - Fri\r\n<option
+        value=\"2018-11-08\">11/08 - Thu\r\n<option value=\"2018-11-07\">11/07 - Wed\r\n<option
+        value=\"2018-11-06\">11/06 - Tue\r\n<option value=\"2018-11-05\">11/05 - Mon\r\n<option
+        value=\"2018-11-02\">11/02 - Fri\r\n<option value=\"2018-11-01\">11/01 - Thu\r\n<option
+        value=\"2018-10-31\">10/31 - Wed\r\n<option value=\"2018-10-30\">10/30 - Tue\r\n<option
+        value=\"2018-10-29\">10/29 - Mon\r\n<option value=\"2018-10-25\">10/25 - Thu\r\n<option
+        value=\"2018-10-24\">10/24 - Wed\r\n<option value=\"2018-10-23\">10/23 - Tue\r\n<option
+        value=\"2018-10-22\">10/22 - Mon\r\n<option value=\"2018-10-19\">10/19 - Fri\r\n<option
+        value=\"2018-10-18\">10/18 - Thu\r\n<option value=\"2018-10-17\">10/17 - Wed\r\n<option
+        value=\"2018-10-16\">10/16 - Tue\r\n<option value=\"2018-10-15\">10/15 - Mon\r\n<option
+        value=\"2018-10-12\">10/12 - Fri\r\n<option value=\"2018-10-11\">10/11 - Thu\r\n<option
+        value=\"2018-10-10\">10/10 - Wed\r\n<option value=\"2018-10-09\">10/09 - Tue\r\n<option
+        value=\"2018-10-08\">10/08 - Mon\r\n<option value=\"2018-10-05\">10/05 - Fri\r\n<option
+        value=\"2018-10-04\">10/04 - Thu\r\n<option value=\"2018-10-03\">10/03 - Wed\r\n<option
+        value=\"2018-10-02\">10/02 - Tue\r\n<option value=\"2018-10-01\">10/01 - Mon\r\n<option
+        value=\"2018-09-28\">09/28 - Fri\r\n<option value=\"2018-09-27\">09/27 - Thu\r\n<option
+        value=\"2018-09-26\">09/26 - Wed\r\n<option value=\"2018-09-25\">09/25 - Tue\r\n<option
+        value=\"2018-09-24\">09/24 - Mon\r\n<option value=\"2018-09-21\">09/21 - Fri\r\n<option
+        value=\"2018-09-20\">09/20 - Thu\r\n<option value=\"2018-09-18\">09/18 - Tue\r\n<option
+        value=\"2018-09-17\">09/17 - Mon\r\n<option value=\"2018-09-14\">09/14 - Fri\r\n<option
+        value=\"2018-09-13\">09/13 - Thu\r\n<option value=\"2018-09-12\">09/12 - Wed\r\n<option
+        value=\"2018-09-11\">09/11 - Tue\r\n<option value=\"2018-09-07\">09/07 - Fri\r\n<option
+        value=\"2018-09-06\">09/06 - Thu\r\n<option value=\"2018-09-05\">09/05 - Wed\r\n<option
+        value=\"2018-09-04\">09/04 - Tue\r\n<option value=\"2018-08-24\">08/24 - Fri\r\n<option
+        value=\"2018-08-23\">08/23 - Thu\r\n<option value=\"2018-08-22\">08/22 - Wed\r\n<option
+        value=\"2018-08-21\">08/21 - Tue\r\n<option value=\"2018-08-20\">08/20 - Mon\r\n<option
+        value=\"2018-08-17\">08/17 - Fri\r\n<option value=\"2018-08-16\">08/16 - Thu\r\n<option
+        value=\"2018-08-15\">08/15 - Wed\r\n<option value=\"2018-08-14\">08/14 - Tue\r\n<option
+        value=\"2018-08-13\">08/13 - Mon\r\n<option value=\"2018-08-09\">08/09 - Thu\r\n<option
+        value=\"2018-08-08\">08/08 - Wed\r\n<option value=\"2018-08-07\">08/07 - Tue\r\n<option
+        value=\"2018-08-06\">08/06 - Mon\r\n<option value=\"2018-08-02\">08/02 - Thu\r\n<option
+        value=\"2018-08-01\">08/01 - Wed\r\n<option value=\"2018-07-31\">07/31 - Tue\r\n<option
+        value=\"2018-07-30\">07/30 - Mon\r\n<option value=\"2018-07-24\">07/24 - Tue\r\n<option
+        value=\"2018-07-23\">07/23 - Mon\r\n<option value=\"2018-07-19\">07/19 - Thu\r\n<option
+        value=\"2018-07-18\">07/18 - Wed\r\n<option value=\"2018-07-17\">07/17 - Tue\r\n<option
+        value=\"2018-07-16\">07/16 - Mon\r\n<option value=\"2018-07-12\">07/12 - Thu\r\n<option
+        value=\"2018-07-11\">07/11 - Wed\r\n<option value=\"2018-07-10\">07/10 - Tue\r\n<option
+        value=\"2018-07-09\">07/09 - Mon\r\n<option value=\"2018-07-06\">07/06 - Fri\r\n<option
+        value=\"2018-07-05\">07/05 - Thu\r\n<option value=\"2018-06-22\">06/22 - Fri\r\n<option
+        value=\"2018-06-21\">06/21 - Thu\r\n<option value=\"2018-06-20\">06/20 - Wed\r\n<option
+        value=\"2018-06-19\">06/19 - Tue\r\n<option value=\"2018-06-18\">06/18 - Mon\r\n<option
+        value=\"2018-06-15\">06/15 - Fri\r\n<option value=\"2018-06-14\">06/14 - Thu\r\n<option
+        value=\"2018-06-13\">06/13 - Wed\r\n<option value=\"2018-06-12\">06/12 - Tue\r\n<option
+        value=\"2018-06-11\">06/11 - Mon\r\n<option value=\"2018-06-08\">06/08 - Fri\r\n<option
+        value=\"2018-06-06\">06/06 - Wed\r\n<option value=\"2018-06-05\">06/05 - Tue\r\n<option
+        value=\"2018-06-04\">06/04 - Mon\r\n<option value=\"2018-06-01\">06/01 - Fri\r\n<option
+        value=\"2018-05-31\">05/31 - Thu\r\n<option value=\"2018-05-30\">05/30 - Wed\r\n<option
+        value=\"2018-05-29\">05/29 - Tue\r\n<option value=\"2018-05-24\">05/24 - Thu\r\n<option
+        value=\"2018-05-23\">05/23 - Wed\r\n<option value=\"2018-05-22\">05/22 - Tue\r\n<option
+        value=\"2018-05-21\">05/21 - Mon\r\n<option value=\"2018-05-17\">05/17 - Thu\r\n<option
+        value=\"2018-05-16\">05/16 - Wed\r\n<option value=\"2018-05-15\">05/15 - Tue\r\n<option
+        value=\"2018-05-14\">05/14 - Mon\r\n<option value=\"2018-05-11\">05/11 - Fri\r\n<option
+        value=\"2018-05-10\">05/10 - Thu\r\n<option value=\"2018-05-09\">05/09 - Wed\r\n<option
+        value=\"2018-05-08\">05/08 - Tue\r\n<option value=\"2018-05-07\">05/07 - Mon\r\n<option
+        value=\"2018-05-04\">05/04 - Fri\r\n<option value=\"2018-05-03\">05/03 - Thu\r\n<option
+        value=\"2018-05-02\">05/02 - Wed\r\n<option value=\"2018-05-01\">05/01 - Tue\r\n<option
+        value=\"2018-04-30\">04/30 - Mon\r\n<option value=\"2018-04-27\">04/27 - Fri\r\n<option
+        value=\"2018-04-26\">04/26 - Thu\r\n<option value=\"2018-04-25\">04/25 - Wed\r\n<option
+        value=\"2018-04-24\">04/24 - Tue\r\n<option value=\"2018-04-23\">04/23 - Mon\r\n<option
+        value=\"2018-04-20\">04/20 - Fri\r\n<option value=\"2018-04-19\">04/19 - Thu\r\n<option
+        value=\"2018-04-18\">04/18 - Wed\r\n<option value=\"2018-04-17\">04/17 - Tue\r\n<option
+        value=\"2018-04-16\">04/16 - Mon\r\n<option value=\"2018-04-13\">04/13 - Fri\r\n<option
+        value=\"2018-04-12\">04/12 - Thu\r\n<option value=\"2018-04-11\">04/11 - Wed\r\n<option
+        value=\"2018-04-10\">04/10 - Tue\r\n<option value=\"2018-04-09\">04/09 - Mon\r\n<option
+        value=\"2018-04-06\">04/06 - Fri\r\n<option value=\"2018-04-05\">04/05 - Thu\r\n<option
+        value=\"2018-03-29\">03/29 - Thu\r\n<option value=\"2018-03-28\">03/28 - Wed\r\n<option
+        value=\"2018-03-27\">03/27 - Tue\r\n<option value=\"2018-03-26\">03/26 - Mon\r\n<option
+        value=\"2018-03-23\">03/23 - Fri\r\n<option value=\"2018-03-22\">03/22 - Thu\r\n<option
+        value=\"2018-03-21\">03/21 - Wed\r\n<option value=\"2018-03-20\">03/20 - Tue\r\n<option
+        value=\"2018-03-19\">03/19 - Mon\r\n<option value=\"2018-03-16\">03/16 - Fri\r\n<option
+        value=\"2018-03-15\">03/15 - Thu\r\n<option value=\"2018-03-14\">03/14 - Wed\r\n<option
+        value=\"2018-03-13\">03/13 - Tue\r\n<option value=\"2018-03-12\">03/12 - Mon\r\n<option
+        value=\"2018-03-09\">03/09 - Fri\r\n<option value=\"2018-03-08\">03/08 - Thu\r\n<option
+        value=\"2018-03-07\">03/07 - Wed\r\n<option value=\"2018-03-06\">03/06 - Tue\r\n<option
+        value=\"2018-03-05\">03/05 - Mon\r\n<option value=\"2018-03-02\">03/02 - Fri\r\n<option
+        value=\"2018-03-01\">03/01 - Thu\r\n<option value=\"2018-02-28\">02/28 - Wed\r\n<option
+        value=\"2018-02-27\">02/27 - Tue\r\n<option value=\"2018-02-26\">02/26 - Mon\r\n<option
+        value=\"2018-02-09\">02/09 - Fri\r\n<option value=\"2018-02-08\">02/08 - Thu\r\n<option
+        value=\"2018-02-07\">02/07 - Wed\r\n<option value=\"2018-02-06\">02/06 - Tue\r\n<option
+        value=\"2018-02-05\">02/05 - Mon\r\n<option value=\"2018-02-02\">02/02 - Fri\r\n<option
+        value=\"2018-02-01\">02/01 - Thu\r\n<option value=\"2018-01-31\">01/31 - Wed\r\n<option
+        value=\"2018-01-30\">01/30 - Tue\r\n<option value=\"2018-01-29\">01/29 - Mon\r\n<option
+        value=\"2018-01-26\">01/26 - Fri\r\n<option value=\"2018-01-24\">01/24 - Wed\r\n<option
+        value=\"2018-01-23\">01/23 - Tue\r\n<option value=\"2018-01-22\">01/22 - Mon\r\n<option
+        value=\"2018-01-19\">01/19 - Fri\r\n<option value=\"2018-01-18\">01/18 - Thu\r\n<option
+        value=\"2018-01-17\">01/17 - Wed\r\n<option value=\"2018-01-16\">01/16 - Tue\r\n<option
+        value=\"2018-01-12\">01/12 - Fri\r\n<option value=\"2018-01-11\">01/11 - Thu\r\n<option
+        value=\"2018-01-10\">01/10 - Wed\r\n<option value=\"2018-01-09\">01/09 - Tue\r\n<option
+        value=\"2018-01-08\">01/08 - Mon\r\n<option value=\"2018-01-05\">01/05 - Fri\r\n<option
+        value=\"2018-01-04\">01/04 - Thu\r\n<option value=\"2018-01-03\">01/03 - Wed\r\n<option
+        value=\"2018-01-02\">01/02 - Tue\r\n<option value=\"2017-12-21\">12/21 - Thu\r\n<option
+        value=\"2017-12-20\">12/20 - Wed\r\n<option value=\"2017-12-19\">12/19 - Tue\r\n<option
+        value=\"2017-12-18\">12/18 - Mon\r\n<option value=\"2017-12-15\">12/15 - Fri\r\n<option
+        value=\"2017-12-14\">12/14 - Thu\r\n<option value=\"2017-12-13\">12/13 - Wed\r\n<option
+        value=\"2017-12-12\">12/12 - Tue\r\n<option value=\"2017-12-11\">12/11 - Mon\r\n<option
+        value=\"2017-12-08\">12/08 - Fri\r\n<option value=\"2017-12-07\">12/07 - Thu\r\n<option
+        value=\"2017-12-06\">12/06 - Wed\r\n<option value=\"2017-12-05\">12/05 - Tue\r\n<option
+        value=\"2017-12-04\">12/04 - Mon\r\n<option value=\"2017-12-01\">12/01 - Fri\r\n<option
+        value=\"2017-11-30\">11/30 - Thu\r\n<option value=\"2017-11-29\">11/29 - Wed\r\n<option
+        value=\"2017-11-28\">11/28 - Tue\r\n<option value=\"2017-11-21\">11/21 - Tue\r\n<option
+        value=\"2017-11-20\">11/20 - Mon\r\n<option value=\"2017-11-17\">11/17 - Fri\r\n<option
+        value=\"2017-11-16\">11/16 - Thu\r\n<option value=\"2017-11-15\">11/15 - Wed\r\n<option
+        value=\"2017-11-14\">11/14 - Tue\r\n<option value=\"2017-11-13\">11/13 - Mon\r\n<option
+        value=\"2017-11-09\">11/09 - Thu\r\n<option value=\"2017-11-08\">11/08 - Wed\r\n<option
+        value=\"2017-11-07\">11/07 - Tue\r\n<option value=\"2017-11-06\">11/06 - Mon\r\n<option
+        value=\"2017-11-03\">11/03 - Fri\r\n<option value=\"2017-11-02\">11/02 - Thu\r\n<option
+        value=\"2017-11-01\">11/01 - Wed\r\n<option value=\"2017-10-31\">10/31 - Tue\r\n<option
+        value=\"2017-10-30\">10/30 - Mon\r\n<option value=\"2017-10-27\">10/27 - Fri\r\n<option
+        value=\"2017-10-26\">10/26 - Thu\r\n<option value=\"2017-10-25\">10/25 - Wed\r\n<option
+        value=\"2017-10-24\">10/24 - Tue\r\n<option value=\"2017-10-23\">10/23 - Mon\r\n<option
+        value=\"2017-10-20\">10/20 - Fri\r\n<option value=\"2017-10-19\">10/19 - Thu\r\n<option
+        value=\"2017-10-18\">10/18 - Wed\r\n<option value=\"2017-10-17\">10/17 - Tue\r\n<option
+        value=\"2017-10-16\">10/16 - Mon\r\n<option value=\"2017-10-13\">10/13 - Fri\r\n<option
+        value=\"2017-10-12\">10/12 - Thu\r\n<option value=\"2017-10-11\">10/11 - Wed\r\n<option
+        value=\"2017-10-10\">10/10 - Tue\r\n<option value=\"2017-10-06\">10/06 - Fri\r\n<option
+        value=\"2017-10-05\">10/05 - Thu\r\n<option value=\"2017-10-04\">10/04 - Wed\r\n<option
+        value=\"2017-10-03\">10/03 - Tue\r\n<option value=\"2017-10-02\">10/02 - Mon\r\n<option
+        value=\"2017-09-29\">09/29 - Fri\r\n<option value=\"2017-09-28\">09/28 - Thu\r\n<option
+        value=\"2017-09-27\">09/27 - Wed\r\n<option value=\"2017-09-26\">09/26 - Tue\r\n<option
+        value=\"2017-09-25\">09/25 - Mon\r\n<option value=\"2017-09-21\">09/21 - Thu\r\n<option
+        value=\"2017-09-20\">09/20 - Wed\r\n<option value=\"2017-09-19\">09/19 - Tue\r\n<option
+        value=\"2017-09-18\">09/18 - Mon\r\n<option value=\"2017-09-15\">09/15 - Fri\r\n<option
+        value=\"2017-09-14\">09/14 - Thu\r\n<option value=\"2017-09-13\">09/13 - Wed\r\n<option
+        value=\"2017-09-12\">09/12 - Tue\r\n<option value=\"2017-09-11\">09/11 - Mon\r\n<option
+        value=\"2017-08-31\">08/31 - Thu\r\n<option value=\"2017-08-30\">08/30 - Wed\r\n<option
+        value=\"2017-08-29\">08/29 - Tue\r\n<option value=\"2017-08-28\">08/28 - Mon\r\n<option
+        value=\"2017-08-24\">08/24 - Thu\r\n<option value=\"2017-08-23\">08/23 - Wed\r\n<option
+        value=\"2017-08-22\">08/22 - Tue\r\n<option value=\"2017-08-21\">08/21 - Mon\r\n<option
+        value=\"2017-08-17\">08/17 - Thu\r\n<option value=\"2017-08-16\">08/16 - Wed\r\n<option
+        value=\"2017-08-15\">08/15 - Tue\r\n<option value=\"2017-08-14\">08/14 - Mon\r\n<option
+        value=\"2017-08-10\">08/10 - Thu\r\n<option value=\"2017-08-09\">08/09 - Wed\r\n<option
+        value=\"2017-08-08\">08/08 - Tue\r\n<option value=\"2017-08-07\">08/07 - Mon\r\n<option
+        value=\"2017-08-03\">08/03 - Thu\r\n<option value=\"2017-08-02\">08/02 - Wed\r\n<option
+        value=\"2017-08-01\">08/01 - Tue\r\n<option value=\"2017-07-31\">07/31 - Mon\r\n<option
+        value=\"2017-07-27\">07/27 - Thu\r\n<option value=\"2017-07-26\">07/26 - Wed\r\n<option
+        value=\"2017-07-25\">07/25 - Tue\r\n<option value=\"2017-07-24\">07/24 - Mon\r\n<option
+        value=\"2017-07-20\">07/20 - Thu\r\n<option value=\"2017-07-19\">07/19 - Wed\r\n<option
+        value=\"2017-07-18\">07/18 - Tue\r\n<option value=\"2017-07-17\">07/17 - Mon\r\n<option
+        value=\"2017-07-13\">07/13 - Thu\r\n<option value=\"2017-07-12\">07/12 - Wed\r\n<option
+        value=\"2017-07-11\">07/11 - Tue\r\n<option value=\"2017-07-10\">07/10 - Mon\r\n<option
+        value=\"2017-07-07\">07/07 - Fri\r\n<option value=\"2017-07-06\">07/06 - Thu\r\n<option
+        value=\"2017-07-05\">07/05 - Wed\r\n<option value=\"2017-06-23\">06/23 - Fri\r\n<option
+        value=\"2017-06-22\">06/22 - Thu\r\n<option value=\"2017-06-21\">06/21 - Wed\r\n<option
+        value=\"2017-06-20\">06/20 - Tue\r\n<option value=\"2017-06-19\">06/19 - Mon\r\n<option
+        value=\"2017-06-16\">06/16 - Fri\r\n<option value=\"2017-06-15\">06/15 - Thu\r\n<option
+        value=\"2017-06-14\">06/14 - Wed\r\n<option value=\"2017-06-13\">06/13 - Tue\r\n<option
+        value=\"2017-06-12\">06/12 - Mon\r\n<option value=\"2017-06-09\">06/09 - Fri\r\n<option
+        value=\"2017-06-08\">06/08 - Thu\r\n<option value=\"2017-06-07\">06/07 - Wed\r\n<option
+        value=\"2017-06-06\">06/06 - Tue\r\n<option value=\"2017-06-02\">06/02 - Fri\r\n<option
+        value=\"2017-06-01\">06/01 - Thu\r\n<option value=\"2017-05-31\">05/31 - Wed\r\n<option
+        value=\"2017-05-30\">05/30 - Tue\r\n<option value=\"2017-05-25\">05/25 - Thu\r\n<option
+        value=\"2017-05-24\">05/24 - Wed\r\n<option value=\"2017-05-23\">05/23 - Tue\r\n<option
+        value=\"2017-05-22\">05/22 - Mon\r\n<option value=\"2017-05-19\">05/19 - Fri\r\n<option
+        value=\"2017-05-18\">05/18 - Thu\r\n<option value=\"2017-05-17\">05/17 - Wed\r\n<option
+        value=\"2017-05-16\">05/16 - Tue\r\n<option value=\"2017-05-15\">05/15 - Mon\r\n<option
+        value=\"2017-05-12\">05/12 - Fri\r\n<option value=\"2017-05-11\">05/11 - Thu\r\n<option
+        value=\"2017-05-10\">05/10 - Wed\r\n<option value=\"2017-05-09\">05/09 - Tue\r\n<option
+        value=\"2017-05-08\">05/08 - Mon\r\n<option value=\"2017-05-05\">05/05 - Fri\r\n<option
+        value=\"2017-05-04\">05/04 - Thu\r\n<option value=\"2017-05-03\">05/03 - Wed\r\n<option
+        value=\"2017-05-02\">05/02 - Tue\r\n<option value=\"2017-05-01\">05/01 - Mon\r\n<option
+        value=\"2017-04-28\">04/28 - Fri\r\n<option value=\"2017-04-27\">04/27 - Thu\r\n<option
+        value=\"2017-04-26\">04/26 - Wed\r\n<option value=\"2017-04-25\">04/25 - Tue\r\n<option
+        value=\"2017-04-24\">04/24 - Mon\r\n<option value=\"2017-04-21\">04/21 - Fri\r\n<option
+        value=\"2017-04-20\">04/20 - Thu\r\n<option value=\"2017-04-19\">04/19 - Wed\r\n<option
+        value=\"2017-04-13\">04/13 - Thu\r\n<option value=\"2017-04-12\">04/12 - Wed\r\n<option
+        value=\"2017-04-11\">04/11 - Tue\r\n<option value=\"2017-04-10\">04/10 - Mon\r\n<option
+        value=\"2017-03-28\">03/28 - Tue\r\n<option value=\"2017-03-27\">03/27 - Mon\r\n<option
+        value=\"2017-03-24\">03/24 - Fri\r\n<option value=\"2017-03-23\">03/23 - Thu\r\n<option
+        value=\"2017-03-22\">03/22 - Wed\r\n<option value=\"2017-03-17\">03/17 - Fri\r\n<option
+        value=\"2017-03-16\">03/16 - Thu\r\n<option value=\"2017-03-15\">03/15 - Wed\r\n<option
+        value=\"2017-03-14\">03/14 - Tue\r\n<option value=\"2017-03-13\">03/13 - Mon\r\n<option
+        value=\"2017-03-10\">03/10 - Fri\r\n<option value=\"2017-03-09\">03/09 - Thu\r\n<option
+        value=\"2017-03-08\">03/08 - Wed\r\n<option value=\"2017-03-07\">03/07 - Tue\r\n<option
+        value=\"2017-03-06\">03/06 - Mon\r\n<option value=\"2017-03-03\">03/03 - Fri\r\n<option
+        value=\"2017-03-02\">03/02 - Thu\r\n<option value=\"2017-03-01\">03/01 - Wed\r\n<option
+        value=\"2017-02-28\">02/28 - Tue\r\n<option value=\"2017-02-27\">02/27 - Mon\r\n<option
+        value=\"2017-02-24\">02/24 - Fri\r\n<option value=\"2017-02-23\">02/23 - Thu\r\n<option
+        value=\"2017-02-22\">02/22 - Wed\r\n<option value=\"2017-02-17\">02/17 - Fri\r\n<option
+        value=\"2017-02-16\">02/16 - Thu\r\n<option value=\"2017-02-13\">02/13 - Mon\r\n<option
+        value=\"2017-02-10\">02/10 - Fri\r\n<option value=\"2017-02-09\">02/09 - Thu\r\n<option
+        value=\"2017-02-08\">02/08 - Wed\r\n<option value=\"2017-02-07\">02/07 - Tue\r\n<option
+        value=\"2017-02-06\">02/06 - Mon\r\n<option value=\"2017-02-03\">02/03 - Fri\r\n<option
+        value=\"2017-02-02\">02/02 - Thu\r\n<option value=\"2017-02-01\">02/01 - Wed\r\n<option
+        value=\"2017-01-31\">01/31 - Tue\r\n<option value=\"2017-01-30\">01/30 - Mon\r\n<option
+        value=\"2017-01-27\">01/27 - Fri\r\n<option value=\"2017-01-26\">01/26 - Thu\r\n<option
+        value=\"2017-01-25\">01/25 - Wed\r\n<option value=\"2017-01-24\">01/24 - Tue\r\n<option
+        value=\"2017-01-23\">01/23 - Mon\r\n<option value=\"2017-01-20\">01/20 - Fri\r\n<option
+        value=\"2017-01-19\">01/19 - Thu\r\n<option value=\"2017-01-18\">01/18 - Wed\r\n<option
+        value=\"2017-01-17\">01/17 - Tue\r\n<option value=\"2017-01-13\">01/13 - Fri\r\n<option
+        value=\"2017-01-12\">01/12 - Thu\r\n<option value=\"2017-01-11\">01/11 - Wed\r\n<option
+        value=\"2017-01-10\">01/10 - Tue\r\n<option value=\"2017-01-09\">01/09 - Mon\r\n<option
+        value=\"2017-01-06\">01/06 - Fri\r\n<option value=\"2017-01-05\">01/05 - Thu\r\n<option
+        value=\"2017-01-04\">01/04 - Wed\r\n<option value=\"2017-01-03\">01/03 - Tue\r\n<option
+        value=\"2016-12-22\">12/22 - Thu\r\n<option value=\"2016-12-21\">12/21 - Wed\r\n<option
+        value=\"2016-12-19\">12/19 - Mon\r\n<option value=\"2016-12-16\">12/16 - Fri\r\n<option
+        value=\"2016-12-15\">12/15 - Thu\r\n<option value=\"2016-12-14\">12/14 - Wed\r\n<option
+        value=\"2016-12-13\">12/13 - Tue\r\n<option value=\"2016-12-12\">12/12 - Mon\r\n<option
+        value=\"2016-12-08\">12/08 - Thu\r\n<option value=\"2016-12-07\">12/07 - Wed\r\n<option
+        value=\"2016-12-06\">12/06 - Tue\r\n<option value=\"2016-12-05\">12/05 - Mon\r\n<option
+        value=\"2016-12-01\">12/01 - Thu\r\n<option value=\"2016-11-30\">11/30 - Wed\r\n<option
+        value=\"2016-11-29\">11/29 - Tue\r\n<option value=\"2016-11-28\">11/28 - Mon\r\n<option
+        value=\"2016-11-22\">11/22 - Tue\r\n<option value=\"2016-11-21\">11/21 - Mon\r\n<option
+        value=\"2016-11-18\">11/18 - Fri\r\n<option value=\"2016-11-17\">11/17 - Thu\r\n<option
+        value=\"2016-11-16\">11/16 - Wed\r\n<option value=\"2016-11-15\">11/15 - Tue\r\n<option
+        value=\"2016-11-14\">11/14 - Mon\r\n<option value=\"2016-11-11\">11/11 - Fri\r\n<option
+        value=\"2016-11-10\">11/10 - Thu\r\n<option value=\"2016-11-09\">11/09 - Wed\r\n<option
+        value=\"2016-11-08\">11/08 - Tue\r\n<option value=\"2016-11-07\">11/07 - Mon\r\n<option
+        value=\"2016-11-04\">11/04 - Fri\r\n<option value=\"2016-11-03\">11/03 - Thu\r\n<option
+        value=\"2016-11-02\">11/02 - Wed\r\n<option value=\"2016-11-01\">11/01 - Tue\r\n<option
+        value=\"2016-10-31\">10/31 - Mon\r\n<option value=\"2016-10-28\">10/28 - Fri\r\n<option
+        value=\"2016-10-27\">10/27 - Thu\r\n<option value=\"2016-10-26\">10/26 - Wed\r\n<option
+        value=\"2016-10-25\">10/25 - Tue\r\n<option value=\"2016-10-24\">10/24 - Mon\r\n<option
+        value=\"2016-10-21\">10/21 - Fri\r\n<option value=\"2016-10-20\">10/20 - Thu\r\n<option
+        value=\"2016-10-19\">10/19 - Wed\r\n<option value=\"2016-10-18\">10/18 - Tue\r\n<option
+        value=\"2016-10-17\">10/17 - Mon\r\n<option value=\"2016-10-14\">10/14 - Fri\r\n<option
+        value=\"2016-10-13\">10/13 - Thu\r\n<option value=\"2016-10-11\">10/11 - Tue\r\n<option
+        value=\"2016-10-07\">10/07 - Fri\r\n<option value=\"2016-10-06\">10/06 - Thu\r\n<option
+        value=\"2016-10-05\">10/05 - Wed\r\n<option value=\"2016-10-04\">10/04 - Tue\r\n<option
+        value=\"2016-09-30\">09/30 - Fri\r\n<option value=\"2016-09-29\">09/29 - Thu\r\n<option
+        value=\"2016-09-28\">09/28 - Wed\r\n<option value=\"2016-09-27\">09/27 - Tue\r\n<option
+        value=\"2016-09-26\">09/26 - Mon\r\n<option value=\"2016-09-23\">09/23 - Fri\r\n<option
+        value=\"2016-09-22\">09/22 - Thu\r\n<option value=\"2016-09-21\">09/21 - Wed\r\n<option
+        value=\"2016-09-20\">09/20 - Tue\r\n<option value=\"2016-09-19\">09/19 - Mon\r\n<option
+        value=\"2016-09-16\">09/16 - Fri\r\n<option value=\"2016-09-15\">09/15 - Thu\r\n<option
+        value=\"2016-09-14\">09/14 - Wed\r\n<option value=\"2016-09-13\">09/13 - Tue\r\n<option
+        value=\"2016-09-12\">09/12 - Mon\r\n<option value=\"2016-09-09\">09/09 - Fri\r\n<option
+        value=\"2016-09-08\">09/08 - Thu\r\n<option value=\"2016-09-07\">09/07 - Wed\r\n<option
+        value=\"2016-09-06\">09/06 - Tue\r\n<option value=\"2016-09-01\">09/01 - Thu\r\n<option
+        value=\"2016-08-31\">08/31 - Wed\r\n<option value=\"2016-08-30\">08/30 - Tue\r\n<option
+        value=\"2016-08-29\">08/29 - Mon\r\n<option value=\"2016-08-25\">08/25 - Thu\r\n<option
+        value=\"2016-08-24\">08/24 - Wed\r\n<option value=\"2016-08-23\">08/23 - Tue\r\n<option
+        value=\"2016-08-22\">08/22 - Mon\r\n<option value=\"2016-08-05\">08/05 - Fri\r\n<option
+        value=\"2016-08-04\">08/04 - Thu\r\n<option value=\"2016-08-03\">08/03 - Wed\r\n<option
+        value=\"2016-08-02\">08/02 - Tue\r\n<option value=\"2016-08-01\">08/01 - Mon\r\n<option
+        value=\"2016-07-28\">07/28 - Thu\r\n<option value=\"2016-07-27\">07/27 - Wed\r\n<option
+        value=\"2016-07-26\">07/26 - Tue\r\n<option value=\"2016-07-25\">07/25 - Mon\r\n<option
+        value=\"2016-07-22\">07/22 - Fri\r\n<option value=\"2016-07-21\">07/21 - Thu\r\n<option
+        value=\"2016-07-20\">07/20 - Wed\r\n<option value=\"2016-07-19\">07/19 - Tue\r\n<option
+        value=\"2016-07-18\">07/18 - Mon\r\n<option value=\"2016-07-15\">07/15 - Fri\r\n<option
+        value=\"2016-07-14\">07/14 - Thu\r\n<option value=\"2016-07-13\">07/13 - Wed\r\n<option
+        value=\"2016-07-12\">07/12 - Tue\r\n<option value=\"2016-07-11\">07/11 - Mon\r\n<option
+        value=\"2016-07-01\">07/01 - Fri\r\n<option value=\"2016-06-30\">06/30 - Thu\r\n<option
+        value=\"2016-06-29\">06/29 - Wed\r\n<option value=\"2016-06-28\">06/28 - Tue\r\n<option
+        value=\"2016-06-27\">06/27 - Mon\r\n<option value=\"2016-06-24\">06/24 - Fri\r\n<option
+        value=\"2016-06-23\">06/23 - Thu\r\n<option value=\"2016-06-22\">06/22 - Wed\r\n<option
+        value=\"2016-06-21\">06/21 - Tue\r\n<option value=\"2016-06-20\">06/20 - Mon\r\n<option
+        value=\"2016-06-17\">06/17 - Fri\r\n<option value=\"2016-06-16\">06/16 - Thu\r\n<option
+        value=\"2016-06-15\">06/15 - Wed\r\n<option value=\"2016-06-14\">06/14 - Tue\r\n<option
+        value=\"2016-06-13\">06/13 - Mon\r\n<option value=\"2016-06-10\">06/10 - Fri\r\n<option
+        value=\"2016-06-09\">06/09 - Thu\r\n<option value=\"2016-06-08\">06/08 - Wed\r\n<option
+        value=\"2016-06-07\">06/07 - Tue\r\n<option value=\"2016-06-03\">06/03 - Fri\r\n<option
+        value=\"2016-06-02\">06/02 - Thu\r\n<option value=\"2016-06-01\">06/01 - Wed\r\n<option
+        value=\"2016-05-27\">05/27 - Fri\r\n<option value=\"2016-05-26\">05/26 - Thu\r\n<option
+        value=\"2016-05-25\">05/25 - Wed\r\n<option value=\"2016-05-24\">05/24 - Tue\r\n<option
+        value=\"2016-05-23\">05/23 - Mon\r\n<option value=\"2016-05-20\">05/20 - Fri\r\n<option
+        value=\"2016-05-19\">05/19 - Thu\r\n<option value=\"2016-05-18\">05/18 - Wed\r\n<option
+        value=\"2016-05-17\">05/17 - Tue\r\n<option value=\"2016-05-16\">05/16 - Mon\r\n<option
+        value=\"2016-05-13\">05/13 - Fri\r\n<option value=\"2016-05-12\">05/12 - Thu\r\n<option
+        value=\"2016-05-11\">05/11 - Wed\r\n<option value=\"2016-05-10\">05/10 - Tue\r\n<option
+        value=\"2016-05-09\">05/09 - Mon\r\n<option value=\"2016-05-06\">05/06 - Fri\r\n<option
+        value=\"2016-05-05\">05/05 - Thu\r\n<option value=\"2016-05-04\">05/04 - Wed\r\n<option
+        value=\"2016-05-03\">05/03 - Tue\r\n<option value=\"2016-05-02\">05/02 - Mon\r\n<option
+        value=\"2016-04-29\">04/29 - Fri\r\n<option value=\"2016-04-28\">04/28 - Thu\r\n<option
+        value=\"2016-04-27\">04/27 - Wed\r\n<option value=\"2016-04-26\">04/26 - Tue\r\n<option
+        value=\"2016-04-25\">04/25 - Mon\r\n<option value=\"2016-04-22\">04/22 - Fri\r\n<option
+        value=\"2016-04-21\">04/21 - Thu\r\n<option value=\"2016-04-20\">04/20 - Wed\r\n<option
+        value=\"2016-04-19\">04/19 - Tue\r\n<option value=\"2016-04-18\">04/18 - Mon\r\n\n\t\t\t\t</select>\n\t\t\t</td></tr>\n
+        \               \n\t\t\t<tr><td align=\"right\" class=\"aslabel\">Call: </td><td
+        align=\"right\">\n\t\t\t\t<select id=\"called\" name=\"called\" tabindex=\"3\"
+        class=\"selectBox\" onchange=\"this.form.submit();\">\n\t\t\t\t<option value=\"%\">All\n\t\t\t\t<option
+        value=5>Buy\n\t\t\t\t<option value=4>Pos Mention\n\t\t\t\t<option value=3>Hold\n\t\t\t\t<option
+        value=2>Neg Mention\n\t\t\t\t<option value=1>Sell\n\t\t\t\t</select>\n\t\t\t</td></tr>\n\n\t\t\t<tr><td
+        align=\"right\" class=\"aslabel\">Industry: </td><td align=\"right\">\n\t\t\t\t<select
+        id=\"industry\" name=\"industry\" tabindex=\"4\" class=\"selectBox\" onchange=\"this.form.submit();\">\n
+        \               <option value=\"%\">All\n                <option>Accident
+        & Health Insurance\r\n<option>Advertising & Marketing\r\n<option>Advertising
+        Agencies\r\n<option>Aerospace & Defense\r\n<option>Aerospace/Defense - Major
+        Diversified\r\n<option>Aerospace/Defense Products\r\n<option>Aerospace/Defense
+        Products & Services\r\n<option>Agricultural Chemicals\r\n<option>Agricultural
+        Inputs\r\n<option>Air Delivery & Freight Services\r\n<option>Air Services,
+        Other\r\n<option>Airports & Air Services\r\n<option>Aluminum\r\n<option>Apparel\r\n<option>Apparel
+        Footwear & Accessories\r\n<option>Apparel Manufacturing\r\n<option>Apparel
+        Retail\r\n<option>Apparel Stores\r\n<option>Appliances\r\n<option>Application
+        Service Providers\r\n<option>Application Software\r\n<option>Application Softwarei\r\n<option>Asset
+        Management\r\n<option>Auto & Truck Dealerships\r\n<option>Auto Dealerships\r\n<option>Auto
+        Manufacturers\r\n<option>Auto Manufacturers - Major\r\n<option>Auto Parts\r\n<option>Auto
+        Parts Stores\r\n<option>Auto Parts Wholesale\r\n<option>Banks - Regional\r\n<option>Banks
+        - Regional - US\r\n<option>Basic Materials Wholesale\r\n<option>Beverages\r\n<option>Beverages
+        - Brewers\r\n<option>Beverages - Soft Drinks\r\n<option>Beverages - Wineries
+        & Distillers\r\n<option>Bio Therapeutic Drugs\r\n<option>Biotechnology\r\n<option>Broadcasting\r\n<option>Broadcasting
+        - Radio\r\n<option>Broadcasting - TV\r\n<option>Building Materials\r\n<option>Building
+        Materials Wholesale\r\n<option>Building Products & Equipment\r\n<option>Busines
+        Software & Services\r\n<option>Business Equipment\r\n<option>Business Services\r\n<option>Business
+        Software & Services\r\n<option>Capital Markets\r\n<option>Catalog & Mail Order
+        Houses\r\n<option>CATV Systems\r\n<option>Cement\r\n<option>Chemicals\r\n<option>Chemicals
+        - Major Diversified\r\n<option>Cigarettes\r\n<option>Cleaning Products\r\n<option>Closed-End
+        Fund - Debt\r\n<option>Closed-End Fund - Equity\r\n<option>Cloud Computing
+        Services\r\n<option>Coal\r\n<option>Commercial Banks\r\n<option>Communication
+        Equipment\r\n<option>Communication Services\r\n<option>Communications & Networking\r\n<option>Communications
+        Equipment\r\n<option>Computer Based Systems\r\n<option>Computer Hardware\r\n<option>Computer
+        Peripherals\r\n<option>Computers Wholesale\r\n<option>Confectioners\r\n<option>Conglomerates\r\n<option>Consumer
+        Electronics\r\n<option>Consumer Services\r\n<option>Copper\r\n<option>Credit
+        Services\r\n<option>Cybersecurity\r\n<option>Dairy Products\r\n<option>Data
+        Centers\r\n<option>Data Processing Services\r\n<option>Data Storage Devices\r\n<option>Department
+        Stores\r\n<option>Diagnostic Substances\r\n<option>Diagnostics & Research\r\n<option>Discount,
+        Variety Stores\r\n<option>Diversified Communication Services\r\n<option>Diversified
+        Computer Systems\r\n<option>Diversified Electronics\r\n<option>Diversified
+        Industrials\r\n<option>Diversified Investments\r\n<option>Diversified Machinery\r\n<option>Diversified
+        Utilities\r\n<option>Doors & Window Frames\r\n<option>Drug Delivery\r\n<option>Drug
+        Manufacturers - Major\r\n<option>Drug Manufacturers - Other\r\n<option>Drug
+        Manufacturers - Specialty\r\n<option>Drug Manufacturers - Specialty & Generic\r\n<option>Drug
+        Manufacturers\u2014Specialty & Generic\r\n<option>Drug Related Products\r\n<option>Drug
+        Stores\r\n<option>Drugs - Generic\r\n<option>Drugs Wholesale\r\n<option>Education
+        & Training Services\r\n<option>Electric Utilities\r\n<option>Electrical Equipment
+        & Parts\r\n<option>Electronic Components\r\n<option>Electronic Equipment\r\n<option>Electronic
+        Gaming & Multimedia\r\n<option>Electronics Stores\r\n<option>Electronics Wholesale\r\n<option>Engineering
+        & Construction\r\n<option>Engineering and Construction\r\n<option>Entertainment\r\n<option>Entertainment
+        - Diversified\r\n<option>ETF\r\n<option>ETF - Exchange Traded Fund\r\n<option>Farm
+        & Construction Equipment\r\n<option>Farm & Construction Machinery\r\n<option>Farm
+        & Heavy Construction Machinery\r\n<option>Farm & Heavy Machinery\r\n<option>Farm
+        Products\r\n<option>Food - Major Diversified\r\n<option>Food Distribution\r\n<option>Food
+        Processing\r\n<option>Food Wholesale\r\n<option>Footwear\r\n<option>Foreign
+        Banks\r\n<option>Foreign Money Center Banks\r\n<option>Foreign Regional Banks\r\n<option>Foreign
+        Utilities\r\n<option>Furnishings, Fixtures & Appliances\r\n<option>Gambling\r\n<option>Gaming
+        Activities\r\n<option>Gas Utilities\r\n<option>General Building Materials\r\n<option>General
+        Contractors\r\n<option>General Entertainment\r\n<option>Gold\r\n<option>Grocery
+        Stores\r\n<option>Health Care Plans\r\n<option>Health Information Services\r\n<option>Health
+        Information Systems\r\n<option>Healthcare Information Services\r\n<option>Healthcare
+        Plans\r\n<option>Heavy Construction\r\n<option>Home Furnishing Stores\r\n<option>Home
+        Furnishings & Fixtures\r\n<option>Home Health Care\r\n<option>Home Improvement
+        Retail\r\n<option>Home Improvement Stores\r\n<option>Hospitals\r\n<option>Household
+        & Personal Products\r\n<option>Housewares & Accessories\r\n<option>Independent
+        Oil & Gas\r\n<option>Independent Power Producers\r\n<option>Industrial Distribution\r\n<option>Industrial
+        Electrical Equipment\r\n<option>Industrial Equipment & Components\r\n<option>Industrial
+        Equipment Wholesale\r\n<option>Industrial Machinery & Equipment\r\n<option>Industrial
+        Metals & Minerals\r\n<option>Industrial Metals & Mining\r\n<option>Information
+        & Delivery Services\r\n<option>Information Services\r\n<option>Information
+        Technology Services\r\n<option>Infrastructure Software\r\n<option>Insurance\r\n<option>Insurance
+        Brokers\r\n<option>Insurance\u2014Property & Casualty\r\n<option>Integrated
+        Freight & Logistics\r\n<option>Integrated Oil & Gas\r\n<option>Integrated
+        Shipping & Logistics\r\n<option>Internet Content & Information\r\n<option>Internet
+        Information Providers\r\n<option>Internet Retail\r\n<option>Internet Service
+        Providers\r\n<option>Internet Software & Services\r\n<option>Investment Brokerage
+        - National\r\n<option>Investment Brokerage - Regional\r\n<option>Jewelry Stores\r\n<option>Keryx
+        Biopharmaceutical\r\n<option>Leasing\r\n<option>Leisure\r\n<option>Life Insurance\r\n<option>LNG
+        Transportation & Storage\r\n<option>Lodging\r\n<option>Long Distance Carriers\r\n<option>Long-Term
+        Care Facilities\r\n<option>Lumber & Wood Production\r\n<option>Lumber, Wood
+        Production\r\n<option>Luxury Goods\r\n<option>Machine Tools & Accessories\r\n<option>Major
+        Airlines\r\n<option>Major Integrated Oil & Gas\r\n<option>Management Services\r\n<option>Marine
+        Shipping\r\n<option>Marketing Services\r\n<option>Meat Products\r\n<option>Media
+        - Diversifie\r\n<option>Media - Diversified\r\n<option>Medical Appliances\r\n<option>Medical
+        Appliances & Equipment\r\n<option>Medical Care Facilities\r\n<option>Medical
+        Devices\r\n<option>Medical Distribution\r\n<option>Medical Equipment Wholesale\r\n<option>Medical
+        Instruments & Supplies\r\n<option>Medical Laboratories & Research\r\n<option>Medical
+        Monitoring Systems\r\n<option>Metal Fabrication\r\n<option>Money Center Banks\r\n<option>Mortgage
+        Finance\r\n<option>Mortgage Investment\r\n<option>Movie Production, Theaters\r\n<option>Multimedia
+        & Graphics Software\r\n<option>Music & Video Stores\r\n<option>Network Equipment\r\n<option>Networking\r\n<option>Networking
+        & Communication Devices\r\n<option>Nonmetallic Mineral Mining\r\n<option>Oil
+        & Gas\r\n<option>Oil & Gas Drilling & Exploration\r\n<option>Oil & Gas Drilling
+        & Pipelines\r\n<option>Oil & Gas Equipment & Services\r\n<option>Oil & Gas
+        Integrated\r\n<option>Oil & Gas Midstream\r\n<option>Oil & Gas Pipelines\r\n<option>Oil
+        & Gas Production\r\n<option>Oil & Gas Refining & Marketing\r\n<option>Oil
+        & Gas Transportation Services\r\n<option>Oil and Gas ENP\r\n<option>Oil and
+        Gas Midstream\r\n<option>Other Industrial Metals & Mining\r\n<option>Packaged
+        Foods\r\n<option>Packaging & Container\r\n<option>Packaging & Containers\r\n<option>Paper
+        & Paper Products\r\n<option>Personal Computers\r\n<option>Personal Products\r\n<option>Personal
+        Services\r\n<option>Pollution & Treatment Controls\r\n<option>Printed Circuit
+        Boards\r\n<option>Processed & Packaged Goods\r\n<option>Processing Systems
+        & Products\r\n<option>Property & Casualty Insurance\r\n<option>Property and
+        Casualty Insurance\r\n<option>Property Management\r\n<option>Publishing\r\n<option>Publishing
+        - Newspapers\r\n<option>Publishing - Periodicals\r\n<option>Railroads\r\n<option>Real
+        Estate Development\r\n<option>Real Estate Services\r\n<option>Recreational
+        Goods, Other\r\n<option>Recreational Vehicles\r\n<option>Regional - Mid-Atlantic
+        Banks\r\n<option>Regional - Midwest Banks\r\n<option>Regional - Northeast
+        Banks\r\n<option>Regional - Pacific Banks\r\n<option>Regional - Southeast
+        Banks\r\n<option>Regional - Southwest Banks\r\n<option>Regional Airlines\r\n<option>Regional
+        Banks\r\n<option>Regulated Gas\r\n<option>REIT - Casino\r\n<option>REIT -
+        Diversified\r\n<option>REIT - Entertainment\r\n<option>REIT - Healthcare\r\n<option>REIT
+        - Healthcare Facilities\r\n<option>REIT - Hospitality\r\n<option>REIT - Hotel/Motel\r\n<option>REIT
+        - Industrial\r\n<option>REIT - Mortgage\r\n<option>REIT - Office\r\n<option>REIT
+        - Residential\r\n<option>REIT - Retail\r\n<option>REIT - Specialized\r\n<option>REIT
+        -Healthcare\r\n<option>Rental & Leasing Services\r\n<option>Residential Construction\r\n<option>Resorts
+        & Casinos\r\n<option>Restaurants\r\n<option>Rubber & Plastics\r\n<option>Savings
+        & Cooperative Banks\r\n<option>Savings & Loan\r\n<option>Savings & Loans\r\n<option>Scientific
+        & Technical Instruments\r\n<option>Security & Protection\r\n<option>Security
+        & Protection Services\r\n<option>Security Software & Services\r\n<option>Semiconductor
+        - Broad Line\r\n<option>Semiconductor - Integrated Circuits\r\n<option>Semiconductor
+        - Specialized\r\n<option>Semiconductor Equipment\r\n<option>Semiconductor
+        Equipment & Materials\r\n<option>Semiconductor- Memory Chips\r\n<option>Semiconductors\r\n<option>Shell
+        Companies\r\n<option>Shell Corporations\r\n<option>Shipping\r\n<option>Silver\r\n<option>Small
+        Tools & Accessories\r\n<option>Software\r\n<option>Software - Application\r\n<option>Software
+        - Infrastructure\r\n<option>Software Infrastructure\r\n<option>Solar\r\n<option>Special
+        Purpose Acquisition\r\n<option>Specialized Health Services\r\n<option>Specialty
+        Acquisition\r\n<option>Specialty Business Service\r\n<option>Specialty Chemicals\r\n<option>Specialty
+        Eateries\r\n<option>Specialty Finance\r\n<option>Specialty Industrial Machinery\r\n<option>Specialty
+        Industrial Materials\r\n<option>Specialty Purpose Acquisition\r\n<option>Specialty
+        Retail\r\n<option>Specialty Retail, Other\r\n<option>Sporting Activities\r\n<option>Sporting
+        Goods\r\n<option>Sporting Goods Stores\r\n<option>Staffing & Employment Services\r\n<option>Staffing
+        & Outsourcing Services\r\n<option>Steel & Iron\r\n<option>Surety & Title Insurance\r\n<option>Synthetics\r\n<option>Technical
+        & System Software\r\n<option>Technical Services\r\n<option>Telecom Services\r\n<option>Telecom
+        Services - Domestic\r\n<option>Textile - Apparel Clothing\r\n<option>Textile
+        - Apparel Footwear & Accessories\r\n<option>Tobacco\r\n<option>Toys & Games\r\n<option>Trucking\r\n<option>Trucks
+        & Other Vehicles\r\n<option>Universal Display\r\n<option>Uranium\r\n<option>Utilities
+        - Independent Power Producer\r\n<option>Utilities - Regulated Electric\r\n<option>Waste
+        Management\r\n<option>Water\r\n<option>Water Utilities\r\n<option>Wholesale,
+        Other\r\n<option>Wireless Communications\r\n<option>Wireless Technologies\r\n\n
+        \               </select>\n\t\t\t</td></tr>\n                \n\t\t\t<tr><td
+        align=\"right\" class=\"aslabel\">Sector: </td><td align=\"right\">\n\t\t\t\t<select
+        id=\"sector\" name=\"sector\" tabindex=\"5\" class=\"selectBox\" onchange=\"this.form.submit();\">\n
+        \               <option value=\"%\">All\n                <option>Apparel Stores\r\n<option>Basic
+        Material\r\n<option>Basic Materials\r\n<option>Basic Matierals\r\n<option>Basica
+        Materials\r\n<option>Conglomerates\r\n<option>Consumer Goods\r\n<option>Energy\r\n<option>Financial\r\n<option>Financials\r\n<option>H\r\n<option>Healthcare\r\n<option>Helathcare\r\n<option>Industrial
+        Goods\r\n<option>Services\r\n<option>Technology\r\n<option>Utilites\r\n<option>Utilities\r\n\n
+        \               </select>\n\t\t\t</td></tr>\n                \n\t\t\t<tr><td
+        align=\"right\" class=\"aslabel\">Segment: </td><td align=\"right\">\n\t\t\t\t<select
+        id=\"segment\" name=\"segment\" tabindex=\"6\" class=\"selectBox\" onchange=\"this.form.submit();\">\n\t\t\t\t<option
+        value=\"%\">All\n\t\t\t\t<option value=F>Featured Stock\n\t\t\t\t<option value=D>Discussed
+        Stock\n\t\t\t\t<option value=C>Caller's Stock\n\t\t\t\t<option value=I>Guest
+        Interview\n\t\t\t\t<option value=L>Lightning Round\n\t\t\t\t<option value=G>Game
+        Plan\n\t\t\t\t<option value=M>MailBag\n\t\t\t\t<option value=S>Sudden Death\n\t\t\t\t</select>\n\t\t\t</td></tr>\n\n\t\t\t<tr><td
+        align=\"right\" class=\"aslabel\">Price Greater: </td><td align=\"right\">\n\t\t\t\t<select
+        id=\"pricelow\" name=\"pricelow\" tabindex=\"7\" class=\"selectBox\" onchange=\"this.form.submit();\">\n
+        \               <option selected >0\n                <option >10\n                <option
+        >20\n                <option >30\n                <option >40\n                <option
+        >50\n                <option >60\n                <option >70\n                <option
+        >80\n                <option >90\n                <option >100\n                <option
+        >200\n                <option >300\n                <option >400\n                <option
+        >500\n                <option >750\n                <option >1000\n\t\t\t\t</select>\n\t\t\t</td></tr>\n\n\t\t\t<tr><td
+        align=\"right\" class=\"aslabel\">Price Less: </td><td align=\"right\">\n\t\t\t\t<select
+        id=\"pricehigh\" name=\"pricehigh\" tabindex=\"8\" class=\"selectBox\" onchange=\"this.form.submit();\">\n
+        \               <option selected >1000\n                <option >750\n                <option
+        >500\n                <option >400\n                <option >300\n                <option
+        >200\n                <option >100\n                <option >90\n                <option
+        >80\n                <option >70\n                <option >60\n                <option
+        >50\n                <option >40\n                <option >30\n                <option
+        >20\n                <option >10\n                </select>\n\t\t\t</td></tr>\n\t\t\t\n\t\t\t<tr><td
+        align=\"right\" class=\"aslabel\">Sort By: </td><td align=\"right\">\n\t\t\t\t<select
+        id=\"sortby\" name=\"sortby\" tabindex=\"9\" class=\"selectBox\" onchange=\"this.form.submit();\">\n
+        \               <option selected value=\"symbol\">Symbol\n                <option
+        value=\"airdate\">Showdate\n                <option value=\"icon\">Segment\n
+        \               <option value=\"called\">Call\n                <option value=\"callprice\">Price\n
+        \               </select> \n\t\t\t</td></tr>\n            \n            <tr><td
+        colspan=\"2\" align=\"right\" class=\"resetText\">\n            \t<a href=\"index.cfm?resetall=Y\"
+        onclick=\"resize()\">Reset Search Criteria</a>\n\t\t\t</td></tr>\n            \n\t\t</table>\n\t\t\n\t\t</form>\n\t</div>\n\n</div>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\t\n\n\t\n\n\n\n</body>\n</html>\n"
+    headers:
+      Cache-Control:
+      - private
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '69950'
+      Content-Type:
+      - text/html;charset=UTF-8
+      Date:
+      - Wed, 02 Mar 2022 02:56:09 GMT
+      Server:
+      - Microsoft-IIS/8.5
+      Set-Cookie:
+      - cfid=12c2409f-e515-4041-b5cd-c74f54a79777;Path=/;Expires=Tue, 22-Mar-2022
+        04:34:13 UTC;HTTPOnly
+      - cftoken=0;Path=/;Expires=Tue, 22-Mar-2022 04:34:13 UTC;HTTPOnly
+      X-AspNet-Version:
+      - 4.0.30319
+      X-Powered-By:
+      - ASP.NET
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Connection:
+      - close
+      Host:
+      - madmoney.thestreet.com
+    method: GET
+    uri: https://madmoney.thestreet.com/screener/index.cfm
+  response:
+    body:
+      string: "\n\n\n\n\n\n\t\n\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t \n\t \n\t
+        \n\t\n\t\n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n
+        \   \n    \n    \n    \n    \n    \n    \n\n\t\n    \n        \n        \n
+        \   \n\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html
+        xmlns=\"http://www.w3.org/1999/xhtml\">\n<head>\n<meta http-equiv=\"Content-Type\"
+        content=\"text/html; charset=iso-8859-1\" />\n<title>Mad Money Stock Screener</title>\n<link
+        rel=\"stylesheet\" type=\"text/css\" href=\"css/stock.css\">\n<link rel=\"stylesheet\"
+        type=\"text/css\" href=\"/09/style.css\">\n\n\n\n<script type=\"text/javascript\">\ndocument.domain=\"thestreet.com\";\ntry
+        {\nwindow.parent.fireAdsAndReporting();\n}catch(e){}\n \n</script>\n\n\n\n
+        \   <script type=\"text/javascript\">\n\t function resize() {\n     var height
+        = document.getElementsByTagName(\"html\")[0].scrollHeight;\n    window.parent.postMessage([\"setHeight\",
+        height], \"*\"); \n\t}\n    </script>\n    \n</head>\n\n<body>\n\n\n\n\n\n<div
+        id=\"stockScreener\">\n\n\t<div id=\"leftPanel\">\n        <a href=\"index.cfm?showview=stocks\"><img
+        id=\"madMoneyLogo\" src=\"images/madMoneyStockScreener.gif\" width=\"309\"
+        height=\"19\" border=\"0\" alt=\"Exclusive Mad Money Stock Screener\" /></a>\n\t\t<p><strong>Cramer's
+        Calls For:</strong> 03/01/2022</p>\n\t\t<br />\n\t\t<table cellpadding=\"0\"
+        cellspacing=\"0\" border=\"0\" id=\"stockTable\">\n\t\t\t<tr>\n\t\t\t\t<th>Company</th><th>Date<th>Segment</th><th>Call</th><th>Price</th><th>Portfolio</th>\n\t\t\t</tr>\n
+        \           \n            \n            \n            \n            <tr class=\"odd\"><td>Academy
+        Sports and Outdoo (<a href=\"https://www.thestreet.com/quote/ASO.html?omorig=header\"
+        target=\"_blank\">ASO</a>)</td><td>03/01</td><td align=\"center\"><img src=\"/09/img/icons/L.gif\"
+        width=\"14\" height=\"16\" alt=\"L\"  /> </td><td align=\"center\"><img src=\"/09/img/icons/5.gif\"
+        width=\"14\" height=\"16\" alt=\"5\" /> </td><td>$30.65</td><td align=\"center\"><a
+        href=\"index.cfm?showview=portfolio&add=Y&symbol=ASO\">add</a> </td>\n\t\t\t</tr>\n
+        \           \n            <tr>\n\t\t\t\t<td>Salesforce (<a href=\"https://www.thestreet.com/quote/CRM.html?omorig=header\"
+        target=\"_blank\">CRM</a>)</td><td>03/01</td><td align=\"center\"><img src=\"/09/img/icons/I.gif\"
+        width=\"14\" height=\"16\" alt=\"I\"  /> </td><td align=\"center\"><img src=\"/09/img/icons/5.gif\"
+        width=\"14\" height=\"16\" alt=\"5\" /> </td><td>$208.89</td><td align=\"center\"><a
+        href=\"index.cfm?showview=portfolio&add=Y&symbol=CRM\">add</a> </td>\n\t\t\t</tr>\n
+        \           \n            <tr class=\"odd\"><td>Coterra Energy (<a href=\"https://www.thestreet.com/quote/CTRA.html?omorig=header\"
+        target=\"_blank\">CTRA</a>)</td><td>03/01</td><td align=\"center\"><img src=\"/09/img/icons/I.gif\"
+        width=\"14\" height=\"16\" alt=\"I\"  /> </td><td align=\"center\"><img src=\"/09/img/icons/5.gif\"
+        width=\"14\" height=\"16\" alt=\"5\" /> </td><td>$24.36</td><td align=\"center\"><a
+        href=\"index.cfm?showview=portfolio&add=Y&symbol=CTRA\">add</a> </td>\n\t\t\t</tr>\n
+        \           \n            <tr>\n\t\t\t\t<td>Domino's Pizza (<a href=\"https://www.thestreet.com/quote/DPZ.html?omorig=header\"
+        target=\"_blank\">DPZ</a>)</td><td>03/01</td><td align=\"center\"><img src=\"/09/img/icons/I.gif\"
+        width=\"14\" height=\"16\" alt=\"I\"  /> </td><td align=\"center\"><img src=\"/09/img/icons/5.gif\"
+        width=\"14\" height=\"16\" alt=\"5\" /> </td><td>$432.21</td><td align=\"center\"><a
+        href=\"index.cfm?showview=portfolio&add=Y&symbol=DPZ\">add</a> </td>\n\t\t\t</tr>\n
+        \           \n            <tr class=\"odd\"><td>Nio (<a href=\"https://www.thestreet.com/quote/NIO.html?omorig=header\"
+        target=\"_blank\">NIO</a>)</td><td>03/01</td><td align=\"center\"><img src=\"/09/img/icons/L.gif\"
+        width=\"14\" height=\"16\" alt=\"L\"  /> </td><td align=\"center\"><img src=\"/09/img/icons/1.gif\"
+        width=\"14\" height=\"16\" alt=\"1\" /> </td><td>$21.87</td><td align=\"center\"><a
+        href=\"index.cfm?showview=portfolio&add=Y&symbol=NIO\">add</a> </td>\n\t\t\t</tr>\n
+        \           \n            <tr>\n\t\t\t\t<td>Origin Materials (<a href=\"https://www.thestreet.com/quote/ORGN.html?omorig=header\"
+        target=\"_blank\">ORGN</a>)</td><td>03/01</td><td align=\"center\"><img src=\"/09/img/icons/L.gif\"
+        width=\"14\" height=\"16\" alt=\"L\"  /> </td><td align=\"center\"><img src=\"/09/img/icons/2.gif\"
+        width=\"14\" height=\"16\" alt=\"2\" /> </td><td>$5.51</td><td align=\"center\"><a
+        href=\"index.cfm?showview=portfolio&add=Y&symbol=ORGN\">add</a> </td>\n\t\t\t</tr>\n
+        \           \n            <tr class=\"odd\"><td>Rent-A-Center (<a href=\"https://www.thestreet.com/quote/RCII.html?omorig=header\"
+        target=\"_blank\">RCII</a>)</td><td>03/01</td><td align=\"center\"><img src=\"/09/img/icons/L.gif\"
+        width=\"14\" height=\"16\" alt=\"L\"  /> </td><td align=\"center\"><img src=\"/09/img/icons/1.gif\"
+        width=\"14\" height=\"16\" alt=\"1\" /> </td><td>$27.08</td><td align=\"center\"><a
+        href=\"index.cfm?showview=portfolio&add=Y&symbol=RCII\">add</a> </td>\n\t\t\t</tr>\n
+        \           \n            <tr>\n\t\t\t\t<td>B. Riley Financial (<a href=\"https://www.thestreet.com/quote/RILY.html?omorig=header\"
+        target=\"_blank\">RILY</a>)</td><td>03/01</td><td align=\"center\"><img src=\"/09/img/icons/L.gif\"
+        width=\"14\" height=\"16\" alt=\"L\"  /> </td><td align=\"center\"><img src=\"/09/img/icons/2.gif\"
+        width=\"14\" height=\"16\" alt=\"2\" /> </td><td>$59.07</td><td align=\"center\"><a
+        href=\"index.cfm?showview=portfolio&add=Y&symbol=RILY\">add</a> </td>\n\t\t\t</tr>\n
+        \           \n            <tr class=\"odd\"><td>Stem (<a href=\"https://www.thestreet.com/quote/STEM.html?omorig=header\"
+        target=\"_blank\">STEM</a>)</td><td>03/01</td><td align=\"center\"><img src=\"/09/img/icons/L.gif\"
+        width=\"14\" height=\"16\" alt=\"L\"  /> </td><td align=\"center\"><img src=\"/09/img/icons/2.gif\"
+        width=\"14\" height=\"16\" alt=\"2\" /> </td><td>$9.33</td><td align=\"center\"><a
+        href=\"index.cfm?showview=portfolio&add=Y&symbol=STEM\">add</a> </td>\n\t\t\t</tr>\n
+        \           \t\t\t\t\n            \n            \n            \t\n            \n
+        \           \n            \n\t\t\t\t\n\t\t</table>\n        \n\t\t\n        \n
+        \       \t\n\t\t\t\n            \t<a href=\"index.cfm?showview=stocks&showrows=500\"
+        class=\"expandLink showAll\" onclick=\"resize()\">Show All</a>\n        \n\t\t\n\t\t<a
+        href=\"index.cfm?showview=portfolio\" class=\"expandLink\" onclick=\"resize()\">View
+        Portfolio &amp; Email Alerts</a>\n\t\t<a href=\"index.cfm?showview=help\"
+        class=\"expandLink\" onclick=\"resize()\">How to Read Our Charts</a>\n\t\t\n\t\t\n\t</div>\n\t\n\t<div
+        id=\"rightPanel\">\n    \n    \t<table width=\"100%\"><tr><td align=\"right\"
+        style=\"padding-right:5px;\">\n       \n       <iframe src=\"https://www.facebook.com/plugins/like.php?href=http%253A%252F%252Fwww.thestreet.com%252Fmad-money%252Findex.html&amp;layout=standard&amp;show_faces=true&amp;width=150&amp;action=like&amp;font&amp;colorscheme=light&amp;height=80\"
+        scrolling=\"no\" frameborder=\"0\" style=\"border:none;\noverflow:hidden;
+        width:190px; height:28px;\" allowtransparency=\"true\"></iframe>\n        \n
+        \       </td></tr></table>\n\t\t\n\t\t<div class=\"note secondNote\">Search
+        Criteria</div>\n        <form name=\"stocksForm\" method=\"post\" action=\"index.cfm\"
+        onsubmit=\"resize()\">\n\t\t<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\"
+        id=\"searchCritaria\">\n\n\t\t\t<tr><td align=\"right\" class=\"aslabel\">Stock
+        Symbol: </td><td align=\"right\">\n\t\t\t\t<input type=\"text\" name=\"symbol\"
+        class=\"symbolText\" tabindex=\"1\" value=\"\"/><input type=\"image\" src=\"images/searchBtn.gif\"
+        width=\"50\" height=\"22\" alt=\"Search\" id=\"searchBtn\" />\n\t\t\t</td></tr>\n
+        \           \n            \t\t\t<tr><td align=\"right\" class=\"aslabel\">Showdate:
+        </td><td align=\"right\">\n\t\t\t\t<select id=\"airdate\" name=\"airdate\"
+        tabindex=\"2\" class=\"selectBox\" onchange=\"this.form.submit();\">\n\t\t\t\t<option
+        value=\"%\">All\n                <option value=\"07\">Last Week\n                <option
+        value=\"30\">Last Month\n                <option value=\"180\">Last Quarter\n
+        \               <option selected value=\"2022-03-01\">03/01 - Tue\r\n<option
+        value=\"2022-02-28\">02/28 - Mon\r\n<option value=\"2022-02-25\">02/25 - Fri\r\n<option
+        value=\"2022-02-24\">02/24 - Thu\r\n<option value=\"2022-02-23\">02/23 - Wed\r\n<option
+        value=\"2022-02-22\">02/22 - Tue\r\n<option value=\"2022-02-04\">02/04 - Fri\r\n<option
+        value=\"2022-02-03\">02/03 - Thu\r\n<option value=\"2022-02-02\">02/02 - Wed\r\n<option
+        value=\"2022-02-01\">02/01 - Tue\r\n<option value=\"2022-01-31\">01/31 - Mon\r\n<option
+        value=\"2022-01-28\">01/28 - Fri\r\n<option value=\"2022-01-27\">01/27 - Thu\r\n<option
+        value=\"2022-01-26\">01/26 - Wed\r\n<option value=\"2022-01-25\">01/25 - Tue\r\n<option
+        value=\"2022-01-24\">01/24 - Mon\r\n<option value=\"2022-01-21\">01/21 - Fri\r\n<option
+        value=\"2022-01-20\">01/20 - Thu\r\n<option value=\"2022-01-19\">01/19 - Wed\r\n<option
+        value=\"2022-01-18\">01/18 - Tue\r\n<option value=\"2022-01-12\">01/12 - Wed\r\n<option
+        value=\"2022-01-11\">01/11 - Tue\r\n<option value=\"2022-01-10\">01/10 - Mon\r\n<option
+        value=\"2022-01-07\">01/07 - Fri\r\n<option value=\"2022-01-06\">01/06 - Thu\r\n<option
+        value=\"2022-01-05\">01/05 - Wed\r\n<option value=\"2022-01-04\">01/04 - Tue\r\n<option
+        value=\"2022-01-03\">01/03 - Mon\r\n<option value=\"2021-12-22\">12/22 - Wed\r\n<option
+        value=\"2021-12-21\">12/21 - Tue\r\n<option value=\"2021-12-20\">12/20 - Mon\r\n<option
+        value=\"2021-12-17\">12/17 - Fri\r\n<option value=\"2021-12-16\">12/16 - Thu\r\n<option
+        value=\"2021-12-15\">12/15 - Wed\r\n<option value=\"2021-12-14\">12/14 - Tue\r\n<option
+        value=\"2021-12-13\">12/13 - Mon\r\n<option value=\"2021-12-10\">12/10 - Fri\r\n<option
+        value=\"2021-12-09\">12/09 - Thu\r\n<option value=\"2021-12-08\">12/08 - Wed\r\n<option
+        value=\"2021-12-07\">12/07 - Tue\r\n<option value=\"2021-12-06\">12/06 - Mon\r\n<option
+        value=\"2021-12-03\">12/03 - Fri\r\n<option value=\"2021-12-02\">12/02 - Thu\r\n<option
+        value=\"2021-12-01\">12/01 - Wed\r\n<option value=\"2021-11-30\">11/30 - Tue\r\n<option
+        value=\"2021-11-29\">11/29 - Mon\r\n<option value=\"2021-11-22\">11/22 - Mon\r\n<option
+        value=\"2021-11-19\">11/19 - Fri\r\n<option value=\"2021-11-18\">11/18 - Thu\r\n<option
+        value=\"2021-11-17\">11/17 - Wed\r\n<option value=\"2021-11-16\">11/16 - Tue\r\n<option
+        value=\"2021-11-15\">11/15 - Mon\r\n<option value=\"2021-11-12\">11/12 - Fri\r\n<option
+        value=\"2021-11-11\">11/11 - Thu\r\n<option value=\"2021-11-10\">11/10 - Wed\r\n<option
+        value=\"2021-11-09\">11/09 - Tue\r\n<option value=\"2021-11-08\">11/08 - Mon\r\n<option
+        value=\"2021-11-05\">11/05 - Fri\r\n<option value=\"2021-11-04\">11/04 - Thu\r\n<option
+        value=\"2021-11-03\">11/03 - Wed\r\n<option value=\"2021-11-02\">11/02 - Tue\r\n<option
+        value=\"2021-11-01\">11/01 - Mon\r\n<option value=\"2021-10-29\">10/29 - Fri\r\n<option
+        value=\"2021-10-28\">10/28 - Thu\r\n<option value=\"2021-10-27\">10/27 - Wed\r\n<option
+        value=\"2021-10-26\">10/26 - Tue\r\n<option value=\"2021-10-21\">10/21 - Thu\r\n<option
+        value=\"2021-10-20\">10/20 - Wed\r\n<option value=\"2021-10-19\">10/19 - Tue\r\n<option
+        value=\"2021-10-18\">10/18 - Mon\r\n<option value=\"2021-10-15\">10/15 - Fri\r\n<option
+        value=\"2021-10-14\">10/14 - Thu\r\n<option value=\"2021-10-13\">10/13 - Wed\r\n<option
+        value=\"2021-10-12\">10/12 - Tue\r\n<option value=\"2021-10-11\">10/11 - Mon\r\n<option
+        value=\"2021-10-08\">10/08 - Fri\r\n<option value=\"2021-10-07\">10/07 - Thu\r\n<option
+        value=\"2021-10-06\">10/06 - Wed\r\n<option value=\"2021-10-05\">10/05 - Tue\r\n<option
+        value=\"2021-10-04\">10/04 - Mon\r\n<option value=\"2021-10-01\">10/01 - Fri\r\n<option
+        value=\"2021-09-29\">09/29 - Wed\r\n<option value=\"2021-09-28\">09/28 - Tue\r\n<option
+        value=\"2021-09-27\">09/27 - Mon\r\n<option value=\"2021-09-23\">09/23 - Thu\r\n<option
+        value=\"2021-09-22\">09/22 - Wed\r\n<option value=\"2021-09-21\">09/21 - Tue\r\n<option
+        value=\"2021-09-20\">09/20 - Mon\r\n<option value=\"2021-09-17\">09/17 - Fri\r\n<option
+        value=\"2021-09-15\">09/15 - Wed\r\n<option value=\"2021-09-14\">09/14 - Tue\r\n<option
+        value=\"2021-09-13\">09/13 - Mon\r\n<option value=\"2021-09-10\">09/10 - Fri\r\n<option
+        value=\"2021-09-09\">09/09 - Thu\r\n<option value=\"2021-09-08\">09/08 - Wed\r\n<option
+        value=\"2021-08-25\">08/25 - Wed\r\n<option value=\"2021-08-24\">08/24 - Tue\r\n<option
+        value=\"2021-08-23\">08/23 - Mon\r\n<option value=\"2021-08-19\">08/19 - Thu\r\n<option
+        value=\"2021-08-18\">08/18 - Wed\r\n<option value=\"2021-08-17\">08/17 - Tue\r\n<option
+        value=\"2021-08-16\">08/16 - Mon\r\n<option value=\"2021-08-12\">08/12 - Thu\r\n<option
+        value=\"2021-08-11\">08/11 - Wed\r\n<option value=\"2021-08-10\">08/10 - Tue\r\n<option
+        value=\"2021-08-09\">08/09 - Mon\r\n<option value=\"2021-08-05\">08/05 - Thu\r\n<option
+        value=\"2021-08-04\">08/04 - Wed\r\n<option value=\"2021-08-03\">08/03 - Tue\r\n<option
+        value=\"2021-08-02\">08/02 - Mon\r\n<option value=\"2021-07-29\">07/29 - Thu\r\n<option
+        value=\"2021-07-28\">07/28 - Wed\r\n<option value=\"2021-07-27\">07/27 - Tue\r\n<option
+        value=\"2021-07-26\">07/26 - Mon\r\n<option value=\"2021-07-23\">07/23 - Fri\r\n<option
+        value=\"2021-07-22\">07/22 - Thu\r\n<option value=\"2021-07-21\">07/21 - Wed\r\n<option
+        value=\"2021-07-20\">07/20 - Tue\r\n<option value=\"2021-07-19\">07/19 - Mon\r\n<option
+        value=\"2021-07-15\">07/15 - Thu\r\n<option value=\"2021-07-14\">07/14 - Wed\r\n<option
+        value=\"2021-07-13\">07/13 - Tue\r\n<option value=\"2021-07-12\">07/12 - Mon\r\n<option
+        value=\"2021-07-09\">07/09 - Fri\r\n<option value=\"2021-07-08\">07/08 - Thu\r\n<option
+        value=\"2021-07-07\">07/07 - Wed\r\n<option value=\"2021-07-06\">07/06 - Tue\r\n<option
+        value=\"2021-06-30\">06/30 - Wed\r\n<option value=\"2021-06-29\">06/29 - Tue\r\n<option
+        value=\"2021-06-28\">06/28 - Mon\r\n<option value=\"2021-06-25\">06/25 - Fri\r\n<option
+        value=\"2021-06-24\">06/24 - Thu\r\n<option value=\"2021-06-23\">06/23 - Wed\r\n<option
+        value=\"2021-06-22\">06/22 - Tue\r\n<option value=\"2021-06-21\">06/21 - Mon\r\n<option
+        value=\"2021-06-18\">06/18 - Fri\r\n<option value=\"2021-06-17\">06/17 - Thu\r\n<option
+        value=\"2021-06-16\">06/16 - Wed\r\n<option value=\"2021-06-15\">06/15 - Tue\r\n<option
+        value=\"2021-06-14\">06/14 - Mon\r\n<option value=\"2021-06-11\">06/11 - Fri\r\n<option
+        value=\"2021-06-10\">06/10 - Thu\r\n<option value=\"2021-06-09\">06/09 - Wed\r\n<option
+        value=\"2021-06-08\">06/08 - Tue\r\n<option value=\"2021-06-07\">06/07 - Mon\r\n<option
+        value=\"2021-05-27\">05/27 - Thu\r\n<option value=\"2021-05-26\">05/26 - Wed\r\n<option
+        value=\"2021-05-25\">05/25 - Tue\r\n<option value=\"2021-05-24\">05/24 - Mon\r\n<option
+        value=\"2021-05-21\">05/21 - Fri\r\n<option value=\"2021-05-20\">05/20 - Thu\r\n<option
+        value=\"2021-05-19\">05/19 - Wed\r\n<option value=\"2021-05-18\">05/18 - Tue\r\n<option
+        value=\"2021-05-17\">05/17 - Mon\r\n<option value=\"2021-05-14\">05/14 - Fri\r\n<option
+        value=\"2021-05-13\">05/13 - Thu\r\n<option value=\"2021-05-12\">05/12 - Wed\r\n<option
+        value=\"2021-05-11\">05/11 - Tue\r\n<option value=\"2021-05-10\">05/10 - Mon\r\n<option
+        value=\"2021-05-07\">05/07 - Fri\r\n<option value=\"2021-05-06\">05/06 - Thu\r\n<option
+        value=\"2021-05-05\">05/05 - Wed\r\n<option value=\"2021-05-04\">05/04 - Tue\r\n<option
+        value=\"2021-05-03\">05/03 - Mon\r\n<option value=\"2021-04-30\">04/30 - Fri\r\n<option
+        value=\"2021-04-29\">04/29 - Thu\r\n<option value=\"2021-04-28\">04/28 - Wed\r\n<option
+        value=\"2021-04-27\">04/27 - Tue\r\n<option value=\"2021-04-26\">04/26 - Mon\r\n<option
+        value=\"2021-04-23\">04/23 - Fri\r\n<option value=\"2021-04-22\">04/22 - Thu\r\n<option
+        value=\"2021-04-21\">04/21 - Wed\r\n<option value=\"2021-04-19\">04/19 - Mon\r\n<option
+        value=\"2021-04-16\">04/16 - Fri\r\n<option value=\"2021-04-15\">04/15 - Thu\r\n<option
+        value=\"2021-04-14\">04/14 - Wed\r\n<option value=\"2021-04-13\">04/13 - Tue\r\n<option
+        value=\"2021-04-12\">04/12 - Mon\r\n<option value=\"2021-04-08\">04/08 - Thu\r\n<option
+        value=\"2021-04-07\">04/07 - Wed\r\n<option value=\"2021-04-06\">04/06 - Tue\r\n<option
+        value=\"2021-04-05\">04/05 - Mon\r\n<option value=\"2021-04-01\">04/01 - Thu\r\n<option
+        value=\"2021-03-31\">03/31 - Wed\r\n<option value=\"2021-03-30\">03/30 - Tue\r\n<option
+        value=\"2021-03-29\">03/29 - Mon\r\n<option value=\"2021-03-25\">03/25 - Thu\r\n<option
+        value=\"2021-03-24\">03/24 - Wed\r\n<option value=\"2021-03-23\">03/23 - Tue\r\n<option
+        value=\"2021-03-22\">03/22 - Mon\r\n<option value=\"2021-03-19\">03/19 - Fri\r\n<option
+        value=\"2021-03-18\">03/18 - Thu\r\n<option value=\"2021-03-17\">03/17 - Wed\r\n<option
+        value=\"2021-03-16\">03/16 - Tue\r\n<option value=\"2021-03-15\">03/15 - Mon\r\n<option
+        value=\"2021-03-05\">03/05 - Fri\r\n<option value=\"2021-03-04\">03/04 - Thu\r\n<option
+        value=\"2021-03-03\">03/03 - Wed\r\n<option value=\"2021-03-02\">03/02 - Tue\r\n<option
+        value=\"2021-03-01\">03/01 - Mon\r\n<option value=\"2021-02-26\">02/26 - Fri\r\n<option
+        value=\"2021-02-25\">02/25 - Thu\r\n<option value=\"2021-02-24\">02/24 - Wed\r\n<option
+        value=\"2021-02-23\">02/23 - Tue\r\n<option value=\"2021-02-22\">02/22 - Mon\r\n<option
+        value=\"2021-02-12\">02/12 - Fri\r\n<option value=\"2021-02-11\">02/11 - Thu\r\n<option
+        value=\"2021-02-10\">02/10 - Wed\r\n<option value=\"2021-02-09\">02/09 - Tue\r\n<option
+        value=\"2021-02-08\">02/08 - Mon\r\n<option value=\"2021-02-05\">02/05 - Fri\r\n<option
+        value=\"2021-02-04\">02/04 - Thu\r\n<option value=\"2021-02-03\">02/03 - Wed\r\n<option
+        value=\"2021-02-02\">02/02 - Tue\r\n<option value=\"2021-02-01\">02/01 - Mon\r\n<option
+        value=\"2021-01-25\">01/25 - Mon\r\n<option value=\"2021-01-22\">01/22 - Fri\r\n<option
+        value=\"2021-01-21\">01/21 - Thu\r\n<option value=\"2021-01-20\">01/20 - Wed\r\n<option
+        value=\"2021-01-19\">01/19 - Tue\r\n<option value=\"2021-01-15\">01/15 - Fri\r\n<option
+        value=\"2021-01-14\">01/14 - Thu\r\n<option value=\"2021-01-13\">01/13 - Wed\r\n<option
+        value=\"2021-01-12\">01/12 - Tue\r\n<option value=\"2021-01-11\">01/11 - Mon\r\n<option
+        value=\"2021-01-08\">01/08 - Fri\r\n<option value=\"2021-01-07\">01/07 - Thu\r\n<option
+        value=\"2021-01-05\">01/05 - Tue\r\n<option value=\"2021-01-04\">01/04 - Mon\r\n<option
+        value=\"2020-12-22\">12/22 - Tue\r\n<option value=\"2020-12-21\">12/21 - Mon\r\n<option
+        value=\"2020-12-18\">12/18 - Fri\r\n<option value=\"2020-12-17\">12/17 - Thu\r\n<option
+        value=\"2020-12-16\">12/16 - Wed\r\n<option value=\"2020-12-15\">12/15 - Tue\r\n<option
+        value=\"2020-12-14\">12/14 - Mon\r\n<option value=\"2020-12-11\">12/11 - Fri\r\n<option
+        value=\"2020-12-10\">12/10 - Thu\r\n<option value=\"2020-12-09\">12/09 - Wed\r\n<option
+        value=\"2020-12-08\">12/08 - Tue\r\n<option value=\"2020-12-07\">12/07 - Mon\r\n<option
+        value=\"2020-12-02\">12/02 - Wed\r\n<option value=\"2020-12-01\">12/01 - Tue\r\n<option
+        value=\"2020-11-30\">11/30 - Mon\r\n<option value=\"2020-11-24\">11/24 - Tue\r\n<option
+        value=\"2020-11-23\">11/23 - Mon\r\n<option value=\"2020-11-20\">11/20 - Fri\r\n<option
+        value=\"2020-11-19\">11/19 - Thu\r\n<option value=\"2020-11-18\">11/18 - Wed\r\n<option
+        value=\"2020-11-17\">11/17 - Tue\r\n<option value=\"2020-11-16\">11/16 - Mon\r\n<option
+        value=\"2020-11-13\">11/13 - Fri\r\n<option value=\"2020-11-12\">11/12 - Thu\r\n<option
+        value=\"2020-11-11\">11/11 - Wed\r\n<option value=\"2020-11-10\">11/10 - Tue\r\n<option
+        value=\"2020-11-09\">11/09 - Mon\r\n<option value=\"2020-11-06\">11/06 - Fri\r\n<option
+        value=\"2020-11-04\">11/04 - Wed\r\n<option value=\"2020-11-03\">11/03 - Tue\r\n<option
+        value=\"2020-11-02\">11/02 - Mon\r\n<option value=\"2020-10-30\">10/30 - Fri\r\n<option
+        value=\"2020-10-29\">10/29 - Thu\r\n<option value=\"2020-10-28\">10/28 - Wed\r\n<option
+        value=\"2020-10-27\">10/27 - Tue\r\n<option value=\"2020-10-26\">10/26 - Mon\r\n<option
+        value=\"2020-10-23\">10/23 - Fri\r\n<option value=\"2020-10-22\">10/22 - Thu\r\n<option
+        value=\"2020-10-21\">10/21 - Wed\r\n<option value=\"2020-10-20\">10/20 - Tue\r\n<option
+        value=\"2020-10-19\">10/19 - Mon\r\n<option value=\"2020-10-15\">10/15 - Thu\r\n<option
+        value=\"2020-10-14\">10/14 - Wed\r\n<option value=\"2020-10-13\">10/13 - Tue\r\n<option
+        value=\"2020-10-12\">10/12 - Mon\r\n<option value=\"2020-10-09\">10/09 - Fri\r\n<option
+        value=\"2020-10-08\">10/08 - Thu\r\n<option value=\"2020-10-07\">10/07 - Wed\r\n<option
+        value=\"2020-10-06\">10/06 - Tue\r\n<option value=\"2020-10-05\">10/05 - Mon\r\n<option
+        value=\"2020-09-25\">09/25 - Fri\r\n<option value=\"2020-09-23\">09/23 - Wed\r\n<option
+        value=\"2020-09-22\">09/22 - Tue\r\n<option value=\"2020-09-21\">09/21 - Mon\r\n<option
+        value=\"2020-09-18\">09/18 - Fri\r\n<option value=\"2020-09-17\">09/17 - Thu\r\n<option
+        value=\"2020-09-16\">09/16 - Wed\r\n<option value=\"2020-09-15\">09/15 - Tue\r\n<option
+        value=\"2020-09-14\">09/14 - Mon\r\n<option value=\"2020-09-11\">09/11 - Fri\r\n<option
+        value=\"2020-09-10\">09/10 - Thu\r\n<option value=\"2020-09-09\">09/09 - Wed\r\n<option
+        value=\"2020-09-08\">09/08 - Tue\r\n<option value=\"2020-08-27\">08/27 - Thu\r\n<option
+        value=\"2020-08-26\">08/26 - Wed\r\n<option value=\"2020-08-25\">08/25 - Tue\r\n<option
+        value=\"2020-08-24\">08/24 - Mon\r\n<option value=\"2020-08-20\">08/20 - Thu\r\n<option
+        value=\"2020-08-19\">08/19 - Wed\r\n<option value=\"2020-08-18\">08/18 - Tue\r\n<option
+        value=\"2020-08-17\">08/17 - Mon\r\n<option value=\"2020-08-13\">08/13 - Thu\r\n<option
+        value=\"2020-08-12\">08/12 - Wed\r\n<option value=\"2020-08-11\">08/11 - Tue\r\n<option
+        value=\"2020-08-10\">08/10 - Mon\r\n<option value=\"2020-08-06\">08/06 - Thu\r\n<option
+        value=\"2020-08-05\">08/05 - Wed\r\n<option value=\"2020-08-04\">08/04 - Tue\r\n<option
+        value=\"2020-08-03\">08/03 - Mon\r\n<option value=\"2020-07-30\">07/30 - Thu\r\n<option
+        value=\"2020-07-29\">07/29 - Wed\r\n<option value=\"2020-07-28\">07/28 - Tue\r\n<option
+        value=\"2020-07-27\">07/27 - Mon\r\n<option value=\"2020-07-23\">07/23 - Thu\r\n<option
+        value=\"2020-07-22\">07/22 - Wed\r\n<option value=\"2020-07-21\">07/21 - Tue\r\n<option
+        value=\"2020-07-20\">07/20 - Mon\r\n<option value=\"2020-07-17\">07/17 - Fri\r\n<option
+        value=\"2020-07-16\">07/16 - Thu\r\n<option value=\"2020-07-15\">07/15 - Wed\r\n<option
+        value=\"2020-07-14\">07/14 - Tue\r\n<option value=\"2020-07-13\">07/13 - Mon\r\n<option
+        value=\"2020-07-02\">07/02 - Thu\r\n<option value=\"2020-07-01\">07/01 - Wed\r\n<option
+        value=\"2020-06-30\">06/30 - Tue\r\n<option value=\"2020-06-29\">06/29 - Mon\r\n<option
+        value=\"2020-06-25\">06/25 - Thu\r\n<option value=\"2020-06-24\">06/24 - Wed\r\n<option
+        value=\"2020-06-23\">06/23 - Tue\r\n<option value=\"2020-06-22\">06/22 - Mon\r\n<option
+        value=\"2020-06-18\">06/18 - Thu\r\n<option value=\"2020-06-17\">06/17 - Wed\r\n<option
+        value=\"2020-06-16\">06/16 - Tue\r\n<option value=\"2020-06-15\">06/15 - Mon\r\n<option
+        value=\"2020-06-12\">06/12 - Fri\r\n<option value=\"2020-06-11\">06/11 - Thu\r\n<option
+        value=\"2020-06-10\">06/10 - Wed\r\n<option value=\"2020-06-09\">06/09 - Tue\r\n<option
+        value=\"2020-06-08\">06/08 - Mon\r\n<option value=\"2020-06-04\">06/04 - Thu\r\n<option
+        value=\"2020-06-03\">06/03 - Wed\r\n<option value=\"2020-06-02\">06/02 - Tue\r\n<option
+        value=\"2020-06-01\">06/01 - Mon\r\n<option value=\"2020-05-29\">05/29 - Fri\r\n<option
+        value=\"2020-05-28\">05/28 - Thu\r\n<option value=\"2020-05-27\">05/27 - Wed\r\n<option
+        value=\"2020-05-26\">05/26 - Tue\r\n<option value=\"2020-05-21\">05/21 - Thu\r\n<option
+        value=\"2020-05-20\">05/20 - Wed\r\n<option value=\"2020-05-19\">05/19 - Tue\r\n<option
+        value=\"2020-05-18\">05/18 - Mon\r\n<option value=\"2020-05-15\">05/15 - Fri\r\n<option
+        value=\"2020-05-14\">05/14 - Thu\r\n<option value=\"2020-05-13\">05/13 - Wed\r\n<option
+        value=\"2020-05-12\">05/12 - Tue\r\n<option value=\"2020-05-11\">05/11 - Mon\r\n<option
+        value=\"2020-05-07\">05/07 - Thu\r\n<option value=\"2020-05-06\">05/06 - Wed\r\n<option
+        value=\"2020-05-05\">05/05 - Tue\r\n<option value=\"2020-05-04\">05/04 - Mon\r\n<option
+        value=\"2020-05-01\">05/01 - Fri\r\n<option value=\"2020-04-30\">04/30 - Thu\r\n<option
+        value=\"2020-04-29\">04/29 - Wed\r\n<option value=\"2020-04-28\">04/28 - Tue\r\n<option
+        value=\"2020-04-27\">04/27 - Mon\r\n<option value=\"2020-04-26\">04/26 - Sun\r\n<option
+        value=\"2020-04-24\">04/24 - Fri\r\n<option value=\"2020-04-23\">04/23 - Thu\r\n<option
+        value=\"2020-04-22\">04/22 - Wed\r\n<option value=\"2020-04-21\">04/21 - Tue\r\n<option
+        value=\"2020-04-20\">04/20 - Mon\r\n<option value=\"2020-04-16\">04/16 - Thu\r\n<option
+        value=\"2020-04-15\">04/15 - Wed\r\n<option value=\"2020-04-14\">04/14 - Tue\r\n<option
+        value=\"2020-04-13\">04/13 - Mon\r\n<option value=\"2020-04-09\">04/09 - Thu\r\n<option
+        value=\"2020-04-08\">04/08 - Wed\r\n<option value=\"2020-04-07\">04/07 - Tue\r\n<option
+        value=\"2020-04-06\">04/06 - Mon\r\n<option value=\"2020-04-03\">04/03 - Fri\r\n<option
+        value=\"2020-04-02\">04/02 - Thu\r\n<option value=\"2020-04-01\">04/01 - Wed\r\n<option
+        value=\"2020-03-31\">03/31 - Tue\r\n<option value=\"2020-03-30\">03/30 - Mon\r\n<option
+        value=\"2020-03-27\">03/27 - Fri\r\n<option value=\"2020-03-26\">03/26 - Thu\r\n<option
+        value=\"2020-03-25\">03/25 - Wed\r\n<option value=\"2020-03-24\">03/24 - Tue\r\n<option
+        value=\"2020-03-20\">03/20 - Fri\r\n<option value=\"2020-03-19\">03/19 - Thu\r\n<option
+        value=\"2020-03-18\">03/18 - Wed\r\n<option value=\"2020-03-17\">03/17 - Tue\r\n<option
+        value=\"2020-03-16\">03/16 - Mon\r\n<option value=\"2020-03-12\">03/12 - Thu\r\n<option
+        value=\"2020-03-11\">03/11 - Wed\r\n<option value=\"2020-03-10\">03/10 - Tue\r\n<option
+        value=\"2020-03-09\">03/09 - Mon\r\n<option value=\"2020-03-05\">03/05 - Thu\r\n<option
+        value=\"2020-03-04\">03/04 - Wed\r\n<option value=\"2020-03-03\">03/03 - Tue\r\n<option
+        value=\"2020-03-02\">03/02 - Mon\r\n<option value=\"2020-02-28\">02/28 - Fri\r\n<option
+        value=\"2020-02-27\">02/27 - Thu\r\n<option value=\"2020-02-25\">02/25 - Tue\r\n<option
+        value=\"2020-02-24\">02/24 - Mon\r\n<option value=\"2020-02-21\">02/21 - Fri\r\n<option
+        value=\"2020-02-20\">02/20 - Thu\r\n<option value=\"2020-02-19\">02/19 - Wed\r\n<option
+        value=\"2020-02-18\">02/18 - Tue\r\n<option value=\"2020-02-14\">02/14 - Fri\r\n<option
+        value=\"2020-02-13\">02/13 - Thu\r\n<option value=\"2020-02-12\">02/12 - Wed\r\n<option
+        value=\"2020-02-11\">02/11 - Tue\r\n<option value=\"2020-02-10\">02/10 - Mon\r\n<option
+        value=\"2020-02-07\">02/07 - Fri\r\n<option value=\"2020-02-06\">02/06 - Thu\r\n<option
+        value=\"2020-02-05\">02/05 - Wed\r\n<option value=\"2020-02-04\">02/04 - Tue\r\n<option
+        value=\"2020-02-03\">02/03 - Mon\r\n<option value=\"2020-01-31\">01/31 - Fri\r\n<option
+        value=\"2020-01-30\">01/30 - Thu\r\n<option value=\"2020-01-29\">01/29 - Wed\r\n<option
+        value=\"2020-01-28\">01/28 - Tue\r\n<option value=\"2020-01-27\">01/27 - Mon\r\n<option
+        value=\"2020-01-24\">01/24 - Fri\r\n<option value=\"2020-01-23\">01/23 - Thu\r\n<option
+        value=\"2020-01-22\">01/22 - Wed\r\n<option value=\"2020-01-21\">01/21 - Tue\r\n<option
+        value=\"2020-01-16\">01/16 - Thu\r\n<option value=\"2020-01-15\">01/15 - Wed\r\n<option
+        value=\"2020-01-14\">01/14 - Tue\r\n<option value=\"2020-01-13\">01/13 - Mon\r\n<option
+        value=\"2020-01-10\">01/10 - Fri\r\n<option value=\"2020-01-09\">01/09 - Thu\r\n<option
+        value=\"2020-01-08\">01/08 - Wed\r\n<option value=\"2020-01-07\">01/07 - Tue\r\n<option
+        value=\"2020-01-06\">01/06 - Mon\r\n<option value=\"2020-01-03\">01/03 - Fri\r\n<option
+        value=\"2019-12-20\">12/20 - Fri\r\n<option value=\"2019-12-19\">12/19 - Thu\r\n<option
+        value=\"2019-12-18\">12/18 - Wed\r\n<option value=\"2019-12-17\">12/17 - Tue\r\n<option
+        value=\"2019-12-16\">12/16 - Mon\r\n<option value=\"2019-12-13\">12/13 - Fri\r\n<option
+        value=\"2019-12-12\">12/12 - Thu\r\n<option value=\"2019-12-11\">12/11 - Wed\r\n<option
+        value=\"2019-12-10\">12/10 - Tue\r\n<option value=\"2019-12-09\">12/09 - Mon\r\n<option
+        value=\"2019-12-06\">12/06 - Fri\r\n<option value=\"2019-12-05\">12/05 - Thu\r\n<option
+        value=\"2019-12-04\">12/04 - Wed\r\n<option value=\"2019-12-03\">12/03 - Tue\r\n<option
+        value=\"2019-12-02\">12/02 - Mon\r\n<option value=\"2019-11-26\">11/26 - Tue\r\n<option
+        value=\"2019-11-25\">11/25 - Mon\r\n<option value=\"2019-11-22\">11/22 - Fri\r\n<option
+        value=\"2019-11-21\">11/21 - Thu\r\n<option value=\"2019-11-20\">11/20 - Wed\r\n<option
+        value=\"2019-11-19\">11/19 - Tue\r\n<option value=\"2019-11-18\">11/18 - Mon\r\n<option
+        value=\"2019-11-15\">11/15 - Fri\r\n<option value=\"2019-11-14\">11/14 - Thu\r\n<option
+        value=\"2019-11-13\">11/13 - Wed\r\n<option value=\"2019-11-12\">11/12 - Tue\r\n<option
+        value=\"2019-11-11\">11/11 - Mon\r\n<option value=\"2019-11-08\">11/08 - Fri\r\n<option
+        value=\"2019-11-07\">11/07 - Thu\r\n<option value=\"2019-11-06\">11/06 - Wed\r\n<option
+        value=\"2019-11-05\">11/05 - Tue\r\n<option value=\"2019-11-04\">11/04 - Mon\r\n<option
+        value=\"2019-11-01\">11/01 - Fri\r\n<option value=\"2019-10-31\">10/31 - Thu\r\n<option
+        value=\"2019-10-30\">10/30 - Wed\r\n<option value=\"2019-10-29\">10/29 - Tue\r\n<option
+        value=\"2019-10-28\">10/28 - Mon\r\n<option value=\"2019-10-25\">10/25 - Fri\r\n<option
+        value=\"2019-10-24\">10/24 - Thu\r\n<option value=\"2019-10-23\">10/23 - Wed\r\n<option
+        value=\"2019-10-22\">10/22 - Tue\r\n<option value=\"2019-10-21\">10/21 - Mon\r\n<option
+        value=\"2019-10-18\">10/18 - Fri\r\n<option value=\"2019-10-17\">10/17 - Thu\r\n<option
+        value=\"2019-10-16\">10/16 - Wed\r\n<option value=\"2019-10-11\">10/11 - Fri\r\n<option
+        value=\"2019-10-10\">10/10 - Thu\r\n<option value=\"2019-10-08\">10/08 - Tue\r\n<option
+        value=\"2019-10-07\">10/07 - Mon\r\n<option value=\"2019-10-04\">10/04 - Fri\r\n<option
+        value=\"2019-09-27\">09/27 - Fri\r\n<option value=\"2019-09-26\">09/26 - Thu\r\n<option
+        value=\"2019-09-25\">09/25 - Wed\r\n<option value=\"2019-09-24\">09/24 - Tue\r\n<option
+        value=\"2019-09-23\">09/23 - Mon\r\n<option value=\"2019-09-20\">09/20 - Fri\r\n<option
+        value=\"2019-09-19\">09/19 - Thu\r\n<option value=\"2019-09-18\">09/18 - Wed\r\n<option
+        value=\"2019-09-17\">09/17 - Tue\r\n<option value=\"2019-09-16\">09/16 - Mon\r\n<option
+        value=\"2019-09-13\">09/13 - Fri\r\n<option value=\"2019-09-11\">09/11 - Wed\r\n<option
+        value=\"2019-09-10\">09/10 - Tue\r\n<option value=\"2019-09-09\">09/09 - Mon\r\n<option
+        value=\"2019-09-06\">09/06 - Fri\r\n<option value=\"2019-09-05\">09/05 - Thu\r\n<option
+        value=\"2019-08-27\">08/27 - Tue\r\n<option value=\"2019-08-26\">08/26 - Mon\r\n<option
+        value=\"2019-08-22\">08/22 - Thu\r\n<option value=\"2019-08-21\">08/21 - Wed\r\n<option
+        value=\"2019-08-20\">08/20 - Tue\r\n<option value=\"2019-08-19\">08/19 - Mon\r\n<option
+        value=\"2019-08-15\">08/15 - Thu\r\n<option value=\"2019-08-14\">08/14 - Wed\r\n<option
+        value=\"2019-08-13\">08/13 - Tue\r\n<option value=\"2019-08-12\">08/12 - Mon\r\n<option
+        value=\"2019-08-08\">08/08 - Thu\r\n<option value=\"2019-08-07\">08/07 - Wed\r\n<option
+        value=\"2019-08-06\">08/06 - Tue\r\n<option value=\"2019-08-05\">08/05 - Mon\r\n<option
+        value=\"2019-08-01\">08/01 - Thu\r\n<option value=\"2019-07-31\">07/31 - Wed\r\n<option
+        value=\"2019-07-30\">07/30 - Tue\r\n<option value=\"2019-07-29\">07/29 - Mon\r\n<option
+        value=\"2019-07-25\">07/25 - Thu\r\n<option value=\"2019-07-24\">07/24 - Wed\r\n<option
+        value=\"2019-07-23\">07/23 - Tue\r\n<option value=\"2019-07-22\">07/22 - Mon\r\n<option
+        value=\"2019-07-18\">07/18 - Thu\r\n<option value=\"2019-07-17\">07/17 - Wed\r\n<option
+        value=\"2019-07-16\">07/16 - Tue\r\n<option value=\"2019-07-15\">07/15 - Mon\r\n<option
+        value=\"2019-07-11\">07/11 - Thu\r\n<option value=\"2019-07-10\">07/10 - Wed\r\n<option
+        value=\"2019-07-09\">07/09 - Tue\r\n<option value=\"2019-06-21\">06/21 - Fri\r\n<option
+        value=\"2019-06-20\">06/20 - Thu\r\n<option value=\"2019-06-19\">06/19 - Wed\r\n<option
+        value=\"2019-06-18\">06/18 - Tue\r\n<option value=\"2019-06-17\">06/17 - Mon\r\n<option
+        value=\"2019-06-14\">06/14 - Fri\r\n<option value=\"2019-06-13\">06/13 - Thu\r\n<option
+        value=\"2019-06-12\">06/12 - Wed\r\n<option value=\"2019-06-11\">06/11 - Tue\r\n<option
+        value=\"2019-06-10\">06/10 - Mon\r\n<option value=\"2019-06-07\">06/07 - Fri\r\n<option
+        value=\"2019-06-05\">06/05 - Wed\r\n<option value=\"2019-06-04\">06/04 - Tue\r\n<option
+        value=\"2019-06-03\">06/03 - Mon\r\n<option value=\"2019-05-31\">05/31 - Fri\r\n<option
+        value=\"2019-05-23\">05/23 - Thu\r\n<option value=\"2019-05-22\">05/22 - Wed\r\n<option
+        value=\"2019-05-21\">05/21 - Tue\r\n<option value=\"2019-05-20\">05/20 - Mon\r\n<option
+        value=\"2019-05-17\">05/17 - Fri\r\n<option value=\"2019-05-16\">05/16 - Thu\r\n<option
+        value=\"2019-05-15\">05/15 - Wed\r\n<option value=\"2019-05-14\">05/14 - Tue\r\n<option
+        value=\"2019-05-13\">05/13 - Mon\r\n<option value=\"2019-05-10\">05/10 - Fri\r\n<option
+        value=\"2019-05-09\">05/09 - Thu\r\n<option value=\"2019-05-08\">05/08 - Wed\r\n<option
+        value=\"2019-05-07\">05/07 - Tue\r\n<option value=\"2019-05-06\">05/06 - Mon\r\n<option
+        value=\"2019-05-03\">05/03 - Fri\r\n<option value=\"2019-05-02\">05/02 - Thu\r\n<option
+        value=\"2019-05-01\">05/01 - Wed\r\n<option value=\"2019-04-30\">04/30 - Tue\r\n<option
+        value=\"2019-04-29\">04/29 - Mon\r\n<option value=\"2019-04-25\">04/25 - Thu\r\n<option
+        value=\"2019-04-24\">04/24 - Wed\r\n<option value=\"2019-04-23\">04/23 - Tue\r\n<option
+        value=\"2019-04-18\">04/18 - Thu\r\n<option value=\"2019-04-17\">04/17 - Wed\r\n<option
+        value=\"2019-04-16\">04/16 - Tue\r\n<option value=\"2019-04-15\">04/15 - Mon\r\n<option
+        value=\"2019-04-12\">04/12 - Fri\r\n<option value=\"2019-04-11\">04/11 - Thu\r\n<option
+        value=\"2019-04-10\">04/10 - Wed\r\n<option value=\"2019-04-09\">04/09 - Tue\r\n<option
+        value=\"2019-04-08\">04/08 - Mon\r\n<option value=\"2019-04-05\">04/05 - Fri\r\n<option
+        value=\"2019-04-04\">04/04 - Thu\r\n<option value=\"2019-04-03\">04/03 - Wed\r\n<option
+        value=\"2019-04-02\">04/02 - Tue\r\n<option value=\"2019-04-01\">04/01 - Mon\r\n<option
+        value=\"2019-03-29\">03/29 - Fri\r\n<option value=\"2019-03-28\">03/28 - Thu\r\n<option
+        value=\"2019-03-27\">03/27 - Wed\r\n<option value=\"2019-03-26\">03/26 - Tue\r\n<option
+        value=\"2019-03-25\">03/25 - Mon\r\n<option value=\"2019-03-22\">03/22 - Fri\r\n<option
+        value=\"2019-03-21\">03/21 - Thu\r\n<option value=\"2019-03-20\">03/20 - Wed\r\n<option
+        value=\"2019-03-19\">03/19 - Tue\r\n<option value=\"2019-03-14\">03/14 - Thu\r\n<option
+        value=\"2019-03-13\">03/13 - Wed\r\n<option value=\"2019-03-12\">03/12 - Tue\r\n<option
+        value=\"2019-03-11\">03/11 - Mon\r\n<option value=\"2019-03-08\">03/08 - Fri\r\n<option
+        value=\"2019-03-07\">03/07 - Thu\r\n<option value=\"2019-03-06\">03/06 - Wed\r\n<option
+        value=\"2019-03-05\">03/05 - Tue\r\n<option value=\"2019-03-04\">03/04 - Mon\r\n<option
+        value=\"2019-03-01\">03/01 - Fri\r\n<option value=\"2019-02-28\">02/28 - Thu\r\n<option
+        value=\"2019-02-27\">02/27 - Wed\r\n<option value=\"2019-02-26\">02/26 - Tue\r\n<option
+        value=\"2019-02-25\">02/25 - Mon\r\n<option value=\"2019-02-15\">02/15 - Fri\r\n<option
+        value=\"2019-02-14\">02/14 - Thu\r\n<option value=\"2019-02-08\">02/08 - Fri\r\n<option
+        value=\"2019-02-07\">02/07 - Thu\r\n<option value=\"2019-02-06\">02/06 - Wed\r\n<option
+        value=\"2019-02-05\">02/05 - Tue\r\n<option value=\"2019-02-04\">02/04 - Mon\r\n<option
+        value=\"2019-02-01\">02/01 - Fri\r\n<option value=\"2019-01-31\">01/31 - Thu\r\n<option
+        value=\"2019-01-30\">01/30 - Wed\r\n<option value=\"2019-01-29\">01/29 - Tue\r\n<option
+        value=\"2019-01-28\">01/28 - Mon\r\n<option value=\"2019-01-25\">01/25 - Fri\r\n<option
+        value=\"2019-01-24\">01/24 - Thu\r\n<option value=\"2019-01-23\">01/23 - Wed\r\n<option
+        value=\"2019-01-22\">01/22 - Tue\r\n<option value=\"2019-01-18\">01/18 - Fri\r\n<option
+        value=\"2019-01-17\">01/17 - Thu\r\n<option value=\"2019-01-16\">01/16 - Wed\r\n<option
+        value=\"2019-01-15\">01/15 - Tue\r\n<option value=\"2019-01-14\">01/14 - Mon\r\n<option
+        value=\"2019-01-11\">01/11 - Fri\r\n<option value=\"2019-01-10\">01/10 - Thu\r\n<option
+        value=\"2019-01-09\">01/09 - Wed\r\n<option value=\"2019-01-08\">01/08 - Tue\r\n<option
+        value=\"2019-01-07\">01/07 - Mon\r\n<option value=\"2019-01-04\">01/04 - Fri\r\n<option
+        value=\"2019-01-03\">01/03 - Thu\r\n<option value=\"2018-12-20\">12/20 - Thu\r\n<option
+        value=\"2018-12-19\">12/19 - Wed\r\n<option value=\"2018-12-18\">12/18 - Tue\r\n<option
+        value=\"2018-12-17\">12/17 - Mon\r\n<option value=\"2018-12-14\">12/14 - Fri\r\n<option
+        value=\"2018-12-13\">12/13 - Thu\r\n<option value=\"2018-12-12\">12/12 - Wed\r\n<option
+        value=\"2018-12-11\">12/11 - Tue\r\n<option value=\"2018-12-10\">12/10 - Mon\r\n<option
+        value=\"2018-12-06\">12/06 - Thu\r\n<option value=\"2018-12-04\">12/04 - Tue\r\n<option
+        value=\"2018-12-03\">12/03 - Mon\r\n<option value=\"2018-11-30\">11/30 - Fri\r\n<option
+        value=\"2018-11-29\">11/29 - Thu\r\n<option value=\"2018-11-28\">11/28 - Wed\r\n<option
+        value=\"2018-11-27\">11/27 - Tue\r\n<option value=\"2018-11-26\">11/26 - Mon\r\n<option
+        value=\"2018-11-20\">11/20 - Tue\r\n<option value=\"2018-11-19\">11/19 - Mon\r\n<option
+        value=\"2018-11-16\">11/16 - Fri\r\n<option value=\"2018-11-15\">11/15 - Thu\r\n<option
+        value=\"2018-11-14\">11/14 - Wed\r\n<option value=\"2018-11-13\">11/13 - Tue\r\n<option
+        value=\"2018-11-12\">11/12 - Mon\r\n<option value=\"2018-11-09\">11/09 - Fri\r\n<option
+        value=\"2018-11-08\">11/08 - Thu\r\n<option value=\"2018-11-07\">11/07 - Wed\r\n<option
+        value=\"2018-11-06\">11/06 - Tue\r\n<option value=\"2018-11-05\">11/05 - Mon\r\n<option
+        value=\"2018-11-02\">11/02 - Fri\r\n<option value=\"2018-11-01\">11/01 - Thu\r\n<option
+        value=\"2018-10-31\">10/31 - Wed\r\n<option value=\"2018-10-30\">10/30 - Tue\r\n<option
+        value=\"2018-10-29\">10/29 - Mon\r\n<option value=\"2018-10-25\">10/25 - Thu\r\n<option
+        value=\"2018-10-24\">10/24 - Wed\r\n<option value=\"2018-10-23\">10/23 - Tue\r\n<option
+        value=\"2018-10-22\">10/22 - Mon\r\n<option value=\"2018-10-19\">10/19 - Fri\r\n<option
+        value=\"2018-10-18\">10/18 - Thu\r\n<option value=\"2018-10-17\">10/17 - Wed\r\n<option
+        value=\"2018-10-16\">10/16 - Tue\r\n<option value=\"2018-10-15\">10/15 - Mon\r\n<option
+        value=\"2018-10-12\">10/12 - Fri\r\n<option value=\"2018-10-11\">10/11 - Thu\r\n<option
+        value=\"2018-10-10\">10/10 - Wed\r\n<option value=\"2018-10-09\">10/09 - Tue\r\n<option
+        value=\"2018-10-08\">10/08 - Mon\r\n<option value=\"2018-10-05\">10/05 - Fri\r\n<option
+        value=\"2018-10-04\">10/04 - Thu\r\n<option value=\"2018-10-03\">10/03 - Wed\r\n<option
+        value=\"2018-10-02\">10/02 - Tue\r\n<option value=\"2018-10-01\">10/01 - Mon\r\n<option
+        value=\"2018-09-28\">09/28 - Fri\r\n<option value=\"2018-09-27\">09/27 - Thu\r\n<option
+        value=\"2018-09-26\">09/26 - Wed\r\n<option value=\"2018-09-25\">09/25 - Tue\r\n<option
+        value=\"2018-09-24\">09/24 - Mon\r\n<option value=\"2018-09-21\">09/21 - Fri\r\n<option
+        value=\"2018-09-20\">09/20 - Thu\r\n<option value=\"2018-09-18\">09/18 - Tue\r\n<option
+        value=\"2018-09-17\">09/17 - Mon\r\n<option value=\"2018-09-14\">09/14 - Fri\r\n<option
+        value=\"2018-09-13\">09/13 - Thu\r\n<option value=\"2018-09-12\">09/12 - Wed\r\n<option
+        value=\"2018-09-11\">09/11 - Tue\r\n<option value=\"2018-09-07\">09/07 - Fri\r\n<option
+        value=\"2018-09-06\">09/06 - Thu\r\n<option value=\"2018-09-05\">09/05 - Wed\r\n<option
+        value=\"2018-09-04\">09/04 - Tue\r\n<option value=\"2018-08-24\">08/24 - Fri\r\n<option
+        value=\"2018-08-23\">08/23 - Thu\r\n<option value=\"2018-08-22\">08/22 - Wed\r\n<option
+        value=\"2018-08-21\">08/21 - Tue\r\n<option value=\"2018-08-20\">08/20 - Mon\r\n<option
+        value=\"2018-08-17\">08/17 - Fri\r\n<option value=\"2018-08-16\">08/16 - Thu\r\n<option
+        value=\"2018-08-15\">08/15 - Wed\r\n<option value=\"2018-08-14\">08/14 - Tue\r\n<option
+        value=\"2018-08-13\">08/13 - Mon\r\n<option value=\"2018-08-09\">08/09 - Thu\r\n<option
+        value=\"2018-08-08\">08/08 - Wed\r\n<option value=\"2018-08-07\">08/07 - Tue\r\n<option
+        value=\"2018-08-06\">08/06 - Mon\r\n<option value=\"2018-08-02\">08/02 - Thu\r\n<option
+        value=\"2018-08-01\">08/01 - Wed\r\n<option value=\"2018-07-31\">07/31 - Tue\r\n<option
+        value=\"2018-07-30\">07/30 - Mon\r\n<option value=\"2018-07-24\">07/24 - Tue\r\n<option
+        value=\"2018-07-23\">07/23 - Mon\r\n<option value=\"2018-07-19\">07/19 - Thu\r\n<option
+        value=\"2018-07-18\">07/18 - Wed\r\n<option value=\"2018-07-17\">07/17 - Tue\r\n<option
+        value=\"2018-07-16\">07/16 - Mon\r\n<option value=\"2018-07-12\">07/12 - Thu\r\n<option
+        value=\"2018-07-11\">07/11 - Wed\r\n<option value=\"2018-07-10\">07/10 - Tue\r\n<option
+        value=\"2018-07-09\">07/09 - Mon\r\n<option value=\"2018-07-06\">07/06 - Fri\r\n<option
+        value=\"2018-07-05\">07/05 - Thu\r\n<option value=\"2018-06-22\">06/22 - Fri\r\n<option
+        value=\"2018-06-21\">06/21 - Thu\r\n<option value=\"2018-06-20\">06/20 - Wed\r\n<option
+        value=\"2018-06-19\">06/19 - Tue\r\n<option value=\"2018-06-18\">06/18 - Mon\r\n<option
+        value=\"2018-06-15\">06/15 - Fri\r\n<option value=\"2018-06-14\">06/14 - Thu\r\n<option
+        value=\"2018-06-13\">06/13 - Wed\r\n<option value=\"2018-06-12\">06/12 - Tue\r\n<option
+        value=\"2018-06-11\">06/11 - Mon\r\n<option value=\"2018-06-08\">06/08 - Fri\r\n<option
+        value=\"2018-06-06\">06/06 - Wed\r\n<option value=\"2018-06-05\">06/05 - Tue\r\n<option
+        value=\"2018-06-04\">06/04 - Mon\r\n<option value=\"2018-06-01\">06/01 - Fri\r\n<option
+        value=\"2018-05-31\">05/31 - Thu\r\n<option value=\"2018-05-30\">05/30 - Wed\r\n<option
+        value=\"2018-05-29\">05/29 - Tue\r\n<option value=\"2018-05-24\">05/24 - Thu\r\n<option
+        value=\"2018-05-23\">05/23 - Wed\r\n<option value=\"2018-05-22\">05/22 - Tue\r\n<option
+        value=\"2018-05-21\">05/21 - Mon\r\n<option value=\"2018-05-17\">05/17 - Thu\r\n<option
+        value=\"2018-05-16\">05/16 - Wed\r\n<option value=\"2018-05-15\">05/15 - Tue\r\n<option
+        value=\"2018-05-14\">05/14 - Mon\r\n<option value=\"2018-05-11\">05/11 - Fri\r\n<option
+        value=\"2018-05-10\">05/10 - Thu\r\n<option value=\"2018-05-09\">05/09 - Wed\r\n<option
+        value=\"2018-05-08\">05/08 - Tue\r\n<option value=\"2018-05-07\">05/07 - Mon\r\n<option
+        value=\"2018-05-04\">05/04 - Fri\r\n<option value=\"2018-05-03\">05/03 - Thu\r\n<option
+        value=\"2018-05-02\">05/02 - Wed\r\n<option value=\"2018-05-01\">05/01 - Tue\r\n<option
+        value=\"2018-04-30\">04/30 - Mon\r\n<option value=\"2018-04-27\">04/27 - Fri\r\n<option
+        value=\"2018-04-26\">04/26 - Thu\r\n<option value=\"2018-04-25\">04/25 - Wed\r\n<option
+        value=\"2018-04-24\">04/24 - Tue\r\n<option value=\"2018-04-23\">04/23 - Mon\r\n<option
+        value=\"2018-04-20\">04/20 - Fri\r\n<option value=\"2018-04-19\">04/19 - Thu\r\n<option
+        value=\"2018-04-18\">04/18 - Wed\r\n<option value=\"2018-04-17\">04/17 - Tue\r\n<option
+        value=\"2018-04-16\">04/16 - Mon\r\n<option value=\"2018-04-13\">04/13 - Fri\r\n<option
+        value=\"2018-04-12\">04/12 - Thu\r\n<option value=\"2018-04-11\">04/11 - Wed\r\n<option
+        value=\"2018-04-10\">04/10 - Tue\r\n<option value=\"2018-04-09\">04/09 - Mon\r\n<option
+        value=\"2018-04-06\">04/06 - Fri\r\n<option value=\"2018-04-05\">04/05 - Thu\r\n<option
+        value=\"2018-03-29\">03/29 - Thu\r\n<option value=\"2018-03-28\">03/28 - Wed\r\n<option
+        value=\"2018-03-27\">03/27 - Tue\r\n<option value=\"2018-03-26\">03/26 - Mon\r\n<option
+        value=\"2018-03-23\">03/23 - Fri\r\n<option value=\"2018-03-22\">03/22 - Thu\r\n<option
+        value=\"2018-03-21\">03/21 - Wed\r\n<option value=\"2018-03-20\">03/20 - Tue\r\n<option
+        value=\"2018-03-19\">03/19 - Mon\r\n<option value=\"2018-03-16\">03/16 - Fri\r\n<option
+        value=\"2018-03-15\">03/15 - Thu\r\n<option value=\"2018-03-14\">03/14 - Wed\r\n<option
+        value=\"2018-03-13\">03/13 - Tue\r\n<option value=\"2018-03-12\">03/12 - Mon\r\n<option
+        value=\"2018-03-09\">03/09 - Fri\r\n<option value=\"2018-03-08\">03/08 - Thu\r\n<option
+        value=\"2018-03-07\">03/07 - Wed\r\n<option value=\"2018-03-06\">03/06 - Tue\r\n<option
+        value=\"2018-03-05\">03/05 - Mon\r\n<option value=\"2018-03-02\">03/02 - Fri\r\n<option
+        value=\"2018-03-01\">03/01 - Thu\r\n<option value=\"2018-02-28\">02/28 - Wed\r\n<option
+        value=\"2018-02-27\">02/27 - Tue\r\n<option value=\"2018-02-26\">02/26 - Mon\r\n<option
+        value=\"2018-02-09\">02/09 - Fri\r\n<option value=\"2018-02-08\">02/08 - Thu\r\n<option
+        value=\"2018-02-07\">02/07 - Wed\r\n<option value=\"2018-02-06\">02/06 - Tue\r\n<option
+        value=\"2018-02-05\">02/05 - Mon\r\n<option value=\"2018-02-02\">02/02 - Fri\r\n<option
+        value=\"2018-02-01\">02/01 - Thu\r\n<option value=\"2018-01-31\">01/31 - Wed\r\n<option
+        value=\"2018-01-30\">01/30 - Tue\r\n<option value=\"2018-01-29\">01/29 - Mon\r\n<option
+        value=\"2018-01-26\">01/26 - Fri\r\n<option value=\"2018-01-24\">01/24 - Wed\r\n<option
+        value=\"2018-01-23\">01/23 - Tue\r\n<option value=\"2018-01-22\">01/22 - Mon\r\n<option
+        value=\"2018-01-19\">01/19 - Fri\r\n<option value=\"2018-01-18\">01/18 - Thu\r\n<option
+        value=\"2018-01-17\">01/17 - Wed\r\n<option value=\"2018-01-16\">01/16 - Tue\r\n<option
+        value=\"2018-01-12\">01/12 - Fri\r\n<option value=\"2018-01-11\">01/11 - Thu\r\n<option
+        value=\"2018-01-10\">01/10 - Wed\r\n<option value=\"2018-01-09\">01/09 - Tue\r\n<option
+        value=\"2018-01-08\">01/08 - Mon\r\n<option value=\"2018-01-05\">01/05 - Fri\r\n<option
+        value=\"2018-01-04\">01/04 - Thu\r\n<option value=\"2018-01-03\">01/03 - Wed\r\n<option
+        value=\"2018-01-02\">01/02 - Tue\r\n<option value=\"2017-12-21\">12/21 - Thu\r\n<option
+        value=\"2017-12-20\">12/20 - Wed\r\n<option value=\"2017-12-19\">12/19 - Tue\r\n<option
+        value=\"2017-12-18\">12/18 - Mon\r\n<option value=\"2017-12-15\">12/15 - Fri\r\n<option
+        value=\"2017-12-14\">12/14 - Thu\r\n<option value=\"2017-12-13\">12/13 - Wed\r\n<option
+        value=\"2017-12-12\">12/12 - Tue\r\n<option value=\"2017-12-11\">12/11 - Mon\r\n<option
+        value=\"2017-12-08\">12/08 - Fri\r\n<option value=\"2017-12-07\">12/07 - Thu\r\n<option
+        value=\"2017-12-06\">12/06 - Wed\r\n<option value=\"2017-12-05\">12/05 - Tue\r\n<option
+        value=\"2017-12-04\">12/04 - Mon\r\n<option value=\"2017-12-01\">12/01 - Fri\r\n<option
+        value=\"2017-11-30\">11/30 - Thu\r\n<option value=\"2017-11-29\">11/29 - Wed\r\n<option
+        value=\"2017-11-28\">11/28 - Tue\r\n<option value=\"2017-11-21\">11/21 - Tue\r\n<option
+        value=\"2017-11-20\">11/20 - Mon\r\n<option value=\"2017-11-17\">11/17 - Fri\r\n<option
+        value=\"2017-11-16\">11/16 - Thu\r\n<option value=\"2017-11-15\">11/15 - Wed\r\n<option
+        value=\"2017-11-14\">11/14 - Tue\r\n<option value=\"2017-11-13\">11/13 - Mon\r\n<option
+        value=\"2017-11-09\">11/09 - Thu\r\n<option value=\"2017-11-08\">11/08 - Wed\r\n<option
+        value=\"2017-11-07\">11/07 - Tue\r\n<option value=\"2017-11-06\">11/06 - Mon\r\n<option
+        value=\"2017-11-03\">11/03 - Fri\r\n<option value=\"2017-11-02\">11/02 - Thu\r\n<option
+        value=\"2017-11-01\">11/01 - Wed\r\n<option value=\"2017-10-31\">10/31 - Tue\r\n<option
+        value=\"2017-10-30\">10/30 - Mon\r\n<option value=\"2017-10-27\">10/27 - Fri\r\n<option
+        value=\"2017-10-26\">10/26 - Thu\r\n<option value=\"2017-10-25\">10/25 - Wed\r\n<option
+        value=\"2017-10-24\">10/24 - Tue\r\n<option value=\"2017-10-23\">10/23 - Mon\r\n<option
+        value=\"2017-10-20\">10/20 - Fri\r\n<option value=\"2017-10-19\">10/19 - Thu\r\n<option
+        value=\"2017-10-18\">10/18 - Wed\r\n<option value=\"2017-10-17\">10/17 - Tue\r\n<option
+        value=\"2017-10-16\">10/16 - Mon\r\n<option value=\"2017-10-13\">10/13 - Fri\r\n<option
+        value=\"2017-10-12\">10/12 - Thu\r\n<option value=\"2017-10-11\">10/11 - Wed\r\n<option
+        value=\"2017-10-10\">10/10 - Tue\r\n<option value=\"2017-10-06\">10/06 - Fri\r\n<option
+        value=\"2017-10-05\">10/05 - Thu\r\n<option value=\"2017-10-04\">10/04 - Wed\r\n<option
+        value=\"2017-10-03\">10/03 - Tue\r\n<option value=\"2017-10-02\">10/02 - Mon\r\n<option
+        value=\"2017-09-29\">09/29 - Fri\r\n<option value=\"2017-09-28\">09/28 - Thu\r\n<option
+        value=\"2017-09-27\">09/27 - Wed\r\n<option value=\"2017-09-26\">09/26 - Tue\r\n<option
+        value=\"2017-09-25\">09/25 - Mon\r\n<option value=\"2017-09-21\">09/21 - Thu\r\n<option
+        value=\"2017-09-20\">09/20 - Wed\r\n<option value=\"2017-09-19\">09/19 - Tue\r\n<option
+        value=\"2017-09-18\">09/18 - Mon\r\n<option value=\"2017-09-15\">09/15 - Fri\r\n<option
+        value=\"2017-09-14\">09/14 - Thu\r\n<option value=\"2017-09-13\">09/13 - Wed\r\n<option
+        value=\"2017-09-12\">09/12 - Tue\r\n<option value=\"2017-09-11\">09/11 - Mon\r\n<option
+        value=\"2017-08-31\">08/31 - Thu\r\n<option value=\"2017-08-30\">08/30 - Wed\r\n<option
+        value=\"2017-08-29\">08/29 - Tue\r\n<option value=\"2017-08-28\">08/28 - Mon\r\n<option
+        value=\"2017-08-24\">08/24 - Thu\r\n<option value=\"2017-08-23\">08/23 - Wed\r\n<option
+        value=\"2017-08-22\">08/22 - Tue\r\n<option value=\"2017-08-21\">08/21 - Mon\r\n<option
+        value=\"2017-08-17\">08/17 - Thu\r\n<option value=\"2017-08-16\">08/16 - Wed\r\n<option
+        value=\"2017-08-15\">08/15 - Tue\r\n<option value=\"2017-08-14\">08/14 - Mon\r\n<option
+        value=\"2017-08-10\">08/10 - Thu\r\n<option value=\"2017-08-09\">08/09 - Wed\r\n<option
+        value=\"2017-08-08\">08/08 - Tue\r\n<option value=\"2017-08-07\">08/07 - Mon\r\n<option
+        value=\"2017-08-03\">08/03 - Thu\r\n<option value=\"2017-08-02\">08/02 - Wed\r\n<option
+        value=\"2017-08-01\">08/01 - Tue\r\n<option value=\"2017-07-31\">07/31 - Mon\r\n<option
+        value=\"2017-07-27\">07/27 - Thu\r\n<option value=\"2017-07-26\">07/26 - Wed\r\n<option
+        value=\"2017-07-25\">07/25 - Tue\r\n<option value=\"2017-07-24\">07/24 - Mon\r\n<option
+        value=\"2017-07-20\">07/20 - Thu\r\n<option value=\"2017-07-19\">07/19 - Wed\r\n<option
+        value=\"2017-07-18\">07/18 - Tue\r\n<option value=\"2017-07-17\">07/17 - Mon\r\n<option
+        value=\"2017-07-13\">07/13 - Thu\r\n<option value=\"2017-07-12\">07/12 - Wed\r\n<option
+        value=\"2017-07-11\">07/11 - Tue\r\n<option value=\"2017-07-10\">07/10 - Mon\r\n<option
+        value=\"2017-07-07\">07/07 - Fri\r\n<option value=\"2017-07-06\">07/06 - Thu\r\n<option
+        value=\"2017-07-05\">07/05 - Wed\r\n<option value=\"2017-06-23\">06/23 - Fri\r\n<option
+        value=\"2017-06-22\">06/22 - Thu\r\n<option value=\"2017-06-21\">06/21 - Wed\r\n<option
+        value=\"2017-06-20\">06/20 - Tue\r\n<option value=\"2017-06-19\">06/19 - Mon\r\n<option
+        value=\"2017-06-16\">06/16 - Fri\r\n<option value=\"2017-06-15\">06/15 - Thu\r\n<option
+        value=\"2017-06-14\">06/14 - Wed\r\n<option value=\"2017-06-13\">06/13 - Tue\r\n<option
+        value=\"2017-06-12\">06/12 - Mon\r\n<option value=\"2017-06-09\">06/09 - Fri\r\n<option
+        value=\"2017-06-08\">06/08 - Thu\r\n<option value=\"2017-06-07\">06/07 - Wed\r\n<option
+        value=\"2017-06-06\">06/06 - Tue\r\n<option value=\"2017-06-02\">06/02 - Fri\r\n<option
+        value=\"2017-06-01\">06/01 - Thu\r\n<option value=\"2017-05-31\">05/31 - Wed\r\n<option
+        value=\"2017-05-30\">05/30 - Tue\r\n<option value=\"2017-05-25\">05/25 - Thu\r\n<option
+        value=\"2017-05-24\">05/24 - Wed\r\n<option value=\"2017-05-23\">05/23 - Tue\r\n<option
+        value=\"2017-05-22\">05/22 - Mon\r\n<option value=\"2017-05-19\">05/19 - Fri\r\n<option
+        value=\"2017-05-18\">05/18 - Thu\r\n<option value=\"2017-05-17\">05/17 - Wed\r\n<option
+        value=\"2017-05-16\">05/16 - Tue\r\n<option value=\"2017-05-15\">05/15 - Mon\r\n<option
+        value=\"2017-05-12\">05/12 - Fri\r\n<option value=\"2017-05-11\">05/11 - Thu\r\n<option
+        value=\"2017-05-10\">05/10 - Wed\r\n<option value=\"2017-05-09\">05/09 - Tue\r\n<option
+        value=\"2017-05-08\">05/08 - Mon\r\n<option value=\"2017-05-05\">05/05 - Fri\r\n<option
+        value=\"2017-05-04\">05/04 - Thu\r\n<option value=\"2017-05-03\">05/03 - Wed\r\n<option
+        value=\"2017-05-02\">05/02 - Tue\r\n<option value=\"2017-05-01\">05/01 - Mon\r\n<option
+        value=\"2017-04-28\">04/28 - Fri\r\n<option value=\"2017-04-27\">04/27 - Thu\r\n<option
+        value=\"2017-04-26\">04/26 - Wed\r\n<option value=\"2017-04-25\">04/25 - Tue\r\n<option
+        value=\"2017-04-24\">04/24 - Mon\r\n<option value=\"2017-04-21\">04/21 - Fri\r\n<option
+        value=\"2017-04-20\">04/20 - Thu\r\n<option value=\"2017-04-19\">04/19 - Wed\r\n<option
+        value=\"2017-04-13\">04/13 - Thu\r\n<option value=\"2017-04-12\">04/12 - Wed\r\n<option
+        value=\"2017-04-11\">04/11 - Tue\r\n<option value=\"2017-04-10\">04/10 - Mon\r\n<option
+        value=\"2017-03-28\">03/28 - Tue\r\n<option value=\"2017-03-27\">03/27 - Mon\r\n<option
+        value=\"2017-03-24\">03/24 - Fri\r\n<option value=\"2017-03-23\">03/23 - Thu\r\n<option
+        value=\"2017-03-22\">03/22 - Wed\r\n<option value=\"2017-03-17\">03/17 - Fri\r\n<option
+        value=\"2017-03-16\">03/16 - Thu\r\n<option value=\"2017-03-15\">03/15 - Wed\r\n<option
+        value=\"2017-03-14\">03/14 - Tue\r\n<option value=\"2017-03-13\">03/13 - Mon\r\n<option
+        value=\"2017-03-10\">03/10 - Fri\r\n<option value=\"2017-03-09\">03/09 - Thu\r\n<option
+        value=\"2017-03-08\">03/08 - Wed\r\n<option value=\"2017-03-07\">03/07 - Tue\r\n<option
+        value=\"2017-03-06\">03/06 - Mon\r\n<option value=\"2017-03-03\">03/03 - Fri\r\n<option
+        value=\"2017-03-02\">03/02 - Thu\r\n<option value=\"2017-03-01\">03/01 - Wed\r\n<option
+        value=\"2017-02-28\">02/28 - Tue\r\n<option value=\"2017-02-27\">02/27 - Mon\r\n<option
+        value=\"2017-02-24\">02/24 - Fri\r\n<option value=\"2017-02-23\">02/23 - Thu\r\n<option
+        value=\"2017-02-22\">02/22 - Wed\r\n<option value=\"2017-02-17\">02/17 - Fri\r\n<option
+        value=\"2017-02-16\">02/16 - Thu\r\n<option value=\"2017-02-13\">02/13 - Mon\r\n<option
+        value=\"2017-02-10\">02/10 - Fri\r\n<option value=\"2017-02-09\">02/09 - Thu\r\n<option
+        value=\"2017-02-08\">02/08 - Wed\r\n<option value=\"2017-02-07\">02/07 - Tue\r\n<option
+        value=\"2017-02-06\">02/06 - Mon\r\n<option value=\"2017-02-03\">02/03 - Fri\r\n<option
+        value=\"2017-02-02\">02/02 - Thu\r\n<option value=\"2017-02-01\">02/01 - Wed\r\n<option
+        value=\"2017-01-31\">01/31 - Tue\r\n<option value=\"2017-01-30\">01/30 - Mon\r\n<option
+        value=\"2017-01-27\">01/27 - Fri\r\n<option value=\"2017-01-26\">01/26 - Thu\r\n<option
+        value=\"2017-01-25\">01/25 - Wed\r\n<option value=\"2017-01-24\">01/24 - Tue\r\n<option
+        value=\"2017-01-23\">01/23 - Mon\r\n<option value=\"2017-01-20\">01/20 - Fri\r\n<option
+        value=\"2017-01-19\">01/19 - Thu\r\n<option value=\"2017-01-18\">01/18 - Wed\r\n<option
+        value=\"2017-01-17\">01/17 - Tue\r\n<option value=\"2017-01-13\">01/13 - Fri\r\n<option
+        value=\"2017-01-12\">01/12 - Thu\r\n<option value=\"2017-01-11\">01/11 - Wed\r\n<option
+        value=\"2017-01-10\">01/10 - Tue\r\n<option value=\"2017-01-09\">01/09 - Mon\r\n<option
+        value=\"2017-01-06\">01/06 - Fri\r\n<option value=\"2017-01-05\">01/05 - Thu\r\n<option
+        value=\"2017-01-04\">01/04 - Wed\r\n<option value=\"2017-01-03\">01/03 - Tue\r\n<option
+        value=\"2016-12-22\">12/22 - Thu\r\n<option value=\"2016-12-21\">12/21 - Wed\r\n<option
+        value=\"2016-12-19\">12/19 - Mon\r\n<option value=\"2016-12-16\">12/16 - Fri\r\n<option
+        value=\"2016-12-15\">12/15 - Thu\r\n<option value=\"2016-12-14\">12/14 - Wed\r\n<option
+        value=\"2016-12-13\">12/13 - Tue\r\n<option value=\"2016-12-12\">12/12 - Mon\r\n<option
+        value=\"2016-12-08\">12/08 - Thu\r\n<option value=\"2016-12-07\">12/07 - Wed\r\n<option
+        value=\"2016-12-06\">12/06 - Tue\r\n<option value=\"2016-12-05\">12/05 - Mon\r\n<option
+        value=\"2016-12-01\">12/01 - Thu\r\n<option value=\"2016-11-30\">11/30 - Wed\r\n<option
+        value=\"2016-11-29\">11/29 - Tue\r\n<option value=\"2016-11-28\">11/28 - Mon\r\n<option
+        value=\"2016-11-22\">11/22 - Tue\r\n<option value=\"2016-11-21\">11/21 - Mon\r\n<option
+        value=\"2016-11-18\">11/18 - Fri\r\n<option value=\"2016-11-17\">11/17 - Thu\r\n<option
+        value=\"2016-11-16\">11/16 - Wed\r\n<option value=\"2016-11-15\">11/15 - Tue\r\n<option
+        value=\"2016-11-14\">11/14 - Mon\r\n<option value=\"2016-11-11\">11/11 - Fri\r\n<option
+        value=\"2016-11-10\">11/10 - Thu\r\n<option value=\"2016-11-09\">11/09 - Wed\r\n<option
+        value=\"2016-11-08\">11/08 - Tue\r\n<option value=\"2016-11-07\">11/07 - Mon\r\n<option
+        value=\"2016-11-04\">11/04 - Fri\r\n<option value=\"2016-11-03\">11/03 - Thu\r\n<option
+        value=\"2016-11-02\">11/02 - Wed\r\n<option value=\"2016-11-01\">11/01 - Tue\r\n<option
+        value=\"2016-10-31\">10/31 - Mon\r\n<option value=\"2016-10-28\">10/28 - Fri\r\n<option
+        value=\"2016-10-27\">10/27 - Thu\r\n<option value=\"2016-10-26\">10/26 - Wed\r\n<option
+        value=\"2016-10-25\">10/25 - Tue\r\n<option value=\"2016-10-24\">10/24 - Mon\r\n<option
+        value=\"2016-10-21\">10/21 - Fri\r\n<option value=\"2016-10-20\">10/20 - Thu\r\n<option
+        value=\"2016-10-19\">10/19 - Wed\r\n<option value=\"2016-10-18\">10/18 - Tue\r\n<option
+        value=\"2016-10-17\">10/17 - Mon\r\n<option value=\"2016-10-14\">10/14 - Fri\r\n<option
+        value=\"2016-10-13\">10/13 - Thu\r\n<option value=\"2016-10-11\">10/11 - Tue\r\n<option
+        value=\"2016-10-07\">10/07 - Fri\r\n<option value=\"2016-10-06\">10/06 - Thu\r\n<option
+        value=\"2016-10-05\">10/05 - Wed\r\n<option value=\"2016-10-04\">10/04 - Tue\r\n<option
+        value=\"2016-09-30\">09/30 - Fri\r\n<option value=\"2016-09-29\">09/29 - Thu\r\n<option
+        value=\"2016-09-28\">09/28 - Wed\r\n<option value=\"2016-09-27\">09/27 - Tue\r\n<option
+        value=\"2016-09-26\">09/26 - Mon\r\n<option value=\"2016-09-23\">09/23 - Fri\r\n<option
+        value=\"2016-09-22\">09/22 - Thu\r\n<option value=\"2016-09-21\">09/21 - Wed\r\n<option
+        value=\"2016-09-20\">09/20 - Tue\r\n<option value=\"2016-09-19\">09/19 - Mon\r\n<option
+        value=\"2016-09-16\">09/16 - Fri\r\n<option value=\"2016-09-15\">09/15 - Thu\r\n<option
+        value=\"2016-09-14\">09/14 - Wed\r\n<option value=\"2016-09-13\">09/13 - Tue\r\n<option
+        value=\"2016-09-12\">09/12 - Mon\r\n<option value=\"2016-09-09\">09/09 - Fri\r\n<option
+        value=\"2016-09-08\">09/08 - Thu\r\n<option value=\"2016-09-07\">09/07 - Wed\r\n<option
+        value=\"2016-09-06\">09/06 - Tue\r\n<option value=\"2016-09-01\">09/01 - Thu\r\n<option
+        value=\"2016-08-31\">08/31 - Wed\r\n<option value=\"2016-08-30\">08/30 - Tue\r\n<option
+        value=\"2016-08-29\">08/29 - Mon\r\n<option value=\"2016-08-25\">08/25 - Thu\r\n<option
+        value=\"2016-08-24\">08/24 - Wed\r\n<option value=\"2016-08-23\">08/23 - Tue\r\n<option
+        value=\"2016-08-22\">08/22 - Mon\r\n<option value=\"2016-08-05\">08/05 - Fri\r\n<option
+        value=\"2016-08-04\">08/04 - Thu\r\n<option value=\"2016-08-03\">08/03 - Wed\r\n<option
+        value=\"2016-08-02\">08/02 - Tue\r\n<option value=\"2016-08-01\">08/01 - Mon\r\n<option
+        value=\"2016-07-28\">07/28 - Thu\r\n<option value=\"2016-07-27\">07/27 - Wed\r\n<option
+        value=\"2016-07-26\">07/26 - Tue\r\n<option value=\"2016-07-25\">07/25 - Mon\r\n<option
+        value=\"2016-07-22\">07/22 - Fri\r\n<option value=\"2016-07-21\">07/21 - Thu\r\n<option
+        value=\"2016-07-20\">07/20 - Wed\r\n<option value=\"2016-07-19\">07/19 - Tue\r\n<option
+        value=\"2016-07-18\">07/18 - Mon\r\n<option value=\"2016-07-15\">07/15 - Fri\r\n<option
+        value=\"2016-07-14\">07/14 - Thu\r\n<option value=\"2016-07-13\">07/13 - Wed\r\n<option
+        value=\"2016-07-12\">07/12 - Tue\r\n<option value=\"2016-07-11\">07/11 - Mon\r\n<option
+        value=\"2016-07-01\">07/01 - Fri\r\n<option value=\"2016-06-30\">06/30 - Thu\r\n<option
+        value=\"2016-06-29\">06/29 - Wed\r\n<option value=\"2016-06-28\">06/28 - Tue\r\n<option
+        value=\"2016-06-27\">06/27 - Mon\r\n<option value=\"2016-06-24\">06/24 - Fri\r\n<option
+        value=\"2016-06-23\">06/23 - Thu\r\n<option value=\"2016-06-22\">06/22 - Wed\r\n<option
+        value=\"2016-06-21\">06/21 - Tue\r\n<option value=\"2016-06-20\">06/20 - Mon\r\n<option
+        value=\"2016-06-17\">06/17 - Fri\r\n<option value=\"2016-06-16\">06/16 - Thu\r\n<option
+        value=\"2016-06-15\">06/15 - Wed\r\n<option value=\"2016-06-14\">06/14 - Tue\r\n<option
+        value=\"2016-06-13\">06/13 - Mon\r\n<option value=\"2016-06-10\">06/10 - Fri\r\n<option
+        value=\"2016-06-09\">06/09 - Thu\r\n<option value=\"2016-06-08\">06/08 - Wed\r\n<option
+        value=\"2016-06-07\">06/07 - Tue\r\n<option value=\"2016-06-03\">06/03 - Fri\r\n<option
+        value=\"2016-06-02\">06/02 - Thu\r\n<option value=\"2016-06-01\">06/01 - Wed\r\n<option
+        value=\"2016-05-27\">05/27 - Fri\r\n<option value=\"2016-05-26\">05/26 - Thu\r\n<option
+        value=\"2016-05-25\">05/25 - Wed\r\n<option value=\"2016-05-24\">05/24 - Tue\r\n<option
+        value=\"2016-05-23\">05/23 - Mon\r\n<option value=\"2016-05-20\">05/20 - Fri\r\n<option
+        value=\"2016-05-19\">05/19 - Thu\r\n<option value=\"2016-05-18\">05/18 - Wed\r\n<option
+        value=\"2016-05-17\">05/17 - Tue\r\n<option value=\"2016-05-16\">05/16 - Mon\r\n<option
+        value=\"2016-05-13\">05/13 - Fri\r\n<option value=\"2016-05-12\">05/12 - Thu\r\n<option
+        value=\"2016-05-11\">05/11 - Wed\r\n<option value=\"2016-05-10\">05/10 - Tue\r\n<option
+        value=\"2016-05-09\">05/09 - Mon\r\n<option value=\"2016-05-06\">05/06 - Fri\r\n<option
+        value=\"2016-05-05\">05/05 - Thu\r\n<option value=\"2016-05-04\">05/04 - Wed\r\n<option
+        value=\"2016-05-03\">05/03 - Tue\r\n<option value=\"2016-05-02\">05/02 - Mon\r\n<option
+        value=\"2016-04-29\">04/29 - Fri\r\n<option value=\"2016-04-28\">04/28 - Thu\r\n<option
+        value=\"2016-04-27\">04/27 - Wed\r\n<option value=\"2016-04-26\">04/26 - Tue\r\n<option
+        value=\"2016-04-25\">04/25 - Mon\r\n<option value=\"2016-04-22\">04/22 - Fri\r\n<option
+        value=\"2016-04-21\">04/21 - Thu\r\n<option value=\"2016-04-20\">04/20 - Wed\r\n<option
+        value=\"2016-04-19\">04/19 - Tue\r\n<option value=\"2016-04-18\">04/18 - Mon\r\n\n\t\t\t\t</select>\n\t\t\t</td></tr>\n
+        \               \n\t\t\t<tr><td align=\"right\" class=\"aslabel\">Call: </td><td
+        align=\"right\">\n\t\t\t\t<select id=\"called\" name=\"called\" tabindex=\"3\"
+        class=\"selectBox\" onchange=\"this.form.submit();\">\n\t\t\t\t<option value=\"%\">All\n\t\t\t\t<option
+        value=5>Buy\n\t\t\t\t<option value=4>Pos Mention\n\t\t\t\t<option value=3>Hold\n\t\t\t\t<option
+        value=2>Neg Mention\n\t\t\t\t<option value=1>Sell\n\t\t\t\t</select>\n\t\t\t</td></tr>\n\n\t\t\t<tr><td
+        align=\"right\" class=\"aslabel\">Industry: </td><td align=\"right\">\n\t\t\t\t<select
+        id=\"industry\" name=\"industry\" tabindex=\"4\" class=\"selectBox\" onchange=\"this.form.submit();\">\n
+        \               <option value=\"%\">All\n                <option>Accident
+        & Health Insurance\r\n<option>Advertising & Marketing\r\n<option>Advertising
+        Agencies\r\n<option>Aerospace & Defense\r\n<option>Aerospace/Defense - Major
+        Diversified\r\n<option>Aerospace/Defense Products\r\n<option>Aerospace/Defense
+        Products & Services\r\n<option>Agricultural Chemicals\r\n<option>Agricultural
+        Inputs\r\n<option>Air Delivery & Freight Services\r\n<option>Air Services,
+        Other\r\n<option>Airports & Air Services\r\n<option>Aluminum\r\n<option>Apparel\r\n<option>Apparel
+        Footwear & Accessories\r\n<option>Apparel Manufacturing\r\n<option>Apparel
+        Retail\r\n<option>Apparel Stores\r\n<option>Appliances\r\n<option>Application
+        Service Providers\r\n<option>Application Software\r\n<option>Application Softwarei\r\n<option>Asset
+        Management\r\n<option>Auto & Truck Dealerships\r\n<option>Auto Dealerships\r\n<option>Auto
+        Manufacturers\r\n<option>Auto Manufacturers - Major\r\n<option>Auto Parts\r\n<option>Auto
+        Parts Stores\r\n<option>Auto Parts Wholesale\r\n<option>Banks - Regional\r\n<option>Banks
+        - Regional - US\r\n<option>Basic Materials Wholesale\r\n<option>Beverages\r\n<option>Beverages
+        - Brewers\r\n<option>Beverages - Soft Drinks\r\n<option>Beverages - Wineries
+        & Distillers\r\n<option>Bio Therapeutic Drugs\r\n<option>Biotechnology\r\n<option>Broadcasting\r\n<option>Broadcasting
+        - Radio\r\n<option>Broadcasting - TV\r\n<option>Building Materials\r\n<option>Building
+        Materials Wholesale\r\n<option>Building Products & Equipment\r\n<option>Busines
+        Software & Services\r\n<option>Business Equipment\r\n<option>Business Services\r\n<option>Business
+        Software & Services\r\n<option>Capital Markets\r\n<option>Catalog & Mail Order
+        Houses\r\n<option>CATV Systems\r\n<option>Cement\r\n<option>Chemicals\r\n<option>Chemicals
+        - Major Diversified\r\n<option>Cigarettes\r\n<option>Cleaning Products\r\n<option>Closed-End
+        Fund - Debt\r\n<option>Closed-End Fund - Equity\r\n<option>Cloud Computing
+        Services\r\n<option>Coal\r\n<option>Commercial Banks\r\n<option>Communication
+        Equipment\r\n<option>Communication Services\r\n<option>Communications & Networking\r\n<option>Communications
+        Equipment\r\n<option>Computer Based Systems\r\n<option>Computer Hardware\r\n<option>Computer
+        Peripherals\r\n<option>Computers Wholesale\r\n<option>Confectioners\r\n<option>Conglomerates\r\n<option>Consumer
+        Electronics\r\n<option>Consumer Services\r\n<option>Copper\r\n<option>Credit
+        Services\r\n<option>Cybersecurity\r\n<option>Dairy Products\r\n<option>Data
+        Centers\r\n<option>Data Processing Services\r\n<option>Data Storage Devices\r\n<option>Department
+        Stores\r\n<option>Diagnostic Substances\r\n<option>Diagnostics & Research\r\n<option>Discount,
+        Variety Stores\r\n<option>Diversified Communication Services\r\n<option>Diversified
+        Computer Systems\r\n<option>Diversified Electronics\r\n<option>Diversified
+        Industrials\r\n<option>Diversified Investments\r\n<option>Diversified Machinery\r\n<option>Diversified
+        Utilities\r\n<option>Doors & Window Frames\r\n<option>Drug Delivery\r\n<option>Drug
+        Manufacturers - Major\r\n<option>Drug Manufacturers - Other\r\n<option>Drug
+        Manufacturers - Specialty\r\n<option>Drug Manufacturers - Specialty & Generic\r\n<option>Drug
+        Manufacturers\u2014Specialty & Generic\r\n<option>Drug Related Products\r\n<option>Drug
+        Stores\r\n<option>Drugs - Generic\r\n<option>Drugs Wholesale\r\n<option>Education
+        & Training Services\r\n<option>Electric Utilities\r\n<option>Electrical Equipment
+        & Parts\r\n<option>Electronic Components\r\n<option>Electronic Equipment\r\n<option>Electronic
+        Gaming & Multimedia\r\n<option>Electronics Stores\r\n<option>Electronics Wholesale\r\n<option>Engineering
+        & Construction\r\n<option>Engineering and Construction\r\n<option>Entertainment\r\n<option>Entertainment
+        - Diversified\r\n<option>ETF\r\n<option>ETF - Exchange Traded Fund\r\n<option>Farm
+        & Construction Equipment\r\n<option>Farm & Construction Machinery\r\n<option>Farm
+        & Heavy Construction Machinery\r\n<option>Farm & Heavy Machinery\r\n<option>Farm
+        Products\r\n<option>Food - Major Diversified\r\n<option>Food Distribution\r\n<option>Food
+        Processing\r\n<option>Food Wholesale\r\n<option>Footwear\r\n<option>Foreign
+        Banks\r\n<option>Foreign Money Center Banks\r\n<option>Foreign Regional Banks\r\n<option>Foreign
+        Utilities\r\n<option>Furnishings, Fixtures & Appliances\r\n<option>Gambling\r\n<option>Gaming
+        Activities\r\n<option>Gas Utilities\r\n<option>General Building Materials\r\n<option>General
+        Contractors\r\n<option>General Entertainment\r\n<option>Gold\r\n<option>Grocery
+        Stores\r\n<option>Health Care Plans\r\n<option>Health Information Services\r\n<option>Health
+        Information Systems\r\n<option>Healthcare Information Services\r\n<option>Healthcare
+        Plans\r\n<option>Heavy Construction\r\n<option>Home Furnishing Stores\r\n<option>Home
+        Furnishings & Fixtures\r\n<option>Home Health Care\r\n<option>Home Improvement
+        Retail\r\n<option>Home Improvement Stores\r\n<option>Hospitals\r\n<option>Household
+        & Personal Products\r\n<option>Housewares & Accessories\r\n<option>Independent
+        Oil & Gas\r\n<option>Independent Power Producers\r\n<option>Industrial Distribution\r\n<option>Industrial
+        Electrical Equipment\r\n<option>Industrial Equipment & Components\r\n<option>Industrial
+        Equipment Wholesale\r\n<option>Industrial Machinery & Equipment\r\n<option>Industrial
+        Metals & Minerals\r\n<option>Industrial Metals & Mining\r\n<option>Information
+        & Delivery Services\r\n<option>Information Services\r\n<option>Information
+        Technology Services\r\n<option>Infrastructure Software\r\n<option>Insurance\r\n<option>Insurance
+        Brokers\r\n<option>Insurance\u2014Property & Casualty\r\n<option>Integrated
+        Freight & Logistics\r\n<option>Integrated Oil & Gas\r\n<option>Integrated
+        Shipping & Logistics\r\n<option>Internet Content & Information\r\n<option>Internet
+        Information Providers\r\n<option>Internet Retail\r\n<option>Internet Service
+        Providers\r\n<option>Internet Software & Services\r\n<option>Investment Brokerage
+        - National\r\n<option>Investment Brokerage - Regional\r\n<option>Jewelry Stores\r\n<option>Keryx
+        Biopharmaceutical\r\n<option>Leasing\r\n<option>Leisure\r\n<option>Life Insurance\r\n<option>LNG
+        Transportation & Storage\r\n<option>Lodging\r\n<option>Long Distance Carriers\r\n<option>Long-Term
+        Care Facilities\r\n<option>Lumber & Wood Production\r\n<option>Lumber, Wood
+        Production\r\n<option>Luxury Goods\r\n<option>Machine Tools & Accessories\r\n<option>Major
+        Airlines\r\n<option>Major Integrated Oil & Gas\r\n<option>Management Services\r\n<option>Marine
+        Shipping\r\n<option>Marketing Services\r\n<option>Meat Products\r\n<option>Media
+        - Diversifie\r\n<option>Media - Diversified\r\n<option>Medical Appliances\r\n<option>Medical
+        Appliances & Equipment\r\n<option>Medical Care Facilities\r\n<option>Medical
+        Devices\r\n<option>Medical Distribution\r\n<option>Medical Equipment Wholesale\r\n<option>Medical
+        Instruments & Supplies\r\n<option>Medical Laboratories & Research\r\n<option>Medical
+        Monitoring Systems\r\n<option>Metal Fabrication\r\n<option>Money Center Banks\r\n<option>Mortgage
+        Finance\r\n<option>Mortgage Investment\r\n<option>Movie Production, Theaters\r\n<option>Multimedia
+        & Graphics Software\r\n<option>Music & Video Stores\r\n<option>Network Equipment\r\n<option>Networking\r\n<option>Networking
+        & Communication Devices\r\n<option>Nonmetallic Mineral Mining\r\n<option>Oil
+        & Gas\r\n<option>Oil & Gas Drilling & Exploration\r\n<option>Oil & Gas Drilling
+        & Pipelines\r\n<option>Oil & Gas Equipment & Services\r\n<option>Oil & Gas
+        Integrated\r\n<option>Oil & Gas Midstream\r\n<option>Oil & Gas Pipelines\r\n<option>Oil
+        & Gas Production\r\n<option>Oil & Gas Refining & Marketing\r\n<option>Oil
+        & Gas Transportation Services\r\n<option>Oil and Gas ENP\r\n<option>Oil and
+        Gas Midstream\r\n<option>Other Industrial Metals & Mining\r\n<option>Packaged
+        Foods\r\n<option>Packaging & Container\r\n<option>Packaging & Containers\r\n<option>Paper
+        & Paper Products\r\n<option>Personal Computers\r\n<option>Personal Products\r\n<option>Personal
+        Services\r\n<option>Pollution & Treatment Controls\r\n<option>Printed Circuit
+        Boards\r\n<option>Processed & Packaged Goods\r\n<option>Processing Systems
+        & Products\r\n<option>Property & Casualty Insurance\r\n<option>Property and
+        Casualty Insurance\r\n<option>Property Management\r\n<option>Publishing\r\n<option>Publishing
+        - Newspapers\r\n<option>Publishing - Periodicals\r\n<option>Railroads\r\n<option>Real
+        Estate Development\r\n<option>Real Estate Services\r\n<option>Recreational
+        Goods, Other\r\n<option>Recreational Vehicles\r\n<option>Regional - Mid-Atlantic
+        Banks\r\n<option>Regional - Midwest Banks\r\n<option>Regional - Northeast
+        Banks\r\n<option>Regional - Pacific Banks\r\n<option>Regional - Southeast
+        Banks\r\n<option>Regional - Southwest Banks\r\n<option>Regional Airlines\r\n<option>Regional
+        Banks\r\n<option>Regulated Gas\r\n<option>REIT - Casino\r\n<option>REIT -
+        Diversified\r\n<option>REIT - Entertainment\r\n<option>REIT - Healthcare\r\n<option>REIT
+        - Healthcare Facilities\r\n<option>REIT - Hospitality\r\n<option>REIT - Hotel/Motel\r\n<option>REIT
+        - Industrial\r\n<option>REIT - Mortgage\r\n<option>REIT - Office\r\n<option>REIT
+        - Residential\r\n<option>REIT - Retail\r\n<option>REIT - Specialized\r\n<option>REIT
+        -Healthcare\r\n<option>Rental & Leasing Services\r\n<option>Residential Construction\r\n<option>Resorts
+        & Casinos\r\n<option>Restaurants\r\n<option>Rubber & Plastics\r\n<option>Savings
+        & Cooperative Banks\r\n<option>Savings & Loan\r\n<option>Savings & Loans\r\n<option>Scientific
+        & Technical Instruments\r\n<option>Security & Protection\r\n<option>Security
+        & Protection Services\r\n<option>Security Software & Services\r\n<option>Semiconductor
+        - Broad Line\r\n<option>Semiconductor - Integrated Circuits\r\n<option>Semiconductor
+        - Specialized\r\n<option>Semiconductor Equipment\r\n<option>Semiconductor
+        Equipment & Materials\r\n<option>Semiconductor- Memory Chips\r\n<option>Semiconductors\r\n<option>Shell
+        Companies\r\n<option>Shell Corporations\r\n<option>Shipping\r\n<option>Silver\r\n<option>Small
+        Tools & Accessories\r\n<option>Software\r\n<option>Software - Application\r\n<option>Software
+        - Infrastructure\r\n<option>Software Infrastructure\r\n<option>Solar\r\n<option>Special
+        Purpose Acquisition\r\n<option>Specialized Health Services\r\n<option>Specialty
+        Acquisition\r\n<option>Specialty Business Service\r\n<option>Specialty Chemicals\r\n<option>Specialty
+        Eateries\r\n<option>Specialty Finance\r\n<option>Specialty Industrial Machinery\r\n<option>Specialty
+        Industrial Materials\r\n<option>Specialty Purpose Acquisition\r\n<option>Specialty
+        Retail\r\n<option>Specialty Retail, Other\r\n<option>Sporting Activities\r\n<option>Sporting
+        Goods\r\n<option>Sporting Goods Stores\r\n<option>Staffing & Employment Services\r\n<option>Staffing
+        & Outsourcing Services\r\n<option>Steel & Iron\r\n<option>Surety & Title Insurance\r\n<option>Synthetics\r\n<option>Technical
+        & System Software\r\n<option>Technical Services\r\n<option>Telecom Services\r\n<option>Telecom
+        Services - Domestic\r\n<option>Textile - Apparel Clothing\r\n<option>Textile
+        - Apparel Footwear & Accessories\r\n<option>Tobacco\r\n<option>Toys & Games\r\n<option>Trucking\r\n<option>Trucks
+        & Other Vehicles\r\n<option>Universal Display\r\n<option>Uranium\r\n<option>Utilities
+        - Independent Power Producer\r\n<option>Utilities - Regulated Electric\r\n<option>Waste
+        Management\r\n<option>Water\r\n<option>Water Utilities\r\n<option>Wholesale,
+        Other\r\n<option>Wireless Communications\r\n<option>Wireless Technologies\r\n\n
+        \               </select>\n\t\t\t</td></tr>\n                \n\t\t\t<tr><td
+        align=\"right\" class=\"aslabel\">Sector: </td><td align=\"right\">\n\t\t\t\t<select
+        id=\"sector\" name=\"sector\" tabindex=\"5\" class=\"selectBox\" onchange=\"this.form.submit();\">\n
+        \               <option value=\"%\">All\n                <option>Apparel Stores\r\n<option>Basic
+        Material\r\n<option>Basic Materials\r\n<option>Basic Matierals\r\n<option>Basica
+        Materials\r\n<option>Conglomerates\r\n<option>Consumer Goods\r\n<option>Energy\r\n<option>Financial\r\n<option>Financials\r\n<option>H\r\n<option>Healthcare\r\n<option>Helathcare\r\n<option>Industrial
+        Goods\r\n<option>Services\r\n<option>Technology\r\n<option>Utilites\r\n<option>Utilities\r\n\n
+        \               </select>\n\t\t\t</td></tr>\n                \n\t\t\t<tr><td
+        align=\"right\" class=\"aslabel\">Segment: </td><td align=\"right\">\n\t\t\t\t<select
+        id=\"segment\" name=\"segment\" tabindex=\"6\" class=\"selectBox\" onchange=\"this.form.submit();\">\n\t\t\t\t<option
+        value=\"%\">All\n\t\t\t\t<option value=F>Featured Stock\n\t\t\t\t<option value=D>Discussed
+        Stock\n\t\t\t\t<option value=C>Caller's Stock\n\t\t\t\t<option value=I>Guest
+        Interview\n\t\t\t\t<option value=L>Lightning Round\n\t\t\t\t<option value=G>Game
+        Plan\n\t\t\t\t<option value=M>MailBag\n\t\t\t\t<option value=S>Sudden Death\n\t\t\t\t</select>\n\t\t\t</td></tr>\n\n\t\t\t<tr><td
+        align=\"right\" class=\"aslabel\">Price Greater: </td><td align=\"right\">\n\t\t\t\t<select
+        id=\"pricelow\" name=\"pricelow\" tabindex=\"7\" class=\"selectBox\" onchange=\"this.form.submit();\">\n
+        \               <option selected >0\n                <option >10\n                <option
+        >20\n                <option >30\n                <option >40\n                <option
+        >50\n                <option >60\n                <option >70\n                <option
+        >80\n                <option >90\n                <option >100\n                <option
+        >200\n                <option >300\n                <option >400\n                <option
+        >500\n                <option >750\n                <option >1000\n\t\t\t\t</select>\n\t\t\t</td></tr>\n\n\t\t\t<tr><td
+        align=\"right\" class=\"aslabel\">Price Less: </td><td align=\"right\">\n\t\t\t\t<select
+        id=\"pricehigh\" name=\"pricehigh\" tabindex=\"8\" class=\"selectBox\" onchange=\"this.form.submit();\">\n
+        \               <option selected >1000\n                <option >750\n                <option
+        >500\n                <option >400\n                <option >300\n                <option
+        >200\n                <option >100\n                <option >90\n                <option
+        >80\n                <option >70\n                <option >60\n                <option
+        >50\n                <option >40\n                <option >30\n                <option
+        >20\n                <option >10\n                </select>\n\t\t\t</td></tr>\n\t\t\t\n\t\t\t<tr><td
+        align=\"right\" class=\"aslabel\">Sort By: </td><td align=\"right\">\n\t\t\t\t<select
+        id=\"sortby\" name=\"sortby\" tabindex=\"9\" class=\"selectBox\" onchange=\"this.form.submit();\">\n
+        \               <option selected value=\"symbol\">Symbol\n                <option
+        value=\"airdate\">Showdate\n                <option value=\"icon\">Segment\n
+        \               <option value=\"called\">Call\n                <option value=\"callprice\">Price\n
+        \               </select> \n\t\t\t</td></tr>\n            \n            <tr><td
+        colspan=\"2\" align=\"right\" class=\"resetText\">\n            \t<a href=\"index.cfm?resetall=Y\"
+        onclick=\"resize()\">Reset Search Criteria</a>\n\t\t\t</td></tr>\n            \n\t\t</table>\n\t\t\n\t\t</form>\n\t</div>\n\n</div>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\t\n\n\t\n\n\n\n</body>\n</html>\n"
+    headers:
+      Cache-Control:
+      - private
+      Connection:
+      - Close
+      Content-Length:
+      - '69950'
+      Content-Type:
+      - text/html;charset=UTF-8
+      Date:
+      - Wed, 02 Mar 2022 02:56:09 GMT
+      Server:
+      - Microsoft-IIS/8.5
+      Set-Cookie:
+      - cfid=2c2be6dd-026b-457a-8668-a75ca1ac9526;Path=/;Expires=Tue, 22-Mar-2022
+        04:34:14 UTC;HTTPOnly
+      - cftoken=0;Path=/;Expires=Tue, 22-Mar-2022 04:34:14 UTC;HTTPOnly
+      X-AspNet-Version:
+      - 4.0.30319
+      X-Powered-By:
+      - ASP.NET
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/ASO?range=1d&interval=1h&includePrePost=False&events=div%2Csplits
+  response:
+    body:
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"ASO","exchangeName":"NMS","instrumentType":"EQUITY","firstTradeDate":1601645400,"regularMarketTime":1646168403,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":30.65,"chartPreviousClose":32.37,"previousClose":32.37,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1646125200,"end":1646145000,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1646145000,"end":1646168400,"gmtoffset":-18000},"post":{"timezone":"EST","start":1646168400,"end":1646182800,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","start":1646145000,"end":1646168400,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","ytd","max"]},"timestamp":[1646145000,1646148600,1646152200,1646155800,1646159400,1646163000,1646166600,1646168400],"indicators":{"quote":[{"open":[32.15999984741211,31.81999969482422,31.100000381469727,31.0,30.895000457763672,30.780000686645508,30.610000610351562,30.649999618530273],"low":[31.770000457763672,31.020000457763672,30.91010093688965,30.8700008392334,30.559999465942383,30.6200008392334,30.450000762939453,30.649999618530273],"volume":[379667,493261,352248,254181,225195,274534,309948,0],"close":[31.829999923706055,31.1200008392334,31.020000457763672,30.885400772094727,30.790000915527344,30.6200008392334,30.649999618530273,30.649999618530273],"high":[32.63999938964844,31.81999969482422,31.200000762939453,31.219999313354492,30.959999084472656,31.110000610351562,30.75,30.649999618530273]}]}}],"error":null}}'
+    headers:
+      Age:
+      - '0'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=15552000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=10, stale-while-revalidate=20
+      content-length:
+      - '1624'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Wed, 02 Mar 2022 02:56:09 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-chart-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '10'
+      x-request-id:
+      - d7593024-80d5-4a6b-891d-7b95ef98bd41
+      x-yahoo-request-id:
+      - 1o2jf4th1tn69
+      y-rid:
+      - 1o2jf4th1tn69
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/CRM?range=1d&interval=1h&includePrePost=False&events=div%2Csplits
+  response:
+    body:
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"CRM","exchangeName":"NYQ","instrumentType":"EQUITY","firstTradeDate":1087997400,"regularMarketTime":1646168402,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":208.89,"chartPreviousClose":210.53,"previousClose":210.53,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1646125200,"end":1646145000,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1646145000,"end":1646168400,"gmtoffset":-18000},"post":{"timezone":"EST","start":1646168400,"end":1646182800,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","start":1646145000,"end":1646168400,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1646145000,1646148600,1646152200,1646155800,1646159400,1646163000,1646166600,1646168400],"indicators":{"quote":[{"low":[209.8300018310547,209.99000549316406,208.67999267578125,210.34500122070312,210.1300048828125,210.22999572753906,208.4600067138672,208.88999938964844],"high":[214.38999938964844,212.6999969482422,211.07000732421875,212.3300018310547,211.8000030517578,213.0399932861328,210.9199981689453,208.88999938964844],"close":[212.1479949951172,210.63499450683594,210.89999389648438,210.50999450683594,211.52999877929688,210.2899932861328,208.77000427246094,208.88999938964844],"volume":[1831712,1203936,845396,832877,937611,1587293,2330798,0],"open":[213.39999389648438,212.11000061035156,210.67999267578125,210.875,210.41000366210938,211.5800018310547,210.27999877929688,208.88999938964844]}]}}],"error":null}}'
+    headers:
+      Age:
+      - '0'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=15552000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=10, stale-while-revalidate=20
+      content-length:
+      - '1660'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Wed, 02 Mar 2022 02:56:10 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-chart-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '14'
+      x-request-id:
+      - 3731b3dc-7cf0-4857-88f8-66766b16c02b
+      x-yahoo-request-id:
+      - 7r36a9th1tn6a
+      y-rid:
+      - 7r36a9th1tn6a
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/CTRA?range=1d&interval=1h&includePrePost=False&events=div%2Csplits
+  response:
+    body:
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"CTRA","exchangeName":"NYQ","instrumentType":"EQUITY","firstTradeDate":634487400,"regularMarketTime":1646168762,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":24.36,"chartPreviousClose":23.33,"previousClose":23.33,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1646125200,"end":1646145000,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1646145000,"end":1646168400,"gmtoffset":-18000},"post":{"timezone":"EST","start":1646168400,"end":1646182800,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","start":1646145000,"end":1646168400,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1646145000,1646148600,1646152200,1646155800,1646159400,1646163000,1646166600,1646168400],"indicators":{"quote":[{"low":[23.510000228881836,23.649999618530273,23.43000030517578,23.5,23.399999618530273,23.71500015258789,24.295000076293945,24.360000610351562],"volume":[2114892,1796224,1790945,1219923,1196801,2451479,3047728,0],"close":[24.0,23.809999465942383,23.59000015258789,23.594999313354492,23.7549991607666,24.322999954223633,24.3700008392334,24.360000610351562],"open":[23.68000030517578,24.0,23.815000534057617,23.59000015258789,23.594999313354492,23.7549991607666,24.31999969482422,24.360000610351562],"high":[24.360000610351562,24.010000228881836,23.850000381469727,23.860000610351562,23.770000457763672,24.354999542236328,24.575000762939453,24.360000610351562]}]}}],"error":null}}'
+    headers:
+      Age:
+      - '1'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=15552000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=10, stale-while-revalidate=20
+      content-length:
+      - '1628'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Wed, 02 Mar 2022 02:56:09 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-chart-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '12'
+      x-request-id:
+      - 639e88bf-5db1-4101-92c2-2679ffa152be
+      x-yahoo-request-id:
+      - 80cag3hh1tn6a
+      y-rid:
+      - 80cag3hh1tn6a
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/DPZ?range=1d&interval=1h&includePrePost=False&events=div%2Csplits
+  response:
+    body:
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"DPZ","exchangeName":"NYQ","instrumentType":"EQUITY","firstTradeDate":1089725400,"regularMarketTime":1646168402,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":432.21,"chartPreviousClose":432.21,"previousClose":432.21,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1646125200,"end":1646145000,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1646145000,"end":1646168400,"gmtoffset":-18000},"post":{"timezone":"EST","start":1646168400,"end":1646182800,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","start":1646145000,"end":1646168400,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1646145000,1646148600,1646152200,1646155800,1646159400,1646163000,1646166600,1646168400],"indicators":{"quote":[{"high":[424.3900146484375,448.989990234375,442.8450012207031,434.3900146484375,436.989990234375,437.8599853515625,435.0450134277344,432.2099914550781],"low":[391.6300048828125,413.3900146484375,428.8399963378906,430.1600036621094,430.6199951171875,430.0400085449219,430.2149963378906,432.2099914550781],"close":[420.70001220703125,442.3550109863281,431.6499938964844,430.8599853515625,435.5400085449219,432.3999938964844,432.17999267578125,432.2099914550781],"open":[394.5,420.635009765625,442.2300109863281,431.82000732421875,430.81500244140625,435.7799987792969,432.0299987792969,432.2099914550781],"volume":[441083,438344,121089,75572,71184,111446,188832,0]}]}}],"error":null}}'
+    headers:
+      Age:
+      - '0'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=15552000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=10, stale-while-revalidate=20
+      content-length:
+      - '1633'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Wed, 02 Mar 2022 02:56:10 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-chart-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '10'
+      x-request-id:
+      - 9be34c82-b925-42c0-8795-9102a1d13e3b
+      x-yahoo-request-id:
+      - 33lp7eth1tn6a
+      y-rid:
+      - 33lp7eth1tn6a
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/NIO?range=1d&interval=1h&includePrePost=False&events=div%2Csplits
+  response:
+    body:
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"NIO","exchangeName":"NYQ","instrumentType":"EQUITY","firstTradeDate":1536759000,"regularMarketTime":1646168573,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":21.87,"chartPreviousClose":22.84,"previousClose":22.84,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","end":1646145000,"start":1646125200,"gmtoffset":-18000},"regular":{"timezone":"EST","end":1646168400,"start":1646145000,"gmtoffset":-18000},"post":{"timezone":"EST","end":1646182800,"start":1646168400,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","end":1646168400,"start":1646145000,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","ytd","max"]},"timestamp":[1646145000,1646148600,1646152200,1646155800,1646159400,1646163000,1646166600,1646168400],"indicators":{"quote":[{"low":[21.95009994506836,22.170000076293945,21.84000015258789,21.921499252319336,21.885000228881836,22.01099967956543,21.729999542236328,21.8700008392334],"close":[22.690000534057617,22.218900680541992,22.099000930786133,21.989999771118164,22.1200008392334,22.028600692749023,21.8799991607666,21.8700008392334],"open":[22.559999465942383,22.700000762939453,22.219999313354492,22.09000015258789,21.979999542236328,22.1200008392334,22.02120018005371,21.8700008392334],"high":[23.344999313354492,22.760000228881836,22.219999313354492,22.239999771118164,22.16010093688965,22.459999084472656,22.040000915527344,21.8700008392334],"volume":[18754664,6998788,6283275,4095965,4145296,4940953,4204764,0]}]}}],"error":null}}'
+    headers:
+      Age:
+      - '0'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=15552000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=10, stale-while-revalidate=20
+      content-length:
+      - '1657'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Wed, 02 Mar 2022 02:56:10 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-chart-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '12'
+      x-request-id:
+      - 647568e3-8802-4b60-b1e7-6d60aab174d8
+      x-yahoo-request-id:
+      - 4fgq8p9h1tn6a
+      y-rid:
+      - 4fgq8p9h1tn6a
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/ORGN?range=1d&interval=1h&includePrePost=False&events=div%2Csplits
+  response:
+    body:
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"ORGN","exchangeName":"NCM","instrumentType":"EQUITY","firstTradeDate":1599226200,"regularMarketTime":1646168402,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":5.51,"chartPreviousClose":5.19,"previousClose":5.19,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1646125200,"end":1646145000,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1646145000,"end":1646168400,"gmtoffset":-18000},"post":{"timezone":"EST","start":1646168400,"end":1646182800,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","start":1646145000,"end":1646168400,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","ytd","max"]},"timestamp":[1646145000,1646148600,1646152200,1646155800,1646159400,1646163000,1646166600,1646168400],"indicators":{"quote":[{"volume":[431830,236921,162993,118548,199846,284061,233236,0],"high":[5.480000019073486,5.494999885559082,5.360000133514404,5.369999885559082,5.369999885559082,5.449999809265137,5.5,5.510000228881836],"open":[5.25,5.432000160217285,5.355000019073486,5.320000171661377,5.309999942779541,5.369999885559082,5.400000095367432,5.510000228881836],"close":[5.429999828338623,5.349999904632568,5.309999942779541,5.309999942779541,5.369999885559082,5.40500020980835,5.5,5.510000228881836],"low":[5.21999979019165,5.340000152587891,5.21999979019165,5.300000190734863,5.289999961853027,5.360000133514404,5.389999866485596,5.510000228881836]}]}}],"error":null}}'
+    headers:
+      Age:
+      - '0'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=15552000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=10, stale-while-revalidate=20
+      content-length:
+      - '1586'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Wed, 02 Mar 2022 02:56:10 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-chart-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '12'
+      x-request-id:
+      - 400fc015-9964-417c-a99b-7b3f9477091c
+      x-yahoo-request-id:
+      - 18k4i85h1tn6a
+      y-rid:
+      - 18k4i85h1tn6a
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/RCII?range=1d&interval=1h&includePrePost=False&events=div%2Csplits
+  response:
+    body:
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"RCII","exchangeName":"NMS","instrumentType":"EQUITY","firstTradeDate":791044200,"regularMarketTime":1646168404,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":27.08,"chartPreviousClose":28.41,"previousClose":28.41,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1646125200,"end":1646145000,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1646145000,"end":1646168400,"gmtoffset":-18000},"post":{"timezone":"EST","start":1646168400,"end":1646182800,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","start":1646145000,"end":1646168400,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1646145000,1646148600,1646152200,1646155800,1646159400,1646163000,1646166600,1646168400],"indicators":{"quote":[{"close":[26.975000381469727,26.540000915527344,26.114999771118164,26.704999923706055,26.81999969482422,27.010000228881836,27.09000015258789,27.079999923706055],"high":[28.280000686645508,27.049999237060547,26.56999969482422,26.809999465942383,26.829999923706055,27.270000457763672,27.190000534057617,27.079999923706055],"low":[26.799999237060547,26.510000228881836,26.059999465942383,26.05500030517578,26.260000228881836,26.81999969482422,26.760000228881836,27.079999923706055],"volume":[0,110642,176888,247509,155780,283777,286169,0],"open":[28.229999542236328,27.040000915527344,26.559999465942383,26.079999923706055,26.700000762939453,26.8799991607666,27.010000228881836,27.079999923706055]}]}}],"error":null}}'
+    headers:
+      Age:
+      - '0'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=15552000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=10, stale-while-revalidate=20
+      content-length:
+      - '1663'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Wed, 02 Mar 2022 02:56:10 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-chart-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '10'
+      x-request-id:
+      - 47175b01-8998-432c-8fcb-a402aeaf6ece
+      x-yahoo-request-id:
+      - fpmn749h1tn6a
+      y-rid:
+      - fpmn749h1tn6a
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/RILY?range=1d&interval=1h&includePrePost=False&events=div%2Csplits
+  response:
+    body:
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"RILY","exchangeName":"NGM","instrumentType":"EQUITY","firstTradeDate":1187011800,"regularMarketTime":1646168403,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":59.07,"chartPreviousClose":59.55,"previousClose":59.55,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1646125200,"end":1646145000,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1646145000,"end":1646168400,"gmtoffset":-18000},"post":{"timezone":"EST","start":1646168400,"end":1646182800,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","start":1646145000,"end":1646168400,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1646145000,1646148600,1646152200,1646155800,1646159400,1646163000,1646166600,1646168400],"indicators":{"quote":[{"volume":[46896,42972,20487,29635,42308,25458,54397,0],"high":[60.38249969482422,59.86000061035156,58.93000030517578,59.2599983215332,59.119998931884766,59.36000061035156,59.439998626708984,59.06999969482422],"open":[59.470001220703125,59.72999954223633,58.75,58.84000015258789,59.06999969482422,58.790000915527344,58.91999816894531,59.06999969482422],"low":[58.58000183105469,58.349998474121094,58.27000045776367,58.779998779296875,58.0,58.58000183105469,58.54999923706055,59.06999969482422],"close":[59.720001220703125,58.810001373291016,58.779998779296875,59.0,58.939998626708984,58.970001220703125,59.09000015258789,59.06999969482422]}]}}],"error":null}}'
+    headers:
+      Age:
+      - '0'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=15552000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=10, stale-while-revalidate=20
+      content-length:
+      - '1609'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Wed, 02 Mar 2022 02:56:10 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-chart-api--mtls-baseline-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '10'
+      x-request-id:
+      - 4f5395f4-d283-47b1-9a23-1727e94def0c
+      x-yahoo-request-id:
+      - 8j0os19h1tn6a
+      y-rid:
+      - 8j0os19h1tn6a
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/STEM?range=1d&interval=1h&includePrePost=False&events=div%2Csplits
+  response:
+    body:
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"STEM","exchangeName":"NYQ","instrumentType":"EQUITY","firstTradeDate":1602163800,"regularMarketTime":1646168402,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":9.33,"chartPreviousClose":9.52,"previousClose":9.52,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","end":1646145000,"start":1646125200,"gmtoffset":-18000},"regular":{"timezone":"EST","end":1646168400,"start":1646145000,"gmtoffset":-18000},"post":{"timezone":"EST","end":1646182800,"start":1646168400,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","end":1646168400,"start":1646145000,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","ytd","max"]},"timestamp":[1646145000,1646148600,1646152200,1646155800,1646159400,1646163000,1646166600,1646168400],"indicators":{"quote":[{"high":[9.744999885559082,9.779999732971191,9.289999961853027,9.460000038146973,9.489999771118164,9.550000190734863,9.414999961853027,9.329999923706055],"open":[9.5,9.734999656677246,9.279999732971191,9.239999771118164,9.420000076293945,9.470000267028809,9.385000228881836,9.329999923706055],"close":[9.729999542236328,9.289899826049805,9.25,9.414999961853027,9.470000267028809,9.390000343322754,9.319999694824219,9.329999923706055],"low":[9.470000267028809,9.260000228881836,9.100000381469727,9.15999984741211,9.310099601745605,9.369999885559082,9.255000114440918,9.329999923706055],"volume":[974935,755960,652251,356752,369068,533014,880158,0]}]}}],"error":null}}'
+    headers:
+      Age:
+      - '0'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=15552000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=10, stale-while-revalidate=20
+      content-length:
+      - '1602'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Wed, 02 Mar 2022 02:56:10 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-chart-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '14'
+      x-request-id:
+      - 524b307b-9712-4faa-b4fa-8b48b4f688df
+      x-yahoo-request-id:
+      - d1tqtoth1tn6a
+      y-rid:
+      - d1tqtoth1tn6a
+    status:
+      code: 200
+      message: OK
+version: 1
