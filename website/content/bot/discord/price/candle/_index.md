@@ -1,4 +1,4 @@
-candle - Displays a candle chart for a ticker, with selectable interval and period windows. A link to a dynmaic version of the chart is provided.
+candle - Displays a candle chart for a ticker, with selectable interval and period windows. A link to a dynamic version of the chart is provided.
 
 ![Screen Shot 2022-03-01 at 9 54 34 AM](https://user-images.githubusercontent.com/85772166/156222469-257f5009-9487-422b-94c9-ff864d1ae339.png)
 
