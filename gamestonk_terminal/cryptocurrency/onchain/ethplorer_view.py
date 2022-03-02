@@ -168,7 +168,7 @@ def display_address_history(
     Parameters
     ----------
     address: str
-        Ethereum nlockchain balance e.g. 0x3cD751E6b0078Be393132286c442345e5DC49699
+        Ethereum blockchain balance e.g. 0x3cD751E6b0078Be393132286c442345e5DC49699
     top: int
         Limit of transactions. Maximum 100
     sortby: str

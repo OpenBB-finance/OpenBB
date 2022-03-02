@@ -99,8 +99,8 @@ def display_real_gdp(
         External axes (1 axis is expected in the list), by default None
     """
     gdp_full = alphavantage_model.get_real_gdp(interval)
+
     if gdp_full.empty:
-        console.print("Error getting data.  Check API Key")
         return
     gdp = gdp_full[gdp_full.date >= f"{start_year}-01-01"]
     int_string = "Annual" if interval == "a" else "Quarterly"
