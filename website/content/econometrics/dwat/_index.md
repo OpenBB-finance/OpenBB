@@ -1,5 +1,5 @@
 ```
-usage: dwat [-h] [--export {csv,json,xlsx}]
+usage: dwat [-p] [-h] [--export {csv,json,xlsx}]
 ```
 
 Show autocorrelation tests from Durbin-Watson
@@ -8,10 +8,10 @@ The Durbin Watson (DW) statistic is a test for autocorrelation in the residuals 
 
 ```
 optional arguments:
+  -p, --plot            Plot the residuals (default: False)
   -h, --help            show this help message (default: False)
   --export {csv,json,xlsx}
                         Export raw data into csv, json, xlsx (default: )
-
 ```
 
 Example:
@@ -47,7 +47,7 @@ Notes:
 [2] The condition number is large, 1.16e+04. This might indicate that there are
 strong multicollinearity or other numerical problems.
 
-2022 Feb 24, 06:00 (✨) /statistics/ $ dwat
+2022 Feb 24, 06:00 (✨) /statistics/ $ dwat -p
 The result 0.04 is outside the range 1.5 and 2.5 and therefore autocorrelation can be problematic.
 Please consider lags of the dependent or independent variable.
 ```

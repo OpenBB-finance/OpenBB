@@ -10,14 +10,15 @@ Normal distribution, also known as the Gaussian distribution, is a probability d
 optional arguments:
   -c {OPTIONS}, --column {OPTIONS}
                         The column and name of the database you want to test normality for (default: None)
+  -p, --plot            Whether you wish to plot a histogram to visually depict normality (default: False)
   -h, --help            show this help message (default: False)
   --export {csv,json,xlsx,png,jpg,pdf,svg}
-                        Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg (default: )load 
+                        Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg (default: )
 ```
 
 Example for stock data (which is not normally distributed):
 ```
-2022 Feb 24, 05:31 (✨) /econometrics/ $ norm adj_close-tsla
+2022 Feb 24, 05:31 (✨) /econometrics/ $ norm adj_close-tsla -p
                  Normality Test [Column: adj_close | Dataset: tsla]                  
 ┏━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┓
 ┃           ┃ Kurtosis ┃ Skewness ┃ Jarque-Bera ┃ Shapiro-Wilk ┃ Kolmogorov-Smirnov ┃
@@ -33,7 +34,7 @@ Example for stock data (which is not normally distributed):
 
 Example for returns (which is usually normally distributed):
 ```
-2022 Feb 24, 05:36 (✨) /econometrics/ $ norm return-msft
+2022 Feb 24, 05:36 (✨) /econometrics/ $ norm return-msft -p
                    Normality Test [Column: return | Dataset: msft]                   
 ┏━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┓
 ┃           ┃ Kurtosis ┃ Skewness ┃ Jarque-Bera ┃ Shapiro-Wilk ┃ Kolmogorov-Smirnov ┃
