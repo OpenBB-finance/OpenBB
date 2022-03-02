@@ -18,6 +18,9 @@ from gamestonk_terminal.common.behavioural_analysis import (
     stocktwits_view,
     twitter_view,
 )
+from gamestonk_terminal.stocks.behavioural_analysis.finnhub_view import (
+    display_stock_price_headlines_sentiment,
+)
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -64,6 +67,7 @@ class BehaviouralAnalysisController(StockBaseController):
         "getdd",
         "hist",
         "trend",
+        "snews",
     ]
 
     historical_sort = ["date", "value"]
@@ -93,6 +97,7 @@ class BehaviouralAnalysisController(StockBaseController):
 [src][Finbrain][/src]
     headlines     sentiment from 15+ major news headlines
 [src][Finnhub][/src]
+    snews         stock price displayed over sentiment of news headlines
     stats         sentiment stats including comparison with sector{has_ticker_end}
 [src][Reddit][/src]
     wsb           show what WSB gang is up to in subreddit wallstreetbets
@@ -143,6 +148,23 @@ class BehaviouralAnalysisController(StockBaseController):
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             reddit_view.display_watchlist(num=ns_parser.limit)
+
+    @log_start_end(log=logger)
+    def call_snews(self, other_args: List[str]):
+        """Process snews command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="snews",
+            description="""Display stock price and headlines sentiment using VADER model over time. [Source: Finnhub]""",
+        )
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if ns_parser:
+            display_stock_price_headlines_sentiment(
+                ticker=self.ticker, export=ns_parser.export
+            )
 
     @log_start_end(log=logger)
     def call_spac(self, other_args: List[str]):
