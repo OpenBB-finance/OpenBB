@@ -54,6 +54,8 @@ main:
             ref: "/stocks/discovery/rtat"
           - name: divcal
             ref: "/stocks/discovery/divcal"
+          - name: cramer
+            ref: "/stocks/discovery/cramer"
       - name: Sector and Industry Analysis (SIA)
         ref: "/stocks/sia"
         sub:
