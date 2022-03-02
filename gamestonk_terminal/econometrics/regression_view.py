@@ -20,7 +20,10 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_dwat(
-    dependent_variable: pd.Series, residual: pd.DataFrame, export: str = ""
+    dependent_variable: pd.Series,
+    residual: pd.DataFrame,
+    plot: bool = False,
+    export: str = "",
 ):
     """Show Durbin-Watson autocorrelation tests
 
@@ -30,6 +33,8 @@ def display_dwat(
         The dependent variable.
     residual : OLS Model
         The residual of an OLS model.
+    plot : bool
+        Whether to plot the residuals
     export : str
         Format to export data
     """
@@ -46,12 +51,13 @@ def display_dwat(
             f"can be problematic. Please consider lags of the dependent or independent variable."
         )
 
-    plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    plt.scatter(dependent_variable, residual)
-    plt.axhline(y=0, color="r", linestyle="-")
-    plt.ylabel("Residual")
-    plt.xlabel(dependent_variable.name.capitalize())
-    plt.title("Plot of Residuals")
+    if plot:
+        plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        plt.scatter(dependent_variable, residual)
+        plt.axhline(y=0, color="r", linestyle="-")
+        plt.ylabel("Residual")
+        plt.xlabel(dependent_variable.name.capitalize())
+        plt.title("Plot of Residuals")
 
     export_data(
         export,

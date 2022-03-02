@@ -168,6 +168,22 @@ class EconometricsController(BaseController):
             choices: dict = {c: {} for c in self.controller_choices}
             choices["load"] = {c: None for c in self.DATA_FILES.keys()}
             choices["show"] = {c: None for c in self.files}
+
+            for feature in ["export", "options", "show", "desc", "clear", "index"]:
+                choices[feature] = {c: None for c in self.files}
+
+            for feature in [
+                "general",
+                "type",
+                "plot",
+                "norm",
+                "root",
+                "granger",
+                "cointegration",
+                "regressions",
+            ]:
+                choices[feature] = dict()
+
             self.choices = choices
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -673,7 +689,10 @@ Tests
 
             if not pd.Index(np.arange(0, len(dataset))).equals(dataset.index):
                 console.print("As an index has been set, resetting the current index.")
-                dataset = dataset.reset_index()
+                if dataset.index.name in dataset.columns:
+                    dataset = dataset.reset_index(drop=True)
+                else:
+                    dataset = dataset.reset_index(drop=False)
 
             for column in columns:
                 if column not in dataset.columns:
@@ -1280,6 +1299,15 @@ Tests
             description="Show autocorrelation tests from Durbin-Watson",
         )
 
+        parser.add_argument(
+            "-p",
+            "--plot",
+            help="Plot Z-Values",
+            dest="plot",
+            action="store_true",
+            default=False,
+        )
+
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
@@ -1318,6 +1346,9 @@ Tests
             help="The lags for the Breusch-Godfrey test",
             default=3,
         )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
 
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
