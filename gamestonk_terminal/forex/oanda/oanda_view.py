@@ -37,7 +37,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-@check_api_key(["OANDA_TOKEN", "OANDA_ACCOUNT_TYPE"])
+@check_api_key(["OANDA_ACCOUNT", "OANDA_TOKEN", "OANDA_ACCOUNT_TYPE"])
 def get_fx_price(account: str, instrument: Union[str, None]):
     """View price for loaded currency pair.
 
@@ -60,7 +60,7 @@ def get_fx_price(account: str, instrument: Union[str, None]):
 
 
 @log_start_end(log=logger)
-@check_api_key(["OANDA_TOKEN", "OANDA_ACCOUNT_TYPE"])
+@check_api_key(["OANDA_ACCOUNT", "OANDA_TOKEN", "OANDA_ACCOUNT_TYPE"])
 def get_account_summary(accountID: str):
     """Print Oanda account summary.
 
@@ -77,7 +77,7 @@ def get_account_summary(accountID: str):
 
 
 @log_start_end(log=logger)
-@check_api_key(["OANDA_TOKEN", "OANDA_ACCOUNT_TYPE"])
+@check_api_key(["OANDA_ACCOUNT", "OANDA_TOKEN", "OANDA_ACCOUNT_TYPE"])
 def get_order_book(
     accountID: str,
     instrument: str,
@@ -115,7 +115,7 @@ def get_order_book(
 
 
 @log_start_end(log=logger)
-@check_api_key(["OANDA_TOKEN", "OANDA_ACCOUNT_TYPE"])
+@check_api_key(["OANDA_ACCOUNT", "OANDA_TOKEN", "OANDA_ACCOUNT_TYPE"])
 def get_position_book(
     accountID: str, instrument: str, external_axes: Optional[List[plt.Axes]] = None
 ):
@@ -153,7 +153,7 @@ def get_position_book(
 
 
 @log_start_end(log=logger)
-@check_api_key(["OANDA_TOKEN", "OANDA_ACCOUNT_TYPE"])
+@check_api_key(["OANDA_ACCOUNT", "OANDA_TOKEN", "OANDA_ACCOUNT_TYPE"])
 def list_orders(accountID: str, order_state: str, order_count: int):
     """List order history.
 
@@ -175,7 +175,7 @@ def list_orders(accountID: str, order_state: str, order_count: int):
 
 
 @log_start_end(log=logger)
-@check_api_key(["OANDA_TOKEN", "OANDA_ACCOUNT_TYPE"])
+@check_api_key(["OANDA_ACCOUNT", "OANDA_TOKEN", "OANDA_ACCOUNT_TYPE"])
 def create_order(accountID: str, instrument: str, price: int, units: int):
     """Create a buy/sell order.
 
@@ -199,7 +199,7 @@ def create_order(accountID: str, instrument: str, price: int, units: int):
 
 
 @log_start_end(log=logger)
-@check_api_key(["OANDA_TOKEN", "OANDA_ACCOUNT_TYPE"])
+@check_api_key(["OANDA_ACCOUNT", "OANDA_TOKEN", "OANDA_ACCOUNT_TYPE"])
 def cancel_pending_order(accountID: str, orderID: str):
     """Cancel a Pending Order.
 
@@ -219,7 +219,7 @@ def cancel_pending_order(accountID: str, orderID: str):
 
 
 @log_start_end(log=logger)
-@check_api_key(["OANDA_TOKEN", "OANDA_ACCOUNT_TYPE"])
+@check_api_key(["OANDA_ACCOUNT", "OANDA_TOKEN", "OANDA_ACCOUNT_TYPE"])
 def get_open_positions(accountID: str):
     """Get information about open positions.
 
@@ -237,7 +237,7 @@ def get_open_positions(accountID: str):
 
 
 @log_start_end(log=logger)
-@check_api_key(["OANDA_TOKEN", "OANDA_ACCOUNT_TYPE"])
+@check_api_key(["OANDA_ACCOUNT", "OANDA_TOKEN", "OANDA_ACCOUNT_TYPE"])
 def get_pending_orders(accountID: str):
     """Get information about pending orders.
 
@@ -260,7 +260,7 @@ def get_pending_orders(accountID: str):
 # a dataframe or a boolean (False) value that has no .empty and no .to_string
 # pylint: disable=no-member
 @log_start_end(log=logger)
-@check_api_key(["OANDA_TOKEN", "OANDA_ACCOUNT_TYPE"])
+@check_api_key(["OANDA_ACCOUNT", "OANDA_TOKEN", "OANDA_ACCOUNT_TYPE"])
 def get_open_trades(accountID: str):
     """View open trades.
 
@@ -280,7 +280,7 @@ def get_open_trades(accountID: str):
 
 
 @log_start_end(log=logger)
-@check_api_key(["OANDA_TOKEN", "OANDA_ACCOUNT_TYPE"])
+@check_api_key(["OANDA_ACCOUNT", "OANDA_TOKEN", "OANDA_ACCOUNT_TYPE"])
 def close_trade(accountID: str, orderID: str, units: Union[int, None]):
     """Close a trade.
 
@@ -304,7 +304,7 @@ def close_trade(accountID: str, orderID: str, units: Union[int, None]):
 
 
 @log_start_end(log=logger)
-@check_api_key(["OANDA_TOKEN", "OANDA_ACCOUNT_TYPE"])
+@check_api_key(["OANDA_ACCOUNT", "OANDA_TOKEN", "OANDA_ACCOUNT_TYPE"])
 def show_candles(
     instrument: str,
     granularity: str,
@@ -393,7 +393,7 @@ def show_candles(
 
 
 @log_start_end(log=logger)
-@check_api_key(["OANDA_TOKEN", "OANDA_ACCOUNT_TYPE"])
+@check_api_key(["OANDA_ACCOUNT", "OANDA_TOKEN", "OANDA_ACCOUNT_TYPE"])
 def calendar(instrument: str, days: int):
     """View calendar of significant events.
 
