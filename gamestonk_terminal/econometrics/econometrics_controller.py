@@ -1302,7 +1302,7 @@ Tests
         parser.add_argument(
             "-p",
             "--plot",
-            help="Plot Z-Values",
+            help="Plot the residuals",
             dest="plot",
             action="store_true",
             default=False,
