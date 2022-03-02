@@ -831,6 +831,17 @@ optional = false
 python-versions = "*"
 
 [[package]]
+name = "finnhub-python"
+version = "2.4.10"
+description = "Finnhub API"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+requests = ">=2.22.0"
+
+[[package]]
 name = "finviz"
 version = "1.4.3"
 description = "Unofficial API for FinViz.com"
@@ -3988,7 +3999,7 @@ prediction = ["tensorflow"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8,<3.10"
-content-hash = "9c4b1ab073be95f2bbabdc2c1309ec600cf0fe5309a00f35a7d927eecd4c12a9"
+content-hash = "5627f70eca6b911461177c361ec7374f5f3576c96dbc9052887ab0c7749b4e5a"
 
 [metadata.files]
 absl-py = [
@@ -4556,6 +4567,10 @@ filelock = [
 financedatabase = [
     {file = "financedatabase-1.0.2-py3-none-any.whl", hash = "sha256:2fbe8acea1a12d2e3371c81b075f357f61f34cae5e6d94de9b3afd68ff3c3a19"},
     {file = "financedatabase-1.0.2.tar.gz", hash = "sha256:7b03d37ef5eef8433380d92122f2fd24bad741971518eaf1bd4a9c6f30763e23"},
+]
+finnhub-python = [
+    {file = "finnhub-python-2.4.10.tar.gz", hash = "sha256:5be38a649ad2e81f1aaa41375d7870b1dec0e6f64055813b3d30e4e534222b8f"},
+    {file = "finnhub_python-2.4.10-py3-none-any.whl", hash = "sha256:6bc25e57aabb942fa6a62bc95cd4451a3f974ed71a27b4b2e5fab54d85003a51"},
 ]
 finviz = [
     {file = "finviz-1.4.3.tar.gz", hash = "sha256:26e15a4c0ffbff2fa9bc04b588f2edaf33caa7e7344e5f64e74437ea98641943"},
