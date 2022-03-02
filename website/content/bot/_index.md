@@ -7,7 +7,7 @@ Each feature includes a description and the ability to select optional arguments
 
 The only social media stock bot with dynamic charting libraries able to deliver queries directly to tablets and mobile devices. 
 
-Our repository is built to be a cross-platform bot, meaning you can take the GameStonks Bot with you, whereever you migrate to!
+Our repository is built to be a cross-platform bot, meaning you can take the GameStonks Bot with you, wherever you migrate to!
 
 For local or new remote server installations, follow the instructions here: https://github.com/GamestonkTerminal/GamestonkTerminal/blob/main/bots/README.md
 
