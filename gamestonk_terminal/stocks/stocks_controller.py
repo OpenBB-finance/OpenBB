@@ -11,7 +11,7 @@ import yfinance as yf
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.common import newsapi_view, newsapi_model
+from gamestonk_terminal.common import newsapi_view
 from gamestonk_terminal.common.quantitative_analysis import qa_view
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
@@ -280,43 +280,6 @@ Stock: [/param]{stock_text}
                                     f"{num} is not a valid moving average, must be integer"
                                 )
 
-                    markers_news = list()
-                    if ns_parser.news:
-                        articles = newsapi_model.get_news(
-                            self.ticker, self.start, show_newest=False
-                        )
-
-                        if articles:
-                            start_stock = self.stock.index[0].date()
-                            end_stock = self.stock.index[-1].date()
-
-                            last_date_used = None
-                            for article in articles:
-                                if article["source"]["name"] == "Seeking Alpha":
-                                    date_article = datetime.strptime(
-                                        article["publishedAt"]
-                                        .replace("T", " ")
-                                        .replace("Z", ""),
-                                        "%Y-%m-%d %H:%M:%S",
-                                    ).date()
-                                    if start_stock <= date_article <= end_stock:
-                                        s_date_article = article["publishedAt"].split(
-                                            "T"
-                                        )[0]
-
-                                        if last_date_used:
-                                            if date_article != last_date_used:
-                                                console.print(f"\n{s_date_article}")
-                                                markers_news.append(date_article)
-                                        else:
-                                            console.print(f"\n{s_date_article}")
-                                            markers_news.append(s_date_article)
-
-                                        last_date_used = date_article
-                                        console.print(
-                                            f"\n   {article['title']}\n{article['url']}"
-                                        )
-
                     stocks_helper.display_candle(
                         s_ticker=self.ticker,
                         df_stock=data,
@@ -324,7 +287,6 @@ Stock: [/param]{stock_text}
                         intraday=self.interval != "1440min",
                         add_trend=ns_parser.trendlines,
                         ma=mov_avgs,
-                        markers_news=markers_news,
                     )
             else:
                 console.print("No ticker loaded. First use `load {ticker}`\n")

@@ -274,7 +274,6 @@ def display_candle(
     intraday: bool = False,
     add_trend: bool = False,
     ma: Optional[Iterable[int]] = None,
-    markers_news: Optional[List[str]] = None,
     asset_type: str = "Stock",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -294,8 +293,6 @@ def display_candle(
         Flag to add high and low trends to chart
     ma: Tuple[int]
         Moving averages to add to the candle
-    markers_news: List
-        List of dates with marker news
     asset_type_: str
         String to include in title
     external_axes : Optional[List[plt.Axes]], optional
@@ -303,9 +300,6 @@ def display_candle(
     asset_type_: str
         String to include in title
     """
-    if not markers_news:
-        markers_news = []
-
     if add_trend:
         if (df_stock.index[1] - df_stock.index[0]).total_seconds() >= 86400:
             df_stock = find_trendline(df_stock, "OC_High", "high")
@@ -346,7 +340,6 @@ def display_candle(
                 "volume_width": 0.8,
             },
             "warn_too_much_data": 10000,
-            "vlines": markers_news,
         }
 
         kwargs = {"mav": ma} if ma else {}
@@ -541,7 +534,6 @@ def display_candle(
             )
 
         fig.show(config=dict({"scrollZoom": True}))
-    console.print("")
 
 
 def quote(other_args: List[str], s_ticker: str):
