@@ -45,8 +45,9 @@ def handle_groupme(request):
                 for i, val in enumerate(full_cmd[1:]):
                     req_name = list(selected.get("required", {}).keys())[i]
                     required = [str(x) for x in selected.get("required", [])[req_name]]
-                    if isinstance(val, str):
+                    if isinstance(val, str) and req_name == "ticker":
                         val = val.upper()
+                    print(f"{val} in {required}")
                     if val not in required:
                         syntax = get_syntax(selected, full_cmd[0])
                         send_message(

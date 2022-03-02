@@ -202,7 +202,9 @@ def image_border(file, **kwargs):
     if "fig" in kwargs:
         fig = kwargs["fig"]
         fig.write_image(imagefile)
-    img = Image.open(imagefile)
+        img = Image.open(imagefile)
+    else:
+        img = Image.open(file)
     im_bg = Image.open(cfg.IMG_BG)
     h = img.height + 240
     w = img.width + 520
