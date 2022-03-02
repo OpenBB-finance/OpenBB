@@ -1,9 +1,10 @@
 """Groupme"""
 __docformat__ = "numpy"
 
+from typing import Optional
+import io
 import json
 import os
-import io
 import pathlib
 import urllib.request as urllib
 
@@ -20,6 +21,15 @@ group_to_bot = {
     os.getenv("TEST_GROUP_ID"): os.getenv("TEST_GROUP_BOT"),
     os.getenv("MAIN_GROUP_ID"): os.getenv("MAIN_GROUP_BOT"),
 }
+
+
+def shorten_message(message: Optional[str]) -> Optional[str]:
+    # TODO: make the cutoff algorithm better
+    if message is None:
+        return message
+    if len(message) > 990:
+        return f"{message[:990]}..."
+    return message
 
 
 def upload_image(image: str, local: bool) -> requests.Response:
@@ -39,10 +49,8 @@ def upload_image(image: str, local: bool) -> requests.Response:
 def send_message(message: str, group_id: str) -> requests.Response:
     mid = "/bots/post"
     bot_id = group_to_bot[group_id]
-    # TODO: make the cutoff algorithm better
-    if len(message) > 990:
-        message = f"{message[:990]}..."
-    return requests.post(url=f"{base+mid}?bot_id={bot_id}&text={message}")
+    cleaned = shorten_message(message)
+    return requests.post(url=f"{base+mid}?bot_id={bot_id}&text={cleaned}")
 
 
 def send_image(
@@ -56,6 +64,7 @@ def send_image(
     image_url = response_json["payload"]["picture_url"]
     mid = "/bots/post"
     bot_id = group_to_bot[group_id]
+    text = shorten_message(text)
     data = {
         "bot_id": bot_id,
         "text": text,
