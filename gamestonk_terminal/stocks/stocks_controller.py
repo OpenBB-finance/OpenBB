@@ -234,13 +234,6 @@ Stock: [/param]{stock_text}
             help="Add moving average in number of days to plot and separate by a comma. Example: 20,30,50",
             default="20,50",
         )
-        parser.add_argument(
-            "--news",
-            action="store_true",
-            default=False,
-            help="Flag to flag when certain news occurrend.",
-            dest="news",
-        )
 
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
