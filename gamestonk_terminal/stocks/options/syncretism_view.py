@@ -158,19 +158,20 @@ def view_historical_greeks(
         (ax,) = external_axes
 
     # Theo I am sorry but I don't know how to get different line colors and move the delta
-    im1 = ax.plot(df.index, df[greek], label=greek.title())
+    im1 = ax.plot(df.index, df[greek], label=greek.title(), color=theme.up_color)
     ax.set_ylabel(greek)
     ax1 = ax.twinx()
-    im2 = ax1.plot(df.index, df.price, label="Stock Price")
+    im2 = ax1.plot(df.index, df.price, label="Stock Price", color=theme.down_color)
     ax1.set_ylabel(f"{ticker} Price")
     ax.set_title(
-        f"{greek} historical for {ticker.upper()} {strike} {['Call','Put'][put]}"
+        f"{(greek).capitalize()} historical for {ticker.upper()} {strike} {['Call','Put'][put]}"
     )
-
+    ax.set_xlim(df.index[0], df.index[-1])
     ims = im1 + im2
     labels = [lab.get_label() for lab in ims]
+
     ax.legend(ims, labels, loc=0)
-    theme.style_primary_axis(ax)
+    theme.style_twin_axes(ax, ax1)
 
     if not external_axes:
         theme.visualize_output()
