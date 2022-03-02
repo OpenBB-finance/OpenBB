@@ -232,7 +232,7 @@ Stock: [/param]{stock_text}
             dest="mov_avg",
             type=str,
             help="Add moving average in number of days to plot and separate by a comma. Example: 20,30,50",
-            default="20,50",
+            default=None,
         )
 
         ns_parser = parse_known_args_and_warn(
@@ -261,10 +261,11 @@ Stock: [/param]{stock_text}
 
                     data = stocks_helper.process_candle(self.stock)
 
+                    mov_avgs = []
+
                     if ns_parser.mov_avg:
 
                         mov_list = (num for num in ns_parser.mov_avg.split(","))
-                        mov_avgs = []
 
                         for num in mov_list:
                             try:
