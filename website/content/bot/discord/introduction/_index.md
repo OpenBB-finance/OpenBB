@@ -1,6 +1,6 @@
 GamestonksBot is an easy-to-use and interactive bot for querying stock, options, futures, indices, crypto and more. The confusion in knowing the exact command structure for each feature is no longer a problem because autocomplete guides you through it, which lets you concentrate on the things that really matter - the data. 
 
-Getting started is as easy as entering the slash key in a server where the bot is hosted, or in a DM to GameStonksBot#4609. It takes only minutes to learn how to use, but with a little curiousity, you can get lost for hours exploring all of the possibilities, finding boundless inspiration for new trade ideas. Browse or search the documentation for more detailed information about each feature. A text list containing the variable options unique to that feature is accessible by using: /cmds
+Getting started is as easy as entering the slash key in a server where the bot is hosted, or in a DM to GameStonksBot#4609. It takes only minutes to learn how to use, but with a little curiosity, you can get lost for hours exploring all of the possibilities, finding boundless inspiration for new trade ideas. Browse or search the documentation for more detailed information about each feature. A text list containing the variable options unique to that feature is accessible by using: /cmds
 
 Please join the Community & Support Discord Server where you can find helpful resources like index and symbol lists: https://discord.com/invite/Up2QGbMKHY 
 
