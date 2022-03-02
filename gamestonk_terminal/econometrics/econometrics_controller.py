@@ -294,7 +294,7 @@ Tests
 
                     self.update_runtime_choices()
 
-                    console.print("")
+                    console.print()
 
     def call_export(self, other_args: List[str]):
         """Process export command"""
@@ -367,7 +367,7 @@ Tests
 
             self.update_runtime_choices()
 
-        console.print("")
+        console.print()
 
     def call_options(self, other_args: List[str]):
         """Process options command"""
@@ -399,7 +399,7 @@ Tests
                 self.datasets, ns_parser.name, ns_parser.export
             )
 
-        console.print("")
+        console.print()
 
     def call_plot(self, other_args: List[str]):
         """Process plot command"""
@@ -516,7 +516,7 @@ Tests
                 df.head(ns_parser.limit),
             )
 
-        return console.print("")
+        return console.print()
 
     def call_desc(self, other_args: List[str]):
         """Process desc command"""
@@ -558,7 +558,7 @@ Tests
                     df,
                 )
 
-        console.print("")
+        console.print()
 
     def call_type(self, other_args: List[str]):
         """Process type"""
@@ -622,7 +622,7 @@ Tests
                         title=str(dataset_name),
                     )
 
-            console.print("")
+            console.print()
 
     def call_index(self, other_args: List[str]):
         """Process index"""
@@ -704,7 +704,7 @@ Tests
 
             self.update_runtime_choices()
 
-        return console.print("")
+        return console.print()
 
     def call_clean(self, other_args: List[str]):
         """Process clean"""
@@ -766,7 +766,7 @@ Tests
                 ns_parser.limit,
             )
 
-        console.print("")
+        console.print()
 
     def call_modify(self, other_args: List[str]):
         """Process modify"""
@@ -938,7 +938,7 @@ Tests
 
             self.update_runtime_choices()
 
-        console.print("")
+        console.print()
 
     def call_ols(self, other_args: List[str]):
         """Process ols command"""
@@ -1234,7 +1234,7 @@ Tests
                     df,
                 )
             else:
-                return console.print("")
+                return console.print()
 
     def call_compare(self, other_args: List[str]):
         """Process compare command"""
@@ -1269,7 +1269,7 @@ Tests
                     df,
                 )
             else:
-                console.print("")
+                console.print()
 
     def call_dwat(self, other_args: List[str]):
         """Process unitroot command"""
@@ -1283,23 +1283,23 @@ Tests
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
+        if ns_parser:
+            if not self.regression["OLS"]["model"]:
+                console.print(
+                    "Please perform an OLS regression before estimating the Durbin-Watson statistic."
+                )
+            else:
+                dependent_variable = self.regression["OLS"]["data"][
+                    self.regression["OLS"]["dependent"]
+                ]
 
-        if not self.regression["OLS"]["model"]:
-            console.print(
-                "Please perform an OLS regression before estimating the Durbin-Watson statistic."
-            )
-        else:
-            dependent_variable = self.regression["OLS"]["data"][
-                self.regression["OLS"]["dependent"]
-            ]
+                gamestonk_terminal.econometrics.regression_view.display_dwat(
+                    dependent_variable,
+                    self.regression["OLS"]["model"].resid,
+                    ns_parser.export,
+                )
 
-            gamestonk_terminal.econometrics.regression_view.display_dwat(
-                dependent_variable,
-                self.regression["OLS"]["model"].resid,
-                ns_parser.export,
-            )
-
-            console.print("")
+                console.print()
 
     def call_bgod(self, other_args):
         """Process bgod command"""
@@ -1333,7 +1333,7 @@ Tests
                     self.regression["OLS"]["model"], ns_parser.lags, ns_parser.export
                 )
 
-        console.print("")
+        console.print()
 
     def call_bpag(self, other_args):
         """Process bpag command"""
@@ -1358,7 +1358,7 @@ Tests
                     self.regression["OLS"]["model"], ns_parser.export
                 )
 
-        console.print("")
+        console.print()
 
     def call_granger(self, other_args: List[str]):
         """Process granger command"""
@@ -1421,7 +1421,7 @@ Tests
                     "for example: granger adj_close-aapl adj_close-tsla"
                 )
 
-        console.print("")
+        console.print()
 
     def call_coint(self, other_args: List[str]):
         """Process coint command"""
@@ -1477,4 +1477,4 @@ Tests
                 datasets, ns_parser.significant, ns_parser.plot, ns_parser.export
             )
 
-        console.print("")
+        console.print()
