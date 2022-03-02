@@ -24,7 +24,6 @@ async def read_root():
 async def write_root(request: Request):
     # TODO: Make this work for more bots
     req_info = await request.body()
-    print(req_info)
     value = handle_groupme(req_info)
     return {"Worked": value}
 

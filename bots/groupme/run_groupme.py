@@ -17,7 +17,6 @@ def get_arguments(selected, req_name, group_id):
     else:
         select = [str(x) for x in selected["required"].get(req_name, [])]
         selections = ", ".join(select)
-        print(selected.get(req_name, []))
         if len(selections) < 440:
             selections = f"{selections[:435]}"
         send_message(f"Options: {selections}", group_id)

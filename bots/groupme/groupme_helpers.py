@@ -26,12 +26,11 @@ def upload_image(image: str, local: bool) -> requests.Response:
     url = "https://image.groupme.com/pictures"
     headers = {
         "Content-Type": "image/jpeg",
-        "X-Access-Token": os.getenv("X-Access-Token"),
+        "X-Access-Token": os.getenv("X_ACCESS_TOKEN"),
     }
     if local:
         path_string = pathlib.Path(__file__).parent.parent.resolve()
         path = os.path.join(path_string, image)
-        print(path)
         return requests.post(url, data=open(path, "rb").read(), headers=headers)
     with urllib.urlopen(image) as data:
         return requests.post(url, data=io.BytesIO(data.read()), headers=headers)
@@ -47,9 +46,8 @@ def send_image(
     image: str, group_id: str, text: str = None, local: bool = False
 ) -> requests.Response:
     response = upload_image(image, local)
-    print(response)
-    response = response.json()
-    image_url = response["payload"]["picture_url"]
+    response_json = response.json()
+    image_url = response_json["payload"]["picture_url"]
     mid = "/bots/post"
     bot_id = group_to_bot[group_id]
     data = {
@@ -57,5 +55,5 @@ def send_image(
         "text": text,
         "attachments": [{"type": "image", "url": image_url}],
     }
-    os.remove(image_url)
+    os.remove(image)
     return requests.post(base + mid + end, data=json.dumps(data))
