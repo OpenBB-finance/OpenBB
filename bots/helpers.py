@@ -274,9 +274,13 @@ class ShowView:
 
     def groupme(self, func, group_id, name, *args, **kwargs):
         data = func(*args, **kwargs)
-        print("hello")
+        print(data)
         if "imagefile" in data:
             send_image(data["imagefile"], group_id, data.get("description", ""), True)
+        elif "embeds_img" in data:
+            send_image(
+                data["embeds_img"][0], group_id, data.get("description", ""), True
+            )
         elif "description" in data:
             title = data.get("title", "")
             # TODO: Allow navigation through pages

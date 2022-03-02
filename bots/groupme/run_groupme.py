@@ -32,9 +32,7 @@ def handle_groupme(request):
         full_cmd = cmd.split("/")
         group = full_cmd[0].split("-")[0]
         parents = {x.split("-")[0] for x in commands}
-        print(f"if {group} in {parents}")
         if group in parents:
-            print(full_cmd)
             if full_cmd[0] in commands:
                 selected = commands[full_cmd[0]]
                 if len(full_cmd) != len(selected.get("required", [])) + 1:
@@ -47,7 +45,6 @@ def handle_groupme(request):
                     required = [str(x) for x in selected.get("required", [])[req_name]]
                     if isinstance(val, str) and req_name == "ticker":
                         val = val.upper()
-                    print(f"{val} in {required}")
                     if val not in required:
                         syntax = get_syntax(selected, full_cmd[0])
                         send_message(

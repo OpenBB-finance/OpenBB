@@ -45,7 +45,10 @@ def send_message(message: str, group_id: str) -> requests.Response:
 def send_image(
     image: str, group_id: str, text: str = None, local: bool = False
 ) -> requests.Response:
-    response = upload_image(image, local)
+    if "http" in image:
+        response = upload_image(image, False)
+    else:
+        response = upload_image(image, True)
     response_json = response.json()
     image_url = response_json["payload"]["picture_url"]
     mid = "/bots/post"
@@ -55,5 +58,6 @@ def send_image(
         "text": text,
         "attachments": [{"type": "image", "url": image_url}],
     }
-    os.remove(image)
+    if "http" not in image:
+        os.remove(image)
     return requests.post(base + mid + end, data=json.dumps(data))
