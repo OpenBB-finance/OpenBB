@@ -8,6 +8,8 @@ import time
 import uuid
 from math import floor, ceil
 
+import boto3
+from botocore.exceptions import ClientError
 import git
 
 import gamestonk_terminal.config_terminal as cfg
@@ -68,6 +70,10 @@ def setup_file_logger(session_id: str) -> None:
 
     start_time = int(time.time())
     cfg.LOGGING_FILE = uuid_log_dir.absolute().joinpath(f"{start_time}.log")  # type: ignore
+
+    send_last_log_s3()
+    with open(uuid_log_dir.absolute().joinpath("latest_log.txt"), "w") as latest_log:
+        latest_log.write(str(start_time))
 
     logger.debug("Current log file: %s", cfg.LOGGING_FILE)
 
@@ -214,3 +220,52 @@ def setup_logging() -> None:
     logger.info(
         "FORMAT: %s%s", LOGPREFIXFORMAT.replace("|", "-"), LOGFORMAT.replace("|", "-")
     )
+
+
+def upload_file_to_s3(
+    file_name: str, bucket: str, object_name=None, folder_name=None
+) -> None:
+    """
+    Credits to Pushp Vashisht for this function
+
+    Upload a file to an S3 bucket.
+    Params:
+        file_name: File to upload
+        bucket: Bucket to upload to
+        object_name: S3 object name. If not specified then file_name is used
+        folder_name: Folder name in which file is to be uploaded
+    """
+
+    # If S3 object_name was not specified, use file_name
+    if object_name is None:
+        object_name = file_name.split("/")[-1]
+        # If folder_name was specified, upload in the folder
+        if folder_name is not None:
+            object_name = f"{folder_name}/{object_name}"
+
+    # Upload the file
+    try:
+        s3_client = boto3.client(
+            service_name="s3",
+            aws_access_key_id="REPLACE_ME",
+            aws_secret_access_key="REPLACE_ME",
+        )
+        response = s3_client.upload_file(file_name, bucket, object_name)
+        logger.info(response)
+    except ClientError as e:
+        logger.exception(str(e))
+
+
+def send_last_log_s3():
+    logging_folder = Path(os.path.dirname(cfg.LOGGING_FILE))
+    latest_log_file = logging_folder.joinpath("latest_log.txt")
+    log_file = ""
+    session_id = ""
+    with open(latest_log_file, "r") as f:
+        session_id = str(f.read())
+        log_file = logging_folder.joinpath(f"{session_id}.log")
+    print(log_file)
+    if log_file:
+        upload_file_to_s3(
+            str(log_file), "test-gamestonk", folder_name="test_log_upload"
+        )
