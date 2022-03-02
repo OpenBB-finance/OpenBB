@@ -10,6 +10,7 @@ from typing import List
 import yfinance as yf
 from prompt_toolkit.completion import NestedCompleter
 
+from gamestonk_terminal.decorators import check_api_key
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
@@ -297,6 +298,7 @@ class ComparisonAnalysisController(BaseController):
                 )
 
     @log_start_end(log=logger)
+    @check_api_key(["API_POLYGON_KEY"])
     def call_getpoly(self, other_args: List[str]):
         """Process get command"""
         parser = argparse.ArgumentParser(
@@ -354,6 +356,7 @@ class ComparisonAnalysisController(BaseController):
                 )
 
     @log_start_end(log=logger)
+    @check_api_key(["API_FINNHUB_KEY"])
     def call_getfinnhub(self, other_args: List[str]):
         """Process get command"""
         parser = argparse.ArgumentParser(
