@@ -11,4 +11,4 @@ optional arguments:
                         Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg (default: )
 ```
 
-![hcorr](https://user-images.githubusercontent.com/46355364/154073186-45336f5f-85e1-4cb9-9307-9694295b1f80.png)
+![snews](https://user-images.githubusercontent.com/25267873/156584514-33c2cd52-4763-43cd-8a53-4118b8615450.png)
