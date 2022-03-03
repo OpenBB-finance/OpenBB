@@ -1,4 +1,4 @@
-<img width="1400" alt="Discord Bot on GST Discord Server" src="https://user-images.githubusercontent.com/85772166/153071762-9da3845d-da06-47af-a147-bea5488524a3.png">
+![Discord Bot on GST Discord Server](https://user-images.githubusercontent.com/85772166/153071762-9da3845d-da06-47af-a147-bea5488524a3.png)
 
 No installation or signup is required, nor is there a need to be in a server setting to use the bot. Any user call it through direct messaging / commands to: GameStonksBot#4609 (https://discord.com/invite/Up2QGbMKHY)
 

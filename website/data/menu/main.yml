@@ -1464,11 +1464,11 @@ main:
             ref: "/bot/discord/etf"
             sub:
               - name: "etf disc-tops"
-                ref: "/bot/discord/etf/tops"
+                ref: "/bot/discord/etf/disc-tops"
               - name: "etf holdings by-ticker"
-                ref: "/bot/discord/etf/tiker"
+                ref: "/bot/discord/etf/holdings_by_ticker"
               - name: "etf holdings by-etf"
-                ref: "/bot/discord/etf/holdings"
+                ref: "/bot/discord/etf/holdings_by_etf"
           - name: "Sector & Industry Analysis Commands"
             ref: "/bot/discord/sia"
             sub:
@@ -1477,7 +1477,7 @@ main:
               - name: "sia cps"
                 ref: "/bot/discord/sia/cps"
               - name: "sia cpis"
-                ref: "/bot/discord/sia/cpis"
+                ref: "/bot/discord/sia/cpic"
           - name: "Stocks Discovery Commands"
             ref: "/bot/discord/disc"
             sub:
@@ -1495,7 +1495,7 @@ main:
               - name: "earnings"
                 ref: "/bot/discord/misc/earnings"
               - name: "ins last"
-                ref: "/bot/discord/misc/ins_last"
+                ref: "/bot/discord/misc/ins-last"
               - name: "moon"
                 ref: "/bot/discord/misc/moon"
               - name: "megashill"
