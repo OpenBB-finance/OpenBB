@@ -476,7 +476,7 @@ commands = {
     },
     "gov-qtrcontracts": {
         "function": qtrcontracts_command,
-        "required": {"analyst": ["total", "upmom", "downmom"]},
+        "required": {"analysis": ["total", "upmom", "downmom"]},
         "optional": {
             "num": re_int,
         },
@@ -495,7 +495,7 @@ commands = {
     },
     "gov-contracts": {
         "function": contracts_command,
-        "required": {"past_transactions_days": re_int, "raw": [True, False]},
+        "required": {"ticker": tickers, "past_transaction_days": re_int, "raw": [True, False]},
     },
     "gov-histcont": {"function": histcont_command, "required": {"ticker": tickers}},
     "gov-lobbying": {

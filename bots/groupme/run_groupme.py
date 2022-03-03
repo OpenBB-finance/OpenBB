@@ -1,4 +1,5 @@
 import json
+from typing import List, Pattern
 
 from bots.common.commands_dict import commands
 from bots.groupme.groupme_helpers import send_message
@@ -14,11 +15,15 @@ def get_syntax(selected, cmd):
 def get_arguments(selected, req_name, group_id):
     if req_name == "ticker":
         send_message("Please give a listed ticker", group_id)
+    elif req_name == "past_transactions_days":
+        send_message("Please give the number of days as an integer", group_id)
+    elif req_name == "raw":
+        send_message("Please type true or false", group_id)
     else:
         select = [str(x) for x in selected["required"].get(req_name, [])]
         selections = ", ".join(select)
-        if len(selections) < 440:
-            selections = f"{selections[:435]}"
+        if len(selections) < 990:
+            selections = f"{selections[:990]}"
         send_message(f"Options: {selections}", group_id)
 
 
@@ -42,10 +47,17 @@ def handle_groupme(request):
                 other_args = {}
                 for i, val in enumerate(full_cmd[1:]):
                     req_name = list(selected.get("required", {}).keys())[i]
-                    required = [str(x) for x in selected.get("required", [])[req_name]]
+                    required = selected.get("required", [])[req_name]
+                    if isinstance(required, List) and required != [True, False]:
+                        required = [str(x) for x in required]
                     if isinstance(val, str) and req_name == "ticker":
                         val = val.upper()
-                    if val not in required:
+                    elif isinstance(val, str) and req_name == "raw":
+                        val = bool(val)
+                    print(f"{val} in {required}")
+                    if (isinstance(required, List) and val not in required) or (
+                        isinstance(required, Pattern) and not required.match(val)
+                    ):
                         syntax = get_syntax(selected, full_cmd[0])
                         send_message(
                             f"{syntax}\nInvalid argument for: {req_name}", group_id
