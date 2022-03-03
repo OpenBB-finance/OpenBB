@@ -157,16 +157,20 @@ def view_historical_greeks(
             return
         (ax,) = external_axes
 
-    ax.plot(df.index, df[greek], label=greek.title(), color="#00AAFF")
+    im1 = ax.plot(df.index, df[greek], label=greek.title(), color=theme.up_color)
+    ax.set_ylabel(greek)
     ax1 = ax.twinx()
-    ax1.plot(df.index, df.price)
+    im2 = ax1.plot(df.index, df.price, label="Stock Price", color=theme.down_color)
     ax1.set_ylabel(f"{ticker} Price")
     ax.set_title(
-        f"{greek} historical for {ticker.upper()} {strike} {['Call','Put'][put]}"
+        f"{(greek).capitalize()} historical for {ticker.upper()} {strike} {['Call','Put'][put]}"
     )
+    ax.set_xlim(df.index[0], df.index[-1])
+    ims = im1 + im2
+    labels = [lab.get_label() for lab in ims]
 
-    ax.legend()
-    theme.style_primary_axis(ax)
+    ax.legend(ims, labels, loc=0)
+    theme.style_twin_axes(ax, ax1)
 
     if not external_axes:
         theme.visualize_output()

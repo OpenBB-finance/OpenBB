@@ -28,7 +28,7 @@ def screener(similar: List[str], data_type: str, export: str = ""):
     """
     df_screen = finviz_compare_model.get_comparison_data(data_type, similar)
 
-    if df_screen.empty:
+    if df_screen is None or df_screen.empty:
         console.print("No screened data found.")
     else:
         print_rich_table(
