@@ -103,7 +103,7 @@ def get_screener_data(preset_loaded: str, data_type: str, limit: int, ascend: bo
             else:
                 df_screen = screen.ScreenerView(ascend=ascend)
         except IndexError:
-            console.print("[red]Invalid data provided by the websitr[/red]")
+            console.print("[red]Invalid data provided by the website[/red]\n")
             return pd.DataFrame()
 
     else:
