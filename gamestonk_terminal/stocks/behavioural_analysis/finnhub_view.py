@@ -6,6 +6,7 @@ import logging
 import os
 from datetime import datetime, timedelta
 from typing import Optional, List
+import numpy as np
 import pandas as pd
 import yfinance as yf
 from matplotlib import pyplot as plt
@@ -78,9 +79,16 @@ def display_stock_price_headlines_sentiment(
                 (ax,) = external_axes
 
             ax[0].set_title(f"Headlines sentiment and {ticker} price")
-            ax[0].plot(df_stock.index, df_stock["Adj Close"].values)
+            for uniquedate in np.unique(df_stock.index.date):
+                ax[0].plot(
+                    df_stock[df_stock.index.date == uniquedate].index,
+                    df_stock[df_stock.index.date == uniquedate]["Adj Close"].values,
+                    c="#FCED00",
+                )
+
             ax[0].set_ylabel("Stock Price")
             theme.style_primary_axis(ax[0])
+            theme.style_primary_axis(ax[1])
 
             ax[1].plot(
                 sentiment.index,
@@ -97,7 +105,7 @@ def display_stock_price_headlines_sentiment(
                     for sublist in sentiment[sentiment.values >= 0].values
                     for item in sublist
                 ],
-                color="#00AAFF",
+                color=theme.up_color,
                 width=0.01,
             )
             ax[1].bar(
@@ -107,7 +115,7 @@ def display_stock_price_headlines_sentiment(
                     for sublist in sentiment[sentiment.values < 0].values
                     for item in sublist
                 ],
-                color="#E4003A",
+                color=theme.down_color,
                 width=0.01,
             )
             ax[1].yaxis.set_label_position("right")
