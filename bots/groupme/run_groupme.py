@@ -54,7 +54,7 @@ def get_arguments(selected: Dict[str, Any], req_name: str, group_id: str) -> Non
         send_message(f"Options: {selections}", group_id)
 
 
-def send_options(name: str, items: Union[List[Any],Set[Any]], group_id: str) -> None:
+def send_options(name: str, items: Union[List[Any], Set[Any]], group_id: str) -> None:
     """Sends the options for a user
 
     Parameters
