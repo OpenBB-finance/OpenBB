@@ -57,7 +57,7 @@ def display_profile(ticker: str):
         console.print(f"\nDescription: {profile.loc['description'][0]}")
     else:
         logger.error("Could not get data")
-        console.print("[red]Unable to get data[/red]")
+        console.print("[red]Unable to get data[/red]\n")
 
     console.print()
 
@@ -73,8 +73,11 @@ def display_quote(ticker: str):
     """
 
     quote = fmp_model.get_quote(ticker)
-    print_rich_table(quote, headers=[""], title=f"{ticker} Quote", show_index=True)
-    console.print()
+    if quote.empty:
+        console.print("[red]Data not found[/red]\n")
+    else:
+        print_rich_table(quote, headers=[""], title=f"{ticker} Quote", show_index=True)
+        console.print()
 
 
 @log_start_end(log=logger)
@@ -96,14 +99,19 @@ def display_enterprise(
     """
     df_fa = fmp_model.get_enterprise(ticker, number, quarterly)
     df_fa = df_fa[df_fa.columns[::-1]]
-    print_rich_table(
-        df_fa,
-        headers=list(df_fa.columns),
-        title=f"{ticker} Enterprise",
-        show_index=True,
-    )
-    console.print()
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "enterprise", df_fa)
+    if df_fa.empty:
+        console.print("[red]No data available[/red]\n")
+    else:
+        print_rich_table(
+            df_fa,
+            headers=list(df_fa.columns),
+            title=f"{ticker} Enterprise",
+            show_index=True,
+        )
+        console.print()
+        export_data(
+            export, os.path.dirname(os.path.abspath(__file__)), "enterprise", df_fa
+        )
 
 
 @log_start_end(log=logger)
@@ -125,10 +133,14 @@ def display_discounted_cash_flow(
     """
     dcf = fmp_model.get_dcf(ticker, number, quarterly)
     dcf = dcf[dcf.columns[::-1]]
-    print_rich_table(dcf, headers=[""], title="Discounted Cash Flow", show_index=True)
-
-    console.print()
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "dcf", dcf)
+    if dcf.empty:
+        console.print("[red]No data available[/red]\n")
+    else:
+        print_rich_table(
+            dcf, headers=[""], title="Discounted Cash Flow", show_index=True
+        )
+        console.print()
+        export_data(export, os.path.dirname(os.path.abspath(__file__)), "dcf", dcf)
 
 
 @log_start_end(log=logger)
