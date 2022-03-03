@@ -1,18 +1,45 @@
 import json
-from typing import List, Pattern
+from typing import List, Pattern, Dict, Any, Set, Union
 
 from bots.common.commands_dict import commands
 from bots.groupme.groupme_helpers import send_message
 from bots.helpers import ShowView
 
 
-def get_syntax(selected, cmd):
+def get_syntax(selected: Dict[str, Any], cmd: str) -> str:
+    """Returns the syntax for a given command
+
+    Parameters
+    ----------
+    selected : Dict[str, Any]
+        The command object
+    cmd : str
+        The command that was attempted
+
+    Returns
+    ---------
+    syntax : str
+        The syntax for the given command
+    """
+
     syntax = f"{cmd}/"
     syntax += "/".join(selected.get("required", []))
     return syntax
 
 
-def get_arguments(selected, req_name, group_id):
+def get_arguments(selected: Dict[str, Any], req_name: str, group_id: str) -> None:
+    """Returns the arguments for a given command
+
+    Parameters
+    ----------
+    selected : Dict[str, Any]
+        The command object
+    req_name : str
+        The name of the requirement
+    group_id : str
+        The groupme chat id
+    """
+
     if req_name == "ticker":
         send_message("Please give a listed ticker", group_id)
     elif req_name == "past_transactions_days":
@@ -27,7 +54,18 @@ def get_arguments(selected, req_name, group_id):
         send_message(f"Options: {selections}", group_id)
 
 
-def send_options(name: str, items: List[str], group_id: str) -> None:
+def send_options(name: str, items: Union[List[Any],Set[Any]], group_id: str) -> None:
+    """Sends the options for a user
+
+    Parameters
+    ----------
+    name : str
+        The name of the section
+    items : List[str]
+        The items the user can select from
+    group_id : str
+        The groupme chat id
+    """
     message = name
     clean = list(items)
     clean.sort()
@@ -35,7 +73,20 @@ def send_options(name: str, items: List[str], group_id: str) -> None:
     send_message(message, group_id)
 
 
-def handle_groupme(request):
+def handle_groupme(request) -> bool:
+    """Handles groupme bot inputs
+
+    Parameters
+    ----------
+    request : Request
+        The request object provided by FASTAPI
+
+    Returns
+    ----------
+    success : bool
+        Whether the response was sent successfully
+    """
+
     req = json.loads(request.decode("utf-8"))
     text = req.get("text").strip().lower()
     group_id = req.get("group_id").strip()
@@ -62,7 +113,6 @@ def handle_groupme(request):
                         val = val.upper()
                     elif isinstance(val, str) and req_name == "raw":
                         val = bool(val)
-                    print(f"{val} in {required}")
                     if (isinstance(required, List) and val not in required) or (
                         isinstance(required, Pattern) and not required.match(val)
                     ):

@@ -275,7 +275,6 @@ class ShowView:
 
     def groupme(self, func, group_id, name, *args, **kwargs):
         data = func(*args, **kwargs)
-        print(data)
         if "imagefile" in data:
             send_image(data["imagefile"], group_id, data.get("description", ""), True)
         elif "embeds_img" in data:
