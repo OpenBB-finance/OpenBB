@@ -55,9 +55,6 @@ from gamestonk_terminal.common.behavioural_analysis.twitter_view import (
 from gamestonk_terminal.common.behavioural_analysis.finbrain_view import (
     display_sentiment_analysis as headlines,
 )
-from gamestonk_terminal.common.behavioural_analysis.finnhub_view import (
-    display_sentiment_stats as stats,
-)
 from gamestonk_terminal.common.behavioural_analysis.sentimentinvestor_view import (
     display_historical as hist,
 )

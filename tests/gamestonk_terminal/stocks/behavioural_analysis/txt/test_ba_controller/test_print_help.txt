@@ -7,7 +7,6 @@ Ticker: TSLA
     headlines     sentiment from 15+ major news headlines
 [Finnhub]
     snews         stock price displayed over sentiment of news headlines
-    stats         sentiment stats including comparison with sector
 [Reddit]
     wsb           show what WSB gang is up to in subreddit wallstreetbets
     watchlist     show other users watchlist
