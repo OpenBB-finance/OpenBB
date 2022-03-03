@@ -112,7 +112,6 @@ def display_fred_series(
             ],
             axis=1,
         )
-    data = data.dropna()
     # Try to get everything onto the same 0-10 scale.
     # To do so, think in scientific notation.  Divide the data by whatever the E would be
     if external_axes is None:
