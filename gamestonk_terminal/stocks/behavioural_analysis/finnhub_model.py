@@ -11,7 +11,7 @@ from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import similar
-
+from gamestonk_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -38,10 +38,14 @@ def get_company_news(
     articles : List
         term to search on the news articles
     """
-    finnhub_client = finnhub.Client(api_key=cfg.API_FINNHUB_KEY)
-    articles = finnhub_client.company_news(ticker.upper(), _from=s_start, to=s_end)
+    try:
+        finnhub_client = finnhub.Client(api_key=cfg.API_FINNHUB_KEY)
+        articles = finnhub_client.company_news(ticker.upper(), _from=s_start, to=s_end)
+        return articles
 
-    return articles
+    except Exception as e:
+        console.print(f"[red]{e}\n[/red]")
+        return [{}]
 
 
 @log_start_end(log=logger)
@@ -60,17 +64,20 @@ def process_news_headlines_sentiment(
     pd.DataFrame
         Headlines sentiment using VADER model over time
     """
-    analyzer = SentimentIntensityAnalyzer()
-
     l_datetime = list()
     l_compound = list()
 
-    last_headline = ""
-    for article in articles:
-        # allows to discard news with similar headline
-        if similar(last_headline, article["headline"].upper()) < 0.7:
-            l_compound.append(analyzer.polarity_scores(article["headline"])["compound"])
-            l_datetime.append(datetime.fromtimestamp(article["datetime"]))
-            last_headline = article["headline"].upper()
+    if articles and len(articles) > 1:
+        analyzer = SentimentIntensityAnalyzer()
+
+        last_headline = ""
+        for article in articles:
+            # allows to discard news with similar headline
+            if similar(last_headline, article["headline"].upper()) < 0.7:
+                l_compound.append(
+                    analyzer.polarity_scores(article["headline"])["compound"]
+                )
+                l_datetime.append(datetime.fromtimestamp(article["datetime"]))
+                last_headline = article["headline"].upper()
 
     return pd.DataFrame(l_compound, index=l_datetime).sort_index()
