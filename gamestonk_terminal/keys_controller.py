@@ -264,8 +264,9 @@ class KeysController(BaseController):
             self.key_dict["COINMARKETCAP"] = "not defined"
         else:
             cmc = CoinMarketCapAPI(cfg.API_CMC_KEY)
+
             try:
-                cmc.exchange_info()
+                cmc.cryptocurrency_map()
                 logger.info("Coinmarketcap key defined, test passed")
                 self.key_dict["COINMARKETCAP"] = "defined, test passed"
             except CoinMarketCapAPIError:
