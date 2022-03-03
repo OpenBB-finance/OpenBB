@@ -6,7 +6,7 @@ Ticker: TSLA
 [Finbrain]
     headlines     sentiment from 15+ major news headlines
 [Finnhub]
-    stats         sentiment stats including comparison with sector
+    snews         stock price displayed over sentiment of news headlines
 [Reddit]
     wsb           show what WSB gang is up to in subreddit wallstreetbets
     watchlist     show other users watchlist
@@ -30,5 +30,4 @@ Ticker: TSLA
 [SentimentInvestor]
     trend         most talked about tickers within the last hour
     hist          plot historical RHI and AHI data by hour
-
         

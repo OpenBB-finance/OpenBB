@@ -966,7 +966,7 @@ def display_line(
                 else:
                     text_loc = (0, 10)
                 ax.annotate(
-                    str(n),
+                    str(n + 1),
                     (mdates.date2num(marker_date), data.iloc[price_location_idx]),
                     xytext=text_loc,
                     textcoords="offset points",
@@ -975,7 +975,7 @@ def display_line(
                     marker_date,
                     data.iloc[price_location_idx],
                     color="#00AAFF",
-                    s=200,
+                    s=100,
                 )
 
     ax.set_xlim(data.index[0], data.index[-1])

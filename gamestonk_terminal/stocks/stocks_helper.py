@@ -8,7 +8,6 @@ from datetime import datetime, timedelta
 from typing import List, Union, Optional, Iterable
 
 import matplotlib.pyplot as plt
-import matplotlib
 from matplotlib.lines import Line2D
 import mplfinance as mpf
 import numpy as np
@@ -31,13 +30,12 @@ from gamestonk_terminal.helper_funcs import (
     plot_autoscale,
     get_user_timezone_or_invalid,
     print_rich_table,
-    lambda_long_number_format,
 )
 from gamestonk_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
-# pylint: disable=no-member,too-many-branches,C0302
+# pylint: disable=no-member,too-many-branches,C0302,R0913
 
 INTERVALS = [1, 5, 15, 30, 60]
 SOURCES = ["yf", "av", "iex"]
@@ -291,7 +289,7 @@ def display_candle(
         Flag for intraday data for plotly range breaks
     add_trend: bool
         Flag to add high and low trends to chart
-    mov_avg: Tuple[int]
+    ma: Tuple[int]
         Moving averages to add to the candle
     asset_type_: str
         String to include in title
@@ -350,12 +348,6 @@ def display_candle(
             candle_chart_kwargs["figscale"] = 1.10
             candle_chart_kwargs["figsize"] = plot_autoscale()
             fig, ax = mpf.plot(df_stock, **candle_chart_kwargs, **kwargs)
-
-            ax[2].get_yaxis().set_major_formatter(
-                matplotlib.ticker.FuncFormatter(
-                    lambda x, _: lambda_long_number_format(x)
-                )
-            )
 
             fig.suptitle(
                 f"{asset_type} {s_ticker}",
@@ -534,7 +526,6 @@ def display_candle(
             )
 
         fig.show(config=dict({"scrollZoom": True}))
-    console.print("")
 
 
 def quote(other_args: List[str], s_ticker: str):
