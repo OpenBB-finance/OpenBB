@@ -97,10 +97,14 @@ def get_screener_data(preset_loaded: str, data_type: str, limit: int, ascend: bo
     if preset_loaded in d_signals:
         screen.set_filter(signal=d_signals[preset_loaded])
 
-        if limit > 0:
-            df_screen = screen.ScreenerView(limit=limit, ascend=ascend)
-        else:
-            df_screen = screen.ScreenerView(ascend=ascend)
+        try:
+            if limit > 0:
+                df_screen = screen.ScreenerView(limit=limit, ascend=ascend)
+            else:
+                df_screen = screen.ScreenerView(ascend=ascend)
+        except IndexError:
+            console.print("[red]Invalid data provided by the website[/red]\n")
+            return pd.DataFrame()
 
     else:
         preset_filter = configparser.RawConfigParser()
