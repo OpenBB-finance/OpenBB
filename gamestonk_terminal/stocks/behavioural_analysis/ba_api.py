@@ -65,3 +65,7 @@ from gamestonk_terminal.common.behavioural_analysis.sentimentinvestor_view impor
 from gamestonk_terminal.common.behavioural_analysis.sentimentinvestor_view import (
     display_trending as trend,
 )
+
+from gamestonk_terminal.common.behavioural_analysis.finnhub_view import (
+    display_sentiment_stats as snews,
+)
