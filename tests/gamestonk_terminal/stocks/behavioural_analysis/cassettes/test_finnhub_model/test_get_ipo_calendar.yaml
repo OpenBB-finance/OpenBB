@@ -1,0 +1,70 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: GET
+    uri: https://finnhub.io/api/v1/calendar/ipo?from=MOCK_FROM&to=MOCK_TO&token=MOCK_TOKEN
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA7SU207jMBRFf8U6zwE5EZdR3yITSqTSlKZFoBkeThPTWnXsjO2oIMS/jzLhqiai
+        BMhbju2ttawtP4AoNUPJVY4GBr8fIEfHYQABDfw9P9ijAXjA77IVqmU9H4fpSXhBhlIvUIIHCot6
+        PJ+FJMz+VsIKJ7QiTJuyXq2KBTfJbbpCwy0MAtp8HpRGZPVBn+5TCh5Yh66yMGgW8npyXyy0bLLD
+        OXjgtEPZJF2irPhrHH30+oJPE0Yixc3yfot/v0XA/9VDYJqwDoHnuC8IDLHglvypKA2OSGRLbZwl
+        0V3JjeAq47tZHR9+3moYRVcdVk9xrVb+OytVSfmikpZo1iTKqwz/445c3gLbHHkCbX5eKDfCrXKD
+        G/UGtNmyTVnPPwaE8XUavd72ZJokp1t3SuK2rh/0qMokZHFH1w/orpfa2XXtVoSdvcO/JEy3VoL2
+        K/qooxL0y/QMS+FQbrRZWxIV3CyFWpJzNGvu7I89Puyc9Xl8dlOajYbXJGQX8ziNZ3EyJiyZTr6L
+        vA7/iPzm8R8AAAD//wMALKjsCwEGAAA=
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - Origin
+      Access-Control-Allow-Methods:
+      - POST, GET, OPTIONS, PUT, DELETE
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Expose-Headers:
+      - Content-Length
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 6e62f07ee8f406b2-LHR
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 03 Mar 2022 14:07:37 GMT
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      NEL:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=LUavwMra4cuvWTjGI14fnmnQafbFQmlpCOojESb%2FyXVY52J8zBvzWcHtXCXwCsSxNRrbucJQRHtlAUHUCvCLMX3eVQxQx%2FAAKGK%2FR0FodmtwmznnB9doJVXllNql2%2B8DSxy3Q3kHHCau"}],"group":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      X-Ratelimit-Limit:
+      - '60'
+      X-Ratelimit-Remaining:
+      - '58'
+      X-Ratelimit-Reset:
+      - '1646316499'
+      alt-svc:
+      - h3=":443"; ma=86400, h3-29=":443"; ma=86400
+    status:
+      code: 200
+      message: OK
+version: 1
