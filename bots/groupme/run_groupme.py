@@ -27,6 +27,14 @@ def get_arguments(selected, req_name, group_id):
         send_message(f"Options: {selections}", group_id)
 
 
+def send_options(name: str, items: List[str], group_id: str) -> None:
+    message = name
+    clean = list(items)
+    clean.sort()
+    message += ", ".join(list(clean))
+    send_message(message, group_id)
+
+
 def handle_groupme(request):
     req = json.loads(request.decode("utf-8"))
     text = req.get("text").strip().lower()
@@ -50,7 +58,7 @@ def handle_groupme(request):
                     required = selected.get("required", [])[req_name]
                     if isinstance(required, List) and required != [True, False]:
                         required = [str(x) for x in required]
-                    if isinstance(val, str) and req_name == "ticker":
+                    if isinstance(val, str) and req_name in ["ticker"]:
                         val = val.upper()
                     elif isinstance(val, str) and req_name == "raw":
                         val = bool(val)
@@ -73,16 +81,9 @@ def handle_groupme(request):
                 for command in commands:
                     if group == command[: len(group)]:
                         show_cmds.append(command)
-                message = "Valid commands: "
-                show_cmds.sort()
-                message += ", ".join(show_cmds)
-                send_message(message, group_id)
+                send_options("Valid commands: ", show_cmds, group_id)
                 return False
         else:
-            message = "Valid categories: "
-            parents_clean = list(parents)
-            parents_clean.sort()
-            message += ", ".join(list(parents_clean))
-            send_message(message, group_id)
+            send_options("Valid categories: ", parents, group_id)
             return False
     return False

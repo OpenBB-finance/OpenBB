@@ -743,7 +743,7 @@ commands = {
         "function": bbands_command,
         "required": {
             "ticker": tickers,
-            "ma_model": ["ema", "sma", "wma", "hma", "zlma"],
+            "mamode": ["ema", "sma", "wma", "hma", "zlma"],
         },
         "optional": {"length": re_int, "std": re_int, "start": re_date, "end": re_date},
     },
@@ -761,7 +761,7 @@ commands = {
         "function": kc_command,
         "required": {
             "ticker": tickers,
-            "ma_mode": ["ema", "sma", "wma", "hma", "zlma"],
+            "mamode": ["ema", "sma", "wma", "hma", "zlma"],
         },
         "optional": {
             "length": re_int,
