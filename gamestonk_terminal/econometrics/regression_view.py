@@ -1,6 +1,7 @@
 """Regression View"""
 __docformat__ = "numpy"
 
+from typing import Optional, List
 import os
 import logging
 import pandas as pd
@@ -14,6 +15,7 @@ from gamestonk_terminal.econometrics import regression_model
 from gamestonk_terminal.helper_funcs import (
     print_rich_table,
 )
+from gamestonk_terminal.config_terminal import theme
 
 logger = logging.getLogger(__name__)
 
@@ -24,6 +26,7 @@ def display_dwat(
     residual: pd.DataFrame,
     plot: bool = False,
     export: str = "",
+    external_axes: Optional[List[plt.axes]] = None,
 ):
     """Show Durbin-Watson autocorrelation tests
 
@@ -37,6 +40,8 @@ def display_dwat(
         Whether to plot the residuals
     export : str
         Format to export data
+    external_axes:Optional[List[plt.axes]]
+        External axes to plot on
     """
     autocorrelation = regression_model.get_dwat(residual)
 
@@ -52,12 +57,20 @@ def display_dwat(
         )
 
     if plot:
-        plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        plt.scatter(dependent_variable, residual)
-        plt.axhline(y=0, color="r", linestyle="-")
-        plt.ylabel("Residual")
-        plt.xlabel(dependent_variable.name.capitalize())
-        plt.title("Plot of Residuals")
+        if external_axes is None:
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        else:
+            ax = external_axes[0]
+
+        ax.scatter(dependent_variable, residual)
+        ax.axhline(y=0, color="r", linestyle="-")
+        ax.set_ylabel("Residual")
+        ax.set_xlabel(dependent_variable.name.capitalize())
+        ax.set_title("Plot of Residuals")
+        theme.style_primary_axis(ax)
+
+        if external_axes is None:
+            theme.visualize_output()
 
     export_data(
         export,
@@ -66,7 +79,7 @@ def display_dwat(
         autocorrelation,
     )
 
-    console.print("")
+    console.print()
 
 
 @log_start_end(log=logger)
@@ -113,7 +126,7 @@ def display_bgod(model: pd.DataFrame, lags: int, export: str = ""):
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "results_bgod", df)
 
-    console.print("")
+    console.print()
 
 
 @log_start_end(log=logger)
@@ -158,4 +171,4 @@ def display_bpag(model: pd.DataFrame, export: str = ""):
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "results_bpag", df)
 
-    console.print("")
+    console.print()

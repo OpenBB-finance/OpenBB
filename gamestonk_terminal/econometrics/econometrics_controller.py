@@ -1324,6 +1324,7 @@ Tests
                 gamestonk_terminal.econometrics.regression_view.display_dwat(
                     dependent_variable,
                     self.regression["OLS"]["model"].resid,
+                    ns_parser.plot,
                     ns_parser.export,
                 )
 

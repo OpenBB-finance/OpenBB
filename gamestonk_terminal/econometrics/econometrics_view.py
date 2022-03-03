@@ -4,13 +4,12 @@ __docformat__ = "numpy"
 import logging
 import os
 from itertools import combinations
-from typing import Dict, Any
+from typing import Dict, Any, Optional, List
 
 import matplotlib.pyplot as plt
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 
-from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
@@ -22,6 +21,7 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.econometrics import econometrics_model
+from gamestonk_terminal.config_terminal import theme
 
 logger = logging.getLogger(__name__)
 
@@ -69,6 +69,7 @@ def get_plot(
     dataset: str,
     column: str,
     export: str = "",
+    external_axes: Optional[List[plt.axes]] = None,
 ):
     """Plot data from a dataset
 
@@ -82,6 +83,8 @@ def get_plot(
         Column for y data
     export: str
         Format to export image
+    external_axes:Optional[List[plt.axes]]
+        External axes to plot on
     """
     if isinstance(data.index, pd.MultiIndex):
         console.print(
@@ -89,18 +92,21 @@ def get_plot(
             "Therefore, it is not possible to plot the data."
         )
     else:
-        plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        if external_axes is None:
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        else:
+            ax = external_axes[0]
 
         if isinstance(data, pd.Series):
-            plt.plot(data)
+            ax.plot(data)
         elif isinstance(data, pd.DataFrame):
-            plt.plot(data[column])
+            ax.plot(data[column])
 
-        plt.title(f"{column} data from dataset {dataset}")
-        if gtff.USE_ION:
-            plt.ion()
-        plt.tight_layout()
-        plt.show()
+        ax.set_title(f"{column} data from dataset {dataset}")
+        theme.style_primary_axis(ax)
+
+        if external_axes is None:
+            theme.visualize_output()
 
     export_data(
         export,
@@ -116,6 +122,7 @@ def display_norm(
     column: str,
     plot: bool = False,
     export: str = "",
+    external_axes: Optional[List[plt.axes]] = None,
 ):
     """Determine the normality of a timeseries.
 
@@ -131,6 +138,8 @@ def display_norm(
         Whether you wish to plot a histogram
     export: str
         Format to export data.
+    external_axes:Optional[List[plt.axes]]
+        External axes to plot on
     """
 
     results = econometrics_model.get_normality(data)
@@ -143,15 +152,19 @@ def display_norm(
     )
 
     if plot:
-        plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        if external_axes is None:
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        else:
+            ax = external_axes[0]
 
-        plt.hist(data, bins=100)
+        ax.hist(data, bins=100)
 
-        plt.title(f"Histogram of {column} data from dataset {dataset}")
-        if gtff.USE_ION:
-            plt.ion()
-        plt.tight_layout()
-        plt.show()
+        ax.set_title(f"Histogram of {column} data from dataset {dataset}")
+
+        theme.style_primary_axis(ax)
+
+        if external_axes is None:
+            theme.visualize_output()
 
     if export:
         export_data(
@@ -161,7 +174,7 @@ def display_norm(
             results,
         )
     else:
-        console.print("")
+        console.print()
 
 
 @log_start_end(log=logger)
@@ -208,7 +221,7 @@ def display_root(
             results,
         )
     else:
-        console.print("")
+        console.print()
 
 
 @log_start_end(log=logger)
@@ -279,7 +292,7 @@ def display_granger(
             granger_df,
         )
     else:
-        console.print("")
+        console.print()
 
 
 @log_start_end(log=logger)
@@ -288,6 +301,7 @@ def display_cointegration_test(
     significant: bool = False,
     plot: bool = False,
     export: str = "",
+    external_axes: Optional[List[plt.axes]] = None,
 ):
     """Estimates long-run and short-run cointegration relationship for series y and x and apply
     the two-step Engle & Granger test for cointegration.
@@ -316,6 +330,8 @@ def display_cointegration_test(
         Whether you wish to plot the z-values of all pairs.
     export : str
         Format to export data
+    external_axes:Optional[List[plt.axes]]
+        External axes to plot on
     """
 
     pairs = list(combinations(datasets.keys(), 2))
@@ -347,7 +363,7 @@ def display_cointegration_test(
             f"Only showing pairs that are statistically significant ({significant} > p-value)."
         )
         df = df[significant > df["P Value"]]
-        console.print("")
+        console.print()
 
     print_rich_table(
         df,
@@ -358,15 +374,21 @@ def display_cointegration_test(
     )
 
     if plot:
-        plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        if external_axes is None:
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        else:
+            ax = external_axes[0]
 
         for pair, values in z_values.items():
-            plt.plot(values, label=pair)
+            ax.plot(values, label=pair)
 
-        plt.legend()
-        plt.title("Error correction terms")
+        ax.legend()
+        ax.set_title("Error correction terms")
 
-        plt.tight_layout()
+        theme.style_primary_axis(ax)
+
+        if external_axes is None:
+            theme.visualize_output()
 
     if export:
         export_data(
@@ -376,4 +398,4 @@ def display_cointegration_test(
             df,
         )
     else:
-        console.print("")
+        console.print()
