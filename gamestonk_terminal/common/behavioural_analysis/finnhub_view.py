@@ -28,6 +28,7 @@ def display_sentiment_stats(ticker: str, export: str = ""):
         Format to export data
     """
     d_stats = finnhub_model.get_sentiment_stats(ticker)
+    print(d_stats)
 
     if d_stats:
         console.print(

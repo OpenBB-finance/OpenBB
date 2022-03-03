@@ -510,6 +510,8 @@ main:
             ref: "/common/behavioural_analysis/headlines"
           - name: stats
             ref: "/common/behavioural_analysis/stats"
+          - name: snews
+            ref: "/stocks/behavioural_analysis/snews"
           - name: wsb
             ref: "/common/behavioural_analysis/wsb"
           - name: watchlist

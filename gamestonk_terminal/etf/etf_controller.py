@@ -413,7 +413,7 @@ class ETFController(BaseController):
 
                 d_stock = yf.Ticker(self.etf_name).info
 
-                newsapi_view.news(
+                newsapi_view.display_news(
                     term=d_stock["shortName"].replace(" ", "+")
                     if "shortName" in d_stock
                     else self.etf_name,
