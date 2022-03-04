@@ -87,6 +87,7 @@ PyNaCl = {version = "^1.5.0", optional = true}
 ascii-magic = "^1.6"
 squarify = "^0.4.3"
 finnhub-python = "^2.4.10"
+linearmodels = "^4.25"
 
 
 [tool.poetry.dev-dependencies]
