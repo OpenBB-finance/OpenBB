@@ -1,10 +1,20 @@
 ,Date,Company,Symbol,Price,LastPrice,Change (%),Recommendation
-0,03/01,Academy Sports and Outdoo ,ASO,30.65,30.65,0.0,Buy
-1,03/01,Salesforce ,CRM,208.89,208.89,0.0,Buy
-2,03/01,Coterra Energy ,CTRA,24.36,24.36,0.0,Buy
-3,03/01,Domino's Pizza ,DPZ,432.21,432.21,0.0,Buy
-4,03/01,Nio ,NIO,21.87,21.87,0.0,Sell
-5,03/01,Origin Materials ,ORGN,5.51,5.51,0.0,Sell
-6,03/01,Rent-A-Center ,RCII,27.08,27.08,0.0,Sell
-7,03/01,B. Riley Financial ,RILY,59.07,59.07,0.0,Sell
-8,03/01,Stem ,STEM,9.33,9.33,0.0,Sell
+0,03/02,AEO ,AEO,21.33,19.34,-10.290000000000001,Buy
+1,03/02,Cemig ,CIG,2.61,2.67,2.25,Buy
+2,03/02,DigitalBridge ,DBRG,7.4,7.37,-0.41000000000000003,Sell
+3,03/02,Dow ,DOW,59.2,59.67,0.79,Buy
+4,03/02,Ford Motor ,F,18.1,17.6,-2.8400000000000003,Buy
+5,03/02,Foot Locker ,FL,30.98,31.0,0.06,Sell
+6,03/02,Innovative Industrial Pro ,IIPR,190.26,187.48,-1.48,Buy
+7,03/02,International Paper ,IP,42.01,42.23,0.52,Buy
+8,03/02,Nordstrom ,JWN,26.93,25.68,-4.87,Buy
+9,03/02,Kontoor Brands ,KTB,48.03,45.55,-5.4399999999999995,Buy
+10,03/02,Masimo ,MASI,153.63,152.46,-0.77,Buy
+11,03/02,Morgan Stanley ,MS,88.38,87.78,-0.6799999999999999,Buy
+12,03/02,Norwegian Cruise Line ,NCLH,19.06,18.56,-2.69,Buy
+13,03/02,Newell Brands ,NWL,23.68,23.82,0.59,Buy
+14,03/02,Okta ,OKTA,182.7,167.98,-8.76,Buy
+15,03/02,Pfizer ,PFE,47.7,47.83,0.27,Buy
+16,03/02,Snowflake ,SNOW,264.69,224.02,-18.15,Buy
+17,03/02,Simon Property Group ,SPG,138.77,139.41,0.45999999999999996,Buy
+18,03/02,Tesla ,TSLA,879.89,839.29,-4.84,Sell

@@ -35,7 +35,7 @@ from gamestonk_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
-# pylint: disable=no-member,too-many-branches,C0302
+# pylint: disable=no-member,too-many-branches,C0302,R0913
 
 INTERVALS = [1, 5, 15, 30, 60]
 SOURCES = ["yf", "av", "iex"]
@@ -289,7 +289,7 @@ def display_candle(
         Flag for intraday data for plotly range breaks
     add_trend: bool
         Flag to add high and low trends to chart
-    mov_avg: Tuple[int]
+    ma: Tuple[int]
         Moving averages to add to the candle
     asset_type_: str
         String to include in title
@@ -526,7 +526,6 @@ def display_candle(
             )
 
         fig.show(config=dict({"scrollZoom": True}))
-    console.print("")
 
 
 def quote(other_args: List[str], s_ticker: str):

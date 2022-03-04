@@ -3,7 +3,8 @@
 # pylint: disable=unused-import
 
 # Context root level functions
-from gamestonk_terminal.common.newsapi_view import news
+from gamestonk_terminal.common.newsapi_view import display_news
+from gamestonk_terminal.common.newsapi_model import get_news
 from .stocks_helper import load, process_candle, search, quote
 from .stocks_helper import display_candle as candle
 

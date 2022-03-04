@@ -9,8 +9,6 @@ import numpy as np
 import yfinance as yf
 from bs4 import BeautifulSoup
 
-from gamestonk_terminal.helper_funcs import get_user_agent
-
 
 def get_cramer_daily(inverse: bool = True) -> pd.DataFrame:
     """Scrape the daily recommendations of Jim Cramer
@@ -25,8 +23,18 @@ def get_cramer_daily(inverse: bool = True) -> pd.DataFrame:
     pd.DataFrame
         Datafreme of daily Cramer recommendations
     """
-    cramer_link = "https://madmoney.thestreet.com/screener/index.cfm"
-    r = requests.get(cramer_link, headers={"User-Agent": get_user_agent()})
+
+    link = (
+        "https://madmoney.thestreet.com/screener/index.cfm?showview=stocks&showrows=500"
+    )
+    r = requests.post(
+        link,
+        headers={
+            "Content-Type": "application/x-www-form-urlencoded",
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+            "AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.3 Safari/605.1.15",
+        },
+    )
     if r.status_code != 200:
         return pd.DataFrame()
     soup = BeautifulSoup(r.text, "html.parser")
@@ -45,7 +53,7 @@ def get_cramer_daily(inverse: bool = True) -> pd.DataFrame:
     for tr in trs[1:]:
         rec.append(recs[tr.find_all("td")[3].find("img")["src"][-5]])
 
-    df = pd.read_html("https://madmoney.thestreet.com/screener/index.cfm")[0]
+    df = pd.read_html(r.text)[0]
     df["Symbol"] = df.Company.apply(lambda x: re.findall(r"[\w]+", x)[-1])
     last_price = []
     for ticker in df.Symbol:
