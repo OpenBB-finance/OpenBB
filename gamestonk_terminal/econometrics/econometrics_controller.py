@@ -5,6 +5,7 @@ __docformat__ = "numpy"
 
 import argparse
 import logging
+from itertools import chain
 import os
 from pathlib import Path
 from typing import List, Dict, Any
@@ -155,12 +156,14 @@ class EconometricsController(BaseController):
             "mod": "%",
             "pow": "**",
         }
-
         self.file_types = ["csv", "xlsx"]
         self.DATA_FILES = {
             filepath.name: filepath
             for file_type in self.file_types
-            for filepath in Path("exports").rglob(f"*.{file_type}")
+            for filepath in chain(
+                Path("exports").rglob(f"*.{file_type}"),
+                Path("custom_imports").rglob(f"*.{file_type}"),
+            )
             if filepath.is_file()
         }
 
