@@ -1,11 +1,10 @@
 
-Overview:
     newsletter    Recent DeFi related newsletters [Substack]
     dpi           DeFi protocols listed on DefiPulse [Defipulse]
     funding       Funding rates - current or last 30 days average [Defirate]
     borrow        DeFi borrow rates - current or last 30 days average [Defirate]
     lending       DeFi ending rates - current or last 30 days average [Defirate]
-    vaults        Top DeFi Vaults on different blockchains [[Coindix]
+    vaults        Top DeFi Vaults on different blockchains [Coindix]
 [The Graph] Uniswap
     tokens        Tokens trade-able on Uniswap
     stats         Base statistics about Uniswap
@@ -18,8 +17,8 @@ Overview:
     stvl          Displays historical values of the total sum of TVLs from all dApps
     dtvl          Displays historical total value locked (TVL) by dApp
 [Terra Engineer]
-    aterra        Displays 30-day history of specified asset in terra address [Terra Engineer]
-    ayr           Displays 30-day history of anchor yield reserve [Terra Engineer]
+    aterra        Displays 30-day history of specified asset in terra address
+    ayr           Displays 30-day history of anchor yield reserve
 [Terra FCD]
     sinfo         Displays staking info for provided terra account address
     validators    Displays information about terra blockchain validators
@@ -27,7 +26,6 @@ Overview:
     gacc          Displays terra blockchain account growth history
     sratio        Displays terra blockchain staking ratio history
     sreturn       Displays terra blockchain staking returns history
-
 [Smartstake]
     lcsc         Displays Luna circulating supply changes
 
