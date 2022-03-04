@@ -33,8 +33,9 @@
   </a>
 
   <h3 align="center">Gamestonk Terminal 🚀</h3>
+  <p align="center">Click on the gif below for a DEMO of the terminal.</p>
   
-  ![honest work](https://user-images.githubusercontent.com/25267873/148552707-12dcca7e-0b7e-481c-9055-17436c2bc4cf.gif)
+  [![honest work](https://user-images.githubusercontent.com/25267873/148552707-12dcca7e-0b7e-481c-9055-17436c2bc4cf.gif)](https://www.youtube.com/watch?v=fqGPK8OVHLk)
 
   <p align="center">
     Investment research for everyone.
