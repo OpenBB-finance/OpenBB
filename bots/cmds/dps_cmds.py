@@ -3,6 +3,7 @@ from __future__ import annotations
 import disnake
 from disnake.ext import commands
 
+from bots.common import commands_dict
 from bots.helpers import ShowView, ticker_autocomp
 from bots.stocks.dark_pool_shorts.dpotc import dpotc_command
 from bots.stocks.dark_pool_shorts.ftd import ftd_command
@@ -12,7 +13,6 @@ from bots.stocks.dark_pool_shorts.psi import psi_command
 from bots.stocks.dark_pool_shorts.shorted import shorted_command
 from bots.stocks.dark_pool_shorts.sidtc import sidtc_command
 from bots.stocks.dark_pool_shorts.spos import spos_command
-from bots.common import commands_dict
 
 
 class DarkPoolShortsCommands(commands.Cog):

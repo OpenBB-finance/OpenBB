@@ -3,6 +3,8 @@ from __future__ import annotations
 import disnake
 from disnake.ext import commands
 
+from bots.common import commands_dict
+from bots.economy.cpi import cpi_command
 from bots.economy.currencies import currencies_command
 from bots.economy.energy import energy_command
 from bots.economy.feargreed import feargreed_command
@@ -16,11 +18,9 @@ from bots.economy.metals import metals_command
 from bots.economy.overview import overview_command
 from bots.economy.performance import performance_command
 from bots.economy.softs import softs_command
-from bots.economy.cpi import cpi_command
 from bots.economy.usbonds import usbonds_command
 from bots.economy.valuation import valuation_command
 from bots.helpers import ShowView
-from bots.common import commands_dict
 
 
 class EconomyCommands(commands.Cog):
@@ -34,7 +34,11 @@ class EconomyCommands(commands.Cog):
         pass
 
     @econ.sub_command()
-    async def feargreed(self, inter: disnake.AppCmdInter, indicator: str = commands.Param(choices=commands_dict.fgind)):
+    async def feargreed(
+        self,
+        inter: disnake.AppCmdInter,
+        indicator: str = commands.Param(choices=commands_dict.fgind),
+    ):
         """CNN Fear and Greed Index [CNN]
 
         Parameters

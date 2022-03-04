@@ -1,20 +1,21 @@
+# pylint: skip-file
 import asyncio
 import hashlib
 import os
 import sys
 import traceback
-from typing import Any, Dict
 import uuid
+from typing import Any, Dict
 
 import disnake
 from disnake.ext import commands
 from fastapi import FastAPI, Request
-from gamestonk_terminal.loggers import setup_logging
-from bots.config_discordbot import logger
-from gamestonk_terminal.decorators import log_start_end
-import bots.config_discordbot as cfg
 
+import bots.config_discordbot as cfg
+from bots.config_discordbot import logger
 from bots.groupme.run_groupme import handle_groupme
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.loggers import setup_logging
 
 app = FastAPI()
 
@@ -53,7 +54,7 @@ activity = disnake.Activity(
 
 
 def hash_user_id(user_id: str) -> str:
-    hash_object = hashlib.new('md4', user_id.encode('utf-8'))
+    hash_object = hashlib.new("md4", user_id.encode("utf-8"))
     return str(uuid.UUID(hash_object.hexdigest(), version=4))
 
 
@@ -121,7 +122,7 @@ class GSTBot(commands.Bot):
             embed = disnake.Embed(
                 title="Command Execution Error",
                 color=disnake.Color.red(),
-                description=f"{tickred}  This command cannot be used in private messages!"
+                description=f"{tickred}  This command cannot be used in private messages!",
             )
             if inter.response._responded:
                 pass
@@ -133,7 +134,7 @@ class GSTBot(commands.Bot):
             embed = disnake.Embed(
                 title="Command Execution Error",
                 color=disnake.Color.red(),
-                description=f"{tickred} You do not have enough permissions to execute this command!"
+                description=f"{tickred} You do not have enough permissions to execute this command!",
             )
             if inter.response._responded:
                 pass
@@ -145,7 +146,7 @@ class GSTBot(commands.Bot):
             embed = disnake.Embed(
                 title="Command Execution Error",
                 color=0xF00,
-                description=f"{tickred} You do not have enough permissions to execute this command!"
+                description=f"{tickred} You do not have enough permissions to execute this command!",
             )
             if inter.response._responded:
                 pass
@@ -195,7 +196,7 @@ class GSTBot(commands.Bot):
             }
         }
 
-        log_uid = {'user_id': hash_user_id(str(inter.author.id))}
+        log_uid = {"user_id": hash_user_id(str(inter.author.id))}
         logger.info(stats_log, extra=log_uid)
 
         pass
@@ -295,15 +296,19 @@ class MyModal(disnake.ui.Modal):
                 max_length=1024,
             ),
         ]
-        super().__init__(title="Support Ticket", custom_id="support_ticket", components=components)
+        super().__init__(
+            title="Support Ticket", custom_id="support_ticket", components=components
+        )
 
     async def callback(self, inter: disnake.ModalInteraction) -> None:
         embed = disnake.Embed(title="Support Ticket")
         channel = await gst_bot.fetch_channel(943929570002878514)
         embed.add_field(name="User", value=inter.author.name, inline=True)
-        embed.add_field(name="Server", value=inter.guild.name, inline=True)
+        embed.add_field(name="Server", value=inter.guild.name, inline=True)  # type: ignore
         embed.add_field(name="Issue", value=inter.text_values["issue"], inline=False)
-        embed.add_field(name="Description", value=inter.text_values["description"], inline=False)
+        embed.add_field(
+            name="Description", value=inter.text_values["description"], inline=False
+        )
         embed.set_image(url=inter.text_values["image"])
         await inter.response.send_message("Ticket Sent. Thank you!!", ephemeral=True)
         await channel.send(embed=embed)

@@ -1,14 +1,15 @@
 import os
+
 import df2img
 import disnake
 import numpy as np
 import pandas as pd
 import requests
-from bots.menus.menu import Menu
 
 import bots.config_discordbot as cfg
-from bots.config_discordbot import gst_imgur, logger
 from bots import helpers
+from bots.config_discordbot import gst_imgur, logger
+from bots.menus.menu import Menu
 from gamestonk_terminal.helper_funcs import get_user_agent
 
 
@@ -145,7 +146,7 @@ def unu_command(num: int = None):
             disnake.SelectOption(label="Home", value="0", emoji="🟢"),
         ]
 
-        return {
+        output = {
             "view": Menu,
             "title": title,
             "embed": embeds,
@@ -165,7 +166,9 @@ def unu_command(num: int = None):
         fig.update_traces(cells=(dict(align="left")))
         imagefile = helpers.save_image("opt-unu.png", fig)
 
-        return {
+        output = {
             "title": "Unusual Options",
             "imagefile": imagefile,
         }
+
+    return output

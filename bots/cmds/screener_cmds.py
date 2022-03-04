@@ -3,6 +3,7 @@ from __future__ import annotations
 import disnake
 from disnake.ext import commands
 
+from bots.common import commands_dict
 from bots.helpers import ShowView, presets_custom_autocomp, signals_autocomp
 from bots.stocks.screener.financial import financial_command
 from bots.stocks.screener.historical import historical_command
@@ -13,7 +14,6 @@ from bots.stocks.screener.presets_custom import presets_custom_command
 from bots.stocks.screener.presets_default import presets_default_command
 from bots.stocks.screener.technical import technical_command
 from bots.stocks.screener.valuation import valuation_command
-from bots.common import commands_dict
 
 # pylint: disable=R0912
 

@@ -58,18 +58,14 @@ def lins_command(ticker: str = "", num: int = 10):
         df_pg.append(df_pg)
         fig = df2img.plot_dataframe(
             df_pg,
-            fig_size=(1600, (40 + (40 * 20))),
-            col_width=[5, 14, 4, 4, 3, 4, 5, 8, 7],
-            tbl_cells=dict(
-                height=35,
-            ),
-            font=dict(
-                family="Consolas",
-                size=20,
-            ),
-            template="plotly_dark",
+            fig_size=(1700, (40 + (45 * 20))),
+            col_width=[4, 13, 4, 4, 3.5, 5.3, 6, 8, 7],
+            tbl_header=cfg.PLT_TBL_HEADER,
+            tbl_cells=cfg.PLT_TBL_CELLS,
+            font=cfg.PLT_TBL_FONT,
             paper_bgcolor="rgba(0, 0, 0, 0)",
         )
+        fig.update_traces(cells=(dict(align=["center", "left"])))
         imagefile = save_image(f"disc-insider{i}.png", fig)
 
         uploaded_image = gst_imgur.upload_image(imagefile, title="something")

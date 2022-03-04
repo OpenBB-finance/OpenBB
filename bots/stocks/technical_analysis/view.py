@@ -1,6 +1,7 @@
 import io
 
 from PIL import Image
+
 import bots.config_discordbot as cfg
 from bots.config_discordbot import logger
 from bots.helpers import image_border

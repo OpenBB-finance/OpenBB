@@ -1,9 +1,10 @@
 from typing import Union
 
-from matplotlib import pyplot as plt
 import pandas as pd
-from bots.config_discordbot import logger
+from matplotlib import pyplot as plt
+
 import bots.config_discordbot as cfg
+from bots.config_discordbot import logger
 from bots.helpers import image_border
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.helper_funcs import plot_autoscale

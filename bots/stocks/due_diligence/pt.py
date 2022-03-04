@@ -15,7 +15,7 @@ def pt_command(ticker: str = "", raw: bool = False, start=""):
 
     # Debug
     if cfg.DEBUG:
-        logger.debug("dd-pt %s", ticker)
+        logger.debug("dd pt %s", ticker)
 
     # Check for argument
     if ticker == "":

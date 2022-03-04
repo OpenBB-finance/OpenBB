@@ -3,12 +3,14 @@ from datetime import datetime, timedelta
 import plotly.graph_objects as go
 
 import bots.config_discordbot as cfg
-from bots.config_discordbot import logger
 from bots import helpers
+from bots.config_discordbot import logger
 from gamestonk_terminal.common.technical_analysis import volatility_model
 
 
-def bbands_command(ticker="", length="20", n_std: float = 2.0, mamode="sma", start="", end=""):
+def bbands_command(
+    ticker="", length="20", n_std: float = 2.0, mamode="sma", start="", end=""
+):
     """Displays chart with bollinger bands [Yahoo Finance]"""
 
     # Debug

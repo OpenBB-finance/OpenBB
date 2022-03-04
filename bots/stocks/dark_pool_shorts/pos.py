@@ -1,12 +1,12 @@
 import os
+
 import df2img
 import disnake
 
-from bots.menus.menu import Menu
-
 import bots.config_discordbot as cfg
-from bots.config_discordbot import gst_imgur, logger
 from bots import helpers
+from bots.config_discordbot import gst_imgur, logger
+from bots.menus.menu import Menu
 from gamestonk_terminal.stocks.dark_pool_shorts import stockgrid_model
 
 
@@ -64,7 +64,6 @@ def pos_command(sort="dpp_dollar", ascending: bool = False, num: int = 10):
         "Net Short Vol. ($)": "${:.2f}M",
         "DP Position": "{:.2f}M",
         "DP Position ($)": "${:.2f}B",
-
     }
     for col, f in formats.items():
         df[col] = df[col].map(lambda x: f.format(x))  # pylint: disable=W0640
@@ -135,7 +134,7 @@ def pos_command(sort="dpp_dollar", ascending: bool = False, num: int = 10):
             disnake.SelectOption(label="Home", value="0", emoji="🟢"),
         ]
 
-        return {
+        output = {
             "view": Menu,
             "title": title,
             "embed": embeds,
@@ -155,7 +154,9 @@ def pos_command(sort="dpp_dollar", ascending: bool = False, num: int = 10):
         fig.update_traces(cells=(dict(align=["center", "left"])))
         imagefile = helpers.save_image("opt-pos.png", fig)
 
-        return {
+        output = {
             "title": title,
             "imagefile": imagefile,
         }
+
+    return output

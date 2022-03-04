@@ -3,8 +3,8 @@ import plotly.graph_objects as go
 from scipy.spatial import Delaunay
 
 import bots.config_discordbot as cfg
-from bots.config_discordbot import logger
 from bots import helpers
+from bots.config_discordbot import logger
 from gamestonk_terminal.stocks.options import yfinance_model
 
 

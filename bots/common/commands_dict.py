@@ -2,6 +2,7 @@ import re
 from typing import List
 
 import pandas as pd
+
 from bots.economy.currencies import currencies_command
 from bots.economy.energy import energy_command
 from bots.economy.feargreed import feargreed_command

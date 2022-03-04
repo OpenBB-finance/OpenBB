@@ -15,7 +15,7 @@ def est_command(ticker: str = ""):
 
     # Debug
     if cfg.DEBUG:
-        logger.debug("dd-est %s", ticker)
+        logger.debug("dd est %s", ticker)
 
     # Check for argument
     if ticker == "":
@@ -45,14 +45,9 @@ def est_command(ticker: str = ""):
         df_year_estimates,
         fig_size=(1200, (40 + (60 * dindex))),
         col_width=[12, 4, 4, 4, 4],
-        tbl_cells=dict(
-            height=35,
-        ),
-        font=dict(
-            family="Consolas",
-            size=20,
-        ),
-        template="plotly_dark",
+        tbl_header=cfg.PLT_TBL_HEADER,
+        tbl_cells=cfg.PLT_TBL_CELLS,
+        font=cfg.PLT_TBL_FONT,
         paper_bgcolor="rgba(0, 0, 0, 0)",
     )
     imagefile = save_image("estimates.png", fig)
@@ -66,14 +61,9 @@ def est_command(ticker: str = ""):
         df_quarter_earnings,
         fig_size=(1200, (40 + (40 * 20))),
         col_width=[5, 5, 4, 4, 5, 4],
-        tbl_cells=dict(
-            height=35,
-        ),
-        font=dict(
-            family="Consolas",
-            size=20,
-        ),
-        template="plotly_dark",
+        tbl_header=cfg.PLT_TBL_HEADER,
+        tbl_cells=cfg.PLT_TBL_CELLS,
+        font=cfg.PLT_TBL_FONT,
         paper_bgcolor="rgba(0, 0, 0, 0)",
     )
     imagefile = save_image("earnings.png", fig)
@@ -86,14 +76,9 @@ def est_command(ticker: str = ""):
         df_quarter_revenues,
         fig_size=(1200, (40 + (40 * 20))),
         col_width=[5, 5, 4, 4, 5, 4],
-        tbl_cells=dict(
-            height=35,
-        ),
-        font=dict(
-            family="Consolas",
-            size=20,
-        ),
-        template="plotly_dark",
+        tbl_header=cfg.PLT_TBL_HEADER,
+        tbl_cells=cfg.PLT_TBL_CELLS,
+        font=cfg.PLT_TBL_FONT,
         paper_bgcolor="rgba(0, 0, 0, 0)",
     )
     imagefile = save_image("revenues.png", fig)

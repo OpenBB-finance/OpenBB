@@ -15,6 +15,7 @@ from gamestonk_terminal.stocks.options import op_helpers, yfinance_model
 from gamestonk_terminal.stocks.options.barchart_model import get_options_info
 
 
+# pylint: disable=R0912
 # pylint: disable=R0914
 # pylint: disable=R0915
 def overview_command(
@@ -357,7 +358,9 @@ def overview_command(
         embeds[0].add_field(name=f"{df_bcinfo.iloc[0, 0]}", value=iv, inline=False)
 
         embeds[0].add_field(
-            name=f"•{df_bcinfo.iloc[1, 0]}", value=f"```css\n{df_bcinfo.iloc[1, 1]}\n```", inline=True
+            name=f"•{df_bcinfo.iloc[1, 0]}",
+            value=f"```css\n{df_bcinfo.iloc[1, 1]}\n```",
+            inline=True,
         )
         for N in range(2, 6):
             embeds[0].add_field(

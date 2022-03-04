@@ -145,7 +145,15 @@ class SlashCommands(commands.Cog):
         end: YYYY-MM-DD format
         """
         await ShowView().discord(
-            candle_command, inter, "candle", ticker, interval, past_days, extended_hours, start, end
+            candle_command,
+            inter,
+            "candle",
+            ticker,
+            interval,
+            past_days,
+            extended_hours,
+            start,
+            end,
         )
 
     @commands.slash_command(name="btc")

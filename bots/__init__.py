@@ -1,6 +1,2 @@
 # flake8: noqa
-from . import (
-    stocks,
-    economy,
-    menus,
-)
+from . import economy, menus, stocks

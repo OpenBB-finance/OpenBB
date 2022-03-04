@@ -1,9 +1,10 @@
 import os
-from typing import List
 import uuid
+from typing import List
 
 import df2img
 import disnake
+import financedatabase as fd
 import pandas as pd
 import yfinance as yf
 from numpy.core.fromnumeric import transpose
@@ -89,6 +90,45 @@ signals = [
     "head_shoulders_inverse",
 ]
 
+metric_yf_keys = {
+    "Return On Assets": ("financialData", "returnOnAssets"),
+    "Return On Equity": ("financialData", "returnOnEquity"),
+    "Current Ratio": ("financialData", "currentRatio"),
+    "Quick Ratio": ("financialData", "quickRatio"),
+    "Debt To Equity": ("financialData", "debtToEquity"),
+    "Total Cash": ("financialData", "totalCash"),
+    "Total Cash Per Share": ("financialData", "totalCashPerShare"),
+    "Total Revenue": ("financialData", "totalRevenue"),
+    "Revenue Per Share": ("financialData", "revenuePerShare"),
+    "Revenue Growth": ("financialData", "revenueGrowth"),
+    "Earnings Growth": ("financialData", "earningsGrowth"),
+    "Profit Margins": ("financialData", "profitMargins"),
+    "Gross Profits": ("financialData", "grossProfits"),
+    "Gross Margins": ("financialData", "grossMargins"),
+    "Operating Cashflow": ("financialData", "operatingCashflow"),
+    "Operating Margins": ("financialData", "operatingMargins"),
+    "Free Cashflow": ("financialData", "freeCashflow"),
+    "Total Debt": ("financialData", "totalDebt"),
+    "Earnings Before Interest, Taxes, Depreciation and Amortization": (
+        "financialData",
+        "ebitda",
+    ),
+    "EBITDA Margins": ("financialData", "ebitdaMargins"),
+    "Recommendation Mean": ("financialData", "recommendationMean"),
+    "Market Cap": ("price", "marketCap"),
+    "Full Time Employees": ("summaryProfile", "fullTimeEmployees"),
+    "Enterprise To Revenue": ("defaultKeyStatistics", "enterpriseToRevenue"),
+    "Book Value": ("defaultKeyStatistics", "bookValue"),
+    "Shares Short": ("defaultKeyStatistics", "sharesShort"),
+    "Price To Book": ("defaultKeyStatistics", "priceToBook"),
+    "Beta": ("defaultKeyStatistics", "beta"),
+    "Float Shares": ("defaultKeyStatistics", "floatShares"),
+    "Short Ratio": ("defaultKeyStatistics", "shortRatio"),
+    "Peg Ratio": ("defaultKeyStatistics", "pegRatio"),
+    "Enterprise Value": ("defaultKeyStatistics", "enterpriseValue"),
+    "Forward PE": ("defaultKeyStatistics", "forwardPE"),
+}
+
 
 def load(ticker, start_date):
     df_stock_candidate = yf.download(ticker, start=start_date, progress=False)
@@ -137,11 +177,6 @@ def quote(ticker):
     return quote_data
 
 
-def uuid_get():
-    rand = str(uuid.uuid1()).replace("-", "")
-    return rand
-
-
 def autocrop_image(image, border=0):
     bbox = image.getbbox()
     image = image.crop(bbox)
@@ -151,6 +186,36 @@ def autocrop_image(image, border=0):
     cropped_image = Image.new("RGBA", (width, height), (0, 0, 0, 0))
     cropped_image.paste(image, (border, border))
     return cropped_image
+
+
+def uuid_get():
+    rand = str(uuid.uuid1()).replace("-", "")
+    return rand
+
+
+def country_autocomp(inter, country: str):  # pylint: disable=W0613
+    data = fd.show_options("equities", "countries")
+    clow = country.lower()
+    return [country for country in data if country.lower().startswith(clow)][:24]
+
+
+def industry_autocomp(inter, industry: str):  # pylint: disable=W0613
+    data = fd.show_options("equities", "industries")
+    if not industry:
+        industry = "a"
+    ilow = industry.lower()
+    return [industry for industry in data if industry.lower().startswith(ilow)][:24]
+
+
+def metric_autocomp(inter, metric: str):  # pylint: disable=W0613
+    data: dict = metric_yf_keys
+    if not metric:
+        data = list(data.keys())  # type: ignore
+        return data[:24]
+    mlow = metric.lower()
+    return [metric for metric, _ in data.items() if metric.lower().startswith(mlow)][
+        :24
+    ]
 
 
 def ticker_autocomp(inter, ticker: str):  # pylint: disable=W0613
@@ -222,6 +287,7 @@ def image_border(file, **kwargs):
     image = Image.open(file)
     image = autocrop_image(image, 0)
     image.save(imagefile, "PNG", quality=100)
+    os.remove(file)
     return imagefile
 
 

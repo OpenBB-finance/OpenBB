@@ -1,5 +1,5 @@
 import json
-from typing import List, Pattern, Dict, Any, Set, Union
+from typing import Any, Dict, List, Pattern, Set, Union
 
 from bots.common.commands_dict import commands
 from bots.groupme.groupme_helpers import send_message

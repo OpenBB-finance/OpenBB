@@ -1,10 +1,10 @@
 import df2img
 import pandas as pd
+import yahoo_fin.stock_info as si
 
 import bots.config_discordbot as cfg
 from bots.config_discordbot import logger
 from bots.helpers import save_image
-import yahoo_fin.stock_info as si
 
 
 def futures_command():
@@ -29,27 +29,34 @@ def futures_command():
         df[col] = df[col].map(lambda x: value.format(x))  # pylint: disable=W0640
 
     df = df.iloc[:5]
-    df['Name'] = df['Name'].replace(
-        to_replace=[
-            "Mar", "Apr", "22",
-            "\\$5", ",-", ".-",
-            "Mini", "mini", "Futures", "Futur", "Indus"
-        ],
-        value="", regex=True
-    ).str.strip()
+    df["Name"] = (
+        df["Name"]
+        .replace(
+            to_replace=[
+                "Mar",
+                "Apr",
+                "22",
+                "\\$5",
+                ",-",
+                ".-",
+                "Mini",
+                "mini",
+                "Futures",
+                "Futur",
+                "Indus",
+            ],
+            value="",
+            regex=True,
+        )
+        .str.strip()
+    )
 
     df = df.fillna("")
     df.drop(columns="Symbol")
     df = df.rename(columns={"Name": " "})
     df.set_index(" ", inplace=True)
 
-    df = df[
-        [
-            "Last Price",
-            "Change",
-            "% Change"
-        ]
-    ]
+    df = df[["Last Price", "Change", "% Change"]]
 
     dindex = len(df.index)
     fig = df2img.plot_dataframe(

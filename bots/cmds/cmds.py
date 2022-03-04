@@ -39,7 +39,6 @@ class CmdsCommands(commands.Cog):
             "[eth]() <INTERVAL> <PAST_DAYS> <START> <END>\n"
             "[sol]() <INTERVAL> <PAST_DAYS> <START> <END>\n"
             "[candle](ticker) <INTERVAL> <PAST_DAYS> <EXTENDED_HOURS> <START> <END>\n```"
-
         )
         opttext = (
             "```md\n[opt unu]()\n"
@@ -165,9 +164,7 @@ class CmdsCommands(commands.Cog):
             ),
             disnake.Embed(
                 title="",
-                description=(
-                    f"**Economy Command List**\n{econtext}\n"
-                ),
+                description=(f"**Economy Command List**\n{econtext}\n"),
                 color=cfg.COLOR,
             ),
             disnake.Embed(
