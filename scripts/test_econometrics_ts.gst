@@ -20,7 +20,7 @@ remove ll2
 ols totemp-ll gnpdefl-ll gnp-ll unemp-ll armed-ll pop-ll year-ll
 norm totemp-ll
 root unemp-ll
-dwat
+dwat -p
 bgod
 granger gnp-ll pop-ll
 coint totemp-ll gnpdefl-ll gnp-ll unemp-ll armed-ll pop-ll year-ll

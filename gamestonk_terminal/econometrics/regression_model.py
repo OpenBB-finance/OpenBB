@@ -15,9 +15,6 @@ from linearmodels.panel import (
     FirstDifferenceOLS,
     compare,
 )
-from linearmodels.panel.results import (
-    PanelModelComparison,
-)
 from pandas import DataFrame
 from statsmodels.api import add_constant
 import statsmodels.api as sm
@@ -86,6 +83,7 @@ def get_regression_data(
     regression_variables: List[tuple],
     data: Dict[str, pd.DataFrame],
     datasets: Dict[pd.DataFrame, Any],
+    regression_type: str = "",
 ) -> Tuple[DataFrame, Any, List[Any]]:
     """This function creates a DataFrame with the required regression data as
     well sets up the dependent and independent variables.
@@ -100,6 +98,8 @@ def get_regression_data(
     datasets: dict
         A dictionary containing the column and dataset names of
         each column/dataset combination.
+    regression_type: str
+        The type of regression that is executed.
 
     Returns
     -------
@@ -121,6 +121,23 @@ def get_regression_data(
             independent_variables.append(f"{column}_{dataset}")
 
     regression_df = pd.DataFrame(regression)
+    nan_values = regression_df.isnull().sum().sum()
+
+    if nan_values > 0:
+        regression_df = regression_df.dropna(how="any", axis="index")
+
+        if regression_df.empty:
+            console.print(
+                f"The resulting DataFrame only consists of NaN values. This is usually due to an index "
+                f"mismatch. Therefore, no {regression_type} regression can be performed. Consider revisiting your "
+                "dataset(s) and adjust accordingly."
+            )
+        else:
+            console.print(
+                f"The resulting DataFrame has {nan_values} NaN values. This is usually due to "
+                f"an index mismatch. Rows that contain NaNs are dropped to be able to perform the {regression_type} "
+                f"regression. Consider revisiting your dataset(s) and adjust accordingly."
+            )
 
     return regression_df, dependent_variable, independent_variables
 
@@ -157,34 +174,37 @@ def get_ols(
     """
 
     regression_df, dependent_variable, independent_variables = get_regression_data(
-        regression_variables, data, datasets
+        regression_variables, data, datasets, "OLS"
     )
 
-    with warnings.catch_warnings(record=True) as warning_messages:
-        model = sm.OLS(
-            regression_df[dependent_variable], regression_df[independent_variables]
-        ).fit()
-
-        if show_regression:
-            console.print(model.summary())
-            console.print("")
-        if len(warning_messages) > 0:
-            console.print("Warnings:")
-            for warning in warning_messages:
-                console.print(f"[red]{warning.message}[/red]".replace("\n", ""))
-
-    if export:
-        results_as_html = model.summary().tables[1].as_html()
-        df = pd.read_html(results_as_html, header=0, index_col=0)[0]
-
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            f"{dependent_variable}_ols_regression",
-            df,
-        )
+    if regression_df.empty:
+        model = None
     else:
-        console.print("")
+        with warnings.catch_warnings(record=True) as warning_messages:
+            model = sm.OLS(
+                regression_df[dependent_variable], regression_df[independent_variables]
+            ).fit()
+
+            if show_regression:
+                console.print(model.summary())
+                console.print("")
+            if len(warning_messages) > 0:
+                console.print("Warnings:")
+                for warning in warning_messages:
+                    console.print(f"[red]{warning.message}[/red]".replace("\n", ""))
+
+        if export:
+            results_as_html = model.summary().tables[1].as_html()
+            df = pd.read_html(results_as_html, header=0, index_col=0)[0]
+
+            export_data(
+                export,
+                os.path.dirname(os.path.abspath(__file__)),
+                f"{dependent_variable}_ols_regression",
+                df,
+            )
+        else:
+            console.print("")
 
     return regression_df, dependent_variable, independent_variables, model
 
@@ -216,18 +236,21 @@ def get_pols(
     """
 
     regression_df, dependent_variable, independent_variables = get_regression_data(
-        regression_variables, data, datasets
+        regression_variables, data, datasets, "POLS"
     )
 
-    with warnings.catch_warnings(record=True) as warning_messages:
-        exogenous = add_constant(regression_df[independent_variables])
-        model = PooledOLS(regression_df[dependent_variable], exogenous).fit()
-        console.print(model)
+    if regression_df.empty:
+        model = None
+    else:
+        with warnings.catch_warnings(record=True) as warning_messages:
+            exogenous = add_constant(regression_df[independent_variables])
+            model = PooledOLS(regression_df[dependent_variable], exogenous).fit()
+            console.print(model)
 
-        if len(warning_messages) > 0:
-            console.print("Warnings:")
-            for warning in warning_messages:
-                console.print(f"[red]{warning.message}[/red]".replace("\n", ""))
+            if len(warning_messages) > 0:
+                console.print("Warnings:")
+                for warning in warning_messages:
+                    console.print(f"[red]{warning.message}[/red]".replace("\n", ""))
 
     return regression_df, dependent_variable, independent_variables, model
 
@@ -260,18 +283,21 @@ def get_re(
     """
 
     regression_df, dependent_variable, independent_variables = get_regression_data(
-        regression_variables, data, datasets
+        regression_variables, data, datasets, "RE"
     )
 
-    with warnings.catch_warnings(record=True) as warning_messages:
-        exogenous = add_constant(regression_df[independent_variables])
-        model = RandomEffects(regression_df[dependent_variable], exogenous).fit()
-        console.print(model)
+    if regression_df.empty:
+        model = None
+    else:
+        with warnings.catch_warnings(record=True) as warning_messages:
+            exogenous = add_constant(regression_df[independent_variables])
+            model = RandomEffects(regression_df[dependent_variable], exogenous).fit()
+            console.print(model)
 
-        if len(warning_messages) > 0:
-            console.print("Warnings:")
-            for warning in warning_messages:
-                console.print(f"[red]{warning.message}[/red]".replace("\n", ""))
+            if len(warning_messages) > 0:
+                console.print("Warnings:")
+                for warning in warning_messages:
+                    console.print(f"[red]{warning.message}[/red]".replace("\n", ""))
 
     return regression_df, dependent_variable, independent_variables, model
 
@@ -304,18 +330,21 @@ def get_bols(
     """
 
     regression_df, dependent_variable, independent_variables = get_regression_data(
-        regression_variables, data, datasets
+        regression_variables, data, datasets, "BOLS"
     )
 
-    with warnings.catch_warnings(record=True) as warning_messages:
-        exogenous = add_constant(regression_df[independent_variables])
-        model = BetweenOLS(regression_df[dependent_variable], exogenous).fit()
-        console.print(model)
+    if regression_df.empty:
+        model = None
+    else:
+        with warnings.catch_warnings(record=True) as warning_messages:
+            exogenous = add_constant(regression_df[independent_variables])
+            model = BetweenOLS(regression_df[dependent_variable], exogenous).fit()
+            console.print(model)
 
-        if len(warning_messages) > 0:
-            console.print("Warnings:")
-            for warning in warning_messages:
-                console.print(f"[red]{warning.message}[/red]".replace("\n", ""))
+            if len(warning_messages) > 0:
+                console.print("Warnings:")
+                for warning in warning_messages:
+                    console.print(f"[red]{warning.message}[/red]".replace("\n", ""))
 
     return regression_df, dependent_variable, independent_variables, model
 
@@ -354,23 +383,26 @@ def get_fe(
     """
 
     regression_df, dependent_variable, independent_variables = get_regression_data(
-        regression_variables, data, datasets
+        regression_variables, data, datasets, "FE"
     )
 
-    with warnings.catch_warnings(record=True) as warning_messages:
-        exogenous = add_constant(regression_df[independent_variables])
-        model = PanelOLS(
-            regression_df[dependent_variable],
-            exogenous,
-            entity_effects=entity_effects,
-            time_effects=time_effects,
-        ).fit()
-        console.print(model)
+    if regression_df.empty:
+        model = None
+    else:
+        with warnings.catch_warnings(record=True) as warning_messages:
+            exogenous = add_constant(regression_df[independent_variables])
+            model = PanelOLS(
+                regression_df[dependent_variable],
+                exogenous,
+                entity_effects=entity_effects,
+                time_effects=time_effects,
+            ).fit()
+            console.print(model)
 
-        if len(warning_messages) > 0:
-            console.print("Warnings:")
-            for warning in warning_messages:
-                console.print(f"[red]{warning.message}[/red]".replace("\n", ""))
+            if len(warning_messages) > 0:
+                console.print("Warnings:")
+                for warning in warning_messages:
+                    console.print(f"[red]{warning.message}[/red]".replace("\n", ""))
 
     return regression_df, dependent_variable, independent_variables, model
 
@@ -405,31 +437,36 @@ def get_fdols(
     """
 
     regression_df, dependent_variable, independent_variables = get_regression_data(
-        regression_variables, data, datasets
+        regression_variables, data, datasets, "FDOLS"
     )
 
-    with warnings.catch_warnings(record=True) as warning_messages:
-        model = FirstDifferenceOLS(
-            regression_df[dependent_variable], regression_df[independent_variables]
-        ).fit()
-        console.print(model)
+    if regression_df.empty:
+        model = None
+    else:
+        with warnings.catch_warnings(record=True) as warning_messages:
+            model = FirstDifferenceOLS(
+                regression_df[dependent_variable], regression_df[independent_variables]
+            ).fit()
+            console.print(model)
 
-        if len(warning_messages) > 0:
-            console.print("Warnings:")
-            for warning in warning_messages:
-                console.print(f"[red]{warning.message}[/red]".replace("\n", ""))
+            if len(warning_messages) > 0:
+                console.print("Warnings:")
+                for warning in warning_messages:
+                    console.print(f"[red]{warning.message}[/red]".replace("\n", ""))
 
     return regression_df, dependent_variable, independent_variables, model
 
 
 @log_start_end(log=logger)
-def get_comparison(regressions) -> PanelModelComparison:
+def get_comparison(regressions, export: str = ""):
     """Compare regression results between Panel Data regressions.
 
     Parameters
     ----------
     regressions : Dict
         Dictionary with regression results.
+    export : str
+        Format to export data
 
     Returns
     -------
@@ -443,7 +480,27 @@ def get_comparison(regressions) -> PanelModelComparison:
         if data["model"]:
             comparison[regression_type] = data["model"]
 
+    if not comparison:
+        # When the dictionary is empty, it means no Panel regression
+        # estimates are available and thus the function will have no output
+        return console.print(
+            "No Panel regression estimates available. Please use the "
+            "command 'panel' before using this command."
+        )
+
     comparison_result = compare(comparison)
+    console.print(comparison_result)
+
+    if export:
+        results_as_html = comparison_result.summary.tables[0].as_html()
+        df = pd.read_html(results_as_html, header=0, index_col=0)[0]
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "regressions_compare",
+            df,
+        )
 
     return comparison_result
 

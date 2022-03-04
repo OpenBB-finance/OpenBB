@@ -324,15 +324,6 @@ def get_engle_granger_two_step_cointegration_test(y, x):
         stronger rejection of no-cointegration, thus stronger evidence of cointegration.
 
     """
-
-    assert (
-        sum(y.isnull()) == 0
-    ), f"Input series '{y.name}' has nan-values. Unhandled case."
-    assert (
-        sum(x.isnull()) == 0
-    ), f"Input series '{x.name}' has nan-values. Unhandled case."
-    assert y.index.equals(x.index), "The two input series do not have the same index."
-
     warnings.simplefilter(action="ignore", category=FutureWarning)
     long_run_ols = sm.OLS(y, sm.add_constant(x))
     warnings.simplefilter(action="default", category=FutureWarning)

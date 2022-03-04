@@ -45,22 +45,27 @@ def show_options(
     export: str
         Format to export image
     """
-    option_tables = econometrics_model.get_options(datasets, dataset_name)
-
-    for dataset, data_values in option_tables.items():
-        print_rich_table(
-            data_values,
-            headers=list(data_values.columns),
-            show_index=False,
-            title=f"Options for {dataset}",
+    if not datasets:
+        console.print(
+            "Please load in a dataset by using the 'load' command before using this feature."
         )
+    else:
+        option_tables = econometrics_model.get_options(datasets, dataset_name)
 
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            f"{dataset}_options",
-            data_values.set_index("column"),
-        )
+        for dataset, data_values in option_tables.items():
+            print_rich_table(
+                data_values,
+                headers=list(data_values.columns),
+                show_index=False,
+                title=f"Options for {dataset}",
+            )
+
+            export_data(
+                export,
+                os.path.dirname(os.path.abspath(__file__)),
+                f"{dataset}_options",
+                data_values.set_index("column"),
+            )
 
 
 @log_start_end(log=logger)
@@ -138,43 +143,48 @@ def display_norm(
         Whether you wish to plot a histogram
     export: str
         Format to export data.
-    external_axes:Optional[List[plt.axes]]
+    external_axes: Optional[List[plt.axes]]
         External axes to plot on
     """
-
-    results = econometrics_model.get_normality(data)
-
-    print_rich_table(
-        results,
-        headers=list(results.columns),
-        show_index=True,
-        title=f"Normality Test [Column: {column} | Dataset: {dataset}]",
-    )
-
-    if plot:
-        if external_axes is None:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        else:
-            ax = external_axes[0]
-
-        ax.hist(data, bins=100)
-
-        ax.set_title(f"Histogram of {column} data from dataset {dataset}")
-
-        theme.style_primary_axis(ax)
-
-        if external_axes is None:
-            theme.visualize_output()
-
-    if export:
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            f"{column}_{dataset}_norm",
-            results,
+    if data.dtype not in [int, float]:
+        console.print(
+            f"The column type must be numeric. The {column}-{dataset} type is {data.dtype}. "
+            f"Consider using the command 'type' to change this."
         )
     else:
-        console.print()
+        results = econometrics_model.get_normality(data)
+
+        print_rich_table(
+            results,
+            headers=list(results.columns),
+            show_index=True,
+            title=f"Normality Test [Column: {column} | Dataset: {dataset}]",
+        )
+
+        if plot:
+            if external_axes is None:
+                _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+            else:
+                ax = external_axes[0]
+
+            ax.hist(data, bins=100)
+
+            ax.set_title(f"Histogram of {column} data from dataset {dataset}")
+
+            theme.style_primary_axis(ax)
+
+            if external_axes is None:
+                theme.visualize_output()
+
+        if export:
+            export_data(
+                export,
+                os.path.dirname(os.path.abspath(__file__)),
+                f"{column}_{dataset}_norm",
+                results,
+            )
+        else:
+            console.print()
 
 
 @log_start_end(log=logger)
@@ -203,25 +213,30 @@ def display_root(
     export: str
         Format to export data.
     """
-
-    results = econometrics_model.get_root(df, fuller_reg, kpss_reg)
-
-    print_rich_table(
-        results,
-        headers=list(results.columns),
-        show_index=True,
-        title=f"Unitroot Test [Column: {column_name} | Dataset: {dataset_name}]",
-    )
-
-    if export:
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            f"{column_name}_{dataset_name}_root",
-            results,
+    if df.dtype not in [int, float]:
+        console.print(
+            f"The column type must be numeric. The {column_name}-{dataset_name} "
+            f"type is {df.dtype}. Consider using the command 'type' to change this."
         )
     else:
-        console.print()
+        results = econometrics_model.get_root(df, fuller_reg, kpss_reg)
+
+        print_rich_table(
+            results,
+            headers=list(results.columns),
+            show_index=True,
+            title=f"Unitroot Test [Column: {column_name} | Dataset: {dataset_name}]",
+        )
+
+        if export:
+            export_data(
+                export,
+                os.path.dirname(os.path.abspath(__file__)),
+                f"{column_name}_{dataset_name}_root",
+                results,
+            )
+        else:
+            console.print()
 
 
 @log_start_end(log=logger)
@@ -247,52 +262,62 @@ def display_granger(
     export : str
         Format to export data
     """
-
-    granger = econometrics_model.get_granger_causality(
-        time_series_y, time_series_x, lags
-    )
-
-    for test in granger[lags][0]:
-        # As ssr_chi2test and lrtest have one less value in the tuple, we fill
-        # this value with a '-' to allow the conversion to a DataFrame
-        if len(granger[lags][0][test]) != 4:
-            pars = granger[lags][0][test]
-            granger[lags][0][test] = (pars[0], pars[1], "-", pars[2])
-
-    granger_df = pd.DataFrame(
-        granger[lags][0], index=["F-test", "P-value", "Count", "Lags"]
-    ).T
-
-    print_rich_table(
-        granger_df,
-        headers=list(granger_df.columns),
-        show_index=True,
-        title=f"Granger Causality Test [Y: {time_series_y.name} | X: {time_series_x.name} | Lags: {lags}]",
-    )
-
-    result_ftest = round(granger[lags][0]["params_ftest"][1], 3)
-
-    if result_ftest > confidence_level:
+    if time_series_y.dtype not in [int, float]:
         console.print(
-            f"As the p-value of the F-test is {result_ftest}, we can not reject the null hypothesis at "
-            f"the {confidence_level} confidence level."
+            f"The time series {time_series_y.name} needs to be numeric but is type {time_series_y.dtype}. "
+            f"Consider using the command 'type' to change this."
+        )
+    elif time_series_x.dtype not in [int, float]:
+        console.print(
+            f"The time series {time_series_x.name} needs to be numeric but is type {time_series_x.dtype}. "
+            f"Consider using the command 'type' to change this."
         )
     else:
-        console.print(
-            f"As the p-value of the F-test is {result_ftest}, we can reject the null hypothesis at "
-            f"the {confidence_level} confidence level and find the Series '{time_series_x.name}' "
-            f"to Granger-cause the Series '{time_series_y.name}'"
+        granger = econometrics_model.get_granger_causality(
+            time_series_y, time_series_x, lags
         )
 
-    if export:
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            f"{time_series_y.name}_{time_series_x.name}_granger",
+        for test in granger[lags][0]:
+            # As ssr_chi2test and lrtest have one less value in the tuple, we fill
+            # this value with a '-' to allow the conversion to a DataFrame
+            if len(granger[lags][0][test]) != 4:
+                pars = granger[lags][0][test]
+                granger[lags][0][test] = (pars[0], pars[1], "-", pars[2])
+
+        granger_df = pd.DataFrame(
+            granger[lags][0], index=["F-test", "P-value", "Count", "Lags"]
+        ).T
+
+        print_rich_table(
             granger_df,
+            headers=list(granger_df.columns),
+            show_index=True,
+            title=f"Granger Causality Test [Y: {time_series_y.name} | X: {time_series_x.name} | Lags: {lags}]",
         )
-    else:
-        console.print()
+
+        result_ftest = round(granger[lags][0]["params_ftest"][1], 3)
+
+        if result_ftest > confidence_level:
+            console.print(
+                f"As the p-value of the F-test is {result_ftest}, we can not reject the null hypothesis at "
+                f"the {confidence_level} confidence level."
+            )
+        else:
+            console.print(
+                f"As the p-value of the F-test is {result_ftest}, we can reject the null hypothesis at "
+                f"the {confidence_level} confidence level and find the Series '{time_series_x.name}' "
+                f"to Granger-cause the Series '{time_series_y.name}'"
+            )
+
+        if export:
+            export_data(
+                export,
+                os.path.dirname(os.path.abspath(__file__)),
+                f"{time_series_y.name}_{time_series_x.name}_granger",
+                granger_df,
+            )
+        else:
+            console.print()
 
 
 @log_start_end(log=logger)
@@ -339,63 +364,77 @@ def display_cointegration_test(
     z_values: Dict[str, pd.Series] = dict()
 
     for x, y in pairs:
-        (
-            c,
-            gamma,
-            alpha,
-            z,
-            adfstat,
-            pvalue,
-        ) = econometrics_model.get_engle_granger_two_step_cointegration_test(
-            datasets[x], datasets[y]
-        )
-        result[f"{x}/{y}"] = [c, gamma, alpha, adfstat, pvalue]
-        z_values[f"{x}/{y}"] = z
-
-    df = pd.DataFrame.from_dict(
-        result,
-        orient="index",
-        columns=["Constant", "Gamma", "Alpha", "Dickey-Fuller", "P Value"],
-    )
-
-    if significant:
-        console.print(
-            f"Only showing pairs that are statistically significant ({significant} > p-value)."
-        )
-        df = df[significant > df["P Value"]]
-        console.print()
-
-    print_rich_table(
-        df,
-        headers=list(df.columns),
-        show_index=True,
-        index_name="Pairs",
-        title="Cointegration Tests",
-    )
-
-    if plot:
-        if external_axes is None:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        if sum(datasets[y].isnull()) > 0:
+            console.print(
+                f"The Series {y} has nan-values. Please consider dropping or filling these "
+                f"values with 'clean'."
+            )
+        elif sum(datasets[x].isnull()) > 0:
+            console.print(
+                f"The Series {x} has nan-values. Please consider dropping or filling these "
+                f"values with 'clean'."
+            )
+        elif not datasets[y].index.equals(datasets[x].index):
+            console.print(f"The Series {y} and {x} do not have the same index.")
         else:
-            ax = external_axes[0]
+            (
+                c,
+                gamma,
+                alpha,
+                z,
+                adfstat,
+                pvalue,
+            ) = econometrics_model.get_engle_granger_two_step_cointegration_test(
+                datasets[x], datasets[y]
+            )
+            result[f"{x}/{y}"] = [c, gamma, alpha, adfstat, pvalue]
+            z_values[f"{x}/{y}"] = z
 
-        for pair, values in z_values.items():
-            ax.plot(values, label=pair)
-
-        ax.legend()
-        ax.set_title("Error correction terms")
-
-        theme.style_primary_axis(ax)
-
-        if external_axes is None:
-            theme.visualize_output()
-
-    if export:
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            "results_cointegration",
-            df,
+    if result and z_values:
+        df = pd.DataFrame.from_dict(
+            result,
+            orient="index",
+            columns=["Constant", "Gamma", "Alpha", "Dickey-Fuller", "P Value"],
         )
-    else:
-        console.print()
+
+        if significant:
+            console.print(
+                f"Only showing pairs that are statistically significant ({significant} > p-value)."
+            )
+            df = df[significant > df["P Value"]]
+            console.print()
+
+        print_rich_table(
+            df,
+            headers=list(df.columns),
+            show_index=True,
+            index_name="Pairs",
+            title="Cointegration Tests",
+        )
+
+        if plot:
+            if external_axes is None:
+                _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+            else:
+                ax = external_axes[0]
+
+            for pair, values in z_values.items():
+                ax.plot(values, label=pair)
+
+            ax.legend()
+            ax.set_title("Error correction terms")
+
+            theme.style_primary_axis(ax)
+
+            if external_axes is None:
+                theme.visualize_output()
+
+        if export:
+            export_data(
+                export,
+                os.path.dirname(os.path.abspath(__file__)),
+                "results_cointegration",
+                df,
+            )
+        else:
+            console.print()

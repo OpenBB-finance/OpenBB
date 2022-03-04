@@ -24,7 +24,7 @@ panel lwage-wp expersq-wp union-wp married-wp  year-wp -t fe -ee
 panel lwage-wp expersq-wp union-wp married-wp  -t fe -te
 panel lwage-wp expersq-wp union-wp married-wp  -t fe -te -ee
 panel lwage-wp exper-wp expersq-wp union-wp married-wp -t fdols
-dwat
+dwat -p
 bgod
 granger married-wp educ-wp
 coint black-wp hisp-wp exper-wp expersq-wp married-wp educ-wp union-wp

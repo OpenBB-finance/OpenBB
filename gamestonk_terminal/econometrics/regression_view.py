@@ -1,7 +1,7 @@
 """Regression View"""
 __docformat__ = "numpy"
 
-from typing import Optional, List
+from typing import Optional, List, Tuple, Dict, Any
 import os
 import logging
 import pandas as pd
@@ -18,6 +18,70 @@ from gamestonk_terminal.helper_funcs import (
 from gamestonk_terminal.config_terminal import theme
 
 logger = logging.getLogger(__name__)
+
+
+@log_start_end(log=logger)
+def display_panel(
+    regression_type: str,
+    regression_variables: List[Tuple],
+    data: Dict[str, pd.DataFrame],
+    datasets: Dict[pd.DataFrame, Any],
+    entity_effects: bool = False,
+    time_effects: bool = False,
+    export: str = "",
+):
+    """Based on the regression type, this function decides what regression to run.
+
+    Parameters
+    ----------
+    regression_type: str
+        The type of regression you wish to execute.
+    regression_variables : list
+        The regressions variables entered where the first variable is
+        the dependent variable.
+    data : dict
+        A dictionary containing the datasets.
+    datasets: dict
+        A dictionary containing the column and dataset names of
+        each column/dataset combination.
+    entity_effects: bool
+        Whether to apply Fixed Effects on entities.
+    time_effects: bool
+        Whether to apply Fixed Effects on time.
+    export : str
+        Format to export data
+
+    Returns
+    -------
+    The dataset used, the dependent variable, the independent variable and
+    the regression model.
+    """
+    (
+        regression_df,
+        dependent,
+        independent,
+        model,
+    ) = regression_model.get_regressions_results(
+        regression_type,
+        regression_variables,
+        data,
+        datasets,
+        entity_effects,
+        time_effects,
+    )
+
+    if export:
+        results_as_html = model.summary.tables[1].as_html()
+        df = pd.read_html(results_as_html, header=0, index_col=0)[0]
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            f"{dependent}_{regression_type}_regression",
+            df,
+        )
+
+    return regression_df, dependent, independent, model
 
 
 @log_start_end(log=logger)
@@ -40,7 +104,7 @@ def display_dwat(
         Whether to plot the residuals
     export : str
         Format to export data
-    external_axes:Optional[List[plt.axes]]
+    external_axes: Optional[List[plt.axes]]
         External axes to plot on
     """
     autocorrelation = regression_model.get_dwat(residual)

@@ -345,13 +345,18 @@ Tests
             parser, other_args, export_allowed=NO_EXPORT
         )
 
-        if ns_parser and ns_parser.name:
-            export_data(
-                ns_parser.type,
-                os.path.dirname(os.path.abspath(__file__)),
-                ns_parser.name,
-                self.datasets[ns_parser.name],
-            )
+        if ns_parser:
+            if not ns_parser.name or ns_parser.name not in self.datasets:
+                console.print("Please enter a valid dataset.")
+            else:
+                export_data(
+                    ns_parser.type,
+                    os.path.dirname(os.path.abspath(__file__)),
+                    ns_parser.name,
+                    self.datasets[ns_parser.name],
+                )
+
+        console.print()
 
     def call_remove(self, other_args: List[str]):
         """Process clear"""
@@ -374,7 +379,9 @@ Tests
             other_args.insert(0, "-n")
         ns_parser = parse_known_args_and_warn(parser, other_args, NO_EXPORT)
 
-        if ns_parser:
+        if not ns_parser.name:
+            console.print("Please enter a valid dataset.")
+        else:
             if ns_parser.name in self.datasets:
                 del self.datasets[ns_parser.name]
                 self.files.remove(ns_parser.name)
@@ -502,37 +509,43 @@ Tests
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
-        if ns_parser and ns_parser.name:
-            df = self.datasets[ns_parser.name]
+        if ns_parser:
+            if not ns_parser.name:
+                dataset_names = list(self.datasets.keys())
+            else:
+                dataset_names = [ns_parser.name]
 
-            if ns_parser.name in self.datasets and self.datasets[ns_parser.name].empty:
-                return console.print(
-                    f"[red]No data available for {ns_parser.name}.[/red]\n"
-                )
-            if ns_parser.sortcol:
-                sort_column = " ".join(ns_parser.sortcol)
-                if sort_column not in self.datasets[ns_parser.name].columns:
-                    console.print(
-                        f"[red]{sort_column} not a valid column. Showing without sorting.\n[/red]"
+            for name in dataset_names:
+                df = self.datasets[name]
+
+                if name in self.datasets and self.datasets[name].empty:
+                    return console.print(
+                        f"[red]No data available for {ns_parser.name}.[/red]\n"
                     )
-                else:
-                    df = df.sort_values(by=sort_column, ascending=ns_parser.ascend)
+                if ns_parser.sortcol:
+                    sort_column = " ".join(ns_parser.sortcol)
+                    if sort_column not in self.datasets[name].columns:
+                        console.print(
+                            f"[red]{sort_column} not a valid column. Showing without sorting.\n[/red]"
+                        )
+                    else:
+                        df = df.sort_values(by=sort_column, ascending=ns_parser.ascend)
 
-            print_rich_table(
-                df.head(ns_parser.limit),
-                headers=list(df.columns),
-                show_index=True,
-                title=ns_parser.name,
-            )
+                print_rich_table(
+                    df.head(ns_parser.limit),
+                    headers=list(df.columns),
+                    show_index=True,
+                    title=f"Dataset {name} | Showing {ns_parser.limit} of {len(df)} rows",
+                )
 
-            export_data(
-                ns_parser.export,
-                os.path.dirname(os.path.abspath(__file__)),
-                f"{ns_parser.name}_show",
-                df.head(ns_parser.limit),
-            )
+                export_data(
+                    ns_parser.export,
+                    os.path.dirname(os.path.abspath(__file__)),
+                    f"{ns_parser.name}_show",
+                    df.head(ns_parser.limit),
+                )
 
-        return console.print()
+                console.print()
 
     def call_desc(self, other_args: List[str]):
         """Process desc command"""
@@ -778,14 +791,17 @@ Tests
         ns_parser = parse_known_args_and_warn(parser, other_args, NO_EXPORT)
 
         if ns_parser:
-            self.datasets[ns_parser.name] = econometrics_model.clean(
-                self.datasets[ns_parser.name],
-                ns_parser.fill,
-                ns_parser.drop,
-                ns_parser.limit,
-            )
+            if not ns_parser.name or ns_parser.name not in self.datasets:
+                console.print("Please enter a valid dataset.")
+            else:
+                self.datasets[ns_parser.name] = econometrics_model.clean(
+                    self.datasets[ns_parser.name],
+                    ns_parser.fill,
+                    ns_parser.drop,
+                    ns_parser.limit,
+                )
 
-        console.print()
+            console.print()
 
     def call_modify(self, other_args: List[str]):
         """Process modify"""
@@ -1229,7 +1245,7 @@ Tests
                     self.regression[regression_name]["dependent"],
                     self.regression[regression_name]["independent"],
                     self.regression[regression_name]["model"],
-                ) = gamestonk_terminal.econometrics.regression_model.get_regressions_results(
+                ) = gamestonk_terminal.econometrics.regression_view.display_panel(
                     regression,
                     ns_parser.regression,
                     self.datasets,
@@ -1238,30 +1254,13 @@ Tests
                     ns_parser.time_effects,
                 )
 
-            if ns_parser.export:
-                results_as_html = (
-                    self.regression[regression_name]["model"]
-                    .summary.tables[1]
-                    .as_html()
-                )
-                df = pd.read_html(results_as_html, header=0, index_col=0)[0]
-
-                export_data(
-                    ns_parser.export,
-                    os.path.dirname(os.path.abspath(__file__)),
-                    f"{self.regression[regression_name]['dependent']}_{regression_name}_regression",
-                    df,
-                )
-            else:
-                return console.print()
-
     def call_compare(self, other_args: List[str]):
         """Process compare command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="compare",
-            description="Compare results between all activated regression models",
+            description="Compare results between all activated Panel regression models",
         )
 
         ns_parser = parse_known_args_and_warn(
@@ -1269,26 +1268,9 @@ Tests
         )
 
         if ns_parser:
-            comparison_result = (
-                gamestonk_terminal.econometrics.regression_model.get_comparison(
-                    self.regression
-                )
+            gamestonk_terminal.econometrics.regression_model.get_comparison(
+                self.regression, ns_parser.export
             )
-
-            console.print(comparison_result)
-
-            if ns_parser.export:
-                results_as_html = comparison_result.summary.tables[0].as_html()
-                df = pd.read_html(results_as_html, header=0, index_col=0)[0]
-
-                export_data(
-                    ns_parser.export,
-                    os.path.dirname(os.path.abspath(__file__)),
-                    "regressions_compare",
-                    df,
-                )
-            else:
-                console.print()
 
     def call_dwat(self, other_args: List[str]):
         """Process unitroot command"""
