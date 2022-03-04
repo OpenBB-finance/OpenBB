@@ -30,6 +30,7 @@ def overview_command():
 
     df = df[
         [
+            " ",
             "Price",
             "Chg",
             "%Chg",
