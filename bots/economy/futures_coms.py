@@ -7,14 +7,15 @@ from bots.helpers import save_image
 from gamestonk_terminal.economy import wsj_model
 
 
-def indices_command():
-    """US indices overview [Wall St. Journal]"""
+def futures_coms_command():
+    """Futures and commodities overview [Wall St. Journal]"""
+
     # Debug user input
     if cfg.DEBUG:
-        logger.debug("econ-indices")
+        logger.debug("econ-futures")
 
     # Retrieve data
-    df = wsj_model.us_indices()
+    df = wsj_model.top_commodities()
 
     # Check for argument
     if df.empty:
@@ -24,13 +25,16 @@ def indices_command():
     df["Chg"] = pd.to_numeric(df["Chg"].astype(float))
     df["%Chg"] = pd.to_numeric(df["%Chg"].astype(float))
 
+    # Debug user output
+    if cfg.DEBUG:
+        logger.debug(df.to_string())
+
     formats = {"Price": "${:.2f}", "Chg": "${:.2f}", "%Chg": "{:.2f}%"}
     for col, value in formats.items():
         df[col] = df[col].map(lambda x: value.format(x))  # pylint: disable=W0640
 
-    # Debug user output
-    if cfg.DEBUG:
-        logger.debug(df)
+    df = df.fillna("")
+    df.set_index(" ", inplace=True)
 
     df = df[
         [
@@ -39,10 +43,6 @@ def indices_command():
             "%Chg",
         ]
     ]
-
-    df = df.fillna("")
-    df.set_index(" ", inplace=True)
-
     dindex = len(df.index)
     fig = df2img.plot_dataframe(
         df,
@@ -53,9 +53,6 @@ def indices_command():
         font=cfg.PLT_TBL_FONT,
         paper_bgcolor="rgba(0, 0, 0, 0)",
     )
-    fig.update_traces(cells=(dict(align=["left", "center"])))
-    imagefile = save_image("econ-indices.png", fig)
-    return {
-        "title": "Economy: [WSJ] US Indices",
-        "imagefile": imagefile,
-    }
+    fig.update_traces(cells=(dict(align="left")))
+    imagefile = save_image("econ-futures.png", fig)
+    return {"title": "Economy: [WSJ] Futures/Commodities", "imagefile": imagefile}

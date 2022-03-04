@@ -15,7 +15,7 @@ def aroon_command(ticker="", length="25", scalar="100", start="", end=""):
     # Debug
     if cfg.DEBUG:
         logger.debug(
-            "ta-aroon %s %s %s %s %s",
+            "ta aroon %s %s %s %s %s",
             ticker,
             length,
             scalar,
@@ -127,6 +127,7 @@ def aroon_command(ticker="", length="25", scalar="100", start="", end=""):
         title=f"Aroon on {ticker}",
         title_x=0.5,
         yaxis_title="Stock Price ($)",
+        font=cfg.PLT_FONT,
         yaxis=dict(
             fixedrange=False,
         ),

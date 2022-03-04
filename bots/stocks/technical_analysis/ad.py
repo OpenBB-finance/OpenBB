@@ -14,7 +14,7 @@ def ad_command(ticker="", is_open="False", start="", end=""):
 
     # Debug
     if cfg.DEBUG:
-        logger.debug("ta-ad %s %s %s %s", ticker, is_open, start, end)
+        logger.debug("ta ad %s %s %s %s", ticker, is_open, start, end)
 
     # Check for argument
     if ticker == "":
@@ -116,6 +116,7 @@ def ad_command(ticker="", is_open="False", start="", end=""):
         yaxis_title="Stock Price ($)",
         yaxis2_title="Volume [M]",
         yaxis3_title="A/D [M]",
+        font=cfg.PLT_FONT,
         yaxis=dict(
             fixedrange=False,
         ),

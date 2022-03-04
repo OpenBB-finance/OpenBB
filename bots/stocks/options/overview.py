@@ -27,14 +27,17 @@ def overview_command(
 
     # Debug
     if cfg.DEBUG:
-        logger.debug("opt-overview %s %s %s %s", ticker, expiry, min_sp, max_sp)
+        logger.debug("opt overview %s %s %s %s", ticker, expiry, min_sp, max_sp)
 
     # Check for argument
     if ticker is None:
         raise Exception("Stock ticker is required")
 
+    indics = "^"
+
     # Get options info/dates, Look for logo_url
-    df = get_options_info(ticker)  # Barchart Options IV Overview
+    if indics not in ticker:
+        df_bcinfo = get_options_info(ticker)  # Barchart Options IV Overview
 
     dates = yfinance_model.option_expirations(ticker)  # Expiration dates
     tup = f"{ticker.upper()}"
@@ -47,6 +50,7 @@ def overview_command(
     options = yfinance_model.get_option_chain(ticker, str(expiry))
     calls = options.calls.fillna(0)
     puts = options.puts.fillna(0)
+
     current_price = yfinance_model.get_price(ticker)
 
     min_strike2 = np.percentile(calls["strike"], 1)
@@ -132,11 +136,11 @@ def overview_command(
         xaxis=dict(
             rangeslider=dict(visible=False),
         ),
+        font=cfg.PLT_FONT,
         legend=dict(yanchor="top", y=0.99, xanchor="left", x=0.01),
         dragmode="pan",
     )
     config = dict({"scrollZoom": True})
-    imagefile = "opt_oi.png"
 
     plt_link = ""
     if cfg.INTERACTIVE:
@@ -149,11 +153,15 @@ def overview_command(
         height=500,
     )
 
-    imagefile = helpers.image_border(imagefile, fig=fig)
+    imagefile_save = f"{cfg.IMG_DIR}/opt_oi.png"
+    imagefile = helpers.image_border(imagefile_save, fig=fig)
 
-    uploaded_image_oi = gst_imgur.upload_image(imagefile, title="something")
-    image_link_oi = uploaded_image_oi.link
-    os.remove(imagefile)
+    if cfg.IMAGES_URL:
+        image_link_oi = cfg.IMAGES_URL + imagefile
+    else:
+        uploaded_image_oi = gst_imgur.upload_image(imagefile, title="something")
+        image_link_oi = uploaded_image_oi.link
+        os.remove(imagefile)
 
     column_map = {"openInterest": "oi", "volume": "vol", "impliedVolatility": "iv"}
     columns = [
@@ -183,13 +191,16 @@ def overview_command(
         )
         puts_df[col] = puts_df[col].map(lambda x: f.format(x))  # pylint: disable=W0640
 
+    calls_df = calls_df.fillna("")
+    puts_df = puts_df.fillna("")
     calls_df.set_index("strike", inplace=True)
     puts_df.set_index("strike", inplace=True)
 
-    if "-" in df.iloc[0, 1]:
-        iv = f"```diff\n-             {df.iloc[0, 1]}\n```"
-    else:
-        iv = f"```yaml\n              {df.iloc[0, 1]}\n```"
+    if indics not in ticker:
+        if "-" in df_bcinfo.iloc[0, 1]:
+            iv = f"```diff\n-             {df_bcinfo.iloc[0, 1]}\n```"
+        else:
+            iv = f"```yaml\n              {df_bcinfo.iloc[0, 1]}\n```"
 
     pfix, sfix = f"{ticker.upper()} ", f" expiring {expiry}"
     if expiry == dates[0]:
@@ -224,14 +235,20 @@ def overview_command(
             df_calls,
             fig_size=(1000, (40 + (40 * 20))),
             col_width=[3, 3, 3, 3],
+            tbl_header=cfg.PLT_TBL_HEADER,
             tbl_cells=cfg.PLT_TBL_CELLS,
             font=cfg.PLT_TBL_FONT,
-            template=cfg.PLT_TBL_STYLE_TEMPLATE,
             paper_bgcolor="rgba(0, 0, 0, 0)",
         )
-        imagefile = helpers.save_image("opt-calls.png", figc)
-        uploaded_image = gst_imgur.upload_image(imagefile, title="something")
-        image_link = uploaded_image.link
+        imagefile_save = f"{cfg.IMG_DIR}/opt-calls{i}.png"
+        imagefile = helpers.save_image(imagefile_save, figc)
+
+        if cfg.IMAGES_URL:
+            image_link = cfg.IMAGES_URL + imagefile
+        else:
+            uploaded_image = gst_imgur.upload_image(imagefile, title="something")
+            image_link = uploaded_image.link
+            os.remove(imagefile)
         embeds_img.append(
             f"{image_link}",
         )
@@ -245,7 +262,6 @@ def overview_command(
         i2 += 1
         i += 20
         end += 20
-        os.remove(imagefile)
 
     # Add Calls page field
     i, page, puts_page = 2, 0, 3
@@ -271,14 +287,20 @@ def overview_command(
             df_puts,
             fig_size=(1000, (40 + (40 * 20))),
             col_width=[3, 3, 3, 3],
+            tbl_header=cfg.PLT_TBL_HEADER,
             tbl_cells=cfg.PLT_TBL_CELLS,
             font=cfg.PLT_TBL_FONT,
-            template=cfg.PLT_TBL_STYLE_TEMPLATE,
             paper_bgcolor="rgba(0, 0, 0, 0)",
         )
-        imagefile = helpers.save_image("opt-puts.png", figp)
-        uploaded_image = gst_imgur.upload_image(imagefile, title="something")
-        image_link = uploaded_image.link
+        imagefile_save = f"{cfg.IMG_DIR}/opt-puts{i}.png"
+        imagefile = helpers.save_image(imagefile_save, figp)
+
+        if cfg.IMAGES_URL:
+            image_link = cfg.IMAGES_URL + imagefile
+        else:
+            uploaded_image = gst_imgur.upload_image(imagefile, title="something")
+            image_link = uploaded_image.link
+            os.remove(imagefile)
         embeds_img.append(
             f"{image_link}",
         )
@@ -292,7 +314,6 @@ def overview_command(
         i2 += 1
         i += 20
         end += 20
-        os.remove(imagefile)
 
     # Add Puts page field
     i, page = 0, 0
@@ -332,44 +353,44 @@ def overview_command(
         embeds[0].set_thumbnail(url=cfg.AUTHOR_ICON_URL)
 
     # Overview Section
-    embeds[0].add_field(name=f"{df.iloc[0, 0]}", value=iv, inline=False)
+    if indics not in ticker:
+        embeds[0].add_field(name=f"{df_bcinfo.iloc[0, 0]}", value=iv, inline=False)
 
-    embeds[0].add_field(
-        name=f"•{df.iloc[1, 0]}", value=f"```css\n{df.iloc[1, 1]}\n```", inline=True
-    )
-    for N in range(2, 6):
         embeds[0].add_field(
-            name=f"_ _ _ _ _ _ _ _ _ _ •{df.iloc[N, 0]}",
-            value=f"```css\n{df.iloc[N, 1]}\n```",
-            inline=True,
+            name=f"•{df_bcinfo.iloc[1, 0]}", value=f"```css\n{df_bcinfo.iloc[1, 1]}\n```", inline=True
         )
+        for N in range(2, 6):
+            embeds[0].add_field(
+                name=f"_ _ _ _ _ _ _ _ _ _ •{df_bcinfo.iloc[N, 0]}",
+                value=f"```css\n{df_bcinfo.iloc[N, 1]}\n```",
+                inline=True,
+            )
 
-    embeds[0].add_field(name="_ _", value="_ _", inline=False)
-    for N in range(6, 8):
-        embeds[0].add_field(
-            name=f"_ _ _ _ _ _ _ _ _ _ •{df.iloc[N, 0]}",
-            value=f"```css\n{df.iloc[N, 1]}\n```",
-            inline=True,
-        )
+        embeds[0].add_field(name="_ _", value="_ _", inline=False)
+        for N in range(6, 8):
+            embeds[0].add_field(
+                name=f"_ _ _ _ _ _ _ _ _ _ •{df_bcinfo.iloc[N, 0]}",
+                value=f"```css\n{df_bcinfo.iloc[N, 1]}\n```",
+                inline=True,
+            )
 
-    embeds[0].add_field(name="_ _", value="_ _", inline=False)
-    for N in range(8, 10):
-        embeds[0].add_field(
-            name=f"_ _ _ _ _ _ _ _ _ _ •{df.iloc[N, 0]}",
-            value=f"```css\n{df.iloc[N, 1]}\n```",
-            inline=True,
-        )
+        embeds[0].add_field(name="_ _", value="_ _", inline=False)
+        for N in range(8, 10):
+            embeds[0].add_field(
+                name=f"_ _ _ _ _ _ _ _ _ _ •{df_bcinfo.iloc[N, 0]}",
+                value=f"```css\n{df_bcinfo.iloc[N, 1]}\n```",
+                inline=True,
+            )
 
-    embeds[0].add_field(name="_ _", value="_ _", inline=False)
-    for N in range(10, 12):
-        embeds[0].add_field(
-            name=f"_ _ _ _ _ _ _ _ _ _ •{df.iloc[N, 0]}",
-            value=f"```css\n{df.iloc[N, 1]}\n```",
-            inline=True,
-        )
+        embeds[0].add_field(name="_ _", value="_ _", inline=False)
+        for N in range(10, 12):
+            embeds[0].add_field(
+                name=f"_ _ _ _ _ _ _ _ _ _ •{df_bcinfo.iloc[N, 0]}",
+                value=f"```css\n{df_bcinfo.iloc[N, 1]}\n```",
+                inline=True,
+            )
 
-    embeds[0].set_footer(text=f"Page 1 of {len(embeds)}")
-    os.remove(imagefile)
+        embeds[0].set_footer(text=f"Page 1 of {len(embeds)}")
 
     return {
         "view": Menu,

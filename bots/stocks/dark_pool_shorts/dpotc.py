@@ -13,7 +13,7 @@ def dpotc_command(ticker: str = ""):
 
     # Debug user input
     if cfg.DEBUG:
-        logger.debug("dps-dpotc %s", ticker)
+        logger.debug("dps dpotc %s", ticker)
 
     # Check for argument
     if ticker == "":
@@ -153,6 +153,7 @@ def dpotc_command(ticker: str = ""):
         yaxis3_title="Shares per Trade",
         yaxis_title="Total Weekly Shares",
         xaxis2_title="Weeks",
+        font=cfg.PLT_FONT,
         yaxis=dict(
             fixedrange=False,
             side="left",

@@ -32,12 +32,14 @@ DISCORD_BOT_TOKEN = os.getenv("GT_DISCORD_BOT_TOKEN") or "REPLACE_ME"
 IMGUR_CLIENT_ID = os.getenv("GT_IMGUR_CLIENT_ID") or "REPLACE_ME"
 
 # Settings
-SLASH_TESTING_SERVERS: List[int] = [936333632317046844]  # Test server IDs
+SLASH_TESTING_SERVERS: List[int] = None  # Test server IDs
 COMMAND_PREFIX = "!"
 DATE_FORMAT = "%Y-%m-%d"
 COLOR = disnake.Color.from_rgb(255, 0, 0)
 INTERACTIVE = False
 INTERACTIVE_URL = ""
+IMG_DIR = "in/images"
+IMAGES_URL = "testing"
 # IMG_BG = "files/bg.png"  # Light BG
 IMG_BG = "files/bg-dark.png"  # Dark BG
 PLT_3DMESH_COLORSCALE = "Jet"
@@ -75,11 +77,24 @@ PLT_TA_COLORWAY = [
     "#e250c3",
     "#d1fa3d",
 ]
-PLT_TBL_STYLE_TEMPLATE = "plotly_dark"
+PLT_TBL_HEADER = dict(
+    fill_color="rgb(30, 30, 30)",
+    font_color="white",
+    line_color="rgb(63, 63, 63)",
+    line_width=2,
+)
 PLT_TBL_CELLS = dict(
     height=35,
+    fill_color="rgb(50, 50, 50)",
+    font_color="white",
+    line_color="rgb(63, 63, 63)",
+    line_width=2,
 )
 PLT_TBL_FONT = dict(
+    family="Consolas",
+    size=20,
+)
+PLT_FONT = dict(
     family="Consolas",
     size=20,
 )

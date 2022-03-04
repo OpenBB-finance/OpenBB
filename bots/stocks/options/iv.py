@@ -11,7 +11,7 @@ def iv_command(ticker: str = None):
 
     # Debug
     if cfg.DEBUG:
-        logger.debug("opt-iv %s", ticker)
+        logger.debug("opt info %s", ticker)
 
     # Check for argument
     if ticker is None:
@@ -31,18 +31,13 @@ def iv_command(ticker: str = None):
         df,
         fig_size=(600, 1500),
         col_width=[3, 3],
-        tbl_cells=dict(
-            align="left",
-            height=35,
-        ),
-        template="plotly_dark",
-        font=dict(
-            family="Consolas",
-            size=20,
-        ),
+        tbl_header=cfg.PLT_TBL_HEADER,
+        tbl_cells=cfg.PLT_TBL_CELLS,
+        font=cfg.PLT_TBL_FONT,
         paper_bgcolor="rgba(0, 0, 0, 0)",
     )
-    imagefile = save_image("opt-iv.png", fig)
+    fig.update_traces(cells=(dict(align="left")))
+    imagefile = save_image("opt-info.png", fig)
 
     return {
         "title": f"{ticker.upper()} Options: IV",

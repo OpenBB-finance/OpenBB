@@ -16,7 +16,7 @@ def rsi_command(ticker="", length="14", scalar="100", drift="1", start="", end="
     if cfg.DEBUG:
         # pylint: disable=logging-too-many-args
         logger.debug(
-            "ta-rsi %s %s %s %s %s %s",
+            "ta rsi %s %s %s %s %s %s",
             ticker,
             length,
             scalar,
@@ -137,6 +137,7 @@ def rsi_command(ticker="", length="14", scalar="100", drift="1", start="", end="
         title=f"{ticker} {trace_name}",
         title_x=0.5,
         yaxis_title="Stock Price ($)",
+        font=cfg.PLT_FONT,
         yaxis=dict(
             fixedrange=False,
         ),

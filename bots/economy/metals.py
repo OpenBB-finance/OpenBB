@@ -51,17 +51,12 @@ def metals_command():
         df,
         fig_size=(800, (40 + (40 * dindex))),
         col_width=[6, 3, 3],
-        tbl_cells=dict(
-            align="left",
-            height=35,
-        ),
-        template="plotly_dark",
-        font=dict(
-            family="Consolas",
-            size=20,
-        ),
+        tbl_header=cfg.PLT_TBL_HEADER,
+        tbl_cells=cfg.PLT_TBL_CELLS,
+        font=cfg.PLT_TBL_FONT,
         paper_bgcolor="rgba(0, 0, 0, 0)",
     )
+    fig.update_traces(cells=(dict(align="left")))
     imagefile = save_image("econ-metals.png", fig)
     return {
         "title": "Economy: [WSJ] Metals Futures",

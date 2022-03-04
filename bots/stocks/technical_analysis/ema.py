@@ -15,7 +15,7 @@ def ema_command(ticker="", window="", offset="", start="", end=""):
     # Debug
     if cfg.DEBUG:
         logger.debug(
-            "ta-ema %s %s %s %s %s",
+            "ta ema %s %s %s %s %s",
             ticker,
             window,
             offset,
@@ -105,6 +105,7 @@ def ema_command(ticker="", window="", offset="", start="", end=""):
         title_x=0.5,
         yaxis_title="Stock Price ($)",
         xaxis_title="Time",
+        font=cfg.PLT_FONT,
         yaxis=dict(
             fixedrange=False,
         ),

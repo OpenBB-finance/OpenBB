@@ -14,7 +14,7 @@ def ftd_command(ticker: str = "", start="", end=""):
 
     # Debug user input
     if cfg.DEBUG:
-        logger.debug("dps-ftd %s %s %s", ticker, start, end)
+        logger.debug("dps ftd %s %s %s", ticker, start, end)
 
     # Check for argument
     if ticker == "":
@@ -75,6 +75,7 @@ def ftd_command(ticker: str = "", start="", end=""):
         title=f"{ticker}",
         title_x=0.5,
         yaxis_title="<b>Stock Price</b> ($)",
+        font=cfg.PLT_FONT,
         yaxis=dict(
             side="right",
             fixedrange=False,

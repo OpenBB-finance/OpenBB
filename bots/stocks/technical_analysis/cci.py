@@ -15,7 +15,7 @@ def cci_command(ticker="", length="14", scalar="0.015", start="", end=""):
     # Debug
     if cfg.DEBUG:
         logger.debug(
-            "ta-cci %s %s %s %s %s",
+            "ta cci %s %s %s %s %s",
             ticker,
             length,
             scalar,
@@ -137,6 +137,7 @@ def cci_command(ticker="", length="14", scalar="0.015", start="", end=""):
         title=f"{ticker} CCI",
         title_x=0.5,
         yaxis_title="Stock Price ($)",
+        font=cfg.PLT_FONT,
         yaxis=dict(
             fixedrange=False,
         ),

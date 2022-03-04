@@ -15,7 +15,7 @@ def obv_command(ticker="", start="", end=""):
     # Debug
     if cfg.DEBUG:
         logger.debug(
-            "ta-obv %s %s %s",
+            "ta obv %s %s %s",
             ticker,
             start,
             end,
@@ -100,9 +100,11 @@ def obv_command(ticker="", start="", end=""):
         colorway=cfg.PLT_TA_COLORWAY,
         title=f"{ticker} OBV",
         title_x=0.4,
+        showlegend=False,
         yaxis_title="Stock Price ($)",
         yaxis2_title="Volume [M]",
         yaxis3_title="OBV [M]",
+        font=cfg.PLT_FONT,
         yaxis=dict(
             fixedrange=False,
         ),

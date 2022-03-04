@@ -16,7 +16,7 @@ def adosc_command(ticker="", is_open="False", fast="3", slow="10", start="", end
     if cfg.DEBUG:
         # pylint: disable=logging-too-many-args
         logger.debug(
-            "ta-adosc %s %s %s %s %s",
+            "ta adosc %s %s %s %s %s",
             ticker,
             is_open,
             fast,
@@ -112,6 +112,7 @@ def adosc_command(ticker="", is_open="False", fast="3", slow="10", start="", end
         title=f"{ticker} AD Oscillator",
         title_x=0.3,
         yaxis_title="Stock Price ($)",
+        font=cfg.PLT_FONT,
         yaxis=dict(
             fixedrange=False,
         ),

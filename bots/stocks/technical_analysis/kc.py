@@ -17,7 +17,7 @@ def kc_command(
     if cfg.DEBUG:
         # pylint: disable=logging-too-many-args
         logger.debug(
-            "ta-kc %s %s %s %s %s %s %s",
+            "ta kc %s %s %s %s %s %s %s",
             ticker,
             length,
             scalar,
@@ -129,6 +129,7 @@ def kc_command(
         title_x=0.5,
         yaxis_title="Stock Price ($)",
         xaxis_title="Time",
+        font=cfg.PLT_FONT,
         yaxis=dict(
             fixedrange=False,
         ),

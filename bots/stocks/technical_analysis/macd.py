@@ -16,7 +16,7 @@ def macd_command(ticker="", fast="12", slow="26", signal="9", start="", end=""):
     if cfg.DEBUG:
         # pylint: disable=logging-too-many-args
         logger.debug(
-            "ta-macd %s %s %s %s %s %s",
+            "ta macd %s %s %s %s %s %s",
             ticker,
             fast,
             slow,
@@ -118,6 +118,7 @@ def macd_command(ticker="", fast="12", slow="26", signal="9", start="", end=""):
         title=f"{ticker} {trace_name}",
         title_x=0.3,
         yaxis_title="Stock Price ($)",
+        font=cfg.PLT_FONT,
         yaxis=dict(
             fixedrange=False,
         ),

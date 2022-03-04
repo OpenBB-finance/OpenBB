@@ -15,7 +15,7 @@ def stoch_command(ticker="", fast_k="14", slow_d="3", slow_k="3", start="", end=
     # Debug
     if cfg.DEBUG:
         logger.debug(
-            "ta-stoch %s %s %s %s %s %s",
+            "ta stoch %s %s %s %s %s %s",
             ticker,
             fast_k,
             slow_k,
@@ -154,6 +154,7 @@ def stoch_command(ticker="", fast_k="14", slow_d="3", slow_k="3", start="", end=
         title=f"Stochastic Relative Strength Index (STOCH RSI) on {ticker}",
         title_x=0.5,
         yaxis_title="Stock Price ($)",
+        font=cfg.PLT_FONT,
         yaxis=dict(
             fixedrange=False,
         ),

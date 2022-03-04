@@ -11,7 +11,7 @@ def hsi_command(num: int = 10):
 
     # Debug user input
     if cfg.DEBUG:
-        logger.debug("dps-hsi %s", num)
+        logger.debug("dps hsi %s", num)
 
     # Check for argument
     if num < 0:

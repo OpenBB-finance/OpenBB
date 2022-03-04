@@ -8,14 +8,14 @@ from bots import helpers
 from gamestonk_terminal.common.technical_analysis import volatility_model
 
 
-def bbands_command(ticker="", length="5", n_std="2", mamode="sma", start="", end=""):
+def bbands_command(ticker="", length="20", n_std: float = 2.0, mamode="sma", start="", end=""):
     """Displays chart with bollinger bands [Yahoo Finance]"""
 
     # Debug
     if cfg.DEBUG:
         # pylint: disable=logging-too-many-args
         logger.debug(
-            "ta-bbands %s %s %s %s %s %s",
+            "ta bbands %s %s %s %s %s %s",
             ticker,
             length,
             n_std,
@@ -61,8 +61,6 @@ def bbands_command(ticker="", length="5", n_std="2", mamode="sma", start="", end
     if not length.lstrip("-").isnumeric():
         raise Exception("Number has to be an integer")
     length = float(length)
-    if not n_std.lstrip("-").isnumeric():
-        raise Exception("Number has to be an integer")
     n_std = float(n_std)
 
     if mamode not in possible_ma:
@@ -135,6 +133,7 @@ def bbands_command(ticker="", length="5", n_std="2", mamode="sma", start="", end
         title_x=0.5,
         yaxis_title="Stock Price ($)",
         xaxis_title="Time",
+        font=cfg.PLT_FONT,
         yaxis=dict(
             fixedrange=False,
         ),

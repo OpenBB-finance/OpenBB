@@ -13,7 +13,7 @@ def psi_command(ticker: str = ""):
 
     # Debug user input
     if cfg.DEBUG:
-        logger.debug("dps-psi %s", ticker)
+        logger.debug("dps psi %s", ticker)
 
     # Check for argument
     if ticker == "":

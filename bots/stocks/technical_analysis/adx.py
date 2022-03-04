@@ -16,7 +16,7 @@ def adx_command(ticker="", length="14", scalar="100", drift="1", start="", end="
     if cfg.DEBUG:
         # pylint: disable=logging-too-many-args
         logger.debug(
-            "ta-adx %s %s %s %s %s",
+            "ta adx %s %s %s %s %s",
             ticker,
             length,
             scalar,
@@ -142,6 +142,7 @@ def adx_command(ticker="", length="14", scalar="100", drift="1", start="", end="
         title=f"Average Directional Movement Index (ADX) on {ticker}",
         title_x=0.3,
         yaxis_title="Stock Price ($)",
+        font=cfg.PLT_FONT,
         yaxis=dict(
             fixedrange=False,
         ),

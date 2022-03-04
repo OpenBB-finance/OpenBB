@@ -7,7 +7,7 @@ import pandas as pd
 
 import bots.config_discordbot as cfg
 from bots.config_discordbot import gst_imgur, logger
-from bots.helpers import save_image
+from bots import helpers
 from bots.menus.menu import Menu
 from gamestonk_terminal.stocks.options import yfinance_model
 
@@ -92,20 +92,21 @@ def chain_command(
             df_pg,
             fig_size=(1000, (40 + (40 * 20))),
             col_width=[3, 3, 3, 3],
-            tbl_cells=dict(
-                height=35,
-            ),
-            font=dict(
-                family="Consolas",
-                size=20,
-            ),
-            template="plotly_dark",
+            tbl_header=cfg.PLT_TBL_HEADER,
+            tbl_cells=cfg.PLT_TBL_CELLS,
+            font=cfg.PLT_TBL_FONT,
             paper_bgcolor="rgba(0, 0, 0, 0)",
         )
-        imagefile = save_image(f"opt-chain{i}.png", fig)
+        imagefile_save = f"{cfg.IMG_DIR}/opt-chain{i}.png"
+        imagefile = helpers.save_image(imagefile_save, fig)
 
-        uploaded_image = gst_imgur.upload_image(imagefile, title="something")
-        image_link = uploaded_image.link
+        if cfg.IMAGES_URL:
+            image_link = cfg.IMAGES_URL + imagefile
+        else:
+            uploaded_image = gst_imgur.upload_image(imagefile, title="something")
+            image_link = uploaded_image.link
+            os.remove(imagefile)
+
         embeds_img.append(
             f"{image_link}",
         )
@@ -118,7 +119,6 @@ def chain_command(
         i2 += 1
         i += 20
         end += 20
-        os.remove(imagefile)
 
     # Author/Footer
     for i in range(0, i2):
