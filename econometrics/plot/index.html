@@ -9,14 +9,14 @@
 
 
 
-    <meta name="description" content="usage: show [-s SORTCOL [SORTCOL ...]] [-a] [-h] [-l LIMIT] Show loaded dataframe
-optional arguments: -s SORTCOL [SORTCOL ...], --sortcol SORTCOL [SORTCOL ...] -a, --ascend -h, --help show this help message (default: False) -l LIMIT, --limit LIMIT Number of entries to show in data. (default: 5) Sample Output:
-2022 Jan 18, 17:53 (✨) /custom/ $ show -l 3 colnorm col2 colnorm3 colb date 2020-01-01 0.999953 1.012313 1.008667 0.001203 2020-01-02 0.983850 1.">
+    <meta name="description" content="usage: plot [-c {OPTIONS}] [-h] [--export {png,jpg,pdf,svg}] Plot data based on the index. This functionality does not work for Panel Data unless creating a subset of the data that has only a singular index.
+optional arguments: -c {OPTIONS} --column {OPTIONS} Column to plot along the index (default: None) -h, --help show this help message (default: False) --export {png,jpg,pdf,svg} Export figure into png, jpg, pdf, svg (default: ) Example:
+2022 Feb 28, 04:37 (✨) /econometrics/ $ load macrodata us_macro 2022 Feb 28, 04:38 (✨) /econometrics/ $ index us_macro year -d 2022 Feb 28, 04:38 (✨) /econometrics/ $ show us_macro us_macro ┏━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━━━┓ ┃ ┃ quarter ┃ realgdp ┃ realcons ┃ realinv ┃ realgovt ┃ realdpi ┃ cpi ┃ m1 ┃ tbilrate ┃ unemp ┃ pop ┃ infl ┃ realint ┃ ┡━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━━━┩ │ 1959.">
 
 
 
     <title>
-      Show | Gamestonk Terminal
+      Plot | Gamestonk Terminal
     </title>
 
     <link rel="icon" href="/GamestonkTerminal/favicon/favicon-32x32.png" type="image/x-icon">
@@ -37,7 +37,7 @@ optional arguments: -s SORTCOL [SORTCOL ...], --sortcol SORTCOL [SORTCOL ...] -a
 <link rel="preload" href="/GamestonkTerminal/custom.css" as="style">
 <link rel="stylesheet" href="/GamestonkTerminal/custom.css" media="all">
 
-<link rel="alternate" type="application/rss+xml" href="https://gamestonkterminal.github.io/GamestonkTerminal/custom/show/index.xml" title="Gamestonk Terminal" />
+<link rel="alternate" type="application/rss+xml" href="https://gamestonkterminal.github.io/GamestonkTerminal/econometrics/plot/index.xml" title="Gamestonk Terminal" />
 
 
 <!-- Made with Geekdoc theme https://github.com/thegeeklab/hugo-geekdoc -->
@@ -18132,14 +18132,14 @@ optional arguments: -s SORTCOL [SORTCOL ...], --sortcol SORTCOL [SORTCOL ...] -a
             
 
             
-            <input type="checkbox" id="navtree-585a7cf4" class="gdoc-nav__toggle" checked>
-            <label for="navtree-585a7cf4" class="flex justify-between">
+            <input type="checkbox" id="navtree-e1e15c02" class="gdoc-nav__toggle" checked>
+            <label for="navtree-e1e15c02" class="flex justify-between">
             
             <span class="flex">
                 
-                <a href="/GamestonkTerminal/custom/"
+                <a href="/GamestonkTerminal/econometrics/"
                     class="gdoc-nav__entry ">
-                    custom
+                    econometrics
                 </a>
             </span>
             
@@ -18175,7 +18175,7 @@ optional arguments: -s SORTCOL [SORTCOL ...], --sortcol SORTCOL [SORTCOL ...] -a
             
             <span class="flex">
                 
-                <a href="/GamestonkTerminal/custom/load/"
+                <a href="/GamestonkTerminal/econometrics/load/"
                     class="gdoc-nav__entry ">
                     load
                 </a>
@@ -18206,8 +18206,101 @@ optional arguments: -s SORTCOL [SORTCOL ...], --sortcol SORTCOL [SORTCOL ...] -a
             
             <span class="flex">
                 
-                <a href="/GamestonkTerminal/custom/show/"
-                    class="gdoc-nav__entry is-active">
+                <a href="/GamestonkTerminal/econometrics/show/"
+                    class="gdoc-nav__entry ">
+                    export
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/GamestonkTerminal/econometrics/remove/"
+                    class="gdoc-nav__entry ">
+                    remove
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/GamestonkTerminal/econometrics/options/"
+                    class="gdoc-nav__entry ">
+                    options
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/GamestonkTerminal/econometrics/show/"
+                    class="gdoc-nav__entry ">
                     show
                 </a>
             </span>
@@ -18237,39 +18330,8 @@ optional arguments: -s SORTCOL [SORTCOL ...], --sortcol SORTCOL [SORTCOL ...] -a
             
             <span class="flex">
                 
-                <a href="/GamestonkTerminal/custom/info/"
-                    class="gdoc-nav__entry ">
-                    info
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/custom/plot/"
-                    class="gdoc-nav__entry ">
+                <a href="/GamestonkTerminal/econometrics/plot/"
+                    class="gdoc-nav__entry is-active">
                     plot
                 </a>
             </span>
@@ -18297,52 +18359,11 @@ optional arguments: -s SORTCOL [SORTCOL ...], --sortcol SORTCOL [SORTCOL ...] -a
             
 
             
-            <input type="checkbox" id="navtree-26786688" class="gdoc-nav__toggle" >
-            <label for="navtree-26786688" class="flex justify-between">
-            
             <span class="flex">
                 
-                <a href="/GamestonkTerminal/common/quantitative_analysis/"
+                <a href="/GamestonkTerminal/econometrics/type/"
                     class="gdoc-nav__entry ">
-                    quantitative analysis
-                </a>
-            </span>
-            
-            <svg class="icon gdoc_keyborad_arrow_left"><use xlink:href="#gdoc_keyborad_arrow_left"></use></svg>
-            <svg class="icon gdoc_keyborad_arrow_down hidden"><use xlink:href="#gdoc_keyborad_arrow_down"></use></svg>
-            </label>
-            
-        
-
-        
-            
-
-
-
-<ul class="gdoc-nav__list">
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/common/quantitative_analysis/load/"
-                    class="gdoc-nav__entry ">
-                    load
+                    type
                 </a>
             </span>
             
@@ -18371,9 +18392,9 @@ optional arguments: -s SORTCOL [SORTCOL ...], --sortcol SORTCOL [SORTCOL ...] -a
             
             <span class="flex">
                 
-                <a href="/GamestonkTerminal/common/quantitative_analysis/pick/"
+                <a href="/GamestonkTerminal/econometrics/desc/"
                     class="gdoc-nav__entry ">
-                    pick
+                    desc
                 </a>
             </span>
             
@@ -18402,9 +18423,9 @@ optional arguments: -s SORTCOL [SORTCOL ...], --sortcol SORTCOL [SORTCOL ...] -a
             
             <span class="flex">
                 
-                <a href="/GamestonkTerminal/common/quantitative_analysis/summary/"
+                <a href="/GamestonkTerminal/econometrics/index/"
                     class="gdoc-nav__entry ">
-                    summary
+                    index
                 </a>
             </span>
             
@@ -18433,9 +18454,9 @@ optional arguments: -s SORTCOL [SORTCOL ...], --sortcol SORTCOL [SORTCOL ...] -a
             
             <span class="flex">
                 
-                <a href="/GamestonkTerminal/common/quantitative_analysis/normality/"
+                <a href="/GamestonkTerminal/econometrics/clean/"
                     class="gdoc-nav__entry ">
-                    normality
+                    clean
                 </a>
             </span>
             
@@ -18464,9 +18485,9 @@ optional arguments: -s SORTCOL [SORTCOL ...], --sortcol SORTCOL [SORTCOL ...] -a
             
             <span class="flex">
                 
-                <a href="/GamestonkTerminal/common/quantitative_analysis/unitroot/"
+                <a href="/GamestonkTerminal/econometrics/modify/"
                     class="gdoc-nav__entry ">
-                    unitroot
+                    modify
                 </a>
             </span>
             
@@ -18495,9 +18516,9 @@ optional arguments: -s SORTCOL [SORTCOL ...], --sortcol SORTCOL [SORTCOL ...] -a
             
             <span class="flex">
                 
-                <a href="/GamestonkTerminal/common/quantitative_analysis/hist/"
+                <a href="/GamestonkTerminal/econometrics/ols/"
                     class="gdoc-nav__entry ">
-                    hist
+                    ols
                 </a>
             </span>
             
@@ -18526,9 +18547,9 @@ optional arguments: -s SORTCOL [SORTCOL ...], --sortcol SORTCOL [SORTCOL ...] -a
             
             <span class="flex">
                 
-                <a href="/GamestonkTerminal/common/quantitative_analysis/cdf/"
+                <a href="/GamestonkTerminal/econometrics/norm/"
                     class="gdoc-nav__entry ">
-                    cdf
+                    norm
                 </a>
             </span>
             
@@ -18557,9 +18578,9 @@ optional arguments: -s SORTCOL [SORTCOL ...], --sortcol SORTCOL [SORTCOL ...] -a
             
             <span class="flex">
                 
-                <a href="/GamestonkTerminal/common/quantitative_analysis/bw/"
+                <a href="/GamestonkTerminal/econometrics/root/"
                     class="gdoc-nav__entry ">
-                    bw
+                    root
                 </a>
             </span>
             
@@ -18588,9 +18609,9 @@ optional arguments: -s SORTCOL [SORTCOL ...], --sortcol SORTCOL [SORTCOL ...] -a
             
             <span class="flex">
                 
-                <a href="/GamestonkTerminal/common/quantitative_analysis/acf/"
+                <a href="/GamestonkTerminal/econometrics/panel/"
                     class="gdoc-nav__entry ">
-                    acf
+                    panel
                 </a>
             </span>
             
@@ -18619,9 +18640,9 @@ optional arguments: -s SORTCOL [SORTCOL ...], --sortcol SORTCOL [SORTCOL ...] -a
             
             <span class="flex">
                 
-                <a href="/GamestonkTerminal/common/quantitative_analysis/qqplot/"
+                <a href="/GamestonkTerminal/econometrics/compare/"
                     class="gdoc-nav__entry ">
-                    qqplot
+                    compare
                 </a>
             </span>
             
@@ -18650,9 +18671,9 @@ optional arguments: -s SORTCOL [SORTCOL ...], --sortcol SORTCOL [SORTCOL ...] -a
             
             <span class="flex">
                 
-                <a href="/GamestonkTerminal/common/quantitative_analysis/rolling/"
+                <a href="/GamestonkTerminal/econometrics/dwat/"
                     class="gdoc-nav__entry ">
-                    rolling
+                    dwat
                 </a>
             </span>
             
@@ -18681,9 +18702,9 @@ optional arguments: -s SORTCOL [SORTCOL ...], --sortcol SORTCOL [SORTCOL ...] -a
             
             <span class="flex">
                 
-                <a href="/GamestonkTerminal/common/quantitative_analysis/spread/"
+                <a href="/GamestonkTerminal/econometrics/bgod/"
                     class="gdoc-nav__entry ">
-                    spread
+                    bgod
                 </a>
             </span>
             
@@ -18712,9 +18733,9 @@ optional arguments: -s SORTCOL [SORTCOL ...], --sortcol SORTCOL [SORTCOL ...] -a
             
             <span class="flex">
                 
-                <a href="/GamestonkTerminal/common/quantitative_analysis/quantile/"
+                <a href="/GamestonkTerminal/econometrics/bpag/"
                     class="gdoc-nav__entry ">
-                    quantile
+                    bpag
                 </a>
             </span>
             
@@ -18743,9 +18764,9 @@ optional arguments: -s SORTCOL [SORTCOL ...], --sortcol SORTCOL [SORTCOL ...] -a
             
             <span class="flex">
                 
-                <a href="/GamestonkTerminal/common/quantitative_analysis/skew/"
+                <a href="/GamestonkTerminal/econometrics/granger/"
                     class="gdoc-nav__entry ">
-                    skew
+                    granger
                 </a>
             </span>
             
@@ -18774,469 +18795,13 @@ optional arguments: -s SORTCOL [SORTCOL ...], --sortcol SORTCOL [SORTCOL ...] -a
             
             <span class="flex">
                 
-                <a href="/GamestonkTerminal/common/quantitative_analysis/kurtosis/"
+                <a href="/GamestonkTerminal/econometrics/coint/"
                     class="gdoc-nav__entry ">
-                    kurtosis
+                    coint
                 </a>
             </span>
             
         
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/common/quantitative_analysis/decompose/"
-                    class="gdoc-nav__entry ">
-                    decompose
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/common/quantitative_analysis/cusum/"
-                    class="gdoc-nav__entry ">
-                    cusum
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/common/quantitative_analysis/capm/"
-                    class="gdoc-nav__entry ">
-                    capm
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/common/quantitative_analysis/line/"
-                    class="gdoc-nav__entry ">
-                    line
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-</ul>
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <input type="checkbox" id="navtree-419eb576" class="gdoc-nav__toggle" >
-            <label for="navtree-419eb576" class="flex justify-between">
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/common/prediction_techniques/"
-                    class="gdoc-nav__entry ">
-                    prediction techniques
-                </a>
-            </span>
-            
-            <svg class="icon gdoc_keyborad_arrow_left"><use xlink:href="#gdoc_keyborad_arrow_left"></use></svg>
-            <svg class="icon gdoc_keyborad_arrow_down hidden"><use xlink:href="#gdoc_keyborad_arrow_down"></use></svg>
-            </label>
-            
-        
-
-        
-            
-
-
-
-<ul class="gdoc-nav__list">
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/common/prediction_techniques/ets/"
-                    class="gdoc-nav__entry ">
-                    ets
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/common/prediction_techniques/knn/"
-                    class="gdoc-nav__entry ">
-                    knn
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/common/prediction_techniques/regression/"
-                    class="gdoc-nav__entry ">
-                    regression
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/common/prediction_techniques/arima/"
-                    class="gdoc-nav__entry ">
-                    arima
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/common/prediction_techniques/mlp/"
-                    class="gdoc-nav__entry ">
-                    mlp
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/common/prediction_techniques/rnn/"
-                    class="gdoc-nav__entry ">
-                    rnn
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/common/prediction_techniques/lstm/"
-                    class="gdoc-nav__entry ">
-                    lstm
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/common/prediction_techniques/conv1d/"
-                    class="gdoc-nav__entry ">
-                    conv1d
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/common/prediction_techniques/mc/"
-                    class="gdoc-nav__entry ">
-                    mc
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-</ul>
 
         
     </li>
@@ -23533,7 +23098,7 @@ optional arguments: -s SORTCOL [SORTCOL ...], --sortcol SORTCOL [SORTCOL ...] -a
         
     
     
-        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/GamestonkTerminal/' href='/GamestonkTerminal/'><span itemprop='name'>Gamestonk Terminal</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/GamestonkTerminal/custom/' href='/GamestonkTerminal/custom/'><span itemprop='name'>Custom</span></a><meta itemprop='position' content='3' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>Show</span><meta itemprop='position' content='4' /></li>
+        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/GamestonkTerminal/' href='/GamestonkTerminal/'><span itemprop='name'>Gamestonk Terminal</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/GamestonkTerminal/econometrics/' href='/GamestonkTerminal/econometrics/'><span itemprop='name'>Econometrics</span></a><meta itemprop='position' content='3' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>Plot</span><meta itemprop='position' content='4' /></li>
     
 
     
@@ -23547,7 +23112,7 @@ optional arguments: -s SORTCOL [SORTCOL ...], --sortcol SORTCOL [SORTCOL ...] -a
     <div>
         <span class="editpage">
             <svg class="icon gdoc_code" style="color: #C7C7C7;"><use xlink:href="#gdoc_code"></use></svg>
-            <a href="https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/website//content/custom/show/_index.md" style="color: #C7C7C7;">
+            <a href="https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/website//content/econometrics/plot/_index.md" style="color: #C7C7C7;">
                 Edit this page
             </a>
         </span>
@@ -23556,23 +23121,53 @@ optional arguments: -s SORTCOL [SORTCOL ...], --sortcol SORTCOL [SORTCOL ...] -a
 </div>
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
-        <h1>Show</h1>
-        <pre><code>usage: show [-s SORTCOL [SORTCOL ...]] [-a] [-h] [-l LIMIT]
-</code></pre><p>Show loaded dataframe</p>
+        <h1>Plot</h1>
+        <pre><code>usage: plot
+            [-c {OPTIONS}]
+            [-h] [--export {png,jpg,pdf,svg}]
+
+</code></pre><p>Plot data based on the index. This functionality does not work for Panel Data unless
+creating a subset of the data that has only a singular index.</p>
 <pre><code>optional arguments:
-  -s SORTCOL [SORTCOL ...], --sortcol SORTCOL [SORTCOL ...]
-  -a, --ascend
+  -c {OPTIONS} --column {OPTIONS}
+                        Column to plot along the index (default: None)
   -h, --help            show this help message (default: False)
-  -l LIMIT, --limit LIMIT
-                        Number of entries to show in data. (default: 5)
-</code></pre><p>Sample Output:</p>
-<pre><code>2022 Jan 18, 17:53 (✨) /custom/ $ show -l 3
-             colnorm      col2  colnorm3      colb
-date                                              
-2020-01-01  0.999953  1.012313  1.008667  0.001203
-2020-01-02  0.983850  1.023421  1.004225  0.004517
-2020-01-03  1.002692  1.019749  1.006244  0.007035
-</code></pre><p>This shows the top 3 rows of my custom dataframe.  This should primarily be used as a method of debugging that the load worked.</p>
+  --export {png,jpg,pdf,svg}
+                        Export figure into png, jpg, pdf, svg (default: )
+
+</code></pre><p>Example:</p>
+<pre><code>2022 Feb 28, 04:37 (✨) /econometrics/ $ load macrodata us_macro
+
+2022 Feb 28, 04:38 (✨) /econometrics/ $ index us_macro year -d
+
+2022 Feb 28, 04:38 (✨) /econometrics/ $ show us_macro
+                                                               us_macro
+┏━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━━━┓
+┃        ┃ quarter ┃ realgdp ┃ realcons ┃ realinv ┃ realgovt ┃ realdpi ┃ cpi   ┃ m1     ┃ tbilrate ┃ unemp ┃ pop    ┃ infl  ┃ realint ┃
+┡━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━━━┩
+│ 1959.0 │ 1.00    │ 2710.35 │ 1707.40  │ 286.90  │ 470.05   │ 1886.90 │ 28.98 │ 139.70 │ 2.82     │ 5.80  │ 177.15 │ 0.00  │ 0.00    │
+├────────┼─────────┼─────────┼──────────┼─────────┼──────────┼─────────┼───────┼────────┼──────────┼───────┼────────┼───────┼─────────┤
+│ 1959.0 │ 2.00    │ 2778.80 │ 1733.70  │ 310.86  │ 481.30   │ 1919.70 │ 29.15 │ 141.70 │ 3.08     │ 5.10  │ 177.83 │ 2.34  │ 0.74    │
+├────────┼─────────┼─────────┼──────────┼─────────┼──────────┼─────────┼───────┼────────┼──────────┼───────┼────────┼───────┼─────────┤
+│ 1959.0 │ 3.00    │ 2775.49 │ 1751.80  │ 289.23  │ 491.26   │ 1916.40 │ 29.35 │ 140.50 │ 3.82     │ 5.30  │ 178.66 │ 2.74  │ 1.09    │
+├────────┼─────────┼─────────┼──────────┼─────────┼──────────┼─────────┼───────┼────────┼──────────┼───────┼────────┼───────┼─────────┤
+│ 1959.0 │ 4.00    │ 2785.20 │ 1753.70  │ 299.36  │ 484.05   │ 1931.30 │ 29.37 │ 140.00 │ 4.33     │ 5.60  │ 179.39 │ 0.27  │ 4.06    │
+├────────┼─────────┼─────────┼──────────┼─────────┼──────────┼─────────┼───────┼────────┼──────────┼───────┼────────┼───────┼─────────┤
+│ 1960.0 │ 1.00    │ 2847.70 │ 1770.50  │ 331.72  │ 462.20   │ 1955.50 │ 29.54 │ 139.60 │ 3.50     │ 5.20  │ 180.01 │ 2.31  │ 1.19    │
+├────────┼─────────┼─────────┼──────────┼─────────┼──────────┼─────────┼───────┼────────┼──────────┼───────┼────────┼───────┼─────────┤
+│ 1960.0 │ 2.00    │ 2834.39 │ 1792.90  │ 298.15  │ 460.40   │ 1966.10 │ 29.55 │ 140.20 │ 2.68     │ 5.20  │ 180.67 │ 0.14  │ 2.55    │
+├────────┼─────────┼─────────┼──────────┼─────────┼──────────┼─────────┼───────┼────────┼──────────┼───────┼────────┼───────┼─────────┤
+│ 1960.0 │ 3.00    │ 2839.02 │ 1785.80  │ 296.38  │ 474.68   │ 1967.80 │ 29.75 │ 140.90 │ 2.36     │ 5.60  │ 181.53 │ 2.70  │ -0.34   │
+├────────┼─────────┼─────────┼──────────┼─────────┼──────────┼─────────┼───────┼────────┼──────────┼───────┼────────┼───────┼─────────┤
+│ 1960.0 │ 4.00    │ 2802.62 │ 1788.20  │ 259.76  │ 476.43   │ 1966.60 │ 29.84 │ 141.10 │ 2.29     │ 6.30  │ 182.29 │ 1.21  │ 1.08    │
+├────────┼─────────┼─────────┼──────────┼─────────┼──────────┼─────────┼───────┼────────┼──────────┼───────┼────────┼───────┼─────────┤
+│ 1961.0 │ 1.00    │ 2819.26 │ 1787.70  │ 266.40  │ 475.85   │ 1984.50 │ 29.81 │ 142.10 │ 2.37     │ 6.80  │ 182.99 │ -0.40 │ 2.77    │
+├────────┼─────────┼─────────┼──────────┼─────────┼──────────┼─────────┼───────┼────────┼──────────┼───────┼────────┼───────┼─────────┤
+│ 1961.0 │ 2.00    │ 2872.01 │ 1814.30  │ 286.25  │ 480.33   │ 2014.40 │ 29.92 │ 142.90 │ 2.29     │ 7.00  │ 183.69 │ 1.47  │ 0.81    │
+└────────┴─────────┴─────────┴──────────┴─────────┴──────────┴─────────┴───────┴────────┴──────────┴───────┴────────┴───────┴─────────┘
+
+2022 Feb 28, 04:38 (✨) /econometrics/ $ plot unemp-us_macro
+</code></pre><p><img src="https://user-images.githubusercontent.com/46355364/156058283-3888c6a8-a9a7-41c6-a091-b94b7946679b.png" alt="unemp_data_us"  /></p>
 
     </article>
  
@@ -34552,6 +34147,82 @@ date
             
 
             
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
                 
                 
             
@@ -34621,10 +34292,6 @@ date
 
         
         
-            
-    
-    
-
     
         
         
@@ -34852,339 +34519,6 @@ date
         
 
         
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-            
-    
-    
-
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-
         
     
 
@@ -37687,12 +37021,12 @@ date
     
         <span class="gdoc-page__nav">
             
-                <a class="gdoc-page__nav--prev flex align-center" href="/GamestonkTerminal/custom/load/" title="load"> load</a>
+                <a class="gdoc-page__nav--prev flex align-center" href="/GamestonkTerminal/econometrics/show/" title="show"> show</a>
             
         </span>
         <span class="gdoc-page__nav">
             
-                <a class="gdoc-page__nav--next flex align-center" href="/GamestonkTerminal/custom/info/" title="info">info </a>
+                <a class="gdoc-page__nav--next flex align-center" href="/GamestonkTerminal/econometrics/type/" title="type">type </a>
             
         </span>
     
