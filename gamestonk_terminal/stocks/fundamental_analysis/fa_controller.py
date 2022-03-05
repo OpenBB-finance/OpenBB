@@ -11,6 +11,7 @@ from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
+    EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
     parse_known_args_and_warn,
@@ -262,7 +263,7 @@ Ticker: [/param] {self.ticker} [cmds]
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="mktcap",
-            description="""Represent company marketcap estimate over time. [Source: Yahoo Finance]""",
+            description="""Market Cap estimate over time. [Source: Yahoo Finance]""",
         )
         parser.add_argument(
             "-s",
@@ -273,7 +274,7 @@ Ticker: [/param] {self.ticker} [cmds]
             help="The starting date (format YYYY-MM-DD) of the ETF",
         )
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
             yahoo_finance_view.display_mktcap(self.ticker, start=ns_parser.start)
