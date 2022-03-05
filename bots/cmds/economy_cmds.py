@@ -37,7 +37,7 @@ class EconomyCommands(commands.Cog):
     async def feargreed(
         self,
         inter: disnake.AppCmdInter,
-        indicator: str = commands.Param(choices=commands_dict.fgind),
+        indicator: str = commands.Param(choices=commands_dict.econ_fgind),
     ):
         """CNN Fear and Greed Index [CNN]
 
@@ -120,7 +120,7 @@ class EconomyCommands(commands.Cog):
     async def valuation(
         self,
         inter: disnake.AppCmdInter,
-        economy_group: str = commands.Param(choices=commands_dict.group),
+        economy_group: str = commands.Param(choices=commands_dict.econ_group),
     ):
         """Valuation of sectors, industry, country [Finviz]
 
@@ -136,7 +136,7 @@ class EconomyCommands(commands.Cog):
     async def performance(
         self,
         inter: disnake.AppCmdInter,
-        economy_group: str = commands.Param(choices=commands_dict.group),
+        economy_group: str = commands.Param(choices=commands_dict.econ_group),
     ):
         """Performance of sectors, industry, country [Finviz]
 

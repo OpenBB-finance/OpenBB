@@ -61,7 +61,7 @@ class ScreenerCommands(commands.Cog):
         self,
         inter: disnake.AppCmdInter,
         preset: str = commands.Param(autocomplete=presets_custom_autocomp),
-        sort: str = commands.Param(choices=commands_dict.sort["overview"]),
+        sort: str = commands.Param(choices=commands_dict.screener_sort["overview"]),
         limit: int = 5,
         ascend: bool = False,
     ):
@@ -83,7 +83,7 @@ class ScreenerCommands(commands.Cog):
         self,
         inter: disnake.AppCmdInter,
         preset: str = commands.Param(autocomplete=presets_custom_autocomp),
-        sort: str = commands.Param(choices=commands_dict.sort["valuation"]),
+        sort: str = commands.Param(choices=commands_dict.screener_sort["valuation"]),
         limit: int = 5,
         ascend: bool = False,
     ):
@@ -105,7 +105,7 @@ class ScreenerCommands(commands.Cog):
         self,
         inter: disnake.AppCmdInter,
         preset: str = commands.Param(autocomplete=presets_custom_autocomp),
-        sort: str = commands.Param(choices=commands_dict.sort["financial"]),
+        sort: str = commands.Param(choices=commands_dict.screener_sort["financial"]),
         limit: int = 5,
         ascend: bool = False,
     ):
@@ -127,7 +127,7 @@ class ScreenerCommands(commands.Cog):
         self,
         inter: disnake.AppCmdInter,
         preset: str = commands.Param(autocomplete=presets_custom_autocomp),
-        sort: str = commands.Param(choices=commands_dict.sort["ownership"]),
+        sort: str = commands.Param(choices=commands_dict.screener_sort["ownership"]),
         limit: int = 5,
         ascend: bool = False,
     ):
@@ -149,7 +149,7 @@ class ScreenerCommands(commands.Cog):
         self,
         inter: disnake.AppCmdInter,
         preset: str = commands.Param(autocomplete=presets_custom_autocomp),
-        sort: str = commands.Param(choices=commands_dict.sort["performance"]),
+        sort: str = commands.Param(choices=commands_dict.screener_sort["performance"]),
         limit: int = 5,
         ascend: bool = False,
     ):
@@ -171,7 +171,7 @@ class ScreenerCommands(commands.Cog):
         self,
         inter: disnake.AppCmdInter,
         preset: str = commands.Param(autocomplete=presets_custom_autocomp),
-        sort: str = commands.Param(choices=commands_dict.sort["technical"]),
+        sort: str = commands.Param(choices=commands_dict.screener_sort["technical"]),
         limit: int = 5,
         ascend: bool = False,
     ):

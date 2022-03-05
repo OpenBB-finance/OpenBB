@@ -132,6 +132,8 @@ class SlashCommands(commands.Cog):
         extended_hours: bool = False,
         start="",
         end="",
+        news: bool = False,
+        heikin_candles: bool = False,
     ):
         """Display Candlestick Chart
 
@@ -140,9 +142,11 @@ class SlashCommands(commands.Cog):
         ticker : Stock Ticker
         interval : Chart Minute Interval, 1440 for Daily
         past_days: Past Days to Display. Default: 0(Not for Daily)
-        extended_hours: Display Pre/After Market Hours Default: False
+        extended_hours: Display Pre/After Market Hours. Default: False
         start: YYYY-MM-DD format
         end: YYYY-MM-DD format
+        news: Display clickable news markers on interactive chart. Default: False
+        heikin_candles: Heikin Ashi candles. Default: False
         """
         await ShowView().discord(
             candle_command,
@@ -154,6 +158,8 @@ class SlashCommands(commands.Cog):
             extended_hours,
             start,
             end,
+            news,
+            heikin_candles,
         )
 
     @commands.slash_command(name="btc")
@@ -164,6 +170,8 @@ class SlashCommands(commands.Cog):
         past_days: int = 0,
         start="",
         end="",
+        news: bool = False,
+        heikin_candles: bool = False,
     ):
         """Display Bitcoin Chart
 
@@ -173,9 +181,21 @@ class SlashCommands(commands.Cog):
         past_days: Past Days to Display. Default: 0(Not for Daily)
         start: YYYY-MM-DD format
         end: YYYY-MM-DD format
+        news: Display clickable news markers on interactive chart. Default: False
+        heikin_candles: Heikin Ashi candles. Default: False
         """
         await ShowView().discord(
-            candle_command, inter, "btc", "btc-usd", interval, past_days, start, end
+            candle_command,
+            inter,
+            "btc",
+            "btc-usd",
+            interval,
+            past_days,
+            False,
+            start,
+            end,
+            news,
+            heikin_candles,
         )
 
     @commands.slash_command(name="eth")
@@ -186,6 +206,8 @@ class SlashCommands(commands.Cog):
         past_days: int = 0,
         start="",
         end="",
+        news: bool = False,
+        heikin_candles: bool = False,
     ):
         """Display Ethereum Chart
 
@@ -195,9 +217,21 @@ class SlashCommands(commands.Cog):
         past_days: Past Days to Display. Default: 1(Not for Daily)
         start: YYYY-MM-DD format
         end: YYYY-MM-DD format
+        news: Display clickable news markers on interactive chart. Default: False
+        heikin_candles: Heikin Ashi candles. Default: False
         """
         await ShowView().discord(
-            candle_command, inter, "eth", "eth-usd", interval, past_days, start, end
+            candle_command,
+            inter,
+            "eth",
+            "eth-usd",
+            interval,
+            past_days,
+            False,
+            start,
+            end,
+            news,
+            heikin_candles,
         )
 
     @commands.slash_command(name="sol")
@@ -208,6 +242,8 @@ class SlashCommands(commands.Cog):
         past_days: int = 0,
         start="",
         end="",
+        news: bool = False,
+        heikin_candles: bool = False,
     ):
         """Display Solana Chart
 
@@ -217,9 +253,21 @@ class SlashCommands(commands.Cog):
         past_days: Past Days to Display. Default: 1(Not for Daily)
         start: YYYY-MM-DD format
         end: YYYY-MM-DD format
+        news: Display clickable news markers on interactive chart. Default: False
+        heikin_candles: Heikin Ashi candles. Default: False
         """
         await ShowView().discord(
-            candle_command, inter, "sol", "sol-usd", interval, past_days, start, end
+            candle_command,
+            inter,
+            "sol",
+            "sol-usd",
+            interval,
+            past_days,
+            False,
+            start,
+            end,
+            news,
+            heikin_candles,
         )
 
     @opt.sub_command()
