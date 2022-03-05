@@ -61,7 +61,7 @@ class TerminalController(BaseController):
         "jupyter",
         "funds",
         "alternative",
-        "custom",
+        "econometrics",
     ]
 
     PATH = "/"
@@ -122,7 +122,7 @@ class TerminalController(BaseController):
 >   alternative
 >   portfolio
 >   jupyter
->   custom[/menu]
+>   econometrics[/menu]
     """,
             menu="Home",
         )
@@ -199,13 +199,13 @@ class TerminalController(BaseController):
 
         self.queue = self.load_class(AlternativeDataController, self.queue)
 
-    def call_custom(self, _):
-        """Process custom command"""
-        from gamestonk_terminal.custom.custom_controller import (
-            CustomDataController,
+    def call_econometrics(self, _):
+        """Process econometrics command"""
+        from gamestonk_terminal.econometrics.econometrics_controller import (
+            EconometricsController,
         )
 
-        self.queue = CustomDataController(self.queue).menu()
+        self.queue = EconometricsController(self.queue).menu()
 
     def call_portfolio(self, _):
         """Process portfolio command"""

@@ -79,7 +79,7 @@ def log_start_end(func=None, log=None):
 # pylint: disable=import-outside-toplevel
 def check_api_key(api_keys):
     """
-    Wrapper around model function and
+    Wrapper around the view or controller function and
     print message statement to the console if API keys are not yet defined.
     """
 

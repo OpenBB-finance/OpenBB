@@ -103,13 +103,12 @@ class DefiController(BaseController):
     def print_help(self):
         """Print help"""
         help_text = """[cmds]
-[info]Overview:[/info]
     newsletter    Recent DeFi related newsletters [src][Substack][/src]
     dpi           DeFi protocols listed on DefiPulse [src][Defipulse][/src]
     funding       Funding rates - current or last 30 days average [src][Defirate][/src]
     borrow        DeFi borrow rates - current or last 30 days average [src][Defirate][/src]
     lending       DeFi ending rates - current or last 30 days average [src][Defirate][/src]
-    vaults        Top DeFi Vaults on different blockchains [src][[Coindix][/src]
+    vaults        Top DeFi Vaults on different blockchains [src][Coindix][/src]
 [src][The Graph][/src] [info]Uniswap[/info]
     tokens        Tokens trade-able on Uniswap
     stats         Base statistics about Uniswap
@@ -122,8 +121,8 @@ class DefiController(BaseController):
     stvl          Displays historical values of the total sum of TVLs from all dApps
     dtvl          Displays historical total value locked (TVL) by dApp
 [src][Terra Engineer][/src]
-    aterra        Displays 30-day history of specified asset in terra address [src][Terra Engineer][/src]
-    ayr           Displays 30-day history of anchor yield reserve [src][Terra Engineer][/src]
+    aterra        Displays 30-day history of specified asset in terra address
+    ayr           Displays 30-day history of anchor yield reserve
 [src][Terra FCD][/src]
     sinfo         Displays staking info for provided terra account address
     validators    Displays information about terra blockchain validators
@@ -131,7 +130,6 @@ class DefiController(BaseController):
     gacc          Displays terra blockchain account growth history
     sratio        Displays terra blockchain staking ratio history
     sreturn       Displays terra blockchain staking returns history
-
 [src][Smartstake][/src]
     lcsc         Displays Luna circulating supply changes[/cmds]
 """

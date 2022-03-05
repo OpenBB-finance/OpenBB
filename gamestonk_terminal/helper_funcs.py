@@ -9,6 +9,7 @@ import os
 import random
 import re
 import sys
+from difflib import SequenceMatcher
 import pytz
 import pandas as pd
 from rich.table import Table
@@ -46,6 +47,25 @@ MENU_RESET = 2
 def log_and_raise(error: Union[argparse.ArgumentTypeError, ValueError]) -> None:
     logger.error(str(error))
     raise error
+
+
+def similar(a: str, b: str) -> float:
+    """
+    Return a similarity float between string a and string b
+
+    Parameters
+    ----------
+    a: str
+        string a
+    b: str
+        string b
+
+    Returns
+    -------
+    float:
+        Ratio of similarity between two strings
+    """
+    return SequenceMatcher(None, a, b).ratio()
 
 
 def print_rich_table(

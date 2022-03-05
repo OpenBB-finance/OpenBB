@@ -29,26 +29,6 @@ from bots.stocks.technical_analysis.view import view_command
 from bots.stocks.technical_analysis.wma import wma_command
 from bots.stocks.technical_analysis.zlma import zlma_command
 
-possible_ma = [
-    "dema",
-    "ema",
-    "fwma",
-    "hma",
-    "linreg",
-    "midpoint",
-    "pwma",
-    "rma",
-    "sinwma",
-    "sma",
-    "swma",
-    "t3",
-    "tema",
-    "trima",
-    "vidya",
-    "wma",
-    "zlma",
-]
-
 
 class TechnicalAnalysisCommands(commands.Cog):
     """Technical Analysis menu."""

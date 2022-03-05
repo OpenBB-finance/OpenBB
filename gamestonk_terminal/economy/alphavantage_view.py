@@ -20,8 +20,6 @@ from gamestonk_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
-# pylint: disable=E1101
-
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
@@ -43,6 +41,7 @@ def realtime_performance_sector(
     """
     df_sectors = alphavantage_model.get_sector_data()
 
+    # pylint: disable=E1101
     if df_sectors.empty:
         return
 

@@ -390,16 +390,6 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             ),
         ),
         (
-            "call_stats",
-            ["--export=csv"],
-            "finnhub_view.display_sentiment_stats",
-            [],
-            dict(
-                ticker="MOCK_TICKER",
-                export="csv",
-            ),
-        ),
-        (
             "call_hist",
             [
                 "--start=2020-12-01",
@@ -515,7 +505,7 @@ def test_call_func(
         "call_queries",
         "call_rise",
         "call_headlines",
-        "call_stats",
+        "call_snews",
         "call_hist",
         "call_trend",
         "call_popular",
@@ -543,7 +533,6 @@ def test_call_func_no_parser(func, mocker):
     "func",
     [
         "call_hist",
-        "call_stats",
         "call_headlines",
         "call_sentiment",
         "call_infer",

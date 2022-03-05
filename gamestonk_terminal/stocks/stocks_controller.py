@@ -26,7 +26,7 @@ from gamestonk_terminal.parent_classes import StockBaseController
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.stocks import stocks_helper
 
-# pylint: disable=R1710,import-outside-toplevel
+# pylint: disable=R1710,import-outside-toplevel,R0913,R1702
 
 logger = logging.getLogger(__name__)
 
@@ -264,7 +264,6 @@ Stock: [/param]{stock_text}
                     mov_avgs = []
 
                     if ns_parser.mov_avg:
-
                         mov_list = (num for num in ns_parser.mov_avg.split(","))
 
                         for num in mov_list:
@@ -272,7 +271,7 @@ Stock: [/param]{stock_text}
                                 mov_avgs.append(int(num))
                             except ValueError:
                                 console.print(
-                                    f"{num} is not valid moving average, must be integer"
+                                    f"{num} is not a valid moving average, must be integer"
                                 )
 
                     stocks_helper.display_candle(
@@ -301,13 +300,13 @@ Stock: [/param]{stock_text}
             """,
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="n_num",
+            dest="limit",
             type=check_positive,
             default=5,
-            help="Number of latest news being printed.",
+            help="Limit of latest news being printed.",
         )
         parser.add_argument(
             "-d",
@@ -333,7 +332,8 @@ Stock: [/param]{stock_text}
             nargs="+",
             help="Show news only from the sources specified (e.g bbc yahoo.com)",
         )
-
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             sources = ns_parser.sources
@@ -343,11 +343,11 @@ Stock: [/param]{stock_text}
 
             d_stock = yf.Ticker(self.ticker).info
 
-            newsapi_view.news(
+            newsapi_view.display_news(
                 term=d_stock["shortName"].replace(" ", "+")
                 if "shortName" in d_stock
                 else self.ticker,
-                num=ns_parser.n_num,
+                num=ns_parser.limit,
                 s_from=ns_parser.n_start_date.strftime("%Y-%m-%d"),
                 show_newest=ns_parser.n_oldest,
                 sources=",".join(sources),

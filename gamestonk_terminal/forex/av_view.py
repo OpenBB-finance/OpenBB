@@ -87,7 +87,7 @@ def display_candle(
         candle_chart_kwargs["figratio"] = (10, 7)
         candle_chart_kwargs["figscale"] = 1.10
         candle_chart_kwargs["figsize"] = plot_autoscale()
-        fig, _ = mpf.plot(data, **candle_chart_kwargs)
+        fig, ax = mpf.plot(data, **candle_chart_kwargs)
         fig.suptitle(
             f"{from_symbol}/{to_symbol}",
             x=0.055,
@@ -95,6 +95,7 @@ def display_candle(
             horizontalalignment="left",
         )
         theme.visualize_output(force_tight_layout=False)
+        ax[0].legend()
     else:
         if len(external_axes) != 1:
             logger.error("Expected list of 1 axis items.")
