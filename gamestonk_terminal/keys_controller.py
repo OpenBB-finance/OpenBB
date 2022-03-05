@@ -78,14 +78,15 @@ class KeysController(BaseController):
         # create env file
         Path(".env")
 
-    def __init__(self, queue: List[str] = None):
+    def __init__(self, queue: List[str] = None, menu_usage: bool = True):
         """Constructor"""
         super().__init__(queue)
-        self.check_keys_status()
+        if menu_usage:
+            self.check_keys_status()
 
-        if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
-            self.completer = NestedCompleter.from_nested_dict(choices)
+            if session and gtff.USE_PROMPT_TOOLKIT:
+                choices: dict = {c: {} for c in self.controller_choices}
+                self.completer = NestedCompleter.from_nested_dict(choices)
 
     def check_av_key(self, show_output: bool = False) -> None:
         """Check Alpha Vantage key"""

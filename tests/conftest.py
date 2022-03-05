@@ -16,6 +16,7 @@ from _pytest.fixtures import SubRequest
 from _pytest.mark.structures import Mark
 
 # IMPORTATION INTERNAL
+from gamestonk_terminal import decorators
 from gamestonk_terminal import rich_config
 from gamestonk_terminal import helper_funcs
 
@@ -349,6 +350,10 @@ def disable_rich():
     helper_funcs.print_rich_table = effect
 
 
+def disable_check_api():
+    decorators.disable_check_api()
+
+
 def enable_debug():
     os.environ["DEBUG_MODE"] = "true"
 
@@ -359,6 +364,7 @@ def pytest_configure(config: Config) -> None:
     brotli_check()
     disable_rich()
     enable_debug()
+    disable_check_api()
 
 
 @pytest.fixture(scope="session")  # type: ignore

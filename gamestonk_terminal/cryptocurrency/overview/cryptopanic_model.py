@@ -93,18 +93,19 @@ def make_request(**kwargs: Any) -> Optional[dict]:
         url += f"&regions={region}"
 
     response = requests.get(url)
+    result = None
 
-    if not 200 <= response.status_code < 300:
+    if response.status_code == 200:
+        result = response.json()
+    else:
+        if "Token not found" in response.json()["info"]:
+            console.print("[red]Invalid API Key[/red]\n")
+        else:
+            console.print(response.json()["info"])
+
         logger.warning("Invalid authentication: %s", response.text)
-        console.print(f"[red]Invalid Authentication: {response.text}[/red]")
-        return None
 
-    try:
-        return response.json()
-    except Exception as e:  # noqa: F841
-        logger.exception("Invalid Response: %s", str(e))
-        console.print(f"[red]Invalid Response: {response.text}[/red]")
-        return None
+    return result
 
 
 @log_start_end(log=logger)

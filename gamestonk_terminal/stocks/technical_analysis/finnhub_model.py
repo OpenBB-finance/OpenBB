@@ -34,14 +34,19 @@ def get_pattern_recognition(ticker: str, resolution: str) -> pd.DataFrame:
         f"https://finnhub.io/api/v1/scan/pattern?symbol={ticker}&resolution={resolution}&token={cfg.API_FINNHUB_KEY}"
     )
 
+    df = pd.DataFrame()
     # pylint:disable=no-else-return
     if response.status_code == 200:
         d_data = response.json()
         if "points" in d_data:
-            return pd.DataFrame(d_data["points"]).T
+            df = pd.DataFrame(d_data["points"]).T
         else:
             console.print("Response is empty")
-            return pd.DataFrame()
+    elif response.status_code == 401:
+        console.print("[red]Invalid API Key[/red]\n")
+    elif response.status_code == 403:
+        console.print("[red]API Key not authorized for Premium Feature[/red]\n")
     else:
-        console.print(f"Error in requests with code: {response.status_code}")
-        return pd.DataFrame()
+        console.print(f"Error in request: {response.json()['error']}", "\n")
+
+    return df

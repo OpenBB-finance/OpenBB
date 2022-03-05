@@ -4,10 +4,13 @@ __docformat__ = "numpy"
 from typing import Union, Dict
 from datetime import datetime, timedelta
 import logging
+
 import pandas as pd
 import requests
+
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -48,18 +51,23 @@ def get_historical(ticker: str, start: str, end: str, number: int) -> pd.DataFra
         "https://api.sentimentinvestor.com/v1/historical", params=payload
     )
 
-    if response.status_code == 200:
-        result = response.json()["results"]
+    df = pd.DataFrame()
 
-        # check if result is not empty
-        if result:
-            df = pd.DataFrame(result)
+    if "results" in response.json():
+        if response.json()["results"]:
+            df = pd.DataFrame(response.json()["results"])
             df = df.set_index("timestamp_date")
             df.index = pd.to_datetime(df.index)
+        else:
+            console.print("No data found.\n")
 
-            return df
+    elif "error" in response.json():
+        if "Authorization error" in response.json()["error"]:
+            console.print("[red]Invalid API Key[/red]\n")
+        else:
+            console.print({response.json()["error"]})
 
-    return pd.DataFrame()
+    return df
 
 
 def check_supported_ticker(ticker: str) -> bool:
@@ -87,17 +95,24 @@ def check_supported_ticker(ticker: str) -> bool:
         "https://api.sentimentinvestor.com/v1/supported", params=payload
     )
 
-    if response.status_code == 200:
+    result = False
 
-        try:
-            # if ticker is valid, payload has result key
-            return response.json()["result"]
+    if "result" in response.json():
+        # if ticker is valid, payload has result key
+        if response.json()["result"]:
+            result = response.json()["result"]
+        else:
+            console.print(
+                f"[red]Ticker {ticker} not supported. Please try another one![/red]\n"
+            )
 
-        # if ticker is not valid, payload doesn't have result key
-        except KeyError:
-            logger.warning("KeyError: Ticker possibly not valid")
+    elif "error" in response.json():
+        if "Authorization error" in response.json()["error"]:
+            console.print("[red]Invalid API Key[/red]\n")
+        else:
+            console.print({response.json()["error"]})
 
-    return False
+    return result
 
 
 def get_trending(start: datetime, hour: int, number: int) -> pd.DataFrame:
@@ -136,13 +151,18 @@ def get_trending(start: datetime, hour: int, number: int) -> pd.DataFrame:
         "https://api.sentimentinvestor.com/v1/trending", params=payload
     )
 
-    if response.status_code == 200:
-        result = response.json()["results"]
+    df = pd.DataFrame()
 
-        # check if result is not empty
-        if result:
-            df = pd.DataFrame(result)
+    if "results" in response.json():
+        if response.json()["results"]:
+            df = pd.DataFrame(response.json()["results"])
+        else:
+            console.print(f"No data found for start date of {str(start_timestamp)}.\n")
 
-            return df
+    elif "error" in response.json():
+        if "Authorization error" in response.json()["error"]:
+            console.print("[red]Invalid API Key[/red]\n")
+        else:
+            console.print({response.json()["error"]})
 
-    return pd.DataFrame()
+    return df

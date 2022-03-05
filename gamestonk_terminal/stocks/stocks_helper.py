@@ -146,11 +146,15 @@ def load(
 
         # Alpha Vantage Source
         if source == "av":
-            ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas")
-            # pylint: disable=unbalanced-tuple-unpacking
-            df_stock_candidate, _ = ts.get_daily_adjusted(
-                symbol=ticker, outputsize="full"
-            )
+            try:
+                ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas")
+                # pylint: disable=unbalanced-tuple-unpacking
+                df_stock_candidate, _ = ts.get_daily_adjusted(
+                    symbol=ticker, outputsize="full"
+                )
+            except Exception as e:
+                console.print(e)
+                return pd.DataFrame()
 
             df_stock_candidate.columns = [
                 val.split(". ")[1].capitalize() for val in df_stock_candidate.columns
@@ -165,7 +169,7 @@ def load(
             # Check that loading a stock was not successful
             # pylint: disable=no-member
             if df_stock_candidate.empty:
-                console.print("")
+                console.print("No data found.\n")
                 return pd.DataFrame()
 
             df_stock_candidate.index = df_stock_candidate.index.tz_localize(None)
@@ -197,14 +201,24 @@ def load(
 
         # IEX Cloud Source
         elif source == "iex":
-            client = pyEX.Client(api_token=cfg.API_IEX_TOKEN, version="v1")
 
-            df_stock_candidate = client.chartDF(ticker, timeframe=iexrange)
+            df_stock_candidate = pd.DataFrame()
 
-            # Check that loading a stock was not successful
-            if df_stock_candidate.empty:
-                console.print("")
-                return pd.DataFrame()
+            try:
+                client = pyEX.Client(api_token=cfg.API_IEX_TOKEN, version="v1")
+
+                df_stock_candidate = client.chartDF(ticker, timeframe=iexrange)
+
+                # Check that loading a stock was not successful
+                if df_stock_candidate.empty:
+                    console.print("No data found.\n")
+            except Exception as e:
+                if "The API key provided is not valid" in str(e):
+                    console.print("[red]Invalid API Key[/red]\n")
+                else:
+                    console.print(e)
+
+                return df_stock_candidate
 
             df_stock_candidate = df_stock_candidate[
                 ["close", "fHigh", "fLow", "fOpen", "fClose", "volume"]
