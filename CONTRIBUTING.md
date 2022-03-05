@@ -144,7 +144,6 @@ will be implemented.
     straightforward. If the data is returned directly by an API, we still want to wrap it around a model function to
     keep consistency across codebase and be more future proof.
 
-
 ```python
 """ Yahoo Finance Model """
 __docformat__ = "numpy"
@@ -176,10 +175,10 @@ or a specific context.
 2. If the model require an API key or some sort of secrets, make sure to handle the error and output relevant message.
 
 In the example below, you can see that we explicitly handle 4 important error types:
-- Invalid API Keys
-- API Keys not authorized for Premium feature
-- Empty return payload
-- Invalid arguments (Optional)
+  * Invalid API Keys
+  * API Keys not authorized for Premium feature
+  * Empty return payload
+  * Invalid arguments (Optional)
 
 It's not always possible to distinguish error types using status_code. So depending on the API provider, you can use either error messages or exception.
 
@@ -213,7 +212,6 @@ def get_economy_calendar_events() -> pd.DataFrame:
 
     return df
 ```
-
 
 #### View
 
