@@ -33,7 +33,7 @@ EXTENSIONS_MATCHING: Dict[str, List[Type]] = {
 
 class Record:
     @staticmethod
-    def extract_string(data: Any) -> str:
+    def extract_string(data: Any, **kwargs) -> str:
         if isinstance(data, tuple(EXTENSIONS_MATCHING["txt"])):
             string_value = data
         elif isinstance(data, tuple(EXTENSIONS_MATCHING["csv"])):
@@ -41,9 +41,10 @@ class Record:
                 encoding="utf-8",
                 line_terminator="\n",
                 # date_format="%Y-%m-%d %H:%M:%S",
+                **kwargs,
             )
         elif isinstance(data, tuple(EXTENSIONS_MATCHING["json"])):
-            string_value = json.dumps(data)
+            string_value = json.dumps(data, **kwargs)
         else:
             raise AttributeError(f"Unsupported type : {type(data)}")
 
@@ -99,8 +100,9 @@ class Record:
         captured: Any,
         record_path: str,
         strip: bool = False,
+        **kwargs,
     ) -> None:
-        self.__captured = self.extract_string(data=captured)
+        self.__captured = self.extract_string(data=captured, **kwargs)
         self.__record_path = record_path
         self.__strip = strip
 
@@ -201,7 +203,7 @@ class Recorder:
 
         self.__record_list: List[Record] = list()
 
-    def capture(self, captured: Any, strip: bool = False):
+    def capture(self, captured: Any, strip: bool = False, **kwargs):
         record_list = self.__record_list
         record_path = self.__path_template.build_path_by_data(
             data=captured,
@@ -211,6 +213,7 @@ class Recorder:
             captured=captured,
             record_path=record_path,
             strip=strip,
+            **kwargs,
         )
         self.__record_list.append(record)
 

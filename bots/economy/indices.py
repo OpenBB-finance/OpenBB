@@ -35,6 +35,7 @@ def indices_command():
 
     df = df[
         [
+            " ",
             "Price",
             "Chg",
             "%Chg",
