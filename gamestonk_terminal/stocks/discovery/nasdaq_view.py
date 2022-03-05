@@ -8,6 +8,7 @@ from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.stocks.discovery import nasdaq_model
+from gamestonk_terminal.decorators import check_api_key
 
 # pylint: disable=E1123
 
@@ -16,6 +17,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_KEY_QUANDL"])
 def display_top_retail(n_days: int = 3, export: str = ""):
     """Display the top 10 retail traded stocks for last days
 
@@ -27,6 +29,10 @@ def display_top_retail(n_days: int = 3, export: str = ""):
         Format to export data, by default ""
     """
     retails = nasdaq_model.get_retail_tickers()
+
+    if retails.empty:
+        return
+
     for date, df in retails.head(n_days * 10).groupby("Date"):
         df = df.drop(columns=["Date"])
         df = df.reset_index(drop=True)

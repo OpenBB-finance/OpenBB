@@ -2,7 +2,6 @@
 
 # IMPORTATION THIRDPARTY
 import pytest
-import requests
 
 # IMPORTATION INTERNAL
 from gamestonk_terminal.stocks.fundamental_analysis import av_model
@@ -28,8 +27,12 @@ def vcr_config():
     ],
 )
 def test_invalid_response_status(func, kwargs_dict, mocker):
-    mock_response = requests.Response()
-    mock_response.status_code = 400
+    # MOCK GET
+    attrs = {
+        "json.return_value": {"Error Message": "mock error message"},
+    }
+    mock_response = mocker.Mock(**attrs)
+
     mocker.patch(
         target="requests.get",
         new=mocker.Mock(return_value=mock_response),

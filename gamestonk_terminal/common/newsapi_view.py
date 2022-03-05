@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 
+from gamestonk_terminal.decorators import check_api_key
 from gamestonk_terminal.common import newsapi_model
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.rich_config import console
@@ -11,6 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_NEWS_TOKEN"])
 def display_news(
     term: str,
     s_from: str,

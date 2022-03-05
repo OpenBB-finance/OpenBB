@@ -9,6 +9,7 @@ import matplotlib.ticker
 import pandas as pd
 from matplotlib import pyplot as plt
 
+from gamestonk_terminal.decorators import check_api_key
 from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.config_plot import PLOT_DPI
@@ -96,6 +97,7 @@ def plot_short_interest(
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_KEY_QUANDL"])
 def short_interest(ticker: str, nyse: bool, days: int, raw: bool, export: str):
     """Plots the short interest of a stock. This corresponds to the
     number of shares that have been sold short but have not yet been

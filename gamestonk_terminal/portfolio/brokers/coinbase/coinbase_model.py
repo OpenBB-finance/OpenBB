@@ -10,6 +10,7 @@ from gamestonk_terminal.cryptocurrency.coinbase_helpers import (
     CoinbaseProAuth,
     _check_account_validity,
     make_coinbase_request,
+    CoinbaseApiException,
 )
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.rich_config import console
@@ -48,15 +49,27 @@ def get_accounts(add_current_price: bool = True, currency: str = "USD") -> pd.Da
     pd.DataFrame
         DataFrame with all your trading accounts.
     """
-    auth = CoinbaseProAuth(
-        cfg.API_COINBASE_KEY, cfg.API_COINBASE_SECRET, cfg.API_COINBASE_PASS_PHRASE
-    )
-    resp = make_coinbase_request("/accounts", auth=auth)
+    try:
+        auth = CoinbaseProAuth(
+            cfg.API_COINBASE_KEY, cfg.API_COINBASE_SECRET, cfg.API_COINBASE_PASS_PHRASE
+        )
+        resp = make_coinbase_request("/accounts", auth=auth)
+    except CoinbaseApiException as e:
+        if "Invalid API Key" in str(e):
+            console.print("[red]Invalid API Key[/red]\n")
+        else:
+            console.print(e)
+
+        return pd.DataFrame()
+
     if not resp:
+        console.print("No data found.\n")
         return pd.DataFrame()
 
     df = pd.DataFrame(resp)
+
     df = df[df.balance.astype(float) > 0]
+
     if add_current_price:
         current_prices = []
         for _, row in df.iterrows():
@@ -68,8 +81,10 @@ def get_accounts(add_current_price: bool = True, currency: str = "USD") -> pd.Da
                     ]
                 )
             )
+
         df["current_price"] = current_prices
         df[f"BalanceValue({currency})"] = df.current_price * df.balance.astype(float)
+
         return df[
             [
                 "id",
@@ -115,17 +130,33 @@ def get_account_history(account: str) -> pd.DataFrame:
     pd.DataFrame
         DataFrame with account history.
     """
-    auth = CoinbaseProAuth(
-        cfg.API_COINBASE_KEY, cfg.API_COINBASE_SECRET, cfg.API_COINBASE_PASS_PHRASE
-    )
+    try:
+        auth = CoinbaseProAuth(
+            cfg.API_COINBASE_KEY, cfg.API_COINBASE_SECRET, cfg.API_COINBASE_PASS_PHRASE
+        )
 
-    account = _check_account_validity(account)
+        account = _check_account_validity(account)
+        resp = make_coinbase_request(f"/accounts/{account}/holds", auth=auth)
+
+    except CoinbaseApiException as e:
+        if "Invalid API Key" in str(e):
+            console.print("[red]Invalid API Key[/red]\n")
+        else:
+            console.print(e)
+
+        return pd.DataFrame()
+
     if not account:
+        console.print(f"Account {account} not exist.\n")
         return pd.DataFrame()
 
-    resp = make_coinbase_request(f"/accounts/{account}/holds", auth=auth)
     if not resp:
+        console.print(
+            f"Your account {account} doesn't have any funds."
+            f"To check all your accounts use command account --all\n"
+        )
         return pd.DataFrame()
+
     df = pd.json_normalize(resp)
 
     try:
@@ -174,11 +205,23 @@ def get_orders() -> pd.DataFrame:
         Open orders in your account
     """
 
-    auth = CoinbaseProAuth(
-        cfg.API_COINBASE_KEY, cfg.API_COINBASE_SECRET, cfg.API_COINBASE_PASS_PHRASE
-    )
-    resp = make_coinbase_request("/orders", auth=auth)
+    try:
+        auth = CoinbaseProAuth(
+            cfg.API_COINBASE_KEY, cfg.API_COINBASE_SECRET, cfg.API_COINBASE_PASS_PHRASE
+        )
+        resp = make_coinbase_request("/orders", auth=auth)
+
+    except CoinbaseApiException as e:
+        if "Invalid API Key" in str(e):
+            console.print("[red]Invalid API Key[/red]\n")
+        else:
+            console.print(e)
+
+        return pd.DataFrame()
+
     if not resp:
+        console.print("No orders found for your account\n")
+
         return pd.DataFrame(
             columns=[
                 "product_id",
@@ -209,15 +252,26 @@ def get_deposits(deposit_type: str = "deposit") -> pd.DataFrame:
     pd.DataFrame
         List of deposits
     """
+    try:
+        auth = CoinbaseProAuth(
+            cfg.API_COINBASE_KEY, cfg.API_COINBASE_SECRET, cfg.API_COINBASE_PASS_PHRASE
+        )
+        params = {"type": deposit_type}
 
-    auth = CoinbaseProAuth(
-        cfg.API_COINBASE_KEY, cfg.API_COINBASE_SECRET, cfg.API_COINBASE_PASS_PHRASE
-    )
-    params = {"type": deposit_type}
-    if deposit_type not in ["internal_deposit", "deposit"]:
-        params["type"] = "deposit"
-    resp = make_coinbase_request("/transfers", auth=auth, params=params)
+        if deposit_type not in ["internal_deposit", "deposit"]:
+            params["type"] = "deposit"
+        resp = make_coinbase_request("/transfers", auth=auth, params=params)
+
+    except CoinbaseApiException as e:
+        if "Invalid API Key" in str(e):
+            console.print("[red]Invalid API Key[/red]\n")
+        else:
+            console.print(e)
+
+        return pd.DataFrame()
+
     if not resp:
+        console.print("No deposits found for your account\n")
         return pd.DataFrame()
 
     if isinstance(resp, tuple):

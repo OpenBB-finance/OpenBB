@@ -10,6 +10,7 @@ from typing import List
 import yfinance as yf
 from prompt_toolkit.completion import NestedCompleter
 
+from gamestonk_terminal.decorators import check_api_key
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
@@ -297,6 +298,7 @@ class ComparisonAnalysisController(BaseController):
                 )
 
     @log_start_end(log=logger)
+    @check_api_key(["API_POLYGON_KEY"])
     def call_getpoly(self, other_args: List[str]):
         """Process get command"""
         parser = argparse.ArgumentParser(
@@ -324,6 +326,7 @@ class ComparisonAnalysisController(BaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(parser, other_args)
+
         if ns_parser:
             if self.ticker:
                 self.similar, self.user = polygon_model.get_similar_companies(
@@ -340,9 +343,8 @@ class ComparisonAnalysisController(BaseController):
                         f"The limit of stocks to compare are {ns_parser.limit}. The subsample will occur randomly.\n",
                     )
 
-                self.similar = [self.ticker] + self.similar
-
                 if self.similar:
+                    self.similar = [self.ticker] + self.similar
                     console.print(
                         f"[{self.user}] Similar Companies: {', '.join(self.similar)}",
                         "\n",
@@ -354,6 +356,7 @@ class ComparisonAnalysisController(BaseController):
                 )
 
     @log_start_end(log=logger)
+    @check_api_key(["API_FINNHUB_KEY"])
     def call_getfinnhub(self, other_args: List[str]):
         """Process get command"""
         parser = argparse.ArgumentParser(
@@ -389,9 +392,9 @@ class ComparisonAnalysisController(BaseController):
                         f"The limit of stocks to compare are {ns_parser.limit}. The subsample will occur randomly.\n",
                     )
 
-                self.similar = [self.ticker] + self.similar
-
                 if self.similar:
+
+                    self.similar = [self.ticker] + self.similar
                     console.print(
                         f"[{self.user}] Similar Companies: {', '.join(self.similar)}",
                         "\n",

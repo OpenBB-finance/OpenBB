@@ -8,6 +8,7 @@ from typing import List, Optional
 import matplotlib.pyplot as plt
 import pandas as pd
 
+from gamestonk_terminal.decorators import check_api_key
 from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.decorators import log_start_end
@@ -23,6 +24,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_KEY_QUANDL"])
 def display_big_mac_index(
     country_codes: List[str],
     raw: bool = False,

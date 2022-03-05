@@ -47,25 +47,30 @@ def get_news(
 
     response = requests.get(link)
 
+    articles = {}
+
     # Check that the API response was successful
-    if response.status_code == 426:
-        console.print(f"Error in request: {response.json()['message']}", "\n")
-        return {}
-
-    if response.status_code != 200:
+    if response.status_code == 200:
         console.print(
-            f"Error in request {response.status_code}. Check News API token", "\n"
+            f"{response.json()['totalResults']} news articles for {term} were found since {s_from}\n"
         )
-        return {}
 
-    console.print(
-        f"{response.json()['totalResults']} news articles for {term} were found since {s_from}\n"
-    )
+        if show_newest:
+            articles = response.json()["articles"]
 
-    if show_newest:
-        articles = response.json()["articles"]
+        else:
+            articles = response.json()["articles"][::-1]
+
+    elif response.status_code == 426:
+        console.print(f"Error in request: {response.json()['message']}", "\n")
+
+    elif response.status_code == 401:
+        console.print("[red]Invalid API Key[/red]\n")
+
+    elif response.status_code == 429:
+        console.print("[red]Exceeded number of calls per minute[/red]\n")
 
     else:
-        articles = response.json()["articles"][::-1]
+        console.print(f"Error in request: {response.json()['message']}", "\n")
 
     return articles

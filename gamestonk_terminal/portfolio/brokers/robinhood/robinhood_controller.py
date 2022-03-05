@@ -7,6 +7,7 @@ from typing import List
 
 from prompt_toolkit.completion import NestedCompleter
 
+from gamestonk_terminal.decorators import check_api_key
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
@@ -54,6 +55,7 @@ class RobinhoodController(BaseController):
         console.print(text=help_text, menu="Portfolio - Brokers - Robinhood")
 
     @log_start_end(log=logger)
+    @check_api_key(["RH_USERNAME", "RH_PASSWORD"])
     def call_login(self, _):
         """Process login"""
         robinhood_model.login()

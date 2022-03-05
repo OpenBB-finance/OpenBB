@@ -260,7 +260,6 @@ class OnchainController(BaseController):
     @log_start_end(log=logger)
     def call_hr(self, other_args: List[str]):
         """Process hr command"""
-
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,

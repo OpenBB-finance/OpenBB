@@ -9,6 +9,7 @@ from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.decorators import check_api_key
 from gamestonk_terminal.economy.fred import fred_model, fred_view
 from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -106,6 +107,7 @@ class FredController(BaseController):
             )
 
     @log_start_end(log=logger)
+    @check_api_key(["API_FRED_KEY"])
     def call_add(self, other_args: List[str]):
         """Process add command"""
         parser = argparse.ArgumentParser(
@@ -124,19 +126,17 @@ class FredController(BaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-i")
         ns_parser = parse_known_args_and_warn(parser, other_args)
+
         if ns_parser:
             # Loop through entries.  If it exists, save title in dictionary
             for s_id in ns_parser.series_id.split(","):
-                exists, information = fred_model.check_series_id(s_id)
-                if exists:
+                information = fred_model.check_series_id(s_id)
+                if "seriess" in information:
                     self.current_series[s_id] = {
                         "title": information["seriess"][0]["title"],
                         "units": information["seriess"][0]["units_short"],
                     }
                     self.long_id = max(self.long_id, len(s_id))
-                else:
-                    logger.error("%s not found", str(s_id))
-                    console.print(f"[red]{s_id} not found[/red].")
 
             console.print(
                 f"Current Series:[blue] {', '.join(self.current_series.keys()) .upper() or None}[/blue]\n"

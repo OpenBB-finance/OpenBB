@@ -2,7 +2,7 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Dict, List, Tuple
+from typing import Dict, List, Tuple, Optional
 
 import numpy as np
 import pandas as pd
@@ -36,43 +36,50 @@ def get_overview(ticker: str) -> pd.DataFrame:
     s_req = f"https://www.alphavantage.co/query?function=OVERVIEW&symbol={ticker}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
     result = requests.get(s_req, stream=True)
 
-    # If the returned data was successful
-    if result.status_code == 200:
+    df_fa = pd.DataFrame()
+
+    # If the returned data was unsuccessful
+    if "Error Message" in result.json():
+        console.print(result.json()["Error Message"])
+    else:
+        # check if json is empty
+        if not result.json():
+            console.print("No data found")
         # Parse json data to dataframe
-        if "Note" in result.json():
+        elif "Note" in result.json():
             console.print(result.json()["Note"], "\n")
-            return pd.DataFrame()
+        else:
+            df_fa = pd.json_normalize(result.json())
 
-        df_fa = pd.json_normalize(result.json())
-
-        # Keep json data sorting in dataframe
-        df_fa = df_fa[list(result.json().keys())].T
-        df_fa.iloc[5:] = df_fa.iloc[5:].applymap(lambda x: lambda_long_number_format(x))
-        clean_df_index(df_fa)
-        df_fa = df_fa.rename(
-            index={
-                "E b i t d a": "EBITDA",
-                "P e ratio": "PE ratio",
-                "P e g ratio": "PEG ratio",
-                "E p s": "EPS",
-                "Revenue per share t t m": "Revenue per share TTM",
-                "Operating margin t t m": "Operating margin TTM",
-                "Return on assets t t m": "Return on assets TTM",
-                "Return on equity t t m": "Return on equity TTM",
-                "Revenue t t m": "Revenue TTM",
-                "Gross profit t t m": "Gross profit TTM",
-                "Diluted e p s t t m": "Diluted EPS TTM",
-                "Quarterly earnings growth y o y": "Quarterly earnings growth YOY",
-                "Quarterly revenue growth y o y": "Quarterly revenue growth YOY",
-                "Trailing p e": "Trailing PE",
-                "Forward p e": "Forward PE",
-                "Price to sales ratio t t m": "Price to sales ratio TTM",
-                "E v to revenue": "EV to revenue",
-                "E v to e b i t d a": "EV to EBITDA",
-            }
-        )
-        return df_fa
-    return pd.DataFrame()
+            # Keep json data sorting in dataframe
+            df_fa = df_fa[list(result.json().keys())].T
+            df_fa.iloc[5:] = df_fa.iloc[5:].applymap(
+                lambda x: lambda_long_number_format(x)
+            )
+            clean_df_index(df_fa)
+            df_fa = df_fa.rename(
+                index={
+                    "E b i t d a": "EBITDA",
+                    "P e ratio": "PE ratio",
+                    "P e g ratio": "PEG ratio",
+                    "E p s": "EPS",
+                    "Revenue per share t t m": "Revenue per share TTM",
+                    "Operating margin t t m": "Operating margin TTM",
+                    "Return on assets t t m": "Return on assets TTM",
+                    "Return on equity t t m": "Return on equity TTM",
+                    "Revenue t t m": "Revenue TTM",
+                    "Gross profit t t m": "Gross profit TTM",
+                    "Diluted e p s t t m": "Diluted EPS TTM",
+                    "Quarterly earnings growth y o y": "Quarterly earnings growth YOY",
+                    "Quarterly revenue growth y o y": "Quarterly revenue growth YOY",
+                    "Trailing p e": "Trailing PE",
+                    "Forward p e": "Forward PE",
+                    "Price to sales ratio t t m": "Price to sales ratio TTM",
+                    "E v to revenue": "EV to revenue",
+                    "E v to e b i t d a": "EV to EBITDA",
+                }
+            )
+    return df_fa
 
 
 @log_start_end(log=logger)
@@ -93,8 +100,15 @@ def get_key_metrics(ticker: str) -> pd.DataFrame:
     s_req = f"https://www.alphavantage.co/query?function=OVERVIEW&symbol={ticker}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
     result = requests.get(s_req, stream=True)
 
-    # If the returned data was successful
-    if result.status_code == 200:
+    # If the returned data was unsuccessful
+    if "Error Message" in result.json():
+        console.print(result.json()["Error Message"])
+    else:
+        # check if json is empty
+        if not result.json():
+            console.print("No data found")
+            return pd.DataFrame()
+
         df_fa = pd.json_normalize(result.json())
         df_fa = df_fa[list(result.json().keys())].T
         df_fa = df_fa.applymap(lambda x: lambda_long_number_format(x))
@@ -148,25 +162,38 @@ def get_income_statements(
     pd.DataFrame
         Dataframe of income statements
     """
-    url = f"https://www.alphavantage.co/query?function=INCOME_STATEMENT&symbol={ticker}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
+    url = (
+        f"https://www.alphavantage.co/query?function=INCOME_STATEMENT&symbol={ticker}"
+        f"&apikey={cfg.API_KEY_ALPHAVANTAGE}"
+    )
     r = requests.get(url)
-    if r.status_code == 200:
-        statements = r.json()
-        df_fa = pd.DataFrame()
-        if quarterly:
-            if "quarterlyReports" in statements:
-                df_fa = pd.DataFrame(statements["quarterlyReports"])
+
+    # If the returned data was unsuccessful
+    if "Error Message" in r.json():
+        console.print(r.json()["Error Message"])
+    else:
+        # check if json is empty
+        if not r.json():
+            console.print("No data found")
         else:
-            if "annualReports" in statements:
-                df_fa = pd.DataFrame(statements["annualReports"])
+            statements = r.json()
+            df_fa = pd.DataFrame()
 
-        if df_fa.empty:
-            return pd.DataFrame()
+            if quarterly:
+                if "quarterlyReports" in statements:
+                    df_fa = pd.DataFrame(statements["quarterlyReports"])
+            else:
+                if "annualReports" in statements:
+                    df_fa = pd.DataFrame(statements["annualReports"])
 
-        df_fa = df_fa.set_index("fiscalDateEnding")
-        df_fa = df_fa.head(number)
-        df_fa = df_fa.applymap(lambda x: lambda_long_number_format(x))
-        return df_fa[::-1].T
+            if df_fa.empty:
+                console.print("No data found")
+                return pd.DataFrame()
+
+            df_fa = df_fa.set_index("fiscalDateEnding")
+            df_fa = df_fa.head(number)
+            df_fa = df_fa.applymap(lambda x: lambda_long_number_format(x))
+            return df_fa[::-1].T
     return pd.DataFrame()
 
 
@@ -192,23 +219,33 @@ def get_balance_sheet(
     """
     url = f"https://www.alphavantage.co/query?function=BALANCE_SHEET&symbol={ticker}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
     r = requests.get(url)
-    if r.status_code == 200:
-        statements = r.json()
-        df_fa = pd.DataFrame()
-        if quarterly:
-            if "quarterlyReports" in statements:
-                df_fa = pd.DataFrame(statements["quarterlyReports"])
+
+    # If the returned data was unsuccessful
+    if "Error Message" in r.json():
+        console.print(r.json()["Error Message"])
+    else:
+        # check if json is empty
+        if not r.json():
+            console.print("No data found")
         else:
-            if "annualReports" in statements:
-                df_fa = pd.DataFrame(statements["annualReports"])
+            statements = r.json()
+            df_fa = pd.DataFrame()
 
-        if df_fa.empty:
-            return pd.DataFrame()
+            if quarterly:
+                if "quarterlyReports" in statements:
+                    df_fa = pd.DataFrame(statements["quarterlyReports"])
+            else:
+                if "annualReports" in statements:
+                    df_fa = pd.DataFrame(statements["annualReports"])
 
-        df_fa = df_fa.set_index("fiscalDateEnding")
-        df_fa = df_fa.head(number)
-        df_fa = df_fa.applymap(lambda x: lambda_long_number_format(x))
-        return df_fa[::-1].T
+            if df_fa.empty:
+                console.print("No data found")
+                return pd.DataFrame()
+
+            df_fa = df_fa.set_index("fiscalDateEnding")
+            df_fa = df_fa.head(number)
+            df_fa = df_fa.applymap(lambda x: lambda_long_number_format(x))
+            return df_fa[::-1].T
     return pd.DataFrame()
 
 
@@ -232,23 +269,33 @@ def get_cash_flow(ticker: str, number: int, quarterly: bool = False) -> pd.DataF
     """
     url = f"https://www.alphavantage.co/query?function=CASH_FLOW&symbol={ticker}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
     r = requests.get(url)
-    if r.status_code == 200:
-        statements = r.json()
-        df_fa = pd.DataFrame()
-        if quarterly:
-            if "quarterlyReports" in statements:
-                df_fa = pd.DataFrame(statements["quarterlyReports"])
+
+    # If the returned data was unsuccessful
+    if "Error Message" in r.json():
+        console.print(r.json()["Error Message"])
+    else:
+        # check if json is empty
+        if not r.json():
+            console.print("No data found")
         else:
-            if "annualReports" in statements:
-                df_fa = pd.DataFrame(statements["annualReports"])
+            statements = r.json()
+            df_fa = pd.DataFrame()
 
-        if df_fa.empty:
-            return pd.DataFrame()
+            if quarterly:
+                if "quarterlyReports" in statements:
+                    df_fa = pd.DataFrame(statements["quarterlyReports"])
+            else:
+                if "annualReports" in statements:
+                    df_fa = pd.DataFrame(statements["annualReports"])
 
-        df_fa = df_fa.set_index("fiscalDateEnding")
-        df_fa = df_fa.head(number)
-        df_fa = df_fa.applymap(lambda x: lambda_long_number_format(x))
-        return df_fa[::-1].T
+            if df_fa.empty:
+                console.print("No data found")
+                return pd.DataFrame()
+
+            df_fa = df_fa.set_index("fiscalDateEnding")
+            df_fa = df_fa.head(number)
+            df_fa = df_fa.applymap(lambda x: lambda_long_number_format(x))
+            return df_fa[::-1].T
     return pd.DataFrame()
 
 
@@ -274,42 +321,51 @@ def get_earnings(ticker: str, quarterly: bool = False) -> pd.DataFrame:
         f"symbol={ticker}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
     )
     result = requests.get(s_req, stream=True)
+    df_fa = pd.DataFrame()
 
-    # If the returned data was successful
-    if result.status_code == 200:
-        df_fa = pd.json_normalize(result.json())
-        if quarterly:
-            df_fa = pd.DataFrame(df_fa["quarterlyEarnings"][0])
-            df_fa = df_fa[
-                [
-                    "fiscalDateEnding",
-                    "reportedDate",
-                    "reportedEPS",
-                    "estimatedEPS",
-                    "surprise",
-                    "surprisePercentage",
-                ]
-            ]
-            df_fa = df_fa.rename(
-                columns={
-                    "fiscalDateEnding": "Fiscal Date Ending",
-                    "reportedEPS": "Reported EPS",
-                    "estimatedEPS": "Estimated EPS",
-                    "reportedDate": "Reported Date",
-                    "surprise": "Surprise",
-                    "surprisePercentage": "Surprise Percentage",
-                }
-            )
+    # If the returned data was unsuccessful
+    if "Error Message" in result.json():
+        console.print(result.json()["Error Message"])
+    else:
+        # check if json is empty
+        if not result.json():
+            console.print("No data found")
         else:
-            df_fa = pd.DataFrame(df_fa["annualEarnings"][0])
-            df_fa = df_fa.rename(
-                columns={
-                    "fiscalDateEnding": "Fiscal Date Ending",
-                    "reportedEPS": "Reported EPS",
-                }
-            )
-        return df_fa
-    return pd.DataFrame()
+
+            df_fa = pd.json_normalize(result.json())
+
+            if quarterly:
+                df_fa = pd.DataFrame(df_fa["quarterlyEarnings"][0])
+                df_fa = df_fa[
+                    [
+                        "fiscalDateEnding",
+                        "reportedDate",
+                        "reportedEPS",
+                        "estimatedEPS",
+                        "surprise",
+                        "surprisePercentage",
+                    ]
+                ]
+                df_fa = df_fa.rename(
+                    columns={
+                        "fiscalDateEnding": "Fiscal Date Ending",
+                        "reportedEPS": "Reported EPS",
+                        "estimatedEPS": "Estimated EPS",
+                        "reportedDate": "Reported Date",
+                        "surprise": "Surprise",
+                        "surprisePercentage": "Surprise Percentage",
+                    }
+                )
+            else:
+                df_fa = pd.DataFrame(df_fa["annualEarnings"][0])
+                df_fa = df_fa.rename(
+                    columns={
+                        "fiscalDateEnding": "Fiscal Date Ending",
+                        "reportedEPS": "Reported EPS",
+                    }
+                )
+
+    return df_fa
 
 
 @log_start_end(log=logger)
@@ -334,7 +390,9 @@ def df_values(df: pd.DataFrame, item: str) -> List[int]:
 
 
 @log_start_end(log=logger)
-def get_fraud_ratios(ticker: str) -> Tuple[Dict[str, float], float, float]:
+def get_fraud_ratios(
+    ticker: str,
+) -> Tuple[Optional[Dict[str, float]], Optional[float], Optional[float]]:
     """Get fraud ratios based on fundamentals
 
     Parameters
@@ -349,12 +407,19 @@ def get_fraud_ratios(ticker: str) -> Tuple[Dict[str, float], float, float]:
     float:
         Z score for fraud metrics
     """
-    fd = FundamentalData(key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas")
-    # pylint: disable=unbalanced-tuple-unpacking
+
+    try:
+        fd = FundamentalData(key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas")
+        # pylint: disable=unbalanced-tuple-unpacking
+        df_cf, _ = fd.get_cash_flow_annual(symbol=ticker)
+        df_bs, _ = fd.get_balance_sheet_annual(symbol=ticker)
+        df_is, _ = fd.get_income_statement_annual(symbol=ticker)
+
+    except Exception as e:
+        console.print(e)
+        return None, None, None
+
     # pylint: disable=no-member
-    df_cf, _ = fd.get_cash_flow_annual(symbol=ticker)
-    df_bs, _ = fd.get_balance_sheet_annual(symbol=ticker)
-    df_is, _ = fd.get_income_statement_annual(symbol=ticker)
     df_cf = df_cf.set_index("fiscalDateEnding").iloc[:2]
     df_bs = df_bs.set_index("fiscalDateEnding").iloc[:2]
     df_is = df_is.set_index("fiscalDateEnding").iloc[:2]

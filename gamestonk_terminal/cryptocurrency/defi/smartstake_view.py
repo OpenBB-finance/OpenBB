@@ -7,6 +7,7 @@ from typing import Optional, List
 
 from matplotlib import pyplot as plt
 
+from gamestonk_terminal.decorators import check_api_key
 from gamestonk_terminal.cryptocurrency.defi import smartstake_model
 from gamestonk_terminal.helper_funcs import (
     export_data,
@@ -25,9 +26,9 @@ logger = logging.getLogger(__name__)
 
 LUNA_CIR_SUPPLY_CHANGE = "lunaSupplyChallengeStats"
 
-log_start_end(log=logger)
 
-
+@log_start_end(log=logger)
+@check_api_key(["API_SMARTSTAKE_KEY", "API_SMARTSTAKE_TOKEN"])
 def display_luna_circ_supply_change(
     days: int,
     export: str,
@@ -58,79 +59,78 @@ def display_luna_circ_supply_change(
     df = smartstake_model.get_luna_supply_stats(supply_type, days)
 
     if df.empty:
-        print("Error in SmartStake request")
+        return
+
+    # This plot has 1 axis
+    if not external_axes:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     else:
+        if len(external_axes) != 1:
+            logger.error("Expected list of one axis item.")
+            console.print("[red]Expected list of one axis item./n[/red]")
+            return
+        (ax,) = external_axes
 
-        # This plot has 1 axis
-        if not external_axes:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        else:
-            if len(external_axes) != 1:
-                logger.error("Expected list of one axis item.")
-                console.print("[red]Expected list of one axis item./n[/red]")
-                return
-            (ax,) = external_axes
+    ax.plot(
+        df.index,
+        df["circulatingSupplyInMil"],
+        c="black",
+        label="Circulating Supply",
+    )
+    ax.plot(
+        df.index,
+        df["liquidCircSupplyInMil"],
+        c="red",
+        label="Liquid Circulating Supply",
+    )
+    ax.plot(
+        df.index, df["stakeFromCircSupplyInMil"], c="green", label="Stake of Supply"
+    )
+    ax.plot(
+        df.index,
+        df["recentTotalLunaBurntInMil"],
+        c="blue",
+        label="Supply Reduction (Luna Burnt)",
+    )
 
-        ax.plot(
-            df.index,
-            df["circulatingSupplyInMil"],
-            c="black",
-            label="Circulating Supply",
-        )
-        ax.plot(
-            df.index,
-            df["liquidCircSupplyInMil"],
-            c="red",
-            label="Liquid Circulating Supply",
-        )
-        ax.plot(
-            df.index, df["stakeFromCircSupplyInMil"], c="green", label="Stake of Supply"
-        )
-        ax.plot(
-            df.index,
-            df["recentTotalLunaBurntInMil"],
-            c="blue",
-            label="Supply Reduction (Luna Burnt)",
-        )
+    ax.grid()
+    ax.set_ylabel("Millions")
+    ax.set_xlabel("Time")
+    ax.set_title("Luna Circulating Supply Changes (In Millions)")
+    ax.set_xlim(df.index[0], df.index[-1])
+    ax.legend(loc="best")
 
-        ax.grid()
-        ax.set_ylabel("Millions")
-        ax.set_xlabel("Time")
-        ax.set_title("Luna Circulating Supply Changes (In Millions)")
-        ax.set_xlim(df.index[0], df.index[-1])
-        ax.legend(loc="best")
+    theme.style_primary_axis(ax)
 
-        theme.style_primary_axis(ax)
+    if external_axes is None:
+        theme.visualize_output()
 
-        if external_axes is None:
-            theme.visualize_output()
+    RAW_COLS = [
+        "circulatingSupplyInMil",
+        "liquidCircSupplyInMil",
+        "circSupplyChangeInMil",
+        "recentTotalLunaBurntInMil",
+    ]
 
-        RAW_COLS = [
-            "circulatingSupplyInMil",
-            "liquidCircSupplyInMil",
-            "circSupplyChangeInMil",
-            "recentTotalLunaBurntInMil",
-        ]
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "lcsc",
+        df[RAW_COLS],
+    )
 
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            "lcsc",
-            df[RAW_COLS],
-        )
+    df.index = df.index.strftime("%Y-%m-%d")
+    df = df.sort_index(ascending=False)
 
-        df.index = df.index.strftime("%Y-%m-%d")
-        df = df.sort_index(ascending=False)
-
-        print_rich_table(
-            df[RAW_COLS].head(limit),
-            headers=[
-                "Circ Supply",
-                "Liquid Circ Supply",
-                "Supply Change",
-                "Supply Reduction (Luna Burnt)",
-            ],
-            show_index=True,
-            index_name="Time",
-            title="Luna Circulating Supply Changes (in Millions)",
-        )
+    print_rich_table(
+        df[RAW_COLS].head(limit),
+        headers=[
+            "Circ Supply",
+            "Liquid Circ Supply",
+            "Supply Change",
+            "Supply Reduction (Luna Burnt)",
+        ],
+        show_index=True,
+        index_name="Time",
+        title="Luna Circulating Supply Changes (in Millions)",
+    )
