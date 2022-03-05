@@ -48,7 +48,7 @@ class KeysController(BaseController):
         "news",
         "tradier",
         "cmc",
-        "finhub",
+        "finnhub",
         "iex",
         "reddit",
         "twitter",
@@ -277,24 +277,24 @@ class KeysController(BaseController):
         if show_output:
             console.print(self.key_dict["COINMARKETCAP"] + "\n")
 
-    def check_finhub_key(self, show_output: bool = False) -> None:
-        """Check Finhub key"""
-        self.cfg_dict["FINNHUB"] = "finhub"
+    def check_finnhub_key(self, show_output: bool = False) -> None:
+        """Check Finnhub key"""
+        self.cfg_dict["FINNHUB"] = "finnhub"
         if cfg.API_FINNHUB_KEY == "REPLACE_ME":
-            logger.info("Finhub key not defined")
+            logger.info("Finnhub key not defined")
             self.key_dict["FINNHUB"] = "not defined"
         else:
             r = r = requests.get(
                 f"https://finnhub.io/api/v1/quote?symbol=AAPL&token={cfg.API_FINNHUB_KEY}"
             )
             if r.status_code in [403, 401, 400]:
-                logger.warning("Finhub key defined, test failed")
+                logger.warning("Finnhub key defined, test failed")
                 self.key_dict["FINNHUB"] = "defined, test failed"
             elif r.status_code == 200:
-                logger.info("Finhub key defined, test passed")
+                logger.info("Finnhub key defined, test passed")
                 self.key_dict["FINNHUB"] = "defined, test passed"
             else:
-                logger.warning("Finhub key defined, test inconclusive")
+                logger.warning("Finnhub key defined, test inconclusive")
                 self.key_dict["FINNHUB"] = "defined, test inconclusive"
 
         if show_output:
@@ -685,7 +685,7 @@ class KeysController(BaseController):
         self.check_news_key()
         self.check_tradier_key()
         self.check_cmc_key()
-        self.check_finhub_key()
+        self.check_finnhub_key()
         self.check_iex_key()
         self.check_reddit_key()
         self.check_twitter_key()
@@ -924,13 +924,13 @@ class KeysController(BaseController):
             self.check_cmc_key(show_output=True)
 
     @log_start_end(log=logger)
-    def call_finhub(self, other_args: List[str]):
-        """Process Finhub API command"""
+    def call_finnhub(self, other_args: List[str]):
+        """Process Finnhub API command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="finhub",
-            description="Set Finhub API key.",
+            prog="finnhub",
+            description="Set Finnhub API key.",
         )
         parser.add_argument(
             "-k",
@@ -946,7 +946,7 @@ class KeysController(BaseController):
             os.environ["GT_API_FINNHUB_KEY"] = ns_parser.key
             dotenv.set_key(self.env_file, "GT_API_FINNHUB_KEY", ns_parser.key)
             cfg.API_FINNHUB_KEY = ns_parser.key
-            self.check_finhub_key(show_output=True)
+            self.check_finnhub_key(show_output=True)
 
     @log_start_end(log=logger)
     def call_iex(self, other_args: List[str]):
