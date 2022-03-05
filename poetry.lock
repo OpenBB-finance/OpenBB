@@ -159,6 +159,14 @@ python-versions = ">=3.7"
 tests = ["pytest", "pytest-asyncio", "mypy (>=0.800)"]
 
 [[package]]
+name = "astor"
+version = "0.8.1"
+description = "Read/rewrite/write Python ASTs"
+category = "main"
+optional = false
+python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,>=2.7"
+
+[[package]]
 name = "astroid"
 version = "2.9.3"
 description = "An abstract syntax tree for Python with inference support."
@@ -918,6 +926,29 @@ unicode = ["unicodedata2 (>=14.0.0)"]
 woff = ["zopfli (>=0.1.4)", "brotlicffi (>=0.8.0)", "brotli (>=1.0.1)"]
 
 [[package]]
+name = "formulaic"
+version = "0.2.4"
+description = "An implementation of Wilkinson formulas."
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+astor = "*"
+interface-meta = ">=1.2"
+numpy = "*"
+pandas = "*"
+scipy = "*"
+wrapt = "*"
+
+[package.extras]
+arrow = ["pyarrow"]
+benchmarks = ["patsy", "rpy2", "uncertainties"]
+calculus = ["sympy"]
+docs = ["mkdocs-material", "pymdown-extensions", "pygments"]
+test = ["flake8", "pytest", "pytest-cov"]
+
+[[package]]
 name = "fred"
 version = "3.1"
 description = "St. Louis Federal Reserve FRED API"
@@ -1159,6 +1190,14 @@ description = "iniconfig: brain-dead simple config-ini parsing"
 category = "dev"
 optional = false
 python-versions = "*"
+
+[[package]]
+name = "interface-meta"
+version = "1.2.4"
+description = "InterfaceMeta"
+category = "main"
+optional = false
+python-versions = ">=3.4"
 
 [[package]]
 name = "investpy"
@@ -1594,6 +1633,26 @@ description = "Clang Python Bindings, mirrored from the official LLVM repo: http
 category = "main"
 optional = true
 python-versions = "*"
+
+[[package]]
+name = "linearmodels"
+version = "4.25"
+description = "Linear Panel, Instrumental Variable, Asset Pricing, and System Regression models for Python"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+Cython = ">=0.29.21"
+formulaic = "*"
+mypy_extensions = ">=0.4"
+numpy = ">=1.16"
+pandas = ">=0.24"
+patsy = "*"
+property_cached = ">=1.6.3"
+pyhdfe = ">=0.1"
+scipy = ">=1.2"
+statsmodels = ">=0.11"
 
 [[package]]
 name = "lxml"
@@ -2337,6 +2396,14 @@ python-versions = ">=3.6.2"
 wcwidth = "*"
 
 [[package]]
+name = "property-cached"
+version = "1.6.4"
+description = "A decorator for caching properties in classes (forked from cached-property)."
+category = "main"
+optional = false
+python-versions = ">= 3.5"
+
+[[package]]
 name = "protobuf"
 version = "3.19.4"
 description = "Protocol Buffers"
@@ -2497,6 +2564,22 @@ description = "Pygments is a syntax highlighting package written in Python."
 category = "main"
 optional = false
 python-versions = ">=3.5"
+
+[[package]]
+name = "pyhdfe"
+version = "0.1.0"
+description = "High dimensional fixed effect absorption with Python 3"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+numpy = ">=1.12.0"
+scipy = ">=1.0.0"
+
+[package.extras]
+docs = ["sphinx", "ipython", "astunparse", "sphinx-rtd-theme", "nbsphinx", "jupyter-client"]
+tests = ["pytest", "pytest-xdist"]
 
 [[package]]
 name = "pyimgur"
@@ -3999,7 +4082,6 @@ prediction = ["tensorflow"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8,<3.10"
-content-hash = "5627f70eca6b911461177c361ec7374f5f3576c96dbc9052887ab0c7749b4e5a"
 
 [metadata.files]
 absl-py = [
@@ -4142,6 +4224,10 @@ ascii-magic = [
 asgiref = [
     {file = "asgiref-3.5.0-py3-none-any.whl", hash = "sha256:88d59c13d634dcffe0510be048210188edd79aeccb6a6c9028cdad6f31d730a9"},
     {file = "asgiref-3.5.0.tar.gz", hash = "sha256:2f8abc20f7248433085eda803936d98992f1343ddb022065779f37c5da0181d0"},
+]
+astor = [
+    {file = "astor-0.8.1-py2.py3-none-any.whl", hash = "sha256:070a54e890cefb5b3739d19f30f5a5ec840ffc9c50ffa7d23cc9fc1a38ebbfc5"},
+    {file = "astor-0.8.1.tar.gz", hash = "sha256:6a6effda93f4e1ce9f618779b2dd1d9d84f1e32812c23a29b3fff6fd7f63fa5e"},
 ]
 astroid = [
     {file = "astroid-2.9.3-py3-none-any.whl", hash = "sha256:506daabe5edffb7e696ad82483ad0228245a9742ed7d2d8c9cdb31537decf9f6"},
@@ -4591,6 +4677,10 @@ fonttools = [
     {file = "fonttools-4.29.1-py3-none-any.whl", hash = "sha256:1933415e0fbdf068815cb1baaa1f159e17830215f7e8624e5731122761627557"},
     {file = "fonttools-4.29.1.zip", hash = "sha256:2b18a172120e32128a80efee04cff487d5d140fe7d817deb648b2eee023a40e4"},
 ]
+formulaic = [
+    {file = "formulaic-0.2.4-py3-none-any.whl", hash = "sha256:775620d93f24f01b33a17aa2cf65a04112003c5112f12015368e4e4605a5013b"},
+    {file = "formulaic-0.2.4.tar.gz", hash = "sha256:15b71ea8972fb451f80684203cddd49620fc9ed5c2e35f31e0874e9c41910d1a"},
+]
 fred = [
     {file = "fred-3.1.tar.gz", hash = "sha256:f31327d648917694b8d15d66ca4e82a082dbb88ca027bdcc9d56738cbc836a6a"},
 ]
@@ -4810,6 +4900,10 @@ iniconfig = [
     {file = "iniconfig-1.1.1-py2.py3-none-any.whl", hash = "sha256:011e24c64b7f47f6ebd835bb12a743f2fbe9a26d4cecaa7f53bc4f35ee9da8b3"},
     {file = "iniconfig-1.1.1.tar.gz", hash = "sha256:bc3af051d7d14b2ee5ef9969666def0cd1a000e121eaea580d4a313df4b37f32"},
 ]
+interface-meta = [
+    {file = "interface_meta-1.2.4-py2.py3-none-any.whl", hash = "sha256:8d11375064d51e73764a02b8225af87b1ed63c20c1df52d3867611a5e70a5fc0"},
+    {file = "interface_meta-1.2.4.tar.gz", hash = "sha256:4c7725dd4b80f97b7eecfb26023e1a8a7cdbb6d6a7207a8e93f9d4bfef9ee566"},
+]
 investpy = [
     {file = "investpy-1.0.8.tar.gz", hash = "sha256:6a7632a94b484ee07cd54afd416bdc759cd905ba60c62dbb8a8d157229b267c6"},
 ]
@@ -5007,6 +5101,31 @@ libclang = [
     {file = "libclang-11.1.0-py2.py3-none-manylinux1_x86_64.whl", hash = "sha256:d8ec7b750c4bf9433340570852ffd0816ccd4ce81548705724aa2d89f37f7329"},
     {file = "libclang-11.1.0-py2.py3-none-manylinux2014_aarch64.whl", hash = "sha256:39d07c8965a3c963fb2686496339b6dbacf42acbd32e4bc7361373a45e98cebe"},
     {file = "libclang-11.1.0-py2.py3-none-win_amd64.whl", hash = "sha256:8cb0082a30b9e1e615d7f4211b0c428b607a9bd1e43ddc6c0cabdd9ea5b244bf"},
+]
+linearmodels = [
+    {file = "linearmodels-4.25-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:e8d3b34c62357701b60d043356563c247096ad79b8b95ac9bbafb1820a455f48"},
+    {file = "linearmodels-4.25-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:b1b2e7e4e27b12e9d5ec4e2de41e9aeaa685405bc37beaff0f080a2ad3e24f61"},
+    {file = "linearmodels-4.25-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:6e107d3d97819cdc4bfe64c85870e0ed655f2e1bd04911e22127dee0e3fab8d2"},
+    {file = "linearmodels-4.25-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:728d82fac702f65cc128742145b3702428b6aed5283450365ec5110f42e883dd"},
+    {file = "linearmodels-4.25-cp310-cp310-win_amd64.whl", hash = "sha256:c0aec5de380c4daf0596bb3be647a8cc8d0081c06715465df7a87efced08014e"},
+    {file = "linearmodels-4.25-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:db4c313127f3307a7c174ee12d9306fbc8dbb8a585b55234ebfa435fa5dd9ee9"},
+    {file = "linearmodels-4.25-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:339f01a68e504db1cccb4be9d4167c38c92ea5700cd3eba03ad0352d869c15eb"},
+    {file = "linearmodels-4.25-cp37-cp37m-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:f55f68eb675f863f80860526143451f516d9b77c580c0afb6c86f8bf7292da86"},
+    {file = "linearmodels-4.25-cp37-cp37m-win32.whl", hash = "sha256:ab9cb6a6fcad05bc5e790341c321713232883a8757aab4c7ce038a0a1af55728"},
+    {file = "linearmodels-4.25-cp37-cp37m-win_amd64.whl", hash = "sha256:f9fcb1eaaaf268ffcffbf4c2333bc9634d7a9ecf2ced0b5222bab6a8491d9fc6"},
+    {file = "linearmodels-4.25-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:397201c401f1d21bbfa9b2f4c44694c2f8c557d69271c244f43ac2ec5c6f2376"},
+    {file = "linearmodels-4.25-cp38-cp38-macosx_11_0_arm64.whl", hash = "sha256:e989cc12320e4cc599f3ceb83e8fa16e27af2584c3f76020bc56c20f76866839"},
+    {file = "linearmodels-4.25-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:c24f4aa2f44bf9e04606e15851b8874b2c8097f533c47bf11d6dab4954ecc6db"},
+    {file = "linearmodels-4.25-cp38-cp38-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:6843e0a8971d4d0539f22967ebf7dc9b381e55f087b6ee7bb32ad7ee728c91a7"},
+    {file = "linearmodels-4.25-cp38-cp38-win32.whl", hash = "sha256:cced735e5c645902c3c2003826d75ff04dd5caa60096918e8f7f4fc0eb79ed31"},
+    {file = "linearmodels-4.25-cp38-cp38-win_amd64.whl", hash = "sha256:4d5d401d1c2c9b8c2e8fd2dd8b064e513bf4cb0d6a30b9198f33f67163cbc7d8"},
+    {file = "linearmodels-4.25-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:3bd3ddc0753d29fcd26ff80d87957904f7d91c3f7d898c8839b13a226ee5fede"},
+    {file = "linearmodels-4.25-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:11b3f66bdf17434b04be916f16ddb319bf8dae54b89b8c268cb37a8ad7b0f4ee"},
+    {file = "linearmodels-4.25-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:f5a1b691e840189a2ed17796a806960166e30e86e6970c80e60fe10762456005"},
+    {file = "linearmodels-4.25-cp39-cp39-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:4abd59e3dda544807676d94ba1ea2ceba87624ab30491ea561430f31379229bc"},
+    {file = "linearmodels-4.25-cp39-cp39-win32.whl", hash = "sha256:061f2970191fcee284f600d5cc84a556a411729494325af8c557047ab733ae46"},
+    {file = "linearmodels-4.25-cp39-cp39-win_amd64.whl", hash = "sha256:19f8cb6237b61badb687a4a020527552a70e077cf1b303959c33faeb8cdde285"},
+    {file = "linearmodels-4.25.tar.gz", hash = "sha256:a73e94195f486f74be6176809a515bb498b5371d8acb9e4ae6f0e59a7c28210a"},
 ]
 lxml = [
     {file = "lxml-4.8.0-cp27-cp27m-macosx_10_14_x86_64.whl", hash = "sha256:e1ab2fac607842ac36864e358c42feb0960ae62c34aa4caaf12ada0a1fb5d99b"},
@@ -5541,6 +5660,10 @@ prompt-toolkit = [
     {file = "prompt_toolkit-3.0.28-py3-none-any.whl", hash = "sha256:30129d870dcb0b3b6a53efdc9d0a83ea96162ffd28ffe077e94215b233dc670c"},
     {file = "prompt_toolkit-3.0.28.tar.gz", hash = "sha256:9f1cd16b1e86c2968f2519d7fb31dd9d669916f515612c269d14e9ed52b51650"},
 ]
+property-cached = [
+    {file = "property-cached-1.6.4.zip", hash = "sha256:3e9c4ef1ed3653909147510481d7df62a3cfb483461a6986a6f1dcd09b2ebb73"},
+    {file = "property_cached-1.6.4-py2.py3-none-any.whl", hash = "sha256:135fc059ec969c1646424a0db15e7fbe1b5f8c36c0006d0b3c91ba568c11e7d8"},
+]
 protobuf = [
     {file = "protobuf-3.19.4-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:f51d5a9f137f7a2cec2d326a74b6e3fc79d635d69ffe1b036d39fc7d75430d37"},
     {file = "protobuf-3.19.4-cp310-cp310-manylinux2014_aarch64.whl", hash = "sha256:09297b7972da685ce269ec52af761743714996b4381c085205914c41fcab59fb"},
@@ -5678,6 +5801,10 @@ pyflakes = [
 pygments = [
     {file = "Pygments-2.11.2-py3-none-any.whl", hash = "sha256:44238f1b60a76d78fc8ca0528ee429702aae011c265fe6a8dd8b63049ae41c65"},
     {file = "Pygments-2.11.2.tar.gz", hash = "sha256:4e426f72023d88d03b2fa258de560726ce890ff3b630f88c21cbb8b2503b8c6a"},
+]
+pyhdfe = [
+    {file = "pyhdfe-0.1.0-py3-none-any.whl", hash = "sha256:21c6f7d9f464929ce5acfce54d46684c4449a5bbe14d2986237ecb30a723b9ee"},
+    {file = "pyhdfe-0.1.0.tar.gz", hash = "sha256:820a40722d70e94cec1dcd140d6c480f02578fee96660b722a2e722c2222e377"},
 ]
 pyimgur = [
     {file = "pyimgur-0.6.0-py2-none-any.whl", hash = "sha256:ad22deea062fe8e7412d0bdfc70cbf305a828c6390096d3523ed3d7dbeb2bdff"},
