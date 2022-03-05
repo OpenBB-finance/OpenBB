@@ -99,7 +99,7 @@ def check_api_key(api_keys):
                     undefined_apis_name = ", ".join(undefined_apis)
                     console.print(
                         f"[red]{undefined_apis_name} not defined. "
-                        "Set API Keys in config_terminal.py or under keys menu[/red].\n"
+                        "Set API Keys in config_terminal.py or under keys menu.[/red]\n"
                     )  # pragma: allowlist secret
                 else:
                     func(*args, **kwargs)

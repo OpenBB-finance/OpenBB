@@ -19,11 +19,13 @@ from gamestonk_terminal.helper_funcs import (
     plot_autoscale,
 )
 from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.decorators import check_api_key
 
 logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_FINNHUB_KEY"])
 def display_stock_price_headlines_sentiment(
     ticker: str,
     export: str = "",
