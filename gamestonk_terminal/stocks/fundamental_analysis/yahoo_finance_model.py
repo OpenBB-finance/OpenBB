@@ -2,7 +2,7 @@
 __docformat__ = "numpy"
 
 import logging
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Tuple
 
 import pandas as pd
@@ -233,7 +233,9 @@ def get_dividends(ticker: str) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_mktcap(ticker: str, start: datetime) -> Tuple[pd.DataFrame, str]:
+def get_mktcap(
+    ticker: str, start: datetime = (datetime.now() - timedelta(days=3 * 366))
+) -> Tuple[pd.DataFrame, str]:
     """Get market cap over time for ticker. [Source: Yahoo Finance]
 
     Parameters

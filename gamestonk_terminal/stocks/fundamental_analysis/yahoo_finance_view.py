@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import logging
 import os
 import webbrowser
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import List, Optional
 
 import matplotlib.pyplot as plt
@@ -240,7 +240,7 @@ def display_dividends(
 @log_start_end(log=logger)
 def display_mktcap(
     ticker: str,
-    start: datetime,
+    start: datetime = (datetime.now() - timedelta(days=3 * 366)),
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
