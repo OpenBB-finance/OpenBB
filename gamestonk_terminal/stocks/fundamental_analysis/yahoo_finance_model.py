@@ -248,7 +248,9 @@ def get_mktcap(
     Returns
     -------
     pd.DataFrame:
-        Dataframe of splits and reverse splits
+        Dataframe of estimated market cap over time
+    str:
+        Currency of ticker
     """
     currency = ""
     df_data = yf.download(ticker, start=start, progress=False, threads=False)

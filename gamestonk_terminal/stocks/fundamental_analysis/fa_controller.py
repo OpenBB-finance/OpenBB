@@ -117,7 +117,7 @@ Ticker: [/param] {self.ticker} [cmds]
     info          information scope of the company
     mktcap        estimated market cap{is_foreign_start}
     shrs          shareholders (insiders, institutions and mutual funds)
-    sust          sustainability values (Environment, Social and Governance)
+    sust          sustainability values (environment, social and governance)
     cal           calendar earnings and estimates of the company
     divs          show historical dividends for company
     splits        stock split and reverse split events since IPO
@@ -273,7 +273,7 @@ Ticker: [/param] {self.ticker} [cmds]
             type=valid_date,
             default=(datetime.now() - timedelta(days=3 * 366)).strftime("%Y-%m-%d"),
             dest="start",
-            help="The starting date (format YYYY-MM-DD) of the ETF",
+            help="The starting date (format YYYY-MM-DD) of the market cap display",
         )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
