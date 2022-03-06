@@ -1,3 +1,8 @@
+---
+geekdocCollapseSection: true
+---
+
+{{< toc-tree >}}
 
 ![Screen Shot 2022-02-22 at 11 17 33 AM](https://user-images.githubusercontent.com/85772166/155203034-6cf5378e-00e9-4844-89f3-c37063eef9e0.png)
 
@@ -5,7 +10,7 @@ The Gamestonk Terminal Bot is a mobile-friendly interactive social media chat bo
 
 Each feature includes a description and the ability to select optional arguments with point-and-click execution, so you can explore the possibilities of features with less friction. !stop.the.guessing today!
 
-The only social media stock bot with dynamic charting libraries able to deliver queries directly to tablets and mobile devices. 
+The only social media stock bot with dynamic charting libraries able to deliver queries directly to tablets and mobile devices.
 
 Our repository is built to be a cross-platform bot, meaning you can take the GameStonks Bot with you, wherever you migrate to!
 
