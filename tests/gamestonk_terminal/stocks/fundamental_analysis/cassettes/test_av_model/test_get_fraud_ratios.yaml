@@ -8,8 +8,10 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
     method: GET
-    uri: https://www.alphavantage.co/query?apikey=MOCK_API_KEY&function=CASH_FLOW&symbol=TSLA
+    uri: https://www.alphavantage.co/query?function=CASH_FLOW&symbol=TSLA&apikey=P6YGOQ6FL6OEIZ3B
   response:
     body:
       string: !!binary |
@@ -23,7 +25,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 6e7b4b271a2688bb-LHR
+      - 6e7bd7541e887201-LHR
       Connection:
       - keep-alive
       Content-Encoding:
@@ -31,7 +33,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Sun, 06 Mar 2022 13:03:52 GMT
+      - Sun, 06 Mar 2022 14:39:30 GMT
       Expect-CT:
       - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
       Server:

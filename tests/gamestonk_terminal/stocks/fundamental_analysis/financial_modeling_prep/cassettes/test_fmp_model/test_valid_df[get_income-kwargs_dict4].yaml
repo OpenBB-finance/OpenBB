@@ -21,7 +21,7 @@ interactions:
         8515000000,\n  \"costAndExpenses\" : 18545000000,\n  \"interestIncome\" :
         109000000,\n  \"interestExpense\" : 737000000,\n  \"depreciationAndAmortization\"
         : 998000000,\n  \"ebitda\" : 13515000000,\n  \"ebitdaratio\" : 0.4303454863875179,\n
-        \ \"operatingIncome\" : 12860000000,\n  \"operatingIncomeRatio\" : 0.40948893488298044,\n
+        \ \"operatingIncome\" : 12975000000,\n  \"operatingIncomeRatio\" : 0.40948893488298044,\n
         \ \"totalOtherIncomeExpensesNet\" : -628000000,\n  \"incomeBeforeTax\" : 12232000000,\n
         \ \"incomeBeforeTaxRatio\" : 0.38949211908931697,\n  \"incomeTaxExpense\"
         : 2671000000,\n  \"netIncome\" : 9109000000,\n  \"netIncomeRatio\" : 0.29004935519821684,\n
@@ -347,7 +347,7 @@ interactions:
       Content-Type:
       - application/json;charset=UTF-8
       Date:
-      - Sun, 06 Mar 2022 13:05:10 GMT
+      - Sun, 06 Mar 2022 14:44:34 GMT
       Server:
       - nginx/1.14.0 (Ubuntu)
       Transfer-Encoding:

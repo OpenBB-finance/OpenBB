@@ -11,15 +11,15 @@ interactions:
   response:
     body:
       string: "[ {\n  \"symbol\" : \"PM\",\n  \"name\" : \"Philip Morris International
-        Inc.\",\n  \"price\" : 99.80000000,\n  \"changesPercentage\" : -2.61514470,\n
-        \ \"change\" : -2.68000030,\n  \"dayLow\" : 99.25000000,\n  \"dayHigh\" :
-        101.06170000,\n  \"yearHigh\" : 112.48000000,\n  \"yearLow\" : 85.64000000,\n
+        Inc.\",\n  \"price\" : 99.80000000,\n  \"changesPercentage\" : -2.61514000,\n
+        \ \"change\" : -2.68000000,\n  \"dayLow\" : 99.25000000,\n  \"dayHigh\" :
+        101.07000000,\n  \"yearHigh\" : 112.48000000,\n  \"yearLow\" : 85.64000000,\n
         \ \"marketCap\" : 154673037312.00000000,\n  \"priceAvg50\" : 101.78640000,\n
-        \ \"priceAvg200\" : 98.53845000,\n  \"volume\" : 6489064,\n  \"avgVolume\"
+        \ \"priceAvg200\" : 98.53845000,\n  \"volume\" : 7054888,\n  \"avgVolume\"
         : 6175341,\n  \"exchange\" : \"NYSE\",\n  \"open\" : 101.04000000,\n  \"previousClose\"
         : 102.48000000,\n  \"eps\" : 5.83000000,\n  \"pe\" : 17.11835500,\n  \"earningsAnnouncement\"
         : \"2022-04-21T12:30:00.000+0000\",\n  \"sharesOutstanding\" : 1549830033,\n
-        \ \"timestamp\" : 1646571908\n} ]"
+        \ \"timestamp\" : 1646577873\n} ]"
     headers:
       Access-Control-Allow-Headers:
       - origin, content-type, accept, Authorization, authorization
@@ -34,7 +34,7 @@ interactions:
       Content-Type:
       - application/json;charset=UTF-8
       Date:
-      - Sun, 06 Mar 2022 13:05:08 GMT
+      - Sun, 06 Mar 2022 14:44:33 GMT
       Server:
       - nginx/1.14.0 (Ubuntu)
       Transfer-Encoding:
