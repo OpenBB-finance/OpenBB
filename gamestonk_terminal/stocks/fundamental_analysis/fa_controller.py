@@ -677,6 +677,7 @@ Ticker: [/param] {self.ticker} [cmds]
                 ticker=self.ticker,
                 limit=ns_parser.limit,
                 quarterly=ns_parser.b_quarter,
+                export=ns_parser.export,
             )
 
     @log_start_end(log=logger)
