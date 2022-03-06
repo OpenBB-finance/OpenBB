@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 import logging
 import os
 import webbrowser
+from datetime import datetime, timedelta
 from typing import List, Optional
 from fractions import Fraction
 
@@ -96,11 +97,10 @@ def display_shareholders(ticker: str):
     ) = yahoo_finance_model.get_shareholders(ticker)
     df_major_holders.columns = ["", ""]
     dfs = [df_major_holders, df_institutional_shareholders, df_mutualfund_shareholders]
-    titles = ["Major Holders:\n", "Institutional Holders:\n", "Mutual Fund Holders:\n"]
+    titles = ["Major Holders", "Institutional Holders", "Mutual Fund Holders"]
     console.print()
 
     for df, title in zip(dfs, titles):
-        console.print(title)
         if "Date Reported" in df.columns:
             df["Date Reported"] = df["Date Reported"].apply(
                 lambda x: x.strftime("%Y-%m-%d")
@@ -109,7 +109,7 @@ def display_shareholders(ticker: str):
             df,
             headers=list(df.columns),
             show_index=False,
-            title=f"{ticker.upper()} Shareholders",
+            title=f"{ticker.upper()} {title}",
         )
         console.print()
 
@@ -181,7 +181,7 @@ def display_dividends(
     limit: int
         Number to show
     plot: bool
-        Plots hitsorical data
+        Plots historical data
     export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
@@ -317,3 +317,50 @@ def display_splits(
     )
     console.print()
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "splits", df_splits)
+
+
+@log_start_end(log=logger)
+def display_mktcap(
+    ticker: str,
+    start: datetime = (datetime.now() - timedelta(days=3 * 366)),
+    export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
+):
+    """Display market cap over time. [Source: Yahoo Finance]
+
+    Parameters
+    ----------
+    ticker: str
+        Stock ticker
+    start: datetime
+        Start date to display market cap
+    export: str
+        Format to export data
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
+    """
+    df_mktcap, currency = yahoo_finance_model.get_mktcap(ticker, start)
+    if df_mktcap.empty:
+        console.print("No Market Cap data available.\n")
+        return
+
+    # This plot has 1 axis
+    if not external_axes:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    else:
+        if len(external_axes) != 1:
+            logger.error("Expected list of one axis item.")
+            console.print("[red]Expected list of one axis item./n[/red]")
+            return
+        (ax,) = external_axes
+
+    ax.stackplot(df_mktcap.index, df_mktcap.values / 1e9, colors=[theme.up_color])
+    ax.set_ylabel(f"Market Cap in Billion ({currency})")
+    ax.set_title(f"{ticker} Market Cap")
+    ax.set_xlim(df_mktcap.index[0], df_mktcap.index[-1])
+    theme.style_primary_axis(ax)
+
+    if not external_axes:
+        theme.visualize_output()
+
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), "mktcap", df_mktcap)
