@@ -10,6 +10,7 @@ from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
+    EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
     parse_known_args_and_warn,
@@ -51,6 +52,7 @@ class FundamentalAnalysisController(StockBaseController):
         "balance",
         "cash",
         "mgmt",
+        "splits",
         "info",
         "shrs",
         "sust",
@@ -113,9 +115,10 @@ Ticker: [/param] {self.ticker} [cmds]
     shrs          shareholders of the company
     sust          sustainability values of the company
     cal           calendar earnings and estimates of the company
+    divs          show historical dividends for company
+    splits        stock split and reverse split events since IPO
     web           open web browser of the company
-    hq            open HQ location of the company
-    divs          show historical dividends for company{is_foreign_end}
+    hq            open HQ location of the company{is_foreign_end}
 [src][Alpha Vantage][/src]
     overview      overview of the company
     key           company key metrics
@@ -250,6 +253,21 @@ Ticker: [/param] {self.ticker} [cmds]
         )
         if ns_parser:
             yahoo_finance_view.display_info(self.ticker)
+
+    @log_start_end(log=logger)
+    def call_splits(self, other_args: List[str]):
+        """Process splits command."""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="splits",
+            description="""Stock splits and reverse split events since IPO [Source: Yahoo Finance]""",
+        )
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if ns_parser:
+            yahoo_finance_view.display_splits(self.ticker)
 
     @log_start_end(log=logger)
     def call_shrs(self, other_args: List[str]):

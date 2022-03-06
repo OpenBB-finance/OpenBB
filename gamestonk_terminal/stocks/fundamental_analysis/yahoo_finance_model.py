@@ -230,3 +230,23 @@ def get_dividends(ticker: str) -> pd.DataFrame:
         Dataframe of dividends and dates
     """
     return pd.DataFrame(yf.Ticker(ticker).dividends)
+
+
+@log_start_end(log=logger)
+def get_splits(ticker: str) -> pd.DataFrame:
+    """Get splits and reverse splits events. [Source: Yahoo Finance]
+
+    Parameters
+    ----------
+    ticker: str
+        Ticker to get dividend for
+
+    Returns
+    -------
+    pd.DataFrame:
+        Dataframe of splits and reverse splits
+    """
+    data = yf.Ticker(ticker).splits
+    if not data.empty:
+        return data.to_frame()
+    return pd.DataFrame()
