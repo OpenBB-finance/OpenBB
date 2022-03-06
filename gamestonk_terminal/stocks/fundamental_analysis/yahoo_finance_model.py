@@ -231,6 +231,7 @@ def get_dividends(ticker: str) -> pd.DataFrame:
     """
     return pd.DataFrame(yf.Ticker(ticker).dividends)
 
+
 @log_start_end(log=logger)
 def get_mktcap(
     ticker: str, start: datetime = (datetime.now() - timedelta(days=3 * 366))
@@ -262,6 +263,7 @@ def get_mktcap(
 
     return df_data, currency
 
+
 @log_start_end(log=logger)
 def get_splits(ticker: str) -> pd.DataFrame:
     """Get splits and reverse splits events. [Source: Yahoo Finance]
@@ -282,4 +284,3 @@ def get_splits(ticker: str) -> pd.DataFrame:
     if not data.empty:
         return data.to_frame()
     return pd.DataFrame()
-  

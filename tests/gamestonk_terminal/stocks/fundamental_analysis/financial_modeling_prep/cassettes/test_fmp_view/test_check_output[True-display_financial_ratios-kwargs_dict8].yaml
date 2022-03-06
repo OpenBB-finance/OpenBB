@@ -10,9 +10,39 @@ interactions:
     uri: https://financialmodelingprep.com/api/v3/ratios/PM?apikey=MOCK_API_KEY&limit=0&period=annual
   response:
     body:
-      string: "[ {\n  \"symbol\" : \"PM\",\n  \"date\" : \"2020-12-31\",\n  \"period\"
-        : \"FY\",\n  \"currentRatio\" : 1.0956920723935764,\n  \"quickRatio\" : 0.562885546775427,\n
-        \ \"cashRatio\" : 0.3711445322457303,\n  \"daysOfSalesOutstanding\" : 47.841534815640905,\n
+      string: "[ {\n  \"symbol\" : \"PM\",\n  \"date\" : \"2021-12-31\",\n  \"period\"
+        : \"FY\",\n  \"currentRatio\" : 0.9201246429498832,\n  \"quickRatio\" : 0.4381199688392625,\n
+        \ \"cashRatio\" : 0.2334977927810958,\n  \"daysOfSalesOutstanding\" : 45.79207132622194,\n
+        \ \"daysOfInventoryOutstanding\" : 317.3280159521436,\n  \"operatingCycle\"
+        : 363.12008727836553,\n  \"daysOfPayablesOutstanding\" : 121.21784646061815,\n
+        \ \"cashConversionCycle\" : 241.90224081774738,\n  \"grossProfitMargin\" :
+        0.6806241044419679,\n  \"operatingProfitMargin\" : 0.40948893488298044,\n
+        \ \"pretaxProfitMargin\" : 0.38949211908931697,\n  \"netProfitMargin\" : 0.29004935519821684,\n
+        \ \"effectiveTaxRate\" : 0.2183616742969261,\n  \"returnOnAssets\" : 0.22061031726810365,\n
+        \ \"returnOnEquity\" : -0.9013457352068078,\n  \"returnOnCapitalEmployed\"
+        : 0.5836169729975039,\n  \"netIncomePerEBT\" : 0.7446860693263571,\n  \"ebtPerEbit\"
+        : 0.9511664074650078,\n  \"ebitPerRevenue\" : 0.40948893488298044,\n  \"debtRatio\"
+        : 1.198789053039477,\n  \"debtEquityRatio\" : -4.897882446071641,\n  \"longTermDebtToCapitalization\"
+        : 1.6885603324930163,\n  \"totalDebtToCapitalization\" : 1.5709604519774012,\n
+        \ \"interestCoverage\" : 17.44911804613297,\n  \"cashFlowToDebtRatio\" : 0.4303747392649069,\n
+        \ \"companyEquityMultiplier\" : -4.085691668315852,\n  \"receivablesTurnover\"
+        : 7.970812182741117,\n  \"payablesTurnover\" : 3.01110777544281,\n  \"inventoryTurnover\"
+        : 1.150229357798165,\n  \"fixedAssetTurnover\" : 5.091601815823606,\n  \"assetTurnover\"
+        : 0.7605957859045773,\n  \"operatingCashFlowPerShare\" : null,\n  \"freeCashFlowPerShare\"
+        : null,\n  \"cashPerShare\" : null,\n  \"payoutRatio\" : 0.8321440333735866,\n
+        \ \"operatingCashFlowSalesRatio\" : 0.3810539722974049,\n  \"freeCashFlowOperatingCashFlowRatio\"
+        : 0.9374947773042533,\n  \"cashFlowCoverageRatios\" : 0.4303747392649069,\n
+        \ \"shortTermCoverageRatios\" : 3.958650347337082,\n  \"capitalExpenditureCoverageRatio\"
+        : -15.998663101604278,\n  \"dividendPaidAndCapexCoverageRatio\" : 1.7516100702576112,\n
+        \ \"dividendPayoutRatio\" : null,\n  \"priceBookValueRatio\" : null,\n  \"priceToBookRatio\"
+        : null,\n  \"priceToSalesRatio\" : null,\n  \"priceEarningsRatio\" : null,\n
+        \ \"priceToFreeCashFlowsRatio\" : 0.0,\n  \"priceToOperatingCashFlowsRatio\"
+        : null,\n  \"priceCashFlowRatio\" : null,\n  \"priceEarningsToGrowthRatio\"
+        : null,\n  \"priceSalesRatio\" : null,\n  \"dividendYield\" : null,\n  \"enterpriseValueMultiple\"
+        : 1.6689339156583376,\n  \"priceFairValue\" : null\n}, {\n  \"symbol\" : \"PM\",\n
+        \ \"date\" : \"2020-12-31\",\n  \"period\" : \"FY\",\n  \"currentRatio\" :
+        1.0956920723935764,\n  \"quickRatio\" : 0.562885546775427,\n  \"cashRatio\"
+        : 0.3711445322457303,\n  \"daysOfSalesOutstanding\" : 47.841534815640905,\n
         \ \"daysOfInventoryOutstanding\" : 365.8391681471418,\n  \"operatingCycle\"
         : 413.6807029627827,\n  \"daysOfPayablesOutstanding\" : 106.04033859337443,\n
         \ \"cashConversionCycle\" : 307.64036436940825,\n  \"grossProfitMargin\" :
@@ -73,7 +103,7 @@ interactions:
         : 14.194972192032905,\n  \"priceToOperatingCashFlowsRatio\" : 12.99634817740337,\n
         \ \"priceCashFlowRatio\" : 12.99634817740337,\n  \"priceEarningsToGrowthRatio\"
         : -2.018080059936398,\n  \"priceSalesRatio\" : 4.3997031742996136,\n  \"dividendYield\"
-        : 0.05460861597671683,\n  \"enterpriseValueMultiple\" : 15.021001267891682,\n
+        : 0.05460861597671683,\n  \"enterpriseValueMultiple\" : 13.820711257341165,\n
         \ \"priceFairValue\" : -11.327040952751142\n}, {\n  \"symbol\" : \"PM\",\n
         \ \"date\" : \"2018-12-31\",\n  \"period\" : \"FY\",\n  \"currentRatio\" :
         1.130940608457914,\n  \"quickRatio\" : 0.5908324123087663,\n  \"cashRatio\"
@@ -106,7 +136,7 @@ interactions:
         \ \"priceToOperatingCashFlowsRatio\" : 12.219498276535134,\n  \"priceCashFlowRatio\"
         : 12.219498276535134,\n  \"priceEarningsToGrowthRatio\" : 0.47779486538306054,\n
         \ \"priceSalesRatio\" : 3.9094145034599155,\n  \"dividendYield\" : 0.05944753698679324,\n
-        \ \"enterpriseValueMultiple\" : 12.484052480740282,\n  \"priceFairValue\"
+        \ \"enterpriseValueMultiple\" : 11.555934808606557,\n  \"priceFairValue\"
         : -9.29580260574685\n}, {\n  \"symbol\" : \"PM\",\n  \"date\" : \"2017-12-31\",\n
         \ \"period\" : \"FY\",\n  \"currentRatio\" : 1.3528379902267886,\n  \"quickRatio\"
         : 0.7633755168525247,\n  \"cashRatio\" : 0.5291943365493046,\n  \"daysOfSalesOutstanding\"
@@ -138,7 +168,7 @@ interactions:
         : 22.748897759913092,\n  \"priceToOperatingCashFlowsRatio\" : 18.797450976660684,\n
         \ \"priceCashFlowRatio\" : 18.797450976660684,\n  \"priceEarningsToGrowthRatio\"
         : -2.102533082175667,\n  \"priceSalesRatio\" : 5.82728826714902,\n  \"dividendYield\"
-        : 0.03892005604961033,\n  \"enterpriseValueMultiple\" : 16.780746408467813,\n
+        : 0.03892005604961033,\n  \"enterpriseValueMultiple\" : 15.708185097376756,\n
         \ \"priceFairValue\" : -13.860903781565447\n}, {\n  \"symbol\" : \"PM\",\n
         \ \"date\" : \"2016-12-31\",\n  \"period\" : \"FY\",\n  \"currentRatio\" :
         1.0692900953421995,\n  \"quickRatio\" : 0.4699095160017004,\n  \"cashRatio\"
@@ -171,7 +201,7 @@ interactions:
         : 21.554519688486604,\n  \"priceToOperatingCashFlowsRatio\" : 18.426886028104494,\n
         \ \"priceCashFlowRatio\" : 18.426886028104494,\n  \"priceEarningsToGrowthRatio\"
         : 15.737191912936568,\n  \"priceSalesRatio\" : 5.577438952557617,\n  \"dividendYield\"
-        : 0.04285312348381508,\n  \"enterpriseValueMultiple\" : 15.964511716216217,\n
+        : 0.04285312348381508,\n  \"enterpriseValueMultiple\" : 15.039573780982073,\n
         \ \"priceFairValue\" : -11.730293068174653\n}, {\n  \"symbol\" : \"PM\",\n
         \ \"date\" : \"2015-12-31\",\n  \"period\" : \"FY\",\n  \"currentRatio\" :
         1.0271675549200572,\n  \"quickRatio\" : 0.402638762511374,\n  \"cashRatio\"
@@ -204,7 +234,7 @@ interactions:
         : 20.191961346560465,\n  \"priceToOperatingCashFlowsRatio\" : 17.72733542250477,\n
         \ \"priceCashFlowRatio\" : 17.72733542250477,\n  \"priceEarningsToGrowthRatio\"
         : -2.8400362336272384,\n  \"priceSalesRatio\" : 5.203608759349108,\n  \"dividendYield\"
-        : 0.044826809366971164,\n  \"enterpriseValueMultiple\" : 15.265753419767982,\n
+        : 0.044826809366971164,\n  \"enterpriseValueMultiple\" : 14.369572210884948,\n
         \ \"priceFairValue\" : -10.527445869676834\n}, {\n  \"symbol\" : \"PM\",\n
         \ \"date\" : \"2014-12-31\",\n  \"period\" : \"FY\",\n  \"currentRatio\" :
         1.024616199047115,\n  \"quickRatio\" : 0.3762572789835892,\n  \"cashRatio\"
@@ -237,7 +267,7 @@ interactions:
         \ \"priceToOperatingCashFlowsRatio\" : 16.23670201162941,\n  \"priceCashFlowRatio\"
         : 16.23670201162941,\n  \"priceEarningsToGrowthRatio\" : -1.7641791056337381,\n
         \ \"priceSalesRatio\" : 4.2213134299056,\n  \"dividendYield\" : 0.048028011673979756,\n
-        \ \"enterpriseValueMultiple\" : 12.944304131274782,\n  \"priceFairValue\"
+        \ \"enterpriseValueMultiple\" : 12.129720678946953,\n  \"priceFairValue\"
         : -9.9497851665215\n}, {\n  \"symbol\" : \"PM\",\n  \"date\" : \"2013-12-31\",\n
         \ \"period\" : \"FY\",\n  \"currentRatio\" : 0.9874604476737373,\n  \"quickRatio\"
         : 0.3519864057189734,\n  \"cashRatio\" : 0.12621586780733624,\n  \"daysOfSalesOutstanding\"
@@ -269,7 +299,7 @@ interactions:
         : 14.357467656631226,\n  \"priceToOperatingCashFlowsRatio\" : 12.657520820128267,\n
         \ \"priceCashFlowRatio\" : 12.657520820128267,\n  \"priceEarningsToGrowthRatio\"
         : 8.59281901763372,\n  \"priceSalesRatio\" : 4.109426706986578,\n  \"dividendYield\"
-        : 0.04458857831890386,\n  \"enterpriseValueMultiple\" : 11.441491743807186,\n
+        : 0.04458857831890386,\n  \"enterpriseValueMultiple\" : 10.807193192242833,\n
         \ \"priceFairValue\" : -16.518667719804274\n}, {\n  \"symbol\" : \"PM\",\n
         \ \"date\" : \"2012-12-31\",\n  \"period\" : \"FY\",\n  \"currentRatio\" :
         0.9749647390691114,\n  \"quickRatio\" : 0.38622472966619653,\n  \"cashRatio\"
@@ -302,8 +332,8 @@ interactions:
         \ \"priceToOperatingCashFlowsRatio\" : 15.741832436471713,\n  \"priceCashFlowRatio\"
         : 15.741832436471713,\n  \"priceEarningsToGrowthRatio\" : 2.8202191022777057,\n
         \ \"priceSalesRatio\" : 4.726513158810594,\n  \"dividendYield\" : 0.03643871483192871,\n
-        \ \"enterpriseValueMultiple\" : 12.2413775485186,\n  \"priceFairValue\" :
-        -42.6650757721519\n}, {\n  \"symbol\" : \"PM\",\n  \"date\" : \"2011-12-31\",\n
+        \ \"enterpriseValueMultiple\" : 11.566914526344751,\n  \"priceFairValue\"
+        : -42.6650757721519\n}, {\n  \"symbol\" : \"PM\",\n  \"date\" : \"2011-12-31\",\n
         \ \"period\" : \"FY\",\n  \"currentRatio\" : 1.0043936731107206,\n  \"quickRatio\"
         : 0.38873867784236854,\n  \"cashRatio\" : 0.17236717588211437,\n  \"daysOfSalesOutstanding\"
         : 37.571630703926424,\n  \"daysOfInventoryOutstanding\" : 277.5613410751077,\n
@@ -334,7 +364,7 @@ interactions:
         \ \"priceToOperatingCashFlowsRatio\" : 12.52720139823345,\n  \"priceCashFlowRatio\"
         : 12.52720139823345,\n  \"priceEarningsToGrowthRatio\" : 0.636154629202183,\n
         \ \"priceSalesRatio\" : 4.241531450686561,\n  \"dividendYield\" : 0.03630052920948951,\n
-        \ \"enterpriseValueMultiple\" : 11.139944525610124,\n  \"priceFairValue\"
+        \ \"enterpriseValueMultiple\" : 10.436377356714416,\n  \"priceFairValue\"
         : 575.9777446375547\n}, {\n  \"symbol\" : \"PM\",\n  \"date\" : \"2010-12-31\",\n
         \ \"period\" : \"FY\",\n  \"currentRatio\" : 1.0743517650734145,\n  \"quickRatio\"
         : 0.36800999687597624,\n  \"cashRatio\" : 0.13300531084036238,\n  \"daysOfSalesOutstanding\"
@@ -366,8 +396,8 @@ interactions:
         \ \"priceToOperatingCashFlowsRatio\" : 11.029712442725442,\n  \"priceCashFlowRatio\"
         : 11.029712442725442,\n  \"priceEarningsToGrowthRatio\" : 0.6853237726118894,\n
         \ \"priceSalesRatio\" : 3.8256173302705085,\n  \"dividendYield\" : 0.04249313707797253,\n
-        \ \"enterpriseValueMultiple\" : 10.665326663855746,\n  \"priceFairValue\"
-        : 29.68836175755847\n}, {\n  \"symbol\" : \"PM\",\n  \"date\" : \"2009-12-31\",\n
+        \ \"enterpriseValueMultiple\" : 9.91463567025269,\n  \"priceFairValue\" :
+        29.68836175755847\n}, {\n  \"symbol\" : \"PM\",\n  \"date\" : \"2009-12-31\",\n
         \ \"period\" : \"FY\",\n  \"currentRatio\" : 1.3134728931830382,\n  \"quickRatio\"
         : 0.41492216854535696,\n  \"cashRatio\" : 0.1377706208624083,\n  \"daysOfSalesOutstanding\"
         : 45.167565408428196,\n  \"daysOfInventoryOutstanding\" : 372.4844823764132,\n
@@ -398,8 +428,8 @@ interactions:
         \ \"priceToOperatingCashFlowsRatio\" : 11.215870892186707,\n  \"priceCashFlowRatio\"
         : 11.215870892186707,\n  \"priceEarningsToGrowthRatio\" : -5.80373568983798,\n
         \ \"priceSalesRatio\" : 3.5320921155981626,\n  \"dividendYield\" : 0.04893361246136758,\n
-        \ \"enterpriseValueMultiple\" : 10.329354413772213,\n  \"priceFairValue\"
-        : 15.469896101119664\n}, {\n  \"symbol\" : \"PM\",\n  \"date\" : \"2008-12-31\",\n
+        \ \"enterpriseValueMultiple\" : 9.576142105588318,\n  \"priceFairValue\" :
+        15.469896101119664\n}, {\n  \"symbol\" : \"PM\",\n  \"date\" : \"2008-12-31\",\n
         \ \"period\" : \"FY\",\n  \"currentRatio\" : 1.4726932176656151,\n  \"quickRatio\"
         : 0.4316837539432177,\n  \"cashRatio\" : 0.15092665615141956,\n  \"daysOfSalesOutstanding\"
         : 40.440381248784284,\n  \"daysOfInventoryOutstanding\" : 378.147512864494,\n
@@ -430,7 +460,7 @@ interactions:
         : 11.238473396138092,\n  \"priceToOperatingCashFlowsRatio\" : 9.681941289981097,\n
         \ \"priceCashFlowRatio\" : 9.681941289981097,\n  \"priceEarningsToGrowthRatio\"
         : 0.695687530353758,\n  \"priceSalesRatio\" : 2.988764992647345,\n  \"dividendYield\"
-        : 0.06611025570141413,\n  \"enterpriseValueMultiple\" : 8.513631001658698,\n
+        : 0.06611025570141413,\n  \"enterpriseValueMultiple\" : 7.89863348746266,\n
         \ \"priceFairValue\" : 10.2434938848\n} ]"
     headers:
       Access-Control-Allow-Headers:
@@ -446,7 +476,7 @@ interactions:
       Content-Type:
       - application/json;charset=UTF-8
       Date:
-      - Sat, 04 Dec 2021 12:25:46 GMT
+      - Sun, 06 Mar 2022 13:05:17 GMT
       Server:
       - nginx/1.14.0 (Ubuntu)
       Transfer-Encoding:

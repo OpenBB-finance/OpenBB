@@ -4,11 +4,6 @@
 1  75.81%  Percentage of Shares Held by Institutions
 2  75.96%   Percentage of Float Held by Institutions
 3    2402      Number of Institutions Holding Shares
-<<<<<<< HEAD
-
-Institutional Holders:
-=======
->>>>>>> main
 
                               Holder     Shares Date Reported   Stake     Value
 0         Vanguard Group, Inc. (The)  126.627 M    2021-12-30  8.17 %  12.030 B
@@ -21,11 +16,6 @@ Institutional Holders:
 7      Geode Capital Management, LLC   27.333 M    2021-12-30  1.76 %   2.597 B
 8   Wellington Management Group, LLP   24.537 M    2021-12-30  1.58 %   2.331 B
 9          JP Morgan Chase & Company   23.415 M    2021-12-30  1.51 %   2.224 B
-<<<<<<< HEAD
-
-Mutual Fund Holders:
-=======
->>>>>>> main
 
                                    Holder    Shares Date Reported   Stake    Value
 0  Vanguard Total Stock Market Index Fund  44.242 M    2021-12-30  2.85 %  4.203 B

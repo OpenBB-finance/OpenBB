@@ -1,33 +1,33 @@
-,Item,30-Sep-2020,31-Dec-2020,31-Mar-2021,30-Jun-2021,30-Sep-2021
-0,Sales/Revenue,64.67B,111.54B,89.9B,81.49B,83.36B
-1,Sales Growth,-,72.49%,-19.41%,-9.35%,2.29%
-2,Cost of Goods Sold (COGS) incl. D&A,40.07B,66.87B,51.1B,46.08B,48.19B
-3,COGS Growth,-,66.86%,-23.58%,-9.83%,4.57%
-4,COGS excluding D&A,37.37B,64.2B,48.3B,43.25B,45.2B
-5,Depreciation & Amortization Expense,2.7B,2.67B,2.8B,2.83B,2.99B
-6,Depreciation,2.7B,2.67B,2.8B,2.83B,2.99B
+,Item,31-Dec-2020,31-Mar-2021,30-Jun-2021,30-Sep-2021,31-Dec-2021
+0,Sales/Revenue,111.54B,89.9B,81.49B,83.36B,123.95B
+1,Sales Growth,-,-19.41%,-9.35%,2.29%,48.69%
+2,Cost of Goods Sold (COGS) incl. D&A,66.87B,51.1B,46.08B,48.19B,69.7B
+3,COGS Growth,-,-23.58%,-9.83%,4.57%,44.65%
+4,COGS excluding D&A,64.2B,48.3B,43.25B,45.2B,67.01B
+5,Depreciation & Amortization Expense,2.67B,2.8B,2.83B,2.99B,2.7B
+6,Depreciation,2.67B,2.8B,2.83B,2.99B,2.7B
 7,Amortization of Intangibles,-,-,-,-,-
-8,Gross Income,24.59B,44.68B,38.8B,35.42B,35.17B
-9,Gross Income Growth,-,81.66%,-13.16%,-8.72%,-0.68%
-10,Gross Profit Margin,-,-,-,-,42.20%
-11,SG&A Expense,9.91B,10.79B,10.58B,11.13B,11.39B
-12,SGA Growth,-,8.88%,-2.02%,5.23%,2.33%
-13,Research & Development,4.98B,5.16B,5.26B,5.72B,5.77B
-14,Other SG&A,4.94B,5.63B,5.31B,5.41B,5.62B
+8,Gross Income,44.68B,38.8B,35.42B,35.17B,54.24B
+9,Gross Income Growth,-,-13.16%,-8.72%,-0.68%,54.21%
+10,Gross Profit Margin,-,-,-,-,43.76%
+11,SG&A Expense,10.79B,10.58B,11.13B,11.39B,12.76B
+12,SGA Growth,-,-2.02%,5.23%,2.33%,12.00%
+13,Research & Development,5.16B,5.26B,5.72B,5.77B,6.31B
+14,Other SG&A,5.63B,5.31B,5.41B,5.62B,-
 15,Other Operating Expense,-,-,-,-,-
-16,Unusual Expense,(92M),(82M),(60M),(57M),-
-17,EBIT after Unusual Expense,92M,82M,60M,57M,-
-18,Non Operating Income/Expense,(5M),(495M),(320M),(29M),(525M)
-19,Non-Operating Interest Income,768M,747M,718M,719M,659M
+16,Unusual Expense,(82M),(60M),(57M),-,-
+17,EBIT after Unusual Expense,82M,60M,57M,-,-
+18,Non Operating Income/Expense,(495M),(320M),(29M),(525M),(203M)
+19,Non-Operating Interest Income,747M,718M,719M,659M,650M
 20,Equity in Affiliates (Pretax),-,-,-,-,-
-21,Interest Expense,634M,638M,670M,665M,672M
-22,Interest Expense Growth,-,0.63%,5.02%,-0.75%,1.05%
-23,Gross Interest Expense,634M,638M,670M,665M,672M
+21,Interest Expense,638M,670M,665M,672M,694M
+22,Interest Expense Growth,-,5.02%,-0.75%,1.05%,3.27%
+23,Gross Interest Expense,638M,670M,665M,672M,694M
 24,Interest Capitalized,-,-,-,-,-
-25,Pretax Income,14.9B,33.58B,28.01B,24.37B,23.25B
-26,Pretax Income Growth,-,125.35%,-16.58%,-13.00%,-4.60%
-27,Pretax Margin,-,-,-,-,27.89%
-28,Income Tax,2.23B,4.82B,4.38B,2.63B,2.7B
+25,Pretax Income,33.58B,28.01B,24.37B,23.25B,41.24B
+26,Pretax Income Growth,-,-16.58%,-13.00%,-4.60%,77.40%
+27,Pretax Margin,-,-,-,-,33.27%
+28,Income Tax,4.82B,4.38B,2.63B,2.7B,6.61B
 29,Income Tax - Current Domestic,-,-,-,-,-
 30,Income Tax - Current Foreign,-,-,-,-,-
 31,Income Tax - Deferred Domestic,-,-,-,-,-
@@ -35,24 +35,24 @@
 33,Income Tax Credits,-,-,-,-,-
 34,Equity in Affiliates,-,-,-,-,-
 35,Other After Tax Income (Expense),-,-,-,-,-
-36,Consolidated Net Income,12.67B,28.76B,23.63B,21.74B,20.55B
+36,Consolidated Net Income,28.76B,23.63B,21.74B,20.55B,34.63B
 37,Minority Interest Expense,-,-,-,-,-
-38,Net Income,12.67B,28.76B,23.63B,21.74B,20.55B
-39,Net Income Growth,-,126.90%,-17.82%,-7.98%,-5.49%
-40,Net Margin Growth,-,-,-,-,24.65%
+38,Net Income,28.76B,23.63B,21.74B,20.55B,34.63B
+39,Net Income Growth,-,-17.82%,-7.98%,-5.49%,68.51%
+40,Net Margin Growth,-,-,-,-,27.94%
 41,Extraordinaries & Discontinued Operations,-,-,-,-,-
 42,Extra Items & Gain/Loss Sale Of Assets,-,-,-,-,-
 43,Cumulative Effect - Accounting Chg,-,-,-,-,-
 44,Discontinued Operations,-,-,-,-,-
-45,Net Income After Extraordinaries,12.67B,28.76B,23.63B,21.74B,20.55B
+45,Net Income After Extraordinaries,28.76B,23.63B,21.74B,20.55B,34.63B
 46,Preferred Dividends,-,-,-,-,-
-47,Net Income Available to Common,12.67B,28.76B,23.63B,21.74B,20.55B
-48,EPS (Basic),0.74,1.7,1.41,1.31,1.25
-49,EPS (Basic) Growth,-,128.53%,-16.94%,-7.29%,-4.67%
-50,Basic Shares Outstanding,17.06B,16.94B,16.75B,16.63B,16.49B
-51,EPS (Diluted),0.73,1.68,1.4,1.3,1.24
-52,EPS (Diluted) Growth,-,128.79%,-16.93%,-7.17%,-4.65%
-53,Diluted Shares Outstanding,17.26B,17.11B,16.93B,16.78B,16.64B
-54,EBITDA,17.38B,36.55B,31.02B,27.12B,26.78B
-55,EBITDA Growth,-,110.27%,-15.13%,-12.58%,-1.27%
-56,EBITDA Margin,-,-,-,-,32.12%
+47,Net Income Available to Common,28.76B,23.63B,21.74B,20.55B,34.63B
+48,EPS (Basic),1.7,1.41,1.31,1.25,2.11
+49,EPS (Basic) Growth,-,-16.94%,-7.29%,-4.67%,69.48%
+50,Basic Shares Outstanding,16.94B,16.75B,16.63B,16.49B,16.39B
+51,EPS (Diluted),1.68,1.4,1.3,1.24,2.1
+52,EPS (Diluted) Growth,-,-16.93%,-7.17%,-4.65%,69.69%
+53,Diluted Shares Outstanding,17.11B,16.93B,16.78B,16.64B,16.52B
+54,EBITDA,36.55B,31.02B,27.12B,26.78B,44.19B
+55,EBITDA Growth,-,-15.13%,-12.58%,-1.27%,65.02%
+56,EBITDA Margin,-,-,-,-,35.65%
