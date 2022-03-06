@@ -9,7 +9,7 @@ RUN mkdir GamestonkTerminal && wget https://github.com/GamestonkTerminal/Gamesto
 WORKDIR /GamestonkTerminal
 
 # Download its dependicies using pip
-RUN pip install -r requirements.txt && pip cache purge
+RUN pip install -r requirements-full.txt && pip cache purge
 
 # Create a little script to start the GamestonkTerminal
 RUN printf '#!/bin/sh\npython3 /GamestonkTerminal/terminal.py\n' > /bin/run && chmod +x /bin/run
