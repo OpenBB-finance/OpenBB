@@ -60,10 +60,6 @@ def test_invalid_response_status(func, kwargs_dict, mocker):
 )
 def test_check_output(func, kwargs_dict, recorder):
     result_df = getattr(av_model, func)(**kwargs_dict)
-
-    print(result_df)
-
-    assert not result_df.empty
     recorder.capture(result_df)
 
 
