@@ -305,7 +305,6 @@ def display_splits(
                 color=theme.down_color,
             )
 
-    ax.legend()
     theme.style_primary_axis(ax)
 
     if not external_axes:
