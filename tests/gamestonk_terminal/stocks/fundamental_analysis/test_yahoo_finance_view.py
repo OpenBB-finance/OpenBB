@@ -30,6 +30,7 @@ def vcr_config():
         "display_calendar_earnings",
         "display_dividends",
         "display_splits",
+        "display_mktcap",
     ],
 )
 @pytest.mark.vcr

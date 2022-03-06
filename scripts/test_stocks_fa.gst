@@ -71,4 +71,5 @@ balance
 cash
 dcf
 splits
+mktcap
 exit
