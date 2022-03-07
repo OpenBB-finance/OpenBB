@@ -29,6 +29,7 @@ def vcr_config():
         "display_sustainability",
         "display_calendar_earnings",
         "display_dividends",
+        "display_mktcap",
     ],
 )
 @pytest.mark.vcr
