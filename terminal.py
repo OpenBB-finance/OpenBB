@@ -22,7 +22,7 @@ from gamestonk_terminal.helper_funcs import (
     replace_user_timezone,
 )
 
-from gamestonk_terminal.loggers import setup_logging
+from gamestonk_terminal.loggers import setup_logging, upload_archive_logs_s3
 from gamestonk_terminal.menu import session
 
 from gamestonk_terminal.terminal_helper import (
@@ -252,6 +252,7 @@ def terminal(jobs_cmds: List[str] = None):
             # If the command is quitting the menu we want to return in here
             if t_controller.queue[0] in ("q", "..", "quit"):
                 print_goodbye()
+                upload_archive_logs_s3(log_filter=".log")
                 break
 
             if gtff.ENABLE_EXIT_AUTO_HELP and len(t_controller.queue) > 1:
@@ -277,6 +278,7 @@ def terminal(jobs_cmds: List[str] = None):
                     )
                 except KeyboardInterrupt:
                     print_goodbye()
+                    upload_archive_logs_s3(log_filter=".log")
                     break
             # Get input from user without auto-completion
             else:
@@ -287,6 +289,7 @@ def terminal(jobs_cmds: List[str] = None):
             t_controller.queue = t_controller.switch(an_input)
             if an_input in ("q", "quit", "..", "exit"):
                 print_goodbye()
+                upload_archive_logs_s3(log_filter=".log")
                 break
 
             # Check if the user wants to reset application
@@ -294,6 +297,7 @@ def terminal(jobs_cmds: List[str] = None):
                 ret_code = reset(t_controller.queue if t_controller.queue else [])
                 if ret_code != 0:
                     print_goodbye()
+                    upload_archive_logs_s3(log_filter=".log")
                     break
 
         except SystemExit:

@@ -1,23 +1,28 @@
 """Logging Configuration"""
 __docformat__ = "numpy"
 import logging
+from logging.handlers import TimedRotatingFileHandler
 import os
+import re
 from pathlib import Path
 import sys
 import time
 import uuid
 from math import floor, ceil
 
+import git
 import boto3
 from botocore.exceptions import ClientError
-import git
 
 import gamestonk_terminal.config_terminal as cfg
+from gamestonk_terminal import feature_flags as gtff
 
 logger = logging.getLogger(__name__)
 LOGFORMAT = "%(asctime)s|%(name)s|%(funcName)s|%(lineno)s|%(message)s"
 LOGPREFIXFORMAT = "%(levelname)s|%(version)s|%(loggingId)s|%(sessionId)s|"
 DATEFORMAT = "%Y-%m-%dT%H:%M:%S%z"
+BUCKET = "gst-restrictions"
+FOLDER_NAME = "gst-app/logs"
 
 
 def library_loggers(verbosity: int = 0) -> None:
@@ -33,8 +38,7 @@ def library_loggers(verbosity: int = 0) -> None:
     logging.getLogger("urllib3").setLevel(verbosity)
 
 
-def setup_file_logger(session_id: str) -> None:
-    """Setup File Logger"""
+def get_log_dir() -> Path:
     file_path = Path(__file__)
     logger.debug("Parent dir: %s", file_path.parent.parent.absolute())
     log_dir = file_path.parent.parent.absolute().joinpath("logs")
@@ -67,19 +71,24 @@ def setup_file_logger(session_id: str) -> None:
             "UUID log dir does not exist: %s. Creating.", uuid_log_dir.absolute()
         )
         os.mkdir(uuid_log_dir.absolute())
+    return uuid_log_dir
+
+
+def setup_file_logger(session_id: str) -> None:
+    """Setup File Logger"""
+
+    uuid_log_dir = get_log_dir()
+
+    upload_archive_logs_s3(directory_str=uuid_log_dir, log_filter=".log")
 
     start_time = int(time.time())
     cfg.LOGGING_FILE = uuid_log_dir.absolute().joinpath(f"{start_time}.log")  # type: ignore
 
-    send_last_log_s3()
-    with open(uuid_log_dir.absolute().joinpath("latest_log.txt"), "w") as latest_log:
-        latest_log.write(str(start_time))
-
     logger.debug("Current log file: %s", cfg.LOGGING_FILE)
 
-    handler = logging.FileHandler(cfg.LOGGING_FILE)
+    handler = TimedRotatingFileHandler(cfg.LOGGING_FILE)
     formatter = CustomFormatterWithExceptions(
-        cfg.LOGGING_ID, session_id, fmt=LOGFORMAT, datefmt=DATEFORMAT
+        uuid_log_dir.stem, session_id, fmt=LOGFORMAT, datefmt=DATEFORMAT
     )
     handler.setFormatter(formatter)
     logging.getLogger().addHandler(handler)
@@ -223,49 +232,56 @@ def setup_logging() -> None:
 
 
 def upload_file_to_s3(
-    file_name: str, bucket: str, object_name=None, folder_name=None
+    file: Path, bucket: str, object_name=None, folder_name=None
 ) -> None:
-    """
-    Credits to Pushp Vashisht for this function
-
-    Upload a file to an S3 bucket.
-    Params:
-        file_name: File to upload
-        bucket: Bucket to upload to
-        object_name: S3 object name. If not specified then file_name is used
-        folder_name: Folder name in which file is to be uploaded
-    """
-
     # If S3 object_name was not specified, use file_name
     if object_name is None:
-        object_name = file_name.split("/")[-1]
-        # If folder_name was specified, upload in the folder
-        if folder_name is not None:
-            object_name = f"{folder_name}/{object_name}"
+        object_name = file.name
+    # If folder_name was specified, upload in the folder
+    if folder_name is not None:
+        object_name = f"{folder_name}/{object_name}"
 
     # Upload the file
     try:
         s3_client = boto3.client(
             service_name="s3",
-            aws_access_key_id="REPLACE_ME",
-            aws_secret_access_key="REPLACE_ME",
+            aws_access_key_id=cfg.AWS_ACCESS_KEY_ID,
+            aws_secret_access_key=cfg.AWS_ACCESS_KEY,
         )
-        response = s3_client.upload_file(file_name, bucket, object_name)
-        logger.info(response)
+        s3_client.upload_file(str(file), bucket, object_name)
     except ClientError as e:
         logger.exception(str(e))
 
 
-def send_last_log_s3():
-    logging_folder = Path(os.path.dirname(cfg.LOGGING_FILE))
-    latest_log_file = logging_folder.joinpath("latest_log.txt")
-    log_file = ""
-    session_id = ""
-    with open(latest_log_file, "r") as f:
-        session_id = str(f.read())
-        log_file = logging_folder.joinpath(f"{session_id}.log")
-    print(log_file)
-    if log_file:
-        upload_file_to_s3(
-            str(log_file), "test-gamestonk", folder_name="test_log_upload"
-        )
+def upload_archive_logs_s3(
+    directory_str=None,
+    log_filter=".log.20[2-3][0-9]-[0-2][0-9]-[0-3][0-9]_[0-2][0-9]*",
+) -> None:
+    if gtff.ALLOW_LOG_COLLECTION:
+        if directory_str is None:
+            directory = get_log_dir()
+        else:
+            directory = Path(directory_str)
+        archive = directory / "archive"
+
+        if not archive.exists():
+            # Create a new directory because it does not exist
+            archive.mkdir()
+            logger.debug("The new archive directory is created!")
+
+        log_files = {}
+
+        for file in directory.iterdir():
+            regexp = re.compile(log_filter)
+            if regexp.search(str(file)):
+                log_files[str(file)] = file, (archive / file.name)
+        logger.info("Start uploading Logs")
+        for log_file, archived_file in log_files.values():
+            upload_file_to_s3(file=log_file, bucket=BUCKET, folder_name=FOLDER_NAME)
+            try:
+                log_file.rename(archived_file)
+            except Exception as e:
+                logger.exception("Cannot archive file: %s", str(e))
+        logger.info("Logs uploaded")
+    else:
+        logger.info("Logs not allowed to be collected")
