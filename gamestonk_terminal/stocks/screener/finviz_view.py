@@ -9,7 +9,11 @@ from typing import List
 import pandas as pd
 
 from gamestonk_terminal.decorators import log_start_end
-from gamestonk_terminal.helper_funcs import export_data, print_rich_table
+from gamestonk_terminal.helper_funcs import (
+    export_data,
+    print_rich_table,
+    lambda_long_number_format,
+)
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.stocks.screener.finviz_model import get_screener_data
 
@@ -192,11 +196,16 @@ def screener(
 
         df_screen = df_screen.fillna("")
 
+        for col in ["Market Cap", "Outstanding", "Float", "Avg Volume", "Volume"]:
+            df_screen[col] = df_screen[col].applymap(
+                lambda x: lambda_long_number_format(x, 1)
+            )
+
         print_rich_table(
             df_screen.head(n=limit),
             headers=list(df_screen.columns),
             show_index=False,
-            title="Finzin Screener",
+            title="Finviz Screener",
         )
         console.print("")
 
