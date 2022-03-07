@@ -70,4 +70,5 @@ income
 balance
 cash
 dcf
+mktcap
 exit

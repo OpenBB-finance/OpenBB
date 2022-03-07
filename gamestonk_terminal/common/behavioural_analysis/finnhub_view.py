@@ -10,11 +10,13 @@ from gamestonk_terminal.common.behavioural_analysis import finnhub_model
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import export_data
 from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.decorators import check_api_key
 
 logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_FINNHUB_KEY"])
 def display_sentiment_stats(ticker: str, export: str = ""):
     """
     Sentiment stats which displays buzz, news score, articles last week, articles weekly average,
@@ -29,6 +31,9 @@ def display_sentiment_stats(ticker: str, export: str = ""):
     """
     d_stats = finnhub_model.get_sentiment_stats(ticker)
     print(d_stats)
+
+    if d_stats.empty:
+        return
 
     if d_stats:
         console.print(

@@ -14,6 +14,7 @@ from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.common.behavioural_analysis import sentimentinvestor_model
 from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.decorators import check_api_key
 from gamestonk_terminal.helper_funcs import (
     export_data,
     print_rich_table,
@@ -25,6 +26,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_SENTIMENTINVESTOR_TOKEN"])
 def display_historical(
     ticker: str,
     start: str,
@@ -69,11 +71,10 @@ def display_historical(
             f"[red]Ticker {ticker} not supported. Please try another one![/red]\n"
         )
         return
+
     df = sentimentinvestor_model.get_historical(ticker, start, end, number)
 
     if df.empty:
-        logger.exception("Error in Sentiment Investor request.")
-        console.print("[red]Error in Sentiment Investor request[/red]\n")
         return
 
     # This plot has 2 axis
@@ -141,6 +142,8 @@ def display_historical(
         )
 
 
+@log_start_end(log=logger)
+@check_api_key(["API_SENTIMENTINVESTOR_TOKEN"])
 def display_trending(
     start: datetime,
     hour: int,
@@ -171,39 +174,37 @@ def display_trending(
     df = sentimentinvestor_model.get_trending(start, hour, number)
 
     if df.empty:
-        logger.error("Error in Sentiment Investor request.")
-        console.print("[red]Error in Sentiment Investor request.\n[/red]")
+        return
 
-    else:
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
-            "trend",
-            df,
-        )
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
+        "trend",
+        df,
+    )
 
-        RAW_COLS = [
-            "total",
-            "twitter",
-            "stocktwits",
-            "yahoo",
-            "likes",
-            "RHI",
-            "AHI",
-        ]
+    RAW_COLS = [
+        "total",
+        "twitter",
+        "stocktwits",
+        "yahoo",
+        "likes",
+        "RHI",
+        "AHI",
+    ]
 
-        RAW_COLS = [col for col in RAW_COLS if col in df.columns.tolist()]
+    RAW_COLS = [col for col in RAW_COLS if col in df.columns.tolist()]
 
-        df.ticker = df.ticker.str.upper()
-        df = df.set_index("ticker")
+    df.ticker = df.ticker.str.upper()
+    df = df.set_index("ticker")
 
-        df.timestamp_date = pd.to_datetime(df.timestamp_date)
-        timestamp = df.timestamp_date[0].strftime("%Y-%m-%d %H:%M")
+    df.timestamp_date = pd.to_datetime(df.timestamp_date)
+    timestamp = df.timestamp_date[0].strftime("%Y-%m-%d %H:%M")
 
-        print_rich_table(
-            df[RAW_COLS].head(limit),
-            headers=[col.upper() for col in RAW_COLS],
-            show_index=True,
-            index_name="TICKER",
-            title=f"Most trending stocks at {timestamp}",
-        )
+    print_rich_table(
+        df[RAW_COLS].head(limit),
+        headers=[col.upper() for col in RAW_COLS],
+        show_index=True,
+        index_name="TICKER",
+        title=f"Most trending stocks at {timestamp}",
+    )

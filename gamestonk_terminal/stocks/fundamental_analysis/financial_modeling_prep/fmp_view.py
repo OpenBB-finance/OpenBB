@@ -6,6 +6,7 @@ import os
 
 import pandas as pd
 
+from gamestonk_terminal.decorators import check_api_key
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.rich_config import console
@@ -17,6 +18,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
 def valinvest_score(ticker: str):
     """Value investing tool based on Warren Buffett, Joseph Piotroski and Benjamin Graham thoughts [Source: FMP]
 
@@ -28,11 +30,13 @@ def valinvest_score(ticker: str):
         Fundamental analysis ticker symbol
     """
     score = fmp_model.get_score(ticker)
-    console.print(f"Score: {score:.2f}".rstrip("0").rstrip(".") + " %")
-    console.print()
+    if score:
+        console.print(f"Score: {score:.2f}".rstrip("0").rstrip(".") + " %")
+        console.print("")
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
 def display_profile(ticker: str):
     """Financial Modeling Prep ticker profile
 
@@ -63,6 +67,7 @@ def display_profile(ticker: str):
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
 def display_quote(ticker: str):
     """Financial Modeling Prep ticker quote
 
@@ -81,6 +86,7 @@ def display_quote(ticker: str):
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
 def display_enterprise(
     ticker: str, number: int, quarterly: bool = False, export: str = ""
 ):
@@ -115,6 +121,7 @@ def display_enterprise(
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
 def display_discounted_cash_flow(
     ticker: str, number: int, quarterly: bool = False, export: str = ""
 ):
@@ -144,6 +151,7 @@ def display_discounted_cash_flow(
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
 def display_income_statement(
     ticker: str, number: int, quarterly: bool = False, export: str = ""
 ):
@@ -186,6 +194,7 @@ def display_income_statement(
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
 def display_balance_sheet(
     ticker: str, number: int, quarterly: bool = False, export: str = ""
 ):
@@ -228,6 +237,7 @@ def display_balance_sheet(
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
 def display_cash_flow(
     ticker: str, number: int, quarterly: bool = False, export: str = ""
 ):
@@ -268,6 +278,7 @@ def display_cash_flow(
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
 def display_key_metrics(
     ticker: str, number: int, quarterly: bool = False, export: str = ""
 ):
@@ -304,6 +315,7 @@ def display_key_metrics(
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
 def display_financial_ratios(
     ticker: str, number: int, quarterly: bool = False, export: str = ""
 ):
@@ -340,6 +352,7 @@ def display_financial_ratios(
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
 def display_financial_statement_growth(
     ticker: str, number: int, quarterly: bool = False, export: str = ""
 ):

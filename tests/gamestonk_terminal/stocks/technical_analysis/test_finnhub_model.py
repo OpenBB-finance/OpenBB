@@ -95,8 +95,13 @@ def test_get_pattern_recognition(recorder, mocker):
 @pytest.mark.vcr(record_mode="none")
 def test_get_pattern_recognition_invalid_status(mocker):
     # MOCK RESPONSE
-    mock_response = requests.Response()
-    mock_response.status_code = 400
+    attrs = {
+        "status_code": 400,
+        "json.return_value": {"error": "mock error message"},
+    }
+
+    mock_response = mocker.Mock(**attrs)
+
     mocker.patch(target="requests.get", new=mocker.Mock(return_value=mock_response))
     result = finnhub_model.get_pattern_recognition(ticker="PM", resolution="D")
 

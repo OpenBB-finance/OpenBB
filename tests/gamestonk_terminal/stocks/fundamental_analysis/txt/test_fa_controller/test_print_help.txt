@@ -9,8 +9,9 @@ Ticker:  TSLA
     dcf           advanced Excel customizable discounted cash flow [Stockanalysis]
 [Yahoo Finance]
     info          information scope of the company
-    shrs          shareholders of the company
-    sust          sustainability values of the company
+    mktcap        estimated market cap
+    shrs          shareholders (insiders, institutions and mutual funds)
+    sust          sustainability values (Environment, Social and Governance)
     cal           calendar earnings and estimates of the company
     web           open web browser of the company
     hq            open HQ location of the company

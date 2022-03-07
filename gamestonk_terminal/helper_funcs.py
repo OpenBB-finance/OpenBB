@@ -1159,3 +1159,20 @@ def excel_columns() -> List[str]:
         + [f"{x}{y}{z}" for x in letters for y in letters for z in letters]
     )
     return opts
+
+
+def handle_error_code(requests_obj, error_code_map):
+    """
+    Helper function to handle error code of HTTP requests.
+
+    Parameters
+    ----------
+    requests_obj: Object
+        Request object
+    error_code_map: Dict
+        Dictionary mapping of HTTP error code and output message
+
+    """
+    for error_code, error_msg in error_code_map.items():
+        if requests_obj.status_code == error_code:
+            console.print(error_msg)

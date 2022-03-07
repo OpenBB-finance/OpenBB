@@ -2,7 +2,7 @@
 __docformat__ = "numpy"
 
 import logging
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Tuple
 
 import pandas as pd
@@ -230,3 +230,37 @@ def get_dividends(ticker: str) -> pd.DataFrame:
         Dataframe of dividends and dates
     """
     return pd.DataFrame(yf.Ticker(ticker).dividends)
+
+
+@log_start_end(log=logger)
+def get_mktcap(
+    ticker: str, start: datetime = (datetime.now() - timedelta(days=3 * 366))
+) -> Tuple[pd.DataFrame, str]:
+    """Get market cap over time for ticker. [Source: Yahoo Finance]
+
+    Parameters
+    ----------
+    ticker: str
+        Ticker to get market cap over time
+    start: datetime
+        Start date to display market cap
+
+    Returns
+    -------
+    pd.DataFrame:
+        Dataframe of estimated market cap over time
+    str:
+        Currency of ticker
+    """
+    currency = ""
+    df_data = yf.download(ticker, start=start, progress=False, threads=False)
+    if not df_data.empty:
+
+        data = yf.Ticker(ticker).info
+        if data:
+            df_data["Adj Close"] = df_data["Adj Close"] * data["sharesOutstanding"]
+            df_data = df_data["Adj Close"]
+
+            currency = data["currency"]
+
+    return df_data, currency

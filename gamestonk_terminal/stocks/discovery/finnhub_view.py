@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 import pandas as pd
 
 from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.decorators import check_api_key
 from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.stocks.discovery import finnhub_model
@@ -13,6 +14,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_FINNHUB_KEY"])
 def past_ipo(
     num_days_behind: int,
     limit: int,
@@ -71,6 +73,7 @@ def past_ipo(
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_FINNHUB_KEY"])
 def future_ipo(
     num_days_ahead: int, limit: int, export: str, end_date: datetime = None
 ) -> pd.DataFrame:

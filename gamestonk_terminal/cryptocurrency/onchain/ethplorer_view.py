@@ -8,6 +8,7 @@ from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
     lambda_very_long_number_formatter,
 )
 from gamestonk_terminal.cryptocurrency.onchain import ethplorer_model
+from gamestonk_terminal.decorators import check_api_key
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.rich_config import console
@@ -16,6 +17,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_ETHPLORER_KEY"])
 def display_address_info(
     address: str,
     top: int = 15,
@@ -66,6 +68,7 @@ def display_address_info(
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_ETHPLORER_KEY"])
 def display_top_tokens(
     top: int = 15,
     sortby: str = "rank",
@@ -111,6 +114,7 @@ def display_top_tokens(
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_ETHPLORER_KEY"])
 def display_top_token_holders(
     address: str,
     top: int = 10,
@@ -156,6 +160,7 @@ def display_top_token_holders(
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_ETHPLORER_KEY"])
 def display_address_history(
     address: str,
     top: int = 10,
@@ -168,7 +173,7 @@ def display_address_history(
     Parameters
     ----------
     address: str
-        Ethereum nlockchain balance e.g. 0x3cD751E6b0078Be393132286c442345e5DC49699
+        Ethereum blockchain balance e.g. 0x3cD751E6b0078Be393132286c442345e5DC49699
     top: int
         Limit of transactions. Maximum 100
     sortby: str
@@ -205,6 +210,7 @@ def display_address_history(
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_ETHPLORER_KEY"])
 def display_token_info(
     address: str,
     social: bool = False,
@@ -246,6 +252,7 @@ def display_token_info(
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_ETHPLORER_KEY"])
 def display_tx_info(
     tx_hash: str,
     export: str = "",
@@ -279,6 +286,7 @@ def display_tx_info(
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_ETHPLORER_KEY"])
 def display_token_history(
     address: str,
     top: int = 10,
@@ -336,6 +344,7 @@ def display_token_history(
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_ETHPLORER_KEY"])
 def display_token_historical_prices(
     address: str,
     top: int = 30,

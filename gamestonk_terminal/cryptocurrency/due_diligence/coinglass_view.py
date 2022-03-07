@@ -11,6 +11,7 @@ from gamestonk_terminal import config_plot as cfgPlot
 from gamestonk_terminal.cryptocurrency.due_diligence.coinglass_model import (
     get_open_interest_per_exchange,
 )
+from gamestonk_terminal.decorators import check_api_key
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
     export_data,
@@ -23,6 +24,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_COINGLASS_KEY"])
 def display_open_interest(symbol: str, interval: int, export: str) -> None:
     """Displays open interest by exchange for a certain cryptocurrency
     [Source: https://coinglass.github.io/API-Reference/]
@@ -37,9 +39,9 @@ def display_open_interest(symbol: str, interval: int, export: str) -> None:
         Export dataframe data to csv,json,xlsx file"""
     df = get_open_interest_per_exchange(symbol, interval)
     if df.empty:
-        console.print("Error in coinglass request")
-    else:
-        plot_data(df, symbol)
+        return
+
+    plot_data(df, symbol)
     console.print("")
 
     export_data(
