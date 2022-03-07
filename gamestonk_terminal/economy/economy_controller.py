@@ -42,8 +42,7 @@ class EconomyController(BaseController):
         "overview",
         "indices",
         "futures",
-        "usbonds",
-        "glbonds",
+        "bonds",
         "futures",
         "currencies",
         "energy",
@@ -136,9 +135,11 @@ class EconomyController(BaseController):
             choices["feargreed"]["--indicator"] = {
                 c: None for c in self.fear_greed_indicators
             }
-            for command in ["energy", "meats", "metals", "grains", "softs"]:
-                choices[command]["-s"] = self.wsj_sortby_cols_dict
-                choices[command]["--sortby"] = self.wsj_sortby_cols_dict
+
+            choices["futures"] = {
+                c: None for c in ["energy", "metals", "meats", "grains", "softs"]
+            }
+            choices["bonds"] = {c: None for c in ["global", "us"]}
 
             choices["map"]["-p"] = {c: None for c in self.map_period_list}
             choices["map"]["--period"] = {c: None for c in self.map_period_list}
@@ -169,25 +170,23 @@ class EconomyController(BaseController):
     def print_help(self):
         """Print help"""
         help_text = """[cmds]
+
+    futures       futures and commodities overview [Source: Wall St. Journal / FinViz]
+
 [src][CNN][/src]
     feargreed     CNN Fear and Greed Index
 [src][Wall St. Journal][/src]
     overview      market data overview
     indices       US indices overview
-    futures       futures and commodities overview
-    usbonds       US bonds overview
-    glbonds       global bonds overview
+    bonds         global and US bonds overview
     currencies    currencies overview
+
 [src][Finviz][/src]
-    energy        energy futures overview
-    metals        metals futures overview
-    meats         meats futures overview
-    grains        grains futures overview
-    softs         softs futures overview
     map           S&P500 index stocks map
     valuation     valuation of sectors, industry, country
     performance   performance of sectors, industry, country
     spectrum      spectrum of sectors, industry, country
+
 [src][Alpha Vantage][/src]
     rtps          real-time performance sectors
     gdp           real GDP for United States
@@ -280,49 +279,88 @@ class EconomyController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="futures",
-            description="Futures/Commodities. [Source: Wall St. Journal]",
+            description="Futures/Commodities frrom Wall St. Journal and FinViz.",
         )
+
+        parser.add_argument(
+            "-c",
+            "--commodity",
+            dest="commodity",
+            help="Obtain commodity futures from FinViz",
+            type=str,
+            choices=["energy", "metals", "meats", "grains", "softs"],
+            default="",
+        )
+
+        parser.add_argument(
+            "-s",
+            "--sortby",
+            dest="sort_col",
+            type=str,
+            choices=self.wsj_sortby_cols_dict.keys(),
+            default="ticker",
+        )
+        parser.add_argument(
+            "-a",
+            "-ascend",
+            dest="ascend",
+            help="Flag to sort in ascending order",
+            action="store_true",
+            default=False,
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-c")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if ns_parser:
+
+        if ns_parser and ns_parser.commodity:
+            finviz_view.display_future(
+                future_type=ns_parser.commodity.capitalize(),
+                sort_col=ns_parser.sort_col,
+                ascending=ns_parser.ascend,
+                export=ns_parser.export,
+            )
+        elif ns_parser:
             wsj_view.display_futures(
                 export=ns_parser.export,
             )
 
     @log_start_end(log=logger)
-    def call_usbonds(self, other_args: List[str]):
-        """Process usbonds command"""
+    def call_bonds(self, other_args: List[str]):
+        """Process bonds command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="usbonds",
-            description="US Bonds. [Source: Wall St. Journal]",
+            prog="bonds",
+            description="Show Global or US Bonds. [Source: Wall St. Journal]",
         )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            wsj_view.display_usbonds(
-                export=ns_parser.export,
-            )
 
-    @log_start_end(log=logger)
-    def call_glbonds(self, other_args: List[str]):
-        """Process glbonds command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="glbonds",
-            description="Global Bonds. [Source: Wall St. Journal]",
+        parser.add_argument(
+            "-t",
+            "--type",
+            dest="type",
+            help="Obtain bonds globally or from the United States",
+            type=str,
+            choices=["global", "us"],
+            default="global",
         )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-t")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            wsj_view.display_glbonds(
-                export=ns_parser.export,
-            )
+            if ns_parser.type == "global":
+                wsj_view.display_glbonds(
+                    export=ns_parser.export,
+                )
+            if ns_parser.type == "us":
+                wsj_view.display_usbonds(
+                    export=ns_parser.export,
+                )
 
     @log_start_end(log=logger)
     def call_currencies(self, other_args: List[str]):
@@ -339,186 +377,6 @@ class EconomyController(BaseController):
         )
         if ns_parser:
             wsj_view.display_currencies(
-                export=ns_parser.export,
-            )
-
-    @log_start_end(log=logger)
-    def call_energy(self, other_args: List[str]):
-        """Process energy command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="energy",
-            description="Energy future overview. [Source: Finviz]",
-        )
-        parser.add_argument(
-            "-s",
-            "--sortby",
-            dest="sort_col",
-            type=str,
-            choices=self.wsj_sortby_cols_dict.keys(),
-            default="ticker",
-        )
-        parser.add_argument(
-            "-a",
-            "-ascend",
-            dest="ascend",
-            help="Flag to sort in ascending order",
-            action="store_true",
-            default=False,
-        )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            finviz_view.display_future(
-                future_type="Energy",
-                sort_col=ns_parser.sort_col,
-                ascending=ns_parser.ascend,
-                export=ns_parser.export,
-            )
-
-    @log_start_end(log=logger)
-    def call_metals(self, other_args: List[str]):
-        """Process metals command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="metals",
-            description="Metals future overview. [Source: Finviz]",
-        )
-        parser.add_argument(
-            "-s",
-            "--sortby",
-            dest="sort_col",
-            type=str,
-            choices=self.wsj_sortby_cols_dict.keys(),
-            default="ticker",
-        )
-        parser.add_argument(
-            "-a",
-            "-ascend",
-            dest="ascend",
-            help="Flag to sort in ascending order",
-            action="store_true",
-            default=False,
-        )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            finviz_view.display_future(
-                future_type="Metals",
-                sort_col=ns_parser.sort_col,
-                ascending=ns_parser.ascend,
-                export=ns_parser.export,
-            )
-
-    @log_start_end(log=logger)
-    def call_meats(self, other_args: List[str]):
-        """Process meats command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="meats",
-            description="Meats future overview. [Source: Finviz]",
-        )
-        parser.add_argument(
-            "-s",
-            "--sortby",
-            dest="sort_col",
-            type=str,
-            choices=self.wsj_sortby_cols_dict.keys(),
-            default="ticker",
-        )
-        parser.add_argument(
-            "-a",
-            "-ascend",
-            dest="ascend",
-            help="Flag to sort in ascending order",
-            action="store_true",
-            default=False,
-        )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            finviz_view.display_future(
-                future_type="Meats",
-                sort_col=ns_parser.sort_col,
-                ascending=ns_parser.ascend,
-                export=ns_parser.export,
-            )
-
-    @log_start_end(log=logger)
-    def call_grains(self, other_args: List[str]):
-        """Process grains command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="grains",
-            description="Grains future overview. [Source: Finviz]",
-        )
-        parser.add_argument(
-            "-s",
-            "--sortby",
-            dest="sort_col",
-            type=str,
-            choices=self.wsj_sortby_cols_dict.keys(),
-            default="ticker",
-        )
-        parser.add_argument(
-            "-a",
-            "-ascend",
-            dest="ascend",
-            help="Flag to sort in ascending order",
-            action="store_true",
-            default=False,
-        )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            finviz_view.display_future(
-                future_type="Grains",
-                sort_col=ns_parser.sort_col,
-                ascending=ns_parser.ascend,
-                export=ns_parser.export,
-            )
-
-    @log_start_end(log=logger)
-    def call_softs(self, other_args: List[str]):
-        """Process softs command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="softs",
-            description="Softs future overview. [Source: Finviz]",
-        )
-        parser.add_argument(
-            "-s",
-            "--sortby",
-            dest="sort_col",
-            type=str,
-            choices=self.wsj_sortby_cols_dict.keys(),
-            default="ticker",
-        )
-        parser.add_argument(
-            "-a",
-            "-ascend",
-            dest="ascend",
-            help="Flag to sort in ascending order",
-            action="store_true",
-            default=False,
-        )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            finviz_view.display_future(
-                future_type="Softs",
-                sort_col=ns_parser.sort_col,
-                ascending=ns_parser.ascend,
                 export=ns_parser.export,
             )
 
