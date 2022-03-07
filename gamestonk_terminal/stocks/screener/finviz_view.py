@@ -150,10 +150,10 @@ def screener(
         List of stocks that meet preset criteria
     """
     df_screen = get_screener_data(
-        loaded_preset,
-        data_type,
-        0,
-        ascend,
+        preset_loaded=loaded_preset,
+        data_type=data_type,
+        limit=10,
+        ascend=ascend,
     )
 
     if isinstance(df_screen, pd.DataFrame):

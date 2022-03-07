@@ -65,7 +65,7 @@ filelock==3.6.0; python_version >= "3.7" and python_full_version >= "3.6.1"
 financedatabase==1.0.2
 finnhub-python==2.4.10
 finviz==1.4.3
-finvizfinance==0.9.10; python_version >= "3.5"
+finvizfinance==0.12.2; python_version >= "3.5"
 flake8==3.9.2; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.5.0")
 flatbuffers==2.0
 fonttools==4.29.1; python_version >= "3.7"

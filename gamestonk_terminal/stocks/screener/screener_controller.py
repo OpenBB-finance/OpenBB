@@ -12,6 +12,7 @@ from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_classes import AllowArgsWithWhiteSpace
 from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
@@ -498,11 +499,10 @@ class ScreenerController(BaseController):
         parser.add_argument(
             "-s",
             "--sort",
-            action="store",
             dest="sort",
             default="",
             nargs="+",
-            choices=finviz_view.d_cols_to_sort["ownership"],
+            action=AllowArgsWithWhiteSpace,
             help="Sort elements of the table.",
         )
         if other_args and "-" not in other_args[0][0]:
@@ -511,14 +511,18 @@ class ScreenerController(BaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            self.screen_tickers = finviz_view.screener(
-                loaded_preset=self.preset,
-                data_type="ownership",
-                limit=ns_parser.limit,
-                ascend=ns_parser.ascend,
-                sort=ns_parser.sort,
-                export=ns_parser.export,
-            )
+            if ns_parser.sort not in finviz_view.d_cols_to_sort["ownership"]:
+                console.print(f"{ns_parser.sort} not a valid sort choice.\n")
+            else:
+
+                self.screen_tickers = finviz_view.screener(
+                    loaded_preset=self.preset,
+                    data_type="ownership",
+                    limit=ns_parser.limit,
+                    ascend=ns_parser.ascend,
+                    sort=ns_parser.sort,
+                    export=ns_parser.export,
+                )
 
     @log_start_end(log=logger)
     def call_performance(self, other_args: List[str]):

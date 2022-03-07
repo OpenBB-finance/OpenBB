@@ -870,7 +870,7 @@ user_agent = "*"
 
 [[package]]
 name = "finvizfinance"
-version = "0.9.10"
+version = "0.12.2"
 description = "Finviz Finance. Information downloader."
 category = "main"
 optional = false
