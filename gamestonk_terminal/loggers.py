@@ -6,6 +6,7 @@ from pathlib import Path
 import sys
 import time
 import uuid
+from logging.handlers import TimedRotatingFileHandler
 from math import floor, ceil
 
 import git
@@ -14,7 +15,7 @@ import gamestonk_terminal.config_terminal as cfg
 
 logger = logging.getLogger(__name__)
 LOGFORMAT = "%(asctime)s|%(name)s|%(funcName)s|%(lineno)s|%(message)s"
-LOGPREFIXFORMAT = "%(levelname)s|%(version)s|%(loggingId)s|%(sessionId)s|"
+LOGPREFIXFORMAT = "%(levelname)s|%(version)s|%(appName)s|%(loggingId)s|%(sessionId)s|"
 DATEFORMAT = "%Y-%m-%dT%H:%M:%S%z"
 
 
@@ -71,7 +72,7 @@ def setup_file_logger(session_id: str) -> None:
 
     logger.debug("Current log file: %s", cfg.LOGGING_FILE)
 
-    handler = logging.FileHandler(cfg.LOGGING_FILE)
+    handler = TimedRotatingFileHandler(cfg.LOGGING_FILE, when="M")
     formatter = CustomFormatterWithExceptions(
         cfg.LOGGING_ID, session_id, fmt=LOGFORMAT, datefmt=DATEFORMAT
     )
@@ -90,12 +91,14 @@ class CustomFormatterWithExceptions(logging.Formatter):
         datefmt=None,
         style="%",
         validate=True,
+        app_name="gst",
     ) -> None:
         super().__init__(fmt=fmt, datefmt=datefmt, style=style, validate=validate)
         self.logPrefixDict = {
             "loggingId": logging_id,
             "sessionId": session_id,
             "version": cfg.LOGGING_VERSION,
+            "appName": app_name,
         }
 
     def formatException(self, ei) -> str:
@@ -130,6 +133,16 @@ class CustomFormatterWithExceptions(logging.Formatter):
         if hasattr(record, "func_name_override"):
             record.funcName = record.func_name_override  # type: ignore
             record.lineno = 0
+
+        if hasattr(record, "user_id"):
+            self.logPrefixDict["loggingId"] = record.user_id  # type: ignore
+
+        if hasattr(record, "session_id"):
+            self.logPrefixDict["sessionId"] = record.session_id  # type: ignore
+
+        if hasattr(record, "app_name"):
+            self.logPrefixDict["appName"] = record.app_name  # type: ignore
+
         s = super().format(record)
         if record.levelname:
             self.logPrefixDict["levelname"] = record.levelname[0]
