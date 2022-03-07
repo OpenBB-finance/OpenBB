@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import argparse
 import logging
+from datetime import datetime, timedelta
 from typing import List
 
 from prompt_toolkit.completion import NestedCompleter
@@ -10,9 +11,11 @@ from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
+    EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
     parse_known_args_and_warn,
+    valid_date,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.parent_classes import StockBaseController
@@ -66,6 +69,7 @@ class FundamentalAnalysisController(StockBaseController):
         "earnings",
         "fraud",
         "dcf",
+        "mktcap",
     ]
 
     CHOICES_MENUS = [
@@ -109,9 +113,10 @@ Ticker: [/param] {self.ticker} [cmds]
     warnings      company warnings according to Sean Seah book [src][Market Watch][/src]
     dcf           advanced Excel customizable discounted cash flow [src][Stockanalysis][/src][/cmds]
 [src][Yahoo Finance][/src]
-    info          information scope of the company{is_foreign_start}
-    shrs          shareholders of the company
-    sust          sustainability values of the company
+    info          information scope of the company
+    mktcap        estimated market cap{is_foreign_start}
+    shrs          shareholders (insiders, institutions and mutual funds)
+    sust          sustainability values (Environment, Social and Governance)
     cal           calendar earnings and estimates of the company
     web           open web browser of the company
     hq            open HQ location of the company
@@ -250,6 +255,29 @@ Ticker: [/param] {self.ticker} [cmds]
         )
         if ns_parser:
             yahoo_finance_view.display_info(self.ticker)
+
+    @log_start_end(log=logger)
+    def call_mktcap(self, other_args: List[str]):
+        """Process mktcap command."""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="mktcap",
+            description="""Market Cap estimate over time. [Source: Yahoo Finance]""",
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            type=valid_date,
+            default=(datetime.now() - timedelta(days=3 * 366)).strftime("%Y-%m-%d"),
+            dest="start",
+            help="The starting date (format YYYY-MM-DD) of the ETF",
+        )
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if ns_parser:
+            yahoo_finance_view.display_mktcap(self.ticker, start=ns_parser.start)
 
     @log_start_end(log=logger)
     def call_shrs(self, other_args: List[str]):

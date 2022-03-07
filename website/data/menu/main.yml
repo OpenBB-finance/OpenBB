@@ -240,6 +240,8 @@ main:
             ref: "/stocks/fundamental_analysis/hq"
           - name: divs
             ref: "/stocks/fundamental_analysis/divs"
+          - name: mktcap
+            ref: "/stocks/fundamental_analysis/mktcap"
           - name: overview
             ref: "/stocks/fundamental_analysis/overview"
           - name: key
