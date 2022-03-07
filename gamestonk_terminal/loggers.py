@@ -79,7 +79,7 @@ def setup_file_logger(session_id: str) -> None:
 
     uuid_log_dir = get_log_dir()
 
-    upload_archive_logs_s3(directory_str=uuid_log_dir, log_filter=".log")
+    upload_archive_logs_s3(directory_str=uuid_log_dir, log_filter=r"\.log")
 
     start_time = int(time.time())
     cfg.LOGGING_FILE = uuid_log_dir.absolute().joinpath(f"{start_time}.log")  # type: ignore
@@ -255,7 +255,7 @@ def upload_file_to_s3(
 
 def upload_archive_logs_s3(
     directory_str=None,
-    log_filter=".log.20[2-3][0-9]-[0-2][0-9]-[0-3][0-9]_[0-2][0-9]*",
+    log_filter=r"\.log\.20[2-3][0-9]-[0-2][0-9]-[0-3][0-9]_[0-2][0-9]*",
 ) -> None:
     if gtff.ALLOW_LOG_COLLECTION:
         if directory_str is None:
