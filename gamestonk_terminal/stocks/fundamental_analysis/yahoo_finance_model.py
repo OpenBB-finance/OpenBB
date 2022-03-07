@@ -264,3 +264,25 @@ def get_mktcap(
             currency = data["currency"]
 
     return df_data, currency
+
+
+@log_start_end(log=logger)
+def get_splits(ticker: str) -> pd.DataFrame:
+    """Get splits and reverse splits events. [Source: Yahoo Finance]
+
+    Parameters
+    ----------
+    ticker: str
+        Ticker to get forward and reverse splits
+    start: datetime
+        Start date to display market cap
+
+    Returns
+    -------
+    pd.DataFrame:
+        Dataframe of forward and reverse splits
+    """
+    data = yf.Ticker(ticker).splits
+    if not data.empty:
+        return data.to_frame()
+    return pd.DataFrame()
