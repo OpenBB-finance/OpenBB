@@ -6,7 +6,6 @@ from pathlib import Path
 import sys
 import time
 import uuid
-from logging.handlers import TimedRotatingFileHandler
 from math import floor, ceil
 
 import git
@@ -72,7 +71,7 @@ def setup_file_logger(session_id: str) -> None:
 
     logger.debug("Current log file: %s", cfg.LOGGING_FILE)
 
-    handler = TimedRotatingFileHandler(cfg.LOGGING_FILE, when="M")
+    handler = logging.FileHandler(cfg.LOGGING_FILE)
     formatter = CustomFormatterWithExceptions(
         cfg.LOGGING_ID, session_id, fmt=LOGFORMAT, datefmt=DATEFORMAT
     )
