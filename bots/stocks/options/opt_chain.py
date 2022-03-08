@@ -97,15 +97,16 @@ def chain_command(
             font=cfg.PLT_TBL_FONT,
             paper_bgcolor="rgba(0, 0, 0, 0)",
         )
-        imagefile_save = f"{cfg.IMG_DIR}/opt-chain{i}.png"
-        imagefile = helpers.save_image(imagefile_save, fig)
+        imagefile = "opt-chain.png"
+        imagefile = helpers.save_image(imagefile, fig)
 
         if cfg.IMAGES_URL:
             image_link = cfg.IMAGES_URL + imagefile
         else:
-            uploaded_image = gst_imgur.upload_image(imagefile, title="something")
+            imagefile_save = cfg.IMG_DIR + imagefile
+            uploaded_image = gst_imgur.upload_image(imagefile_save, title="something")
             image_link = uploaded_image.link
-            os.remove(imagefile)
+            os.remove(imagefile_save)
 
         embeds_img.append(
             f"{image_link}",

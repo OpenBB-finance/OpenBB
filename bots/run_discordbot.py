@@ -1,21 +1,29 @@
 # pylint: skip-file
 import asyncio
 import hashlib
+import logging
 import os
+import platform
 import sys
 import traceback
 import uuid
 from typing import Any, Dict
 
 import disnake
-from disnake.ext import commands
+from disnake.ext import commands, tasks
 from fastapi import FastAPI, Request
 
 import bots.config_discordbot as cfg
-from bots.config_discordbot import logger
 from bots.groupme.run_groupme import handle_groupme
 from gamestonk_terminal.decorators import log_start_end
-from gamestonk_terminal.loggers import setup_logging
+from gamestonk_terminal.loggers import setup_logging, upload_archive_logs_s3
+
+logger = logging.getLogger(__name__)
+setup_logging()
+logger.info("START")
+logger.info("Python: %s", platform.python_version())
+logger.info("OS: %s", platform.system())
+
 
 app = FastAPI()
 
@@ -88,12 +96,11 @@ class GSTHelpCommand(commands.MinimalHelpCommand):
 @log_start_end(log=logger)
 class GSTBot(commands.Bot):
     def __init__(self):
-        setup_logging()
         super().__init__(
             command_prefix=cfg.COMMAND_PREFIX,
             intents=disnake.Intents.all(),
             help_command=GSTHelpCommand(sort_commands=False, commands_heading="list:"),
-            sync_commands_debug=True,
+            sync_commands_debug=False,
             sync_permissions=True,
             activity=activity,
             test_guilds=cfg.SLASH_TESTING_SERVERS,
@@ -187,13 +194,15 @@ class GSTBot(commands.Bot):
             server = "DM"
 
         stats_log = {
-            "data": {
-                "server": server,
-                "command": {
-                    "name": cmd_name,
-                    "cmd_data": filled,
-                },
-            }
+            "data": [
+                {
+                    "server": server,
+                    "command": {
+                        "name": cmd_name,
+                        "cmd_data": filled,
+                    },
+                }
+            ],
         }
 
         log_uid = {"user_id": hash_user_id(str(inter.author.id))}
@@ -231,6 +240,12 @@ class GSTBot(commands.Bot):
         else:
             await inter.response.send_message(embed=embed, ephemeral=True)
 
+    @tasks.loop(hours=1.0)
+    async def logs_upload(self):
+        upload_archive_logs_s3(
+            directory_str="PATH",
+        )
+
     async def on_ready(self):
         # fmt: off
         guildname = []
@@ -251,6 +266,9 @@ class GSTBot(commands.Bot):
             f"The bot is ready."
             f"User: {self.user}"
             f"ID: {self.user.id}"
+        )
+        upload_archive_logs_s3(
+            directory_str="PATH",
         )
         # fmt: on
 

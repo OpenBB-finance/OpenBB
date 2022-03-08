@@ -256,21 +256,23 @@ def signals_autocomp(inter, signal: str):  # pylint: disable=W0613
 
 def save_image(file, fig):
     imagefile = f"{file.replace('.png', '')}_{uuid_get()}.png"
-    df2img.save_dataframe(fig=fig, filename=imagefile)
-    image = Image.open(imagefile)
+    filesave = cfg.IMG_DIR + imagefile
+    df2img.save_dataframe(fig=fig, filename=filesave)
+    image = Image.open(filesave)
     image = autocrop_image(image, 0)
-    image.save(imagefile, "PNG", quality=100)
+    image.save(filesave, "PNG", quality=100)
     return imagefile
 
 
 def image_border(file, **kwargs):
     imagefile = f"{file.replace('.png', '')}_{uuid_get()}.png"
+    filesave = cfg.IMG_DIR + imagefile
     if "fig" in kwargs:
         fig = kwargs["fig"]
-        fig.write_image(imagefile)
-        img = Image.open(imagefile)
+        fig.write_image(filesave)
+        img = Image.open(filesave)
     else:
-        img = Image.open(file)
+        img = Image.open(filesave)
     im_bg = Image.open(cfg.IMG_BG)
     h = img.height + 240
     w = img.width + 520
@@ -283,11 +285,10 @@ def image_border(file, **kwargs):
     y2 = int(0.5 * im_bg.size[1]) + int(0.5 * img.size[1])
     img = img.convert("RGB")
     im_bg.paste(img, box=(x1 - 5, y1, x2 - 5, y2))
-    im_bg.save(file, "PNG", quality=100)
-    image = Image.open(file)
+    im_bg.save(filesave, "PNG", quality=100)
+    image = Image.open(filesave)
     image = autocrop_image(image, 0)
-    image.save(imagefile, "PNG", quality=100)
-    os.remove(file)
+    image.save(filesave, "PNG", quality=100)
     return imagefile
 
 
@@ -311,9 +312,11 @@ class ShowView:
                 icon_url=cfg.AUTHOR_ICON_URL,
             )
             if "imagefile" in data:
-                image = disnake.File(data["imagefile"])
-                embed.set_image(url=f"attachment://{data['imagefile']}")
-                os.remove(data["imagefile"])
+                filename = data["imagefile"]
+                imagefile = cfg.IMG_DIR + filename
+                image = disnake.File(imagefile, filename=filename)
+                embed.set_image(url=f"attachment://{filename}")
+                os.remove(imagefile)
                 await inter.send(embed=embed, file=image)
             else:
                 await inter.send(embed=embed)
@@ -342,7 +345,10 @@ class ShowView:
     def groupme(self, func, group_id, name, *args, **kwargs):
         data = func(*args, **kwargs)
         if "imagefile" in data:
-            send_image(data["imagefile"], group_id, data.get("description", ""), True)
+            imagefile = data["imagefile"]
+            if cfg.IMAGES_URL:
+                imagefile = cfg.IMG_DIR + imagefile
+            send_image(imagefile, group_id, data.get("description", ""), True)
         elif "embeds_img" in data:
             send_image(
                 data["embeds_img"][0], group_id, data.get("description", ""), True

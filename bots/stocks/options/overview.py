@@ -1,4 +1,8 @@
+import logging
 import os
+import time
+from functools import reduce
+from multiprocessing import Pool
 
 import df2img
 import disnake
@@ -9,78 +13,55 @@ import yfinance as yf
 
 import bots.config_discordbot as cfg
 from bots import helpers
-from bots.config_discordbot import gst_imgur, logger
+from bots.config_discordbot import gst_imgur
 from bots.menus.menu import Menu
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.stocks.options import op_helpers, yfinance_model
 from gamestonk_terminal.stocks.options.barchart_model import get_options_info
 
+logger = logging.getLogger(__name__)
 
-# pylint: disable=R0912
-# pylint: disable=R0914
-# pylint: disable=R0915
-def overview_command(
-    ticker: str = None,
-    expiry: str = None,
-    min_sp: float = None,
-    max_sp: float = None,
+
+def unpack(tup):
+
+    return reduce(np.append, tup)
+
+
+column_map = {"openInterest": "oi", "volume": "vol", "impliedVolatility": "iv"}
+columns = [
+    "strike",
+    "bid",
+    "ask",
+    "volume",
+    "openInterest",
+    "impliedVolatility",
+]
+titles, embeds, embeds_img, choices = [], [], [], []
+plt_link = ""
+i2 = 0
+puts_page = 3
+
+
+@log_start_end(log=logger)
+def options_run(
+    ticker,
+    url,
+    expiry,
+    dates,
+    df_bcinfo,
+    calls,
+    puts,
+    df_opt,
+    current_price,
+    min_strike,
+    max_strike,
+    min_strike2,
+    max_strike2,
+    max_pain,
 ):
     """Options Overview"""
-
-    # Debug
-    if cfg.DEBUG:
-        logger.debug("opt overview %s %s %s %s", ticker, expiry, min_sp, max_sp)
-
-    # Check for argument
-    if ticker is None:
-        raise Exception("Stock ticker is required")
-
-    indics = "^"
-
-    # Get options info/dates, Look for logo_url
-    if indics not in ticker:
-        df_bcinfo = get_options_info(ticker)  # Barchart Options IV Overview
-
-    dates = yfinance_model.option_expirations(ticker)  # Expiration dates
-    tup = f"{ticker.upper()}"
-    url = yf.Ticker(tup).info["logo_url"]
-    url += "?raw=true" if url else ""
-
-    if not dates:
-        raise Exception("Stock ticker is invalid")
-
-    options = yfinance_model.get_option_chain(ticker, str(expiry))
-    calls = options.calls.fillna(0)
-    puts = options.puts.fillna(0)
-
-    current_price = yfinance_model.get_price(ticker)
-
-    min_strike2 = np.percentile(calls["strike"], 1)
-    max_strike2 = np.percentile(calls["strike"], 100)
-    min_strike = 0.75 * current_price
-    max_strike = 1.95 * current_price
-
-    if len(calls) > 40:
-        min_strike = 0.75 * current_price
-        max_strike = 1.25 * current_price
-
-    if min_sp:
-        min_strike = min_sp
-        min_strike2 = min_sp
-    if max_sp:
-        max_strike = max_sp
-        max_strike2 = max_sp
-        if min_sp > max_sp:  # type: ignore
-            min_sp, max_sp = max_strike2, min_strike2
-
-    call_oi = calls.set_index("strike")["openInterest"] / 1000
-    put_oi = puts.set_index("strike")["openInterest"] / 1000
-
-    df_opt = pd.merge(call_oi, put_oi, left_index=True, right_index=True)
-    df_opt = df_opt.rename(
-        columns={"openInterest_x": "OI_call", "openInterest_y": "OI_put"}
-    )
-
-    max_pain = op_helpers.calculate_max_pain(df_opt)
+    puts_page = 3
+    iv = ""
     fig = go.Figure()
 
     dmax = df_opt[["OI_call", "OI_put"]].values.max()
@@ -153,51 +134,34 @@ def overview_command(
         width=800,
         height=500,
     )
-
-    imagefile_save = f"{cfg.IMG_DIR}/opt_oi.png"
-    imagefile = helpers.image_border(imagefile_save, fig=fig)
+    imagefile = "opt-oi.png"
+    imagefile = helpers.image_border(imagefile, fig=fig)
 
     if cfg.IMAGES_URL:
         image_link_oi = cfg.IMAGES_URL + imagefile
     else:
-        uploaded_image_oi = gst_imgur.upload_image(imagefile, title="something")
+        imagefile_save = cfg.IMG_DIR + imagefile
+        uploaded_image_oi = gst_imgur.upload_image(imagefile_save, title="something")
         image_link_oi = uploaded_image_oi.link
-        os.remove(imagefile)
+        os.remove(imagefile_save)
 
-    column_map = {"openInterest": "oi", "volume": "vol", "impliedVolatility": "iv"}
-    columns = [
-        "strike",
-        "bid",
-        "ask",
-        "volume",
-        "openInterest",
-        "impliedVolatility",
-    ]
+    df_bcinfo = df_bcinfo
 
     calls_df = calls[columns].rename(columns=column_map)
-    puts_df = puts[columns].rename(columns=column_map)
-
     calls_df = calls_df[calls_df["strike"] >= min_strike2]
     calls_df = calls_df[calls_df["strike"] <= max_strike2]
-    puts_df = puts_df[puts_df["strike"] >= min_strike2]
-    puts_df = puts_df[puts_df["strike"] <= max_strike2]
-
     calls_df["iv"] = pd.to_numeric(calls_df["iv"].astype(float))
-    puts_df["iv"] = pd.to_numeric(puts_df["iv"].astype(float))
 
     formats = {"iv": "{:.2f}"}
     for col, f in formats.items():
         calls_df[col] = calls_df[col].map(
             lambda x: f.format(x)  # pylint: disable=W0640
         )
-        puts_df[col] = puts_df[col].map(lambda x: f.format(x))  # pylint: disable=W0640
 
     calls_df = calls_df.fillna("")
-    puts_df = puts_df.fillna("")
     calls_df.set_index("strike", inplace=True)
-    puts_df.set_index("strike", inplace=True)
 
-    if indics not in ticker:
+    if "^" not in ticker:
         if "-" in df_bcinfo.iloc[0, 1]:
             iv = f"```diff\n-             {df_bcinfo.iloc[0, 1]}\n```"
         else:
@@ -208,23 +172,31 @@ def overview_command(
         pfix = f"{ticker.upper()} Weekly "
         sfix = ""
 
-    titles = [f"{ticker.upper()} Overview", f"{pfix}Open Interest{sfix}"]
-    embeds = [
+    titles.append(
+        f"{ticker.upper()} Overview",
+    )
+    titles.append(
+        f"{pfix}Open Interest{sfix}",
+    )
+    embeds.append(
         disnake.Embed(
             title=f"{ticker.upper()} Overview",
             color=cfg.COLOR,
         ),
+    )
+    embeds.append(
         disnake.Embed(
             title=f"{pfix}Open Interest{sfix}",
             description=plt_link,
             colour=cfg.COLOR,
         ),
-    ]
-    choices = [
+    )
+    choices.append(
         disnake.SelectOption(label=f"{ticker.upper()} Overview", value="0", emoji="🟢"),
+    )
+    choices.append(
         disnake.SelectOption(label=f"{pfix}Open Interest{sfix}", value="1", emoji="🟢"),
-    ]
-    embeds_img = []
+    )
 
     i, i2, end = 0, 0, 20
     df_calls = []
@@ -241,19 +213,23 @@ def overview_command(
             font=cfg.PLT_TBL_FONT,
             paper_bgcolor="rgba(0, 0, 0, 0)",
         )
-        imagefile_save = f"{cfg.IMG_DIR}/opt-calls{i}.png"
-        imagefile = helpers.save_image(imagefile_save, figc)
+        imagefile = "opt-calls.png"
+        imagefile = helpers.save_image(imagefile, figc)
 
         if cfg.IMAGES_URL:
             image_link = cfg.IMAGES_URL + imagefile
         else:
-            uploaded_image = gst_imgur.upload_image(imagefile, title="something")
+            imagefile_save = cfg.IMG_DIR + imagefile
+            uploaded_image = gst_imgur.upload_image(imagefile_save, title="something")
             image_link = uploaded_image.link
-            os.remove(imagefile)
+            os.remove(imagefile_save)
+
         embeds_img.append(
             f"{image_link}",
         )
-        titles.append(f"{pfix}Calls{sfix}")
+        titles.append(
+            f"{pfix}Calls{sfix}",
+        )
         embeds.append(
             disnake.Embed(
                 title=f"{pfix}Calls{sfix}",
@@ -265,7 +241,7 @@ def overview_command(
         end += 20
 
     # Add Calls page field
-    i, page, puts_page = 2, 0, 3
+    i, page = 2, 0
     i3 = i2 + 2
     choices.append(
         disnake.SelectOption(label="Calls Page 1", value="2", emoji="🟢"),
@@ -275,6 +251,25 @@ def overview_command(
         puts_page += 1
 
         embeds[i].add_field(name=f"Calls Page {page}", value="_ _", inline=True)
+
+    puts_df = puts[columns].rename(columns=column_map)
+
+    puts_df = puts_df[puts_df["strike"] >= min_strike2]
+    puts_df = puts_df[puts_df["strike"] <= max_strike2]
+
+    puts_df["iv"] = pd.to_numeric(puts_df["iv"].astype(float))
+
+    formats = {"iv": "{:.2f}"}
+    for col, f in formats.items():
+        puts_df[col] = puts_df[col].map(lambda x: f.format(x))  # pylint: disable=W0640
+
+    puts_df = puts_df.fillna("")
+    puts_df.set_index("strike", inplace=True)
+
+    pfix, sfix = f"{ticker.upper()} ", f" expiring {expiry}"
+    if expiry == dates[0]:
+        pfix = f"{ticker.upper()} Weekly "
+        sfix = ""
 
     # Puts Pages
     i, end = 0, 20
@@ -293,19 +288,23 @@ def overview_command(
             font=cfg.PLT_TBL_FONT,
             paper_bgcolor="rgba(0, 0, 0, 0)",
         )
-        imagefile_save = f"{cfg.IMG_DIR}/opt-puts{i}.png"
-        imagefile = helpers.save_image(imagefile_save, figp)
+        imagefile = "opt-puts.png"
+        imagefile = helpers.save_image(imagefile, figp)
 
         if cfg.IMAGES_URL:
             image_link = cfg.IMAGES_URL + imagefile
         else:
-            uploaded_image = gst_imgur.upload_image(imagefile, title="something")
+            imagefile_save = cfg.IMG_DIR + imagefile
+            uploaded_image = gst_imgur.upload_image(imagefile_save, title="something")
             image_link = uploaded_image.link
-            os.remove(imagefile)
+            os.remove(imagefile_save)
+
         embeds_img.append(
             f"{image_link}",
         )
-        titles.append(f"{pfix}Puts{sfix}")
+        titles.append(
+            f"{pfix}Puts{sfix}",
+        )
         embeds.append(
             disnake.Embed(
                 title=f"{pfix}Puts{sfix}",
@@ -352,9 +351,9 @@ def overview_command(
         embeds[0].set_thumbnail(url=f"{url}")
     else:
         embeds[0].set_thumbnail(url=cfg.AUTHOR_ICON_URL)
-
+    df_bcinfo = df_bcinfo
     # Overview Section
-    if indics not in ticker:
+    if "^" not in ticker:
         embeds[0].add_field(name=f"{df_bcinfo.iloc[0, 0]}", value=iv, inline=False)
 
         embeds[0].add_field(
@@ -395,6 +394,128 @@ def overview_command(
 
         embeds[0].set_footer(text=f"Page 1 of {len(embeds)}")
 
+    return titles, embeds, choices, embeds_img
+
+
+def options_data(
+    ticker: str = None,
+    expiry: str = None,
+    min_sp: float = None,
+    max_sp: float = None,
+):
+
+    # Debug
+    if cfg.DEBUG:
+        logger.debug("opt overview %s %s %s %s", ticker, expiry, min_sp, max_sp)
+
+    # Check for argument
+    if ticker is None:
+        raise Exception("Stock ticker is required")
+
+    df_bcinfo = ""
+    # Get options info/dates, Look for logo_url
+    if "^" not in ticker:
+        df_bcinfo = get_options_info(ticker)  # Barchart Options IV Overview
+
+    dates = yfinance_model.option_expirations(ticker)  # Expiration dates
+    tup = f"{ticker.upper()}"
+    url = yf.Ticker(tup).info["logo_url"]
+    url += "?raw=true" if url else ""
+
+    if not dates:
+        raise Exception("Stock ticker is invalid")
+
+    options = yfinance_model.get_option_chain(ticker, str(expiry))
+    calls = options.calls.fillna(0)
+    puts = options.puts.fillna(0)
+
+    current_price = yfinance_model.get_price(ticker)
+
+    min_strike2 = np.percentile(calls["strike"], 1)
+    max_strike2 = np.percentile(calls["strike"], 100)
+    min_strike = 0.75 * current_price
+    max_strike = 1.95 * current_price
+
+    if len(calls) > 40:
+        min_strike = 0.75 * current_price
+        max_strike = 1.25 * current_price
+
+    if min_sp:
+        min_strike = min_sp
+        min_strike2 = min_sp
+    if max_sp:
+        max_strike = max_sp
+        max_strike2 = max_sp
+        if min_sp > max_sp:  # type: ignore
+            min_sp, max_sp = max_strike2, min_strike2
+
+    call_oi = calls.set_index("strike")["openInterest"] / 1000
+    put_oi = puts.set_index("strike")["openInterest"] / 1000
+
+    df_opt = pd.merge(call_oi, put_oi, left_index=True, right_index=True)
+    df_opt = df_opt.rename(
+        columns={"openInterest_x": "OI_call", "openInterest_y": "OI_put"}
+    )
+
+    max_pain = op_helpers.calculate_max_pain(df_opt)
+    data = [
+        ticker,
+        url,
+        expiry,
+        dates,
+        df_bcinfo,
+        calls,
+        puts,
+        df_opt,
+        current_price,
+        min_strike,
+        max_strike,
+        min_strike2,
+        max_strike2,
+        max_pain,
+    ]
+    return data
+
+
+print(__name__)
+
+
+def run(
+    ticker: str = None,
+    expiry: str = None,
+    min_sp: float = None,
+    max_sp: float = None,
+):
+
+    print("start")
+    cpus = os.cpu_count()
+    data = options_data(ticker, expiry, min_sp, max_sp)
+    with Pool(processes=cpus) as p:
+        time.sleep(1)
+        timer0 = time.perf_counter()
+        titles, embeds, choices, embeds_img = zip(
+            *p.starmap(options_run, [(*data,)], chunksize=1)
+        )
+        timer1 = time.perf_counter()
+
+        deltat = timer1 - timer0
+
+        print(f"\nGenerated in {deltat:.1f} seconds")
+
+    return unpack(titles), unpack(embeds), unpack(choices), unpack(embeds_img)
+
+
+def overview_command(
+    ticker: str = None,
+    expiry: str = None,
+    min_sp: float = None,
+    max_sp: float = None,
+):
+    timer0 = time.perf_counter()
+    titles, embeds, choices, embeds_img = run(ticker, expiry, min_sp, max_sp)
+    timer1 = time.perf_counter()
+    deltat = timer1 - timer0
+    print(f"\nGenerated2 in {deltat:.1f} seconds")
     return {
         "view": Menu,
         "titles": titles,

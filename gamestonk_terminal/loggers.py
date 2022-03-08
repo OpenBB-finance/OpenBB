@@ -2,20 +2,26 @@
 __docformat__ = "numpy"
 import logging
 import os
-from pathlib import Path
 import sys
 import time
 import uuid
-from math import floor, ceil
+from logging.handlers import TimedRotatingFileHandler
+from math import ceil, floor
+from pathlib import Path
 
+import boto3
 import git
+from botocore.exceptions import ClientError
 
 import gamestonk_terminal.config_terminal as cfg
+from gamestonk_terminal import feature_flags as gtff
 
 logger = logging.getLogger(__name__)
 LOGFORMAT = "%(asctime)s|%(name)s|%(funcName)s|%(lineno)s|%(message)s"
-LOGPREFIXFORMAT = "%(levelname)s|%(version)s|%(loggingId)s|%(sessionId)s|"
+LOGPREFIXFORMAT = "%(levelname)s|%(version)s|%(appName)s|%(loggingId)s|%(sessionId)s|"
 DATEFORMAT = "%Y-%m-%dT%H:%M:%S%z"
+BUCKET = "gst-restrictions"
+FOLDER_NAME = "gst-app/logs"
 
 
 def library_loggers(verbosity: int = 0) -> None:
@@ -31,8 +37,7 @@ def library_loggers(verbosity: int = 0) -> None:
     logging.getLogger("urllib3").setLevel(verbosity)
 
 
-def setup_file_logger(session_id: str) -> None:
-    """Setup File Logger"""
+def get_log_dir() -> Path:
     file_path = Path(__file__)
     logger.debug("Parent dir: %s", file_path.parent.parent.absolute())
     log_dir = file_path.parent.parent.absolute().joinpath("logs")
@@ -65,15 +70,23 @@ def setup_file_logger(session_id: str) -> None:
             "UUID log dir does not exist: %s. Creating.", uuid_log_dir.absolute()
         )
         os.mkdir(uuid_log_dir.absolute())
+    return uuid_log_dir
 
+
+def setup_file_logger(session_id: str) -> None:
+    """Setup File Logger"""
+
+    uuid_log_dir = get_log_dir()
+
+    upload_archive_logs_s3(directory_str=uuid_log_dir, log_filter=r"\.log")
     start_time = int(time.time())
     cfg.LOGGING_FILE = uuid_log_dir.absolute().joinpath(f"{start_time}.log")  # type: ignore
 
     logger.debug("Current log file: %s", cfg.LOGGING_FILE)
 
-    handler = logging.FileHandler(cfg.LOGGING_FILE)
+    handler = TimedRotatingFileHandler(cfg.LOGGING_FILE)
     formatter = CustomFormatterWithExceptions(
-        cfg.LOGGING_ID, session_id, fmt=LOGFORMAT, datefmt=DATEFORMAT
+        uuid_log_dir.stem, session_id, fmt=LOGFORMAT, datefmt=DATEFORMAT
     )
     handler.setFormatter(formatter)
     logging.getLogger().addHandler(handler)
@@ -90,22 +103,22 @@ class CustomFormatterWithExceptions(logging.Formatter):
         datefmt=None,
         style="%",
         validate=True,
+        app_name="gst",
     ) -> None:
         super().__init__(fmt=fmt, datefmt=datefmt, style=style, validate=validate)
         self.logPrefixDict = {
             "loggingId": logging_id,
             "sessionId": session_id,
             "version": cfg.LOGGING_VERSION,
+            "appName": app_name,
         }
 
     def formatException(self, ei) -> str:
         """Exception formatting handler
-
         Parameters
         ----------
         ei : logging._SysExcInfoType
             Exception to be logged
-
         Returns
         -------
         str
@@ -116,12 +129,10 @@ class CustomFormatterWithExceptions(logging.Formatter):
 
     def format(self, record: logging.LogRecord) -> str:
         """Log formatter
-
         Parameters
         ----------
         record : logging.LogRecord
             Logging record
-
         Returns
         -------
         str
@@ -130,6 +141,16 @@ class CustomFormatterWithExceptions(logging.Formatter):
         if hasattr(record, "func_name_override"):
             record.funcName = record.func_name_override  # type: ignore
             record.lineno = 0
+
+        if hasattr(record, "user_id"):
+            self.logPrefixDict["loggingId"] = record.user_id  # type: ignore
+
+        if hasattr(record, "session_id"):
+            self.logPrefixDict["sessionId"] = record.session_id  # type: ignore
+
+        if hasattr(record, "app_name"):
+            self.logPrefixDict["appName"] = record.app_name  # type: ignore
+
         s = super().format(record)
         if record.levelname:
             self.logPrefixDict["levelname"] = record.levelname[0]
@@ -214,3 +235,62 @@ def setup_logging() -> None:
     logger.info(
         "FORMAT: %s%s", LOGPREFIXFORMAT.replace("|", "-"), LOGFORMAT.replace("|", "-")
     )
+
+
+def upload_file_to_s3(
+    file: Path, bucket: str, object_name=None, folder_name=None
+) -> None:
+    # If S3 object_name was not specified, use file_name
+    if object_name is None:
+        object_name = file.name
+    # If folder_name was specified, upload in the folder
+    if folder_name is not None:
+        object_name = f"{folder_name}/{object_name}"
+
+    # Upload the file
+    try:
+        s3_client = boto3.client(
+            service_name="s3",
+            aws_access_key_id=cfg.AWS_ACCESS_KEY_ID,
+            aws_secret_access_key=cfg.AWS_ACCESS_KEY,
+        )
+        s3_client.upload_file(str(file), bucket, object_name)
+    except ClientError as e:
+        logger.exception(str(e))
+
+
+def upload_archive_logs_s3(
+    directory_str=None,
+    log_filter=r".*\.log",
+) -> None:
+
+    if gtff.ALLOW_LOG_COLLECTION:
+        if directory_str is None:
+            directory = get_log_dir()
+        else:
+            directory = directory_str
+        archive = Path(directory) / "archive"
+
+        if not archive.exists():
+            # Create a new directory because it does not exist
+            archive.mkdir()
+            logger.debug("The new archive directory is created!")
+
+        log_files: list = []
+
+        log_files = os.listdir(directory_str)
+        log_files = [file for file in log_files if file.endswith(".log")]
+
+        logger.info("Start uploading Logs")
+        for log_file in log_files:
+            archivefile = archive / log_file
+            upload_file_to_s3(
+                file=Path(directory) / log_file, bucket=BUCKET, folder_name=FOLDER_NAME
+            )
+            try:
+                log_file.rename(archivefile)
+            except Exception as e:
+                logger.exception("Cannot archive file: %s", str(e))
+        logger.info("Logs uploaded")
+    else:
+        logger.info("Logs not allowed to be collected")

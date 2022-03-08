@@ -7,68 +7,49 @@ import bots.config_discordbot as cfg
 from bots import helpers
 from bots.config_discordbot import gst_imgur, logger
 from bots.menus.menu import Menu
-from gamestonk_terminal.stocks.discovery import yahoofinance_model
+from gamestonk_terminal.etf.discovery import wsj_model
 
 
-def losers_command(num: int = 10):
-    """Show top losers [Yahoo Finance]"""
+def etfs_command(sort=""):
+    """Display Upcoming Earnings. [Source: Seeking Alpha]"""
 
-    # Debug user input
+    # Debug
     if cfg.DEBUG:
-        logger.debug("disc losers %s", num)
+        logger.debug("etfs")
 
-    # Check for argument
-    if num < 0:
-        raise Exception("Number has to be above 0")
+    df_etfs = wsj_model.etf_movers(sort)
 
-    # Retrieve data
-    df = yahoofinance_model.get_losers().head(num)
-
-    if df.empty:
+    if df_etfs.empty:
         raise Exception("No available data found")
 
-    # Debug user output
-    if cfg.DEBUG:
-        logger.debug(df.to_string())
+    df_etfs.set_index(" ", inplace=True)
+    prfx = "Top"
+    if sort == "active":
+        prfx = "Most"
+    title = f"ETF Movers ({prfx} {sort.capitalize()})"
 
-    # Output data
-    title = "Stocks: Top Losers [Yahoo Finance]"
-    df.dropna(how="all", axis=1, inplace=True)
-    df = df.replace(float("NaN"), "")
-    df = df.drop(columns=["PE Ratio (TTM)"])
-
-    df.set_index("Symbol", inplace=True)
-    df.columns = [
-        "Name",
-        "Price",
-        "Change",
-        "% Change",
-        "Volume",
-        "Avg Vol",
-        "Market Cap",
-    ]
-    dindex = len(df.index)
+    dindex = len(df_etfs.index)
     if dindex > 15:
         embeds: list = []
         # Output
         i, i2, end = 0, 0, 15
         df_pg = []
         embeds_img = []
-        dindex = len(df.index)
+        dindex = len(df_etfs.index)
         while i < dindex:
-            df_pg = df.iloc[i:end]
+            df_pg = df_etfs.iloc[i:end]
             df_pg.append(df_pg)
             fig = df2img.plot_dataframe(
                 df_pg,
-                fig_size=(1400, (45 * dindex)),
-                col_width=[2, 9, 2.5, 2.5, 2.5, 3, 3, 3],
+                fig_size=(1200, (40 + (40 * dindex))),
+                col_width=[1, 9, 1.5, 1.5, 1.5, 1.5],
                 tbl_header=cfg.PLT_TBL_HEADER,
                 tbl_cells=cfg.PLT_TBL_CELLS,
                 font=cfg.PLT_TBL_FONT,
                 paper_bgcolor="rgba(0, 0, 0, 0)",
             )
-            fig.update_traces(cells=(dict(align=["center", "left"])))
-            imagefile = "disc-losers.png"
+            fig.update_traces(cells=(dict(align=["left"])))
+            imagefile = "disc-etfs.png"
             imagefile = helpers.save_image(imagefile, fig)
 
             if cfg.IMAGES_URL:
@@ -125,16 +106,16 @@ def losers_command(num: int = 10):
         }
     else:
         fig = df2img.plot_dataframe(
-            df,
-            fig_size=(1400, (45 * dindex)),
-            col_width=[2, 9, 2.5, 2.5, 2.5, 3, 3, 3],
+            df_etfs,
+            fig_size=(1200, (40 + (40 * dindex))),
+            col_width=[1, 9, 1.5, 1.5, 1.5, 1.5],
             tbl_header=cfg.PLT_TBL_HEADER,
             tbl_cells=cfg.PLT_TBL_CELLS,
             font=cfg.PLT_TBL_FONT,
             paper_bgcolor="rgba(0, 0, 0, 0)",
         )
-        fig.update_traces(cells=(dict(align=["center", "left"])))
-        imagefile = helpers.save_image("disc-losers.png", fig)
+        fig.update_traces(cells=(dict(align=["left", "center"])))
+        imagefile = helpers.save_image("disc-etfs.png", fig)
 
         output = {
             "title": title,

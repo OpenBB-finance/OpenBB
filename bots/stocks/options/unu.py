@@ -101,15 +101,18 @@ def unu_command(num: int = None):
                 paper_bgcolor="rgba(0, 0, 0, 0)",
             )
             fig.update_traces(cells=(dict(align=["left"])))
-            imagefile_save = f"{cfg.IMG_DIR}/opt-unu.png{i}.png"
-            imagefile = helpers.save_image(imagefile_save, fig)
+            imagefile = "opt-unu.png"
+            imagefile = helpers.save_image(imagefile, fig)
 
             if cfg.IMAGES_URL:
                 image_link = cfg.IMAGES_URL + imagefile
             else:
-                uploaded_image = gst_imgur.upload_image(imagefile, title="something")
+                imagefile_save = cfg.IMG_DIR + imagefile
+                uploaded_image = gst_imgur.upload_image(
+                    imagefile_save, title="something"
+                )
                 image_link = uploaded_image.link
-                os.remove(imagefile)
+                os.remove(imagefile_save)
 
             embeds_img.append(
                 f"{image_link}",

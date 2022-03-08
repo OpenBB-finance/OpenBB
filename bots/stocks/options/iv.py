@@ -26,7 +26,10 @@ def iv_command(ticker: str = None):
         ],
         axis="columns",
     )
+    df[""] = df[""].str.lstrip()
+    font_color = [["white"]] + [["red" if "-" in df[""][0] else "#21c903"] + ["white"]]
     df.set_index(" ", inplace=True)
+
     fig = df2img.plot_dataframe(
         df,
         fig_size=(600, 1500),
@@ -36,7 +39,20 @@ def iv_command(ticker: str = None):
         font=cfg.PLT_TBL_FONT,
         paper_bgcolor="rgba(0, 0, 0, 0)",
     )
-    fig.update_traces(cells=(dict(align="left")))
+    fig.update_traces(
+        header=(
+            dict(
+                values=[[f"<b>{ticker.upper()}</b>"]],
+                align="center",
+            )
+        ),
+        cells=(
+            dict(
+                align="left",
+                font=dict(color=font_color),
+            )
+        ),
+    )
     imagefile = save_image("opt-info.png", fig)
 
     return {

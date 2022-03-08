@@ -89,15 +89,18 @@ def pos_command(sort="dpp_dollar", ascending: bool = False, num: int = 10):
                 paper_bgcolor="rgba(0, 0, 0, 0)",
             )
             fig.update_traces(cells=(dict(align=["center", "left"])))
-            imagefile_save = f"{cfg.IMG_DIR}/opt-pos.png{i}.png"
-            imagefile = helpers.save_image(imagefile_save, fig)
+            imagefile = "dps-pos.png"
+            imagefile = helpers.save_image(imagefile, fig)
 
             if cfg.IMAGES_URL:
                 image_link = cfg.IMAGES_URL + imagefile
             else:
-                uploaded_image = gst_imgur.upload_image(imagefile, title="something")
+                imagefile_save = cfg.IMG_DIR + imagefile
+                uploaded_image = gst_imgur.upload_image(
+                    imagefile_save, title="something"
+                )
                 image_link = uploaded_image.link
-                os.remove(imagefile)
+                os.remove(imagefile_save)
 
             embeds_img.append(
                 f"{image_link}",
@@ -152,7 +155,7 @@ def pos_command(sort="dpp_dollar", ascending: bool = False, num: int = 10):
             paper_bgcolor="rgba(0, 0, 0, 0)",
         )
         fig.update_traces(cells=(dict(align=["center", "left"])))
-        imagefile = helpers.save_image("opt-pos.png", fig)
+        imagefile = helpers.save_image("dps-pos.png", fig)
 
         output = {
             "title": title,

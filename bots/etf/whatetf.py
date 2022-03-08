@@ -1,52 +1,75 @@
 import os
+import time
 
+import bs4
 import df2img
 import disnake
+import pandas as pd
+import undetected_chromedriver.v2 as uc
+from selenium.webdriver.common.by import By
 
 import bots.config_discordbot as cfg
 from bots import helpers
 from bots.config_discordbot import gst_imgur, logger
 from bots.menus.menu import Menu
-from gamestonk_terminal.stocks.discovery import yahoofinance_model
 
 
-def losers_command(num: int = 10):
-    """Show top losers [Yahoo Finance]"""
+def by_ticker_command(ticker="", num: int = 15):
+    """Display ETF Holdings. [Source: StockAnalysis]"""
 
-    # Debug user input
+    # Debug
     if cfg.DEBUG:
-        logger.debug("disc losers %s", num)
+        logger.debug("etfs")
 
-    # Check for argument
-    if num < 0:
-        raise Exception("Number has to be above 0")
+    options = uc.ChromeOptions()
 
-    # Retrieve data
-    df = yahoofinance_model.get_losers().head(num)
+    options.headless = True
+    options.add_argument("--headless")
+    options.add_argument("--incognito")
+    global browser
+    driver = uc.Chrome(options=options, version_main=98)
+    driver.set_window_size(1920, 1080)
+    driver.get(f"http://etf.com/stock/{ticker.upper()}/")
+
+    time.sleep(2)
+    driver.find_element(By.XPATH, "(//div[@id='inactiveResult'])[3]").click()
+    soup5 = bs4.BeautifulSoup(driver.page_source, "html.parser")
+    r_ticker = []
+    r_holdings = []
+    r_name = []
+    r_market = []
+    table1 = soup5.find("table", id="StockTable")
+    table = table1.find("tbody")
+    for x in table.find_all("tr"):
+        r_ticker.append(x.find("td").text)
+        r_name.append(x.find("td").findNext("td").text)
+        r_holdings.append(
+            x.find("td").findNext("td").findNext("td").findNext("td").text
+        )
+        r_market.append(
+            x.find("td")
+            .findNext("td")
+            .findNext("td")
+            .findNext("td")
+            .findNext("td")
+            .text
+        )
+
+    df = pd.DataFrame(
+        {
+            "Ticker": r_ticker,
+            "Name": r_name,
+            "Holdings": r_holdings,
+            "Market Value": r_market,
+        }
+    )
 
     if df.empty:
-        raise Exception("No available data found")
+        raise Exception("No company holdings found!\n")
 
-    # Debug user output
-    if cfg.DEBUG:
-        logger.debug(df.to_string())
-
-    # Output data
-    title = "Stocks: Top Losers [Yahoo Finance]"
-    df.dropna(how="all", axis=1, inplace=True)
-    df = df.replace(float("NaN"), "")
-    df = df.drop(columns=["PE Ratio (TTM)"])
-
-    df.set_index("Symbol", inplace=True)
-    df.columns = [
-        "Name",
-        "Price",
-        "Change",
-        "% Change",
-        "Volume",
-        "Avg Vol",
-        "Market Cap",
-    ]
+    df = df.iloc[:num]
+    df.set_index("Ticker", inplace=True)
+    title = f"ETF's Holding {ticker.upper()}"
     dindex = len(df.index)
     if dindex > 15:
         embeds: list = []
@@ -60,15 +83,17 @@ def losers_command(num: int = 10):
             df_pg.append(df_pg)
             fig = df2img.plot_dataframe(
                 df_pg,
-                fig_size=(1400, (45 * dindex)),
-                col_width=[2, 9, 2.5, 2.5, 2.5, 3, 3, 3],
+                fig_size=(900, (40 * dindex)),
+                col_width=[0.6, 3.5, 0.65, 1.1],
                 tbl_header=cfg.PLT_TBL_HEADER,
                 tbl_cells=cfg.PLT_TBL_CELLS,
                 font=cfg.PLT_TBL_FONT,
                 paper_bgcolor="rgba(0, 0, 0, 0)",
             )
-            fig.update_traces(cells=(dict(align=["center", "left"])))
-            imagefile = "disc-losers.png"
+            fig.update_traces(
+                cells=(dict(align=["center", "center", "center", "right"]))
+            )
+            imagefile = "etf-byticker.png"
             imagefile = helpers.save_image(imagefile, fig)
 
             if cfg.IMAGES_URL:
@@ -126,15 +151,15 @@ def losers_command(num: int = 10):
     else:
         fig = df2img.plot_dataframe(
             df,
-            fig_size=(1400, (45 * dindex)),
-            col_width=[2, 9, 2.5, 2.5, 2.5, 3, 3, 3],
+            fig_size=(900, (40 * dindex)),
+            col_width=[0.6, 3.5, 0.65, 1.1],
             tbl_header=cfg.PLT_TBL_HEADER,
             tbl_cells=cfg.PLT_TBL_CELLS,
             font=cfg.PLT_TBL_FONT,
             paper_bgcolor="rgba(0, 0, 0, 0)",
         )
-        fig.update_traces(cells=(dict(align=["center", "left"])))
-        imagefile = helpers.save_image("disc-losers.png", fig)
+        fig.update_traces(cells=(dict(align=["center", "center", "center", "right"])))
+        imagefile = helpers.save_image("etf-holdings.png", fig)
 
         output = {
             "title": title,

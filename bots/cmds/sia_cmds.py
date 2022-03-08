@@ -23,8 +23,6 @@ class StocksSIACommands(commands.Cog):
         self,
         inter: disnake.AppCmdInter,
         country: str = commands.Param(autocomplete=helpers.country_autocomp),
-        mktcap: str = commands.Param(default=None, choices=["Small", "Mid", "Large"]),
-        exclude_exchanges: bool = True,
     ):
         """Display number of companies per industry in a specific country. [Source: Finance Database]
 
@@ -35,7 +33,10 @@ class StocksSIACommands(commands.Cog):
         exclude_exchanges: Exclude international exchanges
         """
         await helpers.ShowView().discord(
-            cps_command, inter, "sia cps", country, mktcap, exclude_exchanges
+            cps_command,
+            inter,
+            "sia cps",
+            country,
         )
 
     @sia.sub_command(name="cpic")
@@ -43,8 +44,6 @@ class StocksSIACommands(commands.Cog):
         self,
         inter: disnake.AppCmdInter,
         industry: str = commands.Param(autocomplete=helpers.industry_autocomp),
-        mktcap: str = commands.Param(default=None, choices=["Small", "Mid", "Large"]),
-        exclude_exchanges: bool = True,
     ):
         """Display number of companies per country in a specific industry. [Source: Finance Database]
 
@@ -55,7 +54,10 @@ class StocksSIACommands(commands.Cog):
         exclude_exchanges: Exclude international exchanges
         """
         await helpers.ShowView().discord(
-            cpic_command, inter, "sia cpic", industry, mktcap, exclude_exchanges
+            cpic_command,
+            inter,
+            "sia cpic",
+            industry,
         )
 
     @sia.sub_command(name="metrics")

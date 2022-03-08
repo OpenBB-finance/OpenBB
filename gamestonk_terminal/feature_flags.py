@@ -60,3 +60,6 @@ ENABLE_RICH_PANEL = strtobool(os.getenv("GTFF_ENABLE_RICH_PANEL", "True"))
 
 # Check API KEYS before running a command
 ENABLE_CHECK_API = strtobool(os.getenv("GTFF_ENABLE_CHECK_API", "True"))
+
+# Send logs to data lake
+ALLOW_LOG_COLLECTION = strtobool(os.getenv("GTFF_ALLOW_LOG_COLLECTION", "True"))

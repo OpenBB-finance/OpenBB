@@ -62,15 +62,16 @@ def ford_command():
                 )
             )
         )
-        imagefile_save = f"{cfg.IMG_DIR}/disc-ford.png{i}"
-        imagefile = helpers.save_image(imagefile_save, fig)
+        imagefile = "disc-ford.png"
+        imagefile = helpers.save_image(imagefile, fig)
 
         if cfg.IMAGES_URL:
             image_link = cfg.IMAGES_URL + imagefile
         else:
-            uploaded_image = gst_imgur.upload_image(imagefile, title="something")
+            imagefile_save = cfg.IMG_DIR + imagefile
+            uploaded_image = gst_imgur.upload_image(imagefile_save, title="something")
             image_link = uploaded_image.link
-            os.remove(imagefile)
+            os.remove(imagefile_save)
 
         embeds_img.append(
             f"{image_link}",
