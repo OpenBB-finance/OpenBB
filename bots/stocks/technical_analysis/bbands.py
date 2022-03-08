@@ -106,6 +106,7 @@ def bbands_command(
     bbm = df_ta.columns[1].replace("_", " ")
     bbl = df_ta.columns[0].replace("_", " ")
     df_stock = df_stock.loc[bb_start:bb_end]
+
     fig = load.candle_fig(df_stock, ticker, interval, extended_hours)
 
     fig.add_trace(
@@ -161,8 +162,8 @@ def bbands_command(
     plt_link = ""
     if cfg.INTERACTIVE:
         html_ran = helpers.uuid_get()
-        fig.write_html(f"in/cci_{html_ran}.html", config=config)
-        plt_link = f"[Interactive]({cfg.INTERACTIVE_URL}/cci_{html_ran}.html)"
+        fig.write_html(f"in/bbands_{html_ran}.html", config=config)
+        plt_link = f"[Interactive]({cfg.INTERACTIVE_URL}/bbands_{html_ran}.html)"
 
     fig.update_layout(
         width=800,
