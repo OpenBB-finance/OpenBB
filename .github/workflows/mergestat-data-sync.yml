@@ -12,9 +12,10 @@ jobs:
       with:
         repository: mergestat/mergestat
         token: ${{ secrets.GITHUB_TOKEN }}
+        submodules: recursive
 
     - name: Install libgit2
-      run: sudo ./scripts/install_libgit2.sh
+      run: make libgit2
 
     - name: Build MergeStat
       run: |
@@ -25,10 +26,10 @@ jobs:
       run: |
         export PGSYNC=1
         export GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
-        export GITHUB_PER_PAGE=50
+        export GITHUB_PER_PAGE=25
         export POSTGRES_CONNECTION=${{ secrets.POSTGRES_CONNECTION }}
-        mergestat pgsync pull_requests "SELECT * FROM github_repo_prs('GamestonkTerminal/GamestonkTerminal')"
-        mergestat pgsync issues "SELECT * FROM github_repo_issues('GamestonkTerminal/GamestonkTerminal')"
-        mergestat pgsync repos "SELECT * FROM github_org_repos('GamestonkTerminal')"
-        mergestat pgsync commit_stats "SELECT * FROM commits('https://github.com/GamestonkTerminal/GamestonkTerminal'), stats('https://github.com/GamestonkTerminal/GamestonkTerminal', commits.hash)"
-        mergestat pgsync stargazers "SELECT * FROM github_stargazers('GamestonkTerminal/GamestonkTerminal')"
+        mergestat pgsync -v pull_requests "SELECT * FROM github_repo_prs('GamestonkTerminal/GamestonkTerminal')"
+        mergestat pgsync -v issues "SELECT * FROM github_repo_issues('GamestonkTerminal/GamestonkTerminal')"
+        mergestat pgsync -v repos "SELECT * FROM github_org_repos('GamestonkTerminal')"
+        mergestat pgsync -v commit_stats "SELECT * FROM commits('https://github.com/GamestonkTerminal/GamestonkTerminal'), stats('https://github.com/GamestonkTerminal/GamestonkTerminal', commits.hash)"
+        mergestat pgsync -v stargazers "SELECT * FROM github_stargazers('GamestonkTerminal/GamestonkTerminal')"

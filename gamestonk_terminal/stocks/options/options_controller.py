@@ -192,7 +192,7 @@ Expiry: [/param]{self.selected_date or None}
     vol           plot volume [src][Tradier/YFinance][/src]
     voi           plot volume and open interest [src][Tradier/YFinance][/src]
     hist          plot option history [src][Tradier][/src]
-    vsurf         show 3D volatility surface [Yfinance]
+    vsurf         show 3D volatility surface [src][Yfinance][/src]
     grhist        plot option greek history [src][Syncretism.io][/src]
     plot          plot variables provided by the user [src][Yfinance][/src]
     parity        shows whether options are above or below expected price [src][Yfinance][/src]

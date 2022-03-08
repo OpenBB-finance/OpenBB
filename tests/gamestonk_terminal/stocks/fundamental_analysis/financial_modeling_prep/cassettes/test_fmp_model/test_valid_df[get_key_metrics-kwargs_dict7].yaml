@@ -10,8 +10,36 @@ interactions:
     uri: https://financialmodelingprep.com/api/v3/key-metrics/PM?apikey=MOCK_API_KEY&limit=0&period=annual
   response:
     body:
-      string: "[ {\n  \"symbol\" : \"PM\",\n  \"date\" : \"2020-12-31\",\n  \"period\"
-        : \"FY\",\n  \"revenuePerShare\" : 18.42903018625562,\n  \"netIncomePerShare\"
+      string: "[ {\n  \"symbol\" : \"PM\",\n  \"date\" : \"2021-12-31\",\n  \"period\"
+        : \"FY\",\n  \"revenuePerShare\" : null,\n  \"netIncomePerShare\" : null,\n
+        \ \"operatingCashFlowPerShare\" : null,\n  \"freeCashFlowPerShare\" : null,\n
+        \ \"cashPerShare\" : null,\n  \"bookValuePerShare\" : null,\n  \"tangibleBookValuePerShare\"
+        : null,\n  \"shareholdersEquityPerShare\" : null,\n  \"interestDebtPerShare\"
+        : null,\n  \"marketCap\" : null,\n  \"enterpriseValue\" : 23310000000,\n  \"peRatio\"
+        : null,\n  \"priceToSalesRatio\" : null,\n  \"pocfratio\" : null,\n  \"pfcfRatio\"
+        : 0.0,\n  \"pbRatio\" : null,\n  \"ptbRatio\" : null,\n  \"evToSales\" : 0.7422384970546091,\n
+        \ \"enterpriseValueOverEBITDA\" : 1.6689339156583376,\n  \"evToOperatingCashFlow\"
+        : 1.9478566056655804,\n  \"evToFreeCashFlow\" : 2.0777252874587755,\n  \"earningsYield\"
+        : null,\n  \"freeCashFlowYield\" : null,\n  \"debtToEquity\" : -2.4523055610528397,\n
+        \ \"debtToAssets\" : 1.198789053039477,\n  \"netDebtToEBITDA\" : 1.6689339156583376,\n
+        \ \"currentRatio\" : 0.9201246429498832,\n  \"interestCoverage\" : 17.44911804613297,\n
+        \ \"incomeQuality\" : 1.3137556263036558,\n  \"dividendYield\" : null,\n  \"payoutRatio\"
+        : 0.8321440333735866,\n  \"salesGeneralAndAdministrativeToRevenue\" : 0.003661837287056201,\n
+        \ \"researchAndDdevelopementToRevenue\" : 0.0,\n  \"intangiblesToTotalAssets\"
+        : 0.23003148462097361,\n  \"capexToOperatingCashFlow\" : -0.06250522269574664,\n
+        \ \"capexToRevenue\" : -0.023817863397548163,\n  \"capexToDepreciation\" :
+        -0.749498997995992,\n  \"stockBasedCompensationToRevenue\" : 0.0,\n  \"grahamNumber\"
+        : null,\n  \"roic\" : 0.5836169729975039,\n  \"returnOnTangibleAssets\" :
+        0.2865186210367388,\n  \"grahamNetNet\" : null,\n  \"workingCapital\" : -1538000000,\n
+        \ \"tangibleAssetValue\" : -17706000000,\n  \"netCurrentAssetValue\" : -31781000000,\n
+        \ \"investedCapital\" : -2.7514347912131405,\n  \"averageReceivables\" : 3850500000,\n
+        \ \"averagePayables\" : 3055500000,\n  \"averageInventory\" : 9155500000,\n
+        \ \"daysSalesOutstanding\" : 45.79207132622194,\n  \"daysPayablesOutstanding\"
+        : 121.21784646061815,\n  \"daysOfInventoryOnHand\" : 317.3280159521436,\n
+        \ \"receivablesTurnover\" : 7.970812182741117,\n  \"payablesTurnover\" : 3.01110777544281,\n
+        \ \"inventoryTurnover\" : 1.150229357798165,\n  \"roe\" : -0.9013457352068078,\n
+        \ \"capexPerShare\" : null\n}, {\n  \"symbol\" : \"PM\",\n  \"date\" : \"2020-12-31\",\n
+        \ \"period\" : \"FY\",\n  \"revenuePerShare\" : 18.42903018625562,\n  \"netIncomePerShare\"
         : 5.1740526653821455,\n  \"operatingCashFlowPerShare\" : 6.3018625561978165,\n
         \ \"freeCashFlowPerShare\" : 5.9152215799614645,\n  \"cashPerShare\" : 4.675658317276814,\n
         \ \"bookValuePerShare\" : -8.071290944123314,\n  \"tangibleBookValuePerShare\"
@@ -36,8 +64,8 @@ interactions:
         : 0.2187228496959166,\n  \"grahamNetNet\" : -26.043513166345537,\n  \"workingCapital\"
         : 1877000000,\n  \"tangibleAssetValue\" : -18614000000,\n  \"netCurrentAssetValue\"
         : -33954000000,\n  \"investedCapital\" : -2.5094294581045595,\n  \"averageReceivables\"
-        : 3739000000,\n  \"averagePayables\" : 2539500000,\n  \"averageInventory\"
-        : 9413000000,\n  \"daysSalesOutstanding\" : 47.841534815640905,\n  \"daysPayablesOutstanding\"
+        : 3761000000,\n  \"averagePayables\" : 2780000000,\n  \"averageInventory\"
+        : 9591000000,\n  \"daysSalesOutstanding\" : 47.841534815640905,\n  \"daysPayablesOutstanding\"
         : 106.04033859337443,\n  \"daysOfInventoryOnHand\" : 365.8391681471418,\n
         \ \"receivablesTurnover\" : 7.6293538952406275,\n  \"payablesTurnover\" :
         3.442086330935252,\n  \"inventoryTurnover\" : 0.9977061828797831,\n  \"roe\"
@@ -53,10 +81,10 @@ interactions:
         : 4.3997031742996136,\n  \"pocfratio\" : 12.99634817740337,\n  \"pfcfRatio\"
         : 14.194972192032905,\n  \"pbRatio\" : -11.327040952751142,\n  \"ptbRatio\"
         : -11.327040952751142,\n  \"evToSales\" : 5.211110656265728,\n  \"enterpriseValueOverEBITDA\"
-        : 15.021001267891682,\n  \"evToOperatingCashFlow\" : 15.393176720515362,\n
+        : 13.820711257341165,\n  \"evToOperatingCashFlow\" : 15.393176720515362,\n
         \ \"evToFreeCashFlow\" : 16.81285485061702,\n  \"earningsYield\" : 0.054791636055398746,\n
         \ \"freeCashFlowYield\" : 0.07044747861931436,\n  \"debtToEquity\" : -2.302496328928047,\n
-        \ \"debtToAssets\" : 1.2238833819241983,\n  \"netDebtToEBITDA\" : 2.338878143133462,\n
+        \ \"debtToAssets\" : 1.2238833819241983,\n  \"netDebtToEBITDA\" : 2.1519843388503292,\n
         \ \"currentRatio\" : 1.0892582169595921,\n  \"interestCoverage\" : 13.118090452261306,\n
         \ \"incomeQuality\" : 1.4043145441892833,\n  \"dividendYield\" : 0.05460861597671683,\n
         \ \"payoutRatio\" : 0.9966597077244259,\n  \"salesGeneralAndAdministrativeToRevenue\"
@@ -68,8 +96,8 @@ interactions:
         : 0.20585033234013295,\n  \"grahamNetNet\" : -24.57090032154341,\n  \"workingCapital\"
         : 1681000000,\n  \"tangibleAssetValue\" : -17570000000,\n  \"netCurrentAssetValue\"
         : -31960000000,\n  \"investedCapital\" : -2.6816100889695087,\n  \"averageReceivables\"
-        : 3717000000,\n  \"averagePayables\" : 2299000000,\n  \"averageInventory\"
-        : 9235000000,\n  \"daysSalesOutstanding\" : 45.51937594363362,\n  \"daysPayablesOutstanding\"
+        : 3739000000,\n  \"averagePayables\" : 2539500000,\n  \"averageInventory\"
+        : 9413000000,\n  \"daysSalesOutstanding\" : 45.51937594363362,\n  \"daysPayablesOutstanding\"
         : 79.81879577665748,\n  \"daysOfInventoryOnHand\" : 320.62922096452013,\n
         \ \"receivablesTurnover\" : 8.018563357546409,\n  \"payablesTurnover\" : 4.572857764245324,\n
         \ \"inventoryTurnover\" : 1.1383865728207905,\n  \"roe\" : -0.6206271054677378,\n
@@ -84,11 +112,11 @@ interactions:
         \ \"priceToSalesRatio\" : 3.9094145034599155,\n  \"pocfratio\" : 12.219498276535134,\n
         \ \"pfcfRatio\" : 14.401443007336484,\n  \"pbRatio\" : -9.29580260574685,\n
         \ \"ptbRatio\" : -9.29580260574685,\n  \"evToSales\" : 4.758899735527426,\n
-        \ \"enterpriseValueOverEBITDA\" : 12.484052480740282,\n  \"evToOperatingCashFlow\"
+        \ \"enterpriseValueOverEBITDA\" : 11.555934808606557,\n  \"evToOperatingCashFlow\"
         : 14.874699795843005,\n  \"evToFreeCashFlow\" : 17.530764071748322,\n  \"earningsYield\"
         : 0.06830638563580557,\n  \"freeCashFlowYield\" : 0.06943748619430519,\n  \"debtToEquity\"
         : -2.165101533028333,\n  \"debtToAssets\" : 1.2698173412728324,\n  \"netDebtToEBITDA\"
-        : 2.228460108031524,\n  \"currentRatio\" : 1.130940608457914,\n  \"interestCoverage\"
+        : 2.0627868852459015,\n  \"currentRatio\" : 1.130940608457914,\n  \"interestCoverage\"
         : 13.258479532163742,\n  \"incomeQuality\" : 1.1980786246997852,\n  \"dividendYield\"
         : 0.05944753698679324,\n  \"payoutRatio\" : 0.8703071672354948,\n  \"salesGeneralAndAdministrativeToRevenue\"
         : 0.25144303797468354,\n  \"researchAndDdevelopementToRevenue\" : 0.0,\n  \"intangiblesToTotalAssets\"
@@ -99,8 +127,8 @@ interactions:
         : 0.260796466011736,\n  \"grahamNetNet\" : -23.711897106109326,\n  \"workingCapital\"
         : 2251000000,\n  \"tangibleAssetValue\" : -20206000000,\n  \"netCurrentAssetValue\"
         : -31098000000,\n  \"investedCapital\" : -2.5490809856328758,\n  \"averageReceivables\"
-        : 3640500000,\n  \"averagePayables\" : 2183500000,\n  \"averageInventory\"
-        : 9019500000,\n  \"daysSalesOutstanding\" : 43.910886075949364,\n  \"daysPayablesOutstanding\"
+        : 3662500000,\n  \"averagePayables\" : 2424000000,\n  \"averageInventory\"
+        : 9197500000,\n  \"daysSalesOutstanding\" : 43.910886075949364,\n  \"daysPayablesOutstanding\"
         : 70.16359918200409,\n  \"daysOfInventoryOnHand\" : 298.70422011526307,\n
         \ \"receivablesTurnover\" : 8.312289562289562,\n  \"payablesTurnover\" : 5.202127659574468,\n
         \ \"inventoryTurnover\" : 1.2219445706497047,\n  \"roe\" : -0.6349626775824705,\n
@@ -115,11 +143,11 @@ interactions:
         \ \"priceToSalesRatio\" : 5.82728826714902,\n  \"pocfratio\" : 18.797450976660684,\n
         \ \"pfcfRatio\" : 22.748897759913092,\n  \"pbRatio\" : -13.860903781565447,\n
         \ \"ptbRatio\" : -13.860903781565447,\n  \"evToSales\" : 6.727942225685265,\n
-        \ \"enterpriseValueOverEBITDA\" : 16.780746408467813,\n  \"evToOperatingCashFlow\"
+        \ \"enterpriseValueOverEBITDA\" : 15.708185097376756,\n  \"evToOperatingCashFlow\"
         : 21.702747206463197,\n  \"evToFreeCashFlow\" : 26.26492165996741,\n  \"earningsYield\"
         : 0.03602492918088932,\n  \"freeCashFlowYield\" : 0.043958173734559895,\n
         \ \"debtToEquity\" : -2.5925864636769815,\n  \"debtToAssets\" : 1.2380841556507167,\n
-        \ \"netDebtToEBITDA\" : 2.2463994447336457,\n  \"currentRatio\" : 1.3528379902267886,\n
+        \ \"netDebtToEBITDA\" : 2.102818159668643,\n  \"currentRatio\" : 1.3528379902267886,\n
         \ \"interestCoverage\" : 10.495437956204379,\n  \"incomeQuality\" : 1.4767191383595692,\n
         \ \"dividendYield\" : 0.03892005604961033,\n  \"payoutRatio\" : 1.0803645401822701,\n
         \ \"salesGeneralAndAdministrativeToRevenue\" : 0.2339293168220398,\n  \"researchAndDdevelopementToRevenue\"
@@ -130,8 +158,8 @@ interactions:
         : 0.18360206875570428,\n  \"grahamNetNet\" : -24.19104381443299,\n  \"workingCapital\"
         : 5632000000,\n  \"tangibleAssetValue\" : -20328000000,\n  \"netCurrentAssetValue\"
         : -31604000000,\n  \"investedCapital\" : -2.84122124772464,\n  \"averageReceivables\"
-        : 3727500000,\n  \"averagePayables\" : 2270500000,\n  \"averageInventory\"
-        : 9020500000,\n  \"daysSalesOutstanding\" : 47.45964936691248,\n  \"daysPayablesOutstanding\"
+        : 3749500000,\n  \"averagePayables\" : 2511000000,\n  \"averageInventory\"
+        : 9198500000,\n  \"daysSalesOutstanding\" : 47.45964936691248,\n  \"daysPayablesOutstanding\"
         : 78.44421012269939,\n  \"daysOfInventoryOnHand\" : 308.10870398773005,\n
         \ \"receivablesTurnover\" : 7.690743713215623,\n  \"payablesTurnover\" : 4.652988403211419,\n
         \ \"inventoryTurnover\" : 1.1846468317056553,\n  \"roe\" : -0.49933807711401623,\n
@@ -146,11 +174,11 @@ interactions:
         \ \"priceToSalesRatio\" : 5.577438952557617,\n  \"pocfratio\" : 18.426886028104494,\n
         \ \"pfcfRatio\" : 21.554519688486604,\n  \"pbRatio\" : -11.730293068174653,\n
         \ \"ptbRatio\" : -11.730293068174653,\n  \"evToSales\" : 6.5078492954468805,\n
-        \ \"enterpriseValueOverEBITDA\" : 15.964511716216217,\n  \"evToOperatingCashFlow\"
+        \ \"enterpriseValueOverEBITDA\" : 15.039573780982073,\n  \"evToOperatingCashFlow\"
         : 21.500799609879905,\n  \"evToFreeCashFlow\" : 25.150175010716872,\n  \"earningsYield\"
         : 0.046810553670702366,\n  \"freeCashFlowYield\" : 0.04639398207208265,\n
         \ \"debtToEquity\" : -2.037436948297604,\n  \"debtToAssets\" : 1.2957857317304822,\n
-        \ \"netDebtToEBITDA\" : 2.2824048538334254,\n  \"currentRatio\" : 1.0692900953421995,\n
+        \ \"netDebtToEBITDA\" : 2.150168875032476,\n  \"currentRatio\" : 1.0692900953421995,\n
         \ \"interestCoverage\" : 10.116931711880262,\n  \"incomeQuality\" : 1.1593225204535669,\n
         \ \"dividendYield\" : 0.04285312348381508,\n  \"payoutRatio\" : 0.9154585904980623,\n
         \ \"salesGeneralAndAdministrativeToRevenue\" : 0.24002248454187747,\n  \"researchAndDdevelopementToRevenue\"
@@ -161,8 +189,8 @@ interactions:
         : 0.2574934397752892,\n  \"grahamNetNet\" : -23.45535138620245,\n  \"workingCapital\"
         : 1141000000,\n  \"tangibleAssetValue\" : -20694000000,\n  \"netCurrentAssetValue\"
         : -30143000000,\n  \"investedCapital\" : -2.290904791929382,\n  \"averageReceivables\"
-        : 3608000000,\n  \"averagePayables\" : 1982500000,\n  \"averageInventory\"
-        : 9126000000,\n  \"daysSalesOutstanding\" : 47.85965898444819,\n  \"daysPayablesOutstanding\"
+        : 3630000000,\n  \"averagePayables\" : 2223000000,\n  \"averageInventory\"
+        : 9304000000,\n  \"daysSalesOutstanding\" : 47.85965898444819,\n  \"daysPayablesOutstanding\"
         : 64.7524225322117,\n  \"daysOfInventoryOnHand\" : 350.4637418805239,\n  \"receivablesTurnover\"
         : 7.6264647042012,\n  \"payablesTurnover\" : 5.636854741896759,\n  \"inventoryTurnover\"
         : 1.041477209714983,\n  \"roe\" : -0.5491015132408575,\n  \"capexPerShare\"
@@ -177,11 +205,11 @@ interactions:
         \ \"priceToSalesRatio\" : 5.203608759349108,\n  \"pocfratio\" : 17.72733542250477,\n
         \ \"pfcfRatio\" : 20.191961346560465,\n  \"pbRatio\" : -10.527445869676834,\n
         \ \"ptbRatio\" : -10.527445869676834,\n  \"evToSales\" : 6.139004743524669,\n
-        \ \"enterpriseValueOverEBITDA\" : 15.265753419767982,\n  \"evToOperatingCashFlow\"
+        \ \"enterpriseValueOverEBITDA\" : 14.369572210884948,\n  \"evToOperatingCashFlow\"
         : 20.913985136427208,\n  \"evToFreeCashFlow\" : 23.821649977986965,\n  \"earningsYield\"
         : 0.04929514572467086,\n  \"freeCashFlowYield\" : 0.04952465898862975,\n  \"debtToEquity\"
         : -1.9065237088492903,\n  \"debtToAssets\" : 1.3379667805395217,\n  \"netDebtToEBITDA\"
-        : 2.326032482598608,\n  \"currentRatio\" : 1.0271675549200572,\n  \"interestCoverage\"
+        : 2.1894819603389535,\n  \"currentRatio\" : 1.0271675549200572,\n  \"interestCoverage\"
         : 9.44434628975265,\n  \"incomeQuality\" : 1.1443328968427178,\n  \"dividendYield\"
         : 0.044826809366971164,\n  \"payoutRatio\" : 0.9093554488578496,\n  \"salesGeneralAndAdministrativeToRevenue\"
         : 0.24841382399044562,\n  \"researchAndDdevelopementToRevenue\" : 0.0,\n  \"intangiblesToTotalAssets\"
@@ -192,8 +220,8 @@ interactions:
         : 0.28735680240822814,\n  \"grahamNetNet\" : -23.043899289864427,\n  \"workingCapital\"
         : 418000000,\n  \"tangibleAssetValue\" : -21514000000,\n  \"netCurrentAssetValue\"
         : -29628000000,\n  \"investedCapital\" : -2.1504077318030808,\n  \"averageReceivables\"
-        : 3247500000,\n  \"averagePayables\" : 1794000000,\n  \"averageInventory\"
-        : 8854000000,\n  \"daysSalesOutstanding\" : 37.84317384489064,\n  \"daysPayablesOutstanding\"
+        : 3269500000,\n  \"averagePayables\" : 2034500000,\n  \"averageInventory\"
+        : 9032000000,\n  \"daysSalesOutstanding\" : 37.84317384489064,\n  \"daysPayablesOutstanding\"
         : 50.2386545648692,\n  \"daysOfInventoryOnHand\" : 330.23438334223175,\n  \"receivablesTurnover\"
         : 9.645068394528439,\n  \"payablesTurnover\" : 7.265321955003879,\n  \"inventoryTurnover\"
         : 1.105275581258114,\n  \"roe\" : -0.5189519782543038,\n  \"capexPerShare\"
@@ -208,11 +236,11 @@ interactions:
         \ \"priceToSalesRatio\" : 4.2213134299056,\n  \"pocfratio\" : 16.23670201162941,\n
         \ \"pfcfRatio\" : 19.07923426480413,\n  \"pbRatio\" : -9.9497851665215,\n
         \ \"ptbRatio\" : -9.9497851665215,\n  \"evToSales\" : 5.154326498068331,\n
-        \ \"enterpriseValueOverEBITDA\" : 12.944304131274782,\n  \"evToOperatingCashFlow\"
+        \ \"enterpriseValueOverEBITDA\" : 12.129720678946953,\n  \"evToOperatingCashFlow\"
         : 19.82540856286342,\n  \"evToFreeCashFlow\" : 23.29620966717279,\n  \"earningsYield\"
         : 0.05963113363266451,\n  \"freeCashFlowYield\" : 0.05241300495191892,\n  \"debtToEquity\"
         : -2.1323145142133186,\n  \"debtToAssets\" : 1.3183846306874698,\n  \"netDebtToEBITDA\"
-        : 2.3431198852611153,\n  \"currentRatio\" : 1.024616199047115,\n  \"interestCoverage\"
+        : 2.195667641710807,\n  \"currentRatio\" : 1.024616199047115,\n  \"interestCoverage\"
         : 10.45897435897436,\n  \"incomeQuality\" : 1.0328306419324702,\n  \"dividendYield\"
         : 0.048028011673979756,\n  \"payoutRatio\" : 0.805418390497798,\n  \"salesGeneralAndAdministrativeToRevenue\"
         : 0.23519333490106495,\n  \"researchAndDdevelopementToRevenue\" : 0.0,\n  \"intangiblesToTotalAssets\"
@@ -223,8 +251,8 @@ interactions:
         : 0.31464684639287815,\n  \"grahamNetNet\" : -23.8882503192848,\n  \"workingCapital\"
         : 372000000,\n  \"tangibleAssetValue\" : -22576000000,\n  \"netCurrentAssetValue\"
         : -30906000000,\n  \"investedCapital\" : -2.332330350779951,\n  \"averageReceivables\"
-        : 3860500000,\n  \"averagePayables\" : 1770500000,\n  \"averageInventory\"
-        : 8913500000,\n  \"daysSalesOutstanding\" : 49.09665065340814,\n  \"daysPayablesOutstanding\"
+        : 3882500000,\n  \"averagePayables\" : 2011000000,\n  \"averageInventory\"
+        : 9091500000,\n  \"daysSalesOutstanding\" : 49.09665065340814,\n  \"daysPayablesOutstanding\"
         : 43.43905711000383,\n  \"daysOfInventoryOnHand\" : 300.5059409735531,\n  \"receivablesTurnover\"
         : 7.434315684315684,\n  \"payablesTurnover\" : 8.402576489533011,\n  \"inventoryTurnover\"
         : 1.2146182495344506,\n  \"roe\" : -0.5933169688811466,\n  \"capexPerShare\"
@@ -239,11 +267,11 @@ interactions:
         \ \"priceToSalesRatio\" : 4.109426706986578,\n  \"pocfratio\" : 12.657520820128267,\n
         \ \"pfcfRatio\" : 14.357467656631226,\n  \"pbRatio\" : -16.518667719804274,\n
         \ \"ptbRatio\" : -16.518667719804274,\n  \"evToSales\" : 4.927058125764808,\n
-        \ \"enterpriseValueOverEBITDA\" : 11.441491743807186,\n  \"evToOperatingCashFlow\"
+        \ \"enterpriseValueOverEBITDA\" : 10.807193192242833,\n  \"evToOperatingCashFlow\"
         : 15.175922398815985,\n  \"evToFreeCashFlow\" : 17.214098882148853,\n  \"earningsYield\"
         : 0.06685168665435655,\n  \"freeCashFlowYield\" : 0.06965016560828775,\n  \"debtToEquity\"
         : -3.0933556528457378,\n  \"debtToAssets\" : 1.164378536994341,\n  \"netDebtToEBITDA\"
-        : 1.8986833296139254,\n  \"currentRatio\" : 0.9874604476737373,\n  \"interestCoverage\"
+        : 1.7934232715008431,\n  \"currentRatio\" : 0.9874604476737373,\n  \"interestCoverage\"
         : 12.521739130434783,\n  \"incomeQuality\" : 1.181786380597015,\n  \"dividendYield\"
         : 0.04458857831890386,\n  \"payoutRatio\" : 0.6669776119402985,\n  \"salesGeneralAndAdministrativeToRevenue\"
         : 0.22071307300509338,\n  \"researchAndDdevelopementToRevenue\" : 0.0,\n  \"intangiblesToTotalAssets\"
@@ -254,8 +282,8 @@ interactions:
         : 0.3288091404033433,\n  \"grahamNetNet\" : -21.254778051787916,\n  \"workingCapital\"
         : -214000000,\n  \"tangibleAssetValue\" : -18360000000,\n  \"netCurrentAssetValue\"
         : -27590000000,\n  \"investedCapital\" : -3.563996909605975,\n  \"averageReceivables\"
-        : 3785000000,\n  \"averagePayables\" : 1786500000,\n  \"averageInventory\"
-        : 9540500000,\n  \"daysSalesOutstanding\" : 45.05061344780088,\n  \"daysPayablesOutstanding\"
+        : 3807000000,\n  \"averagePayables\" : 2027000000,\n  \"averageInventory\"
+        : 9718500000,\n  \"daysSalesOutstanding\" : 45.05061344780088,\n  \"daysPayablesOutstanding\"
         : 44.66954851104707,\n  \"daysOfInventoryOnHand\" : 345.2247838616715,\n  \"receivablesTurnover\"
         : 8.101998442771865,\n  \"payablesTurnover\" : 8.171114599686028,\n  \"inventoryTurnover\"
         : 1.0572821450335161,\n  \"roe\" : -1.1043007983517898,\n  \"capexPerShare\"
@@ -270,14 +298,14 @@ interactions:
         \ \"priceToSalesRatio\" : 4.726513158810594,\n  \"pocfratio\" : 15.741832436471713,\n
         \ \"pfcfRatio\" : 17.729085879737,\n  \"pbRatio\" : -42.6650757721519,\n  \"ptbRatio\"
         : -42.6650757721519,\n  \"evToSales\" : 5.359333377442075,\n  \"enterpriseValueOverEBITDA\"
-        : 12.2413775485186,\n  \"evToOperatingCashFlow\" : 17.849464322683367,\n  \"evToFreeCashFlow\"
-        : 20.102785819964136,\n  \"earningsYield\" : 0.059337655536819515,\n  \"freeCashFlowYield\"
-        : 0.05640448733698809,\n  \"debtToEquity\" : -5.074510932105869,\n  \"debtToAssets\"
-        : 1.0837271037961242,\n  \"netDebtToEBITDA\" : 1.4454393244522095,\n  \"currentRatio\"
-        : 0.9749647390691114,\n  \"interestCoverage\" : 13.832174776564052,\n  \"incomeQuality\"
-        : 1.0705681818181818,\n  \"dividendYield\" : 0.03643871483192871,\n  \"payoutRatio\"
-        : 0.6140909090909091,\n  \"salesGeneralAndAdministrativeToRevenue\" : 0.2223921981068936,\n
-        \ \"researchAndDdevelopementToRevenue\" : 0.0,\n  \"intangiblesToTotalAssets\"
+        : 11.566914526344751,\n  \"evToOperatingCashFlow\" : 17.849464322683367,\n
+        \ \"evToFreeCashFlow\" : 20.102785819964136,\n  \"earningsYield\" : 0.059337655536819515,\n
+        \ \"freeCashFlowYield\" : 0.05640448733698809,\n  \"debtToEquity\" : -5.074510932105869,\n
+        \ \"debtToAssets\" : 1.0837271037961242,\n  \"netDebtToEBITDA\" : 1.3657999724858991,\n
+        \ \"currentRatio\" : 0.9749647390691114,\n  \"interestCoverage\" : 13.832174776564052,\n
+        \ \"incomeQuality\" : 1.0705681818181818,\n  \"dividendYield\" : 0.03643871483192871,\n
+        \ \"payoutRatio\" : 0.6140909090909091,\n  \"salesGeneralAndAdministrativeToRevenue\"
+        : 0.2223921981068936,\n  \"researchAndDdevelopementToRevenue\" : 0.0,\n  \"intangiblesToTotalAssets\"
         : 0.35887974515529597,\n  \"capexToOperatingCashFlow\" : -0.11209001167604288,\n
         \ \"capexToRevenue\" : -0.03365522516492973,\n  \"capexToDepreciation\" :
         -1.175946547884187,\n  \"stockBasedCompensationToRevenue\" : 0.0,\n  \"grahamNumber\"
@@ -285,8 +313,8 @@ interactions:
         : 0.3643741459980953,\n  \"grahamNetNet\" : -18.12928486997636,\n  \"workingCapital\"
         : -426000000,\n  \"tangibleAssetValue\" : -16673000000,\n  \"netCurrentAssetValue\"
         : -24234000000,\n  \"investedCapital\" : -6.5704833141542,\n  \"averageReceivables\"
-        : 3653000000,\n  \"averagePayables\" : 1701000000,\n  \"averageInventory\"
-        : 9092000000,\n  \"daysSalesOutstanding\" : 41.74984861522771,\n  \"daysPayablesOutstanding\"
+        : 3675000000,\n  \"averagePayables\" : 1941500000,\n  \"averageInventory\"
+        : 9270000000,\n  \"daysSalesOutstanding\" : 41.74984861522771,\n  \"daysPayablesOutstanding\"
         : 38.811819145859445,\n  \"daysOfInventoryOnHand\" : 314.8929914200328,\n
         \ \"receivablesTurnover\" : 8.742546670381723,\n  \"payablesTurnover\" : 9.404351767905712,\n
         \ \"inventoryTurnover\" : 1.1591239244608336,\n  \"roe\" : -2.5316455696202533,\n
@@ -301,11 +329,11 @@ interactions:
         \ \"priceToSalesRatio\" : 4.241531450686561,\n  \"pocfratio\" : 12.52720139823345,\n
         \ \"pfcfRatio\" : 13.69382304007475,\n  \"pbRatio\" : 575.9777446375547,\n
         \ \"ptbRatio\" : 575.9777446375547,\n  \"evToSales\" : 4.7558897489146865,\n
-        \ \"enterpriseValueOverEBITDA\" : 11.139944525610124,\n  \"evToOperatingCashFlow\"
+        \ \"enterpriseValueOverEBITDA\" : 10.436377356714416,\n  \"evToOperatingCashFlow\"
         : 14.046339018140374,\n  \"evToFreeCashFlow\" : 15.35443350519103,\n  \"earningsYield\"
         : 0.06513321771903183,\n  \"freeCashFlowYield\" : 0.07302562601207246,\n  \"debtToEquity\"
         : 64.75109170305677,\n  \"debtToAssets\" : 0.9503212353471596,\n  \"netDebtToEBITDA\"
-        : 1.204805664356734,\n  \"currentRatio\" : 1.0043936731107206,\n  \"interestCoverage\"
+        : 1.1287135699668336,\n  \"currentRatio\" : 1.0043936731107206,\n  \"interestCoverage\"
         : 14.390792291220556,\n  \"incomeQuality\" : 1.22558491444535,\n  \"dividendYield\"
         : 0.03630052920948951,\n  \"payoutRatio\" : 0.5573274356885113,\n  \"salesGeneralAndAdministrativeToRevenue\"
         : 0.0,\n  \"researchAndDdevelopementToRevenue\" : 0.0,\n  \"intangiblesToTotalAssets\"
@@ -316,8 +344,8 @@ interactions:
         : 0.3929469880620226,\n  \"grahamNetNet\" : -14.034213515048268,\n  \"workingCapital\"
         : 65000000,\n  \"tangibleAssetValue\" : -11862000000,\n  \"netCurrentAssetValue\"
         : -18866000000,\n  \"investedCapital\" : 80.9825327510917,\n  \"averageReceivables\"
-        : 3459000000,\n  \"averagePayables\" : 1665000000,\n  \"averageInventory\"
-        : 8677500000,\n  \"daysSalesOutstanding\" : 37.571630703926424,\n  \"daysPayablesOutstanding\"
+        : 3481000000,\n  \"averagePayables\" : 1905500000,\n  \"averageInventory\"
+        : 8855500000,\n  \"daysSalesOutstanding\" : 37.571630703926424,\n  \"daysPayablesOutstanding\"
         : 35.242086533058625,\n  \"daysOfInventoryOnHand\" : 277.5613410751077,\n
         \ \"receivablesTurnover\" : 9.714776632302405,\n  \"payablesTurnover\" : 10.35693501454898,\n
         \ \"inventoryTurnover\" : 1.315024630541872,\n  \"roe\" : 37.51528384279476,\n
@@ -332,11 +360,11 @@ interactions:
         \ \"priceToSalesRatio\" : 3.8256173302705085,\n  \"pocfratio\" : 11.029712442725442,\n
         \ \"pfcfRatio\" : 11.931155011691885,\n  \"pbRatio\" : 29.68836175755847,\n
         \ \"ptbRatio\" : 29.68836175755847,\n  \"evToSales\" : 4.369538235886504,\n
-        \ \"enterpriseValueOverEBITDA\" : 10.665326663855746,\n  \"evToOperatingCashFlow\"
+        \ \"enterpriseValueOverEBITDA\" : 9.91463567025269,\n  \"evToOperatingCashFlow\"
         : 12.597901485853555,\n  \"evToFreeCashFlow\" : 13.62750989477304,\n  \"earningsYield\"
         : 0.06973947141058165,\n  \"freeCashFlowYield\" : 0.0838141821994647,\n  \"debtToEquity\"
         : 3.813462635482031,\n  \"debtToAssets\" : 0.8538944365192582,\n  \"netDebtToEBITDA\"
-        : 1.3276217816452858,\n  \"currentRatio\" : 1.0743517650734145,\n  \"interestCoverage\"
+        : 1.2341756317237929,\n  \"currentRatio\" : 1.0743517650734145,\n  \"interestCoverage\"
         : 11.547227926078028,\n  \"incomeQuality\" : 1.3000413280066125,\n  \"dividendYield\"
         : 0.04249313707797253,\n  \"payoutRatio\" : 0.6093125774900124,\n  \"salesGeneralAndAdministrativeToRevenue\"
         : 0.0,\n  \"researchAndDdevelopementToRevenue\" : 0.0,\n  \"intangiblesToTotalAssets\"
@@ -347,8 +375,8 @@ interactions:
         : 0.34540350209364296,\n  \"grahamNetNet\" : -11.860114192495923,\n  \"workingCapital\"
         : 952000000,\n  \"tangibleAssetValue\" : -8913000000,\n  \"netCurrentAssetValue\"
         : -16173000000,\n  \"investedCapital\" : 4.706788362806617,\n  \"averageReceivables\"
-        : 3363000000,\n  \"averagePayables\" : 1567000000,\n  \"averageInventory\"
-        : 8776000000,\n  \"daysSalesOutstanding\" : 40.366252572772716,\n  \"daysPayablesOutstanding\"
+        : 3385000000,\n  \"averagePayables\" : 1807500000,\n  \"averageInventory\"
+        : 8954000000,\n  \"daysSalesOutstanding\" : 40.366252572772716,\n  \"daysPayablesOutstanding\"
         : 31.378050036034182,\n  \"daysOfInventoryOnHand\" : 312.5404097601153,\n
         \ \"receivablesTurnover\" : 9.042206713193751,\n  \"payablesTurnover\" : 11.632335329341318,\n
         \ \"inventoryTurnover\" : 1.167848984008657,\n  \"roe\" : 2.0704506560182545,\n
@@ -363,11 +391,11 @@ interactions:
         \ \"priceToSalesRatio\" : 3.5320921155981626,\n  \"pocfratio\" : 11.215870892186707,\n
         \ \"pfcfRatio\" : 12.334485439252337,\n  \"pbRatio\" : 15.469896101119664,\n
         \ \"ptbRatio\" : 15.469896101119664,\n  \"evToSales\" : 4.086356145955662,\n
-        \ \"enterpriseValueOverEBITDA\" : 10.329354413772213,\n  \"evToOperatingCashFlow\"
+        \ \"enterpriseValueOverEBITDA\" : 9.576142105588318,\n  \"evToOperatingCashFlow\"
         : 12.975891186453577,\n  \"evToFreeCashFlow\" : 14.270041304784488,\n  \"earningsYield\"
         : 0.07172104696787457,\n  \"freeCashFlowYield\" : 0.08107350768096701,\n  \"debtToEquity\"
         : 2.391882435269419,\n  \"debtToAssets\" : 0.8221521185459597,\n  \"netDebtToEBITDA\"
-        : 1.4010500807754442,\n  \"currentRatio\" : 1.3134728931830382,\n  \"interestCoverage\"
+        : 1.298886080688945,\n  \"currentRatio\" : 1.3134728931830382,\n  \"interestCoverage\"
         : 12.633626097867001,\n  \"incomeQuality\" : 1.2431409649952696,\n  \"dividendYield\"
         : 0.04893361246136758,\n  \"payoutRatio\" : 0.6822768842636392,\n  \"salesGeneralAndAdministrativeToRevenue\"
         : 0.0,\n  \"researchAndDdevelopementToRevenue\" : 0.0,\n  \"intangiblesToTotalAssets\"
@@ -378,8 +406,8 @@ interactions:
         : 0.2896684023020005,\n  \"grahamNetNet\" : -10.262480699948533,\n  \"workingCapital\"
         : 3504000000,\n  \"tangibleAssetValue\" : -6513000000,\n  \"netCurrentAssetValue\"
         : -13725000000,\n  \"investedCapital\" : 2.696990902729181,\n  \"averageReceivables\"
-        : 3407500000,\n  \"averagePayables\" : 1484500000,\n  \"averageInventory\"
-        : 9221000000,\n  \"daysSalesOutstanding\" : 45.167565408428196,\n  \"daysPayablesOutstanding\"
+        : 3429500000,\n  \"averagePayables\" : 1725000000,\n  \"averageInventory\"
+        : 9399000000,\n  \"daysSalesOutstanding\" : 45.167565408428196,\n  \"daysPayablesOutstanding\"
         : 27.105963201064068,\n  \"daysOfInventoryOnHand\" : 372.4844823764132,\n
         \ \"receivablesTurnover\" : 8.081020012911555,\n  \"payablesTurnover\" : 13.465671641791046,\n
         \ \"inventoryTurnover\" : 0.9799065928098186,\n  \"roe\" : 1.109517144856543,\n
@@ -394,11 +422,11 @@ interactions:
         : 11.15039247256894,\n  \"priceToSalesRatio\" : 2.988764992647345,\n  \"pocfratio\"
         : 9.681941289981097,\n  \"pfcfRatio\" : 11.238473396138092,\n  \"pbRatio\"
         : 10.2434938848,\n  \"ptbRatio\" : 10.2434938848,\n  \"evToSales\" : 3.3945226273487648,\n
-        \ \"enterpriseValueOverEBITDA\" : 8.513631001658698,\n  \"evToOperatingCashFlow\"
+        \ \"enterpriseValueOverEBITDA\" : 7.89863348746266,\n  \"evToOperatingCashFlow\"
         : 10.99637103163201,\n  \"evToFreeCashFlow\" : 12.764219446459919,\n  \"earningsYield\"
         : 0.08968294187492486,\n  \"freeCashFlowYield\" : 0.08898005669912719,\n  \"debtToEquity\"
         : 1.5169333333333332,\n  \"debtToAssets\" : 0.7725342715030935,\n  \"netDebtToEBITDA\"
-        : 1.017660259537516,\n  \"currentRatio\" : 1.4726932176656151,\n  \"interestCoverage\"
+        : 0.9441477324160406,\n  \"currentRatio\" : 1.4726932176656151,\n  \"interestCoverage\"
         : 19.568181818181817,\n  \"incomeQuality\" : 1.1516690856313498,\n  \"dividendYield\"
         : 0.06611025570141413,\n  \"payoutRatio\" : 0.7371552975326561,\n  \"salesGeneralAndAdministrativeToRevenue\"
         : 0.0,\n  \"researchAndDdevelopementToRevenue\" : 0.0,\n  \"intangiblesToTotalAssets\"
@@ -409,8 +437,8 @@ interactions:
         : 0.31500022859232846,\n  \"grahamNetNet\" : -8.207446808510639,\n  \"workingCapital\"
         : 4795000000,\n  \"tangibleAssetValue\" : -3599000000,\n  \"netCurrentAssetValue\"
         : -10533000000,\n  \"investedCapital\" : 1.5948,\n  \"averageReceivables\"
-        : 3282500000,\n  \"averagePayables\" : 1656000000,\n  \"averageInventory\"
-        : 9449500000,\n  \"daysSalesOutstanding\" : 40.440381248784284,\n  \"daysPayablesOutstanding\"
+        : 3304500000,\n  \"averagePayables\" : 1896500000,\n  \"averageInventory\"
+        : 9627500000,\n  \"daysSalesOutstanding\" : 40.440381248784284,\n  \"daysPayablesOutstanding\"
         : 39.63818610634648,\n  \"daysOfInventoryOnHand\" : 378.147512864494,\n  \"receivablesTurnover\"
         : 9.02563202247191,\n  \"payablesTurnover\" : 9.208292201382033,\n  \"inventoryTurnover\"
         : 0.9652317880794702,\n  \"roe\" : 0.9186666666666666,\n  \"capexPerShare\"
@@ -429,7 +457,7 @@ interactions:
       Content-Type:
       - application/json;charset=UTF-8
       Date:
-      - Sat, 04 Dec 2021 12:08:11 GMT
+      - Sun, 06 Mar 2022 14:44:36 GMT
       Server:
       - nginx/1.14.0 (Ubuntu)
       Transfer-Encoding:

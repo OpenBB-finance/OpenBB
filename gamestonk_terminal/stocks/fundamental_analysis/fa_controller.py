@@ -54,6 +54,7 @@ class FundamentalAnalysisController(StockBaseController):
         "balance",
         "cash",
         "mgmt",
+        "splits",
         "info",
         "shrs",
         "sust",
@@ -116,11 +117,12 @@ Ticker: [/param] {self.ticker} [cmds]
     info          information scope of the company
     mktcap        estimated market cap{is_foreign_start}
     shrs          shareholders (insiders, institutions and mutual funds)
-    sust          sustainability values (Environment, Social and Governance)
+    sust          sustainability values (environment, social and governance)
     cal           calendar earnings and estimates of the company
+    divs          show historical dividends for company
+    splits        stock split and reverse split events since IPO
     web           open web browser of the company
-    hq            open HQ location of the company
-    divs          show historical dividends for company{is_foreign_end}
+    hq            open HQ location of the company{is_foreign_end}
 [src][Alpha Vantage][/src]
     overview      overview of the company
     key           company key metrics
@@ -271,13 +273,28 @@ Ticker: [/param] {self.ticker} [cmds]
             type=valid_date,
             default=(datetime.now() - timedelta(days=3 * 366)).strftime("%Y-%m-%d"),
             dest="start",
-            help="The starting date (format YYYY-MM-DD) of the ETF",
+            help="The starting date (format YYYY-MM-DD) of the market cap display",
         )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
             yahoo_finance_view.display_mktcap(self.ticker, start=ns_parser.start)
+
+    @log_start_end(log=logger)
+    def call_splits(self, other_args: List[str]):
+        """Process splits command."""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="splits",
+            description="""Stock splits and reverse split events since IPO [Source: Yahoo Finance]""",
+        )
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if ns_parser:
+            yahoo_finance_view.display_splits(self.ticker)
 
     @log_start_end(log=logger)
     def call_shrs(self, other_args: List[str]):
@@ -660,6 +677,7 @@ Ticker: [/param] {self.ticker} [cmds]
                 ticker=self.ticker,
                 limit=ns_parser.limit,
                 quarterly=ns_parser.b_quarter,
+                export=ns_parser.export,
             )
 
     @log_start_end(log=logger)

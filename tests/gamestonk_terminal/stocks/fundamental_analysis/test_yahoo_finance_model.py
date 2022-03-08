@@ -28,6 +28,7 @@ def vcr_config():
         "get_website",
         "get_hq",
         "get_dividends",
+        "get_splits",
     ],
 )
 def test_call_func(func, recorder):

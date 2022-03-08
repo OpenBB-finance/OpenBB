@@ -11,11 +11,12 @@ Ticker:  TSLA
     info          information scope of the company
     mktcap        estimated market cap
     shrs          shareholders (insiders, institutions and mutual funds)
-    sust          sustainability values (Environment, Social and Governance)
+    sust          sustainability values (environment, social and governance)
     cal           calendar earnings and estimates of the company
+    divs          show historical dividends for company
+    splits        stock split and reverse split events since IPO
     web           open web browser of the company
     hq            open HQ location of the company
-    divs          show historical dividends for company
 [Alpha Vantage]
     overview      overview of the company
     key           company key metrics
