@@ -2,8 +2,8 @@
 __docformat__ = "numpy"
 
 import logging
-import requests
 import os
+import requests
 
 import pandas as pd
 

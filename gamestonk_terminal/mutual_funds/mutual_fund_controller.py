@@ -479,7 +479,7 @@ Potential errors
             if self.fund_name not in ava_fund.index:
                 console.print("No fund data. Please use another fund", style="bold")
                 return self.queue
-            avanza_view.display_allocation(self.fund_name, self.focus_choices)
+            avanza_view.display_allocation(self.fund_name, ns_parser.focus)
 
         return self.queue
 
