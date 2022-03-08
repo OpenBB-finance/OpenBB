@@ -334,7 +334,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 data_type="ownership",
                 limit=1,
                 ascend=True,
-                sort=["Ticker"],
+                sort="Ticker",
                 export="csv",
             ),
         ),

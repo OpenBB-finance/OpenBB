@@ -196,8 +196,14 @@ def screener(
 
         df_screen = df_screen.fillna("")
 
-        for col in ["Market Cap", "Outstanding", "Float", "Avg Volume", "Volume"]:
-            df_screen[col] = df_screen[col].applymap(
+        if data_type == "ownership":
+            cols = ["Market Cap", "Outstanding", "Float", "Avg Volume", "Volume"]
+            df_screen[cols] = df_screen[cols].applymap(
+                lambda x: lambda_long_number_format(x, 1)
+            )
+        elif data_type == "overview":
+            cols = ["Market Cap", "Volume"]
+            df_screen[cols] = df_screen[cols].applymap(
                 lambda x: lambda_long_number_format(x, 1)
             )
 

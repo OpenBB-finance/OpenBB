@@ -33,7 +33,7 @@ def test_screener(mocker, toggle):
 
     # MOCK PROGRESS_BAR
     mocker.patch(
-        target="finvizfinance.screener.overview.progressBar",
+        target="finvizfinance.screener.overview.progress_bar",
     )
 
     finviz_view.screener(
@@ -97,7 +97,7 @@ def test_screener_sort_matches(sort, mocker):
 
     # MOCK PROGRESS_BAR
     mocker.patch(
-        target="finvizfinance.screener.overview.progressBar",
+        target="finvizfinance.screener.overview.progress_bar",
     )
 
     finviz_view.screener(
