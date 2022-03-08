@@ -25,7 +25,7 @@ def ford_command():
         ["white"] * 2
         + [
             [
-                "red" if boolv else "#21c903"
+                "#e4003a" if boolv else "#00ACFF"
                 for boolv in df_orders["Price Change"].str.contains("-")
             ]
         ]

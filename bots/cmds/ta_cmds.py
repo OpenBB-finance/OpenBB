@@ -354,31 +354,55 @@ class TechnicalAnalysisCommands(commands.Cog):
             aroon_command, inter, "ta aroon", ticker, length, scalar, start, end
         )
 
-    @ta.sub_command()
+    @commands.slash_command(name="ta-candles")
+    async def ta_candles(self, inter):
+        pass
+
+    @ta_candles.sub_command()
     async def bbands(
         self,
         inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
+        interval: int = commands.Param(choices=[1, 5, 15, 30, 60, 1440]),
+        past_days: int = 0,
         length="20",
         std: float = 2.0,
         ma_mode: str = commands.Param(choices=["ema", "sma", "wma", "hma", "zlma"]),
         start="",
         end="",
+        extended_hours: bool = False,
+        heikin_candles: bool = False,
     ):
         """Displays chart with bollinger bands [Yahoo Finance]
 
         Parameters
         -----------
         ticker: Stock Ticker
+        interval : Chart Minute Interval, 1440 for Daily
+        past_days: Past Days to Display. Default: 0(Not for Daily)
         length: length. Default: 5
         std: standard deviation. Default: 2.0
         ma_mode: mode of moving average.
         start: YYYY-MM-DD format
         end: YYYY-MM-DD format
+        extended_hours: Display Pre/After Market Hours. Default: False
+        heikin_candles: Heikin Ashi candles. Default: False
         """
         ma_mode = str(ma_mode)
         await ShowView().discord(
-            bbands_command, inter, "ta bbands", ticker, length, std, ma_mode, start, end
+            bbands_command,
+            inter,
+            "ta bbands",
+            ticker,
+            interval,
+            past_days,
+            length,
+            std,
+            ma_mode,
+            start,
+            end,
+            extended_hours,
+            heikin_candles,
         )
 
     @ta.sub_command()
