@@ -14,7 +14,7 @@ import gamestonk_terminal.config_terminal as cfg
 
 logger = logging.getLogger(__name__)
 LOGFORMAT = "%(asctime)s|%(name)s|%(funcName)s|%(lineno)s|%(message)s"
-LOGPREFIXFORMAT = "%(levelname)s|%(version)s|%(appName)s|%(loggingId)s|%(sessionId)s|"
+LOGPREFIXFORMAT = "%(levelname)s|%(appName)s|%(version)s|%(loggingId)s|%(sessionId)s|"
 DATEFORMAT = "%Y-%m-%dT%H:%M:%S%z"
 
 
@@ -31,7 +31,7 @@ def library_loggers(verbosity: int = 0) -> None:
     logging.getLogger("urllib3").setLevel(verbosity)
 
 
-def setup_file_logger(session_id: str) -> None:
+def setup_file_logger(app_name: str, session_id: str) -> None:
     """Setup File Logger"""
     file_path = Path(__file__)
     logger.debug("Parent dir: %s", file_path.parent.parent.absolute())
@@ -73,7 +73,7 @@ def setup_file_logger(session_id: str) -> None:
 
     handler = logging.FileHandler(cfg.LOGGING_FILE)
     formatter = CustomFormatterWithExceptions(
-        cfg.LOGGING_ID, session_id, fmt=LOGFORMAT, datefmt=DATEFORMAT
+        app_name, cfg.LOGGING_ID, session_id, fmt=LOGFORMAT, datefmt=DATEFORMAT
     )
     handler.setFormatter(formatter)
     logging.getLogger().addHandler(handler)
@@ -84,13 +84,13 @@ class CustomFormatterWithExceptions(logging.Formatter):
 
     def __init__(
         self,
+        app_name: str,
         logging_id: str,
         session_id: str,
         fmt=None,
         datefmt=None,
         style="%",
         validate=True,
-        app_name="gst",
     ) -> None:
         super().__init__(fmt=fmt, datefmt=datefmt, style=style, validate=validate)
         self.logPrefixDict = {
@@ -139,9 +139,6 @@ class CustomFormatterWithExceptions(logging.Formatter):
         if hasattr(record, "session_id"):
             self.logPrefixDict["sessionId"] = record.session_id  # type: ignore
 
-        if hasattr(record, "app_name"):
-            self.logPrefixDict["appName"] = record.app_name  # type: ignore
-
         s = super().format(record)
         if record.levelname:
             self.logPrefixDict["levelname"] = record.levelname[0]
@@ -177,7 +174,7 @@ def get_commit_hash() -> None:
         cfg.LOGGING_VERSION = f"sha:{short_sha}"
 
 
-def setup_logging() -> None:
+def setup_logging(app_name: str) -> None:
     """Setup Logging"""
 
     START_TIME = int(time.time())
@@ -195,26 +192,26 @@ def setup_logging() -> None:
         if a_handler == "stdout":
             handler = logging.StreamHandler(sys.stdout)
             formatter = CustomFormatterWithExceptions(
-                LOGGING_ID, str(START_TIME), fmt=LOGFORMAT, datefmt=DATEFORMAT
+                app_name, LOGGING_ID, str(START_TIME), fmt=LOGFORMAT, datefmt=DATEFORMAT
             )
             handler.setFormatter(formatter)
             logging.getLogger().addHandler(handler)
         elif a_handler == "stderr":
             handler = logging.StreamHandler(sys.stderr)
             formatter = CustomFormatterWithExceptions(
-                LOGGING_ID, str(START_TIME), fmt=LOGFORMAT, datefmt=DATEFORMAT
+                app_name, LOGGING_ID, str(START_TIME), fmt=LOGFORMAT, datefmt=DATEFORMAT
             )
             handler.setFormatter(formatter)
             logging.getLogger().addHandler(handler)
         elif a_handler == "noop":
             handler = logging.NullHandler()  # type: ignore
             formatter = CustomFormatterWithExceptions(
-                LOGGING_ID, str(START_TIME), fmt=LOGFORMAT, datefmt=DATEFORMAT
+                app_name, LOGGING_ID, str(START_TIME), fmt=LOGFORMAT, datefmt=DATEFORMAT
             )
             handler.setFormatter(formatter)
             logging.getLogger().addHandler(handler)
         elif a_handler == "file":
-            setup_file_logger(str(START_TIME))
+            setup_file_logger(app_name, str(START_TIME))
         else:
             logger.debug("Unknown loghandler")
 
