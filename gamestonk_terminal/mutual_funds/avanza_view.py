@@ -40,7 +40,7 @@ def display_allocation(fund_name: str, focus: str):
     """
     # Code mostly taken from: https://github.com/northern-64bit/Portfolio-Report-Generator/tree/main
     fund_data = avanza_model.get_data(fund_name)
-    if focus == "holding" or "all":
+    if focus == ("holding" or "all"):
         table_row = []
         console.print("")
         for data in fund_data["holdingChartData"]:
@@ -52,7 +52,7 @@ def display_allocation(fund_name: str, focus: str):
         header = ["Holding", "Allocation in %", "Country"]
         holding_data = pd.DataFrame(table_row, columns=header)
         print_rich_table(holding_data, title=f"{fund_name}'s Holdings", headers=header)
-    if focus == "sector" or "all":
+    if focus == ("sector" or "all"):
         table_row = []
         console.print("")
         for data in fund_data["sectorChartData"]:
@@ -65,7 +65,7 @@ def display_allocation(fund_name: str, focus: str):
         print_rich_table(
             sector_data, title=f"{fund_name}'s Sector Weighting", headers=header
         )
-    if focus == "country" or "all":
+    if focus == ("country" or "all"):
         table_row = []
         console.print("")
         for data in fund_data["countryChartData"]:
