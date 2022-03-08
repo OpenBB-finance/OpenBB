@@ -234,6 +234,8 @@ main:
             ref: "/stocks/fundamental_analysis/sust"
           - name: cal
             ref: "/stocks/fundamental_analysis/cal"
+          - name: splits
+            ref: "/stocks/fundamental_analysis/splits"
           - name: web
             ref: "/stocks/fundamental_analysis/web"
           - name: hq
