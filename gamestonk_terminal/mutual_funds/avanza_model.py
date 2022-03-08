@@ -8,7 +8,6 @@ import os
 import pandas as pd
 
 from gamestonk_terminal.decorators import log_start_end
-from gamestonk_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
