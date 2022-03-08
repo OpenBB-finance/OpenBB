@@ -94,7 +94,7 @@ def print_rich_table(
         String to
     """
 
-    if gtff.USE_TABULATE_DF:
+    if gtff.ENABLE_RICH:
         table = Table(title=title, show_lines=True)
 
         if show_index:

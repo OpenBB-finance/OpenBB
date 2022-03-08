@@ -18,8 +18,6 @@ from _pytest.mark.structures import Mark
 # IMPORTATION INTERNAL
 from gamestonk_terminal import decorators
 from gamestonk_terminal import rich_config
-from gamestonk_terminal import helper_funcs
-
 
 # pylint: disable=redefined-outer-name
 
@@ -343,11 +341,6 @@ def brotli_check():
 
 def disable_rich():
     rich_config.disable_rich()
-
-    def effect(df, *xargs, **kwargs):  # pylint: disable=unused-argument
-        print(df.to_string())
-
-    helper_funcs.print_rich_table = effect
 
 
 def disable_check_api():
