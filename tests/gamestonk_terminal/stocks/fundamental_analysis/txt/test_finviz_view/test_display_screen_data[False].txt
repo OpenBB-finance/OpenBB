@@ -5,72 +5,72 @@ Sector          Consumer Cyclical
 Industry       Auto Manufacturers
 Country                       USA
 Index                     S&P 500
-P/E                        346.84
-EPS (ttm)                    3.08
-Insider Own                 0.20%
-Shs Outstand              963.33M
-Perf Week                  -2.38%
-Market Cap               1029.76B
-Forward P/E                130.81
-EPS next Y                 34.87%
-Insider Trans             -84.53%
-Shs Float                 811.86M
-Perf Month                 -8.08%
-Income                      3.47B
-PEG                          4.75
-EPS next Q                   2.25
-Inst Own                   42.50%
-Short Float                 3.17%
-Perf Quarter               41.61%
-Sales                      46.85B
-P/S                         21.98
-EPS this Y                165.00%
-Inst Trans                  4.67%
-Short Ratio                  1.01
-Perf Half Y                75.20%
-Book/sh                     27.11
-P/B                         39.43
-ROA                         6.40%
-Target Price               836.72
-Perf Year                  64.49%
-Cash/sh                     16.71
-P/C                         63.98
-EPS next 5Y                73.06%
-ROE                        14.30%
+P/E                        170.31
+EPS (ttm)                    4.92
+Insider Own                 0.10%
+Shs Outstand                1.00B
+Perf Week                   3.51%
+Market Cap                841.86B
+Forward P/E                 65.87
+EPS next Y                 21.43%
+Insider Trans             -94.13%
+Shs Float                 843.60M
+Perf Month                 -7.44%
+Income                      5.52B
+PEG                          7.85
+EPS next Q                   2.24
+Inst Own                   42.60%
+Short Float                 2.88%
+Perf Quarter              -22.71%
+Sales                      53.82B
+P/S                         15.64
+EPS this Y                669.20%
+Inst Trans                  3.32%
+Short Ratio                  0.92
+Perf Half Y                14.46%
+Book/sh                     29.80
+P/B                         28.13
+ROA                         9.70%
+Target Price               962.94
+Perf Year                  40.19%
+Cash/sh                     17.63
+P/C                         47.54
+EPS next 5Y                21.70%
+ROE                        21.00%
 52W Range        539.49 - 1243.49
-Perf YTD                   51.48%
-P/FCF                      104.12
-EPS past 5Y                19.70%
-ROI                         5.00%
-52W High                  -14.04%
-Beta                         2.05
+Perf YTD                  -20.68%
+P/FCF                       73.43
+EPS past 5Y                48.60%
+ROI                        15.70%
+52W High                  -32.59%
+Beta                         2.07
 Quick Ratio                  1.10
-Sales past 5Y              50.80%
-Gross Margin               23.10%
-52W Low                    98.14%
-ATR                         63.76
-Employees                   70757
+Sales past 5Y              50.40%
+Gross Margin               25.30%
+52W Low                    55.39%
+ATR                         53.12
+Employees                   99290
 Current Ratio                1.40
-Sales Q/Q                  56.80%
-Oper. Margin                9.60%
-RSI (14)                    50.93
-Volatility            5.73% 6.15%
+Sales Q/Q                  64.90%
+Oper. Margin               12.10%
+RSI (14)                    43.73
+Volatility            5.40% 5.84%
 Optionable                    Yes
-Debt/Eq                      0.30
-EPS Q/Q                   430.70%
-Profit Margin               7.40%
-Rel Volume                   0.54
-Prev Close                1051.75
+Debt/Eq                      0.23
+EPS Q/Q                   787.10%
+Profit Margin              10.30%
+Rel Volume                   0.85
+Prev Close                 839.29
 Shortable                     Yes
-LT Debt/Eq                   0.24
-Earnings               Oct 20 AMC
+LT Debt/Eq                   0.17
+Earnings               Jan 26 AMC
 Payout                      0.00%
-Avg Volume                 25.48M
-Price                     1068.96
+Avg Volume                 26.32M
+Price                      838.29
 Recom                        2.60
-SMA20                      -0.93%
-SMA50                       7.83%
-SMA200                     41.90%
-Volume                 13,881,093
-Change                      1.64%
+SMA20                      -3.90%
+SMA50                     -12.49%
+SMA200                     -0.01%
+Volume                 22,287,340
+Change                     -0.12%
 

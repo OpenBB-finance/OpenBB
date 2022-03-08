@@ -105,7 +105,7 @@ def get_key_metrics(ticker: str) -> pd.DataFrame:
         console.print(result.json()["Error Message"])
     else:
         # check if json is empty
-        if not result.json():
+        if not result.json() or len(result.json()) < 2:
             console.print("No data found")
             return pd.DataFrame()
 
@@ -308,7 +308,7 @@ def get_earnings(ticker: str, quarterly: bool = False) -> pd.DataFrame:
     ticker : str
         Stock ticker
     quarterly : bool, optional
-        [Flag to get quarterly and not annual, by default False
+        Flag to get quarterly and not annual, by default False
 
     Returns
     -------
@@ -328,7 +328,7 @@ def get_earnings(ticker: str, quarterly: bool = False) -> pd.DataFrame:
         console.print(result.json()["Error Message"])
     else:
         # check if json is empty
-        if not result.json():
+        if not result.json() or len(result.json()) < 2:
             console.print("No data found")
         else:
 

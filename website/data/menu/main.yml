@@ -234,12 +234,16 @@ main:
             ref: "/stocks/fundamental_analysis/sust"
           - name: cal
             ref: "/stocks/fundamental_analysis/cal"
+          - name: splits
+            ref: "/stocks/fundamental_analysis/splits"
           - name: web
             ref: "/stocks/fundamental_analysis/web"
           - name: hq
             ref: "/stocks/fundamental_analysis/hq"
           - name: divs
             ref: "/stocks/fundamental_analysis/divs"
+          - name: mktcap
+            ref: "/stocks/fundamental_analysis/mktcap"
           - name: overview
             ref: "/stocks/fundamental_analysis/overview"
           - name: key
