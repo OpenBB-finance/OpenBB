@@ -167,9 +167,52 @@ def get_most_shorted() -> pd.DataFrame:
     return data
 ```
 
-Note: As explained before, it is possible that this file needs to be created under `common/` directory rather than
+Note:
+
+1. As explained before, it is possible that this file needs to be created under `common/` directory rather than
 `stocks/`, which means that when that happens this function should be done in a generic way, i.e. not mentioning stocks
 or a specific context.
+2. If the model require an API key or some sort of secrets, make sure to handle the error and output relevant message.
+
+In the example below, you can see that we explicitly handle 4 important error types:
+
+* Invalid API Keys
+* API Keys not authorized for Premium feature
+* Empty return payload
+* Invalid arguments (Optional)
+
+It's not always possible to distinguish error types using status_code. So depending on the API provider, you can use either error messages or exception.
+
+```python
+def get_economy_calendar_events() -> pd.DataFrame:
+    """Get economic calendar events
+
+    Returns
+    -------
+    pd.DataFrame
+        Get dataframe with economic calendar events
+    """
+    response = requests.get(
+        f"https://finnhub.io/api/v1/calendar/economic?token={cfg.API_FINNHUB_KEY}"
+    )
+
+    df = pd.DataFrame()
+
+    if response.status_code == 200:
+        d_data = response.json()
+        if "economicCalendar" in d_data:
+            df = pd.DataFrame(d_data["economicCalendar"])
+        else:
+            console.print("No latest economy calendar events found\n")
+    elif response.status_code == 401:
+        console.print("[red]Invalid API Key[/red]\n")
+    elif response.status_code == 403:
+        console.print("[red]API Key not authorized for Premium Feature[/red]\n")
+    else:
+        console.print(f"Error in request: {response.json()['error']}", "\n")
+
+    return df
+```
 
 #### View
 
@@ -188,7 +231,8 @@ same data source.
     `df_data = df.copy()` can be useful as if you change `df_data`, `df` remains intact.
    * Always add a new line at the end, this allows for an additional line between 2 commands and makes it easier for the
     user to visualize what is happening.
-6. Finally, call `export_data` where the variables are export variable, current filename, command name, and dataframe.
+6. If the source requires an API Key or some sort of tokens, add `check_api_key` decorator on that specific view. This will throw a warning if users forget to set their Keys or Tokens
+7. Finally, call `export_data` where the variables are export variable, current filename, command name, and dataframe.
 
 ```python
 """ Yahoo Finance View """

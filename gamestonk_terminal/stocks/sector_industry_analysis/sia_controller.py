@@ -279,7 +279,7 @@ class SectorIndustryAnalysisController(BaseController):
     country       see existing countries, or set country if arg specified
     mktcap        set mktcap between nano, micro, small, mid, large or mega
     exchange      revert exclude international exchanges flag
-    period        set period between annual, quarterly or trailing [src][StockAnalyis][/src]
+    period        set period between annual, quarterly or trailing [src][StockAnalysis][/src]
 [/cmds]
 [param]Industry          : [/param]{self.industry}
 [param]Sector            : [/param]{self.sector}
@@ -297,10 +297,10 @@ class SectorIndustryAnalysisController(BaseController):
 
 [info]Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}[/info] [src][Yahoo Finance][/src] [cmds]
     sama          see all metrics available
-    metric        visualise financial metric across filters selected[/cmds]
-[info]Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}[/info] [src][StockAnalyis][/src] [cmds]
+    metric        visualize financial metric across filters selected[/cmds]
+[info]Financials {'- loaded data (fast mode) 'if self.stocks_data else ''}[/info] [src][StockAnalysis][/src] [cmds]
     satma         see all metrics available over time
-    vis           visualise financial metric across filters selected[/cmds]
+    vis           visualize financial metric across filters selected[/cmds]
 {has_no_tickers}
 [param]Returned tickers: [/param]{', '.join(self.tickers)}
 >   ca            take these to comparison analysis menu
@@ -908,19 +908,19 @@ class SectorIndustryAnalysisController(BaseController):
                 self.stocks_data,
                 self.tickers,
             ) = stockanalysis_view.display_plots_financials(
-                ns_parser.metric,
-                stockanalysis_model.sa_keys,
-                self.country,
-                self.sector,
-                self.industry,
-                self.period,
-                ns_parser.period,
-                self.mktcap,
-                self.exclude_exchanges,
-                ns_parser.limit,
-                ns_parser.export,
-                ns_parser.raw,
-                self.stocks_data,
+                finance_key=ns_parser.metric,
+                sa_dict=stockanalysis_model.sa_keys,
+                country=self.country,
+                sector=self.sector,
+                industry=self.industry,
+                period=self.period,
+                period_length=ns_parser.period,
+                marketcap=self.mktcap,
+                exclude_exchanges=self.exclude_exchanges,
+                limit=ns_parser.limit,
+                export=ns_parser.export,
+                raw=ns_parser.raw,
+                already_loaded_stocks_data=self.stocks_data,
             )
 
     @log_start_end(log=logger)

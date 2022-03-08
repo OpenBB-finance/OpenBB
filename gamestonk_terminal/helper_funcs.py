@@ -9,6 +9,7 @@ import os
 import random
 import re
 import sys
+from difflib import SequenceMatcher
 import pytz
 import pandas as pd
 from rich.table import Table
@@ -46,6 +47,25 @@ MENU_RESET = 2
 def log_and_raise(error: Union[argparse.ArgumentTypeError, ValueError]) -> None:
     logger.error(str(error))
     raise error
+
+
+def similar(a: str, b: str) -> float:
+    """
+    Return a similarity float between string a and string b
+
+    Parameters
+    ----------
+    a: str
+        string a
+    b: str
+        string b
+
+    Returns
+    -------
+    float:
+        Ratio of similarity between two strings
+    """
+    return SequenceMatcher(None, a, b).ratio()
 
 
 def print_rich_table(
@@ -275,6 +295,30 @@ def valid_date_in_past(s: str) -> datetime:
     except ValueError as value_error:
         logging.exception(str(value_error))
         raise argparse.ArgumentTypeError(f"Not a valid date: {s}") from value_error
+
+
+def check_list_dates(str_dates: str) -> List[datetime]:
+    """Argparse type to check list of dates provided have a valid format
+
+    Parameters
+    ----------
+    str_dates: str
+        string with dates separated by ","
+
+    Returns
+    -------
+    list_dates: List[datetime]
+        List of valid dates
+    """
+    list_dates = list()
+    if str_dates:
+        if "," in str_dates:
+            for dt_marker in str_dates.split(","):
+                list_dates.append(valid_date(dt_marker))
+        else:
+            list_dates.append(valid_date(str_dates))
+
+    return list_dates
 
 
 def valid_date(s: str) -> datetime:
@@ -1115,3 +1159,20 @@ def excel_columns() -> List[str]:
         + [f"{x}{y}{z}" for x in letters for y in letters for z in letters]
     )
     return opts
+
+
+def handle_error_code(requests_obj, error_code_map):
+    """
+    Helper function to handle error code of HTTP requests.
+
+    Parameters
+    ----------
+    requests_obj: Object
+        Request object
+    error_code_map: Dict
+        Dictionary mapping of HTTP error code and output message
+
+    """
+    for error_code, error_msg in error_code_map.items():
+        if requests_obj.status_code == error_code:
+            console.print(error_msg)

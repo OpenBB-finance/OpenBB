@@ -6,7 +6,7 @@ import logging
 import os
 
 import matplotlib.pyplot as plt
-
+from gamestonk_terminal.decorators import check_api_key
 from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal import config_plot as cfp
 from gamestonk_terminal.decorators import log_start_end
@@ -22,6 +22,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_KEY_ALPHAVANTAGE"])
 def realtime_performance_sector(
     raw: bool,
     export: str,
@@ -39,6 +40,10 @@ def realtime_performance_sector(
         External axes (1 axis is expected in the list), by default None
     """
     df_sectors = alphavantage_model.get_sector_data()
+
+    # pylint: disable=E1101
+    if df_sectors.empty:
+        return
 
     # pylint: disable=invalid-sequence-index
     df_rtp = df_sectors["Rank A: Real-Time Performance"]
@@ -69,6 +74,7 @@ def realtime_performance_sector(
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_KEY_ALPHAVANTAGE"])
 def display_real_gdp(
     interval: str,
     start_year: int = 2010,
@@ -92,8 +98,8 @@ def display_real_gdp(
         External axes (1 axis is expected in the list), by default None
     """
     gdp_full = alphavantage_model.get_real_gdp(interval)
+
     if gdp_full.empty:
-        console.print("Error getting data.  Check API Key")
         return
     gdp = gdp_full[gdp_full.date >= f"{start_year}-01-01"]
     int_string = "Annual" if interval == "a" else "Quarterly"
@@ -129,6 +135,7 @@ def display_real_gdp(
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_KEY_ALPHAVANTAGE"])
 def display_gdp_capita(
     start_year: int = 2010,
     raw: bool = False,
@@ -188,6 +195,7 @@ def display_gdp_capita(
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_KEY_ALPHAVANTAGE"])
 def display_inflation(
     start_year: int = 2010,
     raw: bool = False,
@@ -247,6 +255,7 @@ def display_inflation(
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_KEY_ALPHAVANTAGE"])
 def display_cpi(
     interval: str,
     start_year: int = 2010,
@@ -308,6 +317,7 @@ def display_cpi(
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_KEY_ALPHAVANTAGE"])
 def display_treasury_yield(
     interval: str,
     maturity: str,
@@ -373,6 +383,7 @@ def display_treasury_yield(
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_KEY_ALPHAVANTAGE"])
 def display_unemployment(
     start_year: int = 2015,
     raw: bool = False,

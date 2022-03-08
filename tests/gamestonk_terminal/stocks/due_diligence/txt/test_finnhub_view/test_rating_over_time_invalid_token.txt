@@ -1,2 +1,2 @@
-No ratings over time found 
+[red]Invalid API Key[/red]
 

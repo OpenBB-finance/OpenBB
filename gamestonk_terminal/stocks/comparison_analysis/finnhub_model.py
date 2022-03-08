@@ -15,16 +15,24 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def get_similar_companies(ticker: str) -> Tuple[List[str], str]:
-    result = requests.get(
+    response = requests.get(
         f"https://finnhub.io/api/v1/stock/peers?symbol={ticker}&token={cfg.API_FINNHUB_KEY}"
     )
 
-    if result.status_code == 200:
-        similar = result.json()
+    similar = []
+    user = "Error"
+
+    if response.status_code == 200:
+        similar = response.json()
         user = "Finnhub"
 
+        if not similar:
+            console.print("Similar companies not found.")
+    elif response.status_code == 401:
+        console.print("[red]Invalid API Key[/red]\n")
+    elif response.status_code == 403:
+        console.print("[red]API Key not authorized for Premium Feature[/red]\n")
     else:
-        console.print("Similar companies not found.")
-        similar = [""]
-        user = "Error"
+        console.print(f"Error in request: {response.json()['error']}", "\n")
+
     return similar, user

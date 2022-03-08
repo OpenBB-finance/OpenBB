@@ -9,6 +9,7 @@ import mplfinance as mpf
 import pandas as pd
 
 from gamestonk_terminal.config_terminal import theme
+from gamestonk_terminal.decorators import check_api_key
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.forex import av_model
 from gamestonk_terminal.helper_funcs import plot_autoscale, print_rich_table
@@ -18,6 +19,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_KEY_ALPHAVANTAGE"])
 def display_quote(to_symbol: str, from_symbol: str):
     """Display current forex pair exchange rate.
 
@@ -31,8 +33,6 @@ def display_quote(to_symbol: str, from_symbol: str):
     quote = av_model.get_quote(to_symbol, from_symbol)
 
     if not quote:
-        logger.error("Quote not pulled from AlphaVantage.  Check API key.")
-        console.print("[red]Quote not pulled from AlphaVantage.  Check API key.[/red]")
         return
 
     df = pd.DataFrame.from_dict(quote)
@@ -87,7 +87,7 @@ def display_candle(
         candle_chart_kwargs["figratio"] = (10, 7)
         candle_chart_kwargs["figscale"] = 1.10
         candle_chart_kwargs["figsize"] = plot_autoscale()
-        fig, _ = mpf.plot(data, **candle_chart_kwargs)
+        fig, ax = mpf.plot(data, **candle_chart_kwargs)
         fig.suptitle(
             f"{from_symbol}/{to_symbol}",
             x=0.055,
@@ -95,6 +95,7 @@ def display_candle(
             horizontalalignment="left",
         )
         theme.visualize_output(force_tight_layout=False)
+        ax[0].legend()
     else:
         if len(external_axes) != 1:
             logger.error("Expected list of 1 axis items.")

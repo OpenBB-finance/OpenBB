@@ -1,4 +1,5 @@
 import os
+from typing import List
 import uuid
 
 import df2img
@@ -9,6 +10,7 @@ from numpy.core.fromnumeric import transpose
 from PIL import Image
 
 import bots.config_discordbot as cfg
+from bots.groupme.groupme_helpers import send_image, send_message
 
 presets_custom = [
     "potential_reversals",
@@ -201,7 +203,9 @@ def image_border(file, **kwargs):
     if "fig" in kwargs:
         fig = kwargs["fig"]
         fig.write_image(imagefile)
-    img = Image.open(file)
+        img = Image.open(imagefile)
+    else:
+        img = Image.open(file)
     im_bg = Image.open(cfg.IMG_BG)
     h = img.height + 240
     w = img.width + 520
@@ -218,7 +222,6 @@ def image_border(file, **kwargs):
     image = Image.open(file)
     image = autocrop_image(image, 0)
     image.save(imagefile, "PNG", quality=100)
-    os.remove(file)
     return imagefile
 
 
@@ -269,3 +272,22 @@ class ShowView:
                 )
 
                 await inter.send(embed=embed, delete_after=30.0)
+
+    def groupme(self, func, group_id, name, *args, **kwargs):
+        data = func(*args, **kwargs)
+        if "imagefile" in data:
+            send_image(data["imagefile"], group_id, data.get("description", ""), True)
+        elif "embeds_img" in data:
+            send_image(
+                data["embeds_img"][0], group_id, data.get("description", ""), True
+            )
+        elif "description" in data:
+            title = data.get("title", "")
+            # TODO: Allow navigation through pages
+            description = data.get("description")
+            if isinstance(description, List):
+                clean_desc = description[0].replace("Page ", "")
+            else:
+                clean_desc = description.replace("Page ", "")
+            message = f"{title}\n{clean_desc}"
+            send_message(message, group_id)

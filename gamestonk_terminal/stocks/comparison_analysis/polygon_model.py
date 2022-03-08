@@ -33,6 +33,9 @@ def get_similar_companies(ticker: str, us_only: bool) -> Tuple[List[str], str]:
         f"https://api.polygon.io/v1/meta/symbols/{ticker.upper()}/company?&apiKey={cfg.API_POLYGON_KEY}"
     )
 
+    similar = []
+    source = "Error"
+
     if result.status_code == 200:
         similar = result.json()["similar"]
         source = "Polygon"
@@ -45,8 +48,11 @@ def get_similar_companies(ticker: str, us_only: bool) -> Tuple[List[str], str]:
                 if prep_link == sent_req.request.url:
                     us_similar.append(sym)
                 similar = us_similar
+    elif result.status_code == 401:
+        console.print("[red]Invalid API Key[/red]\n")
+    elif result.status_code == 403:
+        console.print("[red]API Key not authorized for Premium Feature[/red]\n")
     else:
         console.print(result.json()["error"])
-        similar = [""]
-        source = "Error"
+
     return similar, source

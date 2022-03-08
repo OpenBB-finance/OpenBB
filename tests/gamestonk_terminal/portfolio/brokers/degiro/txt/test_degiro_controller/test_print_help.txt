@@ -1,6 +1,5 @@
 
-Degiro:
-   login        connect to degiro's api
+[cmds]   login        connect to degiro's api
    logout       disconnect from degiro's api
 
    hold         view holdings
@@ -13,5 +12,5 @@ Degiro:
 
    companynews  view news about a company with it's isin
    lastnews     view latest news
-   topnews      view top news preview
+   topnews      view top news preview[/cmds]
 

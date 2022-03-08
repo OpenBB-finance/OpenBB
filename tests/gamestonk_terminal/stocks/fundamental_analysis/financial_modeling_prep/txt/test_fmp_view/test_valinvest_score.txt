@@ -1,2 +1,2 @@
-Score: 77.78 %
+[red]Invalid API Key[/red]
 

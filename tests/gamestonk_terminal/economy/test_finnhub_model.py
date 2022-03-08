@@ -3,7 +3,6 @@
 # IMPORTATION THIRDPARTY
 import pandas as pd
 import pytest
-import requests
 
 # IMPORTATION INTERNAL
 from gamestonk_terminal.economy import finnhub_model
@@ -38,8 +37,11 @@ def test_get_economy_calendar_events(mocker):
 @pytest.mark.vcr(record_mode="none")
 def test_get_economy_calendar_events_no_response(mocker):
     # MOCK GET
-    mock_response = requests.Response()
-    mock_response.status_code = 400
+    attrs = {
+        "json.return_value": {"error": "mock error message"},
+    }
+    mock_response = mocker.Mock(**attrs)
+
     mocker.patch(target="requests.get", new=mocker.Mock(return_value=mock_response))
 
     result_df = finnhub_model.get_economy_calendar_events()

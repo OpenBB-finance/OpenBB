@@ -309,12 +309,12 @@ def test_call_func_expect_queue(expected_queue, func, queue):
         (
             "call_news",
             [
-                "--num=1",
+                "--limit=1",
                 "--date=2022-01-07",
                 "--oldest",
                 "--sources=MOCK_SOURCE_1,MOCK_SOURCE_2",
             ],
-            "newsapi_view.news",
+            "newsapi_view.display_news",
             [],
             dict(
                 term="MOCK_TICKER",

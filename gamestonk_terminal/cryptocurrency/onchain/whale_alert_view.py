@@ -5,6 +5,7 @@ import logging
 import os
 
 from gamestonk_terminal.cryptocurrency.onchain import whale_alert_model
+from gamestonk_terminal.decorators import check_api_key
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
     export_data,
@@ -17,6 +18,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_WHALE_ALERT_KEY"])
 def display_whales_transactions(
     min_value: int = 800000,
     top: int = 100,
@@ -46,7 +48,6 @@ def display_whales_transactions(
     df = whale_alert_model.get_whales_transactions(min_value)
 
     if df.empty:
-        console.print("Error with Whale Alert requests\n")
         return
 
     df_data = df.copy()

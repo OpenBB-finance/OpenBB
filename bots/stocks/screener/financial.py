@@ -115,7 +115,7 @@ def financial_command(preset="template", sort="", limit: int = 5, ascend: bool =
                 )
             )
             reports.append(f"{description}")
-
+    print(df_screen)
     return {
         "view": Menu,
         "title": title,

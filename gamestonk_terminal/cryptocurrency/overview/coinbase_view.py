@@ -5,6 +5,7 @@ import logging
 import os
 
 from gamestonk_terminal.cryptocurrency.overview import coinbase_model
+from gamestonk_terminal.decorators import check_api_key
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
     export_data,
@@ -17,6 +18,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_COINBASE_KEY", "API_COINBASE_SECRET", "API_COINBASE_PASS_PHRASE"])
 def display_trading_pairs(top: int, sortby: str, descend: bool, export: str) -> None:
     """Displays a list of available currency pairs for trading. [Source: Coinbase]
 

@@ -11,13 +11,13 @@ from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.common.behavioural_analysis import (
     finbrain_view,
-    finnhub_view,
     google_view,
     reddit_view,
     sentimentinvestor_view,
     stocktwits_view,
     twitter_view,
 )
+from gamestonk_terminal.stocks.behavioural_analysis import finnhub_view
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -59,11 +59,11 @@ class BehaviouralAnalysisController(StockBaseController):
         "queries",
         "rise",
         "headlines",
-        "stats",
         "popular",
         "getdd",
         "hist",
         "trend",
+        "snews",
     ]
 
     historical_sort = ["date", "value"]
@@ -93,7 +93,7 @@ class BehaviouralAnalysisController(StockBaseController):
 [src][Finbrain][/src]
     headlines     sentiment from 15+ major news headlines
 [src][Finnhub][/src]
-    stats         sentiment stats including comparison with sector{has_ticker_end}
+    snews         stock price displayed over sentiment of news headlines{has_ticker_end}
 [src][Reddit][/src]
     wsb           show what WSB gang is up to in subreddit wallstreetbets
     watchlist     show other users watchlist
@@ -117,7 +117,6 @@ class BehaviouralAnalysisController(StockBaseController):
 [src][SentimentInvestor][/src]
     trend         most talked about tickers within the last hour{has_ticker_start}
     hist          plot historical RHI and AHI data by hour{has_ticker_end}[/cmds]
-
         """
         console.print(text=help_text, menu="Stocks - Behavioural Analysis")
 
@@ -144,6 +143,23 @@ class BehaviouralAnalysisController(StockBaseController):
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             reddit_view.display_watchlist(num=ns_parser.limit)
+
+    @log_start_end(log=logger)
+    def call_snews(self, other_args: List[str]):
+        """Process snews command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="snews",
+            description="""Display stock price and headlines sentiment using VADER model over time. [Source: Finnhub]""",
+        )
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if ns_parser:
+            finnhub_view.display_stock_price_headlines_sentiment(
+                ticker=self.ticker, export=ns_parser.export
+            )
 
     @log_start_end(log=logger)
     def call_spac(self, other_args: List[str]):
@@ -662,30 +678,6 @@ class BehaviouralAnalysisController(StockBaseController):
         if ns_parser:
             if self.ticker:
                 finbrain_view.display_sentiment_analysis(
-                    ticker=self.ticker, export=ns_parser.export
-                )
-            else:
-                console.print("No ticker loaded. Please load using 'load <ticker>'\n")
-
-    @log_start_end(log=logger)
-    def call_stats(self, other_args: List[str]):
-        """Process stats command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="stats",
-            description="""
-                Sentiment stats which displays buzz, news score, articles last week, articles weekly average,
-                bullish vs bearish percentages, sector average bullish percentage, and sector average news score.
-                [Source: https://finnhub.io]
-            """,
-        )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-        if ns_parser:
-            if self.ticker:
-                finnhub_view.display_sentiment_stats(
                     ticker=self.ticker, export=ns_parser.export
                 )
             else:
