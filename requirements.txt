@@ -233,3 +233,5 @@ wrapt==1.13.3; python_full_version >= "3.7.1" and python_full_version < "4.0.0"
 yarl==1.7.2; python_version >= "3.6"
 yfinance==0.1.70
 zope.interface==5.4.0; python_version >= "3.5" and python_full_version < "3.0.0" or python_full_version >= "3.5.0" and python_version >= "3.5"
+boto3==1.21.14; python_version >= "3.6"
+schedule==1.1.0; python_version >= "3.6"

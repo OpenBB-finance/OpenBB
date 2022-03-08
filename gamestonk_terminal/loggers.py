@@ -10,6 +10,7 @@ import time
 import uuid
 from math import floor, ceil
 
+import schedule
 import git
 import boto3
 from botocore.exceptions import ClientError
@@ -79,14 +80,15 @@ def setup_file_logger(session_id: str) -> None:
 
     uuid_log_dir = get_log_dir()
 
-    upload_archive_logs_s3(directory_str=uuid_log_dir, log_filter=r"_log")
+    upload_archive_logs_s3(directory_str=uuid_log_dir, log_filter=r"gst_")
 
     start_time = int(time.time())
-    cfg.LOGGING_FILE = uuid_log_dir.absolute().joinpath(f"{start_time}_log")  # type: ignore
+    cfg.LOGGING_FILE = uuid_log_dir.absolute().joinpath(f"gst_{start_time}")  # type: ignore
 
     logger.debug("Current_log file: %s", cfg.LOGGING_FILE)
 
-    handler = TimedRotatingFileHandler(cfg.LOGGING_FILE, when="M")
+    handler = TimedRotatingFileHandler(cfg.LOGGING_FILE)
+    handler.suffix = "%Y-%m-%d_%H.log"
     formatter = CustomFormatterWithExceptions(
         uuid_log_dir.stem, session_id, fmt=LOGFORMAT, datefmt=DATEFORMAT
     )
@@ -237,6 +239,7 @@ def upload_file_to_s3(
     # If S3 object_name was not specified, use file_name
     if object_name is None:
         object_name = file.name
+
     # If folder_name was specified, upload in the folder
     if folder_name is not None:
         object_name = f"{folder_name}/{object_name}"
@@ -256,9 +259,23 @@ def upload_file_to_s3(
         logger.exception(str(e))
 
 
+def contains_goodbye(file: Path) -> bool:
+    with open(file, "rb") as f:
+        try:
+            f.seek(-2, os.SEEK_END)
+            while f.read(1) != b"\n":
+                f.seek(-2, os.SEEK_CUR)
+        except OSError:
+            f.seek(0)
+            logger.exception("Could not find last line")
+            return False
+        last_line = f.readline().decode()
+    return "print_goodbye" in last_line
+
+
 def upload_archive_logs_s3(
     directory_str=None,
-    log_filter=r"_log\.20[2-3][0-9]-[0-2][0-9]-[0-3][0-9]_[0-2][0-9]*",
+    log_filter=r"gst_\d{10}\.20[2-3][0-9]-[0-2][0-9]-[0-3][0-9]_[0-2][0-9]\.log",
     bucket=BUCKET,
     folder_name=FOLDER_NAME,
 ) -> None:
@@ -277,16 +294,35 @@ def upload_archive_logs_s3(
         log_files = {}
 
         for file in directory.iterdir():
+
+            one_day_old = (
+                file.name[4:14].isdigit()
+                and (int(time.time()) - int(file.name[4:14])) / 86400 > 1
+            )  # 86400 seconds in one day
+
             regexp = re.compile(log_filter)
-            if regexp.search(str(file)):
+            if regexp.search(str(file)) and (
+                file.suffix == ".log" or one_day_old or contains_goodbye(file)
+            ):
                 log_files[str(file)] = file, (archive / file.name)
-        logger.info("Start uploading Logs")
+
         for log_file, archived_file in log_files.values():
-            upload_file_to_s3(file=log_file, bucket=bucket, folder_name=folder_name)
+            logger.info("Uploading logs")
+            upload_file_to_s3(
+                file=log_file,
+                bucket=bucket,
+                folder_name=f"{folder_name}/{cfg.LOGGING_ID}",
+            )
             try:
                 log_file.rename(archived_file)
             except Exception as e:
                 logger.exception("Cannot archive file: %s", str(e))
-        logger.info("Logs uploaded")
     else:
         logger.info("Logs not allowed to be collected")
+
+
+def periodically_upload_logs() -> None:
+    schedule.every(65).minutes.do(upload_archive_logs_s3)
+    while True:
+        schedule.run_pending()
+        time.sleep(60)  # Wait a minute
