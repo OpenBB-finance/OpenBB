@@ -11,6 +11,7 @@ import requests
 
 from gamestonk_terminal.config_terminal import API_KEY_QUANDL
 from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -46,13 +47,25 @@ def get_big_mac_index(country_code: str) -> pd.DataFrame:
     pd.DataFrame
         Dataframe with Big Mac index converted to USD equivalent.
     """
-    r = requests.get(
-        f"https://data.nasdaq.com/api/v3/datasets/ECONOMIST/BIGMAC_{country_code}?column_index=3&api_key={API_KEY_QUANDL}"
-    )
-    if r.status_code != 200:
-        return pd.DataFrame()
+    URL = f"https://data.nasdaq.com/api/v3/datasets/ECONOMIST/BIGMAC_{country_code}"
+    URL += f"?column_index=3&api_key={API_KEY_QUANDL}"
+    r = requests.get(URL)
 
-    df = pd.DataFrame(r.json()["dataset"]["data"])
-    df.columns = r.json()["dataset"]["column_names"]
-    df["Date"] = pd.to_datetime(df["Date"])
+    df = pd.DataFrame()
+
+    if r.status_code == 200:
+        df = pd.DataFrame(r.json()["dataset"]["data"])
+        df.columns = r.json()["dataset"]["column_names"]
+        df["Date"] = pd.to_datetime(df["Date"])
+
+    # Wrong API Key
+    elif r.status_code == 400:
+        console.print(r.text)
+    # Premium Feature
+    elif r.status_code == 403:
+        console.print(r.text)
+    # Catching other exception
+    elif r.status_code != 200:
+        console.print(r.text)
+
     return df

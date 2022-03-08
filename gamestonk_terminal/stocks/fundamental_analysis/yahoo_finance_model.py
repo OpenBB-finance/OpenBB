@@ -2,14 +2,14 @@
 __docformat__ = "numpy"
 
 import logging
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Tuple
 
 import pandas as pd
 import yfinance as yf
 
 from gamestonk_terminal.decorators import log_start_end
-from gamestonk_terminal.helper_funcs import long_number_format
+from gamestonk_terminal.helper_funcs import lambda_long_number_format
 from gamestonk_terminal.stocks.fundamental_analysis.fa_helper import clean_df_index
 
 logger = logging.getLogger(__name__)
@@ -42,7 +42,7 @@ def get_info(ticker: str) -> pd.DataFrame:
 
     df_info = df_info.mask(df_info["Value"].astype(str).eq("[]")).dropna()
     df_info[df_info.index != "Zip"] = df_info[df_info.index != "Zip"].applymap(
-        lambda x: long_number_format(x)
+        lambda x: lambda_long_number_format(x)
     )
 
     df_info = df_info.rename(
@@ -92,10 +92,10 @@ def get_shareholders(ticker: str) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFr
     )
     df_institutional_shareholders["Shares"] = df_institutional_shareholders[
         "Shares"
-    ].apply(lambda x: long_number_format(x))
+    ].apply(lambda x: lambda_long_number_format(x))
     df_institutional_shareholders["Value"] = df_institutional_shareholders[
         "Value"
-    ].apply(lambda x: long_number_format(x))
+    ].apply(lambda x: lambda_long_number_format(x))
     df_institutional_shareholders["Stake"] = df_institutional_shareholders[
         "Stake"
     ].apply(lambda x: str(f"{100 * x:.2f}") + " %")
@@ -106,10 +106,10 @@ def get_shareholders(ticker: str) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFr
         "% Out", "Stake"
     )
     df_mutualfund_shareholders["Shares"] = df_mutualfund_shareholders["Shares"].apply(
-        lambda x: long_number_format(x)
+        lambda x: lambda_long_number_format(x)
     )
     df_mutualfund_shareholders["Value"] = df_mutualfund_shareholders["Value"].apply(
-        lambda x: long_number_format(x)
+        lambda x: lambda_long_number_format(x)
     )
     df_mutualfund_shareholders["Stake"] = df_mutualfund_shareholders["Stake"].apply(
         lambda x: str(f"{100 * x:.2f}") + " %"
@@ -184,7 +184,7 @@ def get_calendar_earnings(ticker: str) -> pd.DataFrame:
     )
 
     df_calendar.iloc[1:, :] = df_calendar.iloc[1:, :].applymap(
-        lambda x: long_number_format(x)
+        lambda x: lambda_long_number_format(x)
     )
 
     return df_calendar
@@ -230,3 +230,59 @@ def get_dividends(ticker: str) -> pd.DataFrame:
         Dataframe of dividends and dates
     """
     return pd.DataFrame(yf.Ticker(ticker).dividends)
+
+
+@log_start_end(log=logger)
+def get_mktcap(
+    ticker: str, start: datetime = (datetime.now() - timedelta(days=3 * 366))
+) -> Tuple[pd.DataFrame, str]:
+    """Get market cap over time for ticker. [Source: Yahoo Finance]
+
+    Parameters
+    ----------
+    ticker: str
+        Ticker to get market cap over time
+    start: datetime
+        Start date to display market cap
+
+    Returns
+    -------
+    pd.DataFrame:
+        Dataframe of estimated market cap over time
+    str:
+        Currency of ticker
+    """
+    currency = ""
+    df_data = yf.download(ticker, start=start, progress=False, threads=False)
+    if not df_data.empty:
+
+        data = yf.Ticker(ticker).info
+        if data:
+            df_data["Adj Close"] = df_data["Adj Close"] * data["sharesOutstanding"]
+            df_data = df_data["Adj Close"]
+
+            currency = data["currency"]
+
+    return df_data, currency
+
+
+@log_start_end(log=logger)
+def get_splits(ticker: str) -> pd.DataFrame:
+    """Get splits and reverse splits events. [Source: Yahoo Finance]
+
+    Parameters
+    ----------
+    ticker: str
+        Ticker to get forward and reverse splits
+    start: datetime
+        Start date to display market cap
+
+    Returns
+    -------
+    pd.DataFrame:
+        Dataframe of forward and reverse splits
+    """
+    data = yf.Ticker(ticker).splits
+    if not data.empty:
+        return data.to_frame()
+    return pd.DataFrame()

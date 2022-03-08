@@ -2,23 +2,28 @@
 __docformat__ = "numpy"
 
 import argparse
+import logging
 import random
-from typing import List
 from datetime import datetime, timedelta
+from typing import List
+
 import yfinance as yf
 from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.rich_config import console
-from gamestonk_terminal.parent_classes import BaseController
+
+from gamestonk_terminal.decorators import check_api_key
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_non_negative,
     check_positive,
     parse_known_args_and_warn,
     valid_date,
-    EXPORT_ONLY_RAW_DATA_ALLOWED,
 )
 from gamestonk_terminal.menu import session
+from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal.portfolio.portfolio_optimization import po_controller
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.stocks.comparison_analysis import (
     finbrain_view,
     finnhub_model,
@@ -26,16 +31,18 @@ from gamestonk_terminal.stocks.comparison_analysis import (
     finviz_compare_view,
     marketwatch_view,
     polygon_model,
-    yahoo_finance_view,
     yahoo_finance_model,
+    yahoo_finance_view,
 )
-
 
 # pylint: disable=E1121,C0302,R0904
 
 # TODO: HELP WANTED! This controller still has some view functionality that should be
 #       refactored in order to implement an API wrapper. Use the discovery controller
 #       as an example.
+
+
+logger = logging.getLogger(__name__)
 
 
 class ComparisonAnalysisController(BaseController):
@@ -143,6 +150,7 @@ class ComparisonAnalysisController(BaseController):
         return []
 
     # TODO: Figure out if this function is actually needed here
+    @log_start_end(log=logger)
     def call_ticker(self, other_args: List[str]):
         """Process ticker command"""
         parser = argparse.ArgumentParser(
@@ -156,7 +164,7 @@ class ComparisonAnalysisController(BaseController):
             "--ticker",
             dest="ticker",
             type=str,
-            required=True,
+            required="-h" not in other_args,
             help="Ticker get similar tickers from",
         )
         if other_args and "-" not in other_args[0][0]:
@@ -178,6 +186,7 @@ class ComparisonAnalysisController(BaseController):
                     self.ticker = ns_parser.ticker.upper()
             console.print("")
 
+    @log_start_end(log=logger)
     def call_tsne(self, other_args: List[str]):
         """Process tsne command"""
         parser = argparse.ArgumentParser(
@@ -227,6 +236,7 @@ class ComparisonAnalysisController(BaseController):
                     "You need to 'set' a ticker to get similar companies from first!"
                 )
 
+    @log_start_end(log=logger)
     def call_getfinviz(self, other_args: List[str]):
         """Process getfinviz command"""
         parser = argparse.ArgumentParser(
@@ -287,6 +297,8 @@ class ComparisonAnalysisController(BaseController):
                     "You need to 'set' a ticker to get similar companies from first!"
                 )
 
+    @log_start_end(log=logger)
+    @check_api_key(["API_POLYGON_KEY"])
     def call_getpoly(self, other_args: List[str]):
         """Process get command"""
         parser = argparse.ArgumentParser(
@@ -314,6 +326,7 @@ class ComparisonAnalysisController(BaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(parser, other_args)
+
         if ns_parser:
             if self.ticker:
                 self.similar, self.user = polygon_model.get_similar_companies(
@@ -330,9 +343,8 @@ class ComparisonAnalysisController(BaseController):
                         f"The limit of stocks to compare are {ns_parser.limit}. The subsample will occur randomly.\n",
                     )
 
-                self.similar = [self.ticker] + self.similar
-
                 if self.similar:
+                    self.similar = [self.ticker] + self.similar
                     console.print(
                         f"[{self.user}] Similar Companies: {', '.join(self.similar)}",
                         "\n",
@@ -343,6 +355,8 @@ class ComparisonAnalysisController(BaseController):
                     "You need to 'set' a ticker to get similar companies from first!"
                 )
 
+    @log_start_end(log=logger)
+    @check_api_key(["API_FINNHUB_KEY"])
     def call_getfinnhub(self, other_args: List[str]):
         """Process get command"""
         parser = argparse.ArgumentParser(
@@ -378,9 +392,9 @@ class ComparisonAnalysisController(BaseController):
                         f"The limit of stocks to compare are {ns_parser.limit}. The subsample will occur randomly.\n",
                     )
 
-                self.similar = [self.ticker] + self.similar
-
                 if self.similar:
+
+                    self.similar = [self.ticker] + self.similar
                     console.print(
                         f"[{self.user}] Similar Companies: {', '.join(self.similar)}",
                         "\n",
@@ -391,6 +405,7 @@ class ComparisonAnalysisController(BaseController):
                     "You need to 'set' a ticker to get similar companies from first!"
                 )
 
+    @log_start_end(log=logger)
     def call_add(self, other_args: List[str]):
         """Process add command"""
         parser = argparse.ArgumentParser(
@@ -421,6 +436,7 @@ class ComparisonAnalysisController(BaseController):
                 f"[{self.user}] Similar Companies: {', '.join(self.similar)}", "\n"
             )
 
+    @log_start_end(log=logger)
     def call_rmv(self, other_args: List[str]):
         """Process rmv command"""
         parser = argparse.ArgumentParser(
@@ -460,6 +476,7 @@ class ComparisonAnalysisController(BaseController):
             console.print("")
             self.user = "Custom"
 
+    @log_start_end(log=logger)
     def call_set(self, other_args: List[str]):
         """Process set command"""
         parser = argparse.ArgumentParser(
@@ -486,6 +503,7 @@ class ComparisonAnalysisController(BaseController):
                 f"[{self.user}] Similar Companies: {', '.join(self.similar)}", "\n"
             )
 
+    @log_start_end(log=logger)
     def call_historical(self, other_args: List[str]):
         """Process historical command"""
         parser = argparse.ArgumentParser(
@@ -540,6 +558,7 @@ class ComparisonAnalysisController(BaseController):
                     "Please make sure there are more than 1 similar tickers selected. \n"
                 )
 
+    @log_start_end(log=logger)
     def call_hcorr(self, other_args: List[str]):
         """Process historical correlation command"""
         parser = argparse.ArgumentParser(
@@ -581,6 +600,7 @@ class ComparisonAnalysisController(BaseController):
             else:
                 console.print("Please make sure there are similar tickers selected. \n")
 
+    @log_start_end(log=logger)
     def call_income(self, other_args: List[str]):
         """Process income command"""
         parser = argparse.ArgumentParser(
@@ -620,6 +640,7 @@ class ComparisonAnalysisController(BaseController):
                 quarter=ns_parser.b_quarter,
             )
 
+    @log_start_end(log=logger)
     def call_volume(self, other_args: List[str]):
         """Process volume command"""
         parser = argparse.ArgumentParser(
@@ -653,6 +674,7 @@ class ComparisonAnalysisController(BaseController):
             else:
                 console.print("Please make sure there are similar tickers selected. \n")
 
+    @log_start_end(log=logger)
     def call_balance(self, other_args: List[str]):
         """Process balance command"""
         parser = argparse.ArgumentParser(
@@ -690,6 +712,7 @@ class ComparisonAnalysisController(BaseController):
                 quarter=ns_parser.b_quarter,
             )
 
+    @log_start_end(log=logger)
     def call_cashflow(self, other_args: List[str]):
         """Process cashflow command"""
         parser = argparse.ArgumentParser(
@@ -727,6 +750,7 @@ class ComparisonAnalysisController(BaseController):
                 quarter=ns_parser.b_quarter,
             )
 
+    @log_start_end(log=logger)
     def call_sentiment(self, other_args: List[str]):
         """Process sentiment command"""
         parser = argparse.ArgumentParser(
@@ -760,6 +784,7 @@ class ComparisonAnalysisController(BaseController):
                     "Please make sure there are more than 1 similar tickers selected. \n"
                 )
 
+    @log_start_end(log=logger)
     def call_scorr(self, other_args: List[str]):
         """Process sentiment correlation command"""
         parser = argparse.ArgumentParser(
@@ -791,6 +816,7 @@ class ComparisonAnalysisController(BaseController):
             else:
                 console.print("Please make sure there are similar tickers selected. \n")
 
+    @log_start_end(log=logger)
     def call_overview(self, other_args: List[str]):
         """Process overview command"""
         parser = argparse.ArgumentParser(
@@ -816,6 +842,7 @@ class ComparisonAnalysisController(BaseController):
                     "Please make sure there are more than 1 similar tickers selected. \n"
                 )
 
+    @log_start_end(log=logger)
     def call_valuation(self, other_args: List[str]):
         """Process valuation command"""
         parser = argparse.ArgumentParser(
@@ -841,6 +868,7 @@ class ComparisonAnalysisController(BaseController):
                     "Please make sure there are more than 1 similar tickers selected. \n"
                 )
 
+    @log_start_end(log=logger)
     def call_financial(self, other_args: List[str]):
         """Process financial command"""
         parser = argparse.ArgumentParser(
@@ -866,6 +894,7 @@ class ComparisonAnalysisController(BaseController):
                     "Please make sure there are more than 1 similar tickers selected. \n"
                 )
 
+    @log_start_end(log=logger)
     def call_ownership(self, other_args: List[str]):
         """Process ownership command"""
         parser = argparse.ArgumentParser(
@@ -891,6 +920,7 @@ class ComparisonAnalysisController(BaseController):
                     "Please make sure there are more than 1 similar tickers selected. \n"
                 )
 
+    @log_start_end(log=logger)
     def call_performance(self, other_args: List[str]):
         """Process performance command"""
         parser = argparse.ArgumentParser(
@@ -916,6 +946,7 @@ class ComparisonAnalysisController(BaseController):
                     "Please make sure there are more than 1 similar tickers selected. \n"
                 )
 
+    @log_start_end(log=logger)
     def call_technical(self, other_args: List[str]):
         """Process technical command"""
         parser = argparse.ArgumentParser(
@@ -941,6 +972,7 @@ class ComparisonAnalysisController(BaseController):
                     "Please make sure there are more than 1 similar tickers selected. \n"
                 )
 
+    @log_start_end(log=logger)
     def call_po(self, _):
         """Call the portfolio optimization menu with selected tickers"""
         if self.similar and len(self.similar) > 1:

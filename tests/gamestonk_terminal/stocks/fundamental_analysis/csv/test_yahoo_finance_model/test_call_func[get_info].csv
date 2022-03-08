@@ -1,117 +1,123 @@
 ,Value
-Zip,76051
-Sector,Consumer Cyclical
-Full time employees,12 K
-Long business summary,"GameStop Corp., a specialty retailer, provides games and entertainment products through its e-commerce properties and various stores in the United States, Canada, Australia, and Europe. The company sells new and pre-owned video game platforms; accessories, such as controllers, gaming headsets, virtual reality products, and memory cards; new and pre-owned video game software; and in-game digital currency, digital downloadable content, and full-game downloads, as well as network points cards, and prepaid digital and subscription cards. It also sells collectibles comprising licensed merchandise primarily related to the video game, television, and movie industries, as well as pop culture themes. The company operates its stores and e-commerce sites under the GameStop, EB Games, and Micromania brands; and collectibles stores under the Zing Pop Culture and ThinkGeek brand, as well as offers Game Informer, a print and digital video game publication featuring reviews of new title releases, game tips, and news regarding the video game industry. As of January 30, 2021, it operated 4,816 stores. The company was formerly known as GSC Holdings Corp. GameStop Corp. was founded in 1996 and is headquartered in Grapevine, Texas."
-City,Grapevine
-Phone,817 424 2000
-State,TX
+Zip,95014
+Sector,Technology
+Full time employees,100 K
+Long business summary,"Apple Inc. designs, manufactures, and markets smartphones, personal computers, tablets, wearables, and accessories worldwide. It also sells various related services. In addition, the company offers iPhone, a line of smartphones; Mac, a line of personal computers; iPad, a line of multi-purpose tablets; AirPods Max, an over-ear wireless headphone; and wearables, home, and accessories comprising AirPods, Apple TV, Apple Watch, Beats products, HomePod, and iPod touch. Further, it provides AppleCare support services; cloud services store services; and operates various platforms, including the App Store that allow customers to discover and download applications and digital content, such as books, music, video, games, and podcasts. Additionally, the company offers various services, such as Apple Arcade, a game subscription service; Apple Music, which offers users a curated listening experience with on-demand radio stations; Apple News+, a subscription news and magazine service; Apple TV+, which offers exclusive original content; Apple Card, a co-branded credit card; and Apple Pay, a cashless payment service, as well as licenses its intellectual property. The company serves consumers, and small and mid-sized businesses; and the education, enterprise, and government markets. It distributes third-party applications for its products through the App Store. The company also sells its products through its retail and online stores, and direct sales force; and third-party cellular network carriers, wholesalers, retailers, and resellers. Apple Inc. was incorporated in 1977 and is headquartered in Cupertino, California."
+City,Cupertino
+Phone,408 996 1010
+State,CA
 Country,United States
-Website,https://www.gamestop.com
+Website,https://www.apple.com
 Max age,1
-Address,625 Westport Parkway
-Industry,Specialty Retail
-Ebitda margins,-0.016
-Profit margins,-0.026
-Gross margins,0.241
-Operating cashflow,-159.200 M
-Revenue growth,0.291
-Operating margins,-0.029
-Ebitda,-95.600 M
-Target low price,24
-Recommendation key,underperform
-Gross profits,1.260 B
-Free cashflow,-168.138 M
-Target median price,45
-Current price,131.030
-Current ratio,1.900
-Return on assets,-0.033
-Number of analyst opinions,3
-Target mean price,83
-Debt to equity,38.053
-Return on equity,-0.147
-Target high price,180
-Total cash,1.413 B
-Total debt,667.800 M
-Total revenue,5.879 B
-Total cash per share,18.604
+Address,One Apple Park Way
+Industry,Consumer Electronics
+Ebitda margins,0.339
+Profit margins,0.266
+Gross margins,0.430
+Operating cashflow,112.241 B
+Revenue growth,0.112
+Operating margins,0.309
+Ebitda,128.218 B
+Target low price,160
+Recommendation key,buy
+Gross profits,152.836 B
+Free cashflow,80.153 B
+Target median price,192
+Current price,176.280
+Earnings growth,0.250
+Current ratio,1.038
+Return on assets,0.199
+Number of analyst opinions,43
+Target mean price,191.820
+Debt to equity,170.714
+Return on equity,1.456
+Target high price,215
+Total cash,63.913 B
+Total debt,122.798 B
+Total revenue,378.323 B
+Total cash per share,3.916
 Financial currency,USD
-Revenue per share,84.044
-Quick ratio,1.079
-Recommendation mean,4
-Exchange,NYQ
-Short name,GameStop Corporation
-Long name,GameStop Corp.
+Revenue per share,22.838
+Quick ratio,0.875
+Recommendation mean,1.800
+Exchange,NMS
+Short name,Apple Inc.
+Long name,Apple Inc.
 Exchange timezone name,America/New_York
 Exchange timezone short name,EST
 Is esg populated,False
 Gmt off set milliseconds,-18 M
 Quote type,EQUITY
-Symbol,GME
-Message board id,finmb_1342560
+Symbol,AAPL
+Message board id,finmb_24937
 Market,us_market
-Enterprise to revenue,1.566
-Enterprise to ebitda,-96.304
-52 week change,6.407
-Forward EPS,-0.820
-Shares outstanding,76.351 M
-Book value,23.244
-Shares short,8.612 M
-Shares percent shares out,0.113
-Last fiscal year end,1.612 B
-Held percent institutions,0.283
-Net income to common,-153.500 M
-Trailing EPS,-2.194
-Last dividend value,0.380
-Sand p52 week change,0.228
-Price to book,5.637
-Held percent insiders,0.180
-Next fiscal year end,1.675 B
-Most recent quarter,1.636 B
-Short ratio,3.110
-Shares short previous month date,1.637 B
-Float shares,62.491 M
-Beta,-2.003
-Enterprise value,9.207 B
+Enterprise to revenue,7.697
+Enterprise to ebitda,22.711
+52 week change,0.294
+Forward EPS,6.570
+Shares outstanding,16.319 B
+Book value,4.402
+Shares short,90.493 M
+Shares percent shares out,0.005
+Last fiscal year end,1.633 B
+Held percent institutions,0.591
+Net income to common,100.555 B
+Trailing EPS,6.015
+Last dividend value,0.220
+Sand p52 week change,0.155
+Price to book,40.045
+Held percent insiders,0.001
+Next fiscal year end,1.696 B
+Most recent quarter,1.640 B
+Short ratio,0.940
+Shares short previous month date,1.640 B
+Float shares,16.303 B
+Beta,1.187
+Enterprise value,2.912 T
 Price hint,2
-Last split date,2007-03-19
-Last split factor,2:1
-Last dividend date,1.553 B
-Price to sales trailing 12 months,1.702
-Date short interest,1.640 B
-PEG ratio,1.790
-Forward PE,-159.793
-Short percent of float,0.186
-Shares short prior month,6.775 M
-Implied shares outstanding,76.492 M
-Previous close,129.370
-Regular market open,132.840
-Two hundred day average,185.277
-Trailing annual dividend yield,0
-Payout ratio,0
-Regular market day high,137.700
-Average daily volume 10 day,2.142 M
-Regular market previous close,129.370
-Fifty day average,180.003
-Trailing annual dividend rate,0
-Open,132.840
-Average volume 10 days,2.142 M
-Ex dividend date,1.553 B
-Regular market day low,121.140
+Last split date,2020-08-31
+Last split factor,4:1
+Last dividend date,1.644 B
+Earnings quarterly growth,0.204
+Price to sales trailing 12 months,7.604
+Date short interest,1.642 B
+PEG ratio,1.910
+Forward PE,26.831
+Short percent of float,0.005
+Shares short prior month,113.277 M
+Previous close,174.830
+Regular market open,176.050
+Two hundred day average,149.519
+Trailing annual dividend yield,0.005
+Payout ratio,0.143
+Regular market day high,176.650
+Average daily volume 10 day,102.073 M
+Regular market previous close,174.830
+Fifty day average,171.663
+Trailing annual dividend rate,0.865
+Open,176.050
+Average volume 10 days,102.073 M
+Dividend rate,0.880
+Ex dividend date,1.644 B
+Regular market day low,174.900
 Currency,USD
-Regular market volume,3.436 M
-Market cap,10.004 B
-Average volume,2.454 M
-Day low,121.140
-Ask,0
-Ask size,1.800 K
-Volume,3.436 M
-Fifty two week high,483
-Fifty two week low,17.080
-Bid,0
+Trailing PE,29.307
+Regular market volume,71.285 M
+Market cap,2.877 T
+Average volume,102.255 M
+Day low,174.900
+Ask,176.230
+Ask size,800
+Volume,71.285 M
+Fifty two week high,182.940
+Five year avg dividend yield,1.150
+Fifty two week low,116.210
+Bid,175.950
 Tradeable,False
-Bid size,1 K
-Day high,137.700
-Regular market price,131.030
-Pre market price,161.650
-Logo_url,https://logo.clearbit.com/gamestop.com
+Dividend yield,0.005
+Bid size,1.100 K
+Day high,176.650
+Regular market price,176.280
+Pre market price,176.080
+Logo_url,https://logo.clearbit.com/apple.com
+Trailing peg ratio,3.358

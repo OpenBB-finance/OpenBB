@@ -10,6 +10,7 @@ import requests
 
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -73,10 +74,22 @@ def get_quote(to_symbol: str, from_symbol: str) -> Dict:
         + f"&to_currency={to_symbol}"
         + f"&apikey={cfg.API_KEY_ALPHAVANTAGE}"
     )
-    r = requests.get(url)
-    if r.status_code != 200:
-        return {}
-    return r.json()
+
+    response = requests.get(url)
+    result = {}
+
+    # If the returned data was unsuccessful
+    if "Error Message" in response.json():
+        console.print(response.json()["Error Message"])
+        logger.error(response.json()["Error Message"])
+    else:
+        # check if json is empty
+        if not response.json():
+            console.print("No data found.\n")
+        else:
+            result = response.json()
+
+    return result
 
 
 @log_start_end(log=logger)
@@ -115,24 +128,36 @@ def get_historical(
         url += f"&interval={interval}min"
 
     r = requests.get(url)
+
     if r.status_code != 200:
         return pd.DataFrame()
 
-    key = list(r.json().keys())[1]
+    df = pd.DataFrame()
 
-    df = pd.DataFrame.from_dict(r.json()[key], orient="index")
-    if start_date and resolution != "i":
-        df = df[df.index > start_date]
+    # If the returned data was unsuccessful
+    if "Error Message" in r.json():
+        console.print(r.json()["Error Message"])
+    else:
+        # check if json is empty
+        if not r.json():
+            console.print("No data found.\n")
+        else:
+            key = list(r.json().keys())[1]
 
-    df = df.rename(
-        columns={
-            "1. open": "Open",
-            "2. high": "High",
-            "3. low": "Low",
-            "4. close": "Close",
-        }
-    )
-    df.index = pd.DatetimeIndex(df.index)
-    df = df[::-1]
+            df = pd.DataFrame.from_dict(r.json()[key], orient="index")
+
+            if start_date and resolution != "i":
+                df = df[df.index > start_date]
+
+            df = df.rename(
+                columns={
+                    "1. open": "Open",
+                    "2. high": "High",
+                    "3. low": "Low",
+                    "4. close": "Close",
+                }
+            )
+            df.index = pd.DatetimeIndex(df.index)
+            df = df[::-1]
 
     return df.astype(float)

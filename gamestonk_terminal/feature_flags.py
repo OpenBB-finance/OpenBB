@@ -8,7 +8,7 @@ if env_files:
     load_dotenv(env_files[0])
 
 # Use tabulate to print dataframes
-USE_TABULATE_DF = strtobool(os.getenv("GTFF_USE_CLEAR_AFTER_CMD", "True"))
+USE_TABULATE_DF = strtobool(os.getenv("GTFF_USE_TABULATE_DF", "True"))
 
 # Use clear console after each command
 USE_CLEAR_AFTER_CMD = strtobool(os.getenv("GTFF_USE_CLEAR_AFTER_CMD", "False"))
@@ -57,3 +57,6 @@ ENABLE_RICH = strtobool(os.getenv("GTFF_ENABLE_RICH", "True"))
 
 # Use the colorful rich terminal
 ENABLE_RICH_PANEL = strtobool(os.getenv("GTFF_ENABLE_RICH_PANEL", "True"))
+
+# Check API KEYS before running a command
+ENABLE_CHECK_API = strtobool(os.getenv("GTFF_ENABLE_CHECK_API", "True"))

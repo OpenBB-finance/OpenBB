@@ -5,10 +5,11 @@ import logging
 import os
 
 from gamestonk_terminal.cryptocurrency.onchain import whale_alert_model
+from gamestonk_terminal.decorators import check_api_key
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
     export_data,
-    long_number_format,
+    lambda_long_number_format,
     print_rich_table,
 )
 from gamestonk_terminal.rich_config import console
@@ -17,6 +18,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_WHALE_ALERT_KEY"])
 def display_whales_transactions(
     min_value: int = 800000,
     top: int = 100,
@@ -44,6 +46,10 @@ def display_whales_transactions(
     """
 
     df = whale_alert_model.get_whales_transactions(min_value)
+
+    if df.empty:
+        return
+
     df_data = df.copy()
 
     df = df.sort_values(by=sortby, ascending=descend)
@@ -54,7 +60,7 @@ def display_whales_transactions(
         df = df.drop(["from", "to", "blockchain"], axis=1)
 
     for col in ["amount_usd", "amount"]:
-        df[col] = df[col].apply(lambda x: long_number_format(x))
+        df[col] = df[col].apply(lambda x: lambda_long_number_format(x))
 
     print_rich_table(
         df.head(top),

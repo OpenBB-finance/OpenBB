@@ -4,16 +4,16 @@ __docformat__ = "numpy"
 import argparse
 import logging
 import os
+from datetime import datetime, timedelta
 from typing import List
 
-from datetime import datetime, timedelta
 import yfinance as yf
 from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.rich_config import console
 
-from gamestonk_terminal.parent_classes import StockController
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.common import newsapi_view
+from gamestonk_terminal.common.quantitative_analysis import qa_view
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
@@ -22,16 +22,16 @@ from gamestonk_terminal.helper_funcs import (
     valid_date,
 )
 from gamestonk_terminal.menu import session
+from gamestonk_terminal.parent_classes import StockBaseController
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.stocks import stocks_helper
 
-from gamestonk_terminal.common.quantitative_analysis import qa_view
-
-# pylint: disable=R1710,import-outside-toplevel
+# pylint: disable=R1710,import-outside-toplevel,R0913,R1702
 
 logger = logging.getLogger(__name__)
 
 
-class StocksController(StockController):
+class StocksController(StockBaseController):
     """Stocks Controller class"""
 
     CHOICES_COMMANDS = [
@@ -88,8 +88,7 @@ class StocksController(StockController):
     load        load a specific stock ticker and additional info for analysis[/cmds][param]
 
 Stock: [/param]{stock_text}
-{self.add_info}
-[cmds]
+{self.add_info}[cmds]
     quote       view the current price for a specific stock ticker
     candle      view a candle chart for a specific stock ticker
     news        latest news of the company[/cmds] [src][News API][/src]
@@ -124,6 +123,7 @@ Stock: [/param]{stock_text}
             ]
         return []
 
+    @log_start_end(log=logger)
     def call_search(self, other_args: List[str]):
         """Process search command"""
         parser = argparse.ArgumentParser(
@@ -155,12 +155,14 @@ Stock: [/param]{stock_text}
         if ns_parser:
             stocks_helper.search(query=ns_parser.query, amount=ns_parser.amount)
 
+    @log_start_end(log=logger)
     def call_quote(self, other_args: List[str]):
         """Process quote command"""
         stocks_helper.quote(
             other_args, self.ticker + "." + self.suffix if self.suffix else self.ticker
         )
 
+    @log_start_end(log=logger)
     def call_candle(self, other_args: List[str]):
         """Process candle command"""
         parser = argparse.ArgumentParser(
@@ -229,8 +231,8 @@ Stock: [/param]{stock_text}
             "--ma",
             dest="mov_avg",
             type=str,
-            help="Add moving averaged to plot",
-            default="",
+            help="Add moving average in number of days to plot and separate by a comma. Example: 20,30,50",
+            default=None,
         )
 
         ns_parser = parse_known_args_and_warn(
@@ -258,11 +260,19 @@ Stock: [/param]{stock_text}
                 else:
 
                     data = stocks_helper.process_candle(self.stock)
-                    mov_avgs = (
-                        tuple(int(num) for num in ns_parser.mov_avg.split(","))
-                        if ns_parser.mov_avg
-                        else None
-                    )
+
+                    mov_avgs = []
+
+                    if ns_parser.mov_avg:
+                        mov_list = (num for num in ns_parser.mov_avg.split(","))
+
+                        for num in mov_list:
+                            try:
+                                mov_avgs.append(int(num))
+                            except ValueError:
+                                console.print(
+                                    f"{num} is not a valid moving average, must be integer"
+                                )
 
                     stocks_helper.display_candle(
                         s_ticker=self.ticker,
@@ -275,6 +285,7 @@ Stock: [/param]{stock_text}
             else:
                 console.print("No ticker loaded. First use `load {ticker}`\n")
 
+    @log_start_end(log=logger)
     def call_news(self, other_args: List[str]):
         """Process news command"""
         if not self.ticker:
@@ -289,13 +300,13 @@ Stock: [/param]{stock_text}
             """,
         )
         parser.add_argument(
-            "-n",
-            "--num",
+            "-l",
+            "--limit",
             action="store",
-            dest="n_num",
+            dest="limit",
             type=check_positive,
             default=5,
-            help="Number of latest news being printed.",
+            help="Limit of latest news being printed.",
         )
         parser.add_argument(
             "-d",
@@ -321,7 +332,8 @@ Stock: [/param]{stock_text}
             nargs="+",
             help="Show news only from the sources specified (e.g bbc yahoo.com)",
         )
-
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             sources = ns_parser.sources
@@ -331,16 +343,17 @@ Stock: [/param]{stock_text}
 
             d_stock = yf.Ticker(self.ticker).info
 
-            newsapi_view.news(
+            newsapi_view.display_news(
                 term=d_stock["shortName"].replace(" ", "+")
                 if "shortName" in d_stock
                 else self.ticker,
-                num=ns_parser.n_num,
+                num=ns_parser.limit,
                 s_from=ns_parser.n_start_date.strftime("%Y-%m-%d"),
                 show_newest=ns_parser.n_oldest,
                 sources=",".join(sources),
             )
 
+    @log_start_end(log=logger)
     def call_disc(self, _):
         """Process disc command"""
         from gamestonk_terminal.stocks.discovery.disc_controller import (
@@ -349,6 +362,7 @@ Stock: [/param]{stock_text}
 
         self.queue = self.load_class(DiscoveryController, self.queue)
 
+    @log_start_end(log=logger)
     def call_dps(self, _):
         """Process dps command"""
         from gamestonk_terminal.stocks.dark_pool_shorts.dps_controller import (
@@ -359,6 +373,7 @@ Stock: [/param]{stock_text}
             DarkPoolShortsController, self.ticker, self.start, self.stock, self.queue
         )
 
+    @log_start_end(log=logger)
     def call_scr(self, _):
         """Process scr command"""
         from gamestonk_terminal.stocks.screener.screener_controller import (
@@ -367,6 +382,7 @@ Stock: [/param]{stock_text}
 
         self.queue = self.load_class(ScreenerController, self.queue)
 
+    @log_start_end(log=logger)
     def call_sia(self, _):
         """Process ins command"""
         from gamestonk_terminal.stocks.sector_industry_analysis.sia_controller import (
@@ -377,6 +393,7 @@ Stock: [/param]{stock_text}
             SectorIndustryAnalysisController, self.ticker, self.queue
         )
 
+    @log_start_end(log=logger)
     def call_ins(self, _):
         """Process ins command"""
         from gamestonk_terminal.stocks.insider.insider_controller import (
@@ -392,12 +409,14 @@ Stock: [/param]{stock_text}
             self.queue,
         )
 
+    @log_start_end(log=logger)
     def call_gov(self, _):
         """Process gov command"""
         from gamestonk_terminal.stocks.government.gov_controller import GovController
 
         self.queue = self.load_class(GovController, self.ticker, self.queue)
 
+    @log_start_end(log=logger)
     def call_options(self, _):
         """Process options command"""
         from gamestonk_terminal.stocks.options.options_controller import (
@@ -406,6 +425,7 @@ Stock: [/param]{stock_text}
 
         self.queue = self.load_class(OptionsController, self.ticker, self.queue)
 
+    @log_start_end(log=logger)
     def call_res(self, _):
         """Process res command"""
         if self.ticker:
@@ -419,6 +439,7 @@ Stock: [/param]{stock_text}
         else:
             console.print("Use 'load <ticker>' prior to this command!", "\n")
 
+    @log_start_end(log=logger)
     def call_dd(self, _):
         """Process dd command"""
         if self.ticker:
@@ -435,6 +456,7 @@ Stock: [/param]{stock_text}
         else:
             console.print("Use 'load <ticker>' prior to this command!", "\n")
 
+    @log_start_end(log=logger)
     def call_ca(self, _):
         """Process ca command"""
 
@@ -446,6 +468,7 @@ Stock: [/param]{stock_text}
             self.queue,
         )
 
+    @log_start_end(log=logger)
     def call_fa(self, _):
         """Process fa command"""
         if self.ticker:
@@ -462,6 +485,7 @@ Stock: [/param]{stock_text}
         else:
             console.print("Use 'load <ticker>' prior to this command!", "\n")
 
+    @log_start_end(log=logger)
     def call_bt(self, _):
         """Process bt command"""
         if self.ticker:
@@ -473,6 +497,7 @@ Stock: [/param]{stock_text}
         else:
             console.print("Use 'load <ticker>' prior to this command!", "\n")
 
+    @log_start_end(log=logger)
     def call_ta(self, _):
         """Process ta command"""
         if self.ticker:
@@ -489,6 +514,7 @@ Stock: [/param]{stock_text}
         else:
             console.print("Use 'load <ticker>' prior to this command!", "\n")
 
+    @log_start_end(log=logger)
     def call_ba(self, _):
         """Process ba command"""
         from gamestonk_terminal.stocks.behavioural_analysis import ba_controller
@@ -500,6 +526,7 @@ Stock: [/param]{stock_text}
             self.queue,
         )
 
+    @log_start_end(log=logger)
     def call_qa(self, _):
         """Process qa command"""
         if self.ticker:
@@ -517,10 +544,12 @@ Stock: [/param]{stock_text}
                     self.queue,
                 )
             # TODO: This menu should work regardless of data being daily or not!
-            console.print("Load daily data to use this menu!", "\n")
+            else:
+                console.print("Load daily data to use this menu!", "\n")
         else:
             console.print("Use 'load <ticker>' prior to this command!", "\n")
 
+    @log_start_end(log=logger)
     def call_pred(self, _):
         """Process pred command"""
         if gtff.ENABLE_PREDICT:
@@ -540,6 +569,10 @@ Stock: [/param]{stock_text}
                             self.queue,
                         )
                     except ModuleNotFoundError as e:
+                        logger.exception(
+                            "One of the optional packages seems to be missing: %s",
+                            str(e),
+                        )
                         console.print(
                             "One of the optional packages seems to be missing: ",
                             e,
@@ -547,7 +580,8 @@ Stock: [/param]{stock_text}
                         )
 
                 # TODO: This menu should work regardless of data being daily or not!
-                console.print("Load daily data to use this menu!", "\n")
+                else:
+                    console.print("Load daily data to use this menu!", "\n")
             else:
                 console.print("Use 'load <ticker>' prior to this command!", "\n")
         else:

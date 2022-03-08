@@ -11,6 +11,7 @@ import pandas as pd
 import requests
 
 import gamestonk_terminal.config_terminal as cfg
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import create_df_index
 from gamestonk_terminal.decorators import log_start_end
 
@@ -122,7 +123,9 @@ def enrich_social_media(dct: dict) -> None:
 
 
 @log_start_end(log=logger)
-def make_request(endpoint: str, address: Optional[str] = None, **kwargs: Any) -> dict:
+def make_request(
+    endpoint: str, address: Optional[str] = None, **kwargs: Any
+) -> Optional[dict]:
     """Helper method that handles request for Ethplorer API [Source: https://ethplorer.io/]
 
     Parameters
@@ -152,13 +155,21 @@ def make_request(endpoint: str, address: Optional[str] = None, **kwargs: Any) ->
         url += f"&limit={kwargs['limit']}"
 
     sleep(0.5)  # Limit is 2 API calls per 1 sec.
-    response = requests.get(url).json()
-    if "error" in response:
-        raise Exception(
-            f"Error: {response['error']['code']}. Message: {response['error']['message']}\n",
-        )
+    response = requests.get(url)
+    result = {}
 
-    return response
+    if response.status_code == 200:
+        result = response.json()
+
+        if result:
+            console.print("No data found")
+
+    elif response.status_code == 401:
+        console.print("[red]Invalid API Key[/red]\n")
+    else:
+        console.print(response.json()["error"]["message"])
+
+    return result
 
 
 @log_start_end(log=logger)
@@ -329,7 +340,9 @@ def get_address_history(address) -> pd.DataFrame:
     df = pd.DataFrame(operations)
     cols = ["timestamp", "transactionHash", "token", "value"]
     df["value"] = df["value"].astype(float) / (10 ** df["decimals"])
+
     if df.empty:
+        console.print(f"No historical transaction found for {address}")
         return pd.DataFrame(columns=cols)
 
     return df[cols]
@@ -352,6 +365,7 @@ def get_token_info(address) -> pd.DataFrame:
 
     response = make_request("getTokenInfo", address)
     decimals = response.pop("decimals") if "decimals" in response else None
+
     for name in [
         "issuancesCount",
         "lastUpdated",
@@ -361,7 +375,8 @@ def get_token_info(address) -> pd.DataFrame:
     ]:
         try:
             response.pop(name)
-        except KeyError:
+        except KeyError as e:
+            logger.exception(str(e))
             continue
 
     enrich_social_media(response)
@@ -413,6 +428,7 @@ def get_tx_info(tx_hash) -> pd.DataFrame:
     """
     decimals = None
     response = make_request("getTxInfo", tx_hash)
+
     try:
         response.pop("logs")
         operations = response.pop("operations")[0]
@@ -435,7 +451,8 @@ def get_tx_info(tx_hash) -> pd.DataFrame:
 
         df = df.to_frame().reset_index()
         df.columns = ["Metric", "Value"]
-    except KeyError:
+    except KeyError as e:
+        logger.exception(str(e))
         return pd.DataFrame()
     return df
 
@@ -466,7 +483,8 @@ def get_token_history(address) -> pd.DataFrame:
             first_row.get("balance"),
         )
         decimals = first_row.get("decimals")
-    except Exception:
+    except Exception as e:
+        logger.exception(str(e))
         name, symbol = "", ""
         decimals = None
 
@@ -477,8 +495,11 @@ def get_token_history(address) -> pd.DataFrame:
         all_operations.append(operation)
 
     df = pd.DataFrame(all_operations)
+
     if df.empty:
+        console.print(f"No historical transaction found for {address}")
         return df
+
     df[["name", "symbol"]] = name, symbol
     df["value"] = df["value"].astype(float) / (10 ** int(decimals))
     return df[["timestamp", "name", "symbol", "value", "from", "to", "transactionHash"]]
@@ -503,12 +524,16 @@ def get_token_historical_price(address) -> pd.DataFrame:
     data = response["history"]
     data.pop("current")
     prices = data.get("prices")
+
     if not prices:
+        console.print(f"No historical price found for {address}")
+
         return pd.DataFrame()
 
     prices_df = pd.DataFrame(prices)
     prices_df["ts"] = prices_df["ts"].apply(lambda x: datetime.fromtimestamp(x))
     prices_df.drop("tmp", axis=1, inplace=True)
+
     return prices_df[
         ["date", "open", "close", "high", "low", "volumeConverted", "cap", "average"]
     ]

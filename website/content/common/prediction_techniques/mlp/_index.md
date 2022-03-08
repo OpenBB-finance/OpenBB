@@ -45,4 +45,4 @@ optional arguments:
   -h, --help            show this help message
 ```
 
-![mlp](https://user-images.githubusercontent.com/25267873/108604944-d2025400-73a8-11eb-9ab6-52972160cd2a.png)
+![MLP](https://user-images.githubusercontent.com/18151143/154814230-5799aa66-7e2c-42bf-a0b9-8b207b9f464c.png)

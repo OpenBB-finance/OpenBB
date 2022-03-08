@@ -2,14 +2,15 @@
 __docformat__ = "numpy"
 
 import argparse
-from typing import List, Dict
+import logging
+from typing import Dict, List
 
 from prompt_toolkit.completion import NestedCompleter
 
-from gamestonk_terminal.rich_config import console
-from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.economy.fred import fred_view, fred_model
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.decorators import check_api_key
+from gamestonk_terminal.economy.fred import fred_model, fred_view
 from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     check_positive,
@@ -17,8 +18,13 @@ from gamestonk_terminal.helper_funcs import (
     valid_date,
 )
 from gamestonk_terminal.menu import session
+from gamestonk_terminal.parent_classes import BaseController
+from gamestonk_terminal.rich_config import console
 
 # pylint: disable=import-outside-toplevel
+
+
+logger = logging.getLogger(__name__)
 
 
 class FredController(BaseController):
@@ -62,6 +68,7 @@ class FredController(BaseController):
         """
         console.print(text=help_text, menu="Economy - Federal Reserve Economic Data")
 
+    @log_start_end(log=logger)
     def call_search(self, other_args: List[str]):
         """Process search command"""
         parser = argparse.ArgumentParser(
@@ -99,6 +106,8 @@ class FredController(BaseController):
                 num=ns_parser.num,
             )
 
+    @log_start_end(log=logger)
+    @check_api_key(["API_FRED_KEY"])
     def call_add(self, other_args: List[str]):
         """Process add command"""
         parser = argparse.ArgumentParser(
@@ -117,23 +126,23 @@ class FredController(BaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-i")
         ns_parser = parse_known_args_and_warn(parser, other_args)
+
         if ns_parser:
             # Loop through entries.  If it exists, save title in dictionary
             for s_id in ns_parser.series_id.split(","):
-                exists, information = fred_model.check_series_id(s_id)
-                if exists:
+                information = fred_model.check_series_id(s_id)
+                if "seriess" in information:
                     self.current_series[s_id] = {
                         "title": information["seriess"][0]["title"],
                         "units": information["seriess"][0]["units_short"],
                     }
                     self.long_id = max(self.long_id, len(s_id))
-                else:
-                    console.print(f"[red]{s_id} not found[/red].")
 
             console.print(
                 f"Current Series:[blue] {', '.join(self.current_series.keys()) .upper() or None}[/blue]\n"
             )
 
+    @log_start_end(log=logger)
     def call_rmv(self, other_args: List[str]):
         """Process rmv command"""
         parser = argparse.ArgumentParser(
@@ -153,7 +162,7 @@ class FredController(BaseController):
             "-i",
             "--id",
             type=lambda x: x.lower(),
-            choices=self.current_series.keys(),
+            choices=[key.lower() for key in self.current_series],
             required="-h" not in other_args
             and "-a" not in other_args
             and "--all" not in other_args,
@@ -176,12 +185,13 @@ class FredController(BaseController):
                 self.current_series = {}
                 self.long_id = 0
                 console.print("")
+            else:
+                self.current_series.pop(ns_parser.series_id)
+                console.print(
+                    f"Current Series Ids: [blue]{', '.join(self.current_series.keys()) .upper() or None}[/blue]\n"
+                )
 
-            self.current_series.pop(ns_parser.series_id)
-            console.print(
-                f"Current Series Ids: [blue]{', '.join(self.current_series.keys()) or None}[/blue]\n"
-            )
-
+    @log_start_end(log=logger)
     def call_plot(self, other_args):
         """Process plot command"""
         parser = argparse.ArgumentParser(
@@ -224,6 +234,7 @@ class FredController(BaseController):
                 ns_parser.limit,
             )
 
+    @log_start_end(log=logger)
     def call_pred(self, _):
         """Process pred command"""
         if not self.current_series:

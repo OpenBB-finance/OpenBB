@@ -566,9 +566,10 @@ def check_valid_range(
                     f"Invalid {category}.{field} '{str(ival)}'. "
                     f"Choose value between {min_range} and {max_range}, inclusive."
                 )
-
+                logging.exception(error)
         except ValueError:
             error = f"Invalid {category}.{field} '{val}'. Not a valid integer.\n"
+            logging.exception(error)
 
     return error
 
@@ -637,7 +638,8 @@ def check_dates(d_date: Dict) -> str:
                 datetime.strptime(d_date["TradingDateTo"], "%Y-%m-%d")
             except ValueError:
                 error += f"Invalid TradingDateTo '{d_date['TradingDateTo']}' (format: dd/mm/yyyy).\n"
-
+    if error:
+        logging.exception(error)
     return error
 
 
@@ -668,10 +670,10 @@ def check_valid_multiple(category: str, field: str, val: str, multiple: int) -> 
 
             if ival % multiple != 0:
                 error = f"Invalid {category}.{field} '{str(ival)}'. Choose value multiple of {str(multiple)}.\n"
-
+                logging.exception(error)
         except ValueError:
             error = f"Invalid {category}.{field} '{val}'. Not a valid integer.\n"
-
+            logging.exception(error)
     return error
 
 
@@ -769,10 +771,10 @@ def check_int_in_list(
                     f"Invalid {category}.{field} '{val}'. "
                     f"Choose one of the following options: {', '.join([str(x) for x in l_possible_vals])}.\n"
                 )
-
+                logging.exception(error)
         except ValueError:
             error += f"Invalid {category}.{field} '{val}'. Not a valid integer.\n"
-
+            logging.exception(error)
     return error
 
 

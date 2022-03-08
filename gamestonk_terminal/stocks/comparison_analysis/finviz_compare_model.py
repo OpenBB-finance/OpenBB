@@ -32,7 +32,7 @@ def get_similar_companies(
     ticker : str
         Ticker to find comparisons for
     compare_list : List[str]
-        List of fields to comparse
+        List of fields to compare, ["Sector", "Industry", "Country"]
 
     Returns
     -------
@@ -47,6 +47,7 @@ def get_similar_companies(
         )
         user = "Finviz"
     except Exception as e:
+        logger.exception(str(e))
         console.print(e)
         similar = [""]
         user = "Error"
@@ -84,4 +85,8 @@ def get_comparison_data(data_type: str, similar: List[str]):
         return pd.DataFrame()
 
     screen.set_filter(ticker=",".join(similar))
-    return screen.ScreenerView(verbose=0)
+    try:
+        return screen.ScreenerView(verbose=0)
+    except IndexError:
+        console.print("[red]Invalid data from website[red]")
+        return pd.DataFrame()

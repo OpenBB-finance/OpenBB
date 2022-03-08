@@ -6,7 +6,6 @@ from gamestonk_terminal.helper_classes import ModelsNamespace as _models
 # pylint: disable=unused-import
 
 # Menu commands
-from .geekofwallstreet_view import display_realtime_earnings as rtearn
 from .finnhub_view import past_ipo as pipo
 from .finnhub_view import future_ipo as fipo
 from .yahoofinance_view import display_gainers as gainers
@@ -24,6 +23,7 @@ from .shortinterest_view import low_float as lowfloat
 from .seeking_alpha_view import display_news as cnews
 from .shortinterest_view import hot_penny_stocks as hotpenny
 from .nasdaq_view import display_top_retail as rtat
+from .cramer_view import display_cramer_daily as cramer
 
 # Models
 models = _models(os.path.abspath(os.path.dirname(__file__)))

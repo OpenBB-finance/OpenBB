@@ -2,37 +2,46 @@
 __docformat__ = "numpy"
 
 import argparse
+import logging
+from datetime import datetime, timedelta
 from typing import List
-from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.rich_config import console
 
-from gamestonk_terminal.parent_classes import StockController
+from prompt_toolkit.completion import NestedCompleter
+
+from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_funcs import (
+    EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
+    check_positive,
+    parse_known_args_and_warn,
+    valid_date,
+)
+from gamestonk_terminal.menu import session
+from gamestonk_terminal.parent_classes import StockBaseController
+from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.stocks import stocks_helper
+from gamestonk_terminal.stocks.fundamental_analysis import (
+    av_view,
+    business_insider_view,
+    dcf_view,
+    eclect_us_view,
+    finviz_view,
+    market_watch_view,
+    yahoo_finance_view,
+)
 from gamestonk_terminal.stocks.fundamental_analysis.financial_modeling_prep import (
     fmp_controller,
     fmp_view,
 )
-from gamestonk_terminal.stocks.fundamental_analysis import (
-    eclect_us_view,
-    finviz_view,
-    yahoo_finance_view,
-    av_view,
-    business_insider_view,
-    dcf_view,
-    market_watch_view,
-)
-from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import (
-    EXPORT_ONLY_RAW_DATA_ALLOWED,
-    parse_known_args_and_warn,
-    check_positive,
-)
-from gamestonk_terminal.stocks import stocks_helper
-from gamestonk_terminal.menu import session
 
 # pylint: disable=inconsistent-return-statements
 
 
-class FundamentalAnalysisController(StockController):
+logger = logging.getLogger(__name__)
+
+
+class FundamentalAnalysisController(StockBaseController):
     """Fundamental Analysis Controller class"""
 
     CHOICES_COMMANDS = [
@@ -45,6 +54,7 @@ class FundamentalAnalysisController(StockController):
         "balance",
         "cash",
         "mgmt",
+        "splits",
         "info",
         "shrs",
         "sust",
@@ -60,6 +70,7 @@ class FundamentalAnalysisController(StockController):
         "earnings",
         "fraud",
         "dcf",
+        "mktcap",
     ]
 
     CHOICES_MENUS = [
@@ -103,13 +114,15 @@ Ticker: [/param] {self.ticker} [cmds]
     warnings      company warnings according to Sean Seah book [src][Market Watch][/src]
     dcf           advanced Excel customizable discounted cash flow [src][Stockanalysis][/src][/cmds]
 [src][Yahoo Finance][/src]
-    info          information scope of the company{is_foreign_start}
-    shrs          shareholders of the company
-    sust          sustainability values of the company
+    info          information scope of the company
+    mktcap        estimated market cap{is_foreign_start}
+    shrs          shareholders (insiders, institutions and mutual funds)
+    sust          sustainability values (environment, social and governance)
     cal           calendar earnings and estimates of the company
+    divs          show historical dividends for company
+    splits        stock split and reverse split events since IPO
     web           open web browser of the company
-    hq            open HQ location of the company
-    divs          show historical dividends for company{is_foreign_end}
+    hq            open HQ location of the company{is_foreign_end}
 [src][Alpha Vantage][/src]
     overview      overview of the company
     key           company key metrics
@@ -129,6 +142,7 @@ Ticker: [/param] {self.ticker} [cmds]
             return ["stocks", f"load {self.ticker}", "fa"]
         return []
 
+    @log_start_end(log=logger)
     def call_analysis(self, other_args: List[str]):
         """Process analysis command."""
         parser = argparse.ArgumentParser(
@@ -143,6 +157,7 @@ Ticker: [/param] {self.ticker} [cmds]
         if ns_parser:
             eclect_us_view.display_analysis(self.ticker)
 
+    @log_start_end(log=logger)
     def call_mgmt(self, other_args: List[str]):
         """Process mgmt command."""
         parser = argparse.ArgumentParser(
@@ -163,6 +178,7 @@ Ticker: [/param] {self.ticker} [cmds]
                 ticker=self.ticker, export=ns_parser.export
             )
 
+    @log_start_end(log=logger)
     def call_data(self, other_args: List[str]):
         """Process screener command."""
         parser = argparse.ArgumentParser(
@@ -190,6 +206,7 @@ Ticker: [/param] {self.ticker} [cmds]
         if ns_parser:
             finviz_view.display_screen_data(self.ticker)
 
+    @log_start_end(log=logger)
     def call_score(self, other_args: List[str]):
         """Process score command."""
         parser = argparse.ArgumentParser(
@@ -207,6 +224,7 @@ Ticker: [/param] {self.ticker} [cmds]
         if ns_parser:
             fmp_view.valinvest_score(self.ticker)
 
+    @log_start_end(log=logger)
     def call_info(self, other_args: List[str]):
         """Process info command."""
         parser = argparse.ArgumentParser(
@@ -240,6 +258,45 @@ Ticker: [/param] {self.ticker} [cmds]
         if ns_parser:
             yahoo_finance_view.display_info(self.ticker)
 
+    @log_start_end(log=logger)
+    def call_mktcap(self, other_args: List[str]):
+        """Process mktcap command."""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="mktcap",
+            description="""Market Cap estimate over time. [Source: Yahoo Finance]""",
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            type=valid_date,
+            default=(datetime.now() - timedelta(days=3 * 366)).strftime("%Y-%m-%d"),
+            dest="start",
+            help="The starting date (format YYYY-MM-DD) of the market cap display",
+        )
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if ns_parser:
+            yahoo_finance_view.display_mktcap(self.ticker, start=ns_parser.start)
+
+    @log_start_end(log=logger)
+    def call_splits(self, other_args: List[str]):
+        """Process splits command."""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="splits",
+            description="""Stock splits and reverse split events since IPO [Source: Yahoo Finance]""",
+        )
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if ns_parser:
+            yahoo_finance_view.display_splits(self.ticker)
+
+    @log_start_end(log=logger)
     def call_shrs(self, other_args: List[str]):
         """Process shrs command."""
         parser = argparse.ArgumentParser(
@@ -258,6 +315,7 @@ Ticker: [/param] {self.ticker} [cmds]
         else:
             console.print("Only US tickers are recognized.", "\n")
 
+    @log_start_end(log=logger)
     def call_sust(self, other_args: List[str]):
         """Process sust command."""
         parser = argparse.ArgumentParser(
@@ -282,6 +340,7 @@ Ticker: [/param] {self.ticker} [cmds]
         else:
             console.print("Only US tickers are recognized.", "\n")
 
+    @log_start_end(log=logger)
     def call_cal(self, other_args: List[str]):
         """Process cal command."""
         parser = argparse.ArgumentParser(
@@ -302,6 +361,7 @@ Ticker: [/param] {self.ticker} [cmds]
         else:
             console.print("Only US tickers are recognized.", "\n")
 
+    @log_start_end(log=logger)
     def call_web(self, other_args: List[str]):
         """Process web command."""
         parser = argparse.ArgumentParser(
@@ -321,6 +381,7 @@ Ticker: [/param] {self.ticker} [cmds]
         else:
             console.print("Only US tickers are recognized.", "\n")
 
+    @log_start_end(log=logger)
     def call_hq(self, other_args: List[str]):
         """Process hq command."""
         parser = argparse.ArgumentParser(
@@ -340,6 +401,7 @@ Ticker: [/param] {self.ticker} [cmds]
         else:
             console.print("Only US tickers are recognized.", "\n")
 
+    @log_start_end(log=logger)
     def call_divs(self, other_args: List[str]):
         """Process divs command."""
         parser = argparse.ArgumentParser(
@@ -378,6 +440,7 @@ Ticker: [/param] {self.ticker} [cmds]
         else:
             console.print("Only US tickers are recognized.", "\n")
 
+    @log_start_end(log=logger)
     def call_overview(self, other_args: List[str]):
         """Process overview command."""
         parser = argparse.ArgumentParser(
@@ -408,6 +471,7 @@ Ticker: [/param] {self.ticker} [cmds]
         if ns_parser:
             av_view.display_overview(self.ticker)
 
+    @log_start_end(log=logger)
     def call_key(self, other_args: List[str]):
         """Process overview command."""
         parser = argparse.ArgumentParser(
@@ -428,6 +492,7 @@ Ticker: [/param] {self.ticker} [cmds]
         if ns_parser:
             av_view.display_key(self.ticker)
 
+    @log_start_end(log=logger)
     def call_income(self, other_args: List[str]):
         """Process income command."""
         parser = argparse.ArgumentParser(
@@ -473,6 +538,7 @@ Ticker: [/param] {self.ticker} [cmds]
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_balance(self, other_args: List[str]):
         """Process balance command."""
         parser = argparse.ArgumentParser(
@@ -524,6 +590,7 @@ Ticker: [/param] {self.ticker} [cmds]
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_cash(self, other_args: List[str]):
         """Process cash command."""
         parser = argparse.ArgumentParser(
@@ -573,6 +640,7 @@ Ticker: [/param] {self.ticker} [cmds]
                 export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_earnings(self, other_args: List[str]):
         """Process earnings command."""
         parser = argparse.ArgumentParser(
@@ -609,8 +677,10 @@ Ticker: [/param] {self.ticker} [cmds]
                 ticker=self.ticker,
                 limit=ns_parser.limit,
                 quarterly=ns_parser.b_quarter,
+                export=ns_parser.export,
             )
 
+    @log_start_end(log=logger)
     def call_fraud(self, other_args: List[str]):
         """Process fraud command."""
         parser = argparse.ArgumentParser(
@@ -663,6 +733,7 @@ Ticker: [/param] {self.ticker} [cmds]
         if ns_parser:
             av_view.display_fraud(self.ticker)
 
+    @log_start_end(log=logger)
     def call_dcf(self, other_args: List[str]):
         """Process dcf command."""
         parser = argparse.ArgumentParser(
@@ -677,7 +748,7 @@ Ticker: [/param] {self.ticker} [cmds]
                 We predict the future expected cash flows by prediciting what the financial
                 statements will look like in the future, and then using this to determine the
                 cash the company will have in the future. This cash is paid to share holders.
-                We us linear regression to predict the future financial statements.\n\n
+                We use linear regression to predict the future financial statements.\n\n
 
                 Once we have our predicted financial statements we need to determine how much the
                 cash flows are worth today. This is done with a discount factor. Our DCF allows
@@ -739,6 +810,7 @@ Ticker: [/param] {self.ticker} [cmds]
             )
             dcf.create_workbook()
 
+    @log_start_end(log=logger)
     def call_warnings(self, other_args: List[str]):
         """Process warnings command."""
         parser = argparse.ArgumentParser(
@@ -768,6 +840,7 @@ Ticker: [/param] {self.ticker} [cmds]
                 ticker=self.ticker, debug=ns_parser.b_debug
             )
 
+    @log_start_end(log=logger)
     def call_fmp(self, _):
         """Process fmp command."""
         self.queue = self.load_class(

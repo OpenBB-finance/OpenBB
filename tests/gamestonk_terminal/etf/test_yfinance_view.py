@@ -21,8 +21,8 @@ def vcr_config():
     ["ARKW", "ARKF"],
 )
 def test_display_etf_weightings(name, mocker):
-    mocker.patch.object(
-        target=yfinance_view.gtff, attribute="USE_TABULATE_DF", new=False
+    mocker.patch(
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
     )
     yfinance_view.display_etf_weightings(
         name, raw=True, min_pct_to_display=5, export=""
@@ -36,7 +36,7 @@ def test_display_etf_weightings(name, mocker):
     ["ARKW", "ARKF"],
 )
 def test_display_etf_description(name, mocker):
-    mocker.patch.object(
-        target=yfinance_view.gtff, attribute="USE_TABULATE_DF", new=False
+    mocker.patch(
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
     )
     yfinance_view.display_etf_description(name)

@@ -236,8 +236,12 @@ class Portfolio:
         self.rf = rf
         if not trades.empty:
             if "cash" not in trades.Name.to_list():
+                logger.warning(
+                    "No initial cash deposit. Calculations may be off as this assumes trading from a "
+                    "funded account"
+                )
                 console.print(
-                    "[red]No initial cash deposit.  Calculations may be off as this assumes trading from a "
+                    "[red]No initial cash deposit. Calculations may be off as this assumes trading from a "
                     "funded account[/red]."
                 )
             # Load in trades df and do some quick editing
@@ -449,6 +453,7 @@ class Portfolio:
         ]
         self.benchmark_returns = self.benchmark.pct_change().dropna()
 
+    # pylint:disable=no-member
     @classmethod
     @log_start_end(log=logger)
     def from_csv(cls, csv_path: str):
@@ -468,9 +473,12 @@ class Portfolio:
         trades = pd.read_csv(csv_path)
         # Convert the date to what pandas understands
         trades.Date = pd.to_datetime(trades.Date)
+        # Sort by date to make more sense of trades
+        trades = trades.sort_values(by="Date")
         # Build the portfolio object
         return cls(trades)
 
+    # pylint:enable=no-member
     @classmethod
     @log_start_end(log=logger)
     def from_custom_inputs_and_weights(
@@ -503,6 +511,7 @@ class Portfolio:
             Class instance
         """
         if not np.isclose(np.sum(list_of_weights), 1, 0.03):
+            logger.error("Weights do not add to 1")
             console.print("[red]Weights do not add to 1[/red].")
             return cls()
         list_of_amounts = [weight * amount for weight in list_of_weights]

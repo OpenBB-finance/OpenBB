@@ -14,42 +14,46 @@ optional arguments:
   -h, --help            show this help message
 ```
 
+Example:
+
 ```
-(✨) (economy)> feargreed
-Fear & Greed Now: 82 (Extreme Greed)
-   Previous Close: 83 (Extreme Greed)
-   1 Week Ago: 86 (Extreme Greed)
-   1 Month Ago: 50 (Neutral)
-   1 Year Ago: 59 (Greed)
+2022 Feb 15, 04:51 (✨) /economy/ $ feargreed
+Fear & Greed Now: 32 (Fear)
+   Previous Close: 34 (Fear)
+   1 Week Ago: 34 (Fear)
+   1 Month Ago: 58 (Greed)
+   1 Year Ago: 63 (Greed)
 
-Junk Bond Demand: Extreme Greed                                                                     [Updated Nov 14 at 7:00pm]
-   Investors in low quality junk bonds are accepting 1.82 percentage points in additional yield over safer investment grade corporate bonds. While this spread is historically high, it is sharply lower than recent prices and suggests that investors are pursuing higher risk strategies.
-   (Last changed Oct 27 from a Greed rating)
+Junk Bond Demand: Extreme Greed                                                                     [Updated Feb 11 at 2:09am]
+   During the last five trading days, volume in put options has lagged volume in call options by 87.34% as investors make bullish bets in their portfolios. This is among the lowest levels of put buying seen during the last two years, indicating extreme greed on the part of investors.
+   (Last changed Dec 29 from a Fear rating)
 
-Market Volatility: Extreme Greed                                                                    [Updated Nov 14 at 7:00pm]
-   Stocks have outperformed bonds by 4.68 percentage points during the last 20 trading days. This is close to the strongest performance for stocks relative to bonds in the past two years and indicates investors are rotating into stocks from the relative safety of bonds.
-   (Last changed Oct 14 from a Fear rating)
+Market Volatility: Neutral                                                                          [Updated Feb 13 at 7:00pm]
+   The CBOE Volatility Index (VIX) is at 28.33. This is a neutral reading and indicates that market risks appear low.
+   (Last changed Jan 27 from an Extreme Fear rating)
 
-Put and Call Options: Extreme Greed                                                                 [Updated Nov 15 at 4:55pm]
-   The S&P 500 is 6.32% above its 125-day average. This is further above the average than has been typical during the last two years and rapid increases like this often indicate extreme greed.
-   (Last changed Oct 27 from a Greed rating)
+Put and Call Options: Fear                                                                          [Updated Feb 13 at 7:00pm]
+   Investors in low quality junk bonds are accepting 1.78 percentage points in additional yield over safer investment grade corporate bonds. This spread is higher than what has been typical for the last two years and indicates that investors are risk averse.
+   (Last changed Feb 9 from a Neutral rating)
 
-Market Momentum: Extreme Greed                                                                      [Updated Nov 15 at 4:24pm]
-   During the last five trading days, volume in put options has lagged volume in call options by 60.83% as investors make bullish bets in their portfolios. This is among the lowest levels of put buying seen during the last two years, indicating extreme greed on the part of investors.
-   (Last changed Oct 27 from a Greed rating)
+Market Momentum: Fear                                                                               [Updated Feb 14 at 4:06pm]
+   The McClellan Volume Summation Index measures advancing and declining volume on the NYSE. During the last month, approximately 5.69% more of each day's volume has traded in declining issues than in advancing issues, pushing this indicator towards the lower end of its range for the last two years.
+   (Last changed Feb 4 from an Extreme Fear rating)
 
-Stock Price Strength: Greed                                                                         [Updated Nov 15 at 4:04pm]
-   The McClellan Volume Summation Index measures advancing and declining volume on the NYSE. During the last month, approximately 6.03% more of each day's volume has traded in advancing issues than in declining issues, pushing this indicator towards the upper end of its range for the last two years.
-   (Last changed Oct 22 from a Neutral rating)
+Stock Price Strength: Extreme Fear                                                                  [Updated Feb 13 at 7:00pm]
+   Bonds have outperformed stocks by 3.67 percentage points during the last 20 trading days. This is close to the weakest performance for stocks relative to bonds in the past two years and indicates investors are fleeing risky stocks for the safety of bonds.
+   (Last changed Feb 9 from a Fear rating)
 
-Stock Price Breadth: Greed                                                                          [Updated Nov 15 at 4:00pm]
-   The number of stocks hitting 52-week highs exceeds the number hitting lows and is at the upper end of its range, indicating greed.
-   (Last changed Nov 5 from a Neutral rating)
+Stock Price Breadth: Extreme Fear                                                                   [Updated Feb 14 at 4:00pm]
+   The number of stocks hitting 52-week lows exceeds the number hitting highs and is at the lower end of its range, indicating extreme fear.
+   (Last changed Jan 20 from a Fear rating)
 
-Safe Heaven Demand: Neutral                                                                         [Updated Nov 15 at 4:15pm]
-   The CBOE Volatility Index (VIX) is at 16.49. This is a neutral reading and indicates that market risks appear low.
-   (Last changed Oct 4 from an Extreme Fear rating)
-   ```
+Safe Heaven Demand: Extreme Fear                                                                    [Updated Feb 14 at 5:14pm]
+   The S&P 500 is 3.33% below its 125-day average. During the last two years, the S&P 500 has typically been above this average, so rapid declines like this indicate extreme levels of fear.
+   (Last changed Jan 14 from a Fear rating)
+```
 
-<img size="1400" alt="Feature Screenshot - feargreed graphs" src="https://user-images.githubusercontent.com/85772166/141887165-f556eec5-ad6c-4551-a476-b038dd63773b.png">
+![feargreed](https://user-images.githubusercontent.com/46355364/154037228-773886a2-dda8-4d7b-aad6-a6f53cbe24cb.png)
+
+
 

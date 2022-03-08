@@ -5,9 +5,10 @@ import logging
 import os
 
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
-    very_long_number_formatter,
+    lambda_very_long_number_formatter,
 )
 from gamestonk_terminal.cryptocurrency.onchain import ethplorer_model
+from gamestonk_terminal.decorators import check_api_key
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.rich_config import console
@@ -16,6 +17,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_ETHPLORER_KEY"])
 def display_address_info(
     address: str,
     top: int = 15,
@@ -44,7 +46,9 @@ def display_address_info(
     df_data = df.copy()
     df = df.sort_values(by=sortby, ascending=descend)
     df["balance"] = df["balance"].apply(
-        lambda x: very_long_number_formatter(x) if x >= 10000 else round(float(x), 4)
+        lambda x: lambda_very_long_number_formatter(x)
+        if x >= 10000
+        else round(float(x), 4)
     )
 
     print_rich_table(
@@ -64,6 +68,7 @@ def display_address_info(
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_ETHPLORER_KEY"])
 def display_top_tokens(
     top: int = 15,
     sortby: str = "rank",
@@ -90,7 +95,7 @@ def display_top_tokens(
     df = df.sort_values(by=sortby, ascending=descend)
     for col in ["txsCount", "transfersCount", "holdersCount"]:
         if col in df.columns:
-            df[col] = df[col].apply(lambda x: very_long_number_formatter(x))
+            df[col] = df[col].apply(lambda x: lambda_very_long_number_formatter(x))
 
     print_rich_table(
         df.head(top),
@@ -109,6 +114,7 @@ def display_top_tokens(
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_ETHPLORER_KEY"])
 def display_top_token_holders(
     address: str,
     top: int = 10,
@@ -135,7 +141,7 @@ def display_top_token_holders(
     df = ethplorer_model.get_top_token_holders(address)
     df_data = df.copy()
     df = df.sort_values(by=sortby, ascending=descend)
-    df["balance"] = df["balance"].apply(lambda x: very_long_number_formatter(x))
+    df["balance"] = df["balance"].apply(lambda x: lambda_very_long_number_formatter(x))
 
     print_rich_table(
         df.head(top),
@@ -154,6 +160,7 @@ def display_top_token_holders(
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_ETHPLORER_KEY"])
 def display_address_history(
     address: str,
     top: int = 10,
@@ -166,7 +173,7 @@ def display_address_history(
     Parameters
     ----------
     address: str
-        Ethereum nlockchain balance e.g. 0x3cD751E6b0078Be393132286c442345e5DC49699
+        Ethereum blockchain balance e.g. 0x3cD751E6b0078Be393132286c442345e5DC49699
     top: int
         Limit of transactions. Maximum 100
     sortby: str
@@ -181,7 +188,9 @@ def display_address_history(
     df_data = df.copy()
     df = df.sort_values(by=sortby, ascending=descend)
     df["value"] = df["value"].apply(
-        lambda x: very_long_number_formatter(x) if x >= 10000 else round(float(x), 4)
+        lambda x: lambda_very_long_number_formatter(x)
+        if x >= 10000
+        else round(float(x), 4)
     )
 
     print_rich_table(
@@ -201,6 +210,7 @@ def display_address_history(
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_ETHPLORER_KEY"])
 def display_token_info(
     address: str,
     social: bool = False,
@@ -220,7 +230,7 @@ def display_token_info(
 
     df = ethplorer_model.get_token_info(address)
     df_data = df.copy()
-    df["Value"] = df["Value"].apply(lambda x: very_long_number_formatter(x))
+    df["Value"] = df["Value"].apply(lambda x: lambda_very_long_number_formatter(x))
 
     socials = ["website", "telegram", "reddit", "twitter", "coingecko"]
     if social:
@@ -242,6 +252,7 @@ def display_token_info(
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_ETHPLORER_KEY"])
 def display_tx_info(
     tx_hash: str,
     export: str = "",
@@ -275,6 +286,7 @@ def display_tx_info(
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_ETHPLORER_KEY"])
 def display_token_history(
     address: str,
     top: int = 10,
@@ -307,7 +319,7 @@ def display_token_history(
         console.print(f"No results found for balance: {address}\n")
         return
 
-    df["value"] = df["value"].apply(lambda x: very_long_number_formatter(x))
+    df["value"] = df["value"].apply(lambda x: lambda_very_long_number_formatter(x))
     df = df.sort_values(by=sortby, ascending=descend)
 
     if hash_:
@@ -332,6 +344,7 @@ def display_token_history(
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_ETHPLORER_KEY"])
 def display_token_historical_prices(
     address: str,
     top: int = 30,
@@ -363,9 +376,9 @@ def display_token_historical_prices(
         return
 
     df["volumeConverted"] = df["volumeConverted"].apply(
-        lambda x: very_long_number_formatter(x)
+        lambda x: lambda_very_long_number_formatter(x)
     )
-    df["cap"] = df["cap"].apply(lambda x: very_long_number_formatter(x))
+    df["cap"] = df["cap"].apply(lambda x: lambda_very_long_number_formatter(x))
     df = df.sort_values(by=sortby, ascending=descend)
 
     print_rich_table(

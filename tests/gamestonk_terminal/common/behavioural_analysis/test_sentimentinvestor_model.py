@@ -55,8 +55,9 @@ def test_get_trending(start, hour, number, recorder):
 def test_get_trending_status_400(mocker):
     # MOCK GET
     attrs = {
-        "status_code": 400,
+        "json.return_value": {"error": "mock error message"},
     }
+
     mock_response = mocker.Mock(**attrs)
     mocker.patch(target="requests.get", new=mocker.Mock(return_value=mock_response))
 

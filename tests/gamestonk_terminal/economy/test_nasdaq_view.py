@@ -17,22 +17,15 @@ def vcr_config():
 @pytest.mark.default_cassette("test_display_big_mac_index")
 @pytest.mark.vcr
 @pytest.mark.parametrize(
-    "raw, tab",
-    [
-        (True, True),
-        (True, False),
-        (False, False),
-    ],
+    "raw",
+    [True, True, False],
 )
 @pytest.mark.record_stdout
-def test_display_big_mac_index(mocker, raw, tab):
-    # MOCK GTFF
-    mocker.patch.object(target=nasdaq_view.gtff, attribute="USE_TABULATE_DF", new=tab)
-    mocker.patch.object(target=nasdaq_view.gtff, attribute="USE_ION", new=True)
-
-    # MOCK ION + SHOW
-    mocker.patch(target="gamestonk_terminal.economy.nasdaq_view.plt.ion")
-    mocker.patch(target="gamestonk_terminal.economy.nasdaq_view.plt.show")
+def test_display_big_mac_index(mocker, raw):
+    # MOCK VISUALIZE_OUTPUT
+    mocker.patch(
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
+    )
 
     # MOCK EXPORT_DATA
     mocker.patch(target="gamestonk_terminal.economy.nasdaq_view.export_data")

@@ -3,13 +3,14 @@ __docformat__ = "numpy"
 
 import logging
 import textwrap
-from typing import Optional
+from typing import Optional, Tuple, Any
 
 import numpy as np
 import pandas as pd
 import requests
 
 import gamestonk_terminal.config_terminal as cfg
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.decorators import log_start_end
 
 logger = logging.getLogger(__name__)
@@ -39,7 +40,7 @@ class ApiKeyException(Exception):
 
 
 @log_start_end(log=logger)
-def make_request(params: Optional[dict] = None) -> dict:
+def make_request(params: Optional[dict] = None) -> Tuple[int, Any]:
     """Helper methods for requests [Source: https://docs.whale-alert.io/]
 
     Parameters
@@ -57,12 +58,24 @@ def make_request(params: Optional[dict] = None) -> dict:
     url = "https://api.whale-alert.io/v1/transactions?api_key=" + api_key
     response = requests.get(url, params=params)
 
-    if not 200 <= response.status_code < 300:
-        raise ApiKeyException(f"Invalid Authentication: {response.text}")
-    try:
-        return response.json()
-    except Exception as e:
-        raise ValueError(f"Invalid Response: {response.text}") from e
+    result = {}
+
+    if response.status_code == 200:
+        result = response.json()
+    elif response.status_code == 401:
+        console.print("[red]Invalid API Key[/red]\n")
+        logger.error("Invalid Authentication: %s", response.text)
+    elif response.status_code == 401:
+        console.print("[red]API Key not authorized for Premium Feature[/red]\n")
+        logger.error("Insufficient Authorization: %s", response.text)
+    elif response.status_code == 429:
+        console.print("[red]Exceeded number of calls per minute[/red]\n")
+        logger.error("Calls limit exceeded: %s", response.text)
+    else:
+        console.print(response.json()["message"])
+        logger.error("Error in request: %s", response.text)
+
+    return response.status_code, result
 
 
 @log_start_end(log=logger)
@@ -88,17 +101,21 @@ def get_whales_transactions(min_value: int = 800000, limit: int = 100) -> pd.Dat
 
     params = {"limit": limit, "min_value": min_value}
 
-    response = make_request(params)
+    status_code, response = make_request(params)
+
+    if status_code != 200:
+        return pd.DataFrame()
+
     data = pd.json_normalize(response["transactions"]).sort_values(
         "timestamp", ascending=False
     )
 
     data["date"] = pd.to_datetime(data["timestamp"], unit="s")
     data.columns = [col.replace(".balance", "") for col in data.columns]
-    data["to_address"] = data["to"].apply(
+    data["to_address"] = data["to.address"].apply(
         lambda x: "\n".join(textwrap.wrap(x, width=45)) if isinstance(x, str) else x
     )
-    data["from_address"] = data["from"].apply(
+    data["from_address"] = data["from.address"].apply(
         lambda x: "\n".join(textwrap.wrap(x, width=45)) if isinstance(x, str) else x
     )
 
@@ -129,6 +146,7 @@ def get_whales_transactions(min_value: int = 800000, limit: int = 100) -> pd.Dat
         axis=1,
         inplace=True,
     )
+
     return data[
         [
             "date",

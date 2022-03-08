@@ -4,14 +4,15 @@ __docformat__ = "numpy"
 import logging
 import os
 import textwrap
-from typing import Dict
+from typing import Dict, Optional, List
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.decorators import check_api_key
+from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.economy.fred import fred_model
@@ -45,6 +46,7 @@ def format_units(num: int) -> str:
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_FRED_KEY"])
 def notes(series_term: str, num: int):
     """Print Series notes. [Source: FRED]
     Parameters
@@ -55,8 +57,8 @@ def notes(series_term: str, num: int):
         Maximum number of series notes to display
     """
     df_search = fred_model.get_series_notes(series_term)
+
     if df_search.empty:
-        console.print("No matches found. \n")
         return
     df_search["notes"] = df_search["notes"].apply(
         lambda x: "\n".join(textwrap.wrap(x, width=100)) if isinstance(x, str) else x
@@ -74,12 +76,14 @@ def notes(series_term: str, num: int):
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_FRED_KEY"])
 def display_fred_series(
     d_series: Dict[str, Dict[str, str]],
     start_date: str,
     raw: bool = False,
     export: str = "",
     limit: int = 10,
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display (multiple) series from https://fred.stlouisfed.org. [Source: FRED]
 
@@ -95,6 +99,8 @@ def display_fred_series(
         Export data to csv,json,xlsx or png,jpg,pdf,svg file
     limit: int
         Number of raw data rows to show
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (3 axes are expected in the list), by default None
     """
     series_ids = list(d_series.keys())
     data = pd.DataFrame()
@@ -109,10 +115,18 @@ def display_fred_series(
             ],
             axis=1,
         )
-    data = data.dropna()
     # Try to get everything onto the same 0-10 scale.
     # To do so, think in scientific notation.  Divide the data by whatever the E would be
-    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    if external_axes is None:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+
+    else:
+        if len(external_axes) != 3:
+            logger.error("Expected list of 3 axis items")
+            console.print("[red]Expected list of 3 axis items./n[/red]")
+            return
+        (ax,) = external_axes
+
     if len(series_ids) == 1:
         s_id = series_ids[0]
         sub_dict: Dict = d_series[s_id]
@@ -134,28 +148,27 @@ def display_fred_series(
             )
 
     ax.legend(prop={"size": 10}, bbox_to_anchor=(0, 1), loc="lower left")
-    ax.grid()
-    ax.set_xlim(data.index[0], data.index[-1])
-    ax.spines["top"].set_visible(False)
-    ax.spines["right"].set_visible(False)
-    plt.gcf().autofmt_xdate()
-    fig.tight_layout()
-    if gtff.USE_ION:
-        plt.ion()
+    if data.empty:
+        logger.error("No data")
+        console.print("[red]No data[/red]\n")
+    else:
+        ax.set_xlim(data.index[0], data.index[-1])
+        theme.style_primary_axis(ax)
+        if external_axes is None:
+            theme.visualize_output()
 
-    plt.show()
-    data.index = [x.strftime("%Y-%m-%d") for x in data.index]
-    if raw:
-        print_rich_table(
-            data.tail(limit),
-            headers=list(data.columns),
-            show_index=True,
-            index_name="Date",
+        data.index = [x.strftime("%Y-%m-%d") for x in data.index]
+        if raw:
+            print_rich_table(
+                data.tail(limit),
+                headers=list(data.columns),
+                show_index=True,
+                index_name="Date",
+            )
+            console.print("")
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "plot",
+            data,
         )
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "plot",
-        data,
-    )
-    console.print("")

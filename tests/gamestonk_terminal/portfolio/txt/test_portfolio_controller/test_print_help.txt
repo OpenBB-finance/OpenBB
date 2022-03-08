@@ -1,7 +1,6 @@
 
 >   bro         brokers holdings, 		 supports: robinhood, ally, degiro, coinbase
 >   po          portfolio optimization, 	 optimal portfolio weights from pyportfolioopt
->   pa          portfolio analysis, 		 analyse portfolios
 
 Portfolio:
     load        load data into the portfolio
@@ -18,4 +17,7 @@ Graphs:
     rmr         graph your returns versus the market's returns
     dd          display portfolio drawdown
     al          display allocation to given assets over period
-        
+
+Risk Metrics:
+    var         display value at risk
+    es          display expected shortfall

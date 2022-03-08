@@ -2,7 +2,6 @@
 
 # IMPORTATION THIRDPARTY
 import pytest
-import requests
 
 # IMPORTATION INTERNAL
 from gamestonk_terminal.stocks.due_diligence import finnhub_model
@@ -29,8 +28,14 @@ def test_get_rating_over_time_invalid_ticker():
 
 @pytest.mark.vcr(mode="none")
 def test_get_rating_over_time_invalid_status(mocker):
-    mock_response = requests.Response()
-    mock_response.status_code = 400
+
+    attrs = {
+        "status_code": 400,
+        "json.return_value": {"error": "mock error message"},
+    }
+
+    mock_response = mocker.Mock(**attrs)
+
     mocker.patch(
         target="requests.get",
         new=mocker.Mock(return_value=mock_response),

@@ -6,6 +6,7 @@ import requests
 
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -206,13 +207,24 @@ def get_close_price(asset: str, interval: str, since: int, until: int) -> pd.Dat
     }
 
     r = requests.get(url, params=parameters)
+
+    df = pd.DataFrame()
+
     if r.status_code == 200:
         df = pd.DataFrame(json.loads(r.text))
-        df = df.set_index("t")
-        df.index = pd.to_datetime(df.index, unit="s")
-        return df
 
-    return pd.DataFrame()
+        if df.empty:
+            console.print(f"No data found for {asset} price.\n")
+        else:
+            df = df.set_index("t")
+            df.index = pd.to_datetime(df.index, unit="s")
+
+    elif r.status_code == 401:
+        console.print("[red]Invalid API Key[/red]\n")
+    else:
+        console.print(r.text)
+
+    return df
 
 
 @log_start_end(log=logger)
@@ -251,12 +263,23 @@ def get_non_zero_addresses(
 
     r = requests.get(url, params=parameters)
 
+    df = pd.DataFrame()
+
     if r.status_code == 200:
         df = pd.DataFrame(json.loads(r.text))
-        df["t"] = pd.to_datetime(df["t"], unit="s")
-        df = df.set_index("t")
-        return df
-    return pd.DataFrame()
+
+        if df.empty:
+            console.print(f"No data found for {asset}'s non-zero addresses.\n")
+        else:
+            df["t"] = pd.to_datetime(df["t"], unit="s")
+            df = df.set_index("t")
+
+    elif r.status_code == 401:
+        console.print("[red]Invalid API Key[/red]\n")
+    else:
+        console.print(r.text)
+
+    return df
 
 
 @log_start_end(log=logger)
@@ -294,13 +317,23 @@ def get_active_addresses(
     }
 
     r = requests.get(url, params=parameters)
+    df = pd.DataFrame()
 
     if r.status_code == 200:
         df = pd.DataFrame(json.loads(r.text))
-        df["t"] = pd.to_datetime(df["t"], unit="s")
-        df = df.set_index("t")
-        return df
-    return pd.DataFrame()
+
+        if df.empty:
+            console.print(f"No data found for {asset}'s active addresses.\n")
+        else:
+            df["t"] = pd.to_datetime(df["t"], unit="s")
+            df = df.set_index("t")
+
+    elif r.status_code == 401:
+        console.print("[red]Invalid API Key[/red]\n")
+    else:
+        console.print(r.text)
+
+    return df
 
 
 @log_start_end(log=logger)
@@ -336,18 +369,34 @@ def get_hashrate(asset: str, interval: str, since: int, until: int) -> pd.DataFr
         "u": str(until),
     }
 
+    df = pd.DataFrame()
+
     r = requests.get(url, params=parameters)
     r2 = requests.get(url2, params=parameters)
-    if r.status_code == 200 and r2.status_code == 200:
-        df2 = pd.DataFrame(json.loads(r2.text))
-        df = pd.DataFrame(json.loads(r.text))
-        df = df.set_index("t")
-        df.index = pd.to_datetime(df.index, unit="s")
-        df["price"] = df2["v"].values
-        df.rename(columns={"v": "hashrate"}, inplace=True)
-        return df
 
-    return pd.DataFrame()
+    if r.status_code == 200 and r2.status_code == 200:
+        df = pd.DataFrame(json.loads(r.text))
+        df2 = pd.DataFrame(json.loads(r2.text))
+
+        if df.empty or df2.empty:
+            console.print(f"No data found for {asset}'s hashrate or price.\n")
+        else:
+            df = df.set_index("t")
+            df.index = pd.to_datetime(df.index, unit="s")
+            df["price"] = df2["v"].values
+            df.rename(columns={"v": "hashrate"}, inplace=True)
+
+    elif r.status_code == 401 or r2.status_code == 401:
+        console.print("[red]Invalid API Key[/red]\n")
+
+    else:
+        if r.status_code != 200:
+            console.print(f"Error getting hashrate: {r.text}")
+
+        if r2.status_code != 200:
+            console.print(f"Error getting {asset} price: {r2.text}")
+
+    return df
 
 
 @log_start_end(log=logger)
@@ -388,6 +437,7 @@ def get_exchange_balances(
         "s": str(since),
         "u": str(until),
     }
+    df = pd.DataFrame()
 
     r = requests.get(url, params=parameters)  # get balances
     r2 = requests.get(url2, params=parameters)  # get relative (percentage) balances
@@ -399,14 +449,32 @@ def get_exchange_balances(
         df3 = pd.DataFrame(json.loads(r3.text))
         df2 = pd.DataFrame(json.loads(r2.text))
         df = pd.DataFrame(json.loads(r.text))
+
         df = df.set_index("t")
         df.index = pd.to_datetime(df.index, unit="s")
         df["percentage"] = df2["v"].values
         df["price"] = df3["v"].values
-        df.rename(columns={"v": "stacked"}, inplace=True)
-        return df
 
-    return pd.DataFrame()
+        df.rename(columns={"v": "stacked"}, inplace=True)
+
+        if df.empty or df2.empty or df3.empty:
+            console.print(f"No data found for {asset}'s exchange balance or price.\n")
+
+    elif r.status_code == 401 or r2.status_code == 401 or r3.status_code == 401:
+        console.print("[red]Invalid API Key[/red]\n")
+    else:
+        if r.status_code != 200:
+            console.print(f"Error getting {asset}'s exchange balance: {r.text}")
+
+        if r2.status_code != 200:
+            console.print(
+                f"Error getting {asset}'s exchange balance relatives: {r2.text}"
+            )
+
+        if r3.status_code != 200:
+            console.print(f"Error getting {asset} price: {r3.text}")
+
+    return df
 
 
 @log_start_end(log=logger)
@@ -447,11 +515,19 @@ def get_exchange_net_position_change(
     }
 
     r = requests.get(url, params=parameters)
+    df = pd.DataFrame()
 
     if r.status_code == 200:
         df = pd.DataFrame(json.loads(r.text))
-        df["t"] = pd.to_datetime(df["t"], unit="s")
-        df = df.set_index("t")
-        return df
 
-    return pd.DataFrame()
+        if df.empty:
+            console.print(f"No data found for {asset}'s net position change.\n")
+        else:
+            df["t"] = pd.to_datetime(df["t"], unit="s")
+            df = df.set_index("t")
+    elif r.status_code == 401:
+        console.print("[red]Invalid API Key[/red]\n")
+    else:
+        console.print(r.text)
+
+    return df

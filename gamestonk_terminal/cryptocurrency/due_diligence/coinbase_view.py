@@ -3,9 +3,12 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Optional
+from typing import Optional, List
+
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
+import matplotlib.pyplot as plt
+
 from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import plot_order_book
 from gamestonk_terminal.cryptocurrency.due_diligence import coinbase_model
 from gamestonk_terminal.decorators import log_start_end
@@ -18,7 +21,11 @@ register_matplotlib_converters()
 
 
 @log_start_end(log=logger)
-def display_order_book(product_id: str, export: str = "") -> None:
+def display_order_book(
+    product_id: str,
+    export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
+) -> None:
     """Displays a list of available currency pairs for trading. [Source: Coinbase]
 
     Parameters
@@ -27,9 +34,11 @@ def display_order_book(product_id: str, export: str = "") -> None:
         Trading pair of coins on Coinbase e.g ETH-USDT or UNI-ETH
     export : str
         Export dataframe data to csv,json,xlsx file
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
     bids, asks, pair, market_book = coinbase_model.get_order_book(product_id)
-    plot_order_book(bids, asks, pair)
+    plot_order_book(bids, asks, pair, external_axes)
 
     export_data(
         export,

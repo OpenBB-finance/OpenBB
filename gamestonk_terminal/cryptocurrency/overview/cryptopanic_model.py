@@ -93,16 +93,19 @@ def make_request(**kwargs: Any) -> Optional[dict]:
         url += f"&regions={region}"
 
     response = requests.get(url)
+    result = None
 
-    if not 200 <= response.status_code < 300:
-        console.print(f"[red]Invalid Authentication: {response.text}[/red]")
-        return None
+    if response.status_code == 200:
+        result = response.json()
+    else:
+        if "Token not found" in response.json()["info"]:
+            console.print("[red]Invalid API Key[/red]\n")
+        else:
+            console.print(response.json()["info"])
 
-    try:
-        return response.json()
-    except Exception as _:  # noqa: F841
-        console.print(f"[red]Invalid Response: {response.text}[/red]")
-        return None
+        logger.warning("Invalid authentication: %s", response.text)
+
+    return result
 
 
 @log_start_end(log=logger)
@@ -185,7 +188,8 @@ def get_news(
                 for post in res["results"]:
                     results.append(_parse_post(post))
                 next_page = res.get("next")
-            except Exception as _:  # noqa: F841
+            except Exception as e:  # noqa: F841
+                logger.exception(str(e))
                 console.print(
                     "[red]Something went wrong while fetching news from API[/red]\n"
                 )
@@ -199,7 +203,8 @@ def get_news(
                 else x
             )
             return df
-        except Exception as _:  # noqa: F841
+        except Exception as e:  # noqa: F841
+            logger.exception(str(e))
             console.print("[red]Something went wrong with DataFrame creation[/red]\n")
             return pd.DataFrame()
     return pd.DataFrame()

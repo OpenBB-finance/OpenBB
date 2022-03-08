@@ -3,21 +3,22 @@ __docformat__ = "numpy"
 
 import argparse
 import logging
-from typing import List
 from pathlib import Path
+from typing import List
 
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 
-from gamestonk_terminal.rich_config import console
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.parent_classes import BaseController
-from gamestonk_terminal.menu import session
-from gamestonk_terminal.helper_funcs import (
-    parse_known_args_and_warn,
-    EXPORT_ONLY_FIGURES_ALLOWED,
-)
 from gamestonk_terminal.custom import custom_model, custom_view
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_funcs import (
+    EXPORT_ONLY_FIGURES_ALLOWED,
+    parse_known_args_and_warn,
+)
+from gamestonk_terminal.menu import session
+from gamestonk_terminal.parent_classes import BaseController
+from gamestonk_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 # pylint:disable=import-outside-toplevel
@@ -84,6 +85,7 @@ class CustomDataController(BaseController):
 """
         console.print(text=help_text, menu="Custom")
 
+    @log_start_end(log=logger)
     def call_load(self, other_args: List[str]):
         """Process load"""
         parser = argparse.ArgumentParser(
@@ -116,6 +118,7 @@ class CustomDataController(BaseController):
             self.update_runtime_choices()
         console.print("")
 
+    @log_start_end(log=logger)
     def call_plot(self, other_args: List[str]):
         """Process plot command"""
         parser = argparse.ArgumentParser(
@@ -143,7 +146,7 @@ class CustomDataController(BaseController):
         parser.add_argument(
             "-k",
             "--kind",
-            default="scatter",
+            default="line",
             help="Type of plot for data",
             choices=self.pandas_plot_choices,
         )
@@ -154,6 +157,7 @@ class CustomDataController(BaseController):
         )
         if ns_parser:
             if self.data.empty:
+                logger.error("No data loaded")
                 console.print("[red]No data loaded.[/red]\n")
                 return
             custom_view.custom_plot(
@@ -165,6 +169,7 @@ class CustomDataController(BaseController):
             )
         console.print("")
 
+    @log_start_end(log=logger)
     def call_show(self, other_args: List[str]):
         """Process head command"""
         parser = argparse.ArgumentParser(
@@ -182,11 +187,15 @@ class CustomDataController(BaseController):
         ns_parser = parse_known_args_and_warn(parser, other_args, limit=5)
         if ns_parser:
             if self.data.empty:
+                logger.error("No data loaded")
                 console.print("[red]No data loaded.[/red]\n")
                 return
             if ns_parser.sortcol:
                 sort_column = " ".join(ns_parser.sortcol)
                 if sort_column not in self.data.columns:
+                    logger.warning(
+                        "%s is not a valid column. Showing without sorting", sort_column
+                    )
                     console.print(
                         f"[red]{sort_column} not a valid column.  Showing without sorting.\n[/red]"
                     )
@@ -202,6 +211,7 @@ class CustomDataController(BaseController):
             console.print(self.data.head(ns_parser.limit))
         console.print()
 
+    @log_start_end(log=logger)
     def call_info(self, other_args: List[str]):
         """Process info command"""
         parser = argparse.ArgumentParser(
@@ -214,11 +224,13 @@ class CustomDataController(BaseController):
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if self.data.empty:
+                logger.error("No data loaded.")
                 console.print("[red]No data loaded.[/red]\n")
                 return
             console.print(self.data.info())
         console.print()
 
+    @log_start_end(log=logger)
     def call_qa(self, _):
         """Process qa command"""
         from gamestonk_terminal.custom.quantitative_analysis import qa_controller
@@ -230,6 +242,7 @@ class CustomDataController(BaseController):
             queue=self.queue,
         )
 
+    @log_start_end(log=logger)
     def call_pred(self, _):
         """Process pred command"""
         if gtff.ENABLE_PREDICT:

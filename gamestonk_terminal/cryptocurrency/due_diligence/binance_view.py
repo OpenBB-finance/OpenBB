@@ -3,10 +3,13 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import List, Optional
 
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from binance.client import Client
+from binance.exceptions import BinanceAPIException
 
 import gamestonk_terminal.config_terminal as cfg
 from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import plot_order_book
@@ -18,7 +21,13 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_order_book(coin: str, limit: int, currency: str, export: str) -> None:
+def display_order_book(
+    coin: str,
+    limit: int,
+    currency: str,
+    export: str,
+    external_axes: Optional[List[plt.Axes]] = None,
+) -> None:
     """Get order book for currency. [Source: Binance]
 
     Parameters
@@ -32,24 +41,30 @@ def display_order_book(coin: str, limit: int, currency: str, export: str) -> Non
         Quote currency (what to view coin vs)
     export: str
         Export dataframe data to csv,json,xlsx
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
 
     pair = coin + currency
 
     client = Client(cfg.API_BINANCE_KEY, cfg.API_BINANCE_SECRET)
-    market_book = client.get_order_book(symbol=pair, limit=limit)
-    bids = np.asarray(market_book["bids"], dtype=float)
-    asks = np.asarray(market_book["asks"], dtype=float)
-    bids = np.insert(bids, 2, bids[:, 1].cumsum(), axis=1)
-    asks = np.insert(asks, 2, np.flipud(asks[:, 1]).cumsum(), axis=1)
-    plot_order_book(bids, asks, coin)
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "book",
-        pd.DataFrame(market_book),
-    )
+    try:
+        market_book = client.get_order_book(symbol=pair, limit=limit)
+        bids = np.asarray(market_book["bids"], dtype=float)
+        asks = np.asarray(market_book["asks"], dtype=float)
+        bids = np.insert(bids, 2, bids[:, 1].cumsum(), axis=1)
+        asks = np.insert(asks, 2, np.flipud(asks[:, 1]).cumsum(), axis=1)
+        plot_order_book(bids, asks, coin, external_axes)
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "book",
+            pd.DataFrame(market_book),
+        )
+    except BinanceAPIException:
+        console.print(f"{coin} is not a valid binance symbol")
 
 
 @log_start_end(log=logger)

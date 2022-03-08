@@ -22,16 +22,17 @@ def vcr_config():
 @pytest.mark.parametrize(
     "func",
     [
-        "get_info",
+        # "get_info",  CHECK HOW TO MOCK TIMEZONE
         "get_sustainability",
         "get_calendar_earnings",
         "get_website",
         "get_hq",
         "get_dividends",
+        "get_splits",
     ],
 )
 def test_call_func(func, recorder):
-    result = getattr(yahoo_finance_model, func)(ticker="GME")
+    result = getattr(yahoo_finance_model, func)(ticker="AAPL")
 
     recorder.capture(result)
 
@@ -39,8 +40,18 @@ def test_call_func(func, recorder):
 @pytest.mark.vcr
 def test_get_shareholders(recorder):
     major_df, institutional_df, mutual_df = yahoo_finance_model.get_shareholders(
-        ticker="GME"
+        ticker="AAPL"
     )
     result_list = [major_df, institutional_df, mutual_df]
+
+    recorder.capture_list(result_list)
+
+
+@pytest.mark.vcr
+def test_get_mktcap(recorder):
+    df_mktcap, currency = yahoo_finance_model.get_mktcap(
+        ticker="AAPL",
+    )
+    result_list = [df_mktcap, currency]
 
     recorder.capture_list(result_list)

@@ -7,6 +7,7 @@ import os
 import numpy as np
 
 from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.decorators import check_api_key
 from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.stocks.fundamental_analysis import av_model
@@ -15,6 +16,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_KEY_ALPHAVANTAGE"])
 def display_overview(ticker: str):
     """Alpha Vantage stock ticker overview
 
@@ -29,7 +31,10 @@ def display_overview(ticker: str):
         return
 
     print_rich_table(
-        df_fa.drop(index=["Description"]), headers=[], title="Ticker Overview"
+        df_fa.drop(index=["Description"]),
+        headers=[""],
+        title=f"{ticker} Overview",
+        show_index=True,
     )
 
     console.print(f"\nCompany Description:\n\n{df_fa.loc['Description'][0]}")
@@ -37,6 +42,7 @@ def display_overview(ticker: str):
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_KEY_ALPHAVANTAGE"])
 def display_key(ticker: str):
     """Alpha Vantage key metrics
 
@@ -46,16 +52,19 @@ def display_key(ticker: str):
         Fundamental analysis ticker symbol
     """
     df_key = av_model.get_key_metrics(ticker)
+
     if df_key.empty:
-        console.print("No API calls left. Try me later", "\n")
         return
 
-    print_rich_table(df_key, headers=[], title="Ticker Key Metrics", show_index=True)
+    print_rich_table(
+        df_key, headers=[""], title=f"{ticker} Key Metrics", show_index=True
+    )
 
     console.print("")
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_KEY_ALPHAVANTAGE"])
 def display_income_statement(
     ticker: str, limit: int, quarterly: bool = False, export: str = ""
 ):
@@ -73,12 +82,15 @@ def display_income_statement(
         Format to export data
     """
     df_income = av_model.get_income_statements(ticker, limit, quarterly)
+
     if df_income.empty:
-        console.print("No API calls left. Try me later", "\n")
         return
 
     print_rich_table(
-        df_income, headers=list(df_income.columns), title="Ticker Income Statement"
+        df_income,
+        headers=list(df_income.columns),
+        title=f"{ticker} Income Statement",
+        show_index=True,
     )
 
     console.print("")
@@ -86,6 +98,7 @@ def display_income_statement(
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_KEY_ALPHAVANTAGE"])
 def display_balance_sheet(
     ticker: str, limit: int, quarterly: bool = False, export: str = ""
 ):
@@ -103,12 +116,15 @@ def display_balance_sheet(
         Format to export data
     """
     df_balance = av_model.get_balance_sheet(ticker, limit, quarterly)
+
     if df_balance.empty:
-        console.print("No API calls left. Try me later", "\n")
         return
 
     print_rich_table(
-        df_balance, headers=list(df_balance.columns), title="Ticker Balance Sheet"
+        df_balance,
+        headers=list(df_balance.columns),
+        title=f"{ticker} Balance Sheet",
+        show_index=True,
     )
 
     console.print("")
@@ -118,6 +134,7 @@ def display_balance_sheet(
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_KEY_ALPHAVANTAGE"])
 def display_cash_flow(
     ticker: str, limit: int, quarterly: bool = False, export: str = ""
 ):
@@ -135,12 +152,15 @@ def display_cash_flow(
         Format to export data
     """
     df_cash = av_model.get_cash_flow(ticker, limit, quarterly)
+
     if df_cash.empty:
-        console.print("No API calls left. Try me later", "\n")
         return
 
     print_rich_table(
-        df_cash, headers=list(df_cash.columns), title="Ticker Balance Sheet"
+        df_cash,
+        headers=list(df_cash.columns),
+        title=f"{ticker} Balance Sheet",
+        show_index=True,
     )
 
     console.print("")
@@ -148,7 +168,10 @@ def display_cash_flow(
 
 
 @log_start_end(log=logger)
-def display_earnings(ticker: str, limit: int, quarterly: bool = False):
+@check_api_key(["API_KEY_ALPHAVANTAGE"])
+def display_earnings(
+    ticker: str, limit: int, quarterly: bool = False, export: str = ""
+):
     """Alpha Vantage earnings
 
     Parameters
@@ -159,22 +182,26 @@ def display_earnings(ticker: str, limit: int, quarterly: bool = False):
         Number of events to show
     quarterly: bool
         Flag to show quarterly instead of annual
+    export: str
+        Format to export data
     """
     df_fa = av_model.get_earnings(ticker, quarterly)
+
     if df_fa.empty:
-        console.print("No API calls left. Try me later", "\n")
         return
+
     print_rich_table(
         df_fa.head(limit),
         headers=list(df_fa.columns),
         show_index=False,
-        title="Ticker Earnings",
+        title=f"{ticker} Earnings",
     )
-
     console.print("")
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), "earnings", df_fa)
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_KEY_ALPHAVANTAGE"])
 def display_fraud(ticker: str):
     """Fraud indicators for given ticker
     Parameters
@@ -183,6 +210,9 @@ def display_fraud(ticker: str):
         Fundamental analysis ticker symbol
     """
     ratios, zscore, mckee = av_model.get_fraud_ratios(ticker)
+
+    if ratios is None and zscore is None and mckee is None:
+        return
 
     if ratios["MSCORE"] > -1.78:
         chance_m = "high"
