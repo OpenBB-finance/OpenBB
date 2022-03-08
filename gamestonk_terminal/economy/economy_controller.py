@@ -4,7 +4,6 @@ __docformat__ = "numpy"
 import argparse
 import logging
 import os
-from datetime import datetime, timedelta
 from typing import List
 
 import pandas as pd
@@ -19,13 +18,15 @@ from gamestonk_terminal.economy import (
     nasdaq_model,
     nasdaq_view,
     wsj_view,
+    econdb_view,
+    econdb_model,
 )
 from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_FIGURES_ALLOWED,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     parse_known_args_and_warn,
-    valid_date,
+    print_rich_table,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.parent_classes import BaseController
@@ -38,30 +39,17 @@ class EconomyController(BaseController):
     """Economy Controller class"""
 
     CHOICES_COMMANDS = [
-        "feargreed",
         "overview",
-        "indices",
         "futures",
-        "bonds",
-        "futures",
-        "currencies",
-        "energy",
-        "metals",
-        "meats",
-        "grains",
-        "softs",
+        "macro",
+        "macrous",
         "valuation",
         "performance",
         "spectrum",
         "map",
         "rtps",
-        "gdp",
-        "gdpc",
-        "inf",
-        "cpi",
-        "tyld",
-        "unemp",
         "industry",
+        "feargreed",
         "bigmac",
         "resources",
     ]
@@ -71,9 +59,29 @@ class EconomyController(BaseController):
     wsj_sortby_cols_dict = {c: None for c in ["ticker", "last", "change", "prevClose"]}
     map_period_list = ["1d", "1w", "1m", "3m", "6m", "1y"]
     map_type_list = ["sp500", "world", "full", "etf"]
-    gdp_interval = ["annual", "quarter"]
-    cpi_interval = ["semiannual", "monthly"]
-    tyld_interval = ["daily", "weekly", "monthly"]
+    macro_us_interval = [
+        "annual",
+        "quarter",
+        "semiannual",
+        "monthly",
+        "weekly",
+        "daily",
+    ]
+    macro_us_types = [
+        "GDP",
+        "GDPC",
+        "INF",
+        "CPI",
+        "TYLD",
+        "UNEMP",
+        "gdp",
+        "gpdc",
+        "inf",
+        "cpi",
+        "tyld",
+        "unemp",
+    ]
+    overview_options = ["indices", "usbonds", "gbonds", "currencies"]
     tyld_maturity = ["3m", "5y", "10y", "30y"]
     valuation_sort_cols = [
         "Name",
@@ -131,18 +139,21 @@ class EconomyController(BaseController):
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
-            choices["feargreed"]["-i"] = {c: None for c in self.fear_greed_indicators}
-            choices["feargreed"]["--indicator"] = {
-                c: None for c in self.fear_greed_indicators
-            }
+            choices["overview"] = {c: None for c in self.overview_options}
 
             choices["futures"] = {
                 c: None for c in ["energy", "metals", "meats", "grains", "softs"]
             }
-            choices["bonds"] = {c: None for c in ["global", "us"]}
 
-            choices["map"]["-p"] = {c: None for c in self.map_period_list}
-            choices["map"]["--period"] = {c: None for c in self.map_period_list}
+            choices["macro"]["-p"] = {c: None for c in econdb_model.PARAMETERS}
+            choices["macro"]["--parameter"] = {c: None for c in econdb_model.PARAMETERS}
+            choices["macro"]["-c"] = {c: None for c in econdb_model.COUNTRY_CODES}
+            choices["macro"]["--countries"] = {
+                c: None for c in econdb_model.COUNTRY_CODES
+            }
+
+            choices["macrous"]["-t"] = {c: None for c in self.macro_us_types}
+            choices["macrous"]["--type"] = {c: None for c in self.macro_us_types}
 
             choices["valuation"]["-s"] = {c: None for c in self.valuation_sort_cols}
             choices["valuation"]["--sortby"] = {
@@ -154,49 +165,38 @@ class EconomyController(BaseController):
                 c: None for c in self.performance_sort_list
             }
 
-            choices["gdp"]["-i"] = {c: None for c in self.gdp_interval}
-            choices["gdp"]["--interval"] = {c: None for c in self.gdp_interval}
+            choices["map"]["-p"] = {c: None for c in self.map_period_list}
+            choices["map"]["--period"] = {c: None for c in self.map_period_list}
 
-            choices["cpi"]["-i"] = {c: None for c in self.cpi_interval}
-            choices["cpi"]["--interval"] = {c: None for c in self.cpi_interval}
-
-            choices["tyld"]["-i"] = {c: None for c in self.tyld_interval}
-            choices["tyld"]["--interval"] = {c: None for c in self.tyld_interval}
-            choices["tyld"]["-m"] = {c: None for c in self.tyld_maturity}
-            choices["tyld"]["--maturity"] = {c: None for c in self.tyld_maturity}
+            choices["feargreed"]["-i"] = {c: None for c in self.fear_greed_indicators}
+            choices["feargreed"]["--indicator"] = {
+                c: None for c in self.fear_greed_indicators
+            }
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
         """Print help"""
         help_text = """[cmds]
+Overview
+    overview      show a market overview of either indices, bonds or currencies [src][Source: Wall St. Journal][/src]
+    futures       display a futures and commodities overview [src][Source: Wall St. Journal / FinViz][/src]
+    map           S&P500 index stocks map [src][Source: FinViz][/src]
 
-    futures       futures and commodities overview [Source: Wall St. Journal / FinViz]
+Macro Data
+    macro         collect macro data for a country or countries [src][Source: EconDB][/src]
+    macrous       show United States macro data [src][Source: Alpha Vantage][/src]
 
-[src][CNN][/src]
-    feargreed     CNN Fear and Greed Index
-[src][Wall St. Journal][/src]
-    overview      market data overview
-    indices       US indices overview
-    bonds         global and US bonds overview
-    currencies    currencies overview
+Performance & Valuations
+    rtps          real-time performance sectors [src][Source: Alpha Vantage][/src]
+    valuation     valuation of sectors, industry, country [src][Source: FinViz][/src]
+    performance   performance of sectors, industry, country [src][Source: FinViz][/src]
+    spectrum      spectrum of sectors, industry, country [src][Source: FinViz][/src]
 
-[src][Finviz][/src]
-    map           S&P500 index stocks map
-    valuation     valuation of sectors, industry, country
-    performance   performance of sectors, industry, country
-    spectrum      spectrum of sectors, industry, country
+Index
+    feargreed     CNN Fear and Greed Index [src][Source: CNN][/src]
+    bigmac        the economists Big Mac index [src][Source: NASDAQ Datalink][/src][/cmds]
 
-[src][Alpha Vantage][/src]
-    rtps          real-time performance sectors
-    gdp           real GDP for United States
-    gdpc          quarterly real GDP per Capita data of the United States
-    inf           infation rates for United States
-    cpi           consumer price index for United States
-    tyld          treasury yields for United States
-    unemp         United States unemployment rates
-[src][NASDAQ DataLink][/src]
-    bigmac        the economists Big Mac index[/cmds]
 [menu]
 >   fred          Federal Reserve Economic Data submenu[/menu]
 """
@@ -244,33 +244,48 @@ class EconomyController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="overview",
-            description="Market overview. [Source: Wall St. Journal]",
+            description="""
+            Provide a market overview of a variety of options. This can be a general overview, indices,
+            bonds and currencies. [Source: Wall St. Journal]
+            """,
         )
 
+        parser.add_argument(
+            "-t",
+            "--type",
+            dest="type",
+            help="Obtain either US indices, US Bonds, Global Bonds or Currencies",
+            type=str,
+            choices=self.overview_options,
+            default="",
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-t")
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            wsj_view.display_overview(
-                export=ns_parser.export,
-            )
-
-    @log_start_end(log=logger)
-    def call_indices(self, other_args: List[str]):
-        """Process indices command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="indices",
-            description="US indices. [Source: Wall St. Journal]",
-        )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            wsj_view.display_indices(
-                export=ns_parser.export,
-            )
+            if not ns_parser.type:
+                wsj_view.display_overview(
+                    export=ns_parser.export,
+                )
+            elif ns_parser.type == "indices":
+                wsj_view.display_indices(
+                    export=ns_parser.export,
+                )
+            if ns_parser.type == "usbonds":
+                wsj_view.display_usbonds(
+                    export=ns_parser.export,
+                )
+            if ns_parser.type == "gbonds":
+                wsj_view.display_glbonds(
+                    export=ns_parser.export,
+                )
+            if ns_parser.type == "currencies":
+                wsj_view.display_currencies(
+                    export=ns_parser.export,
+                )
 
     @log_start_end(log=logger)
     def call_futures(self, other_args: List[str]):
@@ -328,57 +343,111 @@ class EconomyController(BaseController):
             )
 
     @log_start_end(log=logger)
-    def call_bonds(self, other_args: List[str]):
-        """Process bonds command"""
+    def call_macro(self, other_args: List[str]):
+        """Process macro command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="bonds",
-            description="Show Global or US Bonds. [Source: Wall St. Journal]",
+            prog="macro",
+            description="Get a broad selection of macro data from one or multiple companies. [Source: EconDB}",
         )
 
         parser.add_argument(
-            "-t",
-            "--type",
-            dest="type",
-            help="Obtain bonds globally or from the United States",
-            type=str,
-            choices=["global", "us"],
-            default="global",
+            "-p",
+            "--parameters",
+            nargs="+",
+            dest="parameters",
+            help="Abbreviation(s) of the Macro Economic data",
+            default=["CPI"],
         )
 
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-t")
+        parser.add_argument(
+            "-sp",
+            "--show_parameters",
+            dest="show_parameters",
+            help="Show all parameters and what they represent",
+            action="store_true",
+            default=False,
+        )
+
+        parser.add_argument(
+            "-c",
+            "--countries",
+            nargs="+",
+            dest="countries",
+            help="The country or countries you wish to show data for",
+            default=["United_States"],
+        )
+
+        parser.add_argument(
+            "-sc",
+            "--show_countries",
+            dest="show_countries",
+            help="Show all countries and their currencies",
+            action="store_true",
+            default=False,
+        )
+
+        parser.add_argument(
+            "-s",
+            "--start_date",
+            dest="start_date",
+            help="The start date of the data (format: YEAR-MONTH-DAY, i.e. 2010-12-31)",
+            default=None,
+        )
+
+        parser.add_argument(
+            "-e",
+            "--end_date",
+            dest="end_date",
+            help="The end date of the data (format: YEAR-MONTH-DAY, i.e. 2021-06-20)",
+            default=None,
+        )
+
+        parser.add_argument(
+            "-cc",
+            "--convert_currency",
+            dest="convert_currency",
+            help="Convert the currency of the chosen country to a specified currency. By default, this will be USD "
+            "unless specified with this command. To find the currencies use the option -sc",
+            default="USD",
+        )
+
+        parser.add_argument(
+            "-r",
+            "--raw",
+            dest="raw",
+            help="Show raw data",
+            action="store_true",
+            default=False,
+        )
+
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            if ns_parser.type == "global":
-                wsj_view.display_glbonds(
+            if ns_parser.show_parameters:
+                print_rich_table(
+                    pd.DataFrame(econdb_model.PARAMETERS.items()),
+                    show_index=False,
+                    headers=["Parameter", "Description"],
+                )
+            elif ns_parser.show_countries:
+                print_rich_table(
+                    pd.DataFrame(econdb_model.COUNTRY_CURRENCIES.items()),
+                    show_index=False,
+                    headers=["Country", "Currency"],
+                )
+            elif ns_parser.parameters and ns_parser.countries:
+                econdb_view.show_data(
+                    parameters=ns_parser.parameters,
+                    countries=ns_parser.countries,
+                    start_date=ns_parser.start_date,
+                    end_date=ns_parser.end_date,
+                    convert_currency=ns_parser.convert_currency,
+                    raw=ns_parser.raw,
                     export=ns_parser.export,
                 )
-            if ns_parser.type == "us":
-                wsj_view.display_usbonds(
-                    export=ns_parser.export,
-                )
-
-    @log_start_end(log=logger)
-    def call_currencies(self, other_args: List[str]):
-        """Process currencies command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="currencies",
-            description="Currencies. [Source: Wall St. Journal]",
-        )
-
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            wsj_view.display_currencies(
-                export=ns_parser.export,
-            )
 
     @log_start_end(log=logger)
     def call_map(self, other_args: List[str]):
@@ -595,206 +664,56 @@ class EconomyController(BaseController):
             )
 
     @log_start_end(log=logger)
-    def call_gdp(self, other_args: List[str]):
-        """Process gdp command"""
+    def call_macrous(self, other_args: List[str]):
+        """Process macrous command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="gdp",
+            prog="macrous",
             description="""
-                Get real GDP for US on either annual or quarterly interval [Source: Alpha Vantage]
+            Show a large selection of US Macro data including Real Gross Domestic Product (GDP),
+            Inflation Rates (INF), Consumer Price Index (CPI), Treasury Yields (TYLD) and
+            Unemployment Rates (UNEMP) [Source: Alpha Vantage]
             """,
         )
+
+        parser.add_argument(
+            "-t",
+            "--type",
+            help="Type of macro data you wish to view.",
+            dest="type",
+            type=str,
+            choices=self.macro_us_types,
+            default="GDP",
+        )
+
         parser.add_argument(
             "-i",
             "--interval",
-            help="Interval for GDP data",
+            help="The interval you wish to show the data for. This is dependent on the type of data.",
             dest="interval",
-            choices=self.gdp_interval,
+            type=str,
+            choices=self.macro_us_interval,
             default="annual",
         )
         parser.add_argument(
             "-s",
             "--start",
-            help="Start year.  Quarterly only goes back to 2002.",
+            help="Start year. Quarterly only goes back to 2002.",
             dest="start",
             type=int,
             default=2010,
         )
-        parser.add_argument(
-            "--raw",
-            help="Display raw data",
-            action="store_true",
-            dest="raw",
-            default=False,
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-i")
 
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-
-        if ns_parser:
-            alphavantage_view.display_real_gdp(
-                interval=ns_parser.interval[0],
-                start_year=ns_parser.start,
-                raw=ns_parser.raw,
-                export=ns_parser.export,
-            )
-
-    @log_start_end(log=logger)
-    def call_gdpc(self, other_args: List[str]):
-        """Process gdpc command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="gdpc",
-            description="""
-                Get real GDP per capita for United States[Source: Alpha Vantage]
-            """,
-        )
-        parser.add_argument(
-            "-s",
-            "--start",
-            help="Start year.",
-            dest="start",
-            type=int,
-            default=2010,
-        )
-        parser.add_argument(
-            "--raw",
-            help="Display raw data",
-            action="store_true",
-            dest="raw",
-            default=False,
-        )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-        if ns_parser:
-            alphavantage_view.display_gdp_capita(
-                start_year=ns_parser.start,
-                raw=ns_parser.raw,
-                export=ns_parser.export,
-            )
-
-    @log_start_end(log=logger)
-    def call_inf(self, other_args: List[str]):
-        """Process inf command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="inf",
-            description="""
-                Get historical Inflation for United States[Source: Alpha Vantage]
-            """,
-        )
-        parser.add_argument(
-            "-s",
-            "--start",
-            help="Start year.",
-            dest="start",
-            type=int,
-            default=2010,
-        )
-        parser.add_argument(
-            "--raw",
-            help="Display raw data",
-            action="store_true",
-            dest="raw",
-            default=False,
-        )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-        if ns_parser:
-            alphavantage_view.display_inflation(
-                start_year=ns_parser.start,
-                raw=ns_parser.raw,
-                export=ns_parser.export,
-            )
-
-    @log_start_end(log=logger)
-    def call_cpi(self, other_args: List[str]):
-        """Process cpi command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="inf",
-            description="""
-                Get historical CPI for United States [Source: Alpha Vantage]
-            """,
-        )
-        parser.add_argument(
-            "-i",
-            "--interval",
-            help="Interval for GDP data",
-            dest="interval",
-            choices=self.cpi_interval,
-            default="semiannual",
-        )
-        parser.add_argument(
-            "-s",
-            "--start",
-            help="Start year.",
-            dest="start",
-            type=int,
-            default=2010,
-        )
-        parser.add_argument(
-            "--raw",
-            help="Display raw data",
-            action="store_true",
-            dest="raw",
-            default=False,
-        )
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-        if ns_parser:
-            alphavantage_view.display_cpi(
-                interval=ns_parser.interval[0],
-                start_year=ns_parser.start,
-                raw=ns_parser.raw,
-                export=ns_parser.export,
-            )
-
-    @log_start_end(log=logger)
-    def call_tyld(self, other_args: List[str]):
-        """Process tyld command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="tyld",
-            description="""
-                Get historical Treasury Yield [Source: Alpha Vantage]
-            """,
-        )
-        parser.add_argument(
-            "-i",
-            "--interval",
-            help="Interval for treasury data",
-            dest="interval",
-            choices=self.tyld_interval,
-            default="weekly",
-        )
         parser.add_argument(
             "-m",
             "--maturity",
-            help="Maturity timeline for treasury",
+            help="Maturity timeline for treasuries (when entering he TYLD parameter)",
             dest="maturity",
             choices=self.tyld_maturity,
             default="5y",
         )
-        parser.add_argument(
-            "-s",
-            "--start",
-            help="Start date.",
-            dest="start",
-            type=valid_date,
-            default=datetime.now() - timedelta(days=366),
-        )
+
         parser.add_argument(
             "--raw",
             help="Display raw data",
@@ -803,55 +722,50 @@ class EconomyController(BaseController):
             default=False,
         )
 
-        if other_args and "-m" not in other_args[0]:
-            other_args.insert(0, "-m")
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-        if ns_parser:
-            alphavantage_view.display_treasury_yield(
-                interval=ns_parser.interval[0],
-                maturity=ns_parser.maturity,
-                start_date=ns_parser.start,
-                raw=ns_parser.raw,
-                export=ns_parser.export,
-            )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-t")
 
-    @log_start_end(log=logger)
-    def call_unemp(self, other_args: List[str]):
-        """Process unemp command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="unemp",
-            description="""
-                Get United States Unemployment data [Source: Alpha Vantage]
-            """,
-        )
-        parser.add_argument(
-            "-s",
-            "--start",
-            help="Start year.",
-            dest="start",
-            type=int,
-            default=2015,
-        )
-        parser.add_argument(
-            "--raw",
-            help="Display raw data",
-            action="store_true",
-            dest="raw",
-            default=False,
-        )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
+
         if ns_parser:
-            alphavantage_view.display_unemployment(
-                start_year=ns_parser.start,
-                raw=ns_parser.raw,
-                export=ns_parser.export,
-            )
+            type_upper = ns_parser.type.upper()
+
+            if type_upper == "GDP":
+                alphavantage_view.display_real_gdp(
+                    interval=ns_parser.interval,
+                    start_year=ns_parser.start,
+                    raw=ns_parser.raw,
+                    export=ns_parser.export,
+                )
+            elif type_upper == "INF":
+                alphavantage_view.display_inflation(
+                    start_year=ns_parser.start,
+                    raw=ns_parser.raw,
+                    export=ns_parser.export,
+                )
+            elif type_upper == "CPI":
+                alphavantage_view.display_cpi(
+                    interval=ns_parser.interval,
+                    start_year=ns_parser.start,
+                    raw=ns_parser.raw,
+                    export=ns_parser.export,
+                )
+            elif type_upper == "TYLD":
+                alphavantage_view.display_treasury_yield(
+                    interval=ns_parser.interval,
+                    maturity=ns_parser.maturity,
+                    start_date=ns_parser.start,
+                    raw=ns_parser.raw,
+                    export=ns_parser.export,
+                )
+            elif type_upper == "UNEMP":
+                alphavantage_view.display_unemployment(
+                    start_year=ns_parser.start,
+                    raw=ns_parser.raw,
+                    export=ns_parser.export,
+                )
 
     @log_start_end(log=logger)
     def call_bigmac(self, other_args: List[str]):
