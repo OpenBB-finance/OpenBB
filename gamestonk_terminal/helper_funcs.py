@@ -132,7 +132,7 @@ def print_rich_table(
             table.add_row(*row)
         console.print(table)
     else:
-        console.print(df.to_string())
+        console.print(df.to_string(col_space=0))
 
 
 def check_int_range(mini: int, maxi: int):
