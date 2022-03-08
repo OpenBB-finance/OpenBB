@@ -12,9 +12,10 @@ jobs:
       with:
         repository: mergestat/mergestat
         token: ${{ secrets.GITHUB_TOKEN }}
+        submodules: recursive
 
     - name: Install libgit2
-      run: sudo ./scripts/install_libgit2.sh
+      run: make libgit2
 
     - name: Build MergeStat
       run: |
