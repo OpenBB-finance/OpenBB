@@ -224,7 +224,7 @@ class TerminalController(BaseController):
 
 def terminal(jobs_cmds: List[str] = None):
     """Terminal Menu"""
-    setup_logging()
+    setup_logging("gst")
     logger.info("START")
     logger.info("Python: %s", platform.python_version())
     logger.info("OS: %s", platform.system())
