@@ -124,7 +124,7 @@ class FundController(BaseController):
     equity        equity holdings[/cmds]{has_fund_usa_end}
     """
         if self.fund_symbol != "" and self.country == "sweden":
-            help_text += f"""
+            help_text += """
 [src][Avanza][/src]
     al_swe        display fund allocation (sector, country, holdings)
     info_swe      get fund information
