@@ -120,9 +120,9 @@ class TerminalController(BaseController):
 >   forex
 >   funds
 >   alternative
+>   econometrics
 >   portfolio
->   jupyter
->   econometrics[/menu]
+>   jupyter[/menu]
     """,
             menu="Home",
         )

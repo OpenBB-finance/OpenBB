@@ -169,7 +169,9 @@ def display_cash_flow(
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
-def display_earnings(ticker: str, limit: int, quarterly: bool = False):
+def display_earnings(
+    ticker: str, limit: int, quarterly: bool = False, export: str = ""
+):
     """Alpha Vantage earnings
 
     Parameters
@@ -180,6 +182,8 @@ def display_earnings(ticker: str, limit: int, quarterly: bool = False):
         Number of events to show
     quarterly: bool
         Flag to show quarterly instead of annual
+    export: str
+        Format to export data
     """
     df_fa = av_model.get_earnings(ticker, quarterly)
 
@@ -192,8 +196,8 @@ def display_earnings(ticker: str, limit: int, quarterly: bool = False):
         show_index=False,
         title=f"{ticker} Earnings",
     )
-
     console.print("")
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), "earnings", df_fa)
 
 
 @log_start_end(log=logger)

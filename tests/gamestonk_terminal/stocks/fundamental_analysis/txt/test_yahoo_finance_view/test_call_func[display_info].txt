@@ -99,7 +99,7 @@ Currency                                                         USD
 Trailing PE                                                   17.118
 Regular market volume                                        6.489 M
 Market cap                                                 154.673 B
-Average volume                                               6.185 M
+Average volume                                               6.175 M
 Day low                                                       99.250
 Ask                                                           99.710
 Ask size                                                         900

@@ -29,6 +29,7 @@ def vcr_config():
         "display_sustainability",
         "display_calendar_earnings",
         "display_dividends",
+        "display_splits",
         "display_mktcap",
     ],
 )
@@ -50,6 +51,7 @@ def test_call_func(func, mocker):
         ("display_sustainability", "get_sustainability"),
         ("display_calendar_earnings", "get_calendar_earnings"),
         ("display_dividends", "get_dividends"),
+        ("display_splits", "get_splits"),
     ],
 )
 def test_call_func_empty_df(func, mocker, mocked_func):
