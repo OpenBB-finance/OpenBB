@@ -64,11 +64,11 @@ def get_log_dir() -> Path:
 
     uuid_log_dir = log_dir.absolute().joinpath(cfg.LOGGING_ID)
 
-    logger.debug("Current log dir: %s", uuid_log_dir)
+    logger.debug("Current_log dir: %s", uuid_log_dir)
 
     if not os.path.isdir(uuid_log_dir.absolute()):
         logger.debug(
-            "UUID log dir does not exist: %s. Creating.", uuid_log_dir.absolute()
+            "UUID_log dir does not exist: %s. Creating.", uuid_log_dir.absolute()
         )
         os.mkdir(uuid_log_dir.absolute())
     return uuid_log_dir
@@ -79,14 +79,14 @@ def setup_file_logger(session_id: str) -> None:
 
     uuid_log_dir = get_log_dir()
 
-    upload_archive_logs_s3(directory_str=uuid_log_dir, log_filter=r"\.log")
+    upload_archive_logs_s3(directory_str=uuid_log_dir, log_filter=r"_log")
 
     start_time = int(time.time())
-    cfg.LOGGING_FILE = uuid_log_dir.absolute().joinpath(f"{start_time}.log")  # type: ignore
+    cfg.LOGGING_FILE = uuid_log_dir.absolute().joinpath(f"{start_time}_log")  # type: ignore
 
-    logger.debug("Current log file: %s", cfg.LOGGING_FILE)
+    logger.debug("Current_log file: %s", cfg.LOGGING_FILE)
 
-    handler = TimedRotatingFileHandler(cfg.LOGGING_FILE)
+    handler = TimedRotatingFileHandler(cfg.LOGGING_FILE, when="M")
     formatter = CustomFormatterWithExceptions(
         uuid_log_dir.stem, session_id, fmt=LOGFORMAT, datefmt=DATEFORMAT
     )
@@ -140,7 +140,7 @@ class CustomFormatterWithExceptions(logging.Formatter):
         Returns
         -------
         str
-            Formatted log message
+            Formatted_log message
         """
         if hasattr(record, "func_name_override"):
             record.funcName = record.func_name_override  # type: ignore
@@ -241,6 +241,9 @@ def upload_file_to_s3(
     if folder_name is not None:
         object_name = f"{folder_name}/{object_name}"
 
+    if not object_name.endswith(".log"):
+        object_name += ".log"
+
     # Upload the file
     try:
         s3_client = boto3.client(
@@ -255,7 +258,9 @@ def upload_file_to_s3(
 
 def upload_archive_logs_s3(
     directory_str=None,
-    log_filter=r"\.log\.20[2-3][0-9]-[0-2][0-9]-[0-3][0-9]_[0-2][0-9]*",
+    log_filter=r"_log\.20[2-3][0-9]-[0-2][0-9]-[0-3][0-9]_[0-2][0-9]*",
+    bucket=BUCKET,
+    folder_name=FOLDER_NAME,
 ) -> None:
     if gtff.ALLOW_LOG_COLLECTION:
         if directory_str is None:
@@ -277,7 +282,7 @@ def upload_archive_logs_s3(
                 log_files[str(file)] = file, (archive / file.name)
         logger.info("Start uploading Logs")
         for log_file, archived_file in log_files.values():
-            upload_file_to_s3(file=log_file, bucket=BUCKET, folder_name=FOLDER_NAME)
+            upload_file_to_s3(file=log_file, bucket=bucket, folder_name=folder_name)
             try:
                 log_file.rename(archived_file)
             except Exception as e:
