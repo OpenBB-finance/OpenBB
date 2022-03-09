@@ -7,7 +7,7 @@ import logging
 
 import matplotlib.pyplot as plt
 from matplotlib.dates import DateFormatter
-import yfinance as yf
+import yfinance
 import pandas as pd
 
 import gamestonk_terminal.config_plot as cfp
@@ -84,7 +84,10 @@ def display_cramer_ticker(
             console.print("[red]Expected list of one axis item./n[/red]")
             return
         (ax,) = external_axes
-    close_prices = yf.download(ticker, start="2022-01-01", progress=False)["Adj Close"]
+
+    close_prices = yfinance.download(ticker, start="2022-01-01", progress=False)[
+        "Adj Close"
+    ]
 
     ax.plot(close_prices)
     color_map = {"Buy": theme.up_color, "Sell": theme.down_color}
