@@ -17,7 +17,8 @@ from _pytest.mark.structures import Mark
 
 # IMPORTATION INTERNAL
 from gamestonk_terminal import decorators
-from gamestonk_terminal import rich_config
+from gamestonk_terminal import helper_funcs
+
 
 # pylint: disable=redefined-outer-name
 
@@ -28,6 +29,8 @@ EXTENSIONS_MATCHING: Dict[str, List[Type]] = {
     "json": [bool, dict, float, int, list, tuple],
     "txt": [str],
 }
+
+os.environ["TEST_MODE"] = "True"
 
 
 class Record:
@@ -340,7 +343,10 @@ def brotli_check():
 
 
 def disable_rich():
-    rich_config.ENABLE_RICH = False
+    def effect(df, *xargs, **kwargs):  # pylint: disable=unused-argument
+        print(df.to_string())
+
+    helper_funcs.print_rich_table = effect
 
 
 def disable_check_api():
@@ -355,8 +361,8 @@ def pytest_configure(config: Config) -> None:
     config.addinivalue_line("markers", "record_stdout: Mark the test as text record.")
 
     brotli_check()
-    disable_rich()
     enable_debug()
+    disable_rich()
     disable_check_api()
 
 
