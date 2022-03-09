@@ -9,6 +9,8 @@ import requests
 import gamestonk_terminal.config_terminal as cfg
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import get_user_agent
+from gamestonk_terminal.rich_config import console
+
 
 logger = logging.getLogger(__name__)
 
@@ -25,11 +27,25 @@ def get_retail_tickers() -> pd.DataFrame:
     r = requests.get(
         f"https://data.nasdaq.com/api/v3/datatables/NDAQ/RTAT10/?api_key={cfg.API_KEY_QUANDL}"
     )
-    if r.status_code != 200:
-        return pd.DataFrame()
 
-    df = pd.DataFrame(r.json()["datatable"]["data"])
-    df.columns = ["Date", "Ticker", "Activity", "Sentiment"]
+    df = pd.DataFrame()
+
+    if r.status_code == 200:
+        df = pd.DataFrame(r.json()["datatable"]["data"])
+        df.columns = ["Date", "Ticker", "Activity", "Sentiment"]
+    # Wrong API Key
+    elif r.status_code == 400:
+        console.print(r.text)
+        console.print("\n")
+    # Premium Feature
+    elif r.status_code == 403:
+        console.print(r.text)
+        console.print("\n")
+    # Catching other exception
+    elif r.status_code != 200:
+        console.print(r.text)
+        console.print("\n")
+
     return df
 
 
@@ -59,9 +75,23 @@ def get_dividend_cal(date: str) -> pd.DataFrame:
             f"https://api.nasdaq.com/api/calendar/dividends?date={date}",
             headers={"User-Agent": ag},
         )
+
+        df = pd.DataFrame()
+
         if r.status_code == 200:
-            return pd.DataFrame(r.json()["data"]["calendar"]["rows"])
+            df = pd.DataFrame(r.json()["data"]["calendar"]["rows"])
+
+        # Wrong API Key
+        elif r.status_code == 400:
+            console.print(r.text)
+        # Premium Feature
+        elif r.status_code == 403:
+            console.print(r.text)
+        # Catching other exception
+        elif r.status_code != 200:
+            console.print(r.text)
+
     except requests.exceptions.ReadTimeout:
         logger.exception("Request timed out")
         return pd.DataFrame()
-    return pd.DataFrame()
+    return df

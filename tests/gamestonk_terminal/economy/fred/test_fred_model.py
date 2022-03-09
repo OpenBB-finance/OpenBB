@@ -1,5 +1,4 @@
 import pytest
-import requests
 from gamestonk_terminal.economy.fred import fred_model
 
 
@@ -19,10 +18,10 @@ def vcr_config():
     [("check_series_id", {"series_id": "DGS5"})],
 )
 def test_output(func, kwargs_dict, recorder):
-    result_tuple = getattr(fred_model, func)(**kwargs_dict)
-    assert result_tuple[0] is True
-    assert "seriess" in result_tuple[1]
-    recorder.capture(result_tuple[1]["seriess"])
+    payload = getattr(fred_model, func)(**kwargs_dict)
+    assert len(payload) > 0
+    assert "seriess" in payload
+    recorder.capture(payload["seriess"])
 
 
 @pytest.mark.vcr
@@ -48,16 +47,21 @@ def test_check_output(func, kwargs_dict, recorder):
     ],
 )
 def test_invalid_response_status(func, kwargs_dict, mocker):
-    mock_response = requests.Response()
-    mock_response.status_code = 500
+    # MOCK GET
+    attrs = {
+        "status_code": 400,
+        "json.return_value": {"error_message": "mock error message"},
+    }
+
+    mock_response = mocker.Mock(**attrs)
+
     mocker.patch(
         target="requests.get",
         new=mocker.Mock(return_value=mock_response),
     )
 
-    result_tuple = getattr(fred_model, func)(**kwargs_dict)
-    assert result_tuple[0] is False
-    assert bool(result_tuple[1]) is False
+    payload = getattr(fred_model, func)(**kwargs_dict)
+    assert len(payload) == 0
 
 
 @pytest.mark.vcr

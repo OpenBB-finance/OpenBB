@@ -1,8 +1,9 @@
-import pandas as pd
-from matplotlib import pyplot as plt
+from typing import Union
 
-import bots.config_discordbot as cfg
+from matplotlib import pyplot as plt
+import pandas as pd
 from bots.config_discordbot import logger
+import bots.config_discordbot as cfg
 from bots.helpers import image_border
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.helper_funcs import plot_autoscale
@@ -10,9 +11,10 @@ from gamestonk_terminal.stocks.government import quiverquant_model
 
 
 def contracts_command(
-    ticker: str = "", past_transaction_days: int = 10, raw: bool = False
+    ticker: str = "", past_transaction_days: Union[int, str] = 10, raw: bool = False
 ):
     """Displays contracts associated with tickers [quiverquant.com]"""
+    past_transaction_days = int(past_transaction_days)
     # Debug user input
     if cfg.DEBUG:
         logger.debug("gov-contracts %s %s %s", ticker, past_transaction_days, raw)
@@ -24,7 +26,10 @@ def contracts_command(
     df_contracts = quiverquant_model.get_government_trading("contracts", ticker)
 
     if df_contracts.empty:
-        raise Exception("No government contracts found")
+        return {
+            "title": f"Stocks: [quiverquant.com] Contracts by {ticker}",
+            "description": f"{ticker} does not have any contracts",
+        }
 
     # Output Data
     df_contracts["Date"] = pd.to_datetime(df_contracts["Date"]).dt.date

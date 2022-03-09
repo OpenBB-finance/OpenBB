@@ -17,12 +17,7 @@ from bots.stocks.options.unu import unu_command
 from bots.stocks.options.vol import vol_command
 from bots.stocks.options.vsurf import vsurf_command
 from bots.stocks.quote import quote_command
-
-vsurf_choices = {
-    "Volatility": "IV",
-    "Open Interest": "OI",
-    "Last Price": "LP",
-}
+from bots.common import commands_dict
 
 
 class SlashCommands(commands.Cog):
@@ -268,7 +263,7 @@ class SlashCommands(commands.Cog):
         self,
         inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
-        z: str = commands.Param(choices=vsurf_choices),
+        z: str = commands.Param(choices=commands_dict.options_vsurf_choices),
     ):
         """Display Volatility Surface
 

@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 import logging
 import os
 
+from gamestonk_terminal.decorators import check_api_key
 from gamestonk_terminal.cryptocurrency.discovery import coinmarketcap_model
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import export_data, print_rich_table
@@ -21,6 +22,7 @@ sort_map = {
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_CMC_KEY"])
 def display_cmc_top_coins(
     top: int = 15,
     sortby: str = "CMC_Rank",

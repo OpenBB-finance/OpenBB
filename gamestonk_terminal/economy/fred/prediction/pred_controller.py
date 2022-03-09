@@ -8,6 +8,7 @@ from typing import Dict, List
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.decorators import check_api_key
 from gamestonk_terminal.common.prediction_techniques import (
     arima_model,
     arima_view,
@@ -113,6 +114,7 @@ class PredictionTechniquesController(BaseController):
         return []
 
     @log_start_end(log=logger)
+    @check_api_key(["API_FRED_KEY"])
     def call_load(self, other_args: List[str]):
         """Process add command"""
         parser = argparse.ArgumentParser(
@@ -140,8 +142,9 @@ class PredictionTechniquesController(BaseController):
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             self.current_series = {}
-            exists, information = fred_model.check_series_id(ns_parser.series_id)
-            if exists:
+            information = fred_model.check_series_id(ns_parser.series_id)
+
+            if "seriess" in information:
                 self.current_series[ns_parser.series_id] = {
                     "title": information["seriess"][0]["title"],
                     "units": information["seriess"][0]["units_short"],
@@ -151,9 +154,7 @@ class PredictionTechniquesController(BaseController):
                 self.data = fred_model.get_series_data(
                     ns_parser.series_id, ns_parser.start_date
                 ).dropna()
-            else:
-                logger.error("%s not found", str(ns_parser.series_id))
-                console.print(f"[red]{ns_parser.series_id} not found[/red].")
+
             console.print(
                 f"Current Series: {', '.join(self.current_series.keys()).upper() or None}\n"
             )

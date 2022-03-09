@@ -1,0 +1,5 @@
+Only showing pairs that are statistically significant (True > p-value).
+
+     Constant     Gamma   Alpha  Dickey-Fuller       P Value
+y/x -0.003126  0.154512 -1.2884     -13.123662  1.544757e-24
+

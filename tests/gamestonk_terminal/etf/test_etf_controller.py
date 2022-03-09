@@ -432,7 +432,7 @@ def test_call_news(mocker):
     )
     mock_news = mocker.Mock()
     mocker.patch(
-        target="gamestonk_terminal.etf.etf_controller.newsapi_view.news",
+        target="gamestonk_terminal.etf.etf_controller.newsapi_view.display_news",
         new=mock_news,
     )
 

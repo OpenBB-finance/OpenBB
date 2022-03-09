@@ -5,6 +5,7 @@ import logging
 import os
 import pandas as pd
 
+from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -73,3 +74,42 @@ def log_start_end(func=None, log=None):
         return wrapper
 
     return decorator(func) if callable(func) else decorator
+
+
+# pylint: disable=import-outside-toplevel
+def check_api_key(api_keys):
+    """
+    Wrapper around the view or controller function and
+    print message statement to the console if API keys are not yet defined.
+    """
+
+    def decorator(func):
+        @functools.wraps(func)
+        def wrapper_decorator(*args, **kwargs):
+            if gtff.ENABLE_CHECK_API:
+                import gamestonk_terminal.config_terminal as cfg
+
+                undefined_apis = []
+                for key in api_keys:
+                    # Get value of the API Keys
+                    if getattr(cfg, key) == "REPLACE_ME":
+                        undefined_apis.append(key)
+
+                if undefined_apis:
+                    undefined_apis_name = ", ".join(undefined_apis)
+                    console.print(
+                        f"[red]{undefined_apis_name} not defined. "
+                        "Set API Keys in config_terminal.py or under keys menu.[/red]\n"
+                    )  # pragma: allowlist secret
+                else:
+                    func(*args, **kwargs)
+            else:
+                func(*args, **kwargs)
+
+        return wrapper_decorator
+
+    return decorator
+
+
+def disable_check_api():
+    gtff.ENABLE_CHECK_API = False

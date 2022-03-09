@@ -7,6 +7,7 @@ import pandas as pd
 import requests
 from alpha_vantage.sectorperformance import SectorPerformances
 
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import get_user_agent
@@ -51,10 +52,26 @@ def get_real_gdp(interval: str = "a") -> pd.DataFrame:
     if r.status_code != 200:
         return pd.DataFrame()
 
-    data = pd.DataFrame(r.json()["data"])
-    data["date"] = pd.to_datetime(data["date"])
-    data["GDP"] = data["value"].astype(float)
-    data = data.drop(columns=["value"])
+    payload = r.json()
+    data = pd.DataFrame()
+
+    # Successful requests
+    if "data" in payload:
+        if r.json()["data"]:
+            data = pd.DataFrame(r.json()["data"])
+            data["date"] = pd.to_datetime(data["date"])
+            data["GDP"] = data["value"].astype(float)
+            data = data.drop(columns=["value"])
+        else:
+            console.print(f"No data found for {interval}.\n")
+
+    # Invalid API Keys
+    elif "Error Message" in payload:
+        console.print(payload["Error Message"])
+    # Premium feature, API plan is not authorized
+    elif "Information" in payload:
+        console.print(payload["Information"])
+
     return data
 
 
@@ -71,10 +88,25 @@ def get_gdp_capita() -> pd.DataFrame:
     r = requests.get(url, headers={"User-Agent": get_user_agent()})
     if r.status_code != 200:
         return pd.DataFrame()
-    data = pd.DataFrame(r.json()["data"])
-    data["date"] = pd.to_datetime(data["date"])
-    data["GDP"] = data["value"].astype(float)
-    data = data.drop(columns=["value"])
+
+    payload = r.json()
+    data = pd.DataFrame()
+    # Successful requests
+    if "data" in payload:
+        if r.json()["data"]:
+            data = pd.DataFrame(r.json()["data"])
+            data["date"] = pd.to_datetime(data["date"])
+            data["GDP"] = data["value"].astype(float)
+            data = data.drop(columns=["value"])
+        else:
+            console.print("No data found.\n")
+    # Invalid API Keys
+    elif "Error Message" in payload:
+        console.print(payload["Error Message"])
+    # Premium feature, API plan is not authorized
+    elif "Information" in payload:
+        console.print(payload["Information"])
+
     return data
 
 
@@ -91,10 +123,24 @@ def get_inflation() -> pd.DataFrame:
     r = requests.get(url, headers={"User-Agent": get_user_agent()})
     if r.status_code != 200:
         return pd.DataFrame()
-    data = pd.DataFrame(r.json()["data"])
-    data["date"] = pd.to_datetime(data["date"])
-    data["Inflation"] = data["value"].astype(float)
-    data = data.drop(columns=["value"])
+
+    payload = r.json()
+    data = pd.DataFrame()
+    # Successful requests
+    if "data" in payload:
+        if r.json()["data"]:
+            data = pd.DataFrame(r.json()["data"])
+            data["date"] = pd.to_datetime(data["date"])
+            data["Inflation"] = data["value"].astype(float)
+            data = data.drop(columns=["value"])
+        else:
+            console.print("No data found.\n")
+    # Invalid API Keys
+    elif "Error Message" in payload:
+        console.print(payload["Error Message"])
+    # Premium feature, API plan is not authorized
+    elif "Information" in payload:
+        console.print(payload["Information"])
 
     return data
 
@@ -120,10 +166,24 @@ def get_cpi(interval: str) -> pd.DataFrame:
     if r.status_code != 200:
         return pd.DataFrame()
 
-    data = pd.DataFrame(r.json()["data"])
-    data["date"] = pd.to_datetime(data["date"])
-    data["CPI"] = data["value"].astype(float)
-    data = data.drop(columns=["value"])
+    payload = r.json()
+    data = pd.DataFrame()
+
+    # Successful requests
+    if "data" in payload:
+        if r.json()["data"]:
+            data = pd.DataFrame(r.json()["data"])
+            data["date"] = pd.to_datetime(data["date"])
+            data["CPI"] = data["value"].astype(float)
+            data = data.drop(columns=["value"])
+        else:
+            console.print(f"No data found for {interval}.\n")
+    # Invalid API Keys
+    elif "Error Message" in payload:
+        console.print(payload["Error Message"])
+    # Premium feature, API plan is not authorized
+    elif "Information" in payload:
+        console.print(payload["Information"])
 
     return data
 
@@ -153,10 +213,25 @@ def get_treasury_yield(interval: str, maturity: str) -> pd.DataFrame:
     if r.status_code != 200:
         return pd.DataFrame()
 
-    data = pd.DataFrame(r.json()["data"])
-    data["date"] = pd.to_datetime(data["date"])
-    data["Yield"] = data["value"].astype(float)
-    data = data.drop(columns=["value"])
+    payload = r.json()
+    data = pd.DataFrame()
+
+    # Successful requests
+    if "data" in payload:
+        if r.json()["data"]:
+            data = pd.DataFrame(r.json()["data"])
+            data["date"] = pd.to_datetime(data["date"])
+            data["Yield"] = data["value"].astype(float)
+            data = data.drop(columns=["value"])
+        else:
+            console.print(f"No data found for {interval}.\n")
+    # Invalid API Keys
+    elif "Error Message" in payload:
+        console.print(payload["Error Message"])
+
+    # Premium feature, API plan is not authorized
+    elif "Information" in payload:
+        console.print(payload["Information"])
 
     return data
 
@@ -174,8 +249,24 @@ def get_unemployment() -> pd.DataFrame:
     r = requests.get(url, headers={"User-Agent": get_user_agent()})
     if r.status_code != 200:
         return pd.DataFrame()
-    data = pd.DataFrame(r.json()["data"])
-    data["date"] = pd.to_datetime(data["date"])
-    data["unemp"] = data["value"].astype(float)
-    data = data.drop(columns=["value"])
+
+    payload = r.json()
+    data = pd.DataFrame()
+
+    # Successful requests
+    if "data" in payload:
+        if r.json()["data"]:
+            data = pd.DataFrame(r.json()["data"])
+            data["date"] = pd.to_datetime(data["date"])
+            data["unemp"] = data["value"].astype(float)
+            data = data.drop(columns=["value"])
+        else:
+            console.print("No data found.\n")
+    # Invalid API Keys
+    elif "Error Message" in payload:
+        console.print(payload["Error Message"])
+    # Premium feature, API plan is not authorized
+    elif "Information" in payload:
+        console.print(payload["Information"])
+
     return data

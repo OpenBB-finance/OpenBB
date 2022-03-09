@@ -28,6 +28,7 @@ def vcr_config():
         "get_website",
         "get_hq",
         "get_dividends",
+        "get_splits",
     ],
 )
 def test_call_func(func, recorder):
@@ -42,5 +43,15 @@ def test_get_shareholders(recorder):
         ticker="AAPL"
     )
     result_list = [major_df, institutional_df, mutual_df]
+
+    recorder.capture_list(result_list)
+
+
+@pytest.mark.vcr
+def test_get_mktcap(recorder):
+    df_mktcap, currency = yahoo_finance_model.get_mktcap(
+        ticker="AAPL",
+    )
+    result_list = [df_mktcap, currency]
 
     recorder.capture_list(result_list)

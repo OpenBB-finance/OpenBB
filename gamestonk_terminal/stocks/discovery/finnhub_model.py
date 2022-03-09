@@ -5,6 +5,7 @@ import requests
 
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -28,6 +29,9 @@ def get_ipo_calendar(from_date: str, to_date: str) -> pd.DataFrame:
     response = requests.get(
         f"https://finnhub.io/api/v1/calendar/ipo?from={from_date}&to={to_date}&token={cfg.API_FINNHUB_KEY}"
     )
+
+    df = pd.DataFrame()
+
     if response.status_code == 200:
         d_data = response.json()
         if "ipoCalendar" in d_data:
@@ -40,8 +44,14 @@ def get_ipo_calendar(from_date: str, to_date: str) -> pd.DataFrame:
                 "price": "Price",
                 "status": "Status",
             }
-            return pd.DataFrame(d_data["ipoCalendar"]).rename(
-                columns=d_refactor_columns
-            )
+            df = pd.DataFrame(d_data["ipoCalendar"]).rename(columns=d_refactor_columns)
+        else:
+            console.print("Response is empty")
+    elif response.status_code == 401:
+        console.print("[red]Invalid API Key[/red]\n")
+    elif response.status_code == 403:
+        console.print("[red]API Key not authorized for Premium Feature[/red]\n")
+    else:
+        console.print(f"Error in request: {response.json()['error']}", "\n")
 
-    return pd.DataFrame()
+    return df

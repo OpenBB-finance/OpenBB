@@ -25,6 +25,7 @@ gamestonk_terminal/jupyter/reports/stored/*
 gamestonk_terminal/portfolio/portfolios/*
 .ipynb_checkpoints/*
 *.swp
+*.http
 
 # Jupyter Lab Extension build files
 jupyterlab/*/*.bundle.*
