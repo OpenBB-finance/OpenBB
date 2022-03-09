@@ -1,5 +1,0 @@
-Replacing 'Ticke' by 'Ticker' so table can be sorted.
-    Ticker                      Company      Sector       Industry Country Market Cap P/E  Price  Change  Volume
-135   ACXP  Acurx Pharmaceuticals, Inc.  Healthcare  Biotechnology     USA     41.3 M       3.88  0.0868  29.4 K
-180   ADAG                 Adagene Inc.  Healthcare  Biotechnology   China    221.8 M       5.04  0.0701  30.6 K
-

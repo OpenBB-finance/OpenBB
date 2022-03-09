@@ -167,15 +167,15 @@ def screener(
         df_screen = df_screen.dropna(axis="columns", how="all")
 
         if sort:
-            if " ".join(sort) in d_cols_to_sort[data_type]:
+            if sort in d_cols_to_sort[data_type]:
                 df_screen = df_screen.sort_values(
-                    by=[" ".join(sort)],
+                    by=[sort],
                     ascending=ascend,
                     na_position="last",
                 )
             else:
                 similar_cmd = difflib.get_close_matches(
-                    " ".join(sort),
+                    sort,
                     d_cols_to_sort[data_type],
                     n=1,
                     cutoff=0.7,

@@ -1,5 +1,0 @@
-Wrong sort column provided! Provide one of these: Ticker, Company, Sector, Industry, Country, Market Cap, P/E, Price, Change, Volume
-  Ticker                        Company  Sector       Industry Country Market Cap P/E  Price  Change   Volume
-0   HUSA  Houston American Energy Corp.  Energy  Oil & Gas E&P     USA     84.4 M       11.3  4.9474  198.3 M
-1   IMPP        Imperial Petroleum Inc.  Energy  Oil & Gas E&P  Greece     70.1 M        7.5  1.2189  220.8 M
-
