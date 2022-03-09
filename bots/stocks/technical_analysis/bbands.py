@@ -65,7 +65,7 @@ def bbands_command(
         past_days = 2
 
     if interval != 1440:
-        past_days += 30 if news else 0
+        past_days += 30 if news else 1
         if start == "":
             ta_start = datetime.now() - timedelta(days=past_days)
         else:
@@ -98,7 +98,9 @@ def bbands_command(
         return Exception("No Data Found")
 
     df_ta = df_stock.loc[(df_stock.index >= start) & (df_stock.index < end)]
-    df_ta = volatility_model.bbands(df_ta["Adj Close"], length, n_std, mamode)
+    df_ta = df_ta.join(
+        volatility_model.bbands(df_ta["Adj Close"], length, n_std, mamode)
+    )
 
     # Output Data
     if interval != 1440:
@@ -106,12 +108,22 @@ def bbands_command(
         df_ta = df_ta.loc[(df_ta.index >= ta_start) & (df_ta.index < ta_end)]
 
     fig = load_candle.candle_fig(df_ta, ticker, interval, extended_hours, news)
+    length = int(length)
 
     fig.add_trace(
         go.Scatter(
-            name=f"{df_ta.columns[0].replace('_', ' ')}",
+            name=f"BBU_{length}_{n_std}",
             x=df_ta.index,
-            y=df_ta.iloc[:, 0].values,
+            y=df_ta[f"BBU_{(length)}_{n_std}"],
+            opacity=1,
+        ),
+        secondary_y=True,
+    )
+    fig.add_trace(
+        go.Scatter(
+            name=f"BBL_{length}_{n_std}",
+            x=df_ta.index,
+            y=df_ta[f"BBL_{length}_{n_std}"],
             opacity=1,
             mode="lines",
             line_color="indigo",
@@ -120,9 +132,9 @@ def bbands_command(
     )
     fig.add_trace(
         go.Scatter(
-            name=f"{df_ta.columns[2].replace('_', ' ')}",
+            name=f"BBU_{length}_{n_std}",
             x=df_ta.index,
-            y=df_ta.iloc[:, 2].values,
+            y=df_ta[f"BBU_{length}_{n_std}"],
             opacity=1,
             mode="lines",
             line_color="indigo",
@@ -133,9 +145,9 @@ def bbands_command(
     )
     fig.add_trace(
         go.Scatter(
-            name=f"{df_ta.columns[1].replace('_', ' ')}",
+            name=f"BBM_{length}_{n_std}",
             x=df_ta.index,
-            y=df_ta.iloc[:, 1].values,
+            y=df_ta[f"BBM_{length}_{n_std}"],
             opacity=1,
             line=dict(
                 width=1.5,
@@ -150,6 +162,7 @@ def bbands_command(
         colorway=cfg.PLT_TA_COLORWAY,
         title=f"{ticker.upper()} Bollinger Bands ({mamode.upper()})",
         title_x=0.1,
+        title_font_size=12,
         dragmode="pan",
     )
     config = dict({"scrollZoom": True})

@@ -14,7 +14,7 @@ from scipy import stats
 import bots.config_discordbot as cfg
 
 futures = "=F" or "^"
-crypto = "-USD"
+crypto = "-"
 local_now = datetime.now().astimezone().tzinfo
 
 
@@ -25,6 +25,7 @@ def local_tz(tseries):
 
 
 def heikin_ashi(df):
+    """Attempts to calaculate heikin ashi based on given stock ticker data frame."""
 
     HA_df = df.copy()
 
@@ -124,10 +125,6 @@ def stock_data(
     else:
         end = datetime.strptime(end, cfg.DATE_FORMAT)
 
-    if datetime.today().strftime("%A") == "Saturday" and past_days <= 1:
-        past_days = 1
-    if datetime.today().strftime("%A") == "Sunday" and past_days <= 2:
-        past_days = 2
     if news:
         past_days = 30
 
@@ -157,7 +154,7 @@ def stock_data(
         df_stock["OC_Low"] = df_stock[["Open", "Close"]].min(axis=1)
     else:
         s_int = str(interval) + "m"
-        if crypto in ticker.upper():
+        if crypto in ticker.upper() and (cfg.API_BINANCE_KEY != "REPLACE_ME"):
             client = Client(cfg.API_BINANCE_KEY, cfg.API_BINANCE_SECRET)
             interval_map = {
                 "1440m": client.KLINE_INTERVAL_1DAY,
@@ -225,6 +222,21 @@ def stock_data(
                 interval=s_int,
                 prepost=extended_hours,
             )
+
+            max_days = 0
+            while df_stock.empty and max_days < 4:
+                s_start_dt = s_start_dt - timedelta(days=1)
+                s_date_start = s_start_dt.strftime("%Y-%m-%d")
+                df_stock = yf.download(
+                    ticker,
+                    start=s_date_start
+                    if s_start_dt > start
+                    else start.strftime("%Y-%m-%d"),
+                    progress=False,
+                    interval=s_int,
+                    prepost=extended_hours,
+                )
+                max_days += 1
 
         if heikin_candles:
             df_stock = heikin_ashi(df_stock)
@@ -307,11 +319,11 @@ def candle_fig(
     )
 
     # News Markers
-    if news and (cfg.API_NEWS_TOKEN or cfg.API_FINNHUB_KEY != "REPLACE_ME"):
+    if news:
 
         df_date, df_title, df_current, df_content, df_url = [], [], [], [], []
 
-        if crypto in ticker.upper():
+        if (cfg.API_NEWS_TOKEN != "REPLACE_ME") and crypto in ticker.upper():
             d_stock = yf.Ticker(ticker).info
             s_from = (datetime.now() - timedelta(days=28)).strftime("%Y-%m-%d")
             term = (
@@ -327,7 +339,7 @@ def candle_fig(
             response = requests.get(link)
             articles = response.json()["articles"]
 
-            for idx, article in enumerate(articles):
+            for article in articles:
                 dt_at = article["publishedAt"].replace("T", " ").replace("Z", "-05:00")
                 df_date.append(datetime.strptime(dt_at, "%Y-%m-%d %H:%M:%S%z"))
                 df_title.append(article["title"])
@@ -339,7 +351,7 @@ def candle_fig(
                 df_content.append(textwrap.indent(text=content, prefix="<br>"))
                 df_url.append(article["url"])
 
-        else:
+        elif cfg.API_FINNHUB_KEY != "REPLACE_ME":
             finnhub_client = finnhub.Client(api_key=cfg.API_FINNHUB_KEY)
             start_new = (datetime.now() - timedelta(days=30)).strftime(cfg.DATE_FORMAT)
             end_new = datetime.now().strftime(cfg.DATE_FORMAT)
@@ -349,7 +361,7 @@ def candle_fig(
 
             # Grab Data
             area_int = 0
-            for idx, article in enumerate(articles):
+            for article in articles:
                 dt_df = datetime.fromtimestamp(article["datetime"]).strftime(
                     "%Y-%m-%d %H:%M:%S%z"
                 )
@@ -374,6 +386,8 @@ def candle_fig(
                     )
                 )
                 df_url.append(article["url"])
+        else:
+            pass
 
         # Output Data
         df_news = pd.DataFrame(
@@ -455,12 +469,12 @@ def candle_fig(
             )
         fig.update_layout(
             xaxis_tickformatstops=[
-                dict(dtickrange=[None, 1000], value="%I:%M%p \n%b,%d"),
-                dict(dtickrange=[1000, 60000], value="%I:%M%p \n%b,%d"),
-                dict(dtickrange=[60000, 3600000], value="%I:%M%p \n%b,%d"),
-                dict(dtickrange=[3600000, 86400000], value="%I:%M%p \n%b,%d"),
-                dict(dtickrange=[86400000, 604800000], value="%b\n%d"),
-                dict(dtickrange=[604800000, "M1"], value="%b\n%d"),
+                dict(dtickrange=[None, 1_000], value="%I:%M%p \n%b,%d"),
+                dict(dtickrange=[1_000, 60_000], value="%I:%M%p \n%b,%d"),
+                dict(dtickrange=[60_000, 3_600_000], value="%I:%M%p \n%b,%d"),
+                dict(dtickrange=[3_600_000, 86_400_000], value="%I:%M%p \n%b,%d"),
+                dict(dtickrange=[86_400_000, 604_800_000], value="%b\n%d"),
+                dict(dtickrange=[604_800_000, "M1"], value="%b\n%d"),
                 dict(dtickrange=["M1", "M12"], value="%b '%y"),
                 dict(dtickrange=["M12", None], value="%Y"),
             ],
@@ -471,7 +485,7 @@ def candle_fig(
     fig.update_layout(
         margin=dict(l=0, r=10, t=40, b=20),
         template=cfg.PLT_CANDLE_STYLE_TEMPLATE,
-        yaxis2_title="Price ($)",
+        yaxis2_title="Price",
         yaxis_title="Volume",
         font=cfg.PLT_FONT,
         yaxis=dict(
@@ -481,7 +495,7 @@ def candle_fig(
             titlefont=dict(color="#d81aea"),
             tickfont=dict(
                 color="#d81aea",
-                size=14,
+                size=13,
             ),
             nticks=20,
         ),
@@ -493,14 +507,14 @@ def candle_fig(
             overlaying="y",
             nticks=20,
             tickfont=dict(
-                size=14,
+                size=13,
             ),
         ),
         xaxis=dict(
             rangeslider=dict(visible=False),
             type="date",
             tickfont=dict(
-                size=12,
+                size=10,
             ),
         ),
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
@@ -581,9 +595,8 @@ def candle_fig(
                 (datetime.now() + timedelta(days=30)),
             ],
             xaxis_tickformatstops=[
-                dict(dtickrange=[None, 86400000], value="%H:%M%p"),
-                dict(dtickrange=[86400000, 604800000], value="%b\n%d"),
-                dict(dtickrange=[604800000, "M1"], value="%b\n%d"),
+                dict(dtickrange=[None, 604_800_000], value="%b\n%d"),
+                dict(dtickrange=[604_800_000, "M1"], value="%b\n%d"),
                 dict(dtickrange=["M1", "M12"], value="%b '%y"),
                 dict(dtickrange=["M12", None], value="%Y"),
             ],

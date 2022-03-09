@@ -7,15 +7,12 @@ import disnake
 import pyimgur
 from dotenv import load_dotenv
 
-from gamestonk_terminal.loggers import setup_logging
-
 env_files = [f for f in os.listdir() if f.endswith(".env")]
 if env_files:
     load_dotenv(env_files[0])
 
 # Logging
 logger = logging.getLogger(__name__)
-setup_logging()
 
 
 # Relative path to the terminal
@@ -36,6 +33,10 @@ API_BINANCE_SECRET = os.getenv("GT_API_BINANCE_SECRET") or "REPLACE_ME"
 
 # https://finnhub.io
 API_FINNHUB_KEY = os.getenv("GT_API_FINNHUB_KEY") or "REPLACE_ME"
+
+# AWS KEYS
+AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID") or "REPLACE_ME"
+AWS_ACCESS_KEY = os.getenv("AWS_ACCESS_KEY") or "REPLACE_ME"
 
 # Settings
 SLASH_TESTING_SERVERS: Optional[
@@ -88,24 +89,27 @@ PLT_TA_COLORWAY = [
 PLT_TBL_HEADER = dict(
     fill_color="rgb(30, 30, 30)",
     font_color="white",
+    font_size=16,
     line_color="rgb(63, 63, 63)",
     line_width=2,
 )
 PLT_TBL_CELLS = dict(
     height=35,
+    font_size=16,
     fill_color="rgb(50, 50, 50)",
     font_color="white",
     line_color="rgb(63, 63, 63)",
     line_width=2,
 )
 PLT_TBL_FONT = dict(
-    family="Consolas",
+    family="Fira Code",
     size=20,
 )
 PLT_FONT = dict(
-    family="Consolas",
-    size=20,
+    family="Fira Code",
+    size=12,
 )
+
 MENU_TIMEOUT = 30
 DEBUG = False
 

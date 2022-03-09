@@ -45,13 +45,8 @@ def ma_command(
     if ticker == "":
         raise Exception("Stock ticker is required")
 
-    if datetime.today().strftime("%A") == "Saturday" and past_days <= 1:
-        past_days = 1
-    if datetime.today().strftime("%A") == "Sunday" and past_days <= 2:
-        past_days = 2
-
     if interval != 1440:
-        past_days += 30 if news else 0
+        past_days += 30 if news else 1
         if start == "":
             ta_start = datetime.now() - timedelta(days=past_days)
         else:
@@ -121,7 +116,8 @@ def ma_command(
         template=cfg.PLT_TA_STYLE_TEMPLATE,
         colorway=cfg.PLT_TA_COLORWAY,
         title=f"{ticker.upper()} Moving Average ({mamode.upper()})",
-        title_x=0.3,
+        title_x=0.1,
+        title_font_size=12,
         dragmode="pan",
     )
     config = dict({"scrollZoom": True})
