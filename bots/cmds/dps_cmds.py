@@ -12,15 +12,7 @@ from bots.stocks.dark_pool_shorts.psi import psi_command
 from bots.stocks.dark_pool_shorts.shorted import shorted_command
 from bots.stocks.dark_pool_shorts.sidtc import sidtc_command
 from bots.stocks.dark_pool_shorts.spos import spos_command
-
-pos_choices = {
-    "Short Vol (1M)": "sv",
-    "Short Vol %": "sv_pct",
-    "Net Short Vol (1M)": "nsv",
-    "Net Short Vol ($100M)": "nsv_dollar",
-    "DP Position (1M)": "dpp",
-    "DP Position ($1B)": "dpp_dollar",
-}
+from bots.common import commands_dict
 
 
 class DarkPoolShortsCommands(commands.Cog):
@@ -57,7 +49,7 @@ class DarkPoolShortsCommands(commands.Cog):
     async def pos(
         self,
         inter: disnake.AppCmdInter,
-        sort: str = commands.Param(choices=pos_choices),
+        sort: str = commands.Param(choices=commands_dict.dps_pos_choices),
         num: int = 10,
     ):
         """Dark pool short position [Stockgrid]

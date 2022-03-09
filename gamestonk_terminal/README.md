@@ -1,568 +1,307 @@
-# Features 📈
+# Gamestonk Terminal
 
-## Table of contents
+<!-- TABLE OF CONTENTS -->
+<details open="open">
+  <summary><h2 style="display: inline-block">Table of Contents</h2></summary>
+    <ol>
+      <li><a href="#docker-installation">Docker Installation</a></li>
+      <li><a href="#local-install---anaconda-and-python">Local Install - Anaconda and Python</a></li>
+      <li><a href="#web-ui---docker">Web UI - Docker</a></li>
+      <li><a href="#advanced-user-install---machine-learning">Advanced User Install - Machine Learning</a></li>
+      <li><a href="#update-terminal">Update Terminal</a></li>
+      <li><a href="#api-keys">API Keys</a></li>
+    </ol>
+</details>
 
-* [Discover Stocks](#Discover-Stocks-)
-* [Behavioural Analysis](#Behavioural-Analysis-)
-* [Research](#Research-)
-* [Fundamental Analysis](#Fundamental-Analysis-)
-* [Technical Analysis](#Technical-Analysis-)
-* [Due Diligence](#Due-Diligence-)
-* [Prediction Techniques](#Prediction-Techniques-)
-* [Portfolio Analysis](#Portfolio-Analysis-)
-* [Brokers](#Brokers-)
-* [Portfolio Optimization](#Portfolio-Optimization-)
-* [Cryptocurrencies](#Cryptocurrencies-)
-* [Comparison Analysis](#Comparison-Analysis-)
-* [Exploratory Data Analysis](#Exploratory-Data-Analysis-)
-* [Residual Analysis](#Residual-Analysis-)
-* [Economy](#Economy)
-* [Options](#Options-)
-* [Screener](#Screener-)
-* [Insider](#Insider-)
-* [Forex](#Forex-)
-* [Backtesting](#Backtesting-)
-* [Resource Collection](#Resource-Collection-)
-* [Government](#Government-)
-* [ETF](#ETF-)
+---
 
-## Main
+## Getting Started
 
-The main menu allows the following commands:
+There are currently two main options to install the terminal:
 
-```text
-usage: load [-t S_TICKER] [-s S_START_DATE] [-i {1,5,15,30,60}] [--source {yf,av,iex}] [-p]
+- using Docker: recommended if you just want to use the terminal
+- using Python: recommended if you want to develop new features
+- using the Docker web UI: recommended if you want to deploy the web UI for users to access over your LAN
+
+First step in both options is to star the project
+
+<img width="1272" alt="Github starts" src="https://user-images.githubusercontent.com/25267873/115989986-e20cfe80-a5b8-11eb-8182-d6d87d092252.png">
+
+If you want to install the terminal using Python ignore the Docker section and jump to <a href="#local-install---anaconda-and-python">Local Install - Anaconda and Python</a> section.
+
+### Docker Installation
+
+1. Make sure docker desktop is installed. Install links can be found [here](https://www.docker.com/products/docker-desktop).
+   To confirm that your docker desktop is downloaded and running, open a command prompt or terminal and enter
+   `docker info`. If you get the following you are not running the docker desktop:
+
+   ```text
+   Server:
+   ERROR: Cannot connect to the Docker daemon at unix:///var/run/docker.sock.
+   Is the docker daemon running?
+   ```
+
+   Open the docker desktop app in this case.
+
+2. Download the latest docker image.
+
+   ```bash
+   docker pull ghcr.io/gamestonkterminal/gst-poetry:latest
+   ```
+
+   Upon running this the first time, you should see the various layers downloading (note the random series of letters numbers will vary). The first time this is run, it will take a few minutes. Subsequent updates will be much faster, as the changes will be in the MB instead of GB.
+
+   ![Screen Shot 2021-09-08 at 10 41 08 AM](https://user-images.githubusercontent.com/18151143/132531075-7d7f7e71-4fcb-435c-9bb3-466d7077eba4.png)
+
+   Once the download is complete, confirm that the image has been created by doing `docker images`. You should see
+   something similar to
+
+   ```text
+   REPOSITORY                             TAG       IMAGE ID       CREATED        SIZE
+   ghcr.io/gamestonkterminal/gst-poetry   latest    e2bbeebcc73c   42 hours ago   2.02GB
+   ```
+
+3. Run a container
+
+   You are now ready to run the terminal (every time you want to use the terminal you need to run this command):
+
+   `docker run -it --rm ghcr.io/gamestonkterminal/gst-poetry:latest`
+
+   This will open up the terminal in your command prompt or terminal. Note that this has provided now environment file,
+   so you will not be able to view plots or use keys at this stage.
+
+   At this point, you should be able to use the majority of the features using Docker. To read more on adding the environment keys and how to configure your X-server to show plots, hop over to the
+   [Advanced Docker Setup](/DOCKER_ADVANCED.md).
+
+### Local Install - Anaconda and Python
+
+This installation type supports both Windows and Unix systems (Linux + MacOS). However, on Windows it can become messy so it is easier to use Windows Subsystem Linux (WSL) on this operating system. WSL emulates a Linux machine inside your Windows system.
+
+If you are using macOS or other Linux operating systems you can jump the next section <a href="#installing-the-terminal">Installing the terminal</a>.
+
+### Web UI - Docker
+
+1. Ensure Docker is installed.
+2. Navigate to the location of the Dockerfile in the repo (`cd gamestonk_terminal_web`)
+3. Ensure the launcher is executable with `chmod +x ./launch`
+4. Launch it with `./launch`. If you get a permission denied error, do `sudo ./launch` instead
+5. Once it's launched, you will be able to access it by going to `http://host-ip:8080` in a browser, or `http://localhost:8080` if you are running it on your local machine.
+
+For API keys, create the `setenv` file if it doesn't already exist.
+It will automatically get created on the first launch, and won't get committed to Git because it is on the `.gitignore`.
+Set the API keys [as explained here](https://github.com/GamestonkTerminal/GamestonkTerminal/blob/main/DOCKER_ADVANCED.md#environment-variables).
+Once you've put the API keys in that file, re-run the launch script, and it will use your API keys.
+There are a few things that still don't work, and you can see what works and what doesn't [here](https://github.com/CoconutMacaroon/GamestonkTerminal/blob/main/gamestonk_terminal_web/README.md#todo).
+
+#### Installing WSL (Only for Windows users)
+
+If you are using Windows you first you need to install WSL. The process is simple and a tutorial can be found [here](https://www.sitepoint.com/wsl2/). Once you reach the section **Update Linux** on that tutorial, you should have a linux machine installed and can proceed to the next steps.
+
+Since WSL installation is headless by default (i.e., you have only access to a terminal running a linux distribution) you need some extra steps to be able to visualize the charts produced by the terminal (more detailed tutorial [here](https://medium.com/@shaoyenyu/make-matplotlib-works-correctly-with-x-server-in-wsl2-9d9928b4e36a)):
+
+1. Dynamically export the DISPLAY environment variable in WSL2:
+
+   ```bash
+   # add to the end of ~/.bashrc file
+   export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0
+   # source the file
+   source ~/.bashrc
+   ```
+
+2. Download and install [VcXsrv](https://sourceforge.net/projects/vcxsrv/)
+3. When running the program is important to check "Disable access control"
+
+After this, `VcXsrv` should be running successfully and we can proceed to terminal installation.
+
+Although we **extremely** recommend using WSL to run the terminal on windows, if you don't want or can't for some reason, you can try install the terminal directly on Windows without WSL. If you'd like to see a video recording of the installation on Windows without WSL, @JohnnyDankseed has made one available [here](https://www.youtube.com/watch?v=-DJJ-cfquDA).
+
+#### Installing the terminal
+
+These steps are common in all operating systems (Windows with or without WSL, MacOS or Linux).
+
+This project supports Python 3.7, 3.8 and 3.9.
+
+Our current recommendation is to use this project with Anaconda's Python distribution - either full
+[**Anaconda3 Latest**](https://repo.anaconda.com/archive/) or [**Miniconda3 Latest**](https://repo.anaconda.com/archive/).
+Several features in this project utilize Machine Learning. Machine Learning Python dependencies are optional.
+If you decided to add Machine Learning features at a later point, you will likely have better user experience with
+Anaconda's Python distribution.
+
+1. [Install Anaconda](https://docs.anaconda.com/anaconda/install/index.html) (It's on the AUR as anaconda or miniconda3!)
+
+   - Follow the instructions specified on the website above:
+
+     - If you are using macOS click [Installing on MacOS](https://docs.anaconda.com/anaconda/install/mac-os/)
+     - If you are using WSL or Linux click [Installing on Linux](https://docs.anaconda.com/anaconda/install/linux/)
+     - If you are using Windows click [Installing on Windows](https://docs.anaconda.com/anaconda/install/windows/). **ONLY REQUIRED IF NOT USING WSL**, you also need to install/update Microsoft C++ Build Tools from here: <https://visualstudio.microsoft.com/visual-cpp-build-tools/>
+
+   - After following the steps, confirm that you have it by opening a terminal and running: `conda -V`. The output should be something along the lines of: `conda 4.9.2`
+
+2. Install git
+
+   ```bash
+   conda install -c anaconda git
+   ```
+
+3. Clone the Project
+
+   - Via HTTPS: `git clone https://github.com/GamestonkTerminal/GamestonkTerminal.git`
+   - via SSH: `git clone git@github.com:GamestonkTerminal/GamestonkTerminal.git`
+
+4. Navigate into the project's folder
+
+   ```bash
+   cd GamestonkTerminal/
+   ```
+
+5. Create Environment
+
+   You can name the environment whatever you want. Although you could use names such as: `welikethestock`, `thisistheway`
+   or `diamondhands`, we recommend something simple and intuitive like `gst`. This is because this name will be used
+   from now onwards.
+
+   ```bash
+   conda env create -n gst --file build/conda/conda-3-8-env.yaml
+   ```
+
+6. Activate the virtual environment
+
+   ```bash
+   conda activate gst
+   ```
+
+   Note: At the end, you can deactivate it with: `conda deactivate`.
+
+7. Install poetry dependencies
+
+   ```bash
+   poetry install
+   ```
+
+   If you are having trouble with Poetry (e.g. on a Windows system), simply install requirements.txt with pip
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+8. You're ready to Gamestonk it!
+
+   ```bash
+   python terminal.py
+   ```
+
+9. (Windows - Optional and **only if you are not using WSL**) Speeding up opening process in the future
+
+   After you've installed Gamestonk Terminal, you'll find a file named "Gamestonk Terminal.bat". You can use this file
+   to open Gamestonk Terminal quicker. This file can be moved to your desktop if you'd like. If you run into issues
+   while trying to run the batch file. If you run into issues with the batch files, edit the file and check to see if
+   the directories match up. This file assumes you used the default directories when installing.
+
+10. Jupyter Lab (Optional. Early alpha). User the Terminal from Jupyter Lab
+
+    You can install Jupyter Lab extensions that help you manage settings and launch the terminal in a JL bash console
+    using the commands in the [jupyterlab/README.md](jupyterlab/README.md)
+
+**NOTE:** When you close the terminal and re-open it, the only command you need to re-call is `conda activate gst`
+before you call `python terminal.py` again.
+
+**TROUBLESHOOT:** If you are having troubles to install, check our _newest_
+<a href="https://github.com/GamestonkTerminal/GamestonkTerminal/blob/master/TROUBLESHOOT.md"><strong>troubleshoot page</strong></a>. You can also reach for help on our [discord](https://discord.gg/Up2QGbMKHY).
+
+### Advanced User Install - Machine Learning
+
+If you are an advanced user and use other Python distributions, we have several requirements.txt documents that you can
+pick from to download project dependencies.
+
+If you are using conda instead of build/conda/conda-3-8-env.yaml configuration file in Step 5, use build/conda/conda-3-8-env-full.
+
+Note: The libraries specified in the [requirements.txt](/requirements.txt) file have been tested and work for
+the purpose of this project, however, these may be older versions. Hence, it is recommended for the user to set up
+a virtual python environment prior to installing these. This allows to keep dependencies required by different projects
+in separate places.
+
+_If you would like to use optional Machine Learning features:_
+
+- Update your [feature_flags.py](/gamestonk_terminal/feature_flags.py) with:
+
+```bash
+ENABLE_PREDICT = os.getenv("GTFF_ENABLE_PREDICT") or True
 ```
 
-* Load stock ticker to perform analysis on. When the data source is 'yf', an Indian ticker can be loaded by using '.NS'
-  at the end, e.g. 'SBIN.NS'. See available market in <https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html>.
-  * -t : Stock ticker
-  * -s : The starting date (format YYYY-MM-DD) of the stock
-  * -i : Intraday stock minutes
-  * --source : Source of historical data. 'yf' and 'av' available. Default 'yf'
-  * -p : Pre/After market hours. Only works for 'yf' source, and intraday data
+- Install optional ML features dependencies:
 
-**Note:** Until a ticker is loaded, the menu will only show *disc* and *sen* menu, as the others require a ticker being provided.
-
-```text
-usage: clear
+```bash
+poetry install -E prediction
 ```
 
-* Clear previously loaded stock ticker.
+### Update Terminal
 
-```text
-view
+The terminal is constantly being updated with new features and bug fixes, hence, for your terminal to be update,
+you can run:
+
+```bash
+git pull
 ```
 
-* Visualize historical data of a stock.
-![AAPL](https://user-images.githubusercontent.com/18151143/125211301-69424800-e273-11eb-853d-0b7a0db8ffb7.png)
+to get the latest changes.
 
-Line plot color is configurable in config_plot.py
+If this fails due to the fact that you had modified some python files, and there's a conflict with the updates, you can use:
 
-```text
-quote -t S_TICKER
+```bash
+git stash
 ```
 
-* Show the current price of a stock.
+Then, re-run `poetry install` or `pip install -r requirements.txt` to get any new dependencies.
 
-```text
-candle -s START_DATE
+Once installation is finished, you're ready to gamestonk.
+
+If you `stashed` your changes previously, you can un-stash them with:
+
+```bash
+git stash pop
 ```
 
-* Visualize candles historical data, with support and resistance bars, and moving averages of 20 and 50.
+### API Keys
 
-![nio](https://user-images.githubusercontent.com/25267873/111053397-4d609e00-845b-11eb-9c94-89b8892a8e81.png)
+The project is build around several different API calls, whether it is to access historical data or financials. The table below shows the ones where a key is necessary. The environment variable names are shown explicitly, for the variable name in the code one just needs to remove the "GT\_", this can be found in [config_terminal.py](/gamestonk_terminal/config_terminal.py).
 
-```text
-export -f GNUS_data -F csv
+| Website                                                                         | Environment Variables                                                                                                                             |
+| :------------------------------------------------------------------------------ | :------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [Alpha Vantage](https://www.alphavantage.co)                                    | GT_API_KEY_ALPHAVANTAGE                                                                                                                           |
+| [Binance](https://binance.com)                                                  | GT_API_BINANCE_KEY <br/> GT_API_BINANCE_SECRET                                                                                                    |
+| [CoinMarketCap](https://coinmarketcap.com)                                      | GT_API_CMC_KEY <br/>                                                                                                                              |
+| [DEGIRO](https://www.degiro.fr)                                                 | GT_DG_USERNAME <br/> GT_DG_PASSWORD <br/> GT_DG_TOTP_SECRET                                                                                       |
+| [FRED](https://fred.stlouisfed.org)                                             | GT_API_FRED_KEY                                                                                                                                   |
+| [Financial Modeling Prep](https://financialmodelingprep.com)                    | GT_API_KEY_FINANCIALMODELINGPREP                                                                                                                  |
+| [Finnhub](https://finnhub.io)                                                   | GT_API_FINNHUB_KEY                                                                                                                                |
+| [News](https://newsapi.org)                                                     | GT_API_NEWS_TOKEN                                                                                                                                 |
+| [Oanda](https://developer.oanda.com)                                            | GT_OANDA_TOKEN <br/> GT_OANDA_ACCOUNT                                                                                                             |
+| [Polygon](https://polygon.io)                                                   | GT_API_POLYGON_KEY                                                                                                                                |
+| [Quandl](https://www.quandl.com)                                                | GT_API_KEY_QUANDL                                                                                                                                 |
+| [Reddit](https://www.reddit.com)                                                | GT_API_REDDIT_CLIENT_ID <br> GT_API_REDDIT_CLIENT_SECRET <br/> GT_API_REDDIT_USERNAME <br/> GT_API_REDDIT_USER_AGENT <br/> GT_API_REDDIT_PASSWORD |
+| [SentimentInvestor](https://sentimentinvestor.com)                              | GT_API_SENTIMENTINVESTOR_TOKEN <br> GT_API_SENTIMENTINVESTOR_KEY                                                                                  |
+| [Tradier](https://developer.tradier.com)                                        | GT_TRADIER_TOKEN                                                                                                                                  |
+| [Twitter](https://developer.twitter.com)                                        | GT_API_TWITTER_KEY <br/> GT_API_TWITTER_SECRET_KEY <br/> GT_API_TWITTER_BEARER_TOKEN                                                              |
+| [Coinbase](https://docs.pro.coinbase.com/)                                      | GT_API_COINBASE_KEY <br/> GT_API_COINBASE_SECRET <br/> GT_API_COINBASE_PASS_PHRASE                                                                |
+| [Whale Alert](https://docs.whale-alert.io/)                                     | GT_API_WHALE_ALERT_KEY                                                                                                                            |
+| [Ethplorer](https://github.com/EverexIO/Ethplorer/wiki/Ethplorer-API)           | GT_API_ETHPLORER_KEY                                                                                                                              |
+| [Cryptopanic](https://cryptopanic.com/developers/api/)                          | GT_API_CRYPTO_PANIC_KEY                                                                                                                           |
+| [Glassnode](https://docs.glassnode.com/basic-api/api-key#how-to-get-an-api-key) | GT_API_GLASSNODE_KEY                                                                                                                              |
+| [Coinglass](https://coinglass.github.io/API-Reference/#api-key)                 | GT_API_COINGLASS_KEY                                                                                                                              |
+| [BitQuery](https://bitquery.io/pricing)                                         | GT_API_BITQUERY_KEY                                                                                                                               |
+
+Example:
+
+```bash
+export GT_API_REDDIT_USERNAME=SexyYear
 ```
 
-* Exports the historical data from this ticker to a file or stdout.
-  * -f : Name of file to save the historical data exported (stdout if unspecified). Default: stdout.
-  * -F : Export historical data into following formats: csv, json, excel, clipboard. Default: csv.
-
-## Discover Stocks [»](discovery/README.md)
-
-Command|Description|Source
----|---|---
-`ipo`           |past and future IPOs |[Finnhub](https://finnhub.io)
-`map`           |S&P500 index stocks map |[Finviz](https://finviz.com)
-`rtp_sectors`   |real-time performance sectors |[Alpha Vantage](www.alphavantage.co)
-`gainers`       |show latest top gainers |[Yahoo Finance](https://finance.yahoo.com/)
-`losers`        |show latest top losers |[Yahoo Finance](https://finance.yahoo.com/)
-`orders`        |orders by Fidelity Customers |[Fidelity](https://www.fidelity.com/)
-`ark_orders`    |orders by ARK Investment Management LLC | [Cathiesark](https://www.cathiesark.com)
-`up_earnings`   |upcoming earnings release dates |[Seeking Alpha](https://seekingalpha.com/)
-`high_short`    |show top high short interest stocks of over 20% ratio |[High Short Interest](https://www.highshortinterest.com/)
-`low_float`     |show low float stocks under 10M shares float |[Low Float](https://www.lowfloat.com/)
-`simply_wallst` |Simply Wall St. research data |[Simply Wall St.](https://simplywall.st/about)
-`spachero`      |great website for SPACs research |[SpacHero](https://www.spachero.com/)
-`uwhales`       |good website for SPACs research |[UnusualWhales](https://unusualwhales.com/)
-`valuation`     |valuation of sectors, industry, country |[Finviz](https://finviz.com)
-`performance`   |performance of sectors, industry, country |[Finviz](https://finviz.com)
-`spectrum`      |spectrum of sectors, industry, country |[Finviz](https://finviz.com)
-`latest`        |latest news |[Seeking Alpha](https://seekingalpha.com/)
-`trending`      |trending news |[Seeking Alpha](https://seekingalpha.com/)
-`darkpool`      |dark pool tickers with growing activity |[FINRA](https://www.finra.org)
-`darkshort`     |dark pool short position|[Stockgrid](https://stockgrid.io)
-`shortvol`      |short interest and days to cover |[Stockgrid](https://stockgrid.io)
-
-&nbsp;
-
-## Behavioural Analysis [»](behavioural_analysis/README.md)
-
-Command|Description
-----|----
-[FinBrain](https://finbrain.tech)|
-`finbrain`      |sentiment from 15+ major news headlines
-`stats`         |sentiment stats including comparison with sector
-[Reddit](https://reddit.com)|
-`wsb`           |show what WSB gang is up to in subreddit wallstreetbets
-`watchlist`     |show other users watchlist
-`popular`       |show popular tickers
-`spac_c`        |show other users spacs announcements from subreddit SPACs community
-`spac`          |show other users spacs announcements from other subs
-[Stocktwits](https://stocktwits.com/)|
-`bullbear`      |estimate quick sentiment from last 30 messages on board
-`messages`      |output up to the 30 last messages on the board
-`trending`      |trending stocks
-`stalker`       |stalk stocktwits user's last message
-[Twitter](https://twitter.com/)|
-`infer`         |infer about stock's sentiment from latest tweets
-`sentiment`     |in-depth sentiment prediction from tweets over time
-[Google](https://google.com/)|
-`mentions`      |interest over time based on stock's mentions
-`regions`       |regions that show highest interest in stock
-`queries`       |top related queries with this stock
-`rise`          |top rising related queries with stock
-
-&nbsp;
-
-## Research [»](research/README.md)
-
-Command|Website
-----|----
-`macroaxis`         |<https://www.macroaxis.com>
-`yahoo`             |<https://www.finance.yahoo.com>
-`finviz`            |<https://www.finviz.com>
-`marketwatch`       |<https://www.marketwatch.com>
-`fool`              |<https://www.fool.com>
-`businessinsider`   |<https://www.markets.businessinsider.com>
-`fmp`               |<https://www.financialmodelingprep.com>
-`fidelity`          |<https://www.eresearch.fidelity.com>
-`tradingview`       |<https://www.tradingview.com>
-`marketchameleon`   |<https://www.marketchameleon.com>
-`stockrow`          |<https://www.stockrow.com>
-`barchart`          |<https://www.barchart.com>
-`grufity`           |<https://www.grufity.com>
-`fintel`            |<https://www.fintel.com>
-`zacks`             |<https://www.zacks.com>
-`macrotrends`       |<https://www.macrotrends.net>
-`newsfilter`        |<https://www.newsfilter.io>
-`stockanalysis`     |<https://www.stockanalysis.com>
-
-&nbsp;
-
-## Fundamental Analysis [»](fundamental_analysis/README.md)
-
-Command|Description
------ | ---------
-`screener`      |screen info about the company ([Finviz](https://finviz.com/))
-`mgmt`          |management team of the company ([Business Insider](https://markets.businessinsider.com/))
-`score`         |investing score from Warren Buffett, Joseph Piotroski and Benjamin Graham  ([FMP](https://financialmodelingprep.com/))
-`dcf`           |a discounted cash flow with an option to edit in excel
-[Yahoo Finance API](https://finance.yahoo.com/) |
-`info`          |information scope of the company
-`shrs`          |shareholders of the company
-`sust`          |sustainability values of the company
-`cal`           |calendar earnings and estimates of the company
-[Alpha Vantage API](https://www.alphavantage.co/) |
-`overview`      |overview of the company
-`income`        |income statements of the company
-`balance`       |balance sheet of the company
-`cash`          |cash flow of the company
-`earnings`      |earnings dates and reported EPS
-`fraud`         |key fraud ratios
-[Financial Modeling Prep API](https://financialmodelingprep.com/) |
-`profile`       |profile of the company
-`quote`         |quote of the company
-`enterprise`    |enterprise value of the company over time
-`dcf`           |discounted cash flow of the company over time
-`income`        |income statements of the company
-`balance`       |balance sheet of the company
-`cash`          |cash flow of the company
-`metrics`       |key metrics of the company
-`ratios`        |financial ratios of the company
-`growth`        |financial statement growth of the company
-
-&nbsp;
-
-## Technical Analysis [»](technical_analysis/README.md)
-
-Command | Description | Sources
------- | ------ | ------
-`view`         | view historical data and trendlines| [Finviz](https://finviz.com/quote.ashx?t=tsla)
-`summary`      | technical summary report| [FinBrain](https://finbrain.tech)
-`recom`        | recommendation based on Technical Indicators| [Tradingview](https://uk.tradingview.com/widget/technical-analysis/)
-`pr`           | pattern recognition| [Finnhub](https://finnhub.io)
-[overlap](https://github.com/twopirllc/pandas-ta/tree/master/pandas_ta/overlap) |
-`ema`         | exponential moving average | [Wikipedia](https://en.wikipedia.org/wiki/Moving_average#Exponential_moving_average), [Investopedia](https://www.investopedia.com/terms/e/ema.asp)
-`sma`         |simple moving average | [Wikipedia](https://en.wikipedia.org/wiki/Moving_average#Simple_moving_average_(boxcar_filter)), [Investopedia](https://www.investopedia.com/terms/s/sma.asp)
-`vwap`        |volume weighted average price | [Wikipedia](https://en.wikipedia.org/wiki/Volume-weighted_average_price), [Investopedia](https://www.investopedia.com/terms/v/vwap.asp)
-[momentum](https://github.com/twopirllc/pandas-ta/tree/master/pandas_ta/momentum) |
-`cci`         |commodity channel index | [Wikipedia](https://en.wikipedia.org/wiki/Commodity_channel_index), [Investopedia](https://www.investopedia.com/terms/c/commoditychannelindex.asp)
-`macd`        |moving average convergence/divergence | [Wikipedia](https://en.wikipedia.org/wiki/MACD), [Investopedia](https://www.investopedia.com/terms/m/macd.asp)
-`rsi`         |relative strength index | [Wikipedia](https://en.wikipedia.org/wiki/Relative_strength_index), [Investopedia](https://www.investopedia.com/terms/r/rsi.asp)
-`stoch`       |stochastic oscillator | [Wikipedia](https://en.wikipedia.org/wiki/Stochastic_oscillator), [Investopedia](https://www.investopedia.com/terms/s/stochasticoscillator.asp)
-[trend](https://github.com/twopirllc/pandas-ta/tree/master/pandas_ta/trend) |
-`adx`         |average directional movement index | [Wikipedia](https://en.wikipedia.org/wiki/Average_directional_movement_index), [Investopedia](https://www.investopedia.com/terms/a/adx.asp)
-`aroon`       |aroon indicator | [Investopedia](https://www.investopedia.com/terms/a/aroon.asp)
-[volatility](https://github.com/twopirllc/pandas-ta/tree/master/pandas_ta/volatility) |
-`bbands`      |bollinger bands | [Wikipedia](https://en.wikipedia.org/wiki/Bollinger_Bands), [Investopedia](https://www.investopedia.com/terms/b/bollingerbands.asp)
-[volume](https://github.com/twopirllc/pandas-ta/tree/master/pandas_ta/volume) |
-`ad`          |accumulation/distribution line values | [Wikipedia](https://en.wikipedia.org/wiki/Accumulation/distribution_index), [Investopedia](https://www.investopedia.com/terms/a/accumulationdistribution.asp)
-`obv`         |on balance volume | [Wikipedia](https://en.wikipedia.org/wiki/On-balance_volume), [Investopedia](https://www.investopedia.com/terms/o/onbalancevolume.asp)
-custom|
-`fib`          | Fibonocci levels | [Investopedia](https://www.investopedia.com/terms/f/fibonacciretracement.asp)
-&nbsp;
-
-## Due Diligence [»](due_diligence/README.md)
-
-Command|Description|Source
------- | --------|----
-`news`          |latest news of the company |[Finviz](https://finviz.com/)
-`red`           |gets due diligence from another user's post |[Reddit](https://reddit.com)
-`analyst`       |analyst prices and ratings of the company |[Finviz](https://finviz.com/)
-`rating`        |rating of the company from strong sell to strong buy | [FMP](https://financialmodelingprep.com/)
-`pt`            |price targets over time |[Business Insider](https://www.businessinsider.com/)
-`rot`           |ratings over time |[Finnhub](https://finnhub.io)
-`est`           |quarter and year analysts earnings estimates |[Business Insider](https://www.businessinsider.com/)
-`ins`           |insider activity over time |[Business Insider](https://www.businessinsider.com/)
-`insider`       |insider trading of the company |[Finviz](https://finviz.com/)
-`sec`           |SEC filings |[MarketWatch](https://www.marketwatch.com/)
-`short`         |short interest |[Quandl](https://www.quandl.com/)
-`warnings`      |company warnings according to Sean Seah book |[MarketWatch](https://www.marketwatch.com/)
-`dp`            |dark pools (ATS) vs OTC data [FINRA](https://www.finra.org/#/)
-`ftd`           |display fails-to-deliver data [SEC](https://www.sec.gov)
-`shortview`     |shows price vs short interest volume [Stockgrid](https://stockgrid.io)
-`darkpos`       |net short vs position [Stockgrid](https://stockgrid.io)
-`supplier`      |list of suppliers [csimarket](https://csimarket.com)
-`customer`      |list of customers [csimarket](https://csimarket.com)
-
-&nbsp;
-
-## Prediction Techniques [»](prediction_techniques/README.md)
-
-Command|Technique|Sources
------- | ------------|---
-`knn`         |k-Nearest Neighbors | [Wikipedia](https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm)
-`linear`      |linear regression (polynomial 1) | [Wikipedia](https://en.wikipedia.org/wiki/Linear_regression), [Investopedia](https://www.investopedia.com/terms/r/regression.asp)
-`quadratic`   |quadratic regression (polynomial 2) | [Wikipedia](https://en.wikipedia.org/wiki/Polynomial_regression), [Investopedia](https://www.investopedia.com/terms/r/regression.asp)
-`cubic`       |cubic regression (polynomial 3) | [Wikipedia](https://en.wikipedia.org/wiki/Polynomial_regression), [Investopedia](https://www.investopedia.com/terms/r/regression.asp)
-`regression`  |regression (other polynomial) | [Wikipedia](https://en.wikipedia.org/wiki/Polynomial_regression), [Investopedia](https://www.investopedia.com/terms/r/regression.asp)
-`arima`       |autoregressive integrated moving average | [Wikipedia](https://en.wikipedia.org/wiki/Autoregressive_integrated_moving_average), [Investopedia](https://www.investopedia.com/terms/a/autoregressive-integrated-moving-average-arima.asp)
-`mlp`         |MultiLayer Perceptron | [Wikipedia](https://en.wikipedia.org/wiki/Multilayer_perceptron)
-`rnn`         |Recurrent Neural Network  | [Wikipedia](https://en.wikipedia.org/wiki/Recurrent_neural_network)
-`lstm`        |Long Short-Term Memory  | [Wikipedia](https://en.wikipedia.org/wiki/Long_short-term_memory), [Details](https://colah.github.io/posts/2015-08-Understanding-LSTMs/)
-`conv1d`      |1D Convolution Neural Net| [Wikipedia](https://en.wikipedia.org/wiki/Convolutional_neural_network)
-&nbsp;
-
-## Portfolio Analysis [»](portfolio_analysis/README.md)
-
-Command|Description
------- | ------------
-`load`   | load portfolio from a file
-`group`  | view holdings by a user input group
-
-&nbsp;
-
-## Brokers [»](brokers/README.md)
-
-Command|Description|Brokers
------- | ------------|---
-`login`   | login to your brokers
-`rhhold`  | view robinhood holdings | [Robinhood](https://robinhood.com/us/en/)
-`rhhist`  | plot robinhood portfolio history | [Robinhood](https://robinhood.com/us/en/)
-`allyhold`| view ally holdings | [Ally](https://www.ally.com/invest/)
-`hold`    | view net holdings across all logins
-`degiro`  | degiro standalone menu | [Degiro](https://trader.degiro.nl/login/#/login)
-
-Degiro command|Description
------- | ------------
-`cancel`| cancel an order using the `id`
-`companynews`| view news about a company with it's isin
-`create`    |  create an order
-`hold`     |   view holdings
-`lastnews`  |  view latest news
-`login`      | connect to degiro's api
-`logout`     | disconnect from degiro's api
-`lookup`    |  view search for a product by name
-`pending`   | view pending orders
-`topnews`   |  view top news preview
-`update`    |  view top news preview
-
-&nbsp;
-
-## Portfolio Optimization [»](portfolio_optimization/README.md)
-
-Command|Description
-------|------
-`add`| add ticker to optimize
-`select`| overwrite current tickers with new tickers
-`equal`| equally weighted
-`property`| weight according to selected info property (e.g. marketCap)
-`maxsharpe`| optimizes for maximal Sharpe ratio (a.k.a the tangency portfolio)
-`minvol`| optimizes for minimum volatility
-`maxquadutil`| maximises the quadratic utility, given some risk aversion
-`effret`| maximises return for a given target risk
-`effrisk`| minimises risk for a given target return
-`ef`| show the efficient frontier
-
-&nbsp;
-
-## Cryptocurrency [»](cryptocurrency/README.md)
-
-Command|Description
------- | ------------
-[coingecko](#https://www.coingecko.com/en)|
-`load`| load cryptocurrency data
-`view`| view loaded cryptocurrency data
-`trend`| view top 7 coins
-[coinmarketcap](#http://coinmarketcap.com)|
-`top` | view top coins from coinmarketcap
-[binance](#http://binance.us)|
-`select` | select coin/currency to use and load candle data
-`book`| show order book
-`candle`| show candles
-`balance`| show coin balance
-
-&nbsp;
-
-## Comparison Analysis [»](comparison_analysis/README.md)
-
-Command|Description|Source
------- | --------|----
-`get`           |get similar companies |[Polygon](https://polygon.io)
-`select`        |select similar companies
-`historical`    |historical price data comparison |[Yahoo Finance](https://finance.yahoo.com/)
-`hcorr`         |historical price correlation |[Yahoo Finance](https://finance.yahoo.com/)
-`income`        |income financials comparison |[MarketWatch](https://www.marketwatch.com/)
-`balance`       |balance financials comparison |[MarketWatch](https://www.marketwatch.com/)
-`cashflow`      |cashflow comparison |[MarketWatch](https://www.marketwatch.com/)
-`sentiment`     |sentiment analysis comparison |[FinBrain](https://finbrain.tech)
-`scorr`         |sentiment correlation |[FinBrain](https://finbrain.tech)
-
-&nbsp;
-
-## Exploratory Data Analysis [»](exploratory_data_analysis/README.md)
-
-Command|Description|Source
------- | --------|----
-`get`           |get similar companies |[Polygon](https://polygon.io)
-`select`        |select similar companies
-`historical`    |historical price data comparison |[Yahoo Finance](https://finance.yahoo.com/)
-`hcorr`         |historical price correlation |[Yahoo Finance](https://finance.yahoo.com/)
-`income`        |income financials comparison |[MarketWatch](https://www.marketwatch.com/)
-`balance`       |balance financials comparison |[MarketWatch](https://www.marketwatch.com/)
-`cashflow`      |cashflow comparison |[MarketWatch](https://www.marketwatch.com/)
-`sentiment`     |sentiment analysis comparison |[FinBrain](https://finbrain.tech)
-`scorr`         |sentiment correlation |[FinBrain](https://finbrain.tech)
-
-&nbsp;
-
-## Residual Analysis [»](residuals_analysis/README.md)
-
-Command|Description|Source
------- | --------|----
-`pick`          |pick one of the model fitting | Supports [ARIMA](https://en.wikipedia.org/wiki/Autoregressive_integrated_moving_average), [Naive](https://en.wikipedia.org/wiki/Forecasting#Naïve_approach)
-`fit`           |show model fit against stock | [Wikipedia](https://en.wikipedia.org/wiki/Curve_fitting)
-`res`           |show residuals | [Wikipedia](https://en.wikipedia.org/wiki/Errors_and_residuals)
-`hist`          |histogram and density plot | [Wikipedia](https://en.wikipedia.org/wiki/Histogram)
-`qqplot`        |residuals against standard normal curve | [Wikipedia](https://en.wikipedia.org/wiki/Q–Q_plot)
-`acf`           |(partial) auto-correlation function | [Wikipedia](https://en.wikipedia.org/wiki/Autocorrelation)
-`normality`     |normality test (Kurtosis,Skewness,...) | [Wikipedia](https://en.wikipedia.org/wiki/Normality_test)
-`goodness`      |goodness of fit test (Kolmogorov-Smirnov) | [Wikipedia](https://en.wikipedia.org/wiki/Goodness_of_fit)
-`arch`          |autoregressive conditional heteroscedasticity | [Wikipedia](https://en.wikipedia.org/wiki/Autoregressive_conditional_heteroskedasticity)
-`unitroot`      |unit root test / stationarity (ADF, KPSS) | [Wikipedia](https://en.wikipedia.org/wiki/Unit_root_test)
-`independence`  |tests independent and identically distributed (BDS) | [Wikipedia](https://en.wikipedia.org/wiki/Pearson%27s_chi-squared_test#Testing_for_statistical_independence)
-
-&nbsp;
-
-## Economy [»](econ/README.md)
-
-Command|Description|Source
------- | -------- | --------
-`feargreed`     | CNN Fear Greed Index | <https://money.cnn.com/data/fear-and-greed/>
-`events`        | economic impact events | <https://finnhub.io>
-`fred`          | display customized FRED data | <https://fred.stlouisfed.org>
-`vixcls`        | Volatility Index | <https://fred.stlouisfed.org>
-`gdp`           | Gross Domestic Product | <https://fred.stlouisfed.org>
-`unrate`        | Unemployment Rate | <https://fred.stlouisfed.org>
-`dgs1`          | 1-Year Treasury Constant Maturity Rate | <https://fred.stlouisfed.org>
-`dgs5`          | 5-Year Treasury Constant Maturity Rate | <https://fred.stlouisfed.org>
-`dgs10`         | 10-Year Treasury Constant Maturity Rate | <https://fred.stlouisfed.org>
-`dgs30`         | 30-Year Treasury Constant Maturity Rate | <https://fred.stlouisfed.org>
-`mortgage30us`  | 30-Year Fixed Rate Mortgage Average | <https://fred.stlouisfed.org>
-`fedfunds`      | Effective Federal Funds Rate | <https://fred.stlouisfed.org>
-`aaa`           | Moody's Seasoned AAA Corporate Bond Yield | <https://fred.stlouisfed.org>
-`dexcaus`       | Canada / U.S. Foreign Exchange Rate (CAD per 1 USD) | <https://fred.stlouisfed.org>
-`overview`      | Market overview  |  <https://www.wsj.com/market-data>
-`indices`       | US indices overview  |  <https://www.wsj.com/market-data>
-`futures`       | Futures/commodities overview  |  <https://www.wsj.com/market-data>
-`us_bonds`      | US bonds overview  |  <https://www.wsj.com/market-data>
-`gl_bonds`      | Global bonds overview  |  <https://www.wsj.com/market-data>
-`currencies`    | Global currencies overview  |  <https://www.wsj.com/market-data>
-
-&nbsp;
-
-## Options [»](options/README.md)
-
-Command|Description|Source
------- | --------|----
-`disp`          | Display all preset screeners filters
-`scr`           | Output screener options
-`load`          | Load new ticker
-`info`          | Display option information | [Barchart](https://barchart.com/)
-`calc`          | Basic option PnL calculator
-`act`           | Scrapes unusual options activity|
-`exp`           | see/set expiry date
-`chains`        | displays option chains    |[Tradier](https://developer.tradier.com/)
-`oi`            | Plot open interest
-`vol`           | Plot volume
-`voi`           | Plot volume and open interest
-`hist`          | Plot historical options data | [Tradier](https://developer.tradier.com/)
-`gr_hist`       | Plot historical option greek | [Syncretism](ops.syncretism.io)
-&nbsp;
-
-## Screener [»](screener/README.md)
-
-Command|Description|Source
------- | --------|----
-view           |view available presets | [presets]((screener/presets/README.md))
-set            |set one of the available presets
-historical     |view historical price |[Yahoo Finance](https://finance.yahoo.com/)
-[Finviz](https://finviz.com/screener.ashx) |
-overview       |overview (e.g. Sector, Industry, Market Cap, Volume)
-valuation      |valuation (e.g. P/E, PEG, P/S, P/B, EPS this Y)
-financial      |financial (e.g. Dividend, ROA, ROE, ROI, Earnings)
-ownership      |ownership (e.g. Float, Insider Own, Short Ratio)
-performance    |performance (e.g. Perf Week, Perf YTD, Volatility M)
-technical      |technical (e.g. Beta, SMA50, 52W Low, RSI, Change)
-signals        |view filter signals (e.g. -s top_gainers)
-
-&nbsp;
-
-## Insider [»](insider/README.md)
-
-Command|Description|Source
------- | --------|----
-view           |view available presets | [presets](insider/presets/README.md)
-set            |set one of the available presets
-filter         |filter insiders based on preset | [Open Insider](http://openinsider.com)
-Latest |
-lcb |latest cluster boys
-lpsb | latest penny stock buys
-lit | latest insider trading (all filings)
-lip | latest insider purchases
-blip |  big latest insider purchases ($25k+)
-blop | big latest officer purchases ($25k+)
-blcp | big latest CEO/CFO purchases ($25k+)
-lis | latest insider sales
-blis | big latest insider sales ($100k+)
-blos | big latest officer sales ($100k+)
-blcs | big latest CEO/CFO sales ($100k+)
-Top |
-topt | top officer purchases today
-toppw | top officer purchases past week
-toppm | top officer purchases past month
-tipt | top insider purchases today
-tippw | top insider purchases past week
-tippm | top insider purchases past month
-tist | top insider sales today
-tispw | top insider sales past week
-tispm | top insider sales past month
-
-&nbsp;
-
-## Forex [»](forex/README.md)
-
-Command|Description
------- | --------
-summary      |display a summary of your account
-calendar     |get information about past or upcoming events which may impact the price
-list         |list your order history
-pending      |get information about pending orders
-cancel       |cancel a pending order by ID
-positions    |get information about your positions
-trades       |see a list of open trades
-closetrade   |close a trade by ID
-load         |specify an instrument to use
-candles      |get a candlestick chart for the forex instrument
-price        |show the current price for the forex instrument
-order        |place a limit order
-orderbook    |display the orderbook if Oanda provides one for the forex instrument
-positionbook |display the positionbook if Oanda provides one for the forex instrument
-
-&nbsp;
-
-## Backtesting [»](backtesting/README.md)
-
-Command|Description
------- | --------
-`ema`           | buy when price exceeds EMA(l)
-`ema_cross`     | buy when EMA(short) > EMA(long)
-`rsi`           | buy when RSI < low and sell when RSI > high
-
-## Resource Collection [»](resource_collection/README.md)
-
-Command|Website
-----|----
-`hfletters`     |<https://miltonfmr.com/hedge-fund-letters/>
-`arxiv`         |<https://arxiv.org>
-`finra`         |<https://www.finra.org/#/>
-`edgar`         |<https://www.sec.gov/edgar.shtml>
-`fred`          |<https://fred.stlouisfed.org>
-`learn`         |<https://moongangcapital.com/free-stock-market-resources/>
-
-&nbsp;
-
-## Government [»](government/README.md)
-
-Command|Website
-----|----
-`last_congress`         | last congress trading
-`buy_congress`          | plot top buy congress tickers
-`sell_congress`         | plot top sell congress tickers
-`last_senate`           | last senate trading
-`buy_senate`            | plot top buy senate tickers
-`sell_senate`           | plot top sell senate tickers
-`last_house`            | last house trading
-`buy_house`             | plot top buy house tickers
-`sell_house`            | plot top sell house tickers
-`last_contracts`        | last government contracts
-`sum_contracts`         | plot sum of last government contracts
-with ticker provided    |
-`raw_congress`          | raw congress trades on the ticker
-`congress`              | plot congress trades on the ticker
-`raw_senate`            | raw senate trades on the ticker
-`senate`                | plot senate trades on the ticker
-`raw_house`             | raw house trades on the ticker
-`house`                 | plot house trades on the ticker
-`raw_contracts`         | raw contracts on the ticker
-`contracts`             | plot sum of contracts on the ticker
-
-&nbsp;
-
-## ETF [»](etf/README.md)
-
-command|description
----|----
-`web`|open webbroswer to stockanalysis.com
-`search`|search for ETFs matching an input
-`overview`|get ETF overview
-`holdings`|show ETF holdings
-`compare`|compare multiple ETFs overview
-`screener`|screen ETFs
-`gainers`|show top gainers
-`decliners`|show top decliners
-`active`|show most active
+Environment variables can also be set in a `.env` file at the top of the repo. This file is ignored by git so your API
+keys will stay secret. The above example stored in `.env` would be:
+
+```bash
+GT_API_REDDIT_USERNAME=SexyYear
+```
+
+Note that the `GT_API_REDDIT_USER_AGENT` is the name of the script that you set when obtained the Reddit API key.
+Note that it is not necessary to have a valid Alpha Vantage key to get daily OHLC values.

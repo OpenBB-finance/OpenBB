@@ -58,11 +58,24 @@ def make_request(params: Optional[dict] = None) -> Tuple[int, Any]:
     url = "https://api.whale-alert.io/v1/transactions?api_key=" + api_key
     response = requests.get(url, params=params)
 
-    if not 200 <= response.status_code < 300:
-        logger.error("Invalid Authentication: %s", response.text)
-        console.print(f"Invalid Authentication: {response.text}")
+    result = {}
 
-    return response.status_code, response.json()
+    if response.status_code == 200:
+        result = response.json()
+    elif response.status_code == 401:
+        console.print("[red]Invalid API Key[/red]\n")
+        logger.error("Invalid Authentication: %s", response.text)
+    elif response.status_code == 401:
+        console.print("[red]API Key not authorized for Premium Feature[/red]\n")
+        logger.error("Insufficient Authorization: %s", response.text)
+    elif response.status_code == 429:
+        console.print("[red]Exceeded number of calls per minute[/red]\n")
+        logger.error("Calls limit exceeded: %s", response.text)
+    else:
+        console.print(response.json()["message"])
+        logger.error("Error in request: %s", response.text)
+
+    return response.status_code, result
 
 
 @log_start_end(log=logger)

@@ -71,9 +71,10 @@ def get_watchlists(
         filter=["id"],
     )
     n_flair_posts_found = 0
-    for sub in submissions:
-        submission = praw_api.submission(id=sub.id)
-        if submission:
+
+    try:
+        for sub in submissions:
+            submission = praw_api.submission(id=sub.id)
             if (
                 not submission.removed_by_category
                 and submission.selftext
@@ -100,9 +101,15 @@ def get_watchlists(
                     subs.append(submission)
             if n_flair_posts_found > n_to_get - 1:
                 break
+
+    except ResponseException as e:
+        logger.exception("Invalid response: %s", str(e))
+
+        if "received 401 HTTP response" in str(e):
+            console.print("[red]Invalid API Key[/red]\n")
         else:
-            logger.error("Invalid submission")
-            console.print("[red]Invalid submission[/red]\n")
+            console.print(f"[red]Invalid response: {str(e)}[/red]\n")
+
     return subs, d_watchlist_tickers, n_flair_posts_found
 
 
@@ -142,6 +149,7 @@ def get_popular_tickers(
     )
 
     psaw_api = PushshiftAPI()
+
     for s_sub_reddit in sub_reddit_list:
         console.print(
             f"Search for latest tickers for {posts_to_look_at} '{s_sub_reddit}' posts"
@@ -183,13 +191,14 @@ def get_popular_tickers(
                                 # Initialize stock ticker found
                                 d_watchlist_tickers[key] = 1
 
-            except ResponseException:
-                logger.exception(
-                    "Received a response from Reddit with an authorization error. Check your token."
-                )
-                console.print(
-                    "Received a response from Reddit with an authorization error. Check your token.\n"
-                )
+            except ResponseException as e:
+                logger.exception("Invalid response: %s", str(e))
+
+                if "received 401 HTTP response" in str(e):
+                    console.print("[red]Invalid API Key[/red]\n")
+                else:
+                    console.print(f"[red]Invalid response: {str(e)}[/red]\n")
+
                 return pd.DataFrame()
 
         console.print(f"  {n_tickers} potential tickers found.")
@@ -283,36 +292,47 @@ def get_spac_community(
         submissions = praw_api.subreddit("SPACs").new(limit=limit)
 
     subs = []
-    for sub in submissions:
-        if not sub:
-            break
 
-        # Get more information about post using PRAW api
-        submission = praw_api.submission(id=sub.id)
+    try:
+        for sub in submissions:
+            if not sub:
+                break
 
-        # Ensure that the post hasn't been removed  by moderator in the meanwhile,
-        # that there is a description and it's not just an image, that the flair is
-        # meaningful, and that we aren't re-considering same author's watchlist
-        if (
-            not submission.removed_by_category
-            and submission.selftext
-            and submission.link_flair_text not in ["Yolo", "Meme"]
-            and submission.author.name not in l_watchlist_author
-        ):
-            l_tickers_found = find_tickers(submission)
+            # Get more information about post using PRAW api
+            submission = praw_api.submission(id=sub.id)
 
-            if l_tickers_found:
-                # Add another author's name to the parsed watchlists
-                l_watchlist_author.append(submission.author.name)
-                subs.append(submission)
-                # Lookup stock tickers within a watchlist
-                for key in l_tickers_found:
-                    if key in d_watchlist_tickers:
-                        # Increment stock ticker found
-                        d_watchlist_tickers[key] += 1
-                    else:
-                        # Initialize stock ticker found
-                        d_watchlist_tickers[key] = 1
+            # Ensure that the post hasn't been removed  by moderator in the meanwhile,
+            # that there is a description and it's not just an image, that the flair is
+            # meaningful, and that we aren't re-considering same author's watchlist
+            if (
+                not submission.removed_by_category
+                and submission.selftext
+                and submission.link_flair_text not in ["Yolo", "Meme"]
+                and submission.author.name not in l_watchlist_author
+            ):
+                l_tickers_found = find_tickers(submission)
+
+                if l_tickers_found:
+                    # Add another author's name to the parsed watchlists
+                    l_watchlist_author.append(submission.author.name)
+                    subs.append(submission)
+                    # Lookup stock tickers within a watchlist
+                    for key in l_tickers_found:
+                        if key in d_watchlist_tickers:
+                            # Increment stock ticker found
+                            d_watchlist_tickers[key] += 1
+                        else:
+                            # Initialize stock ticker found
+                            d_watchlist_tickers[key] = 1
+
+    except ResponseException as e:
+        logger.exception("Invalid response: %s", str(e))
+
+        if "received 401 HTTP response" in str(e):
+            console.print("[red]Invalid API Key[/red]\n")
+        else:
+            console.print(f"[red]Invalid response: {str(e)}[/red]\n")
+
     return subs, d_watchlist_tickers
 
 
@@ -354,41 +374,51 @@ def get_spac(
         filter=["id"],
     )
     n_flair_posts_found = 0
-    for submission in submissions:
 
-        # Get more information about post using PRAW api
-        submission = praw_api.submission(id=submission.id)
+    try:
+        for submission in submissions:
 
-        # Ensure that the post hasn't been removed  by moderator in the meanwhile,
-        # that there is a description and it's not just an image, that the flair is
-        # meaningful, and that we aren't re-considering same author's watchlist
-        if (
-            not submission.removed_by_category
-            and submission.selftext
-            and submission.link_flair_text not in ["Yolo", "Meme"]
-            and submission.author.name not in l_watchlist_author
-        ):
-            l_tickers_found = find_tickers(submission)
-            subs.append(submission)
-            if l_tickers_found:
-                # Add another author's name to the parsed watchlists
-                l_watchlist_author.append(submission.author.name)
+            # Get more information about post using PRAW api
+            submission = praw_api.submission(id=submission.id)
 
-                # Lookup stock tickers within a watchlist
-                for key in l_tickers_found:
-                    if key in d_watchlist_tickers:
-                        # Increment stock ticker found
-                        d_watchlist_tickers[key] += 1
-                    else:
-                        # Initialize stock ticker found
-                        d_watchlist_tickers[key] = 1
+            # Ensure that the post hasn't been removed  by moderator in the meanwhile,
+            # that there is a description and it's not just an image, that the flair is
+            # meaningful, and that we aren't re-considering same author's watchlist
+            if (
+                not submission.removed_by_category
+                and submission.selftext
+                and submission.link_flair_text not in ["Yolo", "Meme"]
+                and submission.author.name not in l_watchlist_author
+            ):
+                l_tickers_found = find_tickers(submission)
+                subs.append(submission)
+                if l_tickers_found:
+                    # Add another author's name to the parsed watchlists
+                    l_watchlist_author.append(submission.author.name)
 
-                # Increment count of valid posts found
-                n_flair_posts_found += 1
+                    # Lookup stock tickers within a watchlist
+                    for key in l_tickers_found:
+                        if key in d_watchlist_tickers:
+                            # Increment stock ticker found
+                            d_watchlist_tickers[key] += 1
+                        else:
+                            # Initialize stock ticker found
+                            d_watchlist_tickers[key] = 1
 
-            # Check if number of wanted posts found has been reached
-            if n_flair_posts_found > limit - 1:
-                break
+                    # Increment count of valid posts found
+                    n_flair_posts_found += 1
+
+                # Check if number of wanted posts found has been reached
+                if n_flair_posts_found > limit - 1:
+                    break
+
+    except ResponseException as e:
+        logger.exception("Invalid response: %s", str(e))
+
+        if "received 401 HTTP response" in str(e):
+            console.print("[red]Invalid API Key[/red]\n")
+        else:
+            console.print(f"[red]Invalid response: {str(e)}[/red]\n")
 
     return subs, d_watchlist_tickers, n_flair_posts_found
 
@@ -425,6 +455,7 @@ def get_wsb_community(
         submissions = praw_api.subreddit("wallstreetbets").hot(limit=limit)
 
     subs = []
+
     try:
         for submission in submissions:
             submission = praw_api.submission(id=submission.id)
@@ -435,7 +466,11 @@ def get_wsb_community(
                 subs.append(submission)
     except ResponseException as e:
         logger.exception("Invalid response: %s", str(e))
-        console.print("[red]Invalid response[/red]\n")
+
+        if "received 401 HTTP response" in str(e):
+            console.print("[red]Invalid API Key[/red]\n")
+        else:
+            console.print(f"[red]Invalid response: {str(e)}[/red]\n")
     return subs
 
 
@@ -501,25 +536,34 @@ def get_due_dilligence(
     )
     n_flair_posts_found = 0
     subs = []
-    for submission in submissions:
-        # Get more information about post using PRAW api
-        submission = praw_api.submission(id=submission.id)
 
-        # Ensure that the post hasn't been removed in the meanwhile
-        if not submission.removed_by_category:
+    try:
+        for submission in submissions:
+            # Get more information about post using PRAW api
+            submission = praw_api.submission(id=submission.id)
 
-            # Either just filter out Yolo, and Meme flairs, or focus on DD, based on b_DD flag
-            if (
-                submission.link_flair_text in l_flair_text,
-                submission.link_flair_text not in ["Yolo", "Meme"],
-            )[show_all_flairs]:
+            # Ensure that the post hasn't been removed in the meanwhile
+            if not submission.removed_by_category:
 
-                subs.append(submission)
-                # Increment count of valid posts found
-                n_flair_posts_found += 1
+                # Either just filter out Yolo, and Meme flairs, or focus on DD, based on b_DD flag
+                if (
+                    submission.link_flair_text in l_flair_text,
+                    submission.link_flair_text not in ["Yolo", "Meme"],
+                )[show_all_flairs]:
 
-        # Check if number of wanted posts found has been reached
-        if n_flair_posts_found > limit - 1:
-            break
+                    subs.append(submission)
+                    # Increment count of valid posts found
+                    n_flair_posts_found += 1
+
+            # Check if number of wanted posts found has been reached
+            if n_flair_posts_found > limit - 1:
+                break
+    except ResponseException as e:
+        logger.exception("Invalid response: %s", str(e))
+
+        if "received 401 HTTP response" in str(e):
+            console.print("[red]Invalid API Key[/red]\n")
+        else:
+            console.print(f"[red]Invalid response: {str(e)}[/red]\n")
 
     return subs

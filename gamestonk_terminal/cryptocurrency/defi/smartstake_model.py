@@ -6,6 +6,7 @@ import requests
 import pandas as pd
 
 from gamestonk_terminal import config_terminal as cfg
+from gamestonk_terminal.rich_config import console
 
 
 def get_luna_supply_stats(supply_type: str, days: int) -> pd.DataFrame:
@@ -38,7 +39,15 @@ def get_luna_supply_stats(supply_type: str, days: int) -> pd.DataFrame:
         params=payload,
     )
 
-    if response.status_code == 200:
+    df = pd.DataFrame()
+
+    if "errors" in response.json():
+        if "DENIED" in response.json()["errors"]:
+            console.print("[red]Invalid API Key[/red]\n")
+        else:
+            console.print(response.json()["errors"])
+
+    else:
         result = response.json()[supply_type]
 
         # check if result is not empty
@@ -48,6 +57,7 @@ def get_luna_supply_stats(supply_type: str, days: int) -> pd.DataFrame:
             df.index.name = "timestamp_date"
             df.index = pd.to_datetime(df.index)
 
-            return df
+        else:
+            console.print("No data found")
 
-    return pd.DataFrame()
+    return df

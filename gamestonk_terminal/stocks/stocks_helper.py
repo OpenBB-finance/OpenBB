@@ -8,7 +8,6 @@ from datetime import datetime, timedelta
 from typing import List, Union, Optional, Iterable
 
 import matplotlib.pyplot as plt
-import matplotlib
 from matplotlib.lines import Line2D
 import mplfinance as mpf
 import numpy as np
@@ -31,13 +30,12 @@ from gamestonk_terminal.helper_funcs import (
     plot_autoscale,
     get_user_timezone_or_invalid,
     print_rich_table,
-    lambda_long_number_format,
 )
 from gamestonk_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
-# pylint: disable=no-member,too-many-branches,C0302
+# pylint: disable=no-member,too-many-branches,C0302,R0913
 
 INTERVALS = [1, 5, 15, 30, 60]
 SOURCES = ["yf", "av", "iex"]
@@ -148,11 +146,15 @@ def load(
 
         # Alpha Vantage Source
         if source == "av":
-            ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas")
-            # pylint: disable=unbalanced-tuple-unpacking
-            df_stock_candidate, _ = ts.get_daily_adjusted(
-                symbol=ticker, outputsize="full"
-            )
+            try:
+                ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas")
+                # pylint: disable=unbalanced-tuple-unpacking
+                df_stock_candidate, _ = ts.get_daily_adjusted(
+                    symbol=ticker, outputsize="full"
+                )
+            except Exception as e:
+                console.print(e)
+                return pd.DataFrame()
 
             df_stock_candidate.columns = [
                 val.split(". ")[1].capitalize() for val in df_stock_candidate.columns
@@ -167,7 +169,7 @@ def load(
             # Check that loading a stock was not successful
             # pylint: disable=no-member
             if df_stock_candidate.empty:
-                console.print("")
+                console.print("No data found.\n")
                 return pd.DataFrame()
 
             df_stock_candidate.index = df_stock_candidate.index.tz_localize(None)
@@ -199,14 +201,24 @@ def load(
 
         # IEX Cloud Source
         elif source == "iex":
-            client = pyEX.Client(api_token=cfg.API_IEX_TOKEN, version="v1")
 
-            df_stock_candidate = client.chartDF(ticker, timeframe=iexrange)
+            df_stock_candidate = pd.DataFrame()
 
-            # Check that loading a stock was not successful
-            if df_stock_candidate.empty:
-                console.print("")
-                return pd.DataFrame()
+            try:
+                client = pyEX.Client(api_token=cfg.API_IEX_TOKEN, version="v1")
+
+                df_stock_candidate = client.chartDF(ticker, timeframe=iexrange)
+
+                # Check that loading a stock was not successful
+                if df_stock_candidate.empty:
+                    console.print("No data found.\n")
+            except Exception as e:
+                if "The API key provided is not valid" in str(e):
+                    console.print("[red]Invalid API Key[/red]\n")
+                else:
+                    console.print(e)
+
+                return df_stock_candidate
 
             df_stock_candidate = df_stock_candidate[
                 ["close", "fHigh", "fLow", "fOpen", "fClose", "volume"]
@@ -291,7 +303,7 @@ def display_candle(
         Flag for intraday data for plotly range breaks
     add_trend: bool
         Flag to add high and low trends to chart
-    mov_avg: Tuple[int]
+    ma: Tuple[int]
         Moving averages to add to the candle
     asset_type_: str
         String to include in title
@@ -350,12 +362,6 @@ def display_candle(
             candle_chart_kwargs["figscale"] = 1.10
             candle_chart_kwargs["figsize"] = plot_autoscale()
             fig, ax = mpf.plot(df_stock, **candle_chart_kwargs, **kwargs)
-
-            ax[2].get_yaxis().set_major_formatter(
-                matplotlib.ticker.FuncFormatter(
-                    lambda x, _: lambda_long_number_format(x)
-                )
-            )
 
             fig.suptitle(
                 f"{asset_type} {s_ticker}",
@@ -534,7 +540,6 @@ def display_candle(
             )
 
         fig.show(config=dict({"scrollZoom": True}))
-    console.print("")
 
 
 def quote(other_args: List[str], s_ticker: str):

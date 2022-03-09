@@ -15,6 +15,7 @@ from degiro_connector.trading.models.trading_pb2 import (
 )
 
 from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.decorators import check_api_key
 
 # IMPORTATION INTERNAL
 from gamestonk_terminal.portfolio.brokers.degiro.degiro_model import DegiroModel
@@ -52,7 +53,7 @@ class DegiroView:
     @log_start_end(log=logger)
     def help_display():
         console.print(
-            "\nDegiro:\n"
+            "\n[cmds]"
             "   login        connect to degiro's api\n"
             "   logout       disconnect from degiro's api\n"
             "\n"
@@ -66,7 +67,7 @@ class DegiroView:
             "\n"
             "   companynews  view news about a company with it's isin\n"
             "   lastnews     view latest news\n"
-            "   topnews      view top news preview\n"
+            "   topnews      view top news preview[/cmds]\n"
         )
 
     @log_start_end(log=logger)
@@ -304,6 +305,7 @@ class DegiroView:
             console.print("---")
 
     @log_start_end(log=logger)
+    @check_api_key(["DG_USERNAME", "DG_PASSWORD"])
     def login(self, ns_parser: Namespace):
         # GET ATTRIBUTES
         degiro_model = self.__degiro_model
@@ -313,10 +315,6 @@ class DegiroView:
         credentials.CopyFrom(default_credentials)
         credentials.username = ns_parser.username
         credentials.password = ns_parser.password
-
-        if "REPLACE_ME" in (credentials.username, credentials.username):
-            console.print("No Degiro's credentials provided. Login failed.")
-            return
 
         if ns_parser.otp is not None:
             credentials.one_time_password = ns_parser.otp

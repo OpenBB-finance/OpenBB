@@ -2,12 +2,14 @@
 __docformat__ = "numpy"
 
 import logging
+from multiprocessing import AuthenticationError
 
 import pandas as pd
 import quandl
 
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -32,7 +34,19 @@ def get_short_interest(ticker: str, nyse: bool) -> pd.DataFrame:
     """
     quandl.ApiConfig.api_key = cfg.API_KEY_QUANDL
 
-    if nyse:
-        return quandl.get(f"FINRA/FNYX_{ticker}")
+    df = pd.DataFrame()
 
-    return quandl.get(f"FINRA/FNSQ_{ticker}")
+    try:
+
+        if nyse:
+            df = quandl.get(f"FINRA/FNYX_{ticker}")
+        else:
+            df = quandl.get(f"FINRA/FNSQ_{ticker}")
+
+    except AuthenticationError:
+        console.print("[red]Invalid API Key[/red]\n")
+    # Catch invalid ticker
+    except Exception as e:
+        console.print(e)
+
+    return df
