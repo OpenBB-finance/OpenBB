@@ -27,7 +27,7 @@ def iv_command(ticker: str = None):
         axis="columns",
     )
     df[""] = df[""].str.lstrip()
-    font_color = [["white"]] + [["red" if "-" in df[""][0] else "#21c903"] + ["white"]]
+    font_color = [["white"]] + [["#e4003a" if "-" in df[""][0] else "#00ACFF"] + ["white"]]
     df.set_index(" ", inplace=True)
 
     fig = df2img.plot_dataframe(

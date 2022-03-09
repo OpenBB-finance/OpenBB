@@ -5,56 +5,42 @@ import plotly.graph_objects as go
 import bots.config_discordbot as cfg
 from bots import helpers, load_candle
 from bots.config_discordbot import logger
-from gamestonk_terminal.common.technical_analysis import volatility_model
+from gamestonk_terminal.common.technical_analysis import overlap_model
 
 
-def bbands_command(
+def ma_command(
     ticker="",
     interval: int = 15,
     past_days: int = 0,
-    length="20",
-    n_std: float = 2.0,
-    mamode="sma",
+    mamode="ema",
+    window="",
+    offset: int = 0,
     start="",
     end="",
     extended_hours: bool = False,
     heikin_candles: bool = False,
     news: bool = False,
 ):
-    """Displays chart with bollinger bands [Yahoo Finance]"""
+    """Displays chart with selected Moving Average  [Yahoo Finance]"""
     # Debug
     if cfg.DEBUG:
         # pylint: disable=logging-too-many-args
         logger.debug(
-            "ta bbands %s %s %s %s %s %s",
+            "ta ma %s %s %s %s %s %s",
             ticker,
-            length,
-            n_std,
             mamode,
             start,
             end,
         )
 
     # Check for argument
-    possible_ma = [
-        "dema",
-        "ema",
-        "fwma",
-        "hma",
-        "linreg",
-        "midpoint",
-        "pwma",
-        "rma",
-        "sinwma",
-        "sma",
-        "swma",
-        "t3",
-        "tema",
-        "trima",
-        "vidya",
-        "wma",
-        "zlma",
-    ]
+    overlap_ma = {
+        "ema": overlap_model.ema,
+        "hma": overlap_model.hma,
+        "sma": overlap_model.sma,
+        "wma": overlap_model.wma,
+        "zlma": overlap_model.zlma,
+    }
 
     if ticker == "":
         raise Exception("Stock ticker is required")
@@ -72,16 +58,8 @@ def bbands_command(
             ta_start = datetime.strptime(start, cfg.DATE_FORMAT) - timedelta(
                 days=past_days
             )
-        past_days += 2 if news else 1
+        past_days += 2 if news else 10
         ta_start = load_candle.local_tz(ta_start)
-
-    if not length.lstrip("-").isnumeric():
-        raise Exception("Number has to be an integer")
-    length = float(length)
-    n_std = float(n_std)
-
-    if mamode not in possible_ma:
-        raise Exception("Invalid ma entered")
 
     # Retrieve Data
     df_stock, start, end = load_candle.stock_data(
@@ -97,70 +75,64 @@ def bbands_command(
     if df_stock.empty:
         return Exception("No Data Found")
 
-    df_ta = df_stock.loc[(df_stock.index >= start) & (df_stock.index < end)]
-    df_ta = volatility_model.bbands(df_ta["Adj Close"], length, n_std, mamode)
+    if window == "":
+        window = [20, 50]
+    else:
+        window_temp = list()
+        for wind in window.split(","):
+            try:
+                window_temp.append(float(wind))
+            except Exception as e:
+                raise Exception("Window needs to be a float") from e
+        window = window_temp
 
-    # Output Data
+    df_ta = df_stock.loc[(df_stock.index >= start) & (df_stock.index < end)]
+
+    if df_ta.empty:
+        return Exception("No Data Found")
+
+    for win in window:
+        ema_data = overlap_ma[mamode](
+            values=df_ta["Adj Close"], length=win, offset=offset
+        )
+        df_ta = df_ta.join(ema_data)
+    if mamode == "zlma":
+        mamode = "ZL_EMA"
+
     if interval != 1440:
         ta_end = load_candle.local_tz(end)
         df_ta = df_ta.loc[(df_ta.index >= ta_start) & (df_ta.index < ta_end)]
 
-    fig = load_candle.candle_fig(df_stock, ticker, interval, extended_hours, news)
+    fig = load_candle.candle_fig(df_ta, ticker, interval, extended_hours, news)
 
-    fig.add_trace(
-        go.Scatter(
-            name=f"{df_ta.columns[0].replace('_', ' ')}",
-            x=df_ta.index,
-            y=df_ta.iloc[:, 0].values,
-            opacity=1,
-            mode="lines",
-            line_color="indigo",
-        ),
-        secondary_y=True,
-    )
-    fig.add_trace(
-        go.Scatter(
-            name=f"{df_ta.columns[2].replace('_', ' ')}",
-            x=df_ta.index,
-            y=df_ta.iloc[:, 2].values,
-            opacity=1,
-            mode="lines",
-            line_color="indigo",
-            fill="tonexty",
-            fillcolor="rgba(74, 0, 128, 0.2)",
-        ),
-        secondary_y=True,
-    )
-    fig.add_trace(
-        go.Scatter(
-            name=f"{df_ta.columns[1].replace('_', ' ')}",
-            x=df_ta.index,
-            y=df_ta.iloc[:, 1].values,
-            opacity=1,
-            line=dict(
-                width=1.5,
-                dash="dash",
+    for win in window:
+        fig.add_trace(
+            go.Scatter(
+                name=f"{mamode.upper()} {win}",
+                x=df_ta.index,
+                y=df_ta[f"{mamode.upper()}_{win}"],
+                opacity=1,
             ),
-        ),
-        secondary_y=True,
-    )
+            secondary_y=True,
+        )
+
     fig.update_layout(
         margin=dict(l=0, r=0, t=50, b=20),
         template=cfg.PLT_TA_STYLE_TEMPLATE,
         colorway=cfg.PLT_TA_COLORWAY,
-        title=f"{ticker.upper()} Bollinger Bands ({mamode.upper()})",
-        title_x=0.1,
+        title=f"{ticker.upper()} Moving Average ({mamode.upper()})",
+        title_x=0.3,
         dragmode="pan",
     )
     config = dict({"scrollZoom": True})
-    imagefile = "ta_bbands.png"
+    imagefile = "ta_ma.png"
 
     # Check if interactive settings are enabled
     plt_link = ""
     if cfg.INTERACTIVE:
         html_ran = helpers.uuid_get()
-        fig.write_html(f"in/bbands_{html_ran}.html", config=config)
-        plt_link = f"[Interactive]({cfg.INTERACTIVE_URL}/bbands_{html_ran}.html)"
+        fig.write_html(f"in/ma_{html_ran}.html", config=config)
+        plt_link = f"[Interactive]({cfg.INTERACTIVE_URL}/ma_{html_ran}.html)"
 
     fig.update_layout(
         width=800,
@@ -170,7 +142,7 @@ def bbands_command(
     imagefile = helpers.image_border(imagefile, fig=fig)
 
     return {
-        "title": f"Stocks: Bollinger-Bands {ticker}",
+        "title": f"Stocks: Moving Average {mamode.upper()}",
         "description": plt_link,
         "imagefile": imagefile,
     }
