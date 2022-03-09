@@ -340,7 +340,7 @@ def brotli_check():
 
 
 def disable_rich():
-    rich_config.disable_rich()
+    rich_config.ENABLE_RICH = False
 
 
 def disable_check_api():

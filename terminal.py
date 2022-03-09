@@ -358,6 +358,9 @@ def log_settings() -> None:
         "activated" if gtff.ENABLE_EXIT_AUTO_HELP else "deactivated"
     )
     settings_dict["rcontext"] = "activated" if gtff.REMEMBER_CONTEXTS else "deactivated"
+    settings_dict["richpanel"] = (
+        "activated" if gtff.ENABLE_RICH_PANEL else "deactivated"
+    )
     settings_dict["ion"] = "activated" if gtff.USE_ION else "deactivated"
     settings_dict["watermark"] = "activated" if gtff.USE_WATERMARK else "deactivated"
     settings_dict["autoscaling"] = (

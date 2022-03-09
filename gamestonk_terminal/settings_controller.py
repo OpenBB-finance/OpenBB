@@ -95,6 +95,10 @@ class SettingsController(BaseController):
         help_text += f"   [{color}]exithelp         automatically print help when quitting menu[/{color}]\n"
         color = "green" if gtff.REMEMBER_CONTEXTS else "red"
         help_text += f"   [{color}]rcontext         remember contexts loaded params during session[/{color}]\n"
+        color = "green" if gtff.ENABLE_RICH_PANEL else "red"
+        help_text += (
+            f"   [{color}]richpanel        colorful rich terminal panel[/{color}]\n"
+        )
         color = "green" if gtff.USE_ION else "red"
         help_text += (
             f"   [{color}]ion              interactive matplotlib mode[/{color}]\n"
@@ -218,6 +222,15 @@ class SettingsController(BaseController):
         """Process dt command"""
         gtff.USE_DATETIME = not gtff.USE_DATETIME
         dotenv.set_key(self.env_file, "GTFF_USE_DATETIME", str(gtff.USE_DATETIME))
+        console.print("")
+
+    @log_start_end(log=logger)
+    def call_richpanel(self, _):
+        """Process richpanel command"""
+        gtff.ENABLE_RICH_PANEL = not gtff.ENABLE_RICH_PANEL
+        dotenv.set_key(
+            self.env_file, "GTFF_ENABLE_RICH_PANEL", str(gtff.ENABLE_RICH_PANEL)
+        )
         console.print("")
 
     @log_start_end(log=logger)
