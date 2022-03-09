@@ -10,7 +10,6 @@ from gamestonk_terminal import helper_funcs
 
 
 @pytest.mark.vcr
-@pytest.mark.record_stdout
 @pytest.mark.parametrize(
     "use_tab",
     [True, False],
