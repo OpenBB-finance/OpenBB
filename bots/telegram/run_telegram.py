@@ -9,7 +9,20 @@ load_dotenv()
 
 bot = telebot.TeleBot(os.getenv("GT_TELEGRAM_BOT_TOKEN"))
 
-available_commands = list(commands.keys())
+bot_commands = [
+    telebot.types.BotCommand("/start", "main menu"),
+    telebot.types.BotCommand("/help", "main menu"),
+]
+for command in commands:
+    bot_commands.append(
+        telebot.types.BotCommand(
+            command.replace("-", "_"),
+            commands[command]["function"].__doc__.split("Parameters")[0][:256].strip(),
+        )
+    )
+bot.set_my_commands(commands=bot_commands)
+
+available_commands = [cmd.replace("-", "_") for cmd in commands.keys()]
 
 
 def get_syntax(selected: Dict[str, Any], cmd: str) -> str:
@@ -85,11 +98,11 @@ def detect_valid_command(message):
     return full_cmd in available_commands
 
 
-@bot.message_handler(commands=["start", "help"])
+@bot.message_handler(commands=["start", "Start"])
 def send_welcome(message):
     text = """
-    # Welcome to Gamestonk Terminal Bot
-    *best bot*
+    Welcome to *Gamestonk Terminal Bot*
+
     [gamestonk.dev](https://github.com/GamestonkTerminal/GamestonkTerminal)
     [GitHub Repo](https://github.com/GamestonkTerminal/GamestonkTerminal)
     """
@@ -191,11 +204,11 @@ def send_command(message):
     bot.send_chat_action(message.chat.id, action="typing")
     cmd = message.text[1:]
     full_cmd = cmd.split("/")
-    group = full_cmd[0].split("-")[0]
-    parents = {x.split("-")[0] for x in commands}
+    group = full_cmd[0].split("_")[0]
+    parents = {x.split("_")[0] for x in available_commands}
     if group in parents:
-        if full_cmd[0] in commands:
-            selected = commands[full_cmd[0]]
+        if full_cmd[0] in available_commands:
+            selected = commands[full_cmd[0].replace("_", "-")]
             if len(full_cmd) != len(selected.get("required", [])) + 1:
                 syntax = get_syntax(selected, full_cmd[0])
                 bot.reply_to(message, f"Required syntax: {syntax}")
@@ -219,12 +232,12 @@ def send_command(message):
                     return False
                 other_args[req_name] = val
             func = selected["function"]
-            ShowView().telegram(func, message, bot, cmd, **other_args)
+            ShowView().telegram(func, message, bot, cmd.replace("_", "-"), **other_args)
             return True
         show_cmds = []
-        for command in commands:
-            if group == command[: len(group)]:
-                show_cmds.append(command)
+        for a_cmd in available_commands:
+            if group == a_cmd[: len(group)]:
+                show_cmds.append(a_cmd)
         send_options("Valid commands: ", show_cmds, message)
         return False
     send_options("Valid categories: ", parents, message)
