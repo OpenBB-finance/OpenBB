@@ -4,7 +4,6 @@ __docformat__ = "numpy"
 from rich import panel
 from rich.console import Console, Theme
 from gamestonk_terminal import config_terminal as cfg
-from gamestonk_terminal import feature_flags as gtff
 
 # https://rich.readthedocs.io/en/stable/appendix/colors.html#appendix-colors
 # https://rich.readthedocs.io/en/latest/highlighting.html#custom-highlighters
@@ -25,6 +24,11 @@ RICH_TAGS = [
     "[help]",
     "[/help]",
 ]
+
+
+ENABLE_RICH = True
+
+ENABLE_RICH_PANEL = True
 
 
 def no_panel(renderable, *args, **kwargs):  # pylint: disable=unused-argument
@@ -49,8 +53,8 @@ class ConsoleAndPanel:
 
     def print(self, *args, **kwargs):
         if kwargs and "text" in list(kwargs) and "menu" in list(kwargs):
-            if gtff.ENABLE_RICH:
-                if gtff.ENABLE_RICH_PANEL:
+            if ENABLE_RICH:
+                if ENABLE_RICH_PANEL:
                     self.console.print(
                         panel.Panel(
                             kwargs["text"],
@@ -64,7 +68,7 @@ class ConsoleAndPanel:
             else:
                 print(self.filter_rich_tags(kwargs["text"]))
         else:
-            if gtff.ENABLE_RICH:
+            if ENABLE_RICH:
                 self.console.print(*args, **kwargs)
             else:
                 print(*args, **kwargs)
@@ -74,4 +78,4 @@ console = ConsoleAndPanel()
 
 
 def disable_rich():
-    gtff.ENABLE_RICH = False
+    ENABLE_RICH = False  # noqa: F841
