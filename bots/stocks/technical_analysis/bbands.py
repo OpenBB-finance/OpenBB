@@ -72,7 +72,7 @@ def bbands_command(
             ta_start = datetime.strptime(start, cfg.DATE_FORMAT) - timedelta(
                 days=past_days
             )
-        past_days += 2 if news else 1
+        past_days += 2 if news else 10
         ta_start = load_candle.local_tz(ta_start)
 
     if not length.lstrip("-").isnumeric():
@@ -105,7 +105,7 @@ def bbands_command(
         ta_end = load_candle.local_tz(end)
         df_ta = df_ta.loc[(df_ta.index >= ta_start) & (df_ta.index < ta_end)]
 
-    fig = load_candle.candle_fig(df_stock, ticker, interval, extended_hours, news)
+    fig = load_candle.candle_fig(df_ta, ticker, interval, extended_hours, news)
 
     fig.add_trace(
         go.Scatter(
