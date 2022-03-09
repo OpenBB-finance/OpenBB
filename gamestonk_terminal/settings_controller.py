@@ -72,7 +72,10 @@ class SettingsController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = "\n[info]Feature flags through environment variables:[/info]\n"
+        help_text = "\n[info]Feature flags through environment variables:[/info]\n\n"
+        color = "green" if gtff.ALLOW_LOG_COLLECTION else "red"
+        help_text += f"   [{color}]logcollection    allow logs to be send to openBB[/{color}]\n\n"
+
         color = "green" if gtff.USE_TABULATE_DF else "red"
         help_text += (
             f"   [{color}]tab              use tabulate to print dataframes[/{color}]\n"
@@ -111,6 +114,7 @@ class SettingsController(BaseController):
         help_text += f"   [{color}]autoscaling      plot autoscaling[/{color}]\n\n"
         color = "green" if gtff.USE_DATETIME else "red"
         help_text += f"   [{color}]dt               add date and time to command line[/{color}]\n"
+
         help_text += "[cmds]   flair            console flair[/cmds]\n\n"
         help_text += f"[param]USE_FLAIR:[/param]  {get_flair()}\n\n[cmds]"
         help_text += "   dpi              dots per inch\n"

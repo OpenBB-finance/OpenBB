@@ -1,16 +1,19 @@
 """Logging Configuration"""
 __docformat__ = "numpy"
 import logging
+from logging.handlers import TimedRotatingFileHandler
 import os
+import re
+from pathlib import Path
 import sys
 import time
 import uuid
-from logging.handlers import TimedRotatingFileHandler
-from math import ceil, floor
-from pathlib import Path
+from math import floor, ceil
+import requests
 
-import boto3
+import schedule
 import git
+import boto3
 from botocore.exceptions import ClientError
 
 import gamestonk_terminal.config_terminal as cfg
@@ -18,10 +21,11 @@ from gamestonk_terminal import feature_flags as gtff
 
 logger = logging.getLogger(__name__)
 LOGFORMAT = "%(asctime)s|%(name)s|%(funcName)s|%(lineno)s|%(message)s"
-LOGPREFIXFORMAT = "%(levelname)s|%(version)s|%(appName)s|%(loggingId)s|%(sessionId)s|"
+LOGPREFIXFORMAT = "%(levelname)s|%(appName)s|%(version)s|%(loggingId)s|%(sessionId)s|"
 DATEFORMAT = "%Y-%m-%dT%H:%M:%S%z"
 BUCKET = "gst-restrictions"
 FOLDER_NAME = "gst-app/logs"
+URL = "https://knaqi3sud7.execute-api.eu-west-3.amazonaws.com/log_api/logs"
 
 
 def library_loggers(verbosity: int = 0) -> None:
@@ -63,30 +67,32 @@ def get_log_dir() -> Path:
 
     uuid_log_dir = log_dir.absolute().joinpath(cfg.LOGGING_ID)
 
-    logger.debug("Current log dir: %s", uuid_log_dir)
+    logger.debug("Current_log dir: %s", uuid_log_dir)
 
     if not os.path.isdir(uuid_log_dir.absolute()):
         logger.debug(
-            "UUID log dir does not exist: %s. Creating.", uuid_log_dir.absolute()
+            "UUID_log dir does not exist: %s. Creating.", uuid_log_dir.absolute()
         )
         os.mkdir(uuid_log_dir.absolute())
     return uuid_log_dir
 
 
-def setup_file_logger(session_id: str) -> None:
+def setup_file_logger(app_name: str, session_id: str) -> None:
     """Setup File Logger"""
 
     uuid_log_dir = get_log_dir()
 
-    upload_archive_logs_s3(directory_str=uuid_log_dir, log_filter=r"\.log")
-    start_time = int(time.time())
-    cfg.LOGGING_FILE = uuid_log_dir.absolute().joinpath(f"{start_time}.log")  # type: ignore
+    upload_archive_logs_s3(directory_str=uuid_log_dir, log_filter=r"gst_")
 
-    logger.debug("Current log file: %s", cfg.LOGGING_FILE)
+    start_time = int(time.time())
+    cfg.LOGGING_FILE = uuid_log_dir.absolute().joinpath(f"gst_{start_time}")  # type: ignore
+
+    logger.debug("Current_log file: %s", cfg.LOGGING_FILE)
 
     handler = TimedRotatingFileHandler(cfg.LOGGING_FILE)
+    handler.suffix += ".log"
     formatter = CustomFormatterWithExceptions(
-        uuid_log_dir.stem, session_id, fmt=LOGFORMAT, datefmt=DATEFORMAT
+        app_name, uuid_log_dir.stem, session_id, fmt=LOGFORMAT, datefmt=DATEFORMAT
     )
     handler.setFormatter(formatter)
     logging.getLogger().addHandler(handler)
@@ -97,13 +103,13 @@ class CustomFormatterWithExceptions(logging.Formatter):
 
     def __init__(
         self,
+        app_name: str,
         logging_id: str,
         session_id: str,
         fmt=None,
         datefmt=None,
         style="%",
         validate=True,
-        app_name="gst",
     ) -> None:
         super().__init__(fmt=fmt, datefmt=datefmt, style=style, validate=validate)
         self.logPrefixDict = {
@@ -115,10 +121,12 @@ class CustomFormatterWithExceptions(logging.Formatter):
 
     def formatException(self, ei) -> str:
         """Exception formatting handler
+
         Parameters
         ----------
         ei : logging._SysExcInfoType
             Exception to be logged
+
         Returns
         -------
         str
@@ -129,14 +137,16 @@ class CustomFormatterWithExceptions(logging.Formatter):
 
     def format(self, record: logging.LogRecord) -> str:
         """Log formatter
+
         Parameters
         ----------
         record : logging.LogRecord
             Logging record
+
         Returns
         -------
         str
-            Formatted log message
+            Formatted_log message
         """
         if hasattr(record, "func_name_override"):
             record.funcName = record.func_name_override  # type: ignore
@@ -147,9 +157,6 @@ class CustomFormatterWithExceptions(logging.Formatter):
 
         if hasattr(record, "session_id"):
             self.logPrefixDict["sessionId"] = record.session_id  # type: ignore
-
-        if hasattr(record, "app_name"):
-            self.logPrefixDict["appName"] = record.app_name  # type: ignore
 
         s = super().format(record)
         if record.levelname:
@@ -186,7 +193,7 @@ def get_commit_hash() -> None:
         cfg.LOGGING_VERSION = f"sha:{short_sha}"
 
 
-def setup_logging() -> None:
+def setup_logging(app_name: str) -> None:
     """Setup Logging"""
 
     START_TIME = int(time.time())
@@ -204,26 +211,26 @@ def setup_logging() -> None:
         if a_handler == "stdout":
             handler = logging.StreamHandler(sys.stdout)
             formatter = CustomFormatterWithExceptions(
-                LOGGING_ID, str(START_TIME), fmt=LOGFORMAT, datefmt=DATEFORMAT
+                app_name, LOGGING_ID, str(START_TIME), fmt=LOGFORMAT, datefmt=DATEFORMAT
             )
             handler.setFormatter(formatter)
             logging.getLogger().addHandler(handler)
         elif a_handler == "stderr":
             handler = logging.StreamHandler(sys.stderr)
             formatter = CustomFormatterWithExceptions(
-                LOGGING_ID, str(START_TIME), fmt=LOGFORMAT, datefmt=DATEFORMAT
+                app_name, LOGGING_ID, str(START_TIME), fmt=LOGFORMAT, datefmt=DATEFORMAT
             )
             handler.setFormatter(formatter)
             logging.getLogger().addHandler(handler)
         elif a_handler == "noop":
             handler = logging.NullHandler()  # type: ignore
             formatter = CustomFormatterWithExceptions(
-                LOGGING_ID, str(START_TIME), fmt=LOGFORMAT, datefmt=DATEFORMAT
+                app_name, LOGGING_ID, str(START_TIME), fmt=LOGFORMAT, datefmt=DATEFORMAT
             )
             handler.setFormatter(formatter)
             logging.getLogger().addHandler(handler)
         elif a_handler == "file":
-            setup_file_logger(str(START_TIME))
+            setup_file_logger(app_name, str(START_TIME))
         else:
             logger.debug("Unknown loghandler")
 
@@ -238,59 +245,124 @@ def setup_logging() -> None:
 
 
 def upload_file_to_s3(
-    file: Path, bucket: str, object_name=None, folder_name=None
+    file: Path, bucket: str = None, object_name: str = None, folder_name: str = None
 ) -> None:
     # If S3 object_name was not specified, use file_name
     if object_name is None:
         object_name = file.name
+
     # If folder_name was specified, upload in the folder
     if folder_name is not None:
         object_name = f"{folder_name}/{object_name}"
 
+    if not object_name.endswith(".log"):
+        object_name += ".log"
+
     # Upload the file
-    try:
-        s3_client = boto3.client(
-            service_name="s3",
-            aws_access_key_id=cfg.AWS_ACCESS_KEY_ID,
-            aws_secret_access_key=cfg.AWS_ACCESS_KEY,
-        )
-        s3_client.upload_file(str(file), bucket, object_name)
-    except ClientError as e:
-        logger.exception(str(e))
+    if (
+        bucket is not None
+        and cfg.AWS_ACCESS_KEY != "REPLACE_ME"
+        and cfg.AWS_ACCESS_KEY_ID != "REPLACE_ME"
+    ):
+        try:
+            s3_client = boto3.client(
+                service_name="s3",
+                aws_access_key_id=cfg.AWS_ACCESS_KEY_ID,
+                aws_secret_access_key=cfg.AWS_ACCESS_KEY,
+            )
+            s3_client.upload_file(str(file), bucket, object_name)
+        except ClientError as e:
+            logger.exception(str(e))
+    else:
+        files = None
+        try:
+            with open(file, "rb") as f:
+                files = {"file": f.read()}
+        except Exception as e:
+            logger.exception("Could not open file: %s", str(e))
+
+        if files is not None and files:
+            json = requests.put(url=URL, json={"object_key": object_name}).json()
+            r = requests.post(json["url"], data=json["fields"], files=files)
+
+            if r.status_code in [403, 401, 400]:
+                logger.error("%s could not be uploaded", str(file))
+            elif r.status_code == 204:
+                logger.info("Log uploaded")
+            else:
+                logger.error(
+                    "Unexpected status_code: %s when uploading: %s",
+                    str(r.status_code),
+                    str(file),
+                )
+        else:
+            logger.error("Uploading payload empty")
+
+
+def contains_goodbye(file: Path) -> bool:
+    with open(file, "rb") as f:
+        try:
+            f.seek(-2, os.SEEK_END)
+            while f.read(1) != b"\n":
+                f.seek(-2, os.SEEK_CUR)
+        except OSError:
+            f.seek(0)
+            logger.exception("Could not find last line")
+            return False
+        last_line = f.readline().decode()
+    return "print_goodbye" in last_line
 
 
 def upload_archive_logs_s3(
     directory_str=None,
-    log_filter=r".*\.log",
+    log_filter=r"gst_\d{10}\.20[2-3][0-9]-[0-2][0-9]-[0-3][0-9]_[0-2][0-9]\.log",
+    bucket=None,
+    folder_name=FOLDER_NAME,
 ) -> None:
-
     if gtff.ALLOW_LOG_COLLECTION:
         if directory_str is None:
             directory = get_log_dir()
         else:
-            directory = directory_str
-        archive = Path(directory) / "archive"
+            directory = Path(directory_str)
+        archive = directory / "archive"
 
         if not archive.exists():
             # Create a new directory because it does not exist
             archive.mkdir()
             logger.debug("The new archive directory is created!")
 
-        log_files: list = []
+        log_files = {}
 
-        log_files = os.listdir(directory_str)
-        log_files = [file for file in log_files if file.endswith(".log")]
+        for file in directory.iterdir():
 
-        logger.info("Start uploading Logs")
-        for log_file in log_files:
-            archivefile = archive / log_file
+            one_day_old = (
+                file.name[4:14].isdigit()
+                and (int(time.time()) - int(file.name[4:14])) / 86400 > 1
+            )  # 86400 seconds in one day
+
+            regexp = re.compile(log_filter)
+            if regexp.search(str(file)) and (
+                file.suffix == ".log" or one_day_old or contains_goodbye(file)
+            ):
+                log_files[str(file)] = file, (archive / file.name)
+
+        for log_file, archived_file in log_files.values():
+            logger.info("Uploading logs")
             upload_file_to_s3(
-                file=Path(directory) / log_file, bucket=BUCKET, folder_name=FOLDER_NAME
+                file=log_file,
+                bucket=bucket,
+                folder_name=f"{folder_name}/{cfg.LOGGING_ID}",
             )
             try:
-                log_file.rename(archivefile)
+                log_file.rename(archived_file)
             except Exception as e:
                 logger.exception("Cannot archive file: %s", str(e))
-        logger.info("Logs uploaded")
     else:
         logger.info("Logs not allowed to be collected")
+
+
+def periodically_upload_logs() -> None:
+    schedule.every(65).minutes.do(upload_archive_logs_s3)
+    while True:
+        schedule.run_pending()
+        time.sleep(60)  # Wait a minute
