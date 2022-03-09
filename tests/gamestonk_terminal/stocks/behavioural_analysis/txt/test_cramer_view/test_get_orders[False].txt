@@ -1,0 +1,26 @@
+
+                  Company Symbol   Price  LastPrice  Change (%) Recommendation
+0               Allbirds    BIRD    6.33       5.73      -10.47           Sell
+1                 Bumble    BMBL   18.08      16.66       -8.52           Sell
+2          Campbell Soup     CPB   45.55      42.30       -7.68            Buy
+3   Dicks Sporting Goods     DKS  109.71     101.58       -8.00            Buy
+4               DocuSign    DOCU  101.38      91.98      -10.22           Sell
+5           Devon Energy     DVN   59.57      59.48       -0.15            Buy
+6                   eBay    EBAY   55.66      53.31       -4.41           Sell
+7       Freeport-McMoRan     FCX   50.11      46.67       -7.37            Buy
+8                 Kohl's     KSS   58.77      53.35      -10.16            Buy
+9                 Macy's       M   24.80      23.16       -7.08            Buy
+10               MongoDB     MDB  306.11     281.74       -8.65           Sell
+11            On Holding    ONON   21.97      20.83       -5.47           Sell
+12     Progress Software    PRGS   44.28      42.48       -4.24           Sell
+13          The RealReal    REAL    7.39       6.52      -13.34           Sell
+14                Rivian    RIVN   47.39      42.21      -12.27           Sell
+15            Stitch Fix    SFIX   11.17      11.01       -1.45           Sell
+16       Virgin Galactic    SPCE    7.84       7.42       -5.66           Sell
+17                Splunk    SPLK  129.06     124.11       -3.99            Buy
+18                  AT&T       T   23.87      23.00       -3.78           Sell
+19                  Trex    TREX   74.68      68.44       -9.12           Sell
+20        Hostess Brands    TWNK   22.22      21.06       -5.51            Buy
+21           Ulta Beauty    ULTA  366.76     359.02       -2.16            Buy
+22             Wheels Up      UP    3.13       3.39        7.67            Buy
+
