@@ -1,4 +1,3 @@
-
                                    Values
 Company                       Tesla, Inc.
 Sector                  Consumer Cyclical
@@ -6,74 +5,73 @@ Industry               Auto Manufacturers
 Country                               USA
 Website             https://www.tesla.com
 Index                             S&P 500
-P/E                                163.47
+P/E                                167.49
 EPS (ttm)                            4.92
 Insider Own                         0.10%
 Shs Outstand                        1.00B
-Perf Week                          -7.57%
-Market Cap                        808.01B
-Forward P/E                         63.22
+Perf Week                          -4.62%
+Market Cap                        827.91B
+Forward P/E                         64.78
 EPS next Y                          12.73
 Insider Trans                     -94.13%
 Shs Float                         843.60M
-Perf Month                         -9.71%
+Perf Month                        -10.71%
 Income                              5.52B
-PEG                                  7.53
+PEG                                  7.72
 EPS next Q                           2.24
 Inst Own                           42.60%
 Short Float                         2.88%
-Perf Quarter                      -20.73%
+Perf Quarter                      -18.30%
 Sales                              53.82B
-P/S                                 15.01
+P/S                                 15.38
 EPS this Y                        669.20%
 Inst Trans                          3.32%
-Short Ratio                          0.93
-Perf Half Y                         9.68%
+Short Ratio                          0.92
+Perf Half Y                         9.49%
 Book/sh                             29.80
-P/B                                 27.00
+P/B                                 27.66
 EPS growth next Y                  21.43%
 ROA                                 9.70%
 Target Price                       959.33
-Perf Year                          42.91%
+Perf Year                          22.39%
 Cash/sh                             17.63
-P/C                                 45.63
+P/C                                 46.76
 EPS next 5Y                        21.70%
 ROE                                21.00%
-52W Range                539.49 - 1243.49
-Perf YTD                          -23.86%
-P/FCF                               70.48
+52W Range                546.98 - 1243.49
+Perf YTD                          -21.99%
+P/FCF                               72.21
 EPS past 5Y                        48.60%
 ROI                                15.70%
-52W High                          -35.30%
+52W High                          -33.70%
 Beta                                 2.06
 Quick Ratio                          1.10
 Sales past 5Y                      50.40%
 Gross Margin                       25.30%
-52W Low                            49.14%
-ATR                                 53.96
+52W Low                            50.72%
+ATR                                 54.27
 Employees                           99290
 Current Ratio                        1.40
 Sales Q/Q                          64.90%
 Oper. Margin                       12.10%
-RSI (14)                            40.07
-Volatility (Week)                   5.41%
-Volatility (Month)                  5.90%
+RSI (14)                            43.09
+Volatility (Week)                   6.30%
+Volatility (Month)                  6.01%
 Optionable                            Yes
 Debt/Eq                              0.23
 EPS Q/Q                           787.10%
 Profit Margin                      10.30%
-Rel Volume                           0.91
-Prev Close                         838.29
+Rel Volume                           1.01
+Prev Close                         804.58
 Shortable                             Yes
 LT Debt/Eq                           0.17
 Earnings                       Jan 26 AMC
 Payout                              0.00%
-Avg Volume                         26.26M
-Price                              804.58
+Avg Volume                         26.33M
+Price                              824.40
 Recom                                2.60
-SMA20                              -7.48%
-SMA50                             -15.83%
-SMA200                             -4.19%
-Volume                         23,933,335
-Change                             -4.02%
-
+SMA20                              -4.55%
+SMA50                             -13.39%
+SMA200                             -1.96%
+Volume                         26,678,966
+Change                              2.46%
