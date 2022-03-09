@@ -796,7 +796,7 @@ class BehaviouralAnalysisController(StockBaseController):
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="cramer",
+            prog="jcdr",
             description="""
                 Show daily cramer recommendation
             """,
@@ -823,9 +823,9 @@ class BehaviouralAnalysisController(StockBaseController):
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="cramer",
+            prog="jctr",
             description="""
-                Show daily cramer recommendation
+                Show cramer recommendation for loaded ticker
             """,
         )
         ns_parser = parse_known_args_and_warn(
