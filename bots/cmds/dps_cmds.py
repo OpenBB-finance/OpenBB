@@ -3,6 +3,7 @@ from __future__ import annotations
 import disnake
 from disnake.ext import commands
 
+from bots.common import commands_dict
 from bots.helpers import ShowView, ticker_autocomp
 from bots.stocks.dark_pool_shorts.dpotc import dpotc_command
 from bots.stocks.dark_pool_shorts.ftd import ftd_command
@@ -12,7 +13,6 @@ from bots.stocks.dark_pool_shorts.psi import psi_command
 from bots.stocks.dark_pool_shorts.shorted import shorted_command
 from bots.stocks.dark_pool_shorts.sidtc import sidtc_command
 from bots.stocks.dark_pool_shorts.spos import spos_command
-from bots.common import commands_dict
 
 
 class DarkPoolShortsCommands(commands.Cog):
@@ -25,7 +25,11 @@ class DarkPoolShortsCommands(commands.Cog):
     def cog_unload(self):
         self.bot.help_command = None
 
-    @commands.slash_command(name="dps-shorted")
+    @commands.slash_command(name="dps")
+    async def dps(self, inter):
+        pass
+
+    @dps.sub_command()
     async def shorted(self, inter: disnake.AppCmdInter, num: int = 10):
         """Show most shorted stocks [Yahoo Finance]
 
@@ -33,9 +37,9 @@ class DarkPoolShortsCommands(commands.Cog):
         -----------
         num: Number of the most shorted stocks to retrieve
         """
-        await ShowView().discord(shorted_command, inter, "dps-shorted", num)
+        await ShowView().discord(shorted_command, inter, "dps shorted", num)
 
-    @commands.slash_command(name="dps-hsi")
+    @dps.sub_command()
     async def hsi(self, inter: disnake.AppCmdInter, num: int = 10):
         """Show top high short interest stocks of over 20% ratio [shortinterest.com]
 
@@ -43,14 +47,15 @@ class DarkPoolShortsCommands(commands.Cog):
         -----------
         num: Number of top stocks to print
         """
-        await ShowView().discord(hsi_command, inter, "dps-hsi", num)
+        await ShowView().discord(hsi_command, inter, "dps hsi", num)
 
-    @commands.slash_command(name="dps-pos")
+    @dps.sub_command()
     async def pos(
         self,
         inter: disnake.AppCmdInter,
         sort: str = commands.Param(choices=commands_dict.dps_pos_choices),
         num: int = 10,
+        ascending: bool = False,
     ):
         """Dark pool short position [Stockgrid]
 
@@ -58,10 +63,11 @@ class DarkPoolShortsCommands(commands.Cog):
         -----------
         sort: Field for which to sort.
         num: Number of top tickers to show
+        ascending: Display in ascending order
         """
-        await ShowView().discord(pos_command, inter, "dps-pos", sort, num)
+        await ShowView().discord(pos_command, inter, "dps pos", sort, ascending, num)
 
-    @commands.slash_command(name="dps-sidtc")
+    @dps.sub_command()
     async def sidtc(
         self,
         inter: disnake.AppCmdInter,
@@ -81,9 +87,9 @@ class DarkPoolShortsCommands(commands.Cog):
         sort: Field for which to sort. Possible are: `float`, `dtc`, `si`.
         num: Number of top tickers to show
         """
-        await ShowView().discord(sidtc_command, inter, "dps-sidtc", sort, num)
+        await ShowView().discord(sidtc_command, inter, "dps sidtc", sort, num)
 
-    @commands.slash_command(name="dps-ftd")
+    @dps.sub_command()
     async def ftd(
         self,
         inter: disnake.AppCmdInter,
@@ -99,9 +105,9 @@ class DarkPoolShortsCommands(commands.Cog):
         start: YYYY-MM-DD format
         end: YYYY-MM-DD format
         """
-        await ShowView().discord(ftd_command, inter, "dps-ftd", ticker, start, end)
+        await ShowView().discord(ftd_command, inter, "dps ftd", ticker, start, end)
 
-    @commands.slash_command(name="dps-dpotc")
+    @dps.sub_command()
     async def dpotc(
         self,
         inter: disnake.AppCmdInter,
@@ -113,9 +119,9 @@ class DarkPoolShortsCommands(commands.Cog):
         ----------
         ticker: Stock Ticker
         """
-        await ShowView().discord(dpotc_command, inter, "dps-dpotc", ticker)
+        await ShowView().discord(dpotc_command, inter, "dps dpotc", ticker)
 
-    @commands.slash_command(name="dps-spos")
+    @dps.sub_command()
     async def spos(
         self,
         inter: disnake.AppCmdInter,
@@ -127,9 +133,9 @@ class DarkPoolShortsCommands(commands.Cog):
         ----------
         ticker: Stock Ticker
         """
-        await ShowView().discord(spos_command, inter, "dps-spos", ticker)
+        await ShowView().discord(spos_command, inter, "dps spos", ticker)
 
-    @commands.slash_command(name="dps-psi")
+    @dps.sub_command()
     async def psi(
         self,
         inter: disnake.AppCmdInter,
@@ -141,7 +147,7 @@ class DarkPoolShortsCommands(commands.Cog):
         ----------
         ticker: Stock Ticker
         """
-        await ShowView().discord(psi_command, inter, "dps-psi", ticker)
+        await ShowView().discord(psi_command, inter, "dps psi", ticker)
 
 
 def setup(bot: commands.Bot):

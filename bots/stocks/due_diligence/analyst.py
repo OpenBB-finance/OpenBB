@@ -12,7 +12,7 @@ def analyst_command(ticker=""):
 
     # Debug
     if cfg.DEBUG:
-        logger.debug("dd-analyst %s", ticker)
+        logger.debug("dd analyst %s", ticker)
 
     # Check for argument
     if not ticker:
@@ -37,14 +37,9 @@ def analyst_command(ticker=""):
         df,
         fig_size=(1500, (40 + (40 * dindex))),
         col_width=[5, 5, 8, 14, 5, 5, 5],
-        tbl_cells=dict(
-            height=35,
-        ),
-        font=dict(
-            family="Consolas",
-            size=20,
-        ),
-        template="plotly_dark",
+        tbl_header=cfg.PLT_TBL_HEADER,
+        tbl_cells=cfg.PLT_TBL_CELLS,
+        font=cfg.PLT_TBL_FONT,
         paper_bgcolor="rgba(0, 0, 0, 0)",
     )
     imagefile = save_image("dd-analyst.png", fig)

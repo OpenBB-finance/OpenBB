@@ -8,7 +8,7 @@ def supplier_command(ticker=""):
 
     # Debug user input
     if cfg.DEBUG:
-        logger.debug("dd-supplier %s", ticker)
+        logger.debug("dd supplier %s", ticker)
 
     if not ticker:
         raise Exception("A ticker is required")

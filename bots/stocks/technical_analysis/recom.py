@@ -8,7 +8,7 @@ def recom_command(ticker=""):
 
     # Debug
     if cfg.DEBUG:
-        logger.debug("ta-recom %s", ticker)
+        logger.debug("ta recom %s", ticker)
 
     # Check for argument
     if ticker == "":

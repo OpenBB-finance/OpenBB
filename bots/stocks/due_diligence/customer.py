@@ -8,7 +8,7 @@ def customer_command(ticker: str = ""):
 
     # Debug user input
     if cfg.DEBUG:
-        logger.debug("dd-customer %s", ticker)
+        logger.debug("dd customer %s", ticker)
 
     if not ticker:
         raise Exception("A ticker is required")

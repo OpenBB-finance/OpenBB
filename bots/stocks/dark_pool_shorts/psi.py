@@ -3,8 +3,8 @@ import yfinance as yf
 from plotly.subplots import make_subplots
 
 import bots.config_discordbot as cfg
-from bots.config_discordbot import logger
 from bots import helpers
+from bots.config_discordbot import logger
 from gamestonk_terminal.stocks.dark_pool_shorts import stockgrid_model
 
 
@@ -13,7 +13,7 @@ def psi_command(ticker: str = ""):
 
     # Debug user input
     if cfg.DEBUG:
-        logger.debug("dps-psi %s", ticker)
+        logger.debug("dps psi %s", ticker)
 
     # Check for argument
     if ticker == "":
@@ -101,6 +101,7 @@ def psi_command(ticker: str = ""):
         yaxis_title="Stock Price ($)",
         yaxis2_title="FINRA Volume [M]",
         yaxis3_title="Short Vol. %",
+        font=cfg.PLT_FONT,
         yaxis=dict(
             side="right",
             fixedrange=False,

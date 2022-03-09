@@ -4,8 +4,8 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
 import bots.config_discordbot as cfg
-from bots.config_discordbot import logger
 from bots import helpers
+from bots.config_discordbot import logger
 from gamestonk_terminal.common.technical_analysis import volume_model
 
 
@@ -16,7 +16,7 @@ def adosc_command(ticker="", is_open="False", fast="3", slow="10", start="", end
     if cfg.DEBUG:
         # pylint: disable=logging-too-many-args
         logger.debug(
-            "ta-adosc %s %s %s %s %s",
+            "ta adosc %s %s %s %s %s",
             ticker,
             is_open,
             fast,
@@ -112,6 +112,7 @@ def adosc_command(ticker="", is_open="False", fast="3", slow="10", start="", end
         title=f"{ticker} AD Oscillator",
         title_x=0.3,
         yaxis_title="Stock Price ($)",
+        font=cfg.PLT_FONT,
         yaxis=dict(
             fixedrange=False,
         ),

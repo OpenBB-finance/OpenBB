@@ -1,9 +1,10 @@
 import os
-from typing import List
 import uuid
+from typing import List
 
 import df2img
 import disnake
+import financedatabase as fd
 import pandas as pd
 import yfinance as yf
 from numpy.core.fromnumeric import transpose
@@ -89,6 +90,45 @@ signals = [
     "head_shoulders_inverse",
 ]
 
+metric_yf_keys = {
+    "Return On Assets": ("financialData", "returnOnAssets"),
+    "Return On Equity": ("financialData", "returnOnEquity"),
+    "Current Ratio": ("financialData", "currentRatio"),
+    "Quick Ratio": ("financialData", "quickRatio"),
+    "Debt To Equity": ("financialData", "debtToEquity"),
+    "Total Cash": ("financialData", "totalCash"),
+    "Total Cash Per Share": ("financialData", "totalCashPerShare"),
+    "Total Revenue": ("financialData", "totalRevenue"),
+    "Revenue Per Share": ("financialData", "revenuePerShare"),
+    "Revenue Growth": ("financialData", "revenueGrowth"),
+    "Earnings Growth": ("financialData", "earningsGrowth"),
+    "Profit Margins": ("financialData", "profitMargins"),
+    "Gross Profits": ("financialData", "grossProfits"),
+    "Gross Margins": ("financialData", "grossMargins"),
+    "Operating Cashflow": ("financialData", "operatingCashflow"),
+    "Operating Margins": ("financialData", "operatingMargins"),
+    "Free Cashflow": ("financialData", "freeCashflow"),
+    "Total Debt": ("financialData", "totalDebt"),
+    "Earnings Before Interest, Taxes, Depreciation and Amortization": (
+        "financialData",
+        "ebitda",
+    ),
+    "EBITDA Margins": ("financialData", "ebitdaMargins"),
+    "Recommendation Mean": ("financialData", "recommendationMean"),
+    "Market Cap": ("price", "marketCap"),
+    "Full Time Employees": ("summaryProfile", "fullTimeEmployees"),
+    "Enterprise To Revenue": ("defaultKeyStatistics", "enterpriseToRevenue"),
+    "Book Value": ("defaultKeyStatistics", "bookValue"),
+    "Shares Short": ("defaultKeyStatistics", "sharesShort"),
+    "Price To Book": ("defaultKeyStatistics", "priceToBook"),
+    "Beta": ("defaultKeyStatistics", "beta"),
+    "Float Shares": ("defaultKeyStatistics", "floatShares"),
+    "Short Ratio": ("defaultKeyStatistics", "shortRatio"),
+    "Peg Ratio": ("defaultKeyStatistics", "pegRatio"),
+    "Enterprise Value": ("defaultKeyStatistics", "enterpriseValue"),
+    "Forward PE": ("defaultKeyStatistics", "forwardPE"),
+}
+
 
 def load(ticker, start_date):
     df_stock_candidate = yf.download(ticker, start=start_date, progress=False)
@@ -137,11 +177,6 @@ def quote(ticker):
     return quote_data
 
 
-def uuid_get():
-    rand = str(uuid.uuid1()).replace("-", "")
-    return rand
-
-
 def autocrop_image(image, border=0):
     bbox = image.getbbox()
     image = image.crop(bbox)
@@ -151,6 +186,36 @@ def autocrop_image(image, border=0):
     cropped_image = Image.new("RGBA", (width, height), (0, 0, 0, 0))
     cropped_image.paste(image, (border, border))
     return cropped_image
+
+
+def uuid_get():
+    rand = str(uuid.uuid1()).replace("-", "")
+    return rand
+
+
+def country_autocomp(inter, country: str):  # pylint: disable=W0613
+    data = fd.show_options("equities", "countries")
+    clow = country.lower()
+    return [country for country in data if country.lower().startswith(clow)][:24]
+
+
+def industry_autocomp(inter, industry: str):  # pylint: disable=W0613
+    data = fd.show_options("equities", "industries")
+    if not industry:
+        industry = "a"
+    ilow = industry.lower()
+    return [industry for industry in data if industry.lower().startswith(ilow)][:24]
+
+
+def metric_autocomp(inter, metric: str):  # pylint: disable=W0613
+    data: dict = metric_yf_keys
+    if not metric:
+        data = list(data.keys())  # type: ignore
+        return data[:24]
+    mlow = metric.lower()
+    return [metric for metric, _ in data.items() if metric.lower().startswith(mlow)][
+        :24
+    ]
 
 
 def ticker_autocomp(inter, ticker: str):  # pylint: disable=W0613
@@ -191,21 +256,23 @@ def signals_autocomp(inter, signal: str):  # pylint: disable=W0613
 
 def save_image(file, fig):
     imagefile = f"{file.replace('.png', '')}_{uuid_get()}.png"
-    df2img.save_dataframe(fig=fig, filename=imagefile)
-    image = Image.open(imagefile)
+    filesave = cfg.IMG_DIR + imagefile
+    df2img.save_dataframe(fig=fig, filename=filesave)
+    image = Image.open(filesave)
     image = autocrop_image(image, 0)
-    image.save(imagefile, "PNG", quality=100)
+    image.save(filesave, "PNG", quality=100)
     return imagefile
 
 
 def image_border(file, **kwargs):
     imagefile = f"{file.replace('.png', '')}_{uuid_get()}.png"
+    filesave = cfg.IMG_DIR + imagefile
     if "fig" in kwargs:
         fig = kwargs["fig"]
-        fig.write_image(imagefile)
-        img = Image.open(imagefile)
+        fig.write_image(filesave)
+        img = Image.open(filesave)
     else:
-        img = Image.open(file)
+        img = Image.open(filesave)
     im_bg = Image.open(cfg.IMG_BG)
     h = img.height + 240
     w = img.width + 520
@@ -218,10 +285,10 @@ def image_border(file, **kwargs):
     y2 = int(0.5 * im_bg.size[1]) + int(0.5 * img.size[1])
     img = img.convert("RGB")
     im_bg.paste(img, box=(x1 - 5, y1, x2 - 5, y2))
-    im_bg.save(file, "PNG", quality=100)
-    image = Image.open(file)
+    im_bg.save(filesave, "PNG", quality=100)
+    image = Image.open(filesave)
     image = autocrop_image(image, 0)
-    image.save(imagefile, "PNG", quality=100)
+    image.save(filesave, "PNG", quality=100)
     return imagefile
 
 
@@ -245,9 +312,11 @@ class ShowView:
                 icon_url=cfg.AUTHOR_ICON_URL,
             )
             if "imagefile" in data:
-                image = disnake.File(data["imagefile"])
-                embed.set_image(url=f"attachment://{data['imagefile']}")
-                os.remove(data["imagefile"])
+                filename = data["imagefile"]
+                imagefile = cfg.IMG_DIR + filename
+                image = disnake.File(imagefile, filename=filename)
+                embed.set_image(url=f"attachment://{filename}")
+                os.remove(imagefile)
                 await inter.send(embed=embed, file=image)
             else:
                 await inter.send(embed=embed)
@@ -276,7 +345,10 @@ class ShowView:
     def groupme(self, func, group_id, name, *args, **kwargs):
         data = func(*args, **kwargs)
         if "imagefile" in data:
-            send_image(data["imagefile"], group_id, data.get("description", ""), True)
+            imagefile = data["imagefile"]
+            if cfg.IMAGES_URL:
+                imagefile = cfg.IMG_DIR + imagefile
+            send_image(imagefile, group_id, data.get("description", ""), True)
         elif "embeds_img" in data:
             send_image(
                 data["embeds_img"][0], group_id, data.get("description", ""), True

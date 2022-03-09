@@ -1,10 +1,9 @@
-import numpy as np
 import plotly.graph_objects as go
 import yfinance as yf
 from plotly.subplots import make_subplots
 
 import bots.config_discordbot as cfg
-from bots.helpers import image_border
+from bots import helpers
 
 
 def cc_hist_command(
@@ -70,12 +69,15 @@ def cc_hist_command(
             low=df_hist.Low,
             close=df_hist.Close,
             name="OHLC",
+            increasing_line_color="#00ACFF",
+            decreasing_line_color="#e4003a",
         ),
         row=1,
         col=1,
     )
     colors = [
-        "green" if row.Open < row["Close"] else "red" for _, row in df_hist.iterrows()
+        "#00ACFF" if row.Open < row["Close"] else "#e4003a"
+        for _, row in df_hist.iterrows()
     ]  # pylint: disable=E1120
     fig.add_trace(
         go.Bar(
@@ -92,6 +94,7 @@ def cc_hist_command(
         template=cfg.PLT_CANDLE_STYLE_TEMPLATE,
         showlegend=False,
         yaxis_title="Premium",
+        font=cfg.PLT_FONT,
         xaxis=dict(
             rangeslider=dict(visible=False),
             type="date",
@@ -104,16 +107,21 @@ def cc_hist_command(
         ],
     )
     config = dict({"scrollZoom": True})
-    rand = np.random.randint(70000)
-    imagefile = f"opt_hist{rand}.png"
-    fig.write_image(imagefile)
-    imagefile = image_border(imagefile)
+    imagefile = "opt_hist.png"
 
     # Check if interactive settings are enabled
     plt_link = ""
     if cfg.INTERACTIVE:
-        fig.write_html(f"in/cc_hist_{rand}.html", config=config)
-        plt_link = f"[Interactive]({cfg.INTERACTIVE_URL}/cc_hist_{rand}.html)"
+        html_ran = helpers.uuid_get()
+        fig.write_html(f"in/cc_hist_{html_ran}.html", config=config)
+        plt_link = f"[Interactive]({cfg.INTERACTIVE_URL}/cc_hist_{html_ran}.html)"
+
+    fig.update_layout(
+        width=800,
+        height=500,
+    )
+
+    imagefile = helpers.image_border(imagefile, fig=fig)
 
     return {
         "title": f"{ticker.upper()} {strike} {opt_type} expiring {expiry} Historical",

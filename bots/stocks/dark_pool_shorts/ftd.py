@@ -4,8 +4,8 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
 import bots.config_discordbot as cfg
-from bots.config_discordbot import logger
 from bots import helpers
+from bots.config_discordbot import logger
 from gamestonk_terminal.stocks.dark_pool_shorts import sec_model
 
 
@@ -14,7 +14,7 @@ def ftd_command(ticker: str = "", start="", end=""):
 
     # Debug user input
     if cfg.DEBUG:
-        logger.debug("dps-ftd %s %s %s", ticker, start, end)
+        logger.debug("dps ftd %s %s %s", ticker, start, end)
 
     # Check for argument
     if ticker == "":
@@ -75,6 +75,7 @@ def ftd_command(ticker: str = "", start="", end=""):
         title=f"{ticker}",
         title_x=0.5,
         yaxis_title="<b>Stock Price</b> ($)",
+        font=cfg.PLT_FONT,
         yaxis=dict(
             side="right",
             fixedrange=False,

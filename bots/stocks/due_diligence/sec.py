@@ -8,7 +8,7 @@ def sec_command(ticker=""):
 
     # Debug user input
     if cfg.DEBUG:
-        logger.debug("dd-sec %s", ticker)
+        logger.debug("dd sec %s", ticker)
 
     if ticker == "":
         raise Exception("A ticker is required")

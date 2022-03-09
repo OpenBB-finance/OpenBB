@@ -1,10 +1,15 @@
+from __future__ import annotations
+
 import disnake
 from disnake.ext import commands
 
+from bots.common import commands_dict
+from bots.economy.cpi import cpi_command
 from bots.economy.currencies import currencies_command
 from bots.economy.energy import energy_command
 from bots.economy.feargreed import feargreed_command
 from bots.economy.futures import futures_command
+from bots.economy.futures_coms import futures_coms_command
 from bots.economy.glbonds import glbonds_command
 from bots.economy.grains import grains_command
 from bots.economy.indices import indices_command
@@ -16,7 +21,6 @@ from bots.economy.softs import softs_command
 from bots.economy.usbonds import usbonds_command
 from bots.economy.valuation import valuation_command
 from bots.helpers import ShowView
-from bots.common import commands_dict
 
 
 class EconomyCommands(commands.Cog):
@@ -25,67 +29,94 @@ class EconomyCommands(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    @commands.slash_command(name="econ-feargreed")
-    async def feargreed(self, inter: disnake.AppCmdInter):
-        """Feargreed command [CNN]"""
-        await ShowView().discord(feargreed_command, inter, "econ-feargreed")
+    @commands.slash_command(name="econ")
+    async def econ(self, inter):
+        pass
 
-    @commands.slash_command(name="econ-overview")
+    @econ.sub_command()
+    async def feargreed(
+        self,
+        inter: disnake.AppCmdInter,
+        indicator: str = commands.Param(choices=commands_dict.econ_fgind),
+    ):
+        """CNN Fear and Greed Index [CNN]
+
+        Parameters
+        ----------
+        indicator: Select an Indicator
+        """
+        await ShowView().discord(feargreed_command, inter, "econ feargreed", indicator)
+
+    @econ.sub_command()
     async def overview(self, inter: disnake.AppCmdInter):
         """Market data overview [Wall St. Journal]"""
-        await ShowView().discord(overview_command, inter, "econ-overview")
+        await ShowView().discord(overview_command, inter, "econ overview")
 
-    @commands.slash_command(name="econ-indices")
+    @econ.sub_command()
     async def indices(self, inter: disnake.AppCmdInter):
         """US indices overview [Wall St. Journal]"""
-        await ShowView().discord(indices_command, inter, "econ-indices")
+        await ShowView().discord(indices_command, inter, "econ indices")
 
-    @commands.slash_command(name="econ-futures")
+    @econ.sub_command()
     async def futures(self, inter: disnake.AppCmdInter):
         """Futures and commodities overview [Wall St. Journal]"""
-        await ShowView().discord(futures_command, inter, "econ-futures")
+        await ShowView().discord(futures_coms_command, inter, "econ futures")
 
-    @commands.slash_command(name="econ-usbonds")
+    @commands.slash_command(name="futures")
+    async def futs(self, inter: disnake.AppCmdInter):
+        """Futures [Yahoo Finance]"""
+        await ShowView().discord(futures_command, inter, "futures")
+
+    @econ.sub_command()
     async def usbonds(self, inter: disnake.AppCmdInter):
         """US bonds overview [Wall St. Journal]"""
-        await ShowView().discord(usbonds_command, inter, "econ-usbonds")
+        await ShowView().discord(usbonds_command, inter, "econ usbonds")
 
-    @commands.slash_command(name="econ-glbonds")
+    @econ.sub_command()
     async def glbonds(self, inter: disnake.AppCmdInter):
         """Global bonds overview [Wall St. Journal]"""
-        await ShowView().discord(glbonds_command, inter, "econ-glbonds")
+        await ShowView().discord(glbonds_command, inter, "econ glbonds")
 
-    @commands.slash_command(name="econ-energy")
+    @econ.sub_command()
+    async def cpi(self, inter: disnake.AppCmdInter, start: str = ""):
+        """Displays Consumer Prices Index (CPI)
+        Parameters
+        ----------
+        start: YYYY-MM-DD format
+        """
+        await ShowView().discord(cpi_command, inter, "econ energy", start)
+
+    @econ.sub_command()
     async def energy(self, inter: disnake.AppCmdInter):
         """Displays energy futures data [Finviz]"""
-        await ShowView().discord(energy_command, inter, "econ-energy")
+        await ShowView().discord(energy_command, inter, "econ energy")
 
-    @commands.slash_command(name="econ-metals")
+    @econ.sub_command()
     async def metals(self, inter: disnake.AppCmdInter):
         """Displays metals futures data [Finviz]"""
-        await ShowView().discord(metals_command, inter, "econ-metals")
+        await ShowView().discord(metals_command, inter, "econ metals")
 
-    @commands.slash_command(name="econ-meats")
+    @econ.sub_command()
     async def meats(self, inter: disnake.AppCmdInter):
         """Displays meats futures data [Finviz]"""
-        await ShowView().discord(meats_command, inter, "econ-meats")
+        await ShowView().discord(meats_command, inter, "econ meats")
 
-    @commands.slash_command(name="econ-grains")
+    @econ.sub_command()
     async def grains(self, inter: disnake.AppCmdInter):
         """Displays grains futures data [Finviz]"""
-        await ShowView().discord(grains_command, inter, "econ-grains")
+        await ShowView().discord(grains_command, inter, "econ grains")
 
-    @commands.slash_command(name="econ-softs")
+    @econ.sub_command()
     async def softs(self, inter: disnake.AppCmdInter):
         """Displays softs futures data [Finviz]"""
-        await ShowView().discord(softs_command, inter, "econ-softs")
+        await ShowView().discord(softs_command, inter, "econ softs")
 
-    @commands.slash_command(name="econ-currencies")
+    @econ.sub_command()
     async def currencies(self, inter: disnake.AppCmdInter):
         """Currencies overview [Wall St. Journal]"""
-        await ShowView().discord(currencies_command, inter, "econ-currencies")
+        await ShowView().discord(currencies_command, inter, "econ currencies")
 
-    @commands.slash_command(name="econ-valuation")
+    @econ.sub_command()
     async def valuation(
         self,
         inter: disnake.AppCmdInter,
@@ -98,10 +129,10 @@ class EconomyCommands(commands.Cog):
         economy_group: Economy Group
         """
         await ShowView().discord(
-            valuation_command, inter, "econ-valuation", economy_group
+            valuation_command, inter, "econ valuation", economy_group
         )
 
-    @commands.slash_command(name="econ-performance")
+    @econ.sub_command()
     async def performance(
         self,
         inter: disnake.AppCmdInter,
@@ -114,7 +145,7 @@ class EconomyCommands(commands.Cog):
         economy_group: Economy Group
         """
         await ShowView().discord(
-            performance_command, inter, "econ-performance", economy_group
+            performance_command, inter, "econ performance", economy_group
         )
 
 

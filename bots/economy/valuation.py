@@ -108,17 +108,12 @@ def valuation_command(economy_group="sector"):
         df,
         fig_size=(1600, (40 + (50 * dindex))),
         col_width=[12, 5, 4, 4, 4, 4, 4, 4, 4, 6, 6, 6, 4, 4],
-        tbl_cells=dict(
-            align=["left", "center"],
-            height=35,
-        ),
-        template="plotly_dark",
-        font=dict(
-            family="Consolas",
-            size=20,
-        ),
+        tbl_header=cfg.PLT_TBL_HEADER,
+        tbl_cells=cfg.PLT_TBL_CELLS,
+        font=cfg.PLT_TBL_FONT,
         paper_bgcolor="rgba(0, 0, 0, 0)",
     )
+    fig.update_traces(cells=(dict(align=["left", "center"])))
     imagefile = save_image("econ-valuation.png", fig)
     return {
         "title": "Economy: [Finviz] Valuation",

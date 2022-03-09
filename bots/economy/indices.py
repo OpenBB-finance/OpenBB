@@ -26,8 +26,7 @@ def indices_command():
 
     formats = {"Price": "${:.2f}", "Chg": "${:.2f}", "%Chg": "{:.2f}%"}
     for col, value in formats.items():
-        # pylint: disable=W0640
-        df[col] = df[col].map(lambda x: value.format(x))
+        df[col] = df[col].map(lambda x: value.format(x))  # pylint: disable=W0640
 
     # Debug user output
     if cfg.DEBUG:
@@ -35,7 +34,6 @@ def indices_command():
 
     df = df[
         [
-            " ",
             "Price",
             "Chg",
             "%Chg",
@@ -50,17 +48,12 @@ def indices_command():
         df,
         fig_size=(800, (40 + (40 * dindex))),
         col_width=[8, 3, 3],
-        tbl_cells=dict(
-            align=["left", "center"],
-            height=35,
-        ),
-        template="plotly_dark",
-        font=dict(
-            family="Consolas",
-            size=20,
-        ),
+        tbl_header=cfg.PLT_TBL_HEADER,
+        tbl_cells=cfg.PLT_TBL_CELLS,
+        font=cfg.PLT_TBL_FONT,
         paper_bgcolor="rgba(0, 0, 0, 0)",
     )
+    fig.update_traces(cells=(dict(align=["left", "center"])))
     imagefile = save_image("econ-indices.png", fig)
     return {
         "title": "Economy: [WSJ] US Indices",

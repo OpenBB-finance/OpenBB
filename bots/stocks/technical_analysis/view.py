@@ -1,6 +1,7 @@
 import io
 
 from PIL import Image
+
 import bots.config_discordbot as cfg
 from bots.config_discordbot import logger
 from bots.helpers import image_border
@@ -12,7 +13,7 @@ def view_command(ticker=""):
 
     # Debug
     if cfg.DEBUG:
-        logger.debug("ta-view %s", ticker)
+        logger.debug("ta view %s", ticker)
 
     # Check for argument
     if ticker == "":

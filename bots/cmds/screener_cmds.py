@@ -3,6 +3,7 @@ from __future__ import annotations
 import disnake
 from disnake.ext import commands
 
+from bots.common import commands_dict
 from bots.helpers import ShowView, presets_custom_autocomp, signals_autocomp
 from bots.stocks.screener.financial import financial_command
 from bots.stocks.screener.historical import historical_command
@@ -13,7 +14,6 @@ from bots.stocks.screener.presets_custom import presets_custom_command
 from bots.stocks.screener.presets_default import presets_default_command
 from bots.stocks.screener.technical import technical_command
 from bots.stocks.screener.valuation import valuation_command
-from bots.common import commands_dict
 
 # pylint: disable=R0912
 
@@ -24,17 +24,21 @@ class ScreenerCommands(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    @commands.slash_command(name="scr-presets_default")
+    @commands.slash_command(name="scr")
+    async def scr(self, inter):
+        pass
+
+    @scr.sub_command()
     async def presets_default(self, inter: disnake.AppCmdInter):
         """Displays every available preset"""
-        await ShowView().discord(presets_default_command, inter, "scr-presets_default")
+        await ShowView().discord(presets_default_command, inter, "scr presets_default")
 
-    @commands.slash_command(name="scr-presets_custom")
+    @scr.sub_command()
     async def presets_custom(self, inter: disnake.AppCmdInter):
         """Displays every available preset"""
-        await ShowView().discord(presets_custom_command, inter, "scr-presets_custom")
+        await ShowView().discord(presets_custom_command, inter, "scr presets_custom")
 
-    @commands.slash_command(name="scr-historical")
+    @scr.sub_command()
     async def historical(
         self,
         inter: disnake.AppCmdInter,
@@ -49,10 +53,10 @@ class ScreenerCommands(commands.Cog):
         start: Starting date in YYYY-MM-DD format
         """
         await ShowView().discord(
-            historical_command, inter, "scr-historical", signal, start
+            historical_command, inter, "scr historical", signal, start
         )
 
-    @commands.slash_command(name="scr-overview")
+    @scr.sub_command()
     async def overview(
         self,
         inter: disnake.AppCmdInter,
@@ -71,10 +75,10 @@ class ScreenerCommands(commands.Cog):
         ascend: whether it's sorted by ascending order or not. Default: False
         """
         await ShowView().discord(
-            overview_command, inter, "scr-overview", preset, sort, limit, ascend
+            overview_command, inter, "scr overview", preset, sort, limit, ascend
         )
 
-    @commands.slash_command(name="scr-valuation")
+    @scr.sub_command()
     async def valuation(
         self,
         inter: disnake.AppCmdInter,
@@ -93,10 +97,10 @@ class ScreenerCommands(commands.Cog):
         ascend: whether it's sorted by ascending order or not. Default: False
         """
         await ShowView().discord(
-            valuation_command, inter, "scr-valuation", preset, sort, limit, ascend
+            valuation_command, inter, "scr valuation", preset, sort, limit, ascend
         )
 
-    @commands.slash_command(name="scr-financial")
+    @scr.sub_command()
     async def financial(
         self,
         inter: disnake.AppCmdInter,
@@ -115,10 +119,10 @@ class ScreenerCommands(commands.Cog):
         ascend: whether it's sorted by ascending order or not. Default: False
         """
         await ShowView().discord(
-            financial_command, inter, "scr-financial", preset, sort, limit, ascend
+            financial_command, inter, "scr financial", preset, sort, limit, ascend
         )
 
-    @commands.slash_command(name="scr-ownership")
+    @scr.sub_command()
     async def ownership(
         self,
         inter: disnake.AppCmdInter,
@@ -137,10 +141,10 @@ class ScreenerCommands(commands.Cog):
         ascend: whether it's sorted by ascending order or not. Default: False
         """
         await ShowView().discord(
-            ownership_command, inter, "scr-ownership", preset, sort, limit, ascend
+            ownership_command, inter, "scr ownership", preset, sort, limit, ascend
         )
 
-    @commands.slash_command(name="scr-performance")
+    @scr.sub_command()
     async def performance(
         self,
         inter: disnake.AppCmdInter,
@@ -159,10 +163,10 @@ class ScreenerCommands(commands.Cog):
         ascend: whether it's sorted by ascending order or not. Default: False
         """
         await ShowView().discord(
-            performance_command, inter, "scr-performance", preset, sort, limit, ascend
+            performance_command, inter, "scr performance", preset, sort, limit, ascend
         )
 
-    @commands.slash_command(name="scr-technical")
+    @scr.sub_command()
     async def technical(
         self,
         inter: disnake.AppCmdInter,
@@ -181,7 +185,7 @@ class ScreenerCommands(commands.Cog):
         ascend: whether it's sorted by ascending order or not. Default: False
         """
         await ShowView().discord(
-            technical_command, inter, "scr-technical", preset, sort, limit, ascend
+            technical_command, inter, "scr technical", preset, sort, limit, ascend
         )
 
 

@@ -4,8 +4,8 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
 import bots.config_discordbot as cfg
-from bots.config_discordbot import logger
 from bots import helpers
+from bots.config_discordbot import logger
 from gamestonk_terminal.common.technical_analysis import trend_indicators_model
 
 
@@ -16,7 +16,7 @@ def adx_command(ticker="", length="14", scalar="100", drift="1", start="", end="
     if cfg.DEBUG:
         # pylint: disable=logging-too-many-args
         logger.debug(
-            "ta-adx %s %s %s %s %s",
+            "ta adx %s %s %s %s %s",
             ticker,
             length,
             scalar,
@@ -142,6 +142,7 @@ def adx_command(ticker="", length="14", scalar="100", drift="1", start="", end="
         title=f"Average Directional Movement Index (ADX) on {ticker}",
         title_x=0.3,
         yaxis_title="Stock Price ($)",
+        font=cfg.PLT_FONT,
         yaxis=dict(
             fixedrange=False,
         ),

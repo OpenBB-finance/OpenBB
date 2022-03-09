@@ -19,7 +19,11 @@ class DueDiligenceCommands(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    @commands.slash_command(name="dd-analyst")
+    @commands.slash_command(name="dd")
+    async def dd(self, inter):
+        pass
+
+    @dd.sub_command()
     async def analyst(
         inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
@@ -30,9 +34,9 @@ class DueDiligenceCommands(commands.Cog):
         -----------
         ticker: Stock Ticker
         """
-        await ShowView().discord(analyst_command, inter, "dd-analyst", ticker)
+        await ShowView().discord(analyst_command, inter, "dd analyst", ticker)
 
-    @commands.slash_command(name="dd-pt")
+    @dd.sub_command()
     async def pt(
         inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
@@ -47,9 +51,9 @@ class DueDiligenceCommands(commands.Cog):
         raw: True or false
         start: YYYY-MM-DD format
         """
-        await ShowView().discord(pt_command, inter, "dd-pt", ticker, raw, start)
+        await ShowView().discord(pt_command, inter, "dd pt", ticker, raw, start)
 
-    @commands.slash_command(name="dd-est")
+    @dd.sub_command()
     async def est(
         inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
@@ -60,9 +64,9 @@ class DueDiligenceCommands(commands.Cog):
         -----------
         ticker: Stock Ticker
         """
-        await ShowView().discord(est_command, inter, "dd-est", ticker)
+        await ShowView().discord(est_command, inter, "dd est", ticker)
 
-    @commands.slash_command(name="dd-sec")
+    @dd.sub_command()
     async def sec(
         inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
@@ -73,9 +77,9 @@ class DueDiligenceCommands(commands.Cog):
         -----------
         ticker: Stock Ticker
         """
-        await ShowView().discord(sec_command, inter, "dd-sec", ticker)
+        await ShowView().discord(sec_command, inter, "dd sec", ticker)
 
-    @commands.slash_command(name="dd-supplier")
+    @dd.sub_command()
     async def supplier(
         inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
@@ -86,9 +90,9 @@ class DueDiligenceCommands(commands.Cog):
         -----------
         ticker: Stock Ticker
         """
-        await ShowView().discord(supplier_command, inter, "dd-supplier", ticker)
+        await ShowView().discord(supplier_command, inter, "dd supplier", ticker)
 
-    @commands.slash_command(name="dd-customer")
+    @dd.sub_command()
     async def customer(
         inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
@@ -99,9 +103,9 @@ class DueDiligenceCommands(commands.Cog):
         -----------
         ticker: Stock Ticker
         """
-        await ShowView().discord(customer_command, inter, "dd-customer", ticker)
+        await ShowView().discord(customer_command, inter, "dd customer", ticker)
 
-    @commands.slash_command(name="dd-arktrades")
+    @dd.sub_command()
     async def arktrades(
         inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
@@ -114,7 +118,7 @@ class DueDiligenceCommands(commands.Cog):
         ticker: Stock Ticker
         num: number of rows displayed
         """
-        await ShowView().discord(arktrades_command, inter, "dd-arktrades", ticker, num)
+        await ShowView().discord(arktrades_command, inter, "dd arktrades", ticker, num)
 
 
 def setup(bot: commands.Bot):

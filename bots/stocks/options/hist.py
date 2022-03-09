@@ -30,7 +30,7 @@ def hist_command(
 
     # Debug
     if cfg.DEBUG:
-        print(f"opt-hist {ticker} {strike} {opt_type} {expiry} {greek}")
+        print(f"opt hist {ticker} {strike} {opt_type} {expiry} {greek}")
 
     # Check for argument
     if ticker is None:
@@ -84,11 +84,13 @@ def hist_command(
         title=title,
         title_x=0.03,
         yaxis_title="<b>Stock Price</b> ($)",
+        font=cfg.PLT_FONT,
         yaxis=dict(
             side="right",
             fixedrange=False,
             titlefont=dict(color="#fdc708"),
             tickfont=dict(color="#fdc708"),
+            showgrid=False,
             position=0.02,
             nticks=20,
         ),
@@ -123,6 +125,7 @@ def hist_command(
             side="left",
             position=0,
             fixedrange=False,
+            showgrid=False,
             overlaying="y",
             titlefont=dict(color="#00e6c3"),
             tickfont=dict(color="#00e6c3"),
