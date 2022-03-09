@@ -9,6 +9,7 @@ import sys
 import time
 import uuid
 from math import floor, ceil
+import requests
 
 import schedule
 import git
@@ -24,6 +25,7 @@ LOGPREFIXFORMAT = "%(levelname)s|%(version)s|%(loggingId)s|%(sessionId)s|"
 DATEFORMAT = "%Y-%m-%dT%H:%M:%S%z"
 BUCKET = "gst-restrictions"
 FOLDER_NAME = "gst-app/logs"
+URL = "https://knaqi3sud7.execute-api.eu-west-3.amazonaws.com/log_api/logs"
 
 
 def library_loggers(verbosity: int = 0) -> None:
@@ -88,7 +90,7 @@ def setup_file_logger(session_id: str) -> None:
     logger.debug("Current_log file: %s", cfg.LOGGING_FILE)
 
     handler = TimedRotatingFileHandler(cfg.LOGGING_FILE)
-    handler.suffix = "%Y-%m-%d_%H.log"
+    handler.suffix += ".log"
     formatter = CustomFormatterWithExceptions(
         uuid_log_dir.stem, session_id, fmt=LOGFORMAT, datefmt=DATEFORMAT
     )
@@ -234,7 +236,7 @@ def setup_logging() -> None:
 
 
 def upload_file_to_s3(
-    file: Path, bucket: str, object_name=None, folder_name=None
+    file: Path, bucket: str = None, object_name: str = None, folder_name: str = None
 ) -> None:
     # If S3 object_name was not specified, use file_name
     if object_name is None:
@@ -248,15 +250,44 @@ def upload_file_to_s3(
         object_name += ".log"
 
     # Upload the file
-    try:
-        s3_client = boto3.client(
-            service_name="s3",
-            aws_access_key_id=cfg.AWS_ACCESS_KEY_ID,
-            aws_secret_access_key=cfg.AWS_ACCESS_KEY,
-        )
-        s3_client.upload_file(str(file), bucket, object_name)
-    except ClientError as e:
-        logger.exception(str(e))
+    if (
+        bucket is not None
+        and cfg.AWS_ACCESS_KEY != "REPLACE_ME"
+        and cfg.AWS_ACCESS_KEY_ID != "REPLACE_ME"
+    ):
+        try:
+            s3_client = boto3.client(
+                service_name="s3",
+                aws_access_key_id=cfg.AWS_ACCESS_KEY_ID,
+                aws_secret_access_key=cfg.AWS_ACCESS_KEY,
+            )
+            s3_client.upload_file(str(file), bucket, object_name)
+        except ClientError as e:
+            logger.exception(str(e))
+    else:
+        files = None
+        try:
+            with open(file, "rb") as f:
+                files = {"file": f.read()}
+        except Exception as e:
+            logger.exception("Could not open file: %s", str(e))
+
+        if files is not None and files:
+            json = requests.put(url=URL, json={"object_key": object_name}).json()
+            r = requests.post(json["url"], data=json["fields"], files=files)
+
+            if r.status_code in [403, 401, 400]:
+                logger.error("%s could not be uploaded", str(file))
+            elif r.status_code == 204:
+                logger.info("Log uploaded")
+            else:
+                logger.error(
+                    "Unexpected status_code: %s when uploading: %s",
+                    str(r.status_code),
+                    str(file),
+                )
+        else:
+            logger.error("Uploading payload empty")
 
 
 def contains_goodbye(file: Path) -> bool:
@@ -275,8 +306,8 @@ def contains_goodbye(file: Path) -> bool:
 
 def upload_archive_logs_s3(
     directory_str=None,
-    log_filter=r"gst_\d{10}\.20[2-3][0-9]-[0-2][0-9]-[0-3][0-9]_[0-2][0-9]\.log",
-    bucket=BUCKET,
+    log_filter=r"gst_\d{10}\.20[2-3][0-9]-[0-2][0-9]-[0-3][0-9]_[0-2][0-9]-[0-5][0-9]\.log",
+    bucket=None,
     folder_name=FOLDER_NAME,
 ) -> None:
     if gtff.ALLOW_LOG_COLLECTION:
