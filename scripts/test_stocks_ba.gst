@@ -24,4 +24,7 @@ emerging
 metrics
 social
 historical
+jcdr
+load aapl
+jdtr
 exit

@@ -20,3 +20,10 @@ def vcr_config():
 )
 def test_get_orders(inverse):
     cramer_view.display_cramer_daily(inverse=inverse)
+
+
+@pytest.mark.vcr()
+@pytest.mark.record_stdout
+@pytest.mark.parametrize("raw", [True, False])
+def test_cramer_ticker(raw):
+    cramer_view.display_cramer_ticker("AAPL", raw=raw)
