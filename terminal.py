@@ -97,6 +97,12 @@ class TerminalController(BaseController):
 [info]The previous logic also holds for when launching the terminal.[/info]
     E.g. '$ python terminal.py /stocks/disc/ugs -n 3/../load tsla/candle'
 
+[info]You can run a standalone .gst routine file with:[/info]
+    E.g. '$ python terminal.py routines/example.gst'
+
+[info]You can run a .gst routine file with variable inputs:[/info]
+    E.g. '$ python terminal.py routines/example_with_inputs.gst --input pltr,tsla,nio'
+
 [info]The main commands you should be aware when navigating through the terminal are:[/info][cmds]
     cls             clear the screen
     help / h / ?    help menu
