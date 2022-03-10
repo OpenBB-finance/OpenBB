@@ -1,4 +1,5 @@
 import os
+import logging
 from typing import List, Pattern, Dict, Any, Union, Set
 import telebot
 from dotenv import load_dotenv
@@ -55,8 +56,8 @@ def get_arguments(selected: Dict[str, Any], req_name: str, message: Any) -> None
         The command object
     req_name : str
         The name of the requirement
-    group_id : str
-        The groupme chat id
+    message: Any
+        Object that contains telegram request info
     """
 
     if req_name == "ticker":
@@ -82,8 +83,8 @@ def send_options(name: str, items: Union[List[Any], Set[Any]], message: Any) -> 
         The name of the section
     items : List[str]
         The items the user can select from
-    group_id : str
-        The groupme chat id
+    message: Any
+        Object that contains telegram request info
     """
     help_message = name
     clean = list(items)
@@ -120,12 +121,10 @@ Check the available commands with /cmds
     bot.send_message(
         chat_id=message.chat.id, text=text, reply_markup=markdown, parse_mode="MARKDOWN"
     )
-    # bot.reply_to(markdown, text, parse_mode="MARKDOWN")
-    # bot.reply_to(message, text, parse_mode="MARKDOWN")
 
 
 @bot.message_handler(commands=["cmds", "commands"])
-def send_help(message):
+def send_cmds(message):
     helptext = (
         "\n/disc_fidelity\n"
         "/ins_last/ticker <num>\n"
@@ -259,4 +258,9 @@ def send_command(message):
     return False
 
 
-bot.infinity_polling()
+if __name__ == "__main__":
+    # TODO: replace with GST logging
+    logger = logging.getLogger()
+    logger.setLevel(logging.DEBUG)
+    logger.addHandler(logging.StreamHandler())
+    bot.infinity_polling()
