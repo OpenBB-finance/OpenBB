@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_cramer_daily(inverse: bool = True, export: str = ""):
-    """
+    """Display Jim Cramer daily recommendations
 
     Parameters
     ----------
@@ -39,6 +39,7 @@ def display_cramer_daily(inverse: bool = True, export: str = ""):
     recs = cramer_model.get_cramer_daily(inverse)
     if recs.empty:
         console.print("[red]Error getting request.\n[/red]")
+        return
     date = recs.Date[0]
     recs = recs.drop(columns=["Date"])
     console.print()
