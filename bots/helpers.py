@@ -301,6 +301,7 @@ class ShowView:
                 channels=channel_id,
                 user_id=user_id,
             )
+            os.remove(data["imagefile"])
         elif "embeds_img" in data:
             client.files_upload(
                 file=data["embeds_img"][0],
@@ -308,6 +309,7 @@ class ShowView:
                 channels=channel_id,
                 user_id=user_id,
             )
+            os.remove(data["embeds_img"][0])
         elif "description" in data:
             title = data.get("title", "")
             # TODO: Allow navigation through pages
