@@ -1,15 +1,19 @@
 import difflib
+import logging
 
 import disnake
 import pandas as pd
 
 import bots.config_discordbot as cfg
-from bots.config_discordbot import logger
 from bots.menus.menu import Menu
 from bots.stocks.screener import screener_options as so
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.stocks.screener.finviz_model import get_screener_data
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def technical_command(
     preset: str = "template", sort: str = "", limit: int = 5, ascend: bool = False
 ):

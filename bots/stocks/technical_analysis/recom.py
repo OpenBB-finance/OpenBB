@@ -1,8 +1,13 @@
+import logging
+
 import bots.config_discordbot as cfg
-from bots.config_discordbot import logger
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.stocks.technical_analysis import tradingview_model
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def recom_command(ticker=""):
     """Displays text of a given stocks recommendation based on ta [Tradingview API]"""
 

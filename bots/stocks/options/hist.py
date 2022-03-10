@@ -77,6 +77,8 @@ def hist_command(
                 yaxis="y3",
             ),
         )
+    if cfg.PLT_WATERMARK:
+        fig.add_layout_image(cfg.PLT_WATERMARK)
     fig.update_layout(
         margin=dict(l=10, r=10, t=30, b=20),
         template=cfg.PLT_TA_STYLE_TEMPLATE,
@@ -133,15 +135,13 @@ def hist_command(
         ),
         hovermode="x unified",
     )
-    config = dict({"scrollZoom": True})
+
     imagefile = "opt_hist.png"
 
     # Check if interactive settings are enabled
     plt_link = ""
     if cfg.INTERACTIVE:
-        html_ran = helpers.uuid_get()
-        fig.write_html(f"in/hist_{html_ran}.html", config=config)
-        plt_link = f"[Interactive]({cfg.INTERACTIVE_URL}/hist_{html_ran}.html)"
+        plt_link = helpers.inter_chart(fig, imagefile, callback=False)
 
     fig.update_layout(
         width=800,

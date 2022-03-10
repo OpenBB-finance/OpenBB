@@ -1,13 +1,17 @@
+import logging
 from datetime import datetime, timedelta
 
 import plotly.graph_objects as go
 
 import bots.config_discordbot as cfg
 from bots import helpers
-from bots.config_discordbot import logger
 from gamestonk_terminal.common.technical_analysis import volatility_model
+from gamestonk_terminal.decorators import log_start_end
+
+logger = logging.getLogger(__name__)
 
 
+@log_start_end(log=logger)
 def kc_command(
     ticker="", length="20", scalar="2", mamode="sma", offset="0", start="", end=""
 ):
@@ -140,15 +144,13 @@ def kc_command(
         dragmode="pan",
         legend=dict(yanchor="top", y=0.99, xanchor="left", x=0.01),
     )
-    config = dict({"scrollZoom": True})
+
     imagefile = "ta_kc.png"
 
     # Check if interactive settings are enabled
     plt_link = ""
     if cfg.INTERACTIVE:
-        html_ran = helpers.uuid_get()
-        fig.write_html(f"in/kc_{html_ran}.html", config=config)
-        plt_link = f"[Interactive]({cfg.INTERACTIVE_URL}/kc_{html_ran}.html)"
+        plt_link = helpers.inter_chart(fig, imagefile, callback=False)
 
     fig.update_layout(
         width=800,

@@ -1,13 +1,18 @@
+import logging
+
 import df2img
 import numpy as np
 import pandas as pd
 
 import bots.config_discordbot as cfg
-from bots.config_discordbot import logger
 from bots.helpers import save_image
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.economy import finviz_model
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def valuation_command(economy_group="sector"):
     """Valuation of sectors, industry, country [Finviz]"""
 

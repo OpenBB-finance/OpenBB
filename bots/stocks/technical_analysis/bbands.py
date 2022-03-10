@@ -1,13 +1,18 @@
+import logging
 from datetime import datetime, timedelta
 
 import plotly.graph_objects as go
 
 import bots.config_discordbot as cfg
 from bots import helpers, load_candle
-from bots.config_discordbot import logger
 from gamestonk_terminal.common.technical_analysis import volatility_model
+from gamestonk_terminal.decorators import log_start_end
+
+logger = logging.getLogger(__name__)
 
 
+# pylint: disable=R0913
+@log_start_end(log=logger)
 def bbands_command(
     ticker="",
     interval: int = 15,
@@ -22,15 +27,21 @@ def bbands_command(
     news: bool = False,
 ):
     """Displays chart with bollinger bands [Yahoo Finance]"""
+
     # Debug
     if cfg.DEBUG:
         # pylint: disable=logging-too-many-args
         logger.debug(
-            "ta bbands %s %s %s %s %s %s",
+            "ta bbands %s %s %s %s %s %s %s %s %s %s %s",
             ticker,
             length,
             n_std,
             mamode,
+            start,
+            end,
+            extended_hours,
+            heikin_candles,
+            news,
             start,
             end,
         )
@@ -165,15 +176,13 @@ def bbands_command(
         title_font_size=12,
         dragmode="pan",
     )
-    config = dict({"scrollZoom": True})
+
     imagefile = "ta_bbands.png"
 
     # Check if interactive settings are enabled
     plt_link = ""
     if cfg.INTERACTIVE:
-        html_ran = helpers.uuid_get()
-        fig.write_html(f"in/bbands_{html_ran}.html", config=config)
-        plt_link = f"[Interactive]({cfg.INTERACTIVE_URL}/bbands_{html_ran}.html)"
+        plt_link = helpers.inter_chart(fig, imagefile, callback=False)
 
     fig.update_layout(
         width=800,

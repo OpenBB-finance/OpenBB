@@ -1,15 +1,19 @@
+import logging
 from datetime import datetime, timedelta
 
 from matplotlib import pyplot as plt
 
 import bots.config_discordbot as cfg
 import bots.helpers
-from bots.config_discordbot import logger
 from gamestonk_terminal.config_plot import PLOT_DPI
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import plot_autoscale
 from gamestonk_terminal.stocks.due_diligence import business_insider_model
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def pt_command(ticker: str = "", raw: bool = False, start=""):
     """Displays price targets [Business Insider]"""
 

@@ -1,3 +1,4 @@
+import logging
 from datetime import datetime, timedelta
 
 import plotly.graph_objects as go
@@ -5,10 +6,13 @@ from plotly.subplots import make_subplots
 
 import bots.config_discordbot as cfg
 from bots import helpers
-from bots.config_discordbot import logger
 from gamestonk_terminal.common.technical_analysis import volume_model
+from gamestonk_terminal.decorators import log_start_end
+
+logger = logging.getLogger(__name__)
 
 
+@log_start_end(log=logger)
 def adosc_command(ticker="", is_open="False", fast="3", slow="10", start="", end=""):
     """Displays chart with chaikin oscillator [Yahoo Finance]"""
 
@@ -105,6 +109,8 @@ def adosc_command(ticker="", is_open="False", fast="3", slow="10", start="", end
         row=3,
         col=1,
     )
+    if cfg.PLT_WATERMARK:
+        fig.add_layout_image(cfg.PLT_WATERMARK)
     fig.update_layout(
         margin=dict(l=10, r=0, t=30, b=20),
         template=cfg.PLT_TA_STYLE_TEMPLATE,
@@ -123,15 +129,13 @@ def adosc_command(ticker="", is_open="False", fast="3", slow="10", start="", end
         dragmode="pan",
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
     )
-    config = dict({"scrollZoom": True})
+
     imagefile = "ta_adosc.png"
 
     # Check if interactive settings are enabled
     plt_link = ""
     if cfg.INTERACTIVE:
-        html_ran = helpers.uuid_get()
-        fig.write_html(f"in/adosc_{html_ran}.html", config=config)
-        plt_link = f"[Interactive]({cfg.INTERACTIVE_URL}/adosc_{html_ran}.html)"
+        plt_link = helpers.inter_chart(fig, imagefile, callback=False)
 
     fig.update_layout(
         width=800,

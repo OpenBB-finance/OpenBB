@@ -1,13 +1,17 @@
 import datetime
+import logging
 import os
 
 import matplotlib.pyplot as plt
 
 import bots.config_discordbot as cfg
-from bots.config_discordbot import logger
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.economy import cnn_model, cnn_view
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def feargreed_command(indicator=""):
     """CNN Fear and Greed Index [CNN]"""
 

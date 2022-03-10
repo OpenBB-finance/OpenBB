@@ -1,4 +1,5 @@
 import configparser
+import logging
 import random
 from datetime import datetime, timedelta
 
@@ -8,16 +9,20 @@ from matplotlib import pyplot as plt
 from pandas.plotting import register_matplotlib_converters
 
 import bots.config_discordbot as cfg
-from bots.config_discordbot import logger
 from bots.helpers import image_border
 from bots.stocks.screener import screener_options as so
 from gamestonk_terminal.config_plot import PLOT_DPI
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import plot_autoscale
 from gamestonk_terminal.stocks.screener import finviz_model
 
 # pylint:disable=no-member
 
 
+logger = logging.getLogger(__name__)
+
+
+@log_start_end(log=logger)
 def historical_command(signal: str = "", start=""):
     """Displays historical price comparison between similar companies [Yahoo Finance]"""
 

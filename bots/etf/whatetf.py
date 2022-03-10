@@ -1,3 +1,4 @@
+import logging
 import os
 import time
 
@@ -10,10 +11,14 @@ from selenium.webdriver.common.by import By
 
 import bots.config_discordbot as cfg
 from bots import helpers
-from bots.config_discordbot import gst_imgur, logger
+from bots.config_discordbot import gst_imgur
 from bots.menus.menu import Menu
+from gamestonk_terminal.decorators import log_start_end
+
+logger = logging.getLogger(__name__)
 
 
+@log_start_end(log=logger)
 def by_ticker_command(ticker="", num: int = 15):
     """Display ETF Holdings. [Source: StockAnalysis]"""
 
@@ -99,7 +104,7 @@ def by_ticker_command(ticker="", num: int = 15):
             if cfg.IMAGES_URL:
                 image_link = cfg.IMAGES_URL + imagefile
             else:
-                imagefile_save = cfg.IMG_DIR + imagefile
+                imagefile_save = cfg.IMG_DIR / imagefile
                 uploaded_image = gst_imgur.upload_image(
                     imagefile_save, title="something"
                 )

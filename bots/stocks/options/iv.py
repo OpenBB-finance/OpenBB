@@ -1,11 +1,16 @@
+import logging
+
 import df2img
 
 import bots.config_discordbot as cfg
-from bots.config_discordbot import logger
 from bots.helpers import save_image
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.stocks.options import barchart_model
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def iv_command(ticker: str = None):
     """Options IV"""
 

@@ -1,16 +1,20 @@
+import logging
 from datetime import datetime, timedelta
 
 from matplotlib import pyplot as plt
 
 import bots.config_discordbot as cfg
 import bots.helpers
-from bots.config_discordbot import logger
 from bots.helpers import image_border
 from gamestonk_terminal import config_plot as cfp
 from gamestonk_terminal.common.technical_analysis import custom_indicators_model
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import plot_autoscale
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def fib_command(ticker="", start="", end=""):
     """Displays chart with fibonacci retracement [Yahoo Finance]"""
 

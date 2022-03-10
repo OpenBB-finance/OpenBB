@@ -1,4 +1,6 @@
+import logging
 import os
+import re
 import uuid
 from typing import List
 
@@ -9,9 +11,12 @@ import pandas as pd
 import yfinance as yf
 from numpy.core.fromnumeric import transpose
 from PIL import Image
+from plotly.offline import plot
 
 import bots.config_discordbot as cfg
 from bots.groupme.groupme_helpers import send_image, send_message
+
+logger = logging.getLogger(__name__)
 
 presets_custom = [
     "potential_reversals",
@@ -254,9 +259,62 @@ def signals_autocomp(inter, signal: str):  # pylint: disable=W0613
     return [signal for signal in df if signal.lower().startswith(slow)][:24]
 
 
+def inter_chart(fig, file, **data):
+    filename = f"{file.replace('.png', '')}_{uuid_get()}.html"
+    if "config" not in data:
+        config = dict(scrollZoom=True, displayModeBar=False)
+    plot_div = plot(fig, output_type="div", include_plotlyjs=True, config=config)
+    if data["callback"]:
+        res = re.search('<div id="([^"]*)"', plot_div)
+        if res is not None:
+            res = res.groups()[0]
+            div_id = res
+
+        js_callback = f"""
+        <script>
+        var plot_element = document.getElementById("{div_id}");
+        plot_element.on('plotly_click', function(data){{
+            console.log(data);
+            var point = data.points[0];
+            if (point) {{
+                console.log(point.customdata[1]);
+                window.open(point.customdata[1]);
+            }}
+        }})
+        </script>
+        """
+
+        # Build HTML string
+        html_str = f"""
+        <html>
+        <body style="background-color:#111111;">
+        <body>
+        {plot_div}
+        {js_callback}
+        </body>
+        </html>
+        """
+    else:
+        # Build HTML string
+        html_str = f"""
+        <html>
+        <body style="background-color:#111111;">
+        <body>
+        {plot_div}
+        </body>
+        </html>
+        """
+
+    # Write out HTML file
+    with open(f"{cfg.INTERACTIVE_DIR / filename}", "w") as f:
+        f.write(html_str)
+    plt_link = f"[Interactive]({cfg.INTERACTIVE_URL}/{filename})"
+    return plt_link
+
+
 def save_image(file, fig):
     imagefile = f"{file.replace('.png', '')}_{uuid_get()}.png"
-    filesave = cfg.IMG_DIR + imagefile
+    filesave = cfg.IMG_DIR / imagefile
     df2img.save_dataframe(fig=fig, filename=filesave)
     image = Image.open(filesave)
     image = autocrop_image(image, 0)
@@ -266,7 +324,7 @@ def save_image(file, fig):
 
 def image_border(file, **kwargs):
     imagefile = f"{file.replace('.png', '')}_{uuid_get()}.png"
-    filesave = cfg.IMG_DIR + imagefile
+    filesave = cfg.IMG_DIR / imagefile
     if "fig" in kwargs:
         fig = kwargs["fig"]
         fig.write_image(filesave)
@@ -313,7 +371,7 @@ class ShowView:
             )
             if "imagefile" in data:
                 filename = data["imagefile"]
-                imagefile = cfg.IMG_DIR + filename
+                imagefile = cfg.IMG_DIR / filename
                 image = disnake.File(imagefile, filename=filename)
                 embed.set_image(url=f"attachment://{filename}")
                 os.remove(imagefile)
@@ -323,7 +381,7 @@ class ShowView:
 
     async def discord(self, func, inter, name, *args, **kwargs):
         await inter.response.defer()
-        cfg.logger.info(name)
+        logger.info(name)
         if os.environ.get("DEBUG_MODE") == "true":
             await self.run_discord(func, inter, *args, **kwargs)
         else:
@@ -347,7 +405,7 @@ class ShowView:
         if "imagefile" in data:
             imagefile = data["imagefile"]
             if cfg.IMAGES_URL:
-                imagefile = cfg.IMG_DIR + imagefile
+                imagefile = cfg.IMG_DIR / imagefile
             send_image(imagefile, group_id, data.get("description", ""), True)
         elif "embeds_img" in data:
             send_image(

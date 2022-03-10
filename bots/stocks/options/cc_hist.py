@@ -89,6 +89,8 @@ def cc_hist_command(
         row=2,
         col=1,
     )
+    if cfg.PLT_WATERMARK:
+        fig.add_layout_image(cfg.PLT_WATERMARK)
     fig.update_layout(
         margin=dict(l=0, r=0, t=25, b=5),
         template=cfg.PLT_CANDLE_STYLE_TEMPLATE,
@@ -106,15 +108,13 @@ def cc_hist_command(
             dict(bounds=["sat", "mon"]),
         ],
     )
-    config = dict({"scrollZoom": True})
+
     imagefile = "opt_hist.png"
 
     # Check if interactive settings are enabled
     plt_link = ""
     if cfg.INTERACTIVE:
-        html_ran = helpers.uuid_get()
-        fig.write_html(f"in/cc_hist_{html_ran}.html", config=config)
-        plt_link = f"[Interactive]({cfg.INTERACTIVE_URL}/cc_hist_{html_ran}.html)"
+        plt_link = helpers.inter_chart(fig, imagefile, callback=False)
 
     fig.update_layout(
         width=800,

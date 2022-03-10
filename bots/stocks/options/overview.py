@@ -60,8 +60,7 @@ def options_run(
     max_pain,
 ):
     """Options Overview"""
-    puts_page = 3
-    iv = ""
+
     fig = go.Figure()
 
     dmax = df_opt[["OI_call", "OI_put"]].values.max()
@@ -103,6 +102,8 @@ def options_run(
             name=f"Max Pain: {max_pain}",
         )
     )
+    if cfg.PLT_WATERMARK:
+        fig.add_layout_image(cfg.PLT_WATERMARK)
     fig.update_xaxes(
         range=[min_strike, max_strike],
         constrain="domain",
@@ -122,25 +123,24 @@ def options_run(
         legend=dict(yanchor="top", y=0.99, xanchor="left", x=0.01),
         dragmode="pan",
     )
-    config = dict({"scrollZoom": True})
+
+    imagefile = "opt-oi.png"
 
     plt_link = ""
     if cfg.INTERACTIVE:
-        html_ran = helpers.uuid_get()
-        fig.write_html(f"in/oi_{html_ran}.html", config=config)
-        plt_link = f"[Interactive]({cfg.INTERACTIVE_URL}/oi_{html_ran}.html)"
+        plt_link = helpers.inter_chart(fig, imagefile, callback=False)
 
     fig.update_layout(
         width=800,
         height=500,
     )
-    imagefile = "opt-oi.png"
+
     imagefile = helpers.image_border(imagefile, fig=fig)
 
     if cfg.IMAGES_URL:
         image_link_oi = cfg.IMAGES_URL + imagefile
     else:
-        imagefile_save = cfg.IMG_DIR + imagefile
+        imagefile_save = cfg.IMG_DIR / imagefile
         uploaded_image_oi = gst_imgur.upload_image(imagefile_save, title="something")
         image_link_oi = uploaded_image_oi.link
         os.remove(imagefile_save)
@@ -219,7 +219,7 @@ def options_run(
         if cfg.IMAGES_URL:
             image_link = cfg.IMAGES_URL + imagefile
         else:
-            imagefile_save = cfg.IMG_DIR + imagefile
+            imagefile_save = cfg.IMG_DIR / imagefile
             uploaded_image = gst_imgur.upload_image(imagefile_save, title="something")
             image_link = uploaded_image.link
             os.remove(imagefile_save)
@@ -241,7 +241,7 @@ def options_run(
         end += 20
 
     # Add Calls page field
-    i, page = 2, 0
+    i, page, puts_page = 2, 0, 3
     i3 = i2 + 2
     choices.append(
         disnake.SelectOption(label="Calls Page 1", value="2", emoji="🟢"),
@@ -294,7 +294,7 @@ def options_run(
         if cfg.IMAGES_URL:
             image_link = cfg.IMAGES_URL + imagefile
         else:
-            imagefile_save = cfg.IMG_DIR + imagefile
+            imagefile_save = cfg.IMG_DIR / imagefile
             uploaded_image = gst_imgur.upload_image(imagefile_save, title="something")
             image_link = uploaded_image.link
             os.remove(imagefile_save)
@@ -397,6 +397,7 @@ def options_run(
     return titles, embeds, choices, embeds_img
 
 
+@log_start_end(log=logger)
 def options_data(
     ticker: str = None,
     expiry: str = None,
@@ -477,9 +478,7 @@ def options_data(
     return data
 
 
-print(__name__)
-
-
+@log_start_end(log=logger)
 def run(
     ticker: str = None,
     expiry: str = None,
@@ -487,7 +486,6 @@ def run(
     max_sp: float = None,
 ):
 
-    print("start")
     cpus = os.cpu_count()
     data = options_data(ticker, expiry, min_sp, max_sp)
     with Pool(processes=cpus) as p:
@@ -505,6 +503,7 @@ def run(
     return unpack(titles), unpack(embeds), unpack(choices), unpack(embeds_img)
 
 
+@log_start_end(log=logger)
 def overview_command(
     ticker: str = None,
     expiry: str = None,

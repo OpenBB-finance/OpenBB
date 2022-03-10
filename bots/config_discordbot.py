@@ -1,6 +1,7 @@
 import logging
 import os
 import sys
+from pathlib import Path
 from typing import List, Optional
 
 import disnake
@@ -46,9 +47,10 @@ COMMAND_PREFIX = "!"
 DATE_FORMAT = "%Y-%m-%d"
 COLOR = disnake.Color.from_rgb(255, 0, 0)
 INTERACTIVE = False
+INTERACTIVE_DIR = Path("in/")
 INTERACTIVE_URL = ""
-IMG_DIR = "in/images"
-IMAGES_URL = ""
+IMG_DIR = Path("in/images/")
+IMAGES_URL = ""  # Ex. "http://your-site.com/images/"
 # IMG_BG = "files/bg.png"  # Light BG
 IMG_BG = "files/bg-dark.png"  # Dark BG
 PLT_3DMESH_COLORSCALE = "Jet"
@@ -109,7 +111,22 @@ PLT_FONT = dict(
     family="Fira Code",
     size=12,
 )
-
+PLT_WATERMARK = dict(
+    source=(
+        "https://raw.githubusercontent.com/GamestonkTerminal/GamestonkTerminal/main/images"
+        "/gst_logo_lockup_rGreen_with_letters_only.png"
+    ),
+    xref="paper",
+    yref="paper",
+    x=0.88,
+    y=0.28,
+    sizex=0.8,
+    sizey=0.9,
+    opacity=0.069420,
+    xanchor="right",
+    yanchor="bottom",
+    layer="below",
+)
 MENU_TIMEOUT = 30
 DEBUG = False
 

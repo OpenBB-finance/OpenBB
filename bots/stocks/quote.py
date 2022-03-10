@@ -1,10 +1,15 @@
+import logging
+
 import df2img
 
 import bots.config_discordbot as cfg
-from bots.config_discordbot import logger
 from bots.helpers import quote, save_image
+from gamestonk_terminal.decorators import log_start_end
+
+logger = logging.getLogger(__name__)
 
 
+@log_start_end(log=logger)
 def quote_command(ticker: str = None):
     """Ticker Quote"""
 

@@ -19,7 +19,6 @@ local_now = datetime.now().astimezone().tzinfo
 
 
 def local_tz(tseries):
-    local_now = datetime.now().astimezone().tzinfo
     output = tseries.replace(tzinfo=local_now)
     return output
 
@@ -113,7 +112,6 @@ def stock_data(
     end="",
     news: bool = False,
     heikin_candles: bool = False,
-    **kwarg,
 ):
 
     if start == "":
@@ -401,7 +399,6 @@ def candle_fig(
         df_news = df_news.set_index(pd.to_datetime(df_date))
 
         customdatadf = np.stack((df_news["Content"], df_news["url"]), axis=-1)
-        customdatadf.shape
         hover_temp = (
             "<br><b>News:%{text}</b><br><br>Summary:%{customdata[0]}<br>"
             "<b>Click On Marker For More</b><extra></extra>"
@@ -426,24 +423,8 @@ def candle_fig(
             ),
             secondary_y=True,
         )
-    fig.add_layout_image(
-        dict(
-            source=(
-                "https://raw.githubusercontent.com/GamestonkTerminal/GamestonkTerminal/main/images"
-                "/gst_logo_lockup_rGreen_with_letters_only.png"
-            ),
-            xref="paper",
-            yref="paper",
-            x=0.88,
-            y=0.28,
-            sizex=0.8,
-            sizey=0.9,
-            opacity=0.069420,
-            xanchor="right",
-            yanchor="bottom",
-            layer="below",
-        )
-    )
+    if cfg.PLT_WATERMARK:
+        fig.add_layout_image(cfg.PLT_WATERMARK)
     fig.add_annotation(
         xref="x domain",
         yref="y domain",
@@ -537,7 +518,7 @@ def candle_fig(
             for index in df_stock.index:
                 dates = index.strftime("%Y-%m-%d")
                 if dates in unique:
-                    continue
+                    continue  # pylint: disable=R1724
                 else:
                     unique.append(dates)
             fig.add_trace(

@@ -66,7 +66,6 @@ class TechnicalAnalysisCommands(commands.Cog):
         extended_hours: Display Pre/After Market Hours. Default: False
         heikin_candles: Heikin Ashi candles. Default: False
         """
-        ma_mode = str(ma_mode)
         await ShowView().discord(
             ma_command,
             inter,
