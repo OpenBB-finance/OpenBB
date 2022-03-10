@@ -1,11 +1,11 @@
 """ Econ Controller """
 __docformat__ = "numpy"
 # pylint:disable=too-many-lines,R1710,R0904,C0415
+
 import argparse
 import logging
 import os
 from typing import List
-
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 
@@ -20,7 +20,10 @@ from gamestonk_terminal.economy import (
     wsj_view,
     econdb_view,
     econdb_model,
+    yfinance_model,
+    yfinance_view,
 )
+
 from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_FIGURES_ALLOWED,
@@ -42,7 +45,7 @@ class EconomyController(BaseController):
         "overview",
         "futures",
         "macro",
-        "macrous",
+        "indices",
         "valuation",
         "performance",
         "spectrum",
@@ -145,15 +148,14 @@ class EconomyController(BaseController):
                 c: None for c in ["energy", "metals", "meats", "grains", "softs"]
             }
 
+            choices["indices"] = {c: None for c in yfinance_model.INDICES}
+
             choices["macro"]["-p"] = {c: None for c in econdb_model.PARAMETERS}
             choices["macro"]["--parameter"] = {c: None for c in econdb_model.PARAMETERS}
             choices["macro"]["-c"] = {c: None for c in econdb_model.COUNTRY_CODES}
             choices["macro"]["--countries"] = {
                 c: None for c in econdb_model.COUNTRY_CODES
             }
-
-            choices["macrous"]["-t"] = {c: None for c in self.macro_us_types}
-            choices["macrous"]["--type"] = {c: None for c in self.macro_us_types}
 
             choices["valuation"]["-s"] = {c: None for c in self.valuation_sort_cols}
             choices["valuation"]["--sortby"] = {
@@ -185,7 +187,7 @@ Overview
 
 Macro Data
     macro         collect macro data for a country or countries [src][Source: EconDB][/src]
-    macrous       show United States macro data [src][Source: Alpha Vantage][/src]
+    indices       show the most important indices worldwide [src][Source: Yahoo Finance][/src]
 
 Performance & Valuations
     rtps          real-time performance sectors [src][Source: Alpha Vantage][/src]
@@ -349,7 +351,7 @@ Index
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="macro",
-            description="Get a broad selection of macro data from one or multiple companies. [Source: EconDB}",
+            description="Get a broad selection of macro data from one or multiple companies. [Source: EconDB]",
         )
 
         parser.add_argument(
@@ -445,6 +447,139 @@ Index
                     start_date=ns_parser.start_date,
                     end_date=ns_parser.end_date,
                     convert_currency=ns_parser.convert_currency,
+                    raw=ns_parser.raw,
+                    export=ns_parser.export,
+                )
+
+    @log_start_end(log=logger)
+    def call_indices(self, other_args: List[str]):
+        """Process indices command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="indices",
+            description="Obtain any set of indices and plot them together. With the -si argument the major indices are "
+            "shown. By using the arguments (for example 'nasdaq' and 'sp500') you can collect data and "
+            "plot the graphs together. [Source: Yahoo finance / FinanceDatabase]",
+        )
+
+        parser.add_argument(
+            "-i",
+            "--indices",
+            nargs="+",
+            dest="indices",
+            help="One or multiple indices",
+        )
+
+        parser.add_argument(
+            "-si",
+            "--show_indices",
+            dest="show_indices",
+            help="Show the major indices, their arguments and ticker",
+            action="store_true",
+            default=False,
+        )
+
+        parser.add_argument(
+            "-iv",
+            "--interval",
+            type=str,
+            dest="interval",
+            help="The preferred interval data is shown at. This can be 1m, 2m, 5m, 15m, 30m, 60m, 90m, 1h, "
+            "1d, 5d, 1wk, 1mo or 3mo",
+            choices=[
+                "1m",
+                "2m",
+                "5m",
+                "15m",
+                "30m",
+                "60m",
+                "90m",
+                "1h",
+                "1d",
+                "5d",
+                "1wk",
+                "1mo",
+                "3mo",
+            ],
+            default="1d",
+        )
+
+        parser.add_argument(
+            "-s",
+            "--start_date",
+            dest="start_date",
+            help="The start date of the data (format: YEAR-MONTH-DAY, i.e. 2010-12-31)",
+            default="2000-01-01",
+        )
+
+        parser.add_argument(
+            "-e",
+            "--end_date",
+            dest="end_date",
+            help="The end date of the data (format: YEAR-MONTH-DAY, i.e. 2021-06-20)",
+            default=None,
+        )
+
+        parser.add_argument(
+            "-c",
+            "--column",
+            type=str,
+            dest="column",
+            help="The column you wish to load in, by default this is the Adjusted Close column",
+            default="Adj Close",
+        )
+
+        parser.add_argument(
+            "-q",
+            "--query",
+            type=str,
+            nargs="+",
+            dest="query",
+            help="Search for indices with given keyword",
+        )
+
+        parser.add_argument(
+            "-l",
+            "--limit",
+            type=str,
+            dest="limit",
+            help="Takes into account the amount of rows you wish to see for your query ('-q').",
+            default=10,
+        )
+
+        parser.add_argument(
+            "-r",
+            "--raw",
+            dest="raw",
+            help="Show raw data",
+            action="store_true",
+            default=False,
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-i")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            if ns_parser.query and ns_parser.limit:
+                yfinance_view.search_indices(ns_parser.query, ns_parser.limit)
+            if ns_parser.show_indices:
+                print_rich_table(
+                    pd.DataFrame.from_dict(yfinance_model.INDICES, orient="index"),
+                    show_index=True,
+                    index_name="Argument",
+                    headers=["Name", "Ticker"],
+                    title="Major Indices",
+                )
+            elif ns_parser.indices:
+                yfinance_view.show_indices(
+                    indices=ns_parser.indices,
+                    interval=ns_parser.interval,
+                    start_date=ns_parser.start_date,
+                    end_date=ns_parser.end_date,
+                    column=ns_parser.column,
                     raw=ns_parser.raw,
                     export=ns_parser.export,
                 )
@@ -662,110 +797,6 @@ Index
                 raw=ns_parser.raw,
                 export=ns_parser.export,
             )
-
-    @log_start_end(log=logger)
-    def call_macrous(self, other_args: List[str]):
-        """Process macrous command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="macrous",
-            description="""
-            Show a large selection of US Macro data including Real Gross Domestic Product (GDP),
-            Inflation Rates (INF), Consumer Price Index (CPI), Treasury Yields (TYLD) and
-            Unemployment Rates (UNEMP) [Source: Alpha Vantage]
-            """,
-        )
-
-        parser.add_argument(
-            "-t",
-            "--type",
-            help="Type of macro data you wish to view.",
-            dest="type",
-            type=str,
-            choices=self.macro_us_types,
-            default="GDP",
-        )
-
-        parser.add_argument(
-            "-i",
-            "--interval",
-            help="The interval you wish to show the data for. This is dependent on the type of data.",
-            dest="interval",
-            type=str,
-            choices=self.macro_us_interval,
-            default="annual",
-        )
-        parser.add_argument(
-            "-s",
-            "--start",
-            help="Start year. Quarterly only goes back to 2002.",
-            dest="start",
-            type=int,
-            default=2010,
-        )
-
-        parser.add_argument(
-            "-m",
-            "--maturity",
-            help="Maturity timeline for treasuries (when entering he TYLD parameter)",
-            dest="maturity",
-            choices=self.tyld_maturity,
-            default="5y",
-        )
-
-        parser.add_argument(
-            "--raw",
-            help="Display raw data",
-            action="store_true",
-            dest="raw",
-            default=False,
-        )
-
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-t")
-
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-
-        if ns_parser:
-            type_upper = ns_parser.type.upper()
-
-            if type_upper == "GDP":
-                alphavantage_view.display_real_gdp(
-                    interval=ns_parser.interval,
-                    start_year=ns_parser.start,
-                    raw=ns_parser.raw,
-                    export=ns_parser.export,
-                )
-            elif type_upper == "INF":
-                alphavantage_view.display_inflation(
-                    start_year=ns_parser.start,
-                    raw=ns_parser.raw,
-                    export=ns_parser.export,
-                )
-            elif type_upper == "CPI":
-                alphavantage_view.display_cpi(
-                    interval=ns_parser.interval,
-                    start_year=ns_parser.start,
-                    raw=ns_parser.raw,
-                    export=ns_parser.export,
-                )
-            elif type_upper == "TYLD":
-                alphavantage_view.display_treasury_yield(
-                    interval=ns_parser.interval,
-                    maturity=ns_parser.maturity,
-                    start_date=ns_parser.start,
-                    raw=ns_parser.raw,
-                    export=ns_parser.export,
-                )
-            elif type_upper == "UNEMP":
-                alphavantage_view.display_unemployment(
-                    start_year=ns_parser.start,
-                    raw=ns_parser.raw,
-                    export=ns_parser.export,
-                )
 
     @log_start_end(log=logger)
     def call_bigmac(self, other_args: List[str]):

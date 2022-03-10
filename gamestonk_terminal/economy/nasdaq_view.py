@@ -75,7 +75,10 @@ def display_big_mac_index(
 
         if raw:
             print_rich_table(
-                big_mac, headers=list(big_mac.columns), title="Big Mac Index"
+                big_mac,
+                headers=list(big_mac.columns),
+                title="Big Mac Index",
+                show_index=True,
             )
             console.print("")
 

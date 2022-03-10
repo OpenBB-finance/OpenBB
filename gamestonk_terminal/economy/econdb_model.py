@@ -264,7 +264,7 @@ def get_data(parameter: str, country: str, convert_currency: str = "USD") -> pd.
             df = (
                 df
                 * yf.Ticker(f"{convert_currency}{country_currency}=X").history(
-                    period="1d"
+                    start=df.index[0]
                 )["Close"][0]
             )
 
