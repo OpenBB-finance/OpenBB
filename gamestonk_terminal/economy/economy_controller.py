@@ -697,32 +697,43 @@ Index
             type=str,
             dest="maturity",
             help="The preferred maturity which is dependent on the type of the treasury",
-            default="1y",
+            default=["1y"],
+        )
+
+        parser.add_argument(
+            "-f",
+            "--frequency",
+            type=str,
+            dest="frequency",
+            choices=econdb_model.TREASURIES["frequencies"],
+            help="Whether to select nominal, inflation indexed or secondary market treasury bills",
+            default="monthly",
         )
 
         parser.add_argument(
             "-t",
             "--type",
             nargs="+",
+            type=str,
             dest="type",
-            choices=econdb_model.TREASURIES,
+            choices=econdb_model.TREASURIES["instruments"],
             help="Whether to select nominal, inflation indexed or secondary market treasury bills",
-            default="nominal",
+            default=["nominal"],
         )
 
         parser.add_argument(
             "-s",
             "--start_date",
             dest="start_date",
-            help="The start date of the data (format: YEAR-MONTH-DAY, i.e. 2010-12-31)",
-            default="2000-01-01",
+            help="The start date of the data (format: YEAR-DAY-MONTH, i.e. 2010-31-12)",
+            default="1934-01-31",
         )
 
         parser.add_argument(
             "-e",
             "--end_date",
             dest="end_date",
-            help="The end date of the data (format: YEAR-MONTH-DAY, i.e. 2021-06-20)",
+            help="The end date of the data (format: YEAR-DAY-MONTH, i.e. 2021-20-06)",
             default=date.today(),
         )
 
@@ -754,6 +765,7 @@ Index
             econdb_view.show_treasuries(
                 types=ns_parser.type,
                 maturities=ns_parser.maturity,
+                frequency=ns_parser.frequency,
                 start_date=ns_parser.start_date,
                 end_date=ns_parser.end_date,
                 raw=ns_parser.raw,

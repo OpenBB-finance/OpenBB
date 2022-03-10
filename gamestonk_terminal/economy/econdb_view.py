@@ -79,15 +79,15 @@ def show_macro_data(
     if maximum_value > 1_000_000_000:
         df_rounded = df / 1_000_000_000
         denomination = f"[{convert_currency} Billions]"
-    elif 1_000_000_000 > maximum_value:
+    elif maximum_value > 1_000_000:
         df_rounded = df / 1_000_000
         denomination = f"[{convert_currency} Millions]"
-    elif 1_000_000 > maximum_value:
+    elif maximum_value > 1_000:
         df_rounded = df / 1_000
         denomination = f"[{convert_currency} Thousands]"
     else:
         df_rounded = df
-        denomination = f"{convert_currency}"
+        denomination = f"[{convert_currency}]"
 
     for column in df_rounded.columns:
         country_label = column[0].replace("_", " ")
@@ -129,6 +129,7 @@ def show_macro_data(
 def show_treasuries(
     types: list,
     maturities: list,
+    frequency: str,
     start_date: str = None,
     end_date: str = None,
     raw: bool = False,
@@ -143,6 +144,8 @@ def show_treasuries(
         The type(s) of treasuries, nominal, inflation-adjusted or secondary market.
     maturities : list
        the maturities you wish to view.
+    frequency : str
+        The frequency of the data, this can be daily, weekly, monthly or annually
     start_date : str
         The starting date, format "YEAR-MONTH-DAY", i.e. 2010-12-31.
     end_date : str
@@ -163,7 +166,9 @@ def show_treasuries(
     else:
         ax = external_axes[0]
 
-    treasury_data = econdb_model.get_treasuries(types, maturities, start_date, end_date)
+    treasury_data = econdb_model.get_treasuries(
+        types, maturities, frequency, start_date, end_date
+    )
 
     for treasury, maturities_data in treasury_data.items():
         for maturity in maturities_data:

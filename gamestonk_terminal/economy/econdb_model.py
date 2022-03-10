@@ -1,6 +1,8 @@
 """ EconDB Model """
 __docformat__ = "numpy"
 
+# pylint: disable=no-member
+
 import logging
 from typing import Dict, Any
 from urllib.error import HTTPError
@@ -220,35 +222,67 @@ PARAMETERS = {
     "GDEBT": "Government debt",
     "CA": "Current account balance",
     "NIIP": "Net international investment position",
-    "Y10YD": "Long term yield",
+    "Y10YD": "Long term yield (10-year)",
     "M3YD": "3 month yield",
-    "HOU": "House price",
+    "HOU": "House price index",
     "OILPROD": "Oil production",
     "POP": "Population",
 }
 
-TREASURIES = {
-    "nominal": {
-        "1m": "1-month",
-        "3m": "3-month",
-        "6m": "6-month",
-        "1y": "1-year",
-        "2y": "2-year",
-        "3y": "3-year",
-        "5y": "5-year",
-        "7y": "7-year",
-        "10y": "10-year",
-        "20y": "20-year",
-        "30y": "30-year",
+TREASURIES: Dict = {
+    "frequencies": {
+        "monthly": 129,
+        "annual": 203,
+        "weekly": 21,
+        "daily": 9,
     },
-    "inflation": {
-        "5y": "5-year",
-        "7y": "7-year",
-        "10y": "10-year",
-        "20y": "20-year",
-        "30y": "30-year",
+    "instruments": {
+        "nominal": {
+            "identifier": "TCMNOM",
+            "maturities": {
+                "1m": "1-month",
+                "3m": "3-month",
+                "6m": "6-month",
+                "1y": "1-year",
+                "2y": "2-year",
+                "3y": "3-year",
+                "5y": "5-year",
+                "7y": "7-year",
+                "10y": "10-year",
+                "20y": "20-year",
+                "30y": "30-year",
+            },
+        },
+        "inflation": {
+            "identifier": "TCMII",
+            "maturities": {
+                "5y": "5-year",
+                "7y": "7-year",
+                "10y": "10-year",
+                "20y": "20-year",
+                "30y": "30-year",
+            },
+        },
+        "inflation_average": {
+            "identifier": "LTAVG",
+            "maturities": {
+                "5y": "5-year",
+                "7y": "7-year",
+                "10y": "10-year",
+                "20y": "20-year",
+                "30y": "30-year",
+            },
+        },
+        "secondary": {
+            "identifier": "TB",
+            "maturities": {
+                "4w": "4-week",
+                "3m": "3-month",
+                "6m": "6-month",
+                "1y": "1-year",
+            },
+        },
     },
-    "secondary": {"4w": "4-week", "3m": "3-month", "6m": "6-month", "1y": "1-year"},
 }
 
 
@@ -288,6 +322,12 @@ def get_macro_data(
             squeeze=True,
         )
 
+        if df.empty:
+            return console.print(
+                f"No data available for {parameter} ({PARAMETERS[parameter]}) "
+                f"of country {country.replace('_', ' ')}"
+            )
+
         if convert_currency and country_currency != convert_currency:
             df = (
                 df
@@ -301,27 +341,27 @@ def get_macro_data(
             f"There is no data available for the combination {parameter} and {country}."
         )
 
-    if df.empty:
-        return console.print(
-            f"No data available for {parameter} ({PARAMETERS[parameter]}) "
-            f"of country {country.replace('_', ' ')}"
-        )
-
     return df
 
 
 @log_start_end(log=logger)
 def get_treasuries(
-    types: list, maturities: list, start_date: str = None, end_date: str = None
+    instruments: list,
+    maturities: list,
+    frequency: str = "monthly",
+    start_date: str = None,
+    end_date: str = None,
 ) -> Dict[Any, Dict[Any, pd.Series]]:
     """Obtain U.S. Treasury Rates [Source: EconDB]
 
     Parameters
     ----------
-    types: list
-        The type(s) of treasuries, nominal, inflation-adjusted or secondary market.
+    instruments: list
+        The type(s) of treasuries, nominal, inflation-adjusted (long term average) or secondary market.
     maturities : list
        the maturities you wish to view.
+    frequency : str
+        The frequency of the data, this can be annually, monthly, weekly or daily.
     start_date : str
         The starting date, format "YEAR-MONTH-DAY", i.e. 2010-12-31.
     end_date : str
@@ -334,36 +374,43 @@ def get_treasuries(
     """
     treasury_data: Dict[Any, Dict[Any, pd.Series]] = {}
 
-    df = web.DataReader(
-        "&".join(
-            [
-                "dataset=FRB_H15",
-                "v=Instrument",
-                "h=TIME",
-                f"from={start_date}",
-                f"to={end_date}",
-                "UNIT=[PERCENT:_PER_YEAR]",
-            ]
-        ),
-        "econdb",
-    )
-
-    for treasury in types:
-        if treasury not in TREASURIES:
+    for instrument in instruments:
+        if instrument not in TREASURIES["instruments"]:
             console.print(
-                f"{treasury} is not an option. Please choose between: {', '.join(TREASURIES.keys())}"
+                f"{instrument} is not an option. Please choose between: "
+                f"{', '.join(TREASURIES['instruments'].keys())}"
             )
         else:
-            type_string = treasury.capitalize()
+            instrument_identifier = TREASURIES["instruments"][instrument]["identifier"]
+            frequency_number = TREASURIES["frequencies"][frequency]
+            df = web.DataReader(
+                "&".join(
+                    [
+                        "dataset=FRB_H15",
+                        "v=Instrument",
+                        "h=TIME",
+                        f"instrument=[{instrument_identifier}]",
+                        f"from={start_date}",
+                        f"to={end_date}",
+                        f"freq=[{frequency_number}",
+                        "UNIT=[PERCENT:_PER_YEAR]",
+                    ]
+                ),
+                "econdb",
+            )
+
+            type_string = instrument.capitalize()
             treasury_data[type_string] = {}
             for maturity in maturities:
-                if maturity not in TREASURIES[treasury]:
+                if maturity not in TREASURIES["instruments"][instrument]["maturities"]:
                     console.print(
-                        f"The maturity {maturity} is not an option for {treasury}. "
-                        f"Please choose between {', '.join(TREASURIES[treasury].keys())}"
+                        f"The maturity {maturity} is not an option for {instrument}. Please choose between "
+                        f"{', '.join(TREASURIES['instruments'][instrument]['maturities'].keys())}"
                     )
                 else:
-                    maturity_string = TREASURIES[treasury][maturity]
+                    maturity_string = TREASURIES["instruments"][instrument][
+                        "maturities"
+                    ][maturity]
 
                     for column in df.columns:
                         # check if type inside the name and maturity inside the maturity string
@@ -375,7 +422,7 @@ def get_treasuries(
 
                     if maturity_string not in treasury_data[type_string]:
                         console.print(
-                            f"No data found for the combination {treasury} and {maturity}."
+                            f"No data found for the combination {instrument} and {maturity}."
                         )
 
     return treasury_data
