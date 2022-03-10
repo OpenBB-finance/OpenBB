@@ -5,6 +5,8 @@ import sys
 import os
 from typing import List
 
+# pylint: disable=W0105
+
 """
 Disables this for a better solution. Here is the code to add in custom pre-commit items
   - repo: local
@@ -56,7 +58,7 @@ settings = {
     "API_BINANCE_SECRET": 'API_BINANCE_SECRET = os.getenv("GT_API_BINANCE_SECRET") or "REPLACE_ME"',
     "API_FINNHUB_KEY": 'API_FINNHUB_KEY = os.getenv("GT_API_FINNHUB_KEY") or "REPLACE_ME"',
     "API_IEX_TOKEN": 'API_IEX_TOKEN = os.getenv("GT_API_IEX_KEY") or "REPLACE_ME"',
-    "API_SENTIMENTINVESTOR_KEY": 'API_SENTIMENTINVESTOR_KEY = os.getenv("GT_API_SENTIMENTINVESTOR_KEY") or "REPLACE_ME"',
+    "API_SENTIMENTINVESTOR_TOKEN": 'API_SENTIMENTINVESTOR_TOKEN = os.getenv("GT_API_SENTIMENTINVESTOR_TOKEN") or "REPLACE_ME"',  # noqa
     "API_COINBASE_KEY": 'API_COINBASE_KEY = os.getenv("GT_API_COINBASE_KEY") or "REPLACE_ME"',
     "API_COINBASE_SECRET": 'API_COINBASE_SECRET = os.getenv("GT_API_COINBASE_SECRET") or "REPLACE_ME"',
     "API_COINBASE_PASS_PHRASE": 'API_COINBASE_PASS_PHRASE = os.getenv("GT_API_COINBASE_PASS_PHRASE") or "REPLACE_ME"',

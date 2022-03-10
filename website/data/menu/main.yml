@@ -518,6 +518,8 @@ main:
             ref: "/stocks/behavioural_analysis/jcdr"
           - name: jctr
             ref: "/stocks/behavioural_analysis/jctr"
+          - name: interest
+            ref: "/stocks/behavioural_analysis/interest"
           - name: wsb
             ref: "/common/behavioural_analysis/wsb"
           - name: watchlist
@@ -1233,6 +1235,12 @@ main:
   - name: "bot"
     ref: "/bot"
     sub:
+      - name: "GroupMe"
+        ref: "/bot/groupme"
+      - name: "Slack"
+        ref: "/bot/slack"
+      - name: "Telegram"
+        ref: "/bot/telegram"
       - name: "Discord"
         ref: "/bot/discord"
         sub:
