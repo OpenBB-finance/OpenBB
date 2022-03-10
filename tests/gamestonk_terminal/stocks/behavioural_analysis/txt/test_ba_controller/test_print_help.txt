@@ -25,6 +25,7 @@ Ticker: TSLA
 [Google]
     mentions      interest over time based on stock's mentions
     regions       regions that show highest interest in stock
+    interest      interest over time of sentences versus stock price
     queries       top related queries with this stock
     rise          top rising related queries with stock
 [SentimentInvestor]
