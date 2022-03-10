@@ -84,6 +84,8 @@ fastapi = {version = "^0.73.0", optional = true}
 uvicorn = {version = "^0.17.1", optional = true}
 disnake = {version = "^2.3.0", optional = true}
 PyNaCl = {version = "^1.5.0", optional = true}
+pyTelegramBotAPI = {version = "^4.4.0", optional = true}
+slack-bolt = {version = "^1.11.6", optional = true}
 ascii-magic = "^1.6"
 squarify = "^0.4.3"
 finnhub-python = "^2.4.10"
@@ -117,7 +119,7 @@ pytest-cov = "^3.0.0"
 
 [tool.poetry.extras]
 prediction = ["tensorflow"]
-discord = ["pyimgur", "df2img", "fastapi", "uvicorn", "disnake", "PyNaCl"]
+discord = ["pyimgur", "df2img", "fastapi", "uvicorn", "disnake", "PyNaCl", "pyTelegramBotAPI", "slack_bolt"]
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

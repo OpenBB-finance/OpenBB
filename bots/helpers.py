@@ -292,6 +292,35 @@ class ShowView:
             message = f"{title}\n{clean_desc}"
             send_message(message, group_id)
 
+    def slack(self, func, channel_id, user_id, client, *args, **kwargs):
+        data = func(*args, **kwargs)
+        if "imagefile" in data:
+            client.files_upload(
+                file=data["imagefile"],
+                initial_comment=data.get("title", ""),
+                channels=channel_id,
+                user_id=user_id,
+            )
+            os.remove(data["imagefile"])
+        elif "embeds_img" in data:
+            client.files_upload(
+                file=data["embeds_img"][0],
+                initial_comment=data.get("title", ""),
+                channels=channel_id,
+                user_id=user_id,
+            )
+            os.remove(data["embeds_img"][0])
+        elif "description" in data:
+            title = data.get("title", "")
+            description = data.get("description")
+            if isinstance(description, List):
+                clean_desc = description[0].replace("Page ", "")
+            else:
+                clean_desc = description.replace("Page ", "")
+            message = f"{title}\n{clean_desc}"
+            payload = {"channel": channel_id, "username": user_id, "text": message}
+            client.chat_postMessage(**payload)
+
     def telegram(self, func, message, bot, cmd, *args, **kwargs):
         data = func(*args, **kwargs)
         if "imagefile" in data:
@@ -306,7 +335,6 @@ class ShowView:
             os.remove(data["embeds_img"][0])
         elif "description" in data:
             title = data.get("title", "")
-            # TODO: Allow navigation through pages
             description = data.get("description")
             if isinstance(description, List):
                 clean_desc = description[0].replace("Page ", "")
