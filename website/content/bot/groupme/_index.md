@@ -6,7 +6,7 @@ geekdocCollapseSection: true
 
 WIP
 
-![GroupMe Bot](https://user-images.githubusercontent.com/43375532/157494575-72d7202f-7f1c-4093-a815-a2c3aac21835.png)
+[GroupmeDemo.mov.zip](https://github.com/GamestonkTerminal/GamestonkTerminal/files/8178584/Screen.Recording.2022-03-03.at.9.23.58.AM.mov.zip)
 
 No installation or signup is required, nor is there a need to be in a server setting to use the bot. Any user call it through direct messaging / commands to: [t.me/GamestonkTerminalBot](https://t.me/GamestonkTerminalBot)
 You can also invite the bot
