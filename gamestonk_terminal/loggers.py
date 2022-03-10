@@ -9,7 +9,7 @@ import sys
 import time
 import uuid
 from math import floor, ceil
-from threading import Thread
+import threading
 import requests
 
 import git
@@ -99,10 +99,20 @@ def setup_file_logger(app_name: str, session_id: str) -> None:
 
 
 class TimedRotatingFileHandlerWithUpload(TimedRotatingFileHandler):
+    def __init__(self, *args, **kwargs) -> None:
+        super().__init__(*args, **kwargs)
+        self.upload_thread_lock = threading.RLock()
+
     def doRollover(self) -> None:
         super().doRollover()
-        t = Thread(target=upload_archive_logs_s3, args=())
+        t = threading.Thread(target=self.upload_logs_as_thread, args=())
         t.start()
+
+    def upload_logs_as_thread(self) -> None:
+        with self.upload_thread_lock:
+            upload_archive_logs_s3(
+                directory_str="/".join(self.baseFilename.split("/")[:-1])
+            )
 
 
 class CustomFormatterWithExceptions(logging.Formatter):
@@ -334,11 +344,16 @@ def upload_archive_logs_s3(
         else:
             directory = Path(directory_str)
         archive = directory / "archive"
+        tmp = directory / "uploading"
 
         if not archive.exists():
             # Create a new directory because it does not exist
             archive.mkdir()
             logger.debug("The new archive directory is created!")
+        if not tmp.exists():
+            # Create a new directory because it does not exist
+            tmp.mkdir()
+            logger.debug("The new uploading directory is created!")
 
         log_files = {}
 
@@ -353,7 +368,12 @@ def upload_archive_logs_s3(
             if regexp.search(str(file)) and (
                 file.suffix == ".log" or one_day_old or contains_goodbye(file)
             ):
-                log_files[str(file)] = file, (archive / file.name)
+                try:
+                    file.rename(tmp / file.name)
+                except Exception as e:
+                    logger.exception("Cannot upload file: %s", str(e))
+
+                log_files[str(tmp / file.name)] = tmp / file.name, (archive / file.name)
 
         for log_file, archived_file in log_files.values():
             logger.info("Uploading logs")
