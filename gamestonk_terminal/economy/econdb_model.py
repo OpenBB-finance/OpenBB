@@ -2,9 +2,11 @@
 __docformat__ = "numpy"
 
 import logging
+from typing import Dict, Any
 from urllib.error import HTTPError
 
 import pandas as pd
+import pandas_datareader.data as web
 import yfinance as yf
 
 from gamestonk_terminal.decorators import log_start_end
@@ -225,9 +227,35 @@ PARAMETERS = {
     "POP": "Population",
 }
 
+TREASURIES = {
+    "nominal": {
+        "1m": "1-month",
+        "3m": "3-month",
+        "6m": "6-month",
+        "1y": "1-year",
+        "2y": "2-year",
+        "3y": "3-year",
+        "5y": "5-year",
+        "7y": "7-year",
+        "10y": "10-year",
+        "20y": "20-year",
+        "30y": "30-year",
+    },
+    "inflation": {
+        "5y": "5-year",
+        "7y": "7-year",
+        "10y": "10-year",
+        "20y": "20-year",
+        "30y": "30-year",
+    },
+    "secondary": {"4w": "4-week", "3m": "3-month", "6m": "6-month", "1y": "1-year"},
+}
+
 
 @log_start_end(log=logger)
-def get_data(parameter: str, country: str, convert_currency: str = "USD") -> pd.Series:
+def get_macro_data(
+    parameter: str, country: str, convert_currency: str = "USD"
+) -> pd.Series:
     """Query the EconDB database to find specific macro data about a company [Source: EconDB]
 
     Parameters
@@ -280,3 +308,74 @@ def get_data(parameter: str, country: str, convert_currency: str = "USD") -> pd.
         )
 
     return df
+
+
+@log_start_end(log=logger)
+def get_treasuries(
+    types: list, maturities: list, start_date: str = None, end_date: str = None
+) -> Dict[Any, Dict[Any, pd.Series]]:
+    """Obtain U.S. Treasury Rates [Source: EconDB]
+
+    Parameters
+    ----------
+    types: list
+        The type(s) of treasuries, nominal, inflation-adjusted or secondary market.
+    maturities : list
+       the maturities you wish to view.
+    start_date : str
+        The starting date, format "YEAR-MONTH-DAY", i.e. 2010-12-31.
+    end_date : str
+        The end date, format "YEAR-MONTH-DAY", i.e. 2020-06-05.
+
+    Returns
+    ----------
+    treasury_data: dict
+        Holds data of the selected types and maturities
+    """
+    treasury_data: Dict[Any, Dict[Any, pd.Series]] = {}
+
+    df = web.DataReader(
+        "&".join(
+            [
+                "dataset=FRB_H15",
+                "v=Instrument",
+                "h=TIME",
+                f"from={start_date}",
+                f"to={end_date}",
+                "UNIT=[PERCENT:_PER_YEAR]",
+            ]
+        ),
+        "econdb",
+    )
+
+    for treasury in types:
+        if treasury not in TREASURIES:
+            console.print(
+                f"{treasury} is not an option. Please choose between: {', '.join(TREASURIES.keys())}"
+            )
+        else:
+            type_string = treasury.capitalize()
+            treasury_data[type_string] = {}
+            for maturity in maturities:
+                if maturity not in TREASURIES[treasury]:
+                    console.print(
+                        f"The maturity {maturity} is not an option for {treasury}. "
+                        f"Please choose between {', '.join(TREASURIES[treasury].keys())}"
+                    )
+                else:
+                    maturity_string = TREASURIES[treasury][maturity]
+
+                    for column in df.columns:
+                        # check if type inside the name and maturity inside the maturity string
+                        if type_string in column[2] and maturity_string in column[3]:
+                            treasury_data[type_string][maturity_string] = df[
+                                column
+                            ].dropna()
+                            break
+
+                    if maturity_string not in treasury_data[type_string]:
+                        console.print(
+                            f"No data found for the combination {treasury} and {maturity}."
+                        )
+
+    return treasury_data

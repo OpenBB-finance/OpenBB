@@ -5,7 +5,9 @@ __docformat__ = "numpy"
 import argparse
 import logging
 import os
+from datetime import date
 from typing import List, Dict
+
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 
@@ -25,7 +27,6 @@ from gamestonk_terminal.economy import (
     yfinance_model,
     yfinance_view,
 )
-
 from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_FIGURES_ALLOWED,
@@ -50,7 +51,8 @@ class EconomyController(BaseController):
         "futures",
         "macro",
         "fred",
-        "indices",
+        "index",
+        "treasury",
         "valuation",
         "performance",
         "spectrum",
@@ -196,7 +198,8 @@ Overview
 Macro Data
     macro         collect macro data for a country or countries [src][Source: EconDB][/src]
     fred          collect macro data from FRED based on a series ID [src][Source: FRED][/src]
-    indices       show the most important indices worldwide [src][Source: Yahoo Finance][/src]
+    index         find and plot any (major) index on the market [src][Source: Yahoo Finance][/src]
+    treasury      obtain U.S. treasury rates [src][Source: EconDB][/src]
 
 Performance & Valuations
     rtps          real-time performance sectors [src][Source: Alpha Vantage][/src]
@@ -206,7 +209,7 @@ Performance & Valuations
 
 Index
     feargreed     CNN Fear and Greed Index [src][Source: CNN][/src]
-    bigmac        the economists Big Mac index [src][Source: NASDAQ Datalink][/src][/cmds]
+    bigmac        The Economist Big Mac index [src][Source: NASDAQ Datalink][/src][/cmds]
 [menu]
 >   pred          Open the prediction menu to analyse FRED series[/menu]
 """
@@ -449,7 +452,7 @@ Index
                     headers=["Country", "Currency"],
                 )
             elif ns_parser.parameters and ns_parser.countries:
-                econdb_view.show_data(
+                econdb_view.show_macro_data(
                     parameters=ns_parser.parameters,
                     countries=ns_parser.countries,
                     start_date=ns_parser.start_date,
@@ -465,7 +468,7 @@ Index
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="fred",
-            description="Print series notes when searching for series. [Source: FRED]",
+            description="Query the FRED database and plot data based on the Series ID. [Source: FRED]",
         )
 
         parser.add_argument(
@@ -490,7 +493,7 @@ Index
             action="store",
             dest="query",
             type=str,
-            help="Query for this series search term.",
+            help="Query the FRED database to obtain Series IDs given the query seaarch term.",
         )
 
         parser.add_argument(
@@ -674,6 +677,87 @@ Index
                     raw=ns_parser.raw,
                     export=ns_parser.export,
                 )
+
+    @log_start_end(log=logger)
+    def call_treasury(self, other_args: List[str]):
+        """Process treasury command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="treasury",
+            description="Obtain any set of U.S. treasuries and plot them together. These can be a range of maturities "
+            "for nominal, inflation-adjusted and secondary markets over a lengthy period. "
+            "[Source: EconDB / FED]",
+        )
+
+        parser.add_argument(
+            "-m",
+            "--maturity",
+            nargs="+",
+            type=str,
+            dest="maturity",
+            help="The preferred maturity which is dependent on the type of the treasury",
+            default="1y",
+        )
+
+        parser.add_argument(
+            "-t",
+            "--type",
+            nargs="+",
+            dest="type",
+            choices=econdb_model.TREASURIES,
+            help="Whether to select nominal, inflation indexed or secondary market treasury bills",
+            default="nominal",
+        )
+
+        parser.add_argument(
+            "-s",
+            "--start_date",
+            dest="start_date",
+            help="The start date of the data (format: YEAR-MONTH-DAY, i.e. 2010-12-31)",
+            default="2000-01-01",
+        )
+
+        parser.add_argument(
+            "-e",
+            "--end_date",
+            dest="end_date",
+            help="The end date of the data (format: YEAR-MONTH-DAY, i.e. 2021-06-20)",
+            default=date.today(),
+        )
+
+        parser.add_argument(
+            "-l",
+            "--limit",
+            type=str,
+            dest="limit",
+            help="Takes into account the amount of rows you wish to see for your query ('-q').",
+            default=10,
+        )
+
+        parser.add_argument(
+            "-r",
+            "--raw",
+            dest="raw",
+            help="Show raw data",
+            action="store_true",
+            default=False,
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-m")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        if ns_parser and ns_parser.maturity and ns_parser.type:
+            econdb_view.show_treasuries(
+                types=ns_parser.type,
+                maturities=ns_parser.maturity,
+                start_date=ns_parser.start_date,
+                end_date=ns_parser.end_date,
+                raw=ns_parser.raw,
+            )
 
     @log_start_end(log=logger)
     def call_map(self, other_args: List[str]):
