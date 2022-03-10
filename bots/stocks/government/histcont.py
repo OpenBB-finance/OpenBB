@@ -18,7 +18,7 @@ def histcont_command(ticker=""):
     """Displays historical quarterly-contracts [quiverquant.com]"""
     # Debug user input
     if cfg.DEBUG:
-        logger.debug("gov-histcont %s", ticker)
+        logger.debug("gov histcont %s", ticker)
 
     if ticker == "":
         raise Exception("A ticker is required")

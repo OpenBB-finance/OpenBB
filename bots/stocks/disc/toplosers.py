@@ -59,7 +59,6 @@ def losers_command(num: int = 10):
         i, i2, end = 0, 0, 15
         df_pg = []
         embeds_img = []
-        dindex = len(df.index)
         while i < dindex:
             df_pg = df.iloc[i:end]
             df_pg.append(df_pg)

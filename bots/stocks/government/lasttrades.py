@@ -17,7 +17,7 @@ def lasttrades_command(gov_type="", past_days: int = 5, representative=""):
     # Debug user input
     if cfg.DEBUG:
         logger.debug(
-            "gov-lasttrades %s %s %s",
+            "gov lasttrades %s %s %s",
             gov_type,
             past_days,
             representative,

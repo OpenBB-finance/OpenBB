@@ -22,7 +22,7 @@ def oi_command(
 
     # Debug
     if cfg.DEBUG:
-        logger.debug("opt-oi %s %s %s %s", ticker, expiry, min_sp, max_sp)
+        logger.debug("opt oi %s %s %s %s", ticker, expiry, min_sp, max_sp)
 
     # Check for argument
     if ticker is None:
@@ -52,6 +52,8 @@ def oi_command(
 
     call_oi = calls.set_index("strike")["openInterest"] / 1000
     put_oi = puts.set_index("strike")["openInterest"] / 1000
+    call_oi = call_oi.fillna(0.0)
+    put_oi = put_oi.fillna(0.0)
 
     df_opt = pd.merge(call_oi, put_oi, left_index=True, right_index=True)
     df_opt = df_opt.rename(
@@ -114,6 +116,10 @@ def oi_command(
         legend_title="",
         xaxis_title="Strike",
         yaxis_title="Open Interest (1k)",
+        yaxis=dict(
+            fixedrange=False,
+            nticks=20,
+        ),
         xaxis=dict(
             rangeslider=dict(visible=False),
         ),

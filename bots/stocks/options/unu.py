@@ -92,7 +92,6 @@ def unu_command(num: int = None):
         i, i2, end = 0, 0, 20
         df_pg = []
         embeds_img = []
-        dindex = len(df.index)
         while i < dindex:
             df_pg = df.iloc[i:end]
             df_pg.append(df_pg)

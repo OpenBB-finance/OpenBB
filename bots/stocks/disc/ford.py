@@ -52,8 +52,8 @@ def ford_command():
         df_pg.append(df_pg)
         fig = df2img.plot_dataframe(
             df_pg,
-            fig_size=(1500, (40 + (40 * dindex))),
-            col_width=[1, 3, 2.2, 3, 2, 2],
+            fig_size=(1400, (40 + (40 * dindex))),
+            col_width=[1, 2.3, 2.2, 4, 2, 2],
             tbl_header=cfg.PLT_TBL_HEADER,
             tbl_cells=cfg.PLT_TBL_CELLS,
             font=cfg.PLT_TBL_FONT,
@@ -62,7 +62,7 @@ def ford_command():
         fig.update_traces(
             cells=(
                 dict(
-                    align=["left", "center", "left", "left", "center"],
+                    align=["center"],
                     font=dict(color=font_color),
                 )
             )

@@ -50,6 +50,8 @@ def vol_command(
     puts = options.puts
     call_v = calls.set_index("strike")["volume"] / 1000
     put_v = puts.set_index("strike")["volume"] / 1000
+    call_v = call_v.fillna(0.0)
+    put_v = put_v.fillna(0.0)
 
     df_opt = pd.merge(put_v, call_v, left_index=True, right_index=True)
     dmax = df_opt.values.max()
@@ -96,6 +98,10 @@ def vol_command(
         legend_title="",
         xaxis_title="Strike",
         yaxis_title="Volume (1k)",
+        yaxis=dict(
+            fixedrange=False,
+            nticks=20,
+        ),
         xaxis=dict(
             rangeslider=dict(visible=False),
         ),

@@ -36,7 +36,7 @@ def indices_command():
     # Debug user output
     if cfg.DEBUG:
         logger.debug(df)
-
+    df.set_index(" ", inplace=True)
     df = df[
         [
             "Price",
@@ -46,7 +46,6 @@ def indices_command():
     ]
 
     df = df.fillna("")
-    df.set_index(" ", inplace=True)
 
     dindex = len(df.index)
     fig = df2img.plot_dataframe(

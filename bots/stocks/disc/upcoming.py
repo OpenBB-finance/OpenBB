@@ -41,7 +41,6 @@ def earnings_command():
         i, i2, end = 0, 0, 15
         df_pg = []
         embeds_img = []
-        dindex = len(df_earn.index)
         while i < dindex:
             df_pg = df_earn.iloc[i:end]
             df_pg.append(df_pg)

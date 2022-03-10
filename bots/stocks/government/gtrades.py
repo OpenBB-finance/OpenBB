@@ -26,7 +26,7 @@ def gtrades_command(
     # Debug user input
     if cfg.DEBUG:
         logger.debug(
-            "gov-gtrades %s %s %s %s",
+            "gov gtrades %s %s %s %s",
             ticker,
             gov_type,
             past_transactions_months,

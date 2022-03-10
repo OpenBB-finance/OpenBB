@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime, timedelta
 
 import df2img
 import pandas as pd
@@ -28,6 +29,8 @@ def futures_command():
 
     df["Last Price"] = pd.to_numeric(df["Last Price"].astype(float))
     df["Change"] = pd.to_numeric(df["Change"].astype(float))
+    m1 = datetime.now().strftime("%b")
+    m2 = (datetime.now() + timedelta(days=30)).strftime("%b")
 
     formats = {"Last Price": "${:.2f}", "Change": "${:.2f}"}
     for col, value in formats.items():
@@ -38,8 +41,8 @@ def futures_command():
         df["Name"]
         .replace(
             to_replace=[
-                "Mar",
-                "Apr",
+                f"{m1}",
+                f"{m2}",
                 "22",
                 "\\$5",
                 ",-",
@@ -49,6 +52,7 @@ def futures_command():
                 "Futures",
                 "Futur",
                 "Indus",
+                ",Ju",
             ],
             value="",
             regex=True,

@@ -22,7 +22,7 @@ def contracts_command(
     past_transaction_days = int(past_transaction_days)
     # Debug user input
     if cfg.DEBUG:
-        logger.debug("gov-contracts %s %s %s", ticker, past_transaction_days, raw)
+        logger.debug("gov contracts %s %s %s", ticker, past_transaction_days, raw)
 
     if ticker == "":
         raise Exception("A ticker is required")

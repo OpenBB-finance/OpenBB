@@ -27,7 +27,7 @@ def vsurf_command(
 
     # Debug
     if cfg.DEBUG:
-        logger.debug("opt-oi %s %s", ticker, z)
+        logger.debug("opt oi %s %s", ticker, z)
 
     # Check for argument
     if ticker == "":

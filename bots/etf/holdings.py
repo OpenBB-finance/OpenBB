@@ -36,7 +36,6 @@ def holdings_command(etf="", num: int = 15):
         i, i2, end = 0, 0, 15
         df_pg = []
         embeds_img = []
-        dindex = len(holdings.index)
         while i < dindex:
             df_pg = holdings.iloc[i:end]
             df_pg.append(df_pg)
