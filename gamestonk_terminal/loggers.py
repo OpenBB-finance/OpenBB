@@ -9,9 +9,9 @@ import sys
 import time
 import uuid
 from math import floor, ceil
+from threading import Thread
 import requests
 
-import schedule
 import git
 import boto3
 from botocore.exceptions import ClientError
@@ -89,13 +89,20 @@ def setup_file_logger(app_name: str, session_id: str) -> None:
 
     logger.debug("Current_log file: %s", cfg.LOGGING_FILE)
 
-    handler = TimedRotatingFileHandler(cfg.LOGGING_FILE)
+    handler = TimedRotatingFileHandlerWithUpload(cfg.LOGGING_FILE, when="M")
     handler.suffix += ".log"
     formatter = CustomFormatterWithExceptions(
         app_name, uuid_log_dir.stem, session_id, fmt=LOGFORMAT, datefmt=DATEFORMAT
     )
     handler.setFormatter(formatter)
     logging.getLogger().addHandler(handler)
+
+
+class TimedRotatingFileHandlerWithUpload(TimedRotatingFileHandler):
+    def doRollover(self) -> None:
+        super().doRollover()
+        t = Thread(target=upload_archive_logs_s3, args=())
+        t.start()
 
 
 class CustomFormatterWithExceptions(logging.Formatter):
@@ -315,7 +322,7 @@ def contains_goodbye(file: Path) -> bool:
 
 def upload_archive_logs_s3(
     directory_str=None,
-    log_filter=r"gst_\d{10}\.20[2-3][0-9]-[0-2][0-9]-[0-3][0-9]_[0-2][0-9]\.log",
+    log_filter=r"gst_\d{10}\.20[2-3][0-9]-[0-2][0-9]-[0-3][0-9]_[0-2][0-9]-[0-5][0-9]\.log",
     bucket=None,
     folder_name=FOLDER_NAME,
 ) -> None:
@@ -359,10 +366,3 @@ def upload_archive_logs_s3(
                 logger.exception("Cannot archive file: %s", str(e))
     else:
         logger.info("Logs not allowed to be collected")
-
-
-def periodically_upload_logs() -> None:
-    schedule.every(65).minutes.do(upload_archive_logs_s3)
-    while True:
-        schedule.run_pending()
-        time.sleep(60)  # Wait a minute
