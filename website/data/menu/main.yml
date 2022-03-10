@@ -54,8 +54,6 @@ main:
             ref: "/stocks/discovery/rtat"
           - name: divcal
             ref: "/stocks/discovery/divcal"
-          - name: cramer
-            ref: "/stocks/discovery/cramer"
       - name: Sector and Industry Analysis (SIA)
         ref: "/stocks/sia"
         sub:
@@ -516,6 +514,10 @@ main:
             ref: "/common/behavioural_analysis/stats"
           - name: snews
             ref: "/stocks/behavioural_analysis/snews"
+          - name: jcdr
+            ref: "/stocks/behavioural_analysis/jcdr"
+          - name: jctr
+            ref: "/stocks/behavioural_analysis/jctr"
           - name: interest
             ref: "/stocks/behavioural_analysis/interest"
           - name: wsb

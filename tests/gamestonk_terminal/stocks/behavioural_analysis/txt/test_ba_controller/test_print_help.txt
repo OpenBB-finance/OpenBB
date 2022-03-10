@@ -31,4 +31,7 @@ Ticker: TSLA
 [SentimentInvestor]
     trend         most talked about tickers within the last hour
     hist          plot historical RHI and AHI data by hour
+[Jim Cramer]
+    jcdr          Jim Cramer's daily recommendations
+    jctr          Jim Cramer's recommendations by ticker
         
