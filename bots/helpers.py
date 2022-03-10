@@ -1,4 +1,5 @@
 import os
+from this import d
 from typing import List
 import uuid
 
@@ -295,14 +296,15 @@ class ShowView:
     def telegram(self, func, message, bot, cmd, *args, **kwargs):
         data = func(*args, **kwargs)
         if "imagefile" in data:
-            # send_image(data["imagefile"], group_id, data.get("description", ""), True)
             with open(data["imagefile"], "rb") as image:
                 bot.reply_to(message, data["title"])
                 bot.send_photo(message.chat.id, image)
+            os.remove(data["imagefile"])
         elif "embeds_img" in data:
             with open(data["embeds_img"][0], "rb") as image:
                 bot.reply_to(message, data["title"])
                 bot.send_photo(message.chat.id, image)
+            os.remove(data["embeds_img"][0])
         elif "description" in data:
             title = data.get("title", "")
             # TODO: Allow navigation through pages
