@@ -5,7 +5,7 @@ __docformat__ = "numpy"
 import argparse
 import logging
 import os
-from typing import List
+from typing import List, Dict
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 
@@ -20,6 +20,8 @@ from gamestonk_terminal.economy import (
     wsj_view,
     econdb_view,
     econdb_model,
+    fred_view,
+    fred_model,
     yfinance_model,
     yfinance_view,
 )
@@ -30,6 +32,8 @@ from gamestonk_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     parse_known_args_and_warn,
     print_rich_table,
+    valid_date,
+    check_positive,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.parent_classes import BaseController
@@ -45,6 +49,7 @@ class EconomyController(BaseController):
         "overview",
         "futures",
         "macro",
+        "fred",
         "indices",
         "valuation",
         "performance",
@@ -56,7 +61,8 @@ class EconomyController(BaseController):
         "bigmac",
         "resources",
     ]
-    CHOICES_MENUS = ["fred"]
+
+    CHOICES_MENUS = ["pred"]
 
     fear_greed_indicators = ["jbd", "mv", "pco", "mm", "sps", "spb", "shd", "index"]
     wsj_sortby_cols_dict = {c: None for c in ["ticker", "last", "change", "prevClose"]}
@@ -140,6 +146,8 @@ class EconomyController(BaseController):
         """Constructor"""
         super().__init__(queue)
 
+        self.current_series: Dict = dict()
+
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["overview"] = {c: None for c in self.overview_options}
@@ -183,10 +191,11 @@ class EconomyController(BaseController):
 Overview
     overview      show a market overview of either indices, bonds or currencies [src][Source: Wall St. Journal][/src]
     futures       display a futures and commodities overview [src][Source: Wall St. Journal / FinViz][/src]
-    map           S&P500 index stocks map [src][Source: FinViz][/src]
+    map           S&P500 index stocks map [src][Source: FinViz][/src]s
 
 Macro Data
     macro         collect macro data for a country or countries [src][Source: EconDB][/src]
+    fred          collect macro data from FRED based on a series ID [src][Source: FRED][/src]
     indices       show the most important indices worldwide [src][Source: Yahoo Finance][/src]
 
 Performance & Valuations
@@ -198,9 +207,8 @@ Performance & Valuations
 Index
     feargreed     CNN Fear and Greed Index [src][Source: CNN][/src]
     bigmac        the economists Big Mac index [src][Source: NASDAQ Datalink][/src][/cmds]
-
 [menu]
->   fred          Federal Reserve Economic Data submenu[/menu]
+>   pred          Open the prediction menu to analyse FRED series[/menu]
 """
         console.print(text=help_text, menu="Economy")
 
@@ -351,7 +359,7 @@ Index
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="macro",
-            description="Get a broad selection of macro data from one or multiple companies. [Source: EconDB]",
+            description="Get a broad selection of macro data from one or multiple countries. [Source: EconDB]",
         )
 
         parser.add_argument(
@@ -449,6 +457,89 @@ Index
                     convert_currency=ns_parser.convert_currency,
                     raw=ns_parser.raw,
                     export=ns_parser.export,
+                )
+
+    def call_fred(self, other_args: List[str]):
+        """Process fred command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="fred",
+            description="Print series notes when searching for series. [Source: FRED]",
+        )
+
+        parser.add_argument(
+            "-p",
+            "--parameter",
+            nargs="+",
+            dest="parameter",
+            help="Series ID of the Macro Economic data from FRED",
+        )
+
+        parser.add_argument(
+            "-s",
+            dest="start_date",
+            type=valid_date,
+            default="2020-01-01",
+            help="Starting date (YYYY-MM-DD) of data",
+        )
+
+        parser.add_argument(
+            "-q",
+            "--query",
+            action="store",
+            dest="query",
+            type=str,
+            help="Query for this series search term.",
+        )
+
+        parser.add_argument(
+            "-l",
+            "--limit",
+            dest="limit",
+            help="Number of rows to show for limit",
+            type=check_positive,
+            default=5,
+        )
+
+        parser.add_argument(
+            "--raw",
+            help="Flag to show raw data",
+            dest="raw",
+            action="store_true",
+            default=False,
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-p")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if ns_parser:
+            if ns_parser.query:
+                fred_view.notes(
+                    series_term=ns_parser.query,
+                    num=ns_parser.limit,
+                )
+            if ns_parser.parameter:
+                series_dict = {}
+                for series in ns_parser.parameter:
+                    information = fred_model.check_series_id(series)
+
+                    if "seriess" in information:
+                        series_dict[series] = {
+                            "title": information["seriess"][0]["title"],
+                            "units": information["seriess"][0]["units_short"],
+                        }
+
+                    self.current_series = {series: series_dict[series]}
+
+                fred_view.display_fred_series(
+                    series_dict,
+                    ns_parser.start_date,
+                    ns_parser.raw,
+                    ns_parser.export,
+                    ns_parser.limit,
                 )
 
     @log_start_end(log=logger)
@@ -850,8 +941,16 @@ Index
                 )
 
     @log_start_end(log=logger)
-    def call_fred(self, _):
-        """Process fred command"""
-        from gamestonk_terminal.economy.fred.fred_controller import FredController
+    def call_pred(self, _):
+        """Process pred command"""
+        if not self.current_series:
+            console.print("Please select 1 FRED Series to use.\n")
+            return
 
-        self.queue = self.load_class(FredController, self.queue)
+        from gamestonk_terminal.economy.prediction.pred_controller import (
+            PredictionTechniquesController,
+        )
+
+        self.queue = self.load_class(
+            PredictionTechniquesController, self.current_series, self.queue
+        )

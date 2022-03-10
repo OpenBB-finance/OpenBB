@@ -7,7 +7,6 @@ import pytest
 
 # IMPORTATION INTERNAL
 from gamestonk_terminal.economy import economy_controller
-from gamestonk_terminal.economy.fred.fred_controller import FredController
 
 # pylint: disable=E1101
 # pylint: disable=W0603
@@ -545,13 +544,6 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 raw=True,
                 export="csv",
             ),
-        ),
-        (
-            "call_fred",
-            [],
-            "EconomyController.load_class",
-            [FredController, []],
-            dict(),
         ),
     ],
 )

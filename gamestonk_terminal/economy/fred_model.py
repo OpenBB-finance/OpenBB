@@ -131,6 +131,7 @@ def get_series_ids(series_term: str, num: int) -> Tuple[List[str], List[str]]:
 
     df_series = pd.DataFrame(d_series["seriess"])
     df_series = df_series.sort_values(by=["popularity"], ascending=False).head(num)
+
     return df_series["id"].values, df_series["title"].values
 
 

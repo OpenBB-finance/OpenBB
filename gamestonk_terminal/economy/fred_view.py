@@ -15,7 +15,7 @@ from gamestonk_terminal.decorators import check_api_key
 from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.decorators import log_start_end
-from gamestonk_terminal.economy.fred import fred_model
+from gamestonk_terminal.economy import fred_model
 from gamestonk_terminal.helper_funcs import (
     export_data,
     plot_autoscale,

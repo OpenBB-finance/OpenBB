@@ -22,7 +22,7 @@ from gamestonk_terminal.common.prediction_techniques import (
     regression_view,
 )
 from gamestonk_terminal.decorators import log_start_end
-from gamestonk_terminal.economy.fred import fred_model
+from gamestonk_terminal.economy import fred_model
 from gamestonk_terminal.helper_funcs import (
     EXPORT_ONLY_FIGURES_ALLOWED,
     check_positive,
@@ -52,7 +52,7 @@ class PredictionTechniquesController(BaseController):
         "conv1d",
         "mc",
     ]
-    PATH = "/economy/fred/pred/"
+    PATH = "/economy/pred/"
 
     def __init__(
         self,
