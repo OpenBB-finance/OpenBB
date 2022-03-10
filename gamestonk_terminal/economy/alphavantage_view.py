@@ -64,7 +64,7 @@ def realtime_performance_sector(
         theme.style_primary_axis(ax)
         ax.set_title("Real Time Performance (%) per Sector")
         ax.tick_params(axis="x", labelrotation=90)
-        ax.yaxis.set_major_formatter(matplotlib.ticker.FormatStrFormatter("%.2f"))
+        ax.xaxis.set_major_formatter(matplotlib.ticker.FormatStrFormatter("%.2f"))
 
         if external_axes is None:
             theme.visualize_output()
