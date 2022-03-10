@@ -1,12 +1,11 @@
 """Google View."""
 __docformat__ = "numpy"
 
-from datetime import datetime
 import logging
 import os
 from typing import Optional, List
+import pandas as pd
 
-import yfinance as yf
 import matplotlib.pyplot as plt
 
 from gamestonk_terminal.config_terminal import theme
@@ -86,8 +85,8 @@ def display_mentions(
 @log_start_end(log=logger)
 def display_correlation_interest(
     ticker: str,
+    df_data: pd.DataFrame,
     words: List[str],
-    start: datetime,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -97,67 +96,60 @@ def display_correlation_interest(
     ----------
     ticker : str
         Ticker to check price
+    df_data : pd.DataFrame
+        Data dataframe
     words : List[str]
         Words to check for interest for
-    start : datetime
-        Start date
     export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    df_stock = yf.download(
-        ticker,
-        start=start.strftime("%Y-%m-%d"),
-        progress=False,
+
+    # This plot has 1 axis
+    if external_axes is None:
+        _, ax = plt.subplots(
+            figsize=plot_autoscale(),
+            dpi=PLOT_DPI,
+            nrows=2,
+            ncols=1,
+            sharex=True,
+            gridspec_kw={"height_ratios": [1, 2]},
+        )
+    else:
+        if len(external_axes) != 1:
+            logger.error("Expected list of one axis item.")
+            console.print("[red]Expected list of one axis item./n[/red]")
+            return
+        (ax,) = external_axes
+    ax[0].set_title(
+        f"{ticker.upper()} stock price and interest over time on {','.join(words)}"
     )
+    ax[0].plot(
+        df_data.index,
+        df_data["Adj Close"].values,
+        c="#FCED00",
+    )
+    ax[0].set_ylabel("Stock Price")
+    ax[0].set_xlim(df_data.index[0], df_data.index[-1])
 
-    if not df_stock.empty:
+    colors = theme.get_colors()[1:]
+    for idx, word in enumerate(words):
+        df_interest = google_model.get_mentions(word)
+        ax[1].plot(df_interest.index, df_interest[word], "-", color=colors[idx])
 
-        # This plot has 1 axis
-        if external_axes is None:
-            _, ax = plt.subplots(
-                figsize=plot_autoscale(),
-                dpi=PLOT_DPI,
-                nrows=2,
-                ncols=1,
-                sharex=True,
-                gridspec_kw={"height_ratios": [1, 2]},
-            )
-        else:
-            if len(external_axes) != 1:
-                logger.error("Expected list of one axis item.")
-                console.print("[red]Expected list of one axis item./n[/red]")
-                return
-            (ax,) = external_axes
-        ax[0].set_title(
-            f"{ticker.upper()} stock price and interest over time on {','.join(words)}"
-        )
-        ax[0].plot(
-            df_stock.index,
-            df_stock["Adj Close"].values,
-            c="#FCED00",
-        )
-        ax[0].set_ylabel("Stock Price")
-        ax[0].set_xlim(df_stock.index[0], df_stock.index[-1])
+    ax[1].set_ylabel("Interest [%]")
+    ax[1].set_xlim(df_data.index[0], df_data.index[-1])
+    ax[1].legend(words)
+    theme.style_primary_axis(ax[0])
+    theme.style_primary_axis(ax[1])
 
-        colors = theme.get_colors()[1:]
-        for idx, word in enumerate(words):
-            df_interest = google_model.get_mentions(word)
-            ax[1].plot(df_interest.index, df_interest[word], "-", color=colors[idx])
+    if external_axes is None:
+        theme.visualize_output()
 
-        ax[1].set_ylabel("Interest [%]")
-        ax[1].set_xlim(df_stock.index[0], df_stock.index[-1])
-        ax[1].legend(words)
-        theme.style_primary_axis(ax[0])
-        theme.style_primary_axis(ax[1])
-
-        if external_axes is None:
-            theme.visualize_output()
-
-        export_data(
-            export, os.path.dirname(os.path.abspath(__file__)), "interest", df_interest
-        )
+    export_data(
+        export, os.path.dirname(os.path.abspath(__file__)), "interest", df_interest
+    )
 
 
 @log_start_end(log=logger)

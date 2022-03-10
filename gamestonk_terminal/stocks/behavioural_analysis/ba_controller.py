@@ -6,6 +6,7 @@ import logging
 from datetime import datetime, timedelta
 from typing import List
 
+import yfinance as yf
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import feature_flags as gtff
@@ -532,7 +533,7 @@ class BehaviouralAnalysisController(StockBaseController):
             "--start",
             type=valid_date,
             dest="start",
-            default=self.start,
+            default=(datetime.now() - timedelta(days=2 * 366)).strftime("%Y-%m-%d"),
             help="starting date (format YYYY-MM-DD) of interest",
         )
         parser.add_argument(
@@ -551,19 +552,30 @@ class BehaviouralAnalysisController(StockBaseController):
         if ns_parser:
             if self.ticker:
                 if ns_parser.words:
-                    google_view.display_correlation_interest(
-                        ticker=self.ticker,
-                        words=ns_parser.words,
-                        start=ns_parser.start,
-                        export=ns_parser.export,
+                    df_stock = yf.download(
+                        self.ticker,
+                        start=ns_parser.start.strftime("%Y-%m-%d"),
+                        progress=False,
                     )
+
+                    if not df_stock.empty:
+                        google_view.display_correlation_interest(
+                            ticker=self.ticker,
+                            df_data=df_stock,
+                            words=ns_parser.words,
+                            export=ns_parser.export,
+                        )
+                    else:
+                        console.print(
+                            "[red]Ticker provided doesn't exist, load another one.\n[/red]"
+                        )
                 else:
                     console.print(
-                        "[red]Words or sentences to be correlated against with, need to be provided\n[/red]"
+                        "[red]Words or sentences to be correlated against with, need to be provided.\n[/red]"
                     )
             else:
                 console.print(
-                    "[red]No ticker loaded. Please load using 'load <ticker>'\n[/red]"
+                    "[red]No ticker loaded. Please load using 'load <ticker>'.\n[/red]"
                 )
 
     @log_start_end(log=logger)
