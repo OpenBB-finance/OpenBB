@@ -89,7 +89,7 @@ def setup_file_logger(app_name: str, session_id: str) -> None:
 
     logger.debug("Current_log file: %s", cfg.LOGGING_FILE)
 
-    handler = TimedRotatingFileHandlerWithUpload(cfg.LOGGING_FILE, when="M")
+    handler = TimedRotatingFileHandlerWithUpload(cfg.LOGGING_FILE)
     handler.suffix += ".log"
     formatter = CustomFormatterWithExceptions(
         app_name, uuid_log_dir.stem, session_id, fmt=LOGFORMAT, datefmt=DATEFORMAT
