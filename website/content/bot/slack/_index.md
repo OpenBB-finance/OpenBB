@@ -6,7 +6,7 @@ geekdocCollapseSection: true
 
 WIP
 
-![Telegram Bot](https://user-images.githubusercontent.com/43375532/157494575-72d7202f-7f1c-4093-a815-a2c3aac21835.png)
+![Slack Bot](https://user-images.githubusercontent.com/43375532/157494575-72d7202f-7f1c-4093-a815-a2c3aac21835.png)
 
 No installation or signup is required, nor is there a need to be in a server setting to use the bot. Any user call it through direct messaging / commands to: [t.me/GamestonkTerminalBot](https://t.me/GamestonkTerminalBot)
 You can also invite the bot

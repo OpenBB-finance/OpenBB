@@ -312,7 +312,6 @@ class ShowView:
             os.remove(data["embeds_img"][0])
         elif "description" in data:
             title = data.get("title", "")
-            # TODO: Allow navigation through pages
             description = data.get("description")
             if isinstance(description, List):
                 clean_desc = description[0].replace("Page ", "")
@@ -321,3 +320,25 @@ class ShowView:
             message = f"{title}\n{clean_desc}"
             payload = {"channel": channel_id, "username": user_id, "text": message}
             client.chat_postMessage(**payload)
+
+    def telegram(self, func, message, bot, cmd, *args, **kwargs):
+        data = func(*args, **kwargs)
+        if "imagefile" in data:
+            with open(data["imagefile"], "rb") as image:
+                bot.reply_to(message, data["title"])
+                bot.send_photo(message.chat.id, image)
+            os.remove(data["imagefile"])
+        elif "embeds_img" in data:
+            with open(data["embeds_img"][0], "rb") as image:
+                bot.reply_to(message, data["title"])
+                bot.send_photo(message.chat.id, image)
+            os.remove(data["embeds_img"][0])
+        elif "description" in data:
+            title = data.get("title", "")
+            description = data.get("description")
+            if isinstance(description, List):
+                clean_desc = description[0].replace("Page ", "")
+            else:
+                clean_desc = description.replace("Page ", "")
+            res = f"{title}\n{clean_desc}"
+            bot.reply_to(message, res)
