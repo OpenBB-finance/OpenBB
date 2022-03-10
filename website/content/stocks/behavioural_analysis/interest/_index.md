@@ -15,4 +15,5 @@ optional arguments:
                         Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg (default: )
 ```
 
-![snews](https://user-images.githubusercontent.com/25267873/156584514-33c2cd52-4763-43cd-8a53-4118b8615450.png)
+![interest](https://user-images.githubusercontent.com/25267873/157575723-23c55e4e-9e87-4647-b8fa-8ed9643f471f.png)
+ 
