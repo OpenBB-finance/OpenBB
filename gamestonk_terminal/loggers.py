@@ -110,9 +110,7 @@ class TimedRotatingFileHandlerWithUpload(TimedRotatingFileHandler):
 
     def upload_logs_as_thread(self) -> None:
         with self.upload_thread_lock:
-            upload_archive_logs_s3(
-                directory_str="/".join(self.baseFilename.split("/")[:-1])
-            )
+            upload_archive_logs_s3()
 
 
 class CustomFormatterWithExceptions(logging.Formatter):
