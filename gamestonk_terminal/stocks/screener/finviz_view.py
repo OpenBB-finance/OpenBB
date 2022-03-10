@@ -208,6 +208,31 @@ def screener(
             df_screen[cols] = df_screen[cols].applymap(
                 lambda x: lambda_long_number_format(x, 1)
             )
+        elif data_type == "technical":
+            cols = ["Volume"]
+            df_screen[cols] = df_screen[cols].applymap(
+                lambda x: lambda_long_number_format(x, 1)
+            )
+        elif data_type == "valuation":
+            cols = ["Market Cap", "Volume"]
+            df_screen[cols] = df_screen[cols].applymap(
+                lambda x: lambda_long_number_format(x, 1)
+            )
+        elif data_type == "financial":
+            cols = ["Market Cap", "Volume"]
+            df_screen[cols] = df_screen[cols].applymap(
+                lambda x: lambda_long_number_format(x, 1)
+            )
+        elif data_type == "performance":
+            cols = ["Avg Volume", "Volume"]
+            df_screen[cols] = df_screen[cols].applymap(
+                lambda x: lambda_long_number_format(x, 1)
+            )
+        elif data_type == "technical":
+            cols = ["Volume"]
+            df_screen[cols] = df_screen[cols].applymap(
+                lambda x: lambda_long_number_format(x, 1)
+            )
 
         print_rich_table(
             df_screen.head(n=limit),
