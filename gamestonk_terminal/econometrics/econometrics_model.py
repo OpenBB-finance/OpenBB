@@ -260,7 +260,7 @@ def get_granger_causality(time_series_y, time_series_x, lags):
     time_series_x : Series
         The series that you want to test whether it Granger-causes time_series_y
     lags : int
-        The amoiunt of lags for the Granger test. By default, this is set to 3.
+        The amount of lags for the Granger test. By default, this is set to 3.
     """
     granger_set = pd.concat([time_series_y, time_series_x], axis=1)
 
@@ -286,8 +286,6 @@ def get_engle_granger_two_step_cointegration_test(y, x):
 
     If this implies phi < 1, the z series is stationary is concluded to be
     stationary, and thus the series y and x are concluded to be cointegrated.
-
-    Parameters
 
     Parameters
     ----------
@@ -338,10 +336,10 @@ def get_engle_granger_two_step_cointegration_test(y, x):
 
     alpha = short_run_ols_fit.params[0]
 
-    # NOTE: The p-value returned by the adfuller function assumes we do not estimate z first, but test
-    # stationarity of an unestimated series directly. This assumption should have limited effect for high N, however.
-    # Critical values taking this into account more accurately are provided in e.g. McKinnon (1990) and
-    # Engle & Yoo (1987).
+    # NOTE: The p-value returned by the adfuller function assumes we do not estimate z
+    # first, but test stationarity of an unestimated series directly. This assumption
+    # should have limited effect for high N, however. Critical values taking this into
+    # account more accurately are provided in e.g. McKinnon (1990) and Engle & Yoo (1987).
 
     adfstat, pvalue, _, _, _ = adfuller(z, maxlag=1, autolag=None)
 
