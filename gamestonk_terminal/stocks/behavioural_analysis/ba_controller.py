@@ -18,7 +18,7 @@ from gamestonk_terminal.common.behavioural_analysis import (
     stocktwits_view,
     twitter_view,
 )
-from gamestonk_terminal.stocks.behavioural_analysis import finnhub_view
+from gamestonk_terminal.stocks.behavioural_analysis import finnhub_view, cramer_view
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -65,6 +65,8 @@ class BehaviouralAnalysisController(StockBaseController):
         "hist",
         "trend",
         "snews",
+        "jcdr",
+        "jctr",
         "interest",
     ]
 
@@ -119,7 +121,10 @@ class BehaviouralAnalysisController(StockBaseController):
     rise          top rising related queries with stock{has_ticker_end}
 [src][SentimentInvestor][/src]
     trend         most talked about tickers within the last hour{has_ticker_start}
-    hist          plot historical RHI and AHI data by hour{has_ticker_end}[/cmds]
+    hist          plot historical RHI and AHI data by hour{has_ticker_end}
+[src][Jim Cramer][/src]
+    jcdr          Jim Cramer's daily recommendations{has_ticker_start}
+    jctr          Jim Cramer's recommendations by ticker{has_ticker_end}[/cmds]
         """
         console.print(text=help_text, menu="Stocks - Behavioural Analysis")
 
@@ -847,4 +852,59 @@ class BehaviouralAnalysisController(StockBaseController):
                 hour=ns_parser.hour,
                 export=ns_parser.export,
                 number=ns_parser.number,
+            )
+
+    @log_start_end(log=logger)
+    def call_jcdr(self, other_args: List[str]):
+        """Process jcdr command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="jcdr",
+            description="""
+                Show daily cramer recommendation
+            """,
+        )
+        parser.add_argument(
+            "-i",
+            "--inverse",
+            default=False,
+            action="store_true",
+            help="Show inverse recommendation",
+            dest="inverse",
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        if ns_parser:
+            cramer_view.display_cramer_daily(inverse=ns_parser.inverse)
+
+    @log_start_end(log=logger)
+    def call_jctr(self, other_args: List[str]):
+        """Process jctr command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="jctr",
+            description="""
+                Show cramer recommendation for loaded ticker
+            """,
+        )
+        ns_parser = parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+            raw=True,
+        )
+
+        if ns_parser:
+            if not self.ticker:
+                console.print(
+                    "[red]No ticker loaded.  Please use load <ticker> first.\n[/red]"
+                )
+                return
+            cramer_view.display_cramer_ticker(
+                ticker=self.ticker, raw=ns_parser.raw, export=ns_parser.export
             )

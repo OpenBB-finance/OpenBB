@@ -25,6 +25,4 @@
 [NASDAQ Data Link (Formerly Quandl)]
     rtat           top 10 retail traded stocks per day
     divcal         dividend calendar for selected date
-[Jim Cramer]
-    cramer         Jim Cramer's daily recommendations
 
