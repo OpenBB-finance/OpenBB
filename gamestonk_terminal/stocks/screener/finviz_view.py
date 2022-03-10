@@ -14,6 +14,7 @@ from gamestonk_terminal.helper_funcs import (
     print_rich_table,
     lambda_long_number_format,
 )
+from gamestonk_terminal.terminal_helper import suppress_stdout
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.stocks.screener.finviz_model import get_screener_data
 
@@ -153,12 +154,13 @@ def screener(
     List[str]
         List of stocks that meet preset criteria
     """
-    df_screen = get_screener_data(
-        preset_loaded=loaded_preset,
-        data_type=data_type,
-        limit=10,
-        ascend=ascend,
-    )
+    with suppress_stdout():
+        df_screen = get_screener_data(
+            preset_loaded=loaded_preset,
+            data_type=data_type,
+            limit=10,
+            ascend=ascend,
+        )
 
     if isinstance(df_screen, pd.DataFrame):
         if df_screen.empty:
