@@ -1233,6 +1233,12 @@ main:
   - name: "bot"
     ref: "/bot"
     sub:
+      - name: "GroupMe"
+        ref: "/bot/groupme"
+      - name: "Slack"
+        ref: "/bot/slack"
+      - name: "Telegram"
+        ref: "/bot/telegram"
       - name: "Discord"
         ref: "/bot/discord"
         sub:
