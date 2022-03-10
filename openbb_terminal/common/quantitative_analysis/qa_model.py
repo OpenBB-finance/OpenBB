@@ -475,7 +475,7 @@ def get_es(
     return es_list, hist_es_list
 
 
-def sortino(data: pd.DataFrame, target_return: float, period: float, adjusted: bool):
+def get_sortino(data: pd.DataFrame, target_return: float, period: float, adjusted: bool):
     data_return = data[0]/data[-period]
 
     # Sortino Ratio
@@ -487,12 +487,24 @@ def sortino(data: pd.DataFrame, target_return: float, period: float, adjusted: b
     if adjusted:
         # Adjusting the sortino ratio inorder to compare it to sharpe ratio
         # Thus if the deviation is neutral then it's equal to the sharpe ratio
-        sortino_ratio = sortino_ratio / np.sqrt(2)
+        sortino_ratio = sortino_ratio / (-np.sqrt(2))
 
     return sortino_ratio
 
 
-def get_omega(data: pd.DataFrame, threshold: float):
+def get_omega(data: pd.DataFrame, threshold: float = 0):
+    """Calculates omega ratio
+
+    Parameters
+    ----------
+    data: pd.DataFrame
+        selected dataframe
+    threshold: float
+        target return threshold
+    """
+    # Omega ratio; for more information and explanation see:
+    # https://en.wikipedia.org/wiki/Omega_ratio
+
     # Calculating daily threshold from annualised threshold value
     daily_threshold = (threshold + 1) ** np.sqrt(1 / 252) - 1
 

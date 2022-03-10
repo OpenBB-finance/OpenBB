@@ -1129,7 +1129,27 @@ def display_es(
     console.print("")
 
 
+def display_sortino(data: pd.DataFrame, target_return: float, period: float, adjusted: bool):
+    sortino_ratio = qa_model.get_sortino(data, target_return, period, adjusted)
+    if adjusted:
+        str_adjusted = "Adjusted "
+    else:
+        str_adjusted = ""
+    console.print(f"\n{str_adjusted}Sortino ratio: {sortino_ratio}\n")
+
+
 def display_omega(data: pd.DataFrame, threshold_start: float = 0, threshold_end: float = 1.5):
+    """Displays the omega ratio
+
+    Parameters
+    ----------
+    data: pd.DataFrame
+        stock dataframe
+    threshold_start: float
+        annualized target return threshold start of plotted threshold range
+    threshold_end: float
+        annualized target return threshold end of plotted threshold range
+    """
     threshold = np.linspace(threshold_start, threshold_end, 50)
     omega_list = []
 
