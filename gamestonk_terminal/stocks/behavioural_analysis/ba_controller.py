@@ -64,6 +64,7 @@ class BehaviouralAnalysisController(StockBaseController):
         "hist",
         "trend",
         "snews",
+        "interest",
     ]
 
     historical_sort = ["date", "value"]
@@ -112,6 +113,7 @@ class BehaviouralAnalysisController(StockBaseController):
 [src][Google][/src]
     mentions      interest over time based on stock's mentions
     regions       regions that show highest interest in stock
+    interest      interest over time of sentences versus stock price
     queries       top related queries with this stock
     rise          top rising related queries with stock{has_ticker_end}
 [src][SentimentInvestor][/src]
@@ -513,6 +515,56 @@ class BehaviouralAnalysisController(StockBaseController):
                 )
             else:
                 console.print("No ticker loaded. Please load using 'load <ticker>'\n")
+
+    @log_start_end(log=logger)
+    def call_interest(self, other_args: List[str]):
+        """Process interest command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="interest",
+            description="""
+                Plot interest over time of words/sentences versus stock price. [Source: Google]
+            """,
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            type=valid_date,
+            dest="start",
+            default=self.start,
+            help="starting date (format YYYY-MM-DD) of interest",
+        )
+        parser.add_argument(
+            "-w",
+            "--words",
+            help="Select multiple sentences/words separated by commas. E.g. COVID,WW3,NFT",
+            dest="words",
+            type=lambda s: [str(item) for item in s.split(",")],
+            default=None,
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-w")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if ns_parser:
+            if self.ticker:
+                if ns_parser.words:
+                    google_view.display_correlation_interest(
+                        ticker=self.ticker,
+                        words=ns_parser.words,
+                        start=ns_parser.start,
+                        export=ns_parser.export,
+                    )
+                else:
+                    console.print(
+                        "[red]Words or sentences to be correlated against with, need to be provided\n[/red]"
+                    )
+            else:
+                console.print(
+                    "[red]No ticker loaded. Please load using 'load <ticker>'\n[/red]"
+                )
 
     @log_start_end(log=logger)
     def call_queries(self, other_args: List[str]):
