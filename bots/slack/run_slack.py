@@ -11,7 +11,6 @@ from bots.helpers import ShowView
 load_dotenv()
 
 app = App(token=os.environ["GT_SLACK_APP_TOKEN"])
-# signing_secret=os.environ.get("GT_SLACK_SIGNING_SECRET"))
 
 available_commands = list(commands.keys())
 
@@ -48,8 +47,12 @@ def get_arguments(
         The command object
     req_name : str
         The name of the requirement
-    group_id : str
-        The groupme chat id
+    channel_id : str
+        Slack channel id
+    user_id : str
+        Slack user id
+    client : Any
+        Client that sends messages to slack
     """
     if req_name == "ticker":
         message = "Please give a listed ticker"
@@ -84,8 +87,12 @@ def send_options(
         The name of the section
     items : List[str]
         The items the user can select from
-    group_id : str
-        The groupme chat id
+    channel_id : str
+        Slack channel id
+    user_id : str
+        Slack user id
+    client : Any
+        Client that sends messages to slack
     """
     message = name
     clean = list(items)
@@ -97,9 +104,7 @@ def send_options(
 
 @app.event("message")
 def processMessage(event, client):
-    """Display the onboarding welcome message after receiving a message
-    that contains "start".
-    """
+    """Process users' commands"""
     channel_id = event.get("channel")
     user_id = event.get("user")
     text = event.get("text")
@@ -251,6 +256,7 @@ def processMessage(event, client):
 
 
 if __name__ == "__main__":
+    # TODO: replace with GST logging
     logger = logging.getLogger()
     logger.setLevel(logging.DEBUG)
     logger.addHandler(logging.StreamHandler())
