@@ -1243,7 +1243,7 @@ class DueDiligenceController(CryptoBaseController):
         )
 
         if ns_parser:
-            messari_view.display_market_dominance(
+            messari_view.display_marketcap_dominance(
                 coin=self.symbol.upper(),
                 interval=ns_parser.interval,
                 start=ns_parser.start,

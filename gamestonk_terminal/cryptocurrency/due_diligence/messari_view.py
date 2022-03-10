@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 @check_api_key(["API_MESSARI_KEY"])
-def display_market_dominance(
+def display_marketcap_dominance(
     coin: str,
     start: str,
     end: str,
