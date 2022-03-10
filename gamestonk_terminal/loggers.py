@@ -253,7 +253,9 @@ def setup_logging(app_name: str) -> None:
 
 def upload_file_to_s3(
     file: Path, bucket: str = None, object_name: str = None, folder_name: str = None
-) -> None:
+) -> bool:
+    success = False
+
     # If S3 object_name was not specified, use file_name
     if object_name is None:
         object_name = file.name
@@ -280,6 +282,7 @@ def upload_file_to_s3(
             s3_client.upload_file(str(file), bucket, object_name)
         except ClientError as e:
             logger.exception(str(e))
+        success = True
     else:
         files = None
         try:
@@ -288,22 +291,21 @@ def upload_file_to_s3(
         except Exception as e:
             logger.exception("Could not open file: %s", str(e))
 
-        if files is not None and files:
-            json = requests.put(url=URL, json={"object_key": object_name}).json()
-            r = requests.post(json["url"], data=json["fields"], files=files)
+        json = requests.put(url=URL, json={"object_key": object_name}).json()
+        r = requests.post(json["url"], data=json["fields"], files=files)
 
-            if r.status_code in [403, 401, 400]:
-                logger.error("%s could not be uploaded", str(file))
-            elif r.status_code == 204:
-                logger.info("Log uploaded")
-            else:
-                logger.error(
-                    "Unexpected status_code: %s when uploading: %s",
-                    str(r.status_code),
-                    str(file),
-                )
+        if r.status_code in [403, 401, 400]:
+            logger.error("%s could not be uploaded", file.name)
+        elif r.status_code == 204:
+            logger.info("Log uploaded")
+            success = True
         else:
-            logger.error("Uploading payload empty")
+            logger.error(
+                "Unexpected status_code: %s when uploading: %s",
+                str(r.status_code),
+                file.name,
+            )
+    return success
 
 
 def contains_goodbye(file: Path) -> bool:
@@ -322,7 +324,7 @@ def contains_goodbye(file: Path) -> bool:
 
 def upload_archive_logs_s3(
     directory_str=None,
-    log_filter=r"gst_\d{10}\.20[2-3][0-9]-[0-2][0-9]-[0-3][0-9]_[0-2][0-9]-[0-5][0-9]\.log",
+    log_filter=r"gst_\d{10}\.20[2-3][0-9]-[0-2][0-9]-[0-3][0-9]_[0-2][0-9]\.log",
     bucket=None,
     folder_name=FOLDER_NAME,
 ) -> None:
@@ -355,14 +357,15 @@ def upload_archive_logs_s3(
 
         for log_file, archived_file in log_files.values():
             logger.info("Uploading logs")
-            upload_file_to_s3(
+            success = upload_file_to_s3(
                 file=log_file,
                 bucket=bucket,
                 folder_name=f"{folder_name}/{cfg.LOGGING_ID}",
             )
-            try:
-                log_file.rename(archived_file)
-            except Exception as e:
-                logger.exception("Cannot archive file: %s", str(e))
+            if success:
+                try:
+                    log_file.rename(archived_file)
+                except Exception as e:
+                    logger.exception("Cannot archive file: %s", str(e))
     else:
         logger.info("Logs not allowed to be collected")
