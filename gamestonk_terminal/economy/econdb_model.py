@@ -231,8 +231,8 @@ PARAMETERS = {
 
 TREASURIES: Dict = {
     "frequencies": {
+        "annually": 203,
         "monthly": 129,
-        "annual": 203,
         "weekly": 21,
         "daily": 9,
     },
@@ -263,14 +263,10 @@ TREASURIES: Dict = {
                 "30y": "30-year",
             },
         },
-        "inflation_average": {
+        "average": {
             "identifier": "LTAVG",
             "maturities": {
-                "5y": "5-year",
-                "7y": "7-year",
-                "10y": "10-year",
-                "20y": "20-year",
-                "30y": "30-year",
+                "Longer than 10-year": "Longer than 10-year",
             },
         },
         "secondary": {
@@ -399,9 +395,16 @@ def get_treasuries(
                 "econdb",
             )
 
-            type_string = instrument.capitalize()
+            if instrument == "average":
+                maturities_list = ["Longer than 10-year"]
+                type_string = "Long-term average"
+            else:
+                maturities_list = maturities
+                type_string = instrument.capitalize()
+
             treasury_data[type_string] = {}
-            for maturity in maturities:
+
+            for maturity in maturities_list:
                 if maturity not in TREASURIES["instruments"][instrument]["maturities"]:
                     console.print(
                         f"The maturity {maturity} is not an option for {instrument}. Please choose between "

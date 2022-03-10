@@ -686,8 +686,8 @@ Index
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="treasury",
             description="Obtain any set of U.S. treasuries and plot them together. These can be a range of maturities "
-            "for nominal, inflation-adjusted and secondary markets over a lengthy period. "
-            "[Source: EconDB / FED]",
+            "for nominal, inflation-adjusted (on long term average of inflation adjusted) and secondary "
+            "markets over a lengthy period. [Source: EconDB / FED]",
         )
 
         parser.add_argument(
@@ -697,7 +697,7 @@ Index
             type=str,
             dest="maturity",
             help="The preferred maturity which is dependent on the type of the treasury",
-            default=["1y"],
+            default="1y",
         )
 
         parser.add_argument(
@@ -706,7 +706,7 @@ Index
             type=str,
             dest="frequency",
             choices=econdb_model.TREASURIES["frequencies"],
-            help="Whether to select nominal, inflation indexed or secondary market treasury bills",
+            help="The frequency, this can be annually, monthly, weekly or daily",
             default="monthly",
         )
 
@@ -717,8 +717,9 @@ Index
             type=str,
             dest="type",
             choices=econdb_model.TREASURIES["instruments"],
-            help="Whether to select nominal, inflation indexed or secondary market treasury bills",
-            default=["nominal"],
+            help="Whether to select nominal, inflation indexed, average inflation indexed or "
+            "secondary market treasury rates",
+            default="nominal",
         )
 
         parser.add_argument(

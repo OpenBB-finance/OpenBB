@@ -172,7 +172,7 @@ def show_treasuries(
 
     for treasury, maturities_data in treasury_data.items():
         for maturity in maturities_data:
-            ax.plot(maturities_data[maturity], label=f"{treasury} ({maturity}]")
+            ax.plot(maturities_data[maturity], label=f"{treasury} [{maturity}]")
 
     ax.set_title("U.S. Treasuries")
     ax.legend()
