@@ -1,6 +1,7 @@
 """Cramer Model"""
 __docformat__ = "numpy"
 
+import logging
 import re
 
 import pandas as pd
@@ -9,7 +10,13 @@ import numpy as np
 import yfinance as yf
 from bs4 import BeautifulSoup
 
+from gamestonk_terminal.decorators import log_start_end
 
+
+logger = logging.getLogger(__name__)
+
+
+@log_start_end(log=logger)
 def get_cramer_daily(inverse: bool = True) -> pd.DataFrame:
     """Scrape the daily recommendations of Jim Cramer
 
@@ -86,3 +93,23 @@ def get_cramer_daily(inverse: bool = True) -> pd.DataFrame:
         )
         cols.append("InverseCramer")
     return df[cols]
+
+
+@log_start_end(log=logger)
+def get_cramer_ticker(ticker: str) -> pd.DataFrame:
+    """Get cramer recommendations from beginning of year for given ticker
+
+    Parameters
+    ----------
+    ticker: str
+        Ticker to get recommendations for
+
+    Returns
+    -------
+    pd.DataFrame:
+        Dataframe with dates and recommendations
+    """
+
+    link = "https://raw.githubusercontent.com/jmaslek/InverseCramer/main/AllRecommendations.csv"
+    df = pd.read_csv(link, index_col=0)
+    return df[df.Symbol == ticker].reset_index(drop=True)
