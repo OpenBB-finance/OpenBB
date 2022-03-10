@@ -516,6 +516,8 @@ main:
             ref: "/common/behavioural_analysis/stats"
           - name: snews
             ref: "/stocks/behavioural_analysis/snews"
+          - name: interest
+            ref: "/stocks/behavioural_analysis/interest"
           - name: wsb
             ref: "/common/behavioural_analysis/wsb"
           - name: watchlist
