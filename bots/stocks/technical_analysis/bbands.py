@@ -110,18 +110,7 @@ def bbands_command(
         go.Scatter(
             name=f"BBU_{length}_{n_std}",
             x=df_ta.index,
-            y=df_ta[f"BBU_{(length)}_{n_std}"],
-            opacity=1,
-        ),
-        secondary_y=True,
-        row=1,
-        col=1,
-    )
-    fig.add_trace(
-        go.Scatter(
-            name=f"BBL_{length}_{n_std}",
-            x=df_ta.index,
-            y=df_ta[f"BBL_{length}_{n_std}"],
+            y=df_ta[f"BBU_{length}_{n_std}"],
             opacity=1,
             mode="lines",
             line_color="indigo",
@@ -132,9 +121,9 @@ def bbands_command(
     )
     fig.add_trace(
         go.Scatter(
-            name=f"BBU_{length}_{n_std}",
+            name=f"BBL_{length}_{n_std}",
             x=df_ta.index,
-            y=df_ta[f"BBU_{length}_{n_std}"],
+            y=df_ta[f"BBL_{length}_{n_std}"],
             opacity=1,
             mode="lines",
             line_color="indigo",
