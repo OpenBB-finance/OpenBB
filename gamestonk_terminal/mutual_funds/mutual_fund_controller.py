@@ -474,7 +474,9 @@ Potential errors
                 return self.queue
             if self.fund_name == "":
                 if self.fund_symbol != "":
-                    self.fund_symbol = investpy_model.get_fund_name_from_symbol(self.fund_symbol)
+                    self.fund_symbol = investpy_model.get_fund_name_from_symbol(
+                        self.fund_symbol
+                    )
                 else:
                     console.print(
                         "No fund loaded. Please use `load` first.\n", style="bold"
@@ -512,7 +514,9 @@ Potential errors
                 return self.queue
             if self.fund_name == "":
                 if self.fund_symbol != "":
-                    self.fund_symbol = investpy_model.get_fund_name_from_symbol(self.fund_symbol)
+                    self.fund_symbol = investpy_model.get_fund_name_from_symbol(
+                        self.fund_symbol
+                    )
                 else:
                     console.print(
                         "No fund loaded. Please use `load` first.\n", style="bold"
