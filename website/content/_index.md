@@ -5,7 +5,7 @@ geekdocNav: true
 geekdocAnchor: false
 resources:
   - name: GST
-    src: "gst_logo_lockup_rGreen_with_letters.png"
+    src: "/terminal/gst_logo_lockup_rGreen_with_letters.png"
     title:
 ---
 
@@ -40,8 +40,6 @@ resources:
 Gamestonk Terminal provides a modern, and fully customizable, Python-based integrated environment for investment research. Leveraging state-of-the-art data science and machine learning, the individual trader can now harness technologies used by institutions and professionals around the world to make better financial decisions.
 
 As a modern Python-based environment, GamestonkTerminal opens access to numerous Python data libraries in data science (Pandas, Numpy, Scipy, Jupyter), machine learning (Pytorch, Tensorflow, Sklearn, Flair), and data acquisition (Beautiful Soup, and numerous third-party APIs).
-
-<!--{{< button size="large" relref="stocks/" >}}Getting Started{{< /button >}}-->
 
 ### Feature overview
 
