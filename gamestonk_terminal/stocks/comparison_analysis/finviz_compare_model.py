@@ -86,7 +86,7 @@ def get_comparison_data(data_type: str, similar: List[str]):
 
     screen.set_filter(ticker=",".join(similar))
     try:
-        return screen.ScreenerView(verbose=0)
+        return screen.screener_view(verbose=0)
     except IndexError:
         console.print("[red]Invalid data from website[red]")
         return pd.DataFrame()
