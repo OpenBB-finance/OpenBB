@@ -110,7 +110,7 @@ class TimedRotatingFileHandlerWithUpload(TimedRotatingFileHandler):
 
     def upload_logs_as_thread(self) -> None:
         with self.upload_thread_lock:
-            upload_archive_logs_s3()
+            upload_archive_logs_s3((os.sep).join(self.baseFilename.split(os.sep)[:-1]))
 
 
 class CustomFormatterWithExceptions(logging.Formatter):
@@ -260,7 +260,11 @@ def setup_logging(app_name: str) -> None:
 
 
 def upload_file_to_s3(
-    file: Path, bucket: str = None, object_name: str = None, folder_name: str = None
+    file: Path,
+    bucket: str = None,
+    object_name: str = None,
+    folder_name: str = None,
+    only_send_file_size=True,
 ) -> bool:
     success = False
 
@@ -271,9 +275,6 @@ def upload_file_to_s3(
     # If folder_name was specified, upload in the folder
     if folder_name is not None:
         object_name = f"{folder_name}/{object_name}"
-
-    if not object_name.endswith(".log"):
-        object_name += ".log"
 
     # Upload the file
     if (
@@ -293,11 +294,14 @@ def upload_file_to_s3(
         success = True
     else:
         files = None
-        try:
-            with open(file, "rb") as f:
-                files = {"file": f.read()}
-        except Exception as e:
-            logger.exception("Could not open file: %s", str(e))
+        if only_send_file_size:
+            files = {"file": bytes(log_past_logsize(str(file)), "utf-8")}
+        else:
+            try:
+                with open(file, "rb") as f:
+                    files = {"file": f.read()}
+            except Exception as e:
+                logger.exception("Could not open file: %s", str(e))
 
         json = requests.put(url=URL, json={"object_key": object_name}).json()
         r = requests.post(json["url"], data=json["fields"], files=files)
@@ -366,12 +370,15 @@ def upload_archive_logs_s3(
             if regexp.search(str(file)) and (
                 file.suffix == ".log" or one_day_old or contains_goodbye(file)
             ):
+                suffix = ".log" if file.suffix != ".log" else ""
                 try:
-                    file.rename(tmp / file.name)
+                    file.rename(tmp / (file.name + suffix))
                 except Exception as e:
                     logger.exception("Cannot upload file: %s", str(e))
 
-                log_files[str(tmp / file.name)] = tmp / file.name, (archive / file.name)
+                log_files[str(tmp / (file.name + suffix))] = tmp / (
+                    file.name + suffix
+                ), (archive / (file.name + suffix))
 
         for log_file, archived_file in log_files.values():
             logger.info("Uploading logs")
@@ -387,3 +394,20 @@ def upload_archive_logs_s3(
                     logger.exception("Cannot archive file: %s", str(e))
     else:
         logger.info("Logs not allowed to be collected")
+
+
+def log_past_logsize(file: str) -> str:
+    with open(file, "rb") as f:
+        line_count = sum(1 for line in f)
+        try:
+            f.seek(-2, os.SEEK_END)
+            while f.read(1) != b"\n":
+                f.seek(-2, os.SEEK_CUR)
+        except OSError:
+            f.seek(0)
+            logger.exception("Could not find last line")
+            return ""
+        last_line = f.readline().decode()
+    send_up = "|".join(last_line.split("|")[:-1])
+    send_up += f"|Size: {os.path.getsize(file)}|Lines: {line_count}"
+    return send_up
