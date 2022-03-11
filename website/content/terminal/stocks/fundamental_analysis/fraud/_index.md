@@ -4,6 +4,7 @@ usage: fraud [-h] [--export {csv,json,xlsx}]
 
 ```
 optional arguments:
+  -e, --explanation     whether to show the description for the metrics (default: false)
   -h, --help            show this help message
   --export {csv,json,xlsx}
                         Export raw data into csv, json, xlsx
