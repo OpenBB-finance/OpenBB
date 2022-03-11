@@ -226,7 +226,7 @@ class BaseController(metaclass=ABCMeta):
     @log_start_end(log=logger)
     def call_reset(self, _) -> None:
         """Process reset command. If you would like to have customization in the
-        reset process define a methom `custom_reset` in the child class.
+        reset process define a method `custom_reset` in the child class.
         """
         if self.PATH != "/":
             if self.custom_reset():
