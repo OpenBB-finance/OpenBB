@@ -476,6 +476,19 @@ def get_es(
 
 
 def get_sortino(data: pd.DataFrame, target_return: float, period: float, adjusted: bool):
+    """Calculates the sortino ratio
+
+    Parameters
+    ----------
+    data: pd.DataFrame
+        selected dataframe
+    target_return: float
+        target return of the asset
+    period: float
+        period of data to use
+    adjusted: bool
+        adjust the sortino ratio
+    """
     data_return = data[0]/data[-period]
 
     # Sortino Ratio
@@ -487,13 +500,13 @@ def get_sortino(data: pd.DataFrame, target_return: float, period: float, adjuste
     if adjusted:
         # Adjusting the sortino ratio inorder to compare it to sharpe ratio
         # Thus if the deviation is neutral then it's equal to the sharpe ratio
-        sortino_ratio = sortino_ratio / (-np.sqrt(2))
+        sortino_ratio = sortino_ratio / np.sqrt(2)
 
     return sortino_ratio
 
 
 def get_omega(data: pd.DataFrame, threshold: float = 0):
-    """Calculates omega ratio
+    """Calculates the omega ratio
 
     Parameters
     ----------

@@ -1130,6 +1130,19 @@ def display_es(
 
 
 def display_sortino(data: pd.DataFrame, target_return: float, period: float, adjusted: bool):
+    """Displays the sortino ratio
+
+        Parameters
+        ----------
+        data: pd.DataFrame
+            selected dataframe
+        target_return: float
+            target return of the asset
+        period: float
+            period of data to use
+        adjusted: bool
+            adjust the sortino ratio
+        """
     sortino_ratio = qa_model.get_sortino(data, target_return, period, adjusted)
     if adjusted:
         str_adjusted = "Adjusted "
