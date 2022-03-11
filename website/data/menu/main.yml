@@ -1228,6 +1228,8 @@ main:
             ref: "jupyter/dashboards/shortdata"
       - name: "reports"
         ref: "/jupyter/reports"
+      - name: "GST python API"
+        ref: "/jupyter/api"
   - name: "bot"
     ref: "/bot"
     sub:
