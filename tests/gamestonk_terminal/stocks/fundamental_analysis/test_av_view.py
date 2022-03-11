@@ -1,7 +1,6 @@
 # IMPORTATION STANDARD
 
 # IMPORTATION THIRDPARTY
-import numpy as np
 import pandas as pd
 import pytest
 
@@ -110,31 +109,14 @@ def test_check_empty_df(func, kwargs_dict, mocked_func, mocker):
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
-    "ratios, zscore, mckscore",
+    "df",
     [
-        (
-            {
-                "DSRI": np.nan,
-                "GMI": np.nan,
-                "AQI": np.nan,
-                "SGI": np.nan,
-                "DEPI": np.nan,
-                "SGAI": np.nan,
-                "LVGI": np.nan,
-                "TATA": np.nan,
-                "MSCORE": np.nan,
-            },
-            np.nan,
-            np.nan,
-        ),
-        ({"MSCORE": -1}, 0.1, 0.2),
-        ({"AQI": 1, "MSCORE": -2}, 0.1, 0.2),
-        ({"MSCORE": -3}, 1, 0.2),
+        (pd.DataFrame()),
     ],
 )
-def test_display_fraud(mocker, ratios, zscore, mckscore):
+def test_display_fraud(mocker, df):
     mocker.patch(
         "gamestonk_terminal.stocks.fundamental_analysis.av_view.av_model.get_fraud_ratios",
-        return_value=(ratios, zscore, mckscore),
+        return_value=(df),
     )
     av_view.display_fraud(ticker="TSLA")

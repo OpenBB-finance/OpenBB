@@ -2,13 +2,12 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Dict, List, Tuple, Optional
+from typing import Dict, List, Optional, Tuple
 
 import numpy as np
 import pandas as pd
 import requests
 from alpha_vantage.fundamentaldata import FundamentalData
-
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import lambda_long_number_format
@@ -369,7 +368,7 @@ def get_earnings(ticker: str, quarterly: bool = False) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def df_values(df: pd.DataFrame, item: str) -> List[int]:
+def df_values(df: pd.DataFrame, item: str, index: Optional[int] = None) -> List[int]:
     """Clean the values from the df
 
     Parameters
@@ -384,6 +383,8 @@ def df_values(df: pd.DataFrame, item: str) -> List[int]:
     values : List[int]
         The values for the dataframe
     """
+    if index:
+        df = df.iloc[index : index + 2]
     selection = df[item]
     values = selection.apply(lambda x: int(x) if x else 0).values
     return values.tolist()
@@ -417,67 +418,72 @@ def get_fraud_ratios(
 
     except Exception as e:
         console.print(e)
-        return None, None, None
+        return pd.DataFrame()
 
     # pylint: disable=no-member
-    df_cf = df_cf.set_index("fiscalDateEnding").iloc[:2]
-    df_bs = df_bs.set_index("fiscalDateEnding").iloc[:2]
-    df_is = df_is.set_index("fiscalDateEnding").iloc[:2]
+    df_cf = df_cf.set_index("fiscalDateEnding")
+    df_bs = df_bs.set_index("fiscalDateEnding")
+    df_is = df_is.set_index("fiscalDateEnding")
+    fraud_years = pd.DataFrame()
+    for i in range(len(df_cf) - 1):
+        ar = df_values(df_bs, "currentNetReceivables", i)
+        sales = df_values(df_is, "totalRevenue", i)
+        cogs = df_values(df_is, "costofGoodsAndServicesSold", i)
+        ni = df_values(df_is, "netIncome", i)
+        ca = df_values(df_bs, "totalCurrentAssets", i)
+        cl = df_values(df_bs, "totalCurrentLiabilities", i)
+        ppe = df_values(df_bs, "propertyPlantEquipment", i)
+        cash = df_values(df_bs, "cashAndCashEquivalentsAtCarryingValue", i)
+        cash_and_sec = df_values(df_bs, "cashAndShortTermInvestments", i)
+        sec = [y - x for (x, y) in zip(cash, cash_and_sec)]
+        ta = df_values(df_bs, "totalAssets", i)
+        dep = df_values(df_bs, "accumulatedDepreciationAmortizationPPE", i)
+        sga = df_values(df_is, "sellingGeneralAndAdministrative", i)
+        tl = df_values(df_bs, "totalLiabilities", i)
+        icfo = df_values(df_is, "netIncomeFromContinuingOperations", i)
+        cfo = df_values(df_cf, "operatingCashflow", i)
 
-    ar = df_values(df_bs, "currentNetReceivables")
-    sales = df_values(df_is, "totalRevenue")
-    cogs = df_values(df_is, "costofGoodsAndServicesSold")
-    ni = df_values(df_is, "netIncome")
-    ca = df_values(df_bs, "totalCurrentAssets")
-    cl = df_values(df_bs, "totalCurrentLiabilities")
-    ppe = df_values(df_bs, "propertyPlantEquipment")
-    cash = df_values(df_bs, "cashAndCashEquivalentsAtCarryingValue")
-    cash_and_sec = df_values(df_bs, "cashAndShortTermInvestments")
-    sec = [y - x for (x, y) in zip(cash, cash_and_sec)]
-    ta = df_values(df_bs, "totalAssets")
-    dep = df_values(df_bs, "accumulatedDepreciationAmortizationPPE")
-    sga = df_values(df_is, "sellingGeneralAndAdministrative")
-    tl = df_values(df_bs, "totalLiabilities")
-    icfo = df_values(df_is, "netIncomeFromContinuingOperations")
-    cfo = df_values(df_cf, "operatingCashflow")
+        ratios: Dict = {}
+        ratios["DSRI"] = (ar[0] / sales[0]) / (ar[1] / sales[1])
+        ratios["GMI"] = ((sales[1] - cogs[1]) / sales[1]) / (
+            (sales[0] - cogs[0]) / sales[0]
+        )
+        ratios["AQI"] = (1 - ((ca[0] + ppe[0] + sec[0]) / ta[0])) / (
+            1 - ((ca[1] + ppe[1] + sec[1]) / ta[1])
+        )
+        ratios["SGI"] = sales[0] / sales[1]
+        ratios["DEPI"] = (dep[1] / (ppe[1] + dep[1])) / (dep[0] / (ppe[0] + dep[0]))
+        ratios["SGAI"] = (sga[0] / sales[0]) / (sga[1] / sales[1])
+        ratios["LVGI"] = (tl[0] / ta[0]) / (tl[1] / ta[1])
+        ratios["TATA"] = (icfo[0] - cfo[0]) / ta[0]
+        ratios["MSCORE"] = (
+            -4.84
+            + (0.92 * ratios["DSRI"])
+            + (0.58 * ratios["GMI"])
+            + (0.404 * ratios["AQI"])
+            + (0.892 * ratios["SGI"])
+            + (0.115 * ratios["DEPI"] - (0.172 * ratios["SGAI"]))
+            + (4.679 * ratios["TATA"])
+            - (0.327 * ratios["LVGI"])
+        )
 
-    ratios: Dict = {}
-    ratios["DSRI"] = (ar[0] / sales[0]) / (ar[1] / sales[1])
-    ratios["GMI"] = ((sales[1] - cogs[1]) / sales[1]) / (
-        (sales[0] - cogs[0]) / sales[0]
-    )
-    ratios["AQI"] = (1 - ((ca[0] + ppe[0] + sec[0]) / ta[0])) / (
-        1 - ((ca[1] + ppe[1] + sec[1]) / ta[1])
-    )
-    ratios["SGI"] = sales[0] / sales[1]
-    ratios["DEPI"] = (dep[1] / (ppe[1] + dep[1])) / (dep[0] / (ppe[0] + dep[0]))
-    ratios["SGAI"] = (sga[0] / sales[0]) / (sga[1] / sales[1])
-    ratios["LVGI"] = (tl[0] / ta[0]) / (tl[1] / ta[1])
-    ratios["TATA"] = (icfo[0] - cfo[0]) / ta[0]
-    ratios["MSCORE"] = (
-        -4.84
-        + (0.92 * ratios["DSRI"])
-        + (0.58 * ratios["GMI"])
-        + (0.404 * ratios["AQI"])
-        + (0.892 * ratios["SGI"])
-        + (0.115 * ratios["DEPI"] - (0.172 * ratios["SGAI"]))
-        + (4.679 * ratios["TATA"])
-        - (0.327 * ratios["LVGI"])
-    )
+        zscore = (
+            -4.336
+            - (4.513 * (ni[0] / ta[0]))
+            + (5.679 * (tl[0] / ta[0]))
+            + (0.004 * (ca[0] / cl[0]))
+        )
+        v1 = np.log(ta[0] / 1000)
+        v2 = ni[0] / ta[0]
+        v3 = cash[0] / cl[0]
 
-    zscore = (
-        -4.336
-        - (4.513 * (ni[0] / ta[0]))
-        + (5.679 * (tl[0] / ta[0]))
-        + (0.004 * (ca[0] / cl[0]))
-    )
-    v1 = np.log(ta[0] / 1000)
-    v2 = ni[0] / ta[0]
-    v3 = cash[0] / cl[0]
+        x = ((v1 + 0.85) * v2) - 0.85
+        y = 1 + v3
 
-    x = ((v1 + 0.85) * v2) - 0.85
-    y = 1 + v3
-
-    mckee = x**2 / (x**2 + y**2)
-
-    return ratios, zscore, mckee
+        mckee = x**2 / (x**2 + y**2)
+        ratios["Zscore"] = zscore
+        ratios["Mscore"] = mckee
+        if fraud_years.empty:
+            fraud_years.index = ratios.keys()
+        fraud_years[df_cf.index[i]] = ratios.values()
+    return fraud_years

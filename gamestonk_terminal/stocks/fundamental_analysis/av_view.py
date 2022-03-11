@@ -4,10 +4,7 @@ __docformat__ = "numpy"
 import logging
 import os
 
-import numpy as np
-
-from gamestonk_terminal.decorators import log_start_end
-from gamestonk_terminal.decorators import check_api_key
+from gamestonk_terminal.decorators import check_api_key, log_start_end
 from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.stocks.fundamental_analysis import av_model
@@ -202,44 +199,35 @@ def display_earnings(
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
-def display_fraud(ticker: str):
+def display_fraud(ticker: str, help_text: bool = False):
     """Fraud indicators for given ticker
     Parameters
     ----------
     ticker : str
         Fundamental analysis ticker symbol
+    help_text : bool
+        Whether to show help text
     """
-    ratios, zscore, mckee = av_model.get_fraud_ratios(ticker)
-
-    if ratios is None and zscore is None and mckee is None:
-        return
-
-    if ratios["MSCORE"] > -1.78:
-        chance_m = "high"
-    elif ratios["MSCORE"] > -2.22:
-        chance_m = "moderate"
+    df = av_model.get_fraud_ratios(ticker)
+    if df.empty:
+        console.print(
+            "[red]AlphaVantage API limit reached, please wait one minute[/red]\n"
+        )
     else:
-        chance_m = "low"
+        print_rich_table(
+            df, headers=list(df.columns), show_index=True, title="Fraud Risk Statistics"
+        )
 
-    chance_z = "high" if zscore < 0.5 else "low"
+        help_message = """
+MSCORE:
+An mscore above -1.78 indicates a high risk of fraud, and one above  -2.22 indicates a medium risk of fraud.
 
-    chance_mcke = "low" if mckee < 0.5 else "high"
+ZSCORE:
+A zscore less than 0.5 indicates a high risk of fraud.
 
-    if np.isnan(ratios["MSCORE"]) or np.isnan(zscore):
-        console.print("Data incomplete for this ticker. Unable to calculate risk")
-        return
+Mckee:
+A mckee less than 0.5 indicates a high risk of fraud.
+    """
 
-    console.print("Mscore Sub Stats:")
-    for rkey, value in ratios.items():
-        if rkey != "MSCORE":
-            console.print("  ", f"{rkey} : {value:.2f}")
-
-    console.print(
-        "\n" + "MSCORE: ",
-        f"{ratios['MSCORE']:.2f} ({chance_m} chance of fraud)",
-    )
-
-    console.print("ZSCORE: ", f"{zscore:.2f} ({chance_z} chance of bankruptcy)", "\n")
-
-    console.print("McKee: ", f"{mckee:.2f} ({chance_mcke} chance of bankruptcy)", "\n")
-    return
+    if help_text:
+        console.print(help_message)
