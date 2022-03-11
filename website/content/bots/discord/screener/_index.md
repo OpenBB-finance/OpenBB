@@ -2,8 +2,15 @@
 geekdocCollapseSection: true
 ---
 
-{{< toc-tree >}}
+The Stock Screener is a versatile screener that allows to play with screeners created by the community.
 
-The Stock Screener is a versatile screener. Sorting and various combinations will make for interesting results.
+## Table of Contents
 
-![Screen Shot 2022-02-25 at 8 44 20 AM](https://user-images.githubusercontent.com/85772166/155753648-a18314df-c0fa-41f3-8f29-18b60cadd0f1.png)
+- [Default Presets](/GamestonkTerminal/bots/discord/screener/presets_default/)
+- [Custom Presets](/GamestonkTerminal/bots/discord/screener/presets_custom/)
+- [Overview](/GamestonkTerminal/bots/discord/screener/overview/)
+- [Technical](/GamestonkTerminal/bots/discord/screener/technical/)
+- [Valuation](/GamestonkTerminal/bots/discord/screener/valuation/)
+- [Financial](/GamestonkTerminal/bots/discord/screener/financial/)
+- [Ownership](/GamestonkTerminal/bots/discord/screener/ownership/)
+- [Performance](/GamestonkTerminal/bots/discord/screener/performance/)

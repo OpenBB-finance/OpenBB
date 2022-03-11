@@ -2,8 +2,15 @@
 geekdocCollapseSection: true
 ---
 
-{{< toc-tree >}}
+Dark Pools and Short data.
 
-Dark Pool Shorts Commands are prefixed with "dps".
+## Table of Contents
 
-![Screen Shot 2022-02-26 at 4 27 43 PM](https://user-images.githubusercontent.com/85772166/155863356-dca27415-af5a-4605-bb63-e8a22a290426.png)
+- [High & Short Interest](/GamestonkTerminal/bots/discord/dps/hsi/)
+- [Most Shorted](/GamestonkTerminal/bots/discord/dps/shorted/)
+- [Price vs Short Interest](/GamestonkTerminal/bots/discord/dps/psi/)
+- [Short vs Position](/GamestonkTerminal/bots/discord/dps/spos/)
+- [Dark Pools vs OTC](/GamestonkTerminal/bots/discord/dps/dpotc/)
+- [Short Position](/GamestonkTerminal/bots/discord/dps/pos/)
+- [Short Interest & Days to Cover](/GamestonkTerminal/bots/discord/dps/sidtc/)
+- [Failure-to-deliver](/GamestonkTerminal/bots/discord/dps/ftd/)

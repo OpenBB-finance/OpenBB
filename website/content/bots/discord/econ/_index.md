@@ -2,8 +2,22 @@
 geekdocCollapseSection: true
 ---
 
-{{< toc-tree >}}
+Economy commands, start with `/Econ`.
 
-Economy commands can be browsed by clicking on the GameStonksBot avatar and scrolling down. Commands are prefixed with, econ.
+## Table of Contents
 
-![Screen Shot 2022-02-27 at 12 52 39 PM](https://user-images.githubusercontent.com/85772166/155899467-5bd8d3ce-72f7-435f-9b64-4c998bf00204.png)
+- [Softs](/GamestonkTerminal/bots/discord/econ/softs/)
+- [Meats](/GamestonkTerminal/bots/discord/econ/meats/)
+- [Energy](/GamestonkTerminal/bots/discord/econ/energy/)
+- [Metals](/GamestonkTerminal/bots/discord/econ/metals/)
+- [Grains](/GamestonkTerminal/bots/discord/econ/grains/)
+- [Futures](/GamestonkTerminal/bots/discord/econ/futures/)
+- [US Bonds](/GamestonkTerminal/bots/discord/econ/usbonds/)
+- [Global Bonds](/GamestonkTerminal/bots/discord/econ/glbonds/)
+- [Indices](/GamestonkTerminal/bots/discord/econ/indices/)
+- [Overview](/GamestonkTerminal/bots/discord/econ/overview/)
+- [Fear & Greed](/GamestonkTerminal/bots/discord/econ/feargreed/)
+- [Consumer Price Index](/GamestonkTerminal/bots/discord/econ/cpi/)
+- [Currencies](/GamestonkTerminal/bots/discord/econ/currencies/)
+- [Valuation](/GamestonkTerminal/bots/discord/econ/valuation/)
+- [Performance](/GamestonkTerminal/bots/discord/econ/performance/)

@@ -2,8 +2,10 @@
 geekdocCollapseSection: true
 ---
 
-{{< toc-tree >}}
+Sector and industry analysis.
 
-sia - Sector and industry analysis commands are prefixed with, sia.
+## Table of Contents
 
-![Screen Shot 2022-02-28 at 12 22 41 PM](https://user-images.githubusercontent.com/85772166/156053209-290af088-92ef-42cb-bab5-ca2eaf332837.png)
+- [Metrics](/GamestonkTerminal/bots/discord/sia/metrics/)
+- [Companies per Sector](/GamestonkTerminal/bots/discord/sia/cps/)
+- [Companies per Industry](/GamestonkTerminal/bots/discord/sia/cpic/)

@@ -2,20 +2,18 @@
 geekdocCollapseSection: true
 ---
 
-{{< toc-tree >}}
+[Our personal bet on financial bots and how they will render other finance chatting tools useless.](https://twitter.com/gamestonkt/status/1501380282884268037)
 
-![Screen Shot 2022-02-22 at 11 17 33 AM](https://user-images.githubusercontent.com/85772166/155203034-6cf5378e-00e9-4844-89f3-c37063eef9e0.png)
+TL;DR: We remove the need of you and your group of friends/colleagues migrating to any chatting tool to use the the terminal capabilities. Instead, our Gamestonk Terminal Bot will seamlessly integrate with your already existing conversations/chats/servers.
 
-The Gamestonk Terminal Bot is a mobile-friendly interactive social media chat bot for stock market information. Over 90 unique features callable through slash commands and auto-complete. No more typing commands or needing to refer to the documentation when you can’t get the command right. !no.more.typos.and.errors!
+## Discord Bot
 
-Each feature includes a description and the ability to select optional arguments with point-and-click execution, so you can explore the possibilities of features with less friction. !stop.the.guessing today!
+We will go in detail regarding the commands within [Discord Bot](/GamestonkTerminal/bots/discord/).
 
-The only social media stock bot with dynamic charting libraries able to deliver queries directly to tablets and mobile devices.
+However, for the other chatting platforms, we will just list the main differences as the commands are expected to be invoked in the same manner.
 
-Our repository is built to be a cross-platform bot, meaning you can take the GameStonks Bot with you, wherever you migrate to!
+**Supported bots:**
 
-For local or new remote server installations, follow the instructions here: https://github.com/GamestonkTerminal/GamestonkTerminal/blob/main/bots/README.md
-
-Server administrators for Discord can invite the GameStonks Bot to their servers by clicking the invite link:
-
-https://discord.com/oauth2/authorize?client_id=927232119346962513&permissions=510500797553&scope=bot%20applications.commands
+- [Telegram](/GamestonkTerminal/bots/telegram/)
+- [Slack](/GamestonkTerminal/bots/slack/)
+- [GroupMe](/GamestonkTerminal/bots/groupme/)

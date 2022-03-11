@@ -2,8 +2,12 @@
 geekdocCollapseSection: true
 ---
 
-{{< toc-tree >}}
+Miscellaneous commands.
 
-misc - Miscellaneous commands with no defined prefix.
+## Table of Contents
 
-![Screen Shot 2022-02-28 at 7 36 37 PM](https://user-images.githubusercontent.com/85772166/156100124-5833ab5f-ca6d-4062-9b4a-46597197dace.png)
+- [Futures](/GamestonkTerminal/bots/discord/misc/futures/)
+- [Earnings Dates](/GamestonkTerminal/bots/discord/misc/earnings/)
+- [Insider Trading](/GamestonkTerminal/bots/discord/misc/ins-last/)
+- [Moon](/GamestonkTerminal/bots/discord/misc/moon/)
+- [Megashill](/GamestonkTerminal/bots/discord/misc/megashill/)

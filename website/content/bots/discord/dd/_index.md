@@ -2,8 +2,14 @@
 geekdocCollapseSection: true
 ---
 
-{{< toc-tree >}}
+Due Dilligence on tickers to increase confidence on a particular company.
 
-Due Dilligence Commands will display with autocomplete doing most of the work.
+## Table of Contents
 
-![Screen Shot 2022-02-26 at 11 35 57 AM](https://user-images.githubusercontent.com/85772166/155856719-d0a44453-50f5-4210-ad53-a6e0cb9310bc.png)
+- [Earnings Estimates](/GamestonkTerminal/bots/discord/dd/est/)
+- [SEC Filings](/GamestonkTerminal/bots/discord/dd/sec/)
+- [Analyst Ratings](/GamestonkTerminal/bots/discord/dd/analyst/)
+- [Company Suppliers](/GamestonkTerminal/bots/discord/dd/supplier/)
+- [Company Customers](/GamestonkTerminal/bots/discord/dd/customer/)
+- [ARK Portfolio](/GamestonkTerminal/bots/discord/dd/arktrades/)
+- [Price Target vs Price](/GamestonkTerminal/bots/discord/dd/pt/)

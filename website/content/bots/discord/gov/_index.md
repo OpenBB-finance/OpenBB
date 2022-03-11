@@ -2,8 +2,17 @@
 geekdocCollapseSection: true
 ---
 
-{{< toc-tree >}}
+Government Commands (USA Only).
 
-Government Commands (USA Only) share a common prefix of, gov.
+## Table of Contents
 
-![Screen Shot 2022-02-27 at 9 24 35 AM](https://user-images.githubusercontent.com/85772166/155892705-1025b697-dbdd-43d6-96e4-7e73f17a2439.png)
+- [Top Lobbying](/GamestonkTerminal/bots/discord/gov/toplobbying/)
+- [Last Contracts](/GamestonkTerminal/bots/discord/gov/lastcontracts/)
+- [Quarterly Contracts](/GamestonkTerminal/bots/discord/gov/qtrcontracts/)
+- [Last Trades](/GamestonkTerminal/bots/discord/gov/lasttrades/)
+- [Top Buys](/GamestonkTerminal/bots/discord/gov/topbuys/)
+- [Top Sells](/GamestonkTerminal/bots/discord/gov/topsells/)
+- [Historical (ticker)](/GamestonkTerminal/bots/discord/gov/histcont/)
+- [Lobbying (ticker)](/GamestonkTerminal/bots/discord/gov/lobbying/)
+- [Contracts (ticker)](/GamestonkTerminal/bots/discord/gov/contracts/)
+- [Trades (ticker)](/GamestonkTerminal/bots/discord/gov/gtrades/)
