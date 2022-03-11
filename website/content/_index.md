@@ -9,6 +9,8 @@ resources:
     title:
 ---
 
+**All our products are Free and Open-Source (FOSS).**
+
 <!-- markdownlint-capture -->
 <!-- markdownlint-disable MD033 -->
 
@@ -17,69 +19,86 @@ resources:
 [![Contributors][contributors-shield]][contributors-url]
 [![MIT License][license-shield]][license-url]
 
-[![Issues][issues-shield]][issues-url]
-[![Bugs Open][bugs-open-shield]][bugs-open-url]
-[![Bugs Closed][bugs-closed-shield]][bugs-closed-url]
-
-<span class="badge-placeholder">[![Hugo Version](https://img.shields.io/badge/hugo-0.83-blue.svg)](https://gohugo.io)</span>
-[![Build Status](https://github.com/GamestonkTerminal/GamestonkTerminal/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/GamestonkTerminal/GamestonkTerminal/actions)
-[![Documentation Status](https://readthedocs.org/projects/gamestonk-terminal/badge/?version=latest)](https://gamestonk-terminal.readthedocs.io/?badge=latest)
-[![GitHub release](https://img.shields.io/github/release/GamestonkTerminal/GamestonkTerminal.svg?maxAge=3600)](https://github.com/GamestonkTerminal/GamestonkTerminal/releases)
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-[![TODOs](https://badgen.net/https/api.tickgit.com/badgen/github.com/GamestonkTerminal/GamestonkTerminal/main)](https://www.tickgit.com/browse?repo=github.com/GamestonkTerminal/GamestonkTerminal&branch=main)
-
-![Discord Shield](https://discordapp.com/api/guilds/831165782750789672/widget.png?style=shield)
 [![Twitter](https://img.shields.io/twitter/url/https/twitter.com/gamestonkt.svg?style=social&label=Follow%20%40gamestonkt)](https://twitter.com/gamestonkt)
 
 <!-- markdownlint-restore -->
 
-### **High Quality FOSS Investment Research Tools For Everyone**
+---
 
-<!--{{< img name="GST" lazy=false >}}-->
-
-Gamestonk Terminal provides a modern, and fully customizable, Python-based integrated environment for investment research. Leveraging state-of-the-art data science and machine learning, the individual trader can now harness technologies used by institutions and professionals around the world to make better financial decisions.
-
-As a modern Python-based environment, GamestonkTerminal opens access to numerous Python data libraries in data science (Pandas, Numpy, Scipy, Jupyter), machine learning (Pytorch, Tensorflow, Sklearn, Flair), and data acquisition (Beautiful Soup, and numerous third-party APIs).
-
-### Feature overview
+## Gamestonk Terminal
 
 {{< columns >}}
 
-### Ad-Free Experience
+### Python
 
-Don't let your research be influenced by algorithmic advertisements. Gamestonk Terminal provides a fast workflow that is ad-free and uncompromising.
-
-<--->
-
-### Fully Customizable
-
-The MIT Open Source license allows any user to endlessly customize the suite for their specific needs.
+Fully written in python which is one of the most used programming languages due to its simplified syntax and shallow learning curve. It is the first time in history that users - regardless of their background - can so easily add features to an investment research platform.
 
 <--->
 
-### Jupyter Lab Enabled
+### Open Source and Transparency
 
-Work in developer mode with Jupyter Lab, or share reports and customized tools with .ipynb Notebook files. Run multiple dashboards or terminals in parallel.
+The MIT Open Source license allows any user to fork the project to either add features to the broader community or create their own customized terminal version.
+
+<--->
+
+### Importing and Exporting data
+
+The terminal allows for users to import their own proprietary datasets to use on our econometric menu. In addition, users are allowed to export any type of data to any type of format whether that is raw data in Excel or an image in PNG. This is ideal for finance content creation.
 
 {{< /columns >}}
 
 {{< columns >}}
 
-### Discord Bot
+### Automatic notebook reports
 
-A powerful and interactive Discord Bot, complete with a Plotly charting library, for anyone to install and use in public or private servers; without limits.
-
-<--->
-
-### Simple Scripts For Automated Processes
-
-Generate automated reports, charts, and more using the unique simple script batch command for repetitive or scheduled tasks.
+Create notebook templates (through papermill) which can be run on different tickers. This level of automation allows to speed up the development of your investment thesis and reduce human error.
 
 <--->
 
-### Import Your Own Data Sets To Plot, Analyze, Or Predict
+### GST API and Customizable notebook reports
 
-Statisticians and data scientists can harness the power of Tensorflow and quantitative analytics by importing CSV data sets in the custom menu.
+Use our Gamestonk Terminal environment to access raw data through a Jupyter notebook and play with it accordingly. Or just create customizable notebook reports for your colleagues and friends doing research on a particular asset or a macro economic event impact on said asset. The possibilities are endless.
+
+<--->
+
+### Advanced user and routines
+
+Navigate through 500+ terminal features using fast shortcuts and leverage auto-complete functionality. Jump from looking into your portfolio to compare the financials of those companies in a few seconds. Leverage our routines implementation to run analysis while you drink your coffee/tea.
+
+
+{{< /columns >}}
+
+---
+
+---
+
+## Financial Chatting Bot
+
+{{< columns >}}
+
+### Discord, Telegram, Slack and GroupMe integration
+
+The only cross-platform financial chatting bot to accommodate for your already existing groups/chats/servers.
+
+<--->
+
+### Investment data should be OS agnostic
+
+This bot will allow to access the terminal features using any type of device. From mobile phone to tablet and computer.
+
+{{< /columns >}}
+
+{{< columns >}}
+
+### Use bot for your own investment research
+
+If you don't want to engage with the bot in an open-server setting, you can message the bot directly and interact with data on a more private setting.
+
+<--->
+
+### Customize the bot to your needs
+
+The bot also benefits from an MIT Open Source license, which means that you can customize it according to your needs and include proprietary features.
 
 {{< /columns >}}
 
