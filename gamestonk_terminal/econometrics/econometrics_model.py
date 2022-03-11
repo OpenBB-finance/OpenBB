@@ -125,7 +125,7 @@ def clean(dataset: pd.DataFrame, fill: str, drop: str, limit: int) -> pd.DataFra
     dataset : pd.DataFrame
         The dataset you wish to clean
     fill : str
-        The method of filling Nans
+        The method of filling NaNs
     drop : str
         The method of dropping NaNs
     limit : int

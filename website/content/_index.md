@@ -55,13 +55,13 @@ Don't let your research be influenced by algorithmic advertisements. Gamestonk T
 
 ### Fully Customizable
 
-The MIT Open Source license allows any user to endlessly customize the suite for their specific needs. 
+The MIT Open Source license allows any user to endlessly customize the suite for their specific needs.
 
 <--->
 
-### Jupyter Labs Enabled
+### Jupyter Lab Enabled
 
-Work in developer mode with Jupyter Labs, or share reports and customized tools with .ipynb Notebook files. Run multiple dashboards or terminals in parallel. 
+Work in developer mode with Jupyter Lab, or share reports and customized tools with .ipynb Notebook files. Run multiple dashboards or terminals in parallel.
 
 {{< /columns >}}
 
