@@ -9,7 +9,12 @@ from typing import List
 import pandas as pd
 
 from gamestonk_terminal.decorators import log_start_end
-from gamestonk_terminal.helper_funcs import export_data, print_rich_table
+from gamestonk_terminal.helper_funcs import (
+    export_data,
+    print_rich_table,
+    lambda_long_number_format,
+)
+from gamestonk_terminal.terminal_helper import suppress_stdout
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.stocks.screener.finviz_model import get_screener_data
 
@@ -149,12 +154,13 @@ def screener(
     List[str]
         List of stocks that meet preset criteria
     """
-    df_screen = get_screener_data(
-        loaded_preset,
-        data_type,
-        0,
-        ascend,
-    )
+    with suppress_stdout():
+        df_screen = get_screener_data(
+            preset_loaded=loaded_preset,
+            data_type=data_type,
+            limit=10,
+            ascend=ascend,
+        )
 
     if isinstance(df_screen, pd.DataFrame):
         if df_screen.empty:
@@ -163,15 +169,15 @@ def screener(
         df_screen = df_screen.dropna(axis="columns", how="all")
 
         if sort:
-            if " ".join(sort) in d_cols_to_sort[data_type]:
+            if sort in d_cols_to_sort[data_type]:
                 df_screen = df_screen.sort_values(
-                    by=[" ".join(sort)],
+                    by=[sort],
                     ascending=ascend,
                     na_position="last",
                 )
             else:
                 similar_cmd = difflib.get_close_matches(
-                    " ".join(sort),
+                    sort,
                     d_cols_to_sort[data_type],
                     n=1,
                     cutoff=0.7,
@@ -192,11 +198,47 @@ def screener(
 
         df_screen = df_screen.fillna("")
 
+        if data_type == "ownership":
+            cols = ["Market Cap", "Outstanding", "Float", "Avg Volume", "Volume"]
+            df_screen[cols] = df_screen[cols].applymap(
+                lambda x: lambda_long_number_format(x, 1)
+            )
+        elif data_type == "overview":
+            cols = ["Market Cap", "Volume"]
+            df_screen[cols] = df_screen[cols].applymap(
+                lambda x: lambda_long_number_format(x, 1)
+            )
+        elif data_type == "technical":
+            cols = ["Volume"]
+            df_screen[cols] = df_screen[cols].applymap(
+                lambda x: lambda_long_number_format(x, 1)
+            )
+        elif data_type == "valuation":
+            cols = ["Market Cap", "Volume"]
+            df_screen[cols] = df_screen[cols].applymap(
+                lambda x: lambda_long_number_format(x, 1)
+            )
+        elif data_type == "financial":
+            cols = ["Market Cap", "Volume"]
+            df_screen[cols] = df_screen[cols].applymap(
+                lambda x: lambda_long_number_format(x, 1)
+            )
+        elif data_type == "performance":
+            cols = ["Avg Volume", "Volume"]
+            df_screen[cols] = df_screen[cols].applymap(
+                lambda x: lambda_long_number_format(x, 1)
+            )
+        elif data_type == "technical":
+            cols = ["Volume"]
+            df_screen[cols] = df_screen[cols].applymap(
+                lambda x: lambda_long_number_format(x, 1)
+            )
+
         print_rich_table(
             df_screen.head(n=limit),
             headers=list(df_screen.columns),
             show_index=False,
-            title="Finzin Screener",
+            title="Finviz Screener",
         )
         console.print("")
 

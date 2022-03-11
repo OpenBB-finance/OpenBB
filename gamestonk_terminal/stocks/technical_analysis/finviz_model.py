@@ -27,7 +27,7 @@ def get_finviz_image(ticker: str) -> bytes:
         Image in byte format
     """
     stock = finvizfinance(ticker)
-    image_url = stock.TickerCharts(urlonly=True)
+    image_url = stock.ticker_charts(urlonly=True)
 
     r = requests.get(image_url, stream=True, headers=headers, timeout=5)
     r.raise_for_status()

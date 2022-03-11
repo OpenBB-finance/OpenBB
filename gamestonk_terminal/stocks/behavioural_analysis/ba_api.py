@@ -66,3 +66,10 @@ from gamestonk_terminal.common.behavioural_analysis.sentimentinvestor_view impor
 from gamestonk_terminal.stocks.behavioural_analysis.finnhub_view import (
     display_stock_price_headlines_sentiment as snews,
 )
+
+from gamestonk_terminal.stocks.behavioural_analysis.cramer_view import (
+    display_cramer_daily as cramer,
+)
+from gamestonk_terminal.stocks.behavioural_analysis.cramer_view import (
+    display_cramer_ticker as cramer_ticker,
+)
