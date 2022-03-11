@@ -1,1 +1,5 @@
+{"quandl_error":{"code":"QEAx01","message":"We could not recognize your API key: REPLACE_ME. Please check your API key and try again. You can find your API key under your account settings."}}
+{"quandl_error":{"code":"QEAx01","message":"We could not recognize your API key: REPLACE_ME. Please check your API key and try again. You can find your API key under your account settings."}}
+{"quandl_error":{"code":"QEAx01","message":"We could not recognize your API key: REPLACE_ME. Please check your API key and try again. You can find your API key under your account settings."}}
+[red]Unable to get big mac data[/red]
 

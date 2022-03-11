@@ -1,4 +1,4 @@
-Stock Price Strength: Extreme Fear                                                                  [Updated Jan 20 at 7:00pm]
-   The number of stocks hitting 52-week lows exceeds the number hitting highs and is at the lower end of its range, indicating extreme fear.
-   (Last changed Jan 20 from a Fear rating)
+Stock Price Strength: Extreme Fear                                                                  [Updated Mar 7 at 2:08am]
+   During the last five trading days, volume in put options has lagged volume in call options by 37.25% as investors make bullish bets in their portfolios. However, this is still among the highest levels of put buying seen during the last two years, indicating extreme fear on the part of investors.
+   (Last changed Feb 28 from a Fear rating)
 

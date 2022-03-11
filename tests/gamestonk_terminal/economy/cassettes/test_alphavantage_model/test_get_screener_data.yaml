@@ -9,32 +9,33 @@ interactions:
       Connection:
       - keep-alive
     method: GET
-    uri: https://www.alphavantage.co/query?function=SECTOR&apikey=MOCK_API_KEY
+    uri: https://www.alphavantage.co/query?apikey=MOCK_API_KEY&function=SECTOR
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA+yW30/bMBDH3/krrEpMIK03n3/GedtoGUxDmig88GgVs0ZrkykxkxDif5/SMmhM
-        eo32NmmvseM7fz/n793jAWOMjS5C9Gziox/l7HH9af35vLyr6pWPRVWOcja6nrFZmMeqZt9CvV4p
-        54Ed1cEvY7EK7B1bFE2s6mLul8ej96/nfPVNZJfhrg7NIty2RwkuxJjjWCjGTS54rjW7nn2Y+iaG
-        uhytf33anDC69OUP9jFnl8Evx1dtoK3w3YRPqrK5X4WazaL/uQxNG4oDF4fb2bTnsGkTfWz/Ho05
-        cNXZcB2LZRGLze9jDph1ls/L2/sm1oVf/tngbGfDWSvIgp34ehMAgZvkhBdd2VWYL8pqWX1/eN7r
-        ZGfvtAz165rurJ0WpS/nL4mI9KYXPoZ6a1m5zvKLWpOimdehTcfXm1ASkCd7V6v7sphvkp6F+lcx
-        fxZIQpYd9iD7lDNkE//wH9c/geskZ5rGtXU3Dhb7k9tCOUaQFCoEJUkSEgwna0EB5yRsBW4wSwOI
-        BA8DqIdqbECT6C3IbCjbDBzv4zVpn9dFVcbFEGKYAdd7iSGojMgbQZJyc7Cc5E0WPKasUto6pZ3W
-        iwaRDaedDX5eZo1gKHqHfbimOZP7cPUhsaDtDoexoAm5xT45OUj6+XHIJMlLuKFqC9C0K4tU4uTF
-        KHDZcFyJZAQuRNCyj9dpzm6Cr8exGk98DOzo5mpyPOilCbBuiDdqQ3cHoYm3JMGaPc4nHQHPghQk
-        /Czto4SIDrglS82lvkK1VARphqJGAWj78H1u3bEFOASZUqlxJBcQGaAiaAkJ2f5+iDZteLtlQANO
-        UYBRQKZ2A0YOWlGAHVlfDjgOpG/TMWc3LglG9cE6a72RhkUoJQ0IHJiBMW99ZNfFjABFDATaptNJ
-        tyaUBcH31oSygOS8q3Q62yWFoBQ4R5FWCiyBWrjUSra8bJ3cW2Dn7az4t8CEkOkIvhsYIqZ2mlwv
-        M2mj63IwGqTdjdEoUJbSVxtQJCEtwew3fGXSbtqhoBCsGliYkiDWOmL/vPglZ8j3QEukFUaC0Tsj
-        4frdbSIdPP0GAAD//wMA/HMV9ksQAAA=
+        H4sIAAAAAAAAAwAAAP//7JZNb9QwEIbv/RXWSkVFIoPHX3Fyg+6WFlEJddtDj9bWZSN2E5S4SAj1
+        vyOn0Dbe3dmUEweusT2x3+edj58HjDE2OffBsakLblKyn/2n/vNZfdu0axeqpp6UbHI1Z3O/CE3L
+        Pvu2X6kXnh213q1CtfbsFVtWXWjaauFWrydvnuJ8cl1gF/629d3S38RQgguRcZkhMq5KJUst2dX8
+        7cx1wbf1pD96/xBhcuHqr+xdyS68W2WX8UfPfj+88Kz27Zcf8QcSeH74/A7HTd3drX3LplW3aH18
+        k2v7rQhoBluvQrWqQuW7uMohl4PVeA0264IL/mFdDk+fu+Dbyq1+n0Y7WD2NYi3ZsWv70xkHPgx/
+        Vt/cdeExQMYBRfKQ9fqurhY9Fjb37fdq4f/szfVg70lVu3rxLJbl20WZB/dt9RjFFsmVHm3ALv1i
+        WTer5kHlDCE3h1twvS8Zsqn78R/VP4/quGR6LCoNptitP4JFSv+oIAEgQxCGJICgkSSAqR67rZQJ
+        kDiWlgBjKFoSlBrLQUJe7CerQOtttKYxsc6bOizH8MINJANgAkROAhOgaSISJCeJKOCcQK5AyP1i
+        aBB2LCqb3oiwAG7kPJU/HHJLmSBuKLYxm5VMjmcmc+AkszH24SDtHnBJKqboNWBOktVQCEoODYUl
+        yGsoxpculSY+YQDUO0vnFgcYMHIbs5OSXXvXZqHJpi54dnR9OX09Cp9N7zrAF0uU2s/PpPwScQ0o
+        QdIxUNCZa9NuNsRTgNSkP/BFvUeDHZ3BaEDKFwC0WwF+iIUyIhzV13jaDJLnCgVSEJ1Pp1UnkTs6
+        2O7FjhK0GKkpCjDUBGFBEXzzdBRK/KNS++xGINKySKDVPdlNWKexQtKwCCWQjzeMzoETZUlvTJgJ
+        SGVA5SOfqxQoTiBS2Df5PaaQOq34iTelSs2bwJQyHTafnC8UGEV0G9nLtUnsLE6Nf03M5mD1SGKF
+        AkUiySWgIpBasOSUowXogkwGCznJ0QLXuzVUHPj+ki9l2hB3G0sKkMUOoKj6GX2T2MeSIf9rZErx
+        VCWiJNiNEp4wE7pIC+pQU8FlOromVNAIsoVh9O7+4RKxgJzIAOSYVozdYEzRd6OtYEyfpQ9cDu5/
+        AQAA//8DAKcqRBh5EQAA
     headers:
       Allow:
       - GET, HEAD, OPTIONS
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 6d28e012ec423abd-CDG
+      - 6ea3592eec2400e8-AMS
       Connection:
       - keep-alive
       Content-Encoding:
@@ -42,7 +43,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Mon, 24 Jan 2022 11:20:55 GMT
+      - Fri, 11 Mar 2022 09:43:53 GMT
       Expect-CT:
       - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
       Server:

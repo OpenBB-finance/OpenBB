@@ -91,7 +91,7 @@ class EconomyController(BaseController):
         "tyld",
         "unemp",
     ]
-    overview_options = ["indices", "usbonds", "gbonds", "currencies"]
+    overview_options = ["indices", "usbonds", "glbonds", "currencies"]
     tyld_maturity = ["3m", "5y", "10y", "30y"]
     valuation_sort_cols = [
         "Name",
@@ -290,7 +290,7 @@ Index
                 wsj_view.display_usbonds(
                     export=ns_parser.export,
                 )
-            if ns_parser.type == "gbonds":
+            if ns_parser.type == "glbonds":
                 wsj_view.display_glbonds(
                     export=ns_parser.export,
                 )
