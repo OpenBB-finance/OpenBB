@@ -36,7 +36,7 @@ class TechnicalAnalysisCommands(commands.Cog):
     async def ta(self, inter):
         pass
 
-    @ta.sub_command()
+    @commands.slash_command(name="ta-ma")
     async def ma(
         self,
         inter: disnake.AppCmdInter,
@@ -69,7 +69,7 @@ class TechnicalAnalysisCommands(commands.Cog):
         await ShowView().discord(
             ma_command,
             inter,
-            "ta ma",
+            "ta-ma",
             ticker,
             interval,
             past_days,
@@ -106,30 +106,50 @@ class TechnicalAnalysisCommands(commands.Cog):
             cci_command, inter, "ta cci", ticker, length, scalar, start, end
         )
 
-    @ta.sub_command()
+    @commands.slash_command(name="ta-macd")
     async def macd(
         self,
         inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
+        interval: int = commands.Param(choices=[1, 5, 15, 30, 60, 1440]),
+        past_days: int = 0,
         fast="12",
         slow="26",
         signal="9",
         start="",
         end="",
+        extended_hours: bool = False,
+        heikin_candles: bool = False,
     ):
         """Displays chart with moving average convergence/divergence [Yahoo Finance]
 
         Parameters
         -----------
-        ticker:  Stock Ticker
+        ticker: Stock Ticker
+        interval : Chart Minute Interval, 1440 for Daily
+        past_days: Past Days to Display. Default: 0(Not for Daily)
         fast: fast period. Default: 12
         slow: slow period. Default: 26
         signal: signal period. Default: 9
         start: YYYY-MM-DD format
         end: YYYY-MM-DD format
+        extended_hours: Display Pre/After Market Hours. Default: False
+        heikin_candles: Heikin Ashi candles. Default: False
         """
         await ShowView().discord(
-            macd_command, inter, "ta macd", ticker, fast, slow, signal, start, end
+            macd_command,
+            inter,
+            "tamacd",
+            ticker,
+            interval,
+            past_days,
+            fast,
+            slow,
+            signal,
+            start,
+            end,
+            extended_hours,
+            heikin_candles,
         )
 
     @ta.sub_command()
@@ -226,30 +246,50 @@ class TechnicalAnalysisCommands(commands.Cog):
         """
         await ShowView().discord(cg_command, inter, "ta cg", ticker, length, start, end)
 
-    @ta.sub_command()
+    @commands.slash_command(name="ta-adx")
     async def adx(
         self,
         inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
+        interval: int = commands.Param(choices=[1, 5, 15, 30, 60, 1440]),
+        past_days: int = 0,
         length="14",
         scalar="100",
         drift="1",
         start="",
         end="",
+        extended_hours: bool = False,
+        heikin_candles: bool = False,
     ):
         """Displays chart with average directional movement index [Yahoo Finance]
 
         Parameters
         -----------
         ticker: Stock Ticker
+        interval : Chart Minute Interval, 1440 for Daily
+        past_days: Past Days to Display. Default: 0(Not for Daily)
         length: length. Default: 14
         scalar: scalar. Default: 100
         drift: drift. Default: 1
         start: YYYY-MM-DD format
         end: YYYY-MM-DD format
+        extended_hours: Display Pre/After Market Hours. Default: False
+        heikin_candles: Heikin Ashi candles. Default: False
         """
         await ShowView().discord(
-            adx_command, inter, "ta adx", ticker, length, scalar, drift, start, end
+            adx_command,
+            inter,
+            "ta-adx",
+            ticker,
+            interval,
+            past_days,
+            length,
+            scalar,
+            drift,
+            start,
+            end,
+            extended_hours,
+            heikin_candles,
         )
 
     @ta.sub_command()
