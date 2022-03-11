@@ -8,7 +8,7 @@ In order to improve GamestonkTerminal, we need to know how people are using the 
 - Which are the most used features
 - Are they bugs/crashes on certain configuration (OS, python version...)
 
-Knowing that we can focus part of our engeneering effort on most common use cases.
+Knowing that we can focus part of our engineering effort on most common use cases.
 
 **ISSUE**
 
@@ -30,14 +30,14 @@ By default log collection are enabled.
 
 **ENABLE**
 
-Set this environnement variable :
+Set this environment variable :
 ```sh
 GTFF_LOG_COLLECTION = True
 ```
 
 **DISABLE**
 
-Set this environnement variable :
+Set this environment variable :
 ```sh
 GTFF_LOG_COLLECTION = False
 ```
@@ -61,8 +61,8 @@ Here is a list of data and whether they are collected or no :
 |User API KEYS|API Keys to connect to third parties API, like : <br>- ALPHAVANTAGE <br> - COINBASE, <br>- COINPAPRIKA <br>- DEGIRO <br>- REDDIT|NO|
 |User information|Other information that can let identify the users, like : <br>- E-mail <br> - LastName, <br>- Firstname|NO|
 |Session duration|Start and end time of a session.|YES|
-|Session size|Number of line logged withing a user session.|YES|
-|Number of error|Number of error lines logged withing a user session.|YES|
+|Session size|Number of line logged within a user session.|YES|
+|Number of error|Number of error lines logged within a user session.|YES|
 |Commands|Commands run during a session, like : <br>- help <br>- load <br>- candle|NO|
 |Commands arguments|Arguments of the commands run during a session, like : <br>- load TSLA|NO|
 |Exception|Exception generated when a commands crashes : <br>- load TSLA|NO|
