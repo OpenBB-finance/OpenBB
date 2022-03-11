@@ -1233,6 +1233,8 @@ main:
                 ref: "/terminal/jupyter/dashboards/shortdata"
           - name: "reports"
             ref: "/terminal/jupyter/reports"
+  - name: "GST python API"
+    ref: "/api"
   - name: "bots"
     ref: "/bots"
     sub:

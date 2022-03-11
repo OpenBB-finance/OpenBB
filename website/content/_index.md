@@ -65,6 +65,7 @@ Use our Gamestonk Terminal environment to access raw data through a Jupyter note
 
 Navigate through 500+ terminal features using fast shortcuts and leverage auto-complete functionality. Jump from looking into your portfolio to compare the financials of those companies in a few seconds. Leverage our routines implementation to run analysis while you drink your coffee/tea.
 
+
 {{< /columns >}}
 
 ---
