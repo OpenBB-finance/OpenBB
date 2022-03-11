@@ -1,4 +1,4 @@
-```
+```text
 usage: coint [-ts {OPTIONS}] [-p] [-s SIGNIFICANT] [-h] [--export {csv,json,xlsx,png,jpg,pdf,svg}]
 
 ```
@@ -7,7 +7,7 @@ Show co-integration between timeseries
 
 Cointegration is a statistical property of a collection (X1, X2, ..., Xk) of time series variables. First, all of the series must be integrated of order d (see Order of integration). Next, if a linear combination of this collection is integrated of order less than d, then the collection is said to be co-integrated. Formally, if (X,Y,Z) are each integrated of order d, and there exist coefficients a,b,c such that aX + bY + cZ is integrated of order less than d, then X, Y, and Z are cointegrated. Cointegration has become an important property in contemporary time series analysis. Time series often have trends—either deterministic or stochastic. In an influential paper, Charles Nelson and Charles Plosser (1982) provided statistical evidence that many US macroeconomic time series (like GNP, wages, employment, etc.) have stochastic trends. [Source: Wikipedia]
 
-```
+```text
 optional arguments:
   -ts {OPTIONS}, --timeseries {OPTIONS}
                         The time series you wish to test co-integration on. Can hold multiple timeseries. (default: None)
@@ -20,9 +20,10 @@ optional arguments:
 ```
 
 Example:
-```
+
+```text
 2022 Feb 24, 06:03 (✨) /econometrics/ $ coint adj_close-msft adj_close-aapl adj_close-tsla adj_close-googl -p
-                                  Cointegration Tests                                  
+                                  Cointegration Tests
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━━┓
 ┃ Pairs                          ┃ Constant ┃ Gamma ┃ Alpha ┃ Dickey-Fuller ┃ P Value ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━╇━━━━━━━━━┩
@@ -39,6 +40,5 @@ Example:
 │ adj_close-tsla/adj_close-googl │ -505.14  │ 0.51  │ -0.01 │ -2.28         │ 0.18    │
 └────────────────────────────────┴──────────┴───────┴───────┴───────────────┴─────────┘
 ```
+
 ![error_terms_cointegrations](https://user-images.githubusercontent.com/46355364/155514964-dd75cf17-91ae-4326-96e8-45d9a2c7b24a.png)
-
-
