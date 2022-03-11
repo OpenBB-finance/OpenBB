@@ -12,6 +12,7 @@ from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.economy import econdb_model
 from gamestonk_terminal.helper_funcs import plot_autoscale, print_rich_table
+from gamestonk_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -195,3 +196,30 @@ def show_treasuries(
 
     if external_axes is None:
         theme.visualize_output()
+
+
+@log_start_end(log=logger)
+def show_treasury_maturities(treasuries: Dict):
+    """Obtain treasury maturity options [Source: EconDB]
+
+    Parameters
+    ----------
+    treasuries: dict
+        A dictionary containing the options structured {instrument : {maturities: {abbreviation : name}}}
+
+    Returns
+    ----------
+    A table containing the instruments and maturities.
+    """
+
+    instrument_maturities = econdb_model.obtain_treasury_maturities(treasuries)
+
+    print_rich_table(
+        instrument_maturities,
+        headers=list(["Maturities"]),
+        show_index=True,
+        index_name="Instrument",
+        title="Maturity options per instrument",
+    )
+
+    console.print()

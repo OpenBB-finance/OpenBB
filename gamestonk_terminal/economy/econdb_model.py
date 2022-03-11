@@ -429,3 +429,29 @@ def get_treasuries(
                         )
 
     return treasury_data
+
+
+@log_start_end(log=logger)
+def obtain_treasury_maturities(treasuries: Dict) -> pd.DataFrame:
+    """Obtain treasury maturity options [Source: EconDB]
+
+    Parameters
+    ----------
+    treasuries: dict
+        A dictionary containing the options structured {instrument : {maturities: {abbreviation : name}}}
+
+    Returns
+    ----------
+    df: pd.DataFrame
+        Contains the name of the instruments and a string containing all options.
+    """
+
+    instrument_maturities = {
+        instrument: ", ".join(values["maturities"].keys())
+        for instrument, values in treasuries["instruments"].items()
+    }
+
+    df = pd.DataFrame.from_dict(instrument_maturities, orient="index")
+    df.loc["average"] = "Defined by function"
+
+    return df

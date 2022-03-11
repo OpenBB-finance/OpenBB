@@ -34,7 +34,6 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     print_rich_table,
     valid_date,
-    check_positive,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.parent_classes import BaseController
@@ -426,17 +425,8 @@ Index
             default="USD",
         )
 
-        parser.add_argument(
-            "-r",
-            "--raw",
-            dest="raw",
-            help="Show raw data",
-            action="store_true",
-            default=False,
-        )
-
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED, raw=True
         )
         if ns_parser:
             if ns_parser.show_parameters:
@@ -496,27 +486,14 @@ Index
             help="Query the FRED database to obtain Series IDs given the query seaarch term.",
         )
 
-        parser.add_argument(
-            "-l",
-            "--limit",
-            dest="limit",
-            help="Number of rows to show for limit",
-            type=check_positive,
-            default=5,
-        )
-
-        parser.add_argument(
-            "--raw",
-            help="Flag to show raw data",
-            dest="raw",
-            action="store_true",
-            default=False,
-        )
-
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
+            parser,
+            other_args,
+            export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+            raw=True,
+            limit=5,
         )
         if ns_parser:
             if ns_parser.query:
@@ -633,28 +610,14 @@ Index
             help="Search for indices with given keyword",
         )
 
-        parser.add_argument(
-            "-l",
-            "--limit",
-            type=str,
-            dest="limit",
-            help="Takes into account the amount of rows you wish to see for your query ('-q').",
-            default=10,
-        )
-
-        parser.add_argument(
-            "-r",
-            "--raw",
-            dest="raw",
-            help="Show raw data",
-            action="store_true",
-            default=False,
-        )
-
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-i")
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
+            raw=True,
+            limit=10,
         )
         if ns_parser:
             if ns_parser.query and ns_parser.limit:
@@ -697,7 +660,16 @@ Index
             type=str,
             dest="maturity",
             help="The preferred maturity which is dependent on the type of the treasury",
-            default="1y",
+            default=["1y"],
+        )
+
+        parser.add_argument(
+            "-sm",
+            "--show_maturities",
+            dest="show_maturities",
+            help="Show the maturities available for every instrument.",
+            action="store_true",
+            default=False,
         )
 
         parser.add_argument(
@@ -719,14 +691,14 @@ Index
             choices=econdb_model.TREASURIES["instruments"],
             help="Whether to select nominal, inflation indexed, average inflation indexed or "
             "secondary market treasury rates",
-            default="nominal",
+            default=["nominal"],
         )
 
         parser.add_argument(
             "-s",
             "--start_date",
             dest="start_date",
-            help="The start date of the data (format: YEAR-DAY-MONTH, i.e. 2010-31-12)",
+            help="The start date of the data (format: YEAR-MONTH-DAY, i.e. 2010-12-31)",
             default="1934-01-31",
         )
 
@@ -734,43 +706,32 @@ Index
             "-e",
             "--end_date",
             dest="end_date",
-            help="The end date of the data (format: YEAR-DAY-MONTH, i.e. 2021-20-06)",
+            help="The end date of the data (format: YEAR-DAY-MONTH, i.e. 2021-06-02)",
             default=date.today(),
-        )
-
-        parser.add_argument(
-            "-l",
-            "--limit",
-            type=str,
-            dest="limit",
-            help="Takes into account the amount of rows you wish to see for your query ('-q').",
-            default=10,
-        )
-
-        parser.add_argument(
-            "-r",
-            "--raw",
-            dest="raw",
-            help="Show raw data",
-            action="store_true",
-            default=False,
         )
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-m")
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
+            raw=True,
+            limit=10,
         )
 
-        if ns_parser and ns_parser.maturity and ns_parser.type:
-            econdb_view.show_treasuries(
-                types=ns_parser.type,
-                maturities=ns_parser.maturity,
-                frequency=ns_parser.frequency,
-                start_date=ns_parser.start_date,
-                end_date=ns_parser.end_date,
-                raw=ns_parser.raw,
-            )
+        if ns_parser:
+            if ns_parser.show_maturities:
+                econdb_view.show_treasury_maturities(econdb_model.TREASURIES)
+            elif ns_parser.maturity and ns_parser.type:
+                econdb_view.show_treasuries(
+                    types=ns_parser.type,
+                    maturities=ns_parser.maturity,
+                    frequency=ns_parser.frequency,
+                    start_date=ns_parser.start_date,
+                    end_date=ns_parser.end_date,
+                    raw=ns_parser.raw,
+                )
 
     @log_start_end(log=logger)
     def call_map(self, other_args: List[str]):
@@ -971,14 +932,12 @@ Index
                 S&P500 incumbents. Pops plot in terminal. [Source: Alpha Vantage]
             """,
         )
-        parser.add_argument(
-            "--raw",
-            action="store_true",
-            dest="raw",
-            help="Only output raw data",
-        )
+
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
+            parser,
+            other_args,
+            export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+            raw=True,
         )
         if ns_parser:
             alphavantage_view.realtime_performance_sector(
@@ -1012,15 +971,12 @@ Index
             default="USA",
             type=nasdaq_model.check_country_code_type,
         )
-        parser.add_argument(
-            "--raw",
-            action="store_true",
-            default=False,
-            help="Show raw data",
-            dest="raw",
-        )
+
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
+            parser,
+            other_args,
+            export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+            raw=True,
         )
         if ns_parser:
             if ns_parser.codes:
