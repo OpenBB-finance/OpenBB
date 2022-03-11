@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 import logging
+import os
 from typing import Optional, List
 
 import pandas as pd
@@ -12,7 +13,11 @@ from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.economy.yfinance_model import get_index, INDICES
-from gamestonk_terminal.helper_funcs import plot_autoscale, print_rich_table
+from gamestonk_terminal.helper_funcs import (
+    plot_autoscale,
+    print_rich_table,
+    export_data,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -78,11 +83,16 @@ def show_indices(
             indices_data.fillna("-").iloc[-10:],
             headers=list(indices_data.columns),
             show_index=True,
-            title=f"Indices [columns: {column}",
+            title=f"Indices [column: {column}]",
         )
 
     if export:
-        print("Doing nothing!")
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "index_data",
+            indices_data,
+        )
 
     theme.style_primary_axis(ax)
 

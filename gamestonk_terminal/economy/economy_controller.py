@@ -157,7 +157,7 @@ class EconomyController(BaseController):
                 c: None for c in ["energy", "metals", "meats", "grains", "softs"]
             }
 
-            choices["indices"] = {c: None for c in yfinance_model.INDICES}
+            choices["index"] = {c: None for c in yfinance_model.INDICES}
 
             choices["macro"]["-p"] = {c: None for c in econdb_model.PARAMETERS}
             choices["macro"]["--parameter"] = {c: None for c in econdb_model.PARAMETERS}
@@ -523,12 +523,12 @@ Index
                 )
 
     @log_start_end(log=logger)
-    def call_indices(self, other_args: List[str]):
-        """Process indices command"""
+    def call_index(self, other_args: List[str]):
+        """Process index command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="indices",
+            prog="index",
             description="Obtain any set of indices and plot them together. With the -si argument the major indices are "
             "shown. By using the arguments (for example 'nasdaq' and 'sp500') you can collect data and "
             "plot the graphs together. [Source: Yahoo finance / FinanceDatabase]",
@@ -731,6 +731,7 @@ Index
                     start_date=ns_parser.start_date,
                     end_date=ns_parser.end_date,
                     raw=ns_parser.raw,
+                    export=ns_parser.export,
                 )
 
     @log_start_end(log=logger)

@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 import logging
+import os
 from typing import Optional, List, Dict, Any
 
 import pandas as pd
@@ -11,7 +12,11 @@ from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.economy import econdb_model
-from gamestonk_terminal.helper_funcs import plot_autoscale, print_rich_table
+from gamestonk_terminal.helper_funcs import (
+    plot_autoscale,
+    print_rich_table,
+    export_data,
+)
 from gamestonk_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -178,19 +183,26 @@ def show_treasuries(
     ax.set_title("U.S. Treasuries")
     ax.legend()
 
-    if raw:
+    if raw or export:
         df = pd.DataFrame.from_dict(treasury_data, orient="index").stack().to_frame()
         df = pd.DataFrame(df[0].values.tolist(), index=df.index).T
+        df.columns = ["_".join(column) for column in df.columns]
 
-        print_rich_table(
-            df.iloc[-10:],
-            headers=list(df.columns),
-            show_index=True,
-            title="U.S. Treasuries",
-        )
+        if raw:
+            print_rich_table(
+                df.iloc[-10:],
+                headers=list(df.columns),
+                show_index=True,
+                title="U.S. Treasuries",
+            )
 
-    if export:
-        print("Doing nothing!")
+        if export:
+            export_data(
+                export,
+                os.path.dirname(os.path.abspath(__file__)),
+                "treasuries_data",
+                df,
+            )
 
     theme.style_primary_axis(ax)
 
