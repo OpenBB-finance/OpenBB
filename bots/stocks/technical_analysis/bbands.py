@@ -1,5 +1,4 @@
 import logging
-from datetime import datetime, timedelta
 
 import plotly.graph_objects as go
 
@@ -70,22 +69,6 @@ def bbands_command(
     if ticker == "":
         raise Exception("Stock ticker is required")
 
-    if datetime.today().strftime("%A") == "Saturday" and past_days <= 1:
-        past_days = 1
-    if datetime.today().strftime("%A") == "Sunday" and past_days <= 2:
-        past_days = 2
-
-    if interval != 1440:
-        past_days += 30 if news else 1
-        if start == "":
-            ta_start = datetime.now() - timedelta(days=past_days)
-        else:
-            ta_start = datetime.strptime(start, cfg.DATE_FORMAT) - timedelta(
-                days=past_days
-            )
-        past_days += 2 if news else 10
-        ta_start = load_candle.local_tz(ta_start)
-
     if not length.lstrip("-").isnumeric():
         raise Exception("Number has to be an integer")
     length = float(length)
@@ -95,7 +78,7 @@ def bbands_command(
         raise Exception("Invalid ma entered")
 
     # Retrieve Data
-    df_stock, start, end = load_candle.stock_data(
+    df_stock, start, end, bar_start = load_candle.stock_data(
         ticker=ticker,
         interval=interval,
         past_days=past_days,
@@ -115,6 +98,7 @@ def bbands_command(
 
     # Output Data
     if interval != 1440:
+        ta_start = load_candle.local_tz(bar_start)
         ta_end = load_candle.local_tz(end)
         df_ta = df_ta.loc[(df_ta.index >= ta_start) & (df_ta.index < ta_end)]
 
