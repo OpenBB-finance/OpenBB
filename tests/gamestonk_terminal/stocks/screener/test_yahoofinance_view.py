@@ -46,7 +46,7 @@ def test_historical(mocker):
 
     # MOCK PROGRESS_BAR
     mocker.patch(
-        target="finvizfinance.screener.overview.progressBar",
+        target="finvizfinance.screener.overview.progress_bar",
     )
 
     # MOCK EXPORT_DATA
@@ -91,7 +91,7 @@ def test_historical_no_d_signals(mocker):
 
     # MOCK PROGRESS_BAR
     mocker.patch(
-        target="finvizfinance.screener.overview.progressBar",
+        target="finvizfinance.screener.overview.progress_bar",
     )
 
     # MOCK EXPORT_DATA
