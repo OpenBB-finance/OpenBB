@@ -19,7 +19,7 @@ from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.loggers import setup_logging, upload_archive_logs_s3
 
 logger = logging.getLogger(__name__)
-setup_logging()
+setup_logging("DiscordBot")
 logger.info("START")
 logger.info("Python: %s", platform.python_version())
 logger.info("OS: %s", platform.system())
