@@ -514,7 +514,7 @@ def candle_fig(
                 x_start = datetime.now() - timedelta(hours=1.5)
 
             fig.update_layout(
-                xaxis_range=[local_tz(x_start), local_tz((df_stock.index[-1]))],
+                xaxis_range=[local_tz(x_start), local_tz(df_stock.index[-1])],
             )
         fig.update_layout(
             xaxis_tickformatstops=[
@@ -587,8 +587,8 @@ def candle_fig(
             unique = []
             for index in df_stock.index:
                 dates = index.strftime("%Y-%m-%d")
-                if dates in unique:
-                    continue  # pylint: disable=R1724
+                if dates in unique:  # pylint: disable=R1724
+                    continue
                 else:
                     unique.append(dates)
             fig.add_trace(
@@ -663,4 +663,10 @@ def candle_fig(
         )
         fig.update_traces(xhoverformat="%b %d '%y")
 
-    return {"fig": fig, "bar_opacity": bar_opacity}
+    plt_title = (
+        f"{ticker.upper()} {interval}min"
+        if interval != 1440
+        else f"{ticker.upper()} Daily"
+    )
+
+    return {"fig": fig, "bar_opacity": bar_opacity, "plt_title": plt_title}

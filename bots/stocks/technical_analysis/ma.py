@@ -103,8 +103,15 @@ def ma_command(
         df_ta = df_ta.loc[(df_ta.index >= ta_start) & (df_ta.index < ta_end)]
 
     plot = load_candle.candle_fig(
-        df_ta, ticker, interval, extended_hours, news, bar=bar_start
+        df_ta,
+        ticker,
+        interval,
+        extended_hours,
+        news,
+        bar=bar_start,
+        int_bar=interval,
     )
+    title = f"{plot['plt_title']} Moving Average ({mamode.upper()})"
     fig = plot["fig"]
 
     for win in window:
@@ -124,7 +131,7 @@ def ma_command(
         margin=dict(l=0, r=0, t=50, b=20),
         template=cfg.PLT_TA_STYLE_TEMPLATE,
         colorway=cfg.PLT_TA_COLORWAY,
-        title=f"{ticker.upper()} Moving Average ({mamode.upper()})",
+        title=title,
         title_x=0.1,
         title_font_size=12,
         dragmode="pan",

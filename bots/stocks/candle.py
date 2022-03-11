@@ -11,6 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 # pylint: disable=R0912
+# pylint: disable=R0913
 @log_start_end(log=logger)
 def candle_command(
     ticker: str = "",
@@ -85,12 +86,8 @@ def candle_command(
         bar=bar_start,
         int_bar=interval,
     )
+    title = f"{plot['plt_title']} Chart"
     fig = plot["fig"]
-    plt_title = f"{ticker.upper()} Intraday {interval}min"
-    title = f"Intraday {interval}min Chart for {ticker.upper()}"
-    if interval == 1440:
-        plt_title = f"{ticker.upper()} Daily"
-        title = f"Daily Chart for {ticker.upper()}"
 
     if interval != 1440 and vwap:
         fig.add_trace(
@@ -108,7 +105,7 @@ def candle_command(
     fig.update_layout(
         margin=dict(l=0, r=0, t=40, b=20),
         template=cfg.PLT_CANDLE_STYLE_TEMPLATE,
-        title=plt_title,
+        title=title,
         title_x=0.5,
         title_font_size=14,
     )

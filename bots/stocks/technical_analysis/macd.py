@@ -102,7 +102,9 @@ def macd_command(
         row_width=[0.4, 0.6],
         specs=[[{"secondary_y": True}], [{"secondary_y": False}]],
     )
+    title = f"{plot['plt_title']} MACD {fast} {slow} {signal}"
     fig = plot["fig"]
+
     fig.add_trace(
         go.Bar(
             name="MACD Histogram",
@@ -145,7 +147,7 @@ def macd_command(
         margin=dict(l=0, r=0, t=50, b=20),
         template=cfg.PLT_TA_STYLE_TEMPLATE,
         colorway=cfg.PLT_TA_COLORWAY,
-        title=f"{ticker.upper()} {interval}m MACD {fast} {slow} {signal}",
+        title=title,
         title_x=0.1,
         title_font_size=12,
         dragmode="pan",

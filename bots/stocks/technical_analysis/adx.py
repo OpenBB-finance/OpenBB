@@ -109,6 +109,7 @@ def adx_command(
         row_width=[0.4, 0.6],
         specs=[[{"secondary_y": True}], [{"secondary_y": False}]],
     )
+    title = f"{plot['plt_title']} Average Directional Movement Index (ADX)"
     fig = plot["fig"]
 
     fig.add_trace(
@@ -164,7 +165,7 @@ def adx_command(
         margin=dict(l=0, r=0, t=50, b=20),
         template=cfg.PLT_TA_STYLE_TEMPLATE,
         colorway=cfg.PLT_TA_COLORWAY,
-        title=f"{ticker.upper()} {interval}m Average Directional Movement Index (ADX)",
+        title=title,
         title_x=0.02,
         title_font_size=12,
         dragmode="pan",

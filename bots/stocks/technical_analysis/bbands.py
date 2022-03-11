@@ -71,7 +71,7 @@ def bbands_command(
 
     if not length.lstrip("-").isnumeric():
         raise Exception("Number has to be an integer")
-    length = float(length)
+    ta_length = float(length)
     n_std = float(n_std)
 
     if mamode not in possible_ma:
@@ -93,7 +93,7 @@ def bbands_command(
 
     df_ta = df_stock.loc[(df_stock.index >= start) & (df_stock.index < end)]
     df_ta = df_ta.join(
-        volatility_model.bbands(df_ta["Adj Close"], length, n_std, mamode)
+        volatility_model.bbands(df_ta["Adj Close"], ta_length, n_std, mamode)
     )
 
     # Output Data
@@ -103,8 +103,8 @@ def bbands_command(
         df_ta = df_ta.loc[(df_ta.index >= ta_start) & (df_ta.index < ta_end)]
 
     plot = load_candle.candle_fig(df_ta, ticker, interval, extended_hours, news)
+    title = f"{plot['plt_title']} Bollinger Bands ({mamode.upper()})"
     fig = plot["fig"]
-    length = int(length)
 
     fig.add_trace(
         go.Scatter(
@@ -153,7 +153,7 @@ def bbands_command(
         margin=dict(l=0, r=0, t=50, b=20),
         template=cfg.PLT_TA_STYLE_TEMPLATE,
         colorway=cfg.PLT_TA_COLORWAY,
-        title=f"{ticker.upper()} Bollinger Bands ({mamode.upper()})",
+        title=title,
         title_x=0.1,
         title_font_size=12,
         dragmode="pan",
