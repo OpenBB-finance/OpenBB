@@ -9,6 +9,7 @@ from typing import List
 
 import investpy
 import pandas as pd
+import numpy as np
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import feature_flags as gtff
@@ -471,12 +472,15 @@ Potential errors
                     "Avanza implementation currently only supports funds from sweden."
                 )
                 return self.queue
-            if not self.fund_name:
-                console.print(
-                    "No fund loaded. Please use `load` with name first.\n", style="bold"
-                )
-                return self.queue
-            if self.fund_name not in ava_fund.index:
+            if self.fund_name == "":
+                if self.fund_symbol != "":
+                    self.fund_symbol = investpy_model.get_fund_name_from_symbol(self.fund_symbol)
+                else:
+                    console.print(
+                        "No fund loaded. Please use `load` first.\n", style="bold"
+                    )
+                    return self.queue
+            if self.fund_name.upper() not in ava_fund.index.str.upper().to_numpy():
                 console.print("No fund data. Please use another fund", style="bold")
                 return self.queue
             avanza_view.display_allocation(self.fund_name, ns_parser.focus)
@@ -506,12 +510,15 @@ Potential errors
                     "Avanza implementation currently only supports funds from sweden."
                 )
                 return self.queue
-            if not self.fund_name:
-                console.print(
-                    "No fund loaded. Please use `load` with name first.\n", style="bold"
-                )
-                return self.queue
-            if self.fund_name not in ava_fund.index:
+            if self.fund_name == "":
+                if self.fund_symbol != "":
+                    self.fund_symbol = investpy_model.get_fund_name_from_symbol(self.fund_symbol)
+                else:
+                    console.print(
+                        "No fund loaded. Please use `load` first.\n", style="bold"
+                    )
+                    return self.queue
+            if self.fund_name.upper() not in ava_fund.index.str.upper().to_numpy():
                 console.print("No fund data. Please use another fund", style="bold")
                 return self.queue
             avanza_view.display_info(self.fund_name)

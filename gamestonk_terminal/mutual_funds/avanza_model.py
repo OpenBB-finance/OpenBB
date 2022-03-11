@@ -25,6 +25,7 @@ def get_data(fund_name: str):
         os.path.join("gamestonk_terminal", "mutual_funds", "avanza_fund_ID.csv"),
         index_col=0,
     )
+    ava_fund.index = ava_fund.index.str.upper()
     fund_id = ava_fund.loc[fund_name, "ID"]
     url = f"https://www.avanza.se/_api/fund-guide/guide/{fund_id}"
     response = requests.get(url)
