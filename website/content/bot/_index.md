@@ -19,3 +19,12 @@ For local or new remote server installations, follow the instructions here: http
 Server administrators for Discord can invite the GameStonks Bot to their servers by clicking the invite link:
 
 https://discord.com/oauth2/authorize?client_id=927232119346962513&permissions=510500797553&scope=bot%20applications.commands
+
+WIP
+
+Bot currently available for the following platforms:
+
+- Discord
+- Telegram
+- Groupme
+- Slack

@@ -90,7 +90,6 @@ def display_historical(
             return
         (ax,) = external_axes
 
-    # breakpoint()
     companies_names = df_similar.columns.to_list()
     ax.plot(df_similar, label=companies_names)
     ax.set_title("Historical price of similar companies")
