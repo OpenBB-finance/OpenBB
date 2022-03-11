@@ -132,7 +132,7 @@ def print_rich_table(
             table.add_row(*row)
         console.print(table)
     else:
-        console.print(df.to_string())
+        console.print(df.to_string(col_space=0))
 
 
 def check_int_range(mini: int, maxi: int):
@@ -482,14 +482,19 @@ def us_market_holidays(years) -> list:
     return valid_holidays
 
 
-def lambda_long_number_format(num) -> str:
+def lambda_long_number_format(num, round_decimal=3) -> str:
     """Format a long number"""
+
     if isinstance(num, float):
         magnitude = 0
         while abs(num) >= 1000:
             magnitude += 1
             num /= 1000.0
-        num_str = int(num) if num.is_integer() else f"{num:.3f}"
+
+        string_fmt = f".{round_decimal}f"
+
+        num_str = int(num) if num.is_integer() else f"{num:{string_fmt}}"
+
         return f"{num_str} {' KMBTP'[magnitude]}".strip()
     if isinstance(num, int):
         num = str(num)
@@ -500,7 +505,10 @@ def lambda_long_number_format(num) -> str:
         while abs(num) >= 1000:
             magnitude += 1
             num /= 1000.0
-        num_str = int(num) if num.is_integer() else f"{num:.3f}"
+
+        string_fmt = f".{round_decimal}f"
+        num_str = int(num) if num.is_integer() else f"{num:{string_fmt}}"
+
         return f"{num_str} {' KMBTP'[magnitude]}".strip()
     return num
 
