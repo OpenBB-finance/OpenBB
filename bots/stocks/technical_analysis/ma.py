@@ -1,5 +1,4 @@
 import logging
-from datetime import datetime, timedelta
 
 import plotly.graph_objects as go
 
@@ -58,19 +57,8 @@ def ma_command(
     if ticker == "":
         raise Exception("Stock ticker is required")
 
-    if interval != 1440:
-        past_days += 30 if news else 1
-        if start == "":
-            ta_start = datetime.now() - timedelta(days=past_days)
-        else:
-            ta_start = datetime.strptime(start, cfg.DATE_FORMAT) - timedelta(
-                days=past_days
-            )
-        past_days += 2 if news else 10
-        ta_start = load_candle.local_tz(ta_start)
-
     # Retrieve Data
-    df_stock, start, end = load_candle.stock_data(
+    df_stock, start, end, bar_start = load_candle.stock_data(
         ticker=ticker,
         interval=interval,
         past_days=past_days,
@@ -79,6 +67,7 @@ def ma_command(
         end=end,
         heikin_candles=heikin_candles,
     )
+    ta_start = load_candle.local_tz(bar_start)
 
     if df_stock.empty:
         return Exception("No Data Found")
@@ -107,11 +96,16 @@ def ma_command(
     if mamode == "zlma":
         mamode = "ZL_EMA"
 
+    # Output Data
     if interval != 1440:
+        ta_start = load_candle.local_tz(bar_start)
         ta_end = load_candle.local_tz(end)
         df_ta = df_ta.loc[(df_ta.index >= ta_start) & (df_ta.index < ta_end)]
 
-    fig = load_candle.candle_fig(df_ta, ticker, interval, extended_hours, news)
+    plot = load_candle.candle_fig(
+        df_ta, ticker, interval, extended_hours, news, bar=bar_start
+    )
+    fig = plot["fig"]
 
     for win in window:
         fig.add_trace(
@@ -122,6 +116,8 @@ def ma_command(
                 opacity=1,
             ),
             secondary_y=True,
+            row=1,
+            col=1,
         )
 
     fig.update_layout(
@@ -133,7 +129,6 @@ def ma_command(
         title_font_size=12,
         dragmode="pan",
     )
-
     imagefile = "ta_ma.png"
 
     # Check if interactive settings are enabled

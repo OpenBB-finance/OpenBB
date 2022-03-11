@@ -114,17 +114,24 @@ def stock_data(
     heikin_candles: bool = False,
 ):
 
+    if news:
+        past_days = 30
+
+    max_days = 4 if interval == 1 else 57
+    p_days = (past_days + 1) if past_days < max_days else max_days
+
     if start == "":
         start = datetime.now() - timedelta(days=365)
+        bar_start = datetime.now() - timedelta(
+            days=(p_days if interval != 1440 else 365)
+        )
     else:
         start = datetime.strptime(start, cfg.DATE_FORMAT)
+        bar_start = datetime.strptime(start, cfg.DATE_FORMAT) - timedelta(days=p_days)
     if end == "":
         end = datetime.now()
     else:
         end = datetime.strptime(end, cfg.DATE_FORMAT)
-
-    if news:
-        past_days = 30
 
     if interval == 1440 and crypto not in ticker.upper():
         df_stock = yf.download(
@@ -133,6 +140,7 @@ def stock_data(
             end=end,
             progress=False,
         )
+        df_stock = df_stock.fillna(0)
 
         # Check that loading a stock was not successful
         if df_stock.empty:
@@ -145,12 +153,12 @@ def stock_data(
         )
         df_stock["date_id"] = df_stock["date_id"].dt.days + 1
 
-        df_stock["OC_High"], df_stock["OC_Low"] = (
-            df_stock[["Open", "Close"]].max(axis=1),
-            df_stock[["Open", "Close"]].min(axis=1),
-        )
+        df_stock["OC_High"] = df_stock[["Open", "Close"]].max(axis=1)
         df_stock["OC_Low"] = df_stock[["Open", "Close"]].min(axis=1)
     else:
+        past_days = (
+            (past_days + 10) if (10 + past_days + max_days) < max_days else max_days
+        )
         s_int = str(interval) + "m"
         if crypto in ticker.upper() and (cfg.API_BINANCE_KEY != "REPLACE_ME"):
             client = Client(cfg.API_BINANCE_KEY, cfg.API_BINANCE_SECRET)
@@ -179,6 +187,7 @@ def stock_data(
             ]
             if df_stock.empty:
                 raise Exception(f"No data found for {ticker.upper()}.")
+            df_stock = df_stock.dropna()
             df_stock = df_stock.astype(float).iloc[:, :6]
             df_stock = df_stock.set_index(
                 pd.to_datetime(df_stock["date"], unit="ms", utc=True)
@@ -220,6 +229,7 @@ def stock_data(
                 interval=s_int,
                 prepost=extended_hours,
             )
+            df_stock = df_stock.dropna()
 
             max_days = 0
             while df_stock.empty and max_days < 4:
@@ -236,23 +246,22 @@ def stock_data(
                 )
                 max_days += 1
 
-        if heikin_candles:
-            df_stock = heikin_ashi(df_stock)
+    if heikin_candles:
+        df_stock = heikin_ashi(df_stock)
 
-        # Check that loading a stock was not successful
-        if df_stock.empty:
-            raise Exception(f"No data found for {ticker.upper()}.")
+    # Check that loading a stock was not successful
+    if df_stock.empty:
+        raise Exception(f"No data found for {ticker.upper()}.")
 
-        df_stock.index = df_stock.index.tz_convert(local_now)
-        df_stock.index.name = "date"
-        start, end = local_tz(start), local_tz(end)
+    df_stock.index = df_stock.index.tz_convert(local_now)
+    df_stock.index.name = "date"
+    start, end = local_tz(start), local_tz(end)
 
     if (df_stock.index[1] - df_stock.index[0]).total_seconds() >= 86400:
-        df_stock = find_trendline(df_stock, "OC_High", "high"), find_trendline(
-            df_stock, "OC_Low", "low"
-        )
+        df_stock = find_trendline(df_stock, "OC_High", "high")
+        df_stock = find_trendline(df_stock, "OC_Low", "low")
 
-    return df_stock, start, end
+    return df_stock, start, end, bar_start
 
 
 def candle_fig(
@@ -261,12 +270,60 @@ def candle_fig(
     interval,
     extended_hours=False,
     news=False,
+    **data,
 ):
-    fig = make_subplots(
-        shared_xaxes=True,
-        vertical_spacing=0.09,
-        specs=[[{"secondary_y": True}]],
-    )
+    if "rows" in data:
+        fig = make_subplots(
+            rows=data["rows"],
+            cols=data["cols"],
+            shared_xaxes=True,
+            vertical_spacing=data["vertical_spacing"],
+            row_width=data["row_width"],
+            specs=data["specs"],
+        )
+    else:
+        fig = make_subplots(
+            rows=1,
+            cols=1,
+            shared_xaxes=True,
+            vertical_spacing=0.09,
+            row_width=[1],
+            specs=[[{"secondary_y": True}]],
+        )
+    if "bar" in data:
+        dt = {1: 1, 5: 2, 15: 4, 30: 5, 60: 6, 1440: 30}
+        bar_opacity = (
+            0.2
+            if (data["bar"] > (datetime.now() - timedelta(days=dt[data["int_bar"]])))
+            else 0.3
+        )
+        bar_opacity = (
+            bar_opacity
+            if (
+                data["bar"]
+                > (datetime.now() - timedelta(days=(dt[data["int_bar"]] * 3)))
+            )
+            else 0.4
+        )
+        bar_opacity = (
+            bar_opacity
+            if (
+                data["bar"]
+                > (datetime.now() - timedelta(days=(dt[data["int_bar"]] * 4)))
+            )
+            else 0.6
+        )
+        bar_opacity = (
+            bar_opacity
+            if (
+                data["bar"]
+                > (datetime.now() - timedelta(days=(dt[data["int_bar"]] * 10)))
+            )
+            else 0.7
+        )
+    else:
+        bar_opacity = 0.2
+
     fig.add_trace(
         go.Candlestick(
             x=df_stock.index,
@@ -279,6 +336,8 @@ def candle_fig(
             decreasing_line_color="#e4003a",
             showlegend=False,
         ),
+        row=1,
+        col=1,
         secondary_y=True,
     )
     if "OC_High_trend" in df_stock.columns:
@@ -291,6 +350,8 @@ def candle_fig(
                 line=go.scatter.Line(color="#00ACFF"),
             ),
             secondary_y=True,
+            row=1,
+            col=1,
         )
     if "OC_Low_trend" in df_stock.columns:
         fig.add_trace(
@@ -302,6 +363,8 @@ def candle_fig(
                 line=go.scatter.Line(color="#e4003a"),
             ),
             secondary_y=True,
+            row=1,
+            col=1,
         )
     fig.add_trace(
         go.Bar(
@@ -309,11 +372,13 @@ def candle_fig(
             y=df_stock.Volume,
             name="Volume",
             yaxis="y2",
-            marker_color="#d81aea",
-            opacity=0.2,
+            marker_color="#fdc708",
+            opacity=bar_opacity,
             showlegend=False,
         ),
         secondary_y=False,
+        row=1,
+        col=1,
     )
 
     # News Markers
@@ -422,6 +487,8 @@ def candle_fig(
                 ),
             ),
             secondary_y=True,
+            row=1,
+            col=1,
         )
     if cfg.PLT_WATERMARK:
         fig.add_layout_image(cfg.PLT_WATERMARK)
@@ -431,7 +498,7 @@ def candle_fig(
         x=0.02,
         y=1.02,
         text=f"Timezone: {local_now}",
-        font_size=12,
+        font_size=10,
         axref="x domain",
         ayref="y domain",
         ax=0.08,
@@ -473,12 +540,13 @@ def candle_fig(
             showgrid=False,
             fixedrange=False,
             side="left",
-            titlefont=dict(color="#d81aea"),
+            titlefont=dict(color="#fdc708", size=12),
             tickfont=dict(
-                color="#d81aea",
-                size=13,
+                color="#fdc708",
+                size=12,
             ),
             nticks=20,
+            showline=True,
         ),
         yaxis2=dict(
             side="right",
@@ -497,6 +565,7 @@ def candle_fig(
             tickfont=dict(
                 size=10,
             ),
+            showline=True,
         ),
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
         dragmode="pan",
@@ -529,6 +598,8 @@ def candle_fig(
                     opacity=0.2,
                 ),
                 secondary_y=False,
+                row=1,
+                col=1,
             )
             fig.add_trace(
                 go.Bar(
@@ -538,6 +609,8 @@ def candle_fig(
                     opacity=0.3,
                 ),
                 secondary_y=False,
+                row=1,
+                col=1,
             )
             for dates in unique:
                 fig.add_vrect(
@@ -589,4 +662,4 @@ def candle_fig(
         )
         fig.update_traces(xhoverformat="%b %d '%y")
 
-    return fig
+    return {"fig": fig, "bar_opacity": bar_opacity}

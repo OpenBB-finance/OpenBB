@@ -332,8 +332,9 @@ def image_border(file, **kwargs):
     else:
         img = Image.open(filesave)
     im_bg = Image.open(cfg.IMG_BG)
-    h = img.height + 240
+
     w = img.width + 520
+    h = img.height + 240
 
     # Paste fig onto background img and autocrop background
     img = img.resize((w, h), Image.ANTIALIAS)

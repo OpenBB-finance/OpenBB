@@ -1,5 +1,4 @@
 import logging
-from datetime import datetime, timedelta
 
 import plotly.graph_objects as go
 
@@ -21,6 +20,7 @@ def candle_command(
     end="",
     news: bool = False,
     heikin_candles: bool = False,
+    vwap: bool = False,
 ):
     """Display Candlestick Chart
 
@@ -48,19 +48,8 @@ def candle_command(
         heikin_candles,
     )
 
-    if interval != 1440:
-        past_days += 30 if news else 1
-        if start == "":
-            ta_start = datetime.now() - timedelta(days=past_days)
-        else:
-            ta_start = datetime.strptime(start, cfg.DATE_FORMAT) - timedelta(
-                days=past_days
-            )
-        past_days += 2 if news else 10
-        ta_start = load_candle.local_tz(ta_start)
-
     # Retrieve Data
-    df_stock, start, end = load_candle.stock_data(
+    df_stock, start, end, bar_start = load_candle.stock_data(
         ticker=ticker,
         interval=interval,
         past_days=past_days,
@@ -80,27 +69,36 @@ def candle_command(
 
     # Output Data
     if interval != 1440:
+        ta_start = load_candle.local_tz(bar_start)
         ta_end = load_candle.local_tz(end)
         df_stock = df_stock.loc[
             (df_stock.index >= ta_start) & (df_stock.index < ta_end)
         ]
 
-    fig = load_candle.candle_fig(df_stock, ticker, interval, extended_hours, news)
-
+    plot = load_candle.candle_fig(
+        df_stock,
+        ticker,
+        interval,
+        extended_hours,
+        news,
+        bar=bar_start,
+        int_bar=interval,
+    )
+    fig = plot["fig"]
     plt_title = f"{ticker.upper()} Intraday {interval}min"
     title = f"Intraday {interval}min Chart for {ticker.upper()}"
     if interval == 1440:
         plt_title = f"{ticker.upper()} Daily"
         title = f"Daily Chart for {ticker.upper()}"
 
-    if interval != 1440:
+    if interval != 1440 and vwap:
         fig.add_trace(
             go.Scatter(
                 name="VWAP",
                 x=df_stock.index,
                 y=df_stock["VWAP_D"],
                 opacity=0.65,
-                line=dict(color="#fdc708", width=2),
+                line=dict(color="#00e6c3", width=2),
                 showlegend=True,
             ),
             secondary_y=True,
@@ -110,8 +108,9 @@ def candle_command(
         margin=dict(l=0, r=0, t=40, b=20),
         template=cfg.PLT_CANDLE_STYLE_TEMPLATE,
         title=plt_title,
+        title_x=0.5,
+        title_font_size=14,
     )
-
     imagefile = "candle.png"
 
     # Check if interactive settings are enabled
