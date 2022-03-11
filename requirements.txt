@@ -53,7 +53,7 @@ ffn==0.3.6; python_version >= "2.7" and python_full_version < "3.0.0" or python_
 financedatabase==1.0.2
 finnhub-python==2.4.10
 finviz==1.4.3
-finvizfinance==0.9.10; python_version >= "3.5"
+finvizfinance==0.12.2; python_version >= "3.5"
 fonttools==4.29.1; python_version >= "3.7"
 formulaic==0.2.4; python_version >= "3.7"
 fred==3.1

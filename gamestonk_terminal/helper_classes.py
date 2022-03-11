@@ -1,6 +1,7 @@
 """Helper classes."""
 __docformat__ = "numpy"
 import os
+import argparse
 import json
 from importlib import machinery, util
 from typing import Union, List, Dict, Optional
@@ -337,3 +338,8 @@ class TerminalStyle:
             plt.ion()
         plt.show()
         console.print()
+
+
+class AllowArgsWithWhiteSpace(argparse.Action):
+    def __call__(self, parser, namespace, values, option_string=None):
+        setattr(namespace, self.dest, " ".join(values))

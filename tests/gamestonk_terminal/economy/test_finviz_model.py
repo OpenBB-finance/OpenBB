@@ -32,7 +32,7 @@ def test_get_valuation_performance_data(data_type, recorder):
 
 @pytest.mark.vcr(record_mode="none")
 def test_get_spectrum_data(mocker):
-    # MOCK SCREENERVIEW
+    # MOCK screener_view
     mock_spectrum = mocker.Mock()
     mocker.patch(
         target="gamestonk_terminal.economy.finviz_model.spectrum",
@@ -40,7 +40,7 @@ def test_get_spectrum_data(mocker):
     )
     finviz_model.get_spectrum_data(group="Sector")
 
-    mock_spectrum.Spectrum().ScreenerView.assert_called_with(group="Sector")
+    mock_spectrum.Spectrum().screener_view.assert_called_with(group="Sector")
 
 
 @pytest.mark.vcr

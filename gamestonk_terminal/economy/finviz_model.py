@@ -31,8 +31,8 @@ def get_valuation_performance_data(group: str, data_type: str) -> pd.DataFrame:
         dataframe with valuation/performance data
     """
     if data_type == "valuation":
-        return valuation.Valuation().ScreenerView(group=group)
-    return performance.Performance().ScreenerView(group=group)
+        return valuation.Valuation().screener_view(group=group)
+    return performance.Performance().screener_view(group=group)
 
 
 @log_start_end(log=logger)
@@ -44,7 +44,7 @@ def get_spectrum_data(group: str):
     group : str
        sectors, industry or country
     """
-    spectrum.Spectrum().ScreenerView(group=group)
+    spectrum.Spectrum().screener_view(group=group)
 
 
 @log_start_end(log=logger)
