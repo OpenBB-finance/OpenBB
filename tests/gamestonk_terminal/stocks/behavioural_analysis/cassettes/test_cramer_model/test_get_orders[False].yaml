@@ -1,0 +1,2262 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      Content-Type:
+      - application/x-www-form-urlencoded
+    method: POST
+    uri: https://madmoney.thestreet.com/screener/index.cfm?showview=stocks&showrows=500
+  response:
+    body:
+      string: "\n\n\n\n\n\n\t\n\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t \n\t \n\t
+        \n\t\n\t\n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n    \n
+        \   \n    \n    \n    \n    \n    \n    \n\n\t\n    \n        \n        \n
+        \   \n\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html
+        xmlns=\"http://www.w3.org/1999/xhtml\">\n<head>\n<meta http-equiv=\"Content-Type\"
+        content=\"text/html; charset=iso-8859-1\" />\n<title>Mad Money Stock Screener</title>\n<link
+        rel=\"stylesheet\" type=\"text/css\" href=\"css/stock.css\">\n<link rel=\"stylesheet\"
+        type=\"text/css\" href=\"/09/style.css\">\n\n\n\n<script type=\"text/javascript\">\ndocument.domain=\"thestreet.com\";\ntry
+        {\nwindow.parent.fireAdsAndReporting();\n}catch(e){}\n \n</script>\n\n\n\n
+        \   <script type=\"text/javascript\">\n\t function resize() {\n     var height
+        = document.getElementsByTagName(\"html\")[0].scrollHeight;\n    window.parent.postMessage([\"setHeight\",
+        height], \"*\"); \n\t}\n    </script>\n    \n</head>\n\n<body>\n\n\n\n\n\n<div
+        id=\"stockScreener\">\n\n\t<div id=\"leftPanel\">\n        <a href=\"index.cfm?showview=stocks\"><img
+        id=\"madMoneyLogo\" src=\"images/madMoneyStockScreener.gif\" width=\"309\"
+        height=\"19\" border=\"0\" alt=\"Exclusive Mad Money Stock Screener\" /></a>\n\t\t<p><strong>Cramer's
+        Calls For:</strong> 03/04/2022</p>\n\t\t<br />\n\t\t<table cellpadding=\"0\"
+        cellspacing=\"0\" border=\"0\" id=\"stockTable\">\n\t\t\t<tr>\n\t\t\t\t<th>Company</th><th>Date<th>Segment</th><th>Call</th><th>Price</th><th>Portfolio</th>\n\t\t\t</tr>\n
+        \           \n            \n            \n            \n            <tr class=\"odd\"><td>Allbirds
+        (<a href=\"https://www.thestreet.com/quote/BIRD.html?omorig=header\" target=\"_blank\">BIRD</a>)</td><td>03/04</td><td
+        align=\"center\"><img src=\"/09/img/icons/F.gif\" width=\"14\" height=\"16\"
+        alt=\"F\"  /> </td><td align=\"center\"><img src=\"/09/img/icons/1.gif\" width=\"14\"
+        height=\"16\" alt=\"1\" /> </td><td>$6.33</td><td align=\"center\"><a href=\"index.cfm?showview=portfolio&add=Y&symbol=BIRD\">add</a>
+        </td>\n\t\t\t</tr>\n            \n            <tr>\n\t\t\t\t<td>Bumble (<a
+        href=\"https://www.thestreet.com/quote/BMBL.html?omorig=header\" target=\"_blank\">BMBL</a>)</td><td>03/04</td><td
+        align=\"center\"><img src=\"/09/img/icons/D.gif\" width=\"14\" height=\"16\"
+        alt=\"D\"  /> </td><td align=\"center\"><img src=\"/09/img/icons/2.gif\" width=\"14\"
+        height=\"16\" alt=\"2\" /> </td><td>$18.08</td><td align=\"center\"><a href=\"index.cfm?showview=portfolio&add=Y&symbol=BMBL\">add</a>
+        </td>\n\t\t\t</tr>\n            \n            <tr class=\"odd\"><td>Campbell
+        Soup (<a href=\"https://www.thestreet.com/quote/CPB.html?omorig=header\" target=\"_blank\">CPB</a>)</td><td>03/04</td><td
+        align=\"center\"><img src=\"/09/img/icons/D.gif\" width=\"14\" height=\"16\"
+        alt=\"D\"  /> </td><td align=\"center\"><img src=\"/09/img/icons/5.gif\" width=\"14\"
+        height=\"16\" alt=\"5\" /> </td><td>$45.55</td><td align=\"center\"><a href=\"index.cfm?showview=portfolio&add=Y&symbol=CPB\">add</a>
+        </td>\n\t\t\t</tr>\n            \n            <tr>\n\t\t\t\t<td>Dicks Sporting
+        Goods (<a href=\"https://www.thestreet.com/quote/DKS.html?omorig=header\"
+        target=\"_blank\">DKS</a>)</td><td>03/04</td><td align=\"center\"><img src=\"/09/img/icons/D.gif\"
+        width=\"14\" height=\"16\" alt=\"D\"  /> </td><td align=\"center\"><img src=\"/09/img/icons/5.gif\"
+        width=\"14\" height=\"16\" alt=\"5\" /> </td><td>$109.71</td><td align=\"center\"><a
+        href=\"index.cfm?showview=portfolio&add=Y&symbol=DKS\">add</a> </td>\n\t\t\t</tr>\n
+        \           \n            <tr class=\"odd\"><td>DocuSign (<a href=\"https://www.thestreet.com/quote/DOCU.html?omorig=header\"
+        target=\"_blank\">DOCU</a>)</td><td>03/04</td><td align=\"center\"><img src=\"/09/img/icons/D.gif\"
+        width=\"14\" height=\"16\" alt=\"D\"  /> </td><td align=\"center\"><img src=\"/09/img/icons/2.gif\"
+        width=\"14\" height=\"16\" alt=\"2\" /> </td><td>$101.38</td><td align=\"center\"><a
+        href=\"index.cfm?showview=portfolio&add=Y&symbol=DOCU\">add</a> </td>\n\t\t\t</tr>\n
+        \           \n            <tr>\n\t\t\t\t<td>Devon Energy (<a href=\"https://www.thestreet.com/quote/DVN.html?omorig=header\"
+        target=\"_blank\">DVN</a>)</td><td>03/04</td><td align=\"center\"><img src=\"/09/img/icons/D.gif\"
+        width=\"14\" height=\"16\" alt=\"D\"  /> </td><td align=\"center\"><img src=\"/09/img/icons/5.gif\"
+        width=\"14\" height=\"16\" alt=\"5\" /> </td><td>$59.57</td><td align=\"center\"><a
+        href=\"index.cfm?showview=portfolio&add=Y&symbol=DVN\">add</a> </td>\n\t\t\t</tr>\n
+        \           \n            <tr class=\"odd\"><td>eBay (<a href=\"https://www.thestreet.com/quote/EBAY.html?omorig=header\"
+        target=\"_blank\">EBAY</a>)</td><td>03/04</td><td align=\"center\"><img src=\"/09/img/icons/D.gif\"
+        width=\"14\" height=\"16\" alt=\"D\"  /> </td><td align=\"center\"><img src=\"/09/img/icons/2.gif\"
+        width=\"14\" height=\"16\" alt=\"2\" /> </td><td>$55.66</td><td align=\"center\"><a
+        href=\"index.cfm?showview=portfolio&add=Y&symbol=EBAY\">add</a> </td>\n\t\t\t</tr>\n
+        \           \n            <tr>\n\t\t\t\t<td>Freeport-McMoRan (<a href=\"https://www.thestreet.com/quote/FCX.html?omorig=header\"
+        target=\"_blank\">FCX</a>)</td><td>03/04</td><td align=\"center\"><img src=\"/09/img/icons/L.gif\"
+        width=\"14\" height=\"16\" alt=\"L\"  /> </td><td align=\"center\"><img src=\"/09/img/icons/5.gif\"
+        width=\"14\" height=\"16\" alt=\"5\" /> </td><td>$50.11</td><td align=\"center\"><a
+        href=\"index.cfm?showview=portfolio&add=Y&symbol=FCX\">add</a> </td>\n\t\t\t</tr>\n
+        \           \n            <tr class=\"odd\"><td>Kohl's (<a href=\"https://www.thestreet.com/quote/KSS.html?omorig=header\"
+        target=\"_blank\">KSS</a>)</td><td>03/04</td><td align=\"center\"><img src=\"/09/img/icons/D.gif\"
+        width=\"14\" height=\"16\" alt=\"D\"  /> </td><td align=\"center\"><img src=\"/09/img/icons/4.gif\"
+        width=\"14\" height=\"16\" alt=\"4\" /> </td><td>$58.77</td><td align=\"center\"><a
+        href=\"index.cfm?showview=portfolio&add=Y&symbol=KSS\">add</a> </td>\n\t\t\t</tr>\n
+        \           \n            <tr>\n\t\t\t\t<td>Macy's (<a href=\"https://www.thestreet.com/quote/M.html?omorig=header\"
+        target=\"_blank\">M</a>)</td><td>03/04</td><td align=\"center\"><img src=\"/09/img/icons/D.gif\"
+        width=\"14\" height=\"16\" alt=\"D\"  /> </td><td align=\"center\"><img src=\"/09/img/icons/5.gif\"
+        width=\"14\" height=\"16\" alt=\"5\" /> </td><td>$24.80</td><td align=\"center\"><a
+        href=\"index.cfm?showview=portfolio&add=Y&symbol=M\">add</a> </td>\n\t\t\t</tr>\n
+        \           \n            <tr class=\"odd\"><td>MongoDB (<a href=\"https://www.thestreet.com/quote/MDB.html?omorig=header\"
+        target=\"_blank\">MDB</a>)</td><td>03/04</td><td align=\"center\"><img src=\"/09/img/icons/D.gif\"
+        width=\"14\" height=\"16\" alt=\"D\"  /> </td><td align=\"center\"><img src=\"/09/img/icons/2.gif\"
+        width=\"14\" height=\"16\" alt=\"2\" /> </td><td>$306.11</td><td align=\"center\"><a
+        href=\"index.cfm?showview=portfolio&add=Y&symbol=MDB\">add</a> </td>\n\t\t\t</tr>\n
+        \           \n            <tr>\n\t\t\t\t<td>On Holding (<a href=\"https://www.thestreet.com/quote/ONON.html?omorig=header\"
+        target=\"_blank\">ONON</a>)</td><td>03/04</td><td align=\"center\"><img src=\"/09/img/icons/F.gif\"
+        width=\"14\" height=\"16\" alt=\"F\"  /> </td><td align=\"center\"><img src=\"/09/img/icons/1.gif\"
+        width=\"14\" height=\"16\" alt=\"1\" /> </td><td>$21.97</td><td align=\"center\"><a
+        href=\"index.cfm?showview=portfolio&add=Y&symbol=ONON\">add</a> </td>\n\t\t\t</tr>\n
+        \           \n            <tr class=\"odd\"><td>Progress Software (<a href=\"https://www.thestreet.com/quote/PRGS.html?omorig=header\"
+        target=\"_blank\">PRGS</a>)</td><td>03/04</td><td align=\"center\"><img src=\"/09/img/icons/L.gif\"
+        width=\"14\" height=\"16\" alt=\"L\"  /> </td><td align=\"center\"><img src=\"/09/img/icons/1.gif\"
+        width=\"14\" height=\"16\" alt=\"1\" /> </td><td>$44.28</td><td align=\"center\"><a
+        href=\"index.cfm?showview=portfolio&add=Y&symbol=PRGS\">add</a> </td>\n\t\t\t</tr>\n
+        \           \n            <tr>\n\t\t\t\t<td>The RealReal (<a href=\"https://www.thestreet.com/quote/REAL.html?omorig=header\"
+        target=\"_blank\">REAL</a>)</td><td>03/04</td><td align=\"center\"><img src=\"/09/img/icons/F.gif\"
+        width=\"14\" height=\"16\" alt=\"F\"  /> </td><td align=\"center\"><img src=\"/09/img/icons/1.gif\"
+        width=\"14\" height=\"16\" alt=\"1\" /> </td><td>$7.39</td><td align=\"center\"><a
+        href=\"index.cfm?showview=portfolio&add=Y&symbol=REAL\">add</a> </td>\n\t\t\t</tr>\n
+        \           \n            <tr class=\"odd\"><td>Rivian (<a href=\"https://www.thestreet.com/quote/RIVN.html?omorig=header\"
+        target=\"_blank\">RIVN</a>)</td><td>03/04</td><td align=\"center\"><img src=\"/09/img/icons/D.gif\"
+        width=\"14\" height=\"16\" alt=\"D\"  /> </td><td align=\"center\"><img src=\"/09/img/icons/2.gif\"
+        width=\"14\" height=\"16\" alt=\"2\" /> </td><td>$47.39</td><td align=\"center\"><a
+        href=\"index.cfm?showview=portfolio&add=Y&symbol=RIVN\">add</a> </td>\n\t\t\t</tr>\n
+        \           \n            <tr>\n\t\t\t\t<td>Stitch Fix (<a href=\"https://www.thestreet.com/quote/SFIX.html?omorig=header\"
+        target=\"_blank\">SFIX</a>)</td><td>03/04</td><td align=\"center\"><img src=\"/09/img/icons/D.gif\"
+        width=\"14\" height=\"16\" alt=\"D\"  /> </td><td align=\"center\"><img src=\"/09/img/icons/2.gif\"
+        width=\"14\" height=\"16\" alt=\"2\" /> </td><td>$11.17</td><td align=\"center\"><a
+        href=\"index.cfm?showview=portfolio&add=Y&symbol=SFIX\">add</a> </td>\n\t\t\t</tr>\n
+        \           \n            <tr class=\"odd\"><td>Virgin Galactic (<a href=\"https://www.thestreet.com/quote/SPCE.html?omorig=header\"
+        target=\"_blank\">SPCE</a>)</td><td>03/04</td><td align=\"center\"><img src=\"/09/img/icons/L.gif\"
+        width=\"14\" height=\"16\" alt=\"L\"  /> </td><td align=\"center\"><img src=\"/09/img/icons/1.gif\"
+        width=\"14\" height=\"16\" alt=\"1\" /> </td><td>$7.84</td><td align=\"center\"><a
+        href=\"index.cfm?showview=portfolio&add=Y&symbol=SPCE\">add</a> </td>\n\t\t\t</tr>\n
+        \           \n            <tr>\n\t\t\t\t<td>Splunk (<a href=\"https://www.thestreet.com/quote/SPLK.html?omorig=header\"
+        target=\"_blank\">SPLK</a>)</td><td>03/04</td><td align=\"center\"><img src=\"/09/img/icons/I.gif\"
+        width=\"14\" height=\"16\" alt=\"I\"  /> </td><td align=\"center\"><img src=\"/09/img/icons/5.gif\"
+        width=\"14\" height=\"16\" alt=\"5\" /> </td><td>$129.06</td><td align=\"center\"><a
+        href=\"index.cfm?showview=portfolio&add=Y&symbol=SPLK\">add</a> </td>\n\t\t\t</tr>\n
+        \           \n            <tr class=\"odd\"><td>AT&T (<a href=\"https://www.thestreet.com/quote/T.html?omorig=header\"
+        target=\"_blank\">T</a>)</td><td>03/04</td><td align=\"center\"><img src=\"/09/img/icons/D.gif\"
+        width=\"14\" height=\"16\" alt=\"D\"  /> </td><td align=\"center\"><img src=\"/09/img/icons/1.gif\"
+        width=\"14\" height=\"16\" alt=\"1\" /> </td><td>$23.87</td><td align=\"center\"><a
+        href=\"index.cfm?showview=portfolio&add=Y&symbol=T\">add</a> </td>\n\t\t\t</tr>\n
+        \           \n            <tr>\n\t\t\t\t<td>Trex (<a href=\"https://www.thestreet.com/quote/TREX.html?omorig=header\"
+        target=\"_blank\">TREX</a>)</td><td>03/04</td><td align=\"center\"><img src=\"/09/img/icons/L.gif\"
+        width=\"14\" height=\"16\" alt=\"L\"  /> </td><td align=\"center\"><img src=\"/09/img/icons/1.gif\"
+        width=\"14\" height=\"16\" alt=\"1\" /> </td><td>$74.68</td><td align=\"center\"><a
+        href=\"index.cfm?showview=portfolio&add=Y&symbol=TREX\">add</a> </td>\n\t\t\t</tr>\n
+        \           \n            <tr class=\"odd\"><td>Hostess Brands (<a href=\"https://www.thestreet.com/quote/TWNK.html?omorig=header\"
+        target=\"_blank\">TWNK</a>)</td><td>03/04</td><td align=\"center\"><img src=\"/09/img/icons/I.gif\"
+        width=\"14\" height=\"16\" alt=\"I\"  /> </td><td align=\"center\"><img src=\"/09/img/icons/5.gif\"
+        width=\"14\" height=\"16\" alt=\"5\" /> </td><td>$22.22</td><td align=\"center\"><a
+        href=\"index.cfm?showview=portfolio&add=Y&symbol=TWNK\">add</a> </td>\n\t\t\t</tr>\n
+        \           \n            <tr>\n\t\t\t\t<td>Ulta Beauty (<a href=\"https://www.thestreet.com/quote/ULTA.html?omorig=header\"
+        target=\"_blank\">ULTA</a>)</td><td>03/04</td><td align=\"center\"><img src=\"/09/img/icons/D.gif\"
+        width=\"14\" height=\"16\" alt=\"D\"  /> </td><td align=\"center\"><img src=\"/09/img/icons/5.gif\"
+        width=\"14\" height=\"16\" alt=\"5\" /> </td><td>$366.76</td><td align=\"center\"><a
+        href=\"index.cfm?showview=portfolio&add=Y&symbol=ULTA\">add</a> </td>\n\t\t\t</tr>\n
+        \           \n            <tr class=\"odd\"><td>Wheels Up (<a href=\"https://www.thestreet.com/quote/UP.html?omorig=header\"
+        target=\"_blank\">UP</a>)</td><td>03/04</td><td align=\"center\"><img src=\"/09/img/icons/D.gif\"
+        width=\"14\" height=\"16\" alt=\"D\"  /> </td><td align=\"center\"><img src=\"/09/img/icons/4.gif\"
+        width=\"14\" height=\"16\" alt=\"4\" /> </td><td>$3.13</td><td align=\"center\"><a
+        href=\"index.cfm?showview=portfolio&add=Y&symbol=UP\">add</a> </td>\n\t\t\t</tr>\n
+        \           \t\t\t\t\n            \n            \n            \t\n            \n
+        \           \n            \n\t\t\t\t\n\t\t</table>\n        \n\t\t\n        \n\t\t\t<a
+        href=\"index.cfm?showview=stocks&showrows=10\" class=\"expandLink showAll\"
+        onclick=\"resize()\">Show 10</a>\n        \n\t\t\n\t\t<a href=\"index.cfm?showview=portfolio\"
+        class=\"expandLink\" onclick=\"resize()\">View Portfolio &amp; Email Alerts</a>\n\t\t<a
+        href=\"index.cfm?showview=help\" class=\"expandLink\" onclick=\"resize()\">How
+        to Read Our Charts</a>\n\t\t\n\t\t\n\t</div>\n\t\n\t<div id=\"rightPanel\">\n
+        \   \n    \t<table width=\"100%\"><tr><td align=\"right\" style=\"padding-right:5px;\">\n
+        \      \n       <iframe src=\"https://www.facebook.com/plugins/like.php?href=http%253A%252F%252Fwww.thestreet.com%252Fmad-money%252Findex.html&amp;layout=standard&amp;show_faces=true&amp;width=150&amp;action=like&amp;font&amp;colorscheme=light&amp;height=80\"
+        scrolling=\"no\" frameborder=\"0\" style=\"border:none;\noverflow:hidden;
+        width:190px; height:28px;\" allowtransparency=\"true\"></iframe>\n        \n
+        \       </td></tr></table>\n\t\t\n\t\t<div class=\"note secondNote\">Search
+        Criteria</div>\n        <form name=\"stocksForm\" method=\"post\" action=\"index.cfm\"
+        onsubmit=\"resize()\">\n\t\t<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\"
+        id=\"searchCritaria\">\n\n\t\t\t<tr><td align=\"right\" class=\"aslabel\">Stock
+        Symbol: </td><td align=\"right\">\n\t\t\t\t<input type=\"text\" name=\"symbol\"
+        class=\"symbolText\" tabindex=\"1\" value=\"\"/><input type=\"image\" src=\"images/searchBtn.gif\"
+        width=\"50\" height=\"22\" alt=\"Search\" id=\"searchBtn\" />\n\t\t\t</td></tr>\n
+        \           \n            \t\t\t<tr><td align=\"right\" class=\"aslabel\">Showdate:
+        </td><td align=\"right\">\n\t\t\t\t<select id=\"airdate\" name=\"airdate\"
+        tabindex=\"2\" class=\"selectBox\" onchange=\"this.form.submit();\">\n\t\t\t\t<option
+        value=\"%\">All\n                <option value=\"07\">Last Week\n                <option
+        value=\"30\">Last Month\n                <option value=\"180\">Last Quarter\n
+        \               <option selected value=\"2022-03-04\">03/04 - Fri\r\n<option
+        value=\"2022-03-03\">03/03 - Thu\r\n<option value=\"2022-03-02\">03/02 - Wed\r\n<option
+        value=\"2022-03-01\">03/01 - Tue\r\n<option value=\"2022-02-28\">02/28 - Mon\r\n<option
+        value=\"2022-02-25\">02/25 - Fri\r\n<option value=\"2022-02-24\">02/24 - Thu\r\n<option
+        value=\"2022-02-23\">02/23 - Wed\r\n<option value=\"2022-02-22\">02/22 - Tue\r\n<option
+        value=\"2022-02-04\">02/04 - Fri\r\n<option value=\"2022-02-03\">02/03 - Thu\r\n<option
+        value=\"2022-02-02\">02/02 - Wed\r\n<option value=\"2022-02-01\">02/01 - Tue\r\n<option
+        value=\"2022-01-31\">01/31 - Mon\r\n<option value=\"2022-01-28\">01/28 - Fri\r\n<option
+        value=\"2022-01-27\">01/27 - Thu\r\n<option value=\"2022-01-26\">01/26 - Wed\r\n<option
+        value=\"2022-01-25\">01/25 - Tue\r\n<option value=\"2022-01-24\">01/24 - Mon\r\n<option
+        value=\"2022-01-21\">01/21 - Fri\r\n<option value=\"2022-01-20\">01/20 - Thu\r\n<option
+        value=\"2022-01-19\">01/19 - Wed\r\n<option value=\"2022-01-18\">01/18 - Tue\r\n<option
+        value=\"2022-01-12\">01/12 - Wed\r\n<option value=\"2022-01-11\">01/11 - Tue\r\n<option
+        value=\"2022-01-10\">01/10 - Mon\r\n<option value=\"2022-01-07\">01/07 - Fri\r\n<option
+        value=\"2022-01-06\">01/06 - Thu\r\n<option value=\"2022-01-05\">01/05 - Wed\r\n<option
+        value=\"2022-01-04\">01/04 - Tue\r\n<option value=\"2022-01-03\">01/03 - Mon\r\n<option
+        value=\"2021-12-22\">12/22 - Wed\r\n<option value=\"2021-12-21\">12/21 - Tue\r\n<option
+        value=\"2021-12-20\">12/20 - Mon\r\n<option value=\"2021-12-17\">12/17 - Fri\r\n<option
+        value=\"2021-12-16\">12/16 - Thu\r\n<option value=\"2021-12-15\">12/15 - Wed\r\n<option
+        value=\"2021-12-14\">12/14 - Tue\r\n<option value=\"2021-12-13\">12/13 - Mon\r\n<option
+        value=\"2021-12-10\">12/10 - Fri\r\n<option value=\"2021-12-09\">12/09 - Thu\r\n<option
+        value=\"2021-12-08\">12/08 - Wed\r\n<option value=\"2021-12-07\">12/07 - Tue\r\n<option
+        value=\"2021-12-06\">12/06 - Mon\r\n<option value=\"2021-12-03\">12/03 - Fri\r\n<option
+        value=\"2021-12-02\">12/02 - Thu\r\n<option value=\"2021-12-01\">12/01 - Wed\r\n<option
+        value=\"2021-11-30\">11/30 - Tue\r\n<option value=\"2021-11-29\">11/29 - Mon\r\n<option
+        value=\"2021-11-22\">11/22 - Mon\r\n<option value=\"2021-11-19\">11/19 - Fri\r\n<option
+        value=\"2021-11-18\">11/18 - Thu\r\n<option value=\"2021-11-17\">11/17 - Wed\r\n<option
+        value=\"2021-11-16\">11/16 - Tue\r\n<option value=\"2021-11-15\">11/15 - Mon\r\n<option
+        value=\"2021-11-12\">11/12 - Fri\r\n<option value=\"2021-11-11\">11/11 - Thu\r\n<option
+        value=\"2021-11-10\">11/10 - Wed\r\n<option value=\"2021-11-09\">11/09 - Tue\r\n<option
+        value=\"2021-11-08\">11/08 - Mon\r\n<option value=\"2021-11-05\">11/05 - Fri\r\n<option
+        value=\"2021-11-04\">11/04 - Thu\r\n<option value=\"2021-11-03\">11/03 - Wed\r\n<option
+        value=\"2021-11-02\">11/02 - Tue\r\n<option value=\"2021-11-01\">11/01 - Mon\r\n<option
+        value=\"2021-10-29\">10/29 - Fri\r\n<option value=\"2021-10-28\">10/28 - Thu\r\n<option
+        value=\"2021-10-27\">10/27 - Wed\r\n<option value=\"2021-10-26\">10/26 - Tue\r\n<option
+        value=\"2021-10-21\">10/21 - Thu\r\n<option value=\"2021-10-20\">10/20 - Wed\r\n<option
+        value=\"2021-10-19\">10/19 - Tue\r\n<option value=\"2021-10-18\">10/18 - Mon\r\n<option
+        value=\"2021-10-15\">10/15 - Fri\r\n<option value=\"2021-10-14\">10/14 - Thu\r\n<option
+        value=\"2021-10-13\">10/13 - Wed\r\n<option value=\"2021-10-12\">10/12 - Tue\r\n<option
+        value=\"2021-10-11\">10/11 - Mon\r\n<option value=\"2021-10-08\">10/08 - Fri\r\n<option
+        value=\"2021-10-07\">10/07 - Thu\r\n<option value=\"2021-10-06\">10/06 - Wed\r\n<option
+        value=\"2021-10-05\">10/05 - Tue\r\n<option value=\"2021-10-04\">10/04 - Mon\r\n<option
+        value=\"2021-10-01\">10/01 - Fri\r\n<option value=\"2021-09-29\">09/29 - Wed\r\n<option
+        value=\"2021-09-28\">09/28 - Tue\r\n<option value=\"2021-09-27\">09/27 - Mon\r\n<option
+        value=\"2021-09-23\">09/23 - Thu\r\n<option value=\"2021-09-22\">09/22 - Wed\r\n<option
+        value=\"2021-09-21\">09/21 - Tue\r\n<option value=\"2021-09-20\">09/20 - Mon\r\n<option
+        value=\"2021-09-17\">09/17 - Fri\r\n<option value=\"2021-09-15\">09/15 - Wed\r\n<option
+        value=\"2021-09-14\">09/14 - Tue\r\n<option value=\"2021-09-13\">09/13 - Mon\r\n<option
+        value=\"2021-09-10\">09/10 - Fri\r\n<option value=\"2021-09-09\">09/09 - Thu\r\n<option
+        value=\"2021-09-08\">09/08 - Wed\r\n<option value=\"2021-08-25\">08/25 - Wed\r\n<option
+        value=\"2021-08-24\">08/24 - Tue\r\n<option value=\"2021-08-23\">08/23 - Mon\r\n<option
+        value=\"2021-08-19\">08/19 - Thu\r\n<option value=\"2021-08-18\">08/18 - Wed\r\n<option
+        value=\"2021-08-17\">08/17 - Tue\r\n<option value=\"2021-08-16\">08/16 - Mon\r\n<option
+        value=\"2021-08-12\">08/12 - Thu\r\n<option value=\"2021-08-11\">08/11 - Wed\r\n<option
+        value=\"2021-08-10\">08/10 - Tue\r\n<option value=\"2021-08-09\">08/09 - Mon\r\n<option
+        value=\"2021-08-05\">08/05 - Thu\r\n<option value=\"2021-08-04\">08/04 - Wed\r\n<option
+        value=\"2021-08-03\">08/03 - Tue\r\n<option value=\"2021-08-02\">08/02 - Mon\r\n<option
+        value=\"2021-07-29\">07/29 - Thu\r\n<option value=\"2021-07-28\">07/28 - Wed\r\n<option
+        value=\"2021-07-27\">07/27 - Tue\r\n<option value=\"2021-07-26\">07/26 - Mon\r\n<option
+        value=\"2021-07-23\">07/23 - Fri\r\n<option value=\"2021-07-22\">07/22 - Thu\r\n<option
+        value=\"2021-07-21\">07/21 - Wed\r\n<option value=\"2021-07-20\">07/20 - Tue\r\n<option
+        value=\"2021-07-19\">07/19 - Mon\r\n<option value=\"2021-07-15\">07/15 - Thu\r\n<option
+        value=\"2021-07-14\">07/14 - Wed\r\n<option value=\"2021-07-13\">07/13 - Tue\r\n<option
+        value=\"2021-07-12\">07/12 - Mon\r\n<option value=\"2021-07-09\">07/09 - Fri\r\n<option
+        value=\"2021-07-08\">07/08 - Thu\r\n<option value=\"2021-07-07\">07/07 - Wed\r\n<option
+        value=\"2021-07-06\">07/06 - Tue\r\n<option value=\"2021-06-30\">06/30 - Wed\r\n<option
+        value=\"2021-06-29\">06/29 - Tue\r\n<option value=\"2021-06-28\">06/28 - Mon\r\n<option
+        value=\"2021-06-25\">06/25 - Fri\r\n<option value=\"2021-06-24\">06/24 - Thu\r\n<option
+        value=\"2021-06-23\">06/23 - Wed\r\n<option value=\"2021-06-22\">06/22 - Tue\r\n<option
+        value=\"2021-06-21\">06/21 - Mon\r\n<option value=\"2021-06-18\">06/18 - Fri\r\n<option
+        value=\"2021-06-17\">06/17 - Thu\r\n<option value=\"2021-06-16\">06/16 - Wed\r\n<option
+        value=\"2021-06-15\">06/15 - Tue\r\n<option value=\"2021-06-14\">06/14 - Mon\r\n<option
+        value=\"2021-06-11\">06/11 - Fri\r\n<option value=\"2021-06-10\">06/10 - Thu\r\n<option
+        value=\"2021-06-09\">06/09 - Wed\r\n<option value=\"2021-06-08\">06/08 - Tue\r\n<option
+        value=\"2021-06-07\">06/07 - Mon\r\n<option value=\"2021-05-27\">05/27 - Thu\r\n<option
+        value=\"2021-05-26\">05/26 - Wed\r\n<option value=\"2021-05-25\">05/25 - Tue\r\n<option
+        value=\"2021-05-24\">05/24 - Mon\r\n<option value=\"2021-05-21\">05/21 - Fri\r\n<option
+        value=\"2021-05-20\">05/20 - Thu\r\n<option value=\"2021-05-19\">05/19 - Wed\r\n<option
+        value=\"2021-05-18\">05/18 - Tue\r\n<option value=\"2021-05-17\">05/17 - Mon\r\n<option
+        value=\"2021-05-14\">05/14 - Fri\r\n<option value=\"2021-05-13\">05/13 - Thu\r\n<option
+        value=\"2021-05-12\">05/12 - Wed\r\n<option value=\"2021-05-11\">05/11 - Tue\r\n<option
+        value=\"2021-05-10\">05/10 - Mon\r\n<option value=\"2021-05-07\">05/07 - Fri\r\n<option
+        value=\"2021-05-06\">05/06 - Thu\r\n<option value=\"2021-05-05\">05/05 - Wed\r\n<option
+        value=\"2021-05-04\">05/04 - Tue\r\n<option value=\"2021-05-03\">05/03 - Mon\r\n<option
+        value=\"2021-04-30\">04/30 - Fri\r\n<option value=\"2021-04-29\">04/29 - Thu\r\n<option
+        value=\"2021-04-28\">04/28 - Wed\r\n<option value=\"2021-04-27\">04/27 - Tue\r\n<option
+        value=\"2021-04-26\">04/26 - Mon\r\n<option value=\"2021-04-23\">04/23 - Fri\r\n<option
+        value=\"2021-04-22\">04/22 - Thu\r\n<option value=\"2021-04-21\">04/21 - Wed\r\n<option
+        value=\"2021-04-19\">04/19 - Mon\r\n<option value=\"2021-04-16\">04/16 - Fri\r\n<option
+        value=\"2021-04-15\">04/15 - Thu\r\n<option value=\"2021-04-14\">04/14 - Wed\r\n<option
+        value=\"2021-04-13\">04/13 - Tue\r\n<option value=\"2021-04-12\">04/12 - Mon\r\n<option
+        value=\"2021-04-08\">04/08 - Thu\r\n<option value=\"2021-04-07\">04/07 - Wed\r\n<option
+        value=\"2021-04-06\">04/06 - Tue\r\n<option value=\"2021-04-05\">04/05 - Mon\r\n<option
+        value=\"2021-04-01\">04/01 - Thu\r\n<option value=\"2021-03-31\">03/31 - Wed\r\n<option
+        value=\"2021-03-30\">03/30 - Tue\r\n<option value=\"2021-03-29\">03/29 - Mon\r\n<option
+        value=\"2021-03-25\">03/25 - Thu\r\n<option value=\"2021-03-24\">03/24 - Wed\r\n<option
+        value=\"2021-03-23\">03/23 - Tue\r\n<option value=\"2021-03-22\">03/22 - Mon\r\n<option
+        value=\"2021-03-19\">03/19 - Fri\r\n<option value=\"2021-03-18\">03/18 - Thu\r\n<option
+        value=\"2021-03-17\">03/17 - Wed\r\n<option value=\"2021-03-16\">03/16 - Tue\r\n<option
+        value=\"2021-03-15\">03/15 - Mon\r\n<option value=\"2021-03-05\">03/05 - Fri\r\n<option
+        value=\"2021-03-04\">03/04 - Thu\r\n<option value=\"2021-03-03\">03/03 - Wed\r\n<option
+        value=\"2021-03-02\">03/02 - Tue\r\n<option value=\"2021-03-01\">03/01 - Mon\r\n<option
+        value=\"2021-02-26\">02/26 - Fri\r\n<option value=\"2021-02-25\">02/25 - Thu\r\n<option
+        value=\"2021-02-24\">02/24 - Wed\r\n<option value=\"2021-02-23\">02/23 - Tue\r\n<option
+        value=\"2021-02-22\">02/22 - Mon\r\n<option value=\"2021-02-12\">02/12 - Fri\r\n<option
+        value=\"2021-02-11\">02/11 - Thu\r\n<option value=\"2021-02-10\">02/10 - Wed\r\n<option
+        value=\"2021-02-09\">02/09 - Tue\r\n<option value=\"2021-02-08\">02/08 - Mon\r\n<option
+        value=\"2021-02-05\">02/05 - Fri\r\n<option value=\"2021-02-04\">02/04 - Thu\r\n<option
+        value=\"2021-02-03\">02/03 - Wed\r\n<option value=\"2021-02-02\">02/02 - Tue\r\n<option
+        value=\"2021-02-01\">02/01 - Mon\r\n<option value=\"2021-01-25\">01/25 - Mon\r\n<option
+        value=\"2021-01-22\">01/22 - Fri\r\n<option value=\"2021-01-21\">01/21 - Thu\r\n<option
+        value=\"2021-01-20\">01/20 - Wed\r\n<option value=\"2021-01-19\">01/19 - Tue\r\n<option
+        value=\"2021-01-15\">01/15 - Fri\r\n<option value=\"2021-01-14\">01/14 - Thu\r\n<option
+        value=\"2021-01-13\">01/13 - Wed\r\n<option value=\"2021-01-12\">01/12 - Tue\r\n<option
+        value=\"2021-01-11\">01/11 - Mon\r\n<option value=\"2021-01-08\">01/08 - Fri\r\n<option
+        value=\"2021-01-07\">01/07 - Thu\r\n<option value=\"2021-01-05\">01/05 - Tue\r\n<option
+        value=\"2021-01-04\">01/04 - Mon\r\n<option value=\"2020-12-22\">12/22 - Tue\r\n<option
+        value=\"2020-12-21\">12/21 - Mon\r\n<option value=\"2020-12-18\">12/18 - Fri\r\n<option
+        value=\"2020-12-17\">12/17 - Thu\r\n<option value=\"2020-12-16\">12/16 - Wed\r\n<option
+        value=\"2020-12-15\">12/15 - Tue\r\n<option value=\"2020-12-14\">12/14 - Mon\r\n<option
+        value=\"2020-12-11\">12/11 - Fri\r\n<option value=\"2020-12-10\">12/10 - Thu\r\n<option
+        value=\"2020-12-09\">12/09 - Wed\r\n<option value=\"2020-12-08\">12/08 - Tue\r\n<option
+        value=\"2020-12-07\">12/07 - Mon\r\n<option value=\"2020-12-02\">12/02 - Wed\r\n<option
+        value=\"2020-12-01\">12/01 - Tue\r\n<option value=\"2020-11-30\">11/30 - Mon\r\n<option
+        value=\"2020-11-24\">11/24 - Tue\r\n<option value=\"2020-11-23\">11/23 - Mon\r\n<option
+        value=\"2020-11-20\">11/20 - Fri\r\n<option value=\"2020-11-19\">11/19 - Thu\r\n<option
+        value=\"2020-11-18\">11/18 - Wed\r\n<option value=\"2020-11-17\">11/17 - Tue\r\n<option
+        value=\"2020-11-16\">11/16 - Mon\r\n<option value=\"2020-11-13\">11/13 - Fri\r\n<option
+        value=\"2020-11-12\">11/12 - Thu\r\n<option value=\"2020-11-11\">11/11 - Wed\r\n<option
+        value=\"2020-11-10\">11/10 - Tue\r\n<option value=\"2020-11-09\">11/09 - Mon\r\n<option
+        value=\"2020-11-06\">11/06 - Fri\r\n<option value=\"2020-11-04\">11/04 - Wed\r\n<option
+        value=\"2020-11-03\">11/03 - Tue\r\n<option value=\"2020-11-02\">11/02 - Mon\r\n<option
+        value=\"2020-10-30\">10/30 - Fri\r\n<option value=\"2020-10-29\">10/29 - Thu\r\n<option
+        value=\"2020-10-28\">10/28 - Wed\r\n<option value=\"2020-10-27\">10/27 - Tue\r\n<option
+        value=\"2020-10-26\">10/26 - Mon\r\n<option value=\"2020-10-23\">10/23 - Fri\r\n<option
+        value=\"2020-10-22\">10/22 - Thu\r\n<option value=\"2020-10-21\">10/21 - Wed\r\n<option
+        value=\"2020-10-20\">10/20 - Tue\r\n<option value=\"2020-10-19\">10/19 - Mon\r\n<option
+        value=\"2020-10-15\">10/15 - Thu\r\n<option value=\"2020-10-14\">10/14 - Wed\r\n<option
+        value=\"2020-10-13\">10/13 - Tue\r\n<option value=\"2020-10-12\">10/12 - Mon\r\n<option
+        value=\"2020-10-09\">10/09 - Fri\r\n<option value=\"2020-10-08\">10/08 - Thu\r\n<option
+        value=\"2020-10-07\">10/07 - Wed\r\n<option value=\"2020-10-06\">10/06 - Tue\r\n<option
+        value=\"2020-10-05\">10/05 - Mon\r\n<option value=\"2020-09-25\">09/25 - Fri\r\n<option
+        value=\"2020-09-23\">09/23 - Wed\r\n<option value=\"2020-09-22\">09/22 - Tue\r\n<option
+        value=\"2020-09-21\">09/21 - Mon\r\n<option value=\"2020-09-18\">09/18 - Fri\r\n<option
+        value=\"2020-09-17\">09/17 - Thu\r\n<option value=\"2020-09-16\">09/16 - Wed\r\n<option
+        value=\"2020-09-15\">09/15 - Tue\r\n<option value=\"2020-09-14\">09/14 - Mon\r\n<option
+        value=\"2020-09-11\">09/11 - Fri\r\n<option value=\"2020-09-10\">09/10 - Thu\r\n<option
+        value=\"2020-09-09\">09/09 - Wed\r\n<option value=\"2020-09-08\">09/08 - Tue\r\n<option
+        value=\"2020-08-27\">08/27 - Thu\r\n<option value=\"2020-08-26\">08/26 - Wed\r\n<option
+        value=\"2020-08-25\">08/25 - Tue\r\n<option value=\"2020-08-24\">08/24 - Mon\r\n<option
+        value=\"2020-08-20\">08/20 - Thu\r\n<option value=\"2020-08-19\">08/19 - Wed\r\n<option
+        value=\"2020-08-18\">08/18 - Tue\r\n<option value=\"2020-08-17\">08/17 - Mon\r\n<option
+        value=\"2020-08-13\">08/13 - Thu\r\n<option value=\"2020-08-12\">08/12 - Wed\r\n<option
+        value=\"2020-08-11\">08/11 - Tue\r\n<option value=\"2020-08-10\">08/10 - Mon\r\n<option
+        value=\"2020-08-06\">08/06 - Thu\r\n<option value=\"2020-08-05\">08/05 - Wed\r\n<option
+        value=\"2020-08-04\">08/04 - Tue\r\n<option value=\"2020-08-03\">08/03 - Mon\r\n<option
+        value=\"2020-07-30\">07/30 - Thu\r\n<option value=\"2020-07-29\">07/29 - Wed\r\n<option
+        value=\"2020-07-28\">07/28 - Tue\r\n<option value=\"2020-07-27\">07/27 - Mon\r\n<option
+        value=\"2020-07-23\">07/23 - Thu\r\n<option value=\"2020-07-22\">07/22 - Wed\r\n<option
+        value=\"2020-07-21\">07/21 - Tue\r\n<option value=\"2020-07-20\">07/20 - Mon\r\n<option
+        value=\"2020-07-17\">07/17 - Fri\r\n<option value=\"2020-07-16\">07/16 - Thu\r\n<option
+        value=\"2020-07-15\">07/15 - Wed\r\n<option value=\"2020-07-14\">07/14 - Tue\r\n<option
+        value=\"2020-07-13\">07/13 - Mon\r\n<option value=\"2020-07-02\">07/02 - Thu\r\n<option
+        value=\"2020-07-01\">07/01 - Wed\r\n<option value=\"2020-06-30\">06/30 - Tue\r\n<option
+        value=\"2020-06-29\">06/29 - Mon\r\n<option value=\"2020-06-25\">06/25 - Thu\r\n<option
+        value=\"2020-06-24\">06/24 - Wed\r\n<option value=\"2020-06-23\">06/23 - Tue\r\n<option
+        value=\"2020-06-22\">06/22 - Mon\r\n<option value=\"2020-06-18\">06/18 - Thu\r\n<option
+        value=\"2020-06-17\">06/17 - Wed\r\n<option value=\"2020-06-16\">06/16 - Tue\r\n<option
+        value=\"2020-06-15\">06/15 - Mon\r\n<option value=\"2020-06-12\">06/12 - Fri\r\n<option
+        value=\"2020-06-11\">06/11 - Thu\r\n<option value=\"2020-06-10\">06/10 - Wed\r\n<option
+        value=\"2020-06-09\">06/09 - Tue\r\n<option value=\"2020-06-08\">06/08 - Mon\r\n<option
+        value=\"2020-06-04\">06/04 - Thu\r\n<option value=\"2020-06-03\">06/03 - Wed\r\n<option
+        value=\"2020-06-02\">06/02 - Tue\r\n<option value=\"2020-06-01\">06/01 - Mon\r\n<option
+        value=\"2020-05-29\">05/29 - Fri\r\n<option value=\"2020-05-28\">05/28 - Thu\r\n<option
+        value=\"2020-05-27\">05/27 - Wed\r\n<option value=\"2020-05-26\">05/26 - Tue\r\n<option
+        value=\"2020-05-21\">05/21 - Thu\r\n<option value=\"2020-05-20\">05/20 - Wed\r\n<option
+        value=\"2020-05-19\">05/19 - Tue\r\n<option value=\"2020-05-18\">05/18 - Mon\r\n<option
+        value=\"2020-05-15\">05/15 - Fri\r\n<option value=\"2020-05-14\">05/14 - Thu\r\n<option
+        value=\"2020-05-13\">05/13 - Wed\r\n<option value=\"2020-05-12\">05/12 - Tue\r\n<option
+        value=\"2020-05-11\">05/11 - Mon\r\n<option value=\"2020-05-07\">05/07 - Thu\r\n<option
+        value=\"2020-05-06\">05/06 - Wed\r\n<option value=\"2020-05-05\">05/05 - Tue\r\n<option
+        value=\"2020-05-04\">05/04 - Mon\r\n<option value=\"2020-05-01\">05/01 - Fri\r\n<option
+        value=\"2020-04-30\">04/30 - Thu\r\n<option value=\"2020-04-29\">04/29 - Wed\r\n<option
+        value=\"2020-04-28\">04/28 - Tue\r\n<option value=\"2020-04-27\">04/27 - Mon\r\n<option
+        value=\"2020-04-26\">04/26 - Sun\r\n<option value=\"2020-04-24\">04/24 - Fri\r\n<option
+        value=\"2020-04-23\">04/23 - Thu\r\n<option value=\"2020-04-22\">04/22 - Wed\r\n<option
+        value=\"2020-04-21\">04/21 - Tue\r\n<option value=\"2020-04-20\">04/20 - Mon\r\n<option
+        value=\"2020-04-16\">04/16 - Thu\r\n<option value=\"2020-04-15\">04/15 - Wed\r\n<option
+        value=\"2020-04-14\">04/14 - Tue\r\n<option value=\"2020-04-13\">04/13 - Mon\r\n<option
+        value=\"2020-04-09\">04/09 - Thu\r\n<option value=\"2020-04-08\">04/08 - Wed\r\n<option
+        value=\"2020-04-07\">04/07 - Tue\r\n<option value=\"2020-04-06\">04/06 - Mon\r\n<option
+        value=\"2020-04-03\">04/03 - Fri\r\n<option value=\"2020-04-02\">04/02 - Thu\r\n<option
+        value=\"2020-04-01\">04/01 - Wed\r\n<option value=\"2020-03-31\">03/31 - Tue\r\n<option
+        value=\"2020-03-30\">03/30 - Mon\r\n<option value=\"2020-03-27\">03/27 - Fri\r\n<option
+        value=\"2020-03-26\">03/26 - Thu\r\n<option value=\"2020-03-25\">03/25 - Wed\r\n<option
+        value=\"2020-03-24\">03/24 - Tue\r\n<option value=\"2020-03-20\">03/20 - Fri\r\n<option
+        value=\"2020-03-19\">03/19 - Thu\r\n<option value=\"2020-03-18\">03/18 - Wed\r\n<option
+        value=\"2020-03-17\">03/17 - Tue\r\n<option value=\"2020-03-16\">03/16 - Mon\r\n<option
+        value=\"2020-03-12\">03/12 - Thu\r\n<option value=\"2020-03-11\">03/11 - Wed\r\n<option
+        value=\"2020-03-10\">03/10 - Tue\r\n<option value=\"2020-03-09\">03/09 - Mon\r\n<option
+        value=\"2020-03-05\">03/05 - Thu\r\n<option value=\"2020-03-04\">03/04 - Wed\r\n<option
+        value=\"2020-03-03\">03/03 - Tue\r\n<option value=\"2020-03-02\">03/02 - Mon\r\n<option
+        value=\"2020-02-28\">02/28 - Fri\r\n<option value=\"2020-02-27\">02/27 - Thu\r\n<option
+        value=\"2020-02-25\">02/25 - Tue\r\n<option value=\"2020-02-24\">02/24 - Mon\r\n<option
+        value=\"2020-02-21\">02/21 - Fri\r\n<option value=\"2020-02-20\">02/20 - Thu\r\n<option
+        value=\"2020-02-19\">02/19 - Wed\r\n<option value=\"2020-02-18\">02/18 - Tue\r\n<option
+        value=\"2020-02-14\">02/14 - Fri\r\n<option value=\"2020-02-13\">02/13 - Thu\r\n<option
+        value=\"2020-02-12\">02/12 - Wed\r\n<option value=\"2020-02-11\">02/11 - Tue\r\n<option
+        value=\"2020-02-10\">02/10 - Mon\r\n<option value=\"2020-02-07\">02/07 - Fri\r\n<option
+        value=\"2020-02-06\">02/06 - Thu\r\n<option value=\"2020-02-05\">02/05 - Wed\r\n<option
+        value=\"2020-02-04\">02/04 - Tue\r\n<option value=\"2020-02-03\">02/03 - Mon\r\n<option
+        value=\"2020-01-31\">01/31 - Fri\r\n<option value=\"2020-01-30\">01/30 - Thu\r\n<option
+        value=\"2020-01-29\">01/29 - Wed\r\n<option value=\"2020-01-28\">01/28 - Tue\r\n<option
+        value=\"2020-01-27\">01/27 - Mon\r\n<option value=\"2020-01-24\">01/24 - Fri\r\n<option
+        value=\"2020-01-23\">01/23 - Thu\r\n<option value=\"2020-01-22\">01/22 - Wed\r\n<option
+        value=\"2020-01-21\">01/21 - Tue\r\n<option value=\"2020-01-16\">01/16 - Thu\r\n<option
+        value=\"2020-01-15\">01/15 - Wed\r\n<option value=\"2020-01-14\">01/14 - Tue\r\n<option
+        value=\"2020-01-13\">01/13 - Mon\r\n<option value=\"2020-01-10\">01/10 - Fri\r\n<option
+        value=\"2020-01-09\">01/09 - Thu\r\n<option value=\"2020-01-08\">01/08 - Wed\r\n<option
+        value=\"2020-01-07\">01/07 - Tue\r\n<option value=\"2020-01-06\">01/06 - Mon\r\n<option
+        value=\"2020-01-03\">01/03 - Fri\r\n<option value=\"2019-12-20\">12/20 - Fri\r\n<option
+        value=\"2019-12-19\">12/19 - Thu\r\n<option value=\"2019-12-18\">12/18 - Wed\r\n<option
+        value=\"2019-12-17\">12/17 - Tue\r\n<option value=\"2019-12-16\">12/16 - Mon\r\n<option
+        value=\"2019-12-13\">12/13 - Fri\r\n<option value=\"2019-12-12\">12/12 - Thu\r\n<option
+        value=\"2019-12-11\">12/11 - Wed\r\n<option value=\"2019-12-10\">12/10 - Tue\r\n<option
+        value=\"2019-12-09\">12/09 - Mon\r\n<option value=\"2019-12-06\">12/06 - Fri\r\n<option
+        value=\"2019-12-05\">12/05 - Thu\r\n<option value=\"2019-12-04\">12/04 - Wed\r\n<option
+        value=\"2019-12-03\">12/03 - Tue\r\n<option value=\"2019-12-02\">12/02 - Mon\r\n<option
+        value=\"2019-11-26\">11/26 - Tue\r\n<option value=\"2019-11-25\">11/25 - Mon\r\n<option
+        value=\"2019-11-22\">11/22 - Fri\r\n<option value=\"2019-11-21\">11/21 - Thu\r\n<option
+        value=\"2019-11-20\">11/20 - Wed\r\n<option value=\"2019-11-19\">11/19 - Tue\r\n<option
+        value=\"2019-11-18\">11/18 - Mon\r\n<option value=\"2019-11-15\">11/15 - Fri\r\n<option
+        value=\"2019-11-14\">11/14 - Thu\r\n<option value=\"2019-11-13\">11/13 - Wed\r\n<option
+        value=\"2019-11-12\">11/12 - Tue\r\n<option value=\"2019-11-11\">11/11 - Mon\r\n<option
+        value=\"2019-11-08\">11/08 - Fri\r\n<option value=\"2019-11-07\">11/07 - Thu\r\n<option
+        value=\"2019-11-06\">11/06 - Wed\r\n<option value=\"2019-11-05\">11/05 - Tue\r\n<option
+        value=\"2019-11-04\">11/04 - Mon\r\n<option value=\"2019-11-01\">11/01 - Fri\r\n<option
+        value=\"2019-10-31\">10/31 - Thu\r\n<option value=\"2019-10-30\">10/30 - Wed\r\n<option
+        value=\"2019-10-29\">10/29 - Tue\r\n<option value=\"2019-10-28\">10/28 - Mon\r\n<option
+        value=\"2019-10-25\">10/25 - Fri\r\n<option value=\"2019-10-24\">10/24 - Thu\r\n<option
+        value=\"2019-10-23\">10/23 - Wed\r\n<option value=\"2019-10-22\">10/22 - Tue\r\n<option
+        value=\"2019-10-21\">10/21 - Mon\r\n<option value=\"2019-10-18\">10/18 - Fri\r\n<option
+        value=\"2019-10-17\">10/17 - Thu\r\n<option value=\"2019-10-16\">10/16 - Wed\r\n<option
+        value=\"2019-10-11\">10/11 - Fri\r\n<option value=\"2019-10-10\">10/10 - Thu\r\n<option
+        value=\"2019-10-08\">10/08 - Tue\r\n<option value=\"2019-10-07\">10/07 - Mon\r\n<option
+        value=\"2019-10-04\">10/04 - Fri\r\n<option value=\"2019-09-27\">09/27 - Fri\r\n<option
+        value=\"2019-09-26\">09/26 - Thu\r\n<option value=\"2019-09-25\">09/25 - Wed\r\n<option
+        value=\"2019-09-24\">09/24 - Tue\r\n<option value=\"2019-09-23\">09/23 - Mon\r\n<option
+        value=\"2019-09-20\">09/20 - Fri\r\n<option value=\"2019-09-19\">09/19 - Thu\r\n<option
+        value=\"2019-09-18\">09/18 - Wed\r\n<option value=\"2019-09-17\">09/17 - Tue\r\n<option
+        value=\"2019-09-16\">09/16 - Mon\r\n<option value=\"2019-09-13\">09/13 - Fri\r\n<option
+        value=\"2019-09-11\">09/11 - Wed\r\n<option value=\"2019-09-10\">09/10 - Tue\r\n<option
+        value=\"2019-09-09\">09/09 - Mon\r\n<option value=\"2019-09-06\">09/06 - Fri\r\n<option
+        value=\"2019-09-05\">09/05 - Thu\r\n<option value=\"2019-08-27\">08/27 - Tue\r\n<option
+        value=\"2019-08-26\">08/26 - Mon\r\n<option value=\"2019-08-22\">08/22 - Thu\r\n<option
+        value=\"2019-08-21\">08/21 - Wed\r\n<option value=\"2019-08-20\">08/20 - Tue\r\n<option
+        value=\"2019-08-19\">08/19 - Mon\r\n<option value=\"2019-08-15\">08/15 - Thu\r\n<option
+        value=\"2019-08-14\">08/14 - Wed\r\n<option value=\"2019-08-13\">08/13 - Tue\r\n<option
+        value=\"2019-08-12\">08/12 - Mon\r\n<option value=\"2019-08-08\">08/08 - Thu\r\n<option
+        value=\"2019-08-07\">08/07 - Wed\r\n<option value=\"2019-08-06\">08/06 - Tue\r\n<option
+        value=\"2019-08-05\">08/05 - Mon\r\n<option value=\"2019-08-01\">08/01 - Thu\r\n<option
+        value=\"2019-07-31\">07/31 - Wed\r\n<option value=\"2019-07-30\">07/30 - Tue\r\n<option
+        value=\"2019-07-29\">07/29 - Mon\r\n<option value=\"2019-07-25\">07/25 - Thu\r\n<option
+        value=\"2019-07-24\">07/24 - Wed\r\n<option value=\"2019-07-23\">07/23 - Tue\r\n<option
+        value=\"2019-07-22\">07/22 - Mon\r\n<option value=\"2019-07-18\">07/18 - Thu\r\n<option
+        value=\"2019-07-17\">07/17 - Wed\r\n<option value=\"2019-07-16\">07/16 - Tue\r\n<option
+        value=\"2019-07-15\">07/15 - Mon\r\n<option value=\"2019-07-11\">07/11 - Thu\r\n<option
+        value=\"2019-07-10\">07/10 - Wed\r\n<option value=\"2019-07-09\">07/09 - Tue\r\n<option
+        value=\"2019-06-21\">06/21 - Fri\r\n<option value=\"2019-06-20\">06/20 - Thu\r\n<option
+        value=\"2019-06-19\">06/19 - Wed\r\n<option value=\"2019-06-18\">06/18 - Tue\r\n<option
+        value=\"2019-06-17\">06/17 - Mon\r\n<option value=\"2019-06-14\">06/14 - Fri\r\n<option
+        value=\"2019-06-13\">06/13 - Thu\r\n<option value=\"2019-06-12\">06/12 - Wed\r\n<option
+        value=\"2019-06-11\">06/11 - Tue\r\n<option value=\"2019-06-10\">06/10 - Mon\r\n<option
+        value=\"2019-06-07\">06/07 - Fri\r\n<option value=\"2019-06-05\">06/05 - Wed\r\n<option
+        value=\"2019-06-04\">06/04 - Tue\r\n<option value=\"2019-06-03\">06/03 - Mon\r\n<option
+        value=\"2019-05-31\">05/31 - Fri\r\n<option value=\"2019-05-23\">05/23 - Thu\r\n<option
+        value=\"2019-05-22\">05/22 - Wed\r\n<option value=\"2019-05-21\">05/21 - Tue\r\n<option
+        value=\"2019-05-20\">05/20 - Mon\r\n<option value=\"2019-05-17\">05/17 - Fri\r\n<option
+        value=\"2019-05-16\">05/16 - Thu\r\n<option value=\"2019-05-15\">05/15 - Wed\r\n<option
+        value=\"2019-05-14\">05/14 - Tue\r\n<option value=\"2019-05-13\">05/13 - Mon\r\n<option
+        value=\"2019-05-10\">05/10 - Fri\r\n<option value=\"2019-05-09\">05/09 - Thu\r\n<option
+        value=\"2019-05-08\">05/08 - Wed\r\n<option value=\"2019-05-07\">05/07 - Tue\r\n<option
+        value=\"2019-05-06\">05/06 - Mon\r\n<option value=\"2019-05-03\">05/03 - Fri\r\n<option
+        value=\"2019-05-02\">05/02 - Thu\r\n<option value=\"2019-05-01\">05/01 - Wed\r\n<option
+        value=\"2019-04-30\">04/30 - Tue\r\n<option value=\"2019-04-29\">04/29 - Mon\r\n<option
+        value=\"2019-04-25\">04/25 - Thu\r\n<option value=\"2019-04-24\">04/24 - Wed\r\n<option
+        value=\"2019-04-23\">04/23 - Tue\r\n<option value=\"2019-04-18\">04/18 - Thu\r\n<option
+        value=\"2019-04-17\">04/17 - Wed\r\n<option value=\"2019-04-16\">04/16 - Tue\r\n<option
+        value=\"2019-04-15\">04/15 - Mon\r\n<option value=\"2019-04-12\">04/12 - Fri\r\n<option
+        value=\"2019-04-11\">04/11 - Thu\r\n<option value=\"2019-04-10\">04/10 - Wed\r\n<option
+        value=\"2019-04-09\">04/09 - Tue\r\n<option value=\"2019-04-08\">04/08 - Mon\r\n<option
+        value=\"2019-04-05\">04/05 - Fri\r\n<option value=\"2019-04-04\">04/04 - Thu\r\n<option
+        value=\"2019-04-03\">04/03 - Wed\r\n<option value=\"2019-04-02\">04/02 - Tue\r\n<option
+        value=\"2019-04-01\">04/01 - Mon\r\n<option value=\"2019-03-29\">03/29 - Fri\r\n<option
+        value=\"2019-03-28\">03/28 - Thu\r\n<option value=\"2019-03-27\">03/27 - Wed\r\n<option
+        value=\"2019-03-26\">03/26 - Tue\r\n<option value=\"2019-03-25\">03/25 - Mon\r\n<option
+        value=\"2019-03-22\">03/22 - Fri\r\n<option value=\"2019-03-21\">03/21 - Thu\r\n<option
+        value=\"2019-03-20\">03/20 - Wed\r\n<option value=\"2019-03-19\">03/19 - Tue\r\n<option
+        value=\"2019-03-14\">03/14 - Thu\r\n<option value=\"2019-03-13\">03/13 - Wed\r\n<option
+        value=\"2019-03-12\">03/12 - Tue\r\n<option value=\"2019-03-11\">03/11 - Mon\r\n<option
+        value=\"2019-03-08\">03/08 - Fri\r\n<option value=\"2019-03-07\">03/07 - Thu\r\n<option
+        value=\"2019-03-06\">03/06 - Wed\r\n<option value=\"2019-03-05\">03/05 - Tue\r\n<option
+        value=\"2019-03-04\">03/04 - Mon\r\n<option value=\"2019-03-01\">03/01 - Fri\r\n<option
+        value=\"2019-02-28\">02/28 - Thu\r\n<option value=\"2019-02-27\">02/27 - Wed\r\n<option
+        value=\"2019-02-26\">02/26 - Tue\r\n<option value=\"2019-02-25\">02/25 - Mon\r\n<option
+        value=\"2019-02-15\">02/15 - Fri\r\n<option value=\"2019-02-14\">02/14 - Thu\r\n<option
+        value=\"2019-02-08\">02/08 - Fri\r\n<option value=\"2019-02-07\">02/07 - Thu\r\n<option
+        value=\"2019-02-06\">02/06 - Wed\r\n<option value=\"2019-02-05\">02/05 - Tue\r\n<option
+        value=\"2019-02-04\">02/04 - Mon\r\n<option value=\"2019-02-01\">02/01 - Fri\r\n<option
+        value=\"2019-01-31\">01/31 - Thu\r\n<option value=\"2019-01-30\">01/30 - Wed\r\n<option
+        value=\"2019-01-29\">01/29 - Tue\r\n<option value=\"2019-01-28\">01/28 - Mon\r\n<option
+        value=\"2019-01-25\">01/25 - Fri\r\n<option value=\"2019-01-24\">01/24 - Thu\r\n<option
+        value=\"2019-01-23\">01/23 - Wed\r\n<option value=\"2019-01-22\">01/22 - Tue\r\n<option
+        value=\"2019-01-18\">01/18 - Fri\r\n<option value=\"2019-01-17\">01/17 - Thu\r\n<option
+        value=\"2019-01-16\">01/16 - Wed\r\n<option value=\"2019-01-15\">01/15 - Tue\r\n<option
+        value=\"2019-01-14\">01/14 - Mon\r\n<option value=\"2019-01-11\">01/11 - Fri\r\n<option
+        value=\"2019-01-10\">01/10 - Thu\r\n<option value=\"2019-01-09\">01/09 - Wed\r\n<option
+        value=\"2019-01-08\">01/08 - Tue\r\n<option value=\"2019-01-07\">01/07 - Mon\r\n<option
+        value=\"2019-01-04\">01/04 - Fri\r\n<option value=\"2019-01-03\">01/03 - Thu\r\n<option
+        value=\"2018-12-20\">12/20 - Thu\r\n<option value=\"2018-12-19\">12/19 - Wed\r\n<option
+        value=\"2018-12-18\">12/18 - Tue\r\n<option value=\"2018-12-17\">12/17 - Mon\r\n<option
+        value=\"2018-12-14\">12/14 - Fri\r\n<option value=\"2018-12-13\">12/13 - Thu\r\n<option
+        value=\"2018-12-12\">12/12 - Wed\r\n<option value=\"2018-12-11\">12/11 - Tue\r\n<option
+        value=\"2018-12-10\">12/10 - Mon\r\n<option value=\"2018-12-06\">12/06 - Thu\r\n<option
+        value=\"2018-12-04\">12/04 - Tue\r\n<option value=\"2018-12-03\">12/03 - Mon\r\n<option
+        value=\"2018-11-30\">11/30 - Fri\r\n<option value=\"2018-11-29\">11/29 - Thu\r\n<option
+        value=\"2018-11-28\">11/28 - Wed\r\n<option value=\"2018-11-27\">11/27 - Tue\r\n<option
+        value=\"2018-11-26\">11/26 - Mon\r\n<option value=\"2018-11-20\">11/20 - Tue\r\n<option
+        value=\"2018-11-19\">11/19 - Mon\r\n<option value=\"2018-11-16\">11/16 - Fri\r\n<option
+        value=\"2018-11-15\">11/15 - Thu\r\n<option value=\"2018-11-14\">11/14 - Wed\r\n<option
+        value=\"2018-11-13\">11/13 - Tue\r\n<option value=\"2018-11-12\">11/12 - Mon\r\n<option
+        value=\"2018-11-09\">11/09 - Fri\r\n<option value=\"2018-11-08\">11/08 - Thu\r\n<option
+        value=\"2018-11-07\">11/07 - Wed\r\n<option value=\"2018-11-06\">11/06 - Tue\r\n<option
+        value=\"2018-11-05\">11/05 - Mon\r\n<option value=\"2018-11-02\">11/02 - Fri\r\n<option
+        value=\"2018-11-01\">11/01 - Thu\r\n<option value=\"2018-10-31\">10/31 - Wed\r\n<option
+        value=\"2018-10-30\">10/30 - Tue\r\n<option value=\"2018-10-29\">10/29 - Mon\r\n<option
+        value=\"2018-10-25\">10/25 - Thu\r\n<option value=\"2018-10-24\">10/24 - Wed\r\n<option
+        value=\"2018-10-23\">10/23 - Tue\r\n<option value=\"2018-10-22\">10/22 - Mon\r\n<option
+        value=\"2018-10-19\">10/19 - Fri\r\n<option value=\"2018-10-18\">10/18 - Thu\r\n<option
+        value=\"2018-10-17\">10/17 - Wed\r\n<option value=\"2018-10-16\">10/16 - Tue\r\n<option
+        value=\"2018-10-15\">10/15 - Mon\r\n<option value=\"2018-10-12\">10/12 - Fri\r\n<option
+        value=\"2018-10-11\">10/11 - Thu\r\n<option value=\"2018-10-10\">10/10 - Wed\r\n<option
+        value=\"2018-10-09\">10/09 - Tue\r\n<option value=\"2018-10-08\">10/08 - Mon\r\n<option
+        value=\"2018-10-05\">10/05 - Fri\r\n<option value=\"2018-10-04\">10/04 - Thu\r\n<option
+        value=\"2018-10-03\">10/03 - Wed\r\n<option value=\"2018-10-02\">10/02 - Tue\r\n<option
+        value=\"2018-10-01\">10/01 - Mon\r\n<option value=\"2018-09-28\">09/28 - Fri\r\n<option
+        value=\"2018-09-27\">09/27 - Thu\r\n<option value=\"2018-09-26\">09/26 - Wed\r\n<option
+        value=\"2018-09-25\">09/25 - Tue\r\n<option value=\"2018-09-24\">09/24 - Mon\r\n<option
+        value=\"2018-09-21\">09/21 - Fri\r\n<option value=\"2018-09-20\">09/20 - Thu\r\n<option
+        value=\"2018-09-18\">09/18 - Tue\r\n<option value=\"2018-09-17\">09/17 - Mon\r\n<option
+        value=\"2018-09-14\">09/14 - Fri\r\n<option value=\"2018-09-13\">09/13 - Thu\r\n<option
+        value=\"2018-09-12\">09/12 - Wed\r\n<option value=\"2018-09-11\">09/11 - Tue\r\n<option
+        value=\"2018-09-07\">09/07 - Fri\r\n<option value=\"2018-09-06\">09/06 - Thu\r\n<option
+        value=\"2018-09-05\">09/05 - Wed\r\n<option value=\"2018-09-04\">09/04 - Tue\r\n<option
+        value=\"2018-08-24\">08/24 - Fri\r\n<option value=\"2018-08-23\">08/23 - Thu\r\n<option
+        value=\"2018-08-22\">08/22 - Wed\r\n<option value=\"2018-08-21\">08/21 - Tue\r\n<option
+        value=\"2018-08-20\">08/20 - Mon\r\n<option value=\"2018-08-17\">08/17 - Fri\r\n<option
+        value=\"2018-08-16\">08/16 - Thu\r\n<option value=\"2018-08-15\">08/15 - Wed\r\n<option
+        value=\"2018-08-14\">08/14 - Tue\r\n<option value=\"2018-08-13\">08/13 - Mon\r\n<option
+        value=\"2018-08-09\">08/09 - Thu\r\n<option value=\"2018-08-08\">08/08 - Wed\r\n<option
+        value=\"2018-08-07\">08/07 - Tue\r\n<option value=\"2018-08-06\">08/06 - Mon\r\n<option
+        value=\"2018-08-02\">08/02 - Thu\r\n<option value=\"2018-08-01\">08/01 - Wed\r\n<option
+        value=\"2018-07-31\">07/31 - Tue\r\n<option value=\"2018-07-30\">07/30 - Mon\r\n<option
+        value=\"2018-07-24\">07/24 - Tue\r\n<option value=\"2018-07-23\">07/23 - Mon\r\n<option
+        value=\"2018-07-19\">07/19 - Thu\r\n<option value=\"2018-07-18\">07/18 - Wed\r\n<option
+        value=\"2018-07-17\">07/17 - Tue\r\n<option value=\"2018-07-16\">07/16 - Mon\r\n<option
+        value=\"2018-07-12\">07/12 - Thu\r\n<option value=\"2018-07-11\">07/11 - Wed\r\n<option
+        value=\"2018-07-10\">07/10 - Tue\r\n<option value=\"2018-07-09\">07/09 - Mon\r\n<option
+        value=\"2018-07-06\">07/06 - Fri\r\n<option value=\"2018-07-05\">07/05 - Thu\r\n<option
+        value=\"2018-06-22\">06/22 - Fri\r\n<option value=\"2018-06-21\">06/21 - Thu\r\n<option
+        value=\"2018-06-20\">06/20 - Wed\r\n<option value=\"2018-06-19\">06/19 - Tue\r\n<option
+        value=\"2018-06-18\">06/18 - Mon\r\n<option value=\"2018-06-15\">06/15 - Fri\r\n<option
+        value=\"2018-06-14\">06/14 - Thu\r\n<option value=\"2018-06-13\">06/13 - Wed\r\n<option
+        value=\"2018-06-12\">06/12 - Tue\r\n<option value=\"2018-06-11\">06/11 - Mon\r\n<option
+        value=\"2018-06-08\">06/08 - Fri\r\n<option value=\"2018-06-06\">06/06 - Wed\r\n<option
+        value=\"2018-06-05\">06/05 - Tue\r\n<option value=\"2018-06-04\">06/04 - Mon\r\n<option
+        value=\"2018-06-01\">06/01 - Fri\r\n<option value=\"2018-05-31\">05/31 - Thu\r\n<option
+        value=\"2018-05-30\">05/30 - Wed\r\n<option value=\"2018-05-29\">05/29 - Tue\r\n<option
+        value=\"2018-05-24\">05/24 - Thu\r\n<option value=\"2018-05-23\">05/23 - Wed\r\n<option
+        value=\"2018-05-22\">05/22 - Tue\r\n<option value=\"2018-05-21\">05/21 - Mon\r\n<option
+        value=\"2018-05-17\">05/17 - Thu\r\n<option value=\"2018-05-16\">05/16 - Wed\r\n<option
+        value=\"2018-05-15\">05/15 - Tue\r\n<option value=\"2018-05-14\">05/14 - Mon\r\n<option
+        value=\"2018-05-11\">05/11 - Fri\r\n<option value=\"2018-05-10\">05/10 - Thu\r\n<option
+        value=\"2018-05-09\">05/09 - Wed\r\n<option value=\"2018-05-08\">05/08 - Tue\r\n<option
+        value=\"2018-05-07\">05/07 - Mon\r\n<option value=\"2018-05-04\">05/04 - Fri\r\n<option
+        value=\"2018-05-03\">05/03 - Thu\r\n<option value=\"2018-05-02\">05/02 - Wed\r\n<option
+        value=\"2018-05-01\">05/01 - Tue\r\n<option value=\"2018-04-30\">04/30 - Mon\r\n<option
+        value=\"2018-04-27\">04/27 - Fri\r\n<option value=\"2018-04-26\">04/26 - Thu\r\n<option
+        value=\"2018-04-25\">04/25 - Wed\r\n<option value=\"2018-04-24\">04/24 - Tue\r\n<option
+        value=\"2018-04-23\">04/23 - Mon\r\n<option value=\"2018-04-20\">04/20 - Fri\r\n<option
+        value=\"2018-04-19\">04/19 - Thu\r\n<option value=\"2018-04-18\">04/18 - Wed\r\n<option
+        value=\"2018-04-17\">04/17 - Tue\r\n<option value=\"2018-04-16\">04/16 - Mon\r\n<option
+        value=\"2018-04-13\">04/13 - Fri\r\n<option value=\"2018-04-12\">04/12 - Thu\r\n<option
+        value=\"2018-04-11\">04/11 - Wed\r\n<option value=\"2018-04-10\">04/10 - Tue\r\n<option
+        value=\"2018-04-09\">04/09 - Mon\r\n<option value=\"2018-04-06\">04/06 - Fri\r\n<option
+        value=\"2018-04-05\">04/05 - Thu\r\n<option value=\"2018-03-29\">03/29 - Thu\r\n<option
+        value=\"2018-03-28\">03/28 - Wed\r\n<option value=\"2018-03-27\">03/27 - Tue\r\n<option
+        value=\"2018-03-26\">03/26 - Mon\r\n<option value=\"2018-03-23\">03/23 - Fri\r\n<option
+        value=\"2018-03-22\">03/22 - Thu\r\n<option value=\"2018-03-21\">03/21 - Wed\r\n<option
+        value=\"2018-03-20\">03/20 - Tue\r\n<option value=\"2018-03-19\">03/19 - Mon\r\n<option
+        value=\"2018-03-16\">03/16 - Fri\r\n<option value=\"2018-03-15\">03/15 - Thu\r\n<option
+        value=\"2018-03-14\">03/14 - Wed\r\n<option value=\"2018-03-13\">03/13 - Tue\r\n<option
+        value=\"2018-03-12\">03/12 - Mon\r\n<option value=\"2018-03-09\">03/09 - Fri\r\n<option
+        value=\"2018-03-08\">03/08 - Thu\r\n<option value=\"2018-03-07\">03/07 - Wed\r\n<option
+        value=\"2018-03-06\">03/06 - Tue\r\n<option value=\"2018-03-05\">03/05 - Mon\r\n<option
+        value=\"2018-03-02\">03/02 - Fri\r\n<option value=\"2018-03-01\">03/01 - Thu\r\n<option
+        value=\"2018-02-28\">02/28 - Wed\r\n<option value=\"2018-02-27\">02/27 - Tue\r\n<option
+        value=\"2018-02-26\">02/26 - Mon\r\n<option value=\"2018-02-09\">02/09 - Fri\r\n<option
+        value=\"2018-02-08\">02/08 - Thu\r\n<option value=\"2018-02-07\">02/07 - Wed\r\n<option
+        value=\"2018-02-06\">02/06 - Tue\r\n<option value=\"2018-02-05\">02/05 - Mon\r\n<option
+        value=\"2018-02-02\">02/02 - Fri\r\n<option value=\"2018-02-01\">02/01 - Thu\r\n<option
+        value=\"2018-01-31\">01/31 - Wed\r\n<option value=\"2018-01-30\">01/30 - Tue\r\n<option
+        value=\"2018-01-29\">01/29 - Mon\r\n<option value=\"2018-01-26\">01/26 - Fri\r\n<option
+        value=\"2018-01-24\">01/24 - Wed\r\n<option value=\"2018-01-23\">01/23 - Tue\r\n<option
+        value=\"2018-01-22\">01/22 - Mon\r\n<option value=\"2018-01-19\">01/19 - Fri\r\n<option
+        value=\"2018-01-18\">01/18 - Thu\r\n<option value=\"2018-01-17\">01/17 - Wed\r\n<option
+        value=\"2018-01-16\">01/16 - Tue\r\n<option value=\"2018-01-12\">01/12 - Fri\r\n<option
+        value=\"2018-01-11\">01/11 - Thu\r\n<option value=\"2018-01-10\">01/10 - Wed\r\n<option
+        value=\"2018-01-09\">01/09 - Tue\r\n<option value=\"2018-01-08\">01/08 - Mon\r\n<option
+        value=\"2018-01-05\">01/05 - Fri\r\n<option value=\"2018-01-04\">01/04 - Thu\r\n<option
+        value=\"2018-01-03\">01/03 - Wed\r\n<option value=\"2018-01-02\">01/02 - Tue\r\n<option
+        value=\"2017-12-21\">12/21 - Thu\r\n<option value=\"2017-12-20\">12/20 - Wed\r\n<option
+        value=\"2017-12-19\">12/19 - Tue\r\n<option value=\"2017-12-18\">12/18 - Mon\r\n<option
+        value=\"2017-12-15\">12/15 - Fri\r\n<option value=\"2017-12-14\">12/14 - Thu\r\n<option
+        value=\"2017-12-13\">12/13 - Wed\r\n<option value=\"2017-12-12\">12/12 - Tue\r\n<option
+        value=\"2017-12-11\">12/11 - Mon\r\n<option value=\"2017-12-08\">12/08 - Fri\r\n<option
+        value=\"2017-12-07\">12/07 - Thu\r\n<option value=\"2017-12-06\">12/06 - Wed\r\n<option
+        value=\"2017-12-05\">12/05 - Tue\r\n<option value=\"2017-12-04\">12/04 - Mon\r\n<option
+        value=\"2017-12-01\">12/01 - Fri\r\n<option value=\"2017-11-30\">11/30 - Thu\r\n<option
+        value=\"2017-11-29\">11/29 - Wed\r\n<option value=\"2017-11-28\">11/28 - Tue\r\n<option
+        value=\"2017-11-21\">11/21 - Tue\r\n<option value=\"2017-11-20\">11/20 - Mon\r\n<option
+        value=\"2017-11-17\">11/17 - Fri\r\n<option value=\"2017-11-16\">11/16 - Thu\r\n<option
+        value=\"2017-11-15\">11/15 - Wed\r\n<option value=\"2017-11-14\">11/14 - Tue\r\n<option
+        value=\"2017-11-13\">11/13 - Mon\r\n<option value=\"2017-11-09\">11/09 - Thu\r\n<option
+        value=\"2017-11-08\">11/08 - Wed\r\n<option value=\"2017-11-07\">11/07 - Tue\r\n<option
+        value=\"2017-11-06\">11/06 - Mon\r\n<option value=\"2017-11-03\">11/03 - Fri\r\n<option
+        value=\"2017-11-02\">11/02 - Thu\r\n<option value=\"2017-11-01\">11/01 - Wed\r\n<option
+        value=\"2017-10-31\">10/31 - Tue\r\n<option value=\"2017-10-30\">10/30 - Mon\r\n<option
+        value=\"2017-10-27\">10/27 - Fri\r\n<option value=\"2017-10-26\">10/26 - Thu\r\n<option
+        value=\"2017-10-25\">10/25 - Wed\r\n<option value=\"2017-10-24\">10/24 - Tue\r\n<option
+        value=\"2017-10-23\">10/23 - Mon\r\n<option value=\"2017-10-20\">10/20 - Fri\r\n<option
+        value=\"2017-10-19\">10/19 - Thu\r\n<option value=\"2017-10-18\">10/18 - Wed\r\n<option
+        value=\"2017-10-17\">10/17 - Tue\r\n<option value=\"2017-10-16\">10/16 - Mon\r\n<option
+        value=\"2017-10-13\">10/13 - Fri\r\n<option value=\"2017-10-12\">10/12 - Thu\r\n<option
+        value=\"2017-10-11\">10/11 - Wed\r\n<option value=\"2017-10-10\">10/10 - Tue\r\n<option
+        value=\"2017-10-06\">10/06 - Fri\r\n<option value=\"2017-10-05\">10/05 - Thu\r\n<option
+        value=\"2017-10-04\">10/04 - Wed\r\n<option value=\"2017-10-03\">10/03 - Tue\r\n<option
+        value=\"2017-10-02\">10/02 - Mon\r\n<option value=\"2017-09-29\">09/29 - Fri\r\n<option
+        value=\"2017-09-28\">09/28 - Thu\r\n<option value=\"2017-09-27\">09/27 - Wed\r\n<option
+        value=\"2017-09-26\">09/26 - Tue\r\n<option value=\"2017-09-25\">09/25 - Mon\r\n<option
+        value=\"2017-09-21\">09/21 - Thu\r\n<option value=\"2017-09-20\">09/20 - Wed\r\n<option
+        value=\"2017-09-19\">09/19 - Tue\r\n<option value=\"2017-09-18\">09/18 - Mon\r\n<option
+        value=\"2017-09-15\">09/15 - Fri\r\n<option value=\"2017-09-14\">09/14 - Thu\r\n<option
+        value=\"2017-09-13\">09/13 - Wed\r\n<option value=\"2017-09-12\">09/12 - Tue\r\n<option
+        value=\"2017-09-11\">09/11 - Mon\r\n<option value=\"2017-08-31\">08/31 - Thu\r\n<option
+        value=\"2017-08-30\">08/30 - Wed\r\n<option value=\"2017-08-29\">08/29 - Tue\r\n<option
+        value=\"2017-08-28\">08/28 - Mon\r\n<option value=\"2017-08-24\">08/24 - Thu\r\n<option
+        value=\"2017-08-23\">08/23 - Wed\r\n<option value=\"2017-08-22\">08/22 - Tue\r\n<option
+        value=\"2017-08-21\">08/21 - Mon\r\n<option value=\"2017-08-17\">08/17 - Thu\r\n<option
+        value=\"2017-08-16\">08/16 - Wed\r\n<option value=\"2017-08-15\">08/15 - Tue\r\n<option
+        value=\"2017-08-14\">08/14 - Mon\r\n<option value=\"2017-08-10\">08/10 - Thu\r\n<option
+        value=\"2017-08-09\">08/09 - Wed\r\n<option value=\"2017-08-08\">08/08 - Tue\r\n<option
+        value=\"2017-08-07\">08/07 - Mon\r\n<option value=\"2017-08-03\">08/03 - Thu\r\n<option
+        value=\"2017-08-02\">08/02 - Wed\r\n<option value=\"2017-08-01\">08/01 - Tue\r\n<option
+        value=\"2017-07-31\">07/31 - Mon\r\n<option value=\"2017-07-27\">07/27 - Thu\r\n<option
+        value=\"2017-07-26\">07/26 - Wed\r\n<option value=\"2017-07-25\">07/25 - Tue\r\n<option
+        value=\"2017-07-24\">07/24 - Mon\r\n<option value=\"2017-07-20\">07/20 - Thu\r\n<option
+        value=\"2017-07-19\">07/19 - Wed\r\n<option value=\"2017-07-18\">07/18 - Tue\r\n<option
+        value=\"2017-07-17\">07/17 - Mon\r\n<option value=\"2017-07-13\">07/13 - Thu\r\n<option
+        value=\"2017-07-12\">07/12 - Wed\r\n<option value=\"2017-07-11\">07/11 - Tue\r\n<option
+        value=\"2017-07-10\">07/10 - Mon\r\n<option value=\"2017-07-07\">07/07 - Fri\r\n<option
+        value=\"2017-07-06\">07/06 - Thu\r\n<option value=\"2017-07-05\">07/05 - Wed\r\n<option
+        value=\"2017-06-23\">06/23 - Fri\r\n<option value=\"2017-06-22\">06/22 - Thu\r\n<option
+        value=\"2017-06-21\">06/21 - Wed\r\n<option value=\"2017-06-20\">06/20 - Tue\r\n<option
+        value=\"2017-06-19\">06/19 - Mon\r\n<option value=\"2017-06-16\">06/16 - Fri\r\n<option
+        value=\"2017-06-15\">06/15 - Thu\r\n<option value=\"2017-06-14\">06/14 - Wed\r\n<option
+        value=\"2017-06-13\">06/13 - Tue\r\n<option value=\"2017-06-12\">06/12 - Mon\r\n<option
+        value=\"2017-06-09\">06/09 - Fri\r\n<option value=\"2017-06-08\">06/08 - Thu\r\n<option
+        value=\"2017-06-07\">06/07 - Wed\r\n<option value=\"2017-06-06\">06/06 - Tue\r\n<option
+        value=\"2017-06-02\">06/02 - Fri\r\n<option value=\"2017-06-01\">06/01 - Thu\r\n<option
+        value=\"2017-05-31\">05/31 - Wed\r\n<option value=\"2017-05-30\">05/30 - Tue\r\n<option
+        value=\"2017-05-25\">05/25 - Thu\r\n<option value=\"2017-05-24\">05/24 - Wed\r\n<option
+        value=\"2017-05-23\">05/23 - Tue\r\n<option value=\"2017-05-22\">05/22 - Mon\r\n<option
+        value=\"2017-05-19\">05/19 - Fri\r\n<option value=\"2017-05-18\">05/18 - Thu\r\n<option
+        value=\"2017-05-17\">05/17 - Wed\r\n<option value=\"2017-05-16\">05/16 - Tue\r\n<option
+        value=\"2017-05-15\">05/15 - Mon\r\n<option value=\"2017-05-12\">05/12 - Fri\r\n<option
+        value=\"2017-05-11\">05/11 - Thu\r\n<option value=\"2017-05-10\">05/10 - Wed\r\n<option
+        value=\"2017-05-09\">05/09 - Tue\r\n<option value=\"2017-05-08\">05/08 - Mon\r\n<option
+        value=\"2017-05-05\">05/05 - Fri\r\n<option value=\"2017-05-04\">05/04 - Thu\r\n<option
+        value=\"2017-05-03\">05/03 - Wed\r\n<option value=\"2017-05-02\">05/02 - Tue\r\n<option
+        value=\"2017-05-01\">05/01 - Mon\r\n<option value=\"2017-04-28\">04/28 - Fri\r\n<option
+        value=\"2017-04-27\">04/27 - Thu\r\n<option value=\"2017-04-26\">04/26 - Wed\r\n<option
+        value=\"2017-04-25\">04/25 - Tue\r\n<option value=\"2017-04-24\">04/24 - Mon\r\n<option
+        value=\"2017-04-21\">04/21 - Fri\r\n<option value=\"2017-04-20\">04/20 - Thu\r\n<option
+        value=\"2017-04-19\">04/19 - Wed\r\n<option value=\"2017-04-13\">04/13 - Thu\r\n<option
+        value=\"2017-04-12\">04/12 - Wed\r\n<option value=\"2017-04-11\">04/11 - Tue\r\n<option
+        value=\"2017-04-10\">04/10 - Mon\r\n<option value=\"2017-03-28\">03/28 - Tue\r\n<option
+        value=\"2017-03-27\">03/27 - Mon\r\n<option value=\"2017-03-24\">03/24 - Fri\r\n<option
+        value=\"2017-03-23\">03/23 - Thu\r\n<option value=\"2017-03-22\">03/22 - Wed\r\n<option
+        value=\"2017-03-17\">03/17 - Fri\r\n<option value=\"2017-03-16\">03/16 - Thu\r\n<option
+        value=\"2017-03-15\">03/15 - Wed\r\n<option value=\"2017-03-14\">03/14 - Tue\r\n<option
+        value=\"2017-03-13\">03/13 - Mon\r\n<option value=\"2017-03-10\">03/10 - Fri\r\n<option
+        value=\"2017-03-09\">03/09 - Thu\r\n<option value=\"2017-03-08\">03/08 - Wed\r\n<option
+        value=\"2017-03-07\">03/07 - Tue\r\n<option value=\"2017-03-06\">03/06 - Mon\r\n<option
+        value=\"2017-03-03\">03/03 - Fri\r\n<option value=\"2017-03-02\">03/02 - Thu\r\n<option
+        value=\"2017-03-01\">03/01 - Wed\r\n<option value=\"2017-02-28\">02/28 - Tue\r\n<option
+        value=\"2017-02-27\">02/27 - Mon\r\n<option value=\"2017-02-24\">02/24 - Fri\r\n<option
+        value=\"2017-02-23\">02/23 - Thu\r\n<option value=\"2017-02-22\">02/22 - Wed\r\n<option
+        value=\"2017-02-17\">02/17 - Fri\r\n<option value=\"2017-02-16\">02/16 - Thu\r\n<option
+        value=\"2017-02-13\">02/13 - Mon\r\n<option value=\"2017-02-10\">02/10 - Fri\r\n<option
+        value=\"2017-02-09\">02/09 - Thu\r\n<option value=\"2017-02-08\">02/08 - Wed\r\n<option
+        value=\"2017-02-07\">02/07 - Tue\r\n<option value=\"2017-02-06\">02/06 - Mon\r\n<option
+        value=\"2017-02-03\">02/03 - Fri\r\n<option value=\"2017-02-02\">02/02 - Thu\r\n<option
+        value=\"2017-02-01\">02/01 - Wed\r\n<option value=\"2017-01-31\">01/31 - Tue\r\n<option
+        value=\"2017-01-30\">01/30 - Mon\r\n<option value=\"2017-01-27\">01/27 - Fri\r\n<option
+        value=\"2017-01-26\">01/26 - Thu\r\n<option value=\"2017-01-25\">01/25 - Wed\r\n<option
+        value=\"2017-01-24\">01/24 - Tue\r\n<option value=\"2017-01-23\">01/23 - Mon\r\n<option
+        value=\"2017-01-20\">01/20 - Fri\r\n<option value=\"2017-01-19\">01/19 - Thu\r\n<option
+        value=\"2017-01-18\">01/18 - Wed\r\n<option value=\"2017-01-17\">01/17 - Tue\r\n<option
+        value=\"2017-01-13\">01/13 - Fri\r\n<option value=\"2017-01-12\">01/12 - Thu\r\n<option
+        value=\"2017-01-11\">01/11 - Wed\r\n<option value=\"2017-01-10\">01/10 - Tue\r\n<option
+        value=\"2017-01-09\">01/09 - Mon\r\n<option value=\"2017-01-06\">01/06 - Fri\r\n<option
+        value=\"2017-01-05\">01/05 - Thu\r\n<option value=\"2017-01-04\">01/04 - Wed\r\n<option
+        value=\"2017-01-03\">01/03 - Tue\r\n<option value=\"2016-12-22\">12/22 - Thu\r\n<option
+        value=\"2016-12-21\">12/21 - Wed\r\n<option value=\"2016-12-19\">12/19 - Mon\r\n<option
+        value=\"2016-12-16\">12/16 - Fri\r\n<option value=\"2016-12-15\">12/15 - Thu\r\n<option
+        value=\"2016-12-14\">12/14 - Wed\r\n<option value=\"2016-12-13\">12/13 - Tue\r\n<option
+        value=\"2016-12-12\">12/12 - Mon\r\n<option value=\"2016-12-08\">12/08 - Thu\r\n<option
+        value=\"2016-12-07\">12/07 - Wed\r\n<option value=\"2016-12-06\">12/06 - Tue\r\n<option
+        value=\"2016-12-05\">12/05 - Mon\r\n<option value=\"2016-12-01\">12/01 - Thu\r\n<option
+        value=\"2016-11-30\">11/30 - Wed\r\n<option value=\"2016-11-29\">11/29 - Tue\r\n<option
+        value=\"2016-11-28\">11/28 - Mon\r\n<option value=\"2016-11-22\">11/22 - Tue\r\n<option
+        value=\"2016-11-21\">11/21 - Mon\r\n<option value=\"2016-11-18\">11/18 - Fri\r\n<option
+        value=\"2016-11-17\">11/17 - Thu\r\n<option value=\"2016-11-16\">11/16 - Wed\r\n<option
+        value=\"2016-11-15\">11/15 - Tue\r\n<option value=\"2016-11-14\">11/14 - Mon\r\n<option
+        value=\"2016-11-11\">11/11 - Fri\r\n<option value=\"2016-11-10\">11/10 - Thu\r\n<option
+        value=\"2016-11-09\">11/09 - Wed\r\n<option value=\"2016-11-08\">11/08 - Tue\r\n<option
+        value=\"2016-11-07\">11/07 - Mon\r\n<option value=\"2016-11-04\">11/04 - Fri\r\n<option
+        value=\"2016-11-03\">11/03 - Thu\r\n<option value=\"2016-11-02\">11/02 - Wed\r\n<option
+        value=\"2016-11-01\">11/01 - Tue\r\n<option value=\"2016-10-31\">10/31 - Mon\r\n<option
+        value=\"2016-10-28\">10/28 - Fri\r\n<option value=\"2016-10-27\">10/27 - Thu\r\n<option
+        value=\"2016-10-26\">10/26 - Wed\r\n<option value=\"2016-10-25\">10/25 - Tue\r\n<option
+        value=\"2016-10-24\">10/24 - Mon\r\n<option value=\"2016-10-21\">10/21 - Fri\r\n<option
+        value=\"2016-10-20\">10/20 - Thu\r\n<option value=\"2016-10-19\">10/19 - Wed\r\n<option
+        value=\"2016-10-18\">10/18 - Tue\r\n<option value=\"2016-10-17\">10/17 - Mon\r\n<option
+        value=\"2016-10-14\">10/14 - Fri\r\n<option value=\"2016-10-13\">10/13 - Thu\r\n<option
+        value=\"2016-10-11\">10/11 - Tue\r\n<option value=\"2016-10-07\">10/07 - Fri\r\n<option
+        value=\"2016-10-06\">10/06 - Thu\r\n<option value=\"2016-10-05\">10/05 - Wed\r\n<option
+        value=\"2016-10-04\">10/04 - Tue\r\n<option value=\"2016-09-30\">09/30 - Fri\r\n<option
+        value=\"2016-09-29\">09/29 - Thu\r\n<option value=\"2016-09-28\">09/28 - Wed\r\n<option
+        value=\"2016-09-27\">09/27 - Tue\r\n<option value=\"2016-09-26\">09/26 - Mon\r\n<option
+        value=\"2016-09-23\">09/23 - Fri\r\n<option value=\"2016-09-22\">09/22 - Thu\r\n<option
+        value=\"2016-09-21\">09/21 - Wed\r\n<option value=\"2016-09-20\">09/20 - Tue\r\n<option
+        value=\"2016-09-19\">09/19 - Mon\r\n<option value=\"2016-09-16\">09/16 - Fri\r\n<option
+        value=\"2016-09-15\">09/15 - Thu\r\n<option value=\"2016-09-14\">09/14 - Wed\r\n<option
+        value=\"2016-09-13\">09/13 - Tue\r\n<option value=\"2016-09-12\">09/12 - Mon\r\n<option
+        value=\"2016-09-09\">09/09 - Fri\r\n<option value=\"2016-09-08\">09/08 - Thu\r\n<option
+        value=\"2016-09-07\">09/07 - Wed\r\n<option value=\"2016-09-06\">09/06 - Tue\r\n<option
+        value=\"2016-09-01\">09/01 - Thu\r\n<option value=\"2016-08-31\">08/31 - Wed\r\n<option
+        value=\"2016-08-30\">08/30 - Tue\r\n<option value=\"2016-08-29\">08/29 - Mon\r\n<option
+        value=\"2016-08-25\">08/25 - Thu\r\n<option value=\"2016-08-24\">08/24 - Wed\r\n<option
+        value=\"2016-08-23\">08/23 - Tue\r\n<option value=\"2016-08-22\">08/22 - Mon\r\n<option
+        value=\"2016-08-05\">08/05 - Fri\r\n<option value=\"2016-08-04\">08/04 - Thu\r\n<option
+        value=\"2016-08-03\">08/03 - Wed\r\n<option value=\"2016-08-02\">08/02 - Tue\r\n<option
+        value=\"2016-08-01\">08/01 - Mon\r\n<option value=\"2016-07-28\">07/28 - Thu\r\n<option
+        value=\"2016-07-27\">07/27 - Wed\r\n<option value=\"2016-07-26\">07/26 - Tue\r\n<option
+        value=\"2016-07-25\">07/25 - Mon\r\n<option value=\"2016-07-22\">07/22 - Fri\r\n<option
+        value=\"2016-07-21\">07/21 - Thu\r\n<option value=\"2016-07-20\">07/20 - Wed\r\n<option
+        value=\"2016-07-19\">07/19 - Tue\r\n<option value=\"2016-07-18\">07/18 - Mon\r\n<option
+        value=\"2016-07-15\">07/15 - Fri\r\n<option value=\"2016-07-14\">07/14 - Thu\r\n<option
+        value=\"2016-07-13\">07/13 - Wed\r\n<option value=\"2016-07-12\">07/12 - Tue\r\n<option
+        value=\"2016-07-11\">07/11 - Mon\r\n<option value=\"2016-07-01\">07/01 - Fri\r\n<option
+        value=\"2016-06-30\">06/30 - Thu\r\n<option value=\"2016-06-29\">06/29 - Wed\r\n<option
+        value=\"2016-06-28\">06/28 - Tue\r\n<option value=\"2016-06-27\">06/27 - Mon\r\n<option
+        value=\"2016-06-24\">06/24 - Fri\r\n<option value=\"2016-06-23\">06/23 - Thu\r\n<option
+        value=\"2016-06-22\">06/22 - Wed\r\n<option value=\"2016-06-21\">06/21 - Tue\r\n<option
+        value=\"2016-06-20\">06/20 - Mon\r\n<option value=\"2016-06-17\">06/17 - Fri\r\n<option
+        value=\"2016-06-16\">06/16 - Thu\r\n<option value=\"2016-06-15\">06/15 - Wed\r\n<option
+        value=\"2016-06-14\">06/14 - Tue\r\n<option value=\"2016-06-13\">06/13 - Mon\r\n<option
+        value=\"2016-06-10\">06/10 - Fri\r\n<option value=\"2016-06-09\">06/09 - Thu\r\n<option
+        value=\"2016-06-08\">06/08 - Wed\r\n<option value=\"2016-06-07\">06/07 - Tue\r\n<option
+        value=\"2016-06-03\">06/03 - Fri\r\n<option value=\"2016-06-02\">06/02 - Thu\r\n<option
+        value=\"2016-06-01\">06/01 - Wed\r\n<option value=\"2016-05-27\">05/27 - Fri\r\n<option
+        value=\"2016-05-26\">05/26 - Thu\r\n<option value=\"2016-05-25\">05/25 - Wed\r\n<option
+        value=\"2016-05-24\">05/24 - Tue\r\n<option value=\"2016-05-23\">05/23 - Mon\r\n<option
+        value=\"2016-05-20\">05/20 - Fri\r\n<option value=\"2016-05-19\">05/19 - Thu\r\n<option
+        value=\"2016-05-18\">05/18 - Wed\r\n<option value=\"2016-05-17\">05/17 - Tue\r\n<option
+        value=\"2016-05-16\">05/16 - Mon\r\n<option value=\"2016-05-13\">05/13 - Fri\r\n<option
+        value=\"2016-05-12\">05/12 - Thu\r\n<option value=\"2016-05-11\">05/11 - Wed\r\n<option
+        value=\"2016-05-10\">05/10 - Tue\r\n<option value=\"2016-05-09\">05/09 - Mon\r\n<option
+        value=\"2016-05-06\">05/06 - Fri\r\n<option value=\"2016-05-05\">05/05 - Thu\r\n<option
+        value=\"2016-05-04\">05/04 - Wed\r\n<option value=\"2016-05-03\">05/03 - Tue\r\n<option
+        value=\"2016-05-02\">05/02 - Mon\r\n<option value=\"2016-04-29\">04/29 - Fri\r\n<option
+        value=\"2016-04-28\">04/28 - Thu\r\n<option value=\"2016-04-27\">04/27 - Wed\r\n<option
+        value=\"2016-04-26\">04/26 - Tue\r\n<option value=\"2016-04-25\">04/25 - Mon\r\n<option
+        value=\"2016-04-22\">04/22 - Fri\r\n<option value=\"2016-04-21\">04/21 - Thu\r\n<option
+        value=\"2016-04-20\">04/20 - Wed\r\n<option value=\"2016-04-19\">04/19 - Tue\r\n<option
+        value=\"2016-04-18\">04/18 - Mon\r\n\n\t\t\t\t</select>\n\t\t\t</td></tr>\n
+        \               \n\t\t\t<tr><td align=\"right\" class=\"aslabel\">Call: </td><td
+        align=\"right\">\n\t\t\t\t<select id=\"called\" name=\"called\" tabindex=\"3\"
+        class=\"selectBox\" onchange=\"this.form.submit();\">\n\t\t\t\t<option value=\"%\">All\n\t\t\t\t<option
+        value=5>Buy\n\t\t\t\t<option value=4>Pos Mention\n\t\t\t\t<option value=3>Hold\n\t\t\t\t<option
+        value=2>Neg Mention\n\t\t\t\t<option value=1>Sell\n\t\t\t\t</select>\n\t\t\t</td></tr>\n\n\t\t\t<tr><td
+        align=\"right\" class=\"aslabel\">Industry: </td><td align=\"right\">\n\t\t\t\t<select
+        id=\"industry\" name=\"industry\" tabindex=\"4\" class=\"selectBox\" onchange=\"this.form.submit();\">\n
+        \               <option value=\"%\">All\n                <option>Accident
+        & Health Insurance\r\n<option>Advertising & Marketing\r\n<option>Advertising
+        Agencies\r\n<option>Aerospace & Defense\r\n<option>Aerospace/Defense - Major
+        Diversified\r\n<option>Aerospace/Defense Products\r\n<option>Aerospace/Defense
+        Products & Services\r\n<option>Agricultural Chemicals\r\n<option>Agricultural
+        Inputs\r\n<option>Air Delivery & Freight Services\r\n<option>Air Services,
+        Other\r\n<option>Airports & Air Services\r\n<option>Aluminum\r\n<option>Apparel\r\n<option>Apparel
+        Footwear & Accessories\r\n<option>Apparel Manufacturing\r\n<option>Apparel
+        Retail\r\n<option>Apparel Stores\r\n<option>Appliances\r\n<option>Application
+        Service Providers\r\n<option>Application Software\r\n<option>Application Softwarei\r\n<option>Asset
+        Management\r\n<option>Auto & Truck Dealerships\r\n<option>Auto Dealerships\r\n<option>Auto
+        Manufacturers\r\n<option>Auto Manufacturers - Major\r\n<option>Auto Parts\r\n<option>Auto
+        Parts Stores\r\n<option>Auto Parts Wholesale\r\n<option>Banks - Regional\r\n<option>Banks
+        - Regional - US\r\n<option>Basic Materials Wholesale\r\n<option>Beverages\r\n<option>Beverages
+        - Brewers\r\n<option>Beverages - Soft Drinks\r\n<option>Beverages - Wineries
+        & Distillers\r\n<option>Bio Therapeutic Drugs\r\n<option>Biotechnology\r\n<option>Broadcasting\r\n<option>Broadcasting
+        - Radio\r\n<option>Broadcasting - TV\r\n<option>Building Materials\r\n<option>Building
+        Materials Wholesale\r\n<option>Building Products & Equipment\r\n<option>Busines
+        Software & Services\r\n<option>Business Equipment\r\n<option>Business Services\r\n<option>Business
+        Software & Services\r\n<option>Capital Markets\r\n<option>Catalog & Mail Order
+        Houses\r\n<option>CATV Systems\r\n<option>Cement\r\n<option>Chemicals\r\n<option>Chemicals
+        - Major Diversified\r\n<option>Cigarettes\r\n<option>Cleaning Products\r\n<option>Closed-End
+        Fund - Debt\r\n<option>Closed-End Fund - Equity\r\n<option>Cloud Computing
+        Services\r\n<option>Coal\r\n<option>Commercial Banks\r\n<option>Communication
+        Equipment\r\n<option>Communication Services\r\n<option>Communications & Networking\r\n<option>Communications
+        Equipment\r\n<option>Computer Based Systems\r\n<option>Computer Hardware\r\n<option>Computer
+        Peripherals\r\n<option>Computers Wholesale\r\n<option>Confectioners\r\n<option>Conglomerates\r\n<option>Consumer
+        Electronics\r\n<option>Consumer Services\r\n<option>Copper\r\n<option>Credit
+        Services\r\n<option>Cybersecurity\r\n<option>Dairy Products\r\n<option>Data
+        Centers\r\n<option>Data Processing Services\r\n<option>Data Storage Devices\r\n<option>Department
+        Stores\r\n<option>Diagnostic Substances\r\n<option>Diagnostics & Research\r\n<option>Discount,
+        Variety Stores\r\n<option>Diversified Communication Services\r\n<option>Diversified
+        Computer Systems\r\n<option>Diversified Electronics\r\n<option>Diversified
+        Industrials\r\n<option>Diversified Investments\r\n<option>Diversified Machinery\r\n<option>Diversified
+        Utilities\r\n<option>Doors & Window Frames\r\n<option>Drug Delivery\r\n<option>Drug
+        Manufacturers - Major\r\n<option>Drug Manufacturers - Other\r\n<option>Drug
+        Manufacturers - Specialty\r\n<option>Drug Manufacturers - Specialty & Generic\r\n<option>Drug
+        Manufacturers\u2014Specialty & Generic\r\n<option>Drug Related Products\r\n<option>Drug
+        Stores\r\n<option>Drugs - Generic\r\n<option>Drugs Wholesale\r\n<option>Education
+        & Training Services\r\n<option>Electric Utilities\r\n<option>Electrical Equipment
+        & Parts\r\n<option>Electronic Components\r\n<option>Electronic Equipment\r\n<option>Electronic
+        Gaming & Multimedia\r\n<option>Electronics Stores\r\n<option>Electronics Wholesale\r\n<option>Engineering
+        & Construction\r\n<option>Engineering and Construction\r\n<option>Entertainment\r\n<option>Entertainment
+        - Diversified\r\n<option>ETF\r\n<option>ETF - Exchange Traded Fund\r\n<option>Farm
+        & Construction Equipment\r\n<option>Farm & Construction Machinery\r\n<option>Farm
+        & Heavy Construction Machinery\r\n<option>Farm & Heavy Machinery\r\n<option>Farm
+        Products\r\n<option>Food - Major Diversified\r\n<option>Food Distribution\r\n<option>Food
+        Processing\r\n<option>Food Wholesale\r\n<option>Footwear\r\n<option>Foreign
+        Banks\r\n<option>Foreign Money Center Banks\r\n<option>Foreign Regional Banks\r\n<option>Foreign
+        Utilities\r\n<option>Furnishings, Fixtures & Appliances\r\n<option>Gambling\r\n<option>Gaming
+        Activities\r\n<option>Gas Utilities\r\n<option>General Building Materials\r\n<option>General
+        Contractors\r\n<option>General Entertainment\r\n<option>Gold\r\n<option>Grocery
+        Stores\r\n<option>Health Care Plans\r\n<option>Health Information Services\r\n<option>Health
+        Information Systems\r\n<option>Healthcare Information Services\r\n<option>Healthcare
+        Plans\r\n<option>Heavy Construction\r\n<option>Home Furnishing Stores\r\n<option>Home
+        Furnishings & Fixtures\r\n<option>Home Health Care\r\n<option>Home Improvement
+        Retail\r\n<option>Home Improvement Stores\r\n<option>Hospitals\r\n<option>Household
+        & Personal Products\r\n<option>Housewares & Accessories\r\n<option>Independent
+        Oil & Gas\r\n<option>Independent Power Producers\r\n<option>Industrial Distribution\r\n<option>Industrial
+        Electrical Equipment\r\n<option>Industrial Equipment & Components\r\n<option>Industrial
+        Equipment Wholesale\r\n<option>Industrial Machinery & Equipment\r\n<option>Industrial
+        Metals & Minerals\r\n<option>Industrial Metals & Mining\r\n<option>Information
+        & Delivery Services\r\n<option>Information Services\r\n<option>Information
+        Technology Services\r\n<option>Infrastructure Software\r\n<option>Insurance\r\n<option>Insurance
+        Brokers\r\n<option>Insurance\u2014Property & Casualty\r\n<option>Integrated
+        Freight & Logistics\r\n<option>Integrated Oil & Gas\r\n<option>Integrated
+        Shipping & Logistics\r\n<option>Internet Content & Information\r\n<option>Internet
+        Information Providers\r\n<option>Internet Retail\r\n<option>Internet Service
+        Providers\r\n<option>Internet Software & Services\r\n<option>Investment Brokerage
+        - National\r\n<option>Investment Brokerage - Regional\r\n<option>Jewelry Stores\r\n<option>Keryx
+        Biopharmaceutical\r\n<option>Leasing\r\n<option>Leisure\r\n<option>Life Insurance\r\n<option>LNG
+        Transportation & Storage\r\n<option>Lodging\r\n<option>Long Distance Carriers\r\n<option>Long-Term
+        Care Facilities\r\n<option>Lumber & Wood Production\r\n<option>Lumber, Wood
+        Production\r\n<option>Luxury Goods\r\n<option>Machine Tools & Accessories\r\n<option>Major
+        Airlines\r\n<option>Major Integrated Oil & Gas\r\n<option>Management Services\r\n<option>Marine
+        Shipping\r\n<option>Marketing Services\r\n<option>Meat Products\r\n<option>Media
+        - Diversifie\r\n<option>Media - Diversified\r\n<option>Medical Appliances\r\n<option>Medical
+        Appliances & Equipment\r\n<option>Medical Care Facilities\r\n<option>Medical
+        Devices\r\n<option>Medical Distribution\r\n<option>Medical Equipment Wholesale\r\n<option>Medical
+        Instruments & Supplies\r\n<option>Medical Laboratories & Research\r\n<option>Medical
+        Monitoring Systems\r\n<option>Metal Fabrication\r\n<option>Money Center Banks\r\n<option>Mortgage
+        Finance\r\n<option>Mortgage Investment\r\n<option>Movie Production, Theaters\r\n<option>Multimedia
+        & Graphics Software\r\n<option>Music & Video Stores\r\n<option>Network Equipment\r\n<option>Networking\r\n<option>Networking
+        & Communication Devices\r\n<option>Nonmetallic Mineral Mining\r\n<option>Oil
+        & Gas\r\n<option>Oil & Gas Drilling & Exploration\r\n<option>Oil & Gas Drilling
+        & Pipelines\r\n<option>Oil & Gas Equipment & Services\r\n<option>Oil & Gas
+        Integrated\r\n<option>Oil & Gas Midstream\r\n<option>Oil & Gas Pipelines\r\n<option>Oil
+        & Gas Production\r\n<option>Oil & Gas Refining & Marketing\r\n<option>Oil
+        & Gas Transportation Services\r\n<option>Oil and Gas ENP\r\n<option>Oil and
+        Gas Midstream\r\n<option>Other Industrial Metals & Mining\r\n<option>Packaged
+        Foods\r\n<option>Packaging & Container\r\n<option>Packaging & Containers\r\n<option>Paper
+        & Paper Products\r\n<option>Personal Computers\r\n<option>Personal Products\r\n<option>Personal
+        Services\r\n<option>Pollution & Treatment Controls\r\n<option>Printed Circuit
+        Boards\r\n<option>Processed & Packaged Goods\r\n<option>Processing Systems
+        & Products\r\n<option>Property & Casualty Insurance\r\n<option>Property and
+        Casualty Insurance\r\n<option>Property Management\r\n<option>Publishing\r\n<option>Publishing
+        - Newspapers\r\n<option>Publishing - Periodicals\r\n<option>Railroads\r\n<option>Real
+        Estate Development\r\n<option>Real Estate Services\r\n<option>Recreational
+        Goods, Other\r\n<option>Recreational Vehicles\r\n<option>Regional - Mid-Atlantic
+        Banks\r\n<option>Regional - Midwest Banks\r\n<option>Regional - Northeast
+        Banks\r\n<option>Regional - Pacific Banks\r\n<option>Regional - Southeast
+        Banks\r\n<option>Regional - Southwest Banks\r\n<option>Regional Airlines\r\n<option>Regional
+        Banks\r\n<option>Regulated Gas\r\n<option>REIT - Casino\r\n<option>REIT -
+        Diversified\r\n<option>REIT - Entertainment\r\n<option>REIT - Healthcare\r\n<option>REIT
+        - Healthcare Facilities\r\n<option>REIT - Hospitality\r\n<option>REIT - Hotel/Motel\r\n<option>REIT
+        - Industrial\r\n<option>REIT - Mortgage\r\n<option>REIT - Office\r\n<option>REIT
+        - Residential\r\n<option>REIT - Retail\r\n<option>REIT - Specialized\r\n<option>REIT
+        -Healthcare\r\n<option>Rental & Leasing Services\r\n<option>Residential Construction\r\n<option>Resorts
+        & Casinos\r\n<option>Restaurants\r\n<option>Rubber & Plastics\r\n<option>Savings
+        & Cooperative Banks\r\n<option>Savings & Loan\r\n<option>Savings & Loans\r\n<option>Scientific
+        & Technical Instruments\r\n<option>Security & Protection\r\n<option>Security
+        & Protection Services\r\n<option>Security Software & Services\r\n<option>Semiconductor
+        - Broad Line\r\n<option>Semiconductor - Integrated Circuits\r\n<option>Semiconductor
+        - Specialized\r\n<option>Semiconductor Equipment\r\n<option>Semiconductor
+        Equipment & Materials\r\n<option>Semiconductor- Memory Chips\r\n<option>Semiconductors\r\n<option>Shell
+        Companies\r\n<option>Shell Corporations\r\n<option>Shipping\r\n<option>Silver\r\n<option>Small
+        Tools & Accessories\r\n<option>Software\r\n<option>Software - Application\r\n<option>Software
+        - Infrastructure\r\n<option>Software Infrastructure\r\n<option>Solar\r\n<option>Special
+        Purpose Acquisition\r\n<option>Specialized Health Services\r\n<option>Specialty
+        Acquisition\r\n<option>Specialty Business Service\r\n<option>Specialty Chemicals\r\n<option>Specialty
+        Eateries\r\n<option>Specialty Finance\r\n<option>Specialty Industrial Machinery\r\n<option>Specialty
+        Industrial Materials\r\n<option>Specialty Purpose Acquisition\r\n<option>Specialty
+        Retail\r\n<option>Specialty Retail, Other\r\n<option>Sporting Activities\r\n<option>Sporting
+        Goods\r\n<option>Sporting Goods Stores\r\n<option>Staffing & Employment Services\r\n<option>Staffing
+        & Outsourcing Services\r\n<option>Steel & Iron\r\n<option>Surety & Title Insurance\r\n<option>Synthetics\r\n<option>Technical
+        & System Software\r\n<option>Technical Services\r\n<option>Telecom Services\r\n<option>Telecom
+        Services - Domestic\r\n<option>Textile - Apparel Clothing\r\n<option>Textile
+        - Apparel Footwear & Accessories\r\n<option>Tobacco\r\n<option>Toys & Games\r\n<option>Trucking\r\n<option>Trucks
+        & Other Vehicles\r\n<option>Universal Display\r\n<option>Uranium\r\n<option>Utilities
+        - Independent Power Producer\r\n<option>Utilities - Regulated Electric\r\n<option>Waste
+        Management\r\n<option>Water\r\n<option>Water Utilities\r\n<option>Wholesale,
+        Other\r\n<option>Wireless Communications\r\n<option>Wireless Technologies\r\n\n
+        \               </select>\n\t\t\t</td></tr>\n                \n\t\t\t<tr><td
+        align=\"right\" class=\"aslabel\">Sector: </td><td align=\"right\">\n\t\t\t\t<select
+        id=\"sector\" name=\"sector\" tabindex=\"5\" class=\"selectBox\" onchange=\"this.form.submit();\">\n
+        \               <option value=\"%\">All\n                <option>Apparel Stores\r\n<option>Basic
+        Material\r\n<option>Basic Materials\r\n<option>Basic Matierals\r\n<option>Basica
+        Materials\r\n<option>Conglomerates\r\n<option>Consumer Goods\r\n<option>Energy\r\n<option>Financial\r\n<option>Financials\r\n<option>H\r\n<option>Healthcare\r\n<option>Helathcare\r\n<option>Industrial
+        Goods\r\n<option>Services\r\n<option>Technology\r\n<option>Utilites\r\n<option>Utilities\r\n\n
+        \               </select>\n\t\t\t</td></tr>\n                \n\t\t\t<tr><td
+        align=\"right\" class=\"aslabel\">Segment: </td><td align=\"right\">\n\t\t\t\t<select
+        id=\"segment\" name=\"segment\" tabindex=\"6\" class=\"selectBox\" onchange=\"this.form.submit();\">\n\t\t\t\t<option
+        value=\"%\">All\n\t\t\t\t<option value=F>Featured Stock\n\t\t\t\t<option value=D>Discussed
+        Stock\n\t\t\t\t<option value=C>Caller's Stock\n\t\t\t\t<option value=I>Guest
+        Interview\n\t\t\t\t<option value=L>Lightning Round\n\t\t\t\t<option value=G>Game
+        Plan\n\t\t\t\t<option value=M>MailBag\n\t\t\t\t<option value=S>Sudden Death\n\t\t\t\t</select>\n\t\t\t</td></tr>\n\n\t\t\t<tr><td
+        align=\"right\" class=\"aslabel\">Price Greater: </td><td align=\"right\">\n\t\t\t\t<select
+        id=\"pricelow\" name=\"pricelow\" tabindex=\"7\" class=\"selectBox\" onchange=\"this.form.submit();\">\n
+        \               <option selected >0\n                <option >10\n                <option
+        >20\n                <option >30\n                <option >40\n                <option
+        >50\n                <option >60\n                <option >70\n                <option
+        >80\n                <option >90\n                <option >100\n                <option
+        >200\n                <option >300\n                <option >400\n                <option
+        >500\n                <option >750\n                <option >1000\n\t\t\t\t</select>\n\t\t\t</td></tr>\n\n\t\t\t<tr><td
+        align=\"right\" class=\"aslabel\">Price Less: </td><td align=\"right\">\n\t\t\t\t<select
+        id=\"pricehigh\" name=\"pricehigh\" tabindex=\"8\" class=\"selectBox\" onchange=\"this.form.submit();\">\n
+        \               <option selected >1000\n                <option >750\n                <option
+        >500\n                <option >400\n                <option >300\n                <option
+        >200\n                <option >100\n                <option >90\n                <option
+        >80\n                <option >70\n                <option >60\n                <option
+        >50\n                <option >40\n                <option >30\n                <option
+        >20\n                <option >10\n                </select>\n\t\t\t</td></tr>\n\t\t\t\n\t\t\t<tr><td
+        align=\"right\" class=\"aslabel\">Sort By: </td><td align=\"right\">\n\t\t\t\t<select
+        id=\"sortby\" name=\"sortby\" tabindex=\"9\" class=\"selectBox\" onchange=\"this.form.submit();\">\n
+        \               <option selected value=\"symbol\">Symbol\n                <option
+        value=\"airdate\">Showdate\n                <option value=\"icon\">Segment\n
+        \               <option value=\"called\">Call\n                <option value=\"callprice\">Price\n
+        \               </select> \n\t\t\t</td></tr>\n            \n            <tr><td
+        colspan=\"2\" align=\"right\" class=\"resetText\">\n            \t<a href=\"index.cfm?resetall=Y\"
+        onclick=\"resize()\">Reset Search Criteria</a>\n\t\t\t</td></tr>\n            \n\t\t</table>\n\t\t\n\t\t</form>\n\t</div>\n\n</div>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\t\n\n\t\n\n\n\n</body>\n</html>\n"
+    headers:
+      Cache-Control:
+      - private
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '76373'
+      Content-Type:
+      - text/html;charset=UTF-8
+      Date:
+      - Wed, 09 Mar 2022 02:05:18 GMT
+      Server:
+      - Microsoft-IIS/8.5
+      Set-Cookie:
+      - cfid=2bec3d98-2105-44bc-ae48-2f4c82ed5f8b;Path=/;Expires=Tue, 29-Mar-2022
+        03:43:22 UTC;HTTPOnly
+      - cftoken=0;Path=/;Expires=Tue, 29-Mar-2022 03:43:22 UTC;HTTPOnly
+      X-AspNet-Version:
+      - 4.0.30319
+      X-Powered-By:
+      - ASP.NET
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/BIRD?range=1d&interval=1h&includePrePost=False&events=div%2Csplits
+  response:
+    body:
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"BIRD","exchangeName":"NMS","instrumentType":"EQUITY","firstTradeDate":1635946200,"regularMarketTime":1646773201,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":5.73,"chartPreviousClose":5.98,"previousClose":5.98,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1646730000,"end":1646749800,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1646749800,"end":1646773200,"gmtoffset":-18000},"post":{"timezone":"EST","start":1646773200,"end":1646787600,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","start":1646749800,"end":1646773200,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","ytd","max"]},"timestamp":[1646749800,1646753400,1646757000,1646760600,1646764200,1646767800,1646771400,1646773200],"indicators":{"quote":[{"high":[6.119999885559082,5.949999809265137,6.130000114440918,6.190000057220459,6.170000076293945,6.039999961853027,5.769999980926514,5.730000019073486],"low":[5.699999809265137,5.75,5.800000190734863,6.0,5.929999828338623,5.630000114440918,5.670000076293945,5.730000019073486],"close":[5.789899826049805,5.869999885559082,6.039999961853027,6.139999866485596,6.0,5.670000076293945,5.739999771118164,5.730000019073486],"volume":[527013,280166,438384,486661,288568,717767,343324,0],"open":[6.119999885559082,5.78000020980835,5.880000114440918,6.039999961853027,6.1407999992370605,6.0,5.699999809265137,5.730000019073486]}]}}],"error":null}}'
+    headers:
+      Age:
+      - '0'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=15552000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=10, stale-while-revalidate=20
+      content-length:
+      - '1565'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Wed, 09 Mar 2022 02:05:18 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-chart-api--mtls-baseline-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '11'
+      x-request-id:
+      - c54146f8-358e-4d67-9a4e-5b5f8896aa42
+      x-yahoo-request-id:
+      - 1puc8ghh2g2qu
+      y-rid:
+      - 1puc8ghh2g2qu
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/BMBL?range=1d&interval=1h&includePrePost=False&events=div%2Csplits
+  response:
+    body:
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"BMBL","exchangeName":"NMS","instrumentType":"EQUITY","firstTradeDate":1613053800,"regularMarketTime":1646773204,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":16.66,"chartPreviousClose":16.23,"previousClose":16.23,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1646730000,"end":1646749800,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1646749800,"end":1646773200,"gmtoffset":-18000},"post":{"timezone":"EST","start":1646773200,"end":1646787600,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","start":1646749800,"end":1646773200,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","ytd","max"]},"timestamp":[1646749800,1646753400,1646757000,1646760600,1646764200,1646767800,1646771400,1646773200],"indicators":{"quote":[{"close":[15.930000305175781,16.510000228881836,16.690000534057617,16.489999771118164,16.920000076293945,16.8799991607666,16.584999084472656,16.65999984741211],"volume":[1919776,1910671,1047395,769529,939864,756341,1269255,0],"high":[16.610000610351562,16.700000762939453,16.8700008392334,16.95989990234375,17.0,17.13050079345703,16.899999618530273,16.65999984741211],"open":[16.440000534057617,15.930000305175781,16.4950008392334,16.690000534057617,16.49250030517578,16.920000076293945,16.899999618530273,16.65999984741211],"low":[15.40999984741211,15.710200309753418,16.18000030517578,16.489999771118164,16.299999237060547,16.799999237060547,16.540000915527344,16.65999984741211]}]}}],"error":null}}'
+    headers:
+      Age:
+      - '0'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=15552000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=10, stale-while-revalidate=20
+      content-length:
+      - '1640'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Wed, 09 Mar 2022 02:05:18 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-chart-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '11'
+      x-request-id:
+      - 4c939b58-6051-4ca0-a633-6628b4c9100b
+      x-yahoo-request-id:
+      - 4g88b6dh2g2qu
+      y-rid:
+      - 4g88b6dh2g2qu
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/CPB?range=1d&interval=1h&includePrePost=False&events=div%2Csplits
+  response:
+    body:
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"CPB","exchangeName":"NYQ","instrumentType":"EQUITY","firstTradeDate":99153000,"regularMarketTime":1646773202,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":42.3,"chartPreviousClose":45.52,"previousClose":45.52,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1646730000,"end":1646749800,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1646749800,"end":1646773200,"gmtoffset":-18000},"post":{"timezone":"EST","start":1646773200,"end":1646787600,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","start":1646749800,"end":1646773200,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1646749800,1646753400,1646757000,1646760600,1646764200,1646767800,1646771400,1646773200],"indicators":{"quote":[{"close":[44.2599983215332,43.34000015258789,43.150001525878906,43.13999938964844,42.709999084472656,42.755001068115234,42.310001373291016,42.29999923706055],"volume":[389885,755129,749230,865849,855511,519233,1661796,0],"high":[45.65999984741211,44.345001220703125,43.41999816894531,43.470001220703125,43.31999969482422,42.959999084472656,42.81999969482422,42.29999923706055],"open":[45.540000915527344,44.25,43.31999969482422,43.15999984741211,43.130001068115234,42.709999084472656,42.75,42.29999923706055],"low":[44.2599983215332,43.310001373291016,42.90999984741211,42.775001525878906,42.68000030517578,42.5,42.290000915527344,42.29999923706055]}]}}],"error":null}}'
+    headers:
+      Age:
+      - '0'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=15552000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=10, stale-while-revalidate=20
+      content-length:
+      - '1615'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Wed, 09 Mar 2022 02:05:18 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-chart-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '14'
+      x-request-id:
+      - f9cee3df-8a6d-452e-9f8a-032bac8d368d
+      x-yahoo-request-id:
+      - 63ei0h9h2g2qu
+      y-rid:
+      - 63ei0h9h2g2qu
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/DKS?range=1d&interval=1h&includePrePost=False&events=div%2Csplits
+  response:
+    body:
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"DKS","exchangeName":"NYQ","instrumentType":"EQUITY","firstTradeDate":1034775000,"regularMarketTime":1646773202,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":101.58,"chartPreviousClose":99.5,"previousClose":99.5,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","end":1646749800,"start":1646730000,"gmtoffset":-18000},"regular":{"timezone":"EST","end":1646773200,"start":1646749800,"gmtoffset":-18000},"post":{"timezone":"EST","end":1646787600,"start":1646773200,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","end":1646773200,"start":1646749800,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1646749800,1646753400,1646757000,1646760600,1646764200,1646767800,1646771400,1646773200],"indicators":{"quote":[{"volume":[1948188,702309,426176,347187,296037,294774,450073,0],"open":[102.5,101.58000183105469,103.06999969482422,106.19999694824219,103.58879852294922,103.45999908447266,103.08000183105469,101.58000183105469],"high":[107.16999816894531,105.19999694824219,106.88999938964844,106.91999816894531,103.7300033569336,105.16000366210938,103.27999877929688,101.58000183105469],"low":[99.19999694824219,100.79000091552734,101.5,103.54000091552734,101.33999633789062,103.01000213623047,101.44999694824219,101.58000183105469],"close":[101.79000091552734,103.17990112304688,106.07009887695312,103.66000366210938,103.54000091552734,103.08000183105469,101.62999725341797,101.58000183105469]}]}}],"error":null}}'
+    headers:
+      Age:
+      - '0'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=15552000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=10, stale-while-revalidate=20
+      content-length:
+      - '1647'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Wed, 09 Mar 2022 02:05:18 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-chart-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '18'
+      x-request-id:
+      - e9fe8e04-71b0-4cdc-8821-115a18ee0ff4
+      x-yahoo-request-id:
+      - 8hgc6eth2g2qu
+      y-rid:
+      - 8hgc6eth2g2qu
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/DOCU?range=1d&interval=1h&includePrePost=False&events=div%2Csplits
+  response:
+    body:
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"DOCU","exchangeName":"NMS","instrumentType":"EQUITY","firstTradeDate":1524835800,"regularMarketTime":1646773203,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":91.98,"chartPreviousClose":95.06,"previousClose":95.06,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1646730000,"end":1646749800,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1646749800,"end":1646773200,"gmtoffset":-18000},"post":{"timezone":"EST","start":1646773200,"end":1646787600,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","start":1646749800,"end":1646773200,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","ytd","max"]},"timestamp":[1646749800,1646753400,1646757000,1646760600,1646764200,1646767800,1646771400,1646773200],"indicators":{"quote":[{"volume":[1028405,709829,839273,973434,769607,561138,732809,0],"open":[95.0,93.43000030517578,92.5999984741211,95.08000183105469,94.44999694824219,92.9000015258789,92.44999694824219,91.9800033569336],"close":[93.48500061035156,92.5999984741211,95.01000213623047,94.38999938964844,92.95140075683594,92.41500091552734,91.9800033569336,91.9800033569336],"low":[92.45999908447266,92.01000213623047,90.9000015258789,94.20999908447266,91.7699966430664,92.22000122070312,91.75,91.9800033569336],"high":[96.19989776611328,94.66999816894531,96.0,96.95999908447266,94.47000122070312,93.5,92.66999816894531,91.9800033569336]}]}}],"error":null}}'
+    headers:
+      Age:
+      - '0'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=15552000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=10, stale-while-revalidate=20
+      content-length:
+      - '1578'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Wed, 09 Mar 2022 02:05:18 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-chart-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '11'
+      x-request-id:
+      - cc083d88-2d72-4490-8f16-629c04cbd436
+      x-yahoo-request-id:
+      - 66qk4pth2g2qu
+      y-rid:
+      - 66qk4pth2g2qu
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/DVN?range=1d&interval=1h&includePrePost=False&events=div%2Csplits
+  response:
+    body:
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"DVN","exchangeName":"NYQ","instrumentType":"EQUITY","firstTradeDate":490887000,"regularMarketTime":1646773202,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":59.48,"chartPreviousClose":59.89,"previousClose":59.89,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","end":1646749800,"start":1646730000,"gmtoffset":-18000},"regular":{"timezone":"EST","end":1646773200,"start":1646749800,"gmtoffset":-18000},"post":{"timezone":"EST","end":1646787600,"start":1646773200,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","end":1646773200,"start":1646749800,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1646749800,1646753400,1646757000,1646760600,1646764200,1646767800,1646771400,1646773200],"indicators":{"quote":[{"low":[59.709999084472656,60.72999954223633,58.22999954223633,56.040000915527344,58.470001220703125,59.08000183105469,59.189998626708984,59.47999954223633],"open":[61.29999923706055,62.24620056152344,60.7599983215332,58.4635009765625,59.459999084472656,59.138099670410156,59.31999969482422,59.47999954223633],"close":[62.220001220703125,60.77389907836914,58.459999084472656,59.470001220703125,59.14500045776367,59.31999969482422,59.470001220703125,59.47999954223633],"volume":[5714363,3619018,3271027,4939097,2378071,1687440,1683849,0],"high":[62.29999923706055,63.099998474121094,61.71480178833008,59.529998779296875,59.939998626708984,60.0099983215332,59.599998474121094,59.47999954223633]}]}}],"error":null}}'
+    headers:
+      Age:
+      - '0'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=15552000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=10, stale-while-revalidate=20
+      content-length:
+      - '1660'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Wed, 09 Mar 2022 02:05:18 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-chart-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '24'
+      x-request-id:
+      - 376d1fc2-1dc2-4a63-b45d-3d5af6049134
+      x-yahoo-request-id:
+      - 3jrt8t1h2g2qu
+      y-rid:
+      - 3jrt8t1h2g2qu
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/EBAY?range=1d&interval=1h&includePrePost=False&events=div%2Csplits
+  response:
+    body:
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"EBAY","exchangeName":"NMS","instrumentType":"EQUITY","firstTradeDate":906643800,"regularMarketTime":1646773204,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":53.31,"chartPreviousClose":54.85,"previousClose":54.85,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","end":1646749800,"start":1646730000,"gmtoffset":-18000},"regular":{"timezone":"EST","end":1646773200,"start":1646749800,"gmtoffset":-18000},"post":{"timezone":"EST","end":1646787600,"start":1646773200,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","end":1646773200,"start":1646749800,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1646749800,1646753400,1646757000,1646760600,1646764200,1646767800,1646771400,1646773200],"indicators":{"quote":[{"open":[54.939998626708984,54.6150016784668,54.400001525878906,55.380001068115234,54.689998626708984,54.25,53.810001373291016,53.310001373291016],"high":[55.91999816894531,55.19499969482422,55.619998931884766,55.58000183105469,54.689998626708984,54.32500076293945,53.88999938964844,53.310001373291016],"close":[54.61000061035156,54.40999984741211,55.375,54.68000030517578,54.25,53.80500030517578,53.310001373291016,53.310001373291016],"volume":[1633352,988527,1039881,676031,1221052,1337971,1762610,0],"low":[54.27000045776367,54.27000045776367,54.16999816894531,54.66999816894531,53.880001068115234,53.685001373291016,53.25,53.310001373291016]}]}}],"error":null}}'
+    headers:
+      Age:
+      - '1'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=15552000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=10, stale-while-revalidate=20
+      content-length:
+      - '1614'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Wed, 09 Mar 2022 02:05:18 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-chart-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '12'
+      x-request-id:
+      - fa7c42d6-993b-43b5-a163-b57cfc854aaa
+      x-yahoo-request-id:
+      - 6vt021hh2g2qv
+      y-rid:
+      - 6vt021hh2g2qv
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/FCX?range=1d&interval=1h&includePrePost=False&events=div%2Csplits
+  response:
+    body:
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"FCX","exchangeName":"NYQ","instrumentType":"EQUITY","firstTradeDate":805383000,"regularMarketTime":1646773349,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":46.67,"chartPreviousClose":47.15,"previousClose":47.15,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1646730000,"end":1646749800,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1646749800,"end":1646773200,"gmtoffset":-18000},"post":{"timezone":"EST","start":1646773200,"end":1646787600,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","start":1646749800,"end":1646773200,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1646749800,1646753400,1646757000,1646760600,1646764200,1646767800,1646771400,1646773200],"indicators":{"quote":[{"high":[48.150001525878906,47.939998626708984,48.23500061035156,47.779998779296875,47.599998474121094,47.4900016784668,46.98500061035156,46.66999816894531],"low":[46.084999084472656,47.30500030517578,47.13999938964844,46.43000030517578,46.7400016784668,46.814998626708984,46.56999969482422,46.66999816894531],"close":[47.595001220703125,47.380001068115234,47.375,47.09000015258789,47.26499938964844,46.824501037597656,46.65999984741211,46.66999816894531],"volume":[6325812,3427503,2797379,3322219,2363086,2169004,2707554,0],"open":[46.400001525878906,47.599998474121094,47.369998931884766,47.38999938964844,47.099998474121094,47.244998931884766,46.82500076293945,46.66999816894531]}]}}],"error":null}}'
+    headers:
+      Age:
+      - '1'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=15552000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=10, stale-while-revalidate=20
+      content-length:
+      - '1650'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Wed, 09 Mar 2022 02:05:18 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-chart-api--mtls-baseline-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '14'
+      x-request-id:
+      - 7ac05402-2c2b-44fc-a21f-44f1e7cda880
+      x-yahoo-request-id:
+      - 9oungnph2g2qv
+      y-rid:
+      - 9oungnph2g2qv
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/KSS?range=1d&interval=1h&includePrePost=False&events=div%2Csplits
+  response:
+    body:
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"KSS","exchangeName":"NYQ","instrumentType":"EQUITY","firstTradeDate":706282200,"regularMarketTime":1646773201,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":53.35,"chartPreviousClose":51.15,"previousClose":51.15,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1646730000,"end":1646749800,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1646749800,"end":1646773200,"gmtoffset":-18000},"post":{"timezone":"EST","start":1646773200,"end":1646787600,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","start":1646749800,"end":1646773200,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1646749800,1646753400,1646757000,1646760600,1646764200,1646767800,1646771400,1646773200],"indicators":{"quote":[{"low":[50.970001220703125,51.48500061035156,52.70000076293945,54.06999969482422,53.33000183105469,53.65999984741211,53.18000030517578,53.349998474121094],"open":[52.349998474121094,51.88999938964844,53.04999923706055,54.970001220703125,54.18000030517578,53.88999938964844,53.665000915527344,53.349998474121094],"high":[52.52000045776367,53.7400016784668,54.970001220703125,55.400001525878906,54.18000030517578,54.400001525878906,53.720001220703125,53.349998474121094],"close":[51.9474983215332,53.099998474121094,54.970001220703125,54.18000030517578,53.939998626708984,53.65999984741211,53.34000015258789,53.349998474121094],"volume":[769763,582089,421866,511204,281440,362989,463801,0]}]}}],"error":null}}'
+    headers:
+      Age:
+      - '0'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=15552000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=10, stale-while-revalidate=20
+      content-length:
+      - '1655'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Wed, 09 Mar 2022 02:05:19 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-chart-api--mtls-baseline-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '13'
+      x-request-id:
+      - c8d2d5d0-1df0-44be-857b-56169c4c979b
+      x-yahoo-request-id:
+      - biemto1h2g2qv
+      y-rid:
+      - biemto1h2g2qv
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/M?range=1d&interval=1h&includePrePost=False&events=div%2Csplits
+  response:
+    body:
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"M","exchangeName":"NYQ","instrumentType":"EQUITY","firstTradeDate":697300200,"regularMarketTime":1646773202,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":23.16,"chartPreviousClose":21.42,"previousClose":21.42,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1646730000,"end":1646749800,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1646749800,"end":1646773200,"gmtoffset":-18000},"post":{"timezone":"EST","start":1646773200,"end":1646787600,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","start":1646749800,"end":1646773200,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1646749800,1646753400,1646757000,1646760600,1646764200,1646767800,1646771400,1646773200],"indicators":{"quote":[{"high":[22.541000366210938,23.0,23.959999084472656,23.959999084472656,23.764999389648438,23.81999969482422,23.5,23.15999984741211],"open":[21.639999389648438,22.25,22.860000610351562,23.81999969482422,23.520000457763672,23.709999084472656,23.434999465942383,23.15999984741211],"low":[21.510000228881836,22.135000228881836,22.6299991607666,23.489999771118164,23.200000762939453,23.434999465942383,23.149999618530273,23.15999984741211],"volume":[3839113,2200633,2246123,1287137,1851136,1586572,1856997,0],"close":[22.25,22.86009979248047,23.809999465942383,23.524999618530273,23.709999084472656,23.440000534057617,23.170000076293945,23.15999984741211]}]}}],"error":null}}'
+    headers:
+      Age:
+      - '0'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=15552000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=10, stale-while-revalidate=20
+      content-length:
+      - '1616'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Wed, 09 Mar 2022 02:05:19 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-chart-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '17'
+      x-request-id:
+      - 327faed4-6c3e-4fbe-8350-fbe936eeb55a
+      x-yahoo-request-id:
+      - 9e39nflh2g2qv
+      y-rid:
+      - 9e39nflh2g2qv
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/MDB?range=1d&interval=1h&includePrePost=False&events=div%2Csplits
+  response:
+    body:
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"MDB","exchangeName":"NGM","instrumentType":"EQUITY","firstTradeDate":1508419800,"regularMarketTime":1646773204,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":281.74,"chartPreviousClose":279.98,"previousClose":279.98,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","end":1646749800,"start":1646730000,"gmtoffset":-18000},"regular":{"timezone":"EST","end":1646773200,"start":1646749800,"gmtoffset":-18000},"post":{"timezone":"EST","end":1646787600,"start":1646773200,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","end":1646773200,"start":1646749800,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","ytd","max"]},"timestamp":[1646749800,1646753400,1646757000,1646760600,1646764200,1646767800,1646771400,1646773200],"indicators":{"quote":[{"high":[284.4999084472656,285.4198913574219,289.6700134277344,289.159912109375,285.83990478515625,287.2099914550781,283.69500732421875,281.739990234375],"low":[272.5,275.44000244140625,273.0,281.010009765625,278.1700134277344,281.80999755859375,278.7749938964844,281.739990234375],"volume":[321633,269641,280969,391373,163706,271615,477739,0],"open":[280.0400085449219,279.57501220703125,278.54998779296875,284.0899963378906,285.83990478515625,283.5150146484375,283.239990234375,281.739990234375],"close":[280.0249938964844,278.7650146484375,284.05999755859375,285.7099914550781,283.635009765625,283.20001220703125,281.7099914550781,281.739990234375]}]}}],"error":null}}'
+    headers:
+      Age:
+      - '0'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=15552000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=10, stale-while-revalidate=20
+      content-length:
+      - '1617'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Wed, 09 Mar 2022 02:05:19 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-chart-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '13'
+      x-request-id:
+      - cea557d2-c569-445d-8fe2-8a3edab8b015
+      x-yahoo-request-id:
+      - 237rrfhh2g2qv
+      y-rid:
+      - 237rrfhh2g2qv
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/ONON?range=1d&interval=1h&includePrePost=False&events=div%2Csplits
+  response:
+    body:
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"ONON","exchangeName":"NYQ","instrumentType":"EQUITY","firstTradeDate":1631712600,"regularMarketTime":1646773202,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":20.83,"chartPreviousClose":20.73,"previousClose":20.73,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","end":1646749800,"start":1646730000,"gmtoffset":-18000},"regular":{"timezone":"EST","end":1646773200,"start":1646749800,"gmtoffset":-18000},"post":{"timezone":"EST","end":1646787600,"start":1646773200,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","end":1646773200,"start":1646749800,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","ytd","max"]},"timestamp":[1646749800,1646753400,1646757000,1646760600,1646764200,1646767800,1646771400,1646773200],"indicators":{"quote":[{"low":[20.65999984741211,20.610000610351562,20.84000015258789,21.56570053100586,20.950000762939453,20.889999389648438,20.725000381469727,20.829999923706055],"open":[20.65999984741211,20.790000915527344,21.100000381469727,21.700000762939453,21.729999542236328,21.235000610351562,20.899999618530273,20.829999923706055],"close":[20.81999969482422,21.100000381469727,21.700000762939453,21.7549991607666,21.253299713134766,20.889999389648438,20.809999465942383,20.829999923706055],"volume":[411255,348369,326438,397596,287878,255889,328171,0],"high":[21.799999237060547,21.260000228881836,21.8700008392334,22.149999618530273,21.809999465942383,21.399999618530273,20.940000534057617,20.829999923706055]}]}}],"error":null}}'
+    headers:
+      Age:
+      - '0'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=15552000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=10, stale-while-revalidate=20
+      content-length:
+      - '1646'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Wed, 09 Mar 2022 02:05:19 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-chart-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '15'
+      x-request-id:
+      - 487b118b-0eac-4d28-8dfe-9eac06e5a27a
+      x-yahoo-request-id:
+      - ad326t1h2g2qv
+      y-rid:
+      - ad326t1h2g2qv
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/PRGS?range=1d&interval=1h&includePrePost=False&events=div%2Csplits
+  response:
+    body:
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"PRGS","exchangeName":"NMS","instrumentType":"EQUITY","firstTradeDate":680880600,"regularMarketTime":1646773204,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":42.48,"chartPreviousClose":42.9,"previousClose":42.9,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1646730000,"end":1646749800,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1646749800,"end":1646773200,"gmtoffset":-18000},"post":{"timezone":"EST","start":1646773200,"end":1646787600,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","start":1646749800,"end":1646773200,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1646749800,1646753400,1646757000,1646760600,1646764200,1646767800,1646771400,1646773200],"indicators":{"quote":[{"low":[42.51499938964844,42.56999969482422,42.279998779296875,43.29999923706055,42.529998779296875,42.709999084472656,42.415000915527344,42.47999954223633],"volume":[11585,12455,23812,8512,10751,21552,28359,0],"close":[42.91999816894531,42.650001525878906,43.36000061035156,43.369998931884766,42.61000061035156,42.81999969482422,42.459999084472656,42.47999954223633],"open":[42.810001373291016,42.763999938964844,42.540000915527344,43.380001068115234,43.1349983215332,42.84000015258789,42.81999969482422,42.47999954223633],"high":[43.31999969482422,42.95000076293945,43.41999816894531,43.56999969482422,43.209999084472656,43.11000061035156,42.84000015258789,42.47999954223633]}]}}],"error":null}}'
+    headers:
+      Age:
+      - '0'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=15552000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=10, stale-while-revalidate=20
+      content-length:
+      - '1644'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Wed, 09 Mar 2022 02:05:19 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-chart-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '10'
+      x-request-id:
+      - d563af1a-0f5a-4328-bca1-81bdc2c1e1d4
+      x-yahoo-request-id:
+      - 8g8sl3ph2g2qv
+      y-rid:
+      - 8g8sl3ph2g2qv
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/REAL?range=1d&interval=1h&includePrePost=False&events=div%2Csplits
+  response:
+    body:
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"REAL","exchangeName":"NMS","instrumentType":"EQUITY","firstTradeDate":1561728600,"regularMarketTime":1646773203,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":6.52,"chartPreviousClose":6.51,"previousClose":6.51,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","end":1646749800,"start":1646730000,"gmtoffset":-18000},"regular":{"timezone":"EST","end":1646773200,"start":1646749800,"gmtoffset":-18000},"post":{"timezone":"EST","end":1646787600,"start":1646773200,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","end":1646773200,"start":1646749800,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","ytd","max"]},"timestamp":[1646749800,1646753400,1646757000,1646760600,1646764200,1646767800,1646771400,1646773200],"indicators":{"quote":[{"close":[6.364999771118164,6.480000019073486,6.590000152587891,6.664999961853027,6.570000171661377,6.539999961853027,6.510000228881836,6.519999980926514],"open":[6.510000228881836,6.360000133514404,6.480000019073486,6.590000152587891,6.664999961853027,6.579999923706055,6.539999961853027,6.519999980926514],"high":[6.539999961853027,6.534999847412109,6.710000038146973,6.811999797821045,6.670000076293945,6.664999961853027,6.570000171661377,6.519999980926514],"volume":[593747,781366,443496,404936,265061,306157,494183,0],"low":[6.179999828338623,6.255000114440918,6.360000133514404,6.550000190734863,6.460000038146973,6.519999980926514,6.460000038146973,6.519999980926514]}]}}],"error":null}}'
+    headers:
+      Age:
+      - '0'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=15552000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=10, stale-while-revalidate=20
+      content-length:
+      - '1635'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Wed, 09 Mar 2022 02:05:19 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-chart-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '12'
+      x-request-id:
+      - bfe51bd0-45c6-405a-9af2-6ddc4e1d7cb5
+      x-yahoo-request-id:
+      - ces2lsph2g2qv
+      y-rid:
+      - ces2lsph2g2qv
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/RIVN?range=1d&interval=1h&includePrePost=False&events=div%2Csplits
+  response:
+    body:
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"RIVN","exchangeName":"NMS","instrumentType":"EQUITY","firstTradeDate":1636554600,"regularMarketTime":1646773202,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":42.21,"chartPreviousClose":42.43,"previousClose":42.43,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","end":1646749800,"start":1646730000,"gmtoffset":-18000},"regular":{"timezone":"EST","end":1646773200,"start":1646749800,"gmtoffset":-18000},"post":{"timezone":"EST","end":1646787600,"start":1646773200,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","end":1646773200,"start":1646749800,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","ytd","max"]},"timestamp":[1646749800,1646753400,1646757000,1646760600,1646764200,1646767800,1646771400,1646773200],"indicators":{"quote":[{"open":[40.88010025024414,42.89500045776367,42.900001525878906,44.0,43.69380187988281,43.08000183105469,42.619998931884766,42.209999084472656],"high":[44.14500045776367,44.09000015258789,44.650001525878906,45.060001373291016,43.82979965209961,43.790000915527344,42.68000030517578,42.209999084472656],"close":[42.89979934692383,42.91999816894531,44.0099983215332,43.72999954223633,43.10499954223633,42.630001068115234,42.189998626708984,42.209999084472656],"volume":[9465216,3597751,3269472,2825827,2464231,1446685,1518353,0],"low":[39.9900016784668,42.15999984741211,42.25,43.0,42.025001525878906,42.58000183105469,42.09000015258789,42.209999084472656]}]}}],"error":null}}'
+    headers:
+      Age:
+      - '0'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=15552000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=10, stale-while-revalidate=20
+      content-length:
+      - '1602'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Wed, 09 Mar 2022 02:05:19 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-chart-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '14'
+      x-request-id:
+      - 5f0202a6-7197-427e-9d14-1ec660a4dbf2
+      x-yahoo-request-id:
+      - 57k54h9h2g2qv
+      y-rid:
+      - 57k54h9h2g2qv
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/SFIX?range=1d&interval=1h&includePrePost=False&events=div%2Csplits
+  response:
+    body:
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"SFIX","exchangeName":"NMS","instrumentType":"EQUITY","firstTradeDate":1510929000,"regularMarketTime":1646773204,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":11.01,"chartPreviousClose":10.55,"previousClose":10.55,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1646730000,"end":1646749800,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1646749800,"end":1646773200,"gmtoffset":-18000},"post":{"timezone":"EST","start":1646773200,"end":1646787600,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","start":1646749800,"end":1646773200,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","ytd","max"]},"timestamp":[1646749800,1646753400,1646757000,1646760600,1646764200,1646767800,1646771400,1646773200],"indicators":{"quote":[{"high":[10.979999542236328,10.890000343322754,11.170000076293945,11.279999732971191,11.100000381469727,11.210000038146973,11.130000114440918,11.010000228881836],"volume":[1976403,554776,923728,498523,554266,602778,1217496,0],"open":[10.779999732971191,10.350000381469727,10.770000457763672,11.029999732971191,10.960000038146973,11.0600004196167,10.984999656677246,11.010000228881836],"low":[10.289999961853027,10.350000381469727,10.460000038146973,10.890000343322754,10.800000190734863,10.970000267028809,10.975000381469727,11.010000228881836],"close":[10.359999656677246,10.779999732971191,11.010000228881836,10.960000038146973,11.0600004196167,10.984999656677246,11.039999961853027,11.010000228881836]}]}}],"error":null}}'
+    headers:
+      Age:
+      - '0'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=15552000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=10, stale-while-revalidate=20
+      content-length:
+      - '1668'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Wed, 09 Mar 2022 02:05:19 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-chart-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '14'
+      x-request-id:
+      - 126abd5d-d324-49c6-95ff-b2291d1314e1
+      x-yahoo-request-id:
+      - 7m49qtph2g2qv
+      y-rid:
+      - 7m49qtph2g2qv
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/SPCE?range=1d&interval=1h&includePrePost=False&events=div%2Csplits
+  response:
+    body:
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"SPCE","exchangeName":"NYQ","instrumentType":"EQUITY","firstTradeDate":1506691800,"regularMarketTime":1646773202,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":7.42,"chartPreviousClose":7.36,"previousClose":7.36,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1646730000,"end":1646749800,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1646749800,"end":1646773200,"gmtoffset":-18000},"post":{"timezone":"EST","start":1646773200,"end":1646787600,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","start":1646749800,"end":1646773200,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","ytd","max"]},"timestamp":[1646749800,1646753400,1646757000,1646760600,1646764200,1646767800,1646771400,1646773200],"indicators":{"quote":[{"high":[7.429999828338623,7.619999885559082,7.755000114440918,7.828999996185303,7.664999961853027,7.650000095367432,7.5,7.420000076293945],"open":[7.400000095367432,7.174200057983398,7.46999979019165,7.644999980926514,7.664999961853027,7.605000019073486,7.485000133514404,7.420000076293945],"low":[7.050000190734863,7.099999904632568,7.380000114440918,7.590000152587891,7.414999961853027,7.480000019073486,7.400000095367432,7.420000076293945],"volume":[5150044,3287553,2595383,2240402,1756305,1102346,1339900,0],"close":[7.175000190734863,7.46999979019165,7.650000095367432,7.664999961853027,7.610000133514404,7.489099979400635,7.409999847412109,7.420000076293945]}]}}],"error":null}}'
+    headers:
+      Age:
+      - '0'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=15552000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=10, stale-while-revalidate=20
+      content-length:
+      - '1626'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Wed, 09 Mar 2022 02:05:19 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-chart-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '16'
+      x-request-id:
+      - 6a1f6993-99ab-4a2f-8b10-0d6358749568
+      x-yahoo-request-id:
+      - 9f1a6qph2g2qv
+      y-rid:
+      - 9f1a6qph2g2qv
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/SPLK?range=1d&interval=1h&includePrePost=False&events=div%2Csplits
+  response:
+    body:
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"SPLK","exchangeName":"NMS","instrumentType":"EQUITY","firstTradeDate":1334842200,"regularMarketTime":1646773203,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":124.11,"chartPreviousClose":127.12,"previousClose":127.12,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1646730000,"end":1646749800,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1646749800,"end":1646773200,"gmtoffset":-18000},"post":{"timezone":"EST","start":1646773200,"end":1646787600,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","start":1646749800,"end":1646773200,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1646749800,1646753400,1646757000,1646760600,1646764200,1646767800,1646771400,1646773200],"indicators":{"quote":[{"high":[129.30499267578125,126.73999786376953,128.72000122070312,128.4199981689453,127.61000061035156,126.76000213623047,125.34500122070312,124.11000061035156],"volume":[664471,317968,303824,249874,193771,237192,384123,0],"open":[125.16000366210938,125.72000122070312,126.24500274658203,128.11000061035156,127.0999984741211,126.36000061035156,125.31999969482422,124.11000061035156],"close":[125.83999633789062,126.26000213623047,128.0,127.17500305175781,126.30999755859375,125.29000091552734,124.16000366210938,124.11000061035156],"low":[125.0,125.03350067138672,125.01000213623047,126.62000274658203,125.38999938964844,125.25,123.94999694824219,124.11000061035156]}]}}],"error":null}}'
+    headers:
+      Age:
+      - '1'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=15552000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=10, stale-while-revalidate=20
+      content-length:
+      - '1639'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Wed, 09 Mar 2022 02:05:19 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-chart-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '14'
+      x-request-id:
+      - 59f84d93-64e2-44dd-93d5-d433c8cdfd8b
+      x-yahoo-request-id:
+      - cvi9p6th2g2r0
+      y-rid:
+      - cvi9p6th2g2r0
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/T?range=1d&interval=1h&includePrePost=False&events=div%2Csplits
+  response:
+    body:
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"T","exchangeName":"NYQ","instrumentType":"EQUITY","firstTradeDate":438273000,"regularMarketTime":1646773388,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":23.0,"chartPreviousClose":23.57,"previousClose":23.57,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","end":1646749800,"start":1646730000,"gmtoffset":-18000},"regular":{"timezone":"EST","end":1646773200,"start":1646749800,"gmtoffset":-18000},"post":{"timezone":"EST","end":1646787600,"start":1646773200,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","end":1646773200,"start":1646749800,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1646749800,1646753400,1646757000,1646760600,1646764200,1646767800,1646771400,1646773200],"indicators":{"quote":[{"volume":[11502611,6526297,5168543,5286397,5632278,5739562,6558982,0],"close":[23.110000610351562,23.225000381469727,23.385000228881836,23.280000686645508,23.108200073242188,23.110000610351562,23.0,23.0],"high":[23.6299991607666,23.235000610351562,23.399999618530273,23.450000762939453,23.275299072265625,23.204999923706055,23.1299991607666,23.0],"low":[23.074600219726562,23.06999969482422,23.170000076293945,23.274999618530273,23.020000457763672,23.059999465942383,23.0,23.0],"open":[23.510000228881836,23.114999771118164,23.219999313354492,23.389999389648438,23.275299072265625,23.104999542236328,23.114999771118164,23.0]}]}}],"error":null}}'
+    headers:
+      Age:
+      - '0'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=15552000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=10, stale-while-revalidate=20
+      content-length:
+      - '1590'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Wed, 09 Mar 2022 02:05:20 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-chart-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '15'
+      x-request-id:
+      - c079988c-48ca-426a-b5db-3609205ee173
+      x-yahoo-request-id:
+      - 3ng21ddh2g2r0
+      y-rid:
+      - 3ng21ddh2g2r0
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/TREX?range=1d&interval=1h&includePrePost=False&events=div%2Csplits
+  response:
+    body:
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"TREX","exchangeName":"NYQ","instrumentType":"EQUITY","firstTradeDate":923578200,"regularMarketTime":1646773202,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":68.44,"chartPreviousClose":68.73,"previousClose":68.73,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","end":1646749800,"start":1646730000,"gmtoffset":-18000},"regular":{"timezone":"EST","end":1646773200,"start":1646749800,"gmtoffset":-18000},"post":{"timezone":"EST","end":1646787600,"start":1646773200,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","end":1646773200,"start":1646749800,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1646749800,1646753400,1646757000,1646760600,1646764200,1646767800,1646771400,1646773200],"indicators":{"quote":[{"high":[69.80000305175781,70.19999694824219,70.83999633789062,71.79000091552734,70.7699966430664,69.87999725341797,69.26000213623047,68.44000244140625],"low":[68.36000061035156,67.7699966430664,68.51000213623047,70.43000030517578,68.98999786376953,69.02999877929688,68.30999755859375,68.44000244140625],"volume":[222810,168311,175506,121801,160437,174298,310920,0],"open":[68.91000366210938,68.36000061035156,69.37999725341797,70.76000213623047,70.7699966430664,69.62000274658203,69.08999633789062,68.44000244140625],"close":[68.36000061035156,69.51499938964844,70.83000183105469,70.80999755859375,69.58999633789062,69.02999877929688,68.4800033569336,68.44000244140625]}]}}],"error":null}}'
+    headers:
+      Age:
+      - '0'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=15552000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=10, stale-while-revalidate=20
+      content-length:
+      - '1639'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Wed, 09 Mar 2022 02:05:20 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-chart-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '12'
+      x-request-id:
+      - c05103ea-a6ce-49c8-ac2e-90225a33db7f
+      x-yahoo-request-id:
+      - apojgbph2g2r0
+      y-rid:
+      - apojgbph2g2r0
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/TWNK?range=1d&interval=1h&includePrePost=False&events=div%2Csplits
+  response:
+    body:
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"TWNK","exchangeName":"NCM","instrumentType":"EQUITY","firstTradeDate":1450189800,"regularMarketTime":1646773204,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":21.06,"chartPreviousClose":21.94,"previousClose":21.94,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","end":1646749800,"start":1646730000,"gmtoffset":-18000},"regular":{"timezone":"EST","end":1646773200,"start":1646749800,"gmtoffset":-18000},"post":{"timezone":"EST","end":1646787600,"start":1646773200,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","end":1646773200,"start":1646749800,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1646749800,1646753400,1646757000,1646760600,1646764200,1646767800,1646771400,1646773200],"indicators":{"quote":[{"volume":[246099,183987,245585,191654,383590,220961,411982,0],"close":[21.610000610351562,21.510000228881836,21.59000015258789,21.549999237060547,21.25,21.34000015258789,21.059999465942383,21.059999465942383],"high":[21.920000076293945,21.729999542236328,21.59000015258789,21.674999237060547,21.559999465942383,21.445199966430664,21.329999923706055,21.059999465942383],"low":[21.559999465942383,21.5049991607666,21.415000915527344,21.540000915527344,21.165000915527344,21.190000534057617,21.049999237060547,21.059999465942383],"open":[21.829999923706055,21.6200008392334,21.5,21.584999084472656,21.540000915527344,21.25,21.329999923706055,21.059999465942383]}]}}],"error":null}}'
+    headers:
+      Age:
+      - '0'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=15552000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=10, stale-while-revalidate=20
+      content-length:
+      - '1629'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Wed, 09 Mar 2022 02:05:20 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-chart-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '11'
+      x-request-id:
+      - 14b4c5ae-9642-46e0-90ea-7556d1df12d5
+      x-yahoo-request-id:
+      - cf1qp6ph2g2r0
+      y-rid:
+      - cf1qp6ph2g2r0
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/ULTA?range=1d&interval=1h&includePrePost=False&events=div%2Csplits
+  response:
+    body:
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"ULTA","exchangeName":"NMS","instrumentType":"EQUITY","firstTradeDate":1193319000,"regularMarketTime":1646773204,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":359.02,"chartPreviousClose":350.84,"previousClose":350.84,"scale":3,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1646730000,"end":1646749800,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1646749800,"end":1646773200,"gmtoffset":-18000},"post":{"timezone":"EST","start":1646773200,"end":1646787600,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","start":1646749800,"end":1646773200,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1646749800,1646753400,1646757000,1646760600,1646764200,1646767800,1646771400,1646773200],"indicators":{"quote":[{"high":[360.95001220703125,362.3900146484375,367.489990234375,369.4649963378906,364.3800048828125,364.54998779296875,363.5,359.0199890136719],"open":[354.2799987792969,358.4150085449219,358.92498779296875,367.0400085449219,364.3699951171875,361.1300048828125,361.80999755859375,359.0199890136719],"low":[350.1000061035156,356.489990234375,357.0199890136719,363.75,358.05999755859375,359.3900146484375,358.8399963378906,359.0199890136719],"volume":[90020,83253,121457,106930,76942,98416,192389,0],"close":[358.70001220703125,359.0899963378906,367.0400085449219,364.0899963378906,361.489990234375,361.8900146484375,359.0199890136719,359.0199890136719]}]}}],"error":null}}'
+    headers:
+      Age:
+      - '0'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=15552000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=10, stale-while-revalidate=20
+      content-length:
+      - '1623'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Wed, 09 Mar 2022 02:05:20 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-chart-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '13'
+      x-request-id:
+      - b104e9e0-6f6e-4fd9-9234-75838ccee149
+      x-yahoo-request-id:
+      - 0ki2ftph2g2r0
+      y-rid:
+      - 0ki2ftph2g2r0
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/UP?range=1d&interval=1h&includePrePost=False&events=div%2Csplits
+  response:
+    body:
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"UP","exchangeName":"NYQ","instrumentType":"EQUITY","firstTradeDate":1605709800,"regularMarketTime":1646773202,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":3.39,"chartPreviousClose":3.32,"previousClose":3.32,"scale":3,"priceHint":4,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1646730000,"end":1646749800,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1646749800,"end":1646773200,"gmtoffset":-18000},"post":{"timezone":"EST","start":1646773200,"end":1646787600,"gmtoffset":-18000}},"tradingPeriods":[[{"timezone":"EST","start":1646749800,"end":1646773200,"gmtoffset":-18000}]],"dataGranularity":"1h","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","ytd","max"]},"timestamp":[1646749800,1646753400,1646757000,1646760600,1646764200,1646767800,1646771400,1646773200],"indicators":{"quote":[{"close":[3.309999942779541,3.430000066757202,3.440000057220459,3.450000047683716,3.4700000286102295,3.4800000190734863,3.390000104904175,3.390000104904175],"high":[3.5199999809265137,3.444999933242798,3.4600000381469727,3.490000009536743,3.4700000286102295,3.5,3.4749999046325684,3.390000104904175],"volume":[608512,1228815,233833,210170,274093,296302,313976,0],"open":[3.299999952316284,3.305000066757202,3.430000066757202,3.430000066757202,3.440000057220459,3.4700000286102295,3.4749999046325684,3.390000104904175],"low":[3.2109999656677246,3.2699999809265137,3.361999988555908,3.4149999618530273,3.380000114440918,3.444999933242798,3.380000114440918,3.390000104904175]}]}}],"error":null}}'
+    headers:
+      Age:
+      - '0'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=15552000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=10, stale-while-revalidate=20
+      content-length:
+      - '1626'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Wed, 09 Mar 2022 02:05:20 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-chart-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '10'
+      x-request-id:
+      - ac556fa8-92cb-456f-8e93-a802cdc6323b
+      x-yahoo-request-id:
+      - 6niec75h2g2r0
+      y-rid:
+      - 6niec75h2g2r0
+    status:
+      code: 200
+      message: OK
+version: 1

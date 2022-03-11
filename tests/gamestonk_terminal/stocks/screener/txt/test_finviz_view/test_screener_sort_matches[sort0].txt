@@ -1,5 +1,0 @@
-Replacing 'Ticke' by 'Ticker' so table can be sorted.
-   Ticker                    Company      Sector         Industry Country  Market Cap P/E  Price  Change   Volume
-53   ACOR  Acorda Therapeutics, Inc.  Healthcare    Biotechnology     USA  25600000.0       2.37  0.0676  37441.0
-71    AHG          Akso Health Group   Financial  Credit Services   China  42210000.0       1.68  0.0566  57897.0
-

@@ -525,7 +525,7 @@ class ComparisonAnalysisController(BaseController):
         parser.add_argument(
             "-n",
             "--no-scale",
-            action="store_false",
+            action="store_true",
             dest="no_scale",
             default=False,
             help="Flag to not put all prices on same 0-1 scale",
