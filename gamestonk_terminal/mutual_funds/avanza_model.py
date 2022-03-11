@@ -1,6 +1,8 @@
 """Avanza Model"""
 __docformat__ = "numpy"
 
+# pylint: disable=E1101
+
 import logging
 import os
 import requests
