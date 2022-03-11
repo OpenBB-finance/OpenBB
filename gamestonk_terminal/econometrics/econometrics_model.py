@@ -49,7 +49,7 @@ def load(
     if file in data_examples:
         if file == "wage_panel":
             return wage_panel.load()
-        return eval(f"sm.datasets.{file}.load_pandas().data")
+        return getattr(sm.datasets, file).load_pandas().data
 
     if file in data_files:
         file = data_files[file]
