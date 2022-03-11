@@ -9,7 +9,6 @@ from typing import List
 
 import investpy
 import pandas as pd
-import numpy as np
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import feature_flags as gtff
