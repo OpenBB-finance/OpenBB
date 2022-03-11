@@ -5,7 +5,7 @@ geekdocNav: true
 geekdocAnchor: false
 resources:
   - name: GST
-    src: "gst_logo_lockup_rGreen_with_letters.png"
+    src: "/terminal/gst_logo_lockup_rGreen_with_letters.png"
     title:
 ---
 
@@ -41,8 +41,6 @@ Gamestonk Terminal provides a modern, and fully customizable, Python-based integ
 
 As a modern Python-based environment, GamestonkTerminal opens access to numerous Python data libraries in data science (Pandas, Numpy, Scipy, Jupyter), machine learning (Pytorch, Tensorflow, Sklearn, Flair), and data acquisition (Beautiful Soup, and numerous third-party APIs).
 
-<!--{{< button size="large" relref="stocks/" >}}Getting Started{{< /button >}}-->
-
 ### Feature overview
 
 {{< columns >}}
@@ -55,13 +53,13 @@ Don't let your research be influenced by algorithmic advertisements. Gamestonk T
 
 ### Fully Customizable
 
-The MIT Open Source license allows any user to endlessly customize the suite for their specific needs. 
+The MIT Open Source license allows any user to endlessly customize the suite for their specific needs.
 
 <--->
 
 ### Jupyter Labs Enabled
 
-Work in developer mode with Jupyter Labs, or share reports and customized tools with .ipynb Notebook files. Run multiple dashboards or terminals in parallel. 
+Work in developer mode with Jupyter Labs, or share reports and customized tools with .ipynb Notebook files. Run multiple dashboards or terminals in parallel.
 
 {{< /columns >}}
 
