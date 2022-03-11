@@ -120,9 +120,9 @@ def adx_command(
             opacity=1,
             line=dict(width=2),
         ),
+        secondary_y=False,
         row=2,
         col=1,
-        secondary_y=False,
     )
     fig.add_trace(
         go.Scatter(
@@ -133,9 +133,9 @@ def adx_command(
             opacity=1,
             line=dict(width=1),
         ),
+        secondary_y=False,
         row=2,
         col=1,
-        secondary_y=False,
     )
     fig.add_trace(
         go.Scatter(
@@ -146,9 +146,9 @@ def adx_command(
             opacity=1,
             line=dict(width=1),
         ),
+        secondary_y=False,
         row=2,
         col=1,
-        secondary_y=False,
     )
     fig.add_hline(
         y=25,

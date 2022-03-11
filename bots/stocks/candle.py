@@ -10,6 +10,7 @@ from gamestonk_terminal.decorators import log_start_end
 logger = logging.getLogger(__name__)
 
 
+# pylint: disable=R0912
 @log_start_end(log=logger)
 def candle_command(
     ticker: str = "",

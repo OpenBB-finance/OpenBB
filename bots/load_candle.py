@@ -264,6 +264,7 @@ def stock_data(
     return df_stock, start, end, bar_start
 
 
+# pylint: disable=R0912
 def candle_fig(
     df_stock,
     ticker,

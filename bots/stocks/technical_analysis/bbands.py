@@ -102,7 +102,8 @@ def bbands_command(
         ta_end = load_candle.local_tz(end)
         df_ta = df_ta.loc[(df_ta.index >= ta_start) & (df_ta.index < ta_end)]
 
-    fig = load_candle.candle_fig(df_ta, ticker, interval, extended_hours, news)
+    plot = load_candle.candle_fig(df_ta, ticker, interval, extended_hours, news)
+    fig = plot["fig"]
     length = int(length)
 
     fig.add_trace(
@@ -113,6 +114,8 @@ def bbands_command(
             opacity=1,
         ),
         secondary_y=True,
+        row=1,
+        col=1,
     )
     fig.add_trace(
         go.Scatter(
@@ -124,6 +127,8 @@ def bbands_command(
             line_color="indigo",
         ),
         secondary_y=True,
+        row=1,
+        col=1,
     )
     fig.add_trace(
         go.Scatter(
@@ -137,6 +142,8 @@ def bbands_command(
             fillcolor="rgba(74, 0, 128, 0.2)",
         ),
         secondary_y=True,
+        row=1,
+        col=1,
     )
     fig.add_trace(
         go.Scatter(
@@ -150,6 +157,8 @@ def bbands_command(
             ),
         ),
         secondary_y=True,
+        row=1,
+        col=1,
     )
     fig.update_layout(
         margin=dict(l=0, r=0, t=50, b=20),
