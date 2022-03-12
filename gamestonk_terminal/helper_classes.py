@@ -324,12 +324,36 @@ class TerminalStyle:
             alpha=0.5,
         )
 
+    def add_cmd_source(
+        self,
+        cmd_source: str,
+        fig: plt.figure,
+    ):
+        """Add a text label to a figure in a funny position.
+
+        Parameters
+        ----------
+        fig : plt.figure
+            A matplotlib figure
+        """
+        label = cmd_source
+        fig.text(
+            0.0420,
+            0.95,
+            label,
+            fontsize=12,
+            color="gray",
+            alpha=0.5,
+        )
+
     # pylint: disable=import-outside-toplevel
-    def visualize_output(self, force_tight_layout: bool = True):
+    def visualize_output(self, cmd_source: str = "", force_tight_layout: bool = True):
         """Show chart in an interactive widget."""
         import gamestonk_terminal.feature_flags as gtff
         from gamestonk_terminal.rich_config import console
 
+        if gtff.USE_WATERMARK:
+            self.add_cmd_source(cmd_source, plt.gcf())
         if gtff.USE_WATERMARK:
             self.add_label(plt.gcf())
         if force_tight_layout:

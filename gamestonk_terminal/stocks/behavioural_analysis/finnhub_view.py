@@ -124,7 +124,7 @@ def display_stock_price_headlines_sentiment(
             ax[1].set_ylabel("Headline Sentiment")
 
             if external_axes is None:
-                theme.visualize_output()
+                theme.visualize_output("[Finnhub] $ stocks/ba/snews")
 
             export_data(
                 export, os.path.dirname(os.path.abspath(__file__)), "snews", sentiment
