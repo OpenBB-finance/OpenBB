@@ -5,6 +5,7 @@ import logging
 import os
 from typing import List, Optional
 
+from matplotlib import pyplot as plt
 from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.decorators import check_api_key, log_start_end
@@ -15,7 +16,6 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.stocks.fundamental_analysis import av_model
-from matplotlib import pyplot as plt
 
 logger = logging.getLogger(__name__)
 
