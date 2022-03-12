@@ -6,5 +6,6 @@ The dupont ratio is a breakdown of the various components of return on equity. T
 ```
 optional arguments:
   -h, --help            show this help message
+  --raw                 show raw data instead of a graph
   --export {csv,json,xlsx}
                         Export raw data into csv, json, xlsx

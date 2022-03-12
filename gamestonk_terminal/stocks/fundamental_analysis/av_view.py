@@ -3,11 +3,19 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import List, Optional
 
+from gamestonk_terminal.config_terminal import theme
+from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.decorators import check_api_key, log_start_end
-from gamestonk_terminal.helper_funcs import export_data, print_rich_table
+from gamestonk_terminal.helper_funcs import (
+    export_data,
+    print_rich_table,
+    plot_autoscale,
+)
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.stocks.fundamental_analysis import av_model
+from matplotlib import pyplot as plt
 
 logger = logging.getLogger(__name__)
 
@@ -199,12 +207,14 @@ def display_earnings(
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
-def display_fraud(ticker: str, help_text: bool = False):
+def display_fraud(ticker: str, export: str = "", help_text: bool = False):
     """Fraud indicators for given ticker
     Parameters
     ----------
     ticker : str
         Fundamental analysis ticker symbol
+    export : str
+        Whether to export the dupont breakdown
     help_text : bool
         Whether to show help text
     """
@@ -235,18 +245,50 @@ A mckee less than 0.5 indicates a high risk of fraud.
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
-def display_dupont(ticker: str):
+def display_dupont(
+    ticker: str,
+    raw: bool = False,
+    export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
+):
     """Shows the extended dupont ratio
 
     Parameters
     ----------
     ticker : str
         Fundamental analysis ticker symbol
+    raw : str
+        Show raw data instead of a graph
+    export : bool
+        Whether to export the dupont breakdown
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
     df = av_model.get_dupont(ticker)
     if df.empty:
         console.print("[red]Invalid response from AlphaVantage[/red]\n")
-    else:
+        return
+    if raw:
         print_rich_table(
             df, headers=list(df.columns), show_index=True, title="Extended Dupont"
         )
+        return
+    if not external_axes:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    else:
+        if len(external_axes) != 1:
+            logger.error("Expected list of one axis item.")
+            console.print("[red]Expected list of one axis item./n[/red]")
+            return
+        (ax,) = external_axes
+
+    colors = theme.get_colors()
+    df.transpose().plot(kind="line", ax=ax, color=colors)
+    ax.set_title("Extended Dupont by Year")
+    theme.style_primary_axis(ax)
+
+    if not external_axes:
+        theme.visualize_output()
+
+    console.print("")
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), "dupont", df)

@@ -752,11 +752,20 @@ Ticker: [/param] {self.ticker} [cmds]
             prog="dupont",
             description="The extended dupont deconstructs return on equity to allow investors to understand it better",
         )
+        parser.add_argument(
+            "--raw",
+            action="store_true",
+            default=False,
+            dest="raw",
+            help="Print raw data.",
+        )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            av_view.display_dupont(self.ticker)
+            av_view.display_dupont(
+                self.ticker, raw=ns_parser.raw, export=ns_parser.export
+            )
 
     @log_start_end(log=logger)
     def call_dcf(self, other_args: List[str]):
