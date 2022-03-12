@@ -241,6 +241,7 @@ A mckee less than 0.5 indicates a high risk of fraud.
 
     if help_text:
         console.print(help_message)
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), "dupont", df)
 
 
 @log_start_end(log=logger)
