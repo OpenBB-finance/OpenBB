@@ -5,6 +5,7 @@ from typing import List, Optional
 import logging
 import os
 
+import matplotlib
 import matplotlib.pyplot as plt
 from gamestonk_terminal.decorators import check_api_key
 from gamestonk_terminal.config_terminal import theme
@@ -48,6 +49,8 @@ def realtime_performance_sector(
     # pylint: disable=invalid-sequence-index
     df_rtp = df_sectors["Rank A: Real-Time Performance"]
 
+    df_rtp = df_rtp.apply(lambda x: x * 100)
+
     if raw:
         print_rich_table(
             df_rtp.to_frame(),
@@ -61,6 +64,7 @@ def realtime_performance_sector(
         theme.style_primary_axis(ax)
         ax.set_title("Real Time Performance (%) per Sector")
         ax.tick_params(axis="x", labelrotation=90)
+        ax.xaxis.set_major_formatter(matplotlib.ticker.FormatStrFormatter("%.2f"))
 
         if external_axes is None:
             theme.visualize_output()
