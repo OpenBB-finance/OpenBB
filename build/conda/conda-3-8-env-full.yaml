@@ -6,9 +6,9 @@ dependencies:
   - pip
   - poetry=1.1.12
   - numpy=1.21.2
-  - cvxpy=1.1.18
+  - cvxpy=1.2.0
   - pytest
-  - black=21.7b0
+  - black=22.1.0
   - sphinx=4.1.1
   - charset-normalizer=2.0.12
   - rich=10.16.2
