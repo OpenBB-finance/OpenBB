@@ -316,12 +316,13 @@ class TerminalStyle:
         """
         label = "Gamestonk Terminal"
         fig.text(
-            0.69,
+            0.99,
             0.0420,
             label,
             fontsize=12,
             color="gray",
             alpha=0.5,
+            horizontalalignment="right",
         )
 
     def add_cmd_source(
@@ -338,12 +339,14 @@ class TerminalStyle:
         """
         label = cmd_source
         fig.text(
-            0.0420,
-            0.95,
+            0.01,
+            0.5,
             label,
+            rotation=90,
             fontsize=12,
             color="gray",
             alpha=0.5,
+            verticalalignment="center",
         )
 
     # pylint: disable=import-outside-toplevel
