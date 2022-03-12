@@ -245,9 +245,7 @@ def display_dupont(ticker: str):
     """
     df = av_model.get_dupont(ticker)
     if df.empty:
-        console.print(
-            "[red]AlphaVantage API limit reached, please wait one minute[/red]\n"
-        )
+        console.print("[red]Invalid response from AlphaVantage[/red]\n")
     else:
         print_rich_table(
             df, headers=list(df.columns), show_index=True, title="Extended Dupont"

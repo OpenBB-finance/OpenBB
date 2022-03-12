@@ -12,6 +12,7 @@ from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import lambda_long_number_format
 from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.stocks.stocks_helper import clean_fraction
 from gamestonk_terminal.stocks.fundamental_analysis.fa_helper import clean_df_index
 
 logger = logging.getLogger(__name__)
@@ -392,7 +393,9 @@ def df_values(
     if index:
         df = df.iloc[index : index + length]
     selection = df[item]
-    values = selection.apply(lambda x: int(x) if x else 0).values
+    values = selection.apply(
+        lambda x: "N/A" if (not x or x == "None") else int(x)
+    ).values
     return values.tolist()
 
 
@@ -522,7 +525,7 @@ def get_dupont(ticker: str) -> pd.DataFrame:
     df_is = df_is.set_index("fiscalDateEnding")
     dupont_years = pd.DataFrame()
 
-    for i in range(len(df_is)):
+    for i in range(len(df_bs)):
         ni = df_values(df_is, "netIncome", i, 1)
         pretax = df_values(df_is, "incomeBeforeTax", i, 1)
         ebit = df_values(df_is, "ebit", i, 1)
@@ -531,15 +534,18 @@ def get_dupont(ticker: str) -> pd.DataFrame:
         equity = df_values(df_bs, "totalShareholderEquity", i, 1)
 
         ratios: Dict = {}
-        ratios["Tax Burden"] = ni[0] / pretax[0]
-        ratios["Interest Burden"] = pretax[0] / ebit[0]
-        ratios["EBIT Margin"] = ebit[0] / sales[0]
-        ratios["Asset Turnover"] = sales[0] / assets[0]
-        ratios["Finance Leverage"] = assets[0] / equity[0]
-        ratios["ROI"] = ni[0] / equity[0]
+        try:
+            ratios["Tax Burden"] = clean_fraction(ni[0], pretax[0])
+            ratios["Interest Burden"] = clean_fraction(pretax[0], ebit[0])
+            ratios["EBIT Margin"] = clean_fraction(ebit[0], sales[0])
+            ratios["Asset Turnover"] = clean_fraction(sales[0], assets[0])
+            ratios["Finance Leverage"] = clean_fraction(assets[0], equity[0])
+            ratios["ROI"] = clean_fraction(ni[0], equity[0])
+        except IndexError:
+            pass
 
         if dupont_years.empty:
             dupont_years.index = ratios.keys()
-        dupont_years[df_is.index[i]] = ratios.values()
+        dupont_years[df_bs.index[i]] = ratios.values()
     dupont_years = dupont_years[sorted(dupont_years)]
     return dupont_years
