@@ -55,8 +55,7 @@ def lins_command(ticker: str = "", num: int = 10):
     embeds: list = []
 
     i, i2, end = 0, 0, 20
-    df_pg = []
-    embeds_img = []
+    df_pg, embeds_img, images_list = [], [], []
     dindex = len(df.index)
     while i < dindex:
         df_pg = df.iloc[i:end]
@@ -73,8 +72,15 @@ def lins_command(ticker: str = "", num: int = 10):
         fig.update_traces(cells=(dict(align=["center", "left"])))
         imagefile = save_image(f"disc-insider{i}.png", fig)
 
-        uploaded_image = gst_imgur.upload_image(imagefile, title="something")
-        image_link = uploaded_image.link
+        if cfg.IMAGES_URL or cfg.IMGUR_CLIENT_ID != "REPLACE_ME":
+            image_link = cfg.IMAGES_URL + imagefile
+            images_list.append(imagefile)
+        else:
+            imagefile_save = cfg.IMG_DIR / imagefile
+            uploaded_image = gst_imgur.upload_image(imagefile_save, title="something")
+            image_link = uploaded_image.link
+            os.remove(imagefile_save)
+
         embeds_img.append(
             f"{image_link}",
         )
@@ -87,7 +93,6 @@ def lins_command(ticker: str = "", num: int = 10):
         i2 += 1
         i += 20
         end += 20
-        os.remove(imagefile)
 
     # Author/Footer
     for i in range(0, i2):
@@ -117,4 +122,5 @@ def lins_command(ticker: str = "", num: int = 10):
         "embed": embeds,
         "choices": choices,
         "embeds_img": embeds_img,
+        "images_list": images_list,
     }

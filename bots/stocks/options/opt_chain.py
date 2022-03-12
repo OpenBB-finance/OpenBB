@@ -87,8 +87,7 @@ def chain_command(
     embeds: list = []
     # Output
     i, i2, end = 0, 0, 20
-    df_pg = []
-    embeds_img = []
+    df_pg, embeds_img, images_list = [], [], []
     dindex = len(df.index)
     while i < dindex:
         df_pg = df.iloc[i:end]
@@ -105,8 +104,9 @@ def chain_command(
         imagefile = "opt-chain.png"
         imagefile = helpers.save_image(imagefile, fig)
 
-        if cfg.IMAGES_URL:
+        if cfg.IMAGES_URL or cfg.IMGUR_CLIENT_ID != "REPLACE_ME":
             image_link = cfg.IMAGES_URL + imagefile
+            images_list.append(imagefile)
         else:
             imagefile_save = cfg.IMG_DIR / imagefile
             uploaded_image = gst_imgur.upload_image(imagefile_save, title="something")
@@ -154,4 +154,5 @@ def chain_command(
         "embed": embeds,
         "choices": choices,
         "embeds_img": embeds_img,
+        "images_list": images_list,
     }

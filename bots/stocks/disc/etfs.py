@@ -22,7 +22,7 @@ def etfs_command(sort=""):
     if cfg.DEBUG:
         logger.debug("etfs")
 
-    df_etfs = wsj_model.etf_movers(sort)
+    df_etfs = wsj_model.etf_movers(sort, export=True)
 
     if df_etfs.empty:
         raise Exception("No available data found")
@@ -38,9 +38,7 @@ def etfs_command(sort=""):
         embeds: list = []
         # Output
         i, i2, end = 0, 0, 15
-        df_pg = []
-        embeds_img = []
-        dindex = len(df_etfs.index)
+        df_pg, embeds_img, images_list = [], [], []
         while i < dindex:
             df_pg = df_etfs.iloc[i:end]
             df_pg.append(df_pg)
@@ -57,8 +55,9 @@ def etfs_command(sort=""):
             imagefile = "disc-etfs.png"
             imagefile = helpers.save_image(imagefile, fig)
 
-            if cfg.IMAGES_URL:
+            if cfg.IMAGES_URL or cfg.IMGUR_CLIENT_ID != "REPLACE_ME":
                 image_link = cfg.IMAGES_URL + imagefile
+                images_list.append(imagefile)
             else:
                 imagefile_save = cfg.IMG_DIR / imagefile
                 uploaded_image = gst_imgur.upload_image(
@@ -108,6 +107,7 @@ def etfs_command(sort=""):
             "embed": embeds,
             "choices": choices,
             "embeds_img": embeds_img,
+            "images_list": images_list,
         }
     else:
         fig = df2img.plot_dataframe(
@@ -119,7 +119,7 @@ def etfs_command(sort=""):
             font=cfg.PLT_TBL_FONT,
             paper_bgcolor="rgba(0, 0, 0, 0)",
         )
-        fig.update_traces(cells=(dict(align=["left", "center"])))
+        fig.update_traces(cells=(dict(align=["left"])))
         imagefile = helpers.save_image("disc-etfs.png", fig)
 
         output = {

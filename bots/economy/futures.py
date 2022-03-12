@@ -79,4 +79,4 @@ def futures_command():
     )
     fig.update_traces(cells=(dict(align=["left", "center"])))
     imagefile = save_image("econ-futures.png", fig)
-    return {"title": "Economy: [WSJ] Futures/Commodities", "imagefile": imagefile}
+    return {"title": "Futures [yfinance]", "imagefile": imagefile}

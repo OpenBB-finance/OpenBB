@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def etf_movers(sort_type: str = "gainers") -> pd.DataFrame:
+def etf_movers(sort_type: str = "gainers", export: bool = False) -> pd.DataFrame:
     """
     Scrape data for top etf movers.
     Parameters
@@ -46,24 +46,44 @@ def etf_movers(sort_type: str = "gainers") -> pd.DataFrame:
 
     if url:
         data = requests.get(url, headers={"User-Agent": get_user_agent()}).json()
-        name, last_price, net_change, percent_change, volume = [], [], [], [], []
+        symbol, name, last_price, net_change, percent_change, volume = (
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+        )
 
         for entry in data["data"]["instruments"]:
+            symbol.append(entry["ticker"])
             name.append(entry["name"])
             last_price.append(entry["lastPrice"])
             net_change.append(entry["priceChange"])
             percent_change.append(entry["percentChange"])
             volume.append(entry["formattedVolume"])
 
-        etfmovers = pd.DataFrame(
-            {
-                " ": name,
-                "Price": last_price,
-                "Chg": net_change,
-                "%Chg": percent_change,
-                "Vol": volume,
-            }
-        )
+        if export:
+            etfmovers = pd.DataFrame(
+                {
+                    " ": symbol,
+                    "Name": name,
+                    "Price": last_price,
+                    "Chg": net_change,
+                    "%Chg": percent_change,
+                    "Vol": volume,
+                }
+            )
+        else:
+            etfmovers = pd.DataFrame(
+                {
+                    " ": name,
+                    "Price": last_price,
+                    "Chg": net_change,
+                    "%Chg": percent_change,
+                    "Vol": volume,
+                }
+            )
 
         return etfmovers
 

@@ -39,10 +39,8 @@ def by_ticker_command(ticker="", num: int = 15):
     time.sleep(2)
     driver.find_element(By.XPATH, "(//div[@id='inactiveResult'])[3]").click()
     soup5 = bs4.BeautifulSoup(driver.page_source, "html.parser")
-    r_ticker = []
-    r_holdings = []
-    r_name = []
-    r_market = []
+    r_ticker, r_holdings, r_name, r_market = [], [], [], []
+
     table1 = soup5.find("table", id="StockTable")
     table = table1.find("tbody")
     for x in table.find_all("tr"):
@@ -80,9 +78,7 @@ def by_ticker_command(ticker="", num: int = 15):
         embeds: list = []
         # Output
         i, i2, end = 0, 0, 15
-        df_pg = []
-        embeds_img = []
-        dindex = len(df.index)
+        df_pg, embeds_img, images_list = [], [], []
         while i < dindex:
             df_pg = df.iloc[i:end]
             df_pg.append(df_pg)
@@ -101,8 +97,9 @@ def by_ticker_command(ticker="", num: int = 15):
             imagefile = "etf-byticker.png"
             imagefile = helpers.save_image(imagefile, fig)
 
-            if cfg.IMAGES_URL:
+            if cfg.IMAGES_URL or cfg.IMGUR_CLIENT_ID != "REPLACE_ME":
                 image_link = cfg.IMAGES_URL + imagefile
+                images_list.append(imagefile)
             else:
                 imagefile_save = cfg.IMG_DIR / imagefile
                 uploaded_image = gst_imgur.upload_image(
@@ -152,6 +149,7 @@ def by_ticker_command(ticker="", num: int = 15):
             "embed": embeds,
             "choices": choices,
             "embeds_img": embeds_img,
+            "images_list": images_list,
         }
     else:
         fig = df2img.plot_dataframe(

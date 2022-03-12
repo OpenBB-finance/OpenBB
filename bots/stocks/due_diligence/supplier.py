@@ -1,8 +1,12 @@
 import logging
 
+import disnake
+import requests
+from bs4 import BeautifulSoup
+
 import bots.config_discordbot as cfg
+from bots.menus.menu import Menu
 from gamestonk_terminal.decorators import log_start_end
-from gamestonk_terminal.stocks.due_diligence import csimarket_model
 
 logger = logging.getLogger(__name__)
 
@@ -18,17 +22,93 @@ def supplier_command(ticker=""):
     if not ticker:
         raise Exception("A ticker is required")
 
-    tickers = csimarket_model.get_suppliers(ticker)
+    url_supply_chain = (
+        f"https://csimarket.com/stocks/competitionNO3.php?supply&code={ticker.upper()}"
+    )
+    text_supplier_chain = BeautifulSoup(requests.get(url_supply_chain).text, "lxml")
 
-    if not tickers:
-        raise Exception("Enter a valid ticker")
+    l_suppliers = list()
+    for supplier in text_supplier_chain.findAll(
+        "td", {"class": "svjetlirub11 block al"}
+    ):
+        l_suppliers.append(supplier.text.replace("\n", "").strip())
+
+    if not l_suppliers:
+        raise Exception("No suppliers found.\n")
 
     # Debug user output
     if cfg.DEBUG:
-        logger.debug(tickers)
+        logger.debug(l_suppliers)
 
-    # Output data
-    return {
-        "title": "Stocks: [CSIMarket] Company Suppliers",
-        "description": tickers,
-    }
+    suppliers = []
+    unique = []
+    i = 0
+
+    for value in l_suppliers:
+        name = value
+        if name in unique:  # pylint: disable=R1724
+            continue
+        else:
+            unique.append(name)
+
+    while i < len(unique):
+        warp = unique[i][0:28]
+        text = f"{warp:<30}" if (i % 2) == 0 else f"{warp}\n"
+        suppliers.append(text)
+        i += 1
+
+    title = f"Stocks: [CSIMarket] {ticker.upper()} Suppliers"
+    reports = []
+    embeds = []
+    choices = [
+        disnake.SelectOption(label="Home", value="0", emoji="🟢"),
+    ]
+
+    if len(suppliers) < 30:
+        description = f"```{''.join(suppliers)}```"
+        embeds.append(
+            disnake.Embed(
+                title=title,
+                description=suppliers,
+                colour=cfg.COLOR,
+            ).set_author(
+                name=cfg.AUTHOR_NAME,
+                icon_url=cfg.AUTHOR_ICON_URL,
+            )
+        )
+        reports.append(f"{description}")
+
+        # Output data
+        output = {
+            "title": title,
+            "description": reports,
+            "embed": embeds,
+        }
+    else:
+        i, end = 0, 30
+        while i < len(suppliers):
+            description = f"```{''.join(suppliers[i:end])}```"
+            embeds.append(
+                disnake.Embed(
+                    title=title,
+                    description=description,
+                    colour=cfg.COLOR,
+                ).set_author(
+                    name=cfg.AUTHOR_NAME,
+                    icon_url=cfg.AUTHOR_ICON_URL,
+                )
+            )
+            i += 30
+            end += 30
+            reports.append(f"{description}")
+
+        # Output data
+        output = {
+            "view": Menu,
+            "title": title,
+            "description": reports,
+            "embed": embeds,
+            "choices": choices,
+        }
+
+    return output

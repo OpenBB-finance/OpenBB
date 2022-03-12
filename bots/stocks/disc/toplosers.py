@@ -57,8 +57,7 @@ def losers_command(num: int = 10):
         embeds: list = []
         # Output
         i, i2, end = 0, 0, 15
-        df_pg = []
-        embeds_img = []
+        df_pg, embeds_img, images_list = [], [], []
         while i < dindex:
             df_pg = df.iloc[i:end]
             df_pg.append(df_pg)
@@ -75,8 +74,9 @@ def losers_command(num: int = 10):
             imagefile = "disc-losers.png"
             imagefile = helpers.save_image(imagefile, fig)
 
-            if cfg.IMAGES_URL:
+            if cfg.IMAGES_URL or cfg.IMGUR_CLIENT_ID != "REPLACE_ME":
                 image_link = cfg.IMAGES_URL + imagefile
+                images_list.append(imagefile)
             else:
                 imagefile_save = cfg.IMG_DIR / imagefile
                 uploaded_image = gst_imgur.upload_image(
@@ -126,6 +126,7 @@ def losers_command(num: int = 10):
             "embed": embeds,
             "choices": choices,
             "embeds_img": embeds_img,
+            "images_list": images_list,
         }
     else:
         fig = df2img.plot_dataframe(

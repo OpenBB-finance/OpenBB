@@ -45,6 +45,7 @@ def est_command(ticker: str = ""):
         logger.debug(df_quarter_earnings.to_string())
         logger.debug(df_quarter_revenues.to_string())
 
+    images_list = []
     dindex = len(df_year_estimates.index)
     fig = df2img.plot_dataframe(
         df_year_estimates,
@@ -57,10 +58,14 @@ def est_command(ticker: str = ""):
     )
     imagefile = save_image("estimates.png", fig)
 
-    uploaded_image = gst_imgur.upload_image(imagefile, title="something")
-    link_estimates = uploaded_image.link
-
-    os.remove(imagefile)
+    if cfg.IMAGES_URL or cfg.IMGUR_CLIENT_ID != "REPLACE_ME":
+        link_estimates = cfg.IMAGES_URL + imagefile
+        images_list.append(imagefile)
+    else:
+        imagefile_save = cfg.IMG_DIR / imagefile
+        uploaded_image = gst_imgur.upload_image(imagefile_save, title="something")
+        link_estimates = uploaded_image.link
+        os.remove(imagefile_save)
 
     fig = df2img.plot_dataframe(
         df_quarter_earnings,
@@ -73,9 +78,14 @@ def est_command(ticker: str = ""):
     )
     imagefile = save_image("earnings.png", fig)
 
-    uploaded_image = gst_imgur.upload_image(imagefile, title="something")
-    link_earnings = uploaded_image.link
-    os.remove(imagefile)
+    if cfg.IMAGES_URL or cfg.IMGUR_CLIENT_ID != "REPLACE_ME":
+        link_earnings = cfg.IMAGES_URL + imagefile
+        images_list.append(imagefile)
+    else:
+        imagefile_save = cfg.IMG_DIR / imagefile
+        uploaded_image = gst_imgur.upload_image(imagefile_save, title="something")
+        link_earnings = uploaded_image.link
+        os.remove(imagefile_save)
 
     fig = df2img.plot_dataframe(
         df_quarter_revenues,
@@ -88,9 +98,14 @@ def est_command(ticker: str = ""):
     )
     imagefile = save_image("revenues.png", fig)
 
-    uploaded_image = gst_imgur.upload_image(imagefile, title="something")
-    link_revenues = uploaded_image.link
-    os.remove(imagefile)
+    if cfg.IMAGES_URL or cfg.IMGUR_CLIENT_ID != "REPLACE_ME":
+        link_revenues = cfg.IMAGES_URL + imagefile
+        images_list.append(imagefile)
+    else:
+        imagefile_save = cfg.IMG_DIR / imagefile
+        uploaded_image = gst_imgur.upload_image(imagefile_save, title="something")
+        link_revenues = uploaded_image.link
+        os.remove(imagefile_save)
 
     embeds = [
         disnake.Embed(
@@ -138,4 +153,5 @@ def est_command(ticker: str = ""):
         "embed": embeds,
         "choices": choices,
         "embeds_img": embeds_img,
+        "images_list": images_list,
     }

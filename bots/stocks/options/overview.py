@@ -36,12 +36,12 @@ columns = [
     "openInterest",
     "impliedVolatility",
 ]
-titles, embeds, embeds_img, choices = [], [], [], []
-plt_link = ""
-i2 = 0
-puts_page = 3
 
 
+# pylint: disable=R0912
+# pylint: disable=R0913
+# pylint: disable=R0914
+# pylint: disable=R0915
 @log_start_end(log=logger)
 def options_run(
     ticker,
@@ -60,7 +60,7 @@ def options_run(
     max_pain,
 ):
     """Options Overview"""
-
+    titles, embeds, embeds_img, choices, images_list = [], [], [], [], []
     fig = go.Figure()
 
     dmax = df_opt[["OI_call", "OI_put"]].values.max()
@@ -137,15 +137,14 @@ def options_run(
 
     imagefile = helpers.image_border(imagefile, fig=fig)
 
-    if cfg.IMAGES_URL:
+    if cfg.IMAGES_URL or cfg.IMGUR_CLIENT_ID != "REPLACE_ME":
         image_link_oi = cfg.IMAGES_URL + imagefile
+        images_list.append(imagefile)
     else:
         imagefile_save = cfg.IMG_DIR / imagefile
         uploaded_image_oi = gst_imgur.upload_image(imagefile_save, title="something")
         image_link_oi = uploaded_image_oi.link
         os.remove(imagefile_save)
-
-    df_bcinfo = df_bcinfo
 
     calls_df = calls[columns].rename(columns=column_map)
     calls_df = calls_df[calls_df["strike"] >= min_strike2]
@@ -201,7 +200,7 @@ def options_run(
     i, i2, end = 0, 0, 20
     df_calls = []
     dindex = len(calls_df.index)
-    while i <= dindex:
+    while i < dindex:
         df_calls = calls_df.iloc[i:end]
         df_calls.append(df_calls)
         figc = df2img.plot_dataframe(
@@ -216,8 +215,9 @@ def options_run(
         imagefile = "opt-calls.png"
         imagefile = helpers.save_image(imagefile, figc)
 
-        if cfg.IMAGES_URL:
+        if cfg.IMAGES_URL or cfg.IMGUR_CLIENT_ID != "REPLACE_ME":
             image_link = cfg.IMAGES_URL + imagefile
+            images_list.append(imagefile)
         else:
             imagefile_save = cfg.IMG_DIR / imagefile
             uploaded_image = gst_imgur.upload_image(imagefile_save, title="something")
@@ -276,7 +276,7 @@ def options_run(
     df_puts = []
 
     dindex = len(puts_df.index)
-    while i <= dindex:
+    while i < dindex:
         df_puts = puts_df.iloc[i:end]
         df_puts.append(df_puts)
         figp = df2img.plot_dataframe(
@@ -291,8 +291,9 @@ def options_run(
         imagefile = "opt-puts.png"
         imagefile = helpers.save_image(imagefile, figp)
 
-        if cfg.IMAGES_URL:
+        if cfg.IMAGES_URL or cfg.IMGUR_CLIENT_ID != "REPLACE_ME":
             image_link = cfg.IMAGES_URL + imagefile
+            images_list.append(imagefile)
         else:
             imagefile_save = cfg.IMG_DIR / imagefile
             uploaded_image = gst_imgur.upload_image(imagefile_save, title="something")
@@ -351,7 +352,7 @@ def options_run(
         embeds[0].set_thumbnail(url=f"{url}")
     else:
         embeds[0].set_thumbnail(url=cfg.AUTHOR_ICON_URL)
-    df_bcinfo = df_bcinfo
+
     # Overview Section
     if "^" not in ticker:
         embeds[0].add_field(name=f"{df_bcinfo.iloc[0, 0]}", value=iv, inline=False)
@@ -394,7 +395,7 @@ def options_run(
 
         embeds[0].set_footer(text=f"Page 1 of {len(embeds)}")
 
-    return titles, embeds, choices, embeds_img
+    return titles, embeds, choices, embeds_img, images_list
 
 
 @log_start_end(log=logger)
@@ -490,17 +491,17 @@ def run(
     data = options_data(ticker, expiry, min_sp, max_sp)
     with Pool(processes=cpus) as p:
         time.sleep(1)
-        timer0 = time.perf_counter()
-        titles, embeds, choices, embeds_img = zip(
+        titles, embeds, choices, embeds_img, images_list = zip(
             *p.starmap(options_run, [(*data,)], chunksize=1)
         )
-        timer1 = time.perf_counter()
 
-        deltat = timer1 - timer0
-
-        print(f"\nGenerated in {deltat:.1f} seconds")
-
-    return unpack(titles), unpack(embeds), unpack(choices), unpack(embeds_img)
+    return (
+        unpack(titles),
+        unpack(embeds),
+        unpack(choices),
+        unpack(embeds_img),
+        unpack(images_list),
+    )
 
 
 @log_start_end(log=logger)
@@ -510,15 +511,16 @@ def overview_command(
     min_sp: float = None,
     max_sp: float = None,
 ):
-    timer0 = time.perf_counter()
-    titles, embeds, choices, embeds_img = run(ticker, expiry, min_sp, max_sp)
-    timer1 = time.perf_counter()
-    deltat = timer1 - timer0
-    print(f"\nGenerated2 in {deltat:.1f} seconds")
+
+    titles, embeds, choices, embeds_img, images_list = run(
+        ticker, expiry, min_sp, max_sp
+    )
+
     return {
         "view": Menu,
         "titles": titles,
         "embed": embeds,
         "choices": choices,
         "embeds_img": embeds_img,
+        "images_list": images_list,
     }

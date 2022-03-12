@@ -433,6 +433,21 @@ class ShowView:
                 user_id=user_id,
             )
             os.remove(data["imagefile"])
+
+        # elif "embeds_img" in data:
+        #     img_files = (
+        #         (cfg.IMG_DIR / data["images_list"][0])
+        #         if cfg.IMGUR_CLIENT_ID != "REPLACE_ME"
+        #         else data["embeds_img"][0]
+        #     )
+        #     client.files_upload(
+        #         file=img_files,
+        #         initial_comment=data.get("title", ""),
+        #         channels=channel_id,
+        #         user_id=user_id,
+        #     )
+        #     os.remove(img_files)
+
         elif "embeds_img" in data:
             client.files_upload(
                 file=data["embeds_img"][0],

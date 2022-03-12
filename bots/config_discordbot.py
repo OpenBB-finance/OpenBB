@@ -1,4 +1,3 @@
-import logging
 import os
 import sys
 from pathlib import Path
@@ -11,10 +10,6 @@ from dotenv import load_dotenv
 env_files = [f for f in os.listdir() if f.endswith(".env")]
 if env_files:
     load_dotenv(env_files[0])
-
-# Logging
-logger = logging.getLogger(__name__)
-
 
 # Relative path to the terminal
 sys.path.append("..")
@@ -35,10 +30,6 @@ API_BINANCE_SECRET = os.getenv("GT_API_BINANCE_SECRET") or "REPLACE_ME"
 # https://finnhub.io
 API_FINNHUB_KEY = os.getenv("GT_API_FINNHUB_KEY") or "REPLACE_ME"
 
-# AWS KEYS
-AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID") or "REPLACE_ME"
-AWS_ACCESS_KEY = os.getenv("AWS_ACCESS_KEY") or "REPLACE_ME"
-
 # Settings
 SLASH_TESTING_SERVERS: Optional[
     List[int]
@@ -51,6 +42,7 @@ INTERACTIVE_DIR = Path("in/")
 INTERACTIVE_URL = ""
 IMG_DIR = Path("in/images/")
 IMAGES_URL = ""  # Ex. "http://your-site.com/images/"
+
 # IMG_BG = "files/bg.png"  # Light BG
 IMG_BG = "files/bg-dark.png"  # Dark BG
 PLT_3DMESH_COLORSCALE = "Jet"
@@ -122,7 +114,7 @@ PLT_WATERMARK = dict(
     y=0.28,
     sizex=0.8,
     sizey=0.9,
-    opacity=0.069420,
+    opacity=0.04,
     xanchor="right",
     yanchor="bottom",
     layer="below",
@@ -132,7 +124,7 @@ DEBUG = False
 
 GST_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
-gst_imgur = pyimgur.Imgur(IMGUR_CLIENT_ID)
+gst_imgur = pyimgur.Imgur(IMGUR_CLIENT_ID) if IMGUR_CLIENT_ID != "REPLACE_ME" else None
 
 AUTHOR_NAME = "Gamestonk Terminal"
 AUTHOR_URL = "https://github.com/GamestonkTerminal/GamestonkTerminal"
