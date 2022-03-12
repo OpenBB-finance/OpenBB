@@ -727,11 +727,19 @@ Ticker: [/param] {self.ticker} [cmds]
                 "This model is 80% accurate in predicting bankruptcy."
             ),
         )
+        parser.add_argument(
+            "-e",
+            "--explanation",
+            action="store_true",
+            dest="exp",
+            default=False,
+            help="Shows an explanation for the metrics",
+        )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            av_view.display_fraud(self.ticker)
+            av_view.display_fraud(self.ticker, ns_parser.exp)
 
     @log_start_end(log=logger)
     def call_dcf(self, other_args: List[str]):
