@@ -2,7 +2,7 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List
 
 import numpy as np
 import pandas as pd
@@ -368,7 +368,9 @@ def get_earnings(ticker: str, quarterly: bool = False) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def df_values(df: pd.DataFrame, item: str, index: Optional[int] = None) -> List[int]:
+def df_values(
+    df: pd.DataFrame, item: str, index: int = 0, length: int = 2
+) -> List[int]:
     """Clean the values from the df
 
     Parameters
@@ -377,6 +379,10 @@ def df_values(df: pd.DataFrame, item: str, index: Optional[int] = None) -> List[
         The Dataframe to use
     item : str
         The item to select
+    index : int
+        The number of row to display
+    length : int
+        The number of rows to return
 
     Returns
     -------
@@ -384,16 +390,14 @@ def df_values(df: pd.DataFrame, item: str, index: Optional[int] = None) -> List[
         The values for the dataframe
     """
     if index:
-        df = df.iloc[index : index + 2]
+        df = df.iloc[index : index + length]
     selection = df[item]
     values = selection.apply(lambda x: int(x) if x else 0).values
     return values.tolist()
 
 
 @log_start_end(log=logger)
-def get_fraud_ratios(
-    ticker: str,
-) -> Tuple[Optional[Dict[str, float]], Optional[float], Optional[float]]:
+def get_fraud_ratios(ticker: str) -> pd.DataFrame:
     """Get fraud ratios based on fundamentals
 
     Parameters
@@ -403,10 +407,8 @@ def get_fraud_ratios(
 
     Returns
     -------
-    Dict[float]:
-        Dictionary of fraud metrics
-    float:
-        Z score for fraud metrics
+    metrics : pd.DataFrame
+        The fraud ratios
     """
 
     try:
@@ -486,4 +488,58 @@ def get_fraud_ratios(
         if fraud_years.empty:
             fraud_years.index = ratios.keys()
         fraud_years[df_cf.index[i]] = ratios.values()
+    fraud_years = fraud_years[sorted(fraud_years)]
     return fraud_years
+
+
+@log_start_end(log=logger)
+def get_dupont(ticker: str) -> pd.DataFrame:
+    """Get dupont ratios
+
+    Parameters
+    ----------
+    ticker : str
+        Stock ticker
+
+    Returns
+    -------
+    dupont : pd.DataFrame
+        The dupont ratio breakdown
+    """
+
+    try:
+        fd = FundamentalData(key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas")
+        # pylint: disable=unbalanced-tuple-unpacking
+        df_bs, _ = fd.get_balance_sheet_annual(symbol=ticker)
+        df_is, _ = fd.get_income_statement_annual(symbol=ticker)
+
+    except Exception as e:
+        console.print(e)
+        return pd.DataFrame()
+
+    # pylint: disable=no-member
+    df_bs = df_bs.set_index("fiscalDateEnding")
+    df_is = df_is.set_index("fiscalDateEnding")
+    dupont_years = pd.DataFrame()
+
+    for i in range(len(df_is)):
+        ni = df_values(df_is, "netIncome", i, 1)
+        pretax = df_values(df_is, "incomeBeforeTax", i, 1)
+        ebit = df_values(df_is, "ebit", i, 1)
+        sales = df_values(df_is, "totalRevenue", i, 1)
+        assets = df_values(df_bs, "totalAssets", i, 1)
+        equity = df_values(df_bs, "totalShareholderEquity", i, 1)
+
+        ratios: Dict = {}
+        ratios["Tax Burden"] = ni[0] / pretax[0]
+        ratios["Interest Burden"] = pretax[0] / ebit[0]
+        ratios["EBIT Margin"] = ebit[0] / sales[0]
+        ratios["Asset Turnover"] = sales[0] / assets[0]
+        ratios["Finance Leverage"] = assets[0] / equity[0]
+        ratios["ROI"] = ni[0] / equity[0]
+
+        if dupont_years.empty:
+            dupont_years.index = ratios.keys()
+        dupont_years[df_is.index[i]] = ratios.values()
+    dupont_years = dupont_years[sorted(dupont_years)]
+    return dupont_years
