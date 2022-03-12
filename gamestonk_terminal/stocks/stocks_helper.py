@@ -878,3 +878,24 @@ def additional_info_about_ticker(ticker: str) -> str:
         extra_info += "\n[param]Currency: [/param]"
 
     return extra_info + "\n"
+
+
+def clean_fraction(num, denom):
+    """Returns the decimal value or NA if the operation cannot be performed
+
+    Parameters
+    ----------
+    num : Any
+        The numerator for the fraction
+    denom : Any
+        The denominator for the fraction
+
+    Returns
+    ----------
+    val : Any
+        The value of the fraction
+    """
+    try:
+        return num / denom
+    except TypeError:
+        return "N/A"

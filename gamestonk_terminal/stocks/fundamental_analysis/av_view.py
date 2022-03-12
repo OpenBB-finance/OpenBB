@@ -231,3 +231,22 @@ A mckee less than 0.5 indicates a high risk of fraud.
 
     if help_text:
         console.print(help_message)
+
+
+@log_start_end(log=logger)
+@check_api_key(["API_KEY_ALPHAVANTAGE"])
+def display_dupont(ticker: str):
+    """Shows the extended dupont ratio
+
+    Parameters
+    ----------
+    ticker : str
+        Fundamental analysis ticker symbol
+    """
+    df = av_model.get_dupont(ticker)
+    if df.empty:
+        console.print("[red]Invalid response from AlphaVantage[/red]\n")
+    else:
+        print_rich_table(
+            df, headers=list(df.columns), show_index=True, title="Extended Dupont"
+        )

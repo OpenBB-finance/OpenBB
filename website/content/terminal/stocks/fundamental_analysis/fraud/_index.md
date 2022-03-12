@@ -1,5 +1,5 @@
 ```
-usage: fraud [-h] [--export {csv,json,xlsx}]
+usage: fraud [-h] [-e] [--export {csv,json,xlsx}]
 ```
 
 ```
