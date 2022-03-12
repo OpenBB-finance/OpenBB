@@ -766,7 +766,7 @@ def plot_expected_prices(
     """
     up_moves = list(range(len(und_vals[-1])))
     up_moves.reverse()
-    probs = [binom.pmf(r, len(up_moves), p) for r in up_moves]
+    probs = [100 * binom.pmf(r, len(up_moves), p) for r in up_moves]
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
     else:
