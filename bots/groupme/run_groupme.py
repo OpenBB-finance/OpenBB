@@ -20,7 +20,7 @@ def handle_groupme(request) -> bool:
     """
 
     req = json.loads(request.decode("utf-8"))
-    text = req.get("text").strip().lower()
+    text = req.get("text").strip()
     group_id = req.get("group_id").strip()
     response = non_slash(
         text,

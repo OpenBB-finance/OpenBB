@@ -33,6 +33,7 @@ def candle_command(
         end date format YYYY-MM-DD
     """
 
+
     logger.info("candle %s %s %s %s", ticker, interval, start, end)
 
     if start == "":
@@ -53,10 +54,6 @@ def candle_command(
             end=end,
             progress=False,
         )
-
-        # Check that loading a stock was not successful
-        if df_stock_candidate.empty:
-            raise Exception(f"No data found for {ticker.upper()}")
 
         df_stock_candidate.index.name = "date"
     else:
