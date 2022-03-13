@@ -99,9 +99,9 @@ def get_screener_data(preset_loaded: str, data_type: str, limit: int, ascend: bo
 
         try:
             if limit > 0:
-                df_screen = screen.ScreenerView(limit=limit, ascend=ascend)
+                df_screen = screen.screener_view(limit=limit, ascend=ascend)
             else:
-                df_screen = screen.ScreenerView(ascend=ascend)
+                df_screen = screen.screener_view(ascend=ascend)
         except IndexError:
             console.print("[red]Invalid data provided by the website[/red]\n")
             return pd.DataFrame()
@@ -139,19 +139,21 @@ def get_screener_data(preset_loaded: str, data_type: str, limit: int, ascend: bo
 
         if "Order" in d_general:
             if limit > 0:
-                df_screen = screen.ScreenerView(
+                df_screen = screen.screener_view(
                     order=d_general["Order"],
                     limit=limit,
                     ascend=ascend,
                 )
             else:
-                df_screen = screen.ScreenerView(order=d_general["Order"], ascend=ascend)
+                df_screen = screen.screener_view(
+                    order=d_general["Order"], ascend=ascend
+                )
 
         else:
             if limit > 0:
-                df_screen = screen.ScreenerView(limit=limit, ascend=ascend)
+                df_screen = screen.screener_view(limit=limit, ascend=ascend)
             else:
-                df_screen = screen.ScreenerView(ascend=ascend)
+                df_screen = screen.screener_view(ascend=ascend)
 
     return df_screen
 

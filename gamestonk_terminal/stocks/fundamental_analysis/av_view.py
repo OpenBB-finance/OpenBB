@@ -3,12 +3,17 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import List, Optional
 
-import numpy as np
-
-from gamestonk_terminal.decorators import log_start_end
-from gamestonk_terminal.decorators import check_api_key
-from gamestonk_terminal.helper_funcs import export_data, print_rich_table
+from matplotlib import pyplot as plt
+from gamestonk_terminal.config_terminal import theme
+from gamestonk_terminal.config_plot import PLOT_DPI
+from gamestonk_terminal.decorators import check_api_key, log_start_end
+from gamestonk_terminal.helper_funcs import (
+    export_data,
+    print_rich_table,
+    plot_autoscale,
+)
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.stocks.fundamental_analysis import av_model
 
@@ -202,44 +207,89 @@ def display_earnings(
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
-def display_fraud(ticker: str):
+def display_fraud(ticker: str, export: str = "", help_text: bool = False):
     """Fraud indicators for given ticker
     Parameters
     ----------
     ticker : str
         Fundamental analysis ticker symbol
+    export : str
+        Whether to export the dupont breakdown
+    help_text : bool
+        Whether to show help text
     """
-    ratios, zscore, mckee = av_model.get_fraud_ratios(ticker)
-
-    if ratios is None and zscore is None and mckee is None:
-        return
-
-    if ratios["MSCORE"] > -1.78:
-        chance_m = "high"
-    elif ratios["MSCORE"] > -2.22:
-        chance_m = "moderate"
+    df = av_model.get_fraud_ratios(ticker)
+    if df.empty:
+        console.print(
+            "[red]AlphaVantage API limit reached, please wait one minute[/red]\n"
+        )
     else:
-        chance_m = "low"
+        print_rich_table(
+            df, headers=list(df.columns), show_index=True, title="Fraud Risk Statistics"
+        )
 
-    chance_z = "high" if zscore < 0.5 else "low"
+        help_message = """
+MSCORE:
+An mscore above -1.78 indicates a high risk of fraud, and one above  -2.22 indicates a medium risk of fraud.
 
-    chance_mcke = "low" if mckee < 0.5 else "high"
+ZSCORE:
+A zscore less than 0.5 indicates a high risk of fraud.
 
-    if np.isnan(ratios["MSCORE"]) or np.isnan(zscore):
-        console.print("Data incomplete for this ticker. Unable to calculate risk")
+Mckee:
+A mckee less than 0.5 indicates a high risk of fraud.
+    """
+
+    if help_text:
+        console.print(help_message)
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), "dupont", df)
+
+
+@log_start_end(log=logger)
+@check_api_key(["API_KEY_ALPHAVANTAGE"])
+def display_dupont(
+    ticker: str,
+    raw: bool = False,
+    export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
+):
+    """Shows the extended dupont ratio
+
+    Parameters
+    ----------
+    ticker : str
+        Fundamental analysis ticker symbol
+    raw : str
+        Show raw data instead of a graph
+    export : bool
+        Whether to export the dupont breakdown
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
+    """
+    df = av_model.get_dupont(ticker)
+    if df.empty:
+        console.print("[red]Invalid response from AlphaVantage[/red]\n")
         return
+    if raw:
+        print_rich_table(
+            df, headers=list(df.columns), show_index=True, title="Extended Dupont"
+        )
+        return
+    if not external_axes:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    else:
+        if len(external_axes) != 1:
+            logger.error("Expected list of one axis item.")
+            console.print("[red]Expected list of one axis item./n[/red]")
+            return
+        (ax,) = external_axes
 
-    console.print("Mscore Sub Stats:")
-    for rkey, value in ratios.items():
-        if rkey != "MSCORE":
-            console.print("  ", f"{rkey} : {value:.2f}")
+    colors = theme.get_colors()
+    df.transpose().plot(kind="line", ax=ax, color=colors)
+    ax.set_title("Extended Dupont by Year")
+    theme.style_primary_axis(ax)
 
-    console.print(
-        "\n" + "MSCORE: ",
-        f"{ratios['MSCORE']:.2f} ({chance_m} chance of fraud)",
-    )
+    if not external_axes:
+        theme.visualize_output()
 
-    console.print("ZSCORE: ", f"{zscore:.2f} ({chance_z} chance of bankruptcy)", "\n")
-
-    console.print("McKee: ", f"{mckee:.2f} ({chance_mcke} chance of bankruptcy)", "\n")
-    return
+    console.print("")
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), "dupont", df)

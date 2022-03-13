@@ -1,0 +1,2 @@
+[red]Invalid response from AlphaVantage[/red]
+
