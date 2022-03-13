@@ -26,7 +26,7 @@ def processMessage(event, client):
         lambda x: client.chat_postMessage(
             **{"channel": channel_id, "username": user_id, "text": x}
         ),
-        lambda x, y, z: ShowView().slack(x, channel_id, user_id, client, y, z),
+        lambda x, y, z: ShowView().slack(x, channel_id, user_id, client, y, **z),
     )
 
 
