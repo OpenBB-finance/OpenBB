@@ -103,7 +103,7 @@ def non_slash(text, sender, showview):
                     return False
                 other_args[req_name] = val
             func = selected["function"]
-            showview(func, cmd, **other_args)
+            showview(func, cmd, other_args)
             return True
         show_cmds = []
         for a_cmd in available_commands:
