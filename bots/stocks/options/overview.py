@@ -129,7 +129,7 @@ def options_run(
     plt_link = ""
     if cfg.INTERACTIVE:
         plt_link = helpers.inter_chart(fig, imagefile, callback=False)
-        reports.append(plt_link.replace("[Interactive](", "").replace(")", "\n```\n"))
+        reports.append(plt_link)
 
     fig.update_layout(
         width=800,
@@ -543,7 +543,7 @@ def overview_command(
     titles, reports, embeds, choices, embeds_img, images_list = run(
         ticker, expiry, min_sp, max_sp
     )
-    description = f"{''.join(reports)}\n```"
+    description = f"```\n{''.join(reports)}\n```"
 
     return {
         "view": Menu,

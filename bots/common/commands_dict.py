@@ -1,4 +1,5 @@
 import re
+from pathlib import Path
 from typing import List
 
 import pandas as pd
@@ -343,7 +344,10 @@ possible_ma = [
 
 def get_tickers() -> List[str]:
     col_list = ["Name"]
-    df = pd.read_csv("files/tickers.csv", usecols=col_list)
+    df = pd.read_csv(
+        Path(__file__).parent.parent.absolute().joinpath("files/tickers.csv"),
+        usecols=col_list,
+    )
     df = df["Name"]
     return df.tolist()
 
@@ -536,7 +540,7 @@ commands = {
         "required": {"ticker": tickers},
         "optional": {"num": re_int},
     },
-    "cc": {
+    "candle": {
         "function": candle_command,
         "required": {"ticker": tickers, "interval": opt_intervals},
         "optional": {"past_days": re_int, "start": re_date, "end": re_date},

@@ -5,6 +5,7 @@ import finnhub
 import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
+import pytz
 import requests
 import yfinance as yf
 from binance.client import Client
@@ -15,11 +16,11 @@ import bots.config_discordbot as cfg
 
 futures = "=F" or "^"
 crypto = "-"
-local_now = datetime.now().astimezone().tzinfo
 
 
-def local_tz(tseries):
-    output = tseries.replace(tzinfo=local_now)
+def dt_utcnow_local_tz():
+    est_tz = pytz.timezone("America/New_York")
+    output = datetime.utcnow().astimezone(est_tz)
     return output
 
 
@@ -118,18 +119,20 @@ def stock_data(
         past_days = 30
 
     max_days = 4 if interval == 1 else 57
+    if dt_utcnow_local_tz().weekday() > 4:
+        past_days += 2
     p_days = (past_days + 1) if past_days < max_days else max_days
 
     if start == "":
-        start = datetime.now() - timedelta(days=365)
-        bar_start = datetime.now() - timedelta(
+        start = dt_utcnow_local_tz() - timedelta(days=365)
+        bar_start = dt_utcnow_local_tz() - timedelta(
             days=(p_days if interval != 1440 else 365)
         )
     else:
         start = datetime.strptime(start, cfg.DATE_FORMAT)
         bar_start = datetime.strptime(start, cfg.DATE_FORMAT) - timedelta(days=p_days)
     if end == "":
-        end = datetime.now()
+        end = dt_utcnow_local_tz()
     else:
         end = datetime.strptime(end, cfg.DATE_FORMAT)
 
@@ -200,12 +203,11 @@ def stock_data(
             df_stock["OC_High"] = df_stock[["Open", "Close"]].max(axis=1)
             df_stock["OC_Low"] = df_stock[["Open", "Close"]].min(axis=1)
 
-            df_stock.index = df_stock.index.tz_convert(local_now)
             intervals = {15, 30, 60, 120}
             if interval in intervals:
-                x_start = datetime.now() - timedelta(days=past_days)
+                x_start = dt_utcnow_local_tz() - timedelta(days=past_days)
                 x_end = df_stock.index[-1]
-                x_end = local_tz(x_end)
+                x_end = x_end
                 df_stock = df_stock.loc[
                     (df_stock.index >= x_start.strftime("%Y-%m-%d"))
                     & (df_stock.index < x_end)
@@ -218,7 +220,7 @@ def stock_data(
                 "30m": past_days,
                 "60m": past_days,
             }
-            s_start_dt = datetime.now() - timedelta(days=d_granularity[s_int])
+            s_start_dt = dt_utcnow_local_tz() - timedelta(days=d_granularity[s_int])
             s_date_start = s_start_dt.strftime("%Y-%m-%d")
             df_stock = yf.download(
                 ticker,
@@ -231,21 +233,6 @@ def stock_data(
             )
             df_stock = df_stock.dropna()
 
-            max_days = 0
-            while df_stock.empty and max_days < 4:
-                s_start_dt = s_start_dt - timedelta(days=1)
-                s_date_start = s_start_dt.strftime("%Y-%m-%d")
-                df_stock = yf.download(
-                    ticker,
-                    start=s_date_start
-                    if s_start_dt > start
-                    else start.strftime("%Y-%m-%d"),
-                    progress=False,
-                    interval=s_int,
-                    prepost=extended_hours,
-                )
-                max_days += 1
-
     if heikin_candles:
         df_stock = heikin_ashi(df_stock)
 
@@ -253,9 +240,7 @@ def stock_data(
     if df_stock.empty:
         raise Exception(f"No data found for {ticker.upper()}.")
 
-    df_stock.index = df_stock.index.tz_convert(local_now)
     df_stock.index.name = "date"
-    start, end = local_tz(start), local_tz(end)
 
     if (df_stock.index[1] - df_stock.index[0]).total_seconds() >= 86400:
         df_stock = find_trendline(df_stock, "OC_High", "high")
@@ -295,14 +280,17 @@ def candle_fig(
         dt = {1: 1, 5: 2, 15: 4, 30: 5, 60: 6, 1440: 30}
         bar_opacity = (
             0.2
-            if (data["bar"] > (datetime.now() - timedelta(days=dt[data["int_bar"]])))
+            if (
+                data["bar"]
+                > (dt_utcnow_local_tz() - timedelta(days=dt[data["int_bar"]]))
+            )
             else 0.3
         )
         bar_opacity = (
             bar_opacity
             if (
                 data["bar"]
-                > (datetime.now() - timedelta(days=(dt[data["int_bar"]] * 3)))
+                > (dt_utcnow_local_tz() - timedelta(days=(dt[data["int_bar"]] * 3)))
             )
             else 0.4
         )
@@ -310,7 +298,7 @@ def candle_fig(
             bar_opacity
             if (
                 data["bar"]
-                > (datetime.now() - timedelta(days=(dt[data["int_bar"]] * 4)))
+                > (dt_utcnow_local_tz() - timedelta(days=(dt[data["int_bar"]] * 4)))
             )
             else 0.6
         )
@@ -318,7 +306,7 @@ def candle_fig(
             bar_opacity
             if (
                 data["bar"]
-                > (datetime.now() - timedelta(days=(dt[data["int_bar"]] * 10)))
+                > (dt_utcnow_local_tz() - timedelta(days=(dt[data["int_bar"]] * 10)))
             )
             else 0.7
         )
@@ -389,7 +377,7 @@ def candle_fig(
 
         if (cfg.API_NEWS_TOKEN != "REPLACE_ME") and crypto in ticker.upper():
             d_stock = yf.Ticker(ticker).info
-            s_from = (datetime.now() - timedelta(days=28)).strftime("%Y-%m-%d")
+            s_from = (dt_utcnow_local_tz() - timedelta(days=28)).strftime("%Y-%m-%d")
             term = (
                 d_stock["shortName"].replace(" ", "+")
                 if "shortName" in d_stock
@@ -417,8 +405,10 @@ def candle_fig(
 
         elif cfg.API_FINNHUB_KEY != "REPLACE_ME":
             finnhub_client = finnhub.Client(api_key=cfg.API_FINNHUB_KEY)
-            start_new = (datetime.now() - timedelta(days=30)).strftime(cfg.DATE_FORMAT)
-            end_new = datetime.now().strftime(cfg.DATE_FORMAT)
+            start_new = (dt_utcnow_local_tz() - timedelta(days=30)).strftime(
+                cfg.DATE_FORMAT
+            )
+            end_new = datetime.utcnow.strftime(cfg.DATE_FORMAT)
             articles = finnhub_client.company_news(
                 ticker.upper(), _from=start_new, to=end_new
             )
@@ -496,41 +486,37 @@ def candle_fig(
     fig.add_annotation(
         xref="x domain",
         yref="y domain",
+        text=f"Timezone: {dt_utcnow_local_tz().tzinfo}",
         x=0.02,
-        y=1.02,
-        text=f"Timezone: {local_now}",
+        y=1.015,
         font_size=10,
-        axref="x domain",
-        ayref="y domain",
-        ax=0.08,
-        ay=0,
         showarrow=False,
     )
     if interval != 1440:
         intervals = {15, 30, 60}
         if crypto in ticker.upper() and interval not in intervals:
-            x_start = datetime.now() - timedelta(hours=7)
+            x_start = dt_utcnow_local_tz() - timedelta(hours=7)
             if interval == 1:
-                x_start = datetime.now() - timedelta(hours=1.5)
+                x_start = dt_utcnow_local_tz() - timedelta(hours=1.5)
 
             fig.update_layout(
-                xaxis_range=[local_tz(x_start), local_tz(df_stock.index[-1])],
+                xaxis_range=[x_start, df_stock.index[-1]],
             )
-        fig.update_layout(
-            xaxis_tickformatstops=[
-                dict(dtickrange=[None, 1_000], value="%I:%M%p \n%b,%d"),
-                dict(dtickrange=[1_000, 60_000], value="%I:%M%p \n%b,%d"),
-                dict(dtickrange=[60_000, 3_600_000], value="%I:%M%p \n%b,%d"),
-                dict(dtickrange=[3_600_000, 86_400_000], value="%I:%M%p \n%b,%d"),
+        fig.update_traces(xhoverformat="%I:%M%p %b %d '%y")
+        fig.update_xaxes(
+            tickformatstops=[
+                dict(dtickrange=[None, 1_000], value="%I:%M%p \n%b, %d"),
+                dict(dtickrange=[1_000, 60_000], value="%I:%M%p \n%b, %d"),
+                dict(dtickrange=[60_000, 3_600_000], value="%I:%M%p \n%b, %d"),
+                dict(dtickrange=[3_600_000, 86_400_000], value="%I:%M%p \n%b, %d"),
                 dict(dtickrange=[86_400_000, 604_800_000], value="%b\n%d"),
                 dict(dtickrange=[604_800_000, "M1"], value="%b\n%d"),
                 dict(dtickrange=["M1", "M12"], value="%b '%y"),
                 dict(dtickrange=["M12", None], value="%Y"),
             ],
         )
-        fig.update_traces(xhoverformat="%I:%M%p %b %d '%y")
-    fig.update_xaxes(showspikes=False)
-    fig.update_yaxes(showspikes=False)
+    fig.update_xaxes(showline=True)
+    fig.update_yaxes(showline=True)
     fig.update_layout(
         margin=dict(l=0, r=10, t=40, b=20),
         template=cfg.PLT_CANDLE_STYLE_TEMPLATE,
@@ -547,7 +533,6 @@ def candle_fig(
                 size=12,
             ),
             nticks=20,
-            showline=True,
         ),
         yaxis2=dict(
             side="right",
@@ -559,6 +544,7 @@ def candle_fig(
             tickfont=dict(
                 size=13,
             ),
+            showline=False,
         ),
         xaxis=dict(
             rangeslider=dict(visible=False),
@@ -566,7 +552,6 @@ def candle_fig(
             tickfont=dict(
                 size=10,
             ),
-            showline=True,
         ),
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
         dragmode="pan",
@@ -647,7 +632,7 @@ def candle_fig(
         fig.update_layout(
             xaxis_range=[
                 (df_stock.index[0] - timedelta(days=10)),
-                (datetime.now() + timedelta(days=30)),
+                (dt_utcnow_local_tz() + timedelta(days=30)),
             ],
             xaxis_tickformatstops=[
                 dict(dtickrange=[None, 604_800_000], value="%b\n%d"),
@@ -660,9 +645,14 @@ def candle_fig(
             rangebreaks=[
                 dict(bounds=["sat", "mon"]),
             ],
+            tickformatstops=[
+                dict(dtickrange=[None, 604_800_000], value="%b\n%d"),
+                dict(dtickrange=[604_800_000, "M1"], value="%b\n%d"),
+                dict(dtickrange=["M1", "M12"], value="%b '%y"),
+                dict(dtickrange=["M12", None], value="%Y"),
+            ],
         )
         fig.update_traces(xhoverformat="%b %d '%y")
-
     plt_title = (
         f"{ticker.upper()} {interval}min"
         if interval != 1440

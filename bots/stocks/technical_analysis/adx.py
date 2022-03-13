@@ -90,9 +90,7 @@ def adx_command(
 
     # Output Data
     if interval != 1440:
-        ta_start = load_candle.local_tz(bar_start)
-        ta_end = load_candle.local_tz(end)
-        df_ta = df_ta.loc[(df_ta.index >= ta_start) & (df_ta.index < ta_end)]
+        df_ta = df_ta.loc[(df_ta.index >= bar_start) & (df_ta.index < end)]
 
     plot = load_candle.candle_fig(
         df_ta,

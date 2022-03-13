@@ -16,7 +16,7 @@ def ma_command(
     ticker="",
     interval: int = 15,
     past_days: int = 0,
-    mamode="ema",
+    ma_mode="ema",
     window="",
     offset: int = 0,
     start="",
@@ -26,7 +26,6 @@ def ma_command(
     news: bool = False,
 ):
     """Displays chart with selected Moving Average  [Yahoo Finance]"""
-
     # Debug
     if cfg.DEBUG:
         # pylint: disable=logging-too-many-args
@@ -35,7 +34,7 @@ def ma_command(
             ticker,
             interval,
             past_days,
-            mamode,
+            ma_mode,
             window,
             offset,
             start,
@@ -67,7 +66,6 @@ def ma_command(
         end=end,
         heikin_candles=heikin_candles,
     )
-    ta_start = load_candle.local_tz(bar_start)
 
     if df_stock.empty:
         return Exception("No Data Found")
@@ -89,18 +87,16 @@ def ma_command(
         return Exception("No Data Found")
 
     for win in window:
-        ema_data = overlap_ma[mamode](
+        ema_data = overlap_ma[ma_mode](
             values=df_ta["Adj Close"], length=win, offset=offset
         )
         df_ta = df_ta.join(ema_data)
-    if mamode == "zlma":
-        mamode = "ZL_EMA"
+    if ma_mode == "zlma":
+        ma_mode = "ZL_EMA"
 
     # Output Data
     if interval != 1440:
-        ta_start = load_candle.local_tz(bar_start)
-        ta_end = load_candle.local_tz(end)
-        df_ta = df_ta.loc[(df_ta.index >= ta_start) & (df_ta.index < ta_end)]
+        df_ta = df_ta.loc[(df_ta.index >= bar_start) & (df_ta.index < end)]
 
     plot = load_candle.candle_fig(
         df_ta,
@@ -111,15 +107,15 @@ def ma_command(
         bar=bar_start,
         int_bar=interval,
     )
-    title = f"{plot['plt_title']} Moving Average ({mamode.upper()})"
+    title = f"{plot['plt_title']} Moving Average ({ma_mode.upper()})"
     fig = plot["fig"]
 
     for win in window:
         fig.add_trace(
             go.Scatter(
-                name=f"{mamode.upper()} {win}",
+                name=f"{ma_mode.upper()} {win}",
                 x=df_ta.index,
-                y=df_ta[f"{mamode.upper()}_{win}"],
+                y=df_ta[f"{ma_mode.upper()}_{win}"],
                 opacity=1,
             ),
             secondary_y=True,
@@ -151,7 +147,7 @@ def ma_command(
     imagefile = helpers.image_border(imagefile, fig=fig)
 
     return {
-        "title": f"Stocks: Moving Average {mamode.upper()}",
+        "title": f"Stocks: Moving Average {ma_mode.upper()}",
         "description": plt_link,
         "imagefile": imagefile,
     }

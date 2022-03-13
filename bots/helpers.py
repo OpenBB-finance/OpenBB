@@ -404,14 +404,13 @@ class ShowView:
     def groupme(self, func, group_id, name, *args, **kwargs):
         data = func(*args, **kwargs)
         if "imagefile" in data:
-            imagefile = data["imagefile"]
-            if cfg.IMAGES_URL:
-                imagefile = cfg.IMG_DIR / imagefile
+            imagefile = f"in/images/{data['imagefile']}"
             send_image(imagefile, group_id, data.get("description", ""), True)
         elif "embeds_img" in data:
-            send_image(
-                data["embeds_img"][0], group_id, data.get("description", ""), True
-            )
+            imagefiles = data["images_list"]
+            for img in imagefiles:
+                imagefile = f"in/images/{img}"
+                send_image(imagefile, group_id, data.get("description", ""), True)
         elif "description" in data:
             title = data.get("title", "")
             # TODO: Allow navigation through pages
@@ -422,36 +421,37 @@ class ShowView:
                 clean_desc = description.replace("Page ", "")
             message = f"{title}\n{clean_desc}"
             send_message(message, group_id)
+            os.remove(imagefile)
 
     def slack(self, func, channel_id, user_id, client, *args, **kwargs):
         data = func(*args, **kwargs)
         if "imagefile" in data:
             title = data.get("title", "")
-            description = data.get("description", "")
+            description = (
+                data.get("description", "")
+                .replace("[Interactive](", "")
+                .replace(".html)", ".html\n\n")
+            )
             message = f"{title}\n{description}"
-            payload = {"channel": channel_id, "username": user_id, "text": message}
-            client.chat_postMessage(**payload)
             imagefile = f"in/images/{data['imagefile']}"
             client.files_upload(
                 file=imagefile,
-                initial_comment=title,
+                initial_comment=message,
                 channels=channel_id,
                 user_id=user_id,
             )
             os.remove(imagefile)
         elif "embeds_img" in data:
-            description = data.get("description", "")
+            description = (
+                data.get("description", "")
+                .replace("[Interactive](", "")
+                .replace(".html)", ".html\n\n")
+            )
             title = data["title"] if "titles" not in data else data["titles"][0]
-            message = f"{title}\n{description}"
-            payload = {"channel": channel_id, "username": user_id, "text": message}
-            client.chat_postMessage(**payload)
-            imagefiles = data["images_list"]
             N, i = 1, 0
-            for img in imagefiles:
+            for img in data["images_list"]:
                 imagefile = f"in/images/{img}"
                 if i == 0:
-                    description = data.get("description", "")
-                    title = data["title"] if "titles" not in data else data["titles"][0]
                     message = f"{title}\n{description}"
                     payload = {
                         "channel": channel_id,
@@ -459,10 +459,11 @@ class ShowView:
                         "text": message,
                     }
                     client.chat_postMessage(**payload)
-                titles = data["title"] if "titles" not in data else data["titles"][N]
+                if N < len(data["titles"]):
+                    title = data["titles"][N]
                 client.files_upload(
                     file=imagefile,
-                    initial_comment=titles,
+                    initial_comment=title,
                     channels=channel_id,
                     user_id=user_id,
                 )
@@ -484,7 +485,11 @@ class ShowView:
         data = func(*args, **kwargs)
         if "imagefile" in data:
             imagefile = cfg.IMG_DIR / data["imagefile"]
-            description = data.get("description", "")
+            description = (
+                data.get("description", "")
+                .replace("[Interactive](", "")
+                .replace(".html)", ".html\n\n")
+            )
             title = data["title"]
             res = f"{title}\n{description}"
             bot.reply_to(message, res)
@@ -493,16 +498,20 @@ class ShowView:
                 bot.send_photo(message.chat.id, image)
             os.remove(imagefile)
         elif "embeds_img" in data:
-            imagefiles = data["images_list"]
+            title = data["title"] if "titles" not in data else data["titles"][0]
             N, i = 1, 0
-            for img in imagefiles:
+            for img in data["images_list"]:
                 imagefile = cfg.IMG_DIR / img
                 if i == 0:
-                    title = data["title"] if "titles" not in data else data["titles"][0]
-                    description = data.get("description", "")
+                    description = (
+                        data.get("description", "")
+                        .replace("[Interactive](", "")
+                        .replace(".html)", ".html\n\n")
+                    )
                     res = f"{title}\n{description}"
                     bot.reply_to(message, res)
-                title = data["title"] if "titles" not in data else data["titles"][N]
+                if N < len(data["titles"]):
+                    title = data["titles"][N]
                 with open(imagefile, "rb") as image:
                     bot.reply_to(message, title)
                     bot.send_photo(message.chat.id, image)
@@ -511,7 +520,11 @@ class ShowView:
                 os.remove(imagefile)
         elif "description" in data:
             title = data.get("title", "")
-            description = data.get("description")
+            description = (
+                data.get("description")
+                .replace("[Interactive](", "")
+                .replace(".html)", ".html\n\n")
+            )
             if isinstance(description, List):
                 clean_desc = description[0].replace("Page ", "")
             else:

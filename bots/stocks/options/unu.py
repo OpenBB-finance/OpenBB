@@ -18,16 +18,12 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def unu_command(num: int = None):
+def unu_command(num: int = 20):
     """Unusual Options"""
 
     # Debug
     if cfg.DEBUG:
         logger.debug("opt unu %s", num)
-
-    # Check for argument
-    if num is None:
-        num = 10
 
     pages = np.arange(0, num // 20 + 1)
     data_list = []

@@ -14,6 +14,9 @@ if env_files:
 # Relative path to the terminal
 sys.path.append("..")
 
+# Path to bots
+bots_path = Path(__file__).parent.absolute()
+
 # https://discord.com/developers/applications/
 DISCORD_BOT_TOKEN = os.getenv("GT_DISCORD_BOT_TOKEN") or "REPLACE_ME"
 
@@ -38,13 +41,13 @@ COMMAND_PREFIX = "!"
 DATE_FORMAT = "%Y-%m-%d"
 COLOR = disnake.Color.from_rgb(255, 0, 0)
 INTERACTIVE = False
-INTERACTIVE_DIR = Path("in/")
+INTERACTIVE_DIR = bots_path / "in/"
 INTERACTIVE_URL = ""
-IMG_DIR = Path("in/images/")
+IMG_DIR = bots_path / "in/images/"
 IMAGES_URL = ""  # Ex. "http://your-site.com/images/"
 
-# IMG_BG = "files/bg.png"  # Light BG
-IMG_BG = "files/bg-dark.png"  # Dark BG
+# IMG_BG = bots_path.joinpath("files/bg.png")  # Light BG
+IMG_BG = bots_path / "files/bg-dark.png"  # Dark BG
 PLT_3DMESH_COLORSCALE = "Jet"
 PLT_3DMESH_SCENE = dict(
     xaxis=dict(
