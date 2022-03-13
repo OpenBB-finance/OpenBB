@@ -60,7 +60,7 @@ def options_run(
     max_pain,
 ):
     """Options Overview"""
-    titles, embeds, embeds_img, choices, images_list = [], [], [], [], []
+    titles, reports, embeds, embeds_img, choices, images_list = [], [], [], [], [], []
     fig = go.Figure()
 
     dmax = df_opt[["OI_call", "OI_put"]].values.max()
@@ -129,6 +129,7 @@ def options_run(
     plt_link = ""
     if cfg.INTERACTIVE:
         plt_link = helpers.inter_chart(fig, imagefile, callback=False)
+        reports.append(plt_link.replace("[Interactive](", "").replace(")", "\n```\n"))
 
     fig.update_layout(
         width=800,
@@ -355,13 +356,29 @@ def options_run(
 
     # Overview Section
     if "^" not in ticker:
-        embeds[0].add_field(name=f"{df_bcinfo.iloc[0, 0]}", value=iv, inline=False)
+        reports.append(
+            f"{'':^5}*{df_bcinfo.iloc[0, 0]:^25}*{'':^5}*{df_bcinfo.iloc[1, 0]:^25}*{'':^5}\n"
+        )
+        reports.append(
+            f"{'':^8}{df_bcinfo.iloc[0, 1]:^25}{'':^5}{df_bcinfo.iloc[1, 1]:^25}\n"
+        )
+        i, i2 = 2, 3
+        while i < 11:
+            text = (
+                f"{'':^5}*{df_bcinfo.iloc[i, 0]:^25}*{'':^5}*{df_bcinfo.iloc[i2, 0]:^25}*{'':^5}\n"
+                f"{'':^5}{df_bcinfo.iloc[i, 1]:^30}{'':^5}{df_bcinfo.iloc[i2, 1]:^25}{'':^10}\n"
+            )
+            reports.append(text)
+            i += 1
+            i2 += 1
 
+        embeds[0].add_field(name=f"{df_bcinfo.iloc[0, 0]}", value=iv, inline=False)
         embeds[0].add_field(
             name=f"•{df_bcinfo.iloc[1, 0]}",
             value=f"```css\n{df_bcinfo.iloc[1, 1]}\n```",
             inline=True,
         )
+
         for N in range(2, 6):
             embeds[0].add_field(
                 name=f"_ _ _ _ _ _ _ _ _ _ •{df_bcinfo.iloc[N, 0]}",
@@ -395,7 +412,7 @@ def options_run(
 
         embeds[0].set_footer(text=f"Page 1 of {len(embeds)}")
 
-    return titles, embeds, choices, embeds_img, images_list
+    return titles, reports, embeds, choices, embeds_img, images_list
 
 
 @log_start_end(log=logger)
@@ -414,10 +431,20 @@ def options_data(
     if ticker is None:
         raise Exception("Stock ticker is required")
 
-    df_bcinfo = ""
     # Get options info/dates, Look for logo_url
     if "^" not in ticker:
         df_bcinfo = get_options_info(ticker)  # Barchart Options IV Overview
+        df_bcinfo = df_bcinfo.fillna("")
+        df_bcinfo = df_bcinfo.set_axis(
+            [
+                " ",
+                "",
+            ],
+            axis="columns",
+        )
+        df_bcinfo[""] = df_bcinfo[""].str.lstrip()
+    else:
+        df_bcinfo = ""
 
     dates = yfinance_model.option_expirations(ticker)  # Expiration dates
     tup = f"{ticker.upper()}"
@@ -486,17 +513,17 @@ def run(
     min_sp: float = None,
     max_sp: float = None,
 ):
-
     cpus = os.cpu_count()
     data = options_data(ticker, expiry, min_sp, max_sp)
     with Pool(processes=cpus) as p:
         time.sleep(1)
-        titles, embeds, choices, embeds_img, images_list = zip(
+        titles, reports, embeds, choices, embeds_img, images_list = zip(
             *p.starmap(options_run, [(*data,)], chunksize=1)
         )
 
     return (
         unpack(titles),
+        unpack(reports),
         unpack(embeds),
         unpack(choices),
         unpack(embeds_img),
@@ -511,14 +538,17 @@ def overview_command(
     min_sp: float = None,
     max_sp: float = None,
 ):
+    """Options Overview"""
 
-    titles, embeds, choices, embeds_img, images_list = run(
+    titles, reports, embeds, choices, embeds_img, images_list = run(
         ticker, expiry, min_sp, max_sp
     )
+    description = f"{''.join(reports)}\n```"
 
     return {
         "view": Menu,
         "titles": titles,
+        "description": description,
         "embed": embeds,
         "choices": choices,
         "embeds_img": embeds_img,

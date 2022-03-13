@@ -426,36 +426,49 @@ class ShowView:
     def slack(self, func, channel_id, user_id, client, *args, **kwargs):
         data = func(*args, **kwargs)
         if "imagefile" in data:
+            title = data.get("title", "")
+            description = data.get("description", "")
+            message = f"{title}\n{description}"
+            payload = {"channel": channel_id, "username": user_id, "text": message}
+            client.chat_postMessage(**payload)
+            imagefile = f"in/images/{data['imagefile']}"
             client.files_upload(
-                file=data["imagefile"],
-                initial_comment=data.get("title", ""),
+                file=imagefile,
+                initial_comment=title,
                 channels=channel_id,
                 user_id=user_id,
             )
-            os.remove(data["imagefile"])
-
-        # elif "embeds_img" in data:
-        #     img_files = (
-        #         (cfg.IMG_DIR / data["images_list"][0])
-        #         if cfg.IMGUR_CLIENT_ID != "REPLACE_ME"
-        #         else data["embeds_img"][0]
-        #     )
-        #     client.files_upload(
-        #         file=img_files,
-        #         initial_comment=data.get("title", ""),
-        #         channels=channel_id,
-        #         user_id=user_id,
-        #     )
-        #     os.remove(img_files)
-
+            os.remove(imagefile)
         elif "embeds_img" in data:
-            client.files_upload(
-                file=data["embeds_img"][0],
-                initial_comment=data.get("title", ""),
-                channels=channel_id,
-                user_id=user_id,
-            )
-            os.remove(data["embeds_img"][0])
+            description = data.get("description", "")
+            title = data["title"] if "titles" not in data else data["titles"][0]
+            message = f"{title}\n{description}"
+            payload = {"channel": channel_id, "username": user_id, "text": message}
+            client.chat_postMessage(**payload)
+            imagefiles = data["images_list"]
+            N, i = 1, 0
+            for img in imagefiles:
+                imagefile = f"in/images/{img}"
+                if i == 0:
+                    description = data.get("description", "")
+                    title = data["title"] if "titles" not in data else data["titles"][0]
+                    message = f"{title}\n{description}"
+                    payload = {
+                        "channel": channel_id,
+                        "username": user_id,
+                        "text": message,
+                    }
+                    client.chat_postMessage(**payload)
+                titles = data["title"] if "titles" not in data else data["titles"][N]
+                client.files_upload(
+                    file=imagefile,
+                    initial_comment=titles,
+                    channels=channel_id,
+                    user_id=user_id,
+                )
+                N += 1
+                i += 1
+                os.remove(imagefile)
         elif "description" in data:
             title = data.get("title", "")
             description = data.get("description")
@@ -470,15 +483,32 @@ class ShowView:
     def telegram(self, func, message, bot, cmd, *args, **kwargs):
         data = func(*args, **kwargs)
         if "imagefile" in data:
-            with open(data["imagefile"], "rb") as image:
+            imagefile = cfg.IMG_DIR / data["imagefile"]
+            description = data.get("description", "")
+            title = data["title"]
+            res = f"{title}\n{description}"
+            bot.reply_to(message, res)
+            with open(imagefile, "rb") as image:
                 bot.reply_to(message, data["title"])
                 bot.send_photo(message.chat.id, image)
-            os.remove(data["imagefile"])
+            os.remove(imagefile)
         elif "embeds_img" in data:
-            with open(data["embeds_img"][0], "rb") as image:
-                bot.reply_to(message, data["title"])
-                bot.send_photo(message.chat.id, image)
-            os.remove(data["embeds_img"][0])
+            imagefiles = data["images_list"]
+            N, i = 1, 0
+            for img in imagefiles:
+                imagefile = cfg.IMG_DIR / img
+                if i == 0:
+                    title = data["title"] if "titles" not in data else data["titles"][0]
+                    description = data.get("description", "")
+                    res = f"{title}\n{description}"
+                    bot.reply_to(message, res)
+                title = data["title"] if "titles" not in data else data["titles"][N]
+                with open(imagefile, "rb") as image:
+                    bot.reply_to(message, title)
+                    bot.send_photo(message.chat.id, image)
+                N += 1
+                i += 1
+                os.remove(imagefile)
         elif "description" in data:
             title = data.get("title", "")
             description = data.get("description")
