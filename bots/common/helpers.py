@@ -77,39 +77,40 @@ def non_slash(text, sender, showview):
     full_cmd = cmd.split("/")
     group = full_cmd[0].split("_")[0]
     parents = {x.split("_")[0] for x in available_commands}
-    if group in parents:
-        if full_cmd[0] in available_commands:
-            selected = commands[full_cmd[0]]
-            if len(full_cmd) != len(selected.get("required", [])) + 1:
-                syntax = get_syntax(selected, full_cmd[0])
-                sender(f"Required syntax: /{syntax}")
-                return False
-            other_args = {}
-            for i, val in enumerate(full_cmd[1:]):
-                req_name = list(selected.get("required", {}).keys())[i]
-                required = selected.get("required", [])[req_name]
-                if isinstance(required, List) and required != [True, False]:
-                    required = [str(x) for x in required]
-                if isinstance(val, str) and req_name in ["ticker"]:
-                    val = val.upper()
-                elif isinstance(val, str) and req_name == "raw":
-                    val = bool(val)
-                if (isinstance(required, List) and val not in required) or (
-                    isinstance(required, Pattern) and not required.match(val)
-                ):
+    if text[0] == "!":
+        if group in parents:
+            if full_cmd[0] in available_commands:
+                selected = commands[full_cmd[0]]
+                if len(full_cmd) != len(selected.get("required", [])) + 1:
                     syntax = get_syntax(selected, full_cmd[0])
-                    sender(f"{syntax}\nInvalid argument for: {req_name}")
-                    get_arguments(selected, req_name, sender)
+                    sender(f"Required syntax: /{syntax}")
                     return False
-                other_args[req_name] = val
-            func = selected["function"]
-            showview(func, cmd, other_args)
-            return True
-        show_cmds = []
-        for a_cmd in available_commands:
-            if group == a_cmd[: len(group)]:
-                show_cmds.append(a_cmd)
-        send_options("Valid commands: ", show_cmds, sender)
-        return False
-    send_options("Valid categories: ", parents, sender)
+                other_args = {}
+                for i, val in enumerate(full_cmd[1:]):
+                    req_name = list(selected.get("required", {}).keys())[i]
+                    required = selected.get("required", [])[req_name]
+                    if isinstance(required, List) and required != [True, False]:
+                        required = [str(x) for x in required]
+                    if isinstance(val, str) and req_name in ["ticker"]:
+                        val = val.upper()
+                    elif isinstance(val, str) and req_name == "raw":
+                        val = bool(val)
+                    if (isinstance(required, List) and val not in required) or (
+                        isinstance(required, Pattern) and not required.match(val)
+                    ):
+                        syntax = get_syntax(selected, full_cmd[0])
+                        sender(f"{syntax}\nInvalid argument for: {req_name}")
+                        get_arguments(selected, req_name, sender)
+                        return False
+                    other_args[req_name] = val
+                func = selected["function"]
+                showview(func, cmd, other_args)
+                return True
+            show_cmds = []
+            for a_cmd in available_commands:
+                if group == a_cmd[: len(group)]:
+                    show_cmds.append(a_cmd)
+            send_options("Valid commands: ", show_cmds, sender)
+            return False
+        send_options("Valid categories: ", parents, sender)
     return False
