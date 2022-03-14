@@ -35,6 +35,7 @@ class SettingsController(BaseController):
         "dt",
         "ion",
         "watermark",
+        "cmdloc",
         "promptkit",
         "predict",
         "autoscaling",
@@ -103,6 +104,8 @@ class SettingsController(BaseController):
         )
         color = "green" if gtff.USE_WATERMARK else "red"
         help_text += f"   [{color}]watermark        watermark in figures[/{color}]\n"
+        color = "green" if gtff.USE_CMD_LOCATION_FIGURE else "red"
+        help_text += f"   [{color}]cmdloc           command location displayed in figures[/{color}]\n"
         color = "green" if gtff.USE_PLOT_AUTOSCALING else "red"
         help_text += f"   [{color}]autoscaling      plot autoscaling[/{color}]\n\n"
         color = "green" if gtff.USE_DATETIME else "red"
@@ -236,6 +239,17 @@ class SettingsController(BaseController):
         """Process watermark command"""
         gtff.USE_WATERMARK = not gtff.USE_WATERMARK
         dotenv.set_key(self.env_file, "GTFF_USE_WATERMARK", str(gtff.USE_WATERMARK))
+        console.print("")
+
+    @log_start_end(log=logger)
+    def call_cmdloc(self, _):
+        """Process cmdloc command"""
+        gtff.USE_CMD_LOCATION_FIGURE = not gtff.USE_CMD_LOCATION_FIGURE
+        dotenv.set_key(
+            self.env_file,
+            "GTFF_USE_CMD_LOCATION_FIGURE",
+            str(gtff.USE_CMD_LOCATION_FIGURE),
+        )
         console.print("")
 
     @log_start_end(log=logger)

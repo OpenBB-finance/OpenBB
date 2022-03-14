@@ -23,6 +23,8 @@ from gamestonk_terminal.cryptocurrency.due_diligence import (
     glassnode_model,
     glassnode_view,
     pycoingecko_view,
+    messari_model,
+    messari_view,
 )
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
@@ -71,12 +73,14 @@ class DueDiligenceController(CryptoBaseController):
             "balance",
         ],
         "cb": ["cbbook", "trades", "stats"],
+        "mes": ["mcapdom"],
     }
 
     DD_VIEWS_MAPPING = {
         "cg": pycoingecko_view,
         "cp": coinpaprika_view,
         "bin": binance_view,
+        "mes": messari_view,
     }
 
     PATH = "/crypto/dd/"
@@ -132,6 +136,9 @@ class DueDiligenceController(CryptoBaseController):
             choices["twitter"]["-s"] = {
                 c: None for c in coinpaprika_view.TWEETS_FILTERS
             }
+            choices["mcapdom"]["-i"] = {
+                c: None for c in messari_model.INTERVALS_TIMESERIES
+            }
             choices["ps"]["--vs"] = {c: None for c in coinpaprika_view.CURRENCIES}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -174,7 +181,9 @@ class DueDiligenceController(CryptoBaseController):
 [src]Coinbase[/src]
    cbbook          show order book
    trades          show last trades
-   stats           show coin stats[/cmds]
+   stats           show coin stats
+[src]Messari[/src]
+   mcapdom         show market cap dominance[/cmds]
 """
         console.print(text=help_text, menu="Stocks - Due Diligence")
 
@@ -1181,5 +1190,60 @@ class DueDiligenceController(CryptoBaseController):
                 top=ns_parser.limit,
                 sortby=ns_parser.sortby,
                 descend=ns_parser.descend,
+                export=ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
+    def call_mcapdom(self, other_args: List[str]):
+        """Process mcapdom command"""
+
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="mcapdom",
+            description="""
+                Display asset's percentage share of total crypto circulating market cap
+                [Source: https://messari.io]
+            """,
+        )
+
+        parser.add_argument(
+            "-i",
+            "--interval",
+            dest="interval",
+            type=str,
+            help="Frequency interval. Default: 1d",
+            default="1d",
+            choices=messari_model.INTERVALS_TIMESERIES,
+        )
+
+        parser.add_argument(
+            "-s",
+            "--start",
+            dest="start",
+            type=valid_date,
+            help="Initial date. Default: A year ago",
+            default=(datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d"),
+        )
+
+        parser.add_argument(
+            "-end",
+            "--end",
+            dest="end",
+            type=valid_date,
+            help="End date. Default: Today",
+            default=datetime.now().strftime("%Y-%m-%d"),
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+
+        if ns_parser:
+            messari_view.display_marketcap_dominance(
+                coin=self.symbol.upper(),
+                interval=ns_parser.interval,
+                start=ns_parser.start,
+                end=ns_parser.end,
                 export=ns_parser.export,
             )
