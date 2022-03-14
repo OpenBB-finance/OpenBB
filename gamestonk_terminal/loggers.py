@@ -376,6 +376,7 @@ def upload_archive_logs_s3(
 
             if not unused_file and contains_goodbye(file):
                 for handler in logging.getLogger().handlers:
+                    handler.close()
                     logging.getLogger().removeHandler(handler)
                 new_handler = logging.FileHandler(
                     archive / f"uploader_for_{file.name}.log"
