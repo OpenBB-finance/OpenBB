@@ -9,6 +9,7 @@ from bots.stocks.disc.ford import ford_command
 from bots.stocks.disc.topgainers import gainers_command
 from bots.stocks.disc.toplosers import losers_command
 from bots.stocks.disc.ugs import ugs_command
+from bots.stocks.disc.upcoming import earnings_command
 
 
 class DiscoverCommands(commands.Cog):
@@ -71,6 +72,11 @@ class DiscoverCommands(commands.Cog):
         num: Number of stocks to display
         """
         await ShowView().discord(ford_command, inter, "disc fidelity")
+
+    @commands.slash_command(name="earnings")
+    async def earnings(self, inter: disnake.AppCmdInter):
+        """Display Upcoming Earnings. [Source: Seeking Alpha]"""
+        await ShowView().discord(earnings_command, inter, "earnings")
 
 
 def setup(bot: commands.Bot):
