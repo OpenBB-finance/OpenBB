@@ -25,6 +25,7 @@ Ticker:  TSLA
     cash          cash flow of the company
     earnings      earnings dates and reported EPS
     fraud         key fraud ratios
+    dupont        detailed breakdown for return on equity
 Other Sources:
 >   fmp           profile,quote,enterprise,dcf,income,ratios,growth from FMP
         

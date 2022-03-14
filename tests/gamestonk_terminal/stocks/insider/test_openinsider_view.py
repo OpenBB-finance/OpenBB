@@ -67,7 +67,9 @@ def test_print_insider_filter_no_table(mocker):
 )
 def test_print_insider_data(color, mocker):
     # MOCK GTFF
-    mocker.patch.object(target=openinsider_view.gtff, attribute="USE_COLOR", new=color)
+    mocker.patch.object(
+        target=openinsider_view.rich_config, attribute="USE_COLOR", new=color
+    )
 
     # MOCK EXPORT_DATA
     mocker.patch(
