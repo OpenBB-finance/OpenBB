@@ -357,7 +357,7 @@ class TerminalStyle:
         import gamestonk_terminal.feature_flags as gtff
         from gamestonk_terminal.rich_config import console
 
-        if gtff.USE_CMD_SOURCE_FIGURE:
+        if gtff.USE_CMD_LOCATION_FIGURE:
             self.add_cmd_source(plt.gcf())
         if gtff.USE_WATERMARK:
             self.add_label(plt.gcf())
