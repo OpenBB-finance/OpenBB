@@ -20,8 +20,8 @@ from gamestonk_terminal.economy import yfinance_view
             "Close",
             False,
         ],
-        ["dowjones", "1mo", "2015-01-01", "2015-02-02", "Volume", False],
-        ["cac40", "3mo", "2010-01-01", "2016-02-06", "High", True],
+        [["dowjones"], "1mo", "2015-01-01", "2015-02-02", "Volume", False],
+        [["cac40"], "3mo", "2010-01-01", "2016-02-06", "High", True],
     ],
 )
 def test_show_indices(recorder, indices, interval, start_date, end_date, column, store):

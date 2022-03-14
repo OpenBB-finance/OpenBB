@@ -13,7 +13,7 @@ interactions:
       string: "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<observations realtime_start=\"2022-03-14\"
         realtime_end=\"2022-03-14\" observation_start=\"2020-01-01\" observation_end=\"9999-12-31\"
         units=\"lin\" output_type=\"1\" file_type=\"xml\" order_by=\"observation_date\"
-        sort_order=\"asc\" count=\"572\" offset=\"0\" limit=\"100000\">\n  <observation
+        sort_order=\"asc\" count=\"573\" offset=\"0\" limit=\"100000\">\n  <observation
         realtime_start=\"2022-03-14\" realtime_end=\"2022-03-14\" date=\"2020-01-01\"
         value=\".\"/>\n  <observation realtime_start=\"2022-03-14\" realtime_end=\"2022-03-14\"
         date=\"2020-01-02\" value=\"1.88\"/>\n  <observation realtime_start=\"2022-03-14\"
@@ -776,7 +776,8 @@ interactions:
         realtime_end=\"2022-03-14\" date=\"2022-03-08\" value=\"1.86\"/>\n  <observation
         realtime_start=\"2022-03-14\" realtime_end=\"2022-03-14\" date=\"2022-03-09\"
         value=\"1.94\"/>\n  <observation realtime_start=\"2022-03-14\" realtime_end=\"2022-03-14\"
-        date=\"2022-03-10\" value=\"1.98\"/>\n</observations>\n\n\n\n"
+        date=\"2022-03-10\" value=\"1.98\"/>\n  <observation realtime_start=\"2022-03-14\"
+        realtime_end=\"2022-03-14\" date=\"2022-03-11\" value=\"2.00\"/>\n</observations>\n\n\n\n"
     headers:
       Connection:
       - close
@@ -784,13 +785,13 @@ interactions:
       Content-Type:
       - text/xml; charset=UTF-8
       Date:
-      - Mon, 14 Mar 2022 17:57:38 GMT
+      - Mon, 14 Mar 2022 20:25:44 GMT
       Expires:
-      - Mon, 14 Mar 2022 17:58:38 GMT
+      - Mon, 14 Mar 2022 20:26:44 GMT
       Last-Modified:
-      - Fri, 11 Mar 2022 21:18:09 GMT
+      - Mon, 14 Mar 2022 20:24:09 GMT
       Set-Cookie:
-      - cookiesession1=678A3E1F7A05B69C2CD318FA54A350C4;Expires=Tue, 14 Mar 2023 17:57:32
+      - cookiesession1=678A3E1F90DA0F4E16C3D26E0F8F8AFC;Expires=Tue, 14 Mar 2023 20:25:39
         GMT;Path=/;HttpOnly
       Transfer-Encoding:
       - chunked

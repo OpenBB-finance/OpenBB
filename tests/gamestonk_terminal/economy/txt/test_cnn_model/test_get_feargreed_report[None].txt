@@ -4,28 +4,28 @@ Fear & Greed Now: 15 (Extreme Fear)
    1 Month Ago: 21 (Extreme Fear)
    1 Year Ago: 59 (Greed)
 
-Junk Bond Demand: Extreme Fear                                                                      [Updated Mar 14 at 1:45pm]
+Junk Bond Demand: Extreme Fear                                                                      [Updated Mar 14 at 4:10pm]
    Investors in low quality junk bonds are accepting 1.82 percentage points in additional yield over safer investment grade corporate bonds. This spread is much higher than what has been typical during the last two years and indicates that investors are highly risk averse.
    (Last changed Mar 10 from a Fear rating)
 
-Market Volatility: Extreme Fear                                                                     [Updated Mar 14 at 1:45pm]
-   The CBOE Volatility Index (VIX) is at 32.41, 25.23% above its 50-day moving average and indicates that investors are very concerned about a decline in the stock market.
+Market Volatility: Extreme Fear                                                                     [Updated Mar 14 at 4:11pm]
+   The CBOE Volatility Index (VIX) is at 31.80, 22.93% above its 50-day moving average and indicates that investors are very concerned about a decline in the stock market.
    (Last changed Feb 25 from a Neutral rating)
 
-Put and Call Options: Extreme Fear                                                                  [Updated Mar 14 at 1:51pm]
+Put and Call Options: Extreme Fear                                                                  [Updated Mar 14 at 4:00pm]
    The number of stocks hitting 52-week lows exceeds the number hitting highs and is at the lower end of its range, indicating extreme fear.
    (Last changed Jan 20 from a Fear rating)
 
-Market Momentum: Extreme Fear                                                                       [Updated Mar 14 at 1:50pm]
-   Bonds have outperformed stocks by 4.98 percentage points during the last 20 trading days. This is close to the weakest performance for stocks relative to bonds in the past two years and indicates investors are fleeing risky stocks for the safety of bonds.
+Market Momentum: Extreme Fear                                                                       [Updated Mar 14 at 4:10pm]
+   Bonds have outperformed stocks by 4.89 percentage points during the last 20 trading days. This is close to the weakest performance for stocks relative to bonds in the past two years and indicates investors are fleeing risky stocks for the safety of bonds.
    (Last changed Feb 28 from a Fear rating)
 
-Stock Price Strength: Extreme Fear                                                                  [Updated Mar 14 at 1:51pm]
-   The McClellan Volume Summation Index measures advancing and declining volume on the NYSE. During the last month, approximately 12.35% more of each day's volume has traded in declining issues than in advancing issues, pushing this indicator towards the lower end of its range for the last two years.
+Stock Price Strength: Extreme Fear                                                                  [Updated Mar 14 at 4:05pm]
+   The McClellan Volume Summation Index measures advancing and declining volume on the NYSE. During the last month, approximately 11.07% more of each day's volume has traded in declining issues than in advancing issues, pushing this indicator towards the lower end of its range for the last two years.
    (Last changed Feb 22 from a Fear rating)
 
-Stock Price Breadth: Extreme Fear                                                                   [Updated Mar 14 at 1:45pm]
-   The S&P 500 is 7.84% below its 125-day average. During the last two years, the S&P 500 has typically been above this average, so rapid declines like this indicate extreme levels of fear.
+Stock Price Breadth: Extreme Fear                                                                   [Updated Mar 14 at 4:11pm]
+   The S&P 500 is 7.81% below its 125-day average. During the last two years, the S&P 500 has typically been above this average, so rapid declines like this indicate extreme levels of fear.
    (Last changed Jan 14 from a Fear rating)
 
 Safe Heaven Demand: N/A                                                                             [N/A]
