@@ -9,9 +9,9 @@ import sys
 import time
 import uuid
 from math import floor, ceil
+import threading
 import requests
 
-import schedule
 import git
 import boto3
 from botocore.exceptions import ClientError
@@ -89,13 +89,28 @@ def setup_file_logger(app_name: str, session_id: str) -> None:
 
     logger.debug("Current_log file: %s", cfg.LOGGING_FILE)
 
-    handler = TimedRotatingFileHandler(cfg.LOGGING_FILE)
+    handler = TimedRotatingFileHandlerWithUpload(cfg.LOGGING_FILE)
     handler.suffix += ".log"
     formatter = CustomFormatterWithExceptions(
         app_name, uuid_log_dir.stem, session_id, fmt=LOGFORMAT, datefmt=DATEFORMAT
     )
     handler.setFormatter(formatter)
     logging.getLogger().addHandler(handler)
+
+
+class TimedRotatingFileHandlerWithUpload(TimedRotatingFileHandler):
+    def __init__(self, *args, **kwargs) -> None:
+        super().__init__(*args, **kwargs)
+        self.upload_thread_lock = threading.RLock()
+
+    def doRollover(self) -> None:
+        super().doRollover()
+        t = threading.Thread(target=self.upload_logs_as_thread, args=())
+        t.start()
+
+    def upload_logs_as_thread(self) -> None:
+        with self.upload_thread_lock:
+            upload_archive_logs_s3((os.sep).join(self.baseFilename.split(os.sep)[:-1]))
 
 
 class CustomFormatterWithExceptions(logging.Formatter):
@@ -245,8 +260,14 @@ def setup_logging(app_name: str) -> None:
 
 
 def upload_file_to_s3(
-    file: Path, bucket: str = None, object_name: str = None, folder_name: str = None
-) -> None:
+    file: Path,
+    bucket: str = None,
+    object_name: str = None,
+    folder_name: str = None,
+    only_send_file_size=True,
+) -> bool:
+    success = False
+
     # If S3 object_name was not specified, use file_name
     if object_name is None:
         object_name = file.name
@@ -254,9 +275,6 @@ def upload_file_to_s3(
     # If folder_name was specified, upload in the folder
     if folder_name is not None:
         object_name = f"{folder_name}/{object_name}"
-
-    if not object_name.endswith(".log"):
-        object_name += ".log"
 
     # Upload the file
     if (
@@ -273,30 +291,33 @@ def upload_file_to_s3(
             s3_client.upload_file(str(file), bucket, object_name)
         except ClientError as e:
             logger.exception(str(e))
+        success = True
     else:
         files = None
-        try:
-            with open(file, "rb") as f:
-                files = {"file": f.read()}
-        except Exception as e:
-            logger.exception("Could not open file: %s", str(e))
-
-        if files is not None and files:
-            json = requests.put(url=URL, json={"object_key": object_name}).json()
-            r = requests.post(json["url"], data=json["fields"], files=files)
-
-            if r.status_code in [403, 401, 400]:
-                logger.error("%s could not be uploaded", str(file))
-            elif r.status_code == 204:
-                logger.info("Log uploaded")
-            else:
-                logger.error(
-                    "Unexpected status_code: %s when uploading: %s",
-                    str(r.status_code),
-                    str(file),
-                )
+        if only_send_file_size:
+            files = {"file": bytes(log_past_logsize(str(file)), "utf-8")}
         else:
-            logger.error("Uploading payload empty")
+            try:
+                with open(file, "rb") as f:
+                    files = {"file": f.read()}
+            except Exception as e:
+                logger.exception("Could not open file: %s", str(e))
+
+        json = requests.put(url=URL, json={"object_key": object_name}).json()
+        r = requests.post(json["url"], data=json["fields"], files=files)
+
+        if r.status_code in [403, 401, 400]:
+            logger.error("%s could not be uploaded", file.name)
+        elif r.status_code == 204:
+            logger.info("Log uploaded")
+            success = True
+        else:
+            logger.error(
+                "Unexpected status_code: %s when uploading: %s",
+                str(r.status_code),
+                file.name,
+            )
+    return success
 
 
 def contains_goodbye(file: Path) -> bool:
@@ -325,11 +346,16 @@ def upload_archive_logs_s3(
         else:
             directory = Path(directory_str)
         archive = directory / "archive"
+        tmp = directory / "uploading"
 
         if not archive.exists():
             # Create a new directory because it does not exist
             archive.mkdir()
             logger.debug("The new archive directory is created!")
+        if not tmp.exists():
+            # Create a new directory because it does not exist
+            tmp.mkdir()
+            logger.debug("The new uploading directory is created!")
 
         log_files = {}
 
@@ -344,25 +370,44 @@ def upload_archive_logs_s3(
             if regexp.search(str(file)) and (
                 file.suffix == ".log" or one_day_old or contains_goodbye(file)
             ):
-                log_files[str(file)] = file, (archive / file.name)
+                suffix = ".log" if file.suffix != ".log" else ""
+                try:
+                    file.rename(tmp / (file.name + suffix))
+                except Exception as e:
+                    logger.exception("Cannot upload file: %s", str(e))
+
+                log_files[str(tmp / (file.name + suffix))] = tmp / (
+                    file.name + suffix
+                ), (archive / (file.name + suffix))
 
         for log_file, archived_file in log_files.values():
             logger.info("Uploading logs")
-            upload_file_to_s3(
+            success = upload_file_to_s3(
                 file=log_file,
                 bucket=bucket,
                 folder_name=f"{folder_name}/{cfg.LOGGING_ID}",
             )
-            try:
-                log_file.rename(archived_file)
-            except Exception as e:
-                logger.exception("Cannot archive file: %s", str(e))
+            if success:
+                try:
+                    log_file.rename(archived_file)
+                except Exception as e:
+                    logger.exception("Cannot archive file: %s", str(e))
     else:
         logger.info("Logs not allowed to be collected")
 
 
-def periodically_upload_logs() -> None:
-    schedule.every(65).minutes.do(upload_archive_logs_s3)
-    while True:
-        schedule.run_pending()
-        time.sleep(60)  # Wait a minute
+def log_past_logsize(file: str) -> str:
+    with open(file, "rb") as f:
+        line_count = sum(1 for line in f)
+        try:
+            f.seek(-2, os.SEEK_END)
+            while f.read(1) != b"\n":
+                f.seek(-2, os.SEEK_CUR)
+        except OSError:
+            f.seek(0)
+            logger.exception("Could not find last line")
+            return ""
+        last_line = f.readline().decode()
+    send_up = "|".join(last_line.split("|")[:-1])
+    send_up += f"|Size: {os.path.getsize(file)}|Lines: {line_count}"
+    return send_up
