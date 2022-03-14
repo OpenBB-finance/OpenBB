@@ -349,7 +349,6 @@ def log_settings() -> None:
     settings_dict = {}
     settings_dict["tab"] = "activated" if gtff.USE_TABULATE_DF else "deactivated"
     settings_dict["cls"] = "activated" if gtff.USE_CLEAR_AFTER_CMD else "deactivated"
-    settings_dict["color"] = "activated" if gtff.USE_COLOR else "deactivated"
     settings_dict["promptkit"] = (
         "activated" if gtff.USE_PROMPT_TOOLKIT else "deactivated"
     )
@@ -364,7 +363,6 @@ def log_settings() -> None:
         "activated" if gtff.ENABLE_EXIT_AUTO_HELP else "deactivated"
     )
     settings_dict["rcontext"] = "activated" if gtff.REMEMBER_CONTEXTS else "deactivated"
-    settings_dict["rich"] = "activated" if gtff.ENABLE_RICH else "deactivated"
     settings_dict["richpanel"] = (
         "activated" if gtff.ENABLE_RICH_PANEL else "deactivated"
     )
