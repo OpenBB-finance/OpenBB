@@ -408,7 +408,7 @@ def candle_fig(
             start_new = (dt_utcnow_local_tz() - timedelta(days=30)).strftime(
                 cfg.DATE_FORMAT
             )
-            end_new = datetime.utcnow.strftime(cfg.DATE_FORMAT)
+            end_new = datetime.utcnow().strftime(cfg.DATE_FORMAT)
             articles = finnhub_client.company_news(
                 ticker.upper(), _from=start_new, to=end_new
             )
