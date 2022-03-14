@@ -60,13 +60,18 @@ def test_invalid_response_status(func, kwargs_dict, mocker):
 )
 def test_check_output(func, kwargs_dict, recorder):
     result_df = getattr(av_model, func)(**kwargs_dict)
-
-    assert not result_df.empty
     recorder.capture(result_df)
 
 
 @pytest.mark.vcr
 def test_get_fraud_ratios(recorder):
-    result_tuple = av_model.get_fraud_ratios(ticker="TSLA")
+    result_df = av_model.get_fraud_ratios(ticker="TSLA")
 
-    recorder.capture(result_tuple)
+    recorder.capture(result_df)
+
+
+@pytest.mark.vcr
+def test_get_dupont(recorder):
+    result_df = av_model.get_dupont(ticker="TSLA")
+
+    recorder.capture(result_df)

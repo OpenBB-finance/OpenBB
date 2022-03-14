@@ -30,7 +30,6 @@ from gamestonk_terminal.stocks.discovery import (
     seeking_alpha_view,
     shortinterest_view,
     yahoofinance_view,
-    cramer_view,
 )
 
 # pylint:disable=C0302
@@ -61,7 +60,6 @@ class DiscoveryController(BaseController):
         "cnews",
         "rtat",
         "divcal",
-        "cramer",
     ]
 
     arkord_sortby_choices = [
@@ -161,9 +159,7 @@ class DiscoveryController(BaseController):
     hotpenny       today's hot penny stocks
 [src][NASDAQ Data Link (Formerly Quandl)][/src]
     rtat           top 10 retail traded stocks per day
-    divcal         dividend calendar for selected date
-[src][Jim Cramer][/src]
-    cramer         Jim Cramer's daily recommendations[/cmds]
+    divcal         dividend calendar for selected date[/cmds]
 """
         console.print(text=help_text, menu="Stocks - Discovery")
 
@@ -887,30 +883,3 @@ class DiscoveryController(BaseController):
             nasdaq_view.display_top_retail(
                 n_days=ns_parser.limit, export=ns_parser.export
             )
-
-    @log_start_end(log=logger)
-    def call_cramer(self, other_args: List[str]):
-        """Process fds command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="cramer",
-            description="""
-                Show daily cramer recommendation
-            """,
-        )
-        parser.add_argument(
-            "-i",
-            "--inverse",
-            default=False,
-            action="store_true",
-            help="Show inverse recommendation",
-            dest="inverse",
-        )
-
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-
-        if ns_parser:
-            cramer_view.display_cramer_daily(inverse=ns_parser.inverse)
