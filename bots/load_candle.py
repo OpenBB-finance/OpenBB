@@ -121,7 +121,7 @@ def stock_data(
     max_days = 4 if interval == 1 else 57
     if dt_utcnow_local_tz().weekday() > 4 or 1:
         past_days += 2
-    p_days = (past_days + 1) if past_days < max_days else max_days
+    p_days = (past_days + 1) if past_days > max_days else max_days
 
     if start == "":
         start = dt_utcnow_local_tz() - timedelta(days=365)
@@ -160,7 +160,7 @@ def stock_data(
         df_stock["OC_Low"] = df_stock[["Open", "Close"]].min(axis=1)
     else:
         past_days = (
-            (past_days + 10) if (10 + past_days + max_days) < max_days else max_days
+            (past_days + 10) if ((10 + past_days) + max_days) > max_days else max_days
         )
         s_int = str(interval) + "m"
         if crypto in ticker.upper() and (cfg.API_BINANCE_KEY != "REPLACE_ME"):

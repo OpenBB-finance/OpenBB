@@ -71,7 +71,7 @@ def candle_command(
 
     # Output Data
     if interval != 1440:
-        df_stock = df_stock.loc[(df_stock.index >= start) & (df_stock.index < end)]
+        df_stock = df_stock.loc[(df_stock.index >= bar_start) & (df_stock.index < end)]
 
     plot = load_candle.candle_fig(
         df_stock,
