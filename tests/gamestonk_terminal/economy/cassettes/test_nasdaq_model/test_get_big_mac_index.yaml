@@ -15,56 +15,39 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAA/1WNywrCMBBFf2WYtQTddlckC0GhuhFXJSRjDK0zmAdYS//diKuuLhzO5cz4Kobd
-        2FOMErGZ0YojbPCs2/d2hxt8UkrG/9CVwEoZHbBkiGTFc/gQTFIitN0BBpoauOju2O51f9IKupFM
-        qqcH2WGlQU1CjnW9CazgJgWsYbiHyldiYUfxj4ytdc6QKOfAPilcli9cuY8yvwAAAA==
+        H4sIAAAAAAAA/y2NwWrDMBAFf+V9QBrcQy+5FeJDwYQUeslxkZ5jYVmbrKTW/vuKJNeZgenN1PCG
+        735Yu3cccNGKSX4Jro709CgTIUnTtmjNqJmGGJZQoCM+OjiJMePWqJdtjx/FIjOxqPHlijazwy1S
+        MmG8hlxaPraxYDQSJ8le7jhKEQwhzRDntKbSvo9/QkguVk9sWg2f5y/M3PAXyvQkxntlLnn/D5/Q
+        eQ/QAAAA
     headers:
-      Access-Control-Allow-Credentials:
-      - 'true'
-      Access-Control-Allow-Headers:
-      - '*'
-      Access-Control-Allow-Methods:
-      - GET, POST, OPTIONS
-      Access-Control-Allow-Origin:
-      - '*'
-      Access-Control-Expose-Headers:
-      - X-RateLimit-Limit, X-RateLimit-Remaining
-      Access-Control-Max-Age:
-      - '1728000'
       Allow:
       - GET, HEAD, POST, PUT, DELETE, OPTIONS, PATCH
+      Cache-Control:
+      - ''
       Connection:
       - keep-alive
       Content-Encoding:
       - gzip
       Content-Type:
-      - application/json; charset=utf-8
+      - text/plain
       Date:
-      - Fri, 11 Mar 2022 09:44:17 GMT
+      - Mon, 14 Mar 2022 16:17:05 GMT
       Server:
       - openresty
       Set-Cookie:
-      - visid_incap_2170999=wcBdRoReQ7qhTaik0F04ZvEZK2IAAAAAQUIPAAAAAAACAgv8fRCYI+xm0Z5vkf9N;
-        expires=Sat, 11 Mar 2023 09:35:03 GMT; HttpOnly; path=/; Domain=.nasdaq.com
-      - nlbi_2170999=RONJHl7pTjAh7oroKj7S7QAAAABL42h5wVTjEZgkvo9FjyQm; path=/; Domain=.nasdaq.com
-      - incap_ses_358_2170999=OjVOVXTv+E2Gq+mZmt/3BPEZK2IAAAAAslh2ayDwGW819t5cajpPBg==;
+      - visid_incap_2170999=6Uo3gvbeSJawLHXYv8SB3IFqL2IAAAAAQUIPAAAAAACUIq6tJo8k86AHa8sd6Z3Y;
+        expires=Tue, 14 Mar 2023 08:52:47 GMT; HttpOnly; path=/; Domain=.nasdaq.com
+      - nlbi_2170999=bl4WNS7r/EM+ntdHKj7S7QAAAAD4Ux7cBoJmh6ssVUknfDne; path=/; Domain=.nasdaq.com
+      - incap_ses_702_2170999=tkqSTIjCCzxu+WCJ/QG+CYFqL2IAAAAAVmAWuVBgz0HyVdu/P8kAqw==;
         path=/; Domain=.nasdaq.com
       Transfer-Encoding:
       - chunked
       X-CDN:
       - Imperva
       X-Iinfo:
-      - 10-100737645-100737647 NNYN CT(7 18 0) RT(1646991857025 109) q(0 0 0 -1) r(1
-        1) U11
-      X-RateLimit-Limit:
-      - '50'
-      X-RateLimit-Remaining:
-      - '28'
-      X-Request-Id:
-      - f6b76b80-84ef-412f-a41d-ac9fa2cb9650
-      X-Runtime:
-      - '0.008791'
+      - 2-30642540-30642546 NNYY CT(53 9 0) RT(1647274625114 116) q(0 0 0 -1) r(0
+        0) U11
     status:
-      code: 400
-      message: Bad Request
+      code: 429
+      message: Too Many Requests
 version: 1

@@ -1,0 +1,5 @@
+Due to missing exchange values, some data was dropped from RGDP of United_States. Consider using the native currency if you want to prevent this. 
+OLD: 2019-12-31 - 2020-10-01
+NEW: 2020-01-01 - 2020-07-01
+
+

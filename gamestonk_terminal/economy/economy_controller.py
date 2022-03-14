@@ -872,7 +872,6 @@ Index
                         frequency=ns_parser.frequency,
                         start_date=ns_parser.start_date,
                         end_date=ns_parser.end_date,
-                        store=ns_parser.store,
                         raw=ns_parser.raw,
                         export=ns_parser.export,
                     )

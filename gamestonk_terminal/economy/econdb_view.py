@@ -1,7 +1,7 @@
 """ EconDB View """
 __docformat__ = "numpy"
 # pylint:disable=too-many-arguments
-
+from datetime import datetime
 import logging
 import os
 from typing import Optional, List, Dict
@@ -27,9 +27,9 @@ logger = logging.getLogger(__name__)
 def show_macro_data(
     parameters: list,
     countries: list,
-    start_date: int = None,
-    end_date: int = None,
-    convert_currency: str = "USD",
+    start_date: str = "1900-01-01",
+    end_date=datetime.today().date(),
+    convert_currency=False,
     raw: bool = False,
     external_axes: Optional[List[plt.axes]] = None,
     export: str = "",
@@ -69,6 +69,9 @@ def show_macro_data(
         ax = external_axes[0]
 
     maximum_value = country_data_df.max().max()
+
+    if not convert_currency:
+        convert_currency = ""
 
     if maximum_value > 1_000_000_000:
         df_rounded = country_data_df / 1_000_000_000
@@ -113,7 +116,12 @@ def show_macro_data(
         )
 
     if export:
-        print("Doing nothing!")
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "macro_data",
+            df_rounded,
+        )
 
     theme.style_primary_axis(ax)
 
@@ -128,7 +136,6 @@ def show_treasuries(
     frequency: str,
     start_date: str = None,
     end_date: str = None,
-    store: bool = False,
     raw: bool = False,
     external_axes: Optional[List[plt.axes]] = None,
     export: str = "",
@@ -165,23 +172,22 @@ def show_treasuries(
         types, maturities, frequency, start_date, end_date
     )
 
-    if not store:
-        if external_axes is None:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        else:
-            ax = external_axes[0]
+    if external_axes is None:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    else:
+        ax = external_axes[0]
 
-        for treasury, maturities_data in treasury_data.items():
-            for maturity in maturities_data:
-                ax.plot(maturities_data[maturity], label=f"{treasury} [{maturity}]")
+    for treasury, maturities_data in treasury_data.items():
+        for maturity in maturities_data:
+            ax.plot(maturities_data[maturity], label=f"{treasury} [{maturity}]")
 
-        ax.set_title("U.S. Treasuries")
-        ax.legend()
+    ax.set_title("U.S. Treasuries")
+    ax.legend()
 
-        theme.style_primary_axis(ax)
+    theme.style_primary_axis(ax)
 
-        if external_axes is None:
-            theme.visualize_output()
+    if external_axes is None:
+        theme.visualize_output()
 
     df = pd.DataFrame.from_dict(treasury_data, orient="index").stack().to_frame()
     df = pd.DataFrame(df[0].values.tolist(), index=df.index).T

@@ -6,6 +6,7 @@ __docformat__ = "numpy"
 import logging
 from typing import Dict, Any
 from urllib.error import HTTPError
+from datetime import datetime
 
 import pandas as pd
 import pandas_datareader.data as web
@@ -284,7 +285,11 @@ TREASURIES: Dict = {
 
 @log_start_end(log=logger)
 def get_macro_data(
-    parameter: str, country: str, convert_currency: str = "USD"
+    parameter: str,
+    country: str,
+    start_date="1900-01-01",
+    end_date=datetime.today().date(),
+    convert_currency=False,
 ) -> pd.Series:
     """Query the EconDB database to find specific macro data about a company [Source: EconDB]
 
@@ -294,14 +299,20 @@ def get_macro_data(
         The type of data you wish to acquire
     country : str
        the selected country
-    convert_currency : bool
-        The currency you wish to convert the data to.
+    start_date : str
+        The starting date, format "YEAR-MONTH-DAY", i.e. 2010-12-31.
+    end_date : str
+        The end date, format "YEAR-MONTH-DAY", i.e. 2020-06-05.
+    convert_currency : str
+        In what currency you wish to convert all values.
 
     Returns
     ----------
     pd.Series
         A series with the requested macro data of the chosen country
     """
+    country = country.replace(" ", "_")
+
     if country not in COUNTRY_CODES:
         return console.print(f"No data available for the country {country}.")
     if parameter not in PARAMETERS:
@@ -318,19 +329,33 @@ def get_macro_data(
             squeeze=True,
         )
 
+        df = df.dropna()
+
         if df.empty:
             return console.print(
                 f"No data available for {parameter} ({PARAMETERS[parameter]}) "
                 f"of country {country.replace('_', ' ')}"
             )
 
+        if start_date or end_date:
+            df = df.loc[start_date:end_date]
+
         if convert_currency and country_currency != convert_currency:
-            df = (
-                df
-                * yf.Ticker(f"{convert_currency}{country_currency}=X").history(
-                    start=df.index[0]
-                )["Close"][0]
-            )
+            currency_data = yf.Ticker(
+                f"{convert_currency}{country_currency}=X"
+            ).history(start=df.index[0], end=df.index[-1])["Close"]
+            df = df * currency_data
+
+            if pd.isna(df).any():
+                df_old_oldest, df_old_newest = df.index[0].date(), df.index[-1].date()
+                df = df.dropna()
+                df_new_oldest, df_new_newest = df.index[0].date(), df.index[-1].date()
+                console.print(
+                    f"Due to missing exchange values, some data was dropped from {parameter} of {country}. "
+                    f"Consider using the native currency if you want to prevent this. \n"
+                    f"OLD: {df_old_oldest} - {df_old_newest}\n"
+                    f"NEW: {df_new_oldest} - {df_new_newest}\n"
+                )
 
     except HTTPError:
         return console.print(
@@ -344,9 +369,9 @@ def get_macro_data(
 def get_aggregated_macro_data(
     parameters: list,
     countries: list,
-    start_date: int = None,
-    end_date: int = None,
-    convert_currency: str = "USD",
+    start_date: str = "1900-01-01",
+    end_date=datetime.today().date(),
+    convert_currency=False,
 ) -> pd.DataFrame:
     """This functions groups the data queried from the EconDB database [Source: EconDB]
 
@@ -374,13 +399,8 @@ def get_aggregated_macro_data(
         country_data[country] = {}
         for parameter in parameters:
             country_data[country][parameter] = get_macro_data(
-                parameter, country, convert_currency
+                parameter, country, start_date, end_date, convert_currency
             )
-
-            if country_data[country][parameter] is not None and start_date or end_date:
-                country_data[country][parameter] = country_data[country][parameter].loc[
-                    start_date:end_date
-                ]
 
     country_data_df = (
         pd.DataFrame.from_dict(country_data, orient="index").stack().to_frame()
@@ -397,8 +417,8 @@ def get_treasuries(
     instruments: list,
     maturities: list,
     frequency: str = "monthly",
-    start_date: str = None,
-    end_date: str = None,
+    start_date: str = "1900-01-01",
+    end_date=datetime.today().date(),
 ) -> Dict[Any, Dict[Any, pd.Series]]:
     """Obtain U.S. Treasury Rates [Source: EconDB]
 
