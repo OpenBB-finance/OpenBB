@@ -404,7 +404,7 @@ class ShowView:
     def groupme(self, func, group_id, name, *args, **kwargs):
         data = func(*args, **kwargs)
         if "imagefile" in data:
-            imagefile = cfg.IMG_DIR / data['imagefile']
+            imagefile = cfg.IMG_DIR / data["imagefile"]
             send_image(imagefile, group_id, data.get("description", ""), True)
         elif "embeds_img" in data:
             imagefiles = data["images_list"]
@@ -433,7 +433,7 @@ class ShowView:
                 .replace(".html)", ".html\n\n")
             )
             message = f"{title}\n{description}"
-            imagefile = cfg.IMG_DIR / data['imagefile']
+            imagefile = cfg.IMG_DIR / data["imagefile"]
             client.files_upload(
                 file=imagefile,
                 initial_comment=message,
