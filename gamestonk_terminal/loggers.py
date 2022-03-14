@@ -89,7 +89,7 @@ def setup_file_logger(app_name: str, session_id: str) -> None:
 
     logger.debug("Current_log file: %s", cfg.LOGGING_FILE)
 
-    handler = TimedRotatingFileHandlerWithUpload(cfg.LOGGING_FILE)
+    handler = TimedRotatingFileHandlerWithUpload(cfg.LOGGING_FILE, when="M")
     handler.suffix += ".log"
     formatter = CustomFormatterWithExceptions(
         app_name, uuid_log_dir.stem, session_id, fmt=LOGFORMAT, datefmt=DATEFORMAT
@@ -336,7 +336,7 @@ def contains_goodbye(file: Path) -> bool:
 
 def upload_archive_logs_s3(
     directory_str=None,
-    log_filter=r"gst_\d{10}\.20[2-3][0-9]-[0-2][0-9]-[0-3][0-9]_[0-2][0-9]\.log",
+    log_filter=r"gst_\d{10}\.20[2-3][0-9]-[0-2][0-9]-[0-3][0-9]_[0-2][0-9]-[0-5][0-9]\.log",
     bucket=None,
     folder_name=FOLDER_NAME,
 ) -> None:
@@ -360,21 +360,36 @@ def upload_archive_logs_s3(
         log_files = {}
 
         for file in directory.iterdir():
-
-            one_day_old = (
+            if not file.is_file():
+                continue
+            unused_file = False
+            suffix = ""
+            unused_file = (
                 file.name[4:14].isdigit()
-                and (int(time.time()) - int(file.name[4:14])) / 86400 > 1
-            )  # 86400 seconds in one day
+                and (int(time.time()) - int(file.name[4:14])) / 86400
+                > 1  # 86400 seconds in one day
+            )
+            if file.suffix == ".log":
+                unused_file = True
+            else:
+                suffix += ".log"
+
+            if not unused_file and contains_goodbye(file):
+                for handler in logging.getLogger().handlers:
+                    logging.getLogger().removeHandler(handler)
+                new_handler = logging.FileHandler(
+                    archive / f"uploader_for_{file.name}.log"
+                )
+                logging.getLogger().addHandler(new_handler)
+                unused_file = True
 
             regexp = re.compile(log_filter)
-            if regexp.search(str(file)) and (
-                file.suffix == ".log" or one_day_old or contains_goodbye(file)
-            ):
+            if regexp.search(str(file)) and unused_file:
                 suffix = ".log" if file.suffix != ".log" else ""
                 try:
                     file.rename(tmp / (file.name + suffix))
                 except Exception as e:
-                    logger.exception("Cannot upload file: %s", str(e))
+                    logger.exception("Cannot rename file: %s", str(e))
 
                 log_files[str(tmp / (file.name + suffix))] = tmp / (
                     file.name + suffix
