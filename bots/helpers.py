@@ -404,12 +404,12 @@ class ShowView:
     def groupme(self, func, group_id, name, *args, **kwargs):
         data = func(*args, **kwargs)
         if "imagefile" in data:
-            imagefile = f"in/images/{data['imagefile']}"
+            imagefile = cfg.IMG_DIR / data['imagefile']
             send_image(imagefile, group_id, data.get("description", ""), True)
         elif "embeds_img" in data:
             imagefiles = data["images_list"]
             for img in imagefiles:
-                imagefile = f"in/images/{img}"
+                imagefile = cfg.IMG_DIR / img
                 send_image(imagefile, group_id, data.get("description", ""), True)
         elif "description" in data:
             title = data.get("title", "")
@@ -433,7 +433,7 @@ class ShowView:
                 .replace(".html)", ".html\n\n")
             )
             message = f"{title}\n{description}"
-            imagefile = f"in/images/{data['imagefile']}"
+            imagefile = cfg.IMG_DIR / data['imagefile']
             client.files_upload(
                 file=imagefile,
                 initial_comment=message,
@@ -450,7 +450,7 @@ class ShowView:
             title = data["title"] if "titles" not in data else data["titles"][0]
             N = 0
             for img in data["images_list"]:
-                imagefile = f"in/images/{img}"
+                imagefile = cfg.IMG_DIR / img
                 if N == 0:
                     message = f"{title}\n{description}"
                     payload = {
@@ -459,6 +459,7 @@ class ShowView:
                         "text": message,
                     }
                     client.chat_postMessage(**payload)
+                    title = ""
                 if N < len(data["titles"]) and not 0:
                     title = data["titles"][N]
                 client.files_upload(
@@ -509,6 +510,7 @@ class ShowView:
                     )
                     res = f"{title}\n{description}"
                     bot.reply_to(message, res)
+                    title = ""
                 if N < len(data["titles"]) and not 0:
                     title = data["titles"][N]
                 with open(imagefile, "rb") as image:

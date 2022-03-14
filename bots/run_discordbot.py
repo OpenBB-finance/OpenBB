@@ -10,13 +10,13 @@ import uuid
 from typing import Any, Dict
 
 import disnake
-from disnake.ext import commands, tasks
+from disnake.ext import commands
 from fastapi import FastAPI, Request
 
 import bots.config_discordbot as cfg
 from bots.groupme.run_groupme import handle_groupme
 from gamestonk_terminal.decorators import log_start_end
-from gamestonk_terminal.loggers import setup_logging, upload_archive_logs_s3
+from gamestonk_terminal.loggers import setup_logging
 
 logger = logging.getLogger(__name__)
 setup_logging("bot-app")
@@ -261,7 +261,6 @@ class GSTBot(commands.Bot):
             f"User: {self.user}"
             f"ID: {self.user.id}"
         )
-        upload_archive_logs_s3(log_filter=r"gst_\.*.log")
         # fmt: on
 
 
@@ -276,11 +275,6 @@ print(f"disnake: {disnake.__version__}\n")
 
 gst_bot = GSTBot()
 gst_bot.load_all_extensions("cmds")
-
-
-@tasks.loop(hours=1.0)
-async def logs_upload(self):
-    upload_archive_logs_s3(log_filter=r"gst_\.*.log")
 
 
 class MyModal(disnake.ui.Modal):
