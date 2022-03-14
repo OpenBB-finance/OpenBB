@@ -6,7 +6,7 @@ import argparse
 import logging
 import os
 from datetime import date
-from typing import List, Dict
+from typing import List, Dict, Any
 
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
@@ -26,6 +26,7 @@ from gamestonk_terminal.economy import (
     fred_model,
     yfinance_model,
     yfinance_view,
+    plot_view,
 )
 from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -52,6 +53,7 @@ class EconomyController(BaseController):
         "fred",
         "index",
         "treasury",
+        "plot",
         "valuation",
         "performance",
         "spectrum",
@@ -92,6 +94,7 @@ class EconomyController(BaseController):
         "unemp",
     ]
     overview_options = ["indices", "usbonds", "glbonds", "currencies"]
+    futures_options = ["energy", "metals", "meats", "grains", "softs"]
     tyld_maturity = ["3m", "5y", "10y", "30y"]
     valuation_sort_cols = [
         "Name",
@@ -148,43 +151,69 @@ class EconomyController(BaseController):
         super().__init__(queue)
 
         self.current_series: Dict = dict()
+        self.fred_query: pd.Series = pd.Series()
+        self.DATASETS: Dict[Any, pd.DataFrame] = dict()
 
         if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
-            choices["overview"] = {c: None for c in self.overview_options}
+            self.choices: dict = {c: {} for c in self.controller_choices}
+            self.choices["overview"] = {c: None for c in self.overview_options}
 
-            choices["futures"] = {
-                c: None for c in ["energy", "metals", "meats", "grains", "softs"]
+            self.choices["futures"] = {c: None for c in self.futures_options}
+
+            self.choices["index"] = {c: None for c in yfinance_model.INDICES}
+
+            self.choices["macro"]["-p"] = {c: None for c in econdb_model.PARAMETERS}
+            self.choices["macro"]["--parameter"] = {
+                c: None for c in econdb_model.PARAMETERS
             }
-
-            choices["index"] = {c: None for c in yfinance_model.INDICES}
-
-            choices["macro"]["-p"] = {c: None for c in econdb_model.PARAMETERS}
-            choices["macro"]["--parameter"] = {c: None for c in econdb_model.PARAMETERS}
-            choices["macro"]["-c"] = {c: None for c in econdb_model.COUNTRY_CODES}
-            choices["macro"]["--countries"] = {
+            self.choices["macro"]["-c"] = {c: None for c in econdb_model.COUNTRY_CODES}
+            self.choices["macro"]["--countries"] = {
                 c: None for c in econdb_model.COUNTRY_CODES
             }
 
-            choices["valuation"]["-s"] = {c: None for c in self.valuation_sort_cols}
-            choices["valuation"]["--sortby"] = {
+            self.choices["valuation"]["-s"] = {
+                c: None for c in self.valuation_sort_cols
+            }
+            self.choices["valuation"]["--sortby"] = {
                 c: None for c in self.valuation_sort_cols
             }
 
-            choices["performance"]["-s"] = {c: None for c in self.performance_sort_list}
-            choices["performance"]["--sortby"] = {
+            self.choices["performance"]["-s"] = {
+                c: None for c in self.performance_sort_list
+            }
+            self.choices["performance"]["--sortby"] = {
                 c: None for c in self.performance_sort_list
             }
 
-            choices["map"]["-p"] = {c: None for c in self.map_period_list}
-            choices["map"]["--period"] = {c: None for c in self.map_period_list}
+            self.choices["map"]["-p"] = {c: None for c in self.map_period_list}
+            self.choices["map"]["--period"] = {c: None for c in self.map_period_list}
 
-            choices["feargreed"]["-i"] = {c: None for c in self.fear_greed_indicators}
-            choices["feargreed"]["--indicator"] = {
+            self.choices["feargreed"]["-i"] = {
+                c: None for c in self.fear_greed_indicators
+            }
+            self.choices["feargreed"]["--indicator"] = {
                 c: None for c in self.fear_greed_indicators
             }
 
-            self.completer = NestedCompleter.from_nested_dict(choices)
+            self.completer = NestedCompleter.from_nested_dict(self.choices)
+
+    def update_runtime_choices(self):
+        if session and gtff.USE_PROMPT_TOOLKIT:
+            if not self.fred_query.empty:
+                self.choices["fred"] = {c: None for c in self.fred_query}
+            if self.DATASETS:
+                options = [
+                    option
+                    for _, values in self.DATASETS.items()
+                    for option in values.keys()
+                ]
+
+                for argument in ["-y1", "-yaxis1", "-y2", "yaxis2"]:
+                    self.choices["plot"][argument] = {
+                        option: None for option in options
+                    }
+
+        self.completer = NestedCompleter.from_nested_dict(self.choices)
 
     def print_help(self):
         """Print help"""
@@ -199,6 +228,7 @@ Macro Data
     fred          collect macro data from FRED based on a series ID [src][Source: FRED][/src]
     index         find and plot any (major) index on the market [src][Source: Yahoo Finance][/src]
     treasury      obtain U.S. treasury rates [src][Source: EconDB][/src]
+    plot          plot data from the above commands together
 
 Performance & Valuations
     rtps          real-time performance sectors [src][Source: Alpha Vantage][/src]
@@ -361,7 +391,10 @@ Index
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="macro",
-            description="Get a broad selection of macro data from one or multiple countries. [Source: EconDB]",
+            description="Get a broad selection of macro data from one or multiple countries. This includes Gross "
+            "Domestic Product (RGDP & GDP) and the underlying components, Treasury Yields (Y10YD & M3YD), "
+            "Employment figures (URATE, EMP, AC0I0 and EMRATIO), Government components (e.g. GBAL & GREV), "
+            "Consumer and Producer Indices (CPI & PPI) and a variety of other indicators. [Source: EconDB]",
         )
 
         parser.add_argument(
@@ -421,8 +454,17 @@ Index
             "--convert_currency",
             dest="convert_currency",
             help="Convert the currency of the chosen country to a specified currency. By default, this will be USD "
-            "unless specified with this command. To find the currencies use the option -sc",
+            "unless specified with this command. To find the currency symbols use the option -sc",
             default="USD",
+        )
+
+        parser.add_argument(
+            "-st",
+            "--store",
+            dest="store",
+            help="Store the data to be used for plotting with the 'plot' command.",
+            action="store_true",
+            default=False,
         )
 
         ns_parser = parse_known_args_and_warn(
@@ -442,15 +484,30 @@ Index
                     headers=["Country", "Currency"],
                 )
             elif ns_parser.parameters and ns_parser.countries:
-                econdb_view.show_macro_data(
-                    parameters=ns_parser.parameters,
-                    countries=ns_parser.countries,
-                    start_date=ns_parser.start_date,
-                    end_date=ns_parser.end_date,
-                    convert_currency=ns_parser.convert_currency,
-                    raw=ns_parser.raw,
-                    export=ns_parser.export,
-                )
+                if ns_parser.store:
+                    self.DATASETS["macro"] = econdb_model.get_aggregated_macro_data(
+                        parameters=ns_parser.parameters,
+                        countries=ns_parser.countries,
+                        start_date=ns_parser.start_date,
+                        end_date=ns_parser.end_date,
+                        convert_currency=ns_parser.convert_currency,
+                    )
+
+                    self.DATASETS["macro"].columns = [
+                        "_".join(column) for column in self.DATASETS["macro"].columns
+                    ]
+                else:
+                    econdb_view.show_macro_data(
+                        parameters=ns_parser.parameters,
+                        countries=ns_parser.countries,
+                        start_date=ns_parser.start_date,
+                        end_date=ns_parser.end_date,
+                        convert_currency=ns_parser.convert_currency,
+                        raw=ns_parser.raw,
+                        export=ns_parser.export,
+                    )
+
+                self.update_runtime_choices()
 
     def call_fred(self, other_args: List[str]):
         """Process fred command"""
@@ -471,19 +528,38 @@ Index
 
         parser.add_argument(
             "-s",
+            "--start_date",
             dest="start_date",
             type=valid_date,
-            default="2020-01-01",
             help="Starting date (YYYY-MM-DD) of data",
+            default=None,
+        )
+
+        parser.add_argument(
+            "-e",
+            "--end_date",
+            dest="end_date",
+            type=valid_date,
+            help="Ending date (YYYY-MM-DD) of data",
+            default=None,
         )
 
         parser.add_argument(
             "-q",
             "--query",
+            nargs="+",
             action="store",
             dest="query",
-            type=str,
             help="Query the FRED database to obtain Series IDs given the query seaarch term.",
+        )
+
+        parser.add_argument(
+            "-st",
+            "--store",
+            dest="store",
+            help="Store the data to be used for plotting with the 'plot' command.",
+            action="store_true",
+            default=False,
         )
 
         if other_args and "-" not in other_args[0][0]:
@@ -497,10 +573,13 @@ Index
         )
         if ns_parser:
             if ns_parser.query:
-                fred_view.notes(
-                    series_term=ns_parser.query,
-                    num=ns_parser.limit,
-                )
+                query = " ".join(ns_parser.query)
+                df_search = fred_model.get_series_notes(query)
+                fred_view.notes(series_term=query, num=ns_parser.limit)
+
+                self.fred_query = df_search["id"].head(ns_parser.limit)
+                self.update_runtime_choices()
+
             if ns_parser.parameter:
                 series_dict = {}
                 for series in ns_parser.parameter:
@@ -512,15 +591,23 @@ Index
                             "units": information["seriess"][0]["units_short"],
                         }
 
-                    self.current_series = {series: series_dict[series]}
+                        self.current_series = {series: series_dict[series]}
 
-                fred_view.display_fred_series(
-                    series_dict,
-                    ns_parser.start_date,
-                    ns_parser.raw,
-                    ns_parser.export,
-                    ns_parser.limit,
-                )
+                if ns_parser.store:
+                    self.DATASETS["fred"] = fred_model.get_aggregated_series_data(
+                        series_dict, ns_parser.start_date, ns_parser.end_date
+                    )
+                else:
+                    fred_view.display_fred_series(
+                        d_series=series_dict,
+                        start_date=ns_parser.start_date,
+                        end_date=ns_parser.end_date,
+                        raw=ns_parser.raw,
+                        export=ns_parser.export,
+                        limit=ns_parser.limit,
+                    )
+
+                self.update_runtime_choices()
 
     @log_start_end(log=logger)
     def call_index(self, other_args: List[str]):
@@ -610,6 +697,15 @@ Index
             help="Search for indices with given keyword",
         )
 
+        parser.add_argument(
+            "-st",
+            "--store",
+            dest="store",
+            help="Store the data to be used for plotting with the 'plot' command.",
+            action="store_true",
+            default=False,
+        )
+
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-i")
         ns_parser = parse_known_args_and_warn(
@@ -631,15 +727,29 @@ Index
                     title="Major Indices",
                 )
             elif ns_parser.indices:
-                yfinance_view.show_indices(
-                    indices=ns_parser.indices,
-                    interval=ns_parser.interval,
-                    start_date=ns_parser.start_date,
-                    end_date=ns_parser.end_date,
-                    column=ns_parser.column,
-                    raw=ns_parser.raw,
-                    export=ns_parser.export,
-                )
+                if ns_parser.store:
+                    self.DATASETS["index"] = pd.DataFrame()
+                    for index in ns_parser.indices:
+                        self.DATASETS["index"][index] = yfinance_model.get_index(
+                            index,
+                            interval=ns_parser.interval,
+                            start_date=ns_parser.start_date,
+                            end_date=ns_parser.end_date,
+                            column=ns_parser.column,
+                        )
+                else:
+                    yfinance_view.show_indices(
+                        indices=ns_parser.indices,
+                        interval=ns_parser.interval,
+                        start_date=ns_parser.start_date,
+                        end_date=ns_parser.end_date,
+                        column=ns_parser.column,
+                        store=ns_parser.store,
+                        raw=ns_parser.raw,
+                        export=ns_parser.export,
+                    )
+
+                self.update_runtime_choices()
 
     @log_start_end(log=logger)
     def call_treasury(self, other_args: List[str]):
@@ -650,7 +760,8 @@ Index
             prog="treasury",
             description="Obtain any set of U.S. treasuries and plot them together. These can be a range of maturities "
             "for nominal, inflation-adjusted (on long term average of inflation adjusted) and secondary "
-            "markets over a lengthy period. [Source: EconDB / FED]",
+            "markets over a lengthy period. Note: 3-month and 10-year treasury yields for other countries "
+            "are available via the command 'macro' and parameter 'Y10YD' and 'M3YD'. [Source: EconDB / FED]",
         )
 
         parser.add_argument(
@@ -710,6 +821,15 @@ Index
             default=date.today(),
         )
 
+        parser.add_argument(
+            "-st",
+            "--store",
+            dest="store",
+            help="Store the data to be used for plotting with the 'plot' command.",
+            action="store_true",
+            default=False,
+        )
+
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-m")
         ns_parser = parse_known_args_and_warn(
@@ -724,15 +844,141 @@ Index
             if ns_parser.show_maturities:
                 econdb_view.show_treasury_maturities(econdb_model.TREASURIES)
             elif ns_parser.maturity and ns_parser.type:
-                econdb_view.show_treasuries(
-                    types=ns_parser.type,
-                    maturities=ns_parser.maturity,
-                    frequency=ns_parser.frequency,
-                    start_date=ns_parser.start_date,
-                    end_date=ns_parser.end_date,
-                    raw=ns_parser.raw,
-                    export=ns_parser.export,
+                if ns_parser.store:
+                    treasury_data = econdb_model.get_treasuries(
+                        instruments=ns_parser.type,
+                        maturities=ns_parser.maturity,
+                        frequency=ns_parser.frequency,
+                        start_date=ns_parser.start_date,
+                        end_date=ns_parser.end_date,
+                    )
+
+                    df = (
+                        pd.DataFrame.from_dict(treasury_data, orient="index")
+                        .stack()
+                        .to_frame()
+                    )
+                    self.DATASETS["treasuries"] = pd.DataFrame(
+                        df[0].values.tolist(), index=df.index
+                    ).T
+                    self.DATASETS["treasuries"].columns = [
+                        "_".join(column)
+                        for column in self.DATASETS["treasuries"].columns
+                    ]
+                else:
+                    econdb_view.show_treasuries(
+                        types=ns_parser.type,
+                        maturities=ns_parser.maturity,
+                        frequency=ns_parser.frequency,
+                        start_date=ns_parser.start_date,
+                        end_date=ns_parser.end_date,
+                        store=ns_parser.store,
+                        raw=ns_parser.raw,
+                        export=ns_parser.export,
+                    )
+
+            self.update_runtime_choices()
+
+    @log_start_end(log=logger)
+    def call_plot(self, other_args: List[str]):
+        """Process plot command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="plot",
+            description="Obtain any set of U.S. treasuries and plot them together. These can be a range of maturities "
+            "for nominal, inflation-adjusted (on long term average of inflation adjusted) and secondary "
+            "markets over a lengthy period. Note: 3-month and 10-year treasury yields for other countries "
+            "are available via the command 'macro' and parameter 'Y10YD' and 'M3YD'. [Source: EconDB / FED]",
+        )
+
+        parser.add_argument(
+            "-y1",
+            "--yaxis_1",
+            nargs="+",
+            dest="yaxis_1",
+            help="Select the data you wish to plot on the first y-axis. You can select multiple variables here.",
+            default="",
+        )
+
+        parser.add_argument(
+            "-y2",
+            "--yaxis_2",
+            nargs="+",
+            dest="yaxis_2",
+            help="Select the data you wish to plot on the second y-axis. You can select multiple variables here.",
+            default="",
+        )
+
+        parser.add_argument(
+            "-s",
+            "--show",
+            dest="show",
+            help="Show all available options currently collected.",
+            action="store_true",
+            default=False,
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-y1")
+        ns_parser = parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
+            raw=True,
+            limit=10,
+        )
+
+        if ns_parser:
+            if ns_parser.show:
+                options = {
+                    command: ", ".join(values.keys())
+                    for command, values in self.DATASETS.items()
+                }
+                print_rich_table(
+                    pd.DataFrame.from_dict(
+                        options, orient="index", columns=["Options"]
+                    ),
+                    show_index=True,
+                    index_name="Command",
+                    title="Options available to plot",
                 )
+            else:
+                dataset_yaxis_1 = pd.DataFrame()
+                dataset_yaxis_2 = pd.DataFrame()
+
+                if ns_parser.yaxis_1:
+                    for variable in ns_parser.yaxis_1:
+                        for _, data in self.DATASETS.items():
+                            if variable in data.columns:
+                                dataset_yaxis_1[variable] = data[variable]
+                                break
+                        if variable not in dataset_yaxis_1:
+                            return console.print(
+                                f"Not able to find any data for the -y1 argument {ns_parser.yaxis_1}. "
+                                f"The currently available options are: "
+                                f"{', '.join(self.choices['-y1'])}"
+                            )
+
+                if ns_parser.yaxis_2:
+                    for variable in ns_parser.yaxis_2:
+                        for _, data in self.DATASETS.items():
+                            if variable in data.columns:
+                                dataset_yaxis_2[variable] = data[variable]
+                                break
+                        if variable not in dataset_yaxis_2:
+                            return console.print(
+                                f"Not able to find any data for the -y2 argument {ns_parser.yaxis_2}. "
+                                f"The currently available options are: "
+                                f"{', '.join(self.choices['-y2'])}"
+                            )
+
+                if ns_parser.yaxis_1 or ns_parser.yaxis_2:
+                    return plot_view.show_plot(
+                        dataset_yaxis_1=dataset_yaxis_1, dataset_yaxis_2=dataset_yaxis_2
+                    )
+
+            console.print()
 
     @log_start_end(log=logger)
     def call_map(self, other_args: List[str]):

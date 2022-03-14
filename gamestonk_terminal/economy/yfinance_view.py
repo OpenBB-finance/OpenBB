@@ -1,5 +1,6 @@
 """ EconDB View """
 __docformat__ = "numpy"
+# pylint:disable=too-many-arguments
 
 import logging
 import os
@@ -29,6 +30,7 @@ def show_indices(
     start_date: int = None,
     end_date: int = None,
     column: str = "Adj Close",
+    store: bool = False,
     raw: bool = False,
     external_axes: Optional[List[plt.axes]] = None,
     export: str = "",
@@ -46,6 +48,10 @@ def show_indices(
         The starting date, format "YEAR-MONTH-DAY", i.e. 2010-12-31.
     end_date : str
         The end date, format "YEAR-MONTH-DAY", i.e. 2020-06-05.
+    column : str
+        Which column to load in, by default this is the Adjusted Close.
+    store : bool
+        Whether to prevent plotting the data.
     raw : bool
         Whether to display the raw output.
     external_axes: Optional[List[plt.axes]]
@@ -59,24 +65,31 @@ def show_indices(
     """
     indices_data: pd.DataFrame = pd.DataFrame()
 
-    if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    else:
-        ax = external_axes[0]
-
     for index in indices:
         indices_data[index] = get_index(index, interval, start_date, end_date, column)
 
-        if index in INDICES:
-            label = INDICES[index]["name"]
+    if not store:
+        if external_axes is None:
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
         else:
-            label = index
+            ax = external_axes[0]
 
-        if not indices_data[index].empty:
-            ax.plot(indices_data[index], label=label)
+        for index in indices:
+            if index in INDICES:
+                label = INDICES[index]["name"]
+            else:
+                label = index
 
-    ax.set_title("Indices")
-    ax.legend()
+            if not indices_data[index].empty:
+                ax.plot(indices_data[index], label=label)
+
+        ax.set_title("Indices")
+        ax.legend()
+
+        theme.style_primary_axis(ax)
+
+        if external_axes is None:
+            theme.visualize_output()
 
     if raw:
         print_rich_table(
@@ -94,10 +107,7 @@ def show_indices(
             indices_data,
         )
 
-    theme.style_primary_axis(ax)
-
-    if external_axes is None:
-        theme.visualize_output()
+    return indices_data
 
 
 @log_start_end(log=logger)

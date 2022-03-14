@@ -136,7 +136,7 @@ def get_series_ids(series_term: str, num: int) -> Tuple[List[str], List[str]]:
 
 
 @log_start_end(log=logger)
-def get_series_data(series_id: str, start: str) -> pd.DataFrame:
+def get_series_data(series_id: str, start: str = None, end: str = None) -> pd.DataFrame:
     """Get Series data. [Source: FRED]
     Parameters
     ----------
@@ -144,6 +144,9 @@ def get_series_data(series_id: str, start: str) -> pd.DataFrame:
         Series ID to get data from
     start : str
         Start date to get data from, format yyyy-mm-dd
+    end : str
+        End data to get from, format yyyy-mm-dd
+
     Returns
     ----------
     pd.DataFrame
@@ -153,9 +156,43 @@ def get_series_data(series_id: str, start: str) -> pd.DataFrame:
 
     try:
         fredapi_client = Fred(cfg.API_FRED_KEY)
-        df = fredapi_client.get_series(series_id, start)
+        df = fredapi_client.get_series(series_id, start, end)
     # Series does not exist & invalid api keys
     except HTTPError as e:
         console.print(e)
 
     return df
+
+
+@log_start_end(log=logger)
+def get_aggregated_series_data(
+    d_series: Dict[str, Dict[str, str]], start: str = None, end: str = None
+) -> pd.DataFrame:
+    """Get Series data. [Source: FRED]
+    Parameters
+    ----------
+    series_id : str
+        Series ID to get data from
+    start : str
+        Start date to get data from, format yyyy-mm-dd
+    end : str
+        End data to get from, format yyyy-mm-dd
+
+    Returns
+    ----------
+    pd.DataFrame
+        Series data
+    """
+    series_ids = list(d_series.keys())
+    data = pd.DataFrame()
+
+    for s_id in series_ids:
+        data = pd.concat(
+            [
+                data,
+                pd.DataFrame(get_series_data(s_id, start, end), columns=[s_id]),
+            ],
+            axis=1,
+        )
+
+    return data

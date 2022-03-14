@@ -1,9 +1,10 @@
 """ EconDB View """
 __docformat__ = "numpy"
+# pylint:disable=too-many-arguments
 
 import logging
 import os
-from typing import Optional, List, Dict, Any
+from typing import Optional, List, Dict
 
 import pandas as pd
 from matplotlib import pyplot as plt
@@ -58,41 +59,28 @@ def show_macro_data(
     ----------
     Plots the Series.
     """
-    country_data: Dict[Any, Dict[Any, pd.Series]] = {}
+    country_data_df = econdb_model.get_aggregated_macro_data(
+        parameters, countries, start_date, end_date, convert_currency
+    )
 
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     else:
         ax = external_axes[0]
 
-    for country in countries:
-        country_data[country] = {}
-        for parameter in parameters:
-            country_data[country][parameter] = econdb_model.get_macro_data(
-                parameter, country, convert_currency
-            )
-
-            if country_data[country][parameter] is not None and start_date or end_date:
-                country_data[country][parameter] = country_data[country][parameter].loc[
-                    start_date:end_date
-                ]
-
-    df = pd.DataFrame.from_dict(country_data, orient="index").stack().to_frame()
-    df = pd.DataFrame(df[0].values.tolist(), index=df.index).T
-
-    maximum_value = df.max().max()
+    maximum_value = country_data_df.max().max()
 
     if maximum_value > 1_000_000_000:
-        df_rounded = df / 1_000_000_000
+        df_rounded = country_data_df / 1_000_000_000
         denomination = f"[{convert_currency} Billions]"
     elif maximum_value > 1_000_000:
-        df_rounded = df / 1_000_000
+        df_rounded = country_data_df / 1_000_000
         denomination = f"[{convert_currency} Millions]"
     elif maximum_value > 1_000:
-        df_rounded = df / 1_000
+        df_rounded = country_data_df / 1_000
         denomination = f"[{convert_currency} Thousands]"
     else:
-        df_rounded = df
+        df_rounded = country_data_df
         denomination = f"[{convert_currency}]"
 
     for column in df_rounded.columns:
@@ -113,6 +101,8 @@ def show_macro_data(
         else:
             ax.plot(df_rounded[column])
             ax.set_title(f"{parameter_label} of {country_label} {denomination}")
+
+    df_rounded.columns = ["_".join(column) for column in df_rounded.columns]
 
     if raw:
         print_rich_table(
@@ -138,6 +128,7 @@ def show_treasuries(
     frequency: str,
     start_date: str = None,
     end_date: str = None,
+    store: bool = False,
     raw: bool = False,
     external_axes: Optional[List[plt.axes]] = None,
     export: str = "",
@@ -156,6 +147,8 @@ def show_treasuries(
         The starting date, format "YEAR-MONTH-DAY", i.e. 2010-12-31.
     end_date : str
         The end date, format "YEAR-MONTH-DAY", i.e. 2020-06-05.
+    store : bool
+        Whether to prevent plotting the data.
     raw : bool
         Whether to display the raw output.
     external_axes: Optional[List[plt.axes]]
@@ -167,47 +160,48 @@ def show_treasuries(
     ----------
     Plots the Treasury Series.
     """
-    if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    else:
-        ax = external_axes[0]
 
     treasury_data = econdb_model.get_treasuries(
         types, maturities, frequency, start_date, end_date
     )
 
-    for treasury, maturities_data in treasury_data.items():
-        for maturity in maturities_data:
-            ax.plot(maturities_data[maturity], label=f"{treasury} [{maturity}]")
+    if not store:
+        if external_axes is None:
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        else:
+            ax = external_axes[0]
 
-    ax.set_title("U.S. Treasuries")
-    ax.legend()
+        for treasury, maturities_data in treasury_data.items():
+            for maturity in maturities_data:
+                ax.plot(maturities_data[maturity], label=f"{treasury} [{maturity}]")
 
-    if raw or export:
-        df = pd.DataFrame.from_dict(treasury_data, orient="index").stack().to_frame()
-        df = pd.DataFrame(df[0].values.tolist(), index=df.index).T
-        df.columns = ["_".join(column) for column in df.columns]
+        ax.set_title("U.S. Treasuries")
+        ax.legend()
 
-        if raw:
-            print_rich_table(
-                df.iloc[-10:],
-                headers=list(df.columns),
-                show_index=True,
-                title="U.S. Treasuries",
-            )
+        theme.style_primary_axis(ax)
 
-        if export:
-            export_data(
-                export,
-                os.path.dirname(os.path.abspath(__file__)),
-                "treasuries_data",
-                df,
-            )
+        if external_axes is None:
+            theme.visualize_output()
 
-    theme.style_primary_axis(ax)
+    df = pd.DataFrame.from_dict(treasury_data, orient="index").stack().to_frame()
+    df = pd.DataFrame(df[0].values.tolist(), index=df.index).T
+    df.columns = ["_".join(column) for column in df.columns]
 
-    if external_axes is None:
-        theme.visualize_output()
+    if raw:
+        print_rich_table(
+            df.iloc[-10:],
+            headers=list(df.columns),
+            show_index=True,
+            title="U.S. Treasuries",
+        )
+
+    if export:
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "treasuries_data",
+            df,
+        )
 
 
 @log_start_end(log=logger)

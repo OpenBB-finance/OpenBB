@@ -341,6 +341,58 @@ def get_macro_data(
 
 
 @log_start_end(log=logger)
+def get_aggregated_macro_data(
+    parameters: list,
+    countries: list,
+    start_date: int = None,
+    end_date: int = None,
+    convert_currency: str = "USD",
+) -> pd.DataFrame:
+    """This functions groups the data queried from the EconDB database [Source: EconDB]
+
+    Parameters
+    ----------
+    parameters: list
+        The type of data you wish to acquire
+    countries : list
+       the selected country or countries
+    start_date : str
+        The starting date, format "YEAR-MONTH-DAY", i.e. 2010-12-31.
+    end_date : str
+        The end date, format "YEAR-MONTH-DAY", i.e. 2020-06-05.
+    convert_currency : str
+        In what currency you wish to convert all values.
+
+    Returns
+    ----------
+    pd.DataFrame
+        A DataFrame with the requested macro data of all chosen countries
+    """
+    country_data: Dict[Any, Dict[Any, pd.Series]] = {}
+
+    for country in countries:
+        country_data[country] = {}
+        for parameter in parameters:
+            country_data[country][parameter] = get_macro_data(
+                parameter, country, convert_currency
+            )
+
+            if country_data[country][parameter] is not None and start_date or end_date:
+                country_data[country][parameter] = country_data[country][parameter].loc[
+                    start_date:end_date
+                ]
+
+    country_data_df = (
+        pd.DataFrame.from_dict(country_data, orient="index").stack().to_frame()
+    )
+    country_data_df = pd.DataFrame(
+        country_data_df[0].values.tolist(), index=country_data_df.index
+    ).T
+
+    return country_data_df
+
+
+@log_start_end(log=logger)
 def get_treasuries(
     instruments: list,
     maturities: list,

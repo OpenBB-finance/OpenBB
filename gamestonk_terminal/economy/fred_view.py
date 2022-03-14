@@ -11,9 +11,9 @@ import numpy as np
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 
-from gamestonk_terminal.decorators import check_api_key
-from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal.config_plot import PLOT_DPI
+from gamestonk_terminal.config_terminal import theme
+from gamestonk_terminal.decorators import check_api_key
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.economy import fred_model
 from gamestonk_terminal.helper_funcs import (
@@ -47,8 +47,9 @@ def format_units(num: int) -> str:
 
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
-def notes(series_term: str, num: int):
+def notes(series_term: str, num: int) -> pd.DataFrame:
     """Print Series notes. [Source: FRED]
+
     Parameters
     ----------
     series_term : str
@@ -80,6 +81,7 @@ def notes(series_term: str, num: int):
 def display_fred_series(
     d_series: Dict[str, Dict[str, str]],
     start_date: str,
+    end_date: str = "",
     raw: bool = False,
     export: str = "",
     limit: int = 10,
@@ -89,10 +91,14 @@ def display_fred_series(
 
     Parameters
     ----------
-    series : str
+    d_series : str
         FRED Series ID from https://fred.stlouisfed.org. For multiple series use: series1,series2,series3
     start_date : str
         Starting date (YYYY-MM-DD) of data
+    end_date : str
+        Ending date (YYYY-MM-DD) of data
+    store : bool
+        Whether to prevent plotting the data.
     raw : bool
         Output only raw data
     export : str
@@ -103,61 +109,53 @@ def display_fred_series(
         External axes (3 axes are expected in the list), by default None
     """
     series_ids = list(d_series.keys())
-    data = pd.DataFrame()
+    data = fred_model.get_aggregated_series_data(d_series, start_date, end_date)
 
-    for s_id in series_ids:
-        data = pd.concat(
-            [
-                data,
-                pd.DataFrame(
-                    fred_model.get_series_data(s_id, start_date), columns=[s_id]
-                ),
-            ],
-            axis=1,
-        )
-    # Try to get everything onto the same 0-10 scale.
-    # To do so, think in scientific notation.  Divide the data by whatever the E would be
-    if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-
-    else:
-        if len(external_axes) != 3:
-            logger.error("Expected list of 3 axis items")
-            console.print("[red]Expected list of 3 axis items./n[/red]")
-            return
-        (ax,) = external_axes
-
-    if len(series_ids) == 1:
-        s_id = series_ids[0]
-        sub_dict: Dict = d_series[s_id]
-        title = f"{sub_dict['title']} ({sub_dict['units']})"
-        ax.plot(data.index, data, label="\n".join(textwrap.wrap(title, 80)))
-    else:
-        for s_id, sub_dict in d_series.items():
-            data_to_plot = data[s_id].dropna()
-            exponent = int(np.log10(data_to_plot.max()))
-            data_to_plot /= 10**exponent
-            multiplier = f"x {format_units(10**exponent)}" if exponent > 0 else ""
-            title = f"{sub_dict['title']} ({sub_dict['units']}) {'['+multiplier+']' if multiplier else ''}"
-            ax.plot(
-                data_to_plot.index,
-                data_to_plot,
-                label="\n".join(textwrap.wrap(title, 80))
-                if len(series_ids) < 5
-                else title,
-            )
-
-    ax.legend(prop={"size": 10}, bbox_to_anchor=(0, 1), loc="lower left")
     if data.empty:
         logger.error("No data")
-        console.print("[red]No data[/red]\n")
+        console.print("[red]No data available.[/red]\n")
     else:
+        # Try to get everything onto the same 0-10 scale.
+        # To do so, think in scientific notation.  Divide the data by whatever the E would be
+        if external_axes is None:
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+
+        else:
+            if len(external_axes) != 3:
+                logger.error("Expected list of 3 axis items")
+                console.print("[red]Expected list of 3 axis items./n[/red]")
+                return
+            (ax,) = external_axes
+
+        if len(series_ids) == 1:
+            s_id = series_ids[0]
+            sub_dict: Dict = d_series[s_id]
+            title = f"{sub_dict['title']} ({sub_dict['units']})"
+            ax.plot(data.index, data, label="\n".join(textwrap.wrap(title, 80)))
+        else:
+            for s_id, sub_dict in d_series.items():
+                data_to_plot = data[s_id].dropna()
+                exponent = int(np.log10(data_to_plot.max()))
+                data_to_plot /= 10**exponent
+                multiplier = f"x {format_units(10**exponent)}" if exponent > 0 else ""
+                title = f"{sub_dict['title']} ({sub_dict['units']}) {'['+multiplier+']' if multiplier else ''}"
+                ax.plot(
+                    data_to_plot.index,
+                    data_to_plot,
+                    label="\n".join(textwrap.wrap(title, 80))
+                    if len(series_ids) < 5
+                    else title,
+                )
+
+        ax.legend(prop={"size": 10}, bbox_to_anchor=(0, 1), loc="lower left")
+
         ax.set_xlim(data.index[0], data.index[-1])
         theme.style_primary_axis(ax)
         if external_axes is None:
             theme.visualize_output()
 
         data.index = [x.strftime("%Y-%m-%d") for x in data.index]
+
         if raw:
             print_rich_table(
                 data.tail(limit),
@@ -166,9 +164,10 @@ def display_fred_series(
                 index_name="Date",
             )
             console.print("")
+
         export_data(
             export,
             os.path.dirname(os.path.abspath(__file__)),
-            "plot",
+            "fred",
             data,
         )
