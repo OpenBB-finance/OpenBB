@@ -33,7 +33,7 @@ def display_marketcap_dominance(
     Parameters
     ----------
     coin : str
-        Crypto symbol to check close price (BTC or ETH)
+        Crypto symbol to check market cap dominance
     start : int
         Initial date like string (e.g., 2021-10-01)
     end : int

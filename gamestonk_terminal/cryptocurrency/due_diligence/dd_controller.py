@@ -139,9 +139,6 @@ class DueDiligenceController(CryptoBaseController):
             choices["mcapdom"]["-i"] = {
                 c: None for c in messari_model.INTERVALS_TIMESERIES
             }
-            choices["mcapdom"]["--interval"] = {
-                c: None for c in messari_model.INTERVALS_TIMESERIES
-            }
             choices["ps"]["--vs"] = {c: None for c in coinpaprika_view.CURRENCIES}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -1198,14 +1195,14 @@ class DueDiligenceController(CryptoBaseController):
 
     @log_start_end(log=logger)
     def call_mcapdom(self, other_args: List[str]):
-        """Process nonzero command"""
+        """Process mcapdom command"""
 
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="mcapdom",
             description="""
-                Display asset's percentage share of total crypto circulating marketcap
+                Display asset's percentage share of total crypto circulating market cap
                 [Source: https://messari.io]
             """,
         )

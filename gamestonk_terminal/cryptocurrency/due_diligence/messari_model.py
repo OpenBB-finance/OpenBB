@@ -19,13 +19,13 @@ base_url = "https://data.messari.io/api/v1/"
 def get_marketcap_dominance(
     coin: str, interval: str, start: str, end: str
 ) -> pd.DataFrame:
-    """Returns the price of a cryptocurrency
-    [Source: https://glassnode.com]
+    """Returns market dominance of a coin over time
+    [Source: https://messari.io/]
 
     Parameters
     ----------
     coin : str
-        Crypto symbol to check close price (BTC or ETH)
+        Crypto symbol to check market cap dominance
     start : int
         Initial date like string (e.g., 2021-10-01)
     end : int
