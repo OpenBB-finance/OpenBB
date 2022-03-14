@@ -90,6 +90,7 @@ ascii-magic = "^1.6"
 squarify = "^0.4.3"
 finnhub-python = "^2.4.10"
 linearmodels = "^4.25"
+black = "22.1"
 
 
 [tool.poetry.dev-dependencies]
@@ -102,7 +103,7 @@ codespell = "^2.0.0"
 pyupgrade = "^2.11.0"
 sphinx = "4.1.1"
 myst-parser = "^0.15.2"
-black = {extras = ["jupyter"], version = "21.7b0"}
+black = {extras = ["jupyter"], version = "22.1.0"}
 bandit = "^1.7.0"
 coverage = ">=5.5"
 vcrpy = "^4.1.1"

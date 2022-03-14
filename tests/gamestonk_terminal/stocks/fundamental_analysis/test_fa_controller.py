@@ -265,6 +265,12 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             {"TSLA"},
         ),
         (
+            "call_dupont",
+            "av_view.display_dupont",
+            [],
+            {"TSLA"},
+        ),
+        (
             "call_cal",
             "yahoo_finance_view.display_calendar_earnings",
             [],

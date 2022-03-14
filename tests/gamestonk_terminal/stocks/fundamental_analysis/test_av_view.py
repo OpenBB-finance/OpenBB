@@ -120,3 +120,19 @@ def test_display_fraud(mocker, df):
         return_value=(df),
     )
     av_view.display_fraud(ticker="TSLA")
+
+
+@pytest.mark.vcr(record_mode="none")
+@pytest.mark.record_stdout
+@pytest.mark.parametrize(
+    "df",
+    [
+        (pd.DataFrame()),
+    ],
+)
+def test_dupont(mocker, df):
+    mocker.patch(
+        "gamestonk_terminal.stocks.fundamental_analysis.av_view.av_model.get_dupont",
+        return_value=(df),
+    )
+    av_view.display_dupont(ticker="TSLA")

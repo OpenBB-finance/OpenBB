@@ -22,8 +22,8 @@ optional arguments:
   -x, --xlsx            Export an excel spreadsheet with binomial pricing data (default: False)
   --plot                Plot expected ending values (default: False)
   -v VOLATILITY, --volatility VOLATILITY
-                        Underlying asset annualized volatility (default: None)
-  -h, --help            show this help message (default: False)
+                        Underlying asset annualized volatility. (None indicates that the historical volatility is being used) (default: None)
+   -h, --help            show this help message (default: False)
 ```
 
 Example:
