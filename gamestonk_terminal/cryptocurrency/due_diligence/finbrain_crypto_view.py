@@ -6,7 +6,6 @@ import os
 
 import pandas as pd
 
-from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.common.behavioural_analysis.finbrain_model import get_sentiment
 from gamestonk_terminal.common.behavioural_analysis.finbrain_view import (
     plot_sentiment,
@@ -15,6 +14,7 @@ from gamestonk_terminal.common.behavioural_analysis.finbrain_view import (
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import export_data
 from gamestonk_terminal.rich_config import console
+from gamestonk_terminal import rich_config
 
 logger = logging.getLogger(__name__)
 
@@ -57,7 +57,7 @@ def display_crypto_sentiment_analysis(coin: str, export: str) -> None:
     plot_sentiment(df_sentiment, coin)
     df_sentiment.sort_index(ascending=True, inplace=True)
 
-    if gtff.USE_COLOR:
+    if rich_config.USE_COLOR:
         console.print(
             df_sentiment["Sentiment Analysis"]
             .apply(lambda_sentiment_coloring, last_val=0)
