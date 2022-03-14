@@ -1,27 +1,27 @@
-fiscalDateEnding                   2016-12-31  2017-12-31  2018-12-31 2019-12-31 2020-12-31
-reportedCurrency                          USD         USD         USD        USD        USD
-grossProfit                           1.599 B     2.223 B     4.042 B    4.069 B    6.630 B
-totalRevenue                          7.000 B    11.759 B    21.461 B   24.578 B   31.536 B
-costOfRevenue                         5.401 B     9.536 B    17.419 B   20.509 B   24.906 B
-costofGoodsAndServicesSold            4.560 B     7.797 B    85.272 M      193 M      289 M
-operatingIncome                    -667.340 M    -1.632 B      -388 M      -69 M    1.994 B
-sellingGeneralAndAdministrative       1.432 B     2.477 B     2.835 B    2.646 B    3.145 B
-researchAndDevelopment              834.408 M     1.378 B     1.460 B    1.343 B    1.491 B
-operatingExpenses                     2.267 B     3.855 B     4.430 B    4.138 B    4.636 B
-investmentIncomeNet                   8.530 M    19.686 M    24.533 M       44 M       30 M
-netInterestIncome                  -198.810 M  -471.259 M  -663.071 M     -685 M     -748 M
-interestIncome                           None      -259 K       -71 K       44 M       30 M
-interestExpense                     198.810 M       471 M       663 M      685 M      748 M
-nonInterestIncome                   756.309 M   948.469 M    22.185 B      -98 M     -336 M
-otherNonOperatingIncome             111.272 M      -125 M        22 M       45 M     -122 M
-depreciation                        477.300 M       769 M     1.110 B    1.370 B    1.570 B
-depreciationAndAmortization         947.099 M     1.636 B        66 M      343 M      399 M
-incomeBeforeTax                    -648.216 M    -1.930 B      -918 M     -752 M    1.013 B
-incomeTaxExpense                     26.698 M        32 M        58 M      110 M      292 M
-interestAndDebtExpense              198.810 M   471.259 M   663.071 M      685 M      853 M
-netIncomeFromContinuingOperations  -773.046 M    -2.241 B    -1.063 B     -775 M      862 M
-comprehensiveIncomeNetOfTax        -695.098 M    -1.905 B    -1.018 B     -890 M    1.120 B
-ebit                               -449.406 M    -1.459 B      -255 M      -67 M    1.761 B
-ebitda                              497.693 M   177.003 M      -189 M      276 M    2.160 B
-netIncome                          -674.914 M    -1.962 B      -976 M     -862 M      721 M
+fiscalDateEnding                   2017-12-31  2018-12-31 2019-12-31 2020-12-31 2021-12-31
+reportedCurrency                          USD         USD        USD        USD        USD
+grossProfit                           2.223 B     4.042 B    4.069 B    6.630 B   13.606 B
+totalRevenue                         11.759 B    21.461 B   24.578 B   31.536 B   53.823 B
+costOfRevenue                         9.536 B    17.419 B   20.509 B   24.906 B   40.217 B
+costofGoodsAndServicesSold            7.797 B    85.272 M      193 M      289 M      374 M
+operatingIncome                      -1.632 B      -388 M      -69 M    1.994 B    6.523 B
+sellingGeneralAndAdministrative       2.477 B     2.835 B    2.646 B    3.145 B    4.517 B
+researchAndDevelopment                1.378 B     1.460 B    1.343 B    1.491 B    2.593 B
+operatingExpenses                     3.855 B     4.430 B    4.138 B    4.636 B    7.083 B
+investmentIncomeNet                  19.686 M    24.533 M       44 M       30 M       56 M
+netInterestIncome                  -471.259 M  -663.071 M     -685 M     -748 M     -371 M
+interestIncome                         -259 K       -71 K       44 M       30 M       56 M
+interestExpense                         471 M       663 M      685 M      748 M      371 M
+nonInterestIncome                   948.469 M    22.185 B      -98 M     -336 M      -55 M
+otherNonOperatingIncome                -125 M        22 M       45 M     -122 M      135 M
+depreciation                            769 M     1.110 B    1.370 B    1.570 B    1.910 B
+depreciationAndAmortization           1.636 B        66 M      343 M      399 M      466 M
+incomeBeforeTax                      -1.930 B      -918 M     -752 M    1.013 B    6.218 B
+incomeTaxExpense                         32 M        58 M      110 M      292 M      699 M
+interestAndDebtExpense              471.259 M   663.071 M      685 M      853 M      371 M
+netIncomeFromContinuingOperations    -2.241 B    -1.063 B     -775 M      862 M    5.644 B
+comprehensiveIncomeNetOfTax          -1.905 B    -1.018 B     -890 M    1.120 B    5.210 B
+ebit                                 -1.459 B      -255 M      -67 M    1.761 B    6.589 B
+ebitda                              177.003 M      -189 M      276 M    2.160 B    7.055 B
+netIncome                            -1.962 B      -976 M     -862 M      721 M    5.519 B
 

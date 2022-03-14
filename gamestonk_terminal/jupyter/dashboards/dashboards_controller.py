@@ -98,6 +98,14 @@ def create_call(other_args: List[str], name: str, filename: str = None) -> None:
         dest="input",
         help="Skips confirmation to run server.",
     )
+    parser.add_argument(
+        "-d",
+        "--dark",
+        action="store_true",
+        default=False,
+        dest="dark",
+        help="Whether to show voila in dark mode",
+    )
 
     ns_parser = parse_known_args_and_warn(parser, other_args)
 
@@ -111,9 +119,12 @@ def create_call(other_args: List[str], name: str, filename: str = None) -> None:
                 f"Warning: opens a port on your computer to run a {cmd} server."
             )
             response = input("Would you like us to run the server for you? y/n\n")
+        args = ""
+        if ns_parser.dark and not ns_parser.jupyter:
+            args += "--theme=dark"
         if ns_parser.input or response.lower() == "y":
             subprocess.Popen(
-                f"{cmd} {file}",
+                f"{cmd} {file} {args}",
                 stdout=subprocess.PIPE,
                 stderr=subprocess.STDOUT,
                 shell=True,

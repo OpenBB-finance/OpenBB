@@ -10,8 +10,26 @@ interactions:
     uri: https://financialmodelingprep.com/api/v3/financial-growth/PM?apikey=MOCK_API_KEY&limit=0&period=annual
   response:
     body:
-      string: "[ {\n  \"symbol\" : \"PM\",\n  \"date\" : \"2020-12-31\",\n  \"period\"
-        : \"FY\",\n  \"revenueGrowth\" : -0.03727562489515182,\n  \"grossProfitGrowth\"
+      string: "[ {\n  \"symbol\" : \"PM\",\n  \"date\" : \"2021-12-31\",\n  \"period\"
+        : \"FY\",\n  \"revenueGrowth\" : 0.0944796821635185,\n  \"grossProfitGrowth\"
+        : 0.11764705882352941,\n  \"ebitgrowth\" : 0.111399187624233,\n  \"operatingIncomeGrowth\"
+        : 0.111399187624233,\n  \"netIncomeGrowth\" : 0.1307100297914598,\n  \"epsgrowth\"
+        : -1.0,\n  \"epsdilutedGrowth\" : -1.0,\n  \"weightedAverageSharesGrowth\"
+        : -1.0,\n  \"weightedAverageSharesDilutedGrowth\" : -1.0,\n  \"dividendsperShareGrowth\"
+        : 0.0,\n  \"operatingCashFlowGrowth\" : 0.21962902568283735,\n  \"freeCashFlowGrowth\"
+        : 0.21813246471226927,\n  \"tenYRevenueGrowthPerShare\" : 0.0,\n  \"fiveYRevenueGrowthPerShare\"
+        : 0.0,\n  \"threeYRevenueGrowthPerShare\" : 0.0,\n  \"tenYOperatingCFGrowthPerShare\"
+        : 0.0,\n  \"fiveYOperatingCFGrowthPerShare\" : 0.0,\n  \"threeYOperatingCFGrowthPerShare\"
+        : 0.0,\n  \"tenYNetIncomeGrowthPerShare\" : 0.0,\n  \"fiveYNetIncomeGrowthPerShare\"
+        : 0.0,\n  \"threeYNetIncomeGrowthPerShare\" : 0.0,\n  \"tenYShareholdersEquityGrowthPerShare\"
+        : 0.0,\n  \"fiveYShareholdersEquityGrowthPerShare\" : 0.0,\n  \"threeYShareholdersEquityGrowthPerShare\"
+        : 0.0,\n  \"tenYDividendperShareGrowthPerShare\" : 0.0,\n  \"fiveYDividendperShareGrowthPerShare\"
+        : 0.0,\n  \"threeYDividendperShareGrowthPerShare\" : 0.0,\n  \"receivablesGrowth\"
+        : 0.047593725073118855,\n  \"inventoryGrowth\" : -0.09081430507767699,\n  \"assetGrowth\"
+        : -0.07865669976570344,\n  \"bookValueperShareGrowth\" : 0.0,\n  \"debtGrowth\"
+        : -0.11827752409944191,\n  \"rdexpenseGrowth\" : 0.0,\n  \"sgaexpensesGrowth\"
+        : 0.18556701030927836\n}, {\n  \"symbol\" : \"PM\",\n  \"date\" : \"2020-12-31\",\n
+        \ \"period\" : \"FY\",\n  \"revenueGrowth\" : -0.03727562489515182,\n  \"grossProfitGrowth\"
         : -0.008656437901720921,\n  \"ebitgrowth\" : 0.10812104960735491,\n  \"operatingIncomeGrowth\"
         : 0.10812104960735491,\n  \"netIncomeGrowth\" : 0.12122477383437717,\n  \"epsgrowth\"
         : 0.11674321503131489,\n  \"epsdilutedGrowth\" : 0.11746137787056483,\n  \"weightedAverageSharesGrowth\"
@@ -384,7 +402,7 @@ interactions:
       Content-Type:
       - application/json;charset=UTF-8
       Date:
-      - Sat, 04 Dec 2021 12:08:12 GMT
+      - Sun, 06 Mar 2022 14:44:37 GMT
       Server:
       - nginx/1.14.0 (Ubuntu)
       Transfer-Encoding:

@@ -1,5 +1,0 @@
-Wrong sort column provided! Provide one of these: Ticker, Company, Sector, Industry, Country, Market Cap, P/E, Price, Change, Volume
-  Ticker                Company              Sector                             Industry    Country  Market Cap P/E  Price  Change      Volume
-0   VINE  Fresh Vine Wine, Inc.  Consumer Defensive  Beverages - Wineries & Distilleries        USA  71000000.0       8.27  0.4210  26632196.0
-1   IMRN        Immuron Limited          Healthcare                        Biotechnology  Australia  14880000.0       3.65  0.3931  33915518.0
-

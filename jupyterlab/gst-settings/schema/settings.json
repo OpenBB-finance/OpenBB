@@ -404,15 +404,6 @@
                     "default": "REPLACE_ME",
                     "value": ""
                 },
-                "GT_API_SENTIMENTINVESTOR_KEY":
-                {
-                    "type": "string",
-                    "form": "password",
-                    "title": "Sentimentinvestor key",
-                    "description": "https://www.sentimentinvestor.com",
-                    "default": "REPLACE_ME",
-                    "value": ""
-                },
                 "GT_API_SENTIMENTINVESTOR_TOKEN":
                 {
                     "type": "string",

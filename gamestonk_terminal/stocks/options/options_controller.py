@@ -192,7 +192,7 @@ Expiry: [/param]{self.selected_date or None}
     vol           plot volume [src][Tradier/YFinance][/src]
     voi           plot volume and open interest [src][Tradier/YFinance][/src]
     hist          plot option history [src][Tradier][/src]
-    vsurf         show 3D volatility surface [Yfinance]
+    vsurf         show 3D volatility surface [src][Yfinance][/src]
     grhist        plot option greek history [src][Syncretism.io][/src]
     plot          plot variables provided by the user [src][Yfinance][/src]
     parity        shows whether options are above or below expected price [src][Yfinance][/src]
@@ -1334,7 +1334,7 @@ Expiry: [/param]{self.selected_date or None}
             type=float,
             default=None,
             dest="volatility",
-            help="Underlying asset annualized volatility",
+            help="Underlying asset annualized volatility.  Historical volatility used if not supplied.",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-s")
