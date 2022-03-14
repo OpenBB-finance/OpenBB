@@ -40,8 +40,7 @@ def supplier_command(ticker=""):
     if cfg.DEBUG:
         logger.debug(l_suppliers)
 
-    suppliers = []
-    unique = []
+    suppliers, unique = [], []
     i = 0
 
     for value in l_suppliers:

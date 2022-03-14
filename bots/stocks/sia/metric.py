@@ -20,20 +20,16 @@ def metric_command(
     finance_metric: str,
     ticker: str = "",
 ):
-    """Shows candle plot of loaded ticker. [Source: Yahoo Finance, IEX Cloud or Alpha Vantage]
+    """Display financials bars comparing sectors, industry, analysis, countries, market cap and excluding exchanges.
 
     Parameters
     ----------
+    finance_key: str
+        Select finance key from Yahoo Finance(e.g. financialData, defaultKeyStatistics, summaryProfile)
+    finance_metric: str
+        Select finance metric from Yahoo Finance (e.g. operatingCashflow, revenueGrowth, ebitda, freeCashflow)
     ticker: str
-        Ticker name
-    interval: int
-        chart mins or daily
-    past_days: int
-        Display the past * days. Default: 1(Not for Daily)
-    start: str
-        start date format YYYY-MM-DD
-    end: str
-        end date format YYYY-MM-DD
+        Company ticker to use as the basis.
     """
     logger.info("metrics")
     exclude_exchanges: bool = True

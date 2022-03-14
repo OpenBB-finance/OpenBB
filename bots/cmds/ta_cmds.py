@@ -173,25 +173,45 @@ class TechnicalAnalysisCommands(commands.Cog):
         self,
         inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
+        interval: int = commands.Param(choices=[1, 5, 15, 30, 60, 1440]),
+        past_days: int = 0,
         length="14",
         scalar="100",
         drift="1",
         start="",
         end="",
+        extended_hours: bool = False,
+        heikin_candles: bool = False,
     ):
         """Displays chart with relative strength index [Yahoo Finance]
 
         Parameters
         -----------
         ticker: Stock Ticker
+        interval : Chart Minute Interval, 1440 for Daily
+        past_days: Past Days to Display. Default: 0(Not for Daily)
         length: length. Default: 14
         scalar: scalar. Default: 100
         drift: drift. Default: 1
         start: YYYY-MM-DD format
         end: YYYY-MM-DD format
+        extended_hours: Display Pre/After Market Hours. Default: False
+        heikin_candles: Heikin Ashi candles. Default: False
         """
         await ShowView().discord(
-            rsi_command, inter, "ta-mom rsi", ticker, length, scalar, drift, start, end
+            rsi_command,
+            inter,
+            "ta-mom rsi",
+            ticker,
+            interval,
+            past_days,
+            length,
+            scalar,
+            drift,
+            start,
+            end,
+            extended_hours,
+            heikin_candles,
         )
 
     @ta_mom.sub_command()
@@ -323,23 +343,42 @@ class TechnicalAnalysisCommands(commands.Cog):
         self,
         inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
+        interval: int = commands.Param(choices=[1, 5, 15, 30, 60, 1440]),
+        past_days: int = 0,
         length="25",
         scalar="100",
         start="",
         end="",
+        extended_hours: bool = False,
+        heikin_candles: bool = False,
     ):
         """Displays chart with aroon indicator [Yahoo Finance]
 
         Parameters
         -----------
         ticker: Stock Ticker
+        interval : Chart Minute Interval, 1440 for Daily
+        past_days: Past Days to Display. Default: 0(Not for Daily)
         length: length. Default: 25
         scalar: scalar. Default: 100
         start: YYYY-MM-DD format
         end: YYYY-MM-DD format
+        extended_hours: Display Pre/After Market Hours. Default: False
+        heikin_candles: Heikin Ashi candles. Default: False
         """
         await ShowView().discord(
-            aroon_command, inter, "ta-trend aroon", ticker, length, scalar, start, end
+            aroon_command,
+            inter,
+            "ta-trend aroon",
+            ticker,
+            interval,
+            past_days,
+            length,
+            scalar,
+            start,
+            end,
+            extended_hours,
+            heikin_candles,
         )
 
     @ta_vlt.sub_command()
@@ -485,33 +524,45 @@ class TechnicalAnalysisCommands(commands.Cog):
         self,
         inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
-        is_open="False",
+        interval: int = commands.Param(choices=[1, 5, 15, 30, 60, 1440]),
+        past_days: int = 0,
+        is_open: bool = False,
         fast="3",
         slow="10",
         start="",
         end="",
+        extended_hours: bool = False,
+        heikin_candles: bool = False,
     ):
         """Displays chart with chaikin oscillator [Yahoo Finance]
 
         Parameters
         -----------
         ticker: Stock Ticker
+        interval : Chart Minute Interval, 1440 for Daily
+        past_days: Past Days to Display. Default: 0(Not for Daily)
         is_open: whether open price is used. Default: False
         fast: fast value. Default: 3
         slow: slow value. Default: 10
         start: YYYY-MM-DD format
         end: YYYY-MM-DD format
+        extended_hours: Display Pre/After Market Hours. Default: False
+        heikin_candles: Heikin Ashi candles. Default: False
         """
         await ShowView().discord(
             adosc_command,
             inter,
             "ta-vol adosc",
             ticker,
+            interval,
+            past_days,
             is_open,
             fast,
             slow,
             start,
             end,
+            extended_hours,
+            heikin_candles,
         )
 
     @ta_vol.sub_command()
@@ -519,18 +570,37 @@ class TechnicalAnalysisCommands(commands.Cog):
         self,
         inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
+        interval: int = commands.Param(choices=[1, 5, 15, 30, 60, 1440]),
+        past_days: int = 0,
         start="",
         end="",
+        extended_hours: bool = False,
+        heikin_candles: bool = False,
     ):
         """Displays chart with on balance volume [Yahoo Finance]
 
         Parameters
         -----------
         ticker: Stock Ticker
-        start: YYYY-MM-DD
-        end: YYYY-MM-DD
+        interval : Chart Minute Interval, 1440 for Daily
+        past_days: Past Days to Display. Default: 0(Not for Daily)
+        start: YYYY-MM-DD format
+        end: YYYY-MM-DD format
+        extended_hours: Display Pre/After Market Hours. Default: False
+        heikin_candles: Heikin Ashi candles. Default: False
         """
-        await ShowView().discord(obv_command, inter, "ta-vol obv", ticker, start, end)
+        await ShowView().discord(
+            obv_command,
+            inter,
+            "ta-vol obv",
+            ticker,
+            interval,
+            past_days,
+            start,
+            end,
+            extended_hours,
+            heikin_candles,
+        )
 
     @ta.sub_command()
     async def fib(

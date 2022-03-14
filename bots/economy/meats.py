@@ -50,10 +50,9 @@ def meats_command():
     df = df.rename(
         columns={"prevClose": "PrevClose", "last": "Last", "change": "Change"}
     )
-    dindex = len(df.index)
     fig = df2img.plot_dataframe(
         df,
-        fig_size=(800, (40 + (40 * dindex))),
+        fig_size=(800, (40 + (40 * len(df.index)))),
         col_width=[6, 3, 3],
         tbl_header=cfg.PLT_TBL_HEADER,
         tbl_cells=cfg.PLT_TBL_CELLS,

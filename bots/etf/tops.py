@@ -15,8 +15,8 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def etfs_command(sort=""):
-    """Display Upcoming Earnings. [Source: Seeking Alpha]"""
+def etfs_disc_command(sort=""):
+    """Displays ETF's Top Gainers/Decliners, Most Active  [Wall Street Journal]"""
 
     # Debug
     if cfg.DEBUG:

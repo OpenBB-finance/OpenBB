@@ -101,10 +101,9 @@ def performance_command(economy_group="sector"):
     df = df.fillna("")
     df.set_index("Name", inplace=True)
 
-    dindex = len(df.index)
     fig = df2img.plot_dataframe(
         df,
-        fig_size=(1500, (40 + (50 * dindex))),
+        fig_size=(1500, (40 + (50 * len(df.index)))),
         col_width=[10, 3, 3, 3, 3, 3, 3, 3, 4, 4, 3, 3.5],
         tbl_header=cfg.PLT_TBL_HEADER,
         tbl_cells=cfg.PLT_TBL_CELLS,

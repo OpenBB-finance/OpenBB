@@ -1,13 +1,19 @@
+import logging
+
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
 import bots.config_discordbot as cfg
 from bots import helpers
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.stocks.options import syncretism_model
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def hist_command(
-    ticker: str = None,
+    ticker: str = "",
     expiry: str = "",
     strike: float = 10,
     opt_type: str = "",
@@ -30,7 +36,7 @@ def hist_command(
 
     # Debug
     if cfg.DEBUG:
-        print(f"opt hist {ticker} {strike} {opt_type} {expiry} {greek}")
+        logger.info(f"opt grhist {ticker} {strike} {opt_type} {expiry} {greek}")
 
     # Check for argument
     if ticker is None:
@@ -85,7 +91,7 @@ def hist_command(
         colorway=cfg.PLT_TA_COLORWAY,
         title=title,
         title_x=0.03,
-        yaxis_title="<b>Stock Price</b> ($)",
+        yaxis_title="<b>Stock Price</b>",
         font=cfg.PLT_FONT,
         yaxis=dict(
             side="right",

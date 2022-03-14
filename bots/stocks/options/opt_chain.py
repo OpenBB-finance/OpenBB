@@ -29,7 +29,7 @@ def chain_command(
     # Debug
     if cfg.DEBUG:
         logger.debug(
-            "opt-chain %s %s %s %s %s", ticker, expiry, opt_type, min_sp, max_sp
+            "opt chain %s %s %s %s %s", ticker, expiry, opt_type, min_sp, max_sp
         )
 
     # Check for argument
@@ -88,8 +88,7 @@ def chain_command(
     # Output
     i, i2, end = 0, 0, 20
     df_pg, embeds_img, images_list = [], [], []
-    dindex = len(df.index)
-    while i < dindex:
+    while i < len(df.index):
         df_pg = df.iloc[i:end]
         df_pg.append(df_pg)
         fig = df2img.plot_dataframe(

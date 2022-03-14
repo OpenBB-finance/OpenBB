@@ -119,7 +119,7 @@ def stock_data(
         past_days = 30
 
     max_days = 4 if interval == 1 else 57
-    if dt_utcnow_local_tz().weekday() > 4:
+    if dt_utcnow_local_tz().weekday() > 4 or 1:
         past_days += 2
     p_days = (past_days + 1) if past_days < max_days else max_days
 

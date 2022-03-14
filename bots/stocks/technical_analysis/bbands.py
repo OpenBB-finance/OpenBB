@@ -18,7 +18,7 @@ def bbands_command(
     past_days: int = 0,
     length="20",
     n_std: float = 2.0,
-    mamode="sma",
+    ma_mode="sma",
     start="",
     end="",
     extended_hours: bool = False,
@@ -33,16 +33,15 @@ def bbands_command(
         logger.debug(
             "ta bbands %s %s %s %s %s %s %s %s %s %s %s",
             ticker,
+            past_days,
             length,
             n_std,
-            mamode,
+            ma_mode,
             start,
             end,
             extended_hours,
             heikin_candles,
             news,
-            start,
-            end,
         )
 
     # Check for argument
@@ -74,7 +73,7 @@ def bbands_command(
     ta_length = float(length)
     n_std = float(n_std)
 
-    if mamode not in possible_ma:
+    if ma_mode not in possible_ma:
         raise Exception("Invalid ma entered")
 
     # Retrieve Data
@@ -93,7 +92,7 @@ def bbands_command(
 
     df_ta = df_stock.loc[(df_stock.index >= start) & (df_stock.index < end)]
     df_ta = df_ta.join(
-        volatility_model.bbands(df_ta["Adj Close"], ta_length, n_std, mamode)
+        volatility_model.bbands(df_ta["Adj Close"], ta_length, n_std, ma_mode)
     )
 
     # Output Data
@@ -101,7 +100,7 @@ def bbands_command(
         df_ta = df_ta.loc[(df_ta.index >= bar_start) & (df_ta.index < end)]
 
     plot = load_candle.candle_fig(df_ta, ticker, interval, extended_hours, news)
-    title = f"{plot['plt_title']} Bollinger Bands ({mamode.upper()})"
+    title = f"{plot['plt_title']} Bollinger Bands ({ma_mode.upper()})"
     fig = plot["fig"]
 
     fig.add_trace(

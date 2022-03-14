@@ -1,4 +1,3 @@
-import time
 from typing import List
 
 import disnake
@@ -8,7 +7,6 @@ import bots.config_discordbot as cfg
 from bots import helpers
 
 bot = commands.Bot()
-startTime = time.time()
 
 
 class Menu(disnake.ui.View):

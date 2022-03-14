@@ -13,7 +13,7 @@ from gamestonk_terminal.stocks.sector_industry_analysis import financedatabase_m
 def cpic_command(
     industry: str,
     mktcap: str = "",
-    exclude_exchanges: bool = True,
+    exclude_exchanges: bool = False,
     export: str = "",
     raw: bool = False,
     max_countries_to_display: int = 15,
@@ -64,7 +64,7 @@ def cpic_command(
 
     title = mktcap + " cap companies " if mktcap else "Companies "
     title += f"per country in {industry} industry"
-    title += " excl. exchanges" if exclude_exchanges else " incl. exchanges"
+    title += " excl. exchanges" if exclude_exchanges else " incl. all exchanges"
     title = textwrap.fill(title, 40)
     title_plot = textwrap.indent(text=title, prefix="<br>")
 

@@ -29,8 +29,10 @@ def futures_command():
 
     df["Last Price"] = pd.to_numeric(df["Last Price"].astype(float))
     df["Change"] = pd.to_numeric(df["Change"].astype(float))
-    m1 = datetime.now().strftime("%b")
-    m2 = (datetime.now() + timedelta(days=30)).strftime("%b")
+    m1, m2 = datetime.now().strftime("%b"), (
+        datetime.now() + timedelta(days=30)
+    ).strftime("%b")
+    year = datetime.now().strftime("%y")
 
     formats = {"Last Price": "${:.2f}", "Change": "${:.2f}"}
     for col, value in formats.items():
@@ -43,7 +45,7 @@ def futures_command():
             to_replace=[
                 f"{m1}",
                 f"{m2}",
-                "22",
+                f"{year}",
                 "\\$5",
                 ",-",
                 ".-",
@@ -67,10 +69,9 @@ def futures_command():
 
     df = df[["Last Price", "Change", "% Change"]]
 
-    dindex = len(df.index)
     fig = df2img.plot_dataframe(
         df,
-        fig_size=(800, (40 + (45 * dindex))),
+        fig_size=(800, (40 + (45 * len(df.index)))),
         col_width=[5, 2, 2, 2],
         tbl_header=cfg.PLT_TBL_HEADER,
         tbl_cells=cfg.PLT_TBL_CELLS,

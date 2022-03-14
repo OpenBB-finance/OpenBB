@@ -17,11 +17,11 @@ class DiscoverCommands(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    @commands.slash_command()
-    async def disc(self, inter):
+    @commands.slash_command(name="disc")
+    async def discovery(self, inter):
         pass
 
-    @disc.sub_command(name="tops")
+    @discovery.sub_command(name="tops")
     async def tops(
         self,
         inter: disnake.AppCmdInter,
@@ -48,7 +48,7 @@ class DiscoverCommands(commands.Cog):
         }
         await ShowView().discord(func[sort], inter, "disc", num)
 
-    @disc.sub_command(name="ugs")
+    @discovery.sub_command(name="ugs")
     async def ugs(
         self,
         inter: disnake.AppCmdInter,
@@ -62,7 +62,7 @@ class DiscoverCommands(commands.Cog):
         """
         await ShowView().discord(ugs_command, inter, "ugs", num)
 
-    @disc.sub_command(name="fidelity")
+    @discovery.sub_command(name="fidelity")
     async def fidelity(self, inter: disnake.AppCmdInter):
         """Display Orders by Fidelity Customers. [Fidelity]
 

@@ -37,7 +37,7 @@ class SlashCommands(commands.Cog):
         min_sp: float = None,
         max_sp: float = None,
     ):
-        """Open Interest
+        """Options Chain
 
         Parameters
         ----------
@@ -350,7 +350,7 @@ class SlashCommands(commands.Cog):
             ],
         ),
     ):
-        """Options Price History
+        """Options Price History with Greeks
 
         Parameters
         ----------

@@ -30,7 +30,6 @@ class StocksSIACommands(commands.Cog):
         ----------
         country: Country to Display Companies per Sector
         mktcap: Select market cap of companies to consider from Small, Mid and Large
-        exclude_exchanges: Exclude international exchanges
         """
         await helpers.ShowView().discord(
             cps_command,
@@ -51,7 +50,6 @@ class StocksSIACommands(commands.Cog):
         ----------
         industry: Select industry to get number of companies by each country
         mktcap: Select market cap of companies to consider from Small, Mid and Large
-        exclude_exchanges: Exclude international exchanges
         """
         await helpers.ShowView().discord(
             cpic_command,

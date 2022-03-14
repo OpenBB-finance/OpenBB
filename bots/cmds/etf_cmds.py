@@ -4,9 +4,9 @@ import disnake
 from disnake.ext import commands
 
 from bots.etf.holdings import holdings_command
+from bots.etf.tops import etfs_disc_command
 from bots.etf.whatetf import by_ticker_command
 from bots.helpers import ShowView
-from bots.stocks.disc.etfs import etfs_command
 
 
 class EtfCommands(commands.Cog):
@@ -19,8 +19,12 @@ class EtfCommands(commands.Cog):
     async def etf(self, inter):
         pass
 
-    @etf.sub_command(name="tops")
-    async def etf_disc(
+    @etf.sub_command_group()
+    async def disc(self, inter):
+        pass
+
+    @disc.sub_command(name="tops")
+    async def etf_tops(
         inter: disnake.AppCmdInter,
         sort: str = commands.Param(
             choices={
@@ -36,7 +40,7 @@ class EtfCommands(commands.Cog):
         -----------
         sort: Sort by Top Gainers, Top Decliners, or Most Active
         """
-        await ShowView().discord(etfs_command, inter, "etf disc-tops", sort)
+        await ShowView().discord(etfs_disc_command, inter, "etf disc-tops", sort)
 
     @etf.sub_command_group()
     async def holdings(self, inter):
@@ -55,7 +59,9 @@ class EtfCommands(commands.Cog):
         etf: ETF Symbol
         num: Amount of holdings to display Default 15
         """
-        await ShowView().discord(holdings_command, inter, "etf by-etf", etf, num)
+        await ShowView().discord(
+            holdings_command, inter, "etf holdings by-etf", etf, num
+        )
 
     @holdings.sub_command(name="by-ticker")
     async def by_ticker(
@@ -70,7 +76,9 @@ class EtfCommands(commands.Cog):
         ticker: Ticker to Search
         num: Amount of ETFs to display Default 15
         """
-        await ShowView().discord(by_ticker_command, inter, "etf by-ticker", ticker, num)
+        await ShowView().discord(
+            by_ticker_command, inter, "etf holdings by-ticker", ticker, num
+        )
 
 
 def setup(bot: commands.Bot):

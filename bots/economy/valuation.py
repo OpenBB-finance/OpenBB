@@ -108,10 +108,9 @@ def valuation_command(economy_group="sector"):
     df = df.fillna("")
     df.set_index("Name", inplace=True)
 
-    dindex = len(df.index)
     fig = df2img.plot_dataframe(
         df,
-        fig_size=(1600, (40 + (50 * dindex))),
+        fig_size=(1600, (40 + (50 * len(df.index)))),
         col_width=[12, 5, 4, 4, 4, 4, 4, 4, 4, 6, 6, 6, 4, 4],
         tbl_header=cfg.PLT_TBL_HEADER,
         tbl_cells=cfg.PLT_TBL_CELLS,

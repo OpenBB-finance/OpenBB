@@ -448,10 +448,10 @@ class ShowView:
                 .replace(".html)", ".html\n\n")
             )
             title = data["title"] if "titles" not in data else data["titles"][0]
-            N, i = 1, 0
+            N = 0
             for img in data["images_list"]:
                 imagefile = f"in/images/{img}"
-                if i == 0:
+                if N == 0:
                     message = f"{title}\n{description}"
                     payload = {
                         "channel": channel_id,
@@ -459,7 +459,7 @@ class ShowView:
                         "text": message,
                     }
                     client.chat_postMessage(**payload)
-                if N < len(data["titles"]):
+                if N < len(data["titles"]) and not 0:
                     title = data["titles"][N]
                 client.files_upload(
                     file=imagefile,
@@ -468,7 +468,6 @@ class ShowView:
                     user_id=user_id,
                 )
                 N += 1
-                i += 1
                 os.remove(imagefile)
         elif "description" in data:
             title = data.get("title", "")
@@ -485,12 +484,12 @@ class ShowView:
         data = func(*args, **kwargs)
         if "imagefile" in data:
             imagefile = cfg.IMG_DIR / data["imagefile"]
+            title = data["title"]
             description = (
                 data.get("description", "")
                 .replace("[Interactive](", "")
                 .replace(".html)", ".html\n\n")
             )
-            title = data["title"]
             res = f"{title}\n{description}"
             bot.reply_to(message, res)
             with open(imagefile, "rb") as image:
@@ -499,10 +498,10 @@ class ShowView:
             os.remove(imagefile)
         elif "embeds_img" in data:
             title = data["title"] if "titles" not in data else data["titles"][0]
-            N, i = 1, 0
+            N = 0
             for img in data["images_list"]:
                 imagefile = cfg.IMG_DIR / img
-                if i == 0:
+                if N == 0:
                     description = (
                         data.get("description", "")
                         .replace("[Interactive](", "")
@@ -510,13 +509,12 @@ class ShowView:
                     )
                     res = f"{title}\n{description}"
                     bot.reply_to(message, res)
-                if N < len(data["titles"]):
+                if N < len(data["titles"]) and not 0:
                     title = data["titles"][N]
                 with open(imagefile, "rb") as image:
                     bot.reply_to(message, title)
                     bot.send_photo(message.chat.id, image)
                 N += 1
-                i += 1
                 os.remove(imagefile)
         elif "description" in data:
             title = data.get("title", "")

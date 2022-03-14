@@ -38,8 +38,7 @@ def customer_command(ticker=""):
     if cfg.DEBUG:
         logger.debug(l_customer)
 
-    customers = []
-    unique = []
+    customers, unique = [], []
     i = 0
     i2 = 0
 
@@ -62,8 +61,7 @@ def customer_command(ticker=""):
         i += 1
 
     title = f"Stocks: [CSIMarket] {ticker.upper()} Customers"
-    reports = []
-    embeds = []
+    reports, embeds = [], []
     choices = [
         disnake.SelectOption(label="Home", value="0", emoji="🟢"),
     ]
