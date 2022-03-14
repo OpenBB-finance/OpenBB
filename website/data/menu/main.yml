@@ -762,6 +762,8 @@ main:
             ref: "/cryptocurrency/due_diligence/trades"
           - name: stats
             ref: "/cryptocurrency/due_diligence/stats"
+          - name: stats
+            ref: "/cryptocurrency/due_diligence/mcapdom"
       - name: onchain
         ref: "/cryptocurrency/onchain"
         sub:

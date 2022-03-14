@@ -1,0 +1,51 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+      x-messari-api-key:
+      - 29664473-7f0e-4478-9c67-1f4531b574b6
+    method: GET
+    uri: https://data.messari.io/api/v1/assets/BTC/metrics/mcap.dom/time-series?start=1d&end=2022-01-10&interval=2022-03-08
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAA/zTMvQqDUAwG0L1PcflmLbn+Nw/RqVOXEmoQQavcxEIR372T6xnODnPxzcA7dJLV
+        tAc3ZQYfZzWXeQWjoKLIqcxj9aCWy45jfa3bWxMpdtUTGTSlJb3eS6/giuiEWc1kUDDuiwcJX5nG
+        PgxJPtskafQfh7OmDsdx+QcAAP//C9jrII4AAAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '143'
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Mon, 14 Mar 2022 07:38:15 GMT
+      content-encoding:
+      - gzip
+      server:
+      - istio-envoy
+      vary:
+      - Accept-Encoding,Origin
+      x-envoy-decorator-operation:
+      - meridian-service.meridian.svc.cluster.local:8080/*
+      x-envoy-upstream-service-time:
+      - '63'
+      x-ratelimit-limit:
+      - '4000'
+      x-ratelimit-remaining:
+      - '3993'
+      x-ratelimit-reset:
+      - '1647329561'
+    status:
+      code: 400
+      message: Bad Request
+version: 1
