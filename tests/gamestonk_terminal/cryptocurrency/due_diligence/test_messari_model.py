@@ -16,11 +16,13 @@ def vcr_config():
 
 @pytest.mark.vcr
 @pytest.mark.parametrize(
-    "coin,start,end,interval",
+    "coin,interval,start,end",
     [
         ("BTC", "1d", "2022-01-10", "2022-03-08"),
     ],
 )
-def test_get_marketcap_dominance(coin, start, end, interval, recorder):
-    df = messari_model.get_marketcap_dominance(coin, interval, start, end)
+def test_get_marketcap_dominance(coin, interval, start, end, recorder):
+    df = messari_model.get_marketcap_dominance(
+        coin=coin, interval=interval, start=start, end=end
+    )
     recorder.capture(df)
