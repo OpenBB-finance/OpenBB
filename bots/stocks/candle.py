@@ -1,13 +1,12 @@
 from datetime import datetime, timedelta
 
+import bots.config_discordbot as cfg
 import plotly.graph_objects as go
 import yfinance as yf
-from plotly.subplots import make_subplots
-
-import bots.config_discordbot as cfg
-from bots.config_discordbot import logger
 from bots import helpers
+from bots.config_discordbot import logger
 from gamestonk_terminal.common.technical_analysis import overlap_model
+from plotly.subplots import make_subplots
 
 
 def candle_command(
@@ -32,7 +31,6 @@ def candle_command(
     end: str
         end date format YYYY-MM-DD
     """
-
 
     logger.info("candle %s %s %s %s", ticker, interval, start, end)
 
