@@ -14,7 +14,6 @@ def vcr_config():
     }
 
 
-@pytest.mark.default_cassette("test_display_income_comparison")
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_display_income_comparison(mocker):
@@ -32,7 +31,6 @@ def test_display_income_comparison(mocker):
     )
 
 
-@pytest.mark.default_cassette("test_display_balance_comparison")
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_display_balance_comparison(mocker):
@@ -50,7 +48,6 @@ def test_display_balance_comparison(mocker):
     )
 
 
-@pytest.mark.default_cassette("test_display_cashflow_comparison")
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_display_cashflow_comparison(mocker):
