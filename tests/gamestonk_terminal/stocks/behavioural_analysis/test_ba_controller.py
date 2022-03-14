@@ -159,7 +159,7 @@ def test_print_help():
         ("help/help", ["help", "help"]),
         ("q", ["quit"]),
         ("h", []),
-        ("r", ["quit", "quit", "reset", "stocks", "ba"]),
+        ("r", ["quit", "quit", "reset", "stocks", "ba", "load TSLA"]),
     ],
 )
 def test_switch(an_input, expected_queue):
@@ -207,12 +207,12 @@ def test_call_cls(mocker):
         (
             "call_reset",
             [],
-            ["quit", "quit", "reset", "stocks", "ba"],
+            ["quit", "quit", "reset", "stocks", "ba", "load TSLA"],
         ),
         (
             "call_reset",
             ["help"],
-            ["quit", "quit", "reset", "stocks", "ba", "help"],
+            ["quit", "quit", "reset", "stocks", "ba", "load TSLA", "help"],
         ),
     ],
 )
