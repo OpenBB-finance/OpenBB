@@ -11,26 +11,26 @@ Industry                       MOTOR VEHICLES & PASSENGER CAR BODIES
 Address                        3500 DEER CREEK RD, PALO ALTO, CA, US
 Fiscal year end                                             December
 Latest quarter                                            2021-12-31
-Market capitalization                                      866.381 B
+Market capitalization                                      887.752 B
 EBITDA                                                       9.333 B
-PE ratio                                                      171.04
+PE ratio                                                      172.47
 PEG ratio                                                      2.393
 Book value                                                     29.23
 Dividend per share                                                 0
 Dividend yield                                                     0
-EPS                                                            4.901
+EPS                                                            4.922
 Revenue per share TTM                                          54.59
 Profit margin                                                  0.102
 Operating margin TTM                                           0.121
 Return on assets TTM                                          0.0714
-Return on equity TTM                                           0.204
+Return on equity TTM                                           21.08
 Revenue TTM                                                 53.823 B
 Gross profit TTM                                            13.606 B
 Diluted EPS TTM                                                4.901
 Quarterly earnings growth YOY                                   7.54
 Quarterly revenue growth YOY                                   0.649
-Analyst target price                                          959.33
-Trailing PE                                                   171.04
+Analyst target price                                           959.3
+Trailing PE                                                   171.05
 Forward PE                                                     81.97
 Price to sales ratio TTM                                        16.1
 Price to book ratio                                            27.73
@@ -39,8 +39,8 @@ EV to EBITDA                                                   86.04
 Beta                                                           2.049
 52 week high                                                 1243.49
 52 week low                                                   546.98
-50 day moving average                                         957.92
-200 day moving average                                         838.4
+50 day moving average                                         942.27
+200 day moving average                                        843.35
 Shares outstanding                                           1.034 B
 Dividend date                                                   None
 Ex dividend date                                                None

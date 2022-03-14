@@ -1334,7 +1334,7 @@ Expiry: [/param]{self.selected_date or None}
             type=float,
             default=None,
             dest="volatility",
-            help="Underlying asset annualized volatility",
+            help="Underlying asset annualized volatility.  Historical volatility used if not supplied.",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-s")
