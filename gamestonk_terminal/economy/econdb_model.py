@@ -341,14 +341,17 @@ def get_macro_data(
             df = df.loc[start_date:end_date]
 
         if convert_currency and country_currency != convert_currency:
-            currency_data = yf.Ticker(
-                f"{country_currency}{convert_currency}=X"
-            ).history(start=df.index[0], end=df.index[-1])["Close"]
+            currency_data = yf.download(
+                f"{country_currency}{convert_currency}=X",
+                start=df.index[0],
+                end=df.index[-1],
+                progress=False,
+            )["Adj Close"]
 
             merged_df = pd.merge_asof(
                 df, currency_data, left_index=True, right_index=True
             )
-            df = merged_df[f"{parameter}{country_code}"] * merged_df["Close"]
+            df = merged_df[f"{parameter}{country_code}"] * merged_df["Adj Close"]
 
             if pd.isna(df).any():
                 df_old_oldest, df_old_newest = df.index[0].date(), df.index[-1].date()

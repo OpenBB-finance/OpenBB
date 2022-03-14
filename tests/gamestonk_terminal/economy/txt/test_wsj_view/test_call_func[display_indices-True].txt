@@ -1,12 +1,12 @@
                              Price      Chg   %Chg
-0                   DJIA  32990.46    46.27   0.14
-1       Nasdaq Composite  12584.57  -259.24  -2.02
-2                S&P 500   4176.19   -28.12  -0.67
-3  DJ Total Stock Market  42185.06  -396.29  -0.93
-4           Russell 2000   1944.33   -35.34  -1.79
-5         NYSE Composite  15727.46   -26.25  -0.17
-6           Barron's 400    969.97    -4.92  -0.50
-7        CBOE Volatility     32.07     1.32   4.29
-8           DJIA Futures     32916      103   0.31
-9        S&P 500 Futures   4173.00   -19.50  -0.47
+0                   DJIA  32888.99   -55.20  -0.17
+1       Nasdaq Composite  12616.14  -227.67  -1.77
+2                S&P 500   4173.94   -30.37  -0.72
+3  DJ Total Stock Market  42170.94  -410.41  -0.96
+4           Russell 2000   1938.11   -41.55  -2.10
+5         NYSE Composite  15670.29   -83.42  -0.53
+6           Barron's 400    966.12    -8.77  -0.90
+7        CBOE Volatility     32.48     1.73   5.63
+8           DJIA Futures     32756      -57  -0.17
+9        S&P 500 Futures   4157.50   -35.00  -0.83
 
