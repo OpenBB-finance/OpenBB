@@ -146,7 +146,7 @@ def macd_command(
         template=cfg.PLT_TA_STYLE_TEMPLATE,
         colorway=cfg.PLT_TA_COLORWAY,
         title=title,
-        title_x=0.1,
+        title_x=0.02,
         title_font_size=14,
         dragmode="pan",
     )

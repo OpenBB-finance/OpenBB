@@ -37,7 +37,7 @@ class SlashCommands(commands.Cog):
         min_sp: float = None,
         max_sp: float = None,
     ):
-        """Options Chain
+        """Options Chain [Yahoo Finance]
 
         Parameters
         ----------
@@ -60,7 +60,7 @@ class SlashCommands(commands.Cog):
         min_sp: float = None,
         max_sp: float = None,
     ):
-        """Open Interest
+        """Open Interest [Yahoo Finance]
 
         Parameters
         ----------
@@ -93,7 +93,7 @@ class SlashCommands(commands.Cog):
         inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
     ):
-        """Displays ticker quote [yFinance]
+        """Displays ticker quote [Yahoo Finance]
 
         Parameters
         -----------
@@ -113,7 +113,7 @@ class SlashCommands(commands.Cog):
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
         num: int = 10,
     ):
-        """Display insider activity for a given stock ticker. [Source: Finviz]
+        """Display insider activity for a given stock ticker. [Finviz]
 
         Parameters
         ----------
@@ -123,7 +123,7 @@ class SlashCommands(commands.Cog):
         await lins_command(inter, "ins-last", ticker, num)
 
     @commands.slash_command(name="candle")
-    async def cc(
+    async def candle(
         self,
         inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
@@ -135,7 +135,8 @@ class SlashCommands(commands.Cog):
         news: bool = False,
         heikin_candles: bool = False,
     ):
-        """Display Candlestick Chart
+        """Display candlestick chart of ticker or crypto. [Yahoo Finance or Binance API]
+
 
         Parameters
         ----------
@@ -173,7 +174,7 @@ class SlashCommands(commands.Cog):
         news: bool = False,
         heikin_candles: bool = False,
     ):
-        """Display Bitcoin Chart
+        """Display Bitcoin Chart [Yahoo Finance or Binance API]
 
         Parameters
         ----------
@@ -209,12 +210,12 @@ class SlashCommands(commands.Cog):
         news: bool = False,
         heikin_candles: bool = False,
     ):
-        """Display Ethereum Chart
+        """Display Ethereum Chart [Yahoo Finance or Binance API]
 
         Parameters
         ----------
         interval : Chart Minute Interval, 1440 for Daily
-        past_days: Past Days to Display. Default: 1(Not for Daily)
+        past_days: Past Days to Display. Default: 0(Not for Daily)
         start: YYYY-MM-DD format
         end: YYYY-MM-DD format
         news: Display clickable news markers on interactive chart. Default: False
@@ -245,12 +246,12 @@ class SlashCommands(commands.Cog):
         news: bool = False,
         heikin_candles: bool = False,
     ):
-        """Display Solana Chart
+        """Display Solana Chart [Yahoo Finance or Binance API]
 
         Parameters
         ----------
         interval : Chart Minute Interval, 1440 for Daily
-        past_days: Past Days to Display. Default: 1(Not for Daily)
+        past_days: Past Days to Display. Default: 0(Not for Daily)
         start: YYYY-MM-DD format
         end: YYYY-MM-DD format
         news: Display clickable news markers on interactive chart. Default: False
@@ -279,7 +280,7 @@ class SlashCommands(commands.Cog):
         min_sp: float = None,
         max_sp: float = None,
     ):
-        """Options Overview
+        """Options Overview [Yahoo Finance or Binance API]
 
         Parameters
         ----------
@@ -299,7 +300,7 @@ class SlashCommands(commands.Cog):
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
         expiry: str = commands.Param(autocomplete=expiry_autocomp),
     ):
-        """Options Volume
+        """Options Volume [Yahoo Finance]
 
         Parameters
         ----------
@@ -321,7 +322,7 @@ class SlashCommands(commands.Cog):
             }
         ),
     ):
-        """Display Volatility Surface
+        """Display Volatility Surface [Yahoo Finance]
 
         Parameters
         ----------
@@ -350,7 +351,7 @@ class SlashCommands(commands.Cog):
             ],
         ),
     ):
-        """Options Price History with Greeks
+        """Options Price History with Greeks [Yahoo Finance]
 
         Parameters
         ----------
@@ -373,7 +374,7 @@ class SlashCommands(commands.Cog):
         strike: float = commands.Param(),
         opt_type: str = commands.Param(choices=["Calls", "Puts"]),
     ):
-        """Options Price History
+        """Options Price History [Yahoo Finance]
 
         Parameters
         ----------

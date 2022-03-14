@@ -16,10 +16,10 @@ import bots.config_discordbot as cfg
 
 futures = "=F" or "^"
 crypto = "-"
+est_tz = pytz.timezone("America/New_York")
 
 
 def dt_utcnow_local_tz():
-    est_tz = pytz.timezone("America/New_York")
     output = datetime.utcnow().astimezone(est_tz)
     return output
 
@@ -149,7 +149,7 @@ def stock_data(
         if df_stock.empty:
             raise Exception(f"No data found for {ticker.upper()}")
 
-        df_stock.index = pd.to_datetime(df_stock.index)
+        df_stock.index = pd.to_datetime(df_stock.index, utc=True).tz_convert(est_tz)
 
         df_stock["date_id"] = (df_stock.index.date - df_stock.index.date.min()).astype(
             "timedelta64[D]"
@@ -643,7 +643,7 @@ def candle_fig(
         )
         fig.update_xaxes(
             rangebreaks=[
-                dict(bounds=["sat", "mon"]),
+                dict(bounds=["sat", "sun"]),
             ],
             tickformatstops=[
                 dict(dtickrange=[None, 604_800_000], value="%b\n%d"),

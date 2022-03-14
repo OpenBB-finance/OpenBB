@@ -24,7 +24,7 @@ def candle_command(
     heikin_candles: bool = False,
     vwap: bool = False,
 ):
-    """Display Candlestick Chart
+    """Shows candle plot of loaded ticker or crypto. [Source: Yahoo Finance or Binance API]
 
     Parameters
     ----------
