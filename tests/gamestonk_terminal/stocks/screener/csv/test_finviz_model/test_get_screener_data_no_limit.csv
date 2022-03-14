@@ -1,5 +1,49 @@
 ,Ticker,Company,Sector,Industry,Country,Market Cap,P/E,Price,Change,Volume
-0,AGMH,AGM Group Holdings Inc.,Technology,Software - Application,Hong Kong,52780000.0,,2.45,0.021400000000000002,125513.0
-1,ALLK,Allakos Inc.,Healthcare,Biotechnology,USA,435070000.0,,9.92,0.013300000000000001,2424603.0
-2,MFIN,Medallion Financial Corp.,Financial,Credit Services,USA,145460000.0,3.51,5.81,0.0018,269951.0
-3,MNTS,Momentus Inc.,Industrials,Aerospace & Defense,USA,336780000.0,2.18,4.2,0.0036,192708.0
+0,TKLF,"Yoshitsu Co., Ltd",Consumer Defensive,Household & Personal Products,Japan,76680000.0,10.39,2.13,0.127,1054351.0
+1,IQMDW,Intelligent Medicine Acquisition Corp.,Financial,Shell Companies,USA,,,0.27,-0.1439,11277.0
+2,MTAC,MedTech Acquisition Corporation,Financial,Shell Companies,USA,309990000.0,,9.34,-0.0043,64261.0
+3,KOD,Kodiak Sciences Inc.,Healthcare,Biotechnology,USA,433170000.0,,7.43,-0.035699999999999996,1622787.0
+4,RYB,"RYB Education, Inc.",Consumer Defensive,Education & Training Services,China,31160000.0,2.5,0.97,-0.2529,102630.0
+5,ENIC,Enel Chile S.A.,Utilities,Utilities - Regulated Electric,Chile,1860000000.0,18.05,1.39,-0.0608,2027703.0
+6,FSRD,"Fast Radius, Inc.",Technology,Software - Infrastructure,USA,77660000.0,,1.73,-0.005699999999999999,570757.0
+7,BPTS,Biophytis SA,Healthcare,Biotechnology,France,32640000.0,,2.53,-0.0647,31124.0
+8,GDYN,"Grid Dynamics Holdings, Inc.",Technology,Information Technology Services,USA,652210000.0,,9.34,-0.0351,1258688.0
+9,TUEM,Tuesday Morning Corporation,Consumer Defensive,Discount Stores,USA,108530000.0,,1.19,-0.048,426681.0
+10,ERC,Allspring Multi-Sector Income Fund,Financial,Asset Management,USA,290190000.0,3.59,10.33,-0.0246,103135.0
+11,WULF,TeraWulf Inc.,Financial,Capital Markets,USA,621100000.0,,4.97,-0.17170000000000002,1228614.0
+12,QRTEP,"Qurate Retail, Inc.",Consumer Cyclical,Internet Retail,USA,,,83.83,-0.056100000000000004,150653.0
+13,THMO,"ThermoGenesis Holdings, Inc.",Healthcare,Medical Devices,USA,6930000.0,,0.56,-0.024,147539.0
+14,DRUG,Bright Minds Biosciences Inc.,Healthcare,Biotechnology,Canada,27550000.0,,1.72,-0.09949999999999999,33826.0
+15,BIRD,"Allbirds, Inc.",Consumer Cyclical,Apparel Retail,USA,936410000.0,,5.98,-0.0553,3422512.0
+16,PPG,"PPG Industries, Inc.",Basic Materials,Specialty Chemicals,USA,27920000000.0,19.31,114.5,-0.0762,3347007.0
+17,CPS,Cooper-Standard Holdings Inc.,Consumer Cyclical,Auto Parts,USA,150220000.0,,8.55,-0.1957,1944547.0
+18,VRT,Vertiv Holdings Co,Industrials,Electrical Equipment & Parts,USA,4110000000.0000005,30.36,10.05,-0.0492,10040785.0
+19,ERIC,Telefonaktiebolaget LM Ericsson (publ),Technology,Communication Equipment,Sweden,25850000000.0,11.01,7.71,-0.0481,14656096.0
+20,BAND,Bandwidth Inc.,Technology,Software - Infrastructure,USA,746080000.0,,27.87,-0.0007000000000000001,780336.0
+21,ALV,"Autoliv, Inc.",Consumer Cyclical,Auto Parts,Sweden,6470000000.0,14.13,70.25,-0.0821,918133.0
+22,CNSL,"Consolidated Communications Holdings, Inc.",Communication Services,Telecom Services,USA,515179999.99999994,,4.71,-0.0942,986273.0
+23,CLLS,Cellectis S.A.,Healthcare,Biotechnology,France,174740000.0,,3.45,-0.0227,914598.0
+24,IHD,Voya Emerging Markets High Dividend Equity Fund,Financial,Asset Management,USA,118420000.0,,6.22,-0.0475,102932.0
+25,PRQR,ProQR Therapeutics N.V.,Healthcare,Biotechnology,Netherlands,73420000.0,,0.93,0.0315,1030623.0
+26,PLSE,"Pulse Biosciences, Inc.",Healthcare,Medical Instruments & Supplies,USA,134350000.0,,4.62,-0.0335,162508.0
+27,CRNC,Cerence Inc.,Technology,Software - Application,USA,1230000000.0,27.03,29.9,-0.0292,3477880.0
+28,NCNA,NuCana plc,Healthcare,Biotechnology,United Kingdom,53020000.0,,0.81,-0.1535,2575279.0
+29,BCAB,"BioAtla, Inc.",Healthcare,Biotechnology,USA,224390000.0,,5.42,-0.014499999999999999,510984.0
+30,RERE,ATRenew Inc.,Consumer Cyclical,Internet Retail,China,793440000.0,,3.44,-0.0728,271208.0
+31,GOVX,"GeoVax Labs, Inc.",Healthcare,Biotechnology,USA,10360000.0,,1.41,-0.0408,67612.0
+32,WORX,SCWorx Corp.,Healthcare,Health Information Services,USA,8300000.000000001,,0.74,-0.1365,87885.0
+33,GMBL,"Esports Entertainment Group, Inc.",Consumer Cyclical,Gambling,Malta,26470000.0,,0.63,-0.18309999999999998,4916831.0
+34,REE,REE Automotive Ltd.,Consumer Cyclical,Recreational Vehicles,Israel,704680000.0,,2.21,-0.030699999999999998,1790397.0
+35,PRG,"PROG Holdings, Inc.",Industrials,Rental & Leasing Services,USA,1440000000.0,6.99,25.47,-0.1292,1998298.0
+36,RYAAY,Ryanair Holdings plc,Industrials,Airlines,Ireland,15440000000.0,,74.12,-0.1137,1113802.0
+37,SYRS,"Syros Pharmaceuticals, Inc.",Healthcare,Biotechnology,USA,66670000.0,,1.02,-0.0727,549963.0
+38,NP,"Neenah, Inc.",Basic Materials,Paper & Paper Products,USA,585270000.0,,32.66,-0.0349,143778.0
+39,PZZA,"Papa John's International, Inc.",Consumer Cyclical,Restaurants,USA,3420000000.0,1850.59,94.38,-0.0776,773486.0
+40,LYLT,Loyalty Ventures Inc.,Technology,Software - Infrastructure,USA,480650000.0,6.18,18.09,-0.060700000000000004,210596.0
+41,PIK,Kidpik Corp.,Consumer Cyclical,Internet Retail,USA,12980000.0,,1.61,-0.0529,148070.0
+42,NIU,Niu Technologies,Consumer Cyclical,Auto Manufacturers,China,695090000.0,21.07,8.68,-0.1686,1913672.0
+43,FREQ,"Frequency Therapeutics, Inc.",Healthcare,Biotechnology,USA,82560000.0,,2.19,0.0282,315993.0
+44,RACE,Ferrari N.V.,Consumer Cyclical,Auto Manufacturers,Italy,33689999999.999996,34.12,183.25,-0.0764,941733.0
+45,VTRS,Viatris Inc.,Healthcare,Drug Manufacturers - Specialty & Generic,USA,12200000000.0,,9.88,-0.031400000000000004,18309783.0
+46,CS,Credit Suisse Group AG,Financial,Banks - Diversified,Switzerland,19620000000.0,,6.89,-0.0664,25123529.0
+47,MCD,McDonald's Corporation,Consumer Cyclical,Restaurants,USA,167400000000.0,22.35,224.33,-0.0487,5421624.0

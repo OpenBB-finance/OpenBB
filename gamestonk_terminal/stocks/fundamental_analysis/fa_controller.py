@@ -71,6 +71,7 @@ class FundamentalAnalysisController(StockBaseController):
         "fraud",
         "dcf",
         "mktcap",
+        "dupont",
     ]
 
     CHOICES_MENUS = [
@@ -130,7 +131,8 @@ Ticker: [/param] {self.ticker} [cmds]
     balance       balance sheet of the company
     cash          cash flow of the company
     earnings      earnings dates and reported EPS
-    fraud         key fraud ratios[/cmds]
+    fraud         key fraud ratios
+    dupont        detailed breakdown for return on equity[/cmds]
 [info]Other Sources:[/info][menu]
 >   fmp           profile,quote,enterprise,dcf,income,ratios,growth from FMP[/menu]
         """
@@ -727,11 +729,43 @@ Ticker: [/param] {self.ticker} [cmds]
                 "This model is 80% accurate in predicting bankruptcy."
             ),
         )
+        parser.add_argument(
+            "-e",
+            "--explanation",
+            action="store_true",
+            dest="exp",
+            default=False,
+            help="Shows an explanation for the metrics",
+        )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            av_view.display_fraud(self.ticker)
+            av_view.display_fraud(self.ticker, ns_parser.exp)
+
+    @log_start_end(log=logger)
+    def call_dupont(self, other_args: List[str]):
+        """Process dupont command."""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.RawTextHelpFormatter,
+            prog="dupont",
+            description="The extended dupont deconstructs return on equity to allow investors to understand it better",
+        )
+        parser.add_argument(
+            "--raw",
+            action="store_true",
+            default=False,
+            dest="raw",
+            help="Print raw data.",
+        )
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            av_view.display_dupont(
+                self.ticker, raw=ns_parser.raw, export=ns_parser.export
+            )
 
     @log_start_end(log=logger)
     def call_dcf(self, other_args: List[str]):
