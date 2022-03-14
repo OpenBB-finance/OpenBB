@@ -51,7 +51,9 @@ def test_ark_orders_view(kwargs_dict, mocker, use_color):
 
     mocker.patch("yfinance.download", side_effect=mock_yf_download)
 
-    mocker.patch.object(target=ark_view.gtff, attribute="USE_COLOR", new=use_color)
+    mocker.patch.object(
+        target=ark_view.rich_config, attribute="USE_COLOR", new=use_color
+    )
     ark_view.ark_orders_view(**kwargs_dict)
 
 

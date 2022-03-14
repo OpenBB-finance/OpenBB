@@ -6,6 +6,7 @@ import pytest
 
 # IMPORTATION INTERNAL
 from gamestonk_terminal.common.behavioural_analysis import finbrain_view
+from gamestonk_terminal import helper_funcs
 
 
 @pytest.mark.default_cassette("test_display_sentiment_analysis")
@@ -19,8 +20,10 @@ def test_display_sentiment_analysis(color, mocker):
     )
 
     # MOCK GTFF
-    mocker.patch.object(target=finbrain_view.gtff, attribute="USE_ION", new=True)
-    mocker.patch.object(target=finbrain_view.gtff, attribute="USE_COLOR", new=color)
+    mocker.patch.object(target=helper_funcs.gtff, attribute="USE_ION", new=True)
+    mocker.patch.object(
+        target=finbrain_view.rich_config, attribute="USE_COLOR", new=color
+    )
 
     # MOCK VISUALIZE_OUTPUT
     mocker.patch(
@@ -44,7 +47,7 @@ def test_display_sentiment_analysis_empty_df(mocker):
     )
 
     # MOCK GTFF
-    mocker.patch.object(target=finbrain_view.gtff, attribute="USE_ION", new=True)
+    mocker.patch.object(target=helper_funcs.gtff, attribute="USE_ION", new=True)
 
     # MOCK GET_SENTIMENT
     mocker.patch(

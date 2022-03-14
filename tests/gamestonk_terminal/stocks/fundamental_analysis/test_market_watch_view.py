@@ -53,7 +53,7 @@ def test_call_func_no_parser(func, mocker):
     [True, False],
 )
 def test_call_func(func, monkeypatch, use_color):
-    monkeypatch.setattr(market_watch_view.gtff, "USE_COLOR", use_color)
+    monkeypatch.setattr(market_watch_view.rich_config, "USE_COLOR", use_color)
     getattr(market_watch_view, func)(other_args=list(), ticker="TSLA")
 
 

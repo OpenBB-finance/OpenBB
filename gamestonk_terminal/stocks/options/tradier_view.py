@@ -15,7 +15,6 @@ import seaborn as sns
 
 from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal import config_plot as cfp
-from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
     export_data,
@@ -25,6 +24,7 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.stocks.options import op_helpers, tradier_model
+from gamestonk_terminal import rich_config
 
 logger = logging.getLogger(__name__)
 
@@ -153,7 +153,7 @@ def display_chains(
         puts_df = puts_df[puts_df.columns[::-1]]
         chain_table = calls_df.merge(puts_df, on="strike")
 
-        if gtff.USE_COLOR:
+        if rich_config.USE_COLOR:
             call_cols = [col for col in chain_table if col.endswith("_x")]
             put_cols = [col for col in chain_table if col.endswith("_y")]
             patch_pandas_text_adjustment()

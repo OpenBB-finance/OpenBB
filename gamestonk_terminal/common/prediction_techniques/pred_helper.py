@@ -28,10 +28,10 @@ from gamestonk_terminal.helper_funcs import (
     print_rich_table,
 )
 from gamestonk_terminal import config_neural_network_models as cfg
-from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.rich_config import console
+from gamestonk_terminal import rich_config
 
 logger = logging.getLogger(__name__)
 
@@ -559,7 +559,7 @@ def lambda_price_prediction_color(val: float, last_val: float) -> str:
 def print_pretty_prediction(df_pred: pd.DataFrame, last_price: float):
     """Print predictions"""
     console.print("")
-    if gtff.USE_COLOR:
+    if rich_config.USE_COLOR:
         df_pred = pd.DataFrame(df_pred)
         df_pred.columns = ["pred"]
         df_pred["pred"] = df_pred["pred"].apply(
@@ -588,7 +588,7 @@ def print_pretty_prediction(df_pred: pd.DataFrame, last_price: float):
 
 
 def print_pretty_prediction_nn(df_pred: pd.DataFrame, last_price: float):
-    if gtff.USE_COLOR:
+    if rich_config.USE_COLOR:
         console.print(f"Actual price: [yellow]{last_price:.2f} $[/yellow]\n")
         console.print("Prediction:")
         console.print(

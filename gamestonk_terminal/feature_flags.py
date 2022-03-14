@@ -13,9 +13,6 @@ USE_TABULATE_DF = strtobool(os.getenv("GTFF_USE_TABULATE_DF", "True"))
 # Use clear console after each command
 USE_CLEAR_AFTER_CMD = strtobool(os.getenv("GTFF_USE_CLEAR_AFTER_CMD", "False"))
 
-# Use coloring features
-USE_COLOR = strtobool(os.getenv("GTFF_USE_COLOR", "True"))
-
 # Select console flair (choose from the list in helper_funcs.py)
 USE_FLAIR = os.getenv("GTFF_USE_FLAIR") or ":stars"
 

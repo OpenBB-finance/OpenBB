@@ -349,7 +349,6 @@ def log_settings() -> None:
     settings_dict = {}
     settings_dict["tab"] = "activated" if gtff.USE_TABULATE_DF else "deactivated"
     settings_dict["cls"] = "activated" if gtff.USE_CLEAR_AFTER_CMD else "deactivated"
-    settings_dict["color"] = "activated" if gtff.USE_COLOR else "deactivated"
     settings_dict["promptkit"] = (
         "activated" if gtff.USE_PROMPT_TOOLKIT else "deactivated"
     )

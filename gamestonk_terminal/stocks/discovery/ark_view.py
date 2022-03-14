@@ -4,11 +4,11 @@ __docformat__ = "numpy"
 import logging
 import os
 
-from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.stocks.discovery import ark_model
+from gamestonk_terminal import rich_config
 
 logger = logging.getLogger(__name__)
 
@@ -74,7 +74,7 @@ def ark_orders_view(
 
     if sort_col:
         df_orders = df_orders.sort_values(by=sort_col, ascending=ascending)
-    if gtff.USE_COLOR:
+    if rich_config.USE_COLOR:
         df_orders["direction"] = df_orders["direction"].apply(
             lambda_direction_color_red_green
         )

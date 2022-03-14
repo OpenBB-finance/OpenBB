@@ -5,11 +5,11 @@ import logging
 import os
 from typing import Any, List
 
-from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.stocks.due_diligence import finviz_model
+from gamestonk_terminal import rich_config
 
 logger = logging.getLogger(__name__)
 
@@ -74,7 +74,7 @@ def analyst(ticker: str, export: str = ""):
     """
     df = finviz_model.get_analyst_data(ticker)
 
-    if gtff.USE_COLOR:
+    if rich_config.USE_COLOR:
         df["category"] = df["category"].apply(lambda_category_color_red_green)
 
     print_rich_table(

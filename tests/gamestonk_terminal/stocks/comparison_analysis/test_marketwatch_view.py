@@ -17,19 +17,13 @@ def vcr_config():
 @pytest.mark.default_cassette("test_display_income_comparison")
 @pytest.mark.vcr
 @pytest.mark.record_stdout
-@pytest.mark.parametrize(
-    "tab",
-    [True, False],
-)
-def test_display_income_comparison(mocker, tab):
+def test_display_income_comparison(mocker):
     mocker.patch.object(
-        target=marketwatch_view.gtff,
+        target=marketwatch_view.rich_config,
         attribute="USE_COLOR",
         new=True,
     )
-    mocker.patch.object(
-        target=marketwatch_view.gtff, attribute="USE_TABULATE_DF", new=tab
-    )
+
     marketwatch_view.display_income_comparison(
         similar=["TSLA", "GM"],
         timeframe="31-Dec-2020",
@@ -41,19 +35,13 @@ def test_display_income_comparison(mocker, tab):
 @pytest.mark.default_cassette("test_display_balance_comparison")
 @pytest.mark.vcr
 @pytest.mark.record_stdout
-@pytest.mark.parametrize(
-    "tab",
-    [True, False],
-)
-def test_display_balance_comparison(mocker, tab):
+def test_display_balance_comparison(mocker):
     mocker.patch.object(
-        target=marketwatch_view.gtff,
+        target=marketwatch_view.rich_config,
         attribute="USE_COLOR",
         new=True,
     )
-    mocker.patch.object(
-        target=marketwatch_view.gtff, attribute="USE_TABULATE_DF", new=tab
-    )
+
     marketwatch_view.display_balance_comparison(
         similar=["TSLA", "GM"],
         timeframe="31-Dec-2020",
@@ -65,18 +53,11 @@ def test_display_balance_comparison(mocker, tab):
 @pytest.mark.default_cassette("test_display_cashflow_comparison")
 @pytest.mark.vcr
 @pytest.mark.record_stdout
-@pytest.mark.parametrize(
-    "tab",
-    [True, False],
-)
-def test_display_cashflow_comparison(mocker, tab):
+def test_display_cashflow_comparison(mocker):
     mocker.patch.object(
-        target=marketwatch_view.gtff,
+        target=marketwatch_view.rich_config,
         attribute="USE_COLOR",
         new=True,
-    )
-    mocker.patch.object(
-        target=marketwatch_view.gtff, attribute="USE_TABULATE_DF", new=tab
     )
     marketwatch_view.display_cashflow_comparison(
         similar=["TSLA", "GM"],

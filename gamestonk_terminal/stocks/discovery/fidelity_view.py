@@ -7,11 +7,11 @@ import re
 
 import pandas as pd
 
-from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import export_data, print_rich_table
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.stocks.discovery import fidelity_model
+from gamestonk_terminal import rich_config
 
 logger = logging.getLogger(__name__)
 
@@ -79,7 +79,7 @@ def orders_view(num: int, export: str):
 
     pd.set_option("display.max_colwidth", None)
 
-    if gtff.USE_COLOR:
+    if rich_config.USE_COLOR:
         df_orders["Buy / Sell Ratio"] = df_orders["Buy / Sell Ratio"].apply(
             lambda_buy_sell_ratio_color_red_green
         )

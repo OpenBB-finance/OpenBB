@@ -12,7 +12,6 @@ import numpy as np
 import pandas as pd
 
 from gamestonk_terminal.config_terminal import theme
-from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.common.prediction_techniques import ets_model
 from gamestonk_terminal.common.prediction_techniques.pred_helper import (
     lambda_price_prediction_backtesting_color,
@@ -28,6 +27,7 @@ from gamestonk_terminal.helper_funcs import (
     plot_autoscale,
 )
 from gamestonk_terminal.rich_config import console
+from gamestonk_terminal import rich_config
 
 logger = logging.getLogger(__name__)
 
@@ -291,7 +291,7 @@ def display_exponential_smoothing(
         df_pred = df_pred.to_frame()
         df_pred["Real"] = df_future
 
-        if gtff.USE_COLOR:
+        if rich_config.USE_COLOR:
 
             patch_pandas_text_adjustment()
 

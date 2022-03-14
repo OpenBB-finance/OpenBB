@@ -28,6 +28,8 @@ RICH_TAGS = [
     "[/help]",
 ]
 
+USE_COLOR = True
+
 
 def no_panel(renderable, *args, **kwargs):  # pylint: disable=unused-argument
     return renderable

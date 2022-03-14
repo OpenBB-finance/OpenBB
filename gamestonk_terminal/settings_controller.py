@@ -81,8 +81,6 @@ class SettingsController(BaseController):
         help_text += (
             f"   [{color}]cls              clear console after each command[/{color}]\n"
         )
-        color = "green" if gtff.USE_COLOR else "red"
-        help_text += f"   [{color}]color            use coloring features[/{color}]\n"
         color = "green" if gtff.USE_PROMPT_TOOLKIT else "red"
         help_text += f"   [{color}]promptkit        enable prompt toolkit (autocomplete and history)[/{color}]\n"
         color = "green" if gtff.ENABLE_PREDICT else "red"
@@ -156,13 +154,6 @@ class SettingsController(BaseController):
         dotenv.set_key(
             self.env_file, "GTFF_USE_CLEAR_AFTER_CMD", str(gtff.USE_CLEAR_AFTER_CMD)
         )
-        console.print("")
-
-    @log_start_end(log=logger)
-    def call_color(self, _):
-        """Process color command"""
-        gtff.USE_COLOR = not gtff.USE_COLOR
-        dotenv.set_key(self.env_file, "GTFF_USE_COLOR", str(gtff.USE_COLOR))
         console.print("")
 
     @log_start_end(log=logger)

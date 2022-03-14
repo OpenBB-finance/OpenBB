@@ -10,7 +10,6 @@ from typing import Union, Optional, List
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.common.prediction_techniques import arima_model
 from gamestonk_terminal.common.prediction_techniques.pred_helper import (
     print_prediction_kpis,
@@ -26,6 +25,7 @@ from gamestonk_terminal.helper_funcs import (
     print_rich_table,
 )
 from gamestonk_terminal.rich_config import console
+from gamestonk_terminal import rich_config
 
 logger = logging.getLogger(__name__)
 
@@ -283,7 +283,7 @@ def display_arima(
         df_pred = df_pred.to_frame()
         df_pred["Real"] = df_future.values
 
-        if gtff.USE_COLOR:
+        if rich_config.USE_COLOR:
             df_pred["Real"] = df_pred["Real"].astype(float)
             df_pred["Prediction"] = df_pred["Prediction"].astype(float)
             df_pred["Dif"] = 100 * (df_pred.Prediction - df_pred.Real) / df_pred.Real
