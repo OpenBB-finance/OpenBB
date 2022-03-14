@@ -7,6 +7,7 @@ import pytest
 
 # IMPORTATION INTERNAL
 from gamestonk_terminal.stocks.fundamental_analysis import market_watch_view
+from gamestonk_terminal import helper_funcs
 
 # pylint: disable=maybe-no-member
 
@@ -53,7 +54,7 @@ def test_call_func_no_parser(func, mocker):
     [True, False],
 )
 def test_call_func(func, monkeypatch, use_color):
-    monkeypatch.setattr(market_watch_view.gtff, "USE_COLOR", use_color)
+    monkeypatch.setattr(market_watch_view.rich_config, "USE_COLOR", use_color)
     getattr(market_watch_view, func)(other_args=list(), ticker="TSLA")
 
 
@@ -96,5 +97,5 @@ def test_display_sean_seah_warnings_empty_df(mocker):
     [True, False],
 )
 def test_display_sean_seah_warnings(debug, monkeypatch, use_tab):
-    monkeypatch.setattr(market_watch_view.gtff, "USE_TABULATE_DF", use_tab)
+    monkeypatch.setattr(helper_funcs.gtff, "USE_TABULATE_DF", use_tab)
     market_watch_view.display_sean_seah_warnings(ticker="GME", debug=debug)
