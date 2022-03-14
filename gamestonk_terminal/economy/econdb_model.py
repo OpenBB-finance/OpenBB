@@ -342,9 +342,13 @@ def get_macro_data(
 
         if convert_currency and country_currency != convert_currency:
             currency_data = yf.Ticker(
-                f"{convert_currency}{country_currency}=X"
+                f"{country_currency}{convert_currency}=X"
             ).history(start=df.index[0], end=df.index[-1])["Close"]
-            df = df * currency_data
+
+            merged_df = pd.merge_asof(
+                df, currency_data, left_index=True, right_index=True
+            )
+            df = merged_df[f"{parameter}{country_code}"] * merged_df["Close"]
 
             if pd.isna(df).any():
                 df_old_oldest, df_old_newest = df.index[0].date(), df.index[-1].date()
@@ -354,7 +358,7 @@ def get_macro_data(
                     f"Due to missing exchange values, some data was dropped from {parameter} of {country}. "
                     f"Consider using the native currency if you want to prevent this. \n"
                     f"OLD: {df_old_oldest} - {df_old_newest}\n"
-                    f"NEW: {df_new_oldest} - {df_new_newest}\n"
+                    f"NEW: {df_new_oldest} - {df_new_newest}"
                 )
 
     except HTTPError:

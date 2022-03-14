@@ -71,7 +71,7 @@ def show_macro_data(
     maximum_value = country_data_df.max().max()
 
     if not convert_currency:
-        convert_currency = ""
+        convert_currency = "in"
 
     if maximum_value > 1_000_000_000:
         df_rounded = country_data_df / 1_000_000_000

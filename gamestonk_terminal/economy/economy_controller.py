@@ -455,7 +455,7 @@ Index
             dest="convert_currency",
             help="Convert the currency of the chosen country to a specified currency. By default, this will be USD "
             "unless specified with this command. To find the currency symbols use the option -sc",
-            default="USD",
+            default=False,
         )
 
         parser.add_argument(
