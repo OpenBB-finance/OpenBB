@@ -66,7 +66,7 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Mon, 14 Mar 2022 20:25:53 GMT
+      - Mon, 14 Mar 2022 20:50:14 GMT
       server:
       - ATS
       vary:
@@ -74,13 +74,13 @@ interactions:
       x-envoy-decorator-operation:
       - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '3'
+      - '4'
       x-request-id:
-      - 6303a1de-7514-4196-831c-b7a1ac7bec03
+      - 1d3717be-b948-4938-8c3d-335626027372
       x-yahoo-request-id:
-      - atc8ojth2v96i
+      - 63107m9h2vak7
       y-rid:
-      - atc8ojth2v96i
+      - 63107m9h2vak7
     status:
       code: 200
       message: OK

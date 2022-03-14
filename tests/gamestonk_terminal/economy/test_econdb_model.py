@@ -6,7 +6,7 @@ import pytest
 from gamestonk_terminal.economy import econdb_model
 
 
-@pytest.mark.vcr()
+@pytest.mark.vcr
 @pytest.mark.parametrize(
     "parameter, country, start_date, end_date, convert_currency",
     [
@@ -25,7 +25,7 @@ def test_get_macro_data(
     recorder.capture(result_df)
 
 
-@pytest.mark.vcr()
+@pytest.mark.vcr
 @pytest.mark.parametrize(
     "parameters, countries, start_date, end_date, convert_currency",
     [
@@ -44,7 +44,7 @@ def test_get_aggregated_macro_data(
     recorder.capture(result_df)
 
 
-@pytest.mark.vcr()
+@pytest.mark.vcr
 @pytest.mark.parametrize(
     "instruments, maturities, frequency, start_date, end_date",
     [
@@ -63,7 +63,7 @@ def test_get_treasuries(
     recorder.capture(pd.DataFrame(result_df))
 
 
-@pytest.mark.vcr()
+@pytest.mark.vcr
 def test_obtain_treasury_maturities(recorder):
     result_df = econdb_model.obtain_treasury_maturities(econdb_model.TREASURIES)
 

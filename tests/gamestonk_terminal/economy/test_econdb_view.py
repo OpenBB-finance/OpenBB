@@ -5,7 +5,7 @@ import pytest
 from gamestonk_terminal.economy import econdb_view, econdb_model
 
 
-@pytest.mark.vcr()
+@pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
     "parameters, countries, start_date, end_date, convert_currency",
@@ -21,7 +21,7 @@ def test_show_macro_data(parameters, countries, start_date, end_date, convert_cu
     )
 
 
-@pytest.mark.vcr()
+@pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
     "instruments, maturities, frequency, start_date, end_date",
@@ -37,7 +37,7 @@ def test_show_treasuries(instruments, maturities, frequency, start_date, end_dat
     )
 
 
-@pytest.mark.vcr()
+@pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_show_treasury_maturities():
     econdb_view.show_treasury_maturities(econdb_model.TREASURIES)

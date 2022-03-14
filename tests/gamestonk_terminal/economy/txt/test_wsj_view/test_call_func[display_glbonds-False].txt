@@ -1,5 +1,5 @@
                                      Rate (%) Yld (%) Yld Chg (%)
-0         U.S. 10 Year Treasury Note    1.875   2.143       0.145
+0         U.S. 10 Year Treasury Note    1.875   2.144       0.146
 1    Germany 10 Year Government Bond    0.000   0.368       0.118
 2                  U.K. 10 Year Gilt    4.250   1.597       0.104
 3      Japan 10 Year Government Bond    0.100   0.195       0.011

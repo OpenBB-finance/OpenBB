@@ -7,7 +7,7 @@ import pytest
 from gamestonk_terminal.economy import yfinance_model
 
 
-@pytest.mark.vcr()
+@pytest.mark.vcr
 @pytest.mark.parametrize(
     "index, interval, start_date, end_date, column",
     [

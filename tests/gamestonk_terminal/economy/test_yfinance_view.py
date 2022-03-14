@@ -7,7 +7,7 @@ import pytest
 from gamestonk_terminal.economy import yfinance_view
 
 
-@pytest.mark.vcr()
+@pytest.mark.vcr
 @pytest.mark.parametrize(
     "indices, interval, start_date, end_date, column, store",
     [
@@ -32,7 +32,7 @@ def test_show_indices(recorder, indices, interval, start_date, end_date, column,
     recorder.capture(result_df)
 
 
-@pytest.mark.vcr()
+@pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
     "keyword, limit",
