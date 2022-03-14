@@ -25,6 +25,9 @@ USE_ION = strtobool(os.getenv("GTFF_USE_ION", "True"))
 # Enable watermark in the figures
 USE_WATERMARK = strtobool(os.getenv("GTFF_USE_WATERMARK", "True"))
 
+# Enable command and source in the figures
+USE_CMD_LOCATION_FIGURE = strtobool(os.getenv("GTFF_USE_CMD_LOCATION_FIGURE", "True"))
+
 # Enable Prompt Toolkit
 USE_PROMPT_TOOLKIT = strtobool(os.getenv("GTFF_USE_PROMPT_TOOLKIT", "True"))
 
