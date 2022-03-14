@@ -147,7 +147,7 @@ def macd_command(
         colorway=cfg.PLT_TA_COLORWAY,
         title=title,
         title_x=0.1,
-        title_font_size=12,
+        title_font_size=14,
         dragmode="pan",
     )
     imagefile = "ta_macd.png"

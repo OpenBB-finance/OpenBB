@@ -91,6 +91,7 @@ def hist_command(
         colorway=cfg.PLT_TA_COLORWAY,
         title=title,
         title_x=0.03,
+        title_font_size=14,
         yaxis_title="<b>Stock Price</b>",
         font=cfg.PLT_FONT,
         yaxis=dict(

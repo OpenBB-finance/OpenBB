@@ -57,11 +57,7 @@ def cc_hist_command(
     title = f"{ticker.upper()} {strike} {opt_type} expiring {expiry} Historical"
 
     fig = make_subplots(
-        rows=2,
-        cols=1,
         shared_xaxes=True,
-        vertical_spacing=0.06,
-        row_width=[0.2, 0.7],
         specs=[[{"secondary_y": True}]],
     )
     fig.add_trace(
@@ -76,8 +72,6 @@ def cc_hist_command(
             decreasing_line_color="#e4003a",
             showlegend=False,
         ),
-        row=1,
-        col=1,
         secondary_y=True,
     )
     fig.add_trace(
@@ -91,8 +85,6 @@ def cc_hist_command(
             showlegend=False,
         ),
         secondary_y=False,
-        row=1,
-        col=1,
     )
     if cfg.PLT_WATERMARK:
         fig.add_layout_image(cfg.PLT_WATERMARK)
@@ -102,6 +94,7 @@ def cc_hist_command(
         showlegend=False,
         title=title,
         title_x=0.1,
+        title_font_size=14,
         yaxis2_title="Premium",
         yaxis_title="Volume",
         font=cfg.PLT_FONT,
@@ -112,7 +105,7 @@ def cc_hist_command(
             titlefont=dict(color="#fdc708", size=12),
             tickfont=dict(
                 color="#fdc708",
-                size=12,
+                size=14,
             ),
             nticks=20,
         ),
@@ -124,7 +117,7 @@ def cc_hist_command(
             overlaying="y",
             nticks=20,
             tickfont=dict(
-                size=13,
+                size=14,
             ),
             showline=False,
         ),
