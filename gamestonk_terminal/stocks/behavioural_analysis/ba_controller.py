@@ -128,6 +128,12 @@ class BehaviouralAnalysisController(StockBaseController):
         """
         console.print(text=help_text, menu="Stocks - Behavioural Analysis")
 
+    def custom_reset(self):
+        """Class specific component of reset command"""
+        if self.ticker:
+            return ["stocks", "ba", f"load {self.ticker}"]
+        return []
+
     @log_start_end(log=logger)
     def call_watchlist(self, other_args: List[str]):
         """Process watchlist command"""
