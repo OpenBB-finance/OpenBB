@@ -598,7 +598,6 @@ main:
                 ref: "/terminal/common/quantitative_analysis/capm"
               - name: line
                 ref: "/terminal/common/quantitative_analysis/line"
-
           - name: prediction techniques
             ref: "/terminal/common/prediction_techniques"
             sub:
@@ -764,6 +763,8 @@ main:
                 ref: "/terminal/cryptocurrency/due_diligence/trades"
               - name: stats
                 ref: "/terminal/cryptocurrency/due_diligence/stats"
+              - name: stats
+                ref: "/cryptocurrency/due_diligence/mcapdom"
           - name: onchain
             ref: "/terminal/cryptocurrency/onchain"
             sub:
