@@ -886,10 +886,10 @@ Index
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="plot",
-            description="Obtain any set of U.S. treasuries and plot them together. These can be a range of maturities "
-            "for nominal, inflation-adjusted (on long term average of inflation adjusted) and secondary "
-            "markets over a lengthy period. Note: 3-month and 10-year treasury yields for other countries "
-            "are available via the command 'macro' and parameter 'Y10YD' and 'M3YD'. [Source: EconDB / FED]",
+            description="This command can plot any data on two y-axes obtained from the macro, fred, index and "
+            "treasury commands. To be able to use this data, use the -st argument available within these "
+            "commands. For example 'macro -p GDP -c Germany Netherlands -st' will store the data for usage "
+            "in this command. Therefore, it allows you to plot different time series in one graph.",
         )
 
         parser.add_argument(
@@ -914,7 +914,8 @@ Index
             "-s",
             "--show",
             dest="show",
-            help="Show all available options currently collected.",
+            help="Show all available options currently collected from the macro data commands. "
+            "To save data, use the command -st on 'macro', 'fred', 'index' and 'treasury'.",
             action="store_true",
             default=False,
         )
@@ -930,7 +931,12 @@ Index
         )
 
         if ns_parser:
-            if ns_parser.show:
+            if not self.DATASETS:
+                console.print(
+                    "There is no data stored yet. Please use either the 'macro', 'fred', 'index' and/or "
+                    "'treasury' command in combination with the -st argument to be able to plot data."
+                )
+            elif ns_parser.show:
                 options = {
                     command: ", ".join(values.keys())
                     for command, values in self.DATASETS.items()
@@ -956,8 +962,7 @@ Index
                         if variable not in dataset_yaxis_1:
                             return console.print(
                                 f"Not able to find any data for the -y1 argument {ns_parser.yaxis_1}. "
-                                f"The currently available options are: "
-                                f"{', '.join(self.choices['-y1'])}"
+                                f"The currently available options are: {', '.join(self.choices['-y1'])}"
                             )
 
                 if ns_parser.yaxis_2:
@@ -969,8 +974,7 @@ Index
                         if variable not in dataset_yaxis_2:
                             return console.print(
                                 f"Not able to find any data for the -y2 argument {ns_parser.yaxis_2}. "
-                                f"The currently available options are: "
-                                f"{', '.join(self.choices['-y2'])}"
+                                f"The currently available options are: {', '.join(self.choices['-y2'])}"
                             )
 
                 if ns_parser.yaxis_1 or ns_parser.yaxis_2:
