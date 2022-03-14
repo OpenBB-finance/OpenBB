@@ -45,5 +45,7 @@ def test_lambda_price_change_color_red_green(val, recorder):
     [True, False],
 )
 def test_orders_view(mocker, use_color):
-    mocker.patch.object(target=fidelity_view.gtff, attribute="USE_COLOR", new=use_color)
+    mocker.patch.object(
+        target=fidelity_view.rich_config, attribute="USE_COLOR", new=use_color
+    )
     fidelity_view.orders_view(num=1, export="")

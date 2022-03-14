@@ -13,9 +13,6 @@ USE_TABULATE_DF = strtobool(os.getenv("GTFF_USE_TABULATE_DF", "True"))
 # Use clear console after each command
 USE_CLEAR_AFTER_CMD = strtobool(os.getenv("GTFF_USE_CLEAR_AFTER_CMD", "False"))
 
-# Use coloring features
-USE_COLOR = strtobool(os.getenv("GTFF_USE_COLOR", "True"))
-
 # Select console flair (choose from the list in helper_funcs.py)
 USE_FLAIR = os.getenv("GTFF_USE_FLAIR") or ":stars"
 
@@ -51,9 +48,6 @@ ENABLE_EXIT_AUTO_HELP = strtobool(os.getenv("GTFF_ENABLE_EXIT_AUTO_HELP", "False
 
 # Remember contexts during session
 REMEMBER_CONTEXTS = strtobool(os.getenv("GTFF_REMEMBER_CONTEXTS", "True"))
-
-# Use the colorful rich terminal
-ENABLE_RICH = strtobool(os.getenv("GTFF_ENABLE_RICH", "True"))
 
 # Use the colorful rich terminal
 ENABLE_RICH_PANEL = strtobool(os.getenv("GTFF_ENABLE_RICH_PANEL", "True"))
