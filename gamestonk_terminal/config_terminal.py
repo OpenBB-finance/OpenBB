@@ -152,3 +152,6 @@ API_BITQUERY_KEY = os.getenv("GT_API_BITQUERY_KEY") or "REPLACE_ME"
 # https://terra.smartstake.io/
 API_SMARTSTAKE_KEY = os.getenv("GT_API_SMARTSTAKE_KEY") or "REPLACE_ME"
 API_SMARTSTAKE_TOKEN = os.getenv("GT_API_SMARTSTAKE_TOKEN") or "REPLACE_ME"
+
+# https://messari.io/
+API_MESSARI_KEY = os.getenv("GT_API_MESSARI_KEY") or "REPLACE_ME"
