@@ -661,13 +661,16 @@ commands = {
     },
     "ta-rsi": {
         "function": rsi_command,
-        "required": {"ticker": tickers},
+        "required": {"ticker": tickers, "interval": opt_intervals},
         "optional": {
+            "past_days": re_int,
             "length": re_int,
             "scalar": re_float,
             "drift": re_int,
             "start": re_date,
             "end": re_date,
+            "extended_hours": [True, False],
+            "heikin_candles": [True, False],
         },
     },
     "ta-stoch": {
@@ -707,12 +710,15 @@ commands = {
     },
     "ta-aroon": {
         "function": aroon_command,
-        "required": {"ticker": tickers},
+        "required": {"ticker": tickers, "interval": opt_intervals},
         "optional": {
+            "past_days": re_int,
             "length": re_int,
             "scalar": re_int,
             "start": re_date,
             "end": re_date,
+            "extended_hours": [True, False],
+            "heikin_candles": [True, False],
         },
     },
     "ta-bbands": {
@@ -759,21 +765,28 @@ commands = {
     },
     "ta-adosc": {
         "function": adosc_command,
-        "required": {
-            "ticker": tickers,
-        },
+        "required": {"ticker": tickers, "interval": opt_intervals},
         "optional": {
-            "is_open": ["True", "False"],
+            "past_days": re_int,
+            "is_open": [True, False],
             "fast": re_int,
             "slow": re_int,
             "start": re_date,
             "end": re_date,
+            "extended_hours": [True, False],
+            "heikin_candles": [True, False],
         },
     },
     "ta-obv": {
         "function": obv_command,
-        "required": {"ticker": tickers},
-        "optional": {"start": re_date, "end": re_date},
+        "required": {"ticker": tickers, "interval": opt_intervals},
+        "optional": {
+            "past_days": re_int,
+            "start": re_date,
+            "end": re_date,
+            "extended_hours": [True, False],
+            "heikin_candles": [True, False],
+        },
     },
     "ta-fib": {
         "function": fib_command,
