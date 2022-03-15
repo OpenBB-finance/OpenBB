@@ -34,7 +34,6 @@ PAPERMILL_NOTEBOOK_REPORT_PORT = (
 LOGGING_VERBOSITY = 20
 
 if tmp_verbosity := os.getenv("GT_LOGGING_VERBOSITY"):
-    print(f"Setting verbosity to {tmp_verbosity}")
     try:
         LOGGING_VERBOSITY = int(tmp_verbosity)
     except ValueError:
