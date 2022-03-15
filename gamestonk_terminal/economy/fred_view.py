@@ -147,7 +147,12 @@ def display_fred_series(
                     else title,
                 )
 
-        ax.legend(prop={"size": 10}, bbox_to_anchor=(0, 1), loc="lower left")
+        ax.legend(
+            bbox_to_anchor=(0, 0.40, 1, -0.52),
+            loc="upper right",
+            mode="expand",
+            borderaxespad=0,
+        )
 
         ax.set_xlim(data.index[0], data.index[-1])
         theme.style_primary_axis(ax)

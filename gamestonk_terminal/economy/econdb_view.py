@@ -92,15 +92,30 @@ def show_macro_data(
         if len(parameters) > 1 and len(countries) > 1:
             ax.plot(df_rounded[column], label=f"{country_label} [{parameter_label}]")
             ax.set_title(f"Macro data {denomination}")
-            ax.legend()
+            ax.legend(
+                bbox_to_anchor=(0, 0.40, 1, -0.52),
+                loc="upper right",
+                mode="expand",
+                borderaxespad=0,
+            )
         elif len(parameters) > 1:
             ax.plot(df_rounded[column], label=parameter_label)
             ax.set_title(f"{country_label} {denomination}")
-            ax.legend()
+            ax.legend(
+                bbox_to_anchor=(0, 0.40, 1, -0.52),
+                loc="upper right",
+                mode="expand",
+                borderaxespad=0,
+            )
         elif len(countries) > 1:
             ax.plot(df_rounded[column], label=country_label)
             ax.set_title(f"{parameter_label} {denomination}")
-            ax.legend()
+            ax.legend(
+                bbox_to_anchor=(0, 0.40, 1, -0.52),
+                loc="upper right",
+                mode="expand",
+                borderaxespad=0,
+            )
         else:
             ax.plot(df_rounded[column])
             ax.set_title(f"{parameter_label} of {country_label} {denomination}")
@@ -182,7 +197,12 @@ def show_treasuries(
             ax.plot(maturities_data[maturity], label=f"{treasury} [{maturity}]")
 
     ax.set_title("U.S. Treasuries")
-    ax.legend()
+    ax.legend(
+        bbox_to_anchor=(0, 0.40, 1, -0.52),
+        loc="upper right",
+        mode="expand",
+        borderaxespad=0,
+    )
 
     theme.style_primary_axis(ax)
 

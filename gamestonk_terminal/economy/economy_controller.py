@@ -577,11 +577,9 @@ Performance & Valuations
                         convert_currency=ns_parser.convert_currency,
                     )
 
-                    print(self.DATASETS["macro"].columns)
                     self.DATASETS["macro"].columns = [
                         "_".join(column) for column in self.DATASETS["macro"].columns
                     ]
-                    print(self.DATASETS["macro"].columns)
                 else:
                     econdb_view.show_macro_data(
                         parameters=ns_parser.parameters,

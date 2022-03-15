@@ -84,7 +84,12 @@ def show_indices(
                 ax.plot(indices_data[index], label=label)
 
         ax.set_title("Indices")
-        ax.legend()
+        ax.legend(
+            bbox_to_anchor=(0, 0.40, 1, -0.52),
+            loc="upper right",
+            mode="expand",
+            borderaxespad=0,
+        )
 
         theme.style_primary_axis(ax)
 

@@ -47,7 +47,6 @@ def show_plot(
 
     theme.style_primary_axis(ax1)
     ax1.yaxis.set_label_position("left")
-    ax1.legend()
 
     if not dataset_yaxis_2.empty:
         ax2 = ax1.twinx()
@@ -63,7 +62,24 @@ def show_plot(
         ax2.yaxis.set_label_position("right")
         theme.style_twin_axis(ax2)
 
-        ax2.legend(loc="upper right")
+        h1, l1 = ax1.get_legend_handles_labels()
+        h2, l2 = ax2.get_legend_handles_labels()
+
+        ax1.legend(
+            h1 + h2,
+            l1 + l2,
+            bbox_to_anchor=(0, 0.40, 1, -0.52),
+            loc="upper right",
+            mode="expand",
+            borderaxespad=0,
+        )
+    else:
+        ax1.legend(
+            bbox_to_anchor=(0, 0.40, 1, -0.52),
+            loc="upper right",
+            mode="expand",
+            borderaxespad=0,
+        )
 
     if external_axes is None:
         theme.visualize_output()
