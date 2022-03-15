@@ -15,39 +15,84 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAA/y2NwWrDMBAFf+V9QBrcQy+5FeJDwYQUeslxkZ5jYVmbrKTW/vuKJNeZgenN1PCG
-        735Yu3cccNGKSX4Jro709CgTIUnTtmjNqJmGGJZQoCM+OjiJMePWqJdtjx/FIjOxqPHlijazwy1S
-        MmG8hlxaPraxYDQSJ8le7jhKEQwhzRDntKbSvo9/QkguVk9sWg2f5y/M3PAXyvQkxntlLnn/D5/Q
-        eQ/QAAAA
+        H4sIAAAAAAAAA21Uy24iMRD8FctnQH6MX9x2k9WKA8khKIeNIuTMGLB2XmvPkKAo/75tYBgSRYID
+        VFVXV3fPvOPCdja6Ds/fsS/wnDEtKcnkZADWeVM4PMc/F7+XP27Wj3dLfMJeQDaAv27u7+6Xi4cV
+        YLWtjny/RUubo0VduDc0RY/edQAlsYt58G3nmxp4q51Dn7k+IlsjX2+aUNkSVc7GPjjUbFDeh+Dq
+        /IDcW76z9dahYDsH9A61bTtDi25gR9TtnA9ob8veIbu1vo4dsij6ypc2IGj+r+tSzW3TFMmwQNGF
+        vc9dnIA3yKGNHCKC6NzeDN36zcYFX29RGxIzGVc2pEpfOnpt+rJAvmrLA5QCWlO7sX0o3cNYAmrg
+        swfb1GUxg9kEtwku7lyxtrASzAhjU8KnVKwImcOHkRnX9E8as3t1sVvbvYVAL6VbwyLT3E8SOuUU
+        SE0Jw/6WRLMpUSdS3pR9Va/T3iKeP+HbVAjW1JQwqfUxKX6eYGjsX5+mDyYFmB6A0x3a5LnylUMP
+        MBkoMMFtcJXvKzzf2DK6CS5h5hCm7ssSFMHWMW12+OPs7tOZ4Dmf4NjZ0I1prhp1dfFtynTC0PjT
+        p+x8BlfMhZJUaJOR7HlyxOkQm82MkUwrRgxnSqgRP82OzeBBkIRlRnGjxaAno15nimlGuVFKyEEP
+        +EWfKaW4EFoLbsypPjWjXhmVCguSXewTfJETqrPMEEWJpme1vnJnlGVUaZIxIkf4qnmjJYMSXAyw
+        GtWSG24YfCXjQ2sAD2opNGQXgmmjzsmpvFIbIjQzwsiM8rM3wBe1IoJlxBAu2HkuVFzlFpRwKrnU
+        kuuzGuAxN0CQWVAmh+KXY4WtMEm14SIDuX6Gu4QDKm0b4Q5PF9YEeLKGH+k0ji+q9G4TnJOPj/8G
+        WsY88wQAAA==
     headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - '*'
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Expose-Headers:
+      - X-RateLimit-Limit, X-RateLimit-Remaining
+      Access-Control-Max-Age:
+      - '1728000'
       Allow:
       - GET, HEAD, POST, PUT, DELETE, OPTIONS, PATCH
       Cache-Control:
-      - ''
+      - no-store
       Connection:
       - keep-alive
       Content-Encoding:
       - gzip
+      Content-Length:
+      - '691'
+      Content-Security-Policy:
+      - frame-ancestors 'self';
       Content-Type:
-      - text/plain
+      - application/json; charset=utf-8
       Date:
-      - Tue, 15 Mar 2022 09:28:16 GMT
+      - Tue, 15 Mar 2022 11:54:13 GMT
+      ETag:
+      - W/"45e476f05d31ac28262fce2d9afbc44c"
+      Pragma:
+      - no-cache
+      Referrer-Policy:
+      - origin-when-cross-origin
       Server:
       - openresty
       Set-Cookie:
-      - visid_incap_2170999=RPV1MUO+RBmkQYN8Naq0d15bMGIAAAAAQUIPAAAAAAC83eeBhzvLcG/JqsMQMa26;
-        expires=Wed, 15 Mar 2023 08:52:44 GMT; HttpOnly; path=/; Domain=.nasdaq.com
-      - nlbi_2170999=74NKT0qFKTfg+MnoKj7S7QAAAABcZON9yKvShk7mVuL2Q9Hd; path=/; Domain=.nasdaq.com
-      - incap_ses_702_2170999=maniGmU4s1jY+lWL/QG+CS9cMGIAAAAAtvP8I7+rAHTa2sqriQZNlQ==;
+      - visid_incap_2170999=CUengAcrTIO8IA3OFYaAUmV+MGIAAAAAQUIPAAAAAAB0BOBDOFhbZCTnrA8hDU2Q;
+        expires=Tue, 14 Mar 2023 15:21:35 GMT; HttpOnly; path=/; Domain=.nasdaq.com
+      - nlbi_2170999=whhVMJ87qioVb216Kj7S7QAAAABdZOyHZz0HisKht8edlbpp; path=/; Domain=.nasdaq.com
+      - incap_ses_1459_2170999=3e48VqFEmipQAi5r+Gg/FGV+MGIAAAAA/5L3t81upS4HWp0kC9drZA==;
         path=/; Domain=.nasdaq.com
-      Transfer-Encoding:
-      - chunked
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
       X-CDN:
       - Imperva
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
       X-Iinfo:
-      - 10-75921181-75921187 NNYN CT(7 8 0) RT(1647336495477 107) q(0 0 0 0) r(1 1)
-        U11
+      - 14-198828750-198828765 NNNN CT(11 27 0) RT(1647345253319 118) q(0 0 0 3) r(2
+        2) U2
+      X-RateLimit-Limit:
+      - '50000'
+      X-RateLimit-Remaining:
+      - '49980'
+      X-Request-Id:
+      - 17d136c7-f4fd-4b25-a377-5cbf8fe4a1c9
+      X-Runtime:
+      - '0.125857'
+      X-XSS-Protection:
+      - 1; mode=block
     status:
-      code: 429
-      message: Too Many Requests
+      code: 200
+      message: OK
 version: 1

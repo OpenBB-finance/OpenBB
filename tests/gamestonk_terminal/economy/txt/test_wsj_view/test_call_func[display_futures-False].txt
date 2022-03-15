@@ -1,12 +1,12 @@
                                 Price      Chg   %Chg
-0          Crude Oil Futures    97.27    -5.74  -5.57
-1        Brent Crude Futures   100.92    -5.98  -5.59
-2               Gold Futures  1935.20   -25.60  -1.31
-3             Silver Futures   25.030   -0.268  -1.06
-4        Natural Gas Futures    4.607   -0.095  -2.02
-5  Unleaded Gasoline Futures   3.0212  -0.1477  -4.66
-6             Copper Futures   4.4860  -0.0370  -0.82
-7               Corn Futures   737.25   -11.00  -1.47
-8              Wheat Futures  1129.00    32.75   2.99
-9  Bloomberg Commodity Index   121.46    -2.34  -1.89
+0          Crude Oil Futures    95.12    -7.89  -7.66
+1        Brent Crude Futures    99.36    -7.54  -7.05
+2               Gold Futures  1929.10   -31.70  -1.62
+3             Silver Futures   24.885   -0.413  -1.63
+4        Natural Gas Futures    4.587   -0.115  -2.45
+5  Unleaded Gasoline Futures   2.9683  -0.2006  -6.33
+6             Copper Futures   4.4845  -0.0385  -0.85
+7               Corn Futures   739.50    -8.75  -1.17
+8              Wheat Futures  1104.75     8.50   0.78
+9  Bloomberg Commodity Index   120.80    -3.00  -2.42
 

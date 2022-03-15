@@ -15,22 +15,10 @@ interactions:
     uri: https://query2.finance.yahoo.com/v8/finance/chart/%5EFCHI?period1=1591394400&period2=1594072800&interval=1wk&includePrePost=False&events=div%2Csplits
   response:
     body:
-      string: !!binary |
-        H4sIAAAAAAAAAK1T204bMRD9l31euR7fzVsFaeGhKEKpVAkFaZs1YcteUq8XSKP8e2eyIQRaCVXq
-        y+z42HN85nh2ky3uipiyk00WQz/UmF1vsiakgqDFEGNoF+vsJJt8vcryrF8337salzefTs8vEAhP
-        WN8uw2XRBISnH+lU1fYpDk1o02y9Ivji8mzyDTduq9inWSzKcFYk3DDSCOsU5znevhzqIn4p4n1I
-        s4rYwCgrpdZe59mySd3tbR9QnzR0PuGRX11L7KeT2ZGS2X5jr2gyxG4VPkyLWPXZm2umsVqQCgGG
-        SZOPVkxjeKi6oT+tux43NXjLrM+zFR0+r1pUIPK9M7teqnY5DbHqSnJsFQN9/lDXp53LY0sgqIPQ
-        lq+BNz1uD2r/ndGA+zvjquvTu3T76nfpkK8sUvE5Fi3JrBINCjzek8/0FLjC9KGoq/KK1j0OVwYl
-        YpoCNB1GuYtmF2GNQVDQFIBTXCc63BRP2Xw7vjtqbVbIBdqDNpZ6x1QAZWNqrXFjKqUDs0+9Mzhr
-        cxrQsloUqYs9efFz6GgYce4X45tfKyc9E9pbo43QufLWM6U5eI1O05p7hlQgjQVnda45twxeAUoy
-        K7x3XBkE8M6Hrh5oIq8RFkKSaOMUGEualTGY2F2GxwVl6LwG4XaC76rlHZZqAZIZ47HX/S2cKcsF
-        KKfkCOAkA+faYbs7wApmufeGj2sQgLoOFUhdd4/UsdWewYFZGQ/MHREp6zXj6rmfXDkNTFoOcHDA
-        My68RZw8Q2L87VrSjM6zFyeQCf82NPQF8MIxLH822znLxFGBBhBMz7dIWZQ/np9oc7z4/++1nW/p
-        whBjh78fjne93f4GaEhXhiwFAAA=
+      string: '{"chart":{"result":[{"meta":{"currency":"EUR","symbol":"^FCHI","exchangeName":"PAR","instrumentType":"INDEX","firstTradeDate":636278400,"regularMarketTime":1647344355,"gmtoffset":3600,"timezone":"CET","exchangeTimezoneName":"Europe/Paris","regularMarketPrice":6301.51,"chartPreviousClose":5197.79,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"CET","start":1647331200,"end":1647331200,"gmtoffset":3600},"regular":{"timezone":"CET","start":1647331200,"end":1647361800,"gmtoffset":3600},"post":{"timezone":"CET","start":1647361800,"end":1647361800,"gmtoffset":3600}},"dataGranularity":"1wk","range":"","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1591567200,1592172000,1592776800,1593381600,1593986400],"indicators":{"quote":[{"high":[5213.669921875,5040.47021484375,5046.31005859375,5072.7099609375,5121.72021484375],"low":[4759.169921875,4691.81005859375,4795.0498046875,4851.3701171875,5009.02978515625],"volume":[729223200,684167000,466670700,468752700,164512800],"close":[4839.259765625,4979.4501953125,4909.64013671875,5007.14013671875,5043.72998046875],"open":[5159.2998046875,4716.97998046875,4928.009765625,4887.22998046875,5112.5]}],"adjclose":[{"adjclose":[4839.259765625,4979.4501953125,4909.64013671875,5007.14013671875,5043.72998046875]}]}}],"error":null}}'
     headers:
       Age:
-      - '2'
+      - '0'
       Connection:
       - keep-alive
       Expect-CT:
@@ -46,25 +34,27 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
       cache-control:
-      - public, max-age=10, stale-while-revalidate=15, stale-if-error=3600
-      content-encoding:
-      - gzip
+      - public, max-age=10, stale-while-revalidate=20
       content-length:
-      - '647'
+      - '1324'
       content-type:
       - application/json;charset=utf-8
       date:
-      - Tue, 15 Mar 2022 09:28:28 GMT
+      - Tue, 15 Mar 2022 11:54:23 GMT
       server:
       - ATS
       vary:
-      - Origin
+      - Origin,Accept-Encoding
       x-envoy-decorator-operation:
-      - finance-yql--mtls-intel-production-ne1.finance-k8s.svc.yahoo.local:4080/*
+      - finance-chart-api--mtls-canary-production-ir2.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '442'
+      - '4'
+      x-request-id:
+      - 0eb37fed-b654-43b1-8765-34840cff71e5
       x-yahoo-request-id:
-      - 54p8pmhh30n1r
+      - 710uopph30vjf
+      y-rid:
+      - 710uopph30vjf
     status:
       code: 200
       message: OK
@@ -84,19 +74,7 @@ interactions:
     uri: https://query2.finance.yahoo.com/v8/finance/chart/%5EDJI?period1=1591394400&period2=1594072800&interval=1wk&includePrePost=False&events=div%2Csplits
   response:
     body:
-      string: !!binary |
-        H4sIAAAAAAAAALVT227TQBD9Fz+bZe+XviFSQZGoKggSqCpoibepqe0N63XbEOXfmbHdptBKPPEy
-        ntueOTOe2RWrK59ycbQrUuiHBrTzXdGG7NG1GlIK3WpbHBWfPi6Ksui37ffYgPl18e4E7HAHz7t1
-        OPVtAO/krLs+p6ENXV5uN+g+OV0cf4bAZZ36vEy+CgufIaCdFJprSksovh4an977dB3yskY0pqXh
-        Tiipy2Ld5nh52Qeg94JJiS8yJP2KHeIfL5aPuCznwMzpVRtSvfIvT8Ptty8xXRd/FTuDKOQJ7qQi
-        XJbTQM5SuKnj0L9uYg9RbhijxNmy2GD627oDJrycBzT2VHfrM6gUKxzcJgX8POHY53HY2JoQjGMf
-        oatmh2IUHU963T8w/ifmDHHANNOwnsPcxD7/E3B+fwC01j4PCIiVz/5N8h1SrTNuDbsd542/BSxQ
-        b3xTVx/Q7mHTClaBT6FgbQQpRqlHybYgOAqFglGU24zJrb8rLvbTDgDbdgNYTDnqrMT+QWVqIgoq
-        Z07oWTVjBqpCUsEnFTyQSi9wcytYlRxTj4P5OUTcUriHuAkdKFxboQnkGsu4KrnhghPHnbYGLMUN
-        JcJRjSFltSL0kKqY4kRKIDPlOqcPYah8E5sB1/VcSS7wJ9KSS86NnVRujJCzyoygdGqTMaZHFYLa
-        0amJq3p9hWRhwywRB7LKUsIZdQIJaM0YofyBvBZMEmeooWLM1pxKIhllSk+mM0Tdp0ORJt4+MxAF
-        yqNX0kpBmJlLSGf+KKkozAD4z8lPRrKaTu/8/vaonN9pqog6DBpQpZ7bUoBGlHrgY7khQs0tc2sO
-        9S/2UMJXP+6r7B4b/63kHquGlCKcMpxJs9//BmSZTVyBBQAA
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"^DJI","exchangeName":"DJI","instrumentType":"INDEX","firstTradeDate":694362600,"regularMarketTime":1647293546,"gmtoffset":-14400,"timezone":"EDT","exchangeTimezoneName":"America/New_York","regularMarketPrice":32945.24,"chartPreviousClose":27110.98,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EDT","start":1647331200,"end":1647351000,"gmtoffset":-14400},"regular":{"timezone":"EDT","start":1647351000,"end":1647374400,"gmtoffset":-14400},"post":{"timezone":"EDT","start":1647374400,"end":1647388800,"gmtoffset":-14400}},"dataGranularity":"1wk","range":"","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1590984000,1591588800,1592193600,1592798400,1593403200,1594008000],"indicators":{"quote":[{"high":[27338.30078125,27580.2109375,26611.029296875,26314.970703125,26204.41015625,26297.529296875],"volume":[542310000,2422780000,2277340000,2217300000,1511160000,340690000],"open":[26836.80078125,27232.9296875,25270.390625,25865.080078125,25152.44921875,25996.080078125],"low":[26836.80078125,25078.41015625,24843.1796875,24971.029296875,25096.16015625,25996.080078125],"close":[27110.98046875,25605.5390625,25871.4609375,25015.55078125,25827.359375,26287.029296875]}],"adjclose":[{"adjclose":[27110.98046875,25605.5390625,25871.4609375,25015.55078125,25827.359375,26287.029296875]}]}}],"error":null}}'
     headers:
       Age:
       - '0'
@@ -115,25 +93,27 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
       cache-control:
-      - public, max-age=10, stale-while-revalidate=15, stale-if-error=3600
-      content-encoding:
-      - gzip
+      - public, max-age=10, stale-while-revalidate=20
       content-length:
-      - '663'
+      - '1409'
       content-type:
       - application/json;charset=utf-8
       date:
-      - Tue, 15 Mar 2022 09:28:28 GMT
+      - Tue, 15 Mar 2022 11:54:23 GMT
       server:
       - ATS
       vary:
-      - Origin
+      - Origin,Accept-Encoding
       x-envoy-decorator-operation:
-      - finance-yql--mtls-intel-production-ne1.finance-k8s.svc.yahoo.local:4080/*
+      - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '320'
+      - '3'
+      x-request-id:
+      - 79defa5c-c67e-42e5-aa83-4d08c09829e0
       x-yahoo-request-id:
-      - 9h2vh15h30n1s
+      - 5d7j6vdh30vjf
+      y-rid:
+      - 5d7j6vdh30vjf
     status:
       code: 200
       message: OK
@@ -153,23 +133,10 @@ interactions:
     uri: https://query2.finance.yahoo.com/v8/finance/chart/%5EIXIC?period1=1591394400&period2=1594072800&interval=1wk&includePrePost=False&events=div%2Csplits
   response:
     body:
-      string: !!binary |
-        H4sIAAAAAAAAALVTS0/bQBD+Lz6n230/uFUEtTkQoTaVqBCt3HgJLrGdrh0gRfnv/cZxQlSQOPUy
-        mZ1Zf4/J7FM2v81Tl508ZSm26yWyq6esil1Opfk6pVjPN9lJ9vXLOBtl7ab62Sxx/D65nJyiEB/x
-        fb2I07yKKE8n5yiWdduldRXrbrZZUXkyHZ9donFTprabpbyI47xDQ2krpOR8BPLFepmn8zzdxW5W
-        Epiw2skgjQmjbFF1zc1NGyHvndCavuhw6U9TE/zZeHYkZTY0BkkfqpjKef5+Gh9+fGvSXfYP2QW6
-        xCaNF0xKMdpN5CLF+7JZt6fLpkU7eKEZ96NsRdc/lTWUyNEwoN5SWS8uwNQUNLhVivTzQmPb9cMm
-        a0qJ3nmsi6FgBKfCC6/bg+I3MQeIZ0y3G9ZrmKum7d4EHL5/BvTevw4IxCLv8o8pr0lq2dHWiId+
-        3vS34IT0Pl+WxWc6t9i0TBSoGQqiahBVH20fxQZBUjAUBKe46ehylT9m19vdDkBttQKWMIEHr8k/
-        UmF2QpFKEZQdUtffoFRpruQuRQVX+TUtboFV6ZrU0mB+rxtaUryH+2a5pmW6ssZJbziRSCsCN26X
-        KxsUt7vcOeGd7nPhFLhln2sjgyYeImpWsQZccFwxg7sqcCvNKHipGKapZbDe4aylZeG5HbRhOnCp
-        tKIumJgTwUlrqC04fDIFj1567DN4ls0D0VhvmNLB8tB/p4ViUCUEKaUzVHDA6cA4FAmishZ3gGjE
-        HttoFjzXJAzI8927uBoeBufO999h7szzYPY4QVsmjriccUwea5bcQcxeMwpagdkMnsF0Wy5ueyKY
-        t+EwG2y6t8z7YLXvx4GCUSwIvleMx8z8wTUcCEzHHlnSVjKuD6a2IMuLX3tnT8eH/21ze70l+phS
-        g1eOF7Tcbv8CZujfr5wFAAA=
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"^IXIC","exchangeName":"NIM","instrumentType":"INDEX","firstTradeDate":34612200,"regularMarketTime":1647292559,"gmtoffset":-14400,"timezone":"EDT","exchangeTimezoneName":"America/New_York","regularMarketPrice":12581.221,"chartPreviousClose":9814.08,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EDT","start":1647331200,"end":1647351000,"gmtoffset":-14400},"regular":{"timezone":"EDT","start":1647351000,"end":1647374400,"gmtoffset":-14400},"post":{"timezone":"EDT","start":1647374400,"end":1647388800,"gmtoffset":-14400}},"dataGranularity":"1wk","range":"","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1590984000,1591588800,1592193600,1592798400,1593403200,1594008000],"indicators":{"quote":[{"open":[9703.5400390625,9823.4404296875,9426.900390625,9945.490234375,9771.7197265625,10360.3798828125],"close":[9814.080078125,9588.8095703125,9946.1201171875,9757.2197265625,10207.6298828125,10433.650390625],"high":[9845.6904296875,10086.8896484375,10053.91015625,10221.849609375,10310.3603515625,10462.0498046875],"low":[9685.349609375,9413.6201171875,9403.0,9749.0703125,9663.6103515625,10354.98046875],"volume":[6572850000,26190570000,23693060000,27718740000,17393620000,4529480000]}],"adjclose":[{"adjclose":[9814.080078125,9588.8095703125,9946.1201171875,9757.2197265625,10207.6298828125,10433.650390625]}]}}],"error":null}}'
     headers:
       Age:
-      - '2'
+      - '0'
       Connection:
       - keep-alive
       Expect-CT:
@@ -185,25 +152,27 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
       cache-control:
-      - public, max-age=10, stale-while-revalidate=15, stale-if-error=3600
-      content-encoding:
-      - gzip
+      - public, max-age=10, stale-while-revalidate=20
       content-length:
-      - '701'
+      - '1436'
       content-type:
       - application/json;charset=utf-8
       date:
-      - Tue, 15 Mar 2022 09:28:29 GMT
+      - Tue, 15 Mar 2022 11:54:23 GMT
       server:
       - ATS
       vary:
-      - Origin
+      - Origin,Accept-Encoding
       x-envoy-decorator-operation:
-      - finance-yql--mtls-intel-production-ne1.finance-k8s.svc.yahoo.local:4080/*
+      - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '310'
+      - '4'
+      x-request-id:
+      - dd049428-1f2a-4a22-9da1-3e3fc6c22d74
       x-yahoo-request-id:
-      - a6c08phh30n1s
+      - c41e7elh30vjf
+      y-rid:
+      - c41e7elh30vjf
     status:
       code: 200
       message: OK

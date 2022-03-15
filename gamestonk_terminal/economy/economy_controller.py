@@ -298,7 +298,7 @@ Performance & Valuations
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="futures",
-            description="Futures/Commodities frrom Wall St. Journal and FinViz.",
+            description="Futures/Commodities from Wall St. Journal and FinViz.",
         )
 
         parser.add_argument(

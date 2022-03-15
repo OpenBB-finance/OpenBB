@@ -6,7 +6,7 @@
 4           Russell 2000   1941.72   -37.95  -1.92
 5         NYSE Composite  15694.35   -59.35  -0.38
 6           Barron's 400    968.62    -6.27  -0.64
-7        CBOE Volatility     33.69     1.92   6.04
-8           DJIA Futures     32613     -225  -0.69
-9        S&P 500 Futures   4134.25   -29.25  -0.70
+7        CBOE Volatility     32.09     0.32   1.01
+8           DJIA Futures     32840        2   0.01
+9        S&P 500 Futures   4167.25     3.75   0.09
 

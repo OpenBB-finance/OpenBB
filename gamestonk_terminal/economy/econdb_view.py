@@ -98,7 +98,7 @@ def show_macro_data(
             ax.set_title(f"{country_label} {denomination}")
             ax.legend()
         elif len(countries) > 1:
-            ax.plot(df_rounded[column], label=column[0])
+            ax.plot(df_rounded[column], label=country_label)
             ax.set_title(f"{parameter_label} {denomination}")
             ax.legend()
         else:
