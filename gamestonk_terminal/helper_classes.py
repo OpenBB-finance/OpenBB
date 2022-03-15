@@ -316,13 +316,40 @@ class TerminalStyle:
         """
         label = "Gamestonk Terminal"
         fig.text(
-            0.69,
+            0.99,
             0.0420,
             label,
             fontsize=12,
             color="gray",
             alpha=0.5,
+            horizontalalignment="right",
         )
+
+    # pylint: disable=import-outside-toplevel
+    def add_cmd_source(
+        self,
+        fig: plt.figure,
+    ):
+        """Add a text label to a figure in a funny position.
+
+        Parameters
+        ----------
+        fig : plt.figure
+            A matplotlib figure
+        """
+        from gamestonk_terminal.helper_funcs import command_location
+
+        if command_location:
+            fig.text(
+                0.01,
+                0.5,
+                command_location,
+                rotation=90,
+                fontsize=12,
+                color="gray",
+                alpha=0.5,
+                verticalalignment="center",
+            )
 
     # pylint: disable=import-outside-toplevel
     def visualize_output(self, force_tight_layout: bool = True):
@@ -330,6 +357,8 @@ class TerminalStyle:
         import gamestonk_terminal.feature_flags as gtff
         from gamestonk_terminal.rich_config import console
 
+        if gtff.USE_CMD_LOCATION_FIGURE:
+            self.add_cmd_source(plt.gcf())
         if gtff.USE_WATERMARK:
             self.add_label(plt.gcf())
         if force_tight_layout:
