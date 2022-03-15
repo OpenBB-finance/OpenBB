@@ -12,13 +12,13 @@ interactions:
       - Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML,
         like Gecko) Chrome/39.0.2171.95 Safari/537.36
     method: GET
-    uri: https://query2.finance.yahoo.com/v8/finance/chart/%5EFCHI?period1=1591394400&period2=1594072800&interval=1wk&includePrePost=False&events=div%2Csplits
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/%5EFCHI?period1=1591416000&period2=1594094400&interval=1wk&includePrePost=False&events=div%2Csplits
   response:
     body:
-      string: '{"chart":{"result":[{"meta":{"currency":"EUR","symbol":"^FCHI","exchangeName":"PAR","instrumentType":"INDEX","firstTradeDate":636278400,"regularMarketTime":1647344355,"gmtoffset":3600,"timezone":"CET","exchangeTimezoneName":"Europe/Paris","regularMarketPrice":6301.51,"chartPreviousClose":5197.79,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"CET","start":1647331200,"end":1647331200,"gmtoffset":3600},"regular":{"timezone":"CET","start":1647331200,"end":1647361800,"gmtoffset":3600},"post":{"timezone":"CET","start":1647361800,"end":1647361800,"gmtoffset":3600}},"dataGranularity":"1wk","range":"","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1591567200,1592172000,1592776800,1593381600,1593986400],"indicators":{"quote":[{"high":[5213.669921875,5040.47021484375,5046.31005859375,5072.7099609375,5121.72021484375],"low":[4759.169921875,4691.81005859375,4795.0498046875,4851.3701171875,5009.02978515625],"volume":[729223200,684167000,466670700,468752700,164512800],"close":[4839.259765625,4979.4501953125,4909.64013671875,5007.14013671875,5043.72998046875],"open":[5159.2998046875,4716.97998046875,4928.009765625,4887.22998046875,5112.5]}],"adjclose":[{"adjclose":[4839.259765625,4979.4501953125,4909.64013671875,5007.14013671875,5043.72998046875]}]}}],"error":null}}'
+      string: '{"chart":{"result":[{"meta":{"currency":"EUR","symbol":"^FCHI","exchangeName":"PAR","instrumentType":"INDEX","firstTradeDate":636278400,"regularMarketTime":1647354525,"gmtoffset":3600,"timezone":"CET","exchangeTimezoneName":"Europe/Paris","regularMarketPrice":6319.93,"chartPreviousClose":5197.79,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"CET","end":1647331200,"start":1647331200,"gmtoffset":3600},"regular":{"timezone":"CET","end":1647361800,"start":1647331200,"gmtoffset":3600},"post":{"timezone":"CET","end":1647361800,"start":1647361800,"gmtoffset":3600}},"dataGranularity":"1wk","range":"","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1591567200,1592172000,1592776800,1593381600,1593986400],"indicators":{"quote":[{"high":[5213.669921875,5040.47021484375,5046.31005859375,5072.7099609375,5121.72021484375],"open":[5159.2998046875,4716.97998046875,4928.009765625,4887.22998046875,5112.5],"close":[4839.259765625,4979.4501953125,4909.64013671875,5007.14013671875,5043.72998046875],"low":[4759.169921875,4691.81005859375,4795.0498046875,4851.3701171875,5009.02978515625],"volume":[729223200,684167000,466670700,468752700,164512800]}],"adjclose":[{"adjclose":[4839.259765625,4979.4501953125,4909.64013671875,5007.14013671875,5043.72998046875]}]}}],"error":null}}'
     headers:
       Age:
-      - '0'
+      - '1'
       Connection:
       - keep-alive
       Expect-CT:
@@ -40,21 +40,21 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Tue, 15 Mar 2022 11:54:23 GMT
+      - Tue, 15 Mar 2022 14:43:58 GMT
       server:
       - ATS
       vary:
       - Origin,Accept-Encoding
       x-envoy-decorator-operation:
-      - finance-chart-api--mtls-canary-production-ir2.finance-k8s.svc.yahoo.local:4080/*
+      - finance-chart-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '4'
+      - '5'
       x-request-id:
-      - 0eb37fed-b654-43b1-8765-34840cff71e5
+      - 19c7d442-3af7-4635-83fb-dfdaa9e7d728
       x-yahoo-request-id:
-      - 710uopph30vjf
+      - 97o0ufth319hf
       y-rid:
-      - 710uopph30vjf
+      - 97o0ufth319hf
     status:
       code: 200
       message: OK
@@ -71,10 +71,10 @@ interactions:
       - Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML,
         like Gecko) Chrome/39.0.2171.95 Safari/537.36
     method: GET
-    uri: https://query2.finance.yahoo.com/v8/finance/chart/%5EDJI?period1=1591394400&period2=1594072800&interval=1wk&includePrePost=False&events=div%2Csplits
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/%5EDJI?period1=1591416000&period2=1594094400&interval=1wk&includePrePost=False&events=div%2Csplits
   response:
     body:
-      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"^DJI","exchangeName":"DJI","instrumentType":"INDEX","firstTradeDate":694362600,"regularMarketTime":1647293546,"gmtoffset":-14400,"timezone":"EDT","exchangeTimezoneName":"America/New_York","regularMarketPrice":32945.24,"chartPreviousClose":27110.98,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EDT","start":1647331200,"end":1647351000,"gmtoffset":-14400},"regular":{"timezone":"EDT","start":1647351000,"end":1647374400,"gmtoffset":-14400},"post":{"timezone":"EDT","start":1647374400,"end":1647388800,"gmtoffset":-14400}},"dataGranularity":"1wk","range":"","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1590984000,1591588800,1592193600,1592798400,1593403200,1594008000],"indicators":{"quote":[{"high":[27338.30078125,27580.2109375,26611.029296875,26314.970703125,26204.41015625,26297.529296875],"volume":[542310000,2422780000,2277340000,2217300000,1511160000,340690000],"open":[26836.80078125,27232.9296875,25270.390625,25865.080078125,25152.44921875,25996.080078125],"low":[26836.80078125,25078.41015625,24843.1796875,24971.029296875,25096.16015625,25996.080078125],"close":[27110.98046875,25605.5390625,25871.4609375,25015.55078125,25827.359375,26287.029296875]}],"adjclose":[{"adjclose":[27110.98046875,25605.5390625,25871.4609375,25015.55078125,25827.359375,26287.029296875]}]}}],"error":null}}'
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"^DJI","exchangeName":"DJI","instrumentType":"INDEX","firstTradeDate":694362600,"regularMarketTime":1647355438,"gmtoffset":-14400,"timezone":"EDT","exchangeTimezoneName":"America/New_York","regularMarketPrice":33266.36,"chartPreviousClose":27110.98,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EDT","start":1647331200,"end":1647351000,"gmtoffset":-14400},"regular":{"timezone":"EDT","start":1647351000,"end":1647374400,"gmtoffset":-14400},"post":{"timezone":"EDT","start":1647374400,"end":1647388800,"gmtoffset":-14400}},"dataGranularity":"1wk","range":"","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1591588800,1592193600,1592798400,1593403200,1594008000],"indicators":{"quote":[{"open":[27232.9296875,25270.390625,25865.080078125,25152.44921875,25996.080078125],"volume":[2422780000,2277340000,2217300000,1511160000,687510000],"high":[27580.2109375,26611.029296875,26314.970703125,26204.41015625,26297.529296875],"low":[25078.41015625,24843.1796875,24971.029296875,25096.16015625,25866.580078125],"close":[25605.5390625,25871.4609375,25015.55078125,25827.359375,25890.1796875]}],"adjclose":[{"adjclose":[25605.5390625,25871.4609375,25015.55078125,25827.359375,25890.1796875]}]}}],"error":null}}'
     headers:
       Age:
       - '0'
@@ -95,25 +95,25 @@ interactions:
       cache-control:
       - public, max-age=10, stale-while-revalidate=20
       content-length:
-      - '1409'
+      - '1309'
       content-type:
       - application/json;charset=utf-8
       date:
-      - Tue, 15 Mar 2022 11:54:23 GMT
+      - Tue, 15 Mar 2022 14:43:59 GMT
       server:
       - ATS
       vary:
       - Origin,Accept-Encoding
       x-envoy-decorator-operation:
-      - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
+      - finance-chart-api--mtls-canary-production-bf1.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
       - '3'
       x-request-id:
-      - 79defa5c-c67e-42e5-aa83-4d08c09829e0
+      - f6452093-647f-43cc-b054-506aa280e3ba
       x-yahoo-request-id:
-      - 5d7j6vdh30vjf
+      - cja19rlh319hf
       y-rid:
-      - 5d7j6vdh30vjf
+      - cja19rlh319hf
     status:
       code: 200
       message: OK
@@ -130,10 +130,10 @@ interactions:
       - Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML,
         like Gecko) Chrome/39.0.2171.95 Safari/537.36
     method: GET
-    uri: https://query2.finance.yahoo.com/v8/finance/chart/%5EIXIC?period1=1591394400&period2=1594072800&interval=1wk&includePrePost=False&events=div%2Csplits
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/%5EIXIC?period1=1591416000&period2=1594094400&interval=1wk&includePrePost=False&events=div%2Csplits
   response:
     body:
-      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"^IXIC","exchangeName":"NIM","instrumentType":"INDEX","firstTradeDate":34612200,"regularMarketTime":1647292559,"gmtoffset":-14400,"timezone":"EDT","exchangeTimezoneName":"America/New_York","regularMarketPrice":12581.221,"chartPreviousClose":9814.08,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EDT","start":1647331200,"end":1647351000,"gmtoffset":-14400},"regular":{"timezone":"EDT","start":1647351000,"end":1647374400,"gmtoffset":-14400},"post":{"timezone":"EDT","start":1647374400,"end":1647388800,"gmtoffset":-14400}},"dataGranularity":"1wk","range":"","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1590984000,1591588800,1592193600,1592798400,1593403200,1594008000],"indicators":{"quote":[{"open":[9703.5400390625,9823.4404296875,9426.900390625,9945.490234375,9771.7197265625,10360.3798828125],"close":[9814.080078125,9588.8095703125,9946.1201171875,9757.2197265625,10207.6298828125,10433.650390625],"high":[9845.6904296875,10086.8896484375,10053.91015625,10221.849609375,10310.3603515625,10462.0498046875],"low":[9685.349609375,9413.6201171875,9403.0,9749.0703125,9663.6103515625,10354.98046875],"volume":[6572850000,26190570000,23693060000,27718740000,17393620000,4529480000]}],"adjclose":[{"adjclose":[9814.080078125,9588.8095703125,9946.1201171875,9757.2197265625,10207.6298828125,10433.650390625]}]}}],"error":null}}'
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"^IXIC","exchangeName":"NIM","instrumentType":"INDEX","firstTradeDate":34612200,"regularMarketTime":1647355436,"gmtoffset":-14400,"timezone":"EDT","exchangeTimezoneName":"America/New_York","regularMarketPrice":12810.603,"chartPreviousClose":9814.08,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EDT","end":1647351000,"start":1647331200,"gmtoffset":-14400},"regular":{"timezone":"EDT","end":1647374400,"start":1647351000,"gmtoffset":-14400},"post":{"timezone":"EDT","end":1647388800,"start":1647374400,"gmtoffset":-14400}},"dataGranularity":"1wk","range":"","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1591588800,1592193600,1592798400,1593403200,1594008000],"indicators":{"quote":[{"close":[9588.8095703125,9946.1201171875,9757.2197265625,10207.6298828125,10343.8896484375],"high":[10086.8896484375,10053.91015625,10221.849609375,10310.3603515625,10518.98046875],"low":[9413.6201171875,9403.0,9749.0703125,9663.6103515625,10337.98046875],"volume":[26190570000,23693060000,27718740000,17393620000,8843590000],"open":[9823.4404296875,9426.900390625,9945.490234375,9771.7197265625,10360.3798828125]}],"adjclose":[{"adjclose":[9588.8095703125,9946.1201171875,9757.2197265625,10207.6298828125,10343.8896484375]}]}}],"error":null}}'
     headers:
       Age:
       - '0'
@@ -154,25 +154,25 @@ interactions:
       cache-control:
       - public, max-age=10, stale-while-revalidate=20
       content-length:
-      - '1436'
+      - '1337'
       content-type:
       - application/json;charset=utf-8
       date:
-      - Tue, 15 Mar 2022 11:54:23 GMT
+      - Tue, 15 Mar 2022 14:43:59 GMT
       server:
       - ATS
       vary:
       - Origin,Accept-Encoding
       x-envoy-decorator-operation:
-      - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
+      - finance-chart-api--mtls-canary-production-bf1.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '4'
+      - '5'
       x-request-id:
-      - dd049428-1f2a-4a22-9da1-3e3fc6c22d74
+      - 7c60284c-24f0-4985-aca7-1458d3cc40ab
       x-yahoo-request-id:
-      - c41e7elh30vjf
+      - 30ligndh319hf
       y-rid:
-      - c41e7elh30vjf
+      - 30ligndh319hf
     status:
       code: 200
       message: OK
