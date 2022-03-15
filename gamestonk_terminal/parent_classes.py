@@ -26,6 +26,7 @@ from gamestonk_terminal.helper_funcs import (
     valid_date,
     parse_known_args_and_warn,
     valid_date_in_past,
+    set_command_location,
 )
 from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal.rich_config import console
@@ -176,6 +177,7 @@ class BaseController(metaclass=ABCMeta):
                 elif known_args.cmd == "r":
                     known_args.cmd = "reset"
 
+            set_command_location(f"{self.PATH}{known_args.cmd}")
             logger.info("CMD: %s", an_input)
             self.log_queue("QUEUE")
 
