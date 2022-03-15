@@ -66,7 +66,9 @@ def show_indices(
     indices_data: pd.DataFrame = pd.DataFrame()
 
     for index in indices:
-        indices_data[index] = get_index(index, interval, start_date, end_date, column)
+        index_data = get_index(index, interval, start_date, end_date, column)
+        if not index_data.empty:
+            indices_data[index] = index_data
 
     if not store:
         if external_axes is None:

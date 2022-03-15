@@ -2,6 +2,7 @@
 
 # IMPORTATION THIRDPARTY
 import pytest
+import yfinance
 
 # IMPORTATION INTERNAL
 from gamestonk_terminal.economy import yfinance_view
@@ -24,7 +25,19 @@ from gamestonk_terminal.economy import yfinance_view
         [["cac40"], "3mo", "2010-01-01", "2016-02-06", "High", True],
     ],
 )
-def test_show_indices(recorder, indices, interval, start_date, end_date, column, store):
+def test_show_indices(
+    recorder, mocker, indices, interval, start_date, end_date, column, store
+):
+    yf_download = yfinance.download
+
+    def mock_yf_download(*args, **kwargs):
+        kwargs["threads"] = False
+        return yf_download(*args, **kwargs)
+
+    mocker.patch("yfinance.download", side_effect=mock_yf_download)
+    mocker.patch(
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
+    )
     result_df = yfinance_view.show_indices(
         indices, interval, start_date, end_date, column, store
     )
