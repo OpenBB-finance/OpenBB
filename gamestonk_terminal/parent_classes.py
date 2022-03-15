@@ -509,7 +509,7 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
             help="Source of data",
             dest="source",
             choices=("cp", "cg", "bin", "cb"),
-            default="cg",
+            default="cp",
             required=False,
         )
         parser.add_argument(
