@@ -5,7 +5,6 @@ import disnake.ext.commands as commands
 
 from bots.helpers import ShowView, expiry_autocomp, ticker_autocomp
 from bots.stocks.candle import candle_command
-from bots.stocks.insider.lins import lins_command
 from bots.stocks.options.cc_hist import cc_hist_command
 from bots.stocks.options.hist import hist_command
 from bots.stocks.options.iv import iv_command
@@ -105,22 +104,6 @@ class SlashCommands(commands.Cog):
     async def unu(self, inter: disnake.AppCmdInter):
         """Unusual Options"""
         await ShowView().discord(unu_command, inter, "opt unu")
-
-    @commands.slash_command(name="ins-last")
-    async def lins(
-        self,
-        inter: disnake.AppCmdInter,
-        ticker: str = commands.Param(autocomplete=ticker_autocomp),
-        num: int = 10,
-    ):
-        """Display insider activity for a given stock ticker. [Finviz]
-
-        Parameters
-        ----------
-        ticker : Stock Ticker
-        num : Number of latest insider activity to display
-        """
-        await lins_command(inter, "ins-last", ticker, num)
 
     @commands.slash_command(name="candle")
     async def candle(

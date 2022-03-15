@@ -3,13 +3,14 @@ from __future__ import annotations
 import disnake
 from disnake.ext import commands
 
-from bots.helpers import ShowView
+from bots.helpers import ShowView, ticker_autocomp
 from bots.stocks.disc.active import active_command
 from bots.stocks.disc.ford import ford_command
 from bots.stocks.disc.topgainers import gainers_command
 from bots.stocks.disc.toplosers import losers_command
 from bots.stocks.disc.ugs import ugs_command
 from bots.stocks.disc.upcoming import earnings_command
+from bots.stocks.insider.lins import lins_command
 
 
 class DiscoverCommands(commands.Cog):
@@ -77,6 +78,22 @@ class DiscoverCommands(commands.Cog):
     async def earnings(self, inter: disnake.AppCmdInter):
         """Display Upcoming Earnings. [Source: Seeking Alpha]"""
         await ShowView().discord(earnings_command, inter, "earnings")
+
+    @commands.slash_command(name="ins-last")
+    async def lins(
+        self,
+        inter: disnake.AppCmdInter,
+        ticker: str = commands.Param(autocomplete=ticker_autocomp),
+        num: int = 10,
+    ):
+        """Display insider activity for a given stock ticker. [Finviz]
+
+        Parameters
+        ----------
+        ticker : Stock Ticker
+        num : Number of latest insider activity to display
+        """
+        await ShowView().discord(lins_command, inter, "ins-last", ticker, num)
 
 
 def setup(bot: commands.Bot):
