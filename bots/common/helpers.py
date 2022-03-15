@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Set, Union, Pattern
+from typing import Any, Dict, List, Pattern, Set, Union
 
 from bots.common.commands_dict import commands
 
@@ -14,8 +14,8 @@ def send_options(name: str, items: Union[List[Any], Set[Any]], sender: Any) -> N
         The name of the section
     items : List[str]
         The items the user can select from
-    message: Any
-        Object that contains telegram request info
+    sender : Any
+        Lambda function that sends a given message
     """
     help_message = name
     clean = list(items)
@@ -55,7 +55,7 @@ def get_arguments(selected: Dict[str, Any], req_name: str, sender: Any) -> None:
     req_name : str
         The name of the requirement
     sender : Any
-        Object that contains telegram request info
+        Lambda function that sends a given message
     """
 
     if req_name == "ticker":
@@ -72,7 +72,19 @@ def get_arguments(selected: Dict[str, Any], req_name: str, sender: Any) -> None:
         sender(f"Options: {selections}")
 
 
-def non_slash(text, sender, showview):
+def non_slash(text: str, sender: Any, showview: Any):
+    """Menu for bots that do not use slash commands
+
+    Parameters
+    ----------
+    text : str
+        The text the user sent
+    sender : Any
+        A lambda function that sends a given message
+    showview : Any
+        A lambda function for the given bot's ShowView method
+
+    """
     cmd = text[1:]
     full_cmd = cmd.split("/")
     group = full_cmd[0].split("_")[0]
@@ -86,6 +98,8 @@ def non_slash(text, sender, showview):
                     sender(f"Required syntax: /{syntax}")
                     return False
                 other_args = {}
+                i: int
+                val: Any
                 for i, val in enumerate(full_cmd[1:]):
                     req_name = list(selected.get("required", {}).keys())[i]
                     required = selected.get("required", [])[req_name]
@@ -102,6 +116,10 @@ def non_slash(text, sender, showview):
                         sender(f"{syntax}\nInvalid argument for: {req_name}")
                         get_arguments(selected, req_name, sender)
                         return False
+                    if isinstance(val, str) and req_name == "interval":
+                        val = int(val)
+                    elif isinstance(val, str) and req_name == "strike":
+                        val = float(val)
                     other_args[req_name] = val
                 func = selected["function"]
                 showview(func, cmd, other_args)
