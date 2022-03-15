@@ -1,4 +1,5 @@
 import os
+import argparse
 import sys
 from typing import List
 
@@ -20,22 +21,34 @@ def clean_input(text: str) -> List[str]:
     return [x.strip() for x in text_list if x]
 
 
-def main():
+def main(ignore_files: str, ignore_commands: str):
+    """Checks commands in the repository to ensure they are documented
+
+    Parameters
+    ----------
+    ignore_files : str
+        Files that should not be checked
+    ignore_commands : str
+        Commands that should not be checked
+    """
+
+    ignore_file_list = ignore_files.split(",")
+    ignore_cmds_list = ignore_commands.split(",")
     path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     gst_path = os.path.join(path, "gamestonk_terminal/")
     main_yaml_filename = os.path.join(path, "website/data/menu/main.yml")
 
-    files = {}
+    files = []
     commands = []
     for r, _, f in os.walk(gst_path):
         for file in f:
-            if file.endswith("_controller.py"):
-                files[file] = os.path.join(r, file)
+            if file.endswith("_controller.py") and file not in ignore_file_list:
+                files.append(os.path.join(r, file))
 
     record = 0
-    for item in files.values():
-        with open(item) as file:
-            for line in file:
+    for item in files:
+        with open(item) as controller:
+            for line in controller:
                 if "CHOICES_COMMANDS" in line or record == 1:
                     commands += clean_input(line)
                     record = 1
@@ -43,13 +56,15 @@ def main():
                         record = 0
                         break
 
-    commands = {x for x in commands if x and "#" not in x}
+    clean_commands = {
+        x for x in commands if x and "#" not in x and x not in ignore_cmds_list
+    }
 
-    with open(main_yaml_filename) as file:
-        lines = file.read()
+    with open(main_yaml_filename) as yaml:
+        lines = yaml.read()
 
     undocumented = []
-    for command in commands:
+    for command in clean_commands:
         if command not in lines:
             undocumented.append(command)
 
@@ -62,9 +77,27 @@ def main():
         undocumented.sort()
         for item in undocumented:
             print(item)
-        print(undocumented)
         sys.exit(1)
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        prog="check_doc",
+        description="checks for proper documentation in gst",
+    )
+    parser.add_argument(
+        "--ignore-files",
+        dest="files",
+        help="The list of files to not check.",
+        type=str,
+    )
+    parser.add_argument(
+        "--ignore-commands",
+        dest="commands",
+        help="The commands to not check.",
+        type=str,
+    )
+
+    ns_parser = parser.parse_args()
+    main(ns_parser.files, ns_parser.commands)

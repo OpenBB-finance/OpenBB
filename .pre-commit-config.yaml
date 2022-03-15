@@ -4,7 +4,9 @@ repos:
       - id: check-docs
         name: Check Command Documentation
         description: Ensures that all of the commands in the terminal are included in Hugo.
-        language: system
+        language: python
+        pass_filenames: false
+        args: ["--ignore-files=settings_controller.py,keys_controller.py", "--ignore-commands=login"]
         entry: python custom_pre_commit/check_doc.py 
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.1.0
