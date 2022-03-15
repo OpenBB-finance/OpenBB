@@ -668,6 +668,7 @@ Expiry: [/param]{self.selected_date or None}
             "--limit",
             dest="limit",
             type=int,
+            default=5,
             help="Limit of data rows to display",
         )
         if other_args and "-" not in other_args[0][0]:
