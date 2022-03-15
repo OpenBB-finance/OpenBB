@@ -62,6 +62,7 @@ def main():
         undocumented.sort()
         for item in undocumented:
             print(item)
+        print(undocumented)
         sys.exit(1)
 
 

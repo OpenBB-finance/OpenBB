@@ -239,8 +239,7 @@ main:
                 ref: "/terminal/stocks/fundamental_analysis/cal"
               - name: splits
                 ref: "/terminal/stocks/fundamental_analysis/splits"
-              - name: web
-                ref: "/terminal/stocks/fundamental_analysis/web"
+              - name: fundamental_analysis/web"
               - name: hq
                 ref: "/terminal/stocks/fundamental_analysis/hq"
               - name: divs
@@ -261,6 +260,8 @@ main:
                 ref: "/terminal/stocks/fundamental_analysis/earnings"
               - name: fraud
                 ref: "/terminal/stocks/fundamental_analysis/fraud"
+              - name: dupont
+                ref: "/terminal/stocks/fundamental_analysis/dupont"
               - name: financial modeling prep
                 ref: "/terminal/stocks/fundamental_analysis/fmp"
                 sub:
