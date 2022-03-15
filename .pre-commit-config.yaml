@@ -1,4 +1,11 @@
 repos:
+  - repo: local
+    hooks:
+      - id: check-docs
+        name: Check Command Documentation
+        description: Ensures that all of the commands in the terminal are included in Hugo.
+        language: system
+        entry: python custom_pre_commit/check_doc.py 
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.1.0
     hooks:

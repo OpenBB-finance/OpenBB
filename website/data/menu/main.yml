@@ -620,8 +620,8 @@ main:
                 ref: "/terminal/common/prediction_techniques/conv1d"
               - name: mc
                 ref: "/terminal/common/prediction_techniques/mc"
-      - name: cryptocurrency
-        ref: "/terminal/cryptocurrency"
+      - name: Cryptocurrency
+        Ref: "/terminal/cryptocurrency"
         sub:
           - name: load
             ref: "/terminal/cryptocurrency/load"
