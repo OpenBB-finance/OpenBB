@@ -119,6 +119,7 @@ types-setuptools = "^57.4.7"
 pre-commit = "^2.16.0"
 pandas-market-calendars = "~3.2"
 pytest-cov = "^3.0.0"
+boto3= "^1.21.14"
 
 [tool.poetry.extras]
 prediction = ["tensorflow"]
