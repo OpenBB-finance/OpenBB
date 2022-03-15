@@ -238,33 +238,45 @@ class TechnicalAnalysisCommands(commands.Cog):
         self,
         inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
+        interval: int = commands.Param(choices=[1, 5, 15, 30, 60, 1440]),
+        past_days: int = 0,
         fast_k="14",
         slow_d="3",
         slow_k="3",
         start="",
         end="",
+        extended_hours: bool = False,
+        heikin_candles: bool = False,
     ):
         """Displays chart with stochastic relative strength average [Yahoo Finance]
 
         Parameters
         -----------
         ticker: Stock Ticker
+        interval : Chart Minute Interval, 1440 for Daily
+        past_days: Past Days to Display. Default: 0(Not for Daily)
         fast_k: fast_k moving average period. Default: 14
         slow_d: slow_d moving average period. Default: 3
         slow_k: slow_k moving average period. Default: 3
         start: YYYY-MM-DD format
         end: YYYY-MM-DD format
+        extended_hours: Display Pre/After Market Hours. Default: False
+        heikin_candles: Heikin Ashi candles. Default: False
         """
         await ShowView().discord(
             stoch_command,
             inter,
             "ta-mom stoch",
             ticker,
+            interval,
+            past_days,
             fast_k,
             slow_d,
             slow_k,
             start,
             end,
+            extended_hours,
+            heikin_candles,
         )
 
     @ta_mom.sub_command()
