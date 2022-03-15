@@ -89,7 +89,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--ignore-files",
         dest="files",
-        help="The list of files to not check.",
+        help="The files to not check.",
         type=str,
     )
     parser.add_argument(
