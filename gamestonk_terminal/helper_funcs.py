@@ -60,6 +60,26 @@ def set_command_location(cmd_loc: str):
     command_location = cmd_loc
 
 
+def check_path(path: str) -> str:
+    """Check that path file exists
+
+    Parameters
+    ----------
+    path: str
+        path of file
+
+    Returns
+    -------
+    str:
+        Ratio of similarity between two strings
+    """
+    if os.path.isfile(path):
+        return path
+    logger.error("Expected list of one axis item.")
+    console.print("The path file provided does not exist.\n[/red]")
+    return ""
+
+
 def log_and_raise(error: Union[argparse.ArgumentTypeError, ValueError]) -> None:
     logger.error(str(error))
     raise error
