@@ -1,0 +1,30 @@
+economy
+overview
+overview -t indices
+overview -t usbonds
+overview -t glbonds
+overview -t currencies
+futures
+futures -c energy
+futures -c metals
+futures -c meats
+futures -c grains
+futures -c softs
+map
+feargreed
+bigmac -c USA,ESP,LVA,DEU,FRA,FIN
+macro
+macro -sp
+macro -sc
+macro -p RGDP CPI
+macro -p URATE -c Netherlands Germany
+fred -q treasury
+fred -p T10Y2Y FII10 -s 2005-01-01
+index -i nasdaq dowjones sp500 -s 2005-01-01
+macro -p URATE -c Netherlands Germany -s 2005-01-01 -st
+index -i stoxx50 -s 2005-01-01 -st
+plot -y1 Netherlands_URATE Germany_URATE -y2 stoxx50
+rtps
+valuation
+performance
+spectrum
