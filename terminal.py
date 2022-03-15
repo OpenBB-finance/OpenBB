@@ -263,7 +263,9 @@ class TerminalController(BaseController):
                     success_export = True
                 else:
                     # If the path selected does not start from the user root, give relative location from terminal root
-                    if export_path[0] != "/":
+                    if export_path[0] == "~":
+                        export_path = export_path.replace("~", os.environ["HOME"])
+                    elif export_path[0] != "/":
                         export_path = os.path.join(base_path, export_path)
 
                     # Check if the directory exists
