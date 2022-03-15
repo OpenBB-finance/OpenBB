@@ -978,6 +978,8 @@ def display_line(
                     s=100,
                 )
 
+    data_type = data.name
+    ax.set_ylabel(data_type)
     ax.set_xlim(data.index[0], data.index[-1])
     ax.ticklabel_format(style="plain", axis="y")
     ax.get_yaxis().set_major_formatter(
