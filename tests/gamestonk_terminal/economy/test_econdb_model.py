@@ -31,7 +31,7 @@ def test_get_macro_data(
     [
         [["RGDP"], ["United States", "Germany"], "2020-01-01", "2020-10-10", "EUR"],
         [["EMP", "PPI"], ["France"], "2018-01-01", "2019-01-01", False],
-        [["RDGP", "GDP"], ["Italy", "Netherlands"], "2010-01-01", "2010-10-8", "USD"],
+        [["RGDP", "GDP"], ["Italy", "Netherlands"], "2010-01-01", "2010-10-08", "USD"],
     ],
 )
 def test_get_aggregated_macro_data(

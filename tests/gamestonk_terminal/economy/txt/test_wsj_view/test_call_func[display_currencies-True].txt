@@ -1,12 +1,12 @@
                               Last     Chng  %Chng
-0          Euro (EUR/USD)   1.0942   0.0027   0.25
-1  Japanese Yen (USD/JPY)   118.16     0.84   0.72
-2    U.K. Pound (GBP/USD)   1.3003  -0.0035  -0.27
-3   Swiss Franc (USD/CHF)   0.9386   0.0048   0.51
-4  Chinese Yuan (USD/CNY)   6.3654   0.0256   0.40
-5    Canadian $ (USD/CAD)   1.2822   0.0077   0.60
-6  Mexican Peso (USD/MXN)  20.9223   0.0001   0.00
-7       Bitcoin (BTC/USD)    38841      164   0.42
-8        WSJ Dollar Index    91.95     0.25   0.27
-9       U.S. Dollar Index    99.06    -0.06  -0.06
+0          Euro (EUR/USD)   1.0996   0.0055   0.50
+1  Japanese Yen (USD/JPY)   117.95    -0.25  -0.21
+2    U.K. Pound (GBP/USD)   1.3025   0.0024   0.18
+3   Swiss Franc (USD/CHF)   0.9386   0.0000   0.00
+4  Chinese Yuan (USD/CNY)   6.3762   0.0108   0.17
+5    Canadian $ (USD/CAD)   1.2868   0.0042   0.33
+6  Mexican Peso (USD/MXN)  20.8909  -0.0244  -0.12
+7       Bitcoin (BTC/USD)    38640      -97  -0.25
+8        WSJ Dollar Index    91.80    -0.16  -0.18
+9       U.S. Dollar Index    98.79    -0.21  -0.21
 

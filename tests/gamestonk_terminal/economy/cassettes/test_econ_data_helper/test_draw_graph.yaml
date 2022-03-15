@@ -12,10 +12,20 @@ interactions:
     uri: https://query2.finance.yahoo.com/v8/finance/chart/PM?events=div%2Csplits&includePrePost=False&interval=1d&period1=MOCK_PERIOD_1&period2=MOCK_PERIOD_2
   response:
     body:
-      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"PM","exchangeName":"NYQ","instrumentType":"EQUITY","firstTradeDate":1205760600,"regularMarketTime":1647288022,"gmtoffset":-14400,"timezone":"EDT","exchangeTimezoneName":"America/New_York","regularMarketPrice":89.59,"chartPreviousClose":91.89,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EDT","end":1647264600,"start":1647244800,"gmtoffset":-14400},"regular":{"timezone":"EDT","end":1647288000,"start":1647264600,"gmtoffset":-14400},"post":{"timezone":"EDT","end":1647302400,"start":1647288000,"gmtoffset":-14400}},"dataGranularity":"1d","range":"","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1646922600,1647009000,1647288022],"indicators":{"quote":[{"close":[91.88999938964844,88.87000274658203,89.58999633789062],"volume":[8099400,8628300,9927371],"open":[92.93000030517578,92.2699966430664,89.88999938964844],"low":[91.5999984741211,88.76000213623047,88.37000274658203],"high":[93.83000183105469,92.41999816894531,90.58000183105469]}],"adjclose":[{"adjclose":[91.88999938964844,88.87000274658203,89.58999633789062]}]}}],"error":null}}'
+      string: !!binary |
+        H4sIAAAAAAAAAI1STY/TMBD9Lz6H4q849t4QRcBhqy5kD1VVIdO4bdgkDo7T3VL1vzOTFFqxKy2X
+        SebrzZvxO5L1zoZIbo4kuK6v4G95JLWLFkPrPgTXrA/khtx/nZKEdIf6u6/And+C556gudm6ma0d
+        xGaLOwiWTRdDX7sm5ocWwx/u7j/nC8hsytDFPNjCTW2EDOM0zRRVlCYwfNtXNtza8OBiXiIeUzLj
+        WlPOE7Kto99sOgf03jApsSNC0S/fDBOm+RWb/Jw4s3pXu1Cu7duZe/y28OGB/DNsDlmo02aSmmS8
+        xjy4fen77n3lO0zpic4S0mLhp7IBDsBoPM2wTtls5zDDF3iyNjj8PGPXxeHMuJQQsDls4JriHEgZ
+        xcCzLU9/ub6KeYa4YGbjmV7CbH0XXwU8918ANbzFi4CAWNhoPwbbINUyol5YgYfG9wAHfve2Kosv
+        6HcgsTGdomG1BysGqwbLDmA4mhQNo2gPEYtr+0RWp/HxgWzdAhaSo9Tg+hfJrFCIBbx79KHDXX/2
+        HjUH4t77qkdlLLXiWkCXMRzWZdDiW9dAwvAJV8YYpaSgYBIQh9YQMEIbJbWUULsrt7uxVjLIaKa0
+        kalgiaGTFC5FmRaMplIZKK78Iw7UE9A7pZwJxQWVWQIRkWEkkyrVnAqoXY+qWw6yu84hjRRpKCEy
+        bajiqxPU2+LHn5bjtfN//SeEcCF4kBg8X3U6/QabBQ8xEwQAAA==
     headers:
       Age:
-      - '0'
+      - '2'
       Connection:
       - keep-alive
       Expect-CT:
@@ -31,27 +41,25 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
       cache-control:
-      - public, max-age=10, stale-while-revalidate=20
+      - public, max-age=10, stale-while-revalidate=15, stale-if-error=3600
+      content-encoding:
+      - gzip
       content-length:
-      - '1151'
+      - '550'
       content-type:
       - application/json;charset=utf-8
       date:
-      - Mon, 14 Mar 2022 20:49:31 GMT
+      - Tue, 15 Mar 2022 09:27:36 GMT
       server:
       - ATS
       vary:
-      - Origin,Accept-Encoding
+      - Origin
       x-envoy-decorator-operation:
-      - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
+      - finance-yql--mtls-intel-production-ne1.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '22'
-      x-request-id:
-      - 9b1e124c-5780-4e2f-bd2c-e8634a847e6b
+      - '1035'
       x-yahoo-request-id:
-      - 155rfplh2vair
-      y-rid:
-      - 155rfplh2vair
+      - 15uuk29h30n07
     status:
       code: 200
       message: OK

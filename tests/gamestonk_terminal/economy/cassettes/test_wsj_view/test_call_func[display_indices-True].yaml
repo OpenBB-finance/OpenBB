@@ -9,51 +9,51 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.10; rv:83.0) Gecko/20100101 Firefox/83.0
+      - Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:82.1) Gecko/20100101 Firefox/82.1
     method: GET
     uri: https://www.wsj.com/market-data/stocks?id=%7B%22application%22%3A%22WSJ%22%2C%22instruments%22%3A%5B%7B%22symbol%22%3A%22INDEX%2FUS%2F%2FDJIA%22%2C%22name%22%3A%22DJIA%22%7D%2C%7B%22symbol%22%3A%22INDEX%2FUS%2F%2FCOMP%22%2C%22name%22%3A%22Nasdaq%20Composite%22%7D%2C%7B%22symbol%22%3A%22INDEX%2FUS%2F%2FSPX%22%2C%22name%22%3A%22S%26P%20500%22%7D%2C%7B%22symbol%22%3A%22INDEX%2FUS%2F%2FDWCF%22%2C%22name%22%3A%22DJ%20Total%20Stock%20Market%22%7D%2C%7B%22symbol%22%3A%22INDEX%2FUS%2F%2FRUT%22%2C%22name%22%3A%22Russell%202000%22%7D%2C%7B%22symbol%22%3A%22INDEX%2FUS%2F%2FNYA%22%2C%22name%22%3A%22NYSE%20Composite%22%7D%2C%7B%22symbol%22%3A%22INDEX%2FUS%2F%2FB400%22%2C%22name%22%3A%22Barron%27s%20400%22%7D%2C%7B%22symbol%22%3A%22INDEX%2FUS%2F%2FVIX%22%2C%22name%22%3A%22CBOE%20Volatility%22%7D%2C%7B%22symbol%22%3A%22FUTURE%2FUS%2F%2FDJIA%20FUTURES%22%2C%22name%22%3A%22DJIA%20Futures%22%7D%2C%7B%22symbol%22%3A%22FUTURE%2FUS%2F%2FS%26P%20500%20FUTURES%22%2C%22name%22%3A%22S%26P%20500%20Futures%22%7D%5D%7D&type=mdc_quotes
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA8Va33ebNhj9Vzg8bC8xBvHbb7HjbulZ0iy22/SMnB1qs4QVmxTw0izH//skgbAE
-        kuwaur4ZgT5k3atP+u7lVY1X6kh9DdTw6SmJl2ERp5tAHQXqh9nbQD0L1HiTF9l2HW2KHLb/AZ/M
-        X9af0gQ/dHl9Mb0bLmbD4cXby3P8/CZcR/he2bI7E/WYvLu6YXtch/kq/KJM0vVTmsdFJOs9u7lj
-        O89+ulFsXZf1ufgwedMcozJPizBRZkW6/KxchdnnqJCFuF3M2Qi32zyPkkQBuvzd1x8b03P9cTY9
-        7q+OLRSa7jsOsyzd/Jwrlvyl7y8bkzQZv5sq79MEwpzExUu775vFfHE7rRFVyutZG1nlzbbYZlEu
-        DVFhwo9S36wD3e/UM7V4eYogI9er5Z9ftmkR5bBtFRahOnqluYioqH5KttFDFub55DHcbKIEPbMk
-        P9Xhv/HDOtyAYRlnCAzd9j3dsYdZFCZFvI72r7uIkvAlWpE4uzN1mW43RfYC7y1meAhx8vJr/PCo
-        jkzT9G3N9qvG39Jn2AY8w9MM50yNvqIRPESXeTpJVzh2+qy8TTdRrvySpJ/CBEb7K83WYVFEq2s4
-        G+gROKOwOQnz4iaLl6jJBL5la8CCzfBPFHGewykAZ3j+mKCXm9UWTksMWXz+T5SFD+hvPaEoEzwQ
-        +LCh6TZqjLIlnLu6Wdd0HTZn0ZdtlBczDCFsZhc1mqN4+TnK9sNEU5cX4foJNgEdgIFuDgxrbjgj
-        oI90Y6BbIxy4mls4wOgrvNxmKPpjUTzlo+Hw+flZe87/1pbperjG626AYCZgxagTGkRz9spBQdKd
-        hL7ZGX0D+BBp3aDRN4Bt25pp89C/uz6fcRBv5roG+jCiZ2gACNCHMS/Of9/3Vsgcs7gPgAMgUTnQ
-        D4CmW1LsUXqmsa+vRdhb7gg4mmE4/eKP5q8czImY+65hdcTcApar2S4NuWU4huYCHuIosS14mFcZ
-        rwG1ZbgmnDYB0iRLCgA2IUl0Hr665srxhRsoDS+5lK5smC9Av+iWc4UHc+qS1m2vM7y+5Wg+s6Qt
-        oMP06x9I6B/iJH+Ms4ib0jlHiyb0wHB8zfAO5viFNtM44USssAygGS6fFr4rT/nwjMSkfHItI4b5
-        vVI+md9yWKcyxLDc4arkw4k5H24cmmUyKd83geYaHHpstknSpgN9Tmzmet9CqURAArqjMAu4ms/b
-        4AeG5gMp3PA8S6NNLkVgmxBsv1+w0StPXvqm0xFY2zfg3LHI2o5pa67LW/nnt5M73mbOnOWb8NqO
-        b8HDgWgrZ/qKELb9MgJnQZueFGFYeNAIk0shwgBOQL8Io0nDwzgJZt9xgON3g9n3bM3zaJB9x9Ic
-        bnIXQEyXXA2AfcfTHNHypfuJwHU0IEjWjnwPH5eDqcGtr/9vdPGLT13FsHTqBq8Jz08MuiasbLjg
-        TsYzHriNsrhZicHs7ArgbfQUIAwPToADsKmZ8uwM63caXnLJR9eG0KIzGlwvA93uEWE0aXgoJwFs
-        6a7uel0BBl6j3HZ1j1ttTcZzQX1NhIZWne019l69Rnc6uIo3sYLOI5MU3t5s022Of2bhsmjBzK20
-        9PJ81wRZILTQcH+8kq5me2TCiguWna7ZxLv8p98K+F/l/Azxe0/AWvd9y4PJsBvWsNayNNdmay0b
-        aIBfXU+upuJKSwA5rLgq6YO3pCvQ2RBH4T8AsNoWVGM2L5OLpTKaB9PZj+EBfu/uHs0dbC7m31L5
-        U89a8L5yc6VML+aKOYS1OACIAY9hDtFGynO8wnrgaxCwKnSAmoNSiQ6QdhiwanRQ6tFBrT6SDg1V
-        mvTFyiN5htxB6qUsAlapuRFaavUR0ZBqzQ1G1OsjYmAVW/CfeGr2ESGRqs2NyKjbRwRCKjd/sli1
-        +4hQWPXmxmLU7yMiIRWcG6iphgtjiVRxIbNqUfuYkE2VXEYQJvD9DivqaLHjFbTXzHE7WtOw/ZXn
-        4TRTe/ncsr4IjlDP2ZezOR797YBkeXx/MasGVWX6gBLSgzrZB5SUHjTzffmehh6MozL5n3Kf4K06
-        8eNmoqrjWyT7Byj90/6GRFvHHam0jzsgfb28QSd+fAttNPgWk/tF5lmZ89k/UOdS3CzU21k08IkP
-        N8HUj1t60d0rt+dU9ph9sqcW4hn21FI8nz1ITRYwpu0+tthDVHkpe/jaPJc3lT4voA7W6A9yp7ZR
-        Ke5QbWLuNHbtvvlT6/bdOMOo9505Q4R8hjJEyuczplSoBZypTecWVSpVX8oURtvnEwTr+yJ+II3/
-        ID+IUU7RY990ILPs9f6+2bHX/TumFFr974EelRHA8oNYAYc2JKJWC7ck7scGbepUrsCRe5TUG+Cz
-        qvQHxLTy3cNbFvmWgt6y9m1yYpnfe8tifIOODKPcg+57VmUksFtWZSXw6IXNBB6Z2O9O2jtV6SlI
-        KdR2FgQ5CLkLIrIgh+EgWchXMxRX9k1iqlBuQ99Uwa/vlnj23kN3WhAbguUFMSL4eQcJr6KjTOPb
-        ojY9Kk9CfpDhOBN8hmB3QpxOTO8gQ8jnURRD9k0Shuz17L4ZQlyLLjRhvYvONKlsDIYklZHxzRRh
-        PyFrEaT0NKT0aDsbfHIgd0PMDefwCab+/o0iB9X249gx3n9+d2oWobyPHsppZIOwtTQ2QvjkQLK+
-        gBytzwRb/MCeiJQeXGdEVD0DAUGQQ3KQH+QrR4oe+yYRO1puSd8MIa5JF4Kw3kkPBEE2SkNsQUaK
-        oFaejOcSdWX/4WabHchTabJDp9khd1a4NBHWyTo5K7dJIvuclaILcjwO8qWhsrNolHNxCmFo1+V0
-        rjS9lz4qZWzDNCrl0ogR8eVqKq+TJZSpPBlpSjnamRGILcidEe9EtmgnOvBBM8Uj5Jj8aB6VY9jd
-        4xlmfBvODsnVgJjnOe4NjL5Td/8BJ+zJyDowAAA=
+        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
+        Eu8GZ3/VX/8D7vY3DTYwAAA=
     headers:
       Cache-Control:
       - public, max-age=120, no-cache=Set-Cookie
@@ -64,17 +64,17 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Mon, 14 Mar 2022 20:50:12 GMT
+      - Tue, 15 Mar 2022 09:28:21 GMT
       ETag:
-      - W/"303a-YLyhn2XKJWG15hDuSxpv710GPQA"
+      - W/"3036-NXEhZfUSbrF38CVmBVAcUF/HTos"
       GC-Versions:
       - 2.1.798|0.4.955|4.1.2
       Transfer-Encoding:
       - chunked
       Via:
-      - 1.1 4e4c50c641418e6aad9ec09cb0f22844.cloudfront.net (CloudFront)
+      - 1.1 8a5da1dacdf44356dd0f5d8a61106c9a.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - D8N3m3Keen07922X4x26WzhbVk6kSwjWUES0yFtMuHGx3mWJQoeV_A==
+      - AgUfvY4eknSG_QnvnovG8dQ0TsDNrMlkio-DXgVMSm-FDll_PPMESQ==
       X-Amz-Cf-Pop:
       - AMS54-C1
       X-Cache:
