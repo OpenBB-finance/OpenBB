@@ -22,6 +22,8 @@ from gamestonk_terminal.helper_funcs import (
     replace_user_timezone,
     check_path,
     parse_known_args_and_warn,
+    set_export_folder,
+    get_export_folder,
 )
 
 from gamestonk_terminal.loggers import setup_logging
@@ -53,6 +55,7 @@ class TerminalController(BaseController):
         "settings",
         "tz",
         "exe",
+        "export",
     ]
     CHOICES_MENUS = [
         "stocks",
@@ -117,11 +120,13 @@ class TerminalController(BaseController):
     about           about us
     update          update terminal automatically
     tz              set different timezone
+    export          select export folder to output data
     exe             execute automated routine script[/cmds][menu]
 >   settings        set feature flags and style charts
 >   keys            set API keys and check their validity[/menu]
 
-[param]Timezone:[/param] {get_user_timezone_or_invalid()}
+[param]Export Folder:[/param] {get_export_folder() if get_export_folder() else 'DEFAULT (folder: exports/)'}
+[param]Timezone:     [/param] {get_user_timezone_or_invalid()}
 [menu]
 >   stocks
 >   crypto
@@ -230,6 +235,78 @@ class TerminalController(BaseController):
         other_args.append(self.queue[0])
         self.queue = self.queue[1:]
         replace_user_timezone("/".join(other_args))
+
+    def call_export(self, other_args: List[str]):
+        """Process export command"""
+        if other_args or self.queue:
+            if other_args:
+                export_path = ""
+            else:
+                export_path = "/"
+
+            other_args += self.queue
+            self.queue = []
+
+            export_path += "/".join(other_args)
+
+            base_path = os.path.dirname(os.path.abspath(__file__))
+            default_path = os.path.join(base_path, "exports")
+
+            success_export = False
+
+            while not success_export:
+                if export_path.upper() == "DEFAULT":
+                    console.print(
+                        f"Export data to be saved in the default folder: '{default_path}'"
+                    )
+                    set_export_folder(path_folder="")
+                    success_export = True
+                else:
+                    # If the path selected does not start from the user root, give relative location from terminal root
+                    if export_path[0] != "/":
+                        export_path = os.path.join(base_path, export_path)
+
+                    # Check if the directory exists
+                    if os.path.isdir(export_path):
+                        console.print(
+                            f"Export data to be saved in the selected folder: '{export_path}'"
+                        )
+                        set_export_folder(path_folder=export_path)
+                        success_export = True
+                    else:
+                        console.print(
+                            "[red]The path selected to export data does not exist![/red]\n"
+                        )
+                        user_opt = "None"
+                        while user_opt not in ("Y", "N"):
+                            user_opt = input(
+                                f"Do you wish to create folder: `{export_path}` ? [Y/N]\n"
+                            ).upper()
+
+                        if user_opt == "Y":
+                            os.mkdir(export_path)
+                            console.print(
+                                f"[green]Folder '{export_path}' successfully created.[/green]"
+                            )
+                            print(export_path)
+                            set_export_folder(path_folder=export_path)
+                        else:
+                            # Do not update export_folder path since we will keep the same as before
+                            path_display = (
+                                get_export_folder()
+                                if get_export_folder()
+                                else "DEFAULT (folder: exports/)"
+                            )
+                            console.print(
+                                f"[yellow]Export data to keep being saved in the selected folder: {path_display}[/yellow]"
+                            )
+                        success_export = True
+
+            # other_args.append(self.queue[0])
+            # self.queue = self.queue[1:]
+            # print("/".join(other_args))
+
+        console.print()
 
     def call_exe(self, other_args: List[str]):
         """Process exe command"""

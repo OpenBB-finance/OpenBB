@@ -45,6 +45,8 @@ MENU_RESET = 2
 
 # Command location path to be shown in the figures depending on watermark flag
 command_location = ""
+# Folder to export data to
+export_folder = ""
 
 
 # pylint: disable=global-statement
@@ -58,6 +60,30 @@ def set_command_location(cmd_loc: str):
     """
     global command_location
     command_location = cmd_loc
+
+
+# pylint: disable=global-statement
+def set_export_folder(path_folder: str):
+    """Set export folder location
+
+    Parameters
+    ----------
+    path_folder: str
+        Path folder location
+    """
+    global export_folder
+    export_folder = path_folder
+
+
+def get_export_folder() -> str:
+    """Set export folder location
+
+    Returns
+    ----------
+    export_folder: str
+        Path to folder location to export data
+    """
+    return export_folder
 
 
 def check_path(path: str) -> str:
@@ -1081,15 +1107,23 @@ def export_data(
         Dataframe of data to save
     """
     if export_type:
-        export_dir = dir_path.replace("gamestonk_terminal", "exports")
-
         now = datetime.now()
-        full_path = os.path.abspath(
-            os.path.join(
-                export_dir,
-                f"{func_name}_{now.strftime('%Y%m%d_%H%M%S')}",
+
+        if export_folder:
+            path_cmd = dir_path.split("gamestonk_terminal/")[1].replace("/", "_")
+
+            full_path = os.path.join(
+                export_folder,
+                f"{now.strftime('%Y%m%d_%H%M%S')}_{path_cmd}_{func_name}",
             )
-        )
+        else:
+            export_dir = dir_path.replace("gamestonk_terminal", "exports")
+            full_path = os.path.abspath(
+                os.path.join(
+                    export_dir,
+                    f"{func_name}_{now.strftime('%Y%m%d_%H%M%S')}",
+                )
+            )
 
         if "," not in export_type:
             export_type += ","
