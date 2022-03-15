@@ -20,6 +20,8 @@ from gamestonk_terminal.helper_funcs import (
     get_flair,
     get_user_timezone_or_invalid,
     replace_user_timezone,
+    check_path,
+    parse_known_args_and_warn,
 )
 
 from gamestonk_terminal.loggers import (
@@ -53,6 +55,7 @@ class TerminalController(BaseController):
         "keys",
         "settings",
         "tz",
+        "exe",
     ]
     CHOICES_MENUS = [
         "stocks",
@@ -100,6 +103,12 @@ class TerminalController(BaseController):
 [info]The previous logic also holds for when launching the terminal.[/info]
     E.g. '$ python terminal.py /stocks/disc/ugs -n 3/../load tsla/candle'
 
+[info]You can run a standalone .gst routine file with:[/info]
+    E.g. '$ python terminal.py routines/example.gst'
+
+[info]You can run a .gst routine file with variable inputs:[/info]
+    E.g. '$ python terminal.py routines/example_with_inputs.gst --input pltr,tsla,nio'
+
 [info]The main commands you should be aware when navigating through the terminal are:[/info][cmds]
     cls             clear the screen
     help / h / ?    help menu
@@ -110,7 +119,8 @@ class TerminalController(BaseController):
 
     about           about us
     update          update terminal automatically
-    tz              set different timezone[/cmds][menu]
+    tz              set different timezone
+    exe             execute automated routine script[/cmds][menu]
 >   settings        set feature flags and style charts
 >   keys            set API keys and check their validity[/menu]
 
@@ -224,10 +234,100 @@ class TerminalController(BaseController):
         self.queue = self.queue[1:]
         replace_user_timezone("/".join(other_args))
 
+    def call_exe(self, other_args: List[str]):
+        """Process exe command"""
+        # Merge rest of string path to other_args and remove queue since it is a dir
+        other_args += self.queue
+        full_input = " ".join(other_args)
+        if " " in full_input:
+            other_args_processed = full_input.split(" ")
+        else:
+            other_args_processed = [full_input]
+        self.queue = []
 
-def terminal(jobs_cmds: List[str] = None):
+        path_routine = ""
+        args = list()
+        for idx, path_dir in enumerate(other_args_processed):
+            if path_dir in ("-i", "--input"):
+                args = [path_routine[1:]] + other_args_processed[idx:]
+                break
+            path_routine += f"/{path_dir}"
+
+        if not args:
+            args = [path_routine[1:]]
+
+        parser_exe = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="exe",
+            description="Execute automated routine script.",
+        )
+        parser_exe.add_argument(
+            "-p",
+            "--path",
+            help="The path or .gst file to run.",
+            dest="path",
+            default="",
+            type=check_path,
+        )
+        parser_exe.add_argument(
+            "-i",
+            "--input",
+            help="Select multiple inputs to be replaced in the routine and separated by commas. E.g. GME,AMC,BTC-USD",
+            dest="routine_args",
+            type=lambda s: [str(item) for item in s.split(",")],
+            default=None,
+        )
+        if args and "-" not in args[0][0]:
+            args.insert(0, "-p")
+        ns_parser_exe = parse_known_args_and_warn(parser_exe, args)
+        if ns_parser_exe:
+            if ns_parser_exe.path:
+                with open(ns_parser_exe.path) as fp:
+                    raw_lines = [x for x in fp if not is_reset(x)]
+
+                    if ns_parser_exe.routine_args:
+                        lines = list()
+                        idx = 0
+                        for rawline in raw_lines:
+                            arg_to_replace = f"$ARGV[{idx}]"
+                            templine = rawline
+                            while arg_to_replace in rawline:
+                                if idx > (len(ns_parser_exe.routine_args) - 1):
+                                    console.print(
+                                        "[red]There are more arguments on the routine "
+                                        ".gst file than input args provided[/red]"
+                                    )
+                                    return
+                                templine = templine.replace(
+                                    arg_to_replace, ns_parser_exe.routine_args[idx]
+                                )
+                                idx += 1
+                                arg_to_replace = f"$ARGV[{idx}]"
+
+                            lines.append(templine)
+
+                        if idx < len(ns_parser_exe.routine_args):
+                            console.print(
+                                "[red]There are more inputs provided than the number "
+                                "of arguments on routine .gst file\n[/red]"
+                            )
+
+                    else:
+                        lines = raw_lines
+
+                    simulate_argv = f"/{'/'.join([line.rstrip() for line in lines])}"
+                    file_cmds = simulate_argv.replace("//", "/home/").split()
+                    file_cmds = (
+                        insert_start_slash(file_cmds) if file_cmds else file_cmds
+                    )
+                    cmds_with_params = " ".join(file_cmds)
+                    self.queue = cmds_with_params.split("/")
+
+
+def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
     """Terminal Menu"""
-    setup_logging("gst")
+    setup_logging(appName)
     logger.info("START")
     logger.info("Python: %s", platform.python_version())
     logger.info("OS: %s", platform.system())
@@ -350,7 +450,6 @@ def log_settings() -> None:
     settings_dict = {}
     settings_dict["tab"] = "activated" if gtff.USE_TABULATE_DF else "deactivated"
     settings_dict["cls"] = "activated" if gtff.USE_CLEAR_AFTER_CMD else "deactivated"
-    settings_dict["color"] = "activated" if gtff.USE_COLOR else "deactivated"
     settings_dict["promptkit"] = (
         "activated" if gtff.USE_PROMPT_TOOLKIT else "deactivated"
     )
@@ -365,7 +464,6 @@ def log_settings() -> None:
         "activated" if gtff.ENABLE_EXIT_AUTO_HELP else "deactivated"
     )
     settings_dict["rcontext"] = "activated" if gtff.REMEMBER_CONTEXTS else "deactivated"
-    settings_dict["rich"] = "activated" if gtff.ENABLE_RICH else "deactivated"
     settings_dict["richpanel"] = (
         "activated" if gtff.ENABLE_RICH_PANEL else "deactivated"
     )
@@ -378,7 +476,12 @@ def log_settings() -> None:
     logger.info("SETTINGS: %s ", str(settings_dict))
 
 
-def run_scripts(path: str, test_mode: bool = False, verbose: bool = False):
+def run_scripts(
+    path: str,
+    test_mode: bool = False,
+    verbose: bool = False,
+    routines_args: List[str] = None,
+):
     """Runs a given .gst scripts
 
     Parameters
@@ -389,34 +492,70 @@ def run_scripts(path: str, test_mode: bool = False, verbose: bool = False):
         Whether the terminal is in test mode
     verbose : bool
         Whether to run tests in verbose mode
+    routines_args : List[str]
+        One or multiple inputs to be replaced in the routine and separated by commas. E.g. GME,AMC,BTC-USD
     """
     if os.path.isfile(path):
         with open(path) as fp:
-            lines = [x for x in fp if not test_mode or not is_reset(x)]
+            raw_lines = [x for x in fp if not test_mode or not is_reset(x)]
+
+            if routines_args:
+                lines = list()
+                idx = 0
+                for rawline in raw_lines:
+                    arg_to_replace = f"$ARGV[{idx}]"
+                    templine = rawline
+                    while arg_to_replace in rawline:
+                        if idx > (len(routines_args) - 1):
+                            console.print(
+                                "[red]There are more arguments on the routine .gst file than input args provided[/red]"
+                            )
+                            return
+                        templine = templine.replace(arg_to_replace, routines_args[idx])
+                        idx += 1
+                        arg_to_replace = f"$ARGV[{idx}]"
+
+                    lines.append(templine)
+
+                if idx < len(routines_args):
+                    console.print(
+                        "[red]There are more inputs provided than the number of arguments on routine .gst file\n[/red]"
+                    )
+
+            else:
+                lines = raw_lines
 
             if test_mode and "exit" not in lines[-1]:
                 lines.append("exit")
 
             simulate_argv = f"/{'/'.join([line.rstrip() for line in lines])}"
             file_cmds = simulate_argv.replace("//", "/home/").split()
-
             file_cmds = insert_start_slash(file_cmds) if file_cmds else file_cmds
+            file_cmds = [" ".join(file_cmds)]
+
             if not test_mode:
-                terminal(file_cmds)
+                terminal(file_cmds, appName="gst_script")
                 # TODO: Add way to track how many commands are tested
             else:
                 if verbose:
-                    terminal(file_cmds)
+                    terminal(file_cmds, appName="gst_script")
                 else:
                     with suppress_stdout():
-                        terminal(file_cmds)
+                        terminal(file_cmds, appName="gst_script")
     else:
         console.print(f"File '{path}' doesn't exist. Launching base terminal.\n")
         if not test_mode:
             terminal()
 
 
-def main(debug: bool, test: bool, filtert: str, paths: List[str], verbose: bool):
+def main(
+    debug: bool,
+    test: bool,
+    filtert: str,
+    paths: List[str],
+    verbose: bool,
+    routines_args: List[str] = None,
+):
     """
     Runs the terminal with various options
 
@@ -432,6 +571,8 @@ def main(debug: bool, test: bool, filtert: str, paths: List[str], verbose: bool)
         The paths to run for scripts or to test
     verbose : bool
         Whether to show output from tests
+    routines_args : List[str]
+        One or multiple inputs to be replaced in the routine and separated by commas. E.g. GME,AMC,BTC-USD
     """
 
     if test:
@@ -488,7 +629,7 @@ def main(debug: bool, test: bool, filtert: str, paths: List[str], verbose: bool)
         if debug:
             os.environ["DEBUG_MODE"] = "true"
         if isinstance(paths, list) and paths[0].endswith(".gst"):
-            run_scripts(paths[0])
+            run_scripts(paths[0], routines_args=routines_args)
         elif paths:
             argv_cmds = list([" ".join(paths).replace(" /", "/home/")])
             argv_cmds = insert_start_slash(argv_cmds) if argv_cmds else argv_cmds
@@ -538,6 +679,15 @@ if __name__ == "__main__":
         type=str,
     )
     parser.add_argument(
+        "-i",
+        "--input",
+        help="Select multiple inputs to be replaced in the routine and separated by commas. E.g. GME,AMC,BTC-USD",
+        dest="routine_args",
+        type=lambda s: [str(item) for item in s.split(",")],
+        default=None,
+    )
+
+    parser.add_argument(
         "-v", "--verbose", dest="verbose", action="store_true", default=False
     )
 
@@ -550,4 +700,5 @@ if __name__ == "__main__":
         ns_parser.filtert,
         ns_parser.path,
         ns_parser.verbose,
+        ns_parser.routine_args,
     )

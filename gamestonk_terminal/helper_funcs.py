@@ -43,6 +43,42 @@ MENU_GO_BACK = 0
 MENU_QUIT = 1
 MENU_RESET = 2
 
+# Command location path to be shown in the figures depending on watermark flag
+command_location = ""
+
+
+# pylint: disable=global-statement
+def set_command_location(cmd_loc: str):
+    """Set command location
+
+    Parameters
+    ----------
+    cmd_loc: str
+        Command location called by user
+    """
+    global command_location
+    command_location = cmd_loc
+
+
+def check_path(path: str) -> str:
+    """Check that path file exists
+
+    Parameters
+    ----------
+    path: str
+        path of file
+
+    Returns
+    -------
+    str:
+        Ratio of similarity between two strings
+    """
+    if os.path.isfile(path):
+        return path
+    logger.error("Expected list of one axis item.")
+    console.print("The path file provided does not exist.\n[/red]")
+    return ""
+
 
 def log_and_raise(error: Union[argparse.ArgumentTypeError, ValueError]) -> None:
     logger.error(str(error))
@@ -132,7 +168,7 @@ def print_rich_table(
             table.add_row(*row)
         console.print(table)
     else:
-        console.print(df.to_string())
+        console.print(df.to_string(col_space=0))
 
 
 def check_int_range(mini: int, maxi: int):
@@ -482,14 +518,19 @@ def us_market_holidays(years) -> list:
     return valid_holidays
 
 
-def lambda_long_number_format(num) -> str:
+def lambda_long_number_format(num, round_decimal=3) -> str:
     """Format a long number"""
+
     if isinstance(num, float):
         magnitude = 0
         while abs(num) >= 1000:
             magnitude += 1
             num /= 1000.0
-        num_str = int(num) if num.is_integer() else f"{num:.3f}"
+
+        string_fmt = f".{round_decimal}f"
+
+        num_str = int(num) if num.is_integer() else f"{num:{string_fmt}}"
+
         return f"{num_str} {' KMBTP'[magnitude]}".strip()
     if isinstance(num, int):
         num = str(num)
@@ -500,7 +541,10 @@ def lambda_long_number_format(num) -> str:
         while abs(num) >= 1000:
             magnitude += 1
             num /= 1000.0
-        num_str = int(num) if num.is_integer() else f"{num:.3f}"
+
+        string_fmt = f".{round_decimal}f"
+        num_str = int(num) if num.is_integer() else f"{num:{string_fmt}}"
+
         return f"{num_str} {' KMBTP'[magnitude]}".strip()
     return num
 
@@ -849,6 +893,7 @@ def lett_to_num(word: str) -> str:
 def get_flair() -> str:
     """Get a flair icon"""
     flairs = {
+        ":bb": "(🦋)",
         ":rocket": "(🚀🚀)",
         ":diamond": "(💎💎)",
         ":stars": "(✨)",

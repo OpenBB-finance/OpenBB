@@ -1,5 +1,0 @@
-Mscore Sub Stats:
-
-MSCORE:  -3.00 (low chance of fraud)
-ZSCORE:  1.00 (low chance of bankruptcy) 
-

@@ -63,7 +63,7 @@ def historical_command(signal: str = "", start=""):
     # Output Data
     l_min = []
     l_leg = []
-    l_stocks = screen.ScreenerView(verbose=0)
+    l_stocks = screen.screener_view(verbose=0)
 
     if len(l_stocks) > 10:
         description = (

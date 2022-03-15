@@ -72,4 +72,5 @@ cash
 dcf
 splits
 mktcap
+dupont
 exit

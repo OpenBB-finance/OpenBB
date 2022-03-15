@@ -35,6 +35,7 @@ class SettingsController(BaseController):
         "dt",
         "ion",
         "watermark",
+        "cmdloc",
         "promptkit",
         "predict",
         "autoscaling",
@@ -84,8 +85,6 @@ class SettingsController(BaseController):
         help_text += (
             f"   [{color}]cls              clear console after each command[/{color}]\n"
         )
-        color = "green" if gtff.USE_COLOR else "red"
-        help_text += f"   [{color}]color            use coloring features[/{color}]\n"
         color = "green" if gtff.USE_PROMPT_TOOLKIT else "red"
         help_text += f"   [{color}]promptkit        enable prompt toolkit (autocomplete and history)[/{color}]\n"
         color = "green" if gtff.ENABLE_PREDICT else "red"
@@ -98,8 +97,6 @@ class SettingsController(BaseController):
         help_text += f"   [{color}]exithelp         automatically print help when quitting menu[/{color}]\n"
         color = "green" if gtff.REMEMBER_CONTEXTS else "red"
         help_text += f"   [{color}]rcontext         remember contexts loaded params during session[/{color}]\n"
-        color = "green" if gtff.ENABLE_RICH else "red"
-        help_text += f"   [{color}]rich             colorful rich terminal[/{color}]\n"
         color = "green" if gtff.ENABLE_RICH_PANEL else "red"
         help_text += (
             f"   [{color}]richpanel        colorful rich terminal panel[/{color}]\n"
@@ -110,6 +107,8 @@ class SettingsController(BaseController):
         )
         color = "green" if gtff.USE_WATERMARK else "red"
         help_text += f"   [{color}]watermark        watermark in figures[/{color}]\n"
+        color = "green" if gtff.USE_CMD_LOCATION_FIGURE else "red"
+        help_text += f"   [{color}]cmdloc           command location displayed in figures[/{color}]\n"
         color = "green" if gtff.USE_PLOT_AUTOSCALING else "red"
         help_text += f"   [{color}]autoscaling      plot autoscaling[/{color}]\n\n"
         color = "green" if gtff.USE_DATETIME else "red"
@@ -162,13 +161,6 @@ class SettingsController(BaseController):
         dotenv.set_key(
             self.env_file, "GTFF_USE_CLEAR_AFTER_CMD", str(gtff.USE_CLEAR_AFTER_CMD)
         )
-        console.print("")
-
-    @log_start_end(log=logger)
-    def call_color(self, _):
-        """Process color command"""
-        gtff.USE_COLOR = not gtff.USE_COLOR
-        dotenv.set_key(self.env_file, "GTFF_USE_COLOR", str(gtff.USE_COLOR))
         console.print("")
 
     @log_start_end(log=logger)
@@ -231,13 +223,6 @@ class SettingsController(BaseController):
         console.print("")
 
     @log_start_end(log=logger)
-    def call_rich(self, _):
-        """Process rich command"""
-        gtff.ENABLE_RICH = not gtff.ENABLE_RICH
-        dotenv.set_key(self.env_file, "GTFF_ENABLE_RICH", str(gtff.ENABLE_RICH))
-        console.print("")
-
-    @log_start_end(log=logger)
     def call_richpanel(self, _):
         """Process richpanel command"""
         gtff.ENABLE_RICH_PANEL = not gtff.ENABLE_RICH_PANEL
@@ -258,6 +243,17 @@ class SettingsController(BaseController):
         """Process watermark command"""
         gtff.USE_WATERMARK = not gtff.USE_WATERMARK
         dotenv.set_key(self.env_file, "GTFF_USE_WATERMARK", str(gtff.USE_WATERMARK))
+        console.print("")
+
+    @log_start_end(log=logger)
+    def call_cmdloc(self, _):
+        """Process cmdloc command"""
+        gtff.USE_CMD_LOCATION_FIGURE = not gtff.USE_CMD_LOCATION_FIGURE
+        dotenv.set_key(
+            self.env_file,
+            "GTFF_USE_CMD_LOCATION_FIGURE",
+            str(gtff.USE_CMD_LOCATION_FIGURE),
+        )
         console.print("")
 
     @log_start_end(log=logger)
