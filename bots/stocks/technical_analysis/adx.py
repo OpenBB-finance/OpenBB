@@ -107,7 +107,7 @@ def adx_command(
         row_width=[0.4, 0.6],
         specs=[[{"secondary_y": True}], [{"secondary_y": False}]],
     )
-    title = f"{plot['plt_title']} Average Directional Movement Index (ADX)"
+    title = f"{plot['plt_title']} Average Directional Movement Index"
     fig = plot["fig"]
 
     fig.add_trace(

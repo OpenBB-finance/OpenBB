@@ -20,6 +20,7 @@ est_tz = pytz.timezone("America/New_York")
 
 
 def dt_utcnow_local_tz():
+    """Returns utcnow datetime as eastern timezone"""
     output = datetime.utcnow().astimezone(est_tz)
     return output
 
@@ -114,20 +115,43 @@ def stock_data(
     news: bool = False,
     heikin_candles: bool = False,
 ):
+    """Grabs OHLC data . [Source: Yahoo Finance or Binance API]
 
+    Parameters
+    ----------
+    ticker : Stock Ticker
+    interval : Chart Minute Interval, 1440 for Daily
+    past_days: Past Days to Display. Default: 0(Not for Daily)
+    extended_hours: Display Pre/After Market Hours. Default: False
+    start: YYYY-MM-DD format
+    end: YYYY-MM-DD format
+    news: Display clickable news markers on interactive chart. Default: False
+    heikin_candles: Heikin Ashi candles. Default: False
+    """
     if news:
         past_days = 30
 
-    max_days = 4 if interval == 1 else 57
+    # Set max days of data due to api limits
+    day_list = {
+        1: 3,
+        15: 57,
+        30: 57,
+        60: 727,
+        1440: past_days,
+    }
+    max_days = day_list[interval]
+
     if dt_utcnow_local_tz().weekday() > 4 or 1:
         past_days += 2
-    p_days = (past_days + 1) if past_days < max_days else max_days
+
+    p_days = (past_days + 1) if (past_days < max_days) else max_days
 
     if start == "":
         start = dt_utcnow_local_tz() - timedelta(days=365)
-        bar_start = dt_utcnow_local_tz() - timedelta(
-            days=(p_days if interval != 1440 else 365)
-        )
+        bar_start = dt_utcnow_local_tz() - timedelta(days=p_days)
+        start = (
+            bar_start if (bar_start < start) else start
+        )  # Check if past days requested further back than start
     else:
         start = datetime.strptime(start, cfg.DATE_FORMAT)
         bar_start = datetime.strptime(start, cfg.DATE_FORMAT) - timedelta(days=p_days)
@@ -145,7 +169,7 @@ def stock_data(
         )
         df_stock = df_stock.fillna(0)
 
-        # Check that loading a stock was not successful
+        # Check if loading a stock was not successful
         if df_stock.empty:
             raise Exception(f"No data found for {ticker.upper()}")
 
@@ -159,8 +183,9 @@ def stock_data(
         df_stock["OC_High"] = df_stock[["Open", "Close"]].max(axis=1)
         df_stock["OC_Low"] = df_stock[["Open", "Close"]].min(axis=1)
     else:
+        # Add days for ta processing and check if more than api limit
         past_days = (
-            (past_days + 10) if ((10 + past_days) + max_days) > max_days else max_days
+            (past_days + 10) if (((10 + past_days) + max_days) < max_days) else max_days
         )
         s_int = str(interval) + "m"
         if crypto in ticker.upper() and (cfg.API_BINANCE_KEY != "REPLACE_ME"):
@@ -236,7 +261,7 @@ def stock_data(
     if heikin_candles:
         df_stock = heikin_ashi(df_stock)
 
-    # Check that loading a stock was not successful
+    # Check if loading a stock was not successful
     if df_stock.empty:
         raise Exception(f"No data found for {ticker.upper()}.")
 
@@ -251,13 +276,23 @@ def stock_data(
 
 # pylint: disable=R0912
 def candle_fig(
-    df_stock,
-    ticker,
-    interval,
-    extended_hours=False,
-    news=False,
+    df_stock: pd.DataFrame,
+    ticker: str,
+    interval: int,
+    extended_hours: bool = False,
+    news: bool = False,
     **data,
 ):
+    """Plot plotly candle fig with df_stock data
+
+    Parameters
+    ----------
+    df_stock: OHLC Stock data
+    ticker: Stock ticker
+    interval: Candle minute interval
+    extended_hours: Whether to plot extended hours. Defaults to False.
+    news: Display clickable news markers on interactive chart. Default: False
+    """
     if "rows" in data:
         fig = make_subplots(
             rows=data["rows"],
@@ -393,7 +428,7 @@ def candle_fig(
 
             for article in articles:
                 dt_at = article["publishedAt"].replace("T", " ").replace("Z", "-05:00")
-                df_date.append(datetime.strptime(dt_at, "%Y-%m-%d %H:%M:%S%z"))
+                df_date.append(f"{datetime.strptime(dt_at, '%Y-%m-%d %H:%M:%S%z')}")
                 df_title.append(article["title"])
                 grab_price = df_stock.iloc[
                     df_stock.index.get_loc(dt_at, method="nearest")
@@ -443,7 +478,7 @@ def candle_fig(
         else:
             pass
 
-        # Output Data
+        # News Data
         df_news = pd.DataFrame(
             {
                 "Title": df_title,
