@@ -84,7 +84,7 @@ def show_macro_data(
         denomination = f"[{convert_currency} Thousands]"
     else:
         df_rounded = country_data_df
-        denomination = f"[{convert_currency}]"
+        denomination = ""
 
     for column in df_rounded.columns:
         country_label = column[0].replace("_", " ")

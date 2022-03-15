@@ -62,7 +62,6 @@ class EconomyController(BaseController):
         "industry",
         "feargreed",
         "bigmac",
-        "resources",
     ]
 
     CHOICES_MENUS = ["pred"]
@@ -208,7 +207,7 @@ class EconomyController(BaseController):
                     for option in values.keys()
                 ]
 
-                for argument in ["-y1", "-yaxis1", "-y2", "yaxis2"]:
+                for argument in ["-y1", "--yaxis1", "-y2", "--yaxis2"]:
                     self.choices["plot"][argument] = {
                         option: None for option in options
                     }
@@ -221,7 +220,9 @@ class EconomyController(BaseController):
 Overview
     overview      show a market overview of either indices, bonds or currencies [src][Source: Wall St. Journal][/src]
     futures       display a futures and commodities overview [src][Source: Wall St. Journal / FinViz][/src]
-    map           S&P500 index stocks map [src][Source: FinViz][/src]s
+    map           S&P500 index stocks map [src][Source: FinViz][/src]
+    feargreed     CNN Fear and Greed Index [src][Source: CNN][/src]
+    bigmac        The Economist Big Mac index [src][Source: NASDAQ Datalink][/src]
 
 Macro Data
     macro         collect macro data for a country or countries [src][Source: EconDB][/src]
@@ -234,50 +235,11 @@ Performance & Valuations
     rtps          real-time performance sectors [src][Source: Alpha Vantage][/src]
     valuation     valuation of sectors, industry, country [src][Source: FinViz][/src]
     performance   performance of sectors, industry, country [src][Source: FinViz][/src]
-    spectrum      spectrum of sectors, industry, country [src][Source: FinViz][/src]
-
-Index
-    feargreed     CNN Fear and Greed Index [src][Source: CNN][/src]
-    bigmac        The Economist Big Mac index [src][Source: NASDAQ Datalink][/src][/cmds]
+    spectrum      spectrum of sectors, industry, country [src][Source: FinViz][/src][/cmds]
 [menu]
 >   pred          Open the prediction menu to analyse FRED series[/menu]
 """
         console.print(text=help_text, menu="Economy")
-
-    @log_start_end(log=logger)
-    def call_feargreed(self, other_args: List[str]):
-        """Process feargreed command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            prog="feargreed",
-            description="""
-                Display CNN Fear And Greed Index from https://money.cnn.com/data/fear-and-greed/.
-            """,
-        )
-        parser.add_argument(
-            "-i",
-            "--indicator",
-            dest="indicator",
-            required=False,
-            type=str,
-            choices=self.fear_greed_indicators,
-            help="""
-                CNN Fear And Greed indicator or index. From Junk Bond Demand, Market Volatility,
-                Put and Call Options, Market Momentum Stock Price Strength, Stock Price Breadth,
-                Safe Heaven Demand, and Index.
-            """,
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-i")
-
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
-        )
-        if ns_parser:
-            cnn_view.fear_and_greed_index(
-                indicator=ns_parser.indicator,
-                export=ns_parser.export,
-            )
 
     @log_start_end(log=logger)
     def call_overview(self, other_args: List[str]):
@@ -385,6 +347,128 @@ Index
             )
 
     @log_start_end(log=logger)
+    def call_map(self, other_args: List[str]):
+        """Process map command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="map",
+            description="""
+                Performance index stocks map categorized by sectors and industries.
+                Size represents market cap. Opens web-browser. [Source: Finviz]
+            """,
+        )
+        parser.add_argument(
+            "-p",
+            "--period",
+            action="store",
+            dest="s_period",
+            type=str,
+            default="1d",
+            choices=self.map_period_list,
+            help="Performance period.",
+        )
+        parser.add_argument(
+            "-t",
+            "--type",
+            action="store",
+            dest="s_type",
+            type=str,
+            default="sp500",
+            choices=self.map_type_list,
+            help="Map filter type.",
+        )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            finviz_view.map_sp500_view(
+                period=ns_parser.s_period,
+                map_type=ns_parser.s_type,
+            )
+
+    @log_start_end(log=logger)
+    def call_feargreed(self, other_args: List[str]):
+        """Process feargreed command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="feargreed",
+            description="""
+                Display CNN Fear And Greed Index from https://money.cnn.com/data/fear-and-greed/.
+            """,
+        )
+        parser.add_argument(
+            "-i",
+            "--indicator",
+            dest="indicator",
+            required=False,
+            type=str,
+            choices=self.fear_greed_indicators,
+            help="""
+                CNN Fear And Greed indicator or index. From Junk Bond Demand, Market Volatility,
+                Put and Call Options, Market Momentum Stock Price Strength, Stock Price Breadth,
+                Safe Heaven Demand, and Index.
+            """,
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-i")
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
+        )
+        if ns_parser:
+            cnn_view.fear_and_greed_index(
+                indicator=ns_parser.indicator,
+                export=ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
+    def call_bigmac(self, other_args: List[str]):
+        """Process bigmac command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="bigmac",
+            description="""
+                 Get historical Big Mac Index [Nasdaq Data Link]
+             """,
+        )
+        parser.add_argument(
+            "--codes",
+            help="Flag to show all country codes",
+            dest="codes",
+            action="store_true",
+            default=False,
+        )
+        parser.add_argument(
+            "-c",
+            "--countries",
+            help="Country codes to get data for.",
+            dest="countries",
+            default="USA",
+            type=nasdaq_model.check_country_code_type,
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+            raw=True,
+        )
+        if ns_parser:
+            if ns_parser.codes:
+                file = os.path.join(
+                    os.path.dirname(__file__), "NASDAQ_CountryCodes.csv"
+                )
+                console.print(
+                    pd.read_csv(file, index_col=0).to_string(index=False), "\n"
+                )
+            else:
+                nasdaq_view.display_big_mac_index(
+                    country_codes=ns_parser.countries,
+                    raw=ns_parser.raw,
+                    export=ns_parser.export,
+                )
+
+    @log_start_end(log=logger)
     def call_macro(self, other_args: List[str]):
         """Process macro command"""
         parser = argparse.ArgumentParser(
@@ -407,21 +491,21 @@ Index
         )
 
         parser.add_argument(
-            "-sp",
-            "--show_parameters",
-            dest="show_parameters",
-            help="Show all parameters and what they represent",
-            action="store_true",
-            default=False,
-        )
-
-        parser.add_argument(
             "-c",
             "--countries",
             nargs="+",
             dest="countries",
             help="The country or countries you wish to show data for",
             default=["United_States"],
+        )
+
+        parser.add_argument(
+            "-sp",
+            "--show_parameters",
+            dest="show_parameters",
+            help="Show all parameters and what they represent",
+            action="store_true",
+            default=False,
         )
 
         parser.add_argument(
@@ -453,8 +537,8 @@ Index
             "-cc",
             "--convert_currency",
             dest="convert_currency",
-            help="Convert the currency of the chosen country to a specified currency. By default, this will be USD "
-            "unless specified with this command. To find the currency symbols use the option -sc",
+            help="Convert the currency of the chosen country to a specified currency. To find the "
+            "currency symbols use the argument -sc",
             default=False,
         )
 
@@ -761,7 +845,7 @@ Index
             description="Obtain any set of U.S. treasuries and plot them together. These can be a range of maturities "
             "for nominal, inflation-adjusted (on long term average of inflation adjusted) and secondary "
             "markets over a lengthy period. Note: 3-month and 10-year treasury yields for other countries "
-            "are available via the command 'macro' and parameter 'Y10YD' and 'M3YD'. [Source: EconDB / FED]",
+            "are available via the command 'macro' and parameter 'M3YD' and 'Y10YD'. [Source: EconDB / FED]",
         )
 
         parser.add_argument(
@@ -893,18 +977,18 @@ Index
 
         parser.add_argument(
             "-y1",
-            "--yaxis_1",
+            "--yaxis1",
             nargs="+",
-            dest="yaxis_1",
+            dest="yaxis1",
             help="Select the data you wish to plot on the first y-axis. You can select multiple variables here.",
             default="",
         )
 
         parser.add_argument(
             "-y2",
-            "--yaxis_2",
+            "--yaxis2",
             nargs="+",
-            dest="yaxis_2",
+            dest="yaxis2",
             help="Select the data you wish to plot on the second y-axis. You can select multiple variables here.",
             default="",
         )
@@ -949,77 +1033,63 @@ Index
                     title="Options available to plot",
                 )
             else:
-                dataset_yaxis_1 = pd.DataFrame()
-                dataset_yaxis_2 = pd.DataFrame()
+                dataset_yaxis1 = pd.DataFrame()
+                dataset_yaxis2 = pd.DataFrame()
 
-                if ns_parser.yaxis_1:
-                    for variable in ns_parser.yaxis_1:
+                if ns_parser.yaxis1:
+                    for variable in ns_parser.yaxis1:
                         for _, data in self.DATASETS.items():
                             if variable in data.columns:
-                                dataset_yaxis_1[variable] = data[variable]
+                                dataset_yaxis1[variable] = data[variable]
                                 break
-                        if variable not in dataset_yaxis_1:
+                        if variable not in dataset_yaxis1:
                             return console.print(
-                                f"Not able to find any data for the -y1 argument {ns_parser.yaxis_1}. "
-                                f"The currently available options are: {', '.join(self.choices['-y1'])}"
+                                f"Not able to find any data for the -y1 argument {variable}. "
+                                f"The currently available options are: {', '.join(self.choices['plot']['-y1'])}"
                             )
 
-                if ns_parser.yaxis_2:
-                    for variable in ns_parser.yaxis_2:
+                if ns_parser.yaxis2:
+                    for variable in ns_parser.yaxis2:
                         for _, data in self.DATASETS.items():
                             if variable in data.columns:
-                                dataset_yaxis_2[variable] = data[variable]
+                                dataset_yaxis2[variable] = data[variable]
                                 break
-                        if variable not in dataset_yaxis_2:
+                        if variable not in dataset_yaxis2:
                             return console.print(
-                                f"Not able to find any data for the -y2 argument {ns_parser.yaxis_2}. "
-                                f"The currently available options are: {', '.join(self.choices['-y2'])}"
+                                f"Not able to find any data for the -y2 argument {variable}. "
+                                f"The currently available options are: {', '.join(self.choices['plot']['-y2'])}"
                             )
 
-                if ns_parser.yaxis_1 or ns_parser.yaxis_2:
+                if ns_parser.yaxis1 or ns_parser.yaxis2:
                     return plot_view.show_plot(
-                        dataset_yaxis_1=dataset_yaxis_1, dataset_yaxis_2=dataset_yaxis_2
+                        dataset_yaxis_1=dataset_yaxis1, dataset_yaxis_2=dataset_yaxis2
                     )
 
             console.print()
 
     @log_start_end(log=logger)
-    def call_map(self, other_args: List[str]):
-        """Process map command"""
+    def call_rtps(self, other_args: List[str]):
+        """Process rtps command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="map",
+            prog="rtps",
             description="""
-                Performance index stocks map categorized by sectors and industries.
-                Size represents market cap. Opens web-browser. [Source: Finviz]
+                Real-time and historical sector performances calculated from
+                S&P500 incumbents. Pops plot in terminal. [Source: Alpha Vantage]
             """,
         )
-        parser.add_argument(
-            "-p",
-            "--period",
-            action="store",
-            dest="s_period",
-            type=str,
-            default="1d",
-            choices=self.map_period_list,
-            help="Performance period.",
+
+        ns_parser = parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+            raw=True,
         )
-        parser.add_argument(
-            "-t",
-            "--type",
-            action="store",
-            dest="s_type",
-            type=str,
-            default="sp500",
-            choices=self.map_type_list,
-            help="Map filter type.",
-        )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            finviz_view.map_sp500_view(
-                period=ns_parser.s_period,
-                map_type=ns_parser.s_type,
+            alphavantage_view.realtime_performance_sector(
+                raw=ns_parser.raw,
+                export=ns_parser.export,
             )
 
     @log_start_end(log=logger)
@@ -1164,84 +1234,11 @@ Index
                 if isinstance(ns_parser.group, list)
                 else ns_parser.group
             )
-        finviz_view.display_spectrum(s_group=self.d_GROUPS[group])
+            finviz_view.display_spectrum(s_group=self.d_GROUPS[group])
 
-        # Due to Finviz implementation of Spectrum, we delete the generated spectrum figure
-        # after saving it and displaying it to the user
-        os.remove(self.d_GROUPS[group] + ".jpg")
-
-    @log_start_end(log=logger)
-    def call_rtps(self, other_args: List[str]):
-        """Process rtps command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="rtps",
-            description="""
-                Real-time and historical sector performances calculated from
-                S&P500 incumbents. Pops plot in terminal. [Source: Alpha Vantage]
-            """,
-        )
-
-        ns_parser = parse_known_args_and_warn(
-            parser,
-            other_args,
-            export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
-            raw=True,
-        )
-        if ns_parser:
-            alphavantage_view.realtime_performance_sector(
-                raw=ns_parser.raw,
-                export=ns_parser.export,
-            )
-
-    @log_start_end(log=logger)
-    def call_bigmac(self, other_args: List[str]):
-        """Process bigmac command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="bigmac",
-            description="""
-                Get historical Big Mac Index [Nasdaq Data Link]
-            """,
-        )
-        parser.add_argument(
-            "--codes",
-            help="Flag to show all country codes",
-            dest="codes",
-            action="store_true",
-            default=False,
-        )
-        parser.add_argument(
-            "-c",
-            "--countries",
-            help="Country codes to get data for.",
-            dest="countries",
-            default="USA",
-            type=nasdaq_model.check_country_code_type,
-        )
-
-        ns_parser = parse_known_args_and_warn(
-            parser,
-            other_args,
-            export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
-            raw=True,
-        )
-        if ns_parser:
-            if ns_parser.codes:
-                file = os.path.join(
-                    os.path.dirname(__file__), "NASDAQ_CountryCodes.csv"
-                )
-                console.print(
-                    pd.read_csv(file, index_col=0).to_string(index=False), "\n"
-                )
-            else:
-                nasdaq_view.display_big_mac_index(
-                    country_codes=ns_parser.countries,
-                    raw=ns_parser.raw,
-                    export=ns_parser.export,
-                )
+            # Due to Finviz implementation of Spectrum, we delete the generated spectrum figure
+            # after saving it and displaying it to the user
+            os.remove(self.d_GROUPS[group] + ".jpg")
 
     @log_start_end(log=logger)
     def call_pred(self, _):
