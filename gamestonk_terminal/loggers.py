@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 import logging
 import os
+import re
 from pathlib import Path
 import sys
 import time
@@ -9,6 +10,7 @@ import uuid
 from math import floor, ceil
 
 import git
+from numpy import append
 
 import gamestonk_terminal.config_terminal as cfg
 
@@ -16,6 +18,7 @@ logger = logging.getLogger(__name__)
 LOGFORMAT = "%(asctime)s|%(name)s|%(funcName)s|%(lineno)s|%(message)s"
 LOGPREFIXFORMAT = "%(levelname)s|%(appName)s|%(version)s|%(loggingId)s|%(sessionId)s|"
 DATEFORMAT = "%Y-%m-%dT%H:%M:%S%z"
+IP_REGEX = r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"
 
 
 def library_loggers(verbosity: int = 0) -> None:
@@ -155,6 +158,21 @@ class CustomFormatterWithExceptions(logging.Formatter):
                 .replace("'", "`")
                 .replace('"', "`")
             )
+            s_list = []
+            ip_reg = re.compile(IP_REGEX)
+            for word in s.split():
+                if ip_reg.search(word):
+                    s_list.append("suspected_ip")
+                elif "@" in word and "." in word:
+                    s_list.append("suspected_email")
+                elif os.sep in word and "GamestonkTerminal/" in word:
+                    s_list.append(word.split("GamestonkTerminal/")[1])
+                elif os.sep in word:
+                    s_list.append(word.split(os.sep)[-1])
+                else:
+                    s_list.append(word)
+
+            s = " ".join(s_list)
 
         else:
             logPrefix = LOGPREFIXFORMAT % self.logPrefixDict
