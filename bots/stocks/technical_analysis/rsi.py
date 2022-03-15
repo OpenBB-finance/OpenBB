@@ -102,6 +102,7 @@ def rsi_command(
     fig.add_trace(
         go.Scatter(
             name=f"RSI {length}",
+            mode="lines",
             x=df_ta.index,
             y=df_ta[f"RSI_{length}"],
             opacity=1,

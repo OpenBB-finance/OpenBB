@@ -112,8 +112,8 @@ def adx_command(
 
     fig.add_trace(
         go.Scatter(
-            mode="lines",
             name=f"ADX ({length})",
+            mode="lines",
             x=df_ta.index,
             y=df_ta[f"ADX_{length}"],
             opacity=1,
@@ -125,8 +125,8 @@ def adx_command(
     )
     fig.add_trace(
         go.Scatter(
-            mode="lines",
             name=f"+DI ({length})",
+            mode="lines",
             x=df_ta.index,
             y=df_ta[f"DMP_{length}"],
             opacity=1,
@@ -138,8 +138,8 @@ def adx_command(
     )
     fig.add_trace(
         go.Scatter(
-            mode="lines",
             name=f"-DI ({length})",
+            mode="lines",
             x=df_ta.index,
             y=df_ta[f"DMN_{length}"],
             opacity=1,

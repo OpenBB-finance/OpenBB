@@ -103,23 +103,42 @@ class TechnicalAnalysisCommands(commands.Cog):
         self,
         inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
+        interval: int = commands.Param(choices=[1, 5, 15, 30, 60, 1440]),
+        past_days: int = 0,
         length="14",
         scalar="0.015",
         start="",
         end="",
+        extended_hours: bool = False,
+        heikin_candles: bool = False,
     ):
         """Displays chart with commodity channel index [Yahoo Finance]
 
         Parameters
         -----------
         ticker: Stock Ticker
+        interval : Chart Minute Interval, 1440 for Daily
+        past_days: Past Days to Display. Default: 0(Not for Daily)
         length:  window length. Default: 14
         scalar: scalar. Default: 0.015
         start: YYYY-MM-DD format
         end: YYYY-MM-DD format
+        extended_hours: Display Pre/After Market Hours. Default: False
+        heikin_candles: Heikin Ashi candles. Default: False
         """
         await ShowView().discord(
-            cci_command, inter, "ta-mom cci", ticker, length, scalar, start, end
+            cci_command,
+            inter,
+            "ta-mom cci",
+            ticker,
+            interval,
+            past_days,
+            length,
+            scalar,
+            start,
+            end,
+            extended_hours,
+            heikin_candles,
         )
 
     @ta_mom.sub_command()
@@ -253,21 +272,40 @@ class TechnicalAnalysisCommands(commands.Cog):
         self,
         inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
+        interval: int = commands.Param(choices=[1, 5, 15, 30, 60, 1440]),
+        past_days: int = 0,
         length="14",
         start="",
         end="",
+        extended_hours: bool = False,
+        heikin_candles: bool = False,
     ):
         """Displays chart with fisher transformation [Yahoo Finance]
 
         Parameters
         -----------
-        ticker:  Stock Ticker
+        ticker: Stock Ticker
+        interval : Chart Minute Interval, 1440 for Daily
+        past_days: Past Days to Display. Default: 0(Not for Daily)
         length: length. Default: 14
+        scalar: scalar. Default: 100
         start: YYYY-MM-DD format
         end: YYYY-MM-DD format
+        extended_hours: Display Pre/After Market Hours. Default: False
+        heikin_candles: Heikin Ashi candles. Default: False
         """
         await ShowView().discord(
-            fisher_command, inter, "ta-mom fisher", ticker, length, start, end
+            fisher_command,
+            inter,
+            "ta-mom fisher",
+            ticker,
+            interval,
+            past_days,
+            length,
+            start,
+            end,
+            extended_hours,
+            heikin_candles,
         )
 
     @ta_mom.sub_command()
@@ -464,24 +502,32 @@ class TechnicalAnalysisCommands(commands.Cog):
         self,
         inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
+        interval: int = commands.Param(choices=[1, 5, 15, 30, 60, 1440]),
+        past_days: int = 0,
         length="20",
         scalar="2",
         ma_mode: str = commands.Param(choices=["ema", "sma", "wma", "hma", "zlma"]),
         offset="0",
         start="",
         end="",
+        extended_hours: bool = False,
+        heikin_candles: bool = False,
     ):
         """Displays chart with keltner channel [Yahoo Finance]
 
         Parameters
         -----------
         ticker: Stock Ticker
+        interval : Chart Minute Interval, 1440 for Daily
+        past_days: Past Days to Display. Default: 0(Not for Daily)
         length: length. Default: 20
         scalar: scalar. Default: 2
         ma_mode: mode of moving average.
         offset: offset value. Default: 0
         start: YYYY-MM-DD format
         end: YYYY-MM-DD format
+        extended_hours: Display Pre/After Market Hours. Default: False
+        heikin_candles: Heikin Ashi candles. Default: False
         """
         ma_mode = str(ma_mode)
         await ShowView().discord(
@@ -489,12 +535,16 @@ class TechnicalAnalysisCommands(commands.Cog):
             inter,
             "ta-vlt kc",
             ticker,
+            interval,
+            past_days,
             length,
             scalar,
             ma_mode,
             offset,
             start,
             end,
+            extended_hours,
+            heikin_candles,
         )
 
     @ta_vol.sub_command()
@@ -502,21 +552,39 @@ class TechnicalAnalysisCommands(commands.Cog):
         self,
         inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
+        interval: int = commands.Param(choices=[1, 5, 15, 30, 60, 1440]),
+        past_days: int = 0,
         is_open="False",
         start="",
         end="",
+        extended_hours: bool = False,
+        heikin_candles: bool = False,
     ):
         """Displays chart with accumulation/distribution line [Yahoo Finance]
 
         Parameters
         -----------
         ticker: Stock Ticker
+        interval : Chart Minute Interval, 1440 for Daily
+        past_days: Past Days to Display. Default: 0(Not for Daily)
         is_open: whether open price is used. Default: False
         start: YYYY-MM-DD format
         end: YYYY-MM-DD format
+        extended_hours: Display Pre/After Market Hours. Default: False
+        heikin_candles: Heikin Ashi candles. Default: False
         """
         await ShowView().discord(
-            ad_command, inter, "ta-vol ad", ticker, is_open, start, end
+            ad_command,
+            inter,
+            "ta-vol ad",
+            ticker,
+            interval,
+            past_days,
+            is_open,
+            start,
+            end,
+            extended_hours,
+            heikin_candles,
         )
 
     @ta_vol.sub_command()

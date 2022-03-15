@@ -117,8 +117,8 @@ def macd_command(
     )
     fig.add_trace(
         go.Scatter(
-            mode="lines",
             name="MACD Line",
+            mode="lines",
             x=df_ta.index,
             y=df_ta[f"MACD_{fast}_{slow}_{signal}"],
             opacity=0.8,
@@ -130,8 +130,8 @@ def macd_command(
     )
     fig.add_trace(
         go.Scatter(
-            mode="lines",
             name="Signal Line",
+            mode="lines",
             x=df_ta.index,
             y=df_ta[f"MACDs_{fast}_{slow}_{signal}"],
             opacity=1,

@@ -134,6 +134,7 @@ def stock_data(
     # Set max days of data due to api limits
     day_list = {
         1: 3,
+        5: 57,
         15: 57,
         30: 57,
         60: 727,
@@ -141,10 +142,13 @@ def stock_data(
     }
     max_days = day_list[interval]
 
-    if dt_utcnow_local_tz().weekday() > 4 or 1:
+    if dt_utcnow_local_tz().weekday() not in range(2, 5):
         past_days += 2
-
-    p_days = (past_days + 1) if (past_days < max_days) else max_days
+    p_days = (
+        ((past_days + 1) if (past_days < max_days) else max_days)
+        if (interval != 1440 and past_days < 365)
+        else 365
+    )
 
     if start == "":
         start = dt_utcnow_local_tz() - timedelta(days=365)
@@ -312,7 +316,7 @@ def candle_fig(
             specs=[[{"secondary_y": True}]],
         )
     if "bar" in data:
-        dt = {1: 1, 5: 2, 15: 4, 30: 5, 60: 6, 1440: 30}
+        dt = {1: 1, 5: 4, 15: 8, 30: 5, 60: 6, 1440: 30}
         bar_opacity = (
             0.2
             if (

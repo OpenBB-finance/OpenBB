@@ -114,6 +114,7 @@ def ma_command(
         fig.add_trace(
             go.Scatter(
                 name=f"{ma_mode.upper()} {win}",
+                mode="lines",
                 x=df_ta.index,
                 y=df_ta[f"{ma_mode.upper()}_{win}"],
                 opacity=1,

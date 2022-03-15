@@ -85,6 +85,7 @@ def obv_command(
     fig.add_trace(
         go.Scatter(
             name="OBV",
+            mode="lines",
             x=df_ta.index,
             y=df_ta["OBV"],
             line=dict(width=2),

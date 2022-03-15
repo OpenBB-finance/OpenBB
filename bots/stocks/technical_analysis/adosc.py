@@ -100,6 +100,7 @@ def adosc_command(
     fig.add_trace(
         go.Scatter(
             name="AD Osc [M]",
+            mode="lines",
             x=df_ta.index,
             y=df_ta[f"ADOSC_{fast}_{slow}"],
             line=dict(width=2),
