@@ -89,7 +89,7 @@ def setup_file_logger(app_name: str, session_id: str) -> None:
 
     logger.debug("Current_log file: %s", cfg.LOGGING_FILE)
 
-    handler = TimedRotatingFileHandlerWithUpload(cfg.LOGGING_FILE, when="M")
+    handler = TimedRotatingFileHandlerWithUpload(cfg.LOGGING_FILE)
     handler.suffix += ".log"
     formatter = CustomFormatterWithExceptions(
         app_name, uuid_log_dir.stem, session_id, fmt=LOGFORMAT, datefmt=DATEFORMAT
@@ -336,7 +336,7 @@ def contains_goodbye(file: Path) -> bool:
 
 def upload_archive_logs_s3(
     directory_str=None,
-    log_filter=r"gst_\d{10}\.20[2-3][0-9]-[0-2][0-9]-[0-3][0-9]_[0-2][0-9]-[0-5][0-9]\.log",
+    log_filter=r"gst_\d{10}\.20[2-3][0-9]-[0-2][0-9]-[0-3][0-9]_[0-2][0-9]\.log",
     bucket=None,
     folder_name=FOLDER_NAME,
 ) -> None:
