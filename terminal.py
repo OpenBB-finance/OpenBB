@@ -403,9 +403,9 @@ class TerminalController(BaseController):
 
 
 # pylint: disable=global-statement
-def terminal(jobs_cmds: List[str] = None):
+def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
     """Terminal Menu"""
-    setup_logging("gst")
+    setup_logging(appName)
     logger.info("START")
     logger.info("Python: %s", platform.python_version())
     logger.info("OS: %s", platform.system())
