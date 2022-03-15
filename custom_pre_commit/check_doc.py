@@ -1,7 +1,7 @@
-import os
 import argparse
+import os
 import sys
-from typing import List
+from typing import List, Optional
 
 
 def clean_input(text: str) -> List[str]:
@@ -21,19 +21,25 @@ def clean_input(text: str) -> List[str]:
     return [x.strip() for x in text_list if x]
 
 
-def main(ignore_files: str, ignore_commands: str):
+def main(ignore_files: Optional[str], ignore_commands: Optional[str]):
     """Checks commands in the repository to ensure they are documented
 
     Parameters
     ----------
-    ignore_files : str
+    ignore_files : Optional[str]
         Files that should not be checked
-    ignore_commands : str
+    ignore_commands : Optional[str]
         Commands that should not be checked
     """
 
-    ignore_file_list = ignore_files.split(",")
-    ignore_cmds_list = ignore_commands.split(",")
+    if ignore_files:
+        ignore_file_list = ignore_files.split(",")
+    else:
+        ignore_file_list = []
+    if ignore_commands:
+        ignore_cmds_list = ignore_commands.split(",")
+    else:
+        ignore_cmds_list = []
     path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     gst_path = os.path.join(path, "gamestonk_terminal/")
     main_yaml_filename = os.path.join(path, "website/data/menu/main.yml")
