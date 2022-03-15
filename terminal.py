@@ -243,6 +243,7 @@ class TerminalController(BaseController):
             if other_args:
                 export_path = ""
             else:
+                # Re-add the initial slash for an absolute directory provided
                 export_path = "/"
 
             other_args += self.queue
@@ -254,7 +255,6 @@ class TerminalController(BaseController):
             default_path = os.path.join(base_path, "exports")
 
             success_export = False
-
             while not success_export:
                 if export_path.upper() == "DEFAULT":
                     console.print(
@@ -304,10 +304,6 @@ class TerminalController(BaseController):
                                 f"[yellow]Export data to keep being saved in the selected folder: {path_display}[/yellow]"
                             )
                         success_export = True
-
-            # other_args.append(self.queue[0])
-            # self.queue = self.queue[1:]
-            # print("/".join(other_args))
 
         console.print()
 
