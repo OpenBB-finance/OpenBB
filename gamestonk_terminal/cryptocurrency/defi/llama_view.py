@@ -71,9 +71,9 @@ def display_grouped_defi_protocols(
             color=next(colors),
         )
 
-    ax.set_ylabel("Total Value Locked ($)")
-    ax.set_xlabel("dApp name")
-    ax.get_yaxis().set_major_formatter(
+    ax.set_xlabel("Total Value Locked ($)")
+    ax.set_ylabel("Decentralized Application Name")
+    ax.get_xaxis().set_major_formatter(
         ticker.FuncFormatter(lambda x, _: lambda_long_number_format(x))
     )
 

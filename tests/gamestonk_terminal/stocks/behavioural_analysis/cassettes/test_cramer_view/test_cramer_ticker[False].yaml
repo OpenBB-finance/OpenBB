@@ -1,0 +1,1174 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Connection:
+      - close
+      Host:
+      - raw.githubusercontent.com
+    method: GET
+    uri: https://raw.githubusercontent.com/jmaslek/InverseCramer/main/AllRecommendations.csv
+  response:
+    body:
+      string: ',Company,Date,Price,Symbol,Recommendation,InverseCramer
+
+        0,Apple ,01/03,182.01,AAPL,Buy,Sell
+
+        1,AbbVie ,01/03,135.42,ABBV,Buy,Sell
+
+        2,Abbott Laboratories ,01/03,139.04,ABT,Buy,Sell
+
+        3,Activision Blizzard ,01/03,67.42,ATVI,Sell,Buy
+
+        4,Bank of America ,01/03,46.18,BAC,Buy,Sell
+
+        5,Citrix Systems ,01/03,98.26,CTXS,Sell,Buy
+
+        6,Chevron ,01/03,119.26,CVX,Buy,Sell
+
+        7,Consolidated Edison ,01/03,85.13,ED,Buy,Sell
+
+        8,Emerson Electric ,01/03,91.76,EMR,Buy,Sell
+
+        9,Fortinet ,01/03,333.12,FTNT,Sell,Buy
+
+        10,Global Payments ,01/03,141.7,GPN,Sell,Buy
+
+        11,Home Depot ,01/03,408.64,HD,Buy,Sell
+
+        12,IPG Photonics ,01/03,173.81,IPGP,Buy,Sell
+
+        13,Johnson & Johnson ,01/03,171.54,JNJ,Buy,Sell
+
+        14,Lennar ,01/03,111.81,LEN,Buy,Sell
+
+        15,The Lion Electric Company ,01/03,9.99,LEV,Buy,Sell
+
+        16,Linde ,01/03,338.64,LIN,Buy,Sell
+
+        17,Las Vegas Sands ,01/03,38.85,LVS,Sell,Buy
+
+        18,MarketAxess ,01/03,396.83,MKTX,Sell,Buy
+
+        19,NextEra Energy ,01/03,91.66,NEE,Buy,Sell
+
+        20,Cloudflare ,01/03,126.16,NET,Buy,Sell
+
+        21,New Fortress Energy ,01/03,25.03,NFE,Sell,Buy
+
+        22,NVIDIA ,01/03,301.21,NVDA,Buy,Sell
+
+        23,Penn National Gaming ,01/03,50.64,PENN,Sell,Buy
+
+        24,Toll Brothers ,01/03,70.24,TOL,Buy,Sell
+
+        25,Walmart ,01/03,144.65,WMT,Buy,Sell
+
+        26,Wynn Resorts ,01/03,87.77,WYNN,Sell,Buy
+
+        27,Zoom Video Communications ,01/03,184.26,ZM,Buy,Sell
+
+        28,Applied Materials ,01/04,158.36,AMAT,Buy,Sell
+
+        29,AMC Entertainment ,01/04,25.49,AMC,Sell,Buy
+
+        30,Advanced Micro Devices ,01/04,144.42,AMD,Buy,Sell
+
+        31,Apache ,01/04,29.46,APA,Buy,Sell
+
+        32,ASML Holdings ,01/04,779.19,ASML,Buy,Sell
+
+        33,Baidu.com ,01/04,146.53,BIDU,Sell,Buy
+
+        34,DataDog ,01/04,157.76,DDOG,Sell,Buy
+
+        35,Deere & Company ,01/04,371.29,DE,Buy,Sell
+
+        36,Ebix ,01/04,31.4,EBIX,Sell,Buy
+
+        37,Ford Motor ,01/04,24.31,F,Buy,Sell
+
+        38,GameStop ,01/04,148.91,GME,Sell,Buy
+
+        39,Icahn Enterprises ,01/04,52.64,IEP,Sell,Buy
+
+        40,JD.com ,01/04,64.2,JD,Sell,Buy
+
+        41,KLA Corp ,01/04,431.24,KLAC,Buy,Sell
+
+        42,Lucid Group ,01/04,39.41,LCID,Sell,Buy
+
+        43,Mosaic ,01/04,40.5,MOS,Buy,Sell
+
+        44,Marvell Technology ,01/04,88.37,MRVL,Buy,Sell
+
+        45,Okta ,01/04,215.01,OKTA,Sell,Buy
+
+        46,Oppenheimer ,01/04,46.76,OPY,Buy,Sell
+
+        47,Otter Tail ,01/04,68.36,OTTR,Buy,Sell
+
+        48,Peloton ,01/04,33.82,PTON,Sell,Buy
+
+        49,PayPal ,01/04,191.14,PYPL,Buy,Sell
+
+        50,Splunk ,01/04,115.8,SPLK,Sell,Buy
+
+        51,Teladoc ,01/04,91.47,TDOC,Sell,Buy
+
+        52,Atlassian ,01/04,334.99,TEAM,Sell,Buy
+
+        53,T-Mobile US ,01/04,114.06,TMUS,Buy,Sell
+
+        54,Vertex Pharmaceuticals ,01/04,221.86,VRTX,Buy,Sell
+
+        55,Qualtrics ,01/04,31.95,XM,Sell,Buy
+
+        56,Zoom Video Communications ,01/04,179.85,ZM,Buy,Sell
+
+        57,ZScaler ,01/04,281.58,ZS,Sell,Buy
+
+        58,Apple ,01/05,174.92,AAPL,Buy,Sell
+
+        59,AGCO ,01/05,121.86,AGCO,Buy,Sell
+
+        60,Amgen ,01/05,225.14,AMGN,Sell,Buy
+
+        61,Atai Life Sciences ,01/05,6.44,ATAI,Buy,Sell
+
+        62,Boeing ,01/05,213.07,BA,Sell,Buy
+
+        63,Bausch Health ,01/05,27.01,BHC,Buy,Sell
+
+        64,CNH Industrial ,01/05,16.44,CNHI,Buy,Sell
+
+        65,Salesforce ,01/05,227.67,CRM,Buy,Sell
+
+        66,Cisco Systems ,01/05,60.28,CSCO,Buy,Sell
+
+        67,CVS Health ,01/05,105.81,CVS,Buy,Sell
+
+        68,Deere & Company ,01/05,372.05,DE,Buy,Sell
+
+        69,Walt Disney ,01/05,155.19,DIS,Sell,Buy
+
+        70,Doximity ,01/05,49.13,DOCS,Buy,Sell
+
+        71,Enterprise Products Partn ,01/05,22.88,EPD,Buy,Sell
+
+        72,Goldman Sachs ,01/05,398.63,GS,Buy,Sell
+
+        73,Home Depot ,01/05,407.24,HD,Buy,Sell
+
+        74,Honeywell ,01/05,211.06,HON,Buy,Sell
+
+        75,Illumina ,01/05,367.88,ILMN,Buy,Sell
+
+        76,Mastercard ,01/05,373.9,MA,Buy,Sell
+
+        77,McDonald''s ,01/05,267.19,MCD,Buy,Sell
+
+        78,Morgan Stanley ,01/05,101.68,MS,Buy,Sell
+
+        79,Microsoft ,01/05,316.38,MSFT,Buy,Sell
+
+        80,NortonLifeLock ,01/05,26.2,NLOK,Buy,Sell
+
+        81,Nucor ,01/05,122.72,NUE,Buy,Sell
+
+        82,NVIDIA ,01/05,276.04,NVDA,Buy,Sell
+
+        83,Palo Alto Networks ,01/05,504.86,PANW,Buy,Sell
+
+        84,Riskified ,01/05,6.73,RSKD,Sell,Buy
+
+        85,SoFi Technologies ,01/05,14.1,SOFI,Sell,Buy
+
+        86,UnitedHealth Group ,01/05,489.69,UNH,Buy,Sell
+
+        87,Walgreens Boots Alliance ,01/05,54.0,WBA,Sell,Buy
+
+        88,Walmart ,01/05,143.92,WMT,Sell,Buy
+
+        89,Alteryx ,01/06,57.89,AYX,Sell,Buy
+
+        90,Bed Bath & Beyond ,01/06,14.43,BBBY,Buy,Sell
+
+        91,ConAgra Foods ,01/06,33.53,CAG,Buy,Sell
+
+        92,Guardant Health ,01/06,90.24,GH,Sell,Buy
+
+        93,Matterport ,01/06,16.3,MTTR,Sell,Buy
+
+        94,Paysafe ,01/06,3.82,PSFE,Buy,Sell
+
+        95,Scotts Miracle-Gro ,01/06,159.25,SMG,Buy,Sell
+
+        96,Constellation Brands ,01/06,244.79,STZ,Buy,Sell
+
+        97,The Trade Desk ,01/06,76.93,TTD,Sell,Buy
+
+        98,Vertiv ,01/06,23.4,VRT,Buy,Sell
+
+        99,Apple ,01/07,172.17,AAPL,Buy,Sell
+
+        100,Albertsons ,01/07,31.21,ACI,Buy,Sell
+
+        101,BlackRock ,01/07,892.27,BLK,Buy,Sell
+
+        102,Citigroup ,01/07,65.78,C,Buy,Sell
+
+        103,Cisco Systems ,01/07,61.13,CSCO,Buy,Sell
+
+        104,CVS Health ,01/07,104.19,CVS,Buy,Sell
+
+        105,Delta Air Lines ,01/07,41.51,DAL,Sell,Buy
+
+        106,Dell ,01/07,57.99,DELL,Buy,Sell
+
+        107,IBM ,01/07,134.83,IBM,Buy,Sell
+
+        108,JPMorgan Chase ,01/07,167.16,JPM,Buy,Sell
+
+        109,KB Home ,01/07,39.76,KBH,Buy,Sell
+
+        110,Microsoft ,01/07,314.04,MSFT,Buy,Sell
+
+        111,Oracle ,01/07,87.51,ORCL,Buy,Sell
+
+        112,Roblox ,01/07,84.37,RBLX,Buy,Sell
+
+        113,Wells Fargo ,01/07,54.77,WFC,Buy,Sell
+
+        114,WSFS Financial ,01/07,55.26,WSFS,Buy,Sell
+
+        115,Adobe Systems ,01/10,525.83,ADBE,Buy,Sell
+
+        116,DraftKings ,01/10,26.13,DKNG,Sell,Buy
+
+        117,Dexcom ,01/10,462.34,DXCM,Buy,Sell
+
+        118,Grab Holdings ,01/10,6.6,GRAB,Buy,Sell
+
+        119,International Paper ,01/10,48.57,IP,Sell,Buy
+
+        120,Nio ,01/10,28.91,NIO,Sell,Buy
+
+        121,Smart Global Holdings ,01/10,66.34,SGH,Sell,Buy
+
+        122,Uber ,01/10,42.6,UBER,Buy,Sell
+
+        123,Veru ,01/10,5.34,VERU,Buy,Sell
+
+        124,Wynn Resorts ,01/10,82.17,WYNN,Sell,Buy
+
+        125,Zynga ,01/10,8.44,ZNGA,Buy,Sell
+
+        126,Apple ,01/11,175.08,AAPL,Buy,Sell
+
+        127,Advanced Micro Devices ,01/11,137.31,AMD,Buy,Sell
+
+        128,Atkore International ,01/11,105.9,ATKR,Buy,Sell
+
+        129,Boeing ,01/11,216.02,BA,Buy,Sell
+
+        130,BioMarin ,01/11,88.99,BMRN,Buy,Sell
+
+        131,GrowGeneration ,01/11,11.47,GRWG,Sell,Buy
+
+        132,InMode ,01/11,54.95,INMD,Buy,Sell
+
+        133,Li-Cycle Holdings ,01/11,8.99,LICY,Sell,Buy
+
+        134,Netflix ,01/11,540.84,NFLX,Sell,Buy
+
+        135,NovoCure ,01/11,68.37,NVCR,Buy,Sell
+
+        136,NVIDIA ,01/11,278.17,NVDA,Buy,Sell
+
+        137,Rio Tinto ,01/11,74.42,RIO,Buy,Sell
+
+        138,Rivian ,01/11,83.55,RIVN,Sell,Buy
+
+        139,Star Bulk Carriers ,01/11,23.06,SBLK,Sell,Buy
+
+        140,Virgin Galactic ,01/11,12.39,SPCE,Sell,Buy
+
+        141,Zoetis ,01/11,212.8,ZTS,Buy,Sell
+
+        142,Alibaba ,01/12,137.41,BABA,Sell,Buy
+
+        143,Chargepoint ,01/12,15.99,CHPT,Sell,Buy
+
+        144,Devon Energy ,01/12,49.9,DVN,Buy,Sell
+
+        145,Prothena ,01/12,37.47,PRTA,Buy,Sell
+
+        146,QuantumScape ,01/12,20.94,QS,Sell,Buy
+
+        147,Rio Tinto ,01/12,76.07,RIO,Buy,Sell
+
+        148,Squarespace ,01/12,30.21,SQSP,Sell,Buy
+
+        149,Vale ,01/12,15.55,VALE,Sell,Buy
+
+        150,ViacomCBS ,01/12,34.97,VIAC,Buy,Sell
+
+        151,Airbnb ,01/18,154.69,ABNB,Buy,Sell
+
+        152,Boeing ,01/18,225.01,BA,Buy,Sell
+
+        153,Covetrus ,01/18,16.61,CVET,Buy,Sell
+
+        154,Goldman Sachs ,01/18,354.4,GS,Buy,Sell
+
+        155,Microsoft ,01/18,302.65,MSFT,Buy,Sell
+
+        156,Sports Entertainment Acqu ,01/18,9.98,SEAH,Buy,Sell
+
+        157,T-Mobile US ,01/18,106.91,TMUS,Buy,Sell
+
+        158,Unilever ,01/18,46.45,UL,Buy,Sell
+
+        159,Wheels Up ,01/18,4.05,UP,Sell,Buy
+
+        160,Veeva Systems ,01/18,218.27,VEEV,Sell,Buy
+
+        161,Bank of America ,01/19,46.44,BAC,Buy,Sell
+
+        162,Commercial Vehicle Group ,01/19,8.01,CVGI,Buy,Sell
+
+        163,Chevron ,01/19,128.91,CVX,Buy,Sell
+
+        164,DuPont ,01/19,81.58,DD,Sell,Buy
+
+        165,Devon Energy ,01/19,48.93,DVN,Buy,Sell
+
+        166,Diamondback Energy ,01/19,125.71,FANG,Buy,Sell
+
+        167,FREYR Battery ,01/19,9.7,FREY,Sell,Buy
+
+        168,Southwest Airlines ,01/19,44.43,LUV,Sell,Buy
+
+        169,Morgan Stanley ,01/19,95.73,MS,Buy,Sell
+
+        170,Procter & Gamble ,01/19,162.0,PG,Buy,Sell
+
+        171,Pioneer Natural Resources ,01/19,219.06,PXD,Buy,Sell
+
+        172,Spirit Airlines ,01/19,22.68,SAVE,Buy,Sell
+
+        173,SoFi Technologies ,01/19,13.71,SOFI,Buy,Sell
+
+        174,UnitedHealth Group ,01/19,462.52,UNH,Buy,Sell
+
+        175,Vector Group ,01/19,11.59,VGR,Sell,Buy
+
+        176,AMN Healthcare Services ,01/20,96.65,AMN,Buy,Sell
+
+        177,Bank of America ,01/20,45.75,BAC,Buy,Sell
+
+        178,Allbirds ,01/20,13.44,BIRD,Sell,Buy
+
+        179,Citigroup ,01/20,64.46,C,Sell,Buy
+
+        180,First Horizon National ,01/20,17.39,FHN,Buy,Sell
+
+        181,Goldman Sachs ,01/20,348.1,GS,Buy,Sell
+
+        182,JPMorgan Chase ,01/20,147.66,JPM,Buy,Sell
+
+        183,Lincoln Electric Holdings ,01/20,129.45,LECO,Buy,Sell
+
+        184,23andMe ,01/20,4.65,ME,Sell,Buy
+
+        185,Moderna ,01/20,167.52,MRNA,Sell,Buy
+
+        186,Morgan Stanley ,01/20,99.83,MS,Buy,Sell
+
+        187,NextEra Energy ,01/20,83.51,NEE,Buy,Sell
+
+        188,On Holding ,01/20,26.26,ONON,Sell,Buy
+
+        189,Pfizer ,01/20,54.05,PFE,Buy,Sell
+
+        190,ProLogis ,01/20,154.14,PLD,Buy,Sell
+
+        191,Sanofi ,01/20,52.09,SNY,Buy,Sell
+
+        192,Spero Therapeutics ,01/20,12.05,SPRO,Sell,Buy
+
+        193,Wells Fargo ,01/20,55.0,WFC,Buy,Sell
+
+        194,Apple ,01/21,162.41,AAPL,Buy,Sell
+
+        195,American Express ,01/21,158.74,AXP,Buy,Sell
+
+        196,Boeing ,01/21,205.44,BA,Sell,Buy
+
+        197,Carrier Global ,01/21,47.8,CARR,Buy,Sell
+
+        198,Caterpillar ,01/21,214.09,CAT,Sell,Buy
+
+        199,Chevron ,01/21,126.91,CVX,Buy,Sell
+
+        200,Cyxtera Technologies ,01/21,10.86,CYXT,Sell,Buy
+
+        201,Digital Realty Trust ,01/21,154.95,DLR,Buy,Sell
+
+        202,GoodRX ,01/21,23.51,GDRX,Sell,Buy
+
+        203,General Electric ,01/21,96.3,GE,Buy,Sell
+
+        204,GrowGeneration ,01/21,7.75,GRWG,Sell,Buy
+
+        205,Halliburton ,01/21,27.54,HAL,Buy,Sell
+
+        206,Huntington Bancshares ,01/21,15.18,HBAN,Buy,Sell
+
+        207,H&R Block ,01/21,21.44,HRB,Sell,Buy
+
+        208,IBM ,01/21,129.35,IBM,Sell,Buy
+
+        209,InMode ,01/21,43.01,INMD,Buy,Sell
+
+        210,Johnson & Johnson ,01/21,164.87,JNJ,Buy,Sell
+
+        211,McDonald''s ,01/21,254.59,MCD,Buy,Sell
+
+        212,Microsoft ,01/21,296.03,MSFT,Buy,Sell
+
+        213,Nautilus Biotechnology ,01/21,3.97,NAUT,Sell,Buy
+
+        214,AT&T ,01/21,26.61,T,Buy,Sell
+
+        215,Tesla ,01/21,943.9,TSLA,Buy,Sell
+
+        216,Airbnb ,01/24,147.9,ABNB,Buy,Sell
+
+        217,Adobe Systems ,01/24,519.66,ADBE,Buy,Sell
+
+        218,ADT ,01/24,7.3,ADT,Sell,Buy
+
+        219,Dutch Bros ,01/24,45.51,BROS,Buy,Sell
+
+        220,Crocs ,01/24,106.13,CROX,Buy,Sell
+
+        221,DoorDash ,01/24,117.35,DASH,Buy,Sell
+
+        222,DigitalOcean ,01/24,55.66,DOCN,Sell,Buy
+
+        223,Enphase Energy ,01/24,128.1,ENPH,Buy,Sell
+
+        224,EQRx ,01/24,4.61,EQRX,Buy,Sell
+
+        225,Etsy ,01/24,154.06,ETSY,Buy,Sell
+
+        226,Cue Health ,01/24,8.11,HLTH,Sell,Buy
+
+        227,JPMorgan Chase ,01/24,144.95,JPM,Sell,Buy
+
+        228,Kohl''s ,01/24,63.71,KSS,Buy,Sell
+
+        229,Netflix ,01/24,387.15,NFLX,Sell,Buy
+
+        230,ServiceNow ,01/24,525.84,NOW,Buy,Sell
+
+        231,Occidental Petroleum ,01/24,34.01,OXY,Sell,Buy
+
+        232,Palo Alto Networks ,01/24,504.21,PANW,Buy,Sell
+
+        233,Palo Alto Networks ,01/24,504.21,PANW,Buy,Sell
+
+        234,PayPal ,01/24,162.17,PYPL,Buy,Sell
+
+        235,Upstart ,01/24,91.36,UPST,Buy,Sell
+
+        236,AEO ,01/25,23.65,AEO,Buy,Sell
+
+        237,AGNC Investment ,01/25,15.0,AGNC,Sell,Buy
+
+        238,AMC Entertainment ,01/25,16.02,AMC,Sell,Buy
+
+        239,Digital Turbine ,01/25,39.58,APPS,Sell,Buy
+
+        240,American Express ,01/25,173.11,AXP,Buy,Sell
+
+        241,Cleveland-Cliffs ,01/25,16.85,CLF,Buy,Sell
+
+        242,CSX ,01/25,33.72,CSX,Sell,Buy
+
+        243,General Electric ,01/25,91.11,GE,Sell,Buy
+
+        244,GameStop ,01/25,99.79,GME,Sell,Buy
+
+        245,IBM ,01/25,136.1,IBM,Buy,Sell
+
+        246,Johnson & Johnson ,01/25,167.63,JNJ,Buy,Sell
+
+        247,JPMorgan Chase ,01/25,146.53,JPM,Sell,Buy
+
+        248,Logitech International ,01/25,77.78,LOGI,Buy,Sell
+
+        249,Netflix ,01/25,366.42,NFLX,Sell,Buy
+
+        250,Raytheon Technologies ,01/25,90.31,RTX,Buy,Sell
+
+        251,Schrodinger ,01/25,27.59,SDGR,Sell,Buy
+
+        252,Union Pacific ,01/25,244.12,UNP,Buy,Sell
+
+        253,Verizon ,01/25,52.9,VZ,Buy,Sell
+
+        254,Weber ,01/25,10.56,WEBR,Buy,Sell
+
+        255,ArcBest ,01/26,86.61,ARCB,Sell,Buy
+
+        256,American Express ,01/26,175.32,AXP,Buy,Sell
+
+        257,Boeing ,01/26,194.27,BA,Sell,Buy
+
+        258,Bed Bath & Beyond ,01/26,14.15,BBBY,Buy,Sell
+
+        259,Callon Petroleum ,01/26,51.15,CPE,Buy,Sell
+
+        260,Cerence ,01/26,59.24,CRNC,Buy,Sell
+
+        261,Torrid ,01/26,8.31,CURV,Buy,Sell
+
+        262,Dell ,01/26,55.34,DELL,Buy,Sell
+
+        263,Enphase Energy ,01/26,121.75,ENPH,Buy,Sell
+
+        264,Etsy ,01/26,141.3,ETSY,Buy,Sell
+
+        265,F5 Networks ,01/26,202.49,FFIV,Sell,Buy
+
+        266,General Electric ,01/26,89.32,GE,Sell,Buy
+
+        267,HP ,01/26,35.23,HPQ,Buy,Sell
+
+        268,IBM ,01/26,134.26,IBM,Buy,Sell
+
+        269,Jazz Pharmaceuticals ,01/26,133.02,JAZZ,Sell,Buy
+
+        270,Johnson & Johnson ,01/26,168.38,JNJ,Buy,Sell
+
+        271,JPMorgan Chase ,01/26,147.92,JPM,Sell,Buy
+
+        272,3M ,01/26,169.3,MMM,Buy,Sell
+
+        273,Microsoft ,01/26,296.71,MSFT,Buy,Sell
+
+        274,Netflix ,01/26,359.7,NFLX,Sell,Buy
+
+        275,Ollie''s Bargain Outlet ,01/26,44.33,OLLI,Buy,Sell
+
+        276,Pinterest ,01/26,26.74,PINS,Buy,Sell
+
+        277,Roblox ,01/26,63.02,RBLX,Buy,Sell
+
+        278,Revolve Group ,01/26,43.69,RVLV,Buy,Sell
+
+        279,Twitter ,01/26,33.62,TWTR,Buy,Sell
+
+        280,Ulta Beauty ,01/26,353.81,ULTA,Buy,Sell
+
+        281,Union Pacific ,01/26,244.88,UNP,Buy,Sell
+
+        282,Upstart ,01/26,96.05,UPST,Buy,Sell
+
+        283,Verizon ,01/26,51.02,VZ,Buy,Sell
+
+        284,Wells Fargo ,01/26,54.14,WFC,Buy,Sell
+
+        285,Qualtrics ,01/26,24.25,XM,Buy,Sell
+
+        286,Zynga ,01/26,8.66,ZNGA,Sell,Buy
+
+        287,Apple ,01/27,159.22,AAPL,Buy,Sell
+
+        288,AbbVie ,01/27,135.97,ABBV,Buy,Sell
+
+        289,Advanced Micro Devices ,01/27,102.6,AMD,Buy,Sell
+
+        290,Canopy Growth ,01/27,6.85,CGC,Sell,Buy
+
+        291,Traeger ,01/27,8.8,COOK,Buy,Sell
+
+        292,Cerence ,01/27,58.95,CRNC,Buy,Sell
+
+        293,Dole Foods ,01/27,13.0,DOLE,Buy,Sell
+
+        294,Endeavor Group ,01/27,29.63,EDR,Buy,Sell
+
+        295,F45 Training ,01/27,11.49,FXLV,Buy,Sell
+
+        296,Holley ,01/27,11.06,HLLY,Buy,Sell
+
+        297,Intel ,01/27,48.05,INTC,Sell,Buy
+
+        298,Open Lending ,01/27,16.63,LPRO,Buy,Sell
+
+        299,Maxar Technologies ,01/27,24.55,MAXR,Buy,Sell
+
+        300,McCormick ,01/27,98.2,MKC,Buy,Sell
+
+        301,Nucor ,01/27,96.74,NUE,Buy,Sell
+
+        302,NVIDIA ,01/27,219.44,NVDA,Buy,Sell
+
+        303,Perella Weinberg Partners ,01/27,9.57,PWP,Buy,Sell
+
+        304,The Trade Desk ,01/27,60.17,TTD,Sell,Buy
+
+        305,Vista Outdoor ,01/27,36.41,VSTO,Buy,Sell
+
+        306,WW International ,01/27,12.04,WW,Sell,Buy
+
+        307,XPO Fitness ,01/27,15.9,XPOF,Buy,Sell
+
+        308,Apple ,01/28,170.33,AAPL,Buy,Sell
+
+        309,AbbVie ,01/28,137.92,ABBV,Buy,Sell
+
+        310,Advanced Micro Devices ,01/28,105.24,AMD,Buy,Sell
+
+        311,Asana ,01/28,48.0,ASAN,Sell,Buy
+
+        312,Bristol-Myers Squibb ,01/28,64.91,BMY,Buy,Sell
+
+        313,Boot Barn ,01/28,85.69,BOOT,Buy,Sell
+
+        314,Ford Motor ,01/28,19.54,F,Buy,Sell
+
+        315,Meta ,01/28,301.71,FB,Buy,Sell
+
+        316,Greenbrier Companies ,01/28,38.8,GBX,Buy,Sell
+
+        317,General Motors ,01/28,50.24,GM,Buy,Sell
+
+        318,Hillenbrand ,01/28,45.78,HI,Buy,Sell
+
+        319,Honeywell ,01/28,201.99,HON,Buy,Sell
+
+        320,Robinhood ,01/28,12.73,HOOD,Sell,Buy
+
+        321,Herc Holdings ,01/28,154.5,HRI,Buy,Sell
+
+        322,Eli Lilly ,01/28,245.1,LLY,Buy,Sell
+
+        323,Nucor ,01/28,99.79,NUE,Buy,Sell
+
+        324,NXP Semiconductors ,01/28,189.45,NXPI,Buy,Sell
+
+        325,Otis Worldwide ,01/28,82.77,OTIS,Buy,Sell
+
+        326,PayPal ,01/28,163.52,PYPL,Buy,Sell
+
+        327,Regeneron Pharmaceuticals ,01/28,624.92,REGN,Buy,Sell
+
+        328,Rockwell Automation ,01/28,284.6,ROK,Buy,Sell
+
+        329,Starbucks ,01/28,97.21,SBUX,Buy,Sell
+
+        330,ThredUp ,01/28,8.28,TDUP,Sell,Buy
+
+        331,United Rentals ,01/28,317.77,URI,Buy,Sell
+
+        332,Exxon Mobil ,01/28,75.28,XOM,Buy,Sell
+
+        333,Apple ,01/31,174.78,AAPL,Buy,Sell
+
+        334,Boeing ,01/31,200.24,BA,Sell,Buy
+
+        335,Caterpillar ,01/31,201.56,CAT,Sell,Buy
+
+        336,Cullen Frost Bankers ,01/31,141.01,CFR,Buy,Sell
+
+        337,Chevron ,01/31,131.33,CVX,Sell,Buy
+
+        338,Dover ,01/31,169.91,DOV,Buy,Sell
+
+        339,General Electric ,01/31,94.48,GE,Sell,Buy
+
+        340,Mastercard ,01/31,386.38,MA,Buy,Sell
+
+        341,3M ,01/31,166.02,MMM,Sell,Buy
+
+        342,Norwegian Cruise Line ,01/31,20.83,NCLH,Sell,Buy
+
+        343,Netflix ,01/31,427.14,NFLX,Buy,Sell
+
+        344,ServiceNow ,01/31,585.78,NOW,Buy,Sell
+
+        345,Perficient ,01/31,104.82,PRFT,Sell,Buy
+
+        346,Silvergate Capital ,01/31,107.74,SI,Buy,Sell
+
+        347,Willis Towers Watson ,01/31,233.96,WTW,Buy,Sell
+
+        348,Applied Materials ,02/01,138.61,AMAT,Buy,Sell
+
+        349,Brunswick ,02/01,91.96,BC,Buy,Sell
+
+        350,Coinbase Global ,02/01,197.73,COIN,Sell,Buy
+
+        351,Camping World ,02/01,34.38,CWH,Buy,Sell
+
+        352,DraftKings ,02/01,23.68,DKNG,Buy,Sell
+
+        353,Edwards Lifesciences ,02/01,108.37,EW,Buy,Sell
+
+        354,Exact Sciences ,02/01,77.4,EXAS,Buy,Sell
+
+        355,Ford Motor ,02/01,20.66,F,Buy,Sell
+
+        356,Golar LNG ,02/01,14.95,GLNG,Buy,Sell
+
+        357,Corning ,02/01,42.17,GLW,Buy,Sell
+
+        358,Robinhood ,02/01,14.65,HOOD,Buy,Sell
+
+        359,Iron Mountain ,02/01,46.12,IRM,Buy,Sell
+
+        360,Intuitive Surgical ,02/01,286.51,ISRG,Buy,Sell
+
+        361,Intellia Therapeutics ,02/01,99.8,NTLA,Buy,Sell
+
+        362,Planet Labs ,02/01,6.41,PL,Sell,Buy
+
+        363,Roku ,02/01,166.26,ROKU,Buy,Sell
+
+        364,Spotify ,02/01,203.62,SPOT,Buy,Sell
+
+        365,Stryker ,02/01,248.6,SYK,Buy,Sell
+
+        366,Teladoc ,02/01,80.34,TDOC,Buy,Sell
+
+        367,Tesla ,02/01,931.25,TSLA,Buy,Sell
+
+        368,Twilio ,02/01,210.57,TWLO,Buy,Sell
+
+        369,Unity Software ,02/01,107.8,U,Buy,Sell
+
+        370,United Parcel Service ,02/01,230.69,UPS,Buy,Sell
+
+        371,Wells Fargo ,02/01,55.6,WFC,Buy,Sell
+
+        372,Zoom Video Communications ,02/01,155.68,ZM,Buy,Sell
+
+        373,Boxed ,02/02,9.41,BOXD,Sell,Buy
+
+        374,Coterra Energy ,02/02,22.92,CTRA,Buy,Sell
+
+        375,Graphic Packaging Holding ,02/02,18.85,GPK,Buy,Sell
+
+        376,PayPal ,02/02,132.57,PYPL,Sell,Buy
+
+        377,Starbucks ,02/02,97.73,SBUX,Buy,Sell
+
+        378,Thermo Fisher Scientific ,02/02,604.13,TMO,Buy,Sell
+
+        379,Waste Management ,02/02,148.12,WM,Buy,Sell
+
+        380,Apple ,02/03,172.9,AAPL,Buy,Sell
+
+        381,Align Technology ,02/03,503.31,ALGN,Buy,Sell
+
+        382,Boeing ,02/03,206.39,BA,Buy,Sell
+
+        383,Estee Lauder ,02/03,303.12,EL,Buy,Sell
+
+        384,e.l.f. Beauty ,02/03,28.52,ELF,Buy,Sell
+
+        385,Meta ,02/03,237.76,FB,Sell,Buy
+
+        386,Honeywell ,02/03,191.74,HON,Buy,Sell
+
+        387,Nextdoor Holdings ,02/03,4.98,KIND,Buy,Sell
+
+        388,Qualcomm ,02/03,179.1,QCOM,Buy,Sell
+
+        389,Rocket Companies ,02/03,11.83,RKT,Sell,Buy
+
+        390,Rattler Midstream LP ,02/03,12.49,RTLR,Buy,Sell
+
+        391,Berkshire Hathaway (BRK.B),02/04,314.99,B,Buy,Sell
+
+        392,Cleveland-Cliffs ,02/04,18.87,CLF,Buy,Sell
+
+        393,Centene ,02/04,80.57,CNC,Buy,Sell
+
+        394,Columbia Sportswear ,02/04,94.59,COLM,Buy,Sell
+
+        395,CVS Health ,02/04,108.49,CVS,Buy,Sell
+
+        396,DuPont ,02/04,76.06,DD,Sell,Buy
+
+        397,Walt Disney ,02/04,142.02,DIS,Buy,Sell
+
+        398,Gilead Sciences ,02/04,63.9,GILD,Sell,Buy
+
+        399,General Motors ,02/04,51.29,GM,Buy,Sell
+
+        400,Goodyear Tire & Rubber ,02/04,21.03,GT,Buy,Sell
+
+        401,Coca-Cola ,02/04,60.96,KO,Buy,Sell
+
+        402,Mattel ,02/04,21.28,MAT,Buy,Sell
+
+        403,Cloudflare ,02/04,103.19,NET,Sell,Buy
+
+        404,ServiceNow ,02/04,577.52,NOW,Buy,Sell
+
+        405,Pepsico ,02/04,172.49,PEP,Buy,Sell
+
+        406,Pfizer ,02/04,53.0,PFE,Buy,Sell
+
+        407,Rivian ,02/04,60.87,RIVN,Sell,Buy
+
+        408,Simon Property Group ,02/04,145.18,SPG,Buy,Sell
+
+        409,AT&T ,02/04,24.08,T,Sell,Buy
+
+        410,Thermo Fisher Scientific ,02/04,594.42,TMO,Buy,Sell
+
+        411,Tyson Foods ,02/04,88.29,TSN,Sell,Buy
+
+        412,Take-Two Interactive ,02/04,175.0,TTWO,Buy,Sell
+
+        413,Twitter ,02/04,36.94,TWTR,Sell,Buy
+
+        414,Under Armour ,02/04,16.43,UA,Buy,Sell
+
+        415,United Continental ,02/04,42.82,UAL,Sell,Buy
+
+        416,Verizon ,02/04,53.31,VZ,Buy,Sell
+
+        417,Waters Corp ,02/04,325.91,WAT,Buy,Sell
+
+        418,Zendesk ,02/04,97.68,ZEN,Sell,Buy
+
+        419,American Airlines ,02/22,17.43,AAL,Sell,Buy
+
+        420,AbbVie ,02/22,145.56,ABBV,Buy,Sell
+
+        421,Carrier Global ,02/22,45.29,CARR,Buy,Sell
+
+        422,CRISPR Therapeutics ,02/22,55.66,CRSP,Sell,Buy
+
+        423,Cisco Systems ,02/22,56.3,CSCO,Buy,Sell
+
+        424,Mattel ,02/22,24.15,MAT,Buy,Sell
+
+        425,Palo Alto Networks ,02/22,475.51,PANW,Buy,Sell
+
+        426,Sirius XM Radio ,02/22,6.02,SIRI,Buy,Sell
+
+        427,Uber ,02/22,33.68,UBER,Sell,Buy
+
+        428,Walmart ,02/22,136.45,WMT,Buy,Sell
+
+        429,Crestwood Equity Partners ,02/23,28.73,CEQP,Buy,Sell
+
+        430,Energy Transfer ,02/23,9.78,ET,Buy,Sell
+
+        431,Goldman Sachs ,02/23,341.19,GS,Buy,Sell
+
+        432,Home Depot ,02/23,308.45,HD,Sell,Buy
+
+        433,Lowe''s ,02/23,215.09,LOW,Buy,Sell
+
+        434,Lumen Technologies ,02/23,9.62,LUMN,Sell,Buy
+
+        435,Palo Alto Networks ,02/23,477.61,PANW,Buy,Sell
+
+        436,Peloton ,02/23,27.0,PTON,Buy,Sell
+
+        437,SentinelOne ,02/23,34.09,S,Sell,Buy
+
+        438,Southern Copper ,02/23,66.25,SCCO,Buy,Sell
+
+        439,Molson Coors ,02/23,50.81,TAP,Buy,Sell
+
+        440,Vertiv ,02/23,12.38,VRT,Sell,Buy
+
+        441,Autodesk ,02/24,218.18,ADSK,Sell,Buy
+
+        442,American Electric Power ,02/24,86.56,AEP,Buy,Sell
+
+        443,AMC Entertainment ,02/24,17.68,AMC,Sell,Buy
+
+        444,BHP Billiton ,02/24,63.5,BHP,Buy,Sell
+
+        445,CrowdStrike ,02/24,182.88,CRWD,Buy,Sell
+
+        446,FS KKR Capital ,02/24,21.15,FSK,Sell,Buy
+
+        447,GameStop ,02/24,124.58,GME,Sell,Buy
+
+        448,Linde ,02/24,285.25,LIN,Buy,Sell
+
+        449,Revolve Group ,02/24,51.73,RVLV,Buy,Sell
+
+        450,Switch ,02/24,24.18,SWCH,Buy,Sell
+
+        451,Airbnb ,02/25,155.09,ABNB,Buy,Sell
+
+        452,Best Buy ,02/25,95.83,BBY,Sell,Buy
+
+        453,Ciena ,02/25,68.7,CIEN,Sell,Buy
+
+        454,Costco ,02/25,517.49,COST,Buy,Sell
+
+        455,Salesforce ,02/25,208.09,CRM,Buy,Sell
+
+        456,Cisco Systems ,02/25,56.04,CSCO,Buy,Sell
+
+        457,DoorDash ,02/25,100.34,DASH,Buy,Sell
+
+        458,Dell ,02/25,51.46,DELL,Sell,Buy
+
+        459,Domino''s Pizza ,02/25,429.98,DPZ,Buy,Sell
+
+        460,Devon Energy ,02/25,55.2,DVN,Buy,Sell
+
+        461,Etsy ,02/25,148.94,ETSY,Buy,Sell
+
+        462,Cedar Fair ,02/25,57.07,FUN,Buy,Sell
+
+        463,Barrick Gold ,02/25,22.56,GOLD,Buy,Sell
+
+        464,HP ,02/25,34.45,HPQ,Sell,Buy
+
+        465,Hertz Global Holdings ,02/25,20.81,HTZ,Buy,Sell
+
+        466,Kohl''s ,02/25,56.88,KSS,Sell,Buy
+
+        467,MP Materials ,02/25,46.85,MP,Buy,Sell
+
+        468,Okta ,02/25,177.37,OKTA,Sell,Buy
+
+        469,Peloton ,02/25,28.19,PTON,Buy,Sell
+
+        470,Roblox ,02/25,50.05,RBLX,Buy,Sell
+
+        471,Snowflake ,02/25,269.42,SNOW,Buy,Sell
+
+        472,Block ,02/25,119.82,SQ,Buy,Sell
+
+        473,Target ,02/25,199.22,TGT,Buy,Sell
+
+        474,Workday ,02/25,225.23,WDAY,Sell,Buy
+
+        475,Zoom Video Communications ,02/25,125.32,ZM,Sell,Buy
+
+        476,Clean Energy Fuels ,02/28,7.27,CLNE,Buy,Sell
+
+        477,Doximity ,02/28,61.35,DOCS,Sell,Buy
+
+        478,Enbridge ,02/28,43.18,ENB,Buy,Sell
+
+        479,Equitrans Midstream ,02/28,6.41,ETRN,Sell,Buy
+
+        480,HP ,02/28,34.36,HPQ,Buy,Sell
+
+        481,Lazard ,02/28,34.58,LAZ,Buy,Sell
+
+        482,Oceaneering International ,02/28,14.64,OII,Buy,Sell
+
+        483,AT&T ,02/28,23.69,T,Sell,Buy
+
+        484,Tellurian ,02/28,3.81,TELL,Buy,Sell
+
+        485,Workday ,02/28,229.05,WDAY,Buy,Sell
+
+        486,Academy Sports and Outdoo ,03/01,30.65,ASO,Buy,Sell
+
+        487,Salesforce ,03/01,208.89,CRM,Buy,Sell
+
+        488,Coterra Energy ,03/01,24.36,CTRA,Buy,Sell
+
+        489,Domino''s Pizza ,03/01,432.21,DPZ,Buy,Sell
+
+        490,Nio ,03/01,21.87,NIO,Sell,Buy
+
+        491,Origin Materials ,03/01,5.51,ORGN,Sell,Buy
+
+        492,Rent-A-Center ,03/01,27.08,RCII,Sell,Buy
+
+        493,B. Riley Financial ,03/01,59.07,RILY,Sell,Buy
+
+        494,Stem ,03/01,9.33,STEM,Sell,Buy
+
+        495,AEO ,03/02,21.33,AEO,Buy,Sell
+
+        496,Cemig ,03/02,2.61,CIG,Buy,Sell
+
+        497,DigitalBridge ,03/02,7.4,DBRG,Sell,Buy
+
+        498,Dow ,03/02,59.2,DOW,Buy,Sell
+
+        499,Ford Motor ,03/02,18.1,F,Buy,Sell
+
+        500,Foot Locker ,03/02,30.98,FL,Sell,Buy
+
+        501,Innovative Industrial Pro ,03/02,190.26,IIPR,Buy,Sell
+
+        502,International Paper ,03/02,42.01,IP,Buy,Sell
+
+        503,Nordstrom ,03/02,26.93,JWN,Buy,Sell
+
+        504,Kontoor Brands ,03/02,48.03,KTB,Buy,Sell
+
+        505,Masimo ,03/02,153.63,MASI,Buy,Sell
+
+        506,Morgan Stanley ,03/02,88.38,MS,Buy,Sell
+
+        507,Norwegian Cruise Line ,03/02,19.06,NCLH,Buy,Sell
+
+        508,Newell Brands ,03/02,23.68,NWL,Buy,Sell
+
+        509,Okta ,03/02,182.7,OKTA,Buy,Sell
+
+        510,Pfizer ,03/02,47.7,PFE,Buy,Sell
+
+        511,Snowflake ,03/02,264.69,SNOW,Buy,Sell
+
+        512,Simon Property Group ,03/02,138.77,SPG,Buy,Sell
+
+        513,Tesla ,03/02,879.89,TSLA,Sell,Buy
+
+        514,Darling International ,03/03,78.17,DAR,Buy,Sell
+
+        515,Desktop Metal ,03/03,3.84,DM,Sell,Buy
+
+        516,Dow ,03/03,59.67,DOW,Buy,Sell
+
+        517,Floor & Decor ,03/03,95.23,FND,Sell,Buy
+
+        518,Canada Goose ,03/03,25.31,GOOS,Sell,Buy
+
+        519,HP ,03/03,36.62,HPQ,Buy,Sell
+
+        520,Innovative Industrial Pro ,03/03,187.48,IIPR,Buy,Sell
+
+        521,Lowe''s ,03/03,226.28,LOW,Buy,Sell
+
+        522,Magellan Midstream Partne ,03/03,49.02,MMP,Buy,Sell
+
+        523,Okta ,03/03,167.98,OKTA,Sell,Buy
+
+        524,Procter & Gamble ,03/03,154.36,PG,Buy,Sell
+
+        525,Rio Tinto ,03/03,84.0,RIO,Buy,Sell
+
+        526,Snowflake ,03/03,224.02,SNOW,Sell,Buy
+
+        527,Block ,03/03,114.22,SQ,Buy,Sell
+
+        528,Tilray ,03/03,5.42,TLRY,Sell,Buy
+
+        529,Valvoline ,03/03,31.81,VVV,Buy,Sell
+
+        530,Verizon ,03/03,54.66,VZ,Buy,Sell
+
+        531,Allbirds ,03/04,6.33,BIRD,Sell,Buy
+
+        532,Bumble ,03/04,18.08,BMBL,Sell,Buy
+
+        533,Campbell Soup ,03/04,45.55,CPB,Buy,Sell
+
+        534,Dicks Sporting Goods ,03/04,109.71,DKS,Buy,Sell
+
+        535,DocuSign ,03/04,101.38,DOCU,Sell,Buy
+
+        536,Devon Energy ,03/04,59.57,DVN,Buy,Sell
+
+        537,eBay ,03/04,55.66,EBAY,Sell,Buy
+
+        538,Freeport-McMoRan ,03/04,50.11,FCX,Buy,Sell
+
+        539,Kohl''s ,03/04,58.77,KSS,Buy,Sell
+
+        540,Macy''s ,03/04,24.8,M,Buy,Sell
+
+        541,MongoDB ,03/04,306.11,MDB,Sell,Buy
+
+        542,On Holding ,03/04,21.97,ONON,Sell,Buy
+
+        543,Progress Software ,03/04,44.28,PRGS,Sell,Buy
+
+        544,The RealReal ,03/04,7.39,REAL,Sell,Buy
+
+        545,Rivian ,03/04,47.39,RIVN,Sell,Buy
+
+        546,Stitch Fix ,03/04,11.17,SFIX,Sell,Buy
+
+        547,Virgin Galactic ,03/04,7.84,SPCE,Sell,Buy
+
+        548,Splunk ,03/04,129.06,SPLK,Buy,Sell
+
+        549,AT&T ,03/04,23.87,T,Sell,Buy
+
+        550,Trex ,03/04,74.68,TREX,Sell,Buy
+
+        551,Hostess Brands ,03/04,22.22,TWNK,Buy,Sell
+
+        552,Ulta Beauty ,03/04,366.76,ULTA,Buy,Sell
+
+        553,Wheels Up ,03/04,3.13,UP,Buy,Sell
+
+        '
+    headers:
+      Accept-Ranges:
+      - bytes
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - max-age=300
+      Connection:
+      - close
+      Content-Length:
+      - '23688'
+      Content-Security-Policy:
+      - default-src 'none'; style-src 'unsafe-inline'; sandbox
+      Content-Type:
+      - text/plain; charset=utf-8
+      Date:
+      - Wed, 09 Mar 2022 17:31:49 GMT
+      ETag:
+      - '"0fe60587f4979a39e90fd01fd5e058496fca89e137db8d36e126b9846a6517de"'
+      Expires:
+      - Wed, 09 Mar 2022 17:36:49 GMT
+      Source-Age:
+      - '78'
+      Strict-Transport-Security:
+      - max-age=31536000
+      Vary:
+      - Authorization,Accept-Encoding,Origin
+      Via:
+      - 1.1 varnish
+      X-Cache:
+      - HIT
+      X-Cache-Hits:
+      - '1'
+      X-Content-Type-Options:
+      - nosniff
+      X-Fastly-Request-ID:
+      - a1324c24ea22405364f4d44d52d64d5ceaa07e20
+      X-Frame-Options:
+      - deny
+      X-GitHub-Request-Id:
+      - 4C92:3B73:ADD968:F0A6A1:6228DD62
+      X-Served-By:
+      - cache-iad-kjyo7100035-IAD
+      X-Timer:
+      - S1646847109.231301,VS0,VE1
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

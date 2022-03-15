@@ -2,17 +2,17 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Dict, List, Tuple, Optional
+from typing import Dict, List
 
 import numpy as np
 import pandas as pd
 import requests
 from alpha_vantage.fundamentaldata import FundamentalData
-
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import lambda_long_number_format
 from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.stocks.stocks_helper import clean_fraction
 from gamestonk_terminal.stocks.fundamental_analysis.fa_helper import clean_df_index
 
 logger = logging.getLogger(__name__)
@@ -369,7 +369,9 @@ def get_earnings(ticker: str, quarterly: bool = False) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def df_values(df: pd.DataFrame, item: str) -> List[int]:
+def df_values(
+    df: pd.DataFrame, item: str, index: int = 0, length: int = 2
+) -> List[int]:
     """Clean the values from the df
 
     Parameters
@@ -378,21 +380,27 @@ def df_values(df: pd.DataFrame, item: str) -> List[int]:
         The Dataframe to use
     item : str
         The item to select
+    index : int
+        The number of row to display
+    length : int
+        The number of rows to return
 
     Returns
     -------
     values : List[int]
         The values for the dataframe
     """
+    if index:
+        df = df.iloc[index : index + length]
     selection = df[item]
-    values = selection.apply(lambda x: int(x) if x else 0).values
+    values = selection.apply(
+        lambda x: "N/A" if (not x or x == "None") else int(x)
+    ).values
     return values.tolist()
 
 
 @log_start_end(log=logger)
-def get_fraud_ratios(
-    ticker: str,
-) -> Tuple[Optional[Dict[str, float]], Optional[float], Optional[float]]:
+def get_fraud_ratios(ticker: str) -> pd.DataFrame:
     """Get fraud ratios based on fundamentals
 
     Parameters
@@ -402,10 +410,8 @@ def get_fraud_ratios(
 
     Returns
     -------
-    Dict[float]:
-        Dictionary of fraud metrics
-    float:
-        Z score for fraud metrics
+    metrics : pd.DataFrame
+        The fraud ratios
     """
 
     try:
@@ -417,67 +423,129 @@ def get_fraud_ratios(
 
     except Exception as e:
         console.print(e)
-        return None, None, None
+        return pd.DataFrame()
 
     # pylint: disable=no-member
-    df_cf = df_cf.set_index("fiscalDateEnding").iloc[:2]
-    df_bs = df_bs.set_index("fiscalDateEnding").iloc[:2]
-    df_is = df_is.set_index("fiscalDateEnding").iloc[:2]
+    df_cf = df_cf.set_index("fiscalDateEnding")
+    df_bs = df_bs.set_index("fiscalDateEnding")
+    df_is = df_is.set_index("fiscalDateEnding")
+    fraud_years = pd.DataFrame()
+    for i in range(len(df_cf) - 1):
+        ar = df_values(df_bs, "currentNetReceivables", i)
+        sales = df_values(df_is, "totalRevenue", i)
+        cogs = df_values(df_is, "costofGoodsAndServicesSold", i)
+        ni = df_values(df_is, "netIncome", i)
+        ca = df_values(df_bs, "totalCurrentAssets", i)
+        cl = df_values(df_bs, "totalCurrentLiabilities", i)
+        ppe = df_values(df_bs, "propertyPlantEquipment", i)
+        cash = df_values(df_bs, "cashAndCashEquivalentsAtCarryingValue", i)
+        cash_and_sec = df_values(df_bs, "cashAndShortTermInvestments", i)
+        sec = [y - x for (x, y) in zip(cash, cash_and_sec)]
+        ta = df_values(df_bs, "totalAssets", i)
+        dep = df_values(df_bs, "accumulatedDepreciationAmortizationPPE", i)
+        sga = df_values(df_is, "sellingGeneralAndAdministrative", i)
+        tl = df_values(df_bs, "totalLiabilities", i)
+        icfo = df_values(df_is, "netIncomeFromContinuingOperations", i)
+        cfo = df_values(df_cf, "operatingCashflow", i)
 
-    ar = df_values(df_bs, "currentNetReceivables")
-    sales = df_values(df_is, "totalRevenue")
-    cogs = df_values(df_is, "costofGoodsAndServicesSold")
-    ni = df_values(df_is, "netIncome")
-    ca = df_values(df_bs, "totalCurrentAssets")
-    cl = df_values(df_bs, "totalCurrentLiabilities")
-    ppe = df_values(df_bs, "propertyPlantEquipment")
-    cash = df_values(df_bs, "cashAndCashEquivalentsAtCarryingValue")
-    cash_and_sec = df_values(df_bs, "cashAndShortTermInvestments")
-    sec = [y - x for (x, y) in zip(cash, cash_and_sec)]
-    ta = df_values(df_bs, "totalAssets")
-    dep = df_values(df_bs, "accumulatedDepreciationAmortizationPPE")
-    sga = df_values(df_is, "sellingGeneralAndAdministrative")
-    tl = df_values(df_bs, "totalLiabilities")
-    icfo = df_values(df_is, "netIncomeFromContinuingOperations")
-    cfo = df_values(df_cf, "operatingCashflow")
+        ratios: Dict = {}
+        ratios["DSRI"] = (ar[0] / sales[0]) / (ar[1] / sales[1])
+        ratios["GMI"] = ((sales[1] - cogs[1]) / sales[1]) / (
+            (sales[0] - cogs[0]) / sales[0]
+        )
+        ratios["AQI"] = (1 - ((ca[0] + ppe[0] + sec[0]) / ta[0])) / (
+            1 - ((ca[1] + ppe[1] + sec[1]) / ta[1])
+        )
+        ratios["SGI"] = sales[0] / sales[1]
+        ratios["DEPI"] = (dep[1] / (ppe[1] + dep[1])) / (dep[0] / (ppe[0] + dep[0]))
+        ratios["SGAI"] = (sga[0] / sales[0]) / (sga[1] / sales[1])
+        ratios["LVGI"] = (tl[0] / ta[0]) / (tl[1] / ta[1])
+        ratios["TATA"] = (icfo[0] - cfo[0]) / ta[0]
+        ratios["MSCORE"] = (
+            -4.84
+            + (0.92 * ratios["DSRI"])
+            + (0.58 * ratios["GMI"])
+            + (0.404 * ratios["AQI"])
+            + (0.892 * ratios["SGI"])
+            + (0.115 * ratios["DEPI"] - (0.172 * ratios["SGAI"]))
+            + (4.679 * ratios["TATA"])
+            - (0.327 * ratios["LVGI"])
+        )
 
-    ratios: Dict = {}
-    ratios["DSRI"] = (ar[0] / sales[0]) / (ar[1] / sales[1])
-    ratios["GMI"] = ((sales[1] - cogs[1]) / sales[1]) / (
-        (sales[0] - cogs[0]) / sales[0]
-    )
-    ratios["AQI"] = (1 - ((ca[0] + ppe[0] + sec[0]) / ta[0])) / (
-        1 - ((ca[1] + ppe[1] + sec[1]) / ta[1])
-    )
-    ratios["SGI"] = sales[0] / sales[1]
-    ratios["DEPI"] = (dep[1] / (ppe[1] + dep[1])) / (dep[0] / (ppe[0] + dep[0]))
-    ratios["SGAI"] = (sga[0] / sales[0]) / (sga[1] / sales[1])
-    ratios["LVGI"] = (tl[0] / ta[0]) / (tl[1] / ta[1])
-    ratios["TATA"] = (icfo[0] - cfo[0]) / ta[0]
-    ratios["MSCORE"] = (
-        -4.84
-        + (0.92 * ratios["DSRI"])
-        + (0.58 * ratios["GMI"])
-        + (0.404 * ratios["AQI"])
-        + (0.892 * ratios["SGI"])
-        + (0.115 * ratios["DEPI"] - (0.172 * ratios["SGAI"]))
-        + (4.679 * ratios["TATA"])
-        - (0.327 * ratios["LVGI"])
-    )
+        zscore = (
+            -4.336
+            - (4.513 * (ni[0] / ta[0]))
+            + (5.679 * (tl[0] / ta[0]))
+            + (0.004 * (ca[0] / cl[0]))
+        )
+        v1 = np.log(ta[0] / 1000)
+        v2 = ni[0] / ta[0]
+        v3 = cash[0] / cl[0]
 
-    zscore = (
-        -4.336
-        - (4.513 * (ni[0] / ta[0]))
-        + (5.679 * (tl[0] / ta[0]))
-        + (0.004 * (ca[0] / cl[0]))
-    )
-    v1 = np.log(ta[0] / 1000)
-    v2 = ni[0] / ta[0]
-    v3 = cash[0] / cl[0]
+        x = ((v1 + 0.85) * v2) - 0.85
+        y = 1 + v3
 
-    x = ((v1 + 0.85) * v2) - 0.85
-    y = 1 + v3
+        mckee = x**2 / (x**2 + y**2)
+        ratios["Zscore"] = zscore
+        ratios["Mscore"] = mckee
+        if fraud_years.empty:
+            fraud_years.index = ratios.keys()
+        fraud_years[df_cf.index[i]] = ratios.values()
+    fraud_years = fraud_years[sorted(fraud_years)]
+    return fraud_years
 
-    mckee = x**2 / (x**2 + y**2)
 
-    return ratios, zscore, mckee
+@log_start_end(log=logger)
+def get_dupont(ticker: str) -> pd.DataFrame:
+    """Get dupont ratios
+
+    Parameters
+    ----------
+    ticker : str
+        Stock ticker
+
+    Returns
+    -------
+    dupont : pd.DataFrame
+        The dupont ratio breakdown
+    """
+
+    try:
+        fd = FundamentalData(key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas")
+        # pylint: disable=unbalanced-tuple-unpacking
+        df_bs, _ = fd.get_balance_sheet_annual(symbol=ticker)
+        df_is, _ = fd.get_income_statement_annual(symbol=ticker)
+
+    except Exception as e:
+        console.print(e)
+        return pd.DataFrame()
+
+    # pylint: disable=no-member
+    df_bs = df_bs.set_index("fiscalDateEnding")
+    df_is = df_is.set_index("fiscalDateEnding")
+    dupont_years = pd.DataFrame()
+
+    for i in range(len(df_bs)):
+        ni = df_values(df_is, "netIncome", i, 1)
+        pretax = df_values(df_is, "incomeBeforeTax", i, 1)
+        ebit = df_values(df_is, "ebit", i, 1)
+        sales = df_values(df_is, "totalRevenue", i, 1)
+        assets = df_values(df_bs, "totalAssets", i, 1)
+        equity = df_values(df_bs, "totalShareholderEquity", i, 1)
+
+        ratios: Dict = {}
+        try:
+            ratios["Tax Burden"] = clean_fraction(ni[0], pretax[0])
+            ratios["Interest Burden"] = clean_fraction(pretax[0], ebit[0])
+            ratios["EBIT Margin"] = clean_fraction(ebit[0], sales[0])
+            ratios["Asset Turnover"] = clean_fraction(sales[0], assets[0])
+            ratios["Finance Leverage"] = clean_fraction(assets[0], equity[0])
+            ratios["ROI"] = clean_fraction(ni[0], equity[0])
+        except IndexError:
+            pass
+
+        if dupont_years.empty:
+            dupont_years.index = ratios.keys()
+        dupont_years[df_bs.index[i]] = ratios.values()
+    dupont_years = dupont_years[sorted(dupont_years)]
+    return dupont_years

@@ -26,7 +26,7 @@ jobs:
       run: |
         export PGSYNC=1
         export GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
-        export GITHUB_PER_PAGE=25
+        export GITHUB_PER_PAGE=15
         export POSTGRES_CONNECTION=${{ secrets.POSTGRES_CONNECTION }}
         mergestat pgsync -v pull_requests "SELECT * FROM github_repo_prs('GamestonkTerminal/GamestonkTerminal')"
         mergestat pgsync -v issues "SELECT * FROM github_repo_issues('GamestonkTerminal/GamestonkTerminal')"

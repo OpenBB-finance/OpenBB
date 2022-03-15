@@ -1,4 +1,4 @@
-   Ticker                    Company      Sector         Industry Country  Market Cap P/E  Price  Change   Volume
-53   ACOR  Acorda Therapeutics, Inc.  Healthcare    Biotechnology     USA  25600000.0       2.37  0.0676  37441.0
-71    AHG          Akso Health Group   Financial  Credit Services   China  42210000.0       1.68  0.0566  57897.0
+    Ticker                             Company       Sector                 Industry  Country Market Cap  P/E  Price  Change   Volume
+37     ADN  Advent Technologies Holdings, Inc.    Utilities    Utilities - Renewable      USA    168.7 M        2.90  0.1647  965.1 K
+113    AER                AerCap Holdings N.V.  Industrials  Airports & Air Services  Ireland     12.9 B  6.7  48.63  0.1080    4.2 M
 

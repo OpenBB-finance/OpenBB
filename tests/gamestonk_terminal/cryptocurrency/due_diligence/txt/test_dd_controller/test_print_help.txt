@@ -35,4 +35,5 @@ Coinbase
    cbbook          show order book
    trades          show last trades
    stats           show coin stats
-
+Messari
+   mcapdom         show market cap dominance
