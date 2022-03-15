@@ -944,12 +944,11 @@ Performance & Valuations
                         .stack()
                         .to_frame()
                     )
-                    self.DATASETS["treasuries"] = pd.DataFrame(
+                    self.DATASETS["treasury"] = pd.DataFrame(
                         df[0].values.tolist(), index=df.index
                     ).T
-                    self.DATASETS["treasuries"].columns = [
-                        "_".join(column)
-                        for column in self.DATASETS["treasuries"].columns
+                    self.DATASETS["treasury"].columns = [
+                        "_".join(column) for column in self.DATASETS["treasury"].columns
                     ]
                 else:
                     econdb_view.show_treasuries(
