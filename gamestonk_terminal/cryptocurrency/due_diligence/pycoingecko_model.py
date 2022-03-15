@@ -243,10 +243,15 @@ class Coin:
             self._coin_list = self.client.get_coins_list()
         else:
             self._coin_list = read_file_data("coingecko_coins.json")
+
         self.coin_symbol, self.symbol = self._validate_coin(symbol)
 
         if self.coin_symbol:
             self.coin: Dict[Any, Any] = self._get_coin_info()
+        else:
+            console.print(
+                f"[red]Could not find coin with the given id: {symbol}\n[/red]"
+            )
 
     @log_start_end(log=logger)
     def __str__(self):
@@ -279,7 +284,7 @@ class Coin:
                 coin = dct.get("id")
                 symbol = dct.get("symbol")
                 return coin, symbol
-        raise ValueError(f"Could not find coin with the given id: {search_coin}\n")
+        return None, None
 
     @log_start_end(log=logger)
     def coin_list(self) -> list:
