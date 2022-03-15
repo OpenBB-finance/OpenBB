@@ -5,6 +5,7 @@
 **GOAL**
 
 In order to improve GamestonkTerminal, we need to know how people are using the tool, like :
+
 - Which are the most used features
 - Are they bugs/crashes on certain configuration (OS, python version...)
 
@@ -31,6 +32,7 @@ By default log collection are enabled.
 **ENABLE**
 
 Set this environment variable :
+
 ```sh
 GTFF_LOG_COLLECTION = True
 ```
@@ -38,16 +40,17 @@ GTFF_LOG_COLLECTION = True
 **DISABLE**
 
 Set this environment variable :
+
 ```sh
 GTFF_LOG_COLLECTION = False
 ```
-
 
 ## 3. What is collected ?
 
 **PRIVACY**
 
 We are making sure that none of this data are collect :
+
 - data that let identify you
 - credentials you might use with the Terminal
 
