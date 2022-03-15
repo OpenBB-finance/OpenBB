@@ -160,7 +160,11 @@ class CustomFormatterWithExceptions(logging.Formatter):
             s_list = []
             ip_reg = re.compile(IP_REGEX)
             for word in s.split():
-                if ip_reg.search(word):
+                if (
+                    ip_reg.search(word)
+                    and int(max(word.split(""))) < 256
+                    and int(min(word.split(""))) >= 0
+                ):
                     s_list.append("suspected_ip")
                 elif "@" in word and "." in word:
                     s_list.append("suspected_email")
