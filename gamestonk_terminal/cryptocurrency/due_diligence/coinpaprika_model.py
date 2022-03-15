@@ -330,7 +330,7 @@ def get_tickers_info_for_coin(
 
 
 @log_start_end(log=logger)
-def validate_coin(coin: str, coins_dct: dict) -> Tuple[str, Optional[Any]]:
+def validate_coin(coin: str, coins_dct: dict) -> Tuple[Optional[Any], Optional[Any]]:
     """Helper method that validates if proper coin id or symbol was provided [Source: CoinPaprika]
 
     Parameters
@@ -357,8 +357,8 @@ def validate_coin(coin: str, coins_dct: dict) -> Tuple[str, Optional[Any]]:
                 symbol = value
 
     if not coin_found:
-        raise ValueError(f"Could not find coin with given id: {coin}\n")
-    # console.print(f"Coin found : {coin_found} with symbol {symbol}\n")
+        console.print(f"[red]Could not find coin with given id: {coin}\n[/red]")
+        return None, None
     return coin_found, symbol
 
 
