@@ -10,7 +10,6 @@ import uuid
 from math import floor, ceil
 
 import git
-from numpy import append
 
 import gamestonk_terminal.config_terminal as cfg
 
