@@ -1,6 +1,6 @@
 """ Econ Controller """
 __docformat__ = "numpy"
-# pylint:disable=too-many-lines,R1710,R0904,C0415
+# pylint:disable=too-many-lines,R1710,R0904,C0415,too-many-branches
 
 import argparse
 import logging
@@ -577,9 +577,11 @@ Performance & Valuations
                         convert_currency=ns_parser.convert_currency,
                     )
 
+                    print(self.DATASETS["macro"].columns)
                     self.DATASETS["macro"].columns = [
                         "_".join(column) for column in self.DATASETS["macro"].columns
                     ]
+                    print(self.DATASETS["macro"].columns)
                 else:
                     econdb_view.show_macro_data(
                         parameters=ns_parser.parameters,
@@ -1038,27 +1040,77 @@ Performance & Valuations
 
                 if ns_parser.yaxis1:
                     for variable in ns_parser.yaxis1:
-                        for _, data in self.DATASETS.items():
+                        for key, data in self.DATASETS.items():
                             if variable in data.columns:
-                                dataset_yaxis1[variable] = data[variable]
+                                if key == "macro":
+                                    split = variable.split("_")
+                                    if len(split) == 2:
+                                        country, parameter = split
+                                    else:
+                                        country = f"{split[0]} {split[1]}"
+                                        parameter = split[2]
+
+                                    parameter = econdb_model.PARAMETERS[parameter]
+                                    dataset_yaxis1[f"{country} [{parameter}]"] = data[
+                                        variable
+                                    ]
+                                elif (
+                                    key == "index"
+                                    and variable in yfinance_model.INDICES
+                                ):
+                                    dataset_yaxis1[
+                                        yfinance_model.INDICES[variable]["name"]
+                                    ] = data[variable]
+                                elif key == "treasury":
+                                    parameter, maturity = variable.split("_")
+                                    dataset_yaxis1[f"{parameter} [{maturity}]"] = data[
+                                        variable
+                                    ]
+                                else:
+                                    dataset_yaxis1[variable] = data[variable]
                                 break
-                        if variable not in dataset_yaxis1:
-                            return console.print(
-                                f"Not able to find any data for the -y1 argument {variable}. "
-                                f"The currently available options are: {', '.join(self.choices['plot']['-y1'])}"
-                            )
+                    if dataset_yaxis1.empty:
+                        return console.print(
+                            f"Not able to find any data for the -y1 argument. The currently available "
+                            f"options are: {', '.join(self.choices['plot']['-y1'])}"
+                        )
 
                 if ns_parser.yaxis2:
                     for variable in ns_parser.yaxis2:
-                        for _, data in self.DATASETS.items():
+                        for key, data in self.DATASETS.items():
                             if variable in data.columns:
-                                dataset_yaxis2[variable] = data[variable]
+                                if key == "macro":
+                                    split = variable.split("_")
+                                    if len(split) == 2:
+                                        country, parameter = split
+                                    else:
+                                        country = f"{split[0]} {split[1]}"
+                                        parameter = split[2]
+
+                                    parameter = econdb_model.PARAMETERS[parameter]
+                                    dataset_yaxis2[f"{country} [{parameter}]"] = data[
+                                        variable
+                                    ]
+                                elif (
+                                    key == "index"
+                                    and variable in yfinance_model.INDICES
+                                ):
+                                    dataset_yaxis2[
+                                        yfinance_model.INDICES[variable]["name"]
+                                    ] = data[variable]
+                                elif key == "treasury":
+                                    parameter, maturity = variable.split("_")
+                                    dataset_yaxis2[f"{parameter} [{maturity}]"] = data[
+                                        variable
+                                    ]
+                                else:
+                                    dataset_yaxis2[variable] = data[variable]
                                 break
-                        if variable not in dataset_yaxis2:
-                            return console.print(
-                                f"Not able to find any data for the -y2 argument {variable}. "
-                                f"The currently available options are: {', '.join(self.choices['plot']['-y2'])}"
-                            )
+                    if dataset_yaxis2.empty:
+                        return console.print(
+                            f"Not able to find any data for the -y2 argument. The currently available "
+                            f"options are: {', '.join(self.choices['plot']['-y2'])}"
+                        )
 
                 if ns_parser.yaxis1 or ns_parser.yaxis2:
                     return plot_view.show_plot(
