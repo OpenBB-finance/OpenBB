@@ -14,7 +14,7 @@ import pytz
 import pandas as pd
 from rich.table import Table
 import iso8601
-
+import dotenv
 import matplotlib
 import matplotlib.pyplot as plt
 from holidays import US as us_holidays
@@ -45,8 +45,6 @@ MENU_RESET = 2
 
 # Command location path to be shown in the figures depending on watermark flag
 command_location = ""
-# Folder to export data to
-export_folder = ""
 
 
 # pylint: disable=global-statement
@@ -63,27 +61,19 @@ def set_command_location(cmd_loc: str):
 
 
 # pylint: disable=global-statement
-def set_export_folder(path_folder: str):
+def set_export_folder(env_file: str = ".env", path_folder: str = ""):
     """Set export folder location
 
     Parameters
     ----------
+    env_file : str
+        Env file to be updated
     path_folder: str
         Path folder location
     """
-    global export_folder
-    export_folder = path_folder
-
-
-def get_export_folder() -> str:
-    """Set export folder location
-
-    Returns
-    ----------
-    export_folder: str
-        Path to folder location to export data
-    """
-    return export_folder
+    os.environ["GTFF_EXPORT_FOLDER_PATH"] = path_folder
+    dotenv.set_key(env_file, "GTFF_EXPORT_FOLDER_PATH", path_folder)
+    gtff.EXPORT_FOLDER_PATH = path_folder
 
 
 def check_path(path: str) -> str:
@@ -1109,11 +1099,11 @@ def export_data(
     if export_type:
         now = datetime.now()
 
-        if export_folder:
+        if gtff.EXPORT_FOLDER_PATH:
             path_cmd = dir_path.split("gamestonk_terminal/")[1].replace("/", "_")
 
             full_path = os.path.join(
-                export_folder,
+                gtff.EXPORT_FOLDER_PATH,
                 f"{now.strftime('%Y%m%d_%H%M%S')}_{path_cmd}_{func_name}",
             )
         else:
