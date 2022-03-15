@@ -71,14 +71,16 @@ def get_index(
     )
 
     if column not in index_data.columns:
-        return console.print(
+        console.print(
             f"The chosen column is not available for {ticker}. Please choose "
-            f"between: {', '.join(index_data.columns)}"
+            f"between: {', '.join(index_data.columns)}\n"
         )
+        return pd.Series()
     if index_data.empty or len(index_data) < 2:
-        return console.print(
+        console.print(
             f"The chosen index {ticker}, returns no data. Please check if "
-            f"there is any data available."
+            f"there is any data available.\n"
         )
+        return pd.Series()
 
     return index_data[column]
