@@ -1,5 +1,5 @@
 ```
-usage: load [-t TICKER] [-s START] [-e END] [-i {1,5,15,30,60}] [--source {yf,av,iex}] [-p] [-r {ytd,1y,2y,5y,6m}] [-h]
+usage: load [-t TICKER] [-s START] [-e END] [-i {1,5,15,30,60}] [--source {yf,av,iex}] [-p] [-f {Test.csv}] [-m] [-w] [-r {ytd,1y,2y,5y,6m}] [-h]
 ```
 
 Load a symbol to perform analysis using the string above as a template. Optional arguments and their descriptions are listed below. 
@@ -18,19 +18,31 @@ Certain features, such as the Prediction menu, require the symbol to be loaded a
 
 ```
 optional arguments:
+optional arguments:
   -t TICKER, --ticker TICKER
                         Stock ticker (default: None)
   -s START, --start START
-                        The starting date (format YYYY-MM-DD) of the stock (default: 2019-02-12)
-  -e END, --end END     The ending date (format YYYY-MM-DD) of the stock (default: 2022-02-16)
+                        The starting date (format YYYY-MM-DD) of the stock (default: 2019-03-12)
+  -e END, --end END     The ending date (format YYYY-MM-DD) of the stock (default: 2022-03-16)
   -i {1,5,15,30,60}, --interval {1,5,15,30,60}
                         Intraday stock minutes (default: 1440)
   --source {yf,av,iex}  Source of historical data. (default: yf)
   -p, --prepost         Pre/After market hours. Only works for 'yf' source, and intraday data (default: False)
+  -f {Test.csv}, --file {Test.csv}
+                        Path to load custom file. (default: None)
+  -m, --monthly         Load monthly data (default: False)
+  -w, --weekly          Load weekly data (default: False)
   -r {ytd,1y,2y,5y,6m}, --iexrange {ytd,1y,2y,5y,6m}
                         Range for using the iexcloud api. Note that longer range requires more tokens in account (default: ytd)
   -h, --help            show this help message (default: False)
+
 ```
+
+Note that loading monthly and weekly data are limited to yahoo finance, and monthly data has displayed issues where 
+older data just downloads as `nan`.
+
+Loading a custom file looks in the folder `custom_imports/stocks` and is currently only designed for csv files.
+
 
 Example:
 ```
