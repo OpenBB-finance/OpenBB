@@ -94,7 +94,7 @@ def test_load_week_or_month(recorder, weekly, monthly):
 @pytest.mark.vcr
 @pytest.mark.parametrize(
     "path",
-    ["none", os.path.join(os.path.join("custom_imports", "stocks"), "Test.csv")],
+    ["none", os.path.join(os.path.join("custom_imports", "stocks"), "test.csv")],
 )
 def test_load_custom(recorder, path):
     result_df = stocks_helper.load_custom(path)
