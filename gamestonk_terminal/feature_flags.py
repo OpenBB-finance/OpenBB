@@ -66,3 +66,6 @@ ENABLE_CHECK_API = strtobool(os.getenv("GTFF_ENABLE_CHECK_API", "True"))
 
 # Send logs to data lake
 ALLOW_LOG_COLLECTION = strtobool(os.getenv("GTFF_ALLOW_LOG_COLLECTION", "True"))
+
+# Provide export folder path. If empty that means default.
+EXPORT_FOLDER_PATH = os.getenv("GTFF_EXPORT_FOLDER_PATH", "")

@@ -11,7 +11,6 @@ import sys
 from datetime import datetime
 from typing import List
 import ascii_magic
-
 import matplotlib.pyplot as plt
 
 from gamestonk_terminal import feature_flags as gtff
