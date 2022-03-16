@@ -341,7 +341,7 @@ def upload_archive_logs_s3(
         else:
             directory = Path(directory_str)
         archive = directory / "archive"
-        tmp = directory / "uploading"
+        tmp = directory / "tmp"
 
         if not archive.exists():
             # Create a new directory because it does not exist
