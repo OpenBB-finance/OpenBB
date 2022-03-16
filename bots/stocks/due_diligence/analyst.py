@@ -45,6 +45,7 @@ def analyst_command(ticker=""):
         tbl_header=cfg.PLT_TBL_HEADER,
         tbl_cells=cfg.PLT_TBL_CELLS,
         font=cfg.PLT_TBL_FONT,
+        row_fill_color=cfg.PLT_TBL_ROW_COLORS,
         paper_bgcolor="rgba(0, 0, 0, 0)",
     )
     imagefile = save_image("dd-analyst.png", fig)

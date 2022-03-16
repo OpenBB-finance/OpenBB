@@ -29,8 +29,9 @@ def view_command(ticker=""):
     im = im.resize((800, 340), Image.ANTIALIAS)
     imagefile = "ta_view.png"
 
-    im.save(imagefile, "PNG", quality=100)
-    imagefile = image_border(imagefile)
+    im.save(dataBytesIO, "PNG", quality=100)
+    dataBytesIO.seek(0)
+    imagefile = image_border(imagefile, base64=dataBytesIO)
 
     return {
         "title": f"Stocks: [Finviz] Trendlines & Data {ticker}",

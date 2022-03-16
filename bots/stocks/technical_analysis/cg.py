@@ -1,3 +1,4 @@
+import io
 import logging
 from datetime import datetime, timedelta
 
@@ -80,9 +81,11 @@ def cg_command(ticker="", length="14", start="", end=""):
     fig.tight_layout(pad=1)
     plt.legend()
     imagefile = "ta_cg.png"
-    plt.savefig(imagefile)
+    dataBytesIO = io.BytesIO()
+    plt.savefig(dataBytesIO)
 
-    imagefile = image_border(imagefile)
+    dataBytesIO.seek(0)
+    imagefile = image_border(imagefile, base64=dataBytesIO)
 
     return {
         "title": f"Stocks: Center-of-Gravity {ticker}",

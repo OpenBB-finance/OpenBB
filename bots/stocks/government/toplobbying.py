@@ -1,3 +1,4 @@
+import io
 import logging
 
 import pandas as pd
@@ -37,11 +38,14 @@ def toplobbying_command(num: int = 10, raw: bool = False):
     ax.set_ylabel("Total Amount ($100k)")
     ax.set_title(f"Corporate Lobbying Spent since {df_lobbying['Date'].min()}")
     fig.tight_layout()
-
-    plt.savefig("ta_toplobbying.png")
     imagefile = "ta_toplobbying.png"
 
-    imagefile = image_border(imagefile)
+    dataBytesIO = io.BytesIO()
+    plt.savefig(dataBytesIO)
+    dataBytesIO.seek(0)
+
+    imagefile = image_border(imagefile, base64=dataBytesIO)
+
     return {
         "title": "Stocks: [quiverquant.com] Top Lobbying Firms",
         "imagefile": imagefile,

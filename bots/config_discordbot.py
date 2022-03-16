@@ -84,24 +84,23 @@ PLT_TA_COLORWAY = [
     "#d1fa3d",
 ]
 PLT_TBL_HEADER = dict(
+    height=30,
     fill_color="rgb(30, 30, 30)",
     font_color="white",
-    font_size=16,
+    font_size=14,
     line_color="rgb(63, 63, 63)",
     line_width=2,
 )
 PLT_TBL_CELLS = dict(
-    height=35,
-    font_size=16,
+    height=25,
+    font_size=12,
     fill_color="rgb(50, 50, 50)",
     font_color="white",
     line_color="rgb(63, 63, 63)",
     line_width=2,
 )
-PLT_TBL_FONT = dict(
-    family="Fira Code",
-    size=20,
-)
+PLT_TBL_FONT = dict(family="Fira Code")
+PLT_TBL_ROW_COLORS = ["rgb(55, 55, 55)", "rgb(50, 50, 50)"]
 PLT_FONT = dict(
     family="Fira Code",
     size=12,

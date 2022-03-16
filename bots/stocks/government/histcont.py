@@ -1,3 +1,4 @@
+import io
 import logging
 
 import numpy as np
@@ -54,11 +55,14 @@ def histcont_command(ticker=""):
     ax.set_xlabel("Date")
     ax.set_ylabel("Amount ($1k)")
     fig.tight_layout()
-
-    plt.savefig("gov_histcont.png")
     imagefile = "gov_histcont.png"
 
-    imagefile = image_border(imagefile)
+    dataBytesIO = io.BytesIO()
+    plt.savefig(dataBytesIO)
+    dataBytesIO.seek(0)
+
+    imagefile = image_border(imagefile, base64=dataBytesIO)
+
     return {
         "title": "Stocks: Historical Quarterly Government Contract ",
         "imagefile": imagefile,

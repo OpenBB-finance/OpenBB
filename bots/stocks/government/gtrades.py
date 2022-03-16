@@ -1,3 +1,4 @@
+import io
 import logging
 from datetime import datetime, timedelta
 
@@ -108,11 +109,14 @@ def gtrades_command(
     plt.gca().xaxis.set_major_formatter(mdates.DateFormatter("%Y/%m/%d"))
     plt.gcf().autofmt_xdate()
     fig.tight_layout()
-
-    plt.savefig("gov_gtrades.png")
     imagefile = "gov_gtrades.png"
 
-    imagefile = image_border(imagefile)
+    dataBytesIO = io.BytesIO()
+    plt.savefig(dataBytesIO)
+    dataBytesIO.seek(0)
+
+    imagefile = image_border(imagefile, base64=dataBytesIO)
+
     return {
         "title": "Stocks: [quiverquant.com] Government Trades",
         "imagefile": imagefile,

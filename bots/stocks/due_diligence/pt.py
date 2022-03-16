@@ -1,3 +1,4 @@
+import io
 import logging
 from datetime import datetime, timedelta
 
@@ -67,9 +68,12 @@ def pt_command(ticker: str = "", raw: bool = False, start=""):
         plt.xlabel("Time")
         plt.ylabel("Share Price")
         plt.grid(b=True, which="major", color="#666666", linestyle="-")
-        plt.savefig("ta_pt.png")
+        imagefile = "ta_pt.png"
+        dataBytesIO = io.BytesIO()
+        plt.savefig(dataBytesIO)
 
-        imagefile = bots.helpers.image_border("ta_pt.png")
+        dataBytesIO.seek(0)
+        imagefile = bots.helpers.image_border(imagefile, base64=dataBytesIO)
 
         output = {
             "title": title,

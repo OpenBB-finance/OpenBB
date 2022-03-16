@@ -1,3 +1,4 @@
+import io
 import logging
 from datetime import datetime, timedelta
 
@@ -114,11 +115,14 @@ def topsells_command(
     )
     plt.gcf().axes[0].yaxis.get_major_formatter().set_scientific(False)
     fig.tight_layout()
-
-    plt.savefig("gov_topsells.png")
     imagefile = "gov_topsells.png"
 
-    imagefile = image_border(imagefile)
+    dataBytesIO = io.BytesIO()
+    plt.savefig(dataBytesIO)
+    dataBytesIO.seek(0)
+
+    imagefile = image_border(imagefile, base64=dataBytesIO)
+
     return {
         "title": f"Stocks: [quiverquant.com] Top sells for {gov_type.upper()}",
         "imagefile": imagefile,

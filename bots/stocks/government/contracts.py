@@ -1,3 +1,4 @@
+import io
 import logging
 from typing import Union
 
@@ -5,7 +6,7 @@ import pandas as pd
 from matplotlib import pyplot as plt
 
 import bots.config_discordbot as cfg
-from bots.helpers import image_border
+from bots import helpers
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import plot_autoscale
@@ -52,10 +53,13 @@ def contracts_command(
     ax.set_title(f"Sum of latest government contracts to {ticker}")
     fig.tight_layout()
 
-    plt.savefig("gov_contracts.png")
     imagefile = "gov_contracts.png"
+    dataBytesIO = io.BytesIO()
+    plt.savefig(dataBytesIO)
 
-    imagefile = image_border(imagefile)
+    dataBytesIO.seek(0)
+    imagefile = helpers.image_border(imagefile, base64=dataBytesIO)
+
     return {
         "title": f"Stocks: [quiverquant.com] Contracts by {ticker}",
         "imagefile": imagefile,

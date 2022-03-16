@@ -329,6 +329,8 @@ def image_border(file, **kwargs):
         fig = kwargs["fig"]
         fig.write_image(filesave)
         img = Image.open(filesave)
+    elif "base64" in kwargs:
+        img = Image.open(kwargs["base64"])
     else:
         img = Image.open(filesave)
     im_bg = Image.open(cfg.IMG_BG)

@@ -1,3 +1,4 @@
+import io
 import logging
 
 import numpy as np
@@ -81,11 +82,13 @@ def qtrcontracts_command(num: int = 20, analysis=""):
         ax.set_xlabel("Date")
         ax.set_ylabel("Amount ($1M)")
         fig.tight_layout()
-
-        plt.savefig("gov_qtrcontracts.png")
         imagefile = "gov_qtrcontracts.png"
 
-        imagefile = image_border(imagefile)
+        dataBytesIO = io.BytesIO()
+        plt.savefig(dataBytesIO)
+        dataBytesIO.seek(0)
+
+        imagefile = image_border(imagefile, base64=dataBytesIO)
         output = {
             "title": "Stocks: [quiverquant.com] Government Contracts",
             "imagefile": imagefile,

@@ -1,4 +1,5 @@
 import configparser
+import io
 import logging
 import random
 from datetime import datetime, timedelta
@@ -130,10 +131,13 @@ def historical_command(signal: str = "", start=""):
     plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
     # ensures that the historical data starts from same datapoint
     plt.xlim([max(l_min), df_similar_stock.index[-1]])
-
     imagefile = "scr_historical.png"
-    plt.savefig(imagefile)
-    imagefile = image_border(imagefile)
+
+    dataBytesIO = io.BytesIO()
+    plt.savefig(dataBytesIO)
+    dataBytesIO.seek(0)
+
+    imagefile = image_border(imagefile, base64=dataBytesIO)
 
     return {
         "title": "Stocks: [Yahoo Finance] Historical Screener",

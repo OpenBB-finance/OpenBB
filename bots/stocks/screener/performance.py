@@ -95,7 +95,7 @@ def performance_command(
                     )
 
         df_screen = df_screen.fillna("")
-        future_column_name = df_screen["Ticker"]
+        future_column_name = df_screen["Ticker"].head(n=limit)
         df_screen = df_screen.head(n=limit).transpose()
         df_screen.columns = future_column_name
         df_screen.drop("Ticker")
