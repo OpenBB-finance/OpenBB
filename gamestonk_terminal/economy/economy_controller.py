@@ -1111,7 +1111,7 @@ Performance & Valuations
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="options",
-            description="Show the available options for the 'plot command. To save data, use the command -st on "
+            description="Show the available options for the 'plot' command. To save data, use the command -st on "
             "'macro', 'fred', 'index' and 'treasury'. You can use these commands to plot data on a multi-"
             "axes graoh. Furthermore, this command also allows you to see and export all stored data.",
         )
