@@ -152,6 +152,7 @@ def display_fred_series(
             loc="upper right",
             mode="expand",
             borderaxespad=0,
+            prop={"size": 9},
         )
 
         ax.set_xlim(data.index[0], data.index[-1])
