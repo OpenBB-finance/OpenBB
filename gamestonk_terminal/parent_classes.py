@@ -431,6 +431,22 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
             type=str,
         )
         parser.add_argument(
+            "-m",
+            "--monthly",
+            action="store_true",
+            default=False,
+            help="Load monthly data",
+            dest="monthly",
+        )
+        parser.add_argument(
+            "-w",
+            "--weekly",
+            action="store_true",
+            default=False,
+            help="Load weekly data",
+            dest="weekly",
+        )
+        parser.add_argument(
             "-r",
             "--iexrange",
             dest="iexrange",
@@ -443,7 +459,13 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
             other_args.insert(0, "-t")
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
+
         if ns_parser:
+            if ns_parser.weekly and ns_parser.monthly:
+                console.print(
+                    "[red]Only one of monthly or weekly can be selected.[/red]\n."
+                )
+                return
             if ns_parser.filepath is None:
                 df_stock_candidate = stocks_helper.load(
                     ns_parser.ticker,
@@ -452,6 +474,8 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                     ns_parser.end,
                     ns_parser.prepost,
                     ns_parser.source,
+                    weekly=ns_parser.weekly,
+                    monthly=ns_parser.monthly,
                 )
             else:
                 df_stock_candidate = stocks_helper.load_custom(

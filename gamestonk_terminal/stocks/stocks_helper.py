@@ -94,6 +94,8 @@ def load(
     prepost: bool = False,
     source: str = "yf",
     iexrange: str = "ytd",
+    weekly: bool = False,
+    monthly: bool = False,
 ):
     """
     Load a symbol to perform analysis using the string above as a template. Optional arguments and their
@@ -135,6 +137,10 @@ def load(
         Source of data extracted
     iexrange: str
         Timeframe to get IEX data.
+    weekly: bool
+        Flag to get weekly data
+    monthly: bool
+        Flag to get monthly data
 
     Returns
     -------
@@ -186,12 +192,21 @@ def load(
 
         # Yahoo Finance Source
         elif source == "yf":
+
+            # TODO: Better handling of interval with week/month
+            int_ = "1d"
+            int_string = "Daily"
+            if weekly:
+                int_ = "1wk"
+                int_string = "Weekly"
+            if monthly:
+                int_ = "1mo"
+                int_string = "Monthly"
+
+            # Adding a dropna for weekly and monthly because these include weird NaN columns.
             df_stock_candidate = yf.download(
-                ticker,
-                start=start,
-                end=end,
-                progress=False,
-            )
+                ticker, start=start, end=end, progress=False, interval=int_
+            ).dropna(axis=0)
 
             # Check that loading a stock was not successful
             if df_stock_candidate.empty:
@@ -238,6 +253,7 @@ def load(
             df_stock_candidate.sort_index(ascending=True, inplace=True)
         s_start = df_stock_candidate.index[0]
         s_interval = f"{interval}min"
+        int_string = "Daily" if interval == 1440 else "Intraday"
 
     else:
 
@@ -270,7 +286,8 @@ def load(
 
         df_stock_candidate.index.name = "date"
 
-    s_intraday = (f"Intraday {s_interval}", "Daily")[interval == 1440]
+        int_string = "Intraday"
+    s_intraday = (f"Intraday {s_interval}", int_string)[interval == 1440]
 
     console.print(
         f"\nLoading {s_intraday} {ticker.upper()} stock "
@@ -950,7 +967,7 @@ def load_custom(file_path: str) -> pd.DataFrame:
 
 
 def clean_function(entry: str) -> Union[str, float]:
-    """Helper function for cleaning stock data from csv"""
+    """Helper function for cleaning stock data from csv.  This can be customized for csvs"""
     # If there is a digit, get rid of common characters and return float
     if any(char.isdigit() for char in entry):
         return float(entry.replace("$", "").replace(",", ""))
