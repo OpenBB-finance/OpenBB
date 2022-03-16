@@ -2,41 +2,41 @@
 """Main Terminal Module"""
 __docformat__ = "numpy"
 
-import sys
-import os
+import argparse
 import difflib
 import logging
-import argparse
+import os
 import platform
+import sys
 from typing import List
 from pathlib import Path
 import pytz
 import dotenv
 
 from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.rich_config import console
-from gamestonk_terminal.parent_classes import BaseController
+
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
+    check_path,
     get_flair,
     get_user_timezone_or_invalid,
-    replace_user_timezone,
-    check_path,
     parse_known_args_and_warn,
+    replace_user_timezone,
     set_export_folder,
 )
-
 from gamestonk_terminal.loggers import setup_logging, upload_archive_logs_s3
 from gamestonk_terminal.menu import session
+from gamestonk_terminal.parent_classes import BaseController
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.terminal_helper import (
     about_us,
     bootup,
-    welcome_message,
+    is_reset,
     print_goodbye,
     reset,
-    update_terminal,
     suppress_stdout,
-    is_reset,
+    update_terminal,
+    welcome_message,
 )
 
 # pylint: disable=too-many-public-methods,import-outside-toplevel
