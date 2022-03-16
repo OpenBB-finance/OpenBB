@@ -57,3 +57,6 @@ ENABLE_RICH_PANEL = strtobool(os.getenv("GTFF_ENABLE_RICH_PANEL", "True"))
 
 # Check API KEYS before running a command
 ENABLE_CHECK_API = strtobool(os.getenv("GTFF_ENABLE_CHECK_API", "True"))
+
+# Provide export folder path. If empty that means default.
+EXPORT_FOLDER_PATH = os.getenv("GTFF_EXPORT_FOLDER_PATH", "")
