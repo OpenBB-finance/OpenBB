@@ -287,11 +287,10 @@ class TerminalController(BaseController):
                             ).upper()
 
                         if user_opt == "Y":
-                            os.mkdir(export_path)
+                            os.makedirs(export_path)
                             console.print(
                                 f"[green]Folder '{export_path}' successfully created.[/green]"
                             )
-                            print(export_path)
                             set_export_folder(env_file, path_folder=export_path)
                         else:
                             # Do not update export_folder path since we will keep the same as before
