@@ -1,4 +1,6 @@
 import configparser
+import io
+import logging
 import random
 from datetime import datetime, timedelta
 
@@ -8,16 +10,20 @@ from matplotlib import pyplot as plt
 from pandas.plotting import register_matplotlib_converters
 
 import bots.config_discordbot as cfg
-from bots.config_discordbot import logger
 from bots.helpers import image_border
 from bots.stocks.screener import screener_options as so
 from gamestonk_terminal.config_plot import PLOT_DPI
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import plot_autoscale
 from gamestonk_terminal.stocks.screener import finviz_model
 
 # pylint:disable=no-member
 
 
+logger = logging.getLogger(__name__)
+
+
+@log_start_end(log=logger)
 def historical_command(signal: str = "", start=""):
     """Displays historical price comparison between similar companies [Yahoo Finance]"""
 
@@ -125,10 +131,13 @@ def historical_command(signal: str = "", start=""):
     plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
     # ensures that the historical data starts from same datapoint
     plt.xlim([max(l_min), df_similar_stock.index[-1]])
-
     imagefile = "scr_historical.png"
-    plt.savefig(imagefile)
-    imagefile = image_border(imagefile)
+
+    dataBytesIO = io.BytesIO()
+    plt.savefig(dataBytesIO)
+    dataBytesIO.seek(0)
+
+    imagefile = image_border(imagefile, base64=dataBytesIO)
 
     return {
         "title": "Stocks: [Yahoo Finance] Historical Screener",
