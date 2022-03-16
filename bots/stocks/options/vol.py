@@ -1,12 +1,17 @@
+import logging
+
 import pandas as pd
 import plotly.graph_objects as go
 
 import bots.config_discordbot as cfg
-from bots.config_discordbot import logger
 from bots import helpers
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.stocks.options import yfinance_model
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def vol_command(
     ticker: str = None,
     expiry: str = "",
@@ -45,6 +50,8 @@ def vol_command(
     puts = options.puts
     call_v = calls.set_index("strike")["volume"] / 1000
     put_v = puts.set_index("strike")["volume"] / 1000
+    call_v = call_v.fillna(0.0)
+    put_v = put_v.fillna(0.0)
 
     df_opt = pd.merge(put_v, call_v, left_index=True, right_index=True)
     dmax = df_opt.values.max()
@@ -77,6 +84,8 @@ def vol_command(
             name="Current Price",
         )
     )
+    if cfg.PLT_WATERMARK:
+        fig.add_layout_image(cfg.PLT_WATERMARK)
     fig.update_xaxes(
         range=[min_strike, max_strike],
         constrain="domain",
@@ -89,21 +98,23 @@ def vol_command(
         legend_title="",
         xaxis_title="Strike",
         yaxis_title="Volume (1k)",
+        yaxis=dict(
+            fixedrange=False,
+            nticks=20,
+        ),
         xaxis=dict(
             rangeslider=dict(visible=False),
         ),
         legend=dict(yanchor="top", y=0.99, xanchor="left", x=0.01),
         dragmode="pan",
     )
-    config = dict({"scrollZoom": True})
+
     imagefile = "opt_vol.png"
 
     # Check if interactive settings are enabled
     plt_link = ""
     if cfg.INTERACTIVE:
-        html_ran = helpers.uuid_get()
-        fig.write_html(f"in/vol_{html_ran}.html", config=config)
-        plt_link = f"[Interactive]({cfg.INTERACTIVE_URL}/vol_{html_ran}.html)"
+        plt_link = helpers.inter_chart(fig, imagefile, callback=False)
 
     fig.update_layout(
         width=800,

@@ -1,17 +1,22 @@
+import logging
+
 import disnake
 
 import bots.config_discordbot as cfg
-from bots.config_discordbot import logger
 from bots.menus.menu import Menu
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.stocks.dark_pool_shorts import shortinterest_model
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def hsi_command(num: int = 10):
     """Show top high short interest stocks of over 20% ratio [shortinterest.com]"""
 
     # Debug user input
     if cfg.DEBUG:
-        logger.debug("dps-hsi %s", num)
+        logger.debug("dps hsi %s", num)
 
     # Check for argument
     if num < 0:

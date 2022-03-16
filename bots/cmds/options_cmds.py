@@ -5,8 +5,6 @@ import disnake.ext.commands as commands
 
 from bots.helpers import ShowView, expiry_autocomp, ticker_autocomp
 from bots.stocks.candle import candle_command
-from bots.stocks.disc.ford import ford_command
-from bots.stocks.insider.lins import lins_command
 from bots.stocks.options.cc_hist import cc_hist_command
 from bots.stocks.options.hist import hist_command
 from bots.stocks.options.iv import iv_command
@@ -17,7 +15,6 @@ from bots.stocks.options.unu import unu_command
 from bots.stocks.options.vol import vol_command
 from bots.stocks.options.vsurf import vsurf_command
 from bots.stocks.quote import quote_command
-from bots.common import commands_dict
 
 
 class SlashCommands(commands.Cog):
@@ -25,8 +22,12 @@ class SlashCommands(commands.Cog):
         super().__init__
         self.bot: commands.Bot = bot
 
-    @commands.slash_command(name="opt-chain")
-    async def opt_chain(
+    @commands.slash_command(name="opt")
+    async def opt(self, inter):
+        pass
+
+    @opt.sub_command()
+    async def chains(
         self,
         inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
@@ -35,7 +36,7 @@ class SlashCommands(commands.Cog):
         min_sp: float = None,
         max_sp: float = None,
     ):
-        """Open Interest
+        """Options Chain [Yahoo Finance]
 
         Parameters
         ----------
@@ -46,10 +47,10 @@ class SlashCommands(commands.Cog):
         max_sp: Maximum Strike Price
         """
         await ShowView().discord(
-            chain_command, inter, "opt-chain", ticker, expiry, opt_type, min_sp, max_sp
+            chain_command, inter, "opt chain", ticker, expiry, opt_type, min_sp, max_sp
         )
 
-    @commands.slash_command(name="opt-oi")
+    @opt.sub_command(name="oi")
     async def open_interest(
         self,
         inter: disnake.AppCmdInter,
@@ -58,7 +59,7 @@ class SlashCommands(commands.Cog):
         min_sp: float = None,
         max_sp: float = None,
     ):
-        """Open Interest
+        """Open Interest [Yahoo Finance]
 
         Parameters
         ----------
@@ -68,30 +69,30 @@ class SlashCommands(commands.Cog):
         max_sp: Maximum Strike Price
         """
         await ShowView().discord(
-            oi_command, inter, "opt-oi", ticker, expiry, min_sp, max_sp
+            oi_command, inter, "opt oi", ticker, expiry, min_sp, max_sp
         )
 
-    @commands.slash_command(name="opt-iv")
+    @opt.sub_command(name="info")
     async def iv(
         self,
         inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
     ):
-        """Displays ticker options IV [Barchart]
+        """Displays option information (volatility, IV rank etc) [Barchart]
 
         Parameters
         -----------
         ticker: Stock Ticker
         """
-        await ShowView().discord(iv_command, inter, "opt-iv", ticker)
+        await ShowView().discord(iv_command, inter, "opt info", ticker)
 
-    @commands.slash_command(name="q")
+    @commands.slash_command(name="quote")
     async def quote(
         self,
         inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
     ):
-        """Displays ticker quote [yFinance]
+        """Displays ticker quote [Yahoo Finance]
 
         Parameters
         -----------
@@ -99,59 +100,50 @@ class SlashCommands(commands.Cog):
         """
         await ShowView().discord(quote_command, inter, "quote", ticker)
 
-    @commands.slash_command(name="disc-ford")
-    async def ford(self, inter: disnake.AppCmdInter):
-        """Display Orders by Fidelity Customers. [Fidelity]
-
-        Parameters
-        -----------
-        num: Number of stocks to display
-        """
-        await ShowView().discord(ford_command, inter, "disc-ford")
-
-    @commands.slash_command(name="opt-unu")
+    @opt.sub_command()
     async def unu(self, inter: disnake.AppCmdInter):
         """Unusual Options"""
-        await ShowView().discord(unu_command, inter, "disc-ford")
+        await ShowView().discord(unu_command, inter, "opt unu")
 
-    @commands.slash_command(name="ins-last")
-    async def lins(
-        self,
-        inter: disnake.AppCmdInter,
-        ticker: str = commands.Param(autocomplete=ticker_autocomp),
-        num: int = 10,
-    ):
-        """Display insider activity for a given stock ticker. [Source: Finviz]
-
-        Parameters
-        ----------
-        ticker : Stock Ticker
-        num : Number of latest insider activity to display
-        """
-        await lins_command(inter, "ins-last", ticker, num)
-
-    @commands.slash_command(name="cc")
-    async def cc(
+    @commands.slash_command(name="candle")
+    async def candle(
         self,
         inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
         interval: int = commands.Param(choices=[1, 5, 15, 30, 60, 1440]),
-        past_days: int = 1,
+        past_days: int = 0,
+        extended_hours: bool = False,
         start="",
         end="",
+        news: bool = False,
+        heikin_candles: bool = False,
     ):
-        """Display Candlestick Chart
+        """Display candlestick chart of ticker or crypto. [Yahoo Finance or Binance API]
+
 
         Parameters
         ----------
         ticker : Stock Ticker
         interval : Chart Minute Interval, 1440 for Daily
         past_days: Past Days to Display. Default: 0(Not for Daily)
+        extended_hours: Display Pre/After Market Hours. Default: False
         start: YYYY-MM-DD format
         end: YYYY-MM-DD format
+        news: Display clickable news markers on interactive chart. Default: False
+        heikin_candles: Heikin Ashi candles. Default: False
         """
         await ShowView().discord(
-            candle_command, inter, "cc", ticker, interval, past_days, start, end
+            candle_command,
+            inter,
+            "candle",
+            ticker,
+            interval,
+            past_days,
+            extended_hours,
+            start,
+            end,
+            news,
+            heikin_candles,
         )
 
     @commands.slash_command(name="btc")
@@ -159,21 +151,35 @@ class SlashCommands(commands.Cog):
         self,
         inter: disnake.AppCmdInter,
         interval: int = commands.Param(choices=[1, 5, 15, 30, 60, 1440]),
-        past_days: int = 1,
+        past_days: int = 0,
         start="",
         end="",
+        news: bool = False,
+        heikin_candles: bool = False,
     ):
-        """Display Bitcoin Chart
+        """Display Bitcoin Chart [Yahoo Finance or Binance API]
 
         Parameters
         ----------
         interval : Chart Minute Interval, 1440 for Daily
-        past_days: Past Days to Display. Default: 1(Not for Daily)
+        past_days: Past Days to Display. Default: 0(Not for Daily)
         start: YYYY-MM-DD format
         end: YYYY-MM-DD format
+        news: Display clickable news markers on interactive chart. Default: False
+        heikin_candles: Heikin Ashi candles. Default: False
         """
         await ShowView().discord(
-            candle_command, inter, "btc", "btc-usd", interval, past_days, start, end
+            candle_command,
+            inter,
+            "btc",
+            "btc-usd",
+            interval,
+            past_days,
+            False,
+            start,
+            end,
+            news,
+            heikin_candles,
         )
 
     @commands.slash_command(name="eth")
@@ -181,21 +187,35 @@ class SlashCommands(commands.Cog):
         self,
         inter: disnake.AppCmdInter,
         interval: int = commands.Param(choices=[1, 5, 15, 30, 60, 1440]),
-        past_days: int = 1,
+        past_days: int = 0,
         start="",
         end="",
+        news: bool = False,
+        heikin_candles: bool = False,
     ):
-        """Display Ethereum Chart
+        """Display Ethereum Chart [Yahoo Finance or Binance API]
 
         Parameters
         ----------
         interval : Chart Minute Interval, 1440 for Daily
-        past_days: Past Days to Display. Default: 1(Not for Daily)
+        past_days: Past Days to Display. Default: 0(Not for Daily)
         start: YYYY-MM-DD format
         end: YYYY-MM-DD format
+        news: Display clickable news markers on interactive chart. Default: False
+        heikin_candles: Heikin Ashi candles. Default: False
         """
         await ShowView().discord(
-            candle_command, inter, "eth", "eth-usd", interval, past_days, start, end
+            candle_command,
+            inter,
+            "eth",
+            "eth-usd",
+            interval,
+            past_days,
+            False,
+            start,
+            end,
+            news,
+            heikin_candles,
         )
 
     @commands.slash_command(name="sol")
@@ -203,24 +223,38 @@ class SlashCommands(commands.Cog):
         self,
         inter: disnake.AppCmdInter,
         interval: int = commands.Param(choices=[1, 5, 15, 30, 60, 1440]),
-        past_days: int = 1,
+        past_days: int = 0,
         start="",
         end="",
+        news: bool = False,
+        heikin_candles: bool = False,
     ):
-        """Display Solana Chart
+        """Display Solana Chart [Yahoo Finance or Binance API]
 
         Parameters
         ----------
         interval : Chart Minute Interval, 1440 for Daily
-        past_days: Past Days to Display. Default: 1(Not for Daily)
+        past_days: Past Days to Display. Default: 0(Not for Daily)
         start: YYYY-MM-DD format
         end: YYYY-MM-DD format
+        news: Display clickable news markers on interactive chart. Default: False
+        heikin_candles: Heikin Ashi candles. Default: False
         """
         await ShowView().discord(
-            candle_command, inter, "sol", "sol-usd", interval, past_days, start, end
+            candle_command,
+            inter,
+            "sol",
+            "sol-usd",
+            interval,
+            past_days,
+            False,
+            start,
+            end,
+            news,
+            heikin_candles,
         )
 
-    @commands.slash_command(name="opt-overview")
+    @opt.sub_command()
     async def overview(
         self,
         inter: disnake.AppCmdInter,
@@ -229,7 +263,7 @@ class SlashCommands(commands.Cog):
         min_sp: float = None,
         max_sp: float = None,
     ):
-        """Options Overview
+        """Options Overview [Yahoo Finance or Binance API]
 
         Parameters
         ----------
@@ -239,42 +273,48 @@ class SlashCommands(commands.Cog):
         max_sp: Maximum Strike Price
         """
         await ShowView().discord(
-            overview_command, inter, "opt-overview", ticker, expiry, min_sp, max_sp
+            overview_command, inter, "opt overview", ticker, expiry, min_sp, max_sp
         )
 
-    @commands.slash_command(name="opt-vol")
+    @opt.sub_command(name="vol")
     async def volume(
         self,
         inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
         expiry: str = commands.Param(autocomplete=expiry_autocomp),
     ):
-        """Options Volume
+        """Options Volume [Yahoo Finance]
 
         Parameters
         ----------
         ticker: Stock Ticker
         expiry: Expiration Date
         """
-        await ShowView().discord(vol_command, inter, "opt-vol", ticker, expiry)
+        await ShowView().discord(vol_command, inter, "opt vol", ticker, expiry)
 
-    @commands.slash_command(name="opt-vsurf")
+    @opt.sub_command()
     async def vsurf(
         self,
         inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
-        z: str = commands.Param(choices=commands_dict.options_vsurf_choices),
+        z: str = commands.Param(
+            choices={
+                "Volatility": "IV",
+                "Open Interest": "OI",
+                "Last Price": "LP",
+            }
+        ),
     ):
-        """Display Volatility Surface
+        """Display Volatility Surface [Yahoo Finance]
 
         Parameters
         ----------
         ticker: Stock Ticker
         z: The variable for the Z axis
         """
-        await ShowView().discord(vsurf_command, inter, "opt-vsurf", ticker, z)
+        await ShowView().discord(vsurf_command, inter, "opt vsurf", ticker, z)
 
-    @commands.slash_command(name="opt-hist")
+    @opt.sub_command(name="grhist")
     async def history(
         self,
         inter: disnake.AppCmdInter,
@@ -294,7 +334,7 @@ class SlashCommands(commands.Cog):
             ],
         ),
     ):
-        """Options Price History
+        """Options Price History with Greeks [Yahoo Finance]
 
         Parameters
         ----------
@@ -305,10 +345,10 @@ class SlashCommands(commands.Cog):
         greek: Greek variable to plot
         """
         await ShowView().discord(
-            hist_command, inter, "opt-hist", ticker, expiry, strike, opt_type, greek
+            hist_command, inter, "opt grhist", ticker, expiry, strike, opt_type, greek
         )
 
-    @commands.slash_command(name="opt-cc-hist")
+    @opt.sub_command(name="hist")
     async def cc_history(
         self,
         inter: disnake.AppCmdInter,
@@ -317,7 +357,7 @@ class SlashCommands(commands.Cog):
         strike: float = commands.Param(),
         opt_type: str = commands.Param(choices=["Calls", "Puts"]),
     ):
-        """Options Price History
+        """Options Price History [Yahoo Finance]
 
         Parameters
         ----------
@@ -327,7 +367,7 @@ class SlashCommands(commands.Cog):
         opt_type: Calls or Puts
         """
         await ShowView().discord(
-            cc_hist_command, inter, "opt-cc-hist", ticker, expiry, strike, opt_type
+            cc_hist_command, inter, "opt hist", ticker, expiry, strike, opt_type
         )
 
 

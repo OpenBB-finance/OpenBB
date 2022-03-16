@@ -73,7 +73,9 @@ class SettingsController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = "\n[info]Feature flags through environment variables:[/info]\n"
+        help_text = "\n[info]Feature flags through environment variables:[/info]\n\n"
+        color = "green" if gtff.LOG_COLLECTION else "red"
+        help_text += f"   [{color}]logcollection    allow logs to be send to openBB[/{color}]\n\n"
         color = "green" if gtff.USE_TABULATE_DF else "red"
         help_text += (
             f"   [{color}]tab              use tabulate to print dataframes[/{color}]\n"
@@ -82,6 +84,8 @@ class SettingsController(BaseController):
         help_text += (
             f"   [{color}]cls              clear console after each command[/{color}]\n"
         )
+        color = "green" if gtff.USE_COLOR else "red"
+        help_text += f"   [{color}]color            use coloring features[/{color}]\n"
         color = "green" if gtff.USE_PROMPT_TOOLKIT else "red"
         help_text += f"   [{color}]promptkit        enable prompt toolkit (autocomplete and history)[/{color}]\n"
         color = "green" if gtff.ENABLE_PREDICT else "red"
@@ -94,6 +98,8 @@ class SettingsController(BaseController):
         help_text += f"   [{color}]exithelp         automatically print help when quitting menu[/{color}]\n"
         color = "green" if gtff.REMEMBER_CONTEXTS else "red"
         help_text += f"   [{color}]rcontext         remember contexts loaded params during session[/{color}]\n"
+        color = "green" if gtff.ENABLE_RICH else "red"
+        help_text += f"   [{color}]rich             colorful rich terminal[/{color}]\n"
         color = "green" if gtff.ENABLE_RICH_PANEL else "red"
         help_text += (
             f"   [{color}]richpanel        colorful rich terminal panel[/{color}]\n"
@@ -160,6 +166,13 @@ class SettingsController(BaseController):
         console.print("")
 
     @log_start_end(log=logger)
+    def call_color(self, _):
+        """Process color command"""
+        gtff.USE_COLOR = not gtff.USE_COLOR
+        dotenv.set_key(self.env_file, "GTFF_USE_COLOR", str(gtff.USE_COLOR))
+        console.print("")
+
+    @log_start_end(log=logger)
     def call_promptkit(self, _):
         """Process promptkit command"""
         gtff.USE_PROMPT_TOOLKIT = not gtff.USE_PROMPT_TOOLKIT
@@ -216,6 +229,13 @@ class SettingsController(BaseController):
         """Process dt command"""
         gtff.USE_DATETIME = not gtff.USE_DATETIME
         dotenv.set_key(self.env_file, "GTFF_USE_DATETIME", str(gtff.USE_DATETIME))
+        console.print("")
+
+    @log_start_end(log=logger)
+    def call_rich(self, _):
+        """Process rich command"""
+        gtff.ENABLE_RICH = not gtff.ENABLE_RICH
+        dotenv.set_key(self.env_file, "GTFF_ENABLE_RICH", str(gtff.ENABLE_RICH))
         console.print("")
 
     @log_start_end(log=logger)

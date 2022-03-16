@@ -13,21 +13,17 @@ from bots.stocks.technical_analysis.bbands import bbands_command
 from bots.stocks.technical_analysis.cci import cci_command
 from bots.stocks.technical_analysis.cg import cg_command
 from bots.stocks.technical_analysis.donchian import donchian_command
-from bots.stocks.technical_analysis.ema import ema_command
 from bots.stocks.technical_analysis.fib import fib_command
 from bots.stocks.technical_analysis.fisher import fisher_command
-from bots.stocks.technical_analysis.hma import hma_command
 from bots.stocks.technical_analysis.kc import kc_command
+from bots.stocks.technical_analysis.ma import ma_command
 from bots.stocks.technical_analysis.macd import macd_command
 from bots.stocks.technical_analysis.obv import obv_command
 from bots.stocks.technical_analysis.recom import recom_command
 from bots.stocks.technical_analysis.rsi import rsi_command
-from bots.stocks.technical_analysis.sma import sma_command
 from bots.stocks.technical_analysis.stoch import stoch_command
 from bots.stocks.technical_analysis.summary import summary_command
 from bots.stocks.technical_analysis.view import view_command
-from bots.stocks.technical_analysis.wma import wma_command
-from bots.stocks.technical_analysis.zlma import zlma_command
 
 
 class TechnicalAnalysisCommands(commands.Cog):
@@ -36,251 +32,295 @@ class TechnicalAnalysisCommands(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    @commands.slash_command(name="ta-ema")
-    async def ema(
+    @commands.slash_command(name="ta")
+    async def ta(self, inter):
+        pass
+
+    @commands.slash_command(name="ta-mom")
+    async def ta_mom(self, inter):
+        pass
+
+    @commands.slash_command(name="ta-vol")
+    async def ta_vol(self, inter):
+        pass
+
+    @commands.slash_command(name="ta-vlt")
+    async def ta_vlt(self, inter):
+        pass
+
+    @commands.slash_command(name="ta-trend")
+    async def ta_trend(self, inter):
+        pass
+
+    @commands.slash_command(name="ta-ma")
+    async def ma(
         self,
         inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
+        interval: int = commands.Param(choices=[1, 5, 15, 30, 60, 1440]),
+        past_days: int = 0,
+        ma_mode: str = commands.Param(choices=["ema", "sma", "wma", "hma", "zlma"]),
         window="",
         offset: int = 0,
         start="",
         end="",
+        extended_hours: bool = False,
+        heikin_candles: bool = False,
     ):
-        """Displays chart with exponential moving average [Yahoo Finance]
+        """Displays chart with selected moving average [Yahoo Finance]
 
         Parameters
         -----------
         ticker: Stock Ticker
+        interval : Chart Minute Interval, 1440 for Daily
+        past_days: Past Days to Display. Default: 0(Not for Daily)
+        ma_mode: mode of moving average.
         window: window length. Default: 20, 50
         offset: offset. Default: 0
         start: YYYY-MM-DD format
         end: YYYY-MM-DD format
+        extended_hours: Display Pre/After Market Hours. Default: False
+        heikin_candles: Heikin Ashi candles. Default: False
         """
         await ShowView().discord(
-            ema_command, inter, "ta-ema", ticker, window, offset, start, end
+            ma_command,
+            inter,
+            "ta-ma",
+            ticker,
+            interval,
+            past_days,
+            ma_mode,
+            window,
+            offset,
+            start,
+            end,
+            extended_hours,
+            heikin_candles,
         )
 
-    @commands.slash_command(name="ta-sma")
-    async def sma(
-        self,
-        inter: disnake.AppCmdInter,
-        ticker: str = commands.Param(autocomplete=ticker_autocomp),
-        window="",
-        offset: int = 0,
-        start="",
-        end="",
-    ):
-        """Displays chart with simple moving average [Yahoo Finance]
-
-        Parameters
-        -----------
-        ticker: Stock Ticker
-        window: window length. Default: 20, 50
-        offset: offset. Default: 0
-        start: YYYY-MM-DD format
-        end: YYYY-MM-DD format
-        """
-        await ShowView().discord(
-            sma_command, inter, "ta-sma", ticker, window, offset, start, end
-        )
-
-    @commands.slash_command(name="ta-wma")
-    async def wma(
-        self,
-        inter: disnake.AppCmdInter,
-        ticker: str = commands.Param(autocomplete=ticker_autocomp),
-        window="",
-        offset: int = 0,
-        start="",
-        end="",
-    ):
-        """Displays chart with weighted moving average [Yahoo Finance]
-
-        Parameters
-        -----------
-        ticker: Stock Ticker
-        window: window length. Default: 20, 50
-        offset: offset. Default: 0
-        start: YYYY-MM-DD format
-        end: YYYY-MM-DD format
-        """
-        await ShowView().discord(
-            wma_command, inter, "ta-wma", ticker, window, offset, start, end
-        )
-
-    @commands.slash_command(name="ta-hma")
-    async def hma(
-        self,
-        inter: disnake.AppCmdInter,
-        ticker: str = commands.Param(autocomplete=ticker_autocomp),
-        window="",
-        offset: int = 0,
-        start="",
-        end="",
-    ):
-        """Displays chart with hull moving average [Yahoo Finance]
-
-        Parameters
-        -----------
-        ticker: Stock Ticker
-        window: window length. Default: 20, 50
-        offset: offset. Default: 0
-        start: YYYY-MM-DD format
-        end: YYYY-MM-DD format
-        """
-        await ShowView().discord(
-            hma_command, inter, "ta-hma", ticker, window, offset, start, end
-        )
-
-    @commands.slash_command(name="ta-zlma")
-    async def zlma(
-        self,
-        inter: disnake.AppCmdInter,
-        ticker: str = commands.Param(autocomplete=ticker_autocomp),
-        window="",
-        offset: int = 0,
-        start="",
-        end="",
-    ):
-        """Displays chart with zero lag moving average [Yahoo Finance]
-
-        Parameters
-        -----------
-        ticker: Stock Ticker
-        window: window length. Default: 20
-        offset: offset. Default: 0
-        start: YYYY-MM-DD format
-        end: YYYY-MM-DD format
-        """
-        await ShowView().discord(
-            zlma_command, inter, "ta-zlma", ticker, window, offset, start, end
-        )
-
-    @commands.slash_command(name="ta-cci")
+    @ta_mom.sub_command()
     async def cci(
         self,
         inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
+        interval: int = commands.Param(choices=[1, 5, 15, 30, 60, 1440]),
+        past_days: int = 0,
         length="14",
         scalar="0.015",
         start="",
         end="",
+        extended_hours: bool = False,
+        heikin_candles: bool = False,
     ):
         """Displays chart with commodity channel index [Yahoo Finance]
 
         Parameters
         -----------
         ticker: Stock Ticker
+        interval : Chart Minute Interval, 1440 for Daily
+        past_days: Past Days to Display. Default: 0(Not for Daily)
         length:  window length. Default: 14
         scalar: scalar. Default: 0.015
         start: YYYY-MM-DD format
         end: YYYY-MM-DD format
+        extended_hours: Display Pre/After Market Hours. Default: False
+        heikin_candles: Heikin Ashi candles. Default: False
         """
         await ShowView().discord(
-            cci_command, inter, "ta-cci", ticker, length, scalar, start, end
+            cci_command,
+            inter,
+            "ta-mom cci",
+            ticker,
+            interval,
+            past_days,
+            length,
+            scalar,
+            start,
+            end,
+            extended_hours,
+            heikin_candles,
         )
 
-    @commands.slash_command(name="ta-macd")
+    @ta_mom.sub_command()
     async def macd(
         self,
         inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
+        interval: int = commands.Param(choices=[1, 5, 15, 30, 60, 1440]),
+        past_days: int = 0,
         fast="12",
         slow="26",
         signal="9",
         start="",
         end="",
+        extended_hours: bool = False,
+        heikin_candles: bool = False,
     ):
         """Displays chart with moving average convergence/divergence [Yahoo Finance]
 
         Parameters
         -----------
-        ticker:  Stock Ticker
+        ticker: Stock Ticker
+        interval : Chart Minute Interval, 1440 for Daily
+        past_days: Past Days to Display. Default: 0(Not for Daily)
         fast: fast period. Default: 12
         slow: slow period. Default: 26
         signal: signal period. Default: 9
         start: YYYY-MM-DD format
         end: YYYY-MM-DD format
+        extended_hours: Display Pre/After Market Hours. Default: False
+        heikin_candles: Heikin Ashi candles. Default: False
         """
         await ShowView().discord(
-            macd_command, inter, "ta-macd", ticker, fast, slow, signal, start, end
+            macd_command,
+            inter,
+            "ta-mom macd",
+            ticker,
+            interval,
+            past_days,
+            fast,
+            slow,
+            signal,
+            start,
+            end,
+            extended_hours,
+            heikin_candles,
         )
 
-    @commands.slash_command(name="ta-rsi")
+    @ta_mom.sub_command()
     async def rsi(
         self,
         inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
+        interval: int = commands.Param(choices=[1, 5, 15, 30, 60, 1440]),
+        past_days: int = 0,
         length="14",
         scalar="100",
         drift="1",
         start="",
         end="",
+        extended_hours: bool = False,
+        heikin_candles: bool = False,
     ):
         """Displays chart with relative strength index [Yahoo Finance]
 
         Parameters
         -----------
         ticker: Stock Ticker
+        interval : Chart Minute Interval, 1440 for Daily
+        past_days: Past Days to Display. Default: 0(Not for Daily)
         length: length. Default: 14
         scalar: scalar. Default: 100
         drift: drift. Default: 1
         start: YYYY-MM-DD format
         end: YYYY-MM-DD format
+        extended_hours: Display Pre/After Market Hours. Default: False
+        heikin_candles: Heikin Ashi candles. Default: False
         """
         await ShowView().discord(
-            rsi_command, inter, "ta-rsi", ticker, length, scalar, drift, start, end
+            rsi_command,
+            inter,
+            "ta-mom rsi",
+            ticker,
+            interval,
+            past_days,
+            length,
+            scalar,
+            drift,
+            start,
+            end,
+            extended_hours,
+            heikin_candles,
         )
 
-    @commands.slash_command(name="ta-stoch")
+    @ta_mom.sub_command()
     async def stoch(
         self,
         inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
+        interval: int = commands.Param(choices=[1, 5, 15, 30, 60, 1440]),
+        past_days: int = 0,
         fast_k="14",
         slow_d="3",
         slow_k="3",
         start="",
         end="",
+        extended_hours: bool = False,
+        heikin_candles: bool = False,
     ):
         """Displays chart with stochastic relative strength average [Yahoo Finance]
 
         Parameters
         -----------
         ticker: Stock Ticker
+        interval : Chart Minute Interval, 1440 for Daily
+        past_days: Past Days to Display. Default: 0(Not for Daily)
         fast_k: fast_k moving average period. Default: 14
         slow_d: slow_d moving average period. Default: 3
         slow_k: slow_k moving average period. Default: 3
         start: YYYY-MM-DD format
         end: YYYY-MM-DD format
+        extended_hours: Display Pre/After Market Hours. Default: False
+        heikin_candles: Heikin Ashi candles. Default: False
         """
         await ShowView().discord(
-            stoch_command, inter, "ta-stoch", ticker, fast_k, slow_d, slow_k, start, end
+            stoch_command,
+            inter,
+            "ta-mom stoch",
+            ticker,
+            interval,
+            past_days,
+            fast_k,
+            slow_d,
+            slow_k,
+            start,
+            end,
+            extended_hours,
+            heikin_candles,
         )
 
-    @commands.slash_command(name="ta-fisher")
+    @ta_mom.sub_command()
     async def fisher(
         self,
         inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
+        interval: int = commands.Param(choices=[1, 5, 15, 30, 60, 1440]),
+        past_days: int = 0,
         length="14",
         start="",
         end="",
+        extended_hours: bool = False,
+        heikin_candles: bool = False,
     ):
         """Displays chart with fisher transformation [Yahoo Finance]
 
         Parameters
         -----------
-        ticker:  Stock Ticker
+        ticker: Stock Ticker
+        interval : Chart Minute Interval, 1440 for Daily
+        past_days: Past Days to Display. Default: 0(Not for Daily)
         length: length. Default: 14
+        scalar: scalar. Default: 100
         start: YYYY-MM-DD format
         end: YYYY-MM-DD format
+        extended_hours: Display Pre/After Market Hours. Default: False
+        heikin_candles: Heikin Ashi candles. Default: False
         """
         await ShowView().discord(
-            fisher_command, inter, "ta-fisher", ticker, length, start, end
+            fisher_command,
+            inter,
+            "ta-mom fisher",
+            ticker,
+            interval,
+            past_days,
+            length,
+            start,
+            end,
+            extended_hours,
+            heikin_candles,
         )
 
-    @commands.slash_command(name="ta-cg")
+    @ta_mom.sub_command()
     async def cg(
         self,
         inter: disnake.AppCmdInter,
@@ -298,86 +338,146 @@ class TechnicalAnalysisCommands(commands.Cog):
         start: YYYY-MM-DD format
         end: YYYY-MM-DD format
         """
-        await ShowView().discord(cg_command, inter, "ta-cg", ticker, length, start, end)
+        await ShowView().discord(
+            cg_command, inter, "ta-mom cg", ticker, length, start, end
+        )
 
-    @commands.slash_command(name="ta-adx")
+    @ta_trend.sub_command()
     async def adx(
         self,
         inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
+        interval: int = commands.Param(choices=[1, 5, 15, 30, 60, 1440]),
+        past_days: int = 0,
         length="14",
         scalar="100",
         drift="1",
         start="",
         end="",
+        extended_hours: bool = False,
+        heikin_candles: bool = False,
     ):
         """Displays chart with average directional movement index [Yahoo Finance]
 
         Parameters
         -----------
         ticker: Stock Ticker
+        interval : Chart Minute Interval, 1440 for Daily
+        past_days: Past Days to Display. Default: 0(Not for Daily)
         length: length. Default: 14
         scalar: scalar. Default: 100
         drift: drift. Default: 1
         start: YYYY-MM-DD format
         end: YYYY-MM-DD format
+        extended_hours: Display Pre/After Market Hours. Default : False
+        heikin_candles: Heikin Ashi candles. Default: False
         """
         await ShowView().discord(
-            adx_command, inter, "ta-adx", ticker, length, scalar, drift, start, end
+            adx_command,
+            inter,
+            "ta-trend adx",
+            ticker,
+            interval,
+            past_days,
+            length,
+            scalar,
+            drift,
+            start,
+            end,
+            extended_hours,
+            heikin_candles,
         )
 
-    @commands.slash_command(name="ta-aroon")
+    @ta_trend.sub_command()
     async def aroon(
         self,
         inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
+        interval: int = commands.Param(choices=[1, 5, 15, 30, 60, 1440]),
+        past_days: int = 0,
         length="25",
         scalar="100",
         start="",
         end="",
+        extended_hours: bool = False,
+        heikin_candles: bool = False,
     ):
         """Displays chart with aroon indicator [Yahoo Finance]
 
         Parameters
         -----------
         ticker: Stock Ticker
+        interval : Chart Minute Interval, 1440 for Daily
+        past_days: Past Days to Display. Default: 0(Not for Daily)
         length: length. Default: 25
         scalar: scalar. Default: 100
         start: YYYY-MM-DD format
         end: YYYY-MM-DD format
+        extended_hours: Display Pre/After Market Hours. Default: False
+        heikin_candles: Heikin Ashi candles. Default: False
         """
         await ShowView().discord(
-            aroon_command, inter, "ta-aroon", ticker, length, scalar, start, end
+            aroon_command,
+            inter,
+            "ta-trend aroon",
+            ticker,
+            interval,
+            past_days,
+            length,
+            scalar,
+            start,
+            end,
+            extended_hours,
+            heikin_candles,
         )
 
-    @commands.slash_command(name="ta-bbands")
+    @ta_vlt.sub_command()
     async def bbands(
         self,
         inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
-        length="5",
-        std="2",
+        interval: int = commands.Param(choices=[1, 5, 15, 30, 60, 1440]),
+        past_days: int = 0,
+        length="20",
+        std: float = 2.0,
         ma_mode: str = commands.Param(choices=["ema", "sma", "wma", "hma", "zlma"]),
         start="",
         end="",
+        extended_hours: bool = False,
+        heikin_candles: bool = False,
     ):
         """Displays chart with bollinger bands [Yahoo Finance]
 
         Parameters
         -----------
         ticker: Stock Ticker
+        interval : Chart Minute Interval, 1440 for Daily
+        past_days: Past Days to Display. Default: 0(Not for Daily)
         length: length. Default: 5
-        std: standard deviation. Default: 2
+        std: standard deviation. Default: 2.0
         ma_mode: mode of moving average.
         start: YYYY-MM-DD format
         end: YYYY-MM-DD format
+        extended_hours: Display Pre/After Market Hours. Default: False
+        heikin_candles: Heikin Ashi candles. Default: False
         """
-        ma_mode = str(ma_mode)
         await ShowView().discord(
-            bbands_command, inter, "ta-bbands", ticker, length, std, ma_mode, start, end
+            bbands_command,
+            inter,
+            "ta-vlt bbands",
+            ticker,
+            interval,
+            past_days,
+            length,
+            std,
+            ma_mode,
+            start,
+            end,
+            extended_hours,
+            heikin_candles,
         )
 
-    @commands.slash_command(name="ta-donchian")
+    @ta_vlt.sub_command()
     async def donchian(
         self,
         inter: disnake.AppCmdInter,
@@ -400,7 +500,7 @@ class TechnicalAnalysisCommands(commands.Cog):
         await ShowView().discord(
             donchian_command,
             inter,
-            "ta-donchian",
+            "ta-vlt donchian",
             ticker,
             upper_length,
             lower_length,
@@ -409,111 +509,180 @@ class TechnicalAnalysisCommands(commands.Cog):
         )
 
     # pylint: disable=too-many-arguments
-    @commands.slash_command(name="ta-kc")
+    @ta_vlt.sub_command()
     async def kc(
         self,
         inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
+        interval: int = commands.Param(choices=[1, 5, 15, 30, 60, 1440]),
+        past_days: int = 0,
         length="20",
         scalar="2",
         ma_mode: str = commands.Param(choices=["ema", "sma", "wma", "hma", "zlma"]),
         offset="0",
         start="",
         end="",
+        extended_hours: bool = False,
+        heikin_candles: bool = False,
     ):
         """Displays chart with keltner channel [Yahoo Finance]
 
         Parameters
         -----------
         ticker: Stock Ticker
+        interval : Chart Minute Interval, 1440 for Daily
+        past_days: Past Days to Display. Default: 0(Not for Daily)
         length: length. Default: 20
         scalar: scalar. Default: 2
         ma_mode: mode of moving average.
         offset: offset value. Default: 0
         start: YYYY-MM-DD format
         end: YYYY-MM-DD format
+        extended_hours: Display Pre/After Market Hours. Default: False
+        heikin_candles: Heikin Ashi candles. Default: False
         """
         ma_mode = str(ma_mode)
         await ShowView().discord(
             kc_command,
             inter,
-            "ta-kc",
+            "ta-vlt kc",
             ticker,
+            interval,
+            past_days,
             length,
             scalar,
             ma_mode,
             offset,
             start,
             end,
+            extended_hours,
+            heikin_candles,
         )
 
-    @commands.slash_command(name="ta-ad")
+    @ta_vol.sub_command()
     async def ad(
         self,
         inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
+        interval: int = commands.Param(choices=[1, 5, 15, 30, 60, 1440]),
+        past_days: int = 0,
         is_open="False",
         start="",
         end="",
+        extended_hours: bool = False,
+        heikin_candles: bool = False,
     ):
         """Displays chart with accumulation/distribution line [Yahoo Finance]
 
         Parameters
         -----------
         ticker: Stock Ticker
+        interval : Chart Minute Interval, 1440 for Daily
+        past_days: Past Days to Display. Default: 0(Not for Daily)
         is_open: whether open price is used. Default: False
         start: YYYY-MM-DD format
         end: YYYY-MM-DD format
+        extended_hours: Display Pre/After Market Hours. Default: False
+        heikin_candles: Heikin Ashi candles. Default: False
         """
         await ShowView().discord(
-            ad_command, inter, "ta-ad", ticker, is_open, start, end
+            ad_command,
+            inter,
+            "ta-vol ad",
+            ticker,
+            interval,
+            past_days,
+            is_open,
+            start,
+            end,
+            extended_hours,
+            heikin_candles,
         )
 
-    @commands.slash_command(name="ta-adosc")
+    @ta_vol.sub_command()
     async def adosc(
         self,
         inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
-        is_open="False",
+        interval: int = commands.Param(choices=[1, 5, 15, 30, 60, 1440]),
+        past_days: int = 0,
+        is_open: bool = False,
         fast="3",
         slow="10",
         start="",
         end="",
+        extended_hours: bool = False,
+        heikin_candles: bool = False,
     ):
         """Displays chart with chaikin oscillator [Yahoo Finance]
 
         Parameters
         -----------
         ticker: Stock Ticker
+        interval : Chart Minute Interval, 1440 for Daily
+        past_days: Past Days to Display. Default: 0(Not for Daily)
         is_open: whether open price is used. Default: False
         fast: fast value. Default: 3
         slow: slow value. Default: 10
         start: YYYY-MM-DD format
         end: YYYY-MM-DD format
+        extended_hours: Display Pre/After Market Hours. Default: False
+        heikin_candles: Heikin Ashi candles. Default: False
         """
         await ShowView().discord(
-            adosc_command, inter, "ta-adosc", ticker, is_open, fast, slow, start, end
+            adosc_command,
+            inter,
+            "ta-vol adosc",
+            ticker,
+            interval,
+            past_days,
+            is_open,
+            fast,
+            slow,
+            start,
+            end,
+            extended_hours,
+            heikin_candles,
         )
 
-    @commands.slash_command(name="ta-obv")
+    @ta_vol.sub_command()
     async def obv(
         self,
         inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
+        interval: int = commands.Param(choices=[1, 5, 15, 30, 60, 1440]),
+        past_days: int = 0,
         start="",
         end="",
+        extended_hours: bool = False,
+        heikin_candles: bool = False,
     ):
         """Displays chart with on balance volume [Yahoo Finance]
 
         Parameters
         -----------
         ticker: Stock Ticker
-        start: YYYY-MM-DD
-        end: YYYY-MM-DD
+        interval : Chart Minute Interval, 1440 for Daily
+        past_days: Past Days to Display. Default: 0(Not for Daily)
+        start: YYYY-MM-DD format
+        end: YYYY-MM-DD format
+        extended_hours: Display Pre/After Market Hours. Default: False
+        heikin_candles: Heikin Ashi candles. Default: False
         """
-        await ShowView().discord(obv_command, inter, "ta-obv", ticker, start, end)
+        await ShowView().discord(
+            obv_command,
+            inter,
+            "ta-vol obv",
+            ticker,
+            interval,
+            past_days,
+            start,
+            end,
+            extended_hours,
+            heikin_candles,
+        )
 
-    @commands.slash_command(name="ta-fib")
+    @ta.sub_command()
     async def fib(
         self,
         inter: disnake.AppCmdInter,
@@ -529,9 +698,9 @@ class TechnicalAnalysisCommands(commands.Cog):
         start: YYYY-MM-DD format
         end: YYYY-MM-DD format
         """
-        await ShowView().discord(fib_command, inter, "ta-fib", ticker, start, end)
+        await ShowView().discord(fib_command, inter, "ta fib", ticker, start, end)
 
-    @commands.slash_command(name="ta-view")
+    @ta.sub_command()
     async def view(
         self,
         inter: disnake.AppCmdInter,
@@ -543,9 +712,9 @@ class TechnicalAnalysisCommands(commands.Cog):
         -----------
         ticker: Stock Ticker
         """
-        await ShowView().discord(view_command, inter, "ta-view", ticker)
+        await ShowView().discord(view_command, inter, "ta view", ticker)
 
-    @commands.slash_command(name="ta-summary")
+    @ta.sub_command()
     async def summary(
         self,
         inter: disnake.AppCmdInter,
@@ -557,9 +726,9 @@ class TechnicalAnalysisCommands(commands.Cog):
         -----------
         ticker: Stock Ticker
         """
-        await ShowView().discord(summary_command, inter, "ta-summary", ticker)
+        await ShowView().discord(summary_command, inter, "ta summary", ticker)
 
-    @commands.slash_command(name="ta-recom")
+    @ta.sub_command()
     async def recom(
         self,
         inter: disnake.AppCmdInter,
@@ -571,7 +740,7 @@ class TechnicalAnalysisCommands(commands.Cog):
         -----------
         ticker: Stock Ticker
         """
-        await ShowView().discord(recom_command, inter, "ta-recom", ticker)
+        await ShowView().discord(recom_command, inter, "ta recom", ticker)
 
 
 def setup(bot: commands.Bot):
