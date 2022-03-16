@@ -1177,6 +1177,20 @@ main:
             sub:
               - name: calendar
                 ref: "/terminal/forex/oanda/calendar"
+              - name: cancel
+                ref: "/terminal/forex/oanda/cancel"
+              - name: candles
+                ref: "/terminal/forex/oanda/candles"
+              - name: closetrade
+                ref: "/terminal/forex/oanda/closetrade"
+              - name: orderbook
+                ref: "/terminal/forex/oanda/orderbook"
+              - name: pending
+                ref: "/terminal/forex/oanda/pending"
+              - name: positionbook
+                ref: "/terminal/forex/oanda/positionbook"
+              - name: positions
+                ref: "/terminal/forex/oanda/positions"
       - name: alternative
         ref: "/terminal/alternative"
         sub:
