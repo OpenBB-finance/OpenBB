@@ -48,9 +48,10 @@ Example:
 ```
 2022 Mar 15, 07:33 (✨) /economy/ $ treasury -m 1y 3y 5y 10y 30y
 ```
-![3y 5y 10y 30y nominal](https://user-images.githubusercontent.com/46355364/158369352-c9832ed0-89f4-4f19-824b-a96387335a90.png)
+![3y 5y 10y 30y nominal](https://user-images.githubusercontent.com/46355364/158575884-8ec4e1dc-fb5b-4440-be4b-5e1dcd6d2a5e.png)
 
 ```
 2022 Mar 15, 07:35 (✨) /economy/ $ treasury -m 5y -t nominal inflation average -s 2005-01-01
 ```
-![5y nominal inflation average](https://user-images.githubusercontent.com/46355364/158369661-8d34d7ef-3d91-4138-bc7b-7430bc71c9b2.png)
+![5y nominal inflation average](https://user-images.githubusercontent.com/46355364/158575921-ff7c387c-8eb6-4716-80c4-f4c5121633f2.png)
+

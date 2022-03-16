@@ -2,9 +2,7 @@
 usage: index [-i INDICES [INDICES ...]] [-si] [-iv {1m,2m,5m,15m,30m,60m,90m,1h,1d,5d,1wk,1mo,3mo}] [-s START_DATE] [-e END_DATE] [-c COLUMN] [-q QUERY [QUERY ...]] [-st] [-h] [--export {csv,json,xlsx}] [--raw] [-l LIMIT]
 ```
 
-Obtain any set of indices and plot them together. With the -si argument the major indices are shown. By using the arguments (for example 'nasdaq' and 'sp500') you can collect data and plot the graphs together. [Source: Yahoo finance /
-FinanceDatabase]
-
+Obtain any set of indices and plot them together. With the -si argument the major indices are shown. By using the arguments (for example 'nasdaq' and 'sp500') you can collect data and plot the graphs together. [Source: Yahoo finance / FinanceDatabase]
 
 ```
 optional arguments:
@@ -34,12 +32,12 @@ Example:
 ```
 2022 Mar 15, 07:29 (✨) /economy/ $ index nasdaq dowjones
 ```
-![index nasdaq dowjones](https://user-images.githubusercontent.com/46355364/158368540-27da2fa8-b2fd-42af-bacb-ec9c40c4986e.png)
+![index nasdaq dowjones](https://user-images.githubusercontent.com/46355364/158573612-f2e4b04c-b833-4899-9817-62e40b9fe1d2.png)
 
 ```
 2022 Mar 15, 07:29 (✨) /economy/ $ index vix
 ```
-![index vix](https://user-images.githubusercontent.com/46355364/158368642-71ef96af-6b41-4514-8683-593ea0984b56.png)
+![index vix](https://user-images.githubusercontent.com/46355364/158573676-9871c58e-3ffd-44d5-888a-c1d76ec98251.png)
 
 ```
 2022 Mar 15, 07:30 (✨) /economy/ $ index -si
@@ -72,5 +70,3 @@ Example:
 │ cac40    │ CAC 40 Index                 │ ^FCHI     │
 └──────────┴──────────────────────────────┴───────────┘
 ```
-
-
