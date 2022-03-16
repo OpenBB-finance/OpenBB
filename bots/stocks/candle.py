@@ -1,13 +1,12 @@
 from datetime import datetime, timedelta
 
+import bots.config_discordbot as cfg
 import plotly.graph_objects as go
 import yfinance as yf
-from plotly.subplots import make_subplots
-
-import bots.config_discordbot as cfg
-from bots.config_discordbot import logger
 from bots import helpers
+from bots.config_discordbot import logger
 from gamestonk_terminal.common.technical_analysis import overlap_model
+from plotly.subplots import make_subplots
 
 
 def candle_command(
@@ -53,10 +52,6 @@ def candle_command(
             end=end,
             progress=False,
         )
-
-        # Check that loading a stock was not successful
-        if df_stock_candidate.empty:
-            raise Exception(f"No data found for {ticker.upper()}")
 
         df_stock_candidate.index.name = "date"
     else:
