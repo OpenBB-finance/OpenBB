@@ -56,8 +56,8 @@ def get_index(
     pd.Series
         A series with the requested index
     """
-    if index in INDICES:
-        ticker = INDICES[index]["ticker"]
+    if index.lower() in INDICES:
+        ticker = INDICES[index.lower()]["ticker"]
     else:
         ticker = index
 
