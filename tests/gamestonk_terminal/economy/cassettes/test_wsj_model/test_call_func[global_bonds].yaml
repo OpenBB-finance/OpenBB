@@ -1,0 +1,74 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:82.1) Gecko/20100101 Firefox/82.1
+    method: GET
+    uri: https://www.wsj.com/market-data?id=%7B%22application%22%3A%22WSJ%22%2C%22bonds%22%3A%5B%7B%22symbol%22%3A%22TMUBMUSD10Y%22%2C%22name%22%3A%22U.S.%2010%20Year%22%7D%2C%7B%22symbol%22%3A%22TMBMKDE-10Y%22%2C%22name%22%3A%22Germany%2010%20Year%22%7D%2C%7B%22symbol%22%3A%22TMBMKGB-10Y%22%2C%22name%22%3A%22U.K.%2010%20Year%22%7D%2C%7B%22symbol%22%3A%22TMBMKJP-10Y%22%2C%22name%22%3A%22Japan%2010%20Year%22%7D%2C%7B%22symbol%22%3A%22TMBMKAU-10Y%22%2C%22name%22%3A%22Australia%2010%20Year%22%7D%2C%7B%22symbol%22%3A%22AMBMKRM-10Y%22%2C%22name%22%3A%22China%2010%20Year%22%7D%5D%7D&type=mdc_governmentbonds
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA62YXY+bOBSG/wridhOwISSEu0mnGmnSVNVOop1qqVZMQhNaIFkgO0pH+e97bGAw
+        YAec9BJ/wfHDOX5fv6nBRnXUN1f1DocwWHtZsI9d1XHVv54eXXXgqi/7eJNCy98wJj1FL/uQdi8X
+        q9li9XSP0Vc6LPYin3astCdNwUj56nuJq54HzWmzxfz+47A17cFPIi8+dcx8mLVnrrR51wsfv7Sn
+        PXoHL+6Yd7dqz7s7plnihYEnnntH5v65aM/9sAtidt63szpQs9PBBwTRZv3Pdv+fn8SRH2d016Fz
+        42We6rypQQxvPZKelKBQX8Kjv028NP2w8+LYD2EB/VewhS009H+P+8xPdQNjczRBFtYT3wuzIPJh
+        vfX+GGfJCYbPnvPHwz7+4idrWBkasWZPLPLaH5/8rRd+hg+HVhapsoTV0mNyUj7DW2AovDIL0hS+
+        0hyo6QF6yQ81HA5JaMH6p5/AI/O30ObITzMvOkCPgQxjiMwhHi+x6SDTMdEfCDkIVTszg72Ap1Pg
+        hxsS7pY0Ig2Z47K1CsDQsD2C5u97+J2yzN9wQoDuY0J2bJdlh9TR9dfXV+01/aGt95EeeclPPxuS
+        fS83krDQZ886GwQg788AY0OCAURGo68zaOSH8vD+qyjF/ghA4MlUm9RZvKfgZRaWg4y+LCyjzQJp
+        pj3hsGiEcj2OKg45HJOJBI6RZlhtHGzRUR6CMBMDsCzNbu1/Xsi69h8jzUDTvgxGkzYDrI2NMTcf
+        5r8hH6pApAAYI1sqHzAnH2rlWyIbpraGWjTy80FMA00BgIPNXiSGJIE5KAhLXmmqRXITiyIMKRZo
+        PJY6H3i1qXUk9uZhIk5tyk/dCzQsOCScnnlBaOAR76AYTTGHRiuWm4gUocgRwTJEDM2etonUhEZv
+        GmNTM1gajI7pzA27Nw0T8WjYmFemanFcS4IN4/xtoIYe9GZLmcLLjIVwLeVuoXy8XyqmDqwMA/iq
+        Oy/d5UI62FCt9+a6dVHtkmY3F9Yu0YVuKa7dXF677yKyHMqK7HIKFZPlgJrYdnMlylumEt3cZZri
+        +/JKhQgXfNC87wcVopy7TF2cX16nEOncddpiXbgWK9q5a9XFu0vlO5X35IenyDkSng4gPyUMIP9G
+        JeMLS9UsC3ShbilP1y1KA50yey6bqvJAO6ikzz+jKhEtp1aX9XR4WSNcUiTcokrQiSDu88BpoeDa
+        wfeMob1CkV/fP1IyaAtTNGgHFftVDxseFfy0q1Y7OFYUhkD5oB3XC//C7ElQY8V/f2rUBHCpdRiB
+        LnTUDrTp1V35RXqVLehPzzL49KhFENBr3QjcApCJTxogYxf6A6S2QZB2DevQhYwYCC4x5jakgxh7
+        nvWnNprwqVFTIcy5+W/KOSZAWWSswZDJOSzIuYtmozPjiOXg8mOupYT86tajJ7vcgohSDmyIAF7j
+        TuxGemV4svRYSyJzzokqZqc96SBITAqXH3M9KOZXMysS/PBIdOCBcRHw49xN3siwDFGaIb6GITUz
+        XIYXDU0HP2JrmvyaV7Rd+WdL8zORiB9YHQG/xv3w9exq4YHncZump+8xURvPsT6w+lk9/w+hxZPu
+        RhgAAA==
+    headers:
+      Cache-Control:
+      - public, max-age=120, no-cache=Set-Cookie
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Wed, 16 Mar 2022 13:05:32 GMT
+      ETag:
+      - W/"1846-movfG9JsZmsHPHd8Bd9QpFe2Zhs"
+      GC-Versions:
+      - 2.1.815|0.4.956|4.1.2
+      Transfer-Encoding:
+      - chunked
+      Via:
+      - 1.1 4b3bed207ec72204ebc89ae818e573ee.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id:
+      - AdEAWgB5R4g7FztsWl5QXWeNdQtnwIMYhZ95jtf2IPJhYnBwGcI03Q==
+      X-Amz-Cf-Pop:
+      - AMS54-C1
+      X-Cache:
+      - Miss from cloudfront
+      X-Content-Type-Options:
+      - nosniff
+      X-Powered-By:
+      - Express
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

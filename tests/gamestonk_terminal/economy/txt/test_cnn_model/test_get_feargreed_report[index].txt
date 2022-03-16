@@ -1,0 +1,5 @@
+Fear & Greed Now: 19 (Extreme Fear)
+   Previous Close: 16 (Extreme Fear)
+   1 Week Ago: 13 (Extreme Fear)
+   1 Month Ago: 21 (Extreme Fear)
+   1 Year Ago: 60 (Greed)

@@ -1,0 +1,58 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/PM?events=div%2Csplits&includePrePost=False&interval=1d&period1=MOCK_PERIOD_1&period2=MOCK_PERIOD_2
+  response:
+    body:
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"PM","exchangeName":"NYQ","instrumentType":"EQUITY","firstTradeDate":1205760600,"regularMarketTime":1647374402,"gmtoffset":-14400,"timezone":"EDT","exchangeTimezoneName":"America/New_York","regularMarketPrice":92.66,"chartPreviousClose":88.87,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EDT","start":1647417600,"end":1647437400,"gmtoffset":-14400},"regular":{"timezone":"EDT","start":1647437400,"end":1647460800,"gmtoffset":-14400},"post":{"timezone":"EDT","start":1647460800,"end":1647475200,"gmtoffset":-14400}},"dataGranularity":"1d","range":"","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1647264600,1647351000,1647374402],"indicators":{"quote":[{"high":[90.58000183105469,92.94999694824219,92.94499969482422],"close":[89.58999633789062,92.66000366210938,92.66000366210938],"volume":[16030300,8224500,7720104],"open":[89.88999938964844,91.33000183105469,91.33000183105469],"low":[88.37000274658203,90.61000061035156,90.61000061035156]}],"adjclose":[{"adjclose":[89.58999633789062,92.66000366210938,92.66000366210938]}]}}],"error":null}}'
+    headers:
+      Age:
+      - '1'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=15552000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=10, stale-while-revalidate=20
+      content-length:
+      - '1154'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Wed, 16 Mar 2022 13:04:50 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '17'
+      x-request-id:
+      - 90c91729-c47e-4e10-890b-869236ccd712
+      x-yahoo-request-id:
+      - 3fqv0u5h33o3j
+      y-rid:
+      - 3fqv0u5h33o3j
+    status:
+      code: 200
+      message: OK
+version: 1

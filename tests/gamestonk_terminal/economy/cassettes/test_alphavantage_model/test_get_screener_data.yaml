@@ -1,0 +1,62 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www.alphavantage.co/query?apikey=MOCK_API_KEY&function=SECTOR
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAwAAAP//7JdNb9QwEIbv/AprJRBIePD427lBt0ARlVC3PXC0FsNG7CYocZEQ4r+j
+        ZCu6cTdeixMHrrEznszzzvjNz0eEELK4DNGTpY9+UZGf46Px8UXzue12PtZts6jI4mZFVmEd2458
+        CN240qwDedoFv431LpAnZFP3se3qtd8+Wzy/j/Pe95Fchc9d6Dfh0xCKM84pExQ1Ya5ishKa3Kxe
+        nPs+hq5ZjK/+2kdYXPnmK3lZkavgt/R6OOjg+NmEyXVYb5p22375MRwoQIrHhzmdtU1/uwsdWdb9
+        ugvDK7672ypcsnW3u23q9T7uKnTf63Xox88Aro5HXUX/bftnE042vR0KtiFnvhvSXyC4aWoXzafb
+        Pna13/b7dTU95HXd+GZ9vyym4W9iva1jHe5WkwwvfQwHoZFNVocak/M++jimxsBM18+b0O0LSgUY
+        /vgIqVcVQbL0P/4pSvI/pSmls4qoPKVp/hK0LSZjTa6S+5TmPlaA5Lk6czA2WZ9TE4JxJ7kjCFOo
+        IwSUeQ5WzzNmYHCOkgHFjlFaDr102TZxM89pcogGrWYOEWBVDgsfc5j/OgQjc2AYKDOPlSKgOAmD
+        csBSulSlOpoqlipwtpAs1SBYobypBm2OwTqviDgF6wAHSwsyAclB4ulyIVibYzrUk+WgUQEiN7bo
+        g2aeUlWgdU40VIMqBooCjC6lgDKVegYvakB9jNnrinwMvqOxpUsfA3n68Xr5rAQft+n9M8FHEZjL
+        1VWmM/soX5lWP8WnwGVn7SDsHD831iXDDxGMKgao0/bNATTAZDFAM+roIcA3w4QcEBb1nEq7Kp1x
+        FoTMugAFKtO1KEsMIQrgxXcYAuYa1IC083xVqsJEPyIdD/O8GMjSe5IacEdNx9thQuZhZSrBOPDS
+        8aDyc0u6lEDCWapUyYkdYmn8+XIIB+y0KIQCnTWYQoLM9ip36UyZ3ig8HfX3jYE4WpeHxC4Gm/jX
+        xKxKPcM8MSfSKzhBYjRIl5G6A2Fz5VGYGpQpUsVG1c4DUAxsxsMLlzrTGcxOl/63uNTB3BMzoOQx
+        YO8qguyviUkuyolxy8CKrKXUCJjzaOgsqOyEQuVAy8y/EeclxhI5pqN/OrgZB8cKuWidDqIDK4/j
+        /8sezKNfvwEAAP//AwAGiZlkYBEAAA==
+    headers:
+      Allow:
+      - GET, HEAD, OPTIONS
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 6ecdb211a9a89740-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 16 Mar 2022 13:04:36 GMT
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Cookie
+      Via:
+      - 1.1 vegur
+      X-Frame-Options:
+      - SAMEORIGIN
+    status:
+      code: 200
+      message: OK
+version: 1

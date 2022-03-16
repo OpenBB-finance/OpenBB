@@ -67,7 +67,7 @@ def get_index(
         end=end_date,
         interval=interval,
         progress=False,
-        show_errors=True,
+        show_errors=False,
     )
 
     if column not in index_data.columns:
