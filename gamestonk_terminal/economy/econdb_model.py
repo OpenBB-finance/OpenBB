@@ -392,13 +392,13 @@ PARAMETERS = {
         "name": "Net international investment position (Assets)",
         "scale": "Millions",
         "period": "Quarterly",
-        "description": "A nation's stock of foreign assets and a foreigner's stock.",
+        "description": "A nation's stock of foreign assets.",
     },
     "IIPL": {
         "name": "Net international investment position (Liabilities)",
         "scale": "Millions",
         "period": "Quarterly",
-        "description": "Measures a foreigner's stock of the nation's assets.",
+        "description": "A foreigner's stock of the nation's assets.",
     },
     "Y10YD": {
         "name": "Long term yield (10-year)",
