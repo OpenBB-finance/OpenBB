@@ -26,7 +26,7 @@ class DashboardsController(BaseController):
     """Dashboards Controller class"""
 
     CHOICES_COMMANDS = ["stocks", "correlation", "vsurf", "chains", "shortdata"]
-    PATH = "/jupyter/dashboard/"
+    PATH = "/jupyter/dashboards/"
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
