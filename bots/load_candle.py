@@ -232,15 +232,6 @@ def stock_data(
             df_stock["OC_High"] = df_stock[["Open", "Close"]].max(axis=1)
             df_stock["OC_Low"] = df_stock[["Open", "Close"]].min(axis=1)
 
-            intervals = {15, 30, 60, 120}
-            if interval in intervals:
-                x_start = dt_utcnow_local_tz() - timedelta(days=past_days)
-                x_end = df_stock.index[-1]
-                x_end = x_end
-                df_stock = df_stock.loc[
-                    (df_stock.index >= x_start.strftime("%Y-%m-%d"))
-                    & (df_stock.index < x_end)
-                ]
         else:
             d_granularity = {
                 "1m": past_days,
@@ -447,7 +438,7 @@ def candle_fig(
             start_new = (dt_utcnow_local_tz() - timedelta(days=30)).strftime(
                 cfg.DATE_FORMAT
             )
-            end_new = datetime.utcnow().strftime(cfg.DATE_FORMAT)
+            end_new = dt_utcnow_local_tz().strftime(cfg.DATE_FORMAT)
             articles = finnhub_client.company_news(
                 ticker.upper(), _from=start_new, to=end_new
             )
@@ -455,7 +446,7 @@ def candle_fig(
             # Grab Data
             area_int = 0
             for article in articles:
-                dt_df = datetime.fromtimestamp(article["datetime"]).strftime(
+                dt_df = datetime.fromtimestamp(article["datetime"], tz=est_tz).strftime(
                     "%Y-%m-%d %H:%M:%S%z"
                 )
                 df_date.append(dt_df)
@@ -491,8 +482,12 @@ def candle_fig(
                 "url": df_url,
             }
         )
-        df_news = df_news.set_index(pd.to_datetime(df_date))
-
+        df_news = df_news.set_index(
+            pd.to_datetime(df_date, utc=True).tz_convert(est_tz)
+        )
+        df_news = df_news.loc[
+            (df_news.index >= df_stock.index[0]) & (df_news.index < df_stock.index[-1])
+        ]
         customdatadf = np.stack((df_news["Content"], df_news["url"]), axis=-1)
         hover_temp = (
             "<br><b>News:%{text}</b><br><br>Summary:%{customdata[0]}<br>"
@@ -532,15 +527,6 @@ def candle_fig(
         showarrow=False,
     )
     if interval != 1440:
-        intervals = {15, 30, 60}
-        if crypto in ticker.upper() and interval not in intervals:
-            x_start = dt_utcnow_local_tz() - timedelta(hours=7)
-            if interval == 1:
-                x_start = dt_utcnow_local_tz() - timedelta(hours=1.5)
-
-            fig.update_layout(
-                xaxis_range=[x_start, df_stock.index[-1]],
-            )
         fig.update_traces(xhoverformat="%I:%M%p %b %d '%y")
         fig.update_xaxes(
             tickformatstops=[
