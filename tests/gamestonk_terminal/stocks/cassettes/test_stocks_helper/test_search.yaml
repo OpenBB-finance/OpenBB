@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - python-requests/2.26.0
+      - python-requests/2.27.1
     method: GET
     uri: https://raw.githubusercontent.com/JerBouma/FinanceDatabase/master/Database/Equities/Equities%20List.json
   response:
@@ -3695,11 +3695,11 @@ interactions:
       Content-Type:
       - text/plain; charset=utf-8
       Date:
-      - Thu, 09 Dec 2021 17:05:41 GMT
+      - Wed, 16 Mar 2022 15:13:10 GMT
       ETag:
       - W/"fe40cff9436b82e4db55c4fe72f3d81b5180c794042f9eebf5a78ce2469566b6"
       Expires:
-      - Thu, 09 Dec 2021 17:10:41 GMT
+      - Wed, 16 Mar 2022 15:18:10 GMT
       Source-Age:
       - '0'
       Strict-Transport-Security:
@@ -3715,15 +3715,15 @@ interactions:
       X-Content-Type-Options:
       - nosniff
       X-Fastly-Request-ID:
-      - 872e4f0ca46bf305bf43104f8e74d51cb2375837
+      - 2b1dec6d643821235081887b7f429e5d538bf3f1
       X-Frame-Options:
       - deny
       X-GitHub-Request-Id:
-      - 1990:3D9E:82310:8960A:61B23512
+      - 2A58:250E:1AFE9B:29E28C:6231FA75
       X-Served-By:
-      - cache-cdg20741-CDG
+      - cache-iad-kiad7000110-IAD
       X-Timer:
-      - S1639069541.324421,VS0,VE199
+      - S1647443591.587032,VS0,VE1
       X-XSS-Protection:
       - 1; mode=block
     status:

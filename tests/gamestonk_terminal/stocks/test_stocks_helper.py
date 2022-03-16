@@ -1,7 +1,9 @@
 # IMPORTATION STANDARD
 from datetime import datetime
+import os
 
 # IMPORTATION THIRDPARTY
+import pandas as pd
 import pytest
 
 # IMPORTATION INTERNAL
@@ -65,6 +67,49 @@ def test_load(interval, recorder, source):
         source=source,
     )
     recorder.capture(result_df)
+
+
+@pytest.mark.vcr
+@pytest.mark.parametrize(
+    "weekly, monthly",
+    [(True, True), (True, False), (False, True)],
+)
+def test_load_week_or_month(recorder, weekly, monthly):
+    ticker = "AAPL"
+    start = datetime.strptime("2019-12-01", "%Y-%m-%d")
+    end = datetime.strptime("2021-12-02", "%Y-%m-%d")
+    prepost = False
+    result_df = stocks_helper.load(
+        ticker=ticker,
+        start=start,
+        interval=1440,
+        end=end,
+        prepost=prepost,
+        source="yf",
+        weekly=weekly,
+        monthly=monthly,
+    )
+    recorder.capture(result_df)
+
+
+@pytest.mark.vcr
+@pytest.mark.record_stdout
+@pytest.mark.parametrize(
+    "path",
+    ["none", os.path.join(os.path.join("custom_imports", "stocks"), "test.csv")],
+)
+def test_load_custom_output(path):
+    stocks_helper.load_custom(path)
+
+
+@pytest.mark.vcr
+@pytest.mark.parametrize(
+    "path",
+    [os.path.join(os.path.join("custom_imports", "stocks"), "test.csv")],
+)
+def test_load_custom_output_df(path):
+    df = stocks_helper.load_custom(path)
+    assert isinstance(df, pd.DataFrame)
 
 
 @pytest.mark.default_cassette("test_display_candle")
