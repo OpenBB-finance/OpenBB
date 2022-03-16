@@ -194,40 +194,246 @@ COUNTRY_CURRENCIES = {
 }
 
 PARAMETERS = {
-    "RGDP": "Real gross domestic product",
-    "RPRC": "Real private consumption",
-    "RPUC": "Real public consumption",
-    "RGFCF": "Real gross fixed capital formation",
-    "REXP": "Real exports of goods and services",
-    "RIMP": "Real imports of goods and services",
-    "GDP": "Gross domestic product",
-    "PRC": "Private consumption",
-    "PUC": "Public consumption",
-    "GFCF": "Gross fixed capital formation",
-    "EXP": "Exports of goods and services",
-    "IMP": "Imports of goods and services",
-    "CPI": "Consumer price index",
-    "PPI": "Producer price index",
-    "CORE": "Core consumer price index",
-    "URATE": "Unemployment",
-    "EMP": "Employment",
-    "ACOIO": "Active population",
-    "EMRATIO": "Employment to working age population",
-    "RETA": "Retail trade",
-    "CONF": "Consumer confidence index",
-    "IP": "Industrial production",
-    "CP": "Construction production",
-    "GBAL": "Government balance",
-    "GREV": "General government total revenue",
-    "GSPE": "General government total expenditure",
-    "GDEBT": "Government debt",
-    "CA": "Current account balance",
-    "NIIP": "Net international investment position",
-    "Y10YD": "Long term yield (10-year)",
-    "M3YD": "3 month yield",
-    "HOU": "House price index",
-    "OILPROD": "Oil production",
-    "POP": "Population",
+    "RGDP": {
+        "name": "Real gross domestic product",
+        "scale": "Millions",
+        "period": "Quarterly",
+        "description": "Inflation-adjusted measure that reflects the value of all goods and services produced by "
+        "an economy in a given year (chain-linked series).",
+    },
+    "RPRC": {
+        "name": "Real private consumption",
+        "scale": "Millions",
+        "period": "Quarterly",
+        "description": "All purchases made by consumers adjusted by inflation (chain-linked series).",
+    },
+    "RPUC": {
+        "name": "Real public consumption",
+        "scale": "Millions",
+        "period": "Quarterly",
+        "description": "All purchases made by the government adjusted by inflation (chain-linked series).",
+    },
+    "RGFCF": {
+        "name": "Real gross fixed capital formation",
+        "scale": "Millions",
+        "period": "Quarterly",
+        "description": "The acquisition of produced assets adjusted by inflation (chain-linked series).",
+    },
+    "REXP": {
+        "name": "Real exports of goods and services",
+        "scale": "Millions",
+        "period": "Quarterly",
+        "description": "Transactions in goods and services from residents to non-residents adjusted for "
+        "inflation (chain-linked series)",
+    },
+    "RIMP": {
+        "name": "Real imports of goods and services",
+        "scale": "Millions",
+        "period": "Quarterly",
+        "description": "Transactions in goods and services to residents from non-residents adjusted for "
+        "inflation (chain-linked series)",
+    },
+    "GDP": {
+        "name": "Gross domestic product",
+        "scale": "Millions",
+        "period": "Quarterly",
+        "description": "Measure that reflects the value of all goods and services produced by "
+        "an economy in a given year (chain-linked series).",
+    },
+    "PRC": {
+        "name": "Private consumption",
+        "scale": "Millions",
+        "period": "Quarterly",
+        "description": "All purchases made by consumers (chain-linked series).",
+    },
+    "PUC": {
+        "name": "Public consumption",
+        "scale": "Millions",
+        "period": "Quarterly",
+        "description": "All purchases made by the government (chain-linked series)",
+    },
+    "GFCF": {
+        "name": "Gross fixed capital formation",
+        "scale": "Millions",
+        "period": "Quarterly",
+        "description": "The acquisition of produced assets (chain-linked series).",
+    },
+    "EXP": {
+        "name": "Exports of goods and services",
+        "scale": "Millions",
+        "period": "Quarterly",
+        "description": "Transactions in goods and services from residents to non-residents (chain-linked series)",
+    },
+    "IMP": {
+        "name": "Imports of goods and services",
+        "scale": "Millions",
+        "period": "Quarterly",
+        "description": "Transactions in goods and services to residents from non-residents (chain-linked series)",
+    },
+    "CPI": {
+        "name": "Consumer price index",
+        "scale": "Index",
+        "period": "Monthly",
+        "description": "Purchasing power defined with base 2015 for Europe with varying bases for others. See: "
+        "https://www.econdb.com/main-indicators",
+    },
+    "PPI": {
+        "name": "Producer price index",
+        "scale": "Index",
+        "period": "Monthly",
+        "description": "Change in selling prices with base 2015 for Europe with varying bases for others. See: "
+        "https://www.econdb.com/main-indicators",
+    },
+    "CORE": {
+        "name": "Core consumer price index",
+        "scale": "Index",
+        "period": "Monthly",
+        "description": "Purchasing power excluding food and energy defined with base 2015 for Europe with varying "
+        "bases for others. See: https://www.econdb.com/main-indicators",
+    },
+    "URATE": {
+        "name": "Unemployment",
+        "scale": "Percentage",
+        "period": "Monthly",
+        "description": "Monthly average % of the working-age population that is unemployed.",
+    },
+    "EMP": {
+        "name": "Employment",
+        "scale": "Thousands",
+        "period": "Quarterly",
+        "description": "The employed population within a country (in thousands).",
+    },
+    "ACOIO": {
+        "name": "Active population",
+        "scale": "Thousands",
+        "period": "Quarterly",
+        "description": "The active population, unemployed and employed, in thousands.",
+    },
+    "EMRATIO": {
+        "name": "Employment to working age population",
+        "scale": "Percentage",
+        "period": "Quarterly",
+        "description": "Unlike the unemployment rate, the employment-to-population ratio includes unemployed "
+        "people not looking for jobs.",
+    },
+    "RETA": {
+        "name": "Retail trade",
+        "scale": "Index",
+        "period": "Monthly",
+        "description": "Turnover of sales in wholesale and retail trade",
+    },
+    "CONF": {
+        "name": "Consumer confidence index",
+        "scale": "Index",
+        "period": "Monthly",
+        "description": "Measures how optimistic or pessimistic consumers are regarding their expected financial "
+        "situation.",
+    },
+    "IP": {
+        "name": "Industrial production",
+        "scale": "Index",
+        "period": "Monthly",
+        "description": "Measures monthly changes in the price-adjusted output of industry.",
+    },
+    "CP": {
+        "name": "Construction production",
+        "scale": "Index",
+        "period": "Monthly",
+        "description": "Measures monthly changes in the price-adjusted output of construction.",
+    },
+    "GBAL": {
+        "name": "Government balance",
+        "scale": "Millions",
+        "period": "Quarterly",
+        "description": "The government balance (or EMU balance) is the overall difference between government "
+        "revenues and spending.",
+    },
+    "GREV": {
+        "name": "General government total revenue",
+        "scale": "Millions",
+        "period": "Quarterly",
+        "description": "The total amount of revenues collected by governments is determined by past and "
+        "current political decisions.",
+    },
+    "GSPE": {
+        "name": "General government total expenditure",
+        "scale": "Millions",
+        "period": "Quarterly",
+        "description": "Total expenditure consists of total expense and the net acquisition of "
+        "non-financial assets. ",
+    },
+    "GDEBT": {
+        "name": "Government debt",
+        "scale": "Millions",
+        "period": "Quarterly",
+        "description": "The financial liabilities of the government.",
+    },
+    "CA": {
+        "name": "Current account balance",
+        "scale": "Millions",
+        "period": "Monthly",
+        "description": "A record of a country's international transactions with the rest of the world",
+    },
+    "TBFR": {
+        "name": "Trade balance",
+        "scale": "Millions",
+        "period": "Monthly",
+        "description": "The difference between the monetary value of a nation's exports and imports over a "
+        "certain time period.",
+    },
+    "NIIP": {
+        "name": "Net international investment position",
+        "scale": "Millions",
+        "period": "Quarterly",
+        "description": "Measures the gap between a nation's stock of foreign assets and a foreigner's stock "
+        "of that nation's assets",
+    },
+    "IIPA": {
+        "name": "Net international investment position (Assets)",
+        "scale": "Millions",
+        "period": "Quarterly",
+        "description": "A nation's stock of foreign assets and a foreigner's stock.",
+    },
+    "IIPL": {
+        "name": "Net international investment position (Liabilities)",
+        "scale": "Millions",
+        "period": "Quarterly",
+        "description": "Measures a foreigner's stock of the nation's assets.",
+    },
+    "Y10YD": {
+        "name": "Long term yield (10-year)",
+        "scale": "Percentage",
+        "period": "Monthly",
+        "description": "The 10-year yield is used as a proxy for mortgage rates. It's also seen as a "
+        "sign of investor sentiment about the country's economy.",
+    },
+    "M3YD": {
+        "name": "3 month yield",
+        "scale": "Percentage",
+        "period": "Monthly",
+        "description": "The yield received for investing in a government issued treasury security "
+        "that has a maturity of 3 months",
+    },
+    "HOU": {
+        "name": "House price index",
+        "scale": "Index",
+        "period": "Monthly",
+        "description": "House price index defined with base 2015 for Europe with varying "
+        "bases for others. See: https://www.econdb.com/main-indicators",
+    },
+    "OILPROD": {
+        "name": "Oil production",
+        "scale": "Thousands",
+        "period": "Monthly",
+        "description": "The amount of oil barrels produced per day in a month within a country.",
+    },
+    "POP": {
+        "name": "Population",
+        "scale": "Thousands",
+        "period": "Monthly",
+        "description": "The population of a country. This can be in thousands or, "
+        "when relatively small, in actual units.",
+    },
 }
 
 TREASURIES: Dict = {
@@ -333,7 +539,7 @@ def get_macro_data(
 
         if df.empty:
             return console.print(
-                f"No data available for {parameter} ({PARAMETERS[parameter]}) "
+                f"No data available for {parameter} ({PARAMETERS[parameter]['name']}) "
                 f"of country {country.replace('_', ' ')}"
             )
 

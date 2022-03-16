@@ -88,7 +88,7 @@ def show_macro_data(
 
     for column in df_rounded.columns:
         country_label = column[0].replace("_", " ")
-        parameter_label = econdb_model.PARAMETERS[column[1]]
+        parameter_label = econdb_model.PARAMETERS[column[1]]["name"]
         if len(parameters) > 1 and len(countries) > 1:
             ax.plot(df_rounded[column], label=f"{country_label} [{parameter_label}]")
             ax.set_title(f"Macro data {denomination}")
@@ -97,6 +97,8 @@ def show_macro_data(
                 loc="upper right",
                 mode="expand",
                 borderaxespad=0,
+                prop={"size": 9},
+                ncol=2,
             )
         elif len(parameters) > 1:
             ax.plot(df_rounded[column], label=parameter_label)
@@ -106,6 +108,8 @@ def show_macro_data(
                 loc="upper right",
                 mode="expand",
                 borderaxespad=0,
+                prop={"size": 9},
+                ncol=2,
             )
         elif len(countries) > 1:
             ax.plot(df_rounded[column], label=country_label)
@@ -114,7 +118,8 @@ def show_macro_data(
                 bbox_to_anchor=(0, 0.40, 1, -0.52),
                 loc="upper right",
                 mode="expand",
-                borderaxespad=0,
+                prop={"size": 9},
+                ncol=2,
             )
         else:
             ax.plot(df_rounded[column])

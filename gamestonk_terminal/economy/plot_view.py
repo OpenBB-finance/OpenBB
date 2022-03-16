@@ -1,15 +1,20 @@
 """ Plot Controller """
+import os
 from typing import Optional, List
 
+import pandas as pd
 from matplotlib import pyplot as plt
 
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.config_terminal import theme
-from gamestonk_terminal.helper_funcs import plot_autoscale
+from gamestonk_terminal.helper_funcs import plot_autoscale, export_data
 
 
 def show_plot(
-    dataset_yaxis_1, dataset_yaxis_2, external_axes: Optional[List[plt.Axes]] = None
+    dataset_yaxis_1,
+    dataset_yaxis_2,
+    export,
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """
     The ability to plot any data coming from EconDB, FRED or Yahoo Finance.
@@ -46,7 +51,6 @@ def show_plot(
         ax_1_coloring += 1
 
     theme.style_primary_axis(ax1)
-    ax1.yaxis.set_label_position("left")
 
     if not dataset_yaxis_2.empty:
         ax2 = ax1.twinx()
@@ -59,7 +63,6 @@ def show_plot(
             )
             ax_2_coloring += -1
 
-        ax2.yaxis.set_label_position("right")
         theme.style_twin_axis(ax2)
 
         h1, l1 = ax1.get_legend_handles_labels()
@@ -72,6 +75,8 @@ def show_plot(
             loc="upper right",
             mode="expand",
             borderaxespad=0,
+            prop={"size": 9},
+            ncol=2,
         )
     else:
         ax1.legend(
@@ -79,7 +84,18 @@ def show_plot(
             loc="upper right",
             mode="expand",
             borderaxespad=0,
+            prop={"size": 9},
+            ncol=2,
         )
 
     if external_axes is None:
         theme.visualize_output()
+
+    if export:
+        df = pd.concat([dataset_yaxis_1, dataset_yaxis_2], axis=1)
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "plot_macro_data",
+            df,
+        )

@@ -91,6 +91,8 @@ def show_indices(
             loc="upper right",
             mode="expand",
             borderaxespad=0,
+            prop={"size": 9},
+            ncol=2,
         )
 
         theme.style_primary_axis(ax)

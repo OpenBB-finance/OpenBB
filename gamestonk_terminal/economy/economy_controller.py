@@ -557,9 +557,10 @@ Performance & Valuations
         if ns_parser:
             if ns_parser.show_parameters:
                 print_rich_table(
-                    pd.DataFrame(econdb_model.PARAMETERS.items()),
-                    show_index=False,
-                    headers=["Parameter", "Description"],
+                    pd.DataFrame.from_dict(econdb_model.PARAMETERS, orient="index"),
+                    show_index=True,
+                    index_name="Parameter",
+                    headers=["Name", "Scale", "Period", "Description"],
                 )
             elif ns_parser.show_countries:
                 print_rich_table(
@@ -1047,7 +1048,9 @@ Performance & Valuations
                                         country = f"{split[0]} {split[1]}"
                                         parameter = split[2]
 
-                                    parameter = econdb_model.PARAMETERS[parameter]
+                                    parameter = econdb_model.PARAMETERS[parameter][
+                                        "name"
+                                    ]
                                     dataset_yaxis1[f"{country} [{parameter}]"] = data[
                                         variable
                                     ]
@@ -1111,7 +1114,9 @@ Performance & Valuations
 
                 if ns_parser.yaxis1 or ns_parser.yaxis2:
                     return plot_view.show_plot(
-                        dataset_yaxis_1=dataset_yaxis1, dataset_yaxis_2=dataset_yaxis2
+                        dataset_yaxis_1=dataset_yaxis1,
+                        dataset_yaxis_2=dataset_yaxis2,
+                        export=ns_parser.export,
                     )
 
             console.print()
