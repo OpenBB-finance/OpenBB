@@ -1087,7 +1087,9 @@ Performance & Valuations
                                         country = f"{split[0]} {split[1]}"
                                         parameter = split[2]
 
-                                    parameter = econdb_model.PARAMETERS[parameter]
+                                    parameter = econdb_model.PARAMETERS[parameter][
+                                        "name"
+                                    ]
                                     dataset_yaxis2[f"{country} [{parameter}]"] = data[
                                         variable
                                     ]
