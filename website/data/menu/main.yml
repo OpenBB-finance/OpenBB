@@ -94,6 +94,8 @@ main:
                 ref: "/terminal/stocks/sia/metric"
               - name: vis
                 ref: "/terminal/stocks/sia/vis"
+              - name: period
+                ref: "/terminal/stocks/sia/period"
           - name: dark pool shorts
             ref: "/terminal/stocks/dark_pool_shorts"
             sub:
@@ -239,8 +241,7 @@ main:
                 ref: "/terminal/stocks/fundamental_analysis/cal"
               - name: splits
                 ref: "/terminal/stocks/fundamental_analysis/splits"
-              - name: web
-                ref: "/terminal/stocks/fundamental_analysis/web"
+              - name: fundamental_analysis/web"
               - name: hq
                 ref: "/terminal/stocks/fundamental_analysis/hq"
               - name: divs
@@ -261,6 +262,8 @@ main:
                 ref: "/terminal/stocks/fundamental_analysis/earnings"
               - name: fraud
                 ref: "/terminal/stocks/fundamental_analysis/fraud"
+              - name: dupont
+                ref: "/terminal/stocks/fundamental_analysis/dupont"
               - name: financial modeling prep
                 ref: "/terminal/stocks/fundamental_analysis/fmp"
                 sub:
@@ -440,6 +443,8 @@ main:
                 sub:
                   - name: add
                     ref: "/terminal/stocks/options/payoff/add"
+                  - name: sop
+                    ref: "/terminal/stocks/options/payoff/sop"
                   - name: pick
                     ref: "/terminal/stocks/options/payoff/pick"
                   - name: plot
@@ -557,6 +562,10 @@ main:
                 ref: "/terminal/common/behavioural_analysis/hist"
               - name: trend
                 ref: "/terminal/common/behavioural_analysis/trend"
+              - name: jcdr
+                ref: "terminal/common/behavioural_analysis/jcdr"
+              - name: jctr
+                ref: "/terminal/common/behavioural_analysis/jctr"
           - name: quantitative analysis
             ref: "/terminal/common/quantitative_analysis"
             sub:
@@ -598,6 +607,8 @@ main:
                 ref: "/terminal/common/quantitative_analysis/capm"
               - name: line
                 ref: "/terminal/common/quantitative_analysis/line"
+              - name: raw
+                ref: "/terminal/common/quantitative_analysis/raw"
           - name: prediction techniques
             ref: "/terminal/common/prediction_techniques"
             sub:
@@ -619,8 +630,8 @@ main:
                 ref: "/terminal/common/prediction_techniques/conv1d"
               - name: mc
                 ref: "/terminal/common/prediction_techniques/mc"
-      - name: cryptocurrency
-        ref: "/terminal/cryptocurrency"
+      - name: Cryptocurrency
+        Ref: "/terminal/cryptocurrency"
         sub:
           - name: load
             ref: "/terminal/cryptocurrency/load"
@@ -764,7 +775,9 @@ main:
               - name: stats
                 ref: "/terminal/cryptocurrency/due_diligence/stats"
               - name: stats
-                ref: "/cryptocurrency/due_diligence/mcapdom"
+                ref: "/terminal/cryptocurrency/due_diligence/mcapdom"
+              - name: nonzero
+                ref: "/terminal/cryptocurrency/due_diligence/nonzero" 
           - name: onchain
             ref: "/terminal/cryptocurrency/onchain"
             sub:
@@ -1058,6 +1071,8 @@ main:
             ref: "/terminal/funds/plot"
           - name: sector
             ref: "/terminal/funds/sector"
+          - name: equity
+            ref: "/terminal/funds/equity"
       - name: portfolio
         ref: "/terminal/portfolio"
         sub:
@@ -1144,6 +1159,8 @@ main:
             ref: "/terminal/portfolio/init"
           - name: rolling
             ref: "/terminal/portfolio/rolling"
+          - name: var
+            ref: "/terminal/portfolio/var"
       - name: forex
         ref: "/terminal/forex"
         sub:
@@ -1153,8 +1170,27 @@ main:
             ref: "/terminal/forex/load"
           - name: candle
             ref: "/terminal/forex/candle"
-      - name: resources
-        ref: "/terminal/resources"
+          - name: from
+            ref: "/terminal/forex/from"
+          - name: oanda
+            ref: "/terminal/forex/oanda"
+            sub:
+              - name: calendar
+                ref: "/terminal/forex/oanda/calendar"
+              - name: cancel
+                ref: "/terminal/forex/oanda/cancel"
+              - name: candles
+                ref: "/terminal/forex/oanda/candles"
+              - name: closetrade
+                ref: "/terminal/forex/oanda/closetrade"
+              - name: orderbook
+                ref: "/terminal/forex/oanda/orderbook"
+              - name: pending
+                ref: "/terminal/forex/oanda/pending"
+              - name: positionbook
+                ref: "/terminal/forex/oanda/positionbook"
+              - name: positions
+                ref: "/terminal/forex/oanda/positions"
       - name: alternative
         ref: "/terminal/alternative"
         sub:

@@ -25,10 +25,10 @@ def test_menu_with_queue(expected, mocker, queue):
 
     # MOCK SWITCH
     mocker.patch(
-        target=f"{path_controller}.PortfolioAnalysis.switch",
+        target=f"{path_controller}.PortfolioAnalysisController.switch",
         return_value=["quit"],
     )
-    result_menu = pa_controller.PortfolioAnalysis(queue=queue).menu()
+    result_menu = pa_controller.PortfolioAnalysisController(queue=queue).menu()
 
     assert result_menu == expected
 
@@ -64,7 +64,7 @@ def test_menu_without_queue_completion(mocker):
         return_value="quit",
     )
 
-    result_menu = pa_controller.PortfolioAnalysis(queue=None).menu()
+    result_menu = pa_controller.PortfolioAnalysisController(queue=None).menu()
 
     assert result_menu == []
 
@@ -104,11 +104,11 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
 
     mock_switch = mocker.Mock(side_effect=SystemExitSideEffect())
     mocker.patch(
-        target=f"{path_controller}.PortfolioAnalysis.switch",
+        target=f"{path_controller}.PortfolioAnalysisController.switch",
         new=mock_switch,
     )
 
-    result_menu = pa_controller.PortfolioAnalysis(queue=None).menu()
+    result_menu = pa_controller.PortfolioAnalysisController(queue=None).menu()
 
     assert result_menu == []
 
@@ -116,7 +116,7 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.record_stdout
 def test_print_help():
-    controller = pa_controller.PortfolioAnalysis(queue=None)
+    controller = pa_controller.PortfolioAnalysisController(queue=None)
     controller.print_help()
 
 
@@ -136,7 +136,7 @@ def test_print_help():
     ],
 )
 def test_switch(an_input, expected_queue):
-    controller = pa_controller.PortfolioAnalysis(queue=None)
+    controller = pa_controller.PortfolioAnalysisController(queue=None)
     queue = controller.switch(an_input=an_input)
 
     assert queue == expected_queue
@@ -146,7 +146,7 @@ def test_switch(an_input, expected_queue):
 def test_call_cls(mocker):
     mocker.patch("os.system")
 
-    controller = pa_controller.PortfolioAnalysis(queue=None)
+    controller = pa_controller.PortfolioAnalysisController(queue=None)
     controller.call_cls([])
 
     assert controller.queue == []
@@ -180,7 +180,7 @@ def test_call_cls(mocker):
     ],
 )
 def test_call_func_expect_queue(expected_queue, func, queue):
-    controller = pa_controller.PortfolioAnalysis(queue=queue)
+    controller = pa_controller.PortfolioAnalysisController(queue=queue)
     result = getattr(controller, func)([])
 
     assert result is None
@@ -219,7 +219,7 @@ def test_call_func(
             new=mock,
         )
 
-        controller = pa_controller.PortfolioAnalysis(queue=None)
+        controller = pa_controller.PortfolioAnalysisController(queue=None)
 
         getattr(controller, tested_func)(other_args)
 
@@ -228,6 +228,6 @@ def test_call_func(
         else:
             mock.assert_called_once()
     else:
-        controller = pa_controller.PortfolioAnalysis(queue=None)
+        controller = pa_controller.PortfolioAnalysisController(queue=None)
 
         getattr(controller, tested_func)(other_args)
