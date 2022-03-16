@@ -42,7 +42,6 @@ def test_show_indices(mocker, indices, interval, start_date, end_date, column, s
     )
 
     assert isinstance(result_df, pd.DataFrame)
-    assert not result_df.empty
 
 
 @pytest.mark.vcr

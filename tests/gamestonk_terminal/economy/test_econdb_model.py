@@ -41,7 +41,6 @@ def test_get_aggregated_macro_data(
     )
 
     assert isinstance(result_df, pd.DataFrame)
-    assert not result_df.empty
 
 
 @pytest.mark.vcr

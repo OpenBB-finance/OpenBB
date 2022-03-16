@@ -22,4 +22,3 @@ def test_get_index(index, interval, start_date, end_date, column):
     result_df = yfinance_model.get_index(index, interval, start_date, end_date, column)
 
     assert isinstance(result_df, pd.Series)
-    assert not result_df.empty
