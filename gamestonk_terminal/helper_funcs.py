@@ -14,7 +14,7 @@ import pytz
 import pandas as pd
 from rich.table import Table
 import iso8601
-
+import dotenv
 import matplotlib
 import matplotlib.pyplot as plt
 from holidays import US as us_holidays
@@ -58,6 +58,22 @@ def set_command_location(cmd_loc: str):
     """
     global command_location
     command_location = cmd_loc
+
+
+# pylint: disable=global-statement
+def set_export_folder(env_file: str = ".env", path_folder: str = ""):
+    """Set export folder location
+
+    Parameters
+    ----------
+    env_file : str
+        Env file to be updated
+    path_folder: str
+        Path folder location
+    """
+    os.environ["GTFF_EXPORT_FOLDER_PATH"] = path_folder
+    dotenv.set_key(env_file, "GTFF_EXPORT_FOLDER_PATH", path_folder)
+    gtff.EXPORT_FOLDER_PATH = path_folder
 
 
 def check_path(path: str) -> str:
@@ -1081,15 +1097,23 @@ def export_data(
         Dataframe of data to save
     """
     if export_type:
-        export_dir = dir_path.replace("gamestonk_terminal", "exports")
-
         now = datetime.now()
-        full_path = os.path.abspath(
-            os.path.join(
-                export_dir,
-                f"{func_name}_{now.strftime('%Y%m%d_%H%M%S')}",
+
+        if gtff.EXPORT_FOLDER_PATH:
+            path_cmd = dir_path.split("gamestonk_terminal/")[1].replace("/", "_")
+
+            full_path = os.path.join(
+                gtff.EXPORT_FOLDER_PATH,
+                f"{now.strftime('%Y%m%d_%H%M%S')}_{path_cmd}_{func_name}",
             )
-        )
+        else:
+            export_dir = dir_path.replace("gamestonk_terminal", "exports")
+            full_path = os.path.abspath(
+                os.path.join(
+                    export_dir,
+                    f"{func_name}_{now.strftime('%Y%m%d_%H%M%S')}",
+                )
+            )
 
         if "," not in export_type:
             export_type += ","
