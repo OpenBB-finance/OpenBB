@@ -381,7 +381,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
         (
             "call_po",
             [],
-            "po_controller.PortfolioOptimization.menu",
+            "po_controller.PortfolioOptimizationController.menu",
             [],
             dict(),
         ),
