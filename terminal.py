@@ -9,8 +9,15 @@ import os
 import platform
 import sys
 from typing import List
+<<<<<<< HEAD
 
 import pytz
+=======
+from pathlib import Path
+import pytz
+import dotenv
+
+>>>>>>> e9c4dda4c7e34012acb11750053b8088ee2ef9cf
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import feature_flags as gtff
@@ -19,12 +26,19 @@ from gamestonk_terminal.helper_funcs import (
     get_flair,
     get_user_timezone_or_invalid,
     parse_known_args_and_warn,
+<<<<<<< HEAD
     replace_user_timezone,
+=======
+    set_export_folder,
+>>>>>>> e9c4dda4c7e34012acb11750053b8088ee2ef9cf
 )
 from gamestonk_terminal.loggers import setup_logging
 from gamestonk_terminal.menu import session
+<<<<<<< HEAD
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal.rich_config import console
+=======
+>>>>>>> e9c4dda4c7e34012acb11750053b8088ee2ef9cf
 from gamestonk_terminal.terminal_helper import (
     about_us,
     bootup,
@@ -40,6 +54,8 @@ from gamestonk_terminal.terminal_helper import (
 
 logger = logging.getLogger(__name__)
 
+env_file = ".env"
+
 
 class TerminalController(BaseController):
     """Terminal Controller class"""
@@ -51,6 +67,7 @@ class TerminalController(BaseController):
         "settings",
         "tz",
         "exe",
+        "export",
     ]
     CHOICES_MENUS = [
         "stocks",
@@ -115,11 +132,13 @@ class TerminalController(BaseController):
     about           about us
     update          update terminal automatically
     tz              set different timezone
+    export          select export folder to output data
     exe             execute automated routine script[/cmds][menu]
 >   settings        set feature flags and style charts
 >   keys            set API keys and check their validity[/menu]
 
-[param]Timezone:[/param] {get_user_timezone_or_invalid()}
+[param]Export Folder:[/param] {gtff.EXPORT_FOLDER_PATH if gtff.EXPORT_FOLDER_PATH else 'DEFAULT (folder: exports/)'}
+[param]Timezone:     [/param] {get_user_timezone_or_invalid()}
 [menu]
 >   stocks
 >   crypto
@@ -143,7 +162,7 @@ class TerminalController(BaseController):
         """Process keys command"""
         from gamestonk_terminal.keys_controller import KeysController
 
-        self.queue = self.load_class(KeysController, self.queue)
+        self.queue = self.load_class(KeysController, self.queue, env_file)
 
     def call_settings(self, _):
         """Process settings command"""
@@ -228,6 +247,75 @@ class TerminalController(BaseController):
         other_args.append(self.queue[0])
         self.queue = self.queue[1:]
         replace_user_timezone("/".join(other_args))
+
+    def call_export(self, other_args: List[str]):
+        """Process export command"""
+        if other_args or self.queue:
+            if other_args:
+                export_path = ""
+            else:
+                # Re-add the initial slash for an absolute directory provided
+                export_path = "/"
+
+            other_args += self.queue
+            self.queue = []
+
+            export_path += "/".join(other_args)
+
+            base_path = os.path.dirname(os.path.abspath(__file__))
+            default_path = os.path.join(base_path, "exports")
+
+            success_export = False
+            while not success_export:
+                if export_path.upper() == "DEFAULT":
+                    console.print(
+                        f"Export data to be saved in the default folder: '{default_path}'"
+                    )
+                    set_export_folder(env_file, path_folder="")
+                    success_export = True
+                else:
+                    # If the path selected does not start from the user root, give relative location from terminal root
+                    if export_path[0] == "~":
+                        export_path = export_path.replace("~", os.environ["HOME"])
+                    elif export_path[0] != "/":
+                        export_path = os.path.join(base_path, export_path)
+
+                    # Check if the directory exists
+                    if os.path.isdir(export_path):
+                        console.print(
+                            f"Export data to be saved in the selected folder: '{export_path}'"
+                        )
+                        set_export_folder(env_file, path_folder=export_path)
+                        success_export = True
+                    else:
+                        console.print(
+                            "[red]The path selected to export data does not exist![/red]\n"
+                        )
+                        user_opt = "None"
+                        while user_opt not in ("Y", "N"):
+                            user_opt = input(
+                                f"Do you wish to create folder: `{export_path}` ? [Y/N]\n"
+                            ).upper()
+
+                        if user_opt == "Y":
+                            os.makedirs(export_path)
+                            console.print(
+                                f"[green]Folder '{export_path}' successfully created.[/green]"
+                            )
+                            set_export_folder(env_file, path_folder=export_path)
+                        else:
+                            # Do not update export_folder path since we will keep the same as before
+                            path_display = (
+                                gtff.EXPORT_FOLDER_PATH
+                                if gtff.EXPORT_FOLDER_PATH
+                                else "DEFAULT (folder: exports/)"
+                            )
+                            console.print(
+                                f"[yellow]Export data to keep being saved in the selected folder: {path_display}[/yellow]"
+                            )
+                        success_export = True
+
+        console.print()
 
     def call_exe(self, other_args: List[str]):
         """Process exe command"""
@@ -320,6 +408,7 @@ class TerminalController(BaseController):
                     self.queue = cmds_with_params.split("/")
 
 
+# pylint: disable=global-statement
 def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
     """Terminal Menu"""
     setup_logging(appName)
@@ -339,6 +428,15 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
     if not jobs_cmds:
         welcome_message()
         t_controller.print_help()
+
+    env_files = [f for f in os.listdir() if f.endswith(".env")]
+    if env_files:
+        global env_file
+        env_file = env_files[0]
+        dotenv.load_dotenv(env_file)
+    else:
+        # create env file
+        Path(".env")
 
     while ret_code:
         if gtff.ENABLE_QUICK_EXIT:
