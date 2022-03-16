@@ -13,103 +13,125 @@ class CmdsCommands(commands.Cog):
         self.bot = bot
 
     @commands.slash_command(name="cmds")
-    async def ta(self, ctx: disnake.AppCmdInter):
+    async def cmds(self, ctx: disnake.AppCmdInter):
         """Stocks Command List"""
-        misctext = "```md\n[disc-fidelity]()\n" "[ins-last](ticker) <num>\n```"
+        siatext = (
+            "```md\n[sia metrics](ticker) <METRIC>\n"
+            "[sia cps]() <COUNTRY>\n"
+            "[sia cpic]() <INDUSTRY>\n```"
+        )
+        etftext = (
+            "```md\n[etfs disc-tops]() <SORT>\n"
+            "[etfs holdings by-etf](etf) <NUM>\n"
+            "[etfs holdings by-ticker](ticker) <NUM>\n```"
+        )
+        disctext = (
+            "```md\n[disc fidelity]()\n"
+            "[disc ugs]() <NUM>\n"
+            "[disc tops]() <SORT> <NUM>\n```"
+        )
+        misctext = (
+            "```md\n[futures]()\n"
+            "[quote](ticker)\n"
+            "[support]() *Mods Only\n"
+            "[ins-last](ticker) <NUM>\n"
+            "[btc]() <INTERVAL> <PAST_DAYS> <START> <END>\n"
+            "[eth]() <INTERVAL> <PAST_DAYS> <START> <END>\n"
+            "[sol]() <INTERVAL> <PAST_DAYS> <START> <END>\n"
+            "[candle](ticker) <INTERVAL> <PAST_DAYS> <EXTENDED_HOURS> <START> <END> <HEIKIN_CANDLES> <NEWS>\n```"
+        )
         opttext = (
-            "```md\n[opt-unu]()\n"
-            "[opt-iv](ticker)\n"
-            "[opt-vsurf](ticker) <z>\n"
-            "[opt-hist](ticker) <strike> <expiration> <opt-typ>\n"
-            "[opt-oi](ticker) <expiration> <min-sp> <max-sp>\n"
-            "[opt-vol](ticker) <expiration> <min-sp> <max-sp>\n"
-            "[opt-overview](ticker) <expiration> <min-sp> <max-sp>\n"
-            "[opt-chain](ticker) <expiration> <opt-typ> <min-sp> <max-sp>\n```"
+            "```md\n[opt unu]()\n"
+            "[opt info](ticker)\n"
+            "[opt vsurf](ticker) <z>\n"
+            "[opt oi](ticker) <EXPIRATION> <MIN-SP> <MAX-SP>\n"
+            "[opt vol](ticker) <EXPIRATION> <MIN-SP> <MAX-SP>\n"
+            "[opt overview](ticker) <EXPIRATION> <MIN-SP> <MAX-SP>\n"
+            "[opt hist](ticker) <STRIKE> <EXPIRATION> <OPT-TYPE>\n"
+            "[opt grhist](ticker) <STRIKE> <EXPIRATION> <OPT-TYPE> <GREEK>\n"
+            "[opt chain](ticker) <EXPIRATION> <OPT-TYPE> <MIN-SP> <MAX-SP>\n```"
         )
         tatext = (
-            "```md\n[ta-summary](ticker)\n"
-            "[ta-view](ticker)\n"
-            "[ta-recom](ticker)\n"
-            "[ta-obv](ticker) <START> <END>\n"
-            "[ta-fib](ticker) <START> <END>\n"
-            "[ta-ad](ticker) <OPEN> <START> <END>\n"
-            "[ta-cg](ticker) <LENGTH> <START> <END>\n"
-            "[ta-fisher](ticker) <LENGTH> <START> <END>\n"
-            "[ta-cci](ticker) <LENGTH> <SCALAR> <START> <END>\n"
-            "[ta-ema](ticker) <WINDOW> <OFFSET> <START> <END>\n"
-            "[ta-sma](ticker) <WINDOW> <OFFSET> <START> <END>\n"
-            "[ta-wma](ticker) <WINDOW> <OFFSET> <START> <END>\n"
-            "[ta-hma](ticker) <WINDOW> <OFFSET> <START> <END>\n"
-            "[ta-zlma](ticker) <WINDOW> <OFFSET> <START> <END>\n"
-            "[ta-aroon](ticker) <LENGTH> <SCALAR> <START> <END>\n"
-            "[ta-adosc](ticker) <OPEN> <FAST> <SLOW> <START> <END>\n"
-            "[ta-macd](ticker) <FAST> <SLOW> <SIGNAL> <START> <END>\n"
-            "[ta-kc](ticker) <LENGTH> <SCALAR> <MA_MODE> <START> <END>\n"
-            "[ta-adx](ticker) <LENGTH> <SCALAR> <DRIFT> <START> <END>\n"
-            "[ta-rsi](ticker) <LENGTH> <SCALAR> <DRIFT> <START> <END>\n"
-            "[ta-stoch](ticker) <FAST_K> <SLOW_D> <SLOW_K> <START> <END>\n"
-            "[ta-bbands](ticker) <LENGTH> <SCALAR> <MA_MODE> <START> <END>\n"
-            "[ta-donchian](ticker) <LWR_LENGTH> <UPR_LENGTH> <START> <END>\n```"
+            "```md\n[ta summary](ticker)\n"
+            "[ta view](ticker)\n"
+            "[ta recom](ticker)\n"
+            "[ta fib](ticker) <START> <END>\n```"
+            "```md\n[ta-vol obv](ticker) <START> <END>\n"
+            "[ta-vol ad](ticker) <OPEN> <START> <END>\n"
+            "[ta-mom cg](ticker) <LENGTH> <START> <END>\n"
+            "[ta-mom fisher](ticker) <LENGTH> <START> <END>\n"
+            "[ta-mom cci](ticker) <LENGTH> <SCALAR> <START> <END>\n"
+            "[ta ma](ticker) <WINDOW> <OFFSET> <START> <END>\n"
+            "[ta-trend aroon](ticker) <LENGTH> <SCALAR> <START> <END>\n"
+            "[ta-vol adosc](ticker) <OPEN> <FAST> <SLOW> <START> <END>\n"
+            "[ta-mom macd](ticker) <FAST> <SLOW> <SIGNAL> <START> <END>\n"
+            "[ta-vlt kc](ticker) <LENGTH> <SCALAR> <MA_MODE> <START> <END>\n"
+            "[ta-trend adx](ticker) <LENGTH> <SCALAR> <DRIFT> <START> <END>\n"
+            "[ta-mom rsi](ticker) <LENGTH> <SCALAR> <DRIFT> <START> <END>\n"
+            "[ta-mom stoch](ticker) <FAST_K> <SLOW_D> <SLOW_K> <START> <END>\n"
+            "[ta-vlt bbands](ticker) <LENGTH> <SCALAR> <MA_MODE> <START> <END>\n"
+            "[ta-vlt donchian](ticker) <LWR_LENGTH> <UPR_LENGTH> <START> <END>\n```"
+            "```md\n👆<INTERVAL> <PAST_DAYS> <EXTENDED_HOURS> <HEIKIN_CANDLES>👆\n```"
         )
         ddtext = (
-            "```md\n[dd-est](ticker)\n"
-            "[dd-sec](ticker)\n"
-            "[dd-analyst](ticker)\n"
-            "[dd-supplier](ticker)\n"
-            "[dd-customer](ticker)\n"
-            "[dd-arktrades](ticker)\n"
-            "[dd-pt](ticker) <RAW> <DATE_START>\n```"
+            "```md\n[dd est](ticker)\n"
+            "[dd sec](ticker)\n"
+            "[dd analyst](ticker)\n"
+            "[dd supplier](ticker)\n"
+            "[dd customer](ticker)\n"
+            "[dd arktrades](ticker)\n"
+            "[dd pt](ticker) <RAW> <DATE_START>\n```"
         )
         dpstext = (
-            "```md\n[dps.hsi]() <NUM>\n"
-            "[dps.shorted](NUM)\n"
-            "[dps.psi](ticker)\n"
-            "[dps.spos](ticker)\n"
-            "[dps.dpotc](ticker)\n"
-            "[dps.pos]() <NUM> <SORT>\n"
-            "[dps.sidtc]() <NUM> <SORT>\n"
-            "[dps.ftd](ticker) <DATE_START> <DATE_END>\n```"
+            "```md\n[dps hsi]() <NUM>\n"
+            "[dps shorted](NUM)\n"
+            "[dps psi](ticker)\n"
+            "[dps spos](ticker)\n"
+            "[dps dpotc](ticker)\n"
+            "[dps pos]() <SORT> <NUM> <ASCENDING>\n"
+            "[dps sidtc]() <SORT> <NUM>\n"
+            "[dps ftd](ticker) <DATE_START> <DATE_END>\n```"
         )
         scrtext = (
-            "```md\n[scr.presets_default]()\n"
-            "[scr.presets_custom]()\n"
-            "[scr.historical](SIGNAL) <START>\n"
-            "[scr.overview](PRESET) <SORT> <LIMIT> <ASCEND>\n"
-            "[scr.technical](PRESET) <SORT> <LIMIT> <ASCEND>\n"
-            "[scr.valuation](PRESET) <SORT> <LIMIT> <ASCEND>\n"
-            "[scr.financial](PRESET) <SORT> <LIMIT> <ASCEND>\n"
-            "[scr.ownership](PRESET) <SORT> <LIMIT> <ASCEND>\n"
-            "[scr.performance](PRESET) <SORT> <LIMIT> <ASCEND>\n```"
+            "```md\n[scr presets_default]()\n"
+            "[scr presets_custom]()\n"
+            "[scr historical](SIGNAL) <START>\n"
+            "[scr overview](PRESET) <SORT> <LIMIT> <ASCEND>\n"
+            "[scr technical](PRESET) <SORT> <LIMIT> <ASCEND>\n"
+            "[scr valuation](PRESET) <SORT> <LIMIT> <ASCEND>\n"
+            "[scr financial](PRESET) <SORT> <LIMIT> <ASCEND>\n"
+            "[scr ownership](PRESET) <SORT> <LIMIT> <ASCEND>\n"
+            "[scr performance](PRESET) <SORT> <LIMIT> <ASCEND>\n```"
         )
         govtext = (
-            "```md\n[gov-histcont](ticker)\n"
-            "[gov-lobbying](ticker) <NUM>\n"
-            "[gov-toplobbying]() <NUM> <RAW>\n"
-            "[gov-lastcontracts]() <DAYS> <NUM>\n"
-            "[gov-contracts](ticker) <DAYS> <RAW>\n"
-            "[gov-qtrcontracts]() <ANALYSIS> <NUM>\n"
-            "[gov-lasttrades]() <GOV_TYPE> <DAYS> <REP>\n"
-            "[gov-gtrades](ticker) <GOV_TYPE> <MONTHS> <RAW>\n"
-            "[gov-topbuys]() <GOV_TYPE> <MONTHS> <NUM> <RAW>\n"
-            "[gov-topsells]() <GOV_TYPE> <MONTHS> <NUM> <RAW>\n```"
+            "```md\n[gov histcont](ticker)\n"
+            "[gov lobbying](ticker) <NUM>\n"
+            "[gov toplobbying]() <NUM> <RAW>\n"
+            "[gov lastcontracts]() <DAYS> <NUM>\n"
+            "[gov contracts](ticker) <DAYS> <RAW>\n"
+            "[gov qtrcontracts]() <ANALYSIS> <NUM>\n"
+            "[gov lasttrades]() <GOV_TYPE> <DAYS> <REP>\n"
+            "[gov gtrades](ticker) <GOV_TYPE> <MONTHS> <RAW>\n"
+            "[gov topbuys]() <GOV_TYPE> <MONTHS> <NUM> <RAW>\n"
+            "[gov topsells]() <GOV_TYPE> <MONTHS> <NUM> <RAW>\n```"
             "\n`<DAYS> = Past Transaction Days`\n"
             "`<MONTHS> = Past Transaction Months`"
         )
         econtext = (
-            "```md\n[econ-softs]()\n"
-            "[econ-meats]()\n"
-            "[econ-energy]()\n"
-            "[econ-metals]()\n"
-            "[econ-grains]()\n"
-            "[econ-futures]()\n"
-            "[econ-usbonds]()\n"
-            "[econ-glbonds]()\n"
-            "[econ-indices]()\n"
-            "[econ-overview]()\n"
-            "[econ-feargreed]()\n"
-            "[econ-currencies]()\n"
-            "[econ-valuation]() <GROUP>\n"
-            "[econ-performance]() <GROUP>\n```"
+            "```md\n[econ softs]()\n"
+            "[econ meats]()\n"
+            "[econ energy]()\n"
+            "[econ metals]()\n"
+            "[econ grains]()\n"
+            "[econ futures]()\n"
+            "[econ usbonds]()\n"
+            "[econ glbonds]()\n"
+            "[econ indices]()\n"
+            "[econ overview]()\n"
+            "[econ feargreed]()\n"
+            "[econ currencies]()\n"
+            "[econ valuation]() <GROUP>\n"
+            "[econ performance]() <GROUP>\n```"
         )
         options = [disnake.SelectOption(label="Home", value="0", emoji="🟢")]
         embeds = [
@@ -119,6 +141,7 @@ class CmdsCommands(commands.Cog):
                 color=cfg.COLOR,
             ),
             disnake.Embed(
+                title="",
                 description=(
                     f"**Options Command List**\n{opttext}\n"
                     f"**Dark Pool Shorts Command List**\n{dpstext}\n"
@@ -127,16 +150,25 @@ class CmdsCommands(commands.Cog):
                 color=cfg.COLOR,
             ),
             disnake.Embed(
+                title="",
                 description=(
-                    f"**Screener Command List**\n{scrtext}\n"
-                    f"**Government Command List**\n{govtext}\n"
+                    f"**ETF Command List**\n{etftext}\n"
+                    f"**Sector and Industry Analysis Command List**\n{siatext}\n"
+                    f"**Stocks Discovery Command List**\n{disctext}\n"
+                    f"**Other Command List**\n{misctext}\n"
                 ),
                 color=cfg.COLOR,
             ),
             disnake.Embed(
+                title="",
+                description=(f"**Economy Command List**\n{econtext}\n"),
+                color=cfg.COLOR,
+            ),
+            disnake.Embed(
+                title="",
                 description=(
-                    f"**Economy Command List**\n{econtext}\n"
-                    f"**Other Command List**\n{misctext}\n"
+                    f"**Screener Command List**\n{scrtext}\n"
+                    f"**Government Command List**\n{govtext}\n"
                 ),
                 color=cfg.COLOR,
             ),

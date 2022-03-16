@@ -1,12 +1,12 @@
 """Groupme"""
 __docformat__ = "numpy"
 
-from typing import Optional
 import io
 import json
 import os
 import pathlib
 import urllib.request as urllib
+from typing import Optional
 
 import requests
 from dotenv import load_dotenv

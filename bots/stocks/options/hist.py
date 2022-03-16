@@ -1,13 +1,19 @@
+import logging
+
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
 import bots.config_discordbot as cfg
 from bots import helpers
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.stocks.options import syncretism_model
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def hist_command(
-    ticker: str = None,
+    ticker: str = "",
     expiry: str = "",
     strike: float = 10,
     opt_type: str = "",
@@ -30,7 +36,7 @@ def hist_command(
 
     # Debug
     if cfg.DEBUG:
-        print(f"opt-hist {ticker} {strike} {opt_type} {expiry} {greek}")
+        logger.info(f"opt grhist {ticker} {strike} {opt_type} {expiry} {greek}")
 
     # Check for argument
     if ticker is None:
@@ -77,18 +83,23 @@ def hist_command(
                 yaxis="y3",
             ),
         )
+    if cfg.PLT_WATERMARK:
+        fig.add_layout_image(cfg.PLT_WATERMARK)
     fig.update_layout(
         margin=dict(l=10, r=10, t=30, b=20),
         template=cfg.PLT_TA_STYLE_TEMPLATE,
         colorway=cfg.PLT_TA_COLORWAY,
         title=title,
         title_x=0.03,
-        yaxis_title="<b>Stock Price</b> ($)",
+        title_font_size=14,
+        yaxis_title="<b>Stock Price</b>",
+        font=cfg.PLT_FONT,
         yaxis=dict(
             side="right",
             fixedrange=False,
             titlefont=dict(color="#fdc708"),
             tickfont=dict(color="#fdc708"),
+            showgrid=False,
             position=0.02,
             nticks=20,
         ),
@@ -123,6 +134,7 @@ def hist_command(
             side="left",
             position=0,
             fixedrange=False,
+            showgrid=False,
             overlaying="y",
             titlefont=dict(color="#00e6c3"),
             tickfont=dict(color="#00e6c3"),
@@ -130,15 +142,13 @@ def hist_command(
         ),
         hovermode="x unified",
     )
-    config = dict({"scrollZoom": True})
+
     imagefile = "opt_hist.png"
 
     # Check if interactive settings are enabled
     plt_link = ""
     if cfg.INTERACTIVE:
-        html_ran = helpers.uuid_get()
-        fig.write_html(f"in/hist_{html_ran}.html", config=config)
-        plt_link = f"[Interactive]({cfg.INTERACTIVE_URL}/hist_{html_ran}.html)"
+        plt_link = helpers.inter_chart(fig, imagefile, callback=False)
 
     fig.update_layout(
         width=800,
