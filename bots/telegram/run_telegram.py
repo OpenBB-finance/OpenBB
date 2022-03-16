@@ -1,13 +1,15 @@
-import os
 import logging
-from typing import List, Pattern, Dict, Any, Union, Set
+import os
+
 import telebot
-from dotenv import load_dotenv
 from bots.common.commands_dict import commands
+from bots.common.helpers import non_slash
 from bots.helpers import ShowView
+from dotenv import load_dotenv
 
 load_dotenv()
 
+available_commands = list(commands.keys())
 bot = telebot.TeleBot(os.getenv("GT_TELEGRAM_BOT_TOKEN"))
 
 bot_commands = [
@@ -22,75 +24,6 @@ for command in commands:
         )
     )
 bot.set_my_commands(commands=bot_commands)
-
-available_commands = [cmd.replace("-", "_") for cmd in commands.keys()]
-
-
-def get_syntax(selected: Dict[str, Any], cmd: str) -> str:
-    """Returns the syntax for a given command
-
-    Parameters
-    ----------
-    selected : Dict[str, Any]
-        The command object
-    cmd : str
-        The command that was attempted
-
-    Returns
-    ---------
-    syntax : str
-        The syntax for the given command
-    """
-
-    syntax = f"{cmd}/"
-    syntax += "/".join(selected.get("required", []))
-    return syntax
-
-
-def get_arguments(selected: Dict[str, Any], req_name: str, message: Any) -> None:
-    """Returns the arguments for a given command
-
-    Parameters
-    ----------
-    selected : Dict[str, Any]
-        The command object
-    req_name : str
-        The name of the requirement
-    message: Any
-        Object that contains telegram request info
-    """
-
-    if req_name == "ticker":
-        bot.reply_to(message, "Please give a listed ticker")
-    elif req_name == "past_transactions_days":
-        bot.reply_to(message, "Please give the number of days as an integer")
-    elif req_name == "raw":
-        bot.reply_to(message, "Please type true or false")
-    else:
-        select = [str(x) for x in selected["required"].get(req_name, [])]
-        selections = ", ".join(select)
-        if len(selections) < 990:
-            selections = f"{selections[:990]}"
-        bot.reply_to(message, f"Options: {selections}")
-
-
-def send_options(name: str, items: Union[List[Any], Set[Any]], message: Any) -> None:
-    """Sends the options for a user
-
-    Parameters
-    ----------
-    name : str
-        The name of the section
-    items : List[str]
-        The items the user can select from
-    message: Any
-        Object that contains telegram request info
-    """
-    help_message = name
-    clean = list(items)
-    clean.sort()
-    help_message += "\n/" + "\n /".join(list(clean))
-    bot.reply_to(message, help_message)
 
 
 def detect_valid_command(message):
@@ -216,46 +149,11 @@ def send_cmds(message):
 @bot.message_handler(func=lambda m: m.text[0] == "/")
 def send_command(message):
     bot.send_chat_action(message.chat.id, action="typing")
-    cmd = message.text[1:]
-    full_cmd = cmd.split("/")
-    group = full_cmd[0].split("_")[0]
-    parents = {x.split("_")[0] for x in available_commands}
-    if group in parents:
-        if full_cmd[0] in available_commands:
-            selected = commands[full_cmd[0].replace("_", "-")]
-            if len(full_cmd) != len(selected.get("required", [])) + 1:
-                syntax = get_syntax(selected, full_cmd[0])
-                bot.reply_to(message, f"Required syntax: /{syntax}")
-                return False
-            other_args = {}
-            for i, val in enumerate(full_cmd[1:]):
-                req_name = list(selected.get("required", {}).keys())[i]
-                required = selected.get("required", [])[req_name]
-                if isinstance(required, List) and required != [True, False]:
-                    required = [str(x) for x in required]
-                if isinstance(val, str) and req_name in ["ticker"]:
-                    val = val.upper()
-                elif isinstance(val, str) and req_name == "raw":
-                    val = bool(val)
-                if (isinstance(required, List) and val not in required) or (
-                    isinstance(required, Pattern) and not required.match(val)
-                ):
-                    syntax = get_syntax(selected, full_cmd[0])
-                    bot.reply_to(message, f"{syntax}\nInvalid argument for: {req_name}")
-                    get_arguments(selected, req_name, message)
-                    return False
-                other_args[req_name] = val
-            func = selected["function"]
-            ShowView().telegram(func, message, bot, cmd.replace("_", "-"), **other_args)
-            return True
-        show_cmds = []
-        for a_cmd in available_commands:
-            if group == a_cmd[: len(group)]:
-                show_cmds.append(a_cmd)
-        send_options("Valid commands: ", show_cmds, message)
-        return False
-    send_options("Valid categories: ", parents, message)
-    return False
+    non_slash(
+        message.text,
+        lambda x: bot.reply_to(message, x),
+        lambda x, y, z: ShowView().telegram(x, message, bot, y, **z),
+    )
 
 
 if __name__ == "__main__":
