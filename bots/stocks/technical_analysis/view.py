@@ -34,6 +34,6 @@ def view_command(ticker=""):
     imagefile = image_border(imagefile, base64=dataBytesIO)
 
     return {
-        "title": f"Stocks: [Finviz] Trendlines & Data {ticker}",
+        "title": f"Stocks: [Finviz] Trendlines & Data {ticker.upper()}",
         "imagefile": imagefile,
     }

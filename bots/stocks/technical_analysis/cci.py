@@ -78,6 +78,7 @@ def cci_command(
         df_ta["High"], df_ta["Low"], df_ta["Adj Close"], length, scalar
     )
     df_ta = df_ta.join(ta_data)
+
     # Output Data
     if interval != 1440:
         df_ta = df_ta.loc[(df_ta.index >= bar_start) & (df_ta.index < end)]
@@ -177,7 +178,7 @@ def cci_command(
     imagefile = helpers.image_border(imagefile, fig=fig)
 
     return {
-        "title": f"Stocks: Commodity-Channel-Index {ticker}",
+        "title": f"Stocks: Commodity-Channel-Index {ticker.upper()}",
         "description": plt_link,
         "imagefile": imagefile,
     }

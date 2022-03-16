@@ -170,7 +170,7 @@ def bbands_command(
     imagefile = helpers.image_border(imagefile, fig=fig)
 
     return {
-        "title": f"Stocks: Bollinger-Bands {ticker}",
+        "title": f"Stocks: Bollinger-Bands {ticker.upper()}",
         "description": plt_link,
         "imagefile": imagefile,
     }

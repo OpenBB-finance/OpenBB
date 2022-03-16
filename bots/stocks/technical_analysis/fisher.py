@@ -178,7 +178,7 @@ def fisher_command(
     imagefile = helpers.image_border(imagefile, fig=fig)
 
     return {
-        "title": f"Stocks: Fisher-Transform {ticker}",
+        "title": f"Stocks: Fisher-Transform {ticker.upper()}",
         "description": plt_link,
         "imagefile": imagefile,
     }

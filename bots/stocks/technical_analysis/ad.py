@@ -132,7 +132,7 @@ def ad_command(
     imagefile = helpers.image_border(imagefile, fig=fig)
 
     return {
-        "title": f"Stocks: Accumulation/Distribution Line {ticker}",
+        "title": f"Stocks: Accumulation/Distribution Line {ticker.upper()}",
         "description": plt_link,
         "imagefile": imagefile,
     }

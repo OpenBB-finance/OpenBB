@@ -165,7 +165,7 @@ def aroon_command(
     imagefile = helpers.image_border(imagefile, fig=fig)
 
     return {
-        "title": f"Stocks: Aroon-Indicator {ticker}",
+        "title": f"Stocks: Aroon-Indicator {ticker.upper()}",
         "description": plt_link,
         "imagefile": imagefile,
     }

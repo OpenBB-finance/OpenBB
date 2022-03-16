@@ -183,7 +183,7 @@ def adx_command(
     imagefile = helpers.image_border(imagefile, fig=fig)
 
     return {
-        "title": f"Stocks: Average-Directional-Movement-Index {ticker}",
+        "title": f"Stocks: Average-Directional-Movement-Index {ticker.upper()}",
         "description": plt_link,
         "imagefile": imagefile,
     }

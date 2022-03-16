@@ -174,7 +174,7 @@ def kc_command(
     imagefile = helpers.image_border(imagefile, fig=fig)
 
     return {
-        "title": f"Stocks: Keltner-Channel {ticker}",
+        "title": f"Stocks: Keltner-Channel {ticker.upper()}",
         "description": plt_link,
         "imagefile": imagefile,
     }

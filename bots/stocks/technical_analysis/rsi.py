@@ -177,7 +177,7 @@ def rsi_command(
     imagefile = helpers.image_border(imagefile, fig=fig)
 
     return {
-        "title": f"Stocks: Relative-Strength-Index {ticker}",
+        "title": f"Stocks: Relative-Strength-Index {ticker.upper()}",
         "description": plt_link,
         "imagefile": imagefile,
     }

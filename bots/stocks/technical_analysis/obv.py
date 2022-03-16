@@ -121,7 +121,7 @@ def obv_command(
     imagefile = helpers.image_border(imagefile, fig=fig)
 
     return {
-        "title": f"Stocks: On-Balance-Volume {ticker}",
+        "title": f"Stocks: On-Balance-Volume {ticker.upper()}",
         "description": plt_link,
         "imagefile": imagefile,
     }
