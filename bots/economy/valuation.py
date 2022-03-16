@@ -1,13 +1,18 @@
+import logging
+
 import df2img
 import numpy as np
 import pandas as pd
 
 import bots.config_discordbot as cfg
-from bots.config_discordbot import logger
 from bots.helpers import save_image
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.economy import finviz_model
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def valuation_command(economy_group="sector"):
     """Valuation of sectors, industry, country [Finviz]"""
 
@@ -103,22 +108,17 @@ def valuation_command(economy_group="sector"):
     df = df.fillna("")
     df.set_index("Name", inplace=True)
 
-    dindex = len(df.index)
     fig = df2img.plot_dataframe(
         df,
-        fig_size=(1600, (40 + (50 * dindex))),
+        fig_size=(1600, (40 + (50 * len(df.index)))),
         col_width=[12, 5, 4, 4, 4, 4, 4, 4, 4, 6, 6, 6, 4, 4],
-        tbl_cells=dict(
-            align=["left", "center"],
-            height=35,
-        ),
-        template="plotly_dark",
-        font=dict(
-            family="Consolas",
-            size=20,
-        ),
+        tbl_header=cfg.PLT_TBL_HEADER,
+        tbl_cells=cfg.PLT_TBL_CELLS,
+        font=cfg.PLT_TBL_FONT,
+        row_fill_color=cfg.PLT_TBL_ROW_COLORS,
         paper_bgcolor="rgba(0, 0, 0, 0)",
     )
+    fig.update_traces(cells=(dict(align=["left", "center"])))
     imagefile = save_image("econ-valuation.png", fig)
     return {
         "title": "Economy: [Finviz] Valuation",

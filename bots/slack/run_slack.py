@@ -1,12 +1,13 @@
-import os
 import logging
+import os
+
 from dotenv import load_dotenv
 from slack_bolt import App
 from slack_bolt.adapter.socket_mode import SocketModeHandler
 from bots.common.helpers import non_slash
+
 from bots.common.commands_dict import commands
 from bots.helpers import ShowView
-
 
 load_dotenv()
 

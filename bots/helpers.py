@@ -1,16 +1,22 @@
+import logging
 import os
-from typing import List
+import re
 import uuid
+from typing import List
 
 import df2img
 import disnake
+import financedatabase as fd
 import pandas as pd
 import yfinance as yf
 from numpy.core.fromnumeric import transpose
 from PIL import Image
+from plotly.offline import plot
 
 import bots.config_discordbot as cfg
 from bots.groupme.groupme_helpers import send_image, send_message
+
+logger = logging.getLogger(__name__)
 
 presets_custom = [
     "potential_reversals",
@@ -89,6 +95,45 @@ signals = [
     "head_shoulders_inverse",
 ]
 
+metric_yf_keys = {
+    "Return On Assets": ("financialData", "returnOnAssets"),
+    "Return On Equity": ("financialData", "returnOnEquity"),
+    "Current Ratio": ("financialData", "currentRatio"),
+    "Quick Ratio": ("financialData", "quickRatio"),
+    "Debt To Equity": ("financialData", "debtToEquity"),
+    "Total Cash": ("financialData", "totalCash"),
+    "Total Cash Per Share": ("financialData", "totalCashPerShare"),
+    "Total Revenue": ("financialData", "totalRevenue"),
+    "Revenue Per Share": ("financialData", "revenuePerShare"),
+    "Revenue Growth": ("financialData", "revenueGrowth"),
+    "Earnings Growth": ("financialData", "earningsGrowth"),
+    "Profit Margins": ("financialData", "profitMargins"),
+    "Gross Profits": ("financialData", "grossProfits"),
+    "Gross Margins": ("financialData", "grossMargins"),
+    "Operating Cashflow": ("financialData", "operatingCashflow"),
+    "Operating Margins": ("financialData", "operatingMargins"),
+    "Free Cashflow": ("financialData", "freeCashflow"),
+    "Total Debt": ("financialData", "totalDebt"),
+    "Earnings Before Interest, Taxes, Depreciation and Amortization": (
+        "financialData",
+        "ebitda",
+    ),
+    "EBITDA Margins": ("financialData", "ebitdaMargins"),
+    "Recommendation Mean": ("financialData", "recommendationMean"),
+    "Market Cap": ("price", "marketCap"),
+    "Full Time Employees": ("summaryProfile", "fullTimeEmployees"),
+    "Enterprise To Revenue": ("defaultKeyStatistics", "enterpriseToRevenue"),
+    "Book Value": ("defaultKeyStatistics", "bookValue"),
+    "Shares Short": ("defaultKeyStatistics", "sharesShort"),
+    "Price To Book": ("defaultKeyStatistics", "priceToBook"),
+    "Beta": ("defaultKeyStatistics", "beta"),
+    "Float Shares": ("defaultKeyStatistics", "floatShares"),
+    "Short Ratio": ("defaultKeyStatistics", "shortRatio"),
+    "Peg Ratio": ("defaultKeyStatistics", "pegRatio"),
+    "Enterprise Value": ("defaultKeyStatistics", "enterpriseValue"),
+    "Forward PE": ("defaultKeyStatistics", "forwardPE"),
+}
+
 
 def load(ticker, start_date):
     df_stock_candidate = yf.download(ticker, start=start_date, progress=False)
@@ -137,11 +182,6 @@ def quote(ticker):
     return quote_data
 
 
-def uuid_get():
-    rand = str(uuid.uuid1()).replace("-", "")
-    return rand
-
-
 def autocrop_image(image, border=0):
     bbox = image.getbbox()
     image = image.crop(bbox)
@@ -151,6 +191,36 @@ def autocrop_image(image, border=0):
     cropped_image = Image.new("RGBA", (width, height), (0, 0, 0, 0))
     cropped_image.paste(image, (border, border))
     return cropped_image
+
+
+def uuid_get():
+    rand = str(uuid.uuid1()).replace("-", "")
+    return rand
+
+
+def country_autocomp(inter, country: str):  # pylint: disable=W0613
+    data = fd.show_options("equities", "countries")
+    clow = country.lower()
+    return [country for country in data if country.lower().startswith(clow)][:24]
+
+
+def industry_autocomp(inter, industry: str):  # pylint: disable=W0613
+    data = fd.show_options("equities", "industries")
+    if not industry:
+        industry = "a"
+    ilow = industry.lower()
+    return [industry for industry in data if industry.lower().startswith(ilow)][:24]
+
+
+def metric_autocomp(inter, metric: str):  # pylint: disable=W0613
+    data: dict = metric_yf_keys
+    if not metric:
+        data = list(data.keys())  # type: ignore
+        return data[:24]
+    mlow = metric.lower()
+    return [metric for metric, _ in data.items() if metric.lower().startswith(mlow)][
+        :24
+    ]
 
 
 def ticker_autocomp(inter, ticker: str):  # pylint: disable=W0613
@@ -189,26 +259,84 @@ def signals_autocomp(inter, signal: str):  # pylint: disable=W0613
     return [signal for signal in df if signal.lower().startswith(slow)][:24]
 
 
+def inter_chart(fig, file, **data):
+    filename = f"{file.replace('.png', '')}_{uuid_get()}.html"
+    if "config" not in data:
+        config = dict(scrollZoom=True, displayModeBar=False)
+    plot_div = plot(fig, output_type="div", include_plotlyjs=True, config=config)
+    if data["callback"]:
+        res = re.search('<div id="([^"]*)"', plot_div)
+        if res is not None:
+            res = res.groups()[0]
+            div_id = res
+
+        js_callback = f"""
+        <script>
+        var plot_element = document.getElementById("{div_id}");
+        plot_element.on('plotly_click', function(data){{
+            console.log(data);
+            var point = data.points[0];
+            if (point) {{
+                console.log(point.customdata[1]);
+                window.open(point.customdata[1]);
+            }}
+        }})
+        </script>
+        """
+
+        # Build HTML string
+        html_str = f"""
+        <html>
+        <body style="background-color:#111111;">
+        <body>
+        {plot_div}
+        {js_callback}
+        </body>
+        </html>
+        """
+    else:
+        # Build HTML string
+        html_str = f"""
+        <html>
+        <body style="background-color:#111111;">
+        <body>
+        {plot_div}
+        </body>
+        </html>
+        """
+
+    # Write out HTML file
+    with open(f"{cfg.INTERACTIVE_DIR / filename}", "w") as f:
+        f.write(html_str)
+    plt_link = f"[Interactive]({cfg.INTERACTIVE_URL}/{filename})"
+    return plt_link
+
+
 def save_image(file, fig):
     imagefile = f"{file.replace('.png', '')}_{uuid_get()}.png"
-    df2img.save_dataframe(fig=fig, filename=imagefile)
-    image = Image.open(imagefile)
+    filesave = cfg.IMG_DIR / imagefile
+    df2img.save_dataframe(fig=fig, filename=filesave)
+    image = Image.open(filesave)
     image = autocrop_image(image, 0)
-    image.save(imagefile, "PNG", quality=100)
+    image.save(filesave, "PNG", quality=100)
     return imagefile
 
 
 def image_border(file, **kwargs):
     imagefile = f"{file.replace('.png', '')}_{uuid_get()}.png"
+    filesave = cfg.IMG_DIR / imagefile
     if "fig" in kwargs:
         fig = kwargs["fig"]
-        fig.write_image(imagefile)
-        img = Image.open(imagefile)
+        fig.write_image(filesave)
+        img = Image.open(filesave)
+    elif "base64" in kwargs:
+        img = Image.open(kwargs["base64"])
     else:
-        img = Image.open(file)
+        img = Image.open(filesave)
     im_bg = Image.open(cfg.IMG_BG)
-    h = img.height + 240
+
     w = img.width + 520
+    h = img.height + 240
 
     # Paste fig onto background img and autocrop background
     img = img.resize((w, h), Image.ANTIALIAS)
@@ -218,10 +346,10 @@ def image_border(file, **kwargs):
     y2 = int(0.5 * im_bg.size[1]) + int(0.5 * img.size[1])
     img = img.convert("RGB")
     im_bg.paste(img, box=(x1 - 5, y1, x2 - 5, y2))
-    im_bg.save(file, "PNG", quality=100)
-    image = Image.open(file)
+    im_bg.save(filesave, "PNG", quality=100)
+    image = Image.open(filesave)
     image = autocrop_image(image, 0)
-    image.save(imagefile, "PNG", quality=100)
+    image.save(filesave, "PNG", quality=100)
     return imagefile
 
 
@@ -245,16 +373,18 @@ class ShowView:
                 icon_url=cfg.AUTHOR_ICON_URL,
             )
             if "imagefile" in data:
-                image = disnake.File(data["imagefile"])
-                embed.set_image(url=f"attachment://{data['imagefile']}")
-                os.remove(data["imagefile"])
+                filename = data["imagefile"]
+                imagefile = cfg.IMG_DIR / filename
+                image = disnake.File(imagefile, filename=filename)
+                embed.set_image(url=f"attachment://{filename}")
+                os.remove(imagefile)
                 await inter.send(embed=embed, file=image)
             else:
                 await inter.send(embed=embed)
 
     async def discord(self, func, inter, name, *args, **kwargs):
         await inter.response.defer()
-        cfg.logger.info(name)
+        logger.info(name)
         if os.environ.get("DEBUG_MODE") == "true":
             await self.run_discord(func, inter, *args, **kwargs)
         else:
@@ -276,11 +406,13 @@ class ShowView:
     def groupme(self, func, group_id, name, *args, **kwargs):
         data = func(*args, **kwargs)
         if "imagefile" in data:
-            send_image(data["imagefile"], group_id, data.get("description", ""), True)
+            imagefile = cfg.IMG_DIR / data["imagefile"]
+            send_image(imagefile, group_id, data.get("description", ""), True)
         elif "embeds_img" in data:
-            send_image(
-                data["embeds_img"][0], group_id, data.get("description", ""), True
-            )
+            imagefiles = data["images_list"]
+            for img in imagefiles:
+                imagefile = cfg.IMG_DIR / img
+                send_image(imagefile, group_id, data.get("description", ""), True)
         elif "description" in data:
             title = data.get("title", "")
             # TODO: Allow navigation through pages
@@ -291,25 +423,55 @@ class ShowView:
                 clean_desc = description.replace("Page ", "")
             message = f"{title}\n{clean_desc}"
             send_message(message, group_id)
+            os.remove(imagefile)
 
     def slack(self, func, channel_id, user_id, client, *args, **kwargs):
         data = func(*args, **kwargs)
         if "imagefile" in data:
+            title = data.get("title", "")
+            description = (
+                data.get("description", "")
+                .replace("[Interactive](", "")
+                .replace(".html)", ".html\n\n")
+            )
+            message = f"{title}\n{description}"
+            imagefile = cfg.IMG_DIR / data["imagefile"]
             client.files_upload(
-                file=data["imagefile"],
-                initial_comment=data.get("title", ""),
+                file=imagefile,
+                initial_comment=message,
                 channels=channel_id,
                 user_id=user_id,
             )
-            os.remove(data["imagefile"])
+            os.remove(imagefile)
         elif "embeds_img" in data:
-            client.files_upload(
-                file=data["embeds_img"][0],
-                initial_comment=data.get("title", ""),
-                channels=channel_id,
-                user_id=user_id,
+            description = (
+                data.get("description", "")
+                .replace("[Interactive](", "")
+                .replace(".html)", ".html\n\n")
             )
-            os.remove(data["embeds_img"][0])
+            title = data["title"] if "titles" not in data else data["titles"][0]
+            N = 0
+            for img in data["images_list"]:
+                imagefile = cfg.IMG_DIR / img
+                if N == 0:
+                    message = f"{title}\n{description}"
+                    payload = {
+                        "channel": channel_id,
+                        "username": user_id,
+                        "text": message,
+                    }
+                    client.chat_postMessage(**payload)
+                    title = ""
+                if N < len(data["titles"]) and not 0:
+                    title = data["titles"][N]
+                client.files_upload(
+                    file=imagefile,
+                    initial_comment=title,
+                    channels=channel_id,
+                    user_id=user_id,
+                )
+                N += 1
+                os.remove(imagefile)
         elif "description" in data:
             title = data.get("title", "")
             description = data.get("description")
@@ -324,18 +486,47 @@ class ShowView:
     def telegram(self, func, message, bot, cmd, *args, **kwargs):
         data = func(*args, **kwargs)
         if "imagefile" in data:
-            with open(data["imagefile"], "rb") as image:
+            imagefile = cfg.IMG_DIR / data["imagefile"]
+            title = data["title"]
+            description = (
+                data.get("description", "")
+                .replace("[Interactive](", "")
+                .replace(".html)", ".html\n\n")
+            )
+            res = f"{title}\n{description}"
+            bot.reply_to(message, res)
+            with open(imagefile, "rb") as image:
                 bot.reply_to(message, data["title"])
                 bot.send_photo(message.chat.id, image)
-            os.remove(data["imagefile"])
+            os.remove(imagefile)
         elif "embeds_img" in data:
-            with open(data["embeds_img"][0], "rb") as image:
-                bot.reply_to(message, data["title"])
-                bot.send_photo(message.chat.id, image)
-            os.remove(data["embeds_img"][0])
+            title = data["title"] if "titles" not in data else data["titles"][0]
+            N = 0
+            for img in data["images_list"]:
+                imagefile = cfg.IMG_DIR / img
+                if N == 0:
+                    description = (
+                        data.get("description", "")
+                        .replace("[Interactive](", "")
+                        .replace(".html)", ".html\n\n")
+                    )
+                    res = f"{title}\n{description}"
+                    bot.reply_to(message, res)
+                    title = ""
+                if N < len(data["titles"]) and not 0:
+                    title = data["titles"][N]
+                with open(imagefile, "rb") as image:
+                    bot.reply_to(message, title)
+                    bot.send_photo(message.chat.id, image)
+                N += 1
+                os.remove(imagefile)
         elif "description" in data:
             title = data.get("title", "")
-            description = data.get("description")
+            description = (
+                data.get("description")
+                .replace("[Interactive](", "")
+                .replace(".html)", ".html\n\n")
+            )
             if isinstance(description, List):
                 clean_desc = description[0].replace("Page ", "")
             else:

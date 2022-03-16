@@ -1,14 +1,19 @@
+import logging
+
 import bots.config_discordbot as cfg
-from bots.config_discordbot import logger
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.stocks.due_diligence import marketwatch_model
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def sec_command(ticker=""):
     """Displays sec filings [Market Watch]"""
 
     # Debug user input
     if cfg.DEBUG:
-        logger.debug("dd-sec %s", ticker)
+        logger.debug("dd sec %s", ticker)
 
     if ticker == "":
         raise Exception("A ticker is required")

@@ -13,7 +13,10 @@ USE_TABULATE_DF = strtobool(os.getenv("GTFF_USE_TABULATE_DF", "True"))
 # Use clear console after each command
 USE_CLEAR_AFTER_CMD = strtobool(os.getenv("GTFF_USE_CLEAR_AFTER_CMD", "False"))
 
-# Select console flair (choose from the list in helper_funcs.py)
+# Use coloring features
+USE_COLOR = strtobool(os.getenv("GTFF_USE_COLOR", "True"))
+
+# Select console flair (choose from config_terminal.py list)
 USE_FLAIR = os.getenv("GTFF_USE_FLAIR") or ":stars"
 
 # Add date and time to command line
@@ -53,10 +56,16 @@ ENABLE_EXIT_AUTO_HELP = strtobool(os.getenv("GTFF_ENABLE_EXIT_AUTO_HELP", "False
 REMEMBER_CONTEXTS = strtobool(os.getenv("GTFF_REMEMBER_CONTEXTS", "True"))
 
 # Use the colorful rich terminal
+ENABLE_RICH = strtobool(os.getenv("GTFF_ENABLE_RICH", "True"))
+
+# Use the colorful rich terminal
 ENABLE_RICH_PANEL = strtobool(os.getenv("GTFF_ENABLE_RICH_PANEL", "True"))
 
 # Check API KEYS before running a command
 ENABLE_CHECK_API = strtobool(os.getenv("GTFF_ENABLE_CHECK_API", "True"))
+
+# Send logs to data lake
+LOG_COLLECTION = strtobool(os.getenv("GTFF_LOG_COLLECTION", "False"))
 
 # Provide export folder path. If empty that means default.
 EXPORT_FOLDER_PATH = os.getenv("GTFF_EXPORT_FOLDER_PATH", "")

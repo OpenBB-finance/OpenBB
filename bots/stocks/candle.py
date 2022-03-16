@@ -1,195 +1,116 @@
-from datetime import datetime, timedelta
+import logging
+
+import plotly.graph_objects as go
 
 import bots.config_discordbot as cfg
-import plotly.graph_objects as go
-import yfinance as yf
-from bots import helpers
-from bots.config_discordbot import logger
+from bots import helpers, load_candle
 from gamestonk_terminal.common.technical_analysis import overlap_model
-from plotly.subplots import make_subplots
+from gamestonk_terminal.decorators import log_start_end
+
+logger = logging.getLogger(__name__)
 
 
+# pylint: disable=R0912
+# pylint: disable=R0913
+@log_start_end(log=logger)
 def candle_command(
     ticker: str = "",
     interval: int = 15,
-    past_days: int = 1,
+    past_days: int = 0,
+    extended_hours: bool = False,
     start="",
     end="",
+    news: bool = False,
+    heikin_candles: bool = False,
+    vwap: bool = False,
 ):
-    """Shows candle plot of loaded ticker. [Source: Yahoo Finance, IEX Cloud or Alpha Vantage]
+    """Shows candle plot of loaded ticker or crypto. [Source: Yahoo Finance or Binance API]
 
     Parameters
     ----------
-    ticker: str
-        Ticker name
-    interval: int
-        chart mins or daily
-    past_days: int
-        Display the past * days. Default: 1(Not for Daily)
-    start: str
-        start date format YYYY-MM-DD
-    end: str
-        end date format YYYY-MM-DD
+    ticker : Stock Ticker
+    interval : Chart Minute Interval, 1440 for Daily
+    past_days: Past Days to Display. Default: 0(Not for Daily)
+    extended_hours: Display Pre/After Market Hours. Default: False
+    start: YYYY-MM-DD format
+    end: YYYY-MM-DD format
+    news: Display clickable news markers on interactive chart. Default: False
+    heikin_candles: Heikin Ashi candles. Default: False
     """
 
-    logger.info("candle %s %s %s %s", ticker, interval, start, end)
+    logger.info(
+        "candle %s %s %s %s %s %s %s %s",
+        ticker,
+        interval,
+        past_days,
+        extended_hours,
+        start,
+        end,
+        news,
+        heikin_candles,
+    )
 
-    if start == "":
-        start = datetime.now() - timedelta(days=365)
-    else:
-        start = datetime.strptime(start, cfg.DATE_FORMAT)
-    if end == "":
-        end = datetime.now()
-    else:
-        end = datetime.strptime(end, cfg.DATE_FORMAT)
+    # Retrieve Data
+    df_stock, start, end, bar_start = load_candle.stock_data(
+        ticker=ticker,
+        interval=interval,
+        past_days=past_days,
+        extended_hours=extended_hours,
+        start=start,
+        end=end,
+        news=news,
+        heikin_candles=heikin_candles,
+    )
 
-    futures = "=F" or "^"
-    crypto = "-USD"
-    if interval == 1440:
-        df_stock_candidate = yf.download(
-            ticker,
-            start=start,
-            end=end,
-            progress=False,
-        )
-
-        df_stock_candidate.index.name = "date"
-    else:
-        s_int = str(interval) + "m"
-        d_granularity = {
-            "1m": past_days,
-            "5m": past_days,
-            "15m": past_days,
-            "30m": past_days,
-            "60m": past_days,
-        }
-        s_start_dt = datetime.utcnow() - timedelta(days=d_granularity[s_int])
-        s_date_start = s_start_dt.strftime("%Y-%m-%d")
-
-        df_stock_candidate = yf.download(
-            ticker,
-            start=s_date_start if s_start_dt > start else start.strftime("%Y-%m-%d"),
-            progress=False,
-            interval=s_int,
-            prepost=True,
-        )
+    df_stock = df_stock.loc[(df_stock.index >= start) & (df_stock.index < end)]
+    df_stock = df_stock.join(overlap_model.vwap(df_stock, 0))
 
     # Check that loading a stock was not successful
-    if df_stock_candidate.empty:
-        raise Exception(f"No data found for {ticker.upper()}.")
+    if df_stock.empty:
+        return Exception(f"No data found for {ticker.upper()}.")
 
-    df_stock_candidate.index = df_stock_candidate.index.tz_localize(None)
-    df_stock_candidate.index.name = "date"
-    df_stock = df_stock_candidate
-    price_df = df_stock.loc[(df_stock.index >= start) & (df_stock.index < end)]
-
-    df_vwap = overlap_model.vwap(price_df, 0)
-
-    plt_title = [f"{ticker.upper()} Intraday {interval}min", "Volume"]
-    title = f"Intraday {interval}min Chart for {ticker.upper()}"
-    if interval == 1440:
-        plt_title = [f"{ticker.upper()} Daily", "Volume"]
-        title = f"Daily Chart for {ticker.upper()}"
-
-    fig = make_subplots(
-        shared_xaxes=True,
-        vertical_spacing=0.09,
-        subplot_titles=plt_title,
-        specs=[[{"secondary_y": True}]],
-    )
-    fig.add_trace(
-        go.Candlestick(
-            x=df_stock.index,
-            open=df_stock.Open,
-            high=df_stock.High,
-            low=df_stock.Low,
-            close=df_stock.Close,
-            name="OHLC",
-            showlegend=False,
-        ),
-        secondary_y=True,
-    )
-    fig.add_trace(
-        go.Bar(
-            x=df_stock.index,
-            y=df_stock.Volume,
-            name="Volume",
-            yaxis="y2",
-            marker_color="#d81aea",
-            opacity=0.4,
-            showlegend=False,
-        ),
-        secondary_y=False,
-    )
+    # Output Data
     if interval != 1440:
+        df_stock = df_stock.loc[(df_stock.index >= bar_start) & (df_stock.index < end)]
+
+    plot = load_candle.candle_fig(
+        df_stock,
+        ticker,
+        interval,
+        extended_hours,
+        news,
+        bar=bar_start,
+        int_bar=interval,
+    )
+    title = f"{plot['plt_title']} Chart"
+    fig = plot["fig"]
+
+    if interval != 1440 and vwap:
         fig.add_trace(
             go.Scatter(
                 name="VWAP",
                 x=df_stock.index,
-                y=df_vwap["VWAP_D"],
+                y=df_stock["VWAP_D"],
                 opacity=0.65,
-                line=dict(color="#fdc708", width=2),
+                line=dict(color="#00e6c3", width=2),
                 showlegend=True,
             ),
             secondary_y=True,
         )
-    fig.update_xaxes(showspikes=True, spikesnap="cursor", spikemode="across")
-    fig.update_yaxes(showspikes=True, spikethickness=2)
+
     fig.update_layout(
         margin=dict(l=0, r=0, t=40, b=20),
         template=cfg.PLT_CANDLE_STYLE_TEMPLATE,
-        yaxis2_title="Price ($)",
-        yaxis_title="Volume",
-        yaxis=dict(
-            showgrid=False,
-            fixedrange=False,
-            side="left",
-            titlefont=dict(color="#d81aea"),
-            tickfont=dict(color="#d81aea"),
-            nticks=20,
-        ),
-        yaxis2=dict(
-            side="right",
-            fixedrange=False,
-            anchor="x",
-            layer="above traces",
-            overlaying="y",
-            nticks=20,
-        ),
-        xaxis=dict(
-            rangeslider=dict(visible=False),
-            type="date",
-            showspikes=True,
-        ),
-        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
-        dragmode="pan",
-        hovermode="x unified",
-        spikedistance=1000,
-        hoverdistance=100,
+        title=title,
+        title_x=0.5,
+        title_font_size=14,
     )
-    if futures in ticker.upper():
-        fig.update_xaxes(
-            rangebreaks=[
-                dict(bounds=["sat", "sun"]),
-                dict(bounds=[17, 17.50], pattern="hour"),
-            ],
-        )
-    elif crypto not in ticker.upper() and interval != 1440:
-        fig.update_xaxes(
-            rangebreaks=[
-                dict(bounds=["sat", "mon"]),
-                dict(bounds=[20, 9.50], pattern="hour"),
-            ],
-        )
-    config = dict({"scrollZoom": True})
     imagefile = "candle.png"
 
     # Check if interactive settings are enabled
     plt_link = ""
     if cfg.INTERACTIVE:
-        html_ran = helpers.uuid_get()
-        fig.write_html(f"in/candle_{html_ran}.html", config=config)
-        plt_link = f"[Interactive]({cfg.INTERACTIVE_URL}/candle_{html_ran}.html)"
+        plt_link = helpers.inter_chart(fig, imagefile, callback=True)
 
     fig.update_layout(
         width=800,

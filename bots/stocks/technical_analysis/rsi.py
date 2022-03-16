@@ -1,95 +1,116 @@
-from datetime import datetime, timedelta
+import logging
 
 import plotly.graph_objects as go
-from plotly.subplots import make_subplots
 
 import bots.config_discordbot as cfg
-from bots.config_discordbot import logger
-from bots import helpers
+from bots import helpers, load_candle
 from gamestonk_terminal.common.technical_analysis import momentum_model
+from gamestonk_terminal.decorators import log_start_end
+
+logger = logging.getLogger(__name__)
 
 
-def rsi_command(ticker="", length="14", scalar="100", drift="1", start="", end=""):
+@log_start_end(log=logger)
+def rsi_command(
+    ticker="",
+    interval: int = 15,
+    past_days: int = 0,
+    length="14",
+    scalar="100",
+    drift="1",
+    start="",
+    end="",
+    extended_hours: bool = False,
+    heikin_candles: bool = False,
+    news: bool = False,
+):
     """Displays chart with relative strength index [Yahoo Finance]"""
 
     # Debug
     if cfg.DEBUG:
         # pylint: disable=logging-too-many-args
         logger.debug(
-            "ta-rsi %s %s %s %s %s %s",
+            "ta rsi %s %s %s %s %s %s",
             ticker,
+            interval,
+            past_days,
             length,
             scalar,
             drift,
             start,
             end,
+            extended_hours,
+            heikin_candles,
+            news,
         )
 
     # Check for argument
     if ticker == "":
         raise Exception("Stock ticker is required")
 
-    if start == "":
-        start = datetime.now() - timedelta(days=365)
-    else:
-        start = datetime.strptime(start, cfg.DATE_FORMAT)
-
-    if end == "":
-        end = datetime.now()
-    else:
-        end = datetime.strptime(end, cfg.DATE_FORMAT)
-
     if not length.lstrip("-").isnumeric():
         raise Exception("Number has to be an integer")
-    length = float(length)
+    length = int(length)
     if not scalar.lstrip("-").isnumeric():
         raise Exception("Number has to be an integer")
     scalar = float(scalar)
     if not drift.lstrip("-").isnumeric():
         raise Exception("Number has to be an integer")
-    drift = float(drift)
+    drift = int(drift)
 
-    ticker = ticker.upper()
-    df_stock = helpers.load(ticker, start)
+    df_stock, start, end, bar_start = load_candle.stock_data(
+        ticker=ticker,
+        interval=interval,
+        past_days=past_days,
+        extended_hours=extended_hours,
+        start=start,
+        end=end,
+        heikin_candles=heikin_candles,
+    )
+
     if df_stock.empty:
-        raise Exception("Stock ticker is invalid")
+        return Exception("No Data Found")
 
-    # Retrieve Data
-    df_stock = df_stock.loc[(df_stock.index >= start) & (df_stock.index < end)]
-    df_ta = momentum_model.rsi(df_stock["Adj Close"], length, scalar, drift)
+    df_ta = df_stock.loc[(df_stock.index >= start) & (df_stock.index < end)]
+    df_ta = df_ta.join(momentum_model.rsi(df_ta["Adj Close"], length, scalar, drift))
 
     # Output Data
-    fig = make_subplots(
+    if interval != 1440:
+        df_ta = df_ta.loc[(df_ta.index >= bar_start) & (df_ta.index < end)]
+
+    plot = load_candle.candle_fig(
+        df_ta,
+        ticker,
+        interval,
+        extended_hours,
+        news,
+        bar=bar_start,
+        int_bar=interval,
         rows=2,
         cols=1,
         shared_xaxes=True,
         vertical_spacing=0.07,
         row_width=[0.5, 0.6],
+        specs=[
+            [{"secondary_y": True}],
+            [{"secondary_y": False}],
+        ],
     )
+    title = f"{plot['plt_title']} RSI"
+    fig = plot["fig"]
+
     fig.add_trace(
         go.Scatter(
-            name=ticker,
-            x=df_stock.index,
-            y=df_stock["Adj Close"].values,
-            line=dict(color="#fdc708", width=2),
+            name=f"RSI {length}",
+            mode="lines",
+            x=df_ta.index,
+            y=df_ta[f"RSI_{length}"],
             opacity=1,
-            showlegend=False,
         ),
-        row=1,
+        row=2,
         col=1,
+        secondary_y=False,
     )
-    for i in range(0, df_ta.shape[1]):
-        trace_name = df_ta.columns[i].replace("_", " ")
-        fig.add_trace(
-            go.Scatter(
-                name=trace_name,
-                x=df_ta.index,
-                y=df_ta.iloc[:, i],
-                opacity=1,
-            ),
-            row=2,
-            col=1,
-        )
     fig.add_hrect(
         y0=70,
         y1=100,
@@ -131,31 +152,22 @@ def rsi_command(ticker="", length="14", scalar="100", drift="1", start="", end="
         col=1,
     )
     fig.update_layout(
-        margin=dict(l=0, r=20, t=30, b=20),
+        margin=dict(l=0, r=0, t=50, b=20),
         template=cfg.PLT_TA_STYLE_TEMPLATE,
         colorway=cfg.PLT_TA_COLORWAY,
-        title=f"{ticker} {trace_name}",
-        title_x=0.5,
-        yaxis_title="Stock Price ($)",
-        yaxis=dict(
-            fixedrange=False,
-        ),
-        xaxis=dict(
-            rangeslider=dict(visible=False),
-            type="date",
-        ),
+        title=title,
+        title_x=0.1,
+        title_font_size=14,
         dragmode="pan",
-        legend=dict(yanchor="top", y=0.99, xanchor="left", x=0.01),
+        yaxis=dict(nticks=15),
+        yaxis2=dict(nticks=10),
     )
-    config = dict({"scrollZoom": True})
     imagefile = "ta_rsi.png"
 
     # Check if interactive settings are enabled
     plt_link = ""
     if cfg.INTERACTIVE:
-        html_ran = helpers.uuid_get()
-        fig.write_html(f"in/rsi_{html_ran}.html", config=config)
-        plt_link = f"[Interactive]({cfg.INTERACTIVE_URL}/rsi_{html_ran}.html)"
+        plt_link = helpers.inter_chart(fig, imagefile, callback=False)
 
     fig.update_layout(
         width=800,
@@ -165,7 +177,7 @@ def rsi_command(ticker="", length="14", scalar="100", drift="1", start="", end="
     imagefile = helpers.image_border(imagefile, fig=fig)
 
     return {
-        "title": f"Stocks: Relative-Strength-Index {ticker}",
+        "title": f"Stocks: Relative-Strength-Index {ticker.upper()}",
         "description": plt_link,
         "imagefile": imagefile,
     }
