@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 import argparse
 import json
 import logging
+import os
 from datetime import datetime, timedelta
 from typing import List, Union, Optional, Iterable
 
@@ -899,3 +900,58 @@ def clean_fraction(num, denom):
         return num / denom
     except TypeError:
         return "N/A"
+
+
+def load_custom(file_path: str) -> pd.DataFrame:
+    """Loads in a custom csv file
+
+    Parameters
+    ----------
+    file_path: str
+        Path to file
+
+    Returns
+    -------
+    pd.DataFrame:
+        Dataframe of stock data
+    """
+    # Double check that the file exists
+    if not os.path.exists(file_path):
+        console.print("[red]File path does not exist.[/red]\n")
+        return pd.DataFrame()
+
+    df = pd.read_csv(file_path)
+    console.print(f"Loaded data has columns: {', '.join(df.columns.to_list())}\n")
+
+    # Nasdaq specific
+    if "Close/Last" in df.columns:
+        df = df.rename(columns={"Close/Last": "Close"})
+    if "Last" in df.columns:
+        df = df.rename(columns={"Last": "Close"})
+
+    df.columns = [col.lower().rstrip().lstrip() for col in df.columns]
+
+    for col in df.columns:
+        if col in ["date", "time", "timestamp", "datetime"]:
+            df[col] = pd.to_datetime(df[col])
+            df = df.set_index(col)
+            console.print(f"Column [blue]{col.title()}[/blue] set as index.")
+
+    df.columns = [col.title() for col in df.columns]
+    df.index.name = df.index.name.title()
+
+    df = df.applymap(
+        lambda x: clean_function(x) if not isinstance(x, (int, float)) else x
+    )
+    if "Adj Close" not in df.columns:
+        df["Adj Close"] = df.Close.copy()
+
+    return df
+
+
+def clean_function(entry: str) -> Union[str, float]:
+    """Helper function for cleaning stock data from csv"""
+    # If there is a digit, get rid of common characters and return float
+    if any(char.isdigit() for char in entry):
+        return float(entry.replace("$", "").replace(",", ""))
+    return entry
