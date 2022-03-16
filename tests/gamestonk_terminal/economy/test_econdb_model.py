@@ -10,9 +10,9 @@ from gamestonk_terminal.economy import econdb_model
 @pytest.mark.parametrize(
     "parameter, country, start_date, end_date, convert_currency",
     [
-        ["RGDP", "United States", "2005-05-05", "2006-01-01", "EUR"],
+        ["RGDP", "United States", "2005-05-05", "2006-01-01", False],
         ["EMP", "Germany", "2020-01-01", "2020-10-10", False],
-        ["GDP", "France", "2015-01-01", "2020-10-10", "USD"],
+        ["GDP", "France", "2015-01-01", "2020-10-10", False],
     ],
 )
 def test_get_macro_data(parameter, country, start_date, end_date, convert_currency):
@@ -28,9 +28,9 @@ def test_get_macro_data(parameter, country, start_date, end_date, convert_curren
 @pytest.mark.parametrize(
     "parameters, countries, start_date, end_date, convert_currency",
     [
-        [["RGDP"], ["United States", "Germany"], "2020-01-01", "2020-10-10", "EUR"],
+        [["RGDP"], ["United States", "Germany"], "2020-01-01", "2020-10-10", False],
         [["EMP", "PPI"], ["France"], "2018-01-01", "2019-01-01", False],
-        [["RGDP", "GDP"], ["Italy", "Netherlands"], "2010-01-01", "2010-10-08", "USD"],
+        [["RGDP", "GDP"], ["Italy", "Netherlands"], "2010-01-01", "2010-10-08", False],
     ],
 )
 def test_get_aggregated_macro_data(
@@ -41,6 +41,7 @@ def test_get_aggregated_macro_data(
     )
 
     assert isinstance(result_df, pd.DataFrame)
+    assert not result_df.empty
 
 
 @pytest.mark.vcr
