@@ -16,26 +16,27 @@ interactions:
   response:
     body:
       string: !!binary |
-        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
+        H4sIAAAAAAAAAO1WTW8bNxD9LzqrLMkhZ8jcijhIe6hhNC7QwnCLrbW21Uhad7VK4hr673nc5Vqk
+        0yK3nnqhhuTwzcybj9XT4ua+6YfFq6dF3+4PG0hXT4ttOzTp6ObQ9+3u5nHxavHzu7PFcrF/3P7R
+        bbD97e27i9c4aD/h/e6uPW+2LY7fnV/gcL3bD/1h2+6Gy8eHdPzD+dmbX3Bxu+73w2XfrNqzZsDF
+        N4as94G01kvYvztsmv7Hpn/fDpfrhGfYiXOkHa7vtkN3e7tvh/TMufRigNLf3S5ZeHN2WXhzmS+y
+        V99t235903x73n78/deuf794YewCt9BzRE6JLCdKLvr2w7o77F9vun26FGZlwnLxkJS/X+/gh11m
+        hsaY1ru7C9jpVom5h75NP194uB9GtsfAjHCKot2t8gHJGNYXkR6f/f0qZoY4YbIO/4b50O2HrwLm
+        9ydA8fafAYG4aobmbd/skqvrIZWNWSWyU06wgfih2axXP6X9HpU2Xfu0mG2HlcaVx9U8YrFp8Wkx
+        Oq2PQ1LeNp8W18epAODs9gFYcE5HNqmUIBprtc0iaeZZjDQrOIkui559yGKwflaIxswKMUpWsDq4
+        jGuN6IxrveH5lLWdTznEDGZFfAYjTS4rkLGzv2S1zAo2UrZGEDIuMc3+ktjk73VqtBXqeuj6fcrj
+        X4cuNRX6t3todxAcrCqrY2QdSfwS+6AQlCEWE9JB0E55HYU923QfRMWoLblRnSMpioU6R1Hg0kza
+        7L0iiiErc6yxxQblw3wtRMojbh/85AtTbYussu5560NQ2oJ2n415J4qQm2dfnRhFEkOwwaQ9eVZk
+        YrBIzGif0LBcOuR0UKDfiJf8JGiVmJy3lDo8RtSGnkyQUYIUgoPJBxMRw7MJJOBmGg5XeToU2BK5
+        jldAZqqBGUx0ZZyhr11EQniiWqQmgEUrWzgjhpTmIl6xXDPEPr6AYKtCqeFhxOgYQP7khUcWxJ84
+        DtjaePKKUACRSoqMVsbWWXBem+hp2ruIByXn8LKouERx7ZLxoOlk0TsuaAPlH7rNIU31K+scm9Rg
+        epnaK4uEdtV+ElFz6WkSSYzNpxZFI1kX1OlJBIucxdTV+ZlHeVNWCNhlMOsiZzEIZTCUuM6nEfVr
+        RtEbNGsGiyGm2QHRITorWcTQzriRWFM+TRTmKCK7UUTw9+u7+7HcAqvkWFFsVakHExQmkjFzLyJv
+        ok9pgVOqIF000lpkjQW1ZUt946o0iwuVfVdfM/t6Xzc3G1PlGCOzLkMXMZZK+/hWvuh+QJRbT8qW
+        heowfORk0aW6xhfBuDyOMLBVKEeb91q5eRyB6U33ceprr0YCPSYnxzj3mjhlS0JxhdlSNAZwlT11
+        Umo9KcdbTQiFGg5fFuTrNLjZ183PyMeIw6HKKypUVbxJnViK5ci21lZVYsOLcYB/XhiARftrDEDo
+        RYsmP3mHoOtyQa8gf8+T5/oIQpvVn/O0fCo3/4/O/2h0Hq+PKQ9t33f4H4n/aJvj8TO0MgGN/wsA
+        AA==
     headers:
       Age:
       - '0'
@@ -58,25 +59,25 @@ interactions:
       content-encoding:
       - gzip
       content-length:
-      - '1135'
+      - '1141'
       content-type:
       - application/json;charset=utf-8
       date:
-      - Wed, 16 Mar 2022 14:39:05 GMT
+      - Wed, 16 Mar 2022 15:04:01 GMT
       server:
       - ATS
       vary:
       - Origin,Accept-Encoding
       x-envoy-decorator-operation:
-      - finance-chart-api--mtls-canary-production-ir2.finance-k8s.svc.yahoo.local:4080/*
+      - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
       - '3'
       x-request-id:
-      - da7fe207-78d1-4cd6-a1d8-ca96026630f4
+      - caf42c77-7a04-4a2c-9563-974a637c80a2
       x-yahoo-request-id:
-      - 6tuncqdh33tk9
+      - efgkteth33v31
       y-rid:
-      - 6tuncqdh33tk9
+      - efgkteth33v31
     status:
       code: 200
       message: OK

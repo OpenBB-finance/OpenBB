@@ -1,31 +1,31 @@
-Fear & Greed Now: 22 (Extreme Fear)
+Fear & Greed Now: 21 (Extreme Fear)
    Previous Close: 19 (Extreme Fear)
    1 Week Ago: 18 (Extreme Fear)
    1 Month Ago: 20 (Extreme Fear)
    1 Year Ago: 56 (Greed)
 
-Junk Bond Demand: Neutral                                                                           [Updated Mar 16 at 10:29am]
-   The CBOE Volatility Index (VIX) is at 27.47. This is a neutral reading and indicates that market risks appear low.
+Junk Bond Demand: Neutral                                                                           [Updated Mar 16 at 10:51am]
+   The CBOE Volatility Index (VIX) is at 27.82. This is a neutral reading and indicates that market risks appear low.
    (Last changed Mar 14 from an Extreme Fear rating)
 
-Market Volatility: Fear                                                                             [Updated Mar 16 at 10:34am]
-   Bonds have outperformed stocks by 1.95 percentage points during the last 20 trading days. This is close to the weakest performance for stocks relative to bonds in the past two years and indicates investors are fleeing risky stocks for the safety of bonds.
-   (Last changed Mar 14 from an Extreme Fear rating)
-
-Put and Call Options: Fear                                                                          [Updated Mar 16 at 10:27am]
+Market Volatility: Fear                                                                             [Updated Mar 16 at 10:50am]
    Investors in low quality junk bonds are accepting 1.77 percentage points in additional yield over safer investment grade corporate bonds. This spread is higher than what has been typical for the last two years and indicates that investors are risk averse.
    (Last changed Mar 15 from an Extreme Fear rating)
 
-Market Momentum: Extreme Fear                                                                       [Updated Mar 16 at 10:34am]
+Put and Call Options: Fear                                                                          [Updated Mar 16 at 10:56am]
+   Bonds have outperformed stocks by 2.24 percentage points during the last 20 trading days. This is close to the weakest performance for stocks relative to bonds in the past two years and indicates investors are fleeing risky stocks for the safety of bonds.
+   (Last changed Mar 14 from an Extreme Fear rating)
+
+Market Momentum: Extreme Fear                                                                       [Updated Mar 16 at 10:55am]
    The number of stocks hitting 52-week lows exceeds the number hitting highs and is at the lower end of its range, indicating extreme fear.
    (Last changed Jan 20 from a Fear rating)
 
-Stock Price Strength: Extreme Fear                                                                  [Updated Mar 16 at 10:34am]
-   The McClellan Volume Summation Index measures advancing and declining volume on the NYSE. During the last month, approximately 2.03% more of each day's volume has traded in advancing issues than in declining issues. This indicates that market breadth is improving, though the McClellan Oscillator is still towards the lower end of its range for the last two years.
+Stock Price Strength: Extreme Fear                                                                  [Updated Mar 16 at 10:56am]
+   The McClellan Volume Summation Index measures advancing and declining volume on the NYSE. During the last month, approximately 1.71% more of each day's volume has traded in advancing issues than in declining issues. This indicates that market breadth is improving, though the McClellan Oscillator is still towards the lower end of its range for the last two years.
    (Last changed Feb 22 from a Fear rating)
 
-Stock Price Breadth: Extreme Fear                                                                   [Updated Mar 16 at 10:29am]
-   The S&P 500 is 4.04% below its 125-day average. During the last two years, the S&P 500 has typically been above this average, so rapid declines like this indicate extreme levels of fear.
+Stock Price Breadth: Extreme Fear                                                                   [Updated Mar 16 at 10:51am]
+   The S&P 500 is 4.22% below its 125-day average. During the last two years, the S&P 500 has typically been above this average, so rapid declines like this indicate extreme levels of fear.
    (Last changed Jan 14 from a Fear rating)
 
 Safe Heaven Demand: N/A                                                                             [N/A]

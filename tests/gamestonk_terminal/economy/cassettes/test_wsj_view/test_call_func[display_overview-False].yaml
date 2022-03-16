@@ -9,50 +9,49 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - Mozilla/5.0 (Windows NT 10.0; WOW64; rv:86.0) Gecko/20100101 Firefox/86.0
+      - Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:86.0) Gecko/20100101 Firefox/86.0
     method: GET
     uri: https://www.wsj.com/market-data?id=%7B%22application%22%3A%22WSJ%22%2C%22instruments%22%3A%5B%7B%22symbol%22%3A%22INDEX%2FUS%2F%2FDJIA%22%2C%22name%22%3A%22DJIA%22%7D%2C%7B%22symbol%22%3A%22INDEX%2FUS%2F%2FSPX%22%2C%22name%22%3A%22S%26P%20500%22%7D%2C%7B%22symbol%22%3A%22INDEX%2FUS%2F%2FCOMP%22%2C%22name%22%3A%22Nasdaq%20Composite%22%7D%2C%7B%22symbol%22%3A%22INDEX%2FJP%2F%2FNIK%22%2C%22name%22%3A%22Japan%3A%20Nikkei%20225%22%7D%2C%7B%22symbol%22%3A%22INDEX%2FUK%2F%2FUKX%22%2C%22name%22%3A%22UK%3A%20FTSE%20100%22%7D%2C%7B%22symbol%22%3A%22FUTURE%2FUS%2F%2FCRUDE%20OIL%20-%20ELECTRONIC%22%2C%22name%22%3A%22Crude%20Oil%20Futures%22%7D%2C%7B%22symbol%22%3A%22FUTURE%2FUS%2F%2FGOLD%22%2C%22name%22%3A%22Gold%20Futures%22%7D%2C%7B%22symbol%22%3A%22CURRENCY%2FUS%2F%2FUSDJPY%22%2C%22name%22%3A%22Yen%22%7D%2C%7B%22symbol%22%3A%22CURRENCY%2FUS%2F%2FEURUSD%22%2C%22name%22%3A%22Euro%22%7D%5D%7D&type=mdc_quotes
   response:
     body:
       string: !!binary |
-        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
-        6K4f6se/0a0kcgorAAA=
+        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
     headers:
       Cache-Control:
       - public, max-age=120, no-cache=Set-Cookie
@@ -63,17 +62,17 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Wed, 16 Mar 2022 14:39:02 GMT
+      - Wed, 16 Mar 2022 15:03:59 GMT
       ETag:
-      - W/"2b0a-K90vgEdVktwPaowmQ2WWIrAImYU"
+      - W/"2ad6-pCntFE5y9AgpGz46o+u4SETIlfk"
       GC-Versions:
       - 2.1.815|0.4.956|4.1.2
       Transfer-Encoding:
       - chunked
       Via:
-      - 1.1 1396f0307ab4835adf6e4163507d4c8a.cloudfront.net (CloudFront)
+      - 1.1 d2322e4264977966de69a888b2e0eba8.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - T1pxAG9_O-bniVFeEkg6H7Rs3pKN-IY5N7ZPvNxs5DxMP3nVNqalPg==
+      - Kerla8LYZ1FXd1UVPwtGkGBBIFQ2mLaPjvPeXdHv7NFGAYa9GhFYGg==
       X-Amz-Cf-Pop:
       - AMS54-C1
       X-Cache:
