@@ -1,16 +1,21 @@
+import io
+import logging
 from datetime import datetime, timedelta
 
 import pandas as pd
 from matplotlib import pyplot as plt
 
 import bots.config_discordbot as cfg
-from bots.config_discordbot import logger
 from bots.helpers import image_border
 from gamestonk_terminal.config_plot import PLOT_DPI
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import plot_autoscale
 from gamestonk_terminal.stocks.government import quiverquant_model
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def topsells_command(
     gov_type="",
     past_transactions_months: int = 5,
@@ -110,11 +115,14 @@ def topsells_command(
     )
     plt.gcf().axes[0].yaxis.get_major_formatter().set_scientific(False)
     fig.tight_layout()
-
-    plt.savefig("gov_topsells.png")
     imagefile = "gov_topsells.png"
 
-    imagefile = image_border(imagefile)
+    dataBytesIO = io.BytesIO()
+    plt.savefig(dataBytesIO)
+    dataBytesIO.seek(0)
+
+    imagefile = image_border(imagefile, base64=dataBytesIO)
+
     return {
         "title": f"Stocks: [quiverquant.com] Top sells for {gov_type.upper()}",
         "imagefile": imagefile,

@@ -26,7 +26,11 @@ class GovernmentCommands(commands.Cog):
     def cog_unload(self):
         self.bot.help_command = None
 
-    @commands.slash_command(name="gov-lasttrades")
+    @commands.slash_command(name="gov")
+    async def gov(self, inter):
+        pass
+
+    @gov.sub_command()
     async def lasttrades(
         self,
         inter: disnake.AppCmdInter,
@@ -45,13 +49,13 @@ class GovernmentCommands(commands.Cog):
         await ShowView().discord(
             lasttrades_command,
             inter,
-            "gov-lasttrades",
+            "gov lasttrades",
             gov_type,
             past_days,
             representative,
         )
 
-    @commands.slash_command(name="gov-topbuys")
+    @gov.sub_command()
     async def topbuys(
         self,
         inter: disnake.AppCmdInter,
@@ -72,14 +76,14 @@ class GovernmentCommands(commands.Cog):
         await ShowView().discord(
             topbuys_command,
             inter,
-            "gov-topbuys",
+            "gov topbuys",
             gov_type,
             past_transactions_months,
             num,
             raw,
         )
 
-    @commands.slash_command(name="gov-topsells")
+    @gov.sub_command()
     async def topsells(
         self,
         inter: disnake.AppCmdInter,
@@ -100,14 +104,14 @@ class GovernmentCommands(commands.Cog):
         await ShowView().discord(
             topsells_command,
             inter,
-            "gov-topsells",
+            "gov topsells",
             gov_type,
             past_transactions_months,
             num,
             raw,
         )
 
-    @commands.slash_command(name="gov-lastcontracts")
+    @gov.sub_command()
     async def lastcontracts(
         self, inter: disnake.AppCmdInter, past_transactions_days: int = 2, num: int = 20
     ):
@@ -121,12 +125,12 @@ class GovernmentCommands(commands.Cog):
         await ShowView().discord(
             lastcontracts_command,
             inter,
-            "gov-lastcontracts",
+            "gov lastcontracts",
             past_transactions_days,
             num,
         )
 
-    @commands.slash_command(name="gov-qtrcontracts")
+    @gov.sub_command()
     async def qtrcontracts(
         self,
         inter: disnake.AppCmdInter,
@@ -141,10 +145,10 @@ class GovernmentCommands(commands.Cog):
         num: Number of contracts
         """
         await ShowView().discord(
-            qtrcontracts_command, inter, "gov-qtrcontracts", num, analysis
+            qtrcontracts_command, inter, "gov qtrcontracts", num, analysis
         )
 
-    @commands.slash_command(name="gov-toplobbying")
+    @gov.sub_command()
     async def toplobbying(
         self, inter: disnake.AppCmdInter, num: int = 10, raw: bool = False
     ):
@@ -156,10 +160,10 @@ class GovernmentCommands(commands.Cog):
         raw: If raw data should be outputted
         """
         await ShowView().discord(
-            toplobbying_command, inter, "gov-toplobbying", num, raw
+            toplobbying_command, inter, "gov toplobbying", num, raw
         )
 
-    @commands.slash_command(name="gov-gtrades")
+    @gov.sub_command()
     async def gtrades(
         self,
         inter: disnake.AppCmdInter,
@@ -180,14 +184,14 @@ class GovernmentCommands(commands.Cog):
         await ShowView().discord(
             gtrades_command,
             inter,
-            "gov-gtrades",
+            "gov gtrades",
             ticker,
             gov_type,
             past_transactions_months,
             raw,
         )
 
-    @commands.slash_command(name="gov-contracts")
+    @gov.sub_command()
     async def contracts(
         self,
         inter: disnake.AppCmdInter,
@@ -206,13 +210,13 @@ class GovernmentCommands(commands.Cog):
         await ShowView().discord(
             contracts_command,
             inter,
-            "gov-contracts",
+            "gov contracts",
             ticker,
             past_transaction_days,
             raw,
         )
 
-    @commands.slash_command(name="gov-histcont")
+    @gov.sub_command()
     async def histcont(
         self,
         inter: disnake.AppCmdInter,
@@ -224,9 +228,9 @@ class GovernmentCommands(commands.Cog):
         -----------
         ticker: Stock Ticker
         """
-        await ShowView().discord(histcont_command, inter, "gov-histcont", ticker)
+        await ShowView().discord(histcont_command, inter, "gov histcont", ticker)
 
-    @commands.slash_command(name="gov-lobbying")
+    @gov.sub_command()
     async def lobbying(
         self,
         inter: disnake.AppCmdInter,
@@ -240,7 +244,7 @@ class GovernmentCommands(commands.Cog):
         ticker: Stock Ticker
         num: Number of events
         """
-        await ShowView().discord(lobbying_command, inter, "gov-lobbying", ticker, num)
+        await ShowView().discord(lobbying_command, inter, "gov lobbying", ticker, num)
 
 
 def setup(bot: commands.Bot):

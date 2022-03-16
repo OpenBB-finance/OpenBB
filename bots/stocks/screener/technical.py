@@ -1,15 +1,24 @@
 import difflib
+import logging
+import os
 
+import df2img
 import disnake
 import pandas as pd
 
 import bots.config_discordbot as cfg
-from bots.config_discordbot import logger
+from bots import helpers
+from bots.config_discordbot import gst_imgur
 from bots.menus.menu import Menu
 from bots.stocks.screener import screener_options as so
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_funcs import lambda_long_number_format
 from gamestonk_terminal.stocks.screener.finviz_model import get_screener_data
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def technical_command(
     preset: str = "template", sort: str = "", limit: int = 5, ascend: bool = False
 ):
@@ -34,8 +43,6 @@ def technical_command(
         limit,
         ascend,
     )
-
-    description = ""
     title = "Stocks: [Finviz] Technical Screener"
     if isinstance(df_screen, pd.DataFrame):
         if df_screen.empty:
@@ -44,9 +51,9 @@ def technical_command(
         df_screen = df_screen.dropna(axis="columns", how="all")
 
         if sort:
-            if " ".join(sort) in so.d_cols_to_sort["technical"]:
+            if sort in so.d_cols_to_sort["technical"]:
                 df_screen = df_screen.sort_values(
-                    by=[" ".join(sort)],
+                    by=sort,
                     ascending=ascend,
                     na_position="last",
                 )
@@ -58,7 +65,6 @@ def technical_command(
                     cutoff=0.7,
                 )
                 if similar_cmd:
-                    description = f"Replacing '{' '.join(sort)}' by '{similar_cmd[0]}' so table can be sorted.\n\n"
                     df_screen = df_screen.sort_values(
                         by=[similar_cmd[0]],
                         ascending=ascend,
@@ -69,59 +75,105 @@ def technical_command(
                         f"Wrong sort column provided! Select from: {', '.join(so.d_cols_to_sort['technical'])}"
                     )
 
-        df_screen = df_screen.fillna("")
-        future_column_name = df_screen["Ticker"]
-        df_screen = df_screen.head(n=limit).transpose()
-        df_screen.columns = future_column_name
-        df_screen.drop("Ticker")
+    df_screen.set_index("Ticker", inplace=True)
+    df_screen = df_screen.fillna("-")
+    df_screen = df_screen.head(n=limit)
+    dindex = len(df_screen.index)
+    df_screen = df_screen.applymap(lambda x: lambda_long_number_format(x, 2))
 
-        embeds = []
-        initial_str = description + "Overview"
-        i = 1
-        choices = [
-            disnake.SelectOption(label="Overview", value="0", emoji="🟢"),
-        ]
-        for column in df_screen.columns.values:
-            menu = f"\nPage {i}: {column}"
-            initial_str += f"\nPage {i}: {column}"
-            if i < 19:
-                choices.append(
-                    disnake.SelectOption(label=menu, value=f"{i}", emoji="🟢"),
-                )
-            if i == 20:
-                choices.append(
-                    disnake.SelectOption(label="Max Reached", value=f"{i}", emoji="🟢"),
-                )
-            i += 1
-        reports = [f"{initial_str}"]
-        embeds.append(
-            disnake.Embed(
-                title=title,
-                description=initial_str,
-                colour=cfg.COLOR,
-            ).set_author(
-                name=cfg.AUTHOR_NAME,
-                icon_url=cfg.AUTHOR_ICON_URL,
+    if dindex > 5:
+        embeds: list = []
+        # Output
+        i, i2, end = 0, 0, 5
+        df_pg, embeds_img, images_list = pd.DataFrame(), [], []
+        while i < dindex:
+            df_pg = df_screen.iloc[i:end]
+            df_pg.append(df_pg)
+            fig = df2img.plot_dataframe(
+                df_pg.transpose(),
+                fig_size=(800, 720),
+                col_width=[2, 1.5],
+                tbl_header=cfg.PLT_TBL_HEADER,
+                tbl_cells=cfg.PLT_TBL_CELLS,
+                font=cfg.PLT_TBL_FONT,
+                row_fill_color=cfg.PLT_TBL_ROW_COLORS,
+                paper_bgcolor="rgba(0, 0, 0, 0)",
             )
-        )
-        for column in df_screen.columns.values:
-            description = f"```{df_screen[column].fillna('')}```"
+            fig.update_traces(cells=(dict(align=["center", "right"])))
+            imagefile = "scr_technical.png"
+            imagefile = helpers.save_image(imagefile, fig)
+
+            if cfg.IMAGES_URL or cfg.IMGUR_CLIENT_ID != "REPLACE_ME":
+                image_link = cfg.IMAGES_URL + imagefile
+                images_list.append(imagefile)
+            else:
+                imagefile_save = cfg.IMG_DIR / imagefile
+                uploaded_image = gst_imgur.upload_image(
+                    imagefile_save, title="something"
+                )
+                image_link = uploaded_image.link
+                os.remove(imagefile_save)
+
+            embeds_img.append(
+                f"{image_link}",
+            )
             embeds.append(
                 disnake.Embed(
                     title=title,
-                    description=description,
                     colour=cfg.COLOR,
-                ).set_author(
-                    name=cfg.AUTHOR_NAME,
-                    icon_url=cfg.AUTHOR_ICON_URL,
-                )
+                ),
             )
-        reports.append(f"{description}")
+            i2 += 1
+            i += 5
+            end += 5
 
-    return {
-        "view": Menu,
-        "title": title,
-        "description": reports,
-        "embed": embeds,
-        "choices": choices,
-    }
+        # Author/Footer
+        for i in range(0, i2):
+            embeds[i].set_author(
+                name=cfg.AUTHOR_NAME,
+                url=cfg.AUTHOR_URL,
+                icon_url=cfg.AUTHOR_ICON_URL,
+            )
+            embeds[i].set_footer(
+                text=cfg.AUTHOR_NAME,
+                icon_url=cfg.AUTHOR_ICON_URL,
+            )
+
+        i = 0
+        for i in range(0, i2):
+            embeds[i].set_image(url=embeds_img[i])
+
+            i += 1
+        embeds[0].set_footer(text=f"Page 1 of {len(embeds)}")
+        choices = [
+            disnake.SelectOption(label="Home", value="0", emoji="🟢"),
+        ]
+
+        output = {
+            "view": Menu,
+            "title": title,
+            "embed": embeds,
+            "choices": choices,
+            "embeds_img": embeds_img,
+            "images_list": images_list,
+        }
+    else:
+        fig = df2img.plot_dataframe(
+            df_screen.transpose(),
+            fig_size=(800, 720),
+            col_width=[2, 1.5],
+            tbl_header=cfg.PLT_TBL_HEADER,
+            tbl_cells=cfg.PLT_TBL_CELLS,
+            font=cfg.PLT_TBL_FONT,
+            row_fill_color=cfg.PLT_TBL_ROW_COLORS,
+            paper_bgcolor="rgba(0, 0, 0, 0)",
+        )
+        fig.update_traces(cells=(dict(align=["center", "right"])))
+        imagefile = helpers.save_image("scr_technical.png", fig)
+
+        output = {
+            "title": title,
+            "imagefile": imagefile,
+        }
+
+    return output

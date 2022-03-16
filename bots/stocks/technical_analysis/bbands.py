@@ -1,27 +1,47 @@
-from datetime import datetime, timedelta
+import logging
 
 import plotly.graph_objects as go
 
 import bots.config_discordbot as cfg
-from bots.config_discordbot import logger
-from bots import helpers
+from bots import helpers, load_candle
 from gamestonk_terminal.common.technical_analysis import volatility_model
+from gamestonk_terminal.decorators import log_start_end
+
+logger = logging.getLogger(__name__)
 
 
-def bbands_command(ticker="", length="5", n_std="2", mamode="sma", start="", end=""):
+# pylint: disable=R0913
+@log_start_end(log=logger)
+def bbands_command(
+    ticker="",
+    interval: int = 15,
+    past_days: int = 0,
+    length="20",
+    n_std: float = 2.0,
+    ma_mode="sma",
+    start="",
+    end="",
+    extended_hours: bool = False,
+    heikin_candles: bool = False,
+    news: bool = False,
+):
     """Displays chart with bollinger bands [Yahoo Finance]"""
 
     # Debug
     if cfg.DEBUG:
         # pylint: disable=logging-too-many-args
         logger.debug(
-            "ta-bbands %s %s %s %s %s %s",
+            "ta bbands %s %s %s %s %s %s %s %s %s %s %s",
             ticker,
+            past_days,
             length,
             n_std,
-            mamode,
+            ma_mode,
             start,
             end,
+            extended_hours,
+            heikin_candles,
+            news,
         )
 
     # Check for argument
@@ -48,112 +68,99 @@ def bbands_command(ticker="", length="5", n_std="2", mamode="sma", start="", end
     if ticker == "":
         raise Exception("Stock ticker is required")
 
-    if start == "":
-        start = datetime.now() - timedelta(days=365)
-    else:
-        start = datetime.strptime(start, cfg.DATE_FORMAT)
-
-    if end == "":
-        end = datetime.now()
-    else:
-        end = datetime.strptime(end, cfg.DATE_FORMAT)
-
     if not length.lstrip("-").isnumeric():
         raise Exception("Number has to be an integer")
-    length = float(length)
-    if not n_std.lstrip("-").isnumeric():
-        raise Exception("Number has to be an integer")
+    ta_length = float(length)
     n_std = float(n_std)
 
-    if mamode not in possible_ma:
+    if ma_mode not in possible_ma:
         raise Exception("Invalid ma entered")
 
-    ticker = ticker.upper()
-    df_stock = helpers.load(ticker, start)
-    if df_stock.empty:
-        raise Exception("Stock ticker is invalid")
-
     # Retrieve Data
-    df_stock = df_stock.loc[(df_stock.index >= start) & (df_stock.index < end)]
+    df_stock, start, end, bar_start = load_candle.stock_data(
+        ticker=ticker,
+        interval=interval,
+        past_days=past_days,
+        extended_hours=extended_hours,
+        start=start,
+        end=end,
+        heikin_candles=heikin_candles,
+    )
 
-    df_ta = volatility_model.bbands(df_stock["Adj Close"], length, n_std, mamode)
+    if df_stock.empty:
+        return Exception("No Data Found")
+
+    df_ta = df_stock.loc[(df_stock.index >= start) & (df_stock.index < end)]
+    df_ta = df_ta.join(
+        volatility_model.bbands(df_ta["Adj Close"], ta_length, n_std, ma_mode)
+    )
 
     # Output Data
-    bbu = df_ta.columns[2].replace("_", " ")
-    bbm = df_ta.columns[1].replace("_", " ")
-    bbl = df_ta.columns[0].replace("_", " ")
+    if interval != 1440:
+        df_ta = df_ta.loc[(df_ta.index >= bar_start) & (df_ta.index < end)]
 
-    fig = go.Figure()
+    plot = load_candle.candle_fig(df_ta, ticker, interval, extended_hours, news)
+    title = f"{plot['plt_title']} Bollinger Bands ({ma_mode.upper()})"
+    fig = plot["fig"]
+
     fig.add_trace(
         go.Scatter(
-            name=f"{bbu}",
+            name=f"BBU_{length}_{n_std}",
             x=df_ta.index,
-            y=df_ta.iloc[:, 2].values,
+            y=df_ta[f"BBU_{length}_{n_std}"],
             opacity=1,
             mode="lines",
             line_color="indigo",
         ),
+        secondary_y=True,
+        row=1,
+        col=1,
     )
     fig.add_trace(
         go.Scatter(
-            name=f"{bbl}",
+            name=f"BBL_{length}_{n_std}",
             x=df_ta.index,
-            y=df_ta.iloc[:, 0].values,
+            y=df_ta[f"BBL_{length}_{n_std}"],
             opacity=1,
             mode="lines",
             line_color="indigo",
             fill="tonexty",
             fillcolor="rgba(74, 0, 128, 0.2)",
         ),
+        secondary_y=True,
+        row=1,
+        col=1,
     )
     fig.add_trace(
         go.Scatter(
-            name=f"{bbm}",
+            name=f"BBM_{length}_{n_std}",
             x=df_ta.index,
-            y=df_ta.iloc[:, 1].values,
+            y=df_ta[f"BBM_{length}_{n_std}"],
             opacity=1,
             line=dict(
                 width=1.5,
                 dash="dash",
             ),
         ),
-    )
-    fig.add_trace(
-        go.Scatter(
-            name=f"{ticker}",
-            x=df_stock.index,
-            y=df_stock["Adj Close"],
-            line=dict(color="#fdc708", width=2),
-            opacity=1,
-        ),
+        secondary_y=True,
+        row=1,
+        col=1,
     )
     fig.update_layout(
         margin=dict(l=0, r=0, t=50, b=20),
         template=cfg.PLT_TA_STYLE_TEMPLATE,
         colorway=cfg.PLT_TA_COLORWAY,
-        title=f"{ticker} Bollinger Bands ({mamode.upper()})",
-        title_x=0.5,
-        yaxis_title="Stock Price ($)",
-        xaxis_title="Time",
-        yaxis=dict(
-            fixedrange=False,
-        ),
-        xaxis=dict(
-            rangeslider=dict(visible=False),
-            type="date",
-        ),
+        title=title,
+        title_x=0.1,
+        title_font_size=14,
         dragmode="pan",
-        legend=dict(yanchor="top", y=0.99, xanchor="left", x=0.01),
     )
-    config = dict({"scrollZoom": True})
     imagefile = "ta_bbands.png"
 
     # Check if interactive settings are enabled
     plt_link = ""
     if cfg.INTERACTIVE:
-        html_ran = helpers.uuid_get()
-        fig.write_html(f"in/bbands_{html_ran}.html", config=config)
-        plt_link = f"[Interactive]({cfg.INTERACTIVE_URL}/bbands_{html_ran}.html)"
+        plt_link = helpers.inter_chart(fig, imagefile, callback=False)
 
     fig.update_layout(
         width=800,
@@ -163,7 +170,7 @@ def bbands_command(ticker="", length="5", n_std="2", mamode="sma", start="", end
     imagefile = helpers.image_border(imagefile, fig=fig)
 
     return {
-        "title": f"Stocks: Bollinger-Bands {ticker}",
+        "title": f"Stocks: Bollinger-Bands {ticker.upper()}",
         "description": plt_link,
         "imagefile": imagefile,
     }
