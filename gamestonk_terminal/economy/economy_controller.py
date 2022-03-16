@@ -54,6 +54,7 @@ class EconomyController(BaseController):
         "index",
         "treasury",
         "plot",
+        "options",
         "valuation",
         "performance",
         "spectrum",
@@ -230,6 +231,7 @@ Macro Data
     index         find and plot any (major) index on the market [src][Source: Yahoo Finance][/src]
     treasury      obtain U.S. treasury rates [src][Source: EconDB][/src]
     plot          plot data from the above commands together
+    options       show the available options for 'plot' or show/export the data
 
 Performance & Valuations
     rtps          real-time performance sectors [src][Source: Alpha Vantage][/src]
@@ -972,7 +974,9 @@ Performance & Valuations
             description="This command can plot any data on two y-axes obtained from the macro, fred, index and "
             "treasury commands. To be able to use this data, use the -st argument available within these "
             "commands. For example 'macro -p GDP -c Germany Netherlands -st' will store the data for usage "
-            "in this command. Therefore, it allows you to plot different time series in one graph.",
+            "in this command. Therefore, it allows you to plot different time series in one graph. You can use "
+            "the 'options' command to show the required arguments to be entered. The example above could be plotted "
+            "the following way: 'plot -y1 Germany_GDP -y2 Netherlands_GDP' or 'plot -y1 Germany_GDP Netherlands_GDP'",
         )
 
         parser.add_argument(
@@ -993,16 +997,6 @@ Performance & Valuations
             default="",
         )
 
-        parser.add_argument(
-            "-s",
-            "--show",
-            dest="show",
-            help="Show all available options currently collected from the macro data commands. "
-            "To save data, use the command -st on 'macro', 'fred', 'index' and 'treasury'.",
-            action="store_true",
-            default=False,
-        )
-
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-y1")
         ns_parser = parse_known_args_and_warn(
@@ -1018,19 +1012,6 @@ Performance & Valuations
                 console.print(
                     "There is no data stored yet. Please use either the 'macro', 'fred', 'index' and/or "
                     "'treasury' command in combination with the -st argument to be able to plot data."
-                )
-            elif ns_parser.show:
-                options = {
-                    command: ", ".join(values.keys())
-                    for command, values in self.DATASETS.items()
-                }
-                print_rich_table(
-                    pd.DataFrame.from_dict(
-                        options, orient="index", columns=["Options"]
-                    ),
-                    show_index=True,
-                    index_name="Command",
-                    title="Options available to plot",
                 )
             else:
                 dataset_yaxis1 = pd.DataFrame()
@@ -1120,6 +1101,42 @@ Performance & Valuations
                         dataset_yaxis_2=dataset_yaxis2,
                         export=ns_parser.export,
                     )
+
+            console.print()
+
+    @log_start_end(log=logger)
+    def call_options(self, other_args: List[str]):
+        """Process options command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="options",
+            description="Show the available options for the 'plot command. To save data, use the command -st on "
+            "'macro', 'fred', 'index' and 'treasury'. You can use these commands to plot data on a multi-"
+            "axes graoh. Furthermore, this command also allows you to see and export all stored data.",
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
+            raw=True,
+            limit=10,
+        )
+
+        if ns_parser:
+            if not self.DATASETS:
+                console.print(
+                    "There is no data stored yet. Please use either the 'macro', 'fred', 'index' and/or "
+                    "'treasury' command in combination with the -st argument to be able to plot data."
+                )
+            else:
+                plot_view.show_options(
+                    datasets=self.DATASETS,
+                    raw=ns_parser.raw,
+                    limit=ns_parser.limit,
+                    export=ns_parser.export,
+                )
 
             console.print()
 

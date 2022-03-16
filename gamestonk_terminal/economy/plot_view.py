@@ -1,13 +1,17 @@
 """ Plot Controller """
 import os
-from typing import Optional, List
+from typing import Optional, List, Dict, Any
 
 import pandas as pd
 from matplotlib import pyplot as plt
 
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.config_terminal import theme
-from gamestonk_terminal.helper_funcs import plot_autoscale, export_data
+from gamestonk_terminal.helper_funcs import (
+    plot_autoscale,
+    export_data,
+    print_rich_table,
+)
 
 
 def show_plot(
@@ -91,4 +95,56 @@ def show_plot(
             os.path.dirname(os.path.abspath(__file__)),
             "plot_macro_data",
             df,
+        )
+
+
+def show_options(
+    datasets: Dict[Any, pd.DataFrame], raw: str = "", limit: int = 10, export: str = ""
+):
+    """
+    The ability to plot any data coming from EconDB, FRED or Yahoo Finance.
+
+    Parameters
+    ----------
+    datasets: Dict[Any, pd.DataFrame]
+        A dictionary with the format {command: data}.
+    raw : bool
+        Whether you wish to show the data available.
+    limit: int
+        The amount of rows you wish to show.
+    export: bool
+        Whether you want to export the data.
+
+    Returns
+    ----------
+    Plots the data.
+    """
+    if raw or export:
+        df = pd.DataFrame()
+        for _, data in datasets.items():
+            df = pd.concat([df, data], axis=1)
+
+        if raw:
+            print_rich_table(
+                df.tail(limit),
+                show_index=True,
+                headers=list(df.columns),
+                title="Macro data",
+            )
+        if export:
+            export_data(
+                export,
+                os.path.dirname(os.path.abspath(__file__)),
+                "dataset",
+                df,
+            )
+    else:
+        options = {
+            command: ", ".join(values.keys()) for command, values in datasets.items()
+        }
+        print_rich_table(
+            pd.DataFrame.from_dict(options, orient="index", columns=["Options"]),
+            show_index=True,
+            index_name="Command",
+            title="Options available to plot",
         )
