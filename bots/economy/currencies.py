@@ -27,31 +27,39 @@ def currencies_command():
     if df.empty:
         raise Exception("No available data found")
 
-    df["Last"] = pd.to_numeric(df["Last"].astype(float))
-    df["Chng"] = pd.to_numeric(df["Chng"].astype(float))
-    df["%Chng"] = pd.to_numeric(df["%Chng"].astype(float))
-
-    formats = {"Last": "{:.2f}", "Chng": "{:.2f}", "%Chng": "{:.2f}%"}
-    for col, value in formats.items():
-        df[col] = df[col].map(lambda x: value.format(x))  # pylint: disable=W0640
-
-    df = df.fillna("")
-    df.set_index(" ", inplace=True)
+    df["Last Price"] = pd.to_numeric(df["Last"].astype(float))
+    df["Change"] = pd.to_numeric(df["Chng"].astype(float))
+    df["% Change"] = pd.to_numeric(df["%Chng"].astype(float))
+    df = df.drop(columns=["Last", "Chng", "%Chng"])
 
     # Debug user output
     if cfg.DEBUG:
         logger.debug(df.to_string())
 
-    df = df[
-        [
-            "Last",
-            "Chng",
-            "%Chng",
+    formats = {"Last Price": "${:.2f}", "Change": "${:.2f}", "% Change": "{:.2f}%"}
+    for col, value in formats.items():
+        df[col] = df[col].map(lambda x: value.format(x))  # pylint: disable=W0640
+
+    df = df.fillna("")
+    df.set_index(" ", inplace=True)
+    font_color = (
+        ["white"] * 2
+        + [
+            [
+                "#e4003a" if boolv else "#00ACFF"
+                for boolv in df["Change"].str.contains("-")
+            ]
         ]
-    ]
+        + [
+            [
+                "#e4003a" if boolv else "#00ACFF"
+                for boolv in df["% Change"].str.contains("-")
+            ]
+        ]
+    )
     fig = df2img.plot_dataframe(
         df,
-        fig_size=(800, (40 + (40 * len(df.index)))),
+        fig_size=(720, (40 + (40 * len(df.index)))),
         col_width=[8, 3, 3],
         tbl_header=cfg.PLT_TBL_HEADER,
         tbl_cells=cfg.PLT_TBL_CELLS,
@@ -59,7 +67,14 @@ def currencies_command():
         row_fill_color=cfg.PLT_TBL_ROW_COLORS,
         paper_bgcolor="rgba(0, 0, 0, 0)",
     )
-    fig.update_traces(cells=(dict(align="left")))
+    fig.update_traces(
+        cells=(
+            dict(
+                align=["center", "right"],
+                font=dict(color=font_color),
+            )
+        )
+    )
     imagefile = save_image("econ-currencies.png", fig)
     return {
         "title": "Economy: [WSJ] Currencies",

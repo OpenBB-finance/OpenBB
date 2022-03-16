@@ -75,7 +75,7 @@ def arktrades_command(ticker: str = "", num: int = 10):
             row_fill_color=cfg.PLT_TBL_ROW_COLORS,
             paper_bgcolor="rgba(0, 0, 0, 0)",
         )
-        imagefile = save_image(f"dd-arktrades{i}.png", fig)
+        imagefile = save_image("dd-arktrades.png", fig)
 
         if cfg.IMAGES_URL or cfg.IMGUR_CLIENT_ID != "REPLACE_ME":
             image_link = cfg.IMAGES_URL + imagefile
@@ -98,7 +98,6 @@ def arktrades_command(ticker: str = "", num: int = 10):
         i2 += 1
         i += 20
         end += 20
-        os.remove(imagefile)
 
     # Author/Footer
     for i in range(0, i2):

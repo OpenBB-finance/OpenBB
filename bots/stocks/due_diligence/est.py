@@ -49,8 +49,8 @@ def est_command(ticker: str = ""):
     dindex = len(df_year_estimates.index)
     fig = df2img.plot_dataframe(
         df_year_estimates,
-        fig_size=(1200, (40 + (60 * dindex))),
-        col_width=[12, 4, 4, 4, 4],
+        fig_size=(900, (40 + (60 * dindex))),
+        col_width=[9, 4, 4, 4, 4],
         tbl_header=cfg.PLT_TBL_HEADER,
         tbl_cells=cfg.PLT_TBL_CELLS,
         font=cfg.PLT_TBL_FONT,
@@ -70,7 +70,7 @@ def est_command(ticker: str = ""):
 
     fig = df2img.plot_dataframe(
         df_quarter_earnings,
-        fig_size=(1200, (40 + (40 * 20))),
+        fig_size=(900, (40 + (40 * 20))),
         col_width=[5, 5, 4, 4, 5, 4],
         tbl_header=cfg.PLT_TBL_HEADER,
         tbl_cells=cfg.PLT_TBL_CELLS,
@@ -91,7 +91,7 @@ def est_command(ticker: str = ""):
 
     fig = df2img.plot_dataframe(
         df_quarter_revenues,
-        fig_size=(1200, (40 + (40 * 20))),
+        fig_size=(900, (40 + (40 * 20))),
         col_width=[5, 5, 4, 4, 5, 4],
         tbl_header=cfg.PLT_TBL_HEADER,
         tbl_cells=cfg.PLT_TBL_CELLS,

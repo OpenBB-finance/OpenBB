@@ -41,16 +41,15 @@ def financial_command(preset="template", sort="", limit: int = 5, ascend: bool =
         limit,
         ascend,
     )
-    sort = "Ticker"
     title = "Stocks: [Finviz] Financial Screener"
     if df_screen.empty:
         raise Exception("No data found.")
 
-    df_screen = df_screen.fillna("-")
+    df_screen = df_screen.dropna(axis="columns", how="all")
 
-    if " ".join(sort) in so.d_cols_to_sort["financial"]:
+    if sort in so.d_cols_to_sort["financial"]:
         df_screen = df_screen.sort_values(
-            by=[" ".join(sort)],
+            by=sort,
             ascending=ascend,
             na_position="last",
         )
@@ -72,8 +71,8 @@ def financial_command(preset="template", sort="", limit: int = 5, ascend: bool =
                 f"Wrong sort column provided! Select from: {', '.join(so.d_cols_to_sort['financial'])}"
             )
     df_screen.set_index("Ticker", inplace=True)
-    df_screen = df_screen.fillna("")
     df_screen = df_screen.head(n=limit)
+    df_screen = df_screen.fillna("-")
     dindex = len(df_screen.index)
     df_screen = df_screen.applymap(lambda x: lambda_long_number_format(x, 2))
 

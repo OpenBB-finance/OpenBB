@@ -63,7 +63,7 @@ def pt_command(ticker: str = "", raw: bool = False, start=""):
 
         plt.legend(["Closing Price", "Average Price Target", "Price Target"])
 
-        plt.title(f"{ticker.upper} (Time Series) and Price Target")
+        plt.title(f"{ticker.upper()} (Time Series) and Price Target")
         plt.xlim(stock.index[0], stock.index[-1])
         plt.xlabel("Time")
         plt.ylabel("Share Price")

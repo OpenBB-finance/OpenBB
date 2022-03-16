@@ -40,8 +40,8 @@ def analyst_command(ticker=""):
     dindex = len(df.index)
     fig = df2img.plot_dataframe(
         df,
-        fig_size=(1500, (40 + (40 * dindex))),
-        col_width=[5, 5, 8, 14, 5, 5, 5],
+        fig_size=(900, (40 + (40 * dindex))),
+        col_width=[5, 5, 9, 8, 5, 6, 5],
         tbl_header=cfg.PLT_TBL_HEADER,
         tbl_cells=cfg.PLT_TBL_CELLS,
         font=cfg.PLT_TBL_FONT,
