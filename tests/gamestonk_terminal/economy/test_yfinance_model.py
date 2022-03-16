@@ -1,6 +1,7 @@
 # IMPORTATION STANDARD
 
 # IMPORTATION THIRDPARTY
+import pandas as pd
 import pytest
 
 # IMPORTATION INTERNAL
@@ -17,7 +18,8 @@ from gamestonk_terminal.economy import yfinance_model
         ["cac40", "3mo", "2010-01-01", "2016-02-06", "High"],
     ],
 )
-def test_get_index(recorder, index, interval, start_date, end_date, column):
+def test_get_index(index, interval, start_date, end_date, column):
     result_df = yfinance_model.get_index(index, interval, start_date, end_date, column)
 
-    recorder.capture(result_df)
+    assert isinstance(result_df, pd.Series)
+    assert not result_df.empty

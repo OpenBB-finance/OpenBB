@@ -15,14 +15,13 @@ from gamestonk_terminal.economy import econdb_model
         ["GDP", "France", "2015-01-01", "2020-10-10", "USD"],
     ],
 )
-def test_get_macro_data(
-    recorder, parameter, country, start_date, end_date, convert_currency
-):
+def test_get_macro_data(parameter, country, start_date, end_date, convert_currency):
     result_df = econdb_model.get_macro_data(
         parameter, country, start_date, end_date, convert_currency
     )
 
-    recorder.capture(result_df)
+    assert isinstance(result_df, pd.Series)
+    assert not result_df.empty
 
 
 @pytest.mark.vcr
@@ -35,13 +34,14 @@ def test_get_macro_data(
     ],
 )
 def test_get_aggregated_macro_data(
-    recorder, parameters, countries, start_date, end_date, convert_currency
+    parameters, countries, start_date, end_date, convert_currency
 ):
     result_df = econdb_model.get_aggregated_macro_data(
         parameters, countries, start_date, end_date, convert_currency
     )
 
-    recorder.capture(result_df)
+    assert isinstance(result_df, pd.DataFrame)
+    assert not result_df.empty
 
 
 @pytest.mark.vcr

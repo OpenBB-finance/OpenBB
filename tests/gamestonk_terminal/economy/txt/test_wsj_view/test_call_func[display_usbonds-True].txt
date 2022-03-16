@@ -1,12 +1,12 @@
                  Rate (%) Yld (%) Yld Chg (%)
-0  30-Year Bond     2.250   2.490       0.009
-1  10-Year Note     1.875   2.184       0.036
-2   7-Year Note     1.875   2.209       0.049
-3   5-Year Note     1.875   2.151       0.044
-4   3-Year Note     1.750   2.080       0.027
-5   2-Year Note     1.500   1.868       0.001
-6   1-Year Bill     0.000   1.180      -0.059
-7  6-Month Bill     0.000   0.838      -0.002
-8  3-Month Bill     0.000   0.472       0.020
-9  1-Month Bill     0.000   0.248       0.053
+0  30-Year Bond     2.250   2.466      -0.015
+1  10-Year Note     1.875   2.154       0.005
+2   7-Year Note     1.875   2.177       0.017
+3   5-Year Note     1.875   2.122       0.015
+4   3-Year Note     1.750   2.050      -0.003
+5   2-Year Note     1.500   1.856      -0.012
+6   1-Year Bill     0.000   1.165      -0.043
+7  6-Month Bill     0.000   0.842       0.018
+8  3-Month Bill     0.000   0.465       0.006
+9  1-Month Bill     0.000   0.238       0.043
 

@@ -1,6 +1,7 @@
 # IMPORTATION STANDARD
 
 # IMPORTATION THIRDPARTY
+import pandas as pd
 import pytest
 import yfinance
 
@@ -25,9 +26,7 @@ from gamestonk_terminal.economy import yfinance_view
         [["cac40"], "3mo", "2010-01-01", "2016-02-06", "High", True],
     ],
 )
-def test_show_indices(
-    recorder, mocker, indices, interval, start_date, end_date, column, store
-):
+def test_show_indices(mocker, indices, interval, start_date, end_date, column, store):
     yf_download = yfinance.download
 
     def mock_yf_download(*args, **kwargs):
@@ -42,7 +41,8 @@ def test_show_indices(
         indices, interval, start_date, end_date, column, store
     )
 
-    recorder.capture(result_df)
+    assert isinstance(result_df, pd.DataFrame)
+    assert not result_df.empty
 
 
 @pytest.mark.vcr

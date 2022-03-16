@@ -6,7 +6,6 @@ from gamestonk_terminal.economy import econdb_view, econdb_model
 
 
 @pytest.mark.vcr
-@pytest.mark.record_stdout
 @pytest.mark.parametrize(
     "parameters, countries, start_date, end_date, convert_currency",
     [
