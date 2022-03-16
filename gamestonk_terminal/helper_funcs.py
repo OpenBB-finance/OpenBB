@@ -89,10 +89,14 @@ def check_path(path: str) -> str:
     str:
         Ratio of similarity between two strings
     """
+    # Just return empty path because this will be handled outside this function
+    if not path:
+        return ""
+    # Return string of path if such path exists
     if os.path.isfile(path):
         return path
-    logger.error("Expected list of one axis item.")
-    console.print("The path file provided does not exist.\n[/red]")
+    logger.error("The path file '%s' does not exist.", path)
+    console.print(f"[red]The path file '{path}' does not exist.\n[/red]")
     return ""
 
 
