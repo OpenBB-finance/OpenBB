@@ -1,4 +1,4 @@
-Stock Price Strength: Extreme Fear                                                                  [Updated Mar 15 at 11:46am]
-   The McClellan Volume Summation Index measures advancing and declining volume on the NYSE. During the last month, approximately 7.33% more of each day's volume has traded in declining issues than in advancing issues, pushing this indicator towards the lower end of its range for the last two years.
+Stock Price Strength: Extreme Fear                                                                  [Updated Mar 15 at 4:04pm]
+   The McClellan Volume Summation Index measures advancing and declining volume on the NYSE. During the last month, approximately 4.95% more of each day's volume has traded in declining issues than in advancing issues, pushing this indicator towards the lower end of its range for the last two years.
    (Last changed Feb 22 from a Fear rating)
 
