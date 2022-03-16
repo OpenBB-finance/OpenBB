@@ -335,7 +335,7 @@ def upload_archive_logs_s3(
     bucket=None,
     folder_name=FOLDER_NAME,
 ) -> None:
-    if gtff.ALLOW_LOG_COLLECTION:
+    if gtff.LOG_COLLECTION:
         if directory_str is None:
             directory = get_log_dir()
         else:
