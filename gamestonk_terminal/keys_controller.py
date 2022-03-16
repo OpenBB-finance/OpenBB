@@ -4,7 +4,6 @@ __docformat__ = "numpy"
 import argparse
 import logging
 import os
-from pathlib import Path
 from typing import Dict, List
 
 import dotenv
@@ -69,18 +68,13 @@ class KeysController(BaseController):
     PATH = "/keys/"
     key_dict: Dict = {}
     cfg_dict: Dict = {}
-    env_file = ".env"
-    env_files = [f for f in os.listdir() if f.endswith(".env")]
-    if env_files:
-        env_file = env_files[0]
-        dotenv.load_dotenv(env_file)
-    else:
-        # create env file
-        Path(".env")
 
-    def __init__(self, queue: List[str] = None, menu_usage: bool = True):
+    def __init__(
+        self, queue: List[str] = None, menu_usage: bool = True, env_file: str = ".env"
+    ):
         """Constructor"""
         super().__init__(queue)
+        self.env_file = env_file
         if menu_usage:
             self.check_keys_status()
 
@@ -481,14 +475,18 @@ class KeysController(BaseController):
             logger.info("Sentiment Investor key not defined")
             self.key_dict["SENTIMENT_INVESTOR"] = "not defined"
         else:
-            account = requests.get(
-                f"https://api.sentimentinvestor.com/v1/trending"
-                f"?token={cfg.API_SENTIMENTINVESTOR_TOKEN}"
-            )
-            if account.ok and account.json().get("success", False):
-                logger.info("Sentiment Investor key defined, test passed")
-                self.key_dict["SENTIMENT_INVESTOR"] = "defined, test passed"
-            else:
+            try:
+                account = requests.get(
+                    f"https://api.sentimentinvestor.com/v1/trending"
+                    f"?token={cfg.API_SENTIMENTINVESTOR_TOKEN}"
+                )
+                if account.ok and account.json().get("success", False):
+                    logger.info("Sentiment Investor key defined, test passed")
+                    self.key_dict["SENTIMENT_INVESTOR"] = "defined, test passed"
+                else:
+                    logger.warning("Sentiment Investor key defined, test failed")
+                    self.key_dict["SENTIMENT_INVESTOR"] = "defined, test unsuccessful"
+            except Exception:
                 logger.warning("Sentiment Investor key defined, test failed")
                 self.key_dict["SENTIMENT_INVESTOR"] = "defined, test unsuccessful"
 

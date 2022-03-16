@@ -11,6 +11,7 @@ from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
+    EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
     parse_known_args_and_warn,
@@ -146,7 +147,7 @@ class DueDiligenceController(StockBaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
             business_insider_view.price_target_from_analysts(

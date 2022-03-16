@@ -1,19 +1,24 @@
+import logging
+
 import plotly.graph_objects as go
 import yfinance as yf
 from plotly.subplots import make_subplots
 
 import bots.config_discordbot as cfg
-from bots.config_discordbot import logger
 from bots import helpers
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.stocks.dark_pool_shorts import finra_model
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def dpotc_command(ticker: str = ""):
     """Dark pools (ATS) vs OTC data [FINRA]"""
 
     # Debug user input
     if cfg.DEBUG:
-        logger.debug("dps-dpotc %s", ticker)
+        logger.debug("dps dpotc %s", ticker)
 
     # Check for argument
     if ticker == "":
@@ -141,7 +146,8 @@ def dpotc_command(ticker: str = ""):
             row=2,
             col=1,
         )
-
+    if cfg.PLT_WATERMARK:
+        fig.add_layout_image(cfg.PLT_WATERMARK)
     fig.update_xaxes(showspikes=True, spikesnap="cursor", spikemode="across")
     fig.update_yaxes(showspikes=True, spikethickness=2)
     fig.update_layout(
@@ -153,6 +159,7 @@ def dpotc_command(ticker: str = ""):
         yaxis3_title="Shares per Trade",
         yaxis_title="Total Weekly Shares",
         xaxis2_title="Weeks",
+        font=cfg.PLT_FONT,
         yaxis=dict(
             fixedrange=False,
             side="left",
@@ -184,15 +191,13 @@ def dpotc_command(ticker: str = ""):
         spikedistance=1000,
         hoverdistance=100,
     )
-    config = dict({"scrollZoom": True})
+
     imagefile = "dps_dpotc.png"
 
     # Check if interactive settings are enabled
     plt_link = ""
     if cfg.INTERACTIVE:
-        html_ran = helpers.uuid_get()
-        fig.write_html(f"in/dpotc_{html_ran}.html", config=config)
-        plt_link = f"[Interactive]({cfg.INTERACTIVE_URL}/dpotc_{html_ran}.html)"
+        plt_link = helpers.inter_chart(fig, imagefile, callback=False)
 
     fig.update_layout(
         width=800,

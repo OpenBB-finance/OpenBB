@@ -1,3 +1,5 @@
+import io
+import logging
 from datetime import datetime, timedelta
 
 import numpy as np
@@ -5,13 +7,16 @@ from matplotlib import pyplot as plt
 
 import bots.config_discordbot as cfg
 import bots.helpers
-from bots.config_discordbot import logger
 from bots.helpers import image_border
 from gamestonk_terminal.common.technical_analysis import momentum_model
 from gamestonk_terminal.config_plot import PLOT_DPI
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import plot_autoscale
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def cg_command(ticker="", length="14", start="", end=""):
     """Displays chart with centre of gravity [Yahoo Finance]"""
 
@@ -76,9 +81,11 @@ def cg_command(ticker="", length="14", start="", end=""):
     fig.tight_layout(pad=1)
     plt.legend()
     imagefile = "ta_cg.png"
-    plt.savefig(imagefile)
+    dataBytesIO = io.BytesIO()
+    plt.savefig(dataBytesIO)
 
-    imagefile = image_border(imagefile)
+    dataBytesIO.seek(0)
+    imagefile = image_border(imagefile, base64=dataBytesIO)
 
     return {
         "title": f"Stocks: Center-of-Gravity {ticker}",
