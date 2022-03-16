@@ -33,7 +33,7 @@ Comparing Unemployment Rates and Consumer Confidence of France and Italy
 
 2022 Mar 15, 07:43 (✨) /economy/ $ plot -y1 France_URATE Italy_URATE -y2 France_CONF Italy_CONF
 ```
-![unemployment rate versus consumer confidence](https://user-images.githubusercontent.com/46355364/158575389-c90b49b5-5f74-4abf-93c7-160e513f8441.png)
+![Figure_1](https://user-images.githubusercontent.com/46355364/158633367-783d54eb-79ab-443f-af99-8a9ecadf5949.png)
 
 Comparing U.S. treasury rate movements to the S&P 500
 ```
@@ -41,5 +41,4 @@ Comparing U.S. treasury rate movements to the S&P 500
 2022 Mar 15, 07:40 (✨) /economy/ $ index sp500 -s 2005-01-01 -st
 2022 Mar 15, 07:40 (✨) /economy/ $ plot -y1 sp500 -y2 Nominal_1-year Nominal_10-year
 ```
-![treasures vs sp500](https://user-images.githubusercontent.com/46355364/158575319-a3e02169-943d-45d9-8da2-bc432dcb13ad.png)
-
+![Figure_2](https://user-images.githubusercontent.com/46355364/158633394-d948d909-d39b-4b05-9c5b-2e30b202cc32.png)
