@@ -28,7 +28,7 @@ from gamestonk_terminal.rich_config import console
 logger = logging.getLogger(__name__)
 
 
-class PortfolioOptimization(BaseController):
+class PortfolioOptimizationController(BaseController):
     """Portfolio Optimization Controller class"""
 
     CHOICES_COMMANDS = [

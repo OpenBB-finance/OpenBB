@@ -143,7 +143,7 @@ Loaded:[/info] {self.portfolio_name or None}
                 + self.portfolio._crypto_tickers
             )
         self.queue = self.load_class(
-            po_controller.PortfolioOptimization, tickers, self.queue
+            po_controller.PortfolioOptimizationController, tickers, self.queue
         )
 
     # BUG: The commands in pa menu throw errors. First one says that it's related to
@@ -155,7 +155,7 @@ Loaded:[/info] {self.portfolio_name or None}
     #     from gamestonk_terminal.portfolio.portfolio_analysis import pa_controller
     #
     #     self.queue = self.queue = self.load_class(
-    #         pa_controller.PortfolioAnalysis, self.queue
+    #         pa_controller.PortfolioAnalysisController, self.queue
     #     )
 
     @log_start_end(log=logger)

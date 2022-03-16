@@ -80,7 +80,7 @@ def test_print_help():
         ("h", []),
         (
             "r",
-            ["quit", "quit", "reset", "jupyter", "dashboard"],
+            ["quit", "quit", "reset", "jupyter", "dashboards"],
         ),
     ],
 )
@@ -119,7 +119,7 @@ def test_call_cls(mocker):
         (
             "call_reset",
             [],
-            ["quit", "quit", "reset", "jupyter", "dashboard"],
+            ["quit", "quit", "reset", "jupyter", "dashboards"],
         ),
         (
             "call_reset",
@@ -129,7 +129,7 @@ def test_call_cls(mocker):
                 "quit",
                 "reset",
                 "jupyter",
-                "dashboard",
+                "dashboards",
                 "help",
             ],
         ),

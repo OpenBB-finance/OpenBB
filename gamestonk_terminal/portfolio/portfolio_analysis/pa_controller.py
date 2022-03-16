@@ -30,7 +30,7 @@ possible_paths = [
 ]
 
 
-class PortfolioAnalysis(BaseController):
+class PortfolioAnalysisController(BaseController):
     """Portfolio Controller"""
 
     CHOICES_COMMANDS = [

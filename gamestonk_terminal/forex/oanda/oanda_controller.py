@@ -369,7 +369,7 @@ class OandaController(BaseController):
             + "defaults to all units. ",
         )
         if other_args:
-            if "-i" not in other_args[0]:
+            if "-i" not in other_args[0] and "-h" not in other_args[0]:
                 other_args.insert(0, "-i")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
