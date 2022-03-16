@@ -3,6 +3,7 @@ from datetime import datetime
 import os
 
 # IMPORTATION THIRDPARTY
+import pandas as pd
 import pytest
 
 # IMPORTATION INTERNAL
@@ -92,13 +93,23 @@ def test_load_week_or_month(recorder, weekly, monthly):
 
 
 @pytest.mark.vcr
+@pytest.mark.record_stdout
 @pytest.mark.parametrize(
     "path",
     ["none", os.path.join(os.path.join("custom_imports", "stocks"), "test.csv")],
 )
-def test_load_custom(recorder, path):
-    result_df = stocks_helper.load_custom(path)
-    recorder.capture(result_df)
+def test_load_custom_output(path):
+    stocks_helper.load_custom(path)
+
+
+@pytest.mark.vcr
+@pytest.mark.parametrize(
+    "path",
+    [os.path.join(os.path.join("custom_imports", "stocks"), "test.csv")],
+)
+def test_load_custom_output(path):
+    df = stocks_helper.load_custom(path)
+    assert isinstance(df, pd.DataFrame)
 
 
 @pytest.mark.default_cassette("test_display_candle")
