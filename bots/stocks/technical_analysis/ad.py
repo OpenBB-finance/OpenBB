@@ -1,100 +1,101 @@
-from datetime import datetime, timedelta
+import logging
 
 import plotly.graph_objects as go
-from plotly.subplots import make_subplots
 
 import bots.config_discordbot as cfg
-from bots.config_discordbot import logger
-from bots import helpers
+from bots import helpers, load_candle
 from gamestonk_terminal.common.technical_analysis import volume_model
+from gamestonk_terminal.decorators import log_start_end
+
+logger = logging.getLogger(__name__)
 
 
-def ad_command(ticker="", is_open="False", start="", end=""):
+@log_start_end(log=logger)
+def ad_command(
+    ticker="",
+    interval: int = 15,
+    past_days: int = 0,
+    is_open: bool = False,
+    start="",
+    end="",
+    extended_hours: bool = False,
+    heikin_candles: bool = False,
+    news: bool = False,
+):
     """Displays chart with accumulation/distribution line [Yahoo Finance]"""
 
     # Debug
     if cfg.DEBUG:
-        logger.debug("ta-ad %s %s %s %s", ticker, is_open, start, end)
+        # pylint: disable=logging-too-many-args
+        logger.debug(
+            "ta ad %s %s %s %s %s %s %s %s %s",
+            ticker,
+            interval,
+            past_days,
+            is_open,
+            start,
+            end,
+            extended_hours,
+            heikin_candles,
+            news,
+        )
 
     # Check for argument
     if ticker == "":
         raise Exception("Stock ticker is required")
 
-    if start == "":
-        start = datetime.now() - timedelta(days=365)
-    else:
-        start = datetime.strptime(start, cfg.DATE_FORMAT)
-
-    if end == "":
-        end = datetime.now()
-    else:
-        end = datetime.strptime(end, cfg.DATE_FORMAT)
-
-    if is_open in ["false", "False", "FALSE", ""]:
-        is_open = False
-
-    if is_open in ["true", "True", "TRUE"]:
-        is_open = True
-
-    if is_open not in [True, False]:
-        raise Exception("is_open argument has to be true or false")
-
-    ticker = ticker.upper()
-    df_stock = helpers.load(ticker, start)
-    if df_stock.empty:
-        raise Exception("Stock ticker is invalid")
-
     # Retrieve Data
-    df_stock = df_stock.loc[(df_stock.index >= start) & (df_stock.index < end)]
+    df_stock, start, end, bar_start = load_candle.stock_data(
+        ticker=ticker,
+        interval=interval,
+        past_days=past_days,
+        extended_hours=extended_hours,
+        start=start,
+        end=end,
+        heikin_candles=heikin_candles,
+    )
 
-    divisor = 1_000_000
-    df_vol = df_stock["Volume"].dropna()
-    df_vol = df_vol.values / divisor
-    df_ta = volume_model.ad(df_stock, is_open)
-    df_cal = df_ta.values
-    df_cal = df_cal / divisor
+    if df_stock.empty:
+        return Exception("No Data Found")
 
-    fig = make_subplots(
-        rows=3,
+    df_ta = df_stock.loc[(df_stock.index >= start) & (df_stock.index < end)]
+    df_ta = df_ta.join(volume_model.ad(df_stock, is_open))
+
+    # Output Data
+    if interval != 1440:
+        df_ta = df_ta.loc[(df_ta.index >= bar_start) & (df_ta.index < end)]
+
+    plot = load_candle.candle_fig(
+        df_ta,
+        ticker,
+        interval,
+        extended_hours,
+        news,
+        bar=bar_start,
+        int_bar=interval,
+        rows=2,
         cols=1,
         shared_xaxes=True,
-        vertical_spacing=0.06,
-        row_width=[0.2, 0.2, 0.2],
+        vertical_spacing=0.07,
+        row_width=[0.4, 0.6],
+        specs=[
+            [{"secondary_y": True}],
+            [{"secondary_y": False}],
+        ],
     )
+    title = f"{plot['plt_title']} A/D"
+    fig = plot["fig"]
+
     fig.add_trace(
         go.Scatter(
-            name=ticker,
-            x=df_stock.index,
-            y=df_stock["Adj Close"].values,
-            line=dict(color="#fdc708", width=2),
-            opacity=1,
-        ),
-        row=1,
-        col=1,
-    )
-    colors = [
-        "green" if row.Open < row["Adj Close"] else "red"
-        for _, row in df_stock.iterrows()
-    ]
-    fig.add_trace(
-        go.Bar(
-            x=df_stock.index,
-            y=df_vol,
-            name="Volume [M]",
-            marker_color=colors,
-        ),
-        row=2,
-        col=1,
-    )
-    fig.add_trace(
-        go.Scatter(
-            name="A/D [M]",
+            name="A/D",
+            mode="lines",
             x=df_ta.index,
-            y=df_ta.iloc[:, 0].values,
+            y=df_ta["AD"],
             line=dict(width=2),
             opacity=1,
         ),
-        row=3,
+        row=2,
         col=1,
     )
     fig.add_hline(
@@ -104,37 +105,24 @@ def ad_command(ticker="", is_open="False", start="", end=""):
         layer="below",
         line_width=3,
         line=dict(color="grey", dash="dash"),
-        row=3,
+        row=2,
         col=1,
     )
     fig.update_layout(
-        margin=dict(l=10, r=0, t=40, b=20),
+        margin=dict(l=0, r=0, t=50, b=20),
         template=cfg.PLT_TA_STYLE_TEMPLATE,
         colorway=cfg.PLT_TA_COLORWAY,
-        title=f"{ticker} AD",
-        title_x=0.4,
-        yaxis_title="Stock Price ($)",
-        yaxis2_title="Volume [M]",
-        yaxis3_title="A/D [M]",
-        yaxis=dict(
-            fixedrange=False,
-        ),
-        xaxis=dict(
-            rangeslider=dict(visible=False),
-            type="date",
-        ),
+        title=title,
+        title_x=0.1,
+        title_font_size=14,
         dragmode="pan",
-        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
     )
-    config = dict({"scrollZoom": True})
     imagefile = "ta_ad.png"
 
     # Check if interactive settings are enabled
     plt_link = ""
     if cfg.INTERACTIVE:
-        html_ran = helpers.uuid_get()
-        fig.write_html(f"in/ad_{html_ran}.html", config=config)
-        plt_link = f"[Interactive]({cfg.INTERACTIVE_URL}/ad_{html_ran}.html)"
+        plt_link = helpers.inter_chart(fig, imagefile, callback=False)
 
     fig.update_layout(
         width=800,
@@ -144,7 +132,7 @@ def ad_command(ticker="", is_open="False", start="", end=""):
     imagefile = helpers.image_border(imagefile, fig=fig)
 
     return {
-        "title": f"Stocks: Accumulation/Distribution Line {ticker}",
+        "title": f"Stocks: Accumulation/Distribution Line {ticker.upper()}",
         "description": plt_link,
         "imagefile": imagefile,
     }

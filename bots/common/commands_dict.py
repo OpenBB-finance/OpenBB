@@ -1,7 +1,9 @@
 import re
+from pathlib import Path
 from typing import List
 
 import pandas as pd
+
 from bots.economy.currencies import currencies_command
 from bots.economy.energy import energy_command
 from bots.economy.feargreed import feargreed_command
@@ -74,21 +76,17 @@ from bots.stocks.technical_analysis.aroon import aroon_command
 from bots.stocks.technical_analysis.bbands import bbands_command
 from bots.stocks.technical_analysis.cci import cci_command
 from bots.stocks.technical_analysis.donchian import donchian_command
-from bots.stocks.technical_analysis.ema import ema_command
 from bots.stocks.technical_analysis.fib import fib_command
 from bots.stocks.technical_analysis.fisher import fisher_command
-from bots.stocks.technical_analysis.hma import hma_command
 from bots.stocks.technical_analysis.kc import kc_command
+from bots.stocks.technical_analysis.ma import ma_command
 from bots.stocks.technical_analysis.macd import macd_command
 from bots.stocks.technical_analysis.obv import obv_command
 from bots.stocks.technical_analysis.recom import recom_command
 from bots.stocks.technical_analysis.rsi import rsi_command
-from bots.stocks.technical_analysis.sma import sma_command
 from bots.stocks.technical_analysis.stoch import stoch_command
 from bots.stocks.technical_analysis.summary import summary_command
 from bots.stocks.technical_analysis.view import view_command
-from bots.stocks.technical_analysis.wma import wma_command
-from bots.stocks.technical_analysis.zlma import zlma_command
 
 re_date = re.compile(r"/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/")
 re_int = re.compile(r"^[1-9]\d*$")
@@ -142,7 +140,7 @@ options_vsurf_choices = {
 }
 
 opt_intervals = [1, 5, 15, 30, 60, 1440]
-
+ma_mode = ["ema", "sma", "wma", "hma", "zlma"]
 
 screener_sort = {
     "overview": [
@@ -346,7 +344,10 @@ possible_ma = [
 
 def get_tickers() -> List[str]:
     col_list = ["Name"]
-    df = pd.read_csv("files/tickers.csv", usecols=col_list)
+    df = pd.read_csv(
+        Path(__file__).parent.parent.absolute().joinpath("files/tickers.csv"),
+        usecols=col_list,
+    )
     df = df["Name"]
     return df.tolist()
 
@@ -538,7 +539,7 @@ commands = {
         "required": {"ticker": tickers},
         "optional": {"num": re_int},
     },
-    "cc": {
+    "candle": {
         "function": candle_command,
         "required": {"ticker": tickers, "interval": opt_intervals},
         "optional": {"past_days": re_int, "start": re_date, "end": re_date},
@@ -619,54 +620,18 @@ commands = {
         "required": {"preset": presets, "sort": screener_sort["technical"]},
         "optional": {"limit": re_int, "ascend": [True, False]},
     },
-    "ta_ema": {
-        "function": ema_command,
-        "required": {"ticker": tickers},
+    # TODO Add ta candle args
+    "ta-ma": {
+        "function": ma_command,
+        "required": {"ticker": tickers, "interval": opt_intervals, "ma_mode": ma_mode},
         "optional": {
+            "past_days": re_int,
             "window": re_window,
             "offset": re_int,
             "start": re_date,
             "end": re_date,
-        },
-    },
-    "ta_sma": {
-        "function": sma_command,
-        "required": {"ticker": tickers},
-        "optional": {
-            "window": re_window,
-            "offset": re_int,
-            "start": re_date,
-            "end": re_date,
-        },
-    },
-    "ta_wma": {
-        "function": wma_command,
-        "required": {"ticker": tickers},
-        "optional": {
-            "window": re_window,
-            "offset": re_int,
-            "start": re_date,
-            "end": re_date,
-        },
-    },
-    "ta_hma": {
-        "function": hma_command,
-        "required": {"ticker": tickers},
-        "optional": {
-            "window": re_window,
-            "offset": re_int,
-            "start": re_date,
-            "end": re_date,
-        },
-    },
-    "ta_zlma": {
-        "function": zlma_command,
-        "required": {"ticker": tickers},
-        "optional": {
-            "window": re_window,
-            "offset": re_int,
-            "start": re_date,
-            "end": re_date,
+            "extended_hours": [True, False],
+            "heikin_candles": [True, False],
         },
     },
     "ta_cci": {
@@ -681,23 +646,30 @@ commands = {
     },
     "ta_macd": {
         "function": macd_command,
-        "required": {"ticker": tickers},
+        "required": {"ticker": tickers, "interval": opt_intervals, "ma_mode": ma_mode},
         "optional": {
-            "length": re_int,
-            "scalar": re_float,
+            "past_days": re_int,
+            "fast": re_int,
+            "slow": re_int,
+            "signal": re_int,
             "start": re_date,
             "end": re_date,
+            "extended_hours": [True, False],
+            "heikin_candles": [True, False],
         },
     },
     "ta_rsi": {
         "function": rsi_command,
-        "required": {"ticker": tickers},
+        "required": {"ticker": tickers, "interval": opt_intervals},
         "optional": {
+            "past_days": re_int,
             "length": re_int,
             "scalar": re_float,
             "drift": re_int,
             "start": re_date,
             "end": re_date,
+            "extended_hours": [True, False],
+            "heikin_candles": [True, False],
         },
     },
     "ta_stoch": {
@@ -723,32 +695,43 @@ commands = {
     },
     "ta_adx": {
         "function": adx_command,
-        "required": {"ticker": tickers},
+        "required": {"ticker": tickers, "interval": opt_intervals, "ma_mode": ma_mode},
         "optional": {
+            "past_days": re_int,
             "length": re_int,
             "scalar": re_int,
             "drift": re_int,
             "start": re_date,
             "end": re_date,
+            "extended_hours": [True, False],
+            "heikin_candles": [True, False],
         },
     },
     "ta_aroon": {
         "function": aroon_command,
-        "required": {"ticker": tickers},
+        "required": {"ticker": tickers, "interval": opt_intervals},
         "optional": {
+            "past_days": re_int,
             "length": re_int,
             "scalar": re_int,
             "start": re_date,
             "end": re_date,
+            "extended_hours": [True, False],
+            "heikin_candles": [True, False],
         },
     },
     "ta_bbands": {
         "function": bbands_command,
-        "required": {
-            "ticker": tickers,
-            "mamode": ["ema", "sma", "wma", "hma", "zlma"],
+        "required": {"ticker": tickers, "interval": opt_intervals, "ma_mode": ma_mode},
+        "optional": {
+            "past_days": re_int,
+            "length": re_int,
+            "std": re_int,
+            "start": re_date,
+            "end": re_date,
+            "extended_hours": [True, False],
+            "heikin_candles": [True, False],
         },
-        "optional": {"length": re_int, "std": re_int, "start": re_date, "end": re_date},
     },
     "ta_donchian": {
         "function": donchian_command,
@@ -781,21 +764,28 @@ commands = {
     },
     "ta_adosc": {
         "function": adosc_command,
-        "required": {
-            "ticker": tickers,
-        },
+        "required": {"ticker": tickers, "interval": opt_intervals},
         "optional": {
-            "is_open": ["True", "False"],
+            "past_days": re_int,
+            "is_open": [True, False],
             "fast": re_int,
             "slow": re_int,
             "start": re_date,
             "end": re_date,
+            "extended_hours": [True, False],
+            "heikin_candles": [True, False],
         },
     },
     "ta_obv": {
         "function": obv_command,
-        "required": {"ticker": tickers},
-        "optional": {"start": re_date, "end": re_date},
+        "required": {"ticker": tickers, "interval": opt_intervals},
+        "optional": {
+            "past_days": re_int,
+            "start": re_date,
+            "end": re_date,
+            "extended_hours": [True, False],
+            "heikin_candles": [True, False],
+        },
     },
     "ta_fib": {
         "function": fib_command,
