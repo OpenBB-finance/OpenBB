@@ -56,10 +56,10 @@ Example:
 │           │ 10-Year Constant Maturity, Inflation-Indexed    │ http://www.federalreserve.gov/releases/h15/current/h15.pdf and http://www.treasury.gov/resource-    │
 │           │                                                 │ center/data-chart-center/interest-rates/Pages/yieldmethod.aspx.                                     │
 └───────────┴─────────────────────────────────────────────────┴─────────────────────────────────────────────────────────────────────────────────────────────────────┘
-
+```
+```
 2022 Mar 15, 07:09 (✨) /economy/ $ fred T10Y2Y DFII10 -s 2019-01-01 -e 2022-01-01
 ```
-
-![fred](https://user-images.githubusercontent.com/46355364/158365396-7ca6d6ae-5145-479f-86bd-81f8e46c7b9d.png)
+![fred](https://user-images.githubusercontent.com/46355364/158575129-1d4b26de-8bd8-49b3-b1b9-e349afaf8a50.png)
 
 
