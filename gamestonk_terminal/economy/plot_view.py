@@ -65,28 +65,21 @@ def show_plot(
 
         theme.style_twin_axis(ax2)
 
-        h1, l1 = ax1.get_legend_handles_labels()
-        h2, l2 = ax2.get_legend_handles_labels()
+        ax2.legend(
+            bbox_to_anchor=(0.55, 0.40, 1, -0.52),
+            loc="upper left",
+            mode="expand",
+            borderaxespad=0,
+            prop={"size": 9},
+        )
 
-        ax1.legend(
-            h1 + h2,
-            l1 + l2,
-            bbox_to_anchor=(0, 0.40, 1, -0.52),
-            loc="upper right",
-            mode="expand",
-            borderaxespad=0,
-            prop={"size": 9},
-            ncol=2,
-        )
-    else:
-        ax1.legend(
-            bbox_to_anchor=(0, 0.40, 1, -0.52),
-            loc="upper right",
-            mode="expand",
-            borderaxespad=0,
-            prop={"size": 9},
-            ncol=2,
-        )
+    ax1.legend(
+        bbox_to_anchor=(0, 0.40, 1, -0.52),
+        loc="upper right",
+        mode="expand",
+        borderaxespad=0,
+        prop={"size": 9},
+    )
 
     if external_axes is None:
         theme.visualize_output()
