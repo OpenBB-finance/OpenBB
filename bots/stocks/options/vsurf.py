@@ -1,13 +1,18 @@
+import logging
+
 import numpy as np
 import plotly.graph_objects as go
 from scipy.spatial import Delaunay
 
 import bots.config_discordbot as cfg
-from bots.config_discordbot import logger
 from bots import helpers
+from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.stocks.options import yfinance_model
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def vsurf_command(
     ticker: str = "",
     z: str = "IV",
@@ -22,7 +27,7 @@ def vsurf_command(
 
     # Debug
     if cfg.DEBUG:
-        logger.debug("opt-oi %s %s", ticker, z)
+        logger.debug("opt vsurf %s %s", ticker, z)
 
     # Check for argument
     if ticker == "":
@@ -72,6 +77,8 @@ def vsurf_command(
             )
         ]
     )
+    if cfg.PLT_WATERMARK:
+        fig.add_layout_image(cfg.PLT_WATERMARK)
     fig.update_layout(
         scene=dict(
             xaxis=dict(
@@ -100,15 +107,13 @@ def vsurf_command(
         ),
         scene=cfg.PLT_3DMESH_SCENE,
     )
-    config = dict({"scrollZoom": True})
+
     imagefile = "opt-vsurf.png"
 
     # Check if interactive settings are enabled
     plt_link = ""
     if cfg.INTERACTIVE:
-        html_ran = helpers.uuid_get()
-        fig.write_html(f"in/vsurf_{html_ran}.html", config=config)
-        plt_link = f"[Interactive]({cfg.INTERACTIVE_URL}/vsurf_{html_ran}.html)"
+        plt_link = helpers.inter_chart(fig, imagefile, callback=False)
 
     fig.update_layout(
         width=800,

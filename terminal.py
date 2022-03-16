@@ -9,8 +9,9 @@ import logging
 import argparse
 import platform
 from typing import List
+from pathlib import Path
 import pytz
-
+import dotenv
 
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.rich_config import console
@@ -22,11 +23,11 @@ from gamestonk_terminal.helper_funcs import (
     replace_user_timezone,
     check_path,
     parse_known_args_and_warn,
+    set_export_folder,
 )
 
-from gamestonk_terminal.loggers import setup_logging
+from gamestonk_terminal.loggers import setup_logging, upload_archive_logs_s3
 from gamestonk_terminal.menu import session
-
 from gamestonk_terminal.terminal_helper import (
     about_us,
     bootup,
@@ -42,6 +43,8 @@ from gamestonk_terminal.terminal_helper import (
 
 logger = logging.getLogger(__name__)
 
+env_file = ".env"
+
 
 class TerminalController(BaseController):
     """Terminal Controller class"""
@@ -53,6 +56,7 @@ class TerminalController(BaseController):
         "settings",
         "tz",
         "exe",
+        "export",
     ]
     CHOICES_MENUS = [
         "stocks",
@@ -100,12 +104,6 @@ class TerminalController(BaseController):
 [info]The previous logic also holds for when launching the terminal.[/info]
     E.g. '$ python terminal.py /stocks/disc/ugs -n 3/../load tsla/candle'
 
-[info]You can run a standalone .gst routine file with:[/info]
-    E.g. '$ python terminal.py routines/example.gst'
-
-[info]You can run a .gst routine file with variable inputs:[/info]
-    E.g. '$ python terminal.py routines/example_with_inputs.gst --input pltr,tsla,nio'
-
 [info]The main commands you should be aware when navigating through the terminal are:[/info][cmds]
     cls             clear the screen
     help / h / ?    help menu
@@ -117,11 +115,13 @@ class TerminalController(BaseController):
     about           about us
     update          update terminal automatically
     tz              set different timezone
+    export          select export folder to output data
     exe             execute automated routine script[/cmds][menu]
 >   settings        set feature flags and style charts
 >   keys            set API keys and check their validity[/menu]
 
-[param]Timezone:[/param] {get_user_timezone_or_invalid()}
+[param]Export Folder:[/param] {gtff.EXPORT_FOLDER_PATH if gtff.EXPORT_FOLDER_PATH else 'DEFAULT (folder: exports/)'}
+[param]Timezone:     [/param] {get_user_timezone_or_invalid()}
 [menu]
 >   stocks
 >   crypto
@@ -145,7 +145,7 @@ class TerminalController(BaseController):
         """Process keys command"""
         from gamestonk_terminal.keys_controller import KeysController
 
-        self.queue = self.load_class(KeysController, self.queue)
+        self.queue = self.load_class(KeysController, self.queue, env_file)
 
     def call_settings(self, _):
         """Process settings command"""
@@ -230,6 +230,75 @@ class TerminalController(BaseController):
         other_args.append(self.queue[0])
         self.queue = self.queue[1:]
         replace_user_timezone("/".join(other_args))
+
+    def call_export(self, other_args: List[str]):
+        """Process export command"""
+        if other_args or self.queue:
+            if other_args:
+                export_path = ""
+            else:
+                # Re-add the initial slash for an absolute directory provided
+                export_path = "/"
+
+            other_args += self.queue
+            self.queue = []
+
+            export_path += "/".join(other_args)
+
+            base_path = os.path.dirname(os.path.abspath(__file__))
+            default_path = os.path.join(base_path, "exports")
+
+            success_export = False
+            while not success_export:
+                if export_path.upper() == "DEFAULT":
+                    console.print(
+                        f"Export data to be saved in the default folder: '{default_path}'"
+                    )
+                    set_export_folder(env_file, path_folder="")
+                    success_export = True
+                else:
+                    # If the path selected does not start from the user root, give relative location from terminal root
+                    if export_path[0] == "~":
+                        export_path = export_path.replace("~", os.environ["HOME"])
+                    elif export_path[0] != "/":
+                        export_path = os.path.join(base_path, export_path)
+
+                    # Check if the directory exists
+                    if os.path.isdir(export_path):
+                        console.print(
+                            f"Export data to be saved in the selected folder: '{export_path}'"
+                        )
+                        set_export_folder(env_file, path_folder=export_path)
+                        success_export = True
+                    else:
+                        console.print(
+                            "[red]The path selected to export data does not exist![/red]\n"
+                        )
+                        user_opt = "None"
+                        while user_opt not in ("Y", "N"):
+                            user_opt = input(
+                                f"Do you wish to create folder: `{export_path}` ? [Y/N]\n"
+                            ).upper()
+
+                        if user_opt == "Y":
+                            os.makedirs(export_path)
+                            console.print(
+                                f"[green]Folder '{export_path}' successfully created.[/green]"
+                            )
+                            set_export_folder(env_file, path_folder=export_path)
+                        else:
+                            # Do not update export_folder path since we will keep the same as before
+                            path_display = (
+                                gtff.EXPORT_FOLDER_PATH
+                                if gtff.EXPORT_FOLDER_PATH
+                                else "DEFAULT (folder: exports/)"
+                            )
+                            console.print(
+                                f"[yellow]Export data to keep being saved in the selected folder: {path_display}[/yellow]"
+                            )
+                        success_export = True
+
+        console.print()
 
     def call_exe(self, other_args: List[str]):
         """Process exe command"""
@@ -322,6 +391,7 @@ class TerminalController(BaseController):
                     self.queue = cmds_with_params.split("/")
 
 
+# pylint: disable=global-statement
 def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
     """Terminal Menu"""
     setup_logging(appName)
@@ -342,6 +412,15 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
         welcome_message()
         t_controller.print_help()
 
+    env_files = [f for f in os.listdir() if f.endswith(".env")]
+    if env_files:
+        global env_file
+        env_file = env_files[0]
+        dotenv.load_dotenv(env_file)
+    else:
+        # create env file
+        Path(".env")
+
     while ret_code:
         if gtff.ENABLE_QUICK_EXIT:
             console.print("Quick exit enabled")
@@ -352,6 +431,7 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
             # If the command is quitting the menu we want to return in here
             if t_controller.queue[0] in ("q", "..", "quit"):
                 print_goodbye()
+                upload_archive_logs_s3(log_filter=r"gst_")
                 break
 
             if gtff.ENABLE_EXIT_AUTO_HELP and len(t_controller.queue) > 1:
@@ -377,6 +457,7 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
                     )
                 except KeyboardInterrupt:
                     print_goodbye()
+                    upload_archive_logs_s3(log_filter=r"gst_")
                     break
             # Get input from user without auto-completion
             else:
@@ -387,6 +468,7 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
             t_controller.queue = t_controller.switch(an_input)
             if an_input in ("q", "quit", "..", "exit"):
                 print_goodbye()
+                upload_archive_logs_s3(log_filter=r"gst_")
                 break
 
             # Check if the user wants to reset application
@@ -394,6 +476,7 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
                 ret_code = reset(t_controller.queue if t_controller.queue else [])
                 if ret_code != 0:
                     print_goodbye()
+                    upload_archive_logs_s3(log_filter=r"gst_")
                     break
 
         except SystemExit:
@@ -443,6 +526,7 @@ def log_settings() -> None:
     settings_dict = {}
     settings_dict["tab"] = "activated" if gtff.USE_TABULATE_DF else "deactivated"
     settings_dict["cls"] = "activated" if gtff.USE_CLEAR_AFTER_CMD else "deactivated"
+    settings_dict["color"] = "activated" if gtff.USE_COLOR else "deactivated"
     settings_dict["promptkit"] = (
         "activated" if gtff.USE_PROMPT_TOOLKIT else "deactivated"
     )
@@ -457,6 +541,7 @@ def log_settings() -> None:
         "activated" if gtff.ENABLE_EXIT_AUTO_HELP else "deactivated"
     )
     settings_dict["rcontext"] = "activated" if gtff.REMEMBER_CONTEXTS else "deactivated"
+    settings_dict["rich"] = "activated" if gtff.ENABLE_RICH else "deactivated"
     settings_dict["richpanel"] = (
         "activated" if gtff.ENABLE_RICH_PANEL else "deactivated"
     )
@@ -469,12 +554,7 @@ def log_settings() -> None:
     logger.info("SETTINGS: %s ", str(settings_dict))
 
 
-def run_scripts(
-    path: str,
-    test_mode: bool = False,
-    verbose: bool = False,
-    routines_args: List[str] = None,
-):
+def run_scripts(path: str, test_mode: bool = False, verbose: bool = False):
     """Runs a given .gst scripts
 
     Parameters
@@ -485,38 +565,10 @@ def run_scripts(
         Whether the terminal is in test mode
     verbose : bool
         Whether to run tests in verbose mode
-    routines_args : List[str]
-        One or multiple inputs to be replaced in the routine and separated by commas. E.g. GME,AMC,BTC-USD
     """
     if os.path.isfile(path):
         with open(path) as fp:
-            raw_lines = [x for x in fp if not test_mode or not is_reset(x)]
-
-            if routines_args:
-                lines = list()
-                idx = 0
-                for rawline in raw_lines:
-                    arg_to_replace = f"$ARGV[{idx}]"
-                    templine = rawline
-                    while arg_to_replace in rawline:
-                        if idx > (len(routines_args) - 1):
-                            console.print(
-                                "[red]There are more arguments on the routine .gst file than input args provided[/red]"
-                            )
-                            return
-                        templine = templine.replace(arg_to_replace, routines_args[idx])
-                        idx += 1
-                        arg_to_replace = f"$ARGV[{idx}]"
-
-                    lines.append(templine)
-
-                if idx < len(routines_args):
-                    console.print(
-                        "[red]There are more inputs provided than the number of arguments on routine .gst file\n[/red]"
-                    )
-
-            else:
-                lines = raw_lines
+            lines = [x for x in fp if not test_mode or not is_reset(x)]
 
             if test_mode and "exit" not in lines[-1]:
                 lines.append("exit")
@@ -541,14 +593,7 @@ def run_scripts(
             terminal()
 
 
-def main(
-    debug: bool,
-    test: bool,
-    filtert: str,
-    paths: List[str],
-    verbose: bool,
-    routines_args: List[str] = None,
-):
+def main(debug: bool, test: bool, filtert: str, paths: List[str], verbose: bool):
     """
     Runs the terminal with various options
 
@@ -564,8 +609,6 @@ def main(
         The paths to run for scripts or to test
     verbose : bool
         Whether to show output from tests
-    routines_args : List[str]
-        One or multiple inputs to be replaced in the routine and separated by commas. E.g. GME,AMC,BTC-USD
     """
 
     if test:
@@ -622,7 +665,7 @@ def main(
         if debug:
             os.environ["DEBUG_MODE"] = "true"
         if isinstance(paths, list) and paths[0].endswith(".gst"):
-            run_scripts(paths[0], routines_args=routines_args)
+            run_scripts(paths[0])
         elif paths:
             argv_cmds = list([" ".join(paths).replace(" /", "/home/")])
             argv_cmds = insert_start_slash(argv_cmds) if argv_cmds else argv_cmds
@@ -672,15 +715,6 @@ if __name__ == "__main__":
         type=str,
     )
     parser.add_argument(
-        "-i",
-        "--input",
-        help="Select multiple inputs to be replaced in the routine and separated by commas. E.g. GME,AMC,BTC-USD",
-        dest="routine_args",
-        type=lambda s: [str(item) for item in s.split(",")],
-        default=None,
-    )
-
-    parser.add_argument(
         "-v", "--verbose", dest="verbose", action="store_true", default=False
     )
 
@@ -693,5 +727,4 @@ if __name__ == "__main__":
         ns_parser.filtert,
         ns_parser.path,
         ns_parser.verbose,
-        ns_parser.routine_args,
     )

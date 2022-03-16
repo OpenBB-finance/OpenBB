@@ -34,7 +34,6 @@ PAPERMILL_NOTEBOOK_REPORT_PORT = (
 LOGGING_VERBOSITY = 20
 
 if tmp_verbosity := os.getenv("GT_LOGGING_VERBOSITY"):
-    print(f"Setting verbosity to {tmp_verbosity}")
     try:
         LOGGING_VERBOSITY = int(tmp_verbosity)
     except ValueError:
@@ -103,7 +102,7 @@ TRADIER_TOKEN = os.getenv("GT_API_TRADIER_TOKEN") or "REPLACE_ME"
 
 # Selenium Webbrowser drivers can be found at https://selenium-python.readthedocs.io/installation.html
 WEBDRIVER_TO_USE = "chrome"
-PATH_TO_SELENIUM_DRIVER = None  # Replace with "PATH"
+PATH_TO_SELENIUM_DRIVER = ""  # Replace with "PATH"
 
 # https://coinmarketcap.com/api/
 API_CMC_KEY = os.getenv("GT_API_CMC_KEY") or "REPLACE_ME"
@@ -152,6 +151,10 @@ API_BITQUERY_KEY = os.getenv("GT_API_BITQUERY_KEY") or "REPLACE_ME"
 # https://terra.smartstake.io/
 API_SMARTSTAKE_KEY = os.getenv("GT_API_SMARTSTAKE_KEY") or "REPLACE_ME"
 API_SMARTSTAKE_TOKEN = os.getenv("GT_API_SMARTSTAKE_TOKEN") or "REPLACE_ME"
+
+# AWS KEYS
+AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID") or "REPLACE_ME"
+AWS_ACCESS_KEY = os.getenv("AWS_ACCESS_KEY") or "REPLACE_ME"
 
 # https://messari.io/
 API_MESSARI_KEY = os.getenv("GT_API_MESSARI_KEY") or "REPLACE_ME"
