@@ -28,6 +28,7 @@ class SettingsController(BaseController):
     """Settings Controller class"""
 
     CHOICES_COMMANDS: List[str] = [
+        "logcollection",
         "tab",
         "cls",
         "color",
@@ -148,6 +149,13 @@ class SettingsController(BaseController):
         # help_text += f"   [{color}]cls        clear console after each command[/{color}]\n"
 
         console.print(text=help_text, menu="Settings")
+
+    @log_start_end(log=logger)
+    def call_logcollection(self, _):
+        """Process logcollection command"""
+        gtff.LOG_COLLECTION = not gtff.LOG_COLLECTION
+        dotenv.set_key(self.env_file, "GTFF_LOG_COLLECTION", str(gtff.LOG_COLLECTION))
+        console.print("")
 
     @log_start_end(log=logger)
     def call_tab(self, _):
