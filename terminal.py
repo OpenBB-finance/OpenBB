@@ -2,41 +2,41 @@
 """Main Terminal Module"""
 __docformat__ = "numpy"
 
-import sys
-import os
+import argparse
 import difflib
 import logging
-import argparse
+import os
 import platform
+import sys
 from typing import List
 from pathlib import Path
 import pytz
 import dotenv
 
 from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.rich_config import console
-from gamestonk_terminal.parent_classes import BaseController
+
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
+    check_path,
     get_flair,
     get_user_timezone_or_invalid,
-    replace_user_timezone,
-    check_path,
     parse_known_args_and_warn,
+    replace_user_timezone,
     set_export_folder,
 )
-
 from gamestonk_terminal.loggers import setup_logging, upload_archive_logs_s3
 from gamestonk_terminal.menu import session
+from gamestonk_terminal.parent_classes import BaseController
+from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.terminal_helper import (
     about_us,
     bootup,
-    welcome_message,
+    is_reset,
     print_goodbye,
     reset,
-    update_terminal,
     suppress_stdout,
-    is_reset,
+    update_terminal,
+    welcome_message,
 )
 
 # pylint: disable=too-many-public-methods,import-outside-toplevel
@@ -304,6 +304,13 @@ class TerminalController(BaseController):
         """Process exe command"""
         # Merge rest of string path to other_args and remove queue since it is a dir
         other_args += self.queue
+
+        if not other_args:
+            console.print(
+                "[red]Provide a path to the routine you wish to execute.\n[/red]"
+            )
+            return
+
         full_input = " ".join(other_args)
         if " " in full_input:
             other_args_processed = full_input.split(" ")
@@ -317,7 +324,8 @@ class TerminalController(BaseController):
             if path_dir in ("-i", "--input"):
                 args = [path_routine[1:]] + other_args_processed[idx:]
                 break
-            path_routine += f"/{path_dir}"
+            if path_dir not in ("-p", "--path"):
+                path_routine += f"/{path_dir}"
 
         if not args:
             args = [path_routine[1:]]
@@ -335,6 +343,7 @@ class TerminalController(BaseController):
             dest="path",
             default="",
             type=check_path,
+            required="-h" not in args,
         )
         parser_exe.add_argument(
             "-i",

@@ -20,6 +20,7 @@ import gamestonk_terminal.config_terminal as cfg
 from gamestonk_terminal import feature_flags as gtff
 
 logger = logging.getLogger(__name__)
+
 LOGFORMAT = "%(asctime)s|%(name)s|%(funcName)s|%(lineno)s|%(message)s"
 LOGPREFIXFORMAT = "%(levelname)s|%(appName)s|%(version)s|%(loggingId)s|%(sessionId)s|"
 DATEFORMAT = "%Y-%m-%dT%H:%M:%S%z"
@@ -259,7 +260,7 @@ def upload_file_to_s3(
     bucket: str = None,
     object_name: str = None,
     folder_name: str = None,
-    only_send_file_size=True,
+    only_send_file_size=gtff.ONLY_SEND_FILE_SIZE,
 ) -> bool:
     success = False
 

@@ -743,9 +743,9 @@ class ScreenerController(BaseController):
     def call_po(self, _):
         """Call the portfolio optimization menu with selected tickers"""
         if self.screen_tickers:
-            self.queue = po_controller.PortfolioOptimization(self.screen_tickers).menu(
-                custom_path_menu_above="/portfolio/"
-            )
+            self.queue = po_controller.PortfolioOptimizationController(
+                self.screen_tickers
+            ).menu(custom_path_menu_above="/portfolio/")
         else:
             console.print(
                 "Some tickers must be screened first through one of the presets!\n"
