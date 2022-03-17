@@ -104,6 +104,12 @@ class TerminalController(BaseController):
 [info]The previous logic also holds for when launching the terminal.[/info]
     E.g. '$ python terminal.py /stocks/disc/ugs -n 3/../load tsla/candle'
 
+[info]You can run a standalone .gst routine file with:[/info]
+    E.g. '$ python terminal.py routines/example.gst'
+
+[info]You can run a .gst routine file with variable inputs:[/info]
+    E.g. '$ python terminal.py routines/example_with_inputs.gst --input pltr,tsla,nio'
+
 [info]The main commands you should be aware when navigating through the terminal are:[/info][cmds]
     cls             clear the screen
     help / h / ?    help menu
@@ -359,8 +365,14 @@ class TerminalController(BaseController):
         if ns_parser_exe:
             if ns_parser_exe.path:
                 with open(ns_parser_exe.path) as fp:
-                    raw_lines = [x for x in fp if not is_reset(x)]
-
+                    raw_lines = [
+                        x for x in fp if (not is_reset(x)) and ("#" not in x) and x
+                    ]
+                    raw_lines = [
+                        raw_line.strip("\n")
+                        for raw_line in raw_lines
+                        if raw_line.strip("\n")
+                    ]
                     if ns_parser_exe.routine_args:
                         lines = list()
                         idx = 0
@@ -612,7 +624,12 @@ def log_settings() -> None:
     logger.info("SETTINGS: %s ", str(settings_dict))
 
 
-def run_scripts(path: str, test_mode: bool = False, verbose: bool = False):
+def run_scripts(
+    path: str,
+    test_mode: bool = False,
+    verbose: bool = False,
+    routines_args: List[str] = None,
+):
     """Runs a given .gst scripts
 
     Parameters
@@ -623,10 +640,41 @@ def run_scripts(path: str, test_mode: bool = False, verbose: bool = False):
         Whether the terminal is in test mode
     verbose : bool
         Whether to run tests in verbose mode
+    routines_args : List[str]
+        One or multiple inputs to be replaced in the routine and separated by commas. E.g. GME,AMC,BTC-USD
     """
     if os.path.isfile(path):
         with open(path) as fp:
-            lines = [x for x in fp if not test_mode or not is_reset(x)]
+            raw_lines = [x for x in fp if (not is_reset(x)) and ("#" not in x) and x]
+            raw_lines = [
+                raw_line.strip("\n") for raw_line in raw_lines if raw_line.strip("\n")
+            ]
+
+            if routines_args:
+                lines = list()
+                idx = 0
+                for rawline in raw_lines:
+                    arg_to_replace = f"$ARGV[{idx}]"
+                    templine = rawline
+                    while arg_to_replace in rawline:
+                        if idx > (len(routines_args) - 1):
+                            console.print(
+                                "[red]There are more arguments on the routine .gst file than input args provided[/red]"
+                            )
+                            return
+                        templine = templine.replace(arg_to_replace, routines_args[idx])
+                        idx += 1
+                        arg_to_replace = f"$ARGV[{idx}]"
+
+                    lines.append(templine)
+
+                if idx < len(routines_args):
+                    console.print(
+                        "[red]There are more inputs provided than the number of arguments on routine .gst file\n[/red]"
+                    )
+
+            else:
+                lines = raw_lines
 
             if test_mode and "exit" not in lines[-1]:
                 lines.append("exit")
@@ -659,7 +707,14 @@ def run_scripts(path: str, test_mode: bool = False, verbose: bool = False):
             terminal()
 
 
-def main(debug: bool, test: bool, filtert: str, paths: List[str], verbose: bool):
+def main(
+    debug: bool,
+    test: bool,
+    filtert: str,
+    paths: List[str],
+    verbose: bool,
+    routines_args: List[str] = None,
+):
     """
     Runs the terminal with various options
 
@@ -675,6 +730,8 @@ def main(debug: bool, test: bool, filtert: str, paths: List[str], verbose: bool)
         The paths to run for scripts or to test
     verbose : bool
         Whether to show output from tests
+    routines_args : List[str]
+        One or multiple inputs to be replaced in the routine and separated by commas. E.g. GME,AMC,BTC-USD
     """
 
     if test:
@@ -731,7 +788,7 @@ def main(debug: bool, test: bool, filtert: str, paths: List[str], verbose: bool)
         if debug:
             os.environ["DEBUG_MODE"] = "true"
         if isinstance(paths, list) and paths[0].endswith(".gst"):
-            run_scripts(paths[0])
+            run_scripts(paths[0], routines_args=routines_args)
         elif paths:
             argv_cmds = list([" ".join(paths).replace(" /", "/home/")])
             argv_cmds = insert_start_slash(argv_cmds) if argv_cmds else argv_cmds
@@ -783,6 +840,14 @@ if __name__ == "__main__":
     parser.add_argument(
         "-v", "--verbose", dest="verbose", action="store_true", default=False
     )
+    parser.add_argument(
+        "-i",
+        "--input",
+        help="Select multiple inputs to be replaced in the routine and separated by commas. E.g. GME,AMC,BTC-USD",
+        dest="routine_args",
+        type=lambda s: [str(item) for item in s.split(",")],
+        default=None,
+    )
 
     if sys.argv[1:] and "-" not in sys.argv[1][0]:
         sys.argv.insert(1, "-p")
@@ -793,4 +858,5 @@ if __name__ == "__main__":
         ns_parser.filtert,
         ns_parser.path,
         ns_parser.verbose,
+        ns_parser.routine_args,
     )
