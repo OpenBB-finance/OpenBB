@@ -39,7 +39,7 @@ from gamestonk_terminal.terminal_helper import (
     welcome_message,
 )
 
-# pylint: disable=too-many-public-methods,import-outside-toplevel
+# pylint: disable=too-many-public-methods,import-outside-toplevel,too-many-branches
 
 logger = logging.getLogger(__name__)
 
@@ -397,7 +397,30 @@ class TerminalController(BaseController):
                         insert_start_slash(file_cmds) if file_cmds else file_cmds
                     )
                     cmds_with_params = " ".join(file_cmds)
-                    self.queue = cmds_with_params.split("/")
+                    self.queue = [val for val in cmds_with_params.split("/") if val]
+
+                    if "export" in self.queue[0]:
+                        export_path = self.queue[0].split(" ")[1]
+                        # If the path selected does not start from the user root, give relative location from root
+                        if export_path[0] == "~":
+                            export_path = export_path.replace("~", os.environ["HOME"])
+                        elif export_path[0] != "/":
+                            export_path = os.path.join(
+                                os.path.dirname(os.path.abspath(__file__)), export_path
+                            )
+
+                        # Check if the directory exists
+                        if os.path.isdir(export_path):
+                            console.print(
+                                f"Export data to be saved in the selected folder: '{export_path}'"
+                            )
+                        else:
+                            os.makedirs(export_path)
+                            console.print(
+                                f"[green]Folder '{export_path}' successfully created.[/green]"
+                            )
+                        gtff.EXPORT_FOLDER_PATH = export_path
+                        self.queue = self.queue[1:]
 
 
 # pylint: disable=global-statement
@@ -412,9 +435,35 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
     if jobs_cmds is not None and jobs_cmds:
         logger.info("INPUT: %s", "/".join(jobs_cmds))
 
+    export_path = ""
+    if jobs_cmds and "export" in jobs_cmds[0]:
+        export_path = jobs_cmds[0].split("/")[0].split(" ")[1]
+        jobs_cmds = ["/".join(jobs_cmds[0].split("/")[1:])]
+
     ret_code = 1
     t_controller = TerminalController(jobs_cmds)
     an_input = ""
+
+    if export_path:
+        # If the path selected does not start from the user root, give relative location from terminal root
+        if export_path[0] == "~":
+            export_path = export_path.replace("~", os.environ["HOME"])
+        elif export_path[0] != "/":
+            export_path = os.path.join(
+                os.path.dirname(os.path.abspath(__file__)), export_path
+            )
+
+        # Check if the directory exists
+        if os.path.isdir(export_path):
+            console.print(
+                f"Export data to be saved in the selected folder: '{export_path}'"
+            )
+        else:
+            os.makedirs(export_path)
+            console.print(
+                f"[green]Folder '{export_path}' successfully created.[/green]"
+            )
+        gtff.EXPORT_FOLDER_PATH = export_path
 
     bootup()
     if not jobs_cmds:
@@ -582,10 +631,18 @@ def run_scripts(path: str, test_mode: bool = False, verbose: bool = False):
             if test_mode and "exit" not in lines[-1]:
                 lines.append("exit")
 
+            export_folder = ""
+            if "export" in lines[0]:
+                export_folder = lines[0].split("export ")[1].rstrip()
+                lines = lines[1:]
+
             simulate_argv = f"/{'/'.join([line.rstrip() for line in lines])}"
             file_cmds = simulate_argv.replace("//", "/home/").split()
             file_cmds = insert_start_slash(file_cmds) if file_cmds else file_cmds
-            file_cmds = [" ".join(file_cmds)]
+            if export_folder:
+                file_cmds = [f"export {export_folder}{' '.join(file_cmds)}"]
+            else:
+                file_cmds = [" ".join(file_cmds)]
 
             if not test_mode:
                 terminal(file_cmds, appName="gst_script")
