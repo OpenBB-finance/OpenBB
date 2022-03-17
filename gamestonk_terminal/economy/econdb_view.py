@@ -93,20 +93,22 @@ def show_macro_data(
         parameter_label = econdb_model.PARAMETERS[column[1]]["name"]
         if len(parameters) > 1 and len(countries) > 1:
             ax.plot(df_rounded[column])
-            ax.set_title(f"Macro data {denomination}", wrap=True)
+            ax.set_title(f"Macro data {denomination}", wrap=True, fontsize=12)
             legend.append(f"{country_label} [{parameter_label}]")
         elif len(parameters) > 1:
             ax.plot(df_rounded[column])
-            ax.set_title(f"{country_label} {denomination}", wrap=True)
+            ax.set_title(f"{country_label} {denomination}", wrap=True, fontsize=12)
             legend.append(parameter_label)
         elif len(countries) > 1:
             ax.plot(df_rounded[column])
-            ax.set_title(f"{parameter_label} {denomination}", wrap=True)
+            ax.set_title(f"{parameter_label} {denomination}", wrap=True, fontsize=12)
             legend.append(country_label)
         else:
             ax.plot(df_rounded[column])
             ax.set_title(
-                f"{parameter_label} of {country_label} {denomination}", wrap=True
+                f"{parameter_label} of {country_label} {denomination}",
+                wrap=True,
+                fontsize=12,
             )
 
     if len(parameters) > 1 or len(countries) > 1:
