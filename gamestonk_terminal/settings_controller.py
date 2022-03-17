@@ -76,7 +76,7 @@ class SettingsController(BaseController):
         """Print help"""
         help_text = "\n[info]Feature flags through environment variables:[/info]\n\n"
         color = "green" if gtff.LOG_COLLECTION else "red"
-        help_text += f"   [{color}]logcollection    allow logs to be send to openBB[/{color}]\n\n"
+        help_text += f"   [{color}]logcollection    allow logs to be sent[/{color}]\n\n"
         color = "green" if gtff.USE_TABULATE_DF else "red"
         help_text += (
             f"   [{color}]tab              use tabulate to print dataframes[/{color}]\n"
