@@ -240,7 +240,7 @@ Performance & Valuations
     performance   performance of sectors, industry, country [src][Source: FinViz][/src]
     spectrum      spectrum of sectors, industry, country [src][Source: FinViz][/src][/cmds]
 [menu]
->   pred          Open the prediction menu to analyse FRED series[/menu]
+>   pred          Open the prediction menu to analyse stored data[/menu]
 """
         console.print(text=help_text, menu="Economy")
 

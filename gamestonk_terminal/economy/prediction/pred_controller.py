@@ -64,9 +64,8 @@ class PredictionTechniquesController(BaseController):
         self.sources = list(self.datasets.keys())
         self.current_source = self.sources[0]
         self.current_source_dataframe = self.datasets[self.current_source]
-        self.current_series = self.current_source_dataframe.iloc[0, :]
+        self.data = self.current_source_dataframe.iloc[:, 0].copy().dropna(axis=0)
         self.current_id = self.current_source_dataframe.columns[0].upper()
-        self.data = self.current_series.copy().dropna()
         self.start_date = self.data.index[0]
         self.resolution = ""  # For the views
 
@@ -82,10 +81,9 @@ class PredictionTechniquesController(BaseController):
     def print_help(self):
         """Print help"""
         help_string = f"""[cmds]
-    pick        pick new series from stored economy sets[/cmds]
+    pick        pick new series from stored economy data[/cmds]
 
-[param]Selected Series[/param]: From {self.start_date}
-{self.current_id}
+[param]Selected Series[/param]: {self.current_id}
 
 [info]Models:[/info][cmds]
     ets         exponential smoothing (e.g. Holt-Winters)
@@ -102,14 +100,7 @@ class PredictionTechniquesController(BaseController):
 
     def custom_reset(self):
         """Class specific component of reset command"""
-        if self.current_series:
-            return [
-                "economy",
-                "fred",
-                "pred",
-                f"add {list(self.current_series.keys())[0]}",
-            ]
-        return []
+        return ["economy"]
 
     @log_start_end(log=logger)
     def call_pick(self, other_args: List[str]):
@@ -159,8 +150,9 @@ class PredictionTechniquesController(BaseController):
                     f"[red]{ns_parser.column} not a valid column. Use `pick -o` to view available data.[/red"
                 )
                 return
-            self.current_series = self.datasets[ns_parser.source][ns_parser.column]
-            self.data = self.current_series
+            self.data = (
+                self.datasets[ns_parser.source][ns_parser.column].copy().dropna(axis=0)
+            )
             self.current_id = ns_parser.column
             self.start_date = self.data.index[0]
             console.print()
