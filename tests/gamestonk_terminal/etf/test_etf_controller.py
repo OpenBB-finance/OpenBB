@@ -298,16 +298,16 @@ def test_call_func_expect_queue(expected_queue, func, queue):
         ),
         (
             "call_pir",
-            ["ARKW,ARKK", "--filename=hello.xlsx", "--folder=world"],
+            ["ARKW", "ARKF", "--filename=hello.xlsx", "--folder=world"],
             "create_ETF_report",
-            ["ARKW,ARKK"],
+            [["ARKW", "ARKF"]],
             dict(filename="hello.xlsx", folder="world"),
         ),
         (
             "call_pir",
             ["--filename=hello.xlsx", "--folder=world"],
             "create_ETF_report",
-            ["MOCK_ETF_NAME"],
+            [["MOCK_ETF_NAME"]],
             dict(filename="hello.xlsx", folder="world"),
         ),
         (
