@@ -1330,8 +1330,11 @@ Performance & Valuations
     @log_start_end(log=logger)
     def call_pred(self, _):
         """Process pred command"""
-        if not self.current_series:
-            console.print("Please select 1 FRED Series to use.\n")
+        if not self.DATASETS:
+            console.print(
+                "There is no data stored yet. Please use either the 'macro', 'fred', 'index' and/or "
+                "'treasury' command in combination with the -st argument to be able to plot data.\n"
+            )
             return
 
         from gamestonk_terminal.economy.prediction.pred_controller import (
@@ -1339,5 +1342,5 @@ Performance & Valuations
         )
 
         self.queue = self.load_class(
-            PredictionTechniquesController, self.current_series, self.queue
+            PredictionTechniquesController, self.DATASETS, self.queue
         )

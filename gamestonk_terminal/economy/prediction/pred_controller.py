@@ -8,7 +8,6 @@ from typing import Dict, List
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.decorators import check_api_key
 from gamestonk_terminal.common.prediction_techniques import (
     arima_model,
     arima_view,
@@ -22,7 +21,6 @@ from gamestonk_terminal.common.prediction_techniques import (
     regression_view,
 )
 from gamestonk_terminal.decorators import log_start_end
-from gamestonk_terminal.economy import fred_model
 from gamestonk_terminal.helper_funcs import (
     EXPORT_ONLY_FIGURES_ALLOWED,
     check_positive,
@@ -41,7 +39,7 @@ class PredictionTechniquesController(BaseController):
     """Prediction Techniques Controller class"""
 
     CHOICES_COMMANDS = [
-        "load",
+        "pick",
         "ets",
         "knn",
         "regression",
@@ -56,18 +54,20 @@ class PredictionTechniquesController(BaseController):
 
     def __init__(
         self,
-        current_series: Dict,
+        all_economy_data: Dict,
         queue: List[str] = None,
     ):
         """Constructor"""
         super().__init__(queue)
 
-        self.start_date = "2020-01-01"
-        self.current_series = current_series
-        self.current_id = list(current_series.keys())[0].upper()
-        self.data = fred_model.get_series_data(
-            list(current_series.keys())[0], self.start_date
-        ).dropna()
+        self.datasets = all_economy_data
+        self.sources = list(self.datasets.keys())
+        self.current_source = self.sources[0]
+        self.current_source_dataframe = self.datasets[self.current_source]
+        self.current_series = self.current_source_dataframe.iloc[0, :]
+        self.current_id = self.current_source_dataframe.columns[0].upper()
+        self.data = self.current_series.copy().dropna()
+        self.start_date = self.data.index[0]
         self.resolution = ""  # For the views
 
         if session and gtff.USE_PROMPT_TOOLKIT:
@@ -76,18 +76,16 @@ class PredictionTechniquesController(BaseController):
             choices["ets"]["-s"] = {c: {} for c in ets_model.SEASONS}
             choices["arima"]["-i"] = {c: {} for c in arima_model.ICS}
             choices["mc"]["--dist"] = {c: {} for c in mc_model.DISTRIBUTIONS}
+            choices["pick"]["-s"] = {c: {} for c in self.sources}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
         """Print help"""
-        id_string = ""
-        for s_id, sub_dict in self.current_series.items():
-            id_string += f"    [cyan]{s_id.upper()}[/cyan] : {sub_dict['title']}"
         help_string = f"""[cmds]
-    load        load new series[/cmds]
+    pick        pick new series from stored economy sets[/cmds]
 
 [param]Selected Series[/param]: From {self.start_date}
-{id_string}
+{self.current_id}
 
 [info]Models:[/info][cmds]
     ets         exponential smoothing (e.g. Holt-Winters)
@@ -114,8 +112,7 @@ class PredictionTechniquesController(BaseController):
         return []
 
     @log_start_end(log=logger)
-    @check_api_key(["API_FRED_KEY"])
-    def call_load(self, other_args: List[str]):
+    def call_pick(self, other_args: List[str]):
         """Process add command"""
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -123,41 +120,50 @@ class PredictionTechniquesController(BaseController):
             description="Load a FRED series to current selection",
         )
         parser.add_argument(
-            "-i",
-            "--id",
-            dest="series_id",
-            required="-h" not in other_args,
+            "-s",
+            "--source",
+            dest="source",
             type=str,
-            help="FRED Series from https://fred.stlouisfed.org. For multiple series use: series1,series2,series3",
+            help="Which loaded source to get data from",
         )
         parser.add_argument(
-            "-s",
-            dest="start_date",
-            type=valid_date,
-            default=self.start_date,
-            help="Starting date (YYYY-MM-DD) of data",
+            "-c",
+            "--column",
+            dest="column",
+            type=str,
+            help="Which loaded source to get data from",
         )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-i")
+        parser.add_argument(
+            "-o",
+            "--options",
+            dest="options",
+            action="store_true",
+            help="Show available sources and columns",
+            default=False,
+        )
+
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            self.current_series = {}
-            information = fred_model.check_series_id(ns_parser.series_id)
-
-            if "seriess" in information:
-                self.current_series[ns_parser.series_id] = {
-                    "title": information["seriess"][0]["title"],
-                    "units": information["seriess"][0]["units_short"],
-                }
-                self.start_date = ns_parser.start_date
-                self.current_id = ns_parser.series_id.upper()
-                self.data = fred_model.get_series_data(
-                    ns_parser.series_id, ns_parser.start_date
-                ).dropna()
-
-            console.print(
-                f"Current Series: {', '.join(self.current_series.keys()).upper() or None}\n"
-            )
+            if ns_parser.options:
+                for source in self.sources:
+                    for col in self.datasets[source].columns:
+                        console.print(f"-s {source} -c {col}")
+                return
+            if ns_parser.source not in self.sources:
+                console.print(
+                    f"[red]{ns_parser.source} not a valid source. Use `pick -o` to view available data.[/red"
+                )
+                return
+            if ns_parser.column not in self.datasets[ns_parser.source].columns:
+                console.print(
+                    f"[red]{ns_parser.column} not a valid column. Use `pick -o` to view available data.[/red"
+                )
+                return
+            self.current_series = self.datasets[ns_parser.source][ns_parser.column]
+            self.data = self.current_series
+            self.current_id = ns_parser.column
+            self.start_date = self.data.index[0]
+            console.print()
 
     @log_start_end(log=logger)
     def call_ets(self, other_args: List[str]):
