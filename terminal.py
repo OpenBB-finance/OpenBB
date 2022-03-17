@@ -365,8 +365,14 @@ class TerminalController(BaseController):
         if ns_parser_exe:
             if ns_parser_exe.path:
                 with open(ns_parser_exe.path) as fp:
-                    raw_lines = [x for x in fp if (not is_reset(x)) and ("#" not in x) and x]
-                    raw_lines = [raw_line.strip("\n") for raw_line in raw_lines if raw_line.strip("\n")]
+                    raw_lines = [
+                        x for x in fp if (not is_reset(x)) and ("#" not in x) and x
+                    ]
+                    raw_lines = [
+                        raw_line.strip("\n")
+                        for raw_line in raw_lines
+                        if raw_line.strip("\n")
+                    ]
                     if ns_parser_exe.routine_args:
                         lines = list()
                         idx = 0
@@ -619,11 +625,11 @@ def log_settings() -> None:
 
 
 def run_scripts(
-        path: str,
-        test_mode: bool = False,
-        verbose: bool = False,
-        routines_args: List[str] = None,
-    ):
+    path: str,
+    test_mode: bool = False,
+    verbose: bool = False,
+    routines_args: List[str] = None,
+):
     """Runs a given .gst scripts
 
     Parameters
@@ -640,7 +646,9 @@ def run_scripts(
     if os.path.isfile(path):
         with open(path) as fp:
             raw_lines = [x for x in fp if (not is_reset(x)) and ("#" not in x) and x]
-            raw_lines = [raw_line.strip("\n") for raw_line in raw_lines if raw_line.strip("\n")]
+            raw_lines = [
+                raw_line.strip("\n") for raw_line in raw_lines if raw_line.strip("\n")
+            ]
 
             if routines_args:
                 lines = list()
