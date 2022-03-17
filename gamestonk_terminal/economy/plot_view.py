@@ -1,6 +1,7 @@
 """ Plot Controller """
 import os
 from typing import Optional, List, Dict, Any
+from textwrap import fill
 
 import pandas as pd
 from matplotlib import pyplot as plt
@@ -70,6 +71,7 @@ def show_plot(
         theme.style_twin_axis(ax2)
 
         ax2.legend(
+            [fill(column, 45) for column in dataset_yaxis_2.columns],
             bbox_to_anchor=(0.55, 0.40, 1, -0.52),
             loc="upper left",
             mode="expand",
@@ -78,6 +80,7 @@ def show_plot(
         )
 
     ax1.legend(
+        [fill(column, 45) for column in dataset_yaxis_1.columns],
         bbox_to_anchor=(0, 0.40, 1, -0.52),
         loc="upper right",
         mode="expand",

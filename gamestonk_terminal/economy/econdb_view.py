@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 from datetime import datetime
 import logging
 import os
+from textwrap import fill
 from typing import Optional, List, Dict
 
 import pandas as pd
@@ -86,44 +87,37 @@ def show_macro_data(
         df_rounded = country_data_df
         denomination = ""
 
+    legend = []
     for column in df_rounded.columns:
         country_label = column[0].replace("_", " ")
         parameter_label = econdb_model.PARAMETERS[column[1]]["name"]
         if len(parameters) > 1 and len(countries) > 1:
-            ax.plot(df_rounded[column], label=f"{country_label} [{parameter_label}]")
-            ax.set_title(f"Macro data {denomination}")
-            ax.legend(
-                bbox_to_anchor=(0, 0.40, 1, -0.52),
-                loc="upper right",
-                mode="expand",
-                borderaxespad=0,
-                prop={"size": 9},
-                ncol=2,
-            )
+            ax.plot(df_rounded[column])
+            ax.set_title(f"Macro data {denomination}", wrap=True)
+            legend.append(f"{country_label} [{parameter_label}]")
         elif len(parameters) > 1:
-            ax.plot(df_rounded[column], label=parameter_label)
-            ax.set_title(f"{country_label} {denomination}")
-            ax.legend(
-                bbox_to_anchor=(0, 0.40, 1, -0.52),
-                loc="upper right",
-                mode="expand",
-                borderaxespad=0,
-                prop={"size": 9},
-                ncol=2,
-            )
+            ax.plot(df_rounded[column])
+            ax.set_title(f"{country_label} {denomination}", wrap=True)
+            legend.append(parameter_label)
         elif len(countries) > 1:
-            ax.plot(df_rounded[column], label=country_label)
-            ax.set_title(f"{parameter_label} {denomination}")
-            ax.legend(
-                bbox_to_anchor=(0, 0.40, 1, -0.52),
-                loc="upper right",
-                mode="expand",
-                prop={"size": 9},
-                ncol=2,
-            )
+            ax.plot(df_rounded[column])
+            ax.set_title(f"{parameter_label} {denomination}", wrap=True)
+            legend.append(country_label)
         else:
             ax.plot(df_rounded[column])
-            ax.set_title(f"{parameter_label} of {country_label} {denomination}")
+            ax.set_title(
+                f"{parameter_label} of {country_label} {denomination}", wrap=True
+            )
+
+    if len(parameters) > 1 or len(countries) > 1:
+        ax.legend(
+            [fill(label, 45) for label in legend],
+            bbox_to_anchor=(0, 0.40, 1, -0.52),
+            loc="upper right",
+            mode="expand",
+            prop={"size": 9},
+            ncol=2,
+        )
 
     df_rounded.columns = ["_".join(column) for column in df_rounded.columns]
 
@@ -208,7 +202,7 @@ def show_treasuries(
         mode="expand",
         borderaxespad=0,
         prop={"size": 9},
-        ncol=2,
+        ncol=3,
     )
 
     theme.style_primary_axis(ax)

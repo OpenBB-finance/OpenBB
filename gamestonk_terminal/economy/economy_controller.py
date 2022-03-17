@@ -153,6 +153,7 @@ class EconomyController(BaseController):
         self.current_series: Dict = dict()
         self.fred_query: pd.Series = pd.Series()
         self.DATASETS: Dict[Any, pd.DataFrame] = dict()
+        self.FRED_TITLES: Dict = dict()
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             self.choices: dict = {c: {} for c in self.controller_choices}
@@ -681,6 +682,11 @@ Performance & Valuations
                         self.current_series = {series: series_dict[series]}
 
                 if ns_parser.store:
+                    for series_id, data in series_dict.items():
+                        self.FRED_TITLES[
+                            series_id
+                        ] = f"{data['title']} ({data['units']})"
+
                     self.DATASETS["fred"] = fred_model.get_aggregated_series_data(
                         series_dict, ns_parser.start_date, ns_parser.end_date
                     )
@@ -1035,6 +1041,10 @@ Performance & Valuations
                                     dataset_yaxis1[f"{country} [{parameter}]"] = data[
                                         variable
                                     ]
+                                elif key == "fred":
+                                    dataset_yaxis1[self.FRED_TITLES[variable]] = data[
+                                        variable
+                                    ]
                                 elif (
                                     key == "index"
                                     and variable in yfinance_model.INDICES
@@ -1072,6 +1082,10 @@ Performance & Valuations
                                         "name"
                                     ]
                                     dataset_yaxis2[f"{country} [{parameter}]"] = data[
+                                        variable
+                                    ]
+                                elif key == "fred":
+                                    dataset_yaxis2[self.FRED_TITLES[variable]] = data[
                                         variable
                                     ]
                                 elif (

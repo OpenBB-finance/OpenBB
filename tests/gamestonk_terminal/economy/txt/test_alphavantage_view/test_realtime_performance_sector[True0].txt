@@ -1,12 +1,12 @@
                         Rank A: Real-Time Performance
-Information Technology                           2.57
-Consumer Discretionary                           2.47
-Financials                                       2.45
-Communication Services                           2.22
-Materials                                        1.87
-Industrials                                      0.71
-Health Care                                      0.64
-Real Estate                                      0.41
-Consumer Staples                                 0.38
-Energy                                          -0.20
-Utilities                                       -0.81
+Consumer Discretionary                           3.35
+Information Technology                           3.32
+Communication Services                           2.93
+Financials                                       2.88
+Materials                                        1.58
+Industrials                                      1.32
+Health Care                                      1.22
+Real Estate                                      1.13
+Consumer Staples                                 0.13
+Utilities                                       -0.17
+Energy                                          -0.43
