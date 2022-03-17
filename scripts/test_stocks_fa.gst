@@ -70,5 +70,7 @@ income
 balance
 cash
 dcf
+splits
 mktcap
+dupont
 exit

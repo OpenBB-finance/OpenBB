@@ -241,7 +241,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 similar_tickers=["MOCK_SIMILAR_1", "MOCK_SIMILAR_2"],
                 start="2020-12-01",
                 candle_type="h",
-                normalize=True,
+                normalize=False,
                 export="csv",
             ),
         ),
@@ -532,7 +532,7 @@ def test_func_calling_get_similar_companies(
 def test_call_po(mocker):
     similar = ["MOCK_SIMILAR_1", "MOCK_SIMILAR_2"]
     mock = mocker.Mock(return_value=["MOCK_SIMILAR", "MOCK_USER"])
-    target = "gamestonk_terminal.portfolio.portfolio_optimization.po_controller.PortfolioOptimization.menu"
+    target = "gamestonk_terminal.portfolio.portfolio_optimization.po_controller.PortfolioOptimizationController.menu"
     mocker.patch(target=target, new=mock)
 
     controller = ca_controller.ComparisonAnalysisController(similar=similar)

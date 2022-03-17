@@ -525,7 +525,7 @@ class ComparisonAnalysisController(BaseController):
         parser.add_argument(
             "-n",
             "--no-scale",
-            action="store_false",
+            action="store_true",
             dest="no_scale",
             default=False,
             help="Flag to not put all prices on same 0-1 scale",
@@ -976,7 +976,7 @@ class ComparisonAnalysisController(BaseController):
     def call_po(self, _):
         """Call the portfolio optimization menu with selected tickers"""
         if self.similar and len(self.similar) > 1:
-            self.queue = po_controller.PortfolioOptimization(
+            self.queue = po_controller.PortfolioOptimizationController(
                 self.similar, self.queue
             ).menu(custom_path_menu_above="/portfolio/")
         else:

@@ -1,8 +1,13 @@
+import logging
+
 import bots.config_discordbot as cfg
-from bots.config_discordbot import logger
 from bots.stocks.screener import screener_options as so
+from gamestonk_terminal.decorators import log_start_end
+
+logger = logging.getLogger(__name__)
 
 
+@log_start_end(log=logger)
 def presets_custom_command():
     """Displays every custom preset"""
 

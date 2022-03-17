@@ -28,6 +28,9 @@ USE_ION = strtobool(os.getenv("GTFF_USE_ION", "True"))
 # Enable watermark in the figures
 USE_WATERMARK = strtobool(os.getenv("GTFF_USE_WATERMARK", "True"))
 
+# Enable command and source in the figures
+USE_CMD_LOCATION_FIGURE = strtobool(os.getenv("GTFF_USE_CMD_LOCATION_FIGURE", "True"))
+
 # Enable Prompt Toolkit
 USE_PROMPT_TOOLKIT = strtobool(os.getenv("GTFF_USE_PROMPT_TOOLKIT", "True"))
 
@@ -60,3 +63,12 @@ ENABLE_RICH_PANEL = strtobool(os.getenv("GTFF_ENABLE_RICH_PANEL", "True"))
 
 # Check API KEYS before running a command
 ENABLE_CHECK_API = strtobool(os.getenv("GTFF_ENABLE_CHECK_API", "True"))
+
+# Send logs to data lake
+LOG_COLLECTION = strtobool(os.getenv("GTFF_LOG_COLLECTION", "False"))
+
+# Send only file size
+ONLY_SEND_FILE_SIZE = strtobool(os.getenv("GTFF_ONLY_SEND_FILE_SIZE", "False"))
+
+# Provide export folder path. If empty that means default.
+EXPORT_FOLDER_PATH = os.getenv("GTFF_EXPORT_FOLDER_PATH", "")

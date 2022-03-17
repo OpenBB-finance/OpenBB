@@ -4,7 +4,6 @@ __docformat__ = "numpy"
 import argparse
 import logging
 import os
-from pathlib import Path
 from typing import Dict, List
 
 import dotenv
@@ -69,18 +68,13 @@ class KeysController(BaseController):
     PATH = "/keys/"
     key_dict: Dict = {}
     cfg_dict: Dict = {}
-    env_file = ".env"
-    env_files = [f for f in os.listdir() if f.endswith(".env")]
-    if env_files:
-        env_file = env_files[0]
-        dotenv.load_dotenv(env_file)
-    else:
-        # create env file
-        Path(".env")
 
-    def __init__(self, queue: List[str] = None, menu_usage: bool = True):
+    def __init__(
+        self, queue: List[str] = None, menu_usage: bool = True, env_file: str = ".env"
+    ):
         """Constructor"""
         super().__init__(queue)
+        self.env_file = env_file
         if menu_usage:
             self.check_keys_status()
 
@@ -332,19 +326,20 @@ class KeysController(BaseController):
             logger.info("Reddit key not defined")
             self.key_dict["REDDIT"] = "not defined"
         else:
-            praw_api = praw.Reddit(
-                client_id=cfg.API_REDDIT_CLIENT_ID,
-                client_secret=cfg.API_REDDIT_CLIENT_SECRET,
-                username=cfg.API_REDDIT_USERNAME,
-                user_agent=cfg.API_REDDIT_USER_AGENT,
-                password=cfg.API_REDDIT_PASSWORD,
-            )
 
             try:
+                praw_api = praw.Reddit(
+                    client_id=cfg.API_REDDIT_CLIENT_ID,
+                    client_secret=cfg.API_REDDIT_CLIENT_SECRET,
+                    username=cfg.API_REDDIT_USERNAME,
+                    user_agent=cfg.API_REDDIT_USER_AGENT,
+                    password=cfg.API_REDDIT_PASSWORD,
+                )
+
                 praw_api.user.me()
                 logger.info("Reddit key defined, test passed")
                 self.key_dict["REDDIT"] = "defined, test passed"
-            except ResponseException:
+            except (Exception, ResponseException):
                 logger.warning("Reddit key defined, test passed")
                 self.key_dict["REDDIT"] = "defined, test failed"
 
@@ -480,14 +475,18 @@ class KeysController(BaseController):
             logger.info("Sentiment Investor key not defined")
             self.key_dict["SENTIMENT_INVESTOR"] = "not defined"
         else:
-            account = requests.get(
-                f"https://api.sentimentinvestor.com/v1/trending"
-                f"?token={cfg.API_SENTIMENTINVESTOR_TOKEN}"
-            )
-            if account.ok and account.json().get("success", False):
-                logger.info("Sentiment Investor key defined, test passed")
-                self.key_dict["SENTIMENT_INVESTOR"] = "defined, test passed"
-            else:
+            try:
+                account = requests.get(
+                    f"https://api.sentimentinvestor.com/v1/trending"
+                    f"?token={cfg.API_SENTIMENTINVESTOR_TOKEN}"
+                )
+                if account.ok and account.json().get("success", False):
+                    logger.info("Sentiment Investor key defined, test passed")
+                    self.key_dict["SENTIMENT_INVESTOR"] = "defined, test passed"
+                else:
+                    logger.warning("Sentiment Investor key defined, test failed")
+                    self.key_dict["SENTIMENT_INVESTOR"] = "defined, test unsuccessful"
+            except Exception:
                 logger.warning("Sentiment Investor key defined, test failed")
                 self.key_dict["SENTIMENT_INVESTOR"] = "defined, test unsuccessful"
 
@@ -737,6 +736,12 @@ class KeysController(BaseController):
             dest="key",
             help="key",
         )
+        if not other_args:
+            console.print(
+                "For your API Key, visit: https://www.alphavantage.co/support/#api-key\n"
+            )
+            return
+
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
         ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -762,6 +767,12 @@ class KeysController(BaseController):
             dest="key",
             help="key",
         )
+        if not other_args:
+            console.print(
+                "For your API Key, visit: https://financialmodelingprep.com\n"
+            )
+            return
+
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
         ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -789,6 +800,10 @@ class KeysController(BaseController):
             dest="key",
             help="key",
         )
+        if not other_args:
+            console.print("For your API Key, visit: https://www.quandl.com\n")
+            return
+
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
         ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -814,6 +829,10 @@ class KeysController(BaseController):
             dest="key",
             help="key",
         )
+        if not other_args:
+            console.print("For your API Key, visit: https://polygon.io\n")
+            return
+
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
         ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -839,6 +858,10 @@ class KeysController(BaseController):
             dest="key",
             help="key",
         )
+        if not other_args:
+            console.print("For your API Key, visit: https://fred.stlouisfed.org\n")
+            return
+
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
         ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -864,6 +887,10 @@ class KeysController(BaseController):
             dest="key",
             help="key",
         )
+        if not other_args:
+            console.print("For your API Key, visit: https://newsapi.org\n")
+            return
+
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
         ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -889,6 +916,10 @@ class KeysController(BaseController):
             dest="key",
             help="key",
         )
+        if not other_args:
+            console.print("For your API Key, visit: https://developer.tradier.com\n")
+            return
+
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
         ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -914,6 +945,9 @@ class KeysController(BaseController):
             dest="key",
             help="key",
         )
+        if not other_args:
+            console.print("For your API Key, visit: https://coinmarketcap.com\n")
+            return
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
         ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -939,6 +973,9 @@ class KeysController(BaseController):
             dest="key",
             help="key",
         )
+        if not other_args:
+            console.print("For your API Key, visit: https://finnhub.io\n")
+            return
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
         ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -964,6 +1001,9 @@ class KeysController(BaseController):
             dest="key",
             help="key",
         )
+        if not other_args:
+            console.print("For your API Key, visit: https://iexcloud.io\n")
+            return
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
         ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -1017,6 +1057,9 @@ class KeysController(BaseController):
             dest="user_agent",
             help="User agent",
         )
+        if not other_args:
+            console.print("For your API Key, visit: https://www.reddit.com\n")
+            return
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             os.environ["GT_API_REDDIT_CLIENT_ID"] = ns_parser.client_id
@@ -1077,6 +1120,9 @@ class KeysController(BaseController):
             dest="bearer_token",
             help="Bearer token",
         )
+        if not other_args:
+            console.print("For your API Key, visit: https://developer.twitter.com\n")
+            return
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             os.environ["GT_API_TWITTER_KEY"] = ns_parser.key
@@ -1120,6 +1166,9 @@ class KeysController(BaseController):
             dest="password",
             help="password",
         )
+        if not other_args:
+            console.print("For your API Key, visit: https://robinhood.com/us/en/\n")
+            return
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             os.environ["GT_RH_USERNAME"] = ns_parser.username
@@ -1162,6 +1211,9 @@ class KeysController(BaseController):
             dest="secret",
             help="TOPT Secret",
         )
+        if not other_args:
+            console.print("For your API Key, visit: https://www.degiro.fr\n")
+            return
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             os.environ["GT_DG_USERNAME"] = ns_parser.username
@@ -1208,6 +1260,9 @@ class KeysController(BaseController):
             dest="account_type",
             help="account type",
         )
+        if not other_args:
+            console.print("For your API Key, visit: https://developer.oanda.com\n")
+            return
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             os.environ["GT_OANDA_ACCOUNT"] = ns_parser.account
@@ -1249,6 +1304,9 @@ class KeysController(BaseController):
             dest="secret_key",
             help="Secret key",
         )
+        if not other_args:
+            console.print("For your API Key, visit: https://binance.com\n")
+            return
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             os.environ["GT_API_BINANCE_KEY"] = ns_parser.key
@@ -1277,6 +1335,9 @@ class KeysController(BaseController):
             dest="key",
             help="key",
         )
+        if not other_args:
+            console.print("For your API Key, visit: https://bitquery.io/\n")
+            return
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
         ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -1303,6 +1364,9 @@ class KeysController(BaseController):
             dest="key",
             help="key",
         )
+        if not other_args:
+            console.print("For your API Key, visit: https://sentimentinvestor.com\n")
+            return
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
         ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -1345,6 +1409,9 @@ class KeysController(BaseController):
             dest="passphrase",
             help="Passphrase",
         )
+        if not other_args:
+            console.print("For your API Key, visit: https://docs.pro.coinbase.com/\n")
+            return
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             os.environ["GT_API_COINBASE_KEY"] = ns_parser.key
@@ -1381,6 +1448,9 @@ class KeysController(BaseController):
             dest="key",
             help="key",
         )
+        if not other_args:
+            console.print("For your API Key, visit: https://docs.whale-alert.io/\n")
+            return
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
         ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -1407,6 +1477,11 @@ class KeysController(BaseController):
             dest="key",
             help="key",
         )
+        if not other_args:
+            console.print(
+                "For your API Key, visit: https://docs.glassnode.com/basic-api/api-key#how-to-get-an-api-key/\n"
+            )
+            return
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
         ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -1433,6 +1508,11 @@ class KeysController(BaseController):
             dest="key",
             help="key",
         )
+        if not other_args:
+            console.print(
+                "For your API Key, visit: https://coinglass.github.io/API-Reference/#api-key\n"
+            )
+            return
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
         ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -1459,6 +1539,11 @@ class KeysController(BaseController):
             dest="key",
             help="key",
         )
+        if not other_args:
+            console.print(
+                "For your API Key, visit: https://cryptopanic.com/developers/api/\n"
+            )
+            return
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
         ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -1485,6 +1570,11 @@ class KeysController(BaseController):
             dest="key",
             help="key",
         )
+        if not other_args:
+            console.print(
+                "For your API Key, visit: https://github.com/EverexIO/Ethplorer/wiki/Ethplorer-API\n"
+            )
+            return
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
         ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -1517,7 +1607,9 @@ class KeysController(BaseController):
             dest="token",
             help="Token",
         )
-
+        if not other_args:
+            console.print("For your API Key, visit: https://www.smartstake.io\n")
+            return
         ns_parser = parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
@@ -1530,11 +1622,3 @@ class KeysController(BaseController):
             cfg.API_SMARTSTAKE_KEY = ns_parser.key
 
             self.check_smartstake_key(show_output=True)
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            os.environ["GT_API_ETHPLORER_KEY"] = ns_parser.key
-            dotenv.set_key(self.env_file, "GT_API_ETHPLORER_KEY", ns_parser.key)
-            cfg.API_ETHPLORER_KEY = ns_parser.key
-
-            self.check_ethplorer_key(show_output=True)

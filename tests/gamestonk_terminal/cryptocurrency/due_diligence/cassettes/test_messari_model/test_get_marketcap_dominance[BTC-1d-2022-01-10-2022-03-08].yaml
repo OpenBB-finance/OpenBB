@@ -1,0 +1,71 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+      x-messari-api-key:
+      - mock_x-messari-api-key
+    method: GET
+    uri: https://data.messari.io/api/v1/assets/BTC/metrics/mcap.dom/time-series?start=2022-01-10&end=2022-03-08&interval=1d
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAA/3SVT2/jyNHGvwrRl/cNQGvqf1fpmM0pQW7OZQcDg5G4Y2YsSiCpnQwG/u4BZTbJ
+        BFjDB8P8sfqpp58q/kzj1Ez3MR1/pvatuY3tOR0JoE5Td2nHqbnc0jERED0BP6E8QxxVj0wHVhMB
+        tfg1vdfp3EzNXOPWDM2lndrhUbEZx3Z6+db+SMf05+dfUr38pzunY8KWkdCbp1akfRJyfXKC05OT
+        U9sSEbCmetY3TKsGfEJ4Bjg+fn9NdWr7804g+H897PqpHX5v3ubTzqlO1+HcDumYmvHU9ueu/5rq
+        9Nt1uDTzAf8ar33a9f2yPrn33b+fLt3bWze2p2t/HlOdTte3+6Uf0/Hzzqk6XZrhWzudmtvL+Xrp
+        +qY/tenLe53G02t7eTh0aaehO31YcDk1t8P5ekl16ptLm47p7+X96i/r+3U6t+Np6G5Td+3TMT2/
+        ttV6TrWeU3VjNb221cPi/xurWzuc2n5qvrbV+NoMbXX9rZquU/NWnYYft+lanbrhdH9rpq7/utVL
+        dfq9ebu348smeR+F5/J31fXV3pNq7GYRs4L2dj29Vv+P1V+b/t4MPyqMDFW5mOofz7/86Q+s+uPm
+        tm7muF26vrvcLy//e8Hj9T6c2pdmmobun/cPvz7/LOb+rem+XVOd7sP8wus03cbjp0/fv38/fJuf
+        HE7Xy6f0Pl/XhwXp+PkzmmDO5DD/1BwHNwxkRUAlcvlSPxDXoA9E4CBKnFWzsWShhQhR2xVhBzJR
+        c84LQcAfJR6ECDgo5GyZPS8EostGhDIzWYYAc1sQAtm0Eucwh4wOJFKIQFoJcCNHFWMxLUI45yLV
+        Dx7GYDkzo5svhJhsUkkQ3UVno4ohpAqbVKcQIXc3YyjNGJuvlgE5uHtWUyFdiEy8mcriGJrNhaOU
+        cAhbgZxNnYKFzSAXP3whoBY8MKooIs9SSyvhJGuNQJLIQOKOgR8Eg7mvJSJUdL4VJbVCoCpthDkz
+        uHiOjMV1JkFbEfdgBnQ0CpelXeYlZVALHRQ1EBWJSRWXblhQZEXYMZuYIKBQLIQC+EqQANucGzXm
+        lfBMuxougAZo7swLYZltJVADAlDUM1qRuuTjo5sMmsOMg4BzqeElIjMhYa6ZwzwYlpRxlH4fhDEI
+        QnYMWgMggLFJJfcgY/ZwXXoRBN1cDTaE+fqRLasUJGhzFcAyZyMDEo1yDGXftAZkQDZEw5ASI2GT
+        na1ZUUTNQK3MpojiloFHt6QYwJqLWC22PYw3QhSm2XYppxjJpnUeFs8eSGxaTskIWwCycpYMjgjG
+        a8OPkS9IhETQLN48oiDuvPkamdTMYs7S6nxYbFpV3UHDc3bwJfNanP8gAB0sQpRpaUZRaJM6t6oG
+        xKFIJfHzAt2kMs5R9wzZsmipwqi7tCohBYdD5nXl6SPA692wh2YyEs2UC+G7yUJhYbZgyebL3ajm
+        3WARzAMazm6ApV+z3WABoLuzuQiVodAsu8EyECEWp5jbWQhn3sU1IIjRZb6yZWzKV2QZLHfWMMxk
+        VobTAGwf1sAIzsKiXHavQdA+AREsCmbb/jbM62DxQXTOA1t2Xj9oRrZOFh/YBIJQgFWFCsK6ThYf
+        0FRRVOc1LYurjzWwZSSLxfzloOymi2mmtB+sCPRgDMqMpYgh7pcAYTCSGOK6Jx7h3UIiyjE/zsiC
+        X768v/8nAAD//6Kn+3blCgAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '1272'
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Mon, 14 Mar 2022 09:55:32 GMT
+      content-encoding:
+      - gzip
+      server:
+      - istio-envoy
+      vary:
+      - Accept-Encoding,Origin
+      x-envoy-decorator-operation:
+      - meridian-service.meridian.svc.cluster.local:8080/*
+      x-envoy-upstream-service-time:
+      - '246'
+      x-ratelimit-limit:
+      - '4000'
+      x-ratelimit-remaining:
+      - '3984'
+      x-ratelimit-reset:
+      - '1647329561'
+    status:
+      code: 200
+      message: OK
+version: 1

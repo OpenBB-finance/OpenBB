@@ -14,6 +14,7 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.common import newsapi_view
 from gamestonk_terminal.common.quantitative_analysis import qa_view
 from gamestonk_terminal.decorators import log_start_end
+
 from gamestonk_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,

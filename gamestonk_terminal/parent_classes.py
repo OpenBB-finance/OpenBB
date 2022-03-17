@@ -26,6 +26,7 @@ from gamestonk_terminal.helper_funcs import (
     valid_date,
     parse_known_args_and_warn,
     valid_date_in_past,
+    set_command_location,
 )
 from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal.rich_config import console
@@ -176,6 +177,7 @@ class BaseController(metaclass=ABCMeta):
                 elif known_args.cmd == "r":
                     known_args.cmd = "reset"
 
+            set_command_location(f"{self.PATH}{known_args.cmd}")
             logger.info("CMD: %s", an_input)
             self.log_queue("QUEUE")
 
@@ -226,7 +228,7 @@ class BaseController(metaclass=ABCMeta):
     @log_start_end(log=logger)
     def call_reset(self, _) -> None:
         """Process reset command. If you would like to have customization in the
-        reset process define a methom `custom_reset` in the child class.
+        reset process define a method `custom_reset` in the child class.
         """
         if self.PATH != "/":
             if self.custom_reset():
@@ -416,6 +418,35 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
             help="Pre/After market hours. Only works for 'yf' source, and intraday data",
         )
         parser.add_argument(
+            "-f",
+            "--file",
+            default=None,
+            help="Path to load custom file.",
+            choices=[
+                x
+                for x in os.listdir(os.path.join("custom_imports", "stocks"))
+                if x.endswith(".csv")
+            ],
+            dest="filepath",
+            type=str,
+        )
+        parser.add_argument(
+            "-m",
+            "--monthly",
+            action="store_true",
+            default=False,
+            help="Load monthly data",
+            dest="monthly",
+        )
+        parser.add_argument(
+            "-w",
+            "--weekly",
+            action="store_true",
+            default=False,
+            help="Load weekly data",
+            dest="weekly",
+        )
+        parser.add_argument(
             "-r",
             "--iexrange",
             dest="iexrange",
@@ -428,15 +459,32 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
             other_args.insert(0, "-t")
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
+
         if ns_parser:
-            df_stock_candidate = stocks_helper.load(
-                ns_parser.ticker,
-                ns_parser.start,
-                ns_parser.interval,
-                ns_parser.end,
-                ns_parser.prepost,
-                ns_parser.source,
-            )
+            if ns_parser.weekly and ns_parser.monthly:
+                console.print(
+                    "[red]Only one of monthly or weekly can be selected.[/red]\n."
+                )
+                return
+            if ns_parser.filepath is None:
+                df_stock_candidate = stocks_helper.load(
+                    ns_parser.ticker,
+                    ns_parser.start,
+                    ns_parser.interval,
+                    ns_parser.end,
+                    ns_parser.prepost,
+                    ns_parser.source,
+                    weekly=ns_parser.weekly,
+                    monthly=ns_parser.monthly,
+                )
+            else:
+                df_stock_candidate = stocks_helper.load_custom(
+                    os.path.join(
+                        os.path.join("custom_imports", "stocks"), ns_parser.filepath
+                    )
+                )
+                if df_stock_candidate.empty:
+                    return
             if not df_stock_candidate.empty:
                 self.stock = df_stock_candidate
                 self.add_info = stocks_helper.additional_info_about_ticker(
@@ -507,7 +555,7 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
             help="Source of data",
             dest="source",
             choices=("cp", "cg", "bin", "cb"),
-            default="cg",
+            default="cp",
             required=False,
         )
         parser.add_argument(

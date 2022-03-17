@@ -28,6 +28,7 @@ class SettingsController(BaseController):
     """Settings Controller class"""
 
     CHOICES_COMMANDS: List[str] = [
+        "logcollection",
         "tab",
         "cls",
         "color",
@@ -35,6 +36,7 @@ class SettingsController(BaseController):
         "dt",
         "ion",
         "watermark",
+        "cmdloc",
         "promptkit",
         "predict",
         "autoscaling",
@@ -72,7 +74,9 @@ class SettingsController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = "\n[info]Feature flags through environment variables:[/info]\n"
+        help_text = "\n[info]Feature flags through environment variables:[/info]\n\n"
+        color = "green" if gtff.LOG_COLLECTION else "red"
+        help_text += f"   [{color}]logcollection    allow logs to be sent[/{color}]\n\n"
         color = "green" if gtff.USE_TABULATE_DF else "red"
         help_text += (
             f"   [{color}]tab              use tabulate to print dataframes[/{color}]\n"
@@ -107,6 +111,8 @@ class SettingsController(BaseController):
         )
         color = "green" if gtff.USE_WATERMARK else "red"
         help_text += f"   [{color}]watermark        watermark in figures[/{color}]\n"
+        color = "green" if gtff.USE_CMD_LOCATION_FIGURE else "red"
+        help_text += f"   [{color}]cmdloc           command location displayed in figures[/{color}]\n"
         color = "green" if gtff.USE_PLOT_AUTOSCALING else "red"
         help_text += f"   [{color}]autoscaling      plot autoscaling[/{color}]\n\n"
         color = "green" if gtff.USE_DATETIME else "red"
@@ -143,6 +149,13 @@ class SettingsController(BaseController):
         # help_text += f"   [{color}]cls        clear console after each command[/{color}]\n"
 
         console.print(text=help_text, menu="Settings")
+
+    @log_start_end(log=logger)
+    def call_logcollection(self, _):
+        """Process logcollection command"""
+        gtff.LOG_COLLECTION = not gtff.LOG_COLLECTION
+        dotenv.set_key(self.env_file, "GTFF_LOG_COLLECTION", str(gtff.LOG_COLLECTION))
+        console.print("")
 
     @log_start_end(log=logger)
     def call_tab(self, _):
@@ -254,6 +267,17 @@ class SettingsController(BaseController):
         """Process watermark command"""
         gtff.USE_WATERMARK = not gtff.USE_WATERMARK
         dotenv.set_key(self.env_file, "GTFF_USE_WATERMARK", str(gtff.USE_WATERMARK))
+        console.print("")
+
+    @log_start_end(log=logger)
+    def call_cmdloc(self, _):
+        """Process cmdloc command"""
+        gtff.USE_CMD_LOCATION_FIGURE = not gtff.USE_CMD_LOCATION_FIGURE
+        dotenv.set_key(
+            self.env_file,
+            "GTFF_USE_CMD_LOCATION_FIGURE",
+            str(gtff.USE_CMD_LOCATION_FIGURE),
+        )
         console.print("")
 
     @log_start_end(log=logger)

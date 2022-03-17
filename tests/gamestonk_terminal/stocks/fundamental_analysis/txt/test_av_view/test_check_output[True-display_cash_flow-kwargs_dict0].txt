@@ -1,0 +1,30 @@
+fiscalDateEnding                                          2017-12-31 2018-12-31 2019-12-31 2020-12-31 2021-12-31
+reportedCurrency                                                 USD        USD        USD        USD        USD
+operatingCashflow                                              -61 M    2.098 B    2.405 B    5.943 B   11.497 B
+paymentsForOperatingActivities                             248.266 M  443.545 M    1.009 B    1.115 B    1.532 B
+proceedsFromOperatingActivities                                 None       None       None       None       None
+changeInOperatingLiabilities                               639.372 M    2.289 B    1.592 B    2.918 B    5.847 B
+changeInOperatingAssets                                    275.569 M    1.602 B      969 M    1.669 B   -3.401 B
+depreciationDepletionAndAmortization                       769.300 M    1.269 B    1.901 B    2.149 B    2.381 B
+capitalExpenditures                                          3.415 B    2.101 B    1.332 B    3.167 B    7.982 B
+changeInReceivables                                         24.635 M  496.732 M      367 M      652 M     -130 M
+changeInInventory                                              179 M    1.023 B      429 M      422 M   -1.709 B
+profitLoss                                                  -2.241 B   -1.063 B     -775 M      862 M    5.644 B
+cashflowFromInvestment                                      -4.196 B   -2.337 B   -1.436 B   -3.132 B   -7.868 B
+cashflowFromFinancing                                        4.415 B      574 M    1.529 B    9.973 B   -5.203 B
+proceedsFromRepaymentsOfShortTermDebt                      511.321 M       None       None       None       None
+paymentsForRepurchaseOfCommonStock                              None       None       None       None       None
+paymentsForRepurchaseOfEquity                              230.385 M       11 K       None       None       None
+paymentsForRepurchaseOfPreferredStock                           None       None       None       None       None
+dividendPayout                                                  None       None       None       None       None
+dividendPayoutCommonStock                                       None       None       None       None       None
+dividendPayoutPreferredStock                                    None       None       None       None       None
+proceedsFromIssuanceOfCommonStock                              400 M       None      848 M   12.269 B          0
+proceedsFromIssuanceOfLongTermDebtAndCapitalSecuritiesNet       None       None       None       None       None
+proceedsFromIssuanceOfPreferredStock                        52.883 M       None      174 M       None       None
+proceedsFromRepurchaseOfEquity                             481.789 M  295.711 M    1.285 B   12.686 B      707 M
+proceedsFromSaleOfTreasuryStock                                 None       None       None       None       None
+changeInCashAndCashEquivalents                             -25.302 M  334.129 M    2.498 B   12.784 B   -1.574 B
+changeInExchangeRate                                        39.455 M       None       None       None       None
+netIncome                                                   -1.962 B     -976 M     -862 M      721 M    5.519 B
+

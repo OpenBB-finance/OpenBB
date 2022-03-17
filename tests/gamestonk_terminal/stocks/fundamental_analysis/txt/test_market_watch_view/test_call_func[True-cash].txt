@@ -1,20 +1,20 @@
-                                  Item                 2016                  2017                     2018                  2019                   2020
-     Net Income before Extraordinaries [red](773.05M)[/red]    [red](2.24B)[/red]       [red](1.06B)[/red]     [red](775M)[/red]                   862M
-                     Net Income Growth                    -   [red]-189.84%[/red]    [green]52.58%[/green] [green]27.06%[/green] [green]211.23%[/green]
-Depreciation, Depletion & Amortization               947.1M                 1.64B                     1.9B                 2.15B                  2.32B
-            Depreciation and Depletion                    -                     -                        -                 2.11B                  2.27B
-     Amortization of Intangible Assets                    -                     -                        -                   44M                    51M
-Deferred Taxes & Investment Tax Credit                    -                     -                        -                     -                      -
-                        Deferred Taxes                    -                     -                        -                     -                      -
-                 Investment Tax Credit                    -                     -                        -                     -                      -
-                           Other Funds              395.98M                 1.04B                     1.2B                 1.38B                  2.58B
-                 Funds from Operations              570.03M               435.95M                    2.04B                 2.75B                  5.76B
-                       Extraordinaries                    -                     -                        -                     -                      -
-            Changes in Working Capital [red](693.86M)[/red]   [red](496.6M)[/red]                   57.95M     [red](349M)[/red]                   184M
-                           Receivables  [red](213.1M)[/red]   [red](24.64M)[/red]     [red](496.73M)[/red]     [red](367M)[/red]      [red](652M)[/red]
-                      Accounts Payable              750.64M               388.21M                    1.72B                  646M                   2.1B
-              Other Assets/Liabilities                1.23B               841.25M                   69.84M                  565M                   228M
-               Net Operating Cash Flow [red](123.83M)[/red]   [red](60.65M)[/red]                     2.1B                 2.41B                  5.94B
-        Net Operating Cash Flow Growth                    - [green]51.02%[/green] [green]3,558.64%[/green] [green]14.64%[/green] [green]147.11%[/green]
-       Net Operating Cash Flow / Sales    [red]-1.77%[/red]     [red]-0.52%[/red]     [green]9.77%[/green]  [green]9.79%[/green]  [green]18.85%[/green]
+                                  Item                2017                     2018                  2019                   2020                   2021
+     Net Income before Extraordinaries  [red](2.24B)[/red]       [red](1.06B)[/red]     [red](775M)[/red]                   862M                  5.64B
+                     Net Income Growth                   -    [green]52.58%[/green] [green]27.06%[/green] [green]211.23%[/green] [green]554.76%[/green]
+Depreciation, Depletion & Amortization               1.64B                     1.9B                 2.15B                  2.32B                  2.91B
+            Depreciation and Depletion                   -                        -                 2.11B                  2.27B                  1.91B
+     Amortization of Intangible Assets                   -                        -                   44M                    51M                     1B
+Deferred Taxes & Investment Tax Credit                   -                        -                     -                      -                      -
+                        Deferred Taxes                   -                        -                     -                      -                      -
+                 Investment Tax Credit                   -                        -                     -                      -                      -
+                           Other Funds               1.04B                     1.2B                 1.38B                  2.58B                  2.42B
+                 Funds from Operations             435.95M                    2.04B                 2.75B                  5.76B                 10.98B
+                       Extraordinaries                   -                        -                     -                      -                      -
+            Changes in Working Capital [red](496.6M)[/red]                   57.95M     [red](349M)[/red]                   184M                   518M
+                           Receivables [red](24.64M)[/red]     [red](496.73M)[/red]     [red](367M)[/red]      [red](652M)[/red]      [red](130M)[/red]
+                      Accounts Payable             388.21M                    1.72B                  646M                   2.1B                  4.58B
+              Other Assets/Liabilities             841.25M                   69.84M                  565M                   228M     [red](2.22B)[/red]
+               Net Operating Cash Flow [red](60.65M)[/red]                     2.1B                 2.41B                  5.94B                  11.5B
+        Net Operating Cash Flow Growth                   - [green]3,558.64%[/green] [green]14.64%[/green] [green]147.11%[/green]  [green]93.45%[/green]
+       Net Operating Cash Flow / Sales   [red]-0.52%[/red]     [green]9.77%[/green]  [green]9.79%[/green]  [green]18.85%[/green]  [green]21.36%[/green]
 

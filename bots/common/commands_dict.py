@@ -1,7 +1,9 @@
 import re
+from pathlib import Path
 from typing import List
 
 import pandas as pd
+
 from bots.economy.currencies import currencies_command
 from bots.economy.energy import energy_command
 from bots.economy.feargreed import feargreed_command
@@ -74,21 +76,17 @@ from bots.stocks.technical_analysis.aroon import aroon_command
 from bots.stocks.technical_analysis.bbands import bbands_command
 from bots.stocks.technical_analysis.cci import cci_command
 from bots.stocks.technical_analysis.donchian import donchian_command
-from bots.stocks.technical_analysis.ema import ema_command
 from bots.stocks.technical_analysis.fib import fib_command
 from bots.stocks.technical_analysis.fisher import fisher_command
-from bots.stocks.technical_analysis.hma import hma_command
 from bots.stocks.technical_analysis.kc import kc_command
+from bots.stocks.technical_analysis.ma import ma_command
 from bots.stocks.technical_analysis.macd import macd_command
 from bots.stocks.technical_analysis.obv import obv_command
 from bots.stocks.technical_analysis.recom import recom_command
 from bots.stocks.technical_analysis.rsi import rsi_command
-from bots.stocks.technical_analysis.sma import sma_command
 from bots.stocks.technical_analysis.stoch import stoch_command
 from bots.stocks.technical_analysis.summary import summary_command
 from bots.stocks.technical_analysis.view import view_command
-from bots.stocks.technical_analysis.wma import wma_command
-from bots.stocks.technical_analysis.zlma import zlma_command
 
 re_date = re.compile(r"/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/")
 re_int = re.compile(r"^[1-9]\d*$")
@@ -142,7 +140,7 @@ options_vsurf_choices = {
 }
 
 opt_intervals = [1, 5, 15, 30, 60, 1440]
-
+ma_mode = ["ema", "sma", "wma", "hma", "zlma"]
 
 screener_sort = {
     "overview": [
@@ -346,113 +344,115 @@ possible_ma = [
 
 def get_tickers() -> List[str]:
     col_list = ["Name"]
-    df = pd.read_csv("files/tickers.csv", usecols=col_list)
+    df = pd.read_csv(
+        Path(__file__).parent.parent.absolute().joinpath("files/tickers.csv"),
+        usecols=col_list,
+    )
     df = df["Name"]
     return df.tolist()
 
 
 tickers = get_tickers()
-
 commands = {
-    "dd-analyst": {
+    "dd_analyst": {
         "function": analyst_command,
         "required": {"ticker": tickers},
     },
-    "dd-pt": {
+    "dd_pt": {
         "function": pt_command,
         "required": {"ticker": tickers},
         "optional": {"raw": [True, False], "start": re_date},
     },
-    "dd-est": {"function": est_command, "required": {"ticker": tickers}},
-    "dd-sec": {"function": sec_command, "required": {"ticker": tickers}},
-    "dd-supplier": {
+    "dd_est": {"function": est_command, "required": {"ticker": tickers}},
+    "dd_sec": {"function": sec_command, "required": {"ticker": tickers}},
+    "dd_supplier": {
         "function": supplier_command,
         "required": {"ticker": tickers},
     },
-    "dd-customer": {
+    "dd_customer": {
         "function": customer_command,
         "required": {"ticker": tickers},
     },
-    "dd-arktrades": {
+    "dd_arktrades": {
         "function": arktrades_command,
         "required": {
             "ticker": tickers,
         },
         "optional": {"num": re_int},
     },
-    "dps-shorted": {"function": shorted_command, "optional": re_int},
-    "dps-hsi": {"function": hsi_command, "optional": {"num": re_int}},
-    "dps-pos": {
+    "dps_shorted": {"function": shorted_command, "optional": re_int},
+    "dps_hsi": {"function": hsi_command, "optional": {"num": re_int}},
+    "dps_pos": {
         "function": pos_command,
         "required": {"sort": dps_pos_choices.values()},
         "optional": {"num": re_int},
     },
-    "dps-sidtc": {
+    "dps_sidtc": {
         "function": sidtc_command,
         "required": {"sort": ["float", "dtc", "si"]},
         "optional": {"num": re_int},
     },
-    "dps-ftd": {
+    "dps_ftd": {
         "function": ftd_command,
         "required": {"ticker": tickers},
         "optional": {"start": re_date, "end": re_date},
     },
-    "dps-dpotc": {
+    "dps_dpotc": {
         "function": dpotc_command,
         "required": {"ticker": tickers},
     },
-    "dps-spos": {"function": spos_command, "required": {"ticker": tickers}},
-    "dps-psi": {"function": psi_command, "required": {"ticker": tickers}},
-    "econ-feargreed": {
+    "dps_spos": {"function": spos_command, "required": {"ticker": tickers}},
+    "dps_psi": {"function": psi_command, "required": {"ticker": tickers}},
+    "econ_feargreed": {
         "function": feargreed_command,
     },
-    "econ-overview": {
+    "econ_overview": {
         "function": overview_command,
     },
-    "econ-indices": {
+    "econ_indices": {
         "function": indices_command,
     },
-    "econ-futures": {
+    "econ_futures": {
         "function": futures_command,
     },
-    "econ-usbonds": {
+    "econ_usbonds": {
         "function": usbonds_command,
     },
-    "econ-glbonds": {
+    "econ_glbonds": {
         "function": glbonds_command,
     },
-    "econ-energy": {
+    "econ_energy": {
         "function": energy_command,
     },
-    "econ-metals": {
+    "econ_metals": {
         "function": metals_command,
     },
-    "econ-meats": {
+    "econ_meats": {
         "function": meats_command,
     },
-    "econ-grains": {
+    "econ_grains": {
         "function": grains_command,
     },
-    "econ-softs": {
+    "econ_softs": {
         "function": softs_command,
     },
-    "econ-currencies": {
+    "econ_currencies": {
         "function": currencies_command,
     },
-    "econ-valuation": {
+    "econ_valuation": {
         "function": valuation_command,
         "required": {"economy_group": econ_group},
     },
-    "econ-performance": {
+    "econ_performance": {
         "function": performance_command,
         "required": {"economy_group": econ_group},
     },
-    "gov-lasttrades": {
+    "gov_lasttrades": {
         "function": lasttrades_command,
         "required": {"gov_type": gov_type},
         "optional": {"past_days": re_int, "representative": re_name},
     },
-    "gov-topbuys": {
+    "gov_topbuys": {
         "function": topbuys_command,
         "required": {"gov_type": gov_type},
         "optional": {
@@ -461,7 +461,7 @@ commands = {
             "raw": [True, False],
         },
     },
-    "gov-topsells": {
+    "gov_topsells": {
         "function": topsells_command,
         "required": {"gov_type": gov_type},
         "optional": {
@@ -470,22 +470,22 @@ commands = {
             "raw": [True, False],
         },
     },
-    "gov-lastcontracts": {
+    "gov_lastcontracts": {
         "function": lastcontracts_command,
         "optional": {"past_transactions_days": re_int, "num": re_int},
     },
-    "gov-qtrcontracts": {
+    "gov_qtrcontracts": {
         "function": qtrcontracts_command,
         "required": {"analysis": ["total", "upmom", "downmom"]},
         "optional": {
             "num": re_int,
         },
     },
-    "gov-toplobbying": {
+    "gov_toplobbying": {
         "function": toplobbying_command,
         "optional": {"num": re_int, "raw": [True, False]},
     },
-    "gov-gtrades": {
+    "gov_gtrades": {
         "function": gtrades_command,
         "required": {
             "ticker": tickers,
@@ -493,7 +493,7 @@ commands = {
         },
         "optional": {"past_transactions_months": re_int, "raw": [True, False]},
     },
-    "gov-contracts": {
+    "gov_contracts": {
         "function": contracts_command,
         "required": {
             "ticker": tickers,
@@ -501,15 +501,15 @@ commands = {
             "raw": [True, False],
         },
     },
-    "gov-histcont": {"function": histcont_command, "required": {"ticker": tickers}},
-    "gov-lobbying": {
+    "gov_histcont": {"function": histcont_command, "required": {"ticker": tickers}},
+    "gov_lobbying": {
         "function": lobbying_command,
         "required": {"ticker": tickers},
         "optional": {
             "num": re_int,
         },
     },
-    "opt-chain": {
+    "opt_chain": {
         "function": chain_command,
         "required": {
             "ticker": tickers,
@@ -518,33 +518,33 @@ commands = {
         },
         "optional": {"min_sp": re_float, "max_sp": re_float},
     },
-    "opt-oi": {
+    "opt_oi": {
         "function": oi_command,
         "required": {"ticker": tickers, "expiry": re_date},
         "optional": {"min_sp": re_float, "max_sp": re_float},
     },
-    "opt-iv": {
+    "opt_iv": {
         "function": iv_command,
         "required": {"ticker": tickers},
     },
     "q": {"function": quote_command, "required": {"ticker": tickers}},
-    "disc-ford": {
+    "disc_ford": {
         "function": ford_command,
     },
-    "opt-unu": {
+    "opt_unu": {
         "function": unu_command,
     },
-    "ins-last": {
+    "ins_last": {
         "function": lins_command,
         "required": {"ticker": tickers},
         "optional": {"num": re_int},
     },
-    "cc": {
+    "candle": {
         "function": candle_command,
         "required": {"ticker": tickers, "interval": opt_intervals},
         "optional": {"past_days": re_int, "start": re_date, "end": re_date},
     },
-    "opt-overview": {
+    "opt_overview": {
         "function": overview_opt_command,
         "required": {"ticker": tickers, "expiry": re_date},
         "optional": {
@@ -552,15 +552,15 @@ commands = {
             "max_sp": re_float,
         },
     },
-    "opt-vol": {
+    "opt_vol": {
         "function": vol_command,
         "required": {"ticker": tickers, "expiry": re_date},
     },
-    "opt-vsurf": {
+    "opt_vsurf": {
         "function": vsurf_command,
         "required": {"ticker": tickers, "z": options_vsurf_choices.values()},
     },
-    "opt-hist": {
+    "opt_hist": {
         "function": hist_command,
         "required": {
             "ticker": tickers,
@@ -570,7 +570,7 @@ commands = {
             "greek": ["iv", "gamma", "delta", "theta", "rho", "vega"],
         },
     },
-    "opt-cc-hist": {
+    "opt_cc_hist": {
         "function": cc_hist_command,
         "required": {
             "ticker": tickers,
@@ -579,98 +579,62 @@ commands = {
             "opt_type": ["Calls", "Puts"],
         },
     },
-    "scr-presets_default": {
+    "scr_presets_default": {
         "function": presets_default_command,
     },
-    "scr-presets_custom": {
+    "scr_presets_custom": {
         "function": presets_custom_command,
     },
-    "scr-historical": {
+    "scr_historical": {
         "function": historical_command,
         "required": {"signal": signals},
         "optional": {"start": re_date},
     },
-    "scr-overview": {
+    "scr_overview": {
         "function": overview_screener_command,
         "required": {"preset": presets, "sort": screener_sort["overview"]},
         "optional": {"limit": re_int, "ascend": [True, False]},
     },
-    "scr-valuation": {
+    "scr_valuation": {
         "function": valuation_screener_command,
         "required": {"preset": presets, "sort": screener_sort["valuation"]},
         "optional": {"limit": re_int, "ascend": [True, False]},
     },
-    "scr-financial": {
+    "scr_financial": {
         "function": financial_command,
         "required": {"preset": presets, "sort": screener_sort["financial"]},
         "optional": {"limit": re_int, "ascend": [True, False]},
     },
-    "scr-ownership": {
+    "scr_ownership": {
         "function": ownership_command,
         "required": {"preset": presets, "sort": screener_sort["ownership"]},
         "optional": {"limit": re_int, "ascend": [True, False]},
     },
-    "scr-performance": {
+    "scr_performance": {
         "function": performance_screener_command,
         "required": {"preset": presets, "sort": screener_sort["performance"]},
         "optional": {"limit": re_int, "ascend": [True, False]},
     },
-    "scr-technical": {
+    "scr_technical": {
         "function": technical_command,
         "required": {"preset": presets, "sort": screener_sort["technical"]},
         "optional": {"limit": re_int, "ascend": [True, False]},
     },
-    "ta-ema": {
-        "function": ema_command,
-        "required": {"ticker": tickers},
+    # TODO Add ta candle args
+    "ta-ma": {
+        "function": ma_command,
+        "required": {"ticker": tickers, "interval": opt_intervals, "ma_mode": ma_mode},
         "optional": {
+            "past_days": re_int,
             "window": re_window,
             "offset": re_int,
             "start": re_date,
             "end": re_date,
+            "extended_hours": [True, False],
+            "heikin_candles": [True, False],
         },
     },
-    "ta-sma": {
-        "function": sma_command,
-        "required": {"ticker": tickers},
-        "optional": {
-            "window": re_window,
-            "offset": re_int,
-            "start": re_date,
-            "end": re_date,
-        },
-    },
-    "ta-wma": {
-        "function": wma_command,
-        "required": {"ticker": tickers},
-        "optional": {
-            "window": re_window,
-            "offset": re_int,
-            "start": re_date,
-            "end": re_date,
-        },
-    },
-    "ta-hma": {
-        "function": hma_command,
-        "required": {"ticker": tickers},
-        "optional": {
-            "window": re_window,
-            "offset": re_int,
-            "start": re_date,
-            "end": re_date,
-        },
-    },
-    "ta-zlma": {
-        "function": zlma_command,
-        "required": {"ticker": tickers},
-        "optional": {
-            "window": re_window,
-            "offset": re_int,
-            "start": re_date,
-            "end": re_date,
-        },
-    },
-    "ta-cci": {
+    "ta_cci": {
         "function": cci_command,
         "required": {"ticker": tickers},
         "optional": {
@@ -680,28 +644,35 @@ commands = {
             "end": re_date,
         },
     },
-    "ta-macd": {
+    "ta_macd": {
         "function": macd_command,
-        "required": {"ticker": tickers},
+        "required": {"ticker": tickers, "interval": opt_intervals, "ma_mode": ma_mode},
         "optional": {
-            "length": re_int,
-            "scalar": re_float,
+            "past_days": re_int,
+            "fast": re_int,
+            "slow": re_int,
+            "signal": re_int,
             "start": re_date,
             "end": re_date,
+            "extended_hours": [True, False],
+            "heikin_candles": [True, False],
         },
     },
-    "ta-rsi": {
+    "ta_rsi": {
         "function": rsi_command,
-        "required": {"ticker": tickers},
+        "required": {"ticker": tickers, "interval": opt_intervals},
         "optional": {
+            "past_days": re_int,
             "length": re_int,
             "scalar": re_float,
             "drift": re_int,
             "start": re_date,
             "end": re_date,
+            "extended_hours": [True, False],
+            "heikin_candles": [True, False],
         },
     },
-    "ta-stoch": {
+    "ta_stoch": {
         "function": stoch_command,
         "required": {"ticker": tickers},
         "optional": {
@@ -712,46 +683,57 @@ commands = {
             "end": re_date,
         },
     },
-    "ta-fisher": {
+    "ta_fisher": {
         "function": fisher_command,
         "required": {"ticker": tickers},
         "optional": {"length": re_int, "start": re_date, "end": re_date},
     },
-    "ta-cg": {
+    "ta_cg": {
         "function": fisher_command,
         "required": {"ticker": tickers},
         "optional": {"length": re_int, "start": re_date, "end": re_date},
     },
-    "ta-adx": {
+    "ta_adx": {
         "function": adx_command,
-        "required": {"ticker": tickers},
+        "required": {"ticker": tickers, "interval": opt_intervals, "ma_mode": ma_mode},
         "optional": {
+            "past_days": re_int,
             "length": re_int,
             "scalar": re_int,
             "drift": re_int,
             "start": re_date,
             "end": re_date,
+            "extended_hours": [True, False],
+            "heikin_candles": [True, False],
         },
     },
-    "ta-aroon": {
+    "ta_aroon": {
         "function": aroon_command,
-        "required": {"ticker": tickers},
+        "required": {"ticker": tickers, "interval": opt_intervals},
         "optional": {
+            "past_days": re_int,
             "length": re_int,
             "scalar": re_int,
             "start": re_date,
             "end": re_date,
+            "extended_hours": [True, False],
+            "heikin_candles": [True, False],
         },
     },
-    "ta-bbands": {
+    "ta_bbands": {
         "function": bbands_command,
-        "required": {
-            "ticker": tickers,
-            "mamode": ["ema", "sma", "wma", "hma", "zlma"],
+        "required": {"ticker": tickers, "interval": opt_intervals, "ma_mode": ma_mode},
+        "optional": {
+            "past_days": re_int,
+            "length": re_int,
+            "std": re_int,
+            "start": re_date,
+            "end": re_date,
+            "extended_hours": [True, False],
+            "heikin_candles": [True, False],
         },
-        "optional": {"length": re_int, "std": re_int, "start": re_date, "end": re_date},
     },
-    "ta-donchian": {
+    "ta_donchian": {
         "function": donchian_command,
         "required": {"ticker": tickers},
         "optional": {
@@ -761,7 +743,7 @@ commands = {
             "end": re_date,
         },
     },
-    "ta-kc": {
+    "ta_kc": {
         "function": kc_command,
         "required": {
             "ticker": tickers,
@@ -775,35 +757,42 @@ commands = {
             "end": re_date,
         },
     },
-    "ta-ad": {
+    "ta_ad": {
         "function": ad_command,
         "required": {"ticker": tickers},
         "optional": {"is_open": ["True", "False"], "start": re_date, "end": re_date},
     },
-    "ta-adosc": {
+    "ta_adosc": {
         "function": adosc_command,
-        "required": {
-            "ticker": tickers,
-        },
+        "required": {"ticker": tickers, "interval": opt_intervals},
         "optional": {
-            "is_open": ["True", "False"],
+            "past_days": re_int,
+            "is_open": [True, False],
             "fast": re_int,
             "slow": re_int,
             "start": re_date,
             "end": re_date,
+            "extended_hours": [True, False],
+            "heikin_candles": [True, False],
         },
     },
-    "ta-obv": {
+    "ta_obv": {
         "function": obv_command,
-        "required": {"ticker": tickers},
-        "optional": {"start": re_date, "end": re_date},
+        "required": {"ticker": tickers, "interval": opt_intervals},
+        "optional": {
+            "past_days": re_int,
+            "start": re_date,
+            "end": re_date,
+            "extended_hours": [True, False],
+            "heikin_candles": [True, False],
+        },
     },
-    "ta-fib": {
+    "ta_fib": {
         "function": fib_command,
         "required": {"ticker": tickers},
         "optional": {"start": re_date, "end": re_date},
     },
-    "ta-view": {"function": view_command, "required": {"ticker": tickers}},
-    "ta-summary": {"function": summary_command, "required": {"ticker": tickers}},
-    "ta-recom": {"function": recom_command, "required": {"ticker": tickers}},
+    "ta_view": {"function": view_command, "required": {"ticker": tickers}},
+    "ta_summary": {"function": summary_command, "required": {"ticker": tickers}},
+    "ta_recom": {"function": recom_command, "required": {"ticker": tickers}},
 }
