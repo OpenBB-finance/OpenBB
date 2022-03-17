@@ -397,7 +397,30 @@ class TerminalController(BaseController):
                         insert_start_slash(file_cmds) if file_cmds else file_cmds
                     )
                     cmds_with_params = " ".join(file_cmds)
-                    self.queue = cmds_with_params.split("/")
+                    self.queue = [val for val in cmds_with_params.split("/") if val]
+
+                    if "export" in self.queue[0]:
+                        export_path = self.queue[0].split(" ")[1]
+                        # If the path selected does not start from the user root, give relative location from root
+                        if export_path[0] == "~":
+                            export_path = export_path.replace("~", os.environ["HOME"])
+                        elif export_path[0] != "/":
+                            export_path = os.path.join(
+                                os.path.dirname(os.path.abspath(__file__)), export_path
+                            )
+
+                        # Check if the directory exists
+                        if os.path.isdir(export_path):
+                            console.print(
+                                f"Export data to be saved in the selected folder: '{export_path}'"
+                            )
+                        else:
+                            os.makedirs(export_path)
+                            console.print(
+                                f"[green]Folder '{export_path}' successfully created.[/green]"
+                            )
+                        gtff.EXPORT_FOLDER_PATH = export_path
+                        self.queue = self.queue[1:]
 
 
 # pylint: disable=global-statement
