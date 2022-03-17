@@ -304,6 +304,13 @@ class TerminalController(BaseController):
         """Process exe command"""
         # Merge rest of string path to other_args and remove queue since it is a dir
         other_args += self.queue
+
+        if not other_args:
+            console.print(
+                "[red]Provide a path to the routine you wish to execute.\n[/red]"
+            )
+            return
+
         full_input = " ".join(other_args)
         if " " in full_input:
             other_args_processed = full_input.split(" ")
@@ -317,7 +324,8 @@ class TerminalController(BaseController):
             if path_dir in ("-i", "--input"):
                 args = [path_routine[1:]] + other_args_processed[idx:]
                 break
-            path_routine += f"/{path_dir}"
+            if path_dir not in ("-p", "--path"):
+                path_routine += f"/{path_dir}"
 
         if not args:
             args = [path_routine[1:]]
@@ -335,6 +343,7 @@ class TerminalController(BaseController):
             dest="path",
             default="",
             type=check_path,
+            required="-h" not in args,
         )
         parser_exe.add_argument(
             "-i",
