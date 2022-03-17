@@ -92,9 +92,14 @@ def check_path(path: str) -> str:
     # Just return empty path because this will be handled outside this function
     if not path:
         return ""
-    # Return string of path if such path exists
+    if path[0] == "~":
+        path = path.replace("~", os.environ["HOME"])
+    # Return string of path if such relative path exists
     if os.path.isfile(path):
         return path
+    # Return string of path if an absolute path exists
+    if os.path.isfile("/" + path):
+        return f"/{path}"
     logger.error("The path file '%s' does not exist.", path)
     console.print(f"[red]The path file '{path}' does not exist.\n[/red]")
     return ""

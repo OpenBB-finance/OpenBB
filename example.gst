@@ -1,4 +1,3 @@
-export example
 stocks
 load pltr
 dd
