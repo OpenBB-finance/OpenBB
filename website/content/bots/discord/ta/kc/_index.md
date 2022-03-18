@@ -1,4 +1,4 @@
-ta kc - Keltner Channels
+ta-vlt kc - Keltner Channels
 
 https://school.stockcharts.com/doku.php?id=technical_indicators:keltner_channels
 
@@ -15,7 +15,7 @@ Lower Channel Line: 20-day EMA - (2 x ATR(10))
 ![Screen Shot 2022-02-24 at 11 31 34 PM](https://user-images.githubusercontent.com/85772166/155673629-c17f713e-ca2f-4804-883b-9d735b1a7b18.png)
 
 ```
-/ta kc ticker: BPT ma_mode: zlma
+/ta-vlt kc ticker: XOM interval: 30 ma_mode: ema length: 20
 ```
 
 ![Screen Shot 2022-02-24 at 11 33 10 PM](https://user-images.githubusercontent.com/85772166/155673846-c3f20389-c398-4388-90e6-e6ddeab27e34.png)
