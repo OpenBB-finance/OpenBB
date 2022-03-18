@@ -492,7 +492,7 @@ def get_sharpe(data: pd.DataFrame, rfr: float = 0, window: float = 252):
 
     sharpe = (data_return - rfr) / std
 
-    return sharpe[(window - 1) :]
+    return sharpe
 
 
 def get_sortino(
@@ -533,7 +533,7 @@ def get_sortino(
         # Thus if the deviation is neutral then it's equal to the sharpe ratio
         sortino_ratio = sortino_ratio / np.sqrt(2)
 
-    return sortino_ratio[(window - 1) :]
+    return sortino_ratio
 
 
 def get_omega(data: pd.DataFrame, threshold: float = 0):

@@ -1144,7 +1144,7 @@ def display_sharpe(data: pd.DataFrame, rfr: float, window: float):
     sharpe_ratio = qa_model.get_sharpe(data["adjclose"], rfr, window)
 
     fig, ax = plt.subplots()
-    ax.plot(sharpe_ratio)
+    ax.plot(sharpe_ratio[(window - 1) :])
     ax.set_title(f"Sharpe Ratio - over a {window} day window")
     ax.set_ylabel("Sharpe ratio")
     ax.set_xlabel("Date")
@@ -1177,7 +1177,7 @@ def display_sortino(
         str_adjusted = ""
 
     fig, ax = plt.subplots()
-    ax.plot(sortino_ratio)
+    ax.plot(sortino_ratio[(window - 1) :])
     ax.set_title(f"{str_adjusted}Sortino Ratio - over a {window} day window")
     ax.set_ylabel("Sortino ratio")
     ax.set_xlabel("Date")
