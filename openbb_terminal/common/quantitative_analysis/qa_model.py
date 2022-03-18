@@ -488,14 +488,19 @@ def get_sharpe(data: pd.DataFrame, rfr: float = 0, window: float = 252):
         length of the rolling window
     """
     data_return = data.pct_change().rolling(window).sum() * 100
-    std = data.rolling(window).std()/np.sqrt(252)*100
+    std = data.rolling(window).std() / np.sqrt(252) * 100
 
     sharpe = (data_return - rfr) / std
 
-    return sharpe[(window-1):]
+    return sharpe[(window - 1) :]
 
 
-def get_sortino(data: pd.DataFrame, target_return: float = 0, window: float = 252, adjusted: bool = False):
+def get_sortino(
+    data: pd.DataFrame,
+    target_return: float = 0,
+    window: float = 252,
+    adjusted: bool = False,
+):
     """Calculates the sortino ratio
 
     Parameters
@@ -515,7 +520,11 @@ def get_sortino(data: pd.DataFrame, target_return: float = 0, window: float = 25
     # For method & terminology see:
     # http://www.redrockcapital.com/Sortino__A__Sharper__Ratio_Red_Rock_Capital.pdf
 
-    target_downside_deviation = data["returns"].rolling(window).apply(lambda x: (x.values[x.values < 0]).std()/np.sqrt(252)*100)
+    target_downside_deviation = (
+        data["returns"]
+        .rolling(window)
+        .apply(lambda x: (x.values[x.values < 0]).std() / np.sqrt(252) * 100)
+    )
     data_return = data["returns"].rolling(window).sum()
     sortino_ratio = (data_return - target_return) / target_downside_deviation
 
@@ -524,7 +533,7 @@ def get_sortino(data: pd.DataFrame, target_return: float = 0, window: float = 25
         # Thus if the deviation is neutral then it's equal to the sharpe ratio
         sortino_ratio = sortino_ratio / np.sqrt(2)
 
-    return sortino_ratio[(window-1):]
+    return sortino_ratio[(window - 1) :]
 
 
 def get_omega(data: pd.DataFrame, threshold: float = 0):

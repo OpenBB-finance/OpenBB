@@ -917,7 +917,9 @@ class QaController(StockBaseController):
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             data = self.stock
-            qa_view.display_sortino(data, ns_parser.target_return, ns_parser.window, ns_parser.adjusted)
+            qa_view.display_sortino(
+                data, ns_parser.target_return, ns_parser.window, ns_parser.adjusted
+            )
 
     @log_start_end(log=logger)
     def call_om(self, other_args: List[str]):
