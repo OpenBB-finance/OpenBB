@@ -378,10 +378,8 @@ class TerminalController(BaseController):
                         idx = 0
                         for rawline in raw_lines:
                             templine = rawline
-                            for i in range(len(ns_parser_exe.routine_args)):
-                                templine = templine.replace(
-                                    f"$ARGV[{i}]", ns_parser_exe.routine_args[i]
-                                )
+                            for i, arg in enumerate(ns_parser_exe.routine_args):
+                                templine = templine.replace(f"$ARGV[{i}]", arg)
                             lines.append(templine)
                     else:
                         lines = raw_lines
@@ -637,8 +635,8 @@ def run_scripts(
                 lines = list()
                 for rawline in raw_lines:
                     templine = rawline
-                    for i in range(len(routines_args)):
-                        templine = templine.replace(f"$ARGV[{i}]", routines_args[i])
+                    for i, arg in enumerate(routines_args):
+                        templine = templine.replace(f"$ARGV[{i}]", arg)
                     lines.append(templine)
             else:
                 lines = raw_lines
