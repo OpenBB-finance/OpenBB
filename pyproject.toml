@@ -93,6 +93,7 @@ linearmodels = "^4.25"
 black = "22.1"
 boto3 = "^1.21.18"
 undetected-chromedriver = {version = "^3.1.5", optional = true}
+boto3 = {version = "^1.21.14", optional = true}
 
 
 [tool.poetry.dev-dependencies]
@@ -119,11 +120,10 @@ types-setuptools = "^57.4.7"
 pre-commit = "^2.16.0"
 pandas-market-calendars = "~3.2"
 pytest-cov = "^3.0.0"
-boto3= "^1.21.14"
 
 [tool.poetry.extras]
 prediction = ["tensorflow"]
-discord = ["pyimgur", "df2img", "fastapi", "uvicorn", "disnake", "PyNaCl", "pyTelegramBotAPI", "slack_bolt", "undetected_chromedriver"]
+discord = ["boto3", "pyimgur", "df2img", "fastapi", "uvicorn", "disnake", "PyNaCl", "pyTelegramBotAPI", "slack_bolt", "undetected_chromedriver"]
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
