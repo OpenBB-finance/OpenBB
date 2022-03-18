@@ -1368,8 +1368,6 @@ main:
                 ref: "/bots/discord/screener/presets_default"
               - name: "Custom Presets"
                 ref: "/bots/discord/screener/presets_custom"
-              - name: "Historical"
-                ref: "/bots/discord/screener/historical"
               - name: "Overview"
                 ref: "/bots/discord/screener/overview"
               - name: "Technical"
