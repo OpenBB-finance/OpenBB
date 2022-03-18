@@ -20,4 +20,4 @@ Example:
 ```
 
 TO BE UPDATED
-![anchor](https://user-images.githubusercontent.com/46355364/154049081-7f2298ba-8a0e-4aaa-a5b1-5bc4f92af312.png)
+![anchor](https://user-images.githubusercontent.com/43375532/159065235-e8fb189d-f670-4391-a7fc-064640b9607d.png)

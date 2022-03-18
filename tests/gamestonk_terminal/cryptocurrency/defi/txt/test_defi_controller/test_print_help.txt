@@ -27,5 +27,7 @@
     sratio        Displays terra blockchain staking ratio history
     sreturn       Displays terra blockchain staking returns history
 [Smartstake]
-    lcsc         Displays Luna circulating supply changes
+    lcsc          Displays Luna circulating supply changes
+[CryptoSaurio]
+    anchor        Display anchor earnings data
 
