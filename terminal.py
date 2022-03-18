@@ -377,29 +377,12 @@ class TerminalController(BaseController):
                         lines = list()
                         idx = 0
                         for rawline in raw_lines:
-                            arg_to_replace = f"$ARGV[{idx}]"
                             templine = rawline
-                            while arg_to_replace in rawline:
-                                if idx > (len(ns_parser_exe.routine_args) - 1):
-                                    console.print(
-                                        "[red]There are more arguments on the routine "
-                                        ".gst file than input args provided[/red]"
-                                    )
-                                    return
+                            for i in range(len(ns_parser_exe.routine_args)):
                                 templine = templine.replace(
-                                    arg_to_replace, ns_parser_exe.routine_args[idx]
+                                    f"$ARGV[{i}]", ns_parser_exe.routine_args[i]
                                 )
-                                idx += 1
-                                arg_to_replace = f"$ARGV[{idx}]"
-
                             lines.append(templine)
-
-                        if idx < len(ns_parser_exe.routine_args):
-                            console.print(
-                                "[red]There are more inputs provided than the number "
-                                "of arguments on routine .gst file\n[/red]"
-                            )
-
                     else:
                         lines = raw_lines
 
@@ -652,27 +635,11 @@ def run_scripts(
 
             if routines_args:
                 lines = list()
-                idx = 0
                 for rawline in raw_lines:
-                    arg_to_replace = f"$ARGV[{idx}]"
                     templine = rawline
-                    while arg_to_replace in rawline:
-                        if idx > (len(routines_args) - 1):
-                            console.print(
-                                "[red]There are more arguments on the routine .gst file than input args provided[/red]"
-                            )
-                            return
-                        templine = templine.replace(arg_to_replace, routines_args[idx])
-                        idx += 1
-                        arg_to_replace = f"$ARGV[{idx}]"
-
+                    for i in range(len(routines_args)):
+                        templine = templine.replace(f"$ARGV[{i}]", routines_args[i])
                     lines.append(templine)
-
-                if idx < len(routines_args):
-                    console.print(
-                        "[red]There are more inputs provided than the number of arguments on routine .gst file\n[/red]"
-                    )
-
             else:
                 lines = raw_lines
 
