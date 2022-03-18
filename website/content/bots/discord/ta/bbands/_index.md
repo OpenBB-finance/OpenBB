@@ -6,7 +6,7 @@ Bollinger Bands consist of three lines. The middle band is a simple moving avera
 
 
 ```
-/ta bbands ticker: SPY interval: 15 ma_mode: zlma past_days: 21
+/ta-vlt bbands ticker: SPY interval: 15 ma_mode: zlma past_days: 21
 ```
 
 ![Screen Shot 2022-03-17 at 8 54 13 PM](https://user-images.githubusercontent.com/85772166/158934563-60434525-d744-4a3f-b839-f5e201ea94a9.png)
