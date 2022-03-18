@@ -1368,6 +1368,8 @@ main:
                 ref: "/bots/discord/screener/presets_default"
               - name: "Custom Presets"
                 ref: "/bots/discord/screener/presets_custom"
+              - name: "Historical"
+                ref: "/bots/discord/screener/historical"
               - name: "Overview"
                 ref: "/bots/discord/screener/overview"
               - name: "Technical"
@@ -1397,6 +1399,8 @@ main:
                 ref: "/bots/discord/dd/arktrades"
               - name: "Price Target vs Price"
                 ref: "/bots/discord/dd/pt"
+              - name: "Borrowed"
+                ref: "/bots/discord/dd/borrowed"
           - name: "Dark Pool & Shorts"
             ref: "/bots/discord/dps"
             sub:
@@ -1472,6 +1476,8 @@ main:
                 ref: "/bots/discord/econ/valuation"
               - name: "Performance"
                 ref: "/bots/discord/econ/performance"
+              - name: "Repo"
+                ref: "/bots/discord/econ/repo"
           - name: "ETF"
             ref: "/bots/discord/etf"
             sub:
