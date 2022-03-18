@@ -19,5 +19,4 @@ Example:
 2022 Mar 18, 14:29 (✨) /crypto/defi/ $ anchor terra13kc0x8kr3sq8226myf4nmanmn2mrk9s5s9wsnz --transactions
 ```
 
-TO BE UPDATED
 ![anchor](https://user-images.githubusercontent.com/43375532/159065235-e8fb189d-f670-4391-a7fc-064640b9607d.png)
