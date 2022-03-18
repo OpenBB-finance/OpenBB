@@ -959,6 +959,27 @@ main:
             ref: "/terminal/economy/performance"
           - name: spectrum
             ref: "/terminal/economy/spectrum"
+          - name: prediction techniques
+            ref: "/terminal/common/prediction_techniques"
+            sub:
+              - name: ets
+                ref: "/terminal/common/prediction_techniques/ets"
+              - name: knn
+                ref: "/terminal/common/prediction_techniques/knn"
+              - name: regression
+                ref: "/terminal/common/prediction_techniques/regression"
+              - name: arima
+                ref: "/terminal/common/prediction_techniques/arima"
+              - name: mlp
+                ref: "/terminal/common/prediction_techniques/mlp"
+              - name: rnn
+                ref: "/terminal/common/prediction_techniques/rnn"
+              - name: lstm
+                ref: "/terminal/common/prediction_techniques/lstm"
+              - name: conv1d
+                ref: "/terminal/common/prediction_techniques/conv1d"
+              - name: mc
+                ref: "/terminal/common/prediction_techniques/mc"
       - name: etf
         ref: "/terminal/etf"
         sub:

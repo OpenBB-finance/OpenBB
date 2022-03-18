@@ -61,6 +61,9 @@ class PredictionTechniquesController(BaseController):
         super().__init__(queue)
 
         self.datasets = all_economy_data
+        self.options = []
+        for _, sub_df in all_economy_data.items():
+            self.options.extend(list(sub_df.columns))
         self.sources = list(self.datasets.keys())
         self.current_source = self.sources[0]
         self.current_source_dataframe = self.datasets[self.current_source]
@@ -75,7 +78,8 @@ class PredictionTechniquesController(BaseController):
             choices["ets"]["-s"] = {c: {} for c in ets_model.SEASONS}
             choices["arima"]["-i"] = {c: {} for c in arima_model.ICS}
             choices["mc"]["--dist"] = {c: {} for c in mc_model.DISTRIBUTIONS}
-            choices["pick"]["-s"] = {c: {} for c in self.sources}
+            choices["pick"] = {c: {} for c in self.options}
+            choices["pick"]["-c"] = {c: {} for c in self.options}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
@@ -111,51 +115,25 @@ class PredictionTechniquesController(BaseController):
             description="Load a FRED series to current selection",
         )
         parser.add_argument(
-            "-s",
-            "--source",
-            dest="source",
-            type=str,
-            help="Which loaded source to get data from",
-        )
-        parser.add_argument(
             "-c",
             "--column",
             dest="column",
             type=str,
             help="Which loaded source to get data from",
+            choices=self.options,
         )
-        parser.add_argument(
-            "-o",
-            "--options",
-            dest="options",
-            action="store_true",
-            help="Show available sources and columns",
-            default=False,
-        )
-
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-c")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            if ns_parser.options:
-                for source in self.sources:
-                    for col in self.datasets[source].columns:
-                        console.print(f"-s {source} -c {col}")
-                return
-            if ns_parser.source not in self.sources:
-                console.print(
-                    f"[red]{ns_parser.source} not a valid source. Use `pick -o` to view available data.[/red"
-                )
-                return
-            if ns_parser.column not in self.datasets[ns_parser.source].columns:
-                console.print(
-                    f"[red]{ns_parser.column} not a valid column. Use `pick -o` to view available data.[/red"
-                )
-                return
-            self.data = (
-                self.datasets[ns_parser.source][ns_parser.column].copy().dropna(axis=0)
-            )
-            self.current_id = ns_parser.column
-            self.start_date = self.data.index[0]
-            console.print()
+            for source, sub_df in self.datasets.items():
+                if ns_parser.column in sub_df.columns:
+                    self.data = sub_df[ns_parser.column].copy().dropna(axis=0)
+                    self.current_id = ns_parser.column
+                    self.start_date = self.data.index[0]
+                    console.print(f"{ns_parser.column} loaded from {source}.\n")
+                    return
+        console.print(f"[red]{ns_parser.column} not found in data.[/red]\n")
 
     @log_start_end(log=logger)
     def call_ets(self, other_args: List[str]):
