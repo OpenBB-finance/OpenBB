@@ -56,6 +56,7 @@ class QaController(StockBaseController):
         "capm",
         "var",
         "es",
+        "sh",
         "so",
         "om",
     ]
@@ -136,6 +137,7 @@ class QaController(StockBaseController):
 [info]Risk:[/info]
     var         display value at risk
     es          display expected shortfall
+    sh          display sharpe ratio
     so          display sortino ratio
     om          display omega ratio
 [info]Other:[/info]
@@ -850,6 +852,31 @@ class QaController(StockBaseController):
             )
 
     @log_start_end(log=logger)
+    def call_sh(self, other_args: List[str]):
+        """Process sh command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="sh",
+            description="""
+                    Provides the sharpe ratio of the selected stock.
+                """,
+        )
+        parser.add_argument(
+            "-r",
+            "--rfr",
+            action="store",
+            dest="rfr",
+            type=float,
+            default=0,
+            help="Risk free return",
+        )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            data = self.stock
+            qa_view.display_sharpe(data, ns_parser.rfr, 252)
+
+    @log_start_end(log=logger)
     def call_so(self, other_args: List[str]):
         """Process so command"""
         parser = argparse.ArgumentParser(
@@ -878,19 +905,19 @@ class QaController(StockBaseController):
             help="If one should adjust the sortino ratio inorder to make it comparable to the sharpe ratio",
         )
         parser.add_argument(
-            "-p",
-            "--period",
+            "-w",
+            "--window",
             action="store",
-            dest="period",
+            dest="window",
             type=float,
-            default=len(self.stock["returns"]),
-            help="Period of data to use",
+            default=min(len(self.stock["returns"].values), 252),
+            help="Rolling window length",
         )
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            data = self.stock["returns"]
-            qa_view.display_sortino(data, ns_parser.target_return, ns_parser.adjusted, ns_parser.period)
+            data = self.stock
+            qa_view.display_sortino(data, ns_parser.target_return, ns_parser.window, ns_parser.adjusted)
 
     @log_start_end(log=logger)
     def call_om(self, other_args: List[str]):
