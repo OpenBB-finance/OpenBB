@@ -365,7 +365,9 @@ Ticker: [/param] {self.ticker} [cmds]
         )
         if not self.suffix:
             if ns_parser:
-                yahoo_finance_view.display_calendar_earnings(ticker=self.ticker)
+                yahoo_finance_view.display_calendar_earnings(
+                    ticker=self.ticker, export=ns_parser.export
+                )
         else:
             console.print("Only US tickers are recognized.", "\n")
 

@@ -178,7 +178,7 @@ def display_sustainability(ticker: str, export: str = ""):
 
 
 @log_start_end(log=logger)
-def display_calendar_earnings(ticker: str, export: str):
+def display_calendar_earnings(ticker: str, export: str = ""):
     """Yahoo Finance ticker calendar earnings
 
     Parameters
