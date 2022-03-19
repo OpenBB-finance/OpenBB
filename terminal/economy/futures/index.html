@@ -9,9 +9,9 @@
 
 
 
-    <meta name="description" content="usage: futures [--export {csv,json,xlsx}] [-h] Commodities futures overview. [Source: https://www.wsj.com/market-data/commodities]
-optional arguments: --export {csv,json,xlsx} Export dataframe data to csv,json,xlsx file (default: ) -h, --help show this help message (default: False) Example:
-2022 Feb 15, 04:54 (✨) /economy/ $ futures Futures/Commodities ┌───────────────────────────┬─────────┬─────────┬───────┐ │ │ Price │ Chg │ %Chg │ ├───────────────────────────┼─────────┼─────────┼───────┤ │ Crude Oil Futures │ 92.80 │ -2.66 │ -2.79 │ ├───────────────────────────┼─────────┼─────────┼───────┤ │ Brent Crude Futures │ 94.10 │ -2.38 │ -2.">
+    <meta name="description" content="usage: futures [-c {energy,metals,meats,grains,softs}] [-s {ticker,last,change,prevClose}] [-a] [-h] [--export {csv,json,xlsx}] Futures/Commodities frrom Wall St. Journal and FinViz.
+optional arguments: -c {energy,metals,meats,grains,softs}, --commodity {energy,metals,meats,grains,softs} Obtain commodity futures from FinViz (default: ) -s {ticker,last,change,prevClose}, --sortby {ticker,last,change,prevClose} -a, -ascend Flag to sort in ascending order (default: False) -h, --help show this help message (default: False) --export {csv,json,xlsx} Export raw data into csv, json, xlsx (default: ) Example:
+2022 Mar 15, 07:02 (✨) /economy/ $ futures Futures/Commodities [Source: Wall St.">
 
 
 
@@ -14590,71 +14590,9 @@ optional arguments: --export {csv,json,xlsx} Export dataframe data to csv,json,x
             
             <span class="flex">
                 
-                <a href="/GamestonkTerminal/terminal/economy/feargreed/"
-                    class="gdoc-nav__entry ">
-                    feargreed
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
                 <a href="/GamestonkTerminal/terminal/economy/overview/"
                     class="gdoc-nav__entry ">
                     overview
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/terminal/economy/indices/"
-                    class="gdoc-nav__entry ">
-                    indices
                 </a>
             </span>
             
@@ -14714,257 +14652,257 @@ optional arguments: --export {csv,json,xlsx} Export dataframe data to csv,json,x
             
             <span class="flex">
                 
-                <a href="/GamestonkTerminal/terminal/economy/usbonds/"
-                    class="gdoc-nav__entry ">
-                    usbonds
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/terminal/economy/glbonds/"
-                    class="gdoc-nav__entry ">
-                    glbonds
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/terminal/economy/currencies/"
-                    class="gdoc-nav__entry ">
-                    currencies
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/terminal/economy/energy/"
-                    class="gdoc-nav__entry ">
-                    energy
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/terminal/economy/metals/"
-                    class="gdoc-nav__entry ">
-                    metals
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/terminal/economy/meats/"
-                    class="gdoc-nav__entry ">
-                    meats
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/terminal/economy/grains/"
-                    class="gdoc-nav__entry ">
-                    grains
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/terminal/economy/softs/"
-                    class="gdoc-nav__entry ">
-                    softs
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
                 <a href="/GamestonkTerminal/terminal/economy/map/"
                     class="gdoc-nav__entry ">
                     map
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/GamestonkTerminal/terminal/economy/feargreed/"
+                    class="gdoc-nav__entry ">
+                    feargreed
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/GamestonkTerminal/terminal/economy/bigmac/"
+                    class="gdoc-nav__entry ">
+                    bigmac
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/GamestonkTerminal/terminal/economy/macro/"
+                    class="gdoc-nav__entry ">
+                    macro
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/GamestonkTerminal/terminal/economy/fred/"
+                    class="gdoc-nav__entry ">
+                    fred
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/GamestonkTerminal/terminal/economy/index/"
+                    class="gdoc-nav__entry ">
+                    index
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/GamestonkTerminal/terminal/economy/treasury/"
+                    class="gdoc-nav__entry ">
+                    treasury
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/GamestonkTerminal/terminal/economy/plot/"
+                    class="gdoc-nav__entry ">
+                    plot
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/GamestonkTerminal/terminal/economy/rtps/"
+                    class="gdoc-nav__entry ">
+                    rtps
                 </a>
             </span>
             
@@ -15058,419 +14996,6 @@ optional arguments: --export {csv,json,xlsx} Export dataframe data to csv,json,x
                 <a href="/GamestonkTerminal/terminal/economy/spectrum/"
                     class="gdoc-nav__entry ">
                     spectrum
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/terminal/economy/rtps/"
-                    class="gdoc-nav__entry ">
-                    rtps
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/terminal/economy/gdp/"
-                    class="gdoc-nav__entry ">
-                    gdp
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/terminal/economy/gdpc/"
-                    class="gdoc-nav__entry ">
-                    gdpc
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/terminal/economy/inf/"
-                    class="gdoc-nav__entry ">
-                    inf
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/terminal/economy/cpi/"
-                    class="gdoc-nav__entry ">
-                    cpi
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/terminal/economy/tyld/"
-                    class="gdoc-nav__entry ">
-                    tyld
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/terminal/economy/unemp/"
-                    class="gdoc-nav__entry ">
-                    unemp
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/terminal/economy/bigmac/"
-                    class="gdoc-nav__entry ">
-                    bigmac
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <input type="checkbox" id="navtree-37b92b05" class="gdoc-nav__toggle" >
-            <label for="navtree-37b92b05" class="flex justify-between">
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/terminal/economy/fred/"
-                    class="gdoc-nav__entry ">
-                    fred
-                </a>
-            </span>
-            
-            <svg class="icon gdoc_keyborad_arrow_left"><use xlink:href="#gdoc_keyborad_arrow_left"></use></svg>
-            <svg class="icon gdoc_keyborad_arrow_down hidden"><use xlink:href="#gdoc_keyborad_arrow_down"></use></svg>
-            </label>
-            
-        
-
-        
-            
-
-
-
-<ul class="gdoc-nav__list">
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/terminal/economy/fred/search/"
-                    class="gdoc-nav__entry ">
-                    search
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/terminal/economy/fred/add/"
-                    class="gdoc-nav__entry ">
-                    add
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/terminal/economy/fred/rmv/"
-                    class="gdoc-nav__entry ">
-                    rmv
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/terminal/economy/fred/plot/"
-                    class="gdoc-nav__entry ">
-                    plot
                 </a>
             </span>
             
@@ -15801,6 +15326,605 @@ optional arguments: --export {csv,json,xlsx} Export dataframe data to csv,json,x
 
 
 </ul>
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <input type="checkbox" id="navtree-8c93a4b9" class="gdoc-nav__toggle" >
+            <label for="navtree-8c93a4b9" class="flex justify-between">
+            
+            <span class="flex">
+                
+                <a href="/GamestonkTerminal/terminal/common/quantitative_analysis/"
+                    class="gdoc-nav__entry ">
+                    quantitative analysis
+                </a>
+            </span>
+            
+            <svg class="icon gdoc_keyborad_arrow_left"><use xlink:href="#gdoc_keyborad_arrow_left"></use></svg>
+            <svg class="icon gdoc_keyborad_arrow_down hidden"><use xlink:href="#gdoc_keyborad_arrow_down"></use></svg>
+            </label>
+            
+        
+
+        
+            
+
+
+
+<ul class="gdoc-nav__list">
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/GamestonkTerminal/terminal/common/quantitative_analysis/pick/"
+                    class="gdoc-nav__entry ">
+                    pick
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/GamestonkTerminal/terminal/common/quantitative_analysis/summary/"
+                    class="gdoc-nav__entry ">
+                    summary
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/GamestonkTerminal/terminal/common/quantitative_analysis/normality/"
+                    class="gdoc-nav__entry ">
+                    normality
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/GamestonkTerminal/terminal/common/quantitative_analysis/unitroot/"
+                    class="gdoc-nav__entry ">
+                    unitroot
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/GamestonkTerminal/terminal/common/quantitative_analysis/hist/"
+                    class="gdoc-nav__entry ">
+                    hist
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/GamestonkTerminal/terminal/common/quantitative_analysis/cdf/"
+                    class="gdoc-nav__entry ">
+                    cdf
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/GamestonkTerminal/terminal/common/quantitative_analysis/bw/"
+                    class="gdoc-nav__entry ">
+                    bw
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/GamestonkTerminal/terminal/common/quantitative_analysis/acf/"
+                    class="gdoc-nav__entry ">
+                    acf
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/GamestonkTerminal/terminal/common/quantitative_analysis/qqplot/"
+                    class="gdoc-nav__entry ">
+                    qqplot
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/GamestonkTerminal/terminal/common/quantitative_analysis/rolling/"
+                    class="gdoc-nav__entry ">
+                    rolling
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/GamestonkTerminal/terminal/common/quantitative_analysis/spread/"
+                    class="gdoc-nav__entry ">
+                    spread
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/GamestonkTerminal/terminal/common/quantitative_analysis/quantile/"
+                    class="gdoc-nav__entry ">
+                    quantile
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/GamestonkTerminal/terminal/common/quantitative_analysis/skew/"
+                    class="gdoc-nav__entry ">
+                    skew
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/GamestonkTerminal/terminal/common/quantitative_analysis/kurtosis/"
+                    class="gdoc-nav__entry ">
+                    kurtosis
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/GamestonkTerminal/terminal/common/quantitative_analysis/decompose/"
+                    class="gdoc-nav__entry ">
+                    decompose
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/GamestonkTerminal/terminal/common/quantitative_analysis/cusum/"
+                    class="gdoc-nav__entry ">
+                    cusum
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/GamestonkTerminal/terminal/common/quantitative_analysis/line/"
+                    class="gdoc-nav__entry ">
+                    line
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/GamestonkTerminal/terminal/common/quantitative_analysis/raw/"
+                    class="gdoc-nav__entry ">
+                    raw
+                </a>
+            </span>
+            
+        
 
         
     </li>
@@ -23877,38 +24001,128 @@ optional arguments: --export {csv,json,xlsx} Export dataframe data to csv,json,x
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Futures</h1>
-        <pre><code>usage: futures [--export {csv,json,xlsx}] [-h]
-</code></pre><p>Commodities futures overview. [Source: https://www.wsj.com/market-data/commodities]</p>
+        <pre><code>usage: futures [-c {energy,metals,meats,grains,softs}] [-s {ticker,last,change,prevClose}] [-a] [-h] [--export {csv,json,xlsx}]
+</code></pre><p>Futures/Commodities frrom Wall St. Journal and FinViz.</p>
 <pre><code>optional arguments:
-  --export {csv,json,xlsx}
-                        Export dataframe data to csv,json,xlsx file (default: )
+  -c {energy,metals,meats,grains,softs}, --commodity {energy,metals,meats,grains,softs}
+                        Obtain commodity futures from FinViz (default: )
+  -s {ticker,last,change,prevClose}, --sortby {ticker,last,change,prevClose}
+  -a, -ascend           Flag to sort in ascending order (default: False)
   -h, --help            show this help message (default: False)
+  --export {csv,json,xlsx}
+                        Export raw data into csv, json, xlsx (default: )
 </code></pre><p>Example:</p>
-<pre><code>2022 Feb 15, 04:54 (✨) /economy/ $ futures
-                   Futures/Commodities
-┌───────────────────────────┬─────────┬─────────┬───────┐
-│                           │ Price   │ Chg     │ %Chg  │
+<pre><code>2022 Mar 15, 07:02 (✨) /economy/ $ futures
+     Futures/Commodities [Source: Wall St. Journal]      
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━┓
+┃                           ┃ Price   ┃ Chg     ┃ %Chg  ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━╇━━━━━━━┩
+│ Crude Oil Futures         │ 97.11   │ -5.90   │ -5.73 │
 ├───────────────────────────┼─────────┼─────────┼───────┤
-│ Crude Oil Futures         │ 92.80   │ -2.66   │ -2.79 │
+│ Brent Crude Futures       │ 101.01  │ -5.89   │ -5.51 │
 ├───────────────────────────┼─────────┼─────────┼───────┤
-│ Brent Crude Futures       │ 94.10   │ -2.38   │ -2.47 │
+│ Gold Futures              │ 1930.50 │ -30.30  │ -1.55 │
 ├───────────────────────────┼─────────┼─────────┼───────┤
-│ Gold Futures              │ 1857.80 │ -11.60  │ -0.62 │
+│ Silver Futures            │ 24.875  │ -0.423  │ -1.67 │
 ├───────────────────────────┼─────────┼─────────┼───────┤
-│ Silver Futures            │ 23.460  │ -0.388  │ -1.63 │
+│ Natural Gas Futures       │ 4.601   │ -0.101  │ -2.15 │
 ├───────────────────────────┼─────────┼─────────┼───────┤
-│ Natural Gas Futures       │ 4.422   │ 0.227   │ 5.41  │
+│ Unleaded Gasoline Futures │ 3.0197  │ -0.1492 │ -4.71 │
 ├───────────────────────────┼─────────┼─────────┼───────┤
-│ Unleaded Gasoline Futures │ 2.7159  │ -0.0635 │ -2.28 │
+│ Copper Futures            │ 4.5005  │ -0.0225 │ -0.50 │
 ├───────────────────────────┼─────────┼─────────┼───────┤
-│ Copper Futures            │ 4.5300  │ 0.0225  │ 0.50  │
+│ Corn Futures              │ 739.00  │ -9.25   │ -1.24 │
 ├───────────────────────────┼─────────┼─────────┼───────┤
-│ Corn Futures              │ 647.75  │ -8.00   │ -1.22 │
+│ Wheat Futures             │ 1126.50 │ 30.25   │ 2.76  │
 ├───────────────────────────┼─────────┼─────────┼───────┤
-│ Wheat Futures             │ 783.75  │ -15.50  │ -1.94 │
-├───────────────────────────┼─────────┼─────────┼───────┤
-│ Bloomberg Commodity Index │ 110.49  │ -0.61   │ -0.55 │
+│ Bloomberg Commodity Index │ 121.16  │ -2.64   │ -2.13 │
 └───────────────────────────┴─────────┴─────────┴───────┘
+
+2022 Mar 15, 07:03 (✨) /economy/ $ futures energy
+            Future Table [Source: FinViz]            
+┏━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┓
+┃                 ┃ prevClose ┃ last   ┃ change (%) ┃
+┡━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━┩
+│ Ethanol         │ 2.16      │ 2.22   │ 2.78       │
+├─────────────────┼───────────┼────────┼────────────┤
+│ Gasoline RBOB   │ 3.17      │ 3.02   │ -4.82      │
+├─────────────────┼───────────┼────────┼────────────┤
+│ Crude Oil Brent │ 106.90    │ 101.01 │ -5.51      │
+├─────────────────┼───────────┼────────┼────────────┤
+│ Natural Gas     │ 4.66      │ 4.56   │ -2.10      │
+├─────────────────┼───────────┼────────┼────────────┤
+│ Heating Oil     │ 3.28      │ 3.07   │ -6.44      │
+├─────────────────┼───────────┼────────┼────────────┤
+│ Crude Oil WTI   │ 103.01    │ 97.14  │ -5.70      │
+└─────────────────┴───────────┴────────┴────────────┘
+
+2022 Mar 15, 07:04 (✨) /economy/ $ futures metals
+         Future Table [Source: FinViz]          
+┏━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┓
+┃           ┃ prevClose ┃ last    ┃ change (%) ┃
+┡━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━┩
+│ Silver    │ 25.30     │ 24.88   │ -1.65      │
+├───────────┼───────────┼─────────┼────────────┤
+│ Platinum  │ 1052.30   │ 1021.50 │ -2.93      │
+├───────────┼───────────┼─────────┼────────────┤
+│ Palladium │ 2417.60   │ 2450.50 │ 1.36       │
+├───────────┼───────────┼─────────┼────────────┤
+│ Copper    │ 4.52      │ 4.49    │ -0.64      │
+├───────────┼───────────┼─────────┼────────────┤
+│ Gold      │ 1960.80   │ 1930.30 │ -1.56      │
+└───────────┴───────────┴─────────┴────────────┘
+
+2022 Mar 15, 07:04 (✨) /economy/ $ futures meats
+           Future Table [Source: FinViz]           
+┏━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┓
+┃               ┃ prevClose ┃ last   ┃ change (%) ┃
+┡━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━┩
+│ Lean Hogs     │ 102.72    │ 102.17 │ -0.54      │
+├───────────────┼───────────┼────────┼────────────┤
+│ Live Cattle   │ 137.30    │ 140.35 │ 2.22       │
+├───────────────┼───────────┼────────┼────────────┤
+│ Feeder Cattle │ 157.97    │ 162.43 │ 2.82       │
+└───────────────┴───────────┴────────┴────────────┘
+
+2022 Mar 15, 07:04 (✨) /economy/ $ futures grains
+           Future Table [Source: FinViz]           
+┏━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┓
+┃              ┃ prevClose ┃ last    ┃ change (%) ┃
+┡━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━┩
+│ Wheat        │ 1096.25   │ 1127.50 │ 2.85       │
+├──────────────┼───────────┼─────────┼────────────┤
+│ Soybeans     │ 1670.50   │ 1646.00 │ -1.47      │
+├──────────────┼───────────┼─────────┼────────────┤
+│ Rough Rice   │ 16.10     │ 16.14   │ 0.25       │
+├──────────────┼───────────┼─────────┼────────────┤
+│ Oats         │ 662.00    │ 653.75  │ -1.25      │
+├──────────────┼───────────┼─────────┼────────────┤
+│ Soybean Meal │ 484.30    │ 476.40  │ -1.63      │
+├──────────────┼───────────┼─────────┼────────────┤
+│ Soybean oil  │ 73.95     │ 72.90   │ -1.42      │
+├──────────────┼───────────┼─────────┼────────────┤
+│ Corn         │ 748.25    │ 739.75  │ -1.14      │
+├──────────────┼───────────┼─────────┼────────────┤
+│ Canola       │ 1139.10   │ 1113.40 │ -2.26      │
+└──────────────┴───────────┴─────────┴────────────┘
+
+2022 Mar 15, 07:04 (✨) /economy/ $ futures softs
+           Future Table [Source: FinViz]           
+┏━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┓
+┃              ┃ prevClose ┃ last    ┃ change (%) ┃
+┡━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━┩
+│ Sugar        │ 19.13     │ 18.74   │ -2.04      │
+├──────────────┼───────────┼─────────┼────────────┤
+│ Lumber       │ 1159.20   │ 1104.00 │ -4.76      │
+├──────────────┼───────────┼─────────┼────────────┤
+│ Coffee       │ 218.80    │ 215.05  │ -1.71      │
+├──────────────┼───────────┼─────────┼────────────┤
+│ Orange Juice │ 138.70    │ 142.00  │ 2.38       │
+├──────────────┼───────────┼─────────┼────────────┤
+│ Cotton       │ 118.77    │ 118.06  │ -0.60      │
+├──────────────┼───────────┼─────────┼────────────┤
+│ Cocoa        │ 2611.00   │ 2556.00 │ -2.11      │
+└──────────────┴───────────┴─────────┴────────────┘
 </code></pre>
     </article>
  
@@ -32727,44 +32941,6 @@ optional arguments: --export {csv,json,xlsx} Export dataframe data to csv,json,x
             
 
             
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
                 
                 
             
@@ -33024,6 +33200,86 @@ optional arguments: --export {csv,json,xlsx} Export dataframe data to csv,json,x
 
         
         
+            
+    
+    
+
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
     
         
         
@@ -33120,141 +33376,7 @@ optional arguments: --export {csv,json,xlsx} Export dataframe data to csv,json,x
         
         
     
-        
-        
 
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-            
-    
-    
-
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
         
     
         
@@ -33451,7 +33573,175 @@ optional arguments: --export {csv,json,xlsx} Export dataframe data to csv,json,x
         
         
     
+        
+        
 
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
         
     
 
@@ -38212,12 +38502,12 @@ optional arguments: --export {csv,json,xlsx} Export dataframe data to csv,json,x
     
         <span class="gdoc-page__nav">
             
-                <a class="gdoc-page__nav--prev flex align-center" href="/GamestonkTerminal/terminal/economy/indices/" title="indices"> indices</a>
+                <a class="gdoc-page__nav--prev flex align-center" href="/GamestonkTerminal/terminal/economy/overview/" title="overview"> overview</a>
             
         </span>
         <span class="gdoc-page__nav">
             
-                <a class="gdoc-page__nav--next flex align-center" href="/GamestonkTerminal/terminal/economy/usbonds/" title="usbonds">usbonds </a>
+                <a class="gdoc-page__nav--next flex align-center" href="/GamestonkTerminal/terminal/economy/map/" title="map">map </a>
             
         </span>
     
