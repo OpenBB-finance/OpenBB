@@ -88,7 +88,7 @@ def display_futures(export: str):
         df_data,
         show_index=False,
         headers=list(df_data.columns),
-        title="Futures/Commodities",
+        title="Futures/Commodities [Source: Wall St. Journal]",
     )
     console.print("")
 

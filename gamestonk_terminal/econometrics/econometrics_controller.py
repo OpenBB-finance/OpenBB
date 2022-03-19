@@ -480,15 +480,6 @@ class EconometricsController(BaseController):
         )
 
         parser.add_argument(
-            "-l",
-            "--limit",
-            type=int,
-            dest="limit",
-            help="The amount of data you wish to show",
-            default=10,
-        )
-
-        parser.add_argument(
             "-s",
             "--sortcol",
             help="Sort based on a column in the DataFrame",
@@ -509,7 +500,7 @@ class EconometricsController(BaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED, limit=10
         )
 
         if ns_parser:
@@ -779,19 +770,9 @@ class EconometricsController(BaseController):
             default="",
         )
 
-        parser.add_argument(
-            "-l",
-            "--limit",
-            help="The max amount of columns/rows backward filled or forward filled that have NaNs or "
-            "the max amount of columns/rows that have NaNs before being dropped.",
-            dest="limit",
-            type=int,
-            default=5,
-        )
-
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
-        ns_parser = parse_known_args_and_warn(parser, other_args, NO_EXPORT)
+        ns_parser = parse_known_args_and_warn(parser, other_args, NO_EXPORT, limit=5)
 
         if ns_parser:
             if not ns_parser.name or ns_parser.name not in self.datasets:

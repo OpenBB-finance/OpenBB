@@ -1,0 +1,15 @@
+,Long-term average,Inflation
+Longer than 10-year,"TIME_PERIOD
+2018-06-08    0.92
+2018-06-15    0.92
+2018-06-22    0.90
+2018-06-29    0.85
+2018-07-06    0.80
+Name: (Not Applicable, Weekly (Friday), U.S. government securities/Inflation-indexed/Long-term average, Longer than 10-year, RIFLGFL_XII_N.WF, _PER_YEAR:Percent: Per Year), dtype: float64",
+5-year,,"TIME_PERIOD
+2018-06-08    0.72
+2018-06-15    0.74
+2018-06-22    0.72
+2018-06-29    0.67
+2018-07-06    0.65
+Name: (Not Applicable, Weekly (Friday), U.S. government securities/Treasury constant maturities/Inflation indexed, 5-year, RIFLGFCY05_XII_N.WF, _PER_YEAR:Percent: Per Year), dtype: float64"
