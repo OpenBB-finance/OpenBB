@@ -91,7 +91,7 @@ def by_ticker_command(ticker="", sort="fund_percent", num: int = 15):
         raise Exception("No company holdings found!\n")
 
     if sort == "mkt_value":
-        [unit_finder.sub(unit_replacer, x) for x in df["Market Value"]]
+        # [unit_finder.sub(unit_replacer, x) for x in df["Market Value"]]
         key = natsort.index_natsorted(
             df["Market Value"],
             key=lambda x: unit_finder.sub(unit_replacer, x),
