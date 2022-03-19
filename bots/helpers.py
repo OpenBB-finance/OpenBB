@@ -407,12 +407,12 @@ class ShowView:
         data = func(*args, **kwargs)
         if "imagefile" in data:
             imagefile = cfg.IMG_DIR / data["imagefile"]
-            send_image(imagefile, group_id, data.get("description", ""), True)
+            send_image(imagefile, group_id, data.get("description", ""))
         elif "embeds_img" in data:
             imagefiles = data["images_list"]
             for img in imagefiles:
                 imagefile = cfg.IMG_DIR / img
-                send_image(imagefile, group_id, data.get("description", ""), True)
+                send_image(imagefile, group_id, data.get("description", ""))
         elif "description" in data:
             title = data.get("title", "")
             # TODO: Allow navigation through pages

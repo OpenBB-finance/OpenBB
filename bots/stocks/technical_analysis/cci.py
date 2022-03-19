@@ -1,8 +1,8 @@
 import logging
 
-import bots.config_discordbot as cfg
 import plotly.graph_objects as go
 from bots import helpers, load_candle
+import bots.config_discordbot as cfg
 from gamestonk_terminal.common.technical_analysis import momentum_model
 from gamestonk_terminal.decorators import log_start_end
 

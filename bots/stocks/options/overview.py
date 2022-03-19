@@ -4,7 +4,6 @@ import time
 from functools import reduce
 from multiprocessing import Pool
 
-import bots.config_discordbot as cfg
 import df2img
 import disnake
 import numpy as np
@@ -13,6 +12,7 @@ import plotly.graph_objects as go
 import yfinance as yf
 from bots import helpers
 from bots.config_discordbot import gst_imgur
+import bots.config_discordbot as cfg
 from bots.menus.menu import Menu
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.stocks.options import op_helpers, yfinance_model
