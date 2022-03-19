@@ -93,6 +93,7 @@ linearmodels = "^4.25"
 black = "22.1"
 boto3 = "^1.21.18"
 undetected-chromedriver = {version = "^3.1.5", optional = true}
+yahoo-fin = {version = "^0.8.9", optional = true}
 
 
 [tool.poetry.dev-dependencies]
@@ -123,7 +124,7 @@ boto3= "^1.21.14"
 
 [tool.poetry.extras]
 prediction = ["tensorflow"]
-discord = ["pyimgur", "df2img", "fastapi", "uvicorn", "disnake", "PyNaCl", "pyTelegramBotAPI", "slack_bolt", "undetected_chromedriver"]
+discord = ["pyimgur", "df2img", "fastapi", "uvicorn", "disnake", "PyNaCl", "pyTelegramBotAPI", "slack_bolt", "undetected_chromedriver", "yahoo-fin"]
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

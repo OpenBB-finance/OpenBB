@@ -1,0 +1,1 @@
+candle_commandcandle/tsla/1{'ticker': 'TSLA', 'interval': 1}

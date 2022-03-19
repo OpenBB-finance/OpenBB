@@ -1,0 +1,13 @@
+Valid categories: 
+/candle
+ /dd
+ /disc
+ /dps
+ /econ
+ /gov
+ /ins
+ /opt
+ /q
+ /scr
+ /ta
+ /ta-ma

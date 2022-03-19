@@ -1,0 +1,1 @@
+<function candle_command at 0x7fd735ead670>candle/tsla/1{'ticker': 'TSLA', 'interval': 1}
