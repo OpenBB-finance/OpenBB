@@ -52,12 +52,14 @@ def open_web(ticker: str):
 
 
 @log_start_end(log=logger)
-def display_info(ticker: str):
+def display_info(ticker: str, export: str = ""):
     """Yahoo Finance ticker info
     Parameters
     ----------
     ticker : str
         Fundamental analysis ticker symbol
+    export: str
+        Format to export data
     """
     summary = ""
     df_info = yahoo_finance_model.get_info(ticker)
@@ -75,20 +77,25 @@ def display_info(ticker: str):
     else:
         logger.error("Invalid data")
         console.print("[red]Invalid data[/red]\n")
+        return
+
     if summary:
         console.print("Business Summary:")
         console.print(summary)
 
     console.print("")
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), "info", df_info)
 
 
 @log_start_end(log=logger)
-def display_shareholders(ticker: str):
+def display_shareholders(ticker: str, export: str = ""):
     """Yahoo Finance ticker shareholders
     Parameters
     ----------
     ticker : str
         Fundamental analysis ticker symbol
+    export: str
+        Format to export data
     """
     (
         df_major_holders,
@@ -113,16 +120,38 @@ def display_shareholders(ticker: str):
         )
         console.print()
 
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "major_holders",
+        df_major_holders,
+    )
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "institutional_holders",
+        df_institutional_shareholders,
+    )
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "mutualfunds_holders",
+        df_major_holders,
+    )
+
 
 @log_start_end(log=logger)
-def display_sustainability(ticker: str):
+def display_sustainability(ticker: str, export: str = ""):
     """Yahoo Finance ticker sustainability
+
     Parameters
     ----------
     other_args : List[str]
         argparse other args
     ticker : str
         Fundamental analysis ticker symbol
+    export: str
+        Format to export data
     """
 
     df_sustainability = yahoo_finance_model.get_sustainability(ticker)
@@ -143,14 +172,21 @@ def display_sustainability(ticker: str):
         logger.error("Invalid data")
         console.print("[red]Invalid data[/red]\n")
 
+    export_data(
+        export, os.path.dirname(os.path.abspath(__file__)), "sust", df_sustainability
+    )
+
 
 @log_start_end(log=logger)
-def display_calendar_earnings(ticker: str):
+def display_calendar_earnings(ticker: str, export: str = ""):
     """Yahoo Finance ticker calendar earnings
+
     Parameters
     ----------
     ticker : str
         Fundamental analysis ticker symbol
+    export: str
+        Format to export data
     """
     df_calendar = yahoo_finance_model.get_calendar_earnings(ticker).T
     if df_calendar.empty:
@@ -163,6 +199,8 @@ def display_calendar_earnings(ticker: str):
         title=f"{ticker.upper()} Calendar Earnings",
     )
     console.print("")
+
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), "cal", df_calendar)
 
 
 @log_start_end(log=logger)
