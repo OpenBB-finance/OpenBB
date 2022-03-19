@@ -16,6 +16,7 @@ def test_last_insider_activity(mocker):
 
     finviz_view.last_insider_activity(ticker="TSLA", num=5, export="")
 
+
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_last_insider_activity_none(mocker):
