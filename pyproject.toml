@@ -93,6 +93,8 @@ linearmodels = "^4.25"
 black = "22.1"
 boto3 = "^1.21.18"
 undetected-chromedriver = {version = "^3.1.5", optional = true}
+ipywidgets = "^7.7.0"
+ipyflex = "^0.2.2"
 
 
 [tool.poetry.dev-dependencies]
