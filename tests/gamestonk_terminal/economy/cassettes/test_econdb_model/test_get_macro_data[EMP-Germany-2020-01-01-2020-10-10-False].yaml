@@ -1,0 +1,52 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Connection:
+      - close
+      Host:
+      - www.econdb.com
+      User-Agent:
+      - Python-urllib/3.8
+    method: GET
+    uri: https://www.econdb.com/api/series/EMPDE/?format=csv
+  response:
+    body:
+      string: "Date,EMPDE\r\n2009-01-01,37053\r\n2009-04-01,37169\r\n2009-07-01,37157\r\n2009-10-01,37859\r\n2010-01-01,36432\r\n2010-04-01,36727\r\n2010-07-01,37007\r\n2010-10-01,37213\r\n2011-01-01,36914\r\n2011-04-01,37462\r\n2011-07-01,37790\r\n2011-10-01,38007\r\n2012-01-01,37328\r\n2012-04-01,37720\r\n2012-07-01,38095\r\n2012-10-01,38115\r\n2013-01-01,37697\r\n2013-04-01,38173\r\n2013-07-01,38285\r\n2013-10-01,38362\r\n2014-01-01,38046\r\n2014-04-01,38308\r\n2014-07-01,38597\r\n2014-10-01,38621\r\n2015-01-01,38420\r\n2015-04-01,38424\r\n2015-07-01,38706\r\n2015-10-01,39079\r\n2016-01-01,39395\r\n2016-04-01,39308\r\n2016-07-01,39845\r\n2016-10-01,39985\r\n2017-01-01,39628\r\n2017-04-01,39636\r\n2017-07-01,40321\r\n2017-10-01,40195\r\n2018-01-01,39930\r\n2018-04-01,39746\r\n2018-07-01,40351\r\n2018-10-01,40359\r\n2019-01-01,40284\r\n2019-04-01,40141\r\n2019-07-01,40607\r\n2019-10-01,41047\r\n2020-01-01,39854\r\n2020-04-01,39405\r\n2020-07-01,39617\r\n2020-10-01,39945\r\n2021-01-01,39663\r\n2021-04-01,40059\r\n2021-07-01,40629\r\n"
+    headers:
+      Allow:
+      - GET, HEAD, OPTIONS
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 6ed4821d29671f95-AMS
+      Connection:
+      - close
+      Content-Disposition:
+      - attachment;filename="econdb_1647507313.csv"
+      Content-Length:
+      - '930'
+      Content-Type:
+      - text/csv; charset=utf-8
+      Date:
+      - Thu, 17 Mar 2022 08:55:13 GMT
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      NEL:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Referrer-Policy:
+      - same-origin
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=URex4qj%2FMPytBIbpVMJl3EMSkTCdvvSAffk0PCJrQjSl2Oi36vXDwqW5MQVJq%2F0o%2B8KUUk93LMWMD9nWqhVNuXKOxERLkXZisrPdkItWj12sOY4vWLaz%2BXmpcMMy%2F3yI"}],"group":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      Vary:
+      - Accept, Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+    status:
+      code: 200
+      message: OK
+version: 1
