@@ -403,7 +403,7 @@ class ShowView:
 
                 await inter.send(embed=embed, delete_after=30.0)
 
-    def groupme(self, func, group_id, name, *args, **kwargs):
+    def groupme(self, func, group_id, name, *args, **kwargs):  # pylint: disable=W0613
         data = func(*args, **kwargs)
         if "imagefile" in data:
             imagefile = cfg.IMG_DIR / data["imagefile"]
@@ -462,7 +462,7 @@ class ShowView:
                     }
                     client.chat_postMessage(**payload)
                     title = ""
-                if N < len(data["titles"]) and not 0:
+                if N < len(data["titles"]) and N != 0:
                     title = data["titles"][N]
                 client.files_upload(
                     file=imagefile,
@@ -483,7 +483,9 @@ class ShowView:
             payload = {"channel": channel_id, "username": user_id, "text": message}
             client.chat_postMessage(**payload)
 
-    def telegram(self, func, message, bot, cmd, *args, **kwargs):
+    def telegram(
+        self, func, message, bot, cmd, *args, **kwargs
+    ):  # pylint: disable=W0613
         data = func(*args, **kwargs)
         if "imagefile" in data:
             imagefile = cfg.IMG_DIR / data["imagefile"]
@@ -513,7 +515,7 @@ class ShowView:
                     res = f"{title}\n{description}"
                     bot.reply_to(message, res)
                     title = ""
-                if N < len(data["titles"]) and not 0:
+                if N < len(data["titles"]) and N != 0:
                     title = data["titles"][N]
                 with open(imagefile, "rb") as image:
                     bot.reply_to(message, title)
