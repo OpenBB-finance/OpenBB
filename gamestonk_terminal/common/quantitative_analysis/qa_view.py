@@ -875,14 +875,16 @@ def display_raw(
     )
 
     if isinstance(df, pd.Series):
-        df = pd.DataFrame(df)
+        df1 = pd.DataFrame(df)
+    else:
+        df1 = df.copy()
 
     if sort:
-        df = df.sort_values(by=sort, ascending=des)
-    df.index = [x.strftime("%Y-%m-%d") for x in df.index]
+        df1 = df.sort_values(by=sort, ascending=des)
+    df1.index = [x.strftime("%Y-%m-%d") for x in df.index]
     print_rich_table(
-        df.tail(num),
-        headers=[x.title() if x != "" else "Date" for x in df.columns],
+        df1.tail(num),
+        headers=[x.title() if x != "" else "Date" for x in df1.columns],
         title="[bold]Raw Data[/bold]",
         show_index=True,
         floatfmt=".3f",

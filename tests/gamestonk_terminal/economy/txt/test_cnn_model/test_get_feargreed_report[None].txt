@@ -1,34 +1,34 @@
-Fear & Greed Now: 43 (Fear)
-   Previous Close: 55 (Neutral)
-   1 Week Ago: 58 (Greed)
-   1 Month Ago: 35 (Fear)
-   1 Year Ago: 63 (Greed)
+Fear & Greed Now: 22 (Extreme Fear)
+   Previous Close: 19 (Extreme Fear)
+   1 Week Ago: 18 (Extreme Fear)
+   1 Month Ago: 20 (Extreme Fear)
+   1 Year Ago: 56 (Greed)
 
-Junk Bond Demand: Extreme Greed                                                                     [Updated Jan 20 at 11:09pm]
-   During the last five trading days, volume in put options has lagged volume in call options by 73.28% as investors make bullish bets in their portfolios. This is among the lowest levels of put buying seen during the last two years, indicating extreme greed on the part of investors.
-   (Last changed Dec 29 from an Extreme Fear rating)
+Junk Bond Demand: Neutral                                                                           [Updated Mar 15 at 8:00pm]
+   The CBOE Volatility Index (VIX) is at 26.67. This is a neutral reading and indicates that market risks appear low.
+   (Last changed Mar 14 from an Extreme Fear rating)
 
-Market Volatility: Extreme Greed                                                                    [Updated Jan 21 at 6:30pm]
-   Investors in low quality junk bonds are accepting 1.57 percentage points in additional yield over safer investment grade corporate bonds. While this spread is historically high, it is sharply lower than recent prices and suggests that investors are pursuing higher risk strategies.
-   (Last changed Dec 3 from a Greed rating)
+Market Volatility: Fear                                                                             [Updated Mar 15 at 8:00pm]
+   Bonds have outperformed stocks by 1.45 percentage points during the last 20 trading days. This is close to the weakest performance for stocks relative to bonds in the past two years and indicates investors are fleeing risky stocks for the safety of bonds.
+   (Last changed Mar 14 from an Extreme Fear rating)
 
-Put and Call Options: Greed                                                                         [Updated Jan 20 at 7:00pm]
-   The McClellan Volume Summation Index measures advancing and declining volume on the NYSE. During the last two months, approximately 15.37% more of each day's volume has traded in declining issues than in advancing issues. This indicates that market breadth is weakening, though the McClellan Oscillator is near the top of its range for the last two years.
-   (Last changed Jan 20 from an Extreme Greed rating)
+Put and Call Options: Fear                                                                          [Updated Mar 15 at 8:00pm]
+   Investors in low quality junk bonds are accepting 1.77 percentage points in additional yield over safer investment grade corporate bonds. This spread is higher than what has been typical for the last two years and indicates that investors are risk averse.
+   (Last changed Mar 15 from an Extreme Fear rating)
 
-Market Momentum: Extreme Fear                                                                       [Updated Jan 20 at 7:00pm]
-   The CBOE Volatility Index (VIX) is at 28.85, 39.85% above its 50-day moving average and indicates that investors are concerned about the near-term values of their portfolios.
-   (Last changed Jan 20 from a Neutral rating)
-
-Stock Price Strength: Extreme Fear                                                                  [Updated Jan 20 at 7:00pm]
+Market Momentum: Extreme Fear                                                                       [Updated Mar 16 at 4:00pm]
    The number of stocks hitting 52-week lows exceeds the number hitting highs and is at the lower end of its range, indicating extreme fear.
    (Last changed Jan 20 from a Fear rating)
 
-Stock Price Breadth: Extreme Fear                                                                   [Updated Jan 20 at 7:00pm]
-   Bonds have outperformed stocks by 4.03 percentage points during the last 20 trading days. This is close to the weakest performance for stocks relative to bonds in the past two years and indicates investors are fleeing risky stocks for the safety of bonds.
-   (Last changed Jan 19 from a Greed rating)
+Stock Price Strength: Extreme Fear                                                                  [Updated Mar 16 at 4:05pm]
+   The McClellan Volume Summation Index measures advancing and declining volume on the NYSE. During the last month, approximately 2.15% more of each day's volume has traded in advancing issues than in declining issues. This indicates that market breadth is improving, though the McClellan Oscillator is still towards the lower end of its range for the last two years.
+   (Last changed Feb 22 from a Fear rating)
 
-Safe Heaven Demand: Extreme Fear                                                                    [Updated Jan 21 at 4:52pm]
-   The S&P 500 is 3.31% below its 125-day average. During the last two years, the S&P 500 has typically been above this average, so rapid declines like this indicate extreme levels of fear.
+Stock Price Breadth: Extreme Fear                                                                   [Updated Mar 16 at 5:12pm]
+   The S&P 500 is 3.67% below its 125-day average. During the last two years, the S&P 500 has typically been above this average, so rapid declines like this indicate extreme levels of fear.
    (Last changed Jan 14 from a Fear rating)
+
+Safe Heaven Demand: N/A                                                                             [N/A]
+   N/A
+   (N/A)
 

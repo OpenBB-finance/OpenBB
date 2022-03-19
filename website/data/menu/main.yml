@@ -933,86 +933,94 @@ main:
       - name: economy
         ref: "/terminal/economy"
         sub:
-          - name: feargreed
-            ref: "/terminal/economy/feargreed"
           - name: overview
             ref: "/terminal/economy/overview"
-          - name: indices
-            ref: "/terminal/economy/indices"
           - name: futures
             ref: "/terminal/economy/futures"
-          - name: usbonds
-            ref: "/terminal/economy/usbonds"
-          - name: glbonds
-            ref: "/terminal/economy/glbonds"
-          - name: currencies
-            ref: "/terminal/economy/currencies"
-          - name: energy
-            ref: "/terminal/economy/energy"
-          - name: metals
-            ref: "/terminal/economy/metals"
-          - name: meats
-            ref: "/terminal/economy/meats"
-          - name: grains
-            ref: "/terminal/economy/grains"
-          - name: softs
-            ref: "/terminal/economy/softs"
           - name: map
             ref: "/terminal/economy/map"
+          - name: feargreed
+            ref: "/terminal/economy/feargreed"
+          - name: bigmac
+            ref: "/terminal/economy/bigmac"
+          - name: macro
+            ref: "/terminal/economy/macro"
+          - name: fred
+            ref: "/terminal/economy/fred"
+          - name: index
+            ref: "/terminal/economy/index"
+          - name: treasury
+            ref: "/terminal/economy/treasury"
+          - name: plot
+            ref: "/terminal/economy/plot"
+          - name: rtps
+            ref: "/terminal/economy/rtps"
           - name: valuation
             ref: "/terminal/economy/valuation"
           - name: performance
             ref: "/terminal/economy/performance"
           - name: spectrum
             ref: "/terminal/economy/spectrum"
-          - name: rtps
-            ref: "/terminal/economy/rtps"
-          - name: gdp
-            ref: "/terminal/economy/gdp"
-          - name: gdpc
-            ref: "/terminal/economy/gdpc"
-          - name: inf
-            ref: "/terminal/economy/inf"
-          - name: cpi
-            ref: "/terminal/economy/cpi"
-          - name: tyld
-            ref: "/terminal/economy/tyld"
-          - name: unemp
-            ref: "/terminal/economy/unemp"
-          - name: bigmac
-            ref: "/terminal/economy/bigmac"
-          - name: fred
-            ref: "/terminal/economy/fred"
+          - name: prediction techniques
+            ref: "/terminal/common/prediction_techniques"
             sub:
-              - name: search
-                ref: "/terminal/economy/fred/search"
-              - name: add
-                ref: "/terminal/economy/fred/add"
-              - name: rmv
-                ref: "/terminal/economy/fred/rmv"
-              - name: plot
-                ref: "/terminal/economy/fred/plot"
-              - name: prediction techniques
-                ref: "/terminal/common/prediction_techniques"
-                sub:
-                  - name: ets
-                    ref: "/terminal/common/prediction_techniques/ets"
-                  - name: knn
-                    ref: "/terminal/common/prediction_techniques/knn"
-                  - name: regression
-                    ref: "/terminal/common/prediction_techniques/regression"
-                  - name: arima
-                    ref: "/terminal/common/prediction_techniques/arima"
-                  - name: mlp
-                    ref: "/terminal/common/prediction_techniques/mlp"
-                  - name: rnn
-                    ref: "/terminal/common/prediction_techniques/rnn"
-                  - name: lstm
-                    ref: "/terminal/common/prediction_techniques/lstm"
-                  - name: conv1d
-                    ref: "/terminal/common/prediction_techniques/conv1d"
-                  - name: mc
-                    ref: "/terminal/common/prediction_techniques/mc"
+              - name: ets
+                ref: "/terminal/common/prediction_techniques/ets"
+              - name: knn
+                ref: "/terminal/common/prediction_techniques/knn"
+              - name: regression
+                ref: "/terminal/common/prediction_techniques/regression"
+              - name: arima
+                ref: "/terminal/common/prediction_techniques/arima"
+              - name: mlp
+                ref: "/terminal/common/prediction_techniques/mlp"
+              - name: rnn
+                ref: "/terminal/common/prediction_techniques/rnn"
+              - name: lstm
+                ref: "/terminal/common/prediction_techniques/lstm"
+              - name: conv1d
+                ref: "/terminal/common/prediction_techniques/conv1d"
+              - name: mc
+                ref: "/terminal/common/prediction_techniques/mc"
+          - name: quantitative analysis
+            ref: "/terminal/common/quantitative_analysis"
+            sub:
+              - name: pick
+                ref: "/terminal/common/quantitative_analysis/pick"
+              - name: summary
+                ref: "/terminal/common/quantitative_analysis/summary"
+              - name: normality
+                ref: "/terminal/common/quantitative_analysis/normality"
+              - name: unitroot
+                ref: "/terminal/common/quantitative_analysis/unitroot"
+              - name: hist
+                ref: "/terminal/common/quantitative_analysis/hist"
+              - name: cdf
+                ref: "/terminal/common/quantitative_analysis/cdf"
+              - name: bw
+                ref: "/terminal/common/quantitative_analysis/bw"
+              - name: acf
+                ref: "/terminal/common/quantitative_analysis/acf"
+              - name: qqplot
+                ref: "/terminal/common/quantitative_analysis/qqplot"
+              - name: rolling
+                ref: "/terminal/common/quantitative_analysis/rolling"
+              - name: spread
+                ref: "/terminal/common/quantitative_analysis/spread"
+              - name: quantile
+                ref: "/terminal/common/quantitative_analysis/quantile"
+              - name: skew
+                ref: "/terminal/common/quantitative_analysis/skew"
+              - name: kurtosis
+                ref: "/terminal/common/quantitative_analysis/kurtosis"
+              - name: decompose
+                ref: "/terminal/common/quantitative_analysis/decompose"
+              - name: cusum
+                ref: "/terminal/common/quantitative_analysis/cusum"
+              - name: line
+                ref: "/terminal/common/quantitative_analysis/line"
+              - name: raw
+                ref: "/terminal/common/quantitative_analysis/raw"
       - name: etf
         ref: "/terminal/etf"
         sub:

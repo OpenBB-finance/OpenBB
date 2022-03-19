@@ -1,0 +1,6 @@
+                               short_name currency     market exchange exchange timezone
+^BAPR-IV  INNOVATOR ETFS TRUST S&P 500 BU      USD  us_market      ASE               EDT
+^BAUG-IV  INNOVATOR ETFS TRUST S&P 500 BU      USD  us_market      ASE               EDT
+^BDEC-IV  INNOVATOR ETFS TRUST S&P 500 BU      USD  us_market      ASE               EDT
+^BFEB-IV  INNOVATOR S&P 500 BUFFER ETF -       USD  us_market      ASE               EDT
+^BFLY     CBOE S&P 500 Iron Butterfly Ind      USD  us_market      WCB               EDT

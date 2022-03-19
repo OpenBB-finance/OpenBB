@@ -195,7 +195,7 @@ def display_future(
         df[["prevClose", "last", "change"]].fillna(""),
         show_index=True,
         headers=["prevClose", "last", "change (%)"],
-        title="Future Table",
+        title="Future Table [Source: FinViz]",
     )
 
     export_data(
