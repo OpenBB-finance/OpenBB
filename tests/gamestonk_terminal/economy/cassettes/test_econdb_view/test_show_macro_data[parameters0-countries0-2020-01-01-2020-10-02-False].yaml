@@ -7,7 +7,7 @@ interactions:
       Host:
       - www.econdb.com
       User-Agent:
-      - Python-urllib/3.8
+      - Python-urllib/3.9
     method: GET
     uri: https://www.econdb.com/api/series/RGDPUS/?format=csv
   response:
@@ -19,17 +19,17 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 6ed48285f9f81eb5-AMS
+      - 6ee79d12db217fca-IAD
       Connection:
       - close
       Content-Disposition:
-      - attachment;filename="econdb_1647507330.csv"
+      - attachment;filename="econdb_1647707647.csv"
       Content-Length:
       - '6126'
       Content-Type:
       - text/csv; charset=utf-8
       Date:
-      - Thu, 17 Mar 2022 08:55:30 GMT
+      - Sat, 19 Mar 2022 16:34:07 GMT
       Expect-CT:
       - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
       NEL:
@@ -37,7 +37,7 @@ interactions:
       Referrer-Policy:
       - same-origin
       Report-To:
-      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=r8kWYw77usrwZyCcEwAKU5cnZOpLrexhbaWcPccnITCZcIpe0M60rfiiVGqnU%2FTgOosdBabzlJxcHpLqj522ydWsfYmaNZ%2BHrXZQHguSDLH203KPOEsfvKXFgSBZVORK"}],"group":"cf-nel","max_age":604800}'
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=SZxq2hfbYetf1RT4jBX9%2FGdxINyAXvePJQTNFzm7rUUgFSotSr2OE7ThWHrsZn8btclkf7UpKcenOsX8N726anEQqO5tckTfRiX1CpDuLbFPY7iSkb4v4I8vafA%2Bch5S"}],"group":"cf-nel","max_age":604800}'
       Server:
       - cloudflare
       Vary:
@@ -57,7 +57,7 @@ interactions:
       Host:
       - www.econdb.com
       User-Agent:
-      - Python-urllib/3.8
+      - Python-urllib/3.9
     method: GET
     uri: https://www.econdb.com/api/series/RGDPDE/?format=csv
   response:
@@ -69,17 +69,17 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 6ed4828fa88f4242-AMS
+      - 6ee79d1cdac65758-IAD
       Connection:
       - close
       Content-Disposition:
-      - attachment;filename="econdb_1647507331.csv"
+      - attachment;filename="econdb_1647707648.csv"
       Content-Length:
       - '2369'
       Content-Type:
       - text/csv; charset=utf-8
       Date:
-      - Thu, 17 Mar 2022 08:55:31 GMT
+      - Sat, 19 Mar 2022 16:34:08 GMT
       Expect-CT:
       - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
       NEL:
@@ -87,7 +87,7 @@ interactions:
       Referrer-Policy:
       - same-origin
       Report-To:
-      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=vheBXqigldcHzma7XEjffFMmOrBJLiyyUUNEPpvHfyk%2BjjYsNdNNjh17f72%2BvDFYggtE17fhax%2FKDilNAtQYmx3k%2Fot5y%2FG1Zm7lVhGBrvAMHu%2BYpOy5q4LzFuUEB9H5"}],"group":"cf-nel","max_age":604800}'
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=r5uChqodsMbEu0SRN0Vf2U5oG2C%2FGraQpfdyNUX0rqteM28J5vfdnK2Q%2BA1m4rafJPP27IdllEqo0d5qBBGFXVFtfXMEzhzHek9IfV%2F8UFnae8EfT2JbolFB4HPLBgwu"}],"group":"cf-nel","max_age":604800}'
       Server:
       - cloudflare
       Vary:
