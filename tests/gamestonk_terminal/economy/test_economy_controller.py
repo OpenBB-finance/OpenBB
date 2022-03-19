@@ -1,13 +1,12 @@
 # IMPORTATION STANDARD
 import os
-from datetime import datetime
 
 # IMPORTATION THIRDPARTY
 import pytest
 
 # IMPORTATION INTERNAL
 from gamestonk_terminal.economy import economy_controller
-from gamestonk_terminal.economy.fred.fred_controller import FredController
+
 
 # pylint: disable=E1101
 # pylint: disable=W0603
@@ -231,17 +230,6 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             ),
         ),
         (
-            "call_indices",
-            [
-                "--export=csv",
-            ],
-            "wsj_view.display_indices",
-            [],
-            dict(
-                export="csv",
-            ),
-        ),
-        (
             "call_futures",
             [
                 "--export=csv",
@@ -253,8 +241,21 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             ),
         ),
         (
-            "call_usbonds",
+            "call_overview",
             [
+                "--type=indices",
+                "--export=csv",
+            ],
+            "wsj_view.display_indices",
+            [],
+            dict(
+                export="csv",
+            ),
+        ),
+        (
+            "call_overview",
+            [
+                "--type=usbonds",
                 "--export=csv",
             ],
             "wsj_view.display_usbonds",
@@ -264,8 +265,9 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             ),
         ),
         (
-            "call_glbonds",
+            "call_overview",
             [
+                "--type=glbonds",
                 "--export=csv",
             ],
             "wsj_view.display_glbonds",
@@ -286,8 +288,9 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             ),
         ),
         (
-            "call_currencies",
+            "call_overview",
             [
+                "--type=currencies",
                 "--export=csv",
             ],
             "wsj_view.display_currencies",
@@ -297,8 +300,9 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             ),
         ),
         (
-            "call_energy",
+            "call_futures",
             [
+                "--commodity=energy",
                 "--sortby=ticker",
                 "-a",
                 "--export=csv",
@@ -313,8 +317,9 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             ),
         ),
         (
-            "call_metals",
+            "call_futures",
             [
+                "--commodity=metals",
                 "--sortby=ticker",
                 "-a",
                 "--export=csv",
@@ -329,8 +334,9 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             ),
         ),
         (
-            "call_meats",
+            "call_futures",
             [
+                "--commodity=meats",
                 "--sortby=ticker",
                 "-a",
                 "--export=csv",
@@ -345,8 +351,9 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             ),
         ),
         (
-            "call_grains",
+            "call_futures",
             [
+                "--commodity=grains",
                 "--sortby=ticker",
                 "-a",
                 "--export=csv",
@@ -361,8 +368,9 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             ),
         ),
         (
-            "call_softs",
+            "call_futures",
             [
+                "--commodity=softs",
                 "--sortby=ticker",
                 "-a",
                 "--export=csv",
@@ -434,124 +442,6 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 period="1w",
                 map_type="world",
             ),
-        ),
-        (
-            "call_rtps",
-            [
-                "--raw",
-                "--export=csv",
-            ],
-            "alphavantage_view.realtime_performance_sector",
-            [],
-            dict(
-                raw=True,
-                export="csv",
-            ),
-        ),
-        (
-            "call_gdp",
-            [
-                "quarter",
-                "--start=2011",
-                "--raw",
-                "--export=csv",
-            ],
-            "alphavantage_view.display_real_gdp",
-            [],
-            dict(
-                interval="q",
-                start_year=2011,
-                raw=True,
-                export="csv",
-            ),
-        ),
-        (
-            "call_gdpc",
-            [
-                "--start=2011",
-                "--raw",
-                "--export=csv",
-            ],
-            "alphavantage_view.display_gdp_capita",
-            [],
-            dict(
-                start_year=2011,
-                raw=True,
-                export="csv",
-            ),
-        ),
-        (
-            "call_inf",
-            [
-                "--start=2011",
-                "--raw",
-                "--export=csv",
-            ],
-            "alphavantage_view.display_inflation",
-            [],
-            dict(
-                start_year=2011,
-                raw=True,
-                export="csv",
-            ),
-        ),
-        (
-            "call_cpi",
-            [
-                "--interval=monthly",
-                "--start=2011",
-                "--raw",
-                "--export=csv",
-            ],
-            "alphavantage_view.display_cpi",
-            [],
-            dict(
-                interval="m",
-                start_year=2011,
-                raw=True,
-                export="csv",
-            ),
-        ),
-        (
-            "call_tyld",
-            [
-                "10y",
-                "--interval=monthly",
-                "--start=2010-01-01",
-                "--raw",
-                "--export=csv",
-            ],
-            "alphavantage_view.display_treasury_yield",
-            [],
-            dict(
-                interval="m",
-                maturity="10y",
-                start_date=datetime.strptime("2010-01-01", "%Y-%m-%d"),
-                raw=True,
-                export="csv",
-            ),
-        ),
-        (
-            "call_unemp",
-            [
-                "--start=2011",
-                "--raw",
-                "--export=csv",
-            ],
-            "alphavantage_view.display_unemployment",
-            [],
-            dict(
-                start_year=2011,
-                raw=True,
-                export="csv",
-            ),
-        ),
-        (
-            "call_fred",
-            [],
-            "EconomyController.load_class",
-            [FredController, []],
-            dict(),
         ),
     ],
 )
