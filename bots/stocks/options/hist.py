@@ -36,7 +36,9 @@ def hist_command(
 
     # Debug
     if cfg.DEBUG:
-        logger.info(f"opt grhist {ticker} {strike} {opt_type} {expiry} {greek}")
+        logger.info(
+            "opt grhist %s %s %s %s %s", ticker, strike, opt_type, expiry, greek
+        )
 
     # Check for argument
     if ticker is None:
