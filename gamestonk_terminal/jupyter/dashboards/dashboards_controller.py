@@ -25,8 +25,15 @@ logger = logging.getLogger(__name__)
 class DashboardsController(BaseController):
     """Dashboards Controller class"""
 
-    CHOICES_COMMANDS = ["stocks", "correlation", "vsurf", "chains", "shortdata"]
-    PATH = "/jupyter/dashboards/"
+    CHOICES_COMMANDS = [
+        "stocks",
+        "correlation",
+        "vsurf",
+        "chains",
+        "shortdata",
+        "currencies",
+    ]
+    PATH = "/jupyter/dashboard/"
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
@@ -43,7 +50,8 @@ class DashboardsController(BaseController):
    correlation   stock correlations
    vsurf         options volatility surface
    chains        options chain analysis
-   shortdata     finra shortdata analysis[/cmds]
+   shortdata     finra shortdata analysis
+   currencies    forex currency exchange dashboard[/cmds]
         """
         console.print(text=help_text, menu="Jupyter - Dashboards")
 
@@ -64,13 +72,18 @@ class DashboardsController(BaseController):
 
     @log_start_end(log=logger)
     def call_chains(self, other_args: List[str]):
-        """Process vsurf command"""
+        """Process chains command"""
         create_call(other_args, "chains", "")
 
     @log_start_end(log=logger)
     def call_shortdata(self, other_args: List[str]):
-        """Process vsurf command"""
+        """Process shortdata command"""
         create_call(other_args, "shortdata", "")
+
+    @log_start_end(log=logger)
+    def call_currencies(self, other_args: List[str]):
+        """Process currencies command"""
+        create_call(other_args, "currencies", "")
 
 
 def create_call(other_args: List[str], name: str, filename: str = None) -> None:
