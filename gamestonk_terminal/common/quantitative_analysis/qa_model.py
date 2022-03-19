@@ -6,10 +6,11 @@ import warnings
 from typing import Any, Tuple, Union, List
 import pandas as pd
 import statsmodels.api as sm
-from scipy import stats
-import numpy as np
+from statsmodels.tools.sm_exceptions import MissingDataError
 from statsmodels.tsa.seasonal import seasonal_decompose
 from statsmodels.tsa.stattools import adfuller, kpss
+from scipy import stats
+import numpy as np
 
 from gamestonk_terminal.decorators import log_start_end
 
@@ -31,7 +32,6 @@ def get_summary(df: pd.DataFrame) -> pd.DataFrame:
     """
 
     df_stats = df.describe(percentiles=[0.1, 0.25, 0.5, 0.75, 0.9])
-    print(df_stats.to_string())
     df_stats.loc["var"] = df_stats.loc["std"] ** 2
 
     return df_stats
@@ -148,7 +148,11 @@ def get_unitroot(df: pd.DataFrame, fuller_reg: str, kpss_reg: str) -> pd.DataFra
     """
     # The Augmented Dickey-Fuller test
     # Used to test for a unit root in a univariate process in the presence of serial correlation.
-    result = adfuller(df, regression=fuller_reg)
+    try:
+        result = adfuller(df, regression=fuller_reg)
+    except MissingDataError:
+        df = df.dropna(axis=0)
+        result = adfuller(df, regression=fuller_reg)
     cols = ["Test Statistic", "P-Value", "NLags", "Nobs", "ICBest"]
     vals = [result[0], result[1], result[2], result[3], result[5]]
     data = pd.DataFrame(data=vals, index=cols, columns=["ADF"])

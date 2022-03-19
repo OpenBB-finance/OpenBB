@@ -1,0 +1,130 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: GET
+    uri: https://www.econdb.com/api/series/?dataset=FRB_H15&v=Instrument&h=TIME&instrument=%5BLTAVG%5D&from=2018-06-05&to=2018-07-06&freq=%5B21&UNIT=%5BPERCENT:_PER_YEAR%5D&format=json&page_size=500&expand=both
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA6RSXW+bMBT9K9Z9aiVDAKlZ6jzRDDqkBKV8LIuqCHlwS60Sw4yJGkX575Ozpeu6
+        vO3lyse+9+iec3yAsh2kBuZS6HiN/ekk8VUDk0PTUOgU7kQ79GessB8a3QN7PIAW5QsqYBAmd8UX
+        98Yee+Fn317ZeQoUKuxLJTotWgkMcik0ViTVXGNPLBK3mvhd14iSf29wSnI7tUnd7lDJLUpNeiwH
+        JbTAfhTJp4YbGkvICl+xGs1bWVsa1ZbwHSpe45SYK1REP3NJXMfaI1dTkkTh/D6cF9+iqIjtVQgU
+        amxrxbvn/cedgMKTwh8DytK8rYwCrnmP+o9AoDBIYdTDElWJUjOyREXWyBVQ4FUlzJ68KbaouRkH
+        doBZniRBPFuz2aDUb/rYZ387ABTCJHhg4bsdPJetEF+aPbkKlaj4/hooRHGaJfkiiDMWyV6rwdgF
+        DOaZ//We/Z+NQGHhZ3kSZWu24NpM7kcKOyVKIWsipEa14w0wWLvOkl3wHCikQRIFaRH7i4ClqAT2
+        RPItkqswubsGBh9DYRdSyuMoY/nZ6iCZGbnFMkiKdeAn7F/zj7/SMnbveDOYj/zo2LcePRfq2JMb
+        UzanzlMDeI47sZyx5UyAvoFTzGfgee/B7Rv4ZDlj2FDoNdfDiSv2gV4om+Nxc/wJAAD//wMA6/Xz
+        emcDAAA=
+    headers:
+      Allow:
+      - GET, POST, HEAD, OPTIONS
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 6ed482804f7e6b3e-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 17 Mar 2022 08:55:28 GMT
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      NEL:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Referrer-Policy:
+      - same-origin
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=lJGN8YF615ivCu3nF0VlktN1O3ax4e5DgCL24VuoGJPp9I7dhcplYq4dY5h%2FrN0dC%2FmGhoS89w%2B4dyakdr2rS0%2FxkFcJr1qB1TQD1GLG6cDZHWwyhdm4vCkrV2TbvtCC"}],"group":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept, Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: GET
+    uri: https://www.econdb.com/api/series/?dataset=FRB_H15&v=Instrument&h=TIME&instrument=%5BTCMII%5D&from=2018-06-05&to=2018-07-06&freq=%5B21&UNIT=%5BPERCENT:_PER_YEAR%5D&format=json&page_size=500&expand=both
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA+2WX2/aMBDAv4rlp1UCGoflD+5TipIt0oi6hIihqkJeuLKoITDHqYoqvvvOaek6
+        ygtSGX3g5ZTzne3zXX66e6TZoi4V5VaLLsUMKspZi5bwgEtlXRS4KuE+X9TVRpdQ1YVC9fqRqjy7
+        A0k5DeLLyVdmdS7NLrM7o06a0BadQpXJfKnyRYkuaZkrmJJECQUVaZNooYi3XBZ5Jn4WcEHSTtIh
+        s8U9yHIOpSIVZLXMVQ7V+VCCqGq5ItmirJRA41yojTEsbwuh7yB5OYUHmF6QrtFegZAXJA6Db1+C
+        /rhrTH6E4STqjAKMawaLmRTLX6vtqNB2K+F3DWWmbSP9BqFEBervE3Gtxj34fnoFMsNIOcEPMsYL
+        0Sam01wHI4rJHJTQ2yl/pP00jv2oP+b9Wsrn4yOP/5sD3B7E/ncevIrBZHwEcFesyKdA5lOxOkOv
+        MEqGcTrwoyEPMSGy1glD52F/EIb83RKJNw28YRqHwzEfPPmtziUsZZ7l5Qy9FMh7UeDFmGD+nHTc
+        lPhx6CeTyBv4PAGJZ5NSzAFfEF+eofeOqvDdlUqjcMjTTbr9uK+fPMGPydj3Yv62AOuniumUY2S1
+        /p2vjU7PaqGwteiicF0tujeNb+NCTYO5bcNuGy7eulGaYm8U03yt9F4UB3WKR2E6Vd2cFXlofCtu
+        1uvWDmI8u2sbRyfG2gLGsE7AHBQYi1v74vKqJnx3nd4JF8dEPpzPrecv29HC+hi4MMu1g6PjwrYb
+        DDs1mMPywgzO9m4wbEeDYYdoMC5rOoompqeF7jcO+xjEmF3PZ0cnxtwmxjwRc1hiTIObexNj7iDG
+        PAgxmpNeg41uL27TctyPQYxl2UHv6MQ42yOZcwLmoMA43Nl7JHN2jGTOIUay3ktvsZveokey3v/H
+        5Wb9BwdL7PYxEAAA
+    headers:
+      Allow:
+      - GET, POST, HEAD, OPTIONS
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 6ed482825ce50c11-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 17 Mar 2022 08:55:28 GMT
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      NEL:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Referrer-Policy:
+      - same-origin
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=rG%2BJ2K9yc1czR64NkguczL898qE21HinIbi5s6bMfbFqP5SZI1xsmw%2FYV2C0s4truLkYx4T2ejXn7w12YBNHFPz1xsxD4lF1%2Ff4aC%2FrXd9SFlpATM88n6p9dRG246Z5z"}],"group":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      - Accept, Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+    status:
+      code: 200
+      message: OK
+version: 1

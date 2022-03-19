@@ -1,2 +1,0 @@
-Only 1 Series can be input into prediction.
-

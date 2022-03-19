@@ -1,0 +1,18 @@
+,Nominal,Inflation
+3-year,"TIME_PERIOD
+2020-01-01    1.52
+2020-02-01    1.31
+2020-03-01    0.50
+2020-04-01    0.28
+Name: (Not Applicable, Monthly, U.S. government securities/Treasury constant maturities/Nominal, 3-year, RIFLGFCY03_N.M, _PER_YEAR:Percent: Per Year), dtype: float64",
+5-year,"TIME_PERIOD
+2020-01-01    1.56
+2020-02-01    1.32
+2020-03-01    0.59
+2020-04-01    0.39
+Name: (Not Applicable, Monthly, U.S. government securities/Treasury constant maturities/Nominal, 5-year, RIFLGFCY05_N.M, _PER_YEAR:Percent: Per Year), dtype: float64","TIME_PERIOD
+2020-01-01   -0.09
+2020-02-01   -0.26
+2020-03-01   -0.08
+2020-04-01   -0.37
+Name: (Not Applicable, Monthly, U.S. government securities/Treasury constant maturities/Inflation indexed, 5-year, RIFLGFCY05_XII_N.M, _PER_YEAR:Percent: Per Year), dtype: float64"

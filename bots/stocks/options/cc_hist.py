@@ -32,7 +32,7 @@ def cc_hist_command(
 
     # Debug
     if cfg.DEBUG:
-        logger.info(f"opt hist {ticker} {strike} {opt_type} {expiry}")
+        logger.info("opt hist %s, %s, %s, %s", ticker, strike, opt_type, expiry)
 
     # Check for argument
     if ticker is None:

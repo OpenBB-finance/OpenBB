@@ -2,11 +2,11 @@ import logging
 import os
 
 import telebot
+from dotenv import load_dotenv
 
 from bots.common.commands_dict import commands
 from bots.common.helpers import non_slash
 from bots.helpers import ShowView
-from dotenv import load_dotenv
 
 load_dotenv()
 
@@ -17,11 +17,11 @@ bot_commands = [
     telebot.types.BotCommand("/about", "Bot information"),
     telebot.types.BotCommand("/cmds", "List of commands"),
 ]
-for command in commands:
+for key, value in commands.items():
     bot_commands.append(
         telebot.types.BotCommand(
-            command.replace("-", "_"),
-            commands[command]["function"].__doc__.split("Parameters")[0][:256].strip(),
+            key.replace("-", "_"),
+            value["function"].__doc__.split("Parameters")[0][:256].strip(),
         )
     )
 bot.set_my_commands(commands=bot_commands)

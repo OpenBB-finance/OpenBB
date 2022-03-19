@@ -26,7 +26,7 @@ def obv_command(
     # Debug
     if cfg.DEBUG:
         logger.debug(
-            "ta obv %s %s %s",
+            "ta obv %s %s %s %s %s %s %s",
             ticker,
             past_days,
             start,
