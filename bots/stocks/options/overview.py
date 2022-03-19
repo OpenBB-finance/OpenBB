@@ -10,15 +10,15 @@ import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
 import yfinance as yf
-
-import bots.config_discordbot as cfg
 from bots import helpers
 from bots.config_discordbot import gst_imgur
+import bots.config_discordbot as cfg
 from bots.menus.menu import Menu
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.stocks.options import op_helpers, yfinance_model
 from gamestonk_terminal.stocks.options.barchart_model import get_options_info
 
+# pylint: disable=W0640,W0631
 logger = logging.getLogger(__name__)
 
 
@@ -154,9 +154,7 @@ def options_run(
 
     formats = {"iv": "{:.2f}"}
     for col, f in formats.items():
-        calls_df[col] = calls_df[col].map(
-            lambda x: f.format(x)  # pylint: disable=W0640
-        )
+        calls_df[col] = calls_df[col].map(lambda x: f.format(x))
 
     calls_df = calls_df.fillna("")
     calls_df.set_index("strike", inplace=True)

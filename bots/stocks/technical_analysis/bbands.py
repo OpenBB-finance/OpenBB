@@ -31,7 +31,7 @@ def bbands_command(
     if cfg.DEBUG:
         # pylint: disable=logging-too-many-args
         logger.debug(
-            "ta bbands %s %s %s %s %s %s %s %s %s %s %s",
+            "ta bbands %s %s %s %s %s %s %s %s %s %s",
             ticker,
             past_days,
             length,
