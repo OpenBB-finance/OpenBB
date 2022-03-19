@@ -2,18 +2,17 @@ import logging
 import os
 import time
 
+import bots.config_discordbot as cfg
 import bs4
 import df2img
 import disnake
 import pandas as pd
 import undetected_chromedriver.v2 as uc
-from selenium.webdriver.common.by import By
-
-import bots.config_discordbot as cfg
 from bots import helpers
 from bots.config_discordbot import gst_imgur
 from bots.menus.menu import Menu
 from gamestonk_terminal.decorators import log_start_end
+from selenium.webdriver.common.by import By
 
 logger = logging.getLogger(__name__)
 
