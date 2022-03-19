@@ -65,7 +65,7 @@ class EconomyController(BaseController):
         "bigmac",
     ]
 
-    CHOICES_MENUS = ["pred"]
+    CHOICES_MENUS = ["pred", "qa"]
 
     fear_greed_indicators = ["jbd", "mv", "pco", "mm", "sps", "spb", "shd", "index"]
     wsj_sortby_cols_dict = {c: None for c in ["ticker", "last", "change", "prevClose"]}
@@ -240,8 +240,8 @@ Performance & Valuations
     performance   performance of sectors, industry, country [src][Source: FinViz][/src]
     spectrum      spectrum of sectors, industry, country [src][Source: FinViz][/src][/cmds]
 [menu]
->   pred          Open the prediction menu to analyse stored data[/menu]
-"""
+>   pred          Open the prediction menu to analyse stored data
+>   qa            Open quantitative analysis menu with stored data[/menu]"""
         console.print(text=help_text, menu="Economy")
 
     @log_start_end(log=logger)
@@ -1344,3 +1344,19 @@ Performance & Valuations
         self.queue = self.load_class(
             PredictionTechniquesController, self.DATASETS, self.queue
         )
+
+    @log_start_end(log=logger)
+    def call_qa(self, _):
+        """Process pred command"""
+        if not self.DATASETS:
+            console.print(
+                "There is no data stored yet. Please use either the 'macro', 'fred', 'index' and/or "
+                "'treasury' command in combination with the -st argument to be able to plot data.\n"
+            )
+            return
+
+        from gamestonk_terminal.economy.quantitative_analysis.qa_controller import (
+            QaController,
+        )
+
+        self.queue = self.load_class(QaController, self.DATASETS, self.queue)

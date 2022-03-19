@@ -21,4 +21,4 @@ Performance & Valuations
     spectrum      spectrum of sectors, industry, country [Source: FinViz]
 
 >   pred          Open the prediction menu to analyse stored data
-
+>   qa            Open quantitative analysis menu with stored data

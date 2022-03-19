@@ -980,6 +980,45 @@ main:
                 ref: "/terminal/common/prediction_techniques/conv1d"
               - name: mc
                 ref: "/terminal/common/prediction_techniques/mc"
+          - name: quantitative analysis
+            ref: "/terminal/common/quantitative_analysis"
+            sub:
+              - name: pick
+                ref: "/terminal/common/quantitative_analysis/pick"
+              - name: summary
+                ref: "/terminal/common/quantitative_analysis/summary"
+              - name: normality
+                ref: "/terminal/common/quantitative_analysis/normality"
+              - name: unitroot
+                ref: "/terminal/common/quantitative_analysis/unitroot"
+              - name: hist
+                ref: "/terminal/common/quantitative_analysis/hist"
+              - name: cdf
+                ref: "/terminal/common/quantitative_analysis/cdf"
+              - name: bw
+                ref: "/terminal/common/quantitative_analysis/bw"
+              - name: acf
+                ref: "/terminal/common/quantitative_analysis/acf"
+              - name: qqplot
+                ref: "/terminal/common/quantitative_analysis/qqplot"
+              - name: rolling
+                ref: "/terminal/common/quantitative_analysis/rolling"
+              - name: spread
+                ref: "/terminal/common/quantitative_analysis/spread"
+              - name: quantile
+                ref: "/terminal/common/quantitative_analysis/quantile"
+              - name: skew
+                ref: "/terminal/common/quantitative_analysis/skew"
+              - name: kurtosis
+                ref: "/terminal/common/quantitative_analysis/kurtosis"
+              - name: decompose
+                ref: "/terminal/common/quantitative_analysis/decompose"
+              - name: cusum
+                ref: "/terminal/common/quantitative_analysis/cusum"
+              - name: line
+                ref: "/terminal/common/quantitative_analysis/line"
+              - name: raw
+                ref: "/terminal/common/quantitative_analysis/raw"
       - name: etf
         ref: "/terminal/etf"
         sub:
