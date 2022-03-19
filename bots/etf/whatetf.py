@@ -26,7 +26,7 @@ conversion_mapping = {
 
 all_units = "|".join(conversion_mapping.keys())
 float_re = natsort.numeric_regex_chooser(natsort.ns.FLOAT | natsort.ns.SIGNED)
-unit_finder = re.compile(r"({})\s*({})".format(float_re, all_units), re.IGNORECASE)
+unit_finder = re.compile(rf"({float_re})\s*({all_units})", re.IGNORECASE)
 
 
 def unit_replacer(matchobj):
@@ -36,7 +36,7 @@ def unit_replacer(matchobj):
     number = matchobj.group(1)
     unit = matchobj.group(2)
     new_number = float(number) * conversion_mapping[unit]
-    return "{} in".format(new_number)
+    return f"{new_number} in"
 
 
 @log_start_end(log=logger)
