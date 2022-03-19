@@ -10,7 +10,33 @@ interactions:
     uri: https://financialmodelingprep.com/api/v3/balance-sheet-statement/PM?apikey=MOCK_API_KEY&limit=0&period=annual
   response:
     body:
-      string: "[ {\n  \"date\" : \"2020-12-31\",\n  \"symbol\" : \"PM\",\n  \"reportedCurrency\"
+      string: "[ {\n  \"date\" : \"2021-12-31\",\n  \"symbol\" : \"PM\",\n  \"reportedCurrency\"
+        : \"USD\",\n  \"cik\" : null,\n  \"fillingDate\" : \"2022-02-11\",\n  \"acceptedDate\"
+        : \"2022-02-11 08:29:22\",\n  \"calendarYear\" : \"2021\",\n  \"period\" :
+        \"FY\",\n  \"cashAndCashEquivalents\" : 4496000000,\n  \"shortTermInvestments\"
+        : 0.0,\n  \"cashAndShortTermInvestments\" : 4496000000,\n  \"netReceivables\"
+        : 3940000000,\n  \"inventory\" : 8720000000,\n  \"otherCurrentAssets\" : 561000000,\n
+        \ \"totalCurrentAssets\" : 17717000000,\n  \"propertyPlantEquipmentNet\" :
+        6168000000,\n  \"goodwill\" : 6680000000,\n  \"intangibleAssets\" : 2818000000,\n
+        \ \"goodwillAndIntangibleAssets\" : 9498000000,\n  \"longTermInvestments\"
+        : 4463000000,\n  \"taxAssets\" : 895000000,\n  \"otherNonCurrentAssets\" :
+        2549000000,\n  \"totalNonCurrentAssets\" : 23573000000,\n  \"otherAssets\"
+        : 0.0,\n  \"totalAssets\" : 41290000000,\n  \"accountPayables\" : 3331000000,\n
+        \ \"shortTermDebt\" : 3023000000,\n  \"taxPayables\" : 7349000000,\n  \"deferredRevenue\"
+        : 0.0,\n  \"otherCurrentLiabilities\" : 12901000000,\n  \"totalCurrentLiabilities\"
+        : 19255000000,\n  \"longTermDebt\" : 24783000000,\n  \"deferredRevenueNonCurrent\"
+        : 0.0,\n  \"deferredTaxLiabilitiesNonCurrent\" : 726000000,\n  \"otherNonCurrentLiabilities\"
+        : 4734000000,\n  \"totalNonCurrentLiabilities\" : 30243000000,\n  \"otherLiabilities\"
+        : 0.0,\n  \"capitalLeaseObligations\" : 0.0,\n  \"totalLiabilities\" : 49498000000,\n
+        \ \"preferredStock\" : 0.0,\n  \"commonStock\" : 0.0,\n  \"retainedEarnings\"
+        : 33082000000,\n  \"accumulatedOtherComprehensiveIncomeLoss\" : -9577000000,\n
+        \ \"othertotalStockholdersEquity\" : 0.0,\n  \"totalStockholdersEquity\" :
+        -10106000000,\n  \"totalLiabilitiesAndStockholdersEquity\" : 39392000000,\n
+        \ \"minorityInterest\" : 1898000000,\n  \"totalEquity\" : -8208000000,\n  \"totalLiabilitiesAndTotalEquity\"
+        : 41290000000,\n  \"totalInvestments\" : 0.0,\n  \"totalDebt\" : 27806000000,\n
+        \ \"netDebt\" : 23310000000,\n  \"link\" : \"https://www.sec.gov/Archives/edgar/data/1413329/000141332922000011/0001413329-22-000011-index.htm\",\n
+        \ \"finalLink\" : \"https://www.sec.gov/Archives/edgar/data/1413329/000141332922000011/pm-20211231.htm\"\n},
+        {\n  \"date\" : \"2020-12-31\",\n  \"symbol\" : \"PM\",\n  \"reportedCurrency\"
         : \"USD\",\n  \"cik\" : \"0001413329\",\n  \"fillingDate\" : \"2021-02-09\",\n
         \ \"acceptedDate\" : \"2021-02-09 16:20:37\",\n  \"calendarYear\" : \"2020\",\n
         \ \"period\" : \"FY\",\n  \"cashAndCashEquivalents\" : 7280000000,\n  \"shortTermInvestments\"
@@ -456,7 +482,7 @@ interactions:
       Content-Type:
       - application/json;charset=UTF-8
       Date:
-      - Sat, 04 Dec 2021 12:08:10 GMT
+      - Sun, 06 Mar 2022 14:44:35 GMT
       Server:
       - nginx/1.14.0 (Ubuntu)
       Transfer-Encoding:

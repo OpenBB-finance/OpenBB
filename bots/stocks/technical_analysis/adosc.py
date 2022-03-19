@@ -1,145 +1,139 @@
-from datetime import datetime, timedelta
+import logging
 
 import plotly.graph_objects as go
-from plotly.subplots import make_subplots
 
 import bots.config_discordbot as cfg
-from bots.config_discordbot import logger
-from bots import helpers
+from bots import helpers, load_candle
 from gamestonk_terminal.common.technical_analysis import volume_model
+from gamestonk_terminal.decorators import log_start_end
+
+logger = logging.getLogger(__name__)
 
 
-def adosc_command(ticker="", is_open="False", fast="3", slow="10", start="", end=""):
+@log_start_end(log=logger)
+def adosc_command(
+    ticker="",
+    interval: int = 15,
+    past_days: int = 0,
+    is_open: bool = False,
+    fast="3",
+    slow="10",
+    start="",
+    end="",
+    extended_hours: bool = False,
+    heikin_candles: bool = False,
+    news: bool = False,
+):
     """Displays chart with chaikin oscillator [Yahoo Finance]"""
 
     # Debug
     if cfg.DEBUG:
         # pylint: disable=logging-too-many-args
         logger.debug(
-            "ta-adosc %s %s %s %s %s",
+            "ta adosc %s %s %s %s %s",
             ticker,
+            interval,
+            past_days,
             is_open,
             fast,
             slow,
             start,
             end,
+            extended_hours,
+            heikin_candles,
+            news,
         )
 
     # Check for argument
     if ticker == "":
         raise Exception("Stock ticker is required")
 
-    if start == "":
-        start = datetime.now() - timedelta(days=365)
-    else:
-        start = datetime.strptime(start, cfg.DATE_FORMAT)
-
-    if end == "":
-        end = datetime.now()
-    else:
-        end = datetime.strptime(end, cfg.DATE_FORMAT)
-
     if not fast.lstrip("-").isnumeric():
         raise Exception("Number has to be an integer")
-    fast = float(fast)
+    fast = int(fast)
     if not slow.lstrip("-").isnumeric():
         raise Exception("Number has to be an integer")
-    slow = float(slow)
-
-    ticker = ticker.upper()
-    df_stock = helpers.load(ticker, start)
-    if df_stock.empty:
-        raise Exception("Stock ticker is invalid")
+    slow = int(slow)
 
     # Retrieve Data
-    df_stock = df_stock.loc[(df_stock.index >= start) & (df_stock.index < end)]
+    df_stock, start, end, bar_start = load_candle.stock_data(
+        ticker=ticker,
+        interval=interval,
+        past_days=past_days,
+        extended_hours=extended_hours,
+        start=start,
+        end=end,
+        heikin_candles=heikin_candles,
+    )
+
+    if df_stock.empty:
+        return Exception("No Data Found")
+
+    df_ta = df_stock.loc[(df_stock.index >= start) & (df_stock.index < end)]
+    df_ta = df_ta.join(volume_model.adosc(df_stock, is_open, fast, slow))
 
     # Output Data
-    divisor = 1_000_000
-    df_vol = df_stock["Volume"].dropna()
-    df_vol = df_vol.values / divisor
-    df_ta = volume_model.adosc(df_stock, is_open, fast, slow)
-    df_cal = df_ta.values
-    df_cal = df_cal / divisor
+    if interval != 1440:
+        df_ta = df_ta.loc[(df_ta.index >= bar_start) & (df_ta.index < end)]
 
-    fig = make_subplots(
-        rows=3,
+    plot = load_candle.candle_fig(
+        df_ta,
+        ticker,
+        interval,
+        extended_hours,
+        news,
+        bar=bar_start,
+        int_bar=interval,
+        rows=2,
         cols=1,
         shared_xaxes=True,
-        vertical_spacing=0.06,
-        row_width=[0.2, 0.2, 0.2],
+        vertical_spacing=0.07,
+        row_width=[0.4, 0.6],
+        specs=[
+            [{"secondary_y": True}],
+            [{"secondary_y": False}],
+        ],
     )
+    title = f"{plot['plt_title']} AD Oscillator"
+    fig = plot["fig"]
+
     fig.add_trace(
         go.Scatter(
-            name=ticker,
-            x=df_stock.index,
-            y=df_stock["Adj Close"].values,
-            line=dict(color="#fdc708", width=2),
+            name="AD Osc [M]",
+            mode="lines",
+            x=df_ta.index,
+            y=df_ta[f"ADOSC_{fast}_{slow}"],
+            line=dict(width=2),
             opacity=1,
-        ),
-        row=1,
-        col=1,
-    )
-    colors = [
-        "green" if row.Open < row["Adj Close"] else "red"
-        for _, row in df_stock.iterrows()
-    ]
-    fig.add_trace(
-        go.Bar(
-            x=df_stock.index,
-            y=df_vol,
-            name="Volume",
-            marker_color=colors,
         ),
         row=2,
         col=1,
     )
-    fig.add_trace(
-        go.Scatter(
-            name="AD Osc [M]",
-            x=df_ta.index,
-            y=df_ta.iloc[:, 0].values,
-            line=dict(width=2),
-            opacity=1,
-        ),
-        row=3,
-        col=1,
-    )
     fig.update_layout(
-        margin=dict(l=10, r=0, t=30, b=20),
+        margin=dict(l=0, r=0, t=50, b=20),
         template=cfg.PLT_TA_STYLE_TEMPLATE,
         colorway=cfg.PLT_TA_COLORWAY,
-        title=f"{ticker} AD Oscillator",
-        title_x=0.3,
-        yaxis_title="Stock Price ($)",
-        yaxis=dict(
-            fixedrange=False,
-        ),
-        xaxis=dict(
-            rangeslider=dict(visible=False),
-            type="date",
-        ),
+        title=title,
+        title_x=0.1,
+        title_font_size=14,
         dragmode="pan",
-        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
     )
-    config = dict({"scrollZoom": True})
     imagefile = "ta_adosc.png"
 
     # Check if interactive settings are enabled
     plt_link = ""
     if cfg.INTERACTIVE:
-        html_ran = helpers.uuid_get()
-        fig.write_html(f"in/adosc_{html_ran}.html", config=config)
-        plt_link = f"[Interactive]({cfg.INTERACTIVE_URL}/adosc_{html_ran}.html)"
+        plt_link = helpers.inter_chart(fig, imagefile, callback=False)
 
     fig.update_layout(
         width=800,
         height=500,
     )
+
     imagefile = helpers.image_border(imagefile, fig=fig)
 
     return {
-        "title": f"Stocks: Accumulation/Distribution Oscillator {ticker}",
+        "title": f"Stocks: Accumulation/Distribution Oscillator {ticker.upper()}",
         "description": plt_link,
         "imagefile": imagefile,
     }

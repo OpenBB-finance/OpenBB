@@ -1,24 +1,24 @@
                                                       0
 Symbol                                               PM
 Name                   Philip Morris International Inc.
-Price                                             89.38
-Changes percentage                             1.753189
-Change                                         1.540001
-Day low                                           87.95
-Day high                                          89.51
-Year high                                        106.51
-Year low                                          78.34
-Market cap                                    139.149 B
-Price avg50                                     94.4176
-Price avg200                                    95.7881
-Volume                                          7.368 M
-Avg volume                                      4520317
+Price                                              99.8
+Changes percentage                            -2.615145
+Change                                            -2.68
+Day low                                           99.25
+Day high                                       101.0617
+Year high                                        112.48
+Year low                                          85.64
+Market cap                                    154.673 B
+Price avg50                                    101.7864
+Price avg200                                   98.53845
+Volume                                          6.489 M
+Avg volume                                      6175341
 Exchange                                           NYSE
-Open                                              88.63
-Previous close                                    87.84
-Eps                                                5.74
-Pe                                            15.571428
-Earnings announcement               2022-02-02 13:30:00
-Shares outstanding                              1.557 B
-Timestamp                                    1638620741
+Open                                             101.04
+Previous close                                   102.48
+Eps                                                5.83
+Pe                                            17.118355
+Earnings announcement               2022-04-21 12:30:00
+Shares outstanding                              1.550 B
+Timestamp                                    1646571914
 

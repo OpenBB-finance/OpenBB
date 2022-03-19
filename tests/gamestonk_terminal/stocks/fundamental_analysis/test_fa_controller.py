@@ -265,6 +265,12 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             {"TSLA"},
         ),
         (
+            "call_dupont",
+            "av_view.display_dupont",
+            [],
+            {"TSLA"},
+        ),
+        (
             "call_cal",
             "yahoo_finance_view.display_calendar_earnings",
             [],
@@ -315,8 +321,8 @@ def test_call_func_expect_queue(expected_queue, queue, func):
         (
             "call_earnings",
             "av_view.display_earnings",
-            ["--limit=5", "--quarter"],
-            {"ticker": "TSLA", "limit": 5, "quarterly": True},
+            ["--limit=5", "--quarter", "--export=csv"],
+            {"ticker": "TSLA", "limit": 5, "quarterly": True, "export": "csv"},
         ),
         (
             "call_fraud",

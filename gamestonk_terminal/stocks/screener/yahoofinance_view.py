@@ -89,7 +89,7 @@ def historical(
         else:
             screen.set_filter(filters_dict=d_filters)
 
-    l_stocks = screen.ScreenerView(verbose=0)
+    l_stocks = screen.screener_view(verbose=0)
     limit_random_stocks = False
 
     if l_stocks:

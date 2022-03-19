@@ -241,7 +241,7 @@ def _create_closest_match_df(
 # TODO: verify vs, interval, days, depending on source
 def load(
     coin: str,
-    source: str = "cg",
+    source: str = "cp",
     days: int = 60,
     vs: str = "usd",
     interval: str = "1day",
@@ -285,6 +285,10 @@ def load(
 
     if source == "cg":
         coingecko = pycoingecko_model.Coin(coin.lower(), True)
+
+        if not coingecko.symbol:
+            return None, None, None, None, None, None
+
         coin_map_df = coins_map_df.loc[coingecko.symbol]
         coin_map_df = (
             coin_map_df.iloc[0]
@@ -321,6 +325,10 @@ def load(
         paprika_coins = get_list_of_coins()
         paprika_coins_dict = dict(zip(paprika_coins.id, paprika_coins.symbol))
         current_coin, symbol = coinpaprika_model.validate_coin(coin, paprika_coins_dict)
+
+        if not symbol:
+            return None, None, None, None, None, None
+
         coin_map_df = coins_map_df.loc[symbol.lower() if symbol is not None else symbol]
         coin_map_df = (
             coin_map_df.iloc[0]

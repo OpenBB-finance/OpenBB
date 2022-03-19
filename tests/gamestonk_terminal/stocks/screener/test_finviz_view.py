@@ -33,7 +33,7 @@ def test_screener(mocker, toggle):
 
     # MOCK PROGRESS_BAR
     mocker.patch(
-        target="finvizfinance.screener.overview.progressBar",
+        target="finvizfinance.screener.overview.progress_bar",
     )
 
     finviz_view.screener(
@@ -41,7 +41,7 @@ def test_screener(mocker, toggle):
         data_type="overview",
         limit=2,
         ascend=True,
-        sort=["Ticker"],
+        sort="Ticker",
         export="",
     )
 
@@ -77,8 +77,8 @@ def test_screener_no_data(data, mocker):
 @pytest.mark.parametrize(
     "sort",
     [
-        ["Ticke"],
-        ["MOCK_SORT"],
+        "Ticker",
+        "MOCK_SORT",
     ],
 )
 @pytest.mark.record_stdout
@@ -97,7 +97,7 @@ def test_screener_sort_matches(sort, mocker):
 
     # MOCK PROGRESS_BAR
     mocker.patch(
-        target="finvizfinance.screener.overview.progressBar",
+        target="finvizfinance.screener.overview.progress_bar",
     )
 
     finviz_view.screener(

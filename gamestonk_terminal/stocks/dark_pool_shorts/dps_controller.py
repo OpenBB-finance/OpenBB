@@ -460,7 +460,7 @@ class DarkPoolShortsController(StockBaseController):
             dest="raw",
         )
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
             if self.ticker:

@@ -1,0 +1,2 @@
+[red]AlphaVantage API limit reached, please wait one minute[/red]
+
