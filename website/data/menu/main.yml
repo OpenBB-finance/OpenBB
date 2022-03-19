@@ -777,7 +777,7 @@ main:
               - name: stats
                 ref: "/terminal/cryptocurrency/due_diligence/mcapdom"
               - name: nonzero
-                ref: "/terminal/cryptocurrency/due_diligence/nonzero" 
+                ref: "/terminal/cryptocurrency/due_diligence/nonzero"
           - name: onchain
             ref: "/terminal/cryptocurrency/onchain"
             sub:
@@ -880,6 +880,8 @@ main:
           - name: defi
             ref: "/terminal/cryptocurrency/defi"
             sub:
+              - name: anchor
+                ref: "/terminal/cryptocurrency/defi/anchor"
               - name: ldapps
                 ref: "/terminal/cryptocurrency/defi/ldapps"
               - name: gdapps
