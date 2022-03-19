@@ -1,10 +1,12 @@
 import logging
 import os
+import re
 import time
 
 import bs4
 import df2img
 import disnake
+import natsort
 import pandas as pd
 import undetected_chromedriver.v2 as uc
 from selenium.webdriver.common.by import By
@@ -17,9 +19,28 @@ from gamestonk_terminal.decorators import log_start_end
 
 logger = logging.getLogger(__name__)
 
+conversion_mapping = {
+    "K": 1_000,
+    "M": 1_000_000,
+}
+
+all_units = "|".join(conversion_mapping.keys())
+float_re = natsort.numeric_regex_chooser(natsort.ns.FLOAT | natsort.ns.SIGNED)
+unit_finder = re.compile(rf"({float_re})\s*({all_units})", re.IGNORECASE)
+
+
+def unit_replacer(matchobj):
+    """
+    Given a regex match object, return a replacement string where units are modified
+    """
+    number = matchobj.group(1)
+    unit = matchobj.group(2)
+    new_number = float(number) * conversion_mapping[unit]
+    return f"{new_number} in"
+
 
 @log_start_end(log=logger)
-def by_ticker_command(ticker="", num: int = 15):
+def by_ticker_command(ticker="", sort="fund_percent", num: int = 15):
     """Display ETF Holdings. [Source: StockAnalysis]"""
 
     # Debug
@@ -31,7 +52,6 @@ def by_ticker_command(ticker="", num: int = 15):
     options.headless = True
     options.add_argument("--headless")
     options.add_argument("--incognito")
-    global browser
     driver = uc.Chrome(options=options, version_main=98)
     driver.set_window_size(1920, 1080)
     driver.get(f"http://etf.com/stock/{ticker.upper()}/")
@@ -57,7 +77,7 @@ def by_ticker_command(ticker="", num: int = 15):
             .findNext("td")
             .text
         )
-
+    driver.quit()
     df = pd.DataFrame(
         {
             "Ticker": r_ticker,
@@ -70,8 +90,18 @@ def by_ticker_command(ticker="", num: int = 15):
     if df.empty:
         raise Exception("No company holdings found!\n")
 
+    if sort == "mkt_value":
+        # [unit_finder.sub(unit_replacer, x) for x in df["Market Value"]]
+        key = natsort.index_natsorted(
+            df["Market Value"],
+            key=lambda x: unit_finder.sub(unit_replacer, x),
+            reverse=True,
+        )
+        df = df.reindex(key)
+
     df = df.iloc[:num]
     df.set_index("Ticker", inplace=True)
+
     title = f"ETF's Holding {ticker.upper()}"
     dindex = len(df.index)
     if dindex > 15:
@@ -84,7 +114,7 @@ def by_ticker_command(ticker="", num: int = 15):
             df_pg.append(df_pg)
             fig = df2img.plot_dataframe(
                 df_pg,
-                fig_size=(900, (40 * dindex)),
+                fig_size=(800, (40 * dindex)),
                 col_width=[0.6, 3.5, 0.65, 1.1],
                 tbl_header=cfg.PLT_TBL_HEADER,
                 tbl_cells=cfg.PLT_TBL_CELLS,
@@ -155,7 +185,7 @@ def by_ticker_command(ticker="", num: int = 15):
     else:
         fig = df2img.plot_dataframe(
             df,
-            fig_size=(900, (40 * dindex)),
+            fig_size=(800, (40 * dindex)),
             col_width=[0.6, 3.5, 0.65, 1.1],
             tbl_header=cfg.PLT_TBL_HEADER,
             tbl_cells=cfg.PLT_TBL_CELLS,

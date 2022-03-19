@@ -1,0 +1,136 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: GET
+    uri: https://www.econdb.com/api/series/?dataset=FRB_H15&v=Instrument&h=TIME&instrument=%5BTCMNOM%5D&from=2020-01-01&to=2020-04-05&freq=%5B129&UNIT=%5BPERCENT:_PER_YEAR%5D&format=json&page_size=500&expand=both
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA+2ZQW+jOBSA/wriNCulFNsYEveUUJiNNLC7JDlEVRUxxJNBk0DWmGqiqv99n9N2
+        ppA9DBoqX5AqhHl2sJ8/fXqmj2ZW1oU0GUIj85jueAW3I7Pg3+FZUe/38FTwh7ysq9e24FW9l9C8
+        ezRlnn3jwmRmmMw2fyJq+b5jIyuyVgtzZG55lYn8KPOygC6rIpd8ayxkKnllXBlxKY3p8bjPs/Tz
+        nt8YK2thGbvygYviwAtpVDyrRS5zXl0vBU+rWpyMrCwqmULwkMrXYFwe8iLd3xjIvjrxVNwYyTz8
+        9DH018jexFYEE9nxcifS49dTexoQ+yL4vzUvMhVTfbepTCsuf64JntUwBhZs/s1FBlNjBtwYa3gX
+        xNLtNlcrTPebA5epGm6yR9NfJUkQ+2vm10K8/Hw8Zc1Fw/AwCf5h4Zs5IDxhUVnIr/sThOfxYpms
+        oiBesjksXdQqNdBr6UfxXxH7zZzBC6LpcpXMl2sWPUdP14IfRZ7lxc7IC8nFA3RjJuSSveQXBi2C
+        ZB4sNvE0CtiCC/hFo0gP3PgAKfsDejc3gF3sxyqeL9nqNalB4qv1beBmsw6mCbtM89PzvqjEwnxq
+        Rekdsjx3hCw6sq2xBxfXvT/3OgdNbGP7ykbwB+97buC3DfK24agGjIY8yfo8PJ5CsHG5f3oa/Q/w
+        YUhsTxPwXot32xt474t3j3ldaX9OP7vYjZ5odz2g3cFAujeGC6U6cA9c4lBNuOO23/Hg9954xzbD
+        nf2Om37HvfodW7YifozggpXpbS2C92aUzjQRT9rEk4H43ognNiOdiSdN4knPxGMMnE/OolfEY08H
+        8dR3aKDL8e2SBg/A96Z4hjuXNLhZ0uB+SxqqcCcEqhlHlfEY68AdIY+Guo6sVwfFyQ/eIxsNvPfE
+        e4TYS3p/HfiX/LOL7egLeKJOrKp8J+rIipAO4GcT6tq6Kpq238nAe28FDSOd/U6afifv4XekTqtK
+        72Mteh9PvLEm2t0LvbsD7n3p3WVud727Tb27PfN+/iCpeFc1DdJSvYfhdKbrCw1t250OuPdld8po
+        Z7vTpt3pO9BO1AdJOlHIT3Tg7tz6/q22Yqat96Ga6U3vqprprHfS1Hvf5QxVende9e7o4N2eTG4d
+        bafVlt6Hw2p//19lqLPeUVPv73FWdc7FzBn3d6/e75/+A+4OHb2OIAAA
+    headers:
+      Allow:
+      - GET, POST, HEAD, OPTIONS
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 6ed48275be625977-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 17 Mar 2022 08:55:27 GMT
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      NEL:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Referrer-Policy:
+      - same-origin
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=NerL9P7cH%2FDZCvEzarSItCUHnl4Mpm%2FAkoDOHQYO%2BhHE0bvRuibE0KqePTcSVCA%2FSCPu7TuON79x7DqyXgviF%2FRgkRWJWzgSacq4cHg6ZzV%2F9NiX0D%2FUgRNHK%2BazZgPg"}],"group":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      - Accept, Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: GET
+    uri: https://www.econdb.com/api/series/?dataset=FRB_H15&v=Instrument&h=TIME&instrument=%5BTCMII%5D&from=2020-01-01&to=2020-04-05&freq=%5B129&UNIT=%5BPERCENT:_PER_YEAR%5D&format=json&page_size=500&expand=both
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA+2X32+bMBDH/xWLp01KKJgQGveJUdiQBtr4IS2qKuSBm6ERyIypGlX533cmrdom
+        fYlUxEskZHG+O3w+89EXHpW86WqhEHOibOiKtQrRJ0rNHmCq7qoKZjm7L5uufbY5a7tKgHnzqIgy
+        /8u4QhQv+pJ9003VXsw1XQ3UNFYmSsHanJcbUTY1hKR1KViBYkEFa9EUhY1A9mZTlTn9XbErlKqx
+        ilbNPeP1mtUCtSzveClK1l4knNG241uUN3UrKDjXVDw7/fquonINVNYFe2DFFdK16ZZRfoUi3/v+
+        1XOWupb98v0sVAMoa8WaFaebP9vDosB3x9m/jtW59MnYggraMvGyQ5jrIAe2r/xgPIdCCYIbtIT1
+        wEeLopS10CpbM0FlukIeFSeNIjd0lsTpOH96fGiTty2AdC9yfxLvVQ06XpCgqcWfagtuP4yTKA3c
+        MCE+NIJ3slEQlTiB75MPayCsFNhJGvnJkgT7uO0FZxte5mW9gijB+D2tYGFoLHlqNiTFbuS7cRba
+        gUtixuHZqKZrhj5B7z5D9PFpkHcPKA39hKTPXXYjR244g5ts6doROe77bn9QstNQVydf4htN1WaT
+        qabqej9iOc7M2z6yD1CwhrWppsMFa+4N/NowXhszaUA2dE90fXpog/PNcLvbTd5hwnMWujE6E/iQ
+        CXxmYhgmsEbwyUzgYybwAEzg+aSHAegwJBH4cgwiFtf2/HJ0IswDIDTzDMQgQJjEPBWHl7Mg7x7P
+        h+AA77+26CmYy1G7lKNhjUGEZV1789GJMA41wjhrxDBIGBoxTtYI41gjjAE0YmaAPOCFFIr5/ttp
+        DCKwbnj26ERYhxphnYEYBAiLWCdrhHWsEdYQGtH/R/Q/EHr/0TSbDQ3E7e4/P7/DA5gPAAA=
+    headers:
+      Allow:
+      - GET, POST, HEAD, OPTIONS
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 6ed4827acb0a0121-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 17 Mar 2022 08:55:27 GMT
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      NEL:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Referrer-Policy:
+      - same-origin
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=15F%2FNMZ7nyLBpyV6K91Kg3foL9uoacerBRzyXVtR5cKjvsaU4i6QTOZLhoy7B5f6%2F2XckUS87TVTckD01QoCf1BjX%2BBlZ3u%2BpkQeApqO8Qnxg6QQ5QWgzdK9AUKkBowP"}],"group":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      - Accept, Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+    status:
+      code: 200
+      message: OK
+version: 1

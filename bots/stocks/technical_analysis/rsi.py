@@ -1,12 +1,12 @@
 import logging
 
 import plotly.graph_objects as go
-
 import bots.config_discordbot as cfg
 from bots import helpers, load_candle
 from gamestonk_terminal.common.technical_analysis import momentum_model
 from gamestonk_terminal.decorators import log_start_end
 
+# pylint: disable=R0913
 logger = logging.getLogger(__name__)
 
 

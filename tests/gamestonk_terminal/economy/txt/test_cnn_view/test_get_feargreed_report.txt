@@ -1,4 +1,4 @@
-Stock Price Strength: Extreme Fear                                                                  [Updated Jan 20 at 7:00pm]
-   The number of stocks hitting 52-week lows exceeds the number hitting highs and is at the lower end of its range, indicating extreme fear.
-   (Last changed Jan 20 from a Fear rating)
+Stock Price Strength: Extreme Fear                                                                  [Updated Mar 16 at 4:05pm]
+   The McClellan Volume Summation Index measures advancing and declining volume on the NYSE. During the last month, approximately 2.15% more of each day's volume has traded in advancing issues than in declining issues. This indicates that market breadth is improving, though the McClellan Oscillator is still towards the lower end of its range for the last two years.
+   (Last changed Feb 22 from a Fear rating)
 
