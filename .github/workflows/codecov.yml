@@ -48,7 +48,6 @@ jobs:
 
     - name: Generate coverage report
       run: |
-        pytest 
         source $VENV
         pytest --cov=./ --cov-report=xml
     - name: Upload coverage to Codecov
