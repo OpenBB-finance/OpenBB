@@ -2,7 +2,7 @@ name: Post coverage comment
 
 on:
   workflow_run:
-    workflows: ["CI"]
+    workflows: ["Display Coverage"]
     types:
       - completed
 
