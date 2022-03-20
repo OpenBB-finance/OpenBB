@@ -19,7 +19,7 @@ This tutorial assumes that you have successfully installed Gamestonk Terminal.
 Next, from the GamestonkTerminal root folder run the following command:
 
 ```text
-poetry install -E discord
+poetry install -E bots
 ```
 
 ## Registering Applications

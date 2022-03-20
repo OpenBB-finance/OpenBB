@@ -1,3 +1,0 @@
-candle/ticker/interval
-Invalid argument for: ticker
-Please give a listed ticker

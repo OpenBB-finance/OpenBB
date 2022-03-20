@@ -7,7 +7,7 @@ import pandas as pd
 import yahoo_fin.stock_info as si
 
 import bots.config_discordbot as cfg
-from bots import helpers
+from bots.helpers import save_image
 from bots.config_discordbot import gst_imgur
 from bots.menus.menu import Menu
 from gamestonk_terminal.decorators import log_start_end
@@ -105,7 +105,7 @@ def futures_command():
                 )
             )
             imagefile = "econ-futures.png"
-            imagefile = helpers.save_image(imagefile, fig)
+            imagefile = save_image(imagefile, fig)
 
             if cfg.IMAGES_URL or cfg.IMGUR_CLIENT_ID != "REPLACE_ME":
                 image_link = cfg.IMAGES_URL + imagefile
@@ -181,7 +181,7 @@ def futures_command():
             )
         )
         imagefile = "econ-futures.png"
-        imagefile = helpers.save_image(imagefile, fig)
+        imagefile = save_image(imagefile, fig)
 
         output = {
             "title": title,

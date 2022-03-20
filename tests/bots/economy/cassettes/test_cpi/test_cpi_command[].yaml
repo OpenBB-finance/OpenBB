@@ -1,0 +1,42 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Connection:
+      - close
+      Host:
+      - api.stlouisfed.org
+      User-Agent:
+      - Python-urllib/3.8
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series/observations?series_id=CPIAUCSL&observation_start=2019-10-01&api_key=REPLACE_ME
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="utf-8" ?>
+
+        <error code="400" message="Bad Request.  The value for variable api_key is
+        not a 32 character alpha-numeric lower-case string.  Read https://fred.stlouisfed.org/docs/api/api_key.html
+        for more information." />
+
+
+
+
+        '
+    headers:
+      Connection:
+      - close
+      Content-Length:
+      - '252'
+      Content-Type:
+      - text/xml; charset=UTF-8
+      Date:
+      - Sat, 19 Mar 2022 21:54:34 GMT
+      Set-Cookie:
+      - cookiesession1=678A3E1FE1F193A1FE9EA1A434D00151;Expires=Sun, 19 Mar 2023 21:54:28
+        GMT;Path=/;HttpOnly
+      X-N:
+      - S
+    status:
+      code: 400
+      message: Bad Request
+version: 1

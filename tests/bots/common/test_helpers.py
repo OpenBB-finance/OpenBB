@@ -28,6 +28,7 @@ def test_get_arguments(dictionary, cmd):
     get_arguments(dictionary, cmd, lambda x: print(x))
 
 
+@pytest.mark.vcr()
 @pytest.mark.parametrize(
     "text, value",
     [

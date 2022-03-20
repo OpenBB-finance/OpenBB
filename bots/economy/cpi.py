@@ -7,7 +7,7 @@ import plotly.graph_objects as go
 import bots.config_discordbot as cfg
 from bots import helpers
 from gamestonk_terminal.decorators import log_start_end
-from gamestonk_terminal.economy.fred import fred_model
+from gamestonk_terminal.economy import fred_model
 
 logger = logging.getLogger(__name__)
 
