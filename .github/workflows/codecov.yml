@@ -1,5 +1,5 @@
 name: Example workflow for Codecov
-on: [push]
+on: [pull_request, push]
 jobs:
   run:
     runs-on: ubuntu-latest

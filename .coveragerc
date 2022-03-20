@@ -3,4 +3,3 @@ omit =
     env/*
     tests/*
 source = .
-relative_files = true
