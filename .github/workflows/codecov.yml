@@ -1,14 +1,14 @@
-name: Example workflow for Codecov
+name: Codecov
+env:
+  PIP_DEFAULT_TIMEOUT: 100
+  GTFF_USE_PROMPT_TOOLKIT: false
+  GTFF_USE_ION: false
+  GTFF_ENABLE_QUICK_EXIT: true
 on: [pull_request, push]
 jobs:
   run:
+    name: Codecov Report
     runs-on: ubuntu-latest
-    strategy:
-    env:
-      PIP_DEFAULT_TIMEOUT: 100
-      GTFF_USE_PROMPT_TOOLKIT: false
-      GTFF_USE_ION: false
-      GTFF_ENABLE_QUICK_EXIT: true
     steps:
     - uses: actions/checkout@master
     - name: Setup Python
