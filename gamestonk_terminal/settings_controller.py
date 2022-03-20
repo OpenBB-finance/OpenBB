@@ -28,6 +28,7 @@ class SettingsController(BaseController):
     """Settings Controller class"""
 
     CHOICES_COMMANDS: List[str] = [
+        "logcollection",
         "tab",
         "cls",
         "color",
@@ -75,7 +76,7 @@ class SettingsController(BaseController):
         """Print help"""
         help_text = "\n[info]Feature flags through environment variables:[/info]\n\n"
         color = "green" if gtff.LOG_COLLECTION else "red"
-        help_text += f"   [{color}]logcollection    allow logs to be send to openBB[/{color}]\n\n"
+        help_text += f"   [{color}]logcollection    allow logs to be sent[/{color}]\n\n"
         color = "green" if gtff.USE_TABULATE_DF else "red"
         help_text += (
             f"   [{color}]tab              use tabulate to print dataframes[/{color}]\n"
@@ -148,6 +149,13 @@ class SettingsController(BaseController):
         # help_text += f"   [{color}]cls        clear console after each command[/{color}]\n"
 
         console.print(text=help_text, menu="Settings")
+
+    @log_start_end(log=logger)
+    def call_logcollection(self, _):
+        """Process logcollection command"""
+        gtff.LOG_COLLECTION = not gtff.LOG_COLLECTION
+        dotenv.set_key(self.env_file, "GTFF_LOG_COLLECTION", str(gtff.LOG_COLLECTION))
+        console.print("")
 
     @log_start_end(log=logger)
     def call_tab(self, _):

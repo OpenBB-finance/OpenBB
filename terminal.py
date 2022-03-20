@@ -39,7 +39,7 @@ from gamestonk_terminal.terminal_helper import (
     welcome_message,
 )
 
-# pylint: disable=too-many-public-methods,import-outside-toplevel
+# pylint: disable=too-many-public-methods,import-outside-toplevel,too-many-branches
 
 logger = logging.getLogger(__name__)
 
@@ -103,6 +103,12 @@ class TerminalController(BaseController):
 
 [info]The previous logic also holds for when launching the terminal.[/info]
     E.g. '$ python terminal.py /stocks/disc/ugs -n 3/../load tsla/candle'
+
+[info]You can run a standalone .gst routine file with:[/info]
+    E.g. '$ python terminal.py routines/example.gst'
+
+[info]You can run a .gst routine file with variable inputs:[/info]
+    E.g. '$ python terminal.py routines/example_with_inputs.gst --input pltr,tsla,nio'
 
 [info]The main commands you should be aware when navigating through the terminal are:[/info][cmds]
     cls             clear the screen
@@ -304,6 +310,13 @@ class TerminalController(BaseController):
         """Process exe command"""
         # Merge rest of string path to other_args and remove queue since it is a dir
         other_args += self.queue
+
+        if not other_args:
+            console.print(
+                "[red]Provide a path to the routine you wish to execute.\n[/red]"
+            )
+            return
+
         full_input = " ".join(other_args)
         if " " in full_input:
             other_args_processed = full_input.split(" ")
@@ -317,7 +330,8 @@ class TerminalController(BaseController):
             if path_dir in ("-i", "--input"):
                 args = [path_routine[1:]] + other_args_processed[idx:]
                 break
-            path_routine += f"/{path_dir}"
+            if path_dir not in ("-p", "--path"):
+                path_routine += f"/{path_dir}"
 
         if not args:
             args = [path_routine[1:]]
@@ -335,6 +349,7 @@ class TerminalController(BaseController):
             dest="path",
             default="",
             type=check_path,
+            required="-h" not in args,
         )
         parser_exe.add_argument(
             "-i",
@@ -350,35 +365,22 @@ class TerminalController(BaseController):
         if ns_parser_exe:
             if ns_parser_exe.path:
                 with open(ns_parser_exe.path) as fp:
-                    raw_lines = [x for x in fp if not is_reset(x)]
-
+                    raw_lines = [
+                        x for x in fp if (not is_reset(x)) and ("#" not in x) and x
+                    ]
+                    raw_lines = [
+                        raw_line.strip("\n")
+                        for raw_line in raw_lines
+                        if raw_line.strip("\n")
+                    ]
                     if ns_parser_exe.routine_args:
                         lines = list()
                         idx = 0
                         for rawline in raw_lines:
-                            arg_to_replace = f"$ARGV[{idx}]"
                             templine = rawline
-                            while arg_to_replace in rawline:
-                                if idx > (len(ns_parser_exe.routine_args) - 1):
-                                    console.print(
-                                        "[red]There are more arguments on the routine "
-                                        ".gst file than input args provided[/red]"
-                                    )
-                                    return
-                                templine = templine.replace(
-                                    arg_to_replace, ns_parser_exe.routine_args[idx]
-                                )
-                                idx += 1
-                                arg_to_replace = f"$ARGV[{idx}]"
-
+                            for i, arg in enumerate(ns_parser_exe.routine_args):
+                                templine = templine.replace(f"$ARGV[{i}]", arg)
                             lines.append(templine)
-
-                        if idx < len(ns_parser_exe.routine_args):
-                            console.print(
-                                "[red]There are more inputs provided than the number "
-                                "of arguments on routine .gst file\n[/red]"
-                            )
-
                     else:
                         lines = raw_lines
 
@@ -388,7 +390,30 @@ class TerminalController(BaseController):
                         insert_start_slash(file_cmds) if file_cmds else file_cmds
                     )
                     cmds_with_params = " ".join(file_cmds)
-                    self.queue = cmds_with_params.split("/")
+                    self.queue = [val for val in cmds_with_params.split("/") if val]
+
+                    if "export" in self.queue[0]:
+                        export_path = self.queue[0].split(" ")[1]
+                        # If the path selected does not start from the user root, give relative location from root
+                        if export_path[0] == "~":
+                            export_path = export_path.replace("~", os.environ["HOME"])
+                        elif export_path[0] != "/":
+                            export_path = os.path.join(
+                                os.path.dirname(os.path.abspath(__file__)), export_path
+                            )
+
+                        # Check if the directory exists
+                        if os.path.isdir(export_path):
+                            console.print(
+                                f"Export data to be saved in the selected folder: '{export_path}'"
+                            )
+                        else:
+                            os.makedirs(export_path)
+                            console.print(
+                                f"[green]Folder '{export_path}' successfully created.[/green]"
+                            )
+                        gtff.EXPORT_FOLDER_PATH = export_path
+                        self.queue = self.queue[1:]
 
 
 # pylint: disable=global-statement
@@ -403,9 +428,35 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
     if jobs_cmds is not None and jobs_cmds:
         logger.info("INPUT: %s", "/".join(jobs_cmds))
 
+    export_path = ""
+    if jobs_cmds and "export" in jobs_cmds[0]:
+        export_path = jobs_cmds[0].split("/")[0].split(" ")[1]
+        jobs_cmds = ["/".join(jobs_cmds[0].split("/")[1:])]
+
     ret_code = 1
     t_controller = TerminalController(jobs_cmds)
     an_input = ""
+
+    if export_path:
+        # If the path selected does not start from the user root, give relative location from terminal root
+        if export_path[0] == "~":
+            export_path = export_path.replace("~", os.environ["HOME"])
+        elif export_path[0] != "/":
+            export_path = os.path.join(
+                os.path.dirname(os.path.abspath(__file__)), export_path
+            )
+
+        # Check if the directory exists
+        if os.path.isdir(export_path):
+            console.print(
+                f"Export data to be saved in the selected folder: '{export_path}'"
+            )
+        else:
+            os.makedirs(export_path)
+            console.print(
+                f"[green]Folder '{export_path}' successfully created.[/green]"
+            )
+        gtff.EXPORT_FOLDER_PATH = export_path
 
     bootup()
     if not jobs_cmds:
@@ -554,7 +605,12 @@ def log_settings() -> None:
     logger.info("SETTINGS: %s ", str(settings_dict))
 
 
-def run_scripts(path: str, test_mode: bool = False, verbose: bool = False):
+def run_scripts(
+    path: str,
+    test_mode: bool = False,
+    verbose: bool = False,
+    routines_args: List[str] = None,
+):
     """Runs a given .gst scripts
 
     Parameters
@@ -565,18 +621,41 @@ def run_scripts(path: str, test_mode: bool = False, verbose: bool = False):
         Whether the terminal is in test mode
     verbose : bool
         Whether to run tests in verbose mode
+    routines_args : List[str]
+        One or multiple inputs to be replaced in the routine and separated by commas. E.g. GME,AMC,BTC-USD
     """
     if os.path.isfile(path):
         with open(path) as fp:
-            lines = [x for x in fp if not test_mode or not is_reset(x)]
+            raw_lines = [x for x in fp if (not is_reset(x)) and ("#" not in x) and x]
+            raw_lines = [
+                raw_line.strip("\n") for raw_line in raw_lines if raw_line.strip("\n")
+            ]
+
+            if routines_args:
+                lines = list()
+                for rawline in raw_lines:
+                    templine = rawline
+                    for i, arg in enumerate(routines_args):
+                        templine = templine.replace(f"$ARGV[{i}]", arg)
+                    lines.append(templine)
+            else:
+                lines = raw_lines
 
             if test_mode and "exit" not in lines[-1]:
                 lines.append("exit")
 
+            export_folder = ""
+            if "export" in lines[0]:
+                export_folder = lines[0].split("export ")[1].rstrip()
+                lines = lines[1:]
+
             simulate_argv = f"/{'/'.join([line.rstrip() for line in lines])}"
             file_cmds = simulate_argv.replace("//", "/home/").split()
             file_cmds = insert_start_slash(file_cmds) if file_cmds else file_cmds
-            file_cmds = [" ".join(file_cmds)]
+            if export_folder:
+                file_cmds = [f"export {export_folder}{' '.join(file_cmds)}"]
+            else:
+                file_cmds = [" ".join(file_cmds)]
 
             if not test_mode:
                 terminal(file_cmds, appName="gst_script")
@@ -593,7 +672,14 @@ def run_scripts(path: str, test_mode: bool = False, verbose: bool = False):
             terminal()
 
 
-def main(debug: bool, test: bool, filtert: str, paths: List[str], verbose: bool):
+def main(
+    debug: bool,
+    test: bool,
+    filtert: str,
+    paths: List[str],
+    verbose: bool,
+    routines_args: List[str] = None,
+):
     """
     Runs the terminal with various options
 
@@ -609,6 +695,8 @@ def main(debug: bool, test: bool, filtert: str, paths: List[str], verbose: bool)
         The paths to run for scripts or to test
     verbose : bool
         Whether to show output from tests
+    routines_args : List[str]
+        One or multiple inputs to be replaced in the routine and separated by commas. E.g. GME,AMC,BTC-USD
     """
 
     if test:
@@ -665,7 +753,7 @@ def main(debug: bool, test: bool, filtert: str, paths: List[str], verbose: bool)
         if debug:
             os.environ["DEBUG_MODE"] = "true"
         if isinstance(paths, list) and paths[0].endswith(".gst"):
-            run_scripts(paths[0])
+            run_scripts(paths[0], routines_args=routines_args)
         elif paths:
             argv_cmds = list([" ".join(paths).replace(" /", "/home/")])
             argv_cmds = insert_start_slash(argv_cmds) if argv_cmds else argv_cmds
@@ -717,6 +805,14 @@ if __name__ == "__main__":
     parser.add_argument(
         "-v", "--verbose", dest="verbose", action="store_true", default=False
     )
+    parser.add_argument(
+        "-i",
+        "--input",
+        help="Select multiple inputs to be replaced in the routine and separated by commas. E.g. GME,AMC,BTC-USD",
+        dest="routine_args",
+        type=lambda s: [str(item) for item in s.split(",")],
+        default=None,
+    )
 
     if sys.argv[1:] and "-" not in sys.argv[1][0]:
         sys.argv.insert(1, "-p")
@@ -727,4 +823,5 @@ if __name__ == "__main__":
         ns_parser.filtert,
         ns_parser.path,
         ns_parser.verbose,
+        ns_parser.routine_args,
     )

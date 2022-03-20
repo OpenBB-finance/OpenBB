@@ -258,7 +258,7 @@ Ticker: [/param] {self.ticker} [cmds]
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            yahoo_finance_view.display_info(self.ticker)
+            yahoo_finance_view.display_info(self.ticker, export=ns_parser.export)
 
     @log_start_end(log=logger)
     def call_mktcap(self, other_args: List[str]):
@@ -281,7 +281,9 @@ Ticker: [/param] {self.ticker} [cmds]
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            yahoo_finance_view.display_mktcap(self.ticker, start=ns_parser.start)
+            yahoo_finance_view.display_mktcap(
+                self.ticker, start=ns_parser.start, export=ns_parser.export
+            )
 
     @log_start_end(log=logger)
     def call_splits(self, other_args: List[str]):
@@ -296,7 +298,7 @@ Ticker: [/param] {self.ticker} [cmds]
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            yahoo_finance_view.display_splits(self.ticker)
+            yahoo_finance_view.display_splits(self.ticker, export=ns_parser.export)
 
     @log_start_end(log=logger)
     def call_shrs(self, other_args: List[str]):
@@ -313,7 +315,9 @@ Ticker: [/param] {self.ticker} [cmds]
         )
         if not self.suffix:
             if ns_parser:
-                yahoo_finance_view.display_shareholders(self.ticker)
+                yahoo_finance_view.display_shareholders(
+                    self.ticker, export=ns_parser.export
+                )
         else:
             console.print("Only US tickers are recognized.", "\n")
 
@@ -338,7 +342,9 @@ Ticker: [/param] {self.ticker} [cmds]
         )
         if not self.suffix:
             if ns_parser:
-                yahoo_finance_view.display_sustainability(self.ticker)
+                yahoo_finance_view.display_sustainability(
+                    self.ticker, export=ns_parser.export
+                )
         else:
             console.print("Only US tickers are recognized.", "\n")
 
@@ -359,7 +365,9 @@ Ticker: [/param] {self.ticker} [cmds]
         )
         if not self.suffix:
             if ns_parser:
-                yahoo_finance_view.display_calendar_earnings(ticker=self.ticker)
+                yahoo_finance_view.display_calendar_earnings(
+                    ticker=self.ticker, export=ns_parser.export
+                )
         else:
             console.print("Only US tickers are recognized.", "\n")
 

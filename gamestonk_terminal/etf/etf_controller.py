@@ -548,15 +548,18 @@ class ETFController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="pir",
-            description="Create passive investor ETF excel report",
+            description="Create passive investor ETF excel report which contains most of the important metrics "
+            "about an ETF obtained from Yahoo Finnace. You are able to input any ETF ticker you like "
+            "within the command to create am extensive report",
         )
         parser.add_argument(
             "-e",
             "--etfs",
+            nargs="+",
             type=str,
             dest="names",
-            help="Symbols to create a report for (e.g. ARKW,ARKQ)",
-            default=self.etf_name,
+            help="Symbols to create a report for (e.g. pir ARKW ARKQ QQQ VOO)",
+            default=[self.etf_name],
         )
         parser.add_argument(
             "--filename",

@@ -33,7 +33,7 @@ def display_terra_asset_history(
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Displays the 30-day history of specified asset in terra address
-    [Source: https://docs.llama.fi/api]
+    [Source: https://terra.engineer/]
 
     Parameters
     ----------
@@ -86,7 +86,7 @@ def display_anchor_yield_reserve(
     export: str = "", external_axes: Optional[List[plt.Axes]] = None
 ) -> None:
     """Displays the 30-day history of the Anchor Yield Reserve.
-    [Source: https://docs.llama.fi/api]
+    [Source: https://terra.engineer/]
 
     Parameters
     ----------
