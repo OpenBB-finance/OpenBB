@@ -89,7 +89,7 @@ class TerminalController(BaseController):
         if jobs_cmds:
             self.queue = " ".join(jobs_cmds).split("/")
 
-        self.update_succcess = False
+        self.update_success = False
 
     def print_help(self):
         """Print help"""
@@ -145,7 +145,7 @@ class TerminalController(BaseController):
 
     def call_update(self, _):
         """Process update command"""
-        self.update_succcess = not update_terminal()
+        self.update_success = not update_terminal()
 
     def call_keys(self, _):
         """Process keys command"""
@@ -300,7 +300,8 @@ class TerminalController(BaseController):
                                 else "DEFAULT (folder: exports/)"
                             )
                             console.print(
-                                f"[yellow]Export data to keep being saved in the selected folder: {path_display}[/yellow]"
+                                "[yellow]Export data to keep being saved in"
+                                + f"the selected folder: {path_display}[/yellow]"
                             )
                         success_export = True
 
@@ -523,7 +524,7 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
                 break
 
             # Check if the user wants to reset application
-            if an_input in ("r", "reset") or t_controller.update_succcess:
+            if an_input in ("r", "reset") or t_controller.update_success:
                 ret_code = reset(t_controller.queue if t_controller.queue else [])
                 if ret_code != 0:
                     print_goodbye()
