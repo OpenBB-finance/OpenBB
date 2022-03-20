@@ -40,7 +40,7 @@ jobs:
       - name: Install Package
         run: poetry install --no-interaction
 
-      - name: Install everything, run the tests, produce the .coverage file
+      - name: Run tests and Produce .coverage
         run: |
           source $VENV
           pytest --cov=gamestonk_terminal --cov=terminal --cov=botsytest tests/
