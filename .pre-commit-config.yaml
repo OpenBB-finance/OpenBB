@@ -34,7 +34,7 @@ repos:
         entry: codespell
         args:
           [
-            "--ignore-words-list=zlot,ba,buil,coo,ether,hist,hsi,mape,navagation,operatio,pres,ser,yeld,shold,ist,varian",
+            "--ignore-words-list=zlot,ba,buil,coo,ether,hist,hsi,mape,navagation,operatio,pres,ser,yeld,shold,ist,varian,datas",
             "--quiet-level=2",
             "--skip=./tests,.git,*.css,*.csv,*.html,*.ini,*.ipynb,*.js,*.json,*.lock,*.scss,*.txt,*.yaml",
           ]
