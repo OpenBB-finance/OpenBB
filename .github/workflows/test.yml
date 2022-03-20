@@ -305,7 +305,9 @@ jobs:
         run: poetry install --no-interaction
 
       - name: Run Coverage
-        run: pytest --cov=gamestonk_terminal --cov=terminal --cov=bots
+        run: |
+          source $VENV
+          pytest --cov=gamestonk_terminal --cov=terminal --cov=botsytest tests/
 
       - name: Coverage Comment
         id: coverage-comment
