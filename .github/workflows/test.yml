@@ -275,6 +275,9 @@ jobs:
     name: Display Coverage
     runs-on: ubuntu-latest
     steps:
+      - name:
+        run: echo "${GITHUB_WORKFLOW}"
+
       - uses: actions/checkout@v2
 
       - name: Setup Python 3.9
