@@ -1,0 +1,24 @@
+name: Post coverage comment
+
+on:
+  workflow_run:
+    workflows: ["CI"]
+    types:
+      - completed
+
+jobs:
+  test:
+    name: Run tests & display coverage
+    runs-on: ubuntu-latest
+    if: github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.conclusion == 'success'
+    steps:
+      # DO NOT run actions/checkout@v2 here, for securitity reasons
+      # For details, refer to https://securitylab.github.com/research/github-actions-preventing-pwn-requests/
+      - name: Post comment
+        uses: ewjoachim/python-coverage-comment-action@v2
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_PR_RUN_ID: ${{ github.event.workflow_run.id }}
+          # Update those if you changed the default values:
+          # COMMENT_ARTIFACT_NAME: python-coverage-comment-action
+          # COMMENT_FILENAME: python-coverage-comment-action.txt
