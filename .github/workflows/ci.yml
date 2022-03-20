@@ -41,7 +41,9 @@ jobs:
         run: poetry install --no-interaction
 
       - name: Install everything, run the tests, produce the .coverage file
-        run: pytest --cov=gamestonk_terminal --cov=terminal --cov=bots
+        run: |
+          source $VENV
+          pytest --cov=gamestonk_terminal --cov=terminal --cov=botsytest tests/
 
       - name: Coverage comment
         id: coverage_comment
