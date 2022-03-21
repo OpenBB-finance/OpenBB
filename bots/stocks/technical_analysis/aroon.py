@@ -2,8 +2,7 @@ import logging
 
 import plotly.graph_objects as go
 
-import bots.config_discordbot as cfg
-from bots import helpers, load_candle
+from bots import imps, load_candle
 from gamestonk_terminal.common.technical_analysis import trend_indicators_model
 from gamestonk_terminal.decorators import log_start_end
 
@@ -28,7 +27,7 @@ def aroon_command(
     """Displays chart with aroon indicator [Yahoo Finance]"""
 
     # Debug
-    if cfg.DEBUG:
+    if imps.DEBUG:
         logger.debug(
             "ta aroon %s %s %s %s %s, %s, %s, %s, %s, %s",
             ticker,
@@ -66,7 +65,7 @@ def aroon_command(
     )
 
     if df_stock.empty:
-        return Exception("No Data Found")
+        raise Exception("No Data Found")
 
     df_ta = df_stock.loc[(df_stock.index >= start) & (df_stock.index < end)]
     df_ta = df_ta.join(
@@ -96,14 +95,14 @@ def aroon_command(
             [{"secondary_y": False}],
         ],
     )
-    title = f"{plot['plt_title']} Aroon ({length})"
+    title = f"<b>{plot['plt_title']} Aroon ({length})</b>"
     fig = plot["fig"]
 
     fig.add_trace(
         go.Scatter(
             name="Aroon DOWN",
             x=df_ta.index,
-            y=df_ta[f"AROOND_{length}"],
+            y=df_ta.iloc[:, 6].values,
             opacity=1,
         ),
         row=2,
@@ -114,7 +113,7 @@ def aroon_command(
         go.Scatter(
             name="Aroon UP",
             x=df_ta.index,
-            y=df_ta[f"AROONU_{length}"],
+            y=df_ta.iloc[:, 7].values,
             opacity=1,
         ),
         row=2,
@@ -125,7 +124,7 @@ def aroon_command(
         go.Scatter(
             name="Aroon OSC",
             x=df_ta.index,
-            y=df_ta[f"AROONOSC_{length}"],
+            y=df_ta.iloc[:, 8].values,
             opacity=1,
         ),
         row=3,
@@ -144,8 +143,8 @@ def aroon_command(
     )
     fig.update_layout(
         margin=dict(l=0, r=0, t=50, b=20),
-        template=cfg.PLT_TA_STYLE_TEMPLATE,
-        colorway=cfg.PLT_TA_COLORWAY,
+        template=imps.PLT_TA_STYLE_TEMPLATE,
+        colorway=imps.PLT_TA_COLORWAY,
         title=title,
         title_x=0.1,
         title_font_size=14,
@@ -157,14 +156,14 @@ def aroon_command(
 
     # Check if interactive settings are enabled
     plt_link = ""
-    if cfg.INTERACTIVE:
-        plt_link = helpers.inter_chart(fig, imagefile, callback=False)
+    if imps.INTERACTIVE:
+        plt_link = imps.inter_chart(fig, imagefile, callback=False)
 
     fig.update_layout(
         width=800,
         height=500,
     )
-    imagefile = helpers.image_border(imagefile, fig=fig)
+    imagefile = imps.image_border(imagefile, fig=fig)
 
     return {
         "title": f"Stocks: Aroon-Indicator {ticker.upper()}",

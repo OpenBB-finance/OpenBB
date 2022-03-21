@@ -4,18 +4,20 @@ import re
 import uuid
 from typing import List
 
-import df2img
 import disnake
 import financedatabase as fd
+import natsort
 import pandas as pd
+import plotly.graph_objects
 import yfinance as yf
 from numpy.core.fromnumeric import transpose
 from PIL import Image
 from plotly.offline import plot
 
-import bots.config_discordbot as cfg
+from bots import imps
 from bots.groupme.groupme_helpers import send_image, send_message
 
+# pylint: disable=W0613
 logger = logging.getLogger(__name__)
 
 presets_custom = [
@@ -182,7 +184,21 @@ def quote(ticker):
     return quote_data
 
 
-def autocrop_image(image, border=0):
+def autocrop_image(image: Image, border=0) -> Image:
+    """Crop empty space from PIL image
+
+    Parameters
+    ----------
+    image : Image
+        PIL image to crop
+    border : int, optional
+        scale border outwards, by default 0
+
+    Returns
+    -------
+    Image
+        Cropped image
+    """
     bbox = image.getbbox()
     image = image.crop(bbox)
     (width, height) = image.size
@@ -193,18 +209,45 @@ def autocrop_image(image, border=0):
     return cropped_image
 
 
-def uuid_get():
+conversion_mapping = {
+    "K": 1_000,
+    "M": 1_000_000,
+}
+
+all_units = "|".join(conversion_mapping.keys())
+float_re = natsort.numeric_regex_chooser(natsort.ns.FLOAT | natsort.ns.SIGNED)
+unit_finder = re.compile(rf"({float_re})\s*({all_units})", re.IGNORECASE)
+
+
+def unit_replacer(matchobj):
+    """
+    Given a regex match object, return a replacement string where units are modified
+    """
+    number = matchobj.group(1)
+    unit = matchobj.group(2)
+    new_number = float(number) * conversion_mapping[unit]
+    return f"{new_number}"
+
+
+def uuid_get() -> str:
+    """Returns a UUID
+
+    Returns
+    -------
+    str
+        UUID Ex. e48c4851a42711ec8e11fb53fa4c20e5
+    """
     rand = str(uuid.uuid1()).replace("-", "")
     return rand
 
 
-def country_autocomp(inter, country: str):  # pylint: disable=W0613
+def country_autocomp(inter, country: str):
     data = fd.show_options("equities", "countries")
     clow = country.lower()
     return [country for country in data if country.lower().startswith(clow)][:24]
 
 
-def industry_autocomp(inter, industry: str):  # pylint: disable=W0613
+def industry_autocomp(inter, industry: str):
     data = fd.show_options("equities", "industries")
     if not industry:
         industry = "a"
@@ -212,7 +255,7 @@ def industry_autocomp(inter, industry: str):  # pylint: disable=W0613
     return [industry for industry in data if industry.lower().startswith(ilow)][:24]
 
 
-def metric_autocomp(inter, metric: str):  # pylint: disable=W0613
+def metric_autocomp(inter, metric: str):
     data: dict = metric_yf_keys
     if not metric:
         data = list(data.keys())  # type: ignore
@@ -223,7 +266,7 @@ def metric_autocomp(inter, metric: str):  # pylint: disable=W0613
     ]
 
 
-def ticker_autocomp(inter, ticker: str):  # pylint: disable=W0613
+def ticker_autocomp(inter, ticker: str):
     if not ticker:
         return ["Start Typing", "for a", "stock ticker"]
     print(f"ticker_autocomp [ticker]: {ticker}")
@@ -234,14 +277,14 @@ def ticker_autocomp(inter, ticker: str):  # pylint: disable=W0613
     return [ticker for ticker in df if ticker.lower().startswith(tlow)][:24]
 
 
-def expiry_autocomp(inter, ticker: str):  # pylint: disable=W0613
+def expiry_autocomp(inter, ticker: str):
     data = inter.filled_options["ticker"]
     yf_ticker = yf.Ticker(data)
     dates = list(yf_ticker.options)
     return dates[:24]
 
 
-def presets_custom_autocomp(inter, preset: str):  # pylint: disable=W0613
+def presets_custom_autocomp(inter, preset: str):
     df = presets_custom
     if not preset:
         return df[:24]
@@ -250,7 +293,7 @@ def presets_custom_autocomp(inter, preset: str):  # pylint: disable=W0613
     return [preset for preset in df if preset.lower().startswith(plow)][:24]
 
 
-def signals_autocomp(inter, signal: str):  # pylint: disable=W0613
+def signals_autocomp(inter, signal: str):
     df = signals
     if not signal:
         return df[:24]
@@ -259,8 +302,24 @@ def signals_autocomp(inter, signal: str):  # pylint: disable=W0613
     return [signal for signal in df if signal.lower().startswith(slow)][:24]
 
 
-def inter_chart(fig, file, **data):
-    filename = f"{file.replace('.png', '')}_{uuid_get()}.html"
+def inter_chart(fig: plotly.graph_objects, filename: str, **data) -> str:
+    """Takes plotly chart object and saves as a html file for interactive charts
+
+    Parameters
+    ----------
+    fig : plotly.graph_objects
+        Table object to autocrop and save
+    filename : str
+        Name to save html as
+    **kawrgs:
+        config: dict = plotly config Ex. dict(scrollZoom=True, displayModeBar=False)
+        callback: bool = enable js_callback for clickable news
+    Returns
+    -------
+    str
+        Link for interactive charts Ex. f"[Interactive]({imps.INTERACTIVE_URL}/{filename})"
+    """
+    filename = f"{filename.replace('.png', '')}_{uuid_get()}.html"
     if "config" not in data:
         config = dict(scrollZoom=True, displayModeBar=False)
     plot_div = plot(fig, output_type="div", include_plotlyjs=True, config=config)
@@ -306,25 +365,54 @@ def inter_chart(fig, file, **data):
         """
 
     # Write out HTML file
-    with open(f"{cfg.INTERACTIVE_DIR / filename}", "w") as f:
+    with open(f"{imps.INTERACTIVE_DIR / filename}", "w") as f:
         f.write(html_str)
-    plt_link = f"[Interactive]({cfg.INTERACTIVE_URL}/{filename})"
+    plt_link = f"[Interactive]({imps.INTERACTIVE_URL}/{filename})"
     return plt_link
 
 
-def save_image(file, fig):
-    imagefile = f"{file.replace('.png', '')}_{uuid_get()}.png"
-    filesave = cfg.IMG_DIR / imagefile
-    df2img.save_dataframe(fig=fig, filename=filesave)
+def save_image(filename: str, fig: plotly.graph_objects) -> str:
+    """Takes plotly table object, adds uuid to filename, and autocrops
+
+    Parameters
+    ----------
+    filename : str
+        Name to save image as
+    fig : plotly.graph_objects
+        Table object to autocrop and save
+
+    Returns
+    -------
+    str
+        filename with UUID added to use for bot processing
+    """
+    imagefile = f"{filename.replace('.png', '')}_{uuid_get()}.png"
+    filesave = imps.IMG_DIR / imagefile
+    fig.write_image(filesave)
     image = Image.open(filesave)
     image = autocrop_image(image, 0)
     image.save(filesave, "PNG", quality=100)
     return imagefile
 
 
-def image_border(file, **kwargs):
-    imagefile = f"{file.replace('.png', '')}_{uuid_get()}.png"
-    filesave = cfg.IMG_DIR / imagefile
+def image_border(filename: str, **kwargs) -> str:
+    """Takes fig, base64, or already saved image and adds border to it
+
+    Parameters
+    ----------
+    filename : str
+        Name to save image as. If no fig or base64, will try to find
+        an image with this name to open.
+    **kawrgs:
+        fig=plotly.graph_objects
+        base64=BytesIo object
+    Returns
+    -------
+    str
+        filename with UUID added to use for bot processing
+    """
+    imagefile = f"{filename.replace('.png', '')}_{uuid_get()}.png"
+    filesave = imps.IMG_DIR / imagefile
     if "fig" in kwargs:
         fig = kwargs["fig"]
         fig.write_image(filesave)
@@ -333,7 +421,7 @@ def image_border(file, **kwargs):
         img = Image.open(kwargs["base64"])
     else:
         img = Image.open(filesave)
-    im_bg = Image.open(cfg.IMG_BG)
+    im_bg = Image.open(imps.IMG_BG)
 
     w = img.width + 520
     h = img.height + 240
@@ -366,15 +454,15 @@ class ShowView:
         else:
             title = data.get("title", "")
             embed = disnake.Embed(
-                title=title, colour=cfg.COLOR, description=data.get("description", "")
+                title=title, colour=imps.COLOR, description=data.get("description", "")
             )
             embed.set_author(
-                name=cfg.AUTHOR_NAME,
-                icon_url=cfg.AUTHOR_ICON_URL,
+                name=imps.AUTHOR_NAME,
+                icon_url=imps.AUTHOR_ICON_URL,
             )
             if "imagefile" in data:
                 filename = data["imagefile"]
-                imagefile = cfg.IMG_DIR / filename
+                imagefile = (imps.IMG_DIR / filename).as_posix()
                 image = disnake.File(imagefile, filename=filename)
                 embed.set_image(url=f"attachment://{filename}")
                 os.remove(imagefile)
@@ -393,25 +481,25 @@ class ShowView:
             except Exception as e:
                 embed = disnake.Embed(
                     title=name,
-                    colour=cfg.COLOR,
+                    colour=imps.COLOR,
                     description=e,
                 )
                 embed.set_author(
-                    name=cfg.AUTHOR_NAME,
-                    icon_url=cfg.AUTHOR_ICON_URL,
+                    name=imps.AUTHOR_NAME,
+                    icon_url=imps.AUTHOR_ICON_URL,
                 )
 
                 await inter.send(embed=embed, delete_after=30.0)
 
-    def groupme(self, func, group_id, name, *args, **kwargs):  # pylint: disable=W0613
+    def groupme(self, func, group_id, name, *args, **kwargs):
         data = func(*args, **kwargs)
         if "imagefile" in data:
-            imagefile = cfg.IMG_DIR / data["imagefile"]
+            imagefile = (imps.IMG_DIR / data["imagefile"]).as_posix()
             send_image(imagefile, group_id, data.get("description", ""))
         elif "embeds_img" in data:
             imagefiles = data["images_list"]
             for img in imagefiles:
-                imagefile = cfg.IMG_DIR / img
+                imagefile = (imps.IMG_DIR / img).as_posix()
                 send_image(imagefile, group_id, data.get("description", ""))
         elif "description" in data:
             title = data.get("title", "")
@@ -435,7 +523,7 @@ class ShowView:
                 .replace(".html)", ".html\n\n")
             )
             message = f"{title}\n{description}"
-            imagefile = cfg.IMG_DIR / data["imagefile"]
+            imagefile = (imps.IMG_DIR / data["imagefile"]).as_posix()
             client.files_upload(
                 file=imagefile,
                 initial_comment=message,
@@ -452,7 +540,7 @@ class ShowView:
             title = data["title"] if "titles" not in data else data["titles"][0]
             N = 0
             for img in data["images_list"]:
-                imagefile = cfg.IMG_DIR / img
+                imagefile = (imps.IMG_DIR / img).as_posix()
                 if N == 0:
                     message = f"{title}\n{description}"
                     payload = {
@@ -483,12 +571,10 @@ class ShowView:
             payload = {"channel": channel_id, "username": user_id, "text": message}
             client.chat_postMessage(**payload)
 
-    def telegram(
-        self, func, message, bot, cmd, *args, **kwargs
-    ):  # pylint: disable=W0613
+    def telegram(self, func, message, bot, cmd, *args, **kwargs):
         data = func(*args, **kwargs)
         if "imagefile" in data:
-            imagefile = cfg.IMG_DIR / data["imagefile"]
+            imagefile = (imps.IMG_DIR / data["imagefile"]).as_posix()
             title = data["title"]
             description = (
                 data.get("description", "")
@@ -502,23 +588,21 @@ class ShowView:
                 bot.send_photo(message.chat.id, image)
             os.remove(imagefile)
         elif "embeds_img" in data:
-            title = data["title"] if "titles" not in data else data["titles"][0]
+            res_title = data["title"] if "titles" not in data else data["titles"][0]
             N = 0
             for img in data["images_list"]:
-                imagefile = cfg.IMG_DIR / img
+                imagefile = (imps.IMG_DIR / img).as_posix()
                 if N == 0:
                     description = (
                         data.get("description", "")
                         .replace("[Interactive](", "")
                         .replace(".html)", ".html\n\n")
                     )
-                    res = f"{title}\n{description}"
-                    bot.reply_to(message, res)
-                    title = ""
+                    res_title = f"{res_title}\n{description}"
                 if N < len(data["titles"]) and N != 0:
-                    title = data["titles"][N]
+                    res_title = data["titles"][N]
                 with open(imagefile, "rb") as image:
-                    bot.reply_to(message, title)
+                    bot.reply_to(message, res_title)
                     bot.send_photo(message.chat.id, image)
                 N += 1
                 os.remove(imagefile)

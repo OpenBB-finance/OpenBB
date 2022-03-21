@@ -1,13 +1,10 @@
 import logging
 import os
 
-import df2img
 import disnake
+import pandas as pd
 
-import bots.config_discordbot as cfg
-from bots import helpers
-from bots.config_discordbot import gst_imgur
-from bots.menus.menu import Menu
+from bots import imps
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.etf.discovery import wsj_model
 
@@ -19,7 +16,7 @@ def etfs_disc_command(sort=""):
     """Displays ETF's Top Gainers/Decliners, Most Active  [Wall Street Journal]"""
 
     # Debug
-    if cfg.DEBUG:
+    if imps.DEBUG:
         logger.debug("etfs")
 
     df_etfs = wsj_model.etf_movers(sort, export=True)
@@ -27,11 +24,27 @@ def etfs_disc_command(sort=""):
     if df_etfs.empty:
         raise Exception("No available data found")
 
-    df_etfs.set_index(" ", inplace=True)
-    prfx = "Top"
-    if sort == "active":
-        prfx = "Most"
+    prfx = "Most" if sort == "active" else "Top"
     title = f"ETF Movers ({prfx} {sort.capitalize()})"
+
+    df_etfs["Price"] = pd.to_numeric(df_etfs["Price"].astype(float))
+
+    df_etfs["Price"] = df_etfs.apply(lambda x: f"${x['Price']:.2f}", axis=1)
+    df_etfs["Change"] = df_etfs.apply(
+        lambda x: f"${x['Chg']:.2f} (<b>{x['%Chg']:.2f}%</b>)", axis=1
+    )
+
+    df_etfs.set_index(" ", inplace=True)
+    df_etfs = df_etfs.drop(columns=["Chg", "%Chg"])
+
+    df_etfs = df_etfs[
+        [
+            "Name",
+            "Price",
+            "Change",
+            "Vol",
+        ]
+    ]
 
     dindex = len(df_etfs.index)
     if dindex > 15:
@@ -42,26 +55,26 @@ def etfs_disc_command(sort=""):
         while i < dindex:
             df_pg = df_etfs.iloc[i:end]
             df_pg.append(df_pg)
-            fig = df2img.plot_dataframe(
+            fig = imps.plot_df(
                 df_pg,
-                fig_size=(1200, (40 + (40 * dindex))),
-                col_width=[1, 9, 1.5, 1.5, 1.5, 1.5],
-                tbl_header=cfg.PLT_TBL_HEADER,
-                tbl_cells=cfg.PLT_TBL_CELLS,
-                font=cfg.PLT_TBL_FONT,
-                row_fill_color=cfg.PLT_TBL_ROW_COLORS,
+                fig_size=(820, (40 + (40 * dindex))),
+                col_width=[1.1, 9, 1.5, 3, 1.5],
+                tbl_header=imps.PLT_TBL_HEADER,
+                tbl_cells=imps.PLT_TBL_CELLS,
+                font=imps.PLT_TBL_FONT,
+                row_fill_color=imps.PLT_TBL_ROW_COLORS,
                 paper_bgcolor="rgba(0, 0, 0, 0)",
             )
-            fig.update_traces(cells=(dict(align=["left"])))
+            fig.update_traces(cells=(dict(align=["center", "center", "right"])))
             imagefile = "disc-etfs.png"
-            imagefile = helpers.save_image(imagefile, fig)
+            imagefile = imps.save_image(imagefile, fig)
 
-            if cfg.IMAGES_URL or cfg.IMGUR_CLIENT_ID != "REPLACE_ME":
-                image_link = cfg.IMAGES_URL + imagefile
+            if imps.IMAGES_URL or imps.IMGUR_CLIENT_ID != "REPLACE_ME":
+                image_link = imps.IMAGES_URL + imagefile
                 images_list.append(imagefile)
             else:
-                imagefile_save = cfg.IMG_DIR / imagefile
-                uploaded_image = gst_imgur.upload_image(
+                imagefile_save = imps.IMG_DIR / imagefile
+                uploaded_image = imps.gst_imgur.upload_image(
                     imagefile_save, title="something"
                 )
                 image_link = uploaded_image.link
@@ -73,7 +86,7 @@ def etfs_disc_command(sort=""):
             embeds.append(
                 disnake.Embed(
                     title=title,
-                    colour=cfg.COLOR,
+                    colour=imps.COLOR,
                 ),
             )
             i2 += 1
@@ -83,13 +96,13 @@ def etfs_disc_command(sort=""):
         # Author/Footer
         for i in range(0, i2):
             embeds[i].set_author(
-                name=cfg.AUTHOR_NAME,
-                url=cfg.AUTHOR_URL,
-                icon_url=cfg.AUTHOR_ICON_URL,
+                name=imps.AUTHOR_NAME,
+                url=imps.AUTHOR_URL,
+                icon_url=imps.AUTHOR_ICON_URL,
             )
             embeds[i].set_footer(
-                text=cfg.AUTHOR_NAME,
-                icon_url=cfg.AUTHOR_ICON_URL,
+                text=imps.AUTHOR_NAME,
+                icon_url=imps.AUTHOR_ICON_URL,
             )
 
         i = 0
@@ -103,7 +116,7 @@ def etfs_disc_command(sort=""):
         ]
 
         output = {
-            "view": Menu,
+            "view": imps.Menu,
             "title": title,
             "embed": embeds,
             "choices": choices,
@@ -111,18 +124,18 @@ def etfs_disc_command(sort=""):
             "images_list": images_list,
         }
     else:
-        fig = df2img.plot_dataframe(
+        fig = imps.plot_df(
             df_etfs,
-            fig_size=(1200, (40 + (40 * dindex))),
-            col_width=[1, 9, 1.5, 1.5, 1.5, 1.5],
-            tbl_header=cfg.PLT_TBL_HEADER,
-            tbl_cells=cfg.PLT_TBL_CELLS,
-            font=cfg.PLT_TBL_FONT,
-            row_fill_color=cfg.PLT_TBL_ROW_COLORS,
+            fig_size=(820, (40 + (40 * dindex))),
+            col_width=[1, 9, 1.5, 3, 1.5],
+            tbl_header=imps.PLT_TBL_HEADER,
+            tbl_cells=imps.PLT_TBL_CELLS,
+            font=imps.PLT_TBL_FONT,
+            row_fill_color=imps.PLT_TBL_ROW_COLORS,
             paper_bgcolor="rgba(0, 0, 0, 0)",
         )
-        fig.update_traces(cells=(dict(align=["left"])))
-        imagefile = helpers.save_image("disc-etfs.png", fig)
+        fig.update_traces(cells=(dict(align=["center", "center", "right"])))
+        imagefile = imps.save_image("disc-etfs.png", fig)
 
         output = {
             "title": title,
