@@ -407,7 +407,12 @@ PARAMETERS = {
     },
 }
 
-SCALES = {"Thousands": 1_000, "Millions": 1_000_000, "Units": 1}
+SCALES = {
+    "Thousands": 1_000,
+    "Millions": 1_000_000,
+    "Hundreds of millions": 100_000_000,
+    "Units": 1,
+}
 
 TREASURIES: Dict = {
     "frequencies": {
@@ -564,9 +569,6 @@ def get_macro_data(
         return console.print(
             f"There is no data available for the combination {parameter} and {country}."
         )
-
-    print(df)
-    print(units)
 
     return df, units
 
