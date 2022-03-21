@@ -9,8 +9,8 @@
 
 
 
-    <meta name="description" content="usage: metric [-m {roa,roe,cr,qr,de,tc,tcs,tr,rps,rg,eg,pm,gp,gm,ocf,om,fcf,td,ebitda,ebitdam,rec,mc,fte,er,bv,ss,pb,beta,fs,peg,ev,fpe}] [-l LIMIT] [-r] [-h] [--export {csv,json,xlsx,png,jpg,pdf,svg}] Visualise a particular metric with the filters selected [source: Yahoo Finance]
-optional arguments: -m {roa,roe,cr,qr,de,tc,tcs,tr,rps,rg,eg,pm,gp,gm,ocf,om,fcf,td,ebitda,ebitdam,rec,mc,fte,er,bv,ss,pb,beta,fs,peg,ev,fpe}, --metric {roa,roe,cr,qr,de,tc,tcs,tr,rps,rg,eg,pm,gp,gm,ocf,om,fcf,td,ebitda,ebitdam,rec,mc,fte,er,bv,ss,pb,beta,fs,peg,ev,fpe} Metric to visualize (default: None) -l LIMIT, --limit LIMIT Limit number of companies to display (default: 10) -r, --raw Output all raw data (default: False) -h, --help show this help message (default: False) --export {csv,json,xlsx,png,jpg,pdf,svg} Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg (default: ) ">
+    <meta name="description" content="usage: metric [-m {roa,roe,cr,qr,de,tc,tcs,tr,rps,rg,eg,pm,gp,gm,ocf,om,fcf,td,ebitda,ebitdam,rec,mc,fte,er,bv,ss,pb,beta,fs,peg,ev,fpe}] [-l LIMIT] [-r] [-h] [--export EXPORT] Visualise a particular metric with the filters selected [source: Yahoo Finance]
+optional arguments: -m {roa,roe,cr,qr,de,tc,tcs,tr,rps,rg,eg,pm,gp,gm,ocf,om,fcf,td,ebitda,ebitdam,rec,mc,fte,er,bv,ss,pb,beta,fs,peg,ev,fpe}, --metric {roa,roe,cr,qr,de,tc,tcs,tr,rps,rg,eg,pm,gp,gm,ocf,om,fcf,td,ebitda,ebitdam,rec,mc,fte,er,bv,ss,pb,beta,fs,peg,ev,fpe} Metric to visualize (default: None) -l LIMIT, --limit LIMIT Limit number of companies to display (default: 10) -r, --raw Output all raw data (default: False) -h, --help show this help message (default: False) --export EXPORT Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg (default: ) Return on Equity example:">
 
 
 
@@ -24008,7 +24008,7 @@ optional arguments: -m {roa,roe,cr,qr,de,tc,tcs,tr,rps,rg,eg,pm,gp,gm,ocf,om,fcf
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Metric</h1>
-        <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">usage: metric [-m {roa,roe,cr,qr,de,tc,tcs,tr,rps,rg,eg,pm,gp,gm,ocf,om,fcf,td,ebitda,ebitdam,rec,mc,fte,er,bv,ss,pb,beta,fs,peg,ev,fpe}] [-l LIMIT] [-r] [-h] [--export {csv,json,xlsx,png,jpg,pdf,svg}]
+        <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">usage: metric [-m {roa,roe,cr,qr,de,tc,tcs,tr,rps,rg,eg,pm,gp,gm,ocf,om,fcf,td,ebitda,ebitdam,rec,mc,fte,er,bv,ss,pb,beta,fs,peg,ev,fpe}] [-l LIMIT] [-r] [-h] [--export EXPORT]
 </code></pre></div><p>Visualise a particular metric with the filters selected [source: Yahoo Finance]</p>
 <pre><code>optional arguments:
   -m {roa,roe,cr,qr,de,tc,tcs,tr,rps,rg,eg,pm,gp,gm,ocf,om,fcf,td,ebitda,ebitdam,rec,mc,fte,er,bv,ss,pb,beta,fs,peg,ev,fpe}, --metric {roa,roe,cr,qr,de,tc,tcs,tr,rps,rg,eg,pm,gp,gm,ocf,om,fcf,td,ebitda,ebitdam,rec,mc,fte,er,bv,ss,pb,beta,fs,peg,ev,fpe}
@@ -24017,9 +24017,29 @@ optional arguments: -m {roa,roe,cr,qr,de,tc,tcs,tr,rps,rg,eg,pm,gp,gm,ocf,om,fcf
                         Limit number of companies to display (default: 10)
   -r, --raw             Output all raw data (default: False)
   -h, --help            show this help message (default: False)
-  --export {csv,json,xlsx,png,jpg,pdf,svg}
-                        Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg (default: )
-</code></pre><p><img src="https://user-images.githubusercontent.com/46355364/153897033-51c922b5-094d-44ad-87ef-52db51e2cf03.png" alt="metric"  /></p>
+  --export EXPORT       Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg (default: )
+
+</code></pre><p>Return on Equity example:</p>
+<pre><code>│ Industry          : Software - Infrastructure                                                                                                                                                                                           │
+│ Sector            : Technology                                                                                                                                                                                                          │
+│ Country           : United States                                                                                                                                                                                                       │
+│ Market Cap        : Large                                                                                                                                                                                                               │
+│ Exclude Exchanges : True                                                                                                                                                                                                                │
+│ Period            : Annual    
+
+
+2022 Mar 21, 09:51 (✨) /stocks/sia/ $ metric roe
+</code></pre><p><img src="https://user-images.githubusercontent.com/46355364/159276031-ad84d153-9cb3-440e-9771-090aa6c467c4.png" alt="metric roe"  /></p>
+<p>Full Time Employees example:</p>
+<pre><code>│ Industry          : Financial Data &amp; Stock Exchanges                                                                                                                                                                                    │
+│ Sector            : Financial Services                                                                                                                                                                                                  │
+│ Country           : United States                                                                                                                                                                                                       │
+│ Market Cap        : Large                                                                                                                                                                                                               │
+│ Exclude Exchanges : True                                                                                                                                                                                                                │
+│ Period            : Annual   
+
+2022 Mar 21, 09:55 (✨) /stocks/sia/ $ metric fte
+</code></pre><p><img src="https://user-images.githubusercontent.com/46355364/159276335-d0ecb16f-eac2-421f-b69e-3bbffe126bd1.png" alt="metric fte"  /></p>
 
     </article>
  
