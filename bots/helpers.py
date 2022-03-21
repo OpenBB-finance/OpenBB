@@ -462,7 +462,7 @@ class ShowView:
             )
             if "imagefile" in data:
                 filename = data["imagefile"]
-                imagefile = imps.IMG_DIR / filename
+                imagefile = (imps.IMG_DIR / filename).as_posix()
                 image = disnake.File(imagefile, filename=filename)
                 embed.set_image(url=f"attachment://{filename}")
                 os.remove(imagefile)
@@ -494,12 +494,12 @@ class ShowView:
     def groupme(self, func, group_id, name, *args, **kwargs):
         data = func(*args, **kwargs)
         if "imagefile" in data:
-            imagefile = (imps.IMG_DIR / data["imagefile"])
+            imagefile = (imps.IMG_DIR / data["imagefile"]).as_posix()
             send_image(imagefile, group_id, data.get("description", ""))
         elif "embeds_img" in data:
             imagefiles = data["images_list"]
             for img in imagefiles:
-                imagefile = (imps.IMG_DIR / img)
+                imagefile = (imps.IMG_DIR / img).as_posix()
                 send_image(imagefile, group_id, data.get("description", ""))
         elif "description" in data:
             title = data.get("title", "")
@@ -523,7 +523,7 @@ class ShowView:
                 .replace(".html)", ".html\n\n")
             )
             message = f"{title}\n{description}"
-            imagefile = (imps.IMG_DIR / data["imagefile"])
+            imagefile = (imps.IMG_DIR / data["imagefile"]).as_posix()
             client.files_upload(
                 file=imagefile,
                 initial_comment=message,
@@ -540,7 +540,7 @@ class ShowView:
             title = data["title"] if "titles" not in data else data["titles"][0]
             N = 0
             for img in data["images_list"]:
-                imagefile = (imps.IMG_DIR / img)
+                imagefile = (imps.IMG_DIR / img).as_posix()
                 if N == 0:
                     message = f"{title}\n{description}"
                     payload = {
@@ -574,7 +574,7 @@ class ShowView:
     def telegram(self, func, message, bot, cmd, *args, **kwargs):
         data = func(*args, **kwargs)
         if "imagefile" in data:
-            imagefile = (imps.IMG_DIR / data["imagefile"])
+            imagefile = (imps.IMG_DIR / data["imagefile"]).as_posix()
             title = data["title"]
             description = (
                 data.get("description", "")
@@ -591,7 +591,7 @@ class ShowView:
             res_title = data["title"] if "titles" not in data else data["titles"][0]
             N = 0
             for img in data["images_list"]:
-                imagefile = (imps.IMG_DIR / img)
+                imagefile = (imps.IMG_DIR / img).as_posix()
                 if N == 0:
                     description = (
                         data.get("description", "")

@@ -10,7 +10,8 @@ from dotenv import load_dotenv
 # Path to bots
 bots_path = Path(__file__).parent.absolute()
 
-env_files = [f for f in os.listdir(bots_path) if f.endswith(".env")]
+env_files = [f for f in bots_path.iterdir() if f.as_posix().endswith(".env")]
+
 if env_files:
     load_dotenv(env_files[0])
 
