@@ -1,4 +1,3 @@
-[[package]]
 name = "absl-py"
 version = "1.0.0"
 description = "Abseil Python Common Libraries, see https://github.com/abseil/abseil-py."
