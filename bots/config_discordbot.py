@@ -1,6 +1,5 @@
 import os
 import sys
-from distutils.util import strtobool
 from pathlib import Path
 from typing import List, Optional
 
@@ -33,12 +32,6 @@ API_BINANCE_SECRET = os.getenv("GT_API_BINANCE_SECRET") or "REPLACE_ME"
 
 # https://finnhub.io
 API_FINNHUB_KEY = os.getenv("GT_API_FINNHUB_KEY") or "REPLACE_ME"
-
-# AWS KEYS
-AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID") or "REPLACE_ME"
-AWS_ACCESS_KEY = os.getenv("AWS_ACCESS_KEY") or "REPLACE_ME"
-
-ALLOW_LOG_COLLECTION = strtobool(os.getenv("GTFF_ALLOW_LOG_COLLECTION", "True"))
 
 # Settings
 SLASH_TESTING_SERVERS: Optional[
