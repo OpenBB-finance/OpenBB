@@ -94,6 +94,7 @@ boto3 = "^1.21.18"
 undetected-chromedriver = {version = "^3.1.5", optional = true}
 natsort = {version = "^8.1.0", optional = true}
 yahoo-fin = {version = "^0.8.9", optional = true}
+kaleido = {version = "^0.2.1", optional = true}
 
 
 [tool.poetry.dev-dependencies]
@@ -124,7 +125,7 @@ boto3= "^1.21.14"
 
 [tool.poetry.extras]
 prediction = ["tensorflow"]
-bots = ["pyimgur", "df2img", "fastapi", "uvicorn", "disnake", "PyNaCl", "pyTelegramBotAPI", "slack-bolt", "undetected-chromedriver", "yahoo-fin", "natsort"]
+bots = ["pyimgur", "fastapi", "uvicorn", "disnake", "PyNaCl", "pyTelegramBotAPI", "slack-bolt", "undetected-chromedriver", "yahoo-fin", "natsort", "kaleido"]
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

@@ -143,7 +143,7 @@ def stock_data(
     max_days = day_list[interval]
 
     if dt_utcnow_local_tz().weekday() not in range(2, 5):
-        past_days += 2
+        past_days += 3
     p_days = (
         ((past_days + 1) if (past_days < max_days) else max_days)
         if (interval != 1440 and past_days < 365)
