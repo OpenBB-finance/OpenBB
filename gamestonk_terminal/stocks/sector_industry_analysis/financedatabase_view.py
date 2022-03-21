@@ -166,7 +166,7 @@ def display_bars_financials(
                 company_metric = company_metric * 100
 
             else:
-                unit = " KMBTP"[magnitude]
+                unit = " KMBTP"[magnitude] if magnitude != 0 else ""
 
             colors = iter(theme.get_colors())
             for name, metric, ticker in zip(
@@ -174,12 +174,7 @@ def display_bars_financials(
             ):
                 if len(name.split(" ")) > 6 and len(name) > 40:
                     name = f'{" ".join(name.split(" ")[:4])}\n{" ".join(name.split(" ")[4:])}'
-                ax.barh(name, metric, label=ticker, color=next(colors))
-
-            handles, _ = plt.gca().get_legend_handles_labels()
-            ax.legend(
-                reversed(handles), reversed(company_ticker[::-1]), loc="lower right"
-            )
+                ax.barh(f"{name} ({ticker})", metric, label=ticker, color=next(colors))
 
             metric_title = (
                 "".join(
@@ -193,21 +188,16 @@ def display_bars_financials(
             benchmark = np.median(company_metric)
             ax.axvline(x=benchmark, lw=3, ls="--", c="grey")
 
-            if unit != " ":
-                units = f" [{unit}] "
-            else:
-                units = " "
-
-            title = f"{metric_title.capitalize()}{units}with benchmark of {benchmark:.2f} {unit}\n"
+            title = f"The {metric_title.title()} (benchmark: {benchmark:.2f}{unit}) of "
             title += marketcap + " cap companies " if marketcap else "Companies "
             if industry:
-                title += f"in {industry} industry\n"
+                title += f"in {industry} industry "
             elif sector:
-                title += f"in {sector} sector\n"
+                title += f"in {sector} sector "
 
             if country:
                 title += f"in {country}"
-                title += " " if (industry or sector) else "\n"
+                title += " " if (industry or sector) else ""
 
             title += (
                 "(excl. data from international exchanges)"
@@ -215,7 +205,11 @@ def display_bars_financials(
                 else "(incl. data from international exchanges)"
             )
 
-            ax.set_title(title)
+            ax.set_title(title, wrap=True, fontsize=11)
+
+            labels = ax.get_xticks().tolist()
+            ax.set_xticks(labels)
+            ax.set_xticklabels([f"{label}{unit}" for label in labels])
 
             theme.style_primary_axis(ax)
 
