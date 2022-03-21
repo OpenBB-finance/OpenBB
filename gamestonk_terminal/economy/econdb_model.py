@@ -617,6 +617,10 @@ def get_aggregated_macro_data(
                 parameter, country, start_date, end_date, convert_currency
             )
 
+            if country_data[country][parameter].empty:
+                del country_data[country][parameter]
+                del units[country][parameter]
+
     country_data_df = (
         pd.DataFrame.from_dict(country_data, orient="index").stack().to_frame()
     )
