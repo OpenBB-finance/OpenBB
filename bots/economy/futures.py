@@ -3,10 +3,11 @@ import os
 
 import disnake
 import pandas as pd
-import yahoo_fin.stock_info as si
+import requests
 
 from bots import imps
 from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_funcs import get_user_agent
 
 logger = logging.getLogger(__name__)
 
@@ -20,7 +21,13 @@ def futures_command():
         logger.debug("futures")
 
     # Retrieve data
-    df = si.get_futures()
+    req = pd.read_html(
+        requests.get(
+            "https://finance.yahoo.com/commodities",
+            headers={"User-Agent": get_user_agent()},
+        ).text
+    )
+    df = req[0]
 
     # Check for argument
     if df.empty:
