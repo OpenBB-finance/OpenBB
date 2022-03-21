@@ -69,6 +69,14 @@ class ForexController(BaseController):
  """
         console.print(text=help_text, menu="Forex")
 
+    def custom_reset(self):
+        """Class specific component of reset command"""
+        set_from_symbol = f"from {self.from_symbol}" if self.from_symbol else ""
+        set_to_symbol = f"to {self.to_symbol}" if self.to_symbol else ""
+        if set_from_symbol and set_to_symbol:
+            return ["forex", set_from_symbol, set_to_symbol]
+        return []
+
     @log_start_end(log=logger)
     def call_to(self, other_args: List[str]):
         """Process 'to' command."""

@@ -109,7 +109,8 @@ class TechnicalAnalysisController(StockBaseController):
     def custom_reset(self):
         """Class specific component of reset command"""
         if self.ticker:
-            return ["crypto", f"load {self.ticker}", "ta"]
+            from_symbol, to_symbol = self.ticker.split("/")
+            return ["forex", f"from {from_symbol}", f"to {to_symbol}", "load", "ta"]
         return []
 
     # TODO: Go through all models and make sure all needed columns are in dfs.
