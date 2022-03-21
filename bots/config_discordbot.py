@@ -55,7 +55,7 @@ DEBUG = False
 
 GST_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
-gst_imgur = pyimgur.Imgur(IMGUR_CLIENT_ID) if IMGUR_CLIENT_ID != "REPLACE_ME" else None
+gst_imgur = pyimgur.Imgur(IMGUR_CLIENT_ID)
 
 AUTHOR_NAME = "Gamestonk Terminal"
 AUTHOR_URL = "https://github.com/GamestonkTerminal/GamestonkTerminal"
