@@ -980,12 +980,19 @@ def display_line(
                     s=100,
                 )
 
+    data_type = data.name
+    ax.set_ylabel(data_type)
     ax.set_xlim(data.index[0], data.index[-1])
+    ax.ticklabel_format(style="plain", axis="y")
+    ax.get_yaxis().set_major_formatter(
+        matplotlib.ticker.FuncFormatter(lambda x, _: lambda_long_number_format(x))
+    )
 
     if title:
         ax.set_title(title)
     if draw:
         LineAnnotateDrawer(ax).draw_lines_and_annotate()
+
     theme.style_primary_axis(ax)
 
     if external_axes is None:
