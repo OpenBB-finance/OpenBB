@@ -33,7 +33,7 @@ class DashboardsController(BaseController):
         "shortdata",
         "currencies",
     ]
-    PATH = "/jupyter/dashboard/"
+    PATH = "/jupyter/dashboards/"
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
