@@ -1,8 +1,8 @@
 import json
 
+from bots.common.helpers import non_slash
 from bots.groupme.groupme_helpers import send_message
 from bots.helpers import ShowView
-from bots.common.helpers import non_slash
 
 
 def handle_groupme(request) -> bool:
