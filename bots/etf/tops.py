@@ -2,11 +2,11 @@ import logging
 import os
 
 import disnake
+import pandas as pd
 
 from bots import imps
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.etf.discovery import wsj_model
-import pandas as pd
 
 logger = logging.getLogger(__name__)
 
