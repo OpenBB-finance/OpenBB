@@ -27,6 +27,7 @@ DATEFORMAT = "%Y-%m-%dT%H:%M:%S%z"
 BUCKET = "gst-restrictions"
 FOLDER_NAME = "gst-app/logs"
 URL = "https://knaqi3sud7.execute-api.eu-west-3.amazonaws.com/log_api/logs"
+IP_REGEX = r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"
 
 
 def library_loggers(verbosity: int = 0) -> None:
@@ -185,6 +186,25 @@ class CustomFormatterWithExceptions(logging.Formatter):
                 .replace("'", "`")
                 .replace('"', "`")
             )
+            s_list = []
+            ip_reg = re.compile(IP_REGEX)
+            for word in s.split():
+                if (
+                    ip_reg.search(word)
+                    and int(max(word.split(""))) < 256
+                    and int(min(word.split(""))) >= 0
+                ):
+                    s_list.append("suspected_ip")
+                elif "@" in word and "." in word:
+                    s_list.append("suspected_email")
+                elif os.sep in word and "GamestonkTerminal/" in word:
+                    s_list.append(word.split("GamestonkTerminal/")[1])
+                elif os.sep in word:
+                    s_list.append(word.split(os.sep)[-1])
+                else:
+                    s_list.append(word)
+
+            s = " ".join(s_list)
 
         else:
             logPrefix = LOGPREFIXFORMAT % self.logPrefixDict
