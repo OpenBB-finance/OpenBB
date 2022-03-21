@@ -27,7 +27,7 @@ class ForexController(BaseController):
     """Forex Controller class."""
 
     CHOICES_COMMANDS = ["to", "from", "load", "quote", "candle", "resources"]
-    CHOICES_MENUS = ["oanda"]
+    CHOICES_MENUS = ["ta", "oanda"]
     PATH = "/forex/"
     FILE_PATH = os.path.join(os.path.dirname(__file__), "README.md")
 
@@ -60,6 +60,9 @@ class ForexController(BaseController):
     quote         get last quote
     load          get historical data
     candle        show candle plot for loaded data[/cmds]
+[menu]
+>   ta          technical analysis for loaded coin,     e.g.: ema, macd, rsi, adx, bbands, obv
+[/menu]
 {has_symbols_end}
 [info]Forex brokerages:[/info][menu]
 >   oanda         Oanda menu[/menu][/cmds]
@@ -176,6 +179,7 @@ class ForexController(BaseController):
                     interval=ns_parser.interval,
                     start_date=ns_parser.start_date.strftime("%Y-%m-%d"),
                 )
+                self.data.index.name = "date"
                 console.print(
                     f"Loaded historic data from {self.from_symbol} to {self.to_symbol}"
                 )
@@ -236,6 +240,27 @@ class ForexController(BaseController):
         from gamestonk_terminal.forex.oanda.oanda_controller import OandaController
 
         self.queue = self.load_class(OandaController, self.queue)
+
+    @log_start_end(log=logger)
+    def call_ta(self, _):
+        """Process ta command"""
+        from gamestonk_terminal.forex.technical_analysis.ta_controller import (
+            TechnicalAnalysisController,
+        )
+
+        # TODO: Play with this to get correct usage
+        if self.to_symbol and self.from_symbol and not self.data.empty:
+            self.queue = self.load_class(
+                TechnicalAnalysisController,
+                ticker=f"{self.from_symbol}/{self.to_symbol}",
+                data=self.data,
+                start=self.data.index[0],
+                interval="",
+                queue=self.queue,
+            )
+
+        else:
+            console.print("No currency pair data is loaded. Use 'load' to load data.\n")
 
     # HELP WANTED!
     # TODO: Add news and reddit commands back
