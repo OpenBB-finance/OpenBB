@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 import numpy as np
 from matplotlib import pyplot as plt
 
-import bots.config_discordbot as cfg
+from bots import config_discordbot as cfg
 from bots.helpers import image_border, load
 from gamestonk_terminal.common.technical_analysis import momentum_model
 from gamestonk_terminal.config_plot import PLOT_DPI
