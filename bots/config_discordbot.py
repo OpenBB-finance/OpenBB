@@ -41,9 +41,9 @@ COMMAND_PREFIX = "!"
 DATE_FORMAT = "%Y-%m-%d"
 COLOR = disnake.Color.from_rgb(255, 0, 0)
 INTERACTIVE = False
-INTERACTIVE_DIR = bots_path / "in/"
+INTERACTIVE_DIR = bots_path / "interactive/"
 INTERACTIVE_URL = ""
-IMG_DIR = bots_path / "in/images/"
+IMG_DIR = bots_path / "interactive/images/"
 IMAGES_URL = ""  # Ex. "http://your-site.com/images/"
 
 # IMG_BG = bots_path.joinpath("files/bg.png")  # Light BG
