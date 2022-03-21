@@ -126,7 +126,7 @@ def performance_command(economy_group="sector"):
             imagefile = imps.save_image(imagefile, fig)
 
             if imps.IMAGES_URL or imps.IMGUR_CLIENT_ID != "REPLACE_ME":
-                image_link = imps.IMAGES_URL + imagefile
+                image_link = str(imps.IMAGES_URL) + str(imagefile)
                 images_list.append(imagefile)
             else:
                 imagefile_save = imps.IMG_DIR / imagefile

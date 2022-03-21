@@ -50,9 +50,8 @@ def energy_command():
     df = df.rename(
         columns={"prevClose": "PrevClose", "last": "Last", "change": "Change"}
     )
-
     font_color = ["white"] * 3 + [
-        ["#e4003a" if boolv else "#00ACFF" for boolv in df["Yld Chg"].str.contains("-")]
+        ["#e4003a" if boolv else "#00ACFF" for boolv in df["Change"].str.contains("-")]
     ]
 
     fig = imps.plot_df(

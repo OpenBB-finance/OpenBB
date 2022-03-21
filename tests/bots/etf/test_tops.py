@@ -6,7 +6,7 @@ from bots.etf.tops import etfs_disc_command
 @pytest.mark.parametrize("sort", ["active"])
 @pytest.mark.vcr
 def test_etfs_disc_command(mocker, recorder, sort):
-    mocker.patch(target="bots.etf.holdings.helpers.save_image", return_value="1")
+    mocker.patch(target="bots.etf.holdings.imps.save_image", return_value="1")
     value = etfs_disc_command(sort)
     for key, value in value.items():
         key = str(value)

@@ -25,7 +25,9 @@ from bots.economy.valuation import valuation_command
 )
 @pytest.mark.vcr
 def test_valuation_command(mocker, recorder, group):
-    mocker.patch(target="bots.economy.valuation.save_image", return_value=None)
+    mocker.patch(target="bots.economy.valuation.imps.save_image", return_value=None)
     value = valuation_command(group)
-
+    value["view"] = value["view"].__name__
+    value["embed"] = None
+    value["choices"] = None
     recorder.capture(value)

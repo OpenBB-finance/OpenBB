@@ -25,7 +25,9 @@ from bots.economy.performance import performance_command
 )
 @pytest.mark.vcr
 def test_performance_command(mocker, recorder, group):
-    mocker.patch(target="bots.economy.performance.save_image", return_value=None)
+    mocker.patch(target="bots.economy.performance.imps.save_image", return_value=None)
     value = performance_command(group)
-
+    value["view"] = value["view"].__name__
+    value["embed"] = None
+    value["choices"] = None
     recorder.capture(value)
