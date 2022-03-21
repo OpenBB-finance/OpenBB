@@ -1,13 +1,13 @@
 import logging
+import os
 
-import df2img
-import numpy as np
+import disnake
 import pandas as pd
 
-import bots.config_discordbot as cfg
-from bots.helpers import save_image
+from bots import imps
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.economy import finviz_model
+from gamestonk_terminal.helper_funcs import lambda_long_number_format
 
 logger = logging.getLogger(__name__)
 
@@ -35,12 +35,12 @@ def valuation_command(economy_group="sector"):
     }
 
     # Debug user input
-    if cfg.DEBUG:
+    if imps.DEBUG:
         logger.debug("econ-valuation %s", economy_group)
 
     # Select default group
     if economy_group == "":
-        if cfg.DEBUG:
+        if imps.DEBUG:
             logger.debug("Use default economy_group: 'sector'")
         economy_group = "sector"
 
@@ -63,64 +63,106 @@ def valuation_command(economy_group="sector"):
 
     # Output data
     df = pd.DataFrame(df_group)
-    df = df.replace(np.nan, 0)
-
-    df = df.set_axis(
-        [
-            "Name",
-            "MarketCap",
-            "P/E",
-            "FwdP/E",
-            "PEG",
-            "P/S",
-            "P/B",
-            "P/C",
-            "P/FCF",
-            "EPSpast5Y",
-            "EPSnext5Y",
-            "Salespast5Y",
-            "Change",
-            "Volume",
-        ],
-        axis="columns",
-    )
-
-    df["P/E"] = pd.to_numeric(df["P/E"].astype(float))
-    df["FwdP/E"] = pd.to_numeric(df["FwdP/E"].astype(float))
-    df["EPSpast5Y"] = pd.to_numeric(df["EPSpast5Y"].astype(float))
-    df["EPSnext5Y"] = pd.to_numeric(df["EPSnext5Y"].astype(float))
-    df["Salespast5Y"] = pd.to_numeric(df["Salespast5Y"].astype(float))
-    df["Volume"] = pd.to_numeric(df["Volume"].astype(float))
-    df["Volume"] = df["Volume"] / 1_000_000
-
-    formats = {
-        "P/E": "{:.2f}",
-        "FwdP/E": "{:.2f}",
-        "EPSpast5Y": "{:.2f}",
-        "EPSnext5Y": "{:.2f}",
-        "Salespast5Y": "{:.2f}",
-        "Change": "{:.2f}",
-        "Volume": "{:.0f}M",
-    }
-    for col, value in formats.items():
-        df[col] = df[col].map(lambda x: value.format(x))  # pylint: disable=W0640
-
-    df = df.fillna("")
     df.set_index("Name", inplace=True)
+    df = df.fillna("-")
+    df = df.applymap(lambda x: lambda_long_number_format(x, 2))
 
-    fig = df2img.plot_dataframe(
-        df,
-        fig_size=(1600, (40 + (50 * len(df.index)))),
-        col_width=[12, 5, 4, 4, 4, 4, 4, 4, 4, 6, 6, 6, 4, 4],
-        tbl_header=cfg.PLT_TBL_HEADER,
-        tbl_cells=cfg.PLT_TBL_CELLS,
-        font=cfg.PLT_TBL_FONT,
-        row_fill_color=cfg.PLT_TBL_ROW_COLORS,
-        paper_bgcolor="rgba(0, 0, 0, 0)",
-    )
-    fig.update_traces(cells=(dict(align=["left", "center"])))
-    imagefile = save_image("econ-valuation.png", fig)
-    return {
-        "title": "Economy: [Finviz] Valuation",
-        "imagefile": imagefile,
-    }
+    title = f"Economy: [Finviz] Valuation {group}"
+
+    dindex = len(df.index)
+    if dindex > 2:
+        embeds: list = []
+        # Output
+        i, i2, end = 0, 0, 2
+        df_pg, embeds_img, images_list = pd.DataFrame(), [], []
+        while i < dindex:
+            df_pg = df.iloc[i:end]
+            df_pg.append(df_pg)
+            fig = imps.plot_df(
+                df_pg.transpose(),
+                fig_size=(800, 720),
+                col_width=[6, 10],
+                tbl_header=imps.PLT_TBL_HEADER,
+                tbl_cells=imps.PLT_TBL_CELLS,
+                font=imps.PLT_TBL_FONT,
+                row_fill_color=imps.PLT_TBL_ROW_COLORS,
+                paper_bgcolor="rgba(0, 0, 0, 0)",
+            )
+            fig.update_traces(cells=(dict(align=["center", "right"])))
+            imagefile = "econ_valuation.png"
+            imagefile = imps.save_image(imagefile, fig)
+
+            if imps.IMAGES_URL or imps.IMGUR_CLIENT_ID != "REPLACE_ME":
+                image_link = imps.IMAGES_URL + imagefile
+                images_list.append(imagefile)
+            else:
+                imagefile_save = imps.IMG_DIR / imagefile
+                uploaded_image = imps.gst_imgur.upload_image(
+                    imagefile_save, title="something"
+                )
+                image_link = uploaded_image.link
+                os.remove(imagefile_save)
+
+            embeds_img.append(
+                f"{image_link}",
+            )
+            embeds.append(
+                disnake.Embed(
+                    title=title,
+                    colour=imps.COLOR,
+                ),
+            )
+            i2 += 1
+            i += 2
+            end += 2
+
+        # Author/Footer
+        for i in range(0, i2):
+            embeds[i].set_author(
+                name=imps.AUTHOR_NAME,
+                url=imps.AUTHOR_URL,
+                icon_url=imps.AUTHOR_ICON_URL,
+            )
+            embeds[i].set_footer(
+                text=imps.AUTHOR_NAME,
+                icon_url=imps.AUTHOR_ICON_URL,
+            )
+
+        i = 0
+        for i in range(0, i2):
+            embeds[i].set_image(url=embeds_img[i])
+
+            i += 1
+        embeds[0].set_footer(text=f"Page 1 of {len(embeds)}")
+        choices = [
+            disnake.SelectOption(label="Home", value="0", emoji="🟢"),
+        ]
+
+        output = {
+            "view": imps.Menu,
+            "title": title,
+            "embed": embeds,
+            "choices": choices,
+            "embeds_img": embeds_img,
+            "images_list": images_list,
+        }
+    else:
+        fig = imps.plot_df(
+            df.transpose(),
+            fig_size=(800, 720),
+            col_width=[6, 10],
+            tbl_header=imps.PLT_TBL_HEADER,
+            tbl_cells=imps.PLT_TBL_CELLS,
+            font=imps.PLT_TBL_FONT,
+            row_fill_color=imps.PLT_TBL_ROW_COLORS,
+            paper_bgcolor="rgba(0, 0, 0, 0)",
+        )
+        fig.update_traces(cells=(dict(align=["center", "right"])))
+        imagefile = imps.save_image("econ_valuation.png", fig)
+
+        output = {
+            "title": title,
+            "imagefile": imagefile,
+        }
+
+    return output

@@ -4,10 +4,9 @@ from datetime import datetime, timedelta
 import pandas as pd
 import plotly.graph_objects as go
 
-import bots.config_discordbot as cfg
-from bots import helpers
+from bots import imps
 from gamestonk_terminal.decorators import log_start_end
-from gamestonk_terminal.economy.fred import fred_model
+from gamestonk_terminal.economy import fred_model
 
 logger = logging.getLogger(__name__)
 
@@ -17,7 +16,7 @@ def cpi_command(start=""):
     """Displays Consumer Prices Index (CPI)"""
 
     # Debug
-    if cfg.DEBUG:
+    if imps.DEBUG:
         logger.debug(
             "econ cpi %s",
             start,
@@ -26,7 +25,7 @@ def cpi_command(start=""):
     if start == "":
         start = datetime.now() - timedelta(days=900)
     else:
-        start = datetime.strptime(start, cfg.DATE_FORMAT)
+        start = datetime.strptime(start, imps.DATE_FORMAT)
 
     # Retrieve data
     df_d = ("date", "CPI")
@@ -56,7 +55,7 @@ def cpi_command(start=""):
     end = datetime.now() + timedelta(days=30)
 
     # Debug user output
-    if cfg.DEBUG:
+    if imps.DEBUG:
         logger.debug(df.to_string())
 
     fig = go.Figure()
@@ -67,21 +66,21 @@ def cpi_command(start=""):
             y=df["CPI"],
         )
     )
-    if cfg.PLT_WATERMARK:
-        fig.add_layout_image(cfg.PLT_WATERMARK)
-    fig.update_layout(
-        xaxis_range=[df.index[0], end],
-    )
+
+    if imps.PLT_WATERMARK:
+        fig.add_layout_image(imps.PLT_WATERMARK)
+
     fig.update_xaxes(dtick="M2", tickformat="%b\n%Y")
     fig.update_layout(
+        xaxis_range=[df.index[0], end],
         margin=dict(l=0, r=0, t=40, b=50),
-        template=cfg.PLT_SCAT_STYLE_TEMPLATE,
-        colorway=cfg.PLT_TA_COLORWAY,
+        template=imps.PLT_SCAT_STYLE_TEMPLATE,
+        colorway=imps.PLT_TA_COLORWAY,
         title="CPI Monthly",
         title_x=0.5,
         yaxis_title="Consumer Prices",
         legend_title="",
-        font=cfg.PLT_FONT,
+        font=imps.PLT_FONT,
         yaxis=dict(
             fixedrange=False,
             nticks=20,
@@ -98,15 +97,15 @@ def cpi_command(start=""):
 
     # Check if interactive settings are enabled
     plt_link = ""
-    if cfg.INTERACTIVE:
-        plt_link = helpers.inter_chart(fig, imagefile, callback=False)
+    if imps.INTERACTIVE:
+        plt_link = imps.inter_chart(fig, imagefile, callback=False)
 
     fig.update_layout(
         width=800,
         height=500,
     )
 
-    imagefile = helpers.image_border(imagefile, fig=fig)
+    imagefile = imps.image_border(imagefile, fig=fig)
 
     return {
         "title": "Consumer Prices Index",

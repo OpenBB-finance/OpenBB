@@ -6,7 +6,7 @@ from disnake.ext import commands
 from bots.etf.holdings import holdings_command
 from bots.etf.tops import etfs_disc_command
 from bots.etf.whatetf import by_ticker_command
-from bots.helpers import ShowView
+from bots.helpers import ShowView, ticker_autocomp
 
 
 class EtfCommands(commands.Cog):
@@ -66,18 +66,30 @@ class EtfCommands(commands.Cog):
     @holdings.sub_command(name="by-ticker")
     async def by_ticker(
         inter: disnake.AppCmdInter,
-        ticker: str,
+        ticker: str = commands.Param(autocomplete=ticker_autocomp),
         num: int = 15,
+        sort: str = commands.Param(
+            choices={
+                "Percentage of Fund": "fund_percent",
+                "Market Value": "mkt_value",
+            },
+        ),
     ):
         """Displays ETF Holdings By Ticker  [ETF DataBase]
 
         Parameters
         -----------
         ticker: Ticker to Search
+        sort: Sort by Percentage of Fund or Market Value
         num: Amount of ETFs to display Default 15
         """
         await ShowView().discord(
-            by_ticker_command, inter, "etf holdings by-ticker", ticker, num
+            by_ticker_command,
+            inter,
+            "etf holdings by-ticker",
+            ticker,
+            sort,
+            num,
         )
 
 

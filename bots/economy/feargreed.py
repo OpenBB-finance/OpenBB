@@ -4,7 +4,7 @@ import os
 
 import matplotlib.pyplot as plt
 
-import bots.config_discordbot as cfg
+from bots import config_discordbot as cfg
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.economy import cnn_model, cnn_view
 
