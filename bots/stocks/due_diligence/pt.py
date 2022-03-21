@@ -4,8 +4,7 @@ from datetime import datetime, timedelta
 
 from matplotlib import pyplot as plt
 
-import bots.config_discordbot as cfg
-import bots.helpers
+from bots import imps
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import plot_autoscale
@@ -19,7 +18,7 @@ def pt_command(ticker: str = "", raw: bool = False, start=""):
     """Displays price targets [Business Insider]"""
 
     # Debug
-    if cfg.DEBUG:
+    if imps.DEBUG:
         logger.debug("dd pt %s", ticker)
 
     # Check for argument
@@ -29,13 +28,13 @@ def pt_command(ticker: str = "", raw: bool = False, start=""):
     if start == "":
         start = datetime.now() - timedelta(days=365)
     else:
-        start = datetime.strptime(start, cfg.DATE_FORMAT)
+        start = datetime.strptime(start, imps.DATE_FORMAT)
 
     if raw not in [True, False]:
         raise Exception("raw argument has to be true or false")
 
     df_analyst_data = business_insider_model.get_price_target_from_analysts(ticker)
-    stock = bots.helpers.load(ticker, start)
+    stock = imps.load(ticker, start)
     title = f"Stocks: [Business Insider] Price Targets {ticker}"
     if df_analyst_data.empty or stock.empty:
         raise Exception("Enter valid ticker")
@@ -71,9 +70,10 @@ def pt_command(ticker: str = "", raw: bool = False, start=""):
         imagefile = "ta_pt.png"
         dataBytesIO = io.BytesIO()
         plt.savefig(dataBytesIO)
+        plt.close("all")
 
         dataBytesIO.seek(0)
-        imagefile = bots.helpers.image_border(imagefile, base64=dataBytesIO)
+        imagefile = imps.image_border(imagefile, base64=dataBytesIO)
 
         output = {
             "title": title,

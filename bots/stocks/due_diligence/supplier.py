@@ -4,8 +4,7 @@ import disnake
 import requests
 from bs4 import BeautifulSoup
 
-import bots.config_discordbot as cfg
-from bots.menus.menu import Menu
+from bots import imps
 from gamestonk_terminal.decorators import log_start_end
 
 logger = logging.getLogger(__name__)
@@ -16,7 +15,7 @@ def supplier_command(ticker=""):
     """Displays suppliers of the company [CSIMarket]"""
 
     # Debug user input
-    if cfg.DEBUG:
+    if imps.DEBUG:
         logger.debug("dd supplier %s", ticker)
 
     if not ticker:
@@ -37,7 +36,7 @@ def supplier_command(ticker=""):
         raise Exception("No suppliers found.\n")
 
     # Debug user output
-    if cfg.DEBUG:
+    if imps.DEBUG:
         logger.debug(l_suppliers)
 
     suppliers, unique = [], []
@@ -69,10 +68,10 @@ def supplier_command(ticker=""):
             disnake.Embed(
                 title=title,
                 description=suppliers,
-                colour=cfg.COLOR,
+                colour=imps.COLOR,
             ).set_author(
-                name=cfg.AUTHOR_NAME,
-                icon_url=cfg.AUTHOR_ICON_URL,
+                name=imps.AUTHOR_NAME,
+                icon_url=imps.AUTHOR_ICON_URL,
             )
         )
         reports.append(f"{description}")
@@ -91,10 +90,10 @@ def supplier_command(ticker=""):
                 disnake.Embed(
                     title=title,
                     description=description,
-                    colour=cfg.COLOR,
+                    colour=imps.COLOR,
                 ).set_author(
-                    name=cfg.AUTHOR_NAME,
-                    icon_url=cfg.AUTHOR_ICON_URL,
+                    name=imps.AUTHOR_NAME,
+                    icon_url=imps.AUTHOR_ICON_URL,
                 )
             )
             i += 30
@@ -103,7 +102,7 @@ def supplier_command(ticker=""):
 
         # Output data
         output = {
-            "view": Menu,
+            "view": imps.Menu,
             "title": title,
             "description": reports,
             "embed": embeds,

@@ -6,8 +6,7 @@ import matplotlib.dates as mdates
 import pandas as pd
 from matplotlib import pyplot as plt
 
-import bots.config_discordbot as cfg
-from bots.helpers import image_border
+from bots import imps
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import plot_autoscale
@@ -25,7 +24,7 @@ def gtrades_command(
 ):
     """Displays government trades [quiverquant.com]"""
     # Debug user input
-    if cfg.DEBUG:
+    if imps.DEBUG:
         logger.debug(
             "gov gtrades %s %s %s %s",
             ticker,
@@ -115,7 +114,7 @@ def gtrades_command(
     plt.savefig(dataBytesIO)
     dataBytesIO.seek(0)
 
-    imagefile = image_border(imagefile, base64=dataBytesIO)
+    imagefile = imps.image_border(imagefile, base64=dataBytesIO)
 
     return {
         "title": "Stocks: [quiverquant.com] Government Trades",
