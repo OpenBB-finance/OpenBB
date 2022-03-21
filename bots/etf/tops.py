@@ -6,6 +6,7 @@ import disnake
 from bots import imps
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.etf.discovery import wsj_model
+import pandas as pd
 
 logger = logging.getLogger(__name__)
 
@@ -26,13 +27,24 @@ def etfs_disc_command(sort=""):
     prfx = "Most" if sort == "active" else "Top"
     title = f"ETF Movers ({prfx} {sort.capitalize()})"
 
-    df_etfs["%Chg"] = df_etfs["%Chg"].map(lambda x: f"{x:.2f}%")
+    df_etfs["Price"] = pd.to_numeric(df_etfs["Price"].astype(float))
+
+    df_etfs["Price"] = df_etfs.apply(lambda x: f"${x['Price']:.2f}", axis=1)
     df_etfs["Change"] = df_etfs.apply(
-        lambda x: f"${x['Chg']} /top(<b>{x['%Chg']}</b>)", axis=1
+        lambda x: f"${x['Chg']:.2f} (<b>{x['%Chg']:.2f}%</b>)", axis=1
     )
 
     df_etfs.set_index(" ", inplace=True)
     df_etfs = df_etfs.drop(columns=["Chg", "%Chg"])
+
+    df_etfs = df_etfs[
+        [
+            "Name",
+            "Price",
+            "Change",
+            "Vol",
+        ]
+    ]
 
     dindex = len(df_etfs.index)
     if dindex > 15:
@@ -46,7 +58,7 @@ def etfs_disc_command(sort=""):
             fig = imps.plot_df(
                 df_pg,
                 fig_size=(820, (40 + (40 * dindex))),
-                col_width=[1.1, 9, 1.5, 1.5, 4],
+                col_width=[1.1, 9, 1.5, 3, 1.5],
                 tbl_header=imps.PLT_TBL_HEADER,
                 tbl_cells=imps.PLT_TBL_CELLS,
                 font=imps.PLT_TBL_FONT,
@@ -115,7 +127,7 @@ def etfs_disc_command(sort=""):
         fig = imps.plot_df(
             df_etfs,
             fig_size=(820, (40 + (40 * dindex))),
-            col_width=[1, 9, 1.5, 1.5, 4],
+            col_width=[1, 9, 1.5, 3, 1.5],
             tbl_header=imps.PLT_TBL_HEADER,
             tbl_cells=imps.PLT_TBL_CELLS,
             font=imps.PLT_TBL_FONT,
