@@ -25,8 +25,8 @@ beartype==0.7.1; python_version >= "3.8" and python_version < "4.0" and python_f
 beautifulsoup4==4.10.0; python_full_version > "3.0.0" and python_version >= "3.7"
 black==22.1.0; python_full_version >= "3.6.2"
 bleach==4.1.0; python_version >= "3.7"
-boto3==1.21.22; python_version >= "3.6"
-botocore==1.24.22; python_version >= "3.6"
+boto3==1.21.23; python_version >= "3.6"
+botocore==1.24.23; python_version >= "3.6"
 bs4==0.0.1
 bt==0.2.9; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.6.0")
 cachetools==5.0.0; python_version >= "3.7" and python_version < "4.0" and (python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.6")
