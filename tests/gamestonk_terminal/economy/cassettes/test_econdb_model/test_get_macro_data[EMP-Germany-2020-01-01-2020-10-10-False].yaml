@@ -2,34 +2,54 @@ interactions:
 - request:
     body: null
     headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
       Connection:
-      - close
-      Host:
-      - www.econdb.com
+      - keep-alive
       User-Agent:
-      - Python-urllib/3.8
+      - python-requests/2.27.1
     method: GET
-    uri: https://www.econdb.com/api/series/EMPDE/?format=csv
+    uri: https://www.econdb.com/series/context/?tickers=EMPDE
   response:
     body:
-      string: "Date,EMPDE\r\n2009-01-01,37053\r\n2009-04-01,37169\r\n2009-07-01,37157\r\n2009-10-01,37859\r\n2010-01-01,36432\r\n2010-04-01,36727\r\n2010-07-01,37007\r\n2010-10-01,37213\r\n2011-01-01,36914\r\n2011-04-01,37462\r\n2011-07-01,37790\r\n2011-10-01,38007\r\n2012-01-01,37328\r\n2012-04-01,37720\r\n2012-07-01,38095\r\n2012-10-01,38115\r\n2013-01-01,37697\r\n2013-04-01,38173\r\n2013-07-01,38285\r\n2013-10-01,38362\r\n2014-01-01,38046\r\n2014-04-01,38308\r\n2014-07-01,38597\r\n2014-10-01,38621\r\n2015-01-01,38420\r\n2015-04-01,38424\r\n2015-07-01,38706\r\n2015-10-01,39079\r\n2016-01-01,39395\r\n2016-04-01,39308\r\n2016-07-01,39845\r\n2016-10-01,39985\r\n2017-01-01,39628\r\n2017-04-01,39636\r\n2017-07-01,40321\r\n2017-10-01,40195\r\n2018-01-01,39930\r\n2018-04-01,39746\r\n2018-07-01,40351\r\n2018-10-01,40359\r\n2019-01-01,40284\r\n2019-04-01,40141\r\n2019-07-01,40607\r\n2019-10-01,41047\r\n2020-01-01,39854\r\n2020-04-01,39405\r\n2020-07-01,39617\r\n2020-10-01,39945\r\n2021-01-01,39663\r\n2021-04-01,40059\r\n2021-07-01,40629\r\n"
+      string: !!binary |
+        H4sIAAAAAAAAA61Xf0/jOBD9Klb+OO1KDTi/W1arEzoKx+qOgwWkO3EoMonb+pTawXaAasV3P9tp
+        oRCzjFYroZI4fjPzZt5MnKtvQU00IVKSVbCHrtwtNVdBjOMoxEWIo2CEgumfpwdTs5ziPJ6Ye6WJ
+        7pTdd8g4aYLHEXoNTQdQnAGh0StoMsnzBADFYYQH0EmagaADrsZrVMCgr7kmkxQDvQ65jrP0fWg0
+        GXJNI5wCAjZQX10xEDqsa5RGMOhrrimOxxCuYw9XnEDUZKAerkkGCXjsq2uR5jDosK6TBAOghY9r
+        NAGoyUB9XGMI18LHNU8gXAtvv8ZjADT39usYwjX39esY0uoWOuSaYFjAHq4JqDiZjysuIBrOPFzH
+        BYYUJ/NwHacxpOkyD1cDhWg49XAd5yAhpj6u2QQym1IfV1hdUx9XDGr1xMc1yWMQ1MM1Bsk/8XGN
+        CsBL0kIHXIsclOHYxzWKIAHHPq4Y1Dmxh2tRgIQY+7gmoNkU+bhi0EvSc24yAU8gAXvOTYl55UDU
+        5Ds35ZMI0uq+c1MRRxA1+c5NBSxNvnNTXsRA6JBrmgDShD3npqQYQ84S2HNuSoooAwSMPecmA82B
+        Xocaxpm3ONdmkdV2od9qbu+ovBGKlprpxpk8onJJ+AqF6EJo0iC6bBuxWlKu7fYl1aSsqaokazUT
+        /H3EnIq5JO3Cfj98CxZEla0UM+acadlRs4WT5bZri2JK2BUTo+Eb6NqBZ5LedpRX1lRw1hGpqWzc
+        dlWRPvqLhegU4bWyqx1n2tE/pVIJ7tYaonTXbp2xzQyIwzi1z9a8ykbwucuaFEsUZUgLlKdoRYlU
+        nwYc0QdJFavtVSvariE2LagSvKKtNjn54/D84xr1CV1yUv/XKU1rZL+r0Ae2Q3cQp0wvqESKEhMm
+        aZoVetrGhUSWHK+JRC/A1uqaLWqfCZK6ZnwmyppV2mXt8M2sTZ9JMG72Ey2kS+IPULT2ztfxr+N0
+        CjDmfirp3s/DU5j2fn9OUWUKq94omt1zabSAxAwtjbtOvtDKdvaOqGhFw7RJhskAN12xsuxbITXj
+        84/bKn1cq6m8I01HXaq//3EcpBiZz+NguzN51zTWkCR8bqFXrqXPHM5aOUsC27S2bWZC0sr4s7AZ
+        aZTrHPqgS0kbQ2pLz3mY4AuM99yfi9OmTtFeD0p0surjbSWdMZfL6WWw1YjTTgobogu16Vwz0M3a
+        4/bik0ZCk8iQVJrdmZSFN6tQ0Yd+bU7D243qQhuItVqJ2nky0jkuTYLKs60G3AyWLX3aMm2so5uV
+        Uc1Dv2ZKH6In+2hjn1QVVarsZGMNLbRu93Z3SdsqJXY2THZo5a5bYv7t8o7tqoW436nFr/eEfbaz
+        6Zd13j43M8VKQ7a87YdTqerlw/MA02xJS8W4S2uQFv92GBO8ZLzT9PtTxybTkNRlSyRZKlcV4Ch+
+        quPLcg0nofVBtJbsxoVjRHYVHH6duoy7n+cJMdqeEEZ4V8HxycHxb6ZCayGXpmBvjo7RD44O5+i8
+        3D/4Yk2cnO+/NUxGP3uY9J6nf7vQN6NlQ6N/un/k3pP/mA+ePH05bUb+aeNglyfHzuDF7+fl6fSr
+        bwSNPCPIYY+mf9mH/Qv6vYk0ep5I19e9ONeqLe8YvV+L9PH6f1HM9/vLEwAA
     headers:
-      Allow:
-      - GET, HEAD, OPTIONS
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 6ed4821d29671f95-AMS
+      - 6ef63475d90d4bf5-AMS
       Connection:
-      - close
-      Content-Disposition:
-      - attachment;filename="econdb_1647507313.csv"
-      Content-Length:
-      - '930'
+      - keep-alive
+      Content-Encoding:
+      - gzip
       Content-Type:
-      - text/csv; charset=utf-8
+      - application/json
       Date:
-      - Thu, 17 Mar 2022 08:55:13 GMT
+      - Mon, 21 Mar 2022 11:04:07 GMT
       Expect-CT:
       - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
       NEL:
@@ -37,11 +57,14 @@ interactions:
       Referrer-Policy:
       - same-origin
       Report-To:
-      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=URex4qj%2FMPytBIbpVMJl3EMSkTCdvvSAffk0PCJrQjSl2Oi36vXDwqW5MQVJq%2F0o%2B8KUUk93LMWMD9nWqhVNuXKOxERLkXZisrPdkItWj12sOY4vWLaz%2BXmpcMMy%2F3yI"}],"group":"cf-nel","max_age":604800}'
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=WnlWmXsmxKCAP6IKtJr6%2Bt16MWDYkw2aUPeMSu8yvh43KXRGPyWuSo%2BkMmagUuD6i5aEGuyYCDto5D5lxciAfY6bU9QKcyjB905ogYW1Z9e6q%2F%2BokRFKBRlPGR1ZdV8x"}],"group":"cf-nel","max_age":604800}'
       Server:
       - cloudflare
+      Transfer-Encoding:
+      - chunked
       Vary:
-      - Accept, Origin
+      - Accept-Encoding
+      - Origin
       X-Content-Type-Options:
       - nosniff
       X-Frame-Options:

@@ -1,11 +1,11 @@
-                         Price     Chg   %Chg
-0               DJIA  34063.10  518.76   1.55
-1            S&P 500   4357.86   95.41   2.24
-2   Nasdaq Composite  13436.55  487.93   3.77
-3  Japan: Nikkei 225  26652.89  890.88   3.46
-4       UK: FTSE 100   7317.32   25.64   0.35
-5  Crude Oil Futures     98.26    3.22   3.39
-6       Gold Futures   1942.10   32.90   1.72
-7                Yen    118.65   -0.10  -0.08
-8               Euro    1.1052  0.0018   0.16
+                         Price      Chg   %Chg
+0               DJIA  34754.93   274.17   0.80
+1            S&P 500   4463.12    51.45   1.17
+2   Nasdaq Composite  13893.84   279.06   2.05
+3  Japan: Nikkei 225  26827.43   174.54   0.65
+4       UK: FTSE 100   7450.84    46.11   0.62
+5  Crude Oil Futures    109.28     4.58   4.37
+6       Gold Futures   1926.90    -2.40  -0.12
+7                Yen    119.23     0.09   0.07
+8               Euro    1.1040  -0.0010  -0.09
 
