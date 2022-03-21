@@ -7,6 +7,8 @@ from bots import helpers, load_candle
 from gamestonk_terminal.common.technical_analysis import trend_indicators_model
 from gamestonk_terminal.decorators import log_start_end
 
+# pylint: disable=R0913
+
 logger = logging.getLogger(__name__)
 
 
@@ -28,7 +30,7 @@ def aroon_command(
     # Debug
     if cfg.DEBUG:
         logger.debug(
-            "ta aroon %s %s %s %s %s",
+            "ta aroon %s %s %s %s %s, %s, %s, %s, %s, %s",
             ticker,
             interval,
             past_days,

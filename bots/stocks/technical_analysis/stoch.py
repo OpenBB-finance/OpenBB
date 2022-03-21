@@ -7,6 +7,7 @@ from bots import helpers, load_candle
 from gamestonk_terminal.common.technical_analysis import momentum_model
 from gamestonk_terminal.decorators import log_start_end
 
+# pylint: disable=R0913
 logger = logging.getLogger(__name__)
 
 
@@ -29,7 +30,7 @@ def stoch_command(
     # Debug
     if cfg.DEBUG:
         logger.debug(
-            "ta stoch %s %s %s %s %s %s",
+            "ta stoch %s %s %s %s %s %s %s %s %s %s %s",
             ticker,
             interval,
             past_days,

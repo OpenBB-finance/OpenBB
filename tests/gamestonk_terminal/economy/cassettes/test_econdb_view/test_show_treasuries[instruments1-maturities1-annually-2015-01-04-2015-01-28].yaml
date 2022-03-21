@@ -1,0 +1,68 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: GET
+    uri: https://www.econdb.com/api/series/?dataset=FRB_H15&v=Instrument&h=TIME&instrument=%5BTCMNOM%5D&from=2015-01-04&to=2015-01-28&freq=%5B203&UNIT=%5BPERCENT:_PER_YEAR%5D&format=json&page_size=500&expand=both
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA+2YTY+bMBCG/4rFqZWyWT4WaLwnIKSNVGhL4IBWq8glbhaVmNSYVaNV/nuHzaYt
+        pIeiovrCbfDYMDN+NH7Nk5KVNRMK1rSJsidbWoE5URj9DmOsLgoY5fQxL+vq/MxpVRcCHu+eFJFn
+        XylXsLKI3PU7zZyq3htVna6myUqZKBtaZTzfi7xkMCVhuaAbtBJE0ApdobAUyNnvizwjnwt6ixJY
+        hrblI+VsR5lAFc1qnoucVtcxp6Sq+QFlJasEAeeOiLMzLHc5I8Ut0q52JRMPtyhaLt6/XXiBqq3D
+        qQOBbGm55WT/cOiGAb4vnH6rKcsa33PQRJCKil85wVgNayBh5SPlGYSGERgopYSDj2w2eZMhKdY7
+        KkizXMFPipdEkR96KfZqzl9eHzq4nTQsX0T+J7z4LQZdNbDDWE0K8C7DVRwlgR/GeAmZ87qpDEyK
+        vSD8EOB/LBl8IHDiJFrGKQ5O3sM1p3ueZznbopwJyh9hGlYCDb9UF9as/Gjpr9ahE/h4RTm8EDGy
+        o+gVFOw1TG6XH1/sRhIuY5ycS+pHXpPeGox16jsRvizy8bQrTVkhnLph9O7+eexsQoaifraPx8kf
+        sHQ8X51Lw/IASfykMh2pHIrKtKHycEr4L6FM21CmMqF0Dc+YSYLS6EJpjFAOBKWBjd5QGm0oDXlQ
+        3mjqjSwo9S6U+gjlQFDqWO8Npd6GUpcH5WzuWZq0TtlVlWOrHEpVNq2yt6o02qpSYq+cz2eWKQlL
+        s9srzZHKgXqlic3evdJs90pTHpT+bGa7snql2qHSUEcqh5KVKn4pbw8uT/XHF9shgUtdd2e+LGHZ
+        5VIfuRxMWapY782l3uZSl8il6t24sv5YWhfa0hq5HEhbWtjqry2ttra0JGJpG66sK4/d1Zb2SOVA
+        3dLGdm9tabe1pS3xHm6ZrixtqXXPcG08wwf7j65irfcZrrXPcO0/neH3xx9KFFlAtBwAAA==
+    headers:
+      Allow:
+      - GET, POST, HEAD, OPTIONS
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 6ee79d439bb157cd-IAD
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Sat, 19 Mar 2022 16:34:14 GMT
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      NEL:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Referrer-Policy:
+      - same-origin
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=pXwlQjpKGTwuXCAFwixO8W1ACFRJk2fCrSMNne1ebEIb00MIQfo%2FuoKiP7D5Gz70C1Cj6bESkDqsd4zftK3oIlg8JeQrtGZW5pvap0Dvz978qETrkk%2BHSdQZvun373AX"}],"group":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      - Accept, Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+    status:
+      code: 200
+      message: OK
+version: 1
