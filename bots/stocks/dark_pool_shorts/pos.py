@@ -80,7 +80,7 @@ def pos_command(sort="dpp_dollar", ascending: bool = False, num: int = 10):
             df_pg.append(df_pg)
             fig = imps.plot_df(
                 df_pg,
-                fig_size=(1400, (40 * dindex)),
+                fig_size=(900, (40 * dindex)),
                 col_width=[2, 3, 4, 3.5, 5, 4, 5],
                 tbl_header=imps.PLT_TBL_HEADER,
                 tbl_cells=imps.PLT_TBL_CELLS,
@@ -149,7 +149,7 @@ def pos_command(sort="dpp_dollar", ascending: bool = False, num: int = 10):
     else:
         fig = imps.plot_df(
             df,
-            fig_size=(1400, (40 * dindex)),
+            fig_size=(900, (40 * dindex)),
             col_width=[2, 3, 4, 3.5, 5, 4, 5],
             tbl_header=imps.PLT_TBL_HEADER,
             tbl_cells=imps.PLT_TBL_CELLS,

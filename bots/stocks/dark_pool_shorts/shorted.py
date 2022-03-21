@@ -35,6 +35,8 @@ def shorted_command(num: int = 10):
     df.dropna(how="all", axis=1, inplace=True)
     df = df.replace(float("NaN"), "")
     df = df.drop(columns=["PE Ratio (TTM)"])
+    df.set_index("Symbol", inplace=True)
+
     dindex = len(df.index)
     if dindex > 15:
         embeds: list = []
@@ -46,7 +48,7 @@ def shorted_command(num: int = 10):
             df_pg.append(df_pg)
             fig = imps.plot_df(
                 df_pg,
-                fig_size=(1400, (45 * dindex)),
+                fig_size=(900, (45 * dindex)),
                 col_width=[2, 9, 2.5, 2.5, 2.5, 3, 3, 3],
                 tbl_header=imps.PLT_TBL_HEADER,
                 tbl_cells=imps.PLT_TBL_CELLS,
@@ -115,7 +117,7 @@ def shorted_command(num: int = 10):
     else:
         fig = imps.plot_df(
             df,
-            fig_size=(1400, (45 * dindex)),
+            fig_size=(900, (45 * dindex)),
             col_width=[2, 9, 2.5, 2.5, 2.5, 3, 3, 3],
             tbl_header=imps.PLT_TBL_HEADER,
             tbl_cells=imps.PLT_TBL_CELLS,
