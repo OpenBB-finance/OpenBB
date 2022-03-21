@@ -1,100 +1,184 @@
-import io
 import logging
-from datetime import datetime, timedelta
 
-from matplotlib import pyplot as plt
+import plotly.graph_objects as go
 
-import bots.config_discordbot as cfg
-import bots.helpers
-from bots.helpers import image_border
-from gamestonk_terminal import config_plot as cfp
+from bots import imps, load_candle
 from gamestonk_terminal.common.technical_analysis import custom_indicators_model
 from gamestonk_terminal.decorators import log_start_end
-from gamestonk_terminal.helper_funcs import plot_autoscale
 
 logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def fib_command(ticker="", start="", end=""):
+def fib_command(
+    ticker="",
+    interval: int = 15,
+    past_days: int = 0,
+    start: str = "",
+    end: str = "",
+    extended_hours: bool = False,
+    heikin_candles: bool = False,
+    news: bool = False,
+):
     """Displays chart with fibonacci retracement [Yahoo Finance]"""
 
     # Debug
-    if cfg.DEBUG:
+    if imps.DEBUG:
+        # pylint: disable=logging-too-many-args
         logger.debug(
-            "ta-fib %s %s %s",
+            "ta fib %s %s %s %s %s %s %s %s",
             ticker,
+            interval,
+            past_days,
             start,
             end,
+            extended_hours,
+            heikin_candles,
+            news,
         )
 
-    # Check for argument
-    if ticker == "":
-        raise Exception("Stock ticker is required")
-
-    if start == "":
-        start = datetime.now() - timedelta(days=365)
-        f_start = None
-    else:
-        start = datetime.strptime(start, cfg.DATE_FORMAT)
-        f_start = start
-
-    if end == "":
-        end = datetime.now()
-        f_end = None
-    else:
-        end = datetime.strptime(end, cfg.DATE_FORMAT)
-        f_end = None
-
-    ticker = ticker.upper()
-    df_stock = bots.helpers.load(ticker, start)
-    if df_stock.empty:
-        raise Exception("Stock ticker is invalid")
+    past_days = past_days if (interval != 1440) or (start != "") else 365
 
     # Retrieve Data
-    df_stock = df_stock.loc[(df_stock.index >= start) & (df_stock.index < end)]
+    (df_stock, start, end, bar_start,) = load_candle.stock_data(
+        ticker=ticker,
+        interval=interval,
+        past_days=past_days,
+        extended_hours=extended_hours,
+        start=start,
+        end=end,
+        heikin_candles=heikin_candles,
+    )
 
-    start = start.strftime("%Y-%m-%d")
-    end = end.strftime("%Y-%m-%d")
+    if df_stock.empty:
+        raise Exception(f"No data found for {ticker.upper()}.")
+
+    df_ta = df_stock.loc[(df_stock.index >= start) & (df_stock.index < end)]
+
+    # Output Data
+    if interval != 1440:
+        df_ta = df_ta.loc[(df_ta.index >= bar_start) & (df_ta.index < end)]
+
     (
         df_fib,
         min_date,
         max_date,
         min_pr,
         max_pr,
-    ) = custom_indicators_model.calculate_fib_levels(df_stock, 120, f_start, f_end)
+    ) = custom_indicators_model.calculate_fib_levels(df_ta, 12, bar_start, None)
 
     levels = df_fib.Price
-    fig, ax = plt.subplots(figsize=(plot_autoscale()), dpi=cfp.PLOT_DPI)
 
-    ax.plot(df_stock["Adj Close"], "b")
-    ax.plot([min_date, max_date], [min_pr, max_pr], c="k")
+    # Output Data
+    fibs = [
+        "<b>0</b>",
+        "<b>0.235</b>",
+        "<b>0.382</b>",
+        "<b>0.5</b>",
+        "<b>0.618</b>",
+        "<b>0.65</b>",
+        "<b>1</b>",
+    ]
+    plot = load_candle.candle_fig(
+        df_ta,
+        ticker,
+        interval,
+        extended_hours,
+        news,
+        bar=bar_start,
+        int_bar=interval,
+        shared_xaxes=True,
+        vertical_spacing=0.07,
+    )
+    title = f"<b>{plot['plt_title']} Fibonacci-Retracement-Levels</b>"
+    lvl_text: str = "right" if min_date > max_date else "left"
+    fig = plot["fig"]
 
-    for i in levels:
-        ax.axhline(y=i, c="g", alpha=0.5)
+    fig.add_trace(
+        go.Scatter(
+            x=[min_date, max_date],
+            y=[min_pr, max_pr],
+            opacity=1,
+            mode="lines",
+            line=imps.PLT_FIB_COLORWAY[8],
+            showlegend=False,
+        ),
+        row=1,
+        col=1,
+        secondary_y=True,
+    )
 
-    for i in range(5):
-        ax.fill_between(df_stock.index, levels[i], levels[i + 1], alpha=0.6)
+    for i in range(6):
+        fig.add_trace(
+            go.Scatter(
+                name=fibs[i],
+                x=[min_date, max_date],
+                y=[levels[i], levels[i]],
+                opacity=0.2,
+                mode="lines",
+                line_color=imps.PLT_FIB_COLORWAY[i],
+                showlegend=False,
+            ),
+            row=1,
+            col=1,
+            secondary_y=True,
+        )
+        fig.add_trace(
+            go.Scatter(
+                name=fibs[i + 1],
+                x=[min_date, max_date],
+                y=[levels[i + 1], levels[i + 1]],
+                opacity=0.2,
+                mode="lines",
+                fill="tonexty",
+                line_color=imps.PLT_FIB_COLORWAY[i + 1],
+                showlegend=False,
+            ),
+            row=1,
+            col=1,
+            secondary_y=True,
+        )
 
-    ax.set_ylabel("Price")
-    ax.set_title(f"Fibonacci Support for {ticker.upper()}")
-    ax.set_xlim(df_stock.index[0], df_stock.index[-1])
-
-    ax1 = ax.twinx()
-    ax1.set_ylim(ax.get_ylim())
-    ax1.set_yticks(levels)
-    ax1.set_yticklabels([0, 0.235, 0.382, 0.5, 0.618, 1])
-
-    plt.gcf().autofmt_xdate()
-    fig.tight_layout(pad=1)
+    for i in range(7):
+        fig.add_trace(
+            go.Scatter(
+                name=fibs[i],
+                x=[min_date],
+                y=[levels[i]],
+                opacity=0.9,
+                mode="text",
+                text=fibs[i],
+                textposition=f"middle {lvl_text}" if i != 5 else f"bottom {lvl_text}",
+                textfont=dict(imps.PLT_FIB_COLORWAY[7], color=imps.PLT_FIB_COLORWAY[i]),
+                showlegend=False,
+            ),
+            row=1,
+            col=1,
+            secondary_y=True,
+        )
+    fig.update_layout(
+        margin=dict(l=0, r=0, t=50, b=20),
+        template=imps.PLT_TA_STYLE_TEMPLATE,
+        title=title,
+        title_x=0.02,
+        title_font_size=14,
+        dragmode="pan",
+    )
     imagefile = "ta_fib.png"
-    dataBytesIO = io.BytesIO()
-    plt.savefig(dataBytesIO)
 
-    dataBytesIO.seek(0)
-    imagefile = image_border(imagefile, base64=dataBytesIO)
+    # Check if interactive settings are enabled
+    plt_link = ""
+    if imps.INTERACTIVE:
+        plt_link = imps.inter_chart(fig, imagefile, callback=False)
+
+    fig.update_layout(
+        width=800,
+        height=500,
+    )
+    imagefile = imps.image_border(imagefile, fig=fig)
 
     return {
-        "title": f"Stocks: Fibonacci-Retracement-Levels {ticker}",
+        "title": f"Stocks: Fibonacci-Retracement-Levels {ticker.upper()}",
+        "description": plt_link,
         "imagefile": imagefile,
     }

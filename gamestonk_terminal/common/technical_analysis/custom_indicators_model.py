@@ -77,7 +77,7 @@ def calculate_fib_levels(
         max_pr = data_to_use.max()
         max_date = data_to_use.idxmax()
 
-    fib_levels = [0, 0.235, 0.382, 0.5, 0.618, 1]
+    fib_levels = [0, 0.235, 0.382, 0.5, 0.618, 0.65, 1]
     price_dif = max_pr - min_pr
 
     levels = [round(max_pr - price_dif * f_lev, 2) for f_lev in fib_levels]
