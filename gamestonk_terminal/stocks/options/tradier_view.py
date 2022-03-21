@@ -258,29 +258,32 @@ def plot_oi(
         (ax,) = external_axes
 
     if not calls_only:
-        put_oi.plot(
+        line_1 = put_oi.plot(
             x="strike",
             y="open_interest",
-            label="Puts",
             ax=ax,
             marker="o",
             ls="-",
         )
+        label_1 = ["Puts"]
+        ax.legend([line_1], label_1)
+
     if not puts_only:
-        call_oi.plot(
+        line_2 = call_oi.plot(
             x="strike",
             y="open_interest",
-            label="Calls",
             ax=ax,
             marker="o",
             ls="-",
         )
+        label_2 = ["Calls"]
+        ax.legend([line_2], label_2)
+
     ax.axvline(current_price, lw=2, ls="--", label="Current Price", alpha=0.7)
     ax.axvline(max_pain, lw=3, label=f"Max Pain: {max_pain}", alpha=0.7)
     ax.set_xlabel("Strike Price")
     ax.set_ylabel("Open Interest (1k) ")
     ax.set_xlim(min_strike, max_strike)
-
     ax.set_title(f"Open Interest for {ticker.upper()} expiring {expiry}")
 
     theme.style_primary_axis(ax)

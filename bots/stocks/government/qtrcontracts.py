@@ -4,8 +4,7 @@ import logging
 import numpy as np
 from matplotlib import pyplot as plt
 
-import bots.config_discordbot as cfg
-from bots.helpers import image_border
+from bots import imps
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import plot_autoscale
@@ -18,7 +17,7 @@ logger = logging.getLogger(__name__)
 def qtrcontracts_command(num: int = 20, analysis=""):
     """Displays a look at government contracts [quiverquant.com]"""
     # Debug user input
-    if cfg.DEBUG:
+    if imps.DEBUG:
         logger.debug("gov-qtrcontracts %s %s", num, analysis)
 
     possible_args = ["total", "upmom", "downmom"]
@@ -88,7 +87,7 @@ def qtrcontracts_command(num: int = 20, analysis=""):
         plt.savefig(dataBytesIO)
         dataBytesIO.seek(0)
 
-        imagefile = image_border(imagefile, base64=dataBytesIO)
+        imagefile = imps.image_border(imagefile, base64=dataBytesIO)
         output = {
             "title": "Stocks: [quiverquant.com] Government Contracts",
             "imagefile": imagefile,

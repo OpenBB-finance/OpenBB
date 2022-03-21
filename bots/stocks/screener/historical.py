@@ -9,8 +9,7 @@ from finvizfinance.screener import ticker
 from matplotlib import pyplot as plt
 from pandas.plotting import register_matplotlib_converters
 
-import bots.config_discordbot as cfg
-from bots.helpers import image_border
+from bots import imps
 from bots.stocks.screener import screener_options as so
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.decorators import log_start_end
@@ -28,7 +27,7 @@ def historical_command(signal: str = "", start=""):
     """Displays historical price comparison between similar companies [Yahoo Finance]"""
 
     # Debug user input
-    if cfg.DEBUG:
+    if imps.DEBUG:
         logger.debug("scr-historical %s %s", signal, start)
 
     # Check for argument
@@ -64,7 +63,7 @@ def historical_command(signal: str = "", start=""):
     if start == "":
         start = datetime.now() - timedelta(days=365)
     else:
-        start = datetime.strptime(start, cfg.DATE_FORMAT)
+        start = datetime.strptime(start, imps.DATE_FORMAT)
 
     # Output Data
     l_min = []
@@ -137,7 +136,7 @@ def historical_command(signal: str = "", start=""):
     plt.savefig(dataBytesIO)
     dataBytesIO.seek(0)
 
-    imagefile = image_border(imagefile, base64=dataBytesIO)
+    imagefile = imps.image_border(imagefile, base64=dataBytesIO)
 
     return {
         "title": "Stocks: [Yahoo Finance] Historical Screener",

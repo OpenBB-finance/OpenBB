@@ -2,8 +2,7 @@ import logging
 
 import plotly.graph_objects as go
 
-import bots.config_discordbot as cfg
-from bots import helpers, load_candle
+from bots import imps, load_candle
 from gamestonk_terminal.common.technical_analysis import volatility_model
 from gamestonk_terminal.decorators import log_start_end
 
@@ -28,7 +27,7 @@ def bbands_command(
     """Displays chart with bollinger bands [Yahoo Finance]"""
 
     # Debug
-    if cfg.DEBUG:
+    if imps.DEBUG:
         # pylint: disable=logging-too-many-args
         logger.debug(
             "ta bbands %s %s %s %s %s %s %s %s %s %s",
@@ -88,7 +87,7 @@ def bbands_command(
     )
 
     if df_stock.empty:
-        return Exception("No Data Found")
+        raise Exception("No Data Found")
 
     df_ta = df_stock.loc[(df_stock.index >= start) & (df_stock.index < end)]
     df_ta = df_ta.join(
@@ -100,14 +99,14 @@ def bbands_command(
         df_ta = df_ta.loc[(df_ta.index >= bar_start) & (df_ta.index < end)]
 
     plot = load_candle.candle_fig(df_ta, ticker, interval, extended_hours, news)
-    title = f"{plot['plt_title']} Bollinger Bands ({ma_mode.upper()})"
+    title = f"<b>{plot['plt_title']} Bollinger Bands ({ma_mode.upper()})</b>"
     fig = plot["fig"]
 
     fig.add_trace(
         go.Scatter(
             name=f"BBU_{length}_{n_std}",
             x=df_ta.index,
-            y=df_ta[f"BBU_{length}_{n_std}"],
+            y=df_ta.iloc[:, 8].values,
             opacity=1,
             mode="lines",
             line_color="indigo",
@@ -120,7 +119,7 @@ def bbands_command(
         go.Scatter(
             name=f"BBL_{length}_{n_std}",
             x=df_ta.index,
-            y=df_ta[f"BBL_{length}_{n_std}"],
+            y=df_ta.iloc[:, 6].values,
             opacity=1,
             mode="lines",
             line_color="indigo",
@@ -135,7 +134,7 @@ def bbands_command(
         go.Scatter(
             name=f"BBM_{length}_{n_std}",
             x=df_ta.index,
-            y=df_ta[f"BBM_{length}_{n_std}"],
+            y=df_ta.iloc[:, 7].values,
             opacity=1,
             line=dict(
                 width=1.5,
@@ -148,8 +147,8 @@ def bbands_command(
     )
     fig.update_layout(
         margin=dict(l=0, r=0, t=50, b=20),
-        template=cfg.PLT_TA_STYLE_TEMPLATE,
-        colorway=cfg.PLT_TA_COLORWAY,
+        template=imps.PLT_TA_STYLE_TEMPLATE,
+        colorway=imps.PLT_TA_COLORWAY,
         title=title,
         title_x=0.1,
         title_font_size=14,
@@ -159,15 +158,15 @@ def bbands_command(
 
     # Check if interactive settings are enabled
     plt_link = ""
-    if cfg.INTERACTIVE:
-        plt_link = helpers.inter_chart(fig, imagefile, callback=False)
+    if imps.INTERACTIVE:
+        plt_link = imps.inter_chart(fig, imagefile, callback=False)
 
     fig.update_layout(
         width=800,
         height=500,
     )
 
-    imagefile = helpers.image_border(imagefile, fig=fig)
+    imagefile = imps.image_border(imagefile, fig=fig)
 
     return {
         "title": f"Stocks: Bollinger-Bands {ticker.upper()}",

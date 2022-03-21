@@ -30,6 +30,11 @@ def test_display_raw(mocker, tab):
         new=tab,
     )
 
+    # MOCK VISUALIZE_OUTPUT
+    mocker.patch(
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
+    )
+
     chartexchange_view.display_raw(
         export="",
         ticker="GME",

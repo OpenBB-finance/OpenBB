@@ -4,8 +4,7 @@ from datetime import datetime, timedelta
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
-import bots.config_discordbot as cfg
-from bots import helpers
+from bots import imps
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.stocks.dark_pool_shorts import sec_model
 
@@ -17,7 +16,7 @@ def ftd_command(ticker: str = "", start="", end=""):
     """Fails-to-deliver data [SEC]"""
 
     # Debug user input
-    if cfg.DEBUG:
+    if imps.DEBUG:
         logger.debug("dps ftd %s %s %s", ticker, start, end)
 
     # Check for argument
@@ -29,21 +28,21 @@ def ftd_command(ticker: str = "", start="", end=""):
     if start == "":
         start = datetime.now() - timedelta(days=365)
     else:
-        start = datetime.strptime(start, cfg.DATE_FORMAT)
+        start = datetime.strptime(start, imps.DATE_FORMAT)
 
     if end == "":
         end = datetime.now()
     else:
-        end = datetime.strptime(end, cfg.DATE_FORMAT)
+        end = datetime.strptime(end, imps.DATE_FORMAT)
 
     # Retrieve data
     ftds_data = sec_model.get_fails_to_deliver(ticker, start, end, 0)
 
     # Debug user output
-    if cfg.DEBUG:
+    if imps.DEBUG:
         logger.debug(ftds_data.to_string())
 
-    stock = helpers.load(ticker, start)
+    stock = imps.load(ticker, start)
     stock_ftd = stock[stock.index > start]
     stock_ftd = stock_ftd[stock_ftd.index < end]
 
@@ -76,16 +75,16 @@ def ftd_command(ticker: str = "", start="", end=""):
         ),
         secondary_y=False,
     )
-    if cfg.PLT_WATERMARK:
-        fig.add_layout_image(cfg.PLT_WATERMARK)
+    if imps.PLT_WATERMARK:
+        fig.add_layout_image(imps.PLT_WATERMARK)
     fig.update_layout(
         margin=dict(l=0, r=20, t=30, b=20),
-        template=cfg.PLT_TA_STYLE_TEMPLATE,
-        colorway=cfg.PLT_TA_COLORWAY,
+        template=imps.PLT_TA_STYLE_TEMPLATE,
+        colorway=imps.PLT_TA_COLORWAY,
         title=f"{ticker} Failed-to-deliver",
         title_x=0.5,
         yaxis2_title="<b>Stock Price</b>",
-        font=cfg.PLT_FONT,
+        font=imps.PLT_FONT,
         yaxis2=dict(
             side="left",
             fixedrange=False,
@@ -130,15 +129,15 @@ def ftd_command(ticker: str = "", start="", end=""):
 
     # Check if interactive settings are enabled
     plt_link = ""
-    if cfg.INTERACTIVE:
-        plt_link = helpers.inter_chart(fig, imagefile, callback=False)
+    if imps.INTERACTIVE:
+        plt_link = imps.inter_chart(fig, imagefile, callback=False)
 
     fig.update_layout(
         width=800,
         height=500,
     )
 
-    imagefile = helpers.image_border(imagefile, fig=fig)
+    imagefile = imps.image_border(imagefile, fig=fig)
 
     return {
         "title": f"Stocks: [SEC] Failure-to-deliver {ticker}",

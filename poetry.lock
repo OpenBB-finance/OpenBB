@@ -89,14 +89,6 @@ test = ["coverage[toml] (>=4.5)", "hypothesis (>=4.0)", "pytest (>=6.0)", "pytes
 trio = ["trio (>=0.16)"]
 
 [[package]]
-name = "appdirs"
-version = "1.4.4"
-description = "A small Python module for determining appropriate platform-specific dirs, e.g. a \"user data dir\"."
-category = "main"
-optional = true
-python-versions = "*"
-
-[[package]]
 name = "appnope"
 version = "0.1.2"
 description = "Disable App Nap on macOS >= 10.9"
@@ -682,22 +674,6 @@ optional = false
 python-versions = ">=3.6"
 
 [[package]]
-name = "df2img"
-version = "0.2.4"
-description = "Save a Pandas DataFrame as image"
-category = "main"
-optional = true
-python-versions = ">=3.8,<4.0"
-
-[package.dependencies]
-kaleido = "0.2.1"
-pandas = ">=1.0.0,<2.0.0"
-plotly = ">=5.3.1,<6.0.0"
-
-[package.extras]
-docs = ["ipykernel (>=6.6.0,<7.0.0)", "nbformat (>=5.1.3,<6.0.0)", "nbsphinx (>=0.8.7,<0.9.0)", "numpydoc (>=1.1.0,<2.0.0)", "pandoc (>=1.1.0,<2.0.0)", "sphinx (>=4.3.0,<5.0.0)", "sphinx-copybutton (>=0.4.0,<0.5.0)", "sphinx-rtd-theme (>=1.0.0,<2.0.0)"]
-
-[[package]]
 name = "disnake"
 version = "2.4.0"
 description = "A Python wrapper for the Discord API"
@@ -803,14 +779,6 @@ optional = false
 python-versions = "*"
 
 [[package]]
-name = "fake-useragent"
-version = "0.1.11"
-description = "Up to date simple useragent faker with real world database"
-category = "main"
-optional = true
-python-versions = "*"
-
-[[package]]
 name = "fastapi"
 version = "0.73.0"
 description = "FastAPI framework, high performance, easy to learn, fast to code, ready for production"
@@ -845,17 +813,6 @@ Pillow = ">=9.0.0,<10.0.0"
 requests = ">=2.25.1,<3.0.0"
 Sphinx = ">=4.0.2,<5.0.0"
 sphinx-rtd-theme = ">=0.5.2,<0.6.0"
-
-[[package]]
-name = "feedparser"
-version = "6.0.8"
-description = "Universal feed parser, handles RSS 0.9x, RSS 1.0, RSS 2.0, CDF, Atom 0.3, and Atom 1.0 feeds"
-category = "main"
-optional = true
-python-versions = ">=3.6"
-
-[package.dependencies]
-sgmllib3k = "*"
 
 [[package]]
 name = "ffn"
@@ -1639,7 +1596,7 @@ python-versions = ">=3.6"
 
 [[package]]
 name = "kaleido"
-version = "0.2.1"
+version = "0.2.1.post1"
 description = "Static image export for web-based visualization libraries with zero dependencies"
 category = "main"
 optional = true
@@ -2303,14 +2260,6 @@ s3 = ["boto3"]
 test = ["boto3", "botocore", "codecov", "coverage", "google-compute-engine", "ipython (>=5.0)", "ipywidgets", "notebook", "mock", "moto", "pytest (>=4.1)", "pytest-cov (>=2.6.1)", "pytest-mock (>=1.10)", "pytest-env (>=0.6.2)", "requests (>=2.21.0)", "check-manifest", "attrs (>=17.4.0)", "pre-commit", "flake8", "tox", "bumpversion", "recommonmark", "pip (>=18.1)", "wheel (>=0.31.0)", "setuptools (>=38.6.0)", "twine (>=1.11.0)", "azure-datalake-store (>=0.0.30)", "azure-storage-blob (>=12.1.0)", "gcsfs (>=0.2.0)", "pyarrow", "black (>=19.3b0)"]
 
 [[package]]
-name = "parse"
-version = "1.19.0"
-description = "parse() is the opposite of format()"
-category = "main"
-optional = true
-python-versions = "*"
-
-[[package]]
 name = "parso"
 version = "0.8.3"
 description = "A Python Parser"
@@ -2650,14 +2599,6 @@ dotenv = ["python-dotenv (>=0.10.4)"]
 email = ["email-validator (>=1.0.3)"]
 
 [[package]]
-name = "pyee"
-version = "8.2.2"
-description = "A port of node.js's EventEmitter to python."
-category = "main"
-optional = true
-python-versions = "*"
-
-[[package]]
 name = "pyex"
 version = "0.5.0"
 description = "Rest API to IEX"
@@ -2862,40 +2803,12 @@ scipy = ">=1.3,<2.0"
 optionals = ["cvxopt (>=1.2,!=1.2.5.post1,<2.0)", "scikit-learn (>=0.24.1,<0.25.0)", "matplotlib (>=3.2.0,<4.0.0)"]
 
 [[package]]
-name = "pyppeteer"
-version = "0.2.6"
-description = "Headless chrome/chromium automation library (unofficial port of puppeteer)"
-category = "main"
-optional = true
-python-versions = ">=3.6.1,<4.0.0"
-
-[package.dependencies]
-appdirs = ">=1.4.3,<2.0.0"
-importlib-metadata = ">=1.4"
-pyee = ">=8.1.0,<9.0.0"
-tqdm = ">=4.42.1,<5.0.0"
-urllib3 = ">=1.25.8,<2.0.0"
-websockets = ">=9.1,<10.0"
-
-[[package]]
 name = "pyprind"
 version = "2.11.3"
 description = "Python Progress Bar and Percent Indicator Utility"
 category = "main"
 optional = false
 python-versions = "*"
-
-[[package]]
-name = "pyquery"
-version = "1.4.3"
-description = "A jquery-like library for python"
-category = "main"
-optional = true
-python-versions = "*"
-
-[package.dependencies]
-cssselect = ">0.7.9"
-lxml = ">=2.1"
 
 [[package]]
 name = "pyrsistent"
@@ -3235,23 +3148,6 @@ socks = ["PySocks (>=1.5.6,!=1.5.7)", "win-inet-pton"]
 use_chardet_on_py3 = ["chardet (>=3.0.2,<5)"]
 
 [[package]]
-name = "requests-html"
-version = "0.10.0"
-description = "HTML Parsing for Humans."
-category = "main"
-optional = true
-python-versions = ">=3.6.0"
-
-[package.dependencies]
-bs4 = "*"
-fake-useragent = "*"
-parse = "*"
-pyppeteer = ">=0.0.14"
-pyquery = "*"
-requests = "*"
-w3lib = "*"
-
-[[package]]
 name = "requests-oauthlib"
 version = "1.3.1"
 description = "OAuthlib authentication support for Requests."
@@ -3444,14 +3340,6 @@ tomli = ">=1.0.0"
 [package.extras]
 test = ["pytest (>=6.2)", "virtualenv (>20)"]
 toml = ["setuptools (>=42)"]
-
-[[package]]
-name = "sgmllib3k"
-version = "1.0.0"
-description = "Py3k port of sgmllib."
-category = "main"
-optional = true
-python-versions = "*"
 
 [[package]]
 name = "six"
@@ -4286,17 +4174,6 @@ test = ["numpy", "pandas", "ipywidgets", "matplotlib", "mock", "pytest", "pytest
 visual_test = ["jupyterlab (>=3.0,<4.0)", "bqplot", "scipy", "ipympl (==0.8.7)", "ipyvolume", "jupyterlab-miami-nights (==0.3.2)"]
 
 [[package]]
-name = "w3lib"
-version = "1.22.0"
-description = "Library of web-related functions"
-category = "main"
-optional = true
-python-versions = "*"
-
-[package.dependencies]
-six = ">=1.4.1"
-
-[[package]]
 name = "wcwidth"
 version = "0.2.5"
 description = "Measures the displayed width of unicode strings in a terminal"
@@ -4375,20 +4252,6 @@ python-versions = ">=3.7.0"
 h11 = ">=0.9.0,<1"
 
 [[package]]
-name = "yahoo-fin"
-version = "0.8.9.1"
-description = "Download historical stock prices (daily / weekly / monthly), realtime-prices, fundamentals data, income statements, cash flows, analyst info, current cryptocurrency prices, option chains, earnings history, and more with yahoo_fin."
-category = "main"
-optional = true
-python-versions = "*"
-
-[package.dependencies]
-feedparser = "*"
-pandas = "*"
-requests = "*"
-requests-html = "*"
-
-[[package]]
 name = "yarl"
 version = "1.7.2"
 description = "Yet another URL library"
@@ -4441,13 +4304,13 @@ test = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 
 [extras]
-bots = ["pyimgur", "df2img", "fastapi", "uvicorn", "disnake", "PyNaCl", "pyTelegramBotAPI", "slack-bolt", "undetected-chromedriver", "yahoo-fin", "natsort"]
+bots = ["pyimgur", "fastapi", "uvicorn", "disnake", "PyNaCl", "pyTelegramBotAPI", "slack-bolt", "undetected-chromedriver", "natsort", "kaleido"]
 prediction = ["tensorflow"]
 
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8,<3.10"
-content-hash = "8ac64cdf9a1de838f4fadc94d53a2c3633dc45baef23169ba5d0d836eab7b3cd"
+content-hash = "9a47df262a47af2f3f0baf5f67eebd3112200d9e1cb0b41e805d33b618847c84"
 
 [metadata.files]
 absl-py = [
@@ -4547,10 +4410,6 @@ ansiwrap = [
 anyio = [
     {file = "anyio-3.5.0-py3-none-any.whl", hash = "sha256:b5fa16c5ff93fa1046f2eeb5bbff2dad4d3514d6cda61d02816dba34fa8c3c2e"},
     {file = "anyio-3.5.0.tar.gz", hash = "sha256:a0aeffe2fb1fdf374a8e4b471444f0f3ac4fb9f5a5b542b48824475e0042a5a6"},
-]
-appdirs = [
-    {file = "appdirs-1.4.4-py2.py3-none-any.whl", hash = "sha256:a841dacd6b99318a741b166adb07e19ee71a274450e68237b4650ca1055ab128"},
-    {file = "appdirs-1.4.4.tar.gz", hash = "sha256:7d5d0167b2b1ba821647616af46a749d1c653740dd0d2415100fe26e27afdf41"},
 ]
 appnope = [
     {file = "appnope-0.1.2-py2.py3-none-any.whl", hash = "sha256:93aa393e9d6c54c5cd570ccadd8edad61ea0c4b9ea7a01409020c9aa019eb442"},
@@ -4977,10 +4836,6 @@ detecta = [
     {file = "detecta-0.0.5-py3-none-any.whl", hash = "sha256:dbaf1938e5d785386c904034e2553824e2aa31793e967984ca65983aca06d23e"},
     {file = "detecta-0.0.5.tar.gz", hash = "sha256:d2ea7d13dfbbc994d6ce385a7f8dc0a85fe675a8a8e712a64ec56e54c40603ed"},
 ]
-df2img = [
-    {file = "df2img-0.2.4-py3-none-any.whl", hash = "sha256:6046e16cc04735d0ff29034f964db09e70c9786c8b314e27644430b8d90e4e6c"},
-    {file = "df2img-0.2.4.tar.gz", hash = "sha256:f5c700bd681b1c496644f42c559f0a314a11aa182938056abaee7850eabb5e6f"},
-]
 disnake = [
     {file = "disnake-2.4.0-py3-none-any.whl", hash = "sha256:390250a55ed8bbcc8c5753a72fb8fff2376a30295476edfebd0d2301855fb919"},
     {file = "disnake-2.4.0.tar.gz", hash = "sha256:d7a9c83d5cbfcec42441dae1d96744f82c2a22403934db5d8862a8279ca4989c"},
@@ -5030,9 +4885,6 @@ executing = [
     {file = "executing-0.8.3-py2.py3-none-any.whl", hash = "sha256:d1eef132db1b83649a3905ca6dd8897f71ac6f8cac79a7e58a1a09cf137546c9"},
     {file = "executing-0.8.3.tar.gz", hash = "sha256:c6554e21c6b060590a6d3be4b82fb78f8f0194d809de5ea7df1c093763311501"},
 ]
-fake-useragent = [
-    {file = "fake-useragent-0.1.11.tar.gz", hash = "sha256:c104998b750eb097eefc28ae28e92d66397598d2cf41a31aa45d5559ef1adf35"},
-]
 fastapi = [
     {file = "fastapi-0.73.0-py3-none-any.whl", hash = "sha256:f0a618aff5f6942862f2d3f20f39b1c037e33314d1b8207fd1c3a2cca76dfd8c"},
     {file = "fastapi-0.73.0.tar.gz", hash = "sha256:dcfee92a7f9a72b5d4b7ca364bd2b009f8fc10d95ed5769be20e94f39f7e5a15"},
@@ -5040,10 +4892,6 @@ fastapi = [
 fear-greed-index = [
     {file = "fear-greed-index-0.1.4.tar.gz", hash = "sha256:3eca4a50aa5f7ac76ce1ea7581adef322cdbfb61fb1bf0622f4aac914fdf9f1f"},
     {file = "fear_greed_index-0.1.4-py3-none-any.whl", hash = "sha256:20051b67433501dbe00d2744bb8dba2362c82fc1df81515a0deae069ef45e87d"},
-]
-feedparser = [
-    {file = "feedparser-6.0.8-py3-none-any.whl", hash = "sha256:1b7f57841d9cf85074deb316ed2c795091a238adb79846bc46dccdaf80f9c59a"},
-    {file = "feedparser-6.0.8.tar.gz", hash = "sha256:5ce0410a05ab248c8c7cfca3a0ea2203968ee9ff4486067379af4827a59f9661"},
 ]
 ffn = [
     {file = "ffn-0.3.6-py2.py3-none-any.whl", hash = "sha256:1e55e8caf6b63dce2f164cc4d3b8a02b678be7ed12990cafb2006b818a9a09e7"},
@@ -5400,12 +5248,7 @@ jupyterlab-widgets = [
     {file = "jupyterlab_widgets-1.1.0.tar.gz", hash = "sha256:d5f41bc1713795385f718d44dcba47e1e1473c6289f28a95aa6b2c0782ee372a"},
 ]
 kaleido = [
-    {file = "kaleido-0.2.1-py2.py3-none-macosx_10_11_x86_64.whl", hash = "sha256:ca6f73e7ff00aaebf2843f73f1d3bacde1930ef5041093fe76b83a15785049a7"},
-    {file = "kaleido-0.2.1-py2.py3-none-macosx_11_0_arm64.whl", hash = "sha256:bb9a5d1f710357d5d432ee240ef6658a6d124c3e610935817b4b42da9c787c05"},
-    {file = "kaleido-0.2.1-py2.py3-none-manylinux1_x86_64.whl", hash = "sha256:aa21cf1bf1c78f8fa50a9f7d45e1003c387bd3d6fe0a767cfbbf344b95bdc3a8"},
-    {file = "kaleido-0.2.1-py2.py3-none-manylinux2014_aarch64.whl", hash = "sha256:845819844c8082c9469d9c17e42621fbf85c2b237ef8a86ec8a8527f98b6512a"},
-    {file = "kaleido-0.2.1-py2.py3-none-win32.whl", hash = "sha256:ecc72635860be616c6b7161807a65c0dbd9b90c6437ac96965831e2e24066552"},
-    {file = "kaleido-0.2.1-py2.py3-none-win_amd64.whl", hash = "sha256:4670985f28913c2d063c5734d125ecc28e40810141bdb0a46f15b76c1d45f23c"},
+    {file = "kaleido-0.2.1.post1-py2.py3-none-manylinux2014_armv7l.whl", hash = "sha256:d313940896c24447fc12c74f60d46ea826195fc991f58569a6e73864d53e5c20"},
 ]
 keras = [
     {file = "keras-2.8.0-py2.py3-none-any.whl", hash = "sha256:744d39dc6577dcd80ff4a4d41549e92b77d6a17e0edd58a431d30656e29bc94e"},
@@ -5967,9 +5810,6 @@ papermill = [
     {file = "papermill-2.3.4-py3-none-any.whl", hash = "sha256:81eb9aa3dbace9772cd6287f5af8deef64c6659d9ace0b2761db05068233bf77"},
     {file = "papermill-2.3.4.tar.gz", hash = "sha256:be12d2728989c0ae17b42fcb05b623500004e94b34f56bd153355ccebb84a59a"},
 ]
-parse = [
-    {file = "parse-1.19.0.tar.gz", hash = "sha256:9ff82852bcb65d139813e2a5197627a94966245c897796760a3a2a8eb66f020b"},
-]
 parso = [
     {file = "parso-0.8.3-py2.py3-none-any.whl", hash = "sha256:c001d4636cd3aecdaf33cbb40aebb59b094be2a74c556778ef5576c175e19e75"},
     {file = "parso-0.8.3.tar.gz", hash = "sha256:8c07be290bb59f03588915921e29e8a50002acaf2cdc5fa0e0114f91709fafa0"},
@@ -6245,10 +6085,6 @@ pydantic = [
     {file = "pydantic-1.9.0-py3-none-any.whl", hash = "sha256:085ca1de245782e9b46cefcf99deecc67d418737a1fd3f6a4f511344b613a5b3"},
     {file = "pydantic-1.9.0.tar.gz", hash = "sha256:742645059757a56ecd886faf4ed2441b9c0cd406079c2b4bee51bcc3fbcd510a"},
 ]
-pyee = [
-    {file = "pyee-8.2.2-py2.py3-none-any.whl", hash = "sha256:c09f56e36eb10bf23aa2aacf145f690ded75b990a3d9523fd478b005940303d2"},
-    {file = "pyee-8.2.2.tar.gz", hash = "sha256:5c7e60f8df95710dbe17550e16ce0153f83990c00ef744841b43f371ed53ebea"},
-]
 pyex = [
     {file = "pyEX-0.5.0-py2.py3-none-any.whl", hash = "sha256:8860b8eb9c15d91e5f552786fbe8f8ecd46c4c4931e5cb82ba41187eb603f742"},
     {file = "pyEX-0.5.0.tar.gz", hash = "sha256:e85c392733aec3717b00d05640bd7efcfc87bf949064a7f31112293fe395c27e"},
@@ -6382,17 +6218,9 @@ pyportfolioopt = [
     {file = "PyPortfolioOpt-1.5.1-py3-none-any.whl", hash = "sha256:11c2eb7e3a9e74ee04b28be0a05acb0cfab134668c477a1590f1dfae1a7c24b0"},
     {file = "PyPortfolioOpt-1.5.1.tar.gz", hash = "sha256:49af6f4f3fcf850b4a9808251802d8f26299b32877694d97981da8b5bd344d98"},
 ]
-pyppeteer = [
-    {file = "pyppeteer-0.2.6-py3-none-any.whl", hash = "sha256:85adde940cc96820725db59cbdb13384aefd0dd043858cfa4f1c086c0f9e4137"},
-    {file = "pyppeteer-0.2.6.tar.gz", hash = "sha256:4621bb890e54f43dce84f5139ea4d484a62886be1903c2fcb393af607943538f"},
-]
 pyprind = [
     {file = "PyPrind-2.11.3-py2.py3-none-any.whl", hash = "sha256:cc8edb66aabb18f25f7a3cce65312b3bc64b49992ddc93ba4cf511e5e25c1be3"},
     {file = "PyPrind-2.11.3.tar.gz", hash = "sha256:e37dcab6e1a9c8e0a7f0fce65fde7a79e2deda1c75aa015910a49e2137b54cbf"},
-]
-pyquery = [
-    {file = "pyquery-1.4.3-py3-none-any.whl", hash = "sha256:1fc33b7699455ed25c75282bc8f80ace1ac078b0dda5a933dacbd8b1c1f83963"},
-    {file = "pyquery-1.4.3.tar.gz", hash = "sha256:a388eefb6bc4a55350de0316fbd97cda999ae669b6743ae5b99102ba54f5aa72"},
 ]
 pyrsistent = [
     {file = "pyrsistent-0.18.1-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:df46c854f490f81210870e509818b729db4488e1f30f2a1ce1698b2295a878d1"},
@@ -6781,10 +6609,6 @@ requests = [
     {file = "requests-2.27.1-py2.py3-none-any.whl", hash = "sha256:f22fa1e554c9ddfd16e6e41ac79759e17be9e492b3587efa038054674760e72d"},
     {file = "requests-2.27.1.tar.gz", hash = "sha256:68d7c56fd5a8999887728ef304a6d12edc7be74f1cfa47714fc8b414525c9a61"},
 ]
-requests-html = [
-    {file = "requests-html-0.10.0.tar.gz", hash = "sha256:7e929ecfed95fb1d0994bb368295d6d7c4d06b03fcb900c33d7d0b17e6003947"},
-    {file = "requests_html-0.10.0-py3-none-any.whl", hash = "sha256:cb8a78cf829c4eca9d6233f28524f65dd2bfaafb4bdbbc407f0a0b8f487df6e2"},
-]
 requests-oauthlib = [
     {file = "requests-oauthlib-1.3.1.tar.gz", hash = "sha256:75beac4a47881eeb94d5ea5d6ad31ef88856affe2332b9aafb52c6452ccf0d7a"},
     {file = "requests_oauthlib-1.3.1-py2.py3-none-any.whl", hash = "sha256:2577c501a2fb8d05a304c09d090d6e47c306fef15809d102b327cf8364bddab5"},
@@ -6903,9 +6727,6 @@ sentiment-investor = [
 setuptools-scm = [
     {file = "setuptools_scm-6.4.2-py3-none-any.whl", hash = "sha256:acea13255093849de7ccb11af9e1fb8bde7067783450cee9ef7a93139bddf6d4"},
     {file = "setuptools_scm-6.4.2.tar.gz", hash = "sha256:6833ac65c6ed9711a4d5d2266f8024cfa07c533a0e55f4c12f6eff280a5a9e30"},
-]
-sgmllib3k = [
-    {file = "sgmllib3k-1.0.0.tar.gz", hash = "sha256:7868fb1c8bfa764c1ac563d3cf369c381d1325d36124933a726f29fcdaa812e9"},
 ]
 six = [
     {file = "six-1.16.0-py2.py3-none-any.whl", hash = "sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254"},
@@ -7310,10 +7131,6 @@ voila = [
     {file = "voila-0.3.3-py3-none-any.whl", hash = "sha256:39c63ac00410a1c15ea37010416cfb713fa153f6bcb1f191444408bdb1c24b25"},
     {file = "voila-0.3.3.tar.gz", hash = "sha256:de2d3cbc619c91df69bbeba312c481b196db9bc26949254b27c22fb2f16b943e"},
 ]
-w3lib = [
-    {file = "w3lib-1.22.0-py2.py3-none-any.whl", hash = "sha256:0161d55537063e00d95a241663ede3395c4c6d7b777972ba2fd58bbab2001e53"},
-    {file = "w3lib-1.22.0.tar.gz", hash = "sha256:0ad6d0203157d61149fd45aaed2e24f53902989c32fc1dccc2e2bfba371560df"},
-]
 wcwidth = [
     {file = "wcwidth-0.2.5-py2.py3-none-any.whl", hash = "sha256:beb4802a9cebb9144e99086eff703a642a13d6a0052920003a230f3294bbe784"},
     {file = "wcwidth-0.2.5.tar.gz", hash = "sha256:c4d647b99872929fdb7bdcaa4fbe7f01413ed3d98077df798530e5b04f116c83"},
@@ -7425,10 +7242,6 @@ wrapt = [
 wsproto = [
     {file = "wsproto-1.1.0-py3-none-any.whl", hash = "sha256:2218cb57952d90b9fca325c0dcfb08c3bda93e8fd8070b0a17f048e2e47a521b"},
     {file = "wsproto-1.1.0.tar.gz", hash = "sha256:a2e56bfd5c7cd83c1369d83b5feccd6d37798b74872866e62616e0ecf111bda8"},
-]
-yahoo-fin = [
-    {file = "yahoo_fin-0.8.9.1-py3-none-any.whl", hash = "sha256:690aa04f10ccdc380d075911ecaa6b56cff9bfc07a32077f5522c17fc5a3a52a"},
-    {file = "yahoo_fin-0.8.9.1.tar.gz", hash = "sha256:715203a47d0d847ed9d4ba6015fa3447aced2b16977fc8d05b9b469d2d53a8f1"},
 ]
 yarl = [
     {file = "yarl-1.7.2-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:f2a8508f7350512434e41065684076f640ecce176d262a7d54f0da41d99c5a95"},
