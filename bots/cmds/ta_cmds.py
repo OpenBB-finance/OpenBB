@@ -60,10 +60,10 @@ class TechnicalAnalysisCommands(commands.Cog):
         interval: int = commands.Param(choices=[1, 5, 15, 30, 60, 1440]),
         past_days: int = 0,
         ma_mode: str = commands.Param(choices=["ema", "sma", "wma", "hma", "zlma"]),
-        window="",
+        window: str = "",
         offset: int = 0,
-        start="",
-        end="",
+        start: str = "",
+        end: str = "",
         extended_hours: bool = False,
         heikin_candles: bool = False,
     ):
@@ -107,8 +107,8 @@ class TechnicalAnalysisCommands(commands.Cog):
         past_days: int = 0,
         length="14",
         scalar="0.015",
-        start="",
-        end="",
+        start: str = "",
+        end: str = "",
         extended_hours: bool = False,
         heikin_candles: bool = False,
     ):
@@ -151,8 +151,8 @@ class TechnicalAnalysisCommands(commands.Cog):
         fast="12",
         slow="26",
         signal="9",
-        start="",
-        end="",
+        start: str = "",
+        end: str = "",
         extended_hours: bool = False,
         heikin_candles: bool = False,
     ):
@@ -197,8 +197,8 @@ class TechnicalAnalysisCommands(commands.Cog):
         length="14",
         scalar="100",
         drift="1",
-        start="",
-        end="",
+        start: str = "",
+        end: str = "",
         extended_hours: bool = False,
         heikin_candles: bool = False,
     ):
@@ -243,8 +243,8 @@ class TechnicalAnalysisCommands(commands.Cog):
         fast_k="14",
         slow_d="3",
         slow_k="3",
-        start="",
-        end="",
+        start: str = "",
+        end: str = "",
         extended_hours: bool = False,
         heikin_candles: bool = False,
     ):
@@ -287,8 +287,8 @@ class TechnicalAnalysisCommands(commands.Cog):
         interval: int = commands.Param(choices=[1, 5, 15, 30, 60, 1440]),
         past_days: int = 0,
         length="14",
-        start="",
-        end="",
+        start: str = "",
+        end: str = "",
         extended_hours: bool = False,
         heikin_candles: bool = False,
     ):
@@ -352,8 +352,8 @@ class TechnicalAnalysisCommands(commands.Cog):
         length="14",
         scalar="100",
         drift="1",
-        start="",
-        end="",
+        start: str = "",
+        end: str = "",
         extended_hours: bool = False,
         heikin_candles: bool = False,
     ):
@@ -397,8 +397,8 @@ class TechnicalAnalysisCommands(commands.Cog):
         past_days: int = 0,
         length="25",
         scalar="100",
-        start="",
-        end="",
+        start: str = "",
+        end: str = "",
         extended_hours: bool = False,
         heikin_candles: bool = False,
     ):
@@ -441,8 +441,8 @@ class TechnicalAnalysisCommands(commands.Cog):
         length="20",
         std: float = 2.0,
         ma_mode: str = commands.Param(choices=["ema", "sma", "wma", "hma", "zlma"]),
-        start="",
-        end="",
+        start: str = "",
+        end: str = "",
         extended_hours: bool = False,
         heikin_candles: bool = False,
     ):
@@ -484,8 +484,8 @@ class TechnicalAnalysisCommands(commands.Cog):
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
         upper_length="25",
         lower_length="100",
-        start="",
-        end="",
+        start: str = "",
+        end: str = "",
     ):
         """Displays chart with donchian channel [Yahoo Finance]
 
@@ -520,8 +520,8 @@ class TechnicalAnalysisCommands(commands.Cog):
         scalar="2",
         ma_mode: str = commands.Param(choices=["ema", "sma", "wma", "hma", "zlma"]),
         offset="0",
-        start="",
-        end="",
+        start: str = "",
+        end: str = "",
         extended_hours: bool = False,
         heikin_candles: bool = False,
     ):
@@ -567,8 +567,8 @@ class TechnicalAnalysisCommands(commands.Cog):
         interval: int = commands.Param(choices=[1, 5, 15, 30, 60, 1440]),
         past_days: int = 0,
         is_open="False",
-        start="",
-        end="",
+        start: str = "",
+        end: str = "",
         extended_hours: bool = False,
         heikin_candles: bool = False,
     ):
@@ -609,8 +609,8 @@ class TechnicalAnalysisCommands(commands.Cog):
         is_open: bool = False,
         fast="3",
         slow="10",
-        start="",
-        end="",
+        start: str = "",
+        end: str = "",
         extended_hours: bool = False,
         heikin_candles: bool = False,
     ):
@@ -652,8 +652,8 @@ class TechnicalAnalysisCommands(commands.Cog):
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
         interval: int = commands.Param(choices=[1, 5, 15, 30, 60, 1440]),
         past_days: int = 0,
-        start="",
-        end="",
+        start: str = "",
+        end: str = "",
         extended_hours: bool = False,
         heikin_candles: bool = False,
     ):
@@ -687,18 +687,37 @@ class TechnicalAnalysisCommands(commands.Cog):
         self,
         inter: disnake.AppCmdInter,
         ticker: str = commands.Param(autocomplete=ticker_autocomp),
-        start="",
-        end="",
+        interval: int = commands.Param(choices=[1, 5, 15, 30, 60, 1440]),
+        past_days: int = 0,
+        start: str = "",
+        end: str = "",
+        extended_hours: bool = False,
+        heikin_candles: bool = False,
     ):
         """Displays chart with fibonacci retracement [Yahoo Finance]
 
         Parameters
         -----------
         ticker: Stock Ticker
+        interval : Chart Minute Interval, 1440 for Daily
+        past_days: Past Days to Display. Default: 0(Not for Daily)
         start: YYYY-MM-DD format
         end: YYYY-MM-DD format
+        extended_hours: Display Pre/After Market Hours. Default: False
+        heikin_candles: Heikin Ashi candles. Default: False
         """
-        await ShowView().discord(fib_command, inter, "ta fib", ticker, start, end)
+        await ShowView().discord(
+            fib_command,
+            inter,
+            "ta fib",
+            ticker,
+            interval,
+            past_days,
+            start,
+            end,
+            extended_hours,
+            heikin_candles,
+        )
 
     @ta.sub_command()
     async def view(

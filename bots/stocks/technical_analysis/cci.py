@@ -1,8 +1,8 @@
 import logging
 
 import plotly.graph_objects as go
-from bots import helpers, load_candle
-import bots.config_discordbot as cfg
+
+from bots import imps, load_candle
 from gamestonk_terminal.common.technical_analysis import momentum_model
 from gamestonk_terminal.decorators import log_start_end
 
@@ -26,7 +26,7 @@ def cci_command(
     """Displays chart with commodity channel index [Yahoo Finance]"""
 
     # Debug
-    if cfg.DEBUG:
+    if imps.DEBUG:
         logger.debug(
             "ta cci %s %s %s %s %s %s %s %s %s %s",
             ticker,
@@ -57,7 +57,7 @@ def cci_command(
     )
 
     if df_stock.empty:
-        return Exception("No Data Found")
+        raise Exception("No Data Found")
 
     # pylint
     try:
@@ -72,7 +72,7 @@ def cci_command(
     df_ta = df_stock.loc[(df_stock.index >= start) & (df_stock.index < end)]
 
     if df_ta.empty:
-        return Exception("No Data Found")
+        raise Exception("No Data Found")
 
     ta_data = momentum_model.cci(
         df_ta["High"], df_ta["Low"], df_ta["Adj Close"], length, scalar
@@ -98,17 +98,17 @@ def cci_command(
         row_width=[0.4, 0.6],
         specs=[[{"secondary_y": True}], [{"secondary_y": False}]],
     )
-    title = f"{plot['plt_title']} Commodity-Channel-Index"
+    title = f"<b>{plot['plt_title']} Commodity-Channel-Index</b>"
     fig = plot["fig"]
 
-    dmin = df_ta[f"CCI_{length}_{scalar}"].values.min()
-    dmax = df_ta[f"CCI_{length}_{scalar}"].values.max()
+    dmin = df_ta.iloc[:, 6].values.values.min()
+    dmax = df_ta.iloc[:, 6].values.values.max()
     fig.add_trace(
         go.Scatter(
             name=f"CCI  ({length})  ({scalar})",
             mode="lines",
             x=df_ta.index,
-            y=df_ta[f"CCI_{length}_{scalar}"],
+            y=df_ta.iloc[:, 6].values,
             opacity=1,
         ),
         row=2,
@@ -156,8 +156,8 @@ def cci_command(
     )
     fig.update_layout(
         margin=dict(l=0, r=0, t=50, b=20),
-        template=cfg.PLT_TA_STYLE_TEMPLATE,
-        colorway=cfg.PLT_TA_COLORWAY,
+        template=imps.PLT_TA_STYLE_TEMPLATE,
+        colorway=imps.PLT_TA_COLORWAY,
         title=title,
         title_x=0.02,
         title_font_size=14,
@@ -167,15 +167,15 @@ def cci_command(
 
     # Check if interactive settings are enabled
     plt_link = ""
-    if cfg.INTERACTIVE:
-        plt_link = helpers.inter_chart(fig, imagefile, callback=False)
+    if imps.INTERACTIVE:
+        plt_link = imps.inter_chart(fig, imagefile, callback=False)
 
     fig.update_layout(
         width=800,
         height=500,
     )
 
-    imagefile = helpers.image_border(imagefile, fig=fig)
+    imagefile = imps.image_border(imagefile, fig=fig)
 
     return {
         "title": f"Stocks: Commodity-Channel-Index {ticker.upper()}",

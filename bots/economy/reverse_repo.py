@@ -2,59 +2,90 @@ import logging
 import os
 
 import disnake
+import pandas as pd
+import requests
 
 from bots import imps
 from gamestonk_terminal.decorators import log_start_end
-from gamestonk_terminal.etf.discovery import wsj_model
 
 logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def etfs_disc_command(sort=""):
-    """Displays ETF's Top Gainers/Decliners, Most Active  [Wall Street Journal]"""
+def reverse_repo_command(days: int = 100):
+    """Displays Reverse Repo [Stocksera.com]"""
 
-    # Debug
+    # Debug user input
     if imps.DEBUG:
-        logger.debug("etfs")
+        logger.debug("dd repo %s", days)
 
-    df_etfs = wsj_model.etf_movers(sort, export=True)
-
-    if df_etfs.empty:
-        raise Exception("No available data found")
-
-    prfx = "Most" if sort == "active" else "Top"
-    title = f"ETF Movers ({prfx} {sort.capitalize()})"
-
-    df_etfs["%Chg"] = df_etfs["%Chg"].map(lambda x: f"{x:.2f}%")
-    df_etfs["Change"] = df_etfs.apply(
-        lambda x: f"${x['Chg']} /top(<b>{x['%Chg']}</b>)", axis=1
+    df = pd.DataFrame(
+        requests.get(
+            f"https://stocksera.pythonanywhere.com/api/reverse_repo/?days={str(days)}"
+        ).json()
     )
 
-    df_etfs.set_index(" ", inplace=True)
-    df_etfs = df_etfs.drop(columns=["Chg", "%Chg"])
+    if df.empty:
+        raise Exception("No Data Found")
 
-    dindex = len(df_etfs.index)
+    title = "Reverse Repo [Stocksera]"
+
+    df["Difference"] = df["Amount"].diff().fillna(0)
+
+    formats = {
+        "Amount": "${:.2f}B",
+        "Average": "${:.2f}B",
+        "Difference": "<b>${:.2f}B</b>",
+    }
+    for col, value in formats.items():
+        df[col] = df[col].map(lambda x: value.format(x))  # pylint: disable=W0640
+
+    font_color = ["white"] * 4 + [
+        [
+            "#e4003a" if boolv else "#00ACFF"
+            for boolv in df["Difference"].str.contains("-")
+        ]  # type: ignore
+    ]
+
+    df = df.drop(columns="Moving Avg")
+    df = df.sort_values(by="Date", ascending=False)
+    df.set_index("Date", inplace=True)
+    df.columns = df.columns.str.capitalize()
+
+    dindex = len(df.index)
     if dindex > 15:
         embeds: list = []
         # Output
         i, i2, end = 0, 0, 15
-        df_pg, embeds_img, images_list = [], [], []
+        df_pg, embeds_img, images_list = pd.DataFrame(), [], []
         while i < dindex:
-            df_pg = df_etfs.iloc[i:end]
+            df_pg = df.iloc[i:end]
+            font_color = ["white"] * 4 + [
+                [
+                    "#e4003a" if boolv else "#00ACFF"
+                    for boolv in df_pg["Difference"].str.contains("-")
+                ]  # type: ignore
+            ]
             df_pg.append(df_pg)
             fig = imps.plot_df(
                 df_pg,
-                fig_size=(820, (40 + (40 * dindex))),
-                col_width=[1.1, 9, 1.5, 1.5, 4],
+                fig_size=(650, (40 + (40 * len(df.index)))),
+                col_width=[1.8, 1.5, 1.7, 1.3, 1.8],
                 tbl_header=imps.PLT_TBL_HEADER,
                 tbl_cells=imps.PLT_TBL_CELLS,
                 font=imps.PLT_TBL_FONT,
                 row_fill_color=imps.PLT_TBL_ROW_COLORS,
                 paper_bgcolor="rgba(0, 0, 0, 0)",
             )
-            fig.update_traces(cells=(dict(align=["center", "center", "right"])))
-            imagefile = "disc-etfs.png"
+            fig.update_traces(
+                cells=(
+                    dict(
+                        align=["center", "right", "center", "right"],
+                        font=dict(color=font_color),
+                    )
+                )
+            )
+            imagefile = "dd_r_repo.png"
             imagefile = imps.save_image(imagefile, fig)
 
             if imps.IMAGES_URL or imps.IMGUR_CLIENT_ID != "REPLACE_ME":
@@ -113,21 +144,28 @@ def etfs_disc_command(sort=""):
         }
     else:
         fig = imps.plot_df(
-            df_etfs,
-            fig_size=(820, (40 + (40 * dindex))),
-            col_width=[1, 9, 1.5, 1.5, 4],
+            df,
+            fig_size=(650, (40 + (40 * len(df.index)))),
+            col_width=[1.8, 1.5, 1.7, 1.3, 1.8],
             tbl_header=imps.PLT_TBL_HEADER,
             tbl_cells=imps.PLT_TBL_CELLS,
             font=imps.PLT_TBL_FONT,
             row_fill_color=imps.PLT_TBL_ROW_COLORS,
             paper_bgcolor="rgba(0, 0, 0, 0)",
         )
-        fig.update_traces(cells=(dict(align=["center", "center", "right"])))
-        imagefile = imps.save_image("disc-etfs.png", fig)
+        fig.update_traces(
+            cells=(
+                dict(
+                    align=["center", "right", "center", "right"],
+                    font=dict(color=font_color),
+                )
+            )
+        )
+        imagefile = "dd_r_repo.png"
+        imagefile = imps.save_image(imagefile, fig)
 
         output = {
             "title": title,
             "imagefile": imagefile,
         }
-
     return output

@@ -2,8 +2,7 @@ import logging
 
 import plotly.graph_objects as go
 
-import bots.config_discordbot as cfg
-from bots import helpers, load_candle
+from bots import imps, load_candle
 from gamestonk_terminal.common.technical_analysis import overlap_model
 from gamestonk_terminal.decorators import log_start_end
 
@@ -67,7 +66,7 @@ def candle_command(
 
     # Check that loading a stock was not successful
     if df_stock.empty:
-        return Exception(f"No data found for {ticker.upper()}.")
+        raise Exception(f"No data found for {ticker.upper()}.")
 
     # Output Data
     if interval != 1440:
@@ -100,7 +99,7 @@ def candle_command(
 
     fig.update_layout(
         margin=dict(l=0, r=0, t=40, b=20),
-        template=cfg.PLT_CANDLE_STYLE_TEMPLATE,
+        template=imps.PLT_CANDLE_STYLE_TEMPLATE,
         title=title,
         title_x=0.5,
         title_font_size=14,
@@ -109,14 +108,14 @@ def candle_command(
 
     # Check if interactive settings are enabled
     plt_link = ""
-    if cfg.INTERACTIVE:
-        plt_link = helpers.inter_chart(fig, imagefile, callback=True)
+    if imps.INTERACTIVE:
+        plt_link = imps.inter_chart(fig, imagefile, callback=True)
 
     fig.update_layout(
         width=800,
         height=500,
     )
-    imagefile = helpers.image_border(imagefile, fig=fig)
+    imagefile = imps.image_border(imagefile, fig=fig)
 
     return {
         "title": title,
