@@ -99,13 +99,13 @@ def fibonacci_retracement(
     for i in levels:
         ax1.axhline(y=i, alpha=0.5)
 
-    for i in range(5):
+    for i in range(6):
         ax1.fill_between(plot_data.index, levels[i], levels[i + 1], alpha=0.15)
 
     ax1.set_xlim(plot_data.index[0], plot_data.index[-1])
     ax1.set_title(f"Fibonacci Support for {s_ticker.upper()}")
     ax1.set_yticks(levels)
-    ax1.set_yticklabels([0, 0.235, 0.382, 0.5, 0.618, 1])
+    ax1.set_yticklabels([0, 0.235, 0.382, 0.5, 0.618, 0.65, 1])
     theme.style_primary_axis(
         ax1,
         data_index=plot_data.index.to_list(),

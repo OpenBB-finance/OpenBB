@@ -3,8 +3,7 @@ import logging
 import pandas as pd
 import plotly.graph_objects as go
 
-import bots.config_discordbot as cfg
-from bots import helpers
+from bots import imps
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.stocks.options import op_helpers, yfinance_model
 
@@ -21,7 +20,7 @@ def oi_command(
     """Options OI"""
 
     # Debug
-    if cfg.DEBUG:
+    if imps.DEBUG:
         logger.debug("opt oi %s %s %s %s", ticker, expiry, min_sp, max_sp)
 
     # Check for argument
@@ -102,15 +101,15 @@ def oi_command(
             name=f"Max Pain: {max_pain}",
         )
     )
-    if cfg.PLT_WATERMARK:
-        fig.add_layout_image(cfg.PLT_WATERMARK)
+    if imps.PLT_WATERMARK:
+        fig.add_layout_image(imps.PLT_WATERMARK)
     fig.update_xaxes(
         range=[min_strike, max_strike],
         constrain="domain",
     )
     fig.update_layout(
         margin=dict(l=0, r=0, t=60, b=20),
-        template=cfg.PLT_SCAT_STYLE_TEMPLATE,
+        template=imps.PLT_SCAT_STYLE_TEMPLATE,
         title=f"Open Interest for {ticker.upper()} expiring {expiry}",
         title_x=0.5,
         legend_title="",
@@ -131,15 +130,15 @@ def oi_command(
 
     # Check if interactive settings are enabled
     plt_link = ""
-    if cfg.INTERACTIVE:
-        plt_link = helpers.inter_chart(fig, imagefile, callback=False)
+    if imps.INTERACTIVE:
+        plt_link = imps.inter_chart(fig, imagefile, callback=False)
 
     fig.update_layout(
         width=800,
         height=500,
     )
 
-    imagefile = helpers.image_border(imagefile, fig=fig)
+    imagefile = imps.image_border(imagefile, fig=fig)
 
     return {
         "title": f"Open Interest for {ticker.upper()} expiring {expiry}",

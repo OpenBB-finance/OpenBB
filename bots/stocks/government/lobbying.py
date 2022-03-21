@@ -3,8 +3,7 @@ from typing import Any, Dict
 
 import disnake
 
-import bots.config_discordbot as cfg
-from bots.menus.menu import Menu
+from bots import imps
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.stocks.government import quiverquant_model
 
@@ -16,7 +15,7 @@ def lobbying_command(ticker="", num: int = 10):
     """Displays lobbying details [quiverquant.com]"""
 
     # Debug user input
-    if cfg.DEBUG:
+    if imps.DEBUG:
         logger.debug("gov-lobbying %s", ticker)
 
     if ticker == "":
@@ -53,11 +52,11 @@ def lobbying_command(ticker="", num: int = 10):
         embed = disnake.Embed(
             title=title,
             description=description,
-            colour=cfg.COLOR,
+            colour=imps.COLOR,
         )
         embed.set_author(
-            name=cfg.AUTHOR_NAME,
-            icon_url=cfg.AUTHOR_ICON_URL,
+            name=imps.AUTHOR_NAME,
+            icon_url=imps.AUTHOR_ICON_URL,
         )
         output: Dict[str, Any] = {
             "title": title,
@@ -75,10 +74,10 @@ def lobbying_command(ticker="", num: int = 10):
                 disnake.Embed(
                     title=title,
                     description=descript,
-                    colour=cfg.COLOR,
+                    colour=imps.COLOR,
                 ).set_author(
-                    name=cfg.AUTHOR_NAME,
-                    icon_url=cfg.AUTHOR_ICON_URL,
+                    name=imps.AUTHOR_NAME,
+                    icon_url=imps.AUTHOR_ICON_URL,
                 )
             )
             reports.append(f"{descript}")
@@ -87,7 +86,7 @@ def lobbying_command(ticker="", num: int = 10):
             i += 1
 
             output = {
-                "view": Menu,
+                "view": imps.Menu,
                 "title": title,
                 "description": reports,
                 "embed": embeds,
