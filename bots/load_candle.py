@@ -12,7 +12,7 @@ from binance.client import Client
 from plotly.subplots import make_subplots
 from scipy import stats
 
-import bots.config_discordbot as cfg
+from bots import imps
 
 futures = "=F" or "^"
 crypto = "-"
@@ -143,7 +143,7 @@ def stock_data(
     max_days = day_list[interval]
 
     if dt_utcnow_local_tz().weekday() not in range(2, 5):
-        past_days += 2
+        past_days += 3
     p_days = (
         ((past_days + 1) if (past_days < max_days) else max_days)
         if (interval != 1440 and past_days < 365)
@@ -157,12 +157,12 @@ def stock_data(
             bar_start if (bar_start < start) else start
         )  # Check if past days requested further back than start
     else:
-        start = datetime.strptime(start, cfg.DATE_FORMAT)
-        bar_start = datetime.strptime(start, cfg.DATE_FORMAT) - timedelta(days=p_days)
+        start = datetime.strptime(start, imps.DATE_FORMAT).astimezone(est_tz)
+        bar_start = start - timedelta(days=p_days)
     if end == "":
         end = dt_utcnow_local_tz()
     else:
-        end = datetime.strptime(end, cfg.DATE_FORMAT)
+        end = datetime.strptime(end, imps.DATE_FORMAT).astimezone(est_tz)
 
     if interval == 1440 and crypto not in ticker.upper():
         df_stock = yf.download(
@@ -192,8 +192,8 @@ def stock_data(
             (past_days + 10) if (((10 + past_days) + max_days) < max_days) else max_days
         )
         s_int = str(interval) + "m"
-        if crypto in ticker.upper() and (cfg.API_BINANCE_KEY != "REPLACE_ME"):
-            client = Client(cfg.API_BINANCE_KEY, cfg.API_BINANCE_SECRET)
+        if crypto in ticker.upper() and (imps.API_BINANCE_KEY != "REPLACE_ME"):
+            client = Client(imps.API_BINANCE_KEY, imps.API_BINANCE_SECRET)
             interval_map = {
                 "1440m": client.KLINE_INTERVAL_1DAY,
                 "60m": client.KLINE_INTERVAL_1HOUR,
@@ -322,7 +322,7 @@ def candle_fig(
                 data["bar"]
                 > (dt_utcnow_local_tz() - timedelta(days=(dt[data["int_bar"]] * 3)))
             )
-            else 0.4
+            else 0.33
         )
         bar_opacity = (
             bar_opacity
@@ -330,7 +330,7 @@ def candle_fig(
                 data["bar"]
                 > (dt_utcnow_local_tz() - timedelta(days=(dt[data["int_bar"]] * 4)))
             )
-            else 0.6
+            else 0.35
         )
         bar_opacity = (
             bar_opacity
@@ -338,7 +338,7 @@ def candle_fig(
                 data["bar"]
                 > (dt_utcnow_local_tz() - timedelta(days=(dt[data["int_bar"]] * 10)))
             )
-            else 0.7
+            else 0.4
         )
     else:
         bar_opacity = 0.2
@@ -405,7 +405,7 @@ def candle_fig(
 
         df_date, df_title, df_current, df_content, df_url = [], [], [], [], []
 
-        if (cfg.API_NEWS_TOKEN != "REPLACE_ME") and crypto in ticker.upper():
+        if (imps.API_NEWS_TOKEN != "REPLACE_ME") and crypto in ticker.upper():
             d_stock = yf.Ticker(ticker).info
             s_from = (dt_utcnow_local_tz() - timedelta(days=28)).strftime("%Y-%m-%d")
             term = (
@@ -416,7 +416,7 @@ def candle_fig(
 
             link = (
                 f"https://newsapi.org/v2/everything?q={term}&from={s_from}&sortBy=publishedAt&language=en"
-                f"&apiKey={cfg.API_NEWS_TOKEN}"
+                f"&apiKey={imps.API_NEWS_TOKEN}"
             )
             response = requests.get(link)
             articles = response.json()["articles"]
@@ -433,12 +433,12 @@ def candle_fig(
                 df_content.append(textwrap.indent(text=content, prefix="<br>"))
                 df_url.append(article["url"])
 
-        elif cfg.API_FINNHUB_KEY != "REPLACE_ME":
-            finnhub_client = finnhub.Client(api_key=cfg.API_FINNHUB_KEY)
+        elif imps.API_FINNHUB_KEY != "REPLACE_ME":
+            finnhub_client = finnhub.Client(api_key=imps.API_FINNHUB_KEY)
             start_new = (dt_utcnow_local_tz() - timedelta(days=30)).strftime(
-                cfg.DATE_FORMAT
+                imps.DATE_FORMAT
             )
-            end_new = dt_utcnow_local_tz().strftime(cfg.DATE_FORMAT)
+            end_new = dt_utcnow_local_tz().strftime(imps.DATE_FORMAT)
             articles = finnhub_client.company_news(
                 ticker.upper(), _from=start_new, to=end_new
             )
@@ -515,8 +515,8 @@ def candle_fig(
             row=1,
             col=1,
         )
-    if cfg.PLT_WATERMARK:
-        fig.add_layout_image(cfg.PLT_WATERMARK)
+    if imps.PLT_WATERMARK:
+        fig.add_layout_image(imps.PLT_WATERMARK)
     fig.add_annotation(
         xref="x domain",
         yref="y domain",
@@ -544,10 +544,10 @@ def candle_fig(
     fig.update_yaxes(showline=True)
     fig.update_layout(
         margin=dict(l=0, r=10, t=40, b=20),
-        template=cfg.PLT_CANDLE_STYLE_TEMPLATE,
+        template=imps.PLT_CANDLE_STYLE_TEMPLATE,
         yaxis2_title="Price",
         yaxis_title="Volume",
-        font=cfg.PLT_FONT,
+        font=imps.PLT_FONT,
         yaxis=dict(
             showgrid=False,
             fixedrange=False,

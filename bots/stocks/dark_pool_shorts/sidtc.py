@@ -2,8 +2,7 @@ import logging
 
 import disnake
 
-import bots.config_discordbot as cfg
-from bots.menus.menu import Menu
+from bots import imps
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.stocks.dark_pool_shorts import stockgrid_model
 
@@ -15,7 +14,7 @@ def sidtc_command(sort="float", num: int = 10):
     """Short interest and days to cover [Stockgrid]"""
 
     # Debug
-    if cfg.DEBUG:
+    if imps.DEBUG:
         logger.debug("dps-sidtc %s %s", sort, num)
 
     # Check for argument
@@ -32,7 +31,7 @@ def sidtc_command(sort="float", num: int = 10):
     df = df.iloc[:num]
 
     # Debug user output
-    if cfg.DEBUG:
+    if imps.DEBUG:
         logger.debug(df.to_string())
 
     # Output data
@@ -73,10 +72,10 @@ def sidtc_command(sort="float", num: int = 10):
     reports = [f"{initial_str}"]
     embeds.append(
         disnake.Embed(
-            title="Dark Pool Shorts", description=initial_str, colour=cfg.COLOR
+            title="Dark Pool Shorts", description=initial_str, colour=imps.COLOR
         ).set_author(
-            name=cfg.AUTHOR_NAME,
-            icon_url=cfg.AUTHOR_ICON_URL,
+            name=imps.AUTHOR_NAME,
+            icon_url=imps.AUTHOR_ICON_URL,
         )
     )
 
@@ -92,16 +91,16 @@ def sidtc_command(sort="float", num: int = 10):
             disnake.Embed(
                 title=title,
                 description=description,
-                colour=cfg.COLOR,
+                colour=imps.COLOR,
             ).set_author(
-                name=cfg.AUTHOR_NAME,
-                icon_url=cfg.AUTHOR_ICON_URL,
+                name=imps.AUTHOR_NAME,
+                icon_url=imps.AUTHOR_ICON_URL,
             )
         )
         reports.append(f"{description}")
 
     return {
-        "view": Menu,
+        "view": imps.Menu,
         "title": title,
         "description": reports,
         "embed": embeds,

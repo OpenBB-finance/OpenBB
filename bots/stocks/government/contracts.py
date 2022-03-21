@@ -5,8 +5,7 @@ from typing import Union
 import pandas as pd
 from matplotlib import pyplot as plt
 
-import bots.config_discordbot as cfg
-from bots import helpers
+from bots import imps
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import plot_autoscale
@@ -22,7 +21,7 @@ def contracts_command(
     """Displays contracts associated with tickers [quiverquant.com]"""
     past_transaction_days = int(past_transaction_days)
     # Debug user input
-    if cfg.DEBUG:
+    if imps.DEBUG:
         logger.debug("gov contracts %s %s %s", ticker, past_transaction_days, raw)
 
     if ticker == "":
@@ -58,7 +57,7 @@ def contracts_command(
     plt.savefig(dataBytesIO)
 
     dataBytesIO.seek(0)
-    imagefile = helpers.image_border(imagefile, base64=dataBytesIO)
+    imagefile = imps.image_border(imagefile, base64=dataBytesIO)
 
     return {
         "title": f"Stocks: [quiverquant.com] Contracts by {ticker}",

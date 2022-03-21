@@ -17,6 +17,7 @@ from bots.economy.meats import meats_command
 from bots.economy.metals import metals_command
 from bots.economy.overview import overview_command
 from bots.economy.performance import performance_command
+from bots.economy.reverse_repo import reverse_repo_command
 from bots.economy.softs import softs_command
 from bots.economy.usbonds import usbonds_command
 from bots.economy.valuation import valuation_command
@@ -131,6 +132,20 @@ class EconomyCommands(commands.Cog):
         await ShowView().discord(
             valuation_command, inter, "econ valuation", economy_group
         )
+
+    @econ.sub_command()
+    async def repo(
+        self,
+        inter: disnake.AppCmdInter,
+        days: int = 100,
+    ):
+        """Displays Reverse Repo [Stocksera]
+
+        Parameters
+        -----------
+        days: Number of days to display. Default: 100
+        """
+        await ShowView().discord(reverse_repo_command, inter, "econ repo", days)
 
     @econ.sub_command()
     async def performance(

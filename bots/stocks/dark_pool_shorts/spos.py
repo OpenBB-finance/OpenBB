@@ -4,8 +4,7 @@ import plotly.graph_objects as go
 import yfinance as yf
 from plotly.subplots import make_subplots
 
-import bots.config_discordbot as cfg
-from bots import helpers
+from bots import imps
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.stocks.dark_pool_shorts import stockgrid_model
 
@@ -17,7 +16,7 @@ def spos_command(ticker: str = ""):
     """Net short vs position [Stockgrid]"""
 
     # Debug user input
-    if cfg.DEBUG:
+    if imps.DEBUG:
         logger.debug("dps-spos %s", ticker)
 
     # Check for argument
@@ -34,7 +33,7 @@ def spos_command(ticker: str = ""):
     df = stockgrid_model.get_net_short_position(ticker)
 
     # Debug user output
-    if cfg.DEBUG:
+    if imps.DEBUG:
         logger.debug(df.to_string())
 
     # Output data
@@ -63,8 +62,8 @@ def spos_command(ticker: str = ""):
         ),
         secondary_y=False,
     )
-    if cfg.PLT_WATERMARK:
-        fig.add_layout_image(cfg.PLT_WATERMARK)
+    if imps.PLT_WATERMARK:
+        fig.add_layout_image(imps.PLT_WATERMARK)
 
     # Set y-axes titles
     fig.update_xaxes(dtick="M1", tickformat="%b %d\n%Y")
@@ -72,12 +71,12 @@ def spos_command(ticker: str = ""):
     fig.update_traces(hovertemplate="%{y:.2s}")
     fig.update_layout(
         margin=dict(l=0, r=10, t=40, b=20),
-        template=cfg.PLT_TA_STYLE_TEMPLATE,
-        colorway=cfg.PLT_TA_COLORWAY,
+        template=imps.PLT_TA_STYLE_TEMPLATE,
+        colorway=imps.PLT_TA_COLORWAY,
         title=f"Net Short Vol. vs Position for {ticker}",
         title_x=0.5,
         yaxis_title="<b>Net Short Vol.</b> ($)",
-        font=cfg.PLT_FONT,
+        font=imps.PLT_FONT,
         yaxis=dict(
             side="left",
             showgrid=False,
@@ -114,15 +113,15 @@ def spos_command(ticker: str = ""):
 
     # Check if interactive settings are enabled
     plt_link = ""
-    if cfg.INTERACTIVE:
-        plt_link = helpers.inter_chart(fig, imagefile, callback=False)
+    if imps.INTERACTIVE:
+        plt_link = imps.inter_chart(fig, imagefile, callback=False)
 
     fig.update_layout(
         width=800,
         height=500,
     )
 
-    imagefile = helpers.image_border(imagefile, fig=fig)
+    imagefile = imps.image_border(imagefile, fig=fig)
 
     return {
         "title": title,

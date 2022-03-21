@@ -3,8 +3,7 @@ import logging
 import disnake
 import pandas as pd
 
-import bots.config_discordbot as cfg
-from bots.menus.menu import Menu
+from bots import imps
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.stocks.government import quiverquant_model
 
@@ -16,7 +15,7 @@ def lastcontracts_command(past_transactions_days: int = 2, num: int = 20):
     """Displays last government contracts [quiverquant.com]"""
 
     # Debug user input
-    if cfg.DEBUG:
+    if imps.DEBUG:
         logger.debug("gov lastcontracts %s %s", past_transactions_days, num)
 
     df_contracts = quiverquant_model.get_government_trading("contracts")
@@ -59,24 +58,24 @@ def lastcontracts_command(past_transactions_days: int = 2, num: int = 20):
         disnake.Embed(
             title=title,
             description=initial_str,
-            colour=cfg.COLOR,
+            colour=imps.COLOR,
         ).set_author(
-            name=cfg.AUTHOR_NAME,
-            icon_url=cfg.AUTHOR_ICON_URL,
+            name=imps.AUTHOR_NAME,
+            icon_url=imps.AUTHOR_ICON_URL,
         )
     )
     for column in df_contracts.columns.values:
         description = "```" + df_contracts[column].fillna("").to_string() + "```"
         embeds.append(
-            disnake.Embed(description=description, colour=cfg.COLOR,).set_author(
-                name=cfg.AUTHOR_NAME,
-                icon_url=cfg.AUTHOR_ICON_URL,
+            disnake.Embed(description=description, colour=imps.COLOR,).set_author(
+                name=imps.AUTHOR_NAME,
+                icon_url=imps.AUTHOR_ICON_URL,
             )
         )
         reports.append(f"{description}")
 
     return {
-        "view": Menu,
+        "view": imps.Menu,
         "title": title,
         "description": reports,
         "embed": embeds,

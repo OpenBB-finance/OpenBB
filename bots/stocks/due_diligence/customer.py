@@ -4,8 +4,7 @@ import disnake
 import requests
 from bs4 import BeautifulSoup
 
-import bots.config_discordbot as cfg
-from bots.menus.menu import Menu
+from bots import imps
 from gamestonk_terminal.decorators import log_start_end
 
 logger = logging.getLogger(__name__)
@@ -16,7 +15,7 @@ def customer_command(ticker=""):
     """Displays customers of the company [CSIMarket]"""
 
     # Debug user input
-    if cfg.DEBUG:
+    if imps.DEBUG:
         logger.debug("dd customer %s", ticker)
 
     if not ticker:
@@ -35,7 +34,7 @@ def customer_command(ticker=""):
         raise Exception("No customers found.")
 
     # Debug user output
-    if cfg.DEBUG:
+    if imps.DEBUG:
         logger.debug(l_customer)
 
     customers, unique = [], []
@@ -72,10 +71,10 @@ def customer_command(ticker=""):
             disnake.Embed(
                 title=title,
                 description=customers,
-                colour=cfg.COLOR,
+                colour=imps.COLOR,
             ).set_author(
-                name=cfg.AUTHOR_NAME,
-                icon_url=cfg.AUTHOR_ICON_URL,
+                name=imps.AUTHOR_NAME,
+                icon_url=imps.AUTHOR_ICON_URL,
             )
         )
         reports.append(f"{description}")
@@ -94,10 +93,10 @@ def customer_command(ticker=""):
                 disnake.Embed(
                     title=title,
                     description=description,
-                    colour=cfg.COLOR,
+                    colour=imps.COLOR,
                 ).set_author(
-                    name=cfg.AUTHOR_NAME,
-                    icon_url=cfg.AUTHOR_ICON_URL,
+                    name=imps.AUTHOR_NAME,
+                    icon_url=imps.AUTHOR_ICON_URL,
                 )
             )
             i += 60
@@ -106,7 +105,7 @@ def customer_command(ticker=""):
 
         # Output data
         output = {
-            "view": Menu,
+            "view": imps.Menu,
             "title": title,
             "description": reports,
             "embed": embeds,
