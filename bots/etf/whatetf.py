@@ -3,27 +3,25 @@ import os
 import time
 
 import bs4
-import df2img
 import disnake
 import pandas as pd
 import undetected_chromedriver.v2 as uc
 from selenium.webdriver.common.by import By
 
-import bots.config_discordbot as cfg
-from bots import helpers
-from bots.config_discordbot import gst_imgur
-from bots.menus.menu import Menu
+from bots import imps
 from gamestonk_terminal.decorators import log_start_end
+
+# pylint:disable=no-member
 
 logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def by_ticker_command(ticker="", num: int = 15):
+def by_ticker_command(ticker="", sort="fund_percent", num: int = 15):
     """Display ETF Holdings. [Source: StockAnalysis]"""
 
     # Debug
-    if cfg.DEBUG:
+    if imps.DEBUG:
         logger.debug("etfs")
 
     options = uc.ChromeOptions()
@@ -31,7 +29,6 @@ def by_ticker_command(ticker="", num: int = 15):
     options.headless = True
     options.add_argument("--headless")
     options.add_argument("--incognito")
-    global browser
     driver = uc.Chrome(options=options, version_main=98)
     driver.set_window_size(1920, 1080)
     driver.get(f"http://etf.com/stock/{ticker.upper()}/")
@@ -57,7 +54,7 @@ def by_ticker_command(ticker="", num: int = 15):
             .findNext("td")
             .text
         )
-
+    driver.quit()
     df = pd.DataFrame(
         {
             "Ticker": r_ticker,
@@ -70,8 +67,17 @@ def by_ticker_command(ticker="", num: int = 15):
     if df.empty:
         raise Exception("No company holdings found!\n")
 
+    if sort == "mkt_value":
+        key = imps.natsort.index_natsorted(
+            df["Market Value"],
+            key=lambda x: imps.unit_finder.sub(imps.unit_replacer, x),
+            reverse=True,
+        )
+        df = df.reindex(key)
+
     df = df.iloc[:num]
     df.set_index("Ticker", inplace=True)
+
     title = f"ETF's Holding {ticker.upper()}"
     dindex = len(df.index)
     if dindex > 15:
@@ -82,28 +88,28 @@ def by_ticker_command(ticker="", num: int = 15):
         while i < dindex:
             df_pg = df.iloc[i:end]
             df_pg.append(df_pg)
-            fig = df2img.plot_dataframe(
+            fig = imps.plot_df(
                 df_pg,
-                fig_size=(900, (40 * dindex)),
+                fig_size=(800, (40 * dindex)),
                 col_width=[0.6, 3.5, 0.65, 1.1],
-                tbl_header=cfg.PLT_TBL_HEADER,
-                tbl_cells=cfg.PLT_TBL_CELLS,
-                font=cfg.PLT_TBL_FONT,
-                row_fill_color=cfg.PLT_TBL_ROW_COLORS,
+                tbl_header=imps.PLT_TBL_HEADER,
+                tbl_cells=imps.PLT_TBL_CELLS,
+                font=imps.PLT_TBL_FONT,
+                row_fill_color=imps.PLT_TBL_ROW_COLORS,
                 paper_bgcolor="rgba(0, 0, 0, 0)",
             )
             fig.update_traces(
                 cells=(dict(align=["center", "center", "center", "right"]))
             )
             imagefile = "etf-byticker.png"
-            imagefile = helpers.save_image(imagefile, fig)
+            imagefile = imps.save_image(imagefile, fig)
 
-            if cfg.IMAGES_URL or cfg.IMGUR_CLIENT_ID != "REPLACE_ME":
-                image_link = cfg.IMAGES_URL + imagefile
+            if imps.IMAGES_URL or imps.IMGUR_CLIENT_ID != "REPLACE_ME":
+                image_link = imps.IMAGES_URL + imagefile
                 images_list.append(imagefile)
             else:
-                imagefile_save = cfg.IMG_DIR / imagefile
-                uploaded_image = gst_imgur.upload_image(
+                imagefile_save = imps.IMG_DIR / imagefile
+                uploaded_image = imps.gst_imgur.upload_image(
                     imagefile_save, title="something"
                 )
                 image_link = uploaded_image.link
@@ -115,7 +121,7 @@ def by_ticker_command(ticker="", num: int = 15):
             embeds.append(
                 disnake.Embed(
                     title=title,
-                    colour=cfg.COLOR,
+                    colour=imps.COLOR,
                 ),
             )
             i2 += 1
@@ -125,13 +131,13 @@ def by_ticker_command(ticker="", num: int = 15):
         # Author/Footer
         for i in range(0, i2):
             embeds[i].set_author(
-                name=cfg.AUTHOR_NAME,
-                url=cfg.AUTHOR_URL,
-                icon_url=cfg.AUTHOR_ICON_URL,
+                name=imps.AUTHOR_NAME,
+                url=imps.AUTHOR_URL,
+                icon_url=imps.AUTHOR_ICON_URL,
             )
             embeds[i].set_footer(
-                text=cfg.AUTHOR_NAME,
-                icon_url=cfg.AUTHOR_ICON_URL,
+                text=imps.AUTHOR_NAME,
+                icon_url=imps.AUTHOR_ICON_URL,
             )
 
         i = 0
@@ -145,7 +151,7 @@ def by_ticker_command(ticker="", num: int = 15):
         ]
 
         output = {
-            "view": Menu,
+            "view": imps.Menu,
             "title": title,
             "embed": embeds,
             "choices": choices,
@@ -153,18 +159,18 @@ def by_ticker_command(ticker="", num: int = 15):
             "images_list": images_list,
         }
     else:
-        fig = df2img.plot_dataframe(
+        fig = imps.plot_df(
             df,
-            fig_size=(900, (40 * dindex)),
+            fig_size=(800, (40 * dindex)),
             col_width=[0.6, 3.5, 0.65, 1.1],
-            tbl_header=cfg.PLT_TBL_HEADER,
-            tbl_cells=cfg.PLT_TBL_CELLS,
-            font=cfg.PLT_TBL_FONT,
-            row_fill_color=cfg.PLT_TBL_ROW_COLORS,
+            tbl_header=imps.PLT_TBL_HEADER,
+            tbl_cells=imps.PLT_TBL_CELLS,
+            font=imps.PLT_TBL_FONT,
+            row_fill_color=imps.PLT_TBL_ROW_COLORS,
             paper_bgcolor="rgba(0, 0, 0, 0)",
         )
         fig.update_traces(cells=(dict(align=["center", "center", "center", "right"])))
-        imagefile = helpers.save_image("etf-holdings.png", fig)
+        imagefile = imps.save_image("etf-holdings.png", fig)
 
         output = {
             "title": title,

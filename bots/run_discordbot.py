@@ -13,7 +13,7 @@ import disnake
 from disnake.ext import commands
 from fastapi import FastAPI, Request
 
-import bots.config_discordbot as cfg
+from bots import config_discordbot as cfg
 from bots.groupme.run_groupme import handle_groupme
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.loggers import setup_logging
@@ -23,7 +23,6 @@ setup_logging("bot-app")
 logger.info("START")
 logger.info("Python: %s", platform.python_version())
 logger.info("OS: %s", platform.system())
-
 
 app = FastAPI()
 
@@ -332,6 +331,37 @@ class MyModal(disnake.ui.Modal):
 async def support(inter: disnake.CommandInteraction):
     """Send support ticket! *Mods Only"""
     await inter.response.send_modal(modal=MyModal())
+
+
+@gst_bot.slash_command()
+async def stats(
+    self,
+    inter: disnake.AppCmdInter,
+):
+    """Bot Stats"""
+    guildname = []
+    for guild in gst_bot.guilds:
+        guildname.append(guild.name)
+    members = []
+    for guild in gst_bot.guilds:
+        for member in guild.members:
+            members.append(member)
+    embed = disnake.Embed(
+        title="Bot Stats",
+        colour=cfg.COLOR,
+    )
+    embed.add_field(
+        name="Servers",
+        value=f"```css\n{len(guildname):^20}\n```",
+        inline=False,
+    )
+    embed.add_field(
+        name="Users",
+        value=f"```css\n{len(members):^20}\n```",
+        inline=False,
+    )
+
+    await inter.send(embed=embed)
 
 
 async def run():

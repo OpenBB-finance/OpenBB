@@ -377,29 +377,10 @@ class TerminalController(BaseController):
                         lines = list()
                         idx = 0
                         for rawline in raw_lines:
-                            arg_to_replace = f"$ARGV[{idx}]"
                             templine = rawline
-                            while arg_to_replace in rawline:
-                                if idx > (len(ns_parser_exe.routine_args) - 1):
-                                    console.print(
-                                        "[red]There are more arguments on the routine "
-                                        ".gst file than input args provided[/red]"
-                                    )
-                                    return
-                                templine = templine.replace(
-                                    arg_to_replace, ns_parser_exe.routine_args[idx]
-                                )
-                                idx += 1
-                                arg_to_replace = f"$ARGV[{idx}]"
-
+                            for i, arg in enumerate(ns_parser_exe.routine_args):
+                                templine = templine.replace(f"$ARGV[{i}]", arg)
                             lines.append(templine)
-
-                        if idx < len(ns_parser_exe.routine_args):
-                            console.print(
-                                "[red]There are more inputs provided than the number "
-                                "of arguments on routine .gst file\n[/red]"
-                            )
-
                     else:
                         lines = raw_lines
 
@@ -440,8 +421,6 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
     """Terminal Menu"""
     setup_logging(appName)
     logger.info("START")
-    logger.info("Python: %s", platform.python_version())
-    logger.info("OS: %s", platform.system())
     log_settings()
 
     if jobs_cmds is not None and jobs_cmds:
@@ -594,33 +573,24 @@ def insert_start_slash(cmds: List[str]) -> List[str]:
 def log_settings() -> None:
     """Log settings"""
     settings_dict = {}
-    settings_dict["tab"] = "activated" if gtff.USE_TABULATE_DF else "deactivated"
-    settings_dict["cls"] = "activated" if gtff.USE_CLEAR_AFTER_CMD else "deactivated"
-    settings_dict["color"] = "activated" if gtff.USE_COLOR else "deactivated"
-    settings_dict["promptkit"] = (
-        "activated" if gtff.USE_PROMPT_TOOLKIT else "deactivated"
-    )
-    settings_dict["predict"] = "activated" if gtff.ENABLE_PREDICT else "deactivated"
-    settings_dict["thoughts"] = (
-        "activated" if gtff.ENABLE_THOUGHTS_DAY else "deactivated"
-    )
-    settings_dict["reporthtml"] = (
-        "activated" if gtff.OPEN_REPORT_AS_HTML else "deactivated"
-    )
-    settings_dict["exithelp"] = (
-        "activated" if gtff.ENABLE_EXIT_AUTO_HELP else "deactivated"
-    )
-    settings_dict["rcontext"] = "activated" if gtff.REMEMBER_CONTEXTS else "deactivated"
-    settings_dict["rich"] = "activated" if gtff.ENABLE_RICH else "deactivated"
-    settings_dict["richpanel"] = (
-        "activated" if gtff.ENABLE_RICH_PANEL else "deactivated"
-    )
-    settings_dict["ion"] = "activated" if gtff.USE_ION else "deactivated"
-    settings_dict["watermark"] = "activated" if gtff.USE_WATERMARK else "deactivated"
-    settings_dict["autoscaling"] = (
-        "activated" if gtff.USE_PLOT_AUTOSCALING else "deactivated"
-    )
-    settings_dict["dt"] = "activated" if gtff.USE_DATETIME else "deactivated"
+    settings_dict["tab"] = "True" if gtff.USE_TABULATE_DF else "False"
+    settings_dict["cls"] = "True" if gtff.USE_CLEAR_AFTER_CMD else "False"
+    settings_dict["color"] = "True" if gtff.USE_COLOR else "False"
+    settings_dict["promptkit"] = "True" if gtff.USE_PROMPT_TOOLKIT else "False"
+    settings_dict["predict"] = "True" if gtff.ENABLE_PREDICT else "False"
+    settings_dict["thoughts"] = "True" if gtff.ENABLE_THOUGHTS_DAY else "False"
+    settings_dict["reporthtml"] = "True" if gtff.OPEN_REPORT_AS_HTML else "False"
+    settings_dict["exithelp"] = "True" if gtff.ENABLE_EXIT_AUTO_HELP else "False"
+    settings_dict["rcontext"] = "True" if gtff.REMEMBER_CONTEXTS else "False"
+    settings_dict["rich"] = "True" if gtff.ENABLE_RICH else "False"
+    settings_dict["richpanel"] = "True" if gtff.ENABLE_RICH_PANEL else "False"
+    settings_dict["ion"] = "True" if gtff.USE_ION else "False"
+    settings_dict["watermark"] = "True" if gtff.USE_WATERMARK else "False"
+    settings_dict["autoscaling"] = "True" if gtff.USE_PLOT_AUTOSCALING else "False"
+    settings_dict["dt"] = "True" if gtff.USE_DATETIME else "False"
+    settings_dict["python"] = str(platform.python_version())
+    settings_dict["os"] = str(platform.system())
+
     logger.info("SETTINGS: %s ", str(settings_dict))
 
 
@@ -652,27 +622,11 @@ def run_scripts(
 
             if routines_args:
                 lines = list()
-                idx = 0
                 for rawline in raw_lines:
-                    arg_to_replace = f"$ARGV[{idx}]"
                     templine = rawline
-                    while arg_to_replace in rawline:
-                        if idx > (len(routines_args) - 1):
-                            console.print(
-                                "[red]There are more arguments on the routine .gst file than input args provided[/red]"
-                            )
-                            return
-                        templine = templine.replace(arg_to_replace, routines_args[idx])
-                        idx += 1
-                        arg_to_replace = f"$ARGV[{idx}]"
-
+                    for i, arg in enumerate(routines_args):
+                        templine = templine.replace(f"$ARGV[{i}]", arg)
                     lines.append(templine)
-
-                if idx < len(routines_args):
-                    console.print(
-                        "[red]There are more inputs provided than the number of arguments on routine .gst file\n[/red]"
-                    )
-
             else:
                 lines = raw_lines
 

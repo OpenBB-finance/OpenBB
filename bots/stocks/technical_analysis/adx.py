@@ -2,8 +2,7 @@ import logging
 
 import plotly.graph_objects as go
 
-import bots.config_discordbot as cfg
-from bots import helpers, load_candle
+from bots import imps, load_candle
 from gamestonk_terminal.common.technical_analysis import trend_indicators_model
 from gamestonk_terminal.decorators import log_start_end
 
@@ -28,7 +27,7 @@ def adx_command(
     """Displays chart with average directional movement index [Yahoo Finance]"""
 
     # Debug
-    if cfg.DEBUG:
+    if imps.DEBUG:
         # pylint: disable=logging-too-many-args
         logger.debug(
             "ta adx %s %s %s %s %s %s %s %s %s %s %s",
@@ -61,7 +60,7 @@ def adx_command(
     )
 
     if df_stock.empty:
-        return Exception("No Data Found")
+        raise Exception("No Data Found")
 
     if not length.lstrip("-").isnumeric():
         raise Exception("Number has to be an integer")
@@ -76,7 +75,7 @@ def adx_command(
     df_ta = df_stock.loc[(df_stock.index >= start) & (df_stock.index < end)]
 
     if df_ta.empty:
-        return Exception("No Data Found")
+        raise Exception("No Data Found")
 
     ta_data = trend_indicators_model.adx(
         df_stock["High"],
@@ -107,7 +106,7 @@ def adx_command(
         row_width=[0.4, 0.6],
         specs=[[{"secondary_y": True}], [{"secondary_y": False}]],
     )
-    title = f"{plot['plt_title']} Average Directional Movement Index"
+    title = f"<b>{plot['plt_title']} Average Directional Movement Index</b>"
     fig = plot["fig"]
 
     fig.add_trace(
@@ -115,7 +114,7 @@ def adx_command(
             name=f"ADX ({length})",
             mode="lines",
             x=df_ta.index,
-            y=df_ta[f"ADX_{length}"],
+            y=df_ta.iloc[:, 6].values,
             opacity=1,
             line=dict(width=2),
         ),
@@ -128,7 +127,7 @@ def adx_command(
             name=f"+DI ({length})",
             mode="lines",
             x=df_ta.index,
-            y=df_ta[f"DMP_{length}"],
+            y=df_ta.iloc[:, 7].values,
             opacity=1,
             line=dict(width=1),
         ),
@@ -141,7 +140,7 @@ def adx_command(
             name=f"-DI ({length})",
             mode="lines",
             x=df_ta.index,
-            y=df_ta[f"DMN_{length}"],
+            y=df_ta.iloc[:, 8].values,
             opacity=1,
             line=dict(width=1),
         ),
@@ -161,26 +160,26 @@ def adx_command(
     )
     fig.update_layout(
         margin=dict(l=0, r=0, t=50, b=20),
-        template=cfg.PLT_TA_STYLE_TEMPLATE,
-        colorway=cfg.PLT_TA_COLORWAY,
+        template=imps.PLT_TA_STYLE_TEMPLATE,
+        colorway=imps.PLT_TA_COLORWAY,
         title=title,
-        title_x=0.02,
-        title_font_size=14,
+        title_x=0.01,
+        title_font_size=12,
         dragmode="pan",
     )
     imagefile = "ta_adx.png"
 
     # Check if interactive settings are enabled
     plt_link = ""
-    if cfg.INTERACTIVE:
-        plt_link = helpers.inter_chart(fig, imagefile, callback=False)
+    if imps.INTERACTIVE:
+        plt_link = imps.inter_chart(fig, imagefile, callback=False)
 
     fig.update_layout(
         width=800,
         height=500,
     )
 
-    imagefile = helpers.image_border(imagefile, fig=fig)
+    imagefile = imps.image_border(imagefile, fig=fig)
 
     return {
         "title": f"Stocks: Average-Directional-Movement-Index {ticker.upper()}",
