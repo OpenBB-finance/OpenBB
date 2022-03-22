@@ -175,8 +175,6 @@ class ForexController(BaseController):
             help="Start date of data.",
             dest="start_date",
         )
-        if other_args and "-t" not in other_args and "-h" not in other_args:
-            other_args.insert(0, "-t")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if self.to_symbol and self.from_symbol:
