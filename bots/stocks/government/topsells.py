@@ -5,8 +5,7 @@ from datetime import datetime, timedelta
 import pandas as pd
 from matplotlib import pyplot as plt
 
-import bots.config_discordbot as cfg
-from bots.helpers import image_border
+from bots import imps
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import plot_autoscale
@@ -24,7 +23,7 @@ def topsells_command(
 ):
     """Displays most sold stocks by the congress/senate/house [quiverquant.com]"""
     # Debug user input
-    if cfg.DEBUG:
+    if imps.DEBUG:
         logger.debug(
             "gov-topsells %s %s %s %s",
             gov_type,
@@ -121,7 +120,7 @@ def topsells_command(
     plt.savefig(dataBytesIO)
     dataBytesIO.seek(0)
 
-    imagefile = image_border(imagefile, base64=dataBytesIO)
+    imagefile = imps.image_border(imagefile, base64=dataBytesIO)
 
     return {
         "title": f"Stocks: [quiverquant.com] Top sells for {gov_type.upper()}",

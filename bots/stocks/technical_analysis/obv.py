@@ -2,8 +2,7 @@ import logging
 
 import plotly.graph_objects as go
 
-import bots.config_discordbot as cfg
-from bots import helpers, load_candle
+from bots import imps, load_candle
 from gamestonk_terminal.common.technical_analysis import volume_model
 from gamestonk_terminal.decorators import log_start_end
 
@@ -24,7 +23,7 @@ def obv_command(
     """Displays chart with on balance volume [Yahoo Finance]"""
 
     # Debug
-    if cfg.DEBUG:
+    if imps.DEBUG:
         logger.debug(
             "ta obv %s %s %s %s %s %s %s",
             ticker,
@@ -52,7 +51,7 @@ def obv_command(
     )
 
     if df_stock.empty:
-        return Exception("No Data Found")
+        raise Exception("No Data Found")
 
     df_ta = df_stock.loc[(df_stock.index >= start) & (df_stock.index < end)]
     df_ta = df_ta.join(volume_model.obv(df_ta))
@@ -79,7 +78,7 @@ def obv_command(
             [{"secondary_y": False}],
         ],
     )
-    title = f"{plot['plt_title']} OBV"
+    title = f"<b>{plot['plt_title']} OBV</b>"
     fig = plot["fig"]
 
     fig.add_trace(
@@ -87,7 +86,7 @@ def obv_command(
             name="OBV",
             mode="lines",
             x=df_ta.index,
-            y=df_ta["OBV"],
+            y=df_ta.iloc[:, 6].values,
             line=dict(width=2),
             opacity=1,
         ),
@@ -97,8 +96,8 @@ def obv_command(
     )
     fig.update_layout(
         margin=dict(l=0, r=0, t=50, b=20),
-        template=cfg.PLT_TA_STYLE_TEMPLATE,
-        colorway=cfg.PLT_TA_COLORWAY,
+        template=imps.PLT_TA_STYLE_TEMPLATE,
+        colorway=imps.PLT_TA_COLORWAY,
         title=title,
         title_x=0.1,
         title_font_size=14,
@@ -110,15 +109,15 @@ def obv_command(
 
     # Check if interactive settings are enabled
     plt_link = ""
-    if cfg.INTERACTIVE:
-        plt_link = helpers.inter_chart(fig, imagefile, callback=False)
+    if imps.INTERACTIVE:
+        plt_link = imps.inter_chart(fig, imagefile, callback=False)
 
     fig.update_layout(
         width=800,
         height=500,
     )
 
-    imagefile = helpers.image_border(imagefile, fig=fig)
+    imagefile = imps.image_border(imagefile, fig=fig)
 
     return {
         "title": f"Stocks: On-Balance-Volume {ticker.upper()}",

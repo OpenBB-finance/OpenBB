@@ -1,2 +1,13 @@
 # flake8: noqa
-from . import common, economy, etf, groupme, menus, slack, stocks, telegram
+from . import (
+    common,
+    config_discordbot,
+    economy,
+    etf,
+    groupme,
+    imps,
+    menus,
+    slack,
+    stocks,
+    telegram,
+)

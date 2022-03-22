@@ -6,6 +6,7 @@ from disnake.ext import commands
 from bots.helpers import ShowView, ticker_autocomp
 from bots.stocks.due_diligence.analyst import analyst_command
 from bots.stocks.due_diligence.arktrades import arktrades_command
+from bots.stocks.due_diligence.borrowed import borrowed_command
 from bots.stocks.due_diligence.customer import customer_command
 from bots.stocks.due_diligence.est import est_command
 from bots.stocks.due_diligence.pt import pt_command
@@ -35,6 +36,19 @@ class DueDiligenceCommands(commands.Cog):
         ticker: Stock Ticker
         """
         await ShowView().discord(analyst_command, inter, "dd analyst", ticker)
+
+    @dd.sub_command()
+    async def borrowed(
+        inter: disnake.AppCmdInter,
+        ticker: str = commands.Param(autocomplete=ticker_autocomp),
+    ):
+        """Displays borrowed shares available and fee [Stocksera]
+
+        Parameters
+        -----------
+        ticker: Stock Ticker
+        """
+        await ShowView().discord(borrowed_command, inter, "dd borrowed", ticker)
 
     @dd.sub_command()
     async def pt(

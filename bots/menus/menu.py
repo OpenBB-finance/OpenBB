@@ -3,8 +3,7 @@ from typing import List
 import disnake
 from disnake.ext import commands
 
-import bots.config_discordbot as cfg
-from bots import helpers
+from bots import imps
 
 bot = commands.Bot()
 
@@ -34,7 +33,7 @@ class Menu(disnake.ui.View):
         for i, embed in enumerate(self.embeds):
             embed.set_footer(
                 text=f"Page {i + 1} of {len(self.embeds)}",
-                icon_url=cfg.AUTHOR_ICON_URL,
+                icon_url=imps.AUTHOR_ICON_URL,
             )
 
     def set_link_button(self) -> None:
@@ -51,7 +50,7 @@ class Menu(disnake.ui.View):
 
     @disnake.ui.select(
         placeholder="Page Select",
-        custom_id=f"select_{str(disnake.Member)}_{helpers.uuid_get()}",
+        custom_id=f"select_{str(disnake.Member)}_{imps.uuid_get()}",
         row=1,
     )
     async def selector(
@@ -77,7 +76,7 @@ class Menu(disnake.ui.View):
         label="Previous page",
         emoji="<a:leftarrow:929686892339937371>",
         style=disnake.ButtonStyle.red,
-        custom_id=f"persistent_view:prevpage_{str(disnake.Member)}_{helpers.uuid_get()}",
+        custom_id=f"persistent_view:prevpage_{str(disnake.Member)}_{imps.uuid_get()}",
     )
     async def prev_page(  # pylint: disable=W0613
         self,
@@ -101,7 +100,7 @@ class Menu(disnake.ui.View):
         label="Next page",
         emoji="<a:rightarrow:929686891891155006>",
         style=disnake.ButtonStyle.red,
-        custom_id=f"persistent_view:nextpage_{str(disnake.Member)}_{helpers.uuid_get()}",
+        custom_id=f"persistent_view:nextpage_{str(disnake.Member)}_{imps.uuid_get()}",
     )
     async def next_page(  # pylint: disable=W0613
         self,

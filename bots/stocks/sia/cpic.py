@@ -5,8 +5,7 @@ import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
 
-import bots.config_discordbot as cfg
-from bots import helpers
+from bots import imps
 from gamestonk_terminal.stocks.sector_industry_analysis import financedatabase_model
 
 
@@ -14,7 +13,6 @@ def cpic_command(
     industry: str,
     mktcap: str = "",
     exclude_exchanges: bool = False,
-    export: str = "",
     raw: bool = False,
     max_countries_to_display: int = 15,
     min_pct_to_display_country: float = 0.015,
@@ -29,8 +27,6 @@ def cpic_command(
         Select market cap of companies to consider from Small, Mid and Large
     exclude_exchanges : bool
         Exclude international exchanges
-    export: str
-        Format to export data as
     raw: bool
         Output all raw data
     max_countries_to_display: int
@@ -70,7 +66,7 @@ def cpic_command(
 
     if raw:
         output = {
-            "title": "Consumer Prices Index",
+            "title": "Stocks - Sector and Industry Analysis",
             "description": f"{df}",
         }
     else:
@@ -150,8 +146,8 @@ def cpic_command(
                     line=dict(color="#F5EFF3", width=0.8),
                 ),
             )
-            if cfg.PLT_WATERMARK:
-                fig.add_layout_image(cfg.PLT_WATERMARK)
+            if imps.PLT_WATERMARK:
+                fig.add_layout_image(imps.PLT_WATERMARK)
             fig.update_layout(
                 margin=dict(l=40, r=0, t=80, b=40),
                 title=dict(
@@ -161,9 +157,9 @@ def cpic_command(
                     xanchor="center",
                     yanchor="top",
                 ),
-                template=cfg.PLT_CANDLE_STYLE_TEMPLATE,
+                template=imps.PLT_CANDLE_STYLE_TEMPLATE,
                 colorway=colors,
-                font=cfg.PLT_FONT,
+                font=imps.PLT_FONT,
             )
 
         elif len(companies_per_country) == 1:
@@ -177,18 +173,18 @@ def cpic_command(
 
         # Check if interactive settings are enabled
         plt_link = ""
-        if cfg.INTERACTIVE:
-            plt_link = helpers.inter_chart(fig, imagefile, callback=False)
+        if imps.INTERACTIVE:
+            plt_link = imps.inter_chart(fig, imagefile, callback=False)
 
         fig.update_layout(
             width=800,
             height=500,
         )
 
-        imagefile = helpers.image_border(imagefile, fig=fig)
+        imagefile = imps.image_border(imagefile, fig=fig)
 
         output = {
-            "title": "Consumer Prices Index",
+            "title": "Stocks - Sector and Industry Analysis",
             "description": plt_link,
             "imagefile": imagefile,
         }
