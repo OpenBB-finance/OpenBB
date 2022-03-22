@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def etfs_disc_command(sort=""):
+def etfs_disc_command(sort="gainers"):
     """Displays ETF's Top Gainers/Decliners, Most Active  [Wall Street Journal]"""
 
     # Debug

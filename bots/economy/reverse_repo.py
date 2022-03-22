@@ -39,6 +39,9 @@ def reverse_repo_command(days: int = 100):
     for col, value in formats.items():
         df[col] = df[col].map(lambda x: value.format(x))  # pylint: disable=W0640
 
+    df = df.drop(columns="Moving Avg")
+    df = df.sort_values(by="Date", ascending=False)
+
     font_color = ["white"] * 4 + [
         [
             "#e4003a" if boolv else "#00ACFF"
@@ -46,8 +49,6 @@ def reverse_repo_command(days: int = 100):
         ]  # type: ignore
     ]
 
-    df = df.drop(columns="Moving Avg")
-    df = df.sort_values(by="Date", ascending=False)
     df.set_index("Date", inplace=True)
     df.columns = df.columns.str.capitalize()
 

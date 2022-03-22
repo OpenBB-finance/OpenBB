@@ -547,9 +547,10 @@ class ShowView:
                 .replace(".html)", ".html\n\n")
             )
             message = f"{title}\n{description}"
-            imagefile = imps.IMG_DIR.joinpath(data["imagefile"])
+            imagefile = imps.IMG_DIR.joinpath(data["imagefile"]).__str__()
             client.files_upload(
                 file=imagefile,
+                filename=data["imagefile"],
                 initial_comment=message,
                 channels=channel_id,
                 user_id=user_id,
@@ -564,7 +565,7 @@ class ShowView:
             title = data["title"] if "titles" not in data else data["titles"][0]
             N = 0
             for img in data["images_list"]:
-                imagefile = imps.IMG_DIR.joinpath(img)
+                imagefile = imps.IMG_DIR.joinpath(img).__str__()
                 if N == 0:
                     message = f"{title}\n{description}"
                     payload = {
@@ -574,10 +575,11 @@ class ShowView:
                     }
                     client.chat_postMessage(**payload)
                     title = ""
-                if N < len(data["titles"]) and N != 0:
-                    title = data["titles"][N]
+                if N < len(title) and N != 0:
+                    title = data["titles"][N] if "titles" in data else ""
                 client.files_upload(
                     file=imagefile,
+                    filename=img,
                     initial_comment=title,
                     channels=channel_id,
                     user_id=user_id,
@@ -623,8 +625,8 @@ class ShowView:
                         .replace(".html)", ".html\n\n")
                     )
                     res_title = f"{res_title}\n{description}"
-                if N < len(data["titles"]) and N != 0:
-                    res_title = data["titles"][N]
+                if N < len(title) and N != 0:
+                    res_title = data["titles"][N] if "titles" in data else ""
                 with open(imagefile, "rb") as image:
                     bot.reply_to(message, res_title)
                     bot.send_photo(message.chat.id, image)

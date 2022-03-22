@@ -8,6 +8,7 @@ from bots.economy.currencies import currencies_command
 from bots.economy.energy import energy_command
 from bots.economy.feargreed import feargreed_command
 from bots.economy.futures import futures_command
+from bots.economy.futures_coms import futures_coms_command
 from bots.economy.glbonds import glbonds_command
 from bots.economy.grains import grains_command
 from bots.economy.indices import indices_command
@@ -15,9 +16,13 @@ from bots.economy.meats import meats_command
 from bots.economy.metals import metals_command
 from bots.economy.overview import overview_command
 from bots.economy.performance import performance_command
+from bots.economy.reverse_repo import reverse_repo_command
 from bots.economy.softs import softs_command
 from bots.economy.usbonds import usbonds_command
 from bots.economy.valuation import valuation_command
+from bots.etf.holdings import holdings_command
+from bots.etf.tops import etfs_disc_command
+from bots.etf.whatetf import by_ticker_command
 from bots.stocks.candle import candle_command
 from bots.stocks.dark_pool_shorts.dpotc import dpotc_command
 from bots.stocks.dark_pool_shorts.ftd import ftd_command
@@ -27,9 +32,14 @@ from bots.stocks.dark_pool_shorts.psi import psi_command
 from bots.stocks.dark_pool_shorts.shorted import shorted_command
 from bots.stocks.dark_pool_shorts.sidtc import sidtc_command
 from bots.stocks.dark_pool_shorts.spos import spos_command
+from bots.stocks.disc.active import active_command
 from bots.stocks.disc.ford import ford_command
+from bots.stocks.disc.topgainers import gainers_command
+from bots.stocks.disc.toplosers import losers_command
+from bots.stocks.disc.ugs import ugs_command
 from bots.stocks.due_diligence.analyst import analyst_command
 from bots.stocks.due_diligence.arktrades import arktrades_command
+from bots.stocks.due_diligence.borrowed import borrowed_command
 from bots.stocks.due_diligence.customer import customer_command
 from bots.stocks.due_diligence.est import est_command
 from bots.stocks.due_diligence.pt import pt_command
@@ -52,6 +62,7 @@ from bots.stocks.options.iv import iv_command
 from bots.stocks.options.oi import oi_command
 from bots.stocks.options.opt_chain import chain_command
 from bots.stocks.options.overview import overview_command as overview_opt_command
+from bots.stocks.options.smile import smile_command
 from bots.stocks.options.unu import unu_command
 from bots.stocks.options.vol import vol_command
 from bots.stocks.options.vsurf import vsurf_command
@@ -88,11 +99,11 @@ from bots.stocks.technical_analysis.stoch import stoch_command
 from bots.stocks.technical_analysis.summary import summary_command
 from bots.stocks.technical_analysis.view import view_command
 
-re_date = re.compile(r"/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/")
 re_int = re.compile(r"^[1-9]\d*$")
 re_float = re.compile(r"^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$")
 re_name = re.compile(r"(?s).*")
 re_window = re.compile(r"(?s).*")
+re_date = re_name
 
 gov_type = ["congress", "senate", "house"]
 
@@ -352,7 +363,7 @@ def get_tickers() -> List[str]:
     return df.tolist()
 
 
-tickers = get_tickers()
+tickers = re_name
 commands = {
     "dd_analyst": {
         "function": analyst_command,
@@ -367,6 +378,10 @@ commands = {
     "dd_sec": {"function": sec_command, "required": {"ticker": tickers}},
     "dd_supplier": {
         "function": supplier_command,
+        "required": {"ticker": tickers},
+    },
+    "dd_borrowed": {
+        "function": borrowed_command,
         "required": {"ticker": tickers},
     },
     "dd_customer": {
@@ -413,7 +428,7 @@ commands = {
         "function": indices_command,
     },
     "econ_futures": {
-        "function": futures_command,
+        "function": futures_coms_command,
     },
     "econ_usbonds": {
         "function": usbonds_command,
@@ -436,6 +451,10 @@ commands = {
     "econ_softs": {
         "function": softs_command,
     },
+    "econ_repo": {
+        "function": reverse_repo_command,
+        "required": {"days": re_int},
+    },
     "econ_currencies": {
         "function": currencies_command,
     },
@@ -446,6 +465,23 @@ commands = {
     "econ_performance": {
         "function": performance_command,
         "required": {"economy_group": econ_group},
+    },
+    "etf_tops": {
+        "function": etfs_disc_command,
+        "required": {"sort": ["gainers", "decliners", "active"]},
+    },
+    "etf_holdings": {
+        "function": holdings_command,
+        "required": {"etf": re_name},
+        "optional": {"num": re_int},
+    },
+    "etf_byticker": {
+        "function": by_ticker_command,
+        "required": {"ticker": re_name, "sort": ["fund_percent", "mkt_value"]},
+        "optional": {"num": re_int},
+    },
+    "futures": {
+        "function": futures_command,
     },
     "gov_lasttrades": {
         "function": lasttrades_command,
@@ -527,12 +563,29 @@ commands = {
         "function": iv_command,
         "required": {"ticker": tickers},
     },
+    "opt_smile": {
+        "function": smile_command,
+        "required": {"ticker": tickers, "expiry": re_date},
+        "optional": {"min_sp": re_float, "max_sp": re_float},
+    },
+    "opt_unu": {
+        "function": unu_command,
+    },
     "q": {"function": quote_command, "required": {"ticker": tickers}},
     "disc_ford": {
         "function": ford_command,
     },
-    "opt_unu": {
-        "function": unu_command,
+    "disc_active": {
+        "function": active_command,
+    },
+    "disc_gainers": {
+        "function": gainers_command,
+    },
+    "disc_losers": {
+        "function": losers_command,
+    },
+    "disc_ugs": {
+        "function": ugs_command,
     },
     "ins_last": {
         "function": lins_command,
@@ -541,8 +594,8 @@ commands = {
     },
     "candle": {
         "function": candle_command,
-        "required": {"ticker": tickers, "interval": opt_intervals},
-        "optional": {"past_days": re_int, "start": re_date, "end": re_date},
+        "required": {"ticker": tickers, "interval": opt_intervals, "past_days": re_int},
+        "optional": {"start": re_date, "end": re_date},
     },
     "opt_overview": {
         "function": overview_opt_command,
@@ -560,7 +613,7 @@ commands = {
         "function": vsurf_command,
         "required": {"ticker": tickers, "z": options_vsurf_choices.values()},
     },
-    "opt_hist": {
+    "opt_grhist": {
         "function": hist_command,
         "required": {
             "ticker": tickers,
@@ -621,7 +674,7 @@ commands = {
         "optional": {"limit": re_int, "ascend": [True, False]},
     },
     # TODO Add ta candle args
-    "ta-ma": {
+    "ta_ma": {
         "function": ma_command,
         "required": {"ticker": tickers, "interval": opt_intervals, "ma_mode": ma_mode},
         "optional": {
@@ -636,12 +689,15 @@ commands = {
     },
     "ta_cci": {
         "function": cci_command,
-        "required": {"ticker": tickers},
+        "required": {"ticker": tickers, "interval": opt_intervals},
         "optional": {
+            "past_days": re_int,
             "length": re_int,
             "scalar": re_float,
             "start": re_date,
             "end": re_date,
+            "extended_hours": [True, False],
+            "heikin_candles": [True, False],
         },
     },
     "ta_macd": {
@@ -674,19 +730,29 @@ commands = {
     },
     "ta_stoch": {
         "function": stoch_command,
-        "required": {"ticker": tickers},
+        "required": {"ticker": tickers, "interval": opt_intervals},
         "optional": {
+            "past_days": re_int,
             "fast_k": re_int,
             "slow_k": re_int,
             "slow_d": re_int,
             "start": re_date,
             "end": re_date,
+            "extended_hours": [True, False],
+            "heikin_candles": [True, False],
         },
     },
     "ta_fisher": {
         "function": fisher_command,
-        "required": {"ticker": tickers},
-        "optional": {"length": re_int, "start": re_date, "end": re_date},
+        "required": {"ticker": tickers, "interval": opt_intervals},
+        "optional": {
+            "past_days": re_int,
+            "length": re_int,
+            "start": re_date,
+            "end": re_date,
+            "extended_hours": [True, False],
+            "heikin_candles": [True, False],
+        },
     },
     "ta_cg": {
         "function": fisher_command,
@@ -759,8 +825,15 @@ commands = {
     },
     "ta_ad": {
         "function": ad_command,
-        "required": {"ticker": tickers},
-        "optional": {"is_open": ["True", "False"], "start": re_date, "end": re_date},
+        "required": {"ticker": tickers, "interval": opt_intervals},
+        "optional": {
+            "past_days": re_int,
+            "is_open": [True, False],
+            "start": re_date,
+            "end": re_date,
+            "extended_hours": [True, False],
+            "heikin_candles": [True, False],
+        },
     },
     "ta_adosc": {
         "function": adosc_command,
@@ -789,8 +862,14 @@ commands = {
     },
     "ta_fib": {
         "function": fib_command,
-        "required": {"ticker": tickers},
-        "optional": {"start": re_date, "end": re_date},
+        "required": {"ticker": tickers, "interval": opt_intervals},
+        "optional": {
+            "past_days": re_int,
+            "start": re_date,
+            "end": re_date,
+            "extended_hours": [True, False],
+            "heikin_candles": [True, False],
+        },
     },
     "ta_view": {"function": view_command, "required": {"ticker": tickers}},
     "ta_summary": {"function": summary_command, "required": {"ticker": tickers}},
