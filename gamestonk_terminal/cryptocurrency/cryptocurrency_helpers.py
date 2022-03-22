@@ -4,15 +4,19 @@ __docformat__ = "numpy"
 
 import os
 import json
+from datetime import datetime, timedelta
 from typing import Tuple, Any, Optional, List
 import difflib
 import logging
+
 import pandas as pd
 import numpy as np
 from binance.client import Client
 import matplotlib.pyplot as plt
+import yfinance as yf
 import mplfinance as mpf
 from pycoingecko import CoinGeckoAPI
+
 from gamestonk_terminal.helper_funcs import (
     plot_autoscale,
     export_data,
@@ -68,7 +72,38 @@ SOURCES_INTERVALS = {
         "24hour",
         "1day",
     ],
+    "yf": [
+        "1min",
+        "2min",
+        "5min",
+        "15min",
+        "30min",
+        "60min",
+        "90min",
+        "1hour",
+        "1day",
+        "5day",
+        "1week",
+        "1month",
+        "3month",
+    ],
 }
+
+
+YF_CURRENCY = [
+    "CAD",
+    "CNY",
+    "ETH",
+    "EUR",
+    "GBP",
+    "INR",
+    "JPY",
+    "KRW",
+    "RUB",
+    "USD",
+    "AUD",
+    "BTC",
+]
 
 
 def load_cg_coin_data(
@@ -152,8 +187,8 @@ def load_coinbase_map():
 
 
 def prepare_all_coins_df() -> pd.DataFrame:
-    """Helper method which loads coins from all sources: CoinGecko, CoinPaprika, Binance
-    and merge those coins on keys:
+    """Helper method which loads coins from all sources: CoinGecko, CoinPaprika,
+    Binance, Yahoo Finance and merge those coins on keys:
 
         CoinGecko - > name < - CoinPaprika
         CoinGecko - > id <- Binance
@@ -165,6 +200,8 @@ def prepare_all_coins_df() -> pd.DataFrame:
         CoinPaprika - id for coin in CoinPaprika API: uni-uniswap
         Binance - symbol (baseAsset) for coin in Binance API: UNI
         Coinbase - symbol for coin in Coinbase Pro API e.g UNI
+        Yahoo Finance - symbol for coin in Yahoo Finance e.g. UNI1-USD
+
         Symbol: uni
     """
 
@@ -173,6 +210,7 @@ def prepare_all_coins_df() -> pd.DataFrame:
     paprika_coins_df = load_coins_list("coinpaprika_coins.json")
     paprika_coins_df = paprika_coins_df[paprika_coins_df["is_active"]]
     paprika_coins_df = paprika_coins_df[["rank", "id", "name", "symbol", "type"]]
+    yahoofinance_coins_df = load_coins_list("yahoofinance_coins.json")
 
     # TODO: Think about scheduled job, that once a day will update data
 
@@ -205,7 +243,30 @@ def prepare_all_coins_df() -> pd.DataFrame:
         how="left",
     )
 
-    return df_merged[["CoinGecko", "CoinPaprika", "Binance", "Coinbase", "Symbol"]]
+    yahoofinance_coins_df.rename(
+        columns={
+            "symbol": "Symbol",
+        },
+        inplace=True,
+    )
+
+    df_merged = pd.merge(
+        left=df_merged,
+        right=yahoofinance_coins_df[["Symbol", "id"]],
+        on="Symbol",
+        how="left",
+    )
+
+    df_merged.rename(
+        columns={
+            "id": "YahooFinance",
+        },
+        inplace=True,
+    )
+
+    return df_merged[
+        ["CoinGecko", "CoinPaprika", "Binance", "Coinbase", "YahooFinance", "Symbol"]
+    ]
 
 
 def _create_closest_match_df(
@@ -247,7 +308,8 @@ def load(
     interval: str = "1day",
     should_load_ta_data: bool = False,
 ):
-    """Load cryptocurrency from given source. Available sources are: CoinGecko, CoinPaprika, Coinbase and Binance.
+    """Load cryptocurrency from given source. Available sources are: CoinGecko, CoinPaprika,
+    Coinbase, Binance and Yahoo Finance
 
     Loading coin from Binance and CoinPaprika means validation if given coins exists in chosen source,
     if yes then id of the coin is returned as a string.
@@ -259,13 +321,13 @@ def load(
     coin: str
         Coin symbol or id which is checked if exists in chosen data source.
     source : str
-        Source of the loaded data. CoinGecko, CoinPaprika, or Binance
+        Source of the loaded data. CoinGecko, CoinPaprika, Yahoo Finance or Binance
 
     Returns
     -------
     Tuple[Union[str, pycoingecko_model.Coin], str, str]
         - str or Coin object for provided coin
-        - str with source of the loaded data. CoinGecko, CoinPaprika, or Binance
+        - str with source of the loaded data. CoinGecko, CoinPaprika, Yahoo Finance or Binance
         - str with symbol
         - Dataframe with coin map to different sources
     """
@@ -438,6 +500,77 @@ def load(
             return (current_coin, source, coin, coin_map_df, None, None)
         console.print(f"Couldn't find coin with symbol {current_coin}\n")
         return None, None, None, None, None, None
+
+    if source == "yf":
+
+        if vs.upper() not in YF_CURRENCY:
+            console.print(
+                "vs specified not supported by coinbase. Run command again with one supported (e.g., --vs USD):\n",
+                YF_CURRENCY,
+            )
+            return None, None, None, None, None, None
+
+        if interval not in SOURCES_INTERVALS["yf"]:
+            console.print(
+                "Interval not available on YahooFinance. Run command again with one supported (e.g., -i 1day):\n",
+                SOURCES_INTERVALS["yf"],
+            )
+            return None, None, None, None, None, None
+
+        try:
+            # Check if user input is symbol or full crypto name
+            if len(coin) <= 4:
+                coin_map_df = coins_map_df.loc[coin]
+            else:
+                coin_map_df = coins_map_df.loc[coins_map_df.CoinGecko == coin]
+
+            coin_map_df = coin_map_df[
+                coin_map_df["YahooFinance"].str.upper().str.contains(vs.upper())
+            ]
+
+            coin_map_df = (
+                coin_map_df.iloc[0]
+                if isinstance(coin_map_df, pd.DataFrame)
+                else coin_map_df
+            )
+
+            if str(coin_map_df["YahooFinance"]) == "nan":
+                console.print(
+                    f"Cannot find {coin} Yahoo finance. Try another source.\n"
+                )
+                return None, None, None, None, None, None
+
+        except KeyError:
+            console.print(f"Cannot find {coin} Yahoo finance. Try another source.\n")
+            return None, None, None, None, None, None
+
+        if should_load_ta_data:
+            df_prices, currency = load_ta_data(
+                coin_map_df=coin_map_df,
+                source=source,
+                currency=vs,
+                days=days,
+                limit=0,
+                interval=interval,
+            )
+
+            return (
+                coin_map_df["YahooFinance"],
+                source,
+                coin,
+                coin_map_df,
+                df_prices,
+                currency,
+            )
+
+        return (
+            coin_map_df["YahooFinance"],
+            source,
+            coin,
+            coin_map_df,
+            None,
+            None,
+        )
 
     return None, None, None, None, None, None
 
@@ -673,7 +806,7 @@ def load_ta_data(
     coin_map_df: pd.DataFrame
         Cryptocurrency
     source: str
-        Source of data: CoinGecko, Binance, CoinPaprika
+        Source of data: CoinGecko, Binance, CoinPaprika, Yahoo Finance
     currency: str
         Quotes currency
     kwargs:
@@ -797,6 +930,40 @@ def load_ta_data(
             )
 
             return df_coin[::-1], currency
+
+    if source == "yf":
+
+        interval_map = {
+            "1min": "1m",
+            "2min": "2m",
+            "5min": "5m",
+            "15min": "15m",
+            "30min": "30m",
+            "60min": "60m",
+            "90min": "90m",
+            "1hour": "1h",
+            "1day": "1d",
+            "5day": "5d",
+            "1week": "1wk",
+            "1month": "1mo",
+            "3month": "3mo",
+        }
+
+        symbol_yf = coin_map_df["YahooFinance"]
+
+        df_coin = yf.download(
+            symbol_yf,
+            end=datetime.now(),
+            start=datetime.now() - timedelta(days=days),
+            progress=False,
+            interval=interval_map[interval],
+        ).sort_index(ascending=False)
+
+        if df_coin.empty:
+            console.print(f"Could not download data for {symbol_yf} from Yahoo Finance")
+            return pd.DataFrame(), currency
+
+        return df_coin[::-1], currency
 
     return pd.DataFrame(), currency
 

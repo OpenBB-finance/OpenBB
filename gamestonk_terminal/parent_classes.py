@@ -44,6 +44,7 @@ CRYPTO_SOURCES = {
     "cg": "CoinGecko",
     "cp": "CoinPaprika",
     "cb": "Coinbase",
+    "yf": "YahooFinance",
 }
 
 
@@ -554,7 +555,7 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
             "--source",
             help="Source of data",
             dest="source",
-            choices=("cp", "cg", "bin", "cb"),
+            choices=("cp", "cg", "bin", "cb", "yf"),
             default="cp",
             required=False,
         )
@@ -587,6 +588,7 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
         delta = (datetime.now() - ns_parser.start).days
+
         if ns_parser:
             source = ns_parser.source
             for arg in ["--source", source]:

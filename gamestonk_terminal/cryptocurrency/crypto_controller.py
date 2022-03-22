@@ -48,6 +48,7 @@ CRYPTO_SOURCES = {
     "cg": "CoinGecko",
     "cp": "CoinPaprika",
     "cb": "Coinbase",
+    "yf": "YahooFinance",
 }
 
 
