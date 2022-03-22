@@ -299,6 +299,7 @@ def _create_closest_match_df(
     return df.merge(coins, on="id")
 
 
+# pylint: disable=R0912
 # TODO: verify vs, interval, days, depending on source
 def load(
     coin: str,
@@ -524,9 +525,16 @@ def load(
             else:
                 coin_map_df = coins_map_df.loc[coins_map_df.CoinGecko == coin]
 
+            # Filter for the currency
             coin_map_df = coin_map_df[
                 coin_map_df["YahooFinance"].str.upper().str.contains(vs.upper())
             ]
+
+            if coin_map_df.empty:
+                console.print(
+                    f"Cannot find {coin} against {vs} on Yahoo finance. Try another source or currency.\n"
+                )
+                return None, None, None, None, None, None
 
             coin_map_df = (
                 coin_map_df.iloc[0]
@@ -958,6 +966,8 @@ def load_ta_data(
             progress=False,
             interval=interval_map[interval],
         ).sort_index(ascending=False)
+
+        df_coin.index.names = ["date"]
 
         if df_coin.empty:
             console.print(f"Could not download data for {symbol_yf} from Yahoo Finance")
