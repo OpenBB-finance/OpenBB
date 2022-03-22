@@ -8,7 +8,7 @@ import pyimgur
 from dotenv import load_dotenv
 
 # Path to bots
-bots_path = Path(__file__).parent.absolute()
+bots_path = Path(__file__).parent.resolve()
 
 env_files = [f for f in bots_path.iterdir() if f.as_posix().endswith(".env")]
 
