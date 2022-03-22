@@ -91,7 +91,6 @@ squarify = "^0.4.3"
 finnhub-python = "^2.4.10"
 linearmodels = "^4.25"
 black = "22.1"
-boto3 = "^1.21.18"
 undetected-chromedriver = {version = "^3.1.5", optional = true}
 boto3 = {version = "^1.21.14", optional = true}
 
