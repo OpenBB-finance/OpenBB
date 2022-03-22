@@ -1,10 +1,8 @@
 import logging
 
-import df2img
 import numpy as np
 
-import bots.config_discordbot as cfg
-from bots.helpers import save_image
+from bots import imps
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.stocks.due_diligence import finviz_model
 
@@ -16,7 +14,7 @@ def analyst_command(ticker=""):
     """Displays analyst recommendations [Finviz]"""
 
     # Debug
-    if cfg.DEBUG:
+    if imps.DEBUG:
         logger.debug("dd analyst %s", ticker)
 
     # Check for argument
@@ -38,17 +36,17 @@ def analyst_command(ticker=""):
     )
 
     dindex = len(df.index)
-    fig = df2img.plot_dataframe(
+    fig = imps.plot_df(
         df,
         fig_size=(900, (40 + (40 * dindex))),
         col_width=[5, 5, 9, 8, 5, 6, 5],
-        tbl_header=cfg.PLT_TBL_HEADER,
-        tbl_cells=cfg.PLT_TBL_CELLS,
-        font=cfg.PLT_TBL_FONT,
-        row_fill_color=cfg.PLT_TBL_ROW_COLORS,
+        tbl_header=imps.PLT_TBL_HEADER,
+        tbl_cells=imps.PLT_TBL_CELLS,
+        font=imps.PLT_TBL_FONT,
+        row_fill_color=imps.PLT_TBL_ROW_COLORS,
         paper_bgcolor="rgba(0, 0, 0, 0)",
     )
-    imagefile = save_image("dd-analyst.png", fig)
+    imagefile = imps.save_image("dd-analyst.png", fig)
 
     return {
         "title": f"Stocks: [Finviz] Analyst Recommendations {ticker.upper()}",

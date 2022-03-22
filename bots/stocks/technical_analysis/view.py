@@ -3,7 +3,7 @@ import logging
 
 from PIL import Image
 
-import bots.config_discordbot as cfg
+from bots import config_discordbot as cfg
 from bots.helpers import image_border
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.stocks.technical_analysis import finviz_model
