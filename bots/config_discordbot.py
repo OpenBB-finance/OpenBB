@@ -45,7 +45,9 @@ INTERACTIVE = False
 INTERACTIVE_DIR = bots_path / "interactive/"
 INTERACTIVE_URL = ""
 IMG_DIR = bots_path / "interactive/images/"
-IMAGES_URL = ""  # Ex. "http://your-site.com/images/"
+IMAGES_URL = (
+    os.getenv("GT_IMAGES_URL") or "REPLACE_ME"
+)  # Ex. "http://your-site.com/images/"
 
 # IMG_BG = bots_path.joinpath("files/bg.png")  # Light BG
 IMG_BG = bots_path.joinpath("files/bg-dark.png")  # Dark BG

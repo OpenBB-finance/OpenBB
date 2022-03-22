@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.10; rv:86.1) Gecko/20100101 Firefox/86.1
+      - Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:82.1) Gecko/20100101 Firefox/82.1
     method: GET
     uri: https://stockanalysis.com/etf/VDE/holdings/
   response:
@@ -289,7 +289,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 6eff7b4be87820b5-IND
+      - 6eff953b3ee31fef-IND
       Cache-Control:
       - public, max-age=0, s-max-age=3600
       Connection:
@@ -299,7 +299,7 @@ interactions:
       Content-Type:
       - text/html; charset=utf-8
       Date:
-      - Tue, 22 Mar 2022 14:05:20 GMT
+      - Tue, 22 Mar 2022 14:23:02 GMT
       Expect-CT:
       - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
       Server:
@@ -309,7 +309,7 @@ interactions:
       X-Content-Type-Options:
       - nosniff
       age:
-      - '0'
+      - '1062'
       alt-svc:
       - h3=":443"; ma=86400, h3-29=":443"; ma=86400
       strict-transport-security:
@@ -321,9 +321,9 @@ interactions:
       x-powered-by:
       - Next.js
       x-vercel-cache:
-      - MISS
+      - HIT
       x-vercel-id:
-      - cle1::iad1::gfvkn-1647957920670-4025ff2d9c18
+      - cle1::iad1::ndnps-1647958982967-271d39fb136f
     status:
       code: 200
       message: OK

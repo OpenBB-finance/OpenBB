@@ -31,6 +31,7 @@ EXTENSIONS_MATCHING: Dict[str, List[Type]] = {
 }
 
 os.environ["TEST_MODE"] = "True"
+os.environ["GT_IMAGES_URL"] = "http://testurl.com"
 
 
 class Record:
