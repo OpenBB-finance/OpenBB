@@ -5,7 +5,7 @@ from bots.economy.glbonds import glbonds_command
 
 @pytest.mark.vcr
 def test_glbonds_command(mocker, recorder):
-    mocker.patch(target="bots.economy.glbonds.imps.save_image", return_value=None)
+    mocker.patch("bots.helpers.uuid_get", return_value="1")
     value = glbonds_command()
 
     recorder.capture(value)

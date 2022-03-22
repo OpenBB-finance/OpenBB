@@ -25,6 +25,7 @@ from bots.economy.valuation import valuation_command
 )
 @pytest.mark.vcr
 def test_valuation_command(mocker, recorder, group):
+    mocker.patch("bots.helpers.uuid_get", return_value="1")
     value = valuation_command(group)
     value["view"] = value["view"].__name__
     value["embed"] = None
