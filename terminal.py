@@ -39,6 +39,25 @@ from gamestonk_terminal.terminal_helper import (
     welcome_message,
 )
 
+# This imports the package needed for the installer - Wrapped in try/except because
+# it's not needed on the normal launch of project.
+try:
+    import pyi_splash
+except:
+    pass
+# Below line tells the splash screen to go away on .exe launch when terminal is loaded.
+try:
+    # Update the text on the splash screen
+    pyi_splash.update_text("Terminal Loaded!")
+    # Close the splash screen. It does not matter when the call
+    # to this function is made, the splash screen remains open until
+    # this function is called or the Python program is terminated.
+    pyi_splash.close()
+except Exception as e:
+    print(e)
+    pass
+
+
 # pylint: disable=too-many-public-methods,import-outside-toplevel,too-many-branches
 
 logger = logging.getLogger(__name__)

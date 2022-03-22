@@ -48,15 +48,23 @@ a = Analysis(
 )
 pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
 
+splash = Splash('../../images/splashscreen.png',
+                binaries=a.binaries,
+                datas=a.datas,
+                text_pos=(200, 400),
+                text_size=12,
+                text_color='black')
 
 exe = EXE(
     pyz,
     a.scripts,
+    splash,
+    splash.binaries,
     a.binaries,
     a.zipfiles,
     a.datas,
     [],
-    name="terminal",
+    name="GameStonk",
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
@@ -68,6 +76,7 @@ exe = EXE(
     target_arch="x86_64",
     codesign_identity=None,
     entitlements_file=None,
+    icon = "../../images/gst_app.ico",
 )
 
 
