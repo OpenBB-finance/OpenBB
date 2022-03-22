@@ -18,7 +18,7 @@ from _pytest.mark.structures import Mark
 # IMPORTATION INTERNAL
 from gamestonk_terminal import decorators
 from gamestonk_terminal import helper_funcs
-
+from bots import config_discordbot as cfg
 
 # pylint: disable=redefined-outer-name
 
@@ -393,6 +393,15 @@ def default_json_path(request: SubRequest) -> str:
 def record_stdout_markers(request: SubRequest) -> List[Mark]:
     """All markers applied to the certain test together with cassette names associated with each marker."""
     return list(request.node.iter_markers(name="record_stdout"))
+
+
+@pytest.fixture(scope="session", autouse=True)
+def delete_images():
+    yield
+    mydir = os.path.join(cfg.GST_PATH, "bots", "interactive", "images")
+    filelist = [f for f in os.listdir(mydir) if f.endswith(".png")]
+    for f in filelist:
+        os.remove(os.path.join(mydir, f))
 
 
 @pytest.fixture(autouse=True)
