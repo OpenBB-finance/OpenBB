@@ -1149,6 +1149,36 @@ def plot_chart(
 
             console.print("")
 
+    if source == "yf":
+        symbol_yf = coin_map_df["YahooFinance"]
+
+        df = yf.download(
+            symbol_yf,
+            end=datetime.now(),
+            start=datetime.now() - timedelta(days=days),
+            progress=False,
+            interval=interval,
+        ).sort_index(ascending=False)[[
+            "Open",
+            "High",
+            "Low",
+            "Close",
+            "Volume",
+        ]]
+
+        df.index.name = "date"
+
+        title = f"{symbol_yf.replace('-', '/')} from {df.index[0].strftime('%Y/%m/%d')} to {df.index[-1].strftime('%Y/%m/%d')}"  # noqa: E501
+
+        plot_candles(
+            candles_df=df,
+            title=title,
+            volume=True,
+            ylabel="Volume [1M]",
+        )
+
+        console.print("")
+
 
 def plot_candles(
     candles_df: pd.DataFrame,
