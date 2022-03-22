@@ -1,0 +1,53 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: GET
+    uri: https://www.alphavantage.co/query?apikey=MOCK_API_KEY&from_currency=USD&function=CURRENCY_EXCHANGE_RATE&to_currency=JPY
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA3zQwU7DMAwG4Pue4lfOLGqyDWhvo4PDhNDUlcO4IKv1WEWboCRIoGnvjtoJCEzg
+        qz//lr0fAYAomNrQdIz81Tk21Tuu36odmSdGQYFFhv0AB6wkbpztHr9sbuueiPv1Qpx9O/3b3VF3
+        dKYJXGMdKLDHwrYtuXhwIlHa0/jlahOr6U/1Gb6kFzLsGRs2MZ/Jk5uEUqlUM5X0FdtziVvyAQVv
+        Hfsd1z3WidbjZDLWCkplOs2mOp65kCj7Dz5YczyyzOP2pcRVU2Plmurf1anE3D//4QZ2GB0+AAAA
+        //8DAPApKWm2AQAA
+    headers:
+      Allow:
+      - GET, HEAD, OPTIONS
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 6ef659fe1dfb970e-AMS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 21 Mar 2022 11:29:45 GMT
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Cookie
+      Via:
+      - 1.1 vegur
+      X-Frame-Options:
+      - SAMEORIGIN
+    status:
+      code: 200
+      message: OK
+version: 1
