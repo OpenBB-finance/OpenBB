@@ -77,7 +77,8 @@ class PathTrackingFileHandler(TimedRotatingFileHandler):
     ) -> None:
         filename = str(self.build_log_file_path(settings=settings))
         frequency = settings.log_settings.frequency
-        super().__init__(filename, when=frequency, *args, **kwargs)
+        kwargs["when"] = frequency
+        super().__init__(filename, *args, **kwargs)
         self.suffix += ".log"
 
         self.__settings = settings

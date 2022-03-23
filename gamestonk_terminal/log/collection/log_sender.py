@@ -91,7 +91,7 @@ class LogSender(Thread):
 
         self.__app_settings = app_settings
 
-        self.__queue = SimpleQueue()
+        self.__queue: SimpleQueue = SimpleQueue()
 
     def send_path(self, path: Path, last: bool = False):
         """What ever path we send it need to the closed !"""
