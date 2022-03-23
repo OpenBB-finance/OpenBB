@@ -1,1 +1,1 @@
-candle_commandcandle/tsla/1{'ticker': 'TSLA', 'interval': 1}
+Required syntax: /candle/ticker/interval/past_days

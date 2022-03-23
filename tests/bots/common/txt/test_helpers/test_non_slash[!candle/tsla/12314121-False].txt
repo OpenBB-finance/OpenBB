@@ -1,3 +1,1 @@
-candle/ticker/interval
-Invalid argument for: interval
-Options: 1, 5, 15, 30, 60, 1440
+Required syntax: /candle/ticker/interval/past_days

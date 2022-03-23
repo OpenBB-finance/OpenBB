@@ -4,10 +4,11 @@ Valid categories:
  /disc
  /dps
  /econ
+ /etf
+ /futures
  /gov
  /ins
  /opt
  /q
  /scr
  /ta
- /ta-ma

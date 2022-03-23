@@ -47,7 +47,7 @@ INTERACTIVE_URL = ""
 IMG_DIR = bots_path.joinpath("interactive/images/")
 
 IMAGES_URL = ""  # Ex. "http://your-site.com/images/"
-IMG_HOST_ACTIVE = True
+IMG_HOST_ACTIVE = bool(os.getenv("GT_IMG_HOST_ACTIVE"))
 
 # IMG_BG = bots_path.joinpath("files/bg.png")  # Light BG
 IMG_BG = bots_path.joinpath("files/bg-dark.png")  # Dark BG

@@ -1,3 +1,1 @@
-candle/ticker/interval
-Invalid argument for: ticker
-Please give a listed ticker
+Required syntax: /candle/ticker/interval/past_days
