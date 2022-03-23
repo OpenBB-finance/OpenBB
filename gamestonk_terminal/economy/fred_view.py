@@ -208,7 +208,7 @@ def display_yield_curve(date: datetime, external_axes: Optional[List[plt.Axes]] 
             return
         (ax,) = external_axes
 
-    ax.plot(rates.Maturity, rates.Rate, "-or")
+    ax.plot(rates.Maturity, rates.Rate, "-o")
     ax.set_xlabel("Maturity")
     ax.set_ylabel("Rate (%)")
     theme.style_primary_axis(ax)
