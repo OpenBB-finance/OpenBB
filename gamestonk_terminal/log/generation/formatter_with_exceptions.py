@@ -1,5 +1,7 @@
 # IMPORTATION STANDARD
 import logging
+import os
+import re
 
 # IMPORTATION THIRDPARTY
 
@@ -44,6 +46,31 @@ class FormatterWithExceptions(logging.Formatter):
         return log_extra
 
     @staticmethod
+    def filter_piis(text: str) -> str:
+        ip_regex = r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"
+        s_list = []
+        ip_reg = re.compile(ip_regex)
+        for word in text.split():
+            if (
+                ip_reg.search(word)
+                and int(max(word.split(""))) < 256
+                and int(min(word.split(""))) >= 0
+            ):
+                s_list.append("suspected_ip")
+            elif "@" in word and "." in word:
+                s_list.append("suspected_email")
+            elif os.sep in word and "GamestonkTerminal/" in word:
+                s_list.append(word.split("GamestonkTerminal/")[1])
+            elif os.sep in word:
+                s_list.append(word.split(os.sep)[-1])
+            else:
+                s_list.append(word)
+
+            text = " ".join(s_list)
+
+        return text
+
+    @staticmethod
     def filter_special_characters(text: str):
         filtered_text = (
             text.replace("\n", " - ")
@@ -54,6 +81,13 @@ class FormatterWithExceptions(logging.Formatter):
         )
 
         return filtered_text
+
+    @classmethod
+    def filter_log_line(cls, text: str):
+        text = cls.filter_special_characters(text=text)
+        text = cls.filter_piis(text=text)
+
+        return text
 
     # OVERRIDE
     def __init__(
@@ -114,7 +148,7 @@ class FormatterWithExceptions(logging.Formatter):
         log_prefix = self.LOGPREFIXFORMAT % log_prefix_content
 
         log_line = super().format(record)
-        log_line = self.filter_special_characters(text=log_line)
+        log_line = self.filter_log_line(text=log_line)
         log_line_full = log_prefix + log_line
 
         return log_line_full
