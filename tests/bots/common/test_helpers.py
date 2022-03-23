@@ -38,7 +38,7 @@ def test_get_arguments(dictionary, cmd):
         ("!candle", False),
         ("!candle/ewfewewfwe/1", False),
         ("!candle/tsla/12314121", False),
-        ("!candle/tsla/1", True),
+        ("!candle/tsla/1/20", True),
         ("!gov_contracts/tsla/15/True", True),
         ("!opt_cc_hist/tsla/2022-03-25/680/Calls", True),
     ],
