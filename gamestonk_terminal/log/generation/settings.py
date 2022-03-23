@@ -47,7 +47,7 @@ class AppSettings:
 
 class LogSettings:
     @property
-    def directory(self) -> str:
+    def directory(self) -> Path:
         return self.__directory
 
     @property

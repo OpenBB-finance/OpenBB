@@ -12,6 +12,7 @@ from gamestonk_terminal.log.generation.settings import Settings
 
 # DO NOT USE THE FILE LOGGER IN THIS MODULE
 
+
 class PathTrackingFileHandler(TimedRotatingFileHandler):
     @staticmethod
     def build_log_file_path(settings: Settings) -> Path:

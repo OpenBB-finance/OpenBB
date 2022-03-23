@@ -1,7 +1,7 @@
 # IMPORTATION STANDARD
 from copy import deepcopy
 from threading import Thread
-from queue import Queue, SimpleQueue
+from queue import SimpleQueue
 from pathlib import Path
 
 # IMPORTATION THIRDPARTY
@@ -33,7 +33,7 @@ class QueueItem:
 
 class LogSender(Thread):
     @property
-    def queue(self) -> Queue:
+    def queue(self) -> SimpleQueue:
         return self.__queue
 
     @property
