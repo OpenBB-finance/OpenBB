@@ -423,7 +423,9 @@ def candle_fig(
 
             for article in articles:
                 dt_at = article["publishedAt"].replace("T", " ").replace("Z", "-05:00")
-                df_date.append(f"{datetime.strptime(dt_at, '%Y-%m-%d %H:%M:%S%z')}")
+                df_date.append(
+                    f"{datetime.strptime(dt_at, '%Y-%m-%d %H:%M:%S%z').astimezone(est_tz)}"
+                )
                 df_title.append(article["title"])
                 grab_price = df_stock.iloc[
                     df_stock.index.get_loc(dt_at, method="nearest")

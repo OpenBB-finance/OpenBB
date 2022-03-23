@@ -365,7 +365,7 @@ def inter_chart(fig: plotly.graph_objects, filename: str, **data) -> str:
         """
 
     # Write out HTML file
-    with open(f"{imps.INTERACTIVE_DIR / filename}", "w") as f:
+    with open(f"{imps.INTERACTIVE_DIR.joinpath(filename)}", "w") as f:
         f.write(html_str)
     plt_link = f"[Interactive]({imps.INTERACTIVE_URL}/{filename})"
     return plt_link
@@ -387,7 +387,7 @@ def save_image(filename: str, fig: plotly.graph_objects) -> str:
         filename with UUID added to use for bot processing
     """
     imagefile = f"{filename.replace('.png', '')}_{uuid_get()}.png"
-    filesave = imps.IMG_DIR / imagefile
+    filesave = imps.IMG_DIR.joinpath(imagefile)
     fig.write_image(filesave)
     image = Image.open(filesave)
     image = autocrop_image(image, 0)
@@ -412,7 +412,7 @@ def image_border(filename: str, **kwargs) -> str:
         filename with UUID added to use for bot processing
     """
     imagefile = f"{filename.replace('.png', '')}_{uuid_get()}.png"
-    filesave = imps.IMG_DIR / imagefile
+    filesave = imps.IMG_DIR.joinpath(imagefile)
     if "fig" in kwargs:
         fig = kwargs["fig"]
         fig.write_image(filesave)
@@ -441,6 +441,30 @@ def image_border(filename: str, **kwargs) -> str:
     return imagefile
 
 
+def multi_image(filename: str, **kwargs) -> str:
+    """Uploads to an image host and returns image url.
+
+    Parameters
+    ----------
+    filename : str
+        Image filename
+
+    Returns
+    -------
+    str
+        Image url
+    """
+    if imps.IMAGES_URL or not imps.IMG_HOST_ACTIVE:
+        image_link = imps.IMAGES_URL + filename
+    else:
+        imagefile_save = imps.IMG_DIR.joinpath(filename)
+        uploaded_image = imps.gst_imgur.upload_image(imagefile_save, title="something")
+        image_link = uploaded_image.link
+        os.remove(imagefile_save)
+
+    return image_link
+
+
 class ShowView:
     async def run_discord(self, func, inter, *args, **kwargs):
         data = func(*args, **kwargs)
@@ -462,7 +486,7 @@ class ShowView:
             )
             if "imagefile" in data:
                 filename = data["imagefile"]
-                imagefile = (imps.IMG_DIR / filename).as_posix()
+                imagefile = imps.IMG_DIR.joinpath(filename)
                 image = disnake.File(imagefile, filename=filename)
                 embed.set_image(url=f"attachment://{filename}")
                 os.remove(imagefile)
@@ -494,12 +518,12 @@ class ShowView:
     def groupme(self, func, group_id, name, *args, **kwargs):
         data = func(*args, **kwargs)
         if "imagefile" in data:
-            imagefile = (imps.IMG_DIR / data["imagefile"]).as_posix()
+            imagefile = imps.IMG_DIR.joinpath(data["imagefile"])
             send_image(imagefile, group_id, data.get("description", ""))
         elif "embeds_img" in data:
             imagefiles = data["images_list"]
             for img in imagefiles:
-                imagefile = (imps.IMG_DIR / img).as_posix()
+                imagefile = imps.IMG_DIR.joinpath(img)
                 send_image(imagefile, group_id, data.get("description", ""))
         elif "description" in data:
             title = data.get("title", "")
@@ -523,9 +547,10 @@ class ShowView:
                 .replace(".html)", ".html\n\n")
             )
             message = f"{title}\n{description}"
-            imagefile = (imps.IMG_DIR / data["imagefile"]).as_posix()
+            imagefile = imps.IMG_DIR.joinpath(data["imagefile"]).__str__()
             client.files_upload(
                 file=imagefile,
+                filename=data["imagefile"],
                 initial_comment=message,
                 channels=channel_id,
                 user_id=user_id,
@@ -540,7 +565,7 @@ class ShowView:
             title = data["title"] if "titles" not in data else data["titles"][0]
             N = 0
             for img in data["images_list"]:
-                imagefile = (imps.IMG_DIR / img).as_posix()
+                imagefile = imps.IMG_DIR.joinpath(img).__str__()
                 if N == 0:
                     message = f"{title}\n{description}"
                     payload = {
@@ -550,10 +575,11 @@ class ShowView:
                     }
                     client.chat_postMessage(**payload)
                     title = ""
-                if N < len(data["titles"]) and N != 0:
-                    title = data["titles"][N]
+                if N < len(title) and N != 0:
+                    title = data["titles"][N] if "titles" in data else ""
                 client.files_upload(
                     file=imagefile,
+                    filename=img,
                     initial_comment=title,
                     channels=channel_id,
                     user_id=user_id,
@@ -574,7 +600,7 @@ class ShowView:
     def telegram(self, func, message, bot, cmd, *args, **kwargs):
         data = func(*args, **kwargs)
         if "imagefile" in data:
-            imagefile = (imps.IMG_DIR / data["imagefile"]).as_posix()
+            imagefile = imps.IMG_DIR.joinpath(data["imagefile"])
             title = data["title"]
             description = (
                 data.get("description", "")
@@ -591,7 +617,7 @@ class ShowView:
             res_title = data["title"] if "titles" not in data else data["titles"][0]
             N = 0
             for img in data["images_list"]:
-                imagefile = (imps.IMG_DIR / img).as_posix()
+                imagefile = imps.IMG_DIR.joinpath(img)
                 if N == 0:
                     description = (
                         data.get("description", "")
@@ -599,8 +625,8 @@ class ShowView:
                         .replace(".html)", ".html\n\n")
                     )
                     res_title = f"{res_title}\n{description}"
-                if N < len(data["titles"]) and N != 0:
-                    res_title = data["titles"][N]
+                if N < len(title) and N != 0:
+                    res_title = data["titles"][N] if "titles" in data else ""
                 with open(imagefile, "rb") as image:
                     bot.reply_to(message, res_title)
                     bot.send_photo(message.chat.id, image)

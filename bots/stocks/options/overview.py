@@ -65,7 +65,7 @@ def options_run(
             y=df_opt["OI_call"],
             name="Calls",
             mode="lines+markers",
-            line=dict(color="green", width=3),
+            line=dict(color="#00ACFF", width=3),
         )
     )
 
@@ -75,7 +75,7 @@ def options_run(
             y=df_opt["OI_put"],
             name="Puts",
             mode="lines+markers",
-            line=dict(color="red", width=3),
+            line=dict(color="#e4003a", width=3),
         )
     )
     fig.add_trace(
@@ -132,16 +132,11 @@ def options_run(
 
     imagefile = imps.image_border(imagefile, fig=fig)
 
-    if imps.IMAGES_URL or imps.IMGUR_CLIENT_ID != "REPLACE_ME":
-        image_link_oi = imps.IMAGES_URL + imagefile
+    if imps.IMAGES_URL or not imps.IMG_HOST_ACTIVE:
+        image_link_oi = imps.multi_image(imagefile)
         images_list.append(imagefile)
     else:
-        imagefile_save = imps.IMG_DIR / imagefile
-        uploaded_image_oi = imps.gst_imgur.upload_image(
-            imagefile_save, title="something"
-        )
-        image_link_oi = uploaded_image_oi.link
-        os.remove(imagefile_save)
+        image_link_oi = imps.multi_image(imagefile)
 
     calls_df = calls[columns].rename(columns=column_map)
     calls_df = calls_df[calls_df["strike"] >= min_strike2]
@@ -211,16 +206,11 @@ def options_run(
         imagefile = "opt-calls.png"
         imagefile = imps.save_image(imagefile, figc)
 
-        if imps.IMAGES_URL or imps.IMGUR_CLIENT_ID != "REPLACE_ME":
-            image_link = imps.IMAGES_URL + imagefile
+        if imps.IMAGES_URL or not imps.IMG_HOST_ACTIVE:
+            image_link = imps.multi_image(imagefile)
             images_list.append(imagefile)
         else:
-            imagefile_save = imps.IMG_DIR / imagefile
-            uploaded_image = imps.gst_imgur.upload_image(
-                imagefile_save, title="something"
-            )
-            image_link = uploaded_image.link
-            os.remove(imagefile_save)
+            image_link = imps.multi_image(imagefile)
 
         embeds_img.append(
             f"{image_link}",
@@ -290,16 +280,11 @@ def options_run(
         imagefile = "opt-puts.png"
         imagefile = imps.save_image(imagefile, figp)
 
-        if imps.IMAGES_URL or imps.IMGUR_CLIENT_ID != "REPLACE_ME":
-            image_link = imps.IMAGES_URL + imagefile
+        if imps.IMAGES_URL or not imps.IMG_HOST_ACTIVE:
+            image_link = imps.multi_image(imagefile)
             images_list.append(imagefile)
         else:
-            imagefile_save = imps.IMG_DIR / imagefile
-            uploaded_image = imps.gst_imgur.upload_image(
-                imagefile_save, title="something"
-            )
-            image_link = uploaded_image.link
-            os.remove(imagefile_save)
+            image_link = imps.multi_image(imagefile)
 
         embeds_img.append(
             f"{image_link}",

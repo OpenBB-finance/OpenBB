@@ -8,6 +8,7 @@ from gamestonk_terminal.helper_classes import ModelsNamespace as _models
 # Context menus
 from .av_view import display_candle as candle
 from .av_view import display_quote as quote
+from .technical_analysis import ta_api as ta
 from .oanda import oanda_api as oanda
 
 # Models

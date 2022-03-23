@@ -62,7 +62,7 @@ def vol_command(
             y=call_v.values,
             name="Calls",
             mode="lines+markers",
-            line=dict(color="green", width=3),
+            line=dict(color="#00ACFF", width=3),
         )
     )
     fig.add_trace(
@@ -71,7 +71,7 @@ def vol_command(
             y=put_v.values,
             name="Puts",
             mode="lines+markers",
-            line=dict(color="red", width=3),
+            line=dict(color="#e4003a", width=3),
         )
     )
     fig.add_trace(

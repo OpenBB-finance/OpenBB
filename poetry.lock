@@ -924,7 +924,7 @@ python-versions = "*"
 
 [[package]]
 name = "fonttools"
-version = "4.31.1"
+version = "4.31.2"
 description = "Tools to manipulate font files"
 category = "main"
 optional = false
@@ -4153,7 +4153,7 @@ testing = ["coverage (>=4)", "coverage-enable-subprocess (>=1)", "flaky (>=3)", 
 
 [[package]]
 name = "voila"
-version = "0.3.3"
+version = "0.3.4"
 description = "Voilà turns Jupyter notebooks into standalone web applications"
 category = "main"
 optional = false
@@ -4925,8 +4925,8 @@ flatbuffers = [
     {file = "flatbuffers-2.0.tar.gz", hash = "sha256:12158ab0272375eab8db2d663ae97370c33f152b27801fa6024e1d6105fd4dd2"},
 ]
 fonttools = [
-    {file = "fonttools-4.31.1-py3-none-any.whl", hash = "sha256:2b288eae806800668cb5cdf52a37b5ac701c5adda2dd5c88b685581ce3385285"},
-    {file = "fonttools-4.31.1.zip", hash = "sha256:f8b35ed9ba189710994cec2c86b8eb5f0c49336698575e439a0d5671d3ca1ace"},
+    {file = "fonttools-4.31.2-py3-none-any.whl", hash = "sha256:2df636a3f402ef14593c6811dac0609563b8c374bd7850e76919eb51ea205426"},
+    {file = "fonttools-4.31.2.zip", hash = "sha256:236b29aee6b113e8f7bee28779c1230a86ad2aac9a74a31b0aedf57e7dfb62a4"},
 ]
 formulaic = [
     {file = "formulaic-0.3.2-py3-none-any.whl", hash = "sha256:d64f69c6865864ac2b27e4e1ff2d246f0425af13655be0ffc5a7b4b43610e962"},
@@ -7133,8 +7133,8 @@ virtualenv = [
     {file = "virtualenv-20.13.4.tar.gz", hash = "sha256:ce8901d3bbf3b90393498187f2d56797a8a452fb2d0d7efc6fd837554d6f679c"},
 ]
 voila = [
-    {file = "voila-0.3.3-py3-none-any.whl", hash = "sha256:39c63ac00410a1c15ea37010416cfb713fa153f6bcb1f191444408bdb1c24b25"},
-    {file = "voila-0.3.3.tar.gz", hash = "sha256:de2d3cbc619c91df69bbeba312c481b196db9bc26949254b27c22fb2f16b943e"},
+    {file = "voila-0.3.4-py3-none-any.whl", hash = "sha256:da859eba8b396b28cefe3b2271ef2fd0513d06461cba6bb3a53d9d5baae74220"},
+    {file = "voila-0.3.4.tar.gz", hash = "sha256:2e18062445a501fc24c4ae59bd53b2e81ba2d20a7d52516db5b13c3c934f22c4"},
 ]
 wcwidth = [
     {file = "wcwidth-0.2.5-py2.py3-none-any.whl", hash = "sha256:beb4802a9cebb9144e99086eff703a642a13d6a0052920003a230f3294bbe784"},

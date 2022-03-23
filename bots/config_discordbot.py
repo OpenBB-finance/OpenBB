@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 # Path to bots
 bots_path = Path(__file__).parent.resolve()
 
-env_files = [f for f in bots_path.iterdir() if f.as_posix().endswith(".env")]
+env_files = [f for f in bots_path.iterdir() if f.__str__().endswith(".env")]
 
 if env_files:
     load_dotenv(env_files[0])
@@ -42,12 +42,12 @@ COMMAND_PREFIX = "!"
 DATE_FORMAT = "%Y-%m-%d"
 COLOR = disnake.Color.from_rgb(255, 0, 0)
 INTERACTIVE = False
-INTERACTIVE_DIR = bots_path / "interactive/"
+INTERACTIVE_DIR = bots_path.joinpath("interactive/")
 INTERACTIVE_URL = ""
-IMG_DIR = bots_path / "interactive/images/"
-IMAGES_URL = (
-    os.getenv("GT_IMAGES_URL") or "REPLACE_ME"
-)  # Ex. "http://your-site.com/images/"
+IMG_DIR = bots_path.joinpath("interactive/images/")
+
+IMAGES_URL = ""  # Ex. "http://your-site.com/images/"
+IMG_HOST_ACTIVE = True
 
 # IMG_BG = bots_path.joinpath("files/bg.png")  # Light BG
 IMG_BG = bots_path.joinpath("files/bg-dark.png")  # Dark BG
