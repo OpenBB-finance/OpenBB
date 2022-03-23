@@ -53,17 +53,17 @@ class LogSender(Thread):
             file = item.path
             last = item.last
 
-            print(f"LogSender, processing : {file}")
+            # print(f"LogSender, processing : {file}")
 
             if gtff.LOG_COLLECTION:
                 archives_file = file.parent / "archives" / f"{file.stem}.log"
                 object_key = f"{app_name}-app/logs/{identifier}/{file.stem}.log"
                 tmp_file = file.parent / "tmp" / f"{file.stem}.log"
 
-                print(f"Sending to S3, file : {file}")
-                print(f"Sending to S3, archives_file : {archives_file}")
-                print(f"Sending to S3, object_key : {object_key}")
-                print(f"Sending to S3, tmp_file : {tmp_file}")
+                # print(f"Sending to S3, file : {file}")
+                # print(f"Sending to S3, archives_file : {archives_file}")
+                # print(f"Sending to S3, object_key : {object_key}")
+                # print(f"Sending to S3, tmp_file : {tmp_file}")
 
                 try:
                     send_to_s3(
@@ -72,8 +72,9 @@ class LogSender(Thread):
                         object_key=object_key,
                         tmp_file=tmp_file,
                     )
-                except Exception as e:
-                    print(f"Sending to S3 failed : {e}")
+                except Exception:
+                    pass
+                    # print(f"Sending to S3 failed : {e}")
                 finally:
                     pass
 

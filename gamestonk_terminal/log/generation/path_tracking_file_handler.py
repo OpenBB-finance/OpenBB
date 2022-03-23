@@ -91,11 +91,11 @@ class PathTrackingFileHandler(TimedRotatingFileHandler):
     def doRollover(self) -> None:
         super().doRollover()
 
-        print("I am rolling.")
+        # print("I am rolling.")
         log_sender = self.__log_sender
         to_delete_path_list = self.getFilesToDelete()
         for path in to_delete_path_list:
-            print(path)
+            # print(path)
             log_sender.send_path(path=Path(path))
 
     # OVERRIDE
@@ -106,4 +106,4 @@ class PathTrackingFileHandler(TimedRotatingFileHandler):
         closed_log_path = self.baseFilename
         log_sender.send_path(path=Path(closed_log_path), last=True)
         log_sender.join()
-        print("Exiting", self.baseFilename)
+        # print("Exiting", self.baseFilename)

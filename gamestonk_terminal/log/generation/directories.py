@@ -36,7 +36,7 @@ def get_log_dir() -> Path:
     if not os.path.isdir(uuid_log_dir.absolute()):
         os.mkdir(uuid_log_dir.absolute())
 
-    print(uuid_log_dir)
+    # print(uuid_log_dir)
 
     return uuid_log_dir
 
