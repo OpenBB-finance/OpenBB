@@ -43,7 +43,7 @@ class LoggingClock(Thread):
         elif precision is Precision.minute:
             sharp_time = cls.calculate_next_sharp_minute(current_time=current_time)
         else:
-            raise AttributeError(f"Unknwon precision {precision}")
+            raise AttributeError(f"Unknown precision {precision}")
 
         return sharp_time
 

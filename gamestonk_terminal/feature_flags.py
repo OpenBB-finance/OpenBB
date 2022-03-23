@@ -65,7 +65,7 @@ ENABLE_RICH_PANEL = strtobool(os.getenv("GTFF_ENABLE_RICH_PANEL", "True"))
 ENABLE_CHECK_API = strtobool(os.getenv("GTFF_ENABLE_CHECK_API", "True"))
 
 # Send logs to data lake
-LOG_COLLECTION = strtobool(os.getenv("GTFF_LOG_COLLECTION", "False"))
+LOG_COLLECTION = strtobool(os.getenv("GTFF_LOG_COLLECTION", "True"))
 
 # Send only file size
 ONLY_SEND_FILE_SIZE = strtobool(os.getenv("GTFF_ONLY_SEND_FILE_SIZE", "False"))

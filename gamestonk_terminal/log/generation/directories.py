@@ -13,7 +13,7 @@ TEMPORARY_FOLDER_NAME = "tmp"
 
 
 def get_log_dir() -> Path:
-    """Retrieve application's log directoy."""
+    """Retrieve application's log directory."""
 
     file_path = Path(__file__)
     log_dir = file_path.parent.parent.parent.parent.absolute().joinpath("logs")

@@ -1,5 +1,4 @@
 # IMPORTATION STANDARD
-import os
 from pathlib import Path
 from typing import Any, Dict
 
@@ -78,12 +77,10 @@ def send_to_s3(archives_file: Path, file: Path, object_key: str, tmp_file: Path)
     bucket = DEFAULT_BUCKET
 
     if not file.stat().st_size > 0:
+        file.unlink(missing_ok=True)
         raise AttributeError(f"File is empty : {file}")
-    else:
-        # file.unlink(missing_ok=True)
-        pass
 
-    os.makedirs(tmp_file.parent, exist_ok=True)
+    tmp_file.parent.mkdir(exist_ok=True)
     file = file.rename(tmp_file)
 
     if aws_access_key != "REPLACE_ME" and aws_access_key_id != "REPLACE_ME":
@@ -101,5 +98,5 @@ def send_to_s3(archives_file: Path, file: Path, object_key: str, tmp_file: Path)
             object_key=object_key,
         )
 
-    os.makedirs(archives_file.parent, exist_ok=True)
+    archives_file.parent.mkdir(exist_ok=True)
     file.rename(archives_file)
