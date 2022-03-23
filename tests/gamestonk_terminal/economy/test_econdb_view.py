@@ -14,7 +14,12 @@ from gamestonk_terminal.economy import econdb_view, econdb_model
         [["GDP", "RGDP"], ["Italy", "Netherlands"], "2016-01-01", "2016-10-10", False],
     ],
 )
-def test_show_macro_data(parameters, countries, start_date, end_date, convert_currency):
+def test_show_macro_data(
+    mocker, parameters, countries, start_date, end_date, convert_currency
+):
+    mocker.patch(
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
+    )
     econdb_view.show_macro_data(
         parameters, countries, start_date, end_date, convert_currency
     )
@@ -30,7 +35,12 @@ def test_show_macro_data(parameters, countries, start_date, end_date, convert_cu
         [["average", "inflation"], ["3y", "5y"], "weekly", "2018-06-05", "2018-07-06"],
     ],
 )
-def test_show_treasuries(instruments, maturities, frequency, start_date, end_date):
+def test_show_treasuries(
+    mocker, instruments, maturities, frequency, start_date, end_date
+):
+    mocker.patch(
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
+    )
     econdb_view.show_treasuries(
         instruments, maturities, frequency, start_date, end_date
     )
