@@ -79,6 +79,8 @@ def send_to_s3(archives_file: Path, file: Path, object_key: str, tmp_file: Path)
 
     if not file.stat().st_size > 0:
         raise AttributeError(f"File is empty : {file}")
+    else:
+        file.unlink(missing_ok=True)
 
     os.makedirs(tmp_file.parent, exist_ok=True)
     file = file.rename(tmp_file)
