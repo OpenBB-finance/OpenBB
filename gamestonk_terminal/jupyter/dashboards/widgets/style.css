@@ -26,7 +26,7 @@
 
 .container .card .contentBx h1 {
     position: relative;
-    font-size: 28;
+    font-size: 24px;
     font-weight: 600;
     letter-spacing: 1px;
     color: #fff;
@@ -36,7 +36,7 @@
 
 .container .card .contentBx h2 {
     position: relative;
-    font-size: 28px;
+    font-size: 24px;
     font-weight: 600;
     letter-spacing: 1px;
 }
