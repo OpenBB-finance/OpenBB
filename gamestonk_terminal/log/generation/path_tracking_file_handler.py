@@ -10,6 +10,7 @@ from gamestonk_terminal.log.collection.log_sender import LogSender
 from gamestonk_terminal.log.collection.logging_clock import LoggingClock, Precision
 from gamestonk_terminal.log.generation.settings import Settings
 
+# DO NOT USE THE FILE LOGGER IN THIS MODULE
 
 class PathTrackingFileHandler(TimedRotatingFileHandler):
     @staticmethod
