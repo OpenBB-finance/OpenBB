@@ -799,6 +799,15 @@ Performance & Valuations
             default=False,
         )
 
+        parser.add_argument(
+            "-r",
+            "--returns",
+            help="Flag to show compounded returns over interval.",
+            dest="returns",
+            action="store_true",
+            default=False,
+        )
+
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-i")
         ns_parser = parse_known_args_and_warn(
@@ -840,6 +849,7 @@ Performance & Valuations
                         store=ns_parser.store,
                         raw=ns_parser.raw,
                         export=ns_parser.export,
+                        returns=ns_parser.returns,
                     )
 
                 self.update_runtime_choices()
