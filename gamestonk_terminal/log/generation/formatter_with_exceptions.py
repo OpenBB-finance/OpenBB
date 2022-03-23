@@ -15,7 +15,7 @@ class FormatterWithExceptions(logging.Formatter):
     DATEFORMAT = "%Y-%m-%dT%H:%M:%S%z"
     LOGFORMAT = "%(asctime)s|%(name)s|%(funcName)s|%(lineno)s|%(message)s"
     LOGPREFIXFORMAT = (
-        "%(levelname)s|%(appName)s|%(commitHash)s|%(appId)s|%(sessionId)s|"
+        "%(levelname)s|%(appName)s|%(commitHash)s|%(appId)s|%(sessionId)s|%(userId)s|"
     )
 
     @staticmethod
@@ -37,8 +37,7 @@ class FormatterWithExceptions(logging.Formatter):
             record.funcName = record.func_name_override  # type: ignore
             record.lineno = 0
 
-        if hasattr(record, "user_id"):
-            log_extra["loggingId"] = record.user_id  # type: ignore
+        log_extra["userId"] = record.user_id if hasattr(record, "user_id") else ""  # type: ignore
 
         if hasattr(record, "session_id"):
             log_extra["sessionId"] = record.session_id  # type: ignore
