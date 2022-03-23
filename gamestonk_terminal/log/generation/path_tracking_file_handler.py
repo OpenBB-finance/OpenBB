@@ -7,6 +7,7 @@ from pathlib import Path
 
 # IMPORTATION INTERNAL
 from gamestonk_terminal.log.collection.log_sender import LogSender
+from gamestonk_terminal.log.collection.logging_clock import LoggingClock, Precision
 from gamestonk_terminal.log.generation.settings import Settings
 
 
@@ -22,12 +23,42 @@ class PathTrackingFileHandler(TimedRotatingFileHandler):
         path = directory.absolute().joinpath(f"{app_name}_{session_id}")
         return path
 
+    @staticmethod
+    def build_log_sender(settings: Settings, start:bool) -> LogSender:
+        log_sender = LogSender(app_settings=settings.app_settings, daemon=True)
+
+        if start:
+            log_sender.start()
+
+        return log_sender
+
+    def build_rolling_clock(self, frequency: str, start:bool) -> LoggingClock:
+        frequency = frequency.upper()
+
+        if frequency == "H":
+            precision = Precision.hour
+        elif frequency == "M":
+            precision = Precision.minute
+        else:
+            raise AttributeError("Unsupported `logging_clock.Precision`.")
+
+        rolling_clock = LoggingClock(action_func=self.doRollover, precision=precision)
+
+        if start:
+            rolling_clock.start()
+
+        return rolling_clock
+
     @property
-    def log_sender(self) -> str:
+    def log_sender(self) -> LogSender:
         return self.__log_sender
 
     @property
-    def settings(self) -> str:
+    def rolling_clock(self) -> LoggingClock:
+        return self.__rolling_clock
+
+    @property
+    def settings(self) -> Settings:
         return deepcopy(self.__settings)
 
     # OVERRIDE
@@ -35,6 +66,7 @@ class PathTrackingFileHandler(TimedRotatingFileHandler):
         self,
         settings: Settings,
         *args,
+        rolling_clock: bool = False,
         **kwargs,
     ) -> None:
         filename = str(self.build_log_file_path(settings=settings))
@@ -43,13 +75,14 @@ class PathTrackingFileHandler(TimedRotatingFileHandler):
         self.suffix += ".log"
 
         self.__settings = settings
-        self.__log_sender = LogSender(app_settings=settings.app_settings, daemon=True)
-        self.__log_sender.start()
+        self.__log_sender = self.build_log_sender(settings=settings, start=True)
+        self.__rolling_clock = self.build_rolling_clock(frequency=frequency, start=rolling_clock)
 
     # OVERRIDE
     def doRollover(self) -> None:
         super().doRollover()
 
+        print("I am rolling.")
         log_sender = self.__log_sender
         to_delete_path_list = self.getFilesToDelete()
         for path in to_delete_path_list:
