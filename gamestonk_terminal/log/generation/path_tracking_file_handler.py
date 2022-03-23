@@ -42,7 +42,11 @@ class PathTrackingFileHandler(TimedRotatingFileHandler):
         else:
             raise AttributeError("Unsupported `logging_clock.Precision`.")
 
-        rolling_clock = LoggingClock(action_func=self.doRollover, precision=precision)
+        rolling_clock = LoggingClock(
+            action_func=self.doRollover,
+            daemon=True,
+            precision=precision,
+        )
 
         if start:
             rolling_clock.start()
