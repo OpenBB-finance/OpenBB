@@ -89,7 +89,7 @@ def non_slash(text: str, sender: Any, showview: Any):
     full_cmd = cmd.split("/")
     group = full_cmd[0].split("_")[0]
     parents = {x.split("_")[0] for x in available_commands}
-    if text[0] == "!" or text[0] == "/":
+    if text and text[0] in ["!", "/"]:
         if group in parents:
             if full_cmd[0] in available_commands:
                 selected = commands[full_cmd[0]]

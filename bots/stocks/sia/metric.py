@@ -6,10 +6,11 @@ import numpy as np
 import plotly.graph_objects as go
 import yfinance
 
-import bots.config_discordbot as cfg
-from bots import helpers
+from bots import imps
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.stocks.sector_industry_analysis import financedatabase_model
+
+# pylint: disable=R1720,R0912
 
 logger = logging.getLogger(__name__)
 
@@ -69,7 +70,14 @@ def metric_command(
                 )
                 if similar_cmd:
                     industry = similar_cmd[0]
-            mktcap = ""
+            if "price" in data:
+                mktcap = data["price"]["marketCap"]
+                if mktcap < 2_000_000_000:
+                    mktcap = "Small"
+                elif mktcap > 10_000_000_000:
+                    mktcap = "Large"
+                else:
+                    mktcap = "Mid"
 
     stocks_data = financedatabase_model.get_stocks_data(
         country, sector, industry, mktcap, exclude_exchanges
@@ -139,7 +147,7 @@ def metric_command(
         fig = go.Figure()
 
         i = 0
-        for name, metric, ticker in zip(
+        for name, metric, tickers in zip(
             company_name[::-1], company_metric[::-1], company_ticker[::-1]
         ):
             if len(name.split(" ")) > 6 and len(name) > 40:
@@ -148,13 +156,13 @@ def metric_command(
                 )
             df_name = []
             df_metric = []
-            df_ticker = []
+            df_tickers = []
             df_name.append(name)
             df_metric.append(metric)
-            df_ticker.append(ticker)
+            df_tickers.append(tickers)
             fig.add_trace(
                 go.Bar(
-                    name=ticker,
+                    name=tickers,
                     y=[name],
                     x=[metric],
                     orientation="h",
@@ -205,32 +213,32 @@ def metric_command(
             line_width=3,
             line=dict(color="grey", dash="dash"),
         )
-        if cfg.PLT_WATERMARK:
-            fig.add_layout_image(cfg.PLT_WATERMARK)
+        if imps.PLT_WATERMARK:
+            fig.add_layout_image(imps.PLT_WATERMARK)
         fig.update_layout(
             margin=dict(l=40, r=0, t=100, b=20),
-            template=cfg.PLT_CANDLE_STYLE_TEMPLATE,
+            template=imps.PLT_CANDLE_STYLE_TEMPLATE,
             title=title,
             colorway=colors,
-            font=cfg.PLT_FONT,
+            font=imps.PLT_FONT,
             legend={"traceorder": "reversed"},
         )
         imagefile = "sia_metrics.png"
 
         # Check if interactive settings are enabled
         plt_link = ""
-        if cfg.INTERACTIVE:
-            plt_link = helpers.inter_chart(fig, imagefile, callback=False)
+        if imps.INTERACTIVE:
+            plt_link = imps.inter_chart(fig, imagefile, callback=False)
 
         fig.update_layout(
             width=800,
             height=500,
         )
 
-        imagefile = helpers.image_border(imagefile, fig=fig)
+        imagefile = imps.image_border(imagefile, fig=fig)
 
         return {
-            "title": "Consumer Prices Index",
+            "title": "Stocks - Sector and Industry Analysis",
             "description": plt_link,
             "imagefile": imagefile,
         }

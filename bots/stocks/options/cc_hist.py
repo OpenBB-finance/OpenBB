@@ -4,8 +4,7 @@ import plotly.graph_objects as go
 import yfinance as yf
 from plotly.subplots import make_subplots
 
-import bots.config_discordbot as cfg
-from bots import helpers
+from bots import imps
 from gamestonk_terminal.decorators import log_start_end
 
 logger = logging.getLogger(__name__)
@@ -31,7 +30,7 @@ def cc_hist_command(
     """
 
     # Debug
-    if cfg.DEBUG:
+    if imps.DEBUG:
         logger.info("opt hist %s, %s, %s, %s", ticker, strike, opt_type, expiry)
 
     # Check for argument
@@ -86,18 +85,18 @@ def cc_hist_command(
         ),
         secondary_y=False,
     )
-    if cfg.PLT_WATERMARK:
-        fig.add_layout_image(cfg.PLT_WATERMARK)
+    if imps.PLT_WATERMARK:
+        fig.add_layout_image(imps.PLT_WATERMARK)
     fig.update_layout(
         margin=dict(l=0, r=0, t=25, b=5),
-        template=cfg.PLT_CANDLE_STYLE_TEMPLATE,
+        template=imps.PLT_CANDLE_STYLE_TEMPLATE,
         showlegend=False,
         title=title,
         title_x=0.1,
         title_font_size=14,
         yaxis2_title="Premium",
         yaxis_title="Volume",
-        font=cfg.PLT_FONT,
+        font=imps.PLT_FONT,
         yaxis=dict(
             showgrid=False,
             fixedrange=False,
@@ -137,15 +136,15 @@ def cc_hist_command(
 
     # Check if interactive settings are enabled
     plt_link = ""
-    if cfg.INTERACTIVE:
-        plt_link = helpers.inter_chart(fig, imagefile, callback=False)
+    if imps.INTERACTIVE:
+        plt_link = imps.inter_chart(fig, imagefile, callback=False)
 
     fig.update_layout(
         width=800,
         height=500,
     )
 
-    imagefile = helpers.image_border(imagefile, fig=fig)
+    imagefile = imps.image_border(imagefile, fig=fig)
 
     return {
         "title": title,

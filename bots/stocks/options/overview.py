@@ -4,16 +4,13 @@ import time
 from functools import reduce
 from multiprocessing import Pool
 
-import df2img
 import disnake
 import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
 import yfinance as yf
-from bots import helpers
-from bots.config_discordbot import gst_imgur
-import bots.config_discordbot as cfg
-from bots.menus.menu import Menu
+
+from bots import imps
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.stocks.options import op_helpers, yfinance_model
 from gamestonk_terminal.stocks.options.barchart_model import get_options_info
@@ -38,10 +35,7 @@ columns = [
 ]
 
 
-# pylint: disable=R0912
-# pylint: disable=R0913
-# pylint: disable=R0914
-# pylint: disable=R0915
+# pylint: disable=R0912,R0913,R0914,R0915
 @log_start_end(log=logger)
 def options_run(
     ticker,
@@ -102,15 +96,15 @@ def options_run(
             name=f"Max Pain: {max_pain}",
         )
     )
-    if cfg.PLT_WATERMARK:
-        fig.add_layout_image(cfg.PLT_WATERMARK)
+    if imps.PLT_WATERMARK:
+        fig.add_layout_image(imps.PLT_WATERMARK)
     fig.update_xaxes(
         range=[min_strike, max_strike],
         constrain="domain",
     )
     fig.update_layout(
         margin=dict(l=0, r=0, t=60, b=20),
-        template=cfg.PLT_SCAT_STYLE_TEMPLATE,
+        template=imps.PLT_SCAT_STYLE_TEMPLATE,
         title=f"Open Interest for {ticker.upper()} expiring {expiry}",
         title_x=0.5,
         legend_title="",
@@ -119,7 +113,7 @@ def options_run(
         xaxis=dict(
             rangeslider=dict(visible=False),
         ),
-        font=cfg.PLT_FONT,
+        font=imps.PLT_FONT,
         legend=dict(yanchor="top", y=0.99, xanchor="left", x=0.01),
         dragmode="pan",
     )
@@ -127,8 +121,8 @@ def options_run(
     imagefile = "opt-oi.png"
 
     plt_link = ""
-    if cfg.INTERACTIVE:
-        plt_link = helpers.inter_chart(fig, imagefile, callback=False)
+    if imps.INTERACTIVE:
+        plt_link = imps.inter_chart(fig, imagefile, callback=False)
         reports.append(plt_link)
 
     fig.update_layout(
@@ -136,14 +130,16 @@ def options_run(
         height=500,
     )
 
-    imagefile = helpers.image_border(imagefile, fig=fig)
+    imagefile = imps.image_border(imagefile, fig=fig)
 
-    if cfg.IMAGES_URL or cfg.IMGUR_CLIENT_ID != "REPLACE_ME":
-        image_link_oi = cfg.IMAGES_URL + imagefile
+    if imps.IMAGES_URL or imps.IMGUR_CLIENT_ID != "REPLACE_ME":
+        image_link_oi = imps.IMAGES_URL + imagefile
         images_list.append(imagefile)
     else:
-        imagefile_save = cfg.IMG_DIR / imagefile
-        uploaded_image_oi = gst_imgur.upload_image(imagefile_save, title="something")
+        imagefile_save = imps.IMG_DIR / imagefile
+        uploaded_image_oi = imps.gst_imgur.upload_image(
+            imagefile_save, title="something"
+        )
         image_link_oi = uploaded_image_oi.link
         os.remove(imagefile_save)
 
@@ -179,14 +175,14 @@ def options_run(
     embeds.append(
         disnake.Embed(
             title=f"{ticker.upper()} Overview",
-            color=cfg.COLOR,
+            color=imps.COLOR,
         ),
     )
     embeds.append(
         disnake.Embed(
             title=f"{pfix}Open Interest{sfix}",
             description=plt_link,
-            colour=cfg.COLOR,
+            colour=imps.COLOR,
         ),
     )
     choices.append(
@@ -202,25 +198,27 @@ def options_run(
     while i < dindex:
         df_calls = calls_df.iloc[i:end]
         df_calls.append(df_calls)
-        figc = df2img.plot_dataframe(
+        figc = imps.plot_df(
             df_calls,
             fig_size=(1000, (40 + (40 * 20))),
             col_width=[3, 3, 3, 3],
-            tbl_header=cfg.PLT_TBL_HEADER,
-            tbl_cells=cfg.PLT_TBL_CELLS,
-            font=cfg.PLT_TBL_FONT,
-            row_fill_color=cfg.PLT_TBL_ROW_COLORS,
+            tbl_header=imps.PLT_TBL_HEADER,
+            tbl_cells=imps.PLT_TBL_CELLS,
+            font=imps.PLT_TBL_FONT,
+            row_fill_color=imps.PLT_TBL_ROW_COLORS,
             paper_bgcolor="rgba(0, 0, 0, 0)",
         )
         imagefile = "opt-calls.png"
-        imagefile = helpers.save_image(imagefile, figc)
+        imagefile = imps.save_image(imagefile, figc)
 
-        if cfg.IMAGES_URL or cfg.IMGUR_CLIENT_ID != "REPLACE_ME":
-            image_link = cfg.IMAGES_URL + imagefile
+        if imps.IMAGES_URL or imps.IMGUR_CLIENT_ID != "REPLACE_ME":
+            image_link = imps.IMAGES_URL + imagefile
             images_list.append(imagefile)
         else:
-            imagefile_save = cfg.IMG_DIR / imagefile
-            uploaded_image = gst_imgur.upload_image(imagefile_save, title="something")
+            imagefile_save = imps.IMG_DIR / imagefile
+            uploaded_image = imps.gst_imgur.upload_image(
+                imagefile_save, title="something"
+            )
             image_link = uploaded_image.link
             os.remove(imagefile_save)
 
@@ -233,7 +231,7 @@ def options_run(
         embeds.append(
             disnake.Embed(
                 title=f"{pfix}Calls{sfix}",
-                colour=cfg.COLOR,
+                colour=imps.COLOR,
             ),
         )
         i2 += 1
@@ -279,25 +277,27 @@ def options_run(
     while i < dindex:
         df_puts = puts_df.iloc[i:end]
         df_puts.append(df_puts)
-        figp = df2img.plot_dataframe(
+        figp = imps.plot_df(
             df_puts,
             fig_size=(1000, (40 + (40 * 20))),
             col_width=[3, 3, 3, 3],
-            tbl_header=cfg.PLT_TBL_HEADER,
-            tbl_cells=cfg.PLT_TBL_CELLS,
-            font=cfg.PLT_TBL_FONT,
-            row_fill_color=cfg.PLT_TBL_ROW_COLORS,
+            tbl_header=imps.PLT_TBL_HEADER,
+            tbl_cells=imps.PLT_TBL_CELLS,
+            font=imps.PLT_TBL_FONT,
+            row_fill_color=imps.PLT_TBL_ROW_COLORS,
             paper_bgcolor="rgba(0, 0, 0, 0)",
         )
         imagefile = "opt-puts.png"
-        imagefile = helpers.save_image(imagefile, figp)
+        imagefile = imps.save_image(imagefile, figp)
 
-        if cfg.IMAGES_URL or cfg.IMGUR_CLIENT_ID != "REPLACE_ME":
-            image_link = cfg.IMAGES_URL + imagefile
+        if imps.IMAGES_URL or imps.IMGUR_CLIENT_ID != "REPLACE_ME":
+            image_link = imps.IMAGES_URL + imagefile
             images_list.append(imagefile)
         else:
-            imagefile_save = cfg.IMG_DIR / imagefile
-            uploaded_image = gst_imgur.upload_image(imagefile_save, title="something")
+            imagefile_save = imps.IMG_DIR / imagefile
+            uploaded_image = imps.gst_imgur.upload_image(
+                imagefile_save, title="something"
+            )
             image_link = uploaded_image.link
             os.remove(imagefile_save)
 
@@ -310,7 +310,7 @@ def options_run(
         embeds.append(
             disnake.Embed(
                 title=f"{pfix}Puts{sfix}",
-                colour=cfg.COLOR,
+                colour=imps.COLOR,
             ),
         )
         i2 += 1
@@ -331,13 +331,13 @@ def options_run(
     # Author/Footer
     for i in range(0, i2):
         embeds[i].set_author(
-            name=cfg.AUTHOR_NAME,
-            url=cfg.AUTHOR_URL,
-            icon_url=cfg.AUTHOR_ICON_URL,
+            name=imps.AUTHOR_NAME,
+            url=imps.AUTHOR_URL,
+            icon_url=imps.AUTHOR_ICON_URL,
         )
         embeds[i].set_footer(
-            text=cfg.AUTHOR_NAME,
-            icon_url=cfg.AUTHOR_ICON_URL,
+            text=imps.AUTHOR_NAME,
+            icon_url=imps.AUTHOR_ICON_URL,
         )
 
     # Set images to Pages
@@ -352,7 +352,7 @@ def options_run(
     if url:
         embeds[0].set_thumbnail(url=f"{url}")
     else:
-        embeds[0].set_thumbnail(url=cfg.AUTHOR_ICON_URL)
+        embeds[0].set_thumbnail(url=imps.AUTHOR_ICON_URL)
 
     # Overview Section
     if "^" not in ticker:
@@ -424,7 +424,7 @@ def options_data(
 ):
 
     # Debug
-    if cfg.DEBUG:
+    if imps.DEBUG:
         logger.debug("opt overview %s %s %s %s", ticker, expiry, min_sp, max_sp)
 
     # Check for argument
@@ -546,7 +546,7 @@ def overview_command(
     description = f"```\n{''.join(reports)}\n```"
 
     return {
-        "view": Menu,
+        "view": imps.Menu,
         "titles": titles,
         "description": description,
         "embed": embeds,

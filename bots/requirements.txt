@@ -49,7 +49,6 @@ defusedxml==0.7.1; python_version >= "3.7" and python_full_version < "3.0.0" or 
 degiro-connector==2.0.17; python_full_version >= "3.7.1" and python_full_version < "4.0.0"
 deprecation==2.1.0
 detecta==0.0.5; python_version >= "3.6"
-df2img==0.2.4; python_version >= "3.8" and python_version < "4.0"
 disnake==2.4.0; python_full_version >= "3.8.0"
 distlib==0.3.4; python_full_version >= "3.6.1"
 dnspython==2.2.0; python_version >= "3.6" and python_version < "4.0"

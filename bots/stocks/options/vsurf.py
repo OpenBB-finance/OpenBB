@@ -4,8 +4,7 @@ import numpy as np
 import plotly.graph_objects as go
 from scipy.spatial import Delaunay
 
-import bots.config_discordbot as cfg
-from bots import helpers
+from bots import imps
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.stocks.options import yfinance_model
 
@@ -26,7 +25,7 @@ def vsurf_command(
     """
 
     # Debug
-    if cfg.DEBUG:
+    if imps.DEBUG:
         logger.debug("opt vsurf %s %s", ticker, z)
 
     # Check for argument
@@ -67,7 +66,7 @@ def vsurf_command(
                 j=J,
                 k=K,
                 intensity=Z,
-                colorscale=cfg.PLT_3DMESH_COLORSCALE,
+                colorscale=imps.PLT_3DMESH_COLORSCALE,
                 hovertemplate="<b>DTE</b>: %{y} <br><b>Strike</b>: %{x} <br><b>"
                 + z
                 + "</b>: %{z}<extra></extra>",
@@ -77,8 +76,8 @@ def vsurf_command(
             )
         ]
     )
-    if cfg.PLT_WATERMARK:
-        fig.add_layout_image(cfg.PLT_WATERMARK)
+    if imps.PLT_WATERMARK:
+        fig.add_layout_image(imps.PLT_WATERMARK)
     fig.update_layout(
         scene=dict(
             xaxis=dict(
@@ -96,31 +95,31 @@ def vsurf_command(
     )
     fig.update_layout(
         margin=dict(l=0, r=0, t=40, b=20),
-        template=cfg.PLT_3DMESH_STYLE_TEMPLATE,
+        template=imps.PLT_3DMESH_STYLE_TEMPLATE,
         title=f"{label} Surface for {ticker.upper()}",
         title_x=0.5,
-        hoverlabel=cfg.PLT_3DMESH_HOVERLABEL,
+        hoverlabel=imps.PLT_3DMESH_HOVERLABEL,
         scene_camera=dict(
             up=dict(x=0, y=0, z=2),
             center=dict(x=0, y=0, z=-0.3),
             eye=dict(x=1.25, y=1.25, z=0.69),
         ),
-        scene=cfg.PLT_3DMESH_SCENE,
+        scene=imps.PLT_3DMESH_SCENE,
     )
 
     imagefile = "opt-vsurf.png"
 
     # Check if interactive settings are enabled
     plt_link = ""
-    if cfg.INTERACTIVE:
-        plt_link = helpers.inter_chart(fig, imagefile, callback=False)
+    if imps.INTERACTIVE:
+        plt_link = imps.inter_chart(fig, imagefile, callback=False)
 
     fig.update_layout(
         width=800,
         height=500,
     )
 
-    imagefile = helpers.image_border(imagefile, fig=fig)
+    imagefile = imps.image_border(imagefile, fig=fig)
 
     return {
         "title": f"{label} Surface for {ticker.upper()}",

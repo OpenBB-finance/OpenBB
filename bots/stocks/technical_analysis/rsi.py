@@ -1,8 +1,8 @@
 import logging
 
 import plotly.graph_objects as go
-import bots.config_discordbot as cfg
-from bots import helpers, load_candle
+
+from bots import imps, load_candle
 from gamestonk_terminal.common.technical_analysis import momentum_model
 from gamestonk_terminal.decorators import log_start_end
 
@@ -27,7 +27,7 @@ def rsi_command(
     """Displays chart with relative strength index [Yahoo Finance]"""
 
     # Debug
-    if cfg.DEBUG:
+    if imps.DEBUG:
         # pylint: disable=logging-too-many-args
         logger.debug(
             "ta rsi %s %s %s %s %s %s",
@@ -69,7 +69,7 @@ def rsi_command(
     )
 
     if df_stock.empty:
-        return Exception("No Data Found")
+        raise Exception("No Data Found")
 
     df_ta = df_stock.loc[(df_stock.index >= start) & (df_stock.index < end)]
     df_ta = df_ta.join(momentum_model.rsi(df_ta["Adj Close"], length, scalar, drift))
@@ -96,7 +96,7 @@ def rsi_command(
             [{"secondary_y": False}],
         ],
     )
-    title = f"{plot['plt_title']} RSI"
+    title = f"<b>{plot['plt_title']} RSI</b>"
     fig = plot["fig"]
 
     fig.add_trace(
@@ -104,7 +104,7 @@ def rsi_command(
             name=f"RSI {length}",
             mode="lines",
             x=df_ta.index,
-            y=df_ta[f"RSI_{length}"],
+            y=df_ta.iloc[:, 6].values,
             opacity=1,
         ),
         row=2,
@@ -153,8 +153,8 @@ def rsi_command(
     )
     fig.update_layout(
         margin=dict(l=0, r=0, t=50, b=20),
-        template=cfg.PLT_TA_STYLE_TEMPLATE,
-        colorway=cfg.PLT_TA_COLORWAY,
+        template=imps.PLT_TA_STYLE_TEMPLATE,
+        colorway=imps.PLT_TA_COLORWAY,
         title=title,
         title_x=0.1,
         title_font_size=14,
@@ -166,15 +166,15 @@ def rsi_command(
 
     # Check if interactive settings are enabled
     plt_link = ""
-    if cfg.INTERACTIVE:
-        plt_link = helpers.inter_chart(fig, imagefile, callback=False)
+    if imps.INTERACTIVE:
+        plt_link = imps.inter_chart(fig, imagefile, callback=False)
 
     fig.update_layout(
         width=800,
         height=500,
     )
 
-    imagefile = helpers.image_border(imagefile, fig=fig)
+    imagefile = imps.image_border(imagefile, fig=fig)
 
     return {
         "title": f"Stocks: Relative-Strength-Index {ticker.upper()}",

@@ -19,7 +19,7 @@ This tutorial assumes that you have successfully installed Gamestonk Terminal.
 Next, from the GamestonkTerminal root folder run the following command:
 
 ```text
-poetry install -E discord
+poetry install -E bots
 ```
 
 ## Registering Applications
@@ -104,7 +104,7 @@ uvicorn run_discordbot:app
 Now, you should be ready to invoke the discord bot from server using something like:
 
 ```text
-/cc
+/candle
 ```
 
 <img width="600" alt="Screenshot 2021-10-18 at 00 21 30" src="https://user-images.githubusercontent.com/61340027/152454075-bdf50245-c978-44b3-9abc-64e5e4254326.png">
