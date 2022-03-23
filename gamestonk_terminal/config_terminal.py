@@ -24,29 +24,21 @@ PAPERMILL_NOTEBOOK_REPORT_PORT = (
 
 # Logging section
 
-# Logging settings
-# 0 - NOTSET
-# 10 - DEBUG for terminal, DEBUG for libraries
-# 15 - DEBUG for terminal, INFO for libraries
-# 20 - INFO
-
-
-LOGGING_VERBOSITY = 20
-
-if tmp_verbosity := os.getenv("GT_LOGGING_VERBOSITY"):
-    try:
-        LOGGING_VERBOSITY = int(tmp_verbosity)
-    except ValueError:
-        LOGGING_VERBOSITY = 20
-
-# stdout, stderr, file, noop
+# USE IN LOG LINES + FOR FOLDER NAME INSIDE S3 BUCKET
+LOGGING_APP_NAME = os.getenv("GT_LOGGING_APP_NAME") or "gst"
+# D | H | M | S
+LOGGING_FREQUENCY = os.getenv("GT_LOGGING_FREQUENCY") or "H"
+# stdout,stderr,noop,file
 LOGGING_HANDLERS = os.getenv("GT_LOGGING_HANDLERS") or "file"
-
-LOGGING_ID = os.getenv("GT_LOGGING_ID") or None
-
-LOGGING_FILE = ""
-
-LOGGING_VERSION = os.getenv("GT_LOGGING_VERSION") or "ver:1.0.0"
+# CRITICAL = 50
+# FATAL = CRITICAL
+# ERROR = 40
+# WARNING = 30
+# WARN = WARNING
+# INFO = 20
+# DEBUG = 10
+# NOTSET = 0
+LOGGING_VERBOSITY = os.getenv("GT_LOGGING_VERBOSITY") or 20
 
 # API Keys section
 
