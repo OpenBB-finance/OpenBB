@@ -76,7 +76,7 @@ def send_to_s3(archives_file: Path, file: Path, object_key: str, tmp_file: Path)
     aws_access_key_id = cfg.AWS_ACCESS_KEY_ID
     bucket = DEFAULT_BUCKET
 
-    if not file.stat().st_size > 0:
+    if file.stat().st_size <= 0:
         file.unlink(missing_ok=True)
         raise AttributeError(f"File is empty : {file}")
 
