@@ -631,7 +631,7 @@ main:
               - name: mc
                 ref: "/terminal/common/prediction_techniques/mc"
       - name: Cryptocurrency
-        Ref: "/terminal/cryptocurrency"
+        ref: "/terminal/cryptocurrency"
         sub:
           - name: load
             ref: "/terminal/cryptocurrency/load"
