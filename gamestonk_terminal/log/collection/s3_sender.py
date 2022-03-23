@@ -1,5 +1,5 @@
 # IMPORTATION STANDARD
-# import logging
+import os
 from pathlib import Path
 from typing import Any, Dict
 
@@ -19,7 +19,6 @@ from gamestonk_terminal import config_terminal as cfg
 # DO NOT USE THE FILE LOGGER IN THIS MODULE
 
 DEFAULT_BUCKET = "gst-restrictions"
-DEFAULT_FOLDER_PATH = f"{cfg.LOGGING_APP_NAME}-app/logs"
 DEFAULT_API_URL = "https://knaqi3sud7.execute-api.eu-west-3.amazonaws.com/log_api/logs"
 
 
@@ -72,17 +71,17 @@ def send_to_s3_using_presigned_url(
         pass
 
 
-def send_to_s3(file: Path, tmp_dir: Path, archives_dir: Path):
+def send_to_s3(archives_file: Path, file: Path, object_key: str, tmp_file: Path):
     api_url = DEFAULT_API_URL
     aws_access_key = cfg.AWS_ACCESS_KEY
     aws_access_key_id = cfg.AWS_ACCESS_KEY_ID
     bucket = DEFAULT_BUCKET
-    object_key = f"{DEFAULT_FOLDER_PATH}/{file.stem}"
 
     if not file.stat().st_size > 0:
         raise AttributeError(f"File is empty : {file}")
 
-    file = file.rename(tmp_dir / file.name)
+    os.makedirs(tmp_file.parent, exist_ok=True)
+    file = file.rename(tmp_file)
 
     if aws_access_key != "REPLACE_ME" and aws_access_key_id != "REPLACE_ME":
         send_to_s3_directly(
@@ -99,4 +98,5 @@ def send_to_s3(file: Path, tmp_dir: Path, archives_dir: Path):
             object_key=object_key,
         )
 
-    file.rename(archives_dir / file.name)
+    os.makedirs(archives_file.parent, exist_ok=True)
+    file.rename(archives_file)

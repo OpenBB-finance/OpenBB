@@ -4,36 +4,7 @@ import logging
 # IMPORTATION THIRDPARTY
 
 # IMPORTATION INTERNAL
-
-
-class Application:
-    @property
-    def commit_hash(self) -> str:
-        return self.__commit_hash
-
-    @property
-    def identifier(self) -> str:
-        return self.__identifier
-
-    @property
-    def name(self) -> str:
-        return self.__name
-
-    @property
-    def session_id(self) -> str:
-        return self.__session_id
-
-    def __init__(
-        self,
-        commit_hash: str,
-        identifier: str,
-        name: str,
-        session_id: str,
-    ):
-        self.__commit_hash = commit_hash
-        self.__identifier = identifier
-        self.__name = name
-        self.__session_id = session_id
+from gamestonk_terminal.log.generation.settings import AppSettings
 
 
 class FormatterWithExceptions(logging.Formatter):
@@ -87,7 +58,7 @@ class FormatterWithExceptions(logging.Formatter):
     # OVERRIDE
     def __init__(
         self,
-        app: Application,
+        app_settings: AppSettings,
         style="%",
         validate=True,
     ) -> None:
@@ -97,7 +68,7 @@ class FormatterWithExceptions(logging.Formatter):
             style=style,
             validate=validate,
         )
-        self.__app = app
+        self.__log_settings = app_settings
 
     # OVERRIDE
     def formatException(self, ei) -> str:
@@ -128,15 +99,15 @@ class FormatterWithExceptions(logging.Formatter):
             Formatted_log message
         """
 
-        app = self.__app
+        app_settings = self.__log_settings
 
         level_name = self.calculate_level_name(record=record)
         log_prefix_content = {
-            "appName": app.name,
+            "appName": app_settings.name,
             "levelname": level_name,
-            "appId": app.identifier,
-            "sessionId": app.session_id,
-            "commitHash": app.commit_hash,
+            "appId": app_settings.identifier,
+            "sessionId": app_settings.session_id,
+            "commitHash": app_settings.commit_hash,
         }
         log_extra = self.extract_log_extra(record=record)
         log_prefix_content = {**log_prefix_content, **log_extra}

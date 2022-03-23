@@ -14,12 +14,15 @@ import git
 
 # IMPORTATION INTERNAL
 import gamestonk_terminal.config_terminal as cfg
-from gamestonk_terminal.log.collection.log_sender import LOG_SENDER
-from gamestonk_terminal.log.collection.path_tracking_file_handler import (
+from gamestonk_terminal.log.generation.settings import (
+    AppSettings,
+    LogSettings,
+    Settings,
+)
+from gamestonk_terminal.log.generation.path_tracking_file_handler import (
     PathTrackingFileHandler,
 )
 from gamestonk_terminal.log.generation.formatter_with_exceptions import (
-    Application,
     FormatterWithExceptions,
 )
 from gamestonk_terminal.log.generation.directories import get_log_dir
@@ -57,28 +60,42 @@ def get_commit_hash() -> str:
     return commit_hash
 
 
-def setup_logging(
-    frequency: Optional[str] = None,
-    session_id: Optional[str] = None,
-    verbosity: Optional[int] = None,
-) -> None:
-    """Setup Logging"""
+def add_stdout_handler(settings: Settings):
+    app_settings = settings.app_settings
+    handler = logging.StreamHandler(sys.stdout)
+    formatter = FormatterWithExceptions(app_settings=app_settings)
+    handler.setFormatter(formatter)
+    logging.getLogger().addHandler(handler)
 
-    app_name = cfg.LOGGING_APP_NAME
-    commit_hash = get_commit_hash()
-    frequency = frequency or cfg.LOGGING_FREQUENCY
-    identifier = get_app_id()
-    session_id = session_id or START_TIMESTAMP
-    verbosity = verbosity or cfg.LOGGING_VERBOSITY
-    log_sender = LOG_SENDER
-    log_dir = get_log_dir()
 
-    app = Application(
-        commit_hash=commit_hash,
-        identifier=identifier,
-        name=app_name,
-        session_id=session_id,
-    )
+def add_stderr_handler(settings: Settings):
+    app_settings = settings.app_settings
+    handler = logging.StreamHandler(sys.stderr)
+    formatter = FormatterWithExceptions(app_settings=app_settings)
+    handler.setFormatter(formatter)
+    logging.getLogger().addHandler(handler)
+
+
+def add_noop_handler(settings: Settings):
+    app_settings = settings.app_settings
+    handler = logging.NullHandler()
+    formatter = FormatterWithExceptions(app_settings=app_settings)
+    handler.setFormatter(formatter)
+    logging.getLogger().addHandler(handler)
+
+
+def add_file_handler(settings: Settings):
+    app_settings = settings.app_settings
+    handler = PathTrackingFileHandler(settings=settings)
+    formatter = FormatterWithExceptions(app_settings=app_settings)
+    handler.setFormatter(formatter)
+    logging.getLogger().addHandler(handler)
+
+
+def setup_handlers(settings: Settings):
+    log_settings = settings.log_settings
+    handler_list = log_settings.handler_list
+    verbosity = log_settings.verbosity
 
     logging.basicConfig(
         level=verbosity,
@@ -87,40 +104,59 @@ def setup_logging(
         handlers=[],
     )
 
-    for a_handler in cfg.LOGGING_HANDLERS.split(","):
-        if a_handler == "stdout":
-            handler = logging.StreamHandler(sys.stdout)   # type: ignore
-            formatter = FormatterWithExceptions(app=app)
-            handler.setFormatter(formatter)
-            logging.getLogger().addHandler(handler)
-        elif a_handler == "stderr":
-            handler = logging.StreamHandler(sys.stderr)   # type: ignore
-            formatter = FormatterWithExceptions(app=app)
-            handler.setFormatter(formatter)
-            logging.getLogger().addHandler(handler)
-        elif a_handler == "noop":
-            handler = logging.NullHandler()   # type: ignore
-            formatter = FormatterWithExceptions(app=app)
-            handler.setFormatter(formatter)
-            logging.getLogger().addHandler(handler)
-        elif a_handler == "file":
-            filename = str(log_dir.absolute().joinpath(f"{app_name}_{session_id}"))
-            handler = PathTrackingFileHandler(
-                filename=filename,
-                log_sender=log_sender,
-                when=frequency,
-            )   # type: ignore
-            formatter = FormatterWithExceptions(app=app)
-            handler.setFormatter(formatter)
-            logging.getLogger().addHandler(handler)
+    for handler_type in handler_list.split(","):
+        if handler_type == "stdout":
+            add_stdout_handler(settings=settings)
+        elif handler_type == "stderr":
+            add_stderr_handler(settings=settings)
+        elif handler_type == "noop":
+            add_noop_handler(settings=settings)
+        elif handler_type == "file":
+            add_file_handler(settings=settings)
         else:
-            logger.debug("Unknown loghandler")
+            logger.debug("Unknown log handler.")
 
     logger.info("Logging configuration finished")
-    logger.info("Logging set to %s", cfg.LOGGING_HANDLERS)
+    logger.info("Logging set to %s", handler_list)
     logger.info("Verbosity set to %s", verbosity)
     logger.info(
         "LOGFORMAT: %s%s",
         FormatterWithExceptions.LOGPREFIXFORMAT.replace("|", "-"),
         FormatterWithExceptions.LOGFORMAT.replace("|", "-"),
     )
+
+
+def setup_logging(
+    app_name: Optional[str] = None,
+    frequency: Optional[str] = None,
+    session_id: Optional[str] = None,
+    verbosity: Optional[int] = None,
+) -> None:
+    """Setup Logging"""
+
+    name = app_name or cfg.LOGGING_APP_NAME
+    commit_hash = get_commit_hash()
+    identifier = get_app_id()
+    session_id = session_id or START_TIMESTAMP
+
+    frequency = frequency or cfg.LOGGING_FREQUENCY
+    verbosity = verbosity or cfg.LOGGING_VERBOSITY
+    directory = get_log_dir()
+    handler_list = cfg.LOGGING_HANDLERS
+
+    settings = Settings(
+        app_settings=AppSettings(
+            name=name,
+            commit_hash=commit_hash,
+            identifier=identifier,
+            session_id=session_id,
+        ),
+        log_settings=LogSettings(
+            directory=directory,
+            frequency=frequency,
+            handler_list=handler_list,
+            verbosity=verbosity,
+        ),
+    )
+
+    setup_handlers(settings=settings)
