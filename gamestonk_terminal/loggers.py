@@ -137,7 +137,7 @@ def setup_logging(
     name = app_name or cfg.LOGGING_APP_NAME
     commit_hash = get_commit_hash()
     identifier = get_app_id()
-    session_id = session_id or START_TIMESTAMP
+    session_id = session_id or str(START_TIMESTAMP)
 
     frequency = frequency or cfg.LOGGING_FREQUENCY
     verbosity = verbosity or cfg.LOGGING_VERBOSITY

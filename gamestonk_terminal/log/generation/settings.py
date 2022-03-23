@@ -59,7 +59,7 @@ class LogSettings:
         return self.__handler_list
 
     @property
-    def verbosity(self) -> str:
+    def verbosity(self) -> int:
         return self.__verbosity
 
     def __init__(
@@ -85,11 +85,11 @@ class LogSettings:
 
 class Settings:
     @property
-    def app_settings(self) -> str:
+    def app_settings(self) -> AppSettings:
         return deepcopy(self.__app_settings)
 
     @property
-    def log_settings(self) -> str:
+    def log_settings(self) -> LogSettings:
         return deepcopy(self.__log_settings)
 
     def __init__(

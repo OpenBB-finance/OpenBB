@@ -24,7 +24,7 @@ class PathTrackingFileHandler(TimedRotatingFileHandler):
         return path
 
     @staticmethod
-    def build_log_sender(settings: Settings, start:bool) -> LogSender:
+    def build_log_sender(settings: Settings, start: bool) -> LogSender:
         log_sender = LogSender(app_settings=settings.app_settings, daemon=True)
 
         if start:
@@ -32,7 +32,7 @@ class PathTrackingFileHandler(TimedRotatingFileHandler):
 
         return log_sender
 
-    def build_rolling_clock(self, frequency: str, start:bool) -> LoggingClock:
+    def build_rolling_clock(self, frequency: str, start: bool) -> LoggingClock:
         frequency = frequency.upper()
 
         if frequency == "H":
@@ -80,7 +80,9 @@ class PathTrackingFileHandler(TimedRotatingFileHandler):
 
         self.__settings = settings
         self.__log_sender = self.build_log_sender(settings=settings, start=True)
-        self.__rolling_clock = self.build_rolling_clock(frequency=frequency, start=rolling_clock)
+        self.__rolling_clock = self.build_rolling_clock(
+            frequency=frequency, start=rolling_clock
+        )
 
     # OVERRIDE
     def doRollover(self) -> None:
