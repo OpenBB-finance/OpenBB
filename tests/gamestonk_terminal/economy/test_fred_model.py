@@ -1,4 +1,5 @@
 # IMPORTATION STANDARD
+import datetime
 
 # IMPORTATION THIRDPARTY
 import pytest
@@ -77,5 +78,31 @@ def test_invalid_response_status(func, kwargs_dict, mocker):
 def test_load_data(func, kwargs_dict, recorder):
     result_df = getattr(fred_model, func)(**kwargs_dict)
 
+    assert not result_df.empty
+    recorder.capture(result_df)
+
+
+@pytest.mark.vcr
+@pytest.mark.parametrize("date", [datetime.datetime(2022, 3, 21, 0, 0)])
+def test_yield_curve(date, recorder):
+    result_df, returned_date = fred_model.get_yield_curve(date)
+    assert date.strftime("%Y-%m-%d") == returned_date.strftime("%Y-%m-%d")
+    assert not result_df.empty
+    recorder.capture(result_df)
+
+
+@pytest.mark.vcr
+@pytest.mark.parametrize("date", [datetime.datetime(2021, 7, 17, 0, 0)])
+def test_yield_curve_weekend(date):
+    result_df, returned_date = fred_model.get_yield_curve(date)
+    assert date.strftime("%Y-%m-%d") == returned_date
+    assert result_df.empty
+
+
+@pytest.mark.vcr
+@pytest.mark.parametrize("date", [None])
+def test_yield_curve_none(date, recorder):
+    result_df, returned_date = fred_model.get_yield_curve(date)
+    assert returned_date.strftime("%Y-%m-%d") == "2022-03-21"
     assert not result_df.empty
     recorder.capture(result_df)

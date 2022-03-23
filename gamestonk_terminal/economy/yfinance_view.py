@@ -18,6 +18,7 @@ from gamestonk_terminal.helper_funcs import (
     plot_autoscale,
     print_rich_table,
     export_data,
+    reindex_dates,
 )
 
 logger = logging.getLogger(__name__)
@@ -30,6 +31,7 @@ def show_indices(
     start_date: int = None,
     end_date: int = None,
     column: str = "Adj Close",
+    returns: bool = False,
     store: bool = False,
     raw: bool = False,
     external_axes: Optional[List[plt.axes]] = None,
@@ -50,6 +52,8 @@ def show_indices(
         The end date, format "YEAR-MONTH-DAY", i.e. 2020-06-05.
     column : str
         Which column to load in, by default this is the Adjusted Close.
+    returns: bool
+        Flag to show cumulative returns on index
     store : bool
         Whether to prevent plotting the data.
     raw : bool
@@ -68,6 +72,11 @@ def show_indices(
     for index in indices:
         indices_data[index] = get_index(index, interval, start_date, end_date, column)
 
+    if returns:
+        indices_data = indices_data.pct_change().dropna()
+        indices_data = indices_data + 1
+        indices_data = indices_data.cumprod()
+
     if not store:
         if external_axes is None:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -81,9 +90,12 @@ def show_indices(
                 label = index
 
             if not indices_data[index].empty:
-                ax.plot(indices_data[index], label=label)
+                data_to_percent = 100 * (indices_data[index].values - 1)
+                ax.plot(data_to_percent, label=label)
 
         ax.set_title("Indices")
+        if returns:
+            ax.set_ylabel("Performance (%)")
         ax.legend(
             bbox_to_anchor=(0, 0.40, 1, -0.52),
             loc="upper right",
@@ -93,8 +105,17 @@ def show_indices(
             ncol=2,
         )
 
-        theme.style_primary_axis(ax)
-
+        if returns:
+            indices_data.index.name = "date"
+            plot_data = reindex_dates(indices_data)
+            theme.style_primary_axis(
+                ax,
+                data_index=plot_data.index.to_list(),
+                tick_labels=plot_data["date"].to_list(),
+            )
+            ax.set_xlim(plot_data.index[0], plot_data.index[-1])
+        else:
+            theme.style_primary_axis(ax)
         if external_axes is None:
             theme.visualize_output()
 
