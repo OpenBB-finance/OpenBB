@@ -422,11 +422,6 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
             "--file",
             default=None,
             help="Path to load custom file.",
-            choices=[
-                x
-                for x in os.listdir(os.path.join("custom_imports", "stocks"))
-                if x.endswith(".csv")
-            ],
             dest="filepath",
             type=str,
         )
@@ -478,6 +473,21 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                     monthly=ns_parser.monthly,
                 )
             else:
+                # This seems to block the .exe since the folder needs to be manually created
+                # This block basically makes sure that we only look for the file if the -f flag is used
+                # If we add files in the argparse choices, it will fail for the .exe even if no -f is used
+                try:
+                    if ns_parser.filepath not in os.listdir(
+                        os.path.join("custom_imports", "stocks")
+                    ):
+                        console.print(
+                            f"[red]{ns_parser.filepath} not found in custom_imports/stocks/ folder[/red].\n"
+                        )
+                        return
+                except Exception as e:
+                    console.print(e)
+                    return
+
                 df_stock_candidate = stocks_helper.load_custom(
                     os.path.join(
                         os.path.join("custom_imports", "stocks"), ns_parser.filepath
