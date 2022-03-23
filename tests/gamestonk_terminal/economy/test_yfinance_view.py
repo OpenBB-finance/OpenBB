@@ -55,6 +55,7 @@ def test_show_indices(
     assert isinstance(result_df, pd.DataFrame)
 
 
+@pytest.mark.skip
 @pytest.mark.vcr
 @pytest.mark.parametrize(
     "indices, interval, start_date, end_date, column, returns, store",
