@@ -2,7 +2,7 @@
 import disnake
 from disnake.ext import commands
 
-import bots.config_discordbot as cfg
+from bots import config_discordbot as cfg
 from bots.menus.menu import Menu
 
 

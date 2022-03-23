@@ -29,6 +29,9 @@ def last_insider_activity(ticker: str, num: int, export: str):
     """
     d_finviz_insider = finviz_model.get_last_insider_activity(ticker)
     df = pd.DataFrame.from_dict(d_finviz_insider)
+    if df.empty:
+        console.print(f"[red]No insider information found for {ticker}.\n[/red]")
+        return
     df.set_index("Date", inplace=True)
     df = df[
         [

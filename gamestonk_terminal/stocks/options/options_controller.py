@@ -633,7 +633,9 @@ Expiry: [/param]{self.selected_date or None}
             "--strike",
             dest="strike",
             type=float,
-            required="--chain" not in other_args and "-c" not in other_args,
+            required="--chain" not in other_args
+            and "-c" not in other_args
+            and "-h" not in other_args,
             help="Strike price to look at",
         )
         parser.add_argument(
@@ -668,6 +670,7 @@ Expiry: [/param]{self.selected_date or None}
             "--limit",
             dest="limit",
             type=int,
+            default=10,
             help="Limit of data rows to display",
         )
         if other_args and "-" not in other_args[0][0]:

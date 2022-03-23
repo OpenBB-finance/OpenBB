@@ -53,9 +53,7 @@ def send_message(message: str, group_id: str) -> requests.Response:
     return requests.post(url=f"{base+mid}?bot_id={bot_id}&text={cleaned}")
 
 
-def send_image(
-    image: str, group_id: str, text: str = None, local: bool = False
-) -> requests.Response:
+def send_image(image: str, group_id: str, text: str = None) -> requests.Response:
     if "http" in image:
         response = upload_image(image, False)
     else:

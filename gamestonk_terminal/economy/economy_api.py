@@ -28,7 +28,11 @@ from .alphavantage_view import display_cpi as cpi
 from .alphavantage_view import display_treasury_yield as tyld
 from .alphavantage_view import display_unemployment as unemp
 from .nasdaq_view import display_big_mac_index as bigmac
-from .fred import fred_api as fred
+from .econdb_view import show_macro_data as macro
+from .econdb_view import show_treasuries as treasury
+from .econdb_view import show_treasury_maturities as maturities
+from .yfinance_view import show_indices as index
+from .yfinance_view import search_indices as search_index
 
 # Models
 models = _models(os.path.abspath(os.path.dirname(__file__)))

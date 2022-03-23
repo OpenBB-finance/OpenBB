@@ -1,9 +1,6 @@
 import logging
 
-import df2img
-
-import bots.config_discordbot as cfg
-from bots.helpers import save_image
+from bots import imps
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.stocks.options import barchart_model
 
@@ -15,7 +12,7 @@ def iv_command(ticker: str = None):
     """Options IV"""
 
     # Debug
-    if cfg.DEBUG:
+    if imps.DEBUG:
         logger.debug("opt info %s", ticker)
 
     # Check for argument
@@ -37,14 +34,14 @@ def iv_command(ticker: str = None):
     ]
     df.set_index(" ", inplace=True)
 
-    fig = df2img.plot_dataframe(
+    fig = imps.plot_df(
         df,
         fig_size=(600, 1500),
         col_width=[3, 3],
-        tbl_header=cfg.PLT_TBL_HEADER,
-        tbl_cells=cfg.PLT_TBL_CELLS,
-        font=cfg.PLT_TBL_FONT,
-        row_fill_color=cfg.PLT_TBL_ROW_COLORS,
+        tbl_header=imps.PLT_TBL_HEADER,
+        tbl_cells=imps.PLT_TBL_CELLS,
+        font=imps.PLT_TBL_FONT,
+        row_fill_color=imps.PLT_TBL_ROW_COLORS,
         paper_bgcolor="rgba(0, 0, 0, 0)",
     )
     fig.update_traces(
@@ -61,7 +58,7 @@ def iv_command(ticker: str = None):
             )
         ),
     )
-    imagefile = save_image("opt-info.png", fig)
+    imagefile = imps.save_image("opt-info.png", fig)
 
     return {
         "title": f"{ticker.upper()} Options: IV",

@@ -1,0 +1,11 @@
+                             short_name currency     market exchange exchange timezone
+^A1BSC  Dow Jones Americas Basic Materi      USD  us_market      DJI               EDT
+^A1CYC  Dow Jones Americas Consumer Ser      USD  us_market      DJI               EDT
+^A1DOW         Dow Jones Americas Index      USD  us_market      DJI               EDT
+^A1ENE  Dow Jones Americas Oil & Gas In      USD  us_market      DJI               EDT
+^A1FIN  Dow Jones Americas Financials I      USD  us_market      DJI               EDT
+^A1HCR  Dow Jones Americas Health Care       USD  us_market      DJI               EDT
+^A1IDU  Dow Jones Americas Industrials       USD  us_market      DJI               EDT
+^A1NCY  Dow Jones Americas Consumer Goo      USD  us_market      DJI               EDT
+^A1SGI  Dow Jones Sustainability North       USD  us_market      DJI               EDT
+^A1TEC  Dow Jones Americas Technology I      USD  us_market      DJI               EDT

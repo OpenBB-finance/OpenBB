@@ -77,7 +77,7 @@ def display_adx(
     ax1.plot(plot_data.index, plot_data["Close"].values)
     ax1.set_title(f"Average Directional Movement Index (ADX) on {s_ticker}")
     ax1.set_xlim(plot_data.index[0], plot_data.index[-1])
-    ax1.set_ylabel("Share Price ($)")
+    ax1.set_ylabel("Price")
     theme.style_primary_axis(
         ax1,
         data_index=plot_data.index.to_list(),
@@ -167,7 +167,7 @@ def display_aroon(
     ax1.plot(plot_data.index, plot_data["Adj Close"].values)
     ax1.set_title(f"Aroon on {s_ticker}")
     ax1.set_xlim(plot_data.index[0], plot_data.index[-1])
-    ax1.set_ylabel("Share Price ($)")
+    ax1.set_ylabel("Price")
     theme.style_primary_axis(
         ax1,
         data_index=plot_data.index.to_list(),
