@@ -1314,6 +1314,8 @@ main:
                 ref: "/bots/discord/options/oi"
               - name: "Volume"
                 ref: "/bots/discord/options/vol"
+              - name: "Smile"
+                ref: "/bots/discord/options/smile"
               - name: "Overview"
                 ref: "/bots/discord/options/overview"
               - name: "Historical"
