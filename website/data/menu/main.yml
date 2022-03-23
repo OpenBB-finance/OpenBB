@@ -951,6 +951,8 @@ main:
             ref: "/terminal/economy/index"
           - name: treasury
             ref: "/terminal/economy/treasury"
+          - name: yield
+            ref: "/terminal/economy/yield"
           - name: plot
             ref: "/terminal/economy/plot"
           - name: rtps
