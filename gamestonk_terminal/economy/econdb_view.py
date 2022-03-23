@@ -60,7 +60,7 @@ def show_macro_data(
     ----------
     Plots the Series.
     """
-    country_data_df = econdb_model.get_aggregated_macro_data(
+    country_data_df, units = econdb_model.get_aggregated_macro_data(
         parameters, countries, start_date, end_date, convert_currency
     )
 
@@ -71,42 +71,43 @@ def show_macro_data(
 
     maximum_value = country_data_df.max().max()
 
-    if not convert_currency:
-        convert_currency = "in"
-
-    if maximum_value > 1_000_000_000:
+    if maximum_value > 1_000_000_000_000:
+        df_rounded = country_data_df / 1_000_000_000_000
+        denomination = " [in Trillions]"
+    elif maximum_value > 1_000_000_000:
         df_rounded = country_data_df / 1_000_000_000
-        denomination = f"[{convert_currency} Billions]"
+        denomination = " [in Billions]"
     elif maximum_value > 1_000_000:
         df_rounded = country_data_df / 1_000_000
-        denomination = f"[{convert_currency} Millions]"
+        denomination = " [in Millions]"
     elif maximum_value > 1_000:
         df_rounded = country_data_df / 1_000
-        denomination = f"[{convert_currency} Thousands]"
+        denomination = " [in Thousands]"
     else:
         df_rounded = country_data_df
         denomination = ""
 
     legend = []
     for column in df_rounded.columns:
+        parameter_units = f"Units: {units[column[0]][column[1]]}"
         country_label = column[0].replace("_", " ")
         parameter_label = econdb_model.PARAMETERS[column[1]]["name"]
         if len(parameters) > 1 and len(countries) > 1:
             ax.plot(df_rounded[column])
-            ax.set_title(f"Macro data {denomination}", wrap=True, fontsize=12)
-            legend.append(f"{country_label} [{parameter_label}]")
+            ax.set_title(f"Macro data{denomination}", wrap=True, fontsize=12)
+            legend.append(f"{country_label} [{parameter_label}, {parameter_units}]")
         elif len(parameters) > 1:
             ax.plot(df_rounded[column])
-            ax.set_title(f"{country_label} {denomination}", wrap=True, fontsize=12)
-            legend.append(parameter_label)
+            ax.set_title(f"{country_label}{denomination}", wrap=True, fontsize=12)
+            legend.append(f"{parameter_label} [{parameter_units}]")
         elif len(countries) > 1:
             ax.plot(df_rounded[column])
-            ax.set_title(f"{parameter_label} {denomination}", wrap=True, fontsize=12)
-            legend.append(country_label)
+            ax.set_title(f"{parameter_label}{denomination}", wrap=True, fontsize=12)
+            legend.append(f"{country_label} [{parameter_units}]")
         else:
             ax.plot(df_rounded[column])
             ax.set_title(
-                f"{parameter_label} of {country_label} {denomination}",
+                f"{parameter_label} of {country_label}{denomination} [{parameter_units}]",
                 wrap=True,
                 fontsize=12,
             )

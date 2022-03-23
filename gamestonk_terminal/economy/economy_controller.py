@@ -154,6 +154,7 @@ class EconomyController(BaseController):
         self.current_series: Dict = dict()
         self.fred_query: pd.Series = pd.Series()
         self.DATASETS: Dict[Any, pd.DataFrame] = dict()
+        self.UNITS: Dict[Any, Dict[Any, Any]] = dict()
         self.FRED_TITLES: Dict = dict()
 
         if session and gtff.USE_PROMPT_TOOLKIT:
@@ -565,7 +566,7 @@ Performance & Valuations
                     pd.DataFrame.from_dict(econdb_model.PARAMETERS, orient="index"),
                     show_index=True,
                     index_name="Parameter",
-                    headers=["Name", "Scale", "Period", "Description"],
+                    headers=["Name", "Period", "Description"],
                 )
             elif ns_parser.show_countries:
                 print_rich_table(
@@ -575,7 +576,10 @@ Performance & Valuations
                 )
             elif ns_parser.parameters and ns_parser.countries:
                 if ns_parser.store:
-                    self.DATASETS["macro"] = econdb_model.get_aggregated_macro_data(
+                    (
+                        self.DATASETS["macro"],
+                        self.UNITS,
+                    ) = econdb_model.get_aggregated_macro_data(
                         parameters=ns_parser.parameters,
                         countries=ns_parser.countries,
                         start_date=ns_parser.start_date,
@@ -1064,17 +1068,20 @@ Performance & Valuations
                                 if key == "macro":
                                     split = variable.split("_")
                                     if len(split) == 2:
-                                        country, parameter = split
+                                        country, parameter_abbreviation = split
                                     else:
                                         country = f"{split[0]} {split[1]}"
-                                        parameter = split[2]
+                                        parameter_abbreviation = split[2]
 
-                                    parameter = econdb_model.PARAMETERS[parameter][
-                                        "name"
+                                    parameter = econdb_model.PARAMETERS[
+                                        parameter_abbreviation
+                                    ]["name"]
+                                    units = self.UNITS[country.replace(" ", "_")][
+                                        parameter_abbreviation
                                     ]
-                                    dataset_yaxis1[f"{country} [{parameter}]"] = data[
-                                        variable
-                                    ]
+                                    dataset_yaxis1[
+                                        f"{country} [{parameter}, Units: {units}]"
+                                    ] = data[variable]
                                 elif key == "fred":
                                     dataset_yaxis1[self.FRED_TITLES[variable]] = data[
                                         variable
@@ -1107,17 +1114,20 @@ Performance & Valuations
                                 if key == "macro":
                                     split = variable.split("_")
                                     if len(split) == 2:
-                                        country, parameter = split
+                                        country, parameter_abbreviation = split
                                     else:
                                         country = f"{split[0]} {split[1]}"
-                                        parameter = split[2]
+                                        parameter_abbreviation = split[2]
 
-                                    parameter = econdb_model.PARAMETERS[parameter][
-                                        "name"
+                                    parameter = econdb_model.PARAMETERS[
+                                        parameter_abbreviation
+                                    ]["name"]
+                                    units = self.UNITS[country.replace(" ", "_")][
+                                        parameter_abbreviation
                                     ]
-                                    dataset_yaxis2[f"{country} [{parameter}]"] = data[
-                                        variable
-                                    ]
+                                    dataset_yaxis2[
+                                        f"{country} [{parameter}, Units: {units}]"
+                                    ] = data[variable]
                                 elif key == "fred":
                                     dataset_yaxis2[self.FRED_TITLES[variable]] = data[
                                         variable
