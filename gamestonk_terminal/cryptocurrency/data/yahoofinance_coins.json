@@ -8451,52 +8451,52 @@
     },
     {
       "id": "LUNA1-CAD",
-      "symbol": "luna1",
+      "symbol": "luna",
       "name": "Terra CAD"
     },
     {
       "id": "LUNA1-CNY",
-      "symbol": "luna1",
+      "symbol": "luna",
       "name": "Terra CNY"
     },
     {
       "id": "LUNA1-ETH",
-      "symbol": "luna1",
+      "symbol": "luna",
       "name": "Terra ETH"
     },
     {
       "id": "LUNA1-EUR",
-      "symbol": "luna1",
+      "symbol": "luna",
       "name": "Terra EUR"
     },
     {
       "id": "LUNA1-GBP",
-      "symbol": "luna1",
+      "symbol": "luna",
       "name": "Terra GBP"
     },
     {
       "id": "LUNA1-INR",
-      "symbol": "luna1",
+      "symbol": "luna",
       "name": "Terra INR"
     },
     {
       "id": "LUNA1-JPY",
-      "symbol": "luna1",
+      "symbol": "luna",
       "name": "Terra JPY"
     },
     {
       "id": "LUNA1-KRW",
-      "symbol": "luna1",
+      "symbol": "luna",
       "name": "Terra KRW"
     },
     {
       "id": "LUNA1-RUB",
-      "symbol": "luna1",
+      "symbol": "luna",
       "name": "Terra RUB"
     },
     {
       "id": "LUNA1-USD",
-      "symbol": "luna1",
+      "symbol": "luna",
       "name": "Terra USD"
     },
     {

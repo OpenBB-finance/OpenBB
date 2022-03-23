@@ -518,39 +518,40 @@ def load(
             )
             return None, None, None, None, None, None
 
-        try:
-            # Check if user input is symbol or full crypto name
-            if len(coin) <= 4:
-                coin_map_df = coins_map_df.loc[coin]
-            else:
-                coin_map_df = coins_map_df.loc[coins_map_df.CoinGecko == coin]
+        # Search coin using crypto symbol
+        coin_map_df_1 = coins_map_df.loc[coins_map_df.index == coin]
+        # Search coin using yfinance id
+        coin_map_df_2 = coins_map_df.loc[
+            coins_map_df.YahooFinance == f"{coin.upper()}-{vs.upper()}"
+        ]
+        # Search coin using crypto full name
+        coin_map_df_3 = coins_map_df.loc[coins_map_df.CoinGecko == coin]
 
-            # Filter for the currency
-            coin_map_df = coin_map_df[
-                coin_map_df["YahooFinance"].str.upper().str.contains(vs.upper())
-            ]
+        for _df in [coin_map_df_1, coin_map_df_2, coin_map_df_3]:
+            if not _df.empty:
+                coin_map_df = _df
+                break
 
-            if coin_map_df.empty:
-                console.print(
-                    f"Cannot find {coin} against {vs} on Yahoo finance. Try another source or currency.\n"
-                )
-                return None, None, None, None, None, None
-
-            coin_map_df = (
-                coin_map_df.iloc[0]
-                if isinstance(coin_map_df, pd.DataFrame)
-                else coin_map_df
+        if coin_map_df.empty:
+            console.print(
+                f"Cannot find {coin} against {vs} on Yahoo finance. Try another source or currency.\n"
             )
+            return None, None, None, None, None, None
 
-            if str(coin_map_df["YahooFinance"]) == "nan":
-                console.print(
-                    f"Cannot find {coin} Yahoo finance. Try another source.\n"
-                )
-                return None, None, None, None, None, None
-
-        except KeyError:
+        if (coin_map_df["YahooFinance"]).isna().all():
             console.print(f"Cannot find {coin} Yahoo finance. Try another source.\n")
             return None, None, None, None, None, None
+
+        # Filter for the currency
+        coin_map_df = coin_map_df[
+            coin_map_df["YahooFinance"].str.upper().str.contains(vs.upper())
+        ]
+
+        coin_map_df = (
+            coin_map_df.iloc[0]
+            if isinstance(coin_map_df, pd.DataFrame)
+            else coin_map_df
+        )
 
         if should_load_ta_data:
             df_prices, currency = load_ta_data(
@@ -1158,13 +1159,15 @@ def plot_chart(
             start=datetime.now() - timedelta(days=days),
             progress=False,
             interval=interval,
-        ).sort_index(ascending=False)[[
-            "Open",
-            "High",
-            "Low",
-            "Close",
-            "Volume",
-        ]]
+        ).sort_index(ascending=False)[
+            [
+                "Open",
+                "High",
+                "Low",
+                "Close",
+                "Volume",
+            ]
+        ]
 
         df.index.name = "date"
 

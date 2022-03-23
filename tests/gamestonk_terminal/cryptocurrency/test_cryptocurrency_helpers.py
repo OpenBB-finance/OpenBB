@@ -39,6 +39,10 @@ class TestCoinGeckoAPI(TestCase):
     coin, symbol = get_bitcoin()
     coin_map_df = prepare_all_coins_df().set_index("Symbol").loc[symbol]
 
+    print(coin)
+    print(symbol)
+    print(coin_map_df)
+
     def test_coin_api_load(self):
         """
         Mock load function through get_coin_market_chart_by_id.
