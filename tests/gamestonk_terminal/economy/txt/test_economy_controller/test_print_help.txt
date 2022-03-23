@@ -11,6 +11,7 @@ Macro Data
     fred          collect macro data from FRED based on a series ID [Source: FRED]
     index         find and plot any (major) index on the market [Source: Yahoo Finance]
     treasury      obtain U.S. treasury rates [Source: EconDB]
+    yield         show the U.S. Treasury yield curve [Source: FRED]
     plot          plot data from the above commands together
     options       show the available options for 'plot' or show/export the data
 
