@@ -514,18 +514,16 @@ def get_sortino(
     adjusted: bool
         adjust the sortino ratio
     """
-    data["returns"] = data["returns"] * 100
+    data = data * 100
 
     # Sortino Ratio
     # For method & terminology see:
     # http://www.redrockcapital.com/Sortino__A__Sharper__Ratio_Red_Rock_Capital.pdf
 
-    target_downside_deviation = (
-        data["returns"]
-        .rolling(window)
-        .apply(lambda x: (x.values[x.values < 0]).std() / np.sqrt(252) * 100)
+    target_downside_deviation = data.rolling(window).apply(
+        lambda x: (x.values[x.values < 0]).std() / np.sqrt(252) * 100
     )
-    data_return = data["returns"].rolling(window).sum()
+    data_return = data.rolling(window).sum()
     sortino_ratio = (data_return - target_return) / target_downside_deviation
 
     if adjusted:

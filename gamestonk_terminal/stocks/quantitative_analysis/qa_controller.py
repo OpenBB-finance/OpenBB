@@ -871,10 +871,19 @@ class QaController(StockBaseController):
             default=0,
             help="Risk free return",
         )
+        parser.add_argument(
+            "-w",
+            "--window",
+            action="store",
+            dest="window",
+            type=int,
+            default=min(len(self.stock["adjclose"].values), 252),
+            help="Rolling window length",
+        )
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            data = self.stock
-            qa_view.display_sharpe(data, ns_parser.rfr, 252)
+            data = self.stock["adjclose"]
+            qa_view.display_sharpe(data, ns_parser.rfr, ns_parser.window)
 
     @log_start_end(log=logger)
     def call_so(self, other_args: List[str]):
@@ -909,14 +918,14 @@ class QaController(StockBaseController):
             "--window",
             action="store",
             dest="window",
-            type=float,
+            type=int,
             default=min(len(self.stock["returns"].values), 252),
             help="Rolling window length",
         )
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            data = self.stock
+            data = self.stock["returns"]
             qa_view.display_sortino(
                 data, ns_parser.target_return, ns_parser.window, ns_parser.adjusted
             )

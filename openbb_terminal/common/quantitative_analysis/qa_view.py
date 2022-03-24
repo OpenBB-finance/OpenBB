@@ -1141,7 +1141,7 @@ def display_sharpe(data: pd.DataFrame, rfr: float, window: float):
     window: float
         length of the rolling window
     """
-    sharpe_ratio = qa_model.get_sharpe(data["adjclose"], rfr, window)
+    sharpe_ratio = qa_model.get_sharpe(data, rfr, window)
 
     fig, ax = plt.subplots()
     ax.plot(sharpe_ratio[int(window - 1) :])
