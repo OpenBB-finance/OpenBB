@@ -389,7 +389,6 @@ def save_image(filename: str, fig: plotly.graph_objects) -> str:
     imagefile = f"{filename.replace('.png', '')}_{uuid_get()}.png"
     filesave = imps.IMG_DIR.joinpath(imagefile)
     fig.write_image(filesave)
-    fig.close()
     image = Image.open(filesave)
     image = autocrop_image(image, 0)
     image.save(filesave, "PNG", quality=100)
