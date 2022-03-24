@@ -53,7 +53,7 @@ def smile_command(
     fig.add_trace(
         go.Scatter(
             x=calls["strike"],
-            y=calls["impliedVolatility"],
+            y=calls["impliedVolatility"].interpolate(method='nearest'),
             name="Calls",
             mode="lines+markers",
             marker=dict(
@@ -67,7 +67,7 @@ def smile_command(
     fig.add_trace(
         go.Scatter(
             x=puts["strike"],
-            y=puts["impliedVolatility"],
+            y=puts["impliedVolatility"].interpolate(method='nearest'),
             name="Puts",
             mode="lines+markers",
             marker=dict(
