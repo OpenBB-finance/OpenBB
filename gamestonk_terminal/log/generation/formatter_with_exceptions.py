@@ -37,7 +37,7 @@ class FormatterWithExceptions(logging.Formatter):
             record.funcName = record.func_name_override  # type: ignore
             record.lineno = 0
 
-        log_extra["userId"] = record.user_id if hasattr(record, "user_id") else ""  # type: ignore
+        log_extra["userId"] = record.user_id if hasattr(record, "user_id") else "NA"  # type: ignore
 
         if hasattr(record, "session_id"):
             log_extra["sessionId"] = record.session_id  # type: ignore

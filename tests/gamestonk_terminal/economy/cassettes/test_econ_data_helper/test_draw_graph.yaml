@@ -12,7 +12,7 @@ interactions:
     uri: https://query2.finance.yahoo.com/v8/finance/chart/PM?events=div%2Csplits&includePrePost=False&interval=1d&period1=MOCK_PERIOD_1&period2=MOCK_PERIOD_2
   response:
     body:
-      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"PM","exchangeName":"NYQ","instrumentType":"EQUITY","firstTradeDate":1205760600,"regularMarketTime":1647460802,"gmtoffset":-14400,"timezone":"EDT","exchangeTimezoneName":"America/New_York","regularMarketPrice":93.77,"chartPreviousClose":88.87,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EDT","end":1647523800,"start":1647504000,"gmtoffset":-14400},"regular":{"timezone":"EDT","end":1647547200,"start":1647523800,"gmtoffset":-14400},"post":{"timezone":"EDT","end":1647561600,"start":1647547200,"gmtoffset":-14400}},"dataGranularity":"1d","range":"","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1647264600,1647351000,1647437400,1647460802],"indicators":{"quote":[{"close":[89.58999633789062,92.66000366210938,93.7699966430664,93.7699966430664],"open":[89.88999938964844,91.33000183105469,93.0,93.0],"low":[88.37000274658203,90.61000061035156,92.83000183105469,92.83000183105469],"high":[90.58000183105469,92.94999694824219,94.5,94.5],"volume":[16030300,8224500,6299100,6024099]}],"adjclose":[{"adjclose":[89.58999633789062,92.66000366210938,93.7699966430664,93.7699966430664]}]}}],"error":null}}'
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"PM","exchangeName":"NYQ","instrumentType":"EQUITY","firstTradeDate":1205760600,"regularMarketTime":1647633682,"gmtoffset":-14400,"timezone":"EDT","exchangeTimezoneName":"America/New_York","regularMarketPrice":93.9,"chartPreviousClose":93.33,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EDT","end":1647869400,"start":1647849600,"gmtoffset":-14400},"regular":{"timezone":"EDT","end":1647892800,"start":1647869400,"gmtoffset":-14400},"post":{"timezone":"EDT","end":1647907200,"start":1647892800,"gmtoffset":-14400}},"dataGranularity":"1d","range":"","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1647523800,1647610200,1647633682],"indicators":{"quote":[{"volume":[6728800,9657100,9667846],"open":[93.5,94.19000244140625,94.19000244140625],"low":[92.93000030517578,93.22000122070312,93.21499633789062],"close":[93.33000183105469,93.9000015258789,93.9000015258789],"high":[93.8499984741211,94.69999694824219,94.69999694824219]}],"adjclose":[{"adjclose":[93.33000183105469,93.9000015258789,93.9000015258789]}]}}],"error":null}}'
     headers:
       Age:
       - '0'
@@ -33,11 +33,11 @@ interactions:
       cache-control:
       - public, max-age=10, stale-while-revalidate=20
       content-length:
-      - '1207'
+      - '1134'
       content-type:
       - application/json;charset=utf-8
       date:
-      - Thu, 17 Mar 2022 08:55:10 GMT
+      - Mon, 21 Mar 2022 11:04:06 GMT
       server:
       - ATS
       vary:
@@ -45,13 +45,13 @@ interactions:
       x-envoy-decorator-operation:
       - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '15'
+      - '20'
       x-request-id:
-      - 7a6f962e-5cbc-49d0-a92d-b8724026cb19
+      - eb5cd537-3bd5-4ce3-836a-e65ddc8e4fbf
       x-yahoo-request-id:
-      - 9pobpplh35tre
+      - 4j1te99h3gmt6
       y-rid:
-      - 9pobpplh35tre
+      - 4j1te99h3gmt6
     status:
       code: 200
       message: OK

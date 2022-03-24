@@ -11,15 +11,15 @@ from gamestonk_terminal.economy import econdb_view, econdb_model
     [
         [["RGDP"], ["United States", "Germany"], "2020-01-01", "2020-10-02", False],
         [["EMP", "PPI"], ["France"], "2010-01-01", "2019-01-01", False],
-        [["GDP, RGDP"], ["Italy", "Netherlands"], "2016-01-01", "2016-10-10", False],
+        [["GDP", "RGDP"], ["Italy", "Netherlands"], "2016-01-01", "2016-10-10", False],
     ],
 )
 def test_show_macro_data(
-    parameters, mocker, countries, start_date, end_date, convert_currency
+    mocker, parameters, countries, start_date, end_date, convert_currency
 ):
-    mocker.patch(target="gamestonk_terminal.economy.econdb_view.theme.visualize_output")
-    # MOCK EXPORT_DATA
-    mocker.patch(target="gamestonk_terminal.economy.econdb_view.export_data")
+    mocker.patch(
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
+    )
     econdb_view.show_macro_data(
         parameters, countries, start_date, end_date, convert_currency
     )
@@ -36,11 +36,11 @@ def test_show_macro_data(
     ],
 )
 def test_show_treasuries(
-    instruments, mocker, maturities, frequency, start_date, end_date
+    mocker, instruments, maturities, frequency, start_date, end_date
 ):
-    mocker.patch(target="gamestonk_terminal.economy.econdb_view.theme.visualize_output")
-    # MOCK EXPORT_DATA
-    mocker.patch(target="gamestonk_terminal.economy.econdb_view.export_data")
+    mocker.patch(
+        target="gamestonk_terminal.helper_classes.TerminalStyle.visualize_output"
+    )
     econdb_view.show_treasuries(
         instruments, maturities, frequency, start_date, end_date
     )
