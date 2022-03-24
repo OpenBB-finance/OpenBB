@@ -506,7 +506,7 @@ def load(
 
         if vs.upper() not in YF_CURRENCY:
             console.print(
-                "vs specified not supported by coinbase. Run command again with one supported (e.g., --vs USD):\n",
+                "vs specified not supported by Yahoo Finance. Run command again with one supported (e.g., --vs USD):\n",
                 YF_CURRENCY,
             )
             return None, None, None, None, None, None
