@@ -12,7 +12,8 @@ from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.decorators import log_start_end
-from gamestonk_terminal.forex import av_model, av_view
+from gamestonk_terminal.forex import av_view, forex_helper
+from gamestonk_terminal.forex.forex_helper import FOREX_SOURCES, SOURCES_INTERVALS
 from gamestonk_terminal.helper_funcs import parse_known_args_and_warn, valid_date
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.parent_classes import BaseController
@@ -37,12 +38,14 @@ class ForexController(BaseController):
 
         self.from_symbol = "USD"
         self.to_symbol = ""
+        self.source = "yf"
         self.data = pd.DataFrame()
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
-            choices["to"] = {c: None for c in av_model.CURRENCY_LIST}
-            choices["from"] = {c: None for c in av_model.CURRENCY_LIST}
+            choices["to"] = {c: None for c in forex_helper.YF_CURRENCY_LIST}
+            choices["from"] = {c: None for c in forex_helper.YF_CURRENCY_LIST}
+            choices["load"]["--source"] = {c: None for c in FOREX_SOURCES}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
@@ -53,11 +56,12 @@ class ForexController(BaseController):
     from      select the "from" currency in a forex pair
     to        select the "to" currency in a forex pair[/cmds]
 
-[param]From: [/param]{None or self.from_symbol}
-[param]To:   [/param]{None or self.to_symbol}[cmds]
+[param]From:   [/param]{None or self.from_symbol}
+[param]To:     [/param]{None or self.to_symbol}
+[param]Source: [/param]{None or FOREX_SOURCES[self.source]}[cmds]
 {has_symbols_start}
-[src][AlphaVantage][/src][cmds]
-    quote         get last quote
+[cmds]
+    quote         get last quote [src][AlphaVantage][/src]
     load          get historical data
     candle        show candle plot for loaded data[/cmds]
 [menu]
@@ -90,7 +94,7 @@ class ForexController(BaseController):
             "-n",
             "--name",
             help="To currency",
-            type=av_model.check_valid_forex_currency,
+            type=forex_helper.check_valid_yf_forex_currency,
             dest="to_symbol",
         )
 
@@ -107,7 +111,9 @@ class ForexController(BaseController):
             self.to_symbol = ns_parser.to_symbol
 
             console.print(
-                f"\nSelected pair\nFrom: {self.from_symbol}\nTo:   {self.to_symbol}\n\n"
+                f"\nSelected pair\nFrom:   {self.from_symbol}\n"
+                f"To:     {self.to_symbol}\n"
+                f"Source: {FOREX_SOURCES[self.source]}\n\n"
             )
 
     @log_start_end(log=logger)
@@ -123,7 +129,7 @@ class ForexController(BaseController):
             "-n",
             "--name",
             help="From currency",
-            type=av_model.check_valid_forex_currency,
+            type=forex_helper.check_valid_yf_forex_currency,
             dest="from_symbol",
         )
 
@@ -139,7 +145,9 @@ class ForexController(BaseController):
         if ns_parser:
             self.from_symbol = ns_parser.from_symbol
             console.print(
-                f"\nSelected pair\nFrom: {self.from_symbol}\nTo:   {self.to_symbol}\n\n"
+                f"\nSelected pair\nFrom:   {self.from_symbol}\n"
+                f"To:     {self.to_symbol}\n"
+                f"Source: {FOREX_SOURCES[self.source]}\n\n"
             )
 
     @log_start_end(log=logger)
@@ -149,8 +157,20 @@ class ForexController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="load",
-            description="Load historical exchange rate data.",
+            description="Load historical exchange rate data."
+            "Available data sources are Alpha Advantage and YahooFinance"
+            "By default main source used for analysis is YahooFinance (yf). To change it use --source av",
         )
+
+        parser.add_argument(
+            "--source",
+            help="Source of historical data",
+            dest="source",
+            choices=("yf", "av"),
+            default="yf",
+            required=False,
+        )
+
         parser.add_argument(
             "-r",
             "--resolution",
@@ -162,9 +182,11 @@ class ForexController(BaseController):
         parser.add_argument(
             "-i",
             "--interval",
-            choices=[1, 5, 15, 30, 60],
-            default="5",
-            help="Interval of intraday data.  Can be 1, 5, 15, 30 or 60.",
+            choices=SOURCES_INTERVALS["yf"],
+            default="5min",
+            help="""Interval of intraday data. Options:
+            [YahooFinance] 1min, 2min, 5min, 15min, 30min, 60min, 90min, 1hour, 1day, 5day, 1week, 1month, 3month.
+            [AlphaAdvantage] 1min, 5min, 15min, 30min, 60min""",
             dest="interval",
         )
         parser.add_argument(
@@ -175,19 +197,29 @@ class ForexController(BaseController):
             help="Start date of data.",
             dest="start_date",
         )
+
         ns_parser = parse_known_args_and_warn(parser, other_args)
+
         if ns_parser:
+
             if self.to_symbol and self.from_symbol:
-                self.data = av_model.get_historical(
+
+                self.data = forex_helper.load(
                     to_symbol=self.to_symbol,
                     from_symbol=self.from_symbol,
                     resolution=ns_parser.resolution,
                     interval=ns_parser.interval,
                     start_date=ns_parser.start_date.strftime("%Y-%m-%d"),
+                    source=ns_parser.source,
                 )
                 self.data.index.name = "date"
+
+                self.source = ns_parser.source
+
                 console.print(
-                    f"Loaded historic data from {self.from_symbol} to {self.to_symbol}"
+                    f"\nSelected pair\nFrom:   {self.from_symbol}\n"
+                    f"To:     {self.to_symbol}\n"
+                    f"Source: {FOREX_SOURCES[self.source]}\n\n"
                 )
             else:
                 logger.error(
@@ -209,7 +241,7 @@ class ForexController(BaseController):
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if not self.data.empty:
-                av_view.display_candle(self.data, self.to_symbol, self.from_symbol)
+                forex_helper.display_candle(self.data, self.to_symbol, self.from_symbol)
             else:
                 logger.error(
                     "No forex historical data loaded.  Load first using <load>."
@@ -259,6 +291,7 @@ class ForexController(BaseController):
             self.queue = self.load_class(
                 TechnicalAnalysisController,
                 ticker=f"{self.from_symbol}/{self.to_symbol}",
+                source=self.source,
                 data=self.data,
                 start=self.data.index[0],
                 interval="",

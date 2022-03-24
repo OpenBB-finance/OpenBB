@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 def get_currency_list() -> List:
     """Load AV currency codes from a local file."""
-    path = os.path.join(os.path.dirname(__file__), "av_forex_currencies.csv")
+    path = os.path.join(os.path.dirname(__file__), "data/av_forex_currencies.csv")
     return list(pd.read_csv(path)["currency code"])
 
 
