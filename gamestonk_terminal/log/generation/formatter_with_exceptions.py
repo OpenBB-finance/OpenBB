@@ -76,7 +76,7 @@ class FormatterWithExceptions(logging.Formatter):
             .replace("\t", " ")
             .replace("\r", "")
             .replace("'", "`")
-            .replace('"', "`")
+            .replace('"', "``")
         )
 
         return filtered_text
