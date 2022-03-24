@@ -418,7 +418,7 @@ After updating the `pyproject.toml` you will have to export the `requirements` f
 ```bash
 poetry export -f requirements.txt  -o requirements.txt --without-hashes --dev
 poetry export -f requirements.txt  -o requirements-full.txt --extras prediction --without-hashes --dev
-poetry export -f requirements.txt  -o discordbot/requirements.txt --extras discord --without-hashes --dev
+poetry export -f requirements.txt  -o bots/requirements.txt --extras bots --without-hashes --dev
 ```
 
 # 4. Maintain `unit tests`

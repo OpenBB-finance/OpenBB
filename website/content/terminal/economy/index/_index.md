@@ -1,5 +1,5 @@
 ```
-usage: index [-i INDICES [INDICES ...]] [-si] [-iv {1m,2m,5m,15m,30m,60m,90m,1h,1d,5d,1wk,1mo,3mo}] [-s START_DATE] [-e END_DATE] [-c COLUMN] [-q QUERY [QUERY ...]] [-st] [-h] [--export {csv,json,xlsx}] [--raw] [-l LIMIT]
+usage: index [-i INDICES [INDICES ...]] [-si] [-iv {1m,2m,5m,15m,30m,60m,90m,1h,1d,5d,1wk,1mo,3mo}] [-s START_DATE] [-e END_DATE] [-c COLUMN] [-q QUERY [QUERY ...]] [-r] [-st] [-h] [--export {csv,json,xlsx}] [--raw] [-l LIMIT]
 ```
 
 Obtain any set of indices and plot them together. With the -si argument the major indices are shown. By using the arguments (for example 'nasdaq' and 'sp500') you can collect data and plot the graphs together. [Source: Yahoo finance / FinanceDatabase]
@@ -20,6 +20,7 @@ optional arguments:
   -q QUERY [QUERY ...], --query QUERY [QUERY ...]
                         Search for indices with given keyword (default: None)
   -st, --store          Store the data to be used for plotting with the 'plot' command. (default: False)
+  -r, --returns         Flag to show compounded returns over interval. (default: False)
   -h, --help            show this help message (default: False)
   --export {csv,json,xlsx}
                         Export raw data into csv, json, xlsx (default: )

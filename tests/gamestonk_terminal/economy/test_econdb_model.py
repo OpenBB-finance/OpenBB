@@ -16,11 +16,12 @@ from gamestonk_terminal.economy import econdb_model
     ],
 )
 def test_get_macro_data(parameter, country, start_date, end_date, convert_currency):
-    result_df = econdb_model.get_macro_data(
+    result_df, units = econdb_model.get_macro_data(
         parameter, country, start_date, end_date, convert_currency
     )
 
     assert isinstance(result_df, pd.Series)
+    assert isinstance(units, str)
     assert not result_df.empty
 
 
@@ -36,11 +37,12 @@ def test_get_macro_data(parameter, country, start_date, end_date, convert_curren
 def test_get_aggregated_macro_data(
     parameters, countries, start_date, end_date, convert_currency
 ):
-    result_df = econdb_model.get_aggregated_macro_data(
+    result_df, units = econdb_model.get_aggregated_macro_data(
         parameters, countries, start_date, end_date, convert_currency
     )
 
     assert isinstance(result_df, pd.DataFrame)
+    assert isinstance(units, dict)
     assert not result_df.empty
 
 
