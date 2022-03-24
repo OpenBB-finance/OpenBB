@@ -1,14 +1,14 @@
                         0                        1
-0      Implied Volatility    17.57%  (  +0.10%)   
-1   Historical Volatility                14.46%   
-2           IV Percentile                   16%   
-3                 IV Rank                15.63%   
-4                 IV High    35.42% on 01/27/21   
+0      Implied Volatility    24.74%  (  +0.29%)   
+1   Historical Volatility                36.78%   
+2           IV Percentile                   87%   
+3                 IV Rank                48.64%   
+4                 IV High    35.81% on 03/07/22   
 5                  IV Low    14.26% on 07/28/21   
-6      Put/Call Vol Ratio                    0.92 
-7          Today's Volume                   2,545 
-8     Volume Avg (30-Day)                   6,827 
+6      Put/Call Vol Ratio                    0.22 
+7          Today's Volume                   8,113 
+8     Volume Avg (30-Day)                   6,820 
 9       Put/Call OI Ratio                    0.89 
-10  Today's Open Interest                  61,858 
-11      Open Int (30-Day)                  88,017 
+10  Today's Open Interest                  99,043 
+11      Open Int (30-Day)                 101,255 
 
