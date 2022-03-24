@@ -86,7 +86,7 @@ def add_noop_handler(settings: Settings):
 
 def add_file_handler(settings: Settings):
     app_settings = settings.app_settings
-    handler = PathTrackingFileHandler(settings=settings, rolling_clock=True)
+    handler = PathTrackingFileHandler(settings=settings, rolling_clock=False)
     formatter = FormatterWithExceptions(app_settings=app_settings)
     handler.setFormatter(formatter)
     logging.getLogger().addHandler(handler)
