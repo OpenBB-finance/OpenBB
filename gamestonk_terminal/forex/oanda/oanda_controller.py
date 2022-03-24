@@ -11,6 +11,7 @@ from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.forex import av_model, forex_helper
+from gamestonk_terminal.forex.forex_helper import FOREX_SOURCES
 from gamestonk_terminal.forex.oanda import oanda_view
 from gamestonk_terminal.helper_funcs import (
     check_non_negative_float,
@@ -49,13 +50,15 @@ class OandaController(BaseController):
     ]
     PATH = "/forex/oanda/"
 
-    def __init__(self, queue: List[str] = None):
+    def __init__(
+        self, from_symbol: str, to_symbol: str, source: str, queue: List[str] = None
+    ):
         """Construct Data."""
         super().__init__(queue)
 
-        self.from_symbol = ""
-        self.to_symbol = ""
-        self.source = "yf"
+        self.from_symbol = from_symbol
+        self.to_symbol = to_symbol
+        self.source = source
         self.instrument: Union[str, None] = None
 
         if session and gtff.USE_PROMPT_TOOLKIT:
@@ -88,6 +91,9 @@ class OandaController(BaseController):
     to            select the "to" currency in a forex pair[/cmds]
 
 [param]Loaded instrument: [/param]{self.instrument if self.instrument else ""}[cmds]
+[param]From:   [/param]{None or self.from_symbol}
+[param]To:     [/param]{None or self.to_symbol}
+[param]Source: [/param]{None or FOREX_SOURCES[self.source]}[cmds]
 
     {has_instrument_start}
     candles       show candles
@@ -129,7 +135,9 @@ class OandaController(BaseController):
             self.instrument = f"{self.from_symbol}_{self.to_symbol}"
 
             console.print(
-                f"\nSelected pair\nFrom: {self.from_symbol}\nTo:   {self.to_symbol}\n\n"
+                f"\nSelected pair\nFrom:   {self.from_symbol}\n"
+                f"To:     {self.to_symbol}\n"
+                f"Source: {FOREX_SOURCES[self.source]}\n\n"
             )
 
     @log_start_end(log=logger)
@@ -164,7 +172,9 @@ class OandaController(BaseController):
             self.instrument = f"{self.from_symbol}_{self.to_symbol}"
 
             console.print(
-                f"\nSelected pair\nFrom: {self.from_symbol}\nTo:   {self.to_symbol}\n\n"
+                f"\nSelected pair\nFrom:   {self.from_symbol}\n"
+                f"To:     {self.to_symbol}\n"
+                f"Source: {FOREX_SOURCES[self.source]}\n\n"
             )
 
     @log_start_end(log=logger)

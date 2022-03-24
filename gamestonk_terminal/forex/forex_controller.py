@@ -277,7 +277,17 @@ class ForexController(BaseController):
         """Enter Oanda menu."""
         from gamestonk_terminal.forex.oanda.oanda_controller import OandaController
 
-        self.queue = self.load_class(OandaController, self.queue)
+        if self.to_symbol and self.from_symbol:
+
+            self.queue = self.load_class(
+                OandaController,
+                from_symbol=self.from_symbol,
+                to_symbol=self.to_symbol,
+                source=self.source,
+                queue=self.queue,
+            )
+        else:
+            console.print("No currency pair data is loaded. Use 'load' to load data.\n")
 
     @log_start_end(log=logger)
     def call_ta(self, _):
