@@ -4,13 +4,15 @@ __docformat__ = "numpy"
 # pylint: disable=no-member
 
 import logging
-from typing import Dict, Any
+from typing import Dict, Any, Tuple, Union
 from urllib.error import HTTPError
 from datetime import datetime
 
 import pandas as pd
 import pandas_datareader.data as web
+import requests
 import yfinance as yf
+from pandas import DataFrame
 
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.rich_config import console
@@ -202,244 +204,214 @@ COUNTRY_CURRENCIES = {
 PARAMETERS = {
     "RGDP": {
         "name": "Real gross domestic product",
-        "scale": "Millions",
         "period": "Quarterly",
         "description": "Inflation-adjusted measure that reflects the value of all goods and services produced by "
         "an economy in a given year (chain-linked series).",
     },
     "RPRC": {
         "name": "Real private consumption",
-        "scale": "Millions",
         "period": "Quarterly",
         "description": "All purchases made by consumers adjusted by inflation (chain-linked series).",
     },
     "RPUC": {
         "name": "Real public consumption",
-        "scale": "Millions",
         "period": "Quarterly",
         "description": "All purchases made by the government adjusted by inflation (chain-linked series).",
     },
     "RGFCF": {
         "name": "Real gross fixed capital formation",
-        "scale": "Millions",
         "period": "Quarterly",
         "description": "The acquisition of produced assets adjusted by inflation (chain-linked series).",
     },
     "REXP": {
         "name": "Real exports of goods and services",
-        "scale": "Millions",
         "period": "Quarterly",
         "description": "Transactions in goods and services from residents to non-residents adjusted for "
         "inflation (chain-linked series)",
     },
     "RIMP": {
         "name": "Real imports of goods and services",
-        "scale": "Millions",
         "period": "Quarterly",
         "description": "Transactions in goods and services to residents from non-residents adjusted for "
         "inflation (chain-linked series)",
     },
     "GDP": {
         "name": "Gross domestic product",
-        "scale": "Millions",
         "period": "Quarterly",
         "description": "Measure that reflects the value of all goods and services produced by "
         "an economy in a given year (chain-linked series).",
     },
     "PRC": {
         "name": "Private consumption",
-        "scale": "Millions",
         "period": "Quarterly",
         "description": "All purchases made by consumers (chain-linked series).",
     },
     "PUC": {
         "name": "Public consumption",
-        "scale": "Millions",
         "period": "Quarterly",
         "description": "All purchases made by the government (chain-linked series)",
     },
     "GFCF": {
         "name": "Gross fixed capital formation",
-        "scale": "Millions",
         "period": "Quarterly",
         "description": "The acquisition of produced assets (chain-linked series).",
     },
     "EXP": {
         "name": "Exports of goods and services",
-        "scale": "Millions",
         "period": "Quarterly",
         "description": "Transactions in goods and services from residents to non-residents (chain-linked series)",
     },
     "IMP": {
         "name": "Imports of goods and services",
-        "scale": "Millions",
         "period": "Quarterly",
         "description": "Transactions in goods and services to residents from non-residents (chain-linked series)",
     },
     "CPI": {
         "name": "Consumer price index",
-        "scale": "Index",
         "period": "Monthly",
         "description": "Purchasing power defined with base 2015 for Europe with varying bases for others. See: "
         "https://www.econdb.com/main-indicators",
     },
     "PPI": {
         "name": "Producer price index",
-        "scale": "Index",
         "period": "Monthly",
         "description": "Change in selling prices with base 2015 for Europe with varying bases for others. See: "
         "https://www.econdb.com/main-indicators",
     },
     "CORE": {
         "name": "Core consumer price index",
-        "scale": "Index",
         "period": "Monthly",
         "description": "Purchasing power excluding food and energy defined with base 2015 for Europe with varying "
         "bases for others. See: https://www.econdb.com/main-indicators",
     },
     "URATE": {
         "name": "Unemployment",
-        "scale": "Percentage",
         "period": "Monthly",
         "description": "Monthly average % of the working-age population that is unemployed.",
     },
     "EMP": {
         "name": "Employment",
-        "scale": "Thousands",
         "period": "Quarterly",
         "description": "The employed population within a country (in thousands).",
     },
     "ACOIO": {
         "name": "Active population",
-        "scale": "Thousands",
         "period": "Quarterly",
         "description": "The active population, unemployed and employed, in thousands.",
     },
     "EMRATIO": {
         "name": "Employment to working age population",
-        "scale": "Percentage",
         "period": "Quarterly",
         "description": "Unlike the unemployment rate, the employment-to-population ratio includes unemployed "
         "people not looking for jobs.",
     },
     "RETA": {
         "name": "Retail trade",
-        "scale": "Index",
         "period": "Monthly",
         "description": "Turnover of sales in wholesale and retail trade",
     },
     "CONF": {
         "name": "Consumer confidence index",
-        "scale": "Index",
         "period": "Monthly",
         "description": "Measures how optimistic or pessimistic consumers are regarding their expected financial "
         "situation.",
     },
     "IP": {
         "name": "Industrial production",
-        "scale": "Index",
         "period": "Monthly",
         "description": "Measures monthly changes in the price-adjusted output of industry.",
     },
     "CP": {
         "name": "Construction production",
-        "scale": "Index",
         "period": "Monthly",
         "description": "Measures monthly changes in the price-adjusted output of construction.",
     },
     "GBAL": {
         "name": "Government balance",
-        "scale": "Millions",
         "period": "Quarterly",
         "description": "The government balance (or EMU balance) is the overall difference between government "
         "revenues and spending.",
     },
     "GREV": {
         "name": "General government total revenue",
-        "scale": "Millions",
         "period": "Quarterly",
         "description": "The total amount of revenues collected by governments is determined by past and "
         "current political decisions.",
     },
     "GSPE": {
         "name": "General government total expenditure",
-        "scale": "Millions",
         "period": "Quarterly",
         "description": "Total expenditure consists of total expense and the net acquisition of "
         "non-financial assets. ",
     },
     "GDEBT": {
         "name": "Government debt",
-        "scale": "Millions",
         "period": "Quarterly",
         "description": "The financial liabilities of the government.",
     },
     "CA": {
         "name": "Current account balance",
-        "scale": "Millions",
         "period": "Monthly",
         "description": "A record of a country's international transactions with the rest of the world",
     },
     "TBFR": {
         "name": "Trade balance",
-        "scale": "Millions",
         "period": "Monthly",
         "description": "The difference between the monetary value of a nation's exports and imports over a "
         "certain time period.",
     },
     "NIIP": {
         "name": "Net international investment position",
-        "scale": "Millions",
         "period": "Quarterly",
         "description": "Measures the gap between a nation's stock of foreign assets and a foreigner's stock "
         "of that nation's assets",
     },
     "IIPA": {
         "name": "Net international investment position (Assets)",
-        "scale": "Millions",
         "period": "Quarterly",
         "description": "A nation's stock of foreign assets.",
     },
     "IIPL": {
         "name": "Net international investment position (Liabilities)",
-        "scale": "Millions",
         "period": "Quarterly",
         "description": "A foreigner's stock of the nation's assets.",
     },
     "Y10YD": {
         "name": "Long term yield (10-year)",
-        "scale": "Percentage",
         "period": "Monthly",
         "description": "The 10-year yield is used as a proxy for mortgage rates. It's also seen as a "
         "sign of investor sentiment about the country's economy.",
     },
     "M3YD": {
         "name": "3 month yield",
-        "scale": "Percentage",
         "period": "Monthly",
         "description": "The yield received for investing in a government issued treasury security "
         "that has a maturity of 3 months",
     },
     "HOU": {
         "name": "House price index",
-        "scale": "Index",
         "period": "Monthly",
         "description": "House price index defined with base 2015 for Europe with varying "
         "bases for others. See: https://www.econdb.com/main-indicators",
     },
     "OILPROD": {
         "name": "Oil production",
-        "scale": "Thousands",
         "period": "Monthly",
         "description": "The amount of oil barrels produced per day in a month within a country.",
     },
     "POP": {
         "name": "Population",
-        "scale": "Thousands",
         "period": "Monthly",
         "description": "The population of a country. This can be in thousands or, "
         "when relatively small, in actual units.",
     },
+}
+
+SCALES = {
+    "Thousands": 1_000,
+    "Millions": 1_000_000,
+    "Hundreds of millions": 100_000_000,
+    "Units": 1,
 }
 
 TREASURIES: Dict = {
@@ -499,10 +471,10 @@ TREASURIES: Dict = {
 def get_macro_data(
     parameter: str,
     country: str,
-    start_date="1900-01-01",
+    start_date=pd.to_datetime("1900-01-01"),
     end_date=datetime.today().date(),
     convert_currency=False,
-) -> pd.Series:
+) -> Tuple[Any, Union[str, Any]]:
     """Query the EconDB database to find specific macro data about a company [Source: EconDB]
 
     Parameters
@@ -522,37 +494,54 @@ def get_macro_data(
     ----------
     pd.Series
         A series with the requested macro data of the chosen country
+    units
+        The units of the macro data, e.g. 'Bbl/day" for oil.
     """
     country = country.replace(" ", "_")
 
     if country not in COUNTRY_CODES:
-        return console.print(f"No data available for the country {country}.")
+        console.print(f"No data available for the country {country}.")
+        return pd.Series(), ""
     if parameter not in PARAMETERS:
-        return console.print(f"The parameter {parameter} is not an option.")
+        console.print(f"The parameter {parameter} is not an option for {country}.")
+        return pd.Series(), ""
 
     country_code = COUNTRY_CODES[country]
     country_currency = COUNTRY_CURRENCIES[country]
 
     try:
-        df = pd.read_csv(
-            f"https://www.econdb.com/api/series/{parameter}{country_code}/?format=csv",
-            index_col="Date",
-            parse_dates=["Date"],
-            squeeze=True,
+        r = requests.get(
+            f"https://www.econdb.com/series/context/?tickers={parameter}{country_code}"
         )
+        data = r.json()[0]
+        scale = data["td"]["scale"]
+        units = data["td"]["units"]
 
-        df = df.dropna()
+        df = pd.DataFrame(data["dataarray"])
+        df = (
+            df.set_index(pd.to_datetime(df["date"]))[f"{parameter}{country_code}"]
+            * SCALES[scale]
+        )
+        df = df.sort_index().dropna()
 
         if df.empty:
-            return console.print(
+            console.print(
                 f"No data available for {parameter} ({PARAMETERS[parameter]['name']}) "
                 f"of country {country.replace('_', ' ')}"
             )
+            return pd.Series(), ""
 
         if start_date or end_date:
             df = df.loc[start_date:end_date]
 
-        if convert_currency and country_currency != convert_currency:
+        if (
+            convert_currency
+            and country_currency != convert_currency
+            and units in COUNTRY_CURRENCIES.values()
+        ):
+            if units in COUNTRY_CURRENCIES.values():
+                units = convert_currency
+
             currency_data = yf.download(
                 f"{country_currency}{convert_currency}=X",
                 start=df.index[0],
@@ -581,7 +570,7 @@ def get_macro_data(
             f"There is no data available for the combination {parameter} and {country}."
         )
 
-    return df
+    return df, units
 
 
 @log_start_end(log=logger)
@@ -591,7 +580,7 @@ def get_aggregated_macro_data(
     start_date: str = "1900-01-01",
     end_date=datetime.today().date(),
     convert_currency=False,
-) -> pd.DataFrame:
+) -> Tuple[DataFrame, Dict[Any, Dict[Any, Any]]]:
     """This functions groups the data queried from the EconDB database [Source: EconDB]
 
     Parameters
@@ -611,15 +600,26 @@ def get_aggregated_macro_data(
     ----------
     pd.DataFrame
         A DataFrame with the requested macro data of all chosen countries
+    Dictionary
+        A dictionary containing the units of each country's parameter (e.g. EUR)
     """
     country_data: Dict[Any, Dict[Any, pd.Series]] = {}
+    units: Dict[Any, Dict[Any, Any]] = {}
 
     for country in countries:
         country_data[country] = {}
+        units[country] = {}
         for parameter in parameters:
-            country_data[country][parameter] = get_macro_data(
+            (
+                country_data[country][parameter],
+                units[country][parameter],
+            ) = get_macro_data(
                 parameter, country, start_date, end_date, convert_currency
             )
+
+            if country_data[country][parameter].empty:
+                del country_data[country][parameter]
+                del units[country][parameter]
 
     country_data_df = (
         pd.DataFrame.from_dict(country_data, orient="index").stack().to_frame()
@@ -628,7 +628,7 @@ def get_aggregated_macro_data(
         country_data_df[0].values.tolist(), index=country_data_df.index
     ).T
 
-    return country_data_df
+    return country_data_df, units
 
 
 @log_start_end(log=logger)

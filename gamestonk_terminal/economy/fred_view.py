@@ -5,6 +5,7 @@ import logging
 import os
 import textwrap
 from typing import Dict, Optional, List
+from datetime import datetime
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -177,3 +178,40 @@ def display_fred_series(
             "fred",
             data,
         )
+
+
+@log_start_end(log=logger)
+@check_api_key(["API_FRED_KEY"])
+def display_yield_curve(date: datetime, external_axes: Optional[List[plt.Axes]] = None):
+    """Display yield curve based on US Treasury rates for a specified date.
+
+    Parameters
+    ----------
+    date: datetime
+        Date to get yield curve for
+    external_axes: Optional[List[plt.Axes]]
+        External axes to plot data on
+    """
+    rates, date_of_yield = fred_model.get_yield_curve(date)
+    if rates.empty:
+        console.print(
+            f"[red]Yield data not found for {date.strftime('%Y-%m-%d')}[/red].\n"
+        )
+        return
+    if external_axes is None:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+
+    else:
+        if len(external_axes) != 1:
+            logger.error("Expected list of 3 axis items")
+            console.print("[red]Expected list of 3 axis items./n[/red]")
+            return
+        (ax,) = external_axes
+
+    ax.plot(rates.Maturity, rates.Rate, "-o")
+    ax.set_xlabel("Maturity")
+    ax.set_ylabel("Rate (%)")
+    theme.style_primary_axis(ax)
+    if external_axes is None:
+        ax.set_title(f"US Yield Curve for {date_of_yield.strftime('%Y-%m-%d')} ")
+        theme.visualize_output()
