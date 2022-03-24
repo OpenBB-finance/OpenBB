@@ -39,6 +39,7 @@ def display_plots_financials(
     period_length: int,
     marketcap: str = "",
     exclude_exchanges: bool = True,
+    convert_currency: str = "USD",
     limit: int = 10,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -67,6 +68,8 @@ def display_plots_financials(
         Select stocks based on the market cap.
     exclude_exchanges: bool
         When you wish to include different exchanges use this boolean.
+    convert_currency : str
+        Choose in what currency you wish to convert each company's financial statement. Default is USD (US Dollars).
     limit: int
         Limit amount of companies displayed (default is 10)
     export: str
@@ -104,10 +107,23 @@ def display_plots_financials(
             return dict(), list()
 
         stocks_data = stockanalysis_model.get_stocks_data(
-            company_tickers, finance_key, sa_dict, already_loaded_stocks_data, period
+            company_tickers,
+            finance_key,
+            sa_dict,
+            already_loaded_stocks_data,
+            period,
+            convert_currency,
         )
 
     stocks_data_statement = copy.deepcopy(stocks_data[used_statement])
+
+    if not stocks_data_statement:
+        console.print(
+            "It appears the entire dataset is empty. This could be due to the source being unavailable. "
+            "Please check whether https://stockanalysis.com/ is accessible. \n"
+        )
+        return dict(), list()
+
     company_tickers = list(stocks_data[used_statement].keys())
 
     if len(stocks_data_statement[company_tickers[0]].columns) > period_length:
@@ -137,17 +153,25 @@ def display_plots_financials(
 
     maximum_value = df.max().max()
 
+    if convert_currency:
+        denomination = f"[{convert_currency} "
+    else:
+        denomination = "["
+
     if maximum_value > 1_000_000_000:
         df = df / 1_000_000_000
-        denomination = "[$ Billions]"
-    elif 1_000_000_000 > maximum_value:
+        denomination += "Billions]"
+    elif maximum_value > 1_000_000:
         df = df / 1_000_000
-        denomination = "[$ Millions]"
-    elif 1_000_000 > maximum_value:
+        denomination += "Millions]"
+    elif maximum_value > 1_000:
         df = df / 1_000
-        denomination = "[$ Thousands]"
+        denomination += "Thousands]"
     else:
-        denomination = ""
+        if convert_currency:
+            denomination = f"[{convert_currency}]"
+        else:
+            denomination = ""
 
     if raw:
         print_rich_table(

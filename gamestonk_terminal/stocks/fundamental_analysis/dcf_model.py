@@ -23,6 +23,121 @@ from gamestonk_terminal.stocks.fundamental_analysis import dcf_static
 
 logger = logging.getLogger(__name__)
 
+CURRENCIES = [
+    "ALL",
+    "AFN",
+    "ARS",
+    "AWG",
+    "AUD",
+    "AZN",
+    "BSD",
+    "BBD",
+    "BYN",
+    "BZD",
+    "BMD",
+    "BOB",
+    "BAM",
+    "BWP",
+    "BGN",
+    "BRL",
+    "BND",
+    "KHR",
+    "CAD",
+    "KYD",
+    "CLP",
+    "CNY",
+    "COP",
+    "CRC",
+    "HRK",
+    "CUP",
+    "CZK",
+    "DKK",
+    "DOP",
+    "XCD",
+    "EGP",
+    "SVC",
+    "EUR",
+    "FKP",
+    "FJD",
+    "GHS",
+    "GIP",
+    "GTQ",
+    "GGP",
+    "GYD",
+    "HNL",
+    "HKD",
+    "HUF",
+    "ISK",
+    "INR",
+    "IDR",
+    "IRR",
+    "IMP",
+    "ILS",
+    "JMD",
+    "JPY",
+    "JEP",
+    "KZT",
+    "KPW",
+    "KRW",
+    "KGS",
+    "LAK",
+    "LBP",
+    "LRD",
+    "MKD",
+    "MYR",
+    "MUR",
+    "MXN",
+    "MNT",
+    "MNT",
+    "MZN",
+    "NAD",
+    "NPR",
+    "ANG",
+    "NZD",
+    "NIO",
+    "NGN",
+    "NOK",
+    "OMR",
+    "PKR",
+    "PAB",
+    "PYG",
+    "PEN",
+    "PHP",
+    "PLN",
+    "QAR",
+    "RON",
+    "RUB",
+    "SHP",
+    "SAR",
+    "RSD",
+    "SCR",
+    "SGD",
+    "SBD",
+    "SOS",
+    "KRW",
+    "ZAR",
+    "LKR",
+    "SEK",
+    "CHF",
+    "SRD",
+    "SYP",
+    "TWD",
+    "THB",
+    "TTD",
+    "TRY",
+    "TVD",
+    "UAH",
+    "AED",
+    "GBP",
+    "USD",
+    "UYU",
+    "UZS",
+    "VEF",
+    "VND",
+    "YER",
+    "ZWD",
+]
+
 
 @log_start_end(log=logger)
 def string_float(string: str) -> float:
@@ -273,6 +388,8 @@ def create_dataframe(ticker: str, statement: str, period: str = "annual"):
         The financial statement requested
     rounding : int
         The amount of rounding to use
+    statement_currency: str
+        The currency the financial statements are reported in
     """
     if statement not in ["BS", "CF", "IS"]:
         raise ValueError("statement variable must be 'BS','CF', or 'IS'")
@@ -289,18 +406,18 @@ def create_dataframe(ticker: str, statement: str, period: str = "annual"):
     r = requests.get(URL, headers=dcf_static.headers)
 
     if "404 - Page Not Found" in r.text:
-        return pd.DataFrame(), None
+        return pd.DataFrame(), None, None
     soup = BeautifulSoup(r.content, "html.parser")
 
     table = soup.find("table", attrs={"class": re.compile("fintbl")})
     if table is None:
-        return pd.DataFrame(), None
+        return pd.DataFrame(), None, None
     head = table.find("thead")
     if head is None:
-        return pd.DataFrame(), None
+        return pd.DataFrame(), None, None
     columns = head.find_all("th")
     if columns is None:
-        return pd.DataFrame(), None
+        return pd.DataFrame(), None, None
 
     years = [x.get_text().strip() for x in columns]
     len_data = len(years) - 1
@@ -315,7 +432,12 @@ def create_dataframe(ticker: str, statement: str, period: str = "annual"):
     elif "billions" in phrase:
         rounding = 1_000_000_000
     else:
-        return pd.DataFrame(), None
+        return pd.DataFrame(), None, None
+
+    for currency in CURRENCIES:
+        if currency.lower() in phrase:
+            statement_currency = currency
+            break
 
     body = table.find("tbody")
     rows = body.find_all("tr")
@@ -351,11 +473,11 @@ def create_dataframe(ticker: str, statement: str, period: str = "annual"):
     if vals[0] in df.index:
         blank_list = ["0" for _ in df.loc[vals[0]].to_list()]
     else:
-        return pd.DataFrame(), None
+        return pd.DataFrame(), None, None
     for i, _ in enumerate(vals[1][1:]):
         df = insert_row(vals[1][i + 1], vals[1][i], df, blank_list)
 
-    return df, rounding
+    return df, rounding, statement_currency
 
 
 @log_start_end(log=logger)
