@@ -7,6 +7,7 @@ from typing import Callable
 # IMPORTATION THIRDPARTY
 
 # IMPORTATION INTERNAL
+from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.log.constants import ARCHIVES_FOLDER_NAME, TMP_FOLDER_NAME
 from gamestonk_terminal.log.collection.log_sender import LogSender
 from gamestonk_terminal.log.collection.logging_clock import LoggingClock, Precision
@@ -52,6 +53,7 @@ class PathTrackingFileHandler(TimedRotatingFileHandler):
         Args:
             before_timestamp (float): Timestamp before which files are considered expired.
         """
+
         archives_directory = get_log_sub_dir(name=ARCHIVES_FOLDER_NAME)
         tmp_directory = get_log_sub_dir(name=TMP_FOLDER_NAME)
         expired_archives_file_list = get_expired_files(
@@ -137,38 +139,39 @@ class PathTrackingFileHandler(TimedRotatingFileHandler):
         frequency = settings.log_settings.frequency
         kwargs["when"] = frequency
         super().__init__(filename, *args, **kwargs)
+
         self.suffix += ".log"
-
         self.__settings = settings
-        self.__log_sender = self.build_log_sender(settings=settings, start=True)
-        self.__rolling_clock = self.build_rolling_clock(
-            action=self.doRollover,
-            frequency=frequency,
-            start=rolling_clock,
-        )
 
-        before_timestamp = get_timestamp_from_x_days(x=5)
-        self.clean_expired_files(before_timestamp=before_timestamp)
-        self.send_expired_files(before_timestamp=before_timestamp)
+        self.clean_expired_files(before_timestamp=get_timestamp_from_x_days(x=5))
+
+        if gtff.LOG_COLLECTION:
+            self.__log_sender = self.build_log_sender(settings=settings, start=True)
+            self.__rolling_clock = self.build_rolling_clock(
+                action=self.doRollover,
+                frequency=frequency,
+                start=rolling_clock,
+            )
+            self.send_expired_files(before_timestamp=get_timestamp_from_x_days(x=3))
 
     # OVERRIDE
     def doRollover(self) -> None:
         super().doRollover()
 
-        # print("I am rolling.")
-        log_sender = self.__log_sender
-        to_delete_path_list = self.getFilesToDelete()
-        for path in to_delete_path_list:
-            # print(path)
-            log_sender.send_path(path=Path(path))
+        if gtff.LOG_COLLECTION:
+            log_sender = self.__log_sender
+            to_delete_path_list = self.getFilesToDelete()
+            for path in to_delete_path_list:
+                log_sender.send_path(path=Path(path))
 
     # OVERRIDE
     def close(self):
         """Do not use the file logger in this function."""
+
         super().close()
 
-        log_sender = self.__log_sender
-        closed_log_path = self.baseFilename
-        log_sender.send_path(path=Path(closed_log_path), last=True)
-        log_sender.join()
-        # print("Exiting", self.baseFilename)
+        if gtff.LOG_COLLECTION:
+            log_sender = self.__log_sender
+            closed_log_path = self.baseFilename
+            log_sender.send_path(path=Path(closed_log_path), last=True)
+            log_sender.join()
