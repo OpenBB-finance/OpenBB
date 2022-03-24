@@ -8,6 +8,11 @@ from pathlib import Path
 
 # IMPORTATION INTERNAL
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.log.constants import (
+    ARCHIVES_FOLDER_NAME,
+    S3_FOLDER_SUFFIX,
+    TMP_FOLDER_NAME,
+)
 from gamestonk_terminal.log.collection.s3_sender import send_to_s3
 from gamestonk_terminal.log.generation.settings import AppSettings
 
@@ -56,9 +61,11 @@ class LogSender(Thread):
             # print(f"LogSender, processing : {file}")
 
             if gtff.LOG_COLLECTION:
-                archives_file = file.parent / "archives" / f"{file.stem}.log"
-                object_key = f"{app_name}-app/logs/{identifier}/{file.stem}.log"
-                tmp_file = file.parent / "tmp" / f"{file.stem}.log"
+                archives_file = file.parent / ARCHIVES_FOLDER_NAME / f"{file.stem}.log"
+                object_key = (
+                    f"{app_name}{S3_FOLDER_SUFFIX}/logs/{identifier}/{file.stem}.log"
+                )
+                tmp_file = file.parent / TMP_FOLDER_NAME / f"{file.stem}.log"
 
                 # print(f"Sending to S3, file : {file}")
                 # print(f"Sending to S3, archives_file : {archives_file}")
