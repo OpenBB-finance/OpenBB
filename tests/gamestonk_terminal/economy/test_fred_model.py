@@ -81,6 +81,7 @@ def test_load_data(func, kwargs_dict, recorder):
     assert not result_df.empty
     recorder.capture(result_df)
 
+
 @pytest.mark.skip(reason="Date needs to be mocked.")
 @pytest.mark.vcr
 @pytest.mark.parametrize("date", [datetime.datetime(2022, 3, 21, 0, 0)])
