@@ -8,7 +8,6 @@ Ticker to get similar companies from:
     getfinnhub    get similar stocks from finnhub API
     getfinviz     get similar stocks from finviz API[/unvl]
 
-
     set           reset and set similar companies
     add           add more similar companies
     rmv           remove similar companies individually or all
