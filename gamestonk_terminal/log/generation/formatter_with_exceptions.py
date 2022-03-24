@@ -75,8 +75,8 @@ class FormatterWithExceptions(logging.Formatter):
             text.replace("\n", " - ")
             .replace("\t", " ")
             .replace("\r", "")
-            .replace("'", "`")
             .replace('"', "``")
+            .replace("'", "`")
         )
 
         return filtered_text
@@ -84,7 +84,11 @@ class FormatterWithExceptions(logging.Formatter):
     @classmethod
     def filter_log_line(cls, text: str):
         text = cls.filter_special_characters(text=text)
-        text = cls.filter_piis(text=text)
+        text = (
+            text
+            if "CMD: {" in text or "QUEUE: {" in text
+            else cls.filter_piis(text=text)  # chante this
+        )
 
         return text
 
