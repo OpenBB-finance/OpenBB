@@ -140,7 +140,7 @@ def setup_logging(
     session_id = session_id or str(START_TIMESTAMP)
 
     frequency = frequency or cfg.LOGGING_FREQUENCY
-    verbosity = verbosity or int(cfg.LOGGING_VERBOSITY)
+    verbosity = verbosity or cfg.LOGGING_VERBOSITY
     directory = get_log_dir()
     handler_list = cfg.LOGGING_HANDLERS
 
