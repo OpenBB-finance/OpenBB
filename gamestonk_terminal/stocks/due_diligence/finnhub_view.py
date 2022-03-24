@@ -77,7 +77,13 @@ def plot_rating_over_time(
 
 @log_start_end(log=logger)
 @check_api_key(["API_FINNHUB_KEY"])
-def rating_over_time(ticker: str, num: int, raw: bool, export: str):
+def rating_over_time(
+    ticker: str,
+    num: int,
+    raw: bool,
+    export: str,
+    external_axes: Optional[List[plt.Axes]] = None,
+):
     """Rating over time (monthly). [Source: Finnhub]
 
     Parameters
@@ -116,9 +122,7 @@ def rating_over_time(ticker: str, num: int, raw: bool, export: str):
             title="Monthly Rating",
         )
     else:
-        plot_rating_over_time(df_rot.head(num), ticker)
-
-    console.print("")
+        plot_rating_over_time(df_rot.head(num), ticker, external_axes)
 
     export_data(
         export,
