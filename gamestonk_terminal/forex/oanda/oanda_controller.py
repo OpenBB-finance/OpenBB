@@ -50,14 +50,12 @@ class OandaController(BaseController):
     ]
     PATH = "/forex/oanda/"
 
-    def __init__(
-        self, from_symbol: str, to_symbol: str, source: str, queue: List[str] = None
-    ):
+    def __init__(self, source: str, queue: List[str] = None):
         """Construct Data."""
         super().__init__(queue)
 
-        self.from_symbol = from_symbol
-        self.to_symbol = to_symbol
+        self.from_symbol = ""
+        self.to_symbol = ""
         self.source = source
         self.instrument: Union[str, None] = None
 

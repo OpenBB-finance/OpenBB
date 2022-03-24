@@ -18,6 +18,7 @@ from gamestonk_terminal.helper_funcs import parse_known_args_and_warn, valid_dat
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal.rich_config import console
+from gamestonk_terminal.decorators import check_api_key
 
 # pylint: disable=R1710,import-outside-toplevel
 
@@ -273,6 +274,7 @@ class ForexController(BaseController):
 
     # MENUS
     @log_start_end(log=logger)
+    @check_api_key(["OANDA_ACCOUNT_TYPE", "OANDA_ACCOUNT", "OANDA_TOKEN"])
     def call_oanda(self, _):
         """Enter Oanda menu."""
         from gamestonk_terminal.forex.oanda.oanda_controller import OandaController
