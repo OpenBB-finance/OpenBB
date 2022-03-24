@@ -101,7 +101,9 @@ def cci_command(
     )
     title = f"<b>{plot['plt_title']} Commodity-Channel-Index</b>"
     fig = plot["fig"]
-    ta_values = df_ta.iloc[:, 6].values if interval != 1440 else df_ta.iloc[:, 11].values
+    ta_values = (
+        df_ta.iloc[:, 6].values if interval != 1440 else df_ta.iloc[:, 11].values
+    )
 
     dmin = ta_values.min()
     dmax = ta_values.max()
