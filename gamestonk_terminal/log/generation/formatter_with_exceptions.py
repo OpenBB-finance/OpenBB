@@ -87,7 +87,7 @@ class FormatterWithExceptions(logging.Formatter):
         text = (
             text
             if "CMD: {" in text or "QUEUE: {" in text
-            else cls.filter_piis(text=text)  # chante this
+            else cls.filter_piis(text=text)  # change this
         )
 
         return text
