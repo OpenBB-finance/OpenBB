@@ -8,6 +8,7 @@ from pathlib import Path
 
 # IMPORTATION INTERNAL
 
+
 def get_log_dir() -> Path:
     """Retrieve application's log directory."""
 
