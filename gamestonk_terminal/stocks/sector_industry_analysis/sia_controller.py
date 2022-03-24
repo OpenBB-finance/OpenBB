@@ -181,6 +181,7 @@ class SectorIndustryAnalysisController(BaseController):
 
         self.stocks_data: dict = {}
         self.tickers: List = list()
+        self.currency: str = ""
 
         if ticker:
             data = yf.utils.get_json(f"https://finance.yahoo.com/quote/{ticker}")
@@ -872,14 +873,6 @@ class SectorIndustryAnalysisController(BaseController):
             help="Metric to visualize",
             choices=self.vis_choices,
         )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            dest="limit",
-            default=10,
-            help="Limit number of companies to display",
-            type=check_positive,
-        )
 
         parser.add_argument(
             "-p",
@@ -889,21 +882,24 @@ class SectorIndustryAnalysisController(BaseController):
             help="Limit number of periods to display",
             type=check_positive,
         )
+
         parser.add_argument(
-            "-r",
-            "--raw",
-            action="store_true",
-            dest="raw",
-            default=False,
-            help="Output all raw data",
+            "-cc",
+            "--convert_currency",
+            dest="convert_currency",
+            help="Convert the currency of the chosen country to a specified currency. By default, this is set "
+            "to USD (US Dollars).",
+            default="USD",
         )
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-m")
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, limit=10, raw=True
         )
         if ns_parser:
+            if ns_parser.convert_currency != self.currency:
+                self.stocks_data = {}
             (
                 self.stocks_data,
                 self.tickers,
@@ -916,12 +912,15 @@ class SectorIndustryAnalysisController(BaseController):
                 period=self.period,
                 period_length=ns_parser.period,
                 marketcap=self.mktcap,
+                convert_currency=ns_parser.convert_currency,
                 exclude_exchanges=self.exclude_exchanges,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
                 raw=ns_parser.raw,
                 already_loaded_stocks_data=self.stocks_data,
             )
+
+            self.currency = ns_parser.convert_currency
 
     @log_start_end(log=logger)
     def call_cps(self, other_args: List[str]):
