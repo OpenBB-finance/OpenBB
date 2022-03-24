@@ -57,6 +57,7 @@ def cg_command(ticker="", length="14", start="", end=""):
     df_close = df_stock["Adj Close"]
     df_close.columns = ["values"]
     df_ta = momentum_model.cg(df_close, length)
+    df_ta = df_ta.fillna(0.0)
 
     # Output Data
     fig, axes = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)

@@ -63,6 +63,7 @@ def donchian_command(
     df_ta = volatility_model.donchian(
         df_stock["High"], df_stock["Low"], upper_length, lower_length
     )
+    df_ta = df_ta.fillna(0.0)
 
     # Output Data
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
