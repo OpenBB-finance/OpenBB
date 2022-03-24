@@ -165,6 +165,7 @@ class ForexController(BaseController):
 
         parser.add_argument(
             "--source",
+            "-s",
             help="Source of historical data",
             dest="source",
             choices=("yf", "av"),
