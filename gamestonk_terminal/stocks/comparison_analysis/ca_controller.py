@@ -114,7 +114,6 @@ class ComparisonAnalysisController(BaseController):
     getfinnhub    get similar stocks from finnhub API
     getfinviz     get similar stocks from finviz API{has_ticker_end}
 
-
     set           reset and set similar companies
     add           add more similar companies
     rmv           remove similar companies individually or all[/cmds]
@@ -185,7 +184,7 @@ class ComparisonAnalysisController(BaseController):
                     )
                 else:
                     self.ticker = ns_parser.ticker.upper()
-            console.print("")
+            console.print()
 
     @log_start_end(log=logger)
     def call_tsne(self, other_args: List[str]):
@@ -474,7 +473,7 @@ class ComparisonAnalysisController(BaseController):
             else:
                 self.similar = []
 
-            console.print("")
+            console.print()
             self.user = "Custom"
 
     @log_start_end(log=logger)
@@ -525,11 +524,11 @@ class ComparisonAnalysisController(BaseController):
         )
         parser.add_argument(
             "-n",
-            "--no-scale",
+            "--normalize",
             action="store_true",
-            dest="no_scale",
+            dest="normalize",
             default=False,
-            help="Flag to not put all prices on same 0-1 scale",
+            help="Flag to normalize all prices on same 0-1 scale",
         )
         parser.add_argument(
             "-s",
@@ -550,7 +549,7 @@ class ComparisonAnalysisController(BaseController):
                     similar_tickers=self.similar,
                     start=ns_parser.start.strftime("%Y-%m-%d"),
                     candle_type=ns_parser.type_candle,
-                    normalize=not ns_parser.no_scale,
+                    normalize=ns_parser.normalize,
                     export=ns_parser.export,
                 )
 
