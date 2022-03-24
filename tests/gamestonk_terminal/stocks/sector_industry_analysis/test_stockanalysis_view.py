@@ -10,6 +10,7 @@ from gamestonk_terminal.stocks.sector_industry_analysis import (
 )
 
 
+@pytest.mark.skip
 @pytest.mark.vcr
 @pytest.mark.parametrize(
     "finance_key, sa_keys, country, sector, industry, period, period_length, marketcap, statement",
