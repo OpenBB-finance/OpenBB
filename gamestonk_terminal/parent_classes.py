@@ -134,7 +134,12 @@ class BaseController(metaclass=ABCMeta):
 
     def log_queue(self, message: str) -> None:
         if self.queue:
-            logger.info("%s: %s", message, "/".join(self.queue))
+            logger.info(
+                "%s: {path: '%s', queue: '%s'}",
+                message,
+                self.PATH,
+                "/".join(self.queue),
+            )
 
     @log_start_end(log=logger)
     def switch(self, an_input: str) -> List[str]:
@@ -178,7 +183,13 @@ class BaseController(metaclass=ABCMeta):
                     known_args.cmd = "reset"
 
             set_command_location(f"{self.PATH}{known_args.cmd}")
-            logger.info("CMD: %s", an_input)
+            logger.info(
+                "CMD: {path: '%s', known_cmd: '%s', other_args: '%s' input: '%s'}",
+                self.PATH,
+                known_args.cmd,
+                str(other_args),
+                an_input,
+            )
             self.log_queue("QUEUE")
 
             # This is what mutes portfolio issue
