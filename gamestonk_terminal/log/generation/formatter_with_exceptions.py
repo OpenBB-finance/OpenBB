@@ -61,7 +61,7 @@ class FormatterWithExceptions(logging.Formatter):
             elif os.sep in word and "GamestonkTerminal/" in word:
                 s_list.append(word.split("GamestonkTerminal/")[1])
             elif os.sep in word:
-                s_list.append(word.split(os.sep)[-1])
+                s_list.append("cut/file/path/" + word.split(os.sep)[-1])
             else:
                 s_list.append(word)
 
@@ -71,13 +71,7 @@ class FormatterWithExceptions(logging.Formatter):
 
     @staticmethod
     def filter_special_characters(text: str):
-        filtered_text = (
-            text.replace("\n", " - ")
-            .replace("\t", " ")
-            .replace("\r", "")
-            .replace('"', "``")
-            .replace("'", "`")
-        )
+        filtered_text = text.replace("\n", " - ").replace("\t", " ").replace("\r", "")
 
         return filtered_text
 
