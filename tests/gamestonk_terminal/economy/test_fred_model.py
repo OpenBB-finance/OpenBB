@@ -82,6 +82,7 @@ def test_load_data(func, kwargs_dict, recorder):
     recorder.capture(result_df)
 
 
+@pytest.mark.skip(reason="Date needs to be mocked.")
 @pytest.mark.vcr
 @pytest.mark.parametrize("date", [datetime.datetime(2022, 3, 21, 0, 0)])
 def test_yield_curve(date, recorder):
@@ -91,6 +92,7 @@ def test_yield_curve(date, recorder):
     recorder.capture(result_df)
 
 
+@pytest.mark.skip(reason="Date needs to be mocked.")
 @pytest.mark.vcr
 @pytest.mark.parametrize("date", [datetime.datetime(2021, 7, 17, 0, 0)])
 def test_yield_curve_weekend(date):
@@ -99,6 +101,7 @@ def test_yield_curve_weekend(date):
     assert result_df.empty
 
 
+@pytest.mark.skip(reason="Date needs to be mocked.")
 @pytest.mark.vcr
 @pytest.mark.parametrize("date", [None])
 def test_yield_curve_none(date, recorder):
