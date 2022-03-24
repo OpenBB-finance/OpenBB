@@ -8,9 +8,6 @@ from pathlib import Path
 
 # IMPORTATION INTERNAL
 
-ARCHIVE_FOLDER_NAME = "archive"
-TEMPORARY_FOLDER_NAME = "tmp"
-
 
 def get_log_dir() -> Path:
     """Retrieve application's log directory."""
@@ -47,11 +44,3 @@ def get_log_sub_dir(name: str):
     sub_dir = log_dir / name
 
     return sub_dir
-
-
-def get_tmp_dir():
-    return get_log_sub_dir(name=TEMPORARY_FOLDER_NAME)
-
-
-def get_archive_dir():
-    return get_log_sub_dir(name=ARCHIVE_FOLDER_NAME)
