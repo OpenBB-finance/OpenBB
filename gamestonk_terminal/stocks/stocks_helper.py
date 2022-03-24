@@ -401,12 +401,13 @@ def display_candle(
 
             theme.visualize_output(force_tight_layout=False)
         else:
-            if len(external_axes) != 1:
+            if len(external_axes) != 2:
                 logger.error("Expected list of one axis item.")
-                console.print("[red]Expected list of 1 axis items./n[/red]")
+                console.print("[red]Expected list of 2 axis items./n[/red]")
                 return
-            (ax1,) = external_axes
+            ax1, ax2 = external_axes
             candle_chart_kwargs["ax"] = ax1
+            candle_chart_kwargs["volume"] = ax2
             mpf.plot(df_stock, **candle_chart_kwargs)
 
     else:
