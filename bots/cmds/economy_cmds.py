@@ -137,13 +137,13 @@ class EconomyCommands(commands.Cog):
     async def repo(
         self,
         inter: disnake.AppCmdInter,
-        days: int = 100,
+        days: int = 50,
     ):
         """Displays Reverse Repo [Stocksera]
 
         Parameters
         -----------
-        days: Number of days to display. Default: 100
+        days: Number of days to display. Default: 50
         """
         await ShowView().discord(reverse_repo_command, inter, "econ repo", days)
 

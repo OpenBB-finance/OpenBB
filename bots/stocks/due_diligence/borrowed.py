@@ -33,7 +33,7 @@ def borrowed_command(ticker: str = ""):
 
     title = f"{ticker.upper()} Shares Available to Borrow [Stocksera]"
 
-    df = df.head(1000)
+    df = df.head(200)
     df["changed"] = df["available"].astype(int).diff()
     df = df[df["changed"] != 0.0]
     df = df.drop(columns="changed")
