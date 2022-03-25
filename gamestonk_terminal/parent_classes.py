@@ -136,7 +136,7 @@ class BaseController(metaclass=ABCMeta):
     def log_queue(self, message: str) -> None:
         if self.queue:
             logger.info(
-                "%s: {path: '%s', queue: '%s'}",
+                "%s: {'path': '%s', 'queue': '%s'}",
                 message,
                 self.PATH,
                 "/".join(self.queue),
@@ -185,7 +185,7 @@ class BaseController(metaclass=ABCMeta):
 
             set_command_location(f"{self.PATH}{known_args.cmd}")
             logger.info(
-                "CMD: {path: '%s', known_cmd: '%s', other_args: '%s' input: '%s'}",
+                "CMD: {'path': '%s', 'known_cmd': '%s', 'other_args': '%s' 'input': '%s'}",
                 self.PATH,
                 known_args.cmd,
                 str(other_args),
