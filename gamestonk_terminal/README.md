@@ -5,7 +5,7 @@
   <summary><h2 style="display: inline-block">Table of Contents</h2></summary>
     <ol>
       <li><a href="#user">General Installation Process</a></li>
-      <li><a href="#Anaconda-&-Python">Anaconda & Python Installation</a></li>
+      <li><a href="#Anaconda---Python">Anaconda & Python Installation</a></li>
       <li><a href="#Docker-Installation">Docker Installation</a></li>
       <li><a href="#web-ui---docker">Docker Web UI Installationr</a></li>
       <li><a href="#api-keys">API Keys</a></li>
@@ -70,7 +70,7 @@ This installation type supports both Windows and Unix systems (Linux + MacOS). H
 
 If you are using macOS or other Linux operating systems you can jump the next section <a href="#installing-the-terminal">Installing the terminal</a>.
 
-##### Installing WSL (Only for Windows users)
+#### Installing WSL (Only for Windows users)
 
 If you are using Windows you first you need to install WSL. The process is simple and a tutorial can be found [here](https://www.sitepoint.com/wsl2/). Once you reach the section **Update Linux** on that tutorial, you should have a linux machine installed and can proceed to the next steps.
 
@@ -92,7 +92,7 @@ After this, `VcXsrv` should be running successfully and we can proceed to termin
 
 Although we **extremely** recommend using WSL to run the terminal on windows, if you don't want or can't for some reason, you can try install the terminal directly on Windows without WSL. If you'd like to see a video recording of the installation on Windows without WSL, @JohnnyDankseed has made one available [here](https://www.youtube.com/watch?v=-DJJ-cfquDA).
 
-#####  Installing the terminal
+####  Installing the terminal
 
 These steps are common in all operating systems (Windows with or without WSL, MacOS or Linux).
 
@@ -297,7 +297,22 @@ There are a few things that still don't work, and you can see what works and wha
 
 ### API Keys
 
-The project is build around several different API calls, whether it is to access historical data or financials. The table below shows the ones where a key is necessary. The environment variable names are shown explicitly, for the variable name in the code one just needs to remove the "GT\_", this can be found in [config_terminal.py](/gamestonk_terminal/config_terminal.py).
+The project is build around several different API calls, whether it is to access historical data or financials.
+The table below shows the ones where a key is necessary. 
+
+The easiest way is of updating the keys is by using the terminal. You are able to directly set these variables from 
+within the "keys" menu. This menu can be found on the first menu you see when opening the terminal.
+
+<img src="../images/api_keys_part_1.png" alt="API Keys 1" width="800"/>
+
+Then, by typing the command on the left-hand side, followed by your API Key, you can set the key and use the commands 
+attached to it.
+
+<img src="../images/api_keys_part_2.png" alt="API Keys 2" width="800"/>
+
+When you have installed the terminal through Anaconda & Python, you can use the environment variable to set your 
+API Keys directly instead of using the Terminal, for the variable name in the code one just needs to 
+remove the "GT\_", this can be found in [config_terminal.py](/gamestonk_terminal/config_terminal.py).
 
 | Website                                                                         | Environment Variables                                                                                                                             |
 | :------------------------------------------------------------------------------ | :------------------------------------------------------------------------------------------------------------------------------------------------ |
