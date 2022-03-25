@@ -2,16 +2,15 @@
     from      select the "from" currency in a forex pair
     to        select the "to" currency in a forex pair
 
-From: USD
-To:   
-[dim]
-[AlphaVantage]
-    quote         get last quote
+From:   USD
+To:     
+Source: YahooFinance[dim]
+
+    quote         get last quote [AlphaVantage]
     load          get historical data
     candle        show candle plot for loaded data
 
 >   ta          technical analysis for loaded coin,     e.g.: ema, macd, rsi, adx, bbands, obv
-
 [/dim]
 Forex brokerages:
 >   oanda         Oanda menu

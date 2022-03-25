@@ -14,7 +14,7 @@ def get_timestamp_from_x_days(x: int):
     return timestamp_from_x_days
 
 
-def get_expired_files(directory: Path, before_timestamp: float):
+def get_expired_file_list(directory: Path, before_timestamp: float):
     expired_files = list()
     if directory.exists and directory.is_dir():
         for file in directory.iterdir():
