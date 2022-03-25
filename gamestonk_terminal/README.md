@@ -44,9 +44,9 @@ the installation process.
 
 **_STILL NEED TO ADD WALKTHROUGH AND IMAGES_**
 
-| Note about "Malicious Software" warning                                                                                                                                                                 |
-|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| You will most likely see one of the following images displayed below. This is because the installer is still in beta phase, and the team has not requested verification from neither Windows nor Apple. | 
+| Note about "Malicious Software" warning                                                                                                                                                                  |
+|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| You will most likely see one of the following images displayed below. This is because the installer is still in beta phase, and the team has not requested verification from neither Windows nor Apple.  | 
 
 **_STILL NEED TO ADD IMAGES_**
 
