@@ -191,7 +191,7 @@ class ForexController(BaseController):
         parser.add_argument(
             "-s",
             "--start_date",
-            default=(datetime.now() - timedelta(days=366)),
+            default=(datetime.now() - timedelta(days=59)),
             type=valid_date,
             help="Start date of data.",
             dest="start_date",

@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import List, Optional, Dict
 import os
 import argparse
@@ -65,10 +65,10 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 def load(
     to_symbol: str,
-    from_symbol,
-    resolution,
-    interval,
-    start_date,
+    from_symbol: str,
+    resolution: str,
+    interval: str,
+    start_date: str,
     source: str = "yf",
 ):
     interval_map = INTERVAL_MAPS[source]
@@ -87,7 +87,7 @@ def load(
             from_symbol=from_symbol,
             resolution=resolution,
             interval=interval_map[interval],
-            start_date=start_date.strftime("%Y-%m-%d"),
+            start_date=start_date,
         )
 
     if source == "yf":
@@ -95,7 +95,7 @@ def load(
         df = yf.download(
             f"{from_symbol}{to_symbol}=X",
             end=datetime.now(),
-            start=datetime.now() - timedelta(days=30),
+            start=datetime.strptime(start_date, "%Y-%m-%d"),
             interval=interval_map[interval],
             progress=False,
         )
