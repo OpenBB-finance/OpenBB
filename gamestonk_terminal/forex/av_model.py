@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 def get_currency_list() -> List:
     """Load AV currency codes from a local file."""
-    path = os.path.join(os.path.dirname(__file__), "av_forex_currencies.csv")
+    path = os.path.join(os.path.dirname(__file__), "data/av_forex_currencies.csv")
     return list(pd.read_csv(path)["currency code"])
 
 
@@ -137,6 +137,8 @@ def get_historical(
     # If the returned data was unsuccessful
     if "Error Message" in r.json():
         console.print(r.json()["Error Message"])
+    elif "Note" in r.json():
+        console.print(r.json()["Note"])
     else:
         # check if json is empty
         if not r.json():

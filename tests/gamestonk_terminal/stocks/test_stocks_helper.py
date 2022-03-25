@@ -153,7 +153,7 @@ def test_display_candle(mocker, use_matplotlib):
     )
 
     # PROCESS DATA
-    df_stock = stocks_helper.process_candle(df_data=df_stock)
+    df_stock = stocks_helper.process_candle(df=df_stock)
 
     # DISPLAY CANDLE
     s_ticker = "GME"

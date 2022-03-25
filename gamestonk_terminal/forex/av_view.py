@@ -2,17 +2,13 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Optional, List
 
-import matplotlib.pyplot as plt
-import mplfinance as mpf
 import pandas as pd
 
-from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal.decorators import check_api_key
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.forex import av_model
-from gamestonk_terminal.helper_funcs import plot_autoscale, print_rich_table
+from gamestonk_terminal.helper_funcs import print_rich_table
 from gamestonk_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -32,7 +28,15 @@ def display_quote(to_symbol: str, from_symbol: str):
     """
     quote = av_model.get_quote(to_symbol, from_symbol)
 
-    if not quote:
+    if not bool(quote) or "Note" in quote:
+        if "Note" in quote:
+            console.print(quote["Note"])
+        console.print(
+            "\n[red]"
+            + "No historical data loaded.\n"
+            + "Make sure 'av' supports the requested pair and you aren't hitting your API call limits."
+            + "[/red]\n"
+        )
         return
 
     df = pd.DataFrame.from_dict(quote)
@@ -44,63 +48,3 @@ def display_quote(to_symbol: str, from_symbol: str):
         title=f"[bold]{from_symbol}/{to_symbol} Quote [/bold]",
     )
     console.print("")
-
-
-@log_start_end(log=logger)
-def display_candle(
-    data: pd.DataFrame,
-    to_symbol: str,
-    from_symbol: str,
-    external_axes: Optional[List[plt.Axes]] = None,
-):
-    """Show candle plot for fx data.
-
-    Parameters
-    ----------
-    data : pd.DataFrame
-        Loaded fx historical data
-    to_symbol : str
-        To forex symbol
-    from_symbol : str
-        From forex symbol
-    external_axes: Optional[List[plt.Axes]]
-        External axes (1 axis are expected in the list), by default None
-    """
-    candle_chart_kwargs = {
-        "type": "candle",
-        "style": theme.mpf_style,
-        "mav": (20, 50),
-        "volume": False,
-        "xrotation": theme.xticks_rotation,
-        "scale_padding": {"left": 0.3, "right": 1, "top": 0.8, "bottom": 0.8},
-        "update_width_config": {
-            "candle_linewidth": 0.6,
-            "candle_width": 0.8,
-            "volume_linewidth": 0.8,
-            "volume_width": 0.8,
-        },
-        "warn_too_much_data": 10000,
-    }
-    # This plot has 2 axes
-    if not external_axes:
-        candle_chart_kwargs["returnfig"] = True
-        candle_chart_kwargs["figratio"] = (10, 7)
-        candle_chart_kwargs["figscale"] = 1.10
-        candle_chart_kwargs["figsize"] = plot_autoscale()
-        fig, ax = mpf.plot(data, **candle_chart_kwargs)
-        fig.suptitle(
-            f"{from_symbol}/{to_symbol}",
-            x=0.055,
-            y=0.965,
-            horizontalalignment="left",
-        )
-        theme.visualize_output(force_tight_layout=False)
-        ax[0].legend()
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of 1 axis items.")
-            console.print("[red]Expected list of 1 axis items./n[/red]")
-            return
-        (ax1,) = external_axes
-        candle_chart_kwargs["ax"] = ax1
-        mpf.plot(data, **candle_chart_kwargs)

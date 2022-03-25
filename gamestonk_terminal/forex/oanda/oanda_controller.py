@@ -10,7 +10,8 @@ from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.decorators import log_start_end
-from gamestonk_terminal.forex import av_model
+from gamestonk_terminal.forex import av_model, forex_helper
+from gamestonk_terminal.forex.forex_helper import FOREX_SOURCES
 from gamestonk_terminal.forex.oanda import oanda_view
 from gamestonk_terminal.helper_funcs import (
     check_non_negative_float,
@@ -55,6 +56,7 @@ class OandaController(BaseController):
 
         self.from_symbol = ""
         self.to_symbol = ""
+        self.source = "Oanda"
         self.instrument: Union[str, None] = None
 
         if session and gtff.USE_PROMPT_TOOLKIT:
@@ -64,8 +66,8 @@ class OandaController(BaseController):
             # In Oanda they have their own list of available instruments. It would be
             # Great to fetch these lists and store them locally like it's done for
             # other currency codes (see ./av_forex_currencies.csv and how it's handled).
-            choices["to"] = {c: None for c in av_model.CURRENCY_LIST}
-            choices["from"] = {c: None for c in av_model.CURRENCY_LIST}
+            choices["to"] = {c: None for c in forex_helper.YF_CURRENCY_LIST}
+            choices["from"] = {c: None for c in forex_helper.YF_CURRENCY_LIST}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
@@ -87,6 +89,9 @@ class OandaController(BaseController):
     to            select the "to" currency in a forex pair[/cmds]
 
 [param]Loaded instrument: [/param]{self.instrument if self.instrument else ""}[cmds]
+[param]From:   [/param]{None or self.from_symbol}
+[param]To:     [/param]{None or self.to_symbol}
+[param]Source: [/param]{None or FOREX_SOURCES[self.source]}[cmds]
 
     {has_instrument_start}
     candles       show candles
@@ -128,7 +133,9 @@ class OandaController(BaseController):
             self.instrument = f"{self.from_symbol}_{self.to_symbol}"
 
             console.print(
-                f"\nSelected pair\nFrom: {self.from_symbol}\nTo:   {self.to_symbol}\n\n"
+                f"\nSelected pair\nFrom:   {self.from_symbol}\n"
+                f"To:     {self.to_symbol}\n"
+                f"Source: {FOREX_SOURCES[self.source]}\n\n"
             )
 
     @log_start_end(log=logger)
@@ -163,7 +170,9 @@ class OandaController(BaseController):
             self.instrument = f"{self.from_symbol}_{self.to_symbol}"
 
             console.print(
-                f"\nSelected pair\nFrom: {self.from_symbol}\nTo:   {self.to_symbol}\n\n"
+                f"\nSelected pair\nFrom:   {self.from_symbol}\n"
+                f"To:     {self.to_symbol}\n"
+                f"Source: {FOREX_SOURCES[self.source]}\n\n"
             )
 
     @log_start_end(log=logger)

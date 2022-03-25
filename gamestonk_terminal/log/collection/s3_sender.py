@@ -14,11 +14,9 @@ finally:
 
 # IMPORTATION INTERNAL
 from gamestonk_terminal import config_terminal as cfg
+from gamestonk_terminal.log.constants import DEFAULT_API_URL, DEFAULT_BUCKET
 
 # DO NOT USE THE FILE LOGGER IN THIS MODULE
-
-DEFAULT_BUCKET = "gst-restrictions"
-DEFAULT_API_URL = "https://knaqi3sud7.execute-api.eu-west-3.amazonaws.com/log_api/logs"
 
 
 def send_to_s3_directly(

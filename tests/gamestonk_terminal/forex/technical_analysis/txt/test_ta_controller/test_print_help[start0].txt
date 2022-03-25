@@ -1,5 +1,6 @@
 
 Currency Pair Loaded:  MOCK_TICKER (from 2021-12-01)
+Source: YahooFinance
 
 Overlap:
     ema         exponential moving average
