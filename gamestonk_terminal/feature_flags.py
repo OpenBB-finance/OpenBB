@@ -1,7 +1,7 @@
 import os
 import json
 from distutils.util import strtobool
-from typing import Union
+from typing import Union, Optional
 
 from dotenv import load_dotenv
 
@@ -19,7 +19,7 @@ if env_files:
 
 def assign_feature_flag(
     feature_flag: str, fallback_value: str, return_bool: bool = False
-) -> Union[str, bool, None]:
+) -> Optional[Union[str, bool]]:
     """Get the feature flag value in order of priority.
 
     - Env variables have the highest priority
@@ -37,8 +37,8 @@ def assign_feature_flag(
 
     Returns
     -------
-    Union[str, bool, None]
-        The feature flag value
+    Optional[Union[str, bool]]
+        The feature flag value or None
     """
     if bool(os.getenv(feature_flag)):
         feature_flag_value = (

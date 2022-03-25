@@ -942,7 +942,11 @@ def get_flair() -> str:
         ":yy": "(☯)",
     }
 
-    flair = flairs[gtff.USE_FLAIR] if gtff.USE_FLAIR in flairs else gtff.USE_FLAIR
+    flair = (
+        flairs[str(gtff.USE_FLAIR)]
+        if str(gtff.USE_FLAIR) in flairs
+        else str(gtff.USE_FLAIR)
+    )
     if gtff.USE_DATETIME and get_user_timezone_or_invalid() != "INVALID":
         dtime = datetime.now(pytz.timezone(get_user_timezone())).strftime(
             "%Y %b %d, %H:%M"
@@ -1150,7 +1154,7 @@ def export_data(
         now = datetime.now()
 
         if gtff.EXPORT_FOLDER_PATH:
-            full_path_dir = gtff.EXPORT_FOLDER_PATH
+            full_path_dir = str(gtff.EXPORT_FOLDER_PATH)
             path_cmd = dir_path.split("gamestonk_terminal/")[1].replace("/", "_")
             default_filename = f"{now.strftime('%Y%m%d_%H%M%S')}_{path_cmd}_{func_name}"
 
