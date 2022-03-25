@@ -24,7 +24,7 @@ from gamestonk_terminal.helper_funcs import (
     replace_user_timezone,
     set_export_folder,
 )
-from gamestonk_terminal.loggers import setup_logging, upload_archive_logs_s3
+from gamestonk_terminal.loggers import setup_logging
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.parent_classes import BaseController
 from gamestonk_terminal.rich_config import console
@@ -441,8 +441,6 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
     """Terminal Menu"""
     setup_logging(appName)
     logger.info("START")
-    logger.info("Python: %s", platform.python_version())
-    logger.info("OS: %s", platform.system())
     log_settings()
 
     if jobs_cmds is not None and jobs_cmds:
@@ -502,7 +500,6 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
             # If the command is quitting the menu we want to return in here
             if t_controller.queue[0] in ("q", "..", "quit"):
                 print_goodbye()
-                upload_archive_logs_s3(log_filter=r"gst_")
                 break
 
             if gtff.ENABLE_EXIT_AUTO_HELP and len(t_controller.queue) > 1:
@@ -528,7 +525,6 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
                     )
                 except KeyboardInterrupt:
                     print_goodbye()
-                    upload_archive_logs_s3(log_filter=r"gst_")
                     break
             # Get input from user without auto-completion
             else:
@@ -539,7 +535,6 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
             t_controller.queue = t_controller.switch(an_input)
             if an_input in ("q", "quit", "..", "exit"):
                 print_goodbye()
-                upload_archive_logs_s3(log_filter=r"gst_")
                 break
 
             # Check if the user wants to reset application
@@ -547,7 +542,6 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
                 ret_code = reset(t_controller.queue if t_controller.queue else [])
                 if ret_code != 0:
                     print_goodbye()
-                    upload_archive_logs_s3(log_filter=r"gst_")
                     break
 
         except SystemExit:
@@ -595,33 +589,24 @@ def insert_start_slash(cmds: List[str]) -> List[str]:
 def log_settings() -> None:
     """Log settings"""
     settings_dict = {}
-    settings_dict["tab"] = "activated" if gtff.USE_TABULATE_DF else "deactivated"
-    settings_dict["cls"] = "activated" if gtff.USE_CLEAR_AFTER_CMD else "deactivated"
-    settings_dict["color"] = "activated" if gtff.USE_COLOR else "deactivated"
-    settings_dict["promptkit"] = (
-        "activated" if gtff.USE_PROMPT_TOOLKIT else "deactivated"
-    )
-    settings_dict["predict"] = "activated" if gtff.ENABLE_PREDICT else "deactivated"
-    settings_dict["thoughts"] = (
-        "activated" if gtff.ENABLE_THOUGHTS_DAY else "deactivated"
-    )
-    settings_dict["reporthtml"] = (
-        "activated" if gtff.OPEN_REPORT_AS_HTML else "deactivated"
-    )
-    settings_dict["exithelp"] = (
-        "activated" if gtff.ENABLE_EXIT_AUTO_HELP else "deactivated"
-    )
-    settings_dict["rcontext"] = "activated" if gtff.REMEMBER_CONTEXTS else "deactivated"
-    settings_dict["rich"] = "activated" if gtff.ENABLE_RICH else "deactivated"
-    settings_dict["richpanel"] = (
-        "activated" if gtff.ENABLE_RICH_PANEL else "deactivated"
-    )
-    settings_dict["ion"] = "activated" if gtff.USE_ION else "deactivated"
-    settings_dict["watermark"] = "activated" if gtff.USE_WATERMARK else "deactivated"
-    settings_dict["autoscaling"] = (
-        "activated" if gtff.USE_PLOT_AUTOSCALING else "deactivated"
-    )
-    settings_dict["dt"] = "activated" if gtff.USE_DATETIME else "deactivated"
+    settings_dict["tab"] = "True" if gtff.USE_TABULATE_DF else "False"
+    settings_dict["cls"] = "True" if gtff.USE_CLEAR_AFTER_CMD else "False"
+    settings_dict["color"] = "True" if gtff.USE_COLOR else "False"
+    settings_dict["promptkit"] = "True" if gtff.USE_PROMPT_TOOLKIT else "False"
+    settings_dict["predict"] = "True" if gtff.ENABLE_PREDICT else "False"
+    settings_dict["thoughts"] = "True" if gtff.ENABLE_THOUGHTS_DAY else "False"
+    settings_dict["reporthtml"] = "True" if gtff.OPEN_REPORT_AS_HTML else "False"
+    settings_dict["exithelp"] = "True" if gtff.ENABLE_EXIT_AUTO_HELP else "False"
+    settings_dict["rcontext"] = "True" if gtff.REMEMBER_CONTEXTS else "False"
+    settings_dict["rich"] = "True" if gtff.ENABLE_RICH else "False"
+    settings_dict["richpanel"] = "True" if gtff.ENABLE_RICH_PANEL else "False"
+    settings_dict["ion"] = "True" if gtff.USE_ION else "False"
+    settings_dict["watermark"] = "True" if gtff.USE_WATERMARK else "False"
+    settings_dict["autoscaling"] = "True" if gtff.USE_PLOT_AUTOSCALING else "False"
+    settings_dict["dt"] = "True" if gtff.USE_DATETIME else "False"
+    settings_dict["python"] = str(platform.python_version())
+    settings_dict["os"] = str(platform.system())
+
     logger.info("SETTINGS: %s ", str(settings_dict))
 
 

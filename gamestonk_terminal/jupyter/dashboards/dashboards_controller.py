@@ -31,9 +31,9 @@ class DashboardsController(BaseController):
         "vsurf",
         "chains",
         "shortdata",
-        "currencies",
+        "crypto",
     ]
-    PATH = "/jupyter/dashboard/"
+    PATH = "/jupyter/dashboards/"
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
@@ -51,7 +51,7 @@ class DashboardsController(BaseController):
    vsurf         options volatility surface
    chains        options chain analysis
    shortdata     finra shortdata analysis
-   currencies    forex currency exchange dashboard[/cmds]
+   crypto        cryptocurrency exchange rates against USD[/cmds]
         """
         console.print(text=help_text, menu="Jupyter - Dashboards")
 
@@ -81,9 +81,9 @@ class DashboardsController(BaseController):
         create_call(other_args, "shortdata", "")
 
     @log_start_end(log=logger)
-    def call_currencies(self, other_args: List[str]):
-        """Process currencies command"""
-        create_call(other_args, "currencies", "")
+    def call_crypto(self, other_args: List[str]):
+        """Process crypto command"""
+        create_call(other_args, "crypto", "")
 
 
 def create_call(other_args: List[str], name: str, filename: str = None) -> None:

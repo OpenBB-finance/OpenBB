@@ -4,8 +4,7 @@ import plotly.graph_objects as go
 import yfinance as yf
 from plotly.subplots import make_subplots
 
-import bots.config_discordbot as cfg
-from bots import helpers
+from bots import imps
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.stocks.dark_pool_shorts import finra_model
 
@@ -17,7 +16,7 @@ def dpotc_command(ticker: str = ""):
     """Dark pools (ATS) vs OTC data [FINRA]"""
 
     # Debug user input
-    if cfg.DEBUG:
+    if imps.DEBUG:
         logger.debug("dps dpotc %s", ticker)
 
     # Check for argument
@@ -34,7 +33,7 @@ def dpotc_command(ticker: str = ""):
     ats, otc = finra_model.getTickerFINRAdata(ticker)
 
     # Debug user output
-    if cfg.DEBUG:
+    if imps.DEBUG:
         logger.debug(ats.to_string())
         logger.debug(otc.to_string())
 
@@ -146,20 +145,20 @@ def dpotc_command(ticker: str = ""):
             row=2,
             col=1,
         )
-    if cfg.PLT_WATERMARK:
-        fig.add_layout_image(cfg.PLT_WATERMARK)
+    if imps.PLT_WATERMARK:
+        fig.add_layout_image(imps.PLT_WATERMARK)
     fig.update_xaxes(showspikes=True, spikesnap="cursor", spikemode="across")
     fig.update_yaxes(showspikes=True, spikethickness=2)
     fig.update_layout(
         margin=dict(l=20, r=0, t=10, b=20),
-        template=cfg.PLT_CANDLE_STYLE_TEMPLATE,
-        colorway=cfg.PLT_TA_COLORWAY,
+        template=imps.PLT_CANDLE_STYLE_TEMPLATE,
+        colorway=imps.PLT_TA_COLORWAY,
         title=f"Dark Pools (ATS) vs OTC (Non-ATS) Data for {ticker}",
         title_x=0.5,
         yaxis3_title="Shares per Trade",
         yaxis_title="Total Weekly Shares",
         xaxis2_title="Weeks",
-        font=cfg.PLT_FONT,
+        font=imps.PLT_FONT,
         yaxis=dict(
             fixedrange=False,
             side="left",
@@ -196,15 +195,15 @@ def dpotc_command(ticker: str = ""):
 
     # Check if interactive settings are enabled
     plt_link = ""
-    if cfg.INTERACTIVE:
-        plt_link = helpers.inter_chart(fig, imagefile, callback=False)
+    if imps.INTERACTIVE:
+        plt_link = imps.inter_chart(fig, imagefile, callback=False)
 
     fig.update_layout(
         width=800,
         height=500,
     )
 
-    imagefile = helpers.image_border(imagefile, fig=fig)
+    imagefile = imps.image_border(imagefile, fig=fig)
 
     return {
         "title": title,

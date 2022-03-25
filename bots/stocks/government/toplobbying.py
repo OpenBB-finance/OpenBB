@@ -4,8 +4,7 @@ import logging
 import pandas as pd
 from matplotlib import pyplot as plt
 
-import bots.config_discordbot as cfg
-from bots.helpers import image_border
+from bots import imps
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import plot_autoscale
@@ -18,7 +17,7 @@ logger = logging.getLogger(__name__)
 def toplobbying_command(num: int = 10, raw: bool = False):
     """Displays top lobbying firms [quiverquant.com]"""
     # Debug user input
-    if cfg.DEBUG:
+    if imps.DEBUG:
         logger.debug("gov-toplobbying %s %s", num, raw)
 
     # Retrieve Data
@@ -42,9 +41,10 @@ def toplobbying_command(num: int = 10, raw: bool = False):
 
     dataBytesIO = io.BytesIO()
     plt.savefig(dataBytesIO)
+    plt.close("all")
     dataBytesIO.seek(0)
 
-    imagefile = image_border(imagefile, base64=dataBytesIO)
+    imagefile = imps.image_border(imagefile, base64=dataBytesIO)
 
     return {
         "title": "Stocks: [quiverquant.com] Top Lobbying Firms",

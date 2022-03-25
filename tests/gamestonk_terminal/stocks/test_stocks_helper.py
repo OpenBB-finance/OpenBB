@@ -103,6 +103,16 @@ def test_load_custom_output(path):
 
 
 @pytest.mark.vcr
+@pytest.mark.record_stdout
+@pytest.mark.parametrize(
+    "path",
+    [os.path.join(os.path.join("random_folder", "test69.csv"))],
+)
+def test_load_custom_output_wrong_path(path):
+    stocks_helper.load_custom(path)
+
+
+@pytest.mark.vcr
 @pytest.mark.parametrize(
     "path",
     [os.path.join(os.path.join("custom_imports", "stocks"), "test.csv")],
@@ -143,7 +153,7 @@ def test_display_candle(mocker, use_matplotlib):
     )
 
     # PROCESS DATA
-    df_stock = stocks_helper.process_candle(df_data=df_stock)
+    df_stock = stocks_helper.process_candle(df=df_stock)
 
     # DISPLAY CANDLE
     s_ticker = "GME"

@@ -213,7 +213,8 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             "call_create",
             [
                 "--action=buy",
-                "--symbol=MOCK_SYMBOL" "--price=1",
+                "--symbol=MOCK_SYMBOL",
+                "--price=1",
                 "--size=2",
             ],
             "DegiroView.create",

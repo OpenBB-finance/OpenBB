@@ -19,6 +19,9 @@ gamestonk_terminal/config_plot.py
 gamestonk_terminal/config_terminal.py
 gamestonk_terminal/feature_flags.py
 gamestonk_terminal/jupyter/reports/stored/*
+gamestonk_terminal/jupyter/dashboards/.ipynb_checkpoints
+gamestonk_terminal/jupyter/reports/.ipynb_checkpoints
+gamestonk_terminal/jupyter/widgets/.ipynb_checkpoints
 !gamestonk_terminal/jupyter/reports/stored/.gitkeep
 !gamestonk_terminal/jupyter/dashboards/*.ipynb
 !gamestonk_terminal/jupyter/reports/*.ipynb

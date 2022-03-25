@@ -119,7 +119,7 @@ class CreateExcelFA:
 
     @log_start_end(log=logger)
     def get_data(self, statement: str, row: int, header: bool) -> pd.DataFrame:
-        df, rounding = dcf_model.create_dataframe(self.info["ticker"], statement)
+        df, rounding, _ = dcf_model.create_dataframe(self.info["ticker"], statement)
         if df.empty:
             raise ValueError("Could generate a dataframe for the ticker")
         self.info["rounding"] = rounding

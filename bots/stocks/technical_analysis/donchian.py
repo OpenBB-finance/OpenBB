@@ -4,9 +4,8 @@ from datetime import datetime, timedelta
 
 from matplotlib import pyplot as plt
 
-import bots.config_discordbot as cfg
-import bots.helpers
-from bots.helpers import image_border
+from bots import config_discordbot as cfg
+from bots.helpers import image_border, load
 from gamestonk_terminal.common.technical_analysis import volatility_model
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.decorators import log_start_end
@@ -54,7 +53,7 @@ def donchian_command(
     lower_length = float(lower_length)
 
     ticker = ticker.upper()
-    df_stock = bots.helpers.load(ticker, start)
+    df_stock = load(ticker, start)
     if df_stock.empty:
         raise Exception("Stock ticker is invalid")
 
@@ -67,10 +66,10 @@ def donchian_command(
 
     # Output Data
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    ax.plot(df_stock.index, df_stock["Adj Close"].values, color="k", lw=3)
-    ax.plot(df_ta.index, df_ta.iloc[:, 0].values, "b", lw=1.5, label="upper")
-    ax.plot(df_ta.index, df_ta.iloc[:, 1].values, "b", lw=1.5, ls="--")
-    ax.plot(df_ta.index, df_ta.iloc[:, 2].values, "b", lw=1.5, label="lower")
+    ax.plot(df_stock.index, df_stock["Adj Close"].values, lw=3)
+    ax.plot(df_ta.index, df_ta.iloc[:, 0].values, lw=1.5, label="upper")
+    ax.plot(df_ta.index, df_ta.iloc[:, 1].values, lw=1.5, ls="--")
+    ax.plot(df_ta.index, df_ta.iloc[:, 2].values, lw=1.5, label="lower")
     ax.set_title(f"{ticker} donchian")
     ax.set_xlim(df_stock.index[0], df_stock.index[-1])
     ax.set_xlabel("Time")
@@ -82,7 +81,6 @@ def donchian_command(
         df_ta.iloc[:, 0].values,
         df_ta.iloc[:, 2].values,
         alpha=0.1,
-        color="b",
     )
     ax.grid(b=True, which="major", color="#666666", linestyle="-")
 
@@ -94,8 +92,9 @@ def donchian_command(
 
     dataBytesIO = io.BytesIO()
     plt.savefig(dataBytesIO)
-    dataBytesIO.seek(0)
+    plt.close("all")
 
+    dataBytesIO.seek(0)
     imagefile = image_border(imagefile, base64=dataBytesIO)
 
     return {

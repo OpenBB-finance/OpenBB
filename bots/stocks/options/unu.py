@@ -1,16 +1,12 @@
 import logging
 import os
 
-import df2img
 import disnake
 import numpy as np
 import pandas as pd
 import requests
 
-import bots.config_discordbot as cfg
-from bots import helpers
-from bots.config_discordbot import gst_imgur
-from bots.menus.menu import Menu
+from bots import imps
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import get_user_agent
 
@@ -22,7 +18,7 @@ def unu_command(num: int = 20):
     """Unusual Options"""
 
     # Debug
-    if cfg.DEBUG:
+    if imps.DEBUG:
         logger.debug("opt unu %s", num)
 
     pages = np.arange(0, num // 20 + 1)
@@ -90,26 +86,28 @@ def unu_command(num: int = 20):
         while i < dindex:
             df_pg = df.iloc[i:end]
             df_pg.append(df_pg)
-            fig = df2img.plot_dataframe(
+            fig = imps.plot_df(
                 df_pg,
-                fig_size=(850, (40 + (40 * dindex))),
-                col_width=[3, 4, 3, 3, 3, 3, 3],
-                tbl_header=cfg.PLT_TBL_HEADER,
-                tbl_cells=cfg.PLT_TBL_CELLS,
-                font=cfg.PLT_TBL_FONT,
-                row_fill_color=cfg.PLT_TBL_ROW_COLORS,
+                fig_size=(650, (40 + (40 * dindex))),
+                col_width=[3, 4, 3, 2.5, 2.5, 2, 2],
+                tbl_header=imps.PLT_TBL_HEADER,
+                tbl_cells=imps.PLT_TBL_CELLS,
+                font=imps.PLT_TBL_FONT,
+                row_fill_color=imps.PLT_TBL_ROW_COLORS,
                 paper_bgcolor="rgba(0, 0, 0, 0)",
             )
-            fig.update_traces(cells=(dict(align=["left"])))
+            fig.update_traces(
+                cells=(dict(align=["center", "center", "right", "center", "right"]))
+            )
             imagefile = "opt-unu.png"
-            imagefile = helpers.save_image(imagefile, fig)
+            imagefile = imps.save_image(imagefile, fig)
 
-            if cfg.IMAGES_URL or cfg.IMGUR_CLIENT_ID != "REPLACE_ME":
-                image_link = cfg.IMAGES_URL + imagefile
+            if imps.IMAGES_URL or imps.IMGUR_CLIENT_ID != "REPLACE_ME":
+                image_link = imps.IMAGES_URL + imagefile
                 images_list.append(imagefile)
             else:
-                imagefile_save = cfg.IMG_DIR / imagefile
-                uploaded_image = gst_imgur.upload_image(
+                imagefile_save = imps.IMG_DIR / imagefile
+                uploaded_image = imps.gst_imgur.upload_image(
                     imagefile_save, title="something"
                 )
                 image_link = uploaded_image.link
@@ -121,7 +119,7 @@ def unu_command(num: int = 20):
             embeds.append(
                 disnake.Embed(
                     title=title,
-                    colour=cfg.COLOR,
+                    colour=imps.COLOR,
                 ),
             )
             i2 += 1
@@ -131,13 +129,13 @@ def unu_command(num: int = 20):
         # Author/Footer
         for i in range(0, i2):
             embeds[i].set_author(
-                name=cfg.AUTHOR_NAME,
-                url=cfg.AUTHOR_URL,
-                icon_url=cfg.AUTHOR_ICON_URL,
+                name=imps.AUTHOR_NAME,
+                url=imps.AUTHOR_URL,
+                icon_url=imps.AUTHOR_ICON_URL,
             )
             embeds[i].set_footer(
-                text=cfg.AUTHOR_NAME,
-                icon_url=cfg.AUTHOR_ICON_URL,
+                text=imps.AUTHOR_NAME,
+                icon_url=imps.AUTHOR_ICON_URL,
             )
 
         i = 0
@@ -151,7 +149,7 @@ def unu_command(num: int = 20):
         ]
 
         output = {
-            "view": Menu,
+            "view": imps.Menu,
             "title": title,
             "embed": embeds,
             "choices": choices,
@@ -159,18 +157,20 @@ def unu_command(num: int = 20):
             "images_list": images_list,
         }
     else:
-        fig = df2img.plot_dataframe(
+        fig = imps.plot_df(
             df,
-            fig_size=(850, (40 + (40 * dindex))),
-            col_width=[3, 4, 3, 3, 3, 3, 3],
-            tbl_header=cfg.PLT_TBL_HEADER,
-            tbl_cells=cfg.PLT_TBL_CELLS,
-            font=cfg.PLT_TBL_FONT,
-            row_fill_color=cfg.PLT_TBL_ROW_COLORS,
+            fig_size=(650, (40 + (40 * dindex))),
+            col_width=[3, 4, 3, 2.5, 2.5, 2, 2],
+            tbl_header=imps.PLT_TBL_HEADER,
+            tbl_cells=imps.PLT_TBL_CELLS,
+            font=imps.PLT_TBL_FONT,
+            row_fill_color=imps.PLT_TBL_ROW_COLORS,
             paper_bgcolor="rgba(0, 0, 0, 0)",
         )
-        fig.update_traces(cells=(dict(align="left")))
-        imagefile = helpers.save_image("opt-unu.png", fig)
+        fig.update_traces(
+            cells=(dict(align=["center", "center", "right", "center", "right"]))
+        )
+        imagefile = imps.save_image("opt-unu.png", fig)
 
         output = {
             "title": "Unusual Options",

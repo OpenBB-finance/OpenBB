@@ -2,34 +2,74 @@ interactions:
 - request:
     body: null
     headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
       Connection:
-      - close
-      Host:
-      - www.econdb.com
+      - keep-alive
       User-Agent:
-      - Python-urllib/3.8
+      - python-requests/2.27.1
     method: GET
-    uri: https://www.econdb.com/api/series/GDPFR/?format=csv
+    uri: https://www.econdb.com/series/context/?tickers=GDPFR
   response:
     body:
-      string: "Date,GDPFR\r\n1975-01-01,56831\r\n1975-04-01,58101\r\n1975-07-01,59787\r\n1975-10-01,61921\r\n1976-01-01,64354\r\n1976-04-01,67305\r\n1976-07-01,69803\r\n1976-10-01,71947\r\n1977-01-01,73738\r\n1977-04-01,75858\r\n1977-07-01,78027\r\n1977-10-01,80070\r\n1978-01-01,82455\r\n1978-04-01,85915\r\n1978-07-01,89230\r\n1978-10-01,92030\r\n1979-01-01,95359\r\n1979-04-01,97864\r\n1979-07-01,101532\r\n1979-10-01,104671\r\n1980-01-01,108730\r\n1980-04-01,111626\r\n1980-07-01,114402\r\n1980-10-01,116855\r\n1981-01-01,120735\r\n1981-04-01,124686\r\n1981-07-01,129481\r\n1981-10-01,134801\r\n1982-01-01,140627\r\n1982-04-01,145319\r\n1982-07-01,148235\r\n1982-10-01,151468\r\n1983-01-01,156148\r\n1983-04-01,160464\r\n1983-07-01,164945\r\n1983-10-01,168312\r\n1984-01-01,172306\r\n1984-04-01,175469\r\n1984-07-01,178821\r\n1984-10-01,180800\r\n1985-01-01,183927\r\n1985-04-01,188131\r\n1985-07-01,191743\r\n1985-10-01,194392\r\n1986-01-01,198389\r\n1986-04-01,202626\r\n1986-07-01,205997\r\n1986-10-01,207711\r\n1987-01-01,208681\r\n1987-04-01,212044\r\n1987-07-01,215452\r\n1987-10-01,219899\r\n1988-01-01,224460\r\n1988-04-01,228119\r\n1988-07-01,233406\r\n1988-10-01,238177\r\n1989-01-01,243148\r\n1989-04-01,246446\r\n1989-07-01,251294\r\n1989-10-01,256516\r\n1990-01-01,260048\r\n1990-04-01,263333\r\n1990-07-01,264483\r\n1990-10-01,266352\r\n1991-01-01,268542\r\n1991-04-01,271870\r\n1991-07-01,274357\r\n1991-10-01,277225\r\n1992-01-01,281635\r\n1992-04-01,282189\r\n1992-07-01,283291\r\n1992-10-01,283115\r\n1993-01-01,283805\r\n1993-04-01,284948\r\n1993-07-01,285949\r\n1993-10-01,287208\r\n1994-01-01,289661\r\n1994-04-01,293743\r\n1994-07-01,296017\r\n1994-10-01,299849\r\n1995-01-01,301759\r\n1995-04-01,304181\r\n1995-07-01,305636\r\n1995-10-01,307190\r\n1996-01-01,310959\r\n1996-04-01,312138\r\n1996-07-01,314279\r\n1996-10-01,315011\r\n1997-01-01,316833\r\n1997-04-01,321592\r\n1997-07-01,324832\r\n1997-10-01,329584\r\n1998-01-01,333710\r\n1998-04-01,337454\r\n1998-07-01,339446\r\n1998-10-01,341630\r\n1999-01-01,344104\r\n1999-04-01,347389\r\n1999-07-01,351728\r\n1999-10-01,356557\r\n2000-01-01,362507\r\n2000-04-01,367704\r\n2000-07-01,372208\r\n2000-10-01,377018\r\n2001-01-01,380719\r\n2001-04-01,383521\r\n2001-07-01,386404\r\n2001-10-01,388662\r\n2002-01-01,392602\r\n2002-04-01,395622\r\n2002-07-01,399198\r\n2002-10-01,401239\r\n2003-01-01,403277\r\n2003-04-01,404609\r\n2003-07-01,409674\r\n2003-10-01,414341\r\n2004-01-01,419711\r\n2004-04-01,423639\r\n2004-07-01,426215\r\n2004-10-01,431725\r\n2005-01-01,435033\r\n2005-04-01,438424\r\n2005-07-01,441948\r\n2005-10-01,448557\r\n2006-01-01,453848\r\n2006-04-01,460522\r\n2006-07-01,463953\r\n2006-10-01,471144\r\n2007-01-01,476907\r\n2007-04-01,483482\r\n2007-07-01,488750\r\n2007-10-01,493442\r\n2008-01-01,499059\r\n2008-04-01,499959\r\n2008-07-01,498850\r\n2008-10-01,493051\r\n2009-01-01,484412\r\n2009-04-01,482379\r\n2009-07-01,482372\r\n2009-10-01,487663\r\n2010-01-01,491262\r\n2010-04-01,495785\r\n2010-07-01,501181\r\n2010-10-01,505334\r\n2011-01-01,511130\r\n2011-04-01,512541\r\n2011-07-01,515527\r\n2011-10-01,518223\r\n2012-01-01,520154\r\n2012-04-01,521375\r\n2012-07-01,523680\r\n2012-10-01,523842\r\n2013-01-01,525499\r\n2013-04-01,529803\r\n2013-07-01,530117\r\n2013-10-01,532788\r\n2014-01-01,535102\r\n2014-04-01,535704\r\n2014-07-01,538768\r\n2014-10-01,541612\r\n2015-01-01,546683\r\n2015-04-01,547639\r\n2015-07-01,551088\r\n2015-10-01,552990\r\n2016-01-01,557770\r\n2016-04-01,556151\r\n2016-07-01,557600\r\n2016-10-01,561023\r\n2017-01-01,567060\r\n2017-04-01,572808\r\n2017-07-01,576862\r\n2017-10-01,582217\r\n2018-01-01,584669\r\n2018-04-01,588187\r\n2018-07-01,592895\r\n2018-10-01,598788\r\n2019-01-01,605325\r\n2019-04-01,610140\r\n2019-07-01,612081\r\n2019-10-01,611227\r\n2020-01-01,583313\r\n2020-04-01,523985\r\n2020-07-01,596224\r\n2020-10-01,597183\r\n2021-01-01,602194\r\n2021-04-01,611769\r\n2021-07-01,630330\r\n2021-10-01,637301\r\n"
+      string: !!binary |
+        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
+        X49TXDMAAA==
     headers:
-      Allow:
-      - GET, HEAD, OPTIONS
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 6ed48226a9480b3f-AMS
+      - 6ef634778ffd6b42-AMS
       Connection:
-      - close
-      Content-Disposition:
-      - attachment;filename="econdb_1647507314.csv"
-      Content-Length:
-      - '3566'
+      - keep-alive
+      Content-Encoding:
+      - gzip
       Content-Type:
-      - text/csv; charset=utf-8
+      - application/json
       Date:
-      - Thu, 17 Mar 2022 08:55:15 GMT
+      - Mon, 21 Mar 2022 11:04:07 GMT
       Expect-CT:
       - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
       NEL:
@@ -37,11 +77,14 @@ interactions:
       Referrer-Policy:
       - same-origin
       Report-To:
-      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=YTUDxECKbD8dAUDsiGwINukCxL0jqw6S7qAjyvnGfGnP6ZVH3SrM5JU0hcd7D%2Bxxju8A%2BLTZbSJytO2x6GXhIIqqyP13mvdootKyU1CkiuzYyDXM%2BoJG7fqWWhR2NzVB"}],"group":"cf-nel","max_age":604800}'
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=zuYW0D8xaa0vecdVTpQ%2FBRLQFfaTIBIQp%2BuFtc9islgpq6Y%2B8CDApWxXCFagS6M6WceId9j6ZNTyF0ljsXuIT8EVIXTL9Oqroo6Heu9Ile5CMHNdT9W4ldloEI1bYxjB"}],"group":"cf-nel","max_age":604800}'
       Server:
       - cloudflare
+      Transfer-Encoding:
+      - chunked
       Vary:
-      - Accept, Origin
+      - Accept-Encoding
+      - Origin
       X-Content-Type-Options:
       - nosniff
       X-Frame-Options:
