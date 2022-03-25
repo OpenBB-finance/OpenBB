@@ -27,7 +27,7 @@ def print_options_data(ticker: str, export: str):
     data = barchart_model.get_options_info(ticker)
 
     print_rich_table(
-        data, show_index=False, headers=list(data.columns), title="Options Information"
+        data, show_index=False, headers=["Info", "Value"], title="Options Information"
     )
-    console.print("")
+    console.print()
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "info", data)

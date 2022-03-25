@@ -38,7 +38,7 @@ LOGGING_HANDLERS = os.getenv("GT_LOGGING_HANDLERS") or "file"
 # INFO = 20
 # DEBUG = 10
 # NOTSET = 0
-LOGGING_VERBOSITY = os.getenv("GT_LOGGING_VERBOSITY") or 20
+LOGGING_VERBOSITY = int(os.getenv("GT_LOGGING_VERBOSITY") or 20)
 
 # API Keys section
 

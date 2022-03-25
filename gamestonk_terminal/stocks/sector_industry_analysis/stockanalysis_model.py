@@ -8,6 +8,7 @@ from typing import Dict, Any
 import numpy as np
 import pandas as pd
 from tqdm import tqdm
+import yfinance as yf
 
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.rich_config import console
@@ -81,7 +82,12 @@ sa_keys = {
 
 @log_start_end(log=logger)
 def get_stocks_data(
-    stocks: list, finance_key: str, sa_dict: dict, stocks_data: dict, period: str
+    stocks: list,
+    finance_key: str,
+    sa_dict: dict,
+    stocks_data: dict,
+    period: str,
+    convert_currency: str = "USD",
 ):
     """Get stocks data based on a list of stocks and the finance key. The function searches for the correct
      financial statement automatically. [Source: StockAnalysis]
@@ -101,6 +107,8 @@ def get_stocks_data(
         for the first time.
     period : str
         Whether you want annually, quarterly or trailing financial statements.
+    convert_currency : str
+        Choose in what currency you wish to convert each company's financial statement. Default is USD (US Dollars).
 
     Returns
     -------
@@ -114,15 +122,35 @@ def get_stocks_data(
                 if statement not in stocks_data:
                     stocks_data[statement] = {}
                 used_statement = statement
-                symbol_statement = create_dataframe(symbol, statement, period.lower())
+                symbol_statement, rounding, currency = create_dataframe(
+                    symbol, statement, period.lower()
+                )
 
-                if symbol_statement[0].empty:
+                if symbol_statement.empty:
                     no_data.append(symbol)
                     continue
 
-                stocks_data[statement][symbol] = (
-                    change_type_dataframes(symbol_statement[0]) * symbol_statement[1]
+                symbol_statement_rounded = (
+                    change_type_dataframes(symbol_statement) * rounding
                 )
+
+                if convert_currency and convert_currency != currency:
+                    currency_data = yf.download(
+                        f"{currency}{convert_currency}=X",
+                        start=f"{symbol_statement_rounded.columns[0]}-01-01",
+                        end=f"{symbol_statement_rounded.columns[-1]}-12-31",
+                        progress=False,
+                    )["Adj Close"]
+
+                    for year in symbol_statement_rounded:
+                        # Since fiscal year can differ, I take the median of the currency and not the last value
+                        # of the year
+                        symbol_statement_rounded[year] = (
+                            symbol_statement_rounded[year]
+                            * currency_data.loc[year].median()
+                        )
+
+                stocks_data[statement][symbol] = symbol_statement_rounded
 
     if period in ["Quarterly", "Trailing"]:
         for symbol in stocks_data[used_statement]:

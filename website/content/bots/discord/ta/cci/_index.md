@@ -1,4 +1,4 @@
-ta cci - Commodity Channel Index
+ta-mom cci - Commodity Channel Index
 
 https://www.fidelity.com/learning-center/trading-investing/technical-analysis/technical-indicator-guide/cci
 
@@ -10,10 +10,9 @@ Note: CCI is an unbound oscillator, meaning there is no upside or downside limit
 
 If underlying prices make a new high or low that isn't confirmed by the CCI, the divergence may signal a price reversal.
 
-![Screen Shot 2022-02-24 at 9 13 45 PM](https://user-images.githubusercontent.com/85772166/155657898-5b650213-501c-49a5-990d-ba7096b0face.png)
+![Screen Shot 2022-03-17 at 8 56 12 PM](https://user-images.githubusercontent.com/85772166/158934719-fd00c289-8200-403e-a17d-469615b8aade.png)
 
 ```
-ta cci ticker: BB start: 2019-09-30 end: 2022-02-24
+/ta-mom cci ticker: HUT interval: 15 past_days: 60 heiken_candles: True
 ```
-
-![Screen Shot 2022-02-24 at 9 17 42 PM](https://user-images.githubusercontent.com/85772166/155658279-29435a33-3c67-4aaa-b4d9-f0f9e0f4d421.png)
+![Screen Shot 2022-03-17 at 8 58 16 PM](https://user-images.githubusercontent.com/85772166/158934895-3d0ccdef-a55c-47f1-85bc-d15013046702.png)

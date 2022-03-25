@@ -86,7 +86,7 @@ def add_noop_handler(settings: Settings):
 
 def add_file_handler(settings: Settings):
     app_settings = settings.app_settings
-    handler = PathTrackingFileHandler(settings=settings, rolling_clock=True)
+    handler = PathTrackingFileHandler(settings=settings, rolling_clock=False)
     formatter = FormatterWithExceptions(app_settings=app_settings)
     handler.setFormatter(formatter)
     logging.getLogger().addHandler(handler)
@@ -140,7 +140,7 @@ def setup_logging(
     session_id = session_id or str(START_TIMESTAMP)
 
     frequency = frequency or cfg.LOGGING_FREQUENCY
-    verbosity = verbosity or int(cfg.LOGGING_VERBOSITY)
+    verbosity = verbosity or cfg.LOGGING_VERBOSITY
     directory = get_log_dir()
     handler_list = cfg.LOGGING_HANDLERS
 
