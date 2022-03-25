@@ -90,11 +90,21 @@ As a modern Python-based environment, GamestonkTerminal opens access to numerous
 (Pandas, Numpy, Scipy, Jupyter), Machine Learning (Pytorch, Tensorflow, Sklearn, Flair), and Data Acquisition
 (Beautiful Soup, and numerous third-party APIs).
 
+## Installation
+
+If you wish to install the Terminal, there are currently four options:
+
+- [Using the Installer](gamestonk_terminal/README.md#User) (recommended if you just want to use the terminal)
+- [Using Python](gamestonk_terminal/README.md#Anaconda---Python) (recommended if you want to develop new features)
+- [Using Docker](gamestonk_terminal/README.md#Docker-Installation) (alternative option to the installer if preferred)
+- [Using Docker Web UI](gamestonk_terminal/README.md#web-ui---docker) (if you want to deploy the web UI for users to access over your LAN)
+
 ## Contributing
 
 There are 3 main ways of contributing to this project.
 
-For a 1h coding session where the architecture of the repo is explained while a new feature is added, check <https://www.youtube.com/watch?v=9BMI9cleTTg>.
+For a 1 hour coding session where the architecture of the repo is explained while a new feature is added, check
+[here](https://www.youtube.com/watch?v=9BMI9cleTTg).
 
 **Become a Contributor 🦍**
 
