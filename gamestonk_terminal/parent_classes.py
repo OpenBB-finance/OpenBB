@@ -184,10 +184,10 @@ class BaseController(metaclass=ABCMeta):
 
             set_command_location(f"{self.PATH}{known_args.cmd}")
             logger.info(
-                "CMD: {'path': '%s', 'known_cmd': '%s', 'other_args': '%s' 'input': '%s'}",
+                "CMD: {'path': '%s', 'known_cmd': '%s', 'other_args': '%s', 'input': '%s'}",
                 self.PATH,
                 known_args.cmd,
-                str(other_args),
+                ";".join(other_args),
                 an_input,
             )
             self.log_queue("QUEUE")
