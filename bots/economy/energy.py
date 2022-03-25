@@ -50,7 +50,6 @@ def energy_command():
     df = df.rename(
         columns={"prevClose": "PrevClose", "last": "Last", "change": "Change"}
     )
-
     font_color = ["white"] * 3 + [
         ["#e4003a" if boolv else "#00ACFF" for boolv in df["Change"].str.contains("-")]
     ]
