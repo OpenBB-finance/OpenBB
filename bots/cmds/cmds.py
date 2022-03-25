@@ -3,7 +3,6 @@ import disnake
 from disnake.ext import commands
 
 from bots import config_discordbot as cfg
-
 from bots.common.help_text import cmds_text
 from bots.menus.menu import Menu
 

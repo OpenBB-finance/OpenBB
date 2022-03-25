@@ -113,7 +113,7 @@ jupyterlab-pygments==0.1.2; python_version >= "3.7"
 jupyterlab-server==2.11.2; python_version >= "3.7"
 jupyterlab-widgets==1.1.0; python_version >= "3.6"
 jupyterlab==3.3.2; python_version >= "3.7"
-kaleido==0.2.1.post1
+kaleido==0.2.1
 kiwisolver==1.4.0; python_version >= "3.7"
 korean-lunar-calendar==0.2.1; python_version >= "3.7" and python_full_version >= "3.7.0"
 lazy-object-proxy==1.7.1; python_version >= "3.6" and python_full_version >= "3.6.2"

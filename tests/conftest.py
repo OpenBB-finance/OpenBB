@@ -8,16 +8,14 @@ from typing import Any, Dict, List, Optional, Type
 import pandas as pd
 import pkg_resources
 import pytest
-from _pytest.config.argparsing import Parser
-
 from _pytest.capture import MultiCapture, SysCapture
 from _pytest.config import Config
+from _pytest.config.argparsing import Parser
 from _pytest.fixtures import SubRequest
 from _pytest.mark.structures import Mark
 
 # IMPORTATION INTERNAL
-from gamestonk_terminal import decorators
-from gamestonk_terminal import helper_funcs
+from gamestonk_terminal import decorators, helper_funcs
 from bots import config_discordbot as cfg
 
 # pylint: disable=redefined-outer-name
@@ -31,7 +29,7 @@ EXTENSIONS_MATCHING: Dict[str, List[Type]] = {
 }
 
 os.environ["TEST_MODE"] = "True"
-os.environ["GT_IMG_HOST_ACTIVE"] = "false"
+os.environ["GT_IMG_HOST_ACTIVE"] = "False"
 
 
 class Record:
