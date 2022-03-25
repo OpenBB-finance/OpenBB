@@ -75,7 +75,7 @@ class LoggingClock(Thread):
     @classmethod
     def do_action_every_sharp(
         cls,
-        action,
+        action: Callable,
         precision: Precision = Precision.hour,
     ):
         next_hour = cls.calculate_next_sharp(
@@ -100,11 +100,11 @@ class LoggingClock(Thread):
 
     # OVERRIDE
     def run(self):
-        action_func = self.__action_func
+        action = self.__action
         precision = self.__precision
 
         self.do_action_every_sharp(
-            action=action_func,
+            action=action,
             precision=precision,
         )
 
@@ -112,7 +112,7 @@ class LoggingClock(Thread):
     def __init__(
         self,
         *args,
-        action_func: Optional[Callable] = None,
+        action: Optional[Callable] = None,
         level: int = logging.INFO,
         logger: Optional[logging.Logger] = None,
         msg: str = "Logging Clock : %s",
@@ -121,13 +121,13 @@ class LoggingClock(Thread):
     ):
         super().__init__(*args, **kwargs)
 
-        self.__action_func = action_func or self.action
+        self.__action = action or self.default_action
         self.__level = level
         self.__logger = logger or logging.getLogger(self.__module__)
         self.__msg = msg
         self.__precision = precision
 
-    def action(self):
+    def default_action(self):
         level = self.__level
         logger = self.__logger
         msg = self.__msg % datetime.now()

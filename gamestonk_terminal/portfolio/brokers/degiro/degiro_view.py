@@ -2,6 +2,7 @@
 import logging
 from argparse import Namespace
 
+# IMPORTATION THIRDPARTY
 import pandas as pd
 from degiro_connector.core.helpers import pb_handler
 from degiro_connector.trading.models.trading_pb2 import (
@@ -306,22 +307,14 @@ class DegiroView:
 
     @log_start_end(log=logger)
     @check_api_key(["DG_USERNAME", "DG_PASSWORD"])
-    def login(self, ns_parser: Namespace):
+    def login(self):
         # GET ATTRIBUTES
         degiro_model = self.__degiro_model
         default_credentials = degiro_model.login_default_credentials()
 
         credentials = Credentials()
         credentials.CopyFrom(default_credentials)
-        credentials.username = ns_parser.username
-        credentials.password = ns_parser.password
-
-        if ns_parser.otp is not None:
-            credentials.one_time_password = ns_parser.otp
-        if ns_parser.topt_secret is not None:
-            credentials.totp_secret_key = ns_parser.topt_secret
-
-        degiro_model.login(credentials=credentials)
+        degiro_model.login()
 
         DegiroView.__login_display_success()
 
@@ -331,9 +324,7 @@ class DegiroView:
         console.print("You are now logged in !")
 
     @log_start_end(log=logger)
-    def logout(self, ns_parser: Namespace):
-        _ = ns_parser
-
+    def logout(self):
         # GET ATTRIBUTES
         degiro_model = self.__degiro_model
 
