@@ -1218,7 +1218,7 @@ def plot_candles(
     }
 
     # This plot has 2 axes
-    if not external_axes:
+    if external_axes is None:
         candle_chart_kwargs["returnfig"] = True
         candle_chart_kwargs["figratio"] = (10, 7)
         candle_chart_kwargs["figscale"] = 1.10
@@ -1246,7 +1246,7 @@ def plot_candles(
             (ax, volume) = external_axes
             candle_chart_kwargs["volume"] = volume
         else:
-            ax = external_axes
+            ax = external_axes[0]
 
         candle_chart_kwargs["ax"] = ax
 

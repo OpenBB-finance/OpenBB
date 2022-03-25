@@ -1,4 +1,7 @@
 """Crypto context API."""
+import os
+from gamestonk_terminal.helper_classes import ModelsNamespace as _models
+
 # flake8: noqa
 # pylint: disable=unused-import
 
@@ -8,7 +11,6 @@ from .cryptocurrency_helpers import load
 from .cryptocurrency_helpers import find
 from .cryptocurrency_helpers import plot_chart as chart
 from .cryptocurrency_helpers import plot_candles as candles
-
 
 # Context menus
 from .defi import defi_api as defi
@@ -27,3 +29,6 @@ try:
 except Exception:
     # print("Prediction API is not available.")
     pass
+
+# Models
+models = _models(os.path.abspath(os.path.dirname(__file__)))
