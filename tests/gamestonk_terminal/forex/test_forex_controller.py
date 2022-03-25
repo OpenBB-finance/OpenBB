@@ -248,6 +248,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [TechnicalAnalysisController],
             dict(
                 ticker="MOCK_TICKER/MOCK_TICKER",
+                source="yf",
                 data=NON_EMPTY_DF,
                 start=pd.Timestamp("2020-11-30 00:00:00"),
                 interval="",
@@ -290,6 +291,7 @@ def test_call_func(
     else:
         controller = forex_controller.ForexController(queue=None)
         controller.stock = EMPTY_DF
+        controller.source = "yf"
         controller.to_symbol = "MOCK_TICKER"
         controller.from_symbol = "MOCK_TICKER"
         controller.interval = "1440min"

@@ -27,6 +27,7 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     valid_date,
 )
+from gamestonk_terminal.forex.forex_helper import FOREX_SOURCES
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.parent_classes import StockBaseController
 from gamestonk_terminal.rich_config import console
@@ -59,6 +60,7 @@ class TechnicalAnalysisController(StockBaseController):
     def __init__(
         self,
         ticker: str,
+        source: str,
         start: datetime,
         interval: str,
         data: pd.DataFrame,
@@ -68,6 +70,7 @@ class TechnicalAnalysisController(StockBaseController):
         super().__init__(queue)
 
         self.ticker = ticker
+        self.source = source
         self.start = start
         self.interval = interval
         self.data = data
@@ -82,6 +85,7 @@ class TechnicalAnalysisController(StockBaseController):
         currency_str = f" {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
         help_text = f"""[cmds]
 [param]Currency Pair Loaded: [/param]{currency_str}
+[param]Source: [/param]{FOREX_SOURCES[self.source]}
 
 [info]Overlap:[/info]
     ema         exponential moving average
