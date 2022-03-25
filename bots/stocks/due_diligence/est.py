@@ -1,5 +1,4 @@
 import logging
-import os
 
 import disnake
 
@@ -55,14 +54,11 @@ def est_command(ticker: str = ""):
     )
     imagefile = imps.save_image("estimates.png", fig)
 
-    if imps.IMAGES_URL or imps.IMGUR_CLIENT_ID != "REPLACE_ME":
-        link_estimates = imps.IMAGES_URL + imagefile
+    if imps.IMAGES_URL or not imps.IMG_HOST_ACTIVE:
+        link_estimates = imps.multi_image(imagefile)
         images_list.append(imagefile)
     else:
-        imagefile_save = imps.IMG_DIR / imagefile
-        uploaded_image = imps.gst_imgur.upload_image(imagefile_save, title="something")
-        link_estimates = uploaded_image.link
-        os.remove(imagefile_save)
+        link_estimates = imps.multi_image(imagefile)
 
     fig = imps.plot_df(
         df_quarter_earnings,
@@ -76,14 +72,11 @@ def est_command(ticker: str = ""):
     )
     imagefile = imps.save_image("earnings.png", fig)
 
-    if imps.IMAGES_URL or imps.IMGUR_CLIENT_ID != "REPLACE_ME":
-        link_earnings = imps.IMAGES_URL + imagefile
+    if imps.IMAGES_URL or not imps.IMG_HOST_ACTIVE:
+        link_earnings = imps.multi_image(imagefile)
         images_list.append(imagefile)
     else:
-        imagefile_save = imps.IMG_DIR / imagefile
-        uploaded_image = imps.gst_imgur.upload_image(imagefile_save, title="something")
-        link_earnings = uploaded_image.link
-        os.remove(imagefile_save)
+        link_earnings = imps.multi_image(imagefile)
 
     fig = imps.plot_df(
         df_quarter_revenues,
@@ -97,14 +90,11 @@ def est_command(ticker: str = ""):
     )
     imagefile = imps.save_image("revenues.png", fig)
 
-    if imps.IMAGES_URL or imps.IMGUR_CLIENT_ID != "REPLACE_ME":
-        link_revenues = imps.IMAGES_URL + imagefile
+    if imps.IMAGES_URL or not imps.IMG_HOST_ACTIVE:
+        link_revenues = imps.multi_image(imagefile)
         images_list.append(imagefile)
     else:
-        imagefile_save = imps.IMG_DIR / imagefile
-        uploaded_image = imps.gst_imgur.upload_image(imagefile_save, title="something")
-        link_revenues = uploaded_image.link
-        os.remove(imagefile_save)
+        link_revenues = imps.multi_image(imagefile)
 
     embeds = [
         disnake.Embed(

@@ -70,10 +70,10 @@ jobs:
 
       - name: Install dependencies
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-        run: poetry install --no-interaction --no-root
+        run: poetry install --no-interaction --no-root -E bots -E bots
 
       - name: Install Package
-        run: poetry install --no-interaction
+        run: poetry install --no-interaction -E bots -E bots
 
       - name: Run tests
         env:
@@ -136,10 +136,10 @@ jobs:
 
       - name: Install dependencies
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-        run: poetry install --no-interaction --no-root
+        run: poetry install --no-interaction --no-root -E bots
 
       - name: Install Package
-        run: poetry install --no-interaction
+        run: poetry install --no-interaction -E bots
 
       - name: List installed packages
         shell: bash -l {0}
@@ -246,7 +246,7 @@ jobs:
       - name: Install dependencies (Bash)
         shell: bash -l {0}
         run: |
-          pip install --requirement requirements-full.txt
+          pip install --requirement bots/requirements.txt
 
       - name: List installed packages (Bash)
         shell: bash -l {0}

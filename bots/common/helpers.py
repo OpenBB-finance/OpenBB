@@ -64,6 +64,8 @@ def get_arguments(selected: Dict[str, Any], req_name: str, sender: Any) -> None:
         sender("Please give the number of days as an integer")
     elif req_name == "raw":
         sender("Please type true or false")
+    elif req_name == "expiry":
+        sender("Please give a valid expiration date")
     else:
         select = [str(x) for x in selected["required"].get(req_name, [])]
         selections = ", ".join(select)

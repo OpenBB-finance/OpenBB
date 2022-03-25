@@ -147,8 +147,6 @@ def dpotc_command(ticker: str = ""):
         )
     if imps.PLT_WATERMARK:
         fig.add_layout_image(imps.PLT_WATERMARK)
-    fig.update_xaxes(showspikes=True, spikesnap="cursor", spikemode="across")
-    fig.update_yaxes(showspikes=True, spikethickness=2)
     fig.update_layout(
         margin=dict(l=20, r=0, t=10, b=20),
         template=imps.PLT_CANDLE_STYLE_TEMPLATE,
@@ -187,8 +185,8 @@ def dpotc_command(ticker: str = ""):
         bargroupgap=0,
         dragmode="pan",
         hovermode="x unified",
-        spikedistance=1000,
-        hoverdistance=100,
+        spikedistance=1,
+        hoverdistance=1,
     )
 
     imagefile = "dps_dpotc.png"

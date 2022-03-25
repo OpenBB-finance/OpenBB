@@ -10,7 +10,7 @@ from .cryptocurrency_helpers import display_all_coins as coins
 from .cryptocurrency_helpers import load
 from .cryptocurrency_helpers import find
 from .cryptocurrency_helpers import plot_chart as chart
-from .cryptocurrency_helpers import plot_candles as candle
+from .cryptocurrency_helpers import plot_candles as candles
 
 # Context menus
 from .defi import defi_api as defi
