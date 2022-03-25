@@ -39,25 +39,6 @@ from gamestonk_terminal.terminal_helper import (
     welcome_message,
 )
 
-# This imports the package needed for the installer - Wrapped in try/except because
-# it's not needed on the normal launch of project.
-try:
-    import pyi_splash
-except:
-    pass
-# Below line tells the splash screen to go away on .exe launch when terminal is loaded.
-try:
-    # Update the text on the splash screen
-    pyi_splash.update_text("Terminal Loaded!")
-    # Close the splash screen. It does not matter when the call
-    # to this function is made, the splash screen remains open until
-    # this function is called or the Python program is terminated.
-    pyi_splash.close()
-except Exception as e:
-    print(e)
-    pass
-
-
 # pylint: disable=too-many-public-methods,import-outside-toplevel,too-many-branches
 
 logger = logging.getLogger(__name__)
@@ -734,7 +715,9 @@ def main(
         console.print("[green]Gamestonk Terminal Integrated Tests:\n[/green]")
         for file in test_files:
             file = file.replace("//", "/")
-            file_name = file[file.rfind("GamestonkTerminal") :].replace("\\", "/")
+            file_name = file[file.rfind("GamestonkTerminal") :].replace(  # noqa: E203
+                "\\", "/"
+            )
             console.print(f"{file_name}  {((i/length)*100):.1f}%")
             try:
                 if not os.path.isfile(file):
@@ -748,7 +731,9 @@ def main(
         if fails:
             console.print("\n[red]Failures:[/red]\n")
             for key, value in fails.items():
-                file_name = key[key.rfind("GamestonkTerminal") :].replace("\\", "/")
+                file_name = key[key.rfind("GamestonkTerminal") :].replace(  # noqa: E203
+                    "\\", "/"
+                )
                 logger.error("%s: %s failed", file_name, value)
                 console.print(f"{file_name}: {value}\n")
         console.print(
