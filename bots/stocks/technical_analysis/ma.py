@@ -94,6 +94,7 @@ def ma_command(
     # Output Data
     if interval != 1440:
         df_ta = df_ta.loc[(df_ta.index >= bar_start) & (df_ta.index < end)]
+    df_ta = df_ta.fillna(0.0)
 
     plot = load_candle.candle_fig(
         df_ta,
@@ -107,7 +108,8 @@ def ma_command(
     title = f"<b>{plot['plt_title']} Moving Average ({ma_mode.upper()})</b>"
     fig = plot["fig"]
 
-    for i in range(6, df_ta.shape[1]):
+    i2 = 6 if interval != 1440 else 11
+    for i in range(i2, df_ta.shape[1]):
         fig.add_trace(
             go.Scatter(
                 name=f"{df_ta.iloc[:, i].name}",

@@ -1,12 +1,14 @@
-import datetime
+import io
 import logging
-import os
 
 import matplotlib.pyplot as plt
 
 from bots import config_discordbot as cfg
+from bots.helpers import image_border
+from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.decorators import log_start_end
-from gamestonk_terminal.economy import cnn_model, cnn_view
+from gamestonk_terminal.economy import cnn_model
+from gamestonk_terminal.helper_funcs import plot_autoscale
 
 logger = logging.getLogger(__name__)
 
@@ -26,36 +28,28 @@ def feargreed_command(indicator=""):
         raise Exception(
             f"Select a valid indicator from {', '.join(possible_indicators)}"  # nosec
         )
+    # Output data
 
-    # Retrieve data
-    fig = plt.figure(figsize=[1, 1], dpi=10)
+    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
-    report, _ = cnn_model.get_feargreed_report(indicator, fig)
-    cnn_view.fear_and_greed_index(indicator=indicator, export="png")
+    report, im = cnn_model.get_feargreed_report(indicator, fig)
+    ax.axes.xaxis.set_visible(False)
+    ax.axes.yaxis.set_visible(False)
+
+    if indicator:
+        ax.imshow(im)
+
+    imagefile = "feargreed.png"
+    dataBytesIO = io.BytesIO()
+
+    plt.savefig(dataBytesIO)
     plt.close("all")
 
-    # Output data
-    now = datetime.datetime.now()
-    image_path = os.path.join(
-        cfg.GST_PATH,
-        "exports",
-        "economy",
-        f"feargreed_{now.strftime('%Y%m%d_%H%M%S')}.png",
-    )
-
-    i = 0
-    while not os.path.exists(image_path) and i < 10:
-        now -= datetime.timedelta(seconds=1)
-        image_path = os.path.join(
-            cfg.GST_PATH,
-            "exports",
-            "economy",
-            f"feargreed_{now.strftime('%Y%m%d_%H%M%S')}.png",
-        )
-        i += 1
+    dataBytesIO.seek(0)
+    imagefile = image_border(imagefile, base64=dataBytesIO)
 
     return {
         "title": "Economy: [CNN] Fear Geed Index",
-        "imagefile": image_path,
+        "imagefile": imagefile,
         "description": report,
     }

@@ -65,6 +65,7 @@ def ad_command(
     # Output Data
     if interval != 1440:
         df_ta = df_ta.loc[(df_ta.index >= bar_start) & (df_ta.index < end)]
+    df_ta = df_ta.fillna(0.0)
 
     plot = load_candle.candle_fig(
         df_ta,
@@ -91,7 +92,7 @@ def ad_command(
         go.Scatter(
             name="A/D",
             x=df_ta.index,
-            y=df_ta.iloc[:, 6].values,
+            y=df_ta.iloc[:, 6].values if interval != 1440 else df_ta.iloc[:, 11].values,
             mode="lines",
             line=dict(width=2),
             opacity=1,

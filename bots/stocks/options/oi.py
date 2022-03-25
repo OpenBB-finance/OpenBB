@@ -70,7 +70,7 @@ def oi_command(
             y=df_opt["OI_call"],
             name="Calls",
             mode="lines+markers",
-            line=dict(color="green", width=3),
+            line=dict(color="#00ACFF", width=3),
         )
     )
 
@@ -80,7 +80,7 @@ def oi_command(
             y=df_opt["OI_put"],
             name="Puts",
             mode="lines+markers",
-            line=dict(color="red", width=3),
+            line=dict(color="#e4003a", width=3),
         )
     )
     fig.add_trace(

@@ -8,9 +8,9 @@ import pyimgur
 from dotenv import load_dotenv
 
 # Path to bots
-bots_path = Path(__file__).parent.absolute()
+bots_path = Path(__file__).parent.resolve()
 
-env_files = [f for f in bots_path.iterdir() if f.as_posix().endswith(".env")]
+env_files = [f for f in bots_path.iterdir() if f.__str__().endswith(".env")]
 
 if env_files:
     load_dotenv(env_files[0])
@@ -41,21 +41,25 @@ SLASH_TESTING_SERVERS: Optional[
 COMMAND_PREFIX = "!"
 DATE_FORMAT = "%Y-%m-%d"
 COLOR = disnake.Color.from_rgb(255, 0, 0)
-INTERACTIVE = False
-INTERACTIVE_DIR = bots_path / "interactive/"
+
+# Interactive Chart Settings
+INTERACTIVE = bool(os.getenv("GT_INTERACTIVE")) or False
+INTERACTIVE_DIR = bots_path.joinpath("interactive/")
 INTERACTIVE_URL = ""
-IMG_DIR = bots_path / "interactive/images/"
+
+# Image Settings
+IMG_HOST_ACTIVE = bool(os.getenv("GT_IMG_HOST_ACTIVE")) or True
+IMG_DIR = bots_path.joinpath("interactive/images/")
 IMAGES_URL = ""  # Ex. "http://your-site.com/images/"
 
 # IMG_BG = bots_path.joinpath("files/bg.png")  # Light BG
 IMG_BG = bots_path.joinpath("files/bg-dark.png")  # Dark BG
 
-MENU_TIMEOUT = 30
-DEBUG = False
+DEBUG = bool(os.getenv("GT_DEBUG")) or False
 
 GST_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
-gst_imgur = pyimgur.Imgur(IMGUR_CLIENT_ID) if IMGUR_CLIENT_ID != "REPLACE_ME" else None
+gst_imgur = pyimgur.Imgur(IMGUR_CLIENT_ID)
 
 AUTHOR_NAME = "Gamestonk Terminal"
 AUTHOR_URL = "https://github.com/GamestonkTerminal/GamestonkTerminal"

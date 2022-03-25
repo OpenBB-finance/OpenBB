@@ -224,14 +224,8 @@ def stock_data(
             df_stock = df_stock.set_index(
                 pd.to_datetime(df_stock["date"], unit="ms", utc=True)
             ).drop("date", axis=1)
-            df_stock["date_id"] = (
-                df_stock.index.date - df_stock.index.date.min()
-            ).astype("timedelta64[D]")
-            df_stock["date_id"] = df_stock["date_id"].dt.days + 1
 
-            df_stock["OC_High"] = df_stock[["Open", "Close"]].max(axis=1)
-            df_stock["OC_Low"] = df_stock[["Open", "Close"]].min(axis=1)
-
+            df_stock["Adj Close"] = df_stock["Close"].copy()  # For Technical Analysis
         else:
             d_granularity = {
                 "1m": past_days,
@@ -423,7 +417,9 @@ def candle_fig(
 
             for article in articles:
                 dt_at = article["publishedAt"].replace("T", " ").replace("Z", "-05:00")
-                df_date.append(f"{datetime.strptime(dt_at, '%Y-%m-%d %H:%M:%S%z')}")
+                df_date.append(
+                    f"{datetime.strptime(dt_at, '%Y-%m-%d %H:%M:%S%z').astimezone(est_tz)}"
+                )
                 df_title.append(article["title"])
                 grab_price = df_stock.iloc[
                     df_stock.index.get_loc(dt_at, method="nearest")

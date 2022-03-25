@@ -41,8 +41,8 @@ def toplobbying_command(num: int = 10, raw: bool = False):
 
     dataBytesIO = io.BytesIO()
     plt.savefig(dataBytesIO)
-    plt.close("all")
     dataBytesIO.seek(0)
+    plt.close("all")
 
     imagefile = imps.image_border(imagefile, base64=dataBytesIO)
 
