@@ -44,7 +44,7 @@ class PathTrackingFileHandler(TimedRotatingFileHandler):
 
     @staticmethod
     def clean_expired_files(before_timestamp: float):
-        """ Deleting old files inside : archives and tmp folders.
+        """Deleting old files inside : archives and tmp folders.
 
         Only files inside the following folders are considered :
          - {LOG_FOLDER_PATH}/{ARCHIVES_FOLDER_NAME}
