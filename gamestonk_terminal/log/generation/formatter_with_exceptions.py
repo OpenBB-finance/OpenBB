@@ -52,16 +52,24 @@ class FormatterWithExceptions(logging.Formatter):
         for word in text.split():
             if (
                 ip_reg.search(word)
-                # and int(max(word.split(""))) < 256
-                # and int(min(word.split(""))) >= 0
+                # and int(max(word.split("."))) < 256
+                # and int(min(word.split("."))) >= 0
             ):
                 s_list.append("suspected_ip")
             elif "@" in word and "." in word:
                 s_list.append("suspected_email")
             elif os.sep in word and "GamestonkTerminal/" in word:
-                s_list.append(word.split("GamestonkTerminal/")[1])
+                s_list.append(
+                    word.split("GamestonkTerminal/")[1]
+                    .replace('"', "")
+                    .replace("'", "")
+                )
             elif os.sep in word:
-                s_list.append("cut/file/path/" + word.split(os.sep)[-1])
+                s_list.append(
+                    (f"cut{os.sep}file{os.sep}path{os.sep}" + word.split(os.sep)[-1])
+                    .replace('"', "")
+                    .replace("'", "")
+                )
             else:
                 s_list.append(word)
 
@@ -71,8 +79,13 @@ class FormatterWithExceptions(logging.Formatter):
 
     @staticmethod
     def filter_special_characters(text: str):
-        filtered_text = text.replace("\n", " - ").replace("\t", " ").replace("\r", "")
-
+        filtered_text = (
+            text.replace("\\n", " - ")
+            .replace("\n", " - ")
+            .replace("\t", " ")
+            .replace("\r", "")
+            .replace("'Traceback", "Traceback")
+        )
         return filtered_text
 
     @classmethod
