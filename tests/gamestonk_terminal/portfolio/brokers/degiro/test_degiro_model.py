@@ -255,7 +255,7 @@ def test_login(mocker):
         new=mock_get_client_details,
     )
 
-    model.login(credentials=trading_pb2.Credentials())
+    model.login()
 
     mock_connect.assert_called_once()
     mock_get_client_details.assert_called_once()
