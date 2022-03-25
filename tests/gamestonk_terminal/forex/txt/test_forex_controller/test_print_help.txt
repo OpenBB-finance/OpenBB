@@ -4,15 +4,13 @@
 
 From:   USD
 To:     
-Source: YahooFinance
-[dim]
+Source: YahooFinance[dim]
 
     quote         get last quote [AlphaVantage]
     load          get historical data
     candle        show candle plot for loaded data
 
 >   ta          technical analysis for loaded coin,     e.g.: ema, macd, rsi, adx, bbands, obv
-
 [/dim]
 Forex brokerages:
 >   oanda         Oanda menu
