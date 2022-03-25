@@ -28,32 +28,36 @@ First step in all options is to star the project
 If you want to install the terminal using Python ignore the User section and jump to <a href="#Anaconda & Python">Anaconda & Python</a> section.
 
 ## User
-If you are interested in running the terminal via the installer, these steps will guide you through the installation 
-process and explain to you what each message means. 
+
+If you are interested in running the terminal via the installer, these steps will guide you through the installation
+process and explain to you what each message means.
 
 ### Installing Process
-The process starts off by downloading the installer, see below the most recent release:
-- Windows: [LINK TO INSTALLER FILE]()
-- macOS: [LINK TO INSTALLER FILE]()
 
-This downloads the installer to your computer and by clicking on the created file, you are able to start 
+The process starts off by downloading the installer, see below the most recent release:
+- Windows: [LINK TO INSTALLER FILE](https://github.com/GamestonkTerminal/GamestonkTerminal/)
+- macOS: [LINK TO INSTALLER FILE](https://github.com/GamestonkTerminal/GamestonkTerminal/)
+
+This downloads the installer to your computer and by clicking on the created file, you are able to start
 the installation process.
 
 **_STILL NEED TO ADD WALKTHROUGH AND IMAGES_**
 
-| Note about "Malicious Software" warning                                                                                                                                                                                                                                                                                                                                                                                  |
-|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| You will most likely see one of the following images displayed below. Because this installer is still in the Alpha-phase, we do not have requested verification from both Windows and Apple. Therefore, your computer will warn you about this which is what the message represents. We have absolutely no intention to include any malicious software and can promise to you that the usage of our application is safe. | 
+| Note about "Malicious Software" warning                                                                                                                                                                                                                                                                                                                                                                                   |
+|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| You will most likely see one of the following images displayed below. Because this installer is still in the Alpha-phase, we do not have requested verification from both Windows and Apple. Therefore, your computer will warn you about this which is what the message represents. We have absolutely no intention to include any malicious software and can promise to you that the usage of our application is safe.  | 
 
 **_STILL NEED TO ADD IMAGES_**
 
 To mark the application as safe for usage, use the following steps:
 
 #### On Windows 
+
 **_STILL NEED TO ADD CONTENT_**
 
 #### On macOS 
-1) Run the file. You will most likely receive a message that macOS was not able to check whether the application 
+
+1) Run the file. You will most likely receive a message that macOS was not able to check whether the application
 contains malicious software. The reasoning for this is described in the note above.
 2) Go to macOS System Preferences > Security & Privacy > General. You should see see a message at the bottom that says
 that the file "_was blocked from use because it is not from an identified developer_".
@@ -92,7 +96,7 @@ After this, `VcXsrv` should be running successfully and we can proceed to termin
 
 Although we **extremely** recommend using WSL to run the terminal on windows, if you don't want or can't for some reason, you can try install the terminal directly on Windows without WSL. If you'd like to see a video recording of the installation on Windows without WSL, @JohnnyDankseed has made one available [here](https://www.youtube.com/watch?v=-DJJ-cfquDA).
 
-####  Installing the terminal
+#### Installing the terminal
 
 These steps are common in all operating systems (Windows with or without WSL, MacOS or Linux).
 
@@ -237,6 +241,7 @@ If you `stashed` your changes previously, you can un-stash them with:
 ```bash
 git stash pop
 ```
+
 ### Docker Installation
 
 1. Make sure docker desktop is installed. Install links can be found [here](https://www.docker.com/products/docker-desktop).
@@ -300,18 +305,18 @@ There are a few things that still don't work, and you can see what works and wha
 The project is build around several different API calls, whether it is to access historical data or financials.
 The table below shows the ones where a key is necessary. 
 
-The easiest way is of updating the keys is by using the terminal. You are able to directly set these variables from 
+The easiest way is of updating the keys is by using the terminal. You are able to directly set these variables from
 within the "keys" menu. This menu can be found on the first menu you see when opening the terminal.
 
 <img src="../images/api_keys_part_1.png" alt="API Keys 1" width="800"/>
 
-Then, by typing the command on the left-hand side, followed by your API Key, you can set the key and use the commands 
+Then, by typing the command on the left-hand side, followed by your API Key, you can set the key and use the commands
 attached to it.
 
 <img src="../images/api_keys_part_2.png" alt="API Keys 2" width="800"/>
 
-When you have installed the terminal through Anaconda & Python, you can use the environment variable to set your 
-API Keys directly instead of using the Terminal, for the variable name in the code one just needs to 
+When you have installed the terminal through Anaconda & Python, you can use the environment variable to set your
+API Keys directly instead of using the Terminal, for the variable name in the code one just needs to
 remove the "GT\_", this can be found in [config_terminal.py](/gamestonk_terminal/config_terminal.py).
 
 | Website                                                                         | Environment Variables                                                                                                                             |
