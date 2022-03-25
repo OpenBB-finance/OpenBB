@@ -281,9 +281,6 @@ class ForexController(BaseController):
 
             self.queue = self.load_class(
                 OandaController,
-                from_symbol=self.from_symbol,
-                to_symbol=self.to_symbol,
-                source=self.source,
                 queue=self.queue,
             )
         else:
