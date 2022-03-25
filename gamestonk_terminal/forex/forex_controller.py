@@ -59,16 +59,14 @@ class ForexController(BaseController):
 
 [param]From:   [/param]{None or self.from_symbol}
 [param]To:     [/param]{None or self.to_symbol}
-[param]Source: [/param]{None or FOREX_SOURCES[self.source]}[cmds]
-{has_symbols_start}
+[param]Source: [/param]{None or FOREX_SOURCES[self.source]}[cmds]{has_symbols_start}
 [cmds]
     quote         get last quote [src][AlphaVantage][/src]
     load          get historical data
     candle        show candle plot for loaded data[/cmds]
 [menu]
 >   ta          technical analysis for loaded coin,     e.g.: ema, macd, rsi, adx, bbands, obv
-[/menu]
-{has_symbols_end}
+[/menu]{has_symbols_end}
 [info]Forex brokerages:[/info][menu]
 >   oanda         Oanda menu[/menu][/cmds]
  """
@@ -165,7 +163,6 @@ class ForexController(BaseController):
 
         parser.add_argument(
             "--source",
-            "-s",
             help="Source of historical data",
             dest="source",
             choices=("yf", "av"),
