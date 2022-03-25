@@ -1159,7 +1159,7 @@ def plot_chart(
             start=datetime.now() - timedelta(days=days),
             progress=False,
             interval=interval,
-        ).sort_index(ascending=False)[
+        )[
             [
                 "Open",
                 "High",
@@ -1167,8 +1167,9 @@ def plot_chart(
                 "Close",
                 "Volume",
             ]
-        ]
-
+        ].copy()
+        # Because the label has Volume [1M]
+        df.Volume = df.Volume / 1_000_000
         df.index.name = "date"
 
         title = f"{symbol_yf.replace('-', '/')} from {df.index[0].strftime('%Y/%m/%d')} to {df.index[-1].strftime('%Y/%m/%d')}"  # noqa: E501
@@ -1180,7 +1181,7 @@ def plot_chart(
             ylabel="Volume [1M]",
         )
 
-        console.print("")
+        console.print()
 
 
 def plot_candles(
