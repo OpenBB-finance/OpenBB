@@ -102,8 +102,9 @@ from bots.stocks.technical_analysis.view import view_command
 re_int = re.compile(r"^[1-9]\d*$")
 re_float = re.compile(r"^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$")
 re_name = re.compile(r"(?s).*")
-re_window = re.compile(r"(?s).*")
+#  re.compile(r"/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/")
 re_date = re_name
+re_window = re.compile(r"(?s).*")
 
 gov_type = ["congress", "senate", "house"]
 

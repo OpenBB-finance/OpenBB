@@ -1,5 +1,6 @@
 import os
 import sys
+from distutils.util import strtobool
 from pathlib import Path
 from typing import List, Optional
 
@@ -43,19 +44,19 @@ DATE_FORMAT = "%Y-%m-%d"
 COLOR = disnake.Color.from_rgb(255, 0, 0)
 
 # Interactive Chart Settings
-INTERACTIVE = bool(os.getenv("GT_INTERACTIVE")) or False
+INTERACTIVE = strtobool(os.getenv("GT_INTERACTIVE", "False"))
 INTERACTIVE_DIR = bots_path.joinpath("interactive/")
 INTERACTIVE_URL = ""
 
 # Image Settings
-IMG_HOST_ACTIVE = bool(os.getenv("GT_IMG_HOST_ACTIVE")) or True
+IMG_HOST_ACTIVE = strtobool(os.getenv("GT_IMG_HOST_ACTIVE", "False"))
 IMG_DIR = bots_path.joinpath("interactive/images/")
 IMAGES_URL = ""  # Ex. "http://your-site.com/images/"
 
 # IMG_BG = bots_path.joinpath("files/bg.png")  # Light BG
 IMG_BG = bots_path.joinpath("files/bg-dark.png")  # Dark BG
 
-DEBUG = bool(os.getenv("GT_DEBUG")) or False
+DEBUG = strtobool(os.getenv("GT_DEBUG", "False"))
 
 GST_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
