@@ -64,7 +64,7 @@ class FormatterWithExceptions(logging.Formatter):
                     .replace('"', "")
                     .replace("'", "")
                 )
-            elif os.sep in word:
+            elif os.sep in word and os.sep != word:
                 s_list.append(
                     (f"cut{os.sep}file{os.sep}path{os.sep}" + word.split(os.sep)[-1])
                     .replace('"', "")
