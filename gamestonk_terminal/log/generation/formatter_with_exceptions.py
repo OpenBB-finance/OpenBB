@@ -50,18 +50,27 @@ class FormatterWithExceptions(logging.Formatter):
         s_list = []
         ip_reg = re.compile(ip_regex)
         for word in text.split():
+
             if (
                 ip_reg.search(word)
-                # and int(max(word.split(""))) < 256
-                # and int(min(word.split(""))) >= 0
+                # and int(max(word.split("."))) < 256
+                # and int(min(word.split("."))) >= 0
             ):
                 s_list.append("suspected_ip")
             elif "@" in word and "." in word:
                 s_list.append("suspected_email")
-            elif os.sep in word and "GamestonkTerminal/" in word:
-                s_list.append(word.split("GamestonkTerminal/")[1])
-            elif os.sep in word:
-                s_list.append("cut/file/path/" + word.split(os.sep)[-1])
+            elif os.sep in word and f"GamestonkTerminal{os.sep}" in word:
+                s_list.append(
+                    word.split(f"GamestonkTerminal{os.sep}")[1]
+                    .replace('"', "")
+                    .replace("'", "")
+                )
+            elif os.sep in word and os.sep != word:
+                s_list.append(
+                    (f"cut{os.sep}file{os.sep}path{os.sep}" + word.split(os.sep)[-1])
+                    .replace('"', "")
+                    .replace("'", "")
+                )
             else:
                 s_list.append(word)
 
@@ -71,18 +80,34 @@ class FormatterWithExceptions(logging.Formatter):
 
     @staticmethod
     def filter_special_characters(text: str):
-        filtered_text = text.replace("\n", " - ").replace("\t", " ").replace("\r", "")
-
+        filtered_text = (
+            text.replace("\\n", " - ")
+            .replace("\n", " - ")
+            .replace("\t", " ")
+            .replace("\r", "")
+            .replace("'Traceback", "Traceback")
+        )
         return filtered_text
+
+    @staticmethod
+    def detect_terminal_message(text: str):
+        if "The command " in text and "doesn't exist on the" in text and os.sep == "/":
+            return True
+        return False
 
     @classmethod
     def filter_log_line(cls, text: str):
         text = cls.filter_special_characters(text=text)
-        text = (
-            text
-            if "CMD: {" in text or "QUEUE: {" in text
-            else cls.filter_piis(text=text)  # change this
-        )
+        contains_terminal_menu = cls.detect_terminal_message(text)
+        if contains_terminal_menu:
+            first_message, second_message = text.split("menu. - Traceback")
+            text = (
+                first_message
+                + "menu. - Traceback"
+                + cls.filter_piis(text=second_message)
+            )
+        elif "CMD: {" not in text and "QUEUE: {" not in text:
+            cls.filter_piis(text=text)
 
         return text
 
