@@ -35,8 +35,8 @@ process and explain to you what each message means.
 ### Installing Process
 
 The process starts off by downloading the installer, see below the most recent release:
-- Windows: [LINK TO INSTALLER FILE](https://github.com/GamestonkTerminal/GamestonkTerminal/)
-- macOS: [LINK TO INSTALLER FILE](https://github.com/GamestonkTerminal/GamestonkTerminal/)
+- Windows: [LINK TO INSTALLER FILE](https://github.com/GamestonkTerminal/GamestonkTerminal/) 
+- macOS: [LINK TO INSTALLER FILE](https://github.com/GamestonkTerminal/GamestonkTerminal/) 
 
 This downloads the installer to your computer and by clicking on the created file, you are able to start
 the installation process.
@@ -51,11 +51,11 @@ the installation process.
 
 To mark the application as safe for usage, use the following steps:
 
-#### On Windows 
+#### On Windows
 
 **_STILL NEED TO ADD CONTENT_**
 
-#### On macOS 
+#### On macOS
 
 1) Run the file. You will most likely receive a message that macOS was not able to check whether the application
 contains malicious software. The reasoning for this is described in the note above.
@@ -303,7 +303,7 @@ There are a few things that still don't work, and you can see what works and wha
 ### API Keys
 
 The project is build around several different API calls, whether it is to access historical data or financials.
-The table below shows the ones where a key is necessary. 
+The table below shows the ones where a key is necessary.
 
 The easiest way is of updating the keys is by using the terminal. You are able to directly set these variables from
 within the "keys" menu. This menu can be found on the first menu you see when opening the terminal.
