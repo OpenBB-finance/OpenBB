@@ -105,7 +105,6 @@ re_name = re.compile(r"(?s).*")
 #  re.compile(r"/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/")
 re_date = re_name
 re_window = re.compile(r"(?s).*")
-re_date = re_name
 
 gov_type = ["congress", "senate", "house"]
 
