@@ -174,7 +174,7 @@ def display_candle(
             "volume_linewidth": 0.8,
             "volume_width": 0.8,
         },
-        "warn_too_much_data": 10000,
+        "warn_too_much_data": 20000,
     }
     # This plot has 2 axes
     if not external_axes:
