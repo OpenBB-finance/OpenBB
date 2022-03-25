@@ -100,15 +100,13 @@ class FormatterWithExceptions(logging.Formatter):
         text = cls.filter_special_characters(text=text)
         contains_terminal_menu = cls.detect_terminal_message(text)
         if contains_terminal_menu:
-            first_message, second_message = text.split(
-                "menu. - Traceback"
-            )  # change this
+            first_message, second_message = text.split("menu. - Traceback")
             text = (
                 first_message
                 + "menu. - Traceback"
                 + cls.filter_piis(text=second_message)
             )
-        elif "CMD: {" not in text and "QUEUE: {" not in text:  # change this
+        elif "CMD: {" not in text and "QUEUE: {" not in text:
             cls.filter_piis(text=text)
 
         return text
