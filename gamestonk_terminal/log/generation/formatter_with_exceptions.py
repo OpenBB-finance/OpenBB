@@ -50,6 +50,7 @@ class FormatterWithExceptions(logging.Formatter):
         s_list = []
         ip_reg = re.compile(ip_regex)
         for word in text.split():
+
             if (
                 ip_reg.search(word)
                 # and int(max(word.split("."))) < 256
@@ -88,14 +89,27 @@ class FormatterWithExceptions(logging.Formatter):
         )
         return filtered_text
 
+    @staticmethod
+    def detect_terminal_message(text: str):
+        if "The command " in text and "doesn't exist on the" in text and os.sep == "/":
+            return True
+        return False
+
     @classmethod
     def filter_log_line(cls, text: str):
         text = cls.filter_special_characters(text=text)
-        text = (
-            text
-            if "CMD: {" in text or "QUEUE: {" in text
-            else cls.filter_piis(text=text)  # change this
-        )
+        contains_terminal_menu = cls.detect_terminal_message(text)
+        if contains_terminal_menu:
+            first_message, second_message = text.split(
+                "menu. - Traceback"
+            )  # change this
+            text = (
+                first_message
+                + "menu. - Traceback"
+                + cls.filter_piis(text=second_message)
+            )
+        elif "CMD: {" not in text and "QUEUE: {" not in text:  # change this
+            cls.filter_piis(text=text)
 
         return text
 
