@@ -14,7 +14,7 @@
 
 ---
 
-There are currently four options to install the terminal:s
+There are currently four options to install the terminal:
 
 - using Installer: recommended if you just want to use the terminal
 - using Python: recommended if you want to develop new features
