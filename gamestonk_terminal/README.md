@@ -7,7 +7,7 @@
       <li><a href="#user">General Installation Process</a></li>
       <li><a href="#Anaconda---Python">Anaconda & Python Installation</a></li>
       <li><a href="#Docker-Installation">Docker Installation</a></li>
-      <li><a href="#web-ui---docker">Docker Web UI Installationr</a></li>
+      <li><a href="#web-ui---docker">Docker Web UI Installation</a></li>
       <li><a href="#api-keys">API Keys</a></li>
     </ol>
 </details>
