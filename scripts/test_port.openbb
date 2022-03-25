@@ -16,4 +16,7 @@ equal
 mktcap
 es
 var
+sh
+so
+om
 exit
