@@ -1108,7 +1108,7 @@ def check_file_type_saved(valid_types: List[str] = None):
         Parameters
         ----------
         filenames: str
-            filneames to be saved separated with comma
+            filenames to be saved separated with comma
 
         Returns
         -------
