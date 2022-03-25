@@ -137,6 +137,8 @@ def get_historical(
     # If the returned data was unsuccessful
     if "Error Message" in r.json():
         console.print(r.json()["Error Message"])
+    elif "Note" in r.json():
+        console.print(r.json()["Note"])
     else:
         # check if json is empty
         if not r.json():

@@ -28,7 +28,15 @@ def display_quote(to_symbol: str, from_symbol: str):
     """
     quote = av_model.get_quote(to_symbol, from_symbol)
 
-    if not quote:
+    if not bool(quote) or "Note" in quote:
+        if "Note" in quote:
+            console.print(quote["Note"])
+        console.print(
+            "\n[red]"
+            + "No historical data loaded.\n"
+            + "Make sure 'av' supports the requested pair and you aren't hitting your API call limits."
+            + "[/red]\n"
+        )
         return
 
     df = pd.DataFrame.from_dict(quote)

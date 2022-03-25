@@ -211,7 +211,17 @@ class ForexController(BaseController):
                     start_date=ns_parser.start_date.strftime("%Y-%m-%d"),
                     source=ns_parser.source,
                 )
-                self.data.index.name = "date"
+
+                if self.data.empty:
+                    console.print(
+                        "\n[red]"
+                        + "No historical data loaded.\n"
+                        + f"Make sure you have appropriate access for the '{ns_parser.source}' data source "
+                        + f"and that '{ns_parser.source}' supports the requested range."
+                        + "[/red]\n"
+                    )
+                else:
+                    self.data.index.name = "date"
 
                 self.source = ns_parser.source
 
@@ -267,7 +277,7 @@ class ForexController(BaseController):
                     "Make sure both a 'to' symbol and a 'from' symbol are selected."
                 )
                 console.print(
-                    '[red]Make sure both a "to" symbol and a "from" symbol are selected.[/red]\n'
+                    "[red]Make sure both a 'to' symbol and a 'from' symbol are selected.[/red]\n"
                 )
 
     # MENUS
