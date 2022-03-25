@@ -1,10 +1,12 @@
+# IMPORTATION STANDARD
 import argparse
 import logging
 from typing import List
 
+# IMPORTATION THIRDPARTY
 from prompt_toolkit.completion import NestedCompleter
 
-import gamestonk_terminal.config_terminal as config
+# IMPORTATION INTERNAL
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
@@ -205,37 +207,10 @@ class DegiroController(BaseController):
             add_help=False,
             prog="login",
         )
-        parser.add_argument(
-            "-u",
-            "--username",
-            type=str,
-            default=config.DG_USERNAME,
-            help="Username in Degiro's account.",
-        )
-        parser.add_argument(
-            "-p",
-            "--password",
-            type=str,
-            default=config.DG_PASSWORD,
-            help="Password in Degiro's account.",
-        )
-        parser.add_argument(
-            "-o",
-            "--otp",
-            type=int,
-            default=None,
-            help="One time password (2FA).",
-        )
-        parser.add_argument(
-            "-s",
-            "--topt-secret",
-            type=str,
-            default=None,
-            help="TOTP SECRET (2FA).",
-        )
         ns_parser = parse_known_args_and_warn(parser, other_args)
 
-        self.__degiro_view.login(ns_parser=ns_parser)
+        if ns_parser:
+            self.__degiro_view.login()
 
     @log_start_end(log=logger)
     def call_logout(self, other_args: List[str]):
@@ -248,7 +223,8 @@ class DegiroController(BaseController):
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
 
-        self.__degiro_view.logout(ns_parser=ns_parser)
+        if ns_parser:
+            self.__degiro_view.logout()
 
     @log_start_end(log=logger)
     def call_lookup(self, other_args: List[str]):

@@ -8,6 +8,11 @@ from pathlib import Path
 
 # IMPORTATION INTERNAL
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.log.constants import (
+    ARCHIVES_FOLDER_NAME,
+    S3_FOLDER_SUFFIX,
+    TMP_FOLDER_NAME,
+)
 from gamestonk_terminal.log.collection.s3_sender import send_to_s3
 from gamestonk_terminal.log.generation.settings import AppSettings
 
@@ -53,17 +58,12 @@ class LogSender(Thread):
             file = item.path
             last = item.last
 
-            # print(f"LogSender, processing : {file}")
-
             if gtff.LOG_COLLECTION:
-                archives_file = file.parent / "archives" / f"{file.stem}.log"
-                object_key = f"{app_name}-app/logs/{identifier}/{file.stem}.log"
-                tmp_file = file.parent / "tmp" / f"{file.stem}.log"
-
-                # print(f"Sending to S3, file : {file}")
-                # print(f"Sending to S3, archives_file : {archives_file}")
-                # print(f"Sending to S3, object_key : {object_key}")
-                # print(f"Sending to S3, tmp_file : {tmp_file}")
+                archives_file = file.parent / ARCHIVES_FOLDER_NAME / f"{file.stem}.log"
+                object_key = (
+                    f"{app_name}{S3_FOLDER_SUFFIX}/logs/{identifier}/{file.stem}.log"
+                )
+                tmp_file = file.parent / TMP_FOLDER_NAME / f"{file.stem}.log"
 
                 try:
                     send_to_s3(
@@ -74,7 +74,6 @@ class LogSender(Thread):
                     )
                 except Exception:
                     pass
-                    # print(f"Sending to S3 failed : {e}")
                 finally:
                     pass
 
@@ -95,7 +94,7 @@ class LogSender(Thread):
         self.__queue: SimpleQueue = SimpleQueue()
 
     def send_path(self, path: Path, last: bool = False):
-        """What ever path we send it need to the closed !"""
+        """Only closed files should be sent."""
 
         queue = self.__queue
         queue.put(QueueItem(path=path, last=last))
