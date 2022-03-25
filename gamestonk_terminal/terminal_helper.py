@@ -131,10 +131,31 @@ def about_us():
     )
 
 
+def hide_splashscreen():
+    """Hide the splashscreen on Windows bundles.
+
+    `pyi_splash` is a PyInstaller "fake-package" that's used to communicate
+    with the splashscreen on Windows.
+    Sending the `close` signal to the splash screen is required.
+    The splash screen remains open until this function is called or the Python
+    program is terminated.
+    """
+    try:
+        import pyi_splash  # type: ignore  # pylint: disable=import-outside-toplevel
+
+        pyi_splash.update_text("Terminal Loaded!")
+        pyi_splash.close()
+    except Exception as e:
+        logger.info(e)
+
+
 def bootup():
-    # Enable VT100 Escape Sequence for WINDOWS 10 Ver. 1607
     if sys.platform == "win32":
+        # Enable VT100 Escape Sequence for WINDOWS 10 Ver. 1607
         os.system("")  # nosec
+        # Hide splashscreen loader of the packaged app
+        if gtff.PACKAGED_APPLICATION:
+            hide_splashscreen()
 
     try:
         if os.name == "nt":
