@@ -11,6 +11,7 @@ from bots.stocks.options.iv import iv_command
 from bots.stocks.options.oi import oi_command
 from bots.stocks.options.opt_chain import chain_command
 from bots.stocks.options.overview import overview_command
+from bots.stocks.options.smile import smile_command
 from bots.stocks.options.unu import unu_command
 from bots.stocks.options.vol import vol_command
 from bots.stocks.options.vsurf import vsurf_command
@@ -70,6 +71,28 @@ class SlashCommands(commands.Cog):
         """
         await ShowView().discord(
             oi_command, inter, "opt oi", ticker, expiry, min_sp, max_sp
+        )
+
+    @opt.sub_command(name="smile")
+    async def smile(
+        self,
+        inter: disnake.AppCmdInter,
+        ticker: str = commands.Param(autocomplete=ticker_autocomp),
+        expiry: str = commands.Param(autocomplete=expiry_autocomp),
+        min_sp: float = None,
+        max_sp: float = None,
+    ):
+        """Displays Options Volatility Smile [Yahoo Finance]
+
+        Parameters
+        ----------
+        ticker: Stock Ticker
+        expiry: Expiration Date
+        min_sp: Minimum Strike Price
+        max_sp: Maximum Strike Price
+        """
+        await ShowView().discord(
+            smile_command, inter, "opt smile", ticker, expiry, min_sp, max_sp
         )
 
     @opt.sub_command(name="info")

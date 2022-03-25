@@ -48,6 +48,7 @@ CRYPTO_SOURCES = {
     "cg": "CoinGecko",
     "cp": "CoinPaprika",
     "cb": "Coinbase",
+    "yf": "YahooFinance",
 }
 
 
@@ -311,6 +312,74 @@ class CryptoController(CryptoBaseController):
                     help="Number to get",
                     type=check_positive,
                 )
+
+            if self.source == "yf":
+
+                interval_map = {
+                    "1min": "1m",
+                    "2min": "2m",
+                    "5min": "5m",
+                    "15min": "15m",
+                    "30min": "30m",
+                    "60min": "60m",
+                    "90min": "90m",
+                    "1hour": "1h",
+                    "1day": "1d",
+                    "5day": "5d",
+                    "1week": "1wk",
+                    "1month": "1mo",
+                    "3month": "3mo",
+                }
+
+                parser.add_argument(
+                    "--vs",
+                    default="USD",
+                    dest="vs",
+                    help="Currency to display vs coin",
+                    choices=[
+                        "CAD",
+                        "CNY",
+                        "ETH",
+                        "EUR",
+                        "GBP",
+                        "INR",
+                        "JPY",
+                        "KRW",
+                        "RUB",
+                        "USD",
+                        "AUD",
+                        "BTC",
+                    ],
+                    type=str,
+                )
+
+                parser.add_argument(
+                    "-i",
+                    "--interval",
+                    help="Interval to get data",
+                    choices=list(interval_map.keys()),
+                    dest="interval",
+                    default="1day",
+                    type=str,
+                )
+
+                parser.add_argument(
+                    "-l",
+                    "--limit",
+                    dest="limit",
+                    default=100,
+                    help="Number to get",
+                    type=check_positive,
+                )
+
+                parser.add_argument(
+                    "-d",
+                    "--days",
+                    default=30,
+                    dest="days",
+                    help="Number of days to get data for",
+                )
+
             ns_parser = parse_known_args_and_warn(
                 parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
             )
@@ -320,6 +389,10 @@ class CryptoController(CryptoBaseController):
                     limit = ns_parser.limit
                     interval = ns_parser.interval
                     days = 0
+                elif self.source == "yf":
+                    limit = ns_parser.limit
+                    interval = interval_map[ns_parser.interval]
+                    days = ns_parser.days
                 else:
                     limit = 0
                     interval = "1day"

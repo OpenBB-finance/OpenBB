@@ -1,10 +1,10 @@
 import logging
-import os
 
 import disnake
 
 from bots import imps
 from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_funcs import lambda_long_number_format
 from gamestonk_terminal.stocks.dark_pool_shorts import stockgrid_model
 
 logger = logging.getLogger(__name__)
@@ -41,33 +41,36 @@ def pos_command(sort="dpp_dollar", ascending: bool = False, num: int = 10):
 
     # Output data
     title = "Stocks: [Stockgrid] Dark Pool Short Position"
-
+    df = df.applymap(lambda x: lambda_long_number_format(x, 2))
     df = df.drop(columns=["Date"])
-    df["Net Short Volume $"] = df["Net Short Volume $"] / 1_000_000
-    df["Short Volume"] = df["Short Volume"] / 1_000_000
-    df["Net Short Volume"] = df["Net Short Volume"] / 1_000_000
-    df["Short Volume %"] = df["Short Volume %"] * 100
-    df["Dark Pools Position $"] = df["Dark Pools Position $"] / (1_000_000_000)
-    df["Dark Pools Position"] = df["Dark Pools Position"] / 1_000_000
-    df.columns = [
-        "Ticker",
-        "Short Vol.",
-        "Short Vol. %",
-        "Net Short Vol.",
-        "Net Short Vol. ($)",
-        "DP Position",
-        "DP Position ($)",
-    ]
     formats = {
-        "Short Vol.": "{:.2f}M",
-        "Short Vol. %": "{:.2f}%",
-        "Net Short Vol.": "{:.2f}M",
-        "Net Short Vol. ($)": "${:.2f}M",
-        "DP Position": "{:.2f}M",
-        "DP Position ($)": "${:.2f}B",
+        "Short Volume %": "{}%",
+        "Net Short Volume $": "${}",
+        "Dark Pools Position $": "${}",
     }
     for col, f in formats.items():
         df[col] = df[col].map(lambda x: f.format(x))  # pylint: disable=W0640
+
+    df["Short Volume"] = df.apply(
+        lambda x: f"{x['Short Volume']}  (<b>{x['Short Volume %']}</b>)", axis=1
+    )
+    df["Net Short Volume"] = df.apply(
+        lambda x: f"{x['Net Short Volume']:>9} (<b>{x['Net Short Volume $']:>9}</b>)",
+        axis=1,
+    )
+    df["Dark Pools Position"] = df.apply(
+        lambda x: f"{x['Dark Pools Position']:>9}  (<b>{x['Dark Pools Position $']:>9}</b>)",
+        axis=1,
+    )
+    df = df.drop(
+        columns=["Short Volume %", "Net Short Volume $", "Dark Pools Position $"]
+    )
+    df.columns = [
+        "Ticker",
+        "Short Vol.",
+        "Net Short Vol.",
+        "DP Position",
+    ]
     df.set_index("Ticker", inplace=True)
     dindex = len(df.index)
     if dindex > 15:
@@ -80,28 +83,23 @@ def pos_command(sort="dpp_dollar", ascending: bool = False, num: int = 10):
             df_pg.append(df_pg)
             fig = imps.plot_df(
                 df_pg,
-                fig_size=(900, (40 * dindex)),
-                col_width=[2, 3, 4, 3.5, 5, 4, 5],
+                fig_size=(720, (40 * dindex)),
+                col_width=[2, 4, 4, 4],
                 tbl_header=imps.PLT_TBL_HEADER,
                 tbl_cells=imps.PLT_TBL_CELLS,
                 font=imps.PLT_TBL_FONT,
                 row_fill_color=imps.PLT_TBL_ROW_COLORS,
                 paper_bgcolor="rgba(0, 0, 0, 0)",
             )
-            fig.update_traces(cells=(dict(align=["center", "left"])))
+            fig.update_traces(cells=(dict(align=["center", "right"])))
             imagefile = "dps-pos.png"
             imagefile = imps.save_image(imagefile, fig)
 
-            if imps.IMAGES_URL or imps.IMGUR_CLIENT_ID != "REPLACE_ME":
-                image_link = imps.IMAGES_URL + imagefile
+            if imps.IMAGES_URL or not imps.IMG_HOST_ACTIVE:
+                image_link = imps.multi_image(imagefile)
                 images_list.append(imagefile)
             else:
-                imagefile_save = imps.IMG_DIR / imagefile
-                uploaded_image = imps.gst_imgur.upload_image(
-                    imagefile_save, title="something"
-                )
-                image_link = uploaded_image.link
-                os.remove(imagefile_save)
+                image_link = imps.multi_image(imagefile)
 
             embeds_img.append(
                 f"{image_link}",
@@ -149,15 +147,15 @@ def pos_command(sort="dpp_dollar", ascending: bool = False, num: int = 10):
     else:
         fig = imps.plot_df(
             df,
-            fig_size=(900, (40 * dindex)),
-            col_width=[2, 3, 4, 3.5, 5, 4, 5],
+            fig_size=(720, (40 * dindex)),
+            col_width=[2, 4, 4, 4],
             tbl_header=imps.PLT_TBL_HEADER,
             tbl_cells=imps.PLT_TBL_CELLS,
             font=imps.PLT_TBL_FONT,
             row_fill_color=imps.PLT_TBL_ROW_COLORS,
             paper_bgcolor="rgba(0, 0, 0, 0)",
         )
-        fig.update_traces(cells=(dict(align=["center", "left"])))
+        fig.update_traces(cells=(dict(align=["center", "right"])))
         imagefile = imps.save_image("dps-pos.png", fig)
 
         output = {

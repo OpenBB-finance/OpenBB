@@ -8,17 +8,15 @@ from typing import Any, Dict, List, Optional, Type
 import pandas as pd
 import pkg_resources
 import pytest
-from _pytest.config.argparsing import Parser
-
 from _pytest.capture import MultiCapture, SysCapture
 from _pytest.config import Config
+from _pytest.config.argparsing import Parser
 from _pytest.fixtures import SubRequest
 from _pytest.mark.structures import Mark
 
 # IMPORTATION INTERNAL
-from gamestonk_terminal import decorators
-from gamestonk_terminal import helper_funcs
-
+from gamestonk_terminal import decorators, helper_funcs
+from bots import config_discordbot as cfg
 
 # pylint: disable=redefined-outer-name
 
@@ -31,6 +29,7 @@ EXTENSIONS_MATCHING: Dict[str, List[Type]] = {
 }
 
 os.environ["TEST_MODE"] = "True"
+os.environ["GT_IMG_HOST_ACTIVE"] = "False"
 
 
 class Record:
@@ -393,6 +392,15 @@ def default_json_path(request: SubRequest) -> str:
 def record_stdout_markers(request: SubRequest) -> List[Mark]:
     """All markers applied to the certain test together with cassette names associated with each marker."""
     return list(request.node.iter_markers(name="record_stdout"))
+
+
+@pytest.fixture(scope="session", autouse=True)
+def delete_images():
+    yield
+    mydir = os.path.join(cfg.GST_PATH, "bots", "interactive", "images")
+    filelist = [f for f in os.listdir(mydir) if f.endswith(".png")]
+    for f in filelist:
+        os.remove(os.path.join(mydir, f))
 
 
 @pytest.fixture(autouse=True)

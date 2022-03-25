@@ -37,7 +37,7 @@ def get_bitcoin(mock_load):
 class TestCoinGeckoAPI(TestCase):
     # pylint: disable = no-value-for-parameter
     coin, symbol = get_bitcoin()
-    coin_map_df = prepare_all_coins_df().set_index("Symbol").loc[symbol]
+    coin_map_df = prepare_all_coins_df().set_index("Symbol").loc[symbol].iloc[0]
 
     def test_coin_api_load(self):
         """

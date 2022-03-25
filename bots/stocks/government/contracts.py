@@ -55,6 +55,7 @@ def contracts_command(
     imagefile = "gov_contracts.png"
     dataBytesIO = io.BytesIO()
     plt.savefig(dataBytesIO)
+    plt.close("all")
 
     dataBytesIO.seek(0)
     imagefile = imps.image_border(imagefile, base64=dataBytesIO)
