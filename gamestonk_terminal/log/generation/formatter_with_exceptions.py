@@ -52,8 +52,8 @@ class FormatterWithExceptions(logging.Formatter):
         for word in text.split():
             if (
                 ip_reg.search(word)
-                and int(max(word.split(""))) < 256
-                and int(min(word.split(""))) >= 0
+                # and int(max(word.split(""))) < 256
+                # and int(min(word.split(""))) >= 0
             ):
                 s_list.append("suspected_ip")
             elif "@" in word and "." in word:
