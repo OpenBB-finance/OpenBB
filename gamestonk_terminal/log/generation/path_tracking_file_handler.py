@@ -13,7 +13,7 @@ from gamestonk_terminal.log.collection.log_sender import LogSender
 from gamestonk_terminal.log.collection.logging_clock import LoggingClock, Precision
 from gamestonk_terminal.log.generation.directories import get_log_dir, get_log_sub_dir
 from gamestonk_terminal.log.generation.expired_files import (
-    get_expired_files,
+    get_expired_file_list,
     get_timestamp_from_x_days,
     remove_file_list,
 )
@@ -56,11 +56,11 @@ class PathTrackingFileHandler(TimedRotatingFileHandler):
 
         archives_directory = get_log_sub_dir(name=ARCHIVES_FOLDER_NAME)
         tmp_directory = get_log_sub_dir(name=TMP_FOLDER_NAME)
-        expired_archives_file_list = get_expired_files(
+        expired_archives_file_list = get_expired_file_list(
             directory=archives_directory,
             before_timestamp=before_timestamp,
         )
-        expired_tmp_file_list = get_expired_files(
+        expired_tmp_file_list = get_expired_file_list(
             directory=tmp_directory,
             before_timestamp=before_timestamp,
         )
@@ -107,7 +107,7 @@ class PathTrackingFileHandler(TimedRotatingFileHandler):
         log_sender = self.__log_sender
         log_directory = get_log_dir()
 
-        expired_log_file_list = get_expired_files(
+        expired_log_file_list = get_expired_file_list(
             directory=log_directory,
             before_timestamp=before_timestamp,
         )
@@ -174,4 +174,7 @@ class PathTrackingFileHandler(TimedRotatingFileHandler):
             log_sender = self.__log_sender
             closed_log_path = self.baseFilename
             log_sender.send_path(path=Path(closed_log_path), last=True)
-            log_sender.join()
+            try:
+                log_sender.join()
+            except Exception:
+                pass
