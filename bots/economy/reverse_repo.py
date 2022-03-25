@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def reverse_repo_command(days: int = 100):
+def reverse_repo_command(days: int = 50):
     """Displays Reverse Repo [Stocksera.com]"""
 
     # Debug user input

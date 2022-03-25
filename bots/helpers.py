@@ -392,6 +392,7 @@ def save_image(filename: str, fig: plotly.graph_objects) -> str:
     image = Image.open(filesave)
     image = autocrop_image(image, 0)
     image.save(filesave, "PNG", quality=100)
+    image.close()
     return imagefile
 
 
@@ -434,10 +435,13 @@ def image_border(filename: str, **kwargs) -> str:
     y2 = int(0.5 * im_bg.size[1]) + int(0.5 * img.size[1])
     img = img.convert("RGB")
     im_bg.paste(img, box=(x1 - 5, y1, x2 - 5, y2))
+    img.close()
     im_bg.save(filesave, "PNG", quality=100)
+    im_bg.close()
     image = Image.open(filesave)
     image = autocrop_image(image, 0)
     image.save(filesave, "PNG", quality=100)
+    image.close()
     return imagefile
 
 
@@ -489,8 +493,9 @@ class ShowView:
                 imagefile = imps.IMG_DIR.joinpath(filename)
                 image = disnake.File(imagefile, filename=filename)
                 embed.set_image(url=f"attachment://{filename}")
-                os.remove(imagefile)
                 await inter.send(embed=embed, file=image)
+                image.close()
+                os.remove(imagefile)
             else:
                 await inter.send(embed=embed)
 
@@ -625,7 +630,7 @@ class ShowView:
                         .replace(".html)", ".html\n\n")
                     )
                     res_title = f"{res_title}\n{description}"
-                if N < len(title) and N != 0:
+                if N < len(res_title) and N != 0:
                     res_title = data["titles"][N] if "titles" in data else ""
                 with open(imagefile, "rb") as image:
                     bot.reply_to(message, res_title)
