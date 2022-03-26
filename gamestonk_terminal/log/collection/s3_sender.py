@@ -8,9 +8,9 @@ import requests
 try:
     import boto3
 except ImportError:
-    WITH_BOTO3 = True
-finally:
     WITH_BOTO3 = False
+finally:
+    WITH_BOTO3 = True
 
 # IMPORTATION INTERNAL
 from gamestonk_terminal import config_terminal as cfg
@@ -20,8 +20,8 @@ from gamestonk_terminal.log.constants import DEFAULT_API_URL, DEFAULT_BUCKET
 
 
 def send_to_s3_directly(
-    aws_access_key: str,
     aws_access_key_id: str,
+    aws_secret_access_key: str,
     bucket: str,
     file: Path,
     object_key: str,
@@ -31,8 +31,8 @@ def send_to_s3_directly(
 
     s3_client = boto3.client(
         service_name="s3",
-        aws_access_key_id=aws_access_key,
-        aws_secret_access_key=aws_access_key_id,
+        aws_access_key_id=aws_access_key_id,
+        aws_secret_access_key=aws_secret_access_key,
     )
     s3_client.upload_file(str(file), bucket, object_key)
 
@@ -70,8 +70,8 @@ def send_to_s3_using_presigned_url(
 
 def send_to_s3(archives_file: Path, file: Path, object_key: str, tmp_file: Path):
     api_url = DEFAULT_API_URL
-    aws_access_key = cfg.AWS_ACCESS_KEY
     aws_access_key_id = cfg.AWS_ACCESS_KEY_ID
+    aws_secret_access_key = cfg.AWS_SECRET_ACCESS_KEY
     bucket = DEFAULT_BUCKET
 
     if file.stat().st_size <= 0:
@@ -81,10 +81,10 @@ def send_to_s3(archives_file: Path, file: Path, object_key: str, tmp_file: Path)
     tmp_file.parent.mkdir(exist_ok=True)
     file = file.rename(tmp_file)
 
-    if aws_access_key != "REPLACE_ME" and aws_access_key_id != "REPLACE_ME":
+    if aws_access_key_id != "REPLACE_ME" and aws_secret_access_key != "REPLACE_ME":
         send_to_s3_directly(
-            aws_access_key=aws_access_key_id,
             aws_access_key_id=aws_access_key_id,
+            aws_secret_access_key=aws_secret_access_key,
             bucket=bucket,
             file=file,
             object_key=object_key,
