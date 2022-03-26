@@ -87,7 +87,7 @@ jobs:
         run: |
           conda info
           pip install --requirement requirements-full.txt
-          pip install --requirements bots/requirements.txt
+          pip install --requirement bots/requirements.txt
 
       - name: List installed packages (Bash)
         shell: bash -l {0}
