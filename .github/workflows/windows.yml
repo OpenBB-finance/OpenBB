@@ -77,7 +77,6 @@ jobs:
           restore-keys: |
             windows-pip-
 
-      # TODO: Is there a better way to do this?
       - name: Uninstall Brotlipy
         shell: bash -l {0}
         run: |
@@ -88,6 +87,7 @@ jobs:
         run: |
           conda info
           pip install --requirement requirements-full.txt
+          pip install --requirements bots/requirements.txt
 
       - name: List installed packages (Bash)
         shell: bash -l {0}
