@@ -175,6 +175,6 @@ class PathTrackingFileHandler(TimedRotatingFileHandler):
             closed_log_path = self.baseFilename
             log_sender.send_path(path=Path(closed_log_path), last=True)
             try:
-                log_sender.join()
+                log_sender.join(timeout=3)
             except Exception:
                 pass
