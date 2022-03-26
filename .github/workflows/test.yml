@@ -237,7 +237,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip-
 
-      # TODO: Is there a better way to do this?
       - name: Uninstall Brotlipy
         shell: bash -l {0}
         run: |

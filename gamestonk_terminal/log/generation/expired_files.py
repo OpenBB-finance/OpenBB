@@ -18,7 +18,7 @@ def get_expired_file_list(directory: Path, before_timestamp: float):
     expired_files = list()
     if directory.exists and directory.is_dir():
         for file in directory.iterdir():
-            if file.lstat().st_mtime < before_timestamp:
+            if file.is_file() and file.lstat().st_mtime < before_timestamp:
                 expired_files.append(file)
 
     return expired_files
