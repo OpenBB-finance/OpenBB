@@ -1,0 +1,14 @@
+Valid categories: 
+/candle
+ /dd
+ /disc
+ /dps
+ /econ
+ /etf
+ /futures
+ /gov
+ /ins
+ /opt
+ /q
+ /scr
+ /ta

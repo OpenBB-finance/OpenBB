@@ -71,6 +71,7 @@ def fisher_command(
     # Output Data
     if interval != 1440:
         df_ta = df_ta.loc[(df_ta.index >= bar_start) & (df_ta.index < end)]
+    df_ta = df_ta.fillna(0.0)
 
     plot = load_candle.candle_fig(
         df_ta,
@@ -89,15 +90,16 @@ def fisher_command(
     )
     title = f"<b>{plot['plt_title']} Fisher Transform</b>"
     fig = plot["fig"]
+    idx = 6 if interval != 1440 else 11
 
-    dmin = df_ta.iloc[:, 7].values.min()
-    dmax = df_ta.iloc[:, 7].values.max()
+    dmin = df_ta.iloc[:, (idx + 1)].values.min()
+    dmax = df_ta.iloc[:, (idx + 1)].values.max()
     fig.add_trace(
         go.Scatter(
             name="Fisher",
             mode="lines",
             x=df_ta.index,
-            y=df_ta.iloc[:, 6].values,
+            y=df_ta.iloc[:, idx].values,
             opacity=1,
         ),
         row=2,
@@ -108,7 +110,7 @@ def fisher_command(
             name="Signal",
             mode="lines",
             x=df_ta.index,
-            y=df_ta.iloc[:, 7].values,
+            y=df_ta.iloc[:, (idx + 1)].values,
             opacity=1,
         ),
         row=2,

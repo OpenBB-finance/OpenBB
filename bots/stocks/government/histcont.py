@@ -59,6 +59,7 @@ def histcont_command(ticker=""):
     dataBytesIO = io.BytesIO()
     plt.savefig(dataBytesIO)
     dataBytesIO.seek(0)
+    plt.close("all")
 
     imagefile = imps.image_border(imagefile, base64=dataBytesIO)
 

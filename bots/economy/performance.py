@@ -1,5 +1,4 @@
 import logging
-import os
 
 import disnake
 import pandas as pd
@@ -125,16 +124,11 @@ def performance_command(economy_group="sector"):
             imagefile = "econ_performance.png"
             imagefile = imps.save_image(imagefile, fig)
 
-            if imps.IMAGES_URL or imps.IMGUR_CLIENT_ID != "REPLACE_ME":
-                image_link = imps.IMAGES_URL + imagefile
+            if imps.IMAGES_URL or not imps.IMG_HOST_ACTIVE:
+                image_link = imps.multi_image(imagefile)
                 images_list.append(imagefile)
             else:
-                imagefile_save = imps.IMG_DIR / imagefile
-                uploaded_image = imps.gst_imgur.upload_image(
-                    imagefile_save, title="something"
-                )
-                image_link = uploaded_image.link
-                os.remove(imagefile_save)
+                image_link = imps.multi_image(imagefile)
 
             embeds_img.append(
                 f"{image_link}",

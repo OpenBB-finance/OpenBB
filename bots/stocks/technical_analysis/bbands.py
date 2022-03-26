@@ -97,16 +97,18 @@ def bbands_command(
     # Output Data
     if interval != 1440:
         df_ta = df_ta.loc[(df_ta.index >= bar_start) & (df_ta.index < end)]
+    df_ta = df_ta.fillna(0.0)
 
     plot = load_candle.candle_fig(df_ta, ticker, interval, extended_hours, news)
     title = f"<b>{plot['plt_title']} Bollinger Bands ({ma_mode.upper()})</b>"
     fig = plot["fig"]
+    idx = 6 if interval != 1440 else 11
 
     fig.add_trace(
         go.Scatter(
             name=f"BBU_{length}_{n_std}",
             x=df_ta.index,
-            y=df_ta.iloc[:, 8].values,
+            y=df_ta.iloc[:, (idx + 2)].values,
             opacity=1,
             mode="lines",
             line_color="indigo",
@@ -119,7 +121,7 @@ def bbands_command(
         go.Scatter(
             name=f"BBL_{length}_{n_std}",
             x=df_ta.index,
-            y=df_ta.iloc[:, 6].values,
+            y=df_ta.iloc[:, idx].values,
             opacity=1,
             mode="lines",
             line_color="indigo",
@@ -134,7 +136,7 @@ def bbands_command(
         go.Scatter(
             name=f"BBM_{length}_{n_std}",
             x=df_ta.index,
-            y=df_ta.iloc[:, 7].values,
+            y=df_ta.iloc[:, (idx + 1)].values,
             opacity=1,
             line=dict(
                 width=1.5,

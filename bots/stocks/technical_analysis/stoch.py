@@ -87,6 +87,7 @@ def stoch_command(
     # Output Data
     if interval != 1440:
         df_ta = df_ta.loc[(df_ta.index >= bar_start) & (df_ta.index < end)]
+    df_ta = df_ta.fillna(0.0)
 
     plot = load_candle.candle_fig(
         df_ta,
@@ -105,12 +106,13 @@ def stoch_command(
     )
     title = f"<b>{plot['plt_title']} STOCH RSI</b>"
     fig = plot["fig"]
+    idx = 6 if interval != 1440 else 11
 
     fig.add_trace(
         go.Scatter(
             name=f"%K {fast_k}, {slow_d}, {slow_k}",
             x=df_ta.index,
-            y=df_ta.iloc[:, 6].values,
+            y=df_ta.iloc[:, idx].values,
             line=dict(width=1.8),
             mode="lines",
             opacity=1,
@@ -122,7 +124,7 @@ def stoch_command(
         go.Scatter(
             name=f"%D {fast_k}, {slow_d}, {slow_k}",
             x=df_ta.index,
-            y=df_ta.iloc[:, 7].values,
+            y=df_ta.iloc[:, (idx + 1)].values,
             line=dict(width=1.8, dash="dash"),
             opacity=1,
         ),
