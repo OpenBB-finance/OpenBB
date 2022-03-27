@@ -32,6 +32,7 @@ def view_command(ticker=""):
     im.save(dataBytesIO, "PNG", quality=100)
     dataBytesIO.seek(0)
     imagefile = image_border(imagefile, base64=dataBytesIO)
+    im.close()
 
     return {
         "title": f"Stocks: [Finviz] Trendlines & Data {ticker.upper()}",

@@ -37,7 +37,7 @@ def fib_command(
             news,
         )
 
-    past_days = past_days if (interval != 1440) or (start != "") else 365
+    past_days = (past_days + 1) if (interval != 1440) or (start != "") else 365
 
     # Retrieve Data
     (df_stock, start, end, bar_start,) = load_candle.stock_data(

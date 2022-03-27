@@ -1,0 +1,1 @@
+Required syntax: /candle/ticker/interval/past_days

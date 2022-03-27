@@ -96,14 +96,13 @@ def psi_command(ticker: str = ""):
     if imps.PLT_WATERMARK:
         fig.add_layout_image(imps.PLT_WATERMARK)
     fig.update_traces(hovertemplate="%{y:.2f}")
-    fig.update_xaxes(showspikes=True, spikesnap="cursor", spikemode="across")
-    fig.update_yaxes(showspikes=True, spikethickness=2)
     fig.update_layout(
         margin=dict(l=10, r=0, t=40, b=20),
         template=imps.PLT_TA_STYLE_TEMPLATE,
         colorway=imps.PLT_TA_COLORWAY,
-        title=f"Price vs Short Volume Interest for {ticker}",
-        title_x=0.45,
+        title=f"<b>Price vs Short Volume Interest for {ticker}</b>",
+        title_x=0.025,
+        title_font_size=14,
         yaxis_title="Stock Price ($)",
         yaxis2_title="FINRA Volume [M]",
         yaxis3_title="Short Vol. %",
@@ -111,6 +110,7 @@ def psi_command(ticker: str = ""):
         yaxis=dict(
             side="right",
             fixedrange=False,
+            showgrid=False,
             titlefont=dict(color="#fdc708"),
             tickfont=dict(color="#fdc708"),
             nticks=20,
@@ -137,8 +137,8 @@ def psi_command(ticker: str = ""):
         dragmode="pan",
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
         hovermode="x unified",
-        spikedistance=1000,
-        hoverdistance=100,
+        spikedistance=1,
+        hoverdistance=1,
     )
 
     imagefile = "dps_psi.png"

@@ -133,7 +133,7 @@ Select one of the following reports:[/info][cmds]
 
         (known_args, other_args) = self.parser.parse_known_args(an_input.split())
 
-        if not other_args and an_input in ("1", "3", "4"):
+        if not other_args and an_input in ("2", "3", "5"):
             console.print("[red]Error: No ticker provided\n[/red]")
             logger.error("Exception: No ticker provided")
             return self.queue

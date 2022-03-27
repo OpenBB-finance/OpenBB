@@ -1,9 +1,10 @@
 name: Tests
 env:
-  PIP_DEFAULT_TIMEOUT: 100
-  GTFF_USE_PROMPT_TOOLKIT: false
-  GTFF_USE_ION: false
   GTFF_ENABLE_QUICK_EXIT: true
+  GTFF_LOG_COLLECTION: false
+  GTFF_USE_ION: false
+  GTFF_USE_PROMPT_TOOLKIT: false
+  PIP_DEFAULT_TIMEOUT: 100
 on: [pull_request, push]
 jobs:
   linting:
@@ -69,10 +70,10 @@ jobs:
 
       - name: Install dependencies
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-        run: poetry install --no-interaction --no-root
+        run: poetry install --no-interaction --no-root -E bots -E bots
 
       - name: Install Package
-        run: poetry install --no-interaction
+        run: poetry install --no-interaction -E bots -E bots
 
       - name: Run tests
         env:
@@ -135,10 +136,10 @@ jobs:
 
       - name: Install dependencies
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-        run: poetry install --no-interaction --no-root
+        run: poetry install --no-interaction --no-root -E bots
 
       - name: Install Package
-        run: poetry install --no-interaction
+        run: poetry install --no-interaction -E bots
 
       - name: List installed packages
         shell: bash -l {0}
@@ -236,7 +237,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip-
 
-      # TODO: Is there a better way to do this?
       - name: Uninstall Brotlipy
         shell: bash -l {0}
         run: |
@@ -245,7 +245,7 @@ jobs:
       - name: Install dependencies (Bash)
         shell: bash -l {0}
         run: |
-          pip install --requirement requirements-full.txt
+          pip install --requirement bots/requirements.txt
 
       - name: List installed packages (Bash)
         shell: bash -l {0}

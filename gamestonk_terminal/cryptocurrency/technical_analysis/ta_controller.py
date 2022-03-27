@@ -91,7 +91,6 @@ class TechnicalAnalysisController(CryptoBaseController):
     ema         exponential moving average
     sma         simple moving average
     wma         weighted moving average
-    hma         hull moving average
     zlma        zero lag moving average
     vwap        volume weighted average price
 [info]Momentum:[/info]
