@@ -35,7 +35,11 @@
   <h3 align="center">Gamestonk Terminal 🚀</h3>
   <p align="center">Click on the gif below for a DEMO of the terminal.</p>
   
-  [![honest work](https://user-images.githubusercontent.com/25267873/148552707-12dcca7e-0b7e-481c-9055-17436c2bc4cf.gif)](https://www.youtube.com/watch?v=fqGPK8OVHLk)
+<p align="center">
+   <a href="https://www.youtube.com/watch?v=fqGPK8OVHLk" rel="honest work">
+      <img src="images/usage.gif" alt="drawing" width="1000"/>
+   </a>
+</p>
 
   <p align="center">
     Investment research for everyone.
@@ -53,7 +57,7 @@
     Suggest Improvement</a>
     ·
     <a href="https://github.com/GamestonkTerminal/GamestonkTerminal/issues/new?assignees=&labels=new+feature&template=feature_request.md&title=%5BFR%5D">
-    Request Feature</a>
+    Request a Feature</a>
   </p>
 </p>
 
@@ -86,11 +90,21 @@ As a modern Python-based environment, GamestonkTerminal opens access to numerous
 (Pandas, Numpy, Scipy, Jupyter), Machine Learning (Pytorch, Tensorflow, Sklearn, Flair), and Data Acquisition
 (Beautiful Soup, and numerous third-party APIs).
 
+## Installation
+
+If you wish to install the Terminal, there are currently four options:
+
+- [Using the Installer](gamestonk_terminal/README.md#User) (recommended if you just want to use the terminal)
+- [Using Python](gamestonk_terminal/README.md#anaconda--python) (recommended if you want to develop new features)
+- [Using Docker](gamestonk_terminal/README.md#Docker-Installation) (alternative option to the installer if preferred)
+- [Using Docker Web UI](gamestonk_terminal/README.md#web-ui---docker) (if you want to deploy the web UI for users to access over your LAN)
+
 ## Contributing
 
 There are 3 main ways of contributing to this project.
 
-For a 1h coding session where the architecture of the repo is explained while a new feature is added, check <https://www.youtube.com/watch?v=9BMI9cleTTg>.
+For a 1 hour coding session where the architecture of the repo is explained while a new feature is added, check
+[here](https://www.youtube.com/watch?v=9BMI9cleTTg).
 
 **Become a Contributor 🦍**
 
