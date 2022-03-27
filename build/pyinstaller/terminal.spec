@@ -84,7 +84,7 @@ exe_kwargs = dict(
     target_arch="x86_64",
     codesign_identity=None,
     entitlements_file=None,
-    icon=os.path.join(os.getcwd(), "..", "..", "images", "gst_app.ico"),
+    icon=os.path.join(os.getcwd(), "images", "gst_app.ico"),
 )
 
 # Packaging settings
@@ -108,8 +108,9 @@ elif build_type == "folder":
 
 # Platform specific settings
 if is_win:
+    print(os.getcwd())
     splash = Splash(
-        os.path.join(os.getcwd(), "..", "..", "images", "splashscreen.png"),
+        os.path.join(os.getcwd(), "images", "splashscreen.png"),
         binaries=a.binaries,
         datas=a.datas,
         text_pos=(200, 400),
