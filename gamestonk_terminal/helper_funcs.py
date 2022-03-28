@@ -1159,9 +1159,10 @@ def export_data(
             default_filename = f"{now.strftime('%Y%m%d_%H%M%S')}_{path_cmd}_{func_name}"
 
         else:
-            default_filename = f"{func_name}_{now.strftime('%Y%m%d_%H%M%S')}"
-
             if gtff.PACKAGED_APPLICATION:
+                default_filename = (
+                    f"{now.strftime('%Y%m%d_%H%M%S')}_{path_cmd}_{func_name}"
+                )
                 full_path_dir = os.path.join(
                     os.environ["HOME"], "Desktop", "GST-exports"
                 )
@@ -1175,6 +1176,7 @@ def export_data(
                         )
                         return
             else:
+                default_filename = f"{func_name}_{now.strftime('%Y%m%d_%H%M%S')}"
                 full_path_dir = dir_path.replace("gamestonk_terminal", "exports")
 
         for exp_type in export_type.split(","):
