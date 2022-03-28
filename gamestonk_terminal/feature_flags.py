@@ -126,3 +126,5 @@ EXPORT_FOLDER_PATH = assign_feature_flag("GTFF_EXPORT_FOLDER_PATH", "")
 
 # Set a flag if the application is running from a packaged bundle
 PACKAGED_APPLICATION = assign_feature_flag("GTFF_PACKAGED_APPLICATION", "False", True)
+
+LOGGING_COMMIT_HASH = assign_feature_flag("GTFF_LOGGING_COMMIT_HASH", "REPLACE_ME", False)
