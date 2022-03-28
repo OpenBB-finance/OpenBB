@@ -13,8 +13,11 @@ finally:
     WITH_BOTO3 = True
 
 # IMPORTATION INTERNAL
-from gamestonk_terminal import config_terminal as cfg
-from gamestonk_terminal.log.constants import DEFAULT_API_URL, DEFAULT_BUCKET
+from gamestonk_terminal.log.constants import (
+    DEFAULT_API_URL,
+    DEFAULT_BUCKET,
+)
+from gamestonk_terminal.log.generation.settings import AWSSettings
 
 # DO NOT USE THE FILE LOGGER IN THIS MODULE
 
@@ -73,10 +76,14 @@ def send_to_s3_using_presigned_url(
         pass
 
 
-def send_to_s3(archives_file: Path, file: Path, object_key: str, tmp_file: Path):
+def send_to_s3(
+    archives_file: Path,
+    aws_settings: AWSSettings,
+    file: Path,
+    object_key: str,
+    tmp_file: Path,
+):
     api_url = DEFAULT_API_URL
-    aws_access_key_id = cfg.AWS_ACCESS_KEY_ID
-    aws_secret_access_key = cfg.AWS_SECRET_ACCESS_KEY
     bucket = DEFAULT_BUCKET
 
     if file.stat().st_size <= 0:
@@ -86,10 +93,13 @@ def send_to_s3(archives_file: Path, file: Path, object_key: str, tmp_file: Path)
     tmp_file.parent.mkdir(exist_ok=True)
     file = file.rename(tmp_file)
 
-    if aws_access_key_id != "REPLACE_ME" and aws_secret_access_key != "REPLACE_ME":
+    if (
+        aws_settings.aws_access_key_id != "REPLACE_ME"
+        and aws_settings.aws_secret_access_key != "REPLACE_ME"
+    ):
         send_to_s3_directly(
-            aws_access_key_id=aws_access_key_id,
-            aws_secret_access_key=aws_secret_access_key,
+            aws_access_key_id=aws_settings.aws_access_key_id,
+            aws_secret_access_key=aws_settings.aws_secret_access_key,
             bucket=bucket,
             file=file,
             object_key=object_key,

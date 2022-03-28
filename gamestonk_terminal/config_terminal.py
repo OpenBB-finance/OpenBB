@@ -1,6 +1,11 @@
+# IMPORTATION STANDARD
 import os
+from distutils.util import strtobool
+
+# IMPORTATION THIRDPARTY
 import dotenv
 
+# IMPORTATION INTERNAL
 from .helper_classes import TerminalStyle as _TerminalStyle
 
 env_files = [f for f in os.listdir() if f.endswith(".env")]
@@ -26,10 +31,14 @@ PAPERMILL_NOTEBOOK_REPORT_PORT = (
 
 # USE IN LOG LINES + FOR FOLDER NAME INSIDE S3 BUCKET
 LOGGING_APP_NAME = os.getenv("GT_LOGGING_APP_NAME") or "gst"
+# AWS KEYS
+LOGGING_AWS_ACCESS_KEY_ID = os.getenv("GT_LOGGING_AWS_ACCESS_KEY_ID") or "REPLACE_ME"
+LOGGING_AWS_SECRET_ACCESS_KEY = os.getenv("GT_LOGGING_AWS_SECRET_ACCESS_KEY") or "REPLACE_ME"
 # D | H | M | S
 LOGGING_FREQUENCY = os.getenv("GT_LOGGING_FREQUENCY") or "H"
 # stdout,stderr,noop,file
 LOGGING_HANDLERS = os.getenv("GT_LOGGING_HANDLERS") or "file"
+LOGGING_ROLLING_CLOCK = strtobool(os.getenv("GT_LOGGING_ROLLING_CLOCK") or "True")
 # CRITICAL = 50
 # FATAL = CRITICAL
 # ERROR = 40
@@ -143,10 +152,6 @@ API_BITQUERY_KEY = os.getenv("GT_API_BITQUERY_KEY") or "REPLACE_ME"
 # https://terra.smartstake.io/
 API_SMARTSTAKE_KEY = os.getenv("GT_API_SMARTSTAKE_KEY") or "REPLACE_ME"
 API_SMARTSTAKE_TOKEN = os.getenv("GT_API_SMARTSTAKE_TOKEN") or "REPLACE_ME"
-
-# AWS KEYS
-AWS_ACCESS_KEY_ID = os.getenv("GT_AWS_ACCESS_KEY_ID") or "REPLACE_ME"
-AWS_SECRET_ACCESS_KEY = os.getenv("GT_AWS_SECRET_ACCESS_KEY") or "REPLACE_ME"
 
 # https://messari.io/
 API_MESSARI_KEY = os.getenv("GT_API_MESSARI_KEY") or "REPLACE_ME"
