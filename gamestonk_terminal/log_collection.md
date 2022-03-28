@@ -1,71 +1,73 @@
 # Log Collection Feature
 
-## 1. Purpose
+## 1. Contribution
 
-**GOAL**
+Code is not the only way you can contribute on improving GamestonkTerminal.
 
-In order to improve GamestonkTerminal, we need to know how people are using the tool, like :
+You can help GamestonkTerminal Team by enabling reports about your usage and errors.
 
-- Which are the most used features
-- Are they bugs/crashes on certain configuration (OS, python version...)
+No Personal Identifiable Information are collected (PII).
 
-Knowing that we can focus part of our engineering effort on most common use cases.
+Without these information we won't be able to :
+- Focus on most used features
+- Detect and fix errors (not everyone has the time to report bugs)
+
+Personal Identifiable Information : PII is anything that can link you to the data (IP/E-mail/Credentials...)
 
 **ISSUE**
 
 GamestonkTerminal is an onsite application : that you install on your computer.
 
-On a contrary of a web application that can track the usage of every button and page : we have no means to know what happens once GamestonkTerminal is installed on a computer.
+On a contrary of a web application that can track the usage of every button and page.
+
+We have no means to know if a feature we spent time and effort on is actually used or crashes.
 
 **LOG COLLECTION**
 
-Log Collection feature allow exportation of some GamestonkTerminal logs.
+Log Collection feature allow exportation of reports about GamestonkTerminal.
 
 We are not logging credentials or elements that allows identifying you.
 
-And we are exporting only limited portion of these logs.
-
 ## 2. How to setup : Log Collection ?
 
-By default log collection are enabled.
+By default log collection is enabled.
 
-**ENABLE**
+You can disable it running the command : `/settings/logcollection`
 
-Set this environment variable :
+It should appear as red in the `/settings/help` table when disabled.
 
-```sh
-GTFF_LOG_COLLECTION = True
-```
+Run the same command another time to enable it.
 
-**DISABLE**
-
-Set this environment variable :
-
-```sh
-GTFF_LOG_COLLECTION = False
-```
+It should appear as green in the `/settings/help` table when enabled.
 
 ## 3. What is collected ?
 
-**PRIVACY**
+**Personal Identifiable Information**
 
-We are making sure that none of this data are collect :
+We everything we to : filter any Personal Identifiable information and credentials.
 
-- data that let identify you
-- credentials you might use with the Terminal
+Credentials are not logged at all.
 
-**DATA LIST**
+**NOT COLLECTED**
 
-Here is a list of data and whether they are collected or no :
+Here is a list of data we are not collecting :
 
 |**Data**|**Description**|**Collected ?**|
 |:-|:-|:-|
 |User IP Address|User IP address.|NO|
 |User API KEYS|API Keys to connect to third parties API, like : <br>- ALPHAVANTAGE <br> - COINBASE, <br>- COINPAPRIKA <br>- DEGIRO <br>- REDDIT|NO|
-|User information|Other information that can let identify the users, like : <br>- E-mail <br> - LastName, <br>- Firstname|NO|
-|Session duration|Start and end time of a session.|YES|
-|Session size|Number of line logged within a user session.|YES|
-|Number of error|Number of error lines logged within a user session.|YES|
-|Commands|Commands run during a session, like : <br>- help <br>- load <br>- candle|NO|
-|Commands arguments|Arguments of the commands run during a session, like : <br>- load TSLA|NO|
-|Exception|Exception generated when a commands crashes : <br>- load TSLA|NO|
+|User information|Other information that can let identify the users, like : <br>- E-mail <br> - LastName <br>- Firstname|NO|
+|File/Folder paths|When errors occurs usually computers paths are shown : we filter those.|NO|
+
+
+**COLLECTED**
+
+Here is an exhaustive list of what can be collected :
+
+|**Data**|**Description**|**Examples**|**Collected ?**|
+|:-|:-|:-|:-|
+|Python version|Python version on which GamestonkTerminal|<br>- 3.8.12 <br>- 3.9|YES|
+|OS|Platform on which GamestonkTerminal, is running like|<br>- Linux <br>- Darwin <br>- Windows|YES|
+|Exception/Error|When there is a crash of a command.||YES|
+|Timestamp|Timestamp associated with logged information.|<br>- Launch <br>- Start of command<br>- End of command<br>- Exit<br>- Exception/Error|YES|
+|Command|Commands and arguments run during a session|<br>- /help <br>- /crypto/disc/cpsearch -q eth <br>- /crypto/ov/cpinfo --help <br>- /stocks/load TSLA <br>- /stocks/candle --trend|YES|
