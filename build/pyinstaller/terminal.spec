@@ -28,7 +28,7 @@ default_feature_flags_path = os.path.join(build_assets_folder, "GTFF_DEFAULTS.js
 with open(default_feature_flags_path, "r") as f:
     default_gtff = json.load(f)
 
-default_gtff["GT_LOGGING_COMMIT_HASH"] = commit_hash
+default_gtff["GTFF_LOGGING_COMMIT_HASH"] = commit_hash
 with open(default_feature_flags_path, "w") as f:
     json.dump(default_gtff, f, indent=4)
 
