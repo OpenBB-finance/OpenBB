@@ -10,7 +10,10 @@ from pathlib import Path
 from typing import Optional
 
 # IMPORTATION THIRDPARTY
-import git
+try:
+    import git
+except ImportError:
+    pass
 
 # IMPORTATION INTERNAL
 import gamestonk_terminal.feature_flags as gtff
