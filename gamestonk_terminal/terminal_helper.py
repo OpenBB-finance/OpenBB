@@ -66,6 +66,10 @@ def sha256sum(filename):
 
 def update_terminal():
     """Updates the terminal by running git pull in the directory.  Runs poetry install if needed"""
+
+    if gtff.LOGGING_COMMIT_HASH != "REPLACE_ME":
+        return 0
+
     poetry_hash = sha256sum("poetry.lock")
 
     completed_process = subprocess.run("git pull", shell=True, check=False)  # nosec
@@ -81,9 +85,9 @@ def update_terminal():
         "Seems like more modules have been added, grab a coke, this may take a while."
     )
 
-    completed_process = subprocess.run(
+    completed_process = subprocess.run(  # nosec
         "poetry install", shell=True, check=False
-    )  # nosec
+    )
     if completed_process.returncode != 0:
         return completed_process.returncode
 
@@ -110,30 +114,52 @@ def about_us():
 
     console.print(
         "[green]Thanks for using Gamestonk Terminal. This is our way![/green]\n"
-        "\n"
-        "[cyan]Join our community on discord: [/cyan]https://discord.gg/Up2QGbMKHY\n"
-        "[cyan]Follow our twitter for updates: [/cyan]https://twitter.com/gamestonkt\n"
-        "[cyan]Access our landing page: [/cyan]https://gamestonkterminal.github.io/GamestonkTerminal/\n"
-        "\n"
-        "[yellow]Partnerships:[/yellow]\n"
-        "[cyan]FinBrain: [/cyan]https://finbrain.tech\n"
-        "[cyan]Quiver Quantitative: [/cyan]https://www.quiverquant.com\n"
-        "[cyan]SentimentInvestor: [/cyan]https://sentimentinvestor.com\n"
-        "\n[red]"
-        "DISCLAIMER: Trading in financial instruments involves high risks including the risk of losing some, "
-        "or all, of your investment amount, and may not be suitable for all investors. Before deciding to trade in "
-        "financial instrument you should be fully informed of the risks and costs associated with trading the financial "
-        "markets, carefully consider your investment objectives, level of experience, and risk appetite, and seek "
-        "professional advice where needed. The data contained in Gamestonk Terminal (GST) is not necessarily accurate. "
-        "GST and any provider of the data contained in this website will not accept liability for any loss or damage "
-        "as a result of your trading, or your reliance on the information displayed.[/red]\n"
+        + "\n"
+        + "[cyan]Join our community on discord: [/cyan]https://discord.gg/Up2QGbMKHY\n"
+        + "[cyan]Follow our twitter for updates: [/cyan]https://twitter.com/gamestonkt\n"
+        + "[cyan]Access our landing page: [/cyan]https://gamestonkterminal.github.io/GamestonkTerminal/\n"
+        + "\n"
+        + "[yellow]Partnerships:[/yellow]\n"
+        + "[cyan]FinBrain: [/cyan]https://finbrain.tech\n"
+        + "[cyan]Quiver Quantitative: [/cyan]https://www.quiverquant.com\n"
+        + "[cyan]SentimentInvestor: [/cyan]https://sentimentinvestor.com\n"
+        + "\n[red]"
+        + "DISCLAIMER: Trading in financial instruments involves high risks including the risk of losing some, "
+        + "or all, of your investment amount, and may not be suitable for all investors. Before deciding to "
+        + "trade in financial instrument you should be fully informed of the risks and costs associated with "
+        + "trading the financial markets, carefully consider your investment objectives, level of experience, "
+        + "and risk appetite, and seek professional advice where needed.\n"
+        + "The data contained in Gamestonk Terminal (GST) is not necessarily accurate. GST and any provider "
+        + "of the data contained in this software will not accept liability for any loss or damage "
+        + "as a result of your trading, or your reliance on the information displayed.[/red]\n"
     )
 
 
+def hide_splashscreen():
+    """Hide the splashscreen on Windows bundles.
+
+    `pyi_splash` is a PyInstaller "fake-package" that's used to communicate
+    with the splashscreen on Windows.
+    Sending the `close` signal to the splash screen is required.
+    The splash screen remains open until this function is called or the Python
+    program is terminated.
+    """
+    try:
+        import pyi_splash  # type: ignore  # pylint: disable=import-outside-toplevel
+
+        pyi_splash.update_text("Terminal Loaded!")
+        pyi_splash.close()
+    except Exception as e:
+        logger.info(e)
+
+
 def bootup():
-    # Enable VT100 Escape Sequence for WINDOWS 10 Ver. 1607
     if sys.platform == "win32":
+        # Enable VT100 Escape Sequence for WINDOWS 10 Ver. 1607
         os.system("")  # nosec
+        # Hide splashscreen loader of the packaged app
+        if gtff.PACKAGED_APPLICATION:
+            hide_splashscreen()
 
     try:
         if os.name == "nt":

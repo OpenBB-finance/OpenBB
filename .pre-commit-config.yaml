@@ -26,7 +26,7 @@ repos:
     rev: 4.0.1
     hooks:
       - id: flake8
-        entry: flake8 --ignore=E203,W503 --max-line-length=122
+        entry: flake8 --ignore=E203,W503 --max-line-length=122 --exclude ./build/pyinstaller/*
   - repo: https://github.com/codespell-project/codespell
     rev: v2.1.0
     hooks:
@@ -34,9 +34,9 @@ repos:
         entry: codespell
         args:
           [
-            "--ignore-words-list=zlot,ba,buil,coo,ether,hist,hsi,mape,navagation,operatio,pres,ser,yeld,shold,ist,varian",
+            "--ignore-words-list=zlot,ba,buil,coo,ether,hist,hsi,mape,navagation,operatio,pres,ser,yeld,shold,ist,varian,datas",
             "--quiet-level=2",
-            "--skip=./tests,.git,*.css,*.csv,*.html,*.ini,*.ipynb,*.js,*.json,*.lock,*.scss,*.txt,*.yaml",
+            "--skip=./tests,.git,*.css,*.csv,*.html,*.ini,*.ipynb,*.js,*.json,*.lock,*.scss,*.txt,*.yaml,build/pyinstaller/*",
           ]
   - repo: https://github.com/pre-commit/mirrors-mypy
     rev: "v0.940"

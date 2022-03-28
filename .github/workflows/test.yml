@@ -29,11 +29,11 @@ jobs:
 
       - run: python custom_pre_commit/check_doc.py --ignore-files=settings_controller.py,keys_controller.py,degiro_controller.py,oanda_controller.py --ignore-commands=login,al_swe,info_swe,goodness,resources,yf,yolo
       - run: pip install bandit black codespell flake8 mypy pyupgrade safety pylint==2.12.2
-      - run: pip install types-pytz types-requests types-termcolor types-tabulate types-PyYAML types-python-dateutil types-setuptools
+      - run: pip install types-pytz types-requests types-termcolor types-tabulate types-PyYAML types-python-dateutil types-setuptools types-six
       - run: bandit -x ./tests -r . || true
       - run: black --check .
-      - run: codespell --ignore-words-list=zlot,ba,buil,coo,ether,hist,hsi,mape,navagation,operatio,pres,ser,yeld,shold,ist,varian --quiet-level=2 --skip=./tests,.git,*.css,*.csv,*.html,*.ini,*.ipynb,*.js,*.json,*.lock,*.scss,*.txt,*.yaml
-      - run: flake8 . --count --ignore=E203,W503 --max-line-length=122 --show-source --statistics
+      - run: codespell --ignore-words-list=zlot,ba,buil,coo,ether,hist,hsi,mape,navagation,operatio,pres,ser,yeld,shold,ist,varian,datas --quiet-level=2 --skip=./tests,.git,*.css,*.csv,*.html,*.ini,*.ipynb,*.js,*.json,*.lock,*.scss,*.txt,*.yaml,./build/pyinstaller
+      - run: flake8 . --count --ignore=E203,W503 --max-line-length=122 --show-source --statistics --exclude ./build/pyinstaller
       - run: mypy --ignore-missing-imports --exclude="/setup\.py$" .
       - run: shopt -s globstar && pyupgrade --py36-plus **/*.py
       - run: safety check

@@ -1,0 +1,237 @@
+{
+    "global": {
+        "tabSetEnableClose": true,
+        "tabSetEnableTabStrip": false,
+        "tabSetTabLocation": "bottom"
+    },
+    "borders": [],
+    "layout": {
+        "type": "row",
+        "id": "#1",
+        "children": [
+            {
+                "type": "tabset",
+                "id": "#2",
+                "children": [
+                    {
+                        "type": "tab",
+                        "id": "#3",
+                        "name": "New section ",
+                        "component": "sub",
+                        "config": {
+                            "model": {
+                                "global": {
+                                    "tabSetEnableClose": true
+                                },
+                                "borders": [],
+                                "layout": {
+                                    "type": "row",
+                                    "id": "#1",
+                                    "children": [
+                                        {
+                                            "type": "row",
+                                            "id": "#930eb3e5-1999-46b8-afc6-01d731dcb211",
+                                            "children": [
+                                                {
+                                                    "type": "row",
+                                                    "id": "#5debcdc6-eaaf-4224-83a7-17f9908a7a78",
+                                                    "height": 145,
+                                                    "children": [
+                                                        {
+                                                            "type": "tabset",
+                                                            "id": "#ca43de5d-5956-4fe3-8f55-94eb954a2886",
+                                                            "width": 142,
+                                                            "children": [
+                                                                {
+                                                                    "type": "tab",
+                                                                    "id": "#ff22f410-6265-4a7b-b975-1dc8676fb138",
+                                                                    "name": "EUR/USD",
+                                                                    "component": "Widget",
+                                                                    "config": {
+                                                                        "layoutID": "#3"
+                                                                    }
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "type": "tabset",
+                                                            "id": "#6bf131b1-a6eb-4b8f-941a-14e0655acd79",
+                                                            "width": 142,
+                                                            "children": [
+                                                                {
+                                                                    "type": "tab",
+                                                                    "id": "#8b10c77b-40f2-40e6-9673-13ddcc8238c1",
+                                                                    "name": "USD/JPY",
+                                                                    "component": "Widget",
+                                                                    "config": {
+                                                                        "layoutID": "#3"
+                                                                    }
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "type": "tabset",
+                                                            "id": "#6939401f-4c4d-41dd-9849-fd3178320122",
+                                                            "width": 142,
+                                                            "children": [
+                                                                {
+                                                                    "type": "tab",
+                                                                    "id": "#7bd5f16d-d127-46f8-86a0-f413feff3b92",
+                                                                    "name": "GBP/USD",
+                                                                    "component": "Widget",
+                                                                    "config": {
+                                                                        "layoutID": "#3"
+                                                                    }
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "type": "tabset",
+                                                            "id": "#61c25933-b899-4d59-aad8-e1e98df13b7d",
+                                                            "width": 142,
+                                                            "children": [
+                                                                {
+                                                                    "type": "tab",
+                                                                    "id": "#762d37fc-312e-4f16-8541-af486fe2ec4f",
+                                                                    "name": "AUD/USD",
+                                                                    "component": "Widget",
+                                                                    "config": {
+                                                                        "layoutID": "#3"
+                                                                    }
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "type": "tabset",
+                                                            "id": "#d44c4bf6-c879-46fc-bb57-80fd352ae872",
+                                                            "width": 142,
+                                                            "children": [
+                                                                {
+                                                                    "type": "tab",
+                                                                    "id": "#fc1a8e88-160f-41d3-b5d8-d4d9abc5ac44",
+                                                                    "name": "USD/CAD",
+                                                                    "component": "Widget",
+                                                                    "config": {
+                                                                        "layoutID": "#3"
+                                                                    }
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "type": "tabset",
+                                                            "id": "#298c01a6-e058-4e2d-8ac6-ebb279716761",
+                                                            "width": 142,
+                                                            "children": [
+                                                                {
+                                                                    "type": "tab",
+                                                                    "id": "#c2dfcb8c-9078-44f1-9118-3beebc3181d4",
+                                                                    "name": "USD/CNY",
+                                                                    "component": "Widget",
+                                                                    "config": {
+                                                                        "layoutID": "#3"
+                                                                    }
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "type": "tabset",
+                                                            "id": "#f544d439-5557-470f-ad2b-8f6168a40b77",
+                                                            "width": 142,
+                                                            "children": [
+                                                                {
+                                                                    "type": "tab",
+                                                                    "id": "#d1f5dcf1-5643-49dd-aa28-725287f1b3f2",
+                                                                    "name": "USD/CHF",
+                                                                    "component": "Widget",
+                                                                    "config": {
+                                                                        "layoutID": "#3"
+                                                                    }
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "type": "tabset",
+                                                            "id": "#bcbbac20-d71f-4e6a-990e-b2a5d0a11255",
+                                                            "width": 142,
+                                                            "children": [
+                                                                {
+                                                                    "type": "tab",
+                                                                    "id": "#65907a81-d976-482a-b1df-45de9317cad2",
+                                                                    "name": "USD/HKD",
+                                                                    "component": "Widget",
+                                                                    "config": {
+                                                                        "layoutID": "#3"
+                                                                    }
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "type": "row",
+                                                    "id": "#410cd13c-0d14-4ada-8aad-5cfc522d1421",
+                                                    "weight": 15,
+                                                    "children": [
+                                                        {
+                                                            "type": "tabset",
+                                                            "id": "#d83b1943-b895-43bd-9f0f-d36672194a58",
+                                                            "width": 256,
+                                                            "children": [
+                                                                {
+                                                                    "type": "tab",
+                                                                    "id": "#044a38ed-6f61-4586-ae3f-8c76c494351b",
+                                                                    "name": "Select",
+                                                                    "component": "Widget",
+                                                                    "config": {
+                                                                        "layoutID": "#3"
+                                                                    }
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "type": "tabset",
+                                                            "id": "#239aa076-2c4d-44da-a9ed-6f8ad9b27c30",
+                                                            "weight": 75,
+                                                            "children": [
+                                                                {
+                                                                    "type": "tab",
+                                                                    "id": "#3f45998e-34f5-42b0-9980-d07f9fff2eb5",
+                                                                    "name": "Historical",
+                                                                    "component": "Widget",
+                                                                    "config": {
+                                                                        "layoutID": "#3"
+                                                                    }
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "type": "tabset",
+                                                    "id": "#1fd33f67-3fdd-4f36-822a-ac0ee05ad8ab",
+                                                    "weight": 85,
+                                                    "children": [
+                                                        {
+                                                            "type": "tab",
+                                                            "id": "#4b4ab553-fc3a-4984-93ad-99b89def2dc4",
+                                                            "name": "Candle",
+                                                            "component": "Widget",
+                                                            "config": {
+                                                                "layoutID": "#3"
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                ],
+                "active": true
+            }
+        ]
+    }
+}

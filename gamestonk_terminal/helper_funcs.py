@@ -966,7 +966,11 @@ def get_flair() -> str:
         ":yy": "(☯)",
     }
 
-    flair = flairs[gtff.USE_FLAIR] if gtff.USE_FLAIR in flairs else gtff.USE_FLAIR
+    flair = (
+        flairs[str(gtff.USE_FLAIR)]
+        if str(gtff.USE_FLAIR) in flairs
+        else str(gtff.USE_FLAIR)
+    )
     if gtff.USE_DATETIME and get_user_timezone_or_invalid() != "INVALID":
         dtime = datetime.now(pytz.timezone(get_user_timezone())).strftime(
             "%Y %b %d, %H:%M"
@@ -1174,13 +1178,30 @@ def export_data(
         now = datetime.now()
 
         if gtff.EXPORT_FOLDER_PATH:
-            full_path_dir = gtff.EXPORT_FOLDER_PATH
+            full_path_dir = str(gtff.EXPORT_FOLDER_PATH)
             path_cmd = dir_path.split("gamestonk_terminal/")[1].replace("/", "_")
             default_filename = f"{now.strftime('%Y%m%d_%H%M%S')}_{path_cmd}_{func_name}"
 
         else:
-            full_path_dir = dir_path.replace("gamestonk_terminal", "exports")
-            default_filename = f"{func_name}_{now.strftime('%Y%m%d_%H%M%S')}"
+            if gtff.PACKAGED_APPLICATION:
+                default_filename = (
+                    f"{now.strftime('%Y%m%d_%H%M%S')}_{path_cmd}_{func_name}"
+                )
+                full_path_dir = os.path.join(
+                    os.environ["HOME"], "Desktop", "GST-exports"
+                )
+
+                if not os.path.isdir(full_path_dir):
+                    try:
+                        os.makedirs(full_path_dir)
+                    except Exception:
+                        console.print(
+                            f"[red]Couldn't create a folder in {full_path_dir}. Exporting failed.[/red]"
+                        )
+                        return
+            else:
+                default_filename = f"{func_name}_{now.strftime('%Y%m%d_%H%M%S')}"
+                full_path_dir = dir_path.replace("gamestonk_terminal", "exports")
 
         for exp_type in export_type.split(","):
 
