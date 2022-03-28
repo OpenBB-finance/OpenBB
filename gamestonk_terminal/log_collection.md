@@ -6,8 +6,15 @@
 
 Code is not the only way you can contribute to improve GamestonkTerminal.
 
-You can help the team by enabling sending the logs that contain information about the usage of the terminal and errors. This helps to resolve bugs faster and focus the attention of the developers on what is important to you. Together we can strengthen the open source community and channel our efforts.
-This is important since GamestonkTerminal is an on-site application. This means that you install it on your computer. On a contrary of a web application that can track the usage of every button and page, we need logs to be sent to us to understand where to spend our time and effort.
+You can help the team by enabling sending the logs that contain information about the usage of the terminal and errors.
+
+This helps to resolve bugs faster and focus the attention of the developers on what is important to you.
+
+Together we can strengthen the open source community and channel our efforts.
+
+This is important since GamestonkTerminal is an on-site application: you install it on your computer.
+
+On a contrary of a web application that can track the usage of every button and page, we need logs to be sent to us to understand where to spend our time and effort.
 
 With your logs, we can
 
@@ -30,9 +37,11 @@ We are not logging credentials or elements that allows identifying you.
 By default Log Collection is enabled.
 
 You can disable it running the command: `/settings/logcollection`
+
 It should appear as red in the `/settings/help` table when disabled.
 
 Run the same command another time to enable it.
+
 It should appear as green in the `/settings/help` table when enabled.
 
 ## 3. What is and is not collected ?
