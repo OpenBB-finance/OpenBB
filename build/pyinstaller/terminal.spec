@@ -59,6 +59,7 @@ hidden_imports = [
     "boto3",
     "textwrap3",
     "pyEX",
+    "tensorflow",
 ]
 
 analysis_kwargs = dict(
