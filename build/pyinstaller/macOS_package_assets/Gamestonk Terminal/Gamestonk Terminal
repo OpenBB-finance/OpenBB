@@ -1,0 +1,19 @@
+#!/bin/bash
+clear
+
+echo "  _                     _ _                   "
+echo " | |                   | (_)                  "
+echo " | |     ___   __ _  __| |_ _ __   __ _       "
+echo " | |    / _ \ / _\` |/ _\` | | '_ \ / _\` |      "
+echo " | |___| (_) | (_| | (_| | | | | | (_| |_ _ _ "
+echo " |______\___/ \__,_|\__,_|_|_| |_|\__, (_|_|_)"
+echo "                                   __/ |      "
+echo "                                  |___/       "
+
+BOOTUP_MESSAGE="
+The boot up process might take a while. Please be patient...
+"
+echo "$BOOTUP_MESSAGE"
+
+SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+"$SCRIPTDIR"/Gamestonk/GamestonkTerminal
