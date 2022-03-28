@@ -98,7 +98,6 @@ exe_kwargs = dict(
     target_arch="x86_64",
     codesign_identity=None,
     entitlements_file=None,
-    icon=os.path.join(os.getcwd(), "images", "gst_app.ico"),
 )
 
 # Packaging settings
@@ -122,7 +121,6 @@ elif build_type == "folder":
 
 # Platform specific settings
 if is_win:
-    print(os.getcwd())
     splash = Splash(
         os.path.join(os.getcwd(), "images", "splashscreen.png"),
         binaries=a.binaries,
@@ -132,9 +130,12 @@ if is_win:
         text_color="white",
     )
     exe_args += [splash, splash.binaries]
+    exe_kwargs["icon"] = (os.path.join(os.getcwd(), "images", "gst_app.ico"),)
 
 if is_darwin:
-    pass
+    exe_kwargs["icon"] = (
+        os.path.join(os.getcwd(), "images", "GamestonkTerminal.icns"),
+    )
 
 exe = EXE(*exe_args, **exe_kwargs)
 
