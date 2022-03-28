@@ -38,7 +38,11 @@ def send_to_s3_directly(
 
 
 def fetch_presigned_url(api_url: str, object_key: str) -> Dict[str, Any]:
-    raw_response = requests.put(url=api_url, json={"object_key": object_key})
+    raw_response = requests.put(
+        json={"object_key": object_key},
+        timeout=3,
+        url=api_url,
+    )
     raw_response.raise_for_status()
 
     response = raw_response.json()
@@ -57,9 +61,10 @@ def send_to_s3_using_presigned_url(
         files = {"file": f}
 
         raw_response = requests.post(
-            presigned_info["url"],
             data=presigned_info["fields"],
             files=files,
+            timeout=3,
+            url=presigned_info["url"],
         )
 
     raw_response.raise_for_status()
