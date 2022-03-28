@@ -14,6 +14,7 @@ import git
 
 # IMPORTATION INTERNAL
 import gamestonk_terminal.config_terminal as cfg
+import gamestonk_terminal.feature_flags as gtff
 from gamestonk_terminal.log.generation.settings import (
     AppSettings,
     LogSettings,
@@ -46,8 +47,8 @@ def get_app_id() -> str:
 def get_commit_hash() -> str:
     """Get Commit Short Hash"""
 
-    if cfg.LOGGING_COMMIT_HASH != "REPLACE_ME":
-        return cfg.LOGGING_COMMIT_HASH
+    if gtff.LOGGING_COMMIT_HASH != "REPLACE_ME":
+        return gtff.LOGGING_COMMIT_HASH
 
     file_path = Path(__file__)
     git_dir = file_path.parent.parent.absolute().joinpath(".git")
