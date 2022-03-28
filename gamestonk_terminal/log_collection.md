@@ -1,22 +1,25 @@
 # Log Collection Feature
 
-## 1. Contribution
+## 1. Purpose
 
-Code is not the only way you can contribute on improving GamestonkTerminal.
+**CONTRIBUTE**
+
+Code is not the only way you can contribute to improve GamestonkTerminal.
 
 You can help GamestonkTerminal Team by enabling reports about your usage and errors.
 
-No Personal Identifiable Information are collected (PII).
+No Personal Identifiable Information is collected (PII).
 
-Without these information we won't be able to :
-- Focus on most used features
-- Detect and fix errors (not everyone has the time to report bugs)
+Without this information we won't have much visibility on what are the :
+- Most used features
+- Most common errors
+- OS + Python version : specific incompatibilities
 
 Personal Identifiable Information : PII is anything that can link you to the data (IP/E-mail/Credentials...)
 
-**ISSUE**
+**CHALLENGE**
 
-GamestonkTerminal is an onsite application : that you install on your computer.
+GamestonkTerminal is an on-site application : that you install on your computer.
 
 On a contrary of a web application that can track the usage of every button and page.
 
@@ -24,13 +27,13 @@ We have no means to know if a feature we spent time and effort on is actually us
 
 **LOG COLLECTION**
 
-Log Collection feature allow exportation of reports about GamestonkTerminal.
+The Log Collection feature allows exportation of reports about GamestonkTerminal.
 
 We are not logging credentials or elements that allows identifying you.
 
 ## 2. How to setup : Log Collection ?
 
-By default log collection is enabled.
+By default Log Collection is enabled.
 
 You can disable it running the command : `/settings/logcollection`
 
@@ -44,7 +47,7 @@ It should appear as green in the `/settings/help` table when enabled.
 
 **Personal Identifiable Information**
 
-We everything we to : filter any Personal Identifiable information and credentials.
+We everything we can to : filter any Personal Identifiable information and credentials.
 
 Credentials are not logged at all.
 
