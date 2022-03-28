@@ -13,6 +13,7 @@ from typing import List
 import ascii_magic
 import matplotlib.pyplot as plt
 
+import gamestonk_terminal.config_terminal as cfg
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal import thought_of_the_day as thought
 from gamestonk_terminal.rich_config import console
@@ -66,6 +67,10 @@ def sha256sum(filename):
 
 def update_terminal():
     """Updates the terminal by running git pull in the directory.  Runs poetry install if needed"""
+
+    if cfg.LOGGING_COMMIT_HASH != "REPLACE_ME":
+        return cfg.LOGGING_COMMIT_HASH
+
     poetry_hash = sha256sum("poetry.lock")
 
     completed_process = subprocess.run("git pull", shell=True, check=False)  # nosec

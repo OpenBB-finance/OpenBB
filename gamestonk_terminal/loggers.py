@@ -46,6 +46,9 @@ def get_app_id() -> str:
 def get_commit_hash() -> str:
     """Get Commit Short Hash"""
 
+    if cfg.LOGGING_COMMIT_HASH != "REPLACE_ME":
+        return cfg.LOGGING_COMMIT_HASH
+
     file_path = Path(__file__)
     git_dir = file_path.parent.parent.absolute().joinpath(".git")
 
