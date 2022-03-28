@@ -64,6 +64,7 @@ def test_historical(mocker):
     )
 
 
+@pytest.mark.skip
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_historical_no_d_signals(mocker):
