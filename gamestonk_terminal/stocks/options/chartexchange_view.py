@@ -48,7 +48,7 @@ def display_raw(
         Export data as CSV, JSON, XLSX
     """
 
-    df = chartexchange_model.get_option_history(ticker, date, call, price)
+    df = chartexchange_model.get_option_history(ticker, date, call, price)[::-1]
     df["Date"] = pd.to_datetime(df["Date"])
     df = df.set_index("Date")
 
