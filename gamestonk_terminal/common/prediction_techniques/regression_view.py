@@ -87,7 +87,7 @@ def display_regression(
         values = values[:s_end_date]  # type: ignore
 
     l_predictions, _ = regression_model.get_regression_model(
-        values, poly_order, n_input, n_predict, n_jumps
+        list(values.values), poly_order, n_input, n_predict, n_jumps
     )
 
     # Prediction data
