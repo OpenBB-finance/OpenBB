@@ -4,94 +4,76 @@
 <details open="open">
   <summary><h2 style="display: inline-block">Table of Contents</h2></summary>
     <ol>
-      <li><a href="#docker-installation">Docker Installation</a></li>
-      <li><a href="#local-install---anaconda-and-python">Local Install - Anaconda and Python</a></li>
-      <li><a href="#web-ui---docker">Web UI - Docker</a></li>
-      <li><a href="#advanced-user-install---machine-learning">Advanced User Install - Machine Learning</a></li>
-      <li><a href="#update-terminal">Update Terminal</a></li>
+      <li><a href="#user">General Installation Process</a></li>
+      <li><a href="#Anaconda---Python">Anaconda & Python Installation</a></li>
+      <li><a href="#Docker-Installation">Docker Installation</a></li>
+      <li><a href="#web-ui---docker">Docker Web UI Installation</a></li>
       <li><a href="#api-keys">API Keys</a></li>
     </ol>
 </details>
 
 ---
 
-## Getting Started
+There are currently four options to install the terminal:
 
-There are currently two main options to install the terminal:
-
-- using Docker: recommended if you just want to use the terminal
+- using Installer: recommended if you just want to use the terminal
 - using Python: recommended if you want to develop new features
-- using the Docker web UI: recommended if you want to deploy the web UI for users to access over your LAN
+- using Docker: alternative option to the installer if preferred
+- using Docker Web UI: if you want to deploy the web UI for users to access over your LAN
 
-First step in both options is to star the project
+First step in all options is to star the project
 
 <img width="1272" alt="Github starts" src="https://user-images.githubusercontent.com/25267873/115989986-e20cfe80-a5b8-11eb-8182-d6d87d092252.png">
 
-If you want to install the terminal using Python ignore the Docker section and jump to <a href="#local-install---anaconda-and-python">Local Install - Anaconda and Python</a> section.
+If you want to install the terminal using Python ignore the User section and jump to <a href="#Anaconda & Python">Anaconda & Python</a> section.
 
-### Docker Installation
+## User
 
-1. Make sure docker desktop is installed. Install links can be found [here](https://www.docker.com/products/docker-desktop).
-   To confirm that your docker desktop is downloaded and running, open a command prompt or terminal and enter
-   `docker info`. If you get the following you are not running the docker desktop:
+If you are interested in running the terminal via the installer, these steps will guide you through the installation
+process and explain to you what each message means.
 
-   ```text
-   Server:
-   ERROR: Cannot connect to the Docker daemon at unix:///var/run/docker.sock.
-   Is the docker daemon running?
-   ```
+### Installing Process
 
-   Open the docker desktop app in this case.
+The process starts off by downloading the installer, see below the most recent release:
 
-2. Download the latest docker image.
+- Windows: [LINK TO INSTALLER FILE](https://github.com/GamestonkTerminal/GamestonkTerminal/)
+- macOS: [LINK TO INSTALLER FILE](https://github.com/GamestonkTerminal/GamestonkTerminal/)
 
-   ```bash
-   docker pull ghcr.io/gamestonkterminal/gst-poetry:latest
-   ```
+This downloads the installer to your computer and by clicking on the created file, you are able to start
+the installation process.
 
-   Upon running this the first time, you should see the various layers downloading (note the random series of letters numbers will vary). The first time this is run, it will take a few minutes. Subsequent updates will be much faster, as the changes will be in the MB instead of GB.
+**_STILL NEED TO ADD WALKTHROUGH AND IMAGES_**
 
-   ![Screen Shot 2021-09-08 at 10 41 08 AM](https://user-images.githubusercontent.com/18151143/132531075-7d7f7e71-4fcb-435c-9bb3-466d7077eba4.png)
+| Note about "Malicious Software" warning                                                                                                                                                                 |
+|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| You will most likely see one of the following images displayed below. This is because the installer is still in beta phase, and the team has not requested verification from neither Windows nor Apple. |
 
-   Once the download is complete, confirm that the image has been created by doing `docker images`. You should see
-   something similar to
+**_STILL NEED TO ADD IMAGES_**
 
-   ```text
-   REPOSITORY                             TAG       IMAGE ID       CREATED        SIZE
-   ghcr.io/gamestonkterminal/gst-poetry   latest    e2bbeebcc73c   42 hours ago   2.02GB
-   ```
+To mark the application as safe for usage, use the following steps:
 
-3. Run a container
+#### On Windows
 
-   You are now ready to run the terminal (every time you want to use the terminal you need to run this command):
+**_STILL NEED TO ADD CONTENT_**
 
-   `docker run -it --rm ghcr.io/gamestonkterminal/gst-poetry:latest`
+#### On macOS
 
-   This will open up the terminal in your command prompt or terminal. Note that this has provided now environment file,
-   so you will not be able to view plots or use keys at this stage.
+1) Run the file. You will most likely receive a message that macOS was not able to check whether the application
+contains malicious software. The reasoning for this is described in the note above.
+2) Go to macOS System Preferences > Security & Privacy > General. You should see see a message at the bottom that says
+that the file "_was blocked from use because it is not from an identified developer_".
+3) Click on the button "Allow anyway"
+4) You should now be able to use the application.
 
-   At this point, you should be able to use the majority of the features using Docker. To read more on adding the environment keys and how to configure your X-server to show plots, hop over to the
-   [Advanced Docker Setup](/DOCKER_ADVANCED.md).
+_WHAT ELSE?_
 
-### Local Install - Anaconda and Python
+## Developer
+
+### Anaconda & Python
 
 This installation type supports both Windows and Unix systems (Linux + MacOS). However, on Windows it can become messy so it is easier to use Windows Subsystem Linux (WSL) on this operating system. WSL emulates a Linux machine inside your Windows system.
 
 If you are using macOS or other Linux operating systems you can jump the next section <a href="#installing-the-terminal">Installing the terminal</a>.
-
-### Web UI - Docker
-
-1. Ensure Docker is installed.
-2. Navigate to the location of the Dockerfile in the repo (`cd gamestonk_terminal_web`)
-3. Ensure the launcher is executable with `chmod +x ./launch`
-4. Launch it with `./launch`. If you get a permission denied error, do `sudo ./launch` instead
-5. Once it's launched, you will be able to access it by going to `http://host-ip:8080` in a browser, or `http://localhost:8080` if you are running it on your local machine.
-
-For API keys, create the `setenv` file if it doesn't already exist.
-It will automatically get created on the first launch, and won't get committed to Git because it is on the `.gitignore`.
-Set the API keys [as explained here](https://github.com/GamestonkTerminal/GamestonkTerminal/blob/main/DOCKER_ADVANCED.md#environment-variables).
-Once you've put the API keys in that file, re-run the launch script, and it will use your API keys.
-There are a few things that still don't work, and you can see what works and what doesn't [here](https://github.com/CoconutMacaroon/GamestonkTerminal/blob/main/gamestonk_terminal_web/README.md#todo).
 
 #### Installing WSL (Only for Windows users)
 
@@ -261,9 +243,82 @@ If you `stashed` your changes previously, you can un-stash them with:
 git stash pop
 ```
 
+### Docker Installation
+
+1. Make sure docker desktop is installed. Install links can be found [here](https://www.docker.com/products/docker-desktop).
+   To confirm that your docker desktop is downloaded and running, open a command prompt or terminal and enter
+   `docker info`. If you get the following you are not running the docker desktop:
+
+   ```text
+   Server:
+   ERROR: Cannot connect to the Docker daemon at unix:///var/run/docker.sock.
+   Is the docker daemon running?
+   ```
+
+   Open the docker desktop app in this case.
+
+2. Download the latest docker image.
+
+   ```bash
+   docker pull ghcr.io/gamestonkterminal/gst-poetry:latest
+   ```
+
+   Upon running this the first time, you should see the various layers downloading (note the random series of letters numbers will vary). The first time this is run, it will take a few minutes. Subsequent updates will be much faster, as the changes will be in the MB instead of GB.
+
+   ![Screen Shot 2021-09-08 at 10 41 08 AM](https://user-images.githubusercontent.com/18151143/132531075-7d7f7e71-4fcb-435c-9bb3-466d7077eba4.png)
+
+   Once the download is complete, confirm that the image has been created by doing `docker images`. You should see
+   something similar to
+
+   ```text
+   REPOSITORY                             TAG       IMAGE ID       CREATED        SIZE
+   ghcr.io/gamestonkterminal/gst-poetry   latest    e2bbeebcc73c   42 hours ago   2.02GB
+   ```
+
+3. Run a container
+
+   You are now ready to run the terminal (every time you want to use the terminal you need to run this command):
+
+   `docker run -it --rm ghcr.io/gamestonkterminal/gst-poetry:latest`
+
+   This will open up the terminal in your command prompt or terminal. Note that this has provided now environment file,
+   so you will not be able to view plots or use keys at this stage.
+
+   At this point, you should be able to use the majority of the features using Docker. To read more on adding the environment keys and how to configure your X-server to show plots, hop over to the
+   [Advanced Docker Setup](/DOCKER_ADVANCED.md).
+
+### Web UI - Docker
+
+1. Ensure Docker is installed.
+2. Navigate to the location of the Dockerfile in the repo (`cd gamestonk_terminal_web`)
+3. Ensure the launcher is executable with `chmod +x ./launch`
+4. Launch it with `./launch`. If you get a permission denied error, do `sudo ./launch` instead
+5. Once it's launched, you will be able to access it by going to `http://host-ip:8080` in a browser, or `http://localhost:8080` if you are running it on your local machine.
+
+For API keys, create the `setenv` file if it doesn't already exist.
+It will automatically get created on the first launch, and won't get committed to Git because it is on the `.gitignore`.
+Set the API keys [as explained here](https://github.com/GamestonkTerminal/GamestonkTerminal/blob/main/DOCKER_ADVANCED.md#environment-variables).
+Once you've put the API keys in that file, re-run the launch script, and it will use your API keys.
+There are a few things that still don't work, and you can see what works and what doesn't [here](https://github.com/CoconutMacaroon/GamestonkTerminal/blob/main/gamestonk_terminal_web/README.md#todo).
+
 ### API Keys
 
-The project is build around several different API calls, whether it is to access historical data or financials. The table below shows the ones where a key is necessary. The environment variable names are shown explicitly, for the variable name in the code one just needs to remove the "GT\_", this can be found in [config_terminal.py](/gamestonk_terminal/config_terminal.py).
+The project is build around several different API calls, whether it is to access historical data or financials.
+The table below shows the ones where a key is necessary.
+
+The easiest way is of updating the keys is by using the terminal. You are able to directly set these variables from
+within the "keys" menu. This menu can be found on the first menu you see when opening the terminal.
+
+<img src="../images/api_keys_part_1.png" alt="API Keys 1" width="800"/>
+
+Then, by typing the command on the left-hand side, followed by your API Key, you can set the key and use the commands
+attached to it.
+
+<img src="../images/api_keys_part_2.png" alt="API Keys 2" width="800"/>
+
+When you have installed the terminal through Anaconda & Python, you can use the environment variable to set your
+API Keys directly instead of using the Terminal, for the variable name in the code one just needs to
+remove the "GT\_", this can be found in [config_terminal.py](/gamestonk_terminal/config_terminal.py).
 
 | Website                                                                         | Environment Variables                                                                                                                             |
 | :------------------------------------------------------------------------------ | :------------------------------------------------------------------------------------------------------------------------------------------------ |

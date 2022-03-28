@@ -119,7 +119,7 @@ ENABLE_RICH_PANEL = assign_feature_flag("GTFF_ENABLE_RICH_PANEL", "True", True)
 ENABLE_CHECK_API = assign_feature_flag("GTFF_ENABLE_CHECK_API", "True", True)
 
 # Send logs to data lake
-LOG_COLLECTION = assign_feature_flag("GTFF_LOG_COLLECTION", "False", True)
+LOG_COLLECTION = assign_feature_flag("GTFF_LOG_COLLECTION", "True", True)
 
 # Provide export folder path. If empty that means default.
 EXPORT_FOLDER_PATH = assign_feature_flag("GTFF_EXPORT_FOLDER_PATH", "")
@@ -127,4 +127,4 @@ EXPORT_FOLDER_PATH = assign_feature_flag("GTFF_EXPORT_FOLDER_PATH", "")
 # Set a flag if the application is running from a packaged bundle
 PACKAGED_APPLICATION = assign_feature_flag("GTFF_PACKAGED_APPLICATION", "False", True)
 
-LOGGING_COMMIT_HASH = assign_feature_flag("GTFF_LOGGING_COMMIT_HASH", "REPLACE_ME", False)
+LOGGING_COMMIT_HASH = assign_feature_flag("GTFF_LOGGING_COMMIT_HASH", "REPLACE_ME")

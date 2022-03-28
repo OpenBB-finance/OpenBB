@@ -63,7 +63,7 @@ class CryptoController(CryptoBaseController):
         "prt",
         "resources",
     ]
-    CHOICES_MENUS = ["ta", "dd", "ov", "disc", "onchain", "defi", "nft", "pred"]
+    CHOICES_MENUS = ["ta", "dd", "ov", "disc", "onchain", "defi", "nft", "pred", "qa"]
 
     DD_VIEWS_MAPPING = {
         "cg": pycoingecko_view,
@@ -109,7 +109,8 @@ class CryptoController(CryptoBaseController):
 >   nft         non-fungible tokens,                    e.g.: today drops{has_ticker_start}
 >   dd          due-diligence for loaded coin,          e.g.: coin information, social media, market stats
 >   ta          technical analysis for loaded coin,     e.g.: ema, macd, rsi, adx, bbands, obv
->   pred        prediction techniques                   e.g.: regression, arima, rnn, lstm, conv1d, monte carlo[/menu]
+>   pred        prediction techniques                   e.g.: regression, arima, rnn, lstm, conv1d, monte carlo
+>   qa          quantitative analysis,   \t e.g.: decompose, cusum, residuals analysis[/menu]
 {has_ticker_end}
 """
         console.print(text=help_text, menu="Cryptocurrency")
@@ -506,6 +507,24 @@ class CryptoController(CryptoBaseController):
             )
         else:
             console.print("No coin selected. Use 'load' to load a coin.\n")
+
+    @log_start_end(log=logger)
+    def call_qa(self, _):
+        """Process pred command"""
+        if self.coin:
+            from gamestonk_terminal.cryptocurrency.quantitative_analysis import (
+                qa_controller,
+            )
+
+            if self.current_interval != "1day":
+                console.print("Only interval `1day` is possible for now.\n")
+            else:
+                self.queue = self.load_class(
+                    qa_controller.QaController,
+                    self.coin,
+                    self.current_df,
+                    self.queue,
+                )
 
     @log_start_end(log=logger)
     def call_pred(self, _):
