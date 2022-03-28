@@ -1,10 +1,9 @@
 """Regression Model"""
 __docformat__ = "numpy"
 import logging
-from typing import Any, List, Tuple, Union
+from typing import Any, List, Tuple
 
 import numpy as np
-import pandas as pd
 from sklearn import linear_model, pipeline, preprocessing
 
 from gamestonk_terminal.decorators import log_start_end
@@ -72,7 +71,7 @@ def split_train(
 
 @log_start_end(log=logger)
 def get_regression_model(
-    values: Union[pd.Series, pd.DataFrame],
+    values: List[float],
     poly_order: int,
     n_input: int,
     n_predict: int,
@@ -82,7 +81,7 @@ def get_regression_model(
 
     Parameters
     ----------
-    values : Union[pd.Series, pd.DataFrame]
+    values : List[float]
         Data to fit
     poly_order : int
         Order of polynomial
@@ -102,7 +101,7 @@ def get_regression_model(
     """
     # Split training data
     stock_x, stock_y = split_train(
-        values.values,
+        values,
         n_input,
         n_predict,
         n_jumps,
@@ -123,6 +122,6 @@ def get_regression_model(
     model.fit(stock_x, stock_y)
     l_predictions = [
         i if i > 0 else 0
-        for i in model.predict(values.values[-n_input:].reshape(1, -1))[0]
+        for i in model.predict(np.array(values[-n_input:]).reshape(1, -1))[0]
     ]
     return l_predictions, model
