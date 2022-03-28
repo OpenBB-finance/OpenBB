@@ -13,9 +13,18 @@ from typing import Optional
 import git
 
 # IMPORTATION INTERNAL
-import gamestonk_terminal.config_terminal as cfg
+from gamestonk_terminal.config_terminal import (
+    LOGGING_APP_NAME,
+    LOGGING_AWS_ACCESS_KEY_ID,
+    LOGGING_AWS_SECRET_ACCESS_KEY,
+    LOGGING_FREQUENCY,
+    LOGGING_HANDLERS,
+    LOGGING_ROLLING_CLOCK,
+    LOGGING_VERBOSITY,
+)
 from gamestonk_terminal.log.generation.settings import (
     AppSettings,
+    AWSSettings,
     LogSettings,
     Settings,
 )
@@ -27,8 +36,8 @@ from gamestonk_terminal.log.generation.formatter_with_exceptions import (
 )
 from gamestonk_terminal.log.generation.directories import get_log_dir
 
-logging.getLogger("requests").setLevel(cfg.LOGGING_VERBOSITY)
-logging.getLogger("urllib3").setLevel(cfg.LOGGING_VERBOSITY)
+logging.getLogger("requests").setLevel(LOGGING_VERBOSITY)
+logging.getLogger("urllib3").setLevel(LOGGING_VERBOSITY)
 
 logger = logging.getLogger(__name__)
 
@@ -86,7 +95,7 @@ def add_noop_handler(settings: Settings):
 
 def add_file_handler(settings: Settings):
     app_settings = settings.app_settings
-    handler = PathTrackingFileHandler(settings=settings, rolling_clock=False)
+    handler = PathTrackingFileHandler(settings=settings)
     formatter = FormatterWithExceptions(app_settings=app_settings)
     handler.setFormatter(formatter)
     logging.getLogger().addHandler(handler)
@@ -134,27 +143,39 @@ def setup_logging(
 ) -> None:
     """Setup Logging"""
 
-    name = app_name or cfg.LOGGING_APP_NAME
+    # AppSettings
     commit_hash = get_commit_hash()
+    name = app_name or LOGGING_APP_NAME
     identifier = get_app_id()
     session_id = session_id or str(START_TIMESTAMP)
 
-    frequency = frequency or cfg.LOGGING_FREQUENCY
-    verbosity = verbosity or cfg.LOGGING_VERBOSITY
+    # AWSSettings
+    aws_access_key_id = LOGGING_AWS_ACCESS_KEY_ID
+    aws_secret_access_key = LOGGING_AWS_SECRET_ACCESS_KEY
+
+    # LogSettings
     directory = get_log_dir()
-    handler_list = cfg.LOGGING_HANDLERS
+    frequency = frequency or LOGGING_FREQUENCY
+    handler_list = LOGGING_HANDLERS
+    rolling_clock = LOGGING_ROLLING_CLOCK
+    verbosity = verbosity or LOGGING_VERBOSITY
 
     settings = Settings(
         app_settings=AppSettings(
-            name=name,
             commit_hash=commit_hash,
+            name=name,
             identifier=identifier,
             session_id=session_id,
+        ),
+        aws_settings=AWSSettings(
+            aws_access_key_id=aws_access_key_id,
+            aws_secret_access_key=aws_secret_access_key,
         ),
         log_settings=LogSettings(
             directory=directory,
             frequency=frequency,
             handler_list=handler_list,
+            rolling_clock=rolling_clock,
             verbosity=verbosity,
         ),
     )

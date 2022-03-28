@@ -7,7 +7,6 @@ from typing import Callable
 # IMPORTATION THIRDPARTY
 
 # IMPORTATION INTERNAL
-from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.log.constants import ARCHIVES_FOLDER_NAME, TMP_FOLDER_NAME
 from gamestonk_terminal.log.collection.log_sender import LogSender
 from gamestonk_terminal.log.collection.logging_clock import LoggingClock, Precision
@@ -35,7 +34,7 @@ class PathTrackingFileHandler(TimedRotatingFileHandler):
 
     @staticmethod
     def build_log_sender(settings: Settings, start: bool) -> LogSender:
-        log_sender = LogSender(app_settings=settings.app_settings, daemon=True)
+        log_sender = LogSender(settings=settings, daemon=True)
 
         if start:
             log_sender.start()
@@ -132,34 +131,43 @@ class PathTrackingFileHandler(TimedRotatingFileHandler):
         self,
         settings: Settings,
         *args,
-        rolling_clock: bool = False,
         **kwargs,
     ) -> None:
+        # SETUP PARENT CLASS
         filename = str(self.build_log_file_path(settings=settings))
         frequency = settings.log_settings.frequency
         kwargs["when"] = frequency
+
         super().__init__(filename, *args, **kwargs)
 
         self.suffix += ".log"
+
+        # SETUP CURRENT CLASS
         self.__settings = settings
 
         self.clean_expired_files(before_timestamp=get_timestamp_from_x_days(x=5))
 
-        if gtff.LOG_COLLECTION:
-            self.__log_sender = self.build_log_sender(settings=settings, start=True)
-            self.__rolling_clock = self.build_rolling_clock(
-                action=self.doRollover,
-                frequency=frequency,
-                start=rolling_clock,
-            )
-            self.send_expired_files(before_timestamp=get_timestamp_from_x_days(x=3))
+        self.__log_sender = self.build_log_sender(
+            settings=settings,
+            start=False,
+        )
+        self.__rolling_clock = self.build_rolling_clock(
+            action=self.doRollover,
+            frequency=frequency,
+            start=settings.log_settings.rolling_clock,
+        )
+
+        if LogSender.start_required():
+            self.__log_sender.start()
+            self.send_expired_files(before_timestamp=get_timestamp_from_x_days(x=1))
 
     # OVERRIDE
     def doRollover(self) -> None:
+        log_sender = self.__log_sender
+
         super().doRollover()
 
-        if gtff.LOG_COLLECTION:
-            log_sender = self.__log_sender
+        if log_sender.check_sending_conditions():
             to_delete_path_list = self.getFilesToDelete()
             for path in to_delete_path_list:
                 log_sender.send_path(path=Path(path))
@@ -168,13 +176,17 @@ class PathTrackingFileHandler(TimedRotatingFileHandler):
     def close(self):
         """Do not use the file logger in this function."""
 
-        super().close()
+        log_sender = self.__log_sender
+        closed_log_path = Path(self.baseFilename)
 
-        if gtff.LOG_COLLECTION:
-            log_sender = self.__log_sender
-            closed_log_path = self.baseFilename
-            log_sender.send_path(path=Path(closed_log_path), last=True)
+        if log_sender.check_sending_conditions():
+            log_sender.send_path(path=closed_log_path, last=True)
             try:
                 log_sender.join(timeout=3)
             except Exception:
                 pass
+
+        super().close()
+
+        if log_sender.check_sending_conditions():
+            closed_log_path.unlink(missing_ok=True)

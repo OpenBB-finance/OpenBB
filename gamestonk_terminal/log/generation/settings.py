@@ -7,6 +7,24 @@ from pathlib import Path
 # IMPORTATION INTERNAL
 
 
+class AWSSettings:
+    @property
+    def aws_access_key_id(self) -> str:
+        return self.__aws_access_key_id
+
+    @property
+    def aws_secret_access_key(self) -> str:
+        return self.__aws_secret_access_key
+
+    def __init__(
+        self,
+        aws_access_key_id: str,
+        aws_secret_access_key: str,
+    ):
+        self.__aws_access_key_id = aws_access_key_id
+        self.__aws_secret_access_key = aws_secret_access_key
+
+
 class AppSettings:
     @property
     def name(self) -> str:
@@ -59,6 +77,10 @@ class LogSettings:
         return self.__handler_list
 
     @property
+    def rolling_clock(self) -> bool:
+        return self.__rolling_clock
+
+    @property
     def verbosity(self) -> int:
         return self.__verbosity
 
@@ -67,6 +89,7 @@ class LogSettings:
         directory: Path,
         frequency: str,
         handler_list: str,
+        rolling_clock: bool,
         verbosity: int,
     ):
         """
@@ -74,12 +97,14 @@ class LogSettings:
             directory (Path): Directory used to store log files.
             frequency (str): Frequency of the log files rotation.
             handler_list (str) : Comma separated list of handlers : stdout,stderr,noop,file.
+            rolling_clock (bool): Whether or not to start a Thread to rotate logs even when inactive.
             verbosity (str): Verbosity level as defined in Python `logging` module.
         """
 
         self.__directory = directory
         self.__frequency = frequency
         self.__handler_list = handler_list
+        self.__rolling_clock = rolling_clock
         self.__verbosity = verbosity
 
 
@@ -92,9 +117,14 @@ class Settings:
     def log_settings(self) -> LogSettings:
         return deepcopy(self.__log_settings)
 
+    @property
+    def aws_settings(self) -> AWSSettings:
+        return deepcopy(self.__aws_settings)
+
     def __init__(
         self,
         app_settings: AppSettings,
+        aws_settings: AWSSettings,
         log_settings: LogSettings,
     ):
         """This model regroups all configurations used by these classes instance :
@@ -105,7 +135,9 @@ class Settings:
         Args:
             app_name (str): Instance of AppSettings.
             log_settings (str): Instance of LogSettings.
+            aws_settings (str): Instance of AWSSettings.
         """
 
         self.__app_settings = app_settings
         self.__log_settings = log_settings
+        self.__aws_settings = aws_settings
