@@ -12,7 +12,6 @@ You can help the `GamestonkTerminal` Community by enabling sending logs about th
 
 We are not logging credentials or elements that allows identifying you.
 
-
 **REASONS**
 
 Together we can strengthen the open source community and channel our efforts.
@@ -24,6 +23,7 @@ This is important since `GamestonkTerminal` is an on-site application: you insta
 On a contrary of a web application that can track the usage of every button and page, we need logs to be sent to us to understand where to spend our time and effort.
 
 With your this reports, we can :
+
 1. see what your favorite features are, understand why and further improve that part of the terminal
 2. have a look at the most common errors and improve on the ease of use
 3. we can check for incompatibilities of different operating systems and python versions
