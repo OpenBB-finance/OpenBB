@@ -21,6 +21,7 @@ from gamestonk_terminal.helper_funcs import (
     patch_pandas_text_adjustment,
     plot_autoscale,
     print_rich_table,
+    lambda_long_number_format_y_axis,
 )
 from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.stocks.options import op_helpers, tradier_model
@@ -642,13 +643,14 @@ def display_historical(
         candle_chart_kwargs["figratio"] = (10, 7)
         candle_chart_kwargs["figscale"] = 1.10
         candle_chart_kwargs["figsize"] = plot_autoscale()
-        fig, _ = mpf.plot(df_hist, **candle_chart_kwargs)
+        fig, ax = mpf.plot(df_hist, **candle_chart_kwargs)
         fig.suptitle(
             f"Historical {strike} {op_type.title()}",
             x=0.055,
             y=0.965,
             horizontalalignment="left",
         )
+        lambda_long_number_format_y_axis(df_hist, "Volume", ax)
         theme.visualize_output(force_tight_layout=False)
     else:
         if len(external_axes) != 2:

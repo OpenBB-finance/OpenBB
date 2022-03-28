@@ -15,7 +15,10 @@ from gamestonk_terminal.rich_config import console
 from gamestonk_terminal.stocks.options import chartexchange_model
 from gamestonk_terminal.config_terminal import theme
 
-from gamestonk_terminal.helper_funcs import plot_autoscale
+from gamestonk_terminal.helper_funcs import (
+    plot_autoscale,
+    lambda_long_number_format_y_axis,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -81,6 +84,7 @@ def display_raw(
             y=0.965,
             horizontalalignment="left",
         )
+        lambda_long_number_format_y_axis(df, "Volume", ax)
         theme.visualize_output(force_tight_layout=False)
         ax[0].legend()
     else:
