@@ -14,7 +14,12 @@ from gamestonk_terminal.config_terminal import theme
 from gamestonk_terminal.common.technical_analysis import overlap_model
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.decorators import log_start_end
-from gamestonk_terminal.helper_funcs import export_data, plot_autoscale, reindex_dates
+from gamestonk_terminal.helper_funcs import (
+    export_data,
+    plot_autoscale,
+    reindex_dates,
+    lambda_long_number_format_y_axis,
+)
 from gamestonk_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -166,13 +171,14 @@ def view_vwap(
         candle_chart_kwargs["addplot"] = mpf.make_addplot(
             df_vwap, width=theme.line_width
         )
-        fig, _ = mpf.plot(day_df, **candle_chart_kwargs)
+        fig, ax = mpf.plot(day_df, **candle_chart_kwargs)
         fig.suptitle(
             f"{s_ticker} {s_interval} VWAP",
             x=0.055,
             y=0.965,
             horizontalalignment="left",
         )
+        lambda_long_number_format_y_axis(day_df, "Volume", ax)
         theme.visualize_output(force_tight_layout=False)
     else:
         if len(external_axes) != 3:

@@ -31,6 +31,7 @@ from gamestonk_terminal.helper_funcs import (
     plot_autoscale,
     get_user_timezone_or_invalid,
     print_rich_table,
+    lambda_long_number_format_y_axis,
 )
 from gamestonk_terminal.rich_config import console
 
@@ -379,7 +380,9 @@ def display_candle(
             candle_chart_kwargs["figratio"] = (10, 7)
             candle_chart_kwargs["figscale"] = 1.10
             candle_chart_kwargs["figsize"] = plot_autoscale()
+
             fig, ax = mpf.plot(df_stock, **candle_chart_kwargs, **kwargs)
+            lambda_long_number_format_y_axis(df_stock, "Volume", ax)
 
             fig.suptitle(
                 f"{asset_type} {s_ticker}",
