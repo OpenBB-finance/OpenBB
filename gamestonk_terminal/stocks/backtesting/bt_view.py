@@ -149,6 +149,7 @@ def display_simple_ema(
 
     res = bt_model.ema_strategy(ticker, df_stock, ema_length, spy_bt, no_bench)
     res.plot(title=f"Equity for EMA({ema_length})", ax=ax)
+    ax.set_ylabel("Total Return (%)")
 
     theme.style_primary_axis(ax)
 
@@ -211,6 +212,7 @@ def display_ema_cross(
         ticker, df_stock, short_ema, long_ema, spy_bt, no_bench, shortable
     )
     res.plot(title=f"EMA Cross for EMA({short_ema})/EMA({long_ema})", ax=ax)
+    ax.set_ylabel("Total Return (%)")
 
     theme.style_primary_axis(ax)
 
@@ -276,6 +278,8 @@ def display_rsi_strategy(
     )
 
     res.plot(title=f"RSI Strategy between ({low_rsi}, {high_rsi})", ax=ax)
+
+    ax.set_ylabel("Total Return (%)")
 
     theme.style_primary_axis(ax)
 
