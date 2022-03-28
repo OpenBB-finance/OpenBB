@@ -650,7 +650,7 @@ def display_historical(
             y=0.965,
             horizontalalignment="left",
         )
-        lambda_long_number_format_y_axis(df_hist, "Volume", ax)
+        lambda_long_number_format_y_axis(df_hist, "volume", ax)
         theme.visualize_output(force_tight_layout=False)
     else:
         if len(external_axes) != 2:
