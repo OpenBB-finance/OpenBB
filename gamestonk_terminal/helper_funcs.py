@@ -1159,8 +1159,23 @@ def export_data(
             default_filename = f"{now.strftime('%Y%m%d_%H%M%S')}_{path_cmd}_{func_name}"
 
         else:
-            full_path_dir = dir_path.replace("gamestonk_terminal", "exports")
             default_filename = f"{func_name}_{now.strftime('%Y%m%d_%H%M%S')}"
+
+            if gtff.PACKAGED_APPLICATION:
+                full_path_dir = os.path.join(
+                    os.environ["HOME"], "Desktop", "GST-exports"
+                )
+
+                if not os.path.isdir(full_path_dir):
+                    try:
+                        os.makedirs(full_path_dir)
+                    except Exception:
+                        console.print(
+                            f"[red]Couldn't create a folder in {full_path_dir}. Exporting failed.[/red]"
+                        )
+                        return
+            else:
+                full_path_dir = dir_path.replace("gamestonk_terminal", "exports")
 
         for exp_type in export_type.split(","):
 
