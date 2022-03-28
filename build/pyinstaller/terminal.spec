@@ -1,11 +1,14 @@
 # -*- mode: python ; coding: utf-8 -*-
 import os
 import sys
+import json
 
 from PyInstaller.compat import is_darwin, is_win
 from PyInstaller.building.api import PYZ, EXE, COLLECT
 from PyInstaller.building.splash import Splash
 from PyInstaller.building.build_main import Analysis
+
+from gamestonk_terminal.loggers import get_commit_hash
 
 NAME = "GamestonkTerminal"
 
@@ -17,6 +20,17 @@ build_type = (
 pathex = os.path.join(
     os.path.dirname(sys.executable), "..", "lib", "python3.8", "site-packages"
 )
+
+# Get latest commit
+commit_hash = get_commit_hash()
+build_assets_folder = os.path.join(os.getcwd(), "build", "pyinstaller")
+default_feature_flags_path = os.path.join(build_assets_folder, "GTFF_DEFAULTS.json")
+with open(default_feature_flags_path, "r") as f:
+    default_gtff = json.load(f)
+
+default_gtff["GT_LOGGING_COMMIT_HASH"] = commit_hash
+with open(default_feature_flags_path, "w") as f:
+    json.dump(default_gtff, f, indent=4)
 
 # Files that are explicitly pulled into the bundle
 added_files = [
