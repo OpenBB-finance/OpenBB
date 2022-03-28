@@ -37,19 +37,10 @@ added_files = [
     (os.path.join(os.getcwd(), "gamestonk_terminal"), "gamestonk_terminal"),
     (os.path.join(os.getcwd(), "routines"), "routines"),
     (os.path.join(os.getcwd(), "styles"), "styles"),
+    ("property_cached", "property_cached"),
+    ("user_agent", "user_agent"),
+    ("vaderSentiment", "vaderSentiment"),
     (
-        os.path.join("property_cached"),
-        "property_cached",
-    ),
-        (
-        os.path.join("user_agent"),
-        "user_agent",
-    ),
-        (
-        os.path.join("vaderSentiment"),
-        "vaderSentiment",
-    ),
-        (
         os.path.join("frozendict", "VERSION"),
         "frozendict",
     ),
