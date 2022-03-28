@@ -420,6 +420,10 @@ class TerminalController(BaseController):
 # pylint: disable=global-statement
 def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
     """Terminal Menu"""
+    # TODO: HELP WANTED! Refactor the appName setting if a more elegant solution comes up
+    if gtff.PACKAGED_APPLICATION:
+        appName = "gst_packaged"
+
     setup_logging(appName)
     logger.info("START")
     log_settings()
@@ -585,6 +589,7 @@ def log_settings() -> None:
     settings_dict["watermark"] = "True" if gtff.USE_WATERMARK else "False"
     settings_dict["autoscaling"] = "True" if gtff.USE_PLOT_AUTOSCALING else "False"
     settings_dict["dt"] = "True" if gtff.USE_DATETIME else "False"
+    settings_dict["packaged"] = "True" if gtff.PACKAGED_APPLICATION else "False"
     settings_dict["python"] = str(platform.python_version())
     settings_dict["os"] = str(platform.system())
 
@@ -652,6 +657,7 @@ def run_scripts(
                 else:
                     with suppress_stdout():
                         terminal(file_cmds, appName="gst_script")
+
     else:
         console.print(f"File '{path}' doesn't exist. Launching base terminal.\n")
         if not test_mode:
