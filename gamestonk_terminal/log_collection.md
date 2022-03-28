@@ -11,6 +11,7 @@ You can help GamestonkTerminal Team by enabling reports about your usage and err
 No Personal Identifiable Information is collected (PII).
 
 Without this information we won't have much visibility on what are the :
+
 - Most used features
 - Most common errors
 - OS + Python version : specific incompatibilities
@@ -61,7 +62,6 @@ Here is a list of data we are not collecting :
 |User API KEYS|API Keys to connect to third parties API, like : <br>- ALPHAVANTAGE <br> - COINBASE, <br>- COINPAPRIKA <br>- DEGIRO <br>- REDDIT|NO|
 |User information|Other information that can let identify the users, like : <br>- E-mail <br> - LastName <br>- Firstname|NO|
 |File/Folder paths|When errors occurs usually computers paths are shown : we filter those.|NO|
-
 
 **COLLECTED**
 
