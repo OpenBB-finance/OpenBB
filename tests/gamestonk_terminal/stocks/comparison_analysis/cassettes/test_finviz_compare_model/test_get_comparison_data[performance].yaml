@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
       Cookie:
-      - screenerUrl=screener.ashx%3Fv%3D131%26ft%3D4%26t%3DTESLA%2CGM
+      - screenerUrl=screener.ashx%3Fv%3D161%26ft%3D4%26t%3DTESLA%2CGM
       User-Agent:
       - Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4)             AppleWebKit/537.36
         (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36
@@ -300,9 +300,9 @@ interactions:
         cSos4lVYxK2wiF+hpMxBWuagdpmnaZmntcs8S8s8q13meVrmed0y8xwli3hKFnGVLOIrWcRZsoi3
         pKRMcQbUK1OcAfXKFGdAvTLFGVB3THODWrfUfKfRg71GC7qNHqARAvDDVcJ7pR6gE94v+wAn12Je
         rmXcXA/yc6UaYTp0NVXCdMyqdMLuHPy1HFMOz9SXoBFqNQQNOBtnmphKzrbKuAmL2YRNkDlBEyEW
-        sm7EhG70ahQ7rZ89mmJnq1tSsdNo/n7RE+vgiM8sOGId+fAJIh/+PwAAAP//7D3bctvGks9R1f7D
+        sm7EhG70ahQ7rZ89mmJnq1tSsdNo/n7RE+vgiM8sOGId+fB3jXz4/wAAAP//7D3bctvGks9R1f7D
         HMQx5V2RBECCpCSTKTm+yOeYjm0pysapLdUQGJKwQQwzGJCW41Sdx/N8Xrb2dd/2N3b/JF+y1TO4
-        kcRNIk3JCVXlMgn2bS7o7pme6d7ayYcv3SJBotFN2qHkCb2N2KBYzE1aIxBvyxZJstyIVQJSO8u0
+        kcRNIk3JCVXlMgn2bS7o7pme6d7EyYcv3SJBotFN2qHkCb2N2KBYzE1aIxBvyxZJstyIVQJSO8u0
         s0w7y7SzTH/sM3lQWLL+gs5vZKL6+IM98Sf1ie3C/7AdvnqwDi6ZenDLtPyhulCozRgkEMChc121
         tmaQkizXNEgxqdswSO4YsobPxYhkwjgS5kX2xsjAGCs94xuoHjWBJOxyLyKP6EBTx0oPtlGvgwNs
         tOvx0YGPfj0+DcBpXA+nCTjN6+EYgGNcD0fltDFWemq18U1JcEOAG2XBxcCo1TjGkYeAlwZeblrl
@@ -410,14 +410,14 @@ interactions:
         QB6NlV/q01ntnfctI7NuQ9UV6RnH5j1EsWDjdslF4JjbZs10qG8NHcwIpD0BD10Y+QHBJnVrE9ut
         vfPqs5ahE2wSrXWo46ZqDnGj3WpYw1br0Go3G4em1mocqu3DttbWDpsKFHoiI6jxB8lGsKHp1Wd2
         +8P0r286/Ow9mz5tY8qsV29fOz/qj1/wjz84b01/ctax+q/fzR+fPnHnh8/bb19c2d+/q7f42zP+
-        5tEz/mz0smWSly2zf9r52Cb81TNn3u0Ge93msCol7lZ+VRi+em4pR0pr2GgQY9AyO8bQHLaayoHC
-        6XviKkcKMRpDtTNsmYdEbQ6G1mG7pbZVTe0YxDxsDAAUKsfDptKRoqu6VtP0mqocKJ6twJ3o3yrI
-        ZNTzKLNHtttVsEvdqwn1F12rOuxXwf9jPnF6e/8PAAD//wMAM6T0ilWsAgA=
+        5tEz/mz0smWSly2zf9r52Cb81TNn3u0Ge93msCol7lZ+VRi+em4pR0pr2GhqatuyOo0BUQlRDhRO
+        3xNXOVKI0RiqnWHLPCRqczC0Dtstta1qascg5mFj0FQOFKgcD5tKR4qu6lpN02uqcqB4tgJ3on+r
+        IJNRz6PMHtluV8Euda8m1F90reqwXwX/j/nE6e39PwAAAP//AwBY+mCMVawCAA==
     headers:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 6f33e5b6c85fcf64-IAD
+      - 6f34107dd83be0ee-IAD
       Cache-Control:
       - no-cache
       Connection:
@@ -427,7 +427,7 @@ interactions:
       Content-Type:
       - text/html; charset=utf-8
       Date:
-      - Mon, 28 Mar 2022 22:45:39 GMT
+      - Mon, 28 Mar 2022 23:14:51 GMT
       Expect-CT:
       - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
       Server:
@@ -439,10 +439,10 @@ interactions:
       request-context:
       - appId=cid-v1:bdd405ef-7a83-4f9a-9228-0107d7f4bc90
       set-cookie:
-      - preventRedirectLoop=false; expires=Sun, 27 Mar 2022 22:45:39 GMT; domain=.finviz.com;
+      - preventRedirectLoop=false; expires=Sun, 27 Mar 2022 23:14:51 GMT; domain=.finviz.com;
         path=/
       - screenerUrl=screener.ashx%3Fv%3D141%26ft%3D4%26t%3DTESLA%2CGM; expires=Tue,
-        28 Mar 2023 22:45:39 GMT; domain=.finviz.com; path=/
+        28 Mar 2023 23:14:51 GMT; domain=.finviz.com; path=/
       vary:
       - Accept-Encoding
       x-frame-options:
