@@ -4135,6 +4135,14 @@ optional = false
 python-versions = "*"
 
 [[package]]
+name = "types-six"
+version = "1.16.12"
+description = "Typing stubs for six"
+category = "dev"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "types-urllib3"
 version = "1.26.11"
 description = "Typing stubs for urllib3"
@@ -4479,7 +4487,7 @@ prediction = ["tensorflow"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8,<3.10"
-content-hash = "75f73c96c4c4c14d59ba86c460b6d060b0dee53173f51f76e98b3c9015a4b463"
+content-hash = "7fb477dbddc934c73cbe49e0c20b1620ff5d2e7bfb0fddc669ed242ab4951e01"
 
 [metadata.files]
 absl-py = [
@@ -7251,6 +7259,10 @@ types-requests = [
 types-setuptools = [
     {file = "types-setuptools-57.4.11.tar.gz", hash = "sha256:262f7406e0c7d705ad6bb4526b5b761fa500bf99eab74de85ac3592187d62935"},
     {file = "types_setuptools-57.4.11-py3-none-any.whl", hash = "sha256:fbb0647569d6fb2f6bc472402265250c0ffa53e60180d2cbfee9e84f085921f0"},
+]
+types-six = [
+    {file = "types-six-1.16.12.tar.gz", hash = "sha256:557435f8ad73e91562797ac7efac8e6554f0fa7893b6431b928de8ec635d866a"},
+    {file = "types_six-1.16.12-py3-none-any.whl", hash = "sha256:6857be934cfa884e166fb3bab8c0bc6f967b051af09e4f87c5ea8b166c16d2f5"},
 ]
 types-urllib3 = [
     {file = "types-urllib3-1.26.11.tar.gz", hash = "sha256:24d64e441168851eb05f1d022de18ae31558f5649c8f1117e384c2e85e31315b"},
