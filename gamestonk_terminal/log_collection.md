@@ -6,25 +6,18 @@
 
 Code is not the only way you can contribute to improve GamestonkTerminal.
 
-You can help GamestonkTerminal Team by enabling reports about your usage and errors.
+You can help the team by enabling sending the logs that contain information about the usage of the terminal and errors. This helps to resolve bugs faster and focus the attention of the developers on what is important to you. Together we can strengthen the open source community and channel our efforts.
+This is important since GamestonkTerminal is an on-site application. This means that you install it on your computer. On a contrary of a web application that can track the usage of every button and page, we need logs to be sent to us to understand where to spend our time and effort.
 
-No Personal Identifiable Information is collected (PII).
+With your logs, we can
 
-Without this information we won't have much visibility on what are the :
+- see what your favorite features are, understand why and further improve that part of the terminal
+- have a look at the most common errors and improve on the ease of use
+- we can check for incompatibilities of different operating systems and python versions
 
-- Most used features
-- Most common errors
-- OS + Python version : specific incompatibilities
+If you are concerned about privacy, be assured, we do not collect any Personal Identifiable Information (PII). This means that you will stay anonymous at all time.
 
 Personal Identifiable Information : PII is anything that can link you to the data (IP/E-mail/Credentials...)
-
-**CHALLENGE**
-
-GamestonkTerminal is an on-site application : that you install on your computer.
-
-On a contrary of a web application that can track the usage of every button and page.
-
-We have no means to know if a feature we spent time and effort on is actually used or crashes.
 
 **LOG COLLECTION**
 
@@ -36,23 +29,21 @@ We are not logging credentials or elements that allows identifying you.
 
 By default Log Collection is enabled.
 
-You can disable it running the command : `/settings/logcollection`
-
+You can disable it running the command: `/settings/logcollection`
 It should appear as red in the `/settings/help` table when disabled.
 
 Run the same command another time to enable it.
-
 It should appear as green in the `/settings/help` table when enabled.
 
-## 3. What is collected ?
-
-**Personal Identifiable Information**
-
-We everything we can to : filter any Personal Identifiable information and credentials.
-
-Credentials are not logged at all.
+## 3. What is and is not collected ?
 
 **NOT COLLECTED**
+
+*Personal Identifiable Information*
+
+We have a filter in place, to prevent any Personal Identifiable information and credentials to be saved in the logs.
+
+Credentials are not logged at all.
 
 Here is a list of data we are not collecting :
 
