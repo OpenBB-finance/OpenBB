@@ -81,7 +81,7 @@ class TerminalController(BaseController):
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: None for c in self.controller_choices}
-            choices["tz"] = {c: None for c in self.all_timezones}
+            choices["tz"] = {c.replace("/", "-"): None for c in self.all_timezones}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
         self.queue: List[str] = list()
@@ -233,9 +233,29 @@ class TerminalController(BaseController):
 
     def call_tz(self, other_args: List[str]):
         """Process tz command"""
-        other_args.append(self.queue[0])
-        self.queue = self.queue[1:]
-        replace_user_timezone("/".join(other_args))
+
+        tz_parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="""
+                   Setting a different timezone
+               """,
+        )
+
+        tz_parser.add_argument(
+            "-tz",
+            dest="timezone",
+            help="Choose timezone",
+            required="-h" not in other_args,
+        )
+
+        if other_args and "-tz" not in other_args[0] and "-h" not in other_args[0]:
+            other_args.insert(0, "-tz")
+
+        tz_ns_parser = parse_known_args_and_warn(tz_parser, other_args)
+        if tz_ns_parser:
+            if tz_ns_parser.timezone:
+                replace_user_timezone(tz_ns_parser.timezone.replace("-", "/"))
 
     def call_export(self, other_args: List[str]):
         """Process export command"""
