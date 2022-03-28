@@ -585,7 +585,10 @@ def lambda_long_number_format_y_axis(df, y_column, ax):
     magnitude_sym = " KMBTP"[magnitude]
 
     # Second y label axis -
-    ax[2].set_ylabel(f"{y_column} [{magnitude_sym}]")
+    if magnitude_sym == " ":
+        ax[2].set_ylabel(f"{y_column}")
+    else:
+        ax[2].set_ylabel(f"{y_column} [{magnitude_sym}]")
 
     divider_map = {" ": 1, "K": 1000, "M": 1000000, "B": 1000000000}
     divider = divider_map[magnitude_sym]
