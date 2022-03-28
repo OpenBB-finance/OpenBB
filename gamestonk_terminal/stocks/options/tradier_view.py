@@ -637,6 +637,7 @@ def display_historical(
             "volume_linewidth": 0.8,
             "volume_width": 0.8,
         },
+        "datetime_format": "%Y-%b-%d",
     }
     if external_axes is None:
         candle_chart_kwargs["returnfig"] = True

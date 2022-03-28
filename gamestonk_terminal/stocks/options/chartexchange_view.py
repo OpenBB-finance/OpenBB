@@ -52,6 +52,7 @@ def display_raw(
     """
 
     df = chartexchange_model.get_option_history(ticker, date, call, price)
+
     df["Date"] = pd.to_datetime(df["Date"])
     df = df.set_index("Date")
 
@@ -68,6 +69,7 @@ def display_raw(
             "volume_width": 0.8,
         },
         "warn_too_much_data": 10000,
+        "datetime_format": "%Y-%b-%d",
     }
     # This plot has 2 axes
     option_type = "call" if call else "put"
