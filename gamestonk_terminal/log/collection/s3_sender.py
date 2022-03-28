@@ -1,5 +1,6 @@
 # IMPORTATION STANDARD
 from pathlib import Path
+from shutil import copyfile
 from typing import Any, Dict
 
 # IMPORTATION THIRDPARTY
@@ -82,6 +83,7 @@ def send_to_s3(
     file: Path,
     object_key: str,
     tmp_file: Path,
+    copy: bool = False,
 ):
     api_url = DEFAULT_API_URL
     bucket = DEFAULT_BUCKET
@@ -91,7 +93,11 @@ def send_to_s3(
         raise AttributeError(f"File is empty : {file}")
 
     tmp_file.parent.mkdir(exist_ok=True)
-    file = file.rename(tmp_file)
+
+    if copy:
+        copyfile(file, tmp_file)
+    else:
+        file.rename(tmp_file)
 
     if (
         aws_settings.aws_access_key_id != "REPLACE_ME"
@@ -101,15 +107,15 @@ def send_to_s3(
             aws_access_key_id=aws_settings.aws_access_key_id,
             aws_secret_access_key=aws_settings.aws_secret_access_key,
             bucket=bucket,
-            file=file,
+            file=tmp_file,
             object_key=object_key,
         )
     else:
         send_to_s3_using_presigned_url(
             api_url=api_url,
-            file=file,
+            file=tmp_file,
             object_key=object_key,
         )
 
     archives_file.parent.mkdir(exist_ok=True)
-    file.rename(archives_file)
+    tmp_file.rename(archives_file)

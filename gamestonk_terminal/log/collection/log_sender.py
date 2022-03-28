@@ -86,6 +86,7 @@ class LogSender(Thread):
                         file=file,
                         object_key=object_key,
                         tmp_file=tmp_file,
+                        copy=last,
                     )
                 except Exception:
                     self.fails_increment()

@@ -177,13 +177,16 @@ class PathTrackingFileHandler(TimedRotatingFileHandler):
         """Do not use the file logger in this function."""
 
         log_sender = self.__log_sender
-        closed_log_path = self.baseFilename
-
-        super().close()
+        closed_log_path = Path(self.baseFilename)
 
         if log_sender.check_sending_conditions():
-            log_sender.send_path(path=Path(closed_log_path), last=True)
+            log_sender.send_path(path=closed_log_path, last=True)
             try:
                 log_sender.join(timeout=3)
             except Exception:
                 pass
+
+        super().close()
+
+        if log_sender.check_sending_conditions():
+            closed_log_path.unlink(missing_ok=True)
