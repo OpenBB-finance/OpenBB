@@ -10,27 +10,26 @@ Code is not the only way you can contribute to improve `GamestonkTerminal`.
 
 You can help the `GamestonkTerminal` Community by enabling sending logs about the usage of the terminal and errors.
 
-We are not logging credentials or elements that allows identifying you.
+If you are concerned about privacy, be assured, we do **not** collect any:
+
+- Personal Identifiable Information (PII).
+- Credentials.
+
+This means that you will stay anonymous at all time.
 
 **REASONS**
 
-Together we can strengthen the open source community and channel our efforts.
+With your these reports, we can:
+
+1. See what your favorite features are, understand why and further improve them.
+2. Have a look at the most common errors and improve on the ease of use of the terminal.
+3. Check for incompatibilities of different operating systems and python versions.
 
 This helps to resolve bugs faster and focus the attention of the developers on what is important to you.
 
-This is important since `GamestonkTerminal` is an on-site application: you install it on your computer.
+`GamestonkTerminal` is an on-site application: you install it on your computer.
 
 On a contrary of a web application that can track the usage of every button and page, we need logs to be sent to us to understand where to spend our time and effort.
-
-With your this reports, we can :
-
-1. see what your favorite features are, understand why and further improve that part of the terminal
-2. have a look at the most common errors and improve on the ease of use
-3. we can check for incompatibilities of different operating systems and python versions
-
-If you are concerned about privacy, be assured, we do not collect any Personal Identifiable Information (PII).
-
-This means that you will stay anonymous at all time.
 
 ## 2. Disable/Enable `Reporting` ?
 
@@ -46,11 +45,9 @@ You can do the same operation to re-enable it : `logcollection` will appear in g
 
 **NOT COLLECTED**
 
-*Personal Identifiable Information*
+We have a filter in place, to prevent any Personal Identifiable information saved in the reports.
 
-We have a filter in place, to prevent any Personal Identifiable information and credentials to be saved in the logs.
-
-Credentials are not logged at all.
+Credentials are not reported at all.
 
 Here is a list of data we are not collecting :
 
