@@ -10,9 +10,13 @@ from pathlib import Path
 from typing import Optional
 
 # IMPORTATION THIRDPARTY
-import git
+try:
+    import git
+except ImportError:
+    pass
 
 # IMPORTATION INTERNAL
+import gamestonk_terminal.feature_flags as gtff
 from gamestonk_terminal.config_terminal import (
     LOGGING_APP_NAME,
     LOGGING_AWS_ACCESS_KEY_ID,
@@ -54,6 +58,9 @@ def get_app_id() -> str:
 
 def get_commit_hash() -> str:
     """Get Commit Short Hash"""
+
+    if gtff.LOGGING_COMMIT_HASH != "REPLACE_ME":
+        return gtff.LOGGING_COMMIT_HASH
 
     file_path = Path(__file__)
     git_dir = file_path.parent.parent.absolute().joinpath(".git")
