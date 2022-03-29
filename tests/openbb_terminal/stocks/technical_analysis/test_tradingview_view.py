@@ -16,6 +16,7 @@ def vcr_config():
     }
 
 
+@pytest.mark.linux
 @pytest.mark.vcr
 # @pytest.mark.record_stdout
 def test_print_recommendation():
