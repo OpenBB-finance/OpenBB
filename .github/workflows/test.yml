@@ -80,6 +80,7 @@ jobs:
           MPLBACKEND: Agg
         run: |
           source $VENV
+          pip install pytest
           pytest tests/
 
       - name: Start Terminal and exit
@@ -152,6 +153,7 @@ jobs:
           MPLBACKEND: Agg
         run: |
           source $VENV
+          pip install pytest
           pytest tests/
 
       - name: Start Terminal and exit
