@@ -51,7 +51,18 @@ START_TIMESTAMP = int(time.time())
 def get_app_id() -> str:
     """UUID of the current installation."""
 
-    app_id = get_log_dir().stem
+    try:
+        app_id = get_log_dir().stem
+    except OSError as e:
+        if e.errno == 30:
+            print("Please move the application into a writable location.")
+            print(
+                "Note for macOS users: copy `Gamestonk Terminal` folder outside the DMG."
+            )
+        else:
+            raise e
+    except Exception as e:
+        raise e
 
     return app_id
 

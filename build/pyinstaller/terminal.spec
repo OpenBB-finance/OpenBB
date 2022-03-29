@@ -40,9 +40,14 @@ added_files = [
     ("property_cached", "property_cached"),
     ("user_agent", "user_agent"),
     ("vaderSentiment", "vaderSentiment"),
+    (os.path.join("frozendict", "VERSION"), "frozendict"),
     (
-        os.path.join("frozendict", "VERSION"),
-        "frozendict",
+        os.path.join(pathex, "linearmodels", "datasets"),
+        os.path.join("linearmodels", "datasets"),
+    ),
+    (
+        os.path.join(pathex, "statsmodels", "datasets"),
+        os.path.join("statsmodels", "datasets"),
     ),
     ("OBBFF_DEFAULTS.json", "openbb_terminal"),
 ]
@@ -56,6 +61,7 @@ hidden_imports = [
     "sklearn.neighbors._partition_nodes",
     "squarify",
     "linearmodels",
+    "statsmodels",
     "user_agent",
     "vaderSentiment",
     "frozendict",
@@ -126,7 +132,7 @@ elif build_type == "folder":
 # Platform specific settings
 if is_win:
     splash = Splash(
-        os.path.join(os.getcwd(), "images", "splashscreen.png"),
+        os.path.join(os.getcwd(), "images", "openbb_splashscreen.png"),
         binaries=a.binaries,
         datas=a.datas,
         text_pos=(200, 400),
@@ -134,12 +140,10 @@ if is_win:
         text_color="white",
     )
     exe_args += [splash, splash.binaries]
-    exe_kwargs["icon"] = (os.path.join(os.getcwd(), "images", "gst_app.ico"),)
+    exe_kwargs["icon"] = (os.path.join(os.getcwd(), "images", "openbb_icon.ico"),)
 
 if is_darwin:
-    exe_kwargs["icon"] = (
-        os.path.join(os.getcwd(), "images", "GamestonkTerminal.icns"),
-    )
+    exe_kwargs["icon"] = (os.path.join(os.getcwd(), "images", "openbb.icns"),)
 
 exe = EXE(*exe_args, **exe_kwargs)
 

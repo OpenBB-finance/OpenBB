@@ -1175,7 +1175,7 @@ Performance & Valuations
             prog="options",
             description="Show the available options for the 'plot' command. To save data, use the command -st on "
             "'macro', 'fred', 'index' and 'treasury'. You can use these commands to plot data on a multi-"
-            "axes graoh. Furthermore, this command also allows you to see and export all stored data.",
+            "axes graph. Furthermore, this command also allows you to see and export all stored data.",
         )
 
         ns_parser = parse_known_args_and_warn(
