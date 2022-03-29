@@ -45,7 +45,7 @@ the installation process.
 **_STILL NEED TO ADD WALKTHROUGH AND IMAGES_**
 
 | Note about "Malicious Software" warning                                                                                                                                                                 |
-|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | You will most likely see one of the following images displayed below. This is because the installer is still in beta phase, and the team has not requested verification from neither Windows nor Apple. |
 
 **_STILL NEED TO ADD IMAGES_**
@@ -58,12 +58,12 @@ To mark the application as safe for usage, use the following steps:
 
 #### On macOS
 
-1) Run the file. You will most likely receive a message that macOS was not able to check whether the application
-contains malicious software. The reasoning for this is described in the note above.
-2) Go to macOS System Preferences > Security & Privacy > General. You should see see a message at the bottom that says
-that the file "_was blocked from use because it is not from an identified developer_".
-3) Click on the button "Allow anyway"
-4) You should now be able to use the application.
+1. Run the file. You will most likely receive a message that macOS was not able to check whether the application
+   contains malicious software. The reasoning for this is described in the note above.
+2. Go to macOS System Preferences > Security & Privacy > General. You should see see a message at the bottom that says
+   that the file "_was blocked from use because it is not from an identified developer_".
+3. Click on the button "Allow anyway"
+4. You should now be able to use the application.
 
 _WHAT ELSE?_
 
@@ -290,7 +290,7 @@ git stash pop
 ### Web UI - Docker
 
 1. Ensure Docker is installed.
-2. Navigate to the location of the Dockerfile in the repo (`cd gamestonk_terminal_web`)
+2. Navigate to the location of the Dockerfile in the repo (`cd openbb_terminal_web`)
 3. Ensure the launcher is executable with `chmod +x ./launch`
 4. Launch it with `./launch`. If you get a permission denied error, do `sudo ./launch` instead
 5. Once it's launched, you will be able to access it by going to `http://host-ip:8080` in a browser, or `http://localhost:8080` if you are running it on your local machine.
@@ -299,7 +299,7 @@ For API keys, create the `setenv` file if it doesn't already exist.
 It will automatically get created on the first launch, and won't get committed to Git because it is on the `.gitignore`.
 Set the API keys [as explained here](https://github.com/GamestonkTerminal/GamestonkTerminal/blob/main/DOCKER_ADVANCED.md#environment-variables).
 Once you've put the API keys in that file, re-run the launch script, and it will use your API keys.
-There are a few things that still don't work, and you can see what works and what doesn't [here](https://github.com/CoconutMacaroon/GamestonkTerminal/blob/main/gamestonk_terminal_web/README.md#todo).
+There are a few things that still don't work, and you can see what works and what doesn't [here](https://github.com/CoconutMacaroon/GamestonkTerminal/blob/main/openbb_terminal_web/README.md#todo).
 
 ### API Keys
 
@@ -320,30 +320,31 @@ When you have installed the terminal through Anaconda & Python, you can use the 
 API Keys directly instead of using the Terminal, for the variable name in the code one just needs to
 remove the "GT\_", this can be found in [config_terminal.py](/openbb_terminal/config_terminal.py).
 
-| Website                                                                         | Environment Variables                                                                                                                             |
-| :------------------------------------------------------------------------------ | :------------------------------------------------------------------------------------------------------------------------------------------------ |
-| [Alpha Vantage](https://www.alphavantage.co)                                    | OPENBB_API_KEY_ALPHAVANTAGE                                                                                                                           |
-| [Binance](https://binance.com)                                                  | OPENBB_API_BINANCE_KEY <br/> OPENBB_API_BINANCE_SECRET                                                                                                    |
-| [CoinMarketCap](https://coinmarketcap.com)                                      | OPENBB_API_CMC_KEY <br/>                                                                                                                              |
-| [DEGIRO](https://www.degiro.fr)                                                 | OPENBB_DG_USERNAME <br/> OPENBB_DG_PASSWORD <br/> OPENBB_DG_TOTP_SECRET                                                                                       |
-| [FRED](https://fred.stlouisfed.org)                                             | OPENBB_API_FRED_KEY                                                                                                                                   |
-| [Financial Modeling Prep](https://financialmodelingprep.com)                    | OPENBB_API_KEY_FINANCIALMODELINGPREP                                                                                                                  |
-| [Finnhub](https://finnhub.io)                                                   | OPENBB_API_FINNHUB_KEY                                                                                                                                |
-| [News](https://newsapi.org)                                                     | OPENBB_API_NEWS_TOKEN                                                                                                                                 |
-| [Oanda](https://developer.oanda.com)                                            | OPENBB_OANDA_TOKEN <br/> OPENBB_OANDA_ACCOUNT                                                                                                             |
-| [Polygon](https://polygon.io)                                                   | OPENBB_API_POLYGON_KEY                                                                                                                                |
-| [Quandl](https://www.quandl.com)                                                | OPENBB_API_KEY_QUANDL                                                                                                                                 |
+
+| Website                                                                         | Environment Variables                                                                                                                                                 |
+| :------------------------------------------------------------------------------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [Alpha Vantage](https://www.alphavantage.co)                                    | OPENBB_API_KEY_ALPHAVANTAGE                                                                                                                                           |
+| [Binance](https://binance.com)                                                  | OPENBB_API_BINANCE_KEY <br/> OPENBB_API_BINANCE_SECRET                                                                                                                |
+| [CoinMarketCap](https://coinmarketcap.com)                                      | OPENBB_API_CMC_KEY <br/>                                                                                                                                              |
+| [DEGIRO](https://www.degiro.fr)                                                 | OPENBB_DG_USERNAME <br/> OPENBB_DG_PASSWORD <br/> OPENBB_DG_TOTP_SECRET                                                                                               |
+| [FRED](https://fred.stlouisfed.org)                                             | OPENBB_API_FRED_KEY                                                                                                                                                   |
+| [Financial Modeling Prep](https://financialmodelingprep.com)                    | OPENBB_API_KEY_FINANCIALMODELINGPREP                                                                                                                                  |
+| [Finnhub](https://finnhub.io)                                                   | OPENBB_API_FINNHUB_KEY                                                                                                                                                |
+| [News](https://newsapi.org)                                                     | OPENBB_API_NEWS_TOKEN                                                                                                                                                 |
+| [Oanda](https://developer.oanda.com)                                            | OPENBB_OANDA_TOKEN <br/> OPENBB_OANDA_ACCOUNT                                                                                                                         |
+| [Polygon](https://polygon.io)                                                   | OPENBB_API_POLYGON_KEY                                                                                                                                                |
+| [Quandl](https://www.quandl.com)                                                | OPENBB_API_KEY_QUANDL                                                                                                                                                 |
 | [Reddit](https://www.reddit.com)                                                | OPENBB_API_REDDIT_CLIENT_ID <br> OPENBB_API_REDDIT_CLIENT_SECRET <br/> OPENBB_API_REDDIT_USERNAME <br/> OPENBB_API_REDDIT_USER_AGENT <br/> OPENBB_API_REDDIT_PASSWORD |
-| [SentimentInvestor](https://sentimentinvestor.com)                              | OPENBB_API_SENTIMENTINVESTOR_TOKEN <br> OPENBB_API_SENTIMENTINVESTOR_KEY                                                                                  |
-| [Tradier](https://developer.tradier.com)                                        | OPENBB_TRADIER_TOKEN                                                                                                                                  |
-| [Twitter](https://developer.twitter.com)                                        | OPENBB_API_TWITTER_KEY <br/> OPENBB_API_TWITTER_SECRET_KEY <br/> OPENBB_API_TWITTER_BEARER_TOKEN                                                              |
-| [Coinbase](https://docs.pro.coinbase.com/)                                      | OPENBB_API_COINBASE_KEY <br/> OPENBB_API_COINBASE_SECRET <br/> OPENBB_API_COINBASE_PASS_PHRASE                                                                |
-| [Whale Alert](https://docs.whale-alert.io/)                                     | OPENBB_API_WHALE_ALERT_KEY                                                                                                                            |
-| [Ethplorer](https://github.com/EverexIO/Ethplorer/wiki/Ethplorer-API)           | OPENBB_API_ETHPLORER_KEY                                                                                                                              |
-| [Cryptopanic](https://cryptopanic.com/developers/api/)                          | OPENBB_API_CRYPTO_PANIC_KEY                                                                                                                           |
-| [Glassnode](https://docs.glassnode.com/basic-api/api-key#how-to-get-an-api-key) | OPENBB_API_GLASSNODE_KEY                                                                                                                              |
-| [Coinglass](https://coinglass.github.io/API-Reference/#api-key)                 | OPENBB_API_COINGLASS_KEY                                                                                                                              |
-| [BitQuery](https://bitquery.io/pricing)                                         | OPENBB_API_BITQUERY_KEY                                                                                                                               |
+| [SentimentInvestor](https://sentimentinvestor.com)                              | OPENBB_API_SENTIMENTINVESTOR_TOKEN <br> OPENBB_API_SENTIMENTINVESTOR_KEY                                                                                              |
+| [Tradier](https://developer.tradier.com)                                        | OPENBB_TRADIER_TOKEN                                                                                                                                                  |
+| [Twitter](https://developer.twitter.com)                                        | OPENBB_API_TWITTER_KEY <br/> OPENBB_API_TWITTER_SECRET_KEY <br/> OPENBB_API_TWITTER_BEARER_TOKEN                                                                      |
+| [Coinbase](https://docs.pro.coinbase.com/)                                      | OPENBB_API_COINBASE_KEY <br/> OPENBB_API_COINBASE_SECRET <br/> OPENBB_API_COINBASE_PASS_PHRASE                                                                        |
+| [Whale Alert](https://docs.whale-alert.io/)                                     | OPENBB_API_WHALE_ALERT_KEY                                                                                                                                            |
+| [Ethplorer](https://github.com/EverexIO/Ethplorer/wiki/Ethplorer-API)           | OPENBB_API_ETHPLORER_KEY                                                                                                                                              |
+| [Cryptopanic](https://cryptopanic.com/developers/api/)                          | OPENBB_API_CRYPTO_PANIC_KEY                                                                                                                                           |
+| [Glassnode](https://docs.glassnode.com/basic-api/api-key#how-to-get-an-api-key) | OPENBB_API_GLASSNODE_KEY                                                                                                                                              |
+| [Coinglass](https://coinglass.github.io/API-Reference/#api-key)                 | OPENBB_API_COINGLASS_KEY                                                                                                                                              |
+| [BitQuery](https://bitquery.io/pricing)                                         | OPENBB_API_BITQUERY_KEY                                                                                                                                               |
 
 Example:
 

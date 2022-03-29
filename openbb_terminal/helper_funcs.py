@@ -71,8 +71,8 @@ def set_export_folder(env_file: str = ".env", path_folder: str = ""):
     path_folder: str
         Path folder location
     """
-    os.environ["OBBFF_EXPORT_FOLDER_PATH"] = path_folder
-    dotenv.set_key(env_file, "OBBFF_EXPORT_FOLDER_PATH", path_folder)
+    os.environ["OPENBB_EXPORT_FOLDER_PATH"] = path_folder
+    dotenv.set_key(env_file, "OPENBB_EXPORT_FOLDER_PATH", path_folder)
     obbff.EXPORT_FOLDER_PATH = path_folder
 
 
@@ -941,7 +941,7 @@ def lett_to_num(word: str) -> str:
 def get_flair() -> str:
     """Get a flair icon"""
     flairs = {
-        ":bb": "(🦋)",
+        ":openbb": "(🦋)",
         ":rocket": "(🚀🚀)",
         ":diamond": "(💎💎)",
         ":stars": "(✨)",

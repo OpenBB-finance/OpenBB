@@ -37,7 +37,7 @@
     "build:prod": "jlpm run clean && jlpm run build:lib && jlpm run build:labextension",
     "clean": "jlpm run clean:lib",
     "clean:all": "jlpm run clean:lib && jlpm run clean:labextension",
-    "clean:labextension": "rimraf gamestonk_terminal_documentation/labextension",
+    "clean:labextension": "rimraf openbb_terminal_documentation/labextension",
     "clean:lib": "rimraf lib tsconfig.tsbuildinfo",
     "eslint": "eslint . --ext .ts,.tsx --fix",
     "eslint:check": "eslint . --ext .ts,.tsx",
@@ -77,7 +77,7 @@
   ],
   "jupyterlab": {
     "extension": true,
-    "outputDir": "gamestonk_terminal_documentation/labextension",
+    "outputDir": "openbb_terminal_documentation/labextension",
     "schemaDir": "schema"
   },
   "styleModule": "style/index.js"

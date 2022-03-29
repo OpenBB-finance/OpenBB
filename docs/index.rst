@@ -10,7 +10,7 @@ Welcome to OpenBB Terminal's documentation!
    :maxdepth: 3
    :caption: Contents:
 
-   code/gamestonk_terminal
+   code/openbb_terminal
 
 
 Indices and tables
