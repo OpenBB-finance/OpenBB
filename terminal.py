@@ -105,7 +105,7 @@ class TerminalController(BaseController):
     E.g. '$ python terminal.py /stocks/disc/ugs -n 3/../load tsla/candle'
 
 [info]You can run a standalone .gst routine file with:[/info]
-    E.g. '$ python terminal.py routines/example.gst'
+    E.g. '$ python terminal.py routines/example.openbb'
 
 [info]You can run a .gst routine file with variable inputs:[/info]
     E.g. '$ python terminal.py routines/example_with_inputs.gst --input pltr,tsla,nio'
@@ -622,12 +622,12 @@ def run_scripts(
     verbose: bool = False,
     routines_args: List[str] = None,
 ):
-    """Runs a given .gst scripts
+    """Runs a given .openbb scripts
 
     Parameters
     ----------
     path : str
-        The location of the .gst file
+        The location of the .openbb file
     test_mode : bool
         Whether the terminal is in test mode
     verbose : bool
@@ -669,14 +669,14 @@ def run_scripts(
                 file_cmds = [" ".join(file_cmds)]
 
             if not test_mode:
-                terminal(file_cmds, appName="gst_script")
+                terminal(file_cmds, appName="openbb_script")
                 # TODO: Add way to track how many commands are tested
             else:
                 if verbose:
-                    terminal(file_cmds, appName="gst_script")
+                    terminal(file_cmds, appName="openbb_script")
                 else:
                     with suppress_stdout():
-                        terminal(file_cmds, appName="gst_script")
+                        terminal(file_cmds, appName="openbb_script")
 
     else:
         console.print(f"File '{path}' doesn't exist. Launching base terminal.\n")
@@ -719,7 +719,7 @@ def main(
             return
         test_files = []
         for path in paths:
-            if "gst" in path:
+            if "openbb" in path:
                 file = os.path.join(os.path.abspath(os.path.dirname(__file__)), path)
                 test_files.append(file)
             else:
@@ -728,7 +728,7 @@ def main(
                     f"{folder}/{name}"
                     for name in os.listdir(folder)
                     if os.path.isfile(os.path.join(folder, name))
-                    and name.endswith(".gst")
+                    and name.endswith(".openbb")
                     and (filtert in f"{folder}/{name}")
                 ]
                 test_files += files
@@ -768,7 +768,7 @@ def main(
     else:
         if debug:
             os.environ["DEBUG_MODE"] = "true"
-        if isinstance(paths, list) and paths[0].endswith(".gst"):
+        if isinstance(paths, list) and paths[0].endswith(".openbb"):
             run_scripts(paths[0], routines_args=routines_args)
         elif paths:
             argv_cmds = list([" ".join(paths).replace(" /", "/home/")])
@@ -796,7 +796,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "-p",
         "--path",
-        help="The path or .gst file to run.",
+        help="The path or .openbb file to run.",
         dest="path",
         nargs="+",
         default="",
