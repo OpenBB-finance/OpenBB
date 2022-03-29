@@ -908,7 +908,7 @@ def display_lobbying(ticker: str, num: int = 10):
             "$" + str(int(float(row["Amount"]))) if row["Amount"] is not None else "N/A"
         )
         console.print(f"{row['Date']}: {row['Client']} {amount}")
-        if row["Amount"] is not None:
+        if (row["Amount"] is not None) and (row["Specific_Issue"] is not None):
             console.print(
                 "\t" + row["Specific_Issue"].replace("\n", " ").replace("\r", "")
             )

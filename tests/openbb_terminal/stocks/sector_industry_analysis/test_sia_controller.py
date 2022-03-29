@@ -509,7 +509,7 @@ def test_call_func_no_parser(func, mocker):
 def test_controller_init_summary_profile(countries, industries, mocker, sectors):
     path_controller = "openbb_terminal.stocks.sector_industry_analysis.sia_controller"
 
-    # MOCK GTFF
+    # MOCK OBBFF
     mocker.patch(
         target=f"{path_controller}.obbff.USE_PROMPT_TOOLKIT",
         new=True,
@@ -568,7 +568,7 @@ def test_controller_init_market_cap(market_cap, mocker):
 def test_update_runtime_choices(mocker):
     path_controller = "openbb_terminal.stocks.sector_industry_analysis.sia_controller"
 
-    # MOCK GTFF
+    # MOCK OBBFF
     mocker.patch(
         target=f"{path_controller}.obbff.USE_PROMPT_TOOLKIT",
         new=True,

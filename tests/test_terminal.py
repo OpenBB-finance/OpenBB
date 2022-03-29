@@ -42,6 +42,7 @@ def no_suppress():
     yield
 
 
+@pytest.mark.skip
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(

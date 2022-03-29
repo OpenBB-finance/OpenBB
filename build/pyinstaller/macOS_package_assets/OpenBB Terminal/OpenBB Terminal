@@ -16,4 +16,4 @@ The boot up process might take a while. Please be patient...
 echo "$BOOTUP_MESSAGE"
 
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-"$SCRIPTDIR"/Gamestonk/GamestonkTerminal
+"$SCRIPTDIR"/OpenBB/OpenBBTerminal
