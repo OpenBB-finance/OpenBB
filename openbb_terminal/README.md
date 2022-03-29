@@ -34,9 +34,11 @@ process and explain to you what each message means.
 
 ### Windows
 
-The process starts off by downloading the installer, see below for the most recent release:
+The process starts off by downloading the installer, see below for how to download the most recent release:
 
-- [Link to Windows installer](https://github.com/OpenBB-finance/OpenBBTerminal/releases/tag/v1.0.0)
+- Go to [the following link](https://github.com/OpenBB-finance/OpenBBTerminal/releases)
+- Click on the most recent release
+- Click on the ".exe" file:
 
 Then follow these steps:
 
@@ -48,9 +50,11 @@ Then follow these steps:
 
 ### macOS
 
-The process starts off by downloading the installer, see below for the most recent release:
+The process starts off by downloading the installer, see below for how to download the most recent release:
 
-- [Link to macOS installer](https://github.com/OpenBB-finance/OpenBBTerminal/releases/tag/v1.0.0)
+- Go to [the following link](https://github.com/OpenBB-finance/OpenBBTerminal/releases)
+- Click on the most recent release
+- Click on the ".dmg" file:
 
 Installation instructions:
 
@@ -65,7 +69,7 @@ files from the .dmg file.
 |:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:----------------------------------------------------------------------------------------------------------------------------------|
 | <div style="width:300px">It is possible you will see the image displayed on the right. This is because the installer is still in beta phase, and the team has not yet requested verification from Apple. Please see below how to correct for this.</div>                                                                                                                                                                                                                                                                                                                                                                                                                                               | <p align="center"><img src="../images/installation/macos/malicious_software_warning.png" alt="software warning" width="500"/></p> |
 | <div style="width:300px">**Option 1 (via MacOS settings):** <br><br> 1) Run the file. You will most likely receive a message that macOS was not able to check whether the application contains malicious software. The reasoning for this is described above. <br> 2) Go to System Preferences > Security & Privacy > General. You should see a message at the bottom that says that the file "was blocked from use because it is not from an identified developer". Click on “Allow anyway” or "Open anyway".<br> 3) If you receive the above message multiple times on different files, keep allowing the files via Step 2 or use Option 2.<br> 4) You should now be able to launch the application. | <p align="center"><img src="../images/installation/macos/option_one_warning_fix.png" alt="option 1 warning fix" width="500"/></p> |
- | <div style="width:300px">**Option 2 (via Terminal):** <br><br> 1) Run the file. You will most likely receive a message that macOS was not able to check whether the application contains malicious software. The reasoning for this is described in the note above. <br> 2) Open the "Terminal" application. This can be done by using Command (⌘) + Space and typing "terminal". <br> 3) Within this "Terminal" application, assuming you moved the file to the Applications folder, enter the following command: `xattr -r -d com.apple.quarantine "/Applications/Gamestonk Terminal"`<br> 4) You should now be able to launch the application.                                                      | <p align="center"><img src="../images/installation/macos/option_two_warning_fix.png" alt="option 2 warning fix" width="500"/></p> |
+ | <div style="width:300px">**Option 2 (via Terminal):** <br><br> 1) Run the file. You will most likely receive a message that macOS was not able to check whether the application contains malicious software. The reasoning for this is described in the note above. <br> 2) Open the "Terminal" application. This can be done by using Command (⌘) + Space and typing "terminal". <br> 3) Within this "Terminal" application, assuming you moved the file to the Applications folder, enter the following command: `xattr -r -d com.apple.quarantine "/Applications/OpenBB Terminal"`<br> 4) You should now be able to launch the application.                                                         | <p align="center"><img src="../images/installation/macos/option_two_warning_fix.png" alt="option 2 warning fix" width="500"/></p> |
 
 ## Developer
 
