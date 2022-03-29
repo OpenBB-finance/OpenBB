@@ -80,7 +80,7 @@ ipython==8.2.0; python_full_version >= "3.6.2" and python_version >= "3.8"
 ipywidgets==7.7.0
 iso8601==0.1.16
 jedi==0.18.1; python_version >= "3.8"
-jinja2==3.1.1; python_version >= "3.7"
+jinja2==3.0.3; python_version >= "3.6"
 joblib==1.1.0; python_version >= "3.7"
 json5==0.9.6; python_version >= "3.7"
 jsonschema==3.2.0
