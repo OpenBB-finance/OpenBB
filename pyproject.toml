@@ -92,6 +92,7 @@ linearmodels = "^4.25"
 black = "22.1"
 undetected-chromedriver = {version = "^3.1.5", optional = true}
 ipywidgets = "^7.7.0"
+pyinstaller = {version = "^4.10", optional = true}
 boto3 = {version = "^1.21.14", optional = true}
 natsort = {version = "^8.1.0", optional = true}
 kaleido = {version = "^0.2.1", optional = true}
@@ -124,11 +125,13 @@ types-setuptools = "^57.4.7"
 pre-commit = "^2.16.0"
 pandas-market-calendars = "~3.2"
 pytest-cov = "^3.0.0"
+types-six = "^1.16.12"
 
 [tool.poetry.extras]
 prediction = ["tensorflow"]
 bots = ["boto3", "pyimgur", "fastapi", "uvicorn", "disnake", "PyNaCl", "pyTelegramBotAPI", "slack-bolt", "undetected-chromedriver", "natsort", "kaleido"]
 jupyterlab = ["jupyterlab-code-formatter", "jupyterlab-lsp", "jedi-language-server"]
+installer = ["pyinstaller"]
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

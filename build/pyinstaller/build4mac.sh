@@ -1,0 +1,29 @@
+#!/bin/bash
+
+DISK_IMAGE_NAME="Gamestonk Terminal"
+
+# exit when any command fails
+set -e
+
+# Clean Up artifacts from previous builds
+rm -rf build/terminal && rm -rf dist && rm -rf DMG
+
+pyinstaller build/pyinstaller/terminal.spec
+
+# Create the folder that is used for packaging
+mkdir DMG
+
+# Copy relevant artifacts to the packaging folder
+cp -r build/pyinstaller/macOS_package_assets/* DMG/
+mv dist/GamestonkTerminal DMG/"$DISK_IMAGE_NAME"/Gamestonk
+
+# Copy launcher and other artifacts to the
+hdiutil create \
+        -volname "$DISK_IMAGE_NAME" \
+        -srcfolder DMG \
+        -ov \
+        -format UDZO \
+        "$DISK_IMAGE_NAME".dmg
+
+# Clean Up artifacts from this build
+rm -rf build/terminal && rm -rf dist && rm -rf DMG

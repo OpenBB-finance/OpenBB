@@ -1,5 +1,5 @@
 ARCHIVES_FOLDER_NAME = "archives"
-DEFAULT_BUCKET = "gst-restrictions"
-DEFAULT_API_URL = "https://knaqi3sud7.execute-api.eu-west-3.amazonaws.com/log_api/logs"
+DEFAULT_BUCKET = "gst-logging"
+DEFAULT_API_URL = "https://gst.openbb.app/logging"
 S3_FOLDER_SUFFIX = "-app"
 TMP_FOLDER_NAME = "tmp"

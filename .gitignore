@@ -30,6 +30,11 @@ gamestonk_terminal/portfolio/portfolios/*
 *.swp
 *.http
 
+# pyinstaller artifacts
+*.pyo
+dist/*
+build/terminal
+
 # Jupyter Lab Extension build files
 jupyterlab/*/*.bundle.*
 jupyterlab/*/lib/
