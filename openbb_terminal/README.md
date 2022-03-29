@@ -36,7 +36,7 @@ process and explain to you what each message means.
 
 The process starts off by downloading the installer, see below for the most recent release:
 
-- [LINK TO INSTALLER FILE](https://github.com/OpenBB-finance/OpenBBTerminal/)
+- [Link to Windows installer](https://github.com/OpenBB-finance/OpenBBTerminal/releases/tag/v1.0.0)
 
 Then follow these steps:
 
@@ -50,14 +50,14 @@ Then follow these steps:
 
 The process starts off by downloading the installer, see below for the most recent release:
 
-- [LINK TO INSTALLER FILE](https://github.com/OpenBB-finance/OpenBBTerminal/)
+- [Link to macOS installer](https://github.com/OpenBB-finance/OpenBBTerminal/releases/tag/v1.0.0)
 
 Installation instructions:
 
 1. Open the .dmg file that got downloaded to your "Downloads" folder.
 2. Drag the folder into your "Applications" folder. This should take some time as it is extracting the
 files from the .dmg file.
-3. Open the folder and click on the "Gamestonk Terminal" file, this should run the application.
+3. Open the folder and click on the "OpenBB Terminal" file, this should run the application.
 
 <img src="../images/installation/macos/mac_os_installation.png" alt="mac os installation" width=800/>
 
@@ -127,13 +127,13 @@ Anaconda's Python distribution.
 
 3. Clone the Project
 
-   - Via HTTPS: `git clone https://github.com/GamestonkTerminal/GamestonkTerminal.git`
-   - via SSH: `git clone git@github.com:GamestonkTerminal/GamestonkTerminal.git`
+   - Via HTTPS: `git clone https://github.com/OpenBB-finance/OpenBBTerminal.git`
+   - via SSH: `git clone git@github.com:OpenBB-finance/OpenBBTerminal.git`
 
 4. Navigate into the project's folder
 
    ```bash
-   cd GamestonkTerminal/
+   cd OpenBBTerminal/
    ```
 
 5. Create Environment
@@ -166,7 +166,7 @@ Anaconda's Python distribution.
    pip install -r requirements.txt
    ```
 
-8. You're ready to Gamestonk it!
+8. You're ready to use the terminal!
 
    ```bash
    python terminal.py
@@ -188,7 +188,7 @@ Anaconda's Python distribution.
 before you call `python terminal.py` again.
 
 **TROUBLESHOOT:** If you are having troubles to install, check our _newest_
-<a href="https://github.com/GamestonkTerminal/GamestonkTerminal/blob/master/TROUBLESHOOT.md"><strong>troubleshoot page</strong></a>. You can also reach for help on our [discord](https://discord.gg/Up2QGbMKHY).
+<a href="https://github.com/OpenBB-finance/OpenBBTerminal/blob/master/TROUBLESHOOT.md"><strong>troubleshoot page</strong></a>. You can also reach for help on our [discord](https://discord.gg/Up2QGbMKHY).
 
 ### Advanced User Install - Machine Learning
 
@@ -297,7 +297,7 @@ git stash pop
 
 For API keys, create the `setenv` file if it doesn't already exist.
 It will automatically get created on the first launch, and won't get committed to Git because it is on the `.gitignore`.
-Set the API keys [as explained here](https://github.com/GamestonkTerminal/GamestonkTerminal/blob/main/DOCKER_ADVANCED.md#environment-variables).
+Set the API keys [as explained here](https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/DOCKER_ADVANCED.md#environment-variables).
 Once you've put the API keys in that file, re-run the launch script, and it will use your API keys.
 There are a few things that still don't work, and you can see what works and what doesn't [here](https://github.com/CoconutMacaroon/GamestonkTerminal/blob/main/openbb_terminal_web/README.md#todo).
 
