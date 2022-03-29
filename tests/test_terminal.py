@@ -41,6 +41,7 @@ def test_terminal_quit(mocker, monkeypatch):
 def no_suppress():
     yield
 
+
 @pytest.mark.skip
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.record_stdout
