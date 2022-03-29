@@ -19,7 +19,7 @@ def test_display_sentiment_analysis(color, mocker):
         target="openbb_terminal.common.behavioural_analysis.finbrain_view.export_data"
     )
 
-    # MOCK GTFF
+    # MOCK OBBFF
     mocker.patch.object(target=helper_funcs.obbff, attribute="USE_ION", new=True)
     mocker.patch.object(
         target=finbrain_view.rich_config, attribute="USE_COLOR", new=color
@@ -44,7 +44,7 @@ def test_display_sentiment_analysis_empty_df(mocker):
         target="openbb_terminal.common.behavioural_analysis.finbrain_view.export_data"
     )
 
-    # MOCK GTFF
+    # MOCK OBBFF
     mocker.patch.object(target=helper_funcs.obbff, attribute="USE_ION", new=True)
 
     # MOCK GET_SENTIMENT
