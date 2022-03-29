@@ -3,8 +3,8 @@ import logging
 import numpy as np
 
 from bots import imps
-from gamestonk_terminal.decorators import log_start_end
-from gamestonk_terminal.stocks.due_diligence import finviz_model
+from openbb_terminal.decorators import log_start_end
+from openbb_terminal.stocks.due_diligence import finviz_model
 
 logger = logging.getLogger(__name__)
 

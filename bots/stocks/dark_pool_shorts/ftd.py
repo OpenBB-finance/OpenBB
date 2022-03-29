@@ -5,8 +5,8 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
 from bots import imps
-from gamestonk_terminal.decorators import log_start_end
-from gamestonk_terminal.stocks.dark_pool_shorts import sec_model
+from openbb_terminal.decorators import log_start_end
+from openbb_terminal.stocks.dark_pool_shorts import sec_model
 
 logger = logging.getLogger(__name__)
 

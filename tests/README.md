@@ -52,8 +52,8 @@ poetry install --no-dev
 You can run tests on a specific package/module by specifying the path of this package/module, like this :
 
 ```bash
-pytest tests/gamestonk_terminal/some_package
-pytest tests/gamestonk_terminal/some_package/some_module.py
+pytest tests/openbb_terminal/some_package
+pytest tests/openbb_terminal/some_package/some_module.py
 ```
 
 ## 2.3. How to run `tests` : by `name` ?
@@ -261,8 +261,8 @@ You can use the following example below. Once you have mocked the graphs / chart
 def test_display_defi_tvl(mocker):
     # MOCK CHARTS
     mocker.patch.object(target=llama_view.obbff, attribute="USE_ION", new=True)
-    mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.plt.ion")
-    mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.plt.show")
+    mocker.patch(target="openbb_terminal.stocks.options.yfinance_view.plt.ion")
+    mocker.patch(target="openbb_terminal.stocks.options.yfinance_view.plt.show")
     llama_view.display_defi_tvl(20)
 ```
 
@@ -481,7 +481,7 @@ You should be able to see the code coverage on comment of your `Pull Requests`.
 This is how to manually check code coverage.
 
 ```bash
-pytest --cov=gamestonk_terminal --cov=terminal --cov-report term-missing
+pytest --cov=openbb_terminal --cov=terminal --cov-report term-missing
 ```
 
 You can also select a specific package/module with the option `--cov`.
@@ -489,7 +489,7 @@ You can also select a specific package/module with the option `--cov`.
 Here is an example where we select only the package `stocks\due_diligence` :
 
 ```bash
-pytest --cov=gamestonk_terminal\stocks\due_diligence --cov-report term-missing
+pytest --cov=openbb_terminal\stocks\due_diligence --cov-report term-missing
 ```
 
 **PRE-COMMIT**

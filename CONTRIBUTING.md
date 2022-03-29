@@ -239,9 +239,9 @@ same data source.
 __docformat__ = "numpy"
 
 import os
-from gamestonk_terminal.rich_config import console
-from gamestonk_terminal.helper_funcs import export_data, print_rich_table
-from gamestonk_terminal.stocks.dark_pool_shorts import yahoofinance_model
+from openbb_terminal.rich_config import console
+from openbb_terminal.helper_funcs import export_data, print_rich_table
+from openbb_terminal.stocks.dark_pool_shorts import yahoofinance_model
 
 
 def display_most_shorted(num_stocks: int, export: str):

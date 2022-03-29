@@ -15,8 +15,8 @@ import dotenv
 
 from prompt_toolkit.completion import NestedCompleter
 
-from gamestonk_terminal import feature_flags as obbff
-from gamestonk_terminal.helper_funcs import (
+from openbb_terminal import feature_flags as obbff
+from openbb_terminal.helper_funcs import (
     check_path,
     get_flair,
     get_user_timezone_or_invalid,
@@ -24,11 +24,11 @@ from gamestonk_terminal.helper_funcs import (
     replace_user_timezone,
     set_export_folder,
 )
-from gamestonk_terminal.loggers import setup_logging
-from gamestonk_terminal.menu import session
-from gamestonk_terminal.parent_classes import BaseController
-from gamestonk_terminal.rich_config import console
-from gamestonk_terminal.terminal_helper import (
+from openbb_terminal.loggers import setup_logging
+from openbb_terminal.menu import session
+from openbb_terminal.parent_classes import BaseController
+from openbb_terminal.rich_config import console
+from openbb_terminal.terminal_helper import (
     about_us,
     bootup,
     is_reset,
@@ -149,13 +149,13 @@ class TerminalController(BaseController):
 
     def call_keys(self, _):
         """Process keys command"""
-        from gamestonk_terminal.keys_controller import KeysController
+        from openbb_terminal.keys_controller import KeysController
 
         self.queue = self.load_class(KeysController, self.queue, env_file)
 
     def call_settings(self, _):
         """Process settings command"""
-        from gamestonk_terminal.settings_controller import SettingsController
+        from openbb_terminal.settings_controller import SettingsController
 
         self.queue = self.load_class(SettingsController, self.queue)
 
@@ -165,31 +165,31 @@ class TerminalController(BaseController):
 
     def call_stocks(self, _):
         """Process stocks command"""
-        from gamestonk_terminal.stocks.stocks_controller import StocksController
+        from openbb_terminal.stocks.stocks_controller import StocksController
 
         self.queue = self.load_class(StocksController, self.queue)
 
     def call_crypto(self, _):
         """Process crypto command"""
-        from gamestonk_terminal.cryptocurrency.crypto_controller import CryptoController
+        from openbb_terminal.cryptocurrency.crypto_controller import CryptoController
 
         self.queue = self.load_class(CryptoController, self.queue)
 
     def call_economy(self, _):
         """Process economy command"""
-        from gamestonk_terminal.economy.economy_controller import EconomyController
+        from openbb_terminal.economy.economy_controller import EconomyController
 
         self.queue = self.load_class(EconomyController, self.queue)
 
     def call_etf(self, _):
         """Process etf command"""
-        from gamestonk_terminal.etf.etf_controller import ETFController
+        from openbb_terminal.etf.etf_controller import ETFController
 
         self.queue = self.load_class(ETFController, self.queue)
 
     def call_funds(self, _):
         """Process etf command"""
-        from gamestonk_terminal.mutual_funds.mutual_fund_controller import (
+        from openbb_terminal.mutual_funds.mutual_fund_controller import (
             FundController,
         )
 
@@ -197,19 +197,19 @@ class TerminalController(BaseController):
 
     def call_forex(self, _):
         """Process forex command"""
-        from gamestonk_terminal.forex.forex_controller import ForexController
+        from openbb_terminal.forex.forex_controller import ForexController
 
         self.queue = self.load_class(ForexController, self.queue)
 
     def call_jupyter(self, _):
         """Process jupyter command"""
-        from gamestonk_terminal.jupyter.jupyter_controller import JupyterController
+        from openbb_terminal.jupyter.jupyter_controller import JupyterController
 
         self.queue = self.load_class(JupyterController, self.queue)
 
     def call_alternative(self, _):
         """Process alternative command"""
-        from gamestonk_terminal.alternative.alt_controller import (
+        from openbb_terminal.alternative.alt_controller import (
             AlternativeDataController,
         )
 
@@ -217,7 +217,7 @@ class TerminalController(BaseController):
 
     def call_econometrics(self, _):
         """Process econometrics command"""
-        from gamestonk_terminal.econometrics.econometrics_controller import (
+        from openbb_terminal.econometrics.econometrics_controller import (
             EconometricsController,
         )
 
@@ -225,7 +225,7 @@ class TerminalController(BaseController):
 
     def call_portfolio(self, _):
         """Process portfolio command"""
-        from gamestonk_terminal.portfolio.portfolio_controller import (
+        from openbb_terminal.portfolio.portfolio_controller import (
             PortfolioController,
         )
 

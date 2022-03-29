@@ -29,7 +29,7 @@ For example `stocks/load aapl` becomes `gst.stocks.load("aapl")`.
 Import the GST API into your python script or notebook with
 
 ```python
-from gamestonk_terminal import api as gst
+from openbb_terminal import api as gst
 ```
 
 ## Understanding the API functions

@@ -8,7 +8,7 @@ from PyInstaller.building.api import PYZ, EXE, COLLECT
 from PyInstaller.building.splash import Splash
 from PyInstaller.building.build_main import Analysis
 
-from gamestonk_terminal.loggers import get_commit_hash
+from openbb_terminal.loggers import get_commit_hash
 
 NAME = "GamestonkTerminal"
 

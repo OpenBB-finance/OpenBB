@@ -5,10 +5,10 @@ import matplotlib.pyplot as plt
 
 from bots import config_discordbot as cfg
 from bots.helpers import image_border
-from gamestonk_terminal.config_plot import PLOT_DPI
-from gamestonk_terminal.decorators import log_start_end
-from gamestonk_terminal.economy import cnn_model
-from gamestonk_terminal.helper_funcs import plot_autoscale
+from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.decorators import log_start_end
+from openbb_terminal.economy import cnn_model
+from openbb_terminal.helper_funcs import plot_autoscale
 
 logger = logging.getLogger(__name__)
 

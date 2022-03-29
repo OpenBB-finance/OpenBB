@@ -107,7 +107,7 @@ import os
 from datetime import datetime, timedelta
 import discord
 import yfinance as yf
-from gamestonk_terminal.rich_config import console
+from openbb_terminal.rich_config import console
 import discordbot.config_discordbot as cfg
 import discordbot.helpers
 from matplotlib import pyplot as plt
@@ -115,7 +115,7 @@ import matplotlib.dates as mdates
 from discordbot.run_discordbot import gst_imgur
 
 # IMPORT THE GST MODEL/VIEW THAT RETRIEVES DATA WANTED
-from gamestonk_terminal.stocks.dark_pool_shorts import sec_model
+from openbb_terminal.stocks.dark_pool_shorts import sec_model
 
 # DEFINE THE COMMAND AND ITS ARGUMENTS
 async def ftd_command(ctx, ticker="", start="", end=""):

@@ -26,7 +26,7 @@ GTFF_USE_ION=True
 
 where 'qwerty123456' corresponds to each individual API key. Note:
 
-1. Unlike API keys in [config_terminal](/gamestonk_terminal/config_terminal.py), these keys **DO NOT** use " ".
+1. Unlike API keys in [config_terminal](/openbb_terminal/config_terminal.py), these keys **DO NOT** use " ".
 2. This file is sensible to white spaces. Therefore, make sure there isn't an additional white space at the end of the
    key, otherwise it won't work.
 

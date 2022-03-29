@@ -15,7 +15,7 @@ from _pytest.fixtures import SubRequest
 from _pytest.mark.structures import Mark
 
 # IMPORTATION INTERNAL
-from gamestonk_terminal import decorators, helper_funcs
+from openbb_terminal import decorators, helper_funcs
 from bots import config_discordbot as cfg
 
 # pylint: disable=redefined-outer-name

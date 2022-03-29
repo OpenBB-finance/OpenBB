@@ -118,7 +118,7 @@ def check_setting(lines: List[str], setting: str, value: str) -> bool:
 
 def main():
     base = os.path.dirname(os.path.dirname(__file__))
-    path = os.path.join(base, "gamestonk_terminal", "config_terminal.py")
+    path = os.path.join(base, "openbb_terminal", "config_terminal.py")
     with open(path) as file:
         lines = file.readlines()
         lines = [line.rstrip() for line in lines]

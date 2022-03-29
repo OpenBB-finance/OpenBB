@@ -41,7 +41,7 @@ def main(ignore_files: Optional[str], ignore_commands: Optional[str]):
     else:
         ignore_cmds_list = []
     path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    gst_path = os.path.join(path, "gamestonk_terminal/")
+    gst_path = os.path.join(path, "openbb_terminal/")
     main_yaml_filename = os.path.join(path, "website/data/menu/main.yml")
 
     files = []
