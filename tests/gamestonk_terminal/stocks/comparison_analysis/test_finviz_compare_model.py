@@ -24,7 +24,6 @@ def test_get_similar_companies(compare_list, recorder):
     recorder.capture(result_tuple)
 
 
-@pytest.mark.skip
 @pytest.mark.vcr
 @pytest.mark.parametrize(
     "data_type",
