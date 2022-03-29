@@ -13,7 +13,7 @@ from typing import List
 import papermill as pm
 from prompt_toolkit.completion import NestedCompleter
 
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal import feature_flags as obbff
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.parent_classes import BaseController
@@ -85,7 +85,7 @@ class ReportController(BaseController):
         """Constructor"""
         super().__init__(queue)
 
-        if session and gtff.USE_PROMPT_TOOLKIT:
+        if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -208,7 +208,7 @@ Select one of the following reports:[/info][cmds]
                 kernel_name="python3",
             )
 
-            if gtff.OPEN_REPORT_AS_HTML:
+            if obbff.OPEN_REPORT_AS_HTML:
                 report_output_path = os.path.join(
                     os.path.abspath(os.path.join(".")), notebook_output + ".html"
                 )

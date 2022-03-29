@@ -11,7 +11,7 @@ import yfinance as yf
 from prompt_toolkit.completion import NestedCompleter
 from thepassiveinvestor import create_ETF_report
 
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal import feature_flags as obbff
 from gamestonk_terminal.common import newsapi_view
 from gamestonk_terminal.common.quantitative_analysis import qa_view
 from gamestonk_terminal.decorators import log_start_end
@@ -80,7 +80,7 @@ class ETFController(BaseController):
         self.etf_data = ""
         self.etf_holdings: List = list()
 
-        if session and gtff.USE_PROMPT_TOOLKIT:
+        if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -661,7 +661,7 @@ class ETFController(BaseController):
     @log_start_end(log=logger)
     def call_pred(self, _):
         """Process pred command"""
-        if gtff.ENABLE_PREDICT:
+        if obbff.ENABLE_PREDICT:
             if self.etf_name:
                 try:
                     from gamestonk_terminal.etf.prediction_techniques import (

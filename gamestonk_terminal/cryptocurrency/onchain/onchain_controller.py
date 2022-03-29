@@ -11,7 +11,7 @@ from typing import List
 
 from prompt_toolkit.completion import NestedCompleter
 
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal import feature_flags as obbff
 from gamestonk_terminal.cryptocurrency.due_diligence.glassnode_model import (
     GLASSNODE_SUPPORTED_HASHRATE_ASSETS,
     INTERVALS_HASHRATE,
@@ -94,7 +94,7 @@ class OnchainController(BaseController):
         self.address = ""
         self.address_type = ""
 
-        if session and gtff.USE_PROMPT_TOOLKIT:
+        if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["whales"]["-s"] = {c: None for c in whale_alert_model.FILTERS}
             choices["hr"] = {c: None for c in GLASSNODE_SUPPORTED_HASHRATE_ASSETS}

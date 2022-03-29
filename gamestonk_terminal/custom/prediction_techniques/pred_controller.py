@@ -9,7 +9,7 @@ from typing import List
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal import feature_flags as obbff
 from gamestonk_terminal.common.prediction_techniques import (
     arima_model,
     arima_view,
@@ -73,7 +73,7 @@ class PredictionTechniquesController(BaseController):
         self.file = file
         self.target = custom_df.columns[2]
 
-        if session and gtff.USE_PROMPT_TOOLKIT:
+        if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["pick"] = {c: None for c in self.df.columns}
             choices["load"]["-r"] = {c: {} for c in stocks_helper.INTERVALS}
@@ -115,7 +115,7 @@ class PredictionTechniquesController(BaseController):
 
     def update_runtime_choices(self):
         """Add new columns to pick command"""
-        if session and gtff.USE_PROMPT_TOOLKIT:
+        if session and obbff.USE_PROMPT_TOOLKIT:
             self.choices["pick"] = {c: None for c in list(self.df.columns)}
         self.completer = NestedCompleter.from_nested_dict(self.choices)
 

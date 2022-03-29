@@ -28,7 +28,7 @@ def vcr_config():
 def test_display_options(mocker, toggle):
     # MOCK CHARTS
     mocker.patch.object(
-        target=helper_funcs.gtff,
+        target=helper_funcs.obbff,
         attribute="USE_TABULATE_DF",
         new=toggle,
     )

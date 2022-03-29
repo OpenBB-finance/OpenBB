@@ -10,7 +10,7 @@ from typing import List
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal import feature_flags as obbff
 from gamestonk_terminal.config_terminal import TRADIER_TOKEN
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
@@ -133,7 +133,7 @@ class OptionsController(BaseController):
         else:
             self.expiry_dates = []
 
-        if session and gtff.USE_PROMPT_TOOLKIT:
+        if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["unu"]["-s"] = {c: {} for c in self.unu_sortby_choices}
             choices["pcr"] = {c: {} for c in self.pcr_length_choices}
@@ -152,7 +152,7 @@ class OptionsController(BaseController):
 
     def update_runtime_choices(self):
         """Update runtime choices"""
-        if self.expiry_dates and session and gtff.USE_PROMPT_TOOLKIT:
+        if self.expiry_dates and session and obbff.USE_PROMPT_TOOLKIT:
             self.choices["exp"] = {str(c): {} for c in range(len(self.expiry_dates))}
             self.choices["exp"]["-d"] = {c: {} for c in self.expiry_dates + [""]}
             if self.chain:

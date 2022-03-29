@@ -20,7 +20,7 @@ def test_display_sentiment_analysis(color, mocker):
     )
 
     # MOCK GTFF
-    mocker.patch.object(target=helper_funcs.gtff, attribute="USE_ION", new=True)
+    mocker.patch.object(target=helper_funcs.obbff, attribute="USE_ION", new=True)
     mocker.patch.object(
         target=finbrain_view.rich_config, attribute="USE_COLOR", new=color
     )
@@ -47,7 +47,7 @@ def test_display_sentiment_analysis_empty_df(mocker):
     )
 
     # MOCK GTFF
-    mocker.patch.object(target=helper_funcs.gtff, attribute="USE_ION", new=True)
+    mocker.patch.object(target=helper_funcs.obbff, attribute="USE_ION", new=True)
 
     # MOCK GET_SENTIMENT
     mocker.patch(

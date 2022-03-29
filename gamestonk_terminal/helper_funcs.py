@@ -25,7 +25,7 @@ import requests
 from screeninfo import get_monitors
 
 from gamestonk_terminal.rich_config import console
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal import feature_flags as obbff
 from gamestonk_terminal import config_plot as cfgPlot
 
 logger = logging.getLogger(__name__)
@@ -73,7 +73,7 @@ def set_export_folder(env_file: str = ".env", path_folder: str = ""):
     """
     os.environ["GTFF_EXPORT_FOLDER_PATH"] = path_folder
     dotenv.set_key(env_file, "GTFF_EXPORT_FOLDER_PATH", path_folder)
-    gtff.EXPORT_FOLDER_PATH = path_folder
+    obbff.EXPORT_FOLDER_PATH = path_folder
 
 
 def check_path(path: str) -> str:
@@ -155,7 +155,7 @@ def print_rich_table(
         String to
     """
 
-    if gtff.USE_TABULATE_DF:
+    if obbff.USE_TABULATE_DF:
         table = Table(title=title, show_lines=True)
 
         if show_index:
@@ -475,7 +475,7 @@ def plot_view_stock(df: pd.DataFrame, symbol: str, interval: str):
         fontfamily="serif",
         fontstyle="italic",
     )
-    if gtff.USE_ION:
+    if obbff.USE_ION:
         plt.ion()
     fig.tight_layout(pad=2)
     plt.setp(ax[1].get_xticklabels(), rotation=20, horizontalalignment="right")
@@ -890,7 +890,7 @@ def parse_known_args_and_warn(
             type=int,
         )
 
-    if gtff.USE_CLEAR_AFTER_CMD:
+    if obbff.USE_CLEAR_AFTER_CMD:
         system_clear()
 
     try:
@@ -967,11 +967,11 @@ def get_flair() -> str:
     }
 
     flair = (
-        flairs[str(gtff.USE_FLAIR)]
-        if str(gtff.USE_FLAIR) in flairs
-        else str(gtff.USE_FLAIR)
+        flairs[str(obbff.USE_FLAIR)]
+        if str(obbff.USE_FLAIR) in flairs
+        else str(obbff.USE_FLAIR)
     )
-    if gtff.USE_DATETIME and get_user_timezone_or_invalid() != "INVALID":
+    if obbff.USE_DATETIME and get_user_timezone_or_invalid() != "INVALID":
         dtime = datetime.now(pytz.timezone(get_user_timezone())).strftime(
             "%Y %b %d, %H:%M"
         )
@@ -1087,7 +1087,7 @@ def get_screeninfo():
 def plot_autoscale():
     """Autoscale plot"""
 
-    if gtff.USE_PLOT_AUTOSCALING:
+    if obbff.USE_PLOT_AUTOSCALING:
         x, y = get_screeninfo()  # Get screen size
         x = ((x) * cfgPlot.PLOT_WIDTH_PERCENTAGE * 10**-2) / (
             cfgPlot.PLOT_DPI
@@ -1177,13 +1177,13 @@ def export_data(
     if export_type:
         now = datetime.now()
 
-        if gtff.EXPORT_FOLDER_PATH:
-            full_path_dir = str(gtff.EXPORT_FOLDER_PATH)
+        if obbff.EXPORT_FOLDER_PATH:
+            full_path_dir = str(obbff.EXPORT_FOLDER_PATH)
             path_cmd = dir_path.split("gamestonk_terminal/")[1].replace("/", "_")
             default_filename = f"{now.strftime('%Y%m%d_%H%M%S')}_{path_cmd}_{func_name}"
 
         else:
-            if gtff.PACKAGED_APPLICATION:
+            if obbff.PACKAGED_APPLICATION:
                 default_filename = (
                     f"{now.strftime('%Y%m%d_%H%M%S')}_{path_cmd}_{func_name}"
                 )

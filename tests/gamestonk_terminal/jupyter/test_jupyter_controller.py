@@ -45,7 +45,7 @@ def test_menu_without_queue_completion(mocker):
 
     # DISABLE AUTO-COMPLETION : CONTROLLER.COMPLETER
     mocker.patch.object(
-        target=jupyter_controller.gtff,
+        target=jupyter_controller.obbff,
         attribute="USE_PROMPT_TOOLKIT",
         new=True,
     )

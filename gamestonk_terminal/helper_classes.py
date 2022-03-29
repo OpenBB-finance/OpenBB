@@ -354,16 +354,16 @@ class TerminalStyle:
     # pylint: disable=import-outside-toplevel
     def visualize_output(self, force_tight_layout: bool = True):
         """Show chart in an interactive widget."""
-        import gamestonk_terminal.feature_flags as gtff
+        import gamestonk_terminal.feature_flags as obbff
         from gamestonk_terminal.rich_config import console
 
-        if gtff.USE_CMD_LOCATION_FIGURE:
+        if obbff.USE_CMD_LOCATION_FIGURE:
             self.add_cmd_source(plt.gcf())
-        if gtff.USE_WATERMARK:
+        if obbff.USE_WATERMARK:
             self.add_label(plt.gcf())
         if force_tight_layout:
             plt.tight_layout(pad=self.tight_layout_padding)
-        if gtff.USE_ION:
+        if obbff.USE_ION:
             plt.ion()
         plt.show()
         console.print()

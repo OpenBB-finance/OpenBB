@@ -9,7 +9,7 @@ from typing import List
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal import feature_flags as obbff
 from gamestonk_terminal.custom import custom_model, custom_view
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
@@ -50,7 +50,7 @@ class CustomDataController(BaseController):
         self.file = ""
         self.DATA_FILES = [file.name for file in Path("custom_imports").iterdir()]
 
-        if session and gtff.USE_PROMPT_TOOLKIT:
+        if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["load"] = {c: None for c in self.DATA_FILES}
             choices["plot"]["-k"] = {c: None for c in self.pandas_plot_choices}
@@ -58,7 +58,7 @@ class CustomDataController(BaseController):
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def update_runtime_choices(self):
-        if session and gtff.USE_PROMPT_TOOLKIT:
+        if session and obbff.USE_PROMPT_TOOLKIT:
             self.choices["plot"] = {c: None for c in self.data.columns}
             self.choices["plot"]["-y"] = {c: None for c in self.data.columns}
             self.choices["plot"]["-x"] = {c: None for c in self.data.columns}
@@ -245,7 +245,7 @@ class CustomDataController(BaseController):
     @log_start_end(log=logger)
     def call_pred(self, _):
         """Process pred command"""
-        if gtff.ENABLE_PREDICT:
+        if obbff.ENABLE_PREDICT:
             from gamestonk_terminal.custom.prediction_techniques import pred_controller
 
             self.queue = self.load_class(

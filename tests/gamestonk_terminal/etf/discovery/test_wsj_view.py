@@ -27,6 +27,6 @@ def vcr_config():
 )
 def test_show_top_mover(sort_type, mocker):
     mocker.patch.object(
-        target=helper_funcs.gtff, attribute="USE_TABULATE_DF", new=False
+        target=helper_funcs.obbff, attribute="USE_TABULATE_DF", new=False
     )
     wsj_view.show_top_mover(sort_type, limit=5, export="")

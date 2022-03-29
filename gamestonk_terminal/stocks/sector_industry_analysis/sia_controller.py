@@ -9,7 +9,7 @@ from typing import List
 import yfinance as yf
 from prompt_toolkit.completion import NestedCompleter
 
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal import feature_flags as obbff
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -226,7 +226,7 @@ class SectorIndustryAnalysisController(BaseController):
                 else:
                     self.mktcap = "Mid"
 
-        if session and gtff.USE_PROMPT_TOOLKIT:
+        if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["mktcap"] = {c: None for c in self.mktcap_choices}
             choices["period"] = {c: None for c in self.period_choices}
@@ -238,7 +238,7 @@ class SectorIndustryAnalysisController(BaseController):
 
     def update_runtime_choices(self):
         """Update runtime choices"""
-        if session and gtff.USE_PROMPT_TOOLKIT:
+        if session and obbff.USE_PROMPT_TOOLKIT:
             self.choices["industry"] = {
                 i: None
                 for i in financedatabase_model.get_industries(

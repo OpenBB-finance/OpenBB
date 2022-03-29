@@ -10,7 +10,7 @@ from typing import List
 
 from prompt_toolkit.completion import NestedCompleter
 
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal import feature_flags as obbff
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.etf import financedatabase_model, financedatabase_view
 from gamestonk_terminal.etf.screener import screener_view
@@ -69,7 +69,7 @@ class ScreenerController(BaseController):
         self.preset = "etf_config"
         self.screen_tickers: List = list()
 
-        if session and gtff.USE_PROMPT_TOOLKIT:
+        if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["view"] = {c: None for c in self.preset_choices}
             choices["set"] = {c: None for c in self.preset_choices}

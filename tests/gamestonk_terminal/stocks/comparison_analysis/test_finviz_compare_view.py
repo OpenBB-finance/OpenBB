@@ -17,7 +17,7 @@ from gamestonk_terminal import helper_funcs
     [True, False],
 )
 def test_screener(mocker, tab):
-    mocker.patch.object(target=helper_funcs.gtff, attribute="USE_TABULATE_DF", new=tab)
+    mocker.patch.object(target=helper_funcs.obbff, attribute="USE_TABULATE_DF", new=tab)
     finviz_compare_view.screener(
         similar=["TSLA", "GM"],
         data_type="overview",

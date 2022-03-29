@@ -60,7 +60,7 @@ def test_menu_without_queue_completion(mocker):
 
     # ENABLE AUTO-COMPLETION : CONTROLLER.COMPLETER
     mocker.patch.object(
-        target=pricing_controller.gtff,
+        target=pricing_controller.obbff,
         attribute="USE_PROMPT_TOOLKIT",
         new=True,
     )
@@ -92,7 +92,7 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
 
     # DISABLE AUTO-COMPLETION
     mocker.patch.object(
-        target=pricing_controller.gtff,
+        target=pricing_controller.obbff,
         attribute="USE_PROMPT_TOOLKIT",
         new=False,
     )

@@ -7,7 +7,7 @@ from typing import Dict, List
 
 from prompt_toolkit.completion import NestedCompleter
 
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal import feature_flags as obbff
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
     check_non_negative,
@@ -65,7 +65,7 @@ class PayoffController(BaseController):
         self.call_index_choices = range(len(self.calls))
         self.put_index_choices = range(len(self.puts))
 
-        if session and gtff.USE_PROMPT_TOOLKIT:
+        if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["pick"] = {c: {} for c in self.underlying_asset_choices}
             choices["add"] = {
@@ -77,7 +77,7 @@ class PayoffController(BaseController):
 
     def update_runtime_choices(self):
         """Update runtime choices"""
-        if self.options and session and gtff.USE_PROMPT_TOOLKIT:
+        if self.options and session and obbff.USE_PROMPT_TOOLKIT:
             self.choices["rmv"] = {str(c): {} for c in range(len(self.options))}
             self.completer = NestedCompleter.from_nested_dict(self.choices)
 

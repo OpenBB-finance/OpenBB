@@ -55,7 +55,7 @@ poetry install -E bots
 2. Create a Heroku account at: <https://signup.heroku.com/>.
 3. Click 'Create a new app'.
 4. Go to the 'Settings' page, and then find Config Vars.
-5. Add GT_DISCORD_BOT_TOKEN and GT_IMGUR_CLIENT_ID with their associated values.
+5. Add OPENBB_DISCORD_BOT_TOKEN and OPENBB_IMGUR_CLIENT_ID with their associated values.
 6. Go to the repository:<https://github.com/GamestonkTerminal/GamestonkTerminal> and fork it if you have not already
    done so.
 7. On the 'Deploy' page select Github as the deployment method.

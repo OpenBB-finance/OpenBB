@@ -29,7 +29,7 @@ EXTENSIONS_MATCHING: Dict[str, List[Type]] = {
 }
 
 os.environ["TEST_MODE"] = "True"
-os.environ["GT_IMG_HOST_ACTIVE"] = "False"
+os.environ["OPENBB_IMG_HOST_ACTIVE"] = "False"
 
 
 class Record:

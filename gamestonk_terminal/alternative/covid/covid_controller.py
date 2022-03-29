@@ -9,7 +9,7 @@ from typing import List
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal import feature_flags as obbff
 from gamestonk_terminal.alternative.covid import covid_view
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
@@ -42,7 +42,7 @@ class CovidController(BaseController):
             "Countries"
         ].to_list()
 
-        if session and gtff.USE_PROMPT_TOOLKIT:
+        if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["country"] = {c: None for c in self.COUNTRY_LIST}
             self.completer = NestedCompleter.from_nested_dict(choices)

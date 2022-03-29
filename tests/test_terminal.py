@@ -8,9 +8,9 @@ import terminal
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.record_stdout
 def test_terminal_quick_exit(mocker, monkeypatch):
-    monkeypatch.setattr(terminal.gtff, "ENABLE_QUICK_EXIT", True)
-    monkeypatch.setattr(terminal.gtff, "USE_ION", False)
-    monkeypatch.setattr(terminal.gtff, "USE_PROMPT_TOOLKIT", True)
+    monkeypatch.setattr(terminal.obbff, "ENABLE_QUICK_EXIT", True)
+    monkeypatch.setattr(terminal.obbff, "USE_ION", False)
+    monkeypatch.setattr(terminal.obbff, "USE_PROMPT_TOOLKIT", True)
 
     mocker.patch("sys.stdin")
 
@@ -21,9 +21,9 @@ def test_terminal_quick_exit(mocker, monkeypatch):
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.record_stdout
 def test_terminal_quit(mocker, monkeypatch):
-    monkeypatch.setattr(terminal.gtff, "ENABLE_QUICK_EXIT", False)
-    monkeypatch.setattr(terminal.gtff, "USE_ION", False)
-    monkeypatch.setattr(terminal.gtff, "USE_PROMPT_TOOLKIT", True)
+    monkeypatch.setattr(terminal.obbff, "ENABLE_QUICK_EXIT", False)
+    monkeypatch.setattr(terminal.obbff, "USE_ION", False)
+    monkeypatch.setattr(terminal.obbff, "USE_PROMPT_TOOLKIT", True)
 
     mocker.patch("sys.stdin")
     mocker.patch("builtins.input", return_value="e")

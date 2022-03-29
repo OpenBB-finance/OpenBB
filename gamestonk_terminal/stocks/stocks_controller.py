@@ -10,7 +10,7 @@ from typing import List
 import yfinance as yf
 from prompt_toolkit.completion import NestedCompleter
 
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal import feature_flags as obbff
 from gamestonk_terminal.common import newsapi_view
 from gamestonk_terminal.common.quantitative_analysis import qa_view
 from gamestonk_terminal.decorators import log_start_end
@@ -69,7 +69,7 @@ class StocksController(StockBaseController):
         """Constructor"""
         super().__init__(queue)
 
-        if session and gtff.USE_PROMPT_TOOLKIT:
+        if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -553,7 +553,7 @@ Stock: [/param]{stock_text}
     @log_start_end(log=logger)
     def call_pred(self, _):
         """Process pred command"""
-        if gtff.ENABLE_PREDICT:
+        if obbff.ENABLE_PREDICT:
             if self.ticker:
                 if self.interval == "1440min":
                     try:

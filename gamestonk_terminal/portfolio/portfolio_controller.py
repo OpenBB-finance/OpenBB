@@ -11,7 +11,7 @@ from typing import Dict, List, Union
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal import feature_flags as obbff
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
     EXPORT_ONLY_FIGURES_ALLOWED,
@@ -81,7 +81,7 @@ class PortfolioController(BaseController):
         self.portlist: List[str] = os.listdir(portfolios_path)
         self.portfolio = portfolio_model.Portfolio()
 
-        if session and gtff.USE_PROMPT_TOOLKIT:
+        if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["load"] = {c: None for c in self.portlist}
             choices["save"] = {c: None for c in self.portlist}

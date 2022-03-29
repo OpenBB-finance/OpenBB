@@ -5,7 +5,7 @@ import logging
 import os
 import pandas as pd
 
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal import feature_flags as obbff
 from gamestonk_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -86,7 +86,7 @@ def check_api_key(api_keys):
     def decorator(func):
         @functools.wraps(func)
         def wrapper_decorator(*args, **kwargs):
-            if gtff.ENABLE_CHECK_API:
+            if obbff.ENABLE_CHECK_API:
                 import gamestonk_terminal.config_terminal as cfg
 
                 undefined_apis = []
@@ -112,4 +112,4 @@ def check_api_key(api_keys):
 
 
 def disable_check_api():
-    gtff.ENABLE_CHECK_API = False
+    obbff.ENABLE_CHECK_API = False

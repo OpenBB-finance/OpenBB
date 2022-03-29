@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import mplfinance as mpf
 
 from gamestonk_terminal.config_terminal import theme
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal import feature_flags as obbff
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
     export_data,
@@ -86,7 +86,7 @@ def display_historical(interval: str = "day", span: str = "3month", export: str 
             volume_width=0.8,
         ),
     )
-    if gtff.USE_ION:
+    if obbff.USE_ION:
         plt.ion()
     console.print("")
 

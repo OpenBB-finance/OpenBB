@@ -143,7 +143,7 @@
             "description": "Access credentials for data providers.",
             "default":
             {
-                "GT_API_KEY_ALPHAVANTAGE":
+                "OPENBB_API_KEY_ALPHAVANTAGE":
                 {
                     "type": "string",
                     "form": "password",
@@ -152,7 +152,7 @@
                     "default": "REPLACE_ME",
                     "value": ""
                 },
-                "GT_API_KEY_FINANCIALMODELINGPREP":
+                "OPENBB_API_KEY_FINANCIALMODELINGPREP":
                 {
                     "type": "string",
                     "form": "password",
@@ -161,7 +161,7 @@
                     "default": "REPLACE_ME",
                     "value": ""
                 },
-                "GT_API_KEY_QUANDL":
+                "OPENBB_API_KEY_QUANDL":
                 {
                     "type": "string",
                     "form": "password",
@@ -170,7 +170,7 @@
                     "default": "REPLACE_ME",
                     "value": ""
                 },
-                "GT_API_REDDIT_CLIENT_ID":
+                "OPENBB_API_REDDIT_CLIENT_ID":
                 {
                     "type": "string",
                     "form": "password",
@@ -179,7 +179,7 @@
                     "default": "REPLACE_ME",
                     "value": ""
                 },
-                "GT_API_REDDIT_CLIENT_SECRET":
+                "OPENBB_API_REDDIT_CLIENT_SECRET":
                 {
                     "type": "string",
                     "form": "password",
@@ -188,7 +188,7 @@
                     "default": "REPLACE_ME",
                     "value": ""
                 },
-                "GT_API_REDDIT_USERNAME":
+                "OPENBB_API_REDDIT_USERNAME":
                 {
                     "type": "string",
                     "form": "password",
@@ -197,7 +197,7 @@
                     "default": "REPLACE_ME",
                     "value": ""
                 },
-                "GT_API_REDDIT_USER_AGENT":
+                "OPENBB_API_REDDIT_USER_AGENT":
                 {
                     "type": "string",
                     "form": "password",
@@ -206,7 +206,7 @@
                     "default": "REPLACE_ME",
                     "value": ""
                 },
-                "GT_API_REDDIT_PASSWORD":
+                "OPENBB_API_REDDIT_PASSWORD":
                 {
                     "type": "string",
                     "form": "password",
@@ -215,7 +215,7 @@
                     "default": "REPLACE_ME",
                     "value": ""
                 },
-                "GT_API_POLYGON_KEY":
+                "OPENBB_API_POLYGON_KEY":
                 {
                     "type": "string",
                     "form": "password",
@@ -224,7 +224,7 @@
                     "default": "REPLACE_ME",
                     "value": ""
                 },
-                "GT_API_TWITTER_KEY":
+                "OPENBB_API_TWITTER_KEY":
                 {
                     "type": "string",
                     "form": "password",
@@ -233,7 +233,7 @@
                     "default": "REPLACE_ME",
                     "value": ""
                 },
-                "GT_API_TWITTER_SECRET_KEY":
+                "OPENBB_API_TWITTER_SECRET_KEY":
                 {
                     "type": "string",
                     "form": "password",
@@ -242,7 +242,7 @@
                     "default": "REPLACE_ME",
                     "value": ""
                 },
-                "GT_API_TWITTER_BEARER_TOKEN":
+                "OPENBB_API_TWITTER_BEARER_TOKEN":
                 {
                     "type": "string",
                     "form": "password",
@@ -251,7 +251,7 @@
                     "default": "REPLACE_ME",
                     "value": ""
                 },
-                "GT_API_FRED_KEY":
+                "OPENBB_API_FRED_KEY":
                 {
                     "type": "string",
                     "form": "password",
@@ -260,7 +260,7 @@
                     "default": "REPLACE_ME",
                     "value": ""
                 },
-                "GT_API_NEWS_TOKEN":
+                "OPENBB_API_NEWS_TOKEN":
                 {
                     "type": "string",
                     "form": "password",
@@ -269,7 +269,7 @@
                     "default": "REPLACE_ME",
                     "value": ""
                 },
-                "GT_RH_USERNAME":
+                "OPENBB_RH_USERNAME":
                 {
                     "type": "string",
                     "form": "password",
@@ -278,7 +278,7 @@
                     "default": "REPLACE_ME",
                     "value": ""
                 },
-                "GT_RH_PASSWORD":
+                "OPENBB_RH_PASSWORD":
                 {
                     "type": "string",
                     "form": "password",
@@ -287,7 +287,7 @@
                     "default": "REPLACE_ME",
                     "value": ""
                 },
-                "GT_DG_USERNAME":
+                "OPENBB_DG_USERNAME":
                 {
                     "type": "string",
                     "form": "password",
@@ -296,7 +296,7 @@
                     "default": "REPLACE_ME",
                     "value": ""
                 },
-                "GT_DG_PASSWORD":
+                "OPENBB_DG_PASSWORD":
                 {
                     "type": "string",
                     "form": "password",
@@ -305,7 +305,7 @@
                     "default": "REPLACE_ME",
                     "value": ""
                 },
-                "GT_DG_TOTP_SECRET":
+                "OPENBB_DG_TOTP_SECRET":
                 {
                     "type": "string",
                     "form": "password",
@@ -314,7 +314,7 @@
                     "default": "REPLACE_ME",
                     "value": ""
                 },
-                "GT_OANDA_ACCOUNT_TYPE":
+                "OPENBB_OANDA_ACCOUNT_TYPE":
                 {
                     "type": "string",
                     "form": "password",
@@ -323,7 +323,7 @@
                     "default": "practice",
                     "value": ""
                 },
-                "GT_OANDA_ACCOUNT":
+                "OPENBB_OANDA_ACCOUNT":
                 {
                     "type": "string",
                     "form": "password",
@@ -332,7 +332,7 @@
                     "default": "REPLACE_ME",
                     "value": ""
                 },
-                "GT_OANDA_TOKEN":
+                "OPENBB_OANDA_TOKEN":
                 {
                     "type": "string",
                     "form": "password",
@@ -341,7 +341,7 @@
                     "default": "REPLACE_ME",
                     "value": ""
                 },
-                "GT_API_TRADIER_TOKEN":
+                "OPENBB_API_TRADIER_TOKEN":
                 {
                     "type": "string",
                     "form": "password",
@@ -350,7 +350,7 @@
                     "default": "REPLACE_ME",
                     "value": ""
                 },
-                "GT_API_CMC_KEY":
+                "OPENBB_API_CMC_KEY":
                 {
                     "type": "string",
                     "form": "password",
@@ -359,7 +359,7 @@
                     "default": "REPLACE_ME",
                     "value": ""
                 },
-                "GT_API_BINANCE_KEY":
+                "OPENBB_API_BINANCE_KEY":
                 {
                     "type": "string",
                     "form": "password",
@@ -368,7 +368,7 @@
                     "default": "REPLACE_ME",
                     "value": ""
                 },
-                "GT_API_BINANCE_SECRET":
+                "OPENBB_API_BINANCE_SECRET":
                 {
                     "type": "string",
                     "form": "password",
@@ -377,7 +377,7 @@
                     "default": "REPLACE_ME",
                     "value": ""
                 },
-                "GT_API_FINNHUB_KEY":
+                "OPENBB_API_FINNHUB_KEY":
                 {
                     "type": "string",
                     "form": "password",
@@ -386,7 +386,7 @@
                     "default": "REPLACE_ME",
                     "value": ""
                 },
-                "GT_API_IEX_KEY":
+                "OPENBB_API_IEX_KEY":
                 {
                     "type": "string",
                     "form": "password",
@@ -395,7 +395,7 @@
                     "default": "REPLACE_ME",
                     "value": ""
                 },
-                "GT_API_SENTIMENTINVESTOR_TOKEN":
+                "OPENBB_API_SENTIMENTINVESTOR_TOKEN":
                 {
                     "type": "string",
                     "form": "password",

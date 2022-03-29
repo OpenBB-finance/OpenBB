@@ -15,7 +15,7 @@ import dotenv
 
 from prompt_toolkit.completion import NestedCompleter
 
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal import feature_flags as obbff
 from gamestonk_terminal.helper_funcs import (
     check_path,
     get_flair,
@@ -79,7 +79,7 @@ class TerminalController(BaseController):
         """Constructor"""
         super().__init__(jobs_cmds)
 
-        if session and gtff.USE_PROMPT_TOOLKIT:
+        if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: None for c in self.controller_choices}
             choices["tz"] = {c.replace("/", "-"): None for c in self.all_timezones}
             self.completer = NestedCompleter.from_nested_dict(choices)
@@ -126,7 +126,7 @@ class TerminalController(BaseController):
 >   settings        set feature flags and style charts
 >   keys            set API keys and check their validity[/menu]
 
-[param]Export Folder:[/param] {gtff.EXPORT_FOLDER_PATH if gtff.EXPORT_FOLDER_PATH else 'DEFAULT (folder: exports/)'}
+[param]Export Folder:[/param] {obbff.EXPORT_FOLDER_PATH if obbff.EXPORT_FOLDER_PATH else 'DEFAULT (folder: exports/)'}
 [param]Timezone:     [/param] {get_user_timezone_or_invalid()}
 [menu]
 >   stocks
@@ -315,8 +315,8 @@ class TerminalController(BaseController):
                         else:
                             # Do not update export_folder path since we will keep the same as before
                             path_display = (
-                                gtff.EXPORT_FOLDER_PATH
-                                if gtff.EXPORT_FOLDER_PATH
+                                obbff.EXPORT_FOLDER_PATH
+                                if obbff.EXPORT_FOLDER_PATH
                                 else "DEFAULT (folder: exports/)"
                             )
                             console.print(
@@ -433,7 +433,7 @@ class TerminalController(BaseController):
                             console.print(
                                 f"[green]Folder '{export_path}' successfully created.[/green]"
                             )
-                        gtff.EXPORT_FOLDER_PATH = export_path
+                        obbff.EXPORT_FOLDER_PATH = export_path
                         self.queue = self.queue[1:]
 
 
@@ -441,7 +441,7 @@ class TerminalController(BaseController):
 def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
     """Terminal Menu"""
     # TODO: HELP WANTED! Refactor the appName setting if a more elegant solution comes up
-    if gtff.PACKAGED_APPLICATION:
+    if obbff.PACKAGED_APPLICATION:
         appName = "gst_packaged"
 
     setup_logging(appName)
@@ -479,7 +479,7 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
             console.print(
                 f"[green]Folder '{export_path}' successfully created.[/green]"
             )
-        gtff.EXPORT_FOLDER_PATH = export_path
+        obbff.EXPORT_FOLDER_PATH = export_path
 
     bootup()
     if not jobs_cmds:
@@ -496,7 +496,7 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
         Path(".env")
 
     while ret_code:
-        if gtff.ENABLE_QUICK_EXIT:
+        if obbff.ENABLE_QUICK_EXIT:
             console.print("Quick exit enabled")
             break
 
@@ -507,7 +507,7 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
                 print_goodbye()
                 break
 
-            if gtff.ENABLE_EXIT_AUTO_HELP and len(t_controller.queue) > 1:
+            if obbff.ENABLE_EXIT_AUTO_HELP and len(t_controller.queue) > 1:
                 t_controller.queue = t_controller.queue[1:]
 
             # Consume 1 element from the queue
@@ -521,7 +521,7 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
         # Get input command from user
         else:
             # Get input from user using auto-completion
-            if session and gtff.USE_PROMPT_TOOLKIT:
+            if session and obbff.USE_PROMPT_TOOLKIT:
                 try:
                     an_input = session.prompt(
                         f"{get_flair()} / $ ",
@@ -594,22 +594,22 @@ def insert_start_slash(cmds: List[str]) -> List[str]:
 def log_settings() -> None:
     """Log settings"""
     settings_dict = {}
-    settings_dict["tab"] = "True" if gtff.USE_TABULATE_DF else "False"
-    settings_dict["cls"] = "True" if gtff.USE_CLEAR_AFTER_CMD else "False"
-    settings_dict["color"] = "True" if gtff.USE_COLOR else "False"
-    settings_dict["promptkit"] = "True" if gtff.USE_PROMPT_TOOLKIT else "False"
-    settings_dict["predict"] = "True" if gtff.ENABLE_PREDICT else "False"
-    settings_dict["thoughts"] = "True" if gtff.ENABLE_THOUGHTS_DAY else "False"
-    settings_dict["reporthtml"] = "True" if gtff.OPEN_REPORT_AS_HTML else "False"
-    settings_dict["exithelp"] = "True" if gtff.ENABLE_EXIT_AUTO_HELP else "False"
-    settings_dict["rcontext"] = "True" if gtff.REMEMBER_CONTEXTS else "False"
-    settings_dict["rich"] = "True" if gtff.ENABLE_RICH else "False"
-    settings_dict["richpanel"] = "True" if gtff.ENABLE_RICH_PANEL else "False"
-    settings_dict["ion"] = "True" if gtff.USE_ION else "False"
-    settings_dict["watermark"] = "True" if gtff.USE_WATERMARK else "False"
-    settings_dict["autoscaling"] = "True" if gtff.USE_PLOT_AUTOSCALING else "False"
-    settings_dict["dt"] = "True" if gtff.USE_DATETIME else "False"
-    settings_dict["packaged"] = "True" if gtff.PACKAGED_APPLICATION else "False"
+    settings_dict["tab"] = "True" if obbff.USE_TABULATE_DF else "False"
+    settings_dict["cls"] = "True" if obbff.USE_CLEAR_AFTER_CMD else "False"
+    settings_dict["color"] = "True" if obbff.USE_COLOR else "False"
+    settings_dict["promptkit"] = "True" if obbff.USE_PROMPT_TOOLKIT else "False"
+    settings_dict["predict"] = "True" if obbff.ENABLE_PREDICT else "False"
+    settings_dict["thoughts"] = "True" if obbff.ENABLE_THOUGHTS_DAY else "False"
+    settings_dict["reporthtml"] = "True" if obbff.OPEN_REPORT_AS_HTML else "False"
+    settings_dict["exithelp"] = "True" if obbff.ENABLE_EXIT_AUTO_HELP else "False"
+    settings_dict["rcontext"] = "True" if obbff.REMEMBER_CONTEXTS else "False"
+    settings_dict["rich"] = "True" if obbff.ENABLE_RICH else "False"
+    settings_dict["richpanel"] = "True" if obbff.ENABLE_RICH_PANEL else "False"
+    settings_dict["ion"] = "True" if obbff.USE_ION else "False"
+    settings_dict["watermark"] = "True" if obbff.USE_WATERMARK else "False"
+    settings_dict["autoscaling"] = "True" if obbff.USE_PLOT_AUTOSCALING else "False"
+    settings_dict["dt"] = "True" if obbff.USE_DATETIME else "False"
+    settings_dict["packaged"] = "True" if obbff.PACKAGED_APPLICATION else "False"
     settings_dict["python"] = str(platform.python_version())
     settings_dict["os"] = str(platform.system())
 

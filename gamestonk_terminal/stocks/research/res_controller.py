@@ -8,7 +8,7 @@ from typing import List
 
 from prompt_toolkit.completion import NestedCompleter
 
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal import feature_flags as obbff
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.parent_classes import BaseController
@@ -52,7 +52,7 @@ class ResearchController(BaseController):
         self.start = start
         self.interval = interval
 
-        if session and gtff.USE_PROMPT_TOOLKIT:
+        if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             self.completer = NestedCompleter.from_nested_dict(choices)
 

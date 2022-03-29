@@ -445,7 +445,7 @@ def display_drawdown(
 #     fig.tight_layout()
 #     ax.grid(b=True, which="major", color="#666666", linestyle="-")
 #
-#     if gtff.USE_ION:
+#     if obbff.USE_ION:
 #         plt.ion()
 #
 #     imgdata = BytesIO()

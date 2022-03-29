@@ -9,7 +9,7 @@ from typing import List
 
 from prompt_toolkit.completion import NestedCompleter
 
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal import feature_flags as obbff
 from gamestonk_terminal.cryptocurrency.defi import (
     coindix_model,
     coindix_view,
@@ -79,7 +79,7 @@ class DefiController(BaseController):
         """Constructor"""
         super().__init__(queue)
 
-        if session and gtff.USE_PROMPT_TOOLKIT:
+        if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["ldapps"]["-s"] = {c: {} for c in llama_model.LLAMA_FILTERS}
             choices["aterra"]["--asset"] = {c: {} for c in terraengineer_model.ASSETS}

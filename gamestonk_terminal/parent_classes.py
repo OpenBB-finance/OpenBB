@@ -19,7 +19,7 @@ import numpy as np
 from gamestonk_terminal.decorators import log_start_end
 
 from gamestonk_terminal.menu import session
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal import feature_flags as obbff
 from gamestonk_terminal.helper_funcs import (
     system_clear,
     get_flair,
@@ -114,7 +114,7 @@ class BaseController(metaclass=ABCMeta):
         """Checks for an existing instance of the controller before creating a new one"""
         self.save_class()
         arguments = len(args) + len(kwargs)
-        if class_ins.PATH in controllers and arguments == 1 and gtff.REMEMBER_CONTEXTS:
+        if class_ins.PATH in controllers and arguments == 1 and obbff.REMEMBER_CONTEXTS:
             old_class = controllers[class_ins.PATH]
             old_class.queue = self.queue
             return old_class.menu()
@@ -122,7 +122,7 @@ class BaseController(metaclass=ABCMeta):
 
     def save_class(self) -> None:
         """Saves the current instance of the class to be loaded later"""
-        if gtff.REMEMBER_CONTEXTS:
+        if obbff.REMEMBER_CONTEXTS:
             controllers[self.PATH] = self
 
     def custom_reset(self) -> List[str]:
@@ -278,7 +278,7 @@ class BaseController(metaclass=ABCMeta):
                     if len(self.queue) > 1:
                         return self.queue[1:]
 
-                    if gtff.ENABLE_EXIT_AUTO_HELP:
+                    if obbff.ENABLE_EXIT_AUTO_HELP:
                         return ["help"]
                     return []
 
@@ -302,7 +302,7 @@ class BaseController(metaclass=ABCMeta):
 
                 try:
                     # Get input from user using auto-completion
-                    if session and gtff.USE_PROMPT_TOOLKIT:
+                    if session and obbff.USE_PROMPT_TOOLKIT:
                         an_input = session.prompt(
                             f"{get_flair()} {self.PATH} $ ",
                             completer=self.completer,

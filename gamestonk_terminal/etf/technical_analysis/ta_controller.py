@@ -11,7 +11,7 @@ from typing import List
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal import feature_flags as obbff
 from gamestonk_terminal.common.technical_analysis import (
     custom_indicators_view,
     momentum_view,
@@ -80,7 +80,7 @@ class TechnicalAnalysisController(BaseController):
         self.start = start
         self.data = data
 
-        if session and gtff.USE_PROMPT_TOOLKIT:
+        if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             self.completer = NestedCompleter.from_nested_dict(choices)
 

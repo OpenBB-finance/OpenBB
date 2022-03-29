@@ -9,7 +9,7 @@ from typing import List
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal import feature_flags as obbff
 from gamestonk_terminal.common.quantitative_analysis import qa_view, rolling_view
 from gamestonk_terminal.custom import custom_model
 from gamestonk_terminal.decorators import log_start_end
@@ -73,7 +73,7 @@ class QaController(BaseController):
         self.target = custom_df.columns[1]
         self.file = file
 
-        if session and gtff.USE_PROMPT_TOOLKIT:
+        if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["pick"] = {c: None for c in list(custom_df.columns)}
             choices["load"] = {c: None for c in self.DATA_FILES}
@@ -89,7 +89,7 @@ class QaController(BaseController):
         return []
 
     def update_runtime_choices(self):
-        if session and gtff.USE_PROMPT_TOOLKIT:
+        if session and obbff.USE_PROMPT_TOOLKIT:
             self.choices["pick"] = {c: None for c in list(self.df.columns)}
         self.completer = NestedCompleter.from_nested_dict(self.choices)
 

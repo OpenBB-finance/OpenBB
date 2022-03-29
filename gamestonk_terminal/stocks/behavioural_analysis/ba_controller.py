@@ -9,7 +9,7 @@ from typing import List
 import yfinance as yf
 from prompt_toolkit.completion import NestedCompleter
 
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal import feature_flags as obbff
 from gamestonk_terminal.common.behavioural_analysis import (
     finbrain_view,
     google_view,
@@ -82,7 +82,7 @@ class BehaviouralAnalysisController(StockBaseController):
         self.ticker = ticker
         self.start = start
 
-        if session and gtff.USE_PROMPT_TOOLKIT:
+        if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             self.completer = NestedCompleter.from_nested_dict(choices)
 

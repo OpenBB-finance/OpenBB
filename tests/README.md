@@ -260,7 +260,7 @@ You can use the following example below. Once you have mocked the graphs / chart
 @pytest.mark.record_stdout
 def test_display_defi_tvl(mocker):
     # MOCK CHARTS
-    mocker.patch.object(target=llama_view.gtff, attribute="USE_ION", new=True)
+    mocker.patch.object(target=llama_view.obbff, attribute="USE_ION", new=True)
     mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.plt.ion")
     mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.plt.show")
     llama_view.display_defi_tvl(20)

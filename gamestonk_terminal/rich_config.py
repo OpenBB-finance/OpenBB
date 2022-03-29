@@ -5,7 +5,7 @@ import os
 from rich import panel
 from rich.console import Console, Theme
 from gamestonk_terminal import config_terminal as cfg
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal import feature_flags as obbff
 
 
 # https://rich.readthedocs.io/en/stable/appendix/colors.html#appendix-colors
@@ -54,7 +54,7 @@ class ConsoleAndPanel:
     def print(self, *args, **kwargs):
         if kwargs and "text" in list(kwargs) and "menu" in list(kwargs):
             if not os.getenv("TEST_MODE"):
-                if gtff.ENABLE_RICH_PANEL:
+                if obbff.ENABLE_RICH_PANEL:
                     self.console.print(
                         panel.Panel(
                             kwargs["text"],

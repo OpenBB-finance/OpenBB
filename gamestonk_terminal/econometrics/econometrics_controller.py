@@ -16,7 +16,7 @@ from prompt_toolkit.completion import NestedCompleter
 
 import gamestonk_terminal.econometrics.regression_model
 import gamestonk_terminal.econometrics.regression_view
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal import feature_flags as obbff
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     NO_EXPORT,
@@ -167,7 +167,7 @@ class EconometricsController(BaseController):
             if filepath.is_file()
         }
 
-        if session and gtff.USE_PROMPT_TOOLKIT:
+        if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["load"] = {c: None for c in self.DATA_FILES.keys()}
             choices["show"] = {c: None for c in self.files}
@@ -191,7 +191,7 @@ class EconometricsController(BaseController):
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def update_runtime_choices(self):
-        if session and gtff.USE_PROMPT_TOOLKIT:
+        if session and obbff.USE_PROMPT_TOOLKIT:
             dataset_columns = {
                 f"{column}-{dataset}": {column: None, dataset: None}
                 for dataset, dataframe in self.datasets.items()

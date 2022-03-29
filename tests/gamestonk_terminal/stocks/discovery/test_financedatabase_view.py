@@ -34,7 +34,7 @@ from gamestonk_terminal import helper_funcs
 )
 def test_show_equities(kwargs_dict, mocker, use_tab):
     mocker.patch.object(
-        target=helper_funcs.gtff, attribute="USE_TABULATE_DF", new=use_tab
+        target=helper_funcs.obbff, attribute="USE_TABULATE_DF", new=use_tab
     )
 
     kwargs_dict_none = {

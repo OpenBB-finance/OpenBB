@@ -13,7 +13,7 @@ from gamestonk_terminal.loggers import get_commit_hash
 NAME = "GamestonkTerminal"
 
 build_type = (
-    os.getenv("GT_BUILD_TYPE") if bool(os.getenv("GT_BUILD_TYPE")) else "folder"
+    os.getenv("OPENBB_BUILD_TYPE") if bool(os.getenv("OPENBB_BUILD_TYPE")) else "folder"
 )
 
 # Local python environment packages folder

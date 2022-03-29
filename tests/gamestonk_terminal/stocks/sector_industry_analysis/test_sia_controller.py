@@ -99,7 +99,7 @@ def test_menu_without_queue_completion(mocker):
 
     # DISABLE AUTO-COMPLETION : CONTROLLER.COMPLETER
     mocker.patch.object(
-        target=sia_controller.gtff,
+        target=sia_controller.obbff,
         attribute="USE_PROMPT_TOOLKIT",
         new=True,
     )
@@ -130,7 +130,7 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
 
     # DISABLE AUTO-COMPLETION
     mocker.patch.object(
-        target=sia_controller.gtff,
+        target=sia_controller.obbff,
         attribute="USE_PROMPT_TOOLKIT",
         new=False,
     )
@@ -521,7 +521,7 @@ def test_controller_init_summary_profile(countries, industries, mocker, sectors)
 
     # MOCK GTFF
     mocker.patch(
-        target=f"{path_controller}.gtff.USE_PROMPT_TOOLKIT",
+        target=f"{path_controller}.obbff.USE_PROMPT_TOOLKIT",
         new=True,
     )
 
@@ -582,7 +582,7 @@ def test_update_runtime_choices(mocker):
 
     # MOCK GTFF
     mocker.patch(
-        target=f"{path_controller}.gtff.USE_PROMPT_TOOLKIT",
+        target=f"{path_controller}.obbff.USE_PROMPT_TOOLKIT",
         new=True,
     )
 

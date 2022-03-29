@@ -11,7 +11,7 @@ from matplotlib import cm
 from pandas.plotting import register_matplotlib_converters
 from gamestonk_terminal import config_terminal as cfg
 import gamestonk_terminal.cryptocurrency.overview.pycoingecko_model as gecko
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal import feature_flags as obbff
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
     lambda_long_number_format_with_type_check,
@@ -246,7 +246,7 @@ def display_global_market_info(pie: bool, export: str) -> None:
                 startangle=90,
             )
             ax.set_title("Market cap distribution")
-            if gtff.USE_ION:
+            if obbff.USE_ION:
                 plt.ion()
             plt.show()
         print_rich_table(
@@ -359,7 +359,7 @@ def display_stablecoins(
                 startangle=90,
             )
             ax.set_title(f"Market cap distribution of top {top} Stablecoins")
-            if gtff.USE_ION:
+            if obbff.USE_ION:
                 plt.ion()
             plt.show()
         console.print(
@@ -423,7 +423,7 @@ def display_categories(sortby: str, top: int, export: str, pie: bool) -> None:
                 startangle=90,
             )
             ax.set_title(f"Market Cap distribution of top {top} crypto categories")
-            if gtff.USE_ION:
+            if obbff.USE_ION:
                 plt.ion()
             plt.show()
         df = df.applymap(lambda x: lambda_long_number_format_with_type_check(x))

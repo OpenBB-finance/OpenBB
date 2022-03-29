@@ -7,7 +7,7 @@ from typing import Dict, List
 
 from prompt_toolkit.completion import NestedCompleter
 
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal import feature_flags as obbff
 from gamestonk_terminal.common.prediction_techniques import (
     arima_model,
     arima_view,
@@ -72,7 +72,7 @@ class PredictionTechniquesController(BaseController):
         self.start_date = self.data.index[0]
         self.resolution = ""  # For the views
 
-        if session and gtff.USE_PROMPT_TOOLKIT:
+        if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["ets"]["-t"] = {c: {} for c in ets_model.TRENDS}
             choices["ets"]["-s"] = {c: {} for c in ets_model.SEASONS}

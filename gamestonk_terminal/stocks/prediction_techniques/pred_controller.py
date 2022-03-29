@@ -10,7 +10,7 @@ import numpy as np
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal import feature_flags as obbff
 from gamestonk_terminal.common.prediction_techniques import (
     arima_model,
     arima_view,
@@ -82,7 +82,7 @@ class PredictionTechniquesController(BaseController):
         self.interval = interval
         self.target = "AdjClose"
 
-        if session and gtff.USE_PROMPT_TOOLKIT:
+        if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["load"]["-r"] = {c: {} for c in stocks_helper.INTERVALS}
             choices["pick"] = {c: {} for c in stock.columns}

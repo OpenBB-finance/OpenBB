@@ -10,13 +10,13 @@ import unittest
 #   console.print(e_module)
 #   console.print("Skipping the test")
 
-# from gamestonk_terminal import feature_flags as gtff
+# from gamestonk_terminal import feature_flags as obbff
 
 
 class TestPredNeuralNetworks(unittest.TestCase):
     def test_mlp(self):
         pass
-        # if not gtff.ENABLE_PREDICT:
+        # if not obbff.ENABLE_PREDICT:
         #    return
 
         # Fix: need to come up with a better way of doing this

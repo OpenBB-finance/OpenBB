@@ -8,7 +8,7 @@ from typing import List
 
 from prompt_toolkit.completion import NestedCompleter
 
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal import feature_flags as obbff
 from gamestonk_terminal.cryptocurrency.discovery import (
     coinmarketcap_model,
     coinmarketcap_view,
@@ -54,7 +54,7 @@ class DiscoveryController(BaseController):
         """Constructor"""
         super().__init__(queue)
 
-        if session and gtff.USE_PROMPT_TOOLKIT:
+        if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["cggainers"]["-p"] = {c: {} for c in pycoingecko_model.API_PERIODS}
             choices["cggainers"]["--sort"] = {

@@ -11,7 +11,7 @@ from typing import List, Dict, Any
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal import feature_flags as obbff
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.economy import (
     alphavantage_view,
@@ -157,7 +157,7 @@ class EconomyController(BaseController):
         self.UNITS: Dict[Any, Dict[Any, Any]] = dict()
         self.FRED_TITLES: Dict = dict()
 
-        if session and gtff.USE_PROMPT_TOOLKIT:
+        if session and obbff.USE_PROMPT_TOOLKIT:
             self.choices: dict = {c: {} for c in self.controller_choices}
             self.choices["overview"] = {c: None for c in self.overview_options}
 
@@ -201,7 +201,7 @@ class EconomyController(BaseController):
             self.completer = NestedCompleter.from_nested_dict(self.choices)
 
     def update_runtime_choices(self):
-        if session and gtff.USE_PROMPT_TOOLKIT:
+        if session and obbff.USE_PROMPT_TOOLKIT:
             if not self.fred_query.empty:
                 self.choices["fred"] = {c: None for c in self.fred_query}
             if self.DATASETS:

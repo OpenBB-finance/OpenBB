@@ -13,7 +13,7 @@ from typing import List
 import ascii_magic
 import matplotlib.pyplot as plt
 
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal import feature_flags as obbff
 from gamestonk_terminal import thought_of_the_day as thought
 from gamestonk_terminal.rich_config import console
 
@@ -67,7 +67,7 @@ def sha256sum(filename):
 def update_terminal():
     """Updates the terminal by running git pull in the directory.  Runs poetry install if needed"""
 
-    if gtff.LOGGING_COMMIT_HASH != "REPLACE_ME":
+    if obbff.LOGGING_COMMIT_HASH != "REPLACE_ME":
         return 0
 
     poetry_hash = sha256sum("poetry.lock")
@@ -158,7 +158,7 @@ def bootup():
         # Enable VT100 Escape Sequence for WINDOWS 10 Ver. 1607
         os.system("")  # nosec
         # Hide splashscreen loader of the packaged app
-        if gtff.PACKAGED_APPLICATION:
+        if obbff.PACKAGED_APPLICATION:
             hide_splashscreen()
 
     try:
@@ -179,7 +179,7 @@ def welcome_message():
     # The commit has was commented out because the terminal was crashing due to git import for multiple users
     # ({str(git.Repo('.').head.commit)[:7]})
 
-    if gtff.ENABLE_THOUGHTS_DAY:
+    if obbff.ENABLE_THOUGHTS_DAY:
         console.print("-------------------")
         try:
             thought.get_thought_of_the_day()

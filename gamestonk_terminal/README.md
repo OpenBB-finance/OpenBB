@@ -322,41 +322,41 @@ remove the "GT\_", this can be found in [config_terminal.py](/gamestonk_terminal
 
 | Website                                                                         | Environment Variables                                                                                                                             |
 | :------------------------------------------------------------------------------ | :------------------------------------------------------------------------------------------------------------------------------------------------ |
-| [Alpha Vantage](https://www.alphavantage.co)                                    | GT_API_KEY_ALPHAVANTAGE                                                                                                                           |
-| [Binance](https://binance.com)                                                  | GT_API_BINANCE_KEY <br/> GT_API_BINANCE_SECRET                                                                                                    |
-| [CoinMarketCap](https://coinmarketcap.com)                                      | GT_API_CMC_KEY <br/>                                                                                                                              |
-| [DEGIRO](https://www.degiro.fr)                                                 | GT_DG_USERNAME <br/> GT_DG_PASSWORD <br/> GT_DG_TOTP_SECRET                                                                                       |
-| [FRED](https://fred.stlouisfed.org)                                             | GT_API_FRED_KEY                                                                                                                                   |
-| [Financial Modeling Prep](https://financialmodelingprep.com)                    | GT_API_KEY_FINANCIALMODELINGPREP                                                                                                                  |
-| [Finnhub](https://finnhub.io)                                                   | GT_API_FINNHUB_KEY                                                                                                                                |
-| [News](https://newsapi.org)                                                     | GT_API_NEWS_TOKEN                                                                                                                                 |
-| [Oanda](https://developer.oanda.com)                                            | GT_OANDA_TOKEN <br/> GT_OANDA_ACCOUNT                                                                                                             |
-| [Polygon](https://polygon.io)                                                   | GT_API_POLYGON_KEY                                                                                                                                |
-| [Quandl](https://www.quandl.com)                                                | GT_API_KEY_QUANDL                                                                                                                                 |
-| [Reddit](https://www.reddit.com)                                                | GT_API_REDDIT_CLIENT_ID <br> GT_API_REDDIT_CLIENT_SECRET <br/> GT_API_REDDIT_USERNAME <br/> GT_API_REDDIT_USER_AGENT <br/> GT_API_REDDIT_PASSWORD |
-| [SentimentInvestor](https://sentimentinvestor.com)                              | GT_API_SENTIMENTINVESTOR_TOKEN <br> GT_API_SENTIMENTINVESTOR_KEY                                                                                  |
-| [Tradier](https://developer.tradier.com)                                        | GT_TRADIER_TOKEN                                                                                                                                  |
-| [Twitter](https://developer.twitter.com)                                        | GT_API_TWITTER_KEY <br/> GT_API_TWITTER_SECRET_KEY <br/> GT_API_TWITTER_BEARER_TOKEN                                                              |
-| [Coinbase](https://docs.pro.coinbase.com/)                                      | GT_API_COINBASE_KEY <br/> GT_API_COINBASE_SECRET <br/> GT_API_COINBASE_PASS_PHRASE                                                                |
-| [Whale Alert](https://docs.whale-alert.io/)                                     | GT_API_WHALE_ALERT_KEY                                                                                                                            |
-| [Ethplorer](https://github.com/EverexIO/Ethplorer/wiki/Ethplorer-API)           | GT_API_ETHPLORER_KEY                                                                                                                              |
-| [Cryptopanic](https://cryptopanic.com/developers/api/)                          | GT_API_CRYPTO_PANIC_KEY                                                                                                                           |
-| [Glassnode](https://docs.glassnode.com/basic-api/api-key#how-to-get-an-api-key) | GT_API_GLASSNODE_KEY                                                                                                                              |
-| [Coinglass](https://coinglass.github.io/API-Reference/#api-key)                 | GT_API_COINGLASS_KEY                                                                                                                              |
-| [BitQuery](https://bitquery.io/pricing)                                         | GT_API_BITQUERY_KEY                                                                                                                               |
+| [Alpha Vantage](https://www.alphavantage.co)                                    | OPENBB_API_KEY_ALPHAVANTAGE                                                                                                                           |
+| [Binance](https://binance.com)                                                  | OPENBB_API_BINANCE_KEY <br/> OPENBB_API_BINANCE_SECRET                                                                                                    |
+| [CoinMarketCap](https://coinmarketcap.com)                                      | OPENBB_API_CMC_KEY <br/>                                                                                                                              |
+| [DEGIRO](https://www.degiro.fr)                                                 | OPENBB_DG_USERNAME <br/> OPENBB_DG_PASSWORD <br/> OPENBB_DG_TOTP_SECRET                                                                                       |
+| [FRED](https://fred.stlouisfed.org)                                             | OPENBB_API_FRED_KEY                                                                                                                                   |
+| [Financial Modeling Prep](https://financialmodelingprep.com)                    | OPENBB_API_KEY_FINANCIALMODELINGPREP                                                                                                                  |
+| [Finnhub](https://finnhub.io)                                                   | OPENBB_API_FINNHUB_KEY                                                                                                                                |
+| [News](https://newsapi.org)                                                     | OPENBB_API_NEWS_TOKEN                                                                                                                                 |
+| [Oanda](https://developer.oanda.com)                                            | OPENBB_OANDA_TOKEN <br/> OPENBB_OANDA_ACCOUNT                                                                                                             |
+| [Polygon](https://polygon.io)                                                   | OPENBB_API_POLYGON_KEY                                                                                                                                |
+| [Quandl](https://www.quandl.com)                                                | OPENBB_API_KEY_QUANDL                                                                                                                                 |
+| [Reddit](https://www.reddit.com)                                                | OPENBB_API_REDDIT_CLIENT_ID <br> OPENBB_API_REDDIT_CLIENT_SECRET <br/> OPENBB_API_REDDIT_USERNAME <br/> OPENBB_API_REDDIT_USER_AGENT <br/> OPENBB_API_REDDIT_PASSWORD |
+| [SentimentInvestor](https://sentimentinvestor.com)                              | OPENBB_API_SENTIMENTINVESTOR_TOKEN <br> OPENBB_API_SENTIMENTINVESTOR_KEY                                                                                  |
+| [Tradier](https://developer.tradier.com)                                        | OPENBB_TRADIER_TOKEN                                                                                                                                  |
+| [Twitter](https://developer.twitter.com)                                        | OPENBB_API_TWITTER_KEY <br/> OPENBB_API_TWITTER_SECRET_KEY <br/> OPENBB_API_TWITTER_BEARER_TOKEN                                                              |
+| [Coinbase](https://docs.pro.coinbase.com/)                                      | OPENBB_API_COINBASE_KEY <br/> OPENBB_API_COINBASE_SECRET <br/> OPENBB_API_COINBASE_PASS_PHRASE                                                                |
+| [Whale Alert](https://docs.whale-alert.io/)                                     | OPENBB_API_WHALE_ALERT_KEY                                                                                                                            |
+| [Ethplorer](https://github.com/EverexIO/Ethplorer/wiki/Ethplorer-API)           | OPENBB_API_ETHPLORER_KEY                                                                                                                              |
+| [Cryptopanic](https://cryptopanic.com/developers/api/)                          | OPENBB_API_CRYPTO_PANIC_KEY                                                                                                                           |
+| [Glassnode](https://docs.glassnode.com/basic-api/api-key#how-to-get-an-api-key) | OPENBB_API_GLASSNODE_KEY                                                                                                                              |
+| [Coinglass](https://coinglass.github.io/API-Reference/#api-key)                 | OPENBB_API_COINGLASS_KEY                                                                                                                              |
+| [BitQuery](https://bitquery.io/pricing)                                         | OPENBB_API_BITQUERY_KEY                                                                                                                               |
 
 Example:
 
 ```bash
-export GT_API_REDDIT_USERNAME=SexyYear
+export OPENBB_API_REDDIT_USERNAME=SexyYear
 ```
 
 Environment variables can also be set in a `.env` file at the top of the repo. This file is ignored by git so your API
 keys will stay secret. The above example stored in `.env` would be:
 
 ```bash
-GT_API_REDDIT_USERNAME=SexyYear
+OPENBB_API_REDDIT_USERNAME=SexyYear
 ```
 
-Note that the `GT_API_REDDIT_USER_AGENT` is the name of the script that you set when obtained the Reddit API key.
+Note that the `OPENBB_API_REDDIT_USER_AGENT` is the name of the script that you set when obtained the Reddit API key.
 Note that it is not necessary to have a valid Alpha Vantage key to get daily OHLC values.

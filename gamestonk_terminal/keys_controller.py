@@ -18,7 +18,7 @@ from prompt_toolkit.completion import NestedCompleter
 from pyEX.common.exception import PyEXception
 
 from gamestonk_terminal import config_terminal as cfg
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal import feature_flags as obbff
 from gamestonk_terminal.cryptocurrency.coinbase_helpers import (
     CoinbaseProAuth,
     make_coinbase_request,
@@ -78,7 +78,7 @@ class KeysController(BaseController):
         if menu_usage:
             self.check_keys_status()
 
-            if session and gtff.USE_PROMPT_TOOLKIT:
+            if session and obbff.USE_PROMPT_TOOLKIT:
                 choices: dict = {c: {} for c in self.controller_choices}
                 self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -746,8 +746,8 @@ class KeysController(BaseController):
             other_args.insert(0, "-k")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            os.environ["GT_API_KEY_ALPHAVANTAGE"] = ns_parser.key
-            dotenv.set_key(self.env_file, "GT_API_KEY_ALPHAVANTAGE", ns_parser.key)
+            os.environ["OPENBB_API_KEY_ALPHAVANTAGE"] = ns_parser.key
+            dotenv.set_key(self.env_file, "OPENBB_API_KEY_ALPHAVANTAGE", ns_parser.key)
             cfg.API_KEY_ALPHAVANTAGE = ns_parser.key
             self.check_av_key(show_output=True)
 
@@ -777,9 +777,9 @@ class KeysController(BaseController):
             other_args.insert(0, "-k")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            os.environ["GT_API_KEY_FINANCIALMODELINGPREP"] = ns_parser.key
+            os.environ["OPENBB_API_KEY_FINANCIALMODELINGPREP"] = ns_parser.key
             dotenv.set_key(
-                self.env_file, "GT_API_KEY_FINANCIALMODELINGPREP", ns_parser.key
+                self.env_file, "OPENBB_API_KEY_FINANCIALMODELINGPREP", ns_parser.key
             )
             cfg.API_KEY_FINANCIALMODELINGPREP = ns_parser.key
             self.check_fmp_key(show_output=True)
@@ -808,8 +808,8 @@ class KeysController(BaseController):
             other_args.insert(0, "-k")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            os.environ["GT_API_KEY_QUANDL"] = ns_parser.key
-            dotenv.set_key(self.env_file, "GT_API_KEY_QUANDL", ns_parser.key)
+            os.environ["OPENBB_API_KEY_QUANDL"] = ns_parser.key
+            dotenv.set_key(self.env_file, "OPENBB_API_KEY_QUANDL", ns_parser.key)
             cfg.API_KEY_QUANDL = ns_parser.key
             self.check_quandl_key(show_output=True)
 
@@ -837,8 +837,8 @@ class KeysController(BaseController):
             other_args.insert(0, "-k")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            os.environ["GT_API_POLYGON_KEY"] = ns_parser.key
-            dotenv.set_key(self.env_file, "GT_API_POLYGON_KEY", ns_parser.key)
+            os.environ["OPENBB_API_POLYGON_KEY"] = ns_parser.key
+            dotenv.set_key(self.env_file, "OPENBB_API_POLYGON_KEY", ns_parser.key)
             cfg.API_POLYGON_KEY = ns_parser.key
             self.check_polygon_key(show_output=True)
 
@@ -866,8 +866,8 @@ class KeysController(BaseController):
             other_args.insert(0, "-k")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            os.environ["GT_API_FRED_KEY"] = ns_parser.key
-            dotenv.set_key(self.env_file, "GT_API_FRED_KEY", ns_parser.key)
+            os.environ["OPENBB_API_FRED_KEY"] = ns_parser.key
+            dotenv.set_key(self.env_file, "OPENBB_API_FRED_KEY", ns_parser.key)
             cfg.API_FRED_KEY = ns_parser.key
             self.check_fred_key(show_output=True)
 
@@ -895,8 +895,8 @@ class KeysController(BaseController):
             other_args.insert(0, "-k")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            os.environ["GT_API_NEWS_TOKEN"] = ns_parser.key
-            dotenv.set_key(self.env_file, "GT_API_NEWS_TOKEN", ns_parser.key)
+            os.environ["OPENBB_API_NEWS_TOKEN"] = ns_parser.key
+            dotenv.set_key(self.env_file, "OPENBB_API_NEWS_TOKEN", ns_parser.key)
             cfg.API_NEWS_TOKEN = ns_parser.key
             self.check_news_key(show_output=True)
 
@@ -924,8 +924,8 @@ class KeysController(BaseController):
             other_args.insert(0, "-k")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            os.environ["GT_API_TRADIER_TOKEN"] = ns_parser.key
-            dotenv.set_key(self.env_file, "GT_API_TRADIER_TOKEN", ns_parser.key)
+            os.environ["OPENBB_API_TRADIER_TOKEN"] = ns_parser.key
+            dotenv.set_key(self.env_file, "OPENBB_API_TRADIER_TOKEN", ns_parser.key)
             cfg.TRADIER_TOKEN = ns_parser.key
             self.check_tradier_key(show_output=True)
 
@@ -952,8 +952,8 @@ class KeysController(BaseController):
             other_args.insert(0, "-k")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            os.environ["GT_API_CMC_KEY"] = ns_parser.key
-            dotenv.set_key(self.env_file, "GT_API_CMC_KEY", ns_parser.key)
+            os.environ["OPENBB_API_CMC_KEY"] = ns_parser.key
+            dotenv.set_key(self.env_file, "OPENBB_API_CMC_KEY", ns_parser.key)
             cfg.API_CMC_KEY = ns_parser.key
             self.check_cmc_key(show_output=True)
 
@@ -980,8 +980,8 @@ class KeysController(BaseController):
             other_args.insert(0, "-k")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            os.environ["GT_API_FINNHUB_KEY"] = ns_parser.key
-            dotenv.set_key(self.env_file, "GT_API_FINNHUB_KEY", ns_parser.key)
+            os.environ["OPENBB_API_FINNHUB_KEY"] = ns_parser.key
+            dotenv.set_key(self.env_file, "OPENBB_API_FINNHUB_KEY", ns_parser.key)
             cfg.API_FINNHUB_KEY = ns_parser.key
             self.check_finnhub_key(show_output=True)
 
@@ -1008,8 +1008,8 @@ class KeysController(BaseController):
             other_args.insert(0, "-k")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            os.environ["GT_API_IEX_KEY"] = ns_parser.key
-            dotenv.set_key(self.env_file, "GT_API_IEX_KEY", ns_parser.key)
+            os.environ["OPENBB_API_IEX_KEY"] = ns_parser.key
+            dotenv.set_key(self.env_file, "OPENBB_API_IEX_KEY", ns_parser.key)
             cfg.API_IEX_TOKEN = ns_parser.key
             self.check_iex_key(show_output=True)
 
@@ -1062,29 +1062,35 @@ class KeysController(BaseController):
             return
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            os.environ["GT_API_REDDIT_CLIENT_ID"] = ns_parser.client_id
+            os.environ["OPENBB_API_REDDIT_CLIENT_ID"] = ns_parser.client_id
             dotenv.set_key(
-                self.env_file, "GT_API_REDDIT_CLIENT_ID", ns_parser.client_id
+                self.env_file, "OPENBB_API_REDDIT_CLIENT_ID", ns_parser.client_id
             )
             cfg.API_REDDIT_CLIENT_ID = ns_parser.client_id
 
-            os.environ["GT_API_REDDIT_CLIENT_SECRET"] = ns_parser.client_secret
+            os.environ["OPENBB_API_REDDIT_CLIENT_SECRET"] = ns_parser.client_secret
             dotenv.set_key(
-                self.env_file, "GT_API_REDDIT_CLIENT_SECRET", ns_parser.client_secret
+                self.env_file,
+                "OPENBB_API_REDDIT_CLIENT_SECRET",
+                ns_parser.client_secret,
             )
             cfg.API_REDDIT_CLIENT_SECRET = ns_parser.client_secret
 
-            os.environ["GT_API_REDDIT_PASSWORD"] = ns_parser.username
-            dotenv.set_key(self.env_file, "GT_API_REDDIT_PASSWORD", ns_parser.username)
+            os.environ["OPENBB_API_REDDIT_PASSWORD"] = ns_parser.username
+            dotenv.set_key(
+                self.env_file, "OPENBB_API_REDDIT_PASSWORD", ns_parser.username
+            )
             cfg.API_REDDIT_USERNAME = ns_parser.username
 
-            os.environ["GT_API_REDDIT_CLIENT_ID"] = ns_parser.password
-            dotenv.set_key(self.env_file, "GT_API_REDDIT_CLIENT_ID", ns_parser.password)
+            os.environ["OPENBB_API_REDDIT_CLIENT_ID"] = ns_parser.password
+            dotenv.set_key(
+                self.env_file, "OPENBB_API_REDDIT_CLIENT_ID", ns_parser.password
+            )
             cfg.API_REDDIT_PASSWORD = ns_parser.password
 
-            os.environ["GT_API_REDDIT_USER_AGENT"] = ns_parser.user_agent
+            os.environ["OPENBB_API_REDDIT_USER_AGENT"] = ns_parser.user_agent
             dotenv.set_key(
-                self.env_file, "GT_API_REDDIT_USER_AGENT", ns_parser.user_agent
+                self.env_file, "OPENBB_API_REDDIT_USER_AGENT", ns_parser.user_agent
             )
             cfg.API_REDDIT_USER_AGENT = ns_parser.user_agent
 
@@ -1125,19 +1131,19 @@ class KeysController(BaseController):
             return
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            os.environ["GT_API_TWITTER_KEY"] = ns_parser.key
-            dotenv.set_key(self.env_file, "GT_API_TWITTER_KEY", ns_parser.key)
+            os.environ["OPENBB_API_TWITTER_KEY"] = ns_parser.key
+            dotenv.set_key(self.env_file, "OPENBB_API_TWITTER_KEY", ns_parser.key)
             cfg.API_TWITTER_KEY = ns_parser.key
 
-            os.environ["GT_API_TWITTER_SECRET_KEY"] = ns_parser.secret_key
+            os.environ["OPENBB_API_TWITTER_SECRET_KEY"] = ns_parser.secret_key
             dotenv.set_key(
-                self.env_file, "GT_API_TWITTER_SECRET_KEY", ns_parser.secret_key
+                self.env_file, "OPENBB_API_TWITTER_SECRET_KEY", ns_parser.secret_key
             )
             cfg.API_TWITTER_SECRET_KEY = ns_parser.secret_key
 
-            os.environ["GT_API_TWITTER_BEARER_TOKEN"] = ns_parser.bearer_token
+            os.environ["OPENBB_API_TWITTER_BEARER_TOKEN"] = ns_parser.bearer_token
             dotenv.set_key(
-                self.env_file, "GT_API_TWITTER_BEARER_TOKEN", ns_parser.bearer_token
+                self.env_file, "OPENBB_API_TWITTER_BEARER_TOKEN", ns_parser.bearer_token
             )
             cfg.API_TWITTER_BEARER_TOKEN = ns_parser.bearer_token
 
@@ -1171,12 +1177,12 @@ class KeysController(BaseController):
             return
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            os.environ["GT_RH_USERNAME"] = ns_parser.username
-            dotenv.set_key(self.env_file, "GT_RH_USERNAME", ns_parser.username)
+            os.environ["OPENBB_RH_USERNAME"] = ns_parser.username
+            dotenv.set_key(self.env_file, "OPENBB_RH_USERNAME", ns_parser.username)
             cfg.RH_USERNAME = ns_parser.username
 
-            os.environ["GT_RH_PASSWORD"] = ns_parser.password
-            dotenv.set_key(self.env_file, "GT_RH_PASSWORD", ns_parser.password)
+            os.environ["OPENBB_RH_PASSWORD"] = ns_parser.password
+            dotenv.set_key(self.env_file, "OPENBB_RH_PASSWORD", ns_parser.password)
             cfg.RH_PASSWORD = ns_parser.password
 
             self.check_rh_key(show_output=True)
@@ -1216,16 +1222,16 @@ class KeysController(BaseController):
             return
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            os.environ["GT_DG_USERNAME"] = ns_parser.username
-            dotenv.set_key(self.env_file, "GT_DG_USERNAME", ns_parser.username)
+            os.environ["OPENBB_DG_USERNAME"] = ns_parser.username
+            dotenv.set_key(self.env_file, "OPENBB_DG_USERNAME", ns_parser.username)
             cfg.DG_USERNAME = ns_parser.username
 
-            os.environ["GT_DG_PASSWORD"] = ns_parser.password
-            dotenv.set_key(self.env_file, "GT_DG_PASSWORD", ns_parser.password)
+            os.environ["OPENBB_DG_PASSWORD"] = ns_parser.password
+            dotenv.set_key(self.env_file, "OPENBB_DG_PASSWORD", ns_parser.password)
             cfg.DG_PASSWORD = ns_parser.password
 
-            os.environ["GT_DG_TOTP_SECRET"] = ns_parser.secret
-            dotenv.set_key(self.env_file, "GT_DG_TOTP_SECRET", ns_parser.secret)
+            os.environ["OPENBB_DG_TOTP_SECRET"] = ns_parser.secret
+            dotenv.set_key(self.env_file, "OPENBB_DG_TOTP_SECRET", ns_parser.secret)
             cfg.DG_TOTP_SECRET = ns_parser.secret
 
             self.check_degiro_key(show_output=True)
@@ -1265,17 +1271,17 @@ class KeysController(BaseController):
             return
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            os.environ["GT_OANDA_ACCOUNT"] = ns_parser.account
-            dotenv.set_key(self.env_file, "GT_OANDA_ACCOUNT", ns_parser.account)
+            os.environ["OPENBB_OANDA_ACCOUNT"] = ns_parser.account
+            dotenv.set_key(self.env_file, "OPENBB_OANDA_ACCOUNT", ns_parser.account)
             cfg.OANDA_ACCOUNT = ns_parser.account
 
-            os.environ["GT_OANDA_TOKEN"] = ns_parser.token
-            dotenv.set_key(self.env_file, "GT_OANDA_TOKEN", ns_parser.token)
+            os.environ["OPENBB_OANDA_TOKEN"] = ns_parser.token
+            dotenv.set_key(self.env_file, "OPENBB_OANDA_TOKEN", ns_parser.token)
             cfg.OANDA_TOKEN = ns_parser.token
 
-            os.environ["GT_OANDA_ACCOUNT_TYPE"] = ns_parser.account_type
+            os.environ["OPENBB_OANDA_ACCOUNT_TYPE"] = ns_parser.account_type
             dotenv.set_key(
-                self.env_file, "GT_OANDA_ACCOUNT_TYPE", ns_parser.account_type
+                self.env_file, "OPENBB_OANDA_ACCOUNT_TYPE", ns_parser.account_type
             )
             cfg.OANDA_ACCOUNT_TYPE = ns_parser.account_type
 
@@ -1309,12 +1315,14 @@ class KeysController(BaseController):
             return
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            os.environ["GT_API_BINANCE_KEY"] = ns_parser.key
-            dotenv.set_key(self.env_file, "GT_API_BINANCE_KEY", ns_parser.key)
+            os.environ["OPENBB_API_BINANCE_KEY"] = ns_parser.key
+            dotenv.set_key(self.env_file, "OPENBB_API_BINANCE_KEY", ns_parser.key)
             cfg.API_BINANCE_KEY = ns_parser.key
 
-            os.environ["GT_API_BINANCE_SECRET"] = ns_parser.secret_key
-            dotenv.set_key(self.env_file, "GT_API_BINANCE_SECRET", ns_parser.secret_key)
+            os.environ["OPENBB_API_BINANCE_SECRET"] = ns_parser.secret_key
+            dotenv.set_key(
+                self.env_file, "OPENBB_API_BINANCE_SECRET", ns_parser.secret_key
+            )
             cfg.API_BINANCE_SECRET = ns_parser.secret_key
 
             self.check_binance_key(show_output=True)
@@ -1342,8 +1350,8 @@ class KeysController(BaseController):
             other_args.insert(0, "-k")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            os.environ["GT_API_BITQUERY_KEY"] = ns_parser.key
-            dotenv.set_key(self.env_file, "GT_API_BITQUERY_KEY", ns_parser.key)
+            os.environ["OPENBB_API_BITQUERY_KEY"] = ns_parser.key
+            dotenv.set_key(self.env_file, "OPENBB_API_BITQUERY_KEY", ns_parser.key)
             cfg.API_BITQUERY_KEY = ns_parser.key
 
             self.check_bitquery_key(show_output=True)
@@ -1371,9 +1379,9 @@ class KeysController(BaseController):
             other_args.insert(0, "-k")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            os.environ["GT_API_SENTIMENTINVESTOR_TOKEN"] = ns_parser.key
+            os.environ["OPENBB_API_SENTIMENTINVESTOR_TOKEN"] = ns_parser.key
             dotenv.set_key(
-                self.env_file, "GT_API_SENTIMENTINVESTOR_TOKEN", ns_parser.key
+                self.env_file, "OPENBB_API_SENTIMENTINVESTOR_TOKEN", ns_parser.key
             )
             cfg.API_SENTIMENTINVESTOR_TOKEN = ns_parser.key
 
@@ -1414,19 +1422,19 @@ class KeysController(BaseController):
             return
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            os.environ["GT_API_COINBASE_KEY"] = ns_parser.key
-            dotenv.set_key(self.env_file, "GT_API_COINBASE_KEY", ns_parser.key)
+            os.environ["OPENBB_API_COINBASE_KEY"] = ns_parser.key
+            dotenv.set_key(self.env_file, "OPENBB_API_COINBASE_KEY", ns_parser.key)
             cfg.API_COINBASE_KEY = ns_parser.key
 
-            os.environ["GT_API_COINBASE_SECRET"] = ns_parser.secret_key
+            os.environ["OPENBB_API_COINBASE_SECRET"] = ns_parser.secret_key
             dotenv.set_key(
-                self.env_file, "GT_API_COINBASE_SECRET", ns_parser.secret_key
+                self.env_file, "OPENBB_API_COINBASE_SECRET", ns_parser.secret_key
             )
             cfg.API_COINBASE_SECRET = ns_parser.secret_key
 
-            os.environ["GT_API_COINBASE_PASS_PHRASE"] = ns_parser.passphrase
+            os.environ["OPENBB_API_COINBASE_PASS_PHRASE"] = ns_parser.passphrase
             dotenv.set_key(
-                self.env_file, "GT_API_COINBASE_PASS_PHRASE", ns_parser.passphrase
+                self.env_file, "OPENBB_API_COINBASE_PASS_PHRASE", ns_parser.passphrase
             )
             cfg.API_COINBASE_PASS_PHRASE = ns_parser.passphrase
 
@@ -1455,8 +1463,8 @@ class KeysController(BaseController):
             other_args.insert(0, "-k")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            os.environ["GT_API_WHALE_ALERT_KEY"] = ns_parser.key
-            dotenv.set_key(self.env_file, "GT_API_WHALE_ALERT_KEY", ns_parser.key)
+            os.environ["OPENBB_API_WHALE_ALERT_KEY"] = ns_parser.key
+            dotenv.set_key(self.env_file, "OPENBB_API_WHALE_ALERT_KEY", ns_parser.key)
             cfg.API_WHALE_ALERT_KEY = ns_parser.key
 
             self.check_walert_key(show_output=True)
@@ -1486,8 +1494,8 @@ class KeysController(BaseController):
             other_args.insert(0, "-k")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            os.environ["GT_API_GLASSNODE_KEY"] = ns_parser.key
-            dotenv.set_key(self.env_file, "GT_API_GLASSNODE_KEY", ns_parser.key)
+            os.environ["OPENBB_API_GLASSNODE_KEY"] = ns_parser.key
+            dotenv.set_key(self.env_file, "OPENBB_API_GLASSNODE_KEY", ns_parser.key)
             cfg.API_GLASSNODE_KEY = ns_parser.key
 
             self.check_glassnode_key(show_output=True)
@@ -1517,8 +1525,8 @@ class KeysController(BaseController):
             other_args.insert(0, "-k")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            os.environ["GT_API_COINGLASS_KEY"] = ns_parser.key
-            dotenv.set_key(self.env_file, "GT_API_COINGLASS_KEY", ns_parser.key)
+            os.environ["OPENBB_API_COINGLASS_KEY"] = ns_parser.key
+            dotenv.set_key(self.env_file, "OPENBB_API_COINGLASS_KEY", ns_parser.key)
             cfg.API_COINGLASS_KEY = ns_parser.key
 
             self.check_coinglass_key(show_output=True)
@@ -1548,8 +1556,8 @@ class KeysController(BaseController):
             other_args.insert(0, "-k")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            os.environ["GT_API_CRYPTO_PANIC_KEY"] = ns_parser.key
-            dotenv.set_key(self.env_file, "GT_API_CRYPTO_PANIC_KEY", ns_parser.key)
+            os.environ["OPENBB_API_CRYPTO_PANIC_KEY"] = ns_parser.key
+            dotenv.set_key(self.env_file, "OPENBB_API_CRYPTO_PANIC_KEY", ns_parser.key)
             cfg.API_CRYPTO_PANIC_KEY = ns_parser.key
 
             self.check_cpanic_key(show_output=True)
@@ -1579,8 +1587,8 @@ class KeysController(BaseController):
             other_args.insert(0, "-k")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            os.environ["GT_API_ETHPLORER_KEY"] = ns_parser.key
-            dotenv.set_key(self.env_file, "GT_API_ETHPLORER_KEY", ns_parser.key)
+            os.environ["OPENBB_API_ETHPLORER_KEY"] = ns_parser.key
+            dotenv.set_key(self.env_file, "OPENBB_API_ETHPLORER_KEY", ns_parser.key)
             cfg.API_ETHPLORER_KEY = ns_parser.key
 
             self.check_ethplorer_key(show_output=True)
@@ -1613,12 +1621,14 @@ class KeysController(BaseController):
         ns_parser = parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
-            os.environ["GT_API_SMARTSTAKE_TOKEN"] = ns_parser.token
-            dotenv.set_key(self.env_file, "GT_API_SMARTSTAKE_TOKEN", ns_parser.token)
+            os.environ["OPENBB_API_SMARTSTAKE_TOKEN"] = ns_parser.token
+            dotenv.set_key(
+                self.env_file, "OPENBB_API_SMARTSTAKE_TOKEN", ns_parser.token
+            )
             cfg.API_SMARTSTAKE_TOKEN = ns_parser.token
 
-            os.environ["GT_API_SMARTSTAKE_KEY"] = ns_parser.key
-            dotenv.set_key(self.env_file, "GT_API_SMARTSTAKE_KEY", ns_parser.key)
+            os.environ["OPENBB_API_SMARTSTAKE_KEY"] = ns_parser.key
+            dotenv.set_key(self.env_file, "OPENBB_API_SMARTSTAKE_KEY", ns_parser.key)
             cfg.API_SMARTSTAKE_KEY = ns_parser.key
 
             self.check_smartstake_key(show_output=True)

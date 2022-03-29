@@ -8,7 +8,7 @@ from typing import List, Union
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import config_terminal as cfg
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal import feature_flags as obbff
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.forex import av_model, forex_helper
 from gamestonk_terminal.forex.forex_helper import FOREX_SOURCES
@@ -59,7 +59,7 @@ class OandaController(BaseController):
         self.source = "Oanda"
         self.instrument: Union[str, None] = None
 
-        if session and gtff.USE_PROMPT_TOOLKIT:
+        if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             # TODO: We currently use the Alpha Vantage currency list for autocompletion
             # This leads to messages like `USD_EUR is not a valid instrument.`

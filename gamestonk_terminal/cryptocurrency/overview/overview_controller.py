@@ -10,7 +10,7 @@ from typing import List
 
 from prompt_toolkit.completion import NestedCompleter
 
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal import feature_flags as obbff
 from gamestonk_terminal.cryptocurrency.due_diligence.glassnode_view import (
     display_btc_rainbow,
 )
@@ -92,7 +92,7 @@ class OverviewController(BaseController):
         """Constructor"""
         super().__init__(queue)
 
-        if session and gtff.USE_PROMPT_TOOLKIT:
+        if session and obbff.USE_PROMPT_TOOLKIT:
             crypto_hack_slugs = rekt_model.get_crypto_hack_slugs()
             choices: dict = {c: {} for c in self.controller_choices}
             choices["ch"]["--sort"] = {c: None for c in rekt_model.HACKS_COLUMNS}

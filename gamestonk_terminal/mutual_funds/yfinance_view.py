@@ -7,7 +7,7 @@ import os
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal import feature_flags as obbff
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.helper_funcs import (
@@ -82,7 +82,7 @@ def display_sector(fund: str, min_pct_to_display: float = 5, export: str = ""):
     )
     ax.set_title(f"Sector holdings of {fund.upper()}")
     fig.tight_layout()
-    if gtff.USE_ION:
+    if obbff.USE_ION:
         plt.ion()
     plt.show()
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "sector", df_weight)

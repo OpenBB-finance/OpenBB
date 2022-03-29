@@ -11,7 +11,7 @@ from binance.client import Client
 from prompt_toolkit.completion import NestedCompleter
 
 import gamestonk_terminal.config_terminal as cfg
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal import feature_flags as obbff
 from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import (
     FIND_KEYS,
     display_all_coins,
@@ -77,7 +77,7 @@ class CryptoController(CryptoBaseController):
         """Constructor"""
         super().__init__(queue)
 
-        if session and gtff.USE_PROMPT_TOOLKIT:
+        if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["load"]["--source"] = {c: {} for c in CRYPTO_SOURCES.keys()}
             choices["find"]["--source"] = {c: {} for c in CRYPTO_SOURCES.keys()}
@@ -529,7 +529,7 @@ class CryptoController(CryptoBaseController):
     @log_start_end(log=logger)
     def call_pred(self, _):
         """Process pred command"""
-        if gtff.ENABLE_PREDICT:
+        if obbff.ENABLE_PREDICT:
             if self.coin:
                 try:
                     from gamestonk_terminal.cryptocurrency.prediction_techniques import (

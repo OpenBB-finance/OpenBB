@@ -10,7 +10,7 @@ from typing import List
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal import feature_flags as obbff
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.forex import av_view, forex_helper
 from gamestonk_terminal.forex.forex_helper import FOREX_SOURCES, SOURCES_INTERVALS
@@ -42,7 +42,7 @@ class ForexController(BaseController):
         self.source = "yf"
         self.data = pd.DataFrame()
 
-        if session and gtff.USE_PROMPT_TOOLKIT:
+        if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["to"] = {c: None for c in forex_helper.YF_CURRENCY_LIST}
             choices["from"] = {c: None for c in forex_helper.YF_CURRENCY_LIST}

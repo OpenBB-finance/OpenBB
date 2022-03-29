@@ -9,7 +9,7 @@ import numpy as np
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal import feature_flags as obbff
 from gamestonk_terminal.common.quantitative_analysis import qa_view, rolling_view
 from gamestonk_terminal.decorators import log_start_end
 from gamestonk_terminal.cryptocurrency import cryptocurrency_helpers as c_help
@@ -74,7 +74,7 @@ class QaController(CryptoBaseController):
         self.coin = coin
         self.target = "Close"
 
-        if session and gtff.USE_PROMPT_TOOLKIT:
+        if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["pick"] = {c: None for c in list(data.columns)}
             choices["load"]["-r"] = {c: {} for c in c_help.INTERVALS}

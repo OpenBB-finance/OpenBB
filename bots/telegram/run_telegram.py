@@ -11,7 +11,7 @@ from bots.helpers import ShowView
 load_dotenv()
 
 available_commands = list(commands.keys())
-bot = telebot.TeleBot(os.getenv("GT_TELEGRAM_BOT_TOKEN"))
+bot = telebot.TeleBot(os.getenv("OPENBB_TELEGRAM_BOT_TOKEN"))
 
 bot_commands = [
     telebot.types.BotCommand("/about", "Bot information"),

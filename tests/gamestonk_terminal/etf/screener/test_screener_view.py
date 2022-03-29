@@ -27,7 +27,7 @@ def vcr_config():
 )
 def test_view_screener(preset, num_to_show, sortby, ascend, mocker):
     mocker.patch.object(
-        target=helper_funcs.gtff, attribute="USE_TABULATE_DF", new=False
+        target=helper_funcs.obbff, attribute="USE_TABULATE_DF", new=False
     )
     screener_view.view_screener(
         preset, num_to_show=num_to_show, sortby=sortby, ascend=ascend, export=""
