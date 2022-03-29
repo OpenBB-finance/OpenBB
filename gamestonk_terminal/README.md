@@ -34,7 +34,7 @@ process and explain to you what each message means.
 
 ### Windows
 
-The process starts off by downloading the installer, see below the most recent release:
+The process starts off by downloading the installer, see below for the most recent release:
 
 - [LINK TO INSTALLER FILE](https://github.com/GamestonkTerminal/GamestonkTerminal/)
 
@@ -48,7 +48,7 @@ Then follow these steps:
 
 ### macOS
 
-The process starts off by downloading the installer, see below the most recent release:
+The process starts off by downloading the installer, see below for the most recent release:
 
 - [LINK TO INSTALLER FILE](https://github.com/GamestonkTerminal/GamestonkTerminal/)
 
