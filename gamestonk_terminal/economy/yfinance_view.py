@@ -90,14 +90,8 @@ def show_indices(
                 label = index
 
             if not indices_data[index].empty:
-
-                if returns:
-                    indices_data.index.name = "date"
-                    data_to_percent = 100 * (indices_data[index].values - 1)
-                    plot_data = reindex_dates(indices_data)
-                    ax.plot(plot_data.index, data_to_percent, label=label)
-                else:
-                    ax.plot(indices_data.index, indices_data[index], label=label)
+                data_to_percent = 100 * (indices_data[index].values - 1)
+                ax.plot(data_to_percent, label=label)
 
         ax.set_title("Indices")
         if returns:
@@ -112,6 +106,8 @@ def show_indices(
         )
 
         if returns:
+            indices_data.index.name = "date"
+            plot_data = reindex_dates(indices_data)
             theme.style_primary_axis(
                 ax,
                 data_index=plot_data.index.to_list(),
