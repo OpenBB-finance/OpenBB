@@ -143,9 +143,7 @@ if is_win:
     exe_kwargs["icon"] = (os.path.join(os.getcwd(), "images", "gst_app.ico"),)
 
 if is_darwin:
-    exe_kwargs["icon"] = (
-        os.path.join(os.getcwd(), "images", "GamestonkTerminal.icns"),
-    )
+    exe_kwargs["icon"] = (os.path.join(os.getcwd(), "images", "openbb.icns"),)
 
 exe = EXE(*exe_args, **exe_kwargs)
 
