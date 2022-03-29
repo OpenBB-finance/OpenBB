@@ -36,7 +36,7 @@ def detect_valid_command(message):
 @bot.message_handler(commands=["start", "Start", "about", "help"])
 def send_welcome(message):
     text = """
-Welcome to *Gamestonk Terminal Bot* 🦋
+Welcome to *OpenBB Terminal Bot* 🦋
 Investment Research for Everyone
 Check the available commands with /cmds
     """

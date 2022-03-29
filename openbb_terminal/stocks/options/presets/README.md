@@ -1,13 +1,13 @@
 # PRESETS
 
-* [How to add presets](#how-to-add-presets)
-* [template](#template)
+- [How to add presets](#how-to-add-presets)
+- [template](#template)
 
 ---
 
 ## How to add Presets
 
-1. Go to the folder GamestonkTerminal/gamestonk_terminal/options/presets.
+1. Go to the folder GamestonkTerminal/openbb_terminal/options/presets.
 
 2. There should be a `README.md` file and multiple `.ini` files. One of these `.ini` files should be named `template.ini`.
 
@@ -31,25 +31,25 @@
 
    <img width="462" alt="Image5" src="https://user-images.githubusercontent.com/25267873/123711451-6b1a0d80-d868-11eb-9887-3389bbff6514.png">
 
-8. Start the terminal, and go to the `>   op` menu. In there, you can play with it on the terminal as shown:
+8. Start the terminal, and go to the `> op` menu. In there, you can play with it on the terminal as shown:
 
-   * **disp**: Allows to see the screeners available. I.e. all `.ini` files in presets folder.
-   * **disp <selected_preset>**: Allows to see the specific parameters set for the preset selected.
-   * **scr <selected_preset>**: Allows to show stocks that are filtered using the selected preset.
-     * Note: As default, if the user does **scr** this will use the `template.ini` file. So, the user can do some tests
-      with tweaking of parameters on the `template.ini` file.
+   - **disp**: Allows to see the screeners available. I.e. all `.ini` files in presets folder.
+   - **disp <selected_preset>**: Allows to see the specific parameters set for the preset selected.
+   - **scr <selected_preset>**: Allows to show stocks that are filtered using the selected preset.
+     - Note: As default, if the user does **scr** this will use the `template.ini` file. So, the user can do some tests
+       with tweaking of parameters on the `template.ini` file.
 
    <img width="1220" alt="Image6" src="https://user-images.githubusercontent.com/25267873/123711622-aa485e80-d868-11eb-8c9f-ed9e6453632b.png">
 
 9. Share with other Apes. You can do so by either creating yourself a Pull Request with this change, or asking a dev
-    (e.g. @Sexy_Year) on our discord server to add it for you.
+   (e.g. @Sexy_Year) on our discord server to add it for you.
 
 ---
 
 ## template
 
-* **Author of preset:** GamestonkTerminal
-* **Contact:** <https://github.com/DidierRLopes/GamestonkTerminal#contacts>
-* **Description:** Template with all available filters and their options menu. More information can be found in <https://ops.syncretism.io/index.html>.
+- **Author of preset:** GamestonkTerminal
+- **Contact:** <https://github.com/DidierRLopes/GamestonkTerminal#contacts>
+- **Description:** Template with all available filters and their options menu. More information can be found in <https://ops.syncretism.io/index.html>.
 
 ---

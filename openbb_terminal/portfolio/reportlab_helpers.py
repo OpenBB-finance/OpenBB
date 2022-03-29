@@ -22,7 +22,7 @@ def base_format(report: canvas.Canvas, header: str) -> None:
     """
     report.setLineWidth(0.3)
     report.setFont("Helvetica", 12)
-    report.drawString(30, 760, "Gamestonk Terminal")
+    report.drawString(30, 760, "OpenBB Terminal")
     report.drawString(500, 760, datetime.now().strftime("%Y/%m/%d"))
     report.drawString(275, 750, "Annual Report")
     report.line(50, 730, 580, 730)

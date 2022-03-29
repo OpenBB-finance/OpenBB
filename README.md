@@ -44,7 +44,7 @@
   <p align="center">
     Investment research for everyone.
     <br />
-    <a href="https://github.com/GamestonkTerminal/GamestonkTerminal/tree/master/gamestonk_terminal/README.md"><strong>≪  GETTING STARTED</strong></a>
+    <a href="https://github.com/GamestonkTerminal/GamestonkTerminal/tree/master/openbb_terminal/README.md"><strong>≪  GETTING STARTED</strong></a>
     &nbsp · &nbsp
     <a href="https://gamestonkterminal.github.io/GamestonkTerminal/">
     <strong>SEE FEATURES »</strong></a>
