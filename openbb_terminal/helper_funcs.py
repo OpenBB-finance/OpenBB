@@ -1007,11 +1007,11 @@ def get_user_timezone() -> str:
     Returns
     -------
     str
-        user timezone based on timezone.gst file
+        user timezone based on timezone.openbb file
     """
     filename = os.path.join(
         os.path.dirname(os.path.abspath(__file__)),
-        "timezone.gst",
+        "timezone.openbb",
     )
     if os.path.isfile(filename):
         with open(filename) as f:
@@ -1025,7 +1025,7 @@ def get_user_timezone_or_invalid() -> str:
     Returns
     -------
     str
-        user timezone based on timezone.gst file or INVALID
+        user timezone based on timezone.openbb file or INVALID
     """
     user_tz = get_user_timezone()
     if is_timezone_valid(user_tz):
@@ -1043,7 +1043,7 @@ def replace_user_timezone(user_tz: str) -> None:
     """
     filename = os.path.join(
         os.path.dirname(os.path.abspath(__file__)),
-        "timezone.gst",
+        "timezone.openbb",
     )
     if os.path.isfile(filename):
         with open(filename, "w") as f:
@@ -1055,7 +1055,7 @@ def replace_user_timezone(user_tz: str) -> None:
             else:
                 console.print("Timezone selected is not valid", "\n")
     else:
-        console.print("timezone.gst file does not exist", "\n")
+        console.print("timezone.openbb file does not exist", "\n")
 
 
 def str_to_bool(value) -> bool:
