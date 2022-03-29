@@ -165,7 +165,7 @@ any loss or damage as a result of your trading, or your reliance on the informat
 Feel free to share loss porn, memes or any questions at:
 
 - Discord: <https://discord.gg/Up2QGbMKHY>
-- Twitter: [@gamestonkt](https://twitter.com/gamestonkt)
+- Twitter: [@openbb_finance](https://twitter.com/openbb_finance)
 
 ### Contributors
 
