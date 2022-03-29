@@ -53,6 +53,8 @@ def get_app_id() -> str:
 
     try:
         app_id = get_log_dir().stem
+
+        return app_id
     except OSError as e:
         if e.errno == 30:
             print("Please move the application into a writable location.")
@@ -63,8 +65,6 @@ def get_app_id() -> str:
             raise e
     except Exception as e:
         raise e
-
-    return app_id
 
 
 def get_commit_hash() -> str:
