@@ -8,6 +8,7 @@ import pandas as pd
 import requests
 from finvizfinance.group import performance, spectrum, valuation
 
+from openbb_terminal.rich_config import console
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import get_user_agent
 
@@ -30,9 +31,15 @@ def get_valuation_performance_data(group: str, data_type: str) -> pd.DataFrame:
     pd.DataFrame
         dataframe with valuation/performance data
     """
-    if data_type == "valuation":
-        return valuation.Valuation().screener_view(group=group)
-    return performance.Performance().screener_view(group=group)
+
+    try:
+        if data_type == "valuation":
+            return valuation.Valuation().screener_view(group=group)
+        elif data_type == "performance":
+            return performance.Performance().screener_view(group=group)
+    except IndexError:
+        console.print("Data not found.\n")
+        return pd.DataFrame()
 
 
 @log_start_end(log=logger)
