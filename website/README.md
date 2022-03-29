@@ -51,8 +51,8 @@ hugo v0.87.0+extended darwin/amd64 BuildDate=unknown
   Cleaned          |   0
 
 Built in 14912 ms
-Watching for changes in /Users/DidierRodriguesLopes/Documents/git/GamestonkTerminal/website/{archetypes,assets,content,data,static,themes}
-Watching for config changes in /Users/DidierRodriguesLopes/Documents/git/GamestonkTerminal/website/config.toml
+Watching for changes in /Users/DidierRodriguesLopes/Documents/git/OpenBBTerminal/website/{archetypes,assets,content,data,static,themes}
+Watching for config changes in /Users/DidierRodriguesLopes/Documents/git/OpenBBTerminal/website/config.toml
 Environment: "development"
 Serving pages from memory
 Running in Fast Render Mode. For full rebuilds on change: hugo server --disableFastRender
