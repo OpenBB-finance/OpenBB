@@ -95,10 +95,10 @@ ipywidgets = "^7.7.0"
 pyinstaller = {version = "^4.10", optional = true}
 boto3 = {version = "^1.21.14", optional = true}
 natsort = {version = "^8.1.0", optional = true}
-kaleido = {version = "^0.2.1", optional = true}
 jupyterlab-code-formatter = {version = "^1.4.10", optional = true}
 jupyterlab-lsp = {version = "^3.10.1", optional = true}
 jedi-language-server = {version = "^0.35.1", optional = true}
+Jinja2 = "3.0.3"
 
 
 [tool.poetry.dev-dependencies]

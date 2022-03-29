@@ -3,6 +3,7 @@ import pytest
 from bots.economy.valuation import valuation_command
 
 
+@pytest.mark.bots
 @pytest.mark.parametrize(
     "group",
     [
