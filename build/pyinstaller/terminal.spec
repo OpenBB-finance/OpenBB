@@ -24,11 +24,11 @@ pathex = os.path.join(
 # Get latest commit
 commit_hash = get_commit_hash()
 build_assets_folder = os.path.join(os.getcwd(), "build", "pyinstaller")
-default_feature_flags_path = os.path.join(build_assets_folder, "GTFF_DEFAULTS.json")
+default_feature_flags_path = os.path.join(build_assets_folder, "OBBFF_DEFAULTS.json")
 with open(default_feature_flags_path, "r") as f:
     default_gtff = json.load(f)
 
-default_gtff["GTFF_LOGGING_COMMIT_HASH"] = commit_hash
+default_gtff["OBBFF_LOGGING_COMMIT_HASH"] = commit_hash
 with open(default_feature_flags_path, "w") as f:
     json.dump(default_gtff, f, indent=4)
 
@@ -44,7 +44,7 @@ added_files = [
         os.path.join("frozendict", "VERSION"),
         "frozendict",
     ),
-    ("GTFF_DEFAULTS.json", "gamestonk_terminal"),
+    ("OBBFF_DEFAULTS.json", "gamestonk_terminal"),
 ]
 
 # Python libraries that are explicitly pulled into the bundle

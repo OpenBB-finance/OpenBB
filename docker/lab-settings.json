@@ -10,7 +10,7 @@
             "description": "Feature flags for the Gamestonk Terminal.",
             "default":
             {
-                "GTFF_USE_CLEAR_AFTER_CMD":
+                "OBBFF_USE_CLEAR_AFTER_CMD":
                 {
                     "type": "bool",
                     "form": "checkbox",
@@ -19,7 +19,7 @@
                     "default": false,
                     "value": ""
                 },
-                "GTFF_USE_COLOR":
+                "OBBFF_USE_COLOR":
                 {
                     "type": "bool",
                     "form": "checkbox",
@@ -28,7 +28,7 @@
                     "default": true,
                     "value": ""
                 },
-                "GTFF_USE_FLAIR":
+                "OBBFF_USE_FLAIR":
                 {
                     "type": "string",
                     "form": "text",
@@ -37,7 +37,7 @@
                     "default": "stars",
                     "value": ""
                 },
-                "GTFF_USE_ION":
+                "OBBFF_USE_ION":
                 {
                     "type": "bool",
                     "form": "checkbox",
@@ -46,7 +46,7 @@
                     "default": true,
                     "value": ""
                 },
-                "GTFF_USE_PROMPT_TOOLKIT":
+                "OBBFF_USE_PROMPT_TOOLKIT":
                 {
                     "type": "bool",
                     "form": "checkbox",
@@ -55,7 +55,7 @@
                     "default": true,
                     "value": ""
                 },
-                "GTFF_ENABLE_PREDICT":
+                "OBBFF_ENABLE_PREDICT":
                 {
                     "type": "bool",
                     "form": "checkbox",
@@ -64,7 +64,7 @@
                     "default": true,
                     "value": ""
                 },
-                "GTFF_USE_PLOT_AUTOSCALING":
+                "OBBFF_USE_PLOT_AUTOSCALING":
                 {
                     "type": "bool",
                     "form": "checkbox",
@@ -73,7 +73,7 @@
                     "default": false,
                     "value": ""
                 },
-                "GTFF_ENABLE_THOUGHTS_DAY":
+                "OBBFF_ENABLE_THOUGHTS_DAY":
                 {
                     "type": "bool",
                     "form": "checkbox",
@@ -82,7 +82,7 @@
                     "default": false,
                     "value": ""
                 },
-                "GTFF_ENABLE_QUICK_EXIT":
+                "OBBFF_ENABLE_QUICK_EXIT":
                 {
                     "type": "bool",
                     "form": "checkbox",
