@@ -39,7 +39,7 @@ def test_map_sp500_view(mocker):
     ],
 )
 def test_display_performance(mocker, tab):
-    # MOCK GTFF
+    # MOCK OBBFF
     mocker.patch.object(target=helper_funcs.obbff, attribute="USE_TABULATE_DF", new=tab)
     mocker.patch.object(target=helper_funcs.obbff, attribute="USE_ION", new=True)
 
@@ -65,7 +65,7 @@ def test_display_performance(mocker, tab):
     ],
 )
 def test_display_valuation(mocker, tab):
-    # MOCK GTFF
+    # MOCK OBBFF
     mocker.patch.object(target=helper_funcs.obbff, attribute="USE_TABULATE_DF", new=tab)
     mocker.patch.object(target=helper_funcs.obbff, attribute="USE_ION", new=True)
 
@@ -116,7 +116,7 @@ def test_display_spectrum(mocker):
     ],
 )
 def test_display_future(mocker, tab):
-    # MOCK GTFF
+    # MOCK OBBFF
     mocker.patch.object(target=helper_funcs.obbff, attribute="USE_TABULATE_DF", new=tab)
     mocker.patch.object(target=helper_funcs.obbff, attribute="USE_ION", new=True)
 

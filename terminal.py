@@ -203,9 +203,15 @@ class TerminalController(BaseController):
 
     def call_jupyter(self, _):
         """Process jupyter command"""
-        from openbb_terminal.jupyter.jupyter_controller import JupyterController
+        if not obbff.PACKAGED_APPLICATION:
+            from openbb_terminal.jupyter.jupyter_controller import JupyterController
 
-        self.queue = self.load_class(JupyterController, self.queue)
+            self.queue = self.load_class(JupyterController, self.queue)
+        else:
+            console.print("This feature is coming soon.")
+            console.print(
+                "Use the source code and an Anaconda environment if you are familiar with Python."
+            )
 
     def call_alternative(self, _):
         """Process alternative command"""

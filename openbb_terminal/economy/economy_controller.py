@@ -11,6 +11,7 @@ from typing import List, Dict, Any
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 
+from openbb_terminal.decorators import check_api_key
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.economy import (
@@ -603,6 +604,7 @@ Performance & Valuations
 
                 self.update_runtime_choices()
 
+    @check_api_key(["API_FRED_KEY"])
     def call_fred(self, other_args: List[str]):
         """Process fred command"""
         parser = argparse.ArgumentParser(
@@ -669,10 +671,12 @@ Performance & Valuations
             if ns_parser.query:
                 query = " ".join(ns_parser.query)
                 df_search = fred_model.get_series_notes(query)
-                fred_view.notes(series_term=query, num=ns_parser.limit)
 
-                self.fred_query = df_search["id"].head(ns_parser.limit)
-                self.update_runtime_choices()
+                if not df_search.empty:
+                    fred_view.notes(series_term=query, num=ns_parser.limit)
+
+                    self.fred_query = df_search["id"].head(ns_parser.limit)
+                    self.update_runtime_choices()
 
             if ns_parser.parameter:
                 series_dict = {}
@@ -1171,7 +1175,7 @@ Performance & Valuations
             prog="options",
             description="Show the available options for the 'plot' command. To save data, use the command -st on "
             "'macro', 'fred', 'index' and 'treasury'. You can use these commands to plot data on a multi-"
-            "axes graoh. Furthermore, this command also allows you to see and export all stored data.",
+            "axes graph. Furthermore, this command also allows you to see and export all stored data.",
         )
 
         ns_parser = parse_known_args_and_warn(

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DISK_IMAGE_NAME="Gamestonk Terminal"
+DISK_IMAGE_NAME="OpenBB Terminal"
 
 # exit when any command fails
 set -e
@@ -15,7 +15,7 @@ mkdir DMG
 
 # Copy relevant artifacts to the packaging folder
 cp -r build/pyinstaller/macOS_package_assets/* DMG/
-mv dist/GamestonkTerminal DMG/"$DISK_IMAGE_NAME"/Gamestonk
+mv dist/OpenBBTerminal DMG/"$DISK_IMAGE_NAME"/OpenBB
 
 # Copy launcher and other artifacts to the
 hdiutil create \
