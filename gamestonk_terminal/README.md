@@ -33,7 +33,9 @@ If you are interested in running the terminal via the installer, these steps wil
 process and explain to you what each message means.
 
 ### Windows
+
 The process starts off by downloading the installer, see below the most recent release:
+
 - [LINK TO INSTALLER FILE](https://github.com/GamestonkTerminal/GamestonkTerminal/)
 
 Then follow these steps:
@@ -45,14 +47,16 @@ Then follow these steps:
  | <div style="width:300px">By clicking on the application that appeared on your Desktop, you are able to run the Terminal. The first time this takes a bit longer to load.                                                                                                                                            | <p align="center"><img src="../images/installation/windows/run_the_terminal.png" alt="Run the terminal" width="500"/></p>                   |
 
 ### macOS
+
 The process starts off by downloading the installer, see below the most recent release:
+
 - [LINK TO INSTALLER FILE](https://github.com/GamestonkTerminal/GamestonkTerminal/)
 
 Installation instructions:
 
 1. Open the .dmg file that got downloaded to your "Downloads" folder.
-2. Drag the folder into your "Applications" folder. This should take some time as it is 
-extracting the files from the .dmg file.
+2. Drag the folder into your "Applications" folder. This should take some time as it is extracting the
+files from the .dmg file.
 3. Open the folder and click on the "Gamestonk Terminal" file, this should run the application.
 
 <img src="../images/installation/macos/mac_os_installation.png" alt="mac os installation" width=800/>
