@@ -16,7 +16,7 @@ except ImportError:
     pass
 
 # IMPORTATION INTERNAL
-import openbb_terminal.feature_flags as obbff
+import openbb_terminal.feature_flags as gtff
 from openbb_terminal.config_terminal import (
     LOGGING_APP_NAME,
     LOGGING_AWS_ACCESS_KEY_ID,
@@ -51,7 +51,18 @@ START_TIMESTAMP = int(time.time())
 def get_app_id() -> str:
     """UUID of the current installation."""
 
-    app_id = get_log_dir().stem
+    try:
+        app_id = get_log_dir().stem
+    except OSError as e:
+        if e.errno == 30:
+            print("Please move the application into a writable location.")
+            print(
+                "Note for macOS users: copy `Gamestonk Terminal` folder outside the DMG."
+            )
+        else:
+            raise e
+    except Exception as e:
+        raise e
 
     return app_id
 
@@ -59,8 +70,8 @@ def get_app_id() -> str:
 def get_commit_hash() -> str:
     """Get Commit Short Hash"""
 
-    if obbff.LOGGING_COMMIT_HASH != "REPLACE_ME":
-        return obbff.LOGGING_COMMIT_HASH
+    if gtff.LOGGING_COMMIT_HASH != "REPLACE_ME":
+        return gtff.LOGGING_COMMIT_HASH
 
     file_path = Path(__file__)
     git_dir = file_path.parent.parent.absolute().joinpath(".git")

@@ -1,5 +1,4 @@
 # IMPORTATION STANDARD
-import os
 import uuid
 from pathlib import Path
 
@@ -12,28 +11,23 @@ from pathlib import Path
 def get_log_dir() -> Path:
     """Retrieve application's log directory."""
 
-    file_path = Path(__file__)
-    log_dir = file_path.parent.parent.parent.parent.absolute().joinpath("logs")
+    log_dir = Path(__file__).parent.parent.parent.parent.joinpath("logs")
+    log_dir.mkdir(exist_ok=True)
+    logid_file = log_dir.joinpath(".logid")
 
-    if not os.path.isdir(log_dir.absolute()):
-        os.mkdir(log_dir.absolute())
+    if not logid_file.is_file():
+        logid = str(uuid.uuid4())
 
-    log_id = log_dir.absolute().joinpath(".logid")
-
-    if not os.path.isfile(log_id.absolute()):
-        logging_id = f"{uuid.uuid4()}"
-        with open(log_id.absolute(), "a") as a_file:
-            a_file.write(f"{logging_id}\n")
+        with open(logid_file, "w") as f:
+            f.write(f"{logid}\n")
     else:
-        with open(log_id.absolute()) as a_file:
-            logging_id = a_file.readline().rstrip()
+        with open(logid_file) as a_file:
+            logid = a_file.readline().rstrip()
 
-    uuid_log_dir = log_dir.absolute().joinpath(logging_id)
+    logid_dir = log_dir.joinpath(logid)
+    logid_dir.mkdir(exist_ok=True)
 
-    if not os.path.isdir(uuid_log_dir.absolute()):
-        os.mkdir(uuid_log_dir.absolute())
-
-    return uuid_log_dir
+    return logid_dir
 
 
 def get_log_sub_dir(name: str):
