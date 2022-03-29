@@ -38,7 +38,6 @@ def show_indices(
     export: str = "",
 ):
     """Load (and show) the selected indices over time [Source: Yahoo Finance]
-
     Parameters
     ----------
     indices: list
@@ -62,7 +61,6 @@ def show_indices(
         External axes to plot on
     export : str
         Export data to csv,json,xlsx or png,jpg,pdf,svg file
-
     Returns
     ----------
     Plots the Series.
@@ -90,8 +88,14 @@ def show_indices(
                 label = index
 
             if not indices_data[index].empty:
-                data_to_percent = 100 * (indices_data[index].values - 1)
-                ax.plot(data_to_percent, label=label)
+
+                if returns:
+                    indices_data.index.name = "date"
+                    data_to_percent = 100 * (indices_data[index].values - 1)
+                    plot_data = reindex_dates(indices_data)
+                    ax.plot(plot_data.index, data_to_percent, label=label)
+                else:
+                    ax.plot(indices_data.index, indices_data[index], label=label)
 
         ax.set_title("Indices")
         if returns:
@@ -106,8 +110,6 @@ def show_indices(
         )
 
         if returns:
-            indices_data.index.name = "date"
-            plot_data = reindex_dates(indices_data)
             theme.style_primary_axis(
                 ax,
                 data_index=plot_data.index.to_list(),
@@ -141,14 +143,12 @@ def show_indices(
 @log_start_end(log=logger)
 def search_indices(keyword: list, limit: int = 10):
     """Load (and show) the selected indices over time [Source: Yahoo Finance]
-
     Parameters
     ----------
     keyword: list
         The keyword you wish to search for. This can include spaces.
     limit: int
         The amount of views you want to show, by default this is set to 10.
-
     Returns
     ----------
     Shows a rich table with the available options.
