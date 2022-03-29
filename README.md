@@ -28,12 +28,12 @@
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
-  <a href="https://github.com/GamestonkTerminal/GamestonkTerminal">
-    <img src="images/gst_logo_lockup_rGreen_with_letters.png" alt="Logo" width="800" height="276">
+  <a href="https://openbb.co/">
+    <img src="images/openbb_gradient.png" alt="Logo" width="1000">
   </a>
 
   <h3 align="center">OpenBB Terminal 🚀</h3>
-  <p align="center">Click on the gif below for a DEMO of the terminal.</p>
+  <p align="center">Click on the GIF below for a DEMO of the terminal.</p>
   
 <p align="center">
    <a href="https://www.youtube.com/watch?v=fqGPK8OVHLk" rel="honest work">
