@@ -35,8 +35,9 @@ def get_valuation_performance_data(group: str, data_type: str) -> pd.DataFrame:
     try:
         if data_type == "valuation":
             return valuation.Valuation().screener_view(group=group)
-        elif data_type == "performance":
+        if data_type == "performance":
             return performance.Performance().screener_view(group=group)
+        return pd.DataFrame()
     except IndexError:
         console.print("Data not found.\n")
         return pd.DataFrame()
@@ -68,7 +69,7 @@ def get_futures() -> dict:
     ).text
 
     slice_source = source[
-        source.find("var groups = ") : source.find(
+        source.find("var groups = ") : source.find(  # noqa: E203
             "\r\n\r\n                    groups.forEach(function(group) "
         )
     ]
@@ -79,7 +80,7 @@ def get_futures() -> dict:
     )
     titles = literal_eval(
         slice_source[
-            slice_source.find("\r\n                    var tiles = ") : -1
+            slice_source.find("\r\n                    var tiles = ") : -1  # noqa: E203
         ].strip("\r\n                    var tiles = ")
     )
 
