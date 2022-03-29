@@ -14,7 +14,7 @@
 
 
     <title>
-      API | Gamestonk Terminal
+      API | OpenBB Terminal
     </title>
 
     <link rel="icon" href="/GamestonkTerminal/favicon/favicon-32x32.png" type="image/x-icon">
@@ -35,7 +35,7 @@
 <link rel="preload" href="/GamestonkTerminal/custom.css" as="style">
 <link rel="stylesheet" href="/GamestonkTerminal/custom.css" media="all">
 
-<link rel="alternate" type="application/rss+xml" href="https://gamestonkterminal.github.io/GamestonkTerminal/api/index.xml" title="Gamestonk Terminal" />
+<link rel="alternate" type="application/rss+xml" href="https://gamestonkterminal.github.io/GamestonkTerminal/api/index.xml" title="OpenBB Terminal" />
 
 
 <!-- Made with Geekdoc theme https://github.com/thegeeklab/hugo-geekdoc -->
@@ -75,7 +75,7 @@
     <a class="gdoc-header__link" href="https://gamestonkterminal.github.io/GamestonkTerminal">
       <span class="gdoc-brand flex align-center">
         <img class="gdoc-brand__img" src="/GamestonkTerminal/gst_logo_green.png" alt="">
-        <span class="gdoc-brand__title">Gamestonk Terminal</span>
+        <span class="gdoc-brand__title">OpenBB Terminal</span>
       </span>
     </a>
 
@@ -23986,7 +23986,7 @@
         
     
     
-        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/GamestonkTerminal/' href='/GamestonkTerminal/'><span itemprop='name'>Gamestonk Terminal</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>API</span><meta itemprop='position' content='3' /></li>
+        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/GamestonkTerminal/' href='/GamestonkTerminal/'><span itemprop='name'>OpenBB Terminal</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>API</span><meta itemprop='position' content='3' /></li>
     
 
     
@@ -24042,7 +24042,7 @@
 scripts and IPython Notebooks (Jupyter).
 The API wraps the functionality of the terminal in a way that the python commands follow
 the same convention as the terminal.</p>
-<p>For example <code>stocks/load aapl</code> becomes <code>gst.stocks.load(&quot;aapl&quot;)</code>.</p>
+<p>For example <code>stocks/load aapl</code> becomes <code>openbb.stocks.load(&quot;aapl&quot;)</code>.</p>
 <hr>
 <div class="gdoc-page__anchorwrap">
     <h2 id="python-environment-setup">
@@ -24052,7 +24052,7 @@ the same convention as the terminal.</p>
         </a>
     </h2>
 </div><p>Import the GST API into your python script or notebook with</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">gamestonk_terminal</span> <span class="kn">import</span> <span class="n">api</span> <span class="k">as</span> <span class="n">gst</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">openbb_terminal</span> <span class="kn">import</span> <span class="n">api</span> <span class="k">as</span> <span class="n">openbb</span>
 </code></pre></div><div class="gdoc-page__anchorwrap">
     <h2 id="understanding-the-api-functions">
         Understanding the API functions
@@ -24064,7 +24064,7 @@ the same convention as the terminal.</p>
 docstring. Docstrings can be viewed using the code introspection tools of your
 text/notebook editor or the built-in python <code>help</code> command. Docstrings contain both the
 description of the functionality and the overview of the parameters.</p>
-<p>As an example this is the docstring of <code>gst.economy.bigmac</code>:</p>
+<p>As an example this is the docstring of <code>openbb.economy.bigmac</code>:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-txt" data-lang="txt">Display Big Mac Index for given countries
 
 Parameters
@@ -24085,23 +24085,23 @@ external_axes : Optional[List[plt.Axes]], optional
         </a>
     </h2>
 </div><p>Load stock data into a dataframe:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">aapl_data</span> <span class="o">=</span> <span class="n">gst</span><span class="o">.</span><span class="n">stocks</span><span class="o">.</span><span class="n">load</span><span class="p">(</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">aapl_data</span> <span class="o">=</span> <span class="n">openbb</span><span class="o">.</span><span class="n">stocks</span><span class="o">.</span><span class="n">load</span><span class="p">(</span>
     <span class="n">ticker</span><span class="o">=</span><span class="s2">&#34;aapl&#34;</span><span class="p">,</span>
     <span class="n">start</span><span class="o">=</span><span class="s2">&#34;2021-06-10&#34;</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="n">aapl_data</span> <span class="o">=</span> <span class="n">gst</span><span class="o">.</span><span class="n">stocks</span><span class="o">.</span><span class="n">process_candle</span><span class="p">(</span><span class="n">aapl_data</span><span class="p">)</span>
+<span class="n">aapl_data</span> <span class="o">=</span> <span class="n">openbb</span><span class="o">.</span><span class="n">stocks</span><span class="o">.</span><span class="n">process_candle</span><span class="p">(</span><span class="n">aapl_data</span><span class="p">)</span>
 </code></pre></div><p>Plot candle chart</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">gst</span><span class="o">.</span><span class="n">stocks</span><span class="o">.</span><span class="n">candle</span><span class="p">(</span><span class="s2">&#34;AAPL&#34;</span><span class="p">,</span> <span class="n">aapl_data</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">openbb</span><span class="o">.</span><span class="n">stocks</span><span class="o">.</span><span class="n">candle</span><span class="p">(</span><span class="s2">&#34;AAPL&#34;</span><span class="p">,</span> <span class="n">aapl_data</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
 </code></pre></div><p>Call the &ldquo;What if&rdquo; command of the backtesting menu</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">gst</span><span class="o">.</span><span class="n">stocks</span><span class="o">.</span><span class="n">bt</span><span class="o">.</span><span class="n">whatif</span><span class="p">(</span><span class="s2">&#34;aapl&#34;</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="s2">&#34;2012-03-03&#34;</span><span class="p">,</span> <span class="s2">&#34;%Y-%m-</span><span class="si">%d</span><span class="s2">&#34;</span><span class="p">))</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">openbb</span><span class="o">.</span><span class="n">stocks</span><span class="o">.</span><span class="n">bt</span><span class="o">.</span><span class="n">whatif</span><span class="p">(</span><span class="s2">&#34;aapl&#34;</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="s2">&#34;2012-03-03&#34;</span><span class="p">,</span> <span class="s2">&#34;%Y-%m-</span><span class="si">%d</span><span class="s2">&#34;</span><span class="p">))</span>
 </code></pre></div><p>Get sentiment for a list of tickers</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">gst</span><span class="o">.</span><span class="n">stocks</span><span class="o">.</span><span class="n">ca</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">finbrain</span><span class="o">.</span><span class="n">get_sentiments</span><span class="p">(</span><span class="n">tickers</span><span class="o">=</span><span class="p">[</span><span class="s2">&#34;aapl&#34;</span><span class="p">])</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">openbb</span><span class="o">.</span><span class="n">stocks</span><span class="o">.</span><span class="n">ca</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">finbrain</span><span class="o">.</span><span class="n">get_sentiments</span><span class="p">(</span><span class="n">tickers</span><span class="o">=</span><span class="p">[</span><span class="s2">&#34;aapl&#34;</span><span class="p">])</span>
 </code></pre></div><p>Print key fundamental metrics for past 2 years</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">gst</span><span class="o">.</span><span class="n">stocks</span><span class="o">.</span><span class="n">fa</span><span class="o">.</span><span class="n">fmp</span><span class="o">.</span><span class="n">metrics</span><span class="p">(</span><span class="n">ticker</span><span class="o">=</span><span class="s2">&#34;AAPL&#34;</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">openbb</span><span class="o">.</span><span class="n">stocks</span><span class="o">.</span><span class="n">fa</span><span class="o">.</span><span class="n">fmp</span><span class="o">.</span><span class="n">metrics</span><span class="p">(</span><span class="n">ticker</span><span class="o">=</span><span class="s2">&#34;AAPL&#34;</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 </code></pre></div><p>Get fundamental metrics for past 3 years as a pandas dataframe</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">gst</span><span class="o">.</span><span class="n">stocks</span><span class="o">.</span><span class="n">fa</span><span class="o">.</span><span class="n">fmp</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">fmp</span><span class="o">.</span><span class="n">get_key_metrics</span><span class="p">(</span><span class="n">ticker</span><span class="o">=</span><span class="s2">&#34;AAPL&#34;</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">openbb</span><span class="o">.</span><span class="n">stocks</span><span class="o">.</span><span class="n">fa</span><span class="o">.</span><span class="n">fmp</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">fmp</span><span class="o">.</span><span class="n">get_key_metrics</span><span class="p">(</span><span class="n">ticker</span><span class="o">=</span><span class="s2">&#34;AAPL&#34;</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 </code></pre></div><p>Perform an OLS regression on multiple custom datasets</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">gst</span><span class="o">.</span><span class="n">econometrics</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">openbb</span><span class="o">.</span><span class="n">econometrics</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span>
     <span class="n">regression_variables</span><span class="o">=</span><span class="p">[</span>
     <span class="s1">&#39;close-tsla&#39;</span><span class="p">,</span> <span class="s1">&#39;volume-aapl&#39;</span>
     <span class="p">],</span>
@@ -24124,14 +24124,14 @@ GST to appear in another chart that you are creating in a notebook.</p>
 <p>Example:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="c1"># Load stock data</span>
 <span class="n">ticker</span> <span class="o">=</span> <span class="s2">&#34;AAPL&#34;</span>
-<span class="n">stock_data</span> <span class="o">=</span> <span class="n">gst</span><span class="o">.</span><span class="n">stocks</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">ticker</span><span class="o">=</span><span class="s2">&#34;aapl&#34;</span><span class="p">)</span>
+<span class="n">stock_data</span> <span class="o">=</span> <span class="n">openbb</span><span class="o">.</span><span class="n">stocks</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">ticker</span><span class="o">=</span><span class="s2">&#34;aapl&#34;</span><span class="p">)</span>
 
 <span class="c1"># Create a matplotlib figure</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
 
 <span class="c1"># Use GST to add charts to the axes of the created figure</span>
-<span class="n">gst</span><span class="o">.</span><span class="n">stocks</span><span class="o">.</span><span class="n">ta</span><span class="o">.</span><span class="n">macd</span><span class="p">(</span><span class="n">s_ticker</span><span class="o">=</span><span class="n">ticker</span><span class="p">,</span> <span class="n">series</span><span class="o">=</span><span class="n">aapl</span><span class="p">[</span><span class="s2">&#34;Close&#34;</span><span class="p">],</span> <span class="n">external_axes</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">])</span>
-<span class="n">gst</span><span class="o">.</span><span class="n">stocks</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">voi_yf</span><span class="p">(</span>
+<span class="n">openbb</span><span class="o">.</span><span class="n">stocks</span><span class="o">.</span><span class="n">ta</span><span class="o">.</span><span class="n">macd</span><span class="p">(</span><span class="n">s_ticker</span><span class="o">=</span><span class="n">ticker</span><span class="p">,</span> <span class="n">series</span><span class="o">=</span><span class="n">aapl</span><span class="p">[</span><span class="s2">&#34;Close&#34;</span><span class="p">],</span> <span class="n">external_axes</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">openbb</span><span class="o">.</span><span class="n">stocks</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">voi_yf</span><span class="p">(</span>
     <span class="n">ticker</span><span class="o">=</span><span class="n">ticker</span><span class="p">,</span>
     <span class="n">expiry</span><span class="o">=</span><span class="s2">&#34;2022-03-11&#34;</span><span class="p">,</span>
     <span class="n">min_sp</span><span class="o">=</span><span class="mi">110</span><span class="p">,</span>
