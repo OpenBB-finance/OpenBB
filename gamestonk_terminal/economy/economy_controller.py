@@ -12,7 +12,7 @@ import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.decorators import log_start_end, check_api_key
 from gamestonk_terminal.economy import (
     alphavantage_view,
     cnn_view,
@@ -603,6 +603,7 @@ Performance & Valuations
 
                 self.update_runtime_choices()
 
+    @check_api_key(["API_FRED_KEY"])
     def call_fred(self, other_args: List[str]):
         """Process fred command"""
         parser = argparse.ArgumentParser(
@@ -669,10 +670,12 @@ Performance & Valuations
             if ns_parser.query:
                 query = " ".join(ns_parser.query)
                 df_search = fred_model.get_series_notes(query)
-                fred_view.notes(series_term=query, num=ns_parser.limit)
 
-                self.fred_query = df_search["id"].head(ns_parser.limit)
-                self.update_runtime_choices()
+                if not df_search.empty:
+                    fred_view.notes(series_term=query, num=ns_parser.limit)
+
+                    self.fred_query = df_search["id"].head(ns_parser.limit)
+                    self.update_runtime_choices()
 
             if ns_parser.parameter:
                 series_dict = {}
