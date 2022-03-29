@@ -6,11 +6,11 @@ The Stock Screener is a versatile screener that allows to play with screeners cr
 
 ## Table of Contents
 
-- [Default Presets](/GamestonkTerminal/bots/discord/screener/presets_default/)
-- [Custom Presets](/GamestonkTerminal/bots/discord/screener/presets_custom/)
-- [Overview](/GamestonkTerminal/bots/discord/screener/overview/)
-- [Technical](/GamestonkTerminal/bots/discord/screener/technical/)
-- [Valuation](/GamestonkTerminal/bots/discord/screener/valuation/)
-- [Financial](/GamestonkTerminal/bots/discord/screener/financial/)
-- [Ownership](/GamestonkTerminal/bots/discord/screener/ownership/)
-- [Performance](/GamestonkTerminal/bots/discord/screener/performance/)
+- [Default Presets](/OpenBBTerminal/bots/discord/screener/presets_default/)
+- [Custom Presets](/OpenBBTerminal/bots/discord/screener/presets_custom/)
+- [Overview](/OpenBBTerminal/bots/discord/screener/overview/)
+- [Technical](/OpenBBTerminal/bots/discord/screener/technical/)
+- [Valuation](/OpenBBTerminal/bots/discord/screener/valuation/)
+- [Financial](/OpenBBTerminal/bots/discord/screener/financial/)
+- [Ownership](/OpenBBTerminal/bots/discord/screener/ownership/)
+- [Performance](/OpenBBTerminal/bots/discord/screener/performance/)

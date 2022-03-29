@@ -1,4 +1,4 @@
-baseURL = "https://gamestonkterminal.github.io/GamestonkTerminal"
+baseURL = "https://openbb-finance.github.io/OpenBBTerminal"
 title = "OpenBB Terminal"
 theme = "hugo-geekdoc"
 
@@ -39,7 +39,7 @@ enableGitInfo = true
 
   # (Optional, default none) Set source repository location. Used for 'Edit this page' links.
   # You can also specify this parameter per page in front matter.
-  geekdocRepo = "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/website"
+  geekdocRepo = "https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/website"
 
   # (Optional, default none) Enable 'Edit this page' links. Requires 'GeekdocRepo' param
   # and path must point to 'content' directory of repo.
