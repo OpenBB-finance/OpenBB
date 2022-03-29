@@ -36,9 +36,8 @@ process and explain to you what each message means.
 
 The process starts off by downloading the installer, see below for how to download the most recent release:
 
-- Go to: https://github.com/OpenBB-finance/OpenBBTerminal/releases
+- Go to [the following link](https://github.com/OpenBB-finance/OpenBBTerminal/releases)
 - Click on the most recent release
-- Click on "Assets"
 - Click on the ".exe" file:
 
 Then follow these steps:
@@ -53,9 +52,8 @@ Then follow these steps:
 
 The process starts off by downloading the installer, see below for how to download the most recent release:
 
-- Go to: https://github.com/OpenBB-finance/OpenBBTerminal/releases
+- Go to [the following link](https://github.com/OpenBB-finance/OpenBBTerminal/releases)
 - Click on the most recent release
-- Click on "Assets"
 - Click on the ".dmg" file:
 
 Installation instructions:
