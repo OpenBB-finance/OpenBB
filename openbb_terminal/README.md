@@ -178,7 +178,7 @@ Anaconda's Python distribution.
 
 9. (Windows - Optional and **only if you are not using WSL**) Speeding up opening process in the future
 
-   After you've installed OpenBB Terminal, you'll find a file named "Gamestonk Terminal.bat". You can use this file
+   After you've installed OpenBB Terminal, you'll find a file named "OpenBB Terminal.bat". You can use this file
    to open OpenBB Terminal quicker. This file can be moved to your desktop if you'd like. If you run into issues
    while trying to run the batch file. If you run into issues with the batch files, edit the file and check to see if
    the directories match up. This file assumes you used the default directories when installing.
@@ -239,7 +239,7 @@ git stash
 
 Then, re-run `poetry install` or `pip install -r requirements.txt` to get any new dependencies.
 
-Once installation is finished, you're ready to gamestonk.
+Once installation is finished, you're ready to openbb.
 
 If you `stashed` your changes previously, you can un-stash them with:
 
@@ -264,7 +264,7 @@ git stash pop
 2. Download the latest docker image.
 
    ```bash
-   docker pull ghcr.io/gamestonkterminal/gst-poetry:latest
+   docker pull ghcr.io/openbb-finance/openbbterminal-poetry:latest
    ```
 
    Upon running this the first time, you should see the various layers downloading (note the random series of letters numbers will vary). The first time this is run, it will take a few minutes. Subsequent updates will be much faster, as the changes will be in the MB instead of GB.
@@ -276,14 +276,14 @@ git stash pop
 
    ```text
    REPOSITORY                             TAG       IMAGE ID       CREATED        SIZE
-   ghcr.io/gamestonkterminal/gst-poetry   latest    e2bbeebcc73c   42 hours ago   2.02GB
+   ghcr.io/openbb-finance/openbbterminal-poetry   latest    b1409a304750   42 hours ago   2.29GB
    ```
 
 3. Run a container
 
    You are now ready to run the terminal (every time you want to use the terminal you need to run this command):
 
-   `docker run -it --rm ghcr.io/gamestonkterminal/gst-poetry:latest`
+   `docker run -it --rm ghcr.io/openbb-finance/openbbterminal-poetry:latest`
 
    This will open up the terminal in your command prompt or terminal. Note that this has provided now environment file,
    so you will not be able to view plots or use keys at this stage.
@@ -303,7 +303,7 @@ For API keys, create the `setenv` file if it doesn't already exist.
 It will automatically get created on the first launch, and won't get committed to Git because it is on the `.gitignore`.
 Set the API keys [as explained here](https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/DOCKER_ADVANCED.md#environment-variables).
 Once you've put the API keys in that file, re-run the launch script, and it will use your API keys.
-There are a few things that still don't work, and you can see what works and what doesn't [here](https://github.com/CoconutMacaroon/GamestonkTerminal/blob/main/openbb_terminal_web/README.md#todo).
+There are a few things that still don't work, and you can see what works and what doesn't [here](https://github.com/CoconutMacaroon/OpenBBTerminal/blob/main/openbb_terminal_web/README.md#todo).
 
 ### API Keys
 
