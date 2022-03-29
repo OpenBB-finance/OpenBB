@@ -40,9 +40,14 @@ added_files = [
     ("property_cached", "property_cached"),
     ("user_agent", "user_agent"),
     ("vaderSentiment", "vaderSentiment"),
+    (os.path.join("frozendict", "VERSION"), "frozendict"),
     (
-        os.path.join("frozendict", "VERSION"),
-        "frozendict",
+        os.path.join(pathex, "linearmodels", "datasets"),
+        os.path.join("linearmodels", "datasets"),
+    ),
+    (
+        os.path.join(pathex, "statsmodels", "datasets"),
+        os.path.join("statsmodels", "datasets"),
     ),
     ("OBBFF_DEFAULTS.json", "openbb_terminal"),
 ]
@@ -56,6 +61,7 @@ hidden_imports = [
     "sklearn.neighbors._partition_nodes",
     "squarify",
     "linearmodels",
+    "statsmodels",
     "user_agent",
     "vaderSentiment",
     "frozendict",
