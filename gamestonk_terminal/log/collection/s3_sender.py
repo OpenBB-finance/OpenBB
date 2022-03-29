@@ -83,7 +83,7 @@ def send_to_s3(
     file: Path,
     object_key: str,
     tmp_file: Path,
-    copy: bool = False,
+    last: bool = False,
 ):
     api_url = DEFAULT_API_URL
     bucket = DEFAULT_BUCKET
@@ -94,13 +94,14 @@ def send_to_s3(
 
     tmp_file.parent.mkdir(exist_ok=True)
 
-    if copy:
+    if last:
         copyfile(file, tmp_file)
     else:
         file.rename(tmp_file)
 
     if (
-        aws_settings.aws_access_key_id != "REPLACE_ME"
+        not last
+        and aws_settings.aws_access_key_id != "REPLACE_ME"
         and aws_settings.aws_secret_access_key != "REPLACE_ME"
     ):
         send_to_s3_directly(
