@@ -21,7 +21,7 @@ def get_log_dir() -> Path:
         with open(logid_file, "w") as f:
             f.write(f"{logid}\n")
     else:
-        with open(logid_file, "r") as a_file:
+        with open(logid_file) as a_file:
             logid = a_file.readline().rstrip()
 
     logid_dir = log_dir.joinpath(logid)
