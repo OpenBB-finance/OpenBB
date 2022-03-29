@@ -10,7 +10,6 @@ import subprocess  # nosec
 import sys
 from datetime import datetime
 from typing import List
-import ascii_magic
 import matplotlib.pyplot as plt
 
 from openbb_terminal import feature_flags as obbff
@@ -96,27 +95,11 @@ def update_terminal():
 
 def about_us():
     """Prints an about us section"""
-    if console.console.width > 200:
-        gst_logo = ascii_magic.from_image_file(
-            "images/gst_logo_lockup_rGreen_with_letters.png",
-            columns=console.console.width,
-            width_ratio=2,
-        )
-    elif console.console.width < 100:
-        gst_logo = ascii_magic.from_image_file(
-            "images/gst_logo_green_white_background.png", columns=50, width_ratio=2
-        )
-    else:
-        gst_logo = ascii_magic.from_image_file(
-            "images/gst_letters.png", columns=console.console.width, width_ratio=2
-        )
-    ascii_magic.to_terminal(gst_logo)
-
     console.print(
-        "[green]Thanks for using Gamestonk Terminal. This is our way![/green]\n"
+        "\n[green]Thanks for using OpenBB Terminal. This is our way![/green]\n"
         + "\n"
         + "[cyan]Join our community on discord: [/cyan]https://discord.gg/Up2QGbMKHY\n"
-        + "[cyan]Follow our twitter for updates: [/cyan]https://twitter.com/gamestonkt\n"
+        + "[cyan]Follow our twitter for updates: [/cyan]https://twitter.com/openbb_finance\n"
         + "[cyan]Access our landing page: [/cyan]https://gamestonkterminal.github.io/GamestonkTerminal/\n"
         + "\n"
         + "[yellow]Partnerships:[/yellow]\n"
@@ -129,7 +112,7 @@ def about_us():
         + "trade in financial instrument you should be fully informed of the risks and costs associated with "
         + "trading the financial markets, carefully consider your investment objectives, level of experience, "
         + "and risk appetite, and seek professional advice where needed.\n"
-        + "The data contained in Gamestonk Terminal (GST) is not necessarily accurate. GST and any provider "
+        + "The data contained in OpenBB Terminal is not necessarily accurate. OpenBB and any provider "
         + "of the data contained in this software will not accept liability for any loss or damage "
         + "as a result of your trading, or your reliance on the information displayed.[/red]\n"
     )

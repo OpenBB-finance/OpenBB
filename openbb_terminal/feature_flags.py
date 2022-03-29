@@ -5,7 +5,7 @@ from typing import Union, Optional
 
 from dotenv import load_dotenv
 
-OPENBB_defaults_path = os.path.join(os.path.dirname(__file__), "OBBFF_DEFAULTS.json")
+OPENBB_defaults_path = os.path.join(os.path.dirname(__file__), "OPENBB_DEFAULTS.json")
 if os.path.exists(OPENBB_defaults_path):
     with open(OPENBB_defaults_path) as f:
         OPENBB_DEFAULTS = json.load(f)
@@ -60,71 +60,75 @@ def assign_feature_flag(
 
 
 # Use tabulate to print dataframes
-USE_TABULATE_DF = assign_feature_flag("OBBFF_USE_TABULATE_DF", "True", True)
+USE_TABULATE_DF = assign_feature_flag("OPENBB_USE_TABULATE_DF", "True", True)
 
 # Use clear console after each command
-USE_CLEAR_AFTER_CMD = assign_feature_flag("OBBFF_USE_CLEAR_AFTER_CMD", "False", True)
+USE_CLEAR_AFTER_CMD = assign_feature_flag("OPENBB_USE_CLEAR_AFTER_CMD", "False", True)
 
 # Use coloring features
-USE_COLOR = assign_feature_flag("OBBFF_USE_COLOR", "True", True)
+USE_COLOR = assign_feature_flag("OPENBB_USE_COLOR", "True", True)
 
 # Select console flair (choose from config_terminal.py list)
-USE_FLAIR = assign_feature_flag("OBBFF_USE_FLAIR", ":stars")
+USE_FLAIR = assign_feature_flag("OPENBB_USE_FLAIR", ":openbb")
 
 # Add date and time to command line
-USE_DATETIME = assign_feature_flag("OBBFF_USE_DATETIME", "True", True)
+USE_DATETIME = assign_feature_flag("OPENBB_USE_DATETIME", "True", True)
 
 # Enable interactive matplotlib mode
-USE_ION = assign_feature_flag("OBBFF_USE_ION", "True", True)
+USE_ION = assign_feature_flag("OPENBB_USE_ION", "True", True)
 
 # Enable watermark in the figures
-USE_WATERMARK = assign_feature_flag("OBBFF_USE_WATERMARK", "True", True)
+USE_WATERMARK = assign_feature_flag("OPENBB_USE_WATERMARK", "True", True)
 
 # Enable command and source in the figures
 USE_CMD_LOCATION_FIGURE = assign_feature_flag(
-    "OBBFF_USE_CMD_LOCATION_FIGURE", "True", True
+    "OPENBB_USE_CMD_LOCATION_FIGURE", "True", True
 )
 
 # Enable Prompt Toolkit
-USE_PROMPT_TOOLKIT = assign_feature_flag("OBBFF_USE_PROMPT_TOOLKIT", "True", True)
+USE_PROMPT_TOOLKIT = assign_feature_flag("OPENBB_USE_PROMPT_TOOLKIT", "True", True)
 
 # Enable Prediction features
-ENABLE_PREDICT = assign_feature_flag("OBBFF_ENABLE_PREDICT", "True", True)
+ENABLE_PREDICT = assign_feature_flag("OPENBB_ENABLE_PREDICT", "True", True)
 
 # Enable plot autoscaling
-USE_PLOT_AUTOSCALING = assign_feature_flag("OBBFF_USE_PLOT_AUTOSCALING", "False", True)
+USE_PLOT_AUTOSCALING = assign_feature_flag("OPENBB_USE_PLOT_AUTOSCALING", "False", True)
 
 # Enable thoughts of the day
-ENABLE_THOUGHTS_DAY = assign_feature_flag("OBBFF_ENABLE_THOUGHTS_DAY", "False", True)
+ENABLE_THOUGHTS_DAY = assign_feature_flag("OPENBB_ENABLE_THOUGHTS_DAY", "False", True)
 
 # Quick exit for testing
-ENABLE_QUICK_EXIT = assign_feature_flag("OBBFF_ENABLE_QUICK_EXIT", "False", True)
+ENABLE_QUICK_EXIT = assign_feature_flag("OPENBB_ENABLE_QUICK_EXIT", "False", True)
 
 # Open report as HTML, otherwise notebook
-OPEN_REPORT_AS_HTML = assign_feature_flag("OBBFF_OPEN_REPORT_AS_HTML", "True", True)
+OPEN_REPORT_AS_HTML = assign_feature_flag("OPENBB_OPEN_REPORT_AS_HTML", "True", True)
 
 # Enable auto print_help when exiting menus
-ENABLE_EXIT_AUTO_HELP = assign_feature_flag("OBBFF_ENABLE_EXIT_AUTO_HELP", "False", True)
+ENABLE_EXIT_AUTO_HELP = assign_feature_flag(
+    "OPENBB_ENABLE_EXIT_AUTO_HELP", "False", True
+)
 
 # Remember contexts during session
-REMEMBER_CONTEXTS = assign_feature_flag("OBBFF_REMEMBER_CONTEXTS", "True", True)
+REMEMBER_CONTEXTS = assign_feature_flag("OPENBB_REMEMBER_CONTEXTS", "True", True)
 
 # Use the colorful rich terminal
-ENABLE_RICH = assign_feature_flag("OBBFF_ENABLE_RICH", "True", True)
+ENABLE_RICH = assign_feature_flag("OPENBB_ENABLE_RICH", "True", True)
 
 # Use the colorful rich terminal
-ENABLE_RICH_PANEL = assign_feature_flag("OBBFF_ENABLE_RICH_PANEL", "True", True)
+ENABLE_RICH_PANEL = assign_feature_flag("OPENBB_ENABLE_RICH_PANEL", "True", True)
 
 # Check API KEYS before running a command
-ENABLE_CHECK_API = assign_feature_flag("OBBFF_ENABLE_CHECK_API", "True", True)
+ENABLE_CHECK_API = assign_feature_flag("OPENBB_ENABLE_CHECK_API", "True", True)
 
 # Send logs to data lake
-LOG_COLLECTION = bool(assign_feature_flag("OBBFF_LOG_COLLECTION", "True", True))
+LOG_COLLECTION = bool(assign_feature_flag("OPENBB_LOG_COLLECTION", "True", True))
 
 # Provide export folder path. If empty that means default.
-EXPORT_FOLDER_PATH = assign_feature_flag("OBBFF_EXPORT_FOLDER_PATH", "")
+EXPORT_FOLDER_PATH = assign_feature_flag("OPENBB_EXPORT_FOLDER_PATH", "")
 
 # Set a flag if the application is running from a packaged bundle
-PACKAGED_APPLICATION = assign_feature_flag("OBBFF_PACKAGED_APPLICATION", "False", True)
+PACKAGED_APPLICATION = assign_feature_flag("OPENBB_PACKAGED_APPLICATION", "False", True)
 
-LOGGING_COMMIT_HASH = str(assign_feature_flag("OBBFF_LOGGING_COMMIT_HASH", "REPLACE_ME"))
+LOGGING_COMMIT_HASH = str(
+    assign_feature_flag("OPENBB_LOGGING_COMMIT_HASH", "REPLACE_ME")
+)
