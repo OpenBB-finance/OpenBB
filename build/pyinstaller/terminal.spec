@@ -34,7 +34,7 @@ with open(default_feature_flags_path, "w") as f:
 
 # Files that are explicitly pulled into the bundle
 added_files = [
-    (os.path.join(os.getcwd(), "gamestonk_terminal"), "gamestonk_terminal"),
+    (os.path.join(os.getcwd(), "openbb_terminal"), "openbb_terminal"),
     (os.path.join(os.getcwd(), "routines"), "routines"),
     (os.path.join(os.getcwd(), "styles"), "styles"),
     ("property_cached", "property_cached"),
@@ -44,7 +44,7 @@ added_files = [
         os.path.join("frozendict", "VERSION"),
         "frozendict",
     ),
-    ("OBBFF_DEFAULTS.json", "gamestonk_terminal"),
+    ("OBBFF_DEFAULTS.json", "openbb_terminal"),
 ]
 
 # Python libraries that are explicitly pulled into the bundle
