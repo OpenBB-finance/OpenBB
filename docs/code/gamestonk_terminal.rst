@@ -95,7 +95,7 @@ gamestonk\_terminal.thought\_of\_the\_day module
 Module contents
 ---------------
 
-.. automodule:: gamestonk_terminal
+.. automodule:: openbb_terminal
    :members:
    :undoc-members:
    :show-inheritance:

@@ -1,5 +1,5 @@
 baseURL = "https://gamestonkterminal.github.io/GamestonkTerminal"
-title = "Gamestonk Terminal"
+title = "OpenBB Terminal"
 theme = "hugo-geekdoc"
 
 # Required to get well formatted code blocks

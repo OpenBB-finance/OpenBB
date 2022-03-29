@@ -604,7 +604,7 @@ class CreateExcelFA:
         dcf_model.set_cell(
             ws,
             "A1",
-            f"Gamestonk Terminal Analysis: {self.info['ticker'].upper()}",
+            f"OpenBB Terminal Analysis: {self.info['ticker'].upper()}",
             font=Font(color="04cca8", size=20),
             border=dcf_static.thin_border,
             alignment=dcf_static.center,

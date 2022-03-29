@@ -738,7 +738,7 @@ def main(
         fails = {}
         length = len(test_files)
         i = 0
-        console.print("[green]Gamestonk Terminal Integrated Tests:\n[/green]")
+        console.print("[green]OpenBB Terminal Integrated Tests:\n[/green]")
         for file in test_files:
             file = file.replace("//", "/")
             file_name = file[file.rfind("GamestonkTerminal") :].replace(  # noqa: E203
