@@ -3,6 +3,7 @@ import pytest
 from openbb_terminal.cryptocurrency.overview import blockchaincenter_model
 
 
+@pytest.mark.skip
 @pytest.mark.vcr
 @pytest.mark.parametrize(
     "days,since,until",

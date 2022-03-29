@@ -87,6 +87,7 @@ def test_get_defi_protocols():
     assert not df.empty
 
 
+@pytest.mark.skip
 @pytest.mark.vcr(before_record_response=gzip_data)
 def test_get_defi_tvl(recorder):
     df = llama_model.get_defi_tvl()
