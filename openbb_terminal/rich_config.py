@@ -60,7 +60,7 @@ class ConsoleAndPanel:
                             kwargs["text"],
                             title=kwargs["menu"],
                             subtitle_align="right",
-                            subtitle="Gamestonk Terminal",
+                            subtitle="OpenBB Terminal",
                         )
                     )
                 else:
