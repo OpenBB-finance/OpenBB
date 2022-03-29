@@ -32,40 +32,36 @@ If you want to install the terminal using Python ignore the User section and jum
 If you are interested in running the terminal via the installer, these steps will guide you through the installation
 process and explain to you what each message means.
 
-### Installing Process
-
+### Windows
 The process starts off by downloading the installer, see below the most recent release:
+- [LINK TO INSTALLER FILE](https://github.com/GamestonkTerminal/GamestonkTerminal/)
 
-- Windows: [LINK TO INSTALLER FILE](https://github.com/GamestonkTerminal/GamestonkTerminal/)
-- macOS: [LINK TO INSTALLER FILE](https://github.com/GamestonkTerminal/GamestonkTerminal/)
+Then follow these steps:
 
-This downloads the installer to your computer and by clicking on the created file, you are able to start
-the installation process.
+| Installation instructions                                                                                                                                                                                                                                                                                   | Illustration                                                                                                                                |
+|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:--------------------------------------------------------------------------------------------------------------------------------------------|
+| <div style="width:500px">Double click the .exe file that got downloaded to your "Downloads" folder. You will most likely receive the error on the right "Windows protected your PC". This is because the installer is still in beta phase, and the team has not requested verification from Windows. </div> | <p align="center"><img src="../images/installation/windows/windows_protected_your_pc.png" alt="Windows protected your PC" width="300"/></p> |
+| <div style="width:500px">Click on "More info" and select "Run anyway" to start the installation process. Proceed by follow the steps. Do note that if you wish to install the application to Program Files that you will have to run the resulting application as Administrator.                            | <p align="center"><img src="../images/Installation/windows/run_anyway.png" alt="Run anyway" width="300"/></p>                               |
+ | <div style="width:500px">By clicking on the application that appeared on your Desktop, you are able to run the Terminal. Do note that the first time this takes a bit longer to load.                                                                                                                       | <p align="center"><img src="../images/Installation/windows/run_the_terminal.png" alt="Run the terminal" width="300"/></p>                   |
 
-**_STILL NEED TO ADD WALKTHROUGH AND IMAGES_**
+### macOS
+The process starts off by downloading the installer, see below the most recent release:
+- [LINK TO INSTALLER FILE](https://github.com/GamestonkTerminal/GamestonkTerminal/)
 
-| Note about "Malicious Software" warning                                                                                                                                                                 |
-|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| You will most likely see one of the following images displayed below. This is because the installer is still in beta phase, and the team has not requested verification from neither Windows nor Apple. |
+Installation instructions:
 
-**_STILL NEED TO ADD IMAGES_**
+1. Open the .dmg file that got downloaded to your "Downloads" folder.
+2. Drag the folder into your "Applications" folder. This should take some time as it is 
+extracting the files from .dmg file.
+3. Open the folder and click on the "Gamestonk Terminal" file, this should run the application.
 
-To mark the application as safe for usage, use the following steps:
+<img src="../images/installation/macos/mac_os_installation.png" alt="mac os installation" width=800/>
 
-#### On Windows
-
-**_STILL NEED TO ADD CONTENT_**
-
-#### On macOS
-
-1) Run the file. You will most likely receive a message that macOS was not able to check whether the application
-contains malicious software. The reasoning for this is described in the note above.
-2) Go to macOS System Preferences > Security & Privacy > General. You should see see a message at the bottom that says
-that the file "_was blocked from use because it is not from an identified developer_".
-3) Click on the button "Allow anyway"
-4) You should now be able to use the application.
-
-_WHAT ELSE?_
+| Note about "Cannot check it for malicious software" warning                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | Illustration                                                                                                                      |
+|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:----------------------------------------------------------------------------------------------------------------------------------|
+| <div style="width:500px">It is possible you will see the image displayed on the right. This is because the installer is still in beta phase, and the team has not requested verification from Apple. Please see below how to correct for this.</div>                                                                                                                                                                                                                                                                                                                                                                                                                                                               | <p align="center"><img src="../images/installation/macos/malicious_software_warning.png" alt="software warning" width="300"/></p> |
+| <div style="width:500px">**Option 1 (via MacOS settings):** <br><br> 1) Run the file. You will most likely receive a message that macOS was not able to check whether the application contains malicious software. The reasoning for this is described in the note above. <br> 2) Go to System Preferences > Security & Privacy > General. You should see a message at the bottom that says that the file "was blocked from use because it is not from an identified developer". Click on “Allow anyway” or "Open anyway".<br> 3) If you receive the above message multiple times on different files, keep allowing the files via Step 2 or use Option 2.<br> 4) You should now be able to launch the application. | <p align="center"><img src="../images/installation/macos/option_one_warning_fix.png" alt="option 1 warning fix" width="300"/></p> |
+ | <div style="width:500px">**Option 2 (via Terminal):** <br><br> 1) Run the file. You will most likely receive a message that macOS was not able to check whether the application contains malicious software. The reasoning for this is described in the note above. <br> 2) Open the "Terminal" application. This can by using Command + Space and typing "terminal". <br> 3) Within this "Terminal" application, assuming you moved the file to the Applications folder, enter the following command: `xattr -r -d com.apple.quarantine "/Applications/Gamestonk Terminal"`<br> 4) You should now be able to launch the application.                                                                              | <p align="center"><img src="../images/installation/macos/option_two_warning_fix.png" alt="option 2 warning fix" width="300"/></p> |
 
 ## Developer
 
@@ -309,19 +305,19 @@ The table below shows the ones where a key is necessary.
 The easiest way is of updating the keys is by using the terminal. You are able to directly set these variables from
 within the "keys" menu. This menu can be found on the first menu you see when opening the terminal.
 
-<img src="../images/api_keys_part_1.png" alt="API Keys 1" width="800"/>
+<img src="../images/installation/api_keys_part_1.png" alt="API Keys 1" width="800"/>
 
 Then, by typing the command on the left-hand side, followed by your API Key, you can set the key and use the commands
 attached to it.
 
-<img src="../images/api_keys_part_2.png" alt="API Keys 2" width="800"/>
+<img src="../images/installation/api_keys_part_2.png" alt="API Keys 2" width="800"/>
 
 When you have installed the terminal through Anaconda & Python, you can use the environment variable to set your
 API Keys directly instead of using the Terminal, for the variable name in the code one just needs to
 remove the "GT\_", this can be found in [config_terminal.py](/gamestonk_terminal/config_terminal.py).
 
 | Website                                                                         | Environment Variables                                                                                                                             |
-| :------------------------------------------------------------------------------ | :------------------------------------------------------------------------------------------------------------------------------------------------ |
+|:--------------------------------------------------------------------------------|:--------------------------------------------------------------------------------------------------------------------------------------------------|
 | [Alpha Vantage](https://www.alphavantage.co)                                    | GT_API_KEY_ALPHAVANTAGE                                                                                                                           |
 | [Binance](https://binance.com)                                                  | GT_API_BINANCE_KEY <br/> GT_API_BINANCE_SECRET                                                                                                    |
 | [CoinMarketCap](https://coinmarketcap.com)                                      | GT_API_CMC_KEY <br/>                                                                                                                              |
