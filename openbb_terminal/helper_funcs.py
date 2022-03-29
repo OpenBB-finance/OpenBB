@@ -1177,18 +1177,14 @@ def export_data(
     if export_type:
         now = datetime.now()
 
+        path_cmd = dir_path.split("openbb_terminal/")[1].replace("/", "_")
+        default_filename = f"{now.strftime('%Y%m%d_%H%M%S')}_{path_cmd}_{func_name}"
         if obbff.EXPORT_FOLDER_PATH:
             full_path_dir = str(obbff.EXPORT_FOLDER_PATH)
-            path_cmd = dir_path.split("openbb_terminal/")[1].replace("/", "_")
-            default_filename = f"{now.strftime('%Y%m%d_%H%M%S')}_{path_cmd}_{func_name}"
-
         else:
             if obbff.PACKAGED_APPLICATION:
-                default_filename = (
-                    f"{now.strftime('%Y%m%d_%H%M%S')}_{path_cmd}_{func_name}"
-                )
                 full_path_dir = os.path.join(
-                    os.environ["HOME"], "Desktop", "GST-exports"
+                    os.environ["HOME"], "Desktop", "OPENBB-exports"
                 )
 
                 if not os.path.isdir(full_path_dir):
