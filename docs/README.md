@@ -1,4 +1,4 @@
-# Gamestonk Terminal Code Documentation
+# OpenBB Terminal Code Documentation
 
 Requirements:
 

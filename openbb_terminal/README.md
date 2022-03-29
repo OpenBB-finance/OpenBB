@@ -1,4 +1,4 @@
-# Gamestonk Terminal
+# OpenBB Terminal
 
 <!-- TABLE OF CONTENTS -->
 <details open="open">
@@ -174,8 +174,8 @@ Anaconda's Python distribution.
 
 9. (Windows - Optional and **only if you are not using WSL**) Speeding up opening process in the future
 
-   After you've installed Gamestonk Terminal, you'll find a file named "Gamestonk Terminal.bat". You can use this file
-   to open Gamestonk Terminal quicker. This file can be moved to your desktop if you'd like. If you run into issues
+   After you've installed OpenBB Terminal, you'll find a file named "Gamestonk Terminal.bat". You can use this file
+   to open OpenBB Terminal quicker. This file can be moved to your desktop if you'd like. If you run into issues
    while trying to run the batch file. If you run into issues with the batch files, edit the file and check to see if
    the directories match up. This file assumes you used the default directories when installing.
 

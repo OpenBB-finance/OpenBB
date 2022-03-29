@@ -10,7 +10,7 @@ from PyInstaller.building.build_main import Analysis
 
 from openbb_terminal.loggers import get_commit_hash
 
-NAME = "GamestonkTerminal"
+NAME = "OpenBBTerminal"
 
 build_type = (
     os.getenv("OPENBB_BUILD_TYPE") if bool(os.getenv("OPENBB_BUILD_TYPE")) else "folder"

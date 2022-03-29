@@ -1,6 +1,6 @@
-# 1. Gamestonk Terminal : `Unit Testing`
+# 1. OpenBB Terminal : `Unit Testing`
 
-This document is part of the `Gamestonk Terminal` library documentation.
+This document is part of the `OpenBB Terminal` library documentation.
 
 It aims to provide necessary information in order :
 
@@ -29,7 +29,7 @@ Slow part of the code like `network` or `database` access should be either `mock
 
 # 2. Run `unit tests`
 
-In this section we will explain everything you need to run the `unit tests` on `Gamestonk Terminal`.
+In this section we will explain everything you need to run the `unit tests` on `OpenBB Terminal`.
 
 ## 2.1. How to install tests dependencies ?
 
@@ -111,7 +111,7 @@ def test_some_function(mocker):
 
 All the `unit tests` should be insides the `tests` folder.
 
-There should be at most one `test module` for each `module` of `Gamestonk Terminal`.
+There should be at most one `test module` for each `module` of `OpenBB Terminal`.
 
 Each `test module` should follow the same path than the `module` it is `testing`.
 

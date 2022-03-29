@@ -14,7 +14,7 @@
 
 ## Install Requirements
 
-This tutorial assumes that you have successfully installed Gamestonk Terminal.
+This tutorial assumes that you have successfully installed OpenBB Terminal.
 
 Next, from the GamestonkTerminal root folder run the following command:
 

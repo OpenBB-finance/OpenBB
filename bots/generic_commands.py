@@ -15,7 +15,7 @@ class GenericCommands(discord.ext.commands.Cog):
 
     @discord.ext.commands.command(name="about")
     async def about(self, ctx: discord.ext.commands.Context):
-        """About Gamestonk Terminal"""
+        """About OpenBB Terminal"""
         links = (
             "Join our community on discord: https://discord.gg/Up2QGbMKHY\n"
             "Follow our twitter for updates: https://twitter.com/gamestonkt\n"

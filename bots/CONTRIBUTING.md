@@ -12,7 +12,7 @@ First off, thanks for taking the time to contribute (or at least read the Contri
 
 ## Introduction
 
-The following is a set of guidelines for contributing to Gamestonk Terminal. These are mostly guidelines, not rules.
+The following is a set of guidelines for contributing to OpenBB Terminal. These are mostly guidelines, not rules.
 Use your best judgment, and feel free to propose changes to this document in a pull request.
 
 The [Github Discord Bot board](https://github.com/GamestonkTerminal/GamestonkTerminal/projects/4) will display the
@@ -26,7 +26,7 @@ document will mainly focus.
 
 ## Code Structure
 
-It is critical for our discord bot to go hand in hand with Gamestonk Terminal commands structure. As we want the
+It is critical for our discord bot to go hand in hand with OpenBB Terminal commands structure. As we want the
 community to learn the structure of the commands for GST and the GST bot, simultaneously. This is so that if I know
 that I can reach "Price vs Short Interest" command in Terminal through `(stocks)>(dps)>psi`, I know that the discord
 bot will invoke the same command with `!stocks.dps.psi`.
@@ -45,7 +45,7 @@ discordbot/discordbot.py
                                   /spos.py
 ```
 
-The main difference between discord bot code structure and Gamestonk Terminal is in the fact that in Gamestonk Terminal
+The main difference between discord bot code structure and OpenBB Terminal is in the fact that in OpenBB Terminal
 the files are organized by data source whereas in the discord bot each files corresponds at a different bot command.
 
 The file that has the name of the context or category (e.g. `economy_menu` or `dps_menu`) will contain a collection of

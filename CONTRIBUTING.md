@@ -2,7 +2,7 @@
 
 First off, thanks for taking the time to contribute (or at least read the Contributing Guidelines)! 🚀
 
-The following is a set of guidelines for contributing to Gamestonk Terminal. These are mostly guidelines, not rules.
+The following is a set of guidelines for contributing to OpenBB Terminal. These are mostly guidelines, not rules.
 Use your best judgment, and feel free to propose changes to this document in a pull request.
 
 [How Can I Contribute?](#how-can-i-contribute)
@@ -27,11 +27,11 @@ Use your best judgment, and feel free to propose changes to this document in a p
 
 ### Community
 
-Increase Gamestonk Terminal reach:
+Increase OpenBB Terminal reach:
 
 * Star the repo.
 * Pass the word to your friends/family.
-* Create content (e.g. youtube videos) using Gamestonk Terminal.
+* Create content (e.g. youtube videos) using OpenBB Terminal.
 * Share your terminal graphs and interpretations with other Reddit users ([example](https://www.reddit.com/r/amcstock/comments/of6g83/dark_pool_guy_here_to_kick_off_the_shortened_week/)).
 * Join our discord and interact with other users.
 
