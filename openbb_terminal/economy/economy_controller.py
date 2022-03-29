@@ -672,7 +672,7 @@ Performance & Valuations
                 query = " ".join(ns_parser.query)
                 df_search = fred_model.get_series_notes(query)
 
-                if df_search.empty:
+                if not df_search.empty:
                     fred_view.notes(series_term=query, num=ns_parser.limit)
 
                     self.fred_query = df_search["id"].head(ns_parser.limit)
