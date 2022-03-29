@@ -15,17 +15,17 @@ exports/*
 .idea
 .coverage
 htmlcov
-gamestonk_terminal/config_plot.py
-gamestonk_terminal/config_terminal.py
-gamestonk_terminal/feature_flags.py
-gamestonk_terminal/jupyter/reports/stored/*
-gamestonk_terminal/jupyter/dashboards/.ipynb_checkpoints
-gamestonk_terminal/jupyter/reports/.ipynb_checkpoints
-gamestonk_terminal/jupyter/widgets/.ipynb_checkpoints
-!gamestonk_terminal/jupyter/reports/stored/.gitkeep
-!gamestonk_terminal/jupyter/dashboards/*.ipynb
-!gamestonk_terminal/jupyter/reports/*.ipynb
-gamestonk_terminal/portfolio/portfolios/*
+openbb_terminal/config_plot.py
+openbb_terminal/config_terminal.py
+openbb_terminal/feature_flags.py
+openbb_terminal/jupyter/reports/stored/*
+openbb_terminal/jupyter/dashboards/.ipynb_checkpoints
+openbb_terminal/jupyter/reports/.ipynb_checkpoints
+openbb_terminal/jupyter/widgets/.ipynb_checkpoints
+!openbb_terminal/jupyter/reports/stored/.gitkeep
+!openbb_terminal/jupyter/dashboards/*.ipynb
+!openbb_terminal/jupyter/reports/*.ipynb
+openbb_terminal/portfolio/portfolios/*
 .ipynb_checkpoints/*
 *.swp
 *.http
@@ -54,4 +54,4 @@ docs/_build
 styles/user
 
 # the file containing the API keys for the web version
-gamestonk_terminal_web/setenv
+openbb_terminal_web/setenv

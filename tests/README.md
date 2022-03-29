@@ -1,6 +1,6 @@
-# 1. Gamestonk Terminal : `Unit Testing`
+# 1. OpenBB Terminal : `Unit Testing`
 
-This document is part of the `Gamestonk Terminal` library documentation.
+This document is part of the `OpenBB Terminal` library documentation.
 
 It aims to provide necessary information in order :
 
@@ -29,7 +29,7 @@ Slow part of the code like `network` or `database` access should be either `mock
 
 # 2. Run `unit tests`
 
-In this section we will explain everything you need to run the `unit tests` on `Gamestonk Terminal`.
+In this section we will explain everything you need to run the `unit tests` on `OpenBB Terminal`.
 
 ## 2.1. How to install tests dependencies ?
 
@@ -52,8 +52,8 @@ poetry install --no-dev
 You can run tests on a specific package/module by specifying the path of this package/module, like this :
 
 ```bash
-pytest tests/gamestonk_terminal/some_package
-pytest tests/gamestonk_terminal/some_package/some_module.py
+pytest tests/openbb_terminal/some_package
+pytest tests/openbb_terminal/some_package/some_module.py
 ```
 
 ## 2.3. How to run `tests` : by `name` ?
@@ -111,17 +111,17 @@ def test_some_function(mocker):
 
 All the `unit tests` should be insides the `tests` folder.
 
-There should be at most one `test module` for each `module` of `Gamestonk Terminal`.
+There should be at most one `test module` for each `module` of `OpenBB Terminal`.
 
 Each `test module` should follow the same path than the `module` it is `testing`.
 
 For instance to `test` the following module :
 
-- `gamestonk_terminal/stocks/due_diligence/dd_controller.py`
+- `openbb_terminal/stocks/due_diligence/dd_controller.py`
 
 A `test module` should be added here :
 
-- `tests/gamestonk_terminal/stocks/due_diligence/test_dd_controller.py`
+- `tests/openbb_terminal/stocks/due_diligence/test_dd_controller.py`
 
 ## 3.2. How to record network ?
 
@@ -153,12 +153,12 @@ The purpose is to have each `test module` as self-contained as possible.
 
 Data related to a `test module` should be stored within the same folder than this `test module`.
 
-Example with `tests/gamestonk_terminal/some_package/some_module.py` :
+Example with `tests/openbb_terminal/some_package/some_module.py` :
 
-- `tests/gamestonk_terminal/some_package`/cassettes/`some_module`/test_function1.yaml
-- `tests/gamestonk_terminal/some_package`/txt/`some_module`/test_function1.csv
-- `tests/gamestonk_terminal/some_package`/csv/`some_module`/test_function1.csv
-- `tests/gamestonk_terminal/some_package`/json/`some_module`/test_function1.json
+- `tests/openbb_terminal/some_package`/cassettes/`some_module`/test_function1.yaml
+- `tests/openbb_terminal/some_package`/txt/`some_module`/test_function1.csv
+- `tests/openbb_terminal/some_package`/csv/`some_module`/test_function1.csv
+- `tests/openbb_terminal/some_package`/json/`some_module`/test_function1.json
 
 ## 3.3. How to filter `api keys` on `cassettes` ?
 
@@ -260,9 +260,9 @@ You can use the following example below. Once you have mocked the graphs / chart
 @pytest.mark.record_stdout
 def test_display_defi_tvl(mocker):
     # MOCK CHARTS
-    mocker.patch.object(target=llama_view.gtff, attribute="USE_ION", new=True)
-    mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.plt.ion")
-    mocker.patch(target="gamestonk_terminal.stocks.options.yfinance_view.plt.show")
+    mocker.patch.object(target=llama_view.obbff, attribute="USE_ION", new=True)
+    mocker.patch(target="openbb_terminal.stocks.options.yfinance_view.plt.ion")
+    mocker.patch(target="openbb_terminal.stocks.options.yfinance_view.plt.show")
     llama_view.display_defi_tvl(20)
 ```
 
@@ -346,12 +346,11 @@ Unless `brotli` library is installed in the environment.
 Plus `brotli` is not in `GamestonkTerminal` requirements.
 
 So if both of these conditions are fulfilled :
+
 - one generates a cassette with `brotli` installed in his/her environment
 - the server choose to send `brotli` compressed data
 
 Then the `test` might work in local but crash during `PullRequest`.
-
-
 
 **BEFORE_RECORD_RESPONSE**
 
@@ -377,6 +376,7 @@ The issue with this `before_record_response` : it isn't launched at the first ru
 More on this here : https://github.com/kevin1024/vcrpy/pull/594
 
 A solution for now is to run this command while initializing the `cassettes` :
+
 ```bash
 # THE SAME COMMAND NEEDS TO BE RUN TWICE
 pytest tests/.../test_some_test_module.py --record-mode=once --rewrite-expected
@@ -433,7 +433,7 @@ Here are the steps to write proper tests for Gamestonk :
 
 **A. Find right place**
 
-Put the code following the same module and package structure than `gamestonk_terminal` package.
+Put the code following the same module and package structure than `openbb_terminal` package.
 
 **B. Verify coverage is above 90%**
 
@@ -481,7 +481,7 @@ You should be able to see the code coverage on comment of your `Pull Requests`.
 This is how to manually check code coverage.
 
 ```bash
-pytest --cov=gamestonk_terminal --cov=terminal --cov-report term-missing
+pytest --cov=openbb_terminal --cov=terminal --cov-report term-missing
 ```
 
 You can also select a specific package/module with the option `--cov`.
@@ -489,7 +489,7 @@ You can also select a specific package/module with the option `--cov`.
 Here is an example where we select only the package `stocks\due_diligence` :
 
 ```bash
-pytest --cov=gamestonk_terminal\stocks\due_diligence --cov-report term-missing
+pytest --cov=openbb_terminal\stocks\due_diligence --cov-report term-missing
 ```
 
 **PRE-COMMIT**

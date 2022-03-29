@@ -5,8 +5,8 @@ import numpy as np
 import pandas as pd
 
 from bots import imps
-from gamestonk_terminal.decorators import log_start_end
-from gamestonk_terminal.stocks.options import yfinance_model
+from openbb_terminal.decorators import log_start_end
+from openbb_terminal.stocks.options import yfinance_model
 
 logger = logging.getLogger(__name__)
 

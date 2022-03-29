@@ -20,20 +20,20 @@ if env_files:
 sys.path.append("..")
 
 # https://discord.com/developers/applications/
-DISCORD_BOT_TOKEN = os.getenv("GT_DISCORD_BOT_TOKEN") or "REPLACE_ME"
+DISCORD_BOT_TOKEN = os.getenv("OPENBB_DISCORD_BOT_TOKEN") or "REPLACE_ME"
 
 # https://apidocs.imgur.com
-IMGUR_CLIENT_ID = os.getenv("GT_IMGUR_CLIENT_ID") or "REPLACE_ME"
+IMGUR_CLIENT_ID = os.getenv("OPENBB_IMGUR_CLIENT_ID") or "REPLACE_ME"
 
 # https://newsapi.org
-API_NEWS_TOKEN = os.getenv("GT_API_NEWS_TOKEN") or "REPLACE_ME"
+API_NEWS_TOKEN = os.getenv("OPENBB_API_NEWS_TOKEN") or "REPLACE_ME"
 
 # https://www.binance.com/en/
-API_BINANCE_KEY = os.getenv("GT_API_BINANCE_KEY") or "REPLACE_ME"
-API_BINANCE_SECRET = os.getenv("GT_API_BINANCE_SECRET") or "REPLACE_ME"
+API_BINANCE_KEY = os.getenv("OPENBB_API_BINANCE_KEY") or "REPLACE_ME"
+API_BINANCE_SECRET = os.getenv("OPENBB_API_BINANCE_SECRET") or "REPLACE_ME"
 
 # https://finnhub.io
-API_FINNHUB_KEY = os.getenv("GT_API_FINNHUB_KEY") or "REPLACE_ME"
+API_FINNHUB_KEY = os.getenv("OPENBB_API_FINNHUB_KEY") or "REPLACE_ME"
 
 # Settings
 SLASH_TESTING_SERVERS: Optional[
@@ -44,19 +44,19 @@ DATE_FORMAT = "%Y-%m-%d"
 COLOR = disnake.Color.from_rgb(255, 0, 0)
 
 # Interactive Chart Settings
-INTERACTIVE = strtobool(os.getenv("GT_INTERACTIVE", "False"))
+INTERACTIVE = strtobool(os.getenv("OPENBB_INTERACTIVE", "False"))
 INTERACTIVE_DIR = bots_path.joinpath("interactive/")
 INTERACTIVE_URL = ""
 
 # Image Settings
-IMG_HOST_ACTIVE = strtobool(os.getenv("GT_IMG_HOST_ACTIVE", "False"))
+IMG_HOST_ACTIVE = strtobool(os.getenv("OPENBB_IMG_HOST_ACTIVE", "False"))
 IMG_DIR = bots_path.joinpath("interactive/images/")
 IMAGES_URL = ""  # Ex. "http://your-site.com/images/"
 
 # IMG_BG = bots_path.joinpath("files/bg.png")  # Light BG
 IMG_BG = bots_path.joinpath("files/bg-dark.png")  # Dark BG
 
-DEBUG = strtobool(os.getenv("GT_DEBUG", "False"))
+DEBUG = strtobool(os.getenv("OPENBB_DEBUG", "False"))
 
 GST_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 

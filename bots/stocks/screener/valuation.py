@@ -6,9 +6,9 @@ import pandas as pd
 
 from bots import imps
 from bots.stocks.screener import screener_options as so
-from gamestonk_terminal.decorators import log_start_end
-from gamestonk_terminal.helper_funcs import lambda_long_number_format
-from gamestonk_terminal.stocks.screener.finviz_model import get_screener_data
+from openbb_terminal.decorators import log_start_end
+from openbb_terminal.helper_funcs import lambda_long_number_format
+from openbb_terminal.stocks.screener.finviz_model import get_screener_data
 
 logger = logging.getLogger(__name__)
 

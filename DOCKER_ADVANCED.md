@@ -2,8 +2,8 @@
 
 ## Environment Variables
 
-In order to pass your API keys to the docker container, they must first be set in a local file.  In the main repository,
-there is a file with predefined keys and terminal settings [setenv](/docker/setenv).  This can be downloaded or created
+In order to pass your API keys to the docker container, they must first be set in a local file. In the main repository,
+there is a file with predefined keys and terminal settings [setenv](/docker/setenv). This can be downloaded or created
 on your own
 
 The file should contain something such as:
@@ -11,27 +11,27 @@ The file should contain something such as:
 ```bash
 DISPLAY=
 
-GT_API_KEY_FINANCIALMODELINGPREP=qwerty123456
+OPENBB_API_KEY_FINANCIALMODELINGPREP=qwerty123456
 ...
-GT_API_POLYGON_KEY=qwerty123456
-GT_API_FRED_KEY=qwerty123456
+OPENBB_API_POLYGON_KEY=qwerty123456
+OPENBB_API_FRED_KEY=qwerty123456
 
 HDF5_DISABLE_VERSION_CHECK=2
 
-GTFF_ENABLE_PREDICT=True
-GTFF_ENABLE_THOUGHTS_DAY=False
-GTFF_USE_PROMPT_TOOLKIT=True
-GTFF_USE_ION=True
+OPENBB_ENABLE_PREDICT=True
+OPENBB_ENABLE_THOUGHTS_DAY=False
+OPENBB_USE_PROMPT_TOOLKIT=True
+OPENBB_USE_ION=True
 ```
 
 where 'qwerty123456' corresponds to each individual API key. Note:
 
-1. Unlike API keys in [config_terminal](/gamestonk_terminal/config_terminal.py), these keys **DO NOT** use " ".
+1. Unlike API keys in [config_terminal](/openbb_terminal/config_terminal.py), these keys **DO NOT** use " ".
 2. This file is sensible to white spaces. Therefore, make sure there isn't an additional white space at the end of the
    key, otherwise it won't work.
 
 In order to run the docker container with the environment variables, make sure to edit with whatever keys you have and
-then run the container (`path/to/setenv`) should be replaced with wherever this file was created).  If you have
+then run the container (`path/to/setenv`) should be replaced with wherever this file was created). If you have
 downloaded the entire repository and your current directory is `GamestonkTerminal`, then the path would be `docker/setenv`
 
 ```bash
@@ -51,9 +51,9 @@ For help setting up the X-Server, I will go through this now:
 
 #### Setting up X Quartz/X11
 
-0. Install X Quartz from  <https://www.xquartz.org/>
+0. Install X Quartz from <https://www.xquartz.org/>
 1. With X Quartz open: go to Preferences -> Security and make sure both options are enabled.
-![Screen Shot 2021-09-08 at 12 21 48 PM](https://user-images.githubusercontent.com/18151143/132548605-235d774b-9aa6-4a45-afcf-58fb775d376a.png)
+   ![Screen Shot 2021-09-08 at 12 21 48 PM](https://user-images.githubusercontent.com/18151143/132548605-235d774b-9aa6-4a45-afcf-58fb775d376a.png)
 
 #### Adding the display for Docker
 

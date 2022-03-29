@@ -7,10 +7,10 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
-   gamestonk_terminal.common.behavioural_analysis
-   gamestonk_terminal.common.prediction_techniques
-   gamestonk_terminal.common.quantitative_analysis
-   gamestonk_terminal.common.technical_analysis
+   openbb_terminal.common.behavioural_analysis
+   openbb_terminal.common.prediction_techniques
+   openbb_terminal.common.quantitative_analysis
+   openbb_terminal.common.technical_analysis
 
 Submodules
 ----------
@@ -18,7 +18,7 @@ Submodules
 gamestonk\_terminal.common.newsapi\_view module
 -----------------------------------------------
 
-.. automodule:: gamestonk_terminal.common.newsapi_view
+.. automodule:: openbb_terminal.common.newsapi_view
    :members:
    :undoc-members:
    :show-inheritance:
@@ -26,7 +26,7 @@ gamestonk\_terminal.common.newsapi\_view module
 Module contents
 ---------------
 
-.. automodule:: gamestonk_terminal.common
+.. automodule:: openbb_terminal.common
    :members:
    :undoc-members:
    :show-inheritance:

@@ -1,0 +1,13 @@
+{
+  "name": "@gamestonk/settings-tests",
+  "version": "0.1.0",
+  "description": "Integration test for the gamestong Settings extension",
+  "repository": "https://github.com/GamestonkTerminal/GamestonkTerminal",
+  "author": "OpenBB Terminal Contributors",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "@playwright/test": "1.16",
+    "typescript": "~4.1.3"
+  }
+}

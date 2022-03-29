@@ -5,10 +5,10 @@ from datetime import datetime, timedelta
 from matplotlib import pyplot as plt
 
 from bots import imps
-from gamestonk_terminal.config_plot import PLOT_DPI
-from gamestonk_terminal.decorators import log_start_end
-from gamestonk_terminal.helper_funcs import plot_autoscale
-from gamestonk_terminal.stocks.due_diligence import business_insider_model
+from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.decorators import log_start_end
+from openbb_terminal.helper_funcs import plot_autoscale
+from openbb_terminal.stocks.due_diligence import business_insider_model
 
 logger = logging.getLogger(__name__)
 

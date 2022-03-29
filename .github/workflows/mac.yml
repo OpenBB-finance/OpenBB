@@ -1,9 +1,9 @@
 name: Mac OS X Full Clean Build with ML
 env:
-  GTFF_ENABLE_QUICK_EXIT: true
-  GTFF_LOG_COLLECTION: false
-  GTFF_USE_ION: false
-  GTFF_USE_PROMPT_TOOLKIT: false
+  OPENBB_ENABLE_QUICK_EXIT: true
+  OPENBB_LOG_COLLECTION: false
+  OPENBB_USE_ION: false
+  OPENBB_USE_PROMPT_TOOLKIT: false
   PIP_DEFAULT_TIMEOUT: 100
   PYTHONNOUSERSITE: 1
 on:
@@ -14,7 +14,7 @@ on:
     inputs:
       comments:
         required: true
-        description: 'Test scenario tags'
+        description: "Test scenario tags"
 jobs:
   macos-conda:
     name: MacOS-latest, Conda-latest,  Python 3.8
@@ -41,7 +41,7 @@ jobs:
       - name: Setup Miniconda
         uses: conda-incubator/setup-miniconda@v2
         with:
-          miniconda-version: 'latest'
+          miniconda-version: "latest"
           auto-update-conda: true
           channels: conda-forge,defaults
           show-channel-urls: true

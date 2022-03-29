@@ -11,9 +11,9 @@ import plotly.graph_objects as go
 import yfinance as yf
 
 from bots import imps
-from gamestonk_terminal.decorators import log_start_end
-from gamestonk_terminal.stocks.options import op_helpers, yfinance_model
-from gamestonk_terminal.stocks.options.barchart_model import get_options_info
+from openbb_terminal.decorators import log_start_end
+from openbb_terminal.stocks.options import op_helpers, yfinance_model
+from openbb_terminal.stocks.options.barchart_model import get_options_info
 
 # pylint: disable=W0640,W0631
 logger = logging.getLogger(__name__)

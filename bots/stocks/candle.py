@@ -3,8 +3,8 @@ import logging
 import plotly.graph_objects as go
 
 from bots import imps, load_candle
-from gamestonk_terminal.common.technical_analysis import overlap_model
-from gamestonk_terminal.decorators import log_start_end
+from openbb_terminal.common.technical_analysis import overlap_model
+from openbb_terminal.decorators import log_start_end
 
 logger = logging.getLogger(__name__)
 

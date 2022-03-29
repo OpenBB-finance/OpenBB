@@ -8,12 +8,12 @@ from PyInstaller.building.api import PYZ, EXE, COLLECT
 from PyInstaller.building.splash import Splash
 from PyInstaller.building.build_main import Analysis
 
-from gamestonk_terminal.loggers import get_commit_hash
+from openbb_terminal.loggers import get_commit_hash
 
-NAME = "GamestonkTerminal"
+NAME = "OpenBBTerminal"
 
 build_type = (
-    os.getenv("GT_BUILD_TYPE") if bool(os.getenv("GT_BUILD_TYPE")) else "folder"
+    os.getenv("OPENBB_BUILD_TYPE") if bool(os.getenv("OPENBB_BUILD_TYPE")) else "folder"
 )
 
 # Local python environment packages folder
@@ -24,17 +24,17 @@ pathex = os.path.join(
 # Get latest commit
 commit_hash = get_commit_hash()
 build_assets_folder = os.path.join(os.getcwd(), "build", "pyinstaller")
-default_feature_flags_path = os.path.join(build_assets_folder, "GTFF_DEFAULTS.json")
+default_feature_flags_path = os.path.join(build_assets_folder, "OBBFF_DEFAULTS.json")
 with open(default_feature_flags_path, "r") as f:
     default_gtff = json.load(f)
 
-default_gtff["GTFF_LOGGING_COMMIT_HASH"] = commit_hash
+default_gtff["OBBFF_LOGGING_COMMIT_HASH"] = commit_hash
 with open(default_feature_flags_path, "w") as f:
     json.dump(default_gtff, f, indent=4)
 
 # Files that are explicitly pulled into the bundle
 added_files = [
-    (os.path.join(os.getcwd(), "gamestonk_terminal"), "gamestonk_terminal"),
+    (os.path.join(os.getcwd(), "openbb_terminal"), "openbb_terminal"),
     (os.path.join(os.getcwd(), "routines"), "routines"),
     (os.path.join(os.getcwd(), "styles"), "styles"),
     ("property_cached", "property_cached"),
@@ -44,7 +44,7 @@ added_files = [
         os.path.join("frozendict", "VERSION"),
         "frozendict",
     ),
-    ("GTFF_DEFAULTS.json", "gamestonk_terminal"),
+    ("OBBFF_DEFAULTS.json", "openbb_terminal"),
 ]
 
 # Python libraries that are explicitly pulled into the bundle

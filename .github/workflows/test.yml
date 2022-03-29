@@ -1,9 +1,9 @@
 name: Tests
 env:
-  GTFF_ENABLE_QUICK_EXIT: true
-  GTFF_LOG_COLLECTION: false
-  GTFF_USE_ION: false
-  GTFF_USE_PROMPT_TOOLKIT: false
+  OPENBB_ENABLE_QUICK_EXIT: true
+  OPENBB_LOG_COLLECTION: false
+  OPENBB_USE_ION: false
+  OPENBB_USE_PROMPT_TOOLKIT: false
   PIP_DEFAULT_TIMEOUT: 100
 on: [pull_request, push]
 jobs:
@@ -38,7 +38,7 @@ jobs:
       - run: shopt -s globstar && pyupgrade --py36-plus **/*.py
       - run: safety check
       - run: |
-          pylint terminal.py gamestonk_terminal bots tests
+          pylint terminal.py openbb_terminal bots tests
   test:
     name: Base Tests - Ubuntu-latest - Python 3.9
     needs: linting
@@ -96,7 +96,7 @@ jobs:
       - name: Lint Code Base
         uses: docker://avtodev/markdown-lint:v1
         with:
-          args: "./*.md ./changelogs/*.md ./gamestonk_terminal/**/*.md ./discordbot/**/*.md"
+          args: "./*.md ./changelogs/*.md ./openbb_terminal/**/*.md ./discordbot/**/*.md"
   tests-python:
     name: Vanilla Python Tests - (${{ matrix.python-version }}, ${{ matrix.os }})
     needs: test
@@ -257,7 +257,7 @@ jobs:
         shell: bash -l {0}
         run: |
           pip install pylint==2.12.2
-          pylint discordbot gamestonk_terminal terminal.py tests
+          pylint discordbot openbb_terminal terminal.py tests
 
       - name: Run MyPy (Bash)
         if: runner.os != 'Windows'

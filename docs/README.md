@@ -1,4 +1,4 @@
-# Gamestonk Terminal Code Documentation
+# OpenBB Terminal Code Documentation
 
 Requirements:
 
@@ -12,6 +12,6 @@ Usage:
 In the `docs` folder execute:
 
 ```bash
-rm -rf code && sphinx-apidoc ../gamestonk_terminal/ -o ./code
+rm -rf code && sphinx-apidoc ../openbb_terminal/ -o ./code
 make html
 ```

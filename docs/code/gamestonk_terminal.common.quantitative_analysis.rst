@@ -7,7 +7,7 @@ Submodules
 gamestonk\_terminal.common.quantitative\_analysis.qa\_model module
 ------------------------------------------------------------------
 
-.. automodule:: gamestonk_terminal.common.quantitative_analysis.qa_model
+.. automodule:: openbb_terminal.common.quantitative_analysis.qa_model
    :members:
    :undoc-members:
    :show-inheritance:
@@ -15,7 +15,7 @@ gamestonk\_terminal.common.quantitative\_analysis.qa\_model module
 gamestonk\_terminal.common.quantitative\_analysis.qa\_view module
 -----------------------------------------------------------------
 
-.. automodule:: gamestonk_terminal.common.quantitative_analysis.qa_view
+.. automodule:: openbb_terminal.common.quantitative_analysis.qa_view
    :members:
    :undoc-members:
    :show-inheritance:
@@ -23,7 +23,7 @@ gamestonk\_terminal.common.quantitative\_analysis.qa\_view module
 gamestonk\_terminal.common.quantitative\_analysis.rolling\_model module
 -----------------------------------------------------------------------
 
-.. automodule:: gamestonk_terminal.common.quantitative_analysis.rolling_model
+.. automodule:: openbb_terminal.common.quantitative_analysis.rolling_model
    :members:
    :undoc-members:
    :show-inheritance:
@@ -31,7 +31,7 @@ gamestonk\_terminal.common.quantitative\_analysis.rolling\_model module
 gamestonk\_terminal.common.quantitative\_analysis.rolling\_view module
 ----------------------------------------------------------------------
 
-.. automodule:: gamestonk_terminal.common.quantitative_analysis.rolling_view
+.. automodule:: openbb_terminal.common.quantitative_analysis.rolling_view
    :members:
    :undoc-members:
    :show-inheritance:
@@ -39,7 +39,7 @@ gamestonk\_terminal.common.quantitative\_analysis.rolling\_view module
 Module contents
 ---------------
 
-.. automodule:: gamestonk_terminal.common.quantitative_analysis
+.. automodule:: openbb_terminal.common.quantitative_analysis
    :members:
    :undoc-members:
    :show-inheritance:

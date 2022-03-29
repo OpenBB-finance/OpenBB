@@ -5,8 +5,8 @@ import pandas as pd
 import plotly.graph_objects as go
 
 from bots import imps
-from gamestonk_terminal.decorators import log_start_end
-from gamestonk_terminal.economy import fred_model
+from openbb_terminal.decorators import log_start_end
+from openbb_terminal.economy import fred_model
 
 logger = logging.getLogger(__name__)
 

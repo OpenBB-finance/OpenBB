@@ -1,4 +1,4 @@
-# 1. Gamestonk Terminal : `Unit Testing` - `Fixtures`
+# 1. OpenBB Terminal : `Unit Testing` - `Fixtures`
 
 In this document we will list custom `pytest fixtures` built in GamestonkTerminal and explain how they works.
 

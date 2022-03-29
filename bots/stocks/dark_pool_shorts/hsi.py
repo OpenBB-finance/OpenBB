@@ -3,8 +3,8 @@ import logging
 import disnake
 
 from bots import imps
-from gamestonk_terminal.decorators import log_start_end
-from gamestonk_terminal.stocks.dark_pool_shorts import shortinterest_model
+from openbb_terminal.decorators import log_start_end
+from openbb_terminal.stocks.dark_pool_shorts import shortinterest_model
 
 logger = logging.getLogger(__name__)
 

@@ -15,7 +15,7 @@ from _pytest.fixtures import SubRequest
 from _pytest.mark.structures import Mark
 
 # IMPORTATION INTERNAL
-from gamestonk_terminal import decorators, helper_funcs
+from openbb_terminal import decorators, helper_funcs
 from bots import config_discordbot as cfg
 
 # pylint: disable=redefined-outer-name
@@ -29,7 +29,7 @@ EXTENSIONS_MATCHING: Dict[str, List[Type]] = {
 }
 
 os.environ["TEST_MODE"] = "True"
-os.environ["GT_IMG_HOST_ACTIVE"] = "False"
+os.environ["OPENBB_IMG_HOST_ACTIVE"] = "False"
 
 
 class Record:
