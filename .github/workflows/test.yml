@@ -24,8 +24,8 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: ~/.cache/pip
-          key: ${{ runner.os }}-linting
-          restore-keys: ${{ runner.os }}-linting
+          key: ${{ runner.os }}-v1-linting
+          restore-keys: ${{ runner.os }}-v1-linting
 
       - run: python custom_pre_commit/check_doc.py --ignore-files=settings_controller.py,keys_controller.py,degiro_controller.py,oanda_controller.py --ignore-commands=login,al_swe,info_swe,goodness,resources,yf,yolo
       - run: pip install bandit black codespell flake8 mypy pyupgrade safety pylint==2.12.2
@@ -66,14 +66,14 @@ jobs:
         uses: actions/cache@v2
         with:
           path: .venv
-          key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
+          key: venv-${{ runner.os }}-v1-${{ hashFiles('**/poetry.lock') }}
 
       - name: Install dependencies
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-        run: poetry install --no-interaction --no-root -E bots -E bots
+        run: poetry install --no-interaction --no-root -E bots
 
       - name: Install Package
-        run: poetry install --no-interaction -E bots -E bots
+        run: poetry install --no-interaction -E bots
 
       - name: Run tests
         env:
@@ -132,7 +132,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: .venv
-          key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
+          key: venv-${{ runner.os }}-v1-${{ hashFiles('**/poetry.lock') }}
 
       - name: Install dependencies
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
@@ -201,7 +201,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/conda_pkgs_dir
-          key: conda-${{ runner.os }}-${{ matrix.python }}-${{ hashFiles('build/conda/conda-3-8-env.yaml') }}
+          key: conda-${{ runner.os }}-v1-${{ matrix.python }}-${{ hashFiles('build/conda/conda-3-8-env.yaml') }}
 
       - name: Setup Miniconda
         uses: conda-incubator/setup-miniconda@v2
@@ -233,9 +233,9 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ${{ steps.pip-cache.outputs.dir }}
-          key: ${{ runner.os }}-3-8-pip-${{ hashFiles('requirements.txt') }}
+          key: ${{ runner.os }}-v1-3-8-pip-${{ hashFiles('requirements.txt') }}
           restore-keys: |
-            ${{ runner.os }}-pip-
+            ${{ runner.os }}-v1-pip-
 
       - name: Uninstall Brotlipy
         shell: bash -l {0}

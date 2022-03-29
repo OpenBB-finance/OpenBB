@@ -8,8 +8,8 @@ A list of supported exchanges can be downloaded here: [yFinance_global_exchanges
 
 ## Table of Contents
 
-- [Candle](/GamestonkTerminal/bots/discord/price/candle/)
-- [Quote](/GamestonkTerminal/bots/discord/price/quote/)
-- [BTC](/GamestonkTerminal/bots/discord/price/btc/)
-- [ETH](/GamestonkTerminal/bots/discord/price/eth/)
-- [SOL](/GamestonkTerminal/bots/discord/price/sol/)
+- [Candle](/OpenBBTerminal/bots/discord/price/candle/)
+- [Quote](/OpenBBTerminal/bots/discord/price/quote/)
+- [BTC](/OpenBBTerminal/bots/discord/price/btc/)
+- [ETH](/OpenBBTerminal/bots/discord/price/eth/)
+- [SOL](/OpenBBTerminal/bots/discord/price/sol/)
