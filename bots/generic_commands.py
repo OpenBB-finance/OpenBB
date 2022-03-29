@@ -15,7 +15,7 @@ class GenericCommands(discord.ext.commands.Cog):
 
     @discord.ext.commands.command(name="about")
     async def about(self, ctx: discord.ext.commands.Context):
-        """About Gamestonk Terminal"""
+        """About OpenBB Terminal"""
         links = (
             "Join our community on discord: https://discord.gg/Up2QGbMKHY\n"
             "Follow our twitter for updates: https://twitter.com/gamestonkt\n"
@@ -35,7 +35,7 @@ class GenericCommands(discord.ext.commands.Cog):
             "and costs associated with trading the financial markets, carefully "
             "consider your investment objectives, level of experience, and risk "
             "appetite, and seek professional advice where needed. The data "
-            "contained in Gamestonk Terminal (GST) is not necessarily accurate. "
+            "contained in OpenBB Terminal is not necessarily accurate. "
             "GST and any provider of the data contained in this website will not "
             "accept liability for any loss or damage as a result of your trading, "
             "or your reliance on the information displayed."

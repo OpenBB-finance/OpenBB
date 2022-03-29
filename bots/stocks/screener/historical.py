@@ -11,10 +11,10 @@ from pandas.plotting import register_matplotlib_converters
 
 from bots import imps
 from bots.stocks.screener import screener_options as so
-from gamestonk_terminal.config_plot import PLOT_DPI
-from gamestonk_terminal.decorators import log_start_end
-from gamestonk_terminal.helper_funcs import plot_autoscale
-from gamestonk_terminal.stocks.screener import finviz_model
+from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.decorators import log_start_end
+from openbb_terminal.helper_funcs import plot_autoscale
+from openbb_terminal.stocks.screener import finviz_model
 
 # pylint:disable=no-member
 

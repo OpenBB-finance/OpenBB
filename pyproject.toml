@@ -1,15 +1,15 @@
 # https://python-poetry.org/docs/dependency-specification/
 [tool.poetry]
-name = "GamestonkTerminal"
-version = "0.1.0"
+name = "OpenBBTerminal"
+version = "1.0"
 description = ""
 authors = ["Didier Rodrigues Lopes"]
 packages = [
-    { include = "gamestonk_terminal" },
+    { include = "openbb_terminal" },
 ]
 
 [tool.poetry.scripts]
-gst = 'terminal:terminal'
+openbb = 'terminal:terminal'
 
 [tool.poetry.dependencies]
 python = "^3.8,<3.10"

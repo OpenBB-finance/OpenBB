@@ -8,7 +8,7 @@ import undetected_chromedriver.v2 as uc
 from selenium.webdriver.common.by import By
 
 from bots import imps
-from gamestonk_terminal.decorators import log_start_end
+from openbb_terminal.decorators import log_start_end
 
 # pylint:disable=no-member
 

@@ -11,7 +11,7 @@ from bots.helpers import ShowView
 
 load_dotenv()
 
-app = App(token=os.environ["GT_SLACK_APP_TOKEN"])
+app = App(token=os.environ["OPENBB_SLACK_APP_TOKEN"])
 
 available_commands = list(commands.keys())
 
@@ -38,6 +38,6 @@ if __name__ == "__main__":
     logger.addHandler(logging.StreamHandler())
     handler = SocketModeHandler(
         app,
-        os.environ["GT_SLACK_BOT_TOKEN"],
+        os.environ["OPENBB_SLACK_BOT_TOKEN"],
     )
     handler.start()

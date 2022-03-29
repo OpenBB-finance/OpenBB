@@ -13,11 +13,11 @@ from typing import List
 import papermill as pm
 from prompt_toolkit.completion import NestedCompleter
 
-from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.decorators import log_start_end
-from gamestonk_terminal.menu import session
-from gamestonk_terminal.parent_classes import BaseController
-from gamestonk_terminal.rich_config import console
+from openbb_terminal import feature_flags as gtff
+from openbb_terminal.decorators import log_start_end
+from openbb_terminal.menu import session
+from openbb_terminal.parent_classes import BaseController
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -179,7 +179,7 @@ Select one of the following reports:[/info][cmds]
                 console.print("")
 
             notebook_template = os.path.join(
-                "gamestonk_terminal", "jupyter", "reports", report_to_run
+                "openbb_terminal", "jupyter", "reports", report_to_run
             )
             args_to_output = f"_{'_'.join(other_args)}" if "_".join(other_args) else ""
             report_output_name = (
@@ -188,7 +188,7 @@ Select one of the following reports:[/info][cmds]
                 + f"{report_to_run}{args_to_output}"
             )
             notebook_output = os.path.join(
-                "gamestonk_terminal",
+                "openbb_terminal",
                 "jupyter",
                 "reports",
                 "stored",

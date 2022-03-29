@@ -32,7 +32,7 @@
     <img src="images/gst_logo_lockup_rGreen_with_letters.png" alt="Logo" width="800" height="276">
   </a>
 
-  <h3 align="center">Gamestonk Terminal 🚀</h3>
+  <h3 align="center">OpenBB Terminal 🚀</h3>
   <p align="center">Click on the gif below for a DEMO of the terminal.</p>
   
 <p align="center">
@@ -44,7 +44,7 @@
   <p align="center">
     Investment research for everyone.
     <br />
-    <a href="https://github.com/GamestonkTerminal/GamestonkTerminal/tree/master/gamestonk_terminal/README.md"><strong>≪  GETTING STARTED</strong></a>
+    <a href="https://github.com/GamestonkTerminal/GamestonkTerminal/tree/master/openbb_terminal/README.md"><strong>≪  GETTING STARTED</strong></a>
     &nbsp · &nbsp
     <a href="https://gamestonkterminal.github.io/GamestonkTerminal/">
     <strong>SEE FEATURES »</strong></a>
@@ -78,15 +78,15 @@
 
 **How it started:**
 
-Gamestonk Terminal is an awesome stock and crypto market terminal that has been developed for fun, while I saw my GME
+OpenBB Terminal is an awesome stock and crypto market terminal that has been developed for fun, while I saw my GME
 shares tanking. But hey, I like the stock 💎🙌.
 
 **How it's going:**
 
-Gamestonk Terminal provides a modern Python-based integrated environment for investment research, that allows
+OpenBB Terminal provides a modern Python-based integrated environment for investment research, that allows
 an average joe retail trader to leverage state-of-the-art Data Science and Machine Learning technologies.
 
-As a modern Python-based environment, GamestonkTerminal opens access to numerous Python data libraries in Data Science
+As a modern Python-based environment, OpenBBTerminal opens access to numerous Python data libraries in Data Science
 (Pandas, Numpy, Scipy, Jupyter), Machine Learning (Pytorch, Tensorflow, Sklearn, Flair), and Data Acquisition
 (Beautiful Soup, and numerous third-party APIs).
 
@@ -94,10 +94,10 @@ As a modern Python-based environment, GamestonkTerminal opens access to numerous
 
 If you wish to install the Terminal, there are currently four options:
 
-- [Using the Installer](gamestonk_terminal/README.md#User) (recommended if you just want to use the terminal)
-- [Using Python](gamestonk_terminal/README.md#anaconda--python) (recommended if you want to develop new features)
-- [Using Docker](gamestonk_terminal/README.md#Docker-Installation) (alternative option to the installer if preferred)
-- [Using Docker Web UI](gamestonk_terminal/README.md#web-ui---docker) (if you want to deploy the web UI for users to access over your LAN)
+- [Using the Installer](openbb_terminal/README.md#User) (recommended if you just want to use the terminal)
+- [Using Python](openbb_terminal/README.md#anaconda--python) (recommended if you want to develop new features)
+- [Using Docker](openbb_terminal/README.md#Docker-Installation) (alternative option to the installer if preferred)
+- [Using Docker Web UI](openbb_terminal/README.md#web-ui---docker) (if you want to deploy the web UI for users to access over your LAN)
 
 ## Contributing
 

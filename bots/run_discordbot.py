@@ -15,8 +15,8 @@ from fastapi import FastAPI, Request
 
 import config_discordbot as cfg
 from bots.groupme.run_groupme import handle_groupme
-from gamestonk_terminal.decorators import log_start_end
-from gamestonk_terminal.loggers import setup_logging
+from openbb_terminal.decorators import log_start_end
+from openbb_terminal.loggers import setup_logging
 
 logger = logging.getLogger(__name__)
 setup_logging("bot-app")
@@ -56,7 +56,7 @@ async def write_root(request: Request):
 
 activity = disnake.Activity(
     type=disnake.ActivityType.watching,
-    name="Gamestonk Terminal: https://github.com/GamestonkTerminal/GamestonkTerminal",
+    name="OpenBB Terminal: https://github.com/GamestonkTerminal/GamestonkTerminal",
 )
 
 

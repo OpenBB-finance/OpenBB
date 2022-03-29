@@ -11,7 +11,7 @@ from bots.helpers import ShowView
 load_dotenv()
 
 available_commands = list(commands.keys())
-bot = telebot.TeleBot(os.getenv("GT_TELEGRAM_BOT_TOKEN"))
+bot = telebot.TeleBot(os.getenv("OPENBB_TELEGRAM_BOT_TOKEN"))
 
 bot_commands = [
     telebot.types.BotCommand("/about", "Bot information"),
@@ -36,7 +36,7 @@ def detect_valid_command(message):
 @bot.message_handler(commands=["start", "Start", "about", "help"])
 def send_welcome(message):
     text = """
-Welcome to *Gamestonk Terminal Bot* 🦋
+Welcome to *OpenBB Terminal Bot* 🦋
 Investment Research for Everyone
 Check the available commands with /cmds
     """

@@ -1,6 +1,6 @@
-# Gamestonk Teminal Documentation
+# OpenBB Teminal Documentation
 
-This extensions adds a button into the Gamestonk Terminal category of the Jupyter Lab launcher panel.
+This extensions adds a button into the OpenBB Terminal category of the Jupyter Lab launcher panel.
 
 ## Install, Use and Develop
 

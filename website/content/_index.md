@@ -1,5 +1,5 @@
 ---
-title: Gamestonk Terminal
+title: OpenBB Terminal
 description: A modern investment research tool for Everyone.
 geekdocNav: true
 geekdocAnchor: false
@@ -25,7 +25,7 @@ resources:
 
 ---
 
-## Gamestonk Terminal
+## OpenBB Terminal
 
 {{< columns >}}
 
@@ -57,7 +57,7 @@ Create notebook templates (through papermill) which can be run on different tick
 
 ### GST API and Customizable notebook reports
 
-Use our Gamestonk Terminal environment to access raw data through a Jupyter notebook and play with it accordingly. Or just create customizable notebook reports for your colleagues and friends doing research on a particular asset or a macro economic event impact on said asset. The possibilities are endless.
+Use our OpenBB Terminal environment to access raw data through a Jupyter notebook and play with it accordingly. Or just create customizable notebook reports for your colleagues and friends doing research on a particular asset or a macro economic event impact on said asset. The possibilities are endless.
 
 <--->
 

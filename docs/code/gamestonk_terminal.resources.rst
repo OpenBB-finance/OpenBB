@@ -7,7 +7,7 @@ Submodules
 gamestonk\_terminal.resources.resources\_controller module
 ----------------------------------------------------------
 
-.. automodule:: gamestonk_terminal.resources.resources_controller
+.. automodule:: openbb_terminal.resources.resources_controller
    :members:
    :undoc-members:
    :show-inheritance:
@@ -15,7 +15,7 @@ gamestonk\_terminal.resources.resources\_controller module
 Module contents
 ---------------
 
-.. automodule:: gamestonk_terminal.resources
+.. automodule:: openbb_terminal.resources
    :members:
    :undoc-members:
    :show-inheritance:

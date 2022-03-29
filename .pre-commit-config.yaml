@@ -53,7 +53,7 @@ repos:
     hooks:
       - id: pylint
         name: pylint
-        entry: pylint bots gamestonk_terminal terminal.py tests
+        entry: pylint bots openbb_terminal terminal.py tests
         language: system
         types: [python]
   - repo: https://github.com/Yelp/detect-secrets

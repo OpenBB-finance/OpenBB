@@ -1,6 +1,6 @@
 # Hugo Server
 
-The current features can be found in [Gamestonk Terminal Features](https://gamestonkterminal.github.io/GamestonkTerminal).
+The current features can be found in [OpenBB Terminal Features](https://gamestonkterminal.github.io/GamestonkTerminal).
 
 <!-- TABLE OF CONTENTS -->
 <summary><h2 style="display: inline-block">Table of Contents</h2></summary>
