@@ -26,7 +26,7 @@ from openbb_terminal import helper_funcs
 )
 @pytest.mark.record_stdout
 def test_call_func(func, mocker, tab):
-    # MOCK GTFF
+    # MOCK OBBFF
     mocker.patch.object(target=helper_funcs.obbff, attribute="USE_TABULATE_DF", new=tab)
 
     # MOCK EXPORT_DATA
