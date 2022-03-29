@@ -320,7 +320,6 @@ When you have installed the terminal through Anaconda & Python, you can use the 
 API Keys directly instead of using the Terminal, for the variable name in the code one just needs to
 remove the "GT\_", this can be found in [config_terminal.py](/openbb_terminal/config_terminal.py).
 
-
 | Website                                                                         | Environment Variables                                                                                                                                                 |
 | :------------------------------------------------------------------------------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [Alpha Vantage](https://www.alphavantage.co)                                    | OPENBB_API_KEY_ALPHAVANTAGE                                                                                                                                           |
