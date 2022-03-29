@@ -132,7 +132,7 @@ elif build_type == "folder":
 # Platform specific settings
 if is_win:
     splash = Splash(
-        os.path.join(os.getcwd(), "images", "splashscreen.png"),
+        os.path.join(os.getcwd(), "images", "openbb_splashscreen.png"),
         binaries=a.binaries,
         datas=a.datas,
         text_pos=(200, 400),
@@ -140,7 +140,7 @@ if is_win:
         text_color="white",
     )
     exe_args += [splash, splash.binaries]
-    exe_kwargs["icon"] = (os.path.join(os.getcwd(), "images", "gst_app.ico"),)
+    exe_kwargs["icon"] = (os.path.join(os.getcwd(), "images", "openbb_icon.ico"),)
 
 if is_darwin:
     exe_kwargs["icon"] = (os.path.join(os.getcwd(), "images", "openbb.icns"),)
