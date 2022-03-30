@@ -1,8 +1,8 @@
 import logging
 
 from bots import config_discordbot as cfg
-from gamestonk_terminal.decorators import log_start_end
-from gamestonk_terminal.stocks.due_diligence import marketwatch_model
+from openbb_terminal.decorators import log_start_end
+from openbb_terminal.stocks.due_diligence import marketwatch_model
 
 logger = logging.getLogger(__name__)
 

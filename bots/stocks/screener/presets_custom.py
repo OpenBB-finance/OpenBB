@@ -2,7 +2,7 @@ import logging
 
 from bots import config_discordbot as cfg
 from bots.stocks.screener import screener_options as so
-from gamestonk_terminal.decorators import log_start_end
+from openbb_terminal.decorators import log_start_end
 
 logger = logging.getLogger(__name__)
 

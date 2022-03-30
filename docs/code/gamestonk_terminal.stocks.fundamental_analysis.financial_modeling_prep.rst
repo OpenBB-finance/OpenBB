@@ -7,7 +7,7 @@ Submodules
 gamestonk\_terminal.stocks.fundamental\_analysis.financial\_modeling\_prep.fmp\_controller module
 -------------------------------------------------------------------------------------------------
 
-.. automodule:: gamestonk_terminal.stocks.fundamental_analysis.financial_modeling_prep.fmp_controller
+.. automodule:: openbb_terminal.stocks.fundamental_analysis.financial_modeling_prep.fmp_controller
    :members:
    :undoc-members:
    :show-inheritance:
@@ -15,7 +15,7 @@ gamestonk\_terminal.stocks.fundamental\_analysis.financial\_modeling\_prep.fmp\_
 gamestonk\_terminal.stocks.fundamental\_analysis.financial\_modeling\_prep.fmp\_model module
 --------------------------------------------------------------------------------------------
 
-.. automodule:: gamestonk_terminal.stocks.fundamental_analysis.financial_modeling_prep.fmp_model
+.. automodule:: openbb_terminal.stocks.fundamental_analysis.financial_modeling_prep.fmp_model
    :members:
    :undoc-members:
    :show-inheritance:
@@ -23,7 +23,7 @@ gamestonk\_terminal.stocks.fundamental\_analysis.financial\_modeling\_prep.fmp\_
 gamestonk\_terminal.stocks.fundamental\_analysis.financial\_modeling\_prep.fmp\_view module
 -------------------------------------------------------------------------------------------
 
-.. automodule:: gamestonk_terminal.stocks.fundamental_analysis.financial_modeling_prep.fmp_view
+.. automodule:: openbb_terminal.stocks.fundamental_analysis.financial_modeling_prep.fmp_view
    :members:
    :undoc-members:
    :show-inheritance:
@@ -31,7 +31,7 @@ gamestonk\_terminal.stocks.fundamental\_analysis.financial\_modeling\_prep.fmp\_
 Module contents
 ---------------
 
-.. automodule:: gamestonk_terminal.stocks.fundamental_analysis.financial_modeling_prep
+.. automodule:: openbb_terminal.stocks.fundamental_analysis.financial_modeling_prep
    :members:
    :undoc-members:
    :show-inheritance:

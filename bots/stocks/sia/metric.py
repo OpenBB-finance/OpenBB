@@ -7,8 +7,8 @@ import plotly.graph_objects as go
 import yfinance
 
 from bots import imps
-from gamestonk_terminal.decorators import log_start_end
-from gamestonk_terminal.stocks.sector_industry_analysis import financedatabase_model
+from openbb_terminal.decorators import log_start_end
+from openbb_terminal.stocks.sector_industry_analysis import financedatabase_model
 
 # pylint: disable=R1720,R0912
 

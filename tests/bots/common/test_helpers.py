@@ -2,17 +2,20 @@ import pytest
 from bots.common.helpers import get_arguments, get_syntax, non_slash, send_options
 
 
+@pytest.mark.bots
 @pytest.mark.record_stdout
 def test_send_options():
     send_options("Commands", ["Option1", "Option2", "Option3"], lambda x: print(x))
 
 
+@pytest.mark.bots
 def test_get_syntax():
     value = get_syntax({"required": ["Option1", "Option2", "Option3"]}, "Command")
     expected = "Command/Option1/Option2/Option3"
     assert value == expected
 
 
+@pytest.mark.bots
 @pytest.mark.parametrize(
     "dictionary, cmd",
     [
@@ -28,6 +31,7 @@ def test_get_arguments(dictionary, cmd):
     get_arguments(dictionary, cmd, lambda x: print(x))
 
 
+@pytest.mark.bots
 @pytest.mark.vcr()
 @pytest.mark.parametrize(
     "text, value",

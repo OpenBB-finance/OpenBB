@@ -7,7 +7,7 @@ Submodules
 gamestonk\_terminal.cryptocurrency.technical\_analysis.ta\_controller module
 ----------------------------------------------------------------------------
 
-.. automodule:: gamestonk_terminal.cryptocurrency.technical_analysis.ta_controller
+.. automodule:: openbb_terminal.cryptocurrency.technical_analysis.ta_controller
    :members:
    :undoc-members:
    :show-inheritance:
@@ -15,7 +15,7 @@ gamestonk\_terminal.cryptocurrency.technical\_analysis.ta\_controller module
 Module contents
 ---------------
 
-.. automodule:: gamestonk_terminal.cryptocurrency.technical_analysis
+.. automodule:: openbb_terminal.cryptocurrency.technical_analysis
    :members:
    :undoc-members:
    :show-inheritance:

@@ -34,22 +34,22 @@ _2_. Interact directly with the Discord bot by messaging `GameStonksBot#4609`.
 
 _3_. Server owners and admins can add the Discord Bot to any server by using [this invite link](https://discord.com/oauth2/authorize?client_id=927232119346962513&permissions=510500797553&scope=bot%20applications.commands).
 
-_4_. Alternatively, one can fork the Discord bot [here](https://github.com/GamestonkTerminal/GamestonkTerminal). The user is then able to modify the bot at their own discretion, and the bot can be either run locally or on a privately-hosted server. Instructions for installation through Heroku can be found [here](https://github.com/GamestonkTerminal/GamestonkTerminal/blob/main/bots/README.md).
+_4_. Alternatively, one can fork the Discord bot [here](https://github.com/OpenBB-finance/OpenBBTerminal). The user is then able to modify the bot at their own discretion, and the bot can be either run locally or on a privately-hosted server. Instructions for installation through Heroku can be found [here](https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/bots/README.md).
 
 ## Commands Groups
 
-- [Price](/GamestonkTerminal/bots/discord/price/)
-- [Options](/GamestonkTerminal/bots/discord/options/)
-- [Technical Analysis](/GamestonkTerminal/bots/discord/ta)
-- [Stocks Screener](/GamestonkTerminal/bots/discord/screener/)
-- [Due Diligence](/GamestonkTerminal/bots/discord/dd)
-- [Dark Pool & Shorts](/GamestonkTerminal/bots/discord/dps/)
-- [Government Contracts](/GamestonkTerminal/bots/discord/gov/)
-- [Economy](/GamestonkTerminal/bots/discord/economy/)
-- [Sector & Industry Analysis](/GamestonkTerminal/bots/discord/sia)
-- [Sector & Industry Analysis](/GamestonkTerminal/bots/discord/sia)
-- [Stocks Discovery](/GamestonkTerminal/bots/discord/disc)
-- [Miscellaneous](/GamestonkTerminal/bots/discord/misc)
+- [Price](/OpenBBTerminal/bots/discord/price/)
+- [Options](/OpenBBTerminal/bots/discord/options/)
+- [Technical Analysis](/OpenBBTerminal/bots/discord/ta)
+- [Stocks Screener](/OpenBBTerminal/bots/discord/screener/)
+- [Due Diligence](/OpenBBTerminal/bots/discord/dd)
+- [Dark Pool & Shorts](/OpenBBTerminal/bots/discord/dps/)
+- [Government Contracts](/OpenBBTerminal/bots/discord/gov/)
+- [Economy](/OpenBBTerminal/bots/discord/economy/)
+- [Sector & Industry Analysis](/OpenBBTerminal/bots/discord/sia)
+- [Sector & Industry Analysis](/OpenBBTerminal/bots/discord/sia)
+- [Stocks Discovery](/OpenBBTerminal/bots/discord/disc)
+- [Miscellaneous](/OpenBBTerminal/bots/discord/misc)
 
 ## Support
 

@@ -3,8 +3,8 @@ import logging
 import pandas as pd
 
 from bots import imps
-from gamestonk_terminal.decorators import log_start_end
-from gamestonk_terminal.economy import wsj_model
+from openbb_terminal.decorators import log_start_end
+from openbb_terminal.economy import wsj_model
 
 logger = logging.getLogger(__name__)
 

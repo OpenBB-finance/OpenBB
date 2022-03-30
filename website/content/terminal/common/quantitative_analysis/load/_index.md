@@ -1,1 +1,1 @@
-Use the [load](https://gamestonkterminal.github.io/GamestonkTerminal/stocks/load/) command within the submenu.
+Use the [load](https://openbb-finance.github.io/OpenBBTerminal/stocks/load/) command within the submenu.

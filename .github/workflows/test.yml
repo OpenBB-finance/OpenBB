@@ -1,9 +1,9 @@
 name: Tests
 env:
-  GTFF_ENABLE_QUICK_EXIT: true
-  GTFF_LOG_COLLECTION: false
-  GTFF_USE_ION: false
-  GTFF_USE_PROMPT_TOOLKIT: false
+  OPENBB_ENABLE_QUICK_EXIT: true
+  OPENBB_LOG_COLLECTION: false
+  OPENBB_USE_ION: false
+  OPENBB_USE_PROMPT_TOOLKIT: false
   PIP_DEFAULT_TIMEOUT: 100
 on: [pull_request, push]
 jobs:
@@ -24,21 +24,21 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: ~/.cache/pip
-          key: ${{ runner.os }}-linting
-          restore-keys: ${{ runner.os }}-linting
+          key: ${{ runner.os }}-v1-linting
+          restore-keys: ${{ runner.os }}-v1-linting
 
       - run: python custom_pre_commit/check_doc.py --ignore-files=settings_controller.py,keys_controller.py,degiro_controller.py,oanda_controller.py --ignore-commands=login,al_swe,info_swe,goodness,resources,yf,yolo
       - run: pip install bandit black codespell flake8 mypy pyupgrade safety pylint==2.12.2
-      - run: pip install types-pytz types-requests types-termcolor types-tabulate types-PyYAML types-python-dateutil types-setuptools
+      - run: pip install types-pytz types-requests types-termcolor types-tabulate types-PyYAML types-python-dateutil types-setuptools types-six
       - run: bandit -x ./tests -r . || true
       - run: black --check .
-      - run: codespell --ignore-words-list=zlot,ba,buil,coo,ether,hist,hsi,mape,navagation,operatio,pres,ser,yeld,shold,ist,varian --quiet-level=2 --skip=./tests,.git,*.css,*.csv,*.html,*.ini,*.ipynb,*.js,*.json,*.lock,*.scss,*.txt,*.yaml
-      - run: flake8 . --count --ignore=E203,W503 --max-line-length=122 --show-source --statistics
+      - run: codespell --ignore-words-list=zlot,ba,buil,coo,ether,hist,hsi,mape,navagation,operatio,pres,ser,yeld,shold,ist,varian,datas --quiet-level=2 --skip=./tests,.git,*.css,*.csv,*.html,*.ini,*.ipynb,*.js,*.json,*.lock,*.scss,*.txt,*.yaml,./build/pyinstaller
+      - run: flake8 . --count --ignore=E203,W503 --max-line-length=122 --show-source --statistics --exclude ./build/pyinstaller
       - run: mypy --ignore-missing-imports --exclude="/setup\.py$" .
       - run: shopt -s globstar && pyupgrade --py36-plus **/*.py
       - run: safety check
       - run: |
-          pylint terminal.py gamestonk_terminal bots tests
+          pylint terminal.py openbb_terminal bots tests
   test:
     name: Base Tests - Ubuntu-latest - Python 3.9
     needs: linting
@@ -66,21 +66,21 @@ jobs:
         uses: actions/cache@v2
         with:
           path: .venv
-          key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
+          key: venv-${{ runner.os }}-v1-${{ hashFiles('**/poetry.lock') }}
 
       - name: Install dependencies
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-        run: poetry install --no-interaction --no-root -E bots -E bots
+        run: poetry install --no-interaction --no-root -E bots
 
       - name: Install Package
-        run: poetry install --no-interaction -E bots -E bots
+        run: poetry install --no-interaction -E bots
 
       - name: Run tests
         env:
           MPLBACKEND: Agg
         run: |
           source $VENV
-          pytest tests/
+          pytest tests/ -m "not bots"
 
       - name: Start Terminal and exit
         run: |
@@ -96,7 +96,7 @@ jobs:
       - name: Lint Code Base
         uses: docker://avtodev/markdown-lint:v1
         with:
-          args: "./*.md ./changelogs/*.md ./gamestonk_terminal/**/*.md ./discordbot/**/*.md"
+          args: "./*.md ./changelogs/*.md ./openbb_terminal/**/*.md ./discordbot/**/*.md"
   tests-python:
     name: Vanilla Python Tests - (${{ matrix.python-version }}, ${{ matrix.os }})
     needs: test
@@ -132,7 +132,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: .venv
-          key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
+          key: venv-${{ runner.os }}-v1-${{ hashFiles('**/poetry.lock') }}
 
       - name: Install dependencies
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
@@ -152,7 +152,7 @@ jobs:
           MPLBACKEND: Agg
         run: |
           source $VENV
-          pytest tests/
+          pytest tests/ -m "not bots"
 
       - name: Start Terminal and exit
         run: |
@@ -201,7 +201,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/conda_pkgs_dir
-          key: conda-${{ runner.os }}-${{ matrix.python }}-${{ hashFiles('build/conda/conda-3-8-env.yaml') }}
+          key: conda-${{ runner.os }}-v1-${{ matrix.python }}-${{ hashFiles('build/conda/conda-3-8-env.yaml') }}
 
       - name: Setup Miniconda
         uses: conda-incubator/setup-miniconda@v2
@@ -233,9 +233,9 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ${{ steps.pip-cache.outputs.dir }}
-          key: ${{ runner.os }}-3-8-pip-${{ hashFiles('requirements.txt') }}
+          key: ${{ runner.os }}-v1-3-8-pip-${{ hashFiles('requirements.txt') }}
           restore-keys: |
-            ${{ runner.os }}-pip-
+            ${{ runner.os }}-v1-pip-
 
       - name: Uninstall Brotlipy
         shell: bash -l {0}
@@ -257,7 +257,7 @@ jobs:
         shell: bash -l {0}
         run: |
           pip install pylint==2.12.2
-          pylint discordbot gamestonk_terminal terminal.py tests
+          pylint discordbot openbb_terminal terminal.py tests
 
       - name: Run MyPy (Bash)
         if: runner.os != 'Windows'
@@ -266,7 +266,7 @@ jobs:
 
       - name: Run tests (Bash)
         shell: bash -l {0}
-        run: pytest tests/
+        run: pytest tests/ -m "not bots and not linux"
 
       - name: Start Terminal and exit
         shell: bash -l {0}

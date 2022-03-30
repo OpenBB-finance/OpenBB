@@ -1,5 +1,5 @@
 ---
-title: Gamestonk Terminal
+title: OpenBB Terminal
 description: A modern investment research tool for Everyone.
 geekdocNav: true
 geekdocAnchor: false
@@ -19,13 +19,13 @@ resources:
 [![Contributors][contributors-shield]][contributors-url]
 [![MIT License][license-shield]][license-url]
 
-[![Twitter](https://img.shields.io/twitter/url/https/twitter.com/gamestonkt.svg?style=social&label=Follow%20%40gamestonkt)](https://twitter.com/gamestonkt)
+[![Twitter](https://img.shields.io/twitter/url/https/twitter.com/openbb_finance.svg?style=social&label=Follow%20%40openbb_finance)](https://twitter.com/openbb_finance)
 
 <!-- markdownlint-restore -->
 
 ---
 
-## Gamestonk Terminal
+## OpenBB Terminal
 
 {{< columns >}}
 
@@ -57,14 +57,13 @@ Create notebook templates (through papermill) which can be run on different tick
 
 ### GST API and Customizable notebook reports
 
-Use our Gamestonk Terminal environment to access raw data through a Jupyter notebook and play with it accordingly. Or just create customizable notebook reports for your colleagues and friends doing research on a particular asset or a macro economic event impact on said asset. The possibilities are endless.
+Use our OpenBB Terminal environment to access raw data through a Jupyter notebook and play with it accordingly. Or just create customizable notebook reports for your colleagues and friends doing research on a particular asset or a macro economic event impact on said asset. The possibilities are endless.
 
 <--->
 
 ### Advanced user and routines
 
 Navigate through 500+ terminal features using fast shortcuts and leverage auto-complete functionality. Jump from looking into your portfolio to compare the financials of those companies in a few seconds. Leverage our routines implementation to run analysis while you drink your coffee/tea.
-
 
 {{< /columns >}}
 
@@ -102,17 +101,17 @@ The bot also benefits from an MIT Open Source license, which means that you can 
 
 {{< /columns >}}
 
-[contributors-shield]: https://img.shields.io/github/contributors/GamestonkTerminal/GamestonkTerminal.svg?style=for-the-badge
-[contributors-url]: https://github.com/GamestonkTerminal/GamestonkTerminal/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/GamestonkTerminal/GamestonkTerminal.svg?style=for-the-badge
-[forks-url]: https://github.com/GamestonkTerminal/GamestonkTerminal/network/members
-[stars-shield]: https://img.shields.io/github/stars/GamestonkTerminal/GamestonkTerminal.svg?style=for-the-badge
-[stars-url]: https://github.com/GamestonkTerminal/GamestonkTerminal/stargazers
-[issues-shield]: https://img.shields.io/github/issues/GamestonkTerminal/GamestonkTerminal.svg?style=for-the-badge&color=blue
-[issues-url]: https://github.com/GamestonkTerminal/GamestonkTerminal/issues
-[bugs-open-shield]: https://img.shields.io/github/issues/GamestonkTerminal/GamestonkTerminal/bug.svg?style=for-the-badge&color=yellow
-[bugs-open-url]: https://github.com/GamestonkTerminal/GamestonkTerminal/issues?q=is%3Aissue+label%3Abug+is%3Aopen
-[bugs-closed-shield]: https://img.shields.io/github/issues-closed/GamestonkTerminal/GamestonkTerminal/bug.svg?style=for-the-badge&color=success
-[bugs-closed-url]: https://github.com/GamestonkTerminal/GamestonkTerminal/issues?q=is%3Aissue+label%3Abug+is%3Aclosed
-[license-shield]: https://img.shields.io/github/license/GamestonkTerminal/GamestonkTerminal.svg?style=for-the-badge
-[license-url]: https://github.com/GamestonkTerminal/GamestonkTerminal/blob/main/LICENSE.txt
+[contributors-shield]: https://img.shields.io/github/contributors/OpenBB-finance/OpenBBTerminal.svg?style=for-the-badge
+[contributors-url]: https://github.com/OpenBB-finance/OpenBBTerminal/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/OpenBB-finance/OpenBBTerminal.svg?style=for-the-badge
+[forks-url]: https://github.com/OpenBB-finance/OpenBBTerminal/network/members
+[stars-shield]: https://img.shields.io/github/stars/OpenBB-finance/OpenBBTerminal.svg?style=for-the-badge
+[stars-url]: https://github.com/OpenBB-finance/OpenBBTerminal/stargazers
+[issues-shield]: https://img.shields.io/github/issues/OpenBB-finance/OpenBBTerminal.svg?style=for-the-badge&color=blue
+[issues-url]: https://github.com/OpenBB-finance/OpenBBTerminal/issues
+[bugs-open-shield]: https://img.shields.io/github/issues/OpenBB-finance/OpenBBTerminal/bug.svg?style=for-the-badge&color=yellow
+[bugs-open-url]: https://github.com/OpenBB-finance/OpenBBTerminal/issues?q=is%3Aissue+label%3Abug+is%3Aopen
+[bugs-closed-shield]: https://img.shields.io/github/issues-closed/OpenBB-finance/OpenBBTerminal/bug.svg?style=for-the-badge&color=success
+[bugs-closed-url]: https://github.com/OpenBB-finance/OpenBBTerminal/issues?q=is%3Aissue+label%3Abug+is%3Aclosed
+[license-shield]: https://img.shields.io/github/license/OpenBB-finance/OpenBBTerminal.svg?style=for-the-badge
+[license-url]: https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/LICENSE.txt

@@ -1,16 +1,16 @@
-.. Gamestonk Terminal documentation master file, created by
+.. OpenBB Terminal documentation master file, created by
    sphinx-quickstart on Thu Apr 29 21:54:05 2021.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to Gamestonk Terminal's documentation!
+Welcome to OpenBB Terminal's documentation!
 ==============================================
 
 .. toctree::
    :maxdepth: 3
    :caption: Contents:
 
-   code/gamestonk_terminal
+   code/openbb_terminal
 
 
 Indices and tables

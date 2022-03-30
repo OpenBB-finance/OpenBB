@@ -2,7 +2,7 @@
 usage: load [-n NAME] [-h]
 ```
 
-Load a file from gamestonk_terminal/portfolio/portfolios
+Load a file from openbb_terminal/portfolio/portfolios
 
 ```
 optional arguments:

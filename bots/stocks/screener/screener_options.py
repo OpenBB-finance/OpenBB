@@ -3,7 +3,7 @@ import os
 from bots import config_discordbot as cfg
 
 presets_path = os.path.join(
-    cfg.GST_PATH, "gamestonk_terminal", "stocks", "screener", "presets", ""
+    cfg.GST_PATH, "openbb_terminal", "stocks", "screener", "presets", ""
 )
 
 d_signals_desc = {

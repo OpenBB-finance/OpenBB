@@ -7,7 +7,7 @@ Submodules
 gamestonk\_terminal.stocks.quantitative\_analysis.factors\_model module
 -----------------------------------------------------------------------
 
-.. automodule:: gamestonk_terminal.stocks.quantitative_analysis.factors_model
+.. automodule:: openbb_terminal.stocks.quantitative_analysis.factors_model
    :members:
    :undoc-members:
    :show-inheritance:
@@ -15,7 +15,7 @@ gamestonk\_terminal.stocks.quantitative\_analysis.factors\_model module
 gamestonk\_terminal.stocks.quantitative\_analysis.factors\_view module
 ----------------------------------------------------------------------
 
-.. automodule:: gamestonk_terminal.stocks.quantitative_analysis.factors_view
+.. automodule:: openbb_terminal.stocks.quantitative_analysis.factors_view
    :members:
    :undoc-members:
    :show-inheritance:
@@ -23,7 +23,7 @@ gamestonk\_terminal.stocks.quantitative\_analysis.factors\_view module
 gamestonk\_terminal.stocks.quantitative\_analysis.qa\_controller module
 -----------------------------------------------------------------------
 
-.. automodule:: gamestonk_terminal.stocks.quantitative_analysis.qa_controller
+.. automodule:: openbb_terminal.stocks.quantitative_analysis.qa_controller
    :members:
    :undoc-members:
    :show-inheritance:
@@ -31,7 +31,7 @@ gamestonk\_terminal.stocks.quantitative\_analysis.qa\_controller module
 Module contents
 ---------------
 
-.. automodule:: gamestonk_terminal.stocks.quantitative_analysis
+.. automodule:: openbb_terminal.stocks.quantitative_analysis
    :members:
    :undoc-members:
    :show-inheritance:
