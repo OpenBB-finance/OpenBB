@@ -343,7 +343,7 @@ The library `requests` doesn't support : `brotli` comnpression.
 
 Unless `brotli` library is installed in the environment.
 
-Plus `brotli` is not in `GamestonkTerminal` requirements.
+Plus `brotli` is not in `OpenBBTerminal` requirements.
 
 So if both of these conditions are fulfilled :
 

@@ -32,10 +32,10 @@ where 'qwerty123456' corresponds to each individual API key. Note:
 
 In order to run the docker container with the environment variables, make sure to edit with whatever keys you have and
 then run the container (`path/to/setenv`) should be replaced with wherever this file was created). If you have
-downloaded the entire repository and your current directory is `GamestonkTerminal`, then the path would be `docker/setenv`
+downloaded the entire repository and your current directory is `OpenBBTerminal`, then the path would be `docker/setenv`
 
 ```bash
-docker run -it --rm --env-file=path/to/setenv ghcr.io/gamestonkterminal/gst-poetry:latest
+docker run -it --rm --env-file=path/to/setenv ghcr.io/OpenBBTerminal/gst-poetry:latest
 ```
 
 ## Display
@@ -67,7 +67,7 @@ xhost + $IP
 Now we can run the docker container, adding the display to the environment:
 
 ```bach
-docker run -it --rm --env-file=path/to/setenv -e DISPLAY=$IP:0 ghcr.io/gamestonkterminal/gst-poetry:latest
+docker run -it --rm --env-file=path/to/setenv -e DISPLAY=$IP:0 ghcr.io/OpenBBTerminal/gst-poetry:latest
 ```
 
 This container will be able to display all the same plots as the terminal interface.

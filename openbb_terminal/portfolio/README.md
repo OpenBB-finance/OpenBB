@@ -1,4 +1,4 @@
-# Portfolio [>>](https://gamestonkterminal.github.io/GamestonkTerminal/portfolio/)
+# Portfolio [>>](https://openbb-finance.github.io/OpenBBTerminal/portfolio/)
 
 Command|Description
 ------ | ------------

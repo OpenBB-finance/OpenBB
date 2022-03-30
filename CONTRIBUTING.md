@@ -13,15 +13,33 @@ Use your best judgment, and feel free to propose changes to this document in a p
 
 [Development Process](#development-process)
 
-1. [Select feature](#select-feature)
-2. [Understand Code Structure](#understand-code-structure)
-3. [Follow Coding Guidelines](#follow-coding-guidelines)
-4. [Remember Coding Style](#remember-coding-style)
-5. [Write Code and Commit](#write-code-and-commit)
-6. [Add a Test](#add-a-test)
-7. [Add Documentation](#add-documentation)
-8. [Open a Pull Request](#open-a-pull-request)
-9. [Review Process](#review-process)
+- [CONTRIBUTING](#contributing)
+  - [How Can I Contribute?](#how-can-i-contribute)
+    - [Community](#community)
+    - [Retail Trader](#retail-trader)
+    - [Software Developer](#software-developer)
+  - [Development Process](#development-process)
+    - [Select Feature](#select-feature)
+  - [Understand Code Structure](#understand-code-structure)
+  - [Follow Coding Guidelines](#follow-coding-guidelines)
+    - [Model](#model)
+      - [View](#view)
+    - [Controller](#controller)
+  - [Remember Coding Style](#remember-coding-style)
+    - [Naming Convention](#naming-convention)
+    - [Docstrings](#docstrings)
+    - [Linters](#linters)
+  - [Write Code and Commit](#write-code-and-commit)
+    - [Pre Commit Hooks](#pre-commit-hooks)
+    - [Coding](#coding)
+    - [Git Process](#git-process)
+  - [Add a Test](#add-a-test)
+    - [Pytest](#pytest)
+    - [Coverage](#coverage)
+    - [VCR](#vcr)
+  - [Add Documentation](#add-documentation)
+  - [Open a Pull Request](#open-a-pull-request)
+  - [Review Process](#review-process)
 
 ## How Can I Contribute?
 
@@ -67,8 +85,8 @@ repository is live:
 ### Select Feature
 
 - Pick a feature you want to implement or a bug.
-- If out are out of ideas, look into our [issues](https://github.com/GamestonkTerminal/GamestonkTerminal/issues) or
-  search for [`# TODO`](https://www.tickgit.com/browse?repo=github.com/GamestonkTerminal/GamestonkTerminal&branch=main) in
+- If out are out of ideas, look into our [issues](https://github.com/OpenBB-finance/OpenBBTerminal/issues) or
+  search for [`# TODO`](https://www.tickgit.com/browse?repo=github.com/OpenBB-finance/OpenBBTerminal&branch=main) in
   our repository.
 - Feel free to discuss what you'll be working on via discord <https://discord.gg/Up2QGbMKHY>, to avoid duplicate work.
 
@@ -462,7 +480,7 @@ speeds up the time it takes to run tests. To use VCRPY add **@pytest.mark.vcr** 
 - **High-level documentation**:
   - Add a row to the table on the README of the corresponding context/folder.
   - E.g. if you are adding `pipo` feature to `discovery` menu under `stocks` context, you need to go into the corresponding
-    [README](https://github.com/GamestonkTerminal/GamestonkTerminal/blob/main/openbb_terminal/stocks/discovery/README.md)
+    [README](https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/openbb_terminal/stocks/discovery/README.md)
     and add a new row to the table, like:
 
 | Command | Description | Source                        |

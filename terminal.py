@@ -203,9 +203,15 @@ class TerminalController(BaseController):
 
     def call_jupyter(self, _):
         """Process jupyter command"""
-        from openbb_terminal.jupyter.jupyter_controller import JupyterController
+        if not obbff.PACKAGED_APPLICATION:
+            from openbb_terminal.jupyter.jupyter_controller import JupyterController
 
-        self.queue = self.load_class(JupyterController, self.queue)
+            self.queue = self.load_class(JupyterController, self.queue)
+        else:
+            console.print("This feature is coming soon.")
+            console.print(
+                "Use the source code and an Anaconda environment if you are familiar with Python."
+            )
 
     def call_alternative(self, _):
         """Process alternative command"""
@@ -741,7 +747,7 @@ def main(
         console.print("[green]OpenBB Terminal Integrated Tests:\n[/green]")
         for file in test_files:
             file = file.replace("//", "/")
-            file_name = file[file.rfind("GamestonkTerminal") :].replace(  # noqa: E203
+            file_name = file[file.rfind("OpenBBTerminal") :].replace(  # noqa: E203
                 "\\", "/"
             )
             console.print(f"{file_name}  {((i/length)*100):.1f}%")
@@ -757,7 +763,7 @@ def main(
         if fails:
             console.print("\n[red]Failures:[/red]\n")
             for key, value in fails.items():
-                file_name = key[key.rfind("GamestonkTerminal") :].replace(  # noqa: E203
+                file_name = key[key.rfind("OpenBBTerminal") :].replace(  # noqa: E203
                     "\\", "/"
                 )
                 logger.error("%s: %s failed", file_name, value)

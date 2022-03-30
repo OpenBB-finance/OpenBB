@@ -1,6 +1,6 @@
 FROM python:3.8-slim-buster
 
-LABEL org.opencontainers.image.source https://github.com/GamestonkTerminal/GamestonkTerminal
+LABEL org.opencontainers.image.source https://github.com/OpenBB-finance/OpenBBTerminal
 
 RUN  apt-get update && apt-get -y install --no-install-recommends \
   gcc \

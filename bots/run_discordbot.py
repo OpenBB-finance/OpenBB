@@ -56,7 +56,7 @@ async def write_root(request: Request):
 
 activity = disnake.Activity(
     type=disnake.ActivityType.watching,
-    name="OpenBB Terminal: https://github.com/GamestonkTerminal/GamestonkTerminal",
+    name="OpenBB Terminal: https://github.com/OpenBB-finance/OpenBBTerminal",
 )
 
 

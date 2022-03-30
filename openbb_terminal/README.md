@@ -32,40 +32,44 @@ If you want to install the terminal using Python ignore the User section and jum
 If you are interested in running the terminal via the installer, these steps will guide you through the installation
 process and explain to you what each message means.
 
-### Installing Process
+### Windows
 
-The process starts off by downloading the installer, see below the most recent release:
+The process starts off by downloading the installer, see below for how to download the most recent release:
 
-- Windows: [LINK TO INSTALLER FILE](https://github.com/GamestonkTerminal/GamestonkTerminal/)
-- macOS: [LINK TO INSTALLER FILE](https://github.com/GamestonkTerminal/GamestonkTerminal/)
+- Go to [the following link](https://github.com/OpenBB-finance/OpenBBTerminal/releases)
+- Click on the most recent release
+- Click on the ".exe" file:
 
-This downloads the installer to your computer and by clicking on the created file, you are able to start
-the installation process.
+Then follow these steps:
 
-**_STILL NEED TO ADD WALKTHROUGH AND IMAGES_**
+| Installation instructions                                                                                                                                                                                                                                                                                               | Illustration                                                                                                                                |
+|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:--------------------------------------------------------------------------------------------------------------------------------------------|
+| <div style="width:300px">Double click the .exe file that got downloaded to your "Downloads" folder. You will most likely receive the error on the right stating "Windows protected your PC". This is because the installer is still in beta phase, and the team has not yet requested verification from Windows. </div> | <p align="center"><img src="../images/installation/windows/windows_protected_your_pc.png" alt="Windows protected your PC" width="500"/></p> |
+| <div style="width:300px">Click on "More info" and select "Run anyway" to start the installation process. Proceed by following the steps. Do note that if you wish to install the application to 'Program Files' that you will have to run the resulting application as Administrator.                                   | <p align="center"><img src="../images/installation/windows/run_anyway.png" alt="Run anyway" width="500"/></p>                               |
+ | <div style="width:300px">By clicking on the application that appeared on your Desktop, you are able to run the Terminal. The first time this takes a bit longer to load.                                                                                                                                                | <p align="center"><img src="../images/installation/windows/run_the_terminal.png" alt="Run the terminal" width="500"/></p>                   |
 
-| Note about "Malicious Software" warning                                                                                                                                                                 |
-| :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| You will most likely see one of the following images displayed below. This is because the installer is still in beta phase, and the team has not requested verification from neither Windows nor Apple. |
+### macOS
 
-**_STILL NEED TO ADD IMAGES_**
+The process starts off by downloading the installer, see below for how to download the most recent release:
 
-To mark the application as safe for usage, use the following steps:
+- Go to [the following link](https://github.com/OpenBB-finance/OpenBBTerminal/releases)
+- Click on the most recent release
+- Click on the ".dmg" file:
 
-#### On Windows
+Installation instructions:
 
-**_STILL NEED TO ADD CONTENT_**
+1. Open the .dmg file that got downloaded to your "Downloads" folder.
+2. Drag the folder into your "Applications" folder. This should take some time as it is extracting the
+files from the .dmg file.
+3. Open the folder and click on the "OpenBB Terminal" file, this should run the application.
 
-#### On macOS
+<img src="../images/installation/macos/mac_os_installation.png" alt="mac os installation" width=800/>
 
-1. Run the file. You will most likely receive a message that macOS was not able to check whether the application
-   contains malicious software. The reasoning for this is described in the note above.
-2. Go to macOS System Preferences > Security & Privacy > General. You should see see a message at the bottom that says
-   that the file "_was blocked from use because it is not from an identified developer_".
-3. Click on the button "Allow anyway"
-4. You should now be able to use the application.
-
-_WHAT ELSE?_
+| Note about "Cannot check it for malicious software" warning                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | Illustration                                                                                                                      |
+|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:----------------------------------------------------------------------------------------------------------------------------------|
+| <div style="width:300px">It is possible you will see the image displayed on the right. This is because the installer is still in beta phase, and the team has not yet requested verification from Apple. Please see below how to correct for this.</div>                                                                                                                                                                                                                                                                                                                                                                                                                                               | <p align="center"><img src="../images/installation/macos/malicious_software_warning.png" alt="software warning" width="500"/></p> |
+| <div style="width:300px">**Option 1 (via MacOS settings):** <br><br> 1) Run the file. You will most likely receive a message that macOS was not able to check whether the application contains malicious software. The reasoning for this is described above. <br> 2) Go to System Preferences > Security & Privacy > General. You should see a message at the bottom that says that the file "was blocked from use because it is not from an identified developer". Click on “Allow anyway” or "Open anyway".<br> 3) If you receive the above message multiple times on different files, keep allowing the files via Step 2 or use Option 2.<br> 4) You should now be able to launch the application. | <p align="center"><img src="../images/installation/macos/option_one_warning_fix.png" alt="option 1 warning fix" width="500"/></p> |
+ | <div style="width:300px">**Option 2 (via Terminal):** <br><br> 1) Run the file. You will most likely receive a message that macOS was not able to check whether the application contains malicious software. The reasoning for this is described in the note above. <br> 2) Open the "Terminal" application. This can be done by using Command (⌘) + Space and typing "terminal". <br> 3) Within this "Terminal" application, assuming you moved the file to the Applications folder, enter the following command: `xattr -r -d com.apple.quarantine "/Applications/OpenBB Terminal"`<br> 4) You should now be able to launch the application.                                                         | <p align="center"><img src="../images/installation/macos/option_two_warning_fix.png" alt="option 2 warning fix" width="500"/></p> |
 
 ## Developer
 
@@ -104,7 +108,7 @@ These steps are common in all operating systems (Windows with or without WSL, Ma
 This project supports Python 3.7, 3.8 and 3.9.
 
 Our current recommendation is to use this project with Anaconda's Python distribution - either full
-[**Anaconda3 Latest**](https://repo.anaconda.com/archive/) or [**Miniconda3 Latest**](https://repo.anaconda.com/archive/).
+[**Anaconda3 Latest**](https://www.anaconda.com/products/distribution) or [**Miniconda3 Latest**](https://docs.conda.io/en/latest/miniconda.html).
 Several features in this project utilize Machine Learning. Machine Learning Python dependencies are optional.
 If you decided to add Machine Learning features at a later point, you will likely have better user experience with
 Anaconda's Python distribution.
@@ -127,13 +131,13 @@ Anaconda's Python distribution.
 
 3. Clone the Project
 
-   - Via HTTPS: `git clone https://github.com/GamestonkTerminal/GamestonkTerminal.git`
-   - via SSH: `git clone git@github.com:GamestonkTerminal/GamestonkTerminal.git`
+   - Via HTTPS: `git clone https://github.com/OpenBB-finance/OpenBBTerminal.git`
+   - via SSH: `git clone git@github.com:OpenBB-finance/OpenBBTerminal.git`
 
 4. Navigate into the project's folder
 
    ```bash
-   cd GamestonkTerminal/
+   cd OpenBBTerminal/
    ```
 
 5. Create Environment
@@ -166,7 +170,7 @@ Anaconda's Python distribution.
    pip install -r requirements.txt
    ```
 
-8. You're ready to Gamestonk it!
+8. You're ready to use the terminal!
 
    ```bash
    python terminal.py
@@ -174,7 +178,7 @@ Anaconda's Python distribution.
 
 9. (Windows - Optional and **only if you are not using WSL**) Speeding up opening process in the future
 
-   After you've installed OpenBB Terminal, you'll find a file named "Gamestonk Terminal.bat". You can use this file
+   After you've installed OpenBB Terminal, you'll find a file named "OpenBB Terminal.bat". You can use this file
    to open OpenBB Terminal quicker. This file can be moved to your desktop if you'd like. If you run into issues
    while trying to run the batch file. If you run into issues with the batch files, edit the file and check to see if
    the directories match up. This file assumes you used the default directories when installing.
@@ -188,7 +192,7 @@ Anaconda's Python distribution.
 before you call `python terminal.py` again.
 
 **TROUBLESHOOT:** If you are having troubles to install, check our _newest_
-<a href="https://github.com/GamestonkTerminal/GamestonkTerminal/blob/master/TROUBLESHOOT.md"><strong>troubleshoot page</strong></a>. You can also reach for help on our [discord](https://discord.gg/Up2QGbMKHY).
+<a href="https://github.com/OpenBB-finance/OpenBBTerminal/blob/master/TROUBLESHOOT.md"><strong>troubleshoot page</strong></a>. You can also reach for help on our [discord](https://discord.gg/Up2QGbMKHY).
 
 ### Advanced User Install - Machine Learning
 
@@ -235,7 +239,7 @@ git stash
 
 Then, re-run `poetry install` or `pip install -r requirements.txt` to get any new dependencies.
 
-Once installation is finished, you're ready to gamestonk.
+Once installation is finished, you're ready to openbb.
 
 If you `stashed` your changes previously, you can un-stash them with:
 
@@ -260,7 +264,7 @@ git stash pop
 2. Download the latest docker image.
 
    ```bash
-   docker pull ghcr.io/gamestonkterminal/gst-poetry:latest
+   docker pull ghcr.io/openbb-finance/openbbterminal-poetry:latest
    ```
 
    Upon running this the first time, you should see the various layers downloading (note the random series of letters numbers will vary). The first time this is run, it will take a few minutes. Subsequent updates will be much faster, as the changes will be in the MB instead of GB.
@@ -272,14 +276,14 @@ git stash pop
 
    ```text
    REPOSITORY                             TAG       IMAGE ID       CREATED        SIZE
-   ghcr.io/gamestonkterminal/gst-poetry   latest    e2bbeebcc73c   42 hours ago   2.02GB
+   ghcr.io/openbb-finance/openbbterminal-poetry   latest    b1409a304750   42 hours ago   2.29GB
    ```
 
 3. Run a container
 
    You are now ready to run the terminal (every time you want to use the terminal you need to run this command):
 
-   `docker run -it --rm ghcr.io/gamestonkterminal/gst-poetry:latest`
+   `docker run -it --rm ghcr.io/openbb-finance/openbbterminal-poetry:latest`
 
    This will open up the terminal in your command prompt or terminal. Note that this has provided now environment file,
    so you will not be able to view plots or use keys at this stage.
@@ -297,9 +301,9 @@ git stash pop
 
 For API keys, create the `setenv` file if it doesn't already exist.
 It will automatically get created on the first launch, and won't get committed to Git because it is on the `.gitignore`.
-Set the API keys [as explained here](https://github.com/GamestonkTerminal/GamestonkTerminal/blob/main/DOCKER_ADVANCED.md#environment-variables).
+Set the API keys [as explained here](https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/DOCKER_ADVANCED.md#environment-variables).
 Once you've put the API keys in that file, re-run the launch script, and it will use your API keys.
-There are a few things that still don't work, and you can see what works and what doesn't [here](https://github.com/CoconutMacaroon/GamestonkTerminal/blob/main/openbb_terminal_web/README.md#todo).
+There are a few things that still don't work, and you can see what works and what doesn't [here](https://github.com/CoconutMacaroon/OpenBBTerminal/blob/main/openbb_terminal_web/README.md#todo).
 
 ### API Keys
 
@@ -309,12 +313,12 @@ The table below shows the ones where a key is necessary.
 The easiest way is of updating the keys is by using the terminal. You are able to directly set these variables from
 within the "keys" menu. This menu can be found on the first menu you see when opening the terminal.
 
-<img src="../images/api_keys_part_1.png" alt="API Keys 1" width="800"/>
+<img src="../images/installation/api_keys_part_1.png" alt="API Keys 1" width="800"/>
 
 Then, by typing the command on the left-hand side, followed by your API Key, you can set the key and use the commands
 attached to it.
 
-<img src="../images/api_keys_part_2.png" alt="API Keys 2" width="800"/>
+<img src="../images/installation/api_keys_part_2.png" alt="API Keys 2" width="800"/>
 
 When you have installed the terminal through Anaconda & Python, you can use the environment variable to set your
 API Keys directly instead of using the Terminal, for the variable name in the code one just needs to

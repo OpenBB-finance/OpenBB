@@ -85,7 +85,7 @@ jobs:
 
       - name: Run tests (Bash)
         shell: bash -l {0}
-        run: pytest tests/
+        run: pytest tests/ -m "not bots"
 
       - name: Start Terminal and exit
         shell: bash -l {0}

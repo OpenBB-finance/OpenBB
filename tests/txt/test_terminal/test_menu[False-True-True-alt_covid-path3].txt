@@ -1,4 +1,4 @@
 [green]OpenBB Terminal Integrated Tests:
 [/green]
-GamestonkTerminal/scripts/test_alt_covid.openbb  0.0%
+OpenBBTerminal/scripts/test_alt_covid.openbb  0.0%
 Summary: [green]Successes: 1[/green] [red]Failures: 0[/red]

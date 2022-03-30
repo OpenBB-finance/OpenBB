@@ -44,7 +44,7 @@ Check the available commands with /cmds
     markdown.add(
         telebot.types.InlineKeyboardButton(
             "Star us on GitHub",
-            url="https://github.com/GamestonkTerminal/GamestonkTerminal",
+            url="https://github.com/OpenBB-finance/OpenBBTerminal",
         )
     )
     markdown.add(

@@ -24,11 +24,11 @@ pathex = os.path.join(
 # Get latest commit
 commit_hash = get_commit_hash()
 build_assets_folder = os.path.join(os.getcwd(), "build", "pyinstaller")
-default_feature_flags_path = os.path.join(build_assets_folder, "OBBFF_DEFAULTS.json")
+default_feature_flags_path = os.path.join(build_assets_folder, "OPENBB_DEFAULTS.json")
 with open(default_feature_flags_path, "r") as f:
     default_gtff = json.load(f)
 
-default_gtff["OBBFF_LOGGING_COMMIT_HASH"] = commit_hash
+default_gtff["OPENBB_LOGGING_COMMIT_HASH"] = commit_hash
 with open(default_feature_flags_path, "w") as f:
     json.dump(default_gtff, f, indent=4)
 
@@ -40,11 +40,16 @@ added_files = [
     ("property_cached", "property_cached"),
     ("user_agent", "user_agent"),
     ("vaderSentiment", "vaderSentiment"),
+    (os.path.join("frozendict", "VERSION"), "frozendict"),
     (
-        os.path.join("frozendict", "VERSION"),
-        "frozendict",
+        os.path.join(pathex, "linearmodels", "datasets"),
+        os.path.join("linearmodels", "datasets"),
     ),
-    ("OBBFF_DEFAULTS.json", "openbb_terminal"),
+    (
+        os.path.join(pathex, "statsmodels", "datasets"),
+        os.path.join("statsmodels", "datasets"),
+    ),
+    ("OPENBB_DEFAULTS.json", "openbb_terminal"),
 ]
 
 # Python libraries that are explicitly pulled into the bundle
@@ -56,6 +61,7 @@ hidden_imports = [
     "sklearn.neighbors._partition_nodes",
     "squarify",
     "linearmodels",
+    "statsmodels",
     "user_agent",
     "vaderSentiment",
     "frozendict",
@@ -126,7 +132,7 @@ elif build_type == "folder":
 # Platform specific settings
 if is_win:
     splash = Splash(
-        os.path.join(os.getcwd(), "images", "splashscreen.png"),
+        os.path.join(os.getcwd(), "images", "openbb_splashscreen.png"),
         binaries=a.binaries,
         datas=a.datas,
         text_pos=(200, 400),
@@ -134,12 +140,10 @@ if is_win:
         text_color="white",
     )
     exe_args += [splash, splash.binaries]
-    exe_kwargs["icon"] = (os.path.join(os.getcwd(), "images", "gst_app.ico"),)
+    exe_kwargs["icon"] = (os.path.join(os.getcwd(), "images", "openbb_icon.ico"),)
 
 if is_darwin:
-    exe_kwargs["icon"] = (
-        os.path.join(os.getcwd(), "images", "GamestonkTerminal.icns"),
-    )
+    exe_kwargs["icon"] = (os.path.join(os.getcwd(), "images", "openbb.icns"),)
 
 exe = EXE(*exe_args, **exe_kwargs)
 

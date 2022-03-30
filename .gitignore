@@ -10,6 +10,7 @@ env/
 venv/
 !notebooks/jupyter/.gitkeep
 .python-version
+.mypy_cache
 iframe_figures/
 exports/*
 .idea

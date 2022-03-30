@@ -4,7 +4,7 @@ test_alt_covid.gst  0.0%
 
 [red]Failures:[/red]
 
-scripts/test_alt_covid.gst: Can't overwrite existing cassette ('/Users/colindelahunty/Desktop/GamestonkTerminal/tests/openbb_terminal/cassettes/test_menu/test_menu[False-True-alt_covid-path2].yaml') in your current record mode ('none').
+scripts/test_alt_covid.gst: Can't overwrite existing cassette ('/Users/colindelahunty/Desktop/OpenBBTerminal/tests/openbb_terminal/cassettes/test_menu/test_menu[False-True-alt_covid-path2].yaml') in your current record mode ('none').
 No match for the request (<Request (GET) https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv>) was found.
 No similar requests, that have not been played, found.
 

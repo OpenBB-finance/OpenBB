@@ -20,7 +20,7 @@
 
 ## How to add presets
 
-1. Go to the folder GamestonkTerminal/openbb_terminal/screener/presets.
+1. Go to the folder OpenBBTerminal/openbb_terminal/screener/presets.
 
 2. There should be a `README.md` file and multiple `.ini` files. One of these `.ini` files should be named `template.ini`.
 
@@ -70,8 +70,8 @@
 
 ## template
 
-- **Author of preset:** GamestonkTerminal
-- **Contact:** <https://github.com/DidierRLopes/GamestonkTerminal#contacts>
+- **Author of preset:** OpenBBTerminal
+- **Contact:** <https://github.com/OpenBB-finance/OpenBBTerminal>
 - **Description:** Template with all available filters and their options menu. More information can be found in
   <https://finviz.com/help/screener.ashx> and <https://finviz.com/help/technical-analysis/charts-patterns.ashx>
 

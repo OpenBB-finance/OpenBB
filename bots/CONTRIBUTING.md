@@ -15,7 +15,7 @@ First off, thanks for taking the time to contribute (or at least read the Contri
 The following is a set of guidelines for contributing to OpenBB Terminal. These are mostly guidelines, not rules.
 Use your best judgment, and feel free to propose changes to this document in a pull request.
 
-The [Github Discord Bot board](https://github.com/GamestonkTerminal/GamestonkTerminal/projects/4) will display the
+The [Github Discord Bot board](https://github.com/OpenBB-finance/OpenBBTerminal/projects/4) will display the
 tickets we're currently working on, or have planned to work on. As a first step towards contribution, you should look
 into what is there to implement or reach out to the community in discord and ask what they want/need. For more
 information reach out to @lardigalltomhistoria or @SexyYear on discord.

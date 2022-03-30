@@ -42,6 +42,7 @@ def no_suppress():
     yield
 
 
+@pytest.mark.skip
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
@@ -49,8 +50,8 @@ def no_suppress():
     [
         (True, False, False, None, None),
         (False, False, False, None, ["scripts/test_alt_covid.openbb"]),
-        (False, True, False, "alt_covid", ["scripts/"]),
-        (False, True, True, "alt_covid", ["scripts/"]),
+        #       (False, True, False, "alt_covid", ["scripts/"]),
+        #       (False, True, True, "alt_covid", ["scripts/"]),
     ],
 )
 def test_menu(mocker, debug, test, filtert, path, verbose):

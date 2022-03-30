@@ -2,8 +2,8 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>OpenBB Terminal</title>
-    <link>https://gamestonkterminal.github.io/GamestonkTerminal/stocks/discover_stocks/</link>
+    <link>https://OpenBBTerminal.github.io/OpenBBTerminal/stocks/discover_stocks/</link>
     <description>Recent content on OpenBB Terminal</description>
-    <generator>Hugo -- gohugo.io</generator><atom:link href="https://gamestonkterminal.github.io/GamestonkTerminal/stocks/discover_stocks/index.xml" rel="self" type="application/rss+xml" />
+    <generator>Hugo -- gohugo.io</generator><atom:link href="https://OpenBBTerminal.github.io/OpenBBTerminal/stocks/discover_stocks/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>
