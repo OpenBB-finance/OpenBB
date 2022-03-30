@@ -5,14 +5,14 @@ FROM debian:bullseye-slim
 RUN apt-get update && apt-get install git wget python3 python3-pip -y
 
 # Download and uncrompress tarball
-RUN mkdir GamestonkTerminal && wget https://github.com/GamestonkTerminal/GamestonkTerminal/tarball/master.tar.gz -O - | tar -xz -C GamestonkTerminal --strip-components 1
-WORKDIR /GamestonkTerminal
+RUN mkdir OpenBBTerminal && wget https://github.com/OpenBB-finance/OpenBBTerminal/tarball/master.tar.gz -O - | tar -xz -C OpenBBTerminal --strip-components 1
+WORKDIR /OpenBBTerminal
 
 # Download its dependicies using pip
 RUN pip install -r requirements-full.txt && pip cache purge
 
-# Create a little script to start the GamestonkTerminal
-RUN printf '#!/bin/sh\npython3 /GamestonkTerminal/terminal.py\n' > /bin/run && chmod +x /bin/run
+# Create a little script to start the OpenBBTerminal
+RUN printf '#!/bin/sh\npython3 /OpenBBTerminal/terminal.py\n' > /bin/run && chmod +x /bin/run
 
 # Put our custom index.html and .gotty into the root directory of the container
 COPY index.html /index.html

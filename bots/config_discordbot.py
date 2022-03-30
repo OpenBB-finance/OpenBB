@@ -63,8 +63,8 @@ GST_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 gst_imgur = pyimgur.Imgur(IMGUR_CLIENT_ID)
 
 AUTHOR_NAME = "Gamestonk Terminal"
-AUTHOR_URL = "https://github.com/GamestonkTerminal/GamestonkTerminal"
+AUTHOR_URL = "https://github.com/OpenBB-finance/OpenBBTerminal"
 AUTHOR_ICON_URL = (
-    "https://github.com/GamestonkTerminal/GamestonkTerminal/"
+    "https://github.com/OpenBB-finance/OpenBBTerminal/"
     "blob/main/images/gst_logo_green_white_background.png?raw=true"
 )

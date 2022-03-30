@@ -19,7 +19,7 @@ class GenericCommands(discord.ext.commands.Cog):
         links = (
             "Join our community on discord: https://discord.gg/Up2QGbMKHY\n"
             "Follow our twitter for updates: https://twitter.com/gamestonkt\n"
-            "Access our landing page: https://gamestonkterminal.vercel.app\n\n"
+            "Access our landing page: https://openbb.co\n\n"
             "**Main maintainers:** DidierRLopes, jmaslek, aia\n"
         )
         partnerships = (

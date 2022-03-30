@@ -7,9 +7,9 @@
     "jupyterlab",
     "jupyterlab-extension"
   ],
-  "homepage": "https://github.com/GamestonkTerminal/GamestonkTerminal",
+  "homepage": "https://github.com/OpenBB-finance/OpenBBTerminal",
   "bugs": {
-    "url": "https://github.com/GamestonkTerminal/GamestonkTerminal/issues"
+    "url": "https://github.com/OpenBB-finance/OpenBBTerminal/issues"
   },
   "license": "MIT",
   "author": {
@@ -26,7 +26,7 @@
   "style": "style/index.css",
   "repository": {
     "type": "git",
-    "url": "https://github.com/GamestonkTerminal/GamestonkTerminal.git"
+    "url": "https://github.com/OpenBB-finance/OpenBBTerminal.git"
   },
   "scripts": {
     "build": "jlpm run build:lib && jlpm run build:labextension:dev",

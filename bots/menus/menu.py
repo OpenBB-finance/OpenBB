@@ -40,7 +40,7 @@ class Menu(disnake.ui.View):
         if not hasattr(self, "link_button"):
             self.link_button: disnake.ui.Button = disnake.ui.Button(
                 style=disnake.ButtonStyle.url,
-                url="https://github.com/GamestonkTerminal/GamestonkTerminal",
+                url="https://github.com/OpenBB-finance/OpenBBTerminal",
                 label="Site",
                 row=0,
             )

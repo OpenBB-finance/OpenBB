@@ -59,9 +59,9 @@ class FormatterWithExceptions(logging.Formatter):
                 s_list.append("suspected_ip")
             elif "@" in word and "." in word:
                 s_list.append("suspected_email")
-            elif os.sep in word and f"GamestonkTerminal{os.sep}" in word:
+            elif os.sep in word and f"OpenBBTerminal{os.sep}" in word:
                 s_list.append(
-                    word.split(f"GamestonkTerminal{os.sep}")[1]
+                    word.split(f"OpenBBTerminal{os.sep}")[1]
                     .replace('"', "")
                     .replace("'", "")
                 )

@@ -16,10 +16,10 @@
 
 # Checklist:
 
-- [ ] Update [our Hugo documentation](https://gamestonkterminal.github.io/GamestonkTerminal/) following [these guidelines](https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/website).
-- [ ] Update our tests following [these guidelines](https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/tests).
-- [ ] Make sure you are following our [CONTRIBUTING guidelines](https://github.com/GamestonkTerminal/GamestonkTerminal/blob/main/CONTRIBUTING.md).
-- [ ] If a feature was added make sure to add it to the corresponding [scripts file](https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/scripts).
+- [ ] Update [our Hugo documentation](https://openbb-finance.github.io/OpenBBTerminal/) following [these guidelines](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/website).
+- [ ] Update our tests following [these guidelines](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/tests).
+- [ ] Make sure you are following our [CONTRIBUTING guidelines](https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/CONTRIBUTING.md).
+- [ ] If a feature was added make sure to add it to the corresponding [scripts file](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/scripts).
 
 
 # Others

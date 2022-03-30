@@ -28,8 +28,8 @@ jobs:
         export GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
         export GITHUB_PER_PAGE=15
         export POSTGRES_CONNECTION=${{ secrets.POSTGRES_CONNECTION }}
-        mergestat pgsync -v pull_requests "SELECT * FROM github_repo_prs('GamestonkTerminal/GamestonkTerminal')"
-        mergestat pgsync -v issues "SELECT * FROM github_repo_issues('GamestonkTerminal/GamestonkTerminal')"
-        mergestat pgsync -v repos "SELECT * FROM github_org_repos('GamestonkTerminal')"
-        mergestat pgsync -v commit_stats "SELECT * FROM commits('https://github.com/GamestonkTerminal/GamestonkTerminal'), stats('https://github.com/GamestonkTerminal/GamestonkTerminal', commits.hash)"
-        mergestat pgsync -v stargazers "SELECT * FROM github_stargazers('GamestonkTerminal/GamestonkTerminal')"
+        mergestat pgsync -v pull_requests "SELECT * FROM github_repo_prs('OpenBB-finance/OpenBBTerminal')"
+        mergestat pgsync -v issues "SELECT * FROM github_repo_issues('OpenBB-finance/OpenBBTerminal')"
+        mergestat pgsync -v repos "SELECT * FROM github_org_repos('OpenBBTerminal')"
+        mergestat pgsync -v commit_stats "SELECT * FROM commits('https://github.com/OpenBB-finance/OpenBBTerminal'), stats('https://github.com/OpenBB-finance/OpenBBTerminal', commits.hash)"
+        mergestat pgsync -v stargazers "SELECT * FROM github_stargazers('OpenBB-finance/OpenBBTerminal')"
