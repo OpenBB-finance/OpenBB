@@ -76,7 +76,7 @@ def futures_command():
             ]
             fig = imps.plot_df(
                 df_pg,
-                fig_size=(620, (40 + (45 * len(df.index)))),
+                fig_size=(620, (40 + (33 * len(df_pg.index)))),
                 col_width=[4.2, 1.8, 2.5],
                 tbl_header=imps.PLT_TBL_HEADER,
                 tbl_cells=imps.PLT_TBL_CELLS,
@@ -147,7 +147,7 @@ def futures_command():
     else:
         fig = imps.plot_df(
             df,
-            fig_size=(620, (40 + (45 * len(df.index)))),
+            fig_size=(620, (40 + (33 * len(df.index)))),
             col_width=[4.2, 1.8, 2.5],
             tbl_header=imps.PLT_TBL_HEADER,
             tbl_cells=imps.PLT_TBL_CELLS,

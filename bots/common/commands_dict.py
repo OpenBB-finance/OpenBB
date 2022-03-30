@@ -58,6 +58,7 @@ from bots.stocks.government.topsells import topsells_command
 from bots.stocks.insider.lins import lins_command
 from bots.stocks.options.cc_hist import cc_hist_command
 from bots.stocks.options.hist import hist_command
+from bots.stocks.options.itm import itm_command
 from bots.stocks.options.iv import iv_command
 from bots.stocks.options.oi import oi_command
 from bots.stocks.options.opt_chain import chain_command
@@ -102,9 +103,8 @@ from bots.stocks.technical_analysis.view import view_command
 re_int = re.compile(r"^[1-9]\d*$")
 re_float = re.compile(r"^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$")
 re_name = re.compile(r"(?s).*")
-#  re.compile(r"/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/")
-re_date = re_name
 re_window = re.compile(r"(?s).*")
+re_date = re_name
 
 gov_type = ["congress", "senate", "house"]
 
@@ -562,6 +562,10 @@ commands = {
     },
     "opt_iv": {
         "function": iv_command,
+        "required": {"ticker": tickers},
+    },
+    "opt_itm": {
+        "function": itm_command,
         "required": {"ticker": tickers},
     },
     "opt_smile": {
