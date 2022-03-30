@@ -67,7 +67,7 @@ def print_and_record_reddit_post(
         f"{round(100 * submission.upvote_ratio)}%",
         s_all_awards,
     ]
-    df = pd.DataFrame(data, columns=columns)
+    df = pd.DataFrame([data], columns=columns)
     print_rich_table(
         df, headers=list(df.columns), show_index=False, title="Reddit Submission"
     )
