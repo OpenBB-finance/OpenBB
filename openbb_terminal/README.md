@@ -313,12 +313,12 @@ The table below shows the ones where a key is necessary.
 The easiest way is of updating the keys is by using the terminal. You are able to directly set these variables from
 within the "keys" menu. This menu can be found on the first menu you see when opening the terminal.
 
-<img src="../images/api_keys_part_1.png" alt="API Keys 1" width="800"/>
+<img src="../images/installation/api_keys_part_1.png" alt="API Keys 1" width="800"/>
 
 Then, by typing the command on the left-hand side, followed by your API Key, you can set the key and use the commands
 attached to it.
 
-<img src="../images/api_keys_part_2.png" alt="API Keys 2" width="800"/>
+<img src="../images/installation/api_keys_part_2.png" alt="API Keys 2" width="800"/>
 
 When you have installed the terminal through Anaconda & Python, you can use the environment variable to set your
 API Keys directly instead of using the Terminal, for the variable name in the code one just needs to
