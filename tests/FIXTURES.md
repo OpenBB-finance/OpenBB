@@ -1,6 +1,6 @@
 # 1. OpenBB Terminal : `Unit Testing` - `Fixtures`
 
-In this document we will list custom `pytest fixtures` built in GamestonkTerminal and explain how they works.
+In this document we will list custom `pytest fixtures` built in OpenBBTerminal and explain how they works.
 
 
 ## 1.1. What is a `fixture` ?
@@ -19,11 +19,11 @@ pytest --fixtures
 This will include the :
 - `fixtures` available by default in `pytest`
 - `fixtures` defined by installed `pytest plugins`
-- custom `fixtures` built specially for this GamestonkTerminal
+- custom `fixtures` built specially for this OpenBBTerminal
 
 ## 1.3. Which are the custom `fixtures` ?
 
-The fixtures built for GamestonkTerminal are here to : make sure contributors are putting `test data file` in the right location.
+The fixtures built for OpenBBTerminal are here to : make sure contributors are putting `test data file` in the right location.
 
 Here we call `test data file` the files that you might use to store data.
 

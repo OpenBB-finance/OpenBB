@@ -1,4 +1,4 @@
-# Brokers [>>](https://gamestonkterminal.github.io/GamestonkTerminal/portfolio/brokers/)
+# Brokers [>>](https://openbb-finance.github.io/OpenBBTerminal/portfolio/brokers/)
 
 Command|Description|Source
 ------ | ------------|---

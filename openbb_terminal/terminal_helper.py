@@ -100,7 +100,7 @@ def about_us():
         + "\n"
         + "[cyan]Join our community on discord: [/cyan]https://discord.gg/Up2QGbMKHY\n"
         + "[cyan]Follow our twitter for updates: [/cyan]https://twitter.com/openbb_finance\n"
-        + "[cyan]Access our landing page: [/cyan]https://gamestonkterminal.github.io/GamestonkTerminal/\n"
+        + "[cyan]Access our landing page: [/cyan]https://openbb-finance.github.io/OpenBBTerminal/\n"
         + "\n"
         + "[yellow]Partnerships:[/yellow]\n"
         + "[cyan]FinBrain: [/cyan]https://finbrain.tech\n"

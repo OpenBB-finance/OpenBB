@@ -58,7 +58,7 @@ PLT_FIB_COLORWAY: List[Any] = [
 ]
 PLT_WATERMARK = dict(
     source=(
-        "https://raw.githubusercontent.com/GamestonkTerminal/GamestonkTerminal/main/images"
+        "https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/images"
         "/gst_logo_lockup_rGreen_with_letters_only.png"
     ),
     xref="paper",
