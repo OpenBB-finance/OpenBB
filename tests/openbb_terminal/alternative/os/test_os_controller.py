@@ -191,7 +191,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
 @pytest.mark.parametrize(
     "tested_func, other_args, mocked_func, called_args, called_kwargs",
     [
-		(
+        (
             "call_tr",
             [],
             "github_view.display_top_repos",

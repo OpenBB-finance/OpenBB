@@ -48,7 +48,7 @@ def display_star_history(
             console.print("[red]Expected list of one axis item./n[/red]")
             return
         (ax,) = external_axes
-    ax.plot(df.index, df["Stars"])
+    ax.plot(df["Date"], df["Stars"])
 
     ax.set_xlabel("Date")
     ax.set_ylabel("Stars")
