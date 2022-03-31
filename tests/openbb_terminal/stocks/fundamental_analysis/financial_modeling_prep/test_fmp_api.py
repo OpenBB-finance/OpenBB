@@ -3,8 +3,8 @@
 # IMPORTATION THIRDPARTY
 
 # IMPORTATION INTERNAL
-from openbb_terminal.helper_classes import ModelsNamespace as _models
-from openbb_terminal.stocks.fundamental_analysis.financial_modeling_prep import (
+from gamestonk_terminal.helper_classes import ModelsNamespace as _models
+from gamestonk_terminal.stocks.fundamental_analysis.financial_modeling_prep import (
     fmp_api,
 )
 

@@ -10,20 +10,20 @@ import numpy as np
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 
-from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.common.quantitative_analysis import qa_view, rolling_view
-from gamestonk_terminal.decorators import log_start_end
-from gamestonk_terminal.helper_funcs import (
+from openbb_terminal import feature_flags as gtff
+from openbb_terminal.common.quantitative_analysis import qa_view, rolling_view
+from openbb_terminal.decorators import log_start_end
+from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_FIGURES_ALLOWED,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
     check_proportion_range,
     parse_known_args_and_warn,
 )
-from gamestonk_terminal.menu import session
-from gamestonk_terminal.parent_classes import StockBaseController
-from gamestonk_terminal.rich_config import console
-from gamestonk_terminal.stocks.quantitative_analysis.factors_view import capm_view
+from openbb_terminal.menu import session
+from openbb_terminal.parent_classes import StockBaseController
+from openbb_terminal.rich_config import console
+from openbb_terminal.stocks.quantitative_analysis.factors_view import capm_view
 
 logger = logging.getLogger(__name__)
 

@@ -594,7 +594,7 @@ Loaded:[/info] {self.portfolio_name or None}
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            from gamestonk_terminal.common.quantitative_analysis import qa_view
+            from openbb_terminal.common.quantitative_analysis import qa_view
 
             if self.portfolio.empty:
                 console.print("[red]No portfolio loaded.[/red]\n")
@@ -643,7 +643,7 @@ Loaded:[/info] {self.portfolio_name or None}
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            from gamestonk_terminal.common.quantitative_analysis import qa_view
+            from openbb_terminal.common.quantitative_analysis import qa_view
 
             if self.portfolio.empty:
                 console.print("[red]No portfolio loaded.[/red]\n")
@@ -690,7 +690,7 @@ Loaded:[/info] {self.portfolio_name or None}
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            from gamestonk_terminal.common.quantitative_analysis import qa_view
+            from openbb_terminal.common.quantitative_analysis import qa_view
 
             if self.portfolio.empty:
                 console.print("[red]No portfolio loaded.[/red]\n")
