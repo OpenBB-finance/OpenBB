@@ -14,7 +14,7 @@ from typing import List
 
 # IMPORTATION THIRDPARTY
 try:
-    import git as _
+    import git  # noqa
 except ImportError:
     WITH_GIT = False
 else:
