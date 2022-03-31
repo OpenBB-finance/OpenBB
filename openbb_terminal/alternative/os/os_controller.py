@@ -21,6 +21,7 @@ from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
+
 class OsController(BaseController):
     """Open Source Controller class"""
 
@@ -38,7 +39,7 @@ class OsController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = f"""[cmds]
+        help_text = """[cmds]
         rs          repo summary
         sh          repo star history
         tr          top starred repos[/cmds]
@@ -64,11 +65,18 @@ class OsController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-r")
-        ns_parser = parse_known_args_and_warn(parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES, raw=True)
+        ns_parser = parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+            raw=True,
+        )
         if ns_parser:
-            github_view.display_star_history(repo=ns_parser.repo+"/"+self.queue[0],export=ns_parser.export)
+            github_view.display_star_history(
+                repo=ns_parser.repo + "/" + self.queue[0], export=ns_parser.export
+            )
             self.queue = self.queue[1:]
-        
+
     @log_start_end(log=logger)
     def call_rs(self, other_args: List[str]):
         """Process rs command"""
@@ -88,9 +96,13 @@ class OsController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-r")
-        ns_parser = parse_known_args_and_warn(parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED, raw=True)
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED, raw=True
+        )
         if ns_parser:
-            github_view.display_repo_summary(repo=ns_parser.repo+"/"+self.queue[0],export=ns_parser.export)
+            github_view.display_repo_summary(
+                repo=ns_parser.repo + "/" + self.queue[0], export=ns_parser.export
+            )
             self.queue = self.queue[1:]
 
     @log_start_end(log=logger)
@@ -109,7 +121,7 @@ class OsController(BaseController):
             dest="sortby",
             help="Sort repos by {stars, forks}. Default: stars",
             default="stars",
-            choices=["stars", "forks"]
+            choices=["stars", "forks"],
         )
 
         parser.add_argument(
@@ -117,11 +129,22 @@ class OsController(BaseController):
             "--categories",
             type=str,
             dest="categories",
-            help="Check for repo categories. If more than one separate with a comma: e.g., finance,investment. Default: None",
+            help="Filter by repo categories. If more than one separate with a comma: e.g., finance,investment",
             default="",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-c")
-        ns_parser = parse_known_args_and_warn(parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES, raw=True, limit=10)
+        ns_parser = parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+            raw=True,
+            limit=10,
+        )
         if ns_parser:
-            github_view.display_top_repos(sortby=ns_parser.sortby, categories=ns_parser.categories, limit=ns_parser.limit, export=ns_parser.export)
+            github_view.display_top_repos(
+                sortby=ns_parser.sortby,
+                categories=ns_parser.categories,
+                limit=ns_parser.limit,
+                export=ns_parser.export,
+            )

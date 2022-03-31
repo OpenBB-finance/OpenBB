@@ -12,7 +12,8 @@ def vcr_config():
     return {
         "filter_headers": [("Authorization", "MOCK_AUTHORIZATION")],
     }
-    
+
+
 @pytest.mark.vcr
 @pytest.mark.parametrize(
     "repo",
@@ -35,6 +36,7 @@ def test_get_stars_history(repo, recorder):
         repo=repo,
     )
     recorder.capture(df)
+
 
 @pytest.mark.vcr
 @pytest.mark.parametrize(
