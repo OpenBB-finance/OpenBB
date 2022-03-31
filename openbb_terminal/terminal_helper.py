@@ -1,6 +1,7 @@
 """Terminal helper"""
 __docformat__ = "numpy"
 
+# IMPORTATION STANDARD
 from contextlib import contextmanager
 import hashlib
 import logging
@@ -10,8 +11,17 @@ import subprocess  # nosec
 import sys
 from datetime import datetime
 from typing import List
+
+# IMPORTATION THIRDPARTY
+try:
+    import git as _
+except ImportError:
+    WITH_GIT = False
+else:
+    WITH_GIT = True
 import matplotlib.pyplot as plt
 
+# IMPORTATION INTERNAL
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal import thought_of_the_day as thought
 from openbb_terminal.rich_config import console
@@ -64,9 +74,12 @@ def sha256sum(filename):
 
 
 def update_terminal():
-    """Updates the terminal by running git pull in the directory.  Runs poetry install if needed"""
+    """Updates the terminal by running git pull in the directory.
+    Runs poetry install if needed.
+    """
 
-    if obbff.LOGGING_COMMIT_HASH != "REPLACE_ME":
+    if not WITH_GIT or obbff.LOGGING_COMMIT_HASH != "REPLACE_ME":
+        console.print("This feature is not available : Git dependencies not installed.")
         return 0
 
     poetry_hash = sha256sum("poetry.lock")

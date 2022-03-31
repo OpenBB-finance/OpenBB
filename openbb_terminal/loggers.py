@@ -13,7 +13,9 @@ from typing import Optional
 try:
     import git
 except ImportError:
-    pass
+    WITH_GIT = False
+else:
+    WITH_GIT = True
 
 # IMPORTATION INTERNAL
 import openbb_terminal.feature_flags as obbff
@@ -76,7 +78,7 @@ def get_commit_hash() -> str:
     file_path = Path(__file__)
     git_dir = file_path.parent.parent.absolute().joinpath(".git")
 
-    if os.path.isdir(git_dir.absolute()):
+    if WITH_GIT and os.path.isdir(git_dir.absolute()):
         repo = git.Repo(search_parent_directories=True)
         sha = repo.head.object.hexsha
         short_sha = repo.git.rev_parse(sha, short=8)
