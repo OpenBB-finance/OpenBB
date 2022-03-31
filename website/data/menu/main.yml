@@ -1206,6 +1206,15 @@ main:
       - name: alternative
         ref: "/terminal/alternative"
         sub:
+          - name: os
+            ref: "/terminal/alternative/os"
+            sub:
+              - name: tr
+                ref: "/terminal/alternative/os/tr"
+              - name: sh
+                ref: "/terminal/alternative/os/sh"
+              - name: rs
+                ref: "/terminal/alternative/os/rs"
           - name: covid
             ref: "/terminal/alternative/covid"
             sub:

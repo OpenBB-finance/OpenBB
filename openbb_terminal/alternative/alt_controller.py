@@ -20,7 +20,7 @@ class AlternativeDataController(BaseController):
     """Alternative Controller class"""
 
     CHOICES_COMMANDS: List[str] = []
-    CHOICES_MENUS = ["covid"]
+    CHOICES_MENUS = ["covid", "os"]
     PATH = "/alternative/"
 
     def __init__(self, queue: List[str] = None):
@@ -34,7 +34,8 @@ class AlternativeDataController(BaseController):
     def print_help(self):
         """Print help"""
         help_text = """[menu]
->   covid     COVID menu,                    e.g.: cases, deaths, rates[/menu]
+>   covid     COVID menu,                    e.g.: cases, deaths, rates
+>   os        Open Source menu,              e.g.: star history, repo information[/menu]
         """
         console.print(text=help_text, menu="Alternative")
 
@@ -46,3 +47,12 @@ class AlternativeDataController(BaseController):
         )
 
         self.queue = self.load_class(CovidController, self.queue)
+
+    @log_start_end(log=logger)
+    def call_os(self, _):
+        """Process os command"""
+        from openbb_terminal.alternative.os.os_controller import (
+            OsController,
+        )
+
+        self.queue = self.load_class(OsController, self.queue)
