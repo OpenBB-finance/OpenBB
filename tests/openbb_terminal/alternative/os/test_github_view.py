@@ -6,6 +6,11 @@ import pytest
 # IMPORTATION INTERNAL
 from openbb_terminal.alternative.os import github_view
 
+@pytest.fixture(scope="module")
+def vcr_config():
+    return {
+        "filter_headers": [("Authorization", "MOCK_AUTHORIZATION")],
+    }
 
 @pytest.mark.vcr
 @pytest.mark.record_stdout

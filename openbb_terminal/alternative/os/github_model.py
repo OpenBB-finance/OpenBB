@@ -10,6 +10,7 @@ from datetime import datetime
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
+from openbb_terminal.helper_funcs import get_user_agent
 
 logger = logging.getLogger(__name__)
 
@@ -37,7 +38,7 @@ def get_repo_stars(repo, page):
 		console.print("[red]Rate limit reached, please provide a GitHub API key.[/red]")
 		return None
 	else:
-		console.print("[red]Repo not found[/red]")
+		console.print(f"[red]Error occurred f{res.json()}[/red]")
 		return None
 
 def get_repo_stats(repo):
@@ -53,7 +54,7 @@ def get_repo_stats(repo):
 	dict with stats
 	"""
 	res = requests.get(f"https://api.github.com/repos/{repo}", 
-		headers={"Authorization": f"token {cfg.API_GITHUB_KEY}"},
+		headers={"Authorization": f"token {cfg.API_GITHUB_KEY}", "User-Agent": get_user_agent()},
 	)
 	if res.status_code == 200:
 		return res.json()
@@ -61,7 +62,7 @@ def get_repo_stats(repo):
 		console.print("[red]Rate limit reached, please provide a GitHub API key.[/red]")
 		return None
 	else:
-		console.print("[red]Repo not found[/red]")
+		console.print(f"[red]Error occurred f{res.json()}[/red]")
 		return None
 
 def get_repo_releases_stats(repo):
@@ -77,7 +78,7 @@ def get_repo_releases_stats(repo):
 	dict with releases stats
 	"""
 	res = requests.get(f"https://api.github.com/repos/{repo}/releases", 
-		headers={"Accept": "application/vnd.github.v3.star+json", "Authorization": f"token {cfg.API_GITHUB_KEY}"},
+		headers={"Accept": "application/vnd.github.v3.star+json", "Authorization": f"token {cfg.API_GITHUB_KEY}", "User-Agent": get_user_agent()},
 	)
 	if res.status_code == 200:
 		return res.json()
@@ -85,7 +86,7 @@ def get_repo_releases_stats(repo):
 		console.print("[red]Rate limit reached, please provide a GitHub API key.[/red]")
 		return None
 	else:
-		console.print("[red]Repo not found[/red]")
+		console.print(f"[red]Error occurred f{res.json()}[/red]")
 		return None
 
 
@@ -110,7 +111,9 @@ def search_repos(sortby: str = "stars", page: int = 1, categories: str = "") -> 
 		payload["q"] = categories.replace(",", "+")
 	else:
 		payload["q"] = f"{sortby}:>1"
-	res = requests.get('https://api.github.com/search/repositories', params=payload)
+	res = requests.get('https://api.github.com/search/repositories', 
+	headers={"Accept": "application/vnd.github.v3.star+json", "Authorization": f"token {cfg.API_GITHUB_KEY}", "User-Agent": get_user_agent()}, 
+	params=payload)
 	if res.status_code == 200:
 		data = res.json()
 		if "items" in data:
@@ -118,7 +121,7 @@ def search_repos(sortby: str = "stars", page: int = 1, categories: str = "") -> 
 	elif res.status_code == 403:
 		console.print("[red]Rate limit reached, please provide a GitHub API key.[/red]")
 	else:
-		console.print("[red]Error occured[/red]")
+		console.print(f"[red]Error occurred f{res.json()}[/red]")
 	return pd.DataFrame()
 
 
