@@ -1,6 +1,6 @@
 """GitHub Model"""
 __docformat__ = "numpy"
-# pylint: disable=C0201
+# pylint: disable=C0201,W1401
 
 import logging
 from typing import Any, Dict
@@ -17,89 +17,34 @@ from openbb_terminal.helper_funcs import get_user_agent
 logger = logging.getLogger(__name__)
 
 
-def get_repo_stars(repo, page):
-    """Get repository stargazers
-
-    Parameters
-    ----------
-    repo : str
-                    Repo to search for Format: org/repo, e.g., openbb-finance/openbbterminal
-    page : int
-                    Page number to get stars
-
-    Returns
-    -------
-    dict with stargazers
-    """
-    res = requests.get(
-        f"https://api.github.com/repos/{repo}/stargazers",
-        headers={
-            "Accept": "application/vnd.github.v3.star+json",
-            "Authorization": f"token {cfg.API_GITHUB_KEY}",
-        },
-        params={"per_page": 100, "page": page},
-    )
-    if res.status_code == 200:
-        return res.json()
-    if res.status_code == 403:
-        console.print("[red]Rate limit reached, please provide a GitHub API key.[/red]")
-    else:
-        console.print(f"[red]Error occurred {res.json()}[/red]")
-    return None
-
-
-def get_repo_stats(repo):
+def get_github_data(url: str, **kwargs):
     """Get repository stats
 
     Parameters
     ----------
-    repo : str
-                    Repo to search for Format: org/repo, e.g., openbb-finance/openbbterminal
-
+    url: str
+        github api endpoint
+    params: dict
+        params to pass to api endpoint
     Returns
     -------
-    dict with stats
+    dict with data
     """
     res = requests.get(
-        f"https://api.github.com/repos/{repo}",
+        url,
         headers={
             "Authorization": f"token {cfg.API_GITHUB_KEY}",
             "User-Agent": get_user_agent(),
-        },
-    )
-    if res.status_code == 200:
-        return res.json()
-    if res.status_code == 403:
-        console.print("[red]Rate limit reached, please provide a GitHub API key.[/red]")
-    else:
-        console.print(f"[red]Error occurred {res.json()}[/red]")
-    return None
-
-
-def get_repo_releases_stats(repo):
-    """Get repository releases stats
-
-    Parameters
-    ----------
-    repo : str
-                    Repo to search for Format: org/repo, e.g., openbb-finance/openbbterminal
-
-    Returns
-    -------
-    dict with releases stats
-    """
-    res = requests.get(
-        f"https://api.github.com/repos/{repo}/releases",
-        headers={
             "Accept": "application/vnd.github.v3.star+json",
-            "Authorization": f"token {cfg.API_GITHUB_KEY}",
-            "User-Agent": get_user_agent(),
         },
+        **kwargs,
     )
     if res.status_code == 200:
         return res.json()
-    if res.status_code == 403:
+    if res.status_code in (401, 403):
         console.print("[red]Rate limit reached, please provide a GitHub API key.[/red]")
+    elif res.status_code == 404:
+        console.print("[red]Repo not found.[/red]")
     else:
         console.print(f"[red]Error occurred {res.json()}[/red]")
     return None
@@ -122,29 +67,15 @@ def search_repos(
     -------
     pd.DataFrame with list of repos
     """
-    payload: Dict[str, Any] = {"page": page}
+    params: Dict[str, Any] = {"page": page}
     if categories:
-        payload["sort"] = sortby
-        payload["q"] = categories.replace(",", "+")
+        params["sort"] = sortby
+        params["q"] = categories.replace(",", "+")
     else:
-        payload["q"] = f"{sortby}:>1"
-    res = requests.get(
-        "https://api.github.com/search/repositories",
-        headers={
-            "Accept": "application/vnd.github.v3.star+json",
-            "Authorization": f"token {cfg.API_GITHUB_KEY}",
-            "User-Agent": get_user_agent(),
-        },
-        params=payload,
-    )
-    if res.status_code == 200:
-        data = res.json()
-        if "items" in data:
-            return pd.DataFrame(data["items"])
-    elif res.status_code == 403:
-        console.print("[red]Rate limit reached, please provide a GitHub API key.[/red]")
-    else:
-        console.print(f"[red]Error occurred {res.json()}[/red]")
+        params["q"] = f"{sortby}:>1"
+    data = get_github_data("https://api.github.com/search/repositories", params=params)
+    if "items" in data:
+        return pd.DataFrame(data["items"])
     return pd.DataFrame()
 
 
@@ -161,30 +92,37 @@ def get_stars_history(repo: str):
     -------
     pd.DataFrame - Columns: Date, Stars
     """
-    stars_number = get_repo_stats(repo)["stargazers_count"]
-    stars: Dict[str, int] = {}
-    pages = math.ceil(stars_number / 100)
-    for page in range(0, pages):
-        data = get_repo_stars(repo, page)
-        for star in data:
-            day = star["starred_at"].split("T")[0]
-            if day in stars:
-                stars[day] += 1
-            else:
-                stars[day] = 1
-    sorted_keys = sorted(stars.keys())
-    for i in range(1, len(sorted_keys)):
-        stars[sorted_keys[i]] += stars[sorted_keys[i - 1]]
-    df = pd.DataFrame(
-        {
-            "Date": [
-                datetime.strptime(date, "%Y-%m-%d").date() for date in stars.keys()
-            ],
-            "Stars": stars.values(),
-        }
-    )
-    df.set_index("Date")
-    return df
+    data = get_github_data(f"https://api.github.com/repos/{repo}")
+    if data and "stargazers_count" in data:
+        stars_number = data["stargazers_count"]
+        stars: Dict[str, int] = {}
+        pages = math.ceil(stars_number / 100)
+        for page in range(0, pages):
+            data = get_github_data(
+                f"https://api.github.com/repos/{repo}/stargazers",
+                params={"per_page": 100, "page": page},
+            )
+            if data:
+                for star in data:
+                    day = star["starred_at"].split("T")[0]
+                    if day in stars:
+                        stars[day] += 1
+                    else:
+                        stars[day] = 1
+        sorted_keys = sorted(stars.keys())
+        for i in range(1, len(sorted_keys)):
+            stars[sorted_keys[i]] += stars[sorted_keys[i - 1]]
+        df = pd.DataFrame(
+            {
+                "Date": [
+                    datetime.strptime(date, "%Y-%m-%d").date() for date in stars.keys()
+                ],
+                "Stars": stars.values(),
+            }
+        )
+        df.set_index("Date")
+        return df
+    return pd.DataFrame()
 
 
 @log_start_end(log=logger)
@@ -243,8 +181,12 @@ def get_repo_summary(repo: str):
     -------
     pd.DataFrame - Columns: Metric, Value
     """
-    data = get_repo_stats(repo)
-    release_data = get_repo_releases_stats(repo)
+    data = get_github_data(f"https://api.github.com/repos/{repo}")
+    if not data:
+        return pd.DataFrame()
+    release_data = get_github_data(f"https://api.github.com/repos/{repo}/releases")
+    if not release_data:
+        return pd.DataFrame()
     total_release_downloads: Any = "N/A"
     if len(release_data) > 0:
         total_release_downloads = 0

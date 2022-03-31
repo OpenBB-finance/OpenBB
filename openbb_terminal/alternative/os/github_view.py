@@ -40,26 +40,27 @@ def display_star_history(
             External axes (1 axis is expected in the list), by default None
     """
     df = github_model.get_stars_history(repo)
-    if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of one axis item./n[/red]")
-            return
-        (ax,) = external_axes
-    ax.plot(df["Date"], df["Stars"])
+    if not df.empty:
+        if external_axes is None:
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        else:
+            if len(external_axes) != 1:
+                logger.error("Expected list of one axis item.")
+                console.print("[red]Expected list of one axis item./n[/red]")
+                return
+            (ax,) = external_axes
+        ax.plot(df["Date"], df["Stars"])
 
-    ax.set_xlabel("Date")
-    ax.set_ylabel("Stars")
-    ax.set_title(f"Star History for {repo}")
+        ax.set_xlabel("Date")
+        ax.set_ylabel("Stars")
+        ax.set_title(f"Star History for {repo}")
 
-    theme.style_primary_axis(ax)
+        theme.style_primary_axis(ax)
 
-    if external_axes is None:
-        theme.visualize_output()
+        if external_axes is None:
+            theme.visualize_output()
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "sh", df)
+        export_data(export, os.path.dirname(os.path.abspath(__file__)), "sh", df)
 
 
 @log_start_end(log=logger)
@@ -86,41 +87,44 @@ def display_top_repos(
     External axes (1 axis is expected in the list), by default None
     """
     df = github_model.get_top_repos(categories=categories, sortby=sortby, top=limit)
-    if sortby == "forks":
-        df = df.sort_values(by="forks_count")
-    elif sortby == "stars":
-        df = df.sort_values(by="stargazers_count")
-    if external_axes is None:
-        _, ax = plt.subplots(figsize=(14, 8), dpi=PLOT_DPI)
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of one axis item./n[/red]")
-            return
-        (ax, _) = external_axes
-    for _, row in df.iterrows():
-        ax.barh(
-            y=row["full_name"],
-            width=row["stargazers_count" if sortby == "stars" else "forks_count"],
-            height=0.5,
+    if not df.empty:
+        if sortby == "forks":
+            df = df.sort_values(by="forks_count")
+        elif sortby == "stars":
+            df = df.sort_values(by="stargazers_count")
+        if external_axes is None:
+            _, ax = plt.subplots(figsize=(14, 8), dpi=PLOT_DPI)
+        else:
+            if len(external_axes) != 1:
+                logger.error("Expected list of one axis item.")
+                console.print("[red]Expected list of one axis item./n[/red]")
+                return
+            (ax, _) = external_axes
+        for _, row in df.iterrows():
+            ax.barh(
+                y=row["full_name"],
+                width=row["stargazers_count" if sortby == "stars" else "forks_count"],
+                height=0.5,
+            )
+
+        ax.set_xlabel(sortby.capitalize())
+        ax.get_xaxis().set_major_formatter(
+            ticker.FuncFormatter(
+                lambda x, _: lambda_long_number_format_with_type_check(x)
+            )
         )
+        ax.yaxis.set_label_position("left")
+        ax.yaxis.set_ticks_position("left")
+        ax.set_ylabel("Repository Full Name")
+        category_substr = "ies" if "," in categories else "y"
+        category_str = f"categor{category_substr} {categories} " if categories else ""
+        ax.set_title(f"Top repos {category_str}sorted by {sortby}")
+        theme.style_primary_axis(ax)
 
-    ax.set_xlabel(sortby.capitalize())
-    ax.get_xaxis().set_major_formatter(
-        ticker.FuncFormatter(lambda x, _: lambda_long_number_format_with_type_check(x))
-    )
-    ax.yaxis.set_label_position("left")
-    ax.yaxis.set_ticks_position("left")
-    ax.set_ylabel("Repository Full Name")
-    category_substr = "ies" if "," in categories else "y"
-    category_str = f"categor{category_substr} {categories} " if categories else ""
-    ax.set_title(f"Top repos {category_str}sorted by {sortby}")
-    theme.style_primary_axis(ax)
+        if external_axes is None:
+            theme.visualize_output()
 
-    if external_axes is None:
-        theme.visualize_output()
-
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "tr", df)
+        export_data(export, os.path.dirname(os.path.abspath(__file__)), "tr", df)
 
 
 @log_start_end(log=logger)
@@ -135,15 +139,15 @@ def display_repo_summary(repo: str, export: str = "") -> None:
     Export dataframe data to csv,json,xlsx file
     """
     df = github_model.get_repo_summary(repo)
+    if not df.empty:
+        print_rich_table(
+            df, headers=list(df.columns), show_index=False, title="Repo summary"
+        )
+        console.print("")
 
-    print_rich_table(
-        df, headers=list(df.columns), show_index=False, title="Repo summary"
-    )
-    console.print("")
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "rs",
-        df,
-    )
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "rs",
+            df,
+        )

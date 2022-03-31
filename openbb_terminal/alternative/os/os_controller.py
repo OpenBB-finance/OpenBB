@@ -13,7 +13,9 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
+    log_and_raise,
     parse_known_args_and_warn,
+    valid_repo,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
@@ -72,10 +74,16 @@ class OsController(BaseController):
             raw=True,
         )
         if ns_parser:
-            github_view.display_star_history(
-                repo=ns_parser.repo + "/" + self.queue[0], export=ns_parser.export
-            )
-            self.queue = self.queue[1:]
+            if len(self.queue) == 0:
+                log_and_raise(
+                    argparse.ArgumentTypeError(
+                        f"{ns_parser.repo} is not a valid repo. Valid repo: org/repo"
+                    )
+                )
+            repo = ns_parser.repo + "/" + self.queue[0]
+            if valid_repo(repo):
+                github_view.display_star_history(repo=repo, export=ns_parser.export)
+                self.queue = self.queue[1:]
 
     @log_start_end(log=logger)
     def call_rs(self, other_args: List[str]):
@@ -100,10 +108,16 @@ class OsController(BaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED, raw=True
         )
         if ns_parser:
-            github_view.display_repo_summary(
-                repo=ns_parser.repo + "/" + self.queue[0], export=ns_parser.export
-            )
-            self.queue = self.queue[1:]
+            if len(self.queue) == 0:
+                log_and_raise(
+                    argparse.ArgumentTypeError(
+                        f"{ns_parser.repo} is not a valid repo. Valid repo: org/repo"
+                    )
+                )
+            repo = ns_parser.repo + "/" + self.queue[0]
+            if valid_repo(repo):
+                github_view.display_repo_summary(repo=repo, export=ns_parser.export)
+                self.queue = self.queue[1:]
 
     @log_start_end(log=logger)
     def call_tr(self, other_args: List[str]):
