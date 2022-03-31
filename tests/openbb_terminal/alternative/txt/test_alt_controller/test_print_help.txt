@@ -1,3 +1,4 @@
 
 >   covid     COVID menu,                    e.g.: cases, deaths, rates
+>   os        Open Source menu,              e.g.: star history, repo information
         
