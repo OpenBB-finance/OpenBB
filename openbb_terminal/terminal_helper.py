@@ -13,12 +13,6 @@ from datetime import datetime
 from typing import List
 
 # IMPORTATION THIRDPARTY
-try:
-    import git  # noqa
-except ImportError:
-    WITH_GIT = False
-else:
-    WITH_GIT = True
 import matplotlib.pyplot as plt
 
 # IMPORTATION INTERNAL
@@ -28,6 +22,12 @@ from openbb_terminal.rich_config import console
 
 # pylint: disable=too-many-statements,no-member,too-many-branches,C0302
 
+try:
+    __import__("git")
+except ImportError:
+    WITH_GIT = False
+else:
+    WITH_GIT = True
 logger = logging.getLogger(__name__)
 
 
