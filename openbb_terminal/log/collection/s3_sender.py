@@ -10,7 +10,7 @@ try:
     import boto3
 except ImportError:
     WITH_BOTO3 = False
-finally:
+else:
     WITH_BOTO3 = True
 
 # IMPORTATION INTERNAL
