@@ -30,6 +30,7 @@ openbb_terminal/portfolio/portfolios/*
 .ipynb_checkpoints/*
 *.swp
 *.http
+bots/interactive/*.html
 
 # pyinstaller artifacts
 *.pyo
