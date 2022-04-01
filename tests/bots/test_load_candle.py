@@ -24,8 +24,34 @@ def test_dt_utcnow_local_tz():
 
 @pytest.mark.bots
 @pytest.mark.vcr
-def test_stock_data(recorder):
-    value = stock_data("TSLA")
+@pytest.mark.parametrize(
+    "ticker, candles, news, interval, start, end",
+    [
+        ("TSLA", False, False, 1, "", ""),
+        ("TSLA", True, False, 1, "", ""),
+        ("TSLA", False, True, 1, "", ""),
+        ("TSLA", True, True, 1, "", ""),
+        ("TSLA", False, False, 1440, "2019-10-10", "2020-10-10"),
+    ],
+)
+def test_stock_data(mocker, recorder, ticker, candles, news, interval, start, end):
+    mocker.patch("bots.load_candle.imps.API_BINANCE_SECRET", "1")
+    mocker.patch("bots.load_candle.imps.API_BINANCE_KEY", "1")
+    value = stock_data(
+        ticker,
+        news=news,
+        heikin_candles=candles,
+        interval=interval,
+        start=start,
+        end=end,
+    )
     df = value[0]
     df.index = df.index.strftime("%Y-%m-%d")
     recorder.capture(df)
+
+
+@pytest.mark.bots
+@pytest.mark.parametrize("ticker", ["ZZZZ", "-BTC"])
+def test_stock_data_exception(ticker):
+    with pytest.raises(Exception):
+        stock_data(ticker)
