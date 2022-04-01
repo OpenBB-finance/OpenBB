@@ -135,7 +135,7 @@ Also, if somehow you're sitting in several mils due to this terminal, don't forg
 
 Welcome to the club, and feel free to support the developers behind this amazing open-source project.
 
-If you're interested in contributing fork us! Grab an issue or enhancement and put in a PR request with the fix. 
+If you're interested in contributing fork us! Grab an issue or enhancement and put in a PR request with the fix.
 
 ## License
 
