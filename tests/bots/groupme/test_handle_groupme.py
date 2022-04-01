@@ -1,3 +1,4 @@
+import pytest
 from bots.groupme.run_groupme import handle_groupme
 
 
@@ -6,6 +7,7 @@ class FakeRequest:
         return '{"text": "hello", "group_id": "12345"}'
 
 
+@pytest.mark.bots
 def test_handle_groupme(recorder):
     value = handle_groupme(FakeRequest())
 

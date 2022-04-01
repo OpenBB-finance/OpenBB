@@ -29,6 +29,7 @@ class MockInter:
         self.filled_options = {"ticker": "testresponse"}
 
 
+@pytest.mark.bots
 def test_image():
     url = os.path.join(
         os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
@@ -39,8 +40,10 @@ def test_image():
     )
     img = Image.new("RGB", (60, 30), color="red")
     img.save(url)
+    return url
 
 
+@pytest.mark.bots
 @pytest.mark.vcr
 def test_load(recorder):
     value = load("GME", "2020-10-10")
@@ -48,6 +51,7 @@ def test_load(recorder):
     recorder.capture(value)
 
 
+@pytest.mark.bots
 @pytest.mark.vcr
 def test_quote(recorder):
     value = quote("GME")
@@ -55,6 +59,7 @@ def test_quote(recorder):
     recorder.capture(value)
 
 
+@pytest.mark.bots
 def test_autocrop_image(recorder):
     url = os.path.join(
         os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
@@ -67,22 +72,26 @@ def test_autocrop_image(recorder):
     recorder.capture(str(type(value)))
 
 
+@pytest.mark.bots
 def test_unit_replacer(recorder):
     value = unit_finder.sub(unit_replacer, "25M")
 
     recorder.capture(value)
 
 
+@pytest.mark.bots
 def test_uuid_get():
     assert isinstance(uuid_get(), str)
 
 
+@pytest.mark.bots
 def test_country_autocomp(recorder):
     value = country_autocomp("TS", "United States")
 
     recorder.capture(value)
 
 
+@pytest.mark.bots
 @pytest.mark.parametrize("search", ["Technology", None])
 def test_industry_autocomp(recorder, search):
     value = industry_autocomp("TS", search)
@@ -90,6 +99,7 @@ def test_industry_autocomp(recorder, search):
     recorder.capture(value)
 
 
+@pytest.mark.bots
 @pytest.mark.parametrize("search", ["Technology", None])
 def test_metric_autocomp(recorder, search):
     value = metric_autocomp("Vol", search)
@@ -97,6 +107,7 @@ def test_metric_autocomp(recorder, search):
     recorder.capture(value)
 
 
+@pytest.mark.bots
 @pytest.mark.parametrize("tick", ["", "TS"])
 def test_ticker_autocomp(recorder, tick):
     value = ticker_autocomp("", tick)
@@ -104,12 +115,14 @@ def test_ticker_autocomp(recorder, tick):
     recorder.capture(value)
 
 
+@pytest.mark.bots
 def test_expiry_autocomp(recorder):
     value = expiry_autocomp(MockInter(), "TS")
 
     recorder.capture(value)
 
 
+@pytest.mark.bots
 @pytest.mark.parametrize("search", ["Technology", None])
 def test_presets_custom_autocomp(recorder, search):
     value = presets_custom_autocomp("", search)
@@ -117,6 +130,7 @@ def test_presets_custom_autocomp(recorder, search):
     recorder.capture(value)
 
 
+@pytest.mark.bots
 @pytest.mark.parametrize("search", ["Technology", None])
 def test_signals_autocomp(recorder, search):
     value = signals_autocomp("", search)
@@ -124,6 +138,7 @@ def test_signals_autocomp(recorder, search):
     recorder.capture(value)
 
 
+@pytest.mark.bots
 @pytest.mark.parametrize("call", [True, False])
 def test_inter_chart(call):
     name = uuid_get()
@@ -132,15 +147,17 @@ def test_inter_chart(call):
     assert name in value
 
 
+@pytest.mark.bots
 def test_save_image():
     name = uuid_get()
     value = save_image(name, go.Figure())
     assert name in value
 
 
+@pytest.mark.bots
 @pytest.mark.parametrize("figure", ["fig", "png"])
 def test_image_border(figure):
-    test_image()
+    url = test_image()
     if figure == "png":
         value = image_border(url)
     if figure == "fig":
@@ -148,6 +165,7 @@ def test_image_border(figure):
     assert isinstance(value, str)
 
 
+@pytest.mark.bots
 @pytest.mark.parametrize("url", ["hello", None])
 def test_multi_image(mocker, url):
     mocker.patch("bots.helpers.imps.IMAGES_URL", url)
@@ -180,6 +198,7 @@ def view(*args):
         print(arg)
 
 
+@pytest.mark.bots
 @pytest.mark.anyio
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
@@ -231,9 +250,98 @@ async def test_run_discord(data, debug):
     os.environ["DEBUG_MODE"] = "true"
 
 
-@pytest.mark.parametrize("data", [{"imagefile": "testimage.png"}])
+@pytest.mark.bots
+@pytest.mark.parametrize(
+    "data",
+    [
+        {"imagefile": "testimage.png"},
+        {"embeds_img": ["testimage.png"], "images_list": ["testimage.png"]},
+        {"description": "hello"},
+    ],
+)
 def test_groupme(data, mocker):
     test_image()
+    mocker.patch("bots.helpers.send_image")
+    mocker.patch("bots.helpers.send_message")
     ShowView().groupme(
         lambda *args, **kwargs: func(data, *args, *kwargs), "123", "name"
+    )
+
+
+class MockClient:
+    def files_upload(self, **kwargs):
+        for key, value in kwargs.items():
+            print(key, type(value))
+
+    def chat_postMessage(self, **kwargs):
+        for key, value in kwargs.items():
+            print(key, type(value))
+
+    def reply_to(self, *args, **kwargs):
+        for item in args:
+            print(type(item))
+        for key, value in kwargs.items():
+            print(key, type(value))
+
+    def send_photo(self, *args, **kwargs):
+        for item in args:
+            print(type(item))
+        for key, value in kwargs.items():
+            print(key, type(value))
+
+
+@pytest.mark.bots
+@pytest.mark.record_stdout
+@pytest.mark.parametrize(
+    "data",
+    [
+        {"imagefile": "testimage.png"},
+        {
+            "embeds_img": ["testimage.png"],
+            "images_list": ["testimage.png"],
+            "title": "Images",
+        },
+        {"description": "hello"},
+    ],
+)
+def test_slack(data):
+    test_image()
+
+    ShowView().slack(
+        lambda *args, **kwargs: func(data, *args, **kwargs), "123", "123", MockClient()
+    )
+
+
+class MockChat:
+    def __init__(self):
+        self.id = 5
+
+
+class MockMessage:
+    def __init__(self):
+        self.chat = MockChat()
+
+
+@pytest.mark.record_stdout
+@pytest.mark.parametrize(
+    "data",
+    [
+        {"imagefile": "testimage.png", "title": "Image"},
+        {
+            "embeds_img": ["testimage.png"],
+            "images_list": ["testimage.png"],
+            "title": "Images",
+        },
+        {"description": "hello"},
+    ],
+)
+@pytest.mark.bots
+def test_telegram(data):
+    test_image()
+
+    ShowView().telegram(
+        lambda *args, **kwargs: func(data, *args, **kwargs),
+        MockMessage(),
+        MockClient(),
+        "123",
     )

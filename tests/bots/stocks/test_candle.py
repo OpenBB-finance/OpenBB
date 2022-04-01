@@ -14,6 +14,7 @@ def vcr_config():
     }
 
 
+@pytest.mark.bots
 @pytest.mark.vcr
 def test_candle_command(recorder):
     value = candle_command("TSLA")

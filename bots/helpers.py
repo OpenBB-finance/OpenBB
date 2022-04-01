@@ -530,11 +530,13 @@ class ShowView:
         if "imagefile" in data:
             imagefile = imps.IMG_DIR.joinpath(data["imagefile"])
             send_image(imagefile, group_id, data.get("description", ""))
+            os.remove(imagefile)
         elif "embeds_img" in data:
             imagefiles = data["images_list"]
             for img in imagefiles:
                 imagefile = imps.IMG_DIR.joinpath(img)
                 send_image(imagefile, group_id, data.get("description", ""))
+                os.remove(imagefile)
         elif "description" in data:
             title = data.get("title", "")
             # TODO: Allow navigation through pages
@@ -545,7 +547,6 @@ class ShowView:
                 clean_desc = description.replace("Page ", "")
             message = f"{title}\n{clean_desc}"
             send_message(message, group_id)
-            os.remove(imagefile)
 
     def slack(self, func, channel_id, user_id, client, *args, **kwargs):
         data = func(*args, **kwargs)

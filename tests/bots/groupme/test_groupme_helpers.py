@@ -8,6 +8,7 @@ from bots.groupme.groupme_helpers import (
 )
 
 
+@pytest.mark.bots
 @pytest.mark.parametrize(
     "message, expected",
     [("hello", "hello"), ("hello" * 500, ("hello" * 500)[:990] + "...")],
@@ -17,6 +18,7 @@ def test_shorten_message(message, expected):
     assert result == expected
 
 
+@pytest.mark.bots
 @pytest.mark.parametrize(
     "url, local",
     [
@@ -47,6 +49,7 @@ def test_upload_image(url, local, recorder):
     recorder.capture(value.text)
 
 
+@pytest.mark.bots
 @pytest.mark.vcr
 def test_send_message(mocker, recorder):
     mocker.patch.dict("bots.groupme.groupme_helpers.group_to_bot", {"45": "45"})
@@ -60,6 +63,7 @@ class UploadImage:
         return {"payload": {"picture_url": "http://example.com"}}
 
 
+@pytest.mark.bots
 @pytest.mark.vcr
 def test_send_image(recorder, mocker):
     mocker.patch.dict("bots.groupme.groupme_helpers.group_to_bot", {"45": "45"})
