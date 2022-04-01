@@ -183,7 +183,7 @@ class MockShowInter:
         return {}
 
     class response:
-        async def defer():
+        async def defer():  # type: ignore
             return "hello"
 
 
