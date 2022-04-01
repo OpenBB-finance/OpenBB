@@ -1,4 +1,5 @@
 import pytest
+import telebot
 
 
 class MockTelegram:
