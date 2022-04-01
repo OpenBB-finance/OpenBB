@@ -15,7 +15,7 @@ from openbb_terminal.helper_funcs import (
     plot_autoscale,
     print_rich_table,
 )
-from openbb_terminal.alternative.os import github_model
+from openbb_terminal.alternative.oss import github_model
 from openbb_terminal.cryptocurrency.dataframe_helpers import (
     lambda_long_number_format_with_type_check,
 )

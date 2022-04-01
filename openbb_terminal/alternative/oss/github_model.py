@@ -74,7 +74,7 @@ def search_repos(
     else:
         params["q"] = f"{sortby}:>1"
     data = get_github_data("https://api.github.com/search/repositories", params=params)
-    if "items" in data:
+    if data and "items" in data:
         return pd.DataFrame(data["items"])
     return pd.DataFrame()
 
@@ -164,7 +164,6 @@ def get_top_repos(sortby: str, top: int, categories: str) -> pd.DataFrame:
             df = pd.concat([df, df2], ignore_index=True)
             top -= 100
             p += 1
-    df.set_index("full_name")
     return df.head(initial_top)
 
 

@@ -8,7 +8,7 @@ from typing import List
 from prompt_toolkit.completion import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
-from openbb_terminal.alternative.os import github_view
+from openbb_terminal.alternative.oss import github_view
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -24,11 +24,11 @@ from openbb_terminal.rich_config import console
 logger = logging.getLogger(__name__)
 
 
-class OsController(BaseController):
+class OSSController(BaseController):
     """Open Source Controller class"""
 
     CHOICES_COMMANDS = ["sh", "tr", "rs"]
-    PATH = "/alternative/os/"
+    PATH = "/alternative/oss/"
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""

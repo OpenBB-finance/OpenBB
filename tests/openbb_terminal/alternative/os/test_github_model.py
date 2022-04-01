@@ -4,7 +4,7 @@
 import pytest
 
 # IMPORTATION INTERNAL
-from openbb_terminal.alternative.os import github_model
+from openbb_terminal.alternative.oss import github_model
 
 
 @pytest.fixture(scope="module")

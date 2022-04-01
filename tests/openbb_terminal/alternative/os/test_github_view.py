@@ -4,7 +4,7 @@
 import pytest
 
 # IMPORTATION INTERNAL
-from openbb_terminal.alternative.os import github_view
+from openbb_terminal.alternative.oss import github_view
 
 
 @pytest.fixture(scope="module")
@@ -18,7 +18,7 @@ def vcr_config():
 @pytest.mark.record_stdout
 def test_display_star_history(mocker):
     # MOCK EXPORT_DATA
-    mocker.patch(target="openbb_terminal.alternative.os.github_view.export_data")
+    mocker.patch(target="openbb_terminal.alternative.oss.github_view.export_data")
 
     # MOCK VISUALIZE_OUTPUT
     mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
@@ -30,7 +30,7 @@ def test_display_star_history(mocker):
 @pytest.mark.record_stdout
 def test_display_top_repos(mocker):
     # MOCK EXPORT_DATA
-    mocker.patch(target="openbb_terminal.alternative.os.github_view.export_data")
+    mocker.patch(target="openbb_terminal.alternative.oss.github_view.export_data")
 
     # MOCK VISUALIZE_OUTPUT
     mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
@@ -42,7 +42,7 @@ def test_display_top_repos(mocker):
 @pytest.mark.record_stdout
 def test_display_repo_summary(mocker):
     # MOCK EXPORT_DATA
-    mocker.patch(target="openbb_terminal.alternative.os.github_view.export_data")
+    mocker.patch(target="openbb_terminal.alternative.oss.github_view.export_data")
 
     github_view.display_repo_summary(
         repo="openbb-finance/openbbterminal",

@@ -5,7 +5,7 @@ import os
 import pytest
 
 # IMPORTATION INTERNAL
-from openbb_terminal.alternative.os import os_controller
+from openbb_terminal.alternative.oss import oss_controller
 
 # pylint: disable=E1101
 # pylint: disable=W0603
@@ -21,21 +21,21 @@ from openbb_terminal.alternative.os import os_controller
     ],
 )
 def test_menu_with_queue(expected, mocker, queue):
-    path_controller = "openbb_terminal.alternative.os.os_controller"
+    path_controller = "openbb_terminal.alternative.oss.oss_controller"
 
     # MOCK SWITCH
     mocker.patch(
-        target=f"{path_controller}.OsController.switch",
+        target=f"{path_controller}.OSSController.switch",
         return_value=["quit"],
     )
-    result_menu = os_controller.OsController(queue=queue).menu()
+    result_menu = oss_controller.OSSController(queue=queue).menu()
 
     assert result_menu == expected
 
 
 @pytest.mark.vcr(record_mode="none")
 def test_menu_without_queue_completion(mocker):
-    path_controller = "openbb_terminal.alternative.os.os_controller"
+    path_controller = "openbb_terminal.alternative.oss.oss_controller"
 
     # ENABLE AUTO-COMPLETION : HELPER_FUNCS.MENU
     mocker.patch(
@@ -52,7 +52,7 @@ def test_menu_without_queue_completion(mocker):
 
     # DISABLE AUTO-COMPLETION : CONTROLLER.COMPLETER
     mocker.patch.object(
-        target=os_controller.obbff,
+        target=oss_controller.obbff,
         attribute="USE_PROMPT_TOOLKIT",
         new=True,
     )
@@ -64,7 +64,7 @@ def test_menu_without_queue_completion(mocker):
         return_value="quit",
     )
 
-    result_menu = os_controller.OsController(queue=None).menu()
+    result_menu = oss_controller.OSSController(queue=None).menu()
 
     assert result_menu == []
 
@@ -75,11 +75,11 @@ def test_menu_without_queue_completion(mocker):
     ["help", "homee help", "home help", "mock"],
 )
 def test_menu_without_queue_sys_exit(mock_input, mocker):
-    path_controller = "openbb_terminal.alternative.os.os_controller"
+    path_controller = "openbb_terminal.alternative.oss.oss_controller"
 
     # DISABLE AUTO-COMPLETION
     mocker.patch.object(
-        target=os_controller.obbff,
+        target=oss_controller.obbff,
         attribute="USE_PROMPT_TOOLKIT",
         new=False,
     )
@@ -104,11 +104,11 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
 
     mock_switch = mocker.Mock(side_effect=SystemExitSideEffect())
     mocker.patch(
-        target=f"{path_controller}.OsController.switch",
+        target=f"{path_controller}.OSSController.switch",
         new=mock_switch,
     )
 
-    result_menu = os_controller.OsController(queue=None).menu()
+    result_menu = oss_controller.OSSController(queue=None).menu()
 
     assert result_menu == []
 
@@ -116,7 +116,7 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.record_stdout
 def test_print_help():
-    controller = os_controller.OsController(queue=None)
+    controller = oss_controller.OSSController(queue=None)
     controller.print_help()
 
 
@@ -136,7 +136,7 @@ def test_print_help():
     ],
 )
 def test_switch(an_input, expected_queue):
-    controller = os_controller.OsController(queue=None)
+    controller = oss_controller.OSSController(queue=None)
     queue = controller.switch(an_input=an_input)
 
     assert queue == expected_queue
@@ -146,7 +146,7 @@ def test_switch(an_input, expected_queue):
 def test_call_cls(mocker):
     mocker.patch("os.system")
 
-    controller = os_controller.OsController(queue=None)
+    controller = oss_controller.OSSController(queue=None)
     controller.call_cls([])
 
     assert controller.queue == []
@@ -180,7 +180,7 @@ def test_call_cls(mocker):
     ],
 )
 def test_call_func_expect_queue(expected_queue, func, queue):
-    controller = os_controller.OsController(queue=queue)
+    controller = oss_controller.OSSController(queue=queue)
     result = getattr(controller, func)([])
 
     assert result is None
@@ -203,7 +203,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
 def test_call_func(
     tested_func, mocked_func, other_args, called_args, called_kwargs, mocker
 ):
-    path_controller = "openbb_terminal.alternative.os.os_controller"
+    path_controller = "openbb_terminal.alternative.oss.oss_controller"
 
     if mocked_func:
         mock = mocker.Mock()
@@ -212,7 +212,7 @@ def test_call_func(
             new=mock,
         )
 
-        controller = os_controller.OsController(queue=None)
+        controller = oss_controller.OSSController(queue=None)
         getattr(controller, tested_func)(other_args)
 
         if called_args or called_kwargs:
@@ -220,5 +220,5 @@ def test_call_func(
         else:
             mock.assert_called_once()
     else:
-        controller = os_controller.OsController(queue=None)
+        controller = oss_controller.OSSController(queue=None)
         getattr(controller, tested_func)(other_args)

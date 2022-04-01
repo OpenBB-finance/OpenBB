@@ -1207,14 +1207,14 @@ main:
         ref: "/terminal/alternative"
         sub:
           - name: os
-            ref: "/terminal/alternative/os"
+            ref: "/terminal/alternative/oss"
             sub:
               - name: tr
-                ref: "/terminal/alternative/os/tr"
+                ref: "/terminal/alternative/oss/tr"
               - name: sh
-                ref: "/terminal/alternative/os/sh"
+                ref: "/terminal/alternative/oss/sh"
               - name: rs
-                ref: "/terminal/alternative/os/rs"
+                ref: "/terminal/alternative/oss/rs"
           - name: covid
             ref: "/terminal/alternative/covid"
             sub:
