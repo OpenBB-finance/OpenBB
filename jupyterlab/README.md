@@ -26,19 +26,19 @@ To install the Terminal Launcher and the Settings Extensions run the following c
 pip install jupyterlab/gst
 pip install jupyterlab/gst-settings
 pip install jupyterlab/documentation
-jupyter labextension install jupyterlab/gst
-jupyter labextension install jupyterlab/gst-settings
+jupyter labextension install jupyterlab/openbb
+jupyter labextension install jupyterlab/openbb-settings
 jupyter labextension install jupyterlab/documentation
 ```
 
 ### Development setup
 
-In this section `gst` extension will be used as an example.
+In this section `openbb` extension will be used as an example.
 
 - In one terminal window `cd` into the launcher extension folder and build the extension:
 
 ```bash
-cd gst
+cd openbb
 jlpm
 pip install -e .
 jlpm run build
