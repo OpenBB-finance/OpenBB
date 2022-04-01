@@ -21,7 +21,7 @@ def test_shorten_message(message, expected):
     "url, local",
     [
         (
-            "https://cdn.britannica.com/84/73184-004-E5A450B5/Sunflower-field-Fargo-North-Dakota.jpg",
+            "cdn.britannica.com/84/73184-004-E5A450B5/Sunflower-field-Fargo-North-Dakota.jpg",
             False,
         ),
         ("", True),
@@ -29,6 +29,8 @@ def test_shorten_message(message, expected):
 )
 @pytest.mark.vcr
 def test_upload_image(url, local, recorder):
+    if not local:
+        url = "https://" + url
     if url == "":
         url = os.path.join(
             os.path.dirname(
