@@ -1,5 +1,5 @@
 """
-gamestonk_terminal_documentation setup
+openbb_terminal_documentation setup
 """
 import json
 import sys
@@ -10,7 +10,7 @@ import setuptools
 HERE = Path(__file__).parent.resolve()
 
 # The name of the project
-name = "gamestonk_terminal_documentation"
+name = "openbb_terminal_documentation"
 
 lab_path = HERE / name.replace("-", "_") / "labextension"
 

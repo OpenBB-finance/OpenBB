@@ -1,72 +1,72 @@
 version: '3.8'
 services:
-  gst-python:
+  openbbterminal-python:
     build:
       context: ..
-      dockerfile: docker/gst-python.dockerfile
-    image: "${GST_DOCKER_IMAGE_PREFIX}/gst-python:${GST_DOCKER_PYTHON_VERSION}"
-  gst-deps:
+      dockerfile: docker/openbbterminal-python.dockerfile
+    image: "${OPENBBTERMINAL_DOCKER_IMAGE_PREFIX}/openbbterminal-python:${OPENBBTERMINAL_DOCKER_PYTHON_VERSION}"
+  openbbterminal-deps:
     build:
       context: ..
-      dockerfile: docker/gst-deps.dockerfile
+      dockerfile: docker/openbbterminal-deps.dockerfile
       args:
-        GST_DOCKER_IMAGE_PREFIX: ${GST_DOCKER_IMAGE_PREFIX}
-        GST_DOCKER_PYTHON_VERSION: ${GST_DOCKER_PYTHON_VERSION}
-    image: "${GST_DOCKER_IMAGE_PREFIX}/gst-deps:${GST_DOCKER_DEPS_VERSION}"
-  gst-poetry-deps:
+        OPENBBTERMINAL_DOCKER_IMAGE_PREFIX: ${OPENBBTERMINAL_DOCKER_IMAGE_PREFIX}
+        OPENBBTERMINAL_DOCKER_PYTHON_VERSION: ${OPENBBTERMINAL_DOCKER_PYTHON_VERSION}
+    image: "${OPENBBTERMINAL_DOCKER_IMAGE_PREFIX}/openbbterminal-deps:${OPENBBTERMINAL_DOCKER_DEPS_VERSION}"
+  openbbterminal-poetry-deps:
     build:
       context: ..
-      dockerfile: docker/gst-poetry-deps.dockerfile
+      dockerfile: docker/openbbterminal-poetry-deps.dockerfile
       args:
-        GST_DOCKER_IMAGE_PREFIX: ${GST_DOCKER_IMAGE_PREFIX}
-        GST_DOCKER_PYTHON_VERSION: ${GST_DOCKER_PYTHON_VERSION}
-    image: "${GST_DOCKER_IMAGE_PREFIX}/gst-poetry-deps:${GST_DOCKER_POETRY_DEPS_VERSION}"
-  gst-poetry-full-deps:
+        OPENBBTERMINAL_DOCKER_IMAGE_PREFIX: ${OPENBBTERMINAL_DOCKER_IMAGE_PREFIX}
+        OPENBBTERMINAL_DOCKER_PYTHON_VERSION: ${OPENBBTERMINAL_DOCKER_PYTHON_VERSION}
+    image: "${OPENBBTERMINAL_DOCKER_IMAGE_PREFIX}/openbbterminal-poetry-deps:${OPENBBTERMINAL_DOCKER_POETRY_DEPS_VERSION}"
+  openbbterminal-poetry-full-deps:
     build:
       context: ..
-      dockerfile: docker/gst-poetry-full-deps.dockerfile
+      dockerfile: docker/openbbterminal-poetry-full-deps.dockerfile
       args:
-        GST_DOCKER_IMAGE_PREFIX: ${GST_DOCKER_IMAGE_PREFIX}
-        GST_DOCKER_PYTHON_VERSION: ${GST_DOCKER_PYTHON_VERSION}
-        GST_DOCKER_POETRY_DEPS_VERSION: ${GST_DOCKER_POETRY_DEPS_VERSION}
-    image: "${GST_DOCKER_IMAGE_PREFIX}/gst-poetry-full-deps:${GST_DOCKER_POETRY_FULL_DEPS_VERSION}"
-  gst:
+        OPENBBTERMINAL_DOCKER_IMAGE_PREFIX: ${OPENBBTERMINAL_DOCKER_IMAGE_PREFIX}
+        OPENBBTERMINAL_DOCKER_PYTHON_VERSION: ${OPENBBTERMINAL_DOCKER_PYTHON_VERSION}
+        OPENBBTERMINAL_DOCKER_POETRY_DEPS_VERSION: ${OPENBBTERMINAL_DOCKER_POETRY_DEPS_VERSION}
+    image: "${OPENBBTERMINAL_DOCKER_IMAGE_PREFIX}/openbbterminal-poetry-full-deps:${OPENBBTERMINAL_DOCKER_POETRY_FULL_DEPS_VERSION}"
+  openbbterminal:
     build:
       context: ..
-      dockerfile: docker/gst.dockerfile
+      dockerfile: docker/openbbterminal.dockerfile
       args:
-        GST_DOCKER_IMAGE_PREFIX: ${GST_DOCKER_IMAGE_PREFIX}
-        GST_DOCKER_DEPS_VERSION: ${GST_DOCKER_DEPS_VERSION}
-    image: "${GST_DOCKER_IMAGE_PREFIX}/gst:${GST_DOCKER_GST_VERSION}"
+        OPENBBTERMINAL_DOCKER_IMAGE_PREFIX: ${OPENBBTERMINAL_DOCKER_IMAGE_PREFIX}
+        OPENBBTERMINAL_DOCKER_DEPS_VERSION: ${OPENBBTERMINAL_DOCKER_DEPS_VERSION}
+    image: "${OPENBBTERMINAL_DOCKER_IMAGE_PREFIX}/openbbterminal:${OPENBBTERMINAL_DOCKER_OPENBBTERMINAL_VERSION}"
     tty: true
     env_file: setenv
-  gst-poetry:
+  openbbterminal-poetry:
     build:
       context: ..
-      dockerfile: docker/gst-poetry.dockerfile
+      dockerfile: docker/openbbterminal-poetry.dockerfile
       args:
-        GST_DOCKER_IMAGE_PREFIX: ${GST_DOCKER_IMAGE_PREFIX}
-        GST_DOCKER_POETRY_DEPS_VERSION: ${GST_DOCKER_POETRY_DEPS_VERSION}
-    image: "${GST_DOCKER_IMAGE_PREFIX}/gst-poetry:${GST_DOCKER_POETRY_VERSION}"
+        OPENBBTERMINAL_DOCKER_IMAGE_PREFIX: ${OPENBBTERMINAL_DOCKER_IMAGE_PREFIX}
+        OPENBBTERMINAL_DOCKER_POETRY_DEPS_VERSION: ${OPENBBTERMINAL_DOCKER_POETRY_DEPS_VERSION}
+    image: "${OPENBBTERMINAL_DOCKER_IMAGE_PREFIX}/openbbterminal-poetry:${OPENBBTERMINAL_DOCKER_POETRY_VERSION}"
     tty: true
     env_file: setenv
-  gst-poetry-jupyter:
+  openbbterminal-poetry-jupyter:
     build:
       context: ..
-      dockerfile: docker/gst-poetry-jupyter.dockerfile
+      dockerfile: docker/openbbterminal-poetry-jupyter.dockerfile
       args:
-        GST_DOCKER_IMAGE_PREFIX: ${GST_DOCKER_IMAGE_PREFIX}
-        GST_DOCKER_POETRY_FULL_DEPS_VERSION: ${GST_DOCKER_POETRY_FULL_DEPS_VERSION}
-    image: "${GST_DOCKER_IMAGE_PREFIX}/gst-poetry-jupyter:${GST_DOCKER_POETRY_VERSION}"
+        OPENBBTERMINAL_DOCKER_IMAGE_PREFIX: ${OPENBBTERMINAL_DOCKER_IMAGE_PREFIX}
+        OPENBBTERMINAL_DOCKER_POETRY_FULL_DEPS_VERSION: ${OPENBBTERMINAL_DOCKER_POETRY_FULL_DEPS_VERSION}
+    image: "${OPENBBTERMINAL_DOCKER_IMAGE_PREFIX}/openbbterminal-poetry-jupyter:${OPENBBTERMINAL_DOCKER_POETRY_VERSION}"
     tty: true
     env_file: setenv
-  gst-poetry-full:
+  openbbterminal-poetry-full:
     build:
       context: ..
-      dockerfile: docker/gst-poetry-full.dockerfile
+      dockerfile: docker/openbbterminal-poetry-full.dockerfile
       args:
-        GST_DOCKER_IMAGE_PREFIX: ${GST_DOCKER_IMAGE_PREFIX}
-        GST_DOCKER_POETRY_FULL_DEPS_VERSION: ${GST_DOCKER_POETRY_FULL_DEPS_VERSION}
-    image: "${GST_DOCKER_IMAGE_PREFIX}/gst-poetry-full:${GST_DOCKER_POETRY_FULL_VERSION}"
+        OPENBBTERMINAL_DOCKER_IMAGE_PREFIX: ${OPENBBTERMINAL_DOCKER_IMAGE_PREFIX}
+        OPENBBTERMINAL_DOCKER_POETRY_FULL_DEPS_VERSION: ${OPENBBTERMINAL_DOCKER_POETRY_FULL_DEPS_VERSION}
+    image: "${OPENBBTERMINAL_DOCKER_IMAGE_PREFIX}/openbbterminal-poetry-full:${OPENBBTERMINAL_DOCKER_POETRY_FULL_VERSION}"
     tty: true
     env_file: setenv

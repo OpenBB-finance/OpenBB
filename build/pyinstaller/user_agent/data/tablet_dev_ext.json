@@ -1,0 +1,757 @@
+[
+  {
+    "android_versionss": [
+      "v4.2.2",
+      "v4.2.2"
+    ],
+    "cpu": "Quad-core 1.3 GHz Cortex-A7",
+    "dev_ids": [
+      "Lenovo A5500-F Build/KOT49H"
+    ],
+    "name": "Lenovo A8-50 A5500",
+    "released": 2014,
+    "resolution": [
+      800,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.2.2",
+      "v4.2.2"
+    ],
+    "cpu": "Quad-core 1.3 GHz Cortex-A7",
+    "dev_ids": [
+      "Lenovo A5500-H Build/KOT49H"
+    ],
+    "name": "Lenovo A8-50 A5500",
+    "released": 2014,
+    "resolution": [
+      800,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.2.2",
+      "v4.4.2"
+    ],
+    "cpu": "Quad-core 1.3 GHz Cortex-A7",
+    "dev_ids": [
+      "Lenovo A7600-H Build/KOT49H"
+    ],
+    "name": "Lenovo A10-70 A7600",
+    "released": 2014,
+    "resolution": [
+      800,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.2.2",
+      "v4.4.2"
+    ],
+    "cpu": "Quad-core 1.3 GHz Cortex-A7",
+    "dev_ids": [
+      "Lenovo A3500-H Build/KOT49H"
+    ],
+    "name": "Lenovo A7-50 A3500",
+    "released": 2014,
+    "resolution": [
+      800,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.2",
+      "v5.0.2"
+    ],
+    "cpu": "Quad-core 1.2 GHz",
+    "dev_ids": [
+      "SM-T531 Build/KOT49H"
+    ],
+    "name": "Samsung Galaxy Tab 4 10.1 3G",
+    "released": 2014,
+    "resolution": [
+      1280,
+      800
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.2",
+      "v4.4.2"
+    ],
+    "cpu": "Quad-core 1.2 GHz",
+    "dev_ids": [
+      "SM-T230 Build/KOT49H"
+    ],
+    "name": "Samsung Galaxy Tab 4 7.0",
+    "released": 2014,
+    "resolution": [
+      800,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4",
+      "v4.4"
+    ],
+    "cpu": "Octa-core (4x1.9 GHz Cortex-A15 & 4x1.3 GHz Cortex-A7)",
+    "dev_ids": [
+      "SM-P901 Build/KOT49H"
+    ],
+    "name": "Samsung Galaxy Note Pro 12.2 3G",
+    "released": 2014,
+    "resolution": [
+      2560,
+      1600
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4",
+      "v4.4"
+    ],
+    "cpu": "Quad-core 2.3 GHz Krait 400",
+    "dev_ids": [
+      "SM-T325 Build/KOT49H"
+    ],
+    "name": "Samsung Galaxy Tab Pro 8.4 3G/LTE",
+    "released": 2014,
+    "resolution": [
+      1600,
+      2560
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.2",
+      "v4.4.2"
+    ],
+    "cpu": "Quad-core 1.2 GHz Cortex-A7",
+    "dev_ids": [
+      "SM-T231 Build/KOT49H"
+    ],
+    "name": "Samsung Galaxy Tab 4 7.0 3G",
+    "released": 2014,
+    "resolution": [
+      800,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.4",
+      "v4.4.4"
+    ],
+    "cpu": "Quad-core 1.7 GHz",
+    "dev_ids": [
+      "Lenovo TAB 2 A10-70L Build/KTU84P"
+    ],
+    "name": "Lenovo Tab 2 A10-70",
+    "released": 2015,
+    "resolution": [
+      1200,
+      1920
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.1",
+      "v5.1"
+    ],
+    "cpu": "Quad-core 1.3 GHzQuad-core 1.2 GHz - USA model",
+    "dev_ids": [
+      "SM-T560 Build/KTU84P"
+    ],
+    "name": "Samsung Galaxy Tab E 9.6",
+    "released": 2015,
+    "resolution": [
+      800,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.4",
+      "v4.4.4"
+    ],
+    "cpu": "Quad-core 1.3 GHz",
+    "dev_ids": [
+      "SM-T113 Build/KTU84P"
+    ],
+    "name": "Samsung Galaxy Tab 3 Lite 7.0 VE",
+    "released": 2015,
+    "resolution": [
+      600,
+      1024
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.1",
+      "v5.1"
+    ],
+    "cpu": "Quad-core 1.3 GHzQuad-core 1.2 GHz - USA model",
+    "dev_ids": [
+      "SM-T561 Build/KTU84P"
+    ],
+    "name": "Samsung Galaxy Tab E 9.6",
+    "released": 2015,
+    "resolution": [
+      800,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.0",
+      "v5.0"
+    ],
+    "cpu": "Quad-core 1.33 GHz",
+    "dev_ids": [
+      "A3-A30 Build/LRX22G"
+    ],
+    "name": "Acer Iconia Tab 10 A3-A30",
+    "released": 2015,
+    "resolution": [
+      1920,
+      1200
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.2",
+      "v4.4.2"
+    ],
+    "cpu": "Quad-core 1.33 GHz",
+    "dev_ids": [
+      "YOGA Tablet 2 Pro-1380F Build/LRX22C"
+    ],
+    "name": "Lenovo Yoga Tablet 2 Pro",
+    "released": 2014,
+    "resolution": [
+      2560,
+      1440
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.0",
+      "v6.0.1"
+    ],
+    "cpu": "Quad-core 1.2 GHz",
+    "dev_ids": [
+      "SM-T555 Build/LRX22G"
+    ],
+    "name": "Samsung Galaxy Tab A 9.7",
+    "released": 2015,
+    "resolution": [
+      768,
+      1024
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.0.2",
+      "v6.0.1"
+    ],
+    "cpu": "Octa-core (4x1.9 GHz & 4x1.3 GHz) - T710, T715Octa-core (4x1.8 GHz Cortex-A72 & 4x1.4 GHz Cortex-A53) - T719N",
+    "dev_ids": [
+      "SM-T710 Build/LRX22G"
+    ],
+    "name": "Samsung Galaxy Tab S2 8.0",
+    "released": 2015,
+    "resolution": [
+      1536,
+      2048
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.2",
+      "v6.0"
+    ],
+    "cpu": "Quad-core 2.3 GHz Krait 400 (S800)Quad-core 1.9GHz Cortex-A15 & quad-core 1.3 GHz Cortex-A7 (Exynos 5420)",
+    "dev_ids": [
+      "SM-T705 Build/LRX22G"
+    ],
+    "name": "Samsung Galaxy Tab S 8.4 LTE",
+    "released": 2014,
+    "resolution": [
+      1600,
+      2560
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.2",
+      "v4.4.2"
+    ],
+    "cpu": "Quad-core 1.2 GHz",
+    "dev_ids": [
+      "SM-T331 Build/LMY47X"
+    ],
+    "name": "Samsung Galaxy Tab 4 8.0 3G",
+    "released": 2014,
+    "resolution": [
+      800,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.0.2",
+      "v6.0.1"
+    ],
+    "cpu": "Octa-core (4x1.9 GHz & 4x1.3 GHz) - T810, T815Octa-core (4x1.8 GHz Cortex-A72 & 4x1.4 GHz Cortex-A53) - T813N, T819N",
+    "dev_ids": [
+      "SM-T813 Build/MMB29M"
+    ],
+    "name": "Samsung Galaxy Tab S2 9.7",
+    "released": 2015,
+    "resolution": [
+      1536,
+      2048
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.3",
+      "v4.3"
+    ],
+    "cpu": "Quad-core 1.2 GHz Cortex-A7",
+    "dev_ids": [
+      "Archos 80 Helium 4G Build/JLS36C"
+    ],
+    "name": "Archos 80 Helium 4G",
+    "released": 2014,
+    "resolution": [
+      768,
+      1024
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.2",
+      "v6.0.1"
+    ],
+    "cpu": "Octa-core (4x1.9 GHz Cortex-A15 & 4x1.3 GHz Cortex-A7)",
+    "dev_ids": [
+      "SM-T800 Build/MMB29K"
+    ],
+    "name": "Samsung Galaxy Tab S 10.5",
+    "released": 2014,
+    "resolution": [
+      2560,
+      1600
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.2",
+      "v6.0"
+    ],
+    "cpu": "Quad-core 2.3 GHz Krait 400 (S800)Quad-core 1.9GHz Cortex-A15 & quad-core 1.3 GHz Cortex-A7 (Exynos 5420)",
+    "dev_ids": [
+      "SM-T805 Build/KOT49H"
+    ],
+    "name": "Samsung Galaxy Tab S 10.5 LTE",
+    "released": 2014,
+    "resolution": [
+      2560,
+      1600
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4",
+      "v4.4"
+    ],
+    "cpu": "Quad-core 1.3 GHz",
+    "dev_ids": [
+      "SM-T116 Build/KTU84P"
+    ],
+    "name": "Samsung Galaxy Tab 3 V",
+    "released": 2015,
+    "resolution": [
+      600,
+      1024
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.2",
+      "v4.4.2"
+    ],
+    "cpu": "Quad-core 1.2 GHz Cortex-A7",
+    "dev_ids": [
+      "SM-T235 Build/LMY47X"
+    ],
+    "name": "Samsung Galaxy Tab 4 7.0 LTE",
+    "released": 2014,
+    "resolution": [
+      800,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.0",
+      "v7.1.1"
+    ],
+    "cpu": "Dual-core 2.3 GHz Denver",
+    "dev_ids": [
+      "Nexus 9 Build/MOB30M",
+      "Nexus 9 Build/NRD91N"
+    ],
+    "name": "HTC Nexus 9",
+    "released": 2014,
+    "resolution": [
+      1536,
+      2048
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4",
+      "v4.4"
+    ],
+    "cpu": "Quad-core 2.3 GHz Krait 400",
+    "dev_ids": [
+      "SM-T525 Build/KOT49H"
+    ],
+    "name": "Samsung Galaxy Tab Pro 10.1 LTE",
+    "released": 2014,
+    "resolution": [
+      2560,
+      1600
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.0.2",
+      "v6.0.1"
+    ],
+    "cpu": "Octa-core (4x1.9 GHz & 4x1.3 GHz) - T810, T815Octa-core (4x1.8 GHz Cortex-A72 & 4x1.4 GHz Cortex-A53) - T813N, T819N",
+    "dev_ids": [
+      "SAMSUNG SM-T815Y Build/MMB29K"
+    ],
+    "name": "Samsung Galaxy Tab S2 9.7",
+    "released": 2015,
+    "resolution": [
+      1536,
+      2048
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.0",
+      "v5.0"
+    ],
+    "cpu": "Quad-core 1.3 GHz",
+    "dev_ids": [
+      "Lenovo TAB 2 A8-50LC Build/LRX22G",
+      "Lenovo TAB 2 A8-50LC Build/LMY47D"
+    ],
+    "name": "Lenovo Tab 2 A8-50",
+    "released": 2015,
+    "resolution": [
+      800,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.3",
+      "v4.3"
+    ],
+    "cpu": "Quad-core 1.2 GHz Cortex-A7",
+    "dev_ids": [
+      "MediaPad T1 8.0 Build/HuaweiMediaPad"
+    ],
+    "name": "Huawei MediaPad T1 8.0",
+    "released": 2014,
+    "resolution": [
+      800,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.2",
+      "v4.4.2"
+    ],
+    "cpu": "Quad-core",
+    "dev_ids": [
+      "A1-713HD Build/KOT49H"
+    ],
+    "name": "Acer Iconia Tab 7 A1-713HD",
+    "released": 2014,
+    "resolution": [
+      800,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v6.0",
+      "v6.0"
+    ],
+    "cpu": "Octa-core (4x2.3 GHz Cortex-A72 & 4x1.8 GHz Cortex A53)",
+    "dev_ids": [
+      "BTV-DL09 Build/HUAWEIBEETHOVEN-DL09"
+    ],
+    "name": "Huawei MediaPad M3 8.4",
+    "released": 2016,
+    "resolution": [
+      1600,
+      2560
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.2.2",
+      "v4.4.2"
+    ],
+    "cpu": "Quad-core 1.3 GHz Cortex-A7",
+    "dev_ids": [
+      "Lenovo A3500-HV Build/KOT49H"
+    ],
+    "name": "Lenovo A7-50 A3500",
+    "released": 2014,
+    "resolution": [
+      800,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.2",
+      "v4.4.2"
+    ],
+    "cpu": "Quad-core 1.2 GHz",
+    "dev_ids": [
+      "SM-T535 Build/KOT49H"
+    ],
+    "name": "Samsung Galaxy Tab 4 10.1 LTE",
+    "released": 2014,
+    "resolution": [
+      1280,
+      800
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.1",
+      "v5.1"
+    ],
+    "cpu": "Octa-core (4x2.0 GHz Cortex A53 & 4x1.5 GHz Cortex-A53)",
+    "dev_ids": [
+      "HUAWEI M2-A01L Build/HUAWEIM2-A01L"
+    ],
+    "name": "Huawei MediaPad M2 10.0",
+    "released": 2016,
+    "resolution": [
+      1200,
+      1920
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.2",
+      "v4.4.2"
+    ],
+    "cpu": "Quad-core 1.2 GHz Cortex-A7",
+    "dev_ids": [
+      "T1-701u Build/HuaweiMediaPad"
+    ],
+    "name": "Huawei MediaPad T1 7.0 Plus",
+    "released": 2016,
+    "resolution": [
+      600,
+      1024
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.0.2",
+      "v6.0.1"
+    ],
+    "cpu": "Octa-core (4x1.9 GHz & 4x1.3 GHz) - T710, T715Octa-core (4x1.8 GHz Cortex-A72 & 4x1.4 GHz Cortex-A53) - T719N",
+    "dev_ids": [
+      "SM-T719 Build/MMB29M"
+    ],
+    "name": "Samsung Galaxy Tab S2 8.0",
+    "released": 2015,
+    "resolution": [
+      1536,
+      2048
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.2",
+      "v4.2"
+    ],
+    "cpu": "Dual-core 1.2 GHz",
+    "dev_ids": [
+      "SM-T110 Build/JDQ39"
+    ],
+    "name": "Samsung Galaxy Tab 3 Lite 7.0",
+    "released": 2014,
+    "resolution": [
+      600,
+      1024
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4",
+      "v4.4"
+    ],
+    "cpu": "Quad-core 1.3 GHz",
+    "dev_ids": [
+      "SM-T116BU Build/KTU84P"
+    ],
+    "name": "Samsung Galaxy Tab 3 V",
+    "released": 2015,
+    "resolution": [
+      600,
+      1024
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.1",
+      "v5.1"
+    ],
+    "cpu": "Octa-core (4x1.2 GHz Cortex-A53 & 4x1.5 GHz Cortex-A53)",
+    "dev_ids": [
+      "FDR-A01L Build/HuaweiMediaPad"
+    ],
+    "name": "Huawei MediaPad T2 10.0 Pro",
+    "released": 2016,
+    "resolution": [
+      1200,
+      1920
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.2",
+      "v4.4.2"
+    ],
+    "cpu": "Quad-core 1.2 GHz",
+    "dev_ids": [
+      "SM-T530 Build/KOT49H",
+      "SM-T530 Build/LRX22G"
+    ],
+    "name": "Samsung Galaxy Tab 4 10.1",
+    "released": 2014,
+    "resolution": [
+      1280,
+      800
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.2",
+      "v4.4.2"
+    ],
+    "cpu": "Quad-core 1.2 GHz Cortex-A7",
+    "dev_ids": [
+      "SM-T365 Build/LMY47X"
+    ],
+    "name": "Samsung Galaxy Tab Active LTE",
+    "released": 2014,
+    "resolution": [
+      800,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.0",
+      "v5.0"
+    ],
+    "cpu": "Octa-core (4x1.5 GHz Cortex-A53 & 4x2.0 GHz Cortex-A57)",
+    "dev_ids": [
+      "SGP771 Build/28.0.A.8.260"
+    ],
+    "name": "Sony Xperia Z4 Tablet LTE",
+    "released": 2015,
+    "resolution": [
+      2560,
+      1600
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.0.2",
+      "v6.0.1"
+    ],
+    "cpu": "Octa-core (4x1.9 GHz & 4x1.3 GHz) - T710, T715Octa-core (4x1.8 GHz Cortex-A72 & 4x1.4 GHz Cortex-A53) - T719N",
+    "dev_ids": [
+      "SM-T715 Build/MMB29K"
+    ],
+    "name": "Samsung Galaxy Tab S2 8.0",
+    "released": 2015,
+    "resolution": [
+      1536,
+      2048
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.2.2",
+      "v4.4.2"
+    ],
+    "cpu": "Quad-core 1.6 GHz Cortex-A9",
+    "dev_ids": [
+      "X1 7.0 Build/HuaweiMediaPad"
+    ],
+    "name": "Huawei MediaPad X1",
+    "released": 2014,
+    "resolution": [
+      1200,
+      1920
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.2",
+      "v6.0"
+    ],
+    "cpu": "Quad-core 2.3 GHz Krait 400 (S800)Quad-core 1.9GHz Cortex-A15 & quad-core 1.3 GHz Cortex-A7 (Exynos 5420)",
+    "dev_ids": [
+      "SAMSUNG SM-T805 Build/LRX22G"
+    ],
+    "name": "Samsung Galaxy Tab S 10.5 LTE",
+    "released": 2014,
+    "resolution": [
+      2560,
+      1600
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.2",
+      "v6.0"
+    ],
+    "cpu": "Octa-core (4x1.9 GHz Cortex-A15 & 4x1.3 GHz Cortex-A7)",
+    "dev_ids": [
+      "SM-T700 Build/LRX22G"
+    ],
+    "name": "Samsung Galaxy Tab S 8.4",
+    "released": 2014,
+    "resolution": [
+      1600,
+      2560
+    ]
+  }
+]

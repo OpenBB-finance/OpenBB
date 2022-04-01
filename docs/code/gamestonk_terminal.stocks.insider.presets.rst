@@ -7,7 +7,7 @@ Submodules
 gamestonk\_terminal.stocks.insider.presets.test module
 ------------------------------------------------------
 
-.. automodule:: gamestonk_terminal.stocks.insider.presets.test
+.. automodule:: openbb_terminal.stocks.insider.presets.test
    :members:
    :undoc-members:
    :show-inheritance:
@@ -15,7 +15,7 @@ gamestonk\_terminal.stocks.insider.presets.test module
 Module contents
 ---------------
 
-.. automodule:: gamestonk_terminal.stocks.insider.presets
+.. automodule:: openbb_terminal.stocks.insider.presets
    :members:
    :undoc-members:
    :show-inheritance:

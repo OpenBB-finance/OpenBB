@@ -5,7 +5,7 @@ import pandas as pd
 import requests
 
 from bots import imps
-from gamestonk_terminal.decorators import log_start_end
+from openbb_terminal.decorators import log_start_end
 
 logger = logging.getLogger(__name__)
 

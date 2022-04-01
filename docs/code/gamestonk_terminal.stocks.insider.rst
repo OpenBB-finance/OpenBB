@@ -7,7 +7,7 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
-   gamestonk_terminal.stocks.insider.presets
+   openbb_terminal.stocks.insider.presets
 
 Submodules
 ----------
@@ -15,7 +15,7 @@ Submodules
 gamestonk\_terminal.stocks.insider.businessinsider\_model module
 ----------------------------------------------------------------
 
-.. automodule:: gamestonk_terminal.stocks.insider.businessinsider_model
+.. automodule:: openbb_terminal.stocks.insider.businessinsider_model
    :members:
    :undoc-members:
    :show-inheritance:
@@ -23,7 +23,7 @@ gamestonk\_terminal.stocks.insider.businessinsider\_model module
 gamestonk\_terminal.stocks.insider.businessinsider\_view module
 ---------------------------------------------------------------
 
-.. automodule:: gamestonk_terminal.stocks.insider.businessinsider_view
+.. automodule:: openbb_terminal.stocks.insider.businessinsider_view
    :members:
    :undoc-members:
    :show-inheritance:
@@ -31,7 +31,7 @@ gamestonk\_terminal.stocks.insider.businessinsider\_view module
 gamestonk\_terminal.stocks.insider.finviz\_model module
 -------------------------------------------------------
 
-.. automodule:: gamestonk_terminal.stocks.insider.finviz_model
+.. automodule:: openbb_terminal.stocks.insider.finviz_model
    :members:
    :undoc-members:
    :show-inheritance:
@@ -39,7 +39,7 @@ gamestonk\_terminal.stocks.insider.finviz\_model module
 gamestonk\_terminal.stocks.insider.finviz\_view module
 ------------------------------------------------------
 
-.. automodule:: gamestonk_terminal.stocks.insider.finviz_view
+.. automodule:: openbb_terminal.stocks.insider.finviz_view
    :members:
    :undoc-members:
    :show-inheritance:
@@ -47,7 +47,7 @@ gamestonk\_terminal.stocks.insider.finviz\_view module
 gamestonk\_terminal.stocks.insider.insider\_controller module
 -------------------------------------------------------------
 
-.. automodule:: gamestonk_terminal.stocks.insider.insider_controller
+.. automodule:: openbb_terminal.stocks.insider.insider_controller
    :members:
    :undoc-members:
    :show-inheritance:
@@ -55,7 +55,7 @@ gamestonk\_terminal.stocks.insider.insider\_controller module
 gamestonk\_terminal.stocks.insider.openinsider\_model module
 ------------------------------------------------------------
 
-.. automodule:: gamestonk_terminal.stocks.insider.openinsider_model
+.. automodule:: openbb_terminal.stocks.insider.openinsider_model
    :members:
    :undoc-members:
    :show-inheritance:
@@ -63,7 +63,7 @@ gamestonk\_terminal.stocks.insider.openinsider\_model module
 gamestonk\_terminal.stocks.insider.openinsider\_view module
 -----------------------------------------------------------
 
-.. automodule:: gamestonk_terminal.stocks.insider.openinsider_view
+.. automodule:: openbb_terminal.stocks.insider.openinsider_view
    :members:
    :undoc-members:
    :show-inheritance:
@@ -71,7 +71,7 @@ gamestonk\_terminal.stocks.insider.openinsider\_view module
 Module contents
 ---------------
 
-.. automodule:: gamestonk_terminal.stocks.insider
+.. automodule:: openbb_terminal.stocks.insider
    :members:
    :undoc-members:
    :show-inheritance:

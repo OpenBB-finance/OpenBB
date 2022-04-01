@@ -13,7 +13,7 @@ import { LabIcon } from '@jupyterlab/ui-components';
 
 import docsIconStr from '../style/docs.svg';
 
-const CATEGORY = "Gamestonk Terminal";
+const CATEGORY = "OpenBB Terminal";
 
 namespace CommandIDs {
   export const createNew = 'jlab-examples:create-new-python-file';
@@ -41,7 +41,7 @@ const extension: JupyterFrontEndPlugin<void> = {
       icon: icon,
       execute: (args: any) => {
         window.open(
-          'https://gamestonkterminal.github.io/GamestonkTerminal/',
+          'https://openbb-finance.github.io/OpenBBTerminal/',
           '_blank'
         );
       },

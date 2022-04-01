@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta content="text/html; charset=UTF-8" http-equiv="content-type"/>
+        {% if title %}
+            <title>{{ title }}</title>
+        {% else %}
+            <title>OpenBB Terminal</title>
+        {% endif %}
+        {% if stylesheet %}
+            <style type="text/css">
+            {{ stylesheet }}
+            </style>
+        {% endif %}
+    </head>
+    <body class="body">
+        {{ body }}
+    </body>
+</html>

@@ -3,6 +3,7 @@ import pytest
 from bots.etf.tops import etfs_disc_command
 
 
+@pytest.mark.bots
 @pytest.mark.parametrize("sort", ["active"])
 @pytest.mark.vcr
 def test_etfs_disc_command(mocker, recorder, sort):

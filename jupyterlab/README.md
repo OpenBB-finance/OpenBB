@@ -6,14 +6,14 @@ standard for data related tasks.
 This folder contains source code for a bunch of tools that help using the functionality
 of the terminal in connection with Jupyter:
 
-1. Jupyter Lab Extensions for using Gamestonk Terminal
+1. Jupyter Lab Extensions for using OpenBB Terminal
 
-## 1. Jupyter Lab Extensions for using Gamestonk Terminal
+## 1. Jupyter Lab Extensions for using OpenBB Terminal
 
 Documentation, GST and GST-settings are 3 Jupyter Lab extensions that illustrate how
 the terminal can be integrated with Jupyter Lab based IDEs.
 
-*NOTE: The extensions should be considered prototypes and are not production-ready.*
+_NOTE: The extensions should be considered prototypes and are not production-ready._
 
 1. Only bash is supported (only macOS, Linux and WSL). No support for Windows powershell or command prompt.
 2. The input values are not escaped

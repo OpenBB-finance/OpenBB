@@ -3,6 +3,7 @@ import pytest
 from bots.economy.performance import performance_command
 
 
+@pytest.mark.bots
 @pytest.mark.parametrize(
     "group",
     [
