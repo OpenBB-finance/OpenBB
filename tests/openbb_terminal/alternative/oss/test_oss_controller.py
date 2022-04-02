@@ -14,14 +14,19 @@ from openbb_terminal.alternative.oss import oss_controller
 
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.parametrize(
-    "queue, expected", [(["load", "help"], []), (["quit", "help"], ["help"]),],
+    "queue, expected",
+    [
+        (["load", "help"], []),
+        (["quit", "help"], ["help"]),
+    ],
 )
 def test_menu_with_queue(expected, mocker, queue):
     path_controller = "openbb_terminal.alternative.oss.oss_controller"
 
     # MOCK SWITCH
     mocker.patch(
-        target=f"{path_controller}.OSSController.switch", return_value=["quit"],
+        target=f"{path_controller}.OSSController.switch",
+        return_value=["quit"],
     )
     result_menu = oss_controller.OSSController(queue=queue).menu()
 
@@ -34,20 +39,29 @@ def test_menu_without_queue_completion(mocker):
 
     # ENABLE AUTO-COMPLETION : HELPER_FUNCS.MENU
     mocker.patch(
-        target="openbb_terminal.feature_flags.USE_PROMPT_TOOLKIT", new=True,
+        target="openbb_terminal.feature_flags.USE_PROMPT_TOOLKIT",
+        new=True,
     )
-    mocker.patch(target="openbb_terminal.parent_classes.session",)
     mocker.patch(
-        target="openbb_terminal.parent_classes.session.prompt", return_value="quit",
+        target="openbb_terminal.parent_classes.session",
+    )
+    mocker.patch(
+        target="openbb_terminal.parent_classes.session.prompt",
+        return_value="quit",
     )
 
     # DISABLE AUTO-COMPLETION : CONTROLLER.COMPLETER
     mocker.patch.object(
-        target=oss_controller.obbff, attribute="USE_PROMPT_TOOLKIT", new=True,
+        target=oss_controller.obbff,
+        attribute="USE_PROMPT_TOOLKIT",
+        new=True,
     )
-    mocker.patch(target=f"{path_controller}.session",)
     mocker.patch(
-        target=f"{path_controller}.session.prompt", return_value="quit",
+        target=f"{path_controller}.session",
+    )
+    mocker.patch(
+        target=f"{path_controller}.session.prompt",
+        return_value="quit",
     )
 
     result_menu = oss_controller.OSSController(queue=None).menu()
@@ -57,17 +71,21 @@ def test_menu_without_queue_completion(mocker):
 
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.parametrize(
-    "mock_input", ["help", "homee help", "home help", "mock"],
+    "mock_input",
+    ["help", "homee help", "home help", "mock"],
 )
 def test_menu_without_queue_sys_exit(mock_input, mocker):
     path_controller = "openbb_terminal.alternative.oss.oss_controller"
 
     # DISABLE AUTO-COMPLETION
     mocker.patch.object(
-        target=oss_controller.obbff, attribute="USE_PROMPT_TOOLKIT", new=False,
+        target=oss_controller.obbff,
+        attribute="USE_PROMPT_TOOLKIT",
+        new=False,
     )
     mocker.patch(
-        target=f"{path_controller}.session", return_value=None,
+        target=f"{path_controller}.session",
+        return_value=None,
     )
 
     # MOCK USER INPUT
@@ -86,7 +104,8 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
 
     mock_switch = mocker.Mock(side_effect=SystemExitSideEffect())
     mocker.patch(
-        target=f"{path_controller}.OSSController.switch", new=mock_switch,
+        target=f"{path_controller}.OSSController.switch",
+        new=mock_switch,
     )
 
     result_menu = oss_controller.OSSController(queue=None).menu()
@@ -110,7 +129,10 @@ def test_print_help():
         ("help/help", ["help", "help"]),
         ("q", ["quit"]),
         ("h", []),
-        ("r", ["quit", "quit", "reset", "alternative", "oss"],),
+        (
+            "r",
+            ["quit", "quit", "reset", "alternative", "oss"],
+        ),
     ],
 )
 def test_switch(an_input, expected_queue):
@@ -135,13 +157,21 @@ def test_call_cls(mocker):
 @pytest.mark.parametrize(
     "func, queue, expected_queue",
     [
-        ("call_exit", [], ["quit", "quit", "quit"],),
+        (
+            "call_exit",
+            [],
+            ["quit", "quit", "quit"],
+        ),
         ("call_exit", ["help"], ["quit", "quit", "quit", "help"]),
         ("call_home", [], ["quit", "quit"]),
         ("call_help", [], []),
         ("call_quit", [], ["quit"]),
         ("call_quit", ["help"], ["quit", "help"]),
-        ("call_reset", [], ["quit", "quit", "reset", "alternative", "oss"],),
+        (
+            "call_reset",
+            [],
+            ["quit", "quit", "reset", "alternative", "oss"],
+        ),
         (
             "call_reset",
             ["help"],
@@ -160,7 +190,15 @@ def test_call_func_expect_queue(expected_queue, func, queue):
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.parametrize(
     "tested_func, other_args, mocked_func, called_args, called_kwargs",
-    [("call_tr", [], "github_view.display_top_repos", [], dict(),),],
+    [
+        (
+            "call_tr",
+            [],
+            "github_view.display_top_repos",
+            [],
+            dict(),
+        ),
+    ],
 )
 def test_call_func(
     tested_func, mocked_func, other_args, called_args, called_kwargs, mocker
@@ -170,7 +208,8 @@ def test_call_func(
     if mocked_func:
         mock = mocker.Mock()
         mocker.patch(
-            target=f"{path_controller}.{mocked_func}", new=mock,
+            target=f"{path_controller}.{mocked_func}",
+            new=mock,
         )
 
         controller = oss_controller.OSSController(queue=None)
