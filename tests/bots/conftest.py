@@ -1,7 +1,3 @@
-
-# IMPORTATION STANDARD
-
-# IMPORTATION THIRDPARTY
 import pytest
 from _pytest.nodes import Node
 
