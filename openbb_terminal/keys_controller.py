@@ -1260,7 +1260,7 @@ class KeysController(BaseController):
             help="token",
         )
         parser.add_argument(
-            "-t",
+            "-at",
             "--account_type",
             type=str,
             dest="account_type",
