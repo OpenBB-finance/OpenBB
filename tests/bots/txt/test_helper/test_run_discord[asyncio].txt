@@ -1,0 +1,4 @@
+()
+{}
+<disnake.embeds.Embed object at 0x7fc50816f820>
+None

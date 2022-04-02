@@ -1,6 +1,9 @@
 import pytest
 
-from bots.etf.holdings import holdings_command
+try:
+    from bots.etf.holdings import holdings_command
+except ImportError:
+    pytest.skip(allow_module_level=True)
 
 
 @pytest.mark.bots

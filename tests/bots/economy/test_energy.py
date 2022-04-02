@@ -1,10 +1,12 @@
 import pytest
 
-from bots.economy.energy import energy_command
+try:
+    from bots.economy.energy import energy_command
+except ImportError:
+    pytest.skip(allow_module_level=True)
 
 
 @pytest.mark.bots
-@pytest.mark.skip
 @pytest.mark.vcr
 def test_energy_command(mocker, recorder):
     mocker.patch("bots.helpers.uuid_get", return_value="1")
