@@ -101,7 +101,7 @@ def search(
     sector: str = "",
     industry: str = "",
     exchange_country: str = "",
-    amount: int = 0,
+    limit: int = 0,
     export: str = "",
 ) -> None:
     """Search selected query for tickers.
@@ -118,8 +118,8 @@ def search(
         Search by industry to find stocks matching the criteria
     exchange_country: str
         Search by exchange country to find stock matching
-    amount : int
-        The amount of companies shown.
+    limit : int
+        The limit of companies shown.
     export : str
         Export data
     """
@@ -229,7 +229,7 @@ def search(
         title += f" within {industry}"
 
     print_rich_table(
-        df.iloc[:amount] if amount else df,
+        df.iloc[:limit] if limit else df,
         show_index=True,
         headers=["Name", "Country", "Sector", "Industry", "Exchange"],
         title=title,

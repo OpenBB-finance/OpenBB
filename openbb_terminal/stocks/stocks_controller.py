@@ -66,15 +66,16 @@ class StocksController(StockBaseController):
     PATH = "/stocks/"
     FILE_PATH = os.path.join(os.path.dirname(__file__), "README.md")
 
+    country = financedatabase.show_options("equities", "countries")
+    sector = financedatabase.show_options("equities", "sectors")
+    industry = financedatabase.show_options("equities", "industries")
+
     def __init__(self, queue: List[str] = None):
         """Constructor"""
         super().__init__(queue)
 
-        self.country = financedatabase.show_options("equities", "countries")
-        self.sector = financedatabase.show_options("equities", "sectors")
-        self.industry = financedatabase.show_options("equities", "industries")
-
         if session and obbff.USE_PROMPT_TOOLKIT:
+
             choices: dict = {c: {} for c in self.controller_choices}
 
             choices["search"]["--country"] = {c: None for c in self.country}
@@ -161,17 +162,17 @@ Stock: [/param]{stock_text}
             help="The search term used to find company tickers.",
         )
         parser.add_argument(
-            "-a",
-            "--amount",
+            "-l",
+            "--limit",
             default=0,
             type=int,
-            dest="amount",
+            dest="limit",
             help="Enter the number of Equities you wish to see in the table window.",
         )
         parser.add_argument(
             "-c",
             "--country",
-            default=None,
+            default="",
             choices=self.country,
             dest="country",
             help="Search by country to find stocks matching the criteria.",
@@ -212,7 +213,7 @@ Stock: [/param]{stock_text}
                 sector=ns_parser.sector,
                 industry=ns_parser.industry,
                 exchange_country=ns_parser.exchange_country,
-                amount=ns_parser.amount,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
 
