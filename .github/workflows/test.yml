@@ -41,7 +41,6 @@ jobs:
           pylint terminal.py openbb_terminal bots tests
   test:
     name: Base Tests - Ubuntu-latest - Python 3.9
-    needs: linting
     runs-on: ubuntu-latest
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
     steps:
