@@ -49,6 +49,9 @@ class FormatterWithExceptions(logging.Formatter):
         ip_regex = r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"
         s_list = []
         ip_reg = re.compile(ip_regex)
+
+        parent_terminal_folder = os.path.abspath(".").split("/")[-1]
+
         for word in text.split():
 
             if (
@@ -59,15 +62,9 @@ class FormatterWithExceptions(logging.Formatter):
                 s_list.append("suspected_ip")
             elif "@" in word and "." in word:
                 s_list.append("suspected_email")
-            elif f"GamestonkTerminal{os.sep}" in word:
+            elif f"{parent_terminal_folder}{os.sep}" in word:
                 s_list.append(
-                    word.split(f"GamestonkTerminal{os.sep}")[1]
-                    .replace('"', "")
-                    .replace("'", "")
-                )
-            elif f"OpenBBTerminal{os.sep}" in word:
-                s_list.append(
-                    word.split(f"OpenBBTerminal{os.sep}")[1]
+                    word.split(f"{parent_terminal_folder}{os.sep}")[1]
                     .replace('"', "")
                     .replace("'", "")
                 )
