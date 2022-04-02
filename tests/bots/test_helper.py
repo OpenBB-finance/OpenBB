@@ -3,6 +3,8 @@ import pytest
 from PIL import Image
 from plotly import graph_objects as go
 
+# pylint: disable=R0903,W0143,E0211,W0621
+
 try:
     from bots.helpers import (
         load,
