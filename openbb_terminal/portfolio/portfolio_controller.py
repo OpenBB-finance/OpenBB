@@ -314,7 +314,7 @@ Loaded:[/info] {self.portfolio_name or None}
                 f"Portfolio successfully initialized with {inputs['Name']}.\n"
             )
             return
-        inputs["Value"] = inputs["Price"] * inputs["Quantity"]
+        inputs["Value"] = float(inputs["Price"] * inputs["Quantity"])  # type: ignore
         self.portfolio.add_trade(inputs)
 
         console.print(f"{inputs['Name']} successfully added\n")
