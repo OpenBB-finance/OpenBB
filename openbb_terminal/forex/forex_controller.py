@@ -287,14 +287,14 @@ class ForexController(BaseController):
         """Enter Oanda menu."""
         from openbb_terminal.forex.oanda.oanda_controller import OandaController
 
-        if self.to_symbol and self.from_symbol:
+        # if self.to_symbol and self.from_symbol:
 
-            self.queue = self.load_class(
-                OandaController,
-                queue=self.queue,
-            )
-        else:
-            console.print("No currency pair data is loaded. Use 'load' to load data.\n")
+        self.queue = self.load_class(
+            OandaController,
+            queue=self.queue,
+        )
+        # else:
+        #     console.print("No currency pair data is loaded. Use 'load' to load data.\n")
 
     @log_start_end(log=logger)
     def call_ta(self, _):
