@@ -253,17 +253,6 @@ jobs:
           conda list
           pip list
 
-      - name: Run linter (Bash)
-        shell: bash -l {0}
-        run: |
-          pip install pylint==2.12.2
-          pylint discordbot openbb_terminal terminal.py tests
-
-      - name: Run MyPy (Bash)
-        if: runner.os != 'Windows'
-        shell: bash -l {0}
-        run: mypy --ignore-missing-imports --exclude '/setup\.py$' .
-
       - name: Run tests (Bash)
         shell: bash -l {0}
         run: pytest tests/ -m "not bots and not linux"
