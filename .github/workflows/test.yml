@@ -41,7 +41,6 @@ jobs:
           pylint terminal.py openbb_terminal bots tests
   test:
     name: Base Tests - Ubuntu-latest - Python 3.9
-    needs: linting
     runs-on: ubuntu-latest
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
     steps:
@@ -252,17 +251,6 @@ jobs:
         run: |
           conda list
           pip list
-
-      - name: Run linter (Bash)
-        shell: bash -l {0}
-        run: |
-          pip install pylint==2.12.2
-          pylint discordbot openbb_terminal terminal.py tests
-
-      - name: Run MyPy (Bash)
-        if: runner.os != 'Windows'
-        shell: bash -l {0}
-        run: mypy --ignore-missing-imports --exclude '/setup\.py$' .
 
       - name: Run tests (Bash)
         shell: bash -l {0}
