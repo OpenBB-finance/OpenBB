@@ -121,7 +121,7 @@ go up.
 5. Push to your Branch (`git push origin feature/AmazingFeature`)
 6. Open a Pull Request
 
-**Become a Karen 🤷**
+**Raise an Issue**
 
 Recommended if you adopted a strategy of buying high and selling low.
 
@@ -131,11 +131,11 @@ would make you buy even higher and selling even lower.
 Also, if somehow you're sitting in several mils due to this terminal, don't forget to report a
 [bug](https://github.com/OpenBB-finance/OpenBBTerminal/issues) so that the team can fix, and keep the old ways.
 
-**Join the 🙌 💎 Gang**
-
-If red is your favorite color, and you never sell for a loss.
+**Join Us and Contribute**
 
 Welcome to the club, and feel free to support the developers behind this amazing open-source project.
+
+If you're interested in contributing fork us! Grab an issue or enhancement and put in a PR request with the fix.
 
 ## License
 
