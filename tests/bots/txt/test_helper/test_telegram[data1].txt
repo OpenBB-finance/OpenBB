@@ -1,6 +1,6 @@
 ()
 {}
-<class 'test_helper.MockMessage'>
+<class 'tests.bots.test_helper.MockMessage'>
 <class 'str'>
 <class 'int'>
 <class '_io.BufferedReader'>
