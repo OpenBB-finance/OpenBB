@@ -19,6 +19,7 @@ from openbb_terminal.config_terminal import theme
 FOREX_SOURCES: Dict = {
     "yf": "YahooFinance",
     "av": "AlphaAdvantage",
+    "oanda": "Oanda",
 }
 
 SOURCES_INTERVALS: Dict = {

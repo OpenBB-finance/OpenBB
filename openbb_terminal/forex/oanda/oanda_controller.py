@@ -56,7 +56,7 @@ class OandaController(BaseController):
 
         self.from_symbol = ""
         self.to_symbol = ""
-        self.source = "Oanda"
+        self.source = "oanda"
         self.instrument: Union[str, None] = None
 
         if session and obbff.USE_PROMPT_TOOLKIT:
