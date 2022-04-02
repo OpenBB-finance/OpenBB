@@ -1,5 +1,9 @@
 import pytest
-from bots.stocks.candle import candle_command
+
+try:
+    from bots.stocks.candle import candle_command
+except ImportError:
+    pytest.skip(allow_module_level=True)
 
 
 @pytest.fixture(scope="module")

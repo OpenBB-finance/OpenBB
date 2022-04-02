@@ -1,11 +1,14 @@
 import os
 import pytest
-from bots.groupme.groupme_helpers import (
-    shorten_message,
-    upload_image,
-    send_message,
-    send_image,
-)
+try:
+    from bots.groupme.groupme_helpers import (
+        shorten_message,
+        upload_image,
+        send_message,
+        send_image,
+    )
+except ImportError:
+    pytest.skip(allow_module_level=True)
 
 
 @pytest.mark.bots

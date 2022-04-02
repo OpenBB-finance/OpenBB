@@ -2,26 +2,31 @@ import os
 import pytest
 from PIL import Image
 from plotly import graph_objects as go
-from bots.helpers import (
-    load,
-    quote,
-    autocrop_image,
-    unit_finder,
-    unit_replacer,
-    uuid_get,
-    country_autocomp,
-    industry_autocomp,
-    metric_autocomp,
-    ticker_autocomp,
-    expiry_autocomp,
-    presets_custom_autocomp,
-    signals_autocomp,
-    inter_chart,
-    save_image,
-    image_border,
-    multi_image,
-    ShowView,
-)
+
+try:
+    from bots.helpers import (
+        load,
+        quote,
+        autocrop_image,
+        unit_finder,
+        unit_replacer,
+        uuid_get,
+        country_autocomp,
+        industry_autocomp,
+        metric_autocomp,
+        ticker_autocomp,
+        expiry_autocomp,
+        presets_custom_autocomp,
+        signals_autocomp,
+        inter_chart,
+        save_image,
+        image_border,
+        multi_image,
+        ShowView,
+    )
+
+except ImportError:
+    pytest.skip(allow_module_level=True)
 
 
 class MockInter:

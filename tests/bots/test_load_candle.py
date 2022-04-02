@@ -1,6 +1,10 @@
 from datetime import datetime
 import pytest
-from bots.load_candle import dt_utcnow_local_tz, stock_data
+
+try:
+    from bots.load_candle import dt_utcnow_local_tz, stock_data
+except ImportError:
+    pytest.skip(allow_module_level=True)
 
 
 @pytest.mark.bots
