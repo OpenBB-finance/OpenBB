@@ -9,17 +9,17 @@ import traceback
 import uuid
 from typing import Any, Dict
 
+import config_discordbot as cfg
 import disnake
 from disnake.ext import commands
 from fastapi import FastAPI, Request
 
-import config_discordbot as cfg
 from bots.groupme.run_groupme import handle_groupme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.loggers import setup_logging
 
 logger = logging.getLogger(__name__)
-setup_logging("bot-app")
+setup_logging(f"bot_pid_{os.getpid()}")
 logger.info("START")
 logger.info("Python: %s", platform.python_version())
 logger.info("OS: %s", platform.system())
@@ -43,7 +43,7 @@ MISSING: Any = _MissingSentinel()
 
 @app.get("/")
 async def read_root():
-    return {"Hello": str(gst_bot.user)}
+    return {"Hello": str(openbb_bot.user)}
 
 
 @app.post("/")
@@ -272,8 +272,8 @@ if cfg.IMGUR_CLIENT_ID == "REPLACE_ME" or cfg.DISCORD_BOT_TOKEN == "REPLACE_ME":
 print(f"disnake: {disnake.__version__}\n")
 
 
-gst_bot = GSTBot()
-gst_bot.load_all_extensions("cmds")
+openbb_bot = GSTBot()
+openbb_bot.load_all_extensions("cmds")
 
 
 class MyModal(disnake.ui.Modal):
@@ -310,7 +310,7 @@ class MyModal(disnake.ui.Modal):
 
     async def callback(self, inter: disnake.ModalInteraction) -> None:
         embed = disnake.Embed(title="Support Ticket")
-        channel = await gst_bot.fetch_channel(943929570002878514)
+        channel = await openbb_bot.fetch_channel(943929570002878514)
         embed.add_field(name="User", value=inter.author.name, inline=True)
         embed.add_field(name="Server", value=inter.guild.name, inline=True)  # type: ignore
         embed.add_field(name="Issue", value=inter.text_values["issue"], inline=False)
@@ -325,7 +325,7 @@ class MyModal(disnake.ui.Modal):
         await inter.response.send_message("Oops, something went wrong.", ephemeral=True)
 
 
-@gst_bot.slash_command()
+@openbb_bot.slash_command()
 @commands.guild_only()
 @commands.has_permissions(manage_messages=True)
 async def support(inter: disnake.CommandInteraction):
@@ -333,17 +333,17 @@ async def support(inter: disnake.CommandInteraction):
     await inter.response.send_modal(modal=MyModal())
 
 
-@gst_bot.slash_command()
+@openbb_bot.slash_command()
 async def stats(
     self,
     inter: disnake.AppCmdInter,
 ):
     """Bot Stats"""
     guildname = []
-    for guild in gst_bot.guilds:
+    for guild in openbb_bot.guilds:
         guildname.append(guild.name)
     members = []
-    for guild in gst_bot.guilds:
+    for guild in openbb_bot.guilds:
         for member in guild.members:
             members.append(member)
     embed = disnake.Embed(
@@ -366,9 +366,9 @@ async def stats(
 
 async def run():
     try:
-        await gst_bot.start(cfg.DISCORD_BOT_TOKEN)
+        await openbb_bot.start(cfg.DISCORD_BOT_TOKEN)
     except KeyboardInterrupt:
-        await gst_bot.logout()
+        await openbb_bot.logout()
 
 
 asyncio.create_task(run())

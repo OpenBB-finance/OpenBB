@@ -23,6 +23,7 @@ def kc_command(
     end="",
     extended_hours: bool = False,
     heikin_candles: bool = False,
+    trendline: bool = False,
     news: bool = False,
 ):
     """Displays chart with keltner channel [Yahoo Finance]"""
@@ -100,12 +101,13 @@ def kc_command(
         news,
         bar=bar_start,
         int_bar=interval,
+        trendline=trendline,
         shared_xaxes=True,
         vertical_spacing=0.07,
     )
     title = f"<b>{plot['plt_title']} Keltner Channels ({ma_mode.upper()})</b>"
     fig = plot["fig"]
-    idx = 6 if interval != 1440 else 11
+    idx = 6 if (not trendline) and (interval != 1440) else 11
 
     fig.add_trace(
         go.Scatter(

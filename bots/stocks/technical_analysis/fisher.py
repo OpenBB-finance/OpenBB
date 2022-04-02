@@ -20,6 +20,7 @@ def fisher_command(
     end="",
     extended_hours: bool = False,
     heikin_candles: bool = False,
+    trendline: bool = False,
     news: bool = False,
 ):
     """Displays chart with fisher transformation [Yahoo Finance]"""
@@ -81,6 +82,7 @@ def fisher_command(
         news,
         bar=bar_start,
         int_bar=interval,
+        trendline=trendline,
         rows=2,
         cols=1,
         shared_xaxes=True,
@@ -90,7 +92,7 @@ def fisher_command(
     )
     title = f"<b>{plot['plt_title']} Fisher Transform</b>"
     fig = plot["fig"]
-    idx = 6 if interval != 1440 else 11
+    idx = 6 if (not trendline) and (interval != 1440) else 11
 
     dmin = df_ta.iloc[:, (idx + 1)].values.min()
     dmax = df_ta.iloc[:, (idx + 1)].values.max()

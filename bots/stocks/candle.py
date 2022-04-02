@@ -1,9 +1,9 @@
 import logging
 
+import pandas_ta as ta
 import plotly.graph_objects as go
 
 from bots import imps, load_candle
-from openbb_terminal.common.technical_analysis import overlap_model
 from openbb_terminal.decorators import log_start_end
 
 logger = logging.getLogger(__name__)
@@ -21,6 +21,7 @@ def candle_command(
     end="",
     news: bool = False,
     heikin_candles: bool = False,
+    trendline: bool = False,
     vwap: bool = False,
 ):
     """Shows candle plot of loaded ticker or crypto. [Source: Yahoo Finance or Binance API]
@@ -35,6 +36,7 @@ def candle_command(
     end: YYYY-MM-DD format
     news: Display clickable news markers on interactive chart. Default: False
     heikin_candles: Heikin Ashi candles. Default: False
+    trendline: Display trendline on Daily chart. Default: False
     """
 
     logger.info(
@@ -62,7 +64,15 @@ def candle_command(
     )
 
     df_stock = df_stock.loc[(df_stock.index >= start) & (df_stock.index < end)]
-    df_stock = df_stock.join(overlap_model.vwap(df_stock, 0))
+    if vwap:
+        df_vwap = ta.vwap(
+            high=df_stock["High"],
+            low=df_stock["Low"],
+            close=df_stock["Close"],
+            volume=df_stock["Volume"],
+            offset=0,
+        )
+        df_stock = df_stock.join(df_vwap)
 
     # Check that loading a stock was not successful
     if df_stock.empty:
@@ -80,6 +90,7 @@ def candle_command(
         news,
         bar=bar_start,
         int_bar=interval,
+        trendline=trendline,
     )
     title = f"{plot['plt_title']} Chart"
     fig = plot["fig"]

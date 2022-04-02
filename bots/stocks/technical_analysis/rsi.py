@@ -22,6 +22,7 @@ def rsi_command(
     end="",
     extended_hours: bool = False,
     heikin_candles: bool = False,
+    trendline: bool = False,
     news: bool = False,
 ):
     """Displays chart with relative strength index [Yahoo Finance]"""
@@ -87,6 +88,7 @@ def rsi_command(
         news,
         bar=bar_start,
         int_bar=interval,
+        trendline=trendline,
         rows=2,
         cols=1,
         shared_xaxes=True,
@@ -105,7 +107,9 @@ def rsi_command(
             name=f"RSI {length}",
             mode="lines",
             x=df_ta.index,
-            y=df_ta.iloc[:, 6].values if interval != 1440 else df_ta.iloc[:, 11].values,
+            y=df_ta.iloc[:, 6].values
+            if (not trendline) and (interval != 1440)
+            else df_ta.iloc[:, 11].values,
             opacity=1,
         ),
         row=2,

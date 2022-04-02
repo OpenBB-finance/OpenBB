@@ -20,7 +20,8 @@ def reverse_repo_command(days: int = 50):
 
     df = pd.DataFrame(
         requests.get(
-            f"https://stocksera.pythonanywhere.com/api/reverse_repo/?days={str(days)}"
+            f"https://stocksera.pythonanywhere.com/api/reverse_repo/?days={str(days)}",
+            headers={"Authorization": f"Api-Key {imps.API_STOCKSERA_TOKEN}"},
         ).json()
     )
 
@@ -69,7 +70,7 @@ def reverse_repo_command(days: int = 50):
             df_pg.append(df_pg)
             fig = imps.plot_df(
                 df_pg,
-                fig_size=(650, (40 + (40 * len(df.index)))),
+                fig_size=(650, (40 + (33 * len(df_pg.index)))),
                 col_width=[1.8, 1.5, 1.7, 1.3, 1.8],
                 tbl_header=imps.PLT_TBL_HEADER,
                 tbl_cells=imps.PLT_TBL_CELLS,
@@ -140,7 +141,7 @@ def reverse_repo_command(days: int = 50):
     else:
         fig = imps.plot_df(
             df,
-            fig_size=(650, (40 + (40 * len(df.index)))),
+            fig_size=(650, (40 + (33 * len(df.index)))),
             col_width=[1.8, 1.5, 1.7, 1.3, 1.8],
             tbl_header=imps.PLT_TBL_HEADER,
             tbl_cells=imps.PLT_TBL_CELLS,

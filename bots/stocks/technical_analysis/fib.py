@@ -18,6 +18,7 @@ def fib_command(
     end: str = "",
     extended_hours: bool = False,
     heikin_candles: bool = False,
+    trendline: bool = False,
     news: bool = False,
 ):
     """Displays chart with fibonacci retracement [Yahoo Finance]"""
@@ -87,6 +88,7 @@ def fib_command(
         news,
         bar=bar_start,
         int_bar=interval,
+        trendline=trendline,
         shared_xaxes=True,
         vertical_spacing=0.07,
     )

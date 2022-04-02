@@ -56,29 +56,14 @@ PLT_FIB_COLORWAY: List[Any] = [
     ),  # Fib's Text
     dict(color="rgba(0, 230, 195, 1)", width=2, dash="dash"),  # Fib Trendline
 ]
-PLT_WATERMARK = dict(
-    source=(
-        "https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/images"
-        "/gst_logo_lockup_rGreen_with_letters_only.png"
-    ),
-    xref="paper",
-    yref="paper",
-    x=0.88,
-    y=0.28,
-    sizex=0.8,
-    sizey=0.9,
-    opacity=0.04,
-    xanchor="right",
-    yanchor="bottom",
-    layer="below",
-)
+PLT_WATERMARK = ""
 
 # Table Plots Settings
 PLT_TBL_HEADER = dict(
-    height=30,
+    height=16,
     fill_color="rgb(30, 30, 30)",
     font_color="white",
-    font_size=14,
+    font_size=12,
     line_color="rgb(63, 63, 63)",
     line_width=2,
 )

@@ -421,7 +421,7 @@ def image_border(filename: str, **kwargs) -> str:
     elif "base64" in kwargs:
         img = Image.open(kwargs["base64"])
     else:
-        img = Image.open(filesave)
+        img = Image.open(filename)
     im_bg = Image.open(imps.IMG_BG)
 
     w = img.width + 520
@@ -462,7 +462,9 @@ def multi_image(filename: str, **kwargs) -> str:
         image_link = imps.IMAGES_URL + filename
     else:
         imagefile_save = imps.IMG_DIR.joinpath(filename)
-        uploaded_image = imps.gst_imgur.upload_image(imagefile_save, title="something")
+        uploaded_image = imps.openbb_imgur.upload_image(
+            imagefile_save, title="something"
+        )
         image_link = uploaded_image.link
         os.remove(imagefile_save)
 

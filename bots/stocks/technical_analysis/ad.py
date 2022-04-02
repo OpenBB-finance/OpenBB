@@ -21,6 +21,7 @@ def ad_command(
     end="",
     extended_hours: bool = False,
     heikin_candles: bool = False,
+    trendline: bool = False,
     news: bool = False,
 ):
     """Displays chart with accumulation/distribution line [Yahoo Finance]"""
@@ -75,6 +76,7 @@ def ad_command(
         news,
         bar=bar_start,
         int_bar=interval,
+        trendline=trendline,
         rows=2,
         cols=1,
         shared_xaxes=True,
@@ -92,7 +94,9 @@ def ad_command(
         go.Scatter(
             name="A/D",
             x=df_ta.index,
-            y=df_ta.iloc[:, 6].values if interval != 1440 else df_ta.iloc[:, 11].values,
+            y=df_ta.iloc[:, 6].values
+            if (not trendline) and (interval != 1440)
+            else df_ta.iloc[:, 11].values,
             mode="lines",
             line=dict(width=2),
             opacity=1,

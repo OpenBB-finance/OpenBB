@@ -22,6 +22,7 @@ def aroon_command(
     end="",
     extended_hours: bool = False,
     heikin_candles: bool = False,
+    trendline: bool = False,
     news: bool = False,
 ):
     """Displays chart with aroon indicator [Yahoo Finance]"""
@@ -85,6 +86,7 @@ def aroon_command(
         news,
         bar=bar_start,
         int_bar=interval,
+        trendline=trendline,
         rows=3,
         cols=1,
         shared_xaxes=True,
@@ -98,7 +100,7 @@ def aroon_command(
     )
     title = f"<b>{plot['plt_title']} Aroon ({length})</b>"
     fig = plot["fig"]
-    idx = 6 if interval != 1440 else 11
+    idx = 6 if (not trendline) and (interval != 1440) else 11
 
     fig.add_trace(
         go.Scatter(

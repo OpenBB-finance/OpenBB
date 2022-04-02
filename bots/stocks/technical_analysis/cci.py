@@ -21,6 +21,7 @@ def cci_command(
     end="",
     extended_hours: bool = False,
     heikin_candles: bool = False,
+    trendline: bool = False,
     news: bool = False,
 ):
     """Displays chart with commodity channel index [Yahoo Finance]"""
@@ -92,6 +93,7 @@ def cci_command(
         news,
         bar=bar_start,
         int_bar=interval,
+        trendline=trendline,
         rows=2,
         cols=1,
         shared_xaxes=True,
@@ -102,7 +104,9 @@ def cci_command(
     title = f"<b>{plot['plt_title']} Commodity-Channel-Index</b>"
     fig = plot["fig"]
     ta_values = (
-        df_ta.iloc[:, 6].values if interval != 1440 else df_ta.iloc[:, 11].values
+        df_ta.iloc[:, 6].values
+        if (not trendline) and (interval != 1440)
+        else df_ta.iloc[:, 11].values
     )
 
     dmin = ta_values.min()
