@@ -272,7 +272,12 @@ def ticker_autocomp(inter, ticker: str):
     print(f"ticker_autocomp [ticker]: {ticker}")
     tlow = ticker.lower()
     col_list = ["Name"]
-    df = pd.read_csv("files/tickers.csv", usecols=col_list)
+    file = os.path.join(
+        os.path.dirname(os.path.abspath(__file__)),
+        "files",
+        "tickers.csv",
+    )
+    df = pd.read_csv(file, usecols=col_list)
     df = df["Name"]
     return [ticker for ticker in df if ticker.lower().startswith(tlow)][:24]
 
@@ -421,7 +426,7 @@ def image_border(filename: str, **kwargs) -> str:
     elif "base64" in kwargs:
         img = Image.open(kwargs["base64"])
     else:
-        img = Image.open(filesave)
+        img = Image.open(filename)
     im_bg = Image.open(imps.IMG_BG)
 
     w = img.width + 520
@@ -459,7 +464,7 @@ def multi_image(filename: str, **kwargs) -> str:
         Image url
     """
     if imps.IMAGES_URL or not imps.IMG_HOST_ACTIVE:
-        image_link = imps.IMAGES_URL + filename
+        image_link = str(imps.IMAGES_URL) + str(filename)
     else:
         imagefile_save = imps.IMG_DIR.joinpath(filename)
         uploaded_image = imps.gst_imgur.upload_image(imagefile_save, title="something")
@@ -525,11 +530,13 @@ class ShowView:
         if "imagefile" in data:
             imagefile = imps.IMG_DIR.joinpath(data["imagefile"])
             send_image(imagefile, group_id, data.get("description", ""))
+            os.remove(imagefile)
         elif "embeds_img" in data:
             imagefiles = data["images_list"]
             for img in imagefiles:
                 imagefile = imps.IMG_DIR.joinpath(img)
                 send_image(imagefile, group_id, data.get("description", ""))
+                os.remove(imagefile)
         elif "description" in data:
             title = data.get("title", "")
             # TODO: Allow navigation through pages
@@ -540,7 +547,6 @@ class ShowView:
                 clean_desc = description.replace("Page ", "")
             message = f"{title}\n{clean_desc}"
             send_message(message, group_id)
-            os.remove(imagefile)
 
     def slack(self, func, channel_id, user_id, client, *args, **kwargs):
         data = func(*args, **kwargs)

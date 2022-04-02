@@ -1,5 +1,9 @@
 import pytest
-from bots.common.helpers import get_arguments, get_syntax, non_slash, send_options
+
+try:
+    from bots.common.helpers import get_arguments, get_syntax, non_slash, send_options
+except ImportError:
+    pytest.skip(allow_module_level=True)
 
 
 @pytest.mark.bots
