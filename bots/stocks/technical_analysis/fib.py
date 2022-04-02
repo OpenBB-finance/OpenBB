@@ -9,6 +9,7 @@ from openbb_terminal.decorators import log_start_end
 logger = logging.getLogger(__name__)
 
 
+# pylint: disable=R0913
 @log_start_end(log=logger)
 def fib_command(
     ticker="",
