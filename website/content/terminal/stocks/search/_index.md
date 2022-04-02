@@ -26,3 +26,7 @@ optional arguments:
   -h, --help            show this help message (default: False)
   --export EXPORT       Export raw data into csv, json, xlsx (default: )
 ```
+
+<img width="834" alt="Screenshot 2022-04-02 at 21 37 04" src="https://user-images.githubusercontent.com/25267873/161400801-2c5b25b3-1a13-44d8-8456-2727cd7c98ad.png">
+
+

@@ -1,0 +1,8 @@
+()
+{}
+<class 'test_helper.MockMessage'>
+<class 'str'>
+<class 'test_helper.MockMessage'>
+<class 'str'>
+<class 'int'>
+<class '_io.BufferedReader'>
