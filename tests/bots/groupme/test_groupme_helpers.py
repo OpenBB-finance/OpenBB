@@ -1,5 +1,6 @@
 import os
 import pytest
+
 try:
     from bots.groupme.groupme_helpers import (
         shorten_message,

@@ -1,4 +1,5 @@
 import pytest
+
 try:
     from bots.groupme.run_groupme import handle_groupme
 except ImportError:
