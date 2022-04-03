@@ -1,6 +1,9 @@
 import pytest
 
-from bots.economy.futures_coms import futures_coms_command
+try:
+    from bots.economy.futures_coms import futures_coms_command
+except ImportError:
+    pytest.skip(allow_module_level=True)
 
 
 @pytest.mark.bots

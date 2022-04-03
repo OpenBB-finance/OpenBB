@@ -1,0 +1,80 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Authorization:
+      - Bearer testtoken.unit
+      Connection:
+      - close
+      Content-Type:
+      - application/json;charset=utf-8
+      Host:
+      - www.slack.com
+      User-Agent:
+      - Bolt/1.13.0 Python/3.8.12 slackclient/3.15.2 Darwin/21.4.0
+    method: POST
+    uri: https://www.slack.com/api/auth.test
+  response:
+    body:
+      string: '{"ok":false,"error":"invalid_auth"}'
+    headers:
+      access-control-allow-headers:
+      - slack-route, x-slack-version-ts, x-b3-traceid, x-b3-spanid, x-b3-parentspanid,
+        x-b3-sampled, x-b3-flags
+      access-control-allow-origin:
+      - '*'
+      access-control-expose-headers:
+      - x-slack-req-id, retry-after
+      cache-control:
+      - private, no-cache, no-store, must-revalidate
+      connection:
+      - close
+      content-type:
+      - application/json; charset=utf-8
+      date:
+      - Sat, 26 Mar 2022 18:13:01 GMT
+      expires:
+      - Mon, 26 Jul 1997 05:00:00 GMT
+      pragma:
+      - no-cache
+      referrer-policy:
+      - no-referrer
+      server:
+      - Apache
+      strict-transport-security:
+      - max-age=31536000; includeSubDomains; preload
+      transfer-encoding:
+      - chunked
+      vary:
+      - Accept-Encoding
+      via:
+      - envoy-www-iad-ejrl, envoy-edge-iad-3r7g
+      x-backend:
+      - main_normal main_bedrock_normal_with_overflow main_canary_with_overflow main_bedrock_canary_with_overflow
+        main_control_with_overflow main_bedrock_control_with_overflow
+      x-content-type-options:
+      - nosniff
+      x-edge-backend:
+      - envoy-www
+      x-envoy-upstream-service-time:
+      - '5'
+      x-powered-by:
+      - HHVM/4.153.0
+      x-robots-tag:
+      - noindex,nofollow
+      x-server:
+      - slack-www-hhvm-main-iad-2m3t
+      x-slack-backend:
+      - r
+      x-slack-edge-shared-secret-outcome:
+      - no-match
+      x-slack-req-id:
+      - ca7faf2de0d9831d23850a7030c98abf
+      x-slack-shared-secret-outcome:
+      - no-match
+      x-xss-protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+version: 1

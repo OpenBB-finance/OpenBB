@@ -16,7 +16,6 @@ from _pytest.mark.structures import Mark
 
 # IMPORTATION INTERNAL
 from openbb_terminal import decorators, helper_funcs
-from bots import config_discordbot as cfg
 
 # pylint: disable=redefined-outer-name
 
@@ -328,6 +327,11 @@ def pytest_addoption(parser: Parser):
         help="To run tests with the marker : @pytest.mark.prediction",
     )
     parser.addoption(
+        "--bots",
+        action="store_true",
+        help="To run tests with the marker : @pytest.mark.bots",
+    )
+    parser.addoption(
         "--rewrite-expected",
         action="store_true",
         help="To force `record_stdout` and `recorder` to rewrite all files.",
@@ -397,7 +401,12 @@ def record_stdout_markers(request: SubRequest) -> List[Mark]:
 @pytest.fixture(scope="session", autouse=True)
 def delete_images():
     yield
-    mydir = os.path.join(cfg.GST_PATH, "bots", "interactive", "images")
+    mydir = os.path.join(
+        os.path.abspath(os.path.join(os.path.dirname(__file__), "..")),
+        "bots",
+        "interactive",
+        "images",
+    )
     filelist = [f for f in os.listdir(mydir) if f.endswith(".png")]
     for f in filelist:
         os.remove(os.path.join(mydir, f))
