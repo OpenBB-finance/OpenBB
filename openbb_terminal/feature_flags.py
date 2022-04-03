@@ -78,9 +78,6 @@ ENABLE_CHECK_API = strtobool(os.getenv("OPENBB_ENABLE_CHECK_API", "True"))
 
 # Send logs to data lake
 LOG_COLLECTION = strtobool(os.getenv("OPENBB_LOG_COLLECTION", "True"))
-# print("ENV_FILE", ENV_FILE)
-# print("LOG_COLLECTION", LOG_COLLECTION)
-# exit()
 
 # Provide export folder path. If empty that means default.
 EXPORT_FOLDER_PATH = str(os.getenv("OPENBB_EXPORT_FOLDER_PATH", ""))
