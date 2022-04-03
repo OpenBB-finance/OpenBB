@@ -615,14 +615,14 @@ interactions:
         4T1QeNIYmvxWUfwv2KQv3XN1u3ZlTzW+6HxUPxbiYtsx7RatjOfmvX4kEX1RfLJEAO/uuIN+931I
         ZQnQN2wd0cj3BI9lrqOPbF34ni14LCw/srlrxn3uBL6T9H0/SgLXiWLLdyIziAIrsCK3hb7VgyIt
         p9stNeSeZRvP0+By/NNJWJ6eF+NnAZdFcvz3N9l7e/9l+dvb7O9xNToNk6M3Hyf7Lw7ySXQY/P3l
-        NH39ccsv/35anuw+L58PXvmxeOXHRy/C3wJRHj/PJtvbOkRh3Deoxdsb/2wVfHqYtLotv+8lfsyF
-        F5mRbQqv1W6V8lzkrW5LeE7fDPt+HAnT7fWTKPDNAAj6nogjp+e22q0LUcAIbHVbkFm1Y9kds9Vu
-        qbTVtUzzXxsMkmUo8l/fbkGCwOlIVleXVlvgDgufEKry6Xf/PwAAAP//AwDkhtV2u0wCAA==
+        NH39ccsv/35anuw+L58PXvmxeOXHRy/C3wJRHj/PJtvbOkRh3Deoxdsb/2wVfHqYtLotv+8lQRxG
+        duj3bTNKWu1WKc9F3uq2hOf0zbDvx5Ew3V4/iQLfDICg74k4cnpuq926EAWMwFa3BZlVO5bdMVvt
+        lkpbXcs0/7XBIFmGIv/17RYkCJyOZHV1abUF7rDwCaEqn373/wMAAP//AwByZmhtu0wCAA==
     headers:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 6f5d6cae590920e5-IND
+      - 6f5d7c89286f209d-IND
       Cache-Control:
       - no-cache
       Connection:
@@ -632,7 +632,7 @@ interactions:
       Content-Type:
       - text/html; charset=utf-8
       Date:
-      - Sat, 02 Apr 2022 23:43:03 GMT
+      - Sat, 02 Apr 2022 23:53:52 GMT
       Expect-CT:
       - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
       Server:
@@ -644,7 +644,7 @@ interactions:
       request-context:
       - appId=cid-v1:bdd405ef-7a83-4f9a-9228-0107d7f4bc90
       set-cookie:
-      - preventRedirectLoop=false; expires=Fri, 01 Apr 2022 23:43:03 GMT; domain=.finviz.com;
+      - preventRedirectLoop=false; expires=Fri, 01 Apr 2022 23:53:52 GMT; domain=.finviz.com;
         path=/
       vary:
       - Accept-Encoding
