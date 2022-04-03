@@ -81,16 +81,20 @@ def load_analyze_tweets(
         )
         return pd.DataFrame()
     elif response.status_code == 403:
-        console.print(f"""
+        console.print(
+            f"""
             Status code 403.
             It seems you're twitter credentials are invalid - {response.text}
-        """)
+        """
+        )
         return pd.DataFrame()
     else:
-        console.print(f"""
+        console.print(
+            f"""
             Status code {response.status_code}.
             Something went wrong - {response.text}
-        """)
+        """
+        )
         return pd.DataFrame()
 
     sentiments = []
