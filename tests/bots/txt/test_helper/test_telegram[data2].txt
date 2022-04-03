@@ -1,0 +1,4 @@
+()
+{}
+<class 'test_helper.MockMessage'>
+<class 'str'>

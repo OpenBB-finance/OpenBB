@@ -1,0 +1,1 @@
+contracts_commandgov_contracts/tsla/15/True{'ticker': 'TSLA', 'past_transaction_days': '15', 'raw': True}

@@ -1,16 +1,14 @@
 ---
 more:
   - name: "View Source"
-    ref: "https://github.com/GamestonkTerminal/GamestonkTerminal"
+    ref: "https://github.com/OpenBB-finance/OpenBBTerminal"
     external: true
     icon: "gdoc_github"
   - name: "License"
-    ref: "https://github.com/GamestonkTerminal/GamestonkTerminal/blob/main/LICENSE"
+    ref: "https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/LICENSE"
     external: true
     icon: "scales-of-justice"
   - name: "Contributing"
-    ref: "https://github.com/GamestonkTerminal/GamestonkTerminal/blob/main/CONTRIBUTING.md"
+    ref: "https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/CONTRIBUTING.md"
     external: true
     icon: "gdoc_heart"
-
-

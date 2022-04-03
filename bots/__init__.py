@@ -1,6 +1,13 @@
 # flake8: noqa
 from . import (
-    stocks,
+    common,
+    config_discordbot,
     economy,
+    etf,
+    groupme,
+    imps,
     menus,
+    slack,
+    stocks,
+    telegram,
 )

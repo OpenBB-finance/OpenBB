@@ -1,7 +1,7 @@
 import functools
+import io
 import logging
 import sys
-import io
 from typing import Union
 
 logger = logging.getLogger(__name__)

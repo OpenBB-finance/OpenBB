@@ -1,21 +1,25 @@
+import io
+import logging
 from datetime import datetime, timedelta
 
 from matplotlib import pyplot as plt
 
-import bots.config_discordbot as cfg
-import bots.helpers
-from bots.config_discordbot import logger
-from gamestonk_terminal.config_plot import PLOT_DPI
-from gamestonk_terminal.helper_funcs import plot_autoscale
-from gamestonk_terminal.stocks.due_diligence import business_insider_model
+from bots import imps
+from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.decorators import log_start_end
+from openbb_terminal.helper_funcs import plot_autoscale
+from openbb_terminal.stocks.due_diligence import business_insider_model
+
+logger = logging.getLogger(__name__)
 
 
+@log_start_end(log=logger)
 def pt_command(ticker: str = "", raw: bool = False, start=""):
     """Displays price targets [Business Insider]"""
 
     # Debug
-    if cfg.DEBUG:
-        logger.debug("dd-pt %s", ticker)
+    if imps.DEBUG:
+        logger.debug("dd pt %s", ticker)
 
     # Check for argument
     if ticker == "":
@@ -24,13 +28,13 @@ def pt_command(ticker: str = "", raw: bool = False, start=""):
     if start == "":
         start = datetime.now() - timedelta(days=365)
     else:
-        start = datetime.strptime(start, cfg.DATE_FORMAT)
+        start = datetime.strptime(start, imps.DATE_FORMAT)
 
     if raw not in [True, False]:
         raise Exception("raw argument has to be true or false")
 
     df_analyst_data = business_insider_model.get_price_target_from_analysts(ticker)
-    stock = bots.helpers.load(ticker, start)
+    stock = imps.load(ticker, start)
     title = f"Stocks: [Business Insider] Price Targets {ticker}"
     if df_analyst_data.empty or stock.empty:
         raise Exception("Enter valid ticker")
@@ -58,14 +62,18 @@ def pt_command(ticker: str = "", raw: bool = False, start=""):
 
         plt.legend(["Closing Price", "Average Price Target", "Price Target"])
 
-        plt.title(f"{ticker.upper} (Time Series) and Price Target")
+        plt.title(f"{ticker.upper()} (Time Series) and Price Target")
         plt.xlim(stock.index[0], stock.index[-1])
         plt.xlabel("Time")
         plt.ylabel("Share Price")
         plt.grid(b=True, which="major", color="#666666", linestyle="-")
-        plt.savefig("ta_pt.png")
+        imagefile = "ta_pt.png"
+        dataBytesIO = io.BytesIO()
+        plt.savefig(dataBytesIO)
+        plt.close("all")
 
-        imagefile = bots.helpers.image_border("ta_pt.png")
+        dataBytesIO.seek(0)
+        imagefile = imps.image_border(imagefile, base64=dataBytesIO)
 
         output = {
             "title": title,

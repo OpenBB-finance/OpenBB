@@ -28,9 +28,9 @@ if beacon is not None:
 
 # -- Project information -----------------------------------------------------
 
-project = "Gamestonk Terminal"
-copyright = "2021, Gamestonk Terminal Contributors"  # pylint: disable=W0622
-author = "Gamestonk Terminal Contributors"
+project = "OpenBB Terminal"
+copyright = "2021, OpenBB Terminal Contributors"  # pylint: disable=W0622
+author = "OpenBB Terminal Contributors"
 
 
 # -- General configuration ---------------------------------------------------

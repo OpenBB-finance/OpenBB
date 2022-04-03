@@ -1,0 +1,2820 @@
+[
+  {
+    "android_versionss": [
+      "v4.4.4",
+      "v4.4.4"
+    ],
+    "cpu": "Quad-core 1.2 or 1.4 GHz Cortex-A7",
+    "dev_ids": [
+      "GT-I9300 Build/JRO03C"
+    ],
+    "name": "Samsung I9300I Galaxy S3 Neo",
+    "released": 2014,
+    "resolution": [
+      720,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.2.2",
+      "v4.2.2"
+    ],
+    "cpu": "Octa-core 1.4 GHz Cortex-A7",
+    "dev_ids": [
+      "HTC Desire 616 dual sim Build/JDQ39"
+    ],
+    "name": "HTC Desire 616 dual sim",
+    "released": 2014,
+    "resolution": [
+      720,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.2.2",
+      "v4.2.2"
+    ],
+    "cpu": "Quad-core 1.3 GHz Cortex-A7",
+    "dev_ids": [
+      "Lenovo A526 Build/JDQ39"
+    ],
+    "name": "Lenovo A526",
+    "released": 2014,
+    "resolution": [
+      480,
+      854
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.3",
+      "v4.3"
+    ],
+    "cpu": "Quad-core 1.2 GHz",
+    "dev_ids": [
+      "7050Y Build/JLS36C"
+    ],
+    "name": "alcatel Pop S9",
+    "released": 2014,
+    "resolution": [
+      720,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.2.2",
+      "v4.2.2"
+    ],
+    "cpu": "Quad-core 1.2 GHz Cortex-A7",
+    "dev_ids": [
+      "HTC Desire 516 dual sim Build/JWR66Y"
+    ],
+    "name": "HTC Desire 516 dual sim",
+    "released": 2014,
+    "resolution": [
+      540,
+      960
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.3",
+      "v4.3"
+    ],
+    "cpu": "Quad-core 1.2 GHz Cortex-A7",
+    "dev_ids": [
+      "Lenovo S580 Build/JLS36C"
+    ],
+    "name": "Lenovo S580",
+    "released": 2014,
+    "resolution": [
+      720,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.2.1",
+      "v4.4.4"
+    ],
+    "cpu": "Octa-core 2.0 GHz Cortex-A7",
+    "dev_ids": [
+      "6043D Build/KOT49H"
+    ],
+    "name": "alcatel Idol X+",
+    "released": 2014,
+    "resolution": [
+      1080,
+      1920
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.2",
+      "v4.4.2"
+    ],
+    "cpu": "Quad-core 1.2 GHz Cortex-A7",
+    "dev_ids": [
+      "D2212 Build/18.4.B.1.20"
+    ],
+    "name": "Sony Xperia E3 Dual",
+    "released": 2014,
+    "resolution": [
+      480,
+      854
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.2",
+      "v4.4.2"
+    ],
+    "cpu": "Quad-core 1.3 GHz Cortex-A7",
+    "dev_ids": [
+      "GSmart Mika M3 Build/GSmart"
+    ],
+    "name": "Gigabyte GSmart Mika M3",
+    "released": 2014,
+    "resolution": [
+      720,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.3",
+      "v4.3"
+    ],
+    "cpu": "Dual-core 1.2 GHz Cortex-A7",
+    "dev_ids": [
+      "NokiaX2DS Build/JLS36C"
+    ],
+    "name": "Nokia X2 Dual SIM",
+    "released": 2014,
+    "resolution": [
+      480,
+      800
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.2",
+      "v4.4.2"
+    ],
+    "cpu": "Octa-core 1.7 GHz - 526G+ modelQuad-core 1.3 GHz - 526G model",
+    "dev_ids": [
+      "HTC Desire 526G dual sim Build/KOT49H"
+    ],
+    "name": "HTC Desire 526G+ dual sim",
+    "released": 2015,
+    "resolution": [
+      540,
+      960
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.2",
+      "v4.4.2"
+    ],
+    "cpu": "Quad-core 1.2 GHz",
+    "dev_ids": [
+      "HTC Desire 326G dual sim Build/KOT49H"
+    ],
+    "name": "HTC Desire 326G dual sim",
+    "released": 2015,
+    "resolution": [
+      480,
+      854
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.2",
+      "v4.4.2"
+    ],
+    "cpu": "Quad-core 1.2 GHz Cortex-A7",
+    "dev_ids": [
+      "HTC Desire 610 Build/KOT49H"
+    ],
+    "name": "HTC Desire 610",
+    "released": 2014,
+    "resolution": [
+      540,
+      960
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.4",
+      "v4.4.4"
+    ],
+    "cpu": "Octa-core 1.7 GHz Cortex-A7",
+    "dev_ids": [
+      "HTC Desire 620G dual sim Build/KOT49H"
+    ],
+    "name": "HTC Desire 620G dual sim",
+    "released": 2014,
+    "resolution": [
+      720,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.2",
+      "v4.4.2"
+    ],
+    "cpu": "Quad-core 1.3 GHz Cortex-A7",
+    "dev_ids": [
+      "Lenovo A328 Build/KOT49H"
+    ],
+    "name": "Lenovo A328",
+    "released": 2014,
+    "resolution": [
+      480,
+      854
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.2",
+      "v4.4.2"
+    ],
+    "cpu": "Quad-core 1.3 GHz Cortex-A7",
+    "dev_ids": [
+      "Lenovo A606 Build/KOT49H"
+    ],
+    "name": "Lenovo A606",
+    "released": 2014,
+    "resolution": [
+      480,
+      854
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.2",
+      "v4.4.2"
+    ],
+    "cpu": "Quad-core 1.3 GHz Cortex-A7",
+    "dev_ids": [
+      "Lenovo A536 Build/KOT49H"
+    ],
+    "name": "Lenovo A536",
+    "released": 2014,
+    "resolution": [
+      480,
+      854
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.2",
+      "v6.0"
+    ],
+    "cpu": "Quad-core 2.5 GHz Krait 400",
+    "dev_ids": [
+      "LGLS990 Build/KVT49L.LS990ZV4"
+    ],
+    "name": "LG G3 (CDMA)",
+    "released": 2014,
+    "resolution": [
+      1440,
+      2560
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.2",
+      "v4.4.2"
+    ],
+    "cpu": "Dual-core 1.3 GHz Cortex-A7",
+    "dev_ids": [
+      "Micromax D303 Build/KOT49H"
+    ],
+    "name": "Micromax Bolt D303",
+    "released": 2015,
+    "resolution": [
+      480,
+      800
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.2",
+      "v4.4.2"
+    ],
+    "cpu": "Dual-core 1.2 GHz Cortex-A7",
+    "dev_ids": [
+      "Micromax D320 Build/KOT49H"
+    ],
+    "name": "Micromax Bolt D320",
+    "released": 2015,
+    "resolution": [
+      480,
+      854
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.2",
+      "v4.4.2"
+    ],
+    "cpu": "Hexa-core (4x1.3 GHz Cortex A7 & 2x1.7 GHz Cortex A15)",
+    "dev_ids": [
+      "SM-C111 Build/KOT49H"
+    ],
+    "name": "Samsung Galaxy K zoom",
+    "released": 2014,
+    "resolution": [
+      720,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.2",
+      "v4.4.2"
+    ],
+    "cpu": "Octa-core 1.7 GHz",
+    "dev_ids": [
+      "Philips I908 Build/KOT49H"
+    ],
+    "name": "Philips I908",
+    "released": 2015,
+    "resolution": [
+      1080,
+      1920
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.2",
+      "v4.4.2"
+    ],
+    "cpu": "Octa-core (4x1.7 GHz Cortex-A15 & 4x1.3 GHz Cortex-A7)",
+    "dev_ids": [
+      "H60-L04 Build/HDH60-L04"
+    ],
+    "name": "Huawei Honor 6",
+    "released": 2014,
+    "resolution": [
+      1080,
+      1920
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.2",
+      "v4.4.2"
+    ],
+    "cpu": "Quad-core 1.6 GHz Cortex-A7",
+    "dev_ids": [
+      "ZTE Star 1 Build/KVT49L"
+    ],
+    "name": "ZTE Star 1",
+    "released": 2014,
+    "resolution": [
+      1080,
+      1920
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.4",
+      "v4.4.4"
+    ],
+    "cpu": "Quad-core 1.5 GHz Cortex-A53",
+    "dev_ids": [
+      "E2033 Build/25.0.B.2.31"
+    ],
+    "name": "Sony Xperia E4g Dual",
+    "released": 2015,
+    "resolution": [
+      540,
+      960
+    ]
+  },
+  {
+    "android_versionss": [
+      "v6.0",
+      "v6.0"
+    ],
+    "cpu": "Quad-core 1.4 GHz Cortex-A53",
+    "dev_ids": [
+      "ZTE Blade A5 Build/KOT49H"
+    ],
+    "name": "ZTE Blade A512",
+    "released": 2016,
+    "resolution": [
+      720,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.2",
+      "v4.4.2"
+    ],
+    "cpu": "Octa-core 1.7 GHz Cortex-A7",
+    "dev_ids": [
+      "Lenovo A806 Build/KOT49H"
+    ],
+    "name": "Lenovo Golden Warrior A8",
+    "released": 2014,
+    "resolution": [
+      720,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.2",
+      "v4.4.2"
+    ],
+    "cpu": "Quad-core 1.2 GHz Cortex-A53",
+    "dev_ids": [
+      "Lenovo K30-T Build/KTU84Q"
+    ],
+    "name": "Lenovo K3",
+    "released": 2014,
+    "resolution": [
+      720,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.4",
+      "v4.4.4"
+    ],
+    "cpu": "Dual-core 1.2 GHz Cortex-A7",
+    "dev_ids": [
+      "SM-J100FN Build/KTU84P"
+    ],
+    "name": "Samsung Galaxy J1",
+    "released": 2015,
+    "resolution": [
+      480,
+      800
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.4",
+      "v4.4.4"
+    ],
+    "cpu": "Dual-core 1.2 GHz Cortex-A7",
+    "dev_ids": [
+      "SM-J100H Build/KTU84P"
+    ],
+    "name": "Samsung Galaxy J1",
+    "released": 2015,
+    "resolution": [
+      480,
+      800
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.4",
+      "v4.4.4"
+    ],
+    "cpu": "Quad-core 1.3 GHz Cortex-A7",
+    "dev_ids": [
+      "E2115 Build/24.0.B.5.14"
+    ],
+    "name": "Sony Xperia E4 Dual",
+    "released": 2015,
+    "resolution": [
+      540,
+      960
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.4",
+      "v5.1.1"
+    ],
+    "cpu": "Quad-core 1.2 GHz Cortex-A53",
+    "dev_ids": [
+      "SM-G360H Build/KTU84P"
+    ],
+    "name": "Samsung Galaxy Core Prime",
+    "released": 2014,
+    "resolution": [
+      480,
+      800
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.4",
+      "v4.4.4"
+    ],
+    "cpu": "Octa-core 1.7 GHz Cortex-A53",
+    "dev_ids": [
+      "m1 note Build/KTU84P"
+    ],
+    "name": "Meizu M1 Note",
+    "released": 2015,
+    "resolution": [
+      1080,
+      1920
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.4",
+      "v5.1.1"
+    ],
+    "cpu": "Quad-core 1.2 GHz Cortex-A53",
+    "dev_ids": [
+      "SM-G360F Build/KTU84P"
+    ],
+    "name": "Samsung Galaxy Core Prime",
+    "released": 2014,
+    "resolution": [
+      480,
+      800
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.2",
+      "v4.4.2"
+    ],
+    "cpu": "Dual-core 1.2 GHz",
+    "dev_ids": [
+      "SM-G318H Build/KTU84P"
+    ],
+    "name": "Samsung Galaxy V Plus",
+    "released": 2015,
+    "resolution": [
+      480,
+      800
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.2",
+      "v4.2"
+    ],
+    "cpu": "Quad-core 1.3 GHz Cortex-A7",
+    "dev_ids": [
+      "Lenovo S850 Build/KOT49H"
+    ],
+    "name": "Lenovo S850",
+    "released": 2014,
+    "resolution": [
+      720,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.2",
+      "v6.0.1"
+    ],
+    "cpu": "Quad-core 2.5 GHz Krait 450",
+    "dev_ids": [
+      "SAMSUNG SM-G906S Build/LRX22C"
+    ],
+    "name": "Samsung Galaxy S5 LTE-A G906S",
+    "released": 2014,
+    "resolution": [
+      1440,
+      2560
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.2",
+      "v5.0.2"
+    ],
+    "cpu": "Quad-core 2.5 GHz Krait 400",
+    "dev_ids": [
+      "Lenovo K920 Build/LRX22G"
+    ],
+    "name": "Lenovo Vibe Z2 Pro",
+    "released": 2014,
+    "resolution": [
+      1440,
+      2560
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.0",
+      "v5.0"
+    ],
+    "cpu": "Octa-core (4x1.5 GHz Cortex-A53 & 4x1.0 GHz Cortex-A53)",
+    "dev_ids": [
+      "Lenovo PB1-770M Build/S100"
+    ],
+    "name": "Lenovo Phab Plus",
+    "released": 2015,
+    "resolution": [
+      1080,
+      1920
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.0.2",
+      "v5.0.2"
+    ],
+    "cpu": "Octa-core (4x1.7 GHz Cortex-A53 & 4x1.0 GHz Cortex-A53)",
+    "dev_ids": [
+      "Mi 4i Build/LRX22G"
+    ],
+    "name": "Xiaomi Mi 4i",
+    "released": 2015,
+    "resolution": [
+      1080,
+      1920
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.0",
+      "v5.0"
+    ],
+    "cpu": "Quad-core 1.3 GHz Cortex-A7",
+    "dev_ids": [
+      "Micromax Q380 Build/LRX22G"
+    ],
+    "name": "Micromax Canvas Spark Q380",
+    "released": 2015,
+    "resolution": [
+      540,
+      960
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.4",
+      "v4.4.4"
+    ],
+    "cpu": "Octa-core (4x1.5 GHz Cortex-A53 & 4x1.0 GHz Cortex-A53)",
+    "dev_ids": [
+      "SM-A700H Build/LRX22G"
+    ],
+    "name": "Samsung Galaxy A7 Duos",
+    "released": 2015,
+    "resolution": [
+      1080,
+      1920
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.4",
+      "v5.0.2"
+    ],
+    "cpu": "Quad-core 1.2 GHz Cortex-A53Quad-core 1.3 GHz Cortex-A7 (Value Edition)",
+    "dev_ids": [
+      "SM-G530FZ Build/LRX22G"
+    ],
+    "name": "Samsung Galaxy Grand Prime",
+    "released": 2014,
+    "resolution": [
+      540,
+      960
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.0",
+      "v5.0"
+    ],
+    "cpu": "Octa-core 2.0 GHz Cortex-A53 - Redmi Note 2Octa-core 2.2 GHz Cortex-A53 - Redmi Note 2 Prime",
+    "dev_ids": [
+      "Redmi Note 2 Build/LRX22G"
+    ],
+    "name": "Xiaomi Redmi Note 2",
+    "released": 2015,
+    "resolution": [
+      1080,
+      1920
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.4",
+      "v4.4.4"
+    ],
+    "cpu": "Quad-core 1.2 GHz Cortex-A53",
+    "dev_ids": [
+      "SM-A500FU Build/LRX22G"
+    ],
+    "name": "Samsung Galaxy A5",
+    "released": 2014,
+    "resolution": [
+      720,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.4",
+      "v4.4.4"
+    ],
+    "cpu": "Quad-core 1.2 GHz Cortex-A53",
+    "dev_ids": [
+      "RIDGE 4G Build/LRX22G"
+    ],
+    "name": "Wiko Ridge 4G",
+    "released": 2015,
+    "resolution": [
+      720,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.4",
+      "v5.0.2"
+    ],
+    "cpu": "Quad-core 1.2 GHz Cortex-A53Quad-core 1.3 GHz Cortex-A7 (Value Edition)",
+    "dev_ids": [
+      "SM-G530H Build/LRX22G"
+    ],
+    "name": "Samsung Galaxy Grand Prime",
+    "released": 2014,
+    "resolution": [
+      540,
+      960
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.4",
+      "v5.0.2"
+    ],
+    "cpu": "Octa-core (4x1.8 GHz Cortex-A15 & 4x1.3 GHz Cortex-A7)",
+    "dev_ids": [
+      "SM-G850F Build/LRX22G"
+    ],
+    "name": "Samsung Galaxy Alpha",
+    "released": 2014,
+    "resolution": [
+      720,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.2",
+      "v6.0"
+    ],
+    "cpu": "Quad-core 2.5 GHz Krait 400",
+    "dev_ids": [
+      "SM-G900I Build/LRX21T"
+    ],
+    "name": "Samsung Galaxy S5",
+    "released": 2014,
+    "resolution": [
+      1080,
+      1920
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.0.2",
+      "v6.0"
+    ],
+    "cpu": "Octa-core 1.7 GHz Cortex-A53",
+    "dev_ids": [
+      "Lenovo K50-t5 Build/LRX21M"
+    ],
+    "name": "Lenovo K3 Note",
+    "released": 2015,
+    "resolution": [
+      1080,
+      1920
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.2",
+      "v6.0.1"
+    ],
+    "cpu": "Octa-core (4x1.9 GHz Cortex-A15 & 4x1.3 GHz Cortex-A7)",
+    "dev_ids": [
+      "SM-G900H Build/LRX21T"
+    ],
+    "name": "Samsung Galaxy S5 (octa-core)",
+    "released": 2014,
+    "resolution": [
+      1080,
+      1920
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.3",
+      "v5.1"
+    ],
+    "cpu": "Quad-core 2.2 GHz Krait 400",
+    "dev_ids": [
+      "D5503 Build/14.6.A.1.236"
+    ],
+    "name": "Sony Xperia Z1 Compact",
+    "released": 2014,
+    "resolution": [
+      720,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.1",
+      "v5.1"
+    ],
+    "cpu": "Octa-core (4x1.6 GHz Cortex-A53 & 4x1.2 GHz Cortex-A53)",
+    "dev_ids": [
+      "Lenovo P1a42 Build/LMY47V"
+    ],
+    "name": "Lenovo Vibe P1 Turbo",
+    "released": 2016,
+    "resolution": [
+      1080,
+      1920
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.0.1",
+      "v5.0.1"
+    ],
+    "cpu": "Octa-core (4x1.5 GHz Cortex-A53 & 4x2.0 GHz Cortex-A57)",
+    "dev_ids": [
+      "MI NOTE Pro Build/LMY47V"
+    ],
+    "name": "Xiaomi Mi Note Pro",
+    "released": 2015,
+    "resolution": [
+      1440,
+      2560
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.0",
+      "v5.0"
+    ],
+    "cpu": "Quad-core 1.3 GHz Cortex-A7",
+    "dev_ids": [
+      "Micromax AQ5001 Build/LRX21M"
+    ],
+    "name": "Micromax Canvas Juice 2 AQ5001",
+    "released": 2015,
+    "resolution": [
+      720,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.2",
+      "v4.4.2"
+    ],
+    "cpu": "Quad-core 1.4 GHz Cortex-A7",
+    "dev_ids": [
+      "SM-G800F Build/LMY47X"
+    ],
+    "name": "Samsung Galaxy S5 mini",
+    "released": 2014,
+    "resolution": [
+      720,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.1.1",
+      "v5.1.1"
+    ],
+    "cpu": "Quad-core 1.3 GHz Cortex-A7",
+    "dev_ids": [
+      "SM-J120F Build/LMY47X"
+    ],
+    "name": "Samsung Galaxy J1 (2016)",
+    "released": 2016,
+    "resolution": [
+      480,
+      800
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.4",
+      "v4.4.4"
+    ],
+    "cpu": "Quad-core 1.2 GHz Cortex-A53",
+    "dev_ids": [
+      "SM-E500F Build/LMY47X"
+    ],
+    "name": "Samsung Galaxy E5",
+    "released": 2015,
+    "resolution": [
+      720,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.4",
+      "v5.0.2"
+    ],
+    "cpu": "Quad-core 1.2 GHz Cortex-A53Quad-core 1.3 GHz Cortex-A7 (Value Edition)",
+    "dev_ids": [
+      "SM-G531F Build/LMY48B"
+    ],
+    "name": "Samsung Galaxy Grand Prime",
+    "released": 2014,
+    "resolution": [
+      540,
+      960
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.1.1",
+      "v6.0.1"
+    ],
+    "cpu": "Octa-core (4x1.2 GHz Cortex-A53 & 4x1.5 GHz Cortex-A53)Octa-core 1.6 GHz Cortex-A53",
+    "dev_ids": [
+      "SM-A510F Build/LMY47X"
+    ],
+    "name": "Samsung Galaxy A5 (2016)",
+    "released": 2015,
+    "resolution": [
+      1080,
+      1920
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.1.1",
+      "v5.1.1"
+    ],
+    "cpu": "Quad-core 1.3 GHz Cortex-A7",
+    "dev_ids": [
+      "SM-J120H Build/LMY47V"
+    ],
+    "name": "Samsung Galaxy J1 (2016)",
+    "released": 2016,
+    "resolution": [
+      480,
+      800
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.1.1",
+      "v5.1.1"
+    ],
+    "cpu": "Quad-core 1.3 GHz Cortex-A7",
+    "dev_ids": [
+      "SM-J200H Build/LMY48B"
+    ],
+    "name": "Samsung Galaxy J2",
+    "released": 2015,
+    "resolution": [
+      540,
+      960
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.3",
+      "v4.3"
+    ],
+    "cpu": "Quad-core 1.2 GHz Cortex-A7",
+    "dev_ids": [
+      "D2302 Build/18.6.A.0.182"
+    ],
+    "name": "Sony Xperia M2 dual",
+    "released": 2014,
+    "resolution": [
+      540,
+      960
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.1",
+      "v5.1"
+    ],
+    "cpu": "Octa-core (4x1.8 GHz Cortex-A72 & 4x1.4 GHz Cortex-A53)",
+    "dev_ids": [
+      "vivo V3Max Build/LMY47V"
+    ],
+    "name": "vivo V3Max",
+    "released": 2016,
+    "resolution": [
+      1080,
+      1920
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.2",
+      "v4.4.2"
+    ],
+    "cpu": "Quad-core 1.4 GHz Cortex-A7",
+    "dev_ids": [
+      "GT-I9301I Build/LMY48Y"
+    ],
+    "name": "Samsung I9301I Galaxy S3 Neo",
+    "released": 2014,
+    "resolution": [
+      720,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.4",
+      "v6.0.1"
+    ],
+    "cpu": "Quad-core 2.7 GHz Krait 450 - Snapdragon 805Octa-core (4x1.3 GHz Cortex-A53 & 4x1.9 GHz Cortex-A57) - Exynos 5433",
+    "dev_ids": [
+      "SM-N910C Build/LMY47X"
+    ],
+    "name": "Samsung Galaxy Note 4",
+    "released": 2014,
+    "resolution": [
+      1440,
+      2560
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.1",
+      "v5.1"
+    ],
+    "cpu": "Quad-core 1.3 GHz Cortex-A7",
+    "dev_ids": [
+      "Micromax Q392 Build/LMY47I"
+    ],
+    "name": "Micromax Canvas Juice 3 Q392",
+    "released": 2015,
+    "resolution": [
+      720,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.0",
+      "v6.0"
+    ],
+    "cpu": "Octa-core 1.7 GHz Cortex-A53",
+    "dev_ids": [
+      "E5303 Build/27.2.A.0.169"
+    ],
+    "name": "Sony Xperia C4",
+    "released": 2015,
+    "resolution": [
+      1080,
+      1920
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.1",
+      "v5.1"
+    ],
+    "cpu": "Octa-core 1.3 GHz Cortex-A53",
+    "dev_ids": [
+      "HTC Desire 628 Build/LMY47D"
+    ],
+    "name": "HTC Desire 628",
+    "released": 2016,
+    "resolution": [
+      720,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.2",
+      "v6.0"
+    ],
+    "cpu": "Quad-core 2.5 GHz Krait 400",
+    "dev_ids": [
+      "SM-G900F Build/MMB29M"
+    ],
+    "name": "Samsung Galaxy S5",
+    "released": 2014,
+    "resolution": [
+      1080,
+      1920
+    ]
+  },
+  {
+    "android_versionss": [
+      "v6.0",
+      "v7.0"
+    ],
+    "cpu": "Quad-core (2x2.15 GHz Kryo & 2x1.6 GHz Kryo) - G9350Octa-core (4x2.3 GHz Mongoose & 4x1.6 GHz Cortex-A53) - G935FD, G935F, G935W8",
+    "dev_ids": [
+      "SM-G935F Build/MMB29K"
+    ],
+    "name": "Samsung Galaxy S7 edge",
+    "released": 2016,
+    "resolution": [
+      1440,
+      2560
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.0.1",
+      "v5.0.1"
+    ],
+    "cpu": "Octa-core (4x1.5 GHz Cortex-A53 & 4x2.0 GHz Cortex-A57)",
+    "dev_ids": [
+      "E6553 Build/32.1.A.1.185"
+    ],
+    "name": "Sony Xperia Z3+",
+    "released": 2015,
+    "resolution": [
+      1080,
+      1920
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.2",
+      "v4.2"
+    ],
+    "cpu": "Quad-core 1.2 GHz Cortex-A7",
+    "dev_ids": [
+      "GT-I9060 Build/JDQ39"
+    ],
+    "name": "Samsung Galaxy Grand Neo",
+    "released": 2014,
+    "resolution": [
+      480,
+      800
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.2",
+      "v4.4.2"
+    ],
+    "cpu": "Quad-core 1.3 GHz",
+    "dev_ids": [
+      "7045Y Build/KOT49H"
+    ],
+    "name": "alcatel Pop S7",
+    "released": 2014,
+    "resolution": [
+      540,
+      960
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.2",
+      "v4.4.2"
+    ],
+    "cpu": "Quad-core 1.3 GHz",
+    "dev_ids": [
+      "HTC Desire 320 Build/KOT49H"
+    ],
+    "name": "HTC Desire 320",
+    "released": 2015,
+    "resolution": [
+      480,
+      854
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.2",
+      "v4.4.2"
+    ],
+    "cpu": "Dual-core 1.3 GHz Cortex-A7",
+    "dev_ids": [
+      "Lenovo A319 Build/MocorDroid4.4.2"
+    ],
+    "name": "Lenovo A319",
+    "released": 2014,
+    "resolution": [
+      480,
+      800
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.4",
+      "v4.4.4"
+    ],
+    "cpu": "Quad-core 1.5 GHz Cortex-A53",
+    "dev_ids": [
+      "E2003 Build/25.0.A.2.14",
+      "E2003 Build/25.0.A.2.31"
+    ],
+    "name": "Sony Xperia E4g",
+    "released": 2015,
+    "resolution": [
+      540,
+      960
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.2",
+      "v4.4.2"
+    ],
+    "cpu": "Quad-core 1.2 GHz Cortex-A7",
+    "dev_ids": [
+      "D2203 Build/18.5.C.0.19"
+    ],
+    "name": "Sony Xperia E3",
+    "released": 2014,
+    "resolution": [
+      480,
+      854
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.4",
+      "v6.0"
+    ],
+    "cpu": "Quad-core 1.2 GHz Cortex-A7",
+    "dev_ids": [
+      "XT1068 Build/LXB22.46-28"
+    ],
+    "name": "Motorola Moto G (2nd gen)",
+    "released": 2014,
+    "resolution": [
+      720,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.4",
+      "v4.4.4"
+    ],
+    "cpu": "Octa-core (4x2.0 GHz Cortex-A15 & 4x1.5 GHz Cortex-A7)",
+    "dev_ids": [
+      "MX4 Pro Build/LMY48W"
+    ],
+    "name": "Meizu MX4 Pro",
+    "released": 2014,
+    "resolution": [
+      1536,
+      2560
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.1.1",
+      "v6.0.1"
+    ],
+    "cpu": "Octa-core (4x1.2 GHz Cortex-A53 & 4x1.5 GHz Cortex-A53)Octa-core 1.6 GHz Cortex-A53",
+    "dev_ids": [
+      "SM-A710F Build/LMY47X"
+    ],
+    "name": "Samsung Galaxy A7 (2016)",
+    "released": 2015,
+    "resolution": [
+      1080,
+      1920
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.0",
+      "v5.0"
+    ],
+    "cpu": "Octa-core (4x1.5 GHz Cortex-A53 & 4x2.0 GHz Cortex-A57)",
+    "dev_ids": [
+      "E6533 Build/32.2.A.0.253"
+    ],
+    "name": "Sony Xperia Z3+ dual",
+    "released": 2015,
+    "resolution": [
+      1080,
+      1920
+    ]
+  },
+  {
+    "android_versionss": [
+      "v6.0",
+      "v6.0"
+    ],
+    "cpu": "Quad-core 1.3 GHz Cortex-A53",
+    "dev_ids": [
+      "ZTE BLADE A610 Build/MRA58K"
+    ],
+    "name": "ZTE Blade A610",
+    "released": 2016,
+    "resolution": [
+      720,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v6.0",
+      "v7.1.1"
+    ],
+    "cpu": "Hexa-core (4x1.4 GHz Cortex-A53 & 2x1.8 GHz Cortex-A57)",
+    "dev_ids": [
+      "Nexus 5X Build/NMF26F"
+    ],
+    "name": "LG Nexus 5X",
+    "released": 2015,
+    "resolution": [
+      1080,
+      1920
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.2",
+      "v4.4.2"
+    ],
+    "cpu": "Quad-core 1.2 GHz Cortex-A7",
+    "dev_ids": [
+      "Lenovo S856 Build/KVT49L"
+    ],
+    "name": "Lenovo S856",
+    "released": 2014,
+    "resolution": [
+      720,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.0",
+      "v6.0"
+    ],
+    "cpu": "Octa-core 1.7 GHz Cortex-A53",
+    "dev_ids": [
+      "E5533 Build/29.1.B.0.101"
+    ],
+    "name": "Sony Xperia C5 Ultra Dual",
+    "released": 2015,
+    "resolution": [
+      1080,
+      1920
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.1.1",
+      "v5.1.1"
+    ],
+    "cpu": "Quad-core 1.3 GHz Cortex-A53",
+    "dev_ids": [
+      "HUAWEI TIT-AL00 Build/HUAWEITIT-AL00"
+    ],
+    "name": "Huawei Y6 Pro",
+    "released": 2015,
+    "resolution": [
+      720,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.2.2",
+      "v4.2.2"
+    ],
+    "cpu": "Dual-core 1.2 GHz Cortex-A7",
+    "dev_ids": [
+      "Rover Build/LMY47D"
+    ],
+    "name": "Land Rover A8",
+    "released": 2014,
+    "resolution": [
+      480,
+      800
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.1.1",
+      "v6.0.1"
+    ],
+    "cpu": "Octa-core 1.6 GHz Cortex-A53",
+    "dev_ids": [
+      "SM-G903F Build/MMB29K"
+    ],
+    "name": "Samsung Galaxy S5 Neo",
+    "released": 2015,
+    "resolution": [
+      1080,
+      1920
+    ]
+  },
+  {
+    "android_versionss": [
+      "v6.0.1",
+      "v6.0.1"
+    ],
+    "cpu": "Quad-core 1.2 GHz Cortex-A53",
+    "dev_ids": [
+      "SM-J510FN Build/MMB29M"
+    ],
+    "name": "Samsung Galaxy J5 (2016)",
+    "released": 2016,
+    "resolution": [
+      720,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.2",
+      "v4.4.2"
+    ],
+    "cpu": "Octa-core (4x1.7 GHz Cortex-A15 & 4x1.3 GHz Cortex-A7)",
+    "dev_ids": [
+      "H60-L12 Build/HDH60-L12"
+    ],
+    "name": "Huawei Honor 6",
+    "released": 2014,
+    "resolution": [
+      1080,
+      1920
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.2",
+      "v4.4.2"
+    ],
+    "cpu": "Dual-core 1.2 GHz Cortex-A7",
+    "dev_ids": [
+      "SM-G313HU Build/KOT49H"
+    ],
+    "name": "Samsung Galaxy S Duos 3",
+    "released": 2014,
+    "resolution": [
+      480,
+      800
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.1",
+      "v5.1"
+    ],
+    "cpu": "Quad-core 1.3 GHz Cortex-A7 (3G model)Quad-core 1.1 GHz Cortex-A7 (LTE model)",
+    "dev_ids": [
+      "LGMS330 Build/LMY47V"
+    ],
+    "name": "LG K7",
+    "released": 2016,
+    "resolution": [
+      480,
+      854
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.1",
+      "v6.0.1"
+    ],
+    "cpu": "Quad-core 1.2 GHz Cortex-A53",
+    "dev_ids": [
+      "SM-J500M Build/LMY48B"
+    ],
+    "name": "Samsung Galaxy J5",
+    "released": 2015,
+    "resolution": [
+      720,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.4",
+      "v5.0.2"
+    ],
+    "cpu": "Octa-core (4x1.5 GHz Cortex-A53 & 4x1.0 GHz Cortex-A53) - A700FDOcta-core (4x1.8 Cortex-A15 GHz & 4x1.3 Cortex-A7 GHz) - A700F",
+    "dev_ids": [
+      "SM-A700FD Build/MMB29M"
+    ],
+    "name": "Samsung Galaxy A7",
+    "released": 2015,
+    "resolution": [
+      1080,
+      1920
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.1.1",
+      "v5.1.1"
+    ],
+    "cpu": "Hexa-core (4x1.4 GHz Cortex-A53 & 2x1.8 GHz Cortex-A57)",
+    "dev_ids": [
+      "XT1572 Build/MPHS24.107-58-1"
+    ],
+    "name": "Motorola Moto X Style",
+    "released": 2015,
+    "resolution": [
+      1440,
+      2560
+    ]
+  },
+  {
+    "android_versionss": [
+      "v6.0",
+      "v6.0"
+    ],
+    "cpu": "Quad-core 1.0 GHz Cortex-A53",
+    "dev_ids": [
+      "Lenovo K10a40 Build/MRA58K"
+    ],
+    "name": "Lenovo C2",
+    "released": 2016,
+    "resolution": [
+      720,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v6.0",
+      "v6.0"
+    ],
+    "cpu": "Octa-core (4x2.5 GHz Cortex-A72 & 4x1.8 GHz Cortex-A53)",
+    "dev_ids": [
+      "VIE-L29 Build/HUAWEIVIE-L29"
+    ],
+    "name": "Huawei P9 Plus",
+    "released": 2016,
+    "resolution": [
+      1080,
+      1920
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.2.2",
+      "v4.2.2"
+    ],
+    "cpu": "Dual-core 1.0 GHz Cortex-A7",
+    "dev_ids": [
+      "HTC Desire 210 dual sim Build/JDQ39"
+    ],
+    "name": "HTC Desire 210 dual sim",
+    "released": 2014,
+    "resolution": [
+      480,
+      800
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.0",
+      "v5.0"
+    ],
+    "cpu": "Quad-core 1.3 GHz",
+    "dev_ids": [
+      "ZTE T320 Build/LRX21M"
+    ],
+    "name": "ZTE Blade Q Pro",
+    "released": 2015,
+    "resolution": [
+      480,
+      854
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.4",
+      "v4.4.4"
+    ],
+    "cpu": "Quad-core 1.2 GHz Cortex-A53",
+    "dev_ids": [
+      "Lenovo S90-A Build/LRX22G"
+    ],
+    "name": "Lenovo S90 Sisley",
+    "released": 2014,
+    "resolution": [
+      720,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.0.2",
+      "v6.0.1"
+    ],
+    "cpu": "Octa-core (4x2.1 GHz Cortex-A57 & 4x1.5 GHz Cortex-A53)",
+    "dev_ids": [
+      "SM-G920F Build/LRX22G"
+    ],
+    "name": "Samsung Galaxy S6",
+    "released": 2015,
+    "resolution": [
+      1440,
+      2560
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.4",
+      "v5.1.1"
+    ],
+    "cpu": "Quad-core 1.2 GHz Cortex-A53",
+    "dev_ids": [
+      "SAMSUNG SM-G361F Build/LMY48B"
+    ],
+    "name": "Samsung Galaxy Core Prime",
+    "released": 2014,
+    "resolution": [
+      480,
+      800
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.1.1",
+      "v6.0.1"
+    ],
+    "cpu": "Octa-core (4x2.1 GHz Cortex-A57 & 4x1.5 GHz Cortex-A53)",
+    "dev_ids": [
+      "SM-N920T Build/MMB29K"
+    ],
+    "name": "Samsung Galaxy Note5",
+    "released": 2015,
+    "resolution": [
+      1440,
+      2560
+    ]
+  },
+  {
+    "android_versionss": [
+      "v6.0.1",
+      "v7.0"
+    ],
+    "cpu": "Quad-core (2x2.15 GHz Kryo & 2x1.6 GHz Kryo)",
+    "dev_ids": [
+      "F8331 Build/39.2.A.0.417"
+    ],
+    "name": "Sony Xperia XZ",
+    "released": 2016,
+    "resolution": [
+      1080,
+      1920
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.2",
+      "v4.4.2"
+    ],
+    "cpu": "Octa-core 1.4 GHz Cortex-A7",
+    "dev_ids": [
+      "Lenovo A916 Build/KOT49H"
+    ],
+    "name": "Lenovo A916",
+    "released": 2014,
+    "resolution": [
+      720,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.2",
+      "v5.1.1"
+    ],
+    "cpu": "Quad-core 1.2 GHz Cortex-A7",
+    "dev_ids": [
+      "D2403 Build/18.6.A.0.182"
+    ],
+    "name": "Sony Xperia M2 Aqua",
+    "released": 2014,
+    "resolution": [
+      540,
+      960
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.1.1",
+      "v7.0"
+    ],
+    "cpu": "Octa-core (4x1.5 GHz Cortex-A53 & 4x2.0 GHz Cortex-A57)",
+    "dev_ids": [
+      "E6683 Build/32.2.A.0.253"
+    ],
+    "name": "Sony Xperia Z5 Dual",
+    "released": 2015,
+    "resolution": [
+      1080,
+      1920
+    ]
+  },
+  {
+    "android_versionss": [
+      "v6.0.1",
+      "v7.0"
+    ],
+    "cpu": "Quad-core (2x2.15 GHz Kryo & 2x1.6 GHz Kryo)",
+    "dev_ids": [
+      "LGLS992 Build/NRD90U"
+    ],
+    "name": "LG G5",
+    "released": 2016,
+    "resolution": [
+      1440,
+      2560
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.3",
+      "v5.1.1"
+    ],
+    "cpu": "Quad-core 1.4 GHz Cortex-A7",
+    "dev_ids": [
+      "D5322 Build/19.1.C.0.116"
+    ],
+    "name": "Sony Xperia T2 Ultra dual",
+    "released": 2014,
+    "resolution": [
+      720,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.2",
+      "v4.2"
+    ],
+    "cpu": "Quad-core 1.3 GHz Cortex-A7",
+    "dev_ids": [
+      "Lenovo S660 Build/KOT49H"
+    ],
+    "name": "Lenovo S660",
+    "released": 2014,
+    "resolution": [
+      540,
+      960
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.4",
+      "v4.4.4"
+    ],
+    "cpu": "Quad-core 1.2 GHz Cortex-A53",
+    "dev_ids": [
+      "SM-E500H Build/LMY47X"
+    ],
+    "name": "Samsung Galaxy E5",
+    "released": 2015,
+    "resolution": [
+      720,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.1",
+      "v5.1"
+    ],
+    "cpu": "Quad-core 1.0 GHz Cortex-A53",
+    "dev_ids": [
+      "ZTE T620 Build/LMY47D"
+    ],
+    "name": "ZTE Blade X3",
+    "released": 2015,
+    "resolution": [
+      720,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.1",
+      "v6.0.1"
+    ],
+    "cpu": "Quad-core 1.2 GHz Cortex-A53",
+    "dev_ids": [
+      "SAMSUNG SM-J500FN Build/MMB29M"
+    ],
+    "name": "Samsung Galaxy J5",
+    "released": 2015,
+    "resolution": [
+      720,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.2",
+      "v4.4.2"
+    ],
+    "cpu": "Quad-core 1.2 GHz",
+    "dev_ids": [
+      "SM-G355H Build/KOT49H"
+    ],
+    "name": "Samsung Galaxy Core II",
+    "released": 2014,
+    "resolution": [
+      480,
+      800
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.1.1",
+      "v5.1.1"
+    ],
+    "cpu": "Octa-core 1.3 GHz Cortex-A53",
+    "dev_ids": [
+      "HTC Desire 728G dual sim Build/LMY47D"
+    ],
+    "name": "HTC Desire 728 dual sim",
+    "released": 2015,
+    "resolution": [
+      720,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.0.2",
+      "v6.0.1"
+    ],
+    "cpu": "Octa-core (4x2.1 GHz Cortex-A57 & 4x1.5 GHz Cortex-A53)",
+    "dev_ids": [
+      "SM-G925F Build/MMB29K"
+    ],
+    "name": "Samsung Galaxy S6 edge",
+    "released": 2015,
+    "resolution": [
+      1440,
+      2560
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.2",
+      "v5.0"
+    ],
+    "cpu": "Quad-core 1.3 GHz Cortex-A7",
+    "dev_ids": [
+      "Micromax A106 Build/KOT49H"
+    ],
+    "name": "Micromax A106 Unite 2",
+    "released": 2014,
+    "resolution": [
+      480,
+      800
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.3",
+      "v4.3"
+    ],
+    "cpu": "Dual-core 1.2 GHz Cortex-A7",
+    "dev_ids": [
+      "D2005 Build/20.1.A.2.19"
+    ],
+    "name": "Sony Xperia E1",
+    "released": 2014,
+    "resolution": [
+      480,
+      800
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.1",
+      "v5.1"
+    ],
+    "cpu": "Octa-core 1.3 GHz Cortex-A53",
+    "dev_ids": [
+      "HTC Desire 628 dual sim Build/LMY47D"
+    ],
+    "name": "HTC Desire 628",
+    "released": 2016,
+    "resolution": [
+      720,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.0",
+      "v5.0"
+    ],
+    "cpu": "Octa-core 1.3 GHz Cortex-A53",
+    "dev_ids": [
+      "m2 note Build/LMY47D"
+    ],
+    "name": "Meizu M2 Note",
+    "released": 2015,
+    "resolution": [
+      1080,
+      1920
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.0",
+      "v5.0"
+    ],
+    "cpu": "Octa-core (4x1.7 GHz Cortex-A53 & 4x1.0 GHz Cortex-A53)",
+    "dev_ids": [
+      "HTC One M8s Build/MMB29M"
+    ],
+    "name": "HTC One M8s",
+    "released": 2015,
+    "resolution": [
+      1080,
+      1920
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.4",
+      "v6.0.1"
+    ],
+    "cpu": "Quad-core 2.3 GHz Krait 400",
+    "dev_ids": [
+      "HTC Desire EYE Build/MMB29M"
+    ],
+    "name": "HTC Desire Eye",
+    "released": 2014,
+    "resolution": [
+      1080,
+      1920
+    ]
+  },
+  {
+    "android_versionss": [
+      "v6.0",
+      "v6.0"
+    ],
+    "cpu": "Quad-core 1.3 GHz Cortex-A53",
+    "dev_ids": [
+      "Phoenix 2 Build/JDQ39"
+    ],
+    "name": "LG K8",
+    "released": 2016,
+    "resolution": [
+      720,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.2.2",
+      "v4.2.2"
+    ],
+    "cpu": "Octa-core 1.7 GHz Cortex-A7",
+    "dev_ids": [
+      "Archos 50c Oxygen Build/KOT49H"
+    ],
+    "name": "Archos 50c Oxygen",
+    "released": 2014,
+    "resolution": [
+      720,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.3",
+      "v4.3"
+    ],
+    "cpu": "Dual-core 1.2 GHz Cortex-A7",
+    "dev_ids": [
+      "D2105 Build/20.1.B.2.29"
+    ],
+    "name": "Sony Xperia E1 dual",
+    "released": 2014,
+    "resolution": [
+      480,
+      800
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.3",
+      "v5.1"
+    ],
+    "cpu": "Quad-core 1.6 GHz Cortex-A7",
+    "dev_ids": [
+      "HUAWEI MT2-L02 Build/HuaweiMT2-L02"
+    ],
+    "name": "Huawei Ascend Mate2 4G",
+    "released": 2014,
+    "resolution": [
+      720,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.2",
+      "v5.0.1"
+    ],
+    "cpu": "Quad-core 2.5 GHz Krait 400",
+    "dev_ids": [
+      "SM-G900V Build/KTU84P"
+    ],
+    "name": "Samsung Galaxy S5 (USA)",
+    "released": 2014,
+    "resolution": [
+      1080,
+      1920
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.2",
+      "v5.0.2"
+    ],
+    "cpu": "Quad-core 1.3 GHz Cortex-A7",
+    "dev_ids": [
+      "Lenovo A5000 Build/LRX22G"
+    ],
+    "name": "Lenovo A5000",
+    "released": 2015,
+    "resolution": [
+      720,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.1.1",
+      "v6.0.1"
+    ],
+    "cpu": "Octa-core (4x2.1 GHz Cortex-A57 & 4x1.5 GHz Cortex-A53)",
+    "dev_ids": [
+      "SM-N920G Build/LMY47X"
+    ],
+    "name": "Samsung Galaxy Note5",
+    "released": 2015,
+    "resolution": [
+      1440,
+      2560
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.1",
+      "v5.1"
+    ],
+    "cpu": "Octa-core (4x1.8 GHz Cortex-A53 & 4x1.0 GHz Cortex-A53)",
+    "dev_ids": [
+      "m3 note Build/LMY47I"
+    ],
+    "name": "Meizu M3 Note",
+    "released": 2016,
+    "resolution": [
+      1080,
+      1920
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.1",
+      "v5.1"
+    ],
+    "cpu": "Quad-core 1.3 GHz",
+    "dev_ids": [
+      "Philips S337 Build/LMY47D"
+    ],
+    "name": "Philips S337",
+    "released": 2015,
+    "resolution": [
+      480,
+      854
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.1.1",
+      "v5.1.1"
+    ],
+    "cpu": "Octa-core (4x1.7 GHz Cortex-A53 & 4x1.0 GHz Cortex-A53)",
+    "dev_ids": [
+      "XT1562 Build/MPD24.107-52"
+    ],
+    "name": "Motorola Moto X Play",
+    "released": 2015,
+    "resolution": [
+      1080,
+      1920
+    ]
+  },
+  {
+    "android_versionss": [
+      "v6.0.1",
+      "v6.0.1"
+    ],
+    "cpu": "Hexa-core (4x1.4 GHz Cortex-A53 & 2x1.8 GHz Cortex-A72)",
+    "dev_ids": [
+      "F5121 Build/34.2.A.0.292"
+    ],
+    "name": "Sony Xperia X",
+    "released": 2016,
+    "resolution": [
+      1080,
+      1920
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.1.1",
+      "v7.0"
+    ],
+    "cpu": "Octa-core (4x1.5 GHz Cortex-A53 & 4x2.0 GHz Cortex-A57)",
+    "dev_ids": [
+      "E6853 Build/32.2.A.0.224"
+    ],
+    "name": "Sony Xperia Z5 Premium",
+    "released": 2015,
+    "resolution": [
+      2160,
+      3840
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.1.1",
+      "v6.0.1"
+    ],
+    "cpu": "Quad-core 1.5 GHz Cortex-A53",
+    "dev_ids": [
+      "SM-A310F Build/MMB29K"
+    ],
+    "name": "Samsung Galaxy A3 (2016)",
+    "released": 2015,
+    "resolution": [
+      720,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v6.0.1",
+      "v7.0"
+    ],
+    "cpu": "Quad-core (2x2.15 GHz Kryo & 2x1.6 GHz Kryo)",
+    "dev_ids": [
+      "ZTE A2017G Build/MMB29M"
+    ],
+    "name": "ZTE Axon 7",
+    "released": 2016,
+    "resolution": [
+      1440,
+      2560
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.2",
+      "v4.4.2"
+    ],
+    "cpu": "Quad-core 1.3 GHz Cortex-A7",
+    "dev_ids": [
+      "Lenovo S860 Build/JDQ39"
+    ],
+    "name": "Lenovo S860",
+    "released": 2014,
+    "resolution": [
+      720,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.1.1",
+      "v5.1.1"
+    ],
+    "cpu": "Quad-core 1.3 GHz Cortex-A53",
+    "dev_ids": [
+      "HUAWEI TIT-U02 Build/HUAWEITIT-U02"
+    ],
+    "name": "Huawei Y6 Pro",
+    "released": 2015,
+    "resolution": [
+      720,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v6.0.1",
+      "v6.0.1"
+    ],
+    "cpu": "Quad-core (2x2.15 GHz Kryo & 2x1.6 GHz Kryo)",
+    "dev_ids": [
+      "F8132 Build/35.0.A.1.297"
+    ],
+    "name": "Sony Xperia X Performance",
+    "released": 2016,
+    "resolution": [
+      1080,
+      1920
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.1",
+      "v5.1"
+    ],
+    "cpu": "Quad-core 1.3 GHz Cortex-A7 (3G model)Quad-core 1.1 GHz Cortex-A7 (LTE model)",
+    "dev_ids": [
+      "LGLS675 Build/LMY47V"
+    ],
+    "name": "LG K7",
+    "released": 2016,
+    "resolution": [
+      480,
+      854
+    ]
+  },
+  {
+    "android_versionss": [
+      "v6.0",
+      "v6.0"
+    ],
+    "cpu": "Quad-core (2x2.35 GHz Kryo & 2x2.2 GHz Kryo)",
+    "dev_ids": [
+      "MI 5s Plus Build/MXB48T"
+    ],
+    "name": "Xiaomi Mi 5s Plus",
+    "released": 2016,
+    "resolution": [
+      1080,
+      1920
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.0.2",
+      "v5.0.2"
+    ],
+    "cpu": "Octa-core (4x2.2 GHz Cortex-A53 & 4x1.5 GHz Cortex-A53)",
+    "dev_ids": [
+      "HUAWEI P8max Build/HUAWEIDAV-703L"
+    ],
+    "name": "Huawei P8max",
+    "released": 2015,
+    "resolution": [
+      1080,
+      1920
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.1.1",
+      "v5.1.1"
+    ],
+    "cpu": "Quad-core 1.5 GHz Cortex-A7Quad-core 1.3 GHz Cortex-A7 - J320A",
+    "dev_ids": [
+      "SM-J320F Build/LMY47V"
+    ],
+    "name": "Samsung Galaxy J3 (2016)",
+    "released": 2016,
+    "resolution": [
+      720,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v6.0.1",
+      "v6.0.1"
+    ],
+    "cpu": "Quad-core 1.3 GHz Cortex-A7",
+    "dev_ids": [
+      "ROBBY Build/MRA58K"
+    ],
+    "name": "Wiko Robby",
+    "released": 2016,
+    "resolution": [
+      720,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.2",
+      "v4.4.2"
+    ],
+    "cpu": "Quad-core 1.2 GHz Cortex-A7",
+    "dev_ids": [
+      "D2502 Build/19.2.1.A.0.72"
+    ],
+    "name": "Sony Xperia C3 Dual",
+    "released": 2014,
+    "resolution": [
+      720,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.3",
+      "v4.4.2"
+    ],
+    "cpu": "Quad-core 1.2 GHz Cortex-A7",
+    "dev_ids": [
+      "SM-G7102 Build/KOT49H"
+    ],
+    "name": "Samsung Galaxy Grand 2",
+    "released": 2014,
+    "resolution": [
+      720,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.4",
+      "v5.0.2"
+    ],
+    "cpu": "Octa-core (4x1.5 GHz Cortex-A53 & 4x1.0 GHz Cortex-A53) - A700FDOcta-core (4x1.8 Cortex-A15 GHz & 4x1.3 Cortex-A7 GHz) - A700F",
+    "dev_ids": [
+      "SM-A700F Build/LRX22G"
+    ],
+    "name": "Samsung Galaxy A7",
+    "released": 2015,
+    "resolution": [
+      1080,
+      1920
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.1.1",
+      "v5.1.1"
+    ],
+    "cpu": "Quad-core 1.3 GHz Cortex-A7",
+    "dev_ids": [
+      "SM-J120M Build/LMY47X"
+    ],
+    "name": "Samsung Galaxy J1 (2016)",
+    "released": 2016,
+    "resolution": [
+      480,
+      800
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.0",
+      "v5.0"
+    ],
+    "cpu": "Octa-core (4x1.5 GHz Cortex-A53 & 4x1.1 GHz Cortex-A53)",
+    "dev_ids": [
+      "X5pro Build/LMY47D"
+    ],
+    "name": "vivo X5Pro",
+    "released": 2015,
+    "resolution": [
+      1080,
+      1920
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.1.1",
+      "v6.0.1"
+    ],
+    "cpu": "Octa-core (4x1.2 GHz Cortex-A53 & 4x1.5 GHz Cortex-A53)Octa-core 1.6 GHz Cortex-A53",
+    "dev_ids": [
+      "SAMSUNG SM-A710L Build/MMB29K"
+    ],
+    "name": "Samsung Galaxy A7 (2016)",
+    "released": 2015,
+    "resolution": [
+      1080,
+      1920
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.1",
+      "v6.0.1"
+    ],
+    "cpu": "Quad-core 1.2 GHz Cortex-A53",
+    "dev_ids": [
+      "SAMSUNG SM-J500G Build/LMY48B"
+    ],
+    "name": "Samsung Galaxy J5",
+    "released": 2015,
+    "resolution": [
+      720,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.2.2",
+      "v4.2.2"
+    ],
+    "cpu": "Dual-core 1.3 GHz Cortex-A7",
+    "dev_ids": [
+      "Lenovo A316i Build/JDQ39"
+    ],
+    "name": "Lenovo A316i",
+    "released": 2014,
+    "resolution": [
+      480,
+      800
+    ]
+  },
+  {
+    "android_versionss": [
+      "v6.0",
+      "v6.0"
+    ],
+    "cpu": "Quad-core (2x2.15 GHz Kryo & 2x1.6 GHz Kryo)",
+    "dev_ids": [
+      "SM-G935V Build/MMB29M"
+    ],
+    "name": "Samsung Galaxy S7 edge (USA)",
+    "released": 2016,
+    "resolution": [
+      1440,
+      2560
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.2",
+      "v4.4.2"
+    ],
+    "cpu": "Quad-core 1.3 GHz",
+    "dev_ids": [
+      "Micromax A104 Build/KOT49H"
+    ],
+    "name": "Micromax A104 Canvas Fire 2",
+    "released": 2014,
+    "resolution": [
+      480,
+      854
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.1.1",
+      "v6.0.1"
+    ],
+    "cpu": "Octa-core (4x1.2 GHz Cortex-A53 & 4x1.5 GHz Cortex-A53)Octa-core 1.6 GHz Cortex-A53",
+    "dev_ids": [
+      "SAMSUNG SM-A5100 Build/LMY47X"
+    ],
+    "name": "Samsung Galaxy A5 (2016)",
+    "released": 2015,
+    "resolution": [
+      1080,
+      1920
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.1.1",
+      "v5.1.1"
+    ],
+    "cpu": "Octa-core (4x1.5 GHz Cortex-A53 & 4x2.0 GHz Cortex-A57)",
+    "dev_ids": [
+      "XT1585 Build/MCK24.78-13.16"
+    ],
+    "name": "Motorola Droid Turbo 2",
+    "released": 2015,
+    "resolution": [
+      1440,
+      2560
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.1",
+      "v6.0.1"
+    ],
+    "cpu": "Octa-core (4x1.4 GHz Cortex-A53 & 4x1.0 GHz Cortex-A53)Octa-core 1.5 GHz Cortex-A53",
+    "dev_ids": [
+      "SM-J700H Build/MMB29K"
+    ],
+    "name": "Samsung Galaxy J7",
+    "released": 2015,
+    "resolution": [
+      720,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.0.2",
+      "v6.0"
+    ],
+    "cpu": "Octa-core 1.2 GHz Cortex-A53",
+    "dev_ids": [
+      "ALE-L21 Build/HuaweiALE-L21"
+    ],
+    "name": "Huawei P8lite",
+    "released": 2015,
+    "resolution": [
+      720,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.2",
+      "v4.2"
+    ],
+    "cpu": "Quad-core 1.3 GHz",
+    "dev_ids": [
+      "Philips W6610 Build/JDQ39"
+    ],
+    "name": "Philips W6610",
+    "released": 2014,
+    "resolution": [
+      540,
+      960
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.4",
+      "v5.1.1"
+    ],
+    "cpu": "Quad-core 1.2 GHz Cortex-A53",
+    "dev_ids": [
+      "SM-G360T Build/LMY47X"
+    ],
+    "name": "Samsung Galaxy Core Prime",
+    "released": 2014,
+    "resolution": [
+      480,
+      800
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.1.2",
+      "v4.1.2"
+    ],
+    "cpu": "Dual-core 1.0 GHz Cortex-A5",
+    "dev_ids": [
+      "Nokia_XL Build/JZO54K"
+    ],
+    "name": "Nokia XL",
+    "released": 2014,
+    "resolution": [
+      480,
+      800
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.1",
+      "v6.0.1"
+    ],
+    "cpu": "Quad-core 1.2 GHz Cortex-A53",
+    "dev_ids": [
+      "SM-J500FN Build/LMY48B"
+    ],
+    "name": "Samsung Galaxy J5",
+    "released": 2015,
+    "resolution": [
+      720,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.1",
+      "v6.0.1"
+    ],
+    "cpu": "Quad-core 1.2 GHz Cortex-A53",
+    "dev_ids": [
+      "SAMSUNG SM-J500F Build/LMY48B"
+    ],
+    "name": "Samsung Galaxy J5",
+    "released": 2015,
+    "resolution": [
+      720,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v6.0",
+      "v6.0"
+    ],
+    "cpu": "Quad-core 1.3 GHz Cortex-A53",
+    "dev_ids": [
+      "F3311 Build/37.0.A.2.108"
+    ],
+    "name": "Sony Xperia E5",
+    "released": 2016,
+    "resolution": [
+      720,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.1",
+      "v5.1"
+    ],
+    "cpu": "Quad-core 1.6 GHz Cortex-A7",
+    "dev_ids": [
+      "ZB551KL Build/LMY47V"
+    ],
+    "name": "Asus Zenfone Go ZB551KL",
+    "released": 2016,
+    "resolution": [
+      720,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.1.1",
+      "v7.0"
+    ],
+    "cpu": "Octa-core (4x1.5 GHz Cortex-A53 & 4x2.0 GHz Cortex-A57)",
+    "dev_ids": [
+      "E6653 Build/32.2.A.0.305"
+    ],
+    "name": "Sony Xperia Z5",
+    "released": 2015,
+    "resolution": [
+      1080,
+      1920
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.0",
+      "v5.0"
+    ],
+    "cpu": "Dual-core 1.2 GHz Cortex-A7",
+    "dev_ids": [
+      "Z220 Build/LRX21M"
+    ],
+    "name": "Acer Liquid Z220",
+    "released": 2015,
+    "resolution": [
+      480,
+      800
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.2",
+      "v4.4.2"
+    ],
+    "cpu": "Quad-core 1.2 GHz",
+    "dev_ids": [
+      "Micromax Q324 Build/KOT49H"
+    ],
+    "name": "Micromax Bolt Q324",
+    "released": 2015,
+    "resolution": [
+      480,
+      800
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.2",
+      "v4.2"
+    ],
+    "cpu": "Quad-core 1.3 GHz Cortex-A7",
+    "dev_ids": [
+      "Lenovo A859 Build/JDQ39"
+    ],
+    "name": "Lenovo A859",
+    "released": 2014,
+    "resolution": [
+      720,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.2",
+      "v4.2"
+    ],
+    "cpu": "Quad-core 1.3 GHz",
+    "dev_ids": [
+      "Philips S388 Build/JDQ39"
+    ],
+    "name": "Philips S388",
+    "released": 2014,
+    "resolution": [
+      540,
+      960
+    ]
+  },
+  {
+    "android_versionss": [
+      "v4.4.4",
+      "v4.4.4"
+    ],
+    "cpu": "Quad-core 1.5 GHz Cortex-A7 - J111FQuad-core 1.2 GHz Cortex-A7Dual-core 1.3 GHz Cortex-A53- J110L",
+    "dev_ids": [
+      "SAMSUNG SM-J110H Build/KTU84P"
+    ],
+    "name": "Samsung Galaxy J1 Ace",
+    "released": 2015,
+    "resolution": [
+      480,
+      800
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.1",
+      "v6.0.1"
+    ],
+    "cpu": "Quad-core 1.2 GHz Cortex-A53",
+    "dev_ids": [
+      "SAMSUNG SM-J500H Build/MMB29M",
+      "SAMSUNG SM-J500H Build/LMY48B"
+    ],
+    "name": "Samsung Galaxy J5",
+    "released": 2015,
+    "resolution": [
+      720,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.0.1",
+      "v6.0.1"
+    ],
+    "cpu": "Octa-core (4x1.5 GHz Cortex-A53 & 4x1.0 GHz Cortex-A53)",
+    "dev_ids": [
+      "E2303 Build/26.1.A.3.111"
+    ],
+    "name": "Sony Xperia M4 Aqua",
+    "released": 2015,
+    "resolution": [
+      720,
+      1280
+    ]
+  },
+  {
+    "android_versionss": [
+      "v5.1.1",
+      "v6.0.1"
+    ],
+    "cpu": "Octa-core (4x1.2 GHz Cortex-A53 & 4x1.5 GHz Cortex-A53)Octa-core 1.6 GHz Cortex-A53",
+    "dev_ids": [
+      "SAMSUNG SM-A710F Build/MMB29K"
+    ],
+    "name": "Samsung Galaxy A7 (2016)",
+    "released": 2015,
+    "resolution": [
+      1080,
+      1920
+    ]
+  },
+  {
+    "android_versionss": [
+      "v6.0.1",
+      "v6.0.1"
+    ],
+    "cpu": "Quad-core 1.2 GHz Cortex-A53",
+    "dev_ids": [
+      "SAMSUNG SM-J510FN Build/MMB29M"
+    ],
+    "name": "Samsung Galaxy J5 (2016)",
+    "released": 2016,
+    "resolution": [
+      720,
+      1280
+    ]
+  }
+]

@@ -1,5 +1,5 @@
 {
   "packageManager": "python",
-  "packageName": "gamestonk_terminal_documentation",
-  "uninstallInstructions": "Use your Python package manager (pip, conda, etc.) to uninstall the package gamestonk_terminal_documentation"
+  "packageName": "openbb_terminal_documentation",
+  "uninstallInstructions": "Use your Python package manager (pip, conda, etc.) to uninstall the package openbb_terminal_documentation"
 }

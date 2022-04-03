@@ -45,7 +45,7 @@ axes.labelcolor: 0F0F0F
 axes.grid: true
 axes.grid.which: major
 
-axes.prop_cycle: cycler('color', ['254495', '48277c', '822661', 'c13246', 'e4003a', 'ef7d00', 'ffed00', '00aaff', '9b30d9', 'af005f', '5f00af', 'af87ff'])
+axes.prop_cycle: cycler('color', ['254495', 'c13246', '48277c', 'e4003a', 'ef7d00', '822661', 'ffed00', '00aaff', '9b30d9', 'af005f', '5f00af', 'af87ff'])
 
 xtick.color: 0F0F0F
 ytick.color: 0F0F0F

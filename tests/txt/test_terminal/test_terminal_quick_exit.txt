@@ -1,5 +1,5 @@
 
-Welcome to Gamestonk Terminal Beta
+Welcome to OpenBB Terminal 1.0
 
 USAGE INSTRUCTIONS
 

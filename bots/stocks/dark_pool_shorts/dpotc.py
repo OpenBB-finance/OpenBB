@@ -1,19 +1,23 @@
+import logging
+
 import plotly.graph_objects as go
 import yfinance as yf
 from plotly.subplots import make_subplots
 
-import bots.config_discordbot as cfg
-from bots.config_discordbot import logger
-from bots import helpers
-from gamestonk_terminal.stocks.dark_pool_shorts import finra_model
+from bots import imps
+from openbb_terminal.decorators import log_start_end
+from openbb_terminal.stocks.dark_pool_shorts import finra_model
+
+logger = logging.getLogger(__name__)
 
 
+@log_start_end(log=logger)
 def dpotc_command(ticker: str = ""):
     """Dark pools (ATS) vs OTC data [FINRA]"""
 
     # Debug user input
-    if cfg.DEBUG:
-        logger.debug("dps-dpotc %s", ticker)
+    if imps.DEBUG:
+        logger.debug("dps dpotc %s", ticker)
 
     # Check for argument
     if ticker == "":
@@ -29,7 +33,7 @@ def dpotc_command(ticker: str = ""):
     ats, otc = finra_model.getTickerFINRAdata(ticker)
 
     # Debug user output
-    if cfg.DEBUG:
+    if imps.DEBUG:
         logger.debug(ats.to_string())
         logger.debug(otc.to_string())
 
@@ -141,18 +145,18 @@ def dpotc_command(ticker: str = ""):
             row=2,
             col=1,
         )
-
-    fig.update_xaxes(showspikes=True, spikesnap="cursor", spikemode="across")
-    fig.update_yaxes(showspikes=True, spikethickness=2)
+    if imps.PLT_WATERMARK:
+        fig.add_layout_image(imps.PLT_WATERMARK)
     fig.update_layout(
         margin=dict(l=20, r=0, t=10, b=20),
-        template=cfg.PLT_CANDLE_STYLE_TEMPLATE,
-        colorway=cfg.PLT_TA_COLORWAY,
+        template=imps.PLT_CANDLE_STYLE_TEMPLATE,
+        colorway=imps.PLT_TA_COLORWAY,
         title=f"Dark Pools (ATS) vs OTC (Non-ATS) Data for {ticker}",
         title_x=0.5,
         yaxis3_title="Shares per Trade",
         yaxis_title="Total Weekly Shares",
         xaxis2_title="Weeks",
+        font=imps.PLT_FONT,
         yaxis=dict(
             fixedrange=False,
             side="left",
@@ -181,25 +185,23 @@ def dpotc_command(ticker: str = ""):
         bargroupgap=0,
         dragmode="pan",
         hovermode="x unified",
-        spikedistance=1000,
-        hoverdistance=100,
+        spikedistance=1,
+        hoverdistance=1,
     )
-    config = dict({"scrollZoom": True})
+
     imagefile = "dps_dpotc.png"
 
     # Check if interactive settings are enabled
     plt_link = ""
-    if cfg.INTERACTIVE:
-        html_ran = helpers.uuid_get()
-        fig.write_html(f"in/dpotc_{html_ran}.html", config=config)
-        plt_link = f"[Interactive]({cfg.INTERACTIVE_URL}/dpotc_{html_ran}.html)"
+    if imps.INTERACTIVE:
+        plt_link = imps.inter_chart(fig, imagefile, callback=False)
 
     fig.update_layout(
         width=800,
         height=500,
     )
 
-    imagefile = helpers.image_border(imagefile, fig=fig)
+    imagefile = imps.image_border(imagefile, fig=fig)
 
     return {
         "title": title,

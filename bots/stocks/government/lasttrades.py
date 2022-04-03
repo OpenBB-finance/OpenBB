@@ -1,18 +1,22 @@
+import logging
+
 import disnake
 
-import bots.config_discordbot as cfg
-from bots.config_discordbot import logger
-from bots.menus.menu import Menu
-from gamestonk_terminal.stocks.government import quiverquant_model
+from bots import imps
+from openbb_terminal.decorators import log_start_end
+from openbb_terminal.stocks.government import quiverquant_model
+
+logger = logging.getLogger(__name__)
 
 
+@log_start_end(log=logger)
 def lasttrades_command(gov_type="", past_days: int = 5, representative=""):
     """Displays trades made by the congress/senate/house [quiverquant.com]"""
 
     # Debug user input
-    if cfg.DEBUG:
+    if imps.DEBUG:
         logger.debug(
-            "gov-lasttrades %s %s %s",
+            "gov lasttrades %s %s %s",
             gov_type,
             past_days,
             representative,
@@ -102,25 +106,25 @@ def lasttrades_command(gov_type="", past_days: int = 5, representative=""):
             disnake.Embed(
                 title=title,
                 description=initial_str,
-                colour=cfg.COLOR,
+                colour=imps.COLOR,
             ).set_author(
-                name=cfg.AUTHOR_NAME,
-                icon_url=cfg.AUTHOR_ICON_URL,
+                name=imps.AUTHOR_NAME,
+                icon_url=imps.AUTHOR_ICON_URL,
             )
         )
         reports = [f"{initial_str}"]
         for column in df_gov_rep.columns.values:
             description = "```" + df_gov_rep[column].fillna("").to_string() + "```"
             embeds.append(
-                disnake.Embed(description=description, colour=cfg.COLOR,).set_author(
-                    name=cfg.AUTHOR_NAME,
-                    icon_url=cfg.AUTHOR_ICON_URL,
+                disnake.Embed(description=description, colour=imps.COLOR,).set_author(
+                    name=imps.AUTHOR_NAME,
+                    icon_url=imps.AUTHOR_ICON_URL,
                 )
             )
             reports.append(f"{description}")
 
         output = {
-            "view": Menu,
+            "view": imps.Menu,
             "title": title,
             "description": reports,
             "embed": embeds,
@@ -153,25 +157,25 @@ def lasttrades_command(gov_type="", past_days: int = 5, representative=""):
             disnake.Embed(
                 title=title,
                 description=initial_str,
-                colour=cfg.COLOR,
+                colour=imps.COLOR,
             ).set_author(
-                name=cfg.AUTHOR_NAME,
-                icon_url=cfg.AUTHOR_ICON_URL,
+                name=imps.AUTHOR_NAME,
+                icon_url=imps.AUTHOR_ICON_URL,
             )
         )
         reports = [f"{initial_str}"]
         for column in df_gov.columns.values:
             description = "```" + df_gov[column].fillna("").to_string() + "```"
             embeds.append(
-                disnake.Embed(description=description, colour=cfg.COLOR,).set_author(
-                    name=cfg.AUTHOR_NAME,
-                    icon_url=cfg.AUTHOR_ICON_URL,
+                disnake.Embed(description=description, colour=imps.COLOR,).set_author(
+                    name=imps.AUTHOR_NAME,
+                    icon_url=imps.AUTHOR_ICON_URL,
                 )
             )
             reports.append(f"{description}")
 
         output = {
-            "view": Menu,
+            "view": imps.Menu,
             "title": title,
             "description": reports,
             "embed": embeds,
