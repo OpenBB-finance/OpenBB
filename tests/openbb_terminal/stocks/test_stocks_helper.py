@@ -46,7 +46,7 @@ def test_search(mocker, use_tab):
         sector="",
         industry="",
         exchange_country="",
-        amount=5,
+        limit=5,
         export="",
     )
 
