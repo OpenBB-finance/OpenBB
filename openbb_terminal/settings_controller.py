@@ -151,14 +151,14 @@ class SettingsController(BaseController):
     def call_logcollection(self, _):
         """Process logcollection command"""
         obbff.LOG_COLLECTION = not obbff.LOG_COLLECTION
-        set_key(self.ENV_FILE, "OPENBB_LOG_COLLECTION", str(obbff.LOG_COLLECTION))
+        set_key(ENV_FILE, "OPENBB_LOG_COLLECTION", str(obbff.LOG_COLLECTION))
         console.print("")
 
     @log_start_end(log=logger)
     def call_tab(self, _):
         """Process tab command"""
         obbff.USE_TABULATE_DF = not obbff.USE_TABULATE_DF
-        set_key(self.ENV_FILE, "OPENBB_USE_TABULATE_DF", str(obbff.USE_TABULATE_DF))
+        set_key(ENV_FILE, "OPENBB_USE_TABULATE_DF", str(obbff.USE_TABULATE_DF))
         console.print("")
 
     @log_start_end(log=logger)
@@ -166,7 +166,7 @@ class SettingsController(BaseController):
         """Process cls command"""
         obbff.USE_CLEAR_AFTER_CMD = not obbff.USE_CLEAR_AFTER_CMD
         set_key(
-            self.ENV_FILE, "OPENBB_USE_CLEAR_AFTER_CMD", str(obbff.USE_CLEAR_AFTER_CMD)
+            ENV_FILE, "OPENBB_USE_CLEAR_AFTER_CMD", str(obbff.USE_CLEAR_AFTER_CMD)
         )
         console.print("")
 
@@ -174,7 +174,7 @@ class SettingsController(BaseController):
     def call_color(self, _):
         """Process color command"""
         obbff.USE_COLOR = not obbff.USE_COLOR
-        set_key(self.ENV_FILE, "OPENBB_USE_COLOR", str(obbff.USE_COLOR))
+        set_key(ENV_FILE, "OPENBB_USE_COLOR", str(obbff.USE_COLOR))
         console.print("")
 
     @log_start_end(log=logger)
@@ -182,7 +182,7 @@ class SettingsController(BaseController):
         """Process promptkit command"""
         obbff.USE_PROMPT_TOOLKIT = not obbff.USE_PROMPT_TOOLKIT
         set_key(
-            self.ENV_FILE, "OPENBB_USE_PROMPT_TOOLKIT", str(obbff.USE_PROMPT_TOOLKIT)
+            ENV_FILE, "OPENBB_USE_PROMPT_TOOLKIT", str(obbff.USE_PROMPT_TOOLKIT)
         )
         console.print("")
 
@@ -190,7 +190,7 @@ class SettingsController(BaseController):
     def call_predict(self, _):
         """Process predict command"""
         obbff.ENABLE_PREDICT = not obbff.ENABLE_PREDICT
-        set_key(self.ENV_FILE, "OPENBB_ENABLE_PREDICT", str(obbff.ENABLE_PREDICT))
+        set_key(ENV_FILE, "OPENBB_ENABLE_PREDICT", str(obbff.ENABLE_PREDICT))
         console.print("")
 
     @log_start_end(log=logger)
@@ -198,7 +198,7 @@ class SettingsController(BaseController):
         """Process thoughts command"""
         obbff.ENABLE_THOUGHTS_DAY = not obbff.ENABLE_THOUGHTS_DAY
         set_key(
-            self.ENV_FILE, "OPENBB_ENABLE_THOUGHTS_DAY", str(obbff.ENABLE_THOUGHTS_DAY)
+            ENV_FILE, "OPENBB_ENABLE_THOUGHTS_DAY", str(obbff.ENABLE_THOUGHTS_DAY)
         )
         console.print("")
 
@@ -207,7 +207,7 @@ class SettingsController(BaseController):
         """Process reporthtml command"""
         obbff.OPEN_REPORT_AS_HTML = not obbff.OPEN_REPORT_AS_HTML
         set_key(
-            self.ENV_FILE, "OPENBB_OPEN_REPORT_AS_HTML", str(obbff.OPEN_REPORT_AS_HTML)
+            ENV_FILE, "OPENBB_OPEN_REPORT_AS_HTML", str(obbff.OPEN_REPORT_AS_HTML)
         )
         console.print("")
 
@@ -216,7 +216,7 @@ class SettingsController(BaseController):
         """Process exithelp command"""
         obbff.ENABLE_EXIT_AUTO_HELP = not obbff.ENABLE_EXIT_AUTO_HELP
         set_key(
-            self.ENV_FILE,
+            ENV_FILE,
             "OPENBB_ENABLE_EXIT_AUTO_HELP",
             str(obbff.ENABLE_EXIT_AUTO_HELP),
         )
@@ -226,42 +226,42 @@ class SettingsController(BaseController):
     def call_rcontext(self, _):
         """Process rcontext command"""
         obbff.REMEMBER_CONTEXTS = not obbff.REMEMBER_CONTEXTS
-        set_key(self.ENV_FILE, "OPENBB_REMEMBER_CONTEXTS", str(obbff.REMEMBER_CONTEXTS))
+        set_key(ENV_FILE, "OPENBB_REMEMBER_CONTEXTS", str(obbff.REMEMBER_CONTEXTS))
         console.print("")
 
     @log_start_end(log=logger)
     def call_dt(self, _):
         """Process dt command"""
         obbff.USE_DATETIME = not obbff.USE_DATETIME
-        set_key(self.ENV_FILE, "OPENBB_USE_DATETIME", str(obbff.USE_DATETIME))
+        set_key(ENV_FILE, "OPENBB_USE_DATETIME", str(obbff.USE_DATETIME))
         console.print("")
 
     @log_start_end(log=logger)
     def call_rich(self, _):
         """Process rich command"""
         obbff.ENABLE_RICH = not obbff.ENABLE_RICH
-        set_key(self.ENV_FILE, "OPENBB_ENABLE_RICH", str(obbff.ENABLE_RICH))
+        set_key(ENV_FILE, "OPENBB_ENABLE_RICH", str(obbff.ENABLE_RICH))
         console.print("")
 
     @log_start_end(log=logger)
     def call_richpanel(self, _):
         """Process richpanel command"""
         obbff.ENABLE_RICH_PANEL = not obbff.ENABLE_RICH_PANEL
-        set_key(self.ENV_FILE, "OPENBB_ENABLE_RICH_PANEL", str(obbff.ENABLE_RICH_PANEL))
+        set_key(ENV_FILE, "OPENBB_ENABLE_RICH_PANEL", str(obbff.ENABLE_RICH_PANEL))
         console.print("")
 
     @log_start_end(log=logger)
     def call_ion(self, _):
         """Process ion command"""
         obbff.USE_ION = not obbff.USE_ION
-        set_key(self.ENV_FILE, "OPENBB_USE_ION", str(obbff.USE_ION))
+        set_key(ENV_FILE, "OPENBB_USE_ION", str(obbff.USE_ION))
         console.print("")
 
     @log_start_end(log=logger)
     def call_watermark(self, _):
         """Process watermark command"""
         obbff.USE_WATERMARK = not obbff.USE_WATERMARK
-        set_key(self.ENV_FILE, "OPENBB_USE_WATERMARK", str(obbff.USE_WATERMARK))
+        set_key(ENV_FILE, "OPENBB_USE_WATERMARK", str(obbff.USE_WATERMARK))
         console.print("")
 
     @log_start_end(log=logger)
@@ -269,7 +269,7 @@ class SettingsController(BaseController):
         """Process cmdloc command"""
         obbff.USE_CMD_LOCATION_FIGURE = not obbff.USE_CMD_LOCATION_FIGURE
         set_key(
-            self.ENV_FILE,
+            ENV_FILE,
             "OPENBB_USE_CMD_LOCATION_FIGURE",
             str(obbff.USE_CMD_LOCATION_FIGURE),
         )
@@ -280,7 +280,7 @@ class SettingsController(BaseController):
         """Process autoscaling command"""
         obbff.USE_PLOT_AUTOSCALING = not obbff.USE_PLOT_AUTOSCALING
         set_key(
-            self.ENV_FILE,
+            ENV_FILE,
             "OPENBB_USE_PLOT_AUTOSCALING",
             str(obbff.USE_PLOT_AUTOSCALING),
         )
@@ -306,7 +306,7 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            set_key(self.ENV_FILE, "OPENBB_PLOT_DPI", str(ns_parser.value))
+            set_key(ENV_FILE, "OPENBB_PLOT_DPI", str(ns_parser.value))
             cfg_plot.PLOT_DPI = ns_parser.value
             console.print("")
 
@@ -330,7 +330,7 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            set_key(self.ENV_FILE, "OPENBB_PLOT_HEIGHT", str(ns_parser.value))
+            set_key(ENV_FILE, "OPENBB_PLOT_HEIGHT", str(ns_parser.value))
             cfg_plot.PLOT_HEIGHT = ns_parser.value
             console.print("")
 
@@ -354,7 +354,7 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            set_key(self.ENV_FILE, "OPENBB_PLOT_WIDTH", str(ns_parser.value))
+            set_key(ENV_FILE, "OPENBB_PLOT_WIDTH", str(ns_parser.value))
             cfg_plot.PLOT_WIDTH = ns_parser.value
             console.print("")
 
@@ -379,7 +379,7 @@ class SettingsController(BaseController):
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             set_key(
-                self.ENV_FILE, "OPENBB_PLOT_HEIGHT_PERCENTAGE", str(ns_parser.value)
+                ENV_FILE, "OPENBB_PLOT_HEIGHT_PERCENTAGE", str(ns_parser.value)
             )
             cfg_plot.PLOT_HEIGHT_PERCENTAGE = ns_parser.value
             console.print("")
@@ -404,7 +404,7 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            set_key(self.ENV_FILE, "OPENBB_PLOT_WIDTH_PERCENTAGE", str(ns_parser.value))
+            set_key(ENV_FILE, "OPENBB_PLOT_WIDTH_PERCENTAGE", str(ns_parser.value))
             cfg_plot.PLOT_WIDTH_PERCENTAGE = ns_parser.value
             console.print("")
 
@@ -428,7 +428,7 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            set_key(self.ENV_FILE, "OPENBB_MONITOR", str(ns_parser.value))
+            set_key(ENV_FILE, "OPENBB_MONITOR", str(ns_parser.value))
             cfg_plot.MONITOR = ns_parser.value
             console.print("")
 
@@ -452,7 +452,7 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            set_key(self.ENV_FILE, "OPENBB_BACKEND", str(ns_parser.value))
+            set_key(ENV_FILE, "OPENBB_BACKEND", str(ns_parser.value))
             if ns_parser.value == "None":
                 cfg_plot.BACKEND = None  # type: ignore
             else:
