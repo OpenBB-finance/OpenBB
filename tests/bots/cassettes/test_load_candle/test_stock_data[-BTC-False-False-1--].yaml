@@ -1,0 +1,134 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      X-MBX-APIKEY:
+      - '1'
+    method: GET
+    uri: https://api.binance.com/api/v3/ping
+  response:
+    body:
+      string: '{}'
+    headers:
+      Access-Control-Allow-Methods:
+      - GET, HEAD, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-cache, no-store, must-revalidate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '2'
+      Content-Security-Policy:
+      - default-src 'self'
+      Content-Type:
+      - application/json;charset=UTF-8
+      Date:
+      - Fri, 01 Apr 2022 20:16:06 GMT
+      Expires:
+      - '0'
+      Pragma:
+      - no-cache
+      Server:
+      - nginx
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains
+      Via:
+      - 1.1 17b1e7486c33e7b87db3badc162ff13a.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id:
+      - hTuWhrhI00lR9yZSNn03qpXbrfk7-iCDAl0b2Lg0MeagvMAZea5QvA==
+      X-Amz-Cf-Pop:
+      - ORD51-C4
+      X-Cache:
+      - Miss from cloudfront
+      X-Content-Security-Policy:
+      - default-src 'self'
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-WebKit-CSP:
+      - default-src 'self'
+      X-Xss-Protection:
+      - 1; mode=block
+      x-mbx-used-weight:
+      - '1'
+      x-mbx-used-weight-1m:
+      - '1'
+      x-mbx-uuid:
+      - f2f5b93b-db6a-4e7d-89cb-97994e68f160
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      X-MBX-APIKEY:
+      - '1'
+    method: GET
+    uri: https://api.binance.com/api/v3/klines?interval=1m&symbol=-BTC
+  response:
+    body:
+      string: '{"code":-1121,"msg":"Invalid symbol."}'
+    headers:
+      Cache-Control:
+      - no-cache, no-store, must-revalidate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '38'
+      Content-Security-Policy:
+      - default-src 'self'
+      Content-Type:
+      - application/json;charset=UTF-8
+      Date:
+      - Fri, 01 Apr 2022 20:16:06 GMT
+      Expires:
+      - '0'
+      Pragma:
+      - no-cache
+      Server:
+      - nginx
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains
+      Via:
+      - 1.1 17b1e7486c33e7b87db3badc162ff13a.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id:
+      - OmHvx8262b0ra-PXnX65Myn7O78PnkWIGPb3P06GMNszjsOSdfb8pg==
+      X-Amz-Cf-Pop:
+      - ORD51-C4
+      X-Cache:
+      - Error from cloudfront
+      X-Content-Security-Policy:
+      - default-src 'self'
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-WebKit-CSP:
+      - default-src 'self'
+      X-Xss-Protection:
+      - 1; mode=block
+      x-mbx-used-weight:
+      - '2'
+      x-mbx-used-weight-1m:
+      - '2'
+      x-mbx-uuid:
+      - 00fd200d-5369-47fb-a768-c41e24fb8f8c
+    status:
+      code: 400
+      message: Bad Request
+version: 1

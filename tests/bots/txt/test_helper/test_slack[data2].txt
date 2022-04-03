@@ -1,0 +1,5 @@
+()
+{}
+channel <class 'str'>
+username <class 'str'>
+text <class 'str'>
