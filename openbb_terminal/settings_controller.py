@@ -165,9 +165,7 @@ class SettingsController(BaseController):
     def call_cls(self, _):
         """Process cls command"""
         obbff.USE_CLEAR_AFTER_CMD = not obbff.USE_CLEAR_AFTER_CMD
-        set_key(
-            ENV_FILE, "OPENBB_USE_CLEAR_AFTER_CMD", str(obbff.USE_CLEAR_AFTER_CMD)
-        )
+        set_key(ENV_FILE, "OPENBB_USE_CLEAR_AFTER_CMD", str(obbff.USE_CLEAR_AFTER_CMD))
         console.print("")
 
     @log_start_end(log=logger)
@@ -181,9 +179,7 @@ class SettingsController(BaseController):
     def call_promptkit(self, _):
         """Process promptkit command"""
         obbff.USE_PROMPT_TOOLKIT = not obbff.USE_PROMPT_TOOLKIT
-        set_key(
-            ENV_FILE, "OPENBB_USE_PROMPT_TOOLKIT", str(obbff.USE_PROMPT_TOOLKIT)
-        )
+        set_key(ENV_FILE, "OPENBB_USE_PROMPT_TOOLKIT", str(obbff.USE_PROMPT_TOOLKIT))
         console.print("")
 
     @log_start_end(log=logger)
@@ -197,18 +193,14 @@ class SettingsController(BaseController):
     def call_thoughts(self, _):
         """Process thoughts command"""
         obbff.ENABLE_THOUGHTS_DAY = not obbff.ENABLE_THOUGHTS_DAY
-        set_key(
-            ENV_FILE, "OPENBB_ENABLE_THOUGHTS_DAY", str(obbff.ENABLE_THOUGHTS_DAY)
-        )
+        set_key(ENV_FILE, "OPENBB_ENABLE_THOUGHTS_DAY", str(obbff.ENABLE_THOUGHTS_DAY))
         console.print("")
 
     @log_start_end(log=logger)
     def call_reporthtml(self, _):
         """Process reporthtml command"""
         obbff.OPEN_REPORT_AS_HTML = not obbff.OPEN_REPORT_AS_HTML
-        set_key(
-            ENV_FILE, "OPENBB_OPEN_REPORT_AS_HTML", str(obbff.OPEN_REPORT_AS_HTML)
-        )
+        set_key(ENV_FILE, "OPENBB_OPEN_REPORT_AS_HTML", str(obbff.OPEN_REPORT_AS_HTML))
         console.print("")
 
     @log_start_end(log=logger)
@@ -378,9 +370,7 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            set_key(
-                ENV_FILE, "OPENBB_PLOT_HEIGHT_PERCENTAGE", str(ns_parser.value)
-            )
+            set_key(ENV_FILE, "OPENBB_PLOT_HEIGHT_PERCENTAGE", str(ns_parser.value))
             cfg_plot.PLOT_HEIGHT_PERCENTAGE = ns_parser.value
             console.print("")
 
