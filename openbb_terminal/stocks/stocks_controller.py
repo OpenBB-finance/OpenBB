@@ -7,6 +7,7 @@ import os
 from datetime import datetime, timedelta
 from typing import List
 
+import financedatabase
 import yfinance as yf
 from prompt_toolkit.completion import NestedCompleter
 
@@ -65,12 +66,30 @@ class StocksController(StockBaseController):
     PATH = "/stocks/"
     FILE_PATH = os.path.join(os.path.dirname(__file__), "README.md")
 
+    country = financedatabase.show_options("equities", "countries")
+    sector = financedatabase.show_options("equities", "sectors")
+    industry = financedatabase.show_options("equities", "industries")
+
     def __init__(self, queue: List[str] = None):
         """Constructor"""
         super().__init__(queue)
 
         if session and obbff.USE_PROMPT_TOOLKIT:
+
             choices: dict = {c: {} for c in self.controller_choices}
+
+            choices["search"]["--country"] = {c: None for c in self.country}
+            choices["search"]["-c"] = {c: None for c in self.country}
+            choices["search"]["--sector"] = {c: None for c in self.sector}
+            choices["search"]["-s"] = {c: None for c in self.sector}
+            choices["search"]["--industry"] = {c: None for c in self.industry}
+            choices["search"]["-i"] = {c: None for c in self.industry}
+            choices["search"]["--exchange"] = {
+                c: None for c in stocks_helper.market_coverage_suffix
+            }
+            choices["search"]["-e"] = {
+                c: None for c in stocks_helper.market_coverage_suffix
+            }
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
@@ -139,22 +158,64 @@ Stock: [/param]{stock_text}
             action="store",
             dest="query",
             type=str.lower,
-            required="-h" not in other_args,
+            default="",
             help="The search term used to find company tickers.",
         )
         parser.add_argument(
-            "-a",
-            "--amount",
-            default=10,
+            "-l",
+            "--limit",
+            default=0,
             type=int,
-            dest="amount",
+            dest="limit",
             help="Enter the number of Equities you wish to see in the table window.",
+        )
+        parser.add_argument(
+            "-c",
+            "--country",
+            default="",
+            choices=self.country,
+            dest="country",
+            help="Search by country to find stocks matching the criteria.",
+        )
+        parser.add_argument(
+            "-s",
+            "--sector",
+            default="",
+            choices=self.sector,
+            dest="sector",
+            help="Search by sector to find stocks matching the criteria.",
+        )
+        parser.add_argument(
+            "-i",
+            "--industry",
+            default="",
+            choices=self.industry,
+            dest="industry",
+            help="Search by industry to find stocks matching the criteria.",
+        )
+        parser.add_argument(
+            "-e",
+            "--exchange",
+            default="",
+            choices=list(stocks_helper.market_coverage_suffix.keys()),
+            dest="exchange_country",
+            help="Search by a specific exchange country to find stocks matching the criteria.",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-q")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
         if ns_parser:
-            stocks_helper.search(query=ns_parser.query, amount=ns_parser.amount)
+            stocks_helper.search(
+                query=ns_parser.query,
+                country=ns_parser.country,
+                sector=ns_parser.sector,
+                industry=ns_parser.industry,
+                exchange_country=ns_parser.exchange_country,
+                limit=ns_parser.limit,
+                export=ns_parser.export,
+            )
 
     @log_start_end(log=logger)
     def call_quote(self, other_args: List[str]):
