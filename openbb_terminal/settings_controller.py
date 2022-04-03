@@ -28,6 +28,7 @@ logger = logging.getLogger(__name__)
 if ENV_FILE.is_file():
     load_dotenv(ENV_FILE)
 
+
 class SettingsController(BaseController):
     """Settings Controller class"""
 
@@ -150,18 +151,14 @@ class SettingsController(BaseController):
     def call_logcollection(self, _):
         """Process logcollection command"""
         obbff.LOG_COLLECTION = not obbff.LOG_COLLECTION
-        set_key(
-            self.ENV_FILE, "OPENBB_LOG_COLLECTION", str(obbff.LOG_COLLECTION)
-        )
+        set_key(self.ENV_FILE, "OPENBB_LOG_COLLECTION", str(obbff.LOG_COLLECTION))
         console.print("")
 
     @log_start_end(log=logger)
     def call_tab(self, _):
         """Process tab command"""
         obbff.USE_TABULATE_DF = not obbff.USE_TABULATE_DF
-        set_key(
-            self.ENV_FILE, "OPENBB_USE_TABULATE_DF", str(obbff.USE_TABULATE_DF)
-        )
+        set_key(self.ENV_FILE, "OPENBB_USE_TABULATE_DF", str(obbff.USE_TABULATE_DF))
         console.print("")
 
     @log_start_end(log=logger)
@@ -193,9 +190,7 @@ class SettingsController(BaseController):
     def call_predict(self, _):
         """Process predict command"""
         obbff.ENABLE_PREDICT = not obbff.ENABLE_PREDICT
-        set_key(
-            self.ENV_FILE, "OPENBB_ENABLE_PREDICT", str(obbff.ENABLE_PREDICT)
-        )
+        set_key(self.ENV_FILE, "OPENBB_ENABLE_PREDICT", str(obbff.ENABLE_PREDICT))
         console.print("")
 
     @log_start_end(log=logger)
@@ -231,9 +226,7 @@ class SettingsController(BaseController):
     def call_rcontext(self, _):
         """Process rcontext command"""
         obbff.REMEMBER_CONTEXTS = not obbff.REMEMBER_CONTEXTS
-        set_key(
-            self.ENV_FILE, "OPENBB_REMEMBER_CONTEXTS", str(obbff.REMEMBER_CONTEXTS)
-        )
+        set_key(self.ENV_FILE, "OPENBB_REMEMBER_CONTEXTS", str(obbff.REMEMBER_CONTEXTS))
         console.print("")
 
     @log_start_end(log=logger)
@@ -254,9 +247,7 @@ class SettingsController(BaseController):
     def call_richpanel(self, _):
         """Process richpanel command"""
         obbff.ENABLE_RICH_PANEL = not obbff.ENABLE_RICH_PANEL
-        set_key(
-            self.ENV_FILE, "OPENBB_ENABLE_RICH_PANEL", str(obbff.ENABLE_RICH_PANEL)
-        )
+        set_key(self.ENV_FILE, "OPENBB_ENABLE_RICH_PANEL", str(obbff.ENABLE_RICH_PANEL))
         console.print("")
 
     @log_start_end(log=logger)
@@ -413,9 +404,7 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            set_key(
-                self.ENV_FILE, "OPENBB_PLOT_WIDTH_PERCENTAGE", str(ns_parser.value)
-            )
+            set_key(self.ENV_FILE, "OPENBB_PLOT_WIDTH_PERCENTAGE", str(ns_parser.value))
             cfg_plot.PLOT_WIDTH_PERCENTAGE = ns_parser.value
             console.print("")
 
