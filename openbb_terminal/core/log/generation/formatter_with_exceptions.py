@@ -6,7 +6,7 @@ import re
 # IMPORTATION THIRDPARTY
 
 # IMPORTATION INTERNAL
-from openbb_terminal.log.generation.settings import AppSettings
+from openbb_terminal.core.log.generation.settings import AppSettings
 
 
 class FormatterWithExceptions(logging.Formatter):
@@ -52,6 +52,7 @@ class FormatterWithExceptions(logging.Formatter):
 
         parent_terminal_folder = os.path.abspath(".").split("/")[-1]
 
+        print(parent_terminal_folder)
         for word in text.split():
 
             if (
@@ -62,18 +63,18 @@ class FormatterWithExceptions(logging.Formatter):
                 s_list.append("suspected_ip")
             elif "@" in word and "." in word:
                 s_list.append("suspected_email")
-            elif f"{parent_terminal_folder}{os.sep}" in word:
-                s_list.append(
-                    word.split(f"{parent_terminal_folder}{os.sep}")[1]
-                    .replace('"', "")
-                    .replace("'", "")
-                )
-            elif os.sep in word and os.sep != word:
-                s_list.append(
-                    (f"cut{os.sep}file{os.sep}path{os.sep}" + word.split(os.sep)[-1])
-                    .replace('"', "")
-                    .replace("'", "")
-                )
+            # elif f"{parent_terminal_folder}{os.sep}" in word:
+            #     s_list.append(
+            #         word.split(f"{parent_terminal_folder}{os.sep}")[1]
+            #         .replace('"', "")
+            #         .replace("'", "")
+            #     )
+            # elif os.sep in word and os.sep != word:
+            #     s_list.append(
+            #         (f"cut{os.sep}file{os.sep}path{os.sep}" + word.split(os.sep)[-1])
+            #         .replace('"', "")
+            #         .replace("'", "")
+            #     )
             else:
                 s_list.append(word)
 
