@@ -6,6 +6,7 @@ import re
 # IMPORTATION THIRDPARTY
 
 # IMPORTATION INTERNAL
+from openbb_terminal.core.config.constants import REPO_DIR
 from openbb_terminal.core.log.generation.settings import AppSettings
 
 
@@ -50,31 +51,24 @@ class FormatterWithExceptions(logging.Formatter):
         s_list = []
         ip_reg = re.compile(ip_regex)
 
-        parent_terminal_folder = os.path.abspath(".").split("/")[-1]
-
-        print(parent_terminal_folder)
         for word in text.split():
 
-            if (
-                ip_reg.search(word)
-                # and int(max(word.split("."))) < 256
-                # and int(min(word.split("."))) >= 0
-            ):
+            if ip_reg.search(word):
                 s_list.append("suspected_ip")
             elif "@" in word and "." in word:
                 s_list.append("suspected_email")
-            # elif f"{parent_terminal_folder}{os.sep}" in word:
-            #     s_list.append(
-            #         word.split(f"{parent_terminal_folder}{os.sep}")[1]
-            #         .replace('"', "")
-            #         .replace("'", "")
-            #     )
-            # elif os.sep in word and os.sep != word:
-            #     s_list.append(
-            #         (f"cut{os.sep}file{os.sep}path{os.sep}" + word.split(os.sep)[-1])
-            #         .replace('"', "")
-            #         .replace("'", "")
-            #     )
+            elif f"{REPO_DIR.name}{os.sep}" in word:
+                s_list.append(
+                    word.split(f"{REPO_DIR.name}{os.sep}")[1]
+                    .replace('"', "")
+                    .replace("'", "")
+                )
+            elif os.sep in word and os.sep != word:
+                s_list.append(
+                    (f"cut{os.sep}file{os.sep}path{os.sep}" + word.split(os.sep)[-1])
+                    .replace('"', "")
+                    .replace("'", "")
+                )
             else:
                 s_list.append(word)
 
@@ -111,7 +105,7 @@ class FormatterWithExceptions(logging.Formatter):
                 + cls.filter_piis(text=second_message)
             )
         elif "CMD: {" not in text and "QUEUE: {" not in text:
-            cls.filter_piis(text=text)
+            text = cls.filter_piis(text=text)
 
         return text
 
