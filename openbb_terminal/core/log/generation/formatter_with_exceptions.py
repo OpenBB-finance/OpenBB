@@ -6,7 +6,8 @@ import re
 # IMPORTATION THIRDPARTY
 
 # IMPORTATION INTERNAL
-from openbb_terminal.log.generation.settings import AppSettings
+from openbb_terminal.core.config.constants import REPO_DIR
+from openbb_terminal.core.log.generation.settings import AppSettings
 
 
 class FormatterWithExceptions(logging.Formatter):
@@ -49,22 +50,16 @@ class FormatterWithExceptions(logging.Formatter):
         ip_regex = r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"
         s_list = []
         ip_reg = re.compile(ip_regex)
+
         for word in text.split():
 
-            if (
-                ip_reg.search(word)
-                # and int(max(word.split("."))) < 256
-                # and int(min(word.split("."))) >= 0
-            ):
+            if ip_reg.search(word):
                 s_list.append("suspected_ip")
             elif "@" in word and "." in word:
                 s_list.append("suspected_email")
-            elif (
-                f"OpenBBTerminal{os.sep}" in word
-                or f"GamestonkTerminal{os.sep}" in word
-            ):
+            elif f"{REPO_DIR.name}{os.sep}" in word:
                 s_list.append(
-                    word.split(f"OpenBBTerminal{os.sep}")[1]
+                    word.split(f"{REPO_DIR.name}{os.sep}")[1]
                     .replace('"', "")
                     .replace("'", "")
                 )
@@ -110,7 +105,7 @@ class FormatterWithExceptions(logging.Formatter):
                 + cls.filter_piis(text=second_message)
             )
         elif "CMD: {" not in text and "QUEUE: {" not in text:
-            cls.filter_piis(text=text)
+            text = cls.filter_piis(text=text)
 
         return text
 
