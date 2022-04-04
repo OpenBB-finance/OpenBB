@@ -23,19 +23,19 @@ from detecta import detect_cusum
 from statsmodels.graphics.gofplots import qqplot
 from pandas.plotting import register_matplotlib_converters
 
-from openbb_terminal.config_terminal import theme
-from openbb_terminal.common.quantitative_analysis import qa_model
-from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_classes import LineAnnotateDrawer
-from openbb_terminal.helper_funcs import (
+from gamestonk_terminal.config_terminal import theme
+from gamestonk_terminal.common.quantitative_analysis import qa_model
+from gamestonk_terminal.config_plot import PLOT_DPI
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_classes import LineAnnotateDrawer
+from gamestonk_terminal.helper_funcs import (
     export_data,
     plot_autoscale,
     print_rich_table,
     reindex_dates,
     lambda_long_number_format,
 )
-from openbb_terminal.rich_config import console
+from gamestonk_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 

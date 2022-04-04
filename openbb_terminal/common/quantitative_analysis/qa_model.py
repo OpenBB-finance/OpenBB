@@ -12,7 +12,7 @@ from statsmodels.tsa.stattools import adfuller, kpss
 from scipy import stats
 import numpy as np
 
-from openbb_terminal.decorators import log_start_end
+from gamestonk_terminal.decorators import log_start_end
 
 # TODO : Since these are common/ they should be independent of 'stock' info.
 # df_stock should be replaced with a generic df and a column variable

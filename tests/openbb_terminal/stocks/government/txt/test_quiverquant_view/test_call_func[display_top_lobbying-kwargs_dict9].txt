@@ -1,5 +1,0 @@
-        Amount
-Ticker        
-NVEC     5.485
-T        1.850
-

@@ -11,9 +11,15 @@ from typing import Dict, List, Union
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 
+<<<<<<< HEAD:openbb_terminal/portfolio/portfolio_controller.py
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
+=======
+from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.decorators import log_start_end
+from gamestonk_terminal.helper_funcs import (
+>>>>>>> a0d5e9c4c (Revert "Renaming to OpenBB"):gamestonk_terminal/portfolio/portfolio_controller.py
     EXPORT_ONLY_FIGURES_ALLOWED,
     check_positive,
     check_positive_float,
@@ -21,11 +27,11 @@ from openbb_terminal.helper_funcs import (
     print_rich_table,
     valid_date,
 )
-from openbb_terminal.menu import session
-from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.portfolio import portfolio_model, portfolio_view
-from openbb_terminal.portfolio.portfolio_optimization import po_controller
-from openbb_terminal.rich_config import console
+from gamestonk_terminal.menu import session
+from gamestonk_terminal.parent_classes import BaseController
+from gamestonk_terminal.portfolio import portfolio_model, portfolio_view
+from gamestonk_terminal.portfolio.portfolio_optimization import po_controller
+from gamestonk_terminal.rich_config import console
 
 # pylint: disable=R1710,E1101,C0415,W0212
 
@@ -131,7 +137,7 @@ Loaded:[/info] {self.portfolio_name or None}
     @log_start_end(log=logger)
     def call_bro(self, _):
         """Process bro command"""
-        from openbb_terminal.portfolio.brokers.bro_controller import (
+        from gamestonk_terminal.portfolio.brokers.bro_controller import (
             BrokersController,
         )
 
@@ -158,7 +164,7 @@ Loaded:[/info] {self.portfolio_name or None}
     # TODO: This submenu is disabled until the bug is fixed.
     # def call_pa(self, _):
     #     """Process pa command"""
-    #     from openbb_terminal.portfolio.portfolio_analysis import pa_controller
+    #     from gamestonk_terminal.portfolio.portfolio_analysis import pa_controller
     #
     #     self.queue = self.queue = self.load_class(
     #         pa_controller.PortfolioAnalysisController, self.queue
@@ -493,7 +499,7 @@ Loaded:[/info] {self.portfolio_name or None}
             if ns_parser.adjusted and ns_parser.student_t:
                 console.print("Select the adjusted or the student_t parameter.\n")
             else:
-                from openbb_terminal.common.quantitative_analysis import qa_view
+                from gamestonk_terminal.common.quantitative_analysis import qa_view
 
                 self.portfolio.generate_holdings_from_trades()
                 qa_view.display_var(
@@ -548,7 +554,7 @@ Loaded:[/info] {self.portfolio_name or None}
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            from openbb_terminal.common.quantitative_analysis import qa_view
+            from gamestonk_terminal.common.quantitative_analysis import qa_view
 
             if self.portfolio.empty:
                 console.print("[red]No portfolio loaded.[/red]\n")
@@ -594,7 +600,7 @@ Loaded:[/info] {self.portfolio_name or None}
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            from openbb_terminal.common.quantitative_analysis import qa_view
+            from gamestonk_terminal.common.quantitative_analysis import qa_view
 
             if self.portfolio.empty:
                 console.print("[red]No portfolio loaded.[/red]\n")
@@ -643,7 +649,7 @@ Loaded:[/info] {self.portfolio_name or None}
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            from openbb_terminal.common.quantitative_analysis import qa_view
+            from gamestonk_terminal.common.quantitative_analysis import qa_view
 
             if self.portfolio.empty:
                 console.print("[red]No portfolio loaded.[/red]\n")
@@ -690,7 +696,7 @@ Loaded:[/info] {self.portfolio_name or None}
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            from openbb_terminal.common.quantitative_analysis import qa_view
+            from gamestonk_terminal.common.quantitative_analysis import qa_view
 
             if self.portfolio.empty:
                 console.print("[red]No portfolio loaded.[/red]\n")
