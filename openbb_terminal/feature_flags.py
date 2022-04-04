@@ -1,134 +1,88 @@
+# IMPORTATION STANDARD
 import os
 import json
 from distutils.util import strtobool
-from typing import Union, Optional
 
+# IMPORTATION THIRDPARTY
 from dotenv import load_dotenv
 
-OPENBB_defaults_path = os.path.join(os.path.dirname(__file__), "OPENBB_DEFAULTS.json")
-if os.path.exists(OPENBB_defaults_path):
-    with open(OPENBB_defaults_path) as f:
-        OPENBB_DEFAULTS = json.load(f)
-else:
-    OPENBB_DEFAULTS = dict()
+# IMPORTATION INTERNAL
+from openbb_terminal.core.config.constants import DEFAULT_FILE, ENV_FILE
 
-env_files = [f for f in os.listdir() if f.endswith(".env")]
-if env_files:
-    load_dotenv(env_files[0])
+if DEFAULT_FILE.is_file():
+    with open(DEFAULT_FILE) as f:
+        default_dict = json.load(f)
 
+    for key, value in default_dict.items():
+        os.environ[key] = value
 
-def assign_feature_flag(
-    feature_flag: str, fallback_value: str, return_bool: bool = False
-) -> Optional[Union[str, bool]]:
-    """Get the feature flag value in order of priority.
-
-    - Env variables have the highest priority
-    - The OPENBB_DEFAULTS dictionary has the defaults for the bundled app
-    - Fallback value is used if none of the above mentioned places have feature flag settings
-
-    Parameters
-    ----------
-    feature_flag : str
-        Feature flag as upper-case string
-    fallback_value : str
-        Fallback vabue
-    return_bool : bool, optional
-        If a boolean should be returned vs a string, by default False
-
-    Returns
-    -------
-    Optional[Union[str, bool]]
-        The feature flag value or None
-    """
-    if bool(os.getenv(feature_flag)):
-        feature_flag_value = (
-            strtobool(os.getenv(feature_flag))  # type: ignore
-            if return_bool
-            else os.getenv(feature_flag)
-        )
-    elif feature_flag in OPENBB_DEFAULTS:
-        feature_flag_value = (
-            strtobool(OPENBB_DEFAULTS[feature_flag])
-            if return_bool
-            else OPENBB_DEFAULTS[feature_flag]
-        )
-    else:
-        feature_flag_value = (
-            strtobool(fallback_value) if return_bool else fallback_value
-        )
-    return feature_flag_value
-
+if ENV_FILE.is_file():
+    load_dotenv(ENV_FILE)
 
 # Use tabulate to print dataframes
-USE_TABULATE_DF = assign_feature_flag("OPENBB_USE_TABULATE_DF", "True", True)
+USE_TABULATE_DF = strtobool(os.getenv("OPENBB_USE_TABULATE_DF", "True"))
 
 # Use clear console after each command
-USE_CLEAR_AFTER_CMD = assign_feature_flag("OPENBB_USE_CLEAR_AFTER_CMD", "False", True)
+USE_CLEAR_AFTER_CMD = strtobool(os.getenv("OPENBB_USE_CLEAR_AFTER_CMD", "False"))
 
 # Use coloring features
-USE_COLOR = assign_feature_flag("OPENBB_USE_COLOR", "True", True)
+USE_COLOR = strtobool(os.getenv("OPENBB_USE_COLOR", "True"))
 
 # Select console flair (choose from config_terminal.py list)
-USE_FLAIR = assign_feature_flag("OPENBB_USE_FLAIR", ":openbb")
+USE_FLAIR = str(os.getenv("OPENBB_USE_FLAIR", ":openbb"))
 
 # Add date and time to command line
-USE_DATETIME = assign_feature_flag("OPENBB_USE_DATETIME", "True", True)
+USE_DATETIME = strtobool(os.getenv("OPENBB_USE_DATETIME", "True"))
 
 # Enable interactive matplotlib mode
-USE_ION = assign_feature_flag("OPENBB_USE_ION", "True", True)
+USE_ION = strtobool(os.getenv("OPENBB_USE_ION", "True"))
 
 # Enable watermark in the figures
-USE_WATERMARK = assign_feature_flag("OPENBB_USE_WATERMARK", "True", True)
+USE_WATERMARK = strtobool(os.getenv("OPENBB_USE_WATERMARK", "True"))
 
 # Enable command and source in the figures
-USE_CMD_LOCATION_FIGURE = assign_feature_flag(
-    "OPENBB_USE_CMD_LOCATION_FIGURE", "True", True
-)
+USE_CMD_LOCATION_FIGURE = strtobool(os.getenv("OPENBB_USE_CMD_LOCATION_FIGURE", "True"))
 
 # Enable Prompt Toolkit
-USE_PROMPT_TOOLKIT = assign_feature_flag("OPENBB_USE_PROMPT_TOOLKIT", "True", True)
+USE_PROMPT_TOOLKIT = strtobool(os.getenv("OPENBB_USE_PROMPT_TOOLKIT", "True"))
 
 # Enable Prediction features
-ENABLE_PREDICT = assign_feature_flag("OPENBB_ENABLE_PREDICT", "True", True)
+ENABLE_PREDICT = strtobool(os.getenv("OPENBB_ENABLE_PREDICT", "True"))
 
 # Enable plot autoscaling
-USE_PLOT_AUTOSCALING = assign_feature_flag("OPENBB_USE_PLOT_AUTOSCALING", "False", True)
+USE_PLOT_AUTOSCALING = strtobool(os.getenv("OPENBB_USE_PLOT_AUTOSCALING", "False"))
 
 # Enable thoughts of the day
-ENABLE_THOUGHTS_DAY = assign_feature_flag("OPENBB_ENABLE_THOUGHTS_DAY", "False", True)
+ENABLE_THOUGHTS_DAY = strtobool(os.getenv("OPENBB_ENABLE_THOUGHTS_DAY", "False"))
 
 # Quick exit for testing
-ENABLE_QUICK_EXIT = assign_feature_flag("OPENBB_ENABLE_QUICK_EXIT", "False", True)
+ENABLE_QUICK_EXIT = strtobool(os.getenv("OPENBB_ENABLE_QUICK_EXIT", "False"))
 
 # Open report as HTML, otherwise notebook
-OPEN_REPORT_AS_HTML = assign_feature_flag("OPENBB_OPEN_REPORT_AS_HTML", "True", True)
+OPEN_REPORT_AS_HTML = strtobool(os.getenv("OPENBB_OPEN_REPORT_AS_HTML", "True"))
 
 # Enable auto print_help when exiting menus
-ENABLE_EXIT_AUTO_HELP = assign_feature_flag(
-    "OPENBB_ENABLE_EXIT_AUTO_HELP", "False", True
-)
+ENABLE_EXIT_AUTO_HELP = strtobool(os.getenv("OPENBB_ENABLE_EXIT_AUTO_HELP", "False"))
 
 # Remember contexts during session
-REMEMBER_CONTEXTS = assign_feature_flag("OPENBB_REMEMBER_CONTEXTS", "True", True)
+REMEMBER_CONTEXTS = strtobool(os.getenv("OPENBB_REMEMBER_CONTEXTS", "True"))
 
 # Use the colorful rich terminal
-ENABLE_RICH = assign_feature_flag("OPENBB_ENABLE_RICH", "True", True)
+ENABLE_RICH = strtobool(os.getenv("OPENBB_ENABLE_RICH", "True"))
 
 # Use the colorful rich terminal
-ENABLE_RICH_PANEL = assign_feature_flag("OPENBB_ENABLE_RICH_PANEL", "True", True)
+ENABLE_RICH_PANEL = strtobool(os.getenv("OPENBB_ENABLE_RICH_PANEL", "True"))
 
 # Check API KEYS before running a command
-ENABLE_CHECK_API = assign_feature_flag("OPENBB_ENABLE_CHECK_API", "True", True)
+ENABLE_CHECK_API = strtobool(os.getenv("OPENBB_ENABLE_CHECK_API", "True"))
 
 # Send logs to data lake
-LOG_COLLECTION = bool(assign_feature_flag("OPENBB_LOG_COLLECTION", "True", True))
+LOG_COLLECTION = strtobool(os.getenv("OPENBB_LOG_COLLECTION", "True"))
 
 # Provide export folder path. If empty that means default.
-EXPORT_FOLDER_PATH = assign_feature_flag("OPENBB_EXPORT_FOLDER_PATH", "")
+EXPORT_FOLDER_PATH = str(os.getenv("OPENBB_EXPORT_FOLDER_PATH", ""))
 
 # Set a flag if the application is running from a packaged bundle
-PACKAGED_APPLICATION = assign_feature_flag("OPENBB_PACKAGED_APPLICATION", "False", True)
+PACKAGED_APPLICATION = strtobool(os.getenv("OPENBB_PACKAGED_APPLICATION", "False"))
 
-LOGGING_COMMIT_HASH = str(
-    assign_feature_flag("OPENBB_LOGGING_COMMIT_HASH", "REPLACE_ME")
-)
+LOGGING_COMMIT_HASH = str(os.getenv("OPENBB_LOGGING_COMMIT_HASH", "REPLACE_ME"))

@@ -1,0 +1,74 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://stocksera.pythonanywhere.com/api/borrowed_shares/TSLA
+  response:
+    body:
+      string: ''
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      Content-Type:
+      - text/html; charset=utf-8
+      Date:
+      - Sat, 02 Apr 2022 21:37:59 GMT
+      Location:
+      - /api/borrowed_shares/TSLA/
+      Referrer-Policy:
+      - same-origin
+      Server:
+      - PythonAnywhere
+      X-Clacks-Overhead:
+      - GNU Terry Pratchett
+      X-Content-Type-Options:
+      - nosniff
+    status:
+      code: 301
+      message: Moved Permanently
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://stocksera.pythonanywhere.com/api/borrowed_shares/TSLA/
+  response:
+    body:
+      string: '{"Error":"Invalid API Key / Authorization Headers is empty"}'
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '60'
+      Content-Type:
+      - application/json
+      Date:
+      - Sat, 02 Apr 2022 21:37:59 GMT
+      Referrer-Policy:
+      - same-origin
+      Server:
+      - PythonAnywhere
+      X-Clacks-Overhead:
+      - GNU Terry Pratchett
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - ALLOW-FROM HTTPS://ECONIVERSE.GITHUB.IO
+    status:
+      code: 200
+      message: OK
+version: 1
