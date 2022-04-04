@@ -139,7 +139,7 @@ class BaseController(metaclass=ABCMeta):
                 "%s: {'path': '%s', 'queue': '%s'}",
                 message,
                 self.PATH,
-                "/".join(self.queue),
+                ";".join(self.queue),
             )
 
     @log_start_end(log=logger)
@@ -157,9 +157,9 @@ class BaseController(metaclass=ABCMeta):
             pass
         #    console.print("")
 
-        # Navigation slash is being used first split commands
-        elif "/" in an_input:
-            actions = an_input.split("/")
+        # Semicolon is being used first split commands
+        elif ";" in an_input:
+            actions = an_input.split(";")
 
             # Absolute path is specified
             if not actions[0]:

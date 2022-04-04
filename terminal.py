@@ -87,7 +87,7 @@ class TerminalController(BaseController):
         self.queue: List[str] = list()
 
         if jobs_cmds:
-            self.queue = " ".join(jobs_cmds).split("/")
+            self.queue = " ".join(jobs_cmds).split(";")
 
         self.update_success = False
 
@@ -95,8 +95,8 @@ class TerminalController(BaseController):
         """Print help"""
         console.print(
             text=f"""
-[info]Multiple jobs queue (where each '/' denotes a new command).[/info]
-    E.g. '/stocks $ disc/ugs -n 3/../load tsla/candle'
+[info]Multiple jobs queue (where each ';' denotes a new command).[/info]
+    E.g. ';stocks $ disc;ugs -n 3;..;load tsla;candle'
 
 [info]If you want to jump from crypto/ta to stocks you can use an absolute path that starts with a slash (/).[/info]
     E.g. '/crypto/ta $ /stocks'
@@ -411,13 +411,11 @@ class TerminalController(BaseController):
                     else:
                         lines = raw_lines
 
-                    simulate_argv = f"/{'/'.join([line.rstrip() for line in lines])}"
-                    file_cmds = simulate_argv.replace("//", "/home/").split()
-                    file_cmds = (
-                        insert_start_slash(file_cmds) if file_cmds else file_cmds
-                    )
+                    simulate_argv = f";{';'.join([line.rstrip() for line in lines])}"
+                    file_cmds = simulate_argv.replace(";;", ";home;").split()
+
                     cmds_with_params = " ".join(file_cmds)
-                    self.queue = [val for val in cmds_with_params.split("/") if val]
+                    self.queue = [val for val in cmds_with_params.split(";") if val]
 
                     if "export" in self.queue[0]:
                         export_path = self.queue[0].split(" ")[1]
@@ -666,8 +664,8 @@ def run_scripts(
                 export_folder = lines[0].split("export ")[1].rstrip()
                 lines = lines[1:]
 
-            simulate_argv = f"/{'/'.join([line.rstrip() for line in lines])}"
-            file_cmds = simulate_argv.replace("//", "/home/").split()
+            simulate_argv = f";{';'.join([line.rstrip() for line in lines])}"
+            file_cmds = simulate_argv.replace(";;", ";home;").split()
             file_cmds = insert_start_slash(file_cmds) if file_cmds else file_cmds
             if export_folder:
                 file_cmds = [f"export {export_folder}{' '.join(file_cmds)}"]

@@ -4,7 +4,7 @@ load pltr
 dd
 pt
 rot
-../ins
+..;ins
 stats
-../ta
+..;ta
 fib

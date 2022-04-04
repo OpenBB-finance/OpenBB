@@ -44,7 +44,7 @@ dps
 psi --export jpg,csv
 
 # Go back one menu and go into Behavioural Analysis menu
-../ba
+..;ba
 
 # Check interest on google search of covid and quarantine correlated with ticker price
 interest -s 2019-01-01 -w covid,quarantine --export interest_with_covid_quarantine.jpg
@@ -53,10 +53,10 @@ interest -s 2019-01-01 -w covid,quarantine --export interest_with_covid_quaranti
 snews --export jpg
 
 # Check shareholders of company (leave menu, go into Fundamental Analysis command and call command)
-../fa/shrs --export csv
+..;fa;shrs --export csv
 
 # Get SEC filings
-../dd/sec --export csv
+..;dd;sec --export csv
 
 # Analyst ratings over time
 rot --export jpg
@@ -65,10 +65,10 @@ rot --export jpg
 pt --export jpg
 
 # Apply Relative Strength Index to the stock price
-../ta/rsi --export jpg
+..;ta;rsi --export jpg
 
 # Get similar companies arccording to Finnhub API
-../ca/getfinnhub
+..;ca;getfinnhub
 
 # Compare their volume
 volume  --export jpg
