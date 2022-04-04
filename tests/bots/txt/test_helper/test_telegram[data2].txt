@@ -1,4 +1,4 @@
 ()
 {}
-<class 'test_helper.MockMessage'>
+<class 'tests.bots.test_helper.MockMessage'>
 <class 'str'>

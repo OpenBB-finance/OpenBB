@@ -1,0 +1,66 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Token 5cd2a65e96d0486efbe926a7cdbc1e8d8ab6c7b3
+      Connection:
+      - keep-alive
+      X-CSRFToken:
+      - TyTJwjuEC7VV7mOqZ622haRaaUr0x0Ng4nrwSRFKQs7vdoBcJlK9qjAS69ghzhFu
+      accept:
+      - application/json
+    method: GET
+    uri: https://api.quiverquant.com/beta/historical/govcontracts/TSLA
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA3yVvaoVUQyFX2WY+hCy8p/b+QiWYmVhqYJcK/HdZYoLJwM53RQfm2/2Xiv5+vf8
+        /P77fDvscZxfvn+7PoUFj+P89OPXn5/v59vRyQ2l6H+P4wPXV7ggnNKecNnxkuYSpZAnHjuPlGAB
+        hT7x056f+RCoVpDYqj94j8wWoarVf/CabOJO6NV/8HCpFpDb5o8e51sGyshk85+8sGiUTR/ZebQx
+        yql887/zHllJvPvXM28pJQjyXP1r+rswjHi9/zuvKi3Ua34mDyQcTrzq53zeriueHqv+4EUS4UlY
+        7QeOqmptKl3tJ++tIkpaq34MHZRWMwGr/uAhrmY10yYvzu+udKZc0z/5vN62idfywsfxxoUAYQ+P
+        z8dV5XSKWPUn32qp/aK8N54jFUWQ1d9u4bRKodrTY9MfxdbzOuUFXyzeQraXd/BZ4cmke3d1zlpH
+        wKh91R9845rWVHt4Bl6q5jInIV6cXrC6/euUl3mXou1Ott/94MPNpEh3+YlXQ0HYbeZWLNMosnWJ
+        TjwTUCbxVWYuUW9D0Z7iQauyXCXZ1XlOcG0Nsr2DA0/Pq4K6q899ayJd1HsIJq4wjlmo4c493Vlb
+        5njVHQdf/QOZbvJ8X7YlAlqn981GI7v31cP1HwAA//9CMdzMxNLY1Ay1ZWSMV72huYWJHs6AR1Nu
+        YG5pZGKgZ4bT7ajKjS2MDQzA9X4sAAAA//8DAJw4/C02CgAA
+    headers:
+      Allow:
+      - GET, HEAD, OPTIONS
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 6f5dcbe89fee20e5-IND
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Sun, 03 Apr 2022 00:48:04 GMT
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      NEL:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Referrer-Policy:
+      - same-origin
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=MLiBQIj3pqtRbqu6FkP8Lsprdz6CHJkTkxGXcpAFeDa4YYaZms7TeqfGcbNitBc0OvXSLvXQBoCGPGFK3ahu8VKUW1ooGeI9DXNxp8i1UHFP82wOZJtRGcIYK16dbdIueBlUmaI%3D"}],"group":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+    status:
+      code: 200
+      message: OK
+version: 1
