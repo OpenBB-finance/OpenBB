@@ -354,7 +354,7 @@ def load(
 
         coin_map_df = coins_map_df.loc[coingecko.symbol]
         coin_map_df = (
-            coin_map_df.iloc[0]
+            coin_map_df.dropna().iloc[0]
             if isinstance(coin_map_df, pd.DataFrame)
             else coin_map_df
         )  # TODO: improve to choose the row that matches better;
@@ -394,7 +394,7 @@ def load(
 
         coin_map_df = coins_map_df.loc[symbol.lower() if symbol is not None else symbol]
         coin_map_df = (
-            coin_map_df.iloc[0]
+            coin_map_df.dropna().iloc[0]
             if isinstance(coin_map_df, pd.DataFrame)
             else coin_map_df
         )
@@ -433,7 +433,7 @@ def load(
                 return None, None, None, None, None, None
             coin_map_df = coins_map_df.loc[parsed_coin.lower()]
             coin_map_df = (
-                coin_map_df.iloc[0]
+                coin_map_df.dropna().iloc[0]
                 if isinstance(coin_map_df, pd.DataFrame)
                 else coin_map_df
             )
@@ -484,7 +484,7 @@ def load(
 
             coin_map_df = coins_map_df.loc[coin]
             coin_map_df = (
-                coin_map_df.iloc[0]
+                coin_map_df.dropna().iloc[0]
                 if isinstance(coin_map_df, pd.DataFrame)
                 else coin_map_df
             )
@@ -548,7 +548,7 @@ def load(
         ]
 
         coin_map_df = (
-            coin_map_df.iloc[0]
+            coin_map_df.dropna().iloc[0]
             if isinstance(coin_map_df, pd.DataFrame)
             else coin_map_df
         )
