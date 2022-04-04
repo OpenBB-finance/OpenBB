@@ -1,7 +1,7 @@
-                             Company Ticker
-ABIO            ARCA biopharma, Inc.   ABIO
-ABUS   Arbutus Biopharma Corporation   ABUS
-ABVC              ABVC BIOPHARMA INC   ABVC
-ACAD     ACADIA Pharmaceuticals Inc.   ACAD
-ACPGF        ACACIA PHARMA GROUP PLC  ACPGF
+                               long_name   country             sector                         industry  exchange
+S4LB.F   Sonae Indústria, S.G.P.S., S.A.  Portugal    Basic Materials         Lumber & Wood Production   Germany
+SNC.LS          Sonaecom, S.G.P.S., S.A.  Portugal         Technology  Information Technology Services  Portugal
+SON.LS                 Sonae, SGPS, S.A.  Portugal  Consumer Cyclical                Department Stores  Portugal
+SONI.LS  Sonae Indústria, S.G.P.S., S.A.  Portugal    Basic Materials         Lumber & Wood Production  Portugal
+XOA1.SG         Sonaecom, S.G.P.S., S.A.  Portugal         Technology  Information Technology Services   Germany
 

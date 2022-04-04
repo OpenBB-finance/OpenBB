@@ -2,12 +2,12 @@
 __docformat__ = "numpy"
 
 import argparse
-import json
 import logging
 import os
 from datetime import datetime, timedelta
 from typing import List, Union, Optional, Iterable
 
+import financedatabase as fd
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
 import mplfinance as mpf
@@ -17,7 +17,6 @@ import pandas_market_calendars as mcal
 import plotly.graph_objects as go
 import pyEX
 import pytz
-import requests
 import yfinance as yf
 from alpha_vantage.timeseries import TimeSeries
 from numpy.core.fromnumeric import transpose
@@ -27,6 +26,7 @@ from scipy import stats
 from openbb_terminal.config_terminal import theme
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.helper_funcs import (
+    export_data,
     parse_known_args_and_warn,
     plot_autoscale,
     get_user_timezone_or_invalid,
@@ -42,49 +42,200 @@ logger = logging.getLogger(__name__)
 INTERVALS = [1, 5, 15, 30, 60]
 SOURCES = ["yf", "av", "iex"]
 
+market_coverage_suffix = {
+    "USA": ["CBT", "CME", "NYB", "CMX", "NYM"],
+    "Argentina": ["BA"],
+    "Austria": ["VI"],
+    "Australia": ["AX"],
+    "Belgium": ["BR"],
+    "Brazil": ["SA"],
+    "Canada": ["CN", "NE", "TO", "V"],
+    "Chile": ["SN"],
+    "China": ["SS", "SZ"],
+    "Czech-Republic": ["PR"],
+    "Denmark": ["CO"],
+    "Egypt": ["CA"],
+    "Estonia": ["TL"],
+    "Europe": ["NX"],
+    "Finland": ["HE"],
+    "France": ["PA"],
+    "Germany": ["BE", "BM", "DU", "F", "HM", "HA", "MU", "SG", "DE"],
+    "Greece": ["AT"],
+    "Hong-Kong": ["HK"],
+    "Hungary": ["BD"],
+    "Iceland": ["IC"],
+    "India": ["BO", "NS"],
+    "Indonesia": ["JK"],
+    "Ireland": ["IR"],
+    "Israel": ["TA"],
+    "Italy": ["MI"],
+    "Japan": ["T"],
+    "Latvia": ["RG"],
+    "Lithuania": ["VS"],
+    "Malaysia": ["KL"],
+    "Mexico": ["MX"],
+    "Netherlands": ["AS"],
+    "New-Zealand": ["NZ"],
+    "Norway": ["OL"],
+    "Portugal": ["LS"],
+    "Qatar": ["QA"],
+    "Russia": ["ME"],
+    "Singapore": ["SI"],
+    "South-Africa": ["JO"],
+    "South-Korea": ["KS", "KQ"],
+    "Spain": ["MC"],
+    "Saudi-Arabia": ["SAU"],
+    "Sweden": ["ST"],
+    "Switzerland": ["SW"],
+    "Taiwan": ["TWO", "TW"],
+    "Thailand": ["BK"],
+    "Turkey": ["IS"],
+    "United-Kingdom": ["L", "IL"],
+    "Venezuela": ["CR"],
+}
+
 
 def search(
-    query: str,
-    amount: int,
+    query: str = "",
+    country: str = "",
+    sector: str = "",
+    industry: str = "",
+    exchange_country: str = "",
+    limit: int = 0,
+    export: str = "",
 ) -> None:
     """Search selected query for tickers.
 
     Parameters
     ----------
     query : str
-        The search term used to find company tickers.
-    amount : int
-        The amount of companies shown.
+        The search term used to find company tickers
+    country: str
+        Search by country to find stocks matching the criteria
+    sector : str
+        Search by sector to find stocks matching the criteria
+    industry : str
+        Search by industry to find stocks matching the criteria
+    exchange_country: str
+        Search by exchange country to find stock matching
+    limit : int
+        The limit of companies shown.
+    export : str
+        Export data
     """
-    equities_list = (
-        "https://raw.githubusercontent.com/JerBouma/FinanceDatabase/master/"
-        "Database/Equities/Equities List.json"
-    )
-    request = requests.get(equities_list)
-    equities = json.loads(request.text)
+    if country:
+        if sector:
+            if industry:
+                data = fd.select_equities(
+                    country=country,
+                    sector=sector,
+                    industry=industry,
+                    exclude_exchanges=False,
+                )
+            else:  # no industry
+                data = fd.select_equities(
+                    country=country,
+                    sector=sector,
+                    exclude_exchanges=False,
+                )
+        else:  # no sector
+            if industry:
+                data = fd.select_equities(
+                    country=country,
+                    industry=industry,
+                    exclude_exchanges=False,
+                )
+            else:  # no industry
+                data = fd.select_equities(
+                    country=country,
+                    exclude_exchanges=False,
+                )
 
-    equities_query = {
-        key: value
-        for key, value in equities.items()
-        if (query in key.lower()) or (query in value.lower())
-    }
+    else:  # no country
+        if sector:
+            if industry:
+                data = fd.select_equities(
+                    sector=sector,
+                    industry=industry,
+                    exclude_exchanges=False,
+                )
+            else:  # no industry
+                data = fd.select_equities(
+                    sector=sector,
+                    exclude_exchanges=False,
+                )
+        else:  # no sector
+            if industry:
+                data = fd.select_equities(
+                    industry=industry,
+                    exclude_exchanges=False,
+                )
+            else:  # no industry
+                data = fd.select_equities(
+                    exclude_exchanges=False,
+                )
 
-    equities_dataframe = pd.DataFrame(
-        equities_query.items(),
-        index=equities_query.values(),
-        columns=["Company", "Ticker"],
-    )
+    if not data:
+        console.print("No companies found.\n")
+        return
 
-    if equities_dataframe.empty:
-        raise ValueError("No companies found. \n")
+    if query:
+        d = fd.search_products(
+            data, query, search="long_name", case_sensitive=False, new_database=None
+        )
+    else:
+        d = data
+
+    if not d:
+        console.print("No companies found.\n")
+        return
+
+    df = pd.DataFrame.from_dict(d).T[["long_name", "country", "sector", "industry"]]
+    if exchange_country:
+        if exchange_country in market_coverage_suffix:
+            suffix_tickers = [
+                ticker.split(".")[1] if "." in ticker else ""
+                for ticker in list(df.index)
+            ]
+            df = df[
+                [
+                    val in market_coverage_suffix[exchange_country]
+                    for val in suffix_tickers
+                ]
+            ]
+
+    exchange_suffix = {}
+    for k, v in market_coverage_suffix.items():
+        for x in v:
+            exchange_suffix[x] = k
+
+    df["exchange"] = [
+        exchange_suffix[ticker.split(".")[1]] if "." in ticker else "USA"
+        for ticker in list(df.index)
+    ]
+
+    title = "Companies found"
+    if query:
+        title += f" on term {query}"
+    if exchange_country:
+        title += f" {exchange_country} exchange"
+    if country:
+        title += f" in {country}"
+    if sector:
+        title += f" within {sector}"
+        if industry:
+            title += f" and {industry}"
+    if not sector and industry:
+        title += f" within {industry}"
 
     print_rich_table(
-        equities_dataframe.iloc[:amount],
-        show_index=False,
-        headers=["Company", "Ticker"],
-        title="Search Results",
+        df.iloc[:limit] if limit else df,
+        show_index=True,
+        headers=["Name", "Country", "Sector", "Industry", "Exchange"],
+        title=title,
     )
-    console.print("")
+    console.print()
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), "search", df)
 
 
 def load(
