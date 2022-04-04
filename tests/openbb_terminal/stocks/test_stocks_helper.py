@@ -40,7 +40,15 @@ def test_search(mocker, use_tab):
     mocker.patch.object(
         target=helper_funcs.obbff, attribute="USE_TABULATE_DF", new=use_tab
     )
-    stocks_helper.search(query="pharma", amount=5)
+    stocks_helper.search(
+        query="sonae",
+        country="Portugal",
+        sector="",
+        industry="",
+        exchange_country="",
+        limit=5,
+        export="",
+    )
 
 
 @pytest.mark.vcr

@@ -173,6 +173,10 @@ Feel free to share loss porn, memes or any questions at:
    <img src="https://contributors-img.web.app/image?repo=OpenBB-finance/OpenBBTerminal" height="276"/>
 </a>
 
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=openbb-finance/OpenBBTerminal&type=Date)](https://star-history.com/#openbb-finance/OpenBBTerminal&Date)
+
 ## Acknowledgments
 
 - [VICE article - Gamestonk Terminal Is a DIY, Meme Stock Version of Bloomberg Terminal](https://www.vice.com/en/article/qjp9vp/gamestonk-terminal-is-a-diy-meme-stock-version-of-bloomberg-terminal)
