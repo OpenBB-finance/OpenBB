@@ -1,0 +1,208 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/vnd.github.v3.star+json
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - MOCK_AUTHORIZATION
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.github.com/repos/openbb-finance/openbbterminal
+  response:
+    body:
+      string: !!binary |
+        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
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Expose-Headers:
+      - ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining,
+        X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes,
+        X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO,
+        X-GitHub-Request-Id, Deprecation, Sunset
+      Cache-Control:
+      - private, max-age=60, s-maxage=60
+      Content-Encoding:
+      - gzip
+      Content-Security-Policy:
+      - default-src 'none'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 04 Apr 2022 14:11:45 GMT
+      ETag:
+      - W/"de8dde5ff7a08607ca0d8c9ddc1a33e61e66a91fa03c46653e598ad9a786af61"
+      Last-Modified:
+      - Mon, 04 Apr 2022 14:09:59 GMT
+      Referrer-Policy:
+      - origin-when-cross-origin, strict-origin-when-cross-origin
+      Server:
+      - GitHub.com
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept, Authorization, Cookie, X-GitHub-OTP
+      - Accept-Encoding, Accept, X-Requested-With
+      X-Accepted-OAuth-Scopes:
+      - repo
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-GitHub-Media-Type:
+      - github.v3; param=star; format=json
+      X-GitHub-Request-Id:
+      - F206:D36B:192780:19A117:624AFCA1
+      X-OAuth-Scopes:
+      - ''
+      X-RateLimit-Limit:
+      - '5000'
+      X-RateLimit-Remaining:
+      - '4999'
+      X-RateLimit-Reset:
+      - '1649085105'
+      X-RateLimit-Resource:
+      - core
+      X-RateLimit-Used:
+      - '1'
+      X-XSS-Protection:
+      - '0'
+      github-authentication-token-expiration:
+      - 2022-04-30 16:49:13 UTC
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/vnd.github.v3.star+json
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - MOCK_AUTHORIZATION
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.github.com/repos/openbb-finance/openbbterminal/releases
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA8WYW0/jOBTH3/kUUV532tzaFCKtRovKXqQFtDOwO7OjUeUmpvWQJlnbaYGK777H
+        jp0bDb3Q0TwAwpf/OT52zs/HX04MYw0/hmHmNDYDw5xznrHAslBG+jPC5/m0H6YLi+IsZdZ1hpPz
+        894dSVASYvXvDaYLaIhhTIwRw8zyPXs4cM9c810hjRjDnE2+gwWrkNaG8ixOUdQ2VLSyNy9HGVu/
+        T9ACv4vRFMfP2vKcL+K23Vr4dgwcRzNr6fTtvq11SQSbouOpw5nzeUqhvdg52Ls4nZFE7B5KIopX
+        9zihmIRzJQIDpIzr2f5oMDotZKA1SSM8kV3m5fgv/+9PV3H47Y+ny/Fn72ocDqrpaIk4ou31Fa06
+        rjnDNEwTjhMuT0xuaXvvlz/XtGZUqRWGKyOvHw8hz6yu9W0Jf9e0uzSO0xUIv1ha8/RvMm6Vk6sl
+        FE0kmR2uB5PXVsrnGMINS9YHDHZrRtjWj2ijo3Li2hJ/YLdrigw2leIX30vr09+oqaaCq6sEvFzL
+        BFGXzqcspCTjJE0Oii6rC1QRTukMJeQJHawLAqySk2ntkM2SEysdvIRjf5BQMXNtZZQsUfhYCyHF
+        ISZL2J7DxVsSlb/8McPis7+FI1a1MsLxBEWQzaHvDsUMy/z9rPJOLV18uJjcr8bXF/avtxM2GK/I
+        77dKxoQcNhEJUsg3cxmcthnmE0gOC8IJm4sRJIGTFMeYAlQesI6oqQWKvGloxBhNwYiiO65dVU5m
+        FCsOQQenOVbtIcWIQzCRmGC6tuv2bK/nnt04fuDagTP6Vy8gy6cxeNc11g1suxyr8BMYX2SkNEyP
+        DdTCjOXbZ0MffpU7pjO77tCZvZnbP/zS2Kx0PjmvKzRj3dex7keLWX2Y5B3ELsnjuGangCucogpH
+        cvUlkjJC/qvpaJcdx/dPh96wkuoC0sXD1bfPg6ubS6cpcxiUtN0GlKTHXWDaYTOLFPlypVuw9HLC
+        fkAS8zdgSDq8H4pqSp0AKoK0M4SkZBd6pNY++JFqW6BTiO4NnkJ6I26k4v7IkYoN0Eih3WEjBZqI
+        kQp7kEBKdMJF+bM/YJRnjYnNz3IjWoqt2YwX0acQI4epS+REC6Esi0koiW+lIce8xzgk80U9OcHJ
+        4JI4Kh1FjU7yJPp82z0bDgb+qJa9Iri+yJIhTPNEkOHUd2vd3dAYBd4osB0NAul4nkUdiBkFAzfw
+        3MboKU1XQN9J6ULr/rt/9aCVVAmhyrNmQleYKuOtSwjh/vEKQM0rx/aGA9urb0ZR0KiO3XjlXP9Z
+        V+ji1UfM86yPH3B98KHU6qgY5D5vLKZkz64FlRx8GL82FlVS7838em3NW0j22tT9mNZUOg7dNmoe
+        i3Mt8aMRr6X7fdjXNnJMCra038LDltTbyNgSOz4jX3j7o2j50FswDYW9aTly4AnPG/qv0dJxh/ZW
+        XHr2jSPoB2XWDrhUo8+C4ekPxmXFEw1N+fdrsWCoc+kUKtctjwe7vJsqpdbL3xPJjqSvlFr60zR6
+        FDemf0gCZ4QZF58uDDi5xgKF1x+N8eVvRlmbs1bdDbevUD7A1Iq+Y14f9HsnXIG1IX3KTJ7Ce0F5
+        XXPKy5z5kwPeDMpxPfFveTjNGOUz8eBQtczTlCIRgaoJbp53UMqJB9HaOIyouBlWLTQN77FocrzS
+        HH6ExwsYVDyYwO/nk68n/wOXOYXhXhcAAA==
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Expose-Headers:
+      - ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining,
+        X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes,
+        X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO,
+        X-GitHub-Request-Id, Deprecation, Sunset
+      Cache-Control:
+      - private, max-age=60, s-maxage=60
+      Content-Encoding:
+      - gzip
+      Content-Security-Policy:
+      - default-src 'none'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 04 Apr 2022 14:11:46 GMT
+      ETag:
+      - W/"d1c1618657212da1eecd15d60968c6723ef60f79f6a248cce72e769806048a43"
+      Referrer-Policy:
+      - origin-when-cross-origin, strict-origin-when-cross-origin
+      Server:
+      - GitHub.com
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept, Authorization, Cookie, X-GitHub-OTP
+      - Accept-Encoding, Accept, X-Requested-With
+      X-Accepted-OAuth-Scopes:
+      - repo
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-GitHub-Media-Type:
+      - github.v3; param=star; format=json
+      X-GitHub-Request-Id:
+      - A5D5:522A:A7D1B:AE147:624AFCA1
+      X-OAuth-Scopes:
+      - ''
+      X-RateLimit-Limit:
+      - '5000'
+      X-RateLimit-Remaining:
+      - '4998'
+      X-RateLimit-Reset:
+      - '1649085105'
+      X-RateLimit-Resource:
+      - core
+      X-RateLimit-Used:
+      - '2'
+      X-XSS-Protection:
+      - '0'
+      github-authentication-token-expiration:
+      - 2022-04-30 16:49:13 UTC
+    status:
+      code: 200
+      message: OK
+version: 1

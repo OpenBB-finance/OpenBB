@@ -1,10 +1,13 @@
 ```
-usage: cases [-h] [--export {csv,json,xlsx,png,jpg,pdf,svg}] [--raw] [-l LIMIT]
+usage: tr [-h] [-c CATEGORIES] [-s {stars,forks}] [--export {csv,json,xlsx,png,jpg,pdf,svg}] [--raw] [-l LIMIT]
 ```
 
-Show historical cases for country.
+Display top repositories [Source: https://api.github.com]
+
 ```
 optional arguments:
+  -c, --categories      Filter by repo categories. If more than one separate with a comma: e.g., finance,investment. Default: None
+  -s, --sortby          Sort repos by {stars, forks}. Default: stars
   -h, --help            show this help message (default: False)
   --export {csv,json,xlsx,png,jpg,pdf,svg}
                         Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg (default: )
