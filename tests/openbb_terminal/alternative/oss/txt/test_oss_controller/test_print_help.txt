@@ -1,0 +1,5 @@
+
+        rs          repo summary
+        sh          repo star history
+        tr          top starred repos
+        
