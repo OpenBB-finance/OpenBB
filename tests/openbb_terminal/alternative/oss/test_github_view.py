@@ -10,7 +10,10 @@ from openbb_terminal.alternative.oss import github_view
 @pytest.fixture(scope="module")
 def vcr_config():
     return {
-        "filter_headers": [("Authorization", "MOCK_AUTHORIZATION")],
+        "filter_headers": [
+            ("User-Agent", None),
+            ("Authorization", "MOCK_AUTHORIZATION"),
+        ],
     }
 
 

@@ -10,42 +10,40 @@ interactions:
       - MOCK_AUTHORIZATION
       Connection:
       - keep-alive
-      User-Agent:
-      - Mozilla/5.0 (Windows NT 6.1; WOW64; rv:86.1) Gecko/20100101 Firefox/86.1
     method: GET
     uri: https://api.github.com/repos/openbb-finance/openbbterminal
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA+1ZW2/bNhR+768w/Lo6UhyncQ0UHYp0RYZlGQoD6zIMBiXREmOK1EjKni3kv+/w
-        Jslq2qiGHvPSxkfkdy48PDz8WL0ajcYkGS9GF9OLcDa/CqevtYjxBK+MfHx7/XF3R3+l8ae3B/Tl
-        8zZmm8Ptw+3u9+v04vb65t3YTkA51qPvCsw+fFhikROGqP22LildsaMBkzV8ZjEOnhpfCLJFSsOt
-        EZXY4PMdwwIkFfyAn5SnhDX6PJzR5z2ah+Eb8OjSyY5d2t9t3u7vp7+U6EuRJZ/oNnpId7fXf4V3
-        1/G5h0FgBhKrUlCtKlOqkIsgsFJ5lhKVlVEpsYg5U5ips5jnQRl4ve+372YeKRUOy8bUi7vIBXGo
-        FgqgpYtQ18NM5bRrmDXITLVh7U5ac0r5DkC7M9HzioN6sjfeCghLT0eDyVXAVYYhyODsYx0uItVJ
-        RqZ6YhXo/yB9azwJyyhwcoqhbiqYqTPwsQoELngDXEYyFqRQhLOTDJZtAO8+Fyli5IBORgUA6cG0
-        vSeZZiZ6FLyFBD8Jxs6sArOr430dOoFjTLawKKdDdyC8rWpf2FrUCqP/JonCK5RAdfLlBSrGoykx
-        P7SlnixcCa6TQReMG7bFUuUQuNFnLDEScTZaczH6uMVizxk+M0aNQbQ5qnXfrwpmWTob/ElrNO5z
-        K9YDDDY+4FhTN3g/BKKGqQL4t96j4xhKE4q4QIo/W576GH2EVwXtnzYDxwqjfAhnDI4NT8b5IBE3
-        OBaSSFniflukT1gMnAz8nmRlHvmyO+61D/sosUDWfiQlSRnGQ0S6xqqC5rQYRwIaiWwQBR6qCuxf
-        PlNQOoT5CmBsUCLKoyEQ4cAPDFYVyAw5a0G40qqeOez6LKTG11BdeIHXQ8FrqDa8EsPkijFdY7XB
-        4SxXkDlD2O6hgqqJPEUsLVE6CH6NZTNGdyEpOjzfuvVZ1gbMguv2VZCoHKz0NnDOetvkQKkZJPQN
-        2hG8acIGyPp2S+YDlOfk2e6nT+ihN9dI3Q3lxAMYr/P+CSVa1KOB6+uChqqCo9PDHlROzwCOuJPK
-        G97R5m5cQ6SThwqqnwqkMldFQW+BBB7AEYcUVBGS+PHs7KzKMHJXk3GOxTD1wgK5MxcaTeisB7C9
-        0j2rhoIeMEfK3H7WLkIJXIgoR8kQa1BjWQfs2g9gvwXq5E4BdMQQRhucDnZOKLT80NsPoaAB62hh
-        XJE1iXvdD/ts6SO86r0kwMy8RpS+hi2gSExgX8BN3a07tOl4kPhZIHANmCGHLTDFsEuGCJ6HqgLP
-        A4wTXFC+H6oOttDcKSEwsFbJCil9+ZuG03ByPp1Mw+V5uJi9WVzM7+24skiOx00n4WwSni/P54uL
-        q0V46cYVpczacPWwy8XscnEZumG633M3RvgT+Klv0kCdW6KmmtwBKrMWxM8NwOKYR/omQEwh5bv7
-        9QQ7tl+d331BrCMZz3EBHVibruPASEaRp8I8v0Z4x5lg5GJBDnr6xWwazkNzP2/1XjEvmV7dt/PL
-        mfm2QwruHtDWfPXFN3DalD/2KuPMmYjkypYl+KJEaenNDKSF4A84VrIrb4pjZ8KObMgRcWBQdAPa
-        hrA0gLfvPLyyludECO65TQalzPjj6r0mfhvuNSESRRQfC3VYnSO18zMbMEpizKSOomNr4aavwwCd
-        j4kB6PFs8O3NcvSbG+4+ySL5z1PPN0s/4fuciNMog7aKNoUdv1l+og/3f14e7pcfD+Oa84Eix3f6
-        dNtAgWtHjciVwnlBuzy04gWJdXz/to7oAgmlmCA6IUACU0pSDNXTmx2LfaF4XAL7yOK9l2LoOXiu
-        cZzPjg33P1OoiPoU2UxUm0jXxHZNKfmxjWSCgHHfS1Kjtj4Jxz/5WTmCc53hCZRbwbTrzpCiyVTQ
-        9m+JmCJwaYIWoMslg33xZpIjscH1qhpZrd7bPkFFoSP+j8mwLZEkIpQokxJFGcHaGe2GB9ORrVO0
-        lWIgdsnldxxI6l2Y4DUqqVrZW7tJNQQEn0EtdASBhAB+Fj64hDwiAJ3reorS01qpr+dDFQaR36kg
-        gbuSLTEtme4F3Kg6t3T+rGxlVHyDzXOFtanN7zZGvbxpvLxpPPHiYx4zoM98edN4edOA99Ufe9Ng
-        WO2grNYndF1bHclhKJm6N5iHrx5f/Q+4w3hfEx4AAA==
+        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
     headers:
       Access-Control-Allow-Origin:
       - '*'
@@ -63,11 +61,11 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Fri, 01 Apr 2022 18:37:46 GMT
+      - Mon, 04 Apr 2022 14:11:45 GMT
       ETag:
-      - W/"a595c8837f4de2f11f42f982aae7832ccf1f8adcdf814e3427411ad0764073c0"
+      - W/"de8dde5ff7a08607ca0d8c9ddc1a33e61e66a91fa03c46653e598ad9a786af61"
       Last-Modified:
-      - Fri, 01 Apr 2022 18:37:05 GMT
+      - Mon, 04 Apr 2022 14:09:59 GMT
       Referrer-Policy:
       - origin-when-cross-origin, strict-origin-when-cross-origin
       Server:
@@ -88,19 +86,19 @@ interactions:
       X-GitHub-Media-Type:
       - github.v3; param=star; format=json
       X-GitHub-Request-Id:
-      - DDE8:DE0B:1E1D2B4:1EB7A4F:62474679
+      - F206:D36B:192780:19A117:624AFCA1
       X-OAuth-Scopes:
       - ''
       X-RateLimit-Limit:
       - '5000'
       X-RateLimit-Remaining:
-      - '4998'
+      - '4999'
       X-RateLimit-Reset:
-      - '1648841856'
+      - '1649085105'
       X-RateLimit-Resource:
       - core
       X-RateLimit-Used:
-      - '2'
+      - '1'
       X-XSS-Protection:
       - '0'
       github-authentication-token-expiration:
@@ -119,36 +117,34 @@ interactions:
       - MOCK_AUTHORIZATION
       Connection:
       - keep-alive
-      User-Agent:
-      - Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.10; rv:83.0) Gecko/20100101 Firefox/83.0
     method: GET
     uri: https://api.github.com/repos/openbb-finance/openbbterminal/releases
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA8WYWW/bOBDH3/MpBL9ubZ2WYwGLYgNnD2CTYNtkt92iMGiJsdnIopak7CRGvvuO
-        KNI6bMVHXPQhCcLjP8MhNT8Ov5wZxgp+DKOTsbgTGJ2ZECkPTBOlpDclYpZNeiGdmwynlJs3KU4u
-        Lrr3JEFJiNW/t5jNoSGGMTFGHHPTd62+5wydzrtCGnGOBR9/BwtmIa0NZWlMUdQ0VLTyNy9HGVu9
-        T9Acv4vRBMcv2vJMzOOm3Ur49gycQFNzYfesnqV1SQSbouOpw5mJGWXQXuwc7F1MpyTJdw8lEcPL
-        B5wwTMKZEoEBUsZxLX/gDc4LGWhNaITHsqtzNfrL//vTdRx+++P5avTZvR6FXjkdLZBArLm+olXH
-        NeOYhTQROBHyxGSmtvd+8XNFa8qUWmG4NPL68cjludm2vh3hb5t2T+OYLkF4Y2n107/NuLmeXC6h
-        aCLJ9Hg9mLwyqZhhCDcsWR8w2K0p4Ts/oq2OyokrM/8Du11R5LCpDG98L41Pf6ummgquLhPwciUT
-        RFU6m/CQkVQQmhwVXV4VKCNM2RQl5BkdrQsCvJSTae2YzZITSx28gGN/lFAxc2WmjCxQ+FQJIcMh
-        JgvYnuPFGxKlv+IpxflnfwdHrGzlROAxiiCbQ989ijmW+ftF5Z1KuvhwOX5Yjm4urV/vxtwbLcnv
-        d0qmAzlsnCfIXL6ey+C0TbEYQ3KYE0H4LB9BEjhJcYwZQOUR64h2tECRNw2NGKMuGDF0L7SrysmU
-        YcUh6BAsw6o9ZBgJCCbKJ3Qcy3G6ltt1hre2HzhWYA/+1QtIs0kM3rWNdQLLWo9V+AmMLzJSGqan
-        BmphxvStYd+HX+sd05ldd+jMXs/tH36pbRadjS+qCvVY93Sse9F8Wh0meQexS7I4rtgp4AqnqMSR
-        XP0aSSkh/1V0tMu27fvnfbdfSrUB6fLx+ttn7/r2yq7LHAclbbcGJelxG5j22MwiRW6udAeWNicc
-        BqR8/hYMSYcPQ1FFqRVARZD2hpCUbEOP1DoEP1JtB3QK0YPBU0hvxY1UPBw5UrEGGim0P2ykQB0x
-        UuEAEkiJVrgofw4HjPKsNrH+WW5FS7E12/GS9ynEyGHqEjnWQihNYxJK4ps0FFh0uYBkPq8mJzgZ
-        QhJHpaOo1kme8z7fcoZ9z/MHlewVwfVFlgwhzZKcDJ7rVbrboTEI3EFg2RoE0vEsjVoQMwg8J3Cd
-        2ugJo0ug73jtQuP+e3j1oJVUCaHKs3pCV5hax1uXELn7pysANa9sy+17lrvJK9WxH6/smz/34dVH
-        LLK0hx/xKajVUjHIfd5aTMmefQsqOfg4fm0tqqTem/n12pp3kOy1qYcxra50Grpt1TwV5xriJyNe
-        Q/f7sK9p5JQUbGi/hYcNqbeRsSF2ekZuePujaPnYnXMNhYNpObDhCc/t+6/Rst+3dtLStW7tHH5Q
-        Ze1BSzV6GPTPfzAtS5xoZsq/X4sFQ5nLJlC47ng72OfZVCk1Hv6eSXoifaXU0J/Q6Cm/MP1DEjgi
-        3Lj8dGnAwTXmKLz5aIyufjPWpTlvlN1w+Qrl+0ul5jvl7UE/d8INWBvSp6wjKDwXrG9r5VPmTzY4
-        sz6MnW793xhl0/y5oRwwo5ShPABlE9w776GQy59DK+MwYvm9sGxhNHzAeVNpHD/BywWMKV5L4PfL
-        2dez/wE9hjCQWxcAAA==
+        H4sIAAAAAAAAA8WYW0/jOBTH3/kUUV532tzaFCKtRovKXqQFtDOwO7OjUeUmpvWQJlnbaYGK777H
+        jp0bDb3Q0TwAwpf/OT52zs/HX04MYw0/hmHmNDYDw5xznrHAslBG+jPC5/m0H6YLi+IsZdZ1hpPz
+        894dSVASYvXvDaYLaIhhTIwRw8zyPXs4cM9c810hjRjDnE2+gwWrkNaG8ixOUdQ2VLSyNy9HGVu/
+        T9ACv4vRFMfP2vKcL+K23Vr4dgwcRzNr6fTtvq11SQSbouOpw5nzeUqhvdg52Ls4nZFE7B5KIopX
+        9zihmIRzJQIDpIzr2f5oMDotZKA1SSM8kV3m5fgv/+9PV3H47Y+ny/Fn72ocDqrpaIk4ou31Fa06
+        rjnDNEwTjhMuT0xuaXvvlz/XtGZUqRWGKyOvHw8hz6yu9W0Jf9e0uzSO0xUIv1ha8/RvMm6Vk6sl
+        FE0kmR2uB5PXVsrnGMINS9YHDHZrRtjWj2ijo3Li2hJ/YLdrigw2leIX30vr09+oqaaCq6sEvFzL
+        BFGXzqcspCTjJE0Oii6rC1QRTukMJeQJHawLAqySk2ntkM2SEysdvIRjf5BQMXNtZZQsUfhYCyHF
+        ISZL2J7DxVsSlb/8McPis7+FI1a1MsLxBEWQzaHvDsUMy/z9rPJOLV18uJjcr8bXF/avtxM2GK/I
+        77dKxoQcNhEJUsg3cxmcthnmE0gOC8IJm4sRJIGTFMeYAlQesI6oqQWKvGloxBhNwYiiO65dVU5m
+        FCsOQQenOVbtIcWIQzCRmGC6tuv2bK/nnt04fuDagTP6Vy8gy6cxeNc11g1suxyr8BMYX2SkNEyP
+        DdTCjOXbZ0MffpU7pjO77tCZvZnbP/zS2Kx0PjmvKzRj3dex7keLWX2Y5B3ELsnjuGangCucogpH
+        cvUlkjJC/qvpaJcdx/dPh96wkuoC0sXD1bfPg6ubS6cpcxiUtN0GlKTHXWDaYTOLFPlypVuw9HLC
+        fkAS8zdgSDq8H4pqSp0AKoK0M4SkZBd6pNY++JFqW6BTiO4NnkJ6I26k4v7IkYoN0Eih3WEjBZqI
+        kQp7kEBKdMJF+bM/YJRnjYnNz3IjWoqt2YwX0acQI4epS+REC6Esi0koiW+lIce8xzgk80U9OcHJ
+        4JI4Kh1FjU7yJPp82z0bDgb+qJa9Iri+yJIhTPNEkOHUd2vd3dAYBd4osB0NAul4nkUdiBkFAzfw
+        3MboKU1XQN9J6ULr/rt/9aCVVAmhyrNmQleYKuOtSwjh/vEKQM0rx/aGA9urb0ZR0KiO3XjlXP9Z
+        V+ji1UfM86yPH3B98KHU6qgY5D5vLKZkz64FlRx8GL82FlVS7838em3NW0j22tT9mNZUOg7dNmoe
+        i3Mt8aMRr6X7fdjXNnJMCra038LDltTbyNgSOz4jX3j7o2j50FswDYW9aTly4AnPG/qv0dJxh/ZW
+        XHr2jSPoB2XWDrhUo8+C4ekPxmXFEw1N+fdrsWCoc+kUKtctjwe7vJsqpdbL3xPJjqSvlFr60zR6
+        FDemf0gCZ4QZF58uDDi5xgKF1x+N8eVvRlmbs1bdDbevUD7A1Iq+Y14f9HsnXIG1IX3KTJ7Ce0F5
+        XXPKy5z5kwPeDMpxPfFveTjNGOUz8eBQtczTlCIRgaoJbp53UMqJB9HaOIyouBlWLTQN77FocrzS
+        HH6ExwsYVDyYwO/nk68n/wOXOYXhXhcAAA==
     headers:
       Access-Control-Allow-Origin:
       - '*'
@@ -166,9 +162,9 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Fri, 01 Apr 2022 18:37:46 GMT
+      - Mon, 04 Apr 2022 14:11:46 GMT
       ETag:
-      - W/"9d881cdcdcec9858e05d66b9e7f1db117e839e2f4574c4326f9a61585ab94e6e"
+      - W/"d1c1618657212da1eecd15d60968c6723ef60f79f6a248cce72e769806048a43"
       Referrer-Policy:
       - origin-when-cross-origin, strict-origin-when-cross-origin
       Server:
@@ -189,19 +185,19 @@ interactions:
       X-GitHub-Media-Type:
       - github.v3; param=star; format=json
       X-GitHub-Request-Id:
-      - A1F3:BE3C:2B88A31:2C3CB76:6247467A
+      - A5D5:522A:A7D1B:AE147:624AFCA1
       X-OAuth-Scopes:
       - ''
       X-RateLimit-Limit:
       - '5000'
       X-RateLimit-Remaining:
-      - '4997'
+      - '4998'
       X-RateLimit-Reset:
-      - '1648841856'
+      - '1649085105'
       X-RateLimit-Resource:
       - core
       X-RateLimit-Used:
-      - '3'
+      - '2'
       X-XSS-Protection:
       - '0'
       github-authentication-token-expiration:
