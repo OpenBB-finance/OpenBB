@@ -128,9 +128,9 @@ class Settings:
         log_settings: LogSettings,
     ):
         """This model regroups all configurations used by these classes instance :
-         - openbb_terminal.log.collection.log_sender.LogSender
-         - openbb_terminal.log.generation.formatter_with_exceptions.FormatterWithExceptions
-         - openbb_terminal.log.generation.path_tracking_file_handler.PathTrackingFileHandler
+         - openbb_terminal.core.log.collection.log_sender.LogSender
+         - openbb_terminal.core.log.generation.formatter_with_exceptions.FormatterWithExceptions
+         - openbb_terminal.core.log.generation.path_tracking_file_handler.PathTrackingFileHandler
 
         Args:
             app_name (str): Instance of AppSettings.

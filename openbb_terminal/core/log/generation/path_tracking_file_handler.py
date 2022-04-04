@@ -7,17 +7,17 @@ from typing import Callable
 # IMPORTATION THIRDPARTY
 
 # IMPORTATION INTERNAL
-from openbb_terminal.log.constants import ARCHIVES_FOLDER_NAME, TMP_FOLDER_NAME
-from openbb_terminal.log.collection.log_sender import LogSender
-from openbb_terminal.log.collection.logging_clock import LoggingClock, Precision
-from openbb_terminal.log.generation.directories import get_log_dir, get_log_sub_dir
-from openbb_terminal.log.generation.expired_files import (
+from openbb_terminal.core.log.constants import ARCHIVES_FOLDER_NAME, TMP_FOLDER_NAME
+from openbb_terminal.core.log.collection.log_sender import LogSender
+from openbb_terminal.core.log.collection.logging_clock import LoggingClock, Precision
+from openbb_terminal.core.log.generation.directories import get_log_dir, get_log_sub_dir
+from openbb_terminal.core.log.generation.expired_files import (
     get_expired_file_list,
     get_timestamp_from_x_days,
     remove_file_list,
 )
 
-from openbb_terminal.log.generation.settings import Settings
+from openbb_terminal.core.log.generation.settings import Settings
 
 
 class PathTrackingFileHandler(TimedRotatingFileHandler):

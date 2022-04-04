@@ -8,13 +8,13 @@ from pathlib import Path
 
 # IMPORTATION INTERNAL
 from openbb_terminal.feature_flags import LOG_COLLECTION
-from openbb_terminal.log.constants import (
+from openbb_terminal.core.log.constants import (
     ARCHIVES_FOLDER_NAME,
     S3_FOLDER_SUFFIX,
     TMP_FOLDER_NAME,
 )
-from openbb_terminal.log.collection.s3_sender import send_to_s3
-from openbb_terminal.log.generation.settings import Settings
+from openbb_terminal.core.log.collection.s3_sender import send_to_s3
+from openbb_terminal.core.log.generation.settings import Settings
 
 # DO NOT USE THE FILE LOGGER IN THIS MODULE
 
