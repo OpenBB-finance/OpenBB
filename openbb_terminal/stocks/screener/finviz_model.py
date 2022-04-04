@@ -105,6 +105,9 @@ def get_screener_data(preset_loaded: str, data_type: str, limit: int, ascend: bo
         except IndexError:
             console.print("[red]Invalid data provided by the website[/red]\n")
             return pd.DataFrame()
+        except AttributeError:
+            console.print("[red]Invalid data provided by the website[/red]\n")
+            return pd.DataFrame()
 
     else:
         preset_filter = configparser.RawConfigParser()
