@@ -1,4 +1,4 @@
-# Portfolio Optimization [>>](https://gamestonkterminal.github.io/GamestonkTerminal/portfolio/portfolio_optimization/)
+# Portfolio Optimization [>>](https://openbb-finance.github.io/OpenBBTerminal/portfolio/portfolio_optimization/)
 
 Command|Description
 ------ | ------------
