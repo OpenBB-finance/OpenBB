@@ -186,6 +186,7 @@ reportlab==3.6.9; python_version >= "3.7" and python_version < "4"
 requests-oauthlib==1.3.1; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.4.0"
 requests==2.27.1; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.6.0")
 rich==10.16.2; python_full_version >= "3.6.2" and python_full_version < "4.0.0"
+riskfolio-lib==3.0.2; python_full_version >= "3.7"
 robin-stocks==2.1.0; python_version >= "3"
 scikit-learn==1.0.2; python_version >= "3.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.7"
 scipy==1.8.0; python_version >= "3.8" and python_version < "3.11" and python_full_version >= "3.6.1" and python_full_version < "4.0.0" and (python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0")

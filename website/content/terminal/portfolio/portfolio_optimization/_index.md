@@ -2,7 +2,7 @@
 geekdocCollapseSection: true
 ---
 
-The terminal has incorporated PyPortfolioOpt. Refer to the documentation here: https://pyportfolioopt.readthedocs.io/en/latest/MeanVariance.html
+The terminal has incorporated PyPortfolioOpt. Refer to the documentation here: <http://riskfolio-lib.readthedocs.io/>
 
 ```text
 Portfolio Optimization:
@@ -12,20 +12,30 @@ Portfolio Optimization:
 
 Tickers: VT, QQQ, SPY
 
-Optimization:
+Mean Risk Optimization:
+    maxsharpe     maximal Sharpe ratio portfolio (a.k.a the tangency portfolio)
+    minrisk       minimum risk portfolio
+    maxutil       maximal risk averse utility function, given some risk
+                  aversion parameter
+    maxret        maximal return portfolio
+    ef            show the efficient frontier
+
+Risk Parity Optimization:
+    riskparity    risk parity portfolio using risk budgeting approach
+    relriskparity relaxed risk parity using least squares approach
+
+Hierarchical Clustering Models:
+    hrp           hierarchical risk parity
+    herc          hierarchical equal risk contribution
+    nco           nested clustering optimization
+
+Other Optimization Techniques:
     equal         equally weighted
     mktcap        weighted according to market cap (property marketCap)
     dividend      weighted according to dividend yield (property dividendYield)
     property      weight according to selected info property
-
-Mean Variance Optimization:
-    maxsharpe     optimizes for maximal Sharpe ratio (a.k.a the tangency portfolio
-    minvol        optimizes for minimum volatility
-    maxquadutil   maximises the quadratic utility, given some risk aversion
-    effret        maximises return for a given target risk
-    effrisk       minimises risk for a given target return
-
-    ef            show the efficient frontier
+    maxdiv        maximum diversification portfolio
+    maxdecorr     maximum decorrelation portfolio[
 ```
 
 {{< toc-tree >}}
