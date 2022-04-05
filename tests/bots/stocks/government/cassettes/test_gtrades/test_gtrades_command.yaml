@@ -1,0 +1,84 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Token 5cd2a65e96d0486efbe926a7cdbc1e8d8ab6c7b3
+      Connection:
+      - keep-alive
+      X-CSRFToken:
+      - TyTJwjuEC7VV7mOqZ622haRaaUr0x0Ng4nrwSRFKQs7vdoBcJlK9qjAS69ghzhFu
+      accept:
+      - application/json
+    method: GET
+    uri: https://api.quiverquant.com/beta/historical/congresstrading/TSLA
+  response:
+    body:
+      string: !!binary |
+        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
+        yABdAAA=
+    headers:
+      Allow:
+      - GET, HEAD, OPTIONS
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 6f5dcbe4db432055-IND
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Sun, 03 Apr 2022 00:48:03 GMT
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      NEL:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Referrer-Policy:
+      - same-origin
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=BMs1tNrVbp5Ey0bngCpA6%2F55GobyyFd5Uuds7BuyVYWnWndB6MIE8z3triuyDSBKdf2G9YnxQNNTKf%2FdYmPqmHZSJmL1%2Bi1Ig65O7TiY%2B7FhfOtpnwmlP2%2F0IdFRjjA3USZmF5w%3D"}],"group":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+    status:
+      code: 200
+      message: OK
+version: 1
