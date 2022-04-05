@@ -781,7 +781,7 @@ python-versions = ">=3.6"
 name = "exchange-calendars"
 version = "3.6.1"
 description = "exchange_calendars is a Python library with securities exchange calendars"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.7"
 
@@ -2288,7 +2288,7 @@ requests = ">=2.19.0"
 name = "pandas-market-calendars"
 version = "3.2"
 description = "Market and exchange trading calendars for pandas"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.7.0"
 
@@ -2843,7 +2843,7 @@ testutil = ["gitpython (>3)"]
 name = "pyluach"
 version = "1.4.1"
 description = "Pyluach is a Python package for manipulating Hebrew dates,"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.6"
 
@@ -4008,7 +4008,7 @@ python-versions = ">=3.7"
 name = "toolz"
 version = "0.11.2"
 description = "List processing tools and functional utilities"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.5"
 
@@ -4497,7 +4497,7 @@ prediction = ["tensorflow"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8,<3.10"
-content-hash = "11d440e524fa9d40f4318aa6215b05b88816d0cbbad98b0a6cb66648a292a62a"
+content-hash = "1c15654b622877f360e657e8ab8d6da38ef4bbee9d415ae07f02df19fb6d11ff"
 
 [metadata.files]
 absl-py = [
