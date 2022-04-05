@@ -64,6 +64,7 @@ class KeysController(BaseController):
         "cpanic",
         "ethplorer",
         "smartstake",
+        "github",
     ]
     PATH = "/keys/"
     key_dict: Dict = {}
@@ -81,6 +82,20 @@ class KeysController(BaseController):
             if session and obbff.USE_PROMPT_TOOLKIT:
                 choices: dict = {c: {} for c in self.controller_choices}
                 self.completer = NestedCompleter.from_nested_dict(choices)
+
+    def check_github_key(self, show_output: bool = False) -> None:
+        """Check GitHub key"""
+        self.cfg_dict["GITHUB"] = "github"
+        if cfg.API_GITHUB_KEY == "REPLACE_ME":  # pragma: allowlist secret
+            logger.info("GitHub key not defined")
+            self.key_dict["GITHUB"] = "not defined"
+        else:
+            self.key_dict["GITHUB"] = "defined"
+            # github api will not fail for the first requests without key
+            # only after certain amount of requests the user will get rate limited
+
+        if show_output:
+            console.print(self.key_dict["GITHUB"] + "\n")
 
     def check_av_key(self, show_output: bool = False) -> None:
         """Check Alpha Vantage key"""
@@ -701,6 +716,7 @@ class KeysController(BaseController):
         self.check_cpanic_key()
         self.check_ethplorer_key()
         self.check_smartstake_key()
+        self.check_github_key()
 
     def print_help(self):
         """Print help"""
@@ -711,6 +727,8 @@ class KeysController(BaseController):
             c = "red"
             if v == "defined, test passed":
                 c = "green"
+            elif v == "defined":
+                c = "green"
             elif v == "defined, test inconclusive":
                 c = "yellow"
             elif v == "not defined":
@@ -719,6 +737,37 @@ class KeysController(BaseController):
             help_text += f" [{c}] {k} {(25 - len(k)) * ' '} {v} [/{c}]\n"
 
         console.print(text=help_text, menu="Keys")
+
+    @log_start_end(log=logger)
+    def call_github(self, other_args: List[str]):
+        """Process github command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="github",
+            description="Set GitHub API key.",
+        )
+        parser.add_argument(
+            "-k",
+            "--key",
+            type=str,
+            dest="key",
+            help="key",
+        )
+        if not other_args:
+            console.print(
+                "For your API Key, visit: https://docs.github.com/en/rest/guides/getting-started-with-the-rest-api\n"
+            )
+            return
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-k")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            os.environ["OPENBB_API_GITHUB_KEY"] = ns_parser.key
+            dotenv.set_key(self.env_file, "OPENBB_API_GITHUB_KEY", ns_parser.key)
+            cfg.API_GITHUB_KEY = ns_parser.key
+            self.check_github_key(show_output=True)
 
     @log_start_end(log=logger)
     def call_av(self, other_args: List[str]):

@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 
 # IMPORTATION STANDARD
 import logging
-import os
 import sys
 import time
 from pathlib import Path
@@ -28,19 +27,19 @@ from openbb_terminal.config_terminal import (
     LOGGING_ROLLING_CLOCK,
     LOGGING_VERBOSITY,
 )
-from openbb_terminal.log.generation.settings import (
+from openbb_terminal.core.log.generation.settings import (
     AppSettings,
     AWSSettings,
     LogSettings,
     Settings,
 )
-from openbb_terminal.log.generation.path_tracking_file_handler import (
+from openbb_terminal.core.log.generation.path_tracking_file_handler import (
     PathTrackingFileHandler,
 )
-from openbb_terminal.log.generation.formatter_with_exceptions import (
+from openbb_terminal.core.log.generation.formatter_with_exceptions import (
     FormatterWithExceptions,
 )
-from openbb_terminal.log.generation.directories import get_log_dir
+from openbb_terminal.core.log.generation.directories import get_log_dir
 
 logging.getLogger("requests").setLevel(LOGGING_VERBOSITY)
 logging.getLogger("urllib3").setLevel(LOGGING_VERBOSITY)
@@ -75,11 +74,10 @@ def get_commit_hash() -> str:
     if obbff.LOGGING_COMMIT_HASH != "REPLACE_ME":
         return obbff.LOGGING_COMMIT_HASH
 
-    file_path = Path(__file__)
-    git_dir = file_path.parent.parent.absolute().joinpath(".git")
+    git_dir = Path(__file__).parent.parent.joinpath(".git")
 
-    if WITH_GIT and os.path.isdir(git_dir.absolute()):
-        repo = git.Repo(search_parent_directories=True)
+    if WITH_GIT and git_dir.is_dir():
+        repo = git.Repo(path=git_dir)
         sha = repo.head.object.hexsha
         short_sha = repo.git.rev_parse(sha, short=8)
         commit_hash = f"sha:{short_sha}"
