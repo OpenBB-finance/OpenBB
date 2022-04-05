@@ -408,14 +408,15 @@ def display_equal_weight(
     dd : bool, optional
         Display a drawdown chart with risk measures, by default False
     rc-chart : float, optional
-        Display a risck contribution chart for assets, by default False
+        Display a risk contribution chart for assets, by default False
     heat : float, optional
         Display a heatmap of correlation matrix with dendrogram, by default False
     external_axes: Optional[List[plt.Axes]]
         Optional axes to plot data on
     """
+    p = d_period(period, start, end)
+    s_title = f"{p} Equally Weighted Portfolio\n"
 
-    s_title = "Equally Weighted Portfolio"
     weights, stock_returns = optimizer_model.get_equal_weights(
         stocks=stocks,
         period=period,
@@ -552,14 +553,15 @@ def display_property_weighting(
     dd : bool, optional
         Display a drawdown chart with risk measures, by default False
     rc-chart : float, optional
-        Display a risck contribution chart for assets, by default False
+        Display a risk contribution chart for assets, by default False
     heat : float, optional
         Display a heatmap of correlation matrix with dendrogram, by default False
     external_axes: Optional[List[plt.Axes]]
         Optional axes to plot data on
     """
+    p = d_period(period, start, end)
+    s_title = f"{p} Weighted Portfolio based on " + s_property + "\n"
 
-    s_title = "Weighted Portfolio based on " + s_property
     weights, stock_returns = optimizer_model.get_property_weights(
         stocks=stocks,
         period=period,
@@ -751,7 +753,7 @@ def display_mean_risk(
     dd : bool, optional
         Display a drawdown chart with risk measures, by default False
     rc-chart : float, optional
-        Display a risck contribution chart for assets, by default False
+        Display a risk contribution chart for assets, by default False
     heat : float, optional
         Display a heatmap of correlation matrix with dendrogram, by default False
     external_axes: Optional[List[plt.Axes]]
@@ -759,15 +761,13 @@ def display_mean_risk(
     """
     p = d_period(period, start, end)
     if objective == "sharpe":
-        s_title = f"{p} Display a maximal return/risk ratio portfolio using\n"
+        s_title = f"{p} Maximal return/risk ratio portfolio using\n"
     elif objective == "minrisk":
-        s_title = f"{p} Display a minimum risk portfolio using\n"
+        s_title = f"{p} Minimum risk portfolio using\n"
     elif objective == "maxret":
-        s_title = f"{p} Display a maximal return portfolio using\n"
+        s_title = f"{p} Maximal return portfolio using\n"
     elif objective == "utility":
-        s_title = (
-            f"{p} Display a maximal risk averse utility function\n portfolio using "
-        )
+        s_title = f"{p} Maximal risk averse utility function portfolio using\n"
     s_title += risk_names[risk_measure] + " as risk measure\n"
 
     weights, stock_returns = optimizer_model.get_mean_risk_portfolio(
@@ -962,7 +962,7 @@ def display_max_sharpe(
     dd : bool, optional
         Display a drawdown chart with risk measures, by default False
     rc-chart : float, optional
-        Display a risck contribution chart for assets, by default False
+        Display a risk contribution chart for assets, by default False
     heat : float, optional
         Display a heatmap of correlation matrix with dendrogram, by default False
     external_axes: Optional[List[plt.Axes]]
@@ -1127,7 +1127,7 @@ def display_min_risk(
     dd : bool, optional
         Display a drawdown chart with risk measures, by default False
     rc-chart : float, optional
-        Display a risck contribution chart for assets, by default False
+        Display a risk contribution chart for assets, by default False
     heat : float, optional
         Display a heatmap of correlation matrix with dendrogram, by default False
     external_axes: Optional[List[plt.Axes]]
@@ -1296,7 +1296,7 @@ def display_max_util(
     dd : bool, optional
         Display a drawdown chart with risk measures, by default False
     rc-chart : float, optional
-        Display a risck contribution chart for assets, by default False
+        Display a risk contribution chart for assets, by default False
     heat : float, optional
         Display a heatmap of correlation matrix with dendrogram, by default False
     external_axes: Optional[List[plt.Axes]]
@@ -1462,7 +1462,7 @@ def display_max_ret(
     dd : bool, optional
         Display a drawdown chart with risk measures, by default False
     rc-chart : float, optional
-        Display a risck contribution chart for assets, by default False
+        Display a risk contribution chart for assets, by default False
     heat : float, optional
         Display a heatmap of correlation matrix with dendrogram, by default False
     external_axes: Optional[List[plt.Axes]]
@@ -1583,14 +1583,14 @@ def display_max_div(
     dd : bool, optional
         Display a drawdown chart with risk measures, by default False
     rc-chart : float, optional
-        Display a risck contribution chart for assets, by default False
+        Display a risk contribution chart for assets, by default False
     heat : float, optional
         Display a heatmap of correlation matrix with dendrogram, by default False
     external_axes: Optional[List[plt.Axes]]
         Optional axes to plot data on
     """
     p = d_period(period, start, end)
-    s_title = f"{p} Display a maximal diversification portfolio"
+    s_title = f"{p} Display a maximal diversification portfolio\n"
 
     weights, stock_returns = optimizer_model.get_max_diversification_portfolio(
         stocks=stocks,
@@ -1731,14 +1731,14 @@ def display_max_decorr(
     dd : bool, optional
         Display a drawdown chart with risk measures, by default False
     rc-chart : float, optional
-        Display a risck contribution chart for assets, by default False
+        Display a risk contribution chart for assets, by default False
     heat : float, optional
         Display a heatmap of correlation matrix with dendrogram, by default False
     external_axes: Optional[List[plt.Axes]]
         Optional axes to plot data on
     """
     p = d_period(period, start, end)
-    s_title = f"{p} Display a maximal decorrelation portfolio"
+    s_title = f"{p} Display a maximal decorrelation portfolio\n"
 
     weights, stock_returns = optimizer_model.get_max_decorrelation_portfolio(
         stocks=stocks,
@@ -2151,16 +2151,15 @@ def display_risk_parity(
     dd : bool, optional
         Display a drawdown chart with risk measures, by default False
     rc-chart : float, optional
-        Display a risck contribution chart for assets, by default False
+        Display a risk contribution chart for assets, by default False
     heat : float, optional
         Display a heatmap of correlation matrix with dendrogram, by default False
     external_axes: Optional[List[plt.Axes]]
         Optional axes to plot data on
     """
     p = d_period(period, start, end)
-    s_title = (
-        f"{p} Display a risk parity portfolio based on the risk budgeting approach \n"
-    )
+    s_title = f"{p} Risk parity portfolio based on risk budgeting approach\n"
+    s_title += "using " + risk_names[risk_measure] + " as risk measure\n"
     weights, stock_returns = optimizer_model.get_risk_parity_portfolio(
         stocks=stocks,
         period=period,
@@ -2331,14 +2330,14 @@ def display_rel_risk_parity(
     dd : bool, optional
         Display a drawdown chart with risk measures, by default False
     rc-chart : float, optional
-        Display a risck contribution chart for assets, by default False
+        Display a risk contribution chart for assets, by default False
     heat : float, optional
         Display a heatmap of correlation matrix with dendrogram, by default False
     external_axes: Optional[List[plt.Axes]]
         Optional axes to plot data on
     """
     p = d_period(period, start, end)
-    s_title = f"{p} Display a relaxed risk parity portfolio based on the least squares approach \n"
+    s_title = f"{p} Relaxed risk parity portfolio based on least squares approach\n"
     weights, stock_returns = optimizer_model.get_rel_risk_parity_portfolio(
         stocks=stocks,
         period=period,
@@ -2612,7 +2611,7 @@ def display_hcp(
     dd : bool, optional
         Display a drawdown chart with risk measures, by default False
     rc-chart : float, optional
-        Display a risck contribution chart for assets, by default False
+        Display a risk contribution chart for assets, by default False
     heat : float, optional
         Display a heatmap of correlation matrix with dendrogram, by default False
     external_axes: Optional[List[plt.Axes]]
@@ -2621,13 +2620,15 @@ def display_hcp(
     p = d_period(period, start, end)
 
     if model == "HRP":
-        s_title = f"{p} Display a hierarchical risk parity portfolio"
+        s_title = f"{p} Hierarchical risk parity portfolio"
+        s_title += " using " + codependence + " codependence,\n" + linkage
     elif model == "HERC":
-        s_title = f"{p} Display a hierarchical equal risk contribution portfolio"
+        s_title = f"{p} Hierarchical equal risk contribution portfolio"
+        s_title += " using " + codependence + "\ncodependence," + linkage
     elif model == "NCO":
-        s_title = f"{p} Display a nested clustered optimization"
-    s_title += " using " + codependence + " codependence, " + linkage
-    s_title += " linkage and " + risk_names[risk_measure] + " as risk measure."
+        s_title = f"{p} Nested clustered optimization"
+        s_title += " using " + codependence + " codependence,\n" + linkage
+    s_title += " linkage and " + risk_names[risk_measure] + " as risk measure\n"
 
     weights, stock_returns = optimizer_model.get_hcp_portfolio(
         stocks=stocks,
@@ -2901,7 +2902,7 @@ def display_hrp(
     dd : bool, optional
         Display a drawdown chart with risk measures, by default False
     rc-chart : float, optional
-        Display a risck contribution chart for assets, by default False
+        Display a risk contribution chart for assets, by default False
     heat : float, optional
         Display a heatmap of correlation matrix with dendrogram, by default False
     external_axes: Optional[List[plt.Axes]]
@@ -3150,7 +3151,7 @@ def display_herc(
     dd : bool, optional
         Display a drawdown chart with risk measures, by default False
     rc-chart : float, optional
-        Display a risck contribution chart for assets, by default False
+        Display a risk contribution chart for assets, by default False
     heat : float, optional
         Display a heatmap of correlation matrix with dendrogram, by default False
     external_axes: Optional[List[plt.Axes]]
@@ -3410,7 +3411,7 @@ def display_nco(
     dd : bool, optional
         Display a drawdown chart with risk measures, by default False
     rc-chart : float, optional
-        Display a risck contribution chart for assets, by default False
+        Display a risk contribution chart for assets, by default False
     heat : float, optional
         Display a heatmap of correlation matrix with dendrogram, by default False
     external_axes: Optional[List[plt.Axes]]
@@ -3642,7 +3643,7 @@ def additional_plots(
     dd : bool, optional
         Display a drawdown chart with risk measures, by default False
     rc-chart : float, optional
-        Display a risck contribution chart for assets, by default False
+        Display a risk contribution chart for assets, by default False
     heat : float, optional
         Display a heatmap of correlation matrix with dendrogram, by default False
     external_axes: Optional[List[plt.Axes]]

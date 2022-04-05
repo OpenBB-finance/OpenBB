@@ -2,7 +2,7 @@
 geekdocCollapseSection: true
 ---
 
-The terminal has incorporated PyPortfolioOpt. Refer to the documentation here: <http://riskfolio-lib.readthedocs.io/>
+The terminal has incorporated Riskfolio-Lib. Refer to the documentation here: <http://riskfolio-lib.readthedocs.io/>
 
 ```text
 Portfolio Optimization:

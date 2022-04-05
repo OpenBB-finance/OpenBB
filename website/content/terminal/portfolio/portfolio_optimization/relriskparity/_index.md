@@ -1,28 +1,85 @@
 ```
-usage: effret [-p {1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max}] [-v VALUE] [-n] [--pie] [-t TARGET_RETURN] [-h]
+usage: relriskparity [-p PERIOD] [-s START] [-e END] [-lr] [-f {d,w,m}]
+                     [-mn MAXNAN] [-th THRESHOLD] [-mt METHOD] [-ve {A,B,C}]
+                     [-rc RISK_CONT] [-pf PENAL_FACTOR] [-tr TARGET_RETURN]
+                     [-de D_EWMA] [-v VALUE] [--pie] [--hist] [--dd]
+                     [--rc-chart] [--heat] [-h]
 ```
 
-Calculate the 'Markowitz portfolio', minimising volatility for a given target return. By combining assets with different expected returns and volatilities, one can decide on a mathematically optimal allocation.
+Builds a relaxed risk parity based on least squares approach.
 
 ```
 optional arguments:
-  -p {1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max}, --period {1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max}
-                        period to get yfinance data from (default: 1y)
+  -p PERIOD, --period PERIOD
+                        Period to get yfinance data from (default: 3y)
+  -s START, --start START
+                        Start date to get yfinance data from (default: )
+  -e END, --end END     End date to get yfinance data from (default: )
+  -lr, --log-returns    If use logarithmic or arithmetic returns to calculate
+                        returns (default: False)
+  -f {d,w,m}, --freq {d,w,m}
+                        Frequency used to calculate returns (default: d)
+  -mn MAXNAN, --maxnan MAXNAN
+                        Max percentage of nan values accepted per asset to be
+                        considered in the optimization process (default: 0.05)
+  -th THRESHOLD, --threshold THRESHOLD
+                        Value used to replace outliers that are higher to
+                        threshold in absolute value (default: 0.3)
+  -mt METHOD, --method METHOD
+                        Method used to fill nan values (default: time)
+  -ve {A,B,C}, --version {A,B,C}
+                        version of relaxed risk parity model (default: A)
+  -rc RISK_CONT, --risk-cont RISK_CONT
+                        Vector of risk contribution constraints (default:
+                        None)
+  -pf PENAL_FACTOR, --penal-factor PENAL_FACTOR
+                        The penalization factor of penalization constraints.
+                        Only used with version 'C'. (default: 1)
+  -tr TARGET_RETURN, --target-return TARGET_RETURN
+                        Constraint on minimum level of portfolio's return
+                        (default: -1)
+  -de D_EWMA, --d-ewma D_EWMA
+                        Smoothing factor for ewma estimators (default: 0.94)
   -v VALUE, --value VALUE
                         Amount to allocate to portfolio (default: 1.0)
-  -n, --market-neutral  whether the portfolio should be market neutral (weights sum to zero), defaults to False. Requires negative lower weight bound. (default: False)
-  --pie                 Display a pie chart for weights. Only if neutral flag is left False. (default: False)
-  -t TARGET_RETURN, --target-return TARGET_RETURN
-                        the desired return of the resulting portfolio (default: 0.1)
+  --pie                 Display a pie chart for weights (default: False)
+  --hist                Display a histogram with risk measures (default:
+                        False)
+  --dd                  Display a drawdown chart with risk measures (default:
+                        False)
+  --rc-chart            Display a risck contribution chart for assets
+                        (default: False)
+  --heat                Display a heatmap of correlation matrix with
+                        dendrogram (default: False)
   -h, --help            show this help message (default: False)
 ```
 
 Example:
 ```
-2022 Feb 14, 11:14 (✨) /portfolio/po/ $ effret --pie
+2022 Apr 05, 14:08 (🦋) /portfolio/po/ $ relriskparity
 
-Expected annual return: 42.9%
-Annual volatility: 10.2%
-Sharpe Ratio: 4.00
+ [3 Years] Relaxed risk parity portfolio based on least squares approach
+
+     Weights      
+┏━━━━━━┳━━━━━━━━━┓
+┃      ┃ Value   ┃
+┡━━━━━━╇━━━━━━━━━┩
+│ AAPL │ 13.42 % │
+├──────┼─────────┤
+│ AMZN │ 16.51 % │
+├──────┼─────────┤
+│ BA   │ 10.18 % │
+├──────┼─────────┤
+│ FB   │ 12.83 % │
+├──────┼─────────┤
+│ MSFT │ 14.36 % │
+├──────┼─────────┤
+│ T    │ 24.0 %  │
+├──────┼─────────┤
+│ TSLA │  8.68 % │
+└──────┴─────────┘
+
+Annual (by 252) expected return: 28.99%
+Annual (by √252) volatility: 26.60%
+Sharpe ratio: 1.0899
 ```
-![effret](https://user-images.githubusercontent.com/46355364/153902203-c7a23b78-6211-4d2b-be06-6ed8f0b00143.png)

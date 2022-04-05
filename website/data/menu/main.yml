@@ -1139,18 +1139,30 @@ main:
                 ref: "/terminal/portfolio/portfolio_optimization/dividend"
               - name: property
                 ref: "/terminal/portfolio/portfolio_optimization/property"
-              - name: maxhsarpe
+              - name: maxsharpe
                 ref: "/terminal/portfolio/portfolio_optimization/maxsharpe"
-              - name: minvol
-                ref: "/terminal/portfolio/portfolio_optimization/minvol"
-              - name: maxquadutil
-                ref: "/terminal/portfolio/portfolio_optimization/maxquadutil"
-              - name: effret
-                ref: "/terminal/portfolio/portfolio_optimization/effret"
-              - name: effrisk
-                ref: "/terminal/portfolio/portfolio_optimization/effrisk"
+              - name: minrisk
+                ref: "/terminal/portfolio/portfolio_optimization/minrisk"
+              - name: maxutil
+                ref: "/terminal/portfolio/portfolio_optimization/maxutil"
+              - name: maxret
+                ref: "/terminal/portfolio/portfolio_optimization/maxret"
+              - name: maxdiv
+                ref: "/terminal/portfolio/portfolio_optimization/maxdiv"
+              - name: maxdecorr
+                ref: "/terminal/portfolio/portfolio_optimization/maxdecorr"
               - name: ef
                 ref: "/terminal/portfolio/portfolio_optimization/ef"
+              - name: riskparity
+                ref: "/terminal/portfolio/portfolio_optimization/riskparity"
+              - name: relriskparity
+                ref: "/terminal/portfolio/portfolio_optimization/relriskparity"
+              - name: hrp
+                ref: "/terminal/portfolio/portfolio_optimization/hrp"
+              - name: herc
+                ref: "/terminal/portfolio/portfolio_optimization/herc"
+              - name: nco
+                ref: "/terminal/portfolio/portfolio_optimization/nco"
           - name: load
             ref: "/terminal/portfolio/load"
           - name: save

@@ -449,7 +449,7 @@ class PortfolioOptimizationController(BaseController):
         parser.add_argument(
             "-p",
             "--period",
-            default="1y",
+            default="3y",
             dest="period",
             help="Period to get yfinance data from",
             # choices=self.period_choices,
@@ -568,7 +568,7 @@ class PortfolioOptimizationController(BaseController):
             action="store_true",
             dest="rc_chart",
             default=False,
-            help="Display a risck contribution chart for assets",
+            help="Display a risk contribution chart for assets",
         )
         parser.add_argument(
             "--heat",
@@ -619,7 +619,7 @@ class PortfolioOptimizationController(BaseController):
         parser.add_argument(
             "-p",
             "--period",
-            default="1y",
+            default="3y",
             dest="period",
             help="Period to get yfinance data from",
             # choices=self.period_choices,
@@ -738,7 +738,7 @@ class PortfolioOptimizationController(BaseController):
             action="store_true",
             dest="rc_chart",
             default=False,
-            help="Display a risck contribution chart for assets",
+            help="Display a risk contribution chart for assets",
         )
         parser.add_argument(
             "--heat",
@@ -789,7 +789,7 @@ class PortfolioOptimizationController(BaseController):
         parser.add_argument(
             "-p",
             "--period",
-            default="1y",
+            default="3y",
             dest="period",
             help="Period to get yfinance data from",
             # choices=self.period_choices,
@@ -908,7 +908,7 @@ class PortfolioOptimizationController(BaseController):
             action="store_true",
             dest="rc_chart",
             default=False,
-            help="Display a risck contribution chart for assets",
+            help="Display a risk contribution chart for assets",
         )
         parser.add_argument(
             "--heat",
@@ -960,7 +960,7 @@ class PortfolioOptimizationController(BaseController):
         parser.add_argument(
             "-p",
             "--period",
-            default="1y",
+            default="3y",
             dest="period",
             help="Period to get yfinance data from",
             # choices=self.period_choices,
@@ -1025,7 +1025,7 @@ class PortfolioOptimizationController(BaseController):
             "--property",
             required=bool("-h" not in other_args),
             type=optimizer_helper.check_valid_property_type,
-            dest="property",
+            dest="s_property",
             choices=self.yf_info_choices,
             help="""Property info to weight. Use one of yfinance info options.""",
         )
@@ -1088,7 +1088,7 @@ class PortfolioOptimizationController(BaseController):
             action="store_true",
             dest="rc_chart",
             default=False,
-            help="Display a risck contribution chart for assets",
+            help="Display a risk contribution chart for assets",
         )
         parser.add_argument(
             "--heat",
@@ -1214,7 +1214,7 @@ class PortfolioOptimizationController(BaseController):
         parser.add_argument(
             "-p",
             "--period",
-            default="1y",
+            default="3y",
             dest="period",
             help="Period to get yfinance data from",
             # choices=self.period_choices,
@@ -1379,7 +1379,7 @@ class PortfolioOptimizationController(BaseController):
             action="store_true",
             dest="rc_chart",
             default=False,
-            help="Display a risck contribution chart for assets",
+            help="Display a risk contribution chart for assets",
         )
         parser.add_argument(
             "--heat",
@@ -1437,7 +1437,7 @@ class PortfolioOptimizationController(BaseController):
         parser.add_argument(
             "-p",
             "--period",
-            default="1y",
+            default="3y",
             dest="period",
             help="Period to get yfinance data from",
             # choices=self.period_choices,
@@ -1602,7 +1602,7 @@ class PortfolioOptimizationController(BaseController):
             action="store_true",
             dest="rc_chart",
             default=False,
-            help="Display a risck contribution chart for assets",
+            help="Display a risk contribution chart for assets",
         )
         parser.add_argument(
             "--heat",
@@ -1660,7 +1660,7 @@ class PortfolioOptimizationController(BaseController):
         parser.add_argument(
             "-p",
             "--period",
-            default="1y",
+            default="3y",
             dest="period",
             help="Period to get yfinance data from",
             # choices=self.period_choices,
@@ -1833,7 +1833,7 @@ class PortfolioOptimizationController(BaseController):
             action="store_true",
             dest="rc_chart",
             default=False,
-            help="Display a risck contribution chart for assets",
+            help="Display a risk contribution chart for assets",
         )
         parser.add_argument(
             "--heat",
@@ -1892,7 +1892,7 @@ class PortfolioOptimizationController(BaseController):
         parser.add_argument(
             "-p",
             "--period",
-            default="1y",
+            default="3y",
             dest="period",
             help="Period to get yfinance data from",
             # choices=self.period_choices,
@@ -2057,7 +2057,7 @@ class PortfolioOptimizationController(BaseController):
             action="store_true",
             dest="rc_chart",
             default=False,
-            help="Display a risck contribution chart for assets",
+            help="Display a risk contribution chart for assets",
         )
         parser.add_argument(
             "--heat",
@@ -2115,7 +2115,7 @@ class PortfolioOptimizationController(BaseController):
         parser.add_argument(
             "-p",
             "--period",
-            default="1y",
+            default="3y",
             dest="period",
             help="Period to get yfinance data from",
             # choices=self.period_choices,
@@ -2233,7 +2233,7 @@ class PortfolioOptimizationController(BaseController):
             action="store_true",
             dest="rc_chart",
             default=False,
-            help="Display a risck contribution chart for assets",
+            help="Display a risk contribution chart for assets",
         )
         parser.add_argument(
             "--heat",
@@ -2285,7 +2285,7 @@ class PortfolioOptimizationController(BaseController):
         parser.add_argument(
             "-p",
             "--period",
-            default="1y",
+            default="3y",
             dest="period",
             help="Period to get yfinance data from",
             # choices=self.period_choices,
@@ -2403,7 +2403,7 @@ class PortfolioOptimizationController(BaseController):
             action="store_true",
             dest="rc_chart",
             default=False,
-            help="Display a risck contribution chart for assets",
+            help="Display a risk contribution chart for assets",
         )
         parser.add_argument(
             "--heat",
@@ -2625,7 +2625,7 @@ class PortfolioOptimizationController(BaseController):
         parser.add_argument(
             "-p",
             "--period",
-            default="1y",
+            default="3y",
             dest="period",
             help="Period to get yfinance data from",
             # choices=self.period_choices,
@@ -2767,7 +2767,7 @@ class PortfolioOptimizationController(BaseController):
             action="store_true",
             dest="rc_chart",
             default=False,
-            help="Display a risck contribution chart for assets",
+            help="Display a risk contribution chart for assets",
         )
         parser.add_argument(
             "--heat",
@@ -2822,7 +2822,7 @@ class PortfolioOptimizationController(BaseController):
         parser.add_argument(
             "-p",
             "--period",
-            default="1y",
+            default="3y",
             dest="period",
             help="Period to get yfinance data from",
             # choices=self.period_choices,
@@ -2956,7 +2956,7 @@ class PortfolioOptimizationController(BaseController):
             action="store_true",
             dest="rc_chart",
             default=False,
-            help="Display a risck contribution chart for assets",
+            help="Display a risk contribution chart for assets",
         )
         parser.add_argument(
             "--heat",
@@ -3010,7 +3010,7 @@ class PortfolioOptimizationController(BaseController):
         parser.add_argument(
             "-p",
             "--period",
-            default="1y",
+            default="3y",
             dest="period",
             help="Period to get yfinance data from",
             # choices=self.period_choices,
@@ -3232,7 +3232,7 @@ class PortfolioOptimizationController(BaseController):
             action="store_true",
             dest="rc_chart",
             default=False,
-            help="Display a risck contribution chart for assets",
+            help="Display a risk contribution chart for assets",
         )
         parser.add_argument(
             "--heat",
@@ -3296,7 +3296,7 @@ class PortfolioOptimizationController(BaseController):
         parser.add_argument(
             "-p",
             "--period",
-            default="1y",
+            default="3y",
             dest="period",
             help="Period to get yfinance data from",
             # choices=self.period_choices,
@@ -3518,7 +3518,7 @@ class PortfolioOptimizationController(BaseController):
             action="store_true",
             dest="rc_chart",
             default=False,
-            help="Display a risck contribution chart for assets",
+            help="Display a risk contribution chart for assets",
         )
         parser.add_argument(
             "--heat",
@@ -3582,7 +3582,7 @@ class PortfolioOptimizationController(BaseController):
         parser.add_argument(
             "-p",
             "--period",
-            default="1y",
+            default="3y",
             dest="period",
             help="Period to get yfinance data from",
             # choices=self.period_choices,
@@ -3711,7 +3711,8 @@ class PortfolioOptimizationController(BaseController):
         )
         parser.add_argument(
             "-k",
-            default="",
+            type=int,
+            default=None,
             dest="k",
             help="Number of clusters specified in advance",
         )
@@ -3792,7 +3793,7 @@ class PortfolioOptimizationController(BaseController):
             action="store_true",
             dest="rc_chart",
             default=False,
-            help="Display a risck contribution chart for assets",
+            help="Display a risk contribution chart for assets",
         )
         parser.add_argument(
             "--heat",
