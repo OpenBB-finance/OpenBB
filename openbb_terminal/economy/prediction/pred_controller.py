@@ -398,7 +398,7 @@ class PredictionTechniquesController(BaseController):
         if (
             other_args
             and "-h" not in other_args
-            and ("-p" not in other_args or "--polynomial" not in other_args)
+            and not ("-p" in other_args or "--polynomial" in other_args)
         ):
             other_args.insert(0, "-p")
         ns_parser = parse_known_args_and_warn(
