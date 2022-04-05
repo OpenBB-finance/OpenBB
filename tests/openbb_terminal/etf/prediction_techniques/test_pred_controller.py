@@ -197,7 +197,7 @@ def test_print_help(start):
     [
         ("", []),
         ("/help", ["home", "help"]),
-        ("help/help", ["help", "help"]),
+        ("help;help", ["help", "help"]),
         ("q", ["quit"]),
         ("h", []),
         ("r", ["quit", "quit", "reset", "etf", "load ARKW", "pred"]),

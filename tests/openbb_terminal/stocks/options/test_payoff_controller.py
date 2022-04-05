@@ -279,7 +279,7 @@ def test_print_help(mocker, underlying):
     [
         ("", []),
         ("/help", ["home", "help"]),
-        ("help/help", ["help", "help"]),
+        ("help;help", ["help", "help"]),
         ("q", ["quit"]),
         ("h", []),
         (

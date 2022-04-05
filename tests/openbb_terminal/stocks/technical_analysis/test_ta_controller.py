@@ -186,7 +186,7 @@ def test_print_help(start):
                 "help",
             ],
         ),
-        ("help/help", ["help", "help"]),
+        ("help;help", ["help", "help"]),
         ("q", ["quit"]),
         ("h", []),
         (

@@ -138,7 +138,7 @@ def test_print_help():
     [
         ("", []),
         ("/help", ["home", "help"]),
-        ("help/help", ["help", "help"]),
+        ("help;help", ["help", "help"]),
         ("q", ["quit"]),
         ("h", []),
         ("r", ["quit", "quit", "quit", "reset", "stocks", "fa", "fmp"]),
