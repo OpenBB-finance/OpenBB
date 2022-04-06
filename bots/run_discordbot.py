@@ -3,20 +3,34 @@ import asyncio
 import hashlib
 import logging
 import os
+from pathlib import Path
 import platform
 import sys
 import traceback
 import uuid
 from typing import Any, Dict
 
-import config_discordbot as cfg
+from dotenv import load_dotenv
 import disnake
 from disnake.ext import commands
 from fastapi import FastAPI, Request
 
-from bots.groupme.run_groupme import handle_groupme
-from openbb_terminal.decorators import log_start_end
-from openbb_terminal.loggers import setup_logging
+try:
+    from bots import config_discordbot as cfg
+except Exception:
+    sys.path.append(str(Path(__file__).parent.resolve().__str__))
+    from bots import config_discordbot as cfg
+finally:
+    from bots.groupme.run_groupme import handle_groupme
+    from openbb_terminal.decorators import log_start_end
+    from openbb_terminal.loggers import setup_logging
+
+# Load env and add to sys path
+bots_path = Path(__file__).parent.resolve()
+env_files = [f for f in bots_path.iterdir() if f.__str__().endswith(".env")]
+
+if env_files:
+    load_dotenv(env_files[0])
 
 logger = logging.getLogger(__name__)
 setup_logging(f"bot_pid_{os.getpid()}")
