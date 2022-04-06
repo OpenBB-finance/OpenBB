@@ -2,7 +2,7 @@
 
 Displays crypto {borrow,supply} interest rates for cryptocurrencies across several platforms. [Source: https://loanscan.io]
 You can select rate type with --type {borrow,supply} You
-can display only N number of platforms with --limit parameter.
+can display only N number of platforms with --limit parameter. You can check for specific coins with -c and in specific platforms with -p
 
 ```
 optional arguments:
