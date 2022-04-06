@@ -12,6 +12,7 @@ try:
     from bots.helpers import load
 except ImportError:
     sys.path.append(str(Path(__file__).parent.parent.parent.resolve().__str__))
+    from bots.helpers import load
 finally:
     from bots.helpers import (
         ShowView,
@@ -21,7 +22,6 @@ finally:
         image_border,
         industry_autocomp,
         inter_chart,
-        load,
         metric_autocomp,
         multi_image,
         presets_custom_autocomp,
