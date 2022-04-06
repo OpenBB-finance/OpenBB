@@ -165,6 +165,9 @@ def view_historical_greeks(
     ax.set_title(
         f"{(greek).capitalize()} historical for {ticker.upper()} {strike} {['Call','Put'][put]}"
     )
+    if df.empty:
+        console.print("[red]Data from API is not valid.[/red]\n")
+        return
     ax.set_xlim(df.index[0], df.index[-1])
     ims = im1 + im2
     labels = [lab.get_label() for lab in ims]
