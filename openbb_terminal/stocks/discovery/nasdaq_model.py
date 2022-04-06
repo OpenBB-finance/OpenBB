@@ -74,6 +74,7 @@ def get_dividend_cal(date: str) -> pd.DataFrame:
         r = requests.get(
             f"https://api.nasdaq.com/api/calendar/dividends?date={date}",
             headers={"User-Agent": ag},
+            timeout=5,
         )
 
         df = pd.DataFrame()
