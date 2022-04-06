@@ -13,7 +13,7 @@ import disnake
 from disnake.ext import commands
 from fastapi import FastAPI, Request
 
-import config_discordbot as cfg
+from bots import config_discordbot as cfg
 from bots.groupme.run_groupme import handle_groupme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.loggers import setup_logging
