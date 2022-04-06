@@ -149,7 +149,9 @@ class BaseController(metaclass=ABCMeta):
                 joined_queue,
             )
 
-    def log_cmd_and_queue(self, known_cmd: str, other_args_str: str, the_input: str) -> None:
+    def log_cmd_and_queue(
+        self, known_cmd: str, other_args_str: str, the_input: str
+    ) -> None:
         if not self.contains_keys(the_input):
             logger.info(
                 "CMD: {'path': '%s', 'known_cmd': '%s', 'other_args': '%s', 'input': '%s'}",
