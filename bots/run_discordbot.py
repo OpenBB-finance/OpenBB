@@ -17,7 +17,7 @@ from fastapi import FastAPI, Request
 
 try:
     from bots import config_discordbot as cfg
-except Exception:
+except ImportError:
     sys.path.append(str(Path(__file__).parent.resolve().__str__))
     from bots import config_discordbot as cfg
 finally:
