@@ -114,6 +114,7 @@ def candle_command(
         title=title,
         title_x=0.5,
         title_font_size=14,
+        yaxis_title="",
     )
     imagefile = "candle.png"
 
@@ -122,10 +123,6 @@ def candle_command(
     if imps.INTERACTIVE:
         plt_link = imps.inter_chart(fig, imagefile, callback=True)
 
-    fig.update_layout(
-        width=800,
-        height=500,
-    )
     imagefile = imps.image_border(imagefile, fig=fig)
 
     return {

@@ -125,11 +125,6 @@ def options_run(
         plt_link = imps.inter_chart(fig, imagefile, callback=False)
         reports.append(plt_link)
 
-    fig.update_layout(
-        width=800,
-        height=500,
-    )
-
     imagefile = imps.image_border(imagefile, fig=fig)
 
     if imps.IMAGES_URL or not imps.IMG_HOST_ACTIVE:

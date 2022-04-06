@@ -43,7 +43,7 @@ SLASH_TESTING_SERVERS: Optional[
 ] = None  # Add server ID for testing [1884912191119489, 1454644614118448]
 COMMAND_PREFIX = "!"
 DATE_FORMAT = "%Y-%m-%d"
-COLOR = disnake.Color.from_rgb(255, 0, 0)
+COLOR = disnake.Color.from_rgb(130, 38, 97)
 
 # Interactive Chart Settings
 INTERACTIVE = strtobool(os.getenv("OPENBB_INTERACTIVE", "False"))
@@ -56,7 +56,7 @@ IMG_DIR = bots_path.joinpath("interactive/images/")
 IMAGES_URL = ""  # Ex. "http://your-site.com/images/"
 
 # IMG_BG = bots_path.joinpath("files/bg.png")  # Light BG
-IMG_BG = bots_path.joinpath("files/bg-dark.png")  # Dark BG
+IMG_BG = bots_path.joinpath("files/bg-dark_openbb.png")  # Dark BG
 
 DEBUG = strtobool(os.getenv("OPENBB_DEBUG", "False"))
 

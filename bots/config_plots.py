@@ -28,6 +28,7 @@ PLT_3DMESH_STYLE_TEMPLATE = "plotly_dark"
 
 # Chart Plots Settings
 PLT_CANDLE_STYLE_TEMPLATE = "plotly_dark"
+PLT_CANDLE_YAXIS_TEXT_COLOR = "#fdc708"
 PLT_SCAT_STYLE_TEMPLATE = "plotly_dark"
 PLT_TA_STYLE_TEMPLATE = "plotly_dark"
 PLT_FONT = dict(
@@ -56,7 +57,22 @@ PLT_FIB_COLORWAY: List[Any] = [
     ),  # Fib's Text
     dict(color="rgba(0, 230, 195, 1)", width=2, dash="dash"),  # Fib Trendline
 ]
-PLT_WATERMARK = ""
+PLT_WATERMARK = dict(
+    source=(
+        "https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal"
+        "/main/images/openbb_logo.png"
+    ),
+    xref="paper",
+    yref="paper",
+    x=0.86,
+    y=0.08,
+    sizex=1.15,
+    sizey=1.20,
+    opacity=0.04,
+    xanchor="right",
+    yanchor="bottom",
+    layer="below",
+)
 
 # Table Plots Settings
 PLT_TBL_HEADER = dict(

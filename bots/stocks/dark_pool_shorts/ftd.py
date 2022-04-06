@@ -1,6 +1,7 @@
 import logging
 from datetime import datetime, timedelta
 
+import pandas as pd
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
@@ -77,6 +78,31 @@ def ftd_command(ticker: str = "", start="", end=""):
     )
     if imps.PLT_WATERMARK:
         fig.add_layout_image(imps.PLT_WATERMARK)
+    ftds_data["QUANTITY (FAILS)"] = ftds_data["QUANTITY (FAILS)"].apply(
+        lambda x: f"{x:.1f}"
+    )
+    ftds_data["QUANTITY (FAILS)"] = pd.to_numeric(
+        ftds_data["QUANTITY (FAILS)"].astype(float)
+    )
+    volume_ticks = (ftds_data["QUANTITY (FAILS)"].values.max()).astype(int)
+    round_digits = -3
+    first_val = round(volume_ticks * 0.20, round_digits)
+    if len(str(volume_ticks)) > 5:
+        round_digits = -4
+        first_val = round(volume_ticks * 0.20, round_digits)
+    if len(str(volume_ticks)) > 6:
+        round_digits = -5
+        first_val = round(volume_ticks * 0.20, round_digits)
+    if len(str(volume_ticks)) > 7:
+        round_digits = -6
+        first_val = round(volume_ticks * 0.20, round_digits)
+    if len(str(volume_ticks)) > 8:
+        round_digits = -8
+        first_val = round(volume_ticks * 0.20, round_digits)
+    if len(str(volume_ticks)) > 9:
+        round_digits = -9
+        first_val = round(volume_ticks * 0.20, round_digits)
+
     fig.update_layout(
         margin=dict(l=0, r=20, t=30, b=20),
         template=imps.PLT_TA_STYLE_TEMPLATE,
@@ -88,7 +114,6 @@ def ftd_command(ticker: str = "", start="", end=""):
         yaxis2=dict(
             side="left",
             fixedrange=False,
-            showgrid=False,
             layer="above traces",
             overlaying="y",
             titlefont=dict(color="#fdc708"),
@@ -102,13 +127,22 @@ def ftd_command(ticker: str = "", start="", end=""):
             side="right",
             position=0.15,
             fixedrange=False,
-            title_text="<b>Shares</b>",
+            showgrid=False,
+            title_text="",
             titlefont=dict(color="#d81aea"),
             tickfont=dict(
                 color="#d81aea",
                 size=13,
             ),
             nticks=20,
+            range=[0, (volume_ticks * 3)],
+            tickvals=[
+                first_val * 1,
+                first_val * 2,
+                first_val * 3,
+                first_val * 4,
+                first_val * 5,
+            ],
         ),
         xaxis=dict(
             rangeslider=dict(visible=False),
@@ -131,11 +165,6 @@ def ftd_command(ticker: str = "", start="", end=""):
     plt_link = ""
     if imps.INTERACTIVE:
         plt_link = imps.inter_chart(fig, imagefile, callback=False)
-
-    fig.update_layout(
-        width=800,
-        height=500,
-    )
 
     imagefile = imps.image_border(imagefile, fig=fig)
 

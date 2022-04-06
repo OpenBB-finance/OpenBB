@@ -97,8 +97,8 @@ def cci_command(
         rows=2,
         cols=1,
         shared_xaxes=True,
-        vertical_spacing=0.07,
-        row_width=[0.4, 0.6],
+        vertical_spacing=0.05,
+        row_width=[0.4, 0.7],
         specs=[[{"secondary_y": True}], [{"secondary_y": False}]],
     )
     title = f"<b>{plot['plt_title']} Commodity-Channel-Index</b>"
@@ -178,11 +178,6 @@ def cci_command(
     plt_link = ""
     if imps.INTERACTIVE:
         plt_link = imps.inter_chart(fig, imagefile, callback=False)
-
-    fig.update_layout(
-        width=800,
-        height=500,
-    )
 
     imagefile = imps.image_border(imagefile, fig=fig)
 

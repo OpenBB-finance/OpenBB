@@ -416,31 +416,34 @@ def image_border(filename: str, **kwargs) -> str:
     filesave = imps.IMG_DIR.joinpath(imagefile)
     if "fig" in kwargs:
         fig = kwargs["fig"]
-        fig.write_image(filesave)
+        fig.write_image(filesave, scale=5)
         img = Image.open(filesave)
     elif "base64" in kwargs:
         img = Image.open(kwargs["base64"])
     else:
         img = Image.open(filename)
-    im_bg = Image.open(imps.IMG_BG)
 
-    w = img.width + 520
-    h = img.height + 240
+    im_bg = Image.open(imps.IMG_BG)
+    im_bg = im_bg.resize((4100, 2600), resample=Image.Resampling.LANCZOS)
+
+    w = img.width + 500
+    h = img.height
 
     # Paste fig onto background img and autocrop background
-    img = img.resize((w, h), Image.ANTIALIAS)
+    img = img.resize((w, h), resample=Image.Resampling.LANCZOS)
     x1 = int(0.5 * im_bg.size[0]) - int(0.5 * img.size[0])
     y1 = int(0.5 * im_bg.size[1]) - int(0.5 * img.size[1])
     x2 = int(0.5 * im_bg.size[0]) + int(0.5 * img.size[0])
     y2 = int(0.5 * im_bg.size[1]) + int(0.5 * img.size[1])
     img = img.convert("RGB")
-    im_bg.paste(img, box=(x1 - 5, y1, x2 - 5, y2))
+    im_bg.paste(img, box=(x1 + 10, y1 + 10, x2 + 10, y2 + 10))
     img.close()
     im_bg.save(filesave, "PNG", quality=100)
     im_bg.close()
     image = Image.open(filesave)
-    image = autocrop_image(image, 0)
-    image.save(filesave, "PNG", quality=100)
+    image = imps.autocrop_image(image, 0)
+    image = image.resize((1800, 1200), resample=Image.Resampling.LANCZOS)
+    image.save(filesave, "PNG")
     image.close()
     return imagefile
 
