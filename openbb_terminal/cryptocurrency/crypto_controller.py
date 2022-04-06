@@ -451,9 +451,7 @@ class CryptoController(CryptoBaseController):
     @log_start_end(log=logger)
     def call_defi(self, _):
         """Process defi command"""
-        from openbb_terminal.cryptocurrency.defi.defi_controller import (
-            DefiController,
-        )
+        from openbb_terminal.cryptocurrency.defi.defi_controller import DefiController
 
         self.queue = self.load_class(DefiController, self.queue)
 
