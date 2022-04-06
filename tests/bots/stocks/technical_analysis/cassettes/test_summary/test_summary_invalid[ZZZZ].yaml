@@ -1,0 +1,47 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.finbrain.tech/v0/technicalSummary/ZZZZ
+  response:
+    body:
+      string: '{"message":"Technical Summary is not available for this ticker","error":{"name":"i","message":"Technical
+        Summary is not available for this ticker","status":404,"cause":404}}'
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '173'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 04 Apr 2022 00:36:03 GMT
+      X-Amzn-Trace-Id:
+      - Root=1-624a3d73-06981aee6f01686d1f90a9de;Sampled=0
+      access-control-allow-origin:
+      - '*'
+      etag:
+      - W/"ad-6JNVwdYeegSwNy/5lMeDshljVbI"
+      x-amz-apigw-id:
+      - QB6KCEL2oAMFevw=
+      x-amzn-Remapped-connection:
+      - close
+      x-amzn-Remapped-content-length:
+      - '173'
+      x-amzn-Remapped-date:
+      - Mon, 04 Apr 2022 00:36:03 GMT
+      x-amzn-RequestId:
+      - 715a53ed-0751-4fa0-a2d1-ee30ebec343b
+      x-powered-by:
+      - Express
+    status:
+      code: 404
+      message: Not Found
+version: 1

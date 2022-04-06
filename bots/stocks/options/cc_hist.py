@@ -24,7 +24,7 @@ def cc_hist_command(
         expiration date
     strike: float
         Option strike price
-    put: bool
+    opt_type: str
         Calls for call
         Puts for put
     """
@@ -34,7 +34,7 @@ def cc_hist_command(
         logger.info("opt hist %s, %s, %s, %s", ticker, strike, opt_type, expiry)
 
     # Check for argument
-    if ticker is None:
+    if not ticker:
         raise Exception("Stock ticker is required")
     yf_ticker = yf.Ticker(ticker)
     dates = list(yf_ticker.options)

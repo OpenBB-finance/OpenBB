@@ -98,7 +98,7 @@ trio = ["trio (>=0.16)"]
 
 [[package]]
 name = "appnope"
-version = "0.1.2"
+version = "0.1.3"
 description = "Disable App Nap on macOS >= 10.9"
 category = "main"
 optional = false
@@ -160,11 +160,11 @@ tests = ["pytest", "pytest-asyncio", "mypy (>=0.800)"]
 
 [[package]]
 name = "astor"
-version = "0.8.1"
+version = "0.7.1"
 description = "Read/rewrite/write Python ASTs"
 category = "main"
 optional = false
-python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,>=2.7"
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
 [[package]]
 name = "astroid"
@@ -387,7 +387,7 @@ python-dateutil = ">=2.1,<3.0.0"
 urllib3 = ">=1.25.4,<1.27"
 
 [package.extras]
-crt = ["awscrt (==0.13.5)"]
+crt = ["awscrt (==0.13.8)"]
 
 [[package]]
 name = "bs4"
@@ -467,7 +467,7 @@ version = "8.1.2"
 description = "Composable command line interface toolkit"
 category = "main"
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.6"
 
 [package.dependencies]
 colorama = {version = "*", markers = "platform_system == \"Windows\""}
@@ -781,7 +781,7 @@ python-versions = ">=3.6"
 name = "exchange-calendars"
 version = "3.6.1"
 description = "exchange_calendars is a Python library with securities exchange calendars"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.7"
 
@@ -822,6 +822,17 @@ all = ["requests (>=2.24.0,<3.0.0)", "jinja2 (>=2.11.2,<4.0.0)", "python-multipa
 dev = ["python-jose[cryptography] (>=3.3.0,<4.0.0)", "passlib[bcrypt] (>=1.7.2,<2.0.0)", "autoflake (>=1.4.0,<2.0.0)", "flake8 (>=3.8.3,<4.0.0)", "uvicorn[standard] (>=0.12.0,<0.16.0)"]
 doc = ["mkdocs (>=1.1.2,<2.0.0)", "mkdocs-material (>=8.1.4,<9.0.0)", "mdx-include (>=1.4.1,<2.0.0)", "mkdocs-markdownextradata-plugin (>=0.1.7,<0.3.0)", "typer-cli (>=0.0.12,<0.0.13)", "pyyaml (>=5.3.1,<6.0.0)"]
 test = ["pytest (>=6.2.4,<7.0.0)", "pytest-cov (>=2.12.0,<4.0.0)", "mypy (==0.910)", "flake8 (>=3.8.3,<4.0.0)", "black (==21.9b0)", "isort (>=5.0.6,<6.0.0)", "requests (>=2.24.0,<3.0.0)", "httpx (>=0.14.0,<0.19.0)", "email_validator (>=1.1.1,<2.0.0)", "sqlalchemy (>=1.3.18,<1.5.0)", "peewee (>=3.13.3,<4.0.0)", "databases[sqlite] (>=0.3.2,<0.6.0)", "orjson (>=3.2.1,<4.0.0)", "ujson (>=4.0.1,<5.0.0)", "python-multipart (>=0.0.5,<0.0.6)", "flask (>=1.1.2,<3.0.0)", "anyio[trio] (>=3.2.1,<4.0.0)", "types-ujson (==0.1.1)", "types-orjson (==3.6.0)", "types-dataclasses (==0.1.7)"]
+
+[[package]]
+name = "fastjsonschema"
+version = "2.15.3"
+description = "Fastest Python implementation of JSON schema"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.extras]
+devel = ["colorama", "jsonschema", "json-spec", "pylint", "pytest", "pytest-benchmark", "pytest-cache", "validictory"]
 
 [[package]]
 name = "fear-greed-index"
@@ -885,7 +896,7 @@ python-versions = "*"
 
 [[package]]
 name = "finnhub-python"
-version = "2.4.11"
+version = "2.4.12"
 description = "Finnhub API"
 category = "main"
 optional = false
@@ -915,7 +926,7 @@ user_agent = "*"
 
 [[package]]
 name = "finvizfinance"
-version = "0.12.2"
+version = "0.14.0"
 description = "Finviz Finance. Information downloader."
 category = "main"
 optional = false
@@ -972,15 +983,15 @@ woff = ["zopfli (>=0.1.4)", "brotlicffi (>=0.8.0)", "brotli (>=1.0.1)"]
 
 [[package]]
 name = "formulaic"
-version = "0.3.2"
+version = "0.3.3"
 description = "An implementation of Wilkinson formulas."
 category = "main"
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.7.1,<4.0.0"
 
 [package.dependencies]
-astor = ">=0.7.0"
-interface-meta = ">=1.2"
+astor = ">=0.7.0,<0.8.0"
+interface-meta = ">=1.2.0,<2.0.0"
 numpy = ">=1.3"
 pandas = ">=1.2"
 scipy = ">=1.6"
@@ -988,9 +999,7 @@ wrapt = ">=1.0"
 
 [package.extras]
 arrow = ["pyarrow (>=1)"]
-benchmarks = ["patsy", "rpy2", "uncertainties"]
 calculus = ["sympy (>=1.3,<1.10)"]
-test = ["black (==22.1.0)", "flake8 (==4.0.1)", "pytest (==6.2.5)", "pytest-cov (==3.0.0)"]
 
 [[package]]
 name = "fred"
@@ -1016,7 +1025,7 @@ pandas = "*"
 
 [[package]]
 name = "frozendict"
-version = "2.3.0"
+version = "2.3.1"
 description = "A simple immutable dictionary"
 category = "main"
 optional = false
@@ -1237,11 +1246,11 @@ python-versions = "*"
 
 [[package]]
 name = "interface-meta"
-version = "1.2.5"
-description = "InterfaceMeta"
+version = "1.3.0"
+description = "`interface_meta` provides a convenient way to expose an extensible API with enforced method signatures and consistent documentation."
 category = "main"
 optional = false
-python-versions = ">=3.4"
+python-versions = ">=3.7,<4.0"
 
 [[package]]
 name = "investpy"
@@ -1281,6 +1290,7 @@ ipython = ">=7.23.1"
 jupyter-client = ">=6.1.12"
 matplotlib-inline = ">=0.1"
 nest-asyncio = "*"
+packaging = "*"
 psutil = "*"
 tornado = ">=6.1"
 traitlets = ">=5.1.0"
@@ -2073,24 +2083,24 @@ webpdf = ["pyppeteer (>=1,<1.1)"]
 
 [[package]]
 name = "nbformat"
-version = "5.2.0"
+version = "5.3.0"
 description = "The Jupyter Notebook format"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 
 [package.dependencies]
-jsonschema = ">=2.4,<2.5.0 || >2.5.0"
+fastjsonschema = "*"
+jsonschema = ">=2.6"
 jupyter-core = "*"
 traitlets = ">=4.1"
 
 [package.extras]
-fast = ["fastjsonschema"]
-test = ["check-manifest", "fastjsonschema", "testpath", "pytest"]
+test = ["check-manifest", "testpath", "pytest", "pre-commit"]
 
 [[package]]
 name = "nest-asyncio"
-version = "1.5.4"
+version = "1.5.5"
 description = "Patch asyncio to allow nested event loops"
 category = "main"
 optional = false
@@ -2286,7 +2296,7 @@ requests = ">=2.19.0"
 name = "pandas-market-calendars"
 version = "3.2"
 description = "Market and exchange trading calendars for pandas"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.7.0"
 
@@ -2527,11 +2537,11 @@ test = ["betamax (>=0.8,<0.9)", "betamax-matchers (>=0.4.0,<0.5)", "betamax-seri
 
 [[package]]
 name = "pre-commit"
-version = "2.17.0"
+version = "2.18.1"
 description = "A framework for managing and maintaining multi-language pre-commit hooks."
 category = "dev"
 optional = false
-python-versions = ">=3.6.1"
+python-versions = ">=3.7"
 
 [package.dependencies]
 cfgv = ">=2.0.0"
@@ -2554,7 +2564,7 @@ twisted = ["twisted"]
 
 [[package]]
 name = "prompt-toolkit"
-version = "3.0.28"
+version = "3.0.29"
 description = "Library for building powerful interactive command lines in Python"
 category = "main"
 optional = false
@@ -2841,7 +2851,7 @@ testutil = ["gitpython (>3)"]
 name = "pyluach"
 version = "1.4.1"
 description = "Pyluach is a Python package for manipulating Hebrew dates,"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.6"
 
@@ -4006,7 +4016,7 @@ python-versions = ">=3.7"
 name = "toolz"
 version = "0.11.2"
 description = "List processing tools and functional utilities"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.5"
 
@@ -4020,7 +4030,7 @@ python-versions = ">= 3.5"
 
 [[package]]
 name = "tqdm"
-version = "4.63.1"
+version = "4.64.0"
 description = "Fast, Extensible Progress Meter"
 category = "main"
 optional = false
@@ -4032,6 +4042,7 @@ colorama = {version = "*", markers = "platform_system == \"Windows\""}
 [package.extras]
 dev = ["py-make (>=0.1.0)", "twine", "wheel"]
 notebook = ["ipywidgets (>=6)"]
+slack = ["slack-sdk"]
 telegram = ["requests"]
 
 [[package]]
@@ -4135,7 +4146,7 @@ types-urllib3 = "<1.27"
 
 [[package]]
 name = "types-setuptools"
-version = "57.4.11"
+version = "57.4.12"
 description = "Typing stubs for setuptools"
 category = "dev"
 optional = false
@@ -4462,15 +4473,15 @@ requests = ">=2.26"
 
 [[package]]
 name = "zipp"
-version = "3.7.0"
+version = "3.8.0"
 description = "Backport of pathlib-compatible object wrapper for zip files"
 category = "main"
 optional = true
 python-versions = ">=3.7"
 
 [package.extras]
-docs = ["sphinx", "jaraco.packaging (>=8.2)", "rst.linker (>=1.9)"]
-testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-cov", "pytest-enabler (>=1.0.1)", "jaraco.itertools", "func-timeout", "pytest-black (>=0.3.7)", "pytest-mypy"]
+docs = ["sphinx", "jaraco.packaging (>=9)", "rst.linker (>=1.9)"]
+testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-cov", "pytest-enabler (>=1.0.1)", "jaraco.itertools", "func-timeout", "pytest-black (>=0.3.7)", "pytest-mypy (>=0.9.1)"]
 
 [[package]]
 name = "zope.interface"
@@ -4600,8 +4611,8 @@ anyio = [
     {file = "anyio-3.5.0.tar.gz", hash = "sha256:a0aeffe2fb1fdf374a8e4b471444f0f3ac4fb9f5a5b542b48824475e0042a5a6"},
 ]
 appnope = [
-    {file = "appnope-0.1.2-py2.py3-none-any.whl", hash = "sha256:93aa393e9d6c54c5cd570ccadd8edad61ea0c4b9ea7a01409020c9aa019eb442"},
-    {file = "appnope-0.1.2.tar.gz", hash = "sha256:dd83cd4b5b460958838f6eb3000c660b1f9caf2a5b1de4264e941512f603258a"},
+    {file = "appnope-0.1.3-py2.py3-none-any.whl", hash = "sha256:265a455292d0bd8a72453494fa24df5a11eb18373a60c7c0430889f22548605e"},
+    {file = "appnope-0.1.3.tar.gz", hash = "sha256:02bd91c4de869fbb1e1c50aafc4098827a7a54ab2f39d9dcba6c9547ed920e24"},
 ]
 argon2-cffi = [
     {file = "argon2-cffi-21.3.0.tar.gz", hash = "sha256:d384164d944190a7dd7ef22c6aa3ff197da12962bd04b17f64d4e93d934dba5b"},
@@ -4639,8 +4650,8 @@ asgiref = [
     {file = "asgiref-3.5.0.tar.gz", hash = "sha256:2f8abc20f7248433085eda803936d98992f1343ddb022065779f37c5da0181d0"},
 ]
 astor = [
-    {file = "astor-0.8.1-py2.py3-none-any.whl", hash = "sha256:070a54e890cefb5b3739d19f30f5a5ec840ffc9c50ffa7d23cc9fc1a38ebbfc5"},
-    {file = "astor-0.8.1.tar.gz", hash = "sha256:6a6effda93f4e1ce9f618779b2dd1d9d84f1e32812c23a29b3fff6fd7f63fa5e"},
+    {file = "astor-0.7.1-py2.py3-none-any.whl", hash = "sha256:fb503b9e2fdd05609fbf557b916b4a7824171203701660f0c55bbf5a7a68713e"},
+    {file = "astor-0.7.1.tar.gz", hash = "sha256:95c30d87a6c2cf89aa628b87398466840f0ad8652f88eb173125a6df8533fb8d"},
 ]
 astroid = [
     {file = "astroid-2.11.2-py3-none-any.whl", hash = "sha256:cc8cc0d2d916c42d0a7c476c57550a4557a083081976bf42a73414322a6411d9"},
@@ -5082,6 +5093,10 @@ fastapi = [
     {file = "fastapi-0.73.0-py3-none-any.whl", hash = "sha256:f0a618aff5f6942862f2d3f20f39b1c037e33314d1b8207fd1c3a2cca76dfd8c"},
     {file = "fastapi-0.73.0.tar.gz", hash = "sha256:dcfee92a7f9a72b5d4b7ca364bd2b009f8fc10d95ed5769be20e94f39f7e5a15"},
 ]
+fastjsonschema = [
+    {file = "fastjsonschema-2.15.3-py3-none-any.whl", hash = "sha256:ddb0b1d8243e6e3abb822bd14e447a89f4ab7439342912d590444831fa00b6a0"},
+    {file = "fastjsonschema-2.15.3.tar.gz", hash = "sha256:0a572f0836962d844c1fc435e200b2e4f4677e4e6611a2e3bdd01ba697c275ec"},
+]
 fear-greed-index = [
     {file = "fear-greed-index-0.1.4.tar.gz", hash = "sha256:3eca4a50aa5f7ac76ce1ea7581adef322cdbfb61fb1bf0622f4aac914fdf9f1f"},
     {file = "fear_greed_index-0.1.4-py3-none-any.whl", hash = "sha256:20051b67433501dbe00d2744bb8dba2362c82fc1df81515a0deae069ef45e87d"},
@@ -5099,15 +5114,15 @@ financedatabase = [
     {file = "financedatabase-1.0.2.tar.gz", hash = "sha256:7b03d37ef5eef8433380d92122f2fd24bad741971518eaf1bd4a9c6f30763e23"},
 ]
 finnhub-python = [
-    {file = "finnhub-python-2.4.11.tar.gz", hash = "sha256:67faf9942aadc9ad54498a26cd0f605b875f1a7bac3bead2d8a2bc7292b2f752"},
-    {file = "finnhub_python-2.4.11-py3-none-any.whl", hash = "sha256:877203f7e15f48efba1da13c85cde4246f9c4181e191e10272f8930a819cf270"},
+    {file = "finnhub-python-2.4.12.tar.gz", hash = "sha256:2647ccb09ed85dc51da622b2bebd069b41c67049813f68acb92b1e9d4dd05e70"},
+    {file = "finnhub_python-2.4.12-py3-none-any.whl", hash = "sha256:15e9358d63154b1453e527db3e543eab244094f2e8fcc7f0140b647a4b95397a"},
 ]
 finviz = [
     {file = "finviz-1.4.4.tar.gz", hash = "sha256:9772060a070d59e8d1045ffbe826553d15f189fab43074b50bf7a510b5360172"},
 ]
 finvizfinance = [
-    {file = "finvizfinance-0.12.2-py3-none-any.whl", hash = "sha256:8c6d3e46459f6196436435133723dc4caffbfc244484f43ee8c2dd3caee8fc80"},
-    {file = "finvizfinance-0.12.2.tar.gz", hash = "sha256:6f6126e9836e6ef09a46f9f66e25354d7e250ef3336690d3939de16462eb51bc"},
+    {file = "finvizfinance-0.14.0-py3-none-any.whl", hash = "sha256:416fa2ba99f9c5a97c7b7050dc6ea8e2c4811f1b1be62ab435c70a42d39a0742"},
+    {file = "finvizfinance-0.14.0.tar.gz", hash = "sha256:7ea598186eb3209e5998d4523fb788d038d441fe81a69cc68ac517a5e97df40d"},
 ]
 flake8 = [
     {file = "flake8-3.9.2-py2.py3-none-any.whl", hash = "sha256:bf8fd333346d844f616e8d47905ef3a3384edae6b4e9beb0c5101e25e3110907"},
@@ -5122,8 +5137,8 @@ fonttools = [
     {file = "fonttools-4.31.2.zip", hash = "sha256:236b29aee6b113e8f7bee28779c1230a86ad2aac9a74a31b0aedf57e7dfb62a4"},
 ]
 formulaic = [
-    {file = "formulaic-0.3.2-py3-none-any.whl", hash = "sha256:d64f69c6865864ac2b27e4e1ff2d246f0425af13655be0ffc5a7b4b43610e962"},
-    {file = "formulaic-0.3.2.tar.gz", hash = "sha256:3e16262562147acbdeda1178d778ac189a93bd63e2348261bd8b5d303f173f6d"},
+    {file = "formulaic-0.3.3-py3-none-any.whl", hash = "sha256:a126d337741c6b4c699db5a52e3e5954abe0865949424f153be45c4a9c02422e"},
+    {file = "formulaic-0.3.3.tar.gz", hash = "sha256:e728f1be7363d06f68c066140ab762d7cdd95e5cd4daba3cbe6b0f40449a082e"},
 ]
 fred = [
     {file = "fred-3.1.tar.gz", hash = "sha256:f31327d648917694b8d15d66ca4e82a082dbb88ca027bdcc9d56738cbc836a6a"},
@@ -5133,23 +5148,23 @@ fredapi = [
     {file = "fredapi-0.4.3.tar.gz", hash = "sha256:d9b3194fb60541991bd33f019c710d4a9580ecfb5e47efbf2d2571888a2aac02"},
 ]
 frozendict = [
-    {file = "frozendict-2.3.0-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:e18e2abd144a9433b0a8334582843b2aa0d3b9ac8b209aaa912ad365115fe2e1"},
-    {file = "frozendict-2.3.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:96dc7a02e78da5725e5e642269bb7ae792e0c9f13f10f2e02689175ebbfedb35"},
-    {file = "frozendict-2.3.0-cp310-cp310-win_amd64.whl", hash = "sha256:752a6dcfaf9bb20a7ecab24980e4dbe041f154509c989207caf185522ef85461"},
-    {file = "frozendict-2.3.0-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:5346d9fc1c936c76d33975a9a9f1a067342963105d9a403a99e787c939cc2bb2"},
-    {file = "frozendict-2.3.0-cp36-cp36m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:60dd2253f1bacb63a7c486ec541a968af4f985ffb06602ee8954a3d39ec6bd2e"},
-    {file = "frozendict-2.3.0-cp36-cp36m-win_amd64.whl", hash = "sha256:b2e044602ce17e5cd86724add46660fb9d80169545164e763300a3b839cb1b79"},
-    {file = "frozendict-2.3.0-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:a27a69b1ac3591e4258325108aee62b53c0eeb6ad0a993ae68d3c7eaea980420"},
-    {file = "frozendict-2.3.0-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:4f45ef5f6b184d84744fff97b61f6b9a855e24d36b713ea2352fc723a047afa5"},
-    {file = "frozendict-2.3.0-cp37-cp37m-win_amd64.whl", hash = "sha256:2d3f5016650c0e9a192f5024e68fb4d63f670d0ee58b099ed3f5b4c62ea30ecb"},
-    {file = "frozendict-2.3.0-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:6cf605916f50aabaaba5624c81eb270200f6c2c466c46960237a125ec8fe3ae0"},
-    {file = "frozendict-2.3.0-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:f6da06e44904beae4412199d7e49be4f85c6cc168ab06b77c735ea7da5ce3454"},
-    {file = "frozendict-2.3.0-cp38-cp38-win_amd64.whl", hash = "sha256:1f34793fb409c4fa70ffd25bea87b01f3bd305fb1c6b09e7dff085b126302206"},
-    {file = "frozendict-2.3.0-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:fd72494a559bdcd28aa71f4aa81860269cd0b7c45fff3e2614a0a053ecfd2a13"},
-    {file = "frozendict-2.3.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:00ea9166aa68cc5feed05986206fdbf35e838a09cb3feef998cf35978ff8a803"},
-    {file = "frozendict-2.3.0-cp39-cp39-win_amd64.whl", hash = "sha256:9ffaf440648b44e0bc694c1a4701801941378ba3ba6541e17750ae4b4aeeb116"},
-    {file = "frozendict-2.3.0-py3-none-any.whl", hash = "sha256:8578fe06815fcdcc672bd5603eebc98361a5317c1c3a13b28c6c810f6ea3b323"},
-    {file = "frozendict-2.3.0.tar.gz", hash = "sha256:da4231adefc5928e7810da2732269d3ad7b5616295b3e693746392a8205ea0b5"},
+    {file = "frozendict-2.3.1-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:63ababdd78eed2974aeec86518ea7a53187c0258118d25bc0ccbefc52c75a8d6"},
+    {file = "frozendict-2.3.1-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:c6b14817b2299c4902b4c5b2d17a6586c4a1ebf9601dec87cce217465e8aad3a"},
+    {file = "frozendict-2.3.1-cp310-cp310-win_amd64.whl", hash = "sha256:99bb1c7104ac936e8ab47e046c2b96576918b20074f4b9cfd22aa0741d338395"},
+    {file = "frozendict-2.3.1-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:dac109414f63f8b5efa2768ea143d15679734e7b9c04f0d7b0898e801ff71d3f"},
+    {file = "frozendict-2.3.1-cp36-cp36m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:2f8c88ff2cc48630c144d6a6dd619a14e2d5c695900373b262ffc89346d42b41"},
+    {file = "frozendict-2.3.1-cp36-cp36m-win_amd64.whl", hash = "sha256:7835db3e7e21ae93540c11606724a9476f020a637eb9f5651c7947d7a9fc13c5"},
+    {file = "frozendict-2.3.1-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:e1b281ab8b9ad0a5b2dfb057c964561813755412c17d07e4052dd286f6bb4646"},
+    {file = "frozendict-2.3.1-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:46985ff5ea173e9281b8a9c59badcd46c2630704b3ec2549a93d5b279c37d4a8"},
+    {file = "frozendict-2.3.1-cp37-cp37m-win_amd64.whl", hash = "sha256:286ebd679638fe10b9ff394847108ade2bc6da42435b646e374138e573a2207c"},
+    {file = "frozendict-2.3.1-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:c17d40b232ae0d506e2c550ff77a54d932e6340aab639e5369449122bf148159"},
+    {file = "frozendict-2.3.1-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:e711aa962f6d41eabb98493421eab4306c26c8448e5bd61aca8c83dc8a6f728b"},
+    {file = "frozendict-2.3.1-cp38-cp38-win_amd64.whl", hash = "sha256:b827a8b8c2356bc7d73228e019b7b3e561fe283d5a614f6085bdd65e6b41cabf"},
+    {file = "frozendict-2.3.1-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:ac8781c7eca5f01a7097d20c5ca05e5b30220560a7d684165b7d0dfadd7c0352"},
+    {file = "frozendict-2.3.1-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:b53d518e5542d1ac1843877657f7ffe5fc1b7ee8d62e2e4c18d0f22c34923e61"},
+    {file = "frozendict-2.3.1-cp39-cp39-win_amd64.whl", hash = "sha256:75bf7995e3574e814229a95d094522866523e34d93327d063d3d6f97ec7d48df"},
+    {file = "frozendict-2.3.1-py3-none-any.whl", hash = "sha256:1fb6ee91b0bcd35068911cf46ea7ce1bde6a0e605acf5e8852d2a78cc1192cc9"},
+    {file = "frozendict-2.3.1.tar.gz", hash = "sha256:bc91c69233eb916bb6ebc40988b6d849735770240efc9c60be45b4ab919c1bde"},
 ]
 frozenlist = [
     {file = "frozenlist-1.3.0-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:d2257aaba9660f78c7b1d8fea963b68f3feffb1a9d5d05a18401ca9eb3e8d0a3"},
@@ -5355,8 +5370,8 @@ iniconfig = [
     {file = "iniconfig-1.1.1.tar.gz", hash = "sha256:bc3af051d7d14b2ee5ef9969666def0cd1a000e121eaea580d4a313df4b37f32"},
 ]
 interface-meta = [
-    {file = "interface_meta-1.2.5-py2.py3-none-any.whl", hash = "sha256:18a220f5db197e8a7f548bca74a860c7859b7cd9638a640c46035d88410e1dd3"},
-    {file = "interface_meta-1.2.5.tar.gz", hash = "sha256:0c81910ac200a343794db13062775592e4c96cc9f0d55ea5385cdc388945b17d"},
+    {file = "interface_meta-1.3.0-py3-none-any.whl", hash = "sha256:de35dc5241431886e709e20a14d6597ed07c9f1e8b4bfcffde2190ca5b700ee8"},
+    {file = "interface_meta-1.3.0.tar.gz", hash = "sha256:8a4493f8bdb73fb9655dcd5115bc897e207319e36c8835f39c516a2d7e9d79a1"},
 ]
 investpy = [
     {file = "investpy-1.0.8.tar.gz", hash = "sha256:6a7632a94b484ee07cd54afd416bdc759cd905ba60c62dbb8a8d157229b267c6"},
@@ -5892,12 +5907,12 @@ nbconvert = [
     {file = "nbconvert-6.4.5.tar.gz", hash = "sha256:21163a8e2073c07109ca8f398836e45efdba2aacea68d6f75a8a545fef070d4e"},
 ]
 nbformat = [
-    {file = "nbformat-5.2.0-py3-none-any.whl", hash = "sha256:3e30424e8291b2188347f5c3ba5273ed3766f12f8c5137c2e456a0815f36e785"},
-    {file = "nbformat-5.2.0.tar.gz", hash = "sha256:93df0b9c67221d38fb970c48f6d361819a6c388299a0ef3171bbb912edfe1324"},
+    {file = "nbformat-5.3.0-py3-none-any.whl", hash = "sha256:38856d97de49e8292e2d5d8f595e9d26f02abfd87e075d450af4511870b40538"},
+    {file = "nbformat-5.3.0.tar.gz", hash = "sha256:fcc5ab8cb74e20b19570b5be809e2dba9b82836fd2761a89066ad43394ba29f5"},
 ]
 nest-asyncio = [
-    {file = "nest_asyncio-1.5.4-py3-none-any.whl", hash = "sha256:3fdd0d6061a2bb16f21fe8a9c6a7945be83521d81a0d15cff52e9edee50101d6"},
-    {file = "nest_asyncio-1.5.4.tar.gz", hash = "sha256:f969f6013a16fadb4adcf09d11a68a4f617c6049d7af7ac2c676110169a63abd"},
+    {file = "nest_asyncio-1.5.5-py3-none-any.whl", hash = "sha256:b98e3ec1b246135e4642eceffa5a6c23a3ab12c82ff816a92c612d68205813b2"},
+    {file = "nest_asyncio-1.5.5.tar.gz", hash = "sha256:e442291cd942698be619823a17a86a5759eabe1f8613084790de189fe9e16d65"},
 ]
 nodeenv = [
     {file = "nodeenv-1.6.0-py2.py3-none-any.whl", hash = "sha256:621e6b7076565ddcacd2db0294c0381e01fd28945ab36bcf00f41c5daf63bef7"},
@@ -6139,16 +6154,16 @@ prawcore = [
     {file = "prawcore-2.3.0.tar.gz", hash = "sha256:daf1ccd4b7a80dc4e6567d48336d782e94a9a6dad83770fc2edf76dc9a84f56d"},
 ]
 pre-commit = [
-    {file = "pre_commit-2.17.0-py2.py3-none-any.whl", hash = "sha256:725fa7459782d7bec5ead072810e47351de01709be838c2ce1726b9591dad616"},
-    {file = "pre_commit-2.17.0.tar.gz", hash = "sha256:c1a8040ff15ad3d648c70cc3e55b93e4d2d5b687320955505587fd79bbaed06a"},
+    {file = "pre_commit-2.18.1-py2.py3-none-any.whl", hash = "sha256:02226e69564ebca1a070bd1f046af866aa1c318dbc430027c50ab832ed2b73f2"},
+    {file = "pre_commit-2.18.1.tar.gz", hash = "sha256:5d445ee1fa8738d506881c5d84f83c62bb5be6b2838e32207433647e8e5ebe10"},
 ]
 prometheus-client = [
     {file = "prometheus_client-0.13.1-py3-none-any.whl", hash = "sha256:357a447fd2359b0a1d2e9b311a0c5778c330cfbe186d880ad5a6b39884652316"},
     {file = "prometheus_client-0.13.1.tar.gz", hash = "sha256:ada41b891b79fca5638bd5cfe149efa86512eaa55987893becd2c6d8d0a5dfc5"},
 ]
 prompt-toolkit = [
-    {file = "prompt_toolkit-3.0.28-py3-none-any.whl", hash = "sha256:30129d870dcb0b3b6a53efdc9d0a83ea96162ffd28ffe077e94215b233dc670c"},
-    {file = "prompt_toolkit-3.0.28.tar.gz", hash = "sha256:9f1cd16b1e86c2968f2519d7fb31dd9d669916f515612c269d14e9ed52b51650"},
+    {file = "prompt_toolkit-3.0.29-py3-none-any.whl", hash = "sha256:62291dad495e665fca0bda814e342c69952086afb0f4094d0893d357e5c78752"},
+    {file = "prompt_toolkit-3.0.29.tar.gz", hash = "sha256:bd640f60e8cecd74f0dc249713d433ace2ddc62b65ee07f96d358e0b152b6ea7"},
 ]
 property-cached = [
     {file = "property-cached-1.6.4.zip", hash = "sha256:3e9c4ef1ed3653909147510481d7df62a3cfb483461a6986a6f1dcd09b2ebb73"},
@@ -7219,8 +7234,8 @@ tornado = [
     {file = "tornado-6.1.tar.gz", hash = "sha256:33c6e81d7bd55b468d2e793517c909b139960b6c790a60b7991b9b6b76fb9791"},
 ]
 tqdm = [
-    {file = "tqdm-4.63.1-py2.py3-none-any.whl", hash = "sha256:6461b009d6792008d0000e1b0c7ca50195ec78c0e808a3a6b668a56a3236c3a5"},
-    {file = "tqdm-4.63.1.tar.gz", hash = "sha256:4230a49119a416c88cc47d0d2d32d5d90f1a282d5e497d49801950704e49863d"},
+    {file = "tqdm-4.64.0-py2.py3-none-any.whl", hash = "sha256:74a2cdefe14d11442cedf3ba4e21a3b84ff9a2dbdc6cfae2c34addb2a14a5ea6"},
+    {file = "tqdm-4.64.0.tar.gz", hash = "sha256:40be55d30e200777a307a7585aee69e4eabb46b4ec6a4b4a5f2d9f11e7d5408d"},
 ]
 tradingview-ta = [
     {file = "tradingview_ta-3.2.10-py3-none-any.whl", hash = "sha256:634be033dfab9e2c50ba6a2cb15904cf26951b06ccc4ed043817115ab390e615"},
@@ -7259,8 +7274,8 @@ types-requests = [
     {file = "types_requests-2.27.16-py3-none-any.whl", hash = "sha256:2437a5f4d16c0c8bd7539a8126d492b7aeb41e6cda670d76b286c7f83a658d42"},
 ]
 types-setuptools = [
-    {file = "types-setuptools-57.4.11.tar.gz", hash = "sha256:262f7406e0c7d705ad6bb4526b5b761fa500bf99eab74de85ac3592187d62935"},
-    {file = "types_setuptools-57.4.11-py3-none-any.whl", hash = "sha256:fbb0647569d6fb2f6bc472402265250c0ffa53e60180d2cbfee9e84f085921f0"},
+    {file = "types-setuptools-57.4.12.tar.gz", hash = "sha256:415a1c23101a05da17eb66bed5d5a865702e5a69f74c66dbf1af643dce9492ab"},
+    {file = "types_setuptools-57.4.12-py3-none-any.whl", hash = "sha256:c3aa952535dedc78654459dfdee49c66974a6c67bdd8026e7e69ae39f80d590b"},
 ]
 types-six = [
     {file = "types-six-1.16.12.tar.gz", hash = "sha256:557435f8ad73e91562797ac7efac8e6554f0fa7893b6431b928de8ec635d866a"},
@@ -7581,8 +7596,8 @@ yfinance = [
     {file = "yfinance-0.1.70.tar.gz", hash = "sha256:a42190dd3b3fce1b00aec273db36392b8f100cc8c73dc7881bb558117cbf7c69"},
 ]
 zipp = [
-    {file = "zipp-3.7.0-py3-none-any.whl", hash = "sha256:b47250dd24f92b7dd6a0a8fc5244da14608f3ca90a5efcd37a3b1642fac9a375"},
-    {file = "zipp-3.7.0.tar.gz", hash = "sha256:9f50f446828eb9d45b267433fd3e9da8d801f614129124863f9c51ebceafb87d"},
+    {file = "zipp-3.8.0-py3-none-any.whl", hash = "sha256:c4f6e5bbf48e74f7a38e7cc5b0480ff42b0ae5178957d564d18932525d5cf099"},
+    {file = "zipp-3.8.0.tar.gz", hash = "sha256:56bf8aadb83c24db6c4b577e13de374ccfb67da2078beba1d037c17980bf43ad"},
 ]
 "zope.interface" = [
     {file = "zope.interface-5.4.0-cp27-cp27m-macosx_10_14_x86_64.whl", hash = "sha256:7df1e1c05304f26faa49fa752a8c690126cf98b40b91d54e6e9cc3b7d6ffe8b7"},
