@@ -3,21 +3,21 @@ import asyncio
 import hashlib
 import logging
 import os
-from pathlib import Path
 import platform
 import sys
 import traceback
 import uuid
+from pathlib import Path
 from typing import Any, Dict
 
-from dotenv import load_dotenv
 import disnake
 from disnake.ext import commands
+from dotenv import load_dotenv
 from fastapi import FastAPI, Request
 
 try:
     from bots import config_discordbot as cfg
-except Exception:
+except ImportError:
     sys.path.append(str(Path(__file__).parent.resolve().__str__))
     from bots import config_discordbot as cfg
 finally:
@@ -25,7 +25,7 @@ finally:
     from openbb_terminal.decorators import log_start_end
     from openbb_terminal.loggers import setup_logging
 
-# Load env and add to sys path
+# Load env
 bots_path = Path(__file__).parent.resolve()
 env_files = [f for f in bots_path.iterdir() if f.__str__().endswith(".env")]
 
