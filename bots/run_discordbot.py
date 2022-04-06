@@ -5,6 +5,8 @@ import logging
 import os
 import platform
 import sys
+from pathlib import Path
+from dotenv import load_dotenv
 import traceback
 import uuid
 from typing import Any, Dict
@@ -12,6 +14,14 @@ from typing import Any, Dict
 import disnake
 from disnake.ext import commands
 from fastapi import FastAPI, Request
+
+# Load env and add to sys path
+bots_path = Path(__file__).parent.resolve()
+env_files = [f for f in bots_path.iterdir() if f.__str__().endswith(".env")]
+
+if env_files:
+    load_dotenv(env_files[0])
+sys.path.append(bots_path.__str__())
 
 from bots import config_discordbot as cfg
 from bots.groupme.run_groupme import handle_groupme
