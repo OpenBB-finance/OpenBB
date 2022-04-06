@@ -14,6 +14,7 @@ from dotenv import load_dotenv
 import disnake
 from disnake.ext import commands
 from fastapi import FastAPI, Request
+
 try:
     from bots import config_discordbot as cfg
 except Exception:
@@ -30,6 +31,7 @@ env_files = [f for f in bots_path.iterdir() if f.__str__().endswith(".env")]
 
 if env_files:
     load_dotenv(env_files[0])
+
 
 logger = logging.getLogger(__name__)
 setup_logging("bot-app")
