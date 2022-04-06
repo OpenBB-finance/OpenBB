@@ -1125,17 +1125,17 @@ class KeysController(BaseController):
             )
             cfg.API_REDDIT_CLIENT_SECRET = ns_parser.client_secret
 
-            os.environ["OPENBB_API_REDDIT_PASSWORD"] = ns_parser.username
+            os.environ["OPENBB_API_REDDIT_PASSWORD"] = ns_parser.password
             dotenv.set_key(
-                self.env_file, "OPENBB_API_REDDIT_PASSWORD", ns_parser.username
-            )
-            cfg.API_REDDIT_USERNAME = ns_parser.username
-
-            os.environ["OPENBB_API_REDDIT_CLIENT_ID"] = ns_parser.password
-            dotenv.set_key(
-                self.env_file, "OPENBB_API_REDDIT_CLIENT_ID", ns_parser.password
+                self.env_file, "OPENBB_API_REDDIT_PASSWORD", ns_parser.password
             )
             cfg.API_REDDIT_PASSWORD = ns_parser.password
+
+            os.environ["OPENBB_API_REDDIT_USERNAME"] = ns_parser.username
+            dotenv.set_key(
+                self.env_file, "OPENBB_API_REDDIT_USERNAME", ns_parser.username
+            )
+            cfg.API_REDDIT_USERNAME = ns_parser.username
 
             os.environ["OPENBB_API_REDDIT_USER_AGENT"] = ns_parser.user_agent
             dotenv.set_key(
