@@ -1,8 +1,12 @@
 import pytest
 
-from bots.etf.tops import etfs_disc_command
+try:
+    from bots.etf.tops import etfs_disc_command
+except ImportError:
+    pytest.skip(allow_module_level=True)
 
 
+@pytest.mark.bots
 @pytest.mark.parametrize("sort", ["active"])
 @pytest.mark.vcr
 def test_etfs_disc_command(mocker, recorder, sort):

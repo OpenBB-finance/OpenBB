@@ -6,7 +6,7 @@ import pandas as pd
 import plotly.graph_objects as go
 
 from bots import imps
-from gamestonk_terminal.stocks.sector_industry_analysis import financedatabase_model
+from openbb_terminal.stocks.sector_industry_analysis import financedatabase_model
 
 
 def cps_command(

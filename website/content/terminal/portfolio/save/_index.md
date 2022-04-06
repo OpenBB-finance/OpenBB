@@ -2,7 +2,7 @@
 usage: save [-n NAME] [-h]
 ```
 
-Save a file from gamestonk_terminal/portfolio/portfolios
+Save a file from openbb_terminal/portfolio/portfolios
 
 ```
 optional arguments:

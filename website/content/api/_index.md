@@ -20,7 +20,7 @@ scripts and IPython Notebooks (Jupyter).
 The API wraps the functionality of the terminal in a way that the python commands follow
 the same convention as the terminal.
 
-For example `stocks/load aapl` becomes `gst.stocks.load("aapl")`.
+For example `stocks/load aapl` becomes `openbb.stocks.load("aapl")`.
 
 ---
 
@@ -29,7 +29,7 @@ For example `stocks/load aapl` becomes `gst.stocks.load("aapl")`.
 Import the GST API into your python script or notebook with
 
 ```python
-from gamestonk_terminal import api as gst
+from openbb_terminal import api as openbb
 ```
 
 ## Understanding the API functions
@@ -39,7 +39,7 @@ docstring. Docstrings can be viewed using the code introspection tools of your
 text/notebook editor or the built-in python `help` command. Docstrings contain both the
 description of the functionality and the overview of the parameters.
 
-As an example this is the docstring of `gst.economy.bigmac`:
+As an example this is the docstring of `openbb.economy.bigmac`:
 
 ```txt
 Display Big Mac Index for given countries
@@ -61,47 +61,47 @@ external_axes : Optional[List[plt.Axes]], optional
 Load stock data into a dataframe:
 
 ```python
-aapl_data = gst.stocks.load(
+aapl_data = openbb.stocks.load(
     ticker="aapl",
     start="2021-06-10",
 )
-aapl_data = gst.stocks.process_candle(aapl_data)
+aapl_data = openbb.stocks.process_candle(aapl_data)
 ```
 
 Plot candle chart
 
 ```python
-gst.stocks.candle("AAPL", aapl_data, True)
+openbb.stocks.candle("AAPL", aapl_data, True)
 ```
 
 Call the "What if" command of the backtesting menu
 
 ```python
-gst.stocks.bt.whatif("aapl", 10, datetime.strptime("2012-03-03", "%Y-%m-%d"))
+openbb.stocks.bt.whatif("aapl", 10, datetime.strptime("2012-03-03", "%Y-%m-%d"))
 ```
 
 Get sentiment for a list of tickers
 
 ```python
-gst.stocks.ca.models.finbrain.get_sentiments(tickers=["aapl"])
+openbb.stocks.ca.models.finbrain.get_sentiments(tickers=["aapl"])
 ```
 
 Print key fundamental metrics for past 2 years
 
 ```python
-gst.stocks.fa.fmp.metrics(ticker="AAPL", number=2)
+openbb.stocks.fa.fmp.metrics(ticker="AAPL", number=2)
 ```
 
 Get fundamental metrics for past 3 years as a pandas dataframe
 
 ```python
-gst.stocks.fa.fmp.models.fmp.get_key_metrics(ticker="AAPL", number=3)
+openbb.stocks.fa.fmp.models.fmp.get_key_metrics(ticker="AAPL", number=3)
 ```
 
 Perform an OLS regression on multiple custom datasets
 
 ```python
-gst.econometrics.ols(
+openbb.econometrics.ols(
     regression_variables=[
     'close-tsla', 'volume-aapl'
     ],
@@ -124,14 +124,14 @@ Example:
 ```python
 # Load stock data
 ticker = "AAPL"
-stock_data = gst.stocks.load(ticker="aapl")
+stock_data = openbb.stocks.load(ticker="aapl")
 
 # Create a matplotlib figure
 fig, axes = plt.subplots(3, 1, figsize=(10, 7))
 
 # Use GST to add charts to the axes of the created figure
-gst.stocks.ta.macd(s_ticker=ticker, series=aapl["Close"], external_axes=axes[0:2])
-gst.stocks.options.voi_yf(
+openbb.stocks.ta.macd(s_ticker=ticker, series=aapl["Close"], external_axes=axes[0:2])
+openbb.stocks.options.voi_yf(
     ticker=ticker,
     expiry="2022-03-11",
     min_sp=110,

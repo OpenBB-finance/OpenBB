@@ -7,7 +7,7 @@ Submodules
 gamestonk\_terminal.cryptocurrency.discovery.coinmarketcap\_model module
 ------------------------------------------------------------------------
 
-.. automodule:: gamestonk_terminal.cryptocurrency.discovery.coinmarketcap_model
+.. automodule:: openbb_terminal.cryptocurrency.discovery.coinmarketcap_model
    :members:
    :undoc-members:
    :show-inheritance:
@@ -15,7 +15,7 @@ gamestonk\_terminal.cryptocurrency.discovery.coinmarketcap\_model module
 gamestonk\_terminal.cryptocurrency.discovery.coinmarketcap\_view module
 -----------------------------------------------------------------------
 
-.. automodule:: gamestonk_terminal.cryptocurrency.discovery.coinmarketcap_view
+.. automodule:: openbb_terminal.cryptocurrency.discovery.coinmarketcap_view
    :members:
    :undoc-members:
    :show-inheritance:
@@ -23,7 +23,7 @@ gamestonk\_terminal.cryptocurrency.discovery.coinmarketcap\_view module
 gamestonk\_terminal.cryptocurrency.discovery.coinpaprika\_model module
 ----------------------------------------------------------------------
 
-.. automodule:: gamestonk_terminal.cryptocurrency.discovery.coinpaprika_model
+.. automodule:: openbb_terminal.cryptocurrency.discovery.coinpaprika_model
    :members:
    :undoc-members:
    :show-inheritance:
@@ -31,7 +31,7 @@ gamestonk\_terminal.cryptocurrency.discovery.coinpaprika\_model module
 gamestonk\_terminal.cryptocurrency.discovery.coinpaprika\_view module
 ---------------------------------------------------------------------
 
-.. automodule:: gamestonk_terminal.cryptocurrency.discovery.coinpaprika_view
+.. automodule:: openbb_terminal.cryptocurrency.discovery.coinpaprika_view
    :members:
    :undoc-members:
    :show-inheritance:
@@ -39,7 +39,7 @@ gamestonk\_terminal.cryptocurrency.discovery.coinpaprika\_view module
 gamestonk\_terminal.cryptocurrency.discovery.discovery\_controller module
 -------------------------------------------------------------------------
 
-.. automodule:: gamestonk_terminal.cryptocurrency.discovery.discovery_controller
+.. automodule:: openbb_terminal.cryptocurrency.discovery.discovery_controller
    :members:
    :undoc-members:
    :show-inheritance:
@@ -47,7 +47,7 @@ gamestonk\_terminal.cryptocurrency.discovery.discovery\_controller module
 gamestonk\_terminal.cryptocurrency.discovery.pycoingecko\_model module
 ----------------------------------------------------------------------
 
-.. automodule:: gamestonk_terminal.cryptocurrency.discovery.pycoingecko_model
+.. automodule:: openbb_terminal.cryptocurrency.discovery.pycoingecko_model
    :members:
    :undoc-members:
    :show-inheritance:
@@ -55,7 +55,7 @@ gamestonk\_terminal.cryptocurrency.discovery.pycoingecko\_model module
 gamestonk\_terminal.cryptocurrency.discovery.pycoingecko\_view module
 ---------------------------------------------------------------------
 
-.. automodule:: gamestonk_terminal.cryptocurrency.discovery.pycoingecko_view
+.. automodule:: openbb_terminal.cryptocurrency.discovery.pycoingecko_view
    :members:
    :undoc-members:
    :show-inheritance:
@@ -63,7 +63,7 @@ gamestonk\_terminal.cryptocurrency.discovery.pycoingecko\_view module
 Module contents
 ---------------
 
-.. automodule:: gamestonk_terminal.cryptocurrency.discovery
+.. automodule:: openbb_terminal.cryptocurrency.discovery
    :members:
    :undoc-members:
    :show-inheritance:

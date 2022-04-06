@@ -7,7 +7,7 @@ Submodules
 gamestonk\_terminal.reports.reports\_controller module
 ------------------------------------------------------
 
-.. automodule:: gamestonk_terminal.reports.reports_controller
+.. automodule:: openbb_terminal.reports.reports_controller
    :members:
    :undoc-members:
    :show-inheritance:
@@ -15,7 +15,7 @@ gamestonk\_terminal.reports.reports\_controller module
 Module contents
 ---------------
 
-.. automodule:: gamestonk_terminal.reports
+.. automodule:: openbb_terminal.reports
    :members:
    :undoc-members:
    :show-inheritance:

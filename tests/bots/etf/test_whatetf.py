@@ -1,8 +1,12 @@
 import pytest
 
-from bots.etf.whatetf import by_ticker_command
+try:
+    from bots.etf.whatetf import by_ticker_command
+except ImportError:
+    pytest.skip(allow_module_level=True)
 
 
+@pytest.mark.bots
 @pytest.mark.skip
 @pytest.mark.vcr
 def test_by_ticker_command(mocker, recorder):

@@ -7,10 +7,10 @@ from matplotlib import pyplot as plt
 
 from bots import config_discordbot as cfg
 from bots.helpers import image_border, load
-from gamestonk_terminal.common.technical_analysis import momentum_model
-from gamestonk_terminal.config_plot import PLOT_DPI
-from gamestonk_terminal.decorators import log_start_end
-from gamestonk_terminal.helper_funcs import plot_autoscale
+from openbb_terminal.common.technical_analysis import momentum_model
+from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.decorators import log_start_end
+from openbb_terminal.helper_funcs import plot_autoscale
 
 logger = logging.getLogger(__name__)
 

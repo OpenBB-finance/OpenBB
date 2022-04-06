@@ -5,8 +5,8 @@ import pandas as pd
 import requests
 
 from bots import imps
-from gamestonk_terminal.decorators import log_start_end
-from gamestonk_terminal.helper_funcs import get_user_agent
+from openbb_terminal.decorators import log_start_end
+from openbb_terminal.helper_funcs import get_user_agent
 
 logger = logging.getLogger(__name__)
 

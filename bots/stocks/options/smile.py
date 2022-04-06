@@ -3,8 +3,8 @@ import logging
 import plotly.graph_objects as go
 
 from bots import imps
-from gamestonk_terminal.decorators import log_start_end
-from gamestonk_terminal.stocks.options import yfinance_model
+from openbb_terminal.decorators import log_start_end
+from openbb_terminal.stocks.options import yfinance_model
 
 logger = logging.getLogger(__name__)
 
@@ -23,7 +23,7 @@ def smile_command(
         logger.debug("opt smile %s %s %s %s", ticker, expiry, min_sp, max_sp)
 
     # Check for argument
-    if ticker is None:
+    if not ticker:
         raise Exception("Stock ticker is required")
 
     dates = yfinance_model.option_expirations(ticker)

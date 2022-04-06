@@ -1,0 +1,58 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://query2.finance.yahoo.com/v7/finance/options/
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAKtWyi8oyczPc85IzMxTsqpWKkotLs0pUbKKjtVRSi0qyi9SssorzcmprQUADheN
+        kioAAAA=
+    headers:
+      Age:
+      - '0'
+      Cache-Control:
+      - max-age=0, private
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Expires:
+      - '-1'
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=15552000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      content-encoding:
+      - gzip
+      content-length:
+      - '62'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Sun, 03 Apr 2022 20:46:22 GMT
+      server:
+      - ATS
+      x-envoy-decorator-operation:
+      - finance-yql--mtls-default-production-gq1.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '2'
+      x-yahoo-request-id:
+      - a4vqlb5h4k1su
+    status:
+      code: 404
+      message: Not Found
+version: 1

@@ -1,8 +1,12 @@
 import pytest
 
-from bots.economy.performance import performance_command
+try:
+    from bots.economy.performance import performance_command
+except ImportError:
+    pytest.skip(allow_module_level=True)
 
 
+@pytest.mark.bots
 @pytest.mark.parametrize(
     "group",
     [
