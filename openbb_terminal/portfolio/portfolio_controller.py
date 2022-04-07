@@ -11,15 +11,9 @@ from typing import Dict, List, Union
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 
-<<<<<<< HEAD:openbb_terminal/portfolio/portfolio_controller.py
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
-=======
-from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.decorators import log_start_end
-from gamestonk_terminal.helper_funcs import (
->>>>>>> a0d5e9c4c (Revert "Renaming to OpenBB"):gamestonk_terminal/portfolio/portfolio_controller.py
     EXPORT_ONLY_FIGURES_ALLOWED,
     check_positive,
     check_positive_float,
