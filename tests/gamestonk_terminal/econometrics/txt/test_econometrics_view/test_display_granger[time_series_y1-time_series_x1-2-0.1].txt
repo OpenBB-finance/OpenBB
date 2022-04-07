@@ -1,0 +1,7 @@
+                F-test   P-value  Count Lags
+ssr_ftest     3.265591  0.040261  196.0  2.0
+ssr_chi2test  6.697793  0.035123      -    2
+lrtest        6.588619  0.037094      -    2
+params_ftest  3.265591  0.040261  196.0  2.0
+As the p-value of the F-test is 0.04, we can reject the null hypothesis at the 0.1 confidence level and find the Series 'realinv' to Granger-cause the Series 'realgovt'
+

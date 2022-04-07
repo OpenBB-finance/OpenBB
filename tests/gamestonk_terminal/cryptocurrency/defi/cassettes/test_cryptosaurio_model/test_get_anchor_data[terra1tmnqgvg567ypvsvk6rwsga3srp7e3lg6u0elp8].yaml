@@ -1,0 +1,55 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: GET
+    uri: https://barney.cryptosaurio.com/get-anchor-protocol-data-v2/terra1tmnqgvg567ypvsvk6rwsga3srp7e3lg6u0elp8
+  response:
+    body:
+      string: "<!DOCTYPE html>\n<html>\n<head>\n<meta name=\"viewport\" content=\"width=device-width,
+        initial-scale=1\">\n<meta charset=\"utf-8\">\n<title>Application Error</title>\n<style
+        media=\"screen\">\n\t\t  html,body,iframe {\n\t\t\tmargin: 0;\n\t\t\tpadding:
+        0;\n\t\t  }\n\t\t  html,body {\n\t\t\theight: 100%;\n\t\t\toverflow: hidden;\n\t\t
+        \ }\n\t\t  iframe {\n\t\t\twidth: 100%;\n\t\t\theight: 100%;\n\t\t\tborder:
+        0;\n\t\t  }\n\t\t</style>\n</head>\n<body>\n<iframe src=\"//www.herokucdn.com/error-pages/application-error.html\"></iframe>\n<script
+        defer src=\"https://static.cloudflareinsights.com/beacon.min.js/v652eace1692a40cfa3763df669d7439c1639079717194\"
+        integrity=\"sha512-Gi7xpJR8tSkrpF7aordPZQlW2DLtzUlZcumS8dMQjwDHEnw9I7ZLyiOj/6tZStRBGtGgN6ceN6cMH8z7etPGlw==\"
+        data-cf-beacon='{\"rayId\":\"6ee0151308065d43\",\"version\":\"2021.12.0\",\"r\":1,\"token\":\"fe5d8e495e7149f78b1c5ca550bc563e\",\"si\":100}'
+        crossorigin=\"anonymous\"></script>\n</body>\n</html>"
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 6ee0151308065d43-LIS
+      Cache-Control:
+      - no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Type:
+      - text/html; charset=utf-8
+      Date:
+      - Fri, 18 Mar 2022 18:38:25 GMT
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      NEL:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=XyEZWHcMzbVFcTQ4BIxOFS7c1IuflqL3vPaBTun%2BRnyYJi5MJKwbWFppXcYoIIC2pT2N24MrHhO2JEvvpU7VpGxWpvbFuZ8hWBww1xFP%2FhHymthSjcRds7x82PnpgjIGUPJmh1KtLbl4%2Bli%2B6oDvpnRvRU9soQ%3D%3D"}],"group":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      alt-svc:
+      - h3=":443"; ma=86400, h3-29=":443"; ma=86400
+    status:
+      code: 503
+      message: Service Unavailable
+version: 1

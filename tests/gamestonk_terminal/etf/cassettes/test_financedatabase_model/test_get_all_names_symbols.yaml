@@ -1,0 +1,82 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://raw.githubusercontent.com/JerBouma/FinanceDatabase/master/Database/Categories/etfs_options.json
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA31VTW/bMAy9F+h/EAr0tBndMATdtUnTjyHuiqUfKIYdVJlJhMhSRknt8u9L24st
+        KXZ6KIL3nkiJfKR/Hx8x+ju5UMoI7qTRWfZ1dMqcYd++nLLpXy/d9uRzj6qiSTU6rBo1qvPDqvNG
+        9X10UEX0p5Qfc71mM8N1hwBHlnNcg2uxyUpqzn7BkuJ0oClLU0gnwbIxGl6wMbfRKRJ4LZv0NoC1
+        9SUgm2yFIlbtM5ewAG3lG4TUG6CTrwrCSLgxyB2wsdFFC1/SQbRyIaFgUwq3lHrJ8rWzvYp7LuiH
+        OLuwkreC7lhdCBsn2LHZjp1RjVU28YigxTYRaxJv2UyW0tXp0BFiV3LTSeqesEaZovcIQhpvWQ6O
+        q+4NU49mA2zujFi34BX1SQsZ1PTKIMilZjOOS6qTguBqMXeN5t2tBsgnrjzscfOSK3WWy2IgcMcP
+        BO8EcYJrZV65IsfRv6l11OKWuiEsiHQjlyv2IkEVcdkDPCcTtvitLiRPp4BAbx3KsL63eqGawblH
+        40BUzYsykAA5nfLCeYQAdoAlUBby5bUho+kStOvlswf6GUf9wTdcJ13t611vz/p6NaNHaHZBlqVZ
+        SwMbsnjPHSs8m68MOjZBumovk9SwZvbfk3PNl1S6K19VyQZ4NTrsDrzDwK5khWzCN8ljd2jy3B0c
+        PziXVoBSXEM1NcnSisk5tdVgR3rlyAPUH01FC7ZPTYj/4x2jtg6RvJkMxyZcyYVBTW6rShOTudQa
+        rHE8hu9qw5HnG5MMkPvhWqruTMLBO3sxuGah8VoJnfRYT5o1HkXQoDujqTPVfq8jRw/8ualQ9ozE
+        BncJVymDf9nOy53haJktgMpYJEbsG/TGZT3urIkeq83pLgrYJO1TvWQSRzVY4qcGjN30wIWrPlKs
+        +5J2HIiVNsoES/uhKhkNQnZbfa8s3ab7Sg6LLuHVDbPJoLX8DIivh+tgkk7Wn6bjhxJFQ9PSj4r8
+        YesmRW14dFLFV3ky1SZVYexng7SZe2raEFHABmoMc3z05wPdLOMvcwkAAA==
+    headers:
+      Accept-Ranges:
+      - bytes
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - max-age=300
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '784'
+      Content-Security-Policy:
+      - default-src 'none'; style-src 'unsafe-inline'; sandbox
+      Content-Type:
+      - text/plain; charset=utf-8
+      Date:
+      - Wed, 19 Jan 2022 12:51:17 GMT
+      ETag:
+      - W/"8ad5bd17ce788ba17afe6193623fc1ef37a4ffa045d72bd5ad19ca7445a338e1"
+      Expires:
+      - Wed, 19 Jan 2022 12:56:17 GMT
+      Source-Age:
+      - '142'
+      Strict-Transport-Security:
+      - max-age=31536000
+      Vary:
+      - Authorization,Accept-Encoding,Origin
+      Via:
+      - 1.1 varnish
+      X-Cache:
+      - HIT
+      X-Cache-Hits:
+      - '1'
+      X-Content-Type-Options:
+      - nosniff
+      X-Fastly-Request-ID:
+      - 491807f37480db9577f0905b1d6635c17277d7bb
+      X-Frame-Options:
+      - deny
+      X-GitHub-Request-Id:
+      - 118C:BC95:27BFFFF:295201E:61E808B7
+      X-Served-By:
+      - cache-lhr7347-LHR
+      X-Timer:
+      - S1642596678.657121,VS0,VE0
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

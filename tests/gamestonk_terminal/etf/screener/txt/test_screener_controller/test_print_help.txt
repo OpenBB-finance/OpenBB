@@ -1,0 +1,10 @@
+
+    view        view available presets
+    set         set one of the available presets
+
+PRESET: etf_config
+
+    screen      screen ETF using preset selected [StockAnalysis]
+
+    sbc         screen by category [FinanceDatabase]
+

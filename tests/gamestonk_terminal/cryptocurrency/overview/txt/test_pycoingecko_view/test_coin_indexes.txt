@@ -1,0 +1,17 @@
+    Rank                         Name      Id                 Market       Last MultiAsset
+0      1       CoinFLEX (Futures) DFN     DFN     CoinFLEX (Futures)        NaN       None
+1      2       Perpetual Protocol ZIL     ZIL     Perpetual Protocol   0.110000       None
+2      3         Bibox (Futures) LINK    LINK        Bibox (Futures)   0.110000       None
+3      4      CME Bitcoin Futures BTC     BTC              CME Group   0.110000      False
+4      5          Bibox (Futures) XRP     XRP        Bibox (Futures)   0.110000       None
+5      6          Bibox (Futures) AXS     AXS        Bibox (Futures)   0.110000       None
+6      7              ZBG Futures BSV     BSV            ZBG Futures   0.110000       None
+7      8  MEXC Global (Futures) ATLAS   ATLAS  MEXC Global (Futures)   4.543600       None
+8      9    CoinFLEX (Futures) BCHABC  BCHABC     CoinFLEX (Futures)   0.000000       None
+9     10               Prime XBT USDC    USDC              Prime XBT   0.000000       None
+10    11          Bibox (Futures) ETC     ETC        Bibox (Futures)   0.000000       None
+11    12              MyCoinStory SUN     SUN                    MCS  13.407576       None
+12    13          Bibox (Futures) BSV     BSV        Bibox (Futures)  13.407576       None
+13    14                       Tether    USDT      FTX (Derivatives)   1.000372      False
+14    15          Bibox (Futures) EOS     EOS        Bibox (Futures)   1.000372      False
+

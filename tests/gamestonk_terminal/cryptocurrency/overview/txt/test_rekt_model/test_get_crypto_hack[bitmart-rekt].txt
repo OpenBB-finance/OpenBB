@@ -1,0 +1,74 @@
+
+    BitMart - REKT
+    Sunday, December 5, 2021
+
+    Is CeFi any safer than DeFi?
+BitMart,  the self-proclaimed “
+Most Trusted Crypto Trading Platform
+”, has lost ~$196M from two of its hot wallets on Ethereum and BSC.
+The stolen assets 
+(mostly memecoins) total ~$100M on Ethereum and ~$96M on BSC.
+As news began to 
+circulate,  BitMart Telegram admins dismissed rumours as “
+fake news
+”, while stating that requests about the possible hack were creating “
+unnecessary tension
+”.
+Eventually, BitMart CEO Sheldon Xia 
+announced that the withdrawals had in fact been down to a “
+security breach
+”, going on to inform users that “
+At this moment we are temporarily suspending withdrawals until further notice.
+”
+However, Xia put the total loss at $150M, despite the fact that total losses were already known to be 
+~$196M,  a figure that BitMart continues to use in its official 
+statement.
+	
+CEXs are supposed to provide their users with trust.
+Just two days ago, 
+Celsius also 
+lost $50M from a hot wallet in the 
+BadgerDAO front-end attack, also 
+downplaying the loss.
+With this latest “
+security breach
+” sending BitMart straight to number 2 on our 
+leaderboard,  one obvious question springs to mind.
+If CeFi isn’t any safer, why use it?
+The attack began on Ethereum with 
+this transaction at 21:31:09 +UTC for ~$33M of SHIB, commencing on BSC around half an hour 
+later with ~$41M SAFEMOON.
+On Ethereum, the affected wallet, labelled 
+Bitmart 2,  was drained of the majority of its contents. The only substantial remaining asset balance is ~$40M of BitMart’s own 
+token,  presumably because of the difficulty unloading it outside of the exchange.
+The affected wallet on BSC: 
+0x8c128dba2cb66399341aa877315be1054be75da8
+Breakdown of losses by token on Ethereum (~$100M).
+Breakdown of losses by token on BSC (~$96M).
+The hacker transferred BitMart user funds from the hot wallets to the following addresses:
+Ethereum 1: 
+0x39fb0dcd13945b835d47410ae0de7181d3edf270
+Ethereum 2: 
+0x4bb7d80282f5e0616705d7f832acfc59f89f7091
+BSC: 
+0x25fb126b6c6b5c8ef732b86822fa0f0024e16c61
+From there, the various memecoins were swapped via 1inch to ETH and BNB before being washed via TornadoCash.
+BitMart is still investigating what caused the security breach, and has yet to comment on any reimbursement for affected users.
+The 
+Security section of their website states that <0.5% of their assets are kept in hot wallets.
+This puts BitMart’s total assets at over $39 billion…
+If that figure is really true, then a full refund for affected users should be no problem.
+Centralised platforms exist as a trusted go-between for those who may have reservations about interacting directly with crypto.
+Users give up custody of their assets with the expectation that the people managing them are experts in security and best practise.
+It remains to be seen how the attacker managed to gain access to the wallets in question.
+Hopefully it wasn’t another basic OPSEC error such as granting unlimited approvals to an EOA, as in Celsius’ case.
+These are understandable mistakes when it comes to individuals and smaller balances. But at this level it’s hard to forgive, especially when CeFi represents the corrupt legacy financial system cashing in on the innovation of DeFi.
+A Cayman-registered corporation has lost close to $200M. Their communications team first denied and then downplayed the losses. All this while freezing withdrawals until out of the news cycle, when the fear of a “bank run” has subsided.
+Do these middlemen deserve to take a profit?
+And if they insist on doing so, will BitMart at least commit to refunding their users?
+If you enjoy our work, please consider donating to our 
+Gitcoin Grant
+
+
+    Detailed history in https://rekt.news/bitmart-rekt
+    

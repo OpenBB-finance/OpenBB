@@ -1,0 +1,63 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.26.0
+    method: GET
+    uri: https://terra.engineer/en/terra_addresses/terra1tmnqgvg567ypvsvk6rwsga3srp7e3lg6u0elp8/show_snapshot_data.json?asset=ust
+  response:
+    body:
+      string: '[{"id":"UST","data":[{"x":"2021-12-16 00:00:00","y":77386761.1048762},{"x":"2021-12-17
+        00:00:00","y":77107417.4955988},{"x":"2021-12-18 00:00:00","y":76761418.06876892},{"x":"2021-12-19
+        00:00:00","y":76402060.63818446},{"x":"2021-12-20 00:00:00","y":76049371.1771107},{"x":"2021-12-21
+        00:00:00","y":75717916.11125192},{"x":"2021-12-22 00:00:00","y":75334594.8653725},{"x":"2021-12-23
+        00:00:00","y":74801529.79565395},{"x":"2021-12-24 00:00:00","y":74313496.35167404},{"x":"2021-12-25
+        00:00:00","y":73840418.004713},{"x":"2021-12-26 00:00:00","y":73372333.94158259},{"x":"2021-12-27
+        00:00:00","y":72928202.62041229},{"x":"2021-12-28 00:00:00","y":72397414.56039554},{"x":"2021-12-29
+        00:00:00","y":71780278.9789995},{"x":"2021-12-30 00:00:00","y":71106231.95636792},{"x":"2021-12-31
+        00:00:00","y":70404839.98317608},{"x":"2022-01-01 00:00:00","y":69668570.19673496},{"x":"2022-01-02
+        00:00:00","y":68949424.91223967},{"x":"2022-01-03 00:00:00","y":68188371.91197796},{"x":"2022-01-04
+        00:00:00","y":67426977.55449104},{"x":"2022-01-05 00:00:00","y":66614477.86699833},{"x":"2022-01-06
+        00:00:00","y":65796018.71301971},{"x":"2022-01-07 00:00:00","y":64743978.62680196},{"x":"2022-01-08
+        00:00:00","y":63561335.10273054},{"x":"2022-01-09 00:00:00","y":62351850.45086063},{"x":"2022-01-10
+        00:00:00","y":61192301.62778163},{"x":"2022-01-11 00:00:00","y":59839712.407501414},{"x":"2022-01-12
+        00:00:00","y":58579165.89207462},{"x":"2022-01-13 00:00:00","y":57610692.37354207}],"label":"UST
+        in Address terra1tmnqgvg567ypvsvk6rwsga3srp7e3lg6u0elp8","color":"#4d00ff"}]'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 13 Jan 2022 14:00:57 GMT
+      Etag:
+      - W/"98daebd8fe11f2edab563233ea6ff67f"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Transfer-Encoding:
+      - chunked
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Request-Id:
+      - 42bcbf89-ea7a-488e-8586-c79595de50bf
+      X-Runtime:
+      - '0.003172'
+      X-Xss-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

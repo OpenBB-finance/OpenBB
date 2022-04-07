@@ -1,0 +1,15 @@
+,dataset,column,option
+0,macrodata,year,year-macrodata
+1,macrodata,quarter,quarter-macrodata
+2,macrodata,realgdp,realgdp-macrodata
+3,macrodata,realcons,realcons-macrodata
+4,macrodata,realinv,realinv-macrodata
+5,macrodata,realgovt,realgovt-macrodata
+6,macrodata,realdpi,realdpi-macrodata
+7,macrodata,cpi,cpi-macrodata
+8,macrodata,m1,m1-macrodata
+9,macrodata,tbilrate,tbilrate-macrodata
+10,macrodata,unemp,unemp-macrodata
+11,macrodata,pop,pop-macrodata
+12,macrodata,infl,infl-macrodata
+13,macrodata,realint,realint-macrodata

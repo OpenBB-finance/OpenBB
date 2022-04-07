@@ -1,0 +1,12 @@
+                                Account address       Validator name Tokens amount  Voting power %  Commission rate %  Status  Uptime %
+0  terra1259cmu5zyklsdkmgstxhwqpe0utfe5hhyygjdc          Orion.Money         22.3M            7.16                5.0  active    100.00
+1  terra123gn6j23lmexu0qx5qhmgxgunmjcqsx8g5ueq2         Staking Fund         18.7M            5.99               10.0  active     99.99
+2  terra15zcjduavxc5mkp8qcqs9eyhwlqwdlrzy6anwpg            B-Harvest           18M            5.77                5.0  active    100.00
+3  terra1v5hrqlv8dqgzvy0pwzqzg0gxy899rm4kdn0jp4         DokiaCapital         10.4M            3.32                5.0  active     99.81
+4  terra1kprce6kc08a6l03gzzh99hfpazfjeczfpd6td0           Certus One            9M            2.89               10.0  active     99.77
+5  terra1p54hc4yy2ajg67j645dn73w3378j6k05v52cnk               hashed          7.7M            2.47               10.0  active    100.00
+6  terra1va2ew92dtkhffduswr83elf3nfvl4xg48rguwl            NOD Games          7.1M            2.29                0.0  active     99.98
+7  terra1h6rf7y2ar5vz64q8rchz5443s3tqnswrpxe69f               Staked          6.7M            2.16               10.0  active     99.92
+8  terra175hhkyxmkp8hf2zrzka7cnn7lk6mudtv4nsp2x  DSRV - CHAISCAN.com          6.6M            2.13               10.0  active    100.00
+9  terra162892yn0tf8dxl8ghgneqykyr8ufrwmcs6vft5     Luna Maximalists          6.5M            2.09               20.0  active    100.00
+

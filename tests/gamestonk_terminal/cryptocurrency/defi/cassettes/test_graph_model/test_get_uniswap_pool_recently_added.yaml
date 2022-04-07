@@ -1,0 +1,113 @@
+interactions:
+- request:
+    body: '{"query": "MOCK_QUERY"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '569'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-requests/2.27.1
+    method: POST
+    uri: https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2
+  response:
+    body:
+      string: !!binary |
+        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
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 6d51755b59a93a63-CDG
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Sat, 29 Jan 2022 09:33:20 GMT
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Strict-Transport-Security:
+      - max-age=15724800; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      access-control-allow-headers:
+      - Content-Type, User-Agent
+      access-control-allow-methods:
+      - GET, OPTIONS, POST
+      graph-attestable:
+      - 'true'
+    status:
+      code: 200
+      message: OK
+version: 1

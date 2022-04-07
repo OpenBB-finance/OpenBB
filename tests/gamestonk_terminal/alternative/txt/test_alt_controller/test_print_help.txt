@@ -1,0 +1,3 @@
+
+>   covid     COVID menu,                    e.g.: cases, deaths, rates
+        

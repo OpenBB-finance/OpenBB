@@ -1,0 +1,8 @@
+
+                  0
+LM-stat   12.591323
+p-value    0.000388
+f-stat     0.688985
+fp-value   0.424158
+The result 0.0 indicates no existence of autocorrelation.
+
