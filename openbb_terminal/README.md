@@ -409,7 +409,7 @@ There are a few things that still don't work, and you can see what works and wha
 
     Note: For a headless installation using raspbian lite also follow the Jupyter Lab installation
 
-13. Jupyter Lab (Optional. Early alpha). User the Terminal from Jupyter Lab
+12. Jupyter Lab (Optional. Early alpha). User the Terminal from Jupyter Lab
 
    You can install Jupyter Lab extensions that help you manage settings and launch the terminal in a JL bash console
    using the commands in the [jupyterlab/README.md](jupyterlab/README.md)
