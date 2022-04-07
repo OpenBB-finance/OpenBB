@@ -1,4 +1,5 @@
 """LoanScan Model"""
+import argparse
 import logging
 from typing import Any, Dict
 
@@ -6,7 +7,7 @@ import pandas as pd
 import requests
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import get_user_agent
+from openbb_terminal.helper_funcs import get_user_agent, log_and_raise
 
 logger = logging.getLogger(__name__)
 
@@ -295,5 +296,35 @@ def get_rates(rate_type: str) -> pd.DataFrame:
                 cryptos[symbol] = {}
             cryptos[symbol][provider_name] = crypto["rate"]
     df = pd.DataFrame(cryptos, columns=sorted(cryptos.keys()))
-    df = df.fillna("N/A")
+    for platform in PLATFORMS:
+        if platform.lower() not in df.index:
+            df = df.append(pd.Series(name=platform.lower()))
     return df
+
+
+def check_valid_coin(value) -> str:
+    """Argparse type to check valid coins argument"""
+    cryptos = value.split(",")
+    cryptos_lowered = [x.lower() for x in CRYPTOS]
+    for crypto in cryptos:
+        if crypto.lower() not in cryptos_lowered:
+            log_and_raise(
+                argparse.ArgumentTypeError(
+                    f"{crypto} is not supported. Options: {','.join(CRYPTOS)}"
+                )
+            )
+    return value
+
+
+def check_valid_platform(value) -> str:
+    """Argparse type to check valid platform argument"""
+    platforms = value.split(",")
+    platforms_lowered = [x.lower() for x in PLATFORMS]
+    for platform in platforms:
+        if platform.lower() not in platforms_lowered:
+            log_and_raise(
+                argparse.ArgumentTypeError(
+                    f"{platform} is not supported. Options: {','.join(PLATFORMS)}"
+                )
+            )
+    return value

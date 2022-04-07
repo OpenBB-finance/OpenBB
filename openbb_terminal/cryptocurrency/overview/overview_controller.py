@@ -693,7 +693,7 @@ class OverviewController(BaseController):
             "-c",
             "--cryptocurrrencies",
             dest="cryptos",
-            type=str,
+            type=loanscan_model.check_valid_coin,
             help=f"""Cryptocurrencies to search interest rates for separated by comma.
             Default: BTC,ETH,USDT,USDC. Options: {",".join(loanscan_model.CRYPTOS)}""",
             default="BTC,ETH,USDT,USDC",
@@ -703,7 +703,7 @@ class OverviewController(BaseController):
             "-p",
             "--platforms",
             dest="platforms",
-            type=str,
+            type=loanscan_model.check_valid_platform,
             help=f"""Platforms to search interest rates in separated by comma.
             Default: BlockFi,Ledn,SwissBorg,Youhodler. Options: {",".join(loanscan_model.PLATFORMS)}""",
             default="BlockFi,Ledn,SwissBorg,Youhodler",
