@@ -170,6 +170,19 @@ class BaseController(metaclass=ABCMeta):
                 if cmd:
                     self.queue.insert(0, cmd)
 
+        # Slash used for navigation in first token only
+        elif "/" in an_input.split()[0]:
+            actions = an_input.split("/")
+
+            # Absolute path is specified
+            if not actions[0]:
+                actions[0] = "home"
+
+            # Add all instructions to the queue
+            for cmd in actions[::-1]:
+                if cmd:
+                    self.queue.insert(0, cmd)
+
         # Single command fed, process
         else:
             (known_args, other_args) = self.parser.parse_known_args(an_input.split())
