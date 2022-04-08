@@ -5,9 +5,16 @@ from typing import List, Optional
 
 import disnake
 import pyimgur
+from dotenv import load_dotenv
 
 # Path to bots
 bots_path = Path(__file__).parent.resolve()
+GST_PATH = Path(__file__).parent.parent.resolve()
+
+env_files = [f for f in bots_path.iterdir() if f.__str__().endswith(".env")]
+
+if env_files:
+    load_dotenv(env_files[0])
 
 # https://discord.com/developers/applications/
 DISCORD_BOT_TOKEN = os.getenv("OPENBB_DISCORD_BOT_TOKEN") or "REPLACE_ME"
@@ -47,8 +54,6 @@ IMAGES_URL = ""  # Ex. "http://your-site.com/images/"
 IMG_BG = bots_path.joinpath("files/bg-dark.png")  # Dark BG
 
 DEBUG = strtobool(os.getenv("OPENBB_DEBUG", "False"))
-
-GST_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
 gst_imgur = pyimgur.Imgur(IMGUR_CLIENT_ID)
 

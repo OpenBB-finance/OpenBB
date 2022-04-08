@@ -1,16 +1,17 @@
 import hashlib
+import logging
 import os
-from typing import Dict
+import platform
 import traceback
 import uuid
-import logging
-import platform
+from typing import Any, Dict
 
 import disnake
 from disnake.ext import commands
+
+from bots import config_discordbot as cfg
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.loggers import setup_logging
-from bots import config_discordbot as cfg
 
 logger = logging.getLogger(__name__)
 setup_logging("bot-app")
@@ -33,6 +34,9 @@ class _MissingSentinel:
 
     def __repr__(self):
         return "..."
+
+
+MISSING: Any = _MissingSentinel()
 
 
 def hash_user_id(user_id: str) -> str:
@@ -74,18 +78,16 @@ class GSTBot(commands.Bot):
             command_prefix=cfg.COMMAND_PREFIX,
             intents=disnake.Intents.all(),
             help_command=GSTHelpCommand(sort_commands=False, commands_heading="list:"),
-            sync_commands_debug=False,
+            sync_commands_debug=True,
             sync_permissions=True,
             activity=activity,
             test_guilds=cfg.SLASH_TESTING_SERVERS,
         )
 
     def load_all_extensions(self, folder: str) -> None:
-        folder_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), folder)
+        folder_path = cfg.bots_path.joinpath(folder)
         for name in os.listdir(folder_path):
             if name.endswith(".py") and os.path.isfile(f"{folder_path}/{name}"):
-                print(folder)
-                print(os.getcwd())
                 self.load_extension(f"{folder}.{name[:-3]}")
 
     async def on_command_error(
