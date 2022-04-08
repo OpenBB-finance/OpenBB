@@ -1,16 +1,27 @@
 import hashlib
+import os
 from typing import Dict
 import traceback
 import uuid
 import logging
 import platform
 
+import disnake
+from disnake.ext import commands
+from openbb_terminal.decorators import log_start_end
+from openbb_terminal.loggers import setup_logging
+from bots import config_discordbot as cfg
 
 logger = logging.getLogger(__name__)
 setup_logging("bot-app")
 logger.info("START")
 logger.info("Python: %s", platform.python_version())
 logger.info("OS: %s", platform.system())
+
+activity = disnake.Activity(
+    type=disnake.ActivityType.watching,
+    name="OpenBB Terminal: https://github.com/OpenBB-finance/OpenBBTerminal",
+)
 
 
 class _MissingSentinel:
@@ -227,91 +238,3 @@ class GSTBot(commands.Bot):
             f"ID: {self.user.id}"
         )
         # fmt: on
-
-
-class MyModal(disnake.ui.Modal):
-    def __init__(self) -> None:
-        components = [
-            disnake.ui.TextInput(
-                label="Issue",
-                placeholder="_ _",
-                custom_id="issue",
-                style=disnake.TextInputStyle.short,
-                min_length=5,
-                max_length=50,
-            ),
-            disnake.ui.TextInput(
-                label="Image",
-                placeholder="Url to an image showing error",
-                custom_id="image",
-                style=disnake.TextInputStyle.short,
-                min_length=5,
-                max_length=500,
-            ),
-            disnake.ui.TextInput(
-                label="Description",
-                placeholder="Please specify what command and inputs gave the error",
-                custom_id="description",
-                style=disnake.TextInputStyle.paragraph,
-                min_length=5,
-                max_length=1024,
-            ),
-        ]
-        super().__init__(
-            title="Support Ticket", custom_id="support_ticket", components=components
-        )
-
-    async def callback(self, inter: disnake.ModalInteraction) -> None:
-        embed = disnake.Embed(title="Support Ticket")
-        channel = await gst_bot.fetch_channel(943929570002878514)
-        embed.add_field(name="User", value=inter.author.name, inline=True)
-        embed.add_field(name="Server", value=inter.guild.name, inline=True)  # type: ignore
-        embed.add_field(name="Issue", value=inter.text_values["issue"], inline=False)
-        embed.add_field(
-            name="Description", value=inter.text_values["description"], inline=False
-        )
-        embed.set_image(url=inter.text_values["image"])
-        await inter.response.send_message("Ticket Sent. Thank you!!", ephemeral=True)
-        await channel.send(embed=embed)
-
-    async def on_error(self, error: Exception, inter: disnake.ModalInteraction) -> None:
-        await inter.response.send_message("Oops, something went wrong.", ephemeral=True)
-
-
-@gst_bot.slash_command()
-@commands.guild_only()
-@commands.has_permissions(manage_messages=True)
-async def support(inter: disnake.CommandInteraction):
-    """Send support ticket! *Mods Only"""
-    await inter.response.send_modal(modal=MyModal())
-
-
-@gst_bot.slash_command()
-async def stats(
-    self,
-    inter: disnake.AppCmdInter,
-):
-    """Bot Stats"""
-    guildname = []
-    for guild in gst_bot.guilds:
-        guildname.append(guild.name)
-    members = []
-    for guild in gst_bot.guilds:
-        for member in guild.members:
-            members.append(member)
-    embed = disnake.Embed(
-        title="Bot Stats",
-        colour=cfg.COLOR,
-    )
-    embed.add_field(
-        name="Servers",
-        value=f"```css\n{len(guildname):^20}\n```",
-        inline=False,
-    )
-    embed.add_field(
-        name="Users",
-        value=f"```css\n{len(members):^20}\n```",
-        inline=False,
-    )
-
-    await inter.send(embed=embed)
