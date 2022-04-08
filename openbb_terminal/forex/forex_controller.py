@@ -29,7 +29,7 @@ class ForexController(BaseController):
     """Forex Controller class."""
 
     CHOICES_COMMANDS = ["to", "from", "load", "quote", "candle", "resources"]
-    CHOICES_MENUS = ["ta", "oanda"]
+    CHOICES_MENUS = ["ta", "qa", "oanda", "pred"]
     PATH = "/forex/"
     FILE_PATH = os.path.join(os.path.dirname(__file__), "README.md")
 
@@ -66,6 +66,8 @@ class ForexController(BaseController):
     candle        show candle plot for loaded data[/cmds]
 [menu]
 >   ta          technical analysis for loaded coin,     e.g.: ema, macd, rsi, adx, bbands, obv
+>   qa          quantitative analysis,                  e.g.: decompose, cusum, residuals analysis
+>   pred        prediction techniques                   e.g.: regression, arima, rnn, lstm, conv1d, monte carlo
 [/menu]{has_symbols_end}
 [info]Forex brokerages:[/info][menu]
 >   oanda         Oanda menu[/menu][/cmds]
@@ -317,6 +319,64 @@ class ForexController(BaseController):
 
         else:
             console.print("No currency pair data is loaded. Use 'load' to load data.\n")
+
+    @log_start_end(log=logger)
+    def call_pred(self, _):
+        """Process pred command"""
+        if obbff.ENABLE_PREDICT:
+            if self.from_symbol and self.to_symbol:
+                if self.data.empty:
+                    console.print(
+                        "No currency pair data is loaded. Use 'load' to load data.\n"
+                    )
+                else:
+                    try:
+                        from openbb_terminal.forex.prediction_techniques import (
+                            pred_controller,
+                        )
+
+                        self.queue = self.load_class(
+                            pred_controller.PredictionTechniquesController,
+                            self.from_symbol,
+                            self.to_symbol,
+                            self.data.index[0],
+                            "1440min",
+                            self.data,
+                            self.queue,
+                        )
+                    except ImportError:
+                        logger.exception("Tensorflow not available")
+                        console.print(
+                            "[red]Run pip install tensorflow to continue[/red]\n"
+                        )
+            else:
+                console.print("No pair selected.\n")
+        else:
+            console.print(
+                "Predict is disabled. Check ENABLE_PREDICT flag on feature_flags.py",
+                "\n",
+            )
+
+    @log_start_end(log=logger)
+    def call_qa(self, _):
+        """Process qa command"""
+        if self.from_symbol and self.to_symbol:
+            if self.data.empty:
+                console.print(
+                    "No currency pair data is loaded. Use 'load' to load data.\n"
+                )
+            else:
+                from openbb_terminal.forex.quantitative_analysis import qa_controller
+
+                self.queue = self.load_class(
+                    qa_controller.QaController,
+                    self.from_symbol,
+                    self.to_symbol,
+                    self.data,
+                    self.queue,
+                )
+        else:
+            console.print("No pair selected.\n")
 
     # HELP WANTED!
     # TODO: Add news and reddit commands back
