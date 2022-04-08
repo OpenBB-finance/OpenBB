@@ -63,6 +63,12 @@ def get_dividend_cal(date: str) -> pd.DataFrame:
     pd.DataFrame:
         Dataframe of dividend calendar
     """
+    # TODO: HELP WANTED:
+    # Nasdaq API doesn't like a lot of stuff. Your ISP or VPN, the specific user agent
+    # that you might be using, etc. More exploration is required to make this feature
+    # equally usable for all. In the time being we patch selection of the user agent and
+    # add a timeout for cases when the URL doesn't respond.
+
     ag = get_user_agent()
     # Nasdaq API doesn't like this user agent, thus we always get other than this particular one
     while (
@@ -74,6 +80,7 @@ def get_dividend_cal(date: str) -> pd.DataFrame:
         r = requests.get(
             f"https://api.nasdaq.com/api/calendar/dividends?date={date}",
             headers={"User-Agent": ag},
+            timeout=5,
         )
 
         df = pd.DataFrame()
