@@ -393,7 +393,7 @@ def save_image(filename: str, fig: plotly.graph_objects) -> str:
     """
     imagefile = f"{filename.replace('.png', '')}_{uuid_get()}.png"
     filesave = imps.IMG_DIR.joinpath(imagefile)
-    fig.write_image(filesave)
+    fig.write_image(filesave, scale=3)
     image = Image.open(filesave)
     image = autocrop_image(image, 0)
     image.save(filesave, "PNG", quality=100)
@@ -429,9 +429,9 @@ def image_border(filename: str, **kwargs) -> str:
         img = Image.open(filename)
 
     im_bg = Image.open(imps.IMG_BG)
-    im_bg = im_bg.resize((4100, 2600), resample=Image.Resampling.LANCZOS)
+    im_bg = im_bg.resize((4200, 2600), resample=Image.Resampling.LANCZOS)
 
-    w = img.width + 500
+    w = img.width + 520
     h = img.height
 
     # Paste fig onto background img and autocrop background
@@ -441,7 +441,7 @@ def image_border(filename: str, **kwargs) -> str:
     x2 = int(0.5 * im_bg.size[0]) + int(0.5 * img.size[0])
     y2 = int(0.5 * im_bg.size[1]) + int(0.5 * img.size[1])
     img = img.convert("RGB")
-    im_bg.paste(img, box=(x1 + 10, y1 + 10, x2 + 10, y2 + 10))
+    im_bg.paste(img, box=(x1 + 5, y1 + 10, x2 + 5, y2 + 10))
     img.close()
     im_bg.save(filesave, "PNG", quality=100)
     im_bg.close()

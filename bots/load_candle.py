@@ -339,12 +339,12 @@ def candle_fig(
     if "bar" in data:
         dt = {1: 1, 5: 4, 15: 8, 30: 5, 60: 6, 1440: 30}
         bar_opacity = (
-            0.5
+            0.6
             if (
                 data["bar"]
                 > (dt_utcnow_local_tz() - timedelta(days=dt[data["int_bar"]]))
             )
-            else 0.5
+            else 0.65
         )
         bar_opacity = (
             bar_opacity
@@ -372,7 +372,8 @@ def candle_fig(
         )
     else:
         bar_opacity = 0.5
-    line_adj = 2 if interval != 1440 else 0.5
+
+    line_adj = 1 if len(df_stock.index) < 100 else 0.5
     fig.add_trace(
         go.Candlestick(
             x=df_stock.index,
@@ -384,6 +385,7 @@ def candle_fig(
             line=dict(width=line_adj),
             increasing_line_color="#00ACFF",
             decreasing_line_color="#e4003a",
+            opacity=1,
             showlegend=False,
         ),
         row=1,
@@ -585,7 +587,7 @@ def candle_fig(
         showarrow=False,
     )
     ints_lt = [1, 5]
-    xadj = -0.075 if interval in ints_lt else -0.07
+    xadj = -0.075 if interval in ints_lt else -0.069
     yadj = 0.075 if "rows" not in data else 0.474
     tickft_size = 10
     if "rows" in data:

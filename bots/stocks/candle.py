@@ -111,7 +111,7 @@ def candle_command(
     fig.update_layout(
         margin=dict(l=0, r=0, t=40, b=20),
         template=imps.PLT_CANDLE_STYLE_TEMPLATE,
-        title=title,
+        title=f"<b>{title}</b>",
         title_x=0.5,
         title_font_size=14,
         yaxis_title="",

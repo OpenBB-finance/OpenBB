@@ -90,7 +90,7 @@ def topsells_command(
         else -float(x["min"]),
         axis=1,
     )
-    description = None
+    description = ""
     df_gov = df_gov.sort_values("TransactionDate", ascending=True)
     if raw:
         df = pd.DataFrame(
