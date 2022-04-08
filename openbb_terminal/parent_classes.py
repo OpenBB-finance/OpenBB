@@ -172,7 +172,9 @@ class BaseController(metaclass=ABCMeta):
 
         # Slash used for navigation in first token only
         elif "/" in an_input.split()[0]:
-            actions = an_input.split("/")
+            tokens = an_input.split()
+            actions = tokens[0].split("/")
+            actions[-1] += f" {' '.join(tokens[1:])}"
 
             # Absolute path is specified
             if not actions[0]:
