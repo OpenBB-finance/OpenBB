@@ -5,7 +5,6 @@ import sys
 from pathlib import Path
 import logging
 import platform
-from typing import Any
 
 import disnake
 from disnake.ext import commands
@@ -37,9 +36,6 @@ logger.info("Python: %s", platform.python_version())
 logger.info("OS: %s", platform.system())
 
 app = FastAPI()
-
-
-MISSING: Any = helpers._MissingSentinel()
 
 
 @app.get("/")

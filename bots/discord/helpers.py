@@ -1,6 +1,6 @@
 import hashlib
 import os
-from typing import Dict
+from typing import Dict, Any
 import traceback
 import uuid
 import logging
@@ -33,6 +33,9 @@ class _MissingSentinel:
 
     def __repr__(self):
         return "..."
+
+
+MISSING: Any = _MissingSentinel()
 
 
 def hash_user_id(user_id: str) -> str:
