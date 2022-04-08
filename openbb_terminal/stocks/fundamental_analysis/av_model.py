@@ -393,9 +393,7 @@ def df_values(
     if index:
         df = df.iloc[index : index + length]
     selection = df[item]
-    values = selection.apply(
-        lambda x: "N/A" if (not x or x == "None") else int(x)
-    ).values
+    values = selection.apply(lambda x: 0 if (not x or x == "None") else int(x)).values
     return values.tolist()
 
 
@@ -449,45 +447,61 @@ def get_fraud_ratios(ticker: str) -> pd.DataFrame:
         cfo = df_values(df_cf, "operatingCashflow", i)
 
         ratios: Dict = {}
-        ratios["DSRI"] = (ar[0] / sales[0]) / (ar[1] / sales[1])
-        ratios["GMI"] = ((sales[1] - cogs[1]) / sales[1]) / (
-            (sales[0] - cogs[0]) / sales[0]
-        )
-        ratios["AQI"] = (1 - ((ca[0] + ppe[0] + sec[0]) / ta[0])) / (
-            1 - ((ca[1] + ppe[1] + sec[1]) / ta[1])
-        )
-        ratios["SGI"] = sales[0] / sales[1]
-        ratios["DEPI"] = (dep[1] / (ppe[1] + dep[1])) / (dep[0] / (ppe[0] + dep[0]))
-        ratios["SGAI"] = (sga[0] / sales[0]) / (sga[1] / sales[1])
-        ratios["LVGI"] = (tl[0] / ta[0]) / (tl[1] / ta[1])
-        ratios["TATA"] = (icfo[0] - cfo[0]) / ta[0]
-        ratios["MSCORE"] = (
-            -4.84
-            + (0.92 * ratios["DSRI"])
-            + (0.58 * ratios["GMI"])
-            + (0.404 * ratios["AQI"])
-            + (0.892 * ratios["SGI"])
-            + (0.115 * ratios["DEPI"] - (0.172 * ratios["SGAI"]))
-            + (4.679 * ratios["TATA"])
-            - (0.327 * ratios["LVGI"])
-        )
+        try:
+            ratios["DSRI"] = (ar[0] / sales[0]) / (ar[1] / sales[1])
+            ratios["GMI"] = ((sales[1] - cogs[1]) / sales[1]) / (
+                (sales[0] - cogs[0]) / sales[0]
+            )
+            ratios["AQI"] = (1 - ((ca[0] + ppe[0] + sec[0]) / ta[0])) / (
+                1 - ((ca[1] + ppe[1] + sec[1]) / ta[1])
+            )
+            ratios["SGI"] = sales[0] / sales[1]
+            ratios["DEPI"] = (dep[1] / (ppe[1] + dep[1])) / (dep[0] / (ppe[0] + dep[0]))
+            ratios["SGAI"] = (sga[0] / sales[0]) / (sga[1] / sales[1])
+            ratios["LVGI"] = (tl[0] / ta[0]) / (tl[1] / ta[1])
+            ratios["TATA"] = (icfo[0] - cfo[0]) / ta[0]
+            ratios["MSCORE"] = (
+                -4.84
+                + (0.92 * ratios["DSRI"])
+                + (0.58 * ratios["GMI"])
+                + (0.404 * ratios["AQI"])
+                + (0.892 * ratios["SGI"])
+                + (0.115 * ratios["DEPI"] - (0.172 * ratios["SGAI"]))
+                + (4.679 * ratios["TATA"])
+                - (0.327 * ratios["LVGI"])
+            )
 
-        zscore = (
-            -4.336
-            - (4.513 * (ni[0] / ta[0]))
-            + (5.679 * (tl[0] / ta[0]))
-            + (0.004 * (ca[0] / cl[0]))
-        )
-        v1 = np.log(ta[0] / 1000)
-        v2 = ni[0] / ta[0]
-        v3 = cash[0] / cl[0]
+            zscore = (
+                -4.336
+                - (4.513 * (ni[0] / ta[0]))
+                + (5.679 * (tl[0] / ta[0]))
+                + (0.004 * (ca[0] / cl[0]))
+            )
+            v1 = np.log(ta[0] / 1000)
+            v2 = ni[0] / ta[0]
+            v3 = cash[0] / cl[0]
 
-        x = ((v1 + 0.85) * v2) - 0.85
-        y = 1 + v3
+            x = ((v1 + 0.85) * v2) - 0.85
+            y = 1 + v3
 
-        mckee = x**2 / (x**2 + y**2)
-        ratios["Zscore"] = zscore
-        ratios["Mscore"] = mckee
+            mckee = x**2 / (x**2 + y**2)
+            ratios["Zscore"] = zscore
+            ratios["Mscore"] = mckee
+        except ZeroDivisionError:
+            for item in [
+                "DSRI",
+                "GMI",
+                "AQI",
+                "SGI",
+                "DEPI",
+                "SGAI",
+                "LVGI",
+                "TATA",
+                "MSCORE",
+                "Zscore",
+                "Mscore",
+            ]:
+                ratios[item] = "N/A"
         if fraud_years.empty:
             fraud_years.index = ratios.keys()
         fraud_years[df_cf.index[i]] = ratios.values()
