@@ -391,6 +391,18 @@ def valid_date(s: str) -> datetime:
         raise argparse.ArgumentTypeError(f"Not a valid date: {s}") from value_error
 
 
+def valid_repo(repo: str) -> str:
+    """Argparse type to check github repo is in valid format"""
+    result = re.search(r"^[a-zA-Z0-9-_.]+\/[a-zA-Z0-9-_.]+$", repo)  # noqa: W605
+    if not result:
+        log_and_raise(
+            argparse.ArgumentTypeError(
+                f"{repo} is not a valid repo. Valid repo: org/repo"
+            )
+        )
+    return repo
+
+
 def valid_hour(hr: str) -> int:
     """Argparse type to check hour is valid with 24-hour notation"""
 
