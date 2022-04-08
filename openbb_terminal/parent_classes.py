@@ -195,7 +195,8 @@ class BaseController(metaclass=ABCMeta):
         elif "/" in an_input.split()[0]:
             tokens = an_input.split()
             actions = tokens[0].split("/")
-            actions[-1] += f" {' '.join(tokens[1:])}"
+            if len(tokens) != 1:
+                actions[-1] += f" {' '.join(tokens[1:])}"
 
             # Absolute path is specified
             if not actions[0]:
