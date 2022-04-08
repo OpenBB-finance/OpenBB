@@ -466,7 +466,7 @@ unicode_backport = ["unicodedata2"]
 
 [[package]]
 name = "click"
-version = "8.1.2"
+version = "8.0.1"
 description = "Composable command line interface toolkit"
 category = "main"
 optional = false
@@ -4497,7 +4497,7 @@ prediction = ["tensorflow"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8,<3.10"
-content-hash = "7e5b4590eb61f6880a7a858143932cd3d9d1fc46ebf6f48fe69e1fb7f0b1c041"
+content-hash = "49cbce0bb99c519411968ad65e2df15bc989745dd5f523dbbccaa5b050146e25"
 
 [metadata.files]
 absl-py = [
@@ -4831,8 +4831,8 @@ charset-normalizer = [
     {file = "charset_normalizer-2.0.12-py3-none-any.whl", hash = "sha256:6881edbebdb17b39b4eaaa821b438bf6eddffb4468cf344f09f89def34a8b1df"},
 ]
 click = [
-    {file = "click-8.1.2-py3-none-any.whl", hash = "sha256:24e1a4a9ec5bf6299411369b208c1df2188d9eb8d916302fe6bf03faed227f1e"},
-    {file = "click-8.1.2.tar.gz", hash = "sha256:479707fe14d9ec9a0757618b7a100a0ae4c4e236fac5b7f80ca68028141a1a72"},
+    {file = "click-8.0.1-py3-none-any.whl", hash = "sha256:fba402a4a47334742d782209a7c79bc448911afe1149d07bdabdf480b3e2f4b6"},
+    {file = "click-8.0.1.tar.gz", hash = "sha256:8c04c11192119b1ef78ea049e0a6f0463e4c48ef00a30160c704337586f3ad7a"},
 ]
 codespell = [
     {file = "codespell-2.1.0-py3-none-any.whl", hash = "sha256:b864c7d917316316ac24272ee992d7937c3519be4569209c5b60035ac5d569b5"},

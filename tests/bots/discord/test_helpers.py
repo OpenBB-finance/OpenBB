@@ -8,12 +8,12 @@ except ImportError:
     pytest.skip(allow_module_level=True)
 
 
-@pytest.mark.bots
-def test_missing_sequential():
-    test = helpers._MissingSentinel()
-    assert test.__eq__("hello") is False
-    assert test.__bool__() is False
-    assert test.__repr__() == "..."
+# @pytest.mark.bots
+# def test_missing_sequential():
+#     test = helpers._MissingSentinel()
+#     assert test.__eq__("hello") is False
+#     assert test.__bool__() is False
+#     assert test.__repr__() == "..."
 
 
 @pytest.mark.bots
