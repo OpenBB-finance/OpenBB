@@ -3,6 +3,7 @@ import logging
 import os
 from typing import List, Optional
 import matplotlib.pyplot as plt
+import pandas as pd
 from openbb_terminal.cryptocurrency.overview import loanscan_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
@@ -57,18 +58,25 @@ def display_crypto_rates(
                 console.print("[red]Expected list of one axis item./n[/red]")
                 return
             (ax,) = external_axes
-        result_cryptos = list(df.columns)
-        result_platforms = list(df.index)
-        for crypto in result_cryptos:
-            for platform in result_platforms:
-                width = df.loc[platform][crypto]
-                if width != "N/A" and width > 0:
-                    ax.barh(
-                        y=platform,
-                        width=width * 100,
-                        label=crypto,
-                        height=0.5,
-                    )
+
+        df = df.reset_index()
+        df = pd.melt(df, id_vars=["index"])
+
+        assets = df.variable.unique().tolist()
+        colors = iter(cfg.theme.get_colors(reverse=True))
+
+        for asset in assets:
+            width = df.loc[(df.variable == asset) & (df.value != "N/A")]
+
+            width["index"] = width["index"].astype(str) + "-" + asset
+
+            ax.barh(
+                y=width["index"],
+                width=width.value,
+                label=asset,
+                height=0.5,
+                color=next(colors),
+            )
 
         ax.set_xlabel("Rate (%)")
         ax.set_ylabel("Platform")
