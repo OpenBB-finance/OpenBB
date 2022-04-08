@@ -216,6 +216,7 @@ def display_correlation(
         cmap="RdYlGn",
         linewidths=1,
         annot=True,
+        annot_kws={"fontsize": 10},
         vmin=-1,
         vmax=1,
         mask=mask,
