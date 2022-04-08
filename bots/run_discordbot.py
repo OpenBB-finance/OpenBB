@@ -2,18 +2,33 @@
 import asyncio
 import os
 import sys
+from pathlib import Path
 import logging
-from typing import Any
 import platform
+from typing import Any
 
 import disnake
-from fastapi import FastAPI, Request
 from disnake.ext import commands
+from dotenv import load_dotenv
+from fastapi import FastAPI, Request
 
-from bots import config_discordbot as cfg
-from bots.groupme.run_groupme import handle_groupme
-from openbb_terminal.loggers import setup_logging
-from bots.discord import helpers
+try:
+    from bots import config_discordbot as cfg
+except ImportError:
+    sys.path.append(str(Path(__file__).parent.resolve().__str__))
+    from bots import config_discordbot as cfg
+finally:
+    from bots.groupme.run_groupme import handle_groupme
+    from openbb_terminal.loggers import setup_logging
+    from bots.discord import helpers
+
+# Load env
+bots_path = Path(__file__).parent.resolve()
+env_files = [f for f in bots_path.iterdir() if f.__str__().endswith(".env")]
+
+if env_files:
+    load_dotenv(env_files[0])
+
 
 logger = logging.getLogger(__name__)
 setup_logging("bot-app")
