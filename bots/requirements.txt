@@ -69,7 +69,7 @@ filelock==3.6.0; python_version >= "3.7" and python_full_version < "3.0.0" or py
 financedatabase==1.0.2
 finnhub-python==2.4.12
 finviz==1.4.4
-finvizfinance==0.12.2; python_version >= "3.5"
+finvizfinance==0.14.0; python_version >= "3.5"
 flake8==3.9.2; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.5.0")
 fonttools==4.32.0; python_version >= "3.7"
 formulaic==0.3.3; python_full_version >= "3.7.1" and python_full_version < "4.0.0" and python_version >= "3.8"
@@ -296,9 +296,6 @@ tzdata==2022.1; platform_system == "Windows" and python_version >= "3.6" and (py
 tzlocal==4.2; python_version >= "3.6"
 ujson==5.2.0; python_version >= "3.7"
 undetected-chromedriver==3.1.5.post4
-unidecode==1.3.4; python_version >= "3.7"
-update-checker==0.18.0; python_version >= "3.6" and python_version < "4.0"
-urllib3==1.26.9; python_full_version >= "3.7.1" and python_version < "4" and python_version >= "3.8" and python_full_version < "4.0.0" and (python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0") and (python_version >= "3.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.7") and (python_version >= "3.7" and python_full_version < "3.0.0" and python_version < "4.0" or python_full_version >= "3.5.0" and python_version < "4" and python_version >= "3.7") and (python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.5.0" and python_version < "4" and python_version >= "3.6")
 user-agent==0.1.10
 uvicorn==0.17.6; python_version >= "3.7"
 vadersentiment==3.3.2

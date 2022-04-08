@@ -470,7 +470,7 @@ version = "8.1.2"
 description = "Composable command line interface toolkit"
 category = "main"
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.6"
 
 [package.dependencies]
 colorama = {version = "*", markers = "platform_system == \"Windows\""}
@@ -784,7 +784,7 @@ python-versions = ">=3.6"
 name = "exchange-calendars"
 version = "3.6.1"
 description = "exchange_calendars is a Python library with securities exchange calendars"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.7"
 
@@ -929,7 +929,7 @@ user_agent = "*"
 
 [[package]]
 name = "finvizfinance"
-version = "0.12.2"
+version = "0.14.0"
 description = "Finviz Finance. Information downloader."
 category = "main"
 optional = false
@@ -2288,7 +2288,7 @@ requests = ">=2.19.0"
 name = "pandas-market-calendars"
 version = "3.2"
 description = "Market and exchange trading calendars for pandas"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.7.0"
 
@@ -2843,7 +2843,7 @@ testutil = ["gitpython (>3)"]
 name = "pyluach"
 version = "1.4.1"
 description = "Pyluach is a Python package for manipulating Hebrew dates,"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.6"
 
@@ -4008,7 +4008,7 @@ python-versions = ">=3.7"
 name = "toolz"
 version = "0.11.2"
 description = "List processing tools and functional utilities"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.5"
 
@@ -5113,8 +5113,8 @@ finviz = [
     {file = "finviz-1.4.4.tar.gz", hash = "sha256:9772060a070d59e8d1045ffbe826553d15f189fab43074b50bf7a510b5360172"},
 ]
 finvizfinance = [
-    {file = "finvizfinance-0.12.2-py3-none-any.whl", hash = "sha256:8c6d3e46459f6196436435133723dc4caffbfc244484f43ee8c2dd3caee8fc80"},
-    {file = "finvizfinance-0.12.2.tar.gz", hash = "sha256:6f6126e9836e6ef09a46f9f66e25354d7e250ef3336690d3939de16462eb51bc"},
+    {file = "finvizfinance-0.14.0-py3-none-any.whl", hash = "sha256:416fa2ba99f9c5a97c7b7050dc6ea8e2c4811f1b1be62ab435c70a42d39a0742"},
+    {file = "finvizfinance-0.14.0.tar.gz", hash = "sha256:7ea598186eb3209e5998d4523fb788d038d441fe81a69cc68ac517a5e97df40d"},
 ]
 flake8 = [
     {file = "flake8-3.9.2-py2.py3-none-any.whl", hash = "sha256:bf8fd333346d844f616e8d47905ef3a3384edae6b4e9beb0c5101e25e3110907"},
