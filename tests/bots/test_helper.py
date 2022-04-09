@@ -7,32 +7,34 @@ from PIL import Image
 from plotly import graph_objects as go
 
 # pylint: disable=R0903,W0143,E0211,W0621
-
 try:
-    from bots.helpers import load
+    try:
+        from bots.helpers import load
+    except ImportError:
+        sys.path.append(str(Path(__file__).parent.parent.parent.resolve().__str__))
+        from bots.helpers import load
+    finally:
+        from bots.helpers import (
+            ShowView,
+            autocrop_image,
+            country_autocomp,
+            expiry_autocomp,
+            image_border,
+            industry_autocomp,
+            inter_chart,
+            metric_autocomp,
+            multi_image,
+            presets_custom_autocomp,
+            quote,
+            save_image,
+            signals_autocomp,
+            ticker_autocomp,
+            unit_finder,
+            unit_replacer,
+            uuid_get,
+        )
 except ImportError:
-    sys.path.append(str(Path(__file__).parent.parent.parent.resolve().__str__))
-    from bots.helpers import load
-finally:
-    from bots.helpers import (
-        ShowView,
-        autocrop_image,
-        country_autocomp,
-        expiry_autocomp,
-        image_border,
-        industry_autocomp,
-        inter_chart,
-        metric_autocomp,
-        multi_image,
-        presets_custom_autocomp,
-        quote,
-        save_image,
-        signals_autocomp,
-        ticker_autocomp,
-        unit_finder,
-        unit_replacer,
-        uuid_get,
-    )
+    pytest.skip(allow_module_level=True)
 
 
 class MockInter:

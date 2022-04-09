@@ -1,8 +1,7 @@
 import pytest
-from disnake.ext import commands
-
 
 try:
+    from disnake.ext import commands
     from bots.discord import helpers
 except ImportError:
     pytest.skip(allow_module_level=True)
