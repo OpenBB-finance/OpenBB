@@ -1,0 +1,54 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - MOCK_TOKEN
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: GET
+    uri: https://sandbox.tradier.com/v1/markets/quotes?symbols=AAPL&includeAllRoots=true&strikes=false
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAG1RwW6EIBT8leadKRFEXb3tcZOmaa+9GFbJamSFCrrdbvz3PtRNm7a3mXlvmAFu
+        8D4arxwUtxUF4K7no9FQwH7/8gQEauWqobW+NX0QrdXq4dBXOFEfVYPSK0J/tWgG503VIdXSeShY
+        FtMoJ1A1sj/h+DGmDOlk9HhGmoooz6KUETBW9WFdUCYINO2pCSyhYodHmUsgnMYZnqSNQ2c/ak3g
+        2NZbBq5J1/0OLK0aKtV7uWQzusMkOakBeXnvwCLOcxGn0dr5h46KH2StylqGd2GpEAkXPE6SlBOw
+        g5q2MixLKccGF6W6MuHlVn/HaS6+1fUaDFfZ0ty1n+iNF7y94zMs7E9gFLrg/VZLvuDN8gYL+98y
+        GOPL9Tfd/Tvnef4CZHQu3PUBAAA=
+    headers:
+      Access-Control-Allow-Headers:
+      - accept, authorization
+      Access-Control-Allow-Methods:
+      - GET, PUT, POST, DELETE
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json;charset=UTF-8
+      Date:
+      - Thu, 10 Feb 2022 20:32:15 GMT
+      Transfer-Encoding:
+      - chunked
+      X-Ratelimit-Allowed:
+      - '200'
+      X-Ratelimit-Available:
+      - '198'
+      X-Ratelimit-Expiry:
+      - '1644525180000'
+      X-Ratelimit-Used:
+      - '2'
+    status:
+      code: 200
+      message: OK
+version: 1

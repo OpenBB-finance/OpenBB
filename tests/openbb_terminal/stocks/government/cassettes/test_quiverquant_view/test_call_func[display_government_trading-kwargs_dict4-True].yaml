@@ -1,0 +1,64 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - MOCK_TOKEN
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.26.0
+      X-CSRFToken:
+      - TyTJwjuEC7VV7mOqZ622haRaaUr0x0Ng4nrwSRFKQs7vdoBcJlK9qjAS69ghzhFu
+      accept:
+      - application/json
+    method: GET
+    uri: https://api.quiverquant.com/beta/historical/congresstrading/AMRC
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA9zWz2+CMBQH8H+laTzylvfKAPVmtsMOM1nQ27JDQ5qtUamhZTss+98XunjQKOoC
+        Ebi+/oBPvvTR12+eqq0p3KN0ik8ZFygIMAEKecD4spC5lZnTJt+fEAMlfoLOVqqo6rN5+lBVUrUt
+        lFW5k05/+hVsUVqt2LNSB1tWgwu59uXZxpS541NGiHSHAeNPprR+/f6O1j9E5u9+bEQBIsGIogAR
+        +U/AjoNiEPWgCER8MWhpNmwu1zo3X3alb6ca7176lCoEnDSneimL7EPaA1l0JS36s0VYbwsB620C
+        MGozsZZcZzOr5gzUlfTuhIW7j6xGFfcwLQKi0y4EEiAmjTT4403jBu3wWtQ/22ErskviEgOMi8a9
+        jOusjIBwYLeNxlVdyguB+nc7rP93IeB9o7fDrqhCCLt7tt5+AQAA//8DABQosNdxDQAA
+    headers:
+      Allow:
+      - GET, HEAD, OPTIONS
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 6bbe708e586f3b73-CDG
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Sat, 11 Dec 2021 11:40:43 GMT
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      NEL:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Referrer-Policy:
+      - same-origin
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=M8HdvujRjmq6gifkKehNvsyf1suIA%2FdjcoB2FiQv5Af5gTM7gu%2F3pjJE70suLtMCKEmuHsuLy%2BTa5%2BXdqlNS60SlCUZbB4tLP4B7PtqtMVz2aqyl4a2p0p5Lsyq98YpZhmGtm8g%3D"}],"group":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+    status:
+      code: 200
+      message: OK
+version: 1

@@ -1,0 +1,64 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - MOCK_TOKEN
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+      X-CSRFToken:
+      - TyTJwjuEC7VV7mOqZ622haRaaUr0x0Ng4nrwSRFKQs7vdoBcJlK9qjAS69ghzhFu
+      accept:
+      - application/json
+    method: GET
+    uri: https://api.quiverquant.com/beta/historical/congresstrading/AMRC
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAwAAAP//3NbPb4IwFAfwf6VpPPKW98oA9Wa2ww4zWdDbskNDmq1RqaFlOyz73xe6
+        eNAo6gIRuL7+gE++9NHXb56qrSnco3SKTxkXKAgwAQp5wPiykLmVmdMm358QAyV+gs5Wqqjqs3n6
+        UFVStS2UVbmTTn/6FWxRWq3Ys1IHW1aDC7n25dnGlLnjU0aIdIcB40+mtH79/o7WP0Tm735sRAEi
+        wYiiABH5T8COg2IQ9aAIRHwxaGk2bC7XOjdfdqVvpxrvXvqUKgScNKd6KYvsQ9oDWXQlLfqzRVhv
+        CwHrbQIwajOxllxnM6vmDNSV9O6EhbuPrEYV9zAtAqLTLgQSICaNNPjjTeMG7fBa1D/bYSuyS+IS
+        A4yLxr2M66yMgHBgt43GVV3KC4H6dzus/3ch4H2jt8OuqEIIu3u23n4BAAD//wMAFCiw13ENAAA=
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 6da745bdbebe8813-SIN
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 08 Feb 2022 19:30:26 GMT
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      NEL:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=dhyvFVvtFJqyw60fnjLmSROt3RK1qdqr6CsxFvG%2BUKaZAoyddlzhvnhE9eYbfO4YXGq2%2Bus4d%2BKOF%2BI3Bn%2FlFP5TdbQ1LkHFpL30AwtPseCtdleFQp%2FTfFFH15SiKtZDriZE%2FHU%3D"}],"group":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      allow:
+      - GET, HEAD, OPTIONS
+      referrer-policy:
+      - same-origin
+      vary:
+      - Accept
+      x-content-type-options:
+      - nosniff
+      x-frame-options:
+      - DENY
+    status:
+      code: 200
+      message: OK
+version: 1

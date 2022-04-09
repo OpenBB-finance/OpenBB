@@ -1,0 +1,1 @@
+[{"totalWeeklyShareQuantity":69039455,"totalWeeklyTradeCount":1812409,"issueSymbolIdentifier":"TSLA","lastUpdateDate":"2021-11-22"}]

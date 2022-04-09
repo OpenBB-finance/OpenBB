@@ -1,0 +1,10 @@
+
+Ticker: MOCK_TICKER
+Expiry: 2022-01-07
+
+    add           add an expected price to the list
+    rmv           remove an expected price from the list
+
+    show          show the listed of expected prices
+    rnval         risk neutral valuation for an option
+        

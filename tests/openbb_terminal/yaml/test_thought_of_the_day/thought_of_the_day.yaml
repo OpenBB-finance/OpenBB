@@ -1,0 +1,55 @@
+test_get_urls:
+  base_case:
+    urls:
+        "some author": "https://www.goodreads.com/author/quotes/someauthor"
+test_get_metadata:
+  base_case:
+    urls:
+      "some author": "https://www.goodreads.com/author/quotes/someauthor"
+    mock_goodreads_page: |
+      <html>
+      <body>
+      <div class="quotes">
+      <h2>Epicurus quotes   <span class="smallText">
+      Showing 1-30 of 171
+      </span>
+      </h2>
+            <div class='quote'>
+      <div class='quoteDetails'>
+
+      <div class="quoteText">
+            &ldquo;Do not spoil what you have&rdquo;
+        <br>  &#8213;
+        <span class="authorOrTitle">
+          Epicurus
+        </span>
+      </div>
+
+
+      <div class="quoteFooter">
+        <div class="greyText smallText left">
+          tags:
+            <a href="/quotes/tag/desire">desire</a>,
+            <a href="/quotes/tag/gratitude">gratitude</a>,
+            <a href="/quotes/tag/hope">hope</a>
+        </div>
+        <div class="right">
+          <a class="smallText" title="View this quote" href="/quotes/169009-do-not-spoil-what-you-have-by-desiring-what-you">2582 likes</a>
+        </div>
+      </div>
+
+      </div>
+      <div class='action'>
+      <a class="gr-button gr-button--small" rel="nofollow" href="/user/new">Like</a>
+      </div>
+      </div>
+      <div style="text-align: right; width: 100%">
+      <div><span class="previous_page disabled">« previous</span> <em class="current">1</em> <a rel="next" href="/author/quotes/114041.Epicurus?page=2">2</a> <a href="/author/quotes/114041.Epicurus?page=3">3</a> <a href="/author/quotes/114041.Epicurus?page=4">4</a> <a href="/author/quotes/114041.Epicurus?page=5">5</a> <a href="/author/quotes/114041.Epicurus?page=6">6</a> <a class="next_page" rel="next" href="/author/quotes/114041.Epicurus?page=2">next »</a></div>
+      </div>
+      </body>
+      </html>
+    expected_result:
+      "pages": "6"
+      "quoutes": "171"
+      "quotes":
+        - "\n      “Do not spoil what you have”\n    ―\n  \n    Epicurus\n  \n"

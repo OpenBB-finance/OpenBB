@@ -1,0 +1,5 @@
+ARCHIVES_FOLDER_NAME = "archives"
+DEFAULT_BUCKET = "gst-logging"
+DEFAULT_API_URL = "https://gst.openbb.app/logging"
+S3_FOLDER_SUFFIX = "-app"
+TMP_FOLDER_NAME = "tmp"

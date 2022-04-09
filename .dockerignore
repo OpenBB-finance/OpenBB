@@ -1,0 +1,13 @@
+.git
+.*
+.dockerignore
+.env*
+.gitignore
+docker-compose.yaml
+Dockerfile*
+.vscode
+.idea
+__pycache__
+.python-version
+jupyterlab/*/node_modules
+logs/

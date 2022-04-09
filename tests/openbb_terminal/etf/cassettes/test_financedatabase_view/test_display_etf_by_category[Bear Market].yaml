@@ -1,0 +1,78 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://raw.githubusercontent.com/JerBouma/FinanceDatabase/master/Database/ETFs/Bear%20Market.json
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA41SQW/TUAy+T9p/sIKYOqmtBkxog9OgIA4bl6zapVL1mrjJY8l7wfYry6b9d/yS
+        lLbqhVySfP782f7sl9MT0CeZPaQ/kk/w0v92EJeeZOlMjRpIbvKNZU9paQgZZp4YW3ggW5QCaemT
+        8V5m5V3xv4kk8O3++0F6FojQZW3MnqezgxiHujbUhe5LBOs2yFKjE2DER4bMNFZMBaZpCDNrxHoH
+        UpIPRQndREqsKusKfWshKxZ5unBDY+NtZ2dww+yjAPIYbm+/wki03iJJw2oyjLRIzscQUVbM9BiI
+        76B1cPl46Ekhk5UWN/gvdPbmw/Vn3m/fr35hJlY5q1Z/xFjXNdm1jE+N50AYpfZyCCWQY/DrTnhF
+        3uQwn6ZTqAwVOBnMsM+9Dfg7WGlB/XtEiWXQFaaIVazbemMq7PSiykTI5Jhv83Z+gXGKPmWlcVpl
+        YMWxGEaLRNfJas0U5i5HAuep1oVklrJQsxiXRUetDIOomECFhgWuLt7G0lYxpw0aZtTPUVOFWLGF
+        lSfyf7RfhrU6vWdEE0gNQj6Pk+xwtb5U9YxQ1wiaohcYKtmNu+9r59vRqNPDy1Sdwvfn9wUNwV3n
+        5QFnbWpbtUeXf8DZehdZP+/Sg1i/nhgJvKyP9cXrSpe9Ocp6//Hd9dXlxWXPeD09ef0LbOTo3NMD
+        AAA=
+    headers:
+      Accept-Ranges:
+      - bytes
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - max-age=300
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '515'
+      Content-Security-Policy:
+      - default-src 'none'; style-src 'unsafe-inline'; sandbox
+      Content-Type:
+      - text/plain; charset=utf-8
+      Date:
+      - Wed, 19 Jan 2022 16:53:59 GMT
+      ETag:
+      - W/"839f4fc2cf4c68b5aa284e2ff9368b4714f6ec066e010d4feee2d7b82aaf1c83"
+      Expires:
+      - Wed, 19 Jan 2022 16:58:59 GMT
+      Source-Age:
+      - '0'
+      Strict-Transport-Security:
+      - max-age=31536000
+      Vary:
+      - Authorization,Accept-Encoding,Origin
+      Via:
+      - 1.1 varnish
+      X-Cache:
+      - MISS
+      X-Cache-Hits:
+      - '0'
+      X-Content-Type-Options:
+      - nosniff
+      X-Fastly-Request-ID:
+      - 1e2208a258cf4947f057c103c0b663140c9398b9
+      X-Frame-Options:
+      - deny
+      X-GitHub-Request-Id:
+      - 6D9C:E2A2:7A6E31:920B05:61E84227
+      X-Served-By:
+      - cache-lhr7354-LHR
+      X-Timer:
+      - S1642611239.024746,VS0,VE708
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

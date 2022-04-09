@@ -1,0 +1,336 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www.lowfloat.com/
+  response:
+    body:
+      string: "<html>\n<head>\n<meta name=\"Description\" content=\"Comprehensive
+        database of low float stocks listed on the Nasdaq Stock Market, New York Stock
+        Exchange, American Stock Exchange, and Over the Counter Bulletin Board.\">\n<meta
+        name=\"Keywords\" content=\"low float stocks,stocks,stock market,stock quotes,stock
+        research,nasdaq,nyse,amex,otcbb\">\n<title>Low Float Stocks</title>\n\n<style
+        type=\"text/css\">\n<!--\n\nh1  {\n    text-align: center;\n    font-family:
+        verdana, arial;\n    font-size: 24px;\n    color: #046204;\n}\n\nbody, p,
+        a  {\n    text-align: justify;\n    font-family: verdana, arial;\n    font-size:
+        12px;\n    color: #000000;\n}\n\ntable.stocks {\n    font-family     : verdana,
+        arial;\n    color           : #000000;\n    padding-right   : 6px;\n    padding-left
+        \   : 6px;\n    border-width: 1px;\n    border-spacing: ;\n    border-style:
+        outset;\n    border-color: gray;\n    border-collapse: collapse;\n}\n\n\n.tblhdr
+        {\n    font-family     : verdana, arial;\n    color           : #000000;\n
+        \   background      : #6fff6f;\n    padding         : 4px;\n    font-weight
+        \    : bold;\n    font-size       : 12px;\n    text-align      : center;\n
+        \   border-width    : 1px;\n    border-collapse : collapse;\n    border-color
+        \   : black;\n}\n\n.psflow {\n    font-family     : verdana, arial;\n    color
+        \          : #000000;\n    padding         : 4px;\n    font-weight     : bold;\n
+        \   font-size       : 12px;\n    text-align      : center;\n    border-width
+        \   : 1px;\n    border-collapse : collapse;\n    border-color    : black;\n}\n\ntd
+        {\n    font-family     : verdana, arial;\n    color           : #000000;\n
+        \   background      : #FFFFFF;\n    padding         : 5px;\n    font-weight
+        \    : normal;\n    font-size       : 12px;\n    border-width    : 1px;\n
+        \   border-collapse : collapse;\n    border-color    : black;\n}\n\n\n.tdi
+        {\n    font-family     : verdana, arial;\n    color           : #000000;\n
+        \   background      : #eeeeee;\n    padding         : 5px;\n    font-weight
+        \    : normal;\n    font-size       : 12px;\n    border-width    : 1px;\n
+        \   border-collapse : collapse;\n}\n\n\n.mkt {\n    font-family     : verdana,
+        arial;\n    text-align      : center;\n    color           : #000000;\n    background
+        \     : #c8f0f0;\n    padding-right   : 6px;\n    padding-left    : 6px;\n
+        \   font-weight     : normal;\n    font-size       : 12px;\n}\n\n.mktactive
+        {\n    font-family     : verdana, arial;\n    text-align      : center;\n
+        \   color           : #000000;\n    background      : #000088;\n    padding-right
+        \  : 6px;\n    padding-left    : 6px;\n    font-weight     : normal;\n    font-size
+        \      : 12px;\n}\n\n.tab {\n    font-family     : verdana, arial;\n    color
+        \          : #000000;\n    background      : #c3ffc3;\n    font-size       :
+        12px;\n    text-align      : center;\n    white-space     : nowrap;\n    padding
+        \        : 0px;\n}\n\n.tabsel {\n    font-family     : verdana, arial;\n    color
+        \          : #000000;\n    background      : #6fff6f;\n    font-weight     :
+        bold;\n    font-size       : 12px;\n    text-align      : center;\n    white-space
+        \    : nowrap;\n    padding         : 0px;\n}\n\n.tabpic {\n    vertical-align
+        \ : top;\n    white-space     : nowrap;\n    padding         : 0px;\n}\n\n.nav
+        {\n    text-align: center;\n    font-family: verdana, arial;\n    font-size:
+        12px;\n    color: #000000;\n}\n\n-->\n</style>\n</head>\n<body>\n\n\n<table
+        border=0 width=\"800\" style=\"border-collapse:collapse;\">\n\n<tr><td>\n\n<h1>Low
+        Float Stocks</h1>\n\n<p>LowFloat.com provides a convenient sorted database
+        of stocks which have a float of under 10 million shares.  Additional key data
+        such as the number of outstanding shares, short interest, and company industry
+        is displayed.  Data is presented for the Nasdaq Stock Market, the New York
+        Stock Exchange, the American Stock Exchange, and the Over the Counter Bulletin
+        Board.  You can view the data for all exchanges together or only view exchanges
+        of interest by clicking on the appropriate tab. </p>\n\n<p>Low float stocks
+        are often very volatile and are well known for making explosive upside moves.
+        \ Stock traders will often flock to such stocks for no reason other than the
+        fact that they have a low float and the price can potentially move up very
+        quickly. </p>\n<p><i>Disclaimer: We have made our best effort to provide accurate
+        data, but always do your own research and double check the information presented
+        here before making an investment.</i></p>\n</p>\n\n</td></tr>\n\n\n\n<tr><td
+        align=center>\n<br><br><a href=\"https://tinyurl.com/BenzingaSquawk\" target=_blank><img
+        src=\"/benzinga.png\" border=\"0\"></a><br><br><script type=\"text/javascript\"><!--\ngoogle_ad_client
+        = \"pub-1641527371507802\";\n/* Financial */\ngoogle_ad_slot = \"4718314016\";\ngoogle_ad_width
+        = 728;\ngoogle_ad_height = 90;\n//-->\n</script>\n<script type=\"text/javascript\"\nsrc=\"https://pagead2.googlesyndication.com/pagead/show_ads.js\">\n</script><br><br></td></tr>\n<tr><td><table
+        border=\"0\" style=\"border-collapse: collapse\">\n<tr><td class=\"tabpic\"
+        width=\"14\"><img src=\"/tb_left_sel.gif\" width=\"14\" height=\"21\"></td><td
+        class=\"tabsel\" nowrap><a href=\"/all/\">All</a></td><td class=\"tabpic\"
+        width=\"15\"><img src=\"/tb_right_sel.gif\" width=\"15\" height=\"21\"></td><td
+        class=\"tabpic\" width=\"14\"><img src=\"/tb_left.gif\" width=\"14\" height=\"21\"></td><td
+        class=\"tab\" nowrap><a href=\"/all_with_otcbb/\">All (with OTCBB)</a></td><td
+        class=\"tabpic\" width=\"15\"><img src=\"/tb_right.gif\" width=\"15\" height=\"21\"></td><td
+        class=\"tabpic\" width=\"14\"><img src=\"/tb_left.gif\" width=\"14\" height=\"21\"></td><td
+        class=\"tab\" nowrap><a href=\"/nasdaq/\">Nasdaq</a></td><td class=\"tabpic\"
+        width=\"15\"><img src=\"/tb_right.gif\" width=\"15\" height=\"21\"></td><td
+        class=\"tabpic\" width=\"14\"><img src=\"/tb_left.gif\" width=\"14\" height=\"21\"></td><td
+        class=\"tab\" nowrap><a href=\"/nyse/\">NYSE</a></td><td class=\"tabpic\"
+        width=\"15\"><img src=\"/tb_right.gif\" width=\"15\" height=\"21\"></td><td
+        class=\"tabpic\" width=\"14\"><img src=\"/tb_left.gif\" width=\"14\" height=\"21\"></td><td
+        class=\"tab\" nowrap><a href=\"/amex/\">AMEX</a></td><td class=\"tabpic\"
+        width=\"15\"><img src=\"/tb_right.gif\" width=\"15\" height=\"21\"></td><td
+        class=\"tabpic\" width=\"14\"><img src=\"/tb_left.gif\" width=\"14\" height=\"21\"></td><td
+        class=\"tab\" nowrap><a href=\"/otcbb/\">OTCBB</a></td><td class=\"tabpic\"
+        width=\"15\"><img src=\"/tb_right.gif\" width=\"15\" height=\"21\"></td><td
+        class=\"tabpic\" width=\"14\"><img src=\"/tb_left.gif\" width=\"14\" height=\"21\"></td><td
+        class=\"tab\" nowrap><a href=\"https://www.HighShortInterest.com/\" target=\"_blank\">High
+        Short Interest Stocks</a></td><td class=\"tabpic\" width=\"15\"><img src=\"/tb_right.gif\"
+        width=\"15\" height=\"21\"></td><td class=\"tabpic\" width=\"14\"><img src=\"/tb_left.gif\"
+        width=\"14\" height=\"21\"></td><td class=\"tab\" nowrap><a href=\"https://www.PennyStockFlow.com/\"
+        target=\"_blank\">Penny Stocks</a></td><td class=\"tabpic\" width=\"15\"><img
+        src=\"/tb_right.gif\" width=\"15\" height=\"21\"></td></tr></table><table
+        border=1 class=\"stocks\" width=\"798\" style=\"border-collapse:collapse;\">\n<tr><td
+        width=\"40\" class=\"tblhdr\">Ticker</td><td width=\"140\" class=\"tblhdr\">Company</td><td
+        width=\"70\" class=\"tblhdr\">Exchange</td><td width=\"30\" class=\"tblhdr\">Float</td><td
+        width=\"30\" class=\"tblhdr\">Outstd</td><td width=\"60\" class=\"tblhdr\">ShortInt</td><td
+        width=\"140\" class=\"tblhdr\">Industry</td></tr><tr><td><a href=\"https://finance.yahoo.com/q?s=DIT\"
+        target=\"_blank\">DIT</a></td>\n<td>Amcon Distributing Co</td>\n<td align=\"center\">AMEX</td>\n<td
+        align=\"right\">130K</td>\n<td align=\"right\">580K</td>\n<td align=\"right\">1.53%</td>\n<td>Retail
+        (Grocery)</td>\n</tr>\n<tr><td class=\"tdi\"><a href=\"https://finance.yahoo.com/q?s=SEB\"
+        target=\"_blank\">SEB</a></td>\n<td class=\"tdi\">Seaboard Corp</td>\n<td
+        class=\"tdi\" align=\"center\">AMEX</td>\n<td class=\"tdi\" align=\"right\">240K</td>\n<td
+        class=\"tdi\" align=\"right\">1.16M</td>\n<td class=\"tdi\" align=\"right\">0.67%</td>\n<td
+        class=\"tdi\">Fish/Livestock</td>\n</tr>\n<tr><td><a href=\"https://finance.yahoo.com/q?s=HMG\"
+        target=\"_blank\">HMG</a></td>\n<td>HMG Courtland Properties</td>\n<td align=\"center\">AMEX</td>\n<td
+        align=\"right\">280K</td>\n<td align=\"right\">1.02M</td>\n<td align=\"right\">0.38%</td>\n<td>Real
+        Estate Operations</td>\n</tr>\n<tr><td class=\"tdi\"><a href=\"https://finance.yahoo.com/q?s=BDL\"
+        target=\"_blank\">BDL</a></td>\n<td class=\"tdi\">Flanigan's Enterprises Inc</td>\n<td
+        class=\"tdi\" align=\"center\">AMEX</td>\n<td class=\"tdi\" align=\"right\">380K</td>\n<td
+        class=\"tdi\" align=\"right\">1.86M</td>\n<td class=\"tdi\" align=\"right\">1.09%</td>\n<td
+        class=\"tdi\">Restaurants</td>\n</tr>\n<tr><td><a href=\"https://finance.yahoo.com/q?s=MAYS\"
+        target=\"_blank\">MAYS</a></td>\n<td>JW Mays Inc</td>\n<td align=\"center\">Nasdaq</td>\n<td
+        align=\"right\">390K</td>\n<td align=\"right\">2.02M</td>\n<td align=\"right\">0.64%</td>\n<td>Real
+        Estate Operations</td>\n</tr>\n<tr><td class=\"tdi\"><a href=\"https://finance.yahoo.com/q?s=VBFC\"
+        target=\"_blank\">VBFC</a></td>\n<td class=\"tdi\">Village Bank and Trust
+        Financial Corp</td>\n<td class=\"tdi\" align=\"center\">Nasdaq</td>\n<td class=\"tdi\"
+        align=\"right\">530K</td>\n<td class=\"tdi\" align=\"right\">1.47M</td>\n<td
+        class=\"tdi\" align=\"right\">0.36%</td>\n<td class=\"tdi\">Regional Banks</td>\n</tr>\n<tr><td><a
+        href=\"https://finance.yahoo.com/q?s=NCSM\" target=\"_blank\">NCSM</a></td>\n<td>NCS
+        Multistage Holdings Inc</td>\n<td align=\"center\">Nasdaq</td>\n<td align=\"right\">630K</td>\n<td
+        align=\"right\">2.38M</td>\n<td align=\"right\">0.99%</td>\n<td>Oil & Gas
+        - Related Services and Equipment</td>\n</tr>\n<tr><td class=\"tdi\"><a href=\"https://finance.yahoo.com/q?s=RAND\"
+        target=\"_blank\">RAND</a></td>\n<td class=\"tdi\">Rand Capital Corp</td>\n<td
+        class=\"tdi\" align=\"center\">Nasdaq</td>\n<td class=\"tdi\" align=\"right\">640K</td>\n<td
+        class=\"tdi\" align=\"right\">2.58M</td>\n<td class=\"tdi\" align=\"right\">0.15%</td>\n<td
+        class=\"tdi\">Misc. Financial Services</td>\n</tr>\n<tr><td><a href=\"https://finance.yahoo.com/q?s=PNRG\"
+        target=\"_blank\">PNRG</a></td>\n<td>PrimeEnergy Corp</td>\n<td align=\"center\">Nasdaq</td>\n<td
+        align=\"right\">650K</td>\n<td align=\"right\">1.99M</td>\n<td align=\"right\">0.26%</td>\n<td>Oil
+        & Gas Operations</td>\n</tr>\n<tr><td class=\"tdi\"><a href=\"https://finance.yahoo.com/q?s=INTG\"
+        target=\"_blank\">INTG</a></td>\n<td class=\"tdi\">Intergroup Corp</td>\n<td
+        class=\"tdi\" align=\"center\">Nasdaq</td>\n<td class=\"tdi\" align=\"right\">720K</td>\n<td
+        class=\"tdi\" align=\"right\">2.20M</td>\n<td class=\"tdi\" align=\"right\">0.54%</td>\n<td
+        class=\"tdi\">Real Estate Operations</td>\n</tr>\n<tr><td><a href=\"https://finance.yahoo.com/q?s=SENEB\"
+        target=\"_blank\">SENEB</a></td>\n<td>Seneca Foods Corp</td>\n<td align=\"center\">Nasdaq</td>\n<td
+        align=\"right\">740K</td>\n<td align=\"right\">1.71M</td>\n<td align=\"right\">0.07%</td>\n<td>Food
+        Processing</td>\n</tr>\n<tr><td class=\"tdi\"><a href=\"https://finance.yahoo.com/q?s=CVR\"
+        target=\"_blank\">CVR</a></td>\n<td class=\"tdi\">Chicago Rivet & Machine
+        Co</td>\n<td class=\"tdi\" align=\"center\">AMEX</td>\n<td class=\"tdi\" align=\"right\">780K</td>\n<td
+        class=\"tdi\" align=\"right\">970K</td>\n<td class=\"tdi\" align=\"right\">0.21%</td>\n<td
+        class=\"tdi\">Misc. Fabricated Products</td>\n</tr>\n<tr><td><a href=\"https://finance.yahoo.com/q?s=COHN\"
+        target=\"_blank\">COHN</a></td>\n<td>Cohen & Company Inc</td>\n<td align=\"center\">AMEX</td>\n<td
+        align=\"right\">850K</td>\n<td align=\"right\">1.63M</td>\n<td align=\"right\">6.50%</td>\n<td>Diversified
+        Investment Services</td>\n</tr>\n<tr><td class=\"tdi\"><a href=\"https://finance.yahoo.com/q?s=ISIG\"
+        target=\"_blank\">ISIG</a></td>\n<td class=\"tdi\">Insignia Systems, Inc.</td>\n<td
+        class=\"tdi\" align=\"center\">Nasdaq</td>\n<td class=\"tdi\" align=\"right\">920K</td>\n<td
+        class=\"tdi\" align=\"right\">1.77M</td>\n<td class=\"tdi\" align=\"right\">2.34%</td>\n<td
+        class=\"tdi\">Advertising & Marketing</td>\n</tr>\n<tr><td><a href=\"https://finance.yahoo.com/q?s=SVT\"
+        target=\"_blank\">SVT</a></td>\n<td>Servotronics Inc</td>\n<td align=\"center\">NYSE</td>\n<td
+        align=\"right\">920K</td>\n<td align=\"right\">2.49M</td>\n<td align=\"right\">2.33%</td>\n<td>Personal
+        & Household Products</td>\n</tr>\n<tr><td class=\"tdi\"><a href=\"https://finance.yahoo.com/q?s=OBAS\"
+        target=\"_blank\">OBAS</a></td>\n<td class=\"tdi\">Optibase Ltd.</td>\n<td
+        class=\"tdi\" align=\"center\">Nasdaq</td>\n<td class=\"tdi\" align=\"right\">920K</td>\n<td
+        class=\"tdi\" align=\"right\">5.22M</td>\n<td class=\"tdi\" align=\"right\">0.02%</td>\n<td
+        class=\"tdi\">Communications Equipment</td>\n</tr>\n<tr><td><a href=\"https://finance.yahoo.com/q?s=VALU\"
+        target=\"_blank\">VALU</a></td>\n<td>Value Line Inc</td>\n<td align=\"center\">Nasdaq</td>\n<td
+        align=\"right\">920K</td>\n<td align=\"right\">9.56M</td>\n<td align=\"right\">2.55%</td>\n<td>Investment
+        Services</td>\n</tr>\n<tr><td class=\"tdi\"><a href=\"https://finance.yahoo.com/q?s=ARL\"
+        target=\"_blank\">ARL</a></td>\n<td class=\"tdi\">American Realty Investors,
+        Inc</td>\n<td class=\"tdi\" align=\"center\">NYSE</td>\n<td class=\"tdi\"
+        align=\"right\">930K</td>\n<td class=\"tdi\" align=\"right\">16.15M</td>\n<td
+        class=\"tdi\" align=\"right\">4.36%</td>\n<td class=\"tdi\">Real Estate Operations</td>\n</tr>\n<tr><td><a
+        href=\"https://finance.yahoo.com/q?s=AAMC\" target=\"_blank\">AAMC</a></td>\n<td>Altisource
+        Asset Management Co</td>\n<td align=\"center\">AMEX</td>\n<td align=\"right\">950K</td>\n<td
+        align=\"right\">2.06M</td>\n<td align=\"right\">0.41%</td>\n<td>Investment
+        Services</td>\n</tr>\n<tr><td class=\"tdi\"><a href=\"https://finance.yahoo.com/q?s=FFDF\"
+        target=\"_blank\">FFDF</a></td>\n<td class=\"tdi\">FFD Financial Corp</td>\n<td
+        class=\"tdi\" align=\"center\">Nasdaq</td>\n<td class=\"tdi\" align=\"right\">980K</td>\n<td
+        class=\"tdi\" align=\"right\">990K</td>\n<td class=\"tdi\" align=\"right\">0.00%</td>\n<td
+        class=\"tdi\">S&Ls/Savings Banks</td>\n</tr>\n<tr><td><a href=\"https://finance.yahoo.com/q?s=VRTA\"
+        target=\"_blank\">VRTA</a></td>\n<td>Vestin Realty Mortgage I Inc</td>\n<td
+        align=\"center\">Nasdaq</td>\n<td align=\"right\">1.01M</td>\n<td align=\"right\">1.30M</td>\n<td
+        align=\"right\">0.00%</td>\n<td>Real Estate Operations</td>\n</tr>\n<tr><td
+        class=\"tdi\"><a href=\"https://finance.yahoo.com/q?s=IKNX\" target=\"_blank\">IKNX</a></td>\n<td
+        class=\"tdi\">Ikonics Corp</td>\n<td class=\"tdi\" align=\"center\">Nasdaq</td>\n<td
+        class=\"tdi\" align=\"right\">1.05M</td>\n<td class=\"tdi\" align=\"right\">1.98M</td>\n<td
+        class=\"tdi\" align=\"right\">1.57%</td>\n<td class=\"tdi\">Photography</td>\n</tr>\n<tr><td><a
+        href=\"https://finance.yahoo.com/q?s=LINK\" target=\"_blank\">LINK</a></td>\n<td>Interlink
+        Electronics Inc</td>\n<td align=\"center\">Nasdaq</td>\n<td align=\"right\">1.06M</td>\n<td
+        align=\"right\">6.60M</td>\n<td align=\"right\">0.63%</td>\n<td>Electronic
+        Instruments & Controls</td>\n</tr>\n<tr><td class=\"tdi\"><a href=\"https://finance.yahoo.com/q?s=DJCO\"
+        target=\"_blank\">DJCO</a></td>\n<td class=\"tdi\">Daily Journal Corp</td>\n<td
+        class=\"tdi\" align=\"center\">Nasdaq</td>\n<td class=\"tdi\" align=\"right\">1.08M</td>\n<td
+        class=\"tdi\" align=\"right\">1.38M</td>\n<td class=\"tdi\" align=\"right\">0.93%</td>\n<td
+        class=\"tdi\">Printing & Publishing</td>\n</tr>\n<tr><td><a href=\"https://finance.yahoo.com/q?s=TSRI\"
+        target=\"_blank\">TSRI</a></td>\n<td>TSR Inc</td>\n<td align=\"center\">Nasdaq</td>\n<td
+        align=\"right\">1.09M</td>\n<td align=\"right\">1.96M</td>\n<td align=\"right\">2.43%</td>\n<td>Software
+        & Programming</td>\n</tr>\n<tr><td class=\"tdi\"><a href=\"https://finance.yahoo.com/q?s=MXC\"
+        target=\"_blank\">MXC</a></td>\n<td class=\"tdi\">Mexco Energy Corp</td>\n<td
+        class=\"tdi\" align=\"center\">AMEX</td>\n<td class=\"tdi\" align=\"right\">1.09M</td>\n<td
+        class=\"tdi\" align=\"right\">2.09M</td>\n<td class=\"tdi\" align=\"right\">2.10%</td>\n<td
+        class=\"tdi\">Oil & Gas Operations</td>\n</tr>\n<tr><td><a href=\"https://finance.yahoo.com/q?s=NSEC\"
+        target=\"_blank\">NSEC</a></td>\n<td>National Security Group Inc</td>\n<td
+        align=\"center\">Nasdaq</td>\n<td align=\"right\">1.10M</td>\n<td align=\"right\">2.53M</td>\n<td
+        align=\"right\">0.09%</td>\n<td>Insurance (Life)</td>\n</tr>\n<tr><td class=\"tdi\"><a
+        href=\"https://finance.yahoo.com/q?s=BNSO\" target=\"_blank\">BNSO</a></td>\n<td
+        class=\"tdi\">Bonso Electronic International Inc</td>\n<td class=\"tdi\" align=\"center\">Nasdaq</td>\n<td
+        class=\"tdi\" align=\"right\">1.14M</td>\n<td class=\"tdi\" align=\"right\">4.86M</td>\n<td
+        class=\"tdi\" align=\"right\">1.88%</td>\n<td class=\"tdi\">Misc. Capital
+        Goods</td>\n</tr>\n<tr><td><a href=\"https://finance.yahoo.com/q?s=NSYS\"
+        target=\"_blank\">NSYS</a></td>\n<td>Nortech Systems Inc</td>\n<td align=\"center\">Nasdaq</td>\n<td
+        align=\"right\">1.16M</td>\n<td align=\"right\">2.67M</td>\n<td align=\"right\">0.25%</td>\n<td>Electronic
+        Instruments & Controls</td>\n</tr>\n<tr><td class=\"tdi\"><a href=\"https://finance.yahoo.com/q?s=RELI\"
+        target=\"_blank\">RELI</a></td>\n<td class=\"tdi\">Reliance Global Group Inc</td>\n<td
+        class=\"tdi\" align=\"center\">Nasdaq</td>\n<td class=\"tdi\" align=\"right\">1.16M</td>\n<td
+        class=\"tdi\" align=\"right\">10.96M</td>\n<td class=\"tdi\" align=\"right\">4.91%</td>\n<td
+        class=\"tdi\">REITs - Residential</td>\n</tr>\n<tr><td style=\"background-color:#F3FFF3;\"
+        colspan=\"7\" align=\"center\"><script type=\"text/javascript\"><!--\ngoogle_ad_client
+        = \"pub-1641527371507802\";\n/* Financial */\ngoogle_ad_slot = \"4718314016\";\ngoogle_ad_width
+        = 728;\ngoogle_ad_height = 90;\n//-->\n</script>\n<script type=\"text/javascript\"\nsrc=\"https://pagead2.googlesyndication.com/pagead/show_ads.js\">\n</script></td></tr>\n<tr><td><a
+        href=\"https://finance.yahoo.com/q?s=OFED\" target=\"_blank\">OFED</a></td>\n<td>Oconee
+        Federal Financial</td>\n<td align=\"center\">Nasdaq</td>\n<td align=\"right\">1.20M</td>\n<td
+        align=\"right\">5.59M</td>\n<td align=\"right\">0.50%</td>\n<td>S&Ls/Savings
+        Banks</td>\n</tr>\n<tr><td class=\"tdi\"><a href=\"https://finance.yahoo.com/q?s=WAFU\"
+        target=\"_blank\">WAFU</a></td>\n<td class=\"tdi\">Wah Fu Education Group
+        Ltd</td>\n<td class=\"tdi\" align=\"center\">Nasdaq</td>\n<td class=\"tdi\"
+        align=\"right\">1.24M</td>\n<td class=\"tdi\" align=\"right\">4.44M</td>\n<td
+        class=\"tdi\" align=\"right\">2.42%</td>\n<td class=\"tdi\">Personal Services</td>\n</tr>\n<tr><td><a
+        href=\"https://finance.yahoo.com/q?s=TCI\" target=\"_blank\">TCI</a></td>\n<td>Transcontinental
+        Realty Investors</td>\n<td align=\"center\">NYSE</td>\n<td align=\"right\">1.25M</td>\n<td
+        align=\"right\">8.64M</td>\n<td align=\"right\">0.43%</td>\n<td>Real Estate
+        Operations</td>\n</tr>\n<tr><td class=\"tdi\"><a href=\"https://finance.yahoo.com/q?s=LIVE\"
+        target=\"_blank\">LIVE</a></td>\n<td class=\"tdi\">Live Ventures Inc</td>\n<td
+        class=\"tdi\" align=\"center\">Nasdaq</td>\n<td class=\"tdi\" align=\"right\">1.26M</td>\n<td
+        class=\"tdi\" align=\"right\">1.57M</td>\n<td class=\"tdi\" align=\"right\">0.63%</td>\n<td
+        class=\"tdi\">Computer Services</td>\n</tr>\n<tr><td><a href=\"https://finance.yahoo.com/q?s=QBAK\"
+        target=\"_blank\">QBAK</a></td>\n<td>Qualstar Corp</td>\n<td align=\"center\">Nasdaq</td>\n<td
+        align=\"right\">1.29M</td>\n<td align=\"right\">1.93M</td>\n<td align=\"right\">0.00%</td>\n<td>Computer
+        Storage Devices</td>\n</tr>\n<tr><td class=\"tdi\"><a href=\"https://finance.yahoo.com/q?s=FFHL\"
+        target=\"_blank\">FFHL</a></td>\n<td class=\"tdi\">Fuwei Films Holdings Co
+        Ltd</td>\n<td class=\"tdi\" align=\"center\">Nasdaq</td>\n<td class=\"tdi\"
+        align=\"right\">1.30M</td>\n<td class=\"tdi\" align=\"right\">3.27M</td>\n<td
+        class=\"tdi\" align=\"right\">0.53%</td>\n<td class=\"tdi\">Fabricated Plastic
+        & Rubber</td>\n</tr>\n<tr><td><a href=\"https://finance.yahoo.com/q?s=DXR\"
+        target=\"_blank\">DXR</a></td>\n<td>Daxor Corp</td>\n<td align=\"center\">AMEX</td>\n<td
+        align=\"right\">1.31M</td>\n<td align=\"right\">4.03M</td>\n<td align=\"right\">0.96%</td>\n<td>Healthcare
+        Facilities</td>\n</tr>\n<tr><td class=\"tdi\"><a href=\"https://finance.yahoo.com/q?s=HIFS\"
+        target=\"_blank\">HIFS</a></td>\n<td class=\"tdi\">Hingham Institution for
+        Savings</td>\n<td class=\"tdi\" align=\"center\">Nasdaq</td>\n<td class=\"tdi\"
+        align=\"right\">1.36M</td>\n<td class=\"tdi\" align=\"right\">2.14M</td>\n<td
+        class=\"tdi\" align=\"right\">1.47%</td>\n<td class=\"tdi\">S&Ls/Savings Banks</td>\n</tr>\n<tr><td><a
+        href=\"https://finance.yahoo.com/q?s=MTEX\" target=\"_blank\">MTEX</a></td>\n<td>Mannatech,Inc.</td>\n<td
+        align=\"center\">Nasdaq</td>\n<td align=\"right\">1.37M</td>\n<td align=\"right\">1.92M</td>\n<td
+        align=\"right\">0.48%</td>\n<td>Biotechnology & Drugs</td>\n</tr>\n<tr><td
+        class=\"tdi\"><a href=\"https://finance.yahoo.com/q?s=ALAC\" target=\"_blank\">ALAC</a></td>\n<td
+        class=\"tdi\">Alberton Acquisition Corp</td>\n<td class=\"tdi\" align=\"center\">Nasdaq</td>\n<td
+        class=\"tdi\" align=\"right\">1.37M</td>\n<td class=\"tdi\" align=\"right\">4.48M</td>\n<td
+        class=\"tdi\" align=\"right\">2.63%</td>\n<td class=\"tdi\">Investment Holding
+        Companies</td>\n</tr>\n<tr><td><a href=\"https://finance.yahoo.com/q?s=ATRI\"
+        target=\"_blank\">ATRI</a></td>\n<td>Atrion Corp</td>\n<td align=\"center\">Nasdaq</td>\n<td
+        align=\"right\">1.38M</td>\n<td align=\"right\">1.80M</td>\n<td align=\"right\">4.98%</td>\n<td>Medical
+        Equipment & Supplies</td>\n</tr>\n<tr><td class=\"tdi\"><a href=\"https://finance.yahoo.com/q?s=CKX\"
+        target=\"_blank\">CKX</a></td>\n<td class=\"tdi\">CKX Lands Inc</td>\n<td
+        class=\"tdi\" align=\"center\">AMEX</td>\n<td class=\"tdi\" align=\"right\">1.38M</td>\n<td
+        class=\"tdi\" align=\"right\">1.94M</td>\n<td class=\"tdi\" align=\"right\">0.04%</td>\n<td
+        class=\"tdi\">Oil & Gas Operations</td>\n</tr>\n<tr><td><a href=\"https://finance.yahoo.com/q?s=KSPN\"
+        target=\"_blank\">KSPN</a></td>\n<td>Kaspien Holdings, Inc</td>\n<td align=\"center\">Nasdaq</td>\n<td
+        align=\"right\">1.40M</td>\n<td align=\"right\">2.49M</td>\n<td align=\"right\">0.99%</td>\n<td>Retailers
+        - Other Specialty</td>\n</tr>\n<tr><td class=\"tdi\"><a href=\"https://finance.yahoo.com/q?s=WVFC\"
+        target=\"_blank\">WVFC</a></td>\n<td class=\"tdi\">WVS Financial Corp</td>\n<td
+        class=\"tdi\" align=\"center\">Nasdaq</td>\n<td class=\"tdi\" align=\"right\">1.41M</td>\n<td
+        class=\"tdi\" align=\"right\">1.88M</td>\n<td class=\"tdi\" align=\"right\">0.02%</td>\n<td
+        class=\"tdi\">S&Ls/Savings Banks</td>\n</tr>\n<tr><td><a href=\"https://finance.yahoo.com/q?s=ITIC\"
+        target=\"_blank\">ITIC</a></td>\n<td>Investors Title Co</td>\n<td align=\"center\">Nasdaq</td>\n<td
+        align=\"right\">1.41M</td>\n<td align=\"right\">1.89M</td>\n<td align=\"right\">1.06%</td>\n<td>Insurance
+        (Property & Casualty)</td>\n</tr>\n<tr><td class=\"tdi\"><a href=\"https://finance.yahoo.com/q?s=WHLM\"
+        target=\"_blank\">WHLM</a></td>\n<td class=\"tdi\">Wilhelmina International
+        Inc</td>\n<td class=\"tdi\" align=\"center\">Nasdaq</td>\n<td class=\"tdi\"
+        align=\"right\">1.43M</td>\n<td class=\"tdi\" align=\"right\">5.16M</td>\n<td
+        class=\"tdi\" align=\"right\">6.34%</td>\n<td class=\"tdi\">Business Services</td>\n</tr>\n<tr><td><a
+        href=\"https://finance.yahoo.com/q?s=JRJC\" target=\"_blank\">JRJC</a></td>\n<td>China
+        Finance Online Co.</td>\n<td align=\"center\">Nasdaq</td>\n<td align=\"right\">1.44M</td>\n<td
+        align=\"right\">2.44M</td>\n<td align=\"right\">8.73%</td>\n<td>Professional
+        Information Services</td>\n</tr>\n<tr><td class=\"tdi\"><a href=\"https://finance.yahoo.com/q?s=PFIN\"
+        target=\"_blank\">PFIN</a></td>\n<td class=\"tdi\">P&F Industries Inc</td>\n<td
+        class=\"tdi\" align=\"center\">Nasdaq</td>\n<td class=\"tdi\" align=\"right\">1.45M</td>\n<td
+        class=\"tdi\" align=\"right\">3.18M</td>\n<td class=\"tdi\" align=\"right\">0.71%</td>\n<td
+        class=\"tdi\">Appliances & Tools</td>\n</tr>\n<tr><td><a href=\"https://finance.yahoo.com/q?s=MDJH\"
+        target=\"_blank\">MDJH</a></td>\n<td>MDJM Ltd</td>\n<td align=\"center\">Nasdaq</td>\n<td
+        align=\"right\">1.46M</td>\n<td align=\"right\">11.68M</td>\n<td align=\"right\">0.00%</td>\n<td>Real
+        Estate Services</td>\n</tr>\n<tr><td class=\"tdi\"><a href=\"https://finance.yahoo.com/q?s=FBSI\"
+        target=\"_blank\">FBSI</a></td>\n<td class=\"tdi\">First Bancshares Inc/MO</td>\n<td
+        class=\"tdi\" align=\"center\">Nasdaq</td>\n<td class=\"tdi\" align=\"right\">1.48M</td>\n<td
+        class=\"tdi\" align=\"right\">1.55M</td>\n<td class=\"tdi\" align=\"right\">0.00%</td>\n<td
+        class=\"tdi\">S&Ls/Savings Banks</td>\n</tr>\n<tr><td style=\"background-color:#F3FFF3;\"
+        colspan=\"7\" align=\"center\"><a href=\"https://tinyurl.com/TradeOfTheWeek\"
+        target=_blank><img src=\"/TradeIdeasTOW.gif\" border=\"0\"></a></td></tr></table>\n
+        \                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 <div
+        id=\"2b10513b\" class=\"angular-collapse-div partners-collapse-inside\" style=\"position:
+        fixed; right: -1749px; top: -796px; overflow: hidden; width: 292px; visibility:
+        hidden;\"><h2>Porn Central</h2>  <ul class=\"af75cc324-menu\"> <li class=\"ae4-f0\">
+        <a href=\"https://videosdesexo.xxx/\">videos de sexo gratis</a></li> <li class=\"703-58bf\">
+        <a href=\"https://xvideoshq.com/redtube/\">red tube</a></li> <li class=\"6a4854-8fd0\">
+        <a href=\"https://redwap-xxx.com/\">redwap</a></li>  </ul></div><p class=\"nav\">All
+        exchanges : Showing 1 - 50 of 555 stocks</p>\n<table align=\"center\" border=\"0\"
+        cellspacing=\"0\" cellpadding=\"0\">\n<tr>\n<td><b>Pages:</b></td><td valign=\"center\"><b>1</b></td>\n<td
+        valign=\"center\"><a href=\"/all/2\">2</a></td>\n<td valign=\"center\"><a
+        href=\"/all/3\">3</a></td>\n<td valign=\"center\"><a href=\"/all/4\">4</a></td>\n<td
+        valign=\"center\"><a href=\"/all/5\">5</a></td>\n<td valign=\"center\"><a
+        href=\"/all/6\">6</a></td>\n<td valign=\"center\"><a href=\"/all/7\">7</a></td>\n<td
+        valign=\"center\"><a href=\"/all/8\">8</a></td>\n<td valign=\"center\"><a
+        href=\"/all/9\">9</a></td>\n<td valign=\"center\"><a href=\"/all/10\">10</a></td>\n<td><a
+        href=\"/all/2\"><img src=\"/next.gif\" border=\"0\" alt=\"Next\"></a></td></tr></table>\n<tr><td
+        align=center>\nDatabase last updated on November 25, 2021</td></tr>\n</table>\n\n</td>\n</tr>\n</table>\n\n<script
+        type=\"text/javascript\">\nvar gaJsHost = ((\"https:\" == document.location.protocol)
+        ? \"https://ssl.\" : \"http://www.\");\ndocument.write(unescape(\"%3Cscript
+        src='\" + gaJsHost + \"google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E\"));\n</script>\n<script
+        type=\"text/javascript\">\nvar pageTracker = _gat._getTracker(\"UA-6503566-2\");\npageTracker._trackPageview();\n</script>\n\n</body>\n</html>\n\n"
+    headers:
+      Connection:
+      - Keep-Alive
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Fri, 10 Dec 2021 08:31:49 GMT
+      Keep-Alive:
+      - timeout=5, max=100
+      Server:
+      - Apache
+      Transfer-Encoding:
+      - chunked
+      X-Powered-By:
+      - PHP/5.6.40
+    status:
+      code: 200
+      message: OK
+version: 1

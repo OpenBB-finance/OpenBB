@@ -1,0 +1,16 @@
+.jp-example-view {
+  background-color: AliceBlue;
+}
+
+.jp-example-button {
+  background-color: red;
+  border-radius: 12px;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  margin: 30px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}

@@ -1,0 +1,61 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.26.0
+    method: GET
+    uri: https://finnhub.io/api/v1/stock/recommendation?symbol=INVALID_TICKER&token=MOCK_TOKEN
+  response:
+    body:
+      string: '[]'
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 6af95a931ec9ee27-CDG
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '2'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Wed, 17 Nov 2021 13:37:27 GMT
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      NEL:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=l2%2Ben0ig0woUNpUv4a5ikdd6twpZZLNy9o4bO1GMkyT2H3OdMxr4UhpZARXs7ovd6E%2FYZFP3kOR95xPGCAj81ZMFjC%2Fxxjg5sccC8DaGc3Y%2BEeKSDUJgT%2Bwk5CV8"}],"group":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      access-control-allow-credentials:
+      - 'true'
+      access-control-allow-headers:
+      - Origin
+      access-control-allow-methods:
+      - POST, GET, OPTIONS, PUT, DELETE
+      access-control-allow-origin:
+      - '*'
+      access-control-expose-headers:
+      - Content-Length
+      alt-svc:
+      - h3=":443"; ma=86400, h3-29=":443"; ma=86400, h3-28=":443"; ma=86400, h3-27=":443";
+        ma=86400
+      x-ratelimit-limit:
+      - '60'
+      x-ratelimit-remaining:
+      - '57'
+      x-ratelimit-reset:
+      - '1637156306'
+    status:
+      code: 200
+      message: OK
+version: 1

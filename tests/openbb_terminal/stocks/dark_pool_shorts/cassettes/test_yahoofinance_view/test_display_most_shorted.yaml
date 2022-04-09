@@ -1,0 +1,94 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.26.0
+    method: GET
+    uri: https://finance.yahoo.com/screener/predefined/most_shorted_stocks
+  response:
+    body:
+      string: !!binary |
+        H4sIADyau2EC/61ZbW8aRxD+3l+xshQpVevNvr+0jiUgjm052Aio035cYAMnA4uOsxv/+w6JmjbM
+        YEXoPnEabo97ZuZ55oWzJk2WmU1KPcv12xN5wqbLtN2+PZmlJn2q0yqfnP/E2FmzyGm2u9pd12zb
+        PC/z25Mmf25O07Kar39jdTVfNL+ffL3ny4nz0fNqUpZnb+Dyf9ZbeOi+bVBX08xeX6+bOs3S88/7
+        3/cWaT1Hp14x2n5flo/4NzpPcwbfsNearcq6WaAf6af6ITeslzbo9S7YMDVVYa/H4z46ZxX7mPMD
+        3PLdu8BV/cV3b74576yZlNnzNzf+95DZ+cVoMIQ7Z9/ZtptcV2XNxotcp01+bKrp9ld2vZ7y/Vst
+        l0bsG08FVxJbNY/61b5VciH7+0bFhUNGrQTXyHqbbl80/esNBPxqOP5z/+RVrn8IdeAxUKgF6Qtj
+        KNQ+9LE1KmSM0nLtXXvAewTwXqmBU8+rTOOVknsaMGl1HgH2zloliDjHiANtwRE2tIe4+9ftu/2T
+        3fxc1jPWz6mhMTvLTcToJNeCskZLBhmDg/M44Q3QKHTbA/zh9gYBXlbrh51w1fNqPWe9ghCrwLWk
+        sAUcuVMHyU4gdlESkJV0RLLLaFuEfHHRxzFOK3a5LJO0RFgFtyRWT0TXc0dE13jhInquidEjqwya
+        Wyvby+jr3mC8fxKKWK6nedOwAQR5laZfFCwtD2iYNDwIUrrJrI8KecBKE7VF2iitExoluPbw4BZV
+        7OPN1Wj/5MdSPyxKvc3ssi6PGxK24SCoBGqJkZwqSsnM7tY+rggqYCXzzsEjCLp77tVxuDvD3tX+
+        yU49XbBh3pZHiP+hkgVvghNeUIXsF6Am5raCkh7RS1vjlbKY21o5xG1jQPuOZPf74TVid1U+QbmG
+        pE+0gPMQyZrlKCvRmgTuHa5CSvFgcKhj5Na0yPDu5ft7jHjOLBttoFjvJPyylNkWhLwGw65LXGPZ
+        4cpRZKYoDvkhsAuM0pguCgQde8AIz3W0hPxHf5wPRp37DupUYEpIT4mNplVeH8x2o4GlgiK0xVbL
+        fSRKmdVYrizE3hKlzBPpfry4D7tI3KthmZTmpWA78LOgIAciBQzIFWa4k9Z77EooE4aCrLu4+h3N
+        8Ov7Hi5oT2ma6vwSagWss1jVpEDGX3bvhjC7qILVRG8i8KgRIpfKtkfxu94lOnk3fZzn9aFZS2hK
+        unSkWhYpKEGj2m3ozzSR00Lo9nL6/R/3RNWqVqUph0YsQ4I1JIEFrtMWnIVrulcwr6Js1hKKhVDt
+        hXb0DmXzaFUt87uqztOmt3yc0KghnUnU0lOCTeSz3UkRDqYDOcSlLAbo62SLg9Zo3EHLhGrUpJoG
+        q0lcEGP3gxOW8tYGpFg2CBsJTjuJBWs3sRzZiA3u71BKb5r8VL5bIJDIgZ1ka+KJkSTwiKuTNoGo
+        7BrYoYlxGsq1by/Iwz7CPSyrXNig/J1rOq81957sunHveLobF6lybAIxNnuHWWsFUIPouqE90cdB
+        /tDHC4QPeVXWaXZgY2IUl5acLw25GHMEYh0NIcvOWmJfZmOL64NhB6EdVk1mnWr2YrupDqS1Ijcm
+        1hOYZaA2BT7g/HVhN7S1OVPf3uEOpDxV5cfmaQtSSkq3o5oyj1McghgC0T0HSVVnZUx7AR9cjNEw
+        PchNP8/YxedNnbcHMCsLgx4F2noKtBJEz+mNUliyjBQOeVhDKnnMCbVbsR45Zd3coFa7mx4eGnZV
+        ljMYsg4vgC3VVQdq7W2o5YkCjSKGKOnJHs1KqH/i+PUJfH79BwAudn+8nP8Dl1FhmIAZAAA=
+    headers:
+      Age:
+      - '56'
+      Cache-Control:
+      - max-age=0, private
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '201557'
+      Content-Security-Policy:
+      - frame-ancestors 'self' https://*.builtbygirls.com https://*.rivals.com https://*.engadget.com
+        https://*.intheknow.com https://*.autoblog.com https://*.techcrunch.com https://*.yahoo.com
+        https://*.aol.com https://*.huffingtonpost.com https://*.oath.com https://*.search.yahoo.com
+        https://*.search.aol.com https://*.search.huffpost.com https://*.verizonmedia.com
+        https://*.publishing.oath.com https://*.autoblog.com; sandbox allow-forms
+        allow-same-origin allow-scripts allow-popups allow-popups-to-escape-sandbox
+        allow-presentation; report-uri https://csp.yahoo.com/beacon/csp?src=ats&site=finance&region=US&lang=en-US&device=desktop&yrid=d6a9895grn6hr&partner=;
+      Content-Type:
+      - text/html; charset=utf-8
+      Date:
+      - Thu, 16 Dec 2021 19:56:53 GMT
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Expires:
+      - '-1'
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Server:
+      - ATS
+      Strict-Transport-Security:
+      - max-age=15552000
+      Vary:
+      - X-Failsafe-Cache
+      X-Amz-Cf-Id:
+      - F6mQDc681NtPYufk25rbr0IEeMA7abVKv9ooMPdid30-5hQwpnGh5Q==
+      X-Amz-Cf-Pop:
+      - DUB2-C1
+      X-Cache:
+      - Miss from cloudfront
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      x-amz-server-side-encryption:
+      - AES256
+    status:
+      code: 200
+      message: OK
+version: 1

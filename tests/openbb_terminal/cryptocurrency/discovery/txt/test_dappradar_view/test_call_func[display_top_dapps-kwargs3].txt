@@ -1,0 +1,12 @@
+            Name      Category                Protocols Daily Users Daily Volume [$]
+0  Splinterlands         games                 hive,wax      305.1K               8K
+1    PancakeSwap          defi      binance-smart-chain      289.3K           223.7M
+2   Alien Worlds         games  wax,binance-smart-chain      235.6K           759.2K
+3  Farmers World         games                      wax      111.7K             2.3K
+4   AtomicAssets         other                  wax,eos      108.9K           226.3K
+5  Axie Infinity         games           ronin,ethereum       90.9K            11.6M
+6         Upland         games                      eos       63.3K                0
+7        OpenSea  marketplaces         ethereum,polygon         54K             200M
+8         Katana          defi                    ronin       45.9K            92.7M
+9     Magic Eden  marketplaces                   solana       40.2K            18.5M
+

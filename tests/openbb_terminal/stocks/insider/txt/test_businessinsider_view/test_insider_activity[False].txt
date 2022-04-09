@@ -1,0 +1,3 @@
+Loading Daily TSLA stock with starting period 2020-12-11 for analysis.
+
+

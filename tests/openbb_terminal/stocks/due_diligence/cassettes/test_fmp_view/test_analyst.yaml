@@ -1,0 +1,80 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Connection:
+      - close
+      Host:
+      - financialmodelingprep.com
+      User-Agent:
+      - Python-urllib/3.8
+    method: GET
+    uri: https://financialmodelingprep.com/api/v3/historical-rating/TSLA?apikey=MOCK_API_KEY
+  response:
+    body:
+      string: "[ {\n  \"symbol\" : \"TSLA\",\n  \"date\" : \"2021-11-16\",\n  \"rating\"
+        : \"A+\",\n  \"ratingScore\" : 5,\n  \"ratingRecommendation\" : \"Strong Buy\",\n
+        \ \"ratingDetailsDCFScore\" : 5,\n  \"ratingDetailsDCFRecommendation\" : \"Strong
+        Buy\",\n  \"ratingDetailsROEScore\" : 3,\n  \"ratingDetailsROERecommendation\"
+        : \"Neutral\",\n  \"ratingDetailsROAScore\" : 3,\n  \"ratingDetailsROARecommendation\"
+        : \"Neutral\",\n  \"ratingDetailsDEScore\" : 4,\n  \"ratingDetailsDERecommendation\"
+        : \"Buy\",\n  \"ratingDetailsPEScore\" : 5,\n  \"ratingDetailsPERecommendation\"
+        : \"Strong Buy\",\n  \"ratingDetailsPBScore\" : 5,\n  \"ratingDetailsPBRecommendation\"
+        : \"Strong Buy\"\n}, {\n  \"symbol\" : \"TSLA\",\n  \"date\" : \"2021-11-15\",\n
+        \ \"rating\" : \"A+\",\n  \"ratingScore\" : 5,\n  \"ratingRecommendation\"
+        : \"Strong Buy\",\n  \"ratingDetailsDCFScore\" : 5,\n  \"ratingDetailsDCFRecommendation\"
+        : \"Strong Buy\",\n  \"ratingDetailsROEScore\" : 3,\n  \"ratingDetailsROERecommendation\"
+        : \"Neutral\",\n  \"ratingDetailsROAScore\" : 3,\n  \"ratingDetailsROARecommendation\"
+        : \"Neutral\",\n  \"ratingDetailsDEScore\" : 4,\n  \"ratingDetailsDERecommendation\"
+        : \"Buy\",\n  \"ratingDetailsPEScore\" : 5,\n  \"ratingDetailsPERecommendation\"
+        : \"Strong Buy\",\n  \"ratingDetailsPBScore\" : 5,\n  \"ratingDetailsPBRecommendation\"
+        : \"Strong Buy\"\n}, {\n  \"symbol\" : \"TSLA\",\n  \"date\" : \"2021-11-12\",\n
+        \ \"rating\" : \"A+\",\n  \"ratingScore\" : 5,\n  \"ratingRecommendation\"
+        : \"Strong Buy\",\n  \"ratingDetailsDCFScore\" : 5,\n  \"ratingDetailsDCFRecommendation\"
+        : \"Strong Buy\",\n  \"ratingDetailsROEScore\" : 3,\n  \"ratingDetailsROERecommendation\"
+        : \"Neutral\",\n  \"ratingDetailsROAScore\" : 3,\n  \"ratingDetailsROARecommendation\"
+        : \"Neutral\",\n  \"ratingDetailsDEScore\" : 4,\n  \"ratingDetailsDERecommendation\"
+        : \"Buy\",\n  \"ratingDetailsPEScore\" : 5,\n  \"ratingDetailsPERecommendation\"
+        : \"Strong Buy\",\n  \"ratingDetailsPBScore\" : 5,\n  \"ratingDetailsPBRecommendation\"
+        : \"Strong Buy\"\n}, {\n  \"symbol\" : \"TSLA\",\n  \"date\" : \"2021-11-11\",\n
+        \ \"rating\" : \"A+\",\n  \"ratingScore\" : 5,\n  \"ratingRecommendation\"
+        : \"Strong Buy\",\n  \"ratingDetailsDCFScore\" : 5,\n  \"ratingDetailsDCFRecommendation\"
+        : \"Strong Buy\",\n  \"ratingDetailsROEScore\" : 3,\n  \"ratingDetailsROERecommendation\"
+        : \"Neutral\",\n  \"ratingDetailsROAScore\" : 3,\n  \"ratingDetailsROARecommendation\"
+        : \"Neutral\",\n  \"ratingDetailsDEScore\" : 4,\n  \"ratingDetailsDERecommendation\"
+        : \"Buy\",\n  \"ratingDetailsPEScore\" : 5,\n  \"ratingDetailsPERecommendation\"
+        : \"Strong Buy\",\n  \"ratingDetailsPBScore\" : 5,\n  \"ratingDetailsPBRecommendation\"
+        : \"Strong Buy\"\n}, {\n  \"symbol\" : \"TSLA\",\n  \"date\" : \"2021-11-10\",\n
+        \ \"rating\" : \"A+\",\n  \"ratingScore\" : 5,\n  \"ratingRecommendation\"
+        : \"Strong Buy\",\n  \"ratingDetailsDCFScore\" : 5,\n  \"ratingDetailsDCFRecommendation\"
+        : \"Strong Buy\",\n  \"ratingDetailsROEScore\" : 3,\n  \"ratingDetailsROERecommendation\"
+        : \"Neutral\",\n  \"ratingDetailsROAScore\" : 3,\n  \"ratingDetailsROARecommendation\"
+        : \"Neutral\",\n  \"ratingDetailsDEScore\" : 4,\n  \"ratingDetailsDERecommendation\"
+        : \"Buy\",\n  \"ratingDetailsPEScore\" : 5,\n  \"ratingDetailsPERecommendation\"
+        : \"Strong Buy\",\n  \"ratingDetailsPBScore\" : 5,\n  \"ratingDetailsPBRecommendation\"
+        : \"Strong Buy\"\n} ]"
+    headers:
+      Access-Control-Allow-Headers:
+      - origin, content-type, accept, Authorization, authorization
+      Access-Control-Allow-Methods:
+      - GET, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - close
+      Content-Type:
+      - application/json;charset=UTF-8
+      Date:
+      - Wed, 17 Nov 2021 22:22:46 GMT
+      Server:
+      - nginx/1.14.0 (Ubuntu)
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+    status:
+      code: 200
+      message: ''
+version: 1

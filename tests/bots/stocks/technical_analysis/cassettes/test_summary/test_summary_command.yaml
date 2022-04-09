@@ -1,0 +1,51 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.finbrain.tech/v0/technicalSummary/TSLA
+  response:
+    body:
+      string: '{"ticker":"TSLA","name":"Tesla Inc.","technicalSummary":"TSLA price
+        has changed -1.36% in the last 3 days and 0.65% yesterday. RSI is greater
+        than 70 and the indicator is pointing upwards. Asset is in the overbought
+        area. MACD is in the Bullish area and the histogram is moving downwards. TSLA
+        price is trading above the 200-day SMA line and the SMA is trending up. The
+        asset price is between the Upper and the Middle Bollinger Bands. "}'
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '437'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 04 Apr 2022 00:36:02 GMT
+      X-Amzn-Trace-Id:
+      - Root=1-624a3d72-63794dab369cf4b213f2d8e3;Sampled=0
+      access-control-allow-origin:
+      - '*'
+      etag:
+      - W/"1b5-TFMUgUW6+9XIZe3gzMaOYlIdPGM"
+      x-amz-apigw-id:
+      - QB6J8EV6IAMFTJg=
+      x-amzn-Remapped-connection:
+      - close
+      x-amzn-Remapped-content-length:
+      - '437'
+      x-amzn-Remapped-date:
+      - Mon, 04 Apr 2022 00:36:02 GMT
+      x-amzn-RequestId:
+      - 4d6ee6f3-ff28-4a01-9d4a-00274f796cac
+      x-powered-by:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1

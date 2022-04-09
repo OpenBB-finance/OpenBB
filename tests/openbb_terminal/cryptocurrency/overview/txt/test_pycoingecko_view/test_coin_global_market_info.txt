@@ -1,0 +1,11 @@
+                                 Metric         Value
+0               Active Cryptocurrencies  12777.000000
+1                         Upcoming Icos      0.000000
+2                          Ongoing Icos     50.000000
+3                            Ended Icos   3375.000000
+4                               Markets    724.000000
+5  Market Cap Change Percentage 24H Usd     -4.468402
+6                 Btc Market Cap In Pct     39.828528
+7                 Eth Market Cap In Pct     16.382071
+8             Altcoin Market Cap In Pct     43.789401
+

@@ -1,0 +1,37 @@
+,Ticker,Company,Exchange,ShortInt,Float,Outstd,Industry
+0,,,,,,,
+1,BFRI,Biofrontera Inc,Nasdaq,84.54%,5.74M,14.46M,Pharmaceuticals
+2,CRTX,Cortexyme Inc,Nasdaq,59.10%,15.54M,29.88M,Biotechnology & Medical Research
+3,ICPT,Intercept Pharmaceuticals Inc,Nasdaq,35.39%,23.58M,29.55M,Biotechnology & Medical Research
+4,BLNK,Blink Charging Co,Nasdaq,34.23%,36.46M,42.20M,Utilities - Electric
+5,BYND,Beyond Meat Inc,Nasdaq,34.17%,56.16M,63.33M,Food Processing
+6,ISPC,iSpecimen Inc,Nasdaq,32.79%,3.27M,7.00M,Retailers - Department Stores
+7,GOGO,Gogo Inc,Nasdaq,31.95%,45.67M,109.95M,Communications Services
+8,FUV,Arcimoto Inc,Nasdaq,31.50%,28.73M,37.58M,Auto & Truck Manufacturers
+9,GOTU,Gaotu Techedu Inc,NYSE,31.40%,146.36M,128.79M,Miscellaneous Educational Service Providers
+10,RMO,Romeo Power Inc,NYSE,31.15%,97.86M,134.14M,Electrical Components & Equipment
+11,WKHS,Workhorse Group Inc,Nasdaq,30.28%,144.66M,155.99M,Auto & Truck Manufacturers
+12,BGFV,Big 5 Sporting Goods Corp,Nasdaq,29.09%,20.01M,22.31M,Retailers - Miscellaneous Specialty
+13,SDC,SmileDirectClub Inc,Nasdaq,26.18%,108.44M,119.14M,"Medical Equipment, Supplies & Distribution"
+14,IRBT,iRobot Corporation,Nasdaq,25.97%,26.29M,26.96M,Electronic Equipment & Parts
+15,OTRK,"Ontrak, Inc.",Nasdaq,25.55%,10.02M,19.16M,Healthcare Facilities
+16,OCGN,Ocugen Inc,Nasdaq,25.34%,195.22M,199.19M,Biotechnology & Medical Research
+17,BTBT,Bit Digital Inc,Nasdaq,24.97%,35.99M,69.37M,Fintech - Blockchain & Cryptocurrency
+18,SFT,Shift Technologies Inc,Nasdaq,24.27%,54.48M,81.31M,"Retailers - Auto Vehicles, Parts & Service"
+19,PETS,Petmed Express Inc,Nasdaq,23.11%,19.61M,20.94M,Retail (Drugs)
+20,NKLA,Nikola Corporation,Nasdaq,22.80%,224.60M,406.89M,Auto & Truck Manufacturers
+21,VLON,Vallon Pharmaceuticals Inc,Nasdaq,22.76%,3.20M,6.81M,Biotechnology & Medical Research
+22,W,Wayfair Inc,NYSE,22.37%,72.03M,77.98M,Retailers - Department Stores
+23,BBIG,Vinco Ventures Inc,Nasdaq,22.16%,121.72M,137.08M,Toys & Children's Products
+24,VLDR,Velodyne Lidar Inc,Nasdaq,22.12%,116.48M,195.90M,Electronic Equipment & Parts
+25,INO,Inovio Pharmaceuticals Inc,Nasdaq,22.11%,206.97M,210.36M,Biotechnology & Medical Research
+26,ROOT,Root Inc,Nasdaq,22.10%,59.83M,132.50M,Insurance - Multiline & Brokers
+27,SKLZ,Skillz Inc,NYSE,22.02%,246.56M,339.34M,IT Services & Consulting
+28,RIDE,Lordstown Motors Corp,Nasdaq,21.34%,129.92M,192.23M,Auto & Truck Manufacturers
+29,GDRX,Goodrx Holdings Inc,Nasdaq,21.28%,67.80M,80.70M,Online Services
+30,SENS,Senseonics Holdings Inc,AMEX,21.23%,356.43M,445.98M,Medical Equipment & Supplies
+31,CVM,CEL-SCI Corporation,AMEX,20.93%,41.35M,43.03M,Biotechnology & Medical Research
+32,CLVS,Clovis Oncology Inc,Nasdaq,20.80%,127.27M,129.98M,Biotechnology & Drugs
+33,HYLN,Hyliion Holdings Corp,NYSE,20.17%,114.19M,173.31M,Heavy Electrical Equipment
+34,MSTR,MicroStrategy Inc,Nasdaq,20.13%,8.39M,8.39M,Software & Programming
+35,CNK,"Cinemark Holdings, Inc.",NYSE,20.11%,106.03M,119.63M,Leisure & Recreation

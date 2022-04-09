@@ -1,0 +1,3 @@
+,Kurtosis,Skewness,Jarque-Bera,Shapiro-Wilk,Kolmogorov-Smirnov
+Statistic,1.47991,6.17020,52.21623,0.90912,0.97114
+p-value,0.13890,0.00000,0.00000,0.00000,0.00000

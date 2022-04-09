@@ -1,0 +1,7 @@
+
+(✨) /alternative/ $ covid
+(✨) /alternative/covid/ $ country Australia
+[cyan]Australia[/cyan] loaded
+
+(✨) /alternative/covid/ $ reset
+resetting...

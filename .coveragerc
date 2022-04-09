@@ -1,0 +1,5 @@
+[coverage:run]
+omit =
+    env/*
+    tests/*
+source = .

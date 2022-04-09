@@ -1,0 +1,76 @@
+interactions:
+- request:
+    body: '{"query": "MOCK_QUERY"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '568'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-requests/2.27.1
+    method: POST
+    uri: https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA6yX3U5bVxCFXwWda7o1s+afOwQkQYVSBapGqnrhBqtFxRgZEzWNuO+j9D3yYtWG
+        NPJfoRf25Z6z5TOf11oz/jRcjuajYe/TcDu6mt0Nez99Gt7PxqP5+HJ/fnE1Gd/NR5PbYW9gV5Fk
+        sRp2h9n4bjz7MP7h/HDYGyI5kpsXCzLDKdjLxSOdEKggHXaH+fT38Q31L7oZTcbD3vDjbHR7O77c
+        OZr/Np4Nu8Pdx8kv0+teOLp4Mzx8ucELN97tH+1/8+7qaueiVxav/Ft5ujYfXZ/f395efxz2BhUy
+        a5GwQjAxZYlCpL/RHwfT+5t57w3Su/owvb6ffGmKNXo7jZxFKgKpoJISUoKIKcfwsPscq4Czr7Ji
+        mKZJg1m6lAdJeGYCyRLkYRtZnb4/nN6Mri/vdg73zxYb/1rYCOx/IF5kxc6s5dJMBcrKSclURo99
+        LOKyVVomRbAWLBmckcwBQRpCSpISeJ4WMtN5lZaJo7I5k2v/7YSNzCXD4WCoVGyidf790cnJq+O3
+        R+tC+VraCq9kt1YkpcxhXfcgQy7BQvoKLCtipDXLTCsqUDoze5BDOVnIXoAlXKA1aRE5kTVSDuti
+        NSZOcityA3ltltb3o9loDVM/3AYhcXFtGRxMkeJIc3G3JUKiq4Qi1SuaKCoTqUScHEosXk4qUS/I
+        iU2M1uTU9W3erBgRIQCTkSn6WwprFWMTodezq8no/XjnYHq1BOn12+PTbUBCY0pDwc204BK1DEif
+        NLVIqAeHUdMKKeIMdVM1BEIC8BSVFwixSuUqIVgwUQsPh0Z3n2RZwpzLqQqe/xVPv46Xcung8Oz1
+        VkwmAIhFGleQeUQx3KqksOIzwwok9GQVNAvSQKkQGVyDLVQdoPLnIZEma20wGoO5ATASdHErMjU0
+        4aX+NEzWIJ2cnV2sB1I/3Qamx0YhZZqPvRkldFlGnLLqsy55ad1PqdaDIylDI0CEPr8lnwWEUmfH
+        Wmx3wbZId5NM0QpoqJFFhWvANvtsfzL6c3qzczqejz6MZ3dLenqqbSW0uW8ALYWR6QYu4oJDl1kJ
+        rY44CQOsmYYXwoWJMuCu7M4QYX+BlUB1LbWp0eLHgpJCiKmrXdmc2V2piiUqzDb67814Nvn8991m
+        dG+O3p5+/ut8G+xomVGsrgHlKOJG0JIK4yyFkvYM6YxL7SVGrBq6ZrhuXmoRSRASoDzAlVkQSUmt
+        LS2Yxzf3Owej26v56Hrx+ePvDjaktqSBG5FpcRKbCZUVL3vObW2xFFai5hrGfW1yEjjSuaw7hPz5
+        vRJZqRRrlqMSz2xKXqIS4X3wG7gPzr60bwvRq5Ozb48Xn3w6WMfj1FILUHcmKnX3WA7skLU1UlOc
+        I5tJmlopwZW8rzzsnBIiL8Dpc3RtqnFKq4IYIkHoUUmhqpHB7v1PimycauP5bLpmp9OjreQ1o3EJ
+        PWpYg1STq5anPq3GNZgjQltyhglbUPQtr6oiEaAgHh5+fnj4BwAA//8DAKhd9CbUDQAA
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 6d517ab4399332a7-CDG
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Sat, 29 Jan 2022 09:36:59 GMT
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Strict-Transport-Security:
+      - max-age=15724800; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      access-control-allow-headers:
+      - Content-Type, User-Agent
+      access-control-allow-methods:
+      - GET, OPTIONS, POST
+      graph-attestable:
+      - 'true'
+    status:
+      code: 200
+      message: OK
+version: 1

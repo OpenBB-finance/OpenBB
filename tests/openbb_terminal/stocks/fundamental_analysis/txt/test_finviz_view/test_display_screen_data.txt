@@ -1,0 +1,76 @@
+
+                           Values
+Company               Tesla, Inc.
+Sector          Consumer Cyclical
+Industry       Auto Manufacturers
+Country                       USA
+Index                     S&P 500
+P/E                        185.44
+EPS (ttm)                    4.89
+Insider Own                 0.10%
+Shs Outstand                1.00B
+Perf Week                  -3.14%
+Market Cap                911.21B
+Forward P/E                 73.20
+EPS next Y                 21.26%
+Insider Trans             -94.14%
+Shs Float                 803.82M
+Perf Month                -14.78%
+Income                      5.52B
+PEG                          8.55
+EPS next Q                   2.25
+Inst Own                   42.30%
+Short Float                 2.79%
+Perf Quarter              -25.76%
+Sales                      53.82B
+P/S                         16.93
+EPS this Y                165.00%
+Inst Trans                 -0.39%
+Short Ratio                  0.82
+Perf Half Y                27.12%
+Book/sh                     27.11
+P/B                         33.47
+ROA                         3.90%
+Target Price               967.07
+Perf Year                   5.09%
+Cash/sh                     16.03
+P/C                         56.61
+EPS next 5Y                21.70%
+ROE                         8.90%
+52W Range        539.49 - 1243.49
+Perf YTD                  -14.14%
+P/FCF                       99.77
+EPS past 5Y                19.70%
+ROI                         4.60%
+52W High                  -25.73%
+Beta                         2.04
+Quick Ratio                  1.10
+Sales past 5Y              50.80%
+Gross Margin               25.30%
+52W Low                    71.18%
+ATR                         63.32
+Employees                   70757
+Current Ratio                1.40
+Sales Q/Q                  56.80%
+Oper. Margin                6.10%
+RSI (14)                    45.37
+Volatility            5.34% 6.60%
+Optionable                    Yes
+Debt/Eq                      0.30
+EPS Q/Q                   430.70%
+Profit Margin               4.00%
+Rel Volume                   0.61
+Prev Close                 907.34
+Shortable                     Yes
+LT Debt/Eq                   0.24
+Earnings               Jan 26 AMC
+Payout                      0.00%
+Avg Volume                 27.56M
+Price                      923.50
+Recom                        2.60
+SMA20                      -3.97%
+SMA50                      -8.64%
+SMA200                     12.62%
+Volume                 12,381,697
+Change                      1.78%
+

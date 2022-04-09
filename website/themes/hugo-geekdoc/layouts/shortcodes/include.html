@@ -1,0 +1,17 @@
+{{ $file := .Get "file" }}
+{{ $page := .Site.GetPage $file }}
+{{ $type := .Get "type" }}
+{{ $language := .Get "language" }}
+{{ $options :=.Get "options" }}
+
+<div class="gdoc-include">
+{{- if (.Get "language") -}}
+    {{- highlight ($file | readFile) $language (default "linenos=table" $options) -}}
+{{- else if eq $type "html" -}}
+    {{- $file | readFile | safeHTML -}}
+{{- else if eq $type "page" -}}
+    {{- with $page }}{{ .Content }}{{ end -}}
+{{- else -}}
+    {{- $file | readFile | $.Page.RenderString -}}
+{{- end -}}
+</div>

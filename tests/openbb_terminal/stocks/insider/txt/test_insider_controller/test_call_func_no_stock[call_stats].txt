@@ -1,0 +1,2 @@
+Please use `load <ticker>` before.
+

@@ -1,0 +1,27 @@
+stocks
+load aapl
+ta
+view
+recom
+ema
+sma
+wma
+hma
+zlma
+vwap
+cci
+macd
+rsi
+stoch
+fisher
+cg
+adx
+aroon
+bbands
+donchian
+kc
+ad
+adosc
+obv
+fib
+exit

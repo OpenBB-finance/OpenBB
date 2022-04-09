@@ -1,0 +1,7 @@
+<div class="gdoc-columns flex flex-wrap">
+  {{ range split .Inner "<--->" }}
+  <div class="gdoc-columns__content gdoc-markdown--nested flex-even">
+    {{ . | $.Page.RenderString }}
+  </div>
+  {{ end }}
+</div>

@@ -1,0 +1,60 @@
+interactions:
+- request:
+    body: '{"query": "\n       {\n        uniswapFactory(id: \"0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f\"){\n         totalVolumeUSD\n         totalLiquidityUSD\n         pairCount\n         txCount\n         totalLiquidityUSD\n         totalLiquidityETH\n        }\n       }\n       "}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '277'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-requests/2.27.1
+    method: POST
+    uri: https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAwAAAP//XM49awJBEIDh/zJ1OGZmd76uVUOKdCb2i1osqKdmj0Tk/rsk0cb2hQfe
+        K2xKK9BfYTzUr+9yfC3rNpwvv+VY6nk2jIcGvVJwvEAbWtm919NYN7VdFh9v0ANRzkzUBedsIkHC
+        IcgWEmFCbJHhWX4u59ADe6gmVvaOTdgRQ5icMookZUxJH3I17Mb99p8ld3fThEm8E8qGRqgk6Ekz
+        mfCf+rmfg7GSKiNM03QDAAD//wMARXSK4u4AAAA=
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 6d4dd4a8ab10cd8f-CDG
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 28 Jan 2022 22:59:21 GMT
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Strict-Transport-Security:
+      - max-age=15724800; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      access-control-allow-headers:
+      - Content-Type, User-Agent
+      access-control-allow-methods:
+      - GET, OPTIONS, POST
+      graph-attestable:
+      - 'true'
+    status:
+      code: 200
+      message: OK
+version: 1

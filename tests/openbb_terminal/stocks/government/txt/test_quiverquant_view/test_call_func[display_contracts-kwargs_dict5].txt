@@ -1,0 +1,4 @@
+         Date                                                                                                                                                                                                                                           Description                                 Agency   Amount
+0  2022-01-26  GSA REGION 7 NATIONAL DEEP ENERGY RETROFIT (NDER5) ENERGY SAVINGS PERFORMANCE CONTRACT (ESPC) FOR THE PERFORMANCE OF THE INVESTMENT GRADE AUDIT (IGA) AT DALLAS, FARMERS BRANCH, AND SHERMAN, TX NEW ORLEANS, BATON ROUGE, HOUMA, AND LAFAYETTE, LA.  GENERAL SERVICES ADMINISTRATION (GSA)      0.0
+1  2021-10-28                                                                                                                                                                                                                  FY22 REQ#14217 AGAINST 140G0120A0010       DEPARTMENT OF THE INTERIOR (DOI)  76000.0
+

@@ -1,0 +1,3 @@
+          Release time                                Event Impact Level  Previous release  Estimate  Actual release Unit
+0  2020-06-02 01:30:00  Australia - Current Account Balance          low               1.0       6.9             8.4  AUD
+

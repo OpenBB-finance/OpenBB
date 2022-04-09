@@ -1,0 +1,2 @@
+Invalid FilingDate 'MOCK_INVALID_DATE'. Choose one of the following options: All dates, Custom, Latest Day, Last 3 days, Last 1 week, Last 2 weeks, Last 1 month, Last 2 months, Last 3 months, Last 6 months, Last 1 year, Last 2 years, Last 4 years.
+Invalid TradingDate 'MOCK_INVALID_DATE'. Choose one of the following options: All dates, Custom, Latest Day, Last 3 days, Last 1 week, Last 2 weeks, Last 1 month, Last 2 months, Last 3 months, Last 6 months, Last 1 year, Last 2 years, Last 4 years.

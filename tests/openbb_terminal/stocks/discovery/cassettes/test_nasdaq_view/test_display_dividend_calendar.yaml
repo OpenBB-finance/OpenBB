@@ -1,0 +1,72 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.nasdaq.com/api/calendar/dividends?date=MOCK_DATE
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAL2XXW/aMBSG/0qUi12R1Dbjo9whPqZIpaXA1ItpQm7sUkuJjRynAyH+e08CoaGU
+        ZIMpEgLnvM5J3ufYOWFjM2qo3dnYPg24ZFQn41dOGddRMozW4bMK7I493Q1qtq/CJZXrexpyCKc/
+        NZuJN8Hg/PlgNe9TkyiDldPfR600VLOXdB1yabIZ491hpmruK80ycZIeZdoh/2SnZplBEpIJH6Js
+        3pUypsH8oHVsL9OsnWblzqNSqlj6PH9H3Vxsd+kt3Jf6Ayh+bT4576lXLq1v1tRwYGX1AhVx5gzA
+        7cNyqbSJpTBraxhLVrM86btwyQPM4cPwa2gI32B8QxAhp7hAqx+0Y1jJaSSTPrFCLmq3CjFhF9fx
+        10AgK24miTGQKCFwJ0KRoO7HmhqhpDXW/IVrDSEKVICBCvkZIHf9cYVAcL1RCIS4pPEfgEx5wH3z
+        LxjG0yrXRTmGRvP2egwzunK67I1KQxcA4QPHlPuxFkbw6IjBrFspg5Kt0a63rkcwGXiztPrn10Ie
+        weS+2t3QLGHQJN+vZ+DJF00jo2PfxDq3AfLGf84qXf+NsvWPcON644+QNWkF+2pPOA32jeFk/08e
+        vUr7Qknd0SVlHwodGWumY/juDYaZ7XxTHKRl/uiGMK3KsuPismP33HJP8qJd3mLfI/DpiyW8cPwd
+        gVG1BFCzmAByW+1LEHjScN0XC2FocNrcvH6vd5FJ0rzEZElzw27B4kbnFveTkJI/04UCdwwqraF5
+        nTp9+vFQoVFcvI2hmOS808be6W940TUi5PCMToxu7FDI/TSCMHbQrUPIDKFO+oHbCOnqoBPiYOKQ
+        1oe+hXQhjyLo+HZHxkEAdAw1cfqfQvcUgzBBqGY/J+PR8UzG33igllwfxbfbd9rj0wetDAAA
+    headers:
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '681'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sat, 15 Jan 2022 03:52:28 GMT
+      Expires:
+      - Sat, 15 Jan 2022 03:52:28 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - Kestrel
+      Set-Cookie:
+      - ak_bmsc=2D77018EC2D10C1225CD33DA80EC7583~000000000000000000000000000000~YAAQxmV0aDOw2DJ+AQAA4HvdWw5/KqfepPjz4RuC3UllD198t32mcBWGOPVW5RgBp0FMFf0Hq7BTNS6oEX0TyfdDBG1hf4bIx42zyKKwrcQTDuoVT3WLKxubBU4YG/u4bQZ1AjBp+VaBnXK5+eCvc6MPkxga30kXyPCmmv8tcT9QeGtjjDqm+I3MED1hiuiiFi8f76vFhRaa2nk66iXGgMNUT2wAnTfn/k7aDSKp5GqExbZKLvVkWMyc/ola8rmbs6C62L8IX4XOAgGZbMygc9tf82TU83YIvnHOs+piIRDABLVYtqpJ3XV/BliV+hYsB9yPpr3He8dgL/U6AN1FpunwsejTJBFQGbPcx+yHzBvipR4lrTlyEtoVgUFS;
+        Domain=.nasdaq.com; Path=/; Expires=Sat, 15 Jan 2022 05:52:28 GMT; Max-Age=7200;
+        HttpOnly
+      Strict-Transport-Security:
+      - max-age=86400
+      Vary:
+      - Accept-Encoding
+      X-EdgeConnect-MidMile-RTT:
+      - '20'
+      - '30'
+      X-EdgeConnect-Origin-MEX-Latency:
+      - '39'
+      - '39'
+      gid:
+      - '0132'
+      lang:
+      - en
+      rid:
+      - 54e94667-dec5-48fa-ae07-c55a4143f8d4
+      srctype:
+      - default
+    status:
+      code: 200
+      message: OK
+version: 1

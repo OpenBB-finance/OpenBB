@@ -1,0 +1,256 @@
+,id,name,adjusted_volume_24h_share,fiats
+0,binance,Binance,13.09139803,7
+1,bitenium,Bitenium,7.6578666,0
+2,indoex,Indoex,6.79745556,2
+3,cryptocom-exchange,Crypto.com Exchange,5.06217661,0
+4,hitbtc,HitBTC,4.57476886,0
+5,fmfwio,FMFW.io,4.37922515,1
+6,gleec-btc-exchange,Gleec BTC Exchange,4.33088536,1
+7,coinbase,Coinbase,3.80869911,3
+8,okx,OKX,3.7412916,0
+9,ftx,FTX (Spot),2.71360851,1
+10,huobi,Huobi,2.41570325,0
+11,digifinex,DigiFinex,2.34477741,0
+12,whitebit,WhiteBIT,2.0094209,3
+13,kucoin,Kucoin,1.95939477,0
+14,lbank,Lbank,1.89091348,0
+15,tokok,TOKOK,1.2364538,0
+16,upbit,Upbit,1.21473975,1
+17,bibox,Bibox,1.20032419,0
+18,bigone,BigONE,1.19500343,0
+19,bitrue,Bitrue,1.13565332,0
+20,yobit,YoBit,1.11738281,2
+21,coinsbit,Coinsbit,1.04809436,2
+22,btse,BTSE,1.02815522,1
+23,gateio,Gate.io,1.01122262,0
+24,gokumarket,GokuMarket,0.98727486,1
+25,aex,AEX,0.97913717,0
+26,bitfinex,Bitfinex,0.91675148,4
+27,probit-exchange,ProBit Exchange,0.87317115,0
+28,blocktrade,Blocktrade,0.85784829,1
+29,finexbox,FINEXBOX,0.81022975,0
+30,tokpie,TOKPIE,0.79565656,0
+31,bitforex,BitForex,0.72938265,0
+32,abcc,ABCC,0.70017468,0
+33,covesting,Covesting,0.66053819,1
+34,exmarkets,ExMarkets,0.61175653,0
+35,bithumb-global,Bithumb Global,0.5962469,0
+36,p2pb2b,P2PB2B,0.56049811,2
+37,binance-us,Binance US,0.52632574,1
+38,coinmargin,CoinMargin,0.51258199,0
+39,hoo,Hoo,0.48771374,0
+40,bithumb,Bithumb,0.42844347,1
+41,primexbt,PrimeXBT,0.39803692,1
+42,dex-trade,Dex-Trade,0.39437307,0
+43,bitstamp,Bitstamp,0.37950149,2
+44,gemini,Gemini,0.3722773,3
+45,mexc,MEXC,0.36219533,0
+46,bequant,Bequant,0.33052491,0
+47,bitflyer,bitFlyer,0.3288897,3
+48,resfinex,Resfinex,0.32627047,0
+49,oceanex,OceanEx,0.29286455,0
+50,bitmart,BitMart,0.27745489,0
+51,bkex,Bkex,0.27531629,0
+52,bybit-spot,Bybit (Spot),0.25381847,0
+53,btcex,BTCEX,0.24294385,0
+54,zbcom,ZB.COM,0.24109234,0
+55,dragonex,DragonEX,0.22384539,0
+56,latoken,LATOKEN,0.21874171,0
+57,koinbazar,Koinbazar,0.21654283,0
+58,xt,XT,0.20188711,0
+59,ataix,ATAIX,0.19938276,1
+60,catex,Catex,0.19623479,0
+61,cointiger,CoinTiger,0.19259329,0
+62,coinone,Coinone,0.18860224,1
+63,bitvast,Bitvast,0.18380861,0
+64,exmo,Exmo,0.17100368,5
+65,coineal,Coineal,0.16935717,0
+66,mercatox,Mercatox,0.16841178,0
+67,nexdax,NexDAX,0.16817558,0
+68,hotbit,Hotbit,0.16771272,1
+69,coin163,Coin163,0.16405754,0
+70,kickex,KickEX,0.14565183,0
+71,azbit,Azbit,0.14538163,0
+72,vindax,VinDAX,0.13529933,0
+73,bw,BW,0.12985192,0
+74,poloniex,Poloniex,0.12896729,0
+75,betconix,BETCONIX,0.10438996,2
+76,bitvavo,Bitvavo,0.10398931,1
+77,liquid,Liquid,0.10271502,6
+78,ascendex,AscendEX (BitMax),0.09992479,0
+79,coinex,CoinEx,0.09430523,0
+80,tokenlon,Tokenlon,0.08973235,0
+81,cexio,CEX.IO,0.08281845,4
+82,cryptology,Cryptology,0.08104448,2
+83,tokenize,Tokenize,0.07696261,1
+84,arthbit,ArthBit,0.07653904,0
+85,bankcex,BankCEX,0.07640208,0
+86,btcturk,BTCTurk,0.07311511,1
+87,cgcx,CGCX,0.07223833,1
+88,paybito,PayBito,0.07158056,1
+89,bitkub,Bitkub,0.07154089,1
+90,omgfin,Omgfin,0.07062806,0
+91,exrates,Exrates,0.06627419,2
+92,cryptonex,Cryptonex,0.06512716,5
+93,alterdice,Alterdice,0.06488382,1
+94,emirex,Emirex,0.0608415,2
+95,bittrex,Bittrex,0.05746569,2
+96,zbg,ZBG,0.05318122,0
+97,folgory,Folgory,0.05225888,1
+98,okcoin-international,OKCoin,0.05062804,2
+99,krypterz,Krypterz,0.04942592,0
+100,bitflix,Bitflix,0.04938212,0
+101,coincex,CoinCex,0.04933723,0
+102,bittilo,Bittilo,0.0493363,0
+103,curve-finance,Curve Finance,0.0491445,0
+104,kanga-exchange,Kanga,0.04896415,2
+105,udonex,Udonex,0.04495611,0
+106,btcix,Btcix,0.03846399,0
+107,luno,Luno,0.03628918,5
+108,b2bx,B2BX,0.03530746,2
+109,polyx,Polyx,0.03332061,0
+110,bitspay,BitsPay,0.03217171,0
+111,korbit,Korbit,0.03059374,1
+112,coinfield,CoinField,0.02872263,5
+113,dasset,Dasset,0.02757704,1
+114,02x6,02x6,0.02632933,1
+115,bitunivex,Bitunivex,0.02570889,0
+116,tychexchange,TychExchange,0.02383745,0
+117,paribu,Paribu,0.02336678,1
+118,paramountdax,ParamountDax,0.02332121,0
+119,stex,STEX,0.01918576,0
+120,decoin,Decoin,0.01893065,0
+121,coinjar-exchange,CoinJar,0.01822097,1
+122,virtuse,Virtuse,0.01707512,0
+123,bilaxy,Bilaxy,0.01633349,0
+124,bitexlive,Bitexlive,0.01626373,1
+125,indodax,Indodax,0.01575938,1
+126,hypecoinexchange,Hypecoinexchange,0.01536186,0
+127,mdex,MDEX (BSC),0.01486035,0
+128,tarmex,Tarmex,0.01444983,1
+129,zaif,Zaif,0.01385899,1
+130,zonda,Zonda,0.01370101,4
+131,garantex,Garantex,0.01289077,2
+132,timex,TimeX,0.01247915,0
+133,bitso,Bitso,0.01210229,1
+134,bitpreo,BitPreço,0.0114575,1
+135,timebitex,TimebitEx,0.01142555,0
+136,maicoin-asset-exchange,Maicoin Asset Exchange,0.01088978,0
+137,nacdaq,Nacdaq,0.01073076,0
+138,wanswap,Wanswap,0.01062112,0
+139,btc-markets,BTC Markets,0.01042784,1
+140,bitopro,BitoPro,0.00982366,1
+141,bitpanda-pro,Bitpanda Pro,0.00981176,3
+142,redot,Redot,0.00905501,0
+143,bitubu,BitUBU,0.00897713,0
+144,dexzbitz,Dexzbitz,0.00832449,1
+145,crex24,Crex24,0.0080881,1
+146,independent-reserve,Independent Reserve,0.00789993,3
+147,coindeal,CoinDeal,0.00708904,0
+148,bitladon,Bitladon,0.00623045,1
+149,bitbns,Bitbns,0.00615208,1
+150,uniswap,Uniswap V1,0.00535167,0
+151,smartfi,SmartFi,0.00512842,1
+152,narkasa,Narkasa,0.00480401,1
+153,ndax,NDAX,0.00460403,1
+154,txbit,Txbit,0.00447469,1
+155,litebiteu,LiteBit.eu,0.00402855,1
+156,coinamount,CoinAmount,0.00348936,0
+157,buyucoin,BuyUcoin,0.00337492,1
+158,nicehash,NiceHash,0.00321339,0
+159,gdac,GDAC,0.00311486,1
+160,kuna,Kuna,0.00255991,2
+161,bittex,Bittex,0.00255412,0
+162,metronex,Metronex,0.00253882,0
+163,crosstower,CrossTower,0.00248216,1
+164,fatbtc,Fatbtc,0.0022423,0
+165,apeswap,ApeSwap,0.00211166,0
+166,xbtpro,XBTPro,0.00201268,0
+167,bitbank,Bitbank,0.00188313,1
+168,bitocto-exchange,Bitocto Exchange,0.00186562,1
+169,raydium,Raydium,0.00180834,0
+170,buda,Buda,0.00180704,3
+171,bitcoiva,BITCOIVA,0.0017763,1
+172,panxora,Panxora,0.00168432,1
+173,insta-fx,Insta FX,0.00145539,1
+174,coss,COSS,0.00136358,0
+175,knaken,Knaken,0.00136358,0
+176,bololex,Bololex,0.00128301,0
+177,lykke-exchange,Lykke Exchange,0.00110288,5
+178,currency-com,Currency.com,0.00106836,8
+179,wazirx,WazirX,0.00096948,0
+180,vitex,ViteX,0.00093503,0
+181,loopring,Loopring,0.00086116,0
+182,farhadmarket,FarhadMarket,0.00077245,0
+183,bgogo,Bgogo,0.00075998,0
+184,the-rock-trading,The Rock Trading,0.00072513,2
+185,novadax,NovaDAX,0.00068301,1
+186,bitcointrade,BitcoinTrade,0.00066177,1
+187,coinmate,CoinMate,0.00045893,2
+188,energiswap,Energiswap,0.00045408,0
+189,bitsten,Bitsten,0.00044336,0
+190,tidebit,Tidebit,0.00034821,2
+191,anycoin-direct,Anycoin Direct,0.00034137,1
+192,sigen-pro,SIGEN.pro,0.00031372,3
+193,tradeogre,TradeOgre,0.00029901,0
+194,globitex,Globitex,0.00025405,1
+195,gopax,GOPAX,0.00023581,0
+196,nexchange,n.exchange,0.000225,0
+197,orca-dex,Orca DEX,0.00021064,0
+198,365-stream,365 stream,0.000204,0
+199,limitlex,Limitlex,0.00018445,1
+200,btc-trade-ua,BTC Trade UA,0.0001703,1
+201,southxchange,SouthXchange,0.00011073,1
+202,bitcratic,Bitcratic,0.00010519,0
+203,bisq,Bisq,9.906e-05,19
+204,bakeryswap,Bakeryswap,9.098e-05,0
+205,coinut,Coinut,8.605e-05,1
+206,lcx-exchange,LCX Exchange,7.284e-05,1
+207,zebitex,ZEBITEX,6.611e-05,1
+208,bittylicious,Bittylicious,6.292e-05,2
+209,intercore,Intercore,4.494e-05,1
+210,coin-galaxy,Coin Galaxy,3.98e-05,2
+211,nash,Nash,2.969e-05,0
+212,ionomy-exchange,Ionomy Exchange,2.777e-05,0
+213,coinswap-space,CoinSwap Space,1.813e-05,0
+214,safetrade,SafeTrade,1.319e-05,0
+215,otcbtc,OTCBTC,1.212e-05,0
+216,satoexchange,SatoExchange,8.24e-06,0
+217,koinim,Koinim,5.36e-06,1
+218,graviex,Graviex,4.27e-06,2
+219,chiliz,Chiliz,4.24e-06,0
+220,lydia-finance,Lydia Finance,1.84e-06,0
+221,blocktane,Blocktane,1.05e-06,1
+222,yieldfieldsfinance,YieldFields.Finance,7.9e-07,0
+223,goswap,GoSwap,6.6e-07,0
+224,domitai,Domitai,2.7e-07,1
+225,exchangeassets,ExchangeAssets,2.7e-07,0
+226,cratex,Cratex,4e-08,0
+227,xbts,XBTS,2e-08,3
+228,xcalibra,Xcalibra,1e-08,0
+229,velic,VELIC,0.0,0
+230,beaxy,Beaxy,0.0,0
+231,thore-exchange,Thore Exchange,0.0,1
+232,wbb-exchange,WBB Exchange,0.0,2
+233,neblidex,NebliDex,0.0,0
+234,rokkex,ROKKEX,0.0,1
+235,freebitcoins,FreeBitcoins,0.0,0
+236,birake,Birake,0.0,0
+237,nuex,Nuex,0.0,0
+238,altmarkets,AltMarkets,0.0,0
+239,mergedex,MergeDEX,0.0,0
+240,kyber-network,Kyber Network,0.0,0
+241,switcheo-network,Switcheo Network,0.0,0
+242,tidex,Tidex,0.0,0
+243,thxchain-digital-platform,THXCHAIN Digital Platform,0.0,0
+244,c-patex,C-Patex,0.0,0
+245,cointradecx,Cointradecx,0.0,1
+246,bcex,BCEX,0.0,0
+247,rudex,RuDEX,0.0,0
+248,alphaex,AlphaEX,0.0,0
+249,richamster,Richamster,0.0,1
+250,bitfex,BitFex,0.0,1
+251,flame,Flame,0.0,0
+252,exchangily,eXchangily,0.0,0
+253,bitinka,Bitinka,0.0,8
+254,occe,OCCE,0.0,2

@@ -1,0 +1,47 @@
+{
+    "style_name": "light",
+    "base_mpf_style": null,
+    "marketcolors": {
+        "candle": {
+            "up": "#00ACFF",
+            "down": "#e4003a"
+        },
+        "edge": {
+            "up": "#00ACFF",
+            "down": "#e4003a"
+        },
+        "wick": {
+            "up": "#00ACFF",
+            "down": "#e4003a"
+        },
+        "ohlc": {
+            "up": "#00ACFF",
+            "down": "#e4003a"
+        },
+        "volume": {
+            "up": "#00ACFF",
+            "down": "#e4003a"
+        },
+        "vcedge": {
+            "up": "#219E4F",
+            "down": "#9E1711"
+        },
+        "vcdopcod": true,
+        "alpha": 1
+    },
+    "mavcolors": [
+        "#EB3DBC",
+        "#31EBEA",
+        "#EB8C54",
+        "#EB5549"
+    ],
+    "y_on_right": true,
+    "gridcolor": "grey",
+    "gridstyle": ":",
+    "facecolor": "white",
+    "edgecolor": null,
+    "figcolor": null,
+    "gridaxis": null,
+    "rc": null,
+    "legacy_rc": null
+}

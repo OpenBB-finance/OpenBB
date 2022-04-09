@@ -1,0 +1,8 @@
+
+    view          view available portfolios
+    load          load portfolio from a file
+
+Portfolio: 
+
+    group         view holdings grouped by parameter
+        

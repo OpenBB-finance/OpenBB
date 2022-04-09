@@ -1,0 +1,75 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.26.0
+    method: GET
+    uri: https://api.coingecko.com/api/v3/finance_platforms
+  response:
+    body:
+      string: !!binary |
+        H4sIAEVxFWEAA7yV3U7jMBCFX8UKt5Vz3ztoqaiEYLXVrkCr1WpqT1oL147807SseHecOEQJpSBB
+        zV0iJ+cbz5yZ+fM/U7DBbJxdCAWKIVk4eBBqlY2yApiz4SQ8MnC40mYf3iY4E+SHBFdos6mPUDkD
+        Ujwiz8bOeBxlFS6tcPjPGxl+WDtX2nGeV1VFlxFCmd7kqHLbsp5GXRgTlFZ4S27QVdo8nD4MFgFU
+        RUA+gOulTkAMqs2N+6gpCLKAbbi9JT8D5Ch2+h62AGmPcjVYYSmUZW5hi304v+d3CYB8z3cUd2wN
+        aoWD2865RDKLxU8AFkGeFlE+PxuQazsjJ78Wp6+rbaSpt0MPmX3pmnoncFKnXXdPn3peV/j0iYUg
+        e2DdG9wl6BIVVKnQQ9soqVmCGSAa3de0C+GCh3CXavRF9cYZg5mzKbVXPGF7sBbRtUifP/OSGX/c
+        rJ/HFlGZhs855hIVfzXru5UT5+C3rJw3wpjMr+e3H6b/S0EwIYUuxEErLSph7VKbBOvWvkgfQH+D
+        l/z0wG0tewC7RzDqJbmkRrvjhf681/Y1pvP3NmL663Z6eUeu29on2Hw8NHYYJ1KDGnCvNJcKvEtj
+        q3Wr3mb97zMAAAD//wMAg4G0Cs4JAAA=
+    headers:
+      Access-Control-Allow-Headers:
+      - Origin, X-Requested-With, Content-Type, Accept, Authorization
+      Access-Control-Allow-Methods:
+      - POST, PUT, DELETE, GET, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Expose-Headers:
+      - link, per-page, total
+      Access-Control-Request-Method:
+      - '*'
+      Alternate-Protocol:
+      - 443:npn-spdy/2
+      CF-Cache-Status:
+      - EXPIRED
+      CF-RAY:
+      - 67dbfb8eb9b82949-ORD
+      Cache-Control:
+      - max-age=30, public, must-revalidate, s-maxage=300
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 12 Aug 2021 19:06:45 GMT
+      ETag:
+      - W/"19f0ac55a8d325c102c12b757feda2c7"
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Per-Page:
+      - '50'
+      Server:
+      - cloudflare
+      Total:
+      - '21'
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding, Origin
+      X-Request-Id:
+      - c158661a-3067-4a43-a5fb-212ee8c907aa
+      X-Runtime:
+      - '0.012193'
+    status:
+      code: 200
+      message: OK
+version: 1

@@ -1,0 +1,18 @@
+
+Backtesting:
+    cls         clear screen
+    ?/help      show this menu again
+    q           quit this menu, and shows back to main menu
+    quit        quit to abandon program
+    load        load new ticker to analyze
+
+Ticker: TSLA
+
+    ema         buy when price exceeds EMA(l)
+    ema_cross   buy when EMA(short) > EMA(long)
+    rsi         buy when RSI < low and sell when RSI > high
+        
+The command selected doesn't exist
+
+Did you mean 'quit'?
+

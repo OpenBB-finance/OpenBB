@@ -1,0 +1,11 @@
+
+        slopes      get countries with highest slope in cases
+        country     select country for data
+
+Country: US
+
+        ov          get overview (cases and deaths) for selected country
+        deaths      get deaths for selected country
+        cases       get cases for selected country
+        rates       get death/cases rate for selected country
+        

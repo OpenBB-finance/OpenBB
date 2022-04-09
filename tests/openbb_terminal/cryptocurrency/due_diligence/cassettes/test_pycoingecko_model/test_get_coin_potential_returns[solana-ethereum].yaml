@@ -1,0 +1,65 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.26.0
+    method: GET
+    uri: https://api.coingecko.com/api/v3/simple/price?include_market_cap=true&include_24hr_vol=false&include_24hr_change=false&include_last_updated_at=false&ids=solana,ethereum&vs_currencies=usd
+  response:
+    body:
+      string: !!binary |
+        H4sIAJkT2GEAA2TLTQqAIBBA4bvMWmTG39HLhJQQlBVlq/Du1aZNy8fjuyDXMe/5LBAvOI8BolYO
+        JQXxVlfSPuXa9Wl7BrOyVqFxhNJapibgWOe0pM+SIUn6T40O3hAjs5bBB6TWbgAAAP//AwAttxTw
+        egAAAA==
+    headers:
+      Access-Control-Allow-Headers:
+      - Origin, X-Requested-With, Content-Type, Accept, Authorization
+      Access-Control-Allow-Methods:
+      - POST, PUT, DELETE, GET, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Expose-Headers:
+      - link, per-page, total
+      Access-Control-Request-Method:
+      - '*'
+      Alternate-Protocol:
+      - 443:npn-spdy/2
+      CF-Cache-Status:
+      - EXPIRED
+      CF-RAY:
+      - 6c9c722078eada7a-LIS
+      Cache-Control:
+      - max-age=30, public, must-revalidate, s-maxage=60
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 07 Jan 2022 10:19:05 GMT
+      ETag:
+      - W/"93e6583c3ac6a9c0e94f3bc3841febf4"
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding, Origin
+      X-Request-Id:
+      - 4737b0c6-cb37-4b20-b3b3-b3f3a6190d04
+      X-Runtime:
+      - '0.008334'
+    status:
+      code: 200
+      message: OK
+version: 1

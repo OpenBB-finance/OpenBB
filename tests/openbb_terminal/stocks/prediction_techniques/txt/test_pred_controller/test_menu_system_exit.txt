@@ -1,0 +1,27 @@
+
+Prediction Techniques:
+    cls         clear screen
+    ?/help      show this menu again
+    q           quit this menu, and shows back to main menu
+    quit        quit to abandon program
+    load        load new ticker
+    pick        pick new target variable
+
+Daily Stock: TSLA (from 2020-12-01)
+Target Column: AdjClose
+
+Models:
+    ets         exponential smoothing (e.g. Holt-Winters)
+    knn         k-Nearest Neighbors
+    regression  polynomial regression
+    arima       autoregressive integrated moving average
+    mlp         MultiLayer Perceptron
+    rnn         Recurrent Neural Network
+    lstm        Long-Short Term Memory
+    conv1d      1D Convolutional Neural Network
+    mc          Monte-Carlo simulations
+        
+The command selected doesn't exist
+
+Did you mean 'quit'?
+

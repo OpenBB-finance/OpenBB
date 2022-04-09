@@ -1,0 +1,60 @@
+__pycache__/
+logs/
+*.pyc
+.DS_Store
+*.env
+.venv
+.vscode
+*.ipynb
+env/
+venv/
+!notebooks/jupyter/.gitkeep
+.python-version
+.mypy_cache
+iframe_figures/
+exports/*
+.idea
+.coverage
+htmlcov
+openbb_terminal/config_plot.py
+openbb_terminal/config_terminal.py
+openbb_terminal/feature_flags.py
+openbb_terminal/jupyter/reports/stored/*
+openbb_terminal/jupyter/dashboards/.ipynb_checkpoints
+openbb_terminal/jupyter/reports/.ipynb_checkpoints
+openbb_terminal/jupyter/widgets/.ipynb_checkpoints
+!openbb_terminal/jupyter/reports/stored/.gitkeep
+!openbb_terminal/jupyter/dashboards/*.ipynb
+!openbb_terminal/jupyter/reports/*.ipynb
+openbb_terminal/portfolio/portfolios/*
+.ipynb_checkpoints/*
+*.swp
+*.http
+bots/interactive/*.html
+.coverage.*
+
+# pyinstaller artifacts
+*.pyo
+dist/*
+build/terminal
+
+# Jupyter Lab Extension build files
+jupyterlab/*/*.bundle.*
+jupyterlab/*/lib/
+jupyterlab/*/*/labextension/
+jupyterlab/*/node_modules/
+jupyterlab/*/*/node_modules/
+jupyterlab/*/*.egg-info/
+jupyterlab/*/.ipynb_checkpoints
+jupyterlab/*/*.tsbuildinfo
+jupyterlab/*/ui-tests/test-results/
+jupyterlab/*/ui-tests/tests/*.ts-snapshots/
+
+# Sphinx documentation build files
+docs/_build
+
+# User stylesheets
+styles/user
+
+# the file containing the API keys for the web version
+openbb_terminal_web/setenv

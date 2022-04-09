@@ -1,0 +1,6 @@
+Strike: $10
+Premium: $2
+Breakeven price: $8
+Max profit: Unlimited
+Max loss: $-200
+

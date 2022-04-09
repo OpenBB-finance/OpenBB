@@ -1,0 +1,94 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.26.0
+    method: GET
+    uri: https://api.finbrain.tech/v0/sentiments/TSLA
+  response:
+    body:
+      string: '{"ticker":"TSLA","name":"Tesla Inc.","sentimentAnalysis":{"2021-12-20":"0.169","2021-12-17":"-0.14","2021-12-16":"0.049","2021-12-15":"-0.073","2021-12-14":"0.03","2021-12-13":"0.135","2021-12-10":"0.05","2021-12-09":"0.15","2021-12-08":"0.333","2021-12-07":"0.068"}}'
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '267'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 20 Dec 2021 17:18:08 GMT
+      X-Amzn-Trace-Id:
+      - Root=1-61c0bad0-615a5b5e3d4d8f8d312f872d;Sampled=0
+      access-control-allow-origin:
+      - '*'
+      etag:
+      - W/"10b-1o2byEDRNuryxKM+Mm/8tWR1vqE"
+      x-amz-apigw-id:
+      - KqIgkH6MIAMFnZg=
+      x-amzn-Remapped-connection:
+      - close
+      x-amzn-Remapped-content-length:
+      - '267'
+      x-amzn-Remapped-date:
+      - Mon, 20 Dec 2021 17:18:08 GMT
+      x-amzn-RequestId:
+      - aac0f124-b462-48bb-9b86-6a00052d9dc9
+      x-powered-by:
+      - Express
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.26.0
+    method: GET
+    uri: https://api.finbrain.tech/v0/sentiments/GM
+  response:
+    body:
+      string: '{"ticker":"GM","name":"General Motors","sentimentAnalysis":{"2021-12-20":"0.172","2021-12-17":"0.367","2021-12-16":"0.297","2021-12-15":"0.145","2021-12-14":"0.234","2021-12-13":"0.263","2021-12-10":"0.226","2021-12-09":"0.051","2021-12-08":"0.051","2021-12-07":"0.083"}}'
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '271'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 20 Dec 2021 17:18:09 GMT
+      X-Amzn-Trace-Id:
+      - Root=1-61c0bad0-009de273665c62c205309c26;Sampled=0
+      access-control-allow-origin:
+      - '*'
+      etag:
+      - W/"10f-80PmnUbc70agmxbKhGiHPTVU2EQ"
+      x-amz-apigw-id:
+      - KqIgqEb_oAMFo9g=
+      x-amzn-Remapped-connection:
+      - close
+      x-amzn-Remapped-content-length:
+      - '271'
+      x-amzn-Remapped-date:
+      - Mon, 20 Dec 2021 17:18:09 GMT
+      x-amzn-RequestId:
+      - f07fc626-e738-4c2b-bf6f-92eaec3d552c
+      x-powered-by:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1

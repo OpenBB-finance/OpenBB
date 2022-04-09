@@ -1,0 +1,191 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: GET
+    uri: https://raw.githubusercontent.com/JerBouma/FinanceDatabase/master/Database/Equities/Sectors/Conglomerates/_Conglomerates%20Countries%20and%20Industries.json
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA6vm5VIAAiXn/NK8kqLM1GIlK4VoiBhY3Ck1J7MqVUkHScitKDEvGVXIvSg1FU0o
+        NC+zJDVFIbgksQRoKEQiFqpAyTMvpbQYm3XO+XnpOfm5qUXIuni5agFL9KULpwAAAA==
+    headers:
+      Accept-Ranges:
+      - bytes
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - max-age=300
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '106'
+      Content-Security-Policy:
+      - default-src 'none'; style-src 'unsafe-inline'; sandbox
+      Content-Type:
+      - text/plain; charset=utf-8
+      Date:
+      - Fri, 21 Jan 2022 03:56:16 GMT
+      ETag:
+      - W/"cb6f8d56bb62dfe2136b3c45ad72c8d525221cab357ffcc0aa5c8385a4700c91"
+      Expires:
+      - Fri, 21 Jan 2022 04:01:16 GMT
+      Source-Age:
+      - '117'
+      Strict-Transport-Security:
+      - max-age=31536000
+      Vary:
+      - Authorization,Accept-Encoding,Origin
+      Via:
+      - 1.1 varnish
+      X-Cache:
+      - HIT
+      X-Cache-Hits:
+      - '1'
+      X-Content-Type-Options:
+      - nosniff
+      X-Fastly-Request-ID:
+      - 3d4704c4e3233d70197ff176252679bf682be8a6
+      X-Frame-Options:
+      - deny
+      X-GitHub-Request-Id:
+      - 0DEA:E6BA:11C362B:12F0E63:61EA0978
+      X-Served-By:
+      - cache-cdg20781-CDG
+      X-Timer:
+      - S1642737377.839096,VS0,VE0
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: GET
+    uri: https://raw.githubusercontent.com/JerBouma/FinanceDatabase/master/Database/Equities/Sectors/Conglomerates/Conglomerates.json
+  response:
+    body:
+      string: !!binary |
+        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
+        nOPzz377L8L+N99gIwAA
+    headers:
+      Accept-Ranges:
+      - bytes
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - max-age=300
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '2865'
+      Content-Security-Policy:
+      - default-src 'none'; style-src 'unsafe-inline'; sandbox
+      Content-Type:
+      - text/plain; charset=utf-8
+      Date:
+      - Fri, 21 Jan 2022 03:56:16 GMT
+      ETag:
+      - W/"245a431759a86a1c52902a9530b3dded6ceb2f5e141e0f4050ea4ba555d2c011"
+      Expires:
+      - Fri, 21 Jan 2022 04:01:16 GMT
+      Source-Age:
+      - '4'
+      Strict-Transport-Security:
+      - max-age=31536000
+      Vary:
+      - Authorization,Accept-Encoding,Origin
+      Via:
+      - 1.1 varnish
+      X-Cache:
+      - HIT
+      X-Cache-Hits:
+      - '1'
+      X-Content-Type-Options:
+      - nosniff
+      X-Fastly-Request-ID:
+      - 809fd4e6bc4ac8106bfc1d2475fc5b78aecbbe9b
+      X-Frame-Options:
+      - deny
+      X-GitHub-Request-Id:
+      - 103E:11644:1898E88:1A53E62:61EA2EDC
+      X-Served-By:
+      - cache-cdg20768-CDG
+      X-Timer:
+      - S1642737377.917171,VS0,VE0
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

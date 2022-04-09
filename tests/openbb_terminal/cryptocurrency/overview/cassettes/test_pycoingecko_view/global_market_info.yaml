@@ -1,0 +1,96 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.26.0
+    method: GET
+    uri: https://api.coingecko.com/api/v3/global
+  response:
+    body:
+      string: !!binary |
+        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
+        AMY38B+tDQAA
+    headers:
+      Access-Control-Allow-Headers:
+      - Origin, X-Requested-With, Content-Type, Accept, Authorization
+      Access-Control-Allow-Methods:
+      - POST, PUT, DELETE, GET, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Expose-Headers:
+      - link, per-page, total
+      Access-Control-Request-Method:
+      - '*'
+      Alternate-Protocol:
+      - 443:npn-spdy/2
+      CF-Cache-Status:
+      - MISS
+      CF-RAY:
+      - 67dbfb4e7e492a75-ORD
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 12 Aug 2021 19:06:34 GMT
+      ETag:
+      - W/"b424baf473996d6633d8fd11b6cd188c"
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding, Origin
+      X-Request-Id:
+      - fad21e05-083a-4e88-847f-d6a96dccb774
+      X-Runtime:
+      - '0.007812'
+    status:
+      code: 200
+      message: OK
+version: 1

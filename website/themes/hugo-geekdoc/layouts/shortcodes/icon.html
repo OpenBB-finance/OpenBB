@@ -1,0 +1,5 @@
+{{ $id := .Get 0 }}
+
+{{- with $id -}}
+<svg class="icon {{ . }}"><use xlink:href="#{{ . }}"></use></svg>
+{{- end -}}

@@ -1,0 +1,27 @@
+
+Government:
+    cls                  clear screen
+    ?/help               show this menu again
+    q                    quit this menu, and shows back to main menu
+    quit                 quit to abandon program
+    load                 load a ticker
+
+Explore:
+    lasttrades           last trades
+    topbuys              show most purchased stocks
+    topsells             show most sold stocks
+    lastcontracts        show last government contracts given out
+    qtrcontracts         quarterly government contracts analysis
+    toplobbying          top corporate lobbying tickers
+
+Ticker: TSLA
+
+    gtrades              show government trades for ticker
+    contracts            show government contracts for ticker
+    histcont             show historical quarterly government contracts for ticker
+    lobbying             corporate lobbying details for ticker[0m
+            
+The command selected doesn't exist
+
+Did you mean 'quit'?
+

@@ -1,0 +1,18 @@
+{{- $showAnchor := (and (default true .Page.Params.GeekdocAnchor) (default true .Page.Site.Params.GeekdocAnchor)) -}}
+
+{{- if $showAnchor -}}
+<div class="gdoc-page__anchorwrap">
+    <h{{ .Level }} id="{{ .Anchor | safeURL }}">
+        {{ .Text | safeHTML }}
+        <a data-clipboard-text="{{ .Page.Permalink }}#{{ .Anchor | safeURL }}" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor {{ .Text | safeHTML }}" href="#{{ .Anchor | safeURL }}">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h{{ .Level }}>
+</div>
+{{- else -}}
+<div class="gdoc-page__anchorwrap">
+    <h{{ .Level }} id="{{ .Anchor | safeURL }}">
+        {{ .Text | safeHTML }}
+    </h{{ .Level }}>
+</div>
+{{- end -}}

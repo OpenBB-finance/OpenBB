@@ -1,0 +1,54 @@
+.container {
+    position: relative;
+}
+
+.container .card {
+    font-family: Consolas, sans-serif;
+    position: relative;
+    width: 128px;
+    height: 128px;
+    background: #000000;
+    border-radius: 5px;
+    border-color: rgb(142, 142, 142);
+    border-style: solid;
+    border-width: 0.5px;
+    overflow: hidden;
+}
+
+.container .card .contentBx {
+    position: absolute;
+    top: 28;
+    bottom: 32;
+    width: 100%;
+    text-align: center;
+    z-index: 10;
+}
+
+.container .card .contentBx h1 {
+    position: relative;
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: #fff;
+    margin-top: 28px;
+    margin-bottom: 10px;
+}
+
+.container .card .contentBx h2 {
+    position: relative;
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.up_color {
+    color: #00ACFF;
+}
+
+.down_color {
+    color: #e4003a;
+}
+
+.neutral_color {
+    color: #ffed00;
+}

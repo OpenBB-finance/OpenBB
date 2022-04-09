@@ -1,0 +1,33 @@
+{{ $tocLevels := default (default 6 .Site.Params.GeekdocToC) .Page.Params.GeekdocToC }}
+
+{{ if $tocLevels }}
+  <div class="gdoc-toc gdoc-toc__level--{{$tocLevels}}">
+    {{ template "toc-tree" dict "sect" .Page.Pages }}
+  </div>
+{{ end }}
+
+<!-- templates -->
+{{ define "toc-tree" }}
+  <ul>
+    {{ range .sect.GroupBy "Weight" }}
+      {{ range .ByTitle }}
+      {{ if or (not .Params.GeekdocHidden) (not (default true .Params.GeekdocHiddenTocTree)) }}
+      <li>
+      {{ if or .Content .Params.GeekdocFlatSection }}
+        <span>
+          <a href="{{ .RelPermalink }}" class="gdoc-toc__entry">{{ partial "title" . }}{{ with .Params.GeekdocDescription }}:</a> {{ . }}{{ else }}</a>{{ end }}
+        </span>
+      {{ else }}
+        <span>{{ partial "title" . }}{{ with .Params.GeekdocDescription }}: {{ . }}{{ end }}</span>
+      {{ end }}
+
+      {{ $numberOfPages := (add (len .Pages) (len .Sections)) }}
+      {{ if and (ne $numberOfPages 0) (not .Params.GeekdocFlatSection) }}
+        {{ template "toc-tree" dict "sect" .Pages }}
+      {{ end }}
+      </li>
+      {{ end }}
+      {{ end }}
+    {{ end }}
+  </ul>
+{{ end }}

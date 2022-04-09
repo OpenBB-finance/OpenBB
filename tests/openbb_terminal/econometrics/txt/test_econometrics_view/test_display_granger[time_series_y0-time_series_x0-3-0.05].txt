@@ -1,0 +1,7 @@
+                F-test   P-value  Count Lags
+ssr_ftest     2.669911  0.048815  193.0  3.0
+ssr_chi2test  8.300242  0.040198      -    3
+lrtest        8.132629  0.043349      -    3
+params_ftest  2.669911  0.048815  193.0  3.0
+As the p-value of the F-test is 0.049, we can reject the null hypothesis at the 0.05 confidence level and find the Series 'pop' to Granger-cause the Series 'realgdp'
+

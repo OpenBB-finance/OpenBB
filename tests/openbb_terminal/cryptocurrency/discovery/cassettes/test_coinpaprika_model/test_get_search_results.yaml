@@ -1,0 +1,78 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: GET
+    uri: https://api.coinpaprika.com/v1/search/?q=ethereum&c=currencies%2Cexchanges%2Cicos%2Cpeople%2Ctags&limit=100
+  response:
+    body:
+      string: !!binary |
+        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
+        JGNC71v5DwuyLL73138BAAD//7JxbZ9UGwAA
+    headers:
+      Accept-Ranges:
+      - bytes
+      Access-Control-Allow-Origin:
+      - '*'
+      CF-Cache-Status:
+      - EXPIRED
+      CF-RAY:
+      - 6d5624305b99089b-CDG
+      Cache-Control:
+      - public, max-age=60, s-maxage=60, stale-while-revalidate=10, stale-if-error=600
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '1452'
+      Content-Type:
+      - application/json
+      Date:
+      - Sat, 29 Jan 2022 23:11:44 GMT
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Last-Modified:
+      - Sat, 29 Jan 2022 23:06:28 GMT
+      Server:
+      - cloudflare
+      Vary:
+      - Accept-Encoding
+      alt-svc:
+      - h3=":443"; ma=86400, h3-29=":443"; ma=86400
+    status:
+      code: 200
+      message: OK
+version: 1

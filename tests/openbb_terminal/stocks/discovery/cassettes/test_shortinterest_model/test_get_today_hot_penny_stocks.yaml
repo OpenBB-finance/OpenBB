@@ -1,0 +1,167 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www.pennystockflow.com/
+  response:
+    body:
+      string: "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n<html>\n<head>\n<meta
+        name=\"Description\" content=\"Todays Hot Penny Stocks\">\n<meta name=\"Keywords\"
+        content=\"Penny Stocks, OTC Stocks, OTCBB, Pink Sheet Stocks\">\n<title>Todays
+        Hot Penny Stocks</title>\n\n<style type=\"text/css\">\n<!--\n\nh1  {\n    text-align:
+        center;\n    font-family: verdana, arial;\n    font-size: 24px;\n    color:
+        #046204;\n}\n\nh2  {\n    text-align: center;\n    font-family: verdana, arial;\n
+        \   font-size: 16px;\n    color: #046204;\n}\n\nbody, p, a  {\n    text-align:
+        justify;\n    font-family: verdana, arial;\n    font-size: 12px;\n    color:
+        #000000;\n}\n\ntable.stocks {\n    font-family     : verdana, arial;\n    margin-left:auto;
+        margin-right:auto;\n    color           : #000000;\n    padding-right   :
+        6px;\n    padding-left    : 6px;\n    border-width: 1px;\n    border-spacing:
+        ;\n    border-style: outset;\n    border-color: gray;\n    border-collapse:
+        collapse;\n}\n\n\n.tblhdr {\n    font-family     : verdana, arial;\n    color
+        \          : #000000;\n    background      : #6fff6f;\n    padding         :
+        4px;\n    font-weight     : bold;\n    font-size       : 12px;\n    text-align
+        \     : center;\n    border-width    : 1px;\n    border-collapse : collapse;\n
+        \   border-color    : black;\n}\n\ntd {\n    font-family     : verdana, arial;\n
+        \   color           : #000000;\n    background      : #FFFFFF;\n    padding
+        \        : 5px;\n    font-weight     : normal;\n    font-size       : 12px;\n
+        \   border-width    : 1px;\n    border-collapse : collapse;\n    border-color
+        \   : black;\n}\n\n\n.tdi {\n    font-family     : verdana, arial;\n    color
+        \          : #000000;\n    background      : #eeeeee;\n    padding         :
+        5px;\n    font-weight     : normal;\n    font-size       : 12px;\n    border-width
+        \   : 1px;\n    border-collapse : collapse;\n}\n\n.err  {\n    text-align:
+        center;\n    font-family: verdana, arial;\n    font-size: 12px;\n    color:
+        red;\n    font-weight: bold;\n}\n\n-->\n</style>\n</head>\n<body>\n\n\n<table
+        border=0 style=\"border-collapse:collapse;\">\n\n<tr><td>\n\n<h1>Todays Hot
+        Penny Stocks</h1>\n\n<p>This site provides a list of todays most active and
+        hottest penny stocks.</p>\n\n<p>While not for everyone, penny stocks can be
+        exciting and rewarding investments in many ways.  With penny stocks, you can
+        get more bang for the buck. You can turn a few hundred dollars into thousands,
+        just by getting in on the right penny stock at the right time. Penny stocks
+        are increasing in popularity. More and more investors of all age groups and
+        skill levels are getting involved, and the dollar amounts they are putting
+        into these speculative investments are representing a bigger portion of their
+        portfolios. </p>\n</td></tr>\n\n\n\n<tr><td align=center>\n<br><a href=\"https://tinyurl.com/BenzingaSquawk\"
+        target=_blank><img src=\"/benzinga.png\" border=\"0\"></a><br><br><script
+        type=\"text/javascript\"><!--\ngoogle_ad_client = \"pub-1641527371507802\";\n/*
+        Financial */\ngoogle_ad_slot = \"4718314016\";\ngoogle_ad_width = 728;\ngoogle_ad_height
+        = 90;\n//-->\n</script>\n<script type=\"text/javascript\"\nsrc=\"https://pagead2.googlesyndication.com/pagead/show_ads.js\">\n</script><br><br></td></tr>\n<tr><td><h2>Todays
+        Hot Penny Stocks</h2>\n<table border=1 class=\"stocks\" style=\"border-collapse:collapse;\">\n<tr><td
+        width=\"60\" class=\"tblhdr\">Ticker</td><td width=\"70\" class=\"tblhdr\">Price</td><td
+        width=\"70\" class=\"tblhdr\">Change</td><td width=\"100\" class=\"tblhdr\">$
+        Volume</td><td width=\"100\" class=\"tblhdr\">Volume</td><td width=\"70\"
+        class=\"tblhdr\"># Trades</td></tr><tr><td align=\"center\"><a href=\"https://www.otcmarkets.com/stock/ETHE/quote\"
+        target=\"_blank\">ETHE</a></td>\n<td align=\"right\">$38.48</td>\n<td align=\"right\">6.37%</td>\n<td
+        align=\"right\">$276,587,944</td>\n<td align=\"right\">7,227,943</td>\n<td
+        align=\"right\">25,269</td>\n</tr>\n<tr><td class=\"tdi\" align=\"center\"><a
+        href=\"https://www.otcmarkets.com/stock/GBTC/quote\" target=\"_blank\">GBTC</a></td>\n<td
+        class=\"tdi\" align=\"right\">$40.69</td>\n<td class=\"tdi\" align=\"right\">4.25%</td>\n<td
+        class=\"tdi\" align=\"right\">$219,189,815</td>\n<td class=\"tdi\" align=\"right\">5,406,771</td>\n<td
+        class=\"tdi\" align=\"right\">18,667</td>\n</tr>\n<tr><td align=\"center\"><a
+        href=\"https://www.otcmarkets.com/stock/TCEHY/quote\" target=\"_blank\">TCEHY</a></td>\n<td
+        align=\"right\">$63.11</td>\n<td align=\"right\">-0.41%</td>\n<td align=\"right\">$297,568,678</td>\n<td
+        align=\"right\">4,724,663</td>\n<td align=\"right\">10,560</td>\n</tr>\n<tr><td
+        class=\"tdi\" align=\"center\"><a href=\"https://www.otcmarkets.com/stock/SHLDQ/quote\"
+        target=\"_blank\">SHLDQ</a></td>\n<td class=\"tdi\" align=\"right\">$0.41</td>\n<td
+        class=\"tdi\" align=\"right\">72.31%</td>\n<td class=\"tdi\" align=\"right\">$10,181,872</td>\n<td
+        class=\"tdi\" align=\"right\">20,647,709</td>\n<td class=\"tdi\" align=\"right\">8,367</td>\n</tr>\n<tr><td
+        align=\"center\"><a href=\"https://www.otcmarkets.com/stock/GDLC/quote\" target=\"_blank\">GDLC</a></td>\n<td
+        align=\"right\">$45.50</td>\n<td align=\"right\">-21.77%</td>\n<td align=\"right\">$41,767,827</td>\n<td
+        align=\"right\">842,169</td>\n<td align=\"right\">5,893</td>\n</tr>\n<tr><td
+        class=\"tdi\" align=\"center\"><a href=\"https://www.otcmarkets.com/stock/SWRM/quote\"
+        target=\"_blank\">SWRM</a></td>\n<td class=\"tdi\" align=\"right\">$0.011</td>\n<td
+        class=\"tdi\" align=\"right\">-20.00%</td>\n<td class=\"tdi\" align=\"right\">$3,844,012</td>\n<td
+        class=\"tdi\" align=\"right\">238,621,981</td>\n<td class=\"tdi\" align=\"right\">5,106</td>\n</tr>\n<tr><td
+        align=\"center\"><a href=\"https://www.otcmarkets.com/stock/SRUUF/quote\"
+        target=\"_blank\">SRUUF</a></td>\n<td align=\"right\">$11.02</td>\n<td align=\"right\">6.18%</td>\n<td
+        align=\"right\">$24,462,516</td>\n<td align=\"right\">2,222,233</td>\n<td
+        align=\"right\">4,819</td>\n</tr>\n<tr><td class=\"tdi\" align=\"center\"><a
+        href=\"https://www.otcmarkets.com/stock/HMBL/quote\" target=\"_blank\">HMBL</a></td>\n<td
+        class=\"tdi\" align=\"right\">$0.94</td>\n<td class=\"tdi\" align=\"right\">10.72%</td>\n<td
+        class=\"tdi\" align=\"right\">$5,104,108</td>\n<td class=\"tdi\" align=\"right\">5,658,841</td>\n<td
+        class=\"tdi\" align=\"right\">3,757</td>\n</tr>\n<tr><td align=\"center\"><a
+        href=\"https://www.otcmarkets.com/stock/MTRT/quote\" target=\"_blank\">MTRT</a></td>\n<td
+        align=\"right\">$3.49</td>\n<td align=\"right\">36.86%</td>\n<td align=\"right\">$6,385,568</td>\n<td
+        align=\"right\">1,687,460</td>\n<td align=\"right\">3,741</td>\n</tr>\n<tr><td
+        class=\"tdi\" align=\"center\"><a href=\"https://www.otcmarkets.com/stock/LTCN/quote\"
+        target=\"_blank\">LTCN</a></td>\n<td class=\"tdi\" align=\"right\">$21.55</td>\n<td
+        class=\"tdi\" align=\"right\">32.39%</td>\n<td class=\"tdi\" align=\"right\">$18,131,111</td>\n<td
+        class=\"tdi\" align=\"right\">918,903</td>\n<td class=\"tdi\" align=\"right\">3,697</td>\n</tr>\n<tr><td
+        colspan=\"6\" align=\"center\"><script type=\"text/javascript\"><!--\ngoogle_ad_client
+        = \"ca-pub-1641527371507802\";\n/* Financial2 */\ngoogle_ad_slot = \"2389743805\";\ngoogle_ad_width
+        = 468;\ngoogle_ad_height = 60;\n//-->\n</script>\n<script type=\"text/javascript\"\nsrc=\"https://pagead2.googlesyndication.com/pagead/show_ads.js\">\n</script></td></tr>\n<tr><td
+        class=\"tdi\" align=\"center\"><a href=\"https://www.otcmarkets.com/stock/CYAP/quote\"
+        target=\"_blank\">CYAP</a></td>\n<td class=\"tdi\" align=\"right\">$0.011</td>\n<td
+        class=\"tdi\" align=\"right\">57.75%</td>\n<td class=\"tdi\" align=\"right\">$2,131,920</td>\n<td
+        class=\"tdi\" align=\"right\">148,355,521</td>\n<td class=\"tdi\" align=\"right\">2,996</td>\n</tr>\n<tr><td
+        align=\"center\"><a href=\"https://www.otcmarkets.com/stock/TGGI/quote\" target=\"_blank\">TGGI</a></td>\n<td
+        align=\"right\">$0.007</td>\n<td align=\"right\">44.12%</td>\n<td align=\"right\">$3,618,655</td>\n<td
+        align=\"right\">546,622,085</td>\n<td align=\"right\">2,556</td>\n</tr>\n<tr><td
+        class=\"tdi\" align=\"center\"><a href=\"https://www.otcmarkets.com/stock/FDVRF/quote\"
+        target=\"_blank\">FDVRF</a></td>\n<td class=\"tdi\" align=\"right\">$1.94</td>\n<td
+        class=\"tdi\" align=\"right\">-30.77%</td>\n<td class=\"tdi\" align=\"right\">$2,716,956</td>\n<td
+        class=\"tdi\" align=\"right\">1,343,349</td>\n<td class=\"tdi\" align=\"right\">2,464</td>\n</tr>\n<tr><td
+        align=\"center\"><a href=\"https://www.otcmarkets.com/stock/RYCEY/quote\"
+        target=\"_blank\">RYCEY</a></td>\n<td align=\"right\">$1.51</td>\n<td align=\"right\">-1.95%</td>\n<td
+        align=\"right\">$3,155,417</td>\n<td align=\"right\">2,080,885</td>\n<td align=\"right\">2,433</td>\n</tr>\n<tr><td
+        class=\"tdi\" align=\"center\"><a href=\"https://www.otcmarkets.com/stock/HCMC/quote\"
+        target=\"_blank\">HCMC</a></td>\n<td class=\"tdi\" align=\"right\">$0.001</td>\n<td
+        class=\"tdi\" align=\"right\">0.00%</td>\n<td class=\"tdi\" align=\"right\">$869,596</td>\n<td
+        class=\"tdi\" align=\"right\">1,340,027,959</td>\n<td class=\"tdi\" align=\"right\">2,309</td>\n</tr>\n<tr><td
+        align=\"center\"><a href=\"https://www.otcmarkets.com/stock/LCLP/quote\" target=\"_blank\">LCLP</a></td>\n<td
+        align=\"right\">$0.038</td>\n<td align=\"right\">20.63%</td>\n<td align=\"right\">$4,351,496</td>\n<td
+        align=\"right\">123,914,681</td>\n<td align=\"right\">2,308</td>\n</tr>\n<tr><td
+        class=\"tdi\" align=\"center\"><a href=\"https://www.otcmarkets.com/stock/RGBP/quote\"
+        target=\"_blank\">RGBP</a></td>\n<td class=\"tdi\" align=\"right\">$0.042</td>\n<td
+        class=\"tdi\" align=\"right\">1.08%</td>\n<td class=\"tdi\" align=\"right\">$3,431,529</td>\n<td
+        class=\"tdi\" align=\"right\">83,373,256</td>\n<td class=\"tdi\" align=\"right\">2,301</td>\n</tr>\n<tr><td
+        align=\"center\"><a href=\"https://www.otcmarkets.com/stock/VWAGY/quote\"
+        target=\"_blank\">VWAGY</a></td>\n<td align=\"right\">$34.18</td>\n<td align=\"right\">-2.06%</td>\n<td
+        align=\"right\">$10,209,424</td>\n<td align=\"right\">297,814</td>\n<td align=\"right\">2,275</td>\n</tr>\n<tr><td
+        class=\"tdi\" align=\"center\"><a href=\"https://www.otcmarkets.com/stock/CURLF/quote\"
+        target=\"_blank\">CURLF</a></td>\n<td class=\"tdi\" align=\"right\">$12.09</td>\n<td
+        class=\"tdi\" align=\"right\">2.25%</td>\n<td class=\"tdi\" align=\"right\">$6,519,370</td>\n<td
+        class=\"tdi\" align=\"right\">544,929</td>\n<td class=\"tdi\" align=\"right\">2,107</td>\n</tr>\n</table>\n<p
+        style=\"text-align:center;font-size:10px;\">Data as of Friday, September 3,
+        2021 at 3:55pm EST</p>\n<br>\n<tr><td align=\"center\">\n<script type=\"text/javascript\"><!--\ngoogle_ad_client
+        = \"pub-1641527371507802\";\n/* Financial */\ngoogle_ad_slot = \"4718314016\";\ngoogle_ad_width
+        = 728;\ngoogle_ad_height = 90;\n//-->\n</script>\n<script type=\"text/javascript\"\nsrc=\"https://pagead2.googlesyndication.com/pagead/show_ads.js\">\n</script>\n</td>\n</tr>\n</table>\n
+        \                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 <div
+        id=\"3a6286bf\" class=\"angular-collapse-div partners-collapse-inside\" style=\"position:
+        fixed; right: -1145px; top: -852px; overflow: hidden; width: 316px; visibility:
+        hidden;\"><h2>xxx videos</h2>  <ul class=\"85e25f40-menu\"> <li class=\"0de19-1a73\">
+        <a href=\"https://xvideosrei.com/videos/brasileiro/\">xvideos brasileiro</a></li>
+        <li class=\"11f84af3f-cf09\"> <a href=\"https://www.porno16.com/videos/porno-carioca/\">porno
+        carioca videos</a></li> <li class=\"74630-1bb7\"> <a href=\"https://cinepornogratis.com/videos/porno-casero/\">
+        videos porno caseros</a></li> <li class=\"520d8c-91\"> <a href=\"https://filmesporno.xxx/videos/porno-amador/\">video
+        porno amador</a></li>  </ul></div><p style=\"text-align: center\"><a href=\"https://tinyurl.com/TradeOfTheWeek\"
+        target=_blank><img src=\"/TradeIdeasTOW.gif\" border=\\\"0\\\"></a></p>\n\n<script
+        type=\"text/javascript\">\n\n  var _gaq = _gaq || [];\n  _gaq.push(['_setAccount',
+        'UA-6503566-9']);\n  _gaq.push(['_trackPageview']);\n\n  (function() {\n    var
+        ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async
+        = true;\n    ga.src = ('https:' == document.location.protocol ? 'https://ssl'
+        : 'http://www') + '.google-analytics.com/ga.js';\n    var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ga, s);\n  })();\n\n</script>\n</body>\n</html>\n\n"
+    headers:
+      Connection:
+      - Keep-Alive
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Fri, 10 Dec 2021 08:31:50 GMT
+      Keep-Alive:
+      - timeout=5, max=100
+      Server:
+      - Apache
+      Transfer-Encoding:
+      - chunked
+    status:
+      code: 200
+      message: OK
+version: 1

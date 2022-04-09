@@ -1,0 +1,7 @@
+                F-test   P-value  Count Lags
+ssr_ftest     1.012638  0.315494  199.0  1.0
+ssr_chi2test  1.027904  0.310651      -    1
+lrtest        1.025298  0.311266      -    1
+params_ftest  1.012638  0.315494  199.0  1.0
+As the p-value of the F-test is 0.315, we can not reject the null hypothesis at the 0.01 confidence level.
+

@@ -1,0 +1,66 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - MOCK_TOKEN
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.26.0
+      X-CSRFToken:
+      - TyTJwjuEC7VV7mOqZ622haRaaUr0x0Ng4nrwSRFKQs7vdoBcJlK9qjAS69ghzhFu
+      accept:
+      - application/json
+    method: GET
+    uri: https://api.quiverquant.com/beta/historical/housetrading/SPY
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA8zVUWuDMBAH8K8SpI9G7mJ12rcyB2PdoLR7GWMPNxemzMWhtl0Z++4j2pdWCwqu
+        5DWa+OP+l/P5x4qoktaMWQIEchQchGUz6zGNP2Sh19fLJ72wkl+FLKWqqEq39QYWkUplxq4LqcqE
+        dvW2glRJcZXmSr+y3BRxQqXUj+af+UZV1owhADqgjyT1Xp80QRsA+QQ9GwCsX5udsCDkAvqyFnKb
+        KnYrC9UhWlN2rPEA2h4PQIu6JFfcHUfSWZuhGuQw7amJ5GteUMIWDlvlZTlE1AYd8qph7cBABwZB
+        7zI57CGNE9K9lCva0b5PcOh19JHXwLyzLn+AK6Jt+saWDrvL97H8t/YGDi5HNE8luJiOmuHNd5zU
+        nz+RddialufifJKm6xBG1XWnOvgOYMhRTzFTbTB23UaYGxgO+wHNM1Js7bD7fCdVlVDWizXwgjYo
+        9E1EucahAo5TQ1sefC4MG/4H1agN3wkToecI/wjWLLVEgR5b/et00QyDemz5F7ANzbGRGVK1lz8A
+        AAD//wMASpHE+W0MAAA=
+    headers:
+      Allow:
+      - GET, HEAD, OPTIONS
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 6bbd5d7dcd2640ed-CDG
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Sat, 11 Dec 2021 08:32:56 GMT
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      NEL:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Referrer-Policy:
+      - same-origin
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=3DvwH6H4WhTmoq6BemMcWMhhjYAcVp%2F%2Bq%2FRUO3bRB2aKQAKzirvhUSRFbRtuTmPb9G0t5a%2BeZTTLx4z4prj5re6KXRfjbHFM%2BtiLx758MyDVtQbk2nzLlAwP3SL35w5MWCdrIIg%3D"}],"group":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+    status:
+      code: 200
+      message: OK
+version: 1

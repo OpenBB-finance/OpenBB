@@ -1,0 +1,16 @@
+,Metric,Value
+0,address,0x1f9840a85d5af5bf1d1762f925bdaddc4201f984
+1,name,Uniswap
+2,symbol,UNI
+3,totalSupply,1000000000.0
+4,holdersCount,300232
+5,coingecko,https://www.coingecko.com/en/coins/uniswap
+6,website,https://uniswap.org
+7,twitter,https://www.twitter.com/Uniswap
+8,reddit,https://www.reddit.com/r/Uniswap
+9,publicTags,"['DEX', 'Exchange Token', 'DeFi', 'Governance', 'Yield Farming', 'Automated Market Maker']"
+10,countOps,3303316
+11,priceRate,11.743219428061192
+12,priceMarketCapUsd,7381743187.444932
+13,priceAvailableSupply,628596206.7442744
+14,priceVolume24h,219838107.812427
