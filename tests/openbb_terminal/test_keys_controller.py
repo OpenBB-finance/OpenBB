@@ -6,6 +6,11 @@ from openbb_terminal.keys_controller import KeysController
 controller = KeysController(menu_usage=False)
 
 
+@pytest.fixture(autouse=True)
+def no_change_env(mocker):
+    mocker.patch("openbb_terminal.keys_controller.dotenv")
+
+
 class MockCFG:
     def __init__(self, **kwargs):
         self.API_GITHUB_KEY = kwargs.get("GITHUB", None)
