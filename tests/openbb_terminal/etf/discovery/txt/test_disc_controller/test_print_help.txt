@@ -1,6 +1,0 @@
-
-[Wall Street Journal]
-    gainers     top gainers
-    decliners   top decliners
-    active      most active
-
