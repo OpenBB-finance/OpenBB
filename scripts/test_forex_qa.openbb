@@ -1,0 +1,24 @@
+forex
+to eur
+load
+qa
+summary
+normality
+unitroot
+line
+hist
+cdf
+bw
+acf
+qqplot
+rolling
+spread
+quantile
+skew
+kurtosis
+var
+es
+raw
+decompose
+cusum
+exit
