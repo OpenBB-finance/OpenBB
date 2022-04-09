@@ -212,13 +212,14 @@ tbody tr:nth-child(even) {
 .hcontainer {
     margin: 10pt;
     width: 1000px;
+    display:flex;
 }
 
 .item {
     display: inline-block;
-    *display: inline;
     zoom: 1;
     padding-left: 10pt;
     padding-right: 10pt;
     vertical-align: top;
+    flex: 1;
 }
