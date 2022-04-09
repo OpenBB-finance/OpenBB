@@ -1,10 +1,13 @@
-"""Fred Series Prediction Controller"""
+""" Prediction Controller """
 __docformat__ = "numpy"
 
 import argparse
 import logging
-from typing import Dict, List
+from datetime import datetime
+from typing import List
 
+import numpy as np
+import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
@@ -50,44 +53,52 @@ class PredictionTechniquesController(BaseController):
         "conv1d",
         "mc",
     ]
-    PATH = "/economy/pred/"
+
+    PATH = "/forex/pred/"
 
     def __init__(
         self,
-        all_economy_data: Dict,
+        from_symbol: str,
+        to_symbol: str,
+        start: datetime,
+        interval: str,
+        data: pd.DataFrame,
         queue: List[str] = None,
     ):
         """Constructor"""
         super().__init__(queue)
 
-        self.datasets = all_economy_data
-        self.options = []
-        for _, sub_df in all_economy_data.items():
-            self.options.extend(list(sub_df.columns))
-        self.sources = list(self.datasets.keys())
-        self.current_source = self.sources[0]
-        self.current_source_dataframe = self.datasets[self.current_source]
-        self.data = self.current_source_dataframe.iloc[:, 0].copy().dropna(axis=0)
-        self.current_id = self.current_source_dataframe.columns[0].upper()
-        self.start_date = self.data.index[0]
-        self.resolution = ""  # For the views
+        data["Returns"] = data["Adj Close"].pct_change()
+        data["LogRet"] = np.log(data["Adj Close"]) - np.log(data["Adj Close"].shift(1))
+        data = data.rename(columns={"Adj Close": "AdjClose"})
+        data = data.dropna()
+
+        self.data = data
+        self.from_symbol = from_symbol
+        self.to_symbol = to_symbol
+        self.ticker = f"{from_symbol}/{to_symbol}"
+        self.start = start
+        self.interval = interval
+        self.target = "AdjClose"
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
+            choices["pick"] = {c: {} for c in self.data.columns}
             choices["ets"]["-t"] = {c: {} for c in ets_model.TRENDS}
             choices["ets"]["-s"] = {c: {} for c in ets_model.SEASONS}
             choices["arima"]["-i"] = {c: {} for c in arima_model.ICS}
             choices["mc"]["--dist"] = {c: {} for c in mc_model.DISTRIBUTIONS}
-            choices["pick"] = {c: {} for c in self.options}
-            choices["pick"]["-c"] = {c: {} for c in self.options}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
         """Print help"""
-        help_string = f"""[cmds]
-    pick        pick new series from stored economy data[/cmds]
+        pair_info = f"{self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
 
-[param]Selected Series[/param]: {self.current_id}
+        help_text = f"""[cmds]
+    pick        pick new target variable[/cmds]
+
+[param]Pair Loaded: [/param]{pair_info}
+[param]Target Column: [/param]{self.target}
 
 [info]Models:[/info][cmds]
     ets         exponential smoothing (e.g. Holt-Winters)
@@ -100,40 +111,47 @@ class PredictionTechniquesController(BaseController):
     conv1d      1D Convolutional Neural Network
     mc          Monte-Carlo simulations[/cmds]
         """
-        console.print(help_string)
+        console.print(text=help_text, menu="Forex - Prediction Techniques")
 
     def custom_reset(self):
         """Class specific component of reset command"""
-        return ["economy"]
+        if self.ticker:
+            return [
+                "forex",
+                f"from {self.from_symbol}",
+                f"to {self.to_symbol}",
+                "load",
+                "pred",
+            ]
+        return []
 
     @log_start_end(log=logger)
     def call_pick(self, other_args: List[str]):
-        """Process add command"""
+        """Process pick command"""
         parser = argparse.ArgumentParser(
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             add_help=False,
-            prog="load",
-            description="Load a FRED series to current selection",
+            prog="pick",
+            description="""
+                Change target variable
+            """,
         )
         parser.add_argument(
-            "-c",
-            "--column",
-            dest="column",
-            type=str,
-            help="Which loaded source to get data from",
-            choices=self.options,
+            "-t",
+            "--target",
+            dest="target",
+            choices=list(self.data.columns),
+            help="Select variable to analyze",
         )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-c")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if other_args and "-t" not in other_args and "-h" not in other_args:
+            other_args.insert(0, "-t")
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_FIGURES_ALLOWED
+        )
         if ns_parser:
-            for source, sub_df in self.datasets.items():
-                if ns_parser.column in sub_df.columns:
-                    self.data = sub_df[ns_parser.column].copy().dropna(axis=0)
-                    self.current_id = ns_parser.column
-                    self.start_date = self.data.index[0]
-                    console.print(f"{ns_parser.column} loaded from {source}.\n")
-                    return
-        console.print(f"[red]{ns_parser.column} not found in data.[/red]\n")
+            self.target = ns_parser.target
+            console.print("")
 
     @log_start_end(log=logger)
     def call_ets(self, other_args: List[str]):
@@ -207,7 +225,9 @@ class PredictionTechniquesController(BaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
         if ns_parser:
+
             if ns_parser.s_end_date:
+
                 if ns_parser.s_end_date < self.data.index[0]:
                     console.print(
                         "Backtesting not allowed, since End Date is older than Start Date of historical data\n"
@@ -225,15 +245,14 @@ class PredictionTechniquesController(BaseController):
                     )
 
             ets_view.display_exponential_smoothing(
-                ticker=self.current_id,
-                values=self.data,
+                ticker=self.ticker,
+                values=self.data[self.target],
                 n_predict=ns_parser.n_days,
                 trend=ns_parser.trend,
                 seasonal=ns_parser.seasonal,
                 seasonal_periods=ns_parser.seasonal_periods,
                 s_end_date=ns_parser.s_end_date,
                 export=ns_parser.export,
-                time_res=self.resolution,
             )
 
     @log_start_end(log=logger)
@@ -313,29 +332,16 @@ class PredictionTechniquesController(BaseController):
             parser, other_args, EXPORT_ONLY_FIGURES_ALLOWED
         )
         if ns_parser:
-            if ns_parser.n_inputs > len(self.data):
-                logger.error("Number of inputs exceeds number of data samples")
-                console.print(
-                    f"[red]Data only contains {len(self.data)} samples and the model is trying "
-                    f"to use {ns_parser.n_inputs} inputs.  Either use less inputs or load with"
-                    f" an earlier start date[/red]\n"
-                )
-                return
-            try:
-                knn_view.display_k_nearest_neighbors(
-                    ticker=self.current_id,
-                    data=self.data,
-                    n_neighbors=ns_parser.n_neighbors,
-                    n_input_days=ns_parser.n_inputs,
-                    n_predict_days=ns_parser.n_days,
-                    test_size=ns_parser.valid_split,
-                    end_date=ns_parser.s_end_date,
-                    no_shuffle=ns_parser.no_shuffle,
-                    time_res=self.resolution,
-                )
-            except ValueError:
-                logger.exception("The loaded data does not have enough data")
-                console.print("The loaded data does not have enough data")
+            knn_view.display_k_nearest_neighbors(
+                ticker=self.ticker,
+                data=self.data[self.target],
+                n_neighbors=ns_parser.n_neighbors,
+                n_input_days=ns_parser.n_inputs,
+                n_predict_days=ns_parser.n_days,
+                test_size=ns_parser.valid_split,
+                end_date=ns_parser.s_end_date,
+                no_shuffle=ns_parser.no_shuffle,
+            )
 
     @log_start_end(log=logger)
     def call_regression(self, other_args: List[str]):
@@ -350,6 +356,7 @@ class PredictionTechniquesController(BaseController):
                 and the other is considered to be a dependent variable.
             """,
         )
+
         parser.add_argument(
             "-i",
             "--input",
@@ -398,8 +405,7 @@ class PredictionTechniquesController(BaseController):
         if (
             other_args
             and "-h" not in other_args
-            and "-p" not in other_args
-            and "--polynomial" not in other_args
+            and ("-p" not in other_args or "--polynomial" not in other_args)
         ):
             other_args.insert(0, "-p")
         ns_parser = parse_known_args_and_warn(
@@ -412,7 +418,6 @@ class PredictionTechniquesController(BaseController):
                     console.print(
                         "Backtesting not allowed, since End Date is older than Start Date of historical data\n"
                     )
-                    return
 
                 if (
                     ns_parser.s_end_date
@@ -424,31 +429,17 @@ class PredictionTechniquesController(BaseController):
                     console.print(
                         "Backtesting not allowed, since End Date is too close to Start Date to train model\n"
                     )
-                    return
 
-            try:
-                if ns_parser.n_inputs > len(self.data):
-                    logger.error("Number of inputs exceeds number of data samples")
-                    console.print(
-                        f"[red]Data only contains {len(self.data)} samples and the model is trying "
-                        f"to use {ns_parser.n_inputs} inputs.  Either use less inputs or load with"
-                        f" an earlier start date[/red]\n"
-                    )
-                    return
-                regression_view.display_regression(
-                    dataset=self.current_id,
-                    values=self.data,
-                    poly_order=ns_parser.n_polynomial,
-                    n_input=ns_parser.n_inputs,
-                    n_predict=ns_parser.n_days,
-                    n_jumps=ns_parser.n_jumps,
-                    s_end_date=ns_parser.s_end_date,
-                    export=ns_parser.export,
-                    time_res=self.resolution,
-                )
-            except ValueError as e:
-                logger.exception(str(e))
-                console.print(e)
+            regression_view.display_regression(
+                dataset=self.ticker,
+                values=self.data[self.target],
+                poly_order=ns_parser.n_polynomial,
+                n_input=ns_parser.n_inputs,
+                n_predict=ns_parser.n_days,
+                n_jumps=ns_parser.n_jumps,
+                s_end_date=ns_parser.s_end_date,
+                export=ns_parser.export,
+            )
 
     @log_start_end(log=logger)
     def call_arima(self, other_args: List[str]):
@@ -527,11 +518,11 @@ class PredictionTechniquesController(BaseController):
         if ns_parser:
             # BACKTESTING CHECK
             if ns_parser.s_end_date:
+
                 if ns_parser.s_end_date < self.data.index[0]:
                     console.print(
                         "Backtesting not allowed, since End Date is older than Start Date of historical data\n"
                     )
-                    return
 
                 if (
                     ns_parser.s_end_date
@@ -543,11 +534,10 @@ class PredictionTechniquesController(BaseController):
                     console.print(
                         "Backtesting not allowed, since End Date is too close to Start Date to train model\n"
                     )
-                    return
 
             arima_view.display_arima(
-                dataset=self.current_id,
-                values=self.data,
+                dataset=self.ticker,
+                values=self.data[self.target],
                 arima_order=ns_parser.s_order,
                 n_predict=ns_parser.n_days,
                 seasonal=ns_parser.b_seasonal,
@@ -555,7 +545,6 @@ class PredictionTechniquesController(BaseController):
                 results=ns_parser.b_results,
                 s_end_date=ns_parser.s_end_date,
                 export=ns_parser.export,
-                time_res=self.resolution,
             )
 
     @log_start_end(log=logger)
@@ -568,17 +557,9 @@ class PredictionTechniquesController(BaseController):
                 other_args=other_args,
             )
             if ns_parser:
-                if ns_parser.n_inputs > len(self.data):
-                    logger.error("Number of inputs exceeds number of data samples")
-                    console.print(
-                        f"[red]Data only contains {len(self.data)} samples and the model is trying "
-                        f"to use {ns_parser.n_inputs} inputs.  Either use less inputs or load with"
-                        f" an earlier start date[/red]\n"
-                    )
-                    return
                 neural_networks_view.display_mlp(
-                    dataset=self.current_id,
-                    data=self.data,
+                    dataset=self.ticker,
+                    data=self.data[self.target],
                     n_input_days=ns_parser.n_inputs,
                     n_predict_days=ns_parser.n_days,
                     learning_rate=ns_parser.lr,
@@ -587,7 +568,6 @@ class PredictionTechniquesController(BaseController):
                     test_size=ns_parser.valid_split,
                     n_loops=ns_parser.n_loops,
                     no_shuffle=ns_parser.no_shuffle,
-                    time_res=self.resolution,
                 )
         except Exception as e:
             logger.exception(str(e))
@@ -606,17 +586,9 @@ class PredictionTechniquesController(BaseController):
                 other_args=other_args,
             )
             if ns_parser:
-                if ns_parser.n_inputs > len(self.data):
-                    logger.error("Number of inputs exceeds number of data samples")
-                    console.print(
-                        f"[red]Data only contains {len(self.data)} samples and the model is trying "
-                        f"to use {ns_parser.n_inputs} inputs.  Either use less inputs or load with"
-                        f" an earlier start date[/red]\n"
-                    )
-                    return
                 neural_networks_view.display_rnn(
-                    dataset=self.current_id,
-                    data=self.data,
+                    dataset=self.ticker,
+                    data=self.data[self.target],
                     n_input_days=ns_parser.n_inputs,
                     n_predict_days=ns_parser.n_days,
                     learning_rate=ns_parser.lr,
@@ -625,12 +597,11 @@ class PredictionTechniquesController(BaseController):
                     test_size=ns_parser.valid_split,
                     n_loops=ns_parser.n_loops,
                     no_shuffle=ns_parser.no_shuffle,
-                    time_res=self.resolution,
                 )
 
         except Exception as e:
             logger.exception(str(e))
-            console.print(e)
+            console.print(e, "\n")
 
         finally:
             pred_helper.restore_env()
@@ -645,17 +616,9 @@ class PredictionTechniquesController(BaseController):
                 other_args=other_args,
             )
             if ns_parser:
-                if ns_parser.n_inputs > len(self.data):
-                    logger.error("Number of inputs exceeds number of data samples")
-                    console.print(
-                        f"[red]Data only contains {len(self.data)} samples and the model is trying "
-                        f"to use {ns_parser.n_inputs} inputs.  Either use less inputs or load with"
-                        f" an earlier start date[/red]\n"
-                    )
-                    return
                 neural_networks_view.display_lstm(
-                    dataset=self.current_id,
-                    data=self.data,
+                    dataset=self.ticker,
+                    data=self.data[self.target],
                     n_input_days=ns_parser.n_inputs,
                     n_predict_days=ns_parser.n_days,
                     learning_rate=ns_parser.lr,
@@ -664,7 +627,6 @@ class PredictionTechniquesController(BaseController):
                     test_size=ns_parser.valid_split,
                     n_loops=ns_parser.n_loops,
                     no_shuffle=ns_parser.no_shuffle,
-                    time_res=self.resolution,
                 )
 
         except Exception as e:
@@ -684,17 +646,9 @@ class PredictionTechniquesController(BaseController):
                 other_args=other_args,
             )
             if ns_parser:
-                if ns_parser.n_inputs > len(self.data):
-                    logger.error("Number of inputs exceeds number of data samples")
-                    console.print(
-                        f"[red]Data only contains {len(self.data)} samples and the model is trying "
-                        f"to use {ns_parser.n_inputs} inputs.  Either use less inputs or load with"
-                        f" an earlier start date[/red]\n"
-                    )
-                    return
                 neural_networks_view.display_conv1d(
-                    dataset=self.current_id,
-                    data=self.data,
+                    dataset=self.ticker,
+                    data=self.data[self.target],
                     n_input_days=ns_parser.n_inputs,
                     n_predict_days=ns_parser.n_days,
                     learning_rate=ns_parser.lr,
@@ -703,7 +657,6 @@ class PredictionTechniquesController(BaseController):
                     test_size=ns_parser.valid_split,
                     n_loops=ns_parser.n_loops,
                     no_shuffle=ns_parser.no_shuffle,
-                    time_res=self.resolution,
                 )
 
         except Exception as e:
@@ -737,7 +690,6 @@ class PredictionTechniquesController(BaseController):
             "--num",
             help="Number of simulations to perform",
             dest="n_sims",
-            type=check_positive,
             default=100,
         )
         parser.add_argument(
@@ -751,13 +703,14 @@ class PredictionTechniquesController(BaseController):
         ns_parser = parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
-
         if ns_parser:
+            if self.target != "AdjClose":
+                console.print("MC Prediction designed for AdjClose prices\n")
+
             mc_view.display_mc_forecast(
-                data=self.data,
+                data=self.data[self.target],
                 n_future=ns_parser.n_days,
                 n_sims=ns_parser.n_sims,
                 use_log=ns_parser.dist == "lognormal",
                 export=ns_parser.export,
-                fig_title=f"Monte Carlo Forecast for {self.current_id}",
             )
