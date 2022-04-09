@@ -5,8 +5,10 @@ import logging
 import os
 import webbrowser
 
+import requests
 import pandas as pd
 from PIL import Image
+from bs4 import BeautifulSoup
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.economy import finviz_model
@@ -31,9 +33,14 @@ def map_sp500_view(period: str, map_type: str):
     d_period = {"1d": "", "1w": "w1", "1m": "w4", "3m": "w13", "6m": "w26", "1y": "w52"}
     d_type = {"sp500": "sec", "world": "geo", "full": "sec_all", "etf": "etf"}
     # TODO: Try to get this image and output it instead of opening browser
-    webbrowser.open(
-        f"https://finviz.com/map.ashx?t={d_type[map_type]}&st={d_period[period]}"
-    )
+    url = f"https://finviz.com/map.ashx?t={d_type[map_type]}&st={d_period[period]}"
+    if True:
+        content = requests.get(url)
+        soup = BeautifulSoup(content.text, "html.parser")
+        item = soup.find("textarea", {"data-testid": "copy-to-clipboard-textarea"})
+        print(item)
+    else:
+        webbrowser.open(url)
     console.print("")
 
 
