@@ -16,7 +16,7 @@ Source:
 >   nft         non-fungible tokens,                    e.g.: today drops[unvl]
 >   dd          due-diligence for loaded coin,          e.g.: coin information, social media, market stats
 >   ta          technical analysis for loaded coin,     e.g.: ema, macd, rsi, adx, bbands, obv
->   pred        prediction techniques                   e.g.: regression, arima, rnn, lstm, conv1d, monte carlo
->   qa          quantitative analysis,   	 e.g.: decompose, cusum, residuals analysis
+>   pred        prediction techniques,                  e.g.: regression, arima, rnn, lstm, conv1d, monte carlo
+>   qa          quantitative analysis                   e.g.: decompose, cusum, residuals analysis
 [/unvl]
 
