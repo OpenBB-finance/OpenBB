@@ -11,6 +11,8 @@ Source: YahooFinance[dim]
     candle        show candle plot for loaded data
 
 >   ta          technical analysis for loaded coin,     e.g.: ema, macd, rsi, adx, bbands, obv
+>   qa          quantitative analysis,                  e.g.: decompose, cusum, residuals analysis
+>   pred        prediction techniques                   e.g.: regression, arima, rnn, lstm, conv1d, monte carlo
 [/dim]
 Forex brokerages:
 >   oanda         Oanda menu
