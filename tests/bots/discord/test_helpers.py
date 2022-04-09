@@ -8,7 +8,7 @@ except ImportError:
     pytest.skip(allow_module_level=True)
 
 
-# pylint: disable=R0903
+# pylint: disable=R0903,W0212
 
 
 @pytest.mark.bots
