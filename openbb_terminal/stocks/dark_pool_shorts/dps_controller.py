@@ -84,6 +84,8 @@ class DarkPoolShortsController(StockBaseController):
 
 [src][Yahoo Finance][/src]
     shorted        show most shorted stocks
+[src][Interactive Broker][/src]
+    ctb            stocks with highest cost to borrow
 [src][Shortinterest.com][/src]
     hsi            show top high short interest stocks of over 20% ratio
 [src][FINRA][/src]
