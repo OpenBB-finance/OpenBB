@@ -54,8 +54,9 @@ def get_anchor_data(address: str = "") -> Tuple[Any, Any, str]:
     df_deposits = df_deposits[["Type", "Amount [UST]", "Fee [UST]", "Date"]]
 
     stats_str = f"""Current anchor APY is {data['currentRate']}%
-Deposit amount in Anchor Earn of address {address} is {data["totalYield"]["ustHoldings"]} UST
-which is generating approximately:
+Deposit amount in Anchor Earn of address {address} is {data["totalYield"]["ustHoldings"]} UST.
+You already earned [bold]{df.iloc[-1, 1]}[/bold] UST in Anchor Earn.
+Your deposit is generating approximately:
 - {data["estimatedYield"]["perHour"]} UST hourly
 - {data["estimatedYield"]["perDay"]} UST daily
 - {data["estimatedYield"]["perWeek"]} UST weekly

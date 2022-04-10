@@ -1,10 +1,11 @@
 
-Current anchor APY is 19.41%
-Deposit amount in Anchor Earn of address terra13kc0x8kr3sq8226myf4nmanmn2mrk9s5s9wsnz is 5471.90 UST
-which is generating approximately:
-- 0.12 UST hourly
-- 2.91 UST daily
-- 20.43 UST weekly
-- 88.53 UST monthly
-- 1062.35 UST yearly
+Current anchor APY is 19.50%
+Deposit amount in Anchor Earn of address terra13kc0x8kr3sq8226myf4nmanmn2mrk9s5s9wsnz is 6529.34 UST.
+You already earned [bold]657.63[/bold] UST in Anchor Earn.
+Your deposit is generating approximately:
+- 0.15 UST hourly
+- 3.49 UST daily
+- 24.49 UST weekly
+- 106.13 UST monthly
+- 1273.52 UST yearly
 
