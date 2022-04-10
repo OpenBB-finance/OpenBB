@@ -1,0 +1,17 @@
+
+[red]badcol not a valid column. Showing without sorting.
+[/red]
+   cancer  population
+0     1.0       445.0
+1     0.0       559.0
+2     3.0       677.0
+3     4.0       681.0
+4     3.0       746.0
+5     4.0       869.0
+6     1.0       950.0
+7     5.0       976.0
+8     5.0      1096.0
+9     5.0      1098.0
+
+[red]No data available for dataset.[/red]
+

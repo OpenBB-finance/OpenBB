@@ -1,8 +1,10 @@
 import pytest
+import pandas as pd
 from openbb_terminal.econometrics.econometrics_controller import EconometricsController
 
 
-def get_controller(mocker=None):
+@pytest.fixture()
+def controller(mocker):
     if mocker:
         mocker.patch(
             "openbb_terminal.econometrics.econometrics_controller.obbff.USE_PROMPT_TOOLKIT",
@@ -14,16 +16,14 @@ def get_controller(mocker=None):
     return EconometricsController()
 
 
-def test_update_runtime_choices(mocker):
-    controller = get_controller(mocker)
+def test_update_runtime_choices(controller):
     controller.update_runtime_choices()
 
     assert controller.choices
 
 
 @pytest.mark.record_stdout
-def test_print_help():
-    controller = get_controller()
+def test_print_help(controller):
     controller.print_help()
 
 
@@ -33,37 +33,187 @@ def test_print_help():
         ["-f", "badpath.xlsx"],
         ["-f", "badpath.xlsx", "alias"],
         ["badpath.xlsx"],
+        ["cancer", "dataset"],
         [],
         ["-ex"],
     ],
 )
-def test_call_load(other):
-    controller = get_controller()
+def test_call_load(controller, other):
     controller.call_load(other)
 
 
-@pytest.mark.record_stdout
-@pytest.mark.parametrize("other", [["data"], ["-n", "data"]])
-def test_call_export(other):
-    controller = get_controller()
+@pytest.mark.parametrize("other", [["dataset"], ["-n", "data"]])
+def test_call_export(controller, other):
+    controller.call_load(["cancer", "dataset"])
     controller.call_export(other)
 
 
 @pytest.mark.record_stdout
-@pytest.mark.parametrize("other", [["data"], ["-n", "data"], []])
-def test_call_remove(other):
-    controller = get_controller()
+@pytest.mark.parametrize("other", [["data"], ["-n", "dataset"], []])
+def test_call_remove(controller, other):
+    controller.call_load(["cancer", "dataset"])
     controller.call_remove(other)
 
 
 @pytest.mark.parametrize("other", [["data"], ["-n", "data"], []])
-def test_call_options(other):
-    controller = get_controller()
+def test_call_options(controller, other):
     controller.call_options(other)
 
 
-@pytest.mark.skip
-@pytest.mark.parametrize("other", [["data"], ["-c", "data"], []])
-def test_call_plot(other):
-    controller = get_controller()
+@pytest.mark.parametrize("other", [["cancer-dataset"], ["-c", "data"], []])
+def test_call_plot(controller, other):
+    controller.call_load(["cancer", "dataset"])
     controller.call_plot(other)
+
+
+@pytest.mark.record_stdout
+@pytest.mark.parametrize(
+    "other",
+    [
+        ["data"],
+        ["-n", "dataset", "-s", "badcol"],
+        ["-n", "dataset", "-s", "cancer"],
+        [],
+    ],
+)
+def test_call_show(controller, other):
+    controller.call_load(["cancer", "dataset"])
+    controller.call_show(other)
+    controller.datasets = {"dataset": pd.DataFrame()}
+    controller.call_show(["dataset"])
+
+
+@pytest.mark.record_stdout
+@pytest.mark.parametrize("other", [["data"], ["-n", "dataset"], []])
+def test_call_desc(controller, other):
+    controller.call_load(["cancer", "dataset"])
+    controller.call_desc(other)
+    controller.datasets = {"dataset": pd.DataFrame()}
+    controller.call_desc(["dataset"])
+
+
+@pytest.mark.record_stdout
+@pytest.mark.parametrize(
+    "other",
+    [
+        ["data"],
+        ["-n", "dataset"],
+        [],
+        ["cancer-dataset", "int"],
+        ["cancer-dataset", "badbad"],
+        ["cancer-dataset", "date"],
+    ],
+)
+def test_call_type(controller, other):
+    controller.call_load(["cancer", "dataset"])
+    controller.call_type(other)
+
+
+@pytest.mark.record_stdout
+def test_call_index(controller):
+    controller.call_load(["cancer", "dataset"])
+    controller.call_index(["dataset", "cancer", "-a"])
+    controller.call_index(["dataset", "cancer", "-a"])
+    controller.call_index(["dataset", "cancer", "-d"])
+    controller.call_index(["dataset", "cancer", "oogabooga", "-d"])
+
+
+@pytest.mark.record_stdout
+@pytest.mark.parametrize("other", [["data"], ["-n", "dataset"], []])
+def test_call_clean(controller, other):
+    controller.call_load(["cancer", "dataset"])
+    controller.call_clean(other)
+
+
+@pytest.mark.record_stdout
+@pytest.mark.parametrize(
+    "other",
+    [
+        ["-a", "dataset-cancer", "dataset-cancer", "div", "dataset-new"],
+        ["-a", "dataset-ancer", "dataset-cancer", "div", "dataset-new"],
+        ["-d", "dataset-cancer"],
+        ["-r", "cancer", "new"],
+    ],
+)
+def test_call_modify(controller, other):
+    controller.call_load(["cancer", "dataset"])
+    controller.call_modify(other)
+
+
+@pytest.mark.record_stdout
+@pytest.mark.parametrize("other", [["data"], ["-n", "dataset"], []])
+def test_call_ols(controller, other):
+    controller.call_load(["cancer", "dataset"])
+    controller.call_ols(other)
+
+
+@pytest.mark.record_stdout
+@pytest.mark.parametrize(
+    "other", [["cancer-dataset"], ["cancer-datast"], ["-n", "dataset"], []]
+)
+def test_call_norm(controller, other):
+    controller.call_load(["cancer", "dataset"])
+    controller.call_norm(other)
+
+
+@pytest.mark.record_stdout
+@pytest.mark.parametrize(
+    "other", [["cancer-dataset"], ["cancer-datast"], ["-n", "dataset"], []]
+)
+def test_call_root(controller, other):
+    controller.call_load(["cancer", "dataset"])
+    controller.call_root(other)
+
+
+@pytest.mark.record_stdout
+@pytest.mark.parametrize(
+    "other",
+    [
+        ["cancer-dataset"],
+        ["-r", "cancer-dataset", "population-dataset", "-t", "pols", "-ee", "-te"],
+    ],
+)
+def test_call_panel(controller, other):
+    controller.call_load(["cancer", "dataset"])
+    controller.call_panel(other)
+
+
+@pytest.mark.record_stdout
+def test_call_compare(controller):
+    controller.call_load(["cancer", "dataset"])
+    controller.call_compare([])
+
+
+@pytest.mark.record_stdout
+@pytest.mark.parametrize("other", [["data"], ["-n", "dataset"], []])
+def test_call_dwat(controller, other):
+    controller.call_load(["cancer", "dataset"])
+    controller.call_dwat(other)
+
+
+@pytest.mark.record_stdout
+@pytest.mark.parametrize("other", [["data"], ["-n", "dataset"], []])
+def test_call_bgod(controller, other):
+    controller.call_load(["cancer", "dataset"])
+    controller.call_bgod(other)
+
+
+@pytest.mark.record_stdout
+@pytest.mark.parametrize("other", [["data"], ["-n", "dataset"], []])
+def test_call_bpag(controller, other):
+    controller.call_load(["cancer", "dataset"])
+    controller.call_bpag(other)
+
+
+@pytest.mark.record_stdout
+@pytest.mark.parametrize("other", [["data"], ["-n", "dataset"], []])
+def test_call_granger(controller, other):
+    controller.call_load(["cancer", "dataset"])
+    controller.call_granger(other)
+
+
+@pytest.mark.record_stdout
+@pytest.mark.parametrize("other", [["data"], ["-n", "dataset"], []])
+def test_call_coint(controller, other):
+    controller.call_load(["cancer", "dataset"])
+    controller.call_coint(other)

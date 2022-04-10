@@ -191,8 +191,6 @@ class EconometricsController(BaseController):
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def update_runtime_choices(self):
-        print(session)
-        print(obbff.USE_PROMPT_TOOLKIT)
         if session and obbff.USE_PROMPT_TOOLKIT:
             dataset_columns = {
                 f"{column}-{dataset}": {column: None, dataset: None}
