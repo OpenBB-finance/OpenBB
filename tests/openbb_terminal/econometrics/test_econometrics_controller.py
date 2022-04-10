@@ -2,6 +2,8 @@ import pytest
 import pandas as pd
 from openbb_terminal.econometrics.econometrics_controller import EconometricsController
 
+# pylint: disable=W0621
+
 
 @pytest.fixture()
 def controller(mocker):

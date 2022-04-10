@@ -5,6 +5,8 @@ from openbb_terminal.keys_controller import KeysController
 
 controller = KeysController(menu_usage=False)
 
+# pylint: disable=R0902,R0903,W1404
+
 
 @pytest.fixture(autouse=True)
 def no_change_env(mocker):

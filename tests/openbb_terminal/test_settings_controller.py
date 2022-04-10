@@ -2,6 +2,8 @@ import pytest
 
 from openbb_terminal.settings_controller import SettingsController
 
+# pylint: disable=W0621
+
 
 @pytest.fixture()
 def controller(mocker):

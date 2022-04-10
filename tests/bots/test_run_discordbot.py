@@ -1,8 +1,6 @@
 import pytest
 
-# try:
-# except ImportError:
-#    pytest.skip(allow_module_level=True)
+# pylint: disable=C0415
 
 
 @pytest.mark.bots
