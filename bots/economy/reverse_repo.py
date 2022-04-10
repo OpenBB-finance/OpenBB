@@ -20,7 +20,8 @@ def reverse_repo_command(days: int = 50):
 
     df = pd.DataFrame(
         requests.get(
-            f"https://stocksera.pythonanywhere.com/api/reverse_repo/?days={str(days)}"
+            f"https://stocksera.pythonanywhere.com/api/reverse_repo/?days={str(days)}",
+            headers={"Authorization": f"Api-Key {imps.API_STOCKSERA_TOKEN}"},
         ).json()
     )
 
