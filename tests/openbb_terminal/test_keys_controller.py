@@ -8,7 +8,7 @@ controller = KeysController(menu_usage=False)
 
 @pytest.fixture(autouse=True)
 def no_change_env(mocker):
-    mocker.patch("openbb_terminal.keys_controller.dotenv")
+    mocker.patch("openbb_terminal.keys_controller.dotenv.set_key")
 
 
 class MockCFG:
