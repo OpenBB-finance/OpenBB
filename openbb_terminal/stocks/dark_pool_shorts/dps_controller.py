@@ -30,7 +30,7 @@ from openbb_terminal.stocks.dark_pool_shorts import (
     shortinterest_view,
     stockgrid_view,
     yahoofinance_view,
-    ibkr_view
+    ibkr_view,
 )
 
 logger = logging.getLogger(__name__)
@@ -56,7 +56,7 @@ class DarkPoolShortsController(StockBaseController):
     PATH = "/stocks/dps/"
 
     def __init__(
-        self, ticker: str, start: str, stock: pd.DataFrame, queue: List[str] = None
+            self, ticker: str, start: str, stock: pd.DataFrame, queue: List[str] = None
     ):
         """Constructor"""
         super().__init__(queue)
@@ -154,7 +154,7 @@ class DarkPoolShortsController(StockBaseController):
             dest="number",
             type=check_int_range(1, 10000),
             default=20,
-            help="Number of the highest cost to borrow of stocks to retrieve.",
+            help="Number of stocks with high cost to borrow to retrieve.",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
@@ -272,9 +272,9 @@ class DarkPoolShortsController(StockBaseController):
             "-s",
             "--sort",
             help="Field for which to sort by, where 'sv': Short Vol. (1M), "
-            "'sv_pct': Short Vol. %%, 'nsv': Net Short Vol. (1M), "
-            "'nsv_dollar': Net Short Vol. ($100M), 'dpp': DP Position (1M), "
-            "'dpp_dollar': DP Position ($1B)",
+                 "'sv_pct': Short Vol. %%, 'nsv': Net Short Vol. (1M), "
+                 "'nsv_dollar': Net Short Vol. ($100M), 'dpp': DP Position (1M), "
+                 "'dpp_dollar': DP Position ($1B)",
             choices=["sv", "sv_pct", "nsv", "nsv_dollar", "dpp", "dpp_dollar"],
             default="dpp_dollar",
             dest="sort_field",
@@ -320,7 +320,7 @@ class DarkPoolShortsController(StockBaseController):
             "-s",
             "--sort",
             help="Field for which to sort by, where 'float': Float Short %%, "
-            "'dtc': Days to Cover, 'si': Short Interest",
+                 "'dtc': Days to Cover, 'si': Short Interest",
             choices=["float", "dtc", "si"],
             default="float",
             dest="sort_field",
