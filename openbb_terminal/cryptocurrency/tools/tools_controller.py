@@ -13,6 +13,7 @@ from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
+    check_non_negative_float,
     check_percentage_range,
     check_positive,
     check_positive_float,
@@ -66,7 +67,7 @@ class ToolsController(BaseController):
             "-pcA",
             "--priceChangeA",
             dest="priceChangeA",
-            type=check_positive_float,
+            type=check_non_negative_float,
             help="Token A price change in percentage",
             default=0,
         )
@@ -75,7 +76,7 @@ class ToolsController(BaseController):
             "-pcB",
             "--priceChangeB",
             dest="priceChangeB",
-            type=check_positive_float,
+            type=check_non_negative_float,
             help="Token B price change in percentage",
             default=100,
         )
