@@ -18,15 +18,15 @@ backcall==0.2.0; python_full_version >= "3.6.2" and python_version >= "3.8"
 backports.zoneinfo==0.2.1; python_version < "3.9" and python_version >= "3.6" and (python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.6")
 beartype==0.7.1; python_version >= "3.8" and python_version < "4.0" and python_full_version >= "3.6.0"
 beautifulsoup4==4.11.0; python_full_version >= "3.6.0" and python_version >= "3.7"
-black==22.3.0; python_full_version >= "3.6.2"
+black==22.1.0; python_full_version >= "3.6.2"
 bleach==5.0.0; python_version >= "3.7"
 bs4==0.0.1
 bt==0.2.9; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.6.0")
 certifi==2021.10.8; python_full_version >= "3.7.1" and python_version < "4" and python_version >= "3.8" and python_full_version < "4.0.0" and (python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0") and (python_version >= "3.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.7")
 cffi==1.15.0; python_version >= "3.7"
 charset-normalizer==2.0.12; python_full_version >= "3.7.1" and python_version >= "3.8" and python_version < "4.0" and python_full_version < "4.0.0" and (python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0") and (python_version >= "3.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.7")
-click==8.1.2; python_version >= "3.7" and python_full_version >= "3.6.2"
-colorama==0.4.4; python_full_version >= "3.6.2" and python_full_version < "4.0.0" and (python_version >= "3.5" and python_full_version < "3.0.0" or python_full_version >= "3.5.0" and python_version >= "3.5") and (python_version >= "3.7" and python_full_version < "3.0.0" and sys_platform == "win32" or sys_platform == "win32" and python_version >= "3.7" and python_full_version >= "3.5.0") and (python_version >= "3.6" and python_full_version < "3.0.0" and platform_system == "Windows" or python_full_version >= "3.5.0" and platform_system == "Windows" and python_version >= "3.6") and platform_system == "Windows" and python_version >= "3.8" and sys_platform == "win32"
+click==8.0.1; python_version >= "3.6"
+colorama==0.4.4; python_full_version >= "3.6.2" and python_full_version < "4.0.0" and (python_version >= "3.5" and python_full_version < "3.0.0" or python_full_version >= "3.5.0" and python_version >= "3.5") and platform_system == "Windows" and python_version >= "3.8" and (python_version >= "3.7" and python_full_version < "3.0.0" and sys_platform == "win32" or sys_platform == "win32" and python_version >= "3.7" and python_full_version >= "3.5.0") and (python_version >= "3.6" and python_full_version < "3.0.0" and platform_system == "Windows" or python_full_version >= "3.5.0" and platform_system == "Windows" and python_version >= "3.6") and sys_platform == "win32"
 commonmark==0.9.1; python_full_version >= "3.6.2" and python_full_version < "4.0.0"
 convertdate==2.4.0; python_version >= "3.7" and python_version < "4"
 cryptography==36.0.2; python_version >= "3.7" and python_full_version < "3.0.0" and python_version < "4.0" or python_full_version >= "3.6.0" and python_version < "4" and python_version >= "3.7"
@@ -47,6 +47,7 @@ docutils==0.16; python_version >= "3.7" and python_full_version < "3.0.0" or pyt
 ecos==2.0.10; python_full_version >= "3.6.1" and python_full_version < "4.0.0" and python_version >= "3.7"
 entrypoints==0.4; python_full_version >= "3.7.0" and python_version >= "3.7"
 et-xmlfile==1.1.0; python_version >= "3.6"
+exchange-calendars==3.6.1; python_version >= "3.7" and python_full_version >= "3.7.0"
 executing==0.8.3; python_full_version >= "3.6.2" and python_version >= "3.8"
 fastjsonschema==2.15.3; python_full_version >= "3.7.0" and python_version >= "3.7"
 fear-greed-index==0.1.4; python_version >= "3.7"
@@ -54,7 +55,7 @@ ffn==0.3.6; python_version >= "2.7" and python_full_version < "3.0.0" or python_
 financedatabase==1.0.2
 finnhub-python==2.4.12
 finviz==1.4.4
-finvizfinance==0.12.2; python_version >= "3.5"
+finvizfinance==0.14.0; python_version >= "3.5"
 fonttools==4.32.0; python_version >= "3.7"
 formulaic==0.3.3; python_full_version >= "3.7.1" and python_full_version < "4.0.0" and python_version >= "3.8"
 fred==3.1
@@ -95,7 +96,7 @@ jupyterlab-server==2.12.0; python_version >= "3.7"
 jupyterlab-widgets==1.1.0; python_version >= "3.6"
 jupyterlab==3.3.3; python_version >= "3.7"
 kiwisolver==1.4.2; python_version >= "3.7"
-korean-lunar-calendar==0.2.1; python_version >= "3.6"
+korean-lunar-calendar==0.2.1; python_version >= "3.7" and python_full_version >= "3.7.0"
 linearmodels==4.26; python_version >= "3.8"
 lxml==4.8.0; python_version >= "3.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.7"
 m2r2==0.2.8; python_version >= "3.7"
@@ -156,6 +157,7 @@ pycparser==2.21; python_version >= "2.7" and python_full_version < "3.0.0" or py
 pyex==0.5.0
 pygments==2.11.2; python_version >= "3.5"
 pyhdfe==0.1.0; python_version >= "3.8"
+pyluach==1.4.1; python_version >= "3.7" and python_full_version >= "3.7.0"
 pymeeus==0.5.11; python_version >= "3.7" and python_version < "4"
 pymongo==3.11.0; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.4.0")
 pyobjc-core==8.4.1; python_version >= "3.6" and sys_platform == "darwin"
@@ -225,7 +227,8 @@ testpath==0.6.0; python_version >= "3.7"
 textwrap3==0.9.2; python_version >= "3.6"
 thepassiveinvestor==1.0.10
 threadpoolctl==3.1.0; python_version >= "3.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.7"
-tomli==2.0.1; python_version < "3.11" and python_full_version >= "3.6.2" and python_version >= "3.8"
+tomli==2.0.1; python_version >= "3.8" and python_full_version >= "3.6.2"
+toolz==0.11.2; python_version >= "3.7" and python_full_version >= "3.7.0"
 tornado==6.1; python_full_version >= "3.7.0" and python_version >= "3.7"
 tqdm==4.64.0; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.4.0" and python_version >= "3.6"
 tradingview-ta==3.2.10; python_version >= "3.6"
