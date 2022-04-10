@@ -44,12 +44,7 @@ def indices_command():
     df = df.fillna("")
     df.set_index(" ", inplace=True)
 
-    font_color = ["white"] * 2 + [
-        [
-            imps.PLT_TBL_DECREASING if boolv else imps.PLT_TBL_INCREASING
-            for boolv in df["%Chg"].str.contains("-")
-        ]
-    ]
+    font_color = ["white"] * 2 + [imps.in_decreasing_color_list(df["%Chg"])]
 
     df = df.drop(columns=["Price", "Chg", "%Chg"])
     fig = imps.plot_df(

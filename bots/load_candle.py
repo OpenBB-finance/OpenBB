@@ -41,12 +41,17 @@ def qoute(ticker_str: str):
     ]:
         quote_df[c] = quote_df[c].apply(lambda x: f"{x:.2f}")
     quote_df["Volume"] = quote_df["Volume"].apply(lambda x: f"{x:,}")
-    font_color = [
-        imps.PLT_CANDLE_DECREASING if boolv else imps.PLT_CANDLE_INCREASING
-        for boolv in quote_df["Change %"].str.contains("-")
-    ]
     quote_df["Price"] = quote_df["Price"].str.lstrip()
-    return quote_df, font_color
+    vol_text = f'Volume: {"".join(quote_df["Volume"])}'
+    chart_info = (
+        f'<b>{"".join(quote_df["Price"].values)} ({"".join(quote_df["Change"])}) '
+        f'({"".join(quote_df["Change %"].values)})<br></b>'
+    )
+    return {
+        "vol_text": vol_text,
+        "info": chart_info,
+        "color": imps.in_decreasing_color_list(quote_df["Change %"]),
+    }
 
 
 def dt_utcnow_local_tz():
@@ -374,7 +379,6 @@ def candle_fig(
     else:
         bar_opacity = 0.5
 
-    line_adj = 1 if len(df_stock.index) < 100 else 0.5
     fig.add_trace(
         go.Candlestick(
             x=df_stock.index,
@@ -383,7 +387,7 @@ def candle_fig(
             low=df_stock.Low,
             close=df_stock.Close,
             name="OHLC",
-            line=dict(width=line_adj),
+            line=dict(width=(1 if len(df_stock.index) < 100 else 0.5)),
             increasing_line_color=imps.PLT_CANDLE_INCREASING,
             decreasing_line_color=imps.PLT_CANDLE_DECREASING,
             opacity=1,
@@ -486,23 +490,23 @@ def candle_fig(
             # Grab Data
             area_int = 0
             for article in articles:
-                dt_df = datetime.fromtimestamp(article["datetime"], tz=est_tz).strftime(
+                dt_at = datetime.fromtimestamp(article["datetime"], tz=est_tz).strftime(
                     "%Y-%m-%d %H:%M:%S%z"
                 )
-                df_date.append(dt_df)
+                df_date.append(dt_at)
                 df_title.append(
                     textwrap.indent(
                         text=(textwrap.fill(article["headline"], 50)), prefix="<br>"
                     )
                 )
-                stock_df = df_stock.iloc[
-                    df_stock.index.get_loc(dt_df, method="nearest")
+                grab_price = df_stock.iloc[
+                    df_stock.index.get_loc(dt_at, method="nearest")
                 ]
                 if area_int == 0:
-                    df_current.append(stock_df.Close + (stock_df.Close / 80))
+                    df_current.append(grab_price.Close + (grab_price.Close / 80))
                     area_int += 1
                 else:
-                    df_current.append(stock_df.Close + (stock_df.Close / 40))
+                    df_current.append(grab_price.Close + (grab_price.Close / 40))
                     area_int = 0
                 df_content.append(
                     textwrap.indent(
@@ -567,39 +571,33 @@ def candle_fig(
     )
 
     # Add Current Price/Volume
-    quote_df, font_color = qoute(ticker)
-    vol_text = f'Volume: {"".join(quote_df["Volume"])}'
-    chart_info = (
-        f'<b>{"".join(quote_df["Price"].values)} ({"".join(quote_df["Change"])}) '
-        f'({"".join(quote_df["Change %"].values)})<br></b>'
-    )
+    ch_info = qoute(ticker)
+
     fig.add_annotation(
         xref="paper",
         yref="paper",
-        text=chart_info,
+        text=ch_info["info"],
         x=0.99,
         y=1.05,
         font_size=10,
-        font_color="".join(font_color),
+        font_color="".join(ch_info["color"]),
         showarrow=False,
     )
     fig.add_annotation(
         xref="paper",
         yref="paper",
-        text=vol_text,
+        text=ch_info["vol_text"],
         x=0.003,
         y=1.05,
         font_size=10,
         showarrow=False,
     )
-    ints_lt = [1, 5]
-    xadj = -0.075 if interval in ints_lt else -0.069
+    xadj = -0.075 if interval in [1, 5] else -0.069
     yadj = 0.075 if "rows" not in data else 0.474
-    tickft_size = 10
     if "rows" in data:
         yadj = 0.42 if data["rows"] == 3 else yadj
-        xadj = -0.075 if interval in ints_lt else -0.065
-        tickft_size = 9
+        xadj = -0.075 if interval in [1, 5] else -0.065
+
     fig.add_annotation(
         xref="paper",
         yref="paper",
@@ -647,7 +645,7 @@ def candle_fig(
             titlefont=dict(color=imps.PLT_CANDLE_YAXIS_TEXT_COLOR, size=10),
             tickfont=dict(
                 color=imps.PLT_CANDLE_YAXIS_TEXT_COLOR,
-                size=tickft_size,
+                size=(10 if "rows" not in data else 9),
             ),
             nticks=10,
             range=vol_scale["range"],

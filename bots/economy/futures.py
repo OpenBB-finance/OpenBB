@@ -55,9 +55,7 @@ def futures_command():
 
     df = df[["Last Price", "Change"]]
 
-    font_color = ["white"] * 2 + [
-        ["#e4003a" if boolv else "#00ACFF" for boolv in df["Change"].str.contains("-")]
-    ]
+    font_color = ["white"] * 2 + [imps.in_decreasing_color_list(df["Change"])]
 
     dindex = len(df.index)
     if dindex > 15:
@@ -69,10 +67,7 @@ def futures_command():
             df_pg = df[["Last Price", "Change"]].iloc[i:end]
             df_pg.append(df_pg)
             font_color = ["white"] * 2 + [
-                [
-                    "#e4003a" if boolv else "#00ACFF"
-                    for boolv in df_pg["Change"].str.contains("-")
-                ]
+                imps.in_decreasing_color_list(df_pg["Change"])
             ]
             fig = imps.plot_df(
                 df_pg,

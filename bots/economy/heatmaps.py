@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def heatmaps_command(map: str = "", timeline: str = ""):
+def heatmaps_command(maps: str = "sec", timeline: str = ""):
     """Display Heatmaps [Finviz]"""
 
     # Debug
@@ -32,7 +32,7 @@ def heatmaps_command(map: str = "", timeline: str = ""):
         "World Map": "geo",
         "ETF Map - Exchange Traded Funds Map": "etf",
     }
-    url = f"https://finviz.com/map.ashx?t={maps_dict[map]}"
+    url = f"https://finviz.com/map.ashx?t={maps_dict[maps]}"
     url += f"&st={timeline}" if timeline else ""
     options = uc.ChromeOptions()
 
@@ -47,7 +47,7 @@ def heatmaps_command(map: str = "", timeline: str = ""):
     driver.find_element(By.XPATH, "//div[@id='root']/div/div[3]/button[2]/div").click()
     time.sleep(0.5)
     soup5 = bs4.BeautifulSoup(driver.page_source, "html.parser")
-    images = soup5.findAll("img", alt=f"{map}")
+    images = soup5.findAll("img", alt=f"{maps}")
 
     img_scr = []
     for image in images:
@@ -73,6 +73,6 @@ def heatmaps_command(map: str = "", timeline: str = ""):
     im.close()
 
     return {
-        "title": f"Stocks: [Finviz] {map.replace('Map', 'Heatmap')}",
+        "title": f"Stocks: [Finviz] {maps.replace('Map', 'Heatmap')}",
         "imagefile": imagefile,
     }

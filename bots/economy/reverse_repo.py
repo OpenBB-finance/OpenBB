@@ -43,12 +43,7 @@ def reverse_repo_command(days: int = 50):
     df = df.drop(columns="Moving Avg")
     df = df.sort_values(by="Date", ascending=False)
 
-    font_color = ["white"] * 4 + [
-        [
-            imps.PLT_TBL_DECREASING if boolv else imps.PLT_TBL_INCREASING
-            for boolv in df["Difference"].str.contains("-")
-        ]  # type: ignore
-    ]
+    font_color = ["white"] * 4 + [imps.in_decreasing_color_list(df["Difference"])]  # type: ignore
 
     df.set_index("Date", inplace=True)
     df.columns = df.columns.str.capitalize()
@@ -61,12 +56,7 @@ def reverse_repo_command(days: int = 50):
         df_pg, embeds_img, images_list = pd.DataFrame(), [], []
         while i < dindex:
             df_pg = df.iloc[i:end]
-            font_color = ["white"] * 4 + [
-                [
-                    imps.PLT_TBL_DECREASING if boolv else imps.PLT_TBL_INCREASING
-                    for boolv in df_pg["Difference"].str.contains("-")
-                ]  # type: ignore
-            ]
+            font_color = ["white"] * 4 + [imps.in_decreasing_color_list(df_pg["Difference"])]  # type: ignore
             df_pg.append(df_pg)
             fig = imps.plot_df(
                 df_pg,

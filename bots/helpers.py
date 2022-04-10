@@ -314,6 +314,26 @@ def signals_autocomp(inter, signal: str):
     return [signal for signal in df if signal.lower().startswith(slow)][:24]
 
 
+def in_decreasing_color_list(df_column: pd.DataFrame.columns) -> List[str]:
+    """Makes a colorlist for increase/decrease if value in df_column contains "-"
+
+    Parameters
+    ----------
+    df_column : pd.DataFrame.columns
+        Dataframe column to create colorlist.
+
+    Returns
+    -------
+    List[str]
+        List of colors for df_column
+    """
+    colorlist = [
+        imps.PLT_CANDLE_DECREASING if boolv else imps.PLT_CANDLE_INCREASING
+        for boolv in df_column.str.contains("-")
+    ]
+    return colorlist
+
+
 def chart_volume_scaling(df_stock: pd.DataFrame) -> Dict[str, list]:
     """Takes df_stock dataframe and returns volume_ticks, tickvals for chart volume scaling
 
@@ -378,9 +398,7 @@ def inter_chart(fig: go.Figure, filename: str, **data) -> str:
     filename = f"{filename.replace('.png', '')}_{uuid_get()}.html"
     if "config" not in data:
         config = dict(scrollZoom=True, displayModeBar=False)
-    plot_div = plot(
-        fig, output_type="div", include_plotlyjs="plotly.js", config=config
-    )
+    plot_div = plot(fig, output_type="div", include_plotlyjs="plotly.js", config=config)
     if data["callback"]:
         res = re.search('<div id="([^"]*)"', plot_div)
         if res is not None:

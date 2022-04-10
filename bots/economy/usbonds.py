@@ -48,12 +48,7 @@ def usbonds_command():
         axis="columns",
     )
 
-    font_color = ["white"] * 3 + [
-        [
-            imps.PLT_TBL_DECREASING if boolv else imps.PLT_TBL_INCREASING
-            for boolv in df["Yld Chg"].str.contains("-")
-        ]
-    ]
+    font_color = ["white"] * 3 + [imps.in_decreasing_color_list(df["Yld Chg"])]
 
     fig = imps.plot_df(
         df,

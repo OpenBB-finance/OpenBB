@@ -27,7 +27,7 @@ class DiscoverCommands(commands.Cog):
     @commands.slash_command(name="heatmap")
     async def heatmap(
         inter: disnake.AppCmdInter,
-        map: str = commands.Param(
+        maps: str = commands.Param(
             choices={
                 "S&P 500 Map",
                 "Stock Market Map",
@@ -51,10 +51,10 @@ class DiscoverCommands(commands.Cog):
 
         Parameters
         -----------
-        map: Choose map to display
+        maps: Choose map to display
         timeline: Choose performance timeline to display
         """
-        await ShowView().discord(heatmaps_command, inter, "heatmap", map, timeline)
+        await ShowView().discord(heatmaps_command, inter, "heatmap", maps, timeline)
 
     @discovery.sub_command(name="tops")
     async def tops(

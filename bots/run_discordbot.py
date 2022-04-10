@@ -2,7 +2,6 @@
 import asyncio
 import logging
 import os
-import platform
 import sys
 from pathlib import Path
 
@@ -18,13 +17,8 @@ except ImportError:
 finally:
     from bots.discord import helpers
     from bots.groupme.run_groupme import handle_groupme
-    from openbb_terminal.loggers import setup_logging
 
 logger = logging.getLogger(__name__)
-setup_logging(f"bot_pid_{os.getpid()}")
-logger.info("START")
-logger.info("Python: %s", platform.python_version())
-logger.info("OS: %s", platform.system())
 
 app = FastAPI()
 
@@ -55,22 +49,12 @@ openbb_bot = helpers.GSTBot()
 openbb_bot.load_all_extensions("cmds")
 
 
-async def run():
-    try:
-        await openbb_bot.start(cfg.DISCORD_BOT_TOKEN)
-    except KeyboardInterrupt:
-        await openbb_bot.logout()
-
-
-asyncio.create_task(run())
-
-
 @openbb_bot.slash_command()
 @commands.guild_only()
 @commands.has_permissions(manage_messages=True)
 async def support(inter: disnake.CommandInteraction):
     """Send support ticket! *Mods Only"""
-    await inter.response.send_modal(modal=helpers.MyModal())
+    await inter.response.send_modal(modal=MyModal())
 
 
 @openbb_bot.slash_command()
@@ -102,6 +86,14 @@ async def stats(
     )
 
     await inter.send(embed=embed)
+
+
+@app.on_event("startup")
+async def startup_event():
+    try:
+        asyncio.create_task(openbb_bot.start(cfg.DISCORD_BOT_TOKEN))
+    except KeyboardInterrupt:
+        await openbb_bot.logout()
 
 
 class MyModal(disnake.ui.Modal):

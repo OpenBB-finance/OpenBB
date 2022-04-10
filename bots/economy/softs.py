@@ -50,12 +50,7 @@ def softs_command():
         columns={"prevClose": "PrevClose", "last": "Last", "change": "Change"}
     )
 
-    font_color = ["white"] * 3 + [
-        [
-            imps.PLT_TBL_DECREASING if boolv else imps.PLT_TBL_INCREASING
-            for boolv in df["Change"].str.contains("-")
-        ]
-    ]
+    font_color = ["white"] * 3 + [imps.in_decreasing_color_list(df["Change"])]
 
     fig = imps.plot_df(
         df,

@@ -46,12 +46,7 @@ def currencies_command():
 
     df.set_index(" ", inplace=True)
 
-    font_color = ["white"] * 2 + [
-        [
-            imps.PLT_TBL_DECREASING if boolv else imps.PLT_TBL_INCREASING
-            for boolv in df["%Chng"].str.contains("-")
-        ]
-    ]
+    font_color = ["white"] * 2 + [imps.in_decreasing_color_list(df["%Chng"])]
     df = df.drop(columns=["Last", "Chng", "%Chng"])
     fig = imps.plot_df(
         df,
