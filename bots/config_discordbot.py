@@ -1,5 +1,4 @@
 import os
-import sys
 from distutils.util import strtobool
 from pathlib import Path
 from typing import List, Optional
@@ -16,9 +15,6 @@ env_files = [f for f in bots_path.iterdir() if f.__str__().endswith(".env")]
 
 if env_files:
     load_dotenv(env_files[0])
-
-# Relative path to the terminal
-sys.path.append(GST_PATH.__str__())
 
 # https://discord.com/developers/applications/
 DISCORD_BOT_TOKEN = os.getenv("OPENBB_DISCORD_BOT_TOKEN") or "REPLACE_ME"
