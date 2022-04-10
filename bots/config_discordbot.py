@@ -29,6 +29,9 @@ API_NEWS_TOKEN = os.getenv("OPENBB_API_NEWS_TOKEN") or "REPLACE_ME"
 API_BINANCE_KEY = os.getenv("OPENBB_API_BINANCE_KEY") or "REPLACE_ME"
 API_BINANCE_SECRET = os.getenv("OPENBB_API_BINANCE_SECRET") or "REPLACE_ME"
 
+# https://stocksera.pythonanywhere.com/accounts/developers/
+API_STOCKSERA_TOKEN = os.getenv("OPENBB_API_STOCKSERA_TOKEN") or "REPLACE_ME"
+
 # https://finnhub.io
 API_FINNHUB_KEY = os.getenv("OPENBB_API_FINNHUB_KEY") or "REPLACE_ME"
 
@@ -57,9 +60,9 @@ DEBUG = strtobool(os.getenv("OPENBB_DEBUG", "False"))
 
 gst_imgur = pyimgur.Imgur(IMGUR_CLIENT_ID)
 
-AUTHOR_NAME = "Gamestonk Terminal"
+AUTHOR_NAME = "OpenBB Bot"
 AUTHOR_URL = "https://github.com/OpenBB-finance/OpenBBTerminal"
 AUTHOR_ICON_URL = (
-    "https://github.com/OpenBB-finance/OpenBBTerminal/"
-    "blob/main/images/gst_logo_green_white_background.png?raw=true"
+    "https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/"
+    "hugo_rename/images/openbb_logo.png"
 )

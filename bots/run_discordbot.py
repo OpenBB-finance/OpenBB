@@ -13,7 +13,7 @@ from fastapi import FastAPI, Request
 try:
     from bots import config_discordbot as cfg
 except ImportError:
-    sys.path.append(str(Path(__file__).parent.parent.resolve().__str__))
+    sys.path.append(Path(__file__).parent.parent.resolve().__str__())
     from bots import config_discordbot as cfg
 finally:
     from bots.discord import helpers

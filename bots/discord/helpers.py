@@ -1,6 +1,5 @@
 import hashlib
 import logging
-import os
 import platform
 import traceback
 import uuid
@@ -86,9 +85,9 @@ class GSTBot(commands.Bot):
 
     def load_all_extensions(self, folder: str) -> None:
         folder_path = cfg.bots_path.joinpath(folder)
-        for name in os.listdir(folder_path):
-            if name.endswith(".py") and os.path.isfile(f"{folder_path}/{name}"):
-                self.load_extension(f"{folder}.{name[:-3]}")
+        for name in folder_path.iterdir():
+            if name.__str__().endswith(".py") and name.is_file():
+                self.load_extension(f"{folder}.{name.stem}")
 
     async def on_command_error(
         self, ctx: commands.Context, error: commands.CommandError
