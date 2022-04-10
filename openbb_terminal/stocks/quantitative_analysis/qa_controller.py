@@ -57,6 +57,9 @@ class QaController(StockBaseController):
         "capm",
         "var",
         "es",
+        "sh",
+        "so",
+        "om",
     ]
 
     stock_interval = [1, 5, 15, 30, 60]
@@ -135,6 +138,9 @@ class QaController(StockBaseController):
 [info]Risk:[/info]
     var         display value at risk
     es          display expected shortfall
+    sh          display sharpe ratio
+    so          display sortino ratio
+    om          display omega ratio
 [info]Other:[/info]
     raw         print raw data
     decompose   decomposition in cyclic-trend, season, and residuals of prices
@@ -810,6 +816,7 @@ class QaController(StockBaseController):
                     False,
                 )
 
+    @log_start_end(log=logger)
     def call_es(self, other_args: List[str]):
         """Process es command"""
         parser = argparse.ArgumentParser(
@@ -859,4 +866,126 @@ class QaController(StockBaseController):
                 ns_parser.distributions,
                 ns_parser.percentile / 100,
                 False,
+            )
+
+    @log_start_end(log=logger)
+    def call_sh(self, other_args: List[str]):
+        """Process sh command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="sh",
+            description="""
+                    Provides the sharpe ratio of the selected stock.
+                """,
+        )
+        parser.add_argument(
+            "-r",
+            "--rfr",
+            action="store",
+            dest="rfr",
+            type=float,
+            default=0,
+            help="Risk free return",
+        )
+        parser.add_argument(
+            "-w",
+            "--window",
+            action="store",
+            dest="window",
+            type=int,
+            default=min(len(self.stock["adjclose"].values), 252),
+            help="Rolling window length",
+        )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            data = self.stock["adjclose"]
+            qa_view.display_sharpe(data, ns_parser.rfr, ns_parser.window)
+
+    @log_start_end(log=logger)
+    def call_so(self, other_args: List[str]):
+        """Process so command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="so",
+            description="""
+                Provides the sortino ratio of the selected stock.
+            """,
+        )
+        parser.add_argument(
+            "-t",
+            "--target",
+            action="store",
+            dest="target_return",
+            type=float,
+            default=0,
+            help="Target return",
+        )
+        parser.add_argument(
+            "-a",
+            "--adjusted",
+            action="store_true",
+            default=False,
+            dest="adjusted",
+            help="If one should adjust the sortino ratio inorder to make it comparable to the sharpe ratio",
+        )
+        parser.add_argument(
+            "-w",
+            "--window",
+            action="store",
+            dest="window",
+            type=int,
+            default=min(len(self.stock["returns"].values), 252),
+            help="Rolling window length",
+        )
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            data = self.stock["returns"]
+            qa_view.display_sortino(
+                data, ns_parser.target_return, ns_parser.window, ns_parser.adjusted
+            )
+
+    @log_start_end(log=logger)
+    def call_om(self, other_args: List[str]):
+        """Process om command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="om",
+            description="""
+                Provides omega ratio of the selected stock.
+            """,
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            action="store",
+            dest="start",
+            type=float,
+            default=0,
+            help="""
+                Start of the omega ratio threshold
+            """,
+        )
+        parser.add_argument(
+            "-e",
+            "--end",
+            action="store",
+            dest="end",
+            type=float,
+            default=1.5,
+            help="""
+                End of the omega ratio threshold
+            """,
+        )
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            data = self.stock["returns"]
+            qa_view.display_omega(
+                data,
+                ns_parser.start,
+                ns_parser.end,
             )
