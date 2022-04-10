@@ -90,7 +90,7 @@ ascii-magic = "^1.6"
 squarify = "^0.4.3"
 finnhub-python = "^2.4.10"
 linearmodels = "^4.25"
-black = "22.3.0"
+black = "22.1"
 undetected-chromedriver = {version = "^3.1.5", optional = true}
 ipywidgets = "^7.7.0"
 pyinstaller = {version = "^4.10", optional = true}
