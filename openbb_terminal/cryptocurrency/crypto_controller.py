@@ -109,8 +109,8 @@ class CryptoController(CryptoBaseController):
 >   nft         non-fungible tokens,                    e.g.: today drops{has_ticker_start}
 >   dd          due-diligence for loaded coin,          e.g.: coin information, social media, market stats
 >   ta          technical analysis for loaded coin,     e.g.: ema, macd, rsi, adx, bbands, obv
->   pred        prediction techniques                   e.g.: regression, arima, rnn, lstm, conv1d, monte carlo
->   qa          quantitative analysis,   \t e.g.: decompose, cusum, residuals analysis[/menu]
+>   pred        prediction techniques,                  e.g.: regression, arima, rnn, lstm, conv1d, monte carlo
+>   qa          quantitative analysis                   e.g.: decompose, cusum, residuals analysis[/menu]
 {has_ticker_end}
 """
         console.print(text=help_text, menu="Cryptocurrency")
@@ -451,9 +451,7 @@ class CryptoController(CryptoBaseController):
     @log_start_end(log=logger)
     def call_defi(self, _):
         """Process defi command"""
-        from openbb_terminal.cryptocurrency.defi.defi_controller import (
-            DefiController,
-        )
+        from openbb_terminal.cryptocurrency.defi.defi_controller import DefiController
 
         self.queue = self.load_class(DefiController, self.queue)
 
