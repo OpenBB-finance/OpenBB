@@ -31,7 +31,7 @@ def adx_command(
     if imps.DEBUG:
         # pylint: disable=logging-too-many-args
         logger.debug(
-            "ta adx %s %s %s %s %s %s %s %s %s %s %s",
+            "ta adx %s %s %s %s %s %s %s %s %s %s %s %s",
             ticker,
             interval,
             past_days,
@@ -42,6 +42,7 @@ def adx_command(
             end,
             extended_hours,
             heikin_candles,
+            trendline,
             news,
         )
 

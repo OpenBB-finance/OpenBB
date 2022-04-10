@@ -32,6 +32,8 @@ API_NEWS_TOKEN = os.getenv("OPENBB_API_NEWS_TOKEN") or "REPLACE_ME"
 # https://www.binance.com/en/
 API_BINANCE_KEY = os.getenv("OPENBB_API_BINANCE_KEY") or "REPLACE_ME"
 API_BINANCE_SECRET = os.getenv("OPENBB_API_BINANCE_SECRET") or "REPLACE_ME"
+
+# https://stocksera.pythonanywhere.com/accounts/developers/
 API_STOCKSERA_TOKEN = os.getenv("OPENBB_API_STOCKSERA_TOKEN") or "REPLACE_ME"
 
 # https://finnhub.io

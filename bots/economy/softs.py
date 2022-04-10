@@ -51,7 +51,10 @@ def softs_command():
     )
 
     font_color = ["white"] * 3 + [
-        ["#e4003a" if boolv else "#00ACFF" for boolv in df["Change"].str.contains("-")]
+        [
+            imps.PLT_TBL_DECREASING if boolv else imps.PLT_TBL_INCREASING
+            for boolv in df["Change"].str.contains("-")
+        ]
     ]
 
     fig = imps.plot_df(

@@ -30,7 +30,7 @@ def ma_command(
     if imps.DEBUG:
         # pylint: disable=logging-too-many-args
         logger.debug(
-            "ta ma %s %s %s %s %s %s %s %s %s %s %s",
+            "ta ma %s %s %s %s %s %s %s %s %s %s %s %s",
             ticker,
             interval,
             past_days,
@@ -41,6 +41,7 @@ def ma_command(
             end,
             extended_hours,
             heikin_candles,
+            trendline,
             news,
         )
 

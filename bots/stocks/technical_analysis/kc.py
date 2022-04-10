@@ -32,7 +32,7 @@ def kc_command(
     if imps.DEBUG:
         # pylint: disable=logging-too-many-args
         logger.debug(
-            "ta kc %s %s %s %s %s %s %s %s %s %s %s %s",
+            "ta kc %s %s %s %s %s %s %s %s %s %s %s %s %s",
             ticker,
             interval,
             past_days,
@@ -44,6 +44,7 @@ def kc_command(
             end,
             extended_hours,
             heikin_candles,
+            trendline,
             news,
         )
 

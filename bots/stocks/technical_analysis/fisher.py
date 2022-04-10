@@ -28,7 +28,7 @@ def fisher_command(
     # Debug
     if imps.DEBUG:
         logger.debug(
-            "ta fisher %s %s %s %s %s %s %s %s %s",
+            "ta fisher %s %s %s %s %s %s %s %s %s %s",
             ticker,
             interval,
             past_days,
@@ -37,6 +37,7 @@ def fisher_command(
             end,
             extended_hours,
             heikin_candles,
+            trendline,
             news,
         )
 

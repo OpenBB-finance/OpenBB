@@ -478,7 +478,7 @@ class TechnicalAnalysisCommands(commands.Cog):
         ticker: Stock Ticker
         interval : Chart Minute Interval, 1440 for Daily
         past_days: Past Days to Display. Default: 0(Not for Daily)
-        length: length. Default: 5
+        length: length. Default: 20
         std: standard deviation. Default: 2.0
         ma_mode: mode of moving average.
         start: YYYY-MM-DD format

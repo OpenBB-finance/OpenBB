@@ -1,4 +1,16 @@
+import os
 from typing import Any, List, Optional, Tuple
+
+BOT_PLOT_DPI = int(os.getenv("OPENBB_BOT_PLOT_DPI", "300"))
+BOT_PLOT_HEIGHT = int(os.getenv("OPENBB_BOT_PLOT_HEIGHT", "2500"))
+BOT_PLOT_WIDTH = int(os.getenv("OPENBB_BOT_PLOT_WIDTH", "3500"))
+
+
+def bot_plot_scale():
+    x = BOT_PLOT_WIDTH / (BOT_PLOT_DPI)
+    y = BOT_PLOT_HEIGHT / (BOT_PLOT_DPI)
+    return x, y
+
 
 # Vsurf Plot Settings
 PLT_3DMESH_COLORSCALE = "Jet"
@@ -28,6 +40,11 @@ PLT_3DMESH_STYLE_TEMPLATE = "plotly_dark"
 
 # Chart Plots Settings
 PLT_CANDLE_STYLE_TEMPLATE = "plotly_dark"
+PLT_CANDLE_INCREASING = "#00ACFF"
+PLT_CANDLE_DECREASING = "#e4003a"
+PLT_CANDLE_VOLUME = "#fdc708"
+PLT_CANDLE_NEWS_MARKER = "rgba(255, 215, 0, 0.9)"
+PLT_CANDLE_NEWS_MARKER_LINE = "gold"
 PLT_CANDLE_YAXIS_TEXT_COLOR = "#fdc708"
 PLT_SCAT_STYLE_TEMPLATE = "plotly_dark"
 PLT_TA_STYLE_TEMPLATE = "plotly_dark"
@@ -96,3 +113,5 @@ PLT_TBL_ROW_COLORS: Optional[Tuple[str, str]] = (
     "rgb(55, 55, 55)",
     "rgb(50, 50, 50)",
 )
+PLT_TBL_INCREASING = "#00ACFF"
+PLT_TBL_DECREASING = "#e4003a"

@@ -40,7 +40,7 @@ def candle_command(
     """
 
     logger.info(
-        "candle %s %s %s %s %s %s %s %s",
+        "candle %s %s %s %s %s %s %s %s %s",
         ticker,
         interval,
         past_days,
@@ -49,6 +49,7 @@ def candle_command(
         end,
         news,
         heikin_candles,
+        trendline,
     )
 
     # Retrieve Data

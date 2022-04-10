@@ -31,7 +31,7 @@ def adosc_command(
     if imps.DEBUG:
         # pylint: disable=logging-too-many-args
         logger.debug(
-            "ta adosc %s %s %s %s %s",
+            "ta adosc %s %s %s %s %s %s %s %s %s %s %s %s",
             ticker,
             interval,
             past_days,
@@ -42,6 +42,7 @@ def adosc_command(
             end,
             extended_hours,
             heikin_candles,
+            trendline,
             news,
         )
 

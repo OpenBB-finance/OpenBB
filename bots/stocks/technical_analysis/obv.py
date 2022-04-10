@@ -27,13 +27,15 @@ def obv_command(
     # Debug
     if imps.DEBUG:
         logger.debug(
-            "ta obv %s %s %s %s %s %s %s",
+            "ta obv %s %s %s %s %s %s %s %s %s",
             ticker,
+            interval,
             past_days,
             start,
             end,
             extended_hours,
             heikin_candles,
+            trendline,
             news,
         )
 

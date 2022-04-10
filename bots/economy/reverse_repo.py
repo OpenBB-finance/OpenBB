@@ -45,7 +45,7 @@ def reverse_repo_command(days: int = 50):
 
     font_color = ["white"] * 4 + [
         [
-            "#e4003a" if boolv else "#00ACFF"
+            imps.PLT_TBL_DECREASING if boolv else imps.PLT_TBL_INCREASING
             for boolv in df["Difference"].str.contains("-")
         ]  # type: ignore
     ]
@@ -63,7 +63,7 @@ def reverse_repo_command(days: int = 50):
             df_pg = df.iloc[i:end]
             font_color = ["white"] * 4 + [
                 [
-                    "#e4003a" if boolv else "#00ACFF"
+                    imps.PLT_TBL_DECREASING if boolv else imps.PLT_TBL_INCREASING
                     for boolv in df_pg["Difference"].str.contains("-")
                 ]  # type: ignore
             ]

@@ -19,7 +19,7 @@ def feargreed_command(indicator=""):
 
     # Debug user input
     if cfg.DEBUG:
-        logger.debug("econ-futures")
+        logger.debug("econ-feargreed")
 
     # Check for argument
     possible_indicators = ("", "jbd", "mv", "pco", "mm", "sps", "spb", "shd")

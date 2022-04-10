@@ -29,7 +29,7 @@ def cci_command(
     # Debug
     if imps.DEBUG:
         logger.debug(
-            "ta cci %s %s %s %s %s %s %s %s %s %s",
+            "ta cci %s %s %s %s %s %s %s %s %s %s %s",
             ticker,
             interval,
             past_days,
@@ -39,6 +39,7 @@ def cci_command(
             end,
             extended_hours,
             heikin_candles,
+            trendline,
             news,
         )
 

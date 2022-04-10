@@ -3,11 +3,11 @@ import asyncio
 import hashlib
 import logging
 import os
-from pathlib import Path
 import platform
 import sys
 import traceback
 import uuid
+from pathlib import Path
 from typing import Any, Dict
 
 import disnake
@@ -17,7 +17,7 @@ from fastapi import FastAPI, Request
 try:
     from bots import config_discordbot as cfg
 except ImportError:
-    sys.path.append(str(Path(__file__).parent.resolve().__str__))
+    sys.path.append(Path(__file__).parent.parent.resolve().__str__())
     from bots import config_discordbot as cfg
 finally:
     from bots.groupme.run_groupme import handle_groupme
@@ -77,34 +77,13 @@ def fancy_traceback(exc: Exception) -> str:
     return f"```py\n{text[-4086:]}\n```"
 
 
-class GSTHelpCommand(commands.MinimalHelpCommand):
-    """Custom Help Command."""
-
-    def get_command_signature(self, command):
-        command_syntax = f"{self.clean_prefix}{command.qualified_name}"
-        command_usage = command.usage if command.usage is not None else ""
-        signature_text = f"""
-        Example usage:
-            `{command_syntax} {command_usage}`"""
-        return signature_text
-
-    def add_bot_commands_formatting(self, command, heading):
-        """Add a minified bot heading with commands to the output."""
-        if command:
-            menu_header = heading.replace("Commands", " category")
-            self.paginator.add_line(
-                f"__**{menu_header}**__ " + f"contains {len(command)} commands."
-            )
-            self.paginator.add_line(f"\t\t`!help {heading}` for info and options.")
-
-
 @log_start_end(log=logger)
 class GSTBot(commands.Bot):
     def __init__(self):
         super().__init__(
             command_prefix=cfg.COMMAND_PREFIX,
             intents=disnake.Intents.all(),
-            help_command=GSTHelpCommand(sort_commands=False, commands_heading="list:"),
+            help_command=None,  # type: ignore
             sync_commands_debug=False,
             sync_permissions=True,
             activity=activity,
@@ -112,10 +91,10 @@ class GSTBot(commands.Bot):
         )
 
     def load_all_extensions(self, folder: str) -> None:
-        folder_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), folder)
-        for name in os.listdir(folder_path):
-            if name.endswith(".py") and os.path.isfile(f"{folder_path}/{name}"):
-                self.load_extension(f"{folder}.{name[:-3]}")
+        folder_path = cfg.bots_path.joinpath(folder)
+        for name in folder_path.iterdir():
+            if name.__str__().endswith(".py") and name.is_file():
+                self.load_extension(f"{folder}.{name.stem}")
 
     async def on_command_error(
         self, ctx: commands.Context, error: commands.CommandError
@@ -123,127 +102,151 @@ class GSTBot(commands.Bot):
         if isinstance(error, commands.CheckAnyFailure):
             await ctx.message.delete()
 
+    async def on_application_command_autocomplete(
+        self,
+        inter: disnake.AppCmdInter,
+    ) -> None:
+        if inter.response._responded:
+            pass
+        else:
+            if inter.response._responded:
+                pass
+            else:
+                await self.process_app_command_autocompletion(inter)
+
     async def on_slash_command_error(
         self,
         inter: disnake.AppCmdInter,
         error: commands.CommandError,
     ) -> None:
-        if isinstance(error, commands.NoPrivateMessage):
-            logger.info("Slash No Private Message Error")
-            tickred = "<a:tickred:942466341082902528>"
-            embed = disnake.Embed(
-                title="Command Execution Error",
-                color=disnake.Color.red(),
-                description=f"{tickred}  This command cannot be used in private messages!",
-            )
-            if inter.response._responded:
-                pass
-            else:
-                await inter.response.send_message(embed=embed, ephemeral=True)
-        elif isinstance(error, commands.MissingPermissions):
-            logger.info("Slash Permissions Error")
-            tickred = "<a:tickred:942466341082902528>"
-            embed = disnake.Embed(
-                title="Command Execution Error",
-                color=disnake.Color.red(),
-                description=f"{tickred} You do not have enough permissions to execute this command!",
-            )
-            if inter.response._responded:
-                pass
-            else:
-                await inter.response.send_message(embed=embed, ephemeral=True)
-        elif isinstance(error, commands.CheckAnyFailure):
-            logger.info("Slash Permissions Error")
-            tickred = "<a:tickred:942466341082902528>"
-            embed = disnake.Embed(
-                title="Command Execution Error",
-                color=0xF00,
-                description=f"{tickred} You do not have enough permissions to execute this command!",
-            )
-            if inter.response._responded:
-                pass
-            else:
-                await inter.response.send_message(embed=embed, ephemeral=True)
+        if inter.response._responded:
+            pass
         else:
-            embed = disnake.Embed(
-                title="",
-                description=f"Slash command `{inter.data.name}` failed due to `{error}`\n{fancy_traceback(error)}",
-                color=disnake.Color.red(),
-            )
-            if inter.response._responded:
-                pass
+            if isinstance(error, commands.NoPrivateMessage):
+                logger.info("Slash No Private Message Error")
+                tickred = "<a:tickred:942466341082902528>"
+                embed = disnake.Embed(
+                    title="Command Execution Error",
+                    color=disnake.Color.red(),
+                    description=f"{tickred}  This command cannot be used in private messages!",
+                )
+                if inter.response._responded:
+                    pass
+                else:
+                    await inter.response.send_message(embed=embed, ephemeral=True)
+            elif isinstance(error, commands.MissingPermissions):
+                logger.info("Slash Permissions Error")
+                tickred = "<a:tickred:942466341082902528>"
+                embed = disnake.Embed(
+                    title="Command Execution Error",
+                    color=disnake.Color.red(),
+                    description=f"{tickred} You do not have enough permissions to execute this command!",
+                )
+                if inter.response._responded:
+                    pass
+                else:
+                    await inter.response.send_message(embed=embed, ephemeral=True)
+            elif isinstance(error, commands.CheckAnyFailure):
+                logger.info("Slash Permissions Error")
+                tickred = "<a:tickred:942466341082902528>"
+                embed = disnake.Embed(
+                    title="Command Execution Error",
+                    color=0xF00,
+                    description=f"{tickred} You do not have enough permissions to execute this command!",
+                )
+                if inter.response._responded:
+                    pass
+                else:
+                    await inter.response.send_message(embed=embed, ephemeral=True)
             else:
-                await inter.response.send_message(embed=embed, ephemeral=True)
+                embed = disnake.Embed(
+                    title="",
+                    description=f"Slash command `{inter.data.name}` failed due to `{error}`\n{fancy_traceback(error)}",
+                    color=disnake.Color.red(),
+                )
+                if inter.response._responded:
+                    pass
+                else:
+                    await inter.response.send_message(embed=embed, ephemeral=True)
 
     async def on_application_command(
         self,
         inter: disnake.AppCmdInter,
     ) -> None:
-        await self.process_application_commands(inter)
-        if inter.filled_options is MISSING:
-            filled: Dict[str, Any] = {"N/A": ""}
+        if inter.response._responded:
+            pass
         else:
-            filled = inter.filled_options
-        if inter.data.name is MISSING:
-            cmd_name: str = ""
-        else:
-            cmd_name = inter.data.name
-        if inter.guild:
-            server: Any[Dict[str, Any]] = {
-                "guild_id": inter.guild.id,
-                "name": inter.guild.name,
-                "channel": inter.channel.name,
-                "member_count": inter.guild.member_count,
-            }
-        else:
-            server = "DM"
-
-        stats_log = {
-            "data": [
-                {
-                    "server": server,
-                    "command": {
-                        "name": cmd_name,
-                        "cmd_data": filled,
-                    },
+            await self.process_application_commands(inter)
+            if inter.filled_options is MISSING:
+                filled: Dict[str, Any] = {"N/A": ""}
+            else:
+                filled = inter.filled_options
+            if inter.data.name is MISSING:
+                cmd_name: str = ""
+            else:
+                cmd_name = inter.data.name
+            if inter.guild:
+                server: Any[Dict[str, Any]] = {
+                    "guild_id": inter.guild.id,
+                    "name": inter.guild.name,
+                    "channel": inter.channel.name,
+                    "member_count": inter.guild.member_count,
                 }
-            ],
-        }
+            else:
+                server = "DM"
 
-        log_uid = {"user_id": hash_user_id(str(inter.author.id))}
-        logger.info(stats_log, extra=log_uid)
+            stats_log = {
+                "data": [
+                    {
+                        "server": server,
+                        "command": {
+                            "name": cmd_name,
+                            "cmd_data": filled,
+                        },
+                    }
+                ],
+            }
 
-        pass
+            log_uid = {"user_id": hash_user_id(str(inter.author.id))}
+            logger.info(stats_log, extra=log_uid)
+
+            pass
 
     async def on_user_command_error(
         self,
         inter: disnake.AppCmdInter,
         error: commands.CommandError,
     ) -> None:
-        embed = disnake.Embed(
-            title="",
-            description=f"User command `{inter.data.name}` failed due to `{error}`\n{fancy_traceback(error)}",
-            color=disnake.Color.red(),
-        )
         if inter.response._responded:
             pass
         else:
-            await inter.response.send_message(embed=embed, ephemeral=True)
+            embed = disnake.Embed(
+                title="",
+                description=f"User command `{inter.data.name}` failed due to `{error}`\n{fancy_traceback(error)}",
+                color=disnake.Color.red(),
+            )
+            if inter.response._responded:
+                pass
+            else:
+                await inter.response.send_message(embed=embed, ephemeral=True)
 
     async def on_message_command_error(
         self,
         inter: disnake.AppCmdInter,
         error: commands.CommandError,
     ) -> None:
-        embed = disnake.Embed(
-            title="",
-            description=f"Message command `{inter.data.name}` failed due to `{error}`\n{fancy_traceback(error)}",
-            color=disnake.Color.red(),
-        )
         if inter.response._responded:
             pass
         else:
-            await inter.response.send_message(embed=embed, ephemeral=True)
+            embed = disnake.Embed(
+                title="",
+                description=f"Message command `{inter.data.name}` failed due to `{error}`\n{fancy_traceback(error)}",
+                color=disnake.Color.red(),
+            )
+            if inter.response._responded:
+                pass
+            else:
+                await inter.response.send_message(embed=embed, ephemeral=True)
 
     async def on_ready(self):
         # fmt: off
@@ -370,11 +373,9 @@ async def stats(
     await inter.send(embed=embed)
 
 
-async def run():
+@app.on_event("startup")
+async def startup_event():
     try:
-        await openbb_bot.start(cfg.DISCORD_BOT_TOKEN)
+        asyncio.create_task(openbb_bot.start(cfg.DISCORD_BOT_TOKEN))
     except KeyboardInterrupt:
         await openbb_bot.logout()
-
-
-asyncio.create_task(run())

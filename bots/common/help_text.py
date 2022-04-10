@@ -14,6 +14,7 @@ cmds_text = {
     ),
     "misc": (
         "\n[futures]()\n"
+        "[heatmap]()\n"
         "[quote](ticker)\n"
         "[support]() *Mods Only*\n"
         "[ins-last](ticker) <NUM>\n"

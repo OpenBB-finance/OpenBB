@@ -30,7 +30,7 @@ def aroon_command(
     # Debug
     if imps.DEBUG:
         logger.debug(
-            "ta aroon %s %s %s %s %s, %s, %s, %s, %s, %s",
+            "ta aroon %s %s %s %s %s %s %s %s %s %s %s",
             ticker,
             interval,
             past_days,
@@ -40,6 +40,7 @@ def aroon_command(
             end,
             extended_hours,
             heikin_candles,
+            trendline,
             news,
         )
 

@@ -114,7 +114,14 @@ def options_run(
             rangeslider=dict(visible=False),
         ),
         font=imps.PLT_FONT,
-        legend=dict(yanchor="top", y=0.99, xanchor="left", x=0.01),
+        legend=dict(
+            yanchor="top",
+            y=0.99,
+            xanchor="left",
+            font_size=8,
+            bgcolor="rgba(0, 0, 0, 0)",
+            x=0.01,
+        ),
         dragmode="pan",
     )
 

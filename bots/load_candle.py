@@ -42,7 +42,7 @@ def qoute(ticker_str: str):
         quote_df[c] = quote_df[c].apply(lambda x: f"{x:.2f}")
     quote_df["Volume"] = quote_df["Volume"].apply(lambda x: f"{x:,}")
     font_color = [
-        "#e4003a" if boolv else "#00ACFF"
+        imps.PLT_CANDLE_DECREASING if boolv else imps.PLT_CANDLE_INCREASING
         for boolv in quote_df["Change %"].str.contains("-")
     ]
     quote_df["Price"] = quote_df["Price"].str.lstrip()
@@ -254,6 +254,7 @@ def stock_data(
             df_stock = df_stock.set_index(
                 pd.to_datetime(df_stock["date"], unit="ms", utc=True)
             ).drop("date", axis=1)
+
             if interval == 1440:
                 df_stock["date_id"] = (
                     df_stock.index.date - df_stock.index.date.min()
@@ -383,8 +384,8 @@ def candle_fig(
             close=df_stock.Close,
             name="OHLC",
             line=dict(width=line_adj),
-            increasing_line_color="#00ACFF",
-            decreasing_line_color="#e4003a",
+            increasing_line_color=imps.PLT_CANDLE_INCREASING,
+            decreasing_line_color=imps.PLT_CANDLE_DECREASING,
             opacity=1,
             showlegend=False,
         ),
@@ -399,7 +400,9 @@ def candle_fig(
                 y=df_stock["OC_High_trend"],
                 name="High Trend",
                 mode="lines",
-                line=go.scatter.Line(color="#00ACFF"),
+                line=go.scatter.Line(
+                    color=imps.PLT_CANDLE_INCREASING,
+                ),
             ),
             secondary_y=True,
             row=1,
@@ -412,7 +415,9 @@ def candle_fig(
                 y=df_stock["OC_Low_trend"],
                 name="Low Trend",
                 mode="lines",
-                line=go.scatter.Line(color="#e4003a"),
+                line=go.scatter.Line(
+                    color=imps.PLT_CANDLE_DECREASING,
+                ),
             ),
             secondary_y=True,
             row=1,
@@ -424,7 +429,7 @@ def candle_fig(
             y=df_stock.Volume,
             name="Volume",
             yaxis="y2",
-            marker_color="#fdc708",
+            marker_color=imps.PLT_CANDLE_VOLUME,
             opacity=bar_opacity,
             showlegend=False,
         ),
@@ -541,9 +546,9 @@ def candle_fig(
                 mode="markers",
                 marker_symbol="arrow-bar-down",
                 marker=dict(
-                    color="rgba(255, 215, 0, 0.9)",
+                    color=imps.PLT_CANDLE_NEWS_MARKER,
                     size=10,
-                    line=dict(color="gold", width=2),
+                    line=dict(color=imps.PLT_CANDLE_NEWS_MARKER_LINE, width=2),
                 ),
             ),
             secondary_y=True,
@@ -561,6 +566,7 @@ def candle_fig(
         showarrow=False,
     )
 
+    # Add Current Price/Volume
     quote_df, font_color = qoute(ticker)
     vol_text = f'Volume: {"".join(quote_df["Volume"])}'
     chart_info = (
@@ -625,26 +631,7 @@ def candle_fig(
     fig.update_yaxes(showline=True)
 
     # rounding the volume
-    df_stock["Volume"] = df_stock["Volume"].apply(lambda x: f"{x:.1f}")
-    df_stock["Volume"] = pd.to_numeric(df_stock["Volume"].astype(float))
-    volume_ticks = (df_stock["Volume"].values.max()).astype(int)
-    round_digits = -3
-    first_val = round(volume_ticks * 0.20, round_digits)
-    if len(str(volume_ticks)) > 5:
-        round_digits = -4
-        first_val = round(volume_ticks * 0.20, round_digits)
-    if len(str(volume_ticks)) > 6:
-        round_digits = -5
-        first_val = round(volume_ticks * 0.20, round_digits)
-    if len(str(volume_ticks)) > 7:
-        round_digits = -6
-        first_val = round(volume_ticks * 0.20, round_digits)
-    if len(str(volume_ticks)) > 8:
-        round_digits = -8
-        first_val = round(volume_ticks * 0.20, round_digits)
-    if len(str(volume_ticks)) > 9:
-        round_digits = -9
-        first_val = round(volume_ticks * 0.20, round_digits)
+    vol_scale = imps.chart_volume_scaling(df_stock)
 
     fig.update_layout(
         margin=dict(l=5, r=10, t=40, b=20),
@@ -663,14 +650,8 @@ def candle_fig(
                 size=tickft_size,
             ),
             nticks=10,
-            range=[0, (volume_ticks * 5)],
-            tickvals=[
-                first_val * 1,
-                first_val * 2,
-                first_val * 3,
-                first_val * 4,
-                first_val * 5,
-            ],
+            range=vol_scale["range"],
+            tickvals=vol_scale["ticks"],
         ),
         yaxis2=dict(
             side="right",

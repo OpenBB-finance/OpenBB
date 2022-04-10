@@ -30,7 +30,7 @@ def stoch_command(
     # Debug
     if imps.DEBUG:
         logger.debug(
-            "ta stoch %s %s %s %s %s %s %s %s %s %s %s",
+            "ta stoch %s %s %s %s %s %s %s %s %s %s %s %s",
             ticker,
             interval,
             past_days,
@@ -41,6 +41,7 @@ def stoch_command(
             end,
             extended_hours,
             heikin_candles,
+            trendline,
             news,
         )
 

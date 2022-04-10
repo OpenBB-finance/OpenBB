@@ -30,7 +30,7 @@ def ad_command(
     if imps.DEBUG:
         # pylint: disable=logging-too-many-args
         logger.debug(
-            "ta ad %s %s %s %s %s %s %s %s %s",
+            "ta ad %s %s %s %s %s %s %s %s %s %s",
             ticker,
             interval,
             past_days,
@@ -39,6 +39,7 @@ def ad_command(
             end,
             extended_hours,
             heikin_candles,
+            trendline,
             news,
         )
 

@@ -31,8 +31,9 @@ def bbands_command(
     if imps.DEBUG:
         # pylint: disable=logging-too-many-args
         logger.debug(
-            "ta bbands %s %s %s %s %s %s %s %s %s %s",
+            "ta bbands %s %s %s %s %s %s %s %s %s %s %s %s",
             ticker,
+            interval,
             past_days,
             length,
             n_std,
@@ -41,6 +42,7 @@ def bbands_command(
             end,
             extended_hours,
             heikin_candles,
+            trendline,
             news,
         )
 
