@@ -36,7 +36,10 @@ INDICES = {
     "ftas": {"name": "UK FTSE All-Share Index", "ticker": "^FTAS"},
     "spuk": {"name": "S&P United Kingdom (PDS)", "ticker": "^SPUK"},
     "uk100": {"name": "CBOE UK 100 Index", "ticker": "^BUK100P"},
-    "switzerland": {"name": "Zurich Stock Exchange ESTX 50 PR.EU", "ticker": "^STOXX50E"},
+    "switzerland": {
+        "name": "Zurich Stock Exchange ESTX 50 PR.EU",
+        "ticker": "^STOXX50E",
+    },
     "germany": {"name": "DAX Performance Index", "ticker": "^GDAXI"},
     "paris": {"name": "CAC Paris 40 Index", "ticker": "^FCHI"},
     "brussels": {"name": "BEL 20 Brussels Exchange Index", "ticker": "^BFX"},
@@ -71,17 +74,38 @@ INDICES = {
     "sp500tr": {"name": "S&P 500 Total Return USD", "ticker": "^SP500TR"},
     "xsp": {"name": "S&P 500 Mini SPX Options Index", "ticker": "^XSP"},
     "sp-materials": {"name": "S&P 500 Materials Sector Index", "ticker": "^SP500-15"},
-    "sp-industrials": {"name": "S&P 500 Industrials Sector Index", "ticker": "^SP500-20"},
-    "sp-discretionary": {"name": "S&P 500 Consumer Discretionary Index", "ticker": "^SP500-25"},
-    "sp-staples": {"name": "S&P 500 Consumer Staples Sector Index", "ticker": "^SP500-30"},
+    "sp-industrials": {
+        "name": "S&P 500 Industrials Sector Index",
+        "ticker": "^SP500-20",
+    },
+    "sp-discretionary": {
+        "name": "S&P 500 Consumer Discretionary Index",
+        "ticker": "^SP500-25",
+    },
+    "sp-staples": {
+        "name": "S&P 500 Consumer Staples Sector Index",
+        "ticker": "^SP500-30",
+    },
     "sp-health": {"name": "S&P 500 Health Care Sector Index", "ticker": "^SP500-35"},
     "sp-financials": {"name": "S&P 500 Financials Sector Index", "ticker": "^SP500-40"},
     "sp-it": {"name": "S&P 500 IT Sector Index", "ticker": "^SP500-45"},
-    "sp-communications": {"name": "S&P 500 Communications Sector Index", "ticker": "^SP500-50"},
+    "sp-communications": {
+        "name": "S&P 500 Communications Sector Index",
+        "ticker": "^SP500-50",
+    },
     "sp-utilities": {"name": "S&P 500 Utilities Sector Index", "ticker": "^SP500-55"},
-    "sp-real_estate": {"name": "S&P 500 Real Estate Sector Index", "ticker": "^SP500-60"}, 
-    "sp-airlines": {"name": "S&P 500 Airlines Industry Index", "ticker": "^SP500-203020"},
-    "sp-tech_hardware": {"name": "S&P 500 Technology Hardware Industry", "ticker": "^SP500-452020"},
+    "sp-real_estate": {
+        "name": "S&P 500 Real Estate Sector Index",
+        "ticker": "^SP500-60",
+    },
+    "sp-airlines": {
+        "name": "S&P 500 Airlines Industry Index",
+        "ticker": "^SP500-203020",
+    },
+    "sp-tech_hardware": {
+        "name": "S&P 500 Technology Hardware Industry",
+        "ticker": "^SP500-452020",
+    },
     "djt": {"name": "Dow Jones Transportation Average Index", "ticker": "^DJT"},
     "dju": {"name": "Dow Jones Utility Average Index", "ticker": "^DJU"},
     "ixch": {"name": "NASDAQ Health Care Index", "ticker": "^IXCH"},
@@ -91,7 +115,10 @@ INDICES = {
     "bank": {"name": "NASDAQ Bank Index", "ticker": "^BANK"},
     "tran": {"name": "NASDAQ Transportation Index", "ticker": "^TRAN"},
     "ice-auto": {"name": "ICE FactSet Global NextGen Auto Index", "ticker": "^ICEFSNA"},
-    "ice-comm": {"name": "ICE FactSet Global NextGen Communications Index", "ticker": "^ICEFSNC"},
+    "ice-comm": {
+        "name": "ICE FactSet Global NextGen Communications Index",
+        "ticker": "^ICEFSNC",
+    },
     "nyl": {"name": "NYSE World Leaders Index", "ticker": "^NYL"},
     "nyi": {"name": "NYSE International 100 Index", "ticker": "^NYI"},
     "nyy": {"name": "NYSE TMT Index", "ticker": "^NYY"},
@@ -101,7 +128,10 @@ INDICES = {
     "pse": {"name": "NYSE ARCA Tech 100 Index", "ticker": "^PSE"},
     "xci": {"name": "NYSE ARCA Computer Tech Index", "ticker": "^XCI"},
     "xal": {"name": "NYSE ARCA Airline Index", "ticker": "^XAL"},
-    "xtc": {"name": "NYSE ARCA North American Telecom Industry Index", "ticker": "^XTC"},
+    "xtc": {
+        "name": "NYSE ARCA North American Telecom Industry Index",
+        "ticker": "^XTC",
+    },
     "bxm": {"name": "CBOE Buy-Write Monthly Index", "ticker": "^BXM"},
     "sox": {"name": "PHLX Semiconductor Index", "ticker": "^SOX"},
     "xau": {"name": "PHLX Gold/Silver Index", "ticker": "^XAU"},
@@ -113,7 +143,7 @@ INDICES = {
     "wgreit": {"name": "Wilshire Global REIT Index", "ticker": "^WGREIT"},
     "wgresi": {"name": "Wilshire Global Real Estate Sector Index", "ticker": "^WGRESI"},
     "wilreit": {"name": "Wilshire US REIT Index", "ticker": "^WILREIT"},
-    "wilresi": {"name": "Wilshire US Real Estate Security Index", "ticker": "^WILRESI"},    
+    "wilresi": {"name": "Wilshire US Real Estate Security Index", "ticker": "^WILRESI"},
 }
 
 
