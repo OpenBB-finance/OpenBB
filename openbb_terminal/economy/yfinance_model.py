@@ -36,10 +36,8 @@ INDICES = {
     "ftas": {"name": "UK FTSE All-Share Index", "ticker": "^FTAS"},
     "spuk": {"name": "S&P United Kingdom (PDS)", "ticker": "^SPUK"},
     "uk100": {"name": "CBOE UK 100 Index", "ticker": "^BUK100P"},
-    "switzerland": {
-        "name": "Zurich Stock Exchange ESTX 50 PR.EU",
-        "ticker": "^STOXX50E",
-    },
+    "STOXX": {"name": "Zurich Stock Exchange STXE 600 PR.EUR", "ticker": "^STOXX"},
+    "STOXX50E": {"name": "Zurich Stock Exchange ESTX 50 PR.EU", "ticker": "^STOXX50E"},
     "dax": {"name": "DAX Performance Index", "ticker": "^GDAXI"},
     "cac": {"name": "CAC Paris 40 Index", "ticker": "^FCHI"},
     "bel": {"name": "BEL 20 Brussels Exchange Index", "ticker": "^BFX"},
