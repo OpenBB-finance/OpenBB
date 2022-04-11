@@ -38,9 +38,9 @@
     "y_on_right": true,
     "gridcolor": "#A3A0A2",
     "gridstyle": ":",
-    "facecolor": "#101010",
+    "facecolor": "black",
     "edgecolor": null,
-    "figcolor": "#101010",
+    "figcolor": null,
     "gridaxis": null,
     "rc": null,
     "legacy_rc": null

@@ -39,7 +39,7 @@ axes.linewidth: 0.2
 axes.labelsize: small
 axes.titlelocation: left
 
-axes.facecolor: 101010
+axes.facecolor: black
 axes.edgecolor: F5EFF3
 axes.labelcolor: F5EFF3
 axes.grid: true
@@ -72,18 +72,18 @@ grid.linestyle: :
 
 legend.framealpha: 0.6
 legend.frameon: true
-legend.facecolor: 101010
-legend.edgecolor: 101010
+legend.facecolor: black
+legend.edgecolor: black
 legend.scatterpoints: 3
 legend.fontsize: small
 legend.loc: upper left
 
-figure.facecolor: 101010
-figure.edgecolor: 101010
+figure.facecolor: black
+figure.edgecolor: black
 figure.subplot.hspace: 0.2
 
-savefig.facecolor: 101010
-savefig.edgecolor: 101010
+savefig.facecolor: black
+savefig.edgecolor: black
 
 ### Boxplots
 boxplot.boxprops.color: F5EFF3

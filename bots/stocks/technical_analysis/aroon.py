@@ -225,7 +225,7 @@ def aroon_command(
     imagefile = imps.image_border(imagefile, fig=fig)
 
     return {
-        "title": f"Stocks: On-Balance-Volume {ticker.upper()}",
+        "title": f"Stocks: Aroon-Indicator {ticker.upper()}",
         "description": plt_link,
         "imagefile": imagefile,
     }
