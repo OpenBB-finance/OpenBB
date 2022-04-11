@@ -16,7 +16,7 @@ def iv_command(ticker: str = None):
         logger.debug("opt info %s", ticker)
 
     # Check for argument
-    if not ticker:
+    if ticker is None:
         raise Exception("Stock ticker is required")
 
     df = barchart_model.get_options_info(ticker)

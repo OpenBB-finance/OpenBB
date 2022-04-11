@@ -65,7 +65,7 @@ def options_run(
             y=df_opt["OI_call"],
             name="Calls",
             mode="lines+markers",
-            line=dict(color="#00ACFF", width=3),
+            line=dict(color=imps.PLT_SCAT_INCREASING, width=3),
         )
     )
 
@@ -75,7 +75,7 @@ def options_run(
             y=df_opt["OI_put"],
             name="Puts",
             mode="lines+markers",
-            line=dict(color="#e4003a", width=3),
+            line=dict(color=imps.PLT_SCAT_DECREASING, width=3),
         )
     )
     fig.add_trace(
@@ -83,7 +83,7 @@ def options_run(
             x=[current_price, current_price],
             y=[dmin, dmax],
             mode="lines",
-            line=dict(color="gold", width=2),
+            line=dict(color=imps.PLT_SCAT_PRICE, width=2),
             name="Current Price",
         )
     )

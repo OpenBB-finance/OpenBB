@@ -24,7 +24,7 @@ def oi_command(
         logger.debug("opt oi %s %s %s %s", ticker, expiry, min_sp, max_sp)
 
     # Check for argument
-    if not ticker:
+    if ticker is None:
         raise Exception("Stock ticker is required")
 
     dates = yfinance_model.option_expirations(ticker)
@@ -70,7 +70,7 @@ def oi_command(
             y=df_opt["OI_call"],
             name="Calls",
             mode="lines+markers",
-            line=dict(color="#00ACFF", width=3),
+            line=dict(color=imps.PLT_SCAT_INCREASING, width=3),
         )
     )
 
@@ -80,7 +80,7 @@ def oi_command(
             y=df_opt["OI_put"],
             name="Puts",
             mode="lines+markers",
-            line=dict(color="#e4003a", width=3),
+            line=dict(color=imps.PLT_SCAT_DECREASING, width=3),
         )
     )
     fig.add_trace(
@@ -88,7 +88,7 @@ def oi_command(
             x=[current_price, current_price],
             y=[dmin, dmax],
             mode="lines",
-            line=dict(color="gold", width=2),
+            line=dict(color=imps.PLT_SCAT_PRICE, width=2),
             name="Current Price",
         )
     )

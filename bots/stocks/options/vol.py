@@ -24,7 +24,7 @@ def vol_command(
         logger.debug("opt-vol %s %s %s %s", ticker, expiry, min_sp, max_sp)
 
     # Check for argument
-    if not ticker:
+    if ticker is None:
         raise Exception("Stock ticker is required")
 
     dates = yfinance_model.option_expirations(ticker)
@@ -62,7 +62,7 @@ def vol_command(
             y=call_v.values,
             name="Calls",
             mode="lines+markers",
-            line=dict(color="#00ACFF", width=3),
+            line=dict(color=imps.PLT_SCAT_INCREASING, width=3),
         )
     )
     fig.add_trace(
@@ -71,7 +71,7 @@ def vol_command(
             y=put_v.values,
             name="Puts",
             mode="lines+markers",
-            line=dict(color="#e4003a", width=3),
+            line=dict(color=imps.PLT_SCAT_DECREASING, width=3),
         )
     )
     fig.add_trace(
@@ -79,7 +79,7 @@ def vol_command(
             x=[current_price, current_price],
             y=[0, dmax],
             mode="lines",
-            line=dict(color="gold", width=2),
+            line=dict(color=imps.PLT_SCAT_PRICE, width=2),
             name="Current Price",
         )
     )

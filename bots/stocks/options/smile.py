@@ -23,7 +23,7 @@ def smile_command(
         logger.debug("opt smile %s %s %s %s", ticker, expiry, min_sp, max_sp)
 
     # Check for argument
-    if not ticker:
+    if ticker is None:
         raise Exception("Stock ticker is required")
 
     dates = yfinance_model.option_expirations(ticker)
@@ -57,10 +57,10 @@ def smile_command(
             name="Calls",
             mode="lines+markers",
             marker=dict(
-                color="#00ACFF",
+                color=imps.PLT_SCAT_INCREASING,
                 size=4.5,
             ),
-            line=dict(color="#00ACFF", width=2, dash="dash"),
+            line=dict(color=imps.PLT_SCAT_INCREASING, width=2, dash="dash"),
         )
     )
 
@@ -71,10 +71,10 @@ def smile_command(
             name="Puts",
             mode="lines+markers",
             marker=dict(
-                color="#e4003a",
+                color=imps.PLT_SCAT_DECREASING,
                 size=4.5,
             ),
-            line=dict(color="#e4003a", width=2, dash="dash"),
+            line=dict(color=imps.PLT_SCAT_DECREASING, width=2, dash="dash"),
         )
     )
 

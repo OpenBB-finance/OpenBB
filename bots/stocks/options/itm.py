@@ -76,7 +76,11 @@ def itm_command(
     fig.update_traces(
         cells=dict(
             align=["center", "right"],
-            font=dict(color=["white"] + ["#00ACFF"] * 2 + ["#e4003a"] * 2),
+            font=dict(
+                color=["white"]
+                + [imps.PLT_TBL_INCREASING] * 2
+                + [imps.PLT_TBL_DECREASING] * 2
+            ),
         ),
     )
     imagefile = imps.save_image("opt-itm.png", fig)
