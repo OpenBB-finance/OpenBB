@@ -1,7 +1,6 @@
 import logging
 from datetime import datetime, timedelta
 
-import pandas as pd
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
@@ -78,30 +77,8 @@ def ftd_command(ticker: str = "", start="", end=""):
     )
     if imps.PLT_WATERMARK:
         fig.add_layout_image(imps.PLT_WATERMARK)
-    ftds_data["QUANTITY (FAILS)"] = ftds_data["QUANTITY (FAILS)"].apply(
-        lambda x: f"{x:.1f}"
-    )
-    ftds_data["QUANTITY (FAILS)"] = pd.to_numeric(
-        ftds_data["QUANTITY (FAILS)"].astype(float)
-    )
-    volume_ticks = (ftds_data["QUANTITY (FAILS)"].values.max()).astype(int)
-    round_digits = -3
-    first_val = round(volume_ticks * 0.20, round_digits)
-    if len(str(volume_ticks)) > 5:
-        round_digits = -4
-        first_val = round(volume_ticks * 0.20, round_digits)
-    if len(str(volume_ticks)) > 6:
-        round_digits = -5
-        first_val = round(volume_ticks * 0.20, round_digits)
-    if len(str(volume_ticks)) > 7:
-        round_digits = -6
-        first_val = round(volume_ticks * 0.20, round_digits)
-    if len(str(volume_ticks)) > 8:
-        round_digits = -8
-        first_val = round(volume_ticks * 0.20, round_digits)
-    if len(str(volume_ticks)) > 9:
-        round_digits = -9
-        first_val = round(volume_ticks * 0.20, round_digits)
+
+    ftds_scale = imps.chart_volume_scaling(ftds_data["QUANTITY (FAILS)"], 2)
 
     fig.update_layout(
         margin=dict(l=0, r=20, t=30, b=20),
@@ -135,14 +112,8 @@ def ftd_command(ticker: str = "", start="", end=""):
                 size=13,
             ),
             nticks=20,
-            range=[0, (volume_ticks * 3)],
-            tickvals=[
-                first_val * 1,
-                first_val * 2,
-                first_val * 3,
-                first_val * 4,
-                first_val * 5,
-            ],
+            range=ftds_scale["range"],
+            tickvals=ftds_scale["ticks"],
         ),
         xaxis=dict(
             rangeslider=dict(visible=False),

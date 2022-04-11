@@ -334,22 +334,25 @@ def in_decreasing_color_list(df_column: pd.DataFrame.columns) -> List[str]:
     return colorlist
 
 
-def chart_volume_scaling(df_stock: pd.DataFrame) -> Dict[str, list]:
-    """Takes df_stock dataframe and returns volume_ticks, tickvals for chart volume scaling
+def chart_volume_scaling(
+    df_column: pd.DataFrame.columns, range_x: int = 5
+) -> Dict[str, list]:
+    """Takes df_column and returns volume_ticks, tickvals for chart volume scaling
 
     Parameters
     ----------
-    df_stock : pd.DataFrame
-        Stock Dateframe
-
+    df_column : pd.DataFrame.columns
+        Dataframe column
+    range_x : int, optional
+        Number to multiply volume, by default 5
     Returns
     -------
     Dict[str, list]
         {"range": volume_range, "ticks": tickvals}
     """
-    df_stock["Volume"] = df_stock["Volume"].apply(lambda x: f"{x:.1f}")
-    df_stock["Volume"] = pd.to_numeric(df_stock["Volume"].astype(float))
-    volume_ticks = (df_stock["Volume"].values.max()).astype(int)
+    df_column = df_column.apply(lambda x: f"{x:.1f}")
+    df_column = pd.to_numeric(df_column.astype(float))
+    volume_ticks = (df_column.values.max()).astype(int)
     round_digits = -3
     first_val = round(volume_ticks * 0.20, round_digits)
     if len(str(volume_ticks)) > 5:
@@ -374,7 +377,7 @@ def chart_volume_scaling(df_stock: pd.DataFrame) -> Dict[str, list]:
         first_val * 4,
         first_val * 5,
     ]
-    volume_range = [0, (volume_ticks * 5)]
+    volume_range = [0, (volume_ticks * range_x)]
     return {"range": volume_range, "ticks": tickvals}
 
 
@@ -475,13 +478,12 @@ def save_image(filename: str, fig: go.Figure = None, bytesIO: io.BytesIO = None)
         # Transform Fig into PNG with Running Scope. Returns image bytes
         fig = scope.transform(fig, scale=3, format="png")
         imgbytes = io.BytesIO(fig)
-        image = Image.open(imgbytes)
     elif bytesIO:
         imgbytes = bytesIO
-        image = Image.open(imgbytes)
     else:
         raise Exception("Function requires a go.Figure or io.BytesIO object")
 
+    image = Image.open(imgbytes)
     image = autocrop_image(image, 0)
     imgbytes.seek(0)
     image.save(filesave, "PNG", quality=100)

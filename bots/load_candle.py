@@ -629,7 +629,7 @@ def candle_fig(
     fig.update_yaxes(showline=True)
 
     # rounding the volume
-    vol_scale = imps.chart_volume_scaling(df_stock)
+    vol_scale = imps.chart_volume_scaling(df_stock["Volume"])
 
     fig.update_layout(
         margin=dict(l=5, r=10, t=40, b=20),
