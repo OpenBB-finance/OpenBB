@@ -70,13 +70,10 @@ def get_messages(ticker: str, limit: int = 30) -> List[str]:
     result = requests.get(
         f"https://api.stocktwits.com/api/2/streams/symbol/{ticker}.json"
     )
-    messages = []
     if result.status_code == 200:
-        for idx, message in enumerate(result.json()["messages"]):
-            messages.append(message["body"])
-            if idx > limit - 1:
-                break
-    return messages
+        return [message["body"] for message in result.json()["messages"][:limit]]
+
+    return []
 
 
 @log_start_end(log=logger)
@@ -117,11 +114,6 @@ def get_stalker(user: str, limit: int = 30) -> List[Dict]:
     """
     result = requests.get(f"https://api.stocktwits.com/api/2/streams/user/{user}.json")
     if result.status_code == 200:
-        messages = []
-        for idx, message in enumerate(result.json()["messages"]):
-            messages.append(message)
-            if idx > limit - 1:
-                break
-        return messages
+        return list(result.json()["messages"][:limit])
 
     return []
