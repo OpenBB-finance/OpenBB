@@ -517,7 +517,7 @@ def image_border(
         fig = scope.transform(fig, scale=5, format="png")
         imgbytes = io.BytesIO(fig)
         img = Image.open(imgbytes)
-    elif base64 in kwargs:
+    elif base64:
         img = Image.open(base64)
     else:
         img = Image.open(filename)

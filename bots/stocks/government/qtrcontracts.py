@@ -5,9 +5,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 from bots import imps
-from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import plot_autoscale
 from openbb_terminal.stocks.government import quiverquant_model
 
 logger = logging.getLogger(__name__)
@@ -39,7 +37,7 @@ def qtrcontracts_command(num: int = 20, analysis=""):
     # Output Data
     if analysis in {"upmom", "downmom"}:
         description = tickers.to_string()
-        fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        fig, ax = plt.subplots(figsize=imps.bot_plot_scale(), dpi=imps.BOT_PLOT_DPI)
         max_amount = 0
         quarter_ticks = []
         for symbol in tickers:

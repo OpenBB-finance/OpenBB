@@ -6,10 +6,9 @@ from matplotlib import pyplot as plt
 
 from bots import config_discordbot as cfg
 from bots.helpers import image_border, load
+from bots.imps import BOT_PLOT_DPI, bot_plot_scale
 from openbb_terminal.common.technical_analysis import volatility_model
-from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import plot_autoscale
 
 logger = logging.getLogger(__name__)
 
@@ -66,7 +65,7 @@ def donchian_command(
     df_ta = df_ta.fillna(0.0)
 
     # Output Data
-    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    fig, ax = plt.subplots(figsize=bot_plot_scale(), dpi=BOT_PLOT_DPI)
     ax.plot(df_stock.index, df_stock["Adj Close"].values, lw=3)
     ax.plot(df_ta.index, df_ta.iloc[:, 0].values, lw=1.5, label="upper")
     ax.plot(df_ta.index, df_ta.iloc[:, 1].values, lw=1.5, ls="--")

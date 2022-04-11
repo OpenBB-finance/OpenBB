@@ -5,9 +5,7 @@ from datetime import datetime, timedelta
 from matplotlib import pyplot as plt
 
 from bots import imps
-from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import plot_autoscale
 from openbb_terminal.stocks.due_diligence import business_insider_model
 
 logger = logging.getLogger(__name__)
@@ -50,7 +48,7 @@ def pt_command(ticker: str = "", raw: bool = False, start=""):
             "description": report,
         }
     else:
-        plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        plt.subplots(figsize=imps.bot_plot_scale(), dpi=imps.BOT_PLOT_DPI)
         if start:
             df_analyst_data = df_analyst_data[start:]
 
