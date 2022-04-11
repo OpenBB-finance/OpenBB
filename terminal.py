@@ -15,6 +15,7 @@ import dotenv
 
 from prompt_toolkit.completion import NestedCompleter
 
+from openbb_terminal.core.config.constants import REPO_DIR
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.helper_funcs import (
     check_path,
@@ -747,7 +748,7 @@ def main(
         console.print("[green]OpenBB Terminal Integrated Tests:\n[/green]")
         for file in test_files:
             file = file.replace("//", "/")
-            file_name = file[file.rfind("OpenBBTerminal") :].replace(  # noqa: E203
+            file_name = file[file.rfind(REPO_DIR.name) :].replace(  # noqa: E203
                 "\\", "/"
             )
             console.print(f"{file_name}  {((i/length)*100):.1f}%")
