@@ -49,7 +49,7 @@ INDICES = {
     "asx200": {"name": "S&P/ASX 200 Index", "ticker": "^AXJO"},
     "australia": {"name": "Australia All Ordinary Shares Index", "ticker": "^AORD"},
     "nz50": {"name": "S&P New Zealand 50 Index", "ticker": "^nz50"},
-    "kosbi": {"name": "KOSPI Compsite Index", "ticker": "^KS11"},
+    "kosbi": {"name": "KOSPI Composite Index", "ticker": "^KS11"},
     "nikkei": {"name": "Nikkei 255 Index", "ticker": "^N225"},
     "shanghai": {"name": "Shanghai Composite Index", "ticker": "000001.SS"},
     "shenzhen": {"name": "Shenzhen Component Index", "ticker": "399001.SZ"},
