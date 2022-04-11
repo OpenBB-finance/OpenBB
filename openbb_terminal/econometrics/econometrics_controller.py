@@ -217,7 +217,7 @@ class EconometricsController(BaseController):
     def print_help(self):
         """Print help"""
         help_text = f"""[cmds]
-    load          load in custom data sets
+    load          load in custom data sets (use -ex for examples)
     export        export a dataset
     remove        remove a dataset
     options       show available column-dataset options[/cmds]
