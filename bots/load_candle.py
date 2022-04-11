@@ -18,7 +18,7 @@ crypto = "-"
 est_tz = pytz.timezone("America/New_York")
 
 
-def qoute(ticker_str: str):
+def quote(ticker_str: str):
     ticker = imps.yf.Ticker(ticker_str)
     quote_df = pd.DataFrame(
         [
@@ -571,7 +571,7 @@ def candle_fig(
     )
 
     # Add Current Price/Volume
-    ch_info = qoute(ticker)
+    ch_info = quote(ticker)
 
     fig.add_annotation(
         xref="paper",
