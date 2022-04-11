@@ -37,7 +37,7 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Sun, 03 Apr 2022 19:42:33 GMT
+      - Mon, 11 Apr 2022 01:17:19 GMT
       server:
       - ATS
       vary:
@@ -47,11 +47,11 @@ interactions:
       x-envoy-upstream-service-time:
       - '2'
       x-request-id:
-      - 98a3466e-3bcd-4944-a53c-26e53ea0f6ed
+      - a4743519-61db-40dd-94c8-a9aadf280b26
       x-yahoo-request-id:
-      - 02brop9h4ju59
+      - boctu0lh570cv
       y-rid:
-      - 02brop9h4ju59
+      - boctu0lh570cv
     status:
       code: 200
       message: OK

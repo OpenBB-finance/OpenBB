@@ -45,13 +45,21 @@ COLOR = disnake.Color.from_rgb(130, 38, 97)
 
 # Interactive Chart Settings
 INTERACTIVE = strtobool(os.getenv("OPENBB_INTERACTIVE", "False"))
-INTERACTIVE_DIR = bots_path.joinpath("interactive/")
-INTERACTIVE_URL = ""
+INTERACTIVE_DIR = (
+    Path(str(os.getenv("OPENBB_INTERACTIVE_DIR")))
+    if os.getenv("OPENBB_INTERACTIVE_DIR")
+    else bots_path.joinpath("interactive/")
+)
+INTERACTIVE_URL = os.getenv("OPENBB_INTERACTIVE_URL") or ""
 
 # Image Settings
 IMG_HOST_ACTIVE = strtobool(os.getenv("OPENBB_IMG_HOST_ACTIVE", "False"))
-IMG_DIR = bots_path.joinpath("interactive/images/")
-IMAGES_URL = ""  # Ex. "http://your-site.com/images/"
+IMG_DIR = (
+    Path(str(os.getenv("OPENBB_IMG_DIR")))
+    if os.getenv("OPENBB_IMG_DIR")
+    else bots_path.joinpath("interactive/images/")
+)
+IMAGES_URL = os.getenv("OPENBB_IMAGES_URL") or ""  # Ex. "http://your-site.com/images/"
 
 # IMG_BG = bots_path.joinpath("files/bg.png")  # Light BG
 IMG_BG = bots_path.joinpath("files/bg-dark_openbb.png")  # Dark BG
