@@ -11,7 +11,7 @@ from bots.helpers import ShowView
 
 load_dotenv()
 
-app = App(token=os.environ["OPENBB_SLACK_APP_TOKEN"])
+app = App(token=os.environ.get("OPENBB_SLACK_APP_TOKEN", None))
 
 available_commands = list(commands.keys())
 

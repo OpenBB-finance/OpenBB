@@ -92,7 +92,9 @@ def check_api_key(api_keys):
                 undefined_apis = []
                 for key in api_keys:
                     # Get value of the API Keys
-                    if getattr(cfg, key) == "REPLACE_ME":
+                    if getattr(cfg, key) == "REPLACE_ME" and key not in [
+                        "API_KEY_ALPHAVANTAGE"
+                    ]:
                         undefined_apis.append(key)
 
                 if undefined_apis:

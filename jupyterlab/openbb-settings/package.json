@@ -7,9 +7,9 @@
     "jupyterlab",
     "jupyterlab-extension"
   ],
-  "homepage": "https://github.com/GamestonkTerminal/GamestonkTerminal",
+  "homepage": "https://github.com/OpenBB-finance/OpenBBTerminal",
   "bugs": {
-    "url": "https://github.com/GamestonkTerminal/GamestonkTerminal/issues"
+    "url": "https://github.com/OpenBB-finance/OpenBBTerminal/issues"
   },
   "license": "MIT",
   "author": {

@@ -16,7 +16,7 @@
 
 This tutorial assumes that you have successfully installed OpenBB Terminal.
 
-Next, from the GamestonkTerminal root folder run the following command:
+Next, from the OpenBBTerminal root folder run the following command:
 
 ```text
 poetry install -E bots
@@ -56,7 +56,7 @@ poetry install -E bots
 3. Click 'Create a new app'.
 4. Go to the 'Settings' page, and then find Config Vars.
 5. Add OPENBB_DISCORD_BOT_TOKEN and OPENBB_IMGUR_CLIENT_ID with their associated values.
-6. Go to the repository:<https://github.com/GamestonkTerminal/GamestonkTerminal> and fork it if you have not already
+6. Go to the repository:<https://github.com/OpenBB-finance/OpenBBTerminal> and fork it if you have not already
    done so.
 7. On the 'Deploy' page select Github as the deployment method.
 8. Select 'enable automatic deploys' if you would like for the server to update every time you update your fork.
@@ -73,7 +73,7 @@ In order to config the discord bot you will need to edit the
 1. Edit the path to the terminal by changing the variable `GST_PATH`. E.g.
 
    ```python
-   GST_PATH = os.path.join("~", "Documents", "GamestonkTerminal")
+   GST_PATH = os.path.join("~", "Documents", "OpenBBTerminal")
    sys.path.append(GST_PATH)
    ```
 
@@ -138,5 +138,5 @@ If an error occurs, use `DEBUG=True` on the [config_discordbot.py](config_discor
 
 Then, report what is the issue with the console output attached either by:
 
-- [Opening an issue on github](https://github.com/GamestonkTerminal/GamestonkTerminal/issues/new/choose)
+- [Opening an issue on github](https://github.com/OpenBB-finance/OpenBBTerminal/issues/new/choose)
 - Contacting either `DidierRLopes` (@SexyYear) or `northern-64bit`

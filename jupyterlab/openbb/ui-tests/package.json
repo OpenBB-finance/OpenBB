@@ -2,7 +2,7 @@
   "name": "@gamestonk/launcher-tests",
   "version": "0.1.0",
   "description": "Integration test for terminal launcher",
-  "repository": "https://github.com/GamestonkTerminal/GamestonkTerminal",
+  "repository": "https://github.com/OpenBB-finance/OpenBBTerminal",
   "author": "OpenBB Terminal Contributors",
   "license": "MIT",
   "private": true,

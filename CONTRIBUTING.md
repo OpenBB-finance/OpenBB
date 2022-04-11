@@ -85,8 +85,8 @@ repository is live:
 ### Select Feature
 
 - Pick a feature you want to implement or a bug.
-- If out are out of ideas, look into our [issues](https://github.com/GamestonkTerminal/GamestonkTerminal/issues) or
-  search for [`# TODO`](https://www.tickgit.com/browse?repo=github.com/GamestonkTerminal/GamestonkTerminal&branch=main) in
+- If out are out of ideas, look into our [issues](https://github.com/OpenBB-finance/OpenBBTerminal/issues) or
+  search for [`# TODO`](https://www.tickgit.com/browse?repo=github.com/OpenBB-finance/OpenBBTerminal&branch=main) in
   our repository.
 - Feel free to discuss what you'll be working on via discord <https://discord.gg/Up2QGbMKHY>, to avoid duplicate work.
 
@@ -480,7 +480,7 @@ speeds up the time it takes to run tests. To use VCRPY add **@pytest.mark.vcr** 
 - **High-level documentation**:
   - Add a row to the table on the README of the corresponding context/folder.
   - E.g. if you are adding `pipo` feature to `discovery` menu under `stocks` context, you need to go into the corresponding
-    [README](https://github.com/GamestonkTerminal/GamestonkTerminal/blob/main/openbb_terminal/stocks/discovery/README.md)
+    [README](https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/openbb_terminal/stocks/discovery/README.md)
     and add a new row to the table, like:
 
 | Command | Description | Source                        |

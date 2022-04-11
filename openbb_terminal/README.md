@@ -8,6 +8,7 @@
       <li><a href="#Anaconda---Python">Anaconda & Python Installation</a></li>
       <li><a href="#Docker-Installation">Docker Installation</a></li>
       <li><a href="#web-ui---docker">Docker Web UI Installation</a></li>
+      <li><a href="#local-installation-of-gst-on-raspberry-pi">Raspberry-Pi-Installation - Portable GST</a></li>
       <li><a href="#api-keys">API Keys</a></li>
     </ol>
 </details>
@@ -25,7 +26,8 @@ First step in all options is to star the project
 
 <img width="1272" alt="Github starts" src="https://user-images.githubusercontent.com/25267873/115989986-e20cfe80-a5b8-11eb-8182-d6d87d092252.png">
 
-If you want to install the terminal using Python ignore the User section and jump to <a href="#Anaconda & Python">Anaconda & Python</a> section.
+If you want to install the terminal using Python ignore the User section and jump to <a href="#Anaconda & Python">
+Anaconda & Python</a> section.
 
 ## User
 
@@ -75,15 +77,21 @@ files from the .dmg file.
 
 ### Anaconda & Python
 
-This installation type supports both Windows and Unix systems (Linux + MacOS). However, on Windows it can become messy so it is easier to use Windows Subsystem Linux (WSL) on this operating system. WSL emulates a Linux machine inside your Windows system.
+This installation type supports both Windows and Unix systems (Linux + MacOS). However, on Windows it can become messy
+so it is easier to use Windows Subsystem Linux (WSL) on this operating system. WSL emulates a Linux machine inside your
+Windows system.
 
-If you are using macOS or other Linux operating systems you can jump the next section <a href="#installing-the-terminal">Installing the terminal</a>.
+If you are using macOS or other Linux operating systems you can jump the next section
+<a href="#installing-the-terminal">Installing the terminal</a>.
 
 #### Installing WSL (Only for Windows users)
 
-If you are using Windows you first you need to install WSL. The process is simple and a tutorial can be found [here](https://www.sitepoint.com/wsl2/). Once you reach the section **Update Linux** on that tutorial, you should have a linux machine installed and can proceed to the next steps.
+If you are using Windows you first you need to install WSL. The process is simple and a tutorial can be found [here](https://www.sitepoint.com/wsl2/).
+Once you reach the section **Update Linux** on that tutorial, you should have a linux machine installed and can proceed
+to the next steps.
 
-Since WSL installation is headless by default (i.e., you have only access to a terminal running a linux distribution) you need some extra steps to be able to visualize the charts produced by the terminal (more detailed tutorial [here](https://medium.com/@shaoyenyu/make-matplotlib-works-correctly-with-x-server-in-wsl2-9d9928b4e36a)):
+Since WSL installation is headless by default (i.e., you have only access to a terminal running a linux distribution)
+you need some extra steps to be able to visualize the charts produced by the terminal (more detailed tutorial [here](https://medium.com/@shaoyenyu/make-matplotlib-works-correctly-with-x-server-in-wsl2-9d9928b4e36a)):
 
 1. Dynamically export the DISPLAY environment variable in WSL2:
 
@@ -99,7 +107,9 @@ Since WSL installation is headless by default (i.e., you have only access to a t
 
 After this, `VcXsrv` should be running successfully and we can proceed to terminal installation.
 
-Although we **extremely** recommend using WSL to run the terminal on windows, if you don't want or can't for some reason, you can try install the terminal directly on Windows without WSL. If you'd like to see a video recording of the installation on Windows without WSL, @JohnnyDankseed has made one available [here](https://www.youtube.com/watch?v=-DJJ-cfquDA).
+Although we **extremely** recommend using WSL to run the terminal on windows, if you don't want or can't for some reason,
+you can try install the terminal directly on Windows without WSL. If you'd like to see a video recording of the
+installation on Windows without WSL, @JohnnyDankseed has made one available [here](https://www.youtube.com/watch?v=-DJJ-cfquDA).
 
 #### Installing the terminal
 
@@ -119,9 +129,11 @@ Anaconda's Python distribution.
 
      - If you are using macOS click [Installing on MacOS](https://docs.anaconda.com/anaconda/install/mac-os/)
      - If you are using WSL or Linux click [Installing on Linux](https://docs.anaconda.com/anaconda/install/linux/)
-     - If you are using Windows click [Installing on Windows](https://docs.anaconda.com/anaconda/install/windows/). **ONLY REQUIRED IF NOT USING WSL**, you also need to install/update Microsoft C++ Build Tools from here: <https://visualstudio.microsoft.com/visual-cpp-build-tools/>
+     - If you are using Windows click [Installing on Windows](https://docs.anaconda.com/anaconda/install/windows/).
+     **ONLY REQUIRED IF NOT USING WSL**, you also need to install/update Microsoft C++ Build Tools from here: <https://visualstudio.microsoft.com/visual-cpp-build-tools/>
 
-   - After following the steps, confirm that you have it by opening a terminal and running: `conda -V`. The output should be something along the lines of: `conda 4.9.2`
+   - After following the steps, confirm that you have it by opening a terminal and running: `conda -V`. The output
+   should be something along the lines of: `conda 4.9.2`
 
 2. Install git
 
@@ -192,7 +204,8 @@ Anaconda's Python distribution.
 before you call `python terminal.py` again.
 
 **TROUBLESHOOT:** If you are having troubles to install, check our _newest_
-<a href="https://github.com/OpenBB-finance/OpenBBTerminal/blob/master/TROUBLESHOOT.md"><strong>troubleshoot page</strong></a>. You can also reach for help on our [discord](https://discord.gg/Up2QGbMKHY).
+<a href="https://github.com/OpenBB-finance/OpenBBTerminal/blob/master/TROUBLESHOOT.md">
+<strong>troubleshoot page</strong></a>. You can also reach for help on our [discord](https://discord.gg/Up2QGbMKHY).
 
 ### Advanced User Install - Machine Learning
 
@@ -267,7 +280,9 @@ git stash pop
    docker pull ghcr.io/openbb-finance/openbbterminal-poetry:latest
    ```
 
-   Upon running this the first time, you should see the various layers downloading (note the random series of letters numbers will vary). The first time this is run, it will take a few minutes. Subsequent updates will be much faster, as the changes will be in the MB instead of GB.
+   Upon running this the first time, you should see the various layers downloading (note the random series of letters
+   numbers will vary). The first time this is run, it will take a few minutes. Subsequent updates will be much faster,
+   as the changes will be in the MB instead of GB.
 
    ![Screen Shot 2021-09-08 at 10 41 08 AM](https://user-images.githubusercontent.com/18151143/132531075-7d7f7e71-4fcb-435c-9bb3-466d7077eba4.png)
 
@@ -288,7 +303,8 @@ git stash pop
    This will open up the terminal in your command prompt or terminal. Note that this has provided now environment file,
    so you will not be able to view plots or use keys at this stage.
 
-   At this point, you should be able to use the majority of the features using Docker. To read more on adding the environment keys and how to configure your X-server to show plots, hop over to the
+   At this point, you should be able to use the majority of the features using Docker. To read more on adding the
+   environment keys and how to configure your X-server to show plots, hop over to the
    [Advanced Docker Setup](/DOCKER_ADVANCED.md).
 
 ### Web UI - Docker
@@ -297,13 +313,109 @@ git stash pop
 2. Navigate to the location of the Dockerfile in the repo (`cd openbb_terminal_web`)
 3. Ensure the launcher is executable with `chmod +x ./launch`
 4. Launch it with `./launch`. If you get a permission denied error, do `sudo ./launch` instead
-5. Once it's launched, you will be able to access it by going to `http://host-ip:8080` in a browser, or `http://localhost:8080` if you are running it on your local machine.
+5. Once it's launched, you will be able to access it by going to `http://host-ip:8080` in a browser, or
+   `http://localhost:8080` if you are running it on your local machine.
 
 For API keys, create the `setenv` file if it doesn't already exist.
 It will automatically get created on the first launch, and won't get committed to Git because it is on the `.gitignore`.
 Set the API keys [as explained here](https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/DOCKER_ADVANCED.md#environment-variables).
 Once you've put the API keys in that file, re-run the launch script, and it will use your API keys.
 There are a few things that still don't work, and you can see what works and what doesn't [here](https://github.com/CoconutMacaroon/OpenBBTerminal/blob/main/openbb_terminal_web/README.md#todo).
+
+### Local Installation of GST on Raspberry Pi
+
+1. Running raspbian lite(headless) or desktop (both 64bit) we should first start off with an update/upgrade.
+
+   ```bash
+   sudo apt update && sydo apt upgrade
+   ```
+
+   Once completed reboot and lets reopen.
+
+2. [Install Miniforge](https://github.com/conda-forge/miniforge) The community version of anaconda/miniconda that has
+   Arm support.
+
+   - Follow the on screen prompts to install miniforge(conda).
+
+   ```bash
+   wget https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-aarch64.sh
+   ```
+
+   - After following the steps, confirm that you have it by opening a terminal and running: `conda -V`. The output
+   should be something along the lines of: `conda 4.9.2`
+
+3. Install git
+
+   ```bash
+   conda install -c anaconda git
+   ```
+
+4. Install Cmake
+
+   ```bash
+   sudo apt update
+   sudo apt install -y cmake
+   pip install cmake
+   ```
+
+5. Clone the Project
+
+   - Via HTTPS: `git clone https://github.com/GamestonkTerminal/GamestonkTerminal.git`
+   - via SSH: `git clone git@github.com:GamestonkTerminal/GamestonkTerminal.git`
+
+6. Navigate into the project's folder
+
+   ```bash
+   cd GamestonkTerminal/
+   ```
+
+7. Create Environment
+
+   You can name the environment whatever you want. Although you could use names such as: `welikethestock`, `thisistheway`
+   or `diamondhands`, we recommend something simple and intuitive like `gst`. This is because this name will be used
+   from now onwards.
+
+   ```bash
+   conda env create -n gst python=3.9
+   ```
+
+8. Activate the virtual environment
+
+   ```bash
+   conda activate gst
+   ```
+
+   Note: At the end, you can deactivate it with: `conda deactivate`.
+
+9. Update all poetry dependencies
+
+   ```bash
+   poetry update --lock
+   ```
+
+   Note: This is done to solve any issues with poetry dependencies for the arm architecture of the rpi
+
+10. Install using our updated poetry installation
+
+    ```bash
+    poetry install
+    ```
+
+11. You're ready to Gamestonk it on a Raspbery Pi!
+
+    ```bash
+    python terminal.py
+    ```
+
+    Note: For a headless installation using raspbian lite also follow the Jupyter Lab installation
+
+12. Jupyter Lab (Optional. Early alpha). User the Terminal from Jupyter Lab
+
+   You can install Jupyter Lab extensions that help you manage settings and launch the terminal in a JL bash console
+   using the commands in the [jupyterlab/README.md](jupyterlab/README.md)
+
+**NOTE:** When you close the terminal and re-open it, the only command you need to re-call is `conda activate gst`
+before you call `python terminal.py` again.
 
 ### API Keys
 

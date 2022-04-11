@@ -24,7 +24,7 @@ def oi_command(
         logger.debug("opt oi %s %s %s %s", ticker, expiry, min_sp, max_sp)
 
     # Check for argument
-    if ticker is None:
+    if not ticker:
         raise Exception("Stock ticker is required")
 
     dates = yfinance_model.option_expirations(ticker)

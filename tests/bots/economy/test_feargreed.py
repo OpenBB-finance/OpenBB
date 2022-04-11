@@ -1,6 +1,9 @@
 import pytest
 
-from bots.economy.feargreed import feargreed_command
+try:
+    from bots.economy.feargreed import feargreed_command
+except ImportError:
+    pytest.skip(allow_module_level=True)
 
 
 def strftime(_):

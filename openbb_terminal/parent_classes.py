@@ -66,6 +66,8 @@ class BaseController(metaclass=ABCMeta):
 
     CHOICES_COMMANDS: List[str] = []
     CHOICES_MENUS: List[str] = []
+    COMMAND_SEPARATOR = "/"
+    KEYS_MENU = "keys" + COMMAND_SEPARATOR
 
     PATH: str = ""
     FILE_PATH: str = ""
@@ -133,14 +135,33 @@ class BaseController(metaclass=ABCMeta):
     def print_help(self) -> None:
         raise NotImplementedError("Must override print_help")
 
-    def log_queue(self, message: str) -> None:
-        if self.queue:
+    def contains_keys(self, string_to_check: str) -> bool:
+        if self.KEYS_MENU in string_to_check or self.KEYS_MENU in self.PATH:
+            return True
+        return False
+
+    def log_queue(self) -> None:
+        joined_queue = self.COMMAND_SEPARATOR.join(self.queue)
+        if self.queue and not self.contains_keys(joined_queue):
             logger.info(
-                "%s: {'path': '%s', 'queue': '%s'}",
-                message,
+                "QUEUE: {'path': '%s', 'queue': '%s'}",
                 self.PATH,
-                "/".join(self.queue),
+                joined_queue,
             )
+
+    def log_cmd_and_queue(
+        self, known_cmd: str, other_args_str: str, the_input: str
+    ) -> None:
+        if not self.contains_keys(the_input):
+            logger.info(
+                "CMD: {'path': '%s', 'known_cmd': '%s', 'other_args': '%s', 'input': '%s'}",
+                self.PATH,
+                known_cmd,
+                other_args_str,
+                the_input,
+            )
+        if the_input not in self.KEYS_MENU:
+            self.log_queue()
 
     @log_start_end(log=logger)
     def switch(self, an_input: str) -> List[str]:
@@ -184,14 +205,7 @@ class BaseController(metaclass=ABCMeta):
                     known_args.cmd = "reset"
 
             set_command_location(f"{self.PATH}{known_args.cmd}")
-            logger.info(
-                "CMD: {'path': '%s', 'known_cmd': '%s', 'other_args': '%s', 'input': '%s'}",
-                self.PATH,
-                known_args.cmd,
-                ";".join(other_args),
-                an_input,
-            )
-            self.log_queue("QUEUE")
+            self.log_cmd_and_queue(known_args.cmd, ";".join(other_args), an_input)
 
             # This is what mutes portfolio issue
             getattr(
@@ -200,7 +214,7 @@ class BaseController(metaclass=ABCMeta):
                 lambda _: "Command not recognized!",
             )(other_args)
 
-        self.log_queue("QUEUE")
+        self.log_queue()
 
         return self.queue
 
@@ -320,11 +334,12 @@ class BaseController(metaclass=ABCMeta):
                 self.queue = self.switch(an_input)
 
             except SystemExit:
-                logger.exception(
-                    "The command '%s' doesn't exist on the %s menu.",
-                    an_input,
-                    self.PATH,
-                )
+                if not self.contains_keys(an_input):
+                    logger.exception(
+                        "The command '%s' doesn't exist on the %s menu.",
+                        an_input,
+                        self.PATH,
+                    )
                 console.print(
                     f"\nThe command '{an_input}' doesn't exist on the {self.PATH} menu.",
                     end="",
@@ -348,7 +363,8 @@ class BaseController(metaclass=ABCMeta):
                         an_input = candidate_input
                     else:
                         an_input = similar_cmd[0]
-                    logger.warning("Replacing by %s", an_input)
+                    if not self.contains_keys(an_input):
+                        logger.warning("Replacing by %s", an_input)
                     console.print(f" Replacing by '{an_input}'.")
                     self.queue.insert(0, an_input)
                 else:

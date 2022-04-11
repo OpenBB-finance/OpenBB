@@ -66,7 +66,7 @@ CURRENCIES = [
     "ISK",
 ]
 
-# see https://github.com/GamestonkTerminal/GamestonkTerminal/pull/562#issuecomment-887842888
+# see https://github.com/OpenBB-finance/OpenBBTerminal/pull/562#issuecomment-887842888
 # EXCHANGES = paprika.get_list_of_exchanges()
 
 

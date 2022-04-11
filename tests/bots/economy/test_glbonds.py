@@ -1,6 +1,9 @@
 import pytest
 
-from bots.economy.glbonds import glbonds_command
+try:
+    from bots.economy.glbonds import glbonds_command
+except ImportError:
+    pytest.skip(allow_module_level=True)
 
 
 @pytest.mark.bots
