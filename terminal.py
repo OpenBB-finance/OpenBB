@@ -70,6 +70,7 @@ class TerminalController(BaseController):
         "funds",
         "alternative",
         "econometrics",
+        "tradinghours",
     ]
 
     PATH = "/"
@@ -139,7 +140,8 @@ class TerminalController(BaseController):
 >   alternative
 >   econometrics
 >   portfolio
->   jupyter[/menu]
+>   jupyter
+>   tradinghours[/menu]
     """,
             menu="Home",
         )
@@ -263,6 +265,14 @@ class TerminalController(BaseController):
         if tz_ns_parser:
             if tz_ns_parser.timezone:
                 replace_user_timezone(tz_ns_parser.timezone.replace("-", "/"))
+
+    def call_tradinghours(self, _):
+        """Process tradinghours command"""
+        from openbb_terminal.tradinghours.tradinghours_controller import (
+            TradingHoursController,
+        )
+
+        self.queue = self.load_class(TradingHoursController, self.queue)
 
     def call_export(self, other_args: List[str]):
         """Process export command"""
