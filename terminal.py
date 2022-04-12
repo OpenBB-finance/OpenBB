@@ -94,7 +94,7 @@ class TerminalController(BaseController):
 
     def print_help(self):
         """Print help"""
-        console.print(
+        console.print(  # nosec
             text=f"""
 [info]Multiple jobs queue (where each '/' denotes a new command).[/info]
     E.g. '/stocks $ disc/ugs -n 3/../load tsla/candle'
