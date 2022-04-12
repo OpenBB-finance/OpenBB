@@ -17,7 +17,7 @@ mkdir DMG
 cp -r build/pyinstaller/macOS_package_assets/* DMG/
 mv dist/OpenBBTerminal DMG/"$DISK_IMAGE_NAME"/OpenBB
 
-# Copy launcher and other artifacts to the
+# Copy launcher and other artifacts to the DMG
 hdiutil create \
         -volname "$DISK_IMAGE_NAME" \
         -srcfolder DMG \
