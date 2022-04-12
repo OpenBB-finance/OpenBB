@@ -1,6 +1,5 @@
 # -*- mode: python ; coding: utf-8 -*-
 import os
-import sys
 
 from dotenv import set_key
 
@@ -18,9 +17,7 @@ build_type = (
 )
 
 # Local python environment packages folder
-pathex = os.path.join(
-    os.path.dirname(sys.executable), "..", "lib", "python3.8", "site-packages"
-)
+pathex = os.path.join(os.path.dirname(os.__file__), "site-packages")
 
 # Get latest commit
 commit_hash = get_commit_hash()
