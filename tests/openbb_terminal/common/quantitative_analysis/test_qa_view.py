@@ -1,7 +1,7 @@
-from mock import MagicMock
+from datetime import datetime, timedelta
+from unittest.mock import MagicMock
 import pytest
 import pandas as pd
-from datetime import datetime, timedelta
 
 from openbb_terminal.common.quantitative_analysis import qa_view
 
@@ -11,11 +11,7 @@ data = {"date": dates, "col2": nums, "col1": [x - timedelta(days=1) for x in dat
 data2 = {"date": nums, "col2": nums, "col1": dates}
 df = pd.DataFrame(data).set_index("date")
 df2 = pd.DataFrame(data2).set_index("date")
-
-
-@pytest.fixture(autouse=True)
-def mock_mpl(mocker):
-    mocker.patch("matplotlib.pyplot.show")
+series = dict(zip(dates, nums))
 
 
 @pytest.mark.parametrize("val", [0.04, 1])
@@ -86,18 +82,17 @@ def test_display_unitroot():
     qa_view.display_unitroot(df, "col2", "c", "c")
 
 
-@pytest.mark.parametrize(
-    "use_df", [df, pd.Series({x: y for x, y in zip(dates, nums)}, name="Series")]
-)
+@pytest.mark.parametrize("use_df", [df, series])
 def test_display_raw(use_df):
     sort = "col1" if isinstance(use_df, pd.DataFrame) else ""
     qa_view.display_raw(use_df, sort)
 
 
+@pytest.mark.skip
 @pytest.mark.parametrize("y, external", [(True, None), (False, None), (True, [1, 2])])
 def test_display_line(y, external):
     qa_view.display_line(
-        pd.Series({x: y for x, y in zip(dates, nums)}, name="Series"),
+        series,
         log_y=y,
         markers_lines=True,
         markers_scatter=dates,
@@ -107,6 +102,6 @@ def test_display_line(y, external):
     )
 
 
-@pytest.mark.skip
 def test_display_var():
-    qa_view.display_var(df, True, "TSLA", True, True, 50, True)
+    df["adjclose"] = df["col2"]
+    qa_view.display_var(df, "TSLA", True, True, 50, True)

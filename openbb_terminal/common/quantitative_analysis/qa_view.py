@@ -41,9 +41,6 @@ logger = logging.getLogger(__name__)
 
 register_matplotlib_converters()
 
-# TODO : Since these are common/ they should be independent of 'stock' info.
-# df_stock should be replaced with a generic df and a column variable
-
 
 def lambda_color_red(val: Any) -> str:
     """Adds red to dataframe value"""
@@ -58,7 +55,7 @@ def display_summary(df: pd.DataFrame, export: str):
 
     Parameters
     ----------
-    df_stock : pd.DataFrame
+    df : pd.DataFrame
         DataFrame to get statistics of
     export : str
         Format to export data
