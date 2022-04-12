@@ -11,7 +11,7 @@ data = {"date": dates, "col2": nums, "col1": [x - timedelta(days=1) for x in dat
 data2 = {"date": nums, "col2": nums, "col1": dates}
 df = pd.DataFrame(data).set_index("date")
 df2 = pd.DataFrame(data2).set_index("date")
-series = dict(zip(dates, nums))
+series = pd.Series(dict(zip(dates, nums)), name="Series")
 
 
 @pytest.mark.parametrize("val", [0.04, 1])
