@@ -1,32 +1,40 @@
 import os
+import sys
+from pathlib import Path
+
 import pytest
 from PIL import Image
 from plotly import graph_objects as go
 
+
 # pylint: disable=R0903,W0143,E0211,W0621
-
 try:
-    from bots.helpers import (
-        load,
-        quote,
-        autocrop_image,
-        unit_finder,
-        unit_replacer,
-        uuid_get,
-        country_autocomp,
-        industry_autocomp,
-        metric_autocomp,
-        ticker_autocomp,
-        expiry_autocomp,
-        presets_custom_autocomp,
-        signals_autocomp,
-        inter_chart,
-        save_image,
-        image_border,
-        multi_image,
-        ShowView,
-    )
-
+    try:
+        from bots.helpers import load
+    except ImportError:
+        sys.path.append(Path(__file__).parent.parent.parent.resolve().__str__())
+        from bots.helpers import load
+    finally:
+        from bots.helpers import (
+            ShowView,
+            autocrop_image,
+            country_autocomp,
+            expiry_autocomp,
+            image_border,
+            industry_autocomp,
+            inter_chart,
+            metric_autocomp,
+            multi_image,
+            presets_custom_autocomp,
+            quote,
+            save_image,
+            signals_autocomp,
+            ticker_autocomp,
+            unit_finder,
+            unit_replacer,
+            uuid_get,
+        )
+        from bots.config_discordbot import IMG_DIR, IMG_BG
 except ImportError:
     pytest.skip(allow_module_level=True)
 
@@ -38,13 +46,7 @@ class MockInter:
 
 @pytest.mark.bots
 def test_image():
-    url = os.path.join(
-        os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
-        "bots",
-        "interactive",
-        "images",
-        "testimage.png",
-    )
+    url = IMG_DIR.joinpath("testimage.png").__str__()
     img = Image.new("RGB", (60, 30), color="red")
     img.save(url)
     return url
@@ -68,13 +70,7 @@ def test_quote(recorder):
 
 @pytest.mark.bots
 def test_autocrop_image(recorder):
-    url = os.path.join(
-        os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
-        "bots",
-        "files",
-        "bg-dark.png",
-    )
-    value = autocrop_image(Image.open(url))
+    value = autocrop_image(Image.open(IMG_BG))
 
     recorder.capture(str(type(value)))
 
