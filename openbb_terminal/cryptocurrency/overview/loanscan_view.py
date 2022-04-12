@@ -4,6 +4,7 @@ import os
 from typing import List, Optional
 import matplotlib.pyplot as plt
 import pandas as pd
+import numpy as np
 from openbb_terminal.cryptocurrency.overview import loanscan_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
@@ -49,7 +50,7 @@ def display_crypto_rates(
     else:
         df = df[cryptos.upper().split(",")].loc[platforms.lower().split(",")]
         df = df.sort_values(df.columns[0], ascending=False, na_position="last")
-        df = df.fillna("N/A")
+
         if not external_axes:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
         else:
@@ -61,22 +62,29 @@ def display_crypto_rates(
 
         df = df.reset_index()
         df = pd.melt(df, id_vars=["index"])
+        df_non_null = df.dropna()
 
-        assets = df.variable.unique().tolist()
+        assets = df_non_null.variable.unique().tolist()
         colors = iter(cfg.theme.get_colors(reverse=True))
 
         for asset in assets:
-            width = df.loc[(df.variable == asset) & (df.value != "N/A")]
 
-            width["index"] = width["index"].astype(str) + "-" + asset
+            width = df_non_null.loc[(df_non_null.variable == asset)]
+            # silence Setcopywarnings
+            pd.options.mode.chained_assignment = None
+            width["id"] = width["index"] + width["variable"]
 
             ax.barh(
-                y=width["index"],
-                width=width.value,
+                y=width["id"],
+                width=width.value * 100,
                 label=asset,
                 height=0.5,
                 color=next(colors),
             )
+
+        ylabels = df_non_null["index"].values.tolist()
+        ax.set_yticks(np.arange(len(ylabels)))
+        ax.set_yticklabels(ylabels)
 
         ax.set_xlabel("Rate (%)")
         ax.set_ylabel("Platform")
@@ -86,12 +94,17 @@ def display_crypto_rates(
 
         ax.yaxis.set_label_position("left")
         ax.yaxis.set_ticks_position("left")
-        ax.legend(loc="best")
+
+        handles, labels = ax.get_legend_handles_labels()
+        ax.legend(handles[::-1], labels[::-1], loc="best")
 
         if not external_axes:
             cfg.theme.visualize_output()
 
-        df = df.applymap(lambda x: str(round(100 * x, 2)) + "%" if x != "N/A" else x)
+        df = df.fillna("N/A")
+        df.value = df.value.apply(
+            lambda x: str(round(100 * x, 2)) + "%" if x != "N/A" else x
+        )
 
         print_rich_table(
             df.head(limit),
