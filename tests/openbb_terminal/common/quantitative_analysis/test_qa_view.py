@@ -88,7 +88,6 @@ def test_display_raw(use_df):
     qa_view.display_raw(use_df, sort)
 
 
-@pytest.mark.skip
 @pytest.mark.parametrize("y, external", [(True, None), (False, None), (True, [1, 2])])
 def test_display_line(y, external):
     qa_view.display_line(
@@ -98,7 +97,7 @@ def test_display_line(y, external):
         markers_scatter=dates,
         external_axes=external,
         title=True,
-        draw=True,
+        draw=False,
     )
 
 
