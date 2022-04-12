@@ -8,6 +8,8 @@ from PyInstaller.building.api import PYZ, EXE, COLLECT
 from PyInstaller.building.splash import Splash
 from PyInstaller.building.build_main import Analysis
 
+# adding Folder to the system path - if needed (when you aren't using a venv)
+#sys.path.insert(0, '{install_folder}\GamestonkTerminal')
 from openbb_terminal.loggers import get_commit_hash
 
 NAME = "OpenBBTerminal"
@@ -41,15 +43,7 @@ added_files = [
     ("user_agent", "user_agent"),
     ("vaderSentiment", "vaderSentiment"),
     (os.path.join("frozendict", "VERSION"), "frozendict"),
-    (
-        os.path.join(pathex, "linearmodels", "datasets"),
-        os.path.join("linearmodels", "datasets"),
-    ),
-    (
-        os.path.join(pathex, "statsmodels", "datasets"),
-        os.path.join("statsmodels", "datasets"),
-    ),
-    ("OPENBB_DEFAULTS.json", "openbb_terminal"),
+    ("OPENBB_DEFAULTS.json", "."),
 ]
 
 # Python libraries that are explicitly pulled into the bundle
