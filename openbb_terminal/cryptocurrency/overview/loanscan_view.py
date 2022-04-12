@@ -60,9 +60,7 @@ def display_crypto_rates(
                 return
             (ax,) = external_axes
 
-        df = df.reset_index()
-        df = pd.melt(df, id_vars=["index"])
-        df_non_null = df.dropna()
+        df_non_null = pd.melt(df.reset_index(), id_vars=["index"]).dropna()
 
         assets = df_non_null.variable.unique().tolist()
         colors = iter(cfg.theme.get_colors(reverse=True))
@@ -102,9 +100,7 @@ def display_crypto_rates(
             cfg.theme.visualize_output()
 
         df = df.fillna("N/A")
-        df.value = df.value.apply(
-            lambda x: str(round(100 * x, 2)) + "%" if x != "N/A" else x
-        )
+        df = df.applymap(lambda x: str(round(100 * x, 2)) + "%" if x != "N/A" else x)
 
         print_rich_table(
             df.head(limit),
