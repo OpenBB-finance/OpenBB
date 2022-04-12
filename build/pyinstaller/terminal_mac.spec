@@ -42,7 +42,7 @@ added_files = [
     ("user_agent", "user_agent"),
     ("vaderSentiment", "vaderSentiment"),
     (os.path.join("frozendict", "VERSION"), "frozendict"),
-    ("OPENBB_DEFAULTS.json", "OPENBB_DEFAULTS.json"),
+    ("OPENBB_DEFAULTS.json", "."),
 ]
 
 # Python libraries that are explicitly pulled into the bundle
