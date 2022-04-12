@@ -64,6 +64,7 @@ def test_display_chains(calls_only, max_sp, min_sp, mocker, puts_only):
     )
 
 
+@pytest.mark.linux
 @pytest.mark.default_cassette("test_plot_oi")
 @pytest.mark.vcr
 @pytest.mark.parametrize(

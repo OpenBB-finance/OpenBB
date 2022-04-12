@@ -1,5 +1,4 @@
 import os
-import sys
 from distutils.util import strtobool
 from pathlib import Path
 from typing import List, Optional
@@ -10,14 +9,12 @@ from dotenv import load_dotenv
 
 # Path to bots
 bots_path = Path(__file__).parent.resolve()
+GST_PATH = Path(__file__).parent.parent.resolve()
 
 env_files = [f for f in bots_path.iterdir() if f.__str__().endswith(".env")]
 
 if env_files:
     load_dotenv(env_files[0])
-
-# Relative path to the terminal
-sys.path.append("..")
 
 # https://discord.com/developers/applications/
 DISCORD_BOT_TOKEN = os.getenv("OPENBB_DISCORD_BOT_TOKEN") or "REPLACE_ME"
@@ -31,6 +28,9 @@ API_NEWS_TOKEN = os.getenv("OPENBB_API_NEWS_TOKEN") or "REPLACE_ME"
 # https://www.binance.com/en/
 API_BINANCE_KEY = os.getenv("OPENBB_API_BINANCE_KEY") or "REPLACE_ME"
 API_BINANCE_SECRET = os.getenv("OPENBB_API_BINANCE_SECRET") or "REPLACE_ME"
+
+# https://stocksera.pythonanywhere.com/accounts/developers/
+API_STOCKSERA_TOKEN = os.getenv("OPENBB_API_STOCKSERA_TOKEN") or "REPLACE_ME"
 
 # https://finnhub.io
 API_FINNHUB_KEY = os.getenv("OPENBB_API_FINNHUB_KEY") or "REPLACE_ME"
@@ -58,13 +58,11 @@ IMG_BG = bots_path.joinpath("files/bg-dark.png")  # Dark BG
 
 DEBUG = strtobool(os.getenv("OPENBB_DEBUG", "False"))
 
-GST_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-
 gst_imgur = pyimgur.Imgur(IMGUR_CLIENT_ID)
 
-AUTHOR_NAME = "Gamestonk Terminal"
+AUTHOR_NAME = "OpenBB Bot"
 AUTHOR_URL = "https://github.com/OpenBB-finance/OpenBBTerminal"
 AUTHOR_ICON_URL = (
-    "https://github.com/OpenBB-finance/OpenBBTerminal/"
-    "blob/main/images/gst_logo_green_white_background.png?raw=true"
+    "https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/"
+    "hugo_rename/images/openbb_logo.png"
 )
