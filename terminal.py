@@ -767,7 +767,7 @@ def main(
         if fails:
             console.print("\n[red]Failures:[/red]\n")
             for key, value in fails.items():
-                file_name = key[key.rfind("OpenBBTerminal") :].replace(  # noqa: E203
+                file_name = key[key.rfind(REPO_DIR.name) :].replace(  # noqa: E203
                     "\\", "/"
                 )
                 logger.error("%s: %s failed", file_name, value)
