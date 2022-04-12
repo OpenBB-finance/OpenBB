@@ -35,7 +35,7 @@ then run the container (`path/to/setenv`) should be replaced with wherever this 
 downloaded the entire repository and your current directory is `OpenBBTerminal`, then the path would be `docker/setenv`
 
 ```bash
-docker run -it --rm --env-file=path/to/setenv ghcr.io/OpenBBTerminal/gst-poetry:latest
+docker run -it --rm --env-file=path/to/setenv ghcr.io/openbb-finance/openbbterminal-poetry:latest
 ```
 
 ## Display
