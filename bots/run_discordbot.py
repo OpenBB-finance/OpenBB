@@ -20,7 +20,6 @@ finally:
     from bots.discord import helpers
     from bots.groupme.run_groupme import handle_groupme
     from openbb_terminal.loggers import setup_logging
-    from openbb_terminal.decorators import log_start_end
 
 logger = logging.getLogger(__name__)
 setup_logging("bot-app")
