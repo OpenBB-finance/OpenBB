@@ -14,6 +14,11 @@ df2 = pd.DataFrame(data2).set_index("date")
 series = pd.Series(dict(zip(dates, nums)), name="Series")
 
 
+@pytest.fixture(autouse=True)
+def mock_export_data(mocker):
+    mocker.patch("openbb_terminal.helper_funcs.export_data")
+
+
 @pytest.mark.parametrize("val", [0.04, 1])
 def test_lambda_color_red(val):
     qa_view.lambda_color_red(val)
