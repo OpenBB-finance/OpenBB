@@ -480,7 +480,11 @@ INDICES = {
     "dxy": {"name": "US Dollar Index", "ticker": "DX-Y.NYB"},
     "crypto200": {"name": "CMC Crypto 200 Index by Solacti", "ticker": "^CMC200"},
 }
-
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+>>>>>>> baf8deea9 (commit)
 
 @log_start_end(log=logger)
 def get_index(
