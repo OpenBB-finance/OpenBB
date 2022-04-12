@@ -94,7 +94,7 @@ class TerminalController(BaseController):
 
     def print_help(self):
         """Print help"""
-        console.print(
+        console.print(  # nosec
             text=f"""
 [info]Multiple jobs queue (where each '/' denotes a new command).[/info]
     E.g. '/stocks $ disc/ugs -n 3/../load tsla/candle'
@@ -292,6 +292,9 @@ class TerminalController(BaseController):
                 else:
                     # If the path selected does not start from the user root, give relative location from terminal root
                     if export_path[0] == "~":
+                        # TODO: Consider changing
+                        #       `os.environ["HOME"]` to `os.path.expanduser("~")`
+                        #       for cross platform support
                         export_path = export_path.replace("~", os.environ["HOME"])
                     elif export_path[0] != "/":
                         export_path = os.path.join(base_path, export_path)
