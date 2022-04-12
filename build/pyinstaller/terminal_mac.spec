@@ -43,7 +43,16 @@ added_files = [
     ("vaderSentiment", "vaderSentiment"),
     (os.path.join("frozendict", "VERSION"), "frozendict"),
     ("OPENBB_DEFAULTS.json", "."),
+    (
+        os.path.join(pathex, "linearmodels", "datasets"),
+        os.path.join("linearmodels", "datasets"),
+    ),
+    (
+        os.path.join(pathex, "statsmodels", "datasets"),
+        os.path.join("statsmodels", "datasets"),
+    ),
 ]
+
 
 # Python libraries that are explicitly pulled into the bundle
 hidden_imports = [
