@@ -56,7 +56,7 @@ class DarkPoolShortsController(StockBaseController):
     PATH = "/stocks/dps/"
 
     def __init__(
-            self, ticker: str, start: str, stock: pd.DataFrame, queue: List[str] = None
+        self, ticker: str, start: str, stock: pd.DataFrame, queue: List[str] = None
     ):
         """Constructor"""
         super().__init__(queue)
@@ -272,9 +272,9 @@ class DarkPoolShortsController(StockBaseController):
             "-s",
             "--sort",
             help="Field for which to sort by, where 'sv': Short Vol. (1M), "
-                 "'sv_pct': Short Vol. %%, 'nsv': Net Short Vol. (1M), "
-                 "'nsv_dollar': Net Short Vol. ($100M), 'dpp': DP Position (1M), "
-                 "'dpp_dollar': DP Position ($1B)",
+            "'sv_pct': Short Vol. %%, 'nsv': Net Short Vol. (1M), "
+            "'nsv_dollar': Net Short Vol. ($100M), 'dpp': DP Position (1M), "
+            "'dpp_dollar': DP Position ($1B)",
             choices=["sv", "sv_pct", "nsv", "nsv_dollar", "dpp", "dpp_dollar"],
             default="dpp_dollar",
             dest="sort_field",
@@ -320,7 +320,7 @@ class DarkPoolShortsController(StockBaseController):
             "-s",
             "--sort",
             help="Field for which to sort by, where 'float': Float Short %%, "
-                 "'dtc': Days to Cover, 'si': Short Interest",
+            "'dtc': Days to Cover, 'si': Short Interest",
             choices=["float", "dtc", "si"],
             default="float",
             dest="sort_field",
