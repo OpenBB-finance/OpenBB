@@ -15,7 +15,7 @@ import dotenv
 
 from prompt_toolkit.completion import NestedCompleter
 
-from openbb_terminal.core.config.constants import REPO_DIR
+from openbb_terminal.core.config.constants import REPO_DIR, ENV_FILE
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.helper_funcs import (
     check_path,
@@ -44,7 +44,7 @@ from openbb_terminal.terminal_helper import (
 
 logger = logging.getLogger(__name__)
 
-env_file = ".env"
+env_file = str(ENV_FILE)
 
 
 class TerminalController(BaseController):
