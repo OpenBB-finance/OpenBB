@@ -14,8 +14,7 @@ from .pycoingecko_view import display_holdings_overview as cghold
 from .pycoingecko_view import display_categories as cgcategories
 from .pycoingecko_view import display_stablecoins as cgstables
 from .pycoingecko_view import display_products as cgproducts
-from .pycoingecko_view import display_platforms as cgplatforms
-from .pycoingecko_view import display_exchanges as cgexchanges
+from .loanscan_view import display_crypto_rates as cr
 from .pycoingecko_view import display_exchange_rates as cgexrates
 from .pycoingecko_view import display_indexes as cgindexes
 from .pycoingecko_view import display_derivatives as cgderivatives

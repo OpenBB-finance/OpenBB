@@ -7,14 +7,15 @@ usage: ef [-p PERIOD] [-s START] [-e END] [-lr] [-f {d,w,m}] [-mn MAXNAN]
 ```
 
 This function plots random portfolios based on their risk and returns and
-shows the efficient frontier.
+shows the efficient frontier of selected risk measure.
 
 ```
 optional arguments:
   -p PERIOD, --period PERIOD
                         Period to get yfinance data from (default: 3y)
   -s START, --start START
-                        Start date to get yfinance data from (default: )
+                        Start date to get yfinance data from. Must be in
+                        'YYYY-MM-DD' format (default: )
   -e END, --end END     End date to get yfinance data from (default: )
   -lr, --log-returns    If use logarithmic or arithmetic returns to calculate
                         returns (default: False)
