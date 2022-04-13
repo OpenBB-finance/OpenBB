@@ -503,6 +503,7 @@ class PortfolioOptimizationController(BaseController):
         self.queue = self.load_class(
             params_controller.ParametersController, self.file, self.queue
         )
+        self.files_available = [f for f in os.listdir(os.path.join(os.path.dirname(__file__), "parameters")) if (f.endswith(".ini") or f.endswith(".xlsx"))]
 
     @log_start_end(log=logger)
     def call_equal(self, other_args: List[str]):
