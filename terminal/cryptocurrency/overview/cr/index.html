@@ -9,13 +9,14 @@
 
 
 
-    <meta name="description" content="usage: cgproducts [-l N] [-s {Rank,Platform,Identifier,Supply_Rate,Borrow_Rate}] [--descend] [--export {csv,json,xlsx}] [-h] Shows Top Crypto Financial Products with which you can earn yield, borrow or lend your crypto. You can display only N number of platforms with &ndash;limit parameter. You can sort data by Rank, Platform, Identifier, Supply_Rate, Borrow_Rate with &ndash;sort and also with &ndash;descend flag to sort descending. Displays: Rank, Platform, Identifier, Supply_Rate, Borrow_Rate
-optional arguments: -l N, --limit N display N number records (default: 15) -s {Rank,Platform,Identifier,Supply_Rate,Borrow_Rate}, --sort {Rank,Platform,Identifier,Supply_Rate,Borrow_Rate} Sort by given column.">
+    <meta name="description" content="usage: cr [-t {borrow,supply}] [-c CRYPTOCURRENCIES] [-p PLATFORMS] [-h] [--export EXPORT] [-l LIMIT]
+Displays crypto {borrow,supply} interest rates for cryptocurrencies across several platforms. [Source: https://loanscan.io] You can select rate type with &ndash;type {borrow,supply} You can display only N number of platforms with &ndash;limit parameter. You can check for specific coins with -c and in specific platforms with -p
+optional arguments: -t {borrow,supply}, --type {borrow,supply} Select interest rate type (default: supply) -c CRYPTOCURRENCIES, --cryptocurrrencies CRYPTOCURRENCIES Cryptocurrencies to search interest rates for separated by comma.">
 
 
 
     <title>
-      Cgproducts | OpenBB Terminal
+      Cr | OpenBB Terminal
     </title>
 
     <link rel="icon" href="/OpenBBTerminal/favicon/favicon-32x32.png" type="image/x-icon">
@@ -36,7 +37,7 @@ optional arguments: -l N, --limit N display N number records (default: 15) -s {R
 <link rel="preload" href="/OpenBBTerminal/custom.css" as="style">
 <link rel="stylesheet" href="/OpenBBTerminal/custom.css" media="all">
 
-<link rel="alternate" type="application/rss+xml" href="https://openbb-finance.github.io/OpenBBTerminal/terminal/cryptocurrency/overview/cgproducts/index.xml" title="OpenBB Terminal" />
+<link rel="alternate" type="application/rss+xml" href="https://openbb-finance.github.io/OpenBBTerminal/terminal/cryptocurrency/overview/cr/index.xml" title="OpenBB Terminal" />
 
 
 <!-- Made with Geekdoc theme https://github.com/thegeeklab/hugo-geekdoc -->
@@ -10792,40 +10793,9 @@ optional arguments: -l N, --limit N display N number records (default: 15) -s {R
             
             <span class="flex">
                 
-                <a href="/OpenBBTerminal/terminal/cryptocurrency/overview/cgplatforms/"
-                    class="gdoc-nav__entry ">
-                    cgplatforms
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/OpenBBTerminal/terminal/cryptocurrency/overview/cgproducts/"
+                <a href="/OpenBBTerminal/terminal/cryptocurrency/overview/cr/"
                     class="gdoc-nav__entry is-active">
-                    cgproducts
+                    cr
                 </a>
             </span>
             
@@ -24145,7 +24115,7 @@ optional arguments: -l N, --limit N display N number records (default: 15) -s {R
         
     
     
-        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/' href='/OpenBBTerminal/'><span itemprop='name'>OpenBB Terminal</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/terminal/' href='/OpenBBTerminal/terminal/'><span itemprop='name'>Terminal</span></a><meta itemprop='position' content='3' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/terminal/cryptocurrency/' href='/OpenBBTerminal/terminal/cryptocurrency/'><span itemprop='name'>Cryptocurrency</span></a><meta itemprop='position' content='4' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/terminal/cryptocurrency/overview/' href='/OpenBBTerminal/terminal/cryptocurrency/overview/'><span itemprop='name'>Overview</span></a><meta itemprop='position' content='5' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>Cgproducts</span><meta itemprop='position' content='6' /></li>
+        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/' href='/OpenBBTerminal/'><span itemprop='name'>OpenBB Terminal</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/terminal/' href='/OpenBBTerminal/terminal/'><span itemprop='name'>Terminal</span></a><meta itemprop='position' content='3' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/terminal/cryptocurrency/' href='/OpenBBTerminal/terminal/cryptocurrency/'><span itemprop='name'>Cryptocurrency</span></a><meta itemprop='position' content='4' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/terminal/cryptocurrency/overview/' href='/OpenBBTerminal/terminal/cryptocurrency/overview/'><span itemprop='name'>Overview</span></a><meta itemprop='position' content='5' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>Cr</span><meta itemprop='position' content='6' /></li>
     
 
     
@@ -24163,7 +24133,7 @@ optional arguments: -l N, --limit N display N number records (default: 15) -s {R
     <div>
         <span class="editpage">
             <svg class="icon gdoc_code" style="color: #C7C7C7;"><use xlink:href="#gdoc_code"></use></svg>
-            <a href="https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/website//content/terminal/cryptocurrency/overview/cgproducts/_index.md" style="color: #C7C7C7;">
+            <a href="https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/website//content/terminal/cryptocurrency/overview/cr/_index.md" style="color: #C7C7C7;">
                 Edit this page
             </a>
         </span>
@@ -24172,55 +24142,36 @@ optional arguments: -l N, --limit N display N number records (default: 15) -s {R
 </div>
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
-        <h1>Cgproducts</h1>
-        <pre><code>usage: cgproducts [-l N] [-s {Rank,Platform,Identifier,Supply_Rate,Borrow_Rate}] [--descend] [--export {csv,json,xlsx}] [-h]
-</code></pre><p>Shows Top Crypto Financial Products with which you can earn yield, borrow or lend your crypto. You can display only N number of platforms with
-&ndash;limit parameter. You can sort data by Rank, Platform, Identifier, Supply_Rate, Borrow_Rate with &ndash;sort and also with &ndash;descend flag to sort
-descending. Displays: Rank, Platform, Identifier, Supply_Rate, Borrow_Rate</p>
+        <h1>Cr</h1>
+        <p><code>usage: cr [-t {borrow,supply}] [-c CRYPTOCURRENCIES] [-p PLATFORMS] [-h] [--export EXPORT] [-l LIMIT]</code></p>
+<p>Displays crypto {borrow,supply} interest rates for cryptocurrencies across several platforms. [Source: https://loanscan.io]
+You can select rate type with &ndash;type {borrow,supply} You
+can display only N number of platforms with &ndash;limit parameter. You can check for specific coins with -c and in specific platforms with -p</p>
 <pre><code>optional arguments:
-  -l N, --limit N     display N number records (default: 15)
-  -s {Rank,Platform,Identifier,Supply_Rate,Borrow_Rate}, --sort {Rank,Platform,Identifier,Supply_Rate,Borrow_Rate}
-                        Sort by given column. Default: Rank (default: Rank)
-  --descend             Flag to sort in descending order (lowest first) (default: True)
-  --export {csv,json,xlsx}
-                        Export dataframe data to csv,json,xlsx file (default: )
+  -t {borrow,supply}, --type {borrow,supply}
+                        Select interest rate type (default: supply)
+  -c CRYPTOCURRENCIES, --cryptocurrrencies CRYPTOCURRENCIES
+                        Cryptocurrencies to search interest rates for separated by comma. Options: ZRX,BAT,REP,ETH,SAI,BTC,X
+                        RP,LTC,EOS,BCH,XMR,DOGE,USDC,USDT,BSV,NEO,ETC,OMG,ZEC,BTG,SAN,DAI,UNI,WBTC,COMP,LUNA,UST,BUSD,KNC,LEND,LINK,MANA,MKR,SNX,SUSD,TUS
+                        D,eCRV-DAO,HEGIC,YFI,1INCH,CRV-IB,CRV-HBTC,BOOST,CRV-sBTC,CRV-renBTC,CRV-sAave,CRV-oBTC,CRV-pBTC,CRV-LUSD,CRV-BBTC,CRV-tBTC,CRV-
+                        FRAX,CRV-yBUSD,CRV-COMP,CRV-GUSD,yUSD,CRV-3pool,CRV-TUSD,CRV-BUSD,CRV-DUSD,CRV-UST,CRV-mUSD,sUSD,CRV-sUSD,CRV-LINK,CRV-USDN,CRV-
+                        USDP,CRV-alUSD,CRV-Aave,CRV-HUSD,CRV-EURS,RAI,CRV-triCrypto,CRV-Pax,CRV-USDT,CRV-USDK,CRV-RSV,CRV-3Crypto,GUSD,PAX,USD,ILK,BNB,PA
+                        XG,ADA,FTT,SOL,SRM,RAY,XLM,SUSHI,CRV,BAL,AAVE,MATIC,GRT,ENJ,USDP,IOST,AMP,PERP,SHIB,ALICE,ALPHA,ANKR,ATA,AVA,AXS,BAKE,BAND,BNT,BT
+                        CST,CELR,CFX,CHR,COS,COTI,CTSI,DUSK,EGLD,ELF,FET,FLOW,FTM,INJ,IOTX,MDX,NEAR,OCEAN,ONT,POLS,REEF,WRX,XEC,XTZ,XVS,ZIL,DOT,FIL,TRX,C
+                        AKE,ADX,FIRO,SXP,ATOM,IOTA,AKRO,AUDIO,BADGER,CVC,DENT,DYDX,FORTH,GNO,HOT,LPT,LRC,NKN,NMR,NU,OGN,OXT,POLY,QNT,RLC,RSR,SAND,SKL,STM
+                        X,STORJ,TRB,UMA,DPI,VSP,CHSB,EURT,GHST,3CRV,CRVRENWBTC,MIR-UST UNI
+                        LP,ALCX,ALUSD,USDP3CRV,RENBTC,YVECRV,CVX,USDTTRC20,AUD,HKD,GBP,EUR,HUSD,HT,DASH,EURS,AVAX,BTT,GALA,ILV,APE (default:
+                        BTC,ETH,USDT,USDC)
+  -p PLATFORMS, --platforms PLATFORMS
+                        Platforms to search interest rates in separated by comma. Options: MakerDao,Compound,
+                        Poloniex,Bitfinex,dYdX,CompoundV2,Linen,Hodlonaut,InstaDapp,Zerion,Argent,DeFiSaver,MakerDaoV2,Ddex,AaveStable,AaveVariable,Yearn
+                        Finance,BlockFi,Nexo,CryptoCom,Soda,Coinbase,SaltLending,Ledn,Bincentive,Inlock,Bitwala,Zipmex,Vauld,Delio,Yield,Vesper,Reflexer,
+                        SwissBorg,MushroomsFinance,ElementFi,Maple,CoinRabbit,WirexXAccounts,Youhodler,YieldApp,NotionalFinance,IconFi (default:
+                        BlockFi,Ledn,SwissBorg,Youhodler)
   -h, --help            show this help message (default: False)
-</code></pre><p>Example:</p>
-<pre><code>2022 Feb 15, 08:15 (✨) /crypto/ov/ $ cgproducts
-                        Financial Products
-┌──────┬─────────────────┬────────────┬─────────────┬─────────────┐
-│ Rank │ Platform        │ Identifier │ Supply_Rate │ Borrow_Rate │
-├──────┼─────────────────┼────────────┼─────────────┼─────────────┤
-│ 1    │ Crypto.com      │ DAI        │ 6.0         │ None        │
-├──────┼─────────────────┼────────────┼─────────────┼─────────────┤
-│ 2    │ Inlock          │ USDC       │ 10.2        │ None        │
-├──────┼─────────────────┼────────────┼─────────────┼─────────────┤
-│ 3    │ Staked US       │ Keep       │ 3.4         │ None        │
-├──────┼─────────────────┼────────────┼─────────────┼─────────────┤
-│ 4    │ Binance Savings │ XTZ001     │ 1.956035    │ None        │
-├──────┼─────────────────┼────────────┼─────────────┼─────────────┤
-│ 5    │ Staked US       │ V-Systems  │ 17.8        │ None        │
-├──────┼─────────────────┼────────────┼─────────────┼─────────────┤
-│ 6    │ Binance Savings │ ZEC001     │ 0.182865    │ None        │
-├──────┼─────────────────┼────────────┼─────────────┼─────────────┤
-│ 7    │ Binance Savings │ UNI001     │ 1.0001      │ None        │
-├──────┼─────────────────┼────────────┼─────────────┼─────────────┤
-│ 8    │ Binance Savings │ WAVES001   │ 5.000135    │ None        │
-├──────┼─────────────────┼────────────┼─────────────┼─────────────┤
-│ 9    │ Nexo            │ PAXG       │ 8.0         │ 0.001       │
-├──────┼─────────────────┼────────────┼─────────────┼─────────────┤
-│ 10   │ Crypto.com      │ BNB        │ 2.0         │ None        │
-├──────┼─────────────────┼────────────┼─────────────┼─────────────┤
-│ 11   │ Staked US       │ Dai        │ 4.212       │ None        │
-├──────┼─────────────────┼────────────┼─────────────┼─────────────┤
-│ 12   │ Celsius Network │ SOL        │ 5.36        │ None        │
-├──────┼─────────────────┼────────────┼─────────────┼─────────────┤
-│ 13   │ Celsius Network │ SGB        │ 0.0         │ None        │
-├──────┼─────────────────┼────────────┼─────────────┼─────────────┤
-│ 14   │ Nexo            │ GBP        │ 12.0        │ None        │
-├──────┼─────────────────┼────────────┼─────────────┼─────────────┤
-│ 15   │ Binance Savings │ BAL001     │ 4.20991     │ None        │
-└──────┴─────────────────┴────────────┴─────────────┴─────────────┘
+  --export EXPORT       Export raw data into csv, json, xlsx (default: )
+  -l LIMIT, --limit LIMIT
+                        Number of entries to show in data. (default: 10)
 </code></pre>
     </article>
  
@@ -30521,25 +30472,6 @@ descending. Displays: Rank, Platform, Identifier, Supply_Rate, Borrow_Rate</p>
     
     
 
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
     
         
         
@@ -38693,7 +38625,7 @@ descending. Displays: Rank, Platform, Identifier, Supply_Rate, Borrow_Rate</p>
     
         <span class="gdoc-page__nav">
             
-                <a class="gdoc-page__nav--prev flex align-center" href="/OpenBBTerminal/terminal/cryptocurrency/overview/cgplatforms/" title="cgplatforms"> cgplatforms</a>
+                <a class="gdoc-page__nav--prev flex align-center" href="/OpenBBTerminal/terminal/cryptocurrency/overview/cgexrates/" title="cgexrates"> cgexrates</a>
             
         </span>
         <span class="gdoc-page__nav">
