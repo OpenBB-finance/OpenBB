@@ -405,7 +405,7 @@ class SettingsController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="pwidth",
-            description="choose which monitor to scale: 0-primary, 1-seconday (autoscaling enabled)",
+            description="choose which monitor to scale: 0-primary, 1-secondary (autoscaling enabled)",
         )
         parser.add_argument(
             "-v",
