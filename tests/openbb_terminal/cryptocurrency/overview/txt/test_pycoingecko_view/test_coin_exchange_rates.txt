@@ -1,17 +1,17 @@
-    Index                         Name  Unit        Value    Type
-0       1                      Bitcoin   BTC          1.0  crypto
-1       2                        Ether   ETH       15.303  crypto
-2       3                     Litecoin   LTC      339.361  crypto
-3       4                 Bitcoin Cash   BCH      125.646  crypto
-4       5                 Binance Coin   BNB        98.57  crypto
-5       6                          EOS   EOS    16617.174  crypto
-6       7                          XRP   XRP     59836.09  crypto
-7       8                       Lumens   XLM    189812.79  crypto
-8       9                    Chainlink  LINK     2405.508  crypto
-9      10                     Polkadot   DOT     2025.843  crypto
-10     11                Yearn.finance   YFI        1.545  crypto
-11     12                    US Dollar     $    34625.794    fiat
-12     13  United Arab Emirates Dirham    DH   127184.005    fiat
-13     14               Argentine Peso     $  3618796.823    fiat
-14     15            Australian Dollar    A$    48736.775    fiat
+    Index                         Name  Unit       Value    Type
+0       1                      Bitcoin   BTC         1.0  crypto
+1       2                        Ether   ETH      13.641  crypto
+2       3                     Litecoin   LTC     383.413  crypto
+3       4                 Bitcoin Cash   BCH     129.225  crypto
+4       5                 Binance Coin   BNB     102.783  crypto
+5       6                          EOS   EOS   17349.146  crypto
+6       7                          XRP   XRP   56452.556  crypto
+7       8                       Lumens   XLM  209778.484  crypto
+8       9                    Chainlink  LINK    2798.632  crypto
+9      10                     Polkadot   DOT    2154.922  crypto
+10     11                Yearn.finance   YFI       1.978  crypto
+11     12                    US Dollar     $   43929.717    fiat
+12     13  United Arab Emirates Dirham    DH  161358.244    fiat
+13     14               Argentine Peso     $  4913217.13    fiat
+14     15            Australian Dollar    A$   58482.226    fiat
 
