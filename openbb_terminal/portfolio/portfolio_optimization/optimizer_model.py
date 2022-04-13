@@ -9,11 +9,15 @@ from typing import List, Tuple
 import numpy as np
 import pandas as pd
 import yfinance as yf
-import riskfolio as rp
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.portfolio.portfolio_optimization import yahoo_finance_model
 from openbb_terminal.rich_config import console
+from openbb_terminal.portfolio.portfolio_optimization.riskfolio import (
+    Portfolio,
+    HCPortfolio,
+    AuxFunctions,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -330,7 +334,7 @@ def get_mean_risk_portfolio(
     risk_free_rate = risk_free_rate / time_factor[freq.upper()]
 
     # Building the portfolio object
-    port = rp.Portfolio(returns=stock_returns, alpha=alpha)
+    port = Portfolio.Portfolio(returns=stock_returns, alpha=alpha)
 
     # Estimate input parameters:
     port.assets_stats(method_mu=mean, method_cov=covariance, d=d_ewma)
@@ -462,7 +466,7 @@ def get_max_diversification_portfolio(
     )
 
     # Building the portfolio object
-    port = rp.Portfolio(returns=stock_returns)
+    port = Portfolio.Portfolio(returns=stock_returns)
 
     # Estimate input parameters:
     port.assets_stats(method_mu="hist", method_cov=covariance, d=d_ewma)
@@ -572,11 +576,11 @@ def get_max_decorrelation_portfolio(
     )
 
     # Building the portfolio object
-    port = rp.Portfolio(returns=stock_returns)
+    port = Portfolio.Portfolio(returns=stock_returns)
 
     # Estimate input parameters:
     port.assets_stats(method_mu="hist", method_cov=covariance, d=d_ewma)
-    port.cov = rp.cov2corr(port.cov)
+    port.cov = AuxFunctions.cov2corr(port.cov)
 
     # Budget constraints
     port.upperlng = value
@@ -726,7 +730,7 @@ def get_risk_parity_portfolio(
     risk_free_rate = risk_free_rate / time_factor[freq.upper()]
 
     # Building the portfolio object
-    port = rp.Portfolio(returns=stock_returns, alpha=alpha)
+    port = Portfolio.Portfolio(returns=stock_returns, alpha=alpha)
 
     # Calculating optimal portfolio
     port.assets_stats(method_mu=mean, method_cov=covariance, d=d_ewma)
@@ -872,7 +876,7 @@ def get_rel_risk_parity_portfolio(
     )
 
     # Building the portfolio object
-    port = rp.Portfolio(returns=stock_returns)
+    port = Portfolio.Portfolio(returns=stock_returns)
 
     # Calculating optimal portfolio
     port.assets_stats(method_mu=mean, method_cov=covariance, d=d_ewma)
@@ -1129,7 +1133,7 @@ def get_hcp_portfolio(
 
     risk_free_rate = risk_free_rate / time_factor[freq.upper()]
     # Building the portfolio object
-    port = rp.HCPortfolio(
+    port = HCPortfolio.HCPortfolio(
         returns=stock_returns,
         alpha=alpha,
         a_sim=a_sim,

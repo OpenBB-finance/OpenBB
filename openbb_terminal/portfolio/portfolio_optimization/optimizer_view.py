@@ -12,7 +12,6 @@ from datetime import date
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import riskfolio as rp
 from matplotlib.lines import Line2D
 from matplotlib.gridspec import GridSpec
 
@@ -26,6 +25,12 @@ from openbb_terminal.portfolio.portfolio_optimization import (
     optimizer_model,
     yahoo_finance_model,
 )
+from openbb_terminal.portfolio.portfolio_optimization.riskfolio import (
+    Portfolio,
+    PlotFunctions,
+    RiskFunctions,
+)
+
 from openbb_terminal.rich_config import console
 from openbb_terminal.config_terminal import theme
 
@@ -105,6 +110,7 @@ time_factor = {
     "M": 12.0,
 }
 
+
 @log_start_end(log=logger)
 def d_period(period: str, start: str, end: str):
     """
@@ -148,6 +154,7 @@ def d_period(period: str, start: str, end: str):
         p = "[From " + start + " to " + end + "]"
 
     return p
+
 
 @log_start_end(log=logger)
 def portfolio_performance(
@@ -236,7 +243,7 @@ def portfolio_performance(
     print(f"Sharpe ratio: {sharpe:.4f}")
 
     if risk_measure != "MV":
-        risk = rp.Sharpe_Risk(
+        risk = RiskFunctions.Sharpe_Risk(
             weights,
             cov=stock_returns.cov(),
             returns=stock_returns,
@@ -285,6 +292,7 @@ def portfolio_performance(
             "Return / " + risk_names[risk_measure.lower()] + f" ratio: {sharpe_2:.4f}"
         )
 
+
 @log_start_end(log=logger)
 def display_weights(weights: dict, market_neutral: bool = False):
     """
@@ -319,6 +327,7 @@ def display_weights(weights: dict, market_neutral: bool = False):
         tot_value = weight_df["value"].abs().mean()
         header = "Value ($)" if tot_value > 1.01 else "Value (%)"
         print_rich_table(weight_df, headers=[header], show_index=True, title="Weights")
+
 
 @log_start_end(log=logger)
 def display_equal_weight(
@@ -424,6 +433,7 @@ def display_equal_weight(
     )
     console.print("")
     return weights
+
 
 @log_start_end(log=logger)
 def display_property_weighting(
@@ -532,6 +542,7 @@ def display_property_weighting(
     )
     console.print("")
     return weights
+
 
 @log_start_end(log=logger)
 def display_mean_risk(
@@ -719,6 +730,7 @@ def display_mean_risk(
     console.print("")
     return weights
 
+
 @log_start_end(log=logger)
 def display_max_sharpe(
     stocks: List[str],
@@ -860,6 +872,7 @@ def display_max_sharpe(
     )
     return weights
 
+
 @log_start_end(log=logger)
 def display_min_risk(
     stocks: List[str],
@@ -1000,6 +1013,7 @@ def display_min_risk(
         value_short=value_short,
     )
     return weights
+
 
 @log_start_end(log=logger)
 def display_max_util(
@@ -1147,6 +1161,7 @@ def display_max_util(
     )
     return weights
 
+
 @log_start_end(log=logger)
 def display_max_ret(
     stocks: List[str],
@@ -1288,6 +1303,7 @@ def display_max_ret(
     )
     return weights
 
+
 @log_start_end(log=logger)
 def display_max_div(
     stocks: List[str],
@@ -1399,6 +1415,7 @@ def display_max_div(
     )
     console.print("")
     return weights
+
 
 @log_start_end(log=logger)
 def display_max_decorr(
@@ -1513,6 +1530,7 @@ def display_max_decorr(
     console.print("")
     return weights
 
+
 @log_start_end(log=logger)
 def display_ef(
     stocks: List[str],
@@ -1616,7 +1634,7 @@ def display_ef(
     risk_free_rate = risk_free_rate / time_factor[freq.upper()]
 
     # Building the portfolio object
-    port = rp.Portfolio(returns=stock_returns, alpha=alpha)
+    port = Portfolio.Portfolio(returns=stock_returns, alpha=alpha)
 
     # Estimate input parameters:
     port.assets_stats(method_mu="hist", method_cov="hist")
@@ -1662,7 +1680,7 @@ def display_ef(
 
     for i in range(frontier.shape[1]):
         w = np.array(frontier.iloc[:, i], ndmin=2).T
-        risk = rp.Sharpe_Risk(
+        risk = RiskFunctions.Sharpe_Risk(
             w,
             cov=cov,
             returns=stock_returns,
@@ -1687,7 +1705,7 @@ def display_ef(
         ax = external_axes[0]
 
     frontier = pd.concat([frontier, random_weights], axis=1)
-    ax = rp.plot_frontier(
+    ax = PlotFunctions.plot_frontier(
         w_frontier=frontier,
         mu=mu,
         cov=cov,
@@ -1708,7 +1726,7 @@ def display_ef(
     # Add risk free line
     if tangency:
         ret_sharpe = (mu @ weights).to_numpy().item() * time_factor[freq.upper()]
-        risk_sharpe = rp.Sharpe_Risk(
+        risk_sharpe = RiskFunctions.Sharpe_Risk(
             weights,
             cov=cov,
             returns=stock_returns,
@@ -1744,6 +1762,7 @@ def display_ef(
     ax1[-1].set_position([ll * 1.02, bb, ww, hh])
     if external_axes is None:
         theme.visualize_output(force_tight_layout=False)
+
 
 @log_start_end(log=logger)
 def display_risk_parity(
@@ -1898,6 +1917,7 @@ def display_risk_parity(
     console.print("")
     return weights
 
+
 @log_start_end(log=logger)
 def display_rel_risk_parity(
     stocks: List[str],
@@ -2037,6 +2057,7 @@ def display_rel_risk_parity(
     )
     console.print("")
     return weights
+
 
 @log_start_end(log=logger)
 def display_hcp(
@@ -2311,6 +2332,7 @@ def display_hcp(
     console.print("")
     return weights
 
+
 @log_start_end(log=logger)
 def display_hrp(
     stocks: List[str],
@@ -2527,6 +2549,7 @@ def display_hrp(
         value=value,
     )
     return weights
+
 
 @log_start_end(log=logger)
 def display_herc(
@@ -2752,6 +2775,7 @@ def display_herc(
         value=value,
     )
     return weights
+
 
 @log_start_end(log=logger)
 def display_nco(
@@ -3092,6 +3116,7 @@ def pie_chart_weights(
     if external_axes is None:
         theme.visualize_output()
 
+
 @log_start_end(log=logger)
 def additional_plots(
     weights: Dict,
@@ -3196,7 +3221,7 @@ def additional_plots(
         else:
             ax = external_axes[0]
 
-        ax = rp.plot_hist(
+        ax = PlotFunctions.plot_hist(
             stock_returns, w=pd.Series(weights).to_frame(), alpha=alpha, ax=ax
         )
         ax.legend(fontsize="x-small", loc="best")
@@ -3215,7 +3240,7 @@ def additional_plots(
             ax = external_axes[0]
 
         nav = stock_returns.cumsum()
-        ax = rp.plot_drawdown(
+        ax = PlotFunctions.plot_drawdown(
             nav=nav, w=pd.Series(weights).to_frame(), alpha=alpha, ax=ax
         )
 
@@ -3239,7 +3264,7 @@ def additional_plots(
         else:
             ax = external_axes[0]
 
-        ax = rp.plot_risk_con(
+        ax = PlotFunctions.plot_risk_con(
             w=pd.Series(weights).to_frame(),
             cov=stock_returns.cov(),
             returns=stock_returns,
@@ -3267,7 +3292,7 @@ def additional_plots(
         else:
             ax = external_axes[0]
 
-        ax = rp.plot_clusters(
+        ax = PlotFunctions.plot_clusters(
             returns=stock_returns,
             codependence="pearson",
             linkage="ward",
