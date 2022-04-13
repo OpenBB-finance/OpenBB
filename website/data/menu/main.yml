@@ -687,10 +687,8 @@ main:
                 ref: "/terminal/cryptocurrency/overview/cgexchanges"
               - name: cgexrates
                 ref: "/terminal/cryptocurrency/overview/cgexrates"
-              - name: cgplatforms
-                ref: "/terminal/cryptocurrency/overview/cgplatforms"
-              - name: cgproducts
-                ref: "/terminal/cryptocurrency/overview/cgproducts"
+              - name: cr
+                ref: "/terminal/cryptocurrency/overview/cr"
               - name: cgindexes
                 ref: "/terminal/cryptocurrency/overview/cgindexes"
               - name: cgderivatives
