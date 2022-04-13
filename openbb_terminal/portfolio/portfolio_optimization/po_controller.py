@@ -3,6 +3,8 @@ __docformat__ = "numpy"
 
 # pylint: disable=C0302
 
+import os
+import configparser
 import argparse
 import logging
 from typing import List
@@ -22,6 +24,7 @@ from openbb_terminal.portfolio.portfolio_optimization import (
     optimizer_helper,
     optimizer_view,
 )
+from openbb_terminal.portfolio.portfolio_optimization.parameters import params_controller
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -51,6 +54,8 @@ class PortfolioOptimizationController(BaseController):
         "nco",
         "ef",
         "yolo",
+        "file",
+        "params"
     ]
 
     period_choices = [
@@ -296,7 +301,11 @@ class PortfolioOptimizationController(BaseController):
         "barycentric",
     ]
 
+    file = "defaults.ini"
+
     PATH = "/portfolio/po/"
+
+    files_available = list()
 
     def __init__(self, tickers: List[str] = None, queue: List[str] = None):
         """Constructor"""
@@ -321,6 +330,13 @@ class PortfolioOptimizationController(BaseController):
             "herc",
             "nco",
         ]
+
+        self.files_available = [f for f in os.listdir(os.path.join(os.path.dirname(__file__), "parameters")) if (f.endswith(".ini") or f.endswith(".xlsx"))]
+
+        param = configparser.RawConfigParser()
+        param.read(os.path.join(os.path.dirname(__file__), "parameters", "defaults.ini"))
+        param.optionxform = str  # type: ignore
+        self.params = param["OPENBB"]
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
@@ -394,6 +410,11 @@ class PortfolioOptimizationController(BaseController):
 
 [param]Tickers: [/param]{('None', ', '.join(self.tickers))[bool(self.tickers)]}
 
+[param]Parameter file: [/param] {self.file}[cmds]
+
+    file          select parameter file[/cmds][menu]
+>   params        setting portfolio risk parameters[/menu]
+
 [info]Mean Risk Optimization:[/info][cmds]
     maxsharpe     maximal Sharpe ratio portfolio (a.k.a the tangency portfolio)
     minrisk       minimum risk portfolio
@@ -421,6 +442,12 @@ class PortfolioOptimizationController(BaseController):
     """
         console.print(text=help_text, menu="Portfolio - Portfolio Optimization")
 
+    def custom_reset(self):
+        """Class specific component of reset command"""
+        if self.file:
+            return ["portfolio", "po", f"file {self.file}"]
+        return []
+
     @log_start_end(log=logger)
     def call_select(self, other_args: List[str]):
         """Process select command"""
@@ -436,6 +463,46 @@ class PortfolioOptimizationController(BaseController):
     def call_rmv(self, other_args: List[str]):
         """Process rmv command"""
         self.rmv_stocks(other_args)
+
+    @log_start_end(log=logger)
+    def call_file(self, other_args: List[str]):
+        """Process file command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="file",
+            description="Select parameter file to use",
+        )
+        parser.add_argument(
+            "-f",
+            "--file",
+            required=True,
+            dest="file",
+            help="Parameter file to be used",
+            choices=self.files_available,
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-f")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args
+        )
+        if ns_parser:
+            self.file = ns_parser.file
+            param = configparser.RawConfigParser()
+            param.read(os.path.join(os.path.dirname(__file__), "parameters", self.file))
+            param.optionxform = str  # type: ignore
+            self.params = param["OPENBB"]
+            help_text = "\n[info]Parameters:[/info]\n"
+            for k, v in self.params.items():
+                help_text += f"    [param]{k}{' ' * (20-len(k))}[/param]: {v}\n"
+            console.print(help_text)
+
+    @log_start_end(log=logger)
+    def call_params(self, other_args: List[str]):
+        """Process params command"""
+        self.queue = self.load_class(
+            params_controller.ParametersController, self.file, self.queue
+        )
 
     @log_start_end(log=logger)
     def call_equal(self, other_args: List[str]):
