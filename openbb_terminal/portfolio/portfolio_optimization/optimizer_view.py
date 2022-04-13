@@ -12,7 +12,6 @@ from datetime import date
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import riskfolio as rp
 from matplotlib.lines import Line2D
 from matplotlib.gridspec import GridSpec
 
@@ -26,6 +25,12 @@ from openbb_terminal.portfolio.portfolio_optimization import (
     optimizer_model,
     yahoo_finance_model,
 )
+from openbb_terminal.portfolio.portfolio_optimization.riskfolio import (
+    Portfolio,
+    PlotFunctions,
+    RiskFunctions,
+)
+
 from openbb_terminal.rich_config import console
 from openbb_terminal.config_terminal import theme
 
@@ -70,7 +75,6 @@ risk_names = {
     "uci_rel": "ulcer index compounded",
 }
 
-
 risk_choices = {
     "mv": "MV",
     "mad": "MAD",
@@ -109,7 +113,8 @@ time_factor = {
 
 @log_start_end(log=logger)
 def d_period(period: str, start: str, end: str):
-    """Build a date range string
+    """
+    Builds a date range string
 
     Parameters
     ----------
@@ -163,7 +168,8 @@ def portfolio_performance(
     beta: float = None,
     b_sim: float = None,
 ):
-    """Print portfolio performance indicators
+    """
+    Prints portfolio performance indicators
 
     Parameters
     ----------
@@ -237,7 +243,7 @@ def portfolio_performance(
     print(f"Sharpe ratio: {sharpe:.4f}")
 
     if risk_measure != "MV":
-        risk = rp.Sharpe_Risk(
+        risk = RiskFunctions.Sharpe_Risk(
             weights,
             cov=stock_returns.cov(),
             returns=stock_returns,
@@ -289,7 +295,8 @@ def portfolio_performance(
 
 @log_start_end(log=logger)
 def display_weights(weights: dict, market_neutral: bool = False):
-    """Print weights in a nice format
+    """
+    Prints weights in a nice format
 
     Parameters
     ----------
@@ -320,7 +327,6 @@ def display_weights(weights: dict, market_neutral: bool = False):
         tot_value = weight_df["value"].abs().mean()
         header = "Value ($)" if tot_value > 1.01 else "Value (%)"
         print_rich_table(weight_df, headers=[header], show_index=True, title="Weights")
-    console.print("")
 
 
 @log_start_end(log=logger)
@@ -338,14 +344,9 @@ def display_equal_weight(
     risk_free_rate: float = 0,
     alpha: float = 0.05,
     value: float = 1,
-    pie: bool = False,
-    hist: bool = False,
-    dd: bool = False,
-    rc_chart: bool = False,
-    heat: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
-):
-    """Equally weighted portfolio, where weight = 1/# of stocks
+) -> Dict:
+    """
+    Equally weighted portfolio, where weight = 1/# of stocks
 
     Parameters
     ----------
@@ -401,18 +402,6 @@ def display_equal_weight(
         Significance level of CVaR, EVaR, CDaR and EDaR.
     value : float, optional
         Amount to allocate to portfolio, by default 1.0
-    pie : bool, optional
-        Display a pie chart of values, by default False
-    hist : bool, optional
-        Display a histogram with risk measures, by default False
-    dd : bool, optional
-        Display a drawdown chart with risk measures, by default False
-    rc-chart : float, optional
-        Display a risk contribution chart for assets, by default False
-    heat : float, optional
-        Display a heatmap of correlation matrix with dendrogram, by default False
-    external_axes: Optional[List[plt.Axes]]
-        Optional axes to plot data on
     """
     p = d_period(period, start, end)
     s_title = f"{p} Equally Weighted Portfolio\n"
@@ -429,26 +418,6 @@ def display_equal_weight(
         method=method,
         value=value,
     )
-
-    additional_plots(
-        weights=weights,
-        stock_returns=stock_returns,
-        freq=freq,
-        risk_measure=risk_choices[risk_measure],
-        risk_free_rate=risk_free_rate,
-        alpha=alpha,
-        a_sim=100,
-        beta=alpha,
-        b_sim=100,
-        title_opt=s_title,
-        pie=pie,
-        hist=hist,
-        dd=dd,
-        rc_chart=rc_chart,
-        heat=heat,
-        external_axes=external_axes,
-    )
-
     console.print("\n", s_title)
     display_weights(weights)
     portfolio_performance(
@@ -463,6 +432,7 @@ def display_equal_weight(
         freq=freq,
     )
     console.print("")
+    return weights
 
 
 @log_start_end(log=logger)
@@ -479,16 +449,10 @@ def display_property_weighting(
     s_property: str = "marketCap",
     risk_measure="mv",
     risk_free_rate: float = 0,
-    alpha: float = 0.05,
     value: float = 1,
-    pie: bool = False,
-    hist: bool = False,
-    dd: bool = False,
-    rc_chart: bool = False,
-    heat: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
-):
-    """Display portfolio weighted by selected property
+) -> Dict:
+    """
+    Builds a portfolio weighted by selected property
 
     Parameters
     ----------
@@ -546,18 +510,6 @@ def display_property_weighting(
         Significance level of CVaR, EVaR, CDaR and EDaR.
     value : float, optional
         Amount to allocate to portfolio, by default 1.0
-    pie : bool, optional
-        Display a pie chart of values, by default False
-    hist : bool, optional
-        Display a histogram with risk measures, by default False
-    dd : bool, optional
-        Display a drawdown chart with risk measures, by default False
-    rc-chart : float, optional
-        Display a risk contribution chart for assets, by default False
-    heat : float, optional
-        Display a heatmap of correlation matrix with dendrogram, by default False
-    external_axes: Optional[List[plt.Axes]]
-        Optional axes to plot data on
     """
     p = d_period(period, start, end)
     s_title = f"{p} Weighted Portfolio based on " + s_property + "\n"
@@ -575,26 +527,6 @@ def display_property_weighting(
         s_property=s_property,
         value=value,
     )
-
-    additional_plots(
-        weights=weights,
-        stock_returns=stock_returns,
-        freq=freq,
-        risk_measure=risk_measure,
-        risk_free_rate=risk_free_rate,
-        alpha=alpha,
-        a_sim=100,
-        beta=alpha,
-        b_sim=100,
-        title_opt=s_title,
-        pie=pie,
-        hist=hist,
-        dd=dd,
-        rc_chart=rc_chart,
-        heat=heat,
-        external_axes=external_axes,
-    )
-
     console.print("\n", s_title)
     display_weights(weights)
     portfolio_performance(
@@ -609,6 +541,7 @@ def display_property_weighting(
         freq=freq,
     )
     console.print("")
+    return weights
 
 
 @log_start_end(log=logger)
@@ -634,14 +567,9 @@ def display_mean_risk(
     d_ewma: float = 0.94,
     value: float = 1.0,
     value_short: float = 0.0,
-    pie: bool = False,
-    hist: bool = False,
-    dd: bool = False,
-    rc_chart: bool = False,
-    heat: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
-):
-    """Builds a mean risk optimal portfolio
+) -> Dict:
+    """
+    Builds a mean risk optimal portfolio
 
     Parameters
     ----------
@@ -746,18 +674,6 @@ def display_mean_risk(
         Amount to allocate to portfolio in long positions, by default 1.0
     value_short : float, optional
         Amount to allocate to portfolio in short positions, by default 0.0
-    pie : bool, optional
-        Display a pie chart of values, by default False
-    hist : bool, optional
-        Display a histogram with risk measures, by default False
-    dd : bool, optional
-        Display a drawdown chart with risk measures, by default False
-    rc-chart : float, optional
-        Display a risk contribution chart for assets, by default False
-    heat : float, optional
-        Display a heatmap of correlation matrix with dendrogram, by default False
-    external_axes: Optional[List[plt.Axes]]
-        Optional axes to plot data on
     """
     p = d_period(period, start, end)
     if objective == "sharpe":
@@ -798,25 +714,6 @@ def display_mean_risk(
         console.print("\n", "There is no solution with this parameters")
         return
 
-    additional_plots(
-        weights=weights,
-        stock_returns=stock_returns,
-        title_opt=s_title,
-        freq=freq,
-        risk_measure=risk_measure,
-        risk_free_rate=risk_free_rate,
-        alpha=alpha,
-        a_sim=100,
-        beta=0.05,
-        b_sim=100,
-        pie=pie,
-        hist=hist,
-        dd=dd,
-        rc_chart=rc_chart,
-        heat=heat,
-        external_axes=external_axes,
-    )
-
     console.print("\n", s_title)
     display_weights(weights)
     portfolio_performance(
@@ -831,6 +728,7 @@ def display_mean_risk(
         freq=freq,
     )
     console.print("")
+    return weights
 
 
 @log_start_end(log=logger)
@@ -854,13 +752,7 @@ def display_max_sharpe(
     d_ewma: float = 0.94,
     value: float = 1.0,
     value_short: float = 0.0,
-    pie: bool = False,
-    hist: bool = False,
-    dd: bool = False,
-    rc_chart: bool = False,
-    heat: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
-):
+) -> Dict:
     """
     Builds a maximal return/risk ratio portfolio
 
@@ -955,20 +847,8 @@ def display_max_sharpe(
         Amount to allocate to portfolio in long positions, by default 1.0
     value_short : float, optional
         Amount to allocate to portfolio in short positions, by default 0.0
-    pie : bool, optional
-        Display a pie chart of values, by default False
-    hist : bool, optional
-        Display a histogram with risk measures, by default False
-    dd : bool, optional
-        Display a drawdown chart with risk measures, by default False
-    rc-chart : float, optional
-        Display a risk contribution chart for assets, by default False
-    heat : float, optional
-        Display a heatmap of correlation matrix with dendrogram, by default False
-    external_axes: Optional[List[plt.Axes]]
-        Optional axes to plot data on
     """
-    display_mean_risk(
+    weights = display_mean_risk(
         stocks=stocks,
         period=period,
         start=start,
@@ -989,13 +869,8 @@ def display_max_sharpe(
         d_ewma=d_ewma,
         value=value,
         value_short=value_short,
-        pie=pie,
-        hist=hist,
-        dd=dd,
-        rc_chart=rc_chart,
-        heat=heat,
-        external_axes=external_axes,
     )
+    return weights
 
 
 @log_start_end(log=logger)
@@ -1019,13 +894,7 @@ def display_min_risk(
     d_ewma: float = 0.94,
     value: float = 1.0,
     value_short: float = 0.0,
-    pie: bool = False,
-    hist: bool = False,
-    dd: bool = False,
-    rc_chart: bool = False,
-    heat: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
-):
+) -> Dict:
     """
     Builds a minimum risk portfolio
 
@@ -1120,20 +989,8 @@ def display_min_risk(
         Amount to allocate to portfolio in long positions, by default 1.0
     value_short : float, optional
         Amount to allocate to portfolio in short positions, by default 0.0
-    pie : bool, optional
-        Display a pie chart of values, by default False
-    hist : bool, optional
-        Display a histogram with risk measures, by default False
-    dd : bool, optional
-        Display a drawdown chart with risk measures, by default False
-    rc-chart : float, optional
-        Display a risk contribution chart for assets, by default False
-    heat : float, optional
-        Display a heatmap of correlation matrix with dendrogram, by default False
-    external_axes: Optional[List[plt.Axes]]
-        Optional axes to plot data on
     """
-    display_mean_risk(
+    weights = display_mean_risk(
         stocks=stocks,
         period=period,
         start=start,
@@ -1154,13 +1011,8 @@ def display_min_risk(
         d_ewma=d_ewma,
         value=value,
         value_short=value_short,
-        pie=pie,
-        hist=hist,
-        dd=dd,
-        rc_chart=rc_chart,
-        heat=heat,
-        external_axes=external_axes,
     )
+    return weights
 
 
 @log_start_end(log=logger)
@@ -1185,13 +1037,7 @@ def display_max_util(
     d_ewma: float = 0.94,
     value: float = 1.0,
     value_short: float = 0.0,
-    pie: bool = False,
-    hist: bool = False,
-    dd: bool = False,
-    rc_chart: bool = False,
-    heat: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
-):
+) -> Dict:
     """
     Builds a maximal risk averse utility portfolio
 
@@ -1289,20 +1135,8 @@ def display_max_util(
         Amount to allocate to portfolio in long positions, by default 1.0
     value_short : float, optional
         Amount to allocate to portfolio in short positions, by default 0.0
-    pie : bool, optional
-        Display a pie chart of values, by default False
-    hist : bool, optional
-        Display a histogram with risk measures, by default False
-    dd : bool, optional
-        Display a drawdown chart with risk measures, by default False
-    rc-chart : float, optional
-        Display a risk contribution chart for assets, by default False
-    heat : float, optional
-        Display a heatmap of correlation matrix with dendrogram, by default False
-    external_axes: Optional[List[plt.Axes]]
-        Optional axes to plot data on
     """
-    display_mean_risk(
+    weights = display_mean_risk(
         stocks=stocks,
         period=period,
         start=start,
@@ -1324,13 +1158,8 @@ def display_max_util(
         d_ewma=d_ewma,
         value=value,
         value_short=value_short,
-        pie=pie,
-        hist=hist,
-        dd=dd,
-        rc_chart=rc_chart,
-        heat=heat,
-        external_axes=external_axes,
     )
+    return weights
 
 
 @log_start_end(log=logger)
@@ -1354,13 +1183,7 @@ def display_max_ret(
     d_ewma: float = 0.94,
     value: float = 1.0,
     value_short: float = 0.0,
-    pie: bool = False,
-    hist: bool = False,
-    dd: bool = False,
-    rc_chart: bool = False,
-    heat: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
-):
+) -> Dict:
     """
     Builds a maximal return portfolio
 
@@ -1455,20 +1278,8 @@ def display_max_ret(
         Amount to allocate to portfolio in long positions, by default 1.0
     value_short : float, optional
         Amount to allocate to portfolio in short positions, by default 0.0
-    pie : bool, optional
-        Display a pie chart of values, by default False
-    hist : bool, optional
-        Display a histogram with risk measures, by default False
-    dd : bool, optional
-        Display a drawdown chart with risk measures, by default False
-    rc-chart : float, optional
-        Display a risk contribution chart for assets, by default False
-    heat : float, optional
-        Display a heatmap of correlation matrix with dendrogram, by default False
-    external_axes: Optional[List[plt.Axes]]
-        Optional axes to plot data on
     """
-    display_mean_risk(
+    weights = display_mean_risk(
         stocks=stocks,
         period=period,
         start=start,
@@ -1489,13 +1300,8 @@ def display_max_ret(
         d_ewma=d_ewma,
         value=value,
         value_short=value_short,
-        pie=pie,
-        hist=hist,
-        dd=dd,
-        rc_chart=rc_chart,
-        heat=heat,
-        external_axes=external_axes,
     )
+    return weights
 
 
 @log_start_end(log=logger)
@@ -1513,14 +1319,9 @@ def display_max_div(
     d_ewma: float = 0.94,
     value: float = 1.0,
     value_short: float = 0.0,
-    pie: bool = False,
-    hist: bool = False,
-    dd: bool = False,
-    rc_chart: bool = False,
-    heat: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
-):
-    """Builds a maximal diversification portfolio
+) -> Dict:
+    """
+    Builds a maximal diversification portfolio
 
     Parameters
     ----------
@@ -1576,18 +1377,6 @@ def display_max_div(
         Amount to allocate to portfolio in long positions, by default 1.0
     value_short : float, optional
         Amount to allocate to portfolio in short positions, by default 0.0
-    pie : bool, optional
-        Display a pie chart of values, by default False
-    hist : bool, optional
-        Display a histogram with risk measures, by default False
-    dd : bool, optional
-        Display a drawdown chart with risk measures, by default False
-    rc-chart : float, optional
-        Display a risk contribution chart for assets, by default False
-    heat : float, optional
-        Display a heatmap of correlation matrix with dendrogram, by default False
-    external_axes: Optional[List[plt.Axes]]
-        Optional axes to plot data on
     """
     p = d_period(period, start, end)
     s_title = f"{p} Display a maximal diversification portfolio\n"
@@ -1611,25 +1400,6 @@ def display_max_div(
         console.print("\n", "There is no solution with this parameters")
         return
 
-    additional_plots(
-        weights=weights,
-        stock_returns=stock_returns,
-        title_opt=s_title,
-        freq=freq,
-        risk_measure="mv",
-        risk_free_rate=0,
-        alpha=0.05,
-        a_sim=100,
-        beta=0.05,
-        b_sim=100,
-        pie=pie,
-        hist=hist,
-        dd=dd,
-        rc_chart=rc_chart,
-        heat=heat,
-        external_axes=external_axes,
-    )
-
     console.print("\n", s_title)
     display_weights(weights)
     portfolio_performance(
@@ -1644,6 +1414,7 @@ def display_max_div(
         freq=freq,
     )
     console.print("")
+    return weights
 
 
 @log_start_end(log=logger)
@@ -1661,14 +1432,9 @@ def display_max_decorr(
     d_ewma: float = 0.94,
     value: float = 1.0,
     value_short: float = 0.0,
-    pie: bool = False,
-    hist: bool = False,
-    dd: bool = False,
-    rc_chart: bool = False,
-    heat: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
-):
-    """Builds a maximal decorrelation portfolio
+) -> Dict:
+    """
+    Builds a maximal decorrelation portfolio
 
     Parameters
     ----------
@@ -1724,18 +1490,6 @@ def display_max_decorr(
         Amount to allocate to portfolio in long positions, by default 1.0
     value_short : float, optional
         Amount to allocate to portfolio in short positions, by default 0.0
-    pie : bool, optional
-        Display a pie chart of values, by default False
-    hist : bool, optional
-        Display a histogram with risk measures, by default False
-    dd : bool, optional
-        Display a drawdown chart with risk measures, by default False
-    rc-chart : float, optional
-        Display a risk contribution chart for assets, by default False
-    heat : float, optional
-        Display a heatmap of correlation matrix with dendrogram, by default False
-    external_axes: Optional[List[plt.Axes]]
-        Optional axes to plot data on
     """
     p = d_period(period, start, end)
     s_title = f"{p} Display a maximal decorrelation portfolio\n"
@@ -1760,25 +1514,6 @@ def display_max_decorr(
         console.print("\n", "There is no solution with this parameters")
         return
 
-    additional_plots(
-        weights=weights,
-        stock_returns=stock_returns,
-        title_opt=s_title,
-        freq=freq,
-        risk_measure="mv",
-        risk_free_rate=0,
-        alpha=0.05,
-        a_sim=100,
-        beta=0.05,
-        b_sim=100,
-        pie=pie,
-        hist=hist,
-        dd=dd,
-        rc_chart=rc_chart,
-        heat=heat,
-        external_axes=external_axes,
-    )
-
     console.print("\n", s_title)
     display_weights(weights)
     portfolio_performance(
@@ -1793,6 +1528,7 @@ def display_max_decorr(
         freq=freq,
     )
     console.print("")
+    return weights
 
 
 @log_start_end(log=logger)
@@ -1816,7 +1552,8 @@ def display_ef(
     tangency: bool = False,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Display efficient frontier
+    """
+    Display efficient frontier
 
     Parameters
     ----------
@@ -1897,7 +1634,7 @@ def display_ef(
     risk_free_rate = risk_free_rate / time_factor[freq.upper()]
 
     # Building the portfolio object
-    port = rp.Portfolio(returns=stock_returns, alpha=alpha)
+    port = Portfolio.Portfolio(returns=stock_returns, alpha=alpha)
 
     # Estimate input parameters:
     port.assets_stats(method_mu="hist", method_cov="hist")
@@ -1943,7 +1680,7 @@ def display_ef(
 
     for i in range(frontier.shape[1]):
         w = np.array(frontier.iloc[:, i], ndmin=2).T
-        risk = rp.Sharpe_Risk(
+        risk = RiskFunctions.Sharpe_Risk(
             w,
             cov=cov,
             returns=stock_returns,
@@ -1968,7 +1705,7 @@ def display_ef(
         ax = external_axes[0]
 
     frontier = pd.concat([frontier, random_weights], axis=1)
-    ax = rp.plot_frontier(
+    ax = PlotFunctions.plot_frontier(
         w_frontier=frontier,
         mu=mu,
         cov=cov,
@@ -1989,7 +1726,7 @@ def display_ef(
     # Add risk free line
     if tangency:
         ret_sharpe = (mu @ weights).to_numpy().item() * time_factor[freq.upper()]
-        risk_sharpe = rp.Sharpe_Risk(
+        risk_sharpe = RiskFunctions.Sharpe_Risk(
             weights,
             cov=cov,
             returns=stock_returns,
@@ -2047,14 +1784,9 @@ def display_risk_parity(
     covariance: str = "hist",
     d_ewma: float = 0.94,
     value: float = 1.0,
-    pie: bool = False,
-    hist: bool = False,
-    dd: bool = False,
-    rc_chart: bool = False,
-    heat: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
-):
-    """Builds a risk parity portfolio using the risk budgeting approach
+) -> Dict:
+    """
+    Builds a risk parity portfolio using the risk budgeting approach
 
     Parameters
     ----------
@@ -2144,18 +1876,6 @@ def display_risk_parity(
         The default is 0.94.
     value : float, optional
         Amount to allocate to portfolio, by default 1.0
-    pie : bool, optional
-        Display a pie chart of values, by default False
-    hist : bool, optional
-        Display a histogram with risk measures, by default False
-    dd : bool, optional
-        Display a drawdown chart with risk measures, by default False
-    rc-chart : float, optional
-        Display a risk contribution chart for assets, by default False
-    heat : float, optional
-        Display a heatmap of correlation matrix with dendrogram, by default False
-    external_axes: Optional[List[plt.Axes]]
-        Optional axes to plot data on
     """
     p = d_period(period, start, end)
     s_title = f"{p} Risk parity portfolio based on risk budgeting approach\n"
@@ -2183,26 +1903,7 @@ def display_risk_parity(
 
     if weights is None:
         console.print("\n", "There is no solution with this parameters")
-        return
-
-    additional_plots(
-        weights=weights,
-        stock_returns=stock_returns,
-        title_opt=s_title,
-        freq=freq,
-        risk_measure=risk_measure,
-        risk_free_rate=risk_free_rate,
-        alpha=alpha,
-        a_sim=100,
-        beta=0.05,
-        b_sim=100,
-        pie=pie,
-        hist=hist,
-        dd=dd,
-        rc_chart=rc_chart,
-        heat=heat,
-        external_axes=external_axes,
-    )
+        return None
 
     console.print("\n", s_title)
     display_weights(weights)
@@ -2214,6 +1915,7 @@ def display_risk_parity(
         freq=freq,
     )
     console.print("")
+    return weights
 
 
 @log_start_end(log=logger)
@@ -2235,14 +1937,9 @@ def display_rel_risk_parity(
     covariance: str = "hist",
     d_ewma: float = 0.94,
     value: float = 1.0,
-    pie: bool = False,
-    hist: bool = False,
-    dd: bool = False,
-    rc_chart: bool = False,
-    heat: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
-):
-    """Builds a relaxed risk parity portfolio using the least squares approach
+) -> Dict:
+    """
+    Builds a relaxed risk parity portfolio using the least squares approach
 
     Parameters
     ----------
@@ -2323,18 +2020,6 @@ def display_rel_risk_parity(
         The default is 0.94.
     value : float, optional
         Amount to allocate to portfolio, by default 1.0
-    pie : bool, optional
-        Display a pie chart of values, by default False
-    hist : bool, optional
-        Display a histogram with risk measures, by default False
-    dd : bool, optional
-        Display a drawdown chart with risk measures, by default False
-    rc-chart : float, optional
-        Display a risk contribution chart for assets, by default False
-    heat : float, optional
-        Display a heatmap of correlation matrix with dendrogram, by default False
-    external_axes: Optional[List[plt.Axes]]
-        Optional axes to plot data on
     """
     p = d_period(period, start, end)
     s_title = f"{p} Relaxed risk parity portfolio based on least squares approach\n"
@@ -2360,26 +2045,7 @@ def display_rel_risk_parity(
 
     if weights is None:
         console.print("\n", "There is no solution with this parameters")
-        return
-
-    additional_plots(
-        weights=weights,
-        stock_returns=stock_returns,
-        title_opt=s_title,
-        freq=freq,
-        risk_measure="MV",
-        risk_free_rate=0,
-        alpha=0.05,
-        a_sim=100,
-        beta=0.05,
-        b_sim=100,
-        pie=pie,
-        hist=hist,
-        dd=dd,
-        rc_chart=rc_chart,
-        heat=heat,
-        external_axes=external_axes,
-    )
+        return None
 
     console.print("\n", s_title)
     display_weights(weights)
@@ -2390,6 +2056,7 @@ def display_rel_risk_parity(
         freq=freq,
     )
     console.print("")
+    return weights
 
 
 @log_start_end(log=logger)
@@ -2422,14 +2089,9 @@ def display_hcp(
     leaf_order: bool = True,
     d_ewma: float = 0.94,
     value: float = 1.0,
-    pie: bool = False,
-    hist: bool = False,
-    dd: bool = False,
-    rc_chart: bool = False,
-    heat: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
-):
-    """Display portfolio with risk parity
+) -> Dict:
+    """
+    Builds a hierarchical clustering portfolio
 
     Parameters
     ----------
@@ -2604,18 +2266,6 @@ def display_hcp(
         The default is 0.94.
     value : float, optional
         Amount to allocate to portfolio, by default 1.0
-    pie : bool, optional
-        Display a pie chart of values, by default False
-    hist : bool, optional
-        Display a histogram with risk measures, by default False
-    dd : bool, optional
-        Display a drawdown chart with risk measures, by default False
-    rc-chart : float, optional
-        Display a risk contribution chart for assets, by default False
-    heat : float, optional
-        Display a heatmap of correlation matrix with dendrogram, by default False
-    external_axes: Optional[List[plt.Axes]]
-        Optional axes to plot data on
     """
     p = d_period(period, start, end)
 
@@ -2663,28 +2313,8 @@ def display_hcp(
 
     if weights is None:
         console.print("\n", "There is no solution with this parameters")
-        return
+        return None
 
-    additional_plots(
-        weights=weights,
-        stock_returns=stock_returns,
-        title_opt=s_title,
-        freq=freq,
-        risk_measure=risk_measure,
-        risk_free_rate=risk_free_rate,
-        alpha=alpha,
-        a_sim=a_sim,
-        beta=beta,
-        b_sim=b_sim,
-        pie=pie,
-        hist=hist,
-        dd=dd,
-        rc_chart=rc_chart,
-        heat=heat,
-        external_axes=external_axes,
-    )
-
-    # Print portfolios
     console.print("\n", s_title)
     display_weights(weights)
 
@@ -2699,8 +2329,8 @@ def display_hcp(
         b_sim=b_sim,
         freq=freq,
     )
-
     console.print("")
+    return weights
 
 
 @log_start_end(log=logger)
@@ -2730,13 +2360,7 @@ def display_hrp(
     leaf_order: bool = True,
     d_ewma: float = 0.94,
     value: float = 1.0,
-    pie: bool = False,
-    hist: bool = False,
-    dd: bool = False,
-    rc_chart: bool = False,
-    heat: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
-):
+) -> Dict:
     """
     Builds a hierarchical risk parity portfolio
 
@@ -2895,20 +2519,8 @@ def display_hrp(
         Amount to allocate to portfolio in long positions, by default 1.0
     value_short : float, optional
         Amount to allocate to portfolio in short positions, by default 0.0
-    pie : bool, optional
-        Display a pie chart of values, by default False
-    hist : bool, optional
-        Display a histogram with risk measures, by default False
-    dd : bool, optional
-        Display a drawdown chart with risk measures, by default False
-    rc-chart : float, optional
-        Display a risk contribution chart for assets, by default False
-    heat : float, optional
-        Display a heatmap of correlation matrix with dendrogram, by default False
-    external_axes: Optional[List[plt.Axes]]
-        Optional axes to plot data on
     """
-    display_hcp(
+    weights = display_hcp(
         stocks=stocks,
         period=period,
         start=start,
@@ -2935,13 +2547,8 @@ def display_hrp(
         leaf_order=leaf_order,
         d_ewma=d_ewma,
         value=value,
-        pie=pie,
-        hist=hist,
-        dd=dd,
-        rc_chart=rc_chart,
-        heat=heat,
-        external_axes=external_axes,
     )
+    return weights
 
 
 @log_start_end(log=logger)
@@ -2971,13 +2578,7 @@ def display_herc(
     leaf_order: bool = True,
     d_ewma: float = 0.94,
     value: float = 1.0,
-    pie: bool = False,
-    hist: bool = False,
-    dd: bool = False,
-    rc_chart: bool = False,
-    heat: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
-):
+) -> Dict:
     """
     Builds a hierarchical equal risk contribution portfolio
 
@@ -3144,20 +2745,8 @@ def display_herc(
         Amount to allocate to portfolio in long positions, by default 1.0
     value_short : float, optional
         Amount to allocate to portfolio in short positions, by default 0.0
-    pie : bool, optional
-        Display a pie chart of values, by default False
-    hist : bool, optional
-        Display a histogram with risk measures, by default False
-    dd : bool, optional
-        Display a drawdown chart with risk measures, by default False
-    rc-chart : float, optional
-        Display a risk contribution chart for assets, by default False
-    heat : float, optional
-        Display a heatmap of correlation matrix with dendrogram, by default False
-    external_axes: Optional[List[plt.Axes]]
-        Optional axes to plot data on
     """
-    display_hcp(
+    weights = display_hcp(
         stocks=stocks,
         period=period,
         start=start,
@@ -3184,13 +2773,8 @@ def display_herc(
         leaf_order=leaf_order,
         d_ewma=d_ewma,
         value=value,
-        pie=pie,
-        hist=hist,
-        dd=dd,
-        rc_chart=rc_chart,
-        heat=heat,
-        external_axes=external_axes,
     )
+    return weights
 
 
 @log_start_end(log=logger)
@@ -3219,13 +2803,7 @@ def display_nco(
     leaf_order: bool = True,
     d_ewma: float = 0.94,
     value: float = 1.0,
-    pie: bool = False,
-    hist: bool = False,
-    dd: bool = False,
-    rc_chart: bool = False,
-    heat: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
-):
+) -> Dict:
     """
     Builds a nested clustered optimization portfolio
 
@@ -3404,20 +2982,8 @@ def display_nco(
         Amount to allocate to portfolio in long positions, by default 1.0
     value_short : float, optional
         Amount to allocate to portfolio in short positions, by default 0.0
-    pie : bool, optional
-        Display a pie chart of values, by default False
-    hist : bool, optional
-        Display a histogram with risk measures, by default False
-    dd : bool, optional
-        Display a drawdown chart with risk measures, by default False
-    rc-chart : float, optional
-        Display a risk contribution chart for assets, by default False
-    heat : float, optional
-        Display a heatmap of correlation matrix with dendrogram, by default False
-    external_axes: Optional[List[plt.Axes]]
-        Optional axes to plot data on
     """
-    display_hcp(
+    weights = display_hcp(
         stocks=stocks,
         period=period,
         start=start,
@@ -3443,13 +3009,8 @@ def display_nco(
         leaf_order=leaf_order,
         d_ewma=d_ewma,
         value=value,
-        pie=pie,
-        hist=hist,
-        dd=dd,
-        rc_chart=rc_chart,
-        heat=heat,
-        external_axes=external_axes,
     )
+    return weights
 
 
 @log_start_end(log=logger)
@@ -3548,7 +3109,9 @@ def pie_chart_weights(
 
     plt.setp(autotexts, size=8, weight="bold")
 
-    ax.set_title(title_opt, pad=20)
+    title = "Portfolio - " + title_opt + "\n"
+    title += "Portfolio Composition"
+    ax.set_title(title)
 
     if external_axes is None:
         theme.visualize_output()
@@ -3658,10 +3221,14 @@ def additional_plots(
         else:
             ax = external_axes[0]
 
-        ax = rp.plot_hist(
+        ax = PlotFunctions.plot_hist(
             stock_returns, w=pd.Series(weights).to_frame(), alpha=alpha, ax=ax
         )
         ax.legend(fontsize="x-small", loc="best")
+
+        title = "Portfolio - " + title_opt + "\n"
+        title += ax.get_title(loc="left")
+        ax.set_title(title)
 
         if external_axes is None:
             theme.visualize_output()
@@ -3673,7 +3240,7 @@ def additional_plots(
             ax = external_axes[0]
 
         nav = stock_returns.cumsum()
-        ax = rp.plot_drawdown(
+        ax = PlotFunctions.plot_drawdown(
             nav=nav, w=pd.Series(weights).to_frame(), alpha=alpha, ax=ax
         )
 
@@ -3684,6 +3251,10 @@ def additional_plots(
         ax.set_position(gs[0].get_position(fig))
         ax.set_subplotspec(gs[0])
 
+        title = "Portfolio - " + title_opt + "\n"
+        title += ax.get_title(loc="left")
+        ax.set_title(title)
+
         if external_axes is None:
             theme.visualize_output()
 
@@ -3693,7 +3264,7 @@ def additional_plots(
         else:
             ax = external_axes[0]
 
-        ax = rp.plot_risk_con(
+        ax = PlotFunctions.plot_risk_con(
             w=pd.Series(weights).to_frame(),
             cov=stock_returns.cov(),
             returns=stock_returns,
@@ -3707,6 +3278,11 @@ def additional_plots(
             t_factor=time_factor[freq.upper()],
             ax=ax,
         )
+
+        title = "Portfolio - " + title_opt + "\n"
+        title += ax.get_title(loc="left")
+        ax.set_title(title)
+
         if external_axes is None:
             theme.visualize_output()
 
@@ -3716,7 +3292,7 @@ def additional_plots(
         else:
             ax = external_axes[0]
 
-        ax = rp.plot_clusters(
+        ax = PlotFunctions.plot_clusters(
             returns=stock_returns,
             codependence="pearson",
             linkage="ward",
@@ -3747,6 +3323,10 @@ def additional_plots(
         # Horizontal dendrogram
         l, b, w, h = ax[3].get_position().bounds
         ax[3].set_position([l - l1 - w1, b, w * 0.8, h])
+
+        title = "Portfolio - " + title_opt + "\n"
+        title += ax[3].get_title(loc="left")
+        ax[3].set_title(title)
 
         if external_axes is None:
             theme.visualize_output(force_tight_layout=True)

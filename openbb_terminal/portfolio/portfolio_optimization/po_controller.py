@@ -7,7 +7,7 @@ import os
 import configparser
 import argparse
 import logging
-from typing import List
+from typing import List, Dict
 
 from prompt_toolkit.completion import NestedCompleter
 
@@ -22,6 +22,7 @@ from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.portfolio.portfolio_optimization import (
     optimizer_helper,
+    optimizer_model,
     optimizer_view,
 )
 from openbb_terminal.portfolio.portfolio_optimization.parameters import params_controller
@@ -37,6 +38,9 @@ class PortfolioOptimizationController(BaseController):
         "select",
         "add",
         "rmv",
+        "show",
+        "rpf",
+        "plot",
         "equal",
         "mktcap",
         "dividend",
@@ -229,6 +233,34 @@ class PortfolioOptimizationController(BaseController):
         "UCI_Rel",
     ]
 
+    risk_choices = {
+        "mv": "MV",
+        "mad": "MAD",
+        "gmd": "GMD",
+        "msv": "MSV",
+        "var": "VaR",
+        "cvar": "CVaR",
+        "tg": "TG",
+        "evar": "EVaR",
+        "rg": "RG",
+        "cvrg": "CVRG",
+        "tgrg": "TGRG",
+        "wr": "WR",
+        "flpm": "FLPM",
+        "slpm": "SLPM",
+        "mdd": "MDD",
+        "add": "ADD",
+        "dar": "DaR",
+        "cdar": "CDaR",
+        "edar": "EDaR",
+        "uci": "UCI",
+        "mdd_rel": "MDD_Rel",
+        "add_rel": "ADD_Rel",
+        "dar_rel": "DaR_Rel",
+        "cdar_rel": "CDaR_Rel",
+        "edar_rel": "EDaR_Rel",
+        "uci_rel": "UCI_Rel",
+    }
     mean_choices = [
         "hist",
         "ewma1",
@@ -307,14 +339,27 @@ class PortfolioOptimizationController(BaseController):
 
     files_available = list()
 
-    def __init__(self, tickers: List[str] = None, queue: List[str] = None):
+    def __init__(
+        self,
+        tickers: List[str] = None,
+        portfolios: Dict = None,
+        queue: List[str] = None,
+    ):
         """Constructor"""
         super().__init__(queue)
 
         if tickers:
             self.tickers = list(set(tickers))
+            self.tickers.sort()
         else:
             self.tickers = list()
+
+        if portfolios:
+            self.portfolios = dict(portfolios)
+        else:
+            self.portfolios = dict()
+
+        self.count = 0
 
         models = [
             "maxsharpe",
@@ -406,9 +451,12 @@ class PortfolioOptimizationController(BaseController):
         help_text = f"""[cmds]
     select        select list of tickers to be optimized
     add           add tickers to the list of the tickers to be optimized
-    rmv           remove tickers from the list of the tickers to be optimized[/cmds]
+    rmv           remove tickers from the list of the tickers to be optimized
+    show          show selected portfolios from the list of saved portfolios
+    rpf           remove portfolios from the list of saved portfolios[/cmds]
 
 [param]Tickers: [/param]{('None', ', '.join(self.tickers))[bool(self.tickers)]}
+[param]Portfolios: [/param]{('None', ', '.join(self.portfolios.keys()))[bool(self.portfolios.keys())]}
 
 [param]Parameter file: [/param] {self.file}[cmds]
 
@@ -506,695 +554,14 @@ class PortfolioOptimizationController(BaseController):
         self.files_available = [f for f in os.listdir(os.path.join(os.path.dirname(__file__), "parameters")) if (f.endswith(".ini") or f.endswith(".xlsx"))]
 
     @log_start_end(log=logger)
-    def call_equal(self, other_args: List[str]):
-        """Process equal command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="equal",
-            description="Returns an equally weighted portfolio",
-        )
-        parser.add_argument(
-            "-p",
-            "--period",
-            default="3y",
-            dest="period",
-            help="Period to get yfinance data from",
-            # choices=self.period_choices,
-        )
-        parser.add_argument(
-            "-s",
-            "--start",
-            default="",
-            dest="start",
-            help="Start date to get yfinance data from",
-        )
-        parser.add_argument(
-            "-e",
-            "--end",
-            default="",
-            dest="end",
-            help="End date to get yfinance data from",
-        )
-        parser.add_argument(
-            "-lr",
-            "--log-returns",
-            action="store_true",
-            default=False,
-            dest="log_returns",
-            help="If use logarithmic or arithmetic returns to calculate returns",
-        )
-        parser.add_argument(
-            "-f",
-            "--freq",
-            default="d",
-            dest="freq",
-            help="Frequency used to calculate returns",
-            choices=self.freq_choices,
-        )
-        parser.add_argument(
-            "-mn",
-            "--maxnan",
-            type=float,
-            default=0.05,
-            dest="maxnan",
-            help="""Max percentage of nan values accepted per asset to be
-                considered in the optimization process""",
-        )
-        parser.add_argument(
-            "-th",
-            "--threshold",
-            type=float,
-            default=0.30,
-            dest="threshold",
-            help="""Value used to replace outliers that are higher to threshold
-                in absolute value""",
-        )
-        parser.add_argument(
-            "-mt",
-            "--method",
-            default="time",
-            dest="method",
-            help="Method used to fill nan values",
-        )
-        parser.add_argument(
-            "-rm",
-            "--risk-measure",
-            default="MV",
-            dest="risk_measure",
-            help="Risk measure used to optimize the portfolio",
-            choices=self.meanrisk_choices,
-        )
-        parser.add_argument(
-            "-r",
-            "--risk-free-rate",
-            type=float,
-            dest="risk_free_rate",
-            default=get_rf(),
-            help="""Risk-free rate of borrowing/lending. The period of the
-                risk-free rate must be annual""",
-        )
-        parser.add_argument(
-            "-a",
-            "--alpha",
-            type=float,
-            default=0.05,
-            dest="alpha",
-            help="Significance level of CVaR, EVaR, CDaR and EDaR",
-        )
-        parser.add_argument(
-            "-v",
-            "--value",
-            default=1,
-            type=float,
-            dest="value",
-            help="Amount to allocate to portfolio",
-        )
-        parser.add_argument(
-            "--pie",
-            action="store_true",
-            dest="pie",
-            default=False,
-            help="Display a pie chart for weights",
-        )
-        parser.add_argument(
-            "--hist",
-            action="store_true",
-            dest="hist",
-            default=False,
-            help="Display a histogram with risk measures",
-        )
-        parser.add_argument(
-            "--dd",
-            action="store_true",
-            dest="dd",
-            default=False,
-            help="Display a drawdown chart with risk measures",
-        )
-        parser.add_argument(
-            "--rc-chart",
-            action="store_true",
-            dest="rc_chart",
-            default=False,
-            help="Display a risk contribution chart for assets",
-        )
-        parser.add_argument(
-            "--heat",
-            action="store_true",
-            dest="heat",
-            default=False,
-            help="Display a heatmap of correlation matrix with dendrogram",
-        )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            if len(self.tickers) < 2:
-                console.print(
-                    "Please have at least 2 loaded tickers to calculate weights.\n"
-                )
-                return
-
-            optimizer_view.display_equal_weight(
-                stocks=self.tickers,
-                period=ns_parser.period,
-                start=ns_parser.start,
-                end=ns_parser.end,
-                log_returns=ns_parser.log_returns,
-                freq=ns_parser.freq,
-                maxnan=ns_parser.maxnan,
-                threshold=ns_parser.threshold,
-                method=ns_parser.method,
-                risk_measure=ns_parser.risk_measure.lower(),
-                risk_free_rate=ns_parser.risk_free_rate,
-                alpha=ns_parser.alpha,
-                value=ns_parser.value,
-                pie=ns_parser.pie,
-                hist=ns_parser.hist,
-                dd=ns_parser.dd,
-                rc_chart=ns_parser.rc_chart,
-                heat=ns_parser.heat,
-            )
+    def call_show(self, other_args: List[str]):
+        """Process rpf command"""
+        self.show_portfolios(other_args)
 
     @log_start_end(log=logger)
-    def call_mktcap(self, other_args: List[str]):
-        """Process mktcap command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="mktcap",
-            description="Returns a portfolio that is weighted based on Market Cap.",
-        )
-        parser.add_argument(
-            "-p",
-            "--period",
-            default="3y",
-            dest="period",
-            help="Period to get yfinance data from",
-            # choices=self.period_choices,
-        )
-        parser.add_argument(
-            "-s",
-            "--start",
-            default="",
-            dest="start",
-            help="Start date to get yfinance data from",
-        )
-        parser.add_argument(
-            "-e",
-            "--end",
-            default="",
-            dest="end",
-            help="End date to get yfinance data from",
-        )
-        parser.add_argument(
-            "-lr",
-            "--log-returns",
-            action="store_true",
-            default=False,
-            dest="log_returns",
-            help="If use logarithmic or arithmetic returns to calculate returns",
-        )
-        parser.add_argument(
-            "-f",
-            "--freq",
-            default="d",
-            dest="freq",
-            help="Frequency used to calculate returns",
-            choices=self.freq_choices,
-        )
-        parser.add_argument(
-            "-mn",
-            "--maxnan",
-            type=float,
-            default=0.05,
-            dest="maxnan",
-            help="""Max percentage of nan values accepted per asset to be
-                considered in the optimization process""",
-        )
-        parser.add_argument(
-            "-th",
-            "--threshold",
-            type=float,
-            default=0.30,
-            dest="threshold",
-            help="""Value used to replace outliers that are higher to threshold
-                in absolute value""",
-        )
-        parser.add_argument(
-            "-mt",
-            "--method",
-            default="time",
-            dest="method",
-            help="Method used to fill nan values",
-        )
-        parser.add_argument(
-            "-rm",
-            "--risk-measure",
-            default="MV",
-            dest="risk_measure",
-            help="Risk measure used to optimize the portfolio",
-            choices=self.meanrisk_choices,
-        )
-        parser.add_argument(
-            "-r",
-            "--risk-free-rate",
-            type=float,
-            dest="risk_free_rate",
-            default=get_rf(),
-            help="""Risk-free rate of borrowing/lending. The period of the
-                risk-free rate must be annual""",
-        )
-        parser.add_argument(
-            "-a",
-            "--alpha",
-            type=float,
-            default=0.05,
-            dest="alpha",
-            help="Significance level of CVaR, EVaR, CDaR and EDaR",
-        )
-        parser.add_argument(
-            "-v",
-            "--value",
-            default=1,
-            type=float,
-            dest="value",
-            help="Amount to allocate to portfolio",
-        )
-        parser.add_argument(
-            "--pie",
-            action="store_true",
-            dest="pie",
-            default=False,
-            help="Display a pie chart for weights",
-        )
-        parser.add_argument(
-            "--hist",
-            action="store_true",
-            dest="hist",
-            default=False,
-            help="Display a histogram with risk measures",
-        )
-        parser.add_argument(
-            "--dd",
-            action="store_true",
-            dest="dd",
-            default=False,
-            help="Display a drawdown chart with risk measures",
-        )
-        parser.add_argument(
-            "--rc-chart",
-            action="store_true",
-            dest="rc_chart",
-            default=False,
-            help="Display a risk contribution chart for assets",
-        )
-        parser.add_argument(
-            "--heat",
-            action="store_true",
-            dest="heat",
-            default=False,
-            help="Display a heatmap of correlation matrix with dendrogram",
-        )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            if len(self.tickers) < 2:
-                console.print(
-                    "Please have at least 2 stocks selected to perform calculations."
-                )
-                return
-
-            optimizer_view.display_property_weighting(
-                stocks=self.tickers,
-                period=ns_parser.period,
-                start=ns_parser.start,
-                end=ns_parser.end,
-                log_returns=ns_parser.log_returns,
-                freq=ns_parser.freq,
-                maxnan=ns_parser.maxnan,
-                threshold=ns_parser.threshold,
-                method=ns_parser.method,
-                s_property="marketCap",
-                risk_measure=ns_parser.risk_measure.lower(),
-                risk_free_rate=ns_parser.risk_free_rate,
-                alpha=ns_parser.alpha,
-                value=ns_parser.value,
-                pie=ns_parser.pie,
-                hist=ns_parser.hist,
-                dd=ns_parser.dd,
-                rc_chart=ns_parser.rc_chart,
-                heat=ns_parser.heat,
-            )
-
-    @log_start_end(log=logger)
-    def call_dividend(self, other_args: List[str]):
-        """Process dividend command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="dividend",
-            description="Returns a portfolio that is weighted based dividend yield.",
-        )
-        parser.add_argument(
-            "-p",
-            "--period",
-            default="3y",
-            dest="period",
-            help="Period to get yfinance data from",
-            # choices=self.period_choices,
-        )
-        parser.add_argument(
-            "-s",
-            "--start",
-            default="",
-            dest="start",
-            help="Start date to get yfinance data from",
-        )
-        parser.add_argument(
-            "-e",
-            "--end",
-            default="",
-            dest="end",
-            help="End date to get yfinance data from",
-        )
-        parser.add_argument(
-            "-lr",
-            "--log-returns",
-            action="store_true",
-            default=False,
-            dest="log_returns",
-            help="If use logarithmic or arithmetic returns to calculate returns",
-        )
-        parser.add_argument(
-            "-f",
-            "--freq",
-            default="d",
-            dest="freq",
-            help="Frequency used to calculate returns",
-            choices=self.freq_choices,
-        )
-        parser.add_argument(
-            "-mn",
-            "--maxnan",
-            type=float,
-            default=0.05,
-            dest="maxnan",
-            help="""Max percentage of nan values accepted per asset to be
-                considered in the optimization process""",
-        )
-        parser.add_argument(
-            "-th",
-            "--threshold",
-            type=float,
-            default=0.30,
-            dest="threshold",
-            help="""Value used to replace outliers that are higher to threshold
-                in absolute value""",
-        )
-        parser.add_argument(
-            "-mt",
-            "--method",
-            default="time",
-            dest="method",
-            help="Method used to fill nan values",
-        )
-        parser.add_argument(
-            "-rm",
-            "--risk-measure",
-            default="MV",
-            dest="risk_measure",
-            help="Risk measure used to optimize the portfolio",
-            choices=self.meanrisk_choices,
-        )
-        parser.add_argument(
-            "-r",
-            "--risk-free-rate",
-            type=float,
-            dest="risk_free_rate",
-            default=get_rf(),
-            help="""Risk-free rate of borrowing/lending. The period of the
-                risk-free rate must be annual""",
-        )
-        parser.add_argument(
-            "-a",
-            "--alpha",
-            type=float,
-            default=0.05,
-            dest="alpha",
-            help="Significance level of CVaR, EVaR, CDaR and EDaR",
-        )
-        parser.add_argument(
-            "-v",
-            "--value",
-            default=1,
-            type=float,
-            dest="value",
-            help="Amount to allocate to portfolio",
-        )
-        parser.add_argument(
-            "--pie",
-            action="store_true",
-            dest="pie",
-            default=False,
-            help="Display a pie chart for weights",
-        )
-        parser.add_argument(
-            "--hist",
-            action="store_true",
-            dest="hist",
-            default=False,
-            help="Display a histogram with risk measures",
-        )
-        parser.add_argument(
-            "--dd",
-            action="store_true",
-            dest="dd",
-            default=False,
-            help="Display a drawdown chart with risk measures",
-        )
-        parser.add_argument(
-            "--rc-chart",
-            action="store_true",
-            dest="rc_chart",
-            default=False,
-            help="Display a risk contribution chart for assets",
-        )
-        parser.add_argument(
-            "--heat",
-            action="store_true",
-            dest="heat",
-            default=False,
-            help="Display a heatmap of correlation matrix with dendrogram",
-        )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            if len(self.tickers) < 2:
-                console.print(
-                    "Please have at least 2 stocks selected to perform calculations."
-                )
-                return
-
-            optimizer_view.display_property_weighting(
-                stocks=self.tickers,
-                period=ns_parser.period,
-                start=ns_parser.start,
-                end=ns_parser.end,
-                log_returns=ns_parser.log_returns,
-                freq=ns_parser.freq,
-                maxnan=ns_parser.maxnan,
-                threshold=ns_parser.threshold,
-                method=ns_parser.method,
-                s_property="dividendYield",
-                risk_measure=ns_parser.risk_measure.lower(),
-                risk_free_rate=ns_parser.risk_free_rate,
-                alpha=ns_parser.alpha,
-                value=ns_parser.value,
-                pie=ns_parser.pie,
-                hist=ns_parser.hist,
-                dd=ns_parser.dd,
-                rc_chart=ns_parser.rc_chart,
-                heat=ns_parser.heat,
-            )
-
-    @log_start_end(log=logger)
-    def call_property(self, other_args: List[str]):
-        """Process property command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="property",
-            description="Returns a portfolio that is weighted based on selected property.",
-        )
-        parser.add_argument(
-            "-p",
-            "--period",
-            default="3y",
-            dest="period",
-            help="Period to get yfinance data from",
-            # choices=self.period_choices,
-        )
-        parser.add_argument(
-            "-s",
-            "--start",
-            default="",
-            dest="start",
-            help="Start date to get yfinance data from",
-        )
-        parser.add_argument(
-            "-e",
-            "--end",
-            default="",
-            dest="end",
-            help="End date to get yfinance data from",
-        )
-        parser.add_argument(
-            "-lr",
-            "--log-returns",
-            action="store_true",
-            default=False,
-            dest="log_returns",
-            help="If use logarithmic or arithmetic returns to calculate returns",
-        )
-        parser.add_argument(
-            "-f",
-            "--freq",
-            default="d",
-            dest="freq",
-            help="Frequency used to calculate returns",
-            choices=self.freq_choices,
-        )
-        parser.add_argument(
-            "-mn",
-            "--maxnan",
-            type=float,
-            default=0.05,
-            dest="maxnan",
-            help="""Max percentage of nan values accepted per asset to be
-                considered in the optimization process""",
-        )
-        parser.add_argument(
-            "-th",
-            "--threshold",
-            type=float,
-            default=0.30,
-            dest="threshold",
-            help="""Value used to replace outliers that are higher to threshold
-                in absolute value""",
-        )
-        parser.add_argument(
-            "-mt",
-            "--method",
-            default="time",
-            dest="method",
-            help="Method used to fill nan values",
-        )
-        parser.add_argument(
-            "-pr",
-            "--property",
-            required=bool("-h" not in other_args),
-            type=optimizer_helper.check_valid_property_type,
-            dest="s_property",
-            choices=self.yf_info_choices,
-            help="""Property info to weight. Use one of yfinance info options.""",
-        )
-        parser.add_argument(
-            "-rm",
-            "--risk-measure",
-            default="MV",
-            dest="risk_measure",
-            help="Risk measure used to optimize the portfolio",
-            choices=self.meanrisk_choices,
-        )
-        parser.add_argument(
-            "-r",
-            "--risk-free-rate",
-            type=float,
-            dest="risk_free_rate",
-            default=get_rf(),
-            help="""Risk-free rate of borrowing/lending. The period of the
-                risk-free rate must be annual""",
-        )
-        parser.add_argument(
-            "-a",
-            "--alpha",
-            type=float,
-            default=0.05,
-            dest="alpha",
-            help="Significance level of CVaR, EVaR, CDaR and EDaR",
-        )
-        parser.add_argument(
-            "-v",
-            "--value",
-            default=1,
-            type=float,
-            dest="value",
-            help="Amount to allocate to portfolio",
-        )
-        parser.add_argument(
-            "--pie",
-            action="store_true",
-            dest="pie",
-            default=False,
-            help="Display a pie chart for weights",
-        )
-        parser.add_argument(
-            "--hist",
-            action="store_true",
-            dest="hist",
-            default=False,
-            help="Display a histogram with risk measures",
-        )
-        parser.add_argument(
-            "--dd",
-            action="store_true",
-            dest="dd",
-            default=False,
-            help="Display a drawdown chart with risk measures",
-        )
-        parser.add_argument(
-            "--rc-chart",
-            action="store_true",
-            dest="rc_chart",
-            default=False,
-            help="Display a risk contribution chart for assets",
-        )
-        parser.add_argument(
-            "--heat",
-            action="store_true",
-            dest="heat",
-            default=False,
-            help="Display a heatmap of correlation matrix with dendrogram",
-        )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            if len(self.tickers) < 2:
-                console.print(
-                    "Please have at least 2 stocks selected to perform calculations."
-                )
-                return
-
-            optimizer_view.display_property_weighting(
-                stocks=self.tickers,
-                period=ns_parser.period,
-                start=ns_parser.start,
-                end=ns_parser.end,
-                log_returns=ns_parser.log_returns,
-                freq=ns_parser.freq,
-                maxnan=ns_parser.maxnan,
-                threshold=ns_parser.threshold,
-                method=ns_parser.method,
-                s_property=ns_parser.s_property,
-                risk_measure=ns_parser.risk_measure.lower(),
-                risk_free_rate=ns_parser.risk_free_rate,
-                alpha=ns_parser.alpha,
-                value=ns_parser.value,
-                pie=ns_parser.pie,
-                hist=ns_parser.hist,
-                dd=ns_parser.dd,
-                rc_chart=ns_parser.rc_chart,
-                heat=ns_parser.heat,
-            )
+    def call_rpf(self, other_args: List[str]):
+        """Process rpf command"""
+        self.rmv_portfolios(other_args)
 
     @log_start_end(log=logger)
     def call_yolo(self, _):
@@ -1270,36 +637,121 @@ class PortfolioOptimizationController(BaseController):
             self.tickers.sort()
             console.print("")
 
+    def rmv_portfolios(self, other_args: List[str]):
+        """Remove one portfolio"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="rpf",
+            description="""Remove one of the portfolios""",
+        )
+        parser.add_argument(
+            "-pf",
+            "--portfolios",
+            dest="portfolios",
+            type=lambda s: [str(item).upper() for item in s.split(",")],
+            default=[],
+            help="portfolios to be removed from the saved portfolios",
+        )
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-pf")
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            portfolios = set(self.portfolios.keys())
+            for portfolio in ns_parser.portfolios:
+                if portfolio in portfolios:
+                    self.portfolios.pop(portfolio)
+                    portfolios.remove(portfolio)
+
+            if self.portfolios:
+                console.print(
+                    f"\nCurrent Portfolios: {('None', ', '.join(portfolios))[bool(portfolios)]}"
+                )
+            console.print("")
+
+    def show_portfolios(self, other_args: List[str]):
+        """Show saved portfolios"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="show",
+            description="""Show selected saved portfolios""",
+        )
+        parser.add_argument(
+            "-pf",
+            "--portfolios",
+            dest="portfolios",
+            type=lambda s: [str(item).upper() for item in s.split(",")],
+            default=[],
+            help="Show selected saved portfolios",
+        )
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-pf")
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            portfolios = set(self.portfolios.keys())
+            flag = True
+            for portfolio in ns_parser.portfolios:
+                if portfolio in portfolios:
+                    console.print("")
+                    console.print("Portfolio - " + portfolio)
+                    optimizer_view.display_weights(self.portfolios[portfolio])
+                    flag = False
+
+            if flag:
+                console.print(
+                    f"\nCurrent Portfolios: {('None', ', '.join(portfolios))[bool(portfolios)]}"
+                )
+            console.print("")
+
     @log_start_end(log=logger)
-    def call_maxsharpe(self, other_args: List[str]):
-        """Process maxsharpe command"""
+    def call_plot(self, other_args: List[str]):
+        """Process plot command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="maxsharpe",
-            description="Maximizes the portfolio's return/risk ratio",
+            prog="plot",
+            description="plot selected charts for portfolios",
+        )
+        parser.add_argument(
+            "-pf",
+            "--portfolios",
+            type=lambda s: [str(item).upper() for item in s.split(",")],
+            default=[],
+            dest="portfolios",
+            help="selected portfolios that will be plotted",
         )
         parser.add_argument(
             "-p",
             "--period",
             default="3y",
             dest="period",
-            help="Period to get yfinance data from",
-            # choices=self.period_choices,
+            help="""Period to get yfinance data from.
+                    Possible frequency strings are:
+                    'd': means days, for example '252d' means 252 days
+                    'w': means weeks, for example '52w' means 52 weeks
+                    'mo': means months, for example '12mo' means 12 months
+                    'y': means years, for example '1y' means 1 year
+                    'ytd': downloads data from begining of year to today
+                    'max': downloads all data available for each asset""",
         )
         parser.add_argument(
             "-s",
             "--start",
             default="",
             dest="start",
-            help="Start date to get yfinance data from",
+            help="""Start date to get yfinance data from. Must be in
+                    'YYYY-MM-DD' format""",
         )
         parser.add_argument(
             "-e",
             "--end",
             default="",
             dest="end",
-            help="End date to get yfinance data from",
+            help="""End date to get yfinance data from. Must be in
+                    'YYYY-MM-DD' format""",
         )
         parser.add_argument(
             "-lr",
@@ -1314,7 +766,228 @@ class PortfolioOptimizationController(BaseController):
             "--freq",
             default="d",
             dest="freq",
-            help="Frequency used to calculate returns",
+            help="""Frequency used to calculate returns. Possible values are:
+                    'd': for daily returns
+                    'w': for weekly returns
+                    'm': for monthly returns
+                    """,
+            choices=self.freq_choices,
+        )
+        parser.add_argument(
+            "-mn",
+            "--maxnan",
+            type=float,
+            default=0.05,
+            dest="maxnan",
+            help="""Max percentage of nan values accepted per asset to be
+                considered in the optimization process""",
+        )
+        parser.add_argument(
+            "-th",
+            "--threshold",
+            type=float,
+            default=0.30,
+            dest="threshold",
+            help="""Value used to replace outliers that are higher to threshold
+                    in absolute value""",
+        )
+        parser.add_argument(
+            "-mt",
+            "--method",
+            default="time",
+            dest="method",
+            help="""Method used to fill nan values in time series, by default time. 
+                    Possible values are:
+                    linear: linear interpolation
+                    time: linear interpolation based on time index
+                    nearest: use nearest value to replace nan values
+                    zero: spline of zeroth order
+                    slinear: spline of first order
+                    quadratic: spline of second order
+                    cubic: spline of third order
+                    barycentric: builds a polynomial that pass for all points""",
+        )
+        parser.add_argument(
+            "-rm",
+            "--risk-measure",
+            default="MV",
+            dest="risk_measure",
+            help="""Risk measure used to optimize the portfolio. Possible values are:
+                    MV : Variance
+                    MAD : Mean Absolute Deviation
+                    MSV : Semi Variance (Variance of negative returns)
+                    FLPM : First Lower Partial Moment
+                    SLPM : Second Lower Partial Moment
+                    CVaR : Conditional Value at Risk
+                    EVaR : Entropic Value at Risk
+                    WR : Worst Realization
+                    ADD : Average Drawdown of uncompounded returns
+                    UCI : Ulcer Index of uncompounded returns
+                    CDaR : Conditional Drawdown at Risk of uncompounded returns
+                    EDaR : Entropic Drawdown at Risk of uncompounded returns
+                    MDD : Maximum Drawdown of uncompounded returns
+                    """,
+            choices=self.meanrisk_choices,
+        )
+        parser.add_argument(
+            "-r",
+            "--risk-free-rate",
+            type=float,
+            dest="risk_free_rate",
+            default=get_rf(),
+            help="""Risk-free rate of borrowing/lending. The period of the
+                risk-free rate must be annual""",
+        )
+        parser.add_argument(
+            "-a",
+            "--alpha",
+            type=float,
+            default=0.05,
+            dest="alpha",
+            help="Significance level of CVaR, EVaR, CDaR and EDaR",
+        )
+        parser.add_argument(
+            "--pie",
+            action="store_true",
+            dest="pie",
+            default=False,
+            help="Display a pie chart for weights",
+        )
+        parser.add_argument(
+            "--hist",
+            action="store_true",
+            dest="hist",
+            default=False,
+            help="Display a histogram with risk measures",
+        )
+        parser.add_argument(
+            "--dd",
+            action="store_true",
+            dest="dd",
+            default=False,
+            help="Display a drawdown chart with risk measures",
+        )
+        parser.add_argument(
+            "--rc-chart",
+            action="store_true",
+            dest="rc_chart",
+            default=False,
+            help="Display a risk contribution chart for assets",
+        )
+        parser.add_argument(
+            "--heat",
+            action="store_true",
+            dest="heat",
+            default=False,
+            help="Display a heatmap of correlation matrix with dendrogram",
+        )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            if len(self.tickers) < 2:
+                console.print(
+                    "Please have at least 2 loaded tickers to calculate weights.\n"
+                )
+                return
+
+            portfolios = ns_parser.portfolios
+            stocks = []
+            for i in portfolios:
+                stocks += list(self.portfolios[i].keys())
+            stocks = list(set(stocks))
+            stocks.sort()
+
+            _, stock_returns = optimizer_model.get_equal_weights(
+                stocks=stocks,
+                period=ns_parser.period,
+                start=ns_parser.start,
+                end=ns_parser.end,
+                log_returns=ns_parser.log_returns,
+                freq=ns_parser.freq,
+                maxnan=ns_parser.maxnan,
+                threshold=ns_parser.threshold,
+                method=ns_parser.method,
+                value=1,
+            )
+
+            for i in portfolios:
+                weights = self.portfolios[i]
+                stocks = list(self.portfolios[i].keys())
+                optimizer_view.additional_plots(
+                    weights=weights,
+                    stock_returns=stock_returns[stocks],
+                    title_opt=i,
+                    freq=ns_parser.freq,
+                    risk_measure=ns_parser.risk_measure.lower(),
+                    risk_free_rate=ns_parser.risk_free_rate,
+                    alpha=ns_parser.alpha,
+                    a_sim=100,
+                    beta=ns_parser.alpha,
+                    b_sim=100,
+                    pie=ns_parser.pie,
+                    hist=ns_parser.hist,
+                    dd=ns_parser.dd,
+                    rc_chart=ns_parser.rc_chart,
+                    heat=ns_parser.heat,
+                    external_axes=None,
+                )
+
+    @log_start_end(log=logger)
+    def call_equal(self, other_args: List[str]):
+        """Process equal command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="equal",
+            description="Returns an equally weighted portfolio",
+        )
+        parser.add_argument(
+            "-p",
+            "--period",
+            default="3y",
+            dest="period",
+            help="""Period to get yfinance data from.
+                    Possible frequency strings are:
+                    'd': means days, for example '252d' means 252 days
+                    'w': means weeks, for example '52w' means 52 weeks
+                    'mo': means months, for example '12mo' means 12 months
+                    'y': means years, for example '1y' means 1 year
+                    'ytd': downloads data from begining of year to today
+                    'max': downloads all data available for each asset""",
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            default="",
+            dest="start",
+            help="""Start date to get yfinance data from. Must be in
+                    'YYYY-MM-DD' format""",
+        )
+        parser.add_argument(
+            "-e",
+            "--end",
+            default="",
+            dest="end",
+            help="""End date to get yfinance data from. Must be in
+                    'YYYY-MM-DD' format""",
+        )
+        parser.add_argument(
+            "-lr",
+            "--log-returns",
+            action="store_true",
+            default=False,
+            dest="log_returns",
+            help="If use logarithmic or arithmetic returns to calculate returns",
+        )
+        parser.add_argument(
+            "-f",
+            "--freq",
+            default="d",
+            dest="freq",
+            help="""Frequency used to calculate returns. Possible values are:
+                    'd': for daily returns
+                    'w': for weekly returns
+                    'm': for monthly returns
+                    """,
             choices=self.freq_choices,
         )
         parser.add_argument(
@@ -1340,14 +1013,713 @@ class PortfolioOptimizationController(BaseController):
             "--method",
             default="time",
             dest="method",
-            help="Method used to fill nan values",
+            help="""Method used to fill nan values in time series, by default time. 
+                    Possible values are:
+                    linear: linear interpolation
+                    time: linear interpolation based on time index
+                    nearest: use nearest value to replace nan values
+                    zero: spline of zeroth order
+                    slinear: spline of first order
+                    quadratic: spline of second order
+                    cubic: spline of third order
+                    barycentric: builds a polynomial that pass for all points""",
         )
         parser.add_argument(
             "-rm",
             "--risk-measure",
             default="MV",
             dest="risk_measure",
-            help="Risk measure used to optimize the portfolio",
+            help="""Risk measure used to optimize the portfolio. Possible values are:
+                    MV : Variance
+                    MAD : Mean Absolute Deviation
+                    MSV : Semi Variance (Variance of negative returns)
+                    FLPM : First Lower Partial Moment
+                    SLPM : Second Lower Partial Moment
+                    CVaR : Conditional Value at Risk
+                    EVaR : Entropic Value at Risk
+                    WR : Worst Realization
+                    ADD : Average Drawdown of uncompounded returns
+                    UCI : Ulcer Index of uncompounded returns
+                    CDaR : Conditional Drawdown at Risk of uncompounded returns
+                    EDaR : Entropic Drawdown at Risk of uncompounded returns
+                    MDD : Maximum Drawdown of uncompounded returns
+                    """,
+            choices=self.meanrisk_choices,
+        )
+        parser.add_argument(
+            "-r",
+            "--risk-free-rate",
+            type=float,
+            dest="risk_free_rate",
+            default=get_rf(),
+            help="""Risk-free rate of borrowing/lending. The period of the
+                risk-free rate must be annual""",
+        )
+        parser.add_argument(
+            "-a",
+            "--alpha",
+            type=float,
+            default=0.05,
+            dest="alpha",
+            help="Significance level of CVaR, EVaR, CDaR and EDaR",
+        )
+        parser.add_argument(
+            "-v",
+            "--value",
+            default=1,
+            type=float,
+            dest="value",
+            help="Amount to allocate to portfolio",
+        )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            if len(self.tickers) < 2:
+                console.print(
+                    "Please have at least 2 loaded tickers to calculate weights.\n"
+                )
+                return
+
+            weights = optimizer_view.display_equal_weight(
+                stocks=self.tickers,
+                period=ns_parser.period,
+                start=ns_parser.start,
+                end=ns_parser.end,
+                log_returns=ns_parser.log_returns,
+                freq=ns_parser.freq,
+                maxnan=ns_parser.maxnan,
+                threshold=ns_parser.threshold,
+                method=ns_parser.method,
+                risk_measure=ns_parser.risk_measure.lower(),
+                risk_free_rate=ns_parser.risk_free_rate,
+                alpha=ns_parser.alpha,
+                value=ns_parser.value,
+            )
+            self.portfolios[ns_parser.name.upper()] = weights
+            self.count += 1
+
+    @log_start_end(log=logger)
+    def call_mktcap(self, other_args: List[str]):
+        """Process mktcap command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="mktcap",
+            description="Returns a portfolio that is weighted based on Market Cap.",
+        )
+        parser.add_argument(
+            "-p",
+            "--period",
+            default="3y",
+            dest="period",
+            help="""Period to get yfinance data from.
+                    Possible frequency strings are:
+                    'd': means days, for example '252d' means 252 days
+                    'w': means weeks, for example '52w' means 52 weeks
+                    'mo': means months, for example '12mo' means 12 months
+                    'y': means years, for example '1y' means 1 year
+                    'ytd': downloads data from begining of year to today
+                    'max': downloads all data available for each asset""",
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            default="",
+            dest="start",
+            help="""Start date to get yfinance data from. Must be in
+                    'YYYY-MM-DD' format""",
+        )
+        parser.add_argument(
+            "-e",
+            "--end",
+            default="",
+            dest="end",
+            help="""End date to get yfinance data from. Must be in
+                    'YYYY-MM-DD' format""",
+        )
+        parser.add_argument(
+            "-lr",
+            "--log-returns",
+            action="store_true",
+            default=False,
+            dest="log_returns",
+            help="If use logarithmic or arithmetic returns to calculate returns",
+        )
+        parser.add_argument(
+            "-f",
+            "--freq",
+            default="d",
+            dest="freq",
+            help="""Frequency used to calculate returns. Possible values are:
+                    'd': for daily returns
+                    'w': for weekly returns
+                    'm': for monthly returns
+                    """,
+            choices=self.freq_choices,
+        )
+        parser.add_argument(
+            "-mn",
+            "--maxnan",
+            type=float,
+            default=0.05,
+            dest="maxnan",
+            help="""Max percentage of nan values accepted per asset to be
+                considered in the optimization process""",
+        )
+        parser.add_argument(
+            "-th",
+            "--threshold",
+            type=float,
+            default=0.30,
+            dest="threshold",
+            help="""Value used to replace outliers that are higher to threshold
+                in absolute value""",
+        )
+        parser.add_argument(
+            "-mt",
+            "--method",
+            default="time",
+            dest="method",
+            help="""Method used to fill nan values in time series, by default time. 
+                    Possible values are:
+                    linear: linear interpolation
+                    time: linear interpolation based on time index
+                    nearest: use nearest value to replace nan values
+                    zero: spline of zeroth order
+                    slinear: spline of first order
+                    quadratic: spline of second order
+                    cubic: spline of third order
+                    barycentric: builds a polynomial that pass for all points""",
+        )
+        parser.add_argument(
+            "-rm",
+            "--risk-measure",
+            default="MV",
+            dest="risk_measure",
+            help="""Risk measure used to optimize the portfolio. Possible values are:
+                    MV : Variance
+                    MAD : Mean Absolute Deviation
+                    MSV : Semi Variance (Variance of negative returns)
+                    FLPM : First Lower Partial Moment
+                    SLPM : Second Lower Partial Moment
+                    CVaR : Conditional Value at Risk
+                    EVaR : Entropic Value at Risk
+                    WR : Worst Realization
+                    ADD : Average Drawdown of uncompounded returns
+                    UCI : Ulcer Index of uncompounded returns
+                    CDaR : Conditional Drawdown at Risk of uncompounded returns
+                    EDaR : Entropic Drawdown at Risk of uncompounded returns
+                    MDD : Maximum Drawdown of uncompounded returns
+                    """,
+            choices=self.meanrisk_choices,
+        )
+        parser.add_argument(
+            "-r",
+            "--risk-free-rate",
+            type=float,
+            dest="risk_free_rate",
+            default=get_rf(),
+            help="""Risk-free rate of borrowing/lending. The period of the
+                risk-free rate must be annual""",
+        )
+        parser.add_argument(
+            "-a",
+            "--alpha",
+            type=float,
+            default=0.05,
+            dest="alpha",
+            help="Significance level of CVaR, EVaR, CDaR and EDaR",
+        )
+        parser.add_argument(
+            "-v",
+            "--value",
+            default=1,
+            type=float,
+            dest="value",
+            help="Amount to allocate to portfolio",
+        )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            if len(self.tickers) < 2:
+                console.print(
+                    "Please have at least 2 stocks selected to perform calculations."
+                )
+                return
+
+            weights = optimizer_view.display_property_weighting(
+                stocks=self.tickers,
+                period=ns_parser.period,
+                start=ns_parser.start,
+                end=ns_parser.end,
+                log_returns=ns_parser.log_returns,
+                freq=ns_parser.freq,
+                maxnan=ns_parser.maxnan,
+                threshold=ns_parser.threshold,
+                method=ns_parser.method,
+                s_property="marketCap",
+                risk_measure=ns_parser.risk_measure.lower(),
+                risk_free_rate=ns_parser.risk_free_rate,
+                alpha=ns_parser.alpha,
+                value=ns_parser.value,
+            )
+            self.portfolios[ns_parser.name.upper()] = weights
+            self.count += 1
+
+    @log_start_end(log=logger)
+    def call_dividend(self, other_args: List[str]):
+        """Process dividend command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="dividend",
+            description="Returns a portfolio that is weighted based dividend yield.",
+        )
+        parser.add_argument(
+            "-p",
+            "--period",
+            default="3y",
+            dest="period",
+            help="""Period to get yfinance data from.
+                    Possible frequency strings are:
+                    'd': means days, for example '252d' means 252 days
+                    'w': means weeks, for example '52w' means 52 weeks
+                    'mo': means months, for example '12mo' means 12 months
+                    'y': means years, for example '1y' means 1 year
+                    'ytd': downloads data from begining of year to today
+                    'max': downloads all data available for each asset""",
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            default="",
+            dest="start",
+            help="""Start date to get yfinance data from. Must be in
+                    'YYYY-MM-DD' format""",
+        )
+        parser.add_argument(
+            "-e",
+            "--end",
+            default="",
+            dest="end",
+            help="""End date to get yfinance data from. Must be in
+                    'YYYY-MM-DD' format""",
+        )
+        parser.add_argument(
+            "-lr",
+            "--log-returns",
+            action="store_true",
+            default=False,
+            dest="log_returns",
+            help="If use logarithmic or arithmetic returns to calculate returns",
+        )
+        parser.add_argument(
+            "-f",
+            "--freq",
+            default="d",
+            dest="freq",
+            help="""Frequency used to calculate returns. Possible values are:
+                    'd': for daily returns
+                    'w': for weekly returns
+                    'm': for monthly returns
+                    """,
+            choices=self.freq_choices,
+        )
+        parser.add_argument(
+            "-mn",
+            "--maxnan",
+            type=float,
+            default=0.05,
+            dest="maxnan",
+            help="""Max percentage of nan values accepted per asset to be
+                considered in the optimization process""",
+        )
+        parser.add_argument(
+            "-th",
+            "--threshold",
+            type=float,
+            default=0.30,
+            dest="threshold",
+            help="""Value used to replace outliers that are higher to threshold
+                in absolute value""",
+        )
+        parser.add_argument(
+            "-mt",
+            "--method",
+            default="time",
+            dest="method",
+            help="""Method used to fill nan values in time series, by default time. 
+                    Possible values are:
+                    linear: linear interpolation
+                    time: linear interpolation based on time index
+                    nearest: use nearest value to replace nan values
+                    zero: spline of zeroth order
+                    slinear: spline of first order
+                    quadratic: spline of second order
+                    cubic: spline of third order
+                    barycentric: builds a polynomial that pass for all points""",
+        )
+        parser.add_argument(
+            "-rm",
+            "--risk-measure",
+            default="MV",
+            dest="risk_measure",
+            help="""Risk measure used to optimize the portfolio. Possible values are:
+                    MV : Variance
+                    MAD : Mean Absolute Deviation
+                    MSV : Semi Variance (Variance of negative returns)
+                    FLPM : First Lower Partial Moment
+                    SLPM : Second Lower Partial Moment
+                    CVaR : Conditional Value at Risk
+                    EVaR : Entropic Value at Risk
+                    WR : Worst Realization
+                    ADD : Average Drawdown of uncompounded returns
+                    UCI : Ulcer Index of uncompounded returns
+                    CDaR : Conditional Drawdown at Risk of uncompounded returns
+                    EDaR : Entropic Drawdown at Risk of uncompounded returns
+                    MDD : Maximum Drawdown of uncompounded returns
+                    """,
+            choices=self.meanrisk_choices,
+        )
+        parser.add_argument(
+            "-r",
+            "--risk-free-rate",
+            type=float,
+            dest="risk_free_rate",
+            default=get_rf(),
+            help="""Risk-free rate of borrowing/lending. The period of the
+                risk-free rate must be annual""",
+        )
+        parser.add_argument(
+            "-a",
+            "--alpha",
+            type=float,
+            default=0.05,
+            dest="alpha",
+            help="Significance level of CVaR, EVaR, CDaR and EDaR",
+        )
+        parser.add_argument(
+            "-v",
+            "--value",
+            default=1,
+            type=float,
+            dest="value",
+            help="Amount to allocate to portfolio",
+        )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            if len(self.tickers) < 2:
+                console.print(
+                    "Please have at least 2 stocks selected to perform calculations."
+                )
+                return
+
+            weights = optimizer_view.display_property_weighting(
+                stocks=self.tickers,
+                period=ns_parser.period,
+                start=ns_parser.start,
+                end=ns_parser.end,
+                log_returns=ns_parser.log_returns,
+                freq=ns_parser.freq,
+                maxnan=ns_parser.maxnan,
+                threshold=ns_parser.threshold,
+                method=ns_parser.method,
+                s_property="dividendYield",
+                risk_measure=ns_parser.risk_measure.lower(),
+                risk_free_rate=ns_parser.risk_free_rate,
+                alpha=ns_parser.alpha,
+                value=ns_parser.value,
+            )
+            self.portfolios[ns_parser.name.upper()] = weights
+            self.count += 1
+
+    @log_start_end(log=logger)
+    def call_property(self, other_args: List[str]):
+        """Process property command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="property",
+            description="Returns a portfolio that is weighted based on selected property.",
+        )
+        parser.add_argument(
+            "-p",
+            "--period",
+            default="3y",
+            dest="period",
+            help="""Period to get yfinance data from.
+                    Possible frequency strings are:
+                    'd': means days, for example '252d' means 252 days
+                    'w': means weeks, for example '52w' means 52 weeks
+                    'mo': means months, for example '12mo' means 12 months
+                    'y': means years, for example '1y' means 1 year
+                    'ytd': downloads data from begining of year to today
+                    'max': downloads all data available for each asset""",
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            default="",
+            dest="start",
+            help="""Start date to get yfinance data from. Must be in
+                    'YYYY-MM-DD' format""",
+        )
+        parser.add_argument(
+            "-e",
+            "--end",
+            default="",
+            dest="end",
+            help="""End date to get yfinance data from. Must be in
+                    'YYYY-MM-DD' format""",
+        )
+        parser.add_argument(
+            "-lr",
+            "--log-returns",
+            action="store_true",
+            default=False,
+            dest="log_returns",
+            help="If use logarithmic or arithmetic returns to calculate returns",
+        )
+        parser.add_argument(
+            "-f",
+            "--freq",
+            default="d",
+            dest="freq",
+            help="""Frequency used to calculate returns. Possible values are:
+                    'd': for daily returns
+                    'w': for weekly returns
+                    'm': for monthly returns
+                    """,
+            choices=self.freq_choices,
+        )
+        parser.add_argument(
+            "-mn",
+            "--maxnan",
+            type=float,
+            default=0.05,
+            dest="maxnan",
+            help="""Max percentage of nan values accepted per asset to be
+                considered in the optimization process""",
+        )
+        parser.add_argument(
+            "-th",
+            "--threshold",
+            type=float,
+            default=0.30,
+            dest="threshold",
+            help="""Value used to replace outliers that are higher to threshold
+                in absolute value""",
+        )
+        parser.add_argument(
+            "-mt",
+            "--method",
+            default="time",
+            dest="method",
+            help="""Method used to fill nan values in time series, by default time. 
+                    Possible values are:
+                    linear: linear interpolation
+                    time: linear interpolation based on time index
+                    nearest: use nearest value to replace nan values
+                    zero: spline of zeroth order
+                    slinear: spline of first order
+                    quadratic: spline of second order
+                    cubic: spline of third order
+                    barycentric: builds a polynomial that pass for all points""",
+        )
+        parser.add_argument(
+            "-pr",
+            "--property",
+            required=bool("-h" not in other_args),
+            type=optimizer_helper.check_valid_property_type,
+            dest="s_property",
+            choices=self.yf_info_choices,
+            help="""Property info to weight. Use one of yfinance info options.""",
+        )
+        parser.add_argument(
+            "-rm",
+            "--risk-measure",
+            default="MV",
+            dest="risk_measure",
+            help="""Risk measure used to optimize the portfolio. Possible values are:
+                    MV : Variance
+                    MAD : Mean Absolute Deviation
+                    MSV : Semi Variance (Variance of negative returns)
+                    FLPM : First Lower Partial Moment
+                    SLPM : Second Lower Partial Moment
+                    CVaR : Conditional Value at Risk
+                    EVaR : Entropic Value at Risk
+                    WR : Worst Realization
+                    ADD : Average Drawdown of uncompounded returns
+                    UCI : Ulcer Index of uncompounded returns
+                    CDaR : Conditional Drawdown at Risk of uncompounded returns
+                    EDaR : Entropic Drawdown at Risk of uncompounded returns
+                    MDD : Maximum Drawdown of uncompounded returns
+                    """,
+            choices=self.meanrisk_choices,
+        )
+        parser.add_argument(
+            "-r",
+            "--risk-free-rate",
+            type=float,
+            dest="risk_free_rate",
+            default=get_rf(),
+            help="""Risk-free rate of borrowing/lending. The period of the
+                risk-free rate must be annual""",
+        )
+        parser.add_argument(
+            "-a",
+            "--alpha",
+            type=float,
+            default=0.05,
+            dest="alpha",
+            help="Significance level of CVaR, EVaR, CDaR and EDaR",
+        )
+        parser.add_argument(
+            "-v",
+            "--value",
+            default=1,
+            type=float,
+            dest="value",
+            help="Amount to allocate to portfolio",
+        )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            if len(self.tickers) < 2:
+                console.print(
+                    "Please have at least 2 stocks selected to perform calculations."
+                )
+                return
+
+            weights = optimizer_view.display_property_weighting(
+                stocks=self.tickers,
+                period=ns_parser.period,
+                start=ns_parser.start,
+                end=ns_parser.end,
+                log_returns=ns_parser.log_returns,
+                freq=ns_parser.freq,
+                maxnan=ns_parser.maxnan,
+                threshold=ns_parser.threshold,
+                method=ns_parser.method,
+                s_property=ns_parser.s_property,
+                risk_measure=ns_parser.risk_measure.lower(),
+                risk_free_rate=ns_parser.risk_free_rate,
+                alpha=ns_parser.alpha,
+                value=ns_parser.value,
+            )
+            self.portfolios[ns_parser.name.upper()] = weights
+            self.count += 1
+
+    @log_start_end(log=logger)
+    def call_maxsharpe(self, other_args: List[str]):
+        """Process maxsharpe command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="maxsharpe",
+            description="Maximizes the portfolio's return/risk ratio",
+        )
+        parser.add_argument(
+            "-p",
+            "--period",
+            default="3y",
+            dest="period",
+            help="""Period to get yfinance data from.
+                    Possible frequency strings are:
+                    'd': means days, for example '252d' means 252 days
+                    'w': means weeks, for example '52w' means 52 weeks
+                    'mo': means months, for example '12mo' means 12 months
+                    'y': means years, for example '1y' means 1 year
+                    'ytd': downloads data from begining of year to today
+                    'max': downloads all data available for each asset""",
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            default="",
+            dest="start",
+            help="""Start date to get yfinance data from. Must be in
+                    'YYYY-MM-DD' format""",
+        )
+        parser.add_argument(
+            "-e",
+            "--end",
+            default="",
+            dest="end",
+            help="""End date to get yfinance data from. Must be in
+                    'YYYY-MM-DD' format""",
+        )
+        parser.add_argument(
+            "-lr",
+            "--log-returns",
+            action="store_true",
+            default=False,
+            dest="log_returns",
+            help="If use logarithmic or arithmetic returns to calculate returns",
+        )
+        parser.add_argument(
+            "-f",
+            "--freq",
+            default="d",
+            dest="freq",
+            help="""Frequency used to calculate returns. Possible values are:
+                    'd': for daily returns
+                    'w': for weekly returns
+                    'm': for monthly returns
+                    """,
+            choices=self.freq_choices,
+        )
+        parser.add_argument(
+            "-mn",
+            "--maxnan",
+            type=float,
+            default=0.05,
+            dest="maxnan",
+            help="""Max percentage of nan values accepted per asset to be
+                considered in the optimization process""",
+        )
+        parser.add_argument(
+            "-th",
+            "--threshold",
+            type=float,
+            default=0.30,
+            dest="threshold",
+            help="""Value used to replace outliers that are higher to threshold
+                in absolute value""",
+        )
+        parser.add_argument(
+            "-mt",
+            "--method",
+            default="time",
+            dest="method",
+            help="""Method used to fill nan values in time series, by default time. 
+                    Possible values are:
+                    linear: linear interpolation
+                    time: linear interpolation based on time index
+                    nearest: use nearest value to replace nan values
+                    zero: spline of zeroth order
+                    slinear: spline of first order
+                    quadratic: spline of second order
+                    cubic: spline of third order
+                    barycentric: builds a polynomial that pass for all points""",
+        )
+        parser.add_argument(
+            "-rm",
+            "--risk-measure",
+            default="MV",
+            dest="risk_measure",
+            help="""Risk measure used to optimize the portfolio. Possible values are:
+                    MV : Variance
+                    MAD : Mean Absolute Deviation
+                    MSV : Semi Variance (Variance of negative returns)
+                    FLPM : First Lower Partial Moment
+                    SLPM : Second Lower Partial Moment
+                    CVaR : Conditional Value at Risk
+                    EVaR : Entropic Value at Risk
+                    WR : Worst Realization
+                    ADD : Average Drawdown of uncompounded returns
+                    UCI : Ulcer Index of uncompounded returns
+                    CDaR : Conditional Drawdown at Risk of uncompounded returns
+                    EDaR : Entropic Drawdown at Risk of uncompounded returns
+                    MDD : Maximum Drawdown of uncompounded returns
+                    """,
             choices=self.meanrisk_choices,
         )
         parser.add_argument(
@@ -1394,7 +1766,19 @@ class PortfolioOptimizationController(BaseController):
             "--covariance",
             default="hist",
             dest="covariance",
-            help="Method used to estimate covariance matrix",
+            help="""Method used to estimate covariance matrix. Possible values are
+                    hist: historical method
+                    ewma1: exponential weighted moving average with adjust=True
+                    ewma2: exponential weighted moving average with adjust=False
+                    ledoit: Ledoit and Wolf shrinkage method
+                    oas: oracle shrinkage method
+                    shrunk: scikit-learn shrunk method
+                    gl: graphical lasso method
+                    jlogo: j-logo covariance
+                    fixed: takes average of eigenvalues above max Marchenko Pastour limit
+                    spectral:  makes zero eigenvalues above max Marchenko Pastour limit
+                    shrink: Lopez de Prado's book shrinkage method
+                    """,
             choices=self.covariance_choices,
         )
         parser.add_argument(
@@ -1422,41 +1806,12 @@ class PortfolioOptimizationController(BaseController):
             default=0.0,
         )
         parser.add_argument(
-            "--pie",
-            action="store_true",
-            dest="pie",
-            default=False,
-            help="Display a pie chart for weights",
+            "--name",
+            type=str,
+            dest="name",
+            default="MAXSHARPE_" + str(self.count),
+            help="Save portfolio with personalized or default name",
         )
-        parser.add_argument(
-            "--hist",
-            action="store_true",
-            dest="hist",
-            default=False,
-            help="Display a histogram with risk measures",
-        )
-        parser.add_argument(
-            "--dd",
-            action="store_true",
-            dest="dd",
-            default=False,
-            help="Display a drawdown chart with risk measures",
-        )
-        parser.add_argument(
-            "--rc-chart",
-            action="store_true",
-            dest="rc_chart",
-            default=False,
-            help="Display a risk contribution chart for assets",
-        )
-        parser.add_argument(
-            "--heat",
-            action="store_true",
-            dest="heat",
-            default=False,
-            help="Display a heatmap of correlation matrix with dendrogram",
-        )
-
         ns_parser = parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
@@ -1466,7 +1821,7 @@ class PortfolioOptimizationController(BaseController):
                 )
                 return
 
-            optimizer_view.display_max_sharpe(
+            weights = optimizer_view.display_max_sharpe(
                 stocks=self.tickers,
                 period=ns_parser.period,
                 start=ns_parser.start,
@@ -1486,12 +1841,9 @@ class PortfolioOptimizationController(BaseController):
                 d_ewma=ns_parser.d_ewma,
                 value=ns_parser.value,
                 value_short=ns_parser.value_short,
-                pie=ns_parser.pie,
-                hist=ns_parser.hist,
-                dd=ns_parser.dd,
-                rc_chart=ns_parser.rc_chart,
-                heat=ns_parser.heat,
             )
+            self.portfolios[ns_parser.name.upper()] = weights
+            self.count += 1
 
     @log_start_end(log=logger)
     def call_minrisk(self, other_args: List[str]):
@@ -1507,22 +1859,30 @@ class PortfolioOptimizationController(BaseController):
             "--period",
             default="3y",
             dest="period",
-            help="Period to get yfinance data from",
-            # choices=self.period_choices,
+            help="""Period to get yfinance data from.
+                    Possible frequency strings are:
+                    'd': means days, for example '252d' means 252 days
+                    'w': means weeks, for example '52w' means 52 weeks
+                    'mo': means months, for example '12mo' means 12 months
+                    'y': means years, for example '1y' means 1 year
+                    'ytd': downloads data from begining of year to today
+                    'max': downloads all data available for each asset""",
         )
         parser.add_argument(
             "-s",
             "--start",
             default="",
             dest="start",
-            help="Start date to get yfinance data from",
+            help="""Start date to get yfinance data from. Must be in
+                    'YYYY-MM-DD' format""",
         )
         parser.add_argument(
             "-e",
             "--end",
             default="",
             dest="end",
-            help="End date to get yfinance data from",
+            help="""End date to get yfinance data from. Must be in
+                    'YYYY-MM-DD' format""",
         )
         parser.add_argument(
             "-lr",
@@ -1537,7 +1897,11 @@ class PortfolioOptimizationController(BaseController):
             "--freq",
             default="d",
             dest="freq",
-            help="Frequency used to calculate returns",
+            help="""Frequency used to calculate returns. Possible values are:
+                    'd': for daily returns
+                    'w': for weekly returns
+                    'm': for monthly returns
+                    """,
             choices=self.freq_choices,
         )
         parser.add_argument(
@@ -1563,14 +1927,37 @@ class PortfolioOptimizationController(BaseController):
             "--method",
             default="time",
             dest="method",
-            help="Method used to fill nan values",
+            help="""Method used to fill nan values in time series, by default time. 
+                    Possible values are:
+                    linear: linear interpolation
+                    time: linear interpolation based on time index
+                    nearest: use nearest value to replace nan values
+                    zero: spline of zeroth order
+                    slinear: spline of first order
+                    quadratic: spline of second order
+                    cubic: spline of third order
+                    barycentric: builds a polynomial that pass for all points""",
         )
         parser.add_argument(
             "-rm",
             "--risk-measure",
             default="MV",
             dest="risk_measure",
-            help="Risk measure used to optimize the portfolio",
+            help="""Risk measure used to optimize the portfolio. Possible values are:
+                    MV : Variance
+                    MAD : Mean Absolute Deviation
+                    MSV : Semi Variance (Variance of negative returns)
+                    FLPM : First Lower Partial Moment
+                    SLPM : Second Lower Partial Moment
+                    CVaR : Conditional Value at Risk
+                    EVaR : Entropic Value at Risk
+                    WR : Worst Realization
+                    ADD : Average Drawdown of uncompounded returns
+                    UCI : Ulcer Index of uncompounded returns
+                    CDaR : Conditional Drawdown at Risk of uncompounded returns
+                    EDaR : Entropic Drawdown at Risk of uncompounded returns
+                    MDD : Maximum Drawdown of uncompounded returns
+                    """,
             choices=self.meanrisk_choices,
         )
         parser.add_argument(
@@ -1617,7 +2004,19 @@ class PortfolioOptimizationController(BaseController):
             "--covariance",
             default="hist",
             dest="covariance",
-            help="Method used to estimate covariance matrix",
+            help="""Method used to estimate covariance matrix. Possible values are
+                    hist: historical method
+                    ewma1: exponential weighted moving average with adjust=True
+                    ewma2: exponential weighted moving average with adjust=False
+                    ledoit: Ledoit and Wolf shrinkage method
+                    oas: oracle shrinkage method
+                    shrunk: scikit-learn shrunk method
+                    gl: graphical lasso method
+                    jlogo: j-logo covariance
+                    fixed: takes average of eigenvalues above max Marchenko Pastour limit
+                    spectral:  makes zero eigenvalues above max Marchenko Pastour limit
+                    shrink: Lopez de Prado's book shrinkage method
+                    """,
             choices=self.covariance_choices,
         )
         parser.add_argument(
@@ -1645,41 +2044,12 @@ class PortfolioOptimizationController(BaseController):
             help="Amount to allocate to portfolio in short positions",
         )
         parser.add_argument(
-            "--pie",
-            action="store_true",
-            dest="pie",
-            default=False,
-            help="Display a pie chart for weights",
+            "--name",
+            type=str,
+            dest="name",
+            default="MINRISK_" + str(self.count),
+            help="Save portfolio with personalized or default name",
         )
-        parser.add_argument(
-            "--hist",
-            action="store_true",
-            dest="hist",
-            default=False,
-            help="Display a histogram with risk measures",
-        )
-        parser.add_argument(
-            "--dd",
-            action="store_true",
-            dest="dd",
-            default=False,
-            help="Display a drawdown chart with risk measures",
-        )
-        parser.add_argument(
-            "--rc-chart",
-            action="store_true",
-            dest="rc_chart",
-            default=False,
-            help="Display a risk contribution chart for assets",
-        )
-        parser.add_argument(
-            "--heat",
-            action="store_true",
-            dest="heat",
-            default=False,
-            help="Display a heatmap of correlation matrix with dendrogram",
-        )
-
         ns_parser = parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
@@ -1689,7 +2059,7 @@ class PortfolioOptimizationController(BaseController):
                 )
                 return
 
-            optimizer_view.display_min_risk(
+            weights = optimizer_view.display_min_risk(
                 stocks=self.tickers,
                 period=ns_parser.period,
                 start=ns_parser.start,
@@ -1709,12 +2079,9 @@ class PortfolioOptimizationController(BaseController):
                 d_ewma=ns_parser.d_ewma,
                 value=ns_parser.value,
                 value_short=ns_parser.value_short,
-                pie=ns_parser.pie,
-                hist=ns_parser.hist,
-                dd=ns_parser.dd,
-                rc_chart=ns_parser.rc_chart,
-                heat=ns_parser.heat,
             )
+            self.portfolios[ns_parser.name.upper()] = weights
+            self.count += 1
 
     @log_start_end(log=logger)
     def call_maxutil(self, other_args: List[str]):
@@ -1730,22 +2097,30 @@ class PortfolioOptimizationController(BaseController):
             "--period",
             default="3y",
             dest="period",
-            help="Period to get yfinance data from",
-            # choices=self.period_choices,
+            help="""Period to get yfinance data from.
+                    Possible frequency strings are:
+                    'd': means days, for example '252d' means 252 days
+                    'w': means weeks, for example '52w' means 52 weeks
+                    'mo': means months, for example '12mo' means 12 months
+                    'y': means years, for example '1y' means 1 year
+                    'ytd': downloads data from begining of year to today
+                    'max': downloads all data available for each asset""",
         )
         parser.add_argument(
             "-s",
             "--start",
             default="",
             dest="start",
-            help="Start date to get yfinance data from",
+            help="""Start date to get yfinance data from. Must be in
+                    'YYYY-MM-DD' format""",
         )
         parser.add_argument(
             "-e",
             "--end",
             default="",
             dest="end",
-            help="End date to get yfinance data from",
+            help="""End date to get yfinance data from. Must be in
+                    'YYYY-MM-DD' format""",
         )
         parser.add_argument(
             "-lr",
@@ -1760,7 +2135,11 @@ class PortfolioOptimizationController(BaseController):
             "--freq",
             default="d",
             dest="freq",
-            help="Frequency used to calculate returns",
+            help="""Frequency used to calculate returns. Possible values are:
+                    'd': for daily returns
+                    'w': for weekly returns
+                    'm': for monthly returns
+                    """,
             choices=self.freq_choices,
         )
         parser.add_argument(
@@ -1786,14 +2165,37 @@ class PortfolioOptimizationController(BaseController):
             "--method",
             default="time",
             dest="method",
-            help="Method used to fill nan values",
+            help="""Method used to fill nan values in time series, by default time. 
+                    Possible values are:
+                    linear: linear interpolation
+                    time: linear interpolation based on time index
+                    nearest: use nearest value to replace nan values
+                    zero: spline of zeroth order
+                    slinear: spline of first order
+                    quadratic: spline of second order
+                    cubic: spline of third order
+                    barycentric: builds a polynomial that pass for all points""",
         )
         parser.add_argument(
             "-rm",
             "--risk-measure",
             default="MV",
             dest="risk_measure",
-            help="Risk measure used to optimize the portfolio",
+            help="""Risk measure used to optimize the portfolio. Possible values are:
+                    MV : Variance
+                    MAD : Mean Absolute Deviation
+                    MSV : Semi Variance (Variance of negative returns)
+                    FLPM : First Lower Partial Moment
+                    SLPM : Second Lower Partial Moment
+                    CVaR : Conditional Value at Risk
+                    EVaR : Entropic Value at Risk
+                    WR : Worst Realization
+                    ADD : Average Drawdown of uncompounded returns
+                    UCI : Ulcer Index of uncompounded returns
+                    CDaR : Conditional Drawdown at Risk of uncompounded returns
+                    EDaR : Entropic Drawdown at Risk of uncompounded returns
+                    MDD : Maximum Drawdown of uncompounded returns
+                    """,
             choices=self.meanrisk_choices,
         )
         parser.add_argument(
@@ -1848,7 +2250,19 @@ class PortfolioOptimizationController(BaseController):
             "--covariance",
             default="hist",
             dest="covariance",
-            help="Method used to estimate covariance matrix",
+            help="""Method used to estimate covariance matrix. Possible values are
+                    hist: historical method
+                    ewma1: exponential weighted moving average with adjust=True
+                    ewma2: exponential weighted moving average with adjust=False
+                    ledoit: Ledoit and Wolf shrinkage method
+                    oas: oracle shrinkage method
+                    shrunk: scikit-learn shrunk method
+                    gl: graphical lasso method
+                    jlogo: j-logo covariance
+                    fixed: takes average of eigenvalues above max Marchenko Pastour limit
+                    spectral:  makes zero eigenvalues above max Marchenko Pastour limit
+                    shrink: Lopez de Prado's book shrinkage method
+                    """,
             choices=self.covariance_choices,
         )
         parser.add_argument(
@@ -1876,41 +2290,12 @@ class PortfolioOptimizationController(BaseController):
             default=0.0,
         )
         parser.add_argument(
-            "--pie",
-            action="store_true",
-            dest="pie",
-            default=False,
-            help="Display a pie chart for weights",
+            "--name",
+            type=str,
+            dest="name",
+            default="MAXUTIL_" + str(self.count),
+            help="Save portfolio with personalized or default name",
         )
-        parser.add_argument(
-            "--hist",
-            action="store_true",
-            dest="hist",
-            default=False,
-            help="Display a histogram with risk measures",
-        )
-        parser.add_argument(
-            "--dd",
-            action="store_true",
-            dest="dd",
-            default=False,
-            help="Display a drawdown chart with risk measures",
-        )
-        parser.add_argument(
-            "--rc-chart",
-            action="store_true",
-            dest="rc_chart",
-            default=False,
-            help="Display a risk contribution chart for assets",
-        )
-        parser.add_argument(
-            "--heat",
-            action="store_true",
-            dest="heat",
-            default=False,
-            help="Display a heatmap of correlation matrix with dendrogram",
-        )
-
         ns_parser = parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
@@ -1920,7 +2305,7 @@ class PortfolioOptimizationController(BaseController):
                 )
                 return
 
-            optimizer_view.display_max_util(
+            weights = optimizer_view.display_max_util(
                 stocks=self.tickers,
                 period=ns_parser.period,
                 start=ns_parser.start,
@@ -1941,12 +2326,9 @@ class PortfolioOptimizationController(BaseController):
                 d_ewma=ns_parser.d_ewma,
                 value=ns_parser.value,
                 value_short=ns_parser.value_short,
-                pie=ns_parser.pie,
-                hist=ns_parser.hist,
-                dd=ns_parser.dd,
-                rc_chart=ns_parser.rc_chart,
-                heat=ns_parser.heat,
             )
+            self.portfolios[ns_parser.name.upper()] = weights
+            self.count += 1
 
     @log_start_end(log=logger)
     def call_maxret(self, other_args: List[str]):
@@ -1962,22 +2344,30 @@ class PortfolioOptimizationController(BaseController):
             "--period",
             default="3y",
             dest="period",
-            help="Period to get yfinance data from",
-            # choices=self.period_choices,
+            help="""Period to get yfinance data from.
+                    Possible frequency strings are:
+                    'd': means days, for example '252d' means 252 days
+                    'w': means weeks, for example '52w' means 52 weeks
+                    'mo': means months, for example '12mo' means 12 months
+                    'y': means years, for example '1y' means 1 year
+                    'ytd': downloads data from begining of year to today
+                    'max': downloads all data available for each asset""",
         )
         parser.add_argument(
             "-s",
             "--start",
             default="",
             dest="start",
-            help="Start date to get yfinance data from",
+            help="""Start date to get yfinance data from. Must be in
+                    'YYYY-MM-DD' format""",
         )
         parser.add_argument(
             "-e",
             "--end",
             default="",
             dest="end",
-            help="End date to get yfinance data from",
+            help="""End date to get yfinance data from. Must be in
+                    'YYYY-MM-DD' format""",
         )
         parser.add_argument(
             "-lr",
@@ -1992,7 +2382,11 @@ class PortfolioOptimizationController(BaseController):
             "--freq",
             default="d",
             dest="freq",
-            help="Frequency used to calculate returns",
+            help="""Frequency used to calculate returns. Possible values are:
+                    'd': for daily returns
+                    'w': for weekly returns
+                    'm': for monthly returns
+                    """,
             choices=self.freq_choices,
         )
         parser.add_argument(
@@ -2018,14 +2412,37 @@ class PortfolioOptimizationController(BaseController):
             "--method",
             default="time",
             dest="method",
-            help="Method used to fill nan values",
+            help="""Method used to fill nan values in time series, by default time. 
+                    Possible values are:
+                    linear: linear interpolation
+                    time: linear interpolation based on time index
+                    nearest: use nearest value to replace nan values
+                    zero: spline of zeroth order
+                    slinear: spline of first order
+                    quadratic: spline of second order
+                    cubic: spline of third order
+                    barycentric: builds a polynomial that pass for all points""",
         )
         parser.add_argument(
             "-rm",
             "--risk-measure",
             default="MV",
             dest="risk_measure",
-            help="Risk measure used to optimize the portfolio",
+            help="""Risk measure used to optimize the portfolio. Possible values are:
+                    MV : Variance
+                    MAD : Mean Absolute Deviation
+                    MSV : Semi Variance (Variance of negative returns)
+                    FLPM : First Lower Partial Moment
+                    SLPM : Second Lower Partial Moment
+                    CVaR : Conditional Value at Risk
+                    EVaR : Entropic Value at Risk
+                    WR : Worst Realization
+                    ADD : Average Drawdown of uncompounded returns
+                    UCI : Ulcer Index of uncompounded returns
+                    CDaR : Conditional Drawdown at Risk of uncompounded returns
+                    EDaR : Entropic Drawdown at Risk of uncompounded returns
+                    MDD : Maximum Drawdown of uncompounded returns
+                    """,
             choices=self.meanrisk_choices,
         )
         parser.add_argument(
@@ -2072,7 +2489,19 @@ class PortfolioOptimizationController(BaseController):
             "--covariance",
             default="hist",
             dest="covariance",
-            help="Method used to estimate covariance matrix",
+            help="""Method used to estimate covariance matrix. Possible values are
+                    hist: historical method
+                    ewma1: exponential weighted moving average with adjust=True
+                    ewma2: exponential weighted moving average with adjust=False
+                    ledoit: Ledoit and Wolf shrinkage method
+                    oas: oracle shrinkage method
+                    shrunk: scikit-learn shrunk method
+                    gl: graphical lasso method
+                    jlogo: j-logo covariance
+                    fixed: takes average of eigenvalues above max Marchenko Pastour limit
+                    spectral:  makes zero eigenvalues above max Marchenko Pastour limit
+                    shrink: Lopez de Prado's book shrinkage method
+                    """,
             choices=self.covariance_choices,
         )
         parser.add_argument(
@@ -2100,41 +2529,12 @@ class PortfolioOptimizationController(BaseController):
             default=0.0,
         )
         parser.add_argument(
-            "--pie",
-            action="store_true",
-            dest="pie",
-            default=False,
-            help="Display a pie chart for weights",
+            "--name",
+            type=str,
+            dest="name",
+            default="MAXRET_" + str(self.count),
+            help="Save portfolio with personalized or default name",
         )
-        parser.add_argument(
-            "--hist",
-            action="store_true",
-            dest="hist",
-            default=False,
-            help="Display a histogram with risk measures",
-        )
-        parser.add_argument(
-            "--dd",
-            action="store_true",
-            dest="dd",
-            default=False,
-            help="Display a drawdown chart with risk measures",
-        )
-        parser.add_argument(
-            "--rc-chart",
-            action="store_true",
-            dest="rc_chart",
-            default=False,
-            help="Display a risk contribution chart for assets",
-        )
-        parser.add_argument(
-            "--heat",
-            action="store_true",
-            dest="heat",
-            default=False,
-            help="Display a heatmap of correlation matrix with dendrogram",
-        )
-
         ns_parser = parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
@@ -2144,7 +2544,7 @@ class PortfolioOptimizationController(BaseController):
                 )
                 return
 
-            optimizer_view.display_max_ret(
+            weights = optimizer_view.display_max_ret(
                 stocks=self.tickers,
                 period=ns_parser.period,
                 start=ns_parser.start,
@@ -2164,12 +2564,9 @@ class PortfolioOptimizationController(BaseController):
                 d_ewma=ns_parser.d_ewma,
                 value=ns_parser.value,
                 value_short=ns_parser.value_short,
-                pie=ns_parser.pie,
-                hist=ns_parser.hist,
-                dd=ns_parser.dd,
-                rc_chart=ns_parser.rc_chart,
-                heat=ns_parser.heat,
             )
+            self.portfolios[ns_parser.name.upper()] = weights
+            self.count += 1
 
     @log_start_end(log=logger)
     def call_maxdiv(self, other_args: List[str]):
@@ -2185,22 +2582,30 @@ class PortfolioOptimizationController(BaseController):
             "--period",
             default="3y",
             dest="period",
-            help="Period to get yfinance data from",
-            # choices=self.period_choices,
+            help="""Period to get yfinance data from.
+                    Possible frequency strings are:
+                    'd': means days, for example '252d' means 252 days
+                    'w': means weeks, for example '52w' means 52 weeks
+                    'mo': means months, for example '12mo' means 12 months
+                    'y': means years, for example '1y' means 1 year
+                    'ytd': downloads data from begining of year to today
+                    'max': downloads all data available for each asset""",
         )
         parser.add_argument(
             "-s",
             "--start",
             default="",
             dest="start",
-            help="Start date to get yfinance data from",
+            help="""Start date to get yfinance data from. Must be in
+                    'YYYY-MM-DD' format""",
         )
         parser.add_argument(
             "-e",
             "--end",
             default="",
             dest="end",
-            help="End date to get yfinance data from",
+            help="""End date to get yfinance data from. Must be in
+                    'YYYY-MM-DD' format""",
         )
         parser.add_argument(
             "-lr",
@@ -2215,7 +2620,11 @@ class PortfolioOptimizationController(BaseController):
             "--freq",
             default="d",
             dest="freq",
-            help="Frequency used to calculate returns",
+            help="""Frequency used to calculate returns. Possible values are:
+                    'd': for daily returns
+                    'w': for weekly returns
+                    'm': for monthly returns
+                    """,
             choices=self.freq_choices,
         )
         parser.add_argument(
@@ -2241,14 +2650,35 @@ class PortfolioOptimizationController(BaseController):
             "--method",
             default="time",
             dest="method",
-            help="Method used to fill nan values",
+            help="""Method used to fill nan values in time series, by default time. 
+                    Possible values are:
+                    linear: linear interpolation
+                    time: linear interpolation based on time index
+                    nearest: use nearest value to replace nan values
+                    zero: spline of zeroth order
+                    slinear: spline of first order
+                    quadratic: spline of second order
+                    cubic: spline of third order
+                    barycentric: builds a polynomial that pass for all points""",
         )
         parser.add_argument(
             "-cv",
             "--covariance",
             default="hist",
             dest="covariance",
-            help="Method used to estimate covariance matrix",
+            help="""Method used to estimate covariance matrix. Possible values are
+                    hist: historical method
+                    ewma1: exponential weighted moving average with adjust=True
+                    ewma2: exponential weighted moving average with adjust=False
+                    ledoit: Ledoit and Wolf shrinkage method
+                    oas: oracle shrinkage method
+                    shrunk: scikit-learn shrunk method
+                    gl: graphical lasso method
+                    jlogo: j-logo covariance
+                    fixed: takes average of eigenvalues above max Marchenko Pastour limit
+                    spectral:  makes zero eigenvalues above max Marchenko Pastour limit
+                    shrink: Lopez de Prado's book shrinkage method
+                    """,
             choices=self.covariance_choices,
         )
         parser.add_argument(
@@ -2276,41 +2706,12 @@ class PortfolioOptimizationController(BaseController):
             default=0.0,
         )
         parser.add_argument(
-            "--pie",
-            action="store_true",
-            dest="pie",
-            default=False,
-            help="Display a pie chart for weights",
+            "--name",
+            type=str,
+            dest="name",
+            default="MAXDIV_" + str(self.count),
+            help="Save portfolio with personalized or default name",
         )
-        parser.add_argument(
-            "--hist",
-            action="store_true",
-            dest="hist",
-            default=False,
-            help="Display a histogram with risk measures",
-        )
-        parser.add_argument(
-            "--dd",
-            action="store_true",
-            dest="dd",
-            default=False,
-            help="Display a drawdown chart with risk measures",
-        )
-        parser.add_argument(
-            "--rc-chart",
-            action="store_true",
-            dest="rc_chart",
-            default=False,
-            help="Display a risk contribution chart for assets",
-        )
-        parser.add_argument(
-            "--heat",
-            action="store_true",
-            dest="heat",
-            default=False,
-            help="Display a heatmap of correlation matrix with dendrogram",
-        )
-
         ns_parser = parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
@@ -2320,7 +2721,7 @@ class PortfolioOptimizationController(BaseController):
                 )
                 return
 
-            optimizer_view.display_max_div(
+            weights = optimizer_view.display_max_div(
                 stocks=self.tickers,
                 period=ns_parser.period,
                 start=ns_parser.start,
@@ -2334,12 +2735,9 @@ class PortfolioOptimizationController(BaseController):
                 d_ewma=ns_parser.d_ewma,
                 value=ns_parser.value,
                 value_short=ns_parser.value_short,
-                pie=ns_parser.pie,
-                hist=ns_parser.hist,
-                dd=ns_parser.dd,
-                rc_chart=ns_parser.rc_chart,
-                heat=ns_parser.heat,
             )
+            self.portfolios[ns_parser.name.upper()] = weights
+            self.count += 1
 
     @log_start_end(log=logger)
     def call_maxdecorr(self, other_args: List[str]):
@@ -2355,22 +2753,30 @@ class PortfolioOptimizationController(BaseController):
             "--period",
             default="3y",
             dest="period",
-            help="Period to get yfinance data from",
-            # choices=self.period_choices,
+            help="""Period to get yfinance data from.
+                    Possible frequency strings are:
+                    'd': means days, for example '252d' means 252 days
+                    'w': means weeks, for example '52w' means 52 weeks
+                    'mo': means months, for example '12mo' means 12 months
+                    'y': means years, for example '1y' means 1 year
+                    'ytd': downloads data from begining of year to today
+                    'max': downloads all data available for each asset""",
         )
         parser.add_argument(
             "-s",
             "--start",
             default="",
             dest="start",
-            help="Start date to get yfinance data from",
+            help="""Start date to get yfinance data from. Must be in
+                    'YYYY-MM-DD' format""",
         )
         parser.add_argument(
             "-e",
             "--end",
             default="",
             dest="end",
-            help="End date to get yfinance data from",
+            help="""End date to get yfinance data from. Must be in
+                    'YYYY-MM-DD' format""",
         )
         parser.add_argument(
             "-lr",
@@ -2385,7 +2791,11 @@ class PortfolioOptimizationController(BaseController):
             "--freq",
             default="d",
             dest="freq",
-            help="Frequency used to calculate returns",
+            help="""Frequency used to calculate returns. Possible values are:
+                    'd': for daily returns
+                    'w': for weekly returns
+                    'm': for monthly returns
+                    """,
             choices=self.freq_choices,
         )
         parser.add_argument(
@@ -2411,14 +2821,35 @@ class PortfolioOptimizationController(BaseController):
             "--method",
             default="time",
             dest="method",
-            help="Method used to fill nan values",
+            help="""Method used to fill nan values in time series, by default time. 
+                    Possible values are:
+                    linear: linear interpolation
+                    time: linear interpolation based on time index
+                    nearest: use nearest value to replace nan values
+                    zero: spline of zeroth order
+                    slinear: spline of first order
+                    quadratic: spline of second order
+                    cubic: spline of third order
+                    barycentric: builds a polynomial that pass for all points""",
         )
         parser.add_argument(
             "-cv",
             "--covariance",
             default="hist",
             dest="covariance",
-            help="Method used to estimate covariance matrix",
+            help="""Method used to estimate covariance matrix. Possible values are
+                    hist: historical method
+                    ewma1: exponential weighted moving average with adjust=True
+                    ewma2: exponential weighted moving average with adjust=False
+                    ledoit: Ledoit and Wolf shrinkage method
+                    oas: oracle shrinkage method
+                    shrunk: scikit-learn shrunk method
+                    gl: graphical lasso method
+                    jlogo: j-logo covariance
+                    fixed: takes average of eigenvalues above max Marchenko Pastour limit
+                    spectral:  makes zero eigenvalues above max Marchenko Pastour limit
+                    shrink: Lopez de Prado's book shrinkage method
+                    """,
             choices=self.covariance_choices,
         )
         parser.add_argument(
@@ -2446,41 +2877,12 @@ class PortfolioOptimizationController(BaseController):
             default=0.0,
         )
         parser.add_argument(
-            "--pie",
-            action="store_true",
-            dest="pie",
-            default=False,
-            help="Display a pie chart for weights",
+            "--name",
+            type=str,
+            dest="name",
+            default="MAXDECORR_" + str(self.count),
+            help="Save portfolio with personalized or default name",
         )
-        parser.add_argument(
-            "--hist",
-            action="store_true",
-            dest="hist",
-            default=False,
-            help="Display a histogram with risk measures",
-        )
-        parser.add_argument(
-            "--dd",
-            action="store_true",
-            dest="dd",
-            default=False,
-            help="Display a drawdown chart with risk measures",
-        )
-        parser.add_argument(
-            "--rc-chart",
-            action="store_true",
-            dest="rc_chart",
-            default=False,
-            help="Display a risk contribution chart for assets",
-        )
-        parser.add_argument(
-            "--heat",
-            action="store_true",
-            dest="heat",
-            default=False,
-            help="Display a heatmap of correlation matrix with dendrogram",
-        )
-
         ns_parser = parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
@@ -2490,7 +2892,7 @@ class PortfolioOptimizationController(BaseController):
                 )
                 return
 
-            optimizer_view.display_max_decorr(
+            weights = optimizer_view.display_max_decorr(
                 stocks=self.tickers,
                 period=ns_parser.period,
                 start=ns_parser.start,
@@ -2504,12 +2906,9 @@ class PortfolioOptimizationController(BaseController):
                 d_ewma=ns_parser.d_ewma,
                 value=ns_parser.value,
                 value_short=ns_parser.value_short,
-                pie=ns_parser.pie,
-                hist=ns_parser.hist,
-                dd=ns_parser.dd,
-                rc_chart=ns_parser.rc_chart,
-                heat=ns_parser.heat,
             )
+            self.portfolios[ns_parser.name.upper()] = weights
+            self.count += 1
 
     @log_start_end(log=logger)
     def call_ef(self, other_args):
@@ -2526,22 +2925,30 @@ class PortfolioOptimizationController(BaseController):
             "--period",
             default="3y",
             dest="period",
-            help="Period to get yfinance data from",
-            # choices=self.period_choices,
+            help="""Period to get yfinance data from.
+                    Possible frequency strings are:
+                    'd': means days, for example '252d' means 252 days
+                    'w': means weeks, for example '52w' means 52 weeks
+                    'mo': means months, for example '12mo' means 12 months
+                    'y': means years, for example '1y' means 1 year
+                    'ytd': downloads data from begining of year to today
+                    'max': downloads all data available for each asset""",
         )
         parser.add_argument(
             "-s",
             "--start",
             default="",
             dest="start",
-            help="Start date to get yfinance data from",
+            help="""Start date to get yfinance data from. Must be in
+                    'YYYY-MM-DD' format""",
         )
         parser.add_argument(
             "-e",
             "--end",
             default="",
             dest="end",
-            help="End date to get yfinance data from",
+            help="""End date to get yfinance data from. Must be in
+                    'YYYY-MM-DD' format""",
         )
         parser.add_argument(
             "-lr",
@@ -2556,7 +2963,11 @@ class PortfolioOptimizationController(BaseController):
             "--freq",
             default="d",
             dest="freq",
-            help="Frequency used to calculate returns",
+            help="""Frequency used to calculate returns. Possible values are:
+                    'd': for daily returns
+                    'w': for weekly returns
+                    'm': for monthly returns
+                    """,
             choices=self.freq_choices,
         )
         parser.add_argument(
@@ -2582,14 +2993,37 @@ class PortfolioOptimizationController(BaseController):
             "--method",
             default="time",
             dest="method",
-            help="Method used to fill nan values",
+            help="""Method used to fill nan values in time series, by default time. 
+                    Possible values are:
+                    linear: linear interpolation
+                    time: linear interpolation based on time index
+                    nearest: use nearest value to replace nan values
+                    zero: spline of zeroth order
+                    slinear: spline of first order
+                    quadratic: spline of second order
+                    cubic: spline of third order
+                    barycentric: builds a polynomial that pass for all points""",
         )
         parser.add_argument(
             "-rm",
             "--risk-measure",
             default="MV",
             dest="risk_measure",
-            help="Risk measure used to optimize the portfolio",
+            help="""Risk measure used to optimize the portfolio. Possible values are:
+                    MV : Variance
+                    MAD : Mean Absolute Deviation
+                    MSV : Semi Variance (Variance of negative returns)
+                    FLPM : First Lower Partial Moment
+                    SLPM : Second Lower Partial Moment
+                    CVaR : Conditional Value at Risk
+                    EVaR : Entropic Value at Risk
+                    WR : Worst Realization
+                    ADD : Average Drawdown of uncompounded returns
+                    UCI : Ulcer Index of uncompounded returns
+                    CDaR : Conditional Drawdown at Risk of uncompounded returns
+                    EDaR : Entropic Drawdown at Risk of uncompounded returns
+                    MDD : Maximum Drawdown of uncompounded returns
+                    """,
             choices=self.meanrisk_choices,
         )
         parser.add_argument(
@@ -2651,8 +3085,8 @@ class PortfolioOptimizationController(BaseController):
             default=False,
             help="Adds the optimal line with the risk-free asset",
         )
-
         ns_parser = parse_known_args_and_warn(parser, other_args)
+
         if ns_parser:
             if len(self.tickers) < 2:
                 console.print(
@@ -2695,22 +3129,30 @@ class PortfolioOptimizationController(BaseController):
             "--period",
             default="3y",
             dest="period",
-            help="Period to get yfinance data from",
-            # choices=self.period_choices,
+            help="""Period to get yfinance data from.
+                    Possible frequency strings are:
+                    'd': means days, for example '252d' means 252 days
+                    'w': means weeks, for example '52w' means 52 weeks
+                    'mo': means months, for example '12mo' means 12 months
+                    'y': means years, for example '1y' means 1 year
+                    'ytd': downloads data from begining of year to today
+                    'max': downloads all data available for each asset""",
         )
         parser.add_argument(
             "-s",
             "--start",
             default="",
             dest="start",
-            help="Start date to get yfinance data from",
+            help="""Start date to get yfinance data from. Must be in
+                    'YYYY-MM-DD' format""",
         )
         parser.add_argument(
             "-e",
             "--end",
             default="",
             dest="end",
-            help="End date to get yfinance data from",
+            help="""End date to get yfinance data from. Must be in
+                    'YYYY-MM-DD' format""",
         )
         parser.add_argument(
             "-lr",
@@ -2725,7 +3167,11 @@ class PortfolioOptimizationController(BaseController):
             "--freq",
             default="d",
             dest="freq",
-            help="Frequency used to calculate returns",
+            help="""Frequency used to calculate returns. Possible values are:
+                    'd': for daily returns
+                    'w': for weekly returns
+                    'm': for monthly returns
+                    """,
             choices=self.freq_choices,
         )
         parser.add_argument(
@@ -2735,7 +3181,7 @@ class PortfolioOptimizationController(BaseController):
             default=0.05,
             dest="maxnan",
             help="""Max percentage of nan values accepted per asset to be
-                considered in the optimization process""",
+                    considered in the optimization process. """,
         )
         parser.add_argument(
             "-th",
@@ -2751,14 +3197,34 @@ class PortfolioOptimizationController(BaseController):
             "--method",
             default="time",
             dest="method",
-            help="Method used to fill nan values",
+            help="""Method used to fill nan values in time series, by default time. 
+                    Possible values are:
+                    linear: linear interpolation
+                    time: linear interpolation based on time index
+                    nearest: use nearest value to replace nan values
+                    zero: spline of zeroth order
+                    slinear: spline of first order
+                    quadratic: spline of second order
+                    cubic: spline of third order
+                    barycentric: builds a polynomial that pass for all points""",
         )
         parser.add_argument(
             "-rm",
             "--risk-measure",
             default="MV",
             dest="risk_measure",
-            help="Risk measure used to optimize the portfolio",
+            help="""Risk measure used to optimize the portfolio. Possible values are:
+                    MV : Variance
+                    MAD : Mean Absolute Deviation
+                    MSV : Semi Variance (Variance of negative returns)
+                    FLPM : First Lower Partial Moment
+                    SLPM : Second Lower Partial Moment
+                    CVaR : Conditional Value at Risk
+                    EVaR : Entropic Value at Risk
+                    UCI : Ulcer Index of uncompounded returns
+                    CDaR : Conditional Drawdown at Risk of uncompounded returns
+                    EDaR : Entropic Drawdown at Risk of uncompounded returns
+                    """,
             choices=self.riskparity_choices,
         )
         parser.add_argument(
@@ -2810,41 +3276,12 @@ class PortfolioOptimizationController(BaseController):
             default=1.0,
         )
         parser.add_argument(
-            "--pie",
-            action="store_true",
-            dest="pie",
-            default=False,
-            help="Display a pie chart for weights",
+            "--name",
+            type=str,
+            dest="name",
+            default="RP_" + str(self.count),
+            help="Save portfolio with personalized or default name",
         )
-        parser.add_argument(
-            "--hist",
-            action="store_true",
-            dest="hist",
-            default=False,
-            help="Display a histogram with risk measures",
-        )
-        parser.add_argument(
-            "--dd",
-            action="store_true",
-            dest="dd",
-            default=False,
-            help="Display a drawdown chart with risk measures",
-        )
-        parser.add_argument(
-            "--rc-chart",
-            action="store_true",
-            dest="rc_chart",
-            default=False,
-            help="Display a risk contribution chart for assets",
-        )
-        parser.add_argument(
-            "--heat",
-            action="store_true",
-            dest="heat",
-            default=False,
-            help="Display a heatmap of correlation matrix with dendrogram",
-        )
-
         ns_parser = parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
@@ -2854,7 +3291,7 @@ class PortfolioOptimizationController(BaseController):
                 )
                 return
 
-            optimizer_view.display_risk_parity(
+            weights = optimizer_view.display_risk_parity(
                 stocks=self.tickers,
                 period=ns_parser.period,
                 start=ns_parser.start,
@@ -2870,12 +3307,9 @@ class PortfolioOptimizationController(BaseController):
                 alpha=ns_parser.alpha,
                 target_return=ns_parser.target_return,
                 value=ns_parser.value,
-                pie=ns_parser.pie,
-                hist=ns_parser.hist,
-                dd=ns_parser.dd,
-                rc_chart=ns_parser.rc_chart,
-                heat=ns_parser.heat,
             )
+            self.portfolios[ns_parser.name.upper()] = weights
+            self.count += 1
 
     @log_start_end(log=logger)
     def call_relriskparity(self, other_args: List[str]):
@@ -2892,22 +3326,30 @@ class PortfolioOptimizationController(BaseController):
             "--period",
             default="3y",
             dest="period",
-            help="Period to get yfinance data from",
-            # choices=self.period_choices,
+            help="""Period to get yfinance data from.
+                    Possible frequency strings are:
+                    'd': means days, for example '252d' means 252 days
+                    'w': means weeks, for example '52w' means 52 weeks
+                    'mo': means months, for example '12mo' means 12 months
+                    'y': means years, for example '1y' means 1 year
+                    'ytd': downloads data from begining of year to today
+                    'max': downloads all data available for each asset""",
         )
         parser.add_argument(
             "-s",
             "--start",
             default="",
             dest="start",
-            help="Start date to get yfinance data from",
+            help="""Start date to get yfinance data from. Must be in
+                    'YYYY-MM-DD' format""",
         )
         parser.add_argument(
             "-e",
             "--end",
             default="",
             dest="end",
-            help="End date to get yfinance data from",
+            help="""End date to get yfinance data from. Must be in
+                    'YYYY-MM-DD' format""",
         )
         parser.add_argument(
             "-lr",
@@ -2922,7 +3364,11 @@ class PortfolioOptimizationController(BaseController):
             "--freq",
             default="d",
             dest="freq",
-            help="Frequency used to calculate returns",
+            help="""Frequency used to calculate returns. Possible values are:
+                    'd': for daily returns
+                    'w': for weekly returns
+                    'm': for monthly returns
+                    """,
             choices=self.freq_choices,
         )
         parser.add_argument(
@@ -2948,7 +3394,16 @@ class PortfolioOptimizationController(BaseController):
             "--method",
             default="time",
             dest="method",
-            help="Method used to fill nan values",
+            help="""Method used to fill nan values in time series, by default time. 
+                    Possible values are:
+                    linear: linear interpolation
+                    time: linear interpolation based on time index
+                    nearest: use nearest value to replace nan values
+                    zero: spline of zeroth order
+                    slinear: spline of first order
+                    quadratic: spline of second order
+                    cubic: spline of third order
+                    barycentric: builds a polynomial that pass for all points""",
         )
         parser.add_argument(
             "-ve",
@@ -2999,41 +3454,12 @@ class PortfolioOptimizationController(BaseController):
             default=1.0,
         )
         parser.add_argument(
-            "--pie",
-            action="store_true",
-            dest="pie",
-            default=False,
-            help="Display a pie chart for weights",
+            "--name",
+            type=str,
+            dest="name",
+            default="RRP_" + str(self.count),
+            help="Save portfolio with personalized or default name",
         )
-        parser.add_argument(
-            "--hist",
-            action="store_true",
-            dest="hist",
-            default=False,
-            help="Display a histogram with risk measures",
-        )
-        parser.add_argument(
-            "--dd",
-            action="store_true",
-            dest="dd",
-            default=False,
-            help="Display a drawdown chart with risk measures",
-        )
-        parser.add_argument(
-            "--rc-chart",
-            action="store_true",
-            dest="rc_chart",
-            default=False,
-            help="Display a risk contribution chart for assets",
-        )
-        parser.add_argument(
-            "--heat",
-            action="store_true",
-            dest="heat",
-            default=False,
-            help="Display a heatmap of correlation matrix with dendrogram",
-        )
-
         ns_parser = parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
@@ -3043,7 +3469,7 @@ class PortfolioOptimizationController(BaseController):
                 )
                 return
 
-            optimizer_view.display_rel_risk_parity(
+            weights = optimizer_view.display_rel_risk_parity(
                 stocks=self.tickers,
                 period=ns_parser.period,
                 start=ns_parser.start,
@@ -3059,12 +3485,9 @@ class PortfolioOptimizationController(BaseController):
                 target_return=ns_parser.target_return,
                 d_ewma=ns_parser.d_ewma,
                 value=ns_parser.value,
-                pie=ns_parser.pie,
-                hist=ns_parser.hist,
-                dd=ns_parser.dd,
-                rc_chart=ns_parser.rc_chart,
-                heat=ns_parser.heat,
             )
+            self.portfolios[ns_parser.name.upper()] = weights
+            self.count += 1
 
     @log_start_end(log=logger)
     def call_hrp(self, other_args: List[str]):
@@ -3080,22 +3503,30 @@ class PortfolioOptimizationController(BaseController):
             "--period",
             default="3y",
             dest="period",
-            help="Period to get yfinance data from",
-            # choices=self.period_choices,
+            help="""Period to get yfinance data from.
+                    Possible frequency strings are:
+                    'd': means days, for example '252d' means 252 days
+                    'w': means weeks, for example '52w' means 52 weeks
+                    'mo': means months, for example '12mo' means 12 months
+                    'y': means years, for example '1y' means 1 year
+                    'ytd': downloads data from begining of year to today
+                    'max': downloads all data available for each asset""",
         )
         parser.add_argument(
             "-s",
             "--start",
             default="",
             dest="start",
-            help="Start date to get yfinance data from",
+            help="""Start date to get yfinance data from. Must be in
+                    'YYYY-MM-DD' format""",
         )
         parser.add_argument(
             "-e",
             "--end",
             default="",
             dest="end",
-            help="End date to get yfinance data from",
+            help="""End date to get yfinance data from. Must be in
+                    'YYYY-MM-DD' format""",
         )
         parser.add_argument(
             "-lr",
@@ -3110,7 +3541,11 @@ class PortfolioOptimizationController(BaseController):
             "--freq",
             default="d",
             dest="freq",
-            help="Frequency used to calculate returns",
+            help="""Frequency used to calculate returns. Possible values are:
+                    'd': for daily returns
+                    'w': for weekly returns
+                    'm': for monthly returns
+                    """,
             choices=self.freq_choices,
         )
         parser.add_argument(
@@ -3136,7 +3571,16 @@ class PortfolioOptimizationController(BaseController):
             "--method",
             default="time",
             dest="method",
-            help="Method used to fill nan values",
+            help="""Method used to fill nan values in time series, by default time. 
+                    Possible values are:
+                    linear: linear interpolation
+                    time: linear interpolation based on time index
+                    nearest: use nearest value to replace nan values
+                    zero: spline of zeroth order
+                    slinear: spline of first order
+                    quadratic: spline of second order
+                    cubic: spline of third order
+                    barycentric: builds a polynomial that pass for all points""",
         )
         parser.add_argument(
             "-cd",
@@ -3144,7 +3588,14 @@ class PortfolioOptimizationController(BaseController):
             default="pearson",
             dest="codependence",
             help="""The codependence or similarity matrix used to build the
-                distance metric and clusters""",
+                distance metric and clusters. Possible values are:
+                pearson: pearson correlation matrix
+                spearman: spearman correlation matrix
+                abs_pearson: absolute value of pearson correlation matrix
+                abs_spearman: absolute value of spearman correlation matrix
+                distance: distance correlation matrix
+                mutual_info: mutual information codependence matrix
+                tail: tail index codependence matrix""",
             choices=self.codependence_choices,
         )
         parser.add_argument(
@@ -3152,8 +3603,19 @@ class PortfolioOptimizationController(BaseController):
             "--covariance",
             default="hist",
             dest="covariance",
-            help="""The codependence or similarity matrix used to build the
-                distance metric and clusters""",
+            help="""Method used to estimate covariance matrix. Possible values are
+                    hist: historical method
+                    ewma1: exponential weighted moving average with adjust=True
+                    ewma2: exponential weighted moving average with adjust=False
+                    ledoit: Ledoit and Wolf shrinkage method
+                    oas: oracle shrinkage method
+                    shrunk: scikit-learn shrunk method
+                    gl: graphical lasso method
+                    jlogo: j-logo covariance
+                    fixed: takes average of eigenvalues above max Marchenko Pastour limit
+                    spectral:  makes zero eigenvalues above max Marchenko Pastour limit
+                    shrink: Lopez de Prado's book shrinkage method
+                    """,
             choices=self.covariance_choices,
         )
         parser.add_argument(
@@ -3161,7 +3623,21 @@ class PortfolioOptimizationController(BaseController):
             "--risk-measure",
             default="MV",
             dest="risk_measure",
-            help="Risk measure used to optimize the portfolio",
+            help="""Risk measure used to optimize the portfolio. Possible values are:
+                    MV : Variance
+                    MAD : Mean Absolute Deviation
+                    MSV : Semi Variance (Variance of negative returns)
+                    FLPM : First Lower Partial Moment
+                    SLPM : Second Lower Partial Moment
+                    CVaR : Conditional Value at Risk
+                    EVaR : Entropic Value at Risk
+                    WR : Worst Realization
+                    ADD : Average Drawdown of uncompounded returns
+                    UCI : Ulcer Index of uncompounded returns
+                    CDaR : Conditional Drawdown at Risk of uncompounded returns
+                    EDaR : Entropic Drawdown at Risk of uncompounded returns
+                    MDD : Maximum Drawdown of uncompounded returns
+                    """,
             choices=self.hcp_choices,
         )
         parser.add_argument(
@@ -3275,41 +3751,12 @@ class PortfolioOptimizationController(BaseController):
             help="Amount to allocate to portfolio",
         )
         parser.add_argument(
-            "--pie",
-            action="store_true",
-            dest="pie",
-            default=False,
-            help="Display a pie chart for weights",
+            "--name",
+            type=str,
+            dest="name",
+            default="HRP_" + str(self.count),
+            help="Save portfolio with personalized or default name",
         )
-        parser.add_argument(
-            "--hist",
-            action="store_true",
-            dest="hist",
-            default=False,
-            help="Display a histogram with risk measures",
-        )
-        parser.add_argument(
-            "--dd",
-            action="store_true",
-            dest="dd",
-            default=False,
-            help="Display a drawdown chart with risk measures",
-        )
-        parser.add_argument(
-            "--rc-chart",
-            action="store_true",
-            dest="rc_chart",
-            default=False,
-            help="Display a risk contribution chart for assets",
-        )
-        parser.add_argument(
-            "--heat",
-            action="store_true",
-            dest="heat",
-            default=False,
-            help="Display a heatmap of correlation matrix with dendrogram",
-        )
-
         ns_parser = parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
@@ -3319,7 +3766,7 @@ class PortfolioOptimizationController(BaseController):
                 )
                 return
 
-            optimizer_view.display_hrp(
+            weights = optimizer_view.display_hrp(
                 stocks=self.tickers,
                 period=ns_parser.period,
                 start=ns_parser.start,
@@ -3345,12 +3792,9 @@ class PortfolioOptimizationController(BaseController):
                 leaf_order=ns_parser.leaf_order,
                 d_ewma=ns_parser.d_ewma,
                 value=ns_parser.value,
-                pie=ns_parser.pie,
-                hist=ns_parser.hist,
-                dd=ns_parser.dd,
-                rc_chart=ns_parser.rc_chart,
-                heat=ns_parser.heat,
             )
+            self.portfolios[ns_parser.name.upper()] = weights
+            self.count += 1
 
     @log_start_end(log=logger)
     def call_herc(self, other_args: List[str]):
@@ -3366,22 +3810,30 @@ class PortfolioOptimizationController(BaseController):
             "--period",
             default="3y",
             dest="period",
-            help="Period to get yfinance data from",
-            # choices=self.period_choices,
+            help="""Period to get yfinance data from.
+                    Possible frequency strings are:
+                    'd': means days, for example '252d' means 252 days
+                    'w': means weeks, for example '52w' means 52 weeks
+                    'mo': means months, for example '12mo' means 12 months
+                    'y': means years, for example '1y' means 1 year
+                    'ytd': downloads data from begining of year to today
+                    'max': downloads all data available for each asset""",
         )
         parser.add_argument(
             "-s",
             "--start",
             default="",
             dest="start",
-            help="Start date to get yfinance data from",
+            help="""Start date to get yfinance data from. Must be in
+                    'YYYY-MM-DD' format""",
         )
         parser.add_argument(
             "-e",
             "--end",
             default="",
             dest="end",
-            help="End date to get yfinance data from",
+            help="""End date to get yfinance data from. Must be in
+                    'YYYY-MM-DD' format""",
         )
         parser.add_argument(
             "-lr",
@@ -3396,7 +3848,11 @@ class PortfolioOptimizationController(BaseController):
             "--freq",
             default="d",
             dest="freq",
-            help="Frequency used to calculate returns",
+            help="""Frequency used to calculate returns. Possible values are:
+                    'd': for daily returns
+                    'w': for weekly returns
+                    'm': for monthly returns
+                    """,
             choices=self.freq_choices,
         )
         parser.add_argument(
@@ -3422,7 +3878,16 @@ class PortfolioOptimizationController(BaseController):
             "--method",
             default="time",
             dest="method",
-            help="Method used to fill nan values",
+            help="""Method used to fill nan values in time series, by default time. 
+                    Possible values are:
+                    linear: linear interpolation
+                    time: linear interpolation based on time index
+                    nearest: use nearest value to replace nan values
+                    zero: spline of zeroth order
+                    slinear: spline of first order
+                    quadratic: spline of second order
+                    cubic: spline of third order
+                    barycentric: builds a polynomial that pass for all points""",
         )
         parser.add_argument(
             "-cd",
@@ -3430,7 +3895,14 @@ class PortfolioOptimizationController(BaseController):
             default="pearson",
             dest="codependence",
             help="""The codependence or similarity matrix used to build the
-                distance metric and clusters""",
+                distance metric and clusters. Possible values are:
+                pearson: pearson correlation matrix
+                spearman: spearman correlation matrix
+                abs_pearson: absolute value of pearson correlation matrix
+                abs_spearman: absolute value of spearman correlation matrix
+                distance: distance correlation matrix
+                mutual_info: mutual information codependence matrix
+                tail: tail index codependence matrix""",
             choices=self.codependence_choices,
         )
         parser.add_argument(
@@ -3438,8 +3910,19 @@ class PortfolioOptimizationController(BaseController):
             "--covariance",
             default="hist",
             dest="covariance",
-            help="""The codependence or similarity matrix used to build the
-                distance metric and clusters""",
+            help="""Method used to estimate covariance matrix. Possible values are
+                    hist: historical method
+                    ewma1: exponential weighted moving average with adjust=True
+                    ewma2: exponential weighted moving average with adjust=False
+                    ledoit: Ledoit and Wolf shrinkage method
+                    oas: oracle shrinkage method
+                    shrunk: scikit-learn shrunk method
+                    gl: graphical lasso method
+                    jlogo: j-logo covariance
+                    fixed: takes average of eigenvalues above max Marchenko Pastour limit
+                    spectral:  makes zero eigenvalues above max Marchenko Pastour limit
+                    shrink: Lopez de Prado's book shrinkage method
+                    """,
             choices=self.covariance_choices,
         )
         parser.add_argument(
@@ -3447,7 +3930,21 @@ class PortfolioOptimizationController(BaseController):
             "--risk-measure",
             default="MV",
             dest="risk_measure",
-            help="Risk measure used to optimize the portfolio",
+            help="""Risk measure used to optimize the portfolio. Possible values are:
+                    MV : Variance
+                    MAD : Mean Absolute Deviation
+                    MSV : Semi Variance (Variance of negative returns)
+                    FLPM : First Lower Partial Moment
+                    SLPM : Second Lower Partial Moment
+                    CVaR : Conditional Value at Risk
+                    EVaR : Entropic Value at Risk
+                    WR : Worst Realization
+                    ADD : Average Drawdown of uncompounded returns
+                    UCI : Ulcer Index of uncompounded returns
+                    CDaR : Conditional Drawdown at Risk of uncompounded returns
+                    EDaR : Entropic Drawdown at Risk of uncompounded returns
+                    MDD : Maximum Drawdown of uncompounded returns
+                    """,
             choices=self.hcp_choices,
         )
         parser.add_argument(
@@ -3561,41 +4058,12 @@ class PortfolioOptimizationController(BaseController):
             help="Amount to allocate to portfolio",
         )
         parser.add_argument(
-            "--pie",
-            action="store_true",
-            dest="pie",
-            default=False,
-            help="Display a pie chart for weights",
+            "--name",
+            type=str,
+            dest="name",
+            default="HERC_" + str(self.count),
+            help="Save portfolio with personalized or default name",
         )
-        parser.add_argument(
-            "--hist",
-            action="store_true",
-            dest="hist",
-            default=False,
-            help="Display a histogram with risk measures",
-        )
-        parser.add_argument(
-            "--dd",
-            action="store_true",
-            dest="dd",
-            default=False,
-            help="Display a drawdown chart with risk measures",
-        )
-        parser.add_argument(
-            "--rc-chart",
-            action="store_true",
-            dest="rc_chart",
-            default=False,
-            help="Display a risk contribution chart for assets",
-        )
-        parser.add_argument(
-            "--heat",
-            action="store_true",
-            dest="heat",
-            default=False,
-            help="Display a heatmap of correlation matrix with dendrogram",
-        )
-
         ns_parser = parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
@@ -3605,7 +4073,7 @@ class PortfolioOptimizationController(BaseController):
                 )
                 return
 
-            optimizer_view.display_herc(
+            weights = optimizer_view.display_herc(
                 stocks=self.tickers,
                 period=ns_parser.period,
                 start=ns_parser.start,
@@ -3631,12 +4099,9 @@ class PortfolioOptimizationController(BaseController):
                 leaf_order=ns_parser.leaf_order,
                 d_ewma=ns_parser.d_ewma,
                 value=ns_parser.value,
-                pie=ns_parser.pie,
-                hist=ns_parser.hist,
-                dd=ns_parser.dd,
-                rc_chart=ns_parser.rc_chart,
-                heat=ns_parser.heat,
             )
+            self.portfolios[ns_parser.name.upper()] = weights
+            self.count += 1
 
     @log_start_end(log=logger)
     def call_nco(self, other_args: List[str]):
@@ -3652,22 +4117,30 @@ class PortfolioOptimizationController(BaseController):
             "--period",
             default="3y",
             dest="period",
-            help="Period to get yfinance data from",
-            # choices=self.period_choices,
+            help="""Period to get yfinance data from.
+                    Possible frequency strings are:
+                    'd': means days, for example '252d' means 252 days
+                    'w': means weeks, for example '52w' means 52 weeks
+                    'mo': means months, for example '12mo' means 12 months
+                    'y': means years, for example '1y' means 1 year
+                    'ytd': downloads data from begining of year to today
+                    'max': downloads all data available for each asset""",
         )
         parser.add_argument(
             "-s",
             "--start",
             default="",
             dest="start",
-            help="Start date to get yfinance data from",
+            help="""Start date to get yfinance data from. Must be in
+                    'YYYY-MM-DD' format""",
         )
         parser.add_argument(
             "-e",
             "--end",
             default="",
             dest="end",
-            help="End date to get yfinance data from",
+            help="""End date to get yfinance data from. Must be in
+                    'YYYY-MM-DD' format""",
         )
         parser.add_argument(
             "-lr",
@@ -3682,7 +4155,11 @@ class PortfolioOptimizationController(BaseController):
             "--freq",
             default="d",
             dest="freq",
-            help="Frequency used to calculate returns",
+            help="""Frequency used to calculate returns. Possible values are:
+                    'd': for daily returns
+                    'w': for weekly returns
+                    'm': for monthly returns
+                    """,
             choices=self.freq_choices,
         )
         parser.add_argument(
@@ -3708,7 +4185,16 @@ class PortfolioOptimizationController(BaseController):
             "--method",
             default="time",
             dest="method",
-            help="Method used to fill nan values",
+            help="""Method used to fill nan values in time series, by default time. 
+                    Possible values are:
+                    linear: linear interpolation
+                    time: linear interpolation based on time index
+                    nearest: use nearest value to replace nan values
+                    zero: spline of zeroth order
+                    slinear: spline of first order
+                    quadratic: spline of second order
+                    cubic: spline of third order
+                    barycentric: builds a polynomial that pass for all points""",
         )
         parser.add_argument(
             "-cd",
@@ -3716,7 +4202,14 @@ class PortfolioOptimizationController(BaseController):
             default="pearson",
             dest="codependence",
             help="""The codependence or similarity matrix used to build the
-                distance metric and clusters""",
+                distance metric and clusters. Possible values are:
+                pearson: pearson correlation matrix
+                spearman: spearman correlation matrix
+                abs_pearson: absolute value of pearson correlation matrix
+                abs_spearman: absolute value of spearman correlation matrix
+                distance: distance correlation matrix
+                mutual_info: mutual information codependence matrix
+                tail: tail index codependence matrix""",
             choices=self.codependence_choices,
         )
         parser.add_argument(
@@ -3724,8 +4217,19 @@ class PortfolioOptimizationController(BaseController):
             "--covariance",
             default="hist",
             dest="covariance",
-            help="""The codependence or similarity matrix used to build the
-                distance metric and clusters""",
+            help="""Method used to estimate covariance matrix. Possible values are
+                    hist: historical method
+                    ewma1: exponential weighted moving average with adjust=True
+                    ewma2: exponential weighted moving average with adjust=False
+                    ledoit: Ledoit and Wolf shrinkage method
+                    oas: oracle shrinkage method
+                    shrunk: scikit-learn shrunk method
+                    gl: graphical lasso method
+                    jlogo: j-logo covariance
+                    fixed: takes average of eigenvalues above max Marchenko Pastour limit
+                    spectral:  makes zero eigenvalues above max Marchenko Pastour limit
+                    shrink: Lopez de Prado's book shrinkage method
+                    """,
             choices=self.covariance_choices,
         )
         parser.add_argument(
@@ -3741,7 +4245,21 @@ class PortfolioOptimizationController(BaseController):
             "--risk-measure",
             default="MV",
             dest="risk_measure",
-            help="Risk measure used to optimize the portfolio",
+            help="""Risk measure used to optimize the portfolio. Possible values are:
+                    MV : Variance
+                    MAD : Mean Absolute Deviation
+                    MSV : Semi Variance (Variance of negative returns)
+                    FLPM : First Lower Partial Moment
+                    SLPM : Second Lower Partial Moment
+                    CVaR : Conditional Value at Risk
+                    EVaR : Entropic Value at Risk
+                    WR : Worst Realization
+                    ADD : Average Drawdown of uncompounded returns
+                    UCI : Ulcer Index of uncompounded returns
+                    CDaR : Conditional Drawdown at Risk of uncompounded returns
+                    EDaR : Entropic Drawdown at Risk of uncompounded returns
+                    MDD : Maximum Drawdown of uncompounded returns
+                    """,
             choices=self.hcp_choices,
         )
         parser.add_argument(
@@ -3836,41 +4354,12 @@ class PortfolioOptimizationController(BaseController):
             default=1.0,
         )
         parser.add_argument(
-            "--pie",
-            action="store_true",
-            dest="pie",
-            default=False,
-            help="Display a pie chart for weights",
+            "--name",
+            type=str,
+            dest="name",
+            default="NCO_" + str(self.count),
+            help="Save portfolio with personalized or default name",
         )
-        parser.add_argument(
-            "--hist",
-            action="store_true",
-            dest="hist",
-            default=False,
-            help="Display a histogram with risk measures",
-        )
-        parser.add_argument(
-            "--dd",
-            action="store_true",
-            dest="dd",
-            default=False,
-            help="Display a drawdown chart with risk measures",
-        )
-        parser.add_argument(
-            "--rc-chart",
-            action="store_true",
-            dest="rc_chart",
-            default=False,
-            help="Display a risk contribution chart for assets",
-        )
-        parser.add_argument(
-            "--heat",
-            action="store_true",
-            dest="heat",
-            default=False,
-            help="Display a heatmap of correlation matrix with dendrogram",
-        )
-
         ns_parser = parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
@@ -3880,7 +4369,7 @@ class PortfolioOptimizationController(BaseController):
                 )
                 return
 
-            optimizer_view.display_nco(
+            weights = optimizer_view.display_nco(
                 stocks=self.tickers,
                 period=ns_parser.period,
                 start=ns_parser.start,
@@ -3905,9 +4394,6 @@ class PortfolioOptimizationController(BaseController):
                 leaf_order=ns_parser.leaf_order,
                 d_ewma=ns_parser.d_ewma,
                 value=ns_parser.value,
-                pie=ns_parser.pie,
-                hist=ns_parser.hist,
-                dd=ns_parser.dd,
-                rc_chart=ns_parser.rc_chart,
-                heat=ns_parser.heat,
             )
+            self.portfolios[ns_parser.name.upper()] = weights
+            self.count += 1

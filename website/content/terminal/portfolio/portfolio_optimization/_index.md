@@ -9,8 +9,11 @@ Portfolio Optimization:
     select        select list of tickers to be optimized
     add           add tickers to the list of the tickers to be optimized
     rmv           remove tickers from the list of the tickers to be optimized
+    show          show selected portfolios from the list of saved portfolios
+    rpf           remove portfolios from the list of saved portfolios
 
 Tickers: VT, QQQ, SPY
+Portfolios: MINRISK_0, MAXSHARPE_1
 
 Mean Risk Optimization:
     maxsharpe     maximal Sharpe ratio portfolio (a.k.a the tangency portfolio)

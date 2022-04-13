@@ -37,6 +37,7 @@ bots/interactive/*.html
 *.pyo
 dist/*
 build/terminal
+build/nsis/app
 
 # Jupyter Lab Extension build files
 jupyterlab/*/*.bundle.*
