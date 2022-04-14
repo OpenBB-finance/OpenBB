@@ -15,19 +15,19 @@ def vcr_config():
     }
 
 
-@pytest.mark.vcr(record_mode="none")
+@pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_accounts():
     cbv.display_account()
 
 
-@pytest.mark.vcr(record_mode="none")
+@pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_deposits():
     cbv.display_deposits(50, "id", "deposit", False)
 
 
-@pytest.mark.vcr(record_mode="none")
+@pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_orders():
     cbv.display_orders(50, "product_id", False)
