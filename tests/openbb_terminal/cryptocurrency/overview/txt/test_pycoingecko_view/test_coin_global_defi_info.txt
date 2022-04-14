@@ -1,9 +1,9 @@
                     Metric                Value
-0          Defi Market Cap  103664257493.418198
-1           Eth Market Cap  270091252499.143188
-2        Defi To Eth Ratio              38.3812
-3       Trading Volume 24H   11068426470.674601
-4           Defi Dominance               6.2869
+0          Defi Market Cap  131777834163.947693
+1           Eth Market Cap  387334339134.502502
+2        Defi To Eth Ratio              34.0217
+3       Trading Volume 24H     11208399616.6749
+4           Defi Dominance               6.2255
 5            Top Coin Name                Terra
-6  Top Coin Defi Dominance              25.4448
+6  Top Coin Defi Dominance               29.261
 

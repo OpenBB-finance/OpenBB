@@ -218,7 +218,7 @@ class KeysController(BaseController):
     def check_news_key(self, show_output: bool = False) -> None:
         """Check News API key"""
         self.cfg_dict["NEWSAPI"] = "news"
-        if cfg.API_NEWS_TOKEN == "REPLACE_ME":
+        if cfg.API_NEWS_TOKEN == "REPLACE_ME":  # nosec
             logger.info("News API key not defined")
             self.key_dict["NEWSAPI"] = "not defined"
         else:
@@ -241,7 +241,7 @@ class KeysController(BaseController):
     def check_tradier_key(self, show_output: bool = False) -> None:
         """Check Tradier key"""
         self.cfg_dict["TRADIER"] = "tradier"
-        if cfg.TRADIER_TOKEN == "REPLACE_ME":
+        if cfg.TRADIER_TOKEN == "REPLACE_ME":  # nosec
             logger.info("Tradier key not defined")
             self.key_dict["TRADIER"] = "not defined"
         else:
@@ -312,7 +312,7 @@ class KeysController(BaseController):
     def check_iex_key(self, show_output: bool = False) -> None:
         """Check IEX Cloud key"""
         self.cfg_dict["IEXCLOUD"] = "iex"
-        if cfg.API_IEX_TOKEN == "REPLACE_ME":
+        if cfg.API_IEX_TOKEN == "REPLACE_ME":  # nosec
             logger.info("IEX Cloud key not defined")
             self.key_dict["IEXCLOUD"] = "not defined"
         else:
