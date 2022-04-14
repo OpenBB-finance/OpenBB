@@ -6,9 +6,9 @@ DISK_IMAGE_NAME="OpenBB Terminal"
 set -e
 
 # Clean Up artifacts from previous builds
-rm -rf build/terminal && rm -rf dist && rm -rf DMG
+rm -rf build/terminal_mac && rm -rf dist && rm -rf DMG
 
-pyinstaller build/pyinstaller/terminal.spec
+pyinstaller build/pyinstaller/terminal_mac.spec
 
 # Create the folder that is used for packaging
 mkdir DMG
@@ -17,7 +17,7 @@ mkdir DMG
 cp -r build/pyinstaller/macOS_package_assets/* DMG/
 mv dist/OpenBBTerminal DMG/"$DISK_IMAGE_NAME"/OpenBB
 
-# Copy launcher and other artifacts to the
+# Copy launcher and other artifacts to the DMG
 hdiutil create \
         -volname "$DISK_IMAGE_NAME" \
         -srcfolder DMG \
@@ -26,4 +26,4 @@ hdiutil create \
         "$DISK_IMAGE_NAME".dmg
 
 # Clean Up artifacts from this build
-rm -rf build/terminal && rm -rf dist && rm -rf DMG
+rm -rf build/terminal_mac && rm -rf dist && rm -rf DMG
