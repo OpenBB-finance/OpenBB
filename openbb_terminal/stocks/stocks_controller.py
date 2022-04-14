@@ -61,6 +61,7 @@ class StocksController(StockBaseController):
         "dd",
         "ca",
         "options",
+        "th",
     ]
 
     PATH = "/stocks/"
@@ -122,6 +123,7 @@ Stock: [/param]{stock_text}
 >   gov         government menu, \t\t e.g.: house trading, contracts, corporate lobbying
 >   ba          behavioural analysis,    \t from: reddit, stocktwits, twitter, google
 >   ca          comparison analysis,     \t e.g.: get similar, historical, correlation, financials{has_ticker_start}
+>   th          trading hours, \t\t\t check open markets
 >   fa          fundamental analysis,    \t e.g.: income, balance, cash, earnings
 >   res         research web page,       \t e.g.: macroaxis, yahoo finance, fool
 >   dd          in-depth due-diligence,  \t e.g.: news, analyst, shorts, insider, sec
@@ -486,6 +488,15 @@ Stock: [/param]{stock_text}
         )
 
         self.queue = self.load_class(OptionsController, self.ticker, self.queue)
+
+    @log_start_end(log=logger)
+    def call_th(self, _):
+        """Process th command"""
+        from openbb_terminal.stocks.tradinghours.tradinghours_controller import (
+            TradingHoursController,
+        )
+
+        self.queue = self.load_class(TradingHoursController, self.queue)
 
     @log_start_end(log=logger)
     def call_res(self, _):

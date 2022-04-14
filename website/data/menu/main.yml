@@ -462,6 +462,19 @@ main:
                     ref: "/terminal/stocks/options/pricing/show"
                   - name: rnval
                     ref: "/terminal/stocks/options/pricing/rnval"
+              - name: "Trading Hours"
+                ref: "/tradinghours"
+                sub:
+                  - name: "Symbol"
+                    ref: "/tradinghours/stocks/symbol"
+                  - name: "Open"
+                    ref: "/tradinghours/stocks/open"
+                  - name: "Closed"
+                    ref: "/tradinghours/stocks/closed"
+                  - name: "All"
+                    ref: "/tradinghours/stocks/all"
+                  - name: "Exchange"
+                    ref: "/tradinghours/stocks/exchange"
           - name: technical analysis
             ref: "/terminal/common/technical_analysis"
             sub:
@@ -1537,16 +1550,4 @@ main:
         ref: "/bots/slack"
       - name: "GroupMe"
         ref: "/bots/groupme"
-      - name: "Trading Hours"
-        ref: "/tradinghours"
-        sub:
-          - name: "Symbol"
-            ref: "/tradinghours/symbol"
-          - name: "Is traded?"
-            ref: "/tradinghours/is_traded"
-          - name: "Open"
-            ref: "/tradinghours/open"
-          - name: "Closed"
-            ref: "/tradinghours/closed"
-          - name: "All"
-            ref: "/tradinghours/all"
+      
