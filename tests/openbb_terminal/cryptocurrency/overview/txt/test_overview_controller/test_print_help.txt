@@ -5,8 +5,6 @@
     cgstables         stablecoins
     cgexchanges       top crypto exchanges
     cgexrates         coin exchange rates
-    cgplatforms       crypto financial platforms
-    cgproducts        crypto financial products
     cgindexes         crypto indexes
     cgderivatives     crypto derivatives
     cgcategories      crypto categories
@@ -33,4 +31,6 @@
     btcrb             display bitcoin rainbow price chart (logarithmic regression)
 [Rekt]
     ch                lists major crypto-related hacks
+[LoanScan]
+    cr                crypto supply or borrow interest rates
 
