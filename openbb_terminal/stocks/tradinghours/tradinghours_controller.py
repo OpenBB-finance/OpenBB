@@ -35,7 +35,7 @@ class TradingHoursController(BaseController):
     """Trading Hours Controller class."""
 
     CHOICES_COMMANDS = ["symbol", "open", "closed", "all", "exchange"]
-    PATH = "/th/"
+    PATH = "/stocks/th/"
     FILE_PATH = os.path.join(os.path.dirname(__file__), "README.md")
 
     def __init__(self, queue: List[str] = None):
@@ -46,7 +46,7 @@ class TradingHoursController(BaseController):
         self.equity_tickers = sorted(list(self.equities.keys()))
         short_names_df = get_exchanges_short_names()
         short_names_index = short_names_df.index.values
-        short_names =  short_names_df["short_name"].values
+        short_names = short_names_df["short_name"].values
         all_short_names = list(short_names) + list(short_names_index)
         self.all_exchange_short_names = sorted(list(all_short_names))
 
@@ -63,10 +63,10 @@ class TradingHoursController(BaseController):
             choices["symbol"] = {c: None for c in self.equity_tickers}
             choices["symbol"]["-n"] = {c: None for c in self.equity_tickers}
             choices["symbol"]["--name"] = {c: None for c in self.equity_tickers}
-            choices["exchange"]["-n"] = {c: None for c in self.\
-                all_exchange_short_names}
-            choices["exchange"]["--name"] = {c: None for c in self.\
-                all_exchange_short_names}
+            choices["exchange"]["-n"] = {c: None for c in self.all_exchange_short_names}
+            choices["exchange"]["--name"] = {
+                c: None for c in self.all_exchange_short_names
+            }
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):

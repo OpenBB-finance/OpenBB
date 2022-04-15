@@ -1,4 +1,4 @@
-"""Exhcange Open Hours Model."""
+"""Stocks Trading Hours Model."""
 
 from datetime import datetime
 import logging
@@ -30,19 +30,16 @@ def get_bursa(symbol: str) -> pd.DataFrame:
 
     symbol = symbol.upper()
     if symbol in bursa["short_name"].values:
-        df = pd.DataFrame(bursa.loc[bursa["short_name"] == symbol]).transpose
+        df = pd.DataFrame(bursa.loc[bursa["short_name"] == symbol]).transpose()
         open = check_if_open(bursa, symbol)
-        df = df.append(pd.DataFrame([open], index=["open"], \
-            columns=df.columns.values))
+        df = df.append(pd.DataFrame([open], index=["open"], columns=df.columns.values))
         return df
     if symbol in bursa.index:
         df = pd.DataFrame(bursa.loc[symbol])
         open = check_if_open(bursa, symbol)
-        df = df.append(pd.DataFrame([open], index=["open"], \
-            columns=df.columns.values))
+        df = df.append(pd.DataFrame([open], index=["open"], columns=df.columns.values))
         return df
-    else:
-        return pd.DataFrame()
+    return pd.DataFrame()
 
 
 @log_start_end(log=logger)
@@ -109,6 +106,7 @@ def get_all() -> pd.DataFrame:
     bursa["open"] = is_open
     return bursa[["name", "short_name", "open"]]
 
+
 @log_start_end(log=logger)
 def get_all_exchange_short_names() -> pd.DataFrame:
     """Get all exchanges short names.
@@ -129,6 +127,7 @@ def get_all_exchange_short_names() -> pd.DataFrame:
     bursa["open"] = is_open
     return bursa[["short_name"]]
 
+
 def all_bursa():
     """Get all exchanges from dictionary
 
@@ -142,6 +141,7 @@ def all_bursa():
     """
     bursa = pd.DataFrame.from_dict(exchange_trading_hours, orient="index")
     return bursa
+
 
 def check_if_open(bursa, exchange):
     """Check if market open helper function
@@ -159,44 +159,50 @@ def check_if_open(bursa, exchange):
         If market is open
     """
     exchange = exchange.upper()
-    tz = bursa.loc[exchange]["timezone"]
+    if exchange in bursa.index.values:
+        tz = bursa.loc[exchange]["timezone"]
+        exchange_df = bursa.loc[exchange]
+    elif exchange in bursa["short_name"].values:
+        tz = bursa.loc[bursa["short_name"] == exchange]["timezone"].values[0]
+        exchange_df = bursa.loc[bursa["short_name"] == exchange]
+        exchange_df = exchange_df.iloc[0].transpose()
     utcmoment_naive = datetime.utcnow()
     utcmoment = utcmoment_naive.replace(tzinfo=pytz.utc)
     localDatetime = utcmoment.astimezone(pytz.timezone(tz))
+    if localDatetime.weekday() >= 5:
+        return False
     if (
         (
-            localDatetime.hour > bursa.loc[exchange]["market_open"].hour
-            and localDatetime.hour < bursa.loc[exchange]["market_close"].hour
+            localDatetime.hour > exchange_df["market_open"].hour
+            and localDatetime.hour < exchange_df["market_close"].hour
         )
         or (
-            localDatetime.hour > bursa.loc[exchange]["market_open"].hour
-            and localDatetime.hour == bursa.loc[exchange]["market_close"].hour
-            and localDatetime.minute < bursa.loc[exchange]["market_close"].minute
+            localDatetime.hour > exchange_df["market_open"].hour
+            and localDatetime.hour == exchange_df["market_close"].hour
+            and localDatetime.minute < exchange_df["market_close"].minute
         )
         or (
-            localDatetime.hour == bursa.loc[exchange]["market_open"].hour
-            and localDatetime.minute >= bursa.loc[exchange]["market_open"].minute
+            localDatetime.hour == exchange_df["market_open"].hour
+            and localDatetime.minute >= exchange_df["market_open"].minute
         )
     ):
         if (
-            bursa.loc[exchange]["lunchbreak_start"] is not None
-            and bursa.loc[exchange]["lunchbreak_end"] is not None
+            exchange_df["lunchbreak_start"] is not None
+            and exchange_df["lunchbreak_end"] is not None
         ):
             if (
                 (
-                    localDatetime.hour > bursa.loc[exchange]["lunchbreak_start"].hour
-                    and localDatetime.hour < bursa.loc[exchange]["lunchbreak_end"].hour
+                    localDatetime.hour > exchange_df["lunchbreak_start"].hour
+                    and localDatetime.hour < exchange_df["lunchbreak_end"].hour
                 )
                 or (
-                    localDatetime.hour > bursa.loc[exchange]["lunchbreak_start"].hour
-                    and localDatetime.hour == bursa.loc[exchange]["lunchbreak_end"].hour
-                    and localDatetime.minute
-                    < bursa.loc[exchange]["lunchbreak_end"].minute
+                    localDatetime.hour > exchange_df["lunchbreak_start"].hour
+                    and localDatetime.hour == exchange_df["lunchbreak_end"].hour
+                    and localDatetime.minute < exchange_df["lunchbreak_end"].minute
                 )
                 or (
-                    localDatetime.hour == bursa.loc[exchange]["lunchbreak_start"].hour
-                    and localDatetime.minute
-                    >= bursa.loc[exchange]["lunchbreak_start"].minute
+                    localDatetime.hour == exchange_df["lunchbreak_start"].hour
+                    and localDatetime.minute >= exchange_df["lunchbreak_start"].minute
                 )
             ):
                 return False

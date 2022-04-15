@@ -1,4 +1,4 @@
-"""AlphaVantage Forex View."""
+"""Stocks Trading Hours View."""
 __docformat__ = "numpy"
 
 import logging
@@ -22,7 +22,7 @@ def display_exchange(symbol: str):
     """
     exchange = bursa_model.get_bursa(symbol)
 
-    if exchange.empty:
+    if len(exchange) == 0 or exchange.empty:
         console.print(
             "\n[red]"
             + "No exchange data loaded.\n"
