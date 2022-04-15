@@ -15,3 +15,4 @@ optional arguments:
   -e END, --end END     End of the omega ratio threshold (default: 1.5)
   -h, --help            show this help message (default: False)
 ```
+![image](https://user-images.githubusercontent.com/75195383/163531048-c8efc8f7-d2a2-40ba-acca-811c8b92b264.png)
