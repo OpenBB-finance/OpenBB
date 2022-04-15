@@ -21,7 +21,6 @@ class GovernmentCommands(commands.Cog):
 
     def __init__(self, bot: commands.Bot):
         self.bot = bot
-        self.bot.help_command.cog = self
 
     def cog_unload(self):
         self.bot.help_command = None

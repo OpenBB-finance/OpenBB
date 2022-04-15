@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - Mozilla/5.0 (Windows NT 6.1; WOW64; rv:86.1) Gecko/20100101 Firefox/86.1
+      - Mozilla/5.0 (Windows NT 10.0; WOW64; rv:86.0) Gecko/20100101 Firefox/86.0
     method: GET
     uri: https://www.highshortinterest.com/
   response:
@@ -265,7 +265,7 @@ interactions:
       Content-Type:
       - text/html; charset=UTF-8
       Date:
-      - Sat, 02 Apr 2022 20:29:39 GMT
+      - Mon, 11 Apr 2022 01:15:22 GMT
       Keep-Alive:
       - timeout=5, max=100
       Server:

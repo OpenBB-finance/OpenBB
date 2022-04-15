@@ -15,7 +15,7 @@ interactions:
       string: '{"optionChain":{"result":[],"error":null}}'
     headers:
       Age:
-      - '0'
+      - '2'
       Connection:
       - keep-alive
       Expect-CT:
@@ -37,21 +37,21 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Sun, 03 Apr 2022 20:37:56 GMT
+      - Mon, 11 Apr 2022 01:19:41 GMT
       server:
       - ATS
       vary:
       - Origin,Accept-Encoding
       x-envoy-decorator-operation:
-      - finance-quote-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      - finance-quote-api--mtls-production-gq1.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
       - '1'
       x-request-id:
-      - ae0c7aba-146d-4e45-81c6-0330ea830857
+      - 6d996698-dbcc-4d0c-90ca-d7f08cbbc090
       x-yahoo-request-id:
-      - 788pm1hh4k1d4
+      - 7fmcc31h570hd
       y-rid:
-      - 788pm1hh4k1d4
+      - 7fmcc31h570hd
     status:
       code: 200
       message: OK

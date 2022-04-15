@@ -22,6 +22,7 @@ def ma_command(
     end="",
     extended_hours: bool = False,
     heikin_candles: bool = False,
+    trendline: bool = False,
     news: bool = False,
 ):
     """Displays chart with selected Moving Average  [Yahoo Finance]"""
@@ -29,7 +30,7 @@ def ma_command(
     if imps.DEBUG:
         # pylint: disable=logging-too-many-args
         logger.debug(
-            "ta ma %s %s %s %s %s %s %s %s %s %s %s",
+            "ta ma %s %s %s %s %s %s %s %s %s %s %s %s",
             ticker,
             interval,
             past_days,
@@ -40,6 +41,7 @@ def ma_command(
             end,
             extended_hours,
             heikin_candles,
+            trendline,
             news,
         )
 
@@ -104,11 +106,12 @@ def ma_command(
         news,
         bar=bar_start,
         int_bar=interval,
+        trendline=trendline,
     )
     title = f"<b>{plot['plt_title']} Moving Average ({ma_mode.upper()})</b>"
     fig = plot["fig"]
 
-    i2 = 6 if interval != 1440 else 11
+    i2 = 6 if (not trendline) and (interval != 1440) else 11
     for i in range(i2, df_ta.shape[1]):
         fig.add_trace(
             go.Scatter(
@@ -138,13 +141,7 @@ def ma_command(
     plt_link = ""
     if imps.INTERACTIVE:
         plt_link = imps.inter_chart(fig, imagefile, callback=False)
-
-    fig.update_layout(
-        width=800,
-        height=500,
-    )
     imagefile = imps.image_border(imagefile, fig=fig)
-
     return {
         "title": f"Stocks: Moving Average {ma_mode.upper()}",
         "description": plt_link,

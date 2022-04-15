@@ -18,6 +18,7 @@ def vcr_config():
     }
 
 
+@pytest.mark.skip
 @pytest.mark.vcr
 @pytest.mark.bots
 @pytest.mark.parametrize("z", ["IV", "OI", "LP"])
@@ -28,6 +29,7 @@ def test_vsurf(recorder, z):
     recorder.capture(value)
 
 
+@pytest.mark.skip
 @pytest.mark.vcr
 @pytest.mark.bots
 @pytest.mark.parametrize("ticker", [None, "", "ZZZZ"])
