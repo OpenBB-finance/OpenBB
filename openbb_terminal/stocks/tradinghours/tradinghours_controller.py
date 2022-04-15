@@ -63,6 +63,7 @@ class TradingHoursController(BaseController):
             choices["symbol"] = {c: None for c in self.equity_tickers}
             choices["symbol"]["-n"] = {c: None for c in self.equity_tickers}
             choices["symbol"]["--name"] = {c: None for c in self.equity_tickers}
+            choices["exchange"] = {c: None for c in self.all_exchange_short_names}
             choices["exchange"]["-n"] = {c: None for c in self.all_exchange_short_names}
             choices["exchange"]["--name"] = {
                 c: None for c in self.all_exchange_short_names
