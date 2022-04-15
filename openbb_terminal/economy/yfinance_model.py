@@ -245,11 +245,6 @@ INDICES = {
     "cboe-irx": {"name": "CBOE 13 Week Treasury Bill", "ticker": "^IRX"},
     "us-dx-y": {"name": "US Dollar Index", "ticker": "DX-Y.NYB"},
 }
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
->>>>>>> baf8deea9 (commit)
 
 @log_start_end(log=logger)
 def get_index(
