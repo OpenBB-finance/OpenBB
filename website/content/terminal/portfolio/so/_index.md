@@ -18,3 +18,4 @@ optional arguments:
                         Rolling window length (default: 252)
   -h, --help            show this help message (default: False)
 ```
+![image](https://user-images.githubusercontent.com/75195383/163530932-e112931d-4820-404b-8f51-8a126391883a.png)
