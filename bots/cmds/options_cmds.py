@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import disnake
 import disnake.ext.commands as commands
+from stocks.options.itm import itm_command
 
 from bots.helpers import ShowView, expiry_autocomp, ticker_autocomp
 from bots.stocks.candle import candle_command
@@ -50,6 +51,20 @@ class SlashCommands(commands.Cog):
         await ShowView().discord(
             chain_command, inter, "opt chain", ticker, expiry, opt_type, min_sp, max_sp
         )
+
+    @opt.sub_command(name="itm")
+    async def itm_opts(
+        self,
+        inter: disnake.AppCmdInter,
+        ticker: str = commands.Param(autocomplete=ticker_autocomp),
+    ):
+        """Display Options ITM [Yahoo Finance]
+
+        Parameters
+        ----------
+        ticker: Stock Ticker
+        """
+        await ShowView().discord(itm_command, inter, "opt itm", ticker)
 
     @opt.sub_command(name="oi")
     async def open_interest(
@@ -136,10 +151,11 @@ class SlashCommands(commands.Cog):
         interval: int = commands.Param(choices=[1, 5, 15, 30, 60, 1440]),
         past_days: int = 0,
         extended_hours: bool = False,
-        start="",
-        end="",
+        start: str = "",
+        end: str = "",
         news: bool = False,
         heikin_candles: bool = False,
+        trendline: bool = False,
     ):
         """Display candlestick chart of ticker or crypto. [Yahoo Finance or Binance API]
 
@@ -154,6 +170,7 @@ class SlashCommands(commands.Cog):
         end: YYYY-MM-DD format
         news: Display clickable news markers on interactive chart. Default: False
         heikin_candles: Heikin Ashi candles. Default: False
+        trendline: Display trendline on Daily chart. Default: False
         """
         await ShowView().discord(
             candle_command,
@@ -167,6 +184,7 @@ class SlashCommands(commands.Cog):
             end,
             news,
             heikin_candles,
+            trendline,
         )
 
     @commands.slash_command(name="btc")
@@ -175,10 +193,11 @@ class SlashCommands(commands.Cog):
         inter: disnake.AppCmdInter,
         interval: int = commands.Param(choices=[1, 5, 15, 30, 60, 1440]),
         past_days: int = 0,
-        start="",
-        end="",
+        start: str = "",
+        end: str = "",
         news: bool = False,
         heikin_candles: bool = False,
+        trendline: bool = False,
     ):
         """Display Bitcoin Chart [Yahoo Finance or Binance API]
 
@@ -190,6 +209,7 @@ class SlashCommands(commands.Cog):
         end: YYYY-MM-DD format
         news: Display clickable news markers on interactive chart. Default: False
         heikin_candles: Heikin Ashi candles. Default: False
+        trendline: Display trendline on Daily chart. Default: False
         """
         await ShowView().discord(
             candle_command,
@@ -203,6 +223,7 @@ class SlashCommands(commands.Cog):
             end,
             news,
             heikin_candles,
+            trendline,
         )
 
     @commands.slash_command(name="eth")
@@ -211,10 +232,11 @@ class SlashCommands(commands.Cog):
         inter: disnake.AppCmdInter,
         interval: int = commands.Param(choices=[1, 5, 15, 30, 60, 1440]),
         past_days: int = 0,
-        start="",
-        end="",
+        start: str = "",
+        end: str = "",
         news: bool = False,
         heikin_candles: bool = False,
+        trendline: bool = False,
     ):
         """Display Ethereum Chart [Yahoo Finance or Binance API]
 
@@ -226,6 +248,7 @@ class SlashCommands(commands.Cog):
         end: YYYY-MM-DD format
         news: Display clickable news markers on interactive chart. Default: False
         heikin_candles: Heikin Ashi candles. Default: False
+        trendline: Display trendline on Daily chart. Default: False
         """
         await ShowView().discord(
             candle_command,
@@ -239,6 +262,7 @@ class SlashCommands(commands.Cog):
             end,
             news,
             heikin_candles,
+            trendline,
         )
 
     @commands.slash_command(name="sol")
@@ -247,10 +271,11 @@ class SlashCommands(commands.Cog):
         inter: disnake.AppCmdInter,
         interval: int = commands.Param(choices=[1, 5, 15, 30, 60, 1440]),
         past_days: int = 0,
-        start="",
-        end="",
+        start: str = "",
+        end: str = "",
         news: bool = False,
         heikin_candles: bool = False,
+        trendline: bool = False,
     ):
         """Display Solana Chart [Yahoo Finance or Binance API]
 
@@ -262,6 +287,7 @@ class SlashCommands(commands.Cog):
         end: YYYY-MM-DD format
         news: Display clickable news markers on interactive chart. Default: False
         heikin_candles: Heikin Ashi candles. Default: False
+        trendline: Display trendline on Daily chart. Default: False
         """
         await ShowView().discord(
             candle_command,
@@ -275,6 +301,7 @@ class SlashCommands(commands.Cog):
             end,
             news,
             heikin_candles,
+            trendline,
         )
 
     @opt.sub_command()

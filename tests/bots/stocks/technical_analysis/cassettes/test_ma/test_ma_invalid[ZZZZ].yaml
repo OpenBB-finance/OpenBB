@@ -16,7 +16,7 @@ interactions:
         data found, symbol may be delisted"}}}'
     headers:
       Age:
-      - '0'
+      - '1'
       Cache-Control:
       - max-age=0, private
       Connection:
@@ -40,7 +40,7 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Mon, 04 Apr 2022 00:15:52 GMT
+      - Mon, 11 Apr 2022 03:47:06 GMT
       server:
       - ATS
       vary:
@@ -50,11 +50,11 @@ interactions:
       x-envoy-upstream-service-time:
       - '2'
       x-request-id:
-      - bfcf02a9-2e09-466a-b290-b6803270533c
+      - 76da5346-afd1-49ed-9701-2f49b0b68480
       x-yahoo-request-id:
-      - 9ttfo8th4ke5o
+      - cemuhg1h5795r
       y-rid:
-      - 9ttfo8th4ke5o
+      - cemuhg1h5795r
     status:
       code: 404
       message: Not Found
