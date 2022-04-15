@@ -26,12 +26,21 @@ def get_bursa(symbol: str) -> pd.DataFrame:
     pd.DataFrame
         Exchange info
     """
-    bursa = pd.DataFrame.from_dict(exchange_trading_hours, orient="index")
+    bursa = all_bursa()
 
+    symbol = symbol.upper()
     if symbol in bursa["short_name"].values:
-        return pd.DataFrame(bursa.loc[bursa["short_name"] == symbol]).transpose()
+        df = pd.DataFrame(bursa.loc[bursa["short_name"] == symbol]).transpose
+        open = check_if_open(bursa, symbol)
+        df = df.append(pd.DataFrame([open], index=["open"], \
+            columns=df.columns.values))
+        return df
     if symbol in bursa.index:
-        return pd.DataFrame(bursa.loc[symbol])
+        df = pd.DataFrame(bursa.loc[symbol])
+        open = check_if_open(bursa, symbol)
+        df = df.append(pd.DataFrame([open], index=["open"], \
+            columns=df.columns.values))
+        return df
     else:
         return pd.DataFrame()
 
@@ -48,7 +57,7 @@ def get_open() -> pd.DataFrame:
     pd.DataFrame
         Currently open exchanges
     """
-    bursa = pd.DataFrame.from_dict(exchange_trading_hours, orient="index")
+    bursa = all_bursa()
     is_open = []
     for exchange in bursa.index:
         open = check_if_open(bursa, exchange)
@@ -70,7 +79,7 @@ def get_closed() -> pd.DataFrame:
     pd.DataFrame
         Currently closed exchanges
     """
-    bursa = pd.DataFrame.from_dict(exchange_trading_hours, orient="index")
+    bursa = all_bursa()
     is_open = []
     for exchange in bursa.index:
         open = check_if_open(bursa, exchange)
@@ -92,7 +101,7 @@ def get_all() -> pd.DataFrame:
     pd.DataFrame
         All available exchanges
     """
-    bursa = pd.DataFrame.from_dict(exchange_trading_hours, orient="index")
+    bursa = all_bursa()
     is_open = []
     for exchange in bursa.index:
         open = check_if_open(bursa, exchange)
@@ -100,6 +109,39 @@ def get_all() -> pd.DataFrame:
     bursa["open"] = is_open
     return bursa[["name", "short_name", "open"]]
 
+@log_start_end(log=logger)
+def get_all_exchange_short_names() -> pd.DataFrame:
+    """Get all exchanges short names.
+
+    Parameters
+    ----------
+
+    Returns
+    -------
+    pd.DataFrame
+        All available exchanges short names
+    """
+    bursa = all_bursa()
+    is_open = []
+    for exchange in bursa.index:
+        open = check_if_open(bursa, exchange)
+        is_open.append(open)
+    bursa["open"] = is_open
+    return bursa[["short_name"]]
+
+def all_bursa():
+    """Get all exchanges from dictionary
+
+    Parameters
+    __________
+
+    Returns
+    _______
+    pd.DataFrame
+        All exchanges
+    """
+    bursa = pd.DataFrame.from_dict(exchange_trading_hours, orient="index")
+    return bursa
 
 def check_if_open(bursa, exchange):
     """Check if market open helper function
@@ -116,6 +158,7 @@ def check_if_open(bursa, exchange):
     bool
         If market is open
     """
+    exchange = exchange.upper()
     tz = bursa.loc[exchange]["timezone"]
     utcmoment_naive = datetime.utcnow()
     utcmoment = utcmoment_naive.replace(tzinfo=pytz.utc)

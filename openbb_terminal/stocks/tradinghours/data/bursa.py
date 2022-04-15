@@ -656,7 +656,7 @@ exchange_trading_hours = {
     },
     "NGM": {
         "name": "NasdaqGM",
-        "short_name": "",
+        "short_name": "NASGM",
         "website": "https://www.nasdaq.com/stock-market-trading-hours-for-nasdaq",
         "market_open": time(hour=9, minute=30),
         "market_close": time(hour=16, minute=00),
@@ -670,7 +670,7 @@ exchange_trading_hours = {
     },
     "NCM": {
         "name": "Nasdaq",
-        "short_name": "",
+        "short_name": "NASDQ",
         "website": "https://www.nasdaq.com/stock-market-trading-hours-for-nasdaq",
         "market_open": time(hour=9, minute=30),
         "market_close": time(hour=16, minute=00),
@@ -684,7 +684,7 @@ exchange_trading_hours = {
     },
     "NMS": {
         "name": "NasdaqGS",
-        "short_name": "",
+        "short_name": "NASGS",
         "website": "https://www.nasdaq.com/stock-market-trading-hours-for-nasdaq",
         "market_open": time(hour=9, minute=30),
         "market_close": time(hour=16, minute=00),
@@ -952,7 +952,7 @@ exchange_trading_hours = {
     },
     "NAS": {
         "name": "NASDAQ",
-        "short_name": "",
+        "short_name": "NAS",
         "website": "https://www.nasdaq.com/stock-market-trading-hours-for-nasdaq",
         "market_open": time(hour=9, minute=30),
         "market_close": time(hour=16, minute=00),

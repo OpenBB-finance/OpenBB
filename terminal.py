@@ -70,7 +70,6 @@ class TerminalController(BaseController):
         "funds",
         "alternative",
         "econometrics",
-        "tradinghours",
     ]
 
     PATH = "/"
@@ -140,8 +139,7 @@ class TerminalController(BaseController):
 >   alternative
 >   econometrics
 >   portfolio
->   jupyter
->   tradinghours[/menu]
+>   jupyter[/menu]
     """,
             menu="Home",
         )
