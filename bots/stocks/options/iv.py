@@ -16,7 +16,7 @@ def iv_command(ticker: str = None):
         logger.debug("opt info %s", ticker)
 
     # Check for argument
-    if not ticker:
+    if ticker is None:
         raise Exception("Stock ticker is required")
 
     df = barchart_model.get_options_info(ticker)
@@ -30,7 +30,8 @@ def iv_command(ticker: str = None):
     )
     df[""] = df[""].str.lstrip()
     font_color = [["white"]] + [
-        ["#e4003a" if "-" in df[""][0] else "#00ACFF"] + ["white"]
+        [imps.PLT_TBL_DECREASING if "-" in df[""][0] else imps.PLT_TBL_INCREASING]
+        + ["white"]
     ]
     df.set_index(" ", inplace=True)
 

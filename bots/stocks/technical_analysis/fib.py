@@ -9,6 +9,7 @@ from openbb_terminal.decorators import log_start_end
 logger = logging.getLogger(__name__)
 
 
+# pylint: disable=R0913
 @log_start_end(log=logger)
 def fib_command(
     ticker="",
@@ -18,6 +19,7 @@ def fib_command(
     end: str = "",
     extended_hours: bool = False,
     heikin_candles: bool = False,
+    trendline: bool = False,
     news: bool = False,
 ):
     """Displays chart with fibonacci retracement [Yahoo Finance]"""
@@ -26,7 +28,7 @@ def fib_command(
     if imps.DEBUG:
         # pylint: disable=logging-too-many-args
         logger.debug(
-            "ta fib %s %s %s %s %s %s %s %s",
+            "ta fib %s %s %s %s %s %s %s %s %s",
             ticker,
             interval,
             past_days,
@@ -34,6 +36,7 @@ def fib_command(
             end,
             extended_hours,
             heikin_candles,
+            trendline,
             news,
         )
 
@@ -87,6 +90,7 @@ def fib_command(
         news,
         bar=bar_start,
         int_bar=interval,
+        trendline=trendline,
         shared_xaxes=True,
         vertical_spacing=0.07,
     )
@@ -171,10 +175,6 @@ def fib_command(
     if imps.INTERACTIVE:
         plt_link = imps.inter_chart(fig, imagefile, callback=False)
 
-    fig.update_layout(
-        width=800,
-        height=500,
-    )
     imagefile = imps.image_border(imagefile, fig=fig)
 
     return {

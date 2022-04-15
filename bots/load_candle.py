@@ -7,7 +7,6 @@ import pandas as pd
 import plotly.graph_objects as go
 import pytz
 import requests
-import yfinance as yf
 from binance.client import Client
 from plotly.subplots import make_subplots
 from scipy import stats
@@ -17,6 +16,42 @@ from bots import imps
 futures = "=F" or "^"
 crypto = "-"
 est_tz = pytz.timezone("America/New_York")
+
+
+def quote(ticker_str: str):
+    ticker = imps.yf.Ticker(ticker_str)
+    quote_df = pd.DataFrame(
+        [
+            {
+                "Price": ticker.info["regularMarketPrice"],
+                "Previous Close": ticker.info["previousClose"],
+                "Volume": ticker.info["volume"],
+            }
+        ]
+    )
+    quote_df["Change"] = quote_df["Price"] - quote_df["Previous Close"]
+    quote_df["Change %"] = quote_df.apply(
+        lambda x: f'{((x["Change"] / x["Previous Close"]) * 100):.2f}%',
+        axis="columns",
+    )
+    for c in [
+        "Price",
+        "Previous Close",
+        "Change",
+    ]:
+        quote_df[c] = quote_df[c].apply(lambda x: f"{x:.2f}")
+    quote_df["Volume"] = quote_df["Volume"].apply(lambda x: f"{x:,}")
+    quote_df["Price"] = quote_df["Price"].str.lstrip()
+    vol_text = f'Volume: {"".join(quote_df["Volume"])}'
+    chart_info = (
+        f'<b>{"".join(quote_df["Price"].values)} ({"".join(quote_df["Change"])}) '
+        f'({"".join(quote_df["Change %"].values)})<br></b>'
+    )
+    return {
+        "vol_text": vol_text,
+        "info": chart_info,
+        "color": imps.in_decreasing_color_list(quote_df["Change %"]),
+    }
 
 
 def dt_utcnow_local_tz():
@@ -165,7 +200,7 @@ def stock_data(
         end = datetime.strptime(end, imps.DATE_FORMAT).astimezone(est_tz)
 
     if interval == 1440 and crypto not in ticker.upper():
-        df_stock = yf.download(
+        df_stock = imps.yf.download(
             ticker,
             start=start,
             end=end,
@@ -225,6 +260,13 @@ def stock_data(
                 pd.to_datetime(df_stock["date"], unit="ms", utc=True)
             ).drop("date", axis=1)
 
+            if interval == 1440:
+                df_stock["date_id"] = (
+                    df_stock.index.date - df_stock.index.date.min()
+                ).astype("timedelta64[D]")
+                df_stock["date_id"] = df_stock["date_id"].dt.days + 1
+                df_stock["OC_High"] = df_stock[["Open", "Close"]].max(axis=1)
+                df_stock["OC_Low"] = df_stock[["Open", "Close"]].min(axis=1)
             df_stock["Adj Close"] = df_stock["Close"].copy()  # For Technical Analysis
         else:
             d_granularity = {
@@ -236,7 +278,7 @@ def stock_data(
             }
             s_start_dt = dt_utcnow_local_tz() - timedelta(days=d_granularity[s_int])
             s_date_start = s_start_dt.strftime("%Y-%m-%d")
-            df_stock = yf.download(
+            df_stock = imps.yf.download(
                 ticker,
                 start=s_date_start
                 if s_start_dt > start
@@ -303,20 +345,12 @@ def candle_fig(
     if "bar" in data:
         dt = {1: 1, 5: 4, 15: 8, 30: 5, 60: 6, 1440: 30}
         bar_opacity = (
-            0.2
+            0.6
             if (
                 data["bar"]
                 > (dt_utcnow_local_tz() - timedelta(days=dt[data["int_bar"]]))
             )
-            else 0.3
-        )
-        bar_opacity = (
-            bar_opacity
-            if (
-                data["bar"]
-                > (dt_utcnow_local_tz() - timedelta(days=(dt[data["int_bar"]] * 3)))
-            )
-            else 0.33
+            else 0.65
         )
         bar_opacity = (
             bar_opacity
@@ -324,7 +358,15 @@ def candle_fig(
                 data["bar"]
                 > (dt_utcnow_local_tz() - timedelta(days=(dt[data["int_bar"]] * 4)))
             )
-            else 0.35
+            else 0.56
+        )
+        bar_opacity = (
+            bar_opacity
+            if (
+                data["bar"]
+                > (dt_utcnow_local_tz() - timedelta(days=(dt[data["int_bar"]] * 6)))
+            )
+            else 0.58
         )
         bar_opacity = (
             bar_opacity
@@ -332,10 +374,10 @@ def candle_fig(
                 data["bar"]
                 > (dt_utcnow_local_tz() - timedelta(days=(dt[data["int_bar"]] * 10)))
             )
-            else 0.4
+            else 0.6
         )
     else:
-        bar_opacity = 0.2
+        bar_opacity = 0.5
 
     fig.add_trace(
         go.Candlestick(
@@ -345,35 +387,41 @@ def candle_fig(
             low=df_stock.Low,
             close=df_stock.Close,
             name="OHLC",
-            increasing_line_color="#00ACFF",
-            decreasing_line_color="#e4003a",
+            line=dict(width=(1 if len(df_stock.index) < 100 else 0.5)),
+            increasing_line_color=imps.PLT_CANDLE_INCREASING,
+            decreasing_line_color=imps.PLT_CANDLE_DECREASING,
+            opacity=1,
             showlegend=False,
         ),
         row=1,
         col=1,
         secondary_y=True,
     )
-    if "OC_High_trend" in df_stock.columns:
+    if data["trendline"] and "OC_High_trend" in df_stock.columns:
         fig.add_trace(
             go.Scatter(
                 x=df_stock.index,
                 y=df_stock["OC_High_trend"],
                 name="High Trend",
                 mode="lines",
-                line=go.scatter.Line(color="#00ACFF"),
+                line=go.scatter.Line(
+                    color=imps.PLT_CANDLE_INCREASING,
+                ),
             ),
             secondary_y=True,
             row=1,
             col=1,
         )
-    if "OC_Low_trend" in df_stock.columns:
+    if data["trendline"] and "OC_Low_trend" in df_stock.columns:
         fig.add_trace(
             go.Scatter(
                 x=df_stock.index,
                 y=df_stock["OC_Low_trend"],
                 name="Low Trend",
                 mode="lines",
-                line=go.scatter.Line(color="#e4003a"),
+                line=go.scatter.Line(
+                    color=imps.PLT_CANDLE_DECREASING,
+                ),
             ),
             secondary_y=True,
             row=1,
@@ -385,7 +433,7 @@ def candle_fig(
             y=df_stock.Volume,
             name="Volume",
             yaxis="y2",
-            marker_color="#fdc708",
+            marker_color=imps.PLT_CANDLE_VOLUME,
             opacity=bar_opacity,
             showlegend=False,
         ),
@@ -400,7 +448,7 @@ def candle_fig(
         df_date, df_title, df_current, df_content, df_url = [], [], [], [], []
 
         if (imps.API_NEWS_TOKEN != "REPLACE_ME") and crypto in ticker.upper():
-            d_stock = yf.Ticker(ticker).info
+            d_stock = imps.yf.Ticker(ticker).info
             s_from = (dt_utcnow_local_tz() - timedelta(days=28)).strftime("%Y-%m-%d")
             term = (
                 d_stock["shortName"].replace(" ", "+")
@@ -442,23 +490,23 @@ def candle_fig(
             # Grab Data
             area_int = 0
             for article in articles:
-                dt_df = datetime.fromtimestamp(article["datetime"], tz=est_tz).strftime(
+                dt_at = datetime.fromtimestamp(article["datetime"], tz=est_tz).strftime(
                     "%Y-%m-%d %H:%M:%S%z"
                 )
-                df_date.append(dt_df)
+                df_date.append(dt_at)
                 df_title.append(
                     textwrap.indent(
                         text=(textwrap.fill(article["headline"], 50)), prefix="<br>"
                     )
                 )
-                stock_df = df_stock.iloc[
-                    df_stock.index.get_loc(dt_df, method="nearest")
+                grab_price = df_stock.iloc[
+                    df_stock.index.get_loc(dt_at, method="nearest")
                 ]
                 if area_int == 0:
-                    df_current.append(stock_df.Close + (stock_df.Close / 80))
+                    df_current.append(grab_price.Close + (grab_price.Close / 80))
                     area_int += 1
                 else:
-                    df_current.append(stock_df.Close + (stock_df.Close / 40))
+                    df_current.append(grab_price.Close + (grab_price.Close / 40))
                     area_int = 0
                 df_content.append(
                     textwrap.indent(
@@ -502,17 +550,16 @@ def candle_fig(
                 mode="markers",
                 marker_symbol="arrow-bar-down",
                 marker=dict(
-                    color="rgba(255, 215, 0, 0.9)",
+                    color=imps.PLT_CANDLE_NEWS_MARKER,
                     size=10,
-                    line=dict(color="gold", width=2),
+                    line=dict(color=imps.PLT_CANDLE_NEWS_MARKER_LINE, width=2),
                 ),
             ),
             secondary_y=True,
             row=1,
             col=1,
         )
-    if imps.PLT_WATERMARK:
-        fig.add_layout_image(imps.PLT_WATERMARK)
+
     fig.add_annotation(
         xref="x domain",
         yref="y domain",
@@ -522,6 +569,48 @@ def candle_fig(
         font_size=10,
         showarrow=False,
     )
+
+    # Add Current Price/Volume
+    ch_info = quote(ticker)
+
+    fig.add_annotation(
+        xref="paper",
+        yref="paper",
+        text=ch_info["info"],
+        x=0.99,
+        y=1.05,
+        font_size=10,
+        font_color="".join(ch_info["color"]),
+        showarrow=False,
+    )
+    fig.add_annotation(
+        xref="paper",
+        yref="paper",
+        text=ch_info["vol_text"],
+        x=0.003,
+        y=1.05,
+        font_size=10,
+        showarrow=False,
+    )
+    xadj = -0.075 if interval in [1, 5] else -0.069
+    yadj = 0.075 if "rows" not in data else 0.474
+    if "rows" in data:
+        yadj = 0.42 if data["rows"] == 3 else yadj
+        xadj = -0.075 if interval in [1, 5] else -0.065
+
+    fig.add_annotation(
+        xref="paper",
+        yref="paper",
+        text="Volume",
+        textangle=270,
+        x=xadj,
+        y=yadj,
+        font_size=10,
+        font_color=imps.PLT_CANDLE_YAXIS_TEXT_COLOR,
+        showarrow=False,
+    )
+    if imps.PLT_WATERMARK:
+        fig.add_layout_image(imps.PLT_WATERMARK)
     if interval != 1440:
         fig.update_traces(xhoverformat="%I:%M%p %b %d '%y")
         fig.update_xaxes(
@@ -538,22 +627,29 @@ def candle_fig(
         )
     fig.update_xaxes(showline=True)
     fig.update_yaxes(showline=True)
+
+    # rounding the volume
+    vol_scale = imps.chart_volume_scaling(df_stock["Volume"])
+
     fig.update_layout(
-        margin=dict(l=0, r=10, t=40, b=20),
+        margin=dict(l=5, r=10, t=40, b=20),
         template=imps.PLT_CANDLE_STYLE_TEMPLATE,
-        yaxis2_title="Price",
-        yaxis_title="Volume",
+        yaxis2_title="<b>Price</b>",
+        yaxis_title="",
         font=imps.PLT_FONT,
         yaxis=dict(
             showgrid=False,
             fixedrange=False,
             side="left",
-            titlefont=dict(color="#fdc708", size=12),
+            title_standoff=20,
+            titlefont=dict(color=imps.PLT_CANDLE_YAXIS_TEXT_COLOR, size=10),
             tickfont=dict(
-                color="#fdc708",
-                size=12,
+                color=imps.PLT_CANDLE_YAXIS_TEXT_COLOR,
+                size=(10 if "rows" not in data else 9),
             ),
-            nticks=20,
+            nticks=10,
+            range=vol_scale["range"],
+            tickvals=vol_scale["ticks"],
         ),
         yaxis2=dict(
             side="right",
@@ -561,9 +657,10 @@ def candle_fig(
             anchor="x",
             layer="above traces",
             overlaying="y",
-            nticks=20,
+            nticks=10,
+            titlefont=dict(size=10),
             tickfont=dict(
-                size=13,
+                size=9,
             ),
             showline=False,
         ),
@@ -574,7 +671,14 @@ def candle_fig(
                 size=10,
             ),
         ),
-        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+        legend=dict(
+            yanchor="top",
+            y=0.99,
+            xanchor="left",
+            font_size=8,
+            bgcolor="rgba(0, 0, 0, 0)",
+            x=0.01,
+        ),
         dragmode="pan",
         hovermode="x",
         spikedistance=1,
