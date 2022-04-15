@@ -588,7 +588,7 @@ Loaded:[/info] {self.portfolio_name or None}
             "--window",
             action="store",
             dest="window",
-            type=float,
+            type=int,
             default=252,
             help="Rolling window length",
         )
@@ -636,7 +636,7 @@ Loaded:[/info] {self.portfolio_name or None}
             "--window",
             action="store",
             dest="window",
-            type=float,
+            type=int,
             default=252,
             help="Rolling window length",
         )
