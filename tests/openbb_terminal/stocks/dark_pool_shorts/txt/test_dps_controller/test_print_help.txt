@@ -3,6 +3,8 @@
 
 [Yahoo Finance]
     shorted        show most shorted stocks
+[Interactive Broker]
+    ctb            stocks with highest cost to borrow
 [Shortinterest.com]
     hsi            show top high short interest stocks of over 20% ratio
 [FINRA]

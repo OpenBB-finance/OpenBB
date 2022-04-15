@@ -101,6 +101,8 @@ main:
             sub:
               - name: shorted
                 ref: "/terminal/stocks/dark_pool_shorts/shorted"
+              - name: ctb
+                ref: "/terminal/stocks/dark_pool_shorts/ctb"
               - name: hsi
                 ref: "/terminal/stocks/dark_pool_shorts/hsi"
               - name: prom
