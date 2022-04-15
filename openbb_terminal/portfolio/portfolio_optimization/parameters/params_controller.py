@@ -101,6 +101,9 @@ class ParametersController(BaseController):
         "long_allocation": DEFAULT_RANGE,
         "short_allocation": DEFAULT_RANGE,
         "risk_aversion": [value / 100 for value in range(-500, 501)],
+        "amount_portfolios": range(1, 10001),
+        "random_seed": range(1, 10001),
+        "tangency": ["0", "1"],
         "risk_parity_model": ['A', 'B', 'C'],
         "penal_factor": DEFAULT_RANGE + [-x for x in DEFAULT_RANGE],
         "co_dependence": ["pearson", "spearman", "abs_pearson", "abs_spearman", "distance", "mutual_info", "tail"],
@@ -396,7 +399,17 @@ class ParametersController(BaseController):
                 except ValueError:
                     pass
 
-                if value in self.AVAILABLE_OPTIONS[argument] or "Any" in self.AVAILABLE_OPTIONS[argument]:
+                if argument == "historic_period":
+                    for option in self.AVAILABLE_OPTIONS[argument]:
+                        if option in str(value):
+                            self.params[argument] = str(value)
+                            break
+                    if self.params[argument] != str(value):
+                        console.print(
+                            f"[red]The value {value} is not an option for {argument}.\n" f"Please select enter a "
+                            f"number before the option d, w, mo and y or select ytd or max. For example: 252d, "
+                            f"12w, 10y or max[/red]")
+                elif value in self.AVAILABLE_OPTIONS[argument] or "Any" in self.AVAILABLE_OPTIONS[argument]:
                     self.params[argument] = str(value)
                 else:
                     if len(self.AVAILABLE_OPTIONS[argument]) > 15:

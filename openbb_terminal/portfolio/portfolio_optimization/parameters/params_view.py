@@ -37,6 +37,8 @@ def show_arguments(arguments, description=None):
         df = pd.DataFrame([adjusted_arguments]).T
         columns = ['Options']
 
+    df = df[df.index != "technique"]
+
     print_rich_table(
         df,
         headers=list(columns),
