@@ -9,6 +9,7 @@ from openbb_terminal.decorators import log_start_end
 logger = logging.getLogger(__name__)
 
 
+# pylint: disable=R0913
 @log_start_end(log=logger)
 def obv_command(
     ticker="",
@@ -18,6 +19,7 @@ def obv_command(
     end="",
     extended_hours: bool = False,
     heikin_candles: bool = False,
+    trendline: bool = False,
     news: bool = False,
 ):
     """Displays chart with on balance volume [Yahoo Finance]"""
@@ -25,13 +27,15 @@ def obv_command(
     # Debug
     if imps.DEBUG:
         logger.debug(
-            "ta obv %s %s %s %s %s %s %s",
+            "ta obv %s %s %s %s %s %s %s %s %s",
             ticker,
+            interval,
             past_days,
             start,
             end,
             extended_hours,
             heikin_candles,
+            trendline,
             news,
         )
 
@@ -69,11 +73,12 @@ def obv_command(
         news,
         bar=bar_start,
         int_bar=interval,
+        trendline=trendline,
         rows=2,
         cols=1,
         shared_xaxes=True,
-        vertical_spacing=0.07,
-        row_width=[0.5, 0.6],
+        vertical_spacing=0.05,
+        row_width=[0.4, 0.7],
         specs=[
             [{"secondary_y": True}],
             [{"secondary_y": False}],
@@ -87,7 +92,9 @@ def obv_command(
             name="OBV",
             mode="lines",
             x=df_ta.index,
-            y=df_ta.iloc[:, 6].values if interval != 1440 else df_ta.iloc[:, 11].values,
+            y=df_ta.iloc[:, 6].values
+            if (not trendline) and (interval != 1440)
+            else df_ta.iloc[:, 11].values,
             line=dict(width=2),
             opacity=1,
         ),
@@ -112,12 +119,6 @@ def obv_command(
     plt_link = ""
     if imps.INTERACTIVE:
         plt_link = imps.inter_chart(fig, imagefile, callback=False)
-
-    fig.update_layout(
-        width=800,
-        height=500,
-    )
-
     imagefile = imps.image_border(imagefile, fig=fig)
 
     return {

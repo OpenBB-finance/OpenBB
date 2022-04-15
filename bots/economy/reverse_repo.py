@@ -43,12 +43,7 @@ def reverse_repo_command(days: int = 50):
     df = df.drop(columns="Moving Avg")
     df = df.sort_values(by="Date", ascending=False)
 
-    font_color = ["white"] * 4 + [
-        [
-            "#e4003a" if boolv else "#00ACFF"
-            for boolv in df["Difference"].str.contains("-")
-        ]  # type: ignore
-    ]
+    font_color = ["white"] * 4 + [imps.in_decreasing_color_list(df["Difference"])]  # type: ignore
 
     df.set_index("Date", inplace=True)
     df.columns = df.columns.str.capitalize()
@@ -61,16 +56,11 @@ def reverse_repo_command(days: int = 50):
         df_pg, embeds_img, images_list = pd.DataFrame(), [], []
         while i < dindex:
             df_pg = df.iloc[i:end]
-            font_color = ["white"] * 4 + [
-                [
-                    "#e4003a" if boolv else "#00ACFF"
-                    for boolv in df_pg["Difference"].str.contains("-")
-                ]  # type: ignore
-            ]
+            font_color = ["white"] * 4 + [imps.in_decreasing_color_list(df_pg["Difference"])]  # type: ignore
             df_pg.append(df_pg)
             fig = imps.plot_df(
                 df_pg,
-                fig_size=(650, (40 + (40 * len(df.index)))),
+                fig_size=(650, (40 + (33 * len(df_pg.index)))),
                 col_width=[1.8, 1.5, 1.7, 1.3, 1.8],
                 tbl_header=imps.PLT_TBL_HEADER,
                 tbl_cells=imps.PLT_TBL_CELLS,
@@ -141,7 +131,7 @@ def reverse_repo_command(days: int = 50):
     else:
         fig = imps.plot_df(
             df,
-            fig_size=(650, (40 + (40 * len(df.index)))),
+            fig_size=(650, (40 + (33 * len(df.index)))),
             col_width=[1.8, 1.5, 1.7, 1.3, 1.8],
             tbl_header=imps.PLT_TBL_HEADER,
             tbl_cells=imps.PLT_TBL_CELLS,

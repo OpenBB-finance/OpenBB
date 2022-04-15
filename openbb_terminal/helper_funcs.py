@@ -317,6 +317,31 @@ def check_positive_float(value) -> float:
     return new_value
 
 
+def check_percentage_range(num) -> float:
+    """
+    Checks if float is between 0 and 100. If so, return it.
+
+    Parameters
+    ----------
+    num: float
+        Input float
+    Returns
+    -------
+    num: float
+        Input number if conditions are met
+    Raises
+    -------
+    argparse.ArgumentTypeError
+        Input number not between min and max values
+    """
+    num = float(num)
+    maxi = 100.0
+    mini = 0.0
+    if num <= mini or num >= maxi:
+        log_and_raise(argparse.ArgumentTypeError("Value must be between 0 and 100"))
+    return num
+
+
 def check_proportion_range(num) -> float:
     """
     Checks if float is between 0 and 1. If so, return it.

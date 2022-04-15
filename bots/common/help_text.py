@@ -14,6 +14,7 @@ cmds_text = {
     ),
     "misc": (
         "\n[futures]()\n"
+        "[heatmap]()\n"
         "[quote](ticker)\n"
         "[support]() *Mods Only*\n"
         "[ins-last](ticker) <NUM>\n"
@@ -24,6 +25,7 @@ cmds_text = {
     ),
     "opt": (
         "\n[opt unu]()\n"
+        "[opt itm](ticker)\n"
         "[opt info](ticker)\n"
         "[opt vsurf](ticker) <z>\n"
         "[opt oi](ticker) <EXPIRATION> <MIN-SP> <MAX-SP>\n"

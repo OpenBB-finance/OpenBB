@@ -13,6 +13,7 @@ Source:
 >   ov          overview of the cryptocurrencies,       e.g.: market cap, DeFi, latest news, top exchanges, stables
 >   onchain     information on different blockchains,   e.g.: eth gas fees, whale alerts, DEXes info
 >   defi        decentralized finance information,      e.g.: dpi, llama, tvl, lending, borrow, funding
+>   tools       explore different tools                 e.g.: apytoapr, il
 >   nft         non-fungible tokens,                    e.g.: today drops[unvl]
 >   dd          due-diligence for loaded coin,          e.g.: coin information, social media, market stats
 >   ta          technical analysis for loaded coin,     e.g.: ema, macd, rsi, adx, bbands, obv

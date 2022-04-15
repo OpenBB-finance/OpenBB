@@ -58,6 +58,7 @@ from bots.stocks.government.topsells import topsells_command
 from bots.stocks.insider.lins import lins_command
 from bots.stocks.options.cc_hist import cc_hist_command
 from bots.stocks.options.hist import hist_command
+from bots.stocks.options.itm import itm_command
 from bots.stocks.options.iv import iv_command
 from bots.stocks.options.oi import oi_command
 from bots.stocks.options.opt_chain import chain_command
@@ -562,6 +563,10 @@ commands = {
     },
     "opt_iv": {
         "function": iv_command,
+        "required": {"ticker": tickers},
+    },
+    "opt_itm": {
+        "function": itm_command,
         "required": {"ticker": tickers},
     },
     "opt_smile": {

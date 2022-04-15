@@ -6,6 +6,7 @@ from openbb_terminal.helper_classes import ModelsNamespace as _models
 # pylint: disable=unused-import
 
 # Menu commands
+from .ibkr_view import display_cost_to_borrow as call_ctb
 from .yahoofinance_view import display_most_shorted as call_shorted
 from .shortinterest_view import high_short_interest as call_hsi
 from .finra_view import darkpool_otc as call_prom

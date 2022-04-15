@@ -29,4 +29,7 @@ cusum
 capm
 var
 es
+sh
+so
+om
 exit

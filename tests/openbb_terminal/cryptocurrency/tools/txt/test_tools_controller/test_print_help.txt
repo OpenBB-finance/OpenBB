@@ -1,0 +1,4 @@
+
+    aprtoapy         convert apr to apy
+    il               calculate impermanent loss
+

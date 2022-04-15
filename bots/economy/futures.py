@@ -55,9 +55,7 @@ def futures_command():
 
     df = df[["Last Price", "Change"]]
 
-    font_color = ["white"] * 2 + [
-        ["#e4003a" if boolv else "#00ACFF" for boolv in df["Change"].str.contains("-")]
-    ]
+    font_color = ["white"] * 2 + [imps.in_decreasing_color_list(df["Change"])]
 
     dindex = len(df.index)
     if dindex > 15:
@@ -69,14 +67,11 @@ def futures_command():
             df_pg = df[["Last Price", "Change"]].iloc[i:end]
             df_pg.append(df_pg)
             font_color = ["white"] * 2 + [
-                [
-                    "#e4003a" if boolv else "#00ACFF"
-                    for boolv in df_pg["Change"].str.contains("-")
-                ]
+                imps.in_decreasing_color_list(df_pg["Change"])
             ]
             fig = imps.plot_df(
                 df_pg,
-                fig_size=(620, (40 + (45 * len(df.index)))),
+                fig_size=(620, (40 + (33 * len(df_pg.index)))),
                 col_width=[4.2, 1.8, 2.5],
                 tbl_header=imps.PLT_TBL_HEADER,
                 tbl_cells=imps.PLT_TBL_CELLS,
@@ -147,7 +142,7 @@ def futures_command():
     else:
         fig = imps.plot_df(
             df,
-            fig_size=(620, (40 + (45 * len(df.index)))),
+            fig_size=(620, (40 + (33 * len(df.index)))),
             col_width=[4.2, 1.8, 2.5],
             tbl_header=imps.PLT_TBL_HEADER,
             tbl_cells=imps.PLT_TBL_CELLS,

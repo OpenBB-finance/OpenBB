@@ -38,17 +38,7 @@ class MockCommand:
         self.qualified_name = "Serious Name"
 
 
-@pytest.mark.bots
-def test_GSTHelpCommand():
-    test = helpers.GSTHelpCommand()
-    setattr(test, "clean_prefix", "hello")
-    response = test.get_command_signature(MockCommand())
-    assert isinstance(response, str)
-
-    test.add_bot_commands_formatting([1, 2, 4], "Hello")
-
-
-gst_bot = helpers.GSTBot()
+openbb_bot = helpers.GSTBot()
 
 
 class MockMessage:
@@ -95,13 +85,13 @@ class MockInter:
 @pytest.mark.bots
 def test_load_all_extensions():
     with pytest.raises(FileNotFoundError):
-        gst_bot.load_all_extensions("cmds")
+        openbb_bot.load_all_extensions(".cmds")
 
 
 @pytest.mark.bots
 @pytest.mark.anyio
 def test_on_command_error():
-    gst_bot.on_command_error(MockCTX(), commands.MissingPermissions("Hello"))
+    openbb_bot.on_command_error(MockCTX(), commands.MissingPermissions("Hello"))
 
 
 @pytest.mark.bots
@@ -121,7 +111,7 @@ def test_on_command_error():
 )
 def test_on_slash_command_error(responded, error):
     inter = MockInter(responded)
-    gst_bot.on_slash_command_error(inter, error)
+    openbb_bot.on_slash_command_error(inter, error)
 
 
 @pytest.mark.bots
@@ -131,7 +121,7 @@ def test_on_slash_command_error(responded, error):
 )
 def test_on_application_command(option, name, guild):
     inter = MockInter(True, option, name, guild)
-    gst_bot.on_application_command(inter)
+    openbb_bot.on_application_command(inter)
 
 
 @pytest.mark.bots
@@ -139,7 +129,7 @@ def test_on_application_command(option, name, guild):
 @pytest.mark.parametrize("responded", [True, False])
 def test_on_user_command_error(responded):
     inter = MockInter(responded)
-    gst_bot.on_user_command_error(inter, commands.NoPrivateMessage)
+    openbb_bot.on_user_command_error(inter, commands.NoPrivateMessage)
 
 
 @pytest.mark.bots
@@ -147,10 +137,10 @@ def test_on_user_command_error(responded):
 @pytest.mark.parametrize("responded", [True, False])
 def test_on_message_command_error(responded):
     inter = MockInter(responded)
-    gst_bot.on_message_command_error(inter, commands.NoPrivateMessage)
+    openbb_bot.on_message_command_error(inter, commands.NoPrivateMessage)
 
 
 @pytest.mark.bots
 @pytest.mark.anyio
 def test_on_ready():
-    gst_bot.on_ready()
+    openbb_bot.on_ready()

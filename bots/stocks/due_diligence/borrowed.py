@@ -5,12 +5,10 @@ import pandas as pd
 import requests
 
 from bots import imps
-from openbb_terminal.decorators import log_start_end
 
 logger = logging.getLogger(__name__)
 
 
-@log_start_end(log=logger)
 def borrowed_command(ticker: str = ""):
     """Displays borrowed shares available and fee [Stocksera.com]"""
 

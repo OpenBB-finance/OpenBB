@@ -16,7 +16,7 @@ interactions:
         data found, symbol may be delisted"}}}'
     headers:
       Age:
-      - '0'
+      - '2'
       Cache-Control:
       - max-age=0, private
       Connection:
@@ -40,21 +40,21 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Mon, 04 Apr 2022 00:02:17 GMT
+      - Mon, 11 Apr 2022 03:45:02 GMT
       server:
       - ATS
       vary:
       - Origin
       x-envoy-decorator-operation:
-      - finance-chart-api--mtls-baseline-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      - finance-chart-api--mtls-production-gq1.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
       - '3'
       x-request-id:
-      - dfa4cc0b-7037-4b34-aefa-ac934bd054ef
+      - 8f72499a-d047-433b-bc46-1a2391dd58c8
       x-yahoo-request-id:
-      - ai37b0ph4kdc9
+      - 3vkkd69h5791u
       y-rid:
-      - ai37b0ph4kdc9
+      - 3vkkd69h5791u
     status:
       code: 404
       message: Not Found

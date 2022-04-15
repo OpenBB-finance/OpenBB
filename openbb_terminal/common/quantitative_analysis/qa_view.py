@@ -1127,3 +1127,91 @@ def display_es(
         floatfmt=".4f",
     )
     console.print("")
+
+
+def display_sharpe(data: pd.DataFrame, rfr: float, window: float):
+    """Calculates the sharpe ratio
+    Parameters
+    ----------
+    data: pd.DataFrame
+        selected dataframe column
+    rfr: float
+        risk free rate
+    window: float
+        length of the rolling window
+    """
+    sharpe_ratio = qa_model.get_sharpe(data, rfr, window)
+
+    fig, ax = plt.subplots()
+    ax.plot(sharpe_ratio[int(window - 1) :])
+    ax.set_title(f"Sharpe Ratio - over a {window} day window")
+    ax.set_ylabel("Sharpe ratio")
+    ax.set_xlabel("Date")
+    fig.legend()
+
+    theme.style_primary_axis(ax)
+    theme.visualize_output()
+
+
+def display_sortino(
+    data: pd.DataFrame, target_return: float, window: float, adjusted: bool
+):
+    """Displays the sortino ratio
+    Parameters
+    ----------
+    data: pd.DataFrame
+        selected dataframe
+    target_return: float
+        target return of the asset
+    window: float
+        length of the rolling window
+    adjusted: bool
+        adjust the sortino ratio
+    """
+    sortino_ratio = qa_model.get_sortino(data, target_return, window, adjusted)
+    if adjusted:
+        str_adjusted = "Adjusted "
+    else:
+        str_adjusted = ""
+
+    fig, ax = plt.subplots()
+    ax.plot(sortino_ratio[int(window - 1) :])
+    ax.set_title(f"{str_adjusted}Sortino Ratio - over a {window} day window")
+    ax.set_ylabel("Sortino ratio")
+    ax.set_xlabel("Date")
+    fig.legend()
+
+    theme.style_primary_axis(ax)
+    theme.visualize_output()
+
+
+def display_omega(
+    data: pd.DataFrame, threshold_start: float = 0, threshold_end: float = 1.5
+):
+    """Displays the omega ratio
+    Parameters
+    ----------
+    data: pd.DataFrame
+        stock dataframe
+    threshold_start: float
+        annualized target return threshold start of plotted threshold range
+    threshold_end: float
+        annualized target return threshold end of plotted threshold range
+    """
+    threshold = np.linspace(threshold_start, threshold_end, 50)
+    omega_list = []
+
+    for i in threshold:
+        omega_list.append(qa_model.get_omega(data, i))
+
+    # Plotting
+    fig, ax = plt.subplots()
+    ax.plot(threshold, omega_list)
+    ax.set_title(f"Omega Curve - over last {len(data)}'s period")
+    ax.set_ylabel("Omega Ratio")
+    ax.set_xlabel("Threshold (%)")
+    fig.legend()
+    ax.set_ylim(threshold_start, threshold_end)
+
+    theme.style_primary_axis(ax)
+    theme.visualize_output()
