@@ -23,12 +23,7 @@ def ford_command():
 
     font_color = (
         ["white"] * 2
-        + [
-            [
-                "#e4003a" if boolv else "#00ACFF"
-                for boolv in df_orders["Price Change"].str.contains("-")
-            ]
-        ]
+        + [imps.in_decreasing_color_list(df_orders["Price Change"])]
         + [["white"] * 3]
     )
     df_orders = df_orders.rename(

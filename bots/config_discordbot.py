@@ -1,5 +1,4 @@
 import os
-import sys
 from distutils.util import strtobool
 from pathlib import Path
 from typing import List, Optional
@@ -10,14 +9,12 @@ from dotenv import load_dotenv
 
 # Path to bots
 bots_path = Path(__file__).parent.resolve()
+GST_PATH = Path(__file__).parent.parent.resolve()
 
 env_files = [f for f in bots_path.iterdir() if f.__str__().endswith(".env")]
 
 if env_files:
     load_dotenv(env_files[0])
-
-# Relative path to the terminal
-sys.path.append("..")
 
 # https://discord.com/developers/applications/
 DISCORD_BOT_TOKEN = os.getenv("OPENBB_DISCORD_BOT_TOKEN") or "REPLACE_ME"
@@ -32,6 +29,9 @@ API_NEWS_TOKEN = os.getenv("OPENBB_API_NEWS_TOKEN") or "REPLACE_ME"
 API_BINANCE_KEY = os.getenv("OPENBB_API_BINANCE_KEY") or "REPLACE_ME"
 API_BINANCE_SECRET = os.getenv("OPENBB_API_BINANCE_SECRET") or "REPLACE_ME"
 
+# https://stocksera.pythonanywhere.com/accounts/developers/
+API_STOCKSERA_TOKEN = os.getenv("OPENBB_API_STOCKSERA_TOKEN") or "REPLACE_ME"
+
 # https://finnhub.io
 API_FINNHUB_KEY = os.getenv("OPENBB_API_FINNHUB_KEY") or "REPLACE_ME"
 
@@ -41,30 +41,36 @@ SLASH_TESTING_SERVERS: Optional[
 ] = None  # Add server ID for testing [1884912191119489, 1454644614118448]
 COMMAND_PREFIX = "!"
 DATE_FORMAT = "%Y-%m-%d"
-COLOR = disnake.Color.from_rgb(255, 0, 0)
+COLOR = disnake.Color.from_rgb(130, 38, 97)
 
 # Interactive Chart Settings
 INTERACTIVE = strtobool(os.getenv("OPENBB_INTERACTIVE", "False"))
-INTERACTIVE_DIR = bots_path.joinpath("interactive/")
-INTERACTIVE_URL = ""
+INTERACTIVE_DIR = (
+    Path(str(os.getenv("OPENBB_INTERACTIVE_DIR")))
+    if os.getenv("OPENBB_INTERACTIVE_DIR")
+    else bots_path.joinpath("interactive/")
+)
+INTERACTIVE_URL = os.getenv("OPENBB_INTERACTIVE_URL") or ""
 
 # Image Settings
 IMG_HOST_ACTIVE = strtobool(os.getenv("OPENBB_IMG_HOST_ACTIVE", "False"))
-IMG_DIR = bots_path.joinpath("interactive/images/")
-IMAGES_URL = ""  # Ex. "http://your-site.com/images/"
+IMG_DIR = (
+    Path(str(os.getenv("OPENBB_IMG_DIR")))
+    if os.getenv("OPENBB_IMG_DIR")
+    else bots_path.joinpath("interactive/images/")
+)
+IMAGES_URL = os.getenv("OPENBB_IMAGES_URL") or ""  # Ex. "http://your-site.com/images/"
 
 # IMG_BG = bots_path.joinpath("files/bg.png")  # Light BG
-IMG_BG = bots_path.joinpath("files/bg-dark.png")  # Dark BG
+IMG_BG = bots_path.joinpath("files/bg-dark_openbb.png")  # Dark BG
 
 DEBUG = strtobool(os.getenv("OPENBB_DEBUG", "False"))
 
-GST_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+openbb_imgur = pyimgur.Imgur(IMGUR_CLIENT_ID)
 
-gst_imgur = pyimgur.Imgur(IMGUR_CLIENT_ID)
-
-AUTHOR_NAME = "Gamestonk Terminal"
+AUTHOR_NAME = "OpenBB Bot"
 AUTHOR_URL = "https://github.com/OpenBB-finance/OpenBBTerminal"
 AUTHOR_ICON_URL = (
-    "https://github.com/OpenBB-finance/OpenBBTerminal/"
-    "blob/main/images/gst_logo_green_white_background.png?raw=true"
+    "https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/"
+    "hugo_rename/images/openbb_logo.png"
 )

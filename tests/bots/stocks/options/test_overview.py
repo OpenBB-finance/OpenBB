@@ -25,7 +25,7 @@ def vcr_config():
 @pytest.mark.vcr
 @pytest.mark.bots
 def test_options_data(recorder):
-    value = options_data("TSLA", expiry="2022-04-08")
+    value = options_data("TSLA", expiry="2022-04-14")
     new_value = [str(type(x)) for x in value]
 
     recorder.capture(new_value)
@@ -34,7 +34,7 @@ def test_options_data(recorder):
 @pytest.mark.vcr
 @pytest.mark.bots
 def test_run(recorder):
-    value = run("TSLA", expiry="2022-04-08")
+    value = run("TSLA", expiry="2022-04-14")
     new_value = [str(type(x)) for x in value]
 
     recorder.capture(new_value)
@@ -43,7 +43,7 @@ def test_run(recorder):
 @pytest.mark.vcr
 @pytest.mark.bots
 def test_overview_command(recorder):
-    value = overview_command("TSLA", expiry="2022-04-08")
+    value = overview_command("TSLA", expiry="2022-04-14")
     value["view"] = str(type(value["view"]))
     value["embed"] = str(type(value["embed"]))
     value["choices"] = str(type(value["choices"]))

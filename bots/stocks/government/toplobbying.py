@@ -5,9 +5,7 @@ import pandas as pd
 from matplotlib import pyplot as plt
 
 from bots import imps
-from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import plot_autoscale
 from openbb_terminal.stocks.government import quiverquant_model
 
 logger = logging.getLogger(__name__)
@@ -31,7 +29,7 @@ def toplobbying_command(num: int = 10, raw: bool = False):
     lobbying_by_ticker = pd.DataFrame(
         df_lobbying.groupby("Ticker")["Amount"].agg("sum")
     ).sort_values(by="Amount", ascending=False)
-    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    fig, ax = plt.subplots(figsize=imps.bot_plot_scale(), dpi=imps.BOT_PLOT_DPI)
     lobbying_by_ticker.head(num).plot(kind="bar", ax=ax)
     ax.set_xlabel("Ticker")
     ax.set_ylabel("Total Amount ($100k)")

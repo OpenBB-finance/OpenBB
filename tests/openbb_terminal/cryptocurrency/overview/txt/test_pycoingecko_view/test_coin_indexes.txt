@@ -11,7 +11,7 @@
 9     10               Prime XBT USDC    USDC              Prime XBT   0.000000       None
 10    11          Bibox (Futures) ETC     ETC        Bibox (Futures)   0.000000       None
 11    12              MyCoinStory SUN     SUN                    MCS  13.407576       None
-12    13          Bibox (Futures) BSV     BSV        Bibox (Futures)  13.407576       None
-13    14                       Tether    USDT      FTX (Derivatives)   1.000372      False
-14    15          Bibox (Futures) EOS     EOS        Bibox (Futures)   1.000372      False
+12    13                Prime XBT UNI     UNI              Prime XBT  13.407576      False
+13    14          Bibox (Futures) BSV     BSV        Bibox (Futures)  13.407576       None
+14    15         Bibox (Futures) DASH    DASH        Bibox (Futures)  13.407576       None
 

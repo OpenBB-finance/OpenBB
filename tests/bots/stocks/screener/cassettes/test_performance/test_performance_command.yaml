@@ -1,0 +1,56 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - screenerUrl=screener.ashx%3Fv%3D131%26s%3Dta_p_wedgedown%26ft%3D4%26r%3D81
+    method: GET
+    uri: https://finviz.com/screener.ashx?ft=4&s=ta_p_wedgedown&v=141
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAwrJz1fITcyrVChKLSxNLS4p1gMAAAD//wMAirpNZRIAAAA=
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 6f763f94980b1fef-IND
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - text/html; charset=utf-8
+      Date:
+      - Wed, 06 Apr 2022 00:01:20 GMT
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      alt-svc:
+      - h3=":443"; ma=86400, h3-29=":443"; ma=86400
+      request-context:
+      - appId=cid-v1:bdd405ef-7a83-4f9a-9228-0107d7f4bc90
+      set-cookie:
+      - preventRedirectLoop=false; expires=Tue, 05 Apr 2022 00:01:20 GMT; domain=.finviz.com;
+        path=/
+      vary:
+      - Accept-Encoding
+      x-frame-options:
+      - SAMEORIGIN
+      x-powered-by:
+      - ASP.NET
+      - ARR/3.0
+      - ASP.NET
+    status:
+      code: 200
+      message: OK
+version: 1
