@@ -112,7 +112,7 @@ def performance_command(economy_group="sector"):
             df_pg.append(df_pg)
             fig = imps.plot_df(
                 df_pg.transpose(),
-                fig_size=(800, 720),
+                fig_size=(800, 40 + (33 * len(df_pg.transpose().index))),
                 col_width=[6, 10],
                 tbl_header=imps.PLT_TBL_HEADER,
                 tbl_cells=imps.PLT_TBL_CELLS,
@@ -176,7 +176,7 @@ def performance_command(economy_group="sector"):
     else:
         fig = imps.plot_df(
             df.transpose(),
-            fig_size=(800, 720),
+            fig_size=(800, (40 + (33 * len(df.transpose().index)))),
             col_width=[6, 10],
             tbl_header=imps.PLT_TBL_HEADER,
             tbl_cells=imps.PLT_TBL_CELLS,

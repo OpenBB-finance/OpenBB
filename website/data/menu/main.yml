@@ -101,6 +101,8 @@ main:
             sub:
               - name: shorted
                 ref: "/terminal/stocks/dark_pool_shorts/shorted"
+              - name: ctb
+                ref: "/terminal/stocks/dark_pool_shorts/ctb"
               - name: hsi
                 ref: "/terminal/stocks/dark_pool_shorts/hsi"
               - name: prom
@@ -666,6 +668,13 @@ main:
                 ref: "/terminal/cryptocurrency/discovery/cpsearch"
               - name: cmctop
                 ref: "/terminal/cryptocurrency/discovery/cmctop"
+          - name: tools
+            ref: "/terminal/cryptocurrency/tools"
+            sub:
+              - name: aprtoapy
+                ref: "/terminal/cryptocurrency/tools/aprtoapy"
+              - name: il
+                ref: "/terminal/cryptocurrency/tools/il"
           - name: overview
             ref: "/terminal/cryptocurrency/overview"
             sub:

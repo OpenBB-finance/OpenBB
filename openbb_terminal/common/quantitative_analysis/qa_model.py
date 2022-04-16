@@ -473,3 +473,87 @@ def get_es(
     es_list = [es_90, es_95, es_99, es_custom]
     hist_es_list = [hist_es_90, hist_es_95, hist_es_99, hist_es_custom]
     return es_list, hist_es_list
+
+
+def get_sharpe(data: pd.DataFrame, rfr: float = 0, window: float = 252):
+    """Calculates the sharpe ratio
+    Parameters
+    ----------
+    data: pd.DataFrame
+        selected dataframe column
+    rfr: float
+        risk free rate
+    window: float
+        length of the rolling window
+    """
+    data_return = data.pct_change().rolling(window).sum() * 100
+    std = data.rolling(window).std() / np.sqrt(252) * 100
+
+    sharpe = (data_return - rfr) / std
+
+    return sharpe
+
+
+def get_sortino(
+    data: pd.DataFrame,
+    target_return: float = 0,
+    window: float = 252,
+    adjusted: bool = False,
+):
+    """Calculates the sortino ratio
+    Parameters
+    ----------
+    data: pd.DataFrame
+        selected dataframe
+    target_return: float
+        target return of the asset
+    window: float
+        length of the rolling window
+    adjusted: bool
+        adjust the sortino ratio
+    """
+    data = data * 100
+
+    # Sortino Ratio
+    # For method & terminology see:
+    # http://www.redrockcapital.com/Sortino__A__Sharper__Ratio_Red_Rock_Capital.pdf
+
+    target_downside_deviation = data.rolling(window).apply(
+        lambda x: (x.values[x.values < 0]).std() / np.sqrt(252) * 100
+    )
+    data_return = data.rolling(window).sum()
+    sortino_ratio = (data_return - target_return) / target_downside_deviation
+
+    if adjusted:
+        # Adjusting the sortino ratio inorder to compare it to sharpe ratio
+        # Thus if the deviation is neutral then it's equal to the sharpe ratio
+        sortino_ratio = sortino_ratio / np.sqrt(2)
+
+    return sortino_ratio
+
+
+def get_omega(data: pd.DataFrame, threshold: float = 0):
+    """Calculates the omega ratio
+    Parameters
+    ----------
+    data: pd.DataFrame
+        selected dataframe
+    threshold: float
+        target return threshold
+    """
+    # Omega ratio; for more information and explanation see:
+    # https://en.wikipedia.org/wiki/Omega_ratio
+
+    # Calculating daily threshold from annualised threshold value
+    daily_threshold = (threshold + 1) ** np.sqrt(1 / 252) - 1
+
+    # Get excess return
+    data_excess = data - daily_threshold
+
+    # Values excess return
+    data_positive_sum = data_excess[data_excess > 0].sum()
+    data_negative_sum = data_excess[data_excess < 0].sum()
+
+    omega_ratio = data_positive_sum / (-data_negative_sum)
+
+    return omega_ratio
