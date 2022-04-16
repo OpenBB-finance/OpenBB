@@ -22,7 +22,7 @@ def vcr_config():
 @pytest.mark.bots
 @pytest.mark.parametrize("min_sp, max_sp", [(None, None), (200.00, 1200.00)])
 def test_smile_command(recorder, min_sp, max_sp):
-    value = smile_command("TSLA", "2022-04-08", min_sp, max_sp)
+    value = smile_command("TSLA", "2022-04-14", min_sp, max_sp)
     value["imagefile"] = str(type(value["imagefile"]))
 
     recorder.capture(value)
@@ -33,4 +33,4 @@ def test_smile_command(recorder, min_sp, max_sp):
 @pytest.mark.parametrize("ticker", [None, "", "ZZZZ"])
 def test_smile_command_invalid(ticker):
     with pytest.raises(Exception):
-        smile_command(ticker, "2022-04-08")
+        smile_command(ticker, "2022-04-14")

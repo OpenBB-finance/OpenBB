@@ -51,6 +51,9 @@ class PortfolioController(BaseController):
         "rolling",
         "var",
         "es",
+        "sh",
+        "so",
+        "om",
     ]
     CHOICES_MENUS = [
         "bro",
@@ -114,7 +117,10 @@ Loaded:[/info] {self.portfolio_name or None}
 
 [info]Risk Metrics:[/info][cmds]
     var         display value at risk
-    es          display expected shortfall[/cmds]
+    es          display expected shortfall
+    sh          display sharpe ratio
+    so          display sortino ratio
+    om          display omega ratio[/cmds]
         """
         # TODO: Clean up the reports inputs
         # TODO: Edit the allocation to allow the different asset classes
@@ -555,6 +561,146 @@ Loaded:[/info] {self.portfolio_name or None}
                 ns_parser.distributions,
                 ns_parser.percentile / 100,
                 True,
+            )
+
+    @log_start_end(log=logger)
+    def call_sh(self, other_args: List[str]):
+        """Process sh command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="sh",
+            description="""
+                        Provides the sharpe ratio of the selected portfolio.
+                    """,
+        )
+        parser.add_argument(
+            "-r",
+            "--rfr",
+            action="store",
+            dest="rfr",
+            type=float,
+            default=0,
+            help="Risk free return",
+        )
+        parser.add_argument(
+            "-w",
+            "--window",
+            action="store",
+            dest="window",
+            type=int,
+            default=252,
+            help="Rolling window length",
+        )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            from openbb_terminal.common.quantitative_analysis import qa_view
+
+            if self.portfolio.empty:
+                console.print("[red]No portfolio loaded.[/red]\n")
+                return
+            self.portfolio.generate_holdings_from_trades()
+            data = self.portfolio.portfolio_value[1:]
+            qa_view.display_sharpe(data, ns_parser.rfr, ns_parser.window)
+
+    @log_start_end(log=logger)
+    def call_so(self, other_args: List[str]):
+        """Process so command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="so",
+            description="""
+                    Provides the sortino ratio of the selected portfolio.
+                """,
+        )
+        parser.add_argument(
+            "-t",
+            "--target",
+            action="store",
+            dest="target_return",
+            type=float,
+            default=0,
+            help="Target return",
+        )
+        parser.add_argument(
+            "-a",
+            "--adjusted",
+            action="store_true",
+            default=False,
+            dest="adjusted",
+            help="If one should adjust the sortino ratio inorder to make it comparable to the sharpe ratio",
+        )
+        parser.add_argument(
+            "-w",
+            "--window",
+            action="store",
+            dest="window",
+            type=int,
+            default=252,
+            help="Rolling window length",
+        )
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            from openbb_terminal.common.quantitative_analysis import qa_view
+
+            if self.portfolio.empty:
+                console.print("[red]No portfolio loaded.[/red]\n")
+                return
+            self.portfolio.generate_holdings_from_trades()
+            data = self.portfolio.returns[1:]
+            qa_view.display_sortino(
+                data, ns_parser.target_return, ns_parser.window, ns_parser.adjusted
+            )
+
+    @log_start_end(log=logger)
+    def call_om(self, other_args: List[str]):
+        """Process om command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="om",
+            description="""
+                   Provides omega ratio of the selected portfolio.
+               """,
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            action="store",
+            dest="start",
+            type=float,
+            default=0,
+            help="""
+                   Start of the omega ratio threshold
+               """,
+        )
+        parser.add_argument(
+            "-e",
+            "--end",
+            action="store",
+            dest="end",
+            type=float,
+            default=1.5,
+            help="""
+                   End of the omega ratio threshold
+               """,
+        )
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            from openbb_terminal.common.quantitative_analysis import qa_view
+
+            if self.portfolio.empty:
+                console.print("[red]No portfolio loaded.[/red]\n")
+                return
+            self.portfolio.generate_holdings_from_trades()
+            data = self.portfolio.returns[1:]
+            qa_view.display_omega(
+                data,
+                ns_parser.start,
+                ns_parser.end,
             )
 
     @log_start_end(log=logger)

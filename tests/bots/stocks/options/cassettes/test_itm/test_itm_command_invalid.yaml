@@ -43,15 +43,15 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Sun, 03 Apr 2022 20:46:22 GMT
+      - Mon, 11 Apr 2022 04:17:32 GMT
       server:
       - ATS
       x-envoy-decorator-operation:
-      - finance-yql--mtls-default-production-gq1.finance-k8s.svc.yahoo.local:4080/*
+      - finance-yql--mtls-default-production-bf1.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '2'
+      - '1'
       x-yahoo-request-id:
-      - a4vqlb5h4k1su
+      - 5bi15udh57aus
     status:
       code: 404
       message: Not Found
