@@ -1,5 +1,4 @@
 import pytest
-
 import openbb_terminal.portfolio.brokers.coinbase.coinbase_model as cbm
 
 
