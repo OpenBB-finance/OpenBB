@@ -6,9 +6,7 @@ import pandas as pd
 from matplotlib import pyplot as plt
 
 from bots import imps
-from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import plot_autoscale
 from openbb_terminal.stocks.government import quiverquant_model
 
 logger = logging.getLogger(__name__)
@@ -45,7 +43,7 @@ def contracts_command(
 
     df_contracts.drop_duplicates(inplace=True)
 
-    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    fig, ax = plt.subplots(figsize=imps.bot_plot_scale(), dpi=imps.BOT_PLOT_DPI)
 
     df_contracts.groupby("Date").sum().div(1000).plot(kind="bar", rot=0, ax=ax)
     ax.set_ylabel("Amount ($1k)")

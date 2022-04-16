@@ -116,11 +116,6 @@ def spos_command(ticker: str = ""):
     if imps.INTERACTIVE:
         plt_link = imps.inter_chart(fig, imagefile, callback=False)
 
-    fig.update_layout(
-        width=800,
-        height=500,
-    )
-
     imagefile = imps.image_border(imagefile, fig=fig)
 
     return {

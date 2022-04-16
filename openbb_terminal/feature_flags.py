@@ -17,7 +17,7 @@ if DEFAULT_FILE.is_file():
         os.environ[key] = value
 
 if ENV_FILE.is_file():
-    load_dotenv(ENV_FILE)
+    load_dotenv(dotenv_path=ENV_FILE, override=True)
 
 # Use tabulate to print dataframes
 USE_TABULATE_DF = strtobool(os.getenv("OPENBB_USE_TABULATE_DF", "True"))

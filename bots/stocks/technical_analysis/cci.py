@@ -21,6 +21,7 @@ def cci_command(
     end="",
     extended_hours: bool = False,
     heikin_candles: bool = False,
+    trendline: bool = False,
     news: bool = False,
 ):
     """Displays chart with commodity channel index [Yahoo Finance]"""
@@ -28,7 +29,7 @@ def cci_command(
     # Debug
     if imps.DEBUG:
         logger.debug(
-            "ta cci %s %s %s %s %s %s %s %s %s %s",
+            "ta cci %s %s %s %s %s %s %s %s %s %s %s",
             ticker,
             interval,
             past_days,
@@ -38,6 +39,7 @@ def cci_command(
             end,
             extended_hours,
             heikin_candles,
+            trendline,
             news,
         )
 
@@ -92,17 +94,20 @@ def cci_command(
         news,
         bar=bar_start,
         int_bar=interval,
+        trendline=trendline,
         rows=2,
         cols=1,
         shared_xaxes=True,
-        vertical_spacing=0.07,
-        row_width=[0.4, 0.6],
+        vertical_spacing=0.05,
+        row_width=[0.4, 0.7],
         specs=[[{"secondary_y": True}], [{"secondary_y": False}]],
     )
     title = f"<b>{plot['plt_title']} Commodity-Channel-Index</b>"
     fig = plot["fig"]
     ta_values = (
-        df_ta.iloc[:, 6].values if interval != 1440 else df_ta.iloc[:, 11].values
+        df_ta.iloc[:, 6].values
+        if (not trendline) and (interval != 1440)
+        else df_ta.iloc[:, 11].values
     )
 
     dmin = ta_values.min()
@@ -174,11 +179,6 @@ def cci_command(
     plt_link = ""
     if imps.INTERACTIVE:
         plt_link = imps.inter_chart(fig, imagefile, callback=False)
-
-    fig.update_layout(
-        width=800,
-        height=500,
-    )
 
     imagefile = imps.image_border(imagefile, fig=fig)
 

@@ -7,10 +7,9 @@ from matplotlib import pyplot as plt
 
 from bots import config_discordbot as cfg
 from bots.helpers import image_border, load
+from bots.imps import BOT_PLOT_DPI, bot_plot_scale
 from openbb_terminal.common.technical_analysis import momentum_model
-from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import plot_autoscale
 
 logger = logging.getLogger(__name__)
 
@@ -60,7 +59,7 @@ def cg_command(ticker="", length="14", start="", end=""):
     df_ta = df_ta.fillna(0.0)
 
     # Output Data
-    fig, axes = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
+    fig, axes = plt.subplots(2, 1, figsize=bot_plot_scale(), dpi=BOT_PLOT_DPI)
     ax = axes[0]
     ax.set_title(f"{ticker} Centre of Gravity")
     ax.plot(df_stock.index, df_stock["Adj Close"].values, lw=1)

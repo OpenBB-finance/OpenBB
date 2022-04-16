@@ -23,6 +23,7 @@ def kc_command(
     end="",
     extended_hours: bool = False,
     heikin_candles: bool = False,
+    trendline: bool = False,
     news: bool = False,
 ):
     """Displays chart with keltner channel [Yahoo Finance]"""
@@ -31,7 +32,7 @@ def kc_command(
     if imps.DEBUG:
         # pylint: disable=logging-too-many-args
         logger.debug(
-            "ta kc %s %s %s %s %s %s %s %s %s %s %s %s",
+            "ta kc %s %s %s %s %s %s %s %s %s %s %s %s %s",
             ticker,
             interval,
             past_days,
@@ -43,6 +44,7 @@ def kc_command(
             end,
             extended_hours,
             heikin_candles,
+            trendline,
             news,
         )
 
@@ -100,12 +102,13 @@ def kc_command(
         news,
         bar=bar_start,
         int_bar=interval,
+        trendline=trendline,
         shared_xaxes=True,
         vertical_spacing=0.07,
     )
     title = f"<b>{plot['plt_title']} Keltner Channels ({ma_mode.upper()})</b>"
     fig = plot["fig"]
-    idx = 6 if interval != 1440 else 11
+    idx = 6 if (not trendline) and (interval != 1440) else 11
 
     fig.add_trace(
         go.Scatter(
@@ -168,11 +171,6 @@ def kc_command(
     plt_link = ""
     if imps.INTERACTIVE:
         plt_link = imps.inter_chart(fig, imagefile, callback=False)
-
-    fig.update_layout(
-        width=800,
-        height=500,
-    )
     imagefile = imps.image_border(imagefile, fig=fig)
 
     return {
