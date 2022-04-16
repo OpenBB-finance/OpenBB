@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 # pylint: disable=R0913, C0302, E1101
 
 import logging
-from typing import List, Tuple
+from typing import Dict, List, Tuple
 
 import numpy as np
 import pandas as pd
@@ -269,7 +269,7 @@ def get_mean_risk_portfolio(
         - 'MDD': Maximum Drawdown of uncompounded cumulative returns.
 
     risk_free_rate: float, optional
-        Risk free rate, must be in the same period of assets returns. Used for
+        Risk free rate, must be in annual frequency. Used for
         'FLPM' and 'SLPM' and Sharpe objective function. The default is 0.
     risk_aversion: float, optional
         Risk aversion factor of the 'Utility' objective function.
@@ -670,7 +670,7 @@ def get_risk_parity_portfolio(
         The vector of risk contribution per asset. If empty, the default is
         1/n (number of assets).
     risk_free_rate: float, optional
-        Risk free rate, must be in the same period of assets returns. Used for
+        Risk free rate, must be in annual frequency. Used for
         'FLPM' and 'SLPM' and Sharpe objective function. The default is 0.
     alpha: float, optional
         Significance level of CVaR, EVaR, CDaR and EDaR
@@ -1050,7 +1050,7 @@ def get_hcp_portfolio(
         - 'UCI_Rel': Ulcer Index of compounded cumulative returns.
 
     risk_free_rate: float, optional
-        Risk free rate, must be in the same period of assets returns.
+        Risk free rate, must be in annual frequency.
         Used for 'FLPM' and 'SLPM'. The default is 0.
     risk_aversion: float, optional
         Risk aversion factor of the 'Utility' objective function.
@@ -1161,6 +1161,91 @@ def get_hcp_portfolio(
         weights = weights.squeeze().to_dict()
 
     return weights, stock_returns
+
+
+@log_start_end(log=logger)
+def black_litterman(
+    stocks_returns: pd.DataFrame,
+    benchmark: Dict,
+    P_Views: List = None,
+    Q_Views: List = None,
+    Delta: float = 1,
+    risk_free_rate: float = 0,
+    equilibrium: bool = True,
+    freq: float = "D",
+) -> Tuple:
+    """
+    Calculates Black-Litterman estimates following He and Litterman (1999)
+
+    Parameters
+    ----------
+    stocks_returns: pd.DataFrame
+        _description_
+    benchmark: Dict
+        lala
+    P_Views: List
+        Matrix P of views that shows relationships among assets and returns.
+        Default value to None.
+    Q_Views: List
+        Matrix Q of expected returns of views. Default value is None.
+    Delta: float
+        Risk aversion factor. Default value is 1.
+    risk_free_rate: float
+        Risk free rate, must be in annual frequency. Default value is 0.
+    equilibrium: bool
+        If True excess returns are based on equilibrium market portfolio, if False
+        excess returns are calculated as historical returns minus risk free rate.
+        Default value is True.
+    freq: float
+        The frequency used to calculate returns. Default value is 'D'. Possible
+        values are:
+            - 'D' for daily returns.
+            - 'W' for weekly returns.
+            - 'M' for monthly returns.
+
+    Returns
+    -------
+    Tuple:
+        Black-Litterman model estimates of expected returns,
+        covariance matrix and portfolio weights.
+    """
+    stocks = stocks_returns.columns.tolist()
+    benchmark = pd.Series(benchmark).to_numpy().reshape(-1, 1)
+    risk_free_rate = risk_free_rate / time_factor[freq.upper()]
+
+    mu = stocks_returns.mean().to_numpy().reshape(-1, 1)
+    S = stocks_returns.cov().to_numpy()
+    P_Views = np.array(P_Views, dtype=float)
+    Q_Views = np.array(Q_Views, dtype=float) / time_factor[freq.upper()]
+    tau = 1 / stocks_returns.shape[0]
+    Omega = np.diag(np.diag(P_Views @ (tau * S) @ P_Views.T))
+
+    if Delta is None:
+        a = mu.T @ benchmark
+        Delta = (a - risk_free_rate) / (benchmark.T @ S @ benchmark)
+        Delta = Delta.item()
+
+    if equilibrium == True:
+        PI_eq = Delta * (S @ benchmark)
+    elif equilibrium == False:
+        PI_eq = mu - risk_free_rate
+
+    PI = np.linalg.inv(
+        np.linalg.inv(tau * S) + P_Views.T @ np.linalg.inv(Omega) @ P_Views
+    ) @ (np.linalg.inv(tau * S) @ PI_eq + P_Views.T @ np.linalg.inv(Omega) @ Q_Views)
+    M = np.linalg.inv(
+        np.linalg.inv(tau * S) + P_Views.T @ np.linalg.inv(Omega) @ P_Views
+    )
+
+    mu = PI + risk_free_rate
+    cov = S + M
+    weights = np.linalg.inv(Delta * cov) @ PI
+
+    mu = pd.DataFrame(mu, index=stocks).to_dict()
+    cov = pd.DataFrame(cov, index=stocks, columns=stocks).to_dict()
+    weights = pd.DataFrame(weights, index=stocks).to_dict()
+
+    return mu, cov, weights
 
 
 @log_start_end(log=logger)

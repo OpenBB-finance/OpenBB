@@ -105,6 +105,7 @@ time_factor = {
     "M": 12.0,
 }
 
+
 @log_start_end(log=logger)
 def d_period(period: str, start: str, end: str):
     """
@@ -148,6 +149,7 @@ def d_period(period: str, start: str, end: str):
         p = "[From " + start + " to " + end + "]"
 
     return p
+
 
 @log_start_end(log=logger)
 def portfolio_performance(
@@ -285,6 +287,7 @@ def portfolio_performance(
             "Return / " + risk_names[risk_measure.lower()] + f" ratio: {sharpe_2:.4f}"
         )
 
+
 @log_start_end(log=logger)
 def display_weights(weights: dict, market_neutral: bool = False):
     """
@@ -319,6 +322,7 @@ def display_weights(weights: dict, market_neutral: bool = False):
         tot_value = weight_df["value"].abs().mean()
         header = "Value ($)" if tot_value > 1.01 else "Value (%)"
         print_rich_table(weight_df, headers=[header], show_index=True, title="Weights")
+
 
 @log_start_end(log=logger)
 def display_equal_weight(
@@ -424,6 +428,7 @@ def display_equal_weight(
     )
     console.print("")
     return weights
+
 
 @log_start_end(log=logger)
 def display_property_weighting(
@@ -532,6 +537,7 @@ def display_property_weighting(
     )
     console.print("")
     return weights
+
 
 @log_start_end(log=logger)
 def display_mean_risk(
@@ -719,6 +725,7 @@ def display_mean_risk(
     console.print("")
     return weights
 
+
 @log_start_end(log=logger)
 def display_max_sharpe(
     stocks: List[str],
@@ -860,6 +867,7 @@ def display_max_sharpe(
     )
     return weights
 
+
 @log_start_end(log=logger)
 def display_min_risk(
     stocks: List[str],
@@ -1000,6 +1008,7 @@ def display_min_risk(
         value_short=value_short,
     )
     return weights
+
 
 @log_start_end(log=logger)
 def display_max_util(
@@ -1147,6 +1156,7 @@ def display_max_util(
     )
     return weights
 
+
 @log_start_end(log=logger)
 def display_max_ret(
     stocks: List[str],
@@ -1288,6 +1298,7 @@ def display_max_ret(
     )
     return weights
 
+
 @log_start_end(log=logger)
 def display_max_div(
     stocks: List[str],
@@ -1399,6 +1410,7 @@ def display_max_div(
     )
     console.print("")
     return weights
+
 
 @log_start_end(log=logger)
 def display_max_decorr(
@@ -1512,6 +1524,7 @@ def display_max_decorr(
     )
     console.print("")
     return weights
+
 
 @log_start_end(log=logger)
 def display_ef(
@@ -1745,6 +1758,7 @@ def display_ef(
     if external_axes is None:
         theme.visualize_output(force_tight_layout=False)
 
+
 @log_start_end(log=logger)
 def display_risk_parity(
     stocks: List[str],
@@ -1898,6 +1912,7 @@ def display_risk_parity(
     console.print("")
     return weights
 
+
 @log_start_end(log=logger)
 def display_rel_risk_parity(
     stocks: List[str],
@@ -2037,6 +2052,7 @@ def display_rel_risk_parity(
     )
     console.print("")
     return weights
+
 
 @log_start_end(log=logger)
 def display_hcp(
@@ -2311,6 +2327,7 @@ def display_hcp(
     console.print("")
     return weights
 
+
 @log_start_end(log=logger)
 def display_hrp(
     stocks: List[str],
@@ -2527,6 +2544,7 @@ def display_hrp(
         value=value,
     )
     return weights
+
 
 @log_start_end(log=logger)
 def display_herc(
@@ -2752,6 +2770,7 @@ def display_herc(
         value=value,
     )
     return weights
+
 
 @log_start_end(log=logger)
 def display_nco(
@@ -3091,6 +3110,7 @@ def pie_chart_weights(
 
     if external_axes is None:
         theme.visualize_output()
+
 
 @log_start_end(log=logger)
 def additional_plots(

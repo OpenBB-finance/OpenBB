@@ -25,7 +25,9 @@ from openbb_terminal.portfolio.portfolio_optimization import (
     optimizer_model,
     optimizer_view,
 )
-from openbb_terminal.portfolio.portfolio_optimization.parameters import params_controller
+from openbb_terminal.portfolio.portfolio_optimization.parameters import (
+    params_controller,
+)
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -59,7 +61,7 @@ class PortfolioOptimizationController(BaseController):
         "ef",
         "yolo",
         "file",
-        "params"
+        "params",
     ]
 
     period_choices = [
@@ -376,10 +378,16 @@ class PortfolioOptimizationController(BaseController):
             "nco",
         ]
 
-        self.files_available = [f for f in os.listdir(os.path.join(os.path.dirname(__file__), "parameters")) if (f.endswith(".ini") or f.endswith(".xlsx"))]
+        self.files_available = [
+            f
+            for f in os.listdir(os.path.join(os.path.dirname(__file__), "parameters"))
+            if (f.endswith(".ini") or f.endswith(".xlsx"))
+        ]
 
         param = configparser.RawConfigParser()
-        param.read(os.path.join(os.path.dirname(__file__), "parameters", "defaults.ini"))
+        param.read(
+            os.path.join(os.path.dirname(__file__), "parameters", "defaults.ini")
+        )
         param.optionxform = str  # type: ignore
         self.params = param["OPENBB"]
 
@@ -531,9 +539,7 @@ class PortfolioOptimizationController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-f")
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args
-        )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             self.file = ns_parser.file
             param = configparser.RawConfigParser()
@@ -551,7 +557,11 @@ class PortfolioOptimizationController(BaseController):
         self.queue = self.load_class(
             params_controller.ParametersController, self.file, self.queue
         )
-        self.files_available = [f for f in os.listdir(os.path.join(os.path.dirname(__file__), "parameters")) if (f.endswith(".ini") or f.endswith(".xlsx"))]
+        self.files_available = [
+            f
+            for f in os.listdir(os.path.join(os.path.dirname(__file__), "parameters"))
+            if (f.endswith(".ini") or f.endswith(".xlsx"))
+        ]
 
     @log_start_end(log=logger)
     def call_show(self, other_args: List[str]):
