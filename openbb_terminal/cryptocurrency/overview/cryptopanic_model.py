@@ -93,15 +93,16 @@ def make_request(**kwargs: Any) -> Optional[dict]:
         url += f"&regions={region}"
 
     response = requests.get(url)
+    response_json = response.json()
     result = None
 
     if response.status_code == 200:
-        result = response.json()
+        result = response_json
     else:
-        if "Token not found" in response.json()["info"]:
+        if "Token not found" in response_json["info"]:
             console.print("[red]Invalid API Key[/red]\n")
         else:
-            console.print(response.json()["info"])
+            console.print(response_json["info"])
 
         logger.warning("Invalid authentication: %s", response.text)
 
