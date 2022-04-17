@@ -1,0 +1,3 @@
+   currency      balance    available                hold  BalanceValue(USD)
+27     DOGE  2237.200000       2237.2  0.0000000000000000         319.024720
+49      LTC    59.904391  59.89439124  0.0100000000000000        6561.927016
