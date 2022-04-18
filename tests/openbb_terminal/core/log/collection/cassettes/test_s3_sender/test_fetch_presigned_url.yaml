@@ -1,0 +1,40 @@
+interactions:
+- request:
+    body: '{"object_key": "MOCK_COMMIT_HASH-app/logs/MOCK_COMMIT_HASH/file.log"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '69'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-requests/2.27.1
+    method: PUT
+    uri: https://gst.openbb.app/logging
+  response:
+    body:
+      string: 'null'
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '4'
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 18 Apr 2022 00:31:16 GMT
+      X-Amzn-Trace-Id:
+      - Root=1-625cb154-2d3e2bd60dbcffe0593f2c47;Sampled=0
+      x-amz-apigw-id:
+      - QwClNHlQiYcF8VQ=
+      x-amzn-RequestId:
+      - a6d1b1fd-537c-4807-a636-4422972e9092
+    status:
+      code: 200
+      message: OK
+version: 1
