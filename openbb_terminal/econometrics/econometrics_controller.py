@@ -188,6 +188,10 @@ class EconometricsController(BaseController):
                 choices[feature] = dict()
 
             self.choices = choices
+
+            if len(self.REPORT_CHOICES):
+                choices = {**choices, **self.REPORT_CHOICES}
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def update_runtime_choices(self):

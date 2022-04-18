@@ -89,6 +89,10 @@ class PortfolioController(BaseController):
             choices["load"] = {c: None for c in self.portlist}
             choices["save"] = {c: None for c in self.portlist}
             self.choices = choices
+
+            if len(self.REPORT_CHOICES):
+                choices = {**choices, **self.REPORT_CHOICES}
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):

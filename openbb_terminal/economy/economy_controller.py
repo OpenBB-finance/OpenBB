@@ -199,7 +199,10 @@ class EconomyController(BaseController):
                 c: None for c in self.fear_greed_indicators
             }
 
-            self.completer = NestedCompleter.from_nested_dict(self.choices)
+            if len(self.REPORT_CHOICES):
+                choices = {**self.choices, **self.REPORT_CHOICES}
+
+            self.completer = NestedCompleter.from_nested_dict(choices)
 
     def update_runtime_choices(self):
         if session and obbff.USE_PROMPT_TOOLKIT:

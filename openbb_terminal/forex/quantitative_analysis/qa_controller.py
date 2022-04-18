@@ -78,6 +78,10 @@ class QaController(CryptoBaseController):
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["pick"] = {c: None for c in list(data.columns)}
+
+            if len(self.REPORT_CHOICES):
+                choices = {**choices, **self.REPORT_CHOICES}
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):

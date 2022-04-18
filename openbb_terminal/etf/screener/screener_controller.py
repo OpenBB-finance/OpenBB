@@ -76,6 +76,10 @@ class ScreenerController(BaseController):
             choices["sbc"] = {
                 c: None for c in financedatabase_model.get_etfs_categories()
             }
+
+            if len(self.REPORT_CHOICES):
+                choices = {**choices, **self.REPORT_CHOICES}
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):

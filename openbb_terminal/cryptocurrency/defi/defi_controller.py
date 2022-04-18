@@ -100,6 +100,9 @@ class DefiController(BaseController):
                 c: {} for c in terramoney_fcd_model.VALIDATORS_COLUMNS
             }
 
+            if len(self.REPORT_CHOICES):
+                choices = {**choices, **self.REPORT_CHOICES}
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):

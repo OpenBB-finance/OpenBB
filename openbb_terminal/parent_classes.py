@@ -27,6 +27,7 @@ from openbb_terminal.helper_funcs import (
     parse_known_args_and_warn,
     valid_date_in_past,
     set_command_location,
+    save_ticket,
 )
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.rich_config import console
@@ -47,6 +48,8 @@ CRYPTO_SOURCES = {
     "yf": "YahooFinance",
 }
 
+REPORT_CATEGORIES = ["bug", "suggestion", "question", "general"]
+
 
 class BaseController(metaclass=ABCMeta):
 
@@ -62,10 +65,12 @@ class BaseController(metaclass=ABCMeta):
         "exit",
         "r",
         "reset",
+        "report",
     ]
 
     CHOICES_COMMANDS: List[str] = []
     CHOICES_MENUS: List[str] = []
+    REPORT_CHOICES: Dict = {}
     COMMAND_SEPARATOR = "/"
     KEYS_MENU = "keys" + COMMAND_SEPARATOR
 
@@ -97,9 +102,31 @@ class BaseController(metaclass=ABCMeta):
         self.parser = argparse.ArgumentParser(
             add_help=False, prog=self.path[-1] if self.PATH != "/" else "terminal"
         )
+
         self.parser.add_argument("cmd", choices=self.controller_choices)
 
         theme.applyMPLstyle()
+
+        # Terminal-wide report command auto-completion
+
+        # Remove common choices from list of report commands
+        self.report_commands = [
+            c for c in self.controller_choices if c not in self.CHOICES_COMMON
+        ]
+
+        report_choices: dict = {c: {} for c in self.controller_choices}
+
+        report_choices["report"]["--command"] = {
+            c: None for c in (["General"] + self.report_commands)
+        }
+
+        report_choices["report"]["--menu"] = {
+            c: None for c in (["General"] + self.CHOICES_MENUS)
+        }
+
+        report_choices["report"]["--category"] = {c: None for c in (REPORT_CATEGORIES)}
+
+        self.REPORT_CHOICES = report_choices
 
     def check_path(self) -> None:
         path = self.PATH
@@ -275,6 +302,79 @@ class BaseController(metaclass=ABCMeta):
             console.print("")
         else:
             console.print("No resources available.\n")
+
+    @log_start_end(log=logger)
+    def call_report(self, other_args: List[str]) -> None:
+        """Process report command"""
+
+        self.save_class()
+        console.print("")
+
+        path_split = [x for x in self.PATH.split("/") if x != ""]
+        main_menu = path_split[0]
+        main_menu = "home" if main_menu == "" else main_menu
+        report_sub_menu = path_split[-1]
+
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="report",
+            description="Report to us",
+        )
+        parser.add_argument(
+            "--menu",
+            action="store",
+            dest="menu",
+            required=False,
+            choices=["General"] + self.CHOICES_MENUS,
+            default=report_sub_menu,
+            help="Menu to report. Default: current menu",
+        )
+
+        parser.add_argument(
+            "-c",
+            "--command",
+            action="store",
+            dest="command",
+            required=True,
+            choices=["General"] + list(self.REPORT_CHOICES),
+            help="Command to report.",
+        )
+
+        parser.add_argument(
+            "--msg",
+            action="store",
+            type=str,
+            nargs="+",
+            dest="msg",
+            required=True,
+            help="Message to send. Enclose it with double quotes",
+        )
+
+        parser.add_argument(
+            "--category",
+            action="store",
+            dest="category",
+            required=True,
+            choices=REPORT_CATEGORIES,
+            default=report_sub_menu,
+            help="Menu to report. Default: current menu",
+        )
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+
+        if ns_parser:
+
+            menu = "home" if ns_parser.menu == "" else ns_parser.menu
+
+            save_ticket(
+                main_menu=main_menu,
+                menu=menu,
+                command=ns_parser.command,
+                msg=(" ".join(ns_parser.msg)).replace('"', ""),
+                path=self.PATH,
+            )
+            console.print("Ticket submitted successfully.")
 
     def menu(self, custom_path_menu_above: str = ""):
         an_input = "HELP_ME"

@@ -140,6 +140,10 @@ class DueDiligenceController(CryptoBaseController):
                 c: None for c in messari_model.INTERVALS_TIMESERIES
             }
             choices["ps"]["--vs"] = {c: None for c in coinpaprika_view.CURRENCIES}
+
+            if len(self.REPORT_CHOICES):
+                choices = {**choices, **self.REPORT_CHOICES}
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):

@@ -47,6 +47,10 @@ class ForexController(BaseController):
             choices["to"] = {c: None for c in forex_helper.YF_CURRENCY_LIST}
             choices["from"] = {c: None for c in forex_helper.YF_CURRENCY_LIST}
             choices["load"]["--source"] = {c: None for c in FOREX_SOURCES}
+
+            if len(self.REPORT_CHOICES):
+                choices = {**choices, **self.REPORT_CHOICES}
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):

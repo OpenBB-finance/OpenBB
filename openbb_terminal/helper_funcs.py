@@ -23,10 +23,12 @@ from pandas.plotting import register_matplotlib_converters
 import pandas.io.formats.format
 import requests
 from screeninfo import get_monitors
+from airtable import airtable
 
 from openbb_terminal.rich_config import console
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal import config_plot as cfgPlot
+from openbb_terminal import config_terminal as cfg
 
 logger = logging.getLogger(__name__)
 
@@ -1370,3 +1372,25 @@ def handle_error_code(requests_obj, error_code_map):
     for error_code, error_msg in error_code_map.items():
         if requests_obj.status_code == error_code:
             console.print(error_msg)
+
+
+def save_ticket(main_menu: str, menu: str, command: str, path: str, msg: str):
+    """Save Ticket to Airtable"""
+
+    BASE_ID = "appvu8Njcrw5vrkWa"
+    TABLE_ID = "tblSZzXOwoLlh2OVs"
+    at = airtable.Airtable(BASE_ID, api_key=cfg.API_AIRTABLE_KEY)
+
+    at.get(TABLE_ID)
+
+    at.create(
+        TABLE_ID,
+        {
+            "timestamp": datetime.utcnow().strftime("%Y-%m-%d %H:%M"),
+            "main_menu": main_menu,
+            "menu": menu,
+            "command": command,
+            "message": msg,
+            "path": path,
+        },
+    )
