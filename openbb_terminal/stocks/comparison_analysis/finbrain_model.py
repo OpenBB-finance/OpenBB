@@ -34,12 +34,13 @@ def get_sentiments(tickers: List[str]) -> pd.DataFrame:
     for ticker in tickers:
         result = requests.get(f"https://api.finbrain.tech/v0/sentiments/{ticker}")
         if result.status_code == 200:
-            if "ticker" in result.json() and "sentimentAnalysis" in result.json():
+            result_json = result.json()
+            if "ticker" in result_json and "sentimentAnalysis" in result_json:
                 df_sentiment[ticker] = [
                     float(val)
-                    for val in list(result.json()["sentimentAnalysis"].values())
+                    for val in list(result_json["sentimentAnalysis"].values())
                 ]
-                dates_sentiment = list(result.json()["sentimentAnalysis"].keys())
+                dates_sentiment = list(result_json["sentimentAnalysis"].keys())
             else:
                 console.print(f"Unexpected data format from FinBrain API for {ticker}")
                 tickers_to_remove.append(ticker)

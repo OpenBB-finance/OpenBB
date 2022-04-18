@@ -1,0 +1,88 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      CB-ACCESS-KEY:
+      - MOCK-CB-ACCESS-KEY
+      CB-ACCESS-PASSPHRASE:
+      - MOCK-CB-ACCESS-PASSPHRASE
+      CB-ACCESS-SIGN:
+      - MOCK-CB-ACCESS-SIGN
+      CB-ACCESS-TIMESTAMP:
+      - MOCK-CB-ACCESS-TIMESTAMP
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-requests/2.27.1
+    method: GET
+    uri: https://api.pro.coinbase.com/orders
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA3WPQUvEMBCF/8ucO0vSNEnT6wpevLleFAlpM4FAti1tKq7if5d0FwXBub03M9+b
+        efmE6KGD3njuG0GohOyxYc6gIdFi2wjZ86CcUgIqGFKkMdtp3zHCtDKIHqVgARstBXrlWtSG9Vo4
+        KbluoYJ5iQNBB4qxA7sVVLDGj+KyA+M/3rxMfhuy3fEPpyM+Pd5d7RATXe2ehJFS1egc59g05LDV
+        ukavHSOuhTMu7Hhf8CulBBXky1xUiueYi4xnsnG0YVr20+5PxxIzrdlOY7pAF1xaqYJhIZfJW5eh
+        g5rVNbIGuThx00nV1fzAGqakeoYKQkzJBqL1+tOfug2Qt79v/7bonYat5Ly5tNF/gDW7vBX8NNNY
+        NOWcyN+O/Xr9BlZ9ZxvLAQAA
+    headers:
+      Access-Control-Allow-Headers:
+      - Content-Type, Accept, cb-session, cb-fp, cb-form-factor
+      Access-Control-Allow-Methods:
+      - GET,POST,DELETE,PUT
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Expose-Headers:
+      - cb-before, cb-after, cb-gdpr
+      Access-Control-Max-Age:
+      - '7200'
+      CF-Cache-Status:
+      - MISS
+      CF-RAY:
+      - 6fbbd3463b1b8c93-EWR
+      Cache-Control:
+      - no-store
+      Cb-After:
+      - '2022-04-13T19:56:21.040656Z'
+      Cb-Before:
+      - '2022-04-13T19:56:21.040656Z'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 14 Apr 2022 10:40:47 GMT
+      Etag:
+      - W/"1cb-XPk8v5Qx8ZPC+drUtDy8g1n0KrU"
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Dns-Prefetch-Control:
+      - 'off'
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1
