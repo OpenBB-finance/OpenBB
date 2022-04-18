@@ -50,22 +50,23 @@ def get_historical(ticker: str, start: str, end: str, number: int) -> pd.DataFra
     response = requests.get(
         "https://api.sentimentinvestor.com/v1/historical", params=payload
     )
+    response_json = response.json()
 
     df = pd.DataFrame()
 
-    if "results" in response.json():
-        if response.json()["results"]:
-            df = pd.DataFrame(response.json()["results"])
+    if "results" in response_json:
+        if response_json["results"]:
+            df = pd.DataFrame(response_json["results"])
             df = df.set_index("timestamp_date")
             df.index = pd.to_datetime(df.index)
         else:
             console.print("No data found.\n")
 
-    elif "error" in response.json():
-        if "Authorization error" in response.json()["error"]:
+    elif "error" in response_json:
+        if "Authorization error" in response_json["error"]:
             console.print("[red]Invalid API Key[/red]\n")
         else:
-            console.print({response.json()["error"]})
+            console.print({response_json["error"]})
 
     return df
 
@@ -94,23 +95,24 @@ def check_supported_ticker(ticker: str) -> bool:
     response = requests.get(
         "https://api.sentimentinvestor.com/v1/supported", params=payload
     )
+    response_json = response.json()
 
     result = False
 
-    if "result" in response.json():
+    if "result" in response_json:
         # if ticker is valid, payload has result key
-        if response.json()["result"]:
-            result = response.json()["result"]
+        if response_json["result"]:
+            result = response_json["result"]
         else:
             console.print(
                 f"[red]Ticker {ticker} not supported. Please try another one![/red]\n"
             )
 
-    elif "error" in response.json():
-        if "Authorization error" in response.json()["error"]:
+    elif "error" in response_json:
+        if "Authorization error" in response_json["error"]:
             console.print("[red]Invalid API Key[/red]\n")
         else:
-            console.print({response.json()["error"]})
+            console.print({response_json["error"]})
 
     return result
 
@@ -150,19 +152,20 @@ def get_trending(start: datetime, hour: int, number: int) -> pd.DataFrame:
     response = requests.get(
         "https://api.sentimentinvestor.com/v1/trending", params=payload
     )
+    response_json = response.json()
 
     df = pd.DataFrame()
 
-    if "results" in response.json():
-        if response.json()["results"]:
-            df = pd.DataFrame(response.json()["results"])
+    if "results" in response_json:
+        if response_json["results"]:
+            df = pd.DataFrame(response_json["results"])
         else:
             console.print(f"No data found for start date of {str(start_timestamp)}.\n")
 
-    elif "error" in response.json():
-        if "Authorization error" in response.json()["error"]:
+    elif "error" in response_json:
+        if "Authorization error" in response_json["error"]:
             console.print("[red]Invalid API Key[/red]\n")
         else:
-            console.print({response.json()["error"]})
+            console.print({response_json["error"]})
 
     return df
