@@ -26,16 +26,22 @@ def load_configuration(excel_file: str):
         Returns a dictionary with the configurations set.
     """
     # Read in the Optimization template
-    df = pd.read_excel(excel_file, sheet_name="Optimization", skiprows=2, usecols="B:D",
-                       names=['Parameter', 'Value', 'Description'], index_col='Parameter')
+    df = pd.read_excel(
+        excel_file,
+        sheet_name="Optimization",
+        skiprows=2,
+        usecols="B:D",
+        names=["Parameter", "Value", "Description"],
+        index_col="Parameter",
+    )
 
     # Remove completely empty NaN rows
-    cleaned_df = df.dropna(axis='rows', thresh=2)
+    cleaned_df = df.dropna(axis="rows", thresh=2)
 
     # Filter out any general columns
-    filtered_df = cleaned_df[cleaned_df['Description'] != "Description"]
+    filtered_df = cleaned_df[cleaned_df["Description"] != "Description"]
 
     # Convert to Dictionary
     configuration = filtered_df.to_dict()
 
-    return configuration['Value'], configuration['Description']
+    return configuration["Value"], configuration["Description"]

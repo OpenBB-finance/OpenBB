@@ -20,9 +20,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.portfolio.portfolio_optimization import (
-    excel_model
-)
+from openbb_terminal.portfolio.portfolio_optimization import excel_model
 from openbb_terminal.portfolio.portfolio_optimization.parameters import params_view
 from openbb_terminal.rich_config import console
 
@@ -100,7 +98,7 @@ class ParametersController(BaseController):
             )
         )
         self.params.optionxform = str  # type: ignore
-        self.params = self.params['OPENBB']
+        self.params = self.params["OPENBB"]
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
@@ -177,7 +175,7 @@ class ParametersController(BaseController):
             required=True,
             nargs="+",
             dest="file",
-            help="Parameter file to be used"
+            help="Parameter file to be used",
         )
 
         if other_args and "-" not in other_args[0][0]:
@@ -195,7 +193,7 @@ class ParametersController(BaseController):
                     os.path.join(os.path.dirname(__file__), ns_parser.file)
                 )
                 self.params.optionxform = str  # type: ignore
-                self.params = self.params['OPENBB']
+                self.params = self.params["OPENBB"]
 
                 max_len = max([len(k) for k in self.params["OPENBB"].keys()])
                 help_text = "[info]Parameters:[/info]\n"
@@ -212,19 +210,26 @@ class ParametersController(BaseController):
 
             elif self.current_file.endswith(".xlsx"):
                 self.params, self.description = excel_model.load_configuration(
-                    os.path.join(os.path.dirname(__file__), self.current_file))
-                self.current_model = self.params['technique']
+                    os.path.join(os.path.dirname(__file__), self.current_file)
+                )
+                self.current_model = self.params["technique"]
             else:
-                console.print("Can not load in the file due to not being an .ini or .xlsx file.")
+                console.print(
+                    "Can not load in the file due to not being an .ini or .xlsx file."
+                )
                 pass
 
             max_len = max([len(k) for k in self.params.keys()])
             help_text = "[info]Parameters:[/info]\n"
             if self.current_model:
                 for k, v in self.params.items():
-                    all_params = self.DEFAULT_PARAMETERS + self.MODEL_PARAMS[self.current_model]
+                    all_params = (
+                        self.DEFAULT_PARAMETERS + self.MODEL_PARAMS[self.current_model]
+                    )
                     if k in all_params:
-                        help_text += f"    [param]{k}{' ' * (max_len - len(k))} :[/param] {v}\n"
+                        help_text += (
+                            f"    [param]{k}{' ' * (max_len - len(k))} :[/param] {v}\n"
+                        )
             else:
                 console.print("Should never get here!")
 

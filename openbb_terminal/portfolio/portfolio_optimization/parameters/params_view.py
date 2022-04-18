@@ -25,23 +25,22 @@ def show_arguments(arguments, description=None):
         if len(arguments[variable]) > 15:
             minimum = min(arguments[variable])
             maximum = max(arguments[variable])
-            adjusted_arguments[variable] = f"Between {minimum} and {maximum} in steps of " \
-                                           f"{maximum / sum(x > 0 for x in arguments[variable])}"
+            adjusted_arguments[variable] = (
+                f"Between {minimum} and {maximum} in steps of "
+                f"{maximum / sum(x > 0 for x in arguments[variable])}"
+            )
         else:
             adjusted_arguments[variable] = ", ".join(arguments[variable])
 
     if description:
         df = pd.DataFrame([adjusted_arguments, description]).T
-        columns = ['Options', 'Description']
+        columns = ["Options", "Description"]
     else:
         df = pd.DataFrame([adjusted_arguments]).T
-        columns = ['Options']
+        columns = ["Options"]
 
     df = df[df.index != "technique"]
 
     print_rich_table(
-        df,
-        headers=list(columns),
-        show_index=True,
-        index_name="Parameters"
+        df, headers=list(columns), show_index=True, index_name="Parameters"
     )

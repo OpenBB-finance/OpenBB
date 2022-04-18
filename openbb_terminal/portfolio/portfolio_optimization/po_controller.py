@@ -7,7 +7,9 @@ import os
 import configparser
 import argparse
 import logging
+import pandas as pd
 from typing import List, Dict
+import pathlib
 
 from prompt_toolkit.completion import NestedCompleter
 
@@ -42,6 +44,7 @@ class PortfolioOptimizationController(BaseController):
         "rmv",
         "show",
         "rpf",
+        "load",
         "plot",
         "equal",
         "mktcap",
@@ -345,6 +348,7 @@ class PortfolioOptimizationController(BaseController):
         self,
         tickers: List[str] = None,
         portfolios: Dict = None,
+        categories: Dict = None,
         queue: List[str] = None,
     ):
         """Constructor"""
@@ -360,6 +364,11 @@ class PortfolioOptimizationController(BaseController):
             self.portfolios = dict(portfolios)
         else:
             self.portfolios = dict()
+
+        if categories:
+            self.categories = dict(categories)
+        else:
+            self.categories = dict()
 
         self.count = 0
 
@@ -460,10 +469,12 @@ class PortfolioOptimizationController(BaseController):
     select        select list of tickers to be optimized
     add           add tickers to the list of the tickers to be optimized
     rmv           remove tickers from the list of the tickers to be optimized
-    show          show selected portfolios from the list of saved portfolios
-    rpf           remove portfolios from the list of saved portfolios[/cmds]
+    show          show selected portfolios and categories from the list of saved portfolios
+    rpf           remove portfolios from the list of saved portfolios
+    load          load tickers and categories from .xlsx or .csv file [/cmds]
 
 [param]Tickers: [/param]{('None', ', '.join(self.tickers))[bool(self.tickers)]}
+[param]Categories: [/param]{('None', ', '.join(self.categories.keys()))[bool(self.categories.keys())]}
 [param]Portfolios: [/param]{('None', ', '.join(self.portfolios.keys()))[bool(self.portfolios.keys())]}
 
 [param]Parameter file: [/param] {self.file}[cmds]
@@ -574,6 +585,11 @@ class PortfolioOptimizationController(BaseController):
         self.rmv_portfolios(other_args)
 
     @log_start_end(log=logger)
+    def call_load(self, other_args: List[str]):
+        """Process rpf command"""
+        self.load_stocks(other_args)
+
+    @log_start_end(log=logger)
     def call_yolo(self, _):
         # Easter egg :)
         console.print("DFV YOLO")
@@ -604,13 +620,14 @@ class PortfolioOptimizationController(BaseController):
             for ticker in ns_parser.add_tickers:
                 tickers.add(ticker)
 
+            self.tickers = list(tickers)
+            self.tickers.sort()
+
             if self.tickers:
                 console.print(
                     f"\nCurrent Tickers: {('None', ', '.join(tickers))[bool(tickers)]}"
                 )
 
-            self.tickers = list(tickers)
-            self.tickers.sort()
             console.print("")
 
     def rmv_stocks(self, other_args: List[str]):
@@ -638,13 +655,14 @@ class PortfolioOptimizationController(BaseController):
             for ticker in ns_parser.rmv_tickers:
                 tickers.remove(ticker)
 
+            self.tickers = list(tickers)
+            self.tickers.sort()
+
             if self.tickers:
                 console.print(
                     f"\nCurrent Tickers: {('None', ', '.join(tickers))[bool(tickers)]}"
                 )
 
-            self.tickers = list(tickers)
-            self.tickers.sort()
             console.print("")
 
     def rmv_portfolios(self, other_args: List[str]):
@@ -695,6 +713,14 @@ class PortfolioOptimizationController(BaseController):
             default=[],
             help="Show selected saved portfolios",
         )
+        parser.add_argument(
+            "-ct",
+            "--categories",
+            dest="categories",
+            type=lambda s: [str(item).upper() for item in s.split(",")],
+            default=[],
+            help="Show selected categories",
+        )
         if other_args:
             if "-" not in other_args[0]:
                 other_args.insert(0, "-pf")
@@ -702,19 +728,99 @@ class PortfolioOptimizationController(BaseController):
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             portfolios = set(self.portfolios.keys())
+            if ns_parser.categories == []:
+                categories = list(self.categories.keys())
+            else:
+                categories = ns_parser.categories
+
             flag = True
             for portfolio in ns_parser.portfolios:
                 if portfolio in portfolios:
                     console.print("")
                     console.print("Portfolio - " + portfolio)
                     optimizer_view.display_weights(self.portfolios[portfolio])
+
+                    for category in categories:
+                        c = {
+                            self.categories[category][key]: 0.0
+                            for key in self.categories[category]
+                        }
+                        for key in self.categories[category]:
+                            if key in self.portfolios[portfolio]:
+                                c[self.categories[category][key]] += self.portfolios[
+                                    portfolio
+                                ][key]
+                        for key in c:
+                            c[key] = round(c[key], 5)
+                        console.print("Category - " + category)
+                        optimizer_view.display_weights(c)
                     flag = False
 
             if flag:
                 console.print(
                     f"\nCurrent Portfolios: {('None', ', '.join(portfolios))[bool(portfolios)]}"
                 )
+                console.print(
+                    f"\nCurrent Categories: {('None', ', '.join(categories))[bool(categories)]}"
+                )
             console.print("")
+
+    def load_stocks(self, other_args: List[str]):
+        """Load file with stocks tickers and categories"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="load",
+            description="""Load file of stocks tickers with optional categories""",
+        )
+        parser.add_argument(
+            "-e",
+            "--filename",
+            type=str,
+            default="categories.xlsx",
+            dest="filename",
+            help="file name with file extension",
+        )
+        parser.add_argument(
+            "-f",
+            "--folder",
+            type=lambda s: s.replace("\\", "/"),
+            default=os.path.join(os.path.dirname(__file__), "Stocks"),
+            dest="folder",
+            help="path where the file is located, path use '' instead of '/' for subfolders",
+        )
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-f")
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+
+        if ns_parser:
+            filename = ns_parser.filename
+            folder = ns_parser.folder
+            file = os.path.join(folder, filename)
+            if file.endswith(".xlsx"):
+                categories = pd.read_excel(file, engine="openpyxl")
+            elif file.endswith(".csv"):
+                categories = pd.read_excel(file)
+            else:
+                console.print("Only acceptable files with .xlsx and .csv extensions\n")
+                return
+
+            categories.columns = [
+                col.upper().strip().replace(" ", "_") for col in categories.columns
+            ]
+            categories = categories.apply(lambda x: x.astype(str).str.upper())
+            categories = categories[~categories.index.duplicated(keep="first")]
+            try:
+                categories.set_index("STOCKS", inplace=True)
+            except:
+                console.print("File table needs a STOCKS column\n")
+                return
+
+            self.tickers = list(categories.index)
+            self.tickers.sort()
+            self.portfolios = dict()
+            self.categories = categories.to_dict()
 
     @log_start_end(log=logger)
     def call_plot(self, other_args: List[str]):
