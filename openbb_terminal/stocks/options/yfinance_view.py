@@ -1048,13 +1048,12 @@ def show_greeks(
         The minimum strike price to include in the table
     maxi : float
         The maximum strike price to include in the table
-    all : bool
+    show_all : bool
         Whether to show all greeks
     """
 
     s = yfinance_model.get_price(ticker)
     chains = yfinance_model.get_option_chain(ticker, expire)
-    print(yfinance_model.get_vol_from_iv(expire, ticker))
     chain = chains.calls if opt_type == 1 else chains.puts
 
     if mini is None:
@@ -1073,7 +1072,6 @@ def show_greeks(
     for _, row in chain.iterrows():
         vol = row["impliedVolatility"]
         opt = Option(s, row["strike"], risk_free, div_cont, dif, vol, opt_type)
-        print(opt.Valuation())
         result = [
             row["strike"],
             row["impliedVolatility"],
