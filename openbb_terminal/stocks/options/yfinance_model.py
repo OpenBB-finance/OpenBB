@@ -11,6 +11,8 @@ import yfinance as yf
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
 
+# pylint: disable=W0640
+
 logger = logging.getLogger(__name__)
 
 
