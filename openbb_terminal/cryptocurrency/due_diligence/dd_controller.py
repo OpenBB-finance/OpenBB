@@ -25,6 +25,7 @@ from openbb_terminal.cryptocurrency.due_diligence import (
     pycoingecko_view,
     messari_model,
     messari_view,
+    santiment_view,
 )
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
@@ -74,6 +75,7 @@ class DueDiligenceController(CryptoBaseController):
         ],
         "cb": ["cbbook", "trades", "stats"],
         "mes": ["mcapdom"],
+        "san": ["gh"],
     }
 
     DD_VIEWS_MAPPING = {
@@ -81,6 +83,7 @@ class DueDiligenceController(CryptoBaseController):
         "cp": coinpaprika_view,
         "bin": binance_view,
         "mes": messari_view,
+        "san": santiment_view,
     }
 
     PATH = "/crypto/dd/"
@@ -183,7 +186,9 @@ class DueDiligenceController(CryptoBaseController):
    trades          show last trades
    stats           show coin stats
 [src]Messari[/src]
-   mcapdom         show market cap dominance[/cmds]
+   mcapdom         show market cap dominance
+[src]Santiment[/src]
+   gh              show github activity over time[/cmds]
 """
         console.print(text=help_text, menu="Stocks - Due Diligence")
 
@@ -1243,6 +1248,70 @@ class DueDiligenceController(CryptoBaseController):
             messari_view.display_marketcap_dominance(
                 coin=self.symbol.upper(),
                 interval=ns_parser.interval,
+                start=ns_parser.start,
+                end=ns_parser.end,
+                export=ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
+    def call_gh(self, other_args: List[str]):
+        """Process mcapdom command"""
+
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="gh",
+            description="""
+                Display github activity over time for a given coin.
+                [Source: https://santiment.net/]
+            """,
+        )
+
+        parser.add_argument(
+            "-i",
+            "--interval",
+            dest="interval",
+            type=str,
+            help="Frequency interval. Default: 1d",
+            default="1w",
+        )
+
+        parser.add_argument(
+            "-d",
+            "--dev",
+            dest="dev",
+            type=bool,
+            help="Filter only for development activity. Default: False",
+            default=False,
+        )
+
+        parser.add_argument(
+            "-s",
+            "--start",
+            dest="start",
+            type=valid_date,
+            help="Initial date. Default: A year ago",
+            default=(datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d"),
+        )
+
+        parser.add_argument(
+            "-end",
+            "--end",
+            dest="end",
+            type=valid_date,
+            help="End date. Default: Today",
+            default=datetime.now().strftime("%Y-%m-%d"),
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+
+        if ns_parser:
+            santiment_view.display_github_activity(
+                coin=self.symbol.upper(),
+                interval=ns_parser.interval,
+                dev_activity=ns_parser.dev,
                 start=ns_parser.start,
                 end=ns_parser.end,
                 export=ns_parser.export,
