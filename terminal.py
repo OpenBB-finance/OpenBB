@@ -83,16 +83,6 @@ class TerminalController(BaseController):
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: None for c in self.controller_choices}
             choices["tz"] = {c.replace("/", "-"): None for c in self.all_timezones}
-            # choices["report"]["-c"] = {
-            #     c: None for c in (["None"] + self.REPORT_COMMANDS)
-            # }
-            # choices["report"]["--command"] = {
-            #     c: None for c in (["None"] + self.REPORT_COMMANDS)
-            # }
-            # choices["report"]["-m"] = {c: None for c in (["None"] + self.CHOICES_MENUS)}
-            # choices["report"]["--menu"] = {
-            #     c: None for c in (["None"] + self.CHOICES_MENUS)
-            # }
 
             if len(self.REPORT_CHOICES):
                 choices = {**choices, **self.REPORT_CHOICES}
