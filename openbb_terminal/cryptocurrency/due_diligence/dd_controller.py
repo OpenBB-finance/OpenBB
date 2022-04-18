@@ -1,7 +1,7 @@
 """Cryptocurrency Due diligence Controller"""
 __docformat__ = "numpy"
 
-# pylint: disable=R0904, C0302, W0622, C0201
+# pylint: disable=R0904, C0302, W0622, C0201, consider-using-dict-items
 import argparse
 import logging
 from datetime import datetime, timedelta
@@ -73,7 +73,7 @@ class DueDiligenceController(CryptoBaseController):
             "balance",
         ],
         "cb": ["cbbook", "trades", "stats"],
-        "mes": ["mcapdom"],
+        "mes": ["mcapdom", "links", "rm", "tk", "pi", "mt", "team", "gov", "fr", "inv"],
     }
 
     DD_VIEWS_MAPPING = {
@@ -136,6 +136,8 @@ class DueDiligenceController(CryptoBaseController):
             choices["twitter"]["-s"] = {
                 c: None for c in coinpaprika_view.TWEETS_FILTERS
             }
+            choices["mt"] = {c: None for c in messari_model.TIMESERIES}
+            choices["mt"]["-i"] = {c: None for c in messari_model.INTERVALS_TIMESERIES}
             choices["mcapdom"]["-i"] = {
                 c: None for c in messari_model.INTERVALS_TIMESERIES
             }
@@ -183,14 +185,24 @@ class DueDiligenceController(CryptoBaseController):
    trades          show last trades
    stats           show coin stats
 [src]Messari[/src]
-   mcapdom         show market cap dominance[/cmds]
-"""
+   mcapdom         show market cap dominance
+   mt              show messari timeseries
+   rm              show roadmap
+   tk              show tokenomics e.g. circulating/max/total supply, emission type, etc
+   pi              show project information e.g. technology details, public repos, audits, vulns
+   team            show contributors (individuals and organizations)
+   inv             show investors (individuals and organizations)
+   gov             show governance details
+   fr              show fundraising details e.g. treasury accounts, sales rounds, allocation
+   links           show links e.g. whitepaper, github, twitter, youtube, reddit, telegram[/cmds]"""
         console.print(text=help_text, menu="Stocks - Due Diligence")
 
     def custom_reset(self):
         """Class specific component of reset command"""
         if self.coin:
-            return ["crypto", f"load {self.coin} --source {self.source}"]
+            if self.source == "cp":
+                return ["crypto", f"load {self.coin}", "dd"]
+            return ["crypto", f"load {self.coin} --source {self.source}", "dd"]
         return []
 
     @log_start_end(log=logger)
@@ -1247,3 +1259,301 @@ class DueDiligenceController(CryptoBaseController):
                 end=ns_parser.end,
                 export=ns_parser.export,
             )
+
+    @log_start_end(log=logger)
+    def call_links(self, other_args: List[str]):
+        """Process links command"""
+
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="links",
+            description="""
+                Display asset's links
+                [Source: https://messari.io]
+            """,
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        if ns_parser:
+            messari_view.display_links(
+                coin=self.symbol.upper(),
+                export=ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
+    def call_rm(self, other_args: List[str]):
+        """Process rm command"""
+
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="rm",
+            description="""
+                Display asset's roadmap
+                [Source: https://messari.io]
+            """,
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        if ns_parser:
+            messari_view.display_roadmap(
+                coin=self.symbol.upper(),
+                export=ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
+    def call_tk(self, other_args: List[str]):
+        """Process tk command"""
+
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="tk",
+            description="""
+                Display asset's tokenomics
+                [Source: https://messari.io]
+            """,
+        )
+
+        parser.add_argument(
+            "-s",
+            "--source",
+            dest="source",
+            type=str,
+            help="Source to check circulating supply timeseries. Default: mes",
+            default="mes",
+            choices=["mes", "cg"],
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        if ns_parser:
+            messari_view.display_tokenomics(
+                coin=self.symbol.upper(),
+                coingecko_symbol=self.coin_map_df["CoinGecko"],
+                circ_supply_src=ns_parser.source,
+                export=ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
+    def call_pi(self, other_args: List[str]):
+        """Process pi command"""
+
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="pi",
+            description="""
+                Display asset's project info
+                [Source: https://messari.io]
+            """,
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        if ns_parser:
+            messari_view.display_project_info(
+                coin=self.symbol.upper(),
+                export=ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
+    def call_team(self, other_args: List[str]):
+        """Process team command"""
+
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="team",
+            description="""
+                Display asset's team
+                [Source: https://messari.io]
+            """,
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        if ns_parser:
+            messari_view.display_team(
+                coin=self.symbol.upper(),
+                export=ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
+    def call_inv(self, other_args: List[str]):
+        """Process inv command"""
+
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="inv",
+            description="""
+                Display asset's investors
+                [Source: https://messari.io]
+            """,
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        if ns_parser:
+            messari_view.display_investors(
+                coin=self.symbol.upper(),
+                export=ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
+    def call_fr(self, other_args: List[str]):
+        """Process fr command"""
+
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="fr",
+            description="""
+                Display asset's fundraising details
+                [Source: https://messari.io]
+            """,
+        )
+
+        parser.add_argument(
+            "--pie",
+            action="store_true",
+            help="Flag to show pie chart with fundraising allocation percentage",
+            dest="pie",
+            default=False,
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        if ns_parser:
+            messari_view.display_fundraising(
+                coin=self.symbol.upper(), export=ns_parser.export, pie=ns_parser.pie
+            )
+
+    @log_start_end(log=logger)
+    def call_gov(self, other_args: List[str]):
+        """Process gov command"""
+
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="gov",
+            description="""
+                Display asset's governance
+                [Source: https://messari.io]
+            """,
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        if ns_parser:
+            messari_view.display_governance(
+                coin=self.symbol.upper(),
+                export=ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
+    def call_mt(self, other_args: List[str]):
+        """Process mt command"""
+
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="mt",
+            description="""
+                Display messari timeseries
+                [Source: https://messari.io]
+            """,
+        )
+
+        parser.add_argument(
+            "--list",
+            action="store_true",
+            help="Flag to show available timeseries",
+            dest="list",
+            default=False,
+        )
+
+        parser.add_argument(
+            "-t",
+            "--timeseries",
+            dest="timeseries",
+            type=str,
+            help="Messari timeseries id. Default: txn.vol",
+            default="txn.vol",
+            choices=messari_model.TIMESERIES,
+        )
+
+        parser.add_argument(
+            "-i",
+            "--interval",
+            dest="interval",
+            type=str,
+            help="Frequency interval. Default: 1d",
+            default="1d",
+            choices=messari_model.INTERVALS_TIMESERIES,
+        )
+
+        parser.add_argument(
+            "-s",
+            "--start",
+            dest="start",
+            type=valid_date,
+            help="Initial date. Default: A year ago",
+            default=(datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d"),
+        )
+
+        parser.add_argument(
+            "-end",
+            "--end",
+            dest="end",
+            type=valid_date,
+            help="End date. Default: Today",
+            default=datetime.now().strftime("%Y-%m-%d"),
+        )
+
+        if other_args and not other_args[0][0] == "-":
+            other_args.insert(0, "-t")
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+
+        if ns_parser:
+            if ns_parser.list:
+                console.print(
+                    "\nAvailable messari timeseries (some may require a paid key):"
+                )
+                for key in messari_model.TIMESERIES.keys():
+                    title = messari_model.TIMESERIES[key]["title"]
+                    description = messari_model.TIMESERIES[key]["description"]
+                    console.print(f"\t[bold]{key}[/bold]: {title}\n\t\t{description}")
+                print("\n")
+            else:
+                messari_view.display_messari_timeseries(
+                    timeseries_id=ns_parser.timeseries,
+                    coin=self.symbol.upper(),
+                    interval=ns_parser.interval,
+                    start=ns_parser.start,
+                    end=ns_parser.end,
+                    export=ns_parser.export,
+                )
