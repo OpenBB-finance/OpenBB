@@ -51,15 +51,16 @@ def get_news(
 
     # Check that the API response was successful
     if response.status_code == 200:
+        response_json = response.json()
         console.print(
-            f"{response.json()['totalResults']} news articles for {term} were found since {s_from}\n"
+            f"{response_json['totalResults']} news articles for {term} were found since {s_from}\n"
         )
 
         if show_newest:
-            articles = response.json()["articles"]
+            articles = response_json["articles"]
 
         else:
-            articles = response.json()["articles"][::-1]
+            articles = response_json["articles"][::-1]
 
     elif response.status_code == 426:
         console.print(f"Error in request: {response.json()['message']}", "\n")
