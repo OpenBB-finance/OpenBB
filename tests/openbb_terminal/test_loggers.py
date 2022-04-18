@@ -89,6 +89,5 @@ def test_setup_handlers():
     loggers.setup_handlers(settings)
 
 
-def test_setup_logging(mocker):
-    mocker.patch("openbb_terminal.loggers.os")
+def test_setup_logging():
     loggers.setup_logging(settings)
