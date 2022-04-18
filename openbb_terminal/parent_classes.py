@@ -69,6 +69,7 @@ class BaseController(metaclass=ABCMeta):
     COMMAND_SEPARATOR = "/"
     KEYS_MENU = "keys" + COMMAND_SEPARATOR
 
+    SLASH_USED_FOR_QUEUE: bool = False
     PATH: str = ""
     FILE_PATH: str = ""
 
@@ -176,11 +177,17 @@ class BaseController(metaclass=ABCMeta):
         # Empty command
         if not an_input:
             pass
-        #    console.print("")
 
         # Navigation slash is being used first split commands
-        elif "/" in an_input:
+        elif "/" in an_input and not self.SLASH_USED_FOR_QUEUE:
             actions = an_input.split("/")
+
+            ALL_CHOICES = self.CHOICES_MENUS + self.CHOICES_COMMANDS
+
+            if actions[0] not in ALL_CHOICES:
+                actions[0] = actions[0] + "/" + actions[1]
+                if len(actions) > 1:
+                    actions[1:] = actions[2:]
 
             # Absolute path is specified
             if not actions[0]:
@@ -191,9 +198,12 @@ class BaseController(metaclass=ABCMeta):
                 if cmd:
                     self.queue.insert(0, cmd)
 
+            self.SLASH_USED_FOR_QUEUE = True
+
         # Single command fed, process
         else:
             (known_args, other_args) = self.parser.parse_known_args(an_input.split())
+            self.SLASH_USED_FOR_QUEUE = False
 
             # Redirect commands to their correct functions
             if known_args.cmd:
@@ -305,6 +315,7 @@ class BaseController(metaclass=ABCMeta):
                     an_input
                     and an_input != "home"
                     and an_input.split(" ")[0] in self.controller_choices
+                    and not self.SLASH_USED_FOR_QUEUE
                 ):
                     console.print(f"{get_flair()} {self.PATH} $ {an_input}")
 
