@@ -1054,6 +1054,7 @@ def show_greeks(
 
     s = yfinance_model.get_price(ticker)
     chains = yfinance_model.get_option_chain(ticker, expire)
+    print(yfinance_model.get_vol_from_iv(expire, ticker))
     chain = chains.calls if opt_type == 1 else chains.puts
 
     if mini is None:
@@ -1066,12 +1067,13 @@ def show_greeks(
 
     risk_free = rf if rf is not None else get_rf()
     expire_dt = datetime.strptime(expire, "%Y-%m-%d")
-    dif = (expire_dt - datetime.now()).seconds / (60 * 60 * 24)
+    dif = (expire_dt - datetime.now()).total_seconds() / (60 * 60 * 24)
 
     strikes = []
     for _, row in chain.iterrows():
         vol = row["impliedVolatility"]
         opt = Option(s, row["strike"], risk_free, div_cont, dif, vol, opt_type)
+        print(opt.Valuation())
         result = [
             row["strike"],
             row["impliedVolatility"],
@@ -1104,3 +1106,86 @@ def show_greeks(
     print_rich_table(df, headers=list(df.columns), show_index=False, title="Greeks")
     console.print()
     return None
+
+
+def show_var(
+    ticker: str,
+    expire: str,
+    strike: float,
+    simulations: int = 100,
+    percentile: float = 0.99,
+    put: bool = False,
+):
+    """Shows the Value at Risk of the options at expiry
+
+    Parameters
+    ----------
+    ticker: str
+        Stock ticker
+    expire: str
+        Expiry date
+    strike: float
+        Options strike
+    simulations: int
+        Number of simulations
+    percentile: float
+        VaR percentile
+    put: bool
+        Whether the option is a put option
+    """
+    chains = yfinance_model.get_option_chain(ticker, expire)
+    chain = chains.calls if not put else chains.puts
+    option_price = chain.iloc[chain.index[chain["strike"] == strike][0], 3]
+
+    stock_vol = yfinance_model.get_vol_from_iv(expire, ticker)
+    stock_price = yfinance_model.get_price(ticker)
+    expire_dt = datetime.strptime(expire, "%Y-%m-%d")
+    expiry = (expire_dt - datetime.now()).total_seconds() / (60 * 60 * 24)
+
+    results = []
+
+    i = 0
+    while i < simulations:
+        simu_stock_price = stock_price
+        expiry_i = expiry
+        while 0 < expiry_i:
+            change = np.random.randn() * stock_vol / 100
+            simu_stock_price += simu_stock_price * change
+            expiry_i -= 1
+        if not put:
+            option_result = (
+                simu_stock_price - strike if (simu_stock_price - strike) > 0 else 0
+            )
+            returns = (option_result - option_price) / option_price
+        else:
+            option_result = (
+                strike - simu_stock_price if (strike - simu_stock_price) > 0 else 0
+            )
+            returns = (option_result - option_price) / option_price
+        results.append(returns)
+        i += 1
+
+    monte_carlo_results = pd.DataFrame(results, columns=["results"])["results"]
+
+    var_75 = monte_carlo_results.quantile(0.25)
+    var_90 = monte_carlo_results.quantile(0.1)
+    var_95 = monte_carlo_results.quantile(0.05)
+    var_custom = monte_carlo_results.quantile(1 - percentile)
+    var_list = [var_75, var_90, var_95, var_custom]
+
+    data_dictionary = {"Expiry VaR %": var_list}
+    data = pd.DataFrame(
+        data_dictionary, index=["75.0%", "90.0%", "95.0%", f"{percentile * 100}%"]
+    )
+
+    option_type = "Call" if not put else "Put"
+
+    console.print("")
+    print_rich_table(
+        data,
+        show_index=True,
+        headers=list(data.columns),
+        title=f"[bold]{ticker} {option_type} Option {strike} {expire}[/bold]",
+        floatfmt=".4f",
+    )
+    console.print("")

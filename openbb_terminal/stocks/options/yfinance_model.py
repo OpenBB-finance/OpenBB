@@ -218,3 +218,93 @@ def get_iv_surface(ticker: str) -> pd.DataFrame:
         df["dte"] = get_dte(date)
         vol_df = pd.concat([vol_df, df], axis=0)
     return vol_df
+
+
+def get_vol_from_iv(expire: str, ticker: str) -> float:
+    """Gets the future volatility of underlying by getting the average IV of the 3 closest put and call options by
+    strike
+
+    Parameters
+    ----------
+    expire: str
+        Expiry date
+    ticker: str
+        Stock ticker
+
+    Returns
+    -------
+    float
+        Average IV of selected options
+    """
+    s = get_price(ticker)
+    chains = get_option_chain(ticker, expire)
+    chains_c = chains.calls
+    chains_p = chains.puts
+    chains = [chains_c, chains_p]
+    vol_sum = 0
+    for chain in chains:
+        strikes = []
+        for _, row in chain.iterrows():
+            result = [row["strike"], row["impliedVolatility"]]
+            strikes.append(result)
+        chain = pd.DataFrame(strikes, columns=["strike", "implied vol"])
+        strikes = chain["strike"].tolist()
+        i = 0
+        while i < 3:
+            nearest_strike = strikes[
+                min(range(len(strikes)), key=lambda j: abs(strikes[j] - s))
+            ]
+            vol_sum += chain.iloc[chain.index[chain["strike"] == nearest_strike][0], 1]
+            strikes.remove(nearest_strike)
+            i += 1
+
+    return vol_sum / 6
+
+
+def get_strike_choices(ticker: str, expire: str) -> list:
+    """Gets strikes of puts and calls at expiry
+
+    Parameters
+    ----------
+    ticker: str
+        Stock ticker
+    expire: str
+        Expiry date
+
+    Returns
+    -------
+    list
+        Strikes
+    """
+    chains = get_option_chain(ticker, expire)
+    chains_c = chains.calls
+    chains_p = chains.puts
+    strikes = chains_c["strike"].to_list()
+    strikes += chains_p["strike"].to_list()
+
+    return strikes
+
+
+def get_nearest_strike(ticker: str, expire: str) -> float:
+    """Gets strike nearest to current ticker price
+
+    Parameters
+    ----------
+    ticker: str
+        Stock ticker
+    expire: str
+        Expiry date
+
+    Returns
+    -------
+    float
+        Strike nearest to current ticker price
+    """
+    s = get_price(ticker)
+    strikes = get_strike_choices(ticker, expire)
+
+    nearest_strike = strikes[
+        min(range(len(strikes)), key=lambda j: abs(strikes[j] - s))
+    ]
+
+    return nearest_strike

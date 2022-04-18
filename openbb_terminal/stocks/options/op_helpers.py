@@ -1,7 +1,7 @@
 """Option helper functions"""
 __docformat__ = "numpy"
 
-from math import log, e
+from math import log, e, exp
 from typing import Union
 import numpy as np
 import pandas as pd
@@ -200,6 +200,74 @@ class Option:
             * norm.cdf(self.Type * self.d2)
         )
         return tmpprem
+
+    # Black Scholes Valuation
+
+    def valuation_plain_european(self):
+        # If modelling for currency options use q (in this case self.div_cont) as rf (risk free of foreign currency)
+
+        if self.div_cont != 0:
+            # Call
+            valuation = self.strike * exp(-self.div_cont * self.exp_time) * norm.cdf(
+                self.d1
+            ) - self.strike * exp(-self.risk_free * self.exp_time) * norm.cdf(self.d2)
+            if self.Type == -1:
+                # Put
+                valuation = (
+                    self.strike * exp(-self.risk_free * self.exp_time)
+                    - self.price
+                    + valuation
+                )
+        else:
+            # Call
+            valuation = self.price * norm.cdf(self.d1) - self.strike * exp(
+                -self.risk_free * self.exp_time
+            ) * norm.cdf(self.d2)
+            if self.Type == -1:
+                # Put
+                valuation = (
+                    self.strike * exp(-self.risk_free * self.exp_time)
+                    - self.price
+                    + valuation
+                )
+        return valuation
+
+    def valuation_currency_european(self, foreign_currency_rfr):
+        # Modelling for currency options use q (in this case self.div_cont) as rf (risk free of foreign currency) in
+        # the black scholes for plain european options
+
+        div_cont = self.div_cont
+        self.div_cont = foreign_currency_rfr
+
+        valuation = self.valuation_plain_european()
+
+        # Setting the div back to the original
+        self.div_cont = div_cont
+
+        return valuation
+
+    def valuation_futures_european(self):
+        # Valuation of futures and forward options based on Blacks proposition in 1976 (Black-76 model)
+
+        div_cont = self.div_cont
+        self.div_cont = 0
+        risk_free = self.risk_free
+        self.risk_free = 0
+
+        if self.Type == 1:
+            valuation = np.exp(-self.risk_free * self.exp_time) * (
+                self.price * norm.cdf(self.d1) - self.strike * norm.cdf(self.d2)
+            )
+        else:
+            valuation = np.exp(-self.risk_free * self.exp_time) * (
+                self.strike * norm.cdf(-self.d2) - self.price * norm.cdf(-self.d1)
+            )
+
+        # Setting the div and rfr back to the original
+        self.div_cont = div_cont
+        self.risk_free = risk_free
+
+        return valuation
 
     # 1st order greeks
 

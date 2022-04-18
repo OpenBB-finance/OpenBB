@@ -21,6 +21,7 @@ Expiry: None
     parity        shows whether options are above or below expected price [Yfinance]
     binom         shows the value of an option using binomial options pricing [Yfinance]
     greeks        shows the greeks for a given option [Yfinance]
+    var           value at risk for a given option at expiry [Yfinance]
 [dim]
 >   screen        screens tickers based on preset [Syncretism.io]
 >   payoff        shows payoff diagram for a selection of options [Yfinance]

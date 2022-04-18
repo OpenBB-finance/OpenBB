@@ -73,6 +73,7 @@ class OptionsController(BaseController):
         "binom",
         "vsurf",
         "greeks",
+        "var",
     ]
     CHOICES_MENUS = [
         "payoff",
@@ -198,6 +199,7 @@ Expiry: [/param]{self.selected_date or None}
     parity        shows whether options are above or below expected price [src][Yfinance][/src]
     binom         shows the value of an option using binomial options pricing [src][Yfinance][/src]
     greeks        shows the greeks for a given option [src][Yfinance][/src]
+    var           value at risk for a given option at expiry [src][Yfinance][/src]
 {has_ticker_start}
 >   screen        screens tickers based on preset [src][Syncretism.io][/src]
 >   payoff        shows payoff diagram for a selection of options [src][Yfinance][/src]
@@ -1220,6 +1222,68 @@ Expiry: [/param]{self.selected_date or None}
                     mini=ns_parser.min,
                     maxi=ns_parser.max,
                     show_all=ns_parser.all,
+                )
+
+    @log_start_end(log=logger)
+    def call_var(self, other_args: List[str]):
+        """Process VaR command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="var",
+            description="The value at risk for a given option at expiry, thus mostly suitable for european options.",
+        )
+        parser.add_argument(
+            "-s",
+            "--strike",
+            dest="strike",
+            type=float,
+            required=True,
+            help="The strike of the option",
+        )
+        parser.add_argument(
+            "-sim",
+            "--simulations",
+            dest="simulations",
+            type=float,
+            default=100,
+            help="The number of simulations",
+        )
+        parser.add_argument(
+            "-per",
+            "--percentile",
+            dest="percentile",
+            default=99,
+            type=float,
+            help="The risk free rate",
+        )
+        parser.add_argument(
+            "-p",
+            "--put",
+            dest="put",
+            action="store_true",
+            default=False,
+            help="Whether the option is a put.",
+        )
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            if not self.ticker:
+                console.print("No ticker loaded. First use `load <ticker>`\n")
+            elif not self.selected_date:
+                console.print("No expiry loaded. First use `exp {expiry date}`\n")
+            elif not ns_parser.strike:
+                console.print(
+                    "No strike selected. Use `-s`, `--strike` in order to set strike\n"
+                )
+            else:
+                yfinance_view.show_var(
+                    self.ticker,
+                    self.selected_date,
+                    ns_parser.strike,
+                    ns_parser.simulations,
+                    ns_parser.percentile / 100,
+                    ns_parser.put,
                 )
 
     @log_start_end(log=logger)
