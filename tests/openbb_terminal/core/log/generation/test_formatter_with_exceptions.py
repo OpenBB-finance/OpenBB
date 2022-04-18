@@ -1,5 +1,4 @@
 import os
-from pathlib import Path
 import pytest
 from openbb_terminal.core.log.generation import formatter_with_exceptions as fwe
 from openbb_terminal.core.log.generation.settings import AppSettings
@@ -49,9 +48,9 @@ def test_filter_piis():
 
 
 def test_filter_special_characters():
-    text = "\nhello \thi \rgreetings"
+    text = "\nhello \this \rgreetings"
     value = formatter.filter_special_characters(text)
-    assert value == " - hello  hi greetings"
+    assert value == " - hello  his greetings"
 
 
 def test_detect_terminal_message():
