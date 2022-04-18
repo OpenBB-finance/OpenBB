@@ -1,7 +1,6 @@
 import os
 from pathlib import Path
 import pytest
-from openbb_terminal.core.log.collection import s3_sender as s3s
 from openbb_terminal.core.log.constants import S3_FOLDER_SUFFIX
 from openbb_terminal.core.log.generation.settings import (
     Settings,
@@ -10,7 +9,16 @@ from openbb_terminal.core.log.generation.settings import (
     LogSettings,
 )
 from openbb_terminal.core.log.constants import DEFAULT_API_URL
+from openbb_terminal.core.log.collection import s3_sender as s3s
 
+# pylint: disable=W0611
+
+try:
+    import boto3  # noqa:F401
+except ImportError:
+    WITH_BOTO3 = False
+else:
+    WITH_BOTO3 = True
 
 app_settings = AppSettings(
     commit_hash="MOCK_COMMIT_HASH",
@@ -40,8 +48,12 @@ object_key = f"{app_name}{S3_FOLDER_SUFFIX}/logs/{identifier}/file.log"
 
 
 def test_send_to_s3_directly(mocker):
-    mocker.patch("openbb_terminal.core.log.collection.s3_sender.boto3")
-    s3s.send_to_s3_directly("access", "secret", "bucket", Path("."), "key")
+    if WITH_BOTO3:
+        mocker.patch("openbb_terminal.core.log.collection.s3_sender.boto3")
+        s3s.send_to_s3_directly("access", "secret", "bucket", Path("."), "key")
+    else:
+        with pytest.raises(ModuleNotFoundError):
+            s3s.send_to_s3_directly("access", "secret", "bucket", Path("."), "key")
 
 
 def test_send_to_s3_directly_invalid(mocker):
@@ -75,7 +87,8 @@ def test_send_to_s3(mocker, last):
         return_value={"fields": [1, 2, 3], "url": "http://"},
     )
     mocker.patch("openbb_terminal.core.log.collection.s3_sender.requests")
-    mocker.patch("openbb_terminal.core.log.collection.s3_sender.boto3")
+    if WITH_BOTO3:
+        mocker.patch("openbb_terminal.core.log.collection.s3_sender.boto3")
     with open("readme.txt", "w") as f:
         f.write("Create a new text file!")
     with open("dontreadme.txt", "w") as f:
@@ -83,5 +96,10 @@ def test_send_to_s3(mocker, last):
     file = Path("readme.txt")
     file2 = Path("dontreadme.txt")
 
-    s3s.send_to_s3(file, aws_settings, file, object_key, file2, last)
-    os.remove(file)
+    if WITH_BOTO3:
+        s3s.send_to_s3(file, aws_settings, file, object_key, file2, last)
+    elif last is False:
+        with pytest.raises(ModuleNotFoundError):
+            s3s.send_to_s3(file, aws_settings, file, object_key, file2, last)
+    if file.is_file():
+        os.remove(file)

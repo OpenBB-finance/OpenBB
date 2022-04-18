@@ -12,10 +12,12 @@ class MockLoop:
         self.count = 0
 
     def mock_next(self, **_):
+        if datetime.now().minute == 0:
+            raise NotImplementedError
+
         if self.count > 3:
             raise NotImplementedError
-        else:
-            self.count += 1
+        self.count += 1
 
 
 @pytest.mark.parametrize(
