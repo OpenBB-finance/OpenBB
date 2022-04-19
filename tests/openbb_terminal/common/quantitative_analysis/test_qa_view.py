@@ -14,11 +14,6 @@ df2 = pd.DataFrame(data2).set_index("date")
 series = pd.Series(dict(zip(dates, nums)), name="Series")
 
 
-@pytest.fixture(scope="module")
-def mock_matplotlib(mocker):
-    mocker.patch("matplotlib.show")
-
-
 @pytest.mark.parametrize("val", [0.04, 1])
 def test_lambda_color_red(val):
     qa_view.lambda_color_red(val)
