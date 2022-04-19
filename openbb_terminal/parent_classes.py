@@ -184,7 +184,7 @@ class BaseController(metaclass=ABCMeta):
 
             ALL_CHOICES = self.CHOICES_MENUS + self.CHOICES_COMMANDS
 
-            if actions[0] not in ALL_CHOICES:
+            if " " in actions[0] and actions[0] not in ALL_CHOICES:
                 actions[0] = actions[0] + "/" + actions[1]
                 if len(actions) > 1:
                     actions[1:] = actions[2:]
