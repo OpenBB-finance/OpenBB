@@ -1238,7 +1238,6 @@ Expiry: [/param]{self.selected_date or None}
             "--strike",
             dest="strike",
             type=float,
-            required=True,
             help="The strike of the option",
         )
         parser.add_argument(
@@ -1272,11 +1271,13 @@ Expiry: [/param]{self.selected_date or None}
                 console.print("No ticker loaded. First use `load <ticker>`\n")
             elif not self.selected_date:
                 console.print("No expiry loaded. First use `exp {expiry date}`\n")
-            elif not ns_parser.strike:
-                console.print(
-                    "No strike selected. Use `-s`, `--strike` in order to set strike\n"
-                )
             else:
+                if not ns_parser.strike:
+                    ns_parser.strike = yfinance_model.get_nearest_strike(self.ticker, self.selected_date)
+                    console.print(
+                        "\nNo strike selected. Use `-s`, `--strike` in order to set strike. "
+                        f"Strike set to {ns_parser.strike}."
+                    )
                 yfinance_view.show_var(
                     self.ticker,
                     self.selected_date,
