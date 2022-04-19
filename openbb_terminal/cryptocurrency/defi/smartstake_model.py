@@ -38,17 +38,18 @@ def get_luna_supply_stats(supply_type: str, days: int) -> pd.DataFrame:
         "https://prod.smartstakeapi.com/listData?app=TERRA",
         params=payload,
     )
+    response_json = response.json()
 
     df = pd.DataFrame()
 
-    if "errors" in response.json():
-        if "DENIED" in response.json()["errors"]:
+    if "errors" in response_json:
+        if "DENIED" in response_json["errors"]:
             console.print("[red]Invalid API Key[/red]\n")
         else:
-            console.print(response.json()["errors"])
+            console.print(response_json["errors"])
 
     else:
-        result = response.json()[supply_type]
+        result = response_json[supply_type]
 
         # check if result is not empty
         if result:
