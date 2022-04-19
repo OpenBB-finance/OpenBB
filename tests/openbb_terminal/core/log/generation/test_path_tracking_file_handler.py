@@ -1,3 +1,4 @@
+import random
 from pathlib import Path
 from datetime import datetime
 import pytest
@@ -10,12 +11,15 @@ from openbb_terminal.core.log.generation.settings import (
     LogSettings,
 )
 
+
+randint = random.randint(0, 999999999)
+
 settings = Settings(
     app_settings=AppSettings(
         commit_hash="MOCK_COMMIT_HASH",
         name="MOCK_COMMIT_HASH",
         identifier="MOCK_COMMIT_HASH",
-        session_id="MOCK_SESSION_ID",
+        session_id=f"MOCK_SESSION_{randint}",
     ),
     aws_settings=AWSSettings(
         aws_access_key_id="MOCK_AWS_ACCESS_KEY_ID",
