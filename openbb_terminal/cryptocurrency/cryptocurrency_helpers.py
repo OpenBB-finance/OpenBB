@@ -351,17 +351,14 @@ def load(
             return None, None, None, None, None, None
         try:
             coin_map_df = coins_map_df.loc[coingecko.symbol].copy()
-            coin_map_df["null_values"] = coin_map_df.apply(
-                lambda x: sum(x.isnull().values), axis=1
-            )
-            coin_map_df = coin_map_df[
-                coin_map_df.null_values == coin_map_df.null_values.min()
-            ]
-            coin_map_df = (
-                coin_map_df.iloc[0]
-                if isinstance(coin_map_df, pd.DataFrame)
-                else coin_map_df
-            )
+            if not isinstance(coin_map_df, pd.Series):
+                coin_map_df["null_values"] = coin_map_df.apply(
+                    lambda x: sum(x.isnull().values), axis=1
+                )
+                coin_map_df = coin_map_df[
+                    coin_map_df.null_values == coin_map_df.null_values.min()
+                ]
+                coin_map_df = coin_map_df.iloc[0]
             coin_map_df.fillna("")
         except KeyError:
             coin_map_df = pd.Series(
@@ -411,17 +408,14 @@ def load(
 
         try:
             coin_map_df = coins_map_df.loc[symbol].copy()
-            coin_map_df["null_values"] = coin_map_df.apply(
-                lambda x: sum(x.isnull().values), axis=1
-            )
-            coin_map_df = coin_map_df[
-                coin_map_df.null_values == coin_map_df.null_values.min()
-            ]
-            coin_map_df = (
-                coin_map_df.iloc[0]
-                if isinstance(coin_map_df, pd.DataFrame)
-                else coin_map_df
-            )
+            if not isinstance(coin_map_df, pd.Series):
+                coin_map_df["null_values"] = coin_map_df.apply(
+                    lambda x: sum(x.isnull().values), axis=1
+                )
+                coin_map_df = coin_map_df[
+                    coin_map_df.null_values == coin_map_df.null_values.min()
+                ]
+                coin_map_df = coin_map_df.iloc[0]
             coin_map_df.fillna("")
         except KeyError:
             coin_map_df = pd.Series(
@@ -469,17 +463,14 @@ def load(
                 return None, None, None, None, None, None
             try:
                 coin_map_df = coins_map_df.loc[parsed_coin.lower()].copy()
-                coin_map_df["null_values"] = coin_map_df.apply(
-                    lambda x: sum(x.isnull().values), axis=1
-                )
-                coin_map_df = coin_map_df[
-                    coin_map_df.null_values == coin_map_df.null_values.min()
-                ]
-                coin_map_df = (
-                    coin_map_df.iloc[0]
-                    if isinstance(coin_map_df, pd.DataFrame)
-                    else coin_map_df
-                )
+                if not isinstance(coin_map_df, pd.Series):
+                    coin_map_df["null_values"] = coin_map_df.apply(
+                        lambda x: sum(x.isnull().values), axis=1
+                    )
+                    coin_map_df = coin_map_df[
+                        coin_map_df.null_values == coin_map_df.null_values.min()
+                    ]
+                    coin_map_df = coin_map_df.iloc[0]
                 coin_map_df.fillna("")
             except KeyError:
                 coin_map_df = pd.Series(
@@ -538,17 +529,14 @@ def load(
             # console.print(f"Coin found : {current_coin}\n")
             try:
                 coin_map_df = coins_map_df.loc[coin].copy()
-                coin_map_df["null_values"] = coin_map_df.apply(
-                    lambda x: sum(x.isnull().values), axis=1
-                )
-                coin_map_df = coin_map_df[
-                    coin_map_df.null_values == coin_map_df.null_values.min()
-                ]
-                coin_map_df = (
-                    coin_map_df.iloc[0]
-                    if isinstance(coin_map_df, pd.DataFrame)
-                    else coin_map_df
-                )
+                if not isinstance(coin_map_df, pd.Series):
+                    coin_map_df["null_values"] = coin_map_df.apply(
+                        lambda x: sum(x.isnull().values), axis=1
+                    )
+                    coin_map_df = coin_map_df[
+                        coin_map_df.null_values == coin_map_df.null_values.min()
+                    ]
+                    coin_map_df = coin_map_df.iloc[0]
                 coin_map_df.fillna("")
             except KeyError:
                 coin_map_df = pd.Series(
