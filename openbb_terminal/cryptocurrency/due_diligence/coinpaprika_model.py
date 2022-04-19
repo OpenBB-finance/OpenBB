@@ -235,7 +235,9 @@ def get_ohlc_historical(
         end=end,
     )
     if "error" in data:
-        console.print(data)
+        # console.print(
+        #    "Could not load data. Try use symbol (e.g., btc) instead of coin name (e.g., bitcoin)"
+        # )
         return pd.DataFrame()
     return pd.DataFrame(data)
 

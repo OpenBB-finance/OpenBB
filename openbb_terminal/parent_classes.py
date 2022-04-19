@@ -653,7 +653,11 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
                 interval=ns_parser.interval,
                 vs=ns_parser.vs,
             )
-            if self.symbol:
+            if (
+                self.symbol
+                and self.current_df is not None
+                and not self.current_df.empty
+            ):
                 self.current_interval = ns_parser.interval
                 first_price = self.current_df["Close"].iloc[0]
                 last_price = self.current_df["Close"].iloc[-1]
@@ -680,5 +684,5 @@ Loaded {self.coin} against {self.current_currency} from {CRYPTO_SOURCES[self.sou
                     )
             else:
                 console.print(
-                    f"\n[red]Could not find [bold]{ns_parser.coin}[/bold] in [bold]{CRYPTO_SOURCES[ns_parser.source]}[/bold]. Make sure you search for symbol or try another source[/red]\n"  # noqa: E501
+                    f"\n[red]Could not find [bold]{ns_parser.coin}[/bold] in [bold]{CRYPTO_SOURCES[ns_parser.source]}[/bold]. Make sure you search for symbol (e.g., btc) or try another source[/red]\n"  # noqa: E501
                 )

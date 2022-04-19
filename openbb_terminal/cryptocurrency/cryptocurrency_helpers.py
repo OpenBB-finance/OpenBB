@@ -349,16 +349,30 @@ def load(
 
         if not coingecko.symbol:
             return None, None, None, None, None, None
-
         try:
-            coin_map_df = coins_map_df.loc[coingecko.symbol]
+            coin_map_df = coins_map_df.loc[coingecko.symbol].copy()
+            coin_map_df["null_values"] = coin_map_df.apply(
+                lambda x: sum(x.isnull().values), axis=1
+            )
+            coin_map_df = coin_map_df[
+                coin_map_df.null_values == coin_map_df.null_values.min()
+            ]
             coin_map_df = (
                 coin_map_df.iloc[0]
                 if isinstance(coin_map_df, pd.DataFrame)
                 else coin_map_df
-            )  # TODO: improve to choose the row that matches better;
-        except:  # noqa: E722
-            return None, None, None, None, None, None
+            )
+            coin_map_df.fillna("")
+        except KeyError:
+            coin_map_df = pd.Series(
+                {
+                    "CoinGecko": coingecko,
+                    "CoinPaprika": "",
+                    "Binance": "",
+                    "Coinbase": "",
+                    "YahooFinance": "",
+                }
+            )
         # if it is dataframe, it means that found more than 1 coin
         if should_load_ta_data:
             df_prices, currency = load_ta_data(
@@ -370,7 +384,7 @@ def load(
                 interval=interval,
             )
             return (
-                str(coingecko),
+                coin_map_df["CoinGecko"],
                 source,
                 coingecko.symbol,
                 coin_map_df,
@@ -396,14 +410,29 @@ def load(
             return None, None, None, None, None, None
 
         try:
-            coin_map_df = coins_map_df.loc[symbol]
+            coin_map_df = coins_map_df.loc[symbol].copy()
+            coin_map_df["null_values"] = coin_map_df.apply(
+                lambda x: sum(x.isnull().values), axis=1
+            )
+            coin_map_df = coin_map_df[
+                coin_map_df.null_values == coin_map_df.null_values.min()
+            ]
             coin_map_df = (
                 coin_map_df.iloc[0]
                 if isinstance(coin_map_df, pd.DataFrame)
                 else coin_map_df
             )
-        except:  # noqa: E722
-            return None, None, None, None, None, None
+            coin_map_df.fillna("")
+        except KeyError:
+            coin_map_df = pd.Series(
+                {
+                    "CoinGecko": "",
+                    "CoinPaprika": symbol,
+                    "Binance": "",
+                    "Coinbase": "",
+                    "YahooFinance": "",
+                }
+            )
 
         if should_load_ta_data:
             df_prices, currency = load_ta_data(
@@ -415,7 +444,8 @@ def load(
                 interval=interval,
             )
 
-            return (current_coin, source, symbol, coin_map_df, df_prices, currency)
+            if not df_prices.empty:
+                return (current_coin, source, symbol, coin_map_df, df_prices, currency)
         return (current_coin, source, symbol, coin_map_df, None, None)
     if source == "bin":
         if vs == "usd":
@@ -438,14 +468,29 @@ def load(
                 )
                 return None, None, None, None, None, None
             try:
-                coin_map_df = coins_map_df.loc[parsed_coin.lower()]
+                coin_map_df = coins_map_df.loc[parsed_coin.lower()].copy()
+                coin_map_df["null_values"] = coin_map_df.apply(
+                    lambda x: sum(x.isnull().values), axis=1
+                )
+                coin_map_df = coin_map_df[
+                    coin_map_df.null_values == coin_map_df.null_values.min()
+                ]
                 coin_map_df = (
                     coin_map_df.iloc[0]
                     if isinstance(coin_map_df, pd.DataFrame)
                     else coin_map_df
                 )
-            except:  # noqa: E722
-                return None, None, None, None, None, None
+                coin_map_df.fillna("")
+            except KeyError:
+                coin_map_df = pd.Series(
+                    {
+                        "CoinGecko": "",
+                        "CoinPaprika": "",
+                        "Binance": parsed_coin.lower(),
+                        "Coinbase": "",
+                        "YahooFinance": "",
+                    }
+                )
             # console.print(f"Coin found : {current_coin}\n")
             if should_load_ta_data:
                 df_prices, currency = load_ta_data(
@@ -492,14 +537,29 @@ def load(
         if len(pairs) > 0:
             # console.print(f"Coin found : {current_coin}\n")
             try:
-                coin_map_df = coins_map_df.loc[coin]
+                coin_map_df = coins_map_df.loc[coin].copy()
+                coin_map_df["null_values"] = coin_map_df.apply(
+                    lambda x: sum(x.isnull().values), axis=1
+                )
+                coin_map_df = coin_map_df[
+                    coin_map_df.null_values == coin_map_df.null_values.min()
+                ]
                 coin_map_df = (
                     coin_map_df.iloc[0]
                     if isinstance(coin_map_df, pd.DataFrame)
                     else coin_map_df
                 )
-            except:  # noqa: E722
-                return None, None, None, None, None, None
+                coin_map_df.fillna("")
+            except KeyError:
+                coin_map_df = pd.Series(
+                    {
+                        "CoinGecko": "",
+                        "CoinPaprika": "",
+                        "Binance": "",
+                        "Coinbase": coin,
+                        "YahooFinance": "",
+                    }
+                )
             if should_load_ta_data:
                 df_prices, currency = load_ta_data(
                     coin_map_df=coin_map_df,
@@ -901,7 +961,7 @@ def load_ta_data(
         )
 
         if df.empty:
-            console.print("No data found", "\n")
+            # console.print("No data found", "\n")
             return pd.DataFrame(), ""
 
         df.drop(["time_close", "market_cap"], axis=1, inplace=True)
