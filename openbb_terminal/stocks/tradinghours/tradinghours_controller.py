@@ -154,7 +154,7 @@ exchange        show one exchange[/cmds]
             other_args.insert(0, "-n")
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
+        if ns_parser and ns_parser.exchange:
             bursa_view.display_exchange(ns_parser.exchange)
         else:
             logger.error("Select the exchange you want to know about.")
