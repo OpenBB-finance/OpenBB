@@ -377,6 +377,16 @@ def rewrite_expected(request: SubRequest) -> bool:
     return request.config.getoption("--rewrite-expected")
 
 
+@pytest.fixture(scope="session", autouse=True)
+def remove_test_dir():
+    path_string = pathlib.Path(__file__).parent.parent.resolve()
+    path = os.path.join(path_string, "tmp")
+    for _, _, files in os.walk(path):
+        for file in files:
+            if file.endswith(".log"):
+                os.remove(f"{path}/{file}")
+
+
 @pytest.fixture
 def default_csv_path(request: SubRequest) -> str:
     return build_path_by_extension(request=request, extension="csv", create_folder=True)
