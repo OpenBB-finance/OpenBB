@@ -468,15 +468,15 @@ main:
                 ref: "/tradinghours"
                 sub:
                   - name: "Symbol"
-                    ref: "/tradinghours/stocks/symbol"
+                    ref: "/terminal/stocks/tradinghours/symbol"
                   - name: "Open"
-                    ref: "/tradinghours/stocks/open"
-                  - name: "Closed"
-                    ref: "/tradinghours/stocks/closed"
-                  - name: "All"
-                    ref: "/tradinghours/stocks/all"
-                  - name: "Exchange"
-                    ref: "/tradinghours/stocks/exchange"
+                    ref: "/terminal/stocks/tradinghours/open"
+                  - name: "Closed"stocks/
+                    ref: "/terminal/stocks/tradinghours/closed"
+                  - name: "All"stocks/
+                    ref: "/terminal/stocks/tradinghours/all"
+                  - name: "Exchange"stocks/
+                    ref: "/terminal/stocks/tradinghours/exchange"
           - name: technical analysis
             ref: "/terminal/common/technical_analysis"
             sub:
