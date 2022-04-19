@@ -12,6 +12,7 @@ from prompt_toolkit.completion import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.cryptocurrency.crypto_controller import CRYPTO_SOURCES
+from openbb_terminal.cryptocurrency.overview import cryptopanic_model
 from openbb_terminal.cryptocurrency.due_diligence import (
     binance_model,
     binance_view,
@@ -26,6 +27,7 @@ from openbb_terminal.cryptocurrency.due_diligence import (
     messari_model,
     messari_view,
     santiment_view,
+    cryptopanic_view,
 )
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
@@ -76,6 +78,7 @@ class DueDiligenceController(CryptoBaseController):
         "cb": ["cbbook", "trades", "stats"],
         "mes": ["mcapdom"],
         "san": ["gh"],
+        "cpanic": ["news"],
     }
 
     DD_VIEWS_MAPPING = {
@@ -84,6 +87,7 @@ class DueDiligenceController(CryptoBaseController):
         "bin": binance_view,
         "mes": messari_view,
         "san": santiment_view,
+        "cpanic": cryptopanic_view,
     }
 
     PATH = "/crypto/dd/"
@@ -188,7 +192,9 @@ class DueDiligenceController(CryptoBaseController):
 [src]Messari[/src]
    mcapdom         show market cap dominance
 [src]Santiment[/src]
-   gh              show github activity over time[/cmds]
+   gh              show github activity over time
+[src][CryptoPanic][/src]
+    news           show loaded coin's most recent news[/cmds]
 """
         console.print(text=help_text, menu="Stocks - Due Diligence")
 
@@ -1315,4 +1321,101 @@ class DueDiligenceController(CryptoBaseController):
                 start=ns_parser.start,
                 end=ns_parser.end,
                 export=ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
+    def call_news(self, other_args):
+        """Process news command"""
+        parser = argparse.ArgumentParser(
+            prog="news",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="""Display most recent news on the given coin from CryptoPanic aggregator platform.
+            [Source: https://cryptopanic.com/]""",
+        )
+
+        parser.add_argument(
+            "-l",
+            "--limit",
+            dest="limit",
+            type=check_positive,
+            help="display N number records",
+            default=10,
+        )
+
+        parser.add_argument(
+            "-k",
+            "--kind",
+            dest="kind",
+            type=str,
+            help="Filter by category of news. Available values: news or media.",
+            default="news",
+            choices=cryptopanic_model.CATEGORIES,
+        )
+
+        parser.add_argument(
+            "-f",
+            "--filter",
+            dest="filter",
+            type=str,
+            help="Filter by kind of news. One from list: rising|hot|bullish|bearish|important|saved|lol",
+            default=None,
+            required=False,
+            choices=cryptopanic_model.FILTERS,
+        )
+
+        parser.add_argument(
+            "-r",
+            "--region",
+            dest="region",
+            type=str,
+            help="Filter news by regions. Available regions are: en (English), de (Deutsch), nl (Dutch), es (Español), "
+            "fr (Français), it (Italiano), pt (Português), ru (Русский)",
+            default="en",
+            choices=cryptopanic_model.REGIONS,
+        )
+
+        parser.add_argument(
+            "-s",
+            "--sort",
+            dest="sortby",
+            type=str,
+            help="Sort by given column. Default: published_at",
+            default="published_at",
+            choices=cryptopanic_model.SORT_FILTERS,
+        )
+
+        parser.add_argument(
+            "--descend",
+            action="store_false",
+            help="Flag to sort in descending order (lowest first)",
+            dest="descend",
+            default=True,
+        )
+
+        parser.add_argument(
+            "-u",
+            "--urls",
+            dest="urls",
+            action="store_false",
+            help="Flag to disable urls. If you will use the flag you will hide the column with urls",
+            default=True,
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        if ns_parser:
+            cryptopanic_view.display_news(
+                top=ns_parser.limit,
+                source=self.source,
+                currency=self.coin,
+                links=ns_parser.urls,
+                export=ns_parser.export,
+                sortby=ns_parser.sortby,
+                descend=ns_parser.descend,
+                post_kind=ns_parser.kind,
+                filter_=ns_parser.filter,
+                region=ns_parser.region,
             )
