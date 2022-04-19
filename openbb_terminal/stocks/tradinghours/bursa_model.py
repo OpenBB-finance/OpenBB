@@ -60,7 +60,7 @@ def get_open() -> pd.DataFrame:
         open = check_if_open(bursa, exchange)
         is_open.append(open)
     bursa["open"] = is_open
-    open = bursa.loc[bursa["open"] == True]
+    open = bursa.loc[bursa["open"] is True]
     return open[["name", "short_name"]]
 
 
@@ -82,7 +82,7 @@ def get_closed() -> pd.DataFrame:
         open = check_if_open(bursa, exchange)
         is_open.append(open)
     bursa["open"] = is_open
-    open = bursa.loc[bursa["open"] == False]
+    open = bursa.loc[bursa["open"] is False]
     return open[["name", "short_name"]]
 
 
