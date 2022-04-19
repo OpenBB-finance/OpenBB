@@ -7,6 +7,7 @@ import os
 import configparser
 import argparse
 import logging
+from pathlib import Path
 import pandas as pd
 from typing import List, Dict
 import pathlib
@@ -28,7 +29,7 @@ from openbb_terminal.portfolio.portfolio_optimization import (
     optimizer_view,
 )
 from openbb_terminal.portfolio.portfolio_optimization.parameters import (
-    params_controller,
+    params_controller, params_view
 )
 from openbb_terminal.rich_config import console
 
@@ -343,6 +344,7 @@ class PortfolioOptimizationController(BaseController):
     PATH = "/portfolio/po/"
 
     files_available = list()
+    params = configparser.RawConfigParser()
 
     def __init__(
         self,
@@ -353,6 +355,7 @@ class PortfolioOptimizationController(BaseController):
     ):
         """Constructor"""
         super().__init__(queue)
+        self.current_model = None
 
         if tickers:
             self.tickers = list(set(tickers))
@@ -387,23 +390,26 @@ class PortfolioOptimizationController(BaseController):
             "nco",
         ]
 
-        self.files_available = [
-            f
-            for f in os.listdir(os.path.join(os.path.dirname(__file__), "parameters"))
-            if (f.endswith(".ini") or f.endswith(".xlsx"))
-        ]
+        self.current_file = "defaults.ini"
+        self.DEFAULT_PATH = os.path.abspath(os.path.join(
+            os.path.dirname(__file__), "..", "..", "..", "portfolio", "optimization"))
+        self.file_types = ['xlsx', 'ini']
+        self.DATA_FILES = {
+            filepath.name: filepath
+            for file_type in self.file_types
+            for filepath in Path(self.DEFAULT_PATH).rglob(f"*.{file_type}")
+            if filepath.is_file()
+        }
 
-        param = configparser.RawConfigParser()
-        param.read(
-            os.path.join(os.path.dirname(__file__), "parameters", "defaults.ini")
-        )
-        param.optionxform = str  # type: ignore
-        self.params = param["OPENBB"]
+        self.params.read(os.path.join(self.DEFAULT_PATH, self.current_file if self.current_file else "defaults.ini"))
+        self.params.optionxform = str  # type: ignore
+        self.params = self.params['OPENBB']
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["property"]["-p"] = {c: None for c in self.yf_info_choices}
             choices["property"]["--property"] = {c: None for c in self.yf_info_choices}
+            choices['file'] = {c: None for c in self.DATA_FILES}
 
             for fn in models:
                 choices[fn]["-p"] = {c: None for c in self.period_choices}
@@ -477,7 +483,7 @@ class PortfolioOptimizationController(BaseController):
 [param]Categories: [/param]{('None', ', '.join(self.categories.keys()))[bool(self.categories.keys())]}
 [param]Portfolios: [/param]{('None', ', '.join(self.portfolios.keys()))[bool(self.portfolios.keys())]}
 
-[param]Parameter file: [/param] {self.file}[cmds]
+[param]Parameter file: [/param] {self.current_file}[cmds]
 
     file          select parameter file[/cmds][menu]
 >   params        setting portfolio risk parameters[/menu]
@@ -540,39 +546,38 @@ class PortfolioOptimizationController(BaseController):
             prog="file",
             description="Select parameter file to use",
         )
+
         parser.add_argument(
             "-f",
             "--file",
             required=True,
+            nargs="+",
             dest="file",
-            help="Parameter file to be used",
-            choices=self.files_available,
+            help="Parameter file to be used"
         )
+
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-f")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args
+        )
+
         if ns_parser:
-            self.file = ns_parser.file
-            param = configparser.RawConfigParser()
-            param.read(os.path.join(os.path.dirname(__file__), "parameters", self.file))
-            param.optionxform = str  # type: ignore
-            self.params = param["OPENBB"]
-            help_text = "\n[info]Parameters:[/info]\n"
-            for k, v in self.params.items():
-                help_text += f"    [param]{k}{' ' * (20-len(k))}[/param]: {v}\n"
-            console.print(help_text)
+            self.current_file = " ".join(ns_parser.file)
+
+            if self.current_file in self.DATA_FILES:
+                file_location = self.DATA_FILES[self.current_file]
+            else:
+                file_location = self.current_file
+
+            self.params, self.current_model = params_view.load_file(file_location)
 
     @log_start_end(log=logger)
     def call_params(self, other_args: List[str]):
         """Process params command"""
         self.queue = self.load_class(
-            params_controller.ParametersController, self.file, self.queue
+            params_controller.ParametersController, self.file, self.queue, self.params, self.current_model
         )
-        self.files_available = [
-            f
-            for f in os.listdir(os.path.join(os.path.dirname(__file__), "parameters"))
-            if (f.endswith(".ini") or f.endswith(".xlsx"))
-        ]
 
     @log_start_end(log=logger)
     def call_show(self, other_args: List[str]):

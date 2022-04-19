@@ -20,6 +20,9 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
+from openbb_terminal.portfolio.portfolio_optimization.parameters.params_view import (
+    AVAILABLE_OPTIONS, DEFAULT_PARAMETERS, MODEL_PARAMS
+)
 from openbb_terminal.portfolio.portfolio_optimization import (
     excel_model
 )
@@ -46,7 +49,7 @@ class ParametersController(BaseController):
 
     CHOICES_COMMANDS = [
         "set",
-        "load",
+        "file",
         "save",
         "new",
         "clear",
@@ -78,108 +81,55 @@ class ParametersController(BaseController):
         "nco",
     ]
 
-    DEFAULT_RANGE = [value / 1000 for value in range(0, 1001)]
-
-    AVAILABLE_OPTIONS = {
-        "historic_period": ["d", "w", "mo", "y", "ytd", "max"],
-        "start_period": ["Any"],
-        "end_period": ["Any"],
-        "log_returns": ['0', '1'],
-        "return_frequency": ["d", "w", "m"],
-        "max_nan": DEFAULT_RANGE,
-        "threshold_value": DEFAULT_RANGE,
-        "nan_fill_method": ["linear", "time", "nearest", "zero", "slinear", "quadratic", "cubic"],
-        "risk_free": DEFAULT_RANGE,
-        "significance_level": DEFAULT_RANGE,
-        "risk_measure": ["MV", "MAD", "MSV", "FLPM", "SLPM", "CVaR", "EVaR", "WR", "ADD", "UCI", "CDaR", "EDaR", "MDD"],
-        "target_return": DEFAULT_RANGE + [-x for x in DEFAULT_RANGE],
-        "target_risk": DEFAULT_RANGE + [-x for x in DEFAULT_RANGE],
-        "expected_return": ["hist", "ewma1", "ewma2"],
-        "covariance": ["hist", "ewma1", "ewma2", "ledoit", "oas", "shrunk", "gl", "jlogo", "fixed", "spectral",
-                       "shrink"],
-        "smoothing_factor_ewma": DEFAULT_RANGE,
-        "long_allocation": DEFAULT_RANGE,
-        "short_allocation": DEFAULT_RANGE,
-        "risk_aversion": [value / 100 for value in range(-500, 501)],
-        "amount_portfolios": range(1, 10001),
-        "random_seed": range(1, 10001),
-        "tangency": ["0", "1"],
-        "risk_parity_model": ['A', 'B', 'C'],
-        "penal_factor": DEFAULT_RANGE + [-x for x in DEFAULT_RANGE],
-        "co_dependence": ["pearson", "spearman", "abs_pearson", "abs_spearman", "distance", "mutual_info", "tail"],
-        "cvar_simulations": range(1, 10001),
-        "cvar_significance": DEFAULT_RANGE,
-        "linkage": ["single", "complete", "average", "weighted", "centroid", "ward", "dbht"],
-        "max_clusters": range(1, 101),
-        "amount_bins": ["KN", "FD", "SC", "HGR", "Integer"],
-        "alpha_tail": DEFAULT_RANGE,
-        "leaf_order": ['0', '1'],
-        "objective": ["MinRisk", "Utility", "Sharpe", "MaxRet"]
-    }
-
-    DEFAULT_PARAMETERS = ['historic_period', 'start_period', 'end_period', 'log_returns', 'return_frequency',
-                          'max_nan', 'threshold_value', 'nan_fill_method', 'risk_free', 'significance_level']
-    MODEL_PARAMS = {
-        "maxsharpe": ["risk_measure", "target_return", "target_risk", "expected_return", "covariance",
-                      "smoothing_factor_ewma", "long_allocation", "short_allocation"],
-        "minrisk": ["risk_measure", "target_return", "target_risk", "expected_return", "covariance",
-                    "smoothing_factor_ewma", "long_allocation", "short_allocation"],
-        "maxutil": ["risk_measure", "target_return", "target_risk", "expected_return", "covariance",
-                    "smoothing_factor_ewma", "long_allocation", "short_allocation", "risk_aversion"],
-        "maxret": ["risk_measure", "target_return", "target_risk", "expected_return", "covariance",
-                   "smoothing_factor_ewma", "long_allocation"],
-        "maxdiv": ["covariance", "long_allocation"],
-        "maxdecorr": ["covariance", "long_allocation"],
-        "ef": ["risk_measure", "long_allocation", "short_allocation", "amount_portfolios", "random_seed", "tangency"],
-        "equal": ["risk_measure", "long_allocation"],
-        "mktcap": ["risk_measure", "long_allocation"],
-        "dividend": ["risk_measure", "long_allocation"],
-        "riskparity": ["risk_measure", "target_return", "long_allocation", "risk_contribution"],
-        "relriskparity": ["risk_measure", "covariance", "smoothing_factor_ewma", "long_allocation",
-                          "risk_contribution", "risk_parity_model", "penal_factor"],
-        "hrp": ["risk_measure", "covariance", "smoothing_factor_ewma", "long_allocation", "co_dependence",
-                "cvar_simulations", "cvar_significance", "linkage", "amount_clusters", "max_clusters", "amount_bins",
-                "alpha_tail", "leaf_order", "objective"],
-        "herc": ["risk_measure", "covariance", "smoothing_factor_ewma", "long_allocation", "co_dependence",
-                 "cvar_simulations", "cvar_significance", "linkage", "amount_clusters", "max_clusters", "amount_bins",
-                 "alpha_tail", "leaf_order", "objective"],
-        "nco": ["risk_measure", "covariance", "smoothing_factor_ewma", "long_allocation", "co_dependence",
-                "cvar_simulations", "cvar_significance", "linkage", "amount_clusters", "max_clusters", "amount_bins",
-                "alpha_tail", "leaf_order", "objective"],
-    }
-
     current_model = ""
     current_file = ""
     params = configparser.RawConfigParser()
 
-    def __init__(self, file: str, queue: List[str] = None):
+    def __init__(self, file: str, queue: List[str] = None, params: str = None, current_model: str = None):
         """Constructor"""
         super().__init__(queue)
 
         self.current_file = file
+        self.current_model = current_model
         self.description = None
+        self.DEFAULT_PATH = os.path.abspath(os.path.join(
+            os.path.dirname(__file__), "..", "..", "..", "..", "portfolio", "optimization"))
 
-        self.params.read(os.path.join(
-            os.path.dirname(__file__), self.current_file if self.current_file else "defaults.ini"))
-        self.params.optionxform = str  # type: ignore
-        self.params = self.params['OPENBB']
+        self.file_types = ['xlsx', 'ini']
+        self.DATA_FILES = {
+            filepath.name: filepath
+            for file_type in self.file_types
+            for filepath in Path(self.DEFAULT_PATH).rglob(f"*.{file_type}")
+            if filepath.is_file()
+        }
+
+        if params:
+            self.params = params
+        else:
+            self.params.read(os.path.join(self.DEFAULT_PATH, self.current_file if self.current_file else "defaults.ini"))
+            self.params.optionxform = str  # type: ignore
+            self.params = self.params['OPENBB']
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["set"] = {c: None for c in self.models}
             choices["set"]["-m"] = {c: None for c in self.models}
-            choices["arg"] = {c: None for c in self.AVAILABLE_OPTIONS.keys()}
+            choices["arg"] = {c: None for c in AVAILABLE_OPTIONS.keys()}
+            choices["file"] = {c: None for c in self.DATA_FILES.keys()}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
         """Print help"""
         help_text = f"""
-[param]Loaded file:[/param] {self.current_file} [cmds]
 [info]Portfolio Risk Parameters (.ini or .xlsx)[/info]
-    load          load portfolio risk parameters
+
+[param]Loaded file:[/param] {self.current_file} [cmds]
+
+    file          load portfolio risk parameters
     save          save portfolio risk parameters to specified file[/cmds]
 
 [param]Model of interest:[/param] {self.current_model} [cmds]
+
     clear         clear model of interest from filtered parameters
     set           set model of interest to filter parameters
     arg           set a different value for an argument[/cmds]
@@ -188,7 +138,7 @@ class ParametersController(BaseController):
             max_len = max([len(k) for k in self.params.keys()])
             help_text += "\n[info]Parameters:[/info]\n"
             for k, v in self.params.items():
-                all_params = self.DEFAULT_PARAMETERS + self.MODEL_PARAMS[self.current_model]
+                all_params = DEFAULT_PARAMETERS + MODEL_PARAMS[self.current_model]
                 if k in all_params:
                     help_text += f"    [param]{k}{' ' * (max_len - len(k))} :[/param] {v}\n"
         else:
@@ -209,12 +159,12 @@ class ParametersController(BaseController):
         return []
 
     @log_start_end(log=logger)
-    def call_load(self, other_args: List[str]):
+    def call_file(self, other_args: List[str]):
         """Process load command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="load",
+            prog="file",
             description="Load portfolio risk parameters (ini or xlsx)",
         )
 
@@ -235,36 +185,15 @@ class ParametersController(BaseController):
 
         if ns_parser:
             self.current_file = " ".join(ns_parser.file)
-            console.print(self.current_file)
+
+            if self.current_file in self.DATA_FILES:
+                file_location = self.DATA_FILES[self.current_file]
+            else:
+                file_location = self.current_file
+
+            self.params, self.current_model = params_view.load_file(file_location)
 
             console.print()
-
-            if self.current_file.endswith(".ini"):
-                self.params = configparser.RawConfigParser()
-                self.params.read(os.path.join(os.path.dirname(__file__), self.current_file))
-                self.params.optionxform = str  # type: ignore
-                self.params = self.params['OPENBB']
-
-            elif self.current_file.endswith(".xlsx"):
-                self.params, self.description = excel_model.load_configuration(
-                    os.path.join(os.path.dirname(__file__), self.current_file))
-                self.current_model = self.params['technique']
-            else:
-                console.print("Can not load in the file due to not being an .ini or .xlsx file.")
-                pass
-
-            max_len = max([len(k) for k in self.params.keys()])
-            help_text = "[info]Parameters:[/info]\n"
-            if self.current_model:
-                for k, v in self.params.items():
-                    all_params = self.DEFAULT_PARAMETERS + self.MODEL_PARAMS[self.current_model]
-                    if k in all_params:
-                        help_text += f"    [param]{k}{' ' * (max_len - len(k))} :[/param] {v}\n"
-            else:
-                for k, v in self.params.items():
-                    help_text += f"    [param]{k}{' ' * (max_len - len(k))} :[/param] {v}\n"
-
-            console.print(help_text)
 
     @log_start_end(log=logger)
     def call_save(self, other_args: List[str]):
@@ -291,7 +220,8 @@ class ParametersController(BaseController):
         if ns_parser:
             if ns_parser.file.endswith(".ini"):
                 # Create file if it does not exist
-                filepath = os.path.join(os.path.dirname(__file__), ns_parser.file)
+                filepath = os.path.abspath(
+                    os.path.join(os.path.dirname(__file__), ".", "portfolio", "optimization", ns_parser.file))
                 Path(filepath)
 
                 with open(filepath, 'w') as configfile:
@@ -346,8 +276,6 @@ class ParametersController(BaseController):
             self.current_model = ns_parser.model
             console.print("")
 
-    # From here one allow to alter ALL model params
-
     @log_start_end(log=logger)
     def call_arg(self, other_args: List[str]):
         """Process arg command"""
@@ -382,7 +310,7 @@ class ParametersController(BaseController):
         )
         if ns_parser:
             if ns_parser.show:
-                params_view.show_arguments(self.AVAILABLE_OPTIONS, self.description)
+                params_view.show_arguments(AVAILABLE_OPTIONS, self.description)
 
             if ns_parser.argument:
                 argument = ns_parser.argument[0]
@@ -398,7 +326,7 @@ class ParametersController(BaseController):
                     pass
 
                 if argument == "historic_period":
-                    for option in self.AVAILABLE_OPTIONS[argument]:
+                    for option in AVAILABLE_OPTIONS[argument]:
                         if option in str(value):
                             self.params[argument] = str(value)
                             break
@@ -407,16 +335,16 @@ class ParametersController(BaseController):
                             f"[red]The value {value} is not an option for {argument}.\n" f"Please select enter a "
                             f"number before the option d, w, mo and y or select ytd or max. For example: 252d, "
                             f"12w, 10y or max[/red]")
-                elif value in self.AVAILABLE_OPTIONS[argument] or "Any" in self.AVAILABLE_OPTIONS[argument]:
+                elif value in AVAILABLE_OPTIONS[argument] or "Any" in AVAILABLE_OPTIONS[argument]:
                     self.params[argument] = str(value)
                 else:
                     if len(self.AVAILABLE_OPTIONS[argument]) > 15:
-                        minimum = min(self.AVAILABLE_OPTIONS[argument])
-                        maximum = max(self.AVAILABLE_OPTIONS[argument])
+                        minimum = min(AVAILABLE_OPTIONS[argument])
+                        maximum = max(AVAILABLE_OPTIONS[argument])
                         options = f"between {minimum} and {maximum} in steps of " \
-                                  f"{maximum / sum(x > 0 for x in self.AVAILABLE_OPTIONS[argument])}"
+                                  f"{maximum / sum(x > 0 for x in AVAILABLE_OPTIONS[argument])}"
                     else:
-                        options = self.AVAILABLE_OPTIONS[argument]
+                        options = AVAILABLE_OPTIONS[argument]
 
                     console.print(f"[red]The value {value} is not an option for {argument}.\n"
                                   f"The value needs to be {options}[/red]")
