@@ -1140,16 +1140,20 @@ def show_var(
     expire_dt = datetime.strptime(expire, "%Y-%m-%d")
     expiry = (expire_dt - datetime.now()).total_seconds() / (60 * 60 * 24)
 
+    # Monte Carlo simulation
     results = []
-
     i = 0
     while i < simulations:
         simu_stock_price = stock_price
         expiry_i = expiry
+
+        # Stock price simulations through gaussian process
         while 0 < expiry_i:
             change = np.random.randn() * stock_vol / 100
             simu_stock_price += simu_stock_price * change
             expiry_i -= 1
+
+        # Gets return of value
         if not put:
             option_result = (
                 simu_stock_price - strike if (simu_stock_price - strike) > 0 else 0
@@ -1165,6 +1169,7 @@ def show_var(
 
     monte_carlo_results = pd.DataFrame(results, columns=["results"])["results"]
 
+    # VaR from quantiles of results
     var_75 = monte_carlo_results.quantile(0.25)
     var_90 = monte_carlo_results.quantile(0.1)
     var_95 = monte_carlo_results.quantile(0.05)

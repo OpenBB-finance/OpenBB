@@ -21,6 +21,7 @@ grhist 100
 plot -x ltd -y iv
 parity
 binom
+var
 load spy
 vsurf
 exit
