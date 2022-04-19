@@ -1,6 +1,6 @@
 """Cryptocurrency helpers"""
 __docformat__ = "numpy"
-# pylint: disable=C0301,R0911,C0302
+# pylint: disable=C0301,R0911,C0302, W0702
 
 import os
 import json
@@ -28,9 +28,7 @@ from openbb_terminal.cryptocurrency.due_diligence import (
     coinpaprika_model,
 )
 from openbb_terminal.cryptocurrency.discovery.pycoingecko_model import get_coin_list
-from openbb_terminal.cryptocurrency.overview.coinpaprika_model import (
-    get_list_of_coins,
-)
+from openbb_terminal.cryptocurrency.overview.coinpaprika_model import get_list_of_coins
 from openbb_terminal.cryptocurrency.due_diligence.binance_model import (
     check_valid_binance_str,
     show_available_pairs_for_given_symbol,
@@ -347,17 +345,20 @@ def load(
     coins_map_df = prepare_all_coins_df().set_index("Symbol").dropna(thresh=2)
 
     if source == "cg":
-        coingecko = pycoingecko_model.Coin(coin.lower(), True)
+        coingecko = pycoingecko_model.Coin(coin.lower(), False)
 
         if not coingecko.symbol:
             return None, None, None, None, None, None
 
-        coin_map_df = coins_map_df.loc[coingecko.symbol]
-        coin_map_df = (
-            coin_map_df.dropna().iloc[0]
-            if isinstance(coin_map_df, pd.DataFrame)
-            else coin_map_df
-        )  # TODO: improve to choose the row that matches better;
+        try:
+            coin_map_df = coins_map_df.loc[coingecko.symbol]
+            coin_map_df = (
+                coin_map_df.iloc[0]
+                if isinstance(coin_map_df, pd.DataFrame)
+                else coin_map_df
+            )  # TODO: improve to choose the row that matches better;
+        except:  # noqa: E722
+            return None, None, None, None, None, None
         # if it is dataframe, it means that found more than 1 coin
         if should_load_ta_data:
             df_prices, currency = load_ta_data(
@@ -387,17 +388,22 @@ def load(
     if source == "cp":
         paprika_coins = get_list_of_coins()
         paprika_coins_dict = dict(zip(paprika_coins.id, paprika_coins.symbol))
-        current_coin, symbol = coinpaprika_model.validate_coin(coin, paprika_coins_dict)
+        current_coin, symbol = coinpaprika_model.validate_coin(
+            coin.upper(), paprika_coins_dict
+        )
 
         if not symbol:
             return None, None, None, None, None, None
 
-        coin_map_df = coins_map_df.loc[symbol.lower() if symbol is not None else symbol]
-        coin_map_df = (
-            coin_map_df.dropna().iloc[0]
-            if isinstance(coin_map_df, pd.DataFrame)
-            else coin_map_df
-        )
+        try:
+            coin_map_df = coins_map_df.loc[symbol]
+            coin_map_df = (
+                coin_map_df.iloc[0]
+                if isinstance(coin_map_df, pd.DataFrame)
+                else coin_map_df
+            )
+        except:  # noqa: E722
+            return None, None, None, None, None, None
 
         if should_load_ta_data:
             df_prices, currency = load_ta_data(
@@ -431,12 +437,15 @@ def load(
                     pairs,
                 )
                 return None, None, None, None, None, None
-            coin_map_df = coins_map_df.loc[parsed_coin.lower()]
-            coin_map_df = (
-                coin_map_df.dropna().iloc[0]
-                if isinstance(coin_map_df, pd.DataFrame)
-                else coin_map_df
-            )
+            try:
+                coin_map_df = coins_map_df.loc[parsed_coin.lower()]
+                coin_map_df = (
+                    coin_map_df.iloc[0]
+                    if isinstance(coin_map_df, pd.DataFrame)
+                    else coin_map_df
+                )
+            except:  # noqa: E722
+                return None, None, None, None, None, None
             # console.print(f"Coin found : {current_coin}\n")
             if should_load_ta_data:
                 df_prices, currency = load_ta_data(
@@ -474,20 +483,23 @@ def load(
             coinbase_coin
         )
         if vs not in pairs:
-            console.print(
-                "vs specified not supported by coinbase. Run command again with one supported (e.g., --vs USDT):\n",
-                pairs,
-            )
+            if len(pairs) > 0:
+                console.print(
+                    "vs specified not supported by coinbase. Run command again with one supported (e.g., --vs USDT):\n",
+                    pairs,
+                )
             return None, None, None, None, None, None
         if len(pairs) > 0:
             # console.print(f"Coin found : {current_coin}\n")
-
-            coin_map_df = coins_map_df.loc[coin]
-            coin_map_df = (
-                coin_map_df.dropna().iloc[0]
-                if isinstance(coin_map_df, pd.DataFrame)
-                else coin_map_df
-            )
+            try:
+                coin_map_df = coins_map_df.loc[coin]
+                coin_map_df = (
+                    coin_map_df.iloc[0]
+                    if isinstance(coin_map_df, pd.DataFrame)
+                    else coin_map_df
+                )
+            except:  # noqa: E722
+                return None, None, None, None, None, None
             if should_load_ta_data:
                 df_prices, currency = load_ta_data(
                     coin_map_df=coin_map_df,
@@ -499,11 +511,9 @@ def load(
                 )
                 return (current_coin, source, coin, coin_map_df, df_prices, currency)
             return (current_coin, source, coin, coin_map_df, None, None)
-        console.print(f"Couldn't find coin with symbol {current_coin}\n")
         return None, None, None, None, None, None
 
     if source == "yf":
-
         if vs.upper() not in YF_CURRENCY:
             console.print(
                 "vs specified not supported by Yahoo Finance. Run command again with one supported (e.g., --vs USD):\n",
@@ -519,39 +529,38 @@ def load(
             return None, None, None, None, None, None
 
         # Search coin using crypto symbol
-        coin_map_df_1 = coins_map_df.loc[coins_map_df.index == coin]
+        coin_map_df = coins_map_df.loc[coins_map_df.index == coin]
         # Search coin using yfinance id
-        coin_map_df_2 = coins_map_df.loc[
-            coins_map_df.YahooFinance == f"{coin.upper()}-{vs.upper()}"
-        ]
+        # coin_map_df_2 = coins_map_df.loc[
+        #    coins_map_df.YahooFinance == f"{coin.upper()}-{vs.upper()}"
+        # ]
         # Search coin using crypto full name
-        coin_map_df_3 = coins_map_df.loc[coins_map_df.CoinGecko == coin]
+        # coin_map_df_3 = coins_map_df.loc[coins_map_df.CoinGecko == coin]
 
-        for _df in [coin_map_df_1, coin_map_df_2, coin_map_df_3]:
-            if not _df.empty:
-                coin_map_df = _df
-                break
+        # for _df in [coin_map_df_1, coin_map_df_2, coin_map_df_3]:
+        #    if not _df.empty:
+        #        coin_map_df = _df
+        #        break
 
-        if coin_map_df.empty:
-            console.print(
-                f"Cannot find {coin} against {vs} on Yahoo finance. Try another source or currency.\n"
-            )
-            return None, None, None, None, None, None
-
-        if (coin_map_df["YahooFinance"]).isna().all():
-            console.print(f"Cannot find {coin} Yahoo finance. Try another source.\n")
+        if coin_map_df.empty or (coin_map_df["YahooFinance"]).isna().all():
+            # console.print(
+            #    f"Cannot find {coin} against {vs} on Yahoo finance. Try another source or currency.\n"
+            # )
             return None, None, None, None, None, None
 
         # Filter for the currency
-        coin_map_df = coin_map_df[
-            coin_map_df["YahooFinance"].str.upper().str.contains(vs.upper())
-        ]
+        try:
+            coin_map_df = coin_map_df[
+                coin_map_df["YahooFinance"].str.upper().str.contains(vs.upper())
+            ]
 
-        coin_map_df = (
-            coin_map_df.dropna().iloc[0]
-            if isinstance(coin_map_df, pd.DataFrame)
-            else coin_map_df
-        )
+            coin_map_df = (
+                coin_map_df.dropna().iloc[0]
+                if isinstance(coin_map_df, pd.DataFrame)
+                else coin_map_df
+            )
+        except:  # noqa: E722
+            return None, None, None, None, None, None
 
         if should_load_ta_data:
             df_prices, currency = load_ta_data(
