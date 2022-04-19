@@ -1273,7 +1273,9 @@ Expiry: [/param]{self.selected_date or None}
                 console.print("No expiry loaded. First use `exp {expiry date}`\n")
             else:
                 if not ns_parser.strike:
-                    ns_parser.strike = yfinance_model.get_nearest_strike(self.ticker, self.selected_date)
+                    ns_parser.strike = yfinance_model.get_nearest_strike(
+                        self.ticker, self.selected_date
+                    )
                     console.print(
                         "\nNo strike selected. Use `-s`, `--strike` in order to set strike. "
                         f"Strike set to {ns_parser.strike}."
