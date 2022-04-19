@@ -91,8 +91,6 @@ def test_send_to_s3(mocker, last):
         mocker.patch("openbb_terminal.core.log.collection.s3_sender.boto3")
     with open("readme.txt", "w") as f:
         f.write("Create a new text file!")
-    with open("dontreadme.txt", "w") as f:
-        f.write("Create a new text file!")
     file = Path("readme.txt")
     file2 = Path("dontreadme.txt")
 
