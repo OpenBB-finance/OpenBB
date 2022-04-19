@@ -200,7 +200,7 @@ def get_mean_risk_portfolio(
     risk_measure: str = "MV",
     objective: str = "Sharpe",
     risk_free_rate: float = 0,
-    risk_aversion: float = 2,
+    risk_aversion: float = 1,
     alpha: float = 0.05,
     target_return: float = -1,
     target_risk: float = -1,
@@ -241,7 +241,7 @@ def get_mean_risk_portfolio(
     method: str
         Method used to fill nan values. Default value is 'time'. For more information see
         `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
-    obj: str
+    objective: str
         Objective function of the optimization model.
         The default is 'Sharpe'. Possible values are:
 
@@ -311,6 +311,10 @@ def get_mean_risk_portfolio(
     d_ewma: float, optional
         The smoothing factor of ewma methods.
         The default is 0.94.
+    value : float, optional
+        Amount of money to allocate. The default is 1.
+    value_short : float, optional
+        Amount to allocate to portfolio in short positions. The default is 0.
 
     Returns
     -------
@@ -445,6 +449,10 @@ def get_max_diversification_portfolio(
     d_ewma: float, optional
         The smoothing factor of ewma methods.
         The default is 0.94.
+    value : float, optional
+        Amount of money to allocate. The default is 1.
+    value_short : float, optional
+        Amount to allocate to portfolio in short positions. The default is 0.
 
     Returns
     -------
@@ -555,6 +563,10 @@ def get_max_decorrelation_portfolio(
     d_ewma: float, optional
         The smoothing factor of ewma methods.
         The default is 0.94.
+    value : float, optional
+        Amount of money to allocate. The default is 1.
+    value_short : float, optional
+        Amount to allocate to portfolio in short positions. The default is 0.
 
     Returns
     -------
@@ -591,6 +603,159 @@ def get_max_decorrelation_portfolio(
     weights = port.optimization(
         model="Classic", rm="MV", obj="MinRisk", rf=0, hist=True
     )
+
+    if weights is not None:
+        weights = weights.round(5)
+        weights = weights.squeeze().to_dict()
+
+    return weights, stock_returns
+
+
+@log_start_end(log=logger)
+def get_black_litterman_portfolio(
+    stocks: List[str],
+    benchmark: Dict,
+    P_Views: List,
+    Q_Views: List,
+    period: str = "3y",
+    start: str = "",
+    end: str = "",
+    log_returns: bool = False,
+    freq: str = "D",
+    maxnan: float = 0.05,
+    threshold: float = 0,
+    method: str = "time",
+    objective: str = "Sharpe",
+    risk_free_rate: float = 0,
+    risk_aversion: float = 1,
+    Delta: float = None,
+    equilibrium: bool = True,
+    optimize: bool = True,
+    value: float = 1.0,
+    value_short: float = 0,
+) -> Tuple:
+    """Builds a maximal diversification portfolio
+
+    Parameters
+    ----------
+    stocks : List[str]
+        List of portfolio stocks
+    benchmark : Dict
+        Dict of portfolio weights
+    P_Views: List
+        Matrix P of views that shows relationships among assets and returns.
+        Default value to None.
+    Q_Views: List
+        Matrix Q of expected returns of views. Default value is None.
+    period : str, optional
+        Period to get stock data, by default "3mo"
+    start: str
+        If not using period, start date string (YYYY-MM-DD)
+    end: str
+        If not using period, end date string (YYYY-MM-DD). If empty use last
+        weekday.
+    log_returns: bool
+        If True calculate log returns, else arithmetic returns. Default value
+        is False
+    freq: str
+        The frequency used to calculate returns. Default value is 'D'. Possible
+        values are:
+            - 'D' for daily returns.
+            - 'W' for weekly returns.
+            - 'M' for monthly returns.
+
+    maxnan: float
+        Max percentage of nan values accepted per asset to be included in
+        returns.
+    threshold: float
+        Value used to replace outliers that are higher to threshold.
+    method: str
+        Method used to fill nan values. Default value is 'time'. For more information see
+        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+    objective: str
+        Objective function of the optimization model.
+        The default is 'Sharpe'. Possible values are:
+
+        - 'MinRisk': Minimize the selected risk measure.
+        - 'Utility': Maximize the risk averse utility function.
+        - 'Sharpe': Maximize the risk adjusted return ratio based on the selected risk measure.
+        - 'MaxRet': Maximize the expected return of the portfolio.
+
+    risk_free_rate: float, optional
+        Risk free rate, must be in annual frequency. The default is 0.
+    risk_aversion: float, optional
+        Risk aversion factor of the 'Utility' objective function.
+        The default is 1.
+    Delta: float, optional
+        Risk aversion factor of Black Litterman model. Default value is None.
+    equilibrium: bool, optional
+        If True excess returns are based on equilibrium market portfolio, if False
+        excess returns are calculated as historical returns minus risk free rate.
+        Default value is True.
+    optimize: bool, optional
+        If True Black Litterman estimates are used as inputs of mean variance model,
+        if False returns equilibrium weights from Black Litterman model
+        Default value is True.
+    value : float, optional
+        Amount of money to allocate. The default is 1.
+    value_short : float, optional
+        Amount to allocate to portfolio in short positions. The default is 0.
+
+    Returns
+    -------
+    Tuple
+        Dictionary of portfolio weights and DataFrame of stock returns
+    """
+    stock_prices = yahoo_finance_model.process_stocks(stocks, period, start, end)
+    stock_returns = yahoo_finance_model.process_returns(
+        stock_prices,
+        log_returns=log_returns,
+        freq=freq,
+        maxnan=maxnan,
+        threshold=threshold,
+        method=method,
+    )
+
+    risk_free_rate = risk_free_rate / time_factor[freq.upper()]
+
+    mu, cov, weights = black_litterman(
+        stock_returns=stock_returns,
+        benchmark=benchmark,
+        P_Views=P_Views,
+        Q_Views=Q_Views / time_factor[freq.upper()],
+        Delta=Delta,
+        risk_free_rate=risk_free_rate,
+        equilibrium=equilibrium,
+        freq=freq,
+    )
+
+    if optimize:
+        # Building the portfolio object
+        port = rp.Portfolio(returns=stock_returns)
+
+        # Estimate input parameters:
+        port.assets_stats(method_mu="hist", method_cov="hist")
+        port.mu_bl = mu
+        port.cov_bl = cov
+
+        # Budget constraints
+        port.upperlng = value
+        if value_short > 0:
+            port.sht = True
+            port.uppersht = value_short
+            port.budget = value - value_short
+        else:
+            port.budget = value
+
+        # Estimate optimal portfolio:
+        weights = port.optimization(
+            model="BL",
+            rm="MV",
+            obj=objective,
+            rf=risk_free_rate,
+            l=risk_aversion,
+            hist=True,
+        )
 
     if weights is not None:
         weights = weights.round(5)
@@ -707,6 +872,8 @@ def get_risk_parity_portfolio(
     d_ewma: float, optional
         The smoothing factor of ewma methods.
         The default is 0.94.
+    value : float, optional
+        Amount of money to allocate. The default is 1.
 
     Returns
     -------
@@ -855,6 +1022,8 @@ def get_rel_risk_parity_portfolio(
     d_ewma: float, optional
         The smoothing factor of ewma methods.
         The default is 0.94.
+    value : float, optional
+        Amount of money to allocate. The default is 1.
 
     Returns
     -------
@@ -919,8 +1088,8 @@ def get_hcp_portfolio(
     covariance: str = "hist",
     objective: str = "MinRisk",
     risk_measure: str = "MV",
-    risk_free_rate: float = 0.0,
-    risk_aversion: float = 1.0,
+    risk_free_rate: float = 0,
+    risk_aversion: float = 1,
     alpha: float = 0.05,
     a_sim: int = 100,
     beta: float = None,
@@ -1165,21 +1334,20 @@ def get_hcp_portfolio(
 
 @log_start_end(log=logger)
 def black_litterman(
-    stocks_returns: pd.DataFrame,
+    stock_returns: pd.DataFrame,
     benchmark: Dict,
-    P_Views: List = None,
-    Q_Views: List = None,
-    Delta: float = 1,
+    P_Views: List,
+    Q_Views: List,
+    Delta: float = None,
     risk_free_rate: float = 0,
     equilibrium: bool = True,
-    freq: float = "D",
 ) -> Tuple:
     """
     Calculates Black-Litterman estimates following He and Litterman (1999)
 
     Parameters
     ----------
-    stocks_returns: pd.DataFrame
+    stock_returns: pd.DataFrame
         _description_
     benchmark: Dict
         lala
@@ -1187,21 +1355,15 @@ def black_litterman(
         Matrix P of views that shows relationships among assets and returns.
         Default value to None.
     Q_Views: List
-        Matrix Q of expected returns of views. Default value is None.
+        Matrix Q of expected returns of views in annual frequency. Default value is None.
     Delta: float
-        Risk aversion factor. Default value is 1.
-    risk_free_rate: float
+        Risk aversion factor. Default value is None.
+    risk_free_rate: float, optional
         Risk free rate, must be in annual frequency. Default value is 0.
-    equilibrium: bool
+    equilibrium: bool, optional
         If True excess returns are based on equilibrium market portfolio, if False
         excess returns are calculated as historical returns minus risk free rate.
         Default value is True.
-    freq: float
-        The frequency used to calculate returns. Default value is 'D'. Possible
-        values are:
-            - 'D' for daily returns.
-            - 'W' for weekly returns.
-            - 'M' for monthly returns.
 
     Returns
     -------
@@ -1209,15 +1371,15 @@ def black_litterman(
         Black-Litterman model estimates of expected returns,
         covariance matrix and portfolio weights.
     """
-    stocks = stocks_returns.columns.tolist()
+    stocks = stock_returns.columns.tolist()
     benchmark = pd.Series(benchmark).to_numpy().reshape(-1, 1)
-    risk_free_rate = risk_free_rate / time_factor[freq.upper()]
 
-    mu = stocks_returns.mean().to_numpy().reshape(-1, 1)
-    S = stocks_returns.cov().to_numpy()
+    mu = stock_returns.mean().to_numpy().reshape(-1, 1)
+    S = stock_returns.cov().to_numpy()
+
     P_Views = np.array(P_Views, dtype=float)
-    Q_Views = np.array(Q_Views, dtype=float) / time_factor[freq.upper()]
-    tau = 1 / stocks_returns.shape[0]
+    Q_Views = np.array(Q_Views, dtype=float)
+    tau = 1 / stock_returns.shape[0]
     Omega = np.diag(np.diag(P_Views @ (tau * S) @ P_Views.T))
 
     if Delta is None:
@@ -1237,7 +1399,9 @@ def black_litterman(
         np.linalg.inv(tau * S) + P_Views.T @ np.linalg.inv(Omega) @ P_Views
     )
 
-    mu = PI + risk_free_rate
+    PI = PI_eq
+
+    mu = PI_eq + risk_free_rate
     cov = S + M
     weights = np.linalg.inv(Delta * cov) @ PI
 
@@ -1265,6 +1429,8 @@ def generate_random_portfolios(
         "Number of portfolios to simulate. The default value is 100.
     seed: int, optional
         Seed used to generate random portfolios. The default value is 123.
+    value : float, optional
+        Amount of money to allocate. The default is 1.
     """
     assets = stocks.copy()
     # Generate random portfolios
