@@ -66,6 +66,7 @@ class TechnicalAnalysisCommands(commands.Cog):
         end: str = "",
         extended_hours: bool = False,
         heikin_candles: bool = False,
+        trendline: bool = False,
     ):
         """Displays chart with selected moving average [Yahoo Finance]
 
@@ -81,6 +82,7 @@ class TechnicalAnalysisCommands(commands.Cog):
         end: YYYY-MM-DD format
         extended_hours: Display Pre/After Market Hours. Default: False
         heikin_candles: Heikin Ashi candles. Default: False
+        trendline: Display trendline on Daily chart. Default: False
         """
         await ShowView().discord(
             ma_command,
@@ -96,6 +98,7 @@ class TechnicalAnalysisCommands(commands.Cog):
             end,
             extended_hours,
             heikin_candles,
+            trendline,
         )
 
     @ta_mom.sub_command()
@@ -111,6 +114,7 @@ class TechnicalAnalysisCommands(commands.Cog):
         end: str = "",
         extended_hours: bool = False,
         heikin_candles: bool = False,
+        trendline: bool = False,
     ):
         """Displays chart with commodity channel index [Yahoo Finance]
 
@@ -125,6 +129,7 @@ class TechnicalAnalysisCommands(commands.Cog):
         end: YYYY-MM-DD format
         extended_hours: Display Pre/After Market Hours. Default: False
         heikin_candles: Heikin Ashi candles. Default: False
+        trendline: Display trendline on Daily chart. Default: False
         """
         await ShowView().discord(
             cci_command,
@@ -139,6 +144,7 @@ class TechnicalAnalysisCommands(commands.Cog):
             end,
             extended_hours,
             heikin_candles,
+            trendline,
         )
 
     @ta_mom.sub_command()
@@ -155,6 +161,7 @@ class TechnicalAnalysisCommands(commands.Cog):
         end: str = "",
         extended_hours: bool = False,
         heikin_candles: bool = False,
+        trendline: bool = False,
     ):
         """Displays chart with moving average convergence/divergence [Yahoo Finance]
 
@@ -170,6 +177,7 @@ class TechnicalAnalysisCommands(commands.Cog):
         end: YYYY-MM-DD format
         extended_hours: Display Pre/After Market Hours. Default: False
         heikin_candles: Heikin Ashi candles. Default: False
+        trendline: Display trendline on Daily chart. Default: False
         """
         await ShowView().discord(
             macd_command,
@@ -185,6 +193,7 @@ class TechnicalAnalysisCommands(commands.Cog):
             end,
             extended_hours,
             heikin_candles,
+            trendline,
         )
 
     @ta_mom.sub_command()
@@ -201,6 +210,7 @@ class TechnicalAnalysisCommands(commands.Cog):
         end: str = "",
         extended_hours: bool = False,
         heikin_candles: bool = False,
+        trendline: bool = False,
     ):
         """Displays chart with relative strength index [Yahoo Finance]
 
@@ -216,6 +226,7 @@ class TechnicalAnalysisCommands(commands.Cog):
         end: YYYY-MM-DD format
         extended_hours: Display Pre/After Market Hours. Default: False
         heikin_candles: Heikin Ashi candles. Default: False
+        trendline: Display trendline on Daily chart. Default: False
         """
         await ShowView().discord(
             rsi_command,
@@ -231,6 +242,7 @@ class TechnicalAnalysisCommands(commands.Cog):
             end,
             extended_hours,
             heikin_candles,
+            trendline,
         )
 
     @ta_mom.sub_command()
@@ -247,6 +259,7 @@ class TechnicalAnalysisCommands(commands.Cog):
         end: str = "",
         extended_hours: bool = False,
         heikin_candles: bool = False,
+        trendline: bool = False,
     ):
         """Displays chart with stochastic relative strength average [Yahoo Finance]
 
@@ -262,6 +275,7 @@ class TechnicalAnalysisCommands(commands.Cog):
         end: YYYY-MM-DD format
         extended_hours: Display Pre/After Market Hours. Default: False
         heikin_candles: Heikin Ashi candles. Default: False
+        trendline: Display trendline on Daily chart. Default: False
         """
         await ShowView().discord(
             stoch_command,
@@ -277,6 +291,7 @@ class TechnicalAnalysisCommands(commands.Cog):
             end,
             extended_hours,
             heikin_candles,
+            trendline,
         )
 
     @ta_mom.sub_command()
@@ -291,6 +306,7 @@ class TechnicalAnalysisCommands(commands.Cog):
         end: str = "",
         extended_hours: bool = False,
         heikin_candles: bool = False,
+        trendline: bool = False,
     ):
         """Displays chart with fisher transformation [Yahoo Finance]
 
@@ -305,6 +321,7 @@ class TechnicalAnalysisCommands(commands.Cog):
         end: YYYY-MM-DD format
         extended_hours: Display Pre/After Market Hours. Default: False
         heikin_candles: Heikin Ashi candles. Default: False
+        trendline: Display trendline on Daily chart. Default: False
         """
         await ShowView().discord(
             fisher_command,
@@ -318,6 +335,7 @@ class TechnicalAnalysisCommands(commands.Cog):
             end,
             extended_hours,
             heikin_candles,
+            trendline,
         )
 
     @ta_mom.sub_command()
@@ -356,6 +374,7 @@ class TechnicalAnalysisCommands(commands.Cog):
         end: str = "",
         extended_hours: bool = False,
         heikin_candles: bool = False,
+        trendline: bool = False,
     ):
         """Displays chart with average directional movement index [Yahoo Finance]
 
@@ -371,6 +390,7 @@ class TechnicalAnalysisCommands(commands.Cog):
         end: YYYY-MM-DD format
         extended_hours: Display Pre/After Market Hours. Default : False
         heikin_candles: Heikin Ashi candles. Default: False
+        trendline: Display trendline on Daily chart. Default: False
         """
         await ShowView().discord(
             adx_command,
@@ -386,6 +406,7 @@ class TechnicalAnalysisCommands(commands.Cog):
             end,
             extended_hours,
             heikin_candles,
+            trendline,
         )
 
     @ta_trend.sub_command()
@@ -401,6 +422,7 @@ class TechnicalAnalysisCommands(commands.Cog):
         end: str = "",
         extended_hours: bool = False,
         heikin_candles: bool = False,
+        trendline: bool = False,
     ):
         """Displays chart with aroon indicator [Yahoo Finance]
 
@@ -415,6 +437,7 @@ class TechnicalAnalysisCommands(commands.Cog):
         end: YYYY-MM-DD format
         extended_hours: Display Pre/After Market Hours. Default: False
         heikin_candles: Heikin Ashi candles. Default: False
+        trendline: Display trendline on Daily chart. Default: False
         """
         await ShowView().discord(
             aroon_command,
@@ -429,6 +452,7 @@ class TechnicalAnalysisCommands(commands.Cog):
             end,
             extended_hours,
             heikin_candles,
+            trendline,
         )
 
     @ta_vlt.sub_command()
@@ -445,6 +469,7 @@ class TechnicalAnalysisCommands(commands.Cog):
         end: str = "",
         extended_hours: bool = False,
         heikin_candles: bool = False,
+        trendline: bool = False,
     ):
         """Displays chart with bollinger bands [Yahoo Finance]
 
@@ -453,13 +478,14 @@ class TechnicalAnalysisCommands(commands.Cog):
         ticker: Stock Ticker
         interval : Chart Minute Interval, 1440 for Daily
         past_days: Past Days to Display. Default: 0(Not for Daily)
-        length: length. Default: 5
+        length: length. Default: 20
         std: standard deviation. Default: 2.0
         ma_mode: mode of moving average.
         start: YYYY-MM-DD format
         end: YYYY-MM-DD format
         extended_hours: Display Pre/After Market Hours. Default: False
         heikin_candles: Heikin Ashi candles. Default: False
+        trendline: Display trendline on Daily chart. Default: False
         """
         await ShowView().discord(
             bbands_command,
@@ -475,6 +501,7 @@ class TechnicalAnalysisCommands(commands.Cog):
             end,
             extended_hours,
             heikin_candles,
+            trendline,
         )
 
     @ta_vlt.sub_command()
@@ -524,6 +551,7 @@ class TechnicalAnalysisCommands(commands.Cog):
         end: str = "",
         extended_hours: bool = False,
         heikin_candles: bool = False,
+        trendline: bool = False,
     ):
         """Displays chart with keltner channel [Yahoo Finance]
 
@@ -540,6 +568,7 @@ class TechnicalAnalysisCommands(commands.Cog):
         end: YYYY-MM-DD format
         extended_hours: Display Pre/After Market Hours. Default: False
         heikin_candles: Heikin Ashi candles. Default: False
+        trendline: Display trendline on Daily chart. Default: False
         """
         ma_mode = str(ma_mode)
         await ShowView().discord(
@@ -557,6 +586,7 @@ class TechnicalAnalysisCommands(commands.Cog):
             end,
             extended_hours,
             heikin_candles,
+            trendline,
         )
 
     @ta_vol.sub_command()
@@ -571,6 +601,7 @@ class TechnicalAnalysisCommands(commands.Cog):
         end: str = "",
         extended_hours: bool = False,
         heikin_candles: bool = False,
+        trendline: bool = False,
     ):
         """Displays chart with accumulation/distribution line [Yahoo Finance]
 
@@ -584,6 +615,7 @@ class TechnicalAnalysisCommands(commands.Cog):
         end: YYYY-MM-DD format
         extended_hours: Display Pre/After Market Hours. Default: False
         heikin_candles: Heikin Ashi candles. Default: False
+        trendline: Display trendline on Daily chart. Default: False
         """
         await ShowView().discord(
             ad_command,
@@ -597,6 +629,7 @@ class TechnicalAnalysisCommands(commands.Cog):
             end,
             extended_hours,
             heikin_candles,
+            trendline,
         )
 
     @ta_vol.sub_command()
@@ -613,6 +646,7 @@ class TechnicalAnalysisCommands(commands.Cog):
         end: str = "",
         extended_hours: bool = False,
         heikin_candles: bool = False,
+        trendline: bool = False,
     ):
         """Displays chart with chaikin oscillator [Yahoo Finance]
 
@@ -628,6 +662,7 @@ class TechnicalAnalysisCommands(commands.Cog):
         end: YYYY-MM-DD format
         extended_hours: Display Pre/After Market Hours. Default: False
         heikin_candles: Heikin Ashi candles. Default: False
+        trendline: Display trendline on Daily chart. Default: False
         """
         await ShowView().discord(
             adosc_command,
@@ -643,6 +678,7 @@ class TechnicalAnalysisCommands(commands.Cog):
             end,
             extended_hours,
             heikin_candles,
+            trendline,
         )
 
     @ta_vol.sub_command()
@@ -656,6 +692,7 @@ class TechnicalAnalysisCommands(commands.Cog):
         end: str = "",
         extended_hours: bool = False,
         heikin_candles: bool = False,
+        trendline: bool = False,
     ):
         """Displays chart with on balance volume [Yahoo Finance]
 
@@ -668,6 +705,7 @@ class TechnicalAnalysisCommands(commands.Cog):
         end: YYYY-MM-DD format
         extended_hours: Display Pre/After Market Hours. Default: False
         heikin_candles: Heikin Ashi candles. Default: False
+        trendline: Display trendline on Daily chart. Default: False
         """
         await ShowView().discord(
             obv_command,
@@ -680,6 +718,7 @@ class TechnicalAnalysisCommands(commands.Cog):
             end,
             extended_hours,
             heikin_candles,
+            trendline,
         )
 
     @ta.sub_command()
@@ -693,6 +732,7 @@ class TechnicalAnalysisCommands(commands.Cog):
         end: str = "",
         extended_hours: bool = False,
         heikin_candles: bool = False,
+        trendline: bool = False,
     ):
         """Displays chart with fibonacci retracement [Yahoo Finance]
 
@@ -705,6 +745,7 @@ class TechnicalAnalysisCommands(commands.Cog):
         end: YYYY-MM-DD format
         extended_hours: Display Pre/After Market Hours. Default: False
         heikin_candles: Heikin Ashi candles. Default: False
+        trendline: Display trendline on Daily chart. Default: False
         """
         await ShowView().discord(
             fib_command,
@@ -717,6 +758,7 @@ class TechnicalAnalysisCommands(commands.Cog):
             end,
             extended_hours,
             heikin_candles,
+            trendline,
         )
 
     @ta.sub_command()

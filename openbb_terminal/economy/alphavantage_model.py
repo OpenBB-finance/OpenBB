@@ -57,8 +57,8 @@ def get_real_gdp(interval: str = "a") -> pd.DataFrame:
 
     # Successful requests
     if "data" in payload:
-        if r.json()["data"]:
-            data = pd.DataFrame(r.json()["data"])
+        if payload["data"]:
+            data = pd.DataFrame(payload["data"])
             data["date"] = pd.to_datetime(data["date"])
             data["GDP"] = data["value"].astype(float)
             data = data.drop(columns=["value"])
@@ -93,8 +93,8 @@ def get_gdp_capita() -> pd.DataFrame:
     data = pd.DataFrame()
     # Successful requests
     if "data" in payload:
-        if r.json()["data"]:
-            data = pd.DataFrame(r.json()["data"])
+        if payload["data"]:
+            data = pd.DataFrame(payload["data"])
             data["date"] = pd.to_datetime(data["date"])
             data["GDP"] = data["value"].astype(float)
             data = data.drop(columns=["value"])
@@ -128,8 +128,8 @@ def get_inflation() -> pd.DataFrame:
     data = pd.DataFrame()
     # Successful requests
     if "data" in payload:
-        if r.json()["data"]:
-            data = pd.DataFrame(r.json()["data"])
+        if payload["data"]:
+            data = pd.DataFrame(payload["data"])
             data["date"] = pd.to_datetime(data["date"])
             data["Inflation"] = data["value"].astype(float)
             data = data.drop(columns=["value"])
@@ -171,8 +171,8 @@ def get_cpi(interval: str) -> pd.DataFrame:
 
     # Successful requests
     if "data" in payload:
-        if r.json()["data"]:
-            data = pd.DataFrame(r.json()["data"])
+        if payload["data"]:
+            data = pd.DataFrame(payload["data"])
             data["date"] = pd.to_datetime(data["date"])
             data["CPI"] = data["value"].astype(float)
             data = data.drop(columns=["value"])
@@ -218,8 +218,8 @@ def get_treasury_yield(interval: str, maturity: str) -> pd.DataFrame:
 
     # Successful requests
     if "data" in payload:
-        if r.json()["data"]:
-            data = pd.DataFrame(r.json()["data"])
+        if payload["data"]:
+            data = pd.DataFrame(payload["data"])
             data["date"] = pd.to_datetime(data["date"])
             data["Yield"] = data["value"].astype(float)
             data = data.drop(columns=["value"])
@@ -255,8 +255,8 @@ def get_unemployment() -> pd.DataFrame:
 
     # Successful requests
     if "data" in payload:
-        if r.json()["data"]:
-            data = pd.DataFrame(r.json()["data"])
+        if payload["data"]:
+            data = pd.DataFrame(payload["data"])
             data["date"] = pd.to_datetime(data["date"])
             data["unemp"] = data["value"].astype(float)
             data = data.drop(columns=["value"])

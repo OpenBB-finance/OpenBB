@@ -53,15 +53,13 @@ def test_image():
 
 
 @pytest.mark.bots
-@pytest.mark.vcr
 def test_load(recorder):
-    value = load("GME", "2020-10-10")
+    value = load("GME", "2020-11-10")
 
     recorder.capture(value)
 
 
 @pytest.mark.bots
-@pytest.mark.vcr
 def test_quote(recorder):
     value = quote("GME")
 
@@ -138,6 +136,18 @@ def test_presets_custom_autocomp(recorder, search):
 def test_signals_autocomp(recorder, search):
     value = signals_autocomp("", search)
 
+    recorder.capture(value)
+
+
+@pytest.mark.bots
+def test_in_decreasing_color_list(recorder):
+    value = load("GME", "2021-10-11")
+    recorder.capture(value["Volume"])
+
+
+@pytest.mark.bots
+def test_chart_volume_scaling(recorder):
+    value = load("GME", "2021-10-11")
     recorder.capture(value)
 
 

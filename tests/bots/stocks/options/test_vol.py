@@ -22,7 +22,7 @@ def vcr_config():
 @pytest.mark.bots
 @pytest.mark.parametrize("min_sp, max_sp", [(None, None), (500.00, 1500.00)])
 def test_vol_command(recorder, min_sp, max_sp):
-    value = vol_command("TSLA", "2022-04-08", min_sp, max_sp)
+    value = vol_command("TSLA", "2022-04-14", min_sp, max_sp)
     value["imagefile"] = str(type(value["imagefile"]))
 
     recorder.capture(value)
@@ -33,4 +33,4 @@ def test_vol_command(recorder, min_sp, max_sp):
 @pytest.mark.parametrize("ticker", [None, "", "ZZZZ"])
 def test_vol_command_invalid(ticker):
     with pytest.raises(Exception):
-        vol_command(ticker, "2022-04-08")
+        vol_command(ticker, "2022-04-14")

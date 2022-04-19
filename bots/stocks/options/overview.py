@@ -65,7 +65,7 @@ def options_run(
             y=df_opt["OI_call"],
             name="Calls",
             mode="lines+markers",
-            line=dict(color="#00ACFF", width=3),
+            line=dict(color=imps.PLT_SCAT_INCREASING, width=3),
         )
     )
 
@@ -75,7 +75,7 @@ def options_run(
             y=df_opt["OI_put"],
             name="Puts",
             mode="lines+markers",
-            line=dict(color="#e4003a", width=3),
+            line=dict(color=imps.PLT_SCAT_DECREASING, width=3),
         )
     )
     fig.add_trace(
@@ -83,7 +83,7 @@ def options_run(
             x=[current_price, current_price],
             y=[dmin, dmax],
             mode="lines",
-            line=dict(color="gold", width=2),
+            line=dict(color=imps.PLT_SCAT_PRICE, width=2),
             name="Current Price",
         )
     )
@@ -114,7 +114,14 @@ def options_run(
             rangeslider=dict(visible=False),
         ),
         font=imps.PLT_FONT,
-        legend=dict(yanchor="top", y=0.99, xanchor="left", x=0.01),
+        legend=dict(
+            yanchor="top",
+            y=0.99,
+            xanchor="left",
+            font_size=8,
+            bgcolor="rgba(0, 0, 0, 0)",
+            x=0.01,
+        ),
         dragmode="pan",
     )
 
@@ -124,11 +131,6 @@ def options_run(
     if imps.INTERACTIVE:
         plt_link = imps.inter_chart(fig, imagefile, callback=False)
         reports.append(plt_link)
-
-    fig.update_layout(
-        width=800,
-        height=500,
-    )
 
     imagefile = imps.image_border(imagefile, fig=fig)
 

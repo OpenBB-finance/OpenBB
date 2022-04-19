@@ -34,7 +34,7 @@ def cc_hist_command(
         logger.info("opt hist %s, %s, %s, %s", ticker, strike, opt_type, expiry)
 
     # Check for argument
-    if not ticker:
+    if ticker is None:
         raise Exception("Stock ticker is required")
     yf_ticker = yf.Ticker(ticker)
     dates = list(yf_ticker.options)
@@ -67,8 +67,8 @@ def cc_hist_command(
             low=df_hist.Low,
             close=df_hist.Close,
             name="OHLC",
-            increasing_line_color="#00ACFF",
-            decreasing_line_color="#e4003a",
+            increasing_line_color=imps.PLT_CANDLE_INCREASING,
+            decreasing_line_color=imps.PLT_CANDLE_DECREASING,
             showlegend=False,
         ),
         secondary_y=True,
@@ -79,7 +79,7 @@ def cc_hist_command(
             y=df_hist.Volume,
             name="Volume",
             yaxis="y2",
-            marker_color="#fdc708",
+            marker_color=imps.PLT_CANDLE_VOLUME,
             opacity=0.3,
             showlegend=False,
         ),
@@ -101,9 +101,9 @@ def cc_hist_command(
             showgrid=False,
             fixedrange=False,
             side="left",
-            titlefont=dict(color="#fdc708", size=12),
+            titlefont=dict(color=imps.PLT_CANDLE_YAXIS_TEXT_COLOR, size=12),
             tickfont=dict(
-                color="#fdc708",
+                color=imps.PLT_CANDLE_YAXIS_TEXT_COLOR,
                 size=14,
             ),
             nticks=20,
@@ -138,11 +138,6 @@ def cc_hist_command(
     plt_link = ""
     if imps.INTERACTIVE:
         plt_link = imps.inter_chart(fig, imagefile, callback=False)
-
-    fig.update_layout(
-        width=800,
-        height=500,
-    )
 
     imagefile = imps.image_border(imagefile, fig=fig)
 
