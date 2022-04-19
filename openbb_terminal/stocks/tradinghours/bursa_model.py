@@ -31,13 +31,13 @@ def get_bursa(symbol: str) -> pd.DataFrame:
     symbol = symbol.upper()
     if symbol in bursa["short_name"].values:
         df = pd.DataFrame(bursa.loc[bursa["short_name"] == symbol]).transpose()
-        open = check_if_open(bursa, symbol)
-        df = df.append(pd.DataFrame([open], index=["open"], columns=df.columns.values))
+        is_open = check_if_open(bursa, symbol)
+        df = df.append(pd.DataFrame([is_open], index=["open"], columns=df.columns.values))
         return df
     if symbol in bursa.index:
         df = pd.DataFrame(bursa.loc[symbol])
-        open = check_if_open(bursa, symbol)
-        df = df.append(pd.DataFrame([open], index=["open"], columns=df.columns.values))
+        is_open = check_if_open(bursa, symbol)
+        df = df.append(pd.DataFrame([is_open], index=["open"], columns=df.columns.values))
         return df
     return pd.DataFrame()
 
@@ -55,13 +55,13 @@ def get_open() -> pd.DataFrame:
         Currently open exchanges
     """
     bursa = all_bursa()
-    is_open = []
+    is_open_list = []
     for exchange in bursa.index:
-        open = check_if_open(bursa, exchange)
-        is_open.append(open)
-    bursa["open"] = is_open
-    open = bursa.loc[bursa["open"] is True]
-    return open[["name", "short_name"]]
+        is_open = check_if_open(bursa, exchange)
+        is_open_list.append(is_open)
+    bursa["open"] = is_open_list
+    bursa = bursa.loc[bursa["open"]]
+    return bursa[["name", "short_name"]]
 
 
 @log_start_end(log=logger)
@@ -77,13 +77,13 @@ def get_closed() -> pd.DataFrame:
         Currently closed exchanges
     """
     bursa = all_bursa()
-    is_open = []
+    is_open_list = []
     for exchange in bursa.index:
-        open = check_if_open(bursa, exchange)
-        is_open.append(open)
-    bursa["open"] = is_open
-    open = bursa.loc[bursa["open"] is False]
-    return open[["name", "short_name"]]
+        is_open = check_if_open(bursa, exchange)
+        is_open_list.append(is_open)
+    bursa["open"] = is_open_list
+    bursa = bursa.loc[~bursa["open"]]
+    return bursa[["name", "short_name"]]
 
 
 @log_start_end(log=logger)
@@ -99,11 +99,11 @@ def get_all() -> pd.DataFrame:
         All available exchanges
     """
     bursa = all_bursa()
-    is_open = []
+    is_open_list = []
     for exchange in bursa.index:
-        open = check_if_open(bursa, exchange)
-        is_open.append(open)
-    bursa["open"] = is_open
+        is_open = check_if_open(bursa, exchange)
+        is_open_list.append(is_open)
+    bursa["open"] = is_open_list
     return bursa[["name", "short_name", "open"]]
 
 
@@ -120,11 +120,11 @@ def get_all_exchange_short_names() -> pd.DataFrame:
         All available exchanges short names
     """
     bursa = all_bursa()
-    is_open = []
+    is_open_list = []
     for exchange in bursa.index:
-        open = check_if_open(bursa, exchange)
-        is_open.append(open)
-    bursa["open"] = is_open
+        is_open = check_if_open(bursa, exchange)
+        is_open_list.append(is_open)
+    bursa["open"] = is_open_list
     return bursa[["short_name"]]
 
 
