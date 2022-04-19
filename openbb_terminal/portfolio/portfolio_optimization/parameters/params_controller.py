@@ -178,6 +178,7 @@ class ParametersController(BaseController):
 [info]Portfolio Risk Parameters (.ini or .xlsx)[/info]
     load          load portfolio risk parameters
     save          save portfolio risk parameters to specified file[/cmds]
+
 [param]Model of interest:[/param] {self.current_model} [cmds]
     clear         clear model of interest from filtered parameters
     set           set model of interest to filter parameters
