@@ -28,9 +28,10 @@ def get_sentiment(ticker: str) -> pd.DataFrame:
     result = requests.get(f"https://api.finbrain.tech/v0/sentiments/{ticker}")
     sentiment = pd.DataFrame()
     if result.status_code == 200:
-        if "sentimentAnalysis" in result.json():
+        result_json = result.json()
+        if "sentimentAnalysis" in result_json:
             sentiment = pd.DataFrame.from_dict(
-                result.json()["sentimentAnalysis"], orient="index"
+                result_json["sentimentAnalysis"], orient="index"
             )
             sentiment.index = pd.to_datetime(sentiment.index).to_pydatetime()
             sentiment.index.name = "date"
