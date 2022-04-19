@@ -40,7 +40,7 @@ repos:
           [
             "--ignore-words-list=zlot,ba,buil,coo,ether,hist,hsi,mape,navagation,operatio,pres,ser,yeld,shold,ist,varian,datas,AKE",
             "--quiet-level=2",
-            "--skip=./tests,.git,*.css,*.csv,*.html,*.ini,*.ipynb,*.js,*.json,*.lock,*.scss,*.txt,*.yaml,build/pyinstaller/*",
+            "--skip=./tests,.git,*.css,*.csv,*.html,*.ini,*.ipynb,*.js,*.json,*.lock,*.scss,*.txt,*.yaml,build/pyinstaller/*","openbb_terminal/stocks/tradinghours/data/bursa.py",
           ]
   - repo: https://github.com/pre-commit/mirrors-mypy
     rev: "v0.942"
