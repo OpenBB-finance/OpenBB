@@ -385,7 +385,8 @@ def remove_test_dir():
         for file in files:
             if file.endswith(".log"):
                 os.remove(f"{path}/{file}")
-          
+
+
 @pytest.fixture(autouse=True)
 def mock_matplotlib(mocker):
     mocker.patch("matplotlib.pyplot.show")
