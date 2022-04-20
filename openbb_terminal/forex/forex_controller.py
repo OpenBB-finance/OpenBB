@@ -12,9 +12,13 @@ from prompt_toolkit.completion import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.forex import av_view, forex_helper
+from openbb_terminal.forex import av_view, forex_helper, fxempire_view
 from openbb_terminal.forex.forex_helper import FOREX_SOURCES, SOURCES_INTERVALS
-from openbb_terminal.helper_funcs import parse_known_args_and_warn, valid_date
+from openbb_terminal.helper_funcs import (
+    parse_known_args_and_warn,
+    valid_date,
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
+)
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console
@@ -28,7 +32,7 @@ logger = logging.getLogger(__name__)
 class ForexController(BaseController):
     """Forex Controller class."""
 
-    CHOICES_COMMANDS = ["to", "from", "load", "quote", "candle", "resources"]
+    CHOICES_COMMANDS = ["to", "from", "load", "quote", "candle", "resources", "fwd"]
     CHOICES_MENUS = ["ta", "qa", "oanda", "pred"]
     PATH = "/forex/"
     FILE_PATH = os.path.join(os.path.dirname(__file__), "README.md")
@@ -63,7 +67,8 @@ class ForexController(BaseController):
 [cmds]
     quote         get last quote [src][AlphaVantage][/src]
     load          get historical data
-    candle        show candle plot for loaded data[/cmds]
+    candle        show candle plot for loaded pair
+    fwd           get forward rates for loaded pair[src][FXEmpire][/src][/cmds]
 [menu]
 >   ta          technical analysis for loaded coin,     e.g.: ema, macd, rsi, adx, bbands, obv
 >   qa          quantitative analysis,                  e.g.: decompose, cusum, residuals analysis
@@ -274,6 +279,31 @@ class ForexController(BaseController):
         if ns_parser:
             if self.to_symbol and self.from_symbol:
                 av_view.display_quote(self.to_symbol, self.from_symbol)
+            else:
+                logger.error(
+                    "Make sure both a 'to' symbol and a 'from' symbol are selected."
+                )
+                console.print(
+                    "[red]Make sure both a 'to' symbol and a 'from' symbol are selected.[/red]\n"
+                )
+
+    @log_start_end(log=logger)
+    def call_fwd(self, other_args: List[str]):
+        """Process fwd command."""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="fwd",
+            description="Get forward rates for loaded pair.",
+        )
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            if self.to_symbol and self.from_symbol:
+                fxempire_view.display_forward_rates(
+                    self.to_symbol, self.from_symbol, ns_parser.export
+                )
             else:
                 logger.error(
                     "Make sure both a 'to' symbol and a 'from' symbol are selected."

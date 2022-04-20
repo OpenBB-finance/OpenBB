@@ -1187,6 +1187,8 @@ main:
             ref: "/terminal/forex/select"
           - name: load
             ref: "/terminal/forex/load"
+          - name: fwd
+            ref: "/terminal/forex/fwd"
           - name: candle
             ref: "/terminal/forex/candle"
           - name: from
