@@ -9,6 +9,7 @@ import disnake
 from disnake.ext import commands
 from fastapi import FastAPI, Request
 
+
 try:
     from bots import config_discordbot as cfg
 except ImportError:
