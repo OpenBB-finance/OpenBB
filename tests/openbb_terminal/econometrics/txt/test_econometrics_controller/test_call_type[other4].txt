@@ -1,0 +1,3 @@
+
+badbad is not an option. Please choose between: int, float, str, bool, date, category
+

@@ -13,7 +13,7 @@ repos:
           ]
         entry: python custom_pre_commit/check_doc.py
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.1.0
+    rev: v4.2.0
     hooks:
       - id: check-yaml
       - id: end-of-file-fixer
@@ -68,7 +68,7 @@ repos:
           ["--baseline", ".secrets.baseline", "--exclude-files", "cassettes/*"]
         exclude: package.lock.json
   - repo: https://github.com/asottile/pyupgrade
-    rev: v2.31.1
+    rev: v2.32.0
     hooks:
       - id: pyupgrade
         args: [--py36-plus]

@@ -1,0 +1,34 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: GET
+    uri: https://api.ethplorer.io/getTokenInfo/0x1f9840a85d5af5bf1d1762f925bdaddc4201f984?apiKey=VALIDKEY
+  response:
+    body:
+      string: '{"error":{"code":1,"message":"Invalid API key"}}'
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '48'
+      Content-Type:
+      - text/html
+      Date:
+      - Sat, 09 Apr 2022 13:55:09 GMT
+      ETag:
+      - '"5e85ab36-30"'
+    status:
+      code: 401
+      message: Unauthorized
+version: 1
