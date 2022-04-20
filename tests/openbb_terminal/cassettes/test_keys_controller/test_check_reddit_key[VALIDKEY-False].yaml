@@ -1,0 +1,64 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - deflate, gzip
+      Accepts:
+      - application/json
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: GET
+    uri: https://sandbox-api.coinmarketcap.com/v1/cryptocurrency/map
+  response:
+    body:
+      string: "{\n    \"status\": {\n        \"timestamp\": \"2022-04-09T13:18:26.070Z\",\n
+        \       \"error_code\": 1002,\n        \"error_message\": \"API key missing.\",\n
+        \       \"elapsed\": 0,\n        \"credit_count\": 0\n    }\n}"
+    headers:
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '195'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sat, 09 Apr 2022 13:18:26 GMT
+      Referrer-Policy:
+      - origin-when-cross-origin
+      Server:
+      - Tengine
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains
+      Vary:
+      - origin
+      Via:
+      - 1.1 594efe86f4ed7fefc4c09d5ab66c9c1c.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id:
+      - 56GjWWXi-y3OA6KipDo7QD_Bw9clqzxMlkXfZi9rj63qNRbN06wmoA==
+      X-Amz-Cf-Pop:
+      - ORD51-C2
+      X-Cache:
+      - Error from cloudfront
+      X-Content-Type-Options:
+      - nosniff
+      X-Envoy-Decorator-Operation:
+      - coinmarketcap-pro-apis.sandbox.svc.cluster.local:80/*
+      X-Envoy-Upstream-Service-Time:
+      - '0'
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Traefik-Route:
+      - coinmarketcap-pro-apis-sandbox
+      X-Xss-Protection:
+      - 1; mode=block
+    status:
+      code: 401
+      message: Unauthorized
+version: 1
