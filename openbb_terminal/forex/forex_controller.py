@@ -289,7 +289,7 @@ class ForexController(BaseController):
 
     @log_start_end(log=logger)
     def call_fwd(self, other_args: List[str]):
-        """Process quote command."""
+        """Process fwd command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
