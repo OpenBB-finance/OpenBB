@@ -214,9 +214,12 @@ def prepare_all_coins_df() -> pd.DataFrame:
 
     binance_coins_df = load_binance_map().rename(columns={"symbol": "Binance"})
     coinbase_coins_df = load_coinbase_map().rename(columns={"symbol": "Coinbase"})
+    gecko_coins_df.symbol = gecko_coins_df.symbol.str.upper()
+
     gecko_paprika_coins_df = pd.merge(
-        gecko_coins_df, paprika_coins_df, on="name", how="left"
+        gecko_coins_df, paprika_coins_df, on="symbol", how="right"
     )
+
     df_merged = pd.merge(
         left=gecko_paprika_coins_df,
         right=binance_coins_df,
@@ -227,7 +230,7 @@ def prepare_all_coins_df() -> pd.DataFrame:
     df_merged.rename(
         columns={
             "id_x": "CoinGecko",
-            "symbol_x": "Symbol",
+            "symbol": "Symbol",
             "id_y": "CoinPaprika",
         },
         inplace=True,
@@ -247,6 +250,8 @@ def prepare_all_coins_df() -> pd.DataFrame:
         },
         inplace=True,
     )
+
+    yahoofinance_coins_df.Symbol = yahoofinance_coins_df.Symbol.str.upper()
 
     df_merged = pd.merge(
         left=df_merged,
@@ -407,12 +412,15 @@ def load(
             return None, None, None, None, None, None
 
         try:
-            coin_map_df = coins_map_df.loc[symbol].copy()
+            coin_map_df = coins_map_df.loc[
+                coins_map_df.index == symbol.upper() if symbol is not None else symbol
+            ]
+
             if not isinstance(coin_map_df, pd.Series):
                 coin_map_df["null_values"] = coin_map_df.apply(
                     lambda x: sum(x.isnull().values), axis=1
                 )
-                coin_map_df = coin_map_df[
+                coin_map_df = coin_map_df.loc[
                     coin_map_df.null_values == coin_map_df.null_values.min()
                 ]
                 coin_map_df = coin_map_df.iloc[0]
