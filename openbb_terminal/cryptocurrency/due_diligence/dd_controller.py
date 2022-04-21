@@ -178,23 +178,23 @@ class DueDiligenceController(CryptoBaseController):
    dev             github, bitbucket coin development statistics
    bc              links to blockchain explorers for loaded coin
 [src]Binance[/src]
-   binbook         show order book
-   balance         show coin balance
+   binbook         order book
+   balance         coin balance
 [src]Coinbase[/src]
-   cbbook          show order book
-   trades          show last trades
-   stats           show coin stats
+   cbbook          order book
+   trades          last trades
+   stats           coin stats
 [src]Messari[/src]
-   mcapdom         show market cap dominance
-   mt              show messari timeseries
-   rm              show roadmap
-   tk              show tokenomics e.g. circulating/max/total supply, emission type, etc
-   pi              show project information e.g. technology details, public repos, audits, vulns
-   team            show contributors (individuals and organizations)
-   inv             show investors (individuals and organizations)
-   gov             show governance details
-   fr              show fundraising details e.g. treasury accounts, sales rounds, allocation
-   links           show links e.g. whitepaper, github, twitter, youtube, reddit, telegram[/cmds]"""
+   mcapdom         market cap dominance
+   mt              messari timeseries e.g. twitter followers, circ supply, etc
+   rm              roadmap
+   tk              tokenomics e.g. circulating/max/total supply, emission type, etc
+   pi              project information e.g. technology details, public repos, audits, vulns
+   team            contributors (individuals and organizations)
+   inv             investors (individuals and organizations)
+   gov             governance details
+   fr              fundraising details e.g. treasury accounts, sales rounds, allocation
+   links           links e.g. whitepaper, github, twitter, youtube, reddit, telegram[/cmds]"""
         console.print(text=help_text, menu="Stocks - Due Diligence")
 
     def custom_reset(self):
@@ -1298,6 +1298,14 @@ class DueDiligenceController(CryptoBaseController):
             """,
         )
 
+        parser.add_argument(
+            "--chart",
+            action="store_true",
+            help="Flag to show chart with coin price and roadmap dates",
+            dest="chart",
+            default=False,
+        )
+
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
@@ -1305,6 +1313,7 @@ class DueDiligenceController(CryptoBaseController):
         if ns_parser:
             messari_view.display_roadmap(
                 coin=self.symbol.upper(),
+                show_chart=ns_parser.chart,
                 export=ns_parser.export,
             )
 

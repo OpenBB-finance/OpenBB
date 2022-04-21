@@ -1125,6 +1125,7 @@ def get_links(symbol: str) -> pd.DataFrame:
         data = r.json()["data"]
         df = pd.DataFrame(data["profile"]["general"]["overview"]["official_links"])
         df.columns = map(str.capitalize, df.columns)
+        return df
     if r.status_code == 401:
         print("[red]Invalid API Key[/red]\n")
     else:

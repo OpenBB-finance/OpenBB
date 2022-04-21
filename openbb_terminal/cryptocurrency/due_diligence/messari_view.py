@@ -6,14 +6,18 @@ __docformat__ = "numpy"
 import logging
 import os
 from typing import List, Optional
-
+from datetime import datetime
+import pandas as pd
+import numpy as np
 from matplotlib import pyplot as plt
 from matplotlib import ticker
+from matplotlib import dates as mdates
 
 from openbb_terminal.config_terminal import theme
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import check_api_key
 from openbb_terminal import config_plot as cfgPlot
+from openbb_terminal.cryptocurrency.due_diligence import glassnode_view
 from openbb_terminal.cryptocurrency.due_diligence.messari_model import (
     TIMESERIES,
     get_fundraising,
@@ -211,7 +215,9 @@ def display_links(coin: str, export: str = "") -> None:
 @check_api_key(["API_MESSARI_KEY"])
 def display_roadmap(
     coin: str,
+    show_chart: bool = True,
     export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Display coin roadmap
     [Source: https://messari.io/]
@@ -235,6 +241,38 @@ def display_roadmap(
             show_index=False,
             title=f"{coin} Roadmap",
         )
+        if show_chart:
+            df_prices = glassnode_view.get_close_price(
+                coin, "24h", 1_325_376_000, int(datetime.timestamp(datetime.now()))
+            )
+            if not df_prices.empty:
+                if not external_axes:
+                    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
+                else:
+                    if len(external_axes) != 1:
+                        logger.error("Expected list of one axis item.")
+                        console.print("[red]Expected list of one axis item./n[/red]")
+                        return
+                    (ax,) = external_axes
+
+                roadmap_dates = np.array(
+                    pd.to_datetime(df["Date"], format="%Y-%m-%d", errors="coerce")
+                )
+                roadmap_dates = mdates.date2num(roadmap_dates)
+                ax.vlines(
+                    x=roadmap_dates, color="orange", ymin=0, ymax=df_prices["v"].max()
+                )
+                ax.plot(df_prices.index, df_prices["v"].values)
+                ax.get_yaxis().set_major_formatter(
+                    ticker.FuncFormatter(lambda x, _: lambda_long_number_format(x))
+                )
+                ax.set_title(f"{coin.upper()} Price and Roadmap")
+                ax.set_ylabel("Price [$]")
+                ax.set_xlim(df_prices.index[0], df_prices.index[-1])
+                theme.style_primary_axis(ax)
+
+                if not external_axes:
+                    theme.visualize_output()
 
         export_data(
             export,
@@ -281,26 +319,48 @@ def display_tokenomics(
             show_index=False,
             title=f"{coin} Tokenomics",
         )
-        # This plot has 1 axis
         if not external_axes:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
+            ax2 = ax.twinx()
         else:
             if len(external_axes) != 1:
                 logger.error("Expected list of one axis item.")
                 console.print("[red]Expected list of one axis item./n[/red]")
                 return
-            (ax,) = external_axes
+            (ax, ax2) = external_axes
+        df_prices = glassnode_view.get_close_price(
+            coin,
+            "24h",
+            int(circ_df.index[0].value / 1_000_000_000),
+            int(circ_df.index[-1].value / 1_000_000_000) + 24 * 60 * 60,
+        )
 
-        ax.plot(circ_df.index, circ_df["values"])
+        color_palette = theme.get_colors()
+        ax.plot(
+            circ_df.index,
+            circ_df["values"],
+            color=color_palette[0],
+            label="Circ Supply",
+        )
+        ax.plot(np.nan, label="Price", color=color_palette[1])
+        if not df_prices.empty:
+            ax2.plot(circ_df.index, df_prices["v"], color=color_palette[1])
+            ax2.get_yaxis().set_major_formatter(
+                ticker.FuncFormatter(lambda x, _: lambda_long_number_format(x))
+            )
+            ax2.set_ylabel(f"{coin} price [$]")
+            theme.style_twin_axis(ax2)
+            ax2.yaxis.set_label_position("right")
+            ax.legend()
         ax.get_yaxis().set_major_formatter(
             ticker.FuncFormatter(lambda x, _: lambda_long_number_format(x))
         )
         ax.set_title(f"{coin} circulating supply over time")
         ax.set_ylabel(f"{coin} Number")
         ax.set_xlim(circ_df.index[0], circ_df.index[-1])
-
         theme.style_primary_axis(ax)
-
+        ax.yaxis.set_label_position("left")
+        ax.legend()
         if not external_axes:
             theme.visualize_output()
 
