@@ -1,20 +1,12 @@
 # IMPORTATION STANDARD
 import os
-import json
 from distutils.util import strtobool
 
 # IMPORTATION THIRDPARTY
 from dotenv import load_dotenv
 
 # IMPORTATION INTERNAL
-from openbb_terminal.core.config.constants import DEFAULT_FILE, ENV_FILE
-
-if DEFAULT_FILE.is_file():
-    with open(DEFAULT_FILE) as f:
-        default_dict = json.load(f)
-
-    for key, value in default_dict.items():
-        os.environ[key] = value
+from openbb_terminal.core.config.constants import ENV_FILE
 
 if ENV_FILE.is_file():
     load_dotenv(dotenv_path=ENV_FILE, override=True)

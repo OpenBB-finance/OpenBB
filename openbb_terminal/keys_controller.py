@@ -1,6 +1,8 @@
 """Keys Controller Module"""
 __docformat__ = "numpy"
 
+# pylint: disable=too-many-lines
+
 import argparse
 import logging
 import os
@@ -29,13 +31,11 @@ from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console
 
-# pylint: disable=too-many-lines,no-member,too-many-public-methods,C0302
 
 logger = logging.getLogger(__name__)
-# pylint:disable=import-outside-toplevel
 
 
-class KeysController(BaseController):
+class KeysController(BaseController):  # pylint: disable=too-many-public-methods
     """Keys Controller class"""
 
     CHOICES_COMMANDS: List[str] = [
@@ -107,7 +107,7 @@ class KeysController(BaseController):
             df = TimeSeries(
                 key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas"
             ).get_intraday(symbol="AAPL")
-            if df[0].empty:
+            if df[0].empty:  # pylint: disable=no-member
                 logger.warning("Alpha Vantage key defined, test failed")
                 self.key_dict["ALPHA_VANTAGE"] = "defined, test failed"
             else:
