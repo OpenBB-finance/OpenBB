@@ -5,10 +5,9 @@ import matplotlib.pyplot as plt
 
 from bots import config_discordbot as cfg
 from bots.helpers import image_border
-from openbb_terminal.config_plot import PLOT_DPI
+from bots.imps import BOT_PLOT_DPI, bot_plot_scale
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.economy import cnn_model
-from openbb_terminal.helper_funcs import plot_autoscale
 
 logger = logging.getLogger(__name__)
 
@@ -19,7 +18,7 @@ def feargreed_command(indicator=""):
 
     # Debug user input
     if cfg.DEBUG:
-        logger.debug("econ-futures")
+        logger.debug("econ-feargreed")
 
     # Check for argument
     possible_indicators = ("", "jbd", "mv", "pco", "mm", "sps", "spb", "shd")
@@ -30,7 +29,7 @@ def feargreed_command(indicator=""):
         )
     # Output data
 
-    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    fig, ax = plt.subplots(figsize=bot_plot_scale(), dpi=BOT_PLOT_DPI)
 
     report, im = cnn_model.get_feargreed_report(indicator, fig)
     ax.axes.xaxis.set_visible(False)

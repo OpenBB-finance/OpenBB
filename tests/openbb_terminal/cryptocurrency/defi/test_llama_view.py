@@ -81,7 +81,7 @@ def test_display_defi_tvl(mocker):
     llama_view.display_defi_tvl(20)
 
 
-@pytest.mark.vcr(before_record_response=filter_json_data)
+@pytest.mark.vcr()
 @pytest.mark.record_stdout
 def test_display_grouped_defi_protocols(mocker):
     # MOCK EXPORT_DATA

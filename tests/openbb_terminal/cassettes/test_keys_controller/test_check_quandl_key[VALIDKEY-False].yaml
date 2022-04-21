@@ -1,0 +1,97 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+      accept:
+      - application/json
+      request-source:
+      - python
+      request-source-version:
+      - 3.7.0
+      x-api-token:
+      - VALIDKEY
+    method: GET
+    uri: https://data.nasdaq.com/api/v3/datatables/ZACKS/FC?ticker%5B%5D=AAPL&ticker%5B%5D=MSFT&per_end_date.gte=2015-01-01&qopts.columns%5B%5D=ticker&qopts.columns%5B%5D=per_end_date
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAA/5WQTwuCQBTEv8ucV1AXIr0J0akgsJvIYvoIaV1lXaGQ/e6t0R9KL/FOM/yYx8yI
+        qjDuTpIQjw+BOMuQJIcdGEI/WHt+5HEfOftxuceDubtaZBcTgvCVsE+3x3nCl8v/YKMl9/ktZyhb
+        OTSqdz1HqKJxxWHq8kLaoebWTTo1ulZnWPYmOtKCVCXcQvThNpOyuWVoaFrO4XQ1ohx032pRV4jV
+        IKW1d+5psDJnAQAA
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - '*'
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Expose-Headers:
+      - X-RateLimit-Limit, X-RateLimit-Remaining
+      Access-Control-Max-Age:
+      - '1728000'
+      Allow:
+      - GET, HEAD, POST, PUT, DELETE, OPTIONS, PATCH
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Security-Policy:
+      - frame-ancestors 'self';
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sat, 09 Apr 2022 13:01:27 GMT
+      ETag:
+      - W/"d7cab2696c63f665357d438af9d4794f"
+      Location:
+      - https://data.nasdaq.com/api/v3/datatables/ZACKS/FC
+      Pragma:
+      - no-cache
+      Referrer-Policy:
+      - origin-when-cross-origin
+      Server:
+      - openresty
+      Set-Cookie:
+      - visid_incap_2170999=jQOeOvyMTjStCj+O33JBbqaDUWIAAAAAQUIPAAAAAACyjUnjiXPgKZqidSkzySi8;
+        expires=Sun, 09 Apr 2023 06:09:25 GMT; HttpOnly; path=/; Domain=.nasdaq.com
+      - nlbi_2170999=NcVneihkvjZo3JVBKj7S7QAAAAAkuL5C3myUqTDxCnSdRFTG; path=/; Domain=.nasdaq.com
+      - incap_ses_8080_2170999=DUziJzlIgDcwyNiYdu0hcKaDUWIAAAAAmBhxF60dp/TI6T6NlIoj9Q==;
+        path=/; Domain=.nasdaq.com
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Transfer-Encoding:
+      - chunked
+      X-CDN:
+      - Imperva
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Iinfo:
+      - 14-85349003-85349005 NNYN CT(22 52 0) RT(1649509286782 17) q(0 1 1 -1) r(2
+        2) U2
+      X-RateLimit-Limit:
+      - '50'
+      X-RateLimit-Remaining:
+      - '41'
+      X-Request-Id:
+      - 010b236e-0392-469d-934d-b9d4df970c6a
+      X-Runtime:
+      - '0.058996'
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1
