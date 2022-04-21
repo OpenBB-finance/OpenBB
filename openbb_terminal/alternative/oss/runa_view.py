@@ -59,39 +59,41 @@ def display_rossindex(
         if show_chart:
             if external_axes is None:
                 fig, ax1 = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-                ax2 = ax1.twinx()
+                # ax2 = ax1.twiny()
             else:
                 if len(external_axes) != 2:
                     logger.error("Expected list of two axis items.")
                     console.print("[red]Expected list of 2 axis item./n[/red]")
                     return
-                ax1, ax2 = external_axes
+                ax1, _ = external_axes
             for _, row in df[::-1].iterrows():
-                ax1.bar(
-                    x=row["GitHub"],
-                    height=row["Forks" if chart_type == "forks" else "Stars"],
+                ax1.barh(
+                    y=row["GitHub"],
+                    width=row["Forks" if chart_type == "forks" else "Stars"],
                 )
-            ax2.plot(
-                ax1.get_xticks(),
-                df[::-1]["FG" if chart_type == "forks" else "SG"].values,
-            )
-            ax1.set_ylabel("Forks" if chart_type == "forks" else "Stars")
-            ax1.get_yaxis().set_major_formatter(
+            # ax2.plot(
+            #    ax1.get_yticks(),
+            #    df[::-1]["FG" if chart_type == "forks" else "SG"].values,
+            # )
+            ax1.set_xlabel("Forks" if chart_type == "forks" else "Stars")
+            ax1.get_xaxis().set_major_formatter(
                 ticker.FuncFormatter(lambda x, _: lambda_long_number_format(x))
             )
-            ax1.grid()
-            ax2.set_ylabel(
-                "Forks Growth [%]" if chart_type == "forks" else "Stars Growth [%]"
-            )
-            ax1.set_xlabel("Company")
-            ax1.xaxis.set_tick_params(labelsize=8)
+            ax1.grid(axis="y")
+            # ax2.set_xlabel(
+            #    "Forks Annual Growth" if chart_type == "forks" else "Stars Annual Growth"
+            # )
+            ax1.yaxis.set_label_position("left")
+            ax1.yaxis.set_ticks_position("left")
+            ax1.set_ylabel("Company")
+            ax1.yaxis.set_tick_params(labelsize=8)
             fig.tight_layout(pad=6)
             ax1.set_title("ROSS Index")
-            ax1.tick_params(axis="x", labelrotation=90)
             if external_axes is None:
                 theme.visualize_output()
         show_df = df.drop(["SG", "FG"], axis=1)
         show_df = show_df.fillna("")
+        show_df["GitHub"] = show_df["GitHub"].str.wrap(10)
         print_rich_table(
             show_df.head(top),
             headers=list(show_df.columns),
