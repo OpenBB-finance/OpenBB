@@ -30,5 +30,6 @@ def test_display_rossindex(mocker):
         descend=False,
         top=10,
         show_chart=True,
+        show_growth=False,
         chart_type="stars",
     )

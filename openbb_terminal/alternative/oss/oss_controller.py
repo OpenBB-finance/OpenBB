@@ -163,6 +163,13 @@ class OSSController(BaseController):
             default=False,
         )
         parser.add_argument(
+            "--growth",
+            action="store_true",
+            help="Flag to show growth chart",
+            dest="show_growth",
+            default=False,
+        )
+        parser.add_argument(
             "-ct",
             "--chart-type",
             type=str,
@@ -185,6 +192,7 @@ class OSSController(BaseController):
                 descend=ns_parser.descend,
                 top=ns_parser.limit,
                 show_chart=ns_parser.show_chart,
+                show_growth=ns_parser.show_growth,
                 chart_type=ns_parser.chart_type,
                 export=ns_parser.export,
             )
