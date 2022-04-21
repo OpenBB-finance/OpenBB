@@ -29,7 +29,8 @@ from openbb_terminal.portfolio.portfolio_optimization import (
     optimizer_view,
 )
 from openbb_terminal.portfolio.portfolio_optimization.parameters import (
-    params_controller, params_view
+    params_controller,
+    params_view,
 )
 from openbb_terminal.rich_config import console
 
@@ -391,9 +392,12 @@ class PortfolioOptimizationController(BaseController):
         ]
 
         self.current_file = "defaults.ini"
-        self.DEFAULT_PATH = os.path.abspath(os.path.join(
-            os.path.dirname(__file__), "..", "..", "..", "portfolio", "optimization"))
-        self.file_types = ['xlsx', 'ini']
+        self.DEFAULT_PATH = os.path.abspath(
+            os.path.join(
+                os.path.dirname(__file__), "..", "..", "..", "portfolio", "optimization"
+            )
+        )
+        self.file_types = ["xlsx", "ini"]
         self.DATA_FILES = {
             filepath.name: filepath
             for file_type in self.file_types
@@ -401,15 +405,20 @@ class PortfolioOptimizationController(BaseController):
             if filepath.is_file()
         }
 
-        self.params.read(os.path.join(self.DEFAULT_PATH, self.current_file if self.current_file else "defaults.ini"))
+        self.params.read(
+            os.path.join(
+                self.DEFAULT_PATH,
+                self.current_file if self.current_file else "defaults.ini",
+            )
+        )
         self.params.optionxform = str  # type: ignore
-        self.params = self.params['OPENBB']
+        self.params = self.params["OPENBB"]
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["property"]["-p"] = {c: None for c in self.yf_info_choices}
             choices["property"]["--property"] = {c: None for c in self.yf_info_choices}
-            choices['file'] = {c: None for c in self.DATA_FILES}
+            choices["file"] = {c: None for c in self.DATA_FILES}
 
             for fn in models:
                 choices[fn]["-p"] = {c: None for c in self.period_choices}
@@ -553,14 +562,12 @@ class PortfolioOptimizationController(BaseController):
             required=True,
             nargs="+",
             dest="file",
-            help="Parameter file to be used"
+            help="Parameter file to be used",
         )
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-f")
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args
-        )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
             self.current_file = " ".join(ns_parser.file)
@@ -576,7 +583,11 @@ class PortfolioOptimizationController(BaseController):
     def call_params(self, other_args: List[str]):
         """Process params command"""
         self.queue = self.load_class(
-            params_controller.ParametersController, self.file, self.queue, self.params, self.current_model
+            params_controller.ParametersController,
+            self.file,
+            self.queue,
+            self.params,
+            self.current_model,
         )
 
     @log_start_end(log=logger)
@@ -746,19 +757,13 @@ class PortfolioOptimizationController(BaseController):
                     optimizer_view.display_weights(self.portfolios[portfolio])
 
                     for category in categories:
-                        c = {
-                            self.categories[category][key]: 0.0
-                            for key in self.categories[category]
-                        }
-                        for key in self.categories[category]:
-                            if key in self.portfolios[portfolio]:
-                                c[self.categories[category][key]] += self.portfolios[
-                                    portfolio
-                                ][key]
-                        for key in c:
-                            c[key] = round(c[key], 5)
-                        console.print("Category - " + category)
-                        optimizer_view.display_weights(c)
+                        console.print("")
+                        optimizer_view.display_categories(
+                            weights=self.portfolios[portfolio],
+                            categories=self.categories,
+                            column=category,
+                            title="Category - " + category.title(),
+                        )
                     flag = False
 
             if flag:
@@ -781,7 +786,7 @@ class PortfolioOptimizationController(BaseController):
             "-e",
             "--filename",
             type=str,
-            default="categories.xlsx",
+            default="allocation.xlsx",
             dest="filename",
             help="file name with file extension",
         )
@@ -789,7 +794,16 @@ class PortfolioOptimizationController(BaseController):
             "-f",
             "--folder",
             type=lambda s: s.replace("\\", "/"),
-            default=os.path.join(os.path.dirname(__file__), "Stocks"),
+            default=os.path.abspath(
+                os.path.join(
+                    os.path.dirname(__file__),
+                    "..",
+                    "..",
+                    "..",
+                    "portfolio",
+                    "allocation",
+                )
+            ),
             dest="folder",
             help="path where the file is located, path use '' instead of '/' for subfolders",
         )
@@ -817,7 +831,7 @@ class PortfolioOptimizationController(BaseController):
             categories = categories.apply(lambda x: x.astype(str).str.upper())
             categories = categories[~categories.index.duplicated(keep="first")]
             try:
-                categories.set_index("STOCKS", inplace=True)
+                categories.set_index("TICKER", inplace=True)
             except:
                 console.print("File table needs a STOCKS column\n")
                 return

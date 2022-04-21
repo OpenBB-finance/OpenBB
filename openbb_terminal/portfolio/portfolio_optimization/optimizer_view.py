@@ -5,6 +5,7 @@ __docformat__ = "numpy"
 
 import logging
 import math
+from tkinter.tix import COLUMN
 import warnings
 from typing import Dict, List, Optional
 from datetime import date
@@ -305,15 +306,22 @@ def display_weights(weights: dict, market_neutral: bool = False):
     weight_df = pd.DataFrame.from_dict(data=weights, orient="index", columns=["value"])
     if not market_neutral:
         if math.isclose(weight_df.sum()["value"], 1, rel_tol=0.1):
-            weight_df["value"] = (weight_df["value"] * 100).astype(str).apply(
-                lambda s: " " + s[:4] if s.find(".") == 1 else "" + s[:5]
+            weight_df["value"] = (weight_df["value"] * 100).apply(
+                lambda s: "{:.2f}".format(s)
             ) + " %"
-        else:
             weight_df["value"] = (
                 weight_df["value"]
                 .astype(str)
-                .apply(lambda s: " " + s[:4] if s.find(".") == 1 else "" + s[:5])
-                + " $"
+                .apply(lambda s: " " * (8 - len(s)) + s if len(s) < 8 else "" + s)
+            )
+        else:
+            weight_df["value"] = (weight_df["value"] * 100).apply(
+                lambda s: "{:.0f}".format(s)
+            ) + " $"
+            weight_df["value"] = (
+                weight_df["value"]
+                .astype(str)
+                .apply(lambda s: " " * (16 - len(s)) + s if len(s) < 16 else "" + s)
             )
 
         print_rich_table(weight_df, headers=["Value"], show_index=True, title="Weights")
@@ -322,6 +330,99 @@ def display_weights(weights: dict, market_neutral: bool = False):
         tot_value = weight_df["value"].abs().mean()
         header = "Value ($)" if tot_value > 1.01 else "Value (%)"
         print_rich_table(weight_df, headers=[header], show_index=True, title="Weights")
+
+
+@log_start_end(log=logger)
+def display_categories(weights: dict, categories: dict, column: str, title: str = ""):
+    """
+    Prints categories in a nice format
+
+    Parameters
+    ----------
+    weights: dict
+        weights to display.  Keys are stocks.  Values are either weights or values
+    categories: dict
+        categories to display. Keys are stocks.  Values are either weights or values
+    column: int.
+        column selected to show table
+        - ASSET_CLASS
+        - SECTOR
+        - INDUSTRY
+        - COUNTRY
+    """
+    if not weights:
+        return
+    weight_df = pd.DataFrame.from_dict(
+        data=weights, orient="index", columns=["value"], dtype=float
+    )
+    categories_df = pd.DataFrame.from_dict(data=categories, dtype=float)
+
+    col = list(categories_df.columns).index(column)
+    categories_df = weight_df.join(categories_df.iloc[:, [col, 4, 5]], how="inner")
+    categories_df.set_index(column, inplace=True)
+    categories_df.groupby(level=0).sum()
+
+    table_df = pd.pivot_table(
+        categories_df,
+        values=["value", "CURRENT_INVESTED_AMOUNT"],
+        index=["CURRENCY", column],
+        aggfunc=np.sum,
+    )
+    table_df["CURRENT_WEIGHTS"] = (
+        table_df["CURRENT_INVESTED_AMOUNT"]
+        .groupby(level=0)
+        .transform(lambda x: x / sum(x))
+    )
+    table_df["value"] = (
+        table_df["value"].groupby(level=0).transform(lambda x: x / sum(x))
+    )
+    table_df = pd.concat(
+        [
+            d.append(d.sum().rename((k, "TOTAL " + k)))
+            for k, d in table_df.groupby(level=0)
+        ]
+    )
+    table_df = table_df.iloc[:, [0, 2, 1]]
+
+    table_df["value"] = (table_df["value"] * 100).apply(
+        lambda s: "{:.2f}".format(s)
+    ) + " %"
+    table_df["value"] = (
+        table_df["value"]
+        .astype(str)
+        .apply(lambda s: " " * (8 - len(s)) + s if len(s) < 8 else "" + s)
+    )
+    table_df["CURRENT_WEIGHTS"] = (table_df["CURRENT_WEIGHTS"] * 100).apply(
+        lambda s: "{:.2f}".format(s)
+    ) + " %"
+    table_df["CURRENT_WEIGHTS"] = (
+        table_df["CURRENT_WEIGHTS"]
+        .astype(str)
+        .apply(
+            lambda s: " " * (len("CURRENT_WEIGHTS") - len(s)) + s
+            if len(s) < len("CURRENT_WEIGHTS")
+            else "" + s
+        )
+    )
+    table_df["CURRENT_INVESTED_AMOUNT"] = (
+        table_df["CURRENT_INVESTED_AMOUNT"].apply(lambda s: "{:,.0f}".format(s)) + " $"
+    )
+    table_df["CURRENT_INVESTED_AMOUNT"] = (
+        table_df["CURRENT_INVESTED_AMOUNT"]
+        .astype(str)
+        .apply(
+            lambda s: " " * (len("CURRENT_INVESTED_AMOUNT") - len(s)) + s
+            if len(s) < len("CURRENT_INVESTED_AMOUNT")
+            else "" + s
+        )
+    )
+
+    table_df.reset_index(inplace=True)
+    table_df.set_index("CURRENCY", inplace=True)
+
+    headers = list(table_df.columns)
+    headers = [s.title() for s in headers]
+    print_rich_table(table_df, headers=headers, show_index=True, title=title)
 
 
 @log_start_end(log=logger)
