@@ -3,18 +3,18 @@ __docformat__ = "numpy"
 
 # pylint: disable=C0302
 
-import os
-import configparser
 import argparse
+import configparser
 import logging
+import os
 from pathlib import Path
-import pandas as pd
 from typing import List, Dict
-import pathlib
 
+import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 
 from openbb_terminal import feature_flags as gtff
+from openbb_terminal import parent_classes
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     check_non_negative,
@@ -583,12 +583,12 @@ class PortfolioOptimizationController(BaseController):
     def call_params(self, other_args: List[str]):
         """Process params command"""
         self.queue = self.load_class(
-            params_controller.ParametersController,
-            self.file,
-            self.queue,
-            self.params,
-            self.current_model,
+            params_controller.ParametersController, self.current_file, self.queue, self.params, self.current_model
         )
+
+        self.current_file = parent_classes.controllers["/portfolio/po/params/"].current_file
+        self.current_model = parent_classes.controllers["/portfolio/po/params/"].current_model
+        self.params = parent_classes.controllers["/portfolio/po/params/"].params
 
     @log_start_end(log=logger)
     def call_show(self, other_args: List[str]):
