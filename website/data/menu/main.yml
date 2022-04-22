@@ -1218,6 +1218,8 @@ main:
           - name: os
             ref: "/terminal/alternative/oss"
             sub:
+              - name: rossidx
+                ref: "/terminal/alternative/oss/rossidx"
               - name: tr
                 ref: "/terminal/alternative/oss/tr"
               - name: sh
