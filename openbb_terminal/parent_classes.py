@@ -529,6 +529,8 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                     ns_parser.ticker
                 )
                 console.print(self.add_info)
+                if ns_parser.interval == 1440 and ns_parser.filepath is None:
+                    stocks_helper.show_quick_performance(self.stock, ns_parser.ticker)
                 if "." in ns_parser.ticker:
                     self.ticker, self.suffix = ns_parser.ticker.upper().split(".")
                 else:
