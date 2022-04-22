@@ -30,6 +30,7 @@ from openbb_terminal.stocks.dark_pool_shorts import (
     shortinterest_view,
     stockgrid_view,
     yahoofinance_view,
+    ibkr_view,
 )
 
 logger = logging.getLogger(__name__)
@@ -41,6 +42,7 @@ class DarkPoolShortsController(StockBaseController):
     CHOICES_COMMANDS = [
         "load",
         "shorted",
+        "ctb",
         "hsi",
         "prom",
         "pos",
@@ -82,6 +84,8 @@ class DarkPoolShortsController(StockBaseController):
 
 [src][Yahoo Finance][/src]
     shorted        show most shorted stocks
+[src][Interactive Broker][/src]
+    ctb            stocks with highest cost to borrow
 [src][Shortinterest.com][/src]
     hsi            show top high short interest stocks of over 20% ratio
 [src][FINRA][/src]
@@ -131,6 +135,35 @@ class DarkPoolShortsController(StockBaseController):
         if ns_parser:
             yahoofinance_view.display_most_shorted(
                 num_stocks=ns_parser.limit,
+                export=ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
+    def call_ctb(self, other_args: List[str]):
+        """Process CTB command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="ctb",
+            description="Print stocks with highest cost to borrow. [Source: Interactive Broker]",
+        )
+        parser.add_argument(
+            "-n",
+            "--number",
+            action="store",
+            dest="number",
+            type=check_int_range(1, 10000),
+            default=20,
+            help="Number of stocks with high cost to borrow to retrieve.",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            ibkr_view.display_cost_to_borrow(
+                num_stocks=ns_parser.number,
                 export=ns_parser.export,
             )
 

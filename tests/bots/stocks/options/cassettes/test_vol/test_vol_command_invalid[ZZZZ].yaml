@@ -37,7 +37,7 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Sun, 03 Apr 2022 20:46:22 GMT
+      - Mon, 11 Apr 2022 01:19:59 GMT
       server:
       - ATS
       vary:
@@ -45,13 +45,13 @@ interactions:
       x-envoy-decorator-operation:
       - finance-quote-api--mtls-production-gq1.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '2'
+      - '3'
       x-request-id:
-      - 766b9277-80ff-4a1e-bc94-34add1a48de2
+      - 57ba796e-4b03-4164-bdc0-45074051f156
       x-yahoo-request-id:
-      - 7jh8v51h4k1su
+      - borkfn5h570hv
       y-rid:
-      - 7jh8v51h4k1su
+      - borkfn5h570hv
     status:
       code: 200
       message: OK

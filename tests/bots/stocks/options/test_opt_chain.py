@@ -24,7 +24,7 @@ def vcr_config():
     "opt_type, min_sp, max_sp", [("Calls", None, None), ("Puts", 100.0, 1000.0)]
 )
 def test_chain_command(recorder, opt_type, min_sp, max_sp):
-    value = chain_command("TSLA", "2022-04-08", opt_type, min_sp, max_sp)
+    value = chain_command("TSLA", "2022-04-14", opt_type, min_sp, max_sp)
     value["view"] = str(type(value["view"]))
     value["embed"] = str(type(value["embed"]))
     value["choices"] = str(type(value["choices"]))

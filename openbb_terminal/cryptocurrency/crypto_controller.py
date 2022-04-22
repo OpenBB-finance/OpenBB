@@ -63,7 +63,18 @@ class CryptoController(CryptoBaseController):
         "prt",
         "resources",
     ]
-    CHOICES_MENUS = ["ta", "dd", "ov", "disc", "onchain", "defi", "nft", "pred", "qa"]
+    CHOICES_MENUS = [
+        "ta",
+        "dd",
+        "ov",
+        "disc",
+        "onchain",
+        "defi",
+        "tools",
+        "nft",
+        "pred",
+        "qa",
+    ]
 
     DD_VIEWS_MAPPING = {
         "cg": pycoingecko_view,
@@ -106,6 +117,7 @@ class CryptoController(CryptoBaseController):
 >   ov          overview of the cryptocurrencies,       e.g.: market cap, DeFi, latest news, top exchanges, stables
 >   onchain     information on different blockchains,   e.g.: eth gas fees, whale alerts, DEXes info
 >   defi        decentralized finance information,      e.g.: dpi, llama, tvl, lending, borrow, funding
+>   tools       explore different tools                 e.g.: apytoapr, il
 >   nft         non-fungible tokens,                    e.g.: today drops{has_ticker_start}
 >   dd          due-diligence for loaded coin,          e.g.: coin information, social media, market stats
 >   ta          technical analysis for loaded coin,     e.g.: ema, macd, rsi, adx, bbands, obv
@@ -429,6 +441,15 @@ class CryptoController(CryptoBaseController):
 
         else:
             console.print("No coin selected. Use 'load' to load a coin.\n")
+
+    @log_start_end(log=logger)
+    def call_tools(self, _):
+        """Process tools command"""
+        from openbb_terminal.cryptocurrency.tools.tools_controller import (
+            ToolsController,
+        )
+
+        self.queue = self.load_class(ToolsController, self.queue)
 
     @log_start_end(log=logger)
     def call_disc(self, _):

@@ -1,0 +1,77 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      CB-ACCESS-KEY:
+      - VALIDKEY
+      CB-ACCESS-PASSPHRASE:
+      - VALIDKEY
+      CB-ACCESS-SIGN:
+      - !!binary |
+        eHJUY1E3MWJiUHBrZ3BMNVltcFpTOUhuM2x3Q1JMWnZ4eEIvN3Z4QldTbz0=
+      CB-ACCESS-TIMESTAMP:
+      - '1649512507.4303648'
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-requests/2.27.1
+    method: GET
+    uri: https://api.pro.coinbase.com/accounts
+  response:
+    body:
+      string: '{"message":"Invalid API Key"}'
+    headers:
+      Access-Control-Allow-Headers:
+      - Content-Type, Accept, cb-session, cb-fp, cb-form-factor
+      Access-Control-Allow-Methods:
+      - GET,POST,DELETE,PUT
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Expose-Headers:
+      - cb-before, cb-after, cb-gdpr
+      Access-Control-Max-Age:
+      - '7200'
+      CF-Cache-Status:
+      - MISS
+      CF-RAY:
+      - 6f93bd13db5b1fef-IND
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '29'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sat, 09 Apr 2022 13:55:07 GMT
+      Etag:
+      - W/"1d-mmRSeO9uba2rhQtGfy4YjixIkt4"
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Dns-Prefetch-Control:
+      - 'off'
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+    status:
+      code: 401
+      message: Unauthorized
+version: 1

@@ -40,21 +40,21 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Sat, 02 Apr 2022 20:29:15 GMT
+      - Mon, 11 Apr 2022 01:14:18 GMT
       server:
       - ATS
       vary:
       - Origin
       x-envoy-decorator-operation:
-      - finance-chart-api--mtls-production-gq1.finance-k8s.svc.yahoo.local:4080/*
+      - finance-chart-api--mtls-canary-production-gq1.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
       - '2'
       x-request-id:
-      - 357affa2-1fe1-4562-a57e-5a7483e80930
+      - c6281ebf-5b6c-4d54-97d6-add8188f4fb0
       x-yahoo-request-id:
-      - 3qfr1h5h4hcgs
+      - 4thlu6th5707b
       y-rid:
-      - 3qfr1h5h4hcgs
+      - 4thlu6th5707b
     status:
       code: 404
       message: Not Found

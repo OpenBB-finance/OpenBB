@@ -50,9 +50,7 @@ def grains_command():
         columns={"prevClose": "PrevClose", "last": "Last", "change": "Change"}
     )
 
-    font_color = ["white"] * 3 + [
-        ["#e4003a" if boolv else "#00ACFF" for boolv in df["Change"].str.contains("-")]
-    ]
+    font_color = ["white"] * 3 + [imps.in_decreasing_color_list(df["Change"])]
 
     fig = imps.plot_df(
         df,

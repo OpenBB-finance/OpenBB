@@ -1,12 +1,12 @@
-                       Name Symbol  Category                                                                                                                        Chains Change 1H (%) Change 1D (%) Change 7D (%)   TVL ($)
-0                     Curve    CRV     Dexes                                                      Ethereum, Avalanche, Fantom, Polygon, Arbitrum,\nxDai, Harmony, Optimism     -0.125102      1.830004    -13.914751  16.890 B
-1                  MakerDAO    MKR   Minting                                                                                                                      Ethereum     -0.305751       3.19473        7.8493  15.525 B
-2                      AAVE   AAVE   Lending                                                                                                  Ethereum, Avalanche, Polygon      0.102426       4.25863      5.958386  11.550 B
-3            Convex Finance    CVX     Yield                                                                                                                      Ethereum     -0.096771      0.533554    -21.354754  11.465 B
-4  Polygon Bridge & Staking  MATIC     Chain                                                                                                                       Polygon      0.068409      5.981165     10.605475  10.856 B
-5                      WBTC   WBTC    Bridge                                                                                                                      Ethereum      0.264838       3.30441      6.710742  10.266 B
-6                      Lido    LDO   Staking                                                                                                       Ethereum, Terra, Solana     -0.111075       3.62708     -1.782691   8.215 B
-7                Multichain  MULTI    Bridge  Fantom, Avalanche, Ethereum, Binance, Arbitrum,\nMoonriver, OKExChain, Harmony, Polygon, Telos,\nHeco, xDai, Kucoin, Syscoin           0.0      1.288243    -19.811335   8.025 B
-8                    Anchor    ANC   Lending                                                                                                                         Terra     -0.230002     -7.262096    -15.738831   7.276 B
-9                 Instadapp   INST  Services                                                                                                                      Ethereum           0.0           0.0           0.0   6.859 B
+                       Name Symbol        Category                                                                              Chains Change 1H (%) Change 1D (%) Change 7D (%)   TVL ($)
+0                     Curve    CRV           Dexes  Ethereum, Avalanche, Fantom, Polygon, Arbitrum,\nxDai, Harmony, Moonbeam, Optimism      0.179147      1.157088     -2.681498  20.237 B
+1                      Lido    LDO  Liquid Staking                                                  Ethereum, Terra, Solana, Moonriver      0.536422       2.97267    -15.084123  17.337 B
+2                    Anchor    ANC         Lending                                                                    Terra, Avalanche       0.66355      0.907724     -8.835573  14.622 B
+3                  MakerDAO    MKR             CDP                                                                            Ethereum      0.449707      1.522035     -6.427184  14.312 B
+4                      AAVE   AAVE         Lending                                                        Ethereum, Avalanche, Polygon      0.370664      2.339944      -6.57344  13.112 B
+5            Convex Finance    CVX           Yield                                                                            Ethereum      0.321839      0.778416          None  12.225 B
+6                      WBTC   WBTC          Bridge                                                                            Ethereum      0.573662      1.159041    -10.985629  11.094 B
+7  Polygon Bridge & Staking  MATIC           Chain                                                                             Polygon      0.583879      4.134046     -8.565811  10.951 B
+8                   Uniswap    UNI           Dexes                                               Ethereum, Polygon, Arbitrum, Optimism       0.62949          None          None   7.380 B
+9                  Compound   COMP         Lending                                                                            Ethereum      0.529476      0.924896     -7.284813   6.230 B
 

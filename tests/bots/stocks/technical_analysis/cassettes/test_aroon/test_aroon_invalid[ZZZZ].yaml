@@ -15,9 +15,6 @@ interactions:
       string: '{"chart":{"result":null,"error":{"code":"Not Found","description":"No
         data found, symbol may be delisted"}}}'
     headers:
-      Accept-CH:
-      - Sec-CH-UA, Sec-CH-Mobile, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version,
-        Sec-CH-UA-Arch, Sec-CH-UA-Model, Sec-CH-UA-Full-Version
       Age:
       - '0'
       Cache-Control:
@@ -43,7 +40,7 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Sun, 03 Apr 2022 23:51:49 GMT
+      - Mon, 11 Apr 2022 03:43:40 GMT
       server:
       - ATS
       vary:
@@ -53,11 +50,11 @@ interactions:
       x-envoy-upstream-service-time:
       - '2'
       x-request-id:
-      - 3f4c3885-074b-4127-9c67-fea5c5e2c229
+      - 4ae091fe-7e2a-48d1-a7fc-35155bf99c33
       x-yahoo-request-id:
-      - bdhc70hh4kcol
+      - 4optdrhh578vc
       y-rid:
-      - bdhc70hh4kcol
+      - 4optdrhh578vc
     status:
       code: 404
       message: Not Found
