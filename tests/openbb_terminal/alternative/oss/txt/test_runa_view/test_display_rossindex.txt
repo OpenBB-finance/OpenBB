@@ -1,0 +1,12 @@
+                             GitHub      Company  Country           City Founded Raised [$M]    Language  Stars  Forks  Stars AGR [%]  Forks AGR [%]
+0             builderio/\npartytown      Builder      USA  San Francisco    2018        17.3  TypeScript   6830    158           3104          16196
+1                 tooljet/to\noljet      ToolJet    India      Bengaluru    2021         1.6  JavaScript   8856    657           1656           1034
+2                gravitl/ne\ntmaker     Netmaker      USA      Asheville    2021         0.1          Go   3546    213           1422           1532
+3  supertoken\ns/supertok\nens-core  SuperTokens    India         Mumbai    2019         1.5        Java   5343    180           1018            585
+4               safing/por\ntmaster       Safing  Austria          Baden    2017                      Go   2429     80           1016            357
+5                 medusajs/m\nedusa       Medusa  Denmark     Copenhagen    2021         1.0  JavaScript   9833    500            863           1135
+6       amplicatio\nn/amplicat\nion  Amplication   Israel       Tel Aviv    2020         6.6  TypeScript   6296    319            812            667
+7      charmbrace\nlet/soft-\nserve        Charm      USA       New York    2019         3.0          Go   1831     33            729           1784
+8            withfig/au\ntocomplete          Fig      USA  San Francisco    2020         2.4  TypeScript  14329   3425            716            486
+9         growthbook\n/growthboo\nk   GrowthBook      USA      Palo Alto    2020         0.5  TypeScript   2791    109            503            824
+
