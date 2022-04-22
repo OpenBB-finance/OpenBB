@@ -22,10 +22,8 @@ def display_news(
     region: str = "en",
     filter_: Optional[str] = None,
     source: str = "cp",
-    links: bool = True,
     currency: Optional[str] = None,
     top: int = 25,
-    sortby: str = "published_at",
     descend: bool = False,
     export: str = "",
 ) -> None:
@@ -42,8 +40,6 @@ def display_news(
     region: str
         Filter news by regions. Available regions are: en (English), de (Deutsch), nl (Dutch), es (Español),
         fr (Français), it (Italiano), pt (Português), ru (Русский)
-    sortby: str
-        Key to sort by.
     descend: bool
         Sort in descending order.
     export : str
@@ -59,11 +55,8 @@ def display_news(
         source=source,
     )
 
-    if not links:
-        df.drop("link", axis=1, inplace=True)
-
     if not df.empty:
-        df = df.sort_values(by=sortby, ascending=descend)
+        df = df.sort_values(by="published_at", ascending=descend)
         df["published_at"] = pd.to_datetime(df["published_at"]).dt.date
         df.drop(["negative_votes", "positive_votes", "domain"], axis=1, inplace=True)
 

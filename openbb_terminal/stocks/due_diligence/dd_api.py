@@ -15,6 +15,9 @@ from .marketwatch_view import sec_filings as sec
 from .csimarket_view import suppliers as supplier
 from .csimarket_view import customers as customer
 from .ark_view import display_ark_trades as arktrades
+from .santiment_view import display_github_activity as gh
+from .cryptopanic_view import display_news as news
+
 
 # Models
 models = _models(os.path.abspath(os.path.dirname(__file__)))

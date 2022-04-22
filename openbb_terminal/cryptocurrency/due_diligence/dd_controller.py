@@ -194,7 +194,7 @@ class DueDiligenceController(CryptoBaseController):
 [src]Santiment[/src]
    gh              show github activity over time
 [src][CryptoPanic][/src]
-    news           show loaded coin's most recent news[/cmds]
+   news            show loaded coin's most recent news[/cmds]
 """
         console.print(text=help_text, menu="Stocks - Due Diligence")
 
@@ -1411,9 +1411,7 @@ class DueDiligenceController(CryptoBaseController):
                 top=ns_parser.limit,
                 source=self.source,
                 currency=self.coin,
-                links=ns_parser.urls,
                 export=ns_parser.export,
-                sortby=ns_parser.sortby,
                 descend=ns_parser.descend,
                 post_kind=ns_parser.kind,
                 filter_=ns_parser.filter,
