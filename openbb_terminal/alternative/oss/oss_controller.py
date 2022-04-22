@@ -39,7 +39,7 @@ class OSSController(BaseController):
             choices: dict = {c: {} for c in self.controller_choices}
             choices["tr"]["-s"] = {c: None for c in ["stars", "forks"]}
             choices["rossidx"]["-s"] = {c: None for c in runa_model.SORT_COLUMNS}
-            choices["rossidx"]["-ct"] = {c: None for c in ["stars", "forks"]}
+            choices["rossidx"]["-t"] = {c: None for c in ["stars", "forks"]}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
@@ -134,7 +134,7 @@ class OSSController(BaseController):
             prog="rossidx",
             description="""
             Display list of startups from ross index [Source: https://runacap.com/]
-            Use --chart to display chart and -ct {stars,forks} to set chart type
+            Use --chart to display chart and -t {stars,forks} to set chart type
             """,
         )
         parser.add_argument(
@@ -156,6 +156,7 @@ class OSSController(BaseController):
         )
 
         parser.add_argument(
+            "-c",
             "--chart",
             action="store_true",
             help="Flag to show chart",
@@ -163,6 +164,7 @@ class OSSController(BaseController):
             default=False,
         )
         parser.add_argument(
+            "-g",
             "--growth",
             action="store_true",
             help="Flag to show growth chart",
@@ -170,7 +172,7 @@ class OSSController(BaseController):
             default=False,
         )
         parser.add_argument(
-            "-ct",
+            "-t",
             "--chart-type",
             type=str,
             dest="chart_type",
