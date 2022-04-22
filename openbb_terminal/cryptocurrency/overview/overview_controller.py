@@ -22,6 +22,8 @@ from openbb_terminal.cryptocurrency.overview import (
     coinpaprika_view,
     cryptopanic_model,
     cryptopanic_view,
+    loanscan_model,
+    loanscan_view,
     pycoingecko_model,
     pycoingecko_view,
     rekt_model,
@@ -63,8 +65,6 @@ class OverviewController(BaseController):
         "cgstables",
         "cgexchanges",
         "cgexrates",
-        "cgplatforms",
-        "cgproducts",
         "cgindexes",
         "cgderivatives",
         "cgcategories",
@@ -84,6 +84,7 @@ class OverviewController(BaseController):
         "btcrb",
         "altindex",
         "ch",
+        "cr",
     ]
 
     PATH = "/crypto/ov/"
@@ -95,6 +96,9 @@ class OverviewController(BaseController):
         if session and obbff.USE_PROMPT_TOOLKIT:
             crypto_hack_slugs = rekt_model.get_crypto_hack_slugs()
             choices: dict = {c: {} for c in self.controller_choices}
+            choices["cr"] = {c: {} for c in ["borrow", "supply"]}
+            choices["cr"]["-c"] = {c: None for c in loanscan_model.CRYPTOS}
+            choices["cr"]["-p"] = {c: None for c in loanscan_model.PLATFORMS}
             choices["ch"]["--sort"] = {c: None for c in rekt_model.HACKS_COLUMNS}
             choices["ch"]["-s"] = {c: None for c in crypto_hack_slugs}
             choices["ch"]["--slug"] = {c: None for c in crypto_hack_slugs}
@@ -105,12 +109,6 @@ class OverviewController(BaseController):
             }
             choices["cgstables"]["-s"] = {
                 c: None for c in pycoingecko_model.COINS_COLUMNS
-            }
-            choices["cgproducts"]["-s"] = {
-                c: None for c in pycoingecko_model.PRODUCTS_FILTERS
-            }
-            choices["cgplatforms"]["-s"] = {
-                c: None for c in pycoingecko_model.PLATFORMS_FILTERS
             }
             choices["cgexrates"]["-s"] = {
                 c: None for c in pycoingecko_model.EXRATES_FILTERS
@@ -156,8 +154,6 @@ class OverviewController(BaseController):
     cgstables         stablecoins
     cgexchanges       top crypto exchanges
     cgexrates         coin exchange rates
-    cgplatforms       crypto financial platforms
-    cgproducts        crypto financial products
     cgindexes         crypto indexes
     cgderivatives     crypto derivatives
     cgcategories      crypto categories
@@ -184,6 +180,8 @@ class OverviewController(BaseController):
     btcrb             display bitcoin rainbow price chart (logarithmic regression)
 [src][Rekt][/src]
     ch                lists major crypto-related hacks
+[src][LoanScan][/src]
+    cr                crypto supply or borrow interest rates
 """
         console.print(text=help_text, menu="Cryptocurrency - Overview")
 
@@ -671,108 +669,59 @@ class OverviewController(BaseController):
             )
 
     @log_start_end(log=logger)
-    def call_cgproducts(self, other_args):
-        """Process products command"""
+    def call_cr(self, other_args):
+        """Process cr command"""
         parser = argparse.ArgumentParser(
-            prog="cgproducts",
+            prog="cr",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            description="""Shows Top Crypto Financial Products with which you can earn yield, borrow or lend your crypto.
-                You can display only N number of platforms with --limit parameter.
-                You can sort data by Rank,  Platform, Identifier, Supply_Rate, Borrow_Rate with --sort
-                and also with --descend flag to sort descending.
-                Displays: Rank,  Platform, Identifier, Supply_Rate, Borrow_Rate""",
+            description="""Displays crypto {borrow,supply} interest rates for cryptocurrencies across several platforms.
+                You can select rate type with --type {borrow,supply}
+                You can display only N number of platforms with --limit parameter.""",
         )
 
         parser.add_argument(
-            "-l",
-            "--limit",
-            dest="limit",
-            type=check_positive,
-            help="display N number records",
-            default=15,
-        )
-
-        parser.add_argument(
-            "-s",
-            "--sort",
-            dest="sortby",
+            "-t",
+            "--type",
+            dest="type",
             type=str,
-            help="Sort by given column. Default: Rank",
-            default="Rank",
-            choices=pycoingecko_model.PRODUCTS_FILTERS,
+            help="Select interest rate type",
+            default="supply",
+            choices=["borrow", "supply"],
+        )
+        parser.add_argument(
+            "-c",
+            "--cryptocurrrencies",
+            dest="cryptos",
+            type=loanscan_model.check_valid_coin,
+            help=f"""Cryptocurrencies to search interest rates for separated by comma.
+            Default: BTC,ETH,USDT,USDC. Options: {",".join(loanscan_model.CRYPTOS)}""",
+            default="BTC,ETH,USDT,USDC",
         )
 
         parser.add_argument(
-            "--descend",
-            action="store_false",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
-            default=True,
+            "-p",
+            "--platforms",
+            dest="platforms",
+            type=loanscan_model.check_valid_platform,
+            help=f"""Platforms to search interest rates in separated by comma.
+            Default: BlockFi,Ledn,SwissBorg,Youhodler. Options: {",".join(loanscan_model.PLATFORMS)}""",
+            default="BlockFi,Ledn,SwissBorg,Youhodler",
         )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-t")
 
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED, limit=10
         )
         if ns_parser:
-            pycoingecko_view.display_products(
-                top=ns_parser.limit,
+            loanscan_view.display_crypto_rates(
+                rate_type=ns_parser.type,
+                cryptos=ns_parser.cryptos,
+                platforms=ns_parser.platforms,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
-                sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
-            )
-
-    @log_start_end(log=logger)
-    def call_cgplatforms(self, other_args):
-        """Process platforms command"""
-        parser = argparse.ArgumentParser(
-            prog="cgplatforms",
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            description="""Shows Top Crypto Financial Platforms in which you can borrow or lend your crypto.
-                e.g Celsius, Nexo, Crypto.com, Aave and others.
-                You can display only N number of platforms with --limit parameter.
-                You can sort data by Rank, Name, Category, Centralized with --sort
-                and also with --descend flag to sort descending.
-                Displays: Rank, Name, Category, Centralized, Url""",
-        )
-
-        parser.add_argument(
-            "-l",
-            "--limit",
-            dest="limit",
-            type=check_positive,
-            help="display N number records",
-            default=15,
-        )
-
-        parser.add_argument(
-            "-s",
-            "--sort",
-            dest="sortby",
-            type=str,
-            help="Sort by given column. Default: Rank",
-            default="Rank",
-            choices=pycoingecko_model.PLATFORMS_FILTERS,
-        )
-
-        parser.add_argument(
-            "--descend",
-            action="store_false",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
-            default=True,
-        )
-
-        ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            pycoingecko_view.display_platforms(
-                top=ns_parser.limit,
-                export=ns_parser.export,
-                sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
             )
 
     @log_start_end(log=logger)

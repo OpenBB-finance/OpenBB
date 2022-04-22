@@ -83,7 +83,8 @@ def display_grouped_defi_protocols(
 
     ax.yaxis.set_label_position("left")
     ax.yaxis.set_ticks_position("left")
-    ax.legend(loc="best")
+    handles, labels = ax.get_legend_handles_labels()
+    ax.legend(handles[::-1], labels[::-1], loc="best")
 
     if not external_axes:
         cfg.theme.visualize_output()

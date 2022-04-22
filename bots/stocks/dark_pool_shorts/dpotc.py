@@ -47,7 +47,7 @@ def dpotc_command(ticker: str = ""):
         rows=2,
         cols=1,
         shared_xaxes=True,
-        vertical_spacing=0.07,
+        vertical_spacing=0.05,
         row_width=[0.4, 0.6],
         specs=[[{"secondary_y": True}], [{"secondary_y": False}]],
     )
@@ -151,8 +151,9 @@ def dpotc_command(ticker: str = ""):
         margin=dict(l=20, r=0, t=10, b=20),
         template=imps.PLT_CANDLE_STYLE_TEMPLATE,
         colorway=imps.PLT_TA_COLORWAY,
-        title=f"Dark Pools (ATS) vs OTC (Non-ATS) Data for {ticker}",
-        title_x=0.5,
+        title=f"<b>Dark Pools (ATS) vs OTC (Non-ATS) Data for {ticker}</b>",
+        title_x=0.025,
+        title_font_size=14,
         yaxis3_title="Shares per Trade",
         yaxis_title="Total Weekly Shares",
         xaxis2_title="Weeks",
@@ -195,11 +196,6 @@ def dpotc_command(ticker: str = ""):
     plt_link = ""
     if imps.INTERACTIVE:
         plt_link = imps.inter_chart(fig, imagefile, callback=False)
-
-    fig.update_layout(
-        width=800,
-        height=500,
-    )
 
     imagefile = imps.image_border(imagefile, fig=fig)
 

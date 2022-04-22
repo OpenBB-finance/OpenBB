@@ -1,0 +1,34 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: GET
+    uri: https://api.sentimentinvestor.com/v1/trending?token=VALIDKEY
+  response:
+    body:
+      string: '{"error":"Authorization error 3"}'
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Content-Length:
+      - '33'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sat, 09 Apr 2022 13:55:07 GMT
+      Etag:
+      - W/"21-Obpk/qH/cxSMkfn074GB3iqvKjY"
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1

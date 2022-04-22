@@ -23,7 +23,7 @@ def smile_command(
         logger.debug("opt smile %s %s %s %s", ticker, expiry, min_sp, max_sp)
 
     # Check for argument
-    if not ticker:
+    if ticker is None:
         raise Exception("Stock ticker is required")
 
     dates = yfinance_model.option_expirations(ticker)
@@ -57,10 +57,10 @@ def smile_command(
             name="Calls",
             mode="lines+markers",
             marker=dict(
-                color="#00ACFF",
+                color=imps.PLT_SCAT_INCREASING,
                 size=4.5,
             ),
-            line=dict(color="#00ACFF", width=2, dash="dash"),
+            line=dict(color=imps.PLT_SCAT_INCREASING, width=2, dash="dash"),
         )
     )
 
@@ -71,10 +71,10 @@ def smile_command(
             name="Puts",
             mode="lines+markers",
             marker=dict(
-                color="#e4003a",
+                color=imps.PLT_SCAT_DECREASING,
                 size=4.5,
             ),
-            line=dict(color="#e4003a", width=2, dash="dash"),
+            line=dict(color=imps.PLT_SCAT_DECREASING, width=2, dash="dash"),
         )
     )
 
@@ -102,7 +102,14 @@ def smile_command(
             rangeslider=dict(visible=False),
             nticks=20,
         ),
-        legend=dict(yanchor="top", y=0.99, xanchor="left", x=0.01),
+        legend=dict(
+            yanchor="top",
+            y=0.99,
+            xanchor="left",
+            font_size=8,
+            bgcolor="rgba(0, 0, 0, 0)",
+            x=0.01,
+        ),
         dragmode="pan",
     )
 
@@ -112,11 +119,6 @@ def smile_command(
     plt_link = ""
     if imps.INTERACTIVE:
         plt_link = imps.inter_chart(fig, imagefile, callback=False)
-
-    fig.update_layout(
-        width=800,
-        height=500,
-    )
 
     imagefile = imps.image_border(imagefile, fig=fig)
 

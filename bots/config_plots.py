@@ -1,4 +1,16 @@
+import os
 from typing import Any, List, Optional, Tuple
+
+BOT_PLOT_DPI = int(os.getenv("OPENBB_BOT_PLOT_DPI", "300"))
+BOT_PLOT_HEIGHT = int(os.getenv("OPENBB_BOT_PLOT_HEIGHT", "2500"))
+BOT_PLOT_WIDTH = int(os.getenv("OPENBB_BOT_PLOT_WIDTH", "3500"))
+
+
+def bot_plot_scale():
+    x = BOT_PLOT_WIDTH / (BOT_PLOT_DPI)
+    y = BOT_PLOT_HEIGHT / (BOT_PLOT_DPI)
+    return x, y
+
 
 # Vsurf Plot Settings
 PLT_3DMESH_COLORSCALE = "Jet"
@@ -28,7 +40,16 @@ PLT_3DMESH_STYLE_TEMPLATE = "plotly_dark"
 
 # Chart Plots Settings
 PLT_CANDLE_STYLE_TEMPLATE = "plotly_dark"
+PLT_CANDLE_INCREASING = "#00ACFF"
+PLT_CANDLE_DECREASING = "#e4003a"
+PLT_CANDLE_VOLUME = "#fdc708"
+PLT_CANDLE_NEWS_MARKER = "rgba(255, 215, 0, 0.9)"
+PLT_CANDLE_NEWS_MARKER_LINE = "gold"
+PLT_CANDLE_YAXIS_TEXT_COLOR = "#fdc708"
 PLT_SCAT_STYLE_TEMPLATE = "plotly_dark"
+PLT_SCAT_INCREASING = "#00ACFF"
+PLT_SCAT_DECREASING = "#e4003a"
+PLT_SCAT_PRICE = "#fdc708"
 PLT_TA_STYLE_TEMPLATE = "plotly_dark"
 PLT_FONT = dict(
     family="Fira Code",
@@ -58,15 +79,15 @@ PLT_FIB_COLORWAY: List[Any] = [
 ]
 PLT_WATERMARK = dict(
     source=(
-        "https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/images"
-        "/gst_logo_lockup_rGreen_with_letters_only.png"
+        "https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal"
+        "/main/images/openbb_logo.png"
     ),
     xref="paper",
     yref="paper",
-    x=0.88,
-    y=0.28,
-    sizex=0.8,
-    sizey=0.9,
+    x=0.86,
+    y=0.08,
+    sizex=1.15,
+    sizey=1.20,
     opacity=0.04,
     xanchor="right",
     yanchor="bottom",
@@ -75,10 +96,10 @@ PLT_WATERMARK = dict(
 
 # Table Plots Settings
 PLT_TBL_HEADER = dict(
-    height=30,
+    height=16,
     fill_color="rgb(30, 30, 30)",
     font_color="white",
-    font_size=14,
+    font_size=12,
     line_color="rgb(63, 63, 63)",
     line_width=2,
 )
@@ -95,3 +116,5 @@ PLT_TBL_ROW_COLORS: Optional[Tuple[str, str]] = (
     "rgb(55, 55, 55)",
     "rgb(50, 50, 50)",
 )
+PLT_TBL_INCREASING = "#00ACFF"
+PLT_TBL_DECREASING = "#e4003a"

@@ -1,0 +1,46 @@
+interactions:
+- request:
+    body: '{"query": "\n            {\n            ethereum {\n            dexTrades(options:
+      {limit: 10, desc: \"count\"}) {\n                count\n                protocol\n            }}}\n            "}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '196'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-requests/2.27.1
+      x-api-key:
+      - VALIDKEY
+    method: POST
+    uri: https://graphql.bitquery.io/
+  response:
+    body:
+      string: "<html>\r\n<head><title>401 Authorization Required</title></head>\r\n<body>\r\n<center><h1>401
+        Authorization Required</h1></center>\r\n<hr><center>nginx</center>\r\n</body>\r\n</html>\r\n"
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '172'
+      Content-Type:
+      - text/html
+      Date:
+      - Sat, 09 Apr 2022 13:55:07 GMT
+      Server:
+      - nginx
+    status:
+      code: 401
+      message: Unauthorized
+version: 1

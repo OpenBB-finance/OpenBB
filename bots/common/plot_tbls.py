@@ -9,6 +9,7 @@ import plotly
 def plot_df(
     df: Union[pd.Series, pd.DataFrame],
     print_index: bool = True,
+    multi_index: bool = False,
     title: Optional[dict] = None,
     tbl_header_visible: bool = True,
     tbl_header: Optional[dict] = None,
@@ -105,7 +106,7 @@ def plot_df(
         return color_list
 
     def _tbl_values():
-        if print_index:
+        if print_index and not multi_index:
             header_values = [
                 "<b>" + x + "<b>"
                 for x in [
@@ -114,6 +115,9 @@ def plot_df(
                 ]
             ]
             cell_values = [df.index, *[df[col] for col in df]]
+        elif multi_index:
+            header_values = df.columns.tolist()
+            cell_values = df.T.values
         else:
             header_values = ["<b>" + x + "<b>" for x in df.columns.to_list()]
             cell_values = [df[col] for col in df]

@@ -54,8 +54,9 @@ def get_big_mac_index(country_code: str) -> pd.DataFrame:
     df = pd.DataFrame()
 
     if r.status_code == 200:
-        df = pd.DataFrame(r.json()["dataset"]["data"])
-        df.columns = r.json()["dataset"]["column_names"]
+        response_json = r.json()
+        df = pd.DataFrame(response_json["dataset"]["data"])
+        df.columns = response_json["dataset"]["column_names"]
         df["Date"] = pd.to_datetime(df["Date"])
 
     # Wrong API Key

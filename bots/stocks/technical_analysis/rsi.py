@@ -22,6 +22,7 @@ def rsi_command(
     end="",
     extended_hours: bool = False,
     heikin_candles: bool = False,
+    trendline: bool = False,
     news: bool = False,
 ):
     """Displays chart with relative strength index [Yahoo Finance]"""
@@ -30,7 +31,7 @@ def rsi_command(
     if imps.DEBUG:
         # pylint: disable=logging-too-many-args
         logger.debug(
-            "ta rsi %s %s %s %s %s %s",
+            "ta rsi %s %s %s %s %s %s %s %s %s %s %s %s",
             ticker,
             interval,
             past_days,
@@ -41,6 +42,7 @@ def rsi_command(
             end,
             extended_hours,
             heikin_candles,
+            trendline,
             news,
         )
 
@@ -87,11 +89,12 @@ def rsi_command(
         news,
         bar=bar_start,
         int_bar=interval,
+        trendline=trendline,
         rows=2,
         cols=1,
         shared_xaxes=True,
-        vertical_spacing=0.07,
-        row_width=[0.5, 0.6],
+        vertical_spacing=0.05,
+        row_width=[0.4, 0.7],
         specs=[
             [{"secondary_y": True}],
             [{"secondary_y": False}],
@@ -105,7 +108,9 @@ def rsi_command(
             name=f"RSI {length}",
             mode="lines",
             x=df_ta.index,
-            y=df_ta.iloc[:, 6].values if interval != 1440 else df_ta.iloc[:, 11].values,
+            y=df_ta.iloc[:, 6].values
+            if (not trendline) and (interval != 1440)
+            else df_ta.iloc[:, 11].values,
             opacity=1,
         ),
         row=2,
@@ -169,11 +174,6 @@ def rsi_command(
     plt_link = ""
     if imps.INTERACTIVE:
         plt_link = imps.inter_chart(fig, imagefile, callback=False)
-
-    fig.update_layout(
-        width=800,
-        height=500,
-    )
 
     imagefile = imps.image_border(imagefile, fig=fig)
 
