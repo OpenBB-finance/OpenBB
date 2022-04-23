@@ -1,0 +1,38 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: GET
+    uri: https://cryptopanic.com/api/v1/posts/?auth_token=VALIDKEY&kind=all
+  response:
+    body:
+      string: '{"status":"Incomplete","info":"Token not found"}'
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '48'
+      Content-Type:
+      - application/json
+      Date:
+      - Sat, 09 Apr 2022 13:55:08 GMT
+      Server:
+      - nginx/1.19.3
+      Strict-Transport-Security:
+      - max-age=31536000
+      Vary:
+      - Cookie
+      X-Frame-Options:
+      - SAMEORIGIN
+    status:
+      code: 400
+      message: Bad Request
+version: 1

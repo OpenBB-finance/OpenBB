@@ -1,0 +1,37 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: GET
+    uri: https://api.polygon.io/v2/aggs/ticker/AAPL/range/1/day/2020-06-01/2020-06-17?apiKey=VALIDKEY
+  response:
+    body:
+      string: '{"status":"ERROR","request_id":"7e5f2472684f0a998bcb87ded56f0ab8","error":"Unknown
+        API Key"}'
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '92'
+      Content-Type:
+      - application/json
+      Date:
+      - Sat, 09 Apr 2022 13:01:28 GMT
+      Server:
+      - nginx/1.19.2
+      Strict-Transport-Security:
+      - max-age=15724800; includeSubDomains
+      X-Request-Id:
+      - 7e5f2472684f0a998bcb87ded56f0ab8
+    status:
+      code: 401
+      message: Unauthorized
+version: 1
