@@ -212,7 +212,7 @@ class EconometricsController(BaseController):
             for feature in ["export", "options", "show", "desc", "clear", "index"]:
                 self.choices[feature] = {c: None for c in self.files}
 
-        self.completer = NestedCompleter.from_nested_dict(self.choices)
+            self.completer = NestedCompleter.from_nested_dict(self.choices)
 
     def print_help(self):
         """Print help"""
@@ -291,12 +291,12 @@ class EconometricsController(BaseController):
                     index_name="file name",
                     title="Examples from Statsmodels",
                 )
-            elif len(ns_parser.file) == 1:
+            elif ns_parser.file and len(ns_parser.file) == 1:
                 console.print(
                     f"Please provide an alias to the dataset (format: <file> <alias>). For example: "
                     f"'load {ns_parser.file[0] if len(ns_parser.file) > 0 else 'TSLA.xlsx'} dataset'"
                 )
-            else:
+            elif ns_parser.file:
                 file, alias = ns_parser.file
 
                 data = econometrics_model.load(
