@@ -8,6 +8,12 @@ from dotenv import load_dotenv
 # IMPORTATION INTERNAL
 from openbb_terminal.core.config.constants import ENV_FILE
 
+import i18n
+
+i18n.load_path.append("i18n")
+i18n.set("locale", "en")
+i18n.set("filename_format", "{locale}.{format}")
+
 if ENV_FILE.is_file():
     load_dotenv(dotenv_path=ENV_FILE, override=True)
 

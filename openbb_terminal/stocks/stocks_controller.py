@@ -28,6 +28,8 @@ from openbb_terminal.parent_classes import StockBaseController
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks import stocks_helper
 
+import i18n
+
 # pylint: disable=R1710,import-outside-toplevel,R0913,R1702
 
 logger = logging.getLogger(__name__)
@@ -104,31 +106,31 @@ class StocksController(StockBaseController):
         has_ticker_start = "" if self.ticker else "[unvl]"
         has_ticker_end = "" if self.ticker else "[/unvl]"
         help_text = f"""[cmds]
-    search      search a specific stock ticker for analysis
-    load        load a specific stock ticker and additional info for analysis[/cmds][param]
+    search      {i18n.t('stocks/search')}
+    load        {i18n.t('stocks/load')}[/cmds][param]
 
 Stock: [/param]{stock_text}
 {self.add_info}[cmds]
-    quote       view the current price for a specific stock ticker
-    candle      view a candle chart for a specific stock ticker
-    news        latest news of the company[/cmds] [src][News API][/src]
+    quote       {i18n.t('stocks/quote')}
+    candle      {i18n.t('stocks/candle')}
+    news        {i18n.t('stocks/news')}[/cmds] [src][News API][/src]
 [menu]
->   options     options menu,  \t\t\t e.g.: chains, open interest, greeks, parity
->   disc        discover trending stocks, \t e.g.: map, sectors, high short interest
->   sia         sector and industry analysis, \t e.g.: companies per sector, quick ratio per industry and country
->   dps         dark pool and short data, \t e.g.: darkpool, short interest, ftd
->   scr         screener stocks, \t\t e.g.: overview/performance, using preset filters
->   ins         insider trading,         \t e.g.: latest penny stock buys, top officer purchases
->   gov         government menu, \t\t e.g.: house trading, contracts, corporate lobbying
->   ba          behavioural analysis,    \t from: reddit, stocktwits, twitter, google
->   ca          comparison analysis,     \t e.g.: get similar, historical, correlation, financials{has_ticker_start}
->   fa          fundamental analysis,    \t e.g.: income, balance, cash, earnings
->   res         research web page,       \t e.g.: macroaxis, yahoo finance, fool
->   dd          in-depth due-diligence,  \t e.g.: news, analyst, shorts, insider, sec
->   bt          strategy backtester,      \t e.g.: simple ema, ema cross, rsi strategies
->   ta          technical analysis,      \t e.g.: ema, macd, rsi, adx, bbands, obv
->   qa          quantitative analysis,   \t e.g.: decompose, cusum, residuals analysis
->   pred        prediction techniques,   \t e.g.: regression, arima, rnn, lstm
+>   options     {i18n.t('stocks/options')}
+>   disc        {i18n.t('stocks/disc')}
+>   sia         {i18n.t('stocks/sia')}
+>   dps         {i18n.t('stocks/dps')}
+>   scr         {i18n.t('stocks/scr')}
+>   ins         {i18n.t('stocks/ins')}
+>   gov         {i18n.t('stocks/gov')}
+>   ba          {i18n.t('stocks/ba')}
+>   ca          {i18n.t('stocks/ca')}{has_ticker_start}
+>   fa          {i18n.t('stocks/fa')}
+>   res         {i18n.t('stocks/res')}
+>   dd          {i18n.t('stocks/dd')}
+>   bt          {i18n.t('stocks/bt')}
+>   ta          {i18n.t('stocks/ta')}
+>   qa          {i18n.t('stocks/qa')}
+>   pred        {i18n.t('stocks/pred')}
 {has_ticker_end}"""
         console.print(text=help_text, menu="Stocks")
 
@@ -150,7 +152,7 @@ Stock: [/param]{stock_text}
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="search",
-            description="Show companies matching the search query.",
+            description=f"{i18n.t('stocks/search_')}.",
         )
         parser.add_argument(
             "-q",
@@ -159,7 +161,7 @@ Stock: [/param]{stock_text}
             dest="query",
             type=str.lower,
             default="",
-            help="The search term used to find company tickers.",
+            help=f"{i18n.t('stocks/search_query')}.",
         )
         parser.add_argument(
             "-l",
@@ -167,7 +169,7 @@ Stock: [/param]{stock_text}
             default=0,
             type=int,
             dest="limit",
-            help="Enter the number of Equities you wish to see in the table window.",
+            help=f"{i18n.t('stocks/search_limit')}.",
         )
         parser.add_argument(
             "-c",
@@ -175,7 +177,7 @@ Stock: [/param]{stock_text}
             default="",
             choices=self.country,
             dest="country",
-            help="Search by country to find stocks matching the criteria.",
+            help=f"{i18n.t('stocks/search_country')}.",
         )
         parser.add_argument(
             "-s",
@@ -183,7 +185,7 @@ Stock: [/param]{stock_text}
             default="",
             choices=self.sector,
             dest="sector",
-            help="Search by sector to find stocks matching the criteria.",
+            help=f"{i18n.t('stocks/search_sector')}.",
         )
         parser.add_argument(
             "-i",
@@ -191,7 +193,7 @@ Stock: [/param]{stock_text}
             default="",
             choices=self.industry,
             dest="industry",
-            help="Search by industry to find stocks matching the criteria.",
+            help=f"{i18n.t('stocks/search_industry')}.",
         )
         parser.add_argument(
             "-e",
@@ -199,7 +201,7 @@ Stock: [/param]{stock_text}
             default="",
             choices=list(stocks_helper.market_coverage_suffix.keys()),
             dest="exchange_country",
-            help="Search by a specific exchange country to find stocks matching the criteria.",
+            help=f"{i18n.t('stocks/search_exchange')}.",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-q")

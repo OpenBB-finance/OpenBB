@@ -1,0 +1,61 @@
+en:
+  home_info: >
+    [info]Multiple jobs queue (where each '/' denotes a new command).[/info]
+        E.g. '/stocks $ disc/ugs -n 3/../load tsla/candle'
+
+    [info]If you want to jump from crypto/ta to stocks you can use an absolute path that starts with a slash (/).[/info]
+        E.g. '/crypto/ta $ /stocks'
+
+    [info]The previous logic also holds for when launching the terminal.[/info]
+        E.g. '$ python terminal.py /stocks/disc/ugs -n 3/../load tsla/candle'
+
+    [info]You can run a standalone .openbb routine file with:[/info]
+        E.g. '$ python terminal.py routines/example.openbb'
+
+    [info]You can run a .openbb routine file with variable inputs:[/info]
+        E.g. '$ python terminal.py routines/example_with_inputs.gst --input pltr,tsla,nio'
+
+    [info]The main commands you should be aware when navigating through the terminal are:[/info]
+  cls: clear the screen
+  help: help menu
+  quit: quit this menu and go one menu above
+  exit: exit the terminal
+  reset: reset the terminal and reload configs from the current location
+  resources: only available on main contexts (not sub-menus)
+  about: about us
+  update: update terminal automatically
+  tz: set different timezone
+  export: select export folder to output data
+  exe: execute automated routine script
+  settings: set feature flags and style charts
+  keys: set API keys and check their validity
+  export_folder: Export Folder
+  timezone: Timezone
+  stocks/search: search a specific stock ticker for analysis
+  stocks/search_: Show companies matching the search query
+  stocks/search_query: The search term used to find company tickers
+  stocks/search_limit: Enter the number of Equities you wish to see in the table window
+  stocks/search_country: Search by country to find stocks matching the criteria
+  stocks/search_sector: Search by sector to find stocks matching the criteria
+  stocks/search_industry: Search by industry to find stocks matching the criteria
+  stocks/search_exchange: Search by a specific exchange country to find stocks matching the criteria
+  stocks/load: load a specific stock ticker and additional info for analysis
+  stocks/quote: view the current price for a specific stock ticker
+  stocks/candle: view a candle chart for a specific stock ticker
+  stocks/news: latest news of the company
+  stocks/options: options menu,                 chains, open interest, greeks, parity
+  stocks/disc: discover trending stocks,     map, sectors, high short interest
+  stocks/sia: sector and industry analysis, companies per sector, quick ratio per industry and country
+  stocks/dps: dark pool and short data,     darkpool, short interest, ftd
+  stocks/scr: screener stocks,              overview/performance, using preset filters
+  stocks/ins: insider trading,              latest penny stock buys, top officer purchases
+  stocks/gov: government menu,              house trading, contracts, corporate lobbying
+  stocks/ba: behavioural analysis,         from reddit, stocktwits, twitter, google
+  stocks/ca: comparison analysis,          get similar, historical, correlation, financials
+  stocks/fa: fundamental analysis,         income, balance, cash, earnings
+  stocks/res: research web page,            macroaxis, yahoo finance, fool
+  stocks/dd: in-depth due-diligence,       news, analyst, shorts, insider, sec
+  stocks/bt: strategy backtester,          simple ema, ema cross, rsi strategies
+  stocks/ta: technical analysis,           ema, macd, rsi, adx, bbands, obv
+  stocks/qa: quantitative analysis,        decompose, cusum, residuals analysis
+  stocks/pred: prediction techniques,        regression, arima, rnn, lstm

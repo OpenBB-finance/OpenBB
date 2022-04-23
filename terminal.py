@@ -39,6 +39,7 @@ from openbb_terminal.terminal_helper import (
     update_terminal,
     welcome_message,
 )
+import i18n
 
 # pylint: disable=too-many-public-methods,import-outside-toplevel,too-many-branches
 
@@ -94,41 +95,30 @@ class TerminalController(BaseController):
 
     def print_help(self):
         """Print help"""
+        export_folder = (
+            obbff.EXPORT_FOLDER_PATH
+            if obbff.EXPORT_FOLDER_PATH
+            else "DEFAULT (folder: exports/)"
+        )
         console.print(  # nosec
-            text=f"""
-[info]Multiple jobs queue (where each '/' denotes a new command).[/info]
-    E.g. '/stocks $ disc/ugs -n 3/../load tsla/candle'
+            text=f"""{i18n.t('home_info')}[cmds]
+    cls             {i18n.t('cls')}
+    help / h / ?    {i18n.t('help')}
+    quit / q / ..   {i18n.t('quit')}
+    exit            {i18n.t('exit')}
+    reset / r       {i18n.t('reset')}
+    resources       {i18n.t('resources')}
 
-[info]If you want to jump from crypto/ta to stocks you can use an absolute path that starts with a slash (/).[/info]
-    E.g. '/crypto/ta $ /stocks'
+    about           {i18n.t('about')}
+    update          {i18n.t('update')}
+    tz              {i18n.t('tz')}
+    export          {i18n.t('export')}
+    exe             {i18n.t('exe')}
+>   settings        {i18n.t('settings')}
+>   keys            {i18n.t('keys')}
 
-[info]The previous logic also holds for when launching the terminal.[/info]
-    E.g. '$ python terminal.py /stocks/disc/ugs -n 3/../load tsla/candle'
-
-[info]You can run a standalone .openbb routine file with:[/info]
-    E.g. '$ python terminal.py routines/example.openbb'
-
-[info]You can run a .openbb routine file with variable inputs:[/info]
-    E.g. '$ python terminal.py routines/example_with_inputs.gst --input pltr,tsla,nio'
-
-[info]The main commands you should be aware when navigating through the terminal are:[/info][cmds]
-    cls             clear the screen
-    help / h / ?    help menu
-    quit / q / ..   quit this menu and go one menu above
-    exit            exit the terminal
-    reset / r       reset the terminal and reload configs from the current location
-    resources       only available on main contexts (not sub-menus)
-
-    about           about us
-    update          update terminal automatically
-    tz              set different timezone
-    export          select export folder to output data
-    exe             execute automated routine script[/cmds][menu]
->   settings        set feature flags and style charts
->   keys            set API keys and check their validity[/menu]
-
-[param]Export Folder:[/param] {obbff.EXPORT_FOLDER_PATH if obbff.EXPORT_FOLDER_PATH else 'DEFAULT (folder: exports/)'}
-[param]Timezone:     [/param] {get_user_timezone_or_invalid()}
+[param]{i18n.t('export_folder')}:[/param] {export_folder}
+[param]{i18n.t('timezone')}:[/param] {get_user_timezone_or_invalid()}
 [menu]
 >   stocks
 >   crypto

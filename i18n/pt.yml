@@ -1,0 +1,9 @@
+pt:
+  hello: |
+    [info]Multiple jobs queue (where each '/' denotes a new command).[/info]
+        E.g. '/stocks $ disc/ugs -n 3/../load tsla/candle'
+
+    [info]If you want to jump from crypto/ta to stocks you can use an absolute path that starts with a slash (/).[/info]
+        E.g. '/crypto/ta $ /stocks',
+  bye: adeus
+  how are you: tudo bem
