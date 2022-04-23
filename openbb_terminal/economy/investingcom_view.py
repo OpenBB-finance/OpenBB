@@ -7,14 +7,14 @@ import os
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
-from openbb_terminal.economy import investcom_model
+from openbb_terminal.economy import investingcom_model
 
 logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
 def display_yieldcurve(country: str, export: str):
-    """Display yield curve. [Source: Invest.com]
+    """Display yield curve. [Source: Investing.com]
 
     Parameters
     ----------
@@ -23,9 +23,8 @@ def display_yieldcurve(country: str, export: str):
     export : str
         Export dataframe data to csv,json,xlsx file
     """
-    country = country.replace("-", " ")
-    df = investcom_model.get_yieldcurve(country)
-    df.dropna(how="all", axis=1, inplace=True)
+    country = country.replace("_", " ")
+    df = investingcom_model.get_yieldcurve(country)
     df = df.replace(float("NaN"), "")
 
     if df.empty:

@@ -9,6 +9,7 @@ from datetime import date
 from typing import List, Dict, Any
 
 import pandas as pd
+import investpy
 from prompt_toolkit.completion import NestedCompleter
 
 from openbb_terminal.decorators import check_api_key
@@ -27,8 +28,8 @@ from openbb_terminal.economy import (
     fred_model,
     yfinance_model,
     yfinance_view,
-    investcom_model,
-    investcom_view,
+    investingcom_model,
+    investingcom_view,
     plot_view,
 )
 from openbb_terminal.helper_funcs import (
@@ -131,6 +132,7 @@ class EconomyController(BaseController):
         "Change",
         "Volume",
     ]
+    yieldcurve_countries = [country.replace(" ", "_") for country in investpy.bonds.get_bond_countries()]
     d_GROUPS = {
         "sector": "Sector",
         "industry": "Industry",
@@ -1420,7 +1422,7 @@ Performance & Valuations
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="yieldcurve",
-            description="Print country yield curve. [Source: Invest.com]",
+            description="Print country yield curve. [Source: Investing.com]",
         )
         parser.add_argument(
             "-c",
@@ -1428,7 +1430,8 @@ Performance & Valuations
             action="store",
             dest="country",
             type=str,
-            default='united-states',
+            choices=self.yieldcurve_countries,
+            default='united_states',
             help="Display yield curve for specific country.",
         )
 
@@ -1436,7 +1439,7 @@ Performance & Valuations
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            investcom_view.display_yieldcurve(
+            investingcom_view.display_yieldcurve(
                 country=ns_parser.country,
                 export=ns_parser.export,
             )
