@@ -27,6 +27,8 @@ from openbb_terminal.economy import (
     fred_model,
     yfinance_model,
     yfinance_view,
+    investcom_model,
+    investcom_view,
     plot_view,
 )
 from openbb_terminal.helper_funcs import (
@@ -65,6 +67,7 @@ class EconomyController(BaseController):
         "industry",
         "feargreed",
         "bigmac",
+        "yieldcurve"
     ]
 
     CHOICES_MENUS = ["pred", "qa"]
@@ -235,6 +238,7 @@ Macro Data
     index         find and plot any (major) index on the market [src][Source: Yahoo Finance][/src]
     treasury      obtain U.S. treasury rates [src][Source: EconDB][/src]
     yield         show the U.S. Treasury yield curve [src][Source: FRED][/src]
+    yieldcurve    show sovereign yield curves [src][Source: Invest.com][/src]
     plot          plot data from the above commands together
     options       show the available options for 'plot' or show/export the data
 
@@ -1408,3 +1412,31 @@ Performance & Valuations
         )
 
         self.queue = self.load_class(QaController, self.DATASETS, self.queue)
+
+    @log_start_end(log=logger)
+    def call_yieldcurve(self, other_args: List[str]):
+        """Process yieldcurve command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="yieldcurve",
+            description="Print country yield curve. [Source: Invest.com]",
+        )
+        parser.add_argument(
+            "-c",
+            "--country",
+            action="store",
+            dest="country",
+            type=str,
+            default='united-states',
+            help="Display yield curve for specific country.",
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            investcom_view.display_yieldcurve(
+                country=ns_parser.country,
+                export=ns_parser.export,
+            )
