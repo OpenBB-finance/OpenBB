@@ -1241,7 +1241,7 @@ Expiry: [/param]{self.selected_date or None}
             help="The strike of the option",
         )
         parser.add_argument(
-            "-sim",
+            "--sim",
             "--simulations",
             dest="simulations",
             type=float,
@@ -1249,12 +1249,12 @@ Expiry: [/param]{self.selected_date or None}
             help="The number of simulations",
         )
         parser.add_argument(
-            "-per",
+            "--per",
             "--percentile",
             dest="percentile",
             default=99,
             type=float,
-            help="The risk free rate",
+            help="The VaR percentile",
         )
         parser.add_argument(
             "-p",
