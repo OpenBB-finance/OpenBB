@@ -222,9 +222,38 @@ Stock: [/param]{stock_text}
     @log_start_end(log=logger)
     def call_quote(self, other_args: List[str]):
         """Process quote command"""
-        stocks_helper.quote(
-            other_args, self.ticker + "." + self.suffix if self.suffix else self.ticker
+        ticker = self.ticker + "." + self.suffix if self.suffix else self.ticker
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="quote",
+            description="Current quote for stock ticker",
         )
+        if self.ticker:
+            parser.add_argument(
+                "-t",
+                "--ticker",
+                action="store",
+                dest="s_ticker",
+                default=ticker,
+                help="Stock ticker",
+            )
+        else:
+            parser.add_argument(
+                "-t",
+                "--ticker",
+                action="store",
+                dest="s_ticker",
+                required="-h" not in other_args,
+                help="Stock ticker",
+            )
+        # For the case where a user uses: 'quote BB'
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-t")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        stocks_helper.quote(ticker)
 
     @log_start_end(log=logger)
     def call_candle(self, other_args: List[str]):

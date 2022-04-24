@@ -1,7 +1,6 @@
 """Main helper"""
 __docformat__ = "numpy"
 
-import argparse
 import logging
 import os
 from datetime import datetime, timedelta, date
@@ -27,7 +26,6 @@ from openbb_terminal.config_terminal import theme
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.helper_funcs import (
     export_data,
-    parse_known_args_and_warn,
     plot_autoscale,
     get_user_timezone_or_invalid,
     print_rich_table,
@@ -715,121 +713,58 @@ def display_candle(
         fig.show(config=dict({"scrollZoom": True}))
 
 
-def quote(other_args: List[str], s_ticker: str):
+def quote(s_ticker: str):
     """Ticker quote
 
     Parameters
     ----------
-    other_args : List[str]
-        Argparse arguments
     s_ticker : str
         Ticker
     """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="quote",
-        description="Current quote for stock ticker",
+
+    ticker = yf.Ticker(s_ticker)
+
+    quote_df = pd.DataFrame(
+        [
+            {
+                "Symbol": ticker.info["symbol"],
+                "Name": ticker.info["shortName"],
+                "Price": ticker.info["regularMarketPrice"],
+                "Open": ticker.info["regularMarketOpen"],
+                "High": ticker.info["dayHigh"],
+                "Low": ticker.info["dayLow"],
+                "Previous Close": ticker.info["previousClose"],
+                "Volume": ticker.info["volume"],
+                "52 Week High": ticker.info["fiftyTwoWeekHigh"],
+                "52 Week Low": ticker.info["fiftyTwoWeekLow"],
+            }
+        ]
     )
 
-    if s_ticker:
-        parser.add_argument(
-            "-t",
-            "--ticker",
-            action="store",
-            dest="s_ticker",
-            default=s_ticker,
-            help="Stock ticker",
-        )
-    else:
-        parser.add_argument(
-            "-t",
-            "--ticker",
-            action="store",
-            dest="s_ticker",
-            required="-h" not in other_args,
-            help="Stock ticker",
-        )
-
-    # Price only option.
-    parser.add_argument(
-        "-p",
-        "--price",
-        action="store_true",
-        dest="price_only",
-        default=False,
-        help="Price only",
+    quote_df["Change"] = quote_df["Price"] - quote_df["Previous Close"]
+    quote_df["Change %"] = quote_df.apply(
+        lambda x: f'{((x["Change"] / x["Previous Close"]) * 100):.2f}%',
+        axis="columns",
     )
+    for c in [
+        "Price",
+        "Open",
+        "High",
+        "Low",
+        "Previous Close",
+        "52 Week High",
+        "52 Week Low",
+        "Change",
+    ]:
+        quote_df[c] = quote_df[c].apply(lambda x: f"{x:.2f}")
+    quote_df["Volume"] = quote_df["Volume"].apply(lambda x: f"{x:,}")
 
-    try:
-        # For the case where a user uses: 'quote BB'
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-t")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+    quote_df = quote_df.set_index("Symbol")
 
-    except SystemExit:
-        console.print("")
-        return
+    quote_data = transpose(quote_df)
 
-    ticker = yf.Ticker(ns_parser.s_ticker)
-
-    # If price only option, return immediate market price for ticker.
-    if ns_parser.price_only:
-        console.print(
-            f"Price of {ns_parser.s_ticker} {ticker.info['regularMarketPrice']} \n"
-        )
-        return
-
-    try:
-        quote_df = pd.DataFrame(
-            [
-                {
-                    "Symbol": ticker.info["symbol"],
-                    "Name": ticker.info["shortName"],
-                    "Price": ticker.info["regularMarketPrice"],
-                    "Open": ticker.info["regularMarketOpen"],
-                    "High": ticker.info["dayHigh"],
-                    "Low": ticker.info["dayLow"],
-                    "Previous Close": ticker.info["previousClose"],
-                    "Volume": ticker.info["volume"],
-                    "52 Week High": ticker.info["fiftyTwoWeekHigh"],
-                    "52 Week Low": ticker.info["fiftyTwoWeekLow"],
-                }
-            ]
-        )
-
-        quote_df["Change"] = quote_df["Price"] - quote_df["Previous Close"]
-        quote_df["Change %"] = quote_df.apply(
-            lambda x: f'{((x["Change"] / x["Previous Close"]) * 100):.2f}%',
-            axis="columns",
-        )
-        for c in [
-            "Price",
-            "Open",
-            "High",
-            "Low",
-            "Previous Close",
-            "52 Week High",
-            "52 Week Low",
-            "Change",
-        ]:
-            quote_df[c] = quote_df[c].apply(lambda x: f"{x:.2f}")
-        quote_df["Volume"] = quote_df["Volume"].apply(lambda x: f"{x:,}")
-
-        quote_df = quote_df.set_index("Symbol")
-
-        quote_data = transpose(quote_df)
-
-        print_rich_table(quote_data, title="Ticker Quote", show_index=True)
-
-    except KeyError:
-        logger.exception("Invalid stock ticker")
-        console.print(f"Invalid stock ticker: {ns_parser.s_ticker}")
-
-    console.print("")
-    return
+    print_rich_table(quote_data, title="Ticker Quote", show_index=True)
+    console.print()
 
 
 def load_ticker(
