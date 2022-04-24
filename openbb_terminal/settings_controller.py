@@ -54,6 +54,7 @@ class SettingsController(BaseController):
         "pheight",
         "pwidth",
         "monitor",
+        "lang",
     ]
     PATH = "/settings/"
 
@@ -112,6 +113,8 @@ class SettingsController(BaseController):
         help_text += f"   [{color}]dt               add date and time to command line[/{color}]\n"
         help_text += "[cmds]   flair            console flair[/cmds]\n\n"
         help_text += f"[param]USE_FLAIR:[/param]  {get_flair()}\n\n[cmds]"
+        help_text += "   lang             terminal language\n\n"
+        help_text += f"[param]LANGUAGE:[/param]  [/cmds]{obbff.USE_LANGUAGE}\n\n[cmds]"
         help_text += "   dpi              dots per inch\n"
         help_text += (
             "   backend          plotting backend (None, tkAgg, MacOSX, Qt5Agg)\n"
@@ -475,4 +478,30 @@ class SettingsController(BaseController):
                 cfg_plot.BACKEND = None  # type: ignore
             else:
                 cfg_plot.BACKEND = ns_parser.value
+            console.print("")
+
+    @log_start_end(log=logger)
+    def call_lang(self, other_args: List[str]):
+        """Process lang command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="lang",
+            description="Choose language for terminal",
+        )
+        parser.add_argument(
+            "-v",
+            "--value",
+            type=str,
+            dest="value",
+            help="Language",
+            choices=["en"],
+            required=True,
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-v")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            set_key(obbff.ENV_FILE, "OPENBB_USE_LANGUAGE", str(ns_parser.value))
+            obbff.USE_LANGUAGE = ns_parser.value
             console.print("")
