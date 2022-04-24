@@ -2,7 +2,6 @@ import logging
 
 import pandas as pd
 import san
-from san.error import SanError
 
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import log_start_end
@@ -60,7 +59,7 @@ def get_github_activity(
             to_date=end,
             interval=interval,
         )
-    except SanError as e:
+    except Exception as e:
         if "Apikey" in str(e):
             console.print("[red]Invalid API Key[/red]\n")
         else:
