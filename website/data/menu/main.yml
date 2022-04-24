@@ -960,6 +960,8 @@ main:
             ref: "/terminal/economy/treasury"
           - name: yield
             ref: "/terminal/economy/yield"
+          - name: yieldcurve
+            ref: "/terminal/economy/yieldcurve"            
           - name: plot
             ref: "/terminal/economy/plot"
           - name: rtps

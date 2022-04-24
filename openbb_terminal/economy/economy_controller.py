@@ -9,7 +9,6 @@ from datetime import date
 from typing import List, Dict, Any
 
 import pandas as pd
-import investpy
 from prompt_toolkit.completion import NestedCompleter
 
 from openbb_terminal.decorators import check_api_key
@@ -68,7 +67,7 @@ class EconomyController(BaseController):
         "industry",
         "feargreed",
         "bigmac",
-        "yieldcurve"
+        "yieldcurve",
     ]
 
     CHOICES_MENUS = ["pred", "qa"]
@@ -132,7 +131,6 @@ class EconomyController(BaseController):
         "Change",
         "Volume",
     ]
-    yieldcurve_countries = [country.replace(" ", "_") for country in investpy.bonds.get_bond_countries()]
     d_GROUPS = {
         "sector": "Sector",
         "industry": "Industry",
@@ -1430,9 +1428,9 @@ Performance & Valuations
             action="store",
             dest="country",
             type=str,
-            choices=self.yieldcurve_countries,
-            default='united_states',
-            help="Display yield curve for specific country.",
+            choices=investingcom_model.countries,
+            default="united_states",
+            help="Display yield curve for specific country. (spaces: '_')",
         )
 
         ns_parser = parse_known_args_and_warn(

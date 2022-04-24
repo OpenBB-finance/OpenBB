@@ -443,6 +443,19 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 map_type="world",
             ),
         ),
+        (
+            "call_yieldcurve",
+            [
+                "--country=portugal",
+                "--export=csv",
+            ],
+            "investingcom_view.display_yieldcurve",
+            [],
+            dict(
+                country="portugal",
+                export="csv",
+            ),
+        ),
     ],
 )
 def test_call_func(
