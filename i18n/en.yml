@@ -41,8 +41,21 @@ en:
   stocks/search_exchange: Search by a specific exchange country to find stocks matching the criteria
   stocks/load: load a specific stock ticker and additional info for analysis
   stocks/quote: view the current price for a specific stock ticker
+  stocks/quote_: Current quote for stock ticker
+  stocks/quote_ticker: Stock ticker
   stocks/candle: view a candle chart for a specific stock ticker
+  stocks/candle_: Shows historic data for a stock
+  stocks/candle_plotly: Flag to show interactive plotly chart
+  stocks/candle_sort: Choose a column to sort by
+  stocks/candle_descending: Sort selected column descending
+  stocks/candle_raw: Shows raw data instead of chart
+  stocks/candle_trend: Flag to add high and low trends to candle
+  stocks/candle_mov_avg: Add moving average in number of days to plot and separate by a comma
   stocks/news: latest news of the company
+  stocks/news_: Prints latest news about company, including date, title and web link. [News API]
+  stocks/news_date: The starting date (format YYYY-MM-DD) to search articles from
+  stocks/news_oldest: Show oldest articles first
+  stocks/news_sources: Show news only from the sources specified (e.g bbc yahoo.com)
   stocks/options: options menu,                 chains, open interest, greeks, parity
   stocks/disc: discover trending stocks,     map, sectors, high short interest
   stocks/sia: sector and industry analysis, companies per sector, quick ratio per industry and country

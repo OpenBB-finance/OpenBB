@@ -18,7 +18,6 @@ from openbb_terminal.decorators import log_start_end
 
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
-    check_positive,
     export_data,
     parse_known_args_and_warn,
     valid_date,
@@ -227,7 +226,7 @@ Stock: [/param]{stock_text}
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="quote",
-            description="Current quote for stock ticker",
+            description=f"{i18n.t('stocks/quote_')}.",
         )
         if self.ticker:
             parser.add_argument(
@@ -236,7 +235,7 @@ Stock: [/param]{stock_text}
                 action="store",
                 dest="s_ticker",
                 default=ticker,
-                help="Stock ticker",
+                help=f"{i18n.t('stocks/quote_ticker')}.",
             )
         else:
             parser.add_argument(
@@ -245,15 +244,14 @@ Stock: [/param]{stock_text}
                 action="store",
                 dest="s_ticker",
                 required="-h" not in other_args,
-                help="Stock ticker",
+                help=f"{i18n.t('stocks/quote_ticker')}.",
             )
         # For the case where a user uses: 'quote BB'
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        stocks_helper.quote(ticker)
+        if ns_parser:
+            stocks_helper.quote(ticker)
 
     @log_start_end(log=logger)
     def call_candle(self, other_args: List[str]):
@@ -262,7 +260,7 @@ Stock: [/param]{stock_text}
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="candle",
-            description="Shows historic data for a stock",
+            description=f"{i18n.t('stocks/candle_')}.",
         )
         parser.add_argument(
             "-p",
@@ -270,7 +268,7 @@ Stock: [/param]{stock_text}
             dest="plotly",
             action="store_false",
             default=True,
-            help="Flag to show interactive plotly chart.",
+            help=f"{i18n.t('stocks/candle_plotly')}.",
         )
         parser.add_argument(
             "--sort",
@@ -287,7 +285,7 @@ Stock: [/param]{stock_text}
             default="",
             type=str,
             dest="sort",
-            help="Choose a column to sort by",
+            help=f"{i18n.t('stocks/candle_sort')}.",
         )
         parser.add_argument(
             "-d",
@@ -295,41 +293,35 @@ Stock: [/param]{stock_text}
             action="store_false",
             dest="descending",
             default=True,
-            help="Sort selected column descending",
+            help=f"{i18n.t('stocks/candle_descending')}.",
         )
         parser.add_argument(
             "--raw",
             action="store_true",
             dest="raw",
             default=False,
-            help="Shows raw data instead of chart",
-        )
-        parser.add_argument(
-            "-n",
-            "--num",
-            type=check_positive,
-            help="Number to show if raw selected",
-            dest="num",
-            default=20,
+            help=f"{i18n.t('stocks/candle_raw')}.",
         )
         parser.add_argument(
             "-t",
             "--trend",
             action="store_true",
             default=False,
-            help="Flag to add high and low trends to candle.",
+            help=f"{i18n.t('stocks/candle_trend')}.",
             dest="trendlines",
         )
         parser.add_argument(
             "--ma",
             dest="mov_avg",
             type=str,
-            help="Add moving average in number of days to plot and separate by a comma. Example: 20,30,50",
+            help=f"{i18n.t('stocks/candle_mov_avg')}.",
             default=None,
         )
-
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser,
+            other_args,
+            EXPORT_ONLY_RAW_DATA_ALLOWED,
+            limit=20,
         )
         if ns_parser:
             if self.ticker:
@@ -351,9 +343,7 @@ Stock: [/param]{stock_text}
                     )
 
                 else:
-
                     data = stocks_helper.process_candle(self.stock)
-
                     mov_avgs = []
 
                     if ns_parser.mov_avg:
@@ -384,22 +374,10 @@ Stock: [/param]{stock_text}
         if not self.ticker:
             console.print("Use 'load <ticker>' prior to this command!", "\n")
             return
-
         parser = argparse.ArgumentParser(
             add_help=False,
             prog="news",
-            description="""
-                Prints latest news about company, including date, title and web link. [Source: News API]
-            """,
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            action="store",
-            dest="limit",
-            type=check_positive,
-            default=5,
-            help="Limit of latest news being printed.",
+            description=f"{i18n.t('stocks/news_')}.",
         )
         parser.add_argument(
             "-d",
@@ -408,7 +386,7 @@ Stock: [/param]{stock_text}
             dest="n_start_date",
             type=valid_date,
             default=datetime.now() - timedelta(days=7),
-            help="The starting date (format YYYY-MM-DD) to search articles from",
+            help=f"{i18n.t('stocks/news_date')}.",
         )
         parser.add_argument(
             "-o",
@@ -416,18 +394,19 @@ Stock: [/param]{stock_text}
             action="store_false",
             dest="n_oldest",
             default=True,
-            help="Show oldest articles first",
+            help=f"{i18n.t('stocks/news_date')}.",
         )
         parser.add_argument(
             "-s",
             "--sources",
+            dest="sources",
             default=[],
             nargs="+",
-            help="Show news only from the sources specified (e.g bbc yahoo.com)",
+            help=f"{i18n.t('stocks/news_sources')}.",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args, limit=5)
         if ns_parser:
             sources = ns_parser.sources
             for idx, source in enumerate(sources):
