@@ -238,7 +238,7 @@ Macro Data
     index         find and plot any (major) index on the market [src][Source: Yahoo Finance][/src]
     treasury      obtain U.S. treasury rates [src][Source: EconDB][/src]
     yield         show the U.S. Treasury yield curve [src][Source: FRED][/src]
-    yieldcurve    show sovereign yield curves [src][Source: Invest.com][/src]
+    yieldcurve    show sovereign yield curves [src][Source: Investing.com][/src]
     plot          plot data from the above commands together
     options       show the available options for 'plot' or show/export the data
 
