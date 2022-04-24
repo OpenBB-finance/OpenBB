@@ -1,4 +1,4 @@
-""" Invest.com Model """
+""" Investing.com Model """
 __docformat__ = "numpy"
 
 import logging
