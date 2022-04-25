@@ -3,26 +3,26 @@
 1,name,Bitcoin
 2,symbol,BTC
 3,rank,1
-4,circulating_supply,19021956
-5,total_supply,19021962
+4,circulating_supply,19016044
+5,total_supply,19016031
 6,max_supply,21000000
-7,beta_value,0.906632
+7,beta_value,0.887912
 8,first_data_at,2010-07-17 00:00:00
-9,last_updated,2022-04-25 16:32:24
-10,usd_price,39370.390011624026
-11,usd_volume_24h,36287570431.841736
-12,usd_volume_24h_change_24h,96.71
-13,usd_market_cap,748901826504
-14,usd_market_cap_change_24h,-0.08
-15,usd_percent_change_15m,0
-16,usd_percent_change_30m,0.88
-17,usd_percent_change_1h,0.36
-18,usd_percent_change_6h,1.9
-19,usd_percent_change_12h,0.4
-20,usd_percent_change_24h,-0.09
-21,usd_percent_change_7d,-1.39
-22,usd_percent_change_30d,-12.81
-23,usd_percent_change_1y,-27.34
+9,last_updated,2022-04-19 15:43:22
+10,usd_price,41389.57931641128
+11,usd_volume_24h,35357658696.99645
+12,usd_volume_24h_change_24h,15.07
+13,usd_market_cap,787066061422
+14,usd_market_cap_change_24h,5.25
+15,usd_percent_change_15m,-0.15
+16,usd_percent_change_30m,-0.39
+17,usd_percent_change_1h,-0.66
+18,usd_percent_change_6h,1.96
+19,usd_percent_change_12h,1.66
+20,usd_percent_change_24h,5.25
+21,usd_percent_change_7d,3.22
+22,usd_percent_change_30d,1.15
+23,usd_percent_change_1y,-25.61
 24,usd_ath_price,68692.137036932
 25,usd_ath_date,2021-11-10 16:51:15
-26,usd_percent_from_price_ath,-42.69
+26,usd_percent_from_price_ath,-39.75
