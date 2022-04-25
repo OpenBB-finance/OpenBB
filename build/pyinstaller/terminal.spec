@@ -1,15 +1,13 @@
 # -*- mode: python ; coding: utf-8 -*-
 import os
-import sys
-import json
+
+from dotenv import set_key
 
 from PyInstaller.compat import is_darwin, is_win
 from PyInstaller.building.api import PYZ, EXE, COLLECT
 from PyInstaller.building.splash import Splash
 from PyInstaller.building.build_main import Analysis
 
-# adding Folder to the system path - if needed (when you aren't using a venv)
-#sys.path.insert(0, '{install_folder}\GamestonkTerminal')
 from openbb_terminal.loggers import get_commit_hash
 
 NAME = "OpenBBTerminal"
@@ -19,20 +17,13 @@ build_type = (
 )
 
 # Local python environment packages folder
-pathex = os.path.join(
-    os.path.dirname(sys.executable), "..", "lib", "python3.8", "site-packages"
-)
+pathex = os.path.join(os.path.dirname(os.__file__), "site-packages")
 
 # Get latest commit
 commit_hash = get_commit_hash()
 build_assets_folder = os.path.join(os.getcwd(), "build", "pyinstaller")
-default_feature_flags_path = os.path.join(build_assets_folder, "OPENBB_DEFAULTS.json")
-with open(default_feature_flags_path, "r") as f:
-    default_gtff = json.load(f)
-
-default_gtff["OPENBB_LOGGING_COMMIT_HASH"] = commit_hash
-with open(default_feature_flags_path, "w") as f:
-    json.dump(default_gtff, f, indent=4)
+default_env_file = os.path.join(build_assets_folder, ".env")
+set_key(default_env_file, "OPENBB_LOGGING_COMMIT_HASH", str(commit_hash))
 
 # Files that are explicitly pulled into the bundle
 added_files = [
@@ -43,7 +34,15 @@ added_files = [
     ("user_agent", "user_agent"),
     ("vaderSentiment", "vaderSentiment"),
     (os.path.join("frozendict", "VERSION"), "frozendict"),
-    ("OPENBB_DEFAULTS.json", "."),
+    (
+        os.path.join(pathex, "linearmodels", "datasets"),
+        os.path.join("linearmodels", "datasets"),
+    ),
+    (
+        os.path.join(pathex, "statsmodels", "datasets"),
+        os.path.join("statsmodels", "datasets"),
+    ),
+    (".env", "."),
 ]
 
 # Python libraries that are explicitly pulled into the bundle

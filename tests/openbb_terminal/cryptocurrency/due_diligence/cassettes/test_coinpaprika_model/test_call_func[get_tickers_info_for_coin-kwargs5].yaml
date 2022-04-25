@@ -11,18 +11,26 @@ interactions:
       User-Agent:
       - python-requests/2.27.1
     method: GET
-    uri: https://api.coinpaprika.com/v1/coins/eth-ethereum/exchanges/
+    uri: https://api.coinpaprika.com/v1/tickers/btc-bitcoin/?quotes=USD
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAA/4qO5QIEAAD//0TSaHADAAAA
+        H4sIAAAAAAAA/3SRy27cPAyF9/9jcC0Loq4Wl3/7Bp1uuhE0tpIx4lttOeggmHcv5EmCtE4FAQLO
+        RxKHOi/QtUBwzk117nIzdSMwGOOQgOD/d2G9DuepL9LpCzBY4vgEhAyabmm2PuZufAzrNs/9FQi9
+        QCu0ZpCnHPu/dIUMhvjrXZUo9sPgnHIMz7HfEpDgde08SgYP3bLm0MYcQ8xAIAWKSrgK3UkI2u8P
+        YNDHNYdtbmNO7V4lZSV0hf6EhrQiKUvVz23KaQV6ge/fvpZnXromAWlUtefGeYVWI8qawfPUb0MK
+        Ul+AlFHGWVNbb7n3VpuPODSXOD6+VqLhwpUFl6eUQxNnIFc7Ya2wqKX8SP7oM1waBnNamjTmN4Jm
+        AKoExyNS4o6UP3ZddmLtgdhikPsjQLmTT1r+bc61QIqXlQ7W2jLsE9N4Baqk4RYZxHwJr59va+sl
+        R+WEsl7JOytB3nPECrFCcUJLBglNyfFt8MMyDfcxIeayt/Lcmdvt9t/vAAAA//9/V6m71wIAAA==
     headers:
       Accept-Ranges:
       - bytes
+      Age:
+      - '18'
       CF-Cache-Status:
-      - EXPIRED
+      - HIT
       CF-RAY:
-      - 6fe6c3f3ad9903ea-LIS
+      - 6fe6c3be998703fa-LIS
       Cache-Control:
       - public, max-age=60, s-maxage=60, stale-while-revalidate=10, stale-if-error=600
       Connection:
@@ -30,20 +38,19 @@ interactions:
       Content-Encoding:
       - gzip
       Content-Length:
-      - '27'
+      - '397'
       Content-Type:
       - application/json; charset=UTF-8
       Date:
-      - Tue, 19 Apr 2022 15:45:07 GMT
+      - Tue, 19 Apr 2022 15:44:58 GMT
       Expect-CT:
       - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
       Last-Modified:
-      - Tue, 19 Apr 2022 15:43:32 GMT
+      - Tue, 19 Apr 2022 15:44:19 GMT
       Server:
       - cloudflare
       Vary:
-      - Accept-Encoding
-      - Origin
+      - Accept-Encoding,Origin
       alt-svc:
       - h3=":443"; ma=86400, h3-29=":443"; ma=86400
     status:
