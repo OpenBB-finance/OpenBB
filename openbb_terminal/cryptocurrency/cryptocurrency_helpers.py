@@ -417,13 +417,18 @@ def load(
             ]
 
             if not isinstance(coin_map_df, pd.Series):
-                coin_map_df["null_values"] = coin_map_df.apply(
-                    lambda x: sum(x.isnull().values), axis=1
-                )
+                pd.options.mode.chained_assignment = None
+                coin_map_df["null_values"] = coin_map_df.isnull().sum(axis=1)
+
                 coin_map_df = coin_map_df.loc[
                     coin_map_df.null_values == coin_map_df.null_values.min()
                 ]
-                coin_map_df = coin_map_df.iloc[0]
+
+                try:
+                    coin_map_df = coin_map_df.iloc[0]
+                except IndexError:
+                    return None, None, None, None, None, None
+
             coin_map_df.fillna("")
         except KeyError:
             coin_map_df = pd.Series(
