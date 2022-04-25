@@ -75,6 +75,9 @@ def get_github_activity(
 
     if response.status_code == 200:
         df = pd.DataFrame(response.json()["data"]["getMetric"]["timeseriesData"])
+        df["datetime"] = pd.to_datetime(df["datetime"])
+        df = df.set_index("datetime")
+
     elif response.status_code == 400:
         if "Apikey" in response.json()["errors"]["details"]:
             console.print("[red]Invalid API Key[/red]\n")
