@@ -41,7 +41,7 @@ from openbb_terminal.terminal_helper import (
 )
 import i18n
 
-# pylint: disable=too-many-public-methods,import-outside-toplevel,too-many-branches
+# pylint: disable=too-many-public-methods,import-outside-toplevel,too-many-branches,no-member
 
 logger = logging.getLogger(__name__)
 

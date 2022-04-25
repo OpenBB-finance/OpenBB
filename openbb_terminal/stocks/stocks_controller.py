@@ -29,7 +29,7 @@ from openbb_terminal.stocks import stocks_helper
 
 import i18n
 
-# pylint: disable=R1710,import-outside-toplevel,R0913,R1702
+# pylint: disable=R1710,import-outside-toplevel,R0913,R1702,no-member
 
 logger = logging.getLogger(__name__)
 

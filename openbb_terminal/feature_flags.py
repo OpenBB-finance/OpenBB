@@ -10,6 +10,8 @@ from openbb_terminal.core.config.constants import ENV_FILE
 
 import i18n
 
+# pylint: disable=no-member
+
 i18n.load_path.append("i18n")
 i18n.set("locale", "en")
 i18n.set("filename_format", "{locale}.{format}")
