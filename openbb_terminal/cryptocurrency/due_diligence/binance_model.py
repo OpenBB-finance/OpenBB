@@ -12,7 +12,6 @@ from binance.exceptions import BinanceAPIException
 
 import openbb_terminal.config_terminal as cfg
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -127,5 +126,4 @@ def show_available_pairs_for_given_symbol(
     for k, v in pairs.items():
         if k == symbol_upper:
             return k, v
-    console.print(f"Couldn't find anything for symbol {symbol_upper}\n")
     return None, []
