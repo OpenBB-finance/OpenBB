@@ -498,13 +498,13 @@ In order to add support for a new language, the best approach is to:
 2. Rename that file to a short version of language you are translating to, e.g. `i18n/pt.yml` for portuguese
 3. Then just update the text on the right. E.g.
 
-```
+```text
   stocks/news: latest news of the company
 ```
 
 becomes
 
-```
+```text
   stocks/news: mais recentes notícias da empresa
 ```
 
