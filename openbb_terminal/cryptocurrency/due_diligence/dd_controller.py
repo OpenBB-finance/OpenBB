@@ -520,8 +520,14 @@ class DueDiligenceController(CryptoBaseController):
         )
 
         if ns_parser:
+
+            if isinstance(self.coin_map_df["CoinGecko"], str):
+                coin_map_df = self.coin_map_df["CoinGecko"]
+            else:
+                coin_map_df = self.coin_map_df["CoinGecko"].coin["id"]
+
             pycoingecko_view.display_info(
-                symbol=self.coin_map_df["CoinGecko"].coin["id"],
+                symbol=coin_map_df,
                 export=ns_parser.export,
             )
 
@@ -540,9 +546,12 @@ class DueDiligenceController(CryptoBaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            pycoingecko_view.display_market(
-                self.coin_map_df["CoinGecko"].coin["id"], ns_parser.export
-            )
+            if isinstance(self.coin_map_df["CoinGecko"], str):
+                coin_map_df = self.coin_map_df["CoinGecko"]
+            else:
+                coin_map_df = self.coin_map_df["CoinGecko"].coin["id"]
+
+            pycoingecko_view.display_market(coin_map_df, ns_parser.export)
 
     @log_start_end(log=logger)
     def call_web(self, other_args):
@@ -560,8 +569,14 @@ class DueDiligenceController(CryptoBaseController):
         )
 
         if ns_parser:
+
+            if isinstance(self.coin_map_df["CoinGecko"], str):
+                coin_map_df = self.coin_map_df["CoinGecko"]
+            else:
+                coin_map_df = self.coin_map_df["CoinGecko"].coin["id"]
+
             pycoingecko_view.display_web(
-                self.coin_map_df["CoinGecko"].coin["id"],
+                coin_map_df,
                 export=ns_parser.export,
             )
 
@@ -580,9 +595,12 @@ class DueDiligenceController(CryptoBaseController):
         )
 
         if ns_parser:
-            pycoingecko_view.display_social(
-                self.coin_map_df["CoinGecko"].coin["id"], export=ns_parser.export
-            )
+            if isinstance(self.coin_map_df["CoinGecko"], str):
+                coin_map_df = self.coin_map_df["CoinGecko"]
+            else:
+                coin_map_df = self.coin_map_df["CoinGecko"].coin["id"]
+
+            pycoingecko_view.display_social(coin_map_df, export=ns_parser.export)
 
     @log_start_end(log=logger)
     def call_dev(self, other_args):
@@ -602,9 +620,12 @@ class DueDiligenceController(CryptoBaseController):
         )
 
         if ns_parser:
-            pycoingecko_view.display_dev(
-                self.coin_map_df["CoinGecko"].coin["id"], ns_parser.export
-            )
+            if isinstance(self.coin_map_df["CoinGecko"], str):
+                coin_map_df = self.coin_map_df["CoinGecko"]
+            else:
+                coin_map_df = self.coin_map_df["CoinGecko"].coin["id"]
+
+            pycoingecko_view.display_dev(coin_map_df, ns_parser.export)
 
     @log_start_end(log=logger)
     def call_ath(self, other_args):
@@ -629,9 +650,13 @@ class DueDiligenceController(CryptoBaseController):
         )
 
         if ns_parser:
-            pycoingecko_view.display_ath(
-                self.coin_map_df["CoinGecko"].coin["id"], ns_parser.vs, ns_parser.export
-            )
+
+            if isinstance(self.coin_map_df["CoinGecko"], str):
+                coin_map_df = self.coin_map_df["CoinGecko"]
+            else:
+                coin_map_df = self.coin_map_df["CoinGecko"].coin["id"]
+
+            pycoingecko_view.display_ath(coin_map_df, ns_parser.vs, ns_parser.export)
 
     @log_start_end(log=logger)
     def call_atl(self, other_args):
@@ -655,9 +680,12 @@ class DueDiligenceController(CryptoBaseController):
         )
 
         if ns_parser:
-            pycoingecko_view.display_atl(
-                self.coin_map_df["CoinGecko"].coin["id"], ns_parser.vs, ns_parser.export
-            )
+            if isinstance(self.coin_map_df["CoinGecko"], str):
+                coin_map_df = self.coin_map_df["CoinGecko"]
+            else:
+                coin_map_df = self.coin_map_df["CoinGecko"].coin["id"]
+
+            pycoingecko_view.display_atl(coin_map_df, ns_parser.vs, ns_parser.export)
 
     @log_start_end(log=logger)
     def call_score(self, other_args):
@@ -678,9 +706,12 @@ class DueDiligenceController(CryptoBaseController):
         )
 
         if ns_parser:
-            pycoingecko_view.display_score(
-                self.coin_map_df["CoinGecko"].coin["id"], ns_parser.export
-            )
+            if isinstance(self.coin_map_df["CoinGecko"], str):
+                coin_map_df = self.coin_map_df["CoinGecko"]
+            else:
+                coin_map_df = self.coin_map_df["CoinGecko"].coin["id"]
+
+            pycoingecko_view.display_score(coin_map_df, ns_parser.export)
 
     @log_start_end(log=logger)
     def call_bc(self, other_args):
@@ -699,9 +730,12 @@ class DueDiligenceController(CryptoBaseController):
         )
 
         if ns_parser:
-            pycoingecko_view.display_bc(
-                self.coin_map_df["CoinGecko"].coin["id"], ns_parser.export
-            )
+            if isinstance(self.coin_map_df["CoinGecko"], str):
+                coin_map_df = self.coin_map_df["CoinGecko"]
+            else:
+                coin_map_df = self.coin_map_df["CoinGecko"].coin["id"]
+
+            pycoingecko_view.display_bc(coin_map_df, ns_parser.export)
 
     @log_start_end(log=logger)
     def call_binbook(self, other_args):

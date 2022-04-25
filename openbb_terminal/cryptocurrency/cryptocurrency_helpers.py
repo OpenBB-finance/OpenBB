@@ -985,7 +985,7 @@ def load_ta_data(
         return df, currency
 
     if source == "cg":
-        if isinstance(coin_map_df["CoinGecko"]) == str:
+        if isinstance(coin_map_df["CoinGecko"], str):
             coin_id = coin_map_df["CoinGecko"]
         else:
             coin_id = coin_map_df["CoinGecko"].coin["id"]
@@ -1181,7 +1181,7 @@ def plot_chart(
 
     if source == "cg":
 
-        if isinstance(coin_map_df["CoinGecko"]) == str:
+        if isinstance(coin_map_df["CoinGecko"], str):
             symbol_coingecko = coin_map_df["CoinGecko"]
         else:
             symbol_coingecko = coin_map_df["CoinGecko"].coin["id"]
