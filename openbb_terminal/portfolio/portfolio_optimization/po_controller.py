@@ -3,18 +3,18 @@ __docformat__ = "numpy"
 
 # pylint: disable=C0302
 
-import argparse
-import configparser
-import logging
 import os
+import configparser
+import argparse
+import logging
 from pathlib import Path
-from typing import List, Dict
-
 import pandas as pd
+from typing import List, Dict
+import pathlib
+
 from prompt_toolkit.completion import NestedCompleter
 
 from openbb_terminal import feature_flags as gtff
-from openbb_terminal import parent_classes
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     check_non_negative,
@@ -58,6 +58,7 @@ class PortfolioOptimizationController(BaseController):
         "maxret",
         "maxdiv",
         "maxdecorr",
+        "blacklitterman",
         "riskparity",
         "relriskparity",
         "hrp",
@@ -298,6 +299,13 @@ class PortfolioOptimizationController(BaseController):
         "shrink",
     ]
 
+    objective_choices = [
+        "MinRisk",
+        "Utility",
+        "Sharpe",
+        "MaxRet",
+    ]
+
     nco_objective_choices = [
         "MinRisk",
         "Utility",
@@ -383,6 +391,7 @@ class PortfolioOptimizationController(BaseController):
             "maxret",
             "maxdiv",
             "maxdecorr",
+            "blacklitterman",
             "ef",
             "riskparity",
             "relriskparity",
@@ -472,6 +481,10 @@ class PortfolioOptimizationController(BaseController):
                 choices[fn]["-bi"] = {c: None for c in self.bins_choices}
                 choices[fn]["--bins-info"] = {c: None for c in self.bins_choices}
 
+            choices["blacklitterman"]["-o"] = {c: None for c in self.objective_choices}
+            choices["blacklitterman"]["--objective"] = {
+                c: None for c in self.objective_choices
+            }
             choices["nco"]["-o"] = {c: None for c in self.nco_objective_choices}
             choices["nco"]["--objective"] = {
                 c: None for c in self.nco_objective_choices
@@ -498,29 +511,30 @@ class PortfolioOptimizationController(BaseController):
 >   params        setting portfolio risk parameters[/menu]
 
 [info]Mean Risk Optimization:[/info][cmds]
-    maxsharpe     maximal Sharpe ratio portfolio (a.k.a the tangency portfolio)
-    minrisk       minimum risk portfolio
-    maxutil       maximal risk averse utility function, given some risk
-                  aversion parameter
-    maxret        maximal return portfolio
-    ef            show the efficient frontier[/cmds]
+    maxsharpe       maximal Sharpe ratio portfolio (a.k.a the tangency portfolio)
+    minrisk         minimum risk portfolio
+    maxutil         maximal risk averse utility function, given some risk
+                    aversion parameter
+    maxret          maximal return portfolio
+    maxdiv          maximum diversification portfolio
+    maxdecorr       maximum decorrelation portfolio
+    blacklitterman  black litterman portfolio
+    ef              show the efficient frontier[/cmds]
 
 [info]Risk Parity Optimization:[/info][cmds]
-    riskparity    risk parity portfolio using risk budgeting approach
-    relriskparity relaxed risk parity using least squares approach[/cmds]
+    riskparity      risk parity portfolio using risk budgeting approach
+    relriskparity   relaxed risk parity using least squares approach[/cmds]
 
 [info]Hierarchical Clustering Models:[/info][cmds]
-    hrp           hierarchical risk parity
-    herc          hierarchical equal risk contribution
-    nco	          nested clustering optimization[/cmds]
+    hrp             hierarchical risk parity
+    herc            hierarchical equal risk contribution
+    nco	            nested clustering optimization[/cmds]
 
 [info]Other Optimization Techniques:[/info][cmds]
-    equal         equally weighted
-    mktcap        weighted according to market cap (property marketCap)
-    dividend      weighted according to dividend yield (property dividendYield)
-    property      weight according to selected info property
-    maxdiv        maximum diversification portfolio
-    maxdecorr     maximum decorrelation portfolio[/cmds]
+    equal           equally weighted
+    mktcap          weighted according to market cap (property marketCap)
+    dividend        weighted according to dividend yield (property dividendYield)
+    property        weight according to selected info property[/cmds]
     """
         console.print(text=help_text, menu="Portfolio - Portfolio Optimization")
 
@@ -583,12 +597,12 @@ class PortfolioOptimizationController(BaseController):
     def call_params(self, other_args: List[str]):
         """Process params command"""
         self.queue = self.load_class(
-            params_controller.ParametersController, self.current_file, self.queue, self.params, self.current_model
+            params_controller.ParametersController,
+            self.file,
+            self.queue,
+            self.params,
+            self.current_model,
         )
-
-        self.current_file = parent_classes.controllers["/portfolio/po/params/"].current_file
-        self.current_model = parent_classes.controllers["/portfolio/po/params/"].current_model
-        self.params = parent_classes.controllers["/portfolio/po/params/"].params
 
     @log_start_end(log=logger)
     def call_show(self, other_args: List[str]):
@@ -636,8 +650,9 @@ class PortfolioOptimizationController(BaseController):
             for ticker in ns_parser.add_tickers:
                 tickers.add(ticker)
 
-            self.tickers = list(tickers)
-            self.tickers.sort()
+            tickers = list(tickers)
+            tickers.sort()
+            self.tickers = tickers
 
             if self.tickers:
                 console.print(
@@ -3042,6 +3057,235 @@ class PortfolioOptimizationController(BaseController):
                 value=ns_parser.value,
                 value_short=ns_parser.value_short,
             )
+            self.portfolios[ns_parser.name.upper()] = weights
+            self.count += 1
+
+    @log_start_end(log=logger)
+    def call_blacklitterman(self, other_args: List[str]):
+        """Process blacklitterman command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="blacklitterman",
+            description="Optimize portfolio using Black Litterman estimates",
+        )
+        parser.add_argument(
+            "-p",
+            "--period",
+            default="3y",
+            dest="period",
+            help="""Period to get yfinance data from.
+                    Possible frequency strings are:
+                    'd': means days, for example '252d' means 252 days
+                    'w': means weeks, for example '52w' means 52 weeks
+                    'mo': means months, for example '12mo' means 12 months
+                    'y': means years, for example '1y' means 1 year
+                    'ytd': downloads data from begining of year to today
+                    'max': downloads all data available for each asset""",
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            default="",
+            dest="start",
+            help="""Start date to get yfinance data from. Must be in
+                    'YYYY-MM-DD' format""",
+        )
+        parser.add_argument(
+            "-e",
+            "--end",
+            default="",
+            dest="end",
+            help="""End date to get yfinance data from. Must be in
+                    'YYYY-MM-DD' format""",
+        )
+        parser.add_argument(
+            "-lr",
+            "--log-returns",
+            action="store_true",
+            default=False,
+            dest="log_returns",
+            help="If use logarithmic or arithmetic returns to calculate returns",
+        )
+        parser.add_argument(
+            "-f",
+            "--freq",
+            default="d",
+            dest="freq",
+            help="""Frequency used to calculate returns. Possible values are:
+                    'd': for daily returns
+                    'w': for weekly returns
+                    'm': for monthly returns
+                    """,
+            choices=self.freq_choices,
+        )
+        parser.add_argument(
+            "-mn",
+            "--maxnan",
+            type=float,
+            default=0.05,
+            dest="maxnan",
+            help="""Max percentage of nan values accepted per asset to be
+                considered in the optimization process""",
+        )
+        parser.add_argument(
+            "-th",
+            "--threshold",
+            type=float,
+            default=0.30,
+            dest="threshold",
+            help="""Value used to replace outliers that are higher to threshold
+                in absolute value""",
+        )
+        parser.add_argument(
+            "-mt",
+            "--method",
+            default="time",
+            dest="method",
+            help="""Method used to fill nan values in time series, by default time. 
+                    Possible values are:
+                    linear: linear interpolation
+                    time: linear interpolation based on time index
+                    nearest: use nearest value to replace nan values
+                    zero: spline of zeroth order
+                    slinear: spline of first order
+                    quadratic: spline of second order
+                    cubic: spline of third order
+                    barycentric: builds a polynomial that pass for all points""",
+        )
+        parser.add_argument(
+            "-bm",
+            "--benchmark",
+            type=str,
+            default=None,
+            dest="benchmark",
+            help="portfolio name from current portfolio list",
+        )
+        parser.add_argument(
+            "-o",
+            "--objective",
+            default="Sharpe",
+            dest="objective",
+            help="Objective function used to optimize the portfolio",
+            choices=self.objective_choices,
+        )
+        parser.add_argument(
+            "-pv",
+            "--p-views",
+            type=lambda s: [
+                [float(item) for item in row.split(",")] for row in s.split(";")
+            ],
+            default=None,
+            dest="p_views",
+            help="matrix P of views",
+        )
+        parser.add_argument(
+            "-qv",
+            "--q-views",
+            type=lambda s: [float(item) for item in s.split(",")],
+            default=None,
+            dest="q_views",
+            help="matrix Q of views",
+        )
+        parser.add_argument(
+            "-r",
+            "--risk-free-rate",
+            type=float,
+            dest="risk_free_rate",
+            default=get_rf(),
+            help="""Risk-free rate of borrowing/lending. The period of the
+                risk-free rate must be annual""",
+        )
+        parser.add_argument(
+            "-ra",
+            "--risk-aversion",
+            type=float,
+            dest="risk_aversion",
+            default=1.0,
+            help="Risk aversion parameter",
+        )
+        parser.add_argument(
+            "-d",
+            "--delta",
+            default=None,
+            dest="delta",
+            help="Risk aversion factor of Black Litterman model",
+        )
+        parser.add_argument(
+            "-eq",
+            "--equilibrium",
+            action="store_true",
+            default=True,
+            dest="equilibrium",
+            help="""If True excess returns are based on equilibrium market portfolio, if False
+                excess returns are calculated as historical returns minus risk free rate.
+                """,
+        )
+        parser.add_argument(
+            "-op",
+            "--optimize",
+            action="store_false",
+            default=True,
+            dest="optimize",
+            help="""If True Black Litterman estimates are used as inputs of mean variance model,
+                if False returns equilibrium weights from Black Litterman model
+                """,
+        )
+        parser.add_argument(
+            "-v",
+            "--value",
+            type=float,
+            default=1.0,
+            dest="value",
+            help="Amount to allocate to portfolio in long positions",
+        )
+        parser.add_argument(
+            "-vs",
+            "--value-short",
+            type=float,
+            default=0.0,
+            dest="value_short",
+            help="Amount to allocate to portfolio in short positions",
+        )
+        parser.add_argument(
+            "--name",
+            type=str,
+            dest="name",
+            default="BL_" + str(self.count),
+            help="Save portfolio with personalized or default name",
+        )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+
+        if ns_parser:
+            if len(self.tickers) < 2:
+                console.print(
+                    "Please have at least 2 loaded tickers to calculate weights.\n"
+                )
+                return
+
+            weights = optimizer_view.display_black_litterman(
+                stocks=self.tickers,
+                p_views=ns_parser.p_views,
+                q_views=ns_parser.q_views,
+                period=ns_parser.period,
+                start=ns_parser.start,
+                end=ns_parser.end,
+                log_returns=ns_parser.log_returns,
+                freq=ns_parser.freq,
+                maxnan=ns_parser.maxnan,
+                threshold=ns_parser.threshold,
+                method=ns_parser.method,
+                benchmark=self.portfolios[ns_parser.benchmark].upper(),
+                objective=ns_parser.objective.lower(),
+                risk_free_rate=ns_parser.risk_free_rate,
+                risk_aversion=ns_parser.risk_aversion,
+                delta=ns_parser.delta,
+                equilibrium=ns_parser.equilibrium,
+                optimize=ns_parser.optimize,
+                value=ns_parser.value,
+                value_short=ns_parser.value_short,
+            )
+
             self.portfolios[ns_parser.name.upper()] = weights
             self.count += 1
 

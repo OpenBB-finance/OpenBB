@@ -615,8 +615,8 @@ def get_max_decorrelation_portfolio(
 def get_black_litterman_portfolio(
     stocks: List[str],
     benchmark: Dict,
-    P_Views: List,
-    Q_Views: List,
+    p_views: List,
+    q_views: List,
     period: str = "3y",
     start: str = "",
     end: str = "",
@@ -628,7 +628,7 @@ def get_black_litterman_portfolio(
     objective: str = "Sharpe",
     risk_free_rate: float = 0,
     risk_aversion: float = 1,
-    Delta: float = None,
+    delta: float = None,
     equilibrium: bool = True,
     optimize: bool = True,
     value: float = 1.0,
@@ -642,10 +642,10 @@ def get_black_litterman_portfolio(
         List of portfolio stocks
     benchmark : Dict
         Dict of portfolio weights
-    P_Views: List
+    p_views: List
         Matrix P of views that shows relationships among assets and returns.
         Default value to None.
-    Q_Views: List
+    q_views: List
         Matrix Q of expected returns of views. Default value is None.
     period : str, optional
         Period to get stock data, by default "3mo"
@@ -716,18 +716,35 @@ def get_black_litterman_portfolio(
         method=method,
     )
 
+    # By theory default benchmark is market capitalization portfolio
+    if benchmark is None:
+        benchmark, _ = get_property_weights(
+            stocks=stocks,
+            period=period,
+            start=start,
+            end=end,
+            log_returns=log_returns,
+            freq=freq,
+            maxnan=maxnan,
+            threshold=threshold,
+            method=method,
+            s_property="marketCap",
+            value=value,
+        )
+
     risk_free_rate = risk_free_rate / time_factor[freq.upper()]
 
     mu, cov, weights = black_litterman(
         stock_returns=stock_returns,
         benchmark=benchmark,
-        P_Views=P_Views,
-        Q_Views=Q_Views / time_factor[freq.upper()],
-        Delta=Delta,
+        p_views=p_views,
+        q_views=q_views,
+        delta=delta,
         risk_free_rate=risk_free_rate,
         equilibrium=equilibrium,
-        freq=freq,
+        factor=time_factor[freq.upper()],
     )
+    weights = pd.DataFrame(weights)
 
     if optimize:
         # Building the portfolio object
@@ -735,8 +752,8 @@ def get_black_litterman_portfolio(
 
         # Estimate input parameters:
         port.assets_stats(method_mu="hist", method_cov="hist")
-        port.mu_bl = mu
-        port.cov_bl = cov
+        port.mu_bl = pd.DataFrame(mu).T
+        port.cov_bl = pd.DataFrame(cov)
 
         # Budget constraints
         port.upperlng = value
@@ -1336,11 +1353,12 @@ def get_hcp_portfolio(
 def black_litterman(
     stock_returns: pd.DataFrame,
     benchmark: Dict,
-    P_Views: List,
-    Q_Views: List,
-    Delta: float = None,
+    p_views: List,
+    q_views: List,
+    delta: float = None,
     risk_free_rate: float = 0,
     equilibrium: bool = True,
+    factor: float = 1 / 252,
 ) -> Tuple:
     """
     Calculates Black-Litterman estimates following He and Litterman (1999)
@@ -1351,12 +1369,12 @@ def black_litterman(
         _description_
     benchmark: Dict
         lala
-    P_Views: List
+    p_views: List
         Matrix P of views that shows relationships among assets and returns.
         Default value to None.
-    Q_Views: List
+    q_views: List
         Matrix Q of expected returns of views in annual frequency. Default value is None.
-    Delta: float
+    delta: float
         Risk aversion factor. Default value is None.
     risk_free_rate: float, optional
         Risk free rate, must be in annual frequency. Default value is 0.
@@ -1377,33 +1395,42 @@ def black_litterman(
     mu = stock_returns.mean().to_numpy().reshape(-1, 1)
     S = stock_returns.cov().to_numpy()
 
-    P_Views = np.array(P_Views, dtype=float)
-    Q_Views = np.array(Q_Views, dtype=float)
-    tau = 1 / stock_returns.shape[0]
-    Omega = np.diag(np.diag(P_Views @ (tau * S) @ P_Views.T))
-
-    if Delta is None:
+    if delta is None:
         a = mu.T @ benchmark
-        Delta = (a - risk_free_rate) / (benchmark.T @ S @ benchmark)
-        Delta = Delta.item()
+        delta = (a - risk_free_rate) / (benchmark.T @ S @ benchmark)
+        delta = delta.item()
 
     if equilibrium == True:
-        PI_eq = Delta * (S @ benchmark)
+        PI_eq = delta * (S @ benchmark)
     elif equilibrium == False:
         PI_eq = mu - risk_free_rate
 
+    flag = False
+    if p_views is None or q_views is None:
+        p_views = np.identity(S.shape[0])
+        q_views = PI_eq
+        flag = True
+    else:
+        p_views = np.array(p_views, dtype=float)
+        q_views = np.array(q_views, dtype=float).reshape(-1, 1) / factor
+
+    tau = 1 / stock_returns.shape[0]
+    Omega = np.diag(np.diag(p_views @ (tau * S) @ p_views.T))
+
     PI = np.linalg.inv(
-        np.linalg.inv(tau * S) + P_Views.T @ np.linalg.inv(Omega) @ P_Views
-    ) @ (np.linalg.inv(tau * S) @ PI_eq + P_Views.T @ np.linalg.inv(Omega) @ Q_Views)
-    M = np.linalg.inv(
-        np.linalg.inv(tau * S) + P_Views.T @ np.linalg.inv(Omega) @ P_Views
-    )
+        np.linalg.inv(tau * S) + p_views.T @ np.linalg.inv(Omega) @ p_views
+    ) @ (np.linalg.inv(tau * S) @ PI_eq + p_views.T @ np.linalg.inv(Omega) @ q_views)
 
-    PI = PI_eq
+    if flag:
+        M = 0
+    else:
+        M = np.linalg.inv(
+            np.linalg.inv(tau * S) + p_views.T @ np.linalg.inv(Omega) @ p_views
+        )
 
-    mu = PI_eq + risk_free_rate
+    mu = PI + risk_free_rate
     cov = S + M
-    weights = np.linalg.inv(Delta * cov) @ PI
+    weights = np.linalg.inv(delta * cov) @ PI
 
     mu = pd.DataFrame(mu, index=stocks).to_dict()
     cov = pd.DataFrame(cov, index=stocks, columns=stocks).to_dict()

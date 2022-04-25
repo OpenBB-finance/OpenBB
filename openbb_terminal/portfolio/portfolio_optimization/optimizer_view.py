@@ -1475,7 +1475,7 @@ def display_max_div(
         Amount to allocate to portfolio in short positions, by default 0.0
     """
     p = d_period(period, start, end)
-    s_title = f"{p} Display a maximal diversification portfolio\n"
+    s_title = f"{p} Maximal diversification portfolio\n"
 
     weights, stock_returns = optimizer_model.get_max_diversification_portfolio(
         stocks=stocks,
@@ -1588,7 +1588,7 @@ def display_max_decorr(
         Amount to allocate to portfolio in short positions, by default 0.0
     """
     p = d_period(period, start, end)
-    s_title = f"{p} Display a maximal decorrelation portfolio\n"
+    s_title = f"{p} Maximal decorrelation portfolio\n"
 
     weights, stock_returns = optimizer_model.get_max_decorrelation_portfolio(
         stocks=stocks,
@@ -1609,6 +1609,145 @@ def display_max_decorr(
     if weights is None:
         console.print("\n", "There is no solution with this parameters")
         return
+
+    console.print("\n", s_title)
+    display_weights(weights)
+    portfolio_performance(
+        weights=weights,
+        stock_returns=stock_returns,
+        risk_measure="MV",
+        risk_free_rate=0,
+        # alpha=alpha,
+        # a_sim=a_sim,
+        # beta=beta,
+        # b_simb_sim,
+        freq=freq,
+    )
+    console.print("")
+    return weights
+
+
+@log_start_end(log=logger)
+def display_black_litterman(
+    stocks: List[str],
+    p_views: List,
+    q_views: List,
+    period: str = "3y",
+    start: str = "",
+    end: str = "",
+    log_returns: bool = False,
+    freq: str = "D",
+    maxnan: float = 0.05,
+    threshold: float = 0,
+    method: str = "time",
+    benchmark: Dict = None,
+    objective: str = "Sharpe",
+    risk_free_rate: float = 0,
+    risk_aversion: float = 1,
+    delta: float = None,
+    equilibrium: bool = True,
+    optimize: bool = True,
+    value: float = 1.0,
+    value_short: float = 0,
+) -> Dict:
+    """
+    Builds a black litterman portfolio
+
+    Parameters
+    ----------
+    stocks : List[str]
+        List of portfolio tickers
+    p_views: List
+        Matrix P of views that shows relationships among assets and returns.
+        Default value to None.
+    q_views: List
+        Matrix Q of expected returns of views. Default value is None.
+    period : str, optional
+        Period to look at returns from
+    start: str, optional
+        If not using period, start date string (YYYY-MM-DD)
+    end: str, optional
+        If not using period, end date string (YYYY-MM-DD). If empty use last
+        weekday.
+    log_returns: bool, optional
+        If True calculate log returns, else arithmetic returns. Default value
+        is False
+    freq: str, optional
+        The frequency used to calculate returns. Default value is 'D'. Possible
+        values are:
+            - 'D' for daily returns.
+            - 'W' for weekly returns.
+            - 'M' for monthly returns.
+
+    maxnan: float, optional
+        Max percentage of nan values accepted per asset to be included in
+        returns.
+    threshold: float, optional
+        Value used to replace outliers that are higher to threshold.
+    method: str
+        Method used to fill nan values. Default value is 'time'. For more information see
+        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+    benchmark : Dict
+        Dict of portfolio weights
+    objective: str
+        Objective function of the optimization model.
+        The default is 'Sharpe'. Possible values are:
+
+        - 'MinRisk': Minimize the selected risk measure.
+        - 'Utility': Maximize the risk averse utility function.
+        - 'Sharpe': Maximize the risk adjusted return ratio based on the selected risk measure.
+        - 'MaxRet': Maximize the expected return of the portfolio.
+
+    risk_free_rate: float, optional
+        Risk free rate, must be in annual frequency. The default is 0.
+    risk_aversion: float, optional
+        Risk aversion factor of the 'Utility' objective function.
+        The default is 1.
+    delta: float, optional
+        Risk aversion factor of Black Litterman model. Default value is None.
+    equilibrium: bool, optional
+        If True excess returns are based on equilibrium market portfolio, if False
+        excess returns are calculated as historical returns minus risk free rate.
+        Default value is True.
+    optimize: bool, optional
+        If True Black Litterman estimates are used as inputs of mean variance model,
+        if False returns equilibrium weights from Black Litterman model
+        Default value is True.
+    value : float, optional
+        Amount of money to allocate. The default is 1.
+    value_short : float, optional
+        Amount to allocate to portfolio in short positions. The default is 0.
+    """
+    p = d_period(period, start, end)
+    s_title = f"{p} Black Litterman portfolio\n"
+    weights, stock_returns = optimizer_model.get_black_litterman_portfolio(
+        stocks=stocks,
+        benchmark=benchmark,
+        p_views=p_views,
+        q_views=q_views,
+        period=period,
+        start=start,
+        end=end,
+        log_returns=log_returns,
+        freq=freq,
+        maxnan=maxnan,
+        threshold=threshold,
+        method=method,
+        objective=objectives_choices[objective],
+        risk_free_rate=risk_free_rate,
+        risk_aversion=risk_aversion,
+        delta=delta,
+        equilibrium=equilibrium,
+        optimize=optimize,
+        value=value,
+        value_short=value_short,
+    )
+
+    if weights is None:
+        console.print("\n", "There is no solution with this parameters")
+        return
+
+    console.print(weights)
 
     console.print("\n", s_title)
     display_weights(weights)
