@@ -733,7 +733,7 @@ Ticker: [/param] {self.ticker} [cmds]
                 " with more complete data.[Source: YCharts]"
                 "McKee-score:\n------------------------------------------------\n"
                 "The McKee Score is a bankruptcy model used to predict a firm's bankruptcy in one year"
-                "It looks at a companie's size, profitability, and liquidity to determine the probability."
+                "It looks at a company's size, profitability, and liquidity to determine the probability."
                 "This model is 80% accurate in predicting bankruptcy."
             ),
         )
@@ -787,7 +787,7 @@ Ticker: [/param] {self.ticker} [cmds]
                 this we need to predict the future cash flows and then determine how much those
                 cash flows are worth to us today.\n\n
 
-                We predict the future expected cash flows by prediciting what the financial
+                We predict the future expected cash flows by predicting what the financial
                 statements will look like in the future, and then using this to determine the
                 cash the company will have in the future. This cash is paid to share holders.
                 We use linear regression to predict the future financial statements.\n\n

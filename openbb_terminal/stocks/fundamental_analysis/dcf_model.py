@@ -245,8 +245,8 @@ def get_fama_raw() -> pd.DataFrame:
     df : pd.DataFrame
         Fama French data
     """
-    with urlopen(
-        "http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_CSV.zip"
+    with urlopen(  # nosec
+        "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_CSV.zip"
     ) as url:
 
         # Download Zipfile and create pandas DataFrame
@@ -455,7 +455,7 @@ def create_dataframe(ticker: str, statement: str, period: str = "annual"):
     n = df.shape[1] - len_data
     if n > 0:
         df = df.iloc[:, :-n]
-    df.columns = years[1 : len(df.columns) + 1]
+    df.columns = years[1 : len(df.columns) + 1]  # noqa: E203
     df = df.loc[:, ~(df == "Upgrade").any()]
 
     for ignore in ignores:
