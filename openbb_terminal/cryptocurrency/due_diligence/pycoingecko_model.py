@@ -277,6 +277,7 @@ class Coin:
 
         coin = None
         symbol = None
+
         for dct in self._coin_list:
             if search_coin.lower() in [dct["symbol"], dct["id"]]:
                 coin = dct.get("id")
