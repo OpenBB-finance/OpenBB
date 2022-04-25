@@ -1,0 +1,21 @@
+,GitHub,Company,Country,City,Founded,Raised [$M],Language,Stars,Forks,Stars AGR [%],Forks AGR [%],SG,FG
+0,builderio/partytown,Builder,USA,San Francisco,2018,17.3,TypeScript,6830,158,3104,16196,31.0,162.0
+1,tooljet/tooljet,ToolJet,India,Bengaluru,2021,1.6,JavaScript,8856,657,1656,1034,16.6,10.3
+2,gravitl/netmaker,Netmaker,USA,Asheville,2021,0.1,Go,3546,213,1422,1532,14.2,15.3
+3,supertokens/supertokens-core,SuperTokens,India,Mumbai,2019,1.5,Java,5343,180,1018,585,10.2,5.9
+4,safing/portmaster,Safing,Austria,Baden,2017,,Go,2429,80,1016,357,10.2,3.6
+5,medusajs/medusa,Medusa,Denmark,Copenhagen,2021,1.0,JavaScript,9833,500,863,1135,8.6,11.4
+6,amplication/amplication,Amplication,Israel,Tel Aviv,2020,6.6,TypeScript,6296,319,812,667,8.1,6.7
+7,charmbracelet/soft-serve,Charm,USA,New York,2019,3.0,Go,1831,33,729,1784,7.3,17.8
+8,withfig/autocomplete,Fig,USA,San Francisco,2020,2.4,TypeScript,14329,3425,716,486,7.2,4.9
+9,growthbook/growthbook,GrowthBook,USA,Palo Alto,2020,0.5,TypeScript,2791,109,503,824,5.0,8.2
+10,slint-ui/slint,Slint,Germany,Berlin,2020,,Rust,4115,122,470,483,4.7,4.8
+11,nhost/nhost,Nhost,Sweden,Stockholm,2019,3.1,TypeScript,2081,109,453,503,4.5,5.0
+12,mindsdb/mindsdb,MindsDB,USA,Berkeley,2017,7.9,Python,6384,670,437,104,4.4,1.0
+13,penpot/penpot,Penpot,Spain,Madrid,2019,,Clojure,9832,480,432,330,4.3,3.3
+14,remix-run/remix,Remix,USA,Salt Lake City,2020,3.0,TypeScript,14876,1112,391,1172,3.9,11.7
+15,orchest/orchest,Orchest,Netherlands,Rotterdam,2020,4.2,Python,2528,142,385,119,3.9,1.2
+16,coqui-ai/tts,Coqui,Germany,Berlin,2020,,Python,4394,439,381,763,3.8,7.6
+17,mattermost/focalboard,Mattermost,USA,Palo Alto,2015,70.0,TypeScript,10501,788,379,254,3.8,2.5
+18,prabhatsharma/zinc,Zinc,USA,San Francisco,2021,,Go,6687,290,376,421,3.8,4.2
+19,serverless-stack/serverless-stack,Serverless Stack,USA,San Francisco,2017,1.0,TypeScript,5821,454,351,1272,3.5,12.7

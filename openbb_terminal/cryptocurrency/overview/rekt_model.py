@@ -1,4 +1,4 @@
-"""Blockchain Center Model"""
+"""Rekt Model"""
 import logging
 from typing import List, Union
 

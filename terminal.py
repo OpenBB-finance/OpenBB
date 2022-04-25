@@ -15,7 +15,7 @@ import dotenv
 
 from prompt_toolkit.completion import NestedCompleter
 
-from openbb_terminal.core.config.constants import REPO_DIR
+from openbb_terminal.core.config.constants import REPO_DIR, ENV_FILE
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.helper_funcs import (
     check_path,
@@ -44,7 +44,7 @@ from openbb_terminal.terminal_helper import (
 
 logger = logging.getLogger(__name__)
 
-env_file = ".env"
+env_file = str(ENV_FILE)
 
 
 class TerminalController(BaseController):
@@ -767,7 +767,7 @@ def main(
         if fails:
             console.print("\n[red]Failures:[/red]\n")
             for key, value in fails.items():
-                file_name = key[key.rfind("OpenBBTerminal") :].replace(  # noqa: E203
+                file_name = key[key.rfind(REPO_DIR.name) :].replace(  # noqa: E203
                     "\\", "/"
                 )
                 logger.error("%s: %s failed", file_name, value)
