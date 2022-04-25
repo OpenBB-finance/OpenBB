@@ -80,6 +80,7 @@ jobs:
         run: |
           source $VENV
           pytest --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=tests/ -m "not bots" | tee pytest-coverage.txt
+          cat pytest-coverage.txt
 
       - name: Pytest coverage comment
         uses: Mishakav/pytest-coverage-comment@main
