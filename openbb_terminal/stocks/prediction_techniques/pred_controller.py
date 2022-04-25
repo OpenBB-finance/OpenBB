@@ -100,7 +100,7 @@ class PredictionTechniquesController(BaseController):
                 f"{s_intraday} {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
             )
         else:
-            stock_info = "{s_intraday} {self.ticker}"
+            stock_info = f"{s_intraday} {self.ticker}"
 
         help_text = f"""[cmds]
     load        load new ticker
