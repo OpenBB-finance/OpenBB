@@ -38,7 +38,7 @@ def get_bitcoin(mock_load):
     ) as f:
         sample_return = json.load(f)
     mock_load.return_value = sample_return
-    coin, _, symbol, _, _, _ = load(coin="bitcoin", source="cg")
+    coin, _, symbol, _, _, _ = load(coin="btc", source="cg")
     return coin, symbol
 
 
@@ -46,7 +46,7 @@ def get_bitcoin(mock_load):
 class TestCoinGeckoAPI(TestCase):
     # pylint: disable = no-value-for-parameter
     coin, symbol = get_bitcoin()
-    coin_map_df = prepare_all_coins_df().set_index("Symbol").loc[symbol]
+    coin_map_df = prepare_all_coins_df().set_index("Symbol").loc[symbol.upper()]
 
     @check_print(assert_in="Market Cap Rank")
     @vcr.use_cassette(
