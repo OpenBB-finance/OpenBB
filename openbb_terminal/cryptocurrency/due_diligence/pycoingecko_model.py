@@ -237,7 +237,7 @@ class Coin:
     """Coin class, it holds loaded coin"""
 
     @log_start_end(log=logger)
-    def __init__(self, symbol: str, load_from_api: bool = False):
+    def __init__(self, symbol: str, load_from_api: bool = True):
         self.client = CoinGeckoAPI()
         if load_from_api:
             self._coin_list = self.client.get_coins_list()
