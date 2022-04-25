@@ -20,6 +20,7 @@ from sklearn.linear_model import LinearRegression
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.stocks.fundamental_analysis import dcf_static
+from openbb_terminal.helper_funcs import compose_export_path
 
 logger = logging.getLogger(__name__)
 
@@ -602,11 +603,11 @@ def generate_path(n: int, ticker: str, date: str) -> Path:
         The path to save a file to
     """
     val = "" if n == 0 else f"({n})"
+    export_folder, _ = compose_export_path(
+        func_name="dcf", dir_path=os.path.abspath(os.path.dirname(__file__))
+    )
     trypath = os.path.join(
-        os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..")),
-        "exports",
-        "stocks",
-        "fundamental_analysis",
+        export_folder,
         f"{ticker} {date}{val}.xlsx",
     )
     return Path(trypath)
