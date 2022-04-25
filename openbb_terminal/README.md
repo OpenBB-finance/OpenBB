@@ -121,7 +121,6 @@ Our current recommendation is to use this project with Anaconda's Python distrib
 [**Anaconda3 Latest**](https://www.anaconda.com/products/distribution) or [**Miniconda3 Latest**](https://docs.conda.io/en/latest/miniconda.html).
 Several features in this project utilize Machine Learning. Machine Learning Python dependencies are optional. For MacOS systems, Miniconda3 is recommended.
 
-
 1. [Install Anaconda](https://docs.anaconda.com/anaconda/install/index.html) (It's on the AUR as anaconda or miniconda3!)
 
    - Follow the instructions specified on the website above:
@@ -139,8 +138,10 @@ Several features in this project utilize Machine Learning. Machine Learning Pyth
    ```bash
    conda install -c anaconda git
    ```
+
     **For Linux users only, run these additional commands:**
-    ```
+
+    ```bash
     sudo apt update
     sudo apt install -y cmake
     pip install cmake
@@ -237,13 +238,16 @@ ENABLE_PREDICT = os.getenv("OPENBB_ENABLE_PREDICT") or True
 ```bash
 poetry install -E prediction
 ```
+
   **NOTE: For MacOS users should use this method instead of the poetry command
-  ```
+
+  ```bash
   conda install -c conda-forge tensorflow==2.7.0
   ```
 
 - Ready to launch:
-  ```
+
+  ```python
   python terminal.py
   ```
   
