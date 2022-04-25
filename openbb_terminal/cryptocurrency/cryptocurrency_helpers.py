@@ -985,7 +985,11 @@ def load_ta_data(
         return df, currency
 
     if source == "cg":
-        coin_id = coin_map_df["CoinGecko"].coin["id"]
+        if type(coin_map_df["CoinGecko"]) == str:
+            coin_id = coin_map_df["CoinGecko"]
+        else:
+            coin_id = coin_map_df["CoinGecko"].coin["id"]
+
         # coin = pycoingecko_model.Coin(symbol_coingecko)
         df = pycoingecko_model.get_coin_market_chart(coin_id, currency, days)
         df = df["price"].resample("1D").ohlc().ffill()
@@ -1176,7 +1180,12 @@ def plot_chart(
         console.print("")
 
     if source == "cg":
-        symbol_coingecko = coin_map_df["CoinGecko"].coin["id"]
+
+        if type(coin_map_df["CoinGecko"]) == str:
+            symbol_coingecko = coin_map_df["CoinGecko"]
+        else:
+            symbol_coingecko = coin_map_df["CoinGecko"].coin["id"]
+
         coin = pycoingecko_model.Coin(symbol_coingecko)
         df = coin.get_coin_market_chart(currency, days)
         df = df["price"].resample("1D").ohlc().ffill()
