@@ -1375,3 +1375,29 @@ def handle_error_code(requests_obj, error_code_map):
     for error_code, error_msg in error_code_map.items():
         if requests_obj.status_code == error_code:
             console.print(error_msg)
+
+
+def camel_case_split(string: str) -> str:
+    """Converts a camel case string to separate words
+
+    Parameters
+    ----------
+    string : str
+        The string to be converted
+
+    Returns
+    ----------
+    new_string: str
+        The formatted string
+    """
+
+    words = [[string[0]]]
+
+    for c in string[1:]:
+        if words[-1][-1].islower() and c.isupper():
+            words.append(list(c))
+        else:
+            words[-1].append(c)
+
+    results = ["".join(word) for word in words]
+    return " ".join(results).title()
