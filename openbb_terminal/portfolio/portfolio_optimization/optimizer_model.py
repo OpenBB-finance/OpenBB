@@ -1352,10 +1352,10 @@ def get_hcp_portfolio(
 @log_start_end(log=logger)
 def black_litterman(
     stock_returns: pd.DataFrame,
-    benchmark: Dict,
-    p_views: List,
-    q_views: List,
-    delta: float = None,
+    benchmark,
+    p_views,
+    q_views,
+    delta=None,
     risk_free_rate: float = 0,
     equilibrium: bool = True,
     factor: float = 1 / 252,
@@ -1400,9 +1400,9 @@ def black_litterman(
         delta = (a - risk_free_rate) / (benchmark.T @ S @ benchmark)
         delta = delta.item()
 
-    if equilibrium == True:
+    if equilibrium:
         PI_eq = delta * (S @ benchmark)
-    elif equilibrium == False:
+    elif not equilibrium:
         PI_eq = mu - risk_free_rate
 
     flag = False

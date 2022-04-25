@@ -1,20 +1,18 @@
 """ Portfolio Optimization Controller Module """
 __docformat__ = "numpy"
 
-# pylint: disable=C0302
+# pylint: disable=C0302, protected-access, too-many-instance-attributes
 
-import os
-import configparser
 import argparse
 import logging
+import os
 from pathlib import Path
-import pandas as pd
-from typing import List, Dict
-import pathlib
+from typing import List, Dict, Set
 
 from prompt_toolkit.completion import NestedCompleter
 
-from openbb_terminal import feature_flags as gtff
+from openbb_terminal import feature_flags as obbff
+from openbb_terminal import parent_classes
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     check_non_negative,
@@ -23,11 +21,13 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
+from openbb_terminal.portfolio.portfolio_optimization import excel_model
 from openbb_terminal.portfolio.portfolio_optimization import (
     optimizer_helper,
     optimizer_model,
     optimizer_view,
 )
+from openbb_terminal.portfolio.portfolio_optimization import yahoo_finance_model
 from openbb_terminal.portfolio.portfolio_optimization.parameters import (
     params_controller,
     params_view,
@@ -82,99 +82,6 @@ class PortfolioOptimizationController(BaseController):
         "10y",
         "ytd",
         "max",
-    ]
-
-    yf_info_choices = [
-        "previousClose",
-        "regularMarketOpen",
-        "twoHundredDayAverage",
-        "trailingAnnualDividendYield",
-        "payoutRatio",
-        "volume24Hr",
-        "regularMarketDayHigh",
-        "navPrice",
-        "averageDailyVolume10Day",
-        "totalAssets",
-        "regularMarketPreviousClose",
-        "fiftyDayAverage",
-        "trailingAnnualDividendRate",
-        "open",
-        "toCurrency",
-        "averageVolume10days",
-        "expireDate",
-        "yield",
-        "algorithm",
-        "dividendRate",
-        "exDividendDate",
-        "beta",
-        "circulatingSupply",
-        "regularMarketDayLow",
-        "priceHint",
-        "currency",
-        "trailingPE",
-        "regularMarketVolume",
-        "lastMarket",
-        "maxSupply",
-        "openInterest",
-        "marketCap",
-        "volumeAllCurrencies",
-        "strikePrice",
-        "averageVolume",
-        "priceToSalesTrailing12Months",
-        "dayLow",
-        "ask",
-        "ytdReturn",
-        "askSize",
-        "volume",
-        "fiftyTwoWeekHigh",
-        "forwardPE",
-        "fromCurrency",
-        "fiveYearAvgDividendYield",
-        "fiftyTwoWeekLow",
-        "bid",
-        "dividendYield",
-        "bidSize",
-        "dayHigh",
-        "annualHoldingsTurnover",
-        "enterpriseToRevenue",
-        "beta3Year",
-        "profitMargins",
-        "enterpriseToEbitda",
-        "52WeekChange",
-        "morningStarRiskRating",
-        "forwardEps",
-        "revenueQuarterlyGrowth",
-        "sharesOutstanding",
-        "fundInceptionDate",
-        "annualReportExpenseRatio",
-        "bookValue",
-        "sharesShort",
-        "sharesPercentSharesOut",
-        "heldPercentInstitutions",
-        "netIncomeToCommon",
-        "trailingEps",
-        "lastDividendValue",
-        "SandP52WeekChange",
-        "priceToBook",
-        "heldPercentInsiders",
-        "shortRatio",
-        "sharesShortPreviousMonthDate",
-        "floatShares",
-        "enterpriseValue",
-        "fundFamily",
-        "threeYearAverageReturn",
-        "lastSplitFactor",
-        "legalType",
-        "lastDividendDate",
-        "morningStarOverallRating",
-        "earningsQuarterlyGrowth",
-        "pegRatio",
-        "lastCapGain",
-        "shortPercentOfFloat",
-        "sharesShortPriorMonth",
-        "impliedSharesOutstanding",
-        "fiveYearAverageReturn",
-        "regularMarketPrice",
     ]
 
     meanrisk_choices = [
@@ -348,12 +255,9 @@ class PortfolioOptimizationController(BaseController):
         "barycentric",
     ]
 
-    file = "defaults.ini"
-
     PATH = "/portfolio/po/"
 
-    files_available = list()
-    params = configparser.RawConfigParser()
+    files_available: List = list()
 
     def __init__(
         self,
@@ -399,54 +303,70 @@ class PortfolioOptimizationController(BaseController):
             "herc",
             "nco",
         ]
+        self.file_types = ["xlsx", "ini"]
+        self.DEFAULT_ALLOCATION_PATH = os.path.abspath(
+            os.path.join(
+                os.path.dirname(__file__), "..", "..", "..", "portfolio", "allocation"
+            )
+        )
 
-        self.current_file = "defaults.ini"
-        self.DEFAULT_PATH = os.path.abspath(
+        self.DATA_ALLOCATION_FILES = {
+            filepath.name: filepath
+            for file_type in self.file_types
+            for filepath in Path(self.DEFAULT_ALLOCATION_PATH).rglob(f"*.{file_type}")
+            if filepath.is_file()
+        }
+
+        self.current_file = ""
+        self.DEFAULT_OPTIMIZATION_PATH = os.path.abspath(
             os.path.join(
                 os.path.dirname(__file__), "..", "..", "..", "portfolio", "optimization"
             )
         )
-        self.file_types = ["xlsx", "ini"]
-        self.DATA_FILES = {
+        self.DATA_OPTIMIZATION_FILES = {
             filepath.name: filepath
             for file_type in self.file_types
-            for filepath in Path(self.DEFAULT_PATH).rglob(f"*.{file_type}")
+            for filepath in Path(self.DEFAULT_OPTIMIZATION_PATH).rglob(f"*.{file_type}")
             if filepath.is_file()
         }
 
-        self.params.read(
-            os.path.join(
-                self.DEFAULT_PATH,
-                self.current_file if self.current_file else "defaults.ini",
-            )
-        )
-        self.params.optionxform = str  # type: ignore
-        self.params = self.params["OPENBB"]
+        self.params: Dict = {}
 
-        if session and gtff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
-            choices["property"]["-p"] = {c: None for c in self.yf_info_choices}
-            choices["property"]["--property"] = {c: None for c in self.yf_info_choices}
-            choices["file"] = {c: None for c in self.DATA_FILES}
+        if session and obbff.USE_PROMPT_TOOLKIT:
+            self.choices: dict = {c: {} for c in self.controller_choices}
+            self.choices["property"]["-p"] = {
+                c: None for c in yahoo_finance_model.yf_info_choices
+            }
+            self.choices["property"]["--property"] = {
+                c: None for c in yahoo_finance_model.yf_info_choices
+            }
+            self.choices["file"] = {c: None for c in self.DATA_OPTIMIZATION_FILES}
+            self.choices["load"] = {c: None for c in self.DATA_ALLOCATION_FILES}
 
             for fn in models:
-                choices[fn]["-p"] = {c: None for c in self.period_choices}
-                choices[fn]["--period"] = {c: None for c in self.period_choices}
-                choices[fn]["-f"] = {c: None for c in self.freq_choices}
-                choices[fn]["--freq"] = {c: None for c in self.freq_choices}
-                choices[fn]["-mt"] = {c: None for c in self.method_choices}
-                choices[fn]["--method"] = {c: None for c in self.method_choices}
+                self.choices[fn]["-p"] = {c: None for c in self.period_choices}
+                self.choices[fn]["--period"] = {c: None for c in self.period_choices}
+                self.choices[fn]["-f"] = {c: None for c in self.freq_choices}
+                self.choices[fn]["--freq"] = {c: None for c in self.freq_choices}
+                self.choices[fn]["-mt"] = {c: None for c in self.method_choices}
+                self.choices[fn]["--method"] = {c: None for c in self.method_choices}
 
             for fn in ["maxsharpe", "minrisk", "maxutil", "maxret", "ef"]:
-                choices[fn]["-rm"] = {c: None for c in self.meanrisk_choices}
-                choices[fn]["--risk-measure"] = {c: None for c in self.meanrisk_choices}
+                self.choices[fn]["-rm"] = {c: None for c in self.meanrisk_choices}
+                self.choices[fn]["--risk-measure"] = {
+                    c: None for c in self.meanrisk_choices
+                }
 
-            choices["riskparity"]["-rm"] = {c: None for c in self.riskparity_choices}
-            choices["riskparity"]["--risk-measure"] = {
+            self.choices["riskparity"]["-rm"] = {
                 c: None for c in self.riskparity_choices
             }
-            choices["relriskparity"]["-ve"] = {c: None for c in self.riskparity_choices}
-            choices["relriskparity"]["--version"] = {
+            self.choices["riskparity"]["--risk-measure"] = {
+                c: None for c in self.riskparity_choices
+            }
+            self.choices["relriskparity"]["-ve"] = {
+                c: None for c in self.riskparity_choices
+            }
+            self.choices["relriskparity"]["--version"] = {
                 c: None for c in self.riskparity_choices
             }
 
@@ -458,57 +378,71 @@ class PortfolioOptimizationController(BaseController):
                 "riskparity",
                 "relriskparity",
             ]:
-                choices[fn]["-m"] = {c: None for c in self.mean_choices}
-                choices[fn]["--mean"] = {c: None for c in self.mean_choices}
-                choices[fn]["-cv"] = {c: None for c in self.covariance_choices}
-                choices[fn]["--covariance"] = {c: None for c in self.covariance_choices}
+                self.choices[fn]["-m"] = {c: None for c in self.mean_choices}
+                self.choices[fn]["--mean"] = {c: None for c in self.mean_choices}
+                self.choices[fn]["-cv"] = {c: None for c in self.covariance_choices}
+                self.choices[fn]["--covariance"] = {
+                    c: None for c in self.covariance_choices
+                }
 
             for fn in ["maxdiv", "maxdecorr"]:
-                choices[fn]["-cv"] = {c: None for c in self.covariance_choices}
-                choices[fn]["--covariance"] = {c: None for c in self.covariance_choices}
+                self.choices[fn]["-cv"] = {c: None for c in self.covariance_choices}
+                self.choices[fn]["--covariance"] = {
+                    c: None for c in self.covariance_choices
+                }
 
             for fn in ["hrp", "herc", "nco"]:
-                choices[fn]["-rm"] = {c: None for c in self.hcp_choices}
-                choices[fn]["--risk-measure"] = {c: None for c in self.hcp_choices}
-                choices[fn]["-cd"] = {c: None for c in self.codependence_choices}
-                choices[fn]["--codependence"] = {
+                self.choices[fn]["-rm"] = {c: None for c in self.hcp_choices}
+                self.choices[fn]["--risk-measure"] = {c: None for c in self.hcp_choices}
+                self.choices[fn]["-cd"] = {c: None for c in self.codependence_choices}
+                self.choices[fn]["--codependence"] = {
                     c: None for c in self.codependence_choices
                 }
-                choices[fn]["-cv"] = {c: None for c in self.covariance_choices}
-                choices[fn]["--covariance"] = {c: None for c in self.covariance_choices}
-                choices[fn]["-lk"] = {c: None for c in self.linkage_choices}
-                choices[fn]["--linkage"] = {c: None for c in self.linkage_choices}
-                choices[fn]["-bi"] = {c: None for c in self.bins_choices}
-                choices[fn]["--bins-info"] = {c: None for c in self.bins_choices}
+                self.choices[fn]["-cv"] = {c: None for c in self.covariance_choices}
+                self.choices[fn]["--covariance"] = {
+                    c: None for c in self.covariance_choices
+                }
+                self.choices[fn]["-lk"] = {c: None for c in self.linkage_choices}
+                self.choices[fn]["--linkage"] = {c: None for c in self.linkage_choices}
+                self.choices[fn]["-bi"] = {c: None for c in self.bins_choices}
+                self.choices[fn]["--bins-info"] = {c: None for c in self.bins_choices}
 
-            choices["blacklitterman"]["-o"] = {c: None for c in self.objective_choices}
-            choices["blacklitterman"]["--objective"] = {
+            self.choices["blacklitterman"]["-o"] = {
                 c: None for c in self.objective_choices
             }
-            choices["nco"]["-o"] = {c: None for c in self.nco_objective_choices}
-            choices["nco"]["--objective"] = {
+            self.choices["blacklitterman"]["--objective"] = {
+                c: None for c in self.objective_choices
+            }
+            self.choices["nco"]["-o"] = {c: None for c in self.nco_objective_choices}
+            self.choices["nco"]["--objective"] = {
                 c: None for c in self.nco_objective_choices
             }
-            self.completer = NestedCompleter.from_nested_dict(choices)
+            self.completer = NestedCompleter.from_nested_dict(self.choices)
+
+    def update_runtime_choices(self):
+        if session and obbff.USE_PROMPT_TOOLKIT:
+            if self.portfolios:
+                self.choices["show"] = {c: None for c in list(self.portfolios.keys())}
+
+        self.completer = NestedCompleter.from_nested_dict(self.choices)
 
     def print_help(self):
         """Print help"""
-        help_text = f"""[cmds]
-    select        select list of tickers to be optimized
-    add           add tickers to the list of the tickers to be optimized
-    rmv           remove tickers from the list of the tickers to be optimized
-    show          show selected portfolios and categories from the list of saved portfolios
-    rpf           remove portfolios from the list of saved portfolios
-    load          load tickers and categories from .xlsx or .csv file [/cmds]
+        help_text = f"""
+[param]Parameter file: [/param] {self.current_file}[cmds]
+
+    file          select portfolio parameter file[/cmds][menu]
+>   params        specify and show portfolio risk parameters[/menu][cmds]
+    load          load tickers and categories from .xlsx or .csv file[/cmds]
 
 [param]Tickers: [/param]{('None', ', '.join(self.tickers))[bool(self.tickers)]}
 [param]Categories: [/param]{('None', ', '.join(self.categories.keys()))[bool(self.categories.keys())]}
 [param]Portfolios: [/param]{('None', ', '.join(self.portfolios.keys()))[bool(self.portfolios.keys())]}
-
-[param]Parameter file: [/param] {self.current_file}[cmds]
-
-    file          select parameter file[/cmds][menu]
->   params        setting portfolio risk parameters[/menu]
+[cmds]
+    add           add tickers to the list of the tickers to be optimized
+    rmv           remove tickers from the list of the tickers to be optimized
+    show          show selected portfolios and categories from the list of saved portfolios
+    rpf           remove portfolios from the list of saved portfolios[/cmds]
 
 [info]Mean Risk Optimization:[/info][cmds]
     maxsharpe       maximal Sharpe ratio portfolio (a.k.a the tangency portfolio)
@@ -540,92 +474,12 @@ class PortfolioOptimizationController(BaseController):
 
     def custom_reset(self):
         """Class specific component of reset command"""
-        if self.file:
-            return ["portfolio", "po", f"file {self.file}"]
+        if self.current_file:
+            return ["portfolio", "po", f"file {self.current_file}"]
         return []
 
     @log_start_end(log=logger)
-    def call_select(self, other_args: List[str]):
-        """Process select command"""
-        self.tickers = []
-        self.add_stocks(other_args)
-
-    @log_start_end(log=logger)
     def call_add(self, other_args: List[str]):
-        """Process add command"""
-        self.add_stocks(other_args)
-
-    @log_start_end(log=logger)
-    def call_rmv(self, other_args: List[str]):
-        """Process rmv command"""
-        self.rmv_stocks(other_args)
-
-    @log_start_end(log=logger)
-    def call_file(self, other_args: List[str]):
-        """Process file command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="file",
-            description="Select parameter file to use",
-        )
-
-        parser.add_argument(
-            "-f",
-            "--file",
-            required=True,
-            nargs="+",
-            dest="file",
-            help="Parameter file to be used",
-        )
-
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-f")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-
-        if ns_parser:
-            self.current_file = " ".join(ns_parser.file)
-
-            if self.current_file in self.DATA_FILES:
-                file_location = self.DATA_FILES[self.current_file]
-            else:
-                file_location = self.current_file
-
-            self.params, self.current_model = params_view.load_file(file_location)
-
-    @log_start_end(log=logger)
-    def call_params(self, other_args: List[str]):
-        """Process params command"""
-        self.queue = self.load_class(
-            params_controller.ParametersController,
-            self.file,
-            self.queue,
-            self.params,
-            self.current_model,
-        )
-
-    @log_start_end(log=logger)
-    def call_show(self, other_args: List[str]):
-        """Process rpf command"""
-        self.show_portfolios(other_args)
-
-    @log_start_end(log=logger)
-    def call_rpf(self, other_args: List[str]):
-        """Process rpf command"""
-        self.rmv_portfolios(other_args)
-
-    @log_start_end(log=logger)
-    def call_load(self, other_args: List[str]):
-        """Process rpf command"""
-        self.load_stocks(other_args)
-
-    @log_start_end(log=logger)
-    def call_yolo(self, _):
-        # Easter egg :)
-        console.print("DFV YOLO")
-        console.print("GME: ALL", "\n")
-
-    def add_stocks(self, other_args: List[str]):
         """Add ticker or Select tickers for portfolio to be optimized"""
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -646,22 +500,23 @@ class PortfolioOptimizationController(BaseController):
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            tickers = set(self.tickers)
+            tickers: Set = set(self.tickers)
             for ticker in ns_parser.add_tickers:
                 tickers.add(ticker)
 
-            tickers = list(tickers)
-            tickers.sort()
-            self.tickers = tickers
+            tickers_list: List = list(tickers)
+            tickers_list.sort()
+            self.tickers = tickers_list
 
             if self.tickers:
                 console.print(
-                    f"\nCurrent Tickers: {('None', ', '.join(tickers))[bool(tickers)]}"
+                    f"\nCurrent Tickers: {('None', ', '.join(tickers_list))[bool(tickers_list)]}"
                 )
 
             console.print("")
 
-    def rmv_stocks(self, other_args: List[str]):
+    @log_start_end(log=logger)
+    def call_rmv(self, other_args: List[str]):
         """Remove one of the tickers to be optimized"""
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -696,40 +551,60 @@ class PortfolioOptimizationController(BaseController):
 
             console.print("")
 
-    def rmv_portfolios(self, other_args: List[str]):
-        """Remove one portfolio"""
+    @log_start_end(log=logger)
+    def call_file(self, other_args: List[str]):
+        """Process file command"""
         parser = argparse.ArgumentParser(
             add_help=False,
-            prog="rpf",
-            description="""Remove one of the portfolios""",
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="file",
+            description="Select parameter file to use",
         )
+
         parser.add_argument(
-            "-pf",
-            "--portfolios",
-            dest="portfolios",
-            type=lambda s: [str(item).upper() for item in s.split(",")],
-            default=[],
-            help="portfolios to be removed from the saved portfolios",
+            "-f",
+            "--file",
+            required=True,
+            nargs="+",
+            dest="file",
+            help="Parameter file to be used",
         )
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-pf")
 
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-f")
         ns_parser = parse_known_args_and_warn(parser, other_args)
+
         if ns_parser:
-            portfolios = set(self.portfolios.keys())
-            for portfolio in ns_parser.portfolios:
-                if portfolio in portfolios:
-                    self.portfolios.pop(portfolio)
-                    portfolios.remove(portfolio)
+            self.current_file = " ".join(ns_parser.file)
 
-            if self.portfolios:
-                console.print(
-                    f"\nCurrent Portfolios: {('None', ', '.join(portfolios))[bool(portfolios)]}"
-                )
-            console.print("")
+            if self.current_file in self.DATA_OPTIMIZATION_FILES:
+                file_location = self.DATA_OPTIMIZATION_FILES[self.current_file]
+            else:
+                file_location = self.current_file  # type: ignore
 
-    def show_portfolios(self, other_args: List[str]):
+            self.params, self.current_model = params_view.load_file(file_location)
+
+    @log_start_end(log=logger)
+    def call_params(self):
+        """Process params command"""
+        self.queue = self.load_class(
+            params_controller.ParametersController,
+            self.current_file,
+            self.queue,
+            self.params,
+            self.current_model,
+        )
+
+        self.current_file = parent_classes.controllers[
+            "/portfolio/po/params/"
+        ].current_file
+        self.current_model = parent_classes.controllers[
+            "/portfolio/po/params/"
+        ].current_model
+        self.params = parent_classes.controllers["/portfolio/po/params/"].params
+
+    @log_start_end(log=logger)
+    def call_show(self, other_args: List[str]):
         """Show saved portfolios"""
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -759,7 +634,7 @@ class PortfolioOptimizationController(BaseController):
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             portfolios = set(self.portfolios.keys())
-            if ns_parser.categories == []:
+            if not ns_parser.categories:
                 categories = list(self.categories.keys())
             else:
                 categories = ns_parser.categories
@@ -790,71 +665,74 @@ class PortfolioOptimizationController(BaseController):
                 )
             console.print("")
 
-    def load_stocks(self, other_args: List[str]):
+    @log_start_end(log=logger)
+    def call_rpf(self, other_args: List[str]):
+        """Remove one portfolio"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="rpf",
+            description="""Remove one of the portfolios""",
+        )
+        parser.add_argument(
+            "-pf",
+            "--portfolios",
+            dest="portfolios",
+            type=lambda s: [str(item).upper() for item in s.split(",")],
+            default=[],
+            help="portfolios to be removed from the saved portfolios",
+        )
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-pf")
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            portfolios = set(self.portfolios.keys())
+            for portfolio in ns_parser.portfolios:
+                if portfolio in portfolios:
+                    self.portfolios.pop(portfolio)
+                    portfolios.remove(portfolio)
+
+            if self.portfolios:
+                console.print(
+                    f"\nCurrent Portfolios: {('None', ', '.join(portfolios))[bool(portfolios)]}"
+                )
+
+            self.update_runtime_choices()
+            console.print("")
+
+    @log_start_end(log=logger)
+    def call_load(self, other_args: List[str]):
         """Load file with stocks tickers and categories"""
         parser = argparse.ArgumentParser(
             add_help=False,
             prog="load",
             description="""Load file of stocks tickers with optional categories""",
         )
-        parser.add_argument(
-            "-e",
-            "--filename",
-            type=str,
-            default="allocation.xlsx",
-            dest="filename",
-            help="file name with file extension",
-        )
+
         parser.add_argument(
             "-f",
-            "--folder",
-            type=lambda s: s.replace("\\", "/"),
-            default=os.path.abspath(
-                os.path.join(
-                    os.path.dirname(__file__),
-                    "..",
-                    "..",
-                    "..",
-                    "portfolio",
-                    "allocation",
-                )
-            ),
-            dest="folder",
-            help="path where the file is located, path use '' instead of '/' for subfolders",
+            "--file",
+            required=True,
+            nargs="+",
+            dest="file",
+            help="Allocation file to be used",
         )
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-f")
-
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-f")
         ns_parser = parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
-            filename = ns_parser.filename
-            folder = ns_parser.folder
-            file = os.path.join(folder, filename)
-            if file.endswith(".xlsx"):
-                categories = pd.read_excel(file, engine="openpyxl")
-            elif file.endswith(".csv"):
-                categories = pd.read_excel(file)
+            filename = " ".join(ns_parser.file)
+
+            if filename in self.DATA_ALLOCATION_FILES:
+                file_location = self.DATA_ALLOCATION_FILES[filename]
             else:
-                console.print("Only acceptable files with .xlsx and .csv extensions\n")
-                return
+                file_location = filename  # type: ignore
 
-            categories.columns = [
-                col.upper().strip().replace(" ", "_") for col in categories.columns
-            ]
-            categories = categories.apply(lambda x: x.astype(str).str.upper())
-            categories = categories[~categories.index.duplicated(keep="first")]
-            try:
-                categories.set_index("TICKER", inplace=True)
-            except:
-                console.print("File table needs a STOCKS column\n")
-                return
-
-            self.tickers = list(categories.index)
-            self.tickers.sort()
+            self.tickers, self.categories = excel_model.load_allocation(file_location)
             self.portfolios = dict()
-            self.categories = categories.to_dict()
+            self.update_runtime_choices()
 
     @log_start_end(log=logger)
     def call_plot(self, other_args: List[str]):
@@ -877,21 +755,21 @@ class PortfolioOptimizationController(BaseController):
             "-p",
             "--period",
             default="3y",
-            dest="period",
+            dest="historic_period",
             help="""Period to get yfinance data from.
                     Possible frequency strings are:
                     'd': means days, for example '252d' means 252 days
                     'w': means weeks, for example '52w' means 52 weeks
                     'mo': means months, for example '12mo' means 12 months
                     'y': means years, for example '1y' means 1 year
-                    'ytd': downloads data from begining of year to today
+                    'ytd': downloads data from beginning of year to today
                     'max': downloads all data available for each asset""",
         )
         parser.add_argument(
             "-s",
             "--start",
             default="",
-            dest="start",
+            dest="start_period",
             help="""Start date to get yfinance data from. Must be in
                     'YYYY-MM-DD' format""",
         )
@@ -899,7 +777,7 @@ class PortfolioOptimizationController(BaseController):
             "-e",
             "--end",
             default="",
-            dest="end",
+            dest="end_period",
             help="""End date to get yfinance data from. Must be in
                     'YYYY-MM-DD' format""",
         )
@@ -915,7 +793,7 @@ class PortfolioOptimizationController(BaseController):
             "-f",
             "--freq",
             default="d",
-            dest="freq",
+            dest="return_frequency",
             help="""Frequency used to calculate returns. Possible values are:
                     'd': for daily returns
                     'w': for weekly returns
@@ -928,7 +806,7 @@ class PortfolioOptimizationController(BaseController):
             "--maxnan",
             type=float,
             default=0.05,
-            dest="maxnan",
+            dest="max_nan",
             help="""Max percentage of nan values accepted per asset to be
                 considered in the optimization process""",
         )
@@ -937,7 +815,7 @@ class PortfolioOptimizationController(BaseController):
             "--threshold",
             type=float,
             default=0.30,
-            dest="threshold",
+            dest="threshold_value",
             help="""Value used to replace outliers that are higher to threshold
                     in absolute value""",
         )
@@ -945,8 +823,8 @@ class PortfolioOptimizationController(BaseController):
             "-mt",
             "--method",
             default="time",
-            dest="method",
-            help="""Method used to fill nan values in time series, by default time. 
+            dest="nan_fill_method",
+            help="""Method used to fill nan values in time series, by default time.
                     Possible values are:
                     linear: linear interpolation
                     time: linear interpolation based on time index
@@ -983,7 +861,7 @@ class PortfolioOptimizationController(BaseController):
             "-r",
             "--risk-free-rate",
             type=float,
-            dest="risk_free_rate",
+            dest="risk_free",
             default=get_rf(),
             help="""Risk-free rate of borrowing/lending. The period of the
                 risk-free rate must be annual""",
@@ -993,10 +871,11 @@ class PortfolioOptimizationController(BaseController):
             "--alpha",
             type=float,
             default=0.05,
-            dest="alpha",
+            dest="significance_level",
             help="Significance level of CVaR, EVaR, CDaR and EDaR",
         )
         parser.add_argument(
+            "-pi",
             "--pie",
             action="store_true",
             dest="pie",
@@ -1004,6 +883,7 @@ class PortfolioOptimizationController(BaseController):
             help="Display a pie chart for weights",
         )
         parser.add_argument(
+            "-hi",
             "--hist",
             action="store_true",
             dest="hist",
@@ -1011,13 +891,15 @@ class PortfolioOptimizationController(BaseController):
             help="Display a histogram with risk measures",
         )
         parser.add_argument(
-            "--dd",
+            "-dd",
+            "--drawdown",
             action="store_true",
             dest="dd",
             default=False,
             help="Display a drawdown chart with risk measures",
         )
         parser.add_argument(
+            "-rc",
             "--rc-chart",
             action="store_true",
             dest="rc_chart",
@@ -1025,6 +907,7 @@ class PortfolioOptimizationController(BaseController):
             help="Display a risk contribution chart for assets",
         )
         parser.add_argument(
+            "-he",
             "--heat",
             action="store_true",
             dest="heat",
@@ -1046,16 +929,21 @@ class PortfolioOptimizationController(BaseController):
             stocks = list(set(stocks))
             stocks.sort()
 
+            arguments_tuple = ns_parser._get_kwargs()
+            parameters = optimizer_view.check_params(
+                parser, arguments_tuple, self.params
+            )
+
             _, stock_returns = optimizer_model.get_equal_weights(
                 stocks=stocks,
-                period=ns_parser.period,
-                start=ns_parser.start,
-                end=ns_parser.end,
-                log_returns=ns_parser.log_returns,
-                freq=ns_parser.freq,
-                maxnan=ns_parser.maxnan,
-                threshold=ns_parser.threshold,
-                method=ns_parser.method,
+                period=parameters["historic_period"],
+                start=parameters["start_period"],
+                end=parameters["end_period"],
+                log_returns=parameters["log_returns"],
+                freq=parameters["return_frequency"],
+                maxnan=parameters["max_nan"],
+                threshold=parameters["threshold_value"],
+                method=parameters["nan_fill_method"],
                 value=1,
             )
 
@@ -1066,12 +954,12 @@ class PortfolioOptimizationController(BaseController):
                     weights=weights,
                     stock_returns=stock_returns[stocks],
                     title_opt=i,
-                    freq=ns_parser.freq,
-                    risk_measure=ns_parser.risk_measure.lower(),
-                    risk_free_rate=ns_parser.risk_free_rate,
-                    alpha=ns_parser.alpha,
+                    freq=parameters["return_frequency"],
+                    risk_measure=parameters["risk_measure"].lower(),
+                    risk_free_rate=parameters["risk_free"],
+                    alpha=parameters["significance_level"],
                     a_sim=100,
-                    beta=ns_parser.alpha,
+                    beta=parameters["significance_level"],
                     b_sim=100,
                     pie=ns_parser.pie,
                     hist=ns_parser.hist,
@@ -1094,21 +982,21 @@ class PortfolioOptimizationController(BaseController):
             "-p",
             "--period",
             default="3y",
-            dest="period",
+            dest="historic_period",
             help="""Period to get yfinance data from.
                     Possible frequency strings are:
                     'd': means days, for example '252d' means 252 days
                     'w': means weeks, for example '52w' means 52 weeks
                     'mo': means months, for example '12mo' means 12 months
                     'y': means years, for example '1y' means 1 year
-                    'ytd': downloads data from begining of year to today
+                    'ytd': downloads data from beginning of year to today
                     'max': downloads all data available for each asset""",
         )
         parser.add_argument(
             "-s",
             "--start",
             default="",
-            dest="start",
+            dest="start_period",
             help="""Start date to get yfinance data from. Must be in
                     'YYYY-MM-DD' format""",
         )
@@ -1116,7 +1004,7 @@ class PortfolioOptimizationController(BaseController):
             "-e",
             "--end",
             default="",
-            dest="end",
+            dest="end_period",
             help="""End date to get yfinance data from. Must be in
                     'YYYY-MM-DD' format""",
         )
@@ -1132,7 +1020,7 @@ class PortfolioOptimizationController(BaseController):
             "-f",
             "--freq",
             default="d",
-            dest="freq",
+            dest="return_frequency",
             help="""Frequency used to calculate returns. Possible values are:
                     'd': for daily returns
                     'w': for weekly returns
@@ -1145,7 +1033,7 @@ class PortfolioOptimizationController(BaseController):
             "--maxnan",
             type=float,
             default=0.05,
-            dest="maxnan",
+            dest="max_nan",
             help="""Max percentage of nan values accepted per asset to be
                 considered in the optimization process""",
         )
@@ -1154,7 +1042,7 @@ class PortfolioOptimizationController(BaseController):
             "--threshold",
             type=float,
             default=0.30,
-            dest="threshold",
+            dest="threshold_value",
             help="""Value used to replace outliers that are higher to threshold
                 in absolute value""",
         )
@@ -1162,8 +1050,8 @@ class PortfolioOptimizationController(BaseController):
             "-mt",
             "--method",
             default="time",
-            dest="method",
-            help="""Method used to fill nan values in time series, by default time. 
+            dest="nan_fill_method",
+            help="""Method used to fill nan values in time series, by default time.
                     Possible values are:
                     linear: linear interpolation
                     time: linear interpolation based on time index
@@ -1200,7 +1088,7 @@ class PortfolioOptimizationController(BaseController):
             "-r",
             "--risk-free-rate",
             type=float,
-            dest="risk_free_rate",
+            dest="risk_free",
             default=get_rf(),
             help="""Risk-free rate of borrowing/lending. The period of the
                 risk-free rate must be annual""",
@@ -1210,7 +1098,7 @@ class PortfolioOptimizationController(BaseController):
             "--alpha",
             type=float,
             default=0.05,
-            dest="alpha",
+            dest="significance_level",
             help="Significance level of CVaR, EVaR, CDaR and EDaR",
         )
         parser.add_argument(
@@ -1218,8 +1106,15 @@ class PortfolioOptimizationController(BaseController):
             "--value",
             default=1,
             type=float,
-            dest="value",
+            dest="long_allocation",
             help="Amount to allocate to portfolio",
+        )
+        parser.add_argument(
+            "--name",
+            type=str,
+            dest="name",
+            default="EQUAL_" + str(self.count),
+            help="Save portfolio with personalized or default name",
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
@@ -1229,23 +1124,29 @@ class PortfolioOptimizationController(BaseController):
                 )
                 return
 
+            arguments_tuple = ns_parser._get_kwargs()
+            parameters = optimizer_view.check_params(
+                parser, arguments_tuple, self.params
+            )
+
             weights = optimizer_view.display_equal_weight(
                 stocks=self.tickers,
-                period=ns_parser.period,
-                start=ns_parser.start,
-                end=ns_parser.end,
-                log_returns=ns_parser.log_returns,
-                freq=ns_parser.freq,
-                maxnan=ns_parser.maxnan,
-                threshold=ns_parser.threshold,
-                method=ns_parser.method,
-                risk_measure=ns_parser.risk_measure.lower(),
-                risk_free_rate=ns_parser.risk_free_rate,
-                alpha=ns_parser.alpha,
-                value=ns_parser.value,
+                period=parameters["historic_period"],
+                start=parameters["start_period"],
+                end=parameters["end_period"],
+                log_returns=parameters["log_returns"],
+                freq=parameters["return_frequency"],
+                maxnan=parameters["max_nan"],
+                threshold=parameters["threshold_value"],
+                method=parameters["nan_fill_method"],
+                risk_measure=parameters["risk_measure"].lower(),
+                risk_free_rate=parameters["risk_free"],
+                alpha=parameters["significance_level"],
+                value=parameters["long_allocation"],
             )
             self.portfolios[ns_parser.name.upper()] = weights
             self.count += 1
+            self.update_runtime_choices()
 
     @log_start_end(log=logger)
     def call_mktcap(self, other_args: List[str]):
@@ -1260,21 +1161,21 @@ class PortfolioOptimizationController(BaseController):
             "-p",
             "--period",
             default="3y",
-            dest="period",
+            dest="historic_period",
             help="""Period to get yfinance data from.
                     Possible frequency strings are:
                     'd': means days, for example '252d' means 252 days
                     'w': means weeks, for example '52w' means 52 weeks
                     'mo': means months, for example '12mo' means 12 months
                     'y': means years, for example '1y' means 1 year
-                    'ytd': downloads data from begining of year to today
+                    'ytd': downloads data from beginning of year to today
                     'max': downloads all data available for each asset""",
         )
         parser.add_argument(
             "-s",
             "--start",
             default="",
-            dest="start",
+            dest="start_period",
             help="""Start date to get yfinance data from. Must be in
                     'YYYY-MM-DD' format""",
         )
@@ -1282,7 +1183,7 @@ class PortfolioOptimizationController(BaseController):
             "-e",
             "--end",
             default="",
-            dest="end",
+            dest="end_period",
             help="""End date to get yfinance data from. Must be in
                     'YYYY-MM-DD' format""",
         )
@@ -1298,7 +1199,7 @@ class PortfolioOptimizationController(BaseController):
             "-f",
             "--freq",
             default="d",
-            dest="freq",
+            dest="return_frequency",
             help="""Frequency used to calculate returns. Possible values are:
                     'd': for daily returns
                     'w': for weekly returns
@@ -1311,7 +1212,7 @@ class PortfolioOptimizationController(BaseController):
             "--maxnan",
             type=float,
             default=0.05,
-            dest="maxnan",
+            dest="max_nan",
             help="""Max percentage of nan values accepted per asset to be
                 considered in the optimization process""",
         )
@@ -1320,7 +1221,7 @@ class PortfolioOptimizationController(BaseController):
             "--threshold",
             type=float,
             default=0.30,
-            dest="threshold",
+            dest="threshold_value",
             help="""Value used to replace outliers that are higher to threshold
                 in absolute value""",
         )
@@ -1328,8 +1229,8 @@ class PortfolioOptimizationController(BaseController):
             "-mt",
             "--method",
             default="time",
-            dest="method",
-            help="""Method used to fill nan values in time series, by default time. 
+            dest="nan_fill_method",
+            help="""Method used to fill nan values in time series, by default time.
                     Possible values are:
                     linear: linear interpolation
                     time: linear interpolation based on time index
@@ -1366,7 +1267,7 @@ class PortfolioOptimizationController(BaseController):
             "-r",
             "--risk-free-rate",
             type=float,
-            dest="risk_free_rate",
+            dest="risk_free",
             default=get_rf(),
             help="""Risk-free rate of borrowing/lending. The period of the
                 risk-free rate must be annual""",
@@ -1376,7 +1277,7 @@ class PortfolioOptimizationController(BaseController):
             "--alpha",
             type=float,
             default=0.05,
-            dest="alpha",
+            dest="significance_level",
             help="Significance level of CVaR, EVaR, CDaR and EDaR",
         )
         parser.add_argument(
@@ -1384,8 +1285,15 @@ class PortfolioOptimizationController(BaseController):
             "--value",
             default=1,
             type=float,
-            dest="value",
+            dest="long_allocation",
             help="Amount to allocate to portfolio",
+        )
+        parser.add_argument(
+            "--name",
+            type=str,
+            dest="name",
+            default="MKTCAP_" + str(self.count),
+            help="Save portfolio with personalized or default name",
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
@@ -1395,24 +1303,30 @@ class PortfolioOptimizationController(BaseController):
                 )
                 return
 
+            arguments_tuple = ns_parser._get_kwargs()
+            parameters = optimizer_view.check_params(
+                parser, arguments_tuple, self.params
+            )
+
             weights = optimizer_view.display_property_weighting(
                 stocks=self.tickers,
-                period=ns_parser.period,
-                start=ns_parser.start,
-                end=ns_parser.end,
-                log_returns=ns_parser.log_returns,
-                freq=ns_parser.freq,
-                maxnan=ns_parser.maxnan,
-                threshold=ns_parser.threshold,
-                method=ns_parser.method,
+                period=parameters["historic_period"],
+                start=parameters["start_period"],
+                end=parameters["end_period"],
+                log_returns=parameters["log_returns"],
+                freq=parameters["return_frequency"],
+                maxnan=parameters["max_nan"],
+                threshold=parameters["threshold_value"],
+                method=parameters["nan_fill_method"],
                 s_property="marketCap",
-                risk_measure=ns_parser.risk_measure.lower(),
-                risk_free_rate=ns_parser.risk_free_rate,
-                alpha=ns_parser.alpha,
-                value=ns_parser.value,
+                risk_measure=parameters["risk_measure"].lower(),
+                risk_free_rate=parameters["risk_free"],
+                alpha=parameters["significance_level"],
+                value=parameters["long_allocation"],
             )
             self.portfolios[ns_parser.name.upper()] = weights
             self.count += 1
+            self.update_runtime_choices()
 
     @log_start_end(log=logger)
     def call_dividend(self, other_args: List[str]):
@@ -1427,21 +1341,21 @@ class PortfolioOptimizationController(BaseController):
             "-p",
             "--period",
             default="3y",
-            dest="period",
+            dest="historic_period",
             help="""Period to get yfinance data from.
                     Possible frequency strings are:
                     'd': means days, for example '252d' means 252 days
                     'w': means weeks, for example '52w' means 52 weeks
                     'mo': means months, for example '12mo' means 12 months
                     'y': means years, for example '1y' means 1 year
-                    'ytd': downloads data from begining of year to today
+                    'ytd': downloads data from beginning of year to today
                     'max': downloads all data available for each asset""",
         )
         parser.add_argument(
             "-s",
             "--start",
             default="",
-            dest="start",
+            dest="start_period",
             help="""Start date to get yfinance data from. Must be in
                     'YYYY-MM-DD' format""",
         )
@@ -1449,7 +1363,7 @@ class PortfolioOptimizationController(BaseController):
             "-e",
             "--end",
             default="",
-            dest="end",
+            dest="end_period",
             help="""End date to get yfinance data from. Must be in
                     'YYYY-MM-DD' format""",
         )
@@ -1465,7 +1379,7 @@ class PortfolioOptimizationController(BaseController):
             "-f",
             "--freq",
             default="d",
-            dest="freq",
+            dest="return_frequency",
             help="""Frequency used to calculate returns. Possible values are:
                     'd': for daily returns
                     'w': for weekly returns
@@ -1478,7 +1392,7 @@ class PortfolioOptimizationController(BaseController):
             "--maxnan",
             type=float,
             default=0.05,
-            dest="maxnan",
+            dest="max_nan",
             help="""Max percentage of nan values accepted per asset to be
                 considered in the optimization process""",
         )
@@ -1487,7 +1401,7 @@ class PortfolioOptimizationController(BaseController):
             "--threshold",
             type=float,
             default=0.30,
-            dest="threshold",
+            dest="threshold_value",
             help="""Value used to replace outliers that are higher to threshold
                 in absolute value""",
         )
@@ -1495,8 +1409,8 @@ class PortfolioOptimizationController(BaseController):
             "-mt",
             "--method",
             default="time",
-            dest="method",
-            help="""Method used to fill nan values in time series, by default time. 
+            dest="nan_fill_method",
+            help="""Method used to fill nan values in time series, by default time.
                     Possible values are:
                     linear: linear interpolation
                     time: linear interpolation based on time index
@@ -1533,7 +1447,7 @@ class PortfolioOptimizationController(BaseController):
             "-r",
             "--risk-free-rate",
             type=float,
-            dest="risk_free_rate",
+            dest="risk_free",
             default=get_rf(),
             help="""Risk-free rate of borrowing/lending. The period of the
                 risk-free rate must be annual""",
@@ -1543,7 +1457,7 @@ class PortfolioOptimizationController(BaseController):
             "--alpha",
             type=float,
             default=0.05,
-            dest="alpha",
+            dest="significance_level",
             help="Significance level of CVaR, EVaR, CDaR and EDaR",
         )
         parser.add_argument(
@@ -1551,8 +1465,15 @@ class PortfolioOptimizationController(BaseController):
             "--value",
             default=1,
             type=float,
-            dest="value",
+            dest="long_allocation",
             help="Amount to allocate to portfolio",
+        )
+        parser.add_argument(
+            "--name",
+            type=str,
+            dest="name",
+            default="DIVIDEND_" + str(self.count),
+            help="Save portfolio with personalized or default name",
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
@@ -1562,24 +1483,30 @@ class PortfolioOptimizationController(BaseController):
                 )
                 return
 
+            arguments_tuple = ns_parser._get_kwargs()
+            parameters = optimizer_view.check_params(
+                parser, arguments_tuple, self.params
+            )
+
             weights = optimizer_view.display_property_weighting(
                 stocks=self.tickers,
-                period=ns_parser.period,
-                start=ns_parser.start,
-                end=ns_parser.end,
-                log_returns=ns_parser.log_returns,
-                freq=ns_parser.freq,
-                maxnan=ns_parser.maxnan,
-                threshold=ns_parser.threshold,
-                method=ns_parser.method,
+                period=parameters["historic_period"],
+                start=parameters["start_period"],
+                end=parameters["end_period"],
+                log_returns=parameters["log_returns"],
+                freq=parameters["return_frequency"],
+                maxnan=parameters["max_nan"],
+                threshold=parameters["threshold_value"],
+                method=parameters["nan_fill_method"],
                 s_property="dividendYield",
-                risk_measure=ns_parser.risk_measure.lower(),
-                risk_free_rate=ns_parser.risk_free_rate,
-                alpha=ns_parser.alpha,
-                value=ns_parser.value,
+                risk_measure=parameters["risk_measure"].lower(),
+                risk_free_rate=parameters["risk_free"],
+                alpha=parameters["significance_level"],
+                value=parameters["long_allocation"],
             )
             self.portfolios[ns_parser.name.upper()] = weights
             self.count += 1
+            self.update_runtime_choices()
 
     @log_start_end(log=logger)
     def call_property(self, other_args: List[str]):
@@ -1594,21 +1521,21 @@ class PortfolioOptimizationController(BaseController):
             "-p",
             "--period",
             default="3y",
-            dest="period",
+            dest="historic_period",
             help="""Period to get yfinance data from.
                     Possible frequency strings are:
                     'd': means days, for example '252d' means 252 days
                     'w': means weeks, for example '52w' means 52 weeks
                     'mo': means months, for example '12mo' means 12 months
                     'y': means years, for example '1y' means 1 year
-                    'ytd': downloads data from begining of year to today
+                    'ytd': downloads data from beginning of year to today
                     'max': downloads all data available for each asset""",
         )
         parser.add_argument(
             "-s",
             "--start",
             default="",
-            dest="start",
+            dest="start_period",
             help="""Start date to get yfinance data from. Must be in
                     'YYYY-MM-DD' format""",
         )
@@ -1616,7 +1543,7 @@ class PortfolioOptimizationController(BaseController):
             "-e",
             "--end",
             default="",
-            dest="end",
+            dest="end_period",
             help="""End date to get yfinance data from. Must be in
                     'YYYY-MM-DD' format""",
         )
@@ -1632,7 +1559,7 @@ class PortfolioOptimizationController(BaseController):
             "-f",
             "--freq",
             default="d",
-            dest="freq",
+            dest="return_frequency",
             help="""Frequency used to calculate returns. Possible values are:
                     'd': for daily returns
                     'w': for weekly returns
@@ -1645,7 +1572,7 @@ class PortfolioOptimizationController(BaseController):
             "--maxnan",
             type=float,
             default=0.05,
-            dest="maxnan",
+            dest="max_nan",
             help="""Max percentage of nan values accepted per asset to be
                 considered in the optimization process""",
         )
@@ -1654,7 +1581,7 @@ class PortfolioOptimizationController(BaseController):
             "--threshold",
             type=float,
             default=0.30,
-            dest="threshold",
+            dest="threshold_value",
             help="""Value used to replace outliers that are higher to threshold
                 in absolute value""",
         )
@@ -1662,8 +1589,8 @@ class PortfolioOptimizationController(BaseController):
             "-mt",
             "--method",
             default="time",
-            dest="method",
-            help="""Method used to fill nan values in time series, by default time. 
+            dest="nan_fill_method",
+            help="""Method used to fill nan values in time series, by default time.
                     Possible values are:
                     linear: linear interpolation
                     time: linear interpolation based on time index
@@ -1680,7 +1607,7 @@ class PortfolioOptimizationController(BaseController):
             required=bool("-h" not in other_args),
             type=optimizer_helper.check_valid_property_type,
             dest="s_property",
-            choices=self.yf_info_choices,
+            choices=yahoo_finance_model.yf_info_choices,
             help="""Property info to weight. Use one of yfinance info options.""",
         )
         parser.add_argument(
@@ -1709,7 +1636,7 @@ class PortfolioOptimizationController(BaseController):
             "-r",
             "--risk-free-rate",
             type=float,
-            dest="risk_free_rate",
+            dest="risk_free",
             default=get_rf(),
             help="""Risk-free rate of borrowing/lending. The period of the
                 risk-free rate must be annual""",
@@ -1719,7 +1646,7 @@ class PortfolioOptimizationController(BaseController):
             "--alpha",
             type=float,
             default=0.05,
-            dest="alpha",
+            dest="significance_level",
             help="Significance level of CVaR, EVaR, CDaR and EDaR",
         )
         parser.add_argument(
@@ -1727,8 +1654,15 @@ class PortfolioOptimizationController(BaseController):
             "--value",
             default=1,
             type=float,
-            dest="value",
+            dest="long_allocation",
             help="Amount to allocate to portfolio",
+        )
+        parser.add_argument(
+            "--name",
+            type=str,
+            dest="name",
+            default="PROPERTY_" + str(self.count),
+            help="Save portfolio with personalized or default name",
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
@@ -1738,24 +1672,30 @@ class PortfolioOptimizationController(BaseController):
                 )
                 return
 
+            arguments_tuple = ns_parser._get_kwargs()
+            parameters = optimizer_view.check_params(
+                parser, arguments_tuple, self.params
+            )
+
             weights = optimizer_view.display_property_weighting(
                 stocks=self.tickers,
-                period=ns_parser.period,
-                start=ns_parser.start,
-                end=ns_parser.end,
-                log_returns=ns_parser.log_returns,
-                freq=ns_parser.freq,
-                maxnan=ns_parser.maxnan,
-                threshold=ns_parser.threshold,
-                method=ns_parser.method,
-                s_property=ns_parser.s_property,
-                risk_measure=ns_parser.risk_measure.lower(),
-                risk_free_rate=ns_parser.risk_free_rate,
-                alpha=ns_parser.alpha,
-                value=ns_parser.value,
+                period=parameters["historic_period"],
+                start=parameters["start_period"],
+                end=parameters["end_period"],
+                log_returns=parameters["log_returns"],
+                freq=parameters["return_frequency"],
+                maxnan=parameters["max_nan"],
+                threshold=parameters["threshold_value"],
+                method=parameters["nan_fill_method"],
+                s_property=parameters["s_property"],
+                risk_measure=parameters["risk_measure"].lower(),
+                risk_free_rate=parameters["risk_free"],
+                alpha=parameters["significance_level"],
+                value=parameters["long_allocation"],
             )
             self.portfolios[ns_parser.name.upper()] = weights
             self.count += 1
+            self.update_runtime_choices()
 
     @log_start_end(log=logger)
     def call_maxsharpe(self, other_args: List[str]):
@@ -1770,21 +1710,21 @@ class PortfolioOptimizationController(BaseController):
             "-p",
             "--period",
             default="3y",
-            dest="period",
+            dest="historic_period",
             help="""Period to get yfinance data from.
                     Possible frequency strings are:
                     'd': means days, for example '252d' means 252 days
                     'w': means weeks, for example '52w' means 52 weeks
                     'mo': means months, for example '12mo' means 12 months
                     'y': means years, for example '1y' means 1 year
-                    'ytd': downloads data from begining of year to today
+                    'ytd': downloads data from beginning of year to today
                     'max': downloads all data available for each asset""",
         )
         parser.add_argument(
             "-s",
             "--start",
             default="",
-            dest="start",
+            dest="start_period",
             help="""Start date to get yfinance data from. Must be in
                     'YYYY-MM-DD' format""",
         )
@@ -1792,7 +1732,7 @@ class PortfolioOptimizationController(BaseController):
             "-e",
             "--end",
             default="",
-            dest="end",
+            dest="end_period",
             help="""End date to get yfinance data from. Must be in
                     'YYYY-MM-DD' format""",
         )
@@ -1808,7 +1748,7 @@ class PortfolioOptimizationController(BaseController):
             "-f",
             "--freq",
             default="d",
-            dest="freq",
+            dest="return_frequency",
             help="""Frequency used to calculate returns. Possible values are:
                     'd': for daily returns
                     'w': for weekly returns
@@ -1821,7 +1761,7 @@ class PortfolioOptimizationController(BaseController):
             "--maxnan",
             type=float,
             default=0.05,
-            dest="maxnan",
+            dest="max_nan",
             help="""Max percentage of nan values accepted per asset to be
                 considered in the optimization process""",
         )
@@ -1830,7 +1770,7 @@ class PortfolioOptimizationController(BaseController):
             "--threshold",
             type=float,
             default=0.30,
-            dest="threshold",
+            dest="threshold_value",
             help="""Value used to replace outliers that are higher to threshold
                 in absolute value""",
         )
@@ -1838,8 +1778,8 @@ class PortfolioOptimizationController(BaseController):
             "-mt",
             "--method",
             default="time",
-            dest="method",
-            help="""Method used to fill nan values in time series, by default time. 
+            dest="nan_fill_method",
+            help="""Method used to fill nan values in time series, by default time.
                     Possible values are:
                     linear: linear interpolation
                     time: linear interpolation based on time index
@@ -1876,7 +1816,7 @@ class PortfolioOptimizationController(BaseController):
             "-r",
             "--risk-free-rate",
             type=float,
-            dest="risk_free_rate",
+            dest="risk_free",
             default=get_rf(),
             help="""Risk-free rate of borrowing/lending. The period of the
                 risk-free rate must be annual""",
@@ -1886,7 +1826,7 @@ class PortfolioOptimizationController(BaseController):
             "--alpha",
             type=float,
             default=0.05,
-            dest="alpha",
+            dest="significance_level",
             help="Significance level of CVaR, EVaR, CDaR and EDaR",
         )
         parser.add_argument(
@@ -1936,13 +1876,13 @@ class PortfolioOptimizationController(BaseController):
             "--d-ewma",
             type=float,
             default=0.94,
-            dest="d_ewma",
+            dest="smoothing_factor_ewma",
             help="Smoothing factor for ewma estimators",
         )
         parser.add_argument(
             "-v",
             "--value",
-            dest="value",
+            dest="long_allocation",
             help="Amount to allocate to portfolio in long positions",
             type=float,
             default=1.0,
@@ -1950,7 +1890,7 @@ class PortfolioOptimizationController(BaseController):
         parser.add_argument(
             "-vs",
             "--value-short",
-            dest="value_short",
+            dest="short_allocation",
             help="Amount to allocate to portfolio in short positions",
             type=float,
             default=0.0,
@@ -1971,29 +1911,35 @@ class PortfolioOptimizationController(BaseController):
                 )
                 return
 
+            arguments_tuple = ns_parser._get_kwargs()
+            parameters = optimizer_view.check_params(
+                parser, arguments_tuple, self.params
+            )
+
             weights = optimizer_view.display_max_sharpe(
                 stocks=self.tickers,
-                period=ns_parser.period,
-                start=ns_parser.start,
-                end=ns_parser.end,
-                log_returns=ns_parser.log_returns,
-                freq=ns_parser.freq,
-                maxnan=ns_parser.maxnan,
-                threshold=ns_parser.threshold,
-                method=ns_parser.method,
-                risk_measure=ns_parser.risk_measure.lower(),
-                risk_free_rate=ns_parser.risk_free_rate,
-                alpha=ns_parser.alpha,
-                target_return=ns_parser.target_return,
-                target_risk=ns_parser.target_risk,
-                mean=ns_parser.mean.lower(),
-                covariance=ns_parser.covariance.lower(),
-                d_ewma=ns_parser.d_ewma,
-                value=ns_parser.value,
-                value_short=ns_parser.value_short,
+                period=parameters["historic_period"],
+                start=parameters["start_period"],
+                end=parameters["end_period"],
+                log_returns=parameters["log_returns"],
+                freq=parameters["return_frequency"],
+                maxnan=parameters["max_nan"],
+                threshold=parameters["threshold_value"],
+                method=parameters["nan_fill_method"],
+                risk_measure=parameters["risk_measure"].lower(),
+                risk_free_rate=parameters["risk_free"],
+                alpha=parameters["significance_level"],
+                target_return=parameters["target_return"],
+                target_risk=parameters["target_risk"],
+                mean=parameters["mean"].lower(),
+                covariance=parameters["covariance"].lower(),
+                d_ewma=parameters["smoothing_factor_ewma"],
+                value=parameters["long_allocation"],
+                value_short=parameters["short_allocation"],
             )
             self.portfolios[ns_parser.name.upper()] = weights
             self.count += 1
+            self.update_runtime_choices()
 
     @log_start_end(log=logger)
     def call_minrisk(self, other_args: List[str]):
@@ -2008,21 +1954,21 @@ class PortfolioOptimizationController(BaseController):
             "-p",
             "--period",
             default="3y",
-            dest="period",
+            dest="historic_period",
             help="""Period to get yfinance data from.
                     Possible frequency strings are:
                     'd': means days, for example '252d' means 252 days
                     'w': means weeks, for example '52w' means 52 weeks
                     'mo': means months, for example '12mo' means 12 months
                     'y': means years, for example '1y' means 1 year
-                    'ytd': downloads data from begining of year to today
+                    'ytd': downloads data from beginning of year to today
                     'max': downloads all data available for each asset""",
         )
         parser.add_argument(
             "-s",
             "--start",
             default="",
-            dest="start",
+            dest="start_period",
             help="""Start date to get yfinance data from. Must be in
                     'YYYY-MM-DD' format""",
         )
@@ -2030,7 +1976,7 @@ class PortfolioOptimizationController(BaseController):
             "-e",
             "--end",
             default="",
-            dest="end",
+            dest="end_period",
             help="""End date to get yfinance data from. Must be in
                     'YYYY-MM-DD' format""",
         )
@@ -2046,7 +1992,7 @@ class PortfolioOptimizationController(BaseController):
             "-f",
             "--freq",
             default="d",
-            dest="freq",
+            dest="return_frequency",
             help="""Frequency used to calculate returns. Possible values are:
                     'd': for daily returns
                     'w': for weekly returns
@@ -2059,7 +2005,7 @@ class PortfolioOptimizationController(BaseController):
             "--maxnan",
             type=float,
             default=0.05,
-            dest="maxnan",
+            dest="max_nan",
             help="""Max percentage of nan values accepted per asset to be
                 considered in the optimization process""",
         )
@@ -2068,7 +2014,7 @@ class PortfolioOptimizationController(BaseController):
             "--threshold",
             type=float,
             default=0.30,
-            dest="threshold",
+            dest="threshold_value",
             help="""Value used to replace outliers that are higher to threshold
                 in absolute value""",
         )
@@ -2076,8 +2022,8 @@ class PortfolioOptimizationController(BaseController):
             "-mt",
             "--method",
             default="time",
-            dest="method",
-            help="""Method used to fill nan values in time series, by default time. 
+            dest="nan_fill_method",
+            help="""Method used to fill nan values in time series, by default time.
                     Possible values are:
                     linear: linear interpolation
                     time: linear interpolation based on time index
@@ -2114,7 +2060,7 @@ class PortfolioOptimizationController(BaseController):
             "-r",
             "--risk-free-rate",
             type=float,
-            dest="risk_free_rate",
+            dest="risk_free",
             default=get_rf(),
             help="""Risk-free rate of borrowing/lending. The period of the
                 risk-free rate must be annual""",
@@ -2124,7 +2070,7 @@ class PortfolioOptimizationController(BaseController):
             "--alpha",
             type=float,
             default=0.05,
-            dest="alpha",
+            dest="significance_level",
             help="Significance level of CVaR, EVaR, CDaR and EDaR",
         )
         parser.add_argument(
@@ -2174,7 +2120,7 @@ class PortfolioOptimizationController(BaseController):
             "--d-ewma",
             type=float,
             default=0.94,
-            dest="d_ewma",
+            dest="smoothing_factor_ewma",
             help="Smoothing factor for ewma estimators",
         )
         parser.add_argument(
@@ -2182,7 +2128,7 @@ class PortfolioOptimizationController(BaseController):
             "--value",
             type=float,
             default=1.0,
-            dest="value",
+            dest="long_allocation",
             help="Amount to allocate to portfolio in long positions",
         )
         parser.add_argument(
@@ -2190,7 +2136,7 @@ class PortfolioOptimizationController(BaseController):
             "--value-short",
             type=float,
             default=0.0,
-            dest="value_short",
+            dest="short_allocation",
             help="Amount to allocate to portfolio in short positions",
         )
         parser.add_argument(
@@ -2209,29 +2155,35 @@ class PortfolioOptimizationController(BaseController):
                 )
                 return
 
+            arguments_tuple = ns_parser._get_kwargs()
+            parameters = optimizer_view.check_params(
+                parser, arguments_tuple, self.params
+            )
+
             weights = optimizer_view.display_min_risk(
                 stocks=self.tickers,
-                period=ns_parser.period,
-                start=ns_parser.start,
-                end=ns_parser.end,
-                log_returns=ns_parser.log_returns,
-                freq=ns_parser.freq,
-                maxnan=ns_parser.maxnan,
-                threshold=ns_parser.threshold,
-                method=ns_parser.method,
-                risk_measure=ns_parser.risk_measure.lower(),
-                risk_free_rate=ns_parser.risk_free_rate,
-                alpha=ns_parser.alpha,
-                target_return=ns_parser.target_return,
-                target_risk=ns_parser.target_risk,
-                mean=ns_parser.mean.lower(),
-                covariance=ns_parser.covariance.lower(),
-                d_ewma=ns_parser.d_ewma,
-                value=ns_parser.value,
-                value_short=ns_parser.value_short,
+                period=parameters["historic_period"],
+                start=parameters["start_period"],
+                end=parameters["end_period"],
+                log_returns=parameters["log_returns"],
+                freq=parameters["return_frequency"],
+                maxnan=parameters["max_nan"],
+                threshold=parameters["threshold_value"],
+                method=parameters["nan_fill_method"],
+                risk_measure=parameters["risk_measure"].lower(),
+                risk_free_rate=parameters["risk_free"],
+                alpha=parameters["significance_level"],
+                target_return=parameters["target_return"],
+                target_risk=parameters["target_risk"],
+                mean=parameters["mean"].lower(),
+                covariance=parameters["covariance"].lower(),
+                d_ewma=parameters["smoothing_factor_ewma"],
+                value=parameters["long_allocation"],
+                value_short=parameters["short_allocation"],
             )
             self.portfolios[ns_parser.name.upper()] = weights
             self.count += 1
+            self.update_runtime_choices()
 
     @log_start_end(log=logger)
     def call_maxutil(self, other_args: List[str]):
@@ -2246,21 +2198,21 @@ class PortfolioOptimizationController(BaseController):
             "-p",
             "--period",
             default="3y",
-            dest="period",
+            dest="historic_period",
             help="""Period to get yfinance data from.
                     Possible frequency strings are:
                     'd': means days, for example '252d' means 252 days
                     'w': means weeks, for example '52w' means 52 weeks
                     'mo': means months, for example '12mo' means 12 months
                     'y': means years, for example '1y' means 1 year
-                    'ytd': downloads data from begining of year to today
+                    'ytd': downloads data from beginning of year to today
                     'max': downloads all data available for each asset""",
         )
         parser.add_argument(
             "-s",
             "--start",
             default="",
-            dest="start",
+            dest="start_period",
             help="""Start date to get yfinance data from. Must be in
                     'YYYY-MM-DD' format""",
         )
@@ -2268,7 +2220,7 @@ class PortfolioOptimizationController(BaseController):
             "-e",
             "--end",
             default="",
-            dest="end",
+            dest="end_period",
             help="""End date to get yfinance data from. Must be in
                     'YYYY-MM-DD' format""",
         )
@@ -2284,7 +2236,7 @@ class PortfolioOptimizationController(BaseController):
             "-f",
             "--freq",
             default="d",
-            dest="freq",
+            dest="return_frequency",
             help="""Frequency used to calculate returns. Possible values are:
                     'd': for daily returns
                     'w': for weekly returns
@@ -2297,7 +2249,7 @@ class PortfolioOptimizationController(BaseController):
             "--maxnan",
             type=float,
             default=0.05,
-            dest="maxnan",
+            dest="max_nan",
             help="""Max percentage of nan values accepted per asset to be
                 considered in the optimization process""",
         )
@@ -2306,7 +2258,7 @@ class PortfolioOptimizationController(BaseController):
             "--threshold",
             type=float,
             default=0.30,
-            dest="threshold",
+            dest="threshold_value",
             help="""Value used to replace outliers that are higher to threshold
                 in absolute value""",
         )
@@ -2314,8 +2266,8 @@ class PortfolioOptimizationController(BaseController):
             "-mt",
             "--method",
             default="time",
-            dest="method",
-            help="""Method used to fill nan values in time series, by default time. 
+            dest="nan_fill_method",
+            help="""Method used to fill nan values in time series, by default time.
                     Possible values are:
                     linear: linear interpolation
                     time: linear interpolation based on time index
@@ -2352,7 +2304,7 @@ class PortfolioOptimizationController(BaseController):
             "-r",
             "--risk-free-rate",
             type=float,
-            dest="risk_free_rate",
+            dest="risk_free",
             default=get_rf(),
             help="""Risk-free rate of borrowing/lending. The period of the
                 risk-free rate must be annual""",
@@ -2370,7 +2322,7 @@ class PortfolioOptimizationController(BaseController):
             "--alpha",
             type=float,
             default=0.05,
-            dest="alpha",
+            dest="significance_level",
             help="Significance level of CVaR, EVaR, CDaR and EDaR",
         )
         parser.add_argument(
@@ -2420,13 +2372,13 @@ class PortfolioOptimizationController(BaseController):
             "--d-ewma",
             type=float,
             default=0.94,
-            dest="d_ewma",
+            dest="smoothing_factor_ewma",
             help="Smoothing factor for ewma estimators",
         )
         parser.add_argument(
             "-v",
             "--value",
-            dest="value",
+            dest="long_allocation",
             help="Amount to allocate to portfolio in long positions",
             type=float,
             default=1.0,
@@ -2434,7 +2386,7 @@ class PortfolioOptimizationController(BaseController):
         parser.add_argument(
             "-vs",
             "--value-short",
-            dest="value_short",
+            dest="short_allocation",
             help="Amount to allocate to portfolio in short positions",
             type=float,
             default=0.0,
@@ -2455,30 +2407,36 @@ class PortfolioOptimizationController(BaseController):
                 )
                 return
 
+            arguments_tuple = ns_parser._get_kwargs()
+            parameters = optimizer_view.check_params(
+                parser, arguments_tuple, self.params
+            )
+
             weights = optimizer_view.display_max_util(
                 stocks=self.tickers,
-                period=ns_parser.period,
-                start=ns_parser.start,
-                end=ns_parser.end,
-                log_returns=ns_parser.log_returns,
-                freq=ns_parser.freq,
-                maxnan=ns_parser.maxnan,
-                threshold=ns_parser.threshold,
-                method=ns_parser.method,
-                risk_measure=ns_parser.risk_measure.lower(),
-                risk_free_rate=ns_parser.risk_free_rate,
-                risk_aversion=ns_parser.risk_aversion,
-                alpha=ns_parser.alpha,
-                target_return=ns_parser.target_return,
-                target_risk=ns_parser.target_risk,
-                mean=ns_parser.mean.lower(),
-                covariance=ns_parser.covariance.lower(),
-                d_ewma=ns_parser.d_ewma,
-                value=ns_parser.value,
-                value_short=ns_parser.value_short,
+                period=parameters["historic_period"],
+                start=parameters["start_period"],
+                end=parameters["end_period"],
+                log_returns=parameters["log_returns"],
+                freq=parameters["return_frequency"],
+                maxnan=parameters["max_nan"],
+                threshold=parameters["threshold_value"],
+                method=parameters["nan_fill_method"],
+                risk_measure=parameters["risk_measure"].lower(),
+                risk_free_rate=parameters["risk_free"],
+                risk_aversion=parameters["risk_aversion"],
+                alpha=parameters["significance_level"],
+                target_return=parameters["target_return"],
+                target_risk=parameters["target_risk"],
+                mean=parameters["mean"].lower(),
+                covariance=parameters["covariance"].lower(),
+                d_ewma=parameters["smoothing_factor_ewma"],
+                value=parameters["long_allocation"],
+                value_short=parameters["short_allocation"],
             )
             self.portfolios[ns_parser.name.upper()] = weights
             self.count += 1
+            self.update_runtime_choices()
 
     @log_start_end(log=logger)
     def call_maxret(self, other_args: List[str]):
@@ -2493,21 +2451,21 @@ class PortfolioOptimizationController(BaseController):
             "-p",
             "--period",
             default="3y",
-            dest="period",
+            dest="historic_period",
             help="""Period to get yfinance data from.
                     Possible frequency strings are:
                     'd': means days, for example '252d' means 252 days
                     'w': means weeks, for example '52w' means 52 weeks
                     'mo': means months, for example '12mo' means 12 months
                     'y': means years, for example '1y' means 1 year
-                    'ytd': downloads data from begining of year to today
+                    'ytd': downloads data from beginning of year to today
                     'max': downloads all data available for each asset""",
         )
         parser.add_argument(
             "-s",
             "--start",
             default="",
-            dest="start",
+            dest="start_period",
             help="""Start date to get yfinance data from. Must be in
                     'YYYY-MM-DD' format""",
         )
@@ -2515,7 +2473,7 @@ class PortfolioOptimizationController(BaseController):
             "-e",
             "--end",
             default="",
-            dest="end",
+            dest="end_period",
             help="""End date to get yfinance data from. Must be in
                     'YYYY-MM-DD' format""",
         )
@@ -2531,7 +2489,7 @@ class PortfolioOptimizationController(BaseController):
             "-f",
             "--freq",
             default="d",
-            dest="freq",
+            dest="return_frequency",
             help="""Frequency used to calculate returns. Possible values are:
                     'd': for daily returns
                     'w': for weekly returns
@@ -2544,7 +2502,7 @@ class PortfolioOptimizationController(BaseController):
             "--maxnan",
             type=float,
             default=0.05,
-            dest="maxnan",
+            dest="max_nan",
             help="""Max percentage of nan values accepted per asset to be
                 considered in the optimization process""",
         )
@@ -2553,7 +2511,7 @@ class PortfolioOptimizationController(BaseController):
             "--threshold",
             type=float,
             default=0.30,
-            dest="threshold",
+            dest="threshold_value",
             help="""Value used to replace outliers that are higher to threshold
                 in absolute value""",
         )
@@ -2561,8 +2519,8 @@ class PortfolioOptimizationController(BaseController):
             "-mt",
             "--method",
             default="time",
-            dest="method",
-            help="""Method used to fill nan values in time series, by default time. 
+            dest="nan_fill_method",
+            help="""Method used to fill nan values in time series, by default time.
                     Possible values are:
                     linear: linear interpolation
                     time: linear interpolation based on time index
@@ -2599,7 +2557,7 @@ class PortfolioOptimizationController(BaseController):
             "-r",
             "--risk-free-rate",
             type=float,
-            dest="risk_free_rate",
+            dest="risk_free",
             default=get_rf(),
             help="""Risk-free rate of borrowing/lending. The period of the
                 risk-free rate must be annual""",
@@ -2609,7 +2567,7 @@ class PortfolioOptimizationController(BaseController):
             "--alpha",
             type=float,
             default=0.05,
-            dest="alpha",
+            dest="significance_level",
             help="Significance level of CVaR, EVaR, CDaR and EDaR",
         )
         parser.add_argument(
@@ -2659,13 +2617,13 @@ class PortfolioOptimizationController(BaseController):
             "--d-ewma",
             type=float,
             default=0.94,
-            dest="d_ewma",
+            dest="smoothing_factor_ewma",
             help="Smoothing factor for ewma estimators",
         )
         parser.add_argument(
             "-v",
             "--value",
-            dest="value",
+            dest="long_allocation",
             help="Amount to allocate to portfolio in long positions",
             type=float,
             default=1.0,
@@ -2673,7 +2631,7 @@ class PortfolioOptimizationController(BaseController):
         parser.add_argument(
             "-vs",
             "--value-short",
-            dest="value_short",
+            dest="short_allocation",
             help="Amount to allocate to portfolio in short positions",
             type=float,
             default=0.0,
@@ -2694,29 +2652,35 @@ class PortfolioOptimizationController(BaseController):
                 )
                 return
 
+            arguments_tuple = ns_parser._get_kwargs()
+            parameters = optimizer_view.check_params(
+                parser, arguments_tuple, self.params
+            )
+
             weights = optimizer_view.display_max_ret(
                 stocks=self.tickers,
-                period=ns_parser.period,
-                start=ns_parser.start,
-                end=ns_parser.end,
-                log_returns=ns_parser.log_returns,
-                freq=ns_parser.freq,
-                maxnan=ns_parser.maxnan,
-                threshold=ns_parser.threshold,
-                method=ns_parser.method,
-                risk_measure=ns_parser.risk_measure.lower(),
-                risk_free_rate=ns_parser.risk_free_rate,
-                alpha=ns_parser.alpha,
-                target_return=ns_parser.target_return,
-                target_risk=ns_parser.target_risk,
-                mean=ns_parser.mean.lower(),
-                covariance=ns_parser.covariance.lower(),
-                d_ewma=ns_parser.d_ewma,
-                value=ns_parser.value,
-                value_short=ns_parser.value_short,
+                period=parameters["historic_period"],
+                start=parameters["start_period"],
+                end=parameters["end_period"],
+                log_returns=parameters["log_returns"],
+                freq=parameters["return_frequency"],
+                maxnan=parameters["max_nan"],
+                threshold=parameters["threshold_value"],
+                method=parameters["nan_fill_method"],
+                risk_measure=parameters["risk_measure"].lower(),
+                risk_free_rate=parameters["risk_free"],
+                alpha=parameters["significance_level"],
+                target_return=parameters["target_return"],
+                target_risk=parameters["target_risk"],
+                mean=parameters["mean"].lower(),
+                covariance=parameters["covariance"].lower(),
+                d_ewma=parameters["smoothing_factor_ewma"],
+                value=parameters["long_allocation"],
+                value_short=parameters["short_allocation"],
             )
             self.portfolios[ns_parser.name.upper()] = weights
             self.count += 1
+            self.update_runtime_choices()
 
     @log_start_end(log=logger)
     def call_maxdiv(self, other_args: List[str]):
@@ -2731,21 +2695,21 @@ class PortfolioOptimizationController(BaseController):
             "-p",
             "--period",
             default="3y",
-            dest="period",
+            dest="historic_period",
             help="""Period to get yfinance data from.
                     Possible frequency strings are:
                     'd': means days, for example '252d' means 252 days
                     'w': means weeks, for example '52w' means 52 weeks
                     'mo': means months, for example '12mo' means 12 months
                     'y': means years, for example '1y' means 1 year
-                    'ytd': downloads data from begining of year to today
+                    'ytd': downloads data from beginning of year to today
                     'max': downloads all data available for each asset""",
         )
         parser.add_argument(
             "-s",
             "--start",
             default="",
-            dest="start",
+            dest="start_period",
             help="""Start date to get yfinance data from. Must be in
                     'YYYY-MM-DD' format""",
         )
@@ -2753,7 +2717,7 @@ class PortfolioOptimizationController(BaseController):
             "-e",
             "--end",
             default="",
-            dest="end",
+            dest="end_period",
             help="""End date to get yfinance data from. Must be in
                     'YYYY-MM-DD' format""",
         )
@@ -2769,7 +2733,7 @@ class PortfolioOptimizationController(BaseController):
             "-f",
             "--freq",
             default="d",
-            dest="freq",
+            dest="return_frequency",
             help="""Frequency used to calculate returns. Possible values are:
                     'd': for daily returns
                     'w': for weekly returns
@@ -2782,7 +2746,7 @@ class PortfolioOptimizationController(BaseController):
             "--maxnan",
             type=float,
             default=0.05,
-            dest="maxnan",
+            dest="max_nan",
             help="""Max percentage of nan values accepted per asset to be
                 considered in the optimization process""",
         )
@@ -2791,7 +2755,7 @@ class PortfolioOptimizationController(BaseController):
             "--threshold",
             type=float,
             default=0.30,
-            dest="threshold",
+            dest="threshold_value",
             help="""Value used to replace outliers that are higher to threshold
                 in absolute value""",
         )
@@ -2799,8 +2763,8 @@ class PortfolioOptimizationController(BaseController):
             "-mt",
             "--method",
             default="time",
-            dest="method",
-            help="""Method used to fill nan values in time series, by default time. 
+            dest="nan_fill_method",
+            help="""Method used to fill nan values in time series, by default time.
                     Possible values are:
                     linear: linear interpolation
                     time: linear interpolation based on time index
@@ -2836,13 +2800,13 @@ class PortfolioOptimizationController(BaseController):
             "--d-ewma",
             type=float,
             default=0.94,
-            dest="d_ewma",
+            dest="smoothing_factor_ewma",
             help="Smoothing factor for ewma estimators",
         )
         parser.add_argument(
             "-v",
             "--value",
-            dest="value",
+            dest="long_allocation",
             help="Amount to allocate to portfolio in long positions",
             type=float,
             default=1.0,
@@ -2850,7 +2814,7 @@ class PortfolioOptimizationController(BaseController):
         parser.add_argument(
             "-vs",
             "--value-short",
-            dest="value_short",
+            dest="short_allocation",
             help="Amount to allocate to portfolio in short positions",
             type=float,
             default=0.0,
@@ -2871,23 +2835,29 @@ class PortfolioOptimizationController(BaseController):
                 )
                 return
 
+            arguments_tuple = ns_parser._get_kwargs()
+            parameters = optimizer_view.check_params(
+                parser, arguments_tuple, self.params
+            )
+
             weights = optimizer_view.display_max_div(
                 stocks=self.tickers,
-                period=ns_parser.period,
-                start=ns_parser.start,
-                end=ns_parser.end,
-                log_returns=ns_parser.log_returns,
-                freq=ns_parser.freq,
-                maxnan=ns_parser.maxnan,
-                threshold=ns_parser.threshold,
-                method=ns_parser.method,
-                covariance=ns_parser.covariance.lower(),
-                d_ewma=ns_parser.d_ewma,
-                value=ns_parser.value,
-                value_short=ns_parser.value_short,
+                period=parameters["historic_period"],
+                start=parameters["start_period"],
+                end=parameters["end_period"],
+                log_returns=parameters["log_returns"],
+                freq=parameters["return_frequency"],
+                maxnan=parameters["max_nan"],
+                threshold=parameters["threshold_value"],
+                method=parameters["nan_fill_method"],
+                covariance=parameters["covariance"].lower(),
+                d_ewma=parameters["smoothing_factor_ewma"],
+                value=parameters["long_allocation"],
+                value_short=parameters["short_allocation"],
             )
             self.portfolios[ns_parser.name.upper()] = weights
             self.count += 1
+            self.update_runtime_choices()
 
     @log_start_end(log=logger)
     def call_maxdecorr(self, other_args: List[str]):
@@ -2902,21 +2872,21 @@ class PortfolioOptimizationController(BaseController):
             "-p",
             "--period",
             default="3y",
-            dest="period",
+            dest="historic_period",
             help="""Period to get yfinance data from.
                     Possible frequency strings are:
                     'd': means days, for example '252d' means 252 days
                     'w': means weeks, for example '52w' means 52 weeks
                     'mo': means months, for example '12mo' means 12 months
                     'y': means years, for example '1y' means 1 year
-                    'ytd': downloads data from begining of year to today
+                    'ytd': downloads data from beginning of year to today
                     'max': downloads all data available for each asset""",
         )
         parser.add_argument(
             "-s",
             "--start",
             default="",
-            dest="start",
+            dest="start_period",
             help="""Start date to get yfinance data from. Must be in
                     'YYYY-MM-DD' format""",
         )
@@ -2924,7 +2894,7 @@ class PortfolioOptimizationController(BaseController):
             "-e",
             "--end",
             default="",
-            dest="end",
+            dest="end_period",
             help="""End date to get yfinance data from. Must be in
                     'YYYY-MM-DD' format""",
         )
@@ -2940,7 +2910,7 @@ class PortfolioOptimizationController(BaseController):
             "-f",
             "--freq",
             default="d",
-            dest="freq",
+            dest="return_frequency",
             help="""Frequency used to calculate returns. Possible values are:
                     'd': for daily returns
                     'w': for weekly returns
@@ -2953,7 +2923,7 @@ class PortfolioOptimizationController(BaseController):
             "--maxnan",
             type=float,
             default=0.05,
-            dest="maxnan",
+            dest="max_nan",
             help="""Max percentage of nan values accepted per asset to be
                 considered in the optimization process""",
         )
@@ -2962,7 +2932,7 @@ class PortfolioOptimizationController(BaseController):
             "--threshold",
             type=float,
             default=0.30,
-            dest="threshold",
+            dest="threshold_value",
             help="""Value used to replace outliers that are higher to threshold
                 in absolute value""",
         )
@@ -2970,8 +2940,8 @@ class PortfolioOptimizationController(BaseController):
             "-mt",
             "--method",
             default="time",
-            dest="method",
-            help="""Method used to fill nan values in time series, by default time. 
+            dest="nan_fill_method",
+            help="""Method used to fill nan values in time series, by default time.
                     Possible values are:
                     linear: linear interpolation
                     time: linear interpolation based on time index
@@ -3007,13 +2977,13 @@ class PortfolioOptimizationController(BaseController):
             "--d-ewma",
             type=float,
             default=0.94,
-            dest="d_ewma",
+            dest="smoothing_factor_ewma",
             help="Smoothing factor for ewma estimators",
         )
         parser.add_argument(
             "-v",
             "--value",
-            dest="value",
+            dest="long_allocation",
             help="Amount to allocate to portfolio in long positions",
             type=float,
             default=1.0,
@@ -3021,7 +2991,7 @@ class PortfolioOptimizationController(BaseController):
         parser.add_argument(
             "-vs",
             "--value-short",
-            dest="value_short",
+            dest="short_allocation",
             help="Amount to allocate to portfolio in short positions",
             type=float,
             default=0.0,
@@ -3042,23 +3012,29 @@ class PortfolioOptimizationController(BaseController):
                 )
                 return
 
+            arguments_tuple = ns_parser._get_kwargs()
+            parameters = optimizer_view.check_params(
+                parser, arguments_tuple, self.params
+            )
+
             weights = optimizer_view.display_max_decorr(
                 stocks=self.tickers,
-                period=ns_parser.period,
-                start=ns_parser.start,
-                end=ns_parser.end,
-                log_returns=ns_parser.log_returns,
-                freq=ns_parser.freq,
-                maxnan=ns_parser.maxnan,
-                threshold=ns_parser.threshold,
-                method=ns_parser.method,
-                covariance=ns_parser.covariance.lower(),
-                d_ewma=ns_parser.d_ewma,
-                value=ns_parser.value,
-                value_short=ns_parser.value_short,
+                period=parameters["historic_period"],
+                start=parameters["start_period"],
+                end=parameters["end_period"],
+                log_returns=parameters["log_returns"],
+                freq=parameters["return_frequency"],
+                maxnan=parameters["max_nan"],
+                threshold=parameters["threshold_value"],
+                method=parameters["nan_fill_method"],
+                covariance=parameters["covariance"].lower(),
+                d_ewma=parameters["smoothing_factor_ewma"],
+                value=parameters["long_allocation"],
+                value_short=parameters["short_allocation"],
             )
             self.portfolios[ns_parser.name.upper()] = weights
             self.count += 1
+            self.update_runtime_choices()
 
     @log_start_end(log=logger)
     def call_blacklitterman(self, other_args: List[str]):
@@ -3073,21 +3049,21 @@ class PortfolioOptimizationController(BaseController):
             "-p",
             "--period",
             default="3y",
-            dest="period",
+            dest="historic_period",
             help="""Period to get yfinance data from.
                     Possible frequency strings are:
                     'd': means days, for example '252d' means 252 days
                     'w': means weeks, for example '52w' means 52 weeks
                     'mo': means months, for example '12mo' means 12 months
                     'y': means years, for example '1y' means 1 year
-                    'ytd': downloads data from begining of year to today
+                    'ytd': downloads data from beginning of year to today
                     'max': downloads all data available for each asset""",
         )
         parser.add_argument(
             "-s",
             "--start",
             default="",
-            dest="start",
+            dest="start_period",
             help="""Start date to get yfinance data from. Must be in
                     'YYYY-MM-DD' format""",
         )
@@ -3095,7 +3071,7 @@ class PortfolioOptimizationController(BaseController):
             "-e",
             "--end",
             default="",
-            dest="end",
+            dest="end_period",
             help="""End date to get yfinance data from. Must be in
                     'YYYY-MM-DD' format""",
         )
@@ -3111,7 +3087,7 @@ class PortfolioOptimizationController(BaseController):
             "-f",
             "--freq",
             default="d",
-            dest="freq",
+            dest="return_frequency",
             help="""Frequency used to calculate returns. Possible values are:
                     'd': for daily returns
                     'w': for weekly returns
@@ -3124,7 +3100,7 @@ class PortfolioOptimizationController(BaseController):
             "--maxnan",
             type=float,
             default=0.05,
-            dest="maxnan",
+            dest="max_nan",
             help="""Max percentage of nan values accepted per asset to be
                 considered in the optimization process""",
         )
@@ -3133,7 +3109,7 @@ class PortfolioOptimizationController(BaseController):
             "--threshold",
             type=float,
             default=0.30,
-            dest="threshold",
+            dest="threshold_value",
             help="""Value used to replace outliers that are higher to threshold
                 in absolute value""",
         )
@@ -3141,8 +3117,8 @@ class PortfolioOptimizationController(BaseController):
             "-mt",
             "--method",
             default="time",
-            dest="method",
-            help="""Method used to fill nan values in time series, by default time. 
+            dest="nan_fill_method",
+            help="""Method used to fill nan values in time series, by default time.
                     Possible values are:
                     linear: linear interpolation
                     time: linear interpolation based on time index
@@ -3191,7 +3167,7 @@ class PortfolioOptimizationController(BaseController):
             "-r",
             "--risk-free-rate",
             type=float,
-            dest="risk_free_rate",
+            dest="risk_free",
             default=get_rf(),
             help="""Risk-free rate of borrowing/lending. The period of the
                 risk-free rate must be annual""",
@@ -3236,7 +3212,7 @@ class PortfolioOptimizationController(BaseController):
             "--value",
             type=float,
             default=1.0,
-            dest="value",
+            dest="long_allocation",
             help="Amount to allocate to portfolio in long positions",
         )
         parser.add_argument(
@@ -3244,7 +3220,7 @@ class PortfolioOptimizationController(BaseController):
             "--value-short",
             type=float,
             default=0.0,
-            dest="value_short",
+            dest="short_allocation",
             help="Amount to allocate to portfolio in short positions",
         )
         parser.add_argument(
@@ -3263,31 +3239,37 @@ class PortfolioOptimizationController(BaseController):
                 )
                 return
 
+            arguments_tuple = ns_parser._get_kwargs()
+            parameters = optimizer_view.check_params(
+                parser, arguments_tuple, self.params
+            )
+
             weights = optimizer_view.display_black_litterman(
                 stocks=self.tickers,
-                p_views=ns_parser.p_views,
-                q_views=ns_parser.q_views,
-                period=ns_parser.period,
-                start=ns_parser.start,
-                end=ns_parser.end,
-                log_returns=ns_parser.log_returns,
-                freq=ns_parser.freq,
-                maxnan=ns_parser.maxnan,
-                threshold=ns_parser.threshold,
-                method=ns_parser.method,
+                p_views=parameters["p_views"],
+                q_views=parameters["q_views"],
+                period=parameters["historic_period"],
+                start=parameters["start_period"],
+                end=parameters["end_period"],
+                log_returns=parameters["log_returns"],
+                freq=parameters["return_frequency"],
+                maxnan=parameters["max_nan"],
+                threshold=parameters["threshold_value"],
+                method=parameters["nan_fill_method"],
                 benchmark=self.portfolios[ns_parser.benchmark].upper(),
-                objective=ns_parser.objective.lower(),
-                risk_free_rate=ns_parser.risk_free_rate,
-                risk_aversion=ns_parser.risk_aversion,
+                objective=parameters["objective"].lower(),
+                risk_free_rate=parameters["risk_free"],
+                risk_aversion=parameters["risk_aversion"],
                 delta=ns_parser.delta,
                 equilibrium=ns_parser.equilibrium,
                 optimize=ns_parser.optimize,
-                value=ns_parser.value,
-                value_short=ns_parser.value_short,
+                value=parameters["long_allocation"],
+                value_short=parameters["short_allocation"],
             )
 
             self.portfolios[ns_parser.name.upper()] = weights
             self.count += 1
+            self.update_runtime_choices()
 
     @log_start_end(log=logger)
     def call_ef(self, other_args):
@@ -3303,21 +3285,21 @@ class PortfolioOptimizationController(BaseController):
             "-p",
             "--period",
             default="3y",
-            dest="period",
+            dest="historic_period",
             help="""Period to get yfinance data from.
                     Possible frequency strings are:
                     'd': means days, for example '252d' means 252 days
                     'w': means weeks, for example '52w' means 52 weeks
                     'mo': means months, for example '12mo' means 12 months
                     'y': means years, for example '1y' means 1 year
-                    'ytd': downloads data from begining of year to today
+                    'ytd': downloads data from beginning of year to today
                     'max': downloads all data available for each asset""",
         )
         parser.add_argument(
             "-s",
             "--start",
             default="",
-            dest="start",
+            dest="start_period",
             help="""Start date to get yfinance data from. Must be in
                     'YYYY-MM-DD' format""",
         )
@@ -3325,7 +3307,7 @@ class PortfolioOptimizationController(BaseController):
             "-e",
             "--end",
             default="",
-            dest="end",
+            dest="end_period",
             help="""End date to get yfinance data from. Must be in
                     'YYYY-MM-DD' format""",
         )
@@ -3341,7 +3323,7 @@ class PortfolioOptimizationController(BaseController):
             "-f",
             "--freq",
             default="d",
-            dest="freq",
+            dest="return_frequency",
             help="""Frequency used to calculate returns. Possible values are:
                     'd': for daily returns
                     'w': for weekly returns
@@ -3354,7 +3336,7 @@ class PortfolioOptimizationController(BaseController):
             "--maxnan",
             type=float,
             default=0.05,
-            dest="maxnan",
+            dest="max_nan",
             help="""Max percentage of nan values accepted per asset to be
                 considered in the optimization process""",
         )
@@ -3363,7 +3345,7 @@ class PortfolioOptimizationController(BaseController):
             "--threshold",
             type=float,
             default=0.30,
-            dest="threshold",
+            dest="threshold_value",
             help="""Value used to replace outliers that are higher to threshold
                 in absolute value""",
         )
@@ -3371,8 +3353,8 @@ class PortfolioOptimizationController(BaseController):
             "-mt",
             "--method",
             default="time",
-            dest="method",
-            help="""Method used to fill nan values in time series, by default time. 
+            dest="nan_fill_method",
+            help="""Method used to fill nan values in time series, by default time.
                     Possible values are:
                     linear: linear interpolation
                     time: linear interpolation based on time index
@@ -3409,7 +3391,7 @@ class PortfolioOptimizationController(BaseController):
             "-r",
             "--risk-free-rate",
             type=float,
-            dest="risk_free_rate",
+            dest="risk_free",
             default=get_rf(),
             help="""Risk-free rate of borrowing/lending. The period of the
                 risk-free rate must be annual""",
@@ -3419,13 +3401,13 @@ class PortfolioOptimizationController(BaseController):
             "--alpha",
             type=float,
             default=0.05,
-            dest="alpha",
+            dest="significance_level",
             help="Significance level of CVaR, EVaR, CDaR and EDaR",
         )
         parser.add_argument(
             "-v",
             "--value",
-            dest="value",
+            dest="long_allocation",
             help="Amount to allocate to portfolio in long positions",
             type=float,
             default=1.0,
@@ -3433,7 +3415,7 @@ class PortfolioOptimizationController(BaseController):
         parser.add_argument(
             "-vs",
             "--value-short",
-            dest="value_short",
+            dest="short_allocation",
             help="Amount to allocate to portfolio in short positions",
             type=float,
             default=0.0,
@@ -3445,7 +3427,7 @@ class PortfolioOptimizationController(BaseController):
             "--number-portfolios",
             default=100,
             type=check_non_negative,
-            dest="n_portfolios",
+            dest="amount_portfolios",
             help="Number of portfolios to simulate",
         )
         parser.add_argument(
@@ -3453,7 +3435,7 @@ class PortfolioOptimizationController(BaseController):
             "--seed",
             default=123,
             type=check_non_negative,
-            dest="seed",
+            dest="random_seed",
             help="Seed used to generate random portfolios",
         )
         parser.add_argument(
@@ -3473,24 +3455,29 @@ class PortfolioOptimizationController(BaseController):
                 )
                 return
 
+            arguments_tuple = ns_parser._get_kwargs()
+            parameters = optimizer_view.check_params(
+                parser, arguments_tuple, self.params
+            )
+
             optimizer_view.display_ef(
                 stocks=self.tickers,
-                period=ns_parser.period,
-                start=ns_parser.start,
-                end=ns_parser.end,
-                log_returns=ns_parser.log_returns,
-                freq=ns_parser.freq,
-                maxnan=ns_parser.maxnan,
-                threshold=ns_parser.threshold,
-                method=ns_parser.method,
-                risk_measure=ns_parser.risk_measure.lower(),
-                risk_free_rate=ns_parser.risk_free_rate,
-                alpha=ns_parser.alpha,
-                value=ns_parser.value,
-                value_short=ns_parser.value_short,
-                n_portfolios=ns_parser.n_portfolios,
-                seed=ns_parser.seed,
-                tangency=ns_parser.tangency,
+                period=parameters["historic_period"],
+                start=parameters["start_period"],
+                end=parameters["end_period"],
+                log_returns=parameters["log_returns"],
+                freq=parameters["return_frequency"],
+                maxnan=parameters["max_nan"],
+                threshold=parameters["threshold_value"],
+                method=parameters["nan_fill_method"],
+                risk_measure=parameters["risk_measure"].lower(),
+                risk_free_rate=parameters["risk_free"],
+                alpha=parameters["significance_level"],
+                value=parameters["long_allocation"],
+                value_short=parameters["short_allocation"],
+                n_portfolios=parameters["amount_portfolios"],
+                seed=parameters["random_seed"],
+                tangency=parameters["tangency"],
             )
 
     @log_start_end(log=logger)
@@ -3507,21 +3494,21 @@ class PortfolioOptimizationController(BaseController):
             "-p",
             "--period",
             default="3y",
-            dest="period",
+            dest="historic_period",
             help="""Period to get yfinance data from.
                     Possible frequency strings are:
                     'd': means days, for example '252d' means 252 days
                     'w': means weeks, for example '52w' means 52 weeks
                     'mo': means months, for example '12mo' means 12 months
                     'y': means years, for example '1y' means 1 year
-                    'ytd': downloads data from begining of year to today
+                    'ytd': downloads data from beginning of year to today
                     'max': downloads all data available for each asset""",
         )
         parser.add_argument(
             "-s",
             "--start",
             default="",
-            dest="start",
+            dest="start_period",
             help="""Start date to get yfinance data from. Must be in
                     'YYYY-MM-DD' format""",
         )
@@ -3529,7 +3516,7 @@ class PortfolioOptimizationController(BaseController):
             "-e",
             "--end",
             default="",
-            dest="end",
+            dest="end_period",
             help="""End date to get yfinance data from. Must be in
                     'YYYY-MM-DD' format""",
         )
@@ -3545,7 +3532,7 @@ class PortfolioOptimizationController(BaseController):
             "-f",
             "--freq",
             default="d",
-            dest="freq",
+            dest="return_frequency",
             help="""Frequency used to calculate returns. Possible values are:
                     'd': for daily returns
                     'w': for weekly returns
@@ -3558,7 +3545,7 @@ class PortfolioOptimizationController(BaseController):
             "--maxnan",
             type=float,
             default=0.05,
-            dest="maxnan",
+            dest="max_nan",
             help="""Max percentage of nan values accepted per asset to be
                     considered in the optimization process. """,
         )
@@ -3567,7 +3554,7 @@ class PortfolioOptimizationController(BaseController):
             "--threshold",
             type=float,
             default=0.30,
-            dest="threshold",
+            dest="threshold_value",
             help="""Value used to replace outliers that are higher to threshold
                 in absolute value""",
         )
@@ -3575,8 +3562,8 @@ class PortfolioOptimizationController(BaseController):
             "-mt",
             "--method",
             default="time",
-            dest="method",
-            help="""Method used to fill nan values in time series, by default time. 
+            dest="nan_fill_method",
+            help="""Method used to fill nan values in time series, by default time.
                     Possible values are:
                     linear: linear interpolation
                     time: linear interpolation based on time index
@@ -3611,14 +3598,14 @@ class PortfolioOptimizationController(BaseController):
             "--risk-cont",
             type=lambda s: [float(item) for item in s.split(",")],
             default=None,
-            dest="risk_cont",
+            dest="risk_contribution",
             help="vector of risk contribution constraint",
         )
         parser.add_argument(
             "-r",
             "--risk-free-rate",
             type=float,
-            dest="risk_free_rate",
+            dest="risk_free",
             default=get_rf(),
             help="""Risk-free rate of borrowing/lending. The period of the
                 risk-free rate must be annual""",
@@ -3628,7 +3615,7 @@ class PortfolioOptimizationController(BaseController):
             "--alpha",
             type=float,
             default=0.05,
-            dest="alpha",
+            dest="significance_level",
             help="Significance level of CVaR, EVaR, CDaR and EDaR",
         )
         parser.add_argument(
@@ -3643,13 +3630,13 @@ class PortfolioOptimizationController(BaseController):
             "--d-ewma",
             type=float,
             default=0.94,
-            dest="d_ewma",
+            dest="smoothing_factor_ewma",
             help="Smoothing factor for ewma estimators",
         )
         parser.add_argument(
             "-v",
             "--value",
-            dest="value",
+            dest="long_allocation",
             help="Amount to allocate to portfolio",
             type=float,
             default=1.0,
@@ -3670,25 +3657,31 @@ class PortfolioOptimizationController(BaseController):
                 )
                 return
 
+            arguments_tuple = ns_parser._get_kwargs()
+            parameters = optimizer_view.check_params(
+                parser, arguments_tuple, self.params
+            )
+
             weights = optimizer_view.display_risk_parity(
                 stocks=self.tickers,
-                period=ns_parser.period,
-                start=ns_parser.start,
-                end=ns_parser.end,
-                log_returns=ns_parser.log_returns,
-                freq=ns_parser.freq,
-                maxnan=ns_parser.maxnan,
-                threshold=ns_parser.threshold,
-                method=ns_parser.method,
-                risk_measure=ns_parser.risk_measure.lower(),
-                risk_cont=ns_parser.risk_cont,
-                risk_free_rate=ns_parser.risk_free_rate,
-                alpha=ns_parser.alpha,
-                target_return=ns_parser.target_return,
-                value=ns_parser.value,
+                period=parameters["historic_period"],
+                start=parameters["start_period"],
+                end=parameters["end_period"],
+                log_returns=parameters["log_returns"],
+                freq=parameters["return_frequency"],
+                maxnan=parameters["max_nan"],
+                threshold=parameters["threshold_value"],
+                method=parameters["nan_fill_method"],
+                risk_measure=parameters["risk_measure"].lower(),
+                risk_cont=parameters["risk_contribution"],
+                risk_free_rate=parameters["risk_free"],
+                alpha=parameters["significance_level"],
+                target_return=parameters["target_return"],
+                value=parameters["long_allocation"],
             )
             self.portfolios[ns_parser.name.upper()] = weights
             self.count += 1
+            self.update_runtime_choices()
 
     @log_start_end(log=logger)
     def call_relriskparity(self, other_args: List[str]):
@@ -3704,21 +3697,21 @@ class PortfolioOptimizationController(BaseController):
             "-p",
             "--period",
             default="3y",
-            dest="period",
+            dest="historic_period",
             help="""Period to get yfinance data from.
                     Possible frequency strings are:
                     'd': means days, for example '252d' means 252 days
                     'w': means weeks, for example '52w' means 52 weeks
                     'mo': means months, for example '12mo' means 12 months
                     'y': means years, for example '1y' means 1 year
-                    'ytd': downloads data from begining of year to today
+                    'ytd': downloads data from beginning of year to today
                     'max': downloads all data available for each asset""",
         )
         parser.add_argument(
             "-s",
             "--start",
             default="",
-            dest="start",
+            dest="start_period",
             help="""Start date to get yfinance data from. Must be in
                     'YYYY-MM-DD' format""",
         )
@@ -3726,7 +3719,7 @@ class PortfolioOptimizationController(BaseController):
             "-e",
             "--end",
             default="",
-            dest="end",
+            dest="end_period",
             help="""End date to get yfinance data from. Must be in
                     'YYYY-MM-DD' format""",
         )
@@ -3742,7 +3735,7 @@ class PortfolioOptimizationController(BaseController):
             "-f",
             "--freq",
             default="d",
-            dest="freq",
+            dest="return_frequency",
             help="""Frequency used to calculate returns. Possible values are:
                     'd': for daily returns
                     'w': for weekly returns
@@ -3755,7 +3748,7 @@ class PortfolioOptimizationController(BaseController):
             "--maxnan",
             type=float,
             default=0.05,
-            dest="maxnan",
+            dest="max_nan",
             help="""Max percentage of nan values accepted per asset to be
                 considered in the optimization process""",
         )
@@ -3764,7 +3757,7 @@ class PortfolioOptimizationController(BaseController):
             "--threshold",
             type=float,
             default=0.30,
-            dest="threshold",
+            dest="threshold_value",
             help="""Value used to replace outliers that are higher to threshold
                 in absolute value""",
         )
@@ -3772,8 +3765,8 @@ class PortfolioOptimizationController(BaseController):
             "-mt",
             "--method",
             default="time",
-            dest="method",
-            help="""Method used to fill nan values in time series, by default time. 
+            dest="nan_fill_method",
+            help="""Method used to fill nan values in time series, by default time.
                     Possible values are:
                     linear: linear interpolation
                     time: linear interpolation based on time index
@@ -3788,7 +3781,7 @@ class PortfolioOptimizationController(BaseController):
             "-ve",
             "--version",
             default="A",
-            dest="version",
+            dest="risk_parity_model",
             help="version of relaxed risk parity model",
             choices=self.relriskparity_choices,
         )
@@ -3797,7 +3790,7 @@ class PortfolioOptimizationController(BaseController):
             "--risk-cont",
             type=lambda s: [float(item) for item in s.split(",")],
             default=None,
-            dest="risk_cont",
+            dest="risk_contribution",
             help="Vector of risk contribution constraints",
         )
         parser.add_argument(
@@ -3821,13 +3814,13 @@ class PortfolioOptimizationController(BaseController):
             "--d-ewma",
             type=float,
             default=0.94,
-            dest="d_ewma",
+            dest="smoothing_factor_ewma",
             help="Smoothing factor for ewma estimators",
         )
         parser.add_argument(
             "-v",
             "--value",
-            dest="value",
+            dest="long_allocation",
             help="Amount to allocate to portfolio",
             type=float,
             default=1.0,
@@ -3848,25 +3841,31 @@ class PortfolioOptimizationController(BaseController):
                 )
                 return
 
+            arguments_tuple = ns_parser._get_kwargs()
+            parameters = optimizer_view.check_params(
+                parser, arguments_tuple, self.params
+            )
+
             weights = optimizer_view.display_rel_risk_parity(
                 stocks=self.tickers,
-                period=ns_parser.period,
-                start=ns_parser.start,
-                end=ns_parser.end,
-                log_returns=ns_parser.log_returns,
-                freq=ns_parser.freq,
-                maxnan=ns_parser.maxnan,
-                threshold=ns_parser.threshold,
-                method=ns_parser.method,
-                version=ns_parser.version,
-                risk_cont=ns_parser.risk_cont,
-                penal_factor=ns_parser.penal_factor,
-                target_return=ns_parser.target_return,
-                d_ewma=ns_parser.d_ewma,
-                value=ns_parser.value,
+                period=parameters["historic_period"],
+                start=parameters["start_period"],
+                end=parameters["end_period"],
+                log_returns=parameters["log_returns"],
+                freq=parameters["return_frequency"],
+                maxnan=parameters["max_nan"],
+                threshold=parameters["threshold_value"],
+                method=parameters["nan_fill_method"],
+                version=parameters["risk_parity_model"],
+                risk_cont=parameters["risk_contribution"],
+                penal_factor=parameters["penal_factor"],
+                target_return=parameters["target_return"],
+                d_ewma=parameters["smoothing_factor_ewma"],
+                value=parameters["long_allocation"],
             )
             self.portfolios[ns_parser.name.upper()] = weights
             self.count += 1
+            self.update_runtime_choices()
 
     @log_start_end(log=logger)
     def call_hrp(self, other_args: List[str]):
@@ -3881,21 +3880,21 @@ class PortfolioOptimizationController(BaseController):
             "-p",
             "--period",
             default="3y",
-            dest="period",
+            dest="historic_period",
             help="""Period to get yfinance data from.
                     Possible frequency strings are:
                     'd': means days, for example '252d' means 252 days
                     'w': means weeks, for example '52w' means 52 weeks
                     'mo': means months, for example '12mo' means 12 months
                     'y': means years, for example '1y' means 1 year
-                    'ytd': downloads data from begining of year to today
+                    'ytd': downloads data from beginning of year to today
                     'max': downloads all data available for each asset""",
         )
         parser.add_argument(
             "-s",
             "--start",
             default="",
-            dest="start",
+            dest="start_period",
             help="""Start date to get yfinance data from. Must be in
                     'YYYY-MM-DD' format""",
         )
@@ -3903,7 +3902,7 @@ class PortfolioOptimizationController(BaseController):
             "-e",
             "--end",
             default="",
-            dest="end",
+            dest="end_period",
             help="""End date to get yfinance data from. Must be in
                     'YYYY-MM-DD' format""",
         )
@@ -3919,7 +3918,7 @@ class PortfolioOptimizationController(BaseController):
             "-f",
             "--freq",
             default="d",
-            dest="freq",
+            dest="return_frequency",
             help="""Frequency used to calculate returns. Possible values are:
                     'd': for daily returns
                     'w': for weekly returns
@@ -3932,7 +3931,7 @@ class PortfolioOptimizationController(BaseController):
             "--maxnan",
             type=float,
             default=0.05,
-            dest="maxnan",
+            dest="max_nan",
             help="""Max percentage of nan values accepted per asset to be
                 considered in the optimization process""",
         )
@@ -3941,7 +3940,7 @@ class PortfolioOptimizationController(BaseController):
             "--threshold",
             type=float,
             default=0.30,
-            dest="threshold",
+            dest="threshold_value",
             help="""Value used to replace outliers that are higher to threshold
                 in absolute value""",
         )
@@ -3949,8 +3948,8 @@ class PortfolioOptimizationController(BaseController):
             "-mt",
             "--method",
             default="time",
-            dest="method",
-            help="""Method used to fill nan values in time series, by default time. 
+            dest="nan_fill_method",
+            help="""Method used to fill nan values in time series, by default time.
                     Possible values are:
                     linear: linear interpolation
                     time: linear interpolation based on time index
@@ -3965,7 +3964,7 @@ class PortfolioOptimizationController(BaseController):
             "-cd",
             "--codependence",
             default="pearson",
-            dest="codependence",
+            dest="co_dependence",
             help="""The codependence or similarity matrix used to build the
                 distance metric and clusters. Possible values are:
                 pearson: pearson correlation matrix
@@ -4023,7 +4022,7 @@ class PortfolioOptimizationController(BaseController):
             "-r",
             "--risk-free-rate",
             type=float,
-            dest="risk_free_rate",
+            dest="risk_free",
             default=get_rf(),
             help="""Risk-free rate of borrowing/lending. The period of the
                 risk-free rate must be annual""",
@@ -4033,7 +4032,7 @@ class PortfolioOptimizationController(BaseController):
             "--alpha",
             type=float,
             default=0.05,
-            dest="alpha",
+            dest="significance_level",
             help="""Significance level of VaR, CVaR, EVaR, DaR, CDaR, EDaR and
                 Tail Gini of losses""",
         )
@@ -4042,7 +4041,7 @@ class PortfolioOptimizationController(BaseController):
             "--a-sim",
             type=int,
             default=100,
-            dest="a_sim",
+            dest="cvar_simulations_losses",
             help="""Number of CVaRs used to approximate Tail Gini of losses.
                 The default is 100""",
         )
@@ -4051,7 +4050,7 @@ class PortfolioOptimizationController(BaseController):
             "--beta",
             type=float,
             default=None,
-            dest="beta",
+            dest="cvar_significance",
             help="""Significance level of CVaR and Tail Gini of gains. If
                 empty it duplicates alpha""",
         )
@@ -4060,7 +4059,7 @@ class PortfolioOptimizationController(BaseController):
             "--b-sim",
             type=int,
             default=None,
-            dest="b_sim",
+            dest="cvar_simulations_gains",
             help="""Number of CVaRs used to approximate Tail Gini of gains.
                 If empty it duplicates a_sim value""",
         )
@@ -4076,7 +4075,7 @@ class PortfolioOptimizationController(BaseController):
             "-k",
             type=int,
             default=None,
-            dest="k",
+            dest="amount_clusters",
             help="Number of clusters specified in advance",
         )
         parser.add_argument(
@@ -4084,7 +4083,7 @@ class PortfolioOptimizationController(BaseController):
             "--max-k",
             type=int,
             default=10,
-            dest="max_k",
+            dest="max_clusters",
             help="""Max number of clusters used by the two difference gap
             statistic to find the optimal number of clusters. If k is
             empty this value is used""",
@@ -4093,7 +4092,7 @@ class PortfolioOptimizationController(BaseController):
             "-bi",
             "--bins-info",
             default="KN",
-            dest="bins_info",
+            dest="amount_bins",
             help="Number of bins used to calculate the variation of information",
         )
         parser.add_argument(
@@ -4118,7 +4117,7 @@ class PortfolioOptimizationController(BaseController):
             "--d-ewma",
             type=float,
             default=0.94,
-            dest="d_ewma",
+            dest="smoothing_factor_ewma",
             help="Smoothing factor for ewma estimators",
         )
         parser.add_argument(
@@ -4126,7 +4125,7 @@ class PortfolioOptimizationController(BaseController):
             "--value",
             type=float,
             default=1.0,
-            dest="value",
+            dest="long_allocation",
             help="Amount to allocate to portfolio",
         )
         parser.add_argument(
@@ -4145,35 +4144,41 @@ class PortfolioOptimizationController(BaseController):
                 )
                 return
 
+            arguments_tuple = ns_parser._get_kwargs()
+            parameters = optimizer_view.check_params(
+                parser, arguments_tuple, self.params
+            )
+
             weights = optimizer_view.display_hrp(
                 stocks=self.tickers,
-                period=ns_parser.period,
-                start=ns_parser.start,
-                end=ns_parser.end,
-                log_returns=ns_parser.log_returns,
-                freq=ns_parser.freq,
-                maxnan=ns_parser.maxnan,
-                threshold=ns_parser.threshold,
-                method=ns_parser.method,
-                codependence=ns_parser.codependence.lower(),
-                covariance=ns_parser.covariance.lower(),
-                risk_measure=ns_parser.risk_measure.lower(),
-                risk_free_rate=ns_parser.risk_free_rate,
-                alpha=ns_parser.alpha,
-                a_sim=ns_parser.a_sim,
-                beta=ns_parser.beta,
-                b_sim=ns_parser.b_sim,
-                linkage=ns_parser.linkage.lower(),
-                k=ns_parser.k,
-                max_k=ns_parser.max_k,
-                bins_info=ns_parser.bins_info.upper(),
-                alpha_tail=ns_parser.alpha_tail,
-                leaf_order=ns_parser.leaf_order,
-                d_ewma=ns_parser.d_ewma,
-                value=ns_parser.value,
+                period=parameters["historic_period"],
+                start=parameters["start_period"],
+                end=parameters["end_period"],
+                log_returns=parameters["log_returns"],
+                freq=parameters["return_frequency"],
+                maxnan=parameters["max_nan"],
+                threshold=parameters["threshold_value"],
+                method=parameters["nan_fill_method"],
+                codependence=parameters["co_dependence"].lower(),
+                covariance=parameters["covariance"].lower(),
+                risk_measure=parameters["risk_measure"].lower(),
+                risk_free_rate=parameters["risk_free"],
+                alpha=parameters["significance_level"],
+                a_sim=parameters["cvar_simulations_losses"],
+                beta=parameters["cvar_significance"],
+                b_sim=parameters["cvar_simulations_gains"],
+                linkage=parameters["linkage"].lower(),
+                k=parameters["amount_clusters"],
+                max_k=parameters["max_clusters"],
+                bins_info=parameters["amount_bins"].upper(),
+                alpha_tail=parameters["alpha_tail"],
+                leaf_order=parameters["leaf_order"],
+                d_ewma=parameters["smoothing_factor_ewma"],
+                value=parameters["long_allocation"],
             )
             self.portfolios[ns_parser.name.upper()] = weights
             self.count += 1
+            self.update_runtime_choices()
 
     @log_start_end(log=logger)
     def call_herc(self, other_args: List[str]):
@@ -4188,21 +4193,21 @@ class PortfolioOptimizationController(BaseController):
             "-p",
             "--period",
             default="3y",
-            dest="period",
+            dest="historic_period",
             help="""Period to get yfinance data from.
                     Possible frequency strings are:
                     'd': means days, for example '252d' means 252 days
                     'w': means weeks, for example '52w' means 52 weeks
                     'mo': means months, for example '12mo' means 12 months
                     'y': means years, for example '1y' means 1 year
-                    'ytd': downloads data from begining of year to today
+                    'ytd': downloads data from beginning of year to today
                     'max': downloads all data available for each asset""",
         )
         parser.add_argument(
             "-s",
             "--start",
             default="",
-            dest="start",
+            dest="start_period",
             help="""Start date to get yfinance data from. Must be in
                     'YYYY-MM-DD' format""",
         )
@@ -4210,7 +4215,7 @@ class PortfolioOptimizationController(BaseController):
             "-e",
             "--end",
             default="",
-            dest="end",
+            dest="end_period",
             help="""End date to get yfinance data from. Must be in
                     'YYYY-MM-DD' format""",
         )
@@ -4226,7 +4231,7 @@ class PortfolioOptimizationController(BaseController):
             "-f",
             "--freq",
             default="d",
-            dest="freq",
+            dest="return_frequency",
             help="""Frequency used to calculate returns. Possible values are:
                     'd': for daily returns
                     'w': for weekly returns
@@ -4239,7 +4244,7 @@ class PortfolioOptimizationController(BaseController):
             "--maxnan",
             type=float,
             default=0.05,
-            dest="maxnan",
+            dest="max_nan",
             help="""Max percentage of nan values accepted per asset to be
                 considered in the optimization process""",
         )
@@ -4248,7 +4253,7 @@ class PortfolioOptimizationController(BaseController):
             "--threshold",
             type=float,
             default=0.30,
-            dest="threshold",
+            dest="threshold_value",
             help="""Value used to replace outliers that are higher to threshold
                 in absolute value""",
         )
@@ -4256,8 +4261,8 @@ class PortfolioOptimizationController(BaseController):
             "-mt",
             "--method",
             default="time",
-            dest="method",
-            help="""Method used to fill nan values in time series, by default time. 
+            dest="nan_fill_method",
+            help="""Method used to fill nan values in time series, by default time.
                     Possible values are:
                     linear: linear interpolation
                     time: linear interpolation based on time index
@@ -4272,7 +4277,7 @@ class PortfolioOptimizationController(BaseController):
             "-cd",
             "--codependence",
             default="pearson",
-            dest="codependence",
+            dest="co_dependence",
             help="""The codependence or similarity matrix used to build the
                 distance metric and clusters. Possible values are:
                 pearson: pearson correlation matrix
@@ -4330,7 +4335,7 @@ class PortfolioOptimizationController(BaseController):
             "-r",
             "--risk-free-rate",
             type=float,
-            dest="risk_free_rate",
+            dest="risk_free",
             default=get_rf(),
             help="""Risk-free rate of borrowing/lending. The period of the
                 risk-free rate must be annual""",
@@ -4340,7 +4345,7 @@ class PortfolioOptimizationController(BaseController):
             "--alpha",
             type=float,
             default=0.05,
-            dest="alpha",
+            dest="significance_level",
             help="""Significance level of VaR, CVaR, EVaR, DaR, CDaR, EDaR and
                 Tail Gini of losses""",
         )
@@ -4349,7 +4354,7 @@ class PortfolioOptimizationController(BaseController):
             "--a-sim",
             type=int,
             default=100,
-            dest="a_sim",
+            dest="cvar_simulations_losses",
             help="""Number of CVaRs used to approximate Tail Gini of losses.
                 The default is 100""",
         )
@@ -4358,7 +4363,7 @@ class PortfolioOptimizationController(BaseController):
             "--beta",
             type=float,
             default=None,
-            dest="beta",
+            dest="cvar_significance",
             help="""Significance level of CVaR and Tail Gini of gains. If
                 empty it duplicates alpha""",
         )
@@ -4367,7 +4372,7 @@ class PortfolioOptimizationController(BaseController):
             "--b-sim",
             type=int,
             default=None,
-            dest="b_sim",
+            dest="cvar_simulations_gains",
             help="""Number of CVaRs used to approximate Tail Gini of gains.
                 If empty it duplicates a_sim value""",
         )
@@ -4383,7 +4388,7 @@ class PortfolioOptimizationController(BaseController):
             "-k",
             type=int,
             default=None,
-            dest="k",
+            dest="amount_clusters",
             help="Number of clusters specified in advance",
         )
         parser.add_argument(
@@ -4391,7 +4396,7 @@ class PortfolioOptimizationController(BaseController):
             "--max-k",
             type=int,
             default=10,
-            dest="max_k",
+            dest="max_clusters",
             help="""Max number of clusters used by the two difference gap
             statistic to find the optimal number of clusters. If k is
             empty this value is used""",
@@ -4400,7 +4405,7 @@ class PortfolioOptimizationController(BaseController):
             "-bi",
             "--bins-info",
             default="KN",
-            dest="bins_info",
+            dest="amount_bins",
             help="Number of bins used to calculate the variation of information",
         )
         parser.add_argument(
@@ -4425,7 +4430,7 @@ class PortfolioOptimizationController(BaseController):
             "--d-ewma",
             type=float,
             default=0.94,
-            dest="d_ewma",
+            dest="smoothing_factor_ewma",
             help="Smoothing factor for ewma estimators",
         )
         parser.add_argument(
@@ -4433,7 +4438,7 @@ class PortfolioOptimizationController(BaseController):
             "--value",
             type=float,
             default=1.0,
-            dest="value",
+            dest="long_allocation",
             help="Amount to allocate to portfolio",
         )
         parser.add_argument(
@@ -4452,35 +4457,41 @@ class PortfolioOptimizationController(BaseController):
                 )
                 return
 
+            arguments_tuple = ns_parser._get_kwargs()
+            parameters = optimizer_view.check_params(
+                parser, arguments_tuple, self.params
+            )
+
             weights = optimizer_view.display_herc(
                 stocks=self.tickers,
-                period=ns_parser.period,
-                start=ns_parser.start,
-                end=ns_parser.end,
-                log_returns=ns_parser.log_returns,
-                freq=ns_parser.freq,
-                maxnan=ns_parser.maxnan,
-                threshold=ns_parser.threshold,
-                method=ns_parser.method,
-                codependence=ns_parser.codependence.lower(),
-                covariance=ns_parser.covariance.lower(),
-                risk_measure=ns_parser.risk_measure.lower(),
-                risk_free_rate=ns_parser.risk_free_rate,
-                alpha=ns_parser.alpha,
-                a_sim=ns_parser.a_sim,
-                beta=ns_parser.beta,
-                b_sim=ns_parser.b_sim,
-                linkage=ns_parser.linkage.lower(),
-                k=ns_parser.k,
-                max_k=ns_parser.max_k,
-                bins_info=ns_parser.bins_info.upper(),
-                alpha_tail=ns_parser.alpha_tail,
-                leaf_order=ns_parser.leaf_order,
-                d_ewma=ns_parser.d_ewma,
-                value=ns_parser.value,
+                period=parameters["historic_period"],
+                start=parameters["start_period"],
+                end=parameters["end_period"],
+                log_returns=parameters["log_returns"],
+                freq=parameters["return_frequency"],
+                maxnan=parameters["max_nan"],
+                threshold=parameters["threshold_value"],
+                method=parameters["nan_fill_method"],
+                codependence=parameters["co_dependence"].lower(),
+                covariance=parameters["covariance"].lower(),
+                risk_measure=parameters["risk_measure"].lower(),
+                risk_free_rate=parameters["risk_free"],
+                alpha=parameters["significance_level"],
+                a_sim=parameters["cvar_simulations_losses"],
+                beta=parameters["cvar_significance"],
+                b_sim=parameters["cvar_simulations_gains"],
+                linkage=parameters["linkage"].lower(),
+                k=parameters["amount_clusters"],
+                max_k=parameters["max_clusters"],
+                bins_info=parameters["amount_bins"].upper(),
+                alpha_tail=parameters["alpha_tail"],
+                leaf_order=parameters["leaf_order"],
+                d_ewma=parameters["smoothing_factor_ewma"],
+                value=parameters["long_allocation"],
             )
             self.portfolios[ns_parser.name.upper()] = weights
             self.count += 1
+            self.update_runtime_choices()
 
     @log_start_end(log=logger)
     def call_nco(self, other_args: List[str]):
@@ -4495,21 +4506,21 @@ class PortfolioOptimizationController(BaseController):
             "-p",
             "--period",
             default="3y",
-            dest="period",
+            dest="historic_period",
             help="""Period to get yfinance data from.
                     Possible frequency strings are:
                     'd': means days, for example '252d' means 252 days
                     'w': means weeks, for example '52w' means 52 weeks
                     'mo': means months, for example '12mo' means 12 months
                     'y': means years, for example '1y' means 1 year
-                    'ytd': downloads data from begining of year to today
+                    'ytd': downloads data from beginning of year to today
                     'max': downloads all data available for each asset""",
         )
         parser.add_argument(
             "-s",
             "--start",
             default="",
-            dest="start",
+            dest="start_period",
             help="""Start date to get yfinance data from. Must be in
                     'YYYY-MM-DD' format""",
         )
@@ -4517,7 +4528,7 @@ class PortfolioOptimizationController(BaseController):
             "-e",
             "--end",
             default="",
-            dest="end",
+            dest="end_period",
             help="""End date to get yfinance data from. Must be in
                     'YYYY-MM-DD' format""",
         )
@@ -4533,7 +4544,7 @@ class PortfolioOptimizationController(BaseController):
             "-f",
             "--freq",
             default="d",
-            dest="freq",
+            dest="return_frequency",
             help="""Frequency used to calculate returns. Possible values are:
                     'd': for daily returns
                     'w': for weekly returns
@@ -4546,7 +4557,7 @@ class PortfolioOptimizationController(BaseController):
             "--maxnan",
             type=float,
             default=0.05,
-            dest="maxnan",
+            dest="max_nan",
             help="""Max percentage of nan values accepted per asset to be
                 considered in the optimization process""",
         )
@@ -4555,7 +4566,7 @@ class PortfolioOptimizationController(BaseController):
             "--threshold",
             type=float,
             default=0.30,
-            dest="threshold",
+            dest="threshold_value",
             help="""Value used to replace outliers that are higher to threshold
                 in absolute value""",
         )
@@ -4563,8 +4574,8 @@ class PortfolioOptimizationController(BaseController):
             "-mt",
             "--method",
             default="time",
-            dest="method",
-            help="""Method used to fill nan values in time series, by default time. 
+            dest="nan_fill_method",
+            help="""Method used to fill nan values in time series, by default time.
                     Possible values are:
                     linear: linear interpolation
                     time: linear interpolation based on time index
@@ -4579,7 +4590,7 @@ class PortfolioOptimizationController(BaseController):
             "-cd",
             "--codependence",
             default="pearson",
-            dest="codependence",
+            dest="co_dependence",
             help="""The codependence or similarity matrix used to build the
                 distance metric and clusters. Possible values are:
                 pearson: pearson correlation matrix
@@ -4645,7 +4656,7 @@ class PortfolioOptimizationController(BaseController):
             "-r",
             "--risk-free-rate",
             type=float,
-            dest="risk_free_rate",
+            dest="risk_free",
             default=get_rf(),
             help="""Risk-free rate of borrowing/lending. The period of the
                 risk-free rate must be annual""",
@@ -4663,7 +4674,7 @@ class PortfolioOptimizationController(BaseController):
             "--alpha",
             type=float,
             default=0.05,
-            dest="alpha",
+            dest="significance_level",
             help="Significance level of CVaR, EVaR, CDaR and EDaR",
         )
         parser.add_argument(
@@ -4678,7 +4689,7 @@ class PortfolioOptimizationController(BaseController):
             "-k",
             type=int,
             default=None,
-            dest="k",
+            dest="amount_clusters",
             help="Number of clusters specified in advance",
         )
         parser.add_argument(
@@ -4686,7 +4697,7 @@ class PortfolioOptimizationController(BaseController):
             "--max-k",
             type=int,
             default=10,
-            dest="max_k",
+            dest="max_clusters",
             help="""Max number of clusters used by the two difference gap
             statistic to find the optimal number of clusters. If k is
             empty this value is used""",
@@ -4695,7 +4706,7 @@ class PortfolioOptimizationController(BaseController):
             "-bi",
             "--bins-info",
             default="KN",
-            dest="bins_info",
+            dest="amount_bins",
             help="Number of bins used to calculate the variation of information",
         )
         parser.add_argument(
@@ -4721,13 +4732,13 @@ class PortfolioOptimizationController(BaseController):
             "--d-ewma",
             type=float,
             default=0.94,
-            dest="d_ewma",
+            dest="smoothing_factor_ewma",
             help="Smoothing factor for ewma estimators",
         )
         parser.add_argument(
             "-v",
             "--value",
-            dest="value",
+            dest="long_allocation",
             help="Amount to allocate to portfolio",
             type=float,
             default=1.0,
@@ -4748,31 +4759,37 @@ class PortfolioOptimizationController(BaseController):
                 )
                 return
 
+            arguments_tuple = ns_parser._get_kwargs()
+            parameters = optimizer_view.check_params(
+                parser, arguments_tuple, self.params
+            )
+
             weights = optimizer_view.display_nco(
                 stocks=self.tickers,
-                period=ns_parser.period,
-                start=ns_parser.start,
-                end=ns_parser.end,
-                log_returns=ns_parser.log_returns,
-                freq=ns_parser.freq,
-                maxnan=ns_parser.maxnan,
-                threshold=ns_parser.threshold,
-                method=ns_parser.method,
-                codependence=ns_parser.codependence.lower(),
-                covariance=ns_parser.covariance.lower(),
-                objective=ns_parser.objective.lower(),
-                risk_measure=ns_parser.risk_measure.lower(),
-                risk_free_rate=ns_parser.risk_free_rate,
-                risk_aversion=ns_parser.risk_aversion,
-                alpha=ns_parser.alpha,
-                linkage=ns_parser.linkage.lower(),
-                k=ns_parser.k,
-                max_k=ns_parser.max_k,
-                bins_info=ns_parser.bins_info.upper(),
-                alpha_tail=ns_parser.alpha_tail,
-                leaf_order=ns_parser.leaf_order,
-                d_ewma=ns_parser.d_ewma,
-                value=ns_parser.value,
+                period=parameters["historic_period"],
+                start=parameters["start_period"],
+                end=parameters["end_period"],
+                log_returns=parameters["log_returns"],
+                freq=parameters["return_frequency"],
+                maxnan=parameters["max_nan"],
+                threshold=parameters["threshold_value"],
+                method=parameters["nan_fill_method"],
+                codependence=parameters["co_dependence"].lower(),
+                covariance=parameters["covariance"].lower(),
+                objective=parameters["objective"].lower(),
+                risk_measure=parameters["risk_measure"].lower(),
+                risk_free_rate=parameters["risk_free"],
+                risk_aversion=parameters["risk_aversion"],
+                alpha=parameters["significance_level"],
+                linkage=parameters["linkage"].lower(),
+                k=parameters["amount_clusters"],
+                max_k=parameters["max_clusters"],
+                bins_info=parameters["amount_bins"].upper(),
+                alpha_tail=parameters["alpha_tail"],
+                leaf_order=parameters["leaf_order"],
+                d_ewma=parameters["smoothing_factor_ewma"],
+                value=parameters["long_allocation"],
             )
             self.portfolios[ns_parser.name.upper()] = weights
             self.count += 1
+            self.update_runtime_choices()
