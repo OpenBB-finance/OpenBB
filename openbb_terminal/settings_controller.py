@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 # IMPORTATION STANDARD
+import os
 import argparse
 import logging
 from typing import List
@@ -483,6 +484,15 @@ class SettingsController(BaseController):
     @log_start_end(log=logger)
     def call_lang(self, other_args: List[str]):
         """Process lang command"""
+        languages_i18n = os.path.join(
+            os.path.dirname(os.path.abspath(os.path.dirname(__file__))), "i18n"
+        )
+        languages_available = [
+            lang.strip(".yml")
+            for lang in os.listdir(languages_i18n)
+            if lang.endswith(".yml")
+        ]
+
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -495,7 +505,7 @@ class SettingsController(BaseController):
             type=str,
             dest="value",
             help="Language",
-            choices=["en"],
+            choices=languages_available,
             required=True,
         )
         if other_args and "-" not in other_args[0][0]:
