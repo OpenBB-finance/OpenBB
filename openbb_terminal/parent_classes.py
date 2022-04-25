@@ -1,6 +1,8 @@
 """Parent Classes"""
 __docformat__ = "numpy"
 
+# pylint: disable= C0301
+
 from abc import ABCMeta, abstractmethod
 import argparse
 import re
@@ -653,7 +655,11 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
                 interval=ns_parser.interval,
                 vs=ns_parser.vs,
             )
-            if self.symbol:
+            if (
+                self.symbol
+                and self.current_df is not None
+                and not self.current_df.empty
+            ):
                 self.current_interval = ns_parser.interval
                 first_price = self.current_df["Close"].iloc[0]
                 last_price = self.current_df["Close"].iloc[-1]
@@ -661,10 +667,11 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
                 interval_change = calc_change(last_price, second_last_price)
                 since_start_change = calc_change(last_price, first_price)
                 if isinstance(self.current_currency, str) and self.PATH == "/crypto/":
-                    col = "green" if interval_change > 0 else "red"
+                    col1 = "green" if interval_change > 0 else "red"
+                    col2 = "green" if since_start_change > 0 else "red"
                     self.price_str = f"""Current Price: {round(last_price,2)} {self.current_currency.upper()}
-Performance in interval ({self.current_interval}): [{col}]{round(interval_change,2)}%[/{col}]
-Performance since {ns_parser.start.strftime('%Y-%m-%d')}: [{col}]{round(since_start_change,2)}%[/{col}]"""  # noqa
+Performance in interval ({self.current_interval}): [{col1}]{round(interval_change,2)}%[/{col1}]
+Performance since {ns_parser.start.strftime('%Y-%m-%d')}: [{col2}]{round(since_start_change,2)}%[/{col2}]"""  # noqa
 
                     console.print(
                         f"""
@@ -677,3 +684,7 @@ Loaded {self.coin} against {self.current_currency} from {CRYPTO_SOURCES[self.sou
                     console.print(
                         f"{delta} Days of {self.coin} vs {self.current_currency} loaded with {res} resolution.\n"
                     )
+            else:
+                console.print(
+                    f"\n[red]Could not find [bold]{ns_parser.coin}[/bold] in [bold]{CRYPTO_SOURCES[ns_parser.source]}[/bold]. Make sure you search for symbol (e.g., btc) or try another source[/red]\n"  # noqa: E501
+                )
