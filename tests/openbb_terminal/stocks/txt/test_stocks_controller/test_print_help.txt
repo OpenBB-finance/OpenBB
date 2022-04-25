@@ -9,6 +9,7 @@ Timezone:
 Exchange: 
 Market: 
 Currency: 
+Company: 
 
     quote       view the current price for a specific stock ticker
     candle      view a candle chart for a specific stock ticker

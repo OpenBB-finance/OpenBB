@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import argparse
 import logging
 import os
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from typing import List, Union, Optional, Iterable
 
 import financedatabase as fd
@@ -967,10 +967,9 @@ def additional_info_about_ticker(ticker: str) -> str:
     """
     extra_info = ""
     if ticker:
+        ticker_info = yf.Ticker(ticker).info
         # outside US exchange
         if "." in ticker:
-            ticker_info = yf.Ticker(ticker).info
-
             extra_info += "\n[param]Datetime: [/param]"
             if (
                 "exchangeTimezoneName" in ticker_info
@@ -1019,6 +1018,9 @@ def additional_info_about_ticker(ticker: str) -> str:
                             extra_info += "OPEN"
                         else:
                             extra_info += "CLOSED"
+
+            if "shortName" in ticker_info and ticker_info["shortName"]:
+                extra_info += ticker_info["shortName"]
         else:
             extra_info += "\n[param]Datetime: [/param]"
             dtime = datetime.now(pytz.timezone("America/New_York")).strftime(
@@ -1044,12 +1046,16 @@ def additional_info_about_ticker(ticker: str) -> str:
                 else:
                     extra_info += "CLOSED"
 
+            extra_info += "\n[param]Company:  [/param]"
+            if "shortName" in ticker_info and ticker_info["shortName"]:
+                extra_info += ticker_info["shortName"]
     else:
         extra_info += "\n[param]Datetime: [/param]"
         extra_info += "\n[param]Timezone: [/param]"
         extra_info += "\n[param]Exchange: [/param]"
         extra_info += "\n[param]Market: [/param]"
         extra_info += "\n[param]Currency: [/param]"
+        extra_info += "\n[param]Company: [/param]"
 
     return extra_info + "\n"
 
@@ -1128,3 +1134,43 @@ def clean_function(entry: str) -> Union[str, float]:
     if any(char.isdigit() for char in entry):
         return float(entry.replace("$", "").replace(",", ""))
     return entry
+
+
+def show_quick_performance(stock_df: pd.DataFrame, ticker: str):
+    """Show quick performance stats of stock prices.  Daily prices expected"""
+    closes = stock_df["Adj Close"]
+    volumes = stock_df["Volume"]
+
+    perfs = {
+        "1 Day": 100 * closes.pct_change(2)[-1],
+        "1 Week": 100 * closes.pct_change(5)[-1],
+        "1 Month": 100 * closes.pct_change(21)[-1],
+        "1 Year": 100 * closes.pct_change(252)[-1],
+    }
+    if "2022-01-03" in closes.index:
+        closes_ytd = closes[closes.index > f"{date.today().year}-01-01"]
+        perfs["YTD"] = 100 * (closes_ytd[-1] - closes_ytd[0]) / closes_ytd[0]
+    else:
+        perfs["Period"] = 100 * (closes[-1] - closes[0]) / closes[0]
+
+    df = pd.DataFrame.from_dict(perfs, orient="index").dropna().T
+    df = df.applymap(lambda x: str(round(x, 2)) + " %")
+    df = df.applymap(lambda x: f"[red]{x}[/red]" if "-" in x else f"[green]{x}[/green]")
+    if len(closes) > 252:
+        df["Volatility (1Y)"] = (
+            str(round(100 * np.sqrt(252) * closes[:-252].pct_change().std(), 2)) + " %"
+        )
+    else:
+        df["Volatility (Ann)"] = (
+            str(round(100 * np.sqrt(252) * closes.pct_change().std(), 2)) + " %"
+        )
+    if len(volumes) > 10:
+        df["Volume (10D avg)"] = (
+            str(round(np.mean(volumes[-12:-2]) / 1_000_000, 2)) + " M"
+        )
+
+    df["Last Price"] = closes[-1]
+    print_rich_table(
+        df, show_index=False, headers=df.columns, title=f"{ticker.upper()} Performance"
+    )
+    console.print()
