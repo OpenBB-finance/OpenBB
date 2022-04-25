@@ -3,4 +3,5 @@ oss
 rs openbb-finance/openbbterminal
 sh openbb-finance/openbbterminal
 tr
+rossidx
 exit

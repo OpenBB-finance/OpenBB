@@ -29,7 +29,7 @@ def get_bitcoin(mock_load):
     ) as f:
         sample_return = json.load(f)
     mock_load.return_value = sample_return
-    coin, _, symbol, _, _, _ = load(coin="bitcoin", source="cg")
+    coin, _, symbol, _, _, _ = load(coin="BTC", source="cp")
     return coin, symbol
 
 
@@ -37,14 +37,15 @@ def get_bitcoin(mock_load):
 class TestCoinGeckoAPI(TestCase):
     # pylint: disable = no-value-for-parameter
     coin, symbol = get_bitcoin()
-    coin_map_df = prepare_all_coins_df().set_index("Symbol").loc[symbol].iloc[0]
+
+    coin_map_df = prepare_all_coins_df().set_index("Symbol").loc[symbol.upper()].iloc[0]
 
     def test_coin_api_load(self):
         """
         Mock load function through get_coin_market_chart_by_id.
         Mock returns a dict saved as .json
         """
-        self.assertEqual(self.coin, "bitcoin")
+        self.assertEqual(self.coin, "btc-bitcoin")
 
     @mock.patch(
         "openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model.CoinGeckoAPI.get_coin_market_chart_by_id"

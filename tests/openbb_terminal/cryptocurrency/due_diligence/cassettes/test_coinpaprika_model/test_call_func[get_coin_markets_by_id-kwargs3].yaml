@@ -22,11 +22,11 @@ interactions:
       Access-Control-Allow-Origin:
       - '*'
       Age:
-      - '28'
+      - '19'
       CF-Cache-Status:
       - HIT
       CF-RAY:
-      - 6fe6c3f68a3603ae-LIS
+      - 6fe6c3bc7a8e950a-LIS
       Cache-Control:
       - public, max-age=60, s-maxage=60, stale-while-revalidate=10, stale-if-error=600
       Connection:
@@ -34,7 +34,7 @@ interactions:
       Content-Type:
       - text/html; charset=utf-8
       Date:
-      - Tue, 19 Apr 2022 15:45:07 GMT
+      - Tue, 19 Apr 2022 15:44:58 GMT
       Expect-CT:
       - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
       Location:
@@ -3795,11 +3795,11 @@ interactions:
       Access-Control-Allow-Origin:
       - '*'
       Age:
-      - '28'
+      - '19'
       CF-Cache-Status:
       - HIT
       CF-RAY:
-      - 6fe6c3f6daf903ae-LIS
+      - 6fe6c3bcaaf3950a-LIS
       Cache-Control:
       - public, max-age=60, s-maxage=60, stale-while-revalidate=10, stale-if-error=600
       Connection:
@@ -3809,7 +3809,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 19 Apr 2022 15:45:07 GMT
+      - Tue, 19 Apr 2022 15:44:58 GMT
       Expect-CT:
       - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
       Last-Modified:
