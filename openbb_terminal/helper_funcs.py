@@ -1198,7 +1198,22 @@ def check_file_type_saved(valid_types: List[str] = None):
 
 
 def compose_export_path(func_name: str, dir_path: str) -> Tuple[str, str]:
+    """Compose export path for data from the terminal
 
+    Creates a path to a folder and a filename based on conditions.
+
+    Parameters
+    ----------
+    func_name : str
+        Name of the command that invokes this function
+    dir_path : str
+        Path of directory from where this function is called
+
+    Returns
+    -------
+    Tuple[str, str]
+        Tuple containing the folder path and a file name
+    """
     now = datetime.now()
     # Resolving all symlinks and also normalizing path.
     resolve_path = Path(dir_path).resolve()
