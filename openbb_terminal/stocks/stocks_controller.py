@@ -334,7 +334,7 @@ Stock: [/param]{stock_text}
                         df=self.stock,
                         sort=ns_parser.sort,
                         des=ns_parser.descending,
-                        num=ns_parser.num,
+                        num=ns_parser.limit,
                     )
 
                 else:
