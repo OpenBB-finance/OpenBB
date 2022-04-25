@@ -115,7 +115,7 @@ installation on Windows without WSL, @JohnnyDankseed has made one available [her
 
 These steps are common in all operating systems (Windows with or without WSL, MacOS or Linux).
 
-This project supports Python 3.7, 3.8 and 3.9. By default, the newly created virtual environment will use Python 3.8.13
+This project supports Python 3.8 and 3.9. By default, the newly created virtual environment will use Python 3.8.13
 
 Our current recommendation is to use this project with Anaconda's Python distribution - either full
 [**Anaconda3 Latest**](https://www.anaconda.com/products/distribution) or [**Miniconda3 Latest**](https://docs.conda.io/en/latest/miniconda.html).
