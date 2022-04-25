@@ -34,7 +34,6 @@ en:
   stocks/search: search a specific stock ticker for analysis
   stocks/search_: Show companies matching the search query
   stocks/search_query: The search term used to find company tickers
-  stocks/search_limit: Enter the number of Equities you wish to see in the table window
   stocks/search_country: Search by country to find stocks matching the criteria
   stocks/search_sector: Search by sector to find stocks matching the criteria
   stocks/search_industry: Search by industry to find stocks matching the criteria

@@ -163,14 +163,6 @@ Stock: [/param]{stock_text}
             help=f"{i18n.t('stocks/search_query')}.",
         )
         parser.add_argument(
-            "-l",
-            "--limit",
-            default=0,
-            type=int,
-            dest="limit",
-            help=f"{i18n.t('stocks/search_limit')}.",
-        )
-        parser.add_argument(
             "-c",
             "--country",
             default="",
@@ -205,7 +197,10 @@ Stock: [/param]{stock_text}
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-q")
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser,
+            other_args,
+            EXPORT_ONLY_RAW_DATA_ALLOWED,
+            limit=10,
         )
         if ns_parser:
             stocks_helper.search(
