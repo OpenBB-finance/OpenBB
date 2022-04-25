@@ -437,7 +437,7 @@ class PortfolioOptimizationController(BaseController):
                 choices[fn]["-mt"] = {c: None for c in self.method_choices}
                 choices[fn]["--method"] = {c: None for c in self.method_choices}
 
-            for fn in ["maxsharpe", "minrisk", "maxutil", "maxret", "ef"]:
+            for fn in ["maxsharpe", "minrisk", "maxutil", "maxret", "nco", "ef"]:
                 choices[fn]["-rm"] = {c: None for c in self.meanrisk_choices}
                 choices[fn]["--risk-measure"] = {c: None for c in self.meanrisk_choices}
 
@@ -467,9 +467,11 @@ class PortfolioOptimizationController(BaseController):
                 choices[fn]["-cv"] = {c: None for c in self.covariance_choices}
                 choices[fn]["--covariance"] = {c: None for c in self.covariance_choices}
 
-            for fn in ["hrp", "herc", "nco"]:
+            for fn in ["hrp", "herc"]:
                 choices[fn]["-rm"] = {c: None for c in self.hcp_choices}
                 choices[fn]["--risk-measure"] = {c: None for c in self.hcp_choices}
+
+            for fn in ["hrp", "herc", "nco"]:
                 choices[fn]["-cd"] = {c: None for c in self.codependence_choices}
                 choices[fn]["--codependence"] = {
                     c: None for c in self.codependence_choices
@@ -948,14 +950,14 @@ class PortfolioOptimizationController(BaseController):
             dest="method",
             help="""Method used to fill nan values in time series, by default time. 
                     Possible values are:
-                    linear: linear interpolation
-                    time: linear interpolation based on time index
-                    nearest: use nearest value to replace nan values
-                    zero: spline of zeroth order
-                    slinear: spline of first order
-                    quadratic: spline of second order
-                    cubic: spline of third order
-                    barycentric: builds a polynomial that pass for all points""",
+                    'linear': linear interpolation
+                    'time': linear interpolation based on time index
+                    'nearest': use nearest value to replace nan values
+                    'zero': spline of zeroth order
+                    'slinear': spline of first order
+                    'quadratic': spline of second order
+                    'cubic': spline of third order
+                    'barycentric': builds a polynomial that pass for all points""",
         )
         parser.add_argument(
             "-rm",
@@ -963,19 +965,19 @@ class PortfolioOptimizationController(BaseController):
             default="MV",
             dest="risk_measure",
             help="""Risk measure used to optimize the portfolio. Possible values are:
-                    MV : Variance
-                    MAD : Mean Absolute Deviation
-                    MSV : Semi Variance (Variance of negative returns)
-                    FLPM : First Lower Partial Moment
-                    SLPM : Second Lower Partial Moment
-                    CVaR : Conditional Value at Risk
-                    EVaR : Entropic Value at Risk
-                    WR : Worst Realization
-                    ADD : Average Drawdown of uncompounded returns
-                    UCI : Ulcer Index of uncompounded returns
-                    CDaR : Conditional Drawdown at Risk of uncompounded returns
-                    EDaR : Entropic Drawdown at Risk of uncompounded returns
-                    MDD : Maximum Drawdown of uncompounded returns
+                    'MV' : Variance
+                    'MAD' : Mean Absolute Deviation
+                    'MSV' : Semi Variance (Variance of negative returns)
+                    'FLPM' : First Lower Partial Moment
+                    'SLPM' : Second Lower Partial Moment
+                    'CVaR' : Conditional Value at Risk
+                    'EVaR' : Entropic Value at Risk
+                    'WR' : Worst Realization
+                    'ADD' : Average Drawdown of uncompounded returns
+                    'UCI' : Ulcer Index of uncompounded returns
+                    'CDaR' : Conditional Drawdown at Risk of uncompounded returns
+                    'EDaR' : Entropic Drawdown at Risk of uncompounded returns
+                    'MDD' : Maximum Drawdown of uncompounded returns
                     """,
             choices=self.meanrisk_choices,
         )
@@ -1165,14 +1167,14 @@ class PortfolioOptimizationController(BaseController):
             dest="method",
             help="""Method used to fill nan values in time series, by default time. 
                     Possible values are:
-                    linear: linear interpolation
-                    time: linear interpolation based on time index
-                    nearest: use nearest value to replace nan values
-                    zero: spline of zeroth order
-                    slinear: spline of first order
-                    quadratic: spline of second order
-                    cubic: spline of third order
-                    barycentric: builds a polynomial that pass for all points""",
+                    'linear': linear interpolation
+                    'time': linear interpolation based on time index
+                    'nearest': use nearest value to replace nan values
+                    'zero': spline of zeroth order
+                    'slinear': spline of first order
+                    'quadratic': spline of second order
+                    'cubic': spline of third order
+                    'barycentric': builds a polynomial that pass for all points""",
         )
         parser.add_argument(
             "-rm",
@@ -1180,19 +1182,19 @@ class PortfolioOptimizationController(BaseController):
             default="MV",
             dest="risk_measure",
             help="""Risk measure used to optimize the portfolio. Possible values are:
-                    MV : Variance
-                    MAD : Mean Absolute Deviation
-                    MSV : Semi Variance (Variance of negative returns)
-                    FLPM : First Lower Partial Moment
-                    SLPM : Second Lower Partial Moment
-                    CVaR : Conditional Value at Risk
-                    EVaR : Entropic Value at Risk
-                    WR : Worst Realization
-                    ADD : Average Drawdown of uncompounded returns
-                    UCI : Ulcer Index of uncompounded returns
-                    CDaR : Conditional Drawdown at Risk of uncompounded returns
-                    EDaR : Entropic Drawdown at Risk of uncompounded returns
-                    MDD : Maximum Drawdown of uncompounded returns
+                    'MV' : Variance
+                    'MAD' : Mean Absolute Deviation
+                    'MSV' : Semi Variance (Variance of negative returns)
+                    'FLPM' : First Lower Partial Moment
+                    'SLPM' : Second Lower Partial Moment
+                    'CVaR' : Conditional Value at Risk
+                    'EVaR' : Entropic Value at Risk
+                    'WR' : Worst Realization
+                    'ADD' : Average Drawdown of uncompounded returns
+                    'UCI' : Ulcer Index of uncompounded returns
+                    'CDaR' : Conditional Drawdown at Risk of uncompounded returns
+                    'EDaR' : Entropic Drawdown at Risk of uncompounded returns
+                    'MDD' : Maximum Drawdown of uncompounded returns
                     """,
             choices=self.meanrisk_choices,
         )
@@ -1331,14 +1333,14 @@ class PortfolioOptimizationController(BaseController):
             dest="method",
             help="""Method used to fill nan values in time series, by default time. 
                     Possible values are:
-                    linear: linear interpolation
-                    time: linear interpolation based on time index
-                    nearest: use nearest value to replace nan values
-                    zero: spline of zeroth order
-                    slinear: spline of first order
-                    quadratic: spline of second order
-                    cubic: spline of third order
-                    barycentric: builds a polynomial that pass for all points""",
+                    'linear': linear interpolation
+                    'time': linear interpolation based on time index
+                    'nearest': use nearest value to replace nan values
+                    'zero': spline of zeroth order
+                    'slinear': spline of first order
+                    'quadratic': spline of second order
+                    'cubic': spline of third order
+                    'barycentric': builds a polynomial that pass for all points""",
         )
         parser.add_argument(
             "-rm",
@@ -1346,19 +1348,19 @@ class PortfolioOptimizationController(BaseController):
             default="MV",
             dest="risk_measure",
             help="""Risk measure used to optimize the portfolio. Possible values are:
-                    MV : Variance
-                    MAD : Mean Absolute Deviation
-                    MSV : Semi Variance (Variance of negative returns)
-                    FLPM : First Lower Partial Moment
-                    SLPM : Second Lower Partial Moment
-                    CVaR : Conditional Value at Risk
-                    EVaR : Entropic Value at Risk
-                    WR : Worst Realization
-                    ADD : Average Drawdown of uncompounded returns
-                    UCI : Ulcer Index of uncompounded returns
-                    CDaR : Conditional Drawdown at Risk of uncompounded returns
-                    EDaR : Entropic Drawdown at Risk of uncompounded returns
-                    MDD : Maximum Drawdown of uncompounded returns
+                    'MV' : Variance
+                    'MAD' : Mean Absolute Deviation
+                    'MSV' : Semi Variance (Variance of negative returns)
+                    'FLPM' : First Lower Partial Moment
+                    'SLPM' : Second Lower Partial Moment
+                    'CVaR' : Conditional Value at Risk
+                    'EVaR' : Entropic Value at Risk
+                    'WR' : Worst Realization
+                    'ADD' : Average Drawdown of uncompounded returns
+                    'UCI' : Ulcer Index of uncompounded returns
+                    'CDaR' : Conditional Drawdown at Risk of uncompounded returns
+                    'EDaR' : Entropic Drawdown at Risk of uncompounded returns
+                    'MDD' : Maximum Drawdown of uncompounded returns
                     """,
             choices=self.meanrisk_choices,
         )
@@ -1498,14 +1500,14 @@ class PortfolioOptimizationController(BaseController):
             dest="method",
             help="""Method used to fill nan values in time series, by default time. 
                     Possible values are:
-                    linear: linear interpolation
-                    time: linear interpolation based on time index
-                    nearest: use nearest value to replace nan values
-                    zero: spline of zeroth order
-                    slinear: spline of first order
-                    quadratic: spline of second order
-                    cubic: spline of third order
-                    barycentric: builds a polynomial that pass for all points""",
+                    'linear': linear interpolation
+                    'time': linear interpolation based on time index
+                    'nearest': use nearest value to replace nan values
+                    'zero': spline of zeroth order
+                    'slinear': spline of first order
+                    'quadratic': spline of second order
+                    'cubic': spline of third order
+                    'barycentric': builds a polynomial that pass for all points""",
         )
         parser.add_argument(
             "-rm",
@@ -1513,19 +1515,19 @@ class PortfolioOptimizationController(BaseController):
             default="MV",
             dest="risk_measure",
             help="""Risk measure used to optimize the portfolio. Possible values are:
-                    MV : Variance
-                    MAD : Mean Absolute Deviation
-                    MSV : Semi Variance (Variance of negative returns)
-                    FLPM : First Lower Partial Moment
-                    SLPM : Second Lower Partial Moment
-                    CVaR : Conditional Value at Risk
-                    EVaR : Entropic Value at Risk
-                    WR : Worst Realization
-                    ADD : Average Drawdown of uncompounded returns
-                    UCI : Ulcer Index of uncompounded returns
-                    CDaR : Conditional Drawdown at Risk of uncompounded returns
-                    EDaR : Entropic Drawdown at Risk of uncompounded returns
-                    MDD : Maximum Drawdown of uncompounded returns
+                    'MV' : Variance
+                    'MAD' : Mean Absolute Deviation
+                    'MSV' : Semi Variance (Variance of negative returns)
+                    'FLPM' : First Lower Partial Moment
+                    'SLPM' : Second Lower Partial Moment
+                    'CVaR' : Conditional Value at Risk
+                    'EVaR' : Entropic Value at Risk
+                    'WR' : Worst Realization
+                    'ADD' : Average Drawdown of uncompounded returns
+                    'UCI' : Ulcer Index of uncompounded returns
+                    'CDaR' : Conditional Drawdown at Risk of uncompounded returns
+                    'EDaR' : Entropic Drawdown at Risk of uncompounded returns
+                    'MDD' : Maximum Drawdown of uncompounded returns
                     """,
             choices=self.meanrisk_choices,
         )
@@ -1665,14 +1667,14 @@ class PortfolioOptimizationController(BaseController):
             dest="method",
             help="""Method used to fill nan values in time series, by default time. 
                     Possible values are:
-                    linear: linear interpolation
-                    time: linear interpolation based on time index
-                    nearest: use nearest value to replace nan values
-                    zero: spline of zeroth order
-                    slinear: spline of first order
-                    quadratic: spline of second order
-                    cubic: spline of third order
-                    barycentric: builds a polynomial that pass for all points""",
+                    'linear': linear interpolation
+                    'time': linear interpolation based on time index
+                    'nearest': use nearest value to replace nan values
+                    'zero': spline of zeroth order
+                    'slinear': spline of first order
+                    'quadratic': spline of second order
+                    'cubic': spline of third order
+                    'barycentric': builds a polynomial that pass for all points""",
         )
         parser.add_argument(
             "-pr",
@@ -1689,19 +1691,19 @@ class PortfolioOptimizationController(BaseController):
             default="MV",
             dest="risk_measure",
             help="""Risk measure used to optimize the portfolio. Possible values are:
-                    MV : Variance
-                    MAD : Mean Absolute Deviation
-                    MSV : Semi Variance (Variance of negative returns)
-                    FLPM : First Lower Partial Moment
-                    SLPM : Second Lower Partial Moment
-                    CVaR : Conditional Value at Risk
-                    EVaR : Entropic Value at Risk
-                    WR : Worst Realization
-                    ADD : Average Drawdown of uncompounded returns
-                    UCI : Ulcer Index of uncompounded returns
-                    CDaR : Conditional Drawdown at Risk of uncompounded returns
-                    EDaR : Entropic Drawdown at Risk of uncompounded returns
-                    MDD : Maximum Drawdown of uncompounded returns
+                    'MV' : Variance
+                    'MAD' : Mean Absolute Deviation
+                    'MSV' : Semi Variance (Variance of negative returns)
+                    'FLPM' : First Lower Partial Moment
+                    'SLPM' : Second Lower Partial Moment
+                    'CVaR' : Conditional Value at Risk
+                    'EVaR' : Entropic Value at Risk
+                    'WR' : Worst Realization
+                    'ADD' : Average Drawdown of uncompounded returns
+                    'UCI' : Ulcer Index of uncompounded returns
+                    'CDaR' : Conditional Drawdown at Risk of uncompounded returns
+                    'EDaR' : Entropic Drawdown at Risk of uncompounded returns
+                    'MDD' : Maximum Drawdown of uncompounded returns
                     """,
             choices=self.meanrisk_choices,
         )
@@ -1841,14 +1843,14 @@ class PortfolioOptimizationController(BaseController):
             dest="method",
             help="""Method used to fill nan values in time series, by default time. 
                     Possible values are:
-                    linear: linear interpolation
-                    time: linear interpolation based on time index
-                    nearest: use nearest value to replace nan values
-                    zero: spline of zeroth order
-                    slinear: spline of first order
-                    quadratic: spline of second order
-                    cubic: spline of third order
-                    barycentric: builds a polynomial that pass for all points""",
+                    'linear': linear interpolation
+                    'time': linear interpolation based on time index
+                    'nearest': use nearest value to replace nan values
+                    'zero': spline of zeroth order
+                    'slinear': spline of first order
+                    'quadratic': spline of second order
+                    'cubic': spline of third order
+                    'barycentric': builds a polynomial that pass for all points""",
         )
         parser.add_argument(
             "-rm",
@@ -1856,19 +1858,19 @@ class PortfolioOptimizationController(BaseController):
             default="MV",
             dest="risk_measure",
             help="""Risk measure used to optimize the portfolio. Possible values are:
-                    MV : Variance
-                    MAD : Mean Absolute Deviation
-                    MSV : Semi Variance (Variance of negative returns)
-                    FLPM : First Lower Partial Moment
-                    SLPM : Second Lower Partial Moment
-                    CVaR : Conditional Value at Risk
-                    EVaR : Entropic Value at Risk
-                    WR : Worst Realization
-                    ADD : Average Drawdown of uncompounded returns
-                    UCI : Ulcer Index of uncompounded returns
-                    CDaR : Conditional Drawdown at Risk of uncompounded returns
-                    EDaR : Entropic Drawdown at Risk of uncompounded returns
-                    MDD : Maximum Drawdown of uncompounded returns
+                    'MV' : Variance
+                    'MAD' : Mean Absolute Deviation
+                    'MSV' : Semi Variance (Variance of negative returns)
+                    'FLPM' : First Lower Partial Moment
+                    'SLPM' : Second Lower Partial Moment
+                    'CVaR' : Conditional Value at Risk
+                    'EVaR' : Entropic Value at Risk
+                    'WR' : Worst Realization
+                    'ADD' : Average Drawdown of uncompounded returns
+                    'UCI' : Ulcer Index of uncompounded returns
+                    'CDaR' : Conditional Drawdown at Risk of uncompounded returns
+                    'EDaR' : Entropic Drawdown at Risk of uncompounded returns
+                    'MDD' : Maximum Drawdown of uncompounded returns
                     """,
             choices=self.meanrisk_choices,
         )
@@ -1917,17 +1919,17 @@ class PortfolioOptimizationController(BaseController):
             default="hist",
             dest="covariance",
             help="""Method used to estimate covariance matrix. Possible values are
-                    hist: historical method
-                    ewma1: exponential weighted moving average with adjust=True
-                    ewma2: exponential weighted moving average with adjust=False
-                    ledoit: Ledoit and Wolf shrinkage method
-                    oas: oracle shrinkage method
-                    shrunk: scikit-learn shrunk method
-                    gl: graphical lasso method
-                    jlogo: j-logo covariance
-                    fixed: takes average of eigenvalues above max Marchenko Pastour limit
-                    spectral:  makes zero eigenvalues above max Marchenko Pastour limit
-                    shrink: Lopez de Prado's book shrinkage method
+                    'hist': historical method
+                    'ewma1': exponential weighted moving average with adjust=True
+                    'ewma2': exponential weighted moving average with adjust=False
+                    'ledoit': Ledoit and Wolf shrinkage method
+                    'oas': oracle shrinkage method
+                    'shrunk': scikit-learn shrunk method
+                    'gl': graphical lasso method
+                    'jlogo': j-logo covariance
+                    'fixed': takes average of eigenvalues above max Marchenko Pastour limit
+                    'spectral':  makes zero eigenvalues above max Marchenko Pastour limit
+                    'shrink': Lopez de Prado's book shrinkage method
                     """,
             choices=self.covariance_choices,
         )
@@ -2079,14 +2081,14 @@ class PortfolioOptimizationController(BaseController):
             dest="method",
             help="""Method used to fill nan values in time series, by default time. 
                     Possible values are:
-                    linear: linear interpolation
-                    time: linear interpolation based on time index
-                    nearest: use nearest value to replace nan values
-                    zero: spline of zeroth order
-                    slinear: spline of first order
-                    quadratic: spline of second order
-                    cubic: spline of third order
-                    barycentric: builds a polynomial that pass for all points""",
+                    'linear': linear interpolation
+                    'time': linear interpolation based on time index
+                    'nearest': use nearest value to replace nan values
+                    'zero': spline of zeroth order
+                    'slinear': spline of first order
+                    'quadratic': spline of second order
+                    'cubic': spline of third order
+                    'barycentric': builds a polynomial that pass for all points""",
         )
         parser.add_argument(
             "-rm",
@@ -2094,19 +2096,19 @@ class PortfolioOptimizationController(BaseController):
             default="MV",
             dest="risk_measure",
             help="""Risk measure used to optimize the portfolio. Possible values are:
-                    MV : Variance
-                    MAD : Mean Absolute Deviation
-                    MSV : Semi Variance (Variance of negative returns)
-                    FLPM : First Lower Partial Moment
-                    SLPM : Second Lower Partial Moment
-                    CVaR : Conditional Value at Risk
-                    EVaR : Entropic Value at Risk
-                    WR : Worst Realization
-                    ADD : Average Drawdown of uncompounded returns
-                    UCI : Ulcer Index of uncompounded returns
-                    CDaR : Conditional Drawdown at Risk of uncompounded returns
-                    EDaR : Entropic Drawdown at Risk of uncompounded returns
-                    MDD : Maximum Drawdown of uncompounded returns
+                    'MV' : Variance
+                    'MAD' : Mean Absolute Deviation
+                    'MSV' : Semi Variance (Variance of negative returns)
+                    'FLPM' : First Lower Partial Moment
+                    'SLPM' : Second Lower Partial Moment
+                    'CVaR' : Conditional Value at Risk
+                    'EVaR' : Entropic Value at Risk
+                    'WR' : Worst Realization
+                    'ADD' : Average Drawdown of uncompounded returns
+                    'UCI' : Ulcer Index of uncompounded returns
+                    'CDaR' : Conditional Drawdown at Risk of uncompounded returns
+                    'EDaR' : Entropic Drawdown at Risk of uncompounded returns
+                    'MDD' : Maximum Drawdown of uncompounded returns
                     """,
             choices=self.meanrisk_choices,
         )
@@ -2155,17 +2157,17 @@ class PortfolioOptimizationController(BaseController):
             default="hist",
             dest="covariance",
             help="""Method used to estimate covariance matrix. Possible values are
-                    hist: historical method
-                    ewma1: exponential weighted moving average with adjust=True
-                    ewma2: exponential weighted moving average with adjust=False
-                    ledoit: Ledoit and Wolf shrinkage method
-                    oas: oracle shrinkage method
-                    shrunk: scikit-learn shrunk method
-                    gl: graphical lasso method
-                    jlogo: j-logo covariance
-                    fixed: takes average of eigenvalues above max Marchenko Pastour limit
-                    spectral:  makes zero eigenvalues above max Marchenko Pastour limit
-                    shrink: Lopez de Prado's book shrinkage method
+                    'hist': historical method
+                    'ewma1': exponential weighted moving average with adjust=True
+                    'ewma2': exponential weighted moving average with adjust=False
+                    'ledoit': Ledoit and Wolf shrinkage method
+                    'oas': oracle shrinkage method
+                    'shrunk': scikit-learn shrunk method
+                    'gl': graphical lasso method
+                    'jlogo': j-logo covariance
+                    'fixed': takes average of eigenvalues above max Marchenko Pastour limit
+                    'spectral':  makes zero eigenvalues above max Marchenko Pastour limit
+                    'shrink': Lopez de Prado's book shrinkage method
                     """,
             choices=self.covariance_choices,
         )
@@ -2317,14 +2319,14 @@ class PortfolioOptimizationController(BaseController):
             dest="method",
             help="""Method used to fill nan values in time series, by default time. 
                     Possible values are:
-                    linear: linear interpolation
-                    time: linear interpolation based on time index
-                    nearest: use nearest value to replace nan values
-                    zero: spline of zeroth order
-                    slinear: spline of first order
-                    quadratic: spline of second order
-                    cubic: spline of third order
-                    barycentric: builds a polynomial that pass for all points""",
+                    'linear': linear interpolation
+                    'time': linear interpolation based on time index
+                    'nearest': use nearest value to replace nan values
+                    'zero': spline of zeroth order
+                    'slinear': spline of first order
+                    'quadratic': spline of second order
+                    'cubic': spline of third order
+                    'barycentric': builds a polynomial that pass for all points""",
         )
         parser.add_argument(
             "-rm",
@@ -2332,19 +2334,19 @@ class PortfolioOptimizationController(BaseController):
             default="MV",
             dest="risk_measure",
             help="""Risk measure used to optimize the portfolio. Possible values are:
-                    MV : Variance
-                    MAD : Mean Absolute Deviation
-                    MSV : Semi Variance (Variance of negative returns)
-                    FLPM : First Lower Partial Moment
-                    SLPM : Second Lower Partial Moment
-                    CVaR : Conditional Value at Risk
-                    EVaR : Entropic Value at Risk
-                    WR : Worst Realization
-                    ADD : Average Drawdown of uncompounded returns
-                    UCI : Ulcer Index of uncompounded returns
-                    CDaR : Conditional Drawdown at Risk of uncompounded returns
-                    EDaR : Entropic Drawdown at Risk of uncompounded returns
-                    MDD : Maximum Drawdown of uncompounded returns
+                    'MV' : Variance
+                    'MAD' : Mean Absolute Deviation
+                    'MSV' : Semi Variance (Variance of negative returns)
+                    'FLPM' : First Lower Partial Moment
+                    'SLPM' : Second Lower Partial Moment
+                    'CVaR' : Conditional Value at Risk
+                    'EVaR' : Entropic Value at Risk
+                    'WR' : Worst Realization
+                    'ADD' : Average Drawdown of uncompounded returns
+                    'UCI' : Ulcer Index of uncompounded returns
+                    'CDaR' : Conditional Drawdown at Risk of uncompounded returns
+                    'EDaR' : Entropic Drawdown at Risk of uncompounded returns
+                    'MDD' : Maximum Drawdown of uncompounded returns
                     """,
             choices=self.meanrisk_choices,
         )
@@ -2401,17 +2403,17 @@ class PortfolioOptimizationController(BaseController):
             default="hist",
             dest="covariance",
             help="""Method used to estimate covariance matrix. Possible values are
-                    hist: historical method
-                    ewma1: exponential weighted moving average with adjust=True
-                    ewma2: exponential weighted moving average with adjust=False
-                    ledoit: Ledoit and Wolf shrinkage method
-                    oas: oracle shrinkage method
-                    shrunk: scikit-learn shrunk method
-                    gl: graphical lasso method
-                    jlogo: j-logo covariance
-                    fixed: takes average of eigenvalues above max Marchenko Pastour limit
-                    spectral:  makes zero eigenvalues above max Marchenko Pastour limit
-                    shrink: Lopez de Prado's book shrinkage method
+                    'hist': historical method
+                    'ewma1': exponential weighted moving average with adjust=True
+                    'ewma2': exponential weighted moving average with adjust=False
+                    'ledoit': Ledoit and Wolf shrinkage method
+                    'oas': oracle shrinkage method
+                    'shrunk': scikit-learn shrunk method
+                    'gl': graphical lasso method
+                    'jlogo': j-logo covariance
+                    'fixed': takes average of eigenvalues above max Marchenko Pastour limit
+                    'spectral':  makes zero eigenvalues above max Marchenko Pastour limit
+                    'shrink': Lopez de Prado's book shrinkage method
                     """,
             choices=self.covariance_choices,
         )
@@ -2564,14 +2566,14 @@ class PortfolioOptimizationController(BaseController):
             dest="method",
             help="""Method used to fill nan values in time series, by default time. 
                     Possible values are:
-                    linear: linear interpolation
-                    time: linear interpolation based on time index
-                    nearest: use nearest value to replace nan values
-                    zero: spline of zeroth order
-                    slinear: spline of first order
-                    quadratic: spline of second order
-                    cubic: spline of third order
-                    barycentric: builds a polynomial that pass for all points""",
+                    'linear': linear interpolation
+                    'time': linear interpolation based on time index
+                    'nearest': use nearest value to replace nan values
+                    'zero': spline of zeroth order
+                    'slinear': spline of first order
+                    'quadratic': spline of second order
+                    'cubic': spline of third order
+                    'barycentric': builds a polynomial that pass for all points""",
         )
         parser.add_argument(
             "-rm",
@@ -2579,19 +2581,19 @@ class PortfolioOptimizationController(BaseController):
             default="MV",
             dest="risk_measure",
             help="""Risk measure used to optimize the portfolio. Possible values are:
-                    MV : Variance
-                    MAD : Mean Absolute Deviation
-                    MSV : Semi Variance (Variance of negative returns)
-                    FLPM : First Lower Partial Moment
-                    SLPM : Second Lower Partial Moment
-                    CVaR : Conditional Value at Risk
-                    EVaR : Entropic Value at Risk
-                    WR : Worst Realization
-                    ADD : Average Drawdown of uncompounded returns
-                    UCI : Ulcer Index of uncompounded returns
-                    CDaR : Conditional Drawdown at Risk of uncompounded returns
-                    EDaR : Entropic Drawdown at Risk of uncompounded returns
-                    MDD : Maximum Drawdown of uncompounded returns
+                    'MV' : Variance
+                    'MAD' : Mean Absolute Deviation
+                    'MSV' : Semi Variance (Variance of negative returns)
+                    'FLPM' : First Lower Partial Moment
+                    'SLPM' : Second Lower Partial Moment
+                    'CVaR' : Conditional Value at Risk
+                    'EVaR' : Entropic Value at Risk
+                    'WR' : Worst Realization
+                    'ADD' : Average Drawdown of uncompounded returns
+                    'UCI' : Ulcer Index of uncompounded returns
+                    'CDaR' : Conditional Drawdown at Risk of uncompounded returns
+                    'EDaR' : Entropic Drawdown at Risk of uncompounded returns
+                    'MDD' : Maximum Drawdown of uncompounded returns
                     """,
             choices=self.meanrisk_choices,
         )
@@ -2640,17 +2642,17 @@ class PortfolioOptimizationController(BaseController):
             default="hist",
             dest="covariance",
             help="""Method used to estimate covariance matrix. Possible values are
-                    hist: historical method
-                    ewma1: exponential weighted moving average with adjust=True
-                    ewma2: exponential weighted moving average with adjust=False
-                    ledoit: Ledoit and Wolf shrinkage method
-                    oas: oracle shrinkage method
-                    shrunk: scikit-learn shrunk method
-                    gl: graphical lasso method
-                    jlogo: j-logo covariance
-                    fixed: takes average of eigenvalues above max Marchenko Pastour limit
-                    spectral:  makes zero eigenvalues above max Marchenko Pastour limit
-                    shrink: Lopez de Prado's book shrinkage method
+                    'hist': historical method
+                    'ewma1': exponential weighted moving average with adjust=True
+                    'ewma2': exponential weighted moving average with adjust=False
+                    'ledoit': Ledoit and Wolf shrinkage method
+                    'oas': oracle shrinkage method
+                    'shrunk': scikit-learn shrunk method
+                    'gl': graphical lasso method
+                    'jlogo': j-logo covariance
+                    'fixed': takes average of eigenvalues above max Marchenko Pastour limit
+                    'spectral':  makes zero eigenvalues above max Marchenko Pastour limit
+                    'shrink': Lopez de Prado's book shrinkage method
                     """,
             choices=self.covariance_choices,
         )
@@ -2802,14 +2804,14 @@ class PortfolioOptimizationController(BaseController):
             dest="method",
             help="""Method used to fill nan values in time series, by default time. 
                     Possible values are:
-                    linear: linear interpolation
-                    time: linear interpolation based on time index
-                    nearest: use nearest value to replace nan values
-                    zero: spline of zeroth order
-                    slinear: spline of first order
-                    quadratic: spline of second order
-                    cubic: spline of third order
-                    barycentric: builds a polynomial that pass for all points""",
+                    'linear': linear interpolation
+                    'time': linear interpolation based on time index
+                    'nearest': use nearest value to replace nan values
+                    'zero': spline of zeroth order
+                    'slinear': spline of first order
+                    'quadratic': spline of second order
+                    'cubic': spline of third order
+                    'barycentric': builds a polynomial that pass for all points""",
         )
         parser.add_argument(
             "-cv",
@@ -2817,17 +2819,17 @@ class PortfolioOptimizationController(BaseController):
             default="hist",
             dest="covariance",
             help="""Method used to estimate covariance matrix. Possible values are
-                    hist: historical method
-                    ewma1: exponential weighted moving average with adjust=True
-                    ewma2: exponential weighted moving average with adjust=False
-                    ledoit: Ledoit and Wolf shrinkage method
-                    oas: oracle shrinkage method
-                    shrunk: scikit-learn shrunk method
-                    gl: graphical lasso method
-                    jlogo: j-logo covariance
-                    fixed: takes average of eigenvalues above max Marchenko Pastour limit
-                    spectral:  makes zero eigenvalues above max Marchenko Pastour limit
-                    shrink: Lopez de Prado's book shrinkage method
+                    'hist': historical method
+                    'ewma1': exponential weighted moving average with adjust=True
+                    'ewma2': exponential weighted moving average with adjust=False
+                    'ledoit': Ledoit and Wolf shrinkage method
+                    'oas': oracle shrinkage method
+                    'shrunk': scikit-learn shrunk method
+                    'gl': graphical lasso method
+                    'jlogo': j-logo covariance
+                    'fixed': takes average of eigenvalues above max Marchenko Pastour limit
+                    'spectral':  makes zero eigenvalues above max Marchenko Pastour limit
+                    'shrink': Lopez de Prado's book shrinkage method
                     """,
             choices=self.covariance_choices,
         )
@@ -2973,14 +2975,14 @@ class PortfolioOptimizationController(BaseController):
             dest="method",
             help="""Method used to fill nan values in time series, by default time. 
                     Possible values are:
-                    linear: linear interpolation
-                    time: linear interpolation based on time index
-                    nearest: use nearest value to replace nan values
-                    zero: spline of zeroth order
-                    slinear: spline of first order
-                    quadratic: spline of second order
-                    cubic: spline of third order
-                    barycentric: builds a polynomial that pass for all points""",
+                    'linear': linear interpolation
+                    'time': linear interpolation based on time index
+                    'nearest': use nearest value to replace nan values
+                    'zero': spline of zeroth order
+                    'slinear': spline of first order
+                    'quadratic': spline of second order
+                    'cubic': spline of third order
+                    'barycentric': builds a polynomial that pass for all points""",
         )
         parser.add_argument(
             "-cv",
@@ -2988,17 +2990,17 @@ class PortfolioOptimizationController(BaseController):
             default="hist",
             dest="covariance",
             help="""Method used to estimate covariance matrix. Possible values are
-                    hist: historical method
-                    ewma1: exponential weighted moving average with adjust=True
-                    ewma2: exponential weighted moving average with adjust=False
-                    ledoit: Ledoit and Wolf shrinkage method
-                    oas: oracle shrinkage method
-                    shrunk: scikit-learn shrunk method
-                    gl: graphical lasso method
-                    jlogo: j-logo covariance
-                    fixed: takes average of eigenvalues above max Marchenko Pastour limit
-                    spectral:  makes zero eigenvalues above max Marchenko Pastour limit
-                    shrink: Lopez de Prado's book shrinkage method
+                    'hist': historical method
+                    'ewma1': exponential weighted moving average with adjust=True
+                    'ewma2': exponential weighted moving average with adjust=False
+                    'ledoit': Ledoit and Wolf shrinkage method
+                    'oas': oracle shrinkage method
+                    'shrunk': scikit-learn shrunk method
+                    'gl': graphical lasso method
+                    'jlogo': j-logo covariance
+                    'fixed': takes average of eigenvalues above max Marchenko Pastour limit
+                    'spectral':  makes zero eigenvalues above max Marchenko Pastour limit
+                    'shrink': Lopez de Prado's book shrinkage method
                     """,
             choices=self.covariance_choices,
         )
@@ -3144,14 +3146,14 @@ class PortfolioOptimizationController(BaseController):
             dest="method",
             help="""Method used to fill nan values in time series, by default time. 
                     Possible values are:
-                    linear: linear interpolation
-                    time: linear interpolation based on time index
-                    nearest: use nearest value to replace nan values
-                    zero: spline of zeroth order
-                    slinear: spline of first order
-                    quadratic: spline of second order
-                    cubic: spline of third order
-                    barycentric: builds a polynomial that pass for all points""",
+                    'linear': linear interpolation
+                    'time': linear interpolation based on time index
+                    'nearest': use nearest value to replace nan values
+                    'zero': spline of zeroth order
+                    'slinear': spline of first order
+                    'quadratic': spline of second order
+                    'cubic': spline of third order
+                    'barycentric': builds a polynomial that pass for all points""",
         )
         parser.add_argument(
             "-bm",
@@ -3164,7 +3166,7 @@ class PortfolioOptimizationController(BaseController):
         parser.add_argument(
             "-o",
             "--objective",
-            default="Sharpe",
+            default="MinRisk",
             dest="objective",
             help="Objective function used to optimize the portfolio",
             choices=self.objective_choices,
@@ -3177,7 +3179,7 @@ class PortfolioOptimizationController(BaseController):
             ],
             default=None,
             dest="p_views",
-            help="matrix P of views",
+            help="matrix P of analyst views",
         )
         parser.add_argument(
             "-qv",
@@ -3185,7 +3187,7 @@ class PortfolioOptimizationController(BaseController):
             type=lambda s: [float(item) for item in s.split(",")],
             default=None,
             dest="q_views",
-            help="matrix Q of views",
+            help="matrix Q of analyst views",
         )
         parser.add_argument(
             "-r",
@@ -3262,7 +3264,13 @@ class PortfolioOptimizationController(BaseController):
                     "Please have at least 2 loaded tickers to calculate weights.\n"
                 )
                 return
-
+            if ns_parser.benchmark is None:
+                benchmark = None
+            else:
+                benchmark = self.portfolios[ns_parser.benchmark.upper()]
+            console.print(benchmark)
+            console.print(ns_parser.p_views)
+            console.print(ns_parser.q_views)
             weights = optimizer_view.display_black_litterman(
                 stocks=self.tickers,
                 p_views=ns_parser.p_views,
@@ -3275,7 +3283,7 @@ class PortfolioOptimizationController(BaseController):
                 maxnan=ns_parser.maxnan,
                 threshold=ns_parser.threshold,
                 method=ns_parser.method,
-                benchmark=self.portfolios[ns_parser.benchmark].upper(),
+                benchmark=benchmark,
                 objective=ns_parser.objective.lower(),
                 risk_free_rate=ns_parser.risk_free_rate,
                 risk_aversion=ns_parser.risk_aversion,
@@ -3374,14 +3382,14 @@ class PortfolioOptimizationController(BaseController):
             dest="method",
             help="""Method used to fill nan values in time series, by default time. 
                     Possible values are:
-                    linear: linear interpolation
-                    time: linear interpolation based on time index
-                    nearest: use nearest value to replace nan values
-                    zero: spline of zeroth order
-                    slinear: spline of first order
-                    quadratic: spline of second order
-                    cubic: spline of third order
-                    barycentric: builds a polynomial that pass for all points""",
+                    'linear': linear interpolation
+                    'time': linear interpolation based on time index
+                    'nearest': use nearest value to replace nan values
+                    'zero': spline of zeroth order
+                    'slinear': spline of first order
+                    'quadratic': spline of second order
+                    'cubic': spline of third order
+                    'barycentric': builds a polynomial that pass for all points""",
         )
         parser.add_argument(
             "-rm",
@@ -3389,19 +3397,19 @@ class PortfolioOptimizationController(BaseController):
             default="MV",
             dest="risk_measure",
             help="""Risk measure used to optimize the portfolio. Possible values are:
-                    MV : Variance
-                    MAD : Mean Absolute Deviation
-                    MSV : Semi Variance (Variance of negative returns)
-                    FLPM : First Lower Partial Moment
-                    SLPM : Second Lower Partial Moment
-                    CVaR : Conditional Value at Risk
-                    EVaR : Entropic Value at Risk
-                    WR : Worst Realization
-                    ADD : Average Drawdown of uncompounded returns
-                    UCI : Ulcer Index of uncompounded returns
-                    CDaR : Conditional Drawdown at Risk of uncompounded returns
-                    EDaR : Entropic Drawdown at Risk of uncompounded returns
-                    MDD : Maximum Drawdown of uncompounded returns
+                    'MV' : Variance
+                    'MAD' : Mean Absolute Deviation
+                    'MSV' : Semi Variance (Variance of negative returns)
+                    'FLPM' : First Lower Partial Moment
+                    'SLPM' : Second Lower Partial Moment
+                    'CVaR' : Conditional Value at Risk
+                    'EVaR' : Entropic Value at Risk
+                    'WR' : Worst Realization
+                    'ADD' : Average Drawdown of uncompounded returns
+                    'UCI' : Ulcer Index of uncompounded returns
+                    'CDaR' : Conditional Drawdown at Risk of uncompounded returns
+                    'EDaR' : Entropic Drawdown at Risk of uncompounded returns
+                    'MDD' : Maximum Drawdown of uncompounded returns
                     """,
             choices=self.meanrisk_choices,
         )
@@ -3578,14 +3586,14 @@ class PortfolioOptimizationController(BaseController):
             dest="method",
             help="""Method used to fill nan values in time series, by default time. 
                     Possible values are:
-                    linear: linear interpolation
-                    time: linear interpolation based on time index
-                    nearest: use nearest value to replace nan values
-                    zero: spline of zeroth order
-                    slinear: spline of first order
-                    quadratic: spline of second order
-                    cubic: spline of third order
-                    barycentric: builds a polynomial that pass for all points""",
+                    'linear': linear interpolation
+                    'time': linear interpolation based on time index
+                    'nearest': use nearest value to replace nan values
+                    'zero': spline of zeroth order
+                    'slinear': spline of first order
+                    'quadratic': spline of second order
+                    'cubic': spline of third order
+                    'barycentric': builds a polynomial that pass for all points""",
         )
         parser.add_argument(
             "-rm",
@@ -3593,16 +3601,16 @@ class PortfolioOptimizationController(BaseController):
             default="MV",
             dest="risk_measure",
             help="""Risk measure used to optimize the portfolio. Possible values are:
-                    MV : Variance
-                    MAD : Mean Absolute Deviation
-                    MSV : Semi Variance (Variance of negative returns)
-                    FLPM : First Lower Partial Moment
-                    SLPM : Second Lower Partial Moment
-                    CVaR : Conditional Value at Risk
-                    EVaR : Entropic Value at Risk
-                    UCI : Ulcer Index of uncompounded returns
-                    CDaR : Conditional Drawdown at Risk of uncompounded returns
-                    EDaR : Entropic Drawdown at Risk of uncompounded returns
+                    'MV' : Variance
+                    'MAD' : Mean Absolute Deviation
+                    'MSV' : Semi Variance (Variance of negative returns)
+                    'FLPM' : First Lower Partial Moment
+                    'SLPM' : Second Lower Partial Moment
+                    'CVaR' : Conditional Value at Risk
+                    'EVaR' : Entropic Value at Risk
+                    'UCI' : Ulcer Index of uncompounded returns
+                    'CDaR' : Conditional Drawdown at Risk of uncompounded returns
+                    'EDaR' : Entropic Drawdown at Risk of uncompounded returns
                     """,
             choices=self.riskparity_choices,
         )
@@ -3775,21 +3783,25 @@ class PortfolioOptimizationController(BaseController):
             dest="method",
             help="""Method used to fill nan values in time series, by default time. 
                     Possible values are:
-                    linear: linear interpolation
-                    time: linear interpolation based on time index
-                    nearest: use nearest value to replace nan values
-                    zero: spline of zeroth order
-                    slinear: spline of first order
-                    quadratic: spline of second order
-                    cubic: spline of third order
-                    barycentric: builds a polynomial that pass for all points""",
+                    'linear': linear interpolation
+                    'time': linear interpolation based on time index
+                    'nearest': use nearest value to replace nan values
+                    'zero': spline of zeroth order
+                    'slinear': spline of first order
+                    'quadratic': spline of second order
+                    'cubic': spline of third order
+                    'barycentric': builds a polynomial that pass for all points""",
         )
         parser.add_argument(
             "-ve",
             "--version",
             default="A",
             dest="version",
-            help="version of relaxed risk parity model",
+            help="""version of relaxed risk parity model: Possible values are:
+                'A': risk parity without regularization and penalization constraints.
+                'B': with regularization constraint but without penalization constraint.
+                'C': with regularization and penalization constraints.
+                """,
             choices=self.relriskparity_choices,
         )
         parser.add_argument(
@@ -3806,7 +3818,7 @@ class PortfolioOptimizationController(BaseController):
             type=float,
             dest="penal_factor",
             default=1,
-            help="""The penalization factor of penalization constraints. Only
+            help="""The penalization factor of penalization constraint. Only
             used with version 'C'.""",
         )
         parser.add_argument(
@@ -3952,14 +3964,14 @@ class PortfolioOptimizationController(BaseController):
             dest="method",
             help="""Method used to fill nan values in time series, by default time. 
                     Possible values are:
-                    linear: linear interpolation
-                    time: linear interpolation based on time index
-                    nearest: use nearest value to replace nan values
-                    zero: spline of zeroth order
-                    slinear: spline of first order
-                    quadratic: spline of second order
-                    cubic: spline of third order
-                    barycentric: builds a polynomial that pass for all points""",
+                    'linear': linear interpolation
+                    'time': linear interpolation based on time index
+                    'nearest': use nearest value to replace nan values
+                    'zero': spline of zeroth order
+                    'slinear': spline of first order
+                    'quadratic': spline of second order
+                    'cubic': spline of third order
+                    'barycentric': builds a polynomial that pass for all points""",
         )
         parser.add_argument(
             "-cd",
@@ -3968,13 +3980,13 @@ class PortfolioOptimizationController(BaseController):
             dest="codependence",
             help="""The codependence or similarity matrix used to build the
                 distance metric and clusters. Possible values are:
-                pearson: pearson correlation matrix
-                spearman: spearman correlation matrix
-                abs_pearson: absolute value of pearson correlation matrix
-                abs_spearman: absolute value of spearman correlation matrix
-                distance: distance correlation matrix
-                mutual_info: mutual information codependence matrix
-                tail: tail index codependence matrix""",
+                'pearson': pearson correlation matrix
+                'spearman': spearman correlation matrix
+                'abs_pearson': absolute value of pearson correlation matrix
+                'abs_spearman': absolute value of spearman correlation matrix
+                'distance': distance correlation matrix
+                'mutual_info': mutual information codependence matrix
+                'tail': tail index codependence matrix""",
             choices=self.codependence_choices,
         )
         parser.add_argument(
@@ -3983,17 +3995,17 @@ class PortfolioOptimizationController(BaseController):
             default="hist",
             dest="covariance",
             help="""Method used to estimate covariance matrix. Possible values are
-                    hist: historical method
-                    ewma1: exponential weighted moving average with adjust=True
-                    ewma2: exponential weighted moving average with adjust=False
-                    ledoit: Ledoit and Wolf shrinkage method
-                    oas: oracle shrinkage method
-                    shrunk: scikit-learn shrunk method
-                    gl: graphical lasso method
-                    jlogo: j-logo covariance
-                    fixed: takes average of eigenvalues above max Marchenko Pastour limit
-                    spectral:  makes zero eigenvalues above max Marchenko Pastour limit
-                    shrink: Lopez de Prado's book shrinkage method
+                    'hist': historical method
+                    'ewma1': exponential weighted moving average with adjust=True
+                    'ewma2': exponential weighted moving average with adjust=False
+                    'ledoit': Ledoit and Wolf shrinkage method
+                    'oas': oracle shrinkage method
+                    'shrunk': scikit-learn shrunk method
+                    'gl': graphical lasso method
+                    'jlogo': j-logo covariance
+                    'fixed': takes average of eigenvalues above max Marchenko Pastour limit
+                    'spectral':  makes zero eigenvalues above max Marchenko Pastour limit
+                    'shrink': Lopez de Prado's book shrinkage method
                     """,
             choices=self.covariance_choices,
         )
@@ -4003,19 +4015,32 @@ class PortfolioOptimizationController(BaseController):
             default="MV",
             dest="risk_measure",
             help="""Risk measure used to optimize the portfolio. Possible values are:
-                    MV : Variance
-                    MAD : Mean Absolute Deviation
-                    MSV : Semi Variance (Variance of negative returns)
-                    FLPM : First Lower Partial Moment
-                    SLPM : Second Lower Partial Moment
-                    CVaR : Conditional Value at Risk
-                    EVaR : Entropic Value at Risk
-                    WR : Worst Realization
-                    ADD : Average Drawdown of uncompounded returns
-                    UCI : Ulcer Index of uncompounded returns
-                    CDaR : Conditional Drawdown at Risk of uncompounded returns
-                    EDaR : Entropic Drawdown at Risk of uncompounded returns
-                    MDD : Maximum Drawdown of uncompounded returns
+                    'MV' : Variance
+                    'MAD' : Mean Absolute Deviation
+                    'GMD' : Gini Mean Difference
+                    'MSV' : Semi Variance (Variance of negative returns)
+                    'FLPM' : First Lower Partial Moment
+                    'SLPM' : Second Lower Partial Moment
+                    'VaR' : Value at Risk
+                    'CVaR' : Conditional Value at Risk
+                    'TG' : Tail Gini
+                    'EVaR' : Entropic Value at Risk
+                    'WR' : Worst Realization
+                    'RG' : Range
+                    'CVRG' : CVaR Range
+                    'TGRG' : Tail Gini Range
+                    'ADD' : Average Drawdown of uncompounded returns
+                    'UCI' : Ulcer Index of uncompounded returns
+                    'DaR' : Drawdown at Risk of uncompounded returns
+                    'CDaR' : Conditional Drawdown at Risk of uncompounded returns
+                    'EDaR' : Entropic Drawdown at Risk of uncompounded returns
+                    'MDD' : Maximum Drawdown of uncompounded returns
+                    'ADD_Rel' : Average Drawdown of compounded returns
+                    'UCI_Rel' : Ulcer Index of compounded returns
+                    'DaR_Rel' : Drawdown at Risk of compounded returns
+                    'CDaR_Rel' : Conditional Drawdown at Risk of compounded returns
+                    'EDaR_Rel' : Entropic Drawdown at Risk of compounded returns
+                    'MDD_Rel' : Maximum Drawdown of compounded returns
                     """,
             choices=self.hcp_choices,
         )
@@ -4259,14 +4284,14 @@ class PortfolioOptimizationController(BaseController):
             dest="method",
             help="""Method used to fill nan values in time series, by default time. 
                     Possible values are:
-                    linear: linear interpolation
-                    time: linear interpolation based on time index
-                    nearest: use nearest value to replace nan values
-                    zero: spline of zeroth order
-                    slinear: spline of first order
-                    quadratic: spline of second order
-                    cubic: spline of third order
-                    barycentric: builds a polynomial that pass for all points""",
+                    'linear': linear interpolation
+                    'time': linear interpolation based on time index
+                    'nearest': use nearest value to replace nan values
+                    'zero': spline of zeroth order
+                    'slinear': spline of first order
+                    'quadratic': spline of second order
+                    'cubic': spline of third order
+                    'barycentric': builds a polynomial that pass for all points""",
         )
         parser.add_argument(
             "-cd",
@@ -4275,13 +4300,13 @@ class PortfolioOptimizationController(BaseController):
             dest="codependence",
             help="""The codependence or similarity matrix used to build the
                 distance metric and clusters. Possible values are:
-                pearson: pearson correlation matrix
-                spearman: spearman correlation matrix
-                abs_pearson: absolute value of pearson correlation matrix
-                abs_spearman: absolute value of spearman correlation matrix
-                distance: distance correlation matrix
-                mutual_info: mutual information codependence matrix
-                tail: tail index codependence matrix""",
+                'pearson': pearson correlation matrix
+                'spearman': spearman correlation matrix
+                'abs_pearson': absolute value of pearson correlation matrix
+                'abs_spearman': absolute value of spearman correlation matrix
+                'distance': distance correlation matrix
+                'mutual_info': mutual information codependence matrix
+                'tail': tail index codependence matrix""",
             choices=self.codependence_choices,
         )
         parser.add_argument(
@@ -4290,17 +4315,17 @@ class PortfolioOptimizationController(BaseController):
             default="hist",
             dest="covariance",
             help="""Method used to estimate covariance matrix. Possible values are
-                    hist: historical method
-                    ewma1: exponential weighted moving average with adjust=True
-                    ewma2: exponential weighted moving average with adjust=False
-                    ledoit: Ledoit and Wolf shrinkage method
-                    oas: oracle shrinkage method
-                    shrunk: scikit-learn shrunk method
-                    gl: graphical lasso method
-                    jlogo: j-logo covariance
-                    fixed: takes average of eigenvalues above max Marchenko Pastour limit
-                    spectral:  makes zero eigenvalues above max Marchenko Pastour limit
-                    shrink: Lopez de Prado's book shrinkage method
+                    'hist': historical method
+                    'ewma1': exponential weighted moving average with adjust=True
+                    'ewma2': exponential weighted moving average with adjust=False
+                    'ledoit': Ledoit and Wolf shrinkage method
+                    'oas': oracle shrinkage method
+                    'shrunk': scikit-learn shrunk method
+                    'gl': graphical lasso method
+                    'jlogo': j-logo covariance
+                    'fixed': takes average of eigenvalues above max Marchenko Pastour limit
+                    'spectral':  makes zero eigenvalues above max Marchenko Pastour limit
+                    'shrink': Lopez de Prado's book shrinkage method
                     """,
             choices=self.covariance_choices,
         )
@@ -4310,19 +4335,32 @@ class PortfolioOptimizationController(BaseController):
             default="MV",
             dest="risk_measure",
             help="""Risk measure used to optimize the portfolio. Possible values are:
-                    MV : Variance
-                    MAD : Mean Absolute Deviation
-                    MSV : Semi Variance (Variance of negative returns)
-                    FLPM : First Lower Partial Moment
-                    SLPM : Second Lower Partial Moment
-                    CVaR : Conditional Value at Risk
-                    EVaR : Entropic Value at Risk
-                    WR : Worst Realization
-                    ADD : Average Drawdown of uncompounded returns
-                    UCI : Ulcer Index of uncompounded returns
-                    CDaR : Conditional Drawdown at Risk of uncompounded returns
-                    EDaR : Entropic Drawdown at Risk of uncompounded returns
-                    MDD : Maximum Drawdown of uncompounded returns
+                    'MV' : Variance
+                    'MAD' : Mean Absolute Deviation
+                    'GMD' : Gini Mean Difference
+                    'MSV' : Semi Variance (Variance of negative returns)
+                    'FLPM' : First Lower Partial Moment
+                    'SLPM' : Second Lower Partial Moment
+                    'VaR' : Value at Risk
+                    'CVaR' : Conditional Value at Risk
+                    'TG' : Tail Gini
+                    'EVaR' : Entropic Value at Risk
+                    'WR' : Worst Realization
+                    'RG' : Range
+                    'CVRG' : CVaR Range
+                    'TGRG' : Tail Gini Range
+                    'ADD' : Average Drawdown of uncompounded returns
+                    'UCI' : Ulcer Index of uncompounded returns
+                    'DaR' : Drawdown at Risk of uncompounded returns
+                    'CDaR' : Conditional Drawdown at Risk of uncompounded returns
+                    'EDaR' : Entropic Drawdown at Risk of uncompounded returns
+                    'MDD' : Maximum Drawdown of uncompounded returns
+                    'ADD_Rel' : Average Drawdown of compounded returns
+                    'UCI_Rel' : Ulcer Index of compounded returns
+                    'DaR_Rel' : Drawdown at Risk of compounded returns
+                    'CDaR_Rel' : Conditional Drawdown at Risk of compounded returns
+                    'EDaR_Rel' : Entropic Drawdown at Risk of compounded returns
+                    'MDD_Rel' : Maximum Drawdown of compounded returns
                     """,
             choices=self.hcp_choices,
         )
@@ -4566,14 +4604,14 @@ class PortfolioOptimizationController(BaseController):
             dest="method",
             help="""Method used to fill nan values in time series, by default time. 
                     Possible values are:
-                    linear: linear interpolation
-                    time: linear interpolation based on time index
-                    nearest: use nearest value to replace nan values
-                    zero: spline of zeroth order
-                    slinear: spline of first order
-                    quadratic: spline of second order
-                    cubic: spline of third order
-                    barycentric: builds a polynomial that pass for all points""",
+                    'linear': linear interpolation
+                    'time': linear interpolation based on time index
+                    'nearest': use nearest value to replace nan values
+                    'zero': spline of zeroth order
+                    'slinear': spline of first order
+                    'quadratic': spline of second order
+                    'cubic': spline of third order
+                    'barycentric': builds a polynomial that pass for all points""",
         )
         parser.add_argument(
             "-cd",
@@ -4582,13 +4620,13 @@ class PortfolioOptimizationController(BaseController):
             dest="codependence",
             help="""The codependence or similarity matrix used to build the
                 distance metric and clusters. Possible values are:
-                pearson: pearson correlation matrix
-                spearman: spearman correlation matrix
-                abs_pearson: absolute value of pearson correlation matrix
-                abs_spearman: absolute value of spearman correlation matrix
-                distance: distance correlation matrix
-                mutual_info: mutual information codependence matrix
-                tail: tail index codependence matrix""",
+                'pearson': pearson correlation matrix
+                'spearman': spearman correlation matrix
+                'abs_pearson': absolute value of pearson correlation matrix
+                'abs_spearman': absolute value of spearman correlation matrix
+                'distance': distance correlation matrix
+                'mutual_info': mutual information codependence matrix
+                'tail': tail index codependence matrix""",
             choices=self.codependence_choices,
         )
         parser.add_argument(
@@ -4597,17 +4635,17 @@ class PortfolioOptimizationController(BaseController):
             default="hist",
             dest="covariance",
             help="""Method used to estimate covariance matrix. Possible values are
-                    hist: historical method
-                    ewma1: exponential weighted moving average with adjust=True
-                    ewma2: exponential weighted moving average with adjust=False
-                    ledoit: Ledoit and Wolf shrinkage method
-                    oas: oracle shrinkage method
-                    shrunk: scikit-learn shrunk method
-                    gl: graphical lasso method
-                    jlogo: j-logo covariance
-                    fixed: takes average of eigenvalues above max Marchenko Pastour limit
-                    spectral:  makes zero eigenvalues above max Marchenko Pastour limit
-                    shrink: Lopez de Prado's book shrinkage method
+                    'hist': historical method
+                    'ewma1': exponential weighted moving average with adjust=True
+                    'ewma2': exponential weighted moving average with adjust=False
+                    'ledoit': Ledoit and Wolf shrinkage method
+                    'oas': oracle shrinkage method
+                    'shrunk': scikit-learn shrunk method
+                    'gl': graphical lasso method
+                    'jlogo': j-logo covariance
+                    'fixed': takes average of eigenvalues above max Marchenko Pastour limit
+                    'spectral':  makes zero eigenvalues above max Marchenko Pastour limit
+                    'shrink': Lopez de Prado's book shrinkage method
                     """,
             choices=self.covariance_choices,
         )
@@ -4625,21 +4663,21 @@ class PortfolioOptimizationController(BaseController):
             default="MV",
             dest="risk_measure",
             help="""Risk measure used to optimize the portfolio. Possible values are:
-                    MV : Variance
-                    MAD : Mean Absolute Deviation
-                    MSV : Semi Variance (Variance of negative returns)
-                    FLPM : First Lower Partial Moment
-                    SLPM : Second Lower Partial Moment
-                    CVaR : Conditional Value at Risk
-                    EVaR : Entropic Value at Risk
-                    WR : Worst Realization
-                    ADD : Average Drawdown of uncompounded returns
-                    UCI : Ulcer Index of uncompounded returns
-                    CDaR : Conditional Drawdown at Risk of uncompounded returns
-                    EDaR : Entropic Drawdown at Risk of uncompounded returns
-                    MDD : Maximum Drawdown of uncompounded returns
+                    'MV' : Variance
+                    'MAD' : Mean Absolute Deviation
+                    'MSV' : Semi Variance (Variance of negative returns)
+                    'FLPM' : First Lower Partial Moment
+                    'SLPM' : Second Lower Partial Moment
+                    'CVaR' : Conditional Value at Risk
+                    'EVaR' : Entropic Value at Risk
+                    'WR' : Worst Realization
+                    'ADD' : Average Drawdown of uncompounded returns
+                    'UCI' : Ulcer Index of uncompounded returns
+                    'CDaR' : Conditional Drawdown at Risk of uncompounded returns
+                    'EDaR' : Entropic Drawdown at Risk of uncompounded returns
+                    'MDD' : Maximum Drawdown of uncompounded returns
                     """,
-            choices=self.hcp_choices,
+            choices=self.meanrisk_choices,
         )
         parser.add_argument(
             "-r",

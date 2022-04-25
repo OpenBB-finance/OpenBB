@@ -1747,8 +1747,6 @@ def display_black_litterman(
         console.print("\n", "There is no solution with this parameters")
         return
 
-    console.print(weights)
-
     console.print("\n", s_title)
     display_weights(weights)
     portfolio_performance(
