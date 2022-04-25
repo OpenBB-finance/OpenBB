@@ -7,9 +7,6 @@
 5,description,"Bitcoin is a cryptocurrency and worldwide payment system. It is the first
 decentralized digital currency, as the system works without a central bank or
 single administrator."
-6,platform,bnb-binance-coin
 7,proof_type,Proof of Work
-8,contract,0x5293344427dc447b5e9a40b2dbc3d278ef88e4bf
 9,tags,"Segwit, Cryptocurrency, Proof Of Work, Payments, Sha256, Mining, Lightning
 Network"
-10,parent,bnb-binance-coin
