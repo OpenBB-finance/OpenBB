@@ -95,7 +95,7 @@ def check_path(path: str) -> str:
     if not path:
         return ""
     if path[0] == "~":
-        path = path.replace("~", os.environ["HOME"])
+        path = path.replace("~", USER_HOME.as_posix())
     # Return string of path if such relative path exists
     if os.path.isfile(path):
         return path
