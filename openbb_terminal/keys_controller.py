@@ -355,7 +355,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
                 logger.info("Reddit key defined, test passed")
                 self.key_dict["REDDIT"] = "defined, test passed"
             except (Exception, ResponseException):
-                logger.warning("Reddit key defined, test passed")
+                logger.warning("Reddit key defined, test failed")
                 self.key_dict["REDDIT"] = "defined, test failed"
 
         if show_output:
