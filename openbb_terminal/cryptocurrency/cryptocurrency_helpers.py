@@ -968,7 +968,11 @@ def load_ta_data(
             # console.print("No data found", "\n")
             return pd.DataFrame(), ""
 
-        df.drop(["time_close", "market_cap"], axis=1, inplace=True)
+        df.drop(["time_close"], axis=1, inplace=True)
+
+        if "market_cap" in df.columns:
+            df.drop(["market_cap"], axis=1, inplace=True)
+
         df.columns = [
             "date",
             "Open",
