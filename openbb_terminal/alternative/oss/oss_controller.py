@@ -9,6 +9,7 @@ from prompt_toolkit.completion import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.alternative.oss import github_view
+from openbb_terminal.alternative.oss import runa_view, runa_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -27,7 +28,7 @@ logger = logging.getLogger(__name__)
 class OSSController(BaseController):
     """Open Source Controller class"""
 
-    CHOICES_COMMANDS = ["sh", "tr", "rs"]
+    CHOICES_COMMANDS = ["sh", "tr", "rs", "rossidx"]
     PATH = "/alternative/oss/"
 
     def __init__(self, queue: List[str] = None):
@@ -37,11 +38,16 @@ class OSSController(BaseController):
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["tr"]["-s"] = {c: None for c in ["stars", "forks"]}
+            choices["rossidx"]["-s"] = {c: None for c in runa_model.SORT_COLUMNS}
+            choices["rossidx"]["-t"] = {c: None for c in ["stars", "forks"]}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
         """Print help"""
         help_text = """[cmds]
+[src][Runa][/src]
+        rossidx     the fastest-growing open-source startups
+[src][GitHub][/src]
         rs          repo summary
         sh          repo star history
         tr          top starred repos[/cmds]
@@ -118,6 +124,80 @@ class OSSController(BaseController):
             if valid_repo(repo):
                 github_view.display_repo_summary(repo=repo, export=ns_parser.export)
                 self.queue = self.queue[1:]
+
+    @log_start_end(log=logger)
+    def call_rossidx(self, other_args: List[str]):
+        """Process rossidx command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="rossidx",
+            description="""
+            Display list of startups from ross index [Source: https://runacap.com/]
+            Use --chart to display chart and -t {stars,forks} to set chart type
+            """,
+        )
+        parser.add_argument(
+            "-s",
+            "--sortby",
+            type=str,
+            dest="sortby",
+            nargs="+",
+            help="Sort startups by column",
+            default="Stars AGR [%]",
+        )
+
+        parser.add_argument(
+            "--descend",
+            action="store_true",
+            help="Flag to sort in descending order (lowest first)",
+            dest="descend",
+            default=False,
+        )
+
+        parser.add_argument(
+            "-c",
+            "--chart",
+            action="store_true",
+            help="Flag to show chart",
+            dest="show_chart",
+            default=False,
+        )
+        parser.add_argument(
+            "-g",
+            "--growth",
+            action="store_true",
+            help="Flag to show growth chart",
+            dest="show_growth",
+            default=False,
+        )
+        parser.add_argument(
+            "-t",
+            "--chart-type",
+            type=str,
+            dest="chart_type",
+            help="Chart type: {stars, forks}",
+            default="stars",
+            choices=["stars", "forks"],
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
+            limit=10,
+        )
+
+        if ns_parser:
+            runa_view.display_rossindex(
+                sortby=" ".join(ns_parser.sortby),
+                descend=ns_parser.descend,
+                top=ns_parser.limit,
+                show_chart=ns_parser.show_chart,
+                show_growth=ns_parser.show_growth,
+                chart_type=ns_parser.chart_type,
+                export=ns_parser.export,
+            )
 
     @log_start_end(log=logger)
     def call_tr(self, other_args: List[str]):
