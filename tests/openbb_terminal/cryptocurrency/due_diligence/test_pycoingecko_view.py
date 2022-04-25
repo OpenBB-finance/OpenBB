@@ -16,8 +16,9 @@ from tests.helpers.helpers import check_print
 
 # pylint: disable=unused-import
 
+pytest.skip(msg="Pycoingecko tests have not been migrated.", allow_module_level=True)
 
-@pytest.mark.skip
+
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_display_potential_returns():
