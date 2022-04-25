@@ -1356,8 +1356,8 @@ class DueDiligenceController(CryptoBaseController):
                 coin=self.symbol.upper(),
                 interval=ns_parser.interval,
                 dev_activity=ns_parser.dev,
-                start=ns_parser.start,
-                end=ns_parser.end,
+                start=ns_parser.start.strftime("%Y-%m-%dT%H:%M:%SZ"),
+                end=ns_parser.end.strftime("%Y-%m-%dT%H:%M:%SZ"),
                 export=ns_parser.export,
             )
 

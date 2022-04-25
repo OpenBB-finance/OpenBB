@@ -1,5 +1,4 @@
 import logging
-import datetime
 
 import requests
 
@@ -29,8 +28,8 @@ def get_github_activity(
     coin: str,
     dev_activity: bool,
     interval: str,
-    start: datetime.datetime,
-    end: datetime.datetime,
+    start: str,
+    end: str,
 ) -> pd.DataFrame:
     """Returns  a list of developer activity for a given coin and time interval.
 
@@ -64,8 +63,16 @@ def get_github_activity(
         "Authorization": f"Apikey {cfg.API_SANTIMENT_KEY}",
     }
 
+    # if isinstance(start, str):
+    #     start = start + "T00:00:00Z"
+    #     end = end + "T00:00:00Z"
+
+    # else:
+    #     start = start.strftime("%Y-%m-%dT%H:%M:%SZ")
+    #     end = end.strftime("%Y-%m-%dT%H:%M:%SZ")
+
     # pylint: disable=line-too-long
-    data = f'\n{{ getMetric(metric: "{activity_type}"){{ timeseriesData( slug: "{slug}" from: "{start.strftime("%Y-%m-%dT%H:%M:%SZ")}" to: "{end.strftime("%Y-%m-%dT%H:%M:%SZ")}" interval: "{interval}"){{ datetime value }} }} }}'  # noqa: E501
+    data = f'\n{{ getMetric(metric: "{activity_type}"){{ timeseriesData( slug: "{slug}" from: "{start}" to: "{end}" interval: "{interval}"){{ datetime value }} }} }}'  # noqa: E501
 
     response = requests.post(
         "https://api.santiment.net/graphql", headers=headers, data=data
@@ -74,9 +81,13 @@ def get_github_activity(
     df = pd.DataFrame()
 
     if response.status_code == 200:
-        df = pd.DataFrame(response.json()["data"]["getMetric"]["timeseriesData"])
-        df["datetime"] = pd.to_datetime(df["datetime"])
-        df = df.set_index("datetime")
+
+        if "data" in response.json():
+            df = pd.DataFrame(response.json()["data"]["getMetric"]["timeseriesData"])
+            df["datetime"] = pd.to_datetime(df["datetime"])
+            df = df.set_index("datetime")
+        else:
+            console.print(f"Could not find github activity found for {coin}\n")
 
     elif response.status_code == 400:
         if "Apikey" in response.json()["errors"]["details"]:
