@@ -1,22 +1,23 @@
 import logging
+import datetime
+
+import requests
 
 import pandas as pd
-import san
 
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
+from openbb_terminal.cryptocurrency.discovery.pycoingecko_model import read_file_data
 
 logger = logging.getLogger(__name__)
-
-san.ApiConfig.api_key = cfg.API_SANTIMENT_KEY
 
 
 def get_slug(coin: str) -> str:
     """
     Get Santiment slug mapping and return corresponding slug for a given coin
     """
-    df = san.get("projects/all")
+    df = pd.DataFrame(read_file_data("santiment_slugs.json"))
 
     slug = df.loc[df["ticker"] == coin.upper()]["slug"].values[0]
 
@@ -25,7 +26,11 @@ def get_slug(coin: str) -> str:
 
 @log_start_end(log=logger)
 def get_github_activity(
-    coin: str, dev_activity: bool, interval: str, start: str, end: str
+    coin: str,
+    dev_activity: bool,
+    interval: str,
+    start: datetime.datetime,
+    end: datetime.datetime,
 ) -> pd.DataFrame:
     """Returns  a list of developer activity for a given coin and time interval.
 
@@ -51,18 +56,29 @@ def get_github_activity(
     """
 
     activity_type = "dev_activity" if dev_activity else "github_activity"
+
     slug = get_slug(coin)
-    try:
-        df = san.get(
-            f"{activity_type}/{slug}",
-            from_date=start,
-            to_date=end,
-            interval=interval,
-        )
-    except Exception as e:
-        if "Apikey" in str(e):
+
+    headers = {
+        "Content-Type": "application/graphql",
+        "Authorization": f"Apikey {cfg.API_SANTIMENT_KEY}",
+    }
+
+    # pylint: disable=line-too-long
+    data = f'\n{{ getMetric(metric: "{activity_type}"){{ timeseriesData( slug: "{slug}" from: "{start.strftime("%Y-%m-%dT%H:%M:%SZ")}" to: "{end.strftime("%Y-%m-%dT%H:%M:%SZ")}" interval: "{interval}"){{ datetime value }} }} }}'  # noqa: E501
+
+    response = requests.post(
+        "https://api.santiment.net/graphql", headers=headers, data=data
+    )
+
+    df = pd.DataFrame()
+
+    if response.status_code == 200:
+        df = pd.DataFrame(response.json()["data"]["getMetric"]["timeseriesData"])
+    elif response.status_code == 400:
+        if "Apikey" in response.json()["errors"]["details"]:
             console.print("[red]Invalid API Key[/red]\n")
-        else:
-            console.print(e)
+    else:
+        console.print(f"Error in request: {response.json()['error']}", "\n")
 
     return df
