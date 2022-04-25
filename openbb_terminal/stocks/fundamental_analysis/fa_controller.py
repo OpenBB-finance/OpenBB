@@ -895,7 +895,7 @@ Ticker: [/param] {self.ticker} [cmds]
 
 
 def key_metrics_explained(other_args: List[str]):
-    """Key metrics explained.
+    """Key metrics for a company.
 
     Parameters
     ----------
