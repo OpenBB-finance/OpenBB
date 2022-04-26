@@ -59,3 +59,7 @@ styles/user
 
 # the file containing the API keys for the web version
 openbb_terminal_web/setenv
+
+# Coverage reports
+pytest-coverage.txt
+pytest.xml

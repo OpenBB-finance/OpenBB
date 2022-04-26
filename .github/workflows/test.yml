@@ -79,13 +79,7 @@ jobs:
           MPLBACKEND: Agg
         run: |
           source $VENV
-          pytest tests/ --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=openbb_terminal/ --cov=terminal.py  -m "not bots" | tee pytest-coverage.txt
-
-      - name: Show xml
-        run: cat ./pytest.xml
-
-      - name: show text
-        run: cat ./pytest-coverage.txt
+          pytest --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=openbb_terminal --cov=terminal | tee pytest-coverage.txt
 
       - name: Pytest coverage comment
         uses: Mishakav/pytest-coverage-comment@main
