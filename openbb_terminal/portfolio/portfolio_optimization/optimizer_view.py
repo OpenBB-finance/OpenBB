@@ -1,26 +1,25 @@
 """Optimization View"""
 __docformat__ = "numpy"
 
-# pylint: disable=R0913, R0914, C0302
+# pylint: disable=R0913, R0914, C0302, unused-argument
 
 import logging
 import math
-from tkinter.tix import COLUMN
 import warnings
-from typing import Dict, List, Optional
 from datetime import date
+from typing import Dict, List, Optional
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import riskfolio as rp
-from matplotlib.lines import Line2D
-from matplotlib.gridspec import GridSpec
-
 from dateutil.relativedelta import relativedelta, FR
+from matplotlib.gridspec import GridSpec
+from matplotlib.lines import Line2D
 from scipy.interpolate import interp1d
 
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import plot_autoscale, print_rich_table
 from openbb_terminal.portfolio.portfolio_optimization import (
@@ -28,7 +27,6 @@ from openbb_terminal.portfolio.portfolio_optimization import (
     yahoo_finance_model,
 )
 from openbb_terminal.rich_config import console
-from openbb_terminal.config_terminal import theme
 
 warnings.filterwarnings("ignore")
 
@@ -105,6 +103,45 @@ time_factor = {
     "W": 52.0,
     "M": 12.0,
 }
+
+dict_conversion = {"period": "historic_period", "start": "start_period"}
+
+
+def check_params(parser, params, params_dict):
+    """
+    Check the parameters set and change them if an argument is used within the command.
+
+    Parameters
+    ----------
+    parser : ArgumentParser
+        The parser that is being used to call the command.
+    params: tuple
+        All parameters converted into a tuple with name, value
+    params_dict: dict
+        The option to select custom parameters that only get overwritten if the default of
+        the function is altered
+    """
+    function_parameters = params_dict.copy()
+    changed_parameters = []
+
+    for parameter, value in params:
+        if parameter in function_parameters:
+            if (
+                value != parser.get_default(parameter)
+                and value != function_parameters[parameter]
+            ):
+                function_parameters[parameter] = value
+                changed_parameters.append(parameter)
+        else:
+            function_parameters[parameter] = value
+
+    if changed_parameters:
+        console.print(
+            f"Changes are made in the following parameter(s) {' '.join(changed_parameters)} "
+            f"due to user input."
+        )
+
+    return function_parameters
 
 
 @log_start_end(log=logger)
@@ -307,7 +344,7 @@ def display_weights(weights: dict, market_neutral: bool = False):
     if not market_neutral:
         if math.isclose(weight_df.sum()["value"], 1, rel_tol=0.1):
             weight_df["value"] = (weight_df["value"] * 100).apply(
-                lambda s: "{:.2f}".format(s)
+                lambda s: f"{s:.2f}"
             ) + " %"
             weight_df["value"] = (
                 weight_df["value"]
@@ -316,7 +353,7 @@ def display_weights(weights: dict, market_neutral: bool = False):
             )
         else:
             weight_df["value"] = (weight_df["value"] * 100).apply(
-                lambda s: "{:.0f}".format(s)
+                lambda s: f"{s:.0f}"
             ) + " $"
             weight_df["value"] = (
                 weight_df["value"]
@@ -384,16 +421,14 @@ def display_categories(weights: dict, categories: dict, column: str, title: str 
     )
     table_df = table_df.iloc[:, [0, 2, 1]]
 
-    table_df["value"] = (table_df["value"] * 100).apply(
-        lambda s: "{:.2f}".format(s)
-    ) + " %"
+    table_df["value"] = (table_df["value"] * 100).apply(lambda s: f"{s:.2f}") + " %"
     table_df["value"] = (
         table_df["value"]
         .astype(str)
         .apply(lambda s: " " * (8 - len(s)) + s if len(s) < 8 else "" + s)
     )
     table_df["CURRENT_WEIGHTS"] = (table_df["CURRENT_WEIGHTS"] * 100).apply(
-        lambda s: "{:.2f}".format(s)
+        lambda s: f"{s:.2f}"
     ) + " %"
     table_df["CURRENT_WEIGHTS"] = (
         table_df["CURRENT_WEIGHTS"]
@@ -405,7 +440,7 @@ def display_categories(weights: dict, categories: dict, column: str, title: str 
         )
     )
     table_df["CURRENT_INVESTED_AMOUNT"] = (
-        table_df["CURRENT_INVESTED_AMOUNT"].apply(lambda s: "{:,.0f}".format(s)) + " $"
+        table_df["CURRENT_INVESTED_AMOUNT"].apply(lambda s: f"{s:,.0f}") + " $"
     )
     table_df["CURRENT_INVESTED_AMOUNT"] = (
         table_df["CURRENT_INVESTED_AMOUNT"]
@@ -545,6 +580,7 @@ def display_property_weighting(
     s_property: str = "marketCap",
     risk_measure="mv",
     risk_free_rate: float = 0,
+    alpha=0.05,
     value: float = 1,
 ) -> Dict:
     """
@@ -773,13 +809,13 @@ def display_mean_risk(
     """
     p = d_period(period, start, end)
     if objective == "sharpe":
-        s_title = f"{p} Maximal return/risk ratio portfolio using\n"
+        s_title = f"{p} Maximal return/risk ratio portfolio using "
     elif objective == "minrisk":
-        s_title = f"{p} Minimum risk portfolio using\n"
+        s_title = f"{p} Minimum risk portfolio using "
     elif objective == "maxret":
-        s_title = f"{p} Maximal return portfolio using\n"
+        s_title = f"{p} Maximal return portfolio using "
     elif objective == "utility":
-        s_title = f"{p} Maximal risk averse utility function portfolio using\n"
+        s_title = f"{p} Maximal risk averse utility function portfolio using "
     s_title += risk_names[risk_measure] + " as risk measure\n"
 
     weights, stock_returns = optimizer_model.get_mean_risk_portfolio(
@@ -807,8 +843,8 @@ def display_mean_risk(
     )
 
     if weights is None:
-        console.print("\n", "There is no solution with this parameters")
-        return
+        console.print("\n", "There is no solution with these parameters")
+        return {}
 
     console.print("\n", s_title)
     display_weights(weights)
@@ -1494,7 +1530,7 @@ def display_max_div(
     )
     if weights is None:
         console.print("\n", "There is no solution with this parameters")
-        return
+        return {}
 
     console.print("\n", s_title)
     display_weights(weights)
@@ -1608,7 +1644,7 @@ def display_max_decorr(
 
     if weights is None:
         console.print("\n", "There is no solution with this parameters")
-        return
+        return {}
 
     console.print("\n", s_title)
     display_weights(weights)
@@ -1745,7 +1781,7 @@ def display_black_litterman(
 
     if weights is None:
         console.print("\n", "There is no solution with this parameters")
-        return
+        return {}
 
     console.print("\n", s_title)
     display_weights(weights)
@@ -2136,7 +2172,7 @@ def display_risk_parity(
 
     if weights is None:
         console.print("\n", "There is no solution with this parameters")
-        return None
+        return {}
 
     console.print("\n", s_title)
     display_weights(weights)
@@ -2278,7 +2314,7 @@ def display_rel_risk_parity(
 
     if weights is None:
         console.print("\n", "There is no solution with this parameters")
-        return None
+        return {}
 
     console.print("\n", s_title)
     display_weights(weights)
@@ -2546,7 +2582,7 @@ def display_hcp(
 
     if weights is None:
         console.print("\n", "There is no solution with this parameters")
-        return None
+        return {}
 
     console.print("\n", s_title)
     display_weights(weights)

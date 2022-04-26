@@ -732,7 +732,8 @@ def get_black_litterman_portfolio(
             value=value,
         )
 
-    risk_free_rate = risk_free_rate / time_factor[freq.upper()]
+    factor = time_factor[freq.upper()]
+    risk_free_rate = risk_free_rate / factor
 
     mu, cov, weights = black_litterman(
         stock_returns=stock_returns,
@@ -742,7 +743,7 @@ def get_black_litterman_portfolio(
         delta=delta,
         risk_free_rate=risk_free_rate,
         equilibrium=equilibrium,
-        factor=time_factor[freq.upper()],
+        factor=factor,
     )
     weights = pd.DataFrame(weights)
 
@@ -1352,13 +1353,13 @@ def get_hcp_portfolio(
 @log_start_end(log=logger)
 def black_litterman(
     stock_returns: pd.DataFrame,
-    benchmark: Dict,
-    p_views: List,
-    q_views: List,
-    delta: float = None,
+    benchmark,
+    p_views,
+    q_views,
+    delta=None,
     risk_free_rate: float = 0,
     equilibrium: bool = True,
-    factor: float = 1 / 252,
+    factor: float = 252,
 ) -> Tuple:
     """
     Calculates Black-Litterman estimates following He and Litterman (1999)
@@ -1400,9 +1401,9 @@ def black_litterman(
         delta = (a - risk_free_rate) / (benchmark.T @ S @ benchmark)
         delta = delta.item()
 
-    if equilibrium == True:
+    if equilibrium:
         PI_eq = delta * (S @ benchmark)
-    elif equilibrium == False:
+    elif not equilibrium:
         PI_eq = mu - risk_free_rate
 
     flag = False

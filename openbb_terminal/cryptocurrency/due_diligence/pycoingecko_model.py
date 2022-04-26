@@ -237,7 +237,7 @@ class Coin:
     """Coin class, it holds loaded coin"""
 
     @log_start_end(log=logger)
-    def __init__(self, symbol: str, load_from_api: bool = False):
+    def __init__(self, symbol: str, load_from_api: bool = True):
         self.client = CoinGeckoAPI()
         if load_from_api:
             self._coin_list = self.client.get_coins_list()
@@ -249,16 +249,17 @@ class Coin:
         if self.coin_symbol:
             self.coin: Dict[Any, Any] = self._get_coin_info()
         else:
-            console.print(
-                f"[red]Could not find coin with the given id: {symbol}\n[/red]"
-            )
+            pass
 
     @log_start_end(log=logger)
     def __str__(self):
         return f"{self.coin_symbol}"
 
     @log_start_end(log=logger)
-    def _validate_coin(self, search_coin: str) -> Tuple[Optional[Any], Optional[Any]]:
+    def _validate_coin(
+        self,
+        search_coin: str,
+    ) -> Tuple[Optional[Any], Optional[Any]]:
         """Validate if given coin symbol or id exists in list of available coins on CoinGecko.
         If yes it returns coin id. [Source: CoinGecko]
 
@@ -276,11 +277,9 @@ class Coin:
 
         coin = None
         symbol = None
+
         for dct in self._coin_list:
-            if search_coin.lower() in [
-                dct["id"],
-                dct["symbol"],
-            ]:
+            if search_coin.lower() in [dct["symbol"], dct["id"]]:
                 coin = dct.get("id")
                 symbol = dct.get("symbol")
                 return coin, symbol

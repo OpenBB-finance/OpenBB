@@ -83,29 +83,37 @@ optional arguments:
 ```
 
 Example:
-```
-2022 Apr 25, 01:22 (🦋) /portfolio/po/ $ add AAPL,MSFT,JP
-2022 Apr 25, 01:25 (🦋) /portfolio/po/ $ minrisk
 
- [3 Years] Minimum risk portfolio using
-volatility as risk measure
+First we need to build a benchmark portfolio:
+
+```
+2022 Apr 26, 01:25 (🦋) /portfolio/po/ $ add AAPL,MSFT,JP,BA
+2022 Apr 26, 01:26 (🦋) /portfolio/po/ $ maxsharpe
+
+ [3 Years] Maximal return/risk ratio portfolio using volatility as risk measure
 
       Weights      
 ┏━━━━━━┳━━━━━━━━━━┓
 ┃      ┃ Value    ┃
 ┡━━━━━━╇━━━━━━━━━━┩
-│ AAPL │  26.29 % │
+│ AAPL │ 100.00 % │
 ├──────┼──────────┤
-│ JP   │   8.82 % │
+│ BA   │   0.00 % │
 ├──────┼──────────┤
-│ MSFT │  64.89 % │
+│ JP   │   0.00 % │
+├──────┼──────────┤
+│ MSFT │   0.00 % │
 └──────┴──────────┘
-Annual (by 252) expected return: 28.10%
-Annual (by √252) volatility: 29.70%
-Sharpe ratio: 0.9351
+Annual (by 252) expected return: 45.46%
+Annual (by √252) volatility: 34.16%
+Sharpe ratio: 1.3209
+```
 
-2022 Apr 25, 01:26 (🦋) /portfolio/po/ $ blacklitterman -bm minrisk_0 -pv 0,1,0;
-1,0,0;1,0,0 -qv 0.1,0.1,0.05 -o MinRisk
+Then we add our views to the benchmark portfolio:
+
+```
+2022 Apr 26, 01:27 (🦋) /portfolio/po/ $ blacklitterman -bm maxsharpe_0 -pv 0,1,
+0,0;1,0,0,0;0,0,0,1 -qv 0.1,0.1,0.05 -o Sharpe
 
  [3 Years] Black Litterman portfolio
 
@@ -113,13 +121,15 @@ Sharpe ratio: 0.9351
 ┏━━━━━━┳━━━━━━━━━━┓
 ┃      ┃ Value    ┃
 ┡━━━━━━╇━━━━━━━━━━┩
-│ AAPL │  26.29 % │
+│ AAPL │  70.30 % │
 ├──────┼──────────┤
-│ JP   │   8.82 % │
+│ BA   │  18.55 % │
 ├──────┼──────────┤
-│ MSFT │  64.89 % │
+│ JP   │   0.01 % │
+├──────┼──────────┤
+│ MSFT │  11.14 % │
 └──────┴──────────┘
-Annual (by 252) expected return: 28.10%
-Annual (by √252) volatility: 29.70%
-Sharpe ratio: 0.9462
+Annual (by 252) expected return: 33.94%
+Annual (by √252) volatility: 32.80%
+Sharpe ratio: 1.0346
 ```
