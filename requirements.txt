@@ -66,7 +66,7 @@ finnhub-python==2.4.13
 finviz==1.4.4
 finvizfinance==0.14.0; python_version >= "3.5"
 flake8==3.9.2; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.5.0")
-fonttools==4.33.2; python_version >= "3.7"
+fonttools==4.33.3; python_version >= "3.7"
 formulaic==0.3.3; python_full_version >= "3.7.1" and python_full_version < "4.0.0" and python_version >= "3.8"
 fred==3.1
 fredapi==0.4.3
@@ -100,7 +100,7 @@ jinja2==3.0.3; python_version >= "3.6"
 joblib==1.1.0; python_version >= "3.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.7"
 json5==0.9.6; python_version >= "3.7"
 jsonschema==3.2.0
-jupyter-client==7.2.2; python_full_version >= "3.7.0" and python_version >= "3.7"
+jupyter-client==7.3.0; python_full_version >= "3.7.0" and python_version >= "3.7"
 jupyter-console==6.4.3; python_version >= "3.6"
 jupyter-core==4.10.0; python_full_version >= "3.7.0" and python_version >= "3.7"
 jupyter-server==1.16.0; python_version >= "3.7"
@@ -181,7 +181,7 @@ pycoingecko==2.2.0
 pycparser==2.21; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.4.0"
 pyex==0.5.0
 pyflakes==2.3.1; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.5.0"
-pygments==2.11.2; python_version >= "3.5"
+pygments==2.12.0; python_version >= "3.6"
 pyhdfe==0.1.0; python_version >= "3.8"
 pylint==2.13.7; python_full_version >= "3.6.2"
 pyluach==1.4.1; python_version >= "3.7" and python_full_version >= "3.7.0"
