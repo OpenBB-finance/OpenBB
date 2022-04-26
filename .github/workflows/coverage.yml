@@ -1,0 +1,72 @@
+name: Tests
+env:
+  OPENBB_ENABLE_QUICK_EXIT: true
+  OPENBB_LOG_COLLECTION: false
+  OPENBB_USE_ION: false
+  OPENBB_USE_PROMPT_TOOLKIT: false
+  PIP_DEFAULT_TIMEOUT: 100
+on: [pull_request]
+jobs:
+  linting:
+    name: General Linting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Setup Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.9"
+          architecture: x64
+
+      - uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-v1-linting
+          restore-keys: ${{ runner.os }}-v1-linting
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Setup Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.9"
+          architecture: x64
+
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+        with:
+          version: 1.1.11
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+
+      - name: Load cached venv
+        id: cached-poetry-dependencies
+        uses: actions/cache@v2
+        with:
+          path: .venv
+          key: venv-${{ runner.os }}-v1-${{ hashFiles('**/poetry.lock') }}
+
+      - name: Install dependencies
+        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+        run: poetry install --no-interaction --no-root
+
+      - name: Install Package
+        run: poetry install --no-interaction
+
+      - name: Run tests
+        env:
+          MPLBACKEND: Agg
+        run: |
+          source $VENV
+          pytest --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=openbb_terminal --cov=terminal | tee pytest-coverage.txt
+
+      - name: Pytest coverage comment
+        uses: Mishakav/pytest-coverage-comment@main
+        with:
+          junitxml-path: ./pytest.xml
+          pytest-coverage-path: ./pytest-coverage.txt
+          report-only-changed-files: true

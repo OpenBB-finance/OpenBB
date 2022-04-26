@@ -10,7 +10,7 @@ jobs:
   linting:
     name: General Linting
     runs-on: ubuntu-latest
-      # if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
@@ -42,7 +42,7 @@ jobs:
   test:
     name: Base Tests - Ubuntu-latest - Python 3.9
     runs-on: ubuntu-latest
-      # if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
@@ -80,13 +80,6 @@ jobs:
         run: |
           source $VENV
           pytest --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=openbb_terminal --cov=terminal | tee pytest-coverage.txt
-
-      - name: Pytest coverage comment
-        uses: Mishakav/pytest-coverage-comment@main
-        with:
-          junitxml-path: ./pytest.xml
-          pytest-coverage-path: ./pytest-coverage.txt
-          report-only-changed-files: true
 
       - name: Start Terminal and exit
         run: |
