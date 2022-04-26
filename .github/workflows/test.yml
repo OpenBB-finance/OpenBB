@@ -79,7 +79,7 @@ jobs:
           MPLBACKEND: Agg
         run: |
           source $VENV
-          pytest --junitxml=pytest.xml --cov-report=xml --cov=openbb_terminal --cov=terminal | tee pytest-coverage.txt
+          pytest --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=openbb_terminal --cov=terminal | tee pytest-coverage.txt
 
       - name: Pytest coverage comment
         uses: Mishakav/pytest-coverage-comment@main
@@ -87,7 +87,7 @@ jobs:
           create-new-comment: false
           hide-report: false
           junitxml-path: ./pytest.xml
-          pytest-coverage-path: ./coverage.xml
+          pytest-coverage-path: ./pytest-coverage.txt
           report-only-changed-files: true
 
       - name: Start Terminal and exit
