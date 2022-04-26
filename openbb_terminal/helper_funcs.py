@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import argparse
 import logging
 from pathlib import Path
-from typing import List, Union
+from typing import List, Tuple, Union
 from datetime import datetime, timedelta
 import os
 import random
@@ -28,6 +28,7 @@ from screeninfo import get_monitors
 from openbb_terminal.rich_config import console
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal import config_plot as cfgPlot
+from openbb_terminal.core.config.constants import USER_HOME
 
 logger = logging.getLogger(__name__)
 
@@ -94,7 +95,7 @@ def check_path(path: str) -> str:
     if not path:
         return ""
     if path[0] == "~":
-        path = path.replace("~", os.environ["HOME"])
+        path = path.replace("~", USER_HOME.as_posix())
     # Return string of path if such relative path exists
     if os.path.isfile(path):
         return path
@@ -1196,6 +1197,52 @@ def check_file_type_saved(valid_types: List[str] = None):
     return check_filenames
 
 
+def compose_export_path(func_name: str, dir_path: str) -> Tuple[str, str]:
+    """Compose export path for data from the terminal
+
+    Creates a path to a folder and a filename based on conditions.
+
+    Parameters
+    ----------
+    func_name : str
+        Name of the command that invokes this function
+    dir_path : str
+        Path of directory from where this function is called
+
+    Returns
+    -------
+    Tuple[str, str]
+        Tuple containing the folder path and a file name
+    """
+    now = datetime.now()
+    # Resolving all symlinks and also normalizing path.
+    resolve_path = Path(dir_path).resolve()
+    # Getting the directory names from the path. Instead of using split/replace (Windows doesn't like that)
+    path_cmd = f"{resolve_path.parts[-2]}_{resolve_path.parts[-1]}"
+
+    default_filename = f"{now.strftime('%Y%m%d_%H%M%S')}_{path_cmd}_{func_name}"
+    if obbff.EXPORT_FOLDER_PATH:
+        full_path_dir = str(obbff.EXPORT_FOLDER_PATH)
+    else:
+        if obbff.PACKAGED_APPLICATION:
+            full_path_dir = os.path.join(
+                USER_HOME.as_posix(), "Desktop", "OPENBB-exports"
+            )
+
+            if not os.path.isdir(full_path_dir):
+                try:
+                    os.makedirs(full_path_dir)
+                except Exception:
+                    console.print(
+                        f"[red]Couldn't create a folder in {full_path_dir}. Exporting failed.[/red]"
+                    )
+                    full_path_dir = dir_path.replace("openbb_terminal", "exports")
+        else:
+            default_filename = f"{func_name}_{now.strftime('%Y%m%d_%H%M%S')}"
+            full_path_dir = dir_path.replace("openbb_terminal", "exports")
+    return full_path_dir, default_filename
+
+
 def export_data(
     export_type: str, dir_path: str, func_name: str, df: pd.DataFrame = pd.DataFrame()
 ) -> None:
@@ -1213,43 +1260,17 @@ def export_data(
         Dataframe of data to save
     """
     if export_type:
-        now = datetime.now()
-
-        # Resolving all symlinks and also normalizing path.
-        resolve_path = Path(dir_path).resolve()
-        # Getting the directory names from the path. Instead of using split/replace (Windows doesn't like that)
-        path_cmd = f"{resolve_path.parts[-2]}_{resolve_path.parts[-1]}"
-
-        default_filename = f"{now.strftime('%Y%m%d_%H%M%S')}_{path_cmd}_{func_name}"
-        if obbff.EXPORT_FOLDER_PATH:
-            full_path_dir = str(obbff.EXPORT_FOLDER_PATH)
-        else:
-            if obbff.PACKAGED_APPLICATION:
-                full_path_dir = os.path.join(
-                    os.environ["HOME"], "Desktop", "OPENBB-exports"
-                )
-
-                if not os.path.isdir(full_path_dir):
-                    try:
-                        os.makedirs(full_path_dir)
-                    except Exception:
-                        console.print(
-                            f"[red]Couldn't create a folder in {full_path_dir}. Exporting failed.[/red]"
-                        )
-                        return
-            else:
-                default_filename = f"{func_name}_{now.strftime('%Y%m%d_%H%M%S')}"
-                full_path_dir = dir_path.replace("openbb_terminal", "exports")
+        export_folder, export_filename = compose_export_path(func_name, dir_path)
 
         for exp_type in export_type.split(","):
 
             # In this scenario the path was provided, e.g. --export pt.csv, pt.jpg
             if "." in exp_type:
-                saved_path = os.path.join(full_path_dir, exp_type)
+                saved_path = os.path.join(export_folder, exp_type)
             # In this scenario we use the default filename
             else:
                 saved_path = os.path.join(
-                    full_path_dir, f"{default_filename}.{exp_type}"
+                    export_folder, f"{export_filename}.{exp_type}"
                 )
 
             if exp_type.endswith("csv"):

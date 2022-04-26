@@ -8,6 +8,9 @@ set -e
 # Clean Up artifacts from previous builds
 rm -rf build/terminal && rm -rf dist && rm -rf DMG
 
+# Clean up local logging id
+rm -rf openbb_terminal/logs
+
 pyinstaller build/pyinstaller/terminal.spec
 
 # Create the folder that is used for packaging
