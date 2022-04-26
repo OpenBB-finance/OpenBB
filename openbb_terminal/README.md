@@ -143,10 +143,10 @@ Several features in this project utilize Machine Learning. Machine Learning Pyth
 
     ```bash
     sudo apt update
-    sudo apt install -y cmake
+    sudo apt install -y cmake gcc
     pip install cmake
     ```
-  
+
 3. Clone the Project
 
    - Via HTTPS: `git clone https://github.com/OpenBB-finance/OpenBBTerminal.git`
@@ -176,11 +176,28 @@ Several features in this project utilize Machine Learning. Machine Learning Pyth
 
    Note: At the end, you can deactivate it with: `conda deactivate`.
 
-7. Install poetry dependencies
+7. Install dependencies with poetry
+
+   Install the main dependencies with
 
    ```bash
    poetry install
    ```
+
+   To enable the `prediction` menu install additional dependencies after installing main dependencies:
+
+   - On M1 mac
+
+      ```bash
+      conda install -c conda-forge tensorflow==2.7.0
+      poetry install -E prediction
+      ```
+
+   - On all other systems
+
+      ```bash
+      poetry install -E prediction
+      ```
 
    If you are having trouble with Poetry (e.g. on a Windows system), simply install requirements.txt with pip
 
@@ -250,7 +267,7 @@ poetry install -E prediction
   ```python
   python terminal.py
   ```
-  
+
 ### Update Terminal
 
 The terminal is constantly being updated with new features and bug fixes, hence, for your terminal to be update,
