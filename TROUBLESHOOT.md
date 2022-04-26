@@ -1,6 +1,6 @@
 # TROUBLESHOOT
 
-If you are visiting this page it means that you're having issues installing. We deeply apologize for that.
+If you are visiting this page it means that you're having issues installing. We apologize for that.
 
 Since the start of the project we've come across different types of issues experienced by the users. This page tries to
 combine issues, and their solutions. This will allow to give the best install experience to everyone regardless of any
