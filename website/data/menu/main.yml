@@ -101,6 +101,8 @@ main:
             sub:
               - name: shorted
                 ref: "/terminal/stocks/dark_pool_shorts/shorted"
+              - name: ctb
+                ref: "/terminal/stocks/dark_pool_shorts/ctb"
               - name: hsi
                 ref: "/terminal/stocks/dark_pool_shorts/hsi"
               - name: prom
@@ -666,6 +668,13 @@ main:
                 ref: "/terminal/cryptocurrency/discovery/cpsearch"
               - name: cmctop
                 ref: "/terminal/cryptocurrency/discovery/cmctop"
+          - name: tools
+            ref: "/terminal/cryptocurrency/tools"
+            sub:
+              - name: aprtoapy
+                ref: "/terminal/cryptocurrency/tools/aprtoapy"
+              - name: il
+                ref: "/terminal/cryptocurrency/tools/il"
           - name: overview
             ref: "/terminal/cryptocurrency/overview"
             sub:
@@ -687,10 +696,8 @@ main:
                 ref: "/terminal/cryptocurrency/overview/cgexchanges"
               - name: cgexrates
                 ref: "/terminal/cryptocurrency/overview/cgexrates"
-              - name: cgplatforms
-                ref: "/terminal/cryptocurrency/overview/cgplatforms"
-              - name: cgproducts
-                ref: "/terminal/cryptocurrency/overview/cgproducts"
+              - name: cr
+                ref: "/terminal/cryptocurrency/overview/cr"
               - name: cgindexes
                 ref: "/terminal/cryptocurrency/overview/cgindexes"
               - name: cgderivatives
@@ -1180,6 +1187,8 @@ main:
             ref: "/terminal/forex/select"
           - name: load
             ref: "/terminal/forex/load"
+          - name: fwd
+            ref: "/terminal/forex/fwd"
           - name: candle
             ref: "/terminal/forex/candle"
           - name: from
@@ -1209,6 +1218,8 @@ main:
           - name: os
             ref: "/terminal/alternative/oss"
             sub:
+              - name: rossidx
+                ref: "/terminal/alternative/oss/rossidx"
               - name: tr
                 ref: "/terminal/alternative/oss/tr"
               - name: sh

@@ -22,7 +22,7 @@ def vcr_config():
 @pytest.mark.bots
 @pytest.mark.parametrize("opt_type", ["Puts", "Calls"])
 def test_hist_command(recorder, opt_type):
-    value = hist_command("TSLA", "2022-04-08", strike=1000.00, opt_type=opt_type)
+    value = hist_command("TSLA", "2022-04-14", strike=1000.00, opt_type=opt_type)
     value["imagefile"] = str(type(value["imagefile"]))
 
     recorder.capture(value)

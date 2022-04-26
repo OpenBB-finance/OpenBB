@@ -8,11 +8,8 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
-      User-Agent:
-      - Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML,
-        like Gecko) Chrome/39.0.2171.95 Safari/537.36
     method: GET
-    uri: https://query2.finance.yahoo.com/v8/finance/chart/XYZZY?period1=-631159200&period2=1648932336&interval=1d&includePrePost=False&events=div%2Csplits
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/XYZZY?events=div%2Csplits&includePrePost=False&interval=1d&period1=MOCK_PERIOD_1&period2=MOCK_PERIOD_2
   response:
     body:
       string: '{"chart":{"result":null,"error":{"code":"Not Found","description":"No
@@ -43,7 +40,7 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Sat, 02 Apr 2022 20:45:36 GMT
+      - Mon, 11 Apr 2022 01:15:38 GMT
       server:
       - ATS
       vary:
@@ -53,11 +50,11 @@ interactions:
       x-envoy-upstream-service-time:
       - '2'
       x-request-id:
-      - 3027a2b7-d59e-498f-9d1c-a2d9f2b355da
+      - b078d095-89d0-4d96-82e0-17b92cef4d82
       x-yahoo-request-id:
-      - ciqb4p9h4hdfg
+      - bsqcv29h5709q
       y-rid:
-      - ciqb4p9h4hdfg
+      - bsqcv29h5709q
     status:
       code: 404
       message: Not Found

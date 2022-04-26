@@ -42,20 +42,6 @@ class TestCoinGeckoAPI(TestCase):
 
     @pytest.mark.record_stdout
     @pytest.mark.vcr()
-    def test_coin_platforms(self):
-        ov_pycoingecko_view.display_platforms(
-            top=15, sortby="Rank", descend=True, export=""
-        )
-
-    @pytest.mark.record_stdout
-    @pytest.mark.vcr()
-    def test_coin_products(self):
-        ov_pycoingecko_view.display_products(
-            top=15, sortby="Rank", descend=True, export=""
-        )
-
-    @pytest.mark.record_stdout
-    @pytest.mark.vcr()
     def test_coin_indexes(self):
         ov_pycoingecko_view.display_indexes(
             top=15, sortby="Rank", descend=True, export=""

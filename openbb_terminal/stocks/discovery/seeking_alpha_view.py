@@ -48,9 +48,11 @@ def upcoming_earning_release_dates(num_pages: int, num_earnings: int, export: st
         # bigger market cap. Didier attempted this with yfinance, but
         # the computational time involved wasn't worth pursuing that solution.
 
-        df_earn = df_earnings[earning_date == df_earnings.index][
-            ["Ticker", "Name"]
-        ].dropna()
+        df_earn = (
+            df_earnings[earning_date == df_earnings.index][["Ticker", "Name"]]
+            .dropna()
+            .drop_duplicates()
+        )
 
         if export:
             l_earnings_dates.append(earning_date.date())

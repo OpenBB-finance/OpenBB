@@ -4,6 +4,16 @@
 Coin: None
 Source: ?
 
+CoinGecko
+   info            basic information about loaded coin
+   market          market stats about loaded coin
+   ath             all time high related stats for loaded coin
+   atl             all time low related stats for loaded coin
+   web             found websites for loaded coin e.g forum, homepage
+   social          social portals urls for loaded coin, e.g reddit, twitter
+   score           different kind of scores for loaded coin, e.g developer score, sentiment score
+   dev             github, bitbucket coin development statistics
+   bc              links to blockchain explorers for loaded coin
 Glassnode
    active          active addresses
    nonzero         addresses with non-zero balances
@@ -18,31 +28,21 @@ CoinPaprika
    ex              all exchanges where loaded coin is listed
    twitter         tweets for loaded coin
    events          events related to loaded coin
-CoinGecko
-   info            basic information about loaded coin
-   market          market stats about loaded coin
-   ath             all time high related stats for loaded coin
-   atl             all time low related stats for loaded coin
-   web             found websites for loaded coin e.g forum, homepage
-   social          social portals urls for loaded coin, e.g reddit, twitter
-   score           different kind of scores for loaded coin, e.g developer score, sentiment score
-   dev             github, bitbucket coin development statistics
-   bc              links to blockchain explorers for loaded coin
 Binance
-   binbook         show order book
-   balance         show coin balance
+   binbook         order book
+   balance         coin balance
 Coinbase
-   cbbook          show order book
-   trades          show last trades
-   stats           show coin stats
+   cbbook          order book
+   trades          last trades
+   stats           coin stats
 Messari
-   mcapdom         show market cap dominance
-   mt              show messari timeseries
-   rm              show roadmap
-   tk              show tokenomics e.g. circulating/max/total supply, emission type, etc
-   pi              show project information e.g. technology details, public repos, audits, vulns
-   team            show contributors (individuals and organizations)
-   inv             show investors (individuals and organizations)
-   gov             show governance details
-   fr              show fundraising details e.g. treasury accounts, sales rounds, allocation
-   links           show links e.g. whitepaper, github, twitter, youtube, reddit, telegram
+   mcapdom         market cap dominance
+   mt              messari timeseries e.g. twitter followers, circ supply, etc
+   rm              roadmap
+   tk              tokenomics e.g. circulating/max/total supply, emission type, etc
+   pi              project information e.g. technology details, public repos, audits, vulns
+   team            contributors (individuals and organizations)
+   inv             investors (individuals and organizations)
+   gov             governance details
+   fr              fundraising details e.g. treasury accounts, sales rounds, allocation
+   links           links e.g. whitepaper, github, twitter, youtube, reddit, telegram

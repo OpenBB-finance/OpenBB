@@ -37,8 +37,11 @@ def etf_screener(preset: str):
     )
 
     cf = configparser.ConfigParser()
-    path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
-    cf.read(path + preset)
+    path = os.path.join(
+        os.path.abspath(os.path.dirname(__file__)), "presets", preset + ".ini"
+    )
+
+    cf.read(path)
     cols = cf.sections()
 
     for col in cols:

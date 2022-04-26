@@ -77,6 +77,9 @@ def ftd_command(ticker: str = "", start="", end=""):
     )
     if imps.PLT_WATERMARK:
         fig.add_layout_image(imps.PLT_WATERMARK)
+
+    ftds_scale = imps.chart_volume_scaling(ftds_data["QUANTITY (FAILS)"], 2)
+
     fig.update_layout(
         margin=dict(l=0, r=20, t=30, b=20),
         template=imps.PLT_TA_STYLE_TEMPLATE,
@@ -88,7 +91,6 @@ def ftd_command(ticker: str = "", start="", end=""):
         yaxis2=dict(
             side="left",
             fixedrange=False,
-            showgrid=False,
             layer="above traces",
             overlaying="y",
             titlefont=dict(color="#fdc708"),
@@ -102,13 +104,16 @@ def ftd_command(ticker: str = "", start="", end=""):
             side="right",
             position=0.15,
             fixedrange=False,
-            title_text="<b>Shares</b>",
+            showgrid=False,
+            title_text="",
             titlefont=dict(color="#d81aea"),
             tickfont=dict(
                 color="#d81aea",
                 size=13,
             ),
             nticks=20,
+            range=ftds_scale["range"],
+            tickvals=ftds_scale["ticks"],
         ),
         xaxis=dict(
             rangeslider=dict(visible=False),
@@ -131,11 +136,6 @@ def ftd_command(ticker: str = "", start="", end=""):
     plt_link = ""
     if imps.INTERACTIVE:
         plt_link = imps.inter_chart(fig, imagefile, callback=False)
-
-    fig.update_layout(
-        width=800,
-        height=500,
-    )
 
     imagefile = imps.image_border(imagefile, fig=fig)
 

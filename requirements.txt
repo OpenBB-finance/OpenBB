@@ -17,7 +17,7 @@ babel==2.9.1; python_version >= "3.7" and python_full_version < "3.0.0" or pytho
 backcall==0.2.0; python_full_version >= "3.6.2" and python_version >= "3.8"
 backports.zoneinfo==0.2.1; python_version < "3.9" and python_version >= "3.6" and (python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.6")
 beartype==0.7.1; python_version >= "3.8" and python_version < "4.0" and python_full_version >= "3.6.0"
-beautifulsoup4==4.11.0; python_full_version >= "3.6.0" and python_version >= "3.7"
+beautifulsoup4==4.11.1; python_full_version >= "3.6.0" and python_version >= "3.7"
 black==22.1.0; python_full_version >= "3.6.2"
 bleach==5.0.0; python_version >= "3.7"
 bs4==0.0.1
@@ -164,12 +164,12 @@ pyobjc-core==8.4.1; python_version >= "3.6" and sys_platform == "darwin"
 pyobjc-framework-cocoa==8.4.1; python_version >= "3.6" and sys_platform == "darwin"
 pyopenssl==22.0.0; python_version >= "3.7" and python_full_version < "3.0.0" and python_version < "4.0" or python_full_version >= "3.6.0" and python_version < "4" and python_version >= "3.7"
 pyotp==2.6.0; python_version >= "3"
-pyparsing==3.0.7; python_version >= "3.7"
+pyparsing==3.0.8; python_full_version >= "3.6.8" and python_version >= "3.7"
 pyportfolioopt==1.5.2; python_full_version >= "3.6.1" and python_full_version < "4.0.0"
 pyprind==2.11.3; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0"
 pyrsistent==0.18.1; python_version >= "3.7"
 pysocks==1.7.1; python_version >= "3.7" and python_full_version < "3.0.0" and python_version < "4.0" or python_full_version >= "3.6.0" and python_version < "4" and python_version >= "3.7"
-python-binance==1.0.15
+python-binance==1.0.16
 python-coinmarketcap==0.2
 python-dateutil==2.8.2; python_full_version >= "3.7.1" and python_version >= "3.8" and python_full_version < "4.0.0" and (python_version >= "3.7" and python_full_version < "3.0.0" or python_full_version >= "3.3.0" and python_version >= "3.7") and (python_version >= "3.5" and python_full_version < "3.0.0" or python_full_version >= "3.3.0" and python_version >= "3.5")
 python-dotenv==0.19.2; python_version >= "3.5"
@@ -249,7 +249,7 @@ voila==0.3.5; python_version >= "3.7"
 wcwidth==0.2.5; python_full_version >= "3.6.2" and python_version >= "3.8"
 webencodings==0.5.1; python_version >= "3.7"
 websocket-client==1.3.2; python_version >= "3.8" and python_version < "4.0"
-websockets==9.1; python_full_version >= "3.6.1" and python_version >= "3.7"
+websockets==10.2; python_version >= "3.7"
 widgetsnbextension==3.6.0
 wrapt==1.14.0; python_full_version >= "3.7.1" and python_full_version < "4.0.0" and python_version >= "3.8"
 wsproto==1.1.0; python_version >= "3.7" and python_version < "4.0" and python_full_version >= "3.7.0"

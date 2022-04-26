@@ -22,6 +22,7 @@ def bbands_command(
     end="",
     extended_hours: bool = False,
     heikin_candles: bool = False,
+    trendline: bool = False,
     news: bool = False,
 ):
     """Displays chart with bollinger bands [Yahoo Finance]"""
@@ -30,8 +31,9 @@ def bbands_command(
     if imps.DEBUG:
         # pylint: disable=logging-too-many-args
         logger.debug(
-            "ta bbands %s %s %s %s %s %s %s %s %s %s",
+            "ta bbands %s %s %s %s %s %s %s %s %s %s %s %s",
             ticker,
+            interval,
             past_days,
             length,
             n_std,
@@ -40,6 +42,7 @@ def bbands_command(
             end,
             extended_hours,
             heikin_candles,
+            trendline,
             news,
         )
 
@@ -69,7 +72,7 @@ def bbands_command(
 
     if not length.lstrip("-").isnumeric():
         raise Exception("Number has to be an integer")
-    ta_length = float(length)
+    ta_length = int(length)
     n_std = float(n_std)
 
     if ma_mode not in possible_ma:
@@ -99,10 +102,12 @@ def bbands_command(
         df_ta = df_ta.loc[(df_ta.index >= bar_start) & (df_ta.index < end)]
     df_ta = df_ta.fillna(0.0)
 
-    plot = load_candle.candle_fig(df_ta, ticker, interval, extended_hours, news)
+    plot = load_candle.candle_fig(
+        df_ta, ticker, interval, extended_hours, news, trendline=trendline
+    )
     title = f"<b>{plot['plt_title']} Bollinger Bands ({ma_mode.upper()})</b>"
     fig = plot["fig"]
-    idx = 6 if interval != 1440 else 11
+    idx = 6 if (not trendline) and (interval != 1440) else 11
 
     fig.add_trace(
         go.Scatter(
@@ -162,11 +167,6 @@ def bbands_command(
     plt_link = ""
     if imps.INTERACTIVE:
         plt_link = imps.inter_chart(fig, imagefile, callback=False)
-
-    fig.update_layout(
-        width=800,
-        height=500,
-    )
 
     imagefile = imps.image_border(imagefile, fig=fig)
 

@@ -1,0 +1,6 @@
+             BTC    ETH    USDT    USDC
+ledn       5.25%    N/A     N/A    8.0%
+youhodler  4.91%  5.65%  13.07%  12.73%
+blockfi     3.2%   4.5%     N/A    8.6%
+swissborg   0.6%   5.0%    8.0%    8.0%
+

@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 # pylint: disable=too-many-lines
 import argparse
 import logging
+from pathlib import Path
 from typing import List, Union
 from datetime import datetime, timedelta
 import os
@@ -315,6 +316,31 @@ def check_positive_float(value) -> float:
             argparse.ArgumentTypeError(f"{value} is not a positive float value")
         )
     return new_value
+
+
+def check_percentage_range(num) -> float:
+    """
+    Checks if float is between 0 and 100. If so, return it.
+
+    Parameters
+    ----------
+    num: float
+        Input float
+    Returns
+    -------
+    num: float
+        Input number if conditions are met
+    Raises
+    -------
+    argparse.ArgumentTypeError
+        Input number not between min and max values
+    """
+    num = float(num)
+    maxi = 100.0
+    mini = 0.0
+    if num <= mini or num >= maxi:
+        log_and_raise(argparse.ArgumentTypeError("Value must be between 0 and 100"))
+    return num
 
 
 def check_proportion_range(num) -> float:
@@ -1189,7 +1215,11 @@ def export_data(
     if export_type:
         now = datetime.now()
 
-        path_cmd = dir_path.split("openbb_terminal/")[1].replace("/", "_")
+        # Resolving all symlinks and also normalizing path.
+        resolve_path = Path(dir_path).resolve()
+        # Getting the directory names from the path. Instead of using split/replace (Windows doesn't like that)
+        path_cmd = f"{resolve_path.parts[-2]}_{resolve_path.parts[-1]}"
+
         default_filename = f"{now.strftime('%Y%m%d_%H%M%S')}_{path_cmd}_{func_name}"
         if obbff.EXPORT_FOLDER_PATH:
             full_path_dir = str(obbff.EXPORT_FOLDER_PATH)
@@ -1345,3 +1375,29 @@ def handle_error_code(requests_obj, error_code_map):
     for error_code, error_msg in error_code_map.items():
         if requests_obj.status_code == error_code:
             console.print(error_msg)
+
+
+def camel_case_split(string: str) -> str:
+    """Converts a camel case string to separate words
+
+    Parameters
+    ----------
+    string : str
+        The string to be converted
+
+    Returns
+    ----------
+    new_string: str
+        The formatted string
+    """
+
+    words = [[string[0]]]
+
+    for c in string[1:]:
+        if words[-1][-1].islower() and c.isupper():
+            words.append(list(c))
+        else:
+            words[-1].append(c)
+
+    results = ["".join(word) for word in words]
+    return " ".join(results).title()

@@ -275,16 +275,9 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             dict(),
         ),
         (
-            "call_cgplatforms",
+            "call_cr",
             [],
-            "pycoingecko_view.display_platforms",
-            [],
-            dict(),
-        ),
-        (
-            "call_cgproducts",
-            [],
-            "pycoingecko_view.display_products",
+            "loanscan_view.display_crypto_rates",
             [],
             dict(),
         ),
