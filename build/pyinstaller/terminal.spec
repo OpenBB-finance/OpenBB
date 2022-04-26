@@ -42,6 +42,10 @@ added_files = [
         os.path.join(pathex, "statsmodels", "datasets"),
         os.path.join("statsmodels", "datasets"),
     ),
+    (
+        os.path.join(pathex, "investpy", "resources"),
+        os.path.join("investpy", "resources"),
+    ),
     (".env", "."),
 ]
 
