@@ -82,7 +82,7 @@ jobs:
           pytest --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=openbb_terminal --cov=terminal | tee pytest-coverage.txt
 
       - name: Pytest coverage comment
-        if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
+        if: github.event_name == 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository
         uses: Mishakav/pytest-coverage-comment@main
         with:
           junitxml-path: ./pytest.xml
@@ -96,7 +96,7 @@ jobs:
   markdown-link-check:
     name: Markdown Linting
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
     steps:
       - uses: actions/checkout@v2
         name: Check out the code
