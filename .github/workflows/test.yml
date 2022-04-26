@@ -5,7 +5,7 @@ env:
   OPENBB_USE_ION: false
   OPENBB_USE_PROMPT_TOOLKIT: false
   PIP_DEFAULT_TIMEOUT: 100
-on: [pull_request, push]
+on: pull_request
 jobs:
   linting:
     name: General Linting
@@ -82,7 +82,6 @@ jobs:
           pytest --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=openbb_terminal --cov=terminal | tee pytest-coverage.txt
 
       - name: Pytest coverage comment
-        if: github.event_name == 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository
         uses: Mishakav/pytest-coverage-comment@main
         with:
           junitxml-path: ./pytest.xml
