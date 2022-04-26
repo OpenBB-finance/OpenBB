@@ -6,7 +6,6 @@ __docformat__ = "numpy"
 import logging
 import os
 from typing import List, Optional
-from datetime import datetime
 import pandas as pd
 import numpy as np
 from matplotlib import pyplot as plt
@@ -15,11 +14,11 @@ from matplotlib import dates as mdates
 
 from openbb_terminal.config_terminal import theme
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.cryptocurrency import cryptocurrency_helpers
 from openbb_terminal.decorators import check_api_key
 from openbb_terminal import config_plot as cfgPlot
-from openbb_terminal.cryptocurrency.due_diligence import glassnode_view
 from openbb_terminal.cryptocurrency.due_diligence.messari_model import (
-    TIMESERIES,
+    get_available_timeseries,
     get_fundraising,
     get_governance,
     get_investors,
@@ -41,6 +40,59 @@ from openbb_terminal.helper_funcs import (
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
+
+
+@log_start_end(log=logger)
+@check_api_key(["API_MESSARI_KEY"])
+def display_messari_timeseries_list(
+    limit: int = 10,
+    query: str = "",
+    only_free: bool = True,
+    export: str = "",
+) -> None:
+    """Display messari timeseries list
+    [Source: https://messari.io/]
+
+    Parameters
+    ----------
+    limit : int
+        number to show
+    query : str
+        Query to search across all messari timeseries
+    only_free : bool
+        Display only timeseries available for free
+    export : str
+        Export dataframe data to csv,json,xlsx file
+    """
+
+    df = get_available_timeseries()
+    if not df.empty:
+        if only_free:
+            df = df.drop(df[df["Requires Paid Key"]].index)
+        if query:
+            mask = np.column_stack(
+                [
+                    df[col].str.contains(query, na=False, regex=False, case=False)
+                    for col in ["Title", "Description"]
+                ]
+            )
+            df = df.loc[mask.any(axis=1)]
+        print_rich_table(
+            df.head(limit),
+            index_name="ID",
+            headers=list(df.columns),
+            show_index=True,
+            title="Messari Timeseries",
+        )
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "mt",
+            df,
+        )
+    else:
+        console.print("\nUnable to retrieve data from Messari.\n")
 
 
 @log_start_end(log=logger)
@@ -77,40 +129,38 @@ def display_messari_timeseries(
         coin=coin, timeseries_id=timeseries_id, start=start, end=end, interval=interval
     )
 
-    if df.empty or timeseries_id not in TIMESERIES.keys():
-        return
+    if not df.empty:
+        # This plot has 1 axis
+        if not external_axes:
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
+        else:
+            if len(external_axes) != 1:
+                logger.error("Expected list of one axis item.")
+                console.print("[red]Expected list of one axis item./n[/red]")
+                return
+            (ax,) = external_axes
 
-    # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of one axis item./n[/red]")
-            return
-        (ax,) = external_axes
+        ax.get_yaxis().set_major_formatter(
+            ticker.FuncFormatter(lambda x, _: lambda_long_number_format(x))
+        )
 
-    ax.get_yaxis().set_major_formatter(
-        ticker.FuncFormatter(lambda x, _: lambda_long_number_format(x))
-    )
+        ax.plot(df.index, df["values"])
 
-    ax.plot(df.index, df["values"])
+        ax.set_title(f"{coin}'s {title}")
+        ax.set_ylabel(y_axis)
+        ax.set_xlim(df.index[0], df.index[-1])
 
-    ax.set_title(f"{coin}'s {title}")
-    ax.set_ylabel(y_axis)
-    ax.set_xlim(df.index[0], df.index[-1])
+        theme.style_primary_axis(ax)
 
-    theme.style_primary_axis(ax)
+        if not external_axes:
+            theme.visualize_output()
 
-    if not external_axes:
-        theme.visualize_output()
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "mt",
-        df,
-    )
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "mt",
+            df,
+        )
 
 
 @log_start_end(log=logger)
@@ -144,36 +194,35 @@ def display_marketcap_dominance(
 
     df = get_marketcap_dominance(coin=coin, start=start, end=end, interval=interval)
 
-    if df.empty:
-        return
+    if not df.empty:
 
-    # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
-    else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of one axis item./n[/red]")
-            return
-        (ax,) = external_axes
+        # This plot has 1 axis
+        if not external_axes:
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
+        else:
+            if len(external_axes) != 1:
+                logger.error("Expected list of one axis item.")
+                console.print("[red]Expected list of one axis item./n[/red]")
+                return
+            (ax,) = external_axes
 
-    ax.plot(df.index, df["values"])
+        ax.plot(df.index, df["values"])
 
-    ax.set_title(f"{coin}'s Market Cap Dominance over time")
-    ax.set_ylabel(f"{coin} Percentage share")
-    ax.set_xlim(df.index[0], df.index[-1])
+        ax.set_title(f"{coin}'s Market Cap Dominance over time")
+        ax.set_ylabel(f"{coin} Percentage share")
+        ax.set_xlim(df.index[0], df.index[-1])
 
-    theme.style_primary_axis(ax)
+        theme.style_primary_axis(ax)
 
-    if not external_axes:
-        theme.visualize_output()
+        if not external_axes:
+            theme.visualize_output()
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "mcapdom",
-        df,
-    )
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "mcapdom",
+            df,
+        )
 
 
 @log_start_end(log=logger)
@@ -242,8 +291,11 @@ def display_roadmap(
             title=f"{coin} Roadmap",
         )
         if show_chart:
-            df_prices = glassnode_view.get_close_price(
-                coin, "24h", 1_325_376_000, int(datetime.timestamp(datetime.now()))
+            df_prices, _ = cryptocurrency_helpers.load_yf_data(
+                symbol=coin,
+                currency="USD",
+                days=4380,
+                interval="1d",
             )
             if not df_prices.empty:
                 if not external_axes:
@@ -258,11 +310,36 @@ def display_roadmap(
                 roadmap_dates = np.array(
                     pd.to_datetime(df["Date"], format="%Y-%m-%d", errors="coerce")
                 )
-                roadmap_dates = mdates.date2num(roadmap_dates)
-                ax.vlines(
-                    x=roadmap_dates, color="orange", ymin=0, ymax=df_prices["v"].max()
+
+                df_copy = df
+                df_copy["Date"] = pd.to_datetime(
+                    df_copy["Date"], format="%Y-%m-%d", errors="coerce"
                 )
-                ax.plot(df_prices.index, df_prices["v"].values)
+
+                df_copy = df_copy[df_copy["Date"].notnull()]
+                titles = list(df_copy[df_copy["Date"] > df_prices.index[0]]["Title"])
+
+                roadmap_dates = mdates.date2num(roadmap_dates)
+                counter = 0
+                max_price = df_prices["Close"].max()
+                for x in roadmap_dates:
+                    if x > mdates.date2num(df_prices.index[0]):
+                        ax.text(
+                            x,
+                            max_price * 0.7,
+                            titles[counter],
+                            rotation=-90,
+                            verticalalignment="center",
+                            size=6,
+                        )
+                        counter += 1
+                ax.vlines(
+                    x=roadmap_dates,
+                    color="orange",
+                    ymin=0,
+                    ymax=max_price,
+                )
+                ax.plot(df_prices.index, df_prices["Close"].values)
                 ax.get_yaxis().set_major_formatter(
                     ticker.FuncFormatter(lambda x, _: lambda_long_number_format(x))
                 )
@@ -328,23 +405,24 @@ def display_tokenomics(
                 console.print("[red]Expected list of one axis item./n[/red]")
                 return
             (ax, ax2) = external_axes
-        df_prices = glassnode_view.get_close_price(
-            coin,
-            "24h",
-            int(circ_df.index[0].value / 1_000_000_000),
-            int(circ_df.index[-1].value / 1_000_000_000) + 24 * 60 * 60,
+        df_prices, _ = cryptocurrency_helpers.load_yf_data(
+            symbol=coin,
+            currency="USD",
+            days=4380,
+            interval="1d",
         )
+        merged_df = pd.concat([circ_df, df_prices], axis=1)
 
         color_palette = theme.get_colors()
         ax.plot(
-            circ_df.index,
-            circ_df["values"],
+            merged_df.index,
+            merged_df["values"],
             color=color_palette[0],
             label="Circ Supply",
         )
         ax.plot(np.nan, label="Price", color=color_palette[1])
         if not df_prices.empty:
-            ax2.plot(circ_df.index, df_prices["v"], color=color_palette[1])
+            ax2.plot(merged_df.index, merged_df["Close"], color=color_palette[1])
             ax2.get_yaxis().set_major_formatter(
                 ticker.FuncFormatter(lambda x, _: lambda_long_number_format(x))
             )
@@ -356,8 +434,8 @@ def display_tokenomics(
             ticker.FuncFormatter(lambda x, _: lambda_long_number_format(x))
         )
         ax.set_title(f"{coin} circulating supply over time")
-        ax.set_ylabel(f"{coin} Number")
-        ax.set_xlim(circ_df.index[0], circ_df.index[-1])
+        ax.set_ylabel("Number of tokens")
+        ax.set_xlim(merged_df.index[0], merged_df.index[-1])
         theme.style_primary_axis(ax)
         ax.yaxis.set_label_position("left")
         ax.legend()
@@ -390,60 +468,51 @@ def display_project_info(
     export : str
         Export dataframe data to csv,json,xlsx file
     """
-    (
-        project_details,
-        tech_details,
-        df_repos,
-        df_audits,
-        df_vulns,
-    ) = get_project_product_info(coin)
+    (df_info, df_repos, df_audits, df_vulns) = get_project_product_info(coin)
 
-    if project_details and tech_details:
-        console.print(
-            "\n",
-            "[bold]Project details:[/bold]\t",
-            project_details,
-            "\n\n\n",
-            "[bold]Technology details:[/bold]\t",
-            tech_details,
-            "\n",
-        )
-        if not df_repos.empty:
-            print_rich_table(
-                df_repos,
-                headers=list(df_repos.columns),
-                show_index=False,
-                title=f"{coin} Public Repositories",
-            )
-        else:
-            console.print("\nPublic repositories not found\n")
-        if not df_audits.empty:
-            print_rich_table(
-                df_audits,
-                headers=list(df_audits.columns),
-                show_index=False,
-                title=f"{coin} Audits",
-            )
-        else:
-            console.print("\nAudits not found\n")
-        if not df_vulns.empty:
-            print_rich_table(
-                df_vulns,
-                headers=list(df_vulns.columns),
-                show_index=False,
-                title=f"{coin} Vulnerabilities",
-            )
-        else:
-            console.print("\nVulnerabilities not found\n")
-
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            "rm",
-            project_details,
+    if not df_info.empty:
+        print_rich_table(
+            df_info,
+            headers=list(df_info.columns),
+            show_index=False,
+            title=f"{coin} General Info",
         )
     else:
-        console.print("\nUnable to retrieve data from Messari.\n")
+        console.print("\nGeneral info not found\n")
+    if not df_repos.empty:
+        print_rich_table(
+            df_repos,
+            headers=list(df_repos.columns),
+            show_index=False,
+            title=f"{coin} Public Repositories",
+        )
+    else:
+        console.print("\nPublic repositories not found\n")
+    if not df_audits.empty:
+        print_rich_table(
+            df_audits,
+            headers=list(df_audits.columns),
+            show_index=False,
+            title=f"{coin} Audits",
+        )
+    else:
+        console.print("\nAudits not found\n")
+    if not df_vulns.empty:
+        print_rich_table(
+            df_vulns,
+            headers=list(df_vulns.columns),
+            show_index=False,
+            title=f"{coin} Vulnerabilities",
+        )
+    else:
+        console.print("\nVulnerabilities not found\n")
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "pi",
+        df_info,
+    )
 
 
 @log_start_end(log=logger)
@@ -472,7 +541,7 @@ def display_investors(
                 title=f"{coin} Investors - Individuals",
             )
         else:
-            console.print("\nIndividuals not found\n")
+            console.print("\nIndividual investors not found\n")
         if not df_organizations.empty:
             print_rich_table(
                 df_organizations,
@@ -481,7 +550,7 @@ def display_investors(
                 title=f"{coin} Investors - Organizations",
             )
         else:
-            console.print("\nOrganizations not found\n")
+            console.print("\nInvestors - Organizations not found\n")
         export_data(
             export,
             os.path.dirname(os.path.abspath(__file__)),
@@ -518,7 +587,7 @@ def display_team(
                 title=f"{coin} Team - Individuals",
             )
         else:
-            console.print("\nIndividuals not found\n")
+            console.print("\nIndividual team members not found\n")
         if not df_organizations.empty:
             print_rich_table(
                 df_organizations,
@@ -527,7 +596,7 @@ def display_team(
                 title=f"{coin} Team - Organizations",
             )
         else:
-            console.print("\nOrganizations not found\n")
+            console.print("\nTeam organizations not found\n")
         export_data(
             export,
             os.path.dirname(os.path.abspath(__file__)),
@@ -555,7 +624,7 @@ def display_governance(
         Export dataframe data to csv,json,xlsx file
     """
     (summary, df) = get_governance(coin)
-    if summary != "":
+    if summary:
         console.print(summary, "\n")
         if not df.empty:
             print_rich_table(
@@ -571,14 +640,13 @@ def display_governance(
             df,
         )
     else:
-        console.print("\nGovernance details not found\n")
+        console.print(f"\n{coin} governance details not found\n")
 
 
 @log_start_end(log=logger)
 @check_api_key(["API_MESSARI_KEY"])
 def display_fundraising(
     coin: str,
-    pie: bool,
     export: str = "",
 ) -> None:
     """Display coin fundraising
@@ -588,88 +656,84 @@ def display_fundraising(
     ----------
     coin : str
         Crypto symbol to check coin fundraising
-    pie : bool
-        Show percentage allocation pie chart
     export : str
         Export dataframe data to csv,json,xlsx file
     """
     (summary, df_sales_rounds, df_treasury_accs, df_details) = get_fundraising(coin)
-    if summary != "":
+    if summary:
         console.print(summary, "\n")
-        if not df_sales_rounds.empty:
-            df_sales_rounds = df_sales_rounds.applymap(
-                lambda x: lambda_long_number_format(x, 2)
-            )
-            print_rich_table(
-                df_sales_rounds,
-                headers=list(df_sales_rounds.columns),
-                show_index=False,
-                title=f"{coin} Sales Rounds",
-            )
-        else:
-            console.print("\nSales rounds not found\n")
-        if not df_treasury_accs.empty:
-            print_rich_table(
-                df_treasury_accs,
-                headers=list(df_treasury_accs.columns),
-                show_index=False,
-                title=f"{coin} Treasury Accounts",
-            )
-        else:
-            console.print("\nTreasury accounts not found\n")
+    if not df_sales_rounds.empty:
+        df_sales_rounds = df_sales_rounds.applymap(
+            lambda x: lambda_long_number_format(x, 2)
+        )
+        print_rich_table(
+            df_sales_rounds,
+            headers=list(df_sales_rounds.columns),
+            show_index=False,
+            title=f"{coin} Sales Rounds",
+        )
+    else:
+        console.print("\nSales rounds not found\n")
+    if not df_treasury_accs.empty:
+        print_rich_table(
+            df_treasury_accs,
+            headers=list(df_treasury_accs.columns),
+            show_index=False,
+            title=f"{coin} Treasury Accounts",
+        )
+    else:
+        console.print("\nTreasury accounts not found\n")
 
-        if not df_details.empty:
-            if pie:
-                values = []
-                labels = []
-                investors = df_details.loc[df_details["Metric"] == "Investors [%]"][
-                    "Value"
-                ].item()
-                founders = df_details.loc[
-                    df_details["Metric"] == "Organization/Founders [%]"
-                ]["Value"].item()
-                airdrops = (
-                    df_details.loc[df_details["Metric"] == "Rewards/Airdrops [%]"][
-                        "Value"
-                    ].item(),
-                )
-                if isinstance(investors, (int, float)):
-                    values.append(investors)
-                    labels.append("Investors")
-                if isinstance(founders, (int, float)):
-                    values.append(founders)
-                    labels.append("Organization/Founders")
-                if isinstance(airdrops[0], (int, float)):
-                    values.append(airdrops[0])
-                    labels.append("Rewards/Airdrops")
-                if len(values) > 0 and sum(values) > 0:
-                    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
-                    ax.pie(
-                        values,
-                        labels=labels,
-                        wedgeprops={"linewidth": 0.5, "edgecolor": "white"},
-                        labeldistance=1.05,
-                        autopct="%1.0f%%",
-                        startangle=90,
-                    )
-                    ax.set_title(f"{coin} Fundraising Distribution")
-                    if obbff.USE_ION:
-                        plt.ion()
-                    plt.show()
-
-            print_rich_table(
-                df_details,
-                headers=list(df_details.columns),
-                show_index=False,
-                title=f"{coin} Fundraising Details",
+    if not df_details.empty:
+        values = []
+        labels = []
+        investors = df_details.loc[df_details["Metric"] == "Investors [%]"][
+            "Value"
+        ].item()
+        founders = df_details.loc[df_details["Metric"] == "Organization/Founders [%]"][
+            "Value"
+        ].item()
+        airdrops = (
+            df_details.loc[df_details["Metric"] == "Rewards/Airdrops [%]"][
+                "Value"
+            ].item(),
+        )
+        if isinstance(investors, (int, float)) and investors > 0:
+            values.append(investors)
+            labels.append("Investors")
+        if isinstance(founders, (int, float)) and founders > 0:
+            values.append(founders)
+            labels.append("Organization/Founders")
+        if isinstance(airdrops[0], (int, float)) and airdrops[0] > 0:
+            values.append(airdrops[0])
+            labels.append("Rewards/Airdrops")
+        if len(values) > 0 and sum(values) > 0:
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
+            ax.pie(
+                values,
+                labels=labels,
+                wedgeprops={"linewidth": 0.5, "edgecolor": "white"},
+                labeldistance=1.05,
+                autopct="%1.0f%%",
+                startangle=90,
+                colors=theme.get_colors()[1:4],
             )
-        else:
-            console.print("\nFundraising details not found\n")
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            "fr",
+            ax.set_title(f"{coin} Fundraising Distribution")
+            if obbff.USE_ION:
+                plt.ion()
+            plt.show()
+
+        print_rich_table(
             df_details,
+            headers=list(df_details.columns),
+            show_index=False,
+            title=f"{coin} Fundraising Details",
         )
     else:
         console.print("\nFundraising details not found\n")
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "fr",
+        df_details,
+    )

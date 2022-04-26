@@ -103,7 +103,10 @@ class DueDiligenceController(CryptoBaseController):
         self.source = source
         self.symbol = symbol
         self.coin_map_df = coin_map_df
-
+        self.messari_timeseries = []
+        df_mt = messari_model.get_available_timeseries()
+        if not df_mt.empty:
+            self.messari_timeseries = df_mt.index.to_list()
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["load"]["--source"] = {c: None for c in CRYPTO_SOURCES.keys()}
@@ -136,7 +139,7 @@ class DueDiligenceController(CryptoBaseController):
             choices["twitter"]["-s"] = {
                 c: None for c in coinpaprika_view.TWEETS_FILTERS
             }
-            choices["mt"] = {c: None for c in messari_model.TIMESERIES}
+            choices["mt"] = {c: None for c in self.messari_timeseries}
             choices["mt"]["-i"] = {c: None for c in messari_model.INTERVALS_TIMESERIES}
             choices["mcapdom"]["-i"] = {
                 c: None for c in messari_model.INTERVALS_TIMESERIES
@@ -201,8 +204,8 @@ class DueDiligenceController(CryptoBaseController):
         """Class specific component of reset command"""
         if self.coin:
             if self.source == "cp":
-                return ["crypto", f"load {self.coin}", "dd"]
-            return ["crypto", f"load {self.coin} --source {self.source}", "dd"]
+                return ["crypto", f"load {self.symbol}", "dd"]
+            return ["crypto", f"load {self.symbol} --source {self.source}", "dd"]
         return []
 
     @log_start_end(log=logger)
@@ -1477,21 +1480,14 @@ class DueDiligenceController(CryptoBaseController):
             """,
         )
 
-        parser.add_argument(
-            "--pie",
-            action="store_true",
-            help="Flag to show pie chart with fundraising allocation percentage",
-            dest="pie",
-            default=False,
-        )
-
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
         if ns_parser:
             messari_view.display_fundraising(
-                coin=self.symbol.upper(), export=ns_parser.export, pie=ns_parser.pie
+                coin=self.symbol.upper(),
+                export=ns_parser.export,
             )
 
     @log_start_end(log=logger)
@@ -1547,7 +1543,7 @@ class DueDiligenceController(CryptoBaseController):
             type=str,
             help="Messari timeseries id. Default: txn.vol",
             default="txn.vol",
-            choices=messari_model.TIMESERIES,
+            choices=self.messari_timeseries,
         )
 
         parser.add_argument(
@@ -1577,24 +1573,39 @@ class DueDiligenceController(CryptoBaseController):
             help="End date. Default: Today",
             default=datetime.now().strftime("%Y-%m-%d"),
         )
+        parser.add_argument(
+            "--include-paid",
+            action="store_true",
+            help="Flag to show both paid and free sources",
+            dest="include_paid",
+            default=False,
+        )
+
+        parser.add_argument(
+            "-q",
+            "--query",
+            type=str,
+            dest="query",
+            nargs="+",
+            help="Query to search across all messari timeseries",
+            default="",
+        )
 
         if other_args and not other_args[0][0] == "-":
             other_args.insert(0, "-t")
 
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, limit=10
         )
 
         if ns_parser:
             if ns_parser.list:
-                console.print(
-                    "\nAvailable messari timeseries (some may require a paid key):"
+                messari_view.display_messari_timeseries_list(
+                    ns_parser.limit,
+                    " ".join(ns_parser.query),
+                    not ns_parser.include_paid,
+                    ns_parser.export,
                 )
-                for key in messari_model.TIMESERIES.keys():
-                    title = messari_model.TIMESERIES[key]["title"]
-                    description = messari_model.TIMESERIES[key]["description"]
-                    console.print(f"\t[bold]{key}[/bold]: {title}\n\t\t{description}")
-                print("\n")
             else:
                 messari_view.display_messari_timeseries(
                     timeseries_id=ns_parser.timeseries,
