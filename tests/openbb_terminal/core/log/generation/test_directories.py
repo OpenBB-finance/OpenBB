@@ -1,18 +1,34 @@
-import os
+from openbb_terminal.core.log.generation.directories import get_log_dir, get_log_sub_dir
 from pathlib import Path
-from openbb_terminal.core.log.generation import directories
-
-# pylint: disable=too-few-public-methods
 
 
-class MockFilePath:
-    def __init__(self, _):
-        self.parent = Path(__file__)
+def test_get_log_dir(mocker, tmp_path):
+    mock_file_path = mocker.Mock()
+    mock_file_path.parent.parent.parent.parent = tmp_path
+    mocker.patch(
+        "openbb_terminal.core.log.generation.directories.Path",
+        return_value=mock_file_path,
+    )
+
+    log_dir = get_log_dir()
+
+    assert isinstance(log_dir, Path)
+    assert log_dir.parent.parent == tmp_path
+
+    log_dir_bis = get_log_dir()
+
+    assert isinstance(log_dir, Path)
+    assert log_dir.parent.parent == tmp_path
+    assert log_dir_bis == log_dir
 
 
-def test_get_log_dir(mocker):
-    mocker.patch("openbb_terminal.core.log.generation.directories.Path", MockFilePath)
-    path = directories.get_log_dir()
-    os.rmdir(path)
-    os.remove(path.parent.joinpath(".logid"))
-    os.rmdir(path.parent)
+def test_get_log_sub_dir(mocker, tmp_path):
+    mocker.patch(
+        "openbb_terminal.core.log.generation.directories.get_log_dir",
+        return_value=tmp_path,
+    )
+    name = "mock_sub_dir"
+    sub_dir = get_log_sub_dir(name=name)
+
+    assert isinstance(sub_dir, Path)
+    assert sub_dir.parent == tmp_path

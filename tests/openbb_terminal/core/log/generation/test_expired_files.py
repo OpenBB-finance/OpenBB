@@ -1,40 +1,44 @@
-from datetime import datetime
-from openbb_terminal.core.log.generation import expired_files
-
-# pylint: disable=too-few-public-methods
-
-
-class MockObject:
-    def __init__(self):
-        self.st_mtime = datetime(2020, 11, 11)
+import os
+from openbb_terminal.core.log.generation.expired_files import (
+    get_timestamp_from_x_days,
+    get_expired_file_list,
+    remove_file_list,
+)
 
 
-class MockFile:
-    def is_file(self):
-        return True
+def test_get_timestamp_from_x_days():
+    timestamp = get_timestamp_from_x_days(x=1)
 
-    def lstat(self):
-        return MockObject()
-
-    def unlink(self, missing_ok):
-        print(missing_ok)
+    assert isinstance(timestamp, float)
 
 
-class MockDir:
-    def __init__(self):
-        self.exists = True
+def test_get_expired_files(tmp_path):
+    mock_file_list = [
+        tmp_path.joinpath("mock_file_1"),
+        tmp_path.joinpath("mock_file_2"),
+    ]
 
-    def is_dir(self):
-        return True
+    x = 2
+    mock_timestamp = get_timestamp_from_x_days(x=x + 1)
+    before_timestamp = get_timestamp_from_x_days(x=x)
 
-    def iterdir(self):
-        return [MockFile(), MockFile()]
+    for path in mock_file_list:
+        path.touch()
+        os.utime(path, times=(mock_timestamp, mock_timestamp))
+
+    expired_file_list = get_expired_file_list(
+        directory=tmp_path, before_timestamp=before_timestamp
+    )
+
+    assert len(expired_file_list) == len(mock_file_list)
+
+    for path in mock_file_list:
+        assert path in expired_file_list
 
 
-def test_get_expired_files():
-    value = expired_files.get_expired_file_list(MockDir(), datetime.now())
-    assert value
+def test_remove_file_list(mocker):
+    file_list = [mocker.Mock(), mocker.Mock()]
+    remove_file_list(file_list=file_list)
 
-
-def test_remove_file_list():
-    expired_files.remove_file_list([MockFile(), MockFile()])
+    for file in file_list:
+        file.unlink.assert_called_once()
