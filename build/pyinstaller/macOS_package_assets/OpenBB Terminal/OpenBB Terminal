@@ -1,6 +1,10 @@
 #!/bin/bash
 clear
 
+SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
+xattr -r -d com.apple.quarantine "$SCRIPTDIR"/OpenBB
+
 echo "  _                     _ _                   "
 echo " | |                   | (_)                  "
 echo " | |     ___   __ _  __| |_ _ __   __ _       "
@@ -15,5 +19,4 @@ The boot up process might take a while. Please be patient...
 "
 echo "$BOOTUP_MESSAGE"
 
-SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 "$SCRIPTDIR"/OpenBB/OpenBBTerminal
