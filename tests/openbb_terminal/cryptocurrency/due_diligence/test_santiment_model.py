@@ -10,9 +10,7 @@ from openbb_terminal.cryptocurrency.due_diligence import santiment_model
 @pytest.fixture(scope="module")
 def vcr_config():
     return {
-        "filter_query_parameters": [
-            ("api_key", "MOCK_API_KEY"),
-        ]
+        "filter_headers": [("Authorization", "MOCK_API_KEY")],
     }
 
 

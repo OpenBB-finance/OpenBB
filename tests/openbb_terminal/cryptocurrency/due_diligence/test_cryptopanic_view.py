@@ -8,7 +8,7 @@ def vcr_config():
     return {
         "filter_headers": [("User-Agent", None)],
         "filter_query_parameters": [
-            ("api_key", "MOCK_API_KEY"),
+            ("auth_token", "AUTH_TOKEN"),
         ],
     }
 
