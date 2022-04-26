@@ -18,10 +18,13 @@ def vcr_config():
 @pytest.mark.parametrize(
     "coin,dev_activity,interval,start,end",
     [
-        ("BTC", "True", "1d", "2022-01-10T00:00:00Z", "2022-03-08T00:00:00Z"),
+        ("BTC", "True", "1d", "2022-01-10", "2022-03-08"),
     ],
 )
 def test_get_github_activity(coin, dev_activity, interval, start, end, recorder):
+
+    start = start + "T00:00:00Z"
+    end = end + "T00:00:00Z"
     df = santiment_model.get_github_activity(
         coin=coin, dev_activity=dev_activity, interval=interval, start=start, end=end
     )
