@@ -18,6 +18,7 @@ import matplotlib.pyplot as plt
 # IMPORTATION INTERNAL
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal import thought_of_the_day as thought
+from openbb_terminal.config_terminal import LOGGING_COMMIT_HASH
 from openbb_terminal.rich_config import console
 
 # pylint: disable=too-many-statements,no-member,too-many-branches,C0302
@@ -78,7 +79,7 @@ def update_terminal():
     Runs poetry install if needed.
     """
 
-    if not WITH_GIT or obbff.LOGGING_COMMIT_HASH != "REPLACE_ME":
+    if not WITH_GIT or LOGGING_COMMIT_HASH != "REPLACE_ME":
         console.print("This feature is not available : Git dependencies not installed.")
         return 0
 
