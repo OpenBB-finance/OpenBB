@@ -1,0 +1,50 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.27.1
+    method: GET
+    uri: https://api.coingecko.com/api/v3/coins/%3Ctests.conftest.Recorder%20object%20at%200x7fde0b977bb0%3E/market_chart?vs_currency=USD&days=135
+  response:
+    body:
+      string: !!binary |
+        H4sIAE4VaGIAA6pWSi0qyi9SslLyzEvOLypKTS5RKEgsydBTCMhJTSxOVUjOSE3OVsgoKSkottLX
+        Ly8v10vOz8xLBwrmA1m5+okFmfpKtQAAAAD//wMAb+le9EcAAAA=
+    headers:
+      CF-Cache-Status:
+      - MISS
+      CF-RAY:
+      - 70207ccaa8bc2037-IND
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 26 Apr 2022 15:52:46 GMT
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding, Origin
+      X-Request-Id:
+      - 137c231e-54e6-4e0e-90c9-930ae1278dbb
+      X-Runtime:
+      - '0.002306'
+    status:
+      code: 404
+      message: Not Found
+version: 1
