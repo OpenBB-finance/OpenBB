@@ -84,8 +84,11 @@ jobs:
       - name: Pytest coverage comment
         uses: Mishakav/pytest-coverage-comment@main
         with:
-          pytest-coverage-path: ./pytest-coverage.txt
+          create-new-comment: false
+          hide-report: false
           junitxml-path: ./pytest.xml
+          pytest-coverage-path: ./pytest-coverage.txt
+          report-only-changed-files: true
 
       - name: Start Terminal and exit
         run: |
