@@ -1,18 +1,88 @@
 import json
 
+import pandas as pd
 import pytest
 from pycoingecko import CoinGeckoAPI
 
 from openbb_terminal.cryptocurrency.cryptocurrency_helpers import (
+    read_data_file,
+    _load_coin_map,
     plot_chart,
     load,
     load_ta_data,
     prepare_all_coins_df,
+    load_coins_list,
+    _create_closest_match_df,
 )
 
 # pylint: disable=unused-import
 
 base = "openbb_terminal.cryptocurrency."
+
+
+def test_load_coin_map():
+    with pytest.raises(TypeError):
+        _load_coin_map("test.test")
+
+
+def test_read_data_file(recorder):
+    file = read_data_file("coinbase_gecko_map.json")
+
+    recorder.capture(file)
+
+
+def test_read_data_file_invalid():
+    with pytest.raises(TypeError):
+        read_data_file("sample.bad")
+
+
+def test_load_coins_list(recorder):
+    value = load_coins_list("coinbase_gecko_map.json", True)
+
+    recorder.capture(value)
+
+
+def test_load_coins_list_invalud():
+    with pytest.raises(TypeError):
+        load_coins_list("bad.bad")
+
+
+def test_create_closet_match_df(recorder):
+    df = pd.DataFrame({"id": ["btc", "eth"], "index": [1, 2]})
+    value = _create_closest_match_df("btc", df, 5, 0.2)
+
+    recorder.capture(value)
+
+
+@pytest.mark.parametrize(
+    "coin, interval, source",
+    [
+        ("badcoin", "1day", "cg"),
+        ("BTC", "1hour", "cg"),
+        ("BTC", "1hour", "cp"),
+        ("BTC", "1hour", "cp"),
+    ],
+)
+def test_load_none(coin, interval, source):
+    assert load("BTC", vs=coin, interval=interval, source=source) == (
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+    )
+
+
+@pytest.mark.parametrize(
+    "coin, load_ta", [("BTC", True), ("ZTH", False), ("BTC", False)]
+)
+def test_load_cg(coin, load_ta):
+    load(coin, source="cg", should_load_ta_data=load_ta)
+
+
+def test_load_cg_invalid():
+    load("ZTH", source="cg")
 
 
 def get_bitcoin(mocker):
