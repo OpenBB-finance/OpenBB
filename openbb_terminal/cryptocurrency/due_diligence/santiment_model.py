@@ -63,14 +63,6 @@ def get_github_activity(
         "Authorization": f"Apikey {cfg.API_SANTIMENT_KEY}",
     }
 
-    # if isinstance(start, str):
-    #     start = start + "T00:00:00Z"
-    #     end = end + "T00:00:00Z"
-
-    # else:
-    #     start = start.strftime("%Y-%m-%dT%H:%M:%SZ")
-    #     end = end.strftime("%Y-%m-%dT%H:%M:%SZ")
-
     # pylint: disable=line-too-long
     data = f'\n{{ getMetric(metric: "{activity_type}"){{ timeseriesData( slug: "{slug}" from: "{start}" to: "{end}" interval: "{interval}"){{ datetime value }} }} }}'  # noqa: E501
 
@@ -82,7 +74,7 @@ def get_github_activity(
 
     if response.status_code == 200:
 
-        if "data" in response.json():
+        if "getMetric" in response.json()["data"]:
             df = pd.DataFrame(response.json()["data"]["getMetric"]["timeseriesData"])
             df["datetime"] = pd.to_datetime(df["datetime"])
             df = df.set_index("datetime")

@@ -193,7 +193,7 @@ class DueDiligenceController(CryptoBaseController):
    mcapdom         show market cap dominance
 [src]Santiment[/src]
    gh              show github activity over time
-[src][CryptoPanic][/src]
+[src]CryptoPanic[/src]
    news            show loaded coin's most recent news[/cmds]
 """
         console.print(text=help_text, menu="Stocks - Due Diligence")
