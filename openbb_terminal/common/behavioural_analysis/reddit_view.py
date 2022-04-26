@@ -8,8 +8,11 @@ from datetime import datetime
 from typing import Dict
 
 import finviz
+import matplotlib.pyplot as plt
 import pandas as pd
 import praw
+from tqdm import tqdm
+import seaborn as sns
 
 from openbb_terminal.common.behavioural_analysis import reddit_model
 from openbb_terminal.decorators import check_api_key
@@ -323,3 +326,81 @@ def display_due_diligence(
         print_and_record_reddit_post({}, sub)
     if not subs:
         console.print(f"No DD posts found for {ticker}\n")
+
+
+@log_start_end(log=logger)
+@check_api_key(
+    [
+        "API_REDDIT_CLIENT_ID",
+        "API_REDDIT_CLIENT_SECRET",
+        "API_REDDIT_USERNAME",
+        "API_REDDIT_USER_AGENT",
+        "API_REDDIT_PASSWORD",
+    ]
+)
+def display_reddit_sent(
+    ticker: str,
+    sort: str,
+    limit: int,
+    graphic: bool,
+    time_frame: str,
+    full_search: bool,
+    subreddits: str,
+    export: str = "",
+):
+    """Determine Reddit sentiment about a search term
+    Parameters
+    ----------
+    ticker: str
+        The ticker being search for in Reddit
+    sort: str
+        Type of search
+    limit: str
+        Number of posts to get at most
+    graphic: bool
+        Displays box and whisker plot
+    time_frame: str
+        Time frame for search
+    full_search: bool
+        Enable comprehensive search for ticker
+    subreddits: str
+        Comma-separated list of subreddits
+    """
+
+    posts = reddit_model.get_posts_about(ticker, limit, sort, time_frame, subreddits)
+    post_data = []
+    polarity_scores = []
+
+    if not posts:
+        console.print(f"No posts for {ticker} found")
+        return
+
+    console.print("Analyzing each post...")
+    for p in tqdm(posts):
+        texts = [p.title, p.selftext]
+        if full_search:
+            tlcs = reddit_model.get_comments(p)
+            texts.extend(tlcs)
+        preprocessed_text = reddit_model.clean_reddit_text(texts)
+        sentiment = reddit_model.get_sentiment(preprocessed_text)
+        polarity_scores.append(sentiment)
+        post_data.append([p.title, sentiment])
+
+    avg_polarity = sum(polarity_scores) / len(polarity_scores)
+
+    columns = ["Title", "Polarity Score"]
+    df = pd.DataFrame(post_data, columns=columns)
+
+    if graphic:
+        boxplot = sns.boxplot(x=polarity_scores)
+        boxplot.set(title=f"Sentiment Score of {ticker}")
+        plt.xlabel("Sentiment Score")
+
+    console.print(f"Sentiment Analysis for {ticker} is {avg_polarity}\n")
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "polarity_scores",
+        df,
+    )
