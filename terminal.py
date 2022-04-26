@@ -15,7 +15,7 @@ import dotenv
 
 from prompt_toolkit.completion import NestedCompleter
 
-from openbb_terminal.core.config.constants import REPO_DIR, ENV_FILE
+from openbb_terminal.core.config.constants import REPO_DIR, ENV_FILE, USER_HOME
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.helper_funcs import (
     check_path,
@@ -292,10 +292,7 @@ class TerminalController(BaseController):
                 else:
                     # If the path selected does not start from the user root, give relative location from terminal root
                     if export_path[0] == "~":
-                        # TODO: Consider changing
-                        #       `os.environ["HOME"]` to `os.path.expanduser("~")`
-                        #       for cross platform support
-                        export_path = export_path.replace("~", os.environ["HOME"])
+                        export_path = export_path.replace("~", os.path.expanduser("~"))
                     elif export_path[0] != "/":
                         export_path = os.path.join(base_path, export_path)
 
@@ -427,7 +424,7 @@ class TerminalController(BaseController):
                         export_path = self.queue[0].split(" ")[1]
                         # If the path selected does not start from the user root, give relative location from root
                         if export_path[0] == "~":
-                            export_path = export_path.replace("~", os.environ["HOME"])
+                            export_path = export_path.replace("~", USER_HOME.as_posix())
                         elif export_path[0] != "/":
                             export_path = os.path.join(
                                 os.path.dirname(os.path.abspath(__file__)), export_path
@@ -473,7 +470,7 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
     if export_path:
         # If the path selected does not start from the user root, give relative location from terminal root
         if export_path[0] == "~":
-            export_path = export_path.replace("~", os.environ["HOME"])
+            export_path = export_path.replace("~", USER_HOME.as_posix())
         elif export_path[0] != "/":
             export_path = os.path.join(
                 os.path.dirname(os.path.abspath(__file__)), export_path

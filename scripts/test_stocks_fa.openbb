@@ -34,24 +34,6 @@ income
 income -l 3
 balance
 cash
-load aal
-data
-mgmt
-analysis
-info
-shrs
-sust
-cal
-web
-hq
-divs
-divs --limit 8
-overview
-key
-income
-income --limit 6
-balance
-cash
 load goog
 data
 mgmt
