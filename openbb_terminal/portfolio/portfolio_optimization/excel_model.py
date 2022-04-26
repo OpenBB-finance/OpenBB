@@ -67,8 +67,10 @@ def load_allocation(excel_file: str):
     """
     if str(excel_file).endswith(".xlsx"):
         categories = pd.read_excel(excel_file, sheet_name="Allocation", usecols="A:G")
+        categories = categories.dropna(axis='rows')
     elif str(excel_file).endswith(".csv"):
         categories = pd.read_excel(excel_file)
+        categories = categories.dropna(axis='rows')
     else:
         console.print("Only Excel (.xlsx and .csv) files are accepted.\n")
         return [], {}
