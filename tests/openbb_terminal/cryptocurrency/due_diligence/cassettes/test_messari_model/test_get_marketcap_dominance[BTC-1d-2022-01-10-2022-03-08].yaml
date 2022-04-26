@@ -13,54 +13,50 @@ interactions:
       x-messari-api-key:
       - mock_x-messari-api-key
     method: GET
-    uri: https://data.messari.io/api/v1/assets/BTC/metrics/mcap.dom/time-series?start=2022-01-10&end=2022-03-08&interval=1d
+    uri: https://data.messari.io/api/v1/assets/btc/metrics/mcap.dom/time-series?start=2022-01-10&end=2022-03-08&interval=1d
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAA/3SWT2/jyBHFvwrRlyQApan/XaVjNqcEuTmXHQwMRuKOGVt/QFI7GQz83QPKbJJZ
-        YAwfBPWP1a9ev2rqRxrGZrwP6fAjtW/NbWhP6YDsdRq7czuMzfmWDomAaAeyQ39CP6ge2PYYru5M
-        +mt6r9OpGZupxq3pm3M7tv2jYjMM7fj82n5Ph/TXp19SPX/TndIhYctI6M2uFWl3Qq47JzjunJza
-        loiANdWTvn5cNOAO4Qng8Pj/NdWpvZyWRd6B/99idxnb/vfmbdrtlOp07U9tnw6pGY7t5dRdvqY6
-        /Xbtz820wX+G6yVt+n5eVu6X7r+7c/f21g3t8Xo5DalOx+vb/XwZ0uHzxqk6nZv+tR2Pze35dD13
-        l+ZybNOX9zoNx5f2/HDo3I59d/yw4HxsbvvT9ZzqdGnObTqkf5bnq78tz9fp1A7HvruN3fWSDunp
-        pa2Wfapln6obqvGlrR4W/2mobm1/bC9j87Wthpemb6vrb9V4HZu36th/v43X6tj1x/tbM3aXr2u9
-        VKffm7d7OzyvkrdReCqfq+5SbT2phm4SMSlob9fjS/VnrP7eXO5N/73CyFCVg6n+9fTLX35i1c+b
-        W7uZ4nbuLt35fn7+4wEP13t/bJ+bcey7f98//Pr8o5j7j6Z7vaY63fvpgZdxvA2HT5++ffu2f51W
-        9sfr+VN6n47rw4J0+PwZTTBncpj+ao69GwayIqASuXypH4hr0AcisBclzqrZWLLQTISobYqwA5mo
-        OeeZIOCPEg9CBBwUcrbMnmcC0WUlQpmZLEOAuc0IgaxaiXOYQ0YHEilEIC0EuJGjirGYFiGcc5Hq
-        ew9jsJyZ0c1nQkxWqSSI7qKTUcUQUoVVqlOIkLubMZRmjM0Xy4Ac3D2rqZDORCZeTWVxDM3mwlFK
-        OIQtQM6mTsHCZpCLHz4TUAvuGVUUkSeppZVwkqVGIElkIHHHwA+CwdyXEhEqOp2KklohUJVWwpwZ
-        XDxHxuI6k6AtiHswAzoahcvcLvOcMqiF9ooaiIrEpIpzNywosiDsmE1MEFAoZkIBfCFIgG3KjRrz
-        QnimTQ0XQAM0d+aZsMy2EKgBASjqGa1InfPx0U0GzWHGQcC51PASkYmQMNfMYR4Mc8o4Sr8PwhgE
-        ITsGLQEQwFilknuQMXu4zr0Igq6uBhvCdPzIllUKErS6CmCZs5EBiUbZhrKvWgMyIBuiYUiJkbDJ
-        xtasKKJmoFZmU0RxzcCjW1IMYM1FrBbbHsYbIQrTZLuUXYxk1ToNi2cPJDYtu2SENQBZOUsGRwTj
-        peHHyBckQiJoEm8eUZDpvb0imdTMYsrS4nxYrFpV3UHDc3bwOfNanP8gAB0sQpRpbkZRaJU6taoG
-        xKFIJfHTBbpKZZyi7hmyZdFShVE3aVVCCg6HzMuVp48AL2fDHprJSDRTLoRvJguFhdmCJZvPZ6Oa
-        N4NFMA1oOLsBln7NNoMFgO7O5iJUhkKzbAbLQIRYnGJqZyaceRPXgCBGl+nI5rEpb5F5sNxZwzCT
-        WRlOA7BtWAMjOAuLcrl7DYK2CYhgUTBb72/DvAwW7+XxO44tOy8vNCNbJov3bAJBKMCqQgVhXSaL
-        92iqKKrTNS2zq49rYM1IFovpzUHZTWfTTGk7WBHowRiUGUsRQ9xeAoTBSGKIyz3xCO8aElGOaTkj
-        C3758v7+vwAAAP//XyUtiOUKAAA=
+        H4sIAAAAAAAA/3SVS4/byBWF/wpRmySAWr7vh7bJKkF2nc0YRoMjcdyMWw+I1DiG0f89oJpFKgFG
+        0EJQfbx17qlziz/LMLbjbSi7n6V7ay9Ddyg7R9iUsT92w9geL2VXCIieQJ7InlF3kjvkrSKSsrr8
+        Ut435dCO7VTj0l7bYzd213vFdhi68eVb96Psyq/jvmzmf/pD2RXsGAmjfepEuieh0Kcg2D8FBXUd
+        EQFr2Uz6ruOiAZ8QngF29+8vZVO602FZ5CeI/1nsT2N3/b19m3Y7lE05Xw/dtexKO+y706E/fS2b
+        8tv5emynDf49nE/loe+XZeV26v/zdOzf3vqh259Ph6Fsyv78djuehrL7/ODUphzb67du3LeXl8P5
+        2J/a074rX943Zdi/dse7Q8duvPb7DwuO+/ayPZyPZVNO7bEru/LP+nzzt+X5TTl0w/7aX8b+fCq7
+        8vzaNcs+zbJP0w/N+No1d4v/NDSX7rrvTmP7tWuG1/baNeffmvE8tm/N/vrjMp6bfX/d397asT99
+        XeuVTfm9fbt1w8sq+TEKz/V305+aR0+aoZ9ETAq6y3n/2vwZm7+3p1t7/dFgOjT1YJp/Pf/1L39g
+        1R83t3Yzxe3Yn/rj7fjy/wc8nG/XfffSjuO1//X24dfnn9Xcf7T9t3PZlNt1euB1HC/D7tOn79+/
+        b79NK9v9+fipvE/H9WFB2X3+jCboTgHTZ8O5DcNEVgRUopAvmzsSmvSBCGxFiV3VjcWFZiJF7aEI
+        B5CJWrDPBAF/lLgTIhCg4G7O4TOBGLISqcxM5pBgYTNCIKtWYk8LcAwgkUok0kJAGAWqGItpFcLu
+        VWpsI43B3JkxLGZCTFapJIgRopNR1RBShVVqUIpQRJgx1GaMLRbLgAIiwtVUSGfCiVdTWQJT3UI4
+        a4mAtAVwNw1KFjYDr37ETMBGcMuooog8Sa2tZJAsNRJJ0oEkAhM/CAaLWEpkquh0KkpqlUBVWgkL
+        ZggJT8fqOpOgLUhEMgMGGmXI3C7znDLYCG0VNREViUkV525YUGRBONBNTBBQKGdCAWIhSIBtyo0a
+        80KE00ONEEADtAjmmTBnWwjUhAQUDUerUud8fHTjoJ5mnATstUbUiEyEpIU6p0UyzCnjrP3eCWMQ
+        BA9MWgIggLlKpYgkY44MnXsRBF1dTTaE6fiRzVUqkrS6CmDObmRAolm3IY9Va4IDsiEaptQYCZs8
+        2OqKImoGanU2RRTXDNy7JcUEVq9itdp2N94IUZgm26XuYiSr1mlYwiOR2LTu4ghrAFzZxSEQwXhp
+        +D7yFcmUTJrEW2RWJIJXX9NJzSynLC3Op+WqVTUCNMM9IObMa3X+gwAMsExRprkZRaFV6tSqGhCn
+        ItXETxfoKpVxino4uLlorcKoD2lVQkrOAOflytN7gJez4Uh1MhJ18krEw2ShsDBbsrjFfDaq/jBY
+        BNOAZnAYYO3X7GGwADAi2EKE6lCoy8NgGYgQS1BO7cxEMD/ENSGJMWQ6snls6ltkHqwI1jR0MqvD
+        aQD2GNbETHZhUa53r0HSYwIyWRTM1vvb0JfB4q3olAc2D15eaEa2TBZv2QSSUIBVhSrCukwWb9FU
+        UVSna1pmV+/XwJoRF8vpzUEeprNppvQ4WJkYyZjkjLWIIT5eAoTJSGKIyz1xD+8aElHOadmRBb98
+        eX//bwAAAP//P9S3auUKAAA=
     headers:
       content-encoding:
       - gzip
       content-length:
-      - '1274'
+      - '1271'
       content-type:
       - application/json; charset=UTF-8
       date:
-      - Mon, 18 Apr 2022 18:55:36 GMT
-      server:
-      - istio-envoy
+      - Tue, 26 Apr 2022 15:49:13 GMT
       vary:
       - Accept-Encoding,Origin
-      x-envoy-upstream-service-time:
-      - '160'
       x-ratelimit-limit:
       - '4000'
       x-ratelimit-remaining:
-      - '3864'
+      - '3705'
       x-ratelimit-reset:
-      - '1650358246'
+      - '1651049004'
     status:
       code: 200
       message: OK
