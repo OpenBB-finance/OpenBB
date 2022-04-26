@@ -1,35 +1,61 @@
 ```
-usage: relriskparity [-p PERIOD] [-s START] [-e END] [-lr] [-f {d,w,m}]
-                     [-mn MAXNAN] [-th THRESHOLD] [-mt METHOD] [-ve {A,B,C}]
-                     [-rc RISK_CONT] [-pf PENAL_FACTOR] [-tr TARGET_RETURN]
-                     [-de D_EWMA] [-v VALUE] [--pie] [--hist] [--dd]
-                     [--rc-chart] [--heat] [-h]
+usage: relriskparity [-p HISTORIC_PERIOD] [-s START_PERIOD] [-e END_PERIOD]
+                     [-lr] [-f {d,w,m}] [-mn MAX_NAN] [-th THRESHOLD_VALUE]
+                     [-mt NAN_FILL_METHOD] [-ve {A,B,C}]
+                     [-rc RISK_CONTRIBUTION] [-pf PENAL_FACTOR]
+                     [-tr TARGET_RETURN] [-de SMOOTHING_FACTOR_EWMA]
+                     [-v LONG_ALLOCATION] [--name NAME] [-h]
 ```
 
 Builds a relaxed risk parity based on least squares approach.
 
 ```
 optional arguments:
-  -p PERIOD, --period PERIOD
-                        Period to get yfinance data from (default: 3y)
-  -s START, --start START
-                        Start date to get yfinance data from (default: )
-  -e END, --end END     End date to get yfinance data from (default: )
+  -p HISTORIC_PERIOD, --period HISTORIC_PERIOD
+                        Period to get yfinance data from. Possible frequency
+                        strings are: 'd': means days, for example '252d' means
+                        252 days 'w': means weeks, for example '52w' means 52
+                        weeks 'mo': means months, for example '12mo' means 12
+                        months 'y': means years, for example '1y' means 1 year
+                        'ytd': downloads data from beginning of year to today
+                        'max': downloads all data available for each asset
+                        (default: 3y)
+  -s START_PERIOD, --start START_PERIOD
+                        Start date to get yfinance data from. Must be in
+                        'YYYY-MM-DD' format (default: )
+  -e END_PERIOD, --end END_PERIOD
+                        End date to get yfinance data from. Must be in 'YYYY-
+                        MM-DD' format (default: )
   -lr, --log-returns    If use logarithmic or arithmetic returns to calculate
                         returns (default: False)
   -f {d,w,m}, --freq {d,w,m}
-                        Frequency used to calculate returns (default: d)
-  -mn MAXNAN, --maxnan MAXNAN
+                        Frequency used to calculate returns. Possible values
+                        are: 'd': for daily returns 'w': for weekly returns
+                        'm': for monthly returns (default: d)
+  -mn MAX_NAN, --maxnan MAX_NAN
                         Max percentage of nan values accepted per asset to be
                         considered in the optimization process (default: 0.05)
-  -th THRESHOLD, --threshold THRESHOLD
+  -th THRESHOLD_VALUE, --threshold THRESHOLD_VALUE
                         Value used to replace outliers that are higher to
                         threshold in absolute value (default: 0.3)
-  -mt METHOD, --method METHOD
-                        Method used to fill nan values (default: time)
+  -mt NAN_FILL_METHOD, --method NAN_FILL_METHOD
+                        Method used to fill nan values in time series, by
+                        default time. Possible values are: 'linear': linear
+                        interpolation 'time': linear interpolation based on
+                        time index 'nearest': use nearest value to replace nan
+                        values 'zero': spline of zeroth order 'slinear':
+                        spline of first order 'quadratic': spline of second
+                        order 'cubic': spline of third order 'barycentric':
+                        builds a polynomial that pass for all points (default:
+                        time)
   -ve {A,B,C}, --version {A,B,C}
-                        version of relaxed risk parity model (default: A)
-  -rc RISK_CONT, --risk-cont RISK_CONT
+                        version of relaxed risk parity model: Possible values
+                        are: 'A': risk parity without regularization and
+                        penalization constraints 'B': with regularization
+                        constraint but without penalization constraint 'C':
+                        with regularization and penalization constraints
+                        (default: A)
+  -rc RISK_CONTRIBUTION, --risk-cont RISK_CONTRIBUTION
                         Vector of risk contribution constraints (default:
                         None)
   -pf PENAL_FACTOR, --penal-factor PENAL_FACTOR
@@ -38,19 +64,12 @@ optional arguments:
   -tr TARGET_RETURN, --target-return TARGET_RETURN
                         Constraint on minimum level of portfolio's return
                         (default: -1)
-  -de D_EWMA, --d-ewma D_EWMA
+  -de SMOOTHING_FACTOR_EWMA, --d-ewma SMOOTHING_FACTOR_EWMA
                         Smoothing factor for ewma estimators (default: 0.94)
-  -v VALUE, --value VALUE
-                        Amount to allocate to portfolio (default: 1.0)
-  --pie                 Display a pie chart for weights (default: False)
-  --hist                Display a histogram with risk measures (default:
-                        False)
-  --dd                  Display a drawdown chart with risk measures (default:
-                        False)
-  --rc-chart            Display a risck contribution chart for assets
-                        (default: False)
-  --heat                Display a heatmap of correlation matrix with
-                        dendrogram (default: False)
+  -v LONG_ALLOCATION, --value LONG_ALLOCATION
+                        Amount to allocate to portfolio (default: 1)
+  --name NAME           Save portfolio with personalized or default name
+                        (default: RRP_0)
   -h, --help            show this help message (default: False)
 ```
 

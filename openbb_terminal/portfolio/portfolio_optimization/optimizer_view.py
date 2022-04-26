@@ -618,7 +618,7 @@ def display_property_weighting(
     s_property : str
         Property to get weighted portfolio of
     risk_measure: str, optional
-        The risk measure used to optimize the portfolio.
+        The risk measure used to compute indicators.
         The default is 'MV'. Possible values are:
 
         - 'MV': Standard Deviation.

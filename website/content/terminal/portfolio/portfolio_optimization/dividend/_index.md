@@ -1,52 +1,76 @@
 ```
-usage: dividend [-p PERIOD] [-s START] [-e END] [-lr] [-f {d,w,m}]
-                [-mn MAXNAN] [-th THRESHOLD] [-mt METHOD]
+usage: dividend [-p HISTORIC_PERIOD] [-s START_PERIOD] [-e END_PERIOD] [-lr]
+                [-f {d,w,m}] [-mn MAX_NAN] [-th THRESHOLD_VALUE]
+                [-mt NAN_FILL_METHOD]
                 [-rm {MV,MAD,MSV,FLPM,SLPM,CVaR,EVaR,WR,ADD,UCI,CDaR,EDaR,MDD}]
-                [-r RISK_FREE_RATE] [-a ALPHA] [-v VALUE] [--pie] [--hist]
-                [--dd] [--rc-chart] [--heat] [-h]
+                [-r RISK_FREE] [-a SIGNIFICANCE_LEVEL] [-v LONG_ALLOCATION]
+                [--name NAME] [-h]
 ```
 
 Returns a portfolio that is weighted based dividend yield.
 
 ```
 optional arguments:
-  -p PERIOD, --period PERIOD
-                        Period to get yfinance data from (default: 3y)
-  -s START, --start START
-                        Start date to get yfinance data from (default: )
-  -e END, --end END     End date to get yfinance data from (default: )
+  -p HISTORIC_PERIOD, --period HISTORIC_PERIOD
+                        Period to get yfinance data from. Possible frequency
+                        strings are: 'd': means days, for example '252d' means
+                        252 days 'w': means weeks, for example '52w' means 52
+                        weeks 'mo': means months, for example '12mo' means 12
+                        months 'y': means years, for example '1y' means 1 year
+                        'ytd': downloads data from beginning of year to today
+                        'max': downloads all data available for each asset
+                        (default: 3y)
+  -s START_PERIOD, --start START_PERIOD
+                        Start date to get yfinance data from. Must be in
+                        'YYYY-MM-DD' format (default: )
+  -e END_PERIOD, --end END_PERIOD
+                        End date to get yfinance data from. Must be in 'YYYY-
+                        MM-DD' format (default: )
   -lr, --log-returns    If use logarithmic or arithmetic returns to calculate
                         returns (default: False)
   -f {d,w,m}, --freq {d,w,m}
-                        Frequency used to calculate returns (default: d)
-  -mn MAXNAN, --maxnan MAXNAN
+                        Frequency used to calculate returns. Possible values
+                        are: 'd': for daily returns 'w': for weekly returns
+                        'm': for monthly returns (default: d)
+  -mn MAX_NAN, --maxnan MAX_NAN
                         Max percentage of nan values accepted per asset to be
                         considered in the optimization process (default: 0.05)
-  -th THRESHOLD, --threshold THRESHOLD
+  -th THRESHOLD_VALUE, --threshold THRESHOLD_VALUE
                         Value used to replace outliers that are higher to
                         threshold in absolute value (default: 0.3)
-  -mt METHOD, --method METHOD
-                        Method used to fill nan values (default: time)
+  -mt NAN_FILL_METHOD, --method NAN_FILL_METHOD
+                        Method used to fill nan values in time series, by
+                        default time. Possible values are: 'linear': linear
+                        interpolation 'time': linear interpolation based on
+                        time index 'nearest': use nearest value to replace nan
+                        values 'zero': spline of zeroth order 'slinear':
+                        spline of first order 'quadratic': spline of second
+                        order 'cubic': spline of third order 'barycentric':
+                        builds a polynomial that pass for all points (default:
+                        time)
   -rm {MV,MAD,MSV,FLPM,SLPM,CVaR,EVaR,WR,ADD,UCI,CDaR,EDaR,MDD}, --risk-measure {MV,MAD,MSV,FLPM,SLPM,CVaR,EVaR,WR,ADD,UCI,CDaR,EDaR,MDD}
-                        Risk measure used to optimize the portfolio (default:
-                        MV)
-  -r RISK_FREE_RATE, --risk-free-rate RISK_FREE_RATE
+                        Risk measure used to calculate indicators. Possible
+                        values are: 'MV' : Variance 'MAD' : Mean Absolute
+                        Deviation 'MSV' : Semi Variance (Variance of negative
+                        returns) 'FLPM' : First Lower Partial Moment 'SLPM' :
+                        Second Lower Partial Moment 'CVaR' : Conditional Value
+                        at Risk 'EVaR' : Entropic Value at Risk 'WR' : Worst
+                        Realization 'ADD' : Average Drawdown of uncompounded
+                        returns 'UCI' : Ulcer Index of uncompounded returns
+                        'CDaR' : Conditional Drawdown at Risk of uncompounded
+                        returns 'EDaR' : Entropic Drawdown at Risk of
+                        uncompounded returns 'MDD' : Maximum Drawdown of
+                        uncompounded returns (default: MV)
+  -r RISK_FREE, --risk-free-rate RISK_FREE
                         Risk-free rate of borrowing/lending. The period of the
-                        risk-free rate must be annual (default: 0.00185)
-  -a ALPHA, --alpha ALPHA
+                        risk-free rate must be annual (default: 0.00329)
+  -a SIGNIFICANCE_LEVEL, --alpha SIGNIFICANCE_LEVEL
                         Significance level of CVaR, EVaR, CDaR and EDaR
                         (default: 0.05)
-  -v VALUE, --value VALUE
+  -v LONG_ALLOCATION, --value LONG_ALLOCATION
                         Amount to allocate to portfolio (default: 1)
-  --pie                 Display a pie chart for weights (default: False)
-  --hist                Display a histogram with risk measures (default:
-                        False)
-  --dd                  Display a drawdown chart with risk measures (default:
-                        False)
-  --rc-chart            Display a risk contribution chart for assets (default:
-                        False)
-  --heat                Display a heatmap of correlation matrix with
-                        dendrogram (default: False)
+  --name NAME           Save portfolio with personalized or default name
+                        (default: DIVIDEND_0)
   -h, --help            show this help message (default: False)
 ```
 

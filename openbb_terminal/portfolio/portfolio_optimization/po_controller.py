@@ -1097,7 +1097,7 @@ class PortfolioOptimizationController(BaseController):
             if "risk_measure" in self.params
             else "MV",
             dest="risk_measure",
-            help="""Risk measure used to optimize the portfolio. Possible values are:
+            help="""Risk measure used to calculate indicators. Possible values are:
                     'MV' : Variance
                     'MAD' : Mean Absolute Deviation
                     'MSV' : Semi Variance (Variance of negative returns)
@@ -1291,7 +1291,7 @@ class PortfolioOptimizationController(BaseController):
             if "risk_measure" in self.params
             else "MV",
             dest="risk_measure",
-            help="""Risk measure used to optimize the portfolio. Possible values are:
+            help="""Risk measure used to calculate indicators. Possible values are:
                     'MV' : Variance
                     'MAD' : Mean Absolute Deviation
                     'MSV' : Semi Variance (Variance of negative returns)
@@ -1486,7 +1486,7 @@ class PortfolioOptimizationController(BaseController):
             if "risk_measure" in self.params
             else "MV",
             dest="risk_measure",
-            help="""Risk measure used to optimize the portfolio. Possible values are:
+            help="""Risk measure used to calculate indicators. Possible values are:
                     'MV' : Variance
                     'MAD' : Mean Absolute Deviation
                     'MSV' : Semi Variance (Variance of negative returns)
@@ -1690,7 +1690,7 @@ class PortfolioOptimizationController(BaseController):
             if "risk_measure" in self.params
             else "MV",
             dest="risk_measure",
-            help="""Risk measure used to optimize the portfolio. Possible values are:
+            help="""Risk measure used to calculate indicators. Possible values are:
                     'MV' : Variance
                     'MAD' : Mean Absolute Deviation
                     'MSV' : Semi Variance (Variance of negative returns)

@@ -1,16 +1,18 @@
 ```
-usage: equal [-p HISTORIC_PERIOD] [-s START_PERIOD] [-e END_PERIOD] [-lr]
-             [-f {d,w,m}] [-mn MAX_NAN] [-th THRESHOLD_VALUE]
-             [-mt NAN_FILL_METHOD]
-             [-rm {MV,MAD,MSV,FLPM,SLPM,CVaR,EVaR,WR,ADD,UCI,CDaR,EDaR,MDD}]
-             [-r RISK_FREE] [-a SIGNIFICANCE_LEVEL] [-v LONG_ALLOCATION]
-             [--name NAME] [-h]
+usage: plot [-pf PORTFOLIOS] [-p HISTORIC_PERIOD] [-s START_PERIOD]
+            [-e END_PERIOD] [-lr] [-f {d,w,m}] [-mn MAX_NAN]
+            [-th THRESHOLD_VALUE] [-mt NAN_FILL_METHOD]
+            [-rm {MV,MAD,MSV,FLPM,SLPM,CVaR,EVaR,WR,ADD,UCI,CDaR,EDaR,MDD}]
+            [-r RISK_FREE] [-a SIGNIFICANCE_LEVEL] [-pi] [-hi] [-dd] [-rc]
+            [-he] [-h]
 ```
 
-Returns an equally weighted portfolio.
+Plot selected charts for portfolios
 
 ```
 optional arguments:
+  -pf PORTFOLIOS, --portfolios PORTFOLIOS
+                        selected portfolios that will be plotted (default: [])
   -p HISTORIC_PERIOD, --period HISTORIC_PERIOD
                         Period to get yfinance data from. Possible frequency
                         strings are: 'd': means days, for example '252d' means
@@ -67,39 +69,19 @@ optional arguments:
   -a SIGNIFICANCE_LEVEL, --alpha SIGNIFICANCE_LEVEL
                         Significance level of CVaR, EVaR, CDaR and EDaR
                         (default: 0.05)
-  -v LONG_ALLOCATION, --value LONG_ALLOCATION
-                        Amount to allocate to portfolio (default: 1)
-  --name NAME           Save portfolio with personalized or default name
-                        (default: EQUAL_0)
+  -pi, --pie            Display a pie chart for weights (default: False)
+  -hi, --hist           Display a histogram with risk measures (default:
+                        False)
+  -dd, --drawdown       Display a drawdown chart with risk measures (default:
+                        False)
+  -rc, --rc-chart       Display a risk contribution chart for assets (default:
+                        False)
+  -he, --heat           Display a heatmap of correlation matrix with
+                        dendrogram (default: False)
   -h, --help            show this help message (default: False)
 ```
 
 Example:
 ```
-2022 Apr 05, 14:52 (🦋) /portfolio/po/ $ equal
-
- [3 Years] Equally Weighted Portfolio
-
-     Weights      
-┏━━━━━━┳━━━━━━━━━┓
-┃      ┃ Value   ┃
-┡━━━━━━╇━━━━━━━━━┩
-│ AAPL │ 14.28 % │
-├──────┼─────────┤
-│ AMZN │ 14.28 % │
-├──────┼─────────┤
-│ BA   │ 14.28 % │
-├──────┼─────────┤
-│ FB   │ 14.28 % │
-├──────┼─────────┤
-│ MSFT │ 14.28 % │
-├──────┼─────────┤
-│ T    │ 14.28 % │
-├──────┼─────────┤
-│ TSLA │ 14.28 % │
-└──────┴─────────┘
-
-Annual (by 252) expected return: 35.70%
-Annual (by √252) volatility: 29.50%
-Sharpe ratio: 1.2041
+2022 Apr 26, 02:19 (🦋) /portfolio/po/ $ plot -pf maxsharpe_0 -pi -hi -dd -rc -he
 ```
