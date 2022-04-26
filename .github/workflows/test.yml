@@ -82,10 +82,9 @@ jobs:
           pytest --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=openbb_terminal --cov=terminal | tee pytest-coverage.txt
 
       - name: Pytest coverage comment
+        on: pull_request
         uses: Mishakav/pytest-coverage-comment@main
         with:
-          create-new-comment: false
-          hide-report: false
           junitxml-path: ./pytest.xml
           pytest-coverage-path: ./pytest-coverage.txt
           report-only-changed-files: true
