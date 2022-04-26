@@ -235,7 +235,9 @@ def get_ohlc_historical(
         end=end,
     )
     if "error" in data:
-        console.print(data)
+        # console.print(
+        #    "Could not load data. Try use symbol (e.g., btc) instead of coin name (e.g., bitcoin)"
+        # )
         return pd.DataFrame()
     return pd.DataFrame(data)
 
@@ -346,20 +348,10 @@ def validate_coin(coin: str, coins_dct: dict) -> Tuple[Optional[Any], Optional[A
         coin id, coin symbol
     """
 
-    coin_found, symbol = None, None
-    if coin in coins_dct:
-        coin_found = coin
-        symbol = coins_dct.get(coin_found)
-    else:
-        for key, value in coins_dct.items():
-            if coin.upper() == value:
-                coin_found = key
-                symbol = value
-
-    if not coin_found:
-        console.print(f"[red]Could not find coin with given id: {coin}\n[/red]")
-        return None, None
-    return coin_found, symbol
+    for key, value in coins_dct.items():
+        if coin == value:
+            return key, value.lower()
+    return None, None
 
 
 @log_start_end(log=logger)

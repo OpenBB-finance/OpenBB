@@ -13,6 +13,7 @@ from openbb_terminal.helper_funcs import (
     export_data,
     print_rich_table,
     plot_autoscale,
+    camel_case_split,
 )
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.fundamental_analysis import av_model
@@ -91,6 +92,10 @@ def display_income_statement(
     if df_income.empty:
         return
 
+    indexes = df_income.index
+    new_indexes = [camel_case_split(ind) for ind in indexes]
+    df_income.index = new_indexes
+
     print_rich_table(
         df_income,
         headers=list(df_income.columns),
@@ -124,6 +129,10 @@ def display_balance_sheet(
 
     if df_balance.empty:
         return
+
+    indexes = df_balance.index
+    new_indexes = [camel_case_split(ind) for ind in indexes]
+    df_balance.index = new_indexes
 
     print_rich_table(
         df_balance,
@@ -160,6 +169,10 @@ def display_cash_flow(
 
     if df_cash.empty:
         return
+
+    indexes = df_cash.index
+    new_indexes = [camel_case_split(ind) for ind in indexes]
+    df_cash.index = new_indexes
 
     print_rich_table(
         df_cash,
