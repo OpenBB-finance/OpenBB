@@ -1,4 +1,4 @@
-name: Tests
+name: Comment Coverage
 env:
   OPENBB_ENABLE_QUICK_EXIT: true
   OPENBB_LOG_COLLECTION: false
