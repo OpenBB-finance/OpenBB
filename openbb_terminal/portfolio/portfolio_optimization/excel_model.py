@@ -66,11 +66,11 @@ def load_allocation(excel_file: str):
         Returns a dictionary that specifies each category
     """
     if str(excel_file).endswith(".xlsx"):
-        categories = pd.read_excel(excel_file, engine="openpyxl")
+        categories = pd.read_excel(excel_file, sheet_name="Allocation", usecols="A:G")
     elif str(excel_file).endswith(".csv"):
         categories = pd.read_excel(excel_file)
     else:
-        console.print("Only acceptable files with .xlsx and .csv extensions\n")
+        console.print("Only Excel (.xlsx and .csv) files are accepted.\n")
         return [], {}
 
     categories.columns = [
