@@ -213,7 +213,7 @@ class CryptoController(CryptoBaseController):
                 parser.add_argument(
                     "-d",
                     "--days",
-                    default=30,
+                    default=365,
                     dest="days",
                     help="Number of days to get data for",
                     type=check_positive,

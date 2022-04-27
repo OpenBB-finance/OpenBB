@@ -785,6 +785,10 @@ main:
                 ref: "/terminal/cryptocurrency/due_diligence/mcapdom"
               - name: nonzero
                 ref: "/terminal/cryptocurrency/due_diligence/nonzero"
+              - name: news
+                ref: "/terminal/cryptocurrency/due_diligence/news"
+              - name: gh
+                ref: "/terminal/cryptocurrency/due_diligence/gh"
           - name: onchain
             ref: "/terminal/cryptocurrency/onchain"
             sub:
