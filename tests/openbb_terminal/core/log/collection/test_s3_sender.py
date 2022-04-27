@@ -81,7 +81,7 @@ def test_send_to_s3_using_presigned_url(mocker):
 
 
 @pytest.mark.parametrize("last", [True, False])
-def test_send_to_s3(mocker, last):
+def test_send_to_s3(mocker, last, tmp_path):
     mocker.patch(
         "openbb_terminal.core.log.collection.s3_sender.fetch_presigned_url",
         return_value={"fields": [1, 2, 3], "url": "http://"},
@@ -89,10 +89,9 @@ def test_send_to_s3(mocker, last):
     mocker.patch("openbb_terminal.core.log.collection.s3_sender.requests")
     if WITH_BOTO3:
         mocker.patch("openbb_terminal.core.log.collection.s3_sender.boto3")
-    with open("readme.txt", "w") as f:
-        f.write("Create a new text file!")
-    file = Path("readme.txt")
-    file2 = Path("dontreadme.txt")
+    file = tmp_path / "readme.txt"
+    file.write_text("Create a new text file!")
+    file2 = tmp_path / "dontreadme.txt"
 
     if WITH_BOTO3:
         s3s.send_to_s3(file, aws_settings, file, object_key, file2, last)
