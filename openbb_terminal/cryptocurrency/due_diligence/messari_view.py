@@ -38,6 +38,7 @@ from openbb_terminal.helper_funcs import (
     print_rich_table,
 )
 from openbb_terminal.rich_config import console
+from openbb_terminal.cryptocurrency.dataframe_helpers import prettify_paragraph
 
 logger = logging.getLogger(__name__)
 
@@ -625,6 +626,7 @@ def display_governance(
     """
     (summary, df) = get_governance(coin)
     if summary:
+        summary = prettify_paragraph(summary)
         console.print(summary, "\n")
         if not df.empty:
             print_rich_table(
@@ -661,6 +663,7 @@ def display_fundraising(
     """
     (summary, df_sales_rounds, df_treasury_accs, df_details) = get_fundraising(coin)
     if summary:
+        summary = prettify_paragraph(summary)
         console.print(summary, "\n")
     if not df_sales_rounds.empty:
         df_sales_rounds = df_sales_rounds.applymap(
