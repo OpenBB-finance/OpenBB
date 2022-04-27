@@ -33,4 +33,3 @@
     ch                lists major crypto-related hacks
 [LoanScan]
     cr                crypto supply or borrow interest rates
-
