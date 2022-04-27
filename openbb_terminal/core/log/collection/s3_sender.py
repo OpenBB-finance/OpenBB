@@ -66,7 +66,7 @@ def send_to_s3_using_presigned_url(
 
         raw_response = requests.post(
             data=presigned_info["fields"],
-            files=files,
+            files=files,  # type: ignore
             timeout=3,
             url=presigned_info["url"],
         )
