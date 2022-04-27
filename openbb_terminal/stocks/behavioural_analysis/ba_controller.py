@@ -437,6 +437,14 @@ class BehaviouralAnalysisController(StockBaseController):
             default=True,
             help="display graphic",
         )
+        parser.add_argument(
+            "-d",
+            "--display",
+            action="store_true",
+            dest="display",
+            default=False,
+            help="Print table of sentiment values",
+        )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
@@ -454,6 +462,7 @@ class BehaviouralAnalysisController(StockBaseController):
                     full_search=ns_parser.full_search,
                     subreddits=ns_parser.subreddits,
                     export=ns_parser.export,
+                    display=ns_parser.display,
                 )
             else:
                 console.print("No ticker loaded. Please load using 'load <ticker>'\n")

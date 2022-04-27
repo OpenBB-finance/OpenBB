@@ -19,6 +19,7 @@ optional arguments:
                         time period to get posts from -- all, year, month, week, or day; defaults to week
   -f, --full_search     enable comprehensive search
   -g, --graphic         display graphic
+  -d, --display         Print table of sentiment values
   -h, --help            show this help message
   --export EXPORT       Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg
 ```

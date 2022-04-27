@@ -347,6 +347,7 @@ def display_reddit_sent(
     full_search: bool = True,
     subreddits: str = "all",
     export: str = "",
+    display: bool = False,
 ):
     """Determine Reddit sentiment about a search term
     Parameters
@@ -365,6 +366,8 @@ def display_reddit_sent(
         Enable comprehensive search for ticker
     subreddits: str
         Comma-separated list of subreddits
+    display: bool
+        Enable printing of raw sentiment values for each post
     """
 
     posts = reddit_model.get_posts_about(ticker, limit, sort, time_frame, subreddits)
@@ -390,6 +393,9 @@ def display_reddit_sent(
 
     columns = ["Title", "Polarity Score"]
     df = pd.DataFrame(post_data, columns=columns)
+
+    if display:
+        print_rich_table(df=df)
 
     if graphic:
         boxplot = sns.boxplot(x=polarity_scores)
