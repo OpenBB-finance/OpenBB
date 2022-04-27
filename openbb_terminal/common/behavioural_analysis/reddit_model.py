@@ -22,8 +22,6 @@ from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
-analyzer = SentimentIntensityAnalyzer()
-
 l_sub_reddits = [
     "Superstonk",
     "pennystocks",
@@ -717,8 +715,13 @@ def get_sentiment(post_data: List[str]) -> float:
     float
         A number in the range [-1, 1] representing sentiment
     """
+    analyzer = SentimentIntensityAnalyzer()
     post_data_l = " ".join(post_data)
     sentiment = analyzer.polarity_scores(post_data_l)
-    pre_norm = sentiment["pos"] - sentiment["neg"]
-    norm = (pre_norm - 0.06) * 8  # Explicitly give us a better range
-    return norm
+    score = sentiment["pos"] - sentiment["neg"]
+
+    # Because we score a long document (post text and all comments),
+    # our score will be limited to a small range. We scale the score
+    # empirically to make it more interpretable.
+    scaled_score = (score - 0.06) * 8
+    return scaled_score
