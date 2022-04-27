@@ -7,17 +7,8 @@ clock = logging_clock.LoggingClock()
 now = datetime.now()
 
 
-class MockLoop:
-    def __init__(self):
-        self.count = 0
-
-    def mock_next(self, **_):
-        if datetime.now().minute == 0:
-            raise NotImplementedError
-
-        if self.count > 3:
-            raise NotImplementedError
-        self.count += 1
+def mock_next(**_):
+    raise NotImplementedError
 
 
 @pytest.mark.parametrize(
@@ -34,9 +25,12 @@ def test_calculate_next_sharp_invalid():
 
 
 # TODO: find a better way to mock the while loop
-def test_do_action_every_sharp():
+def test_do_action_every_sharp(mocker):
+    mock = mocker.Mock()
+    mock.count = 0
+    mock.mock_next = mock_next
     with pytest.raises(NotImplementedError):
-        clock.do_action_every_sharp(MockLoop().mock_next)
+        clock.do_action_every_sharp(mock.mock_next)
 
 
 def test_run(mocker):

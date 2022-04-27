@@ -12,32 +12,23 @@ app_settings = AppSettings(
 )
 
 
-class Record:
-    def __init__(self, exc_text, levelname):
-        self.exc_text = exc_text
-        self.levelname = levelname
-        self.func_name_override = "Hello"
-        self.session_id = 6
-        self.created = True
-        self.name = "Name"
-        self.exc_info = "hello"
-        self.stack_info = "stack"
-
-    def getMessage(self):
-        return "a really cool message"
-
-
 formatter = fwe.FormatterWithExceptions(app_settings)
 
 
 @pytest.mark.parametrize("exc, level", [(True, True), (False, "name"), (False, False)])
-def test_calculate_level_name(exc, level):
-    value = formatter.calculate_level_name(Record(exc, level))
+def test_calculate_level_name(exc, level, mocker):
+    mock = mocker.Mock()
+    mock.exc_text = exc
+    mock.levelname = level
+    value = formatter.calculate_level_name(mock)
     assert value
 
 
-def test_extract_log_extra():
-    value = formatter.extract_log_extra(Record(True, "name"))
+def test_extract_log_extra(mocker):
+    mock = mocker.Mock()
+    mock.exc_text = True
+    mock.levelname = "name"
+    value = formatter.extract_log_extra(mock)
     assert value
 
 
@@ -69,11 +60,18 @@ def test_filter_log_line():
     assert value
 
 
-def test_formatException():
+def test_formatException_invalid():
     with pytest.raises(Exception):
         formatter.formatException(Exception("Big bad error"))
 
 
-def test_format():
-    value = formatter.format(Record("Text", ""))
+def test_format(mocker):
+    mock = mocker.Mock()
+    mock.exc_text = "Text"
+    mock.levelname = ""
+    mock.created = 6
+    mock.name = "Hello"
+    mock.getMessage = lambda: "aeffew" or "3232432423"
+    mock.stack_info = "info"
+    value = formatter.format(mock)
     assert value
