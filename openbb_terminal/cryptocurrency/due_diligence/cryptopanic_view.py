@@ -11,6 +11,7 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
 from openbb_terminal.decorators import check_api_key
+from openbb_terminal.cryptocurrency.dataframe_helpers import prettify_column_names
 
 logger = logging.getLogger(__name__)
 
@@ -59,6 +60,8 @@ def display_news(
         df = df.sort_values(by="published_at", ascending=descend)
         df["published_at"] = pd.to_datetime(df["published_at"]).dt.date
         df.drop(["negative_votes", "positive_votes", "domain"], axis=1, inplace=True)
+
+        df.columns = prettify_column_names(df.columns)
 
         print_rich_table(
             df.head(top),

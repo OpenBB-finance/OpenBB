@@ -147,6 +147,11 @@ class DueDiligenceController(CryptoBaseController):
                 c: None for c in messari_model.INTERVALS_TIMESERIES
             }
             choices["ps"]["--vs"] = {c: None for c in coinpaprika_view.CURRENCIES}
+            choices["news"]["-k"] = {c: None for c in cryptopanic_model.CATEGORIES}
+            choices["news"]["-f"] = {c: None for c in cryptopanic_model.FILTERS}
+            choices["news"]["-r"] = {c: None for c in cryptopanic_model.REGIONS}
+            choices["news"]["-s"] = {c: None for c in cryptopanic_model.SORT_FILTERS}
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
@@ -192,9 +197,9 @@ class DueDiligenceController(CryptoBaseController):
 [src]Messari[/src]
    mcapdom         show market cap dominance
 [src]Santiment[/src]
-   gh              show github activity over time
+   gh              github activity over time
 [src]CryptoPanic[/src]
-   news            show loaded coin's most recent news[/cmds]
+   news            loaded coin's most recent news[/cmds]
 """
         console.print(text=help_text, menu="Stocks - Due Diligence")
 
