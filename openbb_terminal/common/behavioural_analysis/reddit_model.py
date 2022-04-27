@@ -575,10 +575,10 @@ def get_due_dilligence(
 @log_start_end(log=logger)
 def get_posts_about(
     ticker: str,
-    limit: int,
-    sort: str,
-    time_frame: str,
-    subreddits: str,
+    limit: int = 100,
+    sort: str = "relevance",
+    time_frame: str = "week",
+    subreddits: str = "all",
 ) -> List[praw.models.reddit.submission.Submission]:
     """Finds posts related to a specific search term in Reddit
 

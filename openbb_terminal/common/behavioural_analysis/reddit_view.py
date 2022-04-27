@@ -340,12 +340,12 @@ def display_due_diligence(
 )
 def display_reddit_sent(
     ticker: str,
-    sort: str,
-    limit: int,
-    graphic: bool,
-    time_frame: str,
-    full_search: bool,
-    subreddits: str,
+    sort: str = "relevance",
+    limit: int = 100,
+    graphic: bool = False,
+    time_frame: str = "week",
+    full_search: bool = True,
+    subreddits: str = "all",
     export: str = "",
 ):
     """Determine Reddit sentiment about a search term
