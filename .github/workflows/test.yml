@@ -81,6 +81,12 @@ jobs:
           source $VENV
           pytest --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=openbb_terminal --cov=terminal | tee pytest-coverage.txt
 
+      - name: Pytest coverage comment
+        uses: Mishakav/pytest-coverage-comment@main
+        with:
+          junitxml-path: ./pytest.xml
+          pytest-coverage-path: ./pytest-coverage.txt
+
       - name: Start Terminal and exit
         run: |
           source $VENV
