@@ -1312,6 +1312,11 @@ class DueDiligenceController(CryptoBaseController):
             prog="gh",
             description="""
                 Display github activity over time for a given coin.
+                Github activity includes the following actions: creating a Pull Request, an Issue,
+                commenting on an issue / PR, and many more.
+
+                See detailed definition at https://academy.santiment.net/metrics/development-activity/
+
                 [Source: https://santiment.net/]
             """,
         )
