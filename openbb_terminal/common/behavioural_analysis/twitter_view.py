@@ -15,7 +15,7 @@ import openbb_terminal.config_plot as cfg_plot
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.common.behavioural_analysis import twitter_model
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import export_data, plot_autoscale
+from openbb_terminal.helper_funcs import export_data, plot_autoscale, get_closing_price
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -74,6 +74,7 @@ def display_sentiment(
     ticker: str,
     n_tweets: int,
     n_days_past: int,
+    compare: bool = False,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -152,52 +153,111 @@ def display_sentiment(
     df_tweets = df_tweets.sort_values(by="date")
     df_tweets["cumulative_compound"] = df_tweets["sentiment"].cumsum()
 
-    # This plot has 2 axis
-    if external_axes is None:
-        _, axes = plt.subplots(
-            2, 1, sharex=True, figsize=plot_autoscale(), dpi=cfg_plot.PLOT_DPI
-        )
-        ax1, ax2 = axes
-    else:
-        if len(external_axes) != 2:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of one axis item./n[/red]")
-            return
-        (ax1, ax2) = external_axes
+    # get stock end price for each corresponding day if compare == True
+    if not compare:
+        # This plot has 2 axis
+        if external_axes is None:
+            _, axes = plt.subplots(
+                2, 1, sharex=True, figsize=plot_autoscale(), dpi=cfg_plot.PLOT_DPI
+            )
+            ax1, ax2 = axes
+        else:
+            if len(external_axes) != 2:
+                logger.error("Expected list of one axis item.")
+                console.print("[red]Expected list of one axis item./n[/red]")
+                return
+            (ax1, ax2) = external_axes
 
-    ax1.plot(
-        pd.to_datetime(df_tweets["created_at"]),
-        df_tweets["cumulative_compound"].values,
-    )
-    ax1.set_ylabel("\nCumulative\nVADER Sentiment")
-    for _, day_df in df_tweets.groupby(by="Day"):
-        day_df["time"] = pd.to_datetime(day_df["created_at"])
-        day_df = day_df.sort_values(by="time")
         ax1.plot(
-            day_df["time"],
-            day_df["sentiment"].cumsum(),
-            label=pd.to_datetime(day_df["date"]).iloc[0].strftime("%Y-%m-%d"),
+            pd.to_datetime(df_tweets["created_at"]),
+            df_tweets["cumulative_compound"].values,
         )
+        ax1.set_ylabel("\nCumulative\nVADER Sentiment")
+        for _, day_df in df_tweets.groupby(by="Day"):
+            day_df["time"] = pd.to_datetime(day_df["created_at"])
+            day_df = day_df.sort_values(by="time")
+            ax1.plot(
+                day_df["time"],
+                day_df["sentiment"].cumsum(),
+                label=pd.to_datetime(day_df["date"]).iloc[0].strftime("%Y-%m-%d"),
+            )
+            ax2.bar(
+                df_tweets["date"],
+                df_tweets["positive"],
+                color=theme.up_color,
+                width=theme.volume_bar_width / 100,
+            )
         ax2.bar(
             df_tweets["date"],
-            df_tweets["positive"],
-            color=theme.up_color,
+            -1 * df_tweets["negative"],
+            color=theme.down_color,
             width=theme.volume_bar_width / 100,
         )
-    ax2.bar(
-        df_tweets["date"],
-        -1 * df_tweets["negative"],
-        color=theme.down_color,
-        width=theme.volume_bar_width / 100,
-    )
-    ax1.set_title(
-        f"Twitter's {ticker} total compound sentiment over time is {round(np.sum(df_tweets['sentiment']), 2)}"
-    )
+        ax1.set_title(
+            f"Twitter's {ticker} total compound sentiment over time is {round(np.sum(df_tweets['sentiment']), 2)}"
+        )
 
-    theme.style_primary_axis(ax1)
+        theme.style_primary_axis(ax1)
 
-    ax2.set_ylabel("VADER Polarity Scores")
-    theme.style_primary_axis(ax2)
+        ax2.set_ylabel("VADER Polarity Scores")
+        theme.style_primary_axis(ax2)
+
+    else:
+        closing_price_df = get_closing_price(ticker, n_days_past - 1)
+        # This plot has 3 axis
+        if external_axes is None:
+            _, axes = plt.subplots(
+                3, 1, sharex=False, figsize=(12, 7), dpi=cfg_plot.PLOT_DPI
+            )
+            ax1, ax2, ax3 = axes
+        else:
+            if len(external_axes) != 3:
+                logger.error("Expected list of three axis item.")
+                console.print("[red]Expected list of three axis item./n[/red]")
+                return
+            (ax1, ax2, ax3) = external_axes
+
+        ax1.plot(
+            pd.to_datetime(df_tweets["created_at"]),
+            df_tweets["cumulative_compound"].values,
+        )
+        ax1.set_ylabel("\nCumulative\nVADER Sentiment")
+        for _, day_df in df_tweets.groupby(by="Day"):
+            day_df["time"] = pd.to_datetime(day_df["created_at"])
+            day_df = day_df.sort_values(by="time")
+            ax1.plot(
+                day_df["time"],
+                day_df["sentiment"].cumsum(),
+                label=pd.to_datetime(day_df["date"]).iloc[0].strftime("%Y-%m-%d"),
+            )
+            ax2.bar(
+                df_tweets["date"],
+                df_tweets["positive"],
+                color=theme.up_color,
+                width=theme.volume_bar_width / 100,
+            )
+        ax2.bar(
+            df_tweets["date"],
+            -1 * df_tweets["negative"],
+            color=theme.down_color,
+            width=theme.volume_bar_width / 100,
+        )
+        ax3.plot(
+            closing_price_df["Date"],
+            closing_price_df["Close"],
+            label=pd.to_datetime(closing_price_df["Date"]).iloc[0].strftime("%Y-%m-%d"),
+        )
+
+        ax1.set_title(
+            f"Twitter's {ticker} total compound sentiment over time is {round(np.sum(df_tweets['sentiment']), 2)}"
+        )
+
+        theme.style_primary_axis(ax1)
+
+        ax2.set_ylabel("VADER\nPolarity Scores")
+        theme.style_primary_axis(ax2)
+        ax3.set_ylabel("Stock Price")
+        theme.style_primary_axis(ax3)
 
     if external_axes is None:
         theme.visualize_output()
