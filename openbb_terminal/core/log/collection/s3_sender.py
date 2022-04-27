@@ -61,15 +61,17 @@ def send_to_s3_using_presigned_url(
 ):
     presigned_info = fetch_presigned_url(api_url=api_url, object_key=object_key)
 
-    with open(file, "rb") as f:
-        files = {"file": f}
+    f = open(file, "rb")
+    files = {"file": f}
 
-        raw_response = requests.post(
-            data=presigned_info["fields"],
-            files=files,
-            timeout=3,
-            url=presigned_info["url"],
-        )
+    raw_response = requests.post(
+        data=presigned_info["fields"],
+        files=files,
+        timeout=3,
+        url=presigned_info["url"],
+    )
+
+    f.close()
 
     raw_response.raise_for_status()
 
