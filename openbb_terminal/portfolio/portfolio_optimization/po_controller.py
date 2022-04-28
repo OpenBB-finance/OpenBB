@@ -972,7 +972,7 @@ class PortfolioOptimizationController(BaseController):
             )
 
             categories = ns_parser.categories
-                    
+
             for i in portfolios:
                 weights = self.portfolios[i]
                 stocks = list(self.portfolios[i].keys())
@@ -997,7 +997,12 @@ class PortfolioOptimizationController(BaseController):
                 )
                 if ns_parser.pie or ns_parser.heat or ns_parser.rc_chart:
                     for category in categories:
-                        filtered_categories = dict(filter(lambda elem: elem[0] in stocks, self.categories[category].items()))
+                        filtered_categories = dict(
+                            filter(
+                                lambda elem: elem[0] in stocks,
+                                self.categories[category].items(),
+                            )
+                        )
                         optimizer_view.additional_plots(
                             weights=weights,
                             stock_returns=stock_returns[stocks],
@@ -1017,7 +1022,6 @@ class PortfolioOptimizationController(BaseController):
                             heat=ns_parser.heat,
                             external_axes=None,
                         )
-
 
     @log_start_end(log=logger)
     def call_equal(self, other_args: List[str]):

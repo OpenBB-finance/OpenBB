@@ -3486,7 +3486,9 @@ def additional_plots(
         weights = pd.DataFrame.from_dict(
             data=weights, orient="index", columns=["value"], dtype=float
         )
-        category_df = pd.DataFrame.from_dict(data=category, orient="index", columns=["category"])
+        category_df = pd.DataFrame.from_dict(
+            data=category, orient="index", columns=["category"]
+        )
         weights = weights.join(category_df, how="inner")
         weights.sort_index(inplace=True)
 
@@ -3498,12 +3500,19 @@ def additional_plots(
 
         j = 0
         for i in classes:
-            matrix_classes[:, j] = np.array([1 if x == i else 0 for x in labels], dtype=float)
-            matrix_classes[:, j] = matrix_classes[:, j] * weights["value"] / weights_classes.loc[
-                i, "value"]
+            matrix_classes[:, j] = np.array(
+                [1 if x == i else 0 for x in labels], dtype=float
+            )
+            matrix_classes[:, j] = (
+                matrix_classes[:, j]
+                * weights["value"]
+                / weights_classes.loc[i, "value"]
+            )
             j += 1
 
-        matrix_classes = pd.DataFrame(matrix_classes, columns=classes, index=weights.index)
+        matrix_classes = pd.DataFrame(
+            matrix_classes, columns=classes, index=weights.index
+        )
         stock_returns = stock_returns @ matrix_classes
         weights = weights_classes["value"]
         weights.replace(0, np.nan, inplace=True)
