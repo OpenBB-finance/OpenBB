@@ -55,6 +55,7 @@ class BehaviouralAnalysisController(StockBaseController):
         "stalker",
         "infer",
         "sentiment",
+        "reddit_sent",
         "mentions",
         "regions",
         "queries",
@@ -104,7 +105,8 @@ class BehaviouralAnalysisController(StockBaseController):
     popular       show popular tickers
     spac_c        show other users spacs announcements from subreddit SPACs community
     spac          show other users spacs announcements from other subs{has_ticker_start}
-    getdd         gets due diligence from another user's post{has_ticker_end}
+    getdd         gets due diligence from another user's post
+    reddit_sent   searches reddit for ticker and finds reddit sentiment{has_ticker_end}
 [src][Stocktwits][/src]
     trending      trending stocks
     stalker       stalk stocktwits user's last messages{has_ticker_start}
@@ -363,6 +365,104 @@ class BehaviouralAnalysisController(StockBaseController):
                     limit=ns_parser.limit,
                     n_days=ns_parser.days,
                     show_all_flairs=ns_parser.all,
+                )
+            else:
+                console.print("No ticker loaded. Please load using 'load <ticker>'\n")
+
+    @log_start_end(log=logger)
+    def call_reddit_sent(self, other_args: List[str]):
+        """Process reddit_sent command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="reddit_sent",
+            description="""
+                Determine general Reddit sentiment about a ticker. [Source: Reddit]
+            """,
+        )
+        parser.add_argument(
+            "-s",
+            "--sort",
+            action="store",
+            dest="sort",
+            choices=["relevance", "hot", "top", "new", "comments"],
+            default="relevance",
+            help="search sorting type",
+        )
+        parser.add_argument(
+            "-c",
+            "--company",
+            action="store",
+            dest="company",
+            default=None,
+            help="explicit name of company to search for, will override ticker symbol",
+        )
+        parser.add_argument(
+            "--subreddits",
+            action="store",
+            dest="subreddits",
+            default="all",
+            help="comma-separated list of subreddits to search",
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            action="store",
+            dest="limit",
+            default=10,
+            type=check_positive,
+            help="how many posts to gather from each subreddit",
+        )
+        parser.add_argument(
+            "-t",
+            "--time",
+            action="store",
+            dest="time",
+            default="week",
+            choices=["hour", "day", "week", "month", "year", "all"],
+            help="time period to get posts from -- all, year, month, week, or day; defaults to week",
+        )
+        parser.add_argument(
+            "-f",
+            "--full_search",
+            action="store_true",
+            dest="full_search",
+            default=False,
+            help="enable comprehensive search",
+        )
+        parser.add_argument(
+            "-g",
+            "--graphic",
+            action="store_true",
+            dest="graphic",
+            default=True,
+            help="display graphic",
+        )
+        parser.add_argument(
+            "-d",
+            "--display",
+            action="store_true",
+            dest="display",
+            default=False,
+            help="Print table of sentiment values",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if ns_parser:
+            ticker = ns_parser.company if ns_parser.company else self.ticker
+            if self.ticker:
+                reddit_view.display_reddit_sent(
+                    ticker=ticker,
+                    sort=ns_parser.sort,
+                    limit=ns_parser.limit,
+                    graphic=ns_parser.graphic,
+                    time_frame=ns_parser.time,
+                    full_search=ns_parser.full_search,
+                    subreddits=ns_parser.subreddits,
+                    export=ns_parser.export,
+                    display=ns_parser.display,
                 )
             else:
                 console.print("No ticker loaded. Please load using 'load <ticker>'\n")

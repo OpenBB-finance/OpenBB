@@ -5,18 +5,24 @@ import logging
 import os
 import warnings
 from datetime import datetime
-from typing import Dict
+from typing import Dict, List, Optional
 
 import finviz
+import matplotlib.pyplot as plt
 import pandas as pd
 import praw
+from tqdm import tqdm
+import seaborn as sns
 
 from openbb_terminal.common.behavioural_analysis import reddit_model
+from openbb_terminal.config_terminal import theme
+from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.decorators import check_api_key
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import export_data, print_rich_table
+from openbb_terminal.helper_funcs import export_data, plot_autoscale, print_rich_table
 from openbb_terminal.rich_config import console
 
+# pylint: disable=R0913
 logger = logging.getLogger(__name__)
 
 
@@ -323,3 +329,102 @@ def display_due_diligence(
         print_and_record_reddit_post({}, sub)
     if not subs:
         console.print(f"No DD posts found for {ticker}\n")
+
+
+@log_start_end(log=logger)
+@check_api_key(
+    [
+        "API_REDDIT_CLIENT_ID",
+        "API_REDDIT_CLIENT_SECRET",
+        "API_REDDIT_USERNAME",
+        "API_REDDIT_USER_AGENT",
+        "API_REDDIT_PASSWORD",
+    ]
+)
+def display_reddit_sent(
+    ticker: str,
+    sort: str = "relevance",
+    limit: int = 100,
+    graphic: bool = False,
+    time_frame: str = "week",
+    full_search: bool = True,
+    subreddits: str = "all",
+    export: str = "",
+    display: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
+):
+    """Determine Reddit sentiment about a search term
+    Parameters
+    ----------
+    ticker: str
+        The ticker being search for in Reddit
+    sort: str
+        Type of search
+    limit: str
+        Number of posts to get at most
+    graphic: bool
+        Displays box and whisker plot
+    time_frame: str
+        Time frame for search
+    full_search: bool
+        Enable comprehensive search for ticker
+    subreddits: str
+        Comma-separated list of subreddits
+    display: bool
+        Enable printing of raw sentiment values for each post
+    external_axes: Optional[List[plt.Axes]]
+        If supplied, expect 1 external axis
+    """
+
+    posts = reddit_model.get_posts_about(ticker, limit, sort, time_frame, subreddits)
+    post_data = []
+    polarity_scores = []
+
+    if not posts:
+        console.print(f"No posts for {ticker} found")
+        return
+
+    console.print("Analyzing each post...")
+    for p in tqdm(posts):
+        texts = [p.title, p.selftext]
+        if full_search:
+            tlcs = reddit_model.get_comments(p)
+            texts.extend(tlcs)
+        preprocessed_text = reddit_model.clean_reddit_text(texts)
+        sentiment = reddit_model.get_sentiment(preprocessed_text)
+        polarity_scores.append(sentiment)
+        post_data.append([p.title, sentiment])
+
+    avg_polarity = sum(polarity_scores) / len(polarity_scores)
+
+    columns = ["Title", "Polarity Score"]
+    df = pd.DataFrame(post_data, columns=columns)
+
+    if display:
+        print_rich_table(df=df)
+
+    if graphic:
+        if not external_axes:
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        else:
+            if len(external_axes) != 1:
+                logger.error("Expected list of one axis item.")
+                console.print("[red]Expected list of one axis item./n[/red]")
+                return
+            (ax,) = external_axes
+
+        sns.boxplot(x=polarity_scores, ax=ax)
+        ax.set_title(f"Sentiment Score of {ticker}")
+        ax.set_xlabel("Sentiment Score")
+
+        if not external_axes:
+            theme.visualize_output()
+
+    console.print(f"Sentiment Analysis for {ticker} is {avg_polarity}\n")
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "polarity_scores",
+        df,
+    )
