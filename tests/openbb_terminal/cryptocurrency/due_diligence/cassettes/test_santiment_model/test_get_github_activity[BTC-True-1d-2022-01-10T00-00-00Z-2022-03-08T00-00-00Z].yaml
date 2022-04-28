@@ -1,0 +1,90 @@
+interactions:
+- request:
+    body: '
+
+      { getMetric(metric: "dev_activity"){ timeseriesData( slug: "bitcoin" from: "2022-01-10T00:00:00Z"
+      to: "2022-03-08T00:00:00Z" interval: "1d"){ datetime value } } }'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - MOCK_API_KEY
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '163'
+      Content-Type:
+      - application/graphql
+      User-Agent:
+      - python-requests/2.27.1
+    method: POST
+    uri: https://api.santiment.net/graphql
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA32WsW7CQBBE/8U1RLe757OhTpsuVaIUKLEipKQBkwb532NTz1tpGzCju92Zfebe
+        fZ3mU3e8d9/T/DLNl/Pn9mE+/07X6XKers+Px+/37XfT9nV37Ly474vtrbyWcnzUW7fr/k4/t/Xx
+        eHgqy04LTAms9qxwqegHVoRSNGdBlYKRBb0SZFdqShCJYFCCQyIY5ZWSuR7kCRUFLr3ueawuvR54
+        rC6trty0a6eTHqTTY9KDdNpKcidptSU74dJrK8YKabZF0rh0uzYUhHR74DyF3uy+gGITSYVT31vJ
+        zAYLZEB4tGvJhFSa7FoyIRjatWRAelqLtXQ+ImlC5qMlAhkPMzYPyE/5cCK/UQQdyF9pWR3AHzxZ
+        DX4bkiOk25lAut04Hpr85skR0m0kuQP6k73T6G+ENAf04+vLAf1m3IRmvzlHVsOfWe5A/+DIavgn
+        TQD6WaBf83RCAGTx/1YAY52WKICxjaAcgNjsBG0DTSkAsUF5DUDsg8kfy7L8A6/I64okCwAA
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 701fe65bcfce3d9a-HKG
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 26 Apr 2022 14:10:06 GMT
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      NEL:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=XWnAf8ZKNcHWVGMWgg9aewrCgOXgtGPmr5349BbTAcejxoILsylE0FJvrEp4DQp1AcWGeGdF%2B0mf7%2BzlvrQFwZp%2BIXhQ0E%2F8r3x8CXumPuVxzRCAfyfw1WZV8XXOc%2FvUP62sdonvTo6l7A%2F24oPU"}],"group":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      access-control-allow-credentials:
+      - 'true'
+      access-control-allow-headers:
+      - DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization,X-SharedAccess-Authorization
+      access-control-allow-methods:
+      - GET, POST, OPTIONS
+      set-cookie:
+      - INGRESSCOOKIE=1650982206.595.3125.424721; Path=/.+; Secure; HttpOnly
+      vary:
+      - Accept-Encoding
+      x-ratelimit-limit:
+      - '100'
+      x-ratelimit-limit-hour:
+      - '500'
+      x-ratelimit-limit-minute:
+      - '100'
+      x-ratelimit-limit-month:
+      - '1000'
+      x-ratelimit-remaining:
+      - '100'
+      x-ratelimit-remaining-hour:
+      - '500'
+      x-ratelimit-remaining-minute:
+      - '100'
+      x-ratelimit-remaining-month:
+      - '988'
+      x-request-id:
+      - 0a74b69a56ce3095d071d6028f521e02
+    status:
+      code: 200
+      message: OK
+version: 1
