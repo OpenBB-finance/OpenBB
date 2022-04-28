@@ -1340,21 +1340,22 @@ class DueDiligenceController(CryptoBaseController):
         )
 
         parser.add_argument(
-            "--chart",
+            "--descend",
             action="store_true",
-            help="Flag to show chart with coin price and roadmap dates",
-            dest="chart",
+            help="Flag to sort in descending order (lowest first)",
+            dest="descend",
             default=False,
         )
 
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED, limit=5
         )
 
         if ns_parser:
             messari_view.display_roadmap(
+                descend=ns_parser.descend,
                 coin=self.symbol.upper(),
-                show_chart=ns_parser.chart,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -1372,16 +1373,6 @@ class DueDiligenceController(CryptoBaseController):
             """,
         )
 
-        parser.add_argument(
-            "-s",
-            "--source",
-            dest="source",
-            type=str,
-            help="Source to check circulating supply timeseries. Default: mes",
-            default="mes",
-            choices=["mes", "cg"],
-        )
-
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
@@ -1390,7 +1381,6 @@ class DueDiligenceController(CryptoBaseController):
             messari_view.display_tokenomics(
                 coin=self.symbol.upper(),
                 coingecko_symbol=self.coin_map_df["CoinGecko"],
-                circ_supply_src=ns_parser.source,
                 export=ns_parser.export,
             )
 
@@ -1541,9 +1531,8 @@ class DueDiligenceController(CryptoBaseController):
             "--timeseries",
             dest="timeseries",
             type=str,
-            help="Messari timeseries id. Default: txn.vol",
+            help="Messari timeseries id",
             default="txn.vol",
-            choices=self.messari_timeseries,
         )
 
         parser.add_argument(
@@ -1551,7 +1540,7 @@ class DueDiligenceController(CryptoBaseController):
             "--interval",
             dest="interval",
             type=str,
-            help="Frequency interval. Default: 1d",
+            help="Frequency interval",
             default="1d",
             choices=messari_model.INTERVALS_TIMESERIES,
         )
@@ -1599,7 +1588,13 @@ class DueDiligenceController(CryptoBaseController):
         )
 
         if ns_parser:
-            if ns_parser.list:
+            if (
+                ns_parser.timeseries
+                and ns_parser.timeseries not in self.messari_timeseries
+            ):
+                console.print("\nTimeseries {ns_parser.timeseries} not found")
+                return
+            if ns_parser.list or ns_parser.query:
                 messari_view.display_messari_timeseries_list(
                     ns_parser.limit,
                     " ".join(ns_parser.query),

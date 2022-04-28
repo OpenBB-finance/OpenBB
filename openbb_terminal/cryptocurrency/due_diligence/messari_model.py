@@ -5,7 +5,7 @@ __docformat__ = "numpy"
 
 import logging
 from typing import Any, Tuple
-
+import re
 import pandas as pd
 import requests
 
@@ -153,9 +153,11 @@ def get_messari_timeseries(
         else:
             df = df.set_index("timestamp")
             df.index = pd.to_datetime(df.index, unit="ms")
-
     elif r.status_code == 401:
-        console.print("[red]Invalid API Key[/red]\n")
+        if "requires a pro or enterprise subscription" in r.text:
+            console.print("[red]API Key not authorized for Premium Feature[/red]\n")
+        else:
+            console.print("[red]Invalid API Key[/red]\n")
     else:
         console.print(r.text)
 
@@ -242,7 +244,7 @@ def get_roadmap(symbol: str) -> pd.DataFrame:
 
 @log_start_end(log=logger)
 def get_tokenomics(
-    symbol: str, coingecko_symbol: str, circ_supply_src: str
+    symbol: str, coingecko_symbol: str
 ) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """Returns coin tokenomics
     [Source: https://messari.io/]
@@ -251,8 +253,6 @@ def get_tokenomics(
     ----------
     symbol : str
         Crypto symbol to check tokenomics
-    coingecko_symbol : str
-        Coingecko crypto symbol to check tokenomics
     Returns
     -------
     pd.DataFrame
@@ -298,7 +298,7 @@ def get_tokenomics(
         df.fillna("-", inplace=True)
         circ_df, _, _ = get_messari_timeseries(
             coin=symbol,
-            timeseries_id="sply.circ" if circ_supply_src == "mes" else "cg.sply.circ",
+            timeseries_id="sply.circ",
             interval="1d",
             start="",
             end="",
@@ -563,7 +563,7 @@ def get_governance(symbol: str) -> Tuple[str, pd.DataFrame]:
             is not None
         ):
             return (
-                governance_data["governance_details"],
+                re.sub("<[^>]*>", "", governance_data["governance_details"]),
                 pd.DataFrame(
                     {
                         "Metric": ["Type", "Details"],
@@ -578,7 +578,10 @@ def get_governance(symbol: str) -> Tuple[str, pd.DataFrame]:
                     }
                 ),
             )
-        return governance_data["governance_details"], df
+        return (
+            re.sub("<[^>]*>", "", governance_data["governance_details"]),
+            df,
+        )
     if r.status_code == 401:
         console.print("[red]Invalid API Key[/red]\n")
     else:

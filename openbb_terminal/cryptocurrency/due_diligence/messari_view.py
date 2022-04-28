@@ -78,13 +78,16 @@ def display_messari_timeseries_list(
                 ]
             )
             df = df.loc[mask.any(axis=1)]
-        print_rich_table(
-            df.head(limit),
-            index_name="ID",
-            headers=list(df.columns),
-            show_index=True,
-            title="Messari Timeseries",
-        )
+        if df.empty:
+            console.print(f"\nNo timeseries found with query {query}\n")
+        else:
+            print_rich_table(
+                df.head(limit),
+                index_name="ID",
+                headers=list(df.columns),
+                show_index=True,
+                title="Messari Timeseries",
+            )
 
         export_data(
             export,
@@ -126,7 +129,7 @@ def display_messari_timeseries(
         External axes (1 axis is expected in the list), by default None
     """
 
-    df, title, y_axis = get_messari_timeseries(
+    df, title, _ = get_messari_timeseries(
         coin=coin, timeseries_id=timeseries_id, start=start, end=end, interval=interval
     )
 
@@ -148,7 +151,7 @@ def display_messari_timeseries(
         ax.plot(df.index, df["values"])
 
         ax.set_title(f"{coin}'s {title}")
-        ax.set_ylabel(y_axis)
+        ax.set_ylabel(title)
         ax.set_xlim(df.index[0], df.index[-1])
 
         theme.style_primary_axis(ax)
@@ -265,7 +268,8 @@ def display_links(coin: str, export: str = "") -> None:
 @check_api_key(["API_MESSARI_KEY"])
 def display_roadmap(
     coin: str,
-    show_chart: bool = True,
+    descend: bool,
+    limit: int,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
@@ -276,6 +280,10 @@ def display_roadmap(
     ----------
     coin : str
         Crypto symbol to check roadmap
+    descend: bool
+        reverse order
+    limit : int
+        number to show
     export : str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
@@ -285,72 +293,74 @@ def display_roadmap(
 
     if not df.empty:
         df["Date"] = df["Date"].dt.date
+        show_df = df
+        show_df = show_df.sort_values(by="Date", ascending=descend)
+        show_df.fillna("Unknown", inplace=True)
         print_rich_table(
-            df,
-            headers=list(df.columns),
+            show_df.head(limit),
+            headers=list(show_df.columns),
             show_index=False,
             title=f"{coin} Roadmap",
         )
-        if show_chart:
-            df_prices, _ = cryptocurrency_helpers.load_yf_data(
-                symbol=coin,
-                currency="USD",
-                days=4380,
-                interval="1d",
+        df_prices, _ = cryptocurrency_helpers.load_yf_data(
+            symbol=coin,
+            currency="USD",
+            days=4380,
+            interval="1d",
+        )
+        if not df_prices.empty:
+            if not external_axes:
+                _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
+            else:
+                if len(external_axes) != 1:
+                    logger.error("Expected list of one axis item.")
+                    console.print("[red]Expected list of one axis item./n[/red]")
+                    return
+                (ax,) = external_axes
+
+            roadmap_dates = np.array(
+                pd.to_datetime(df["Date"], format="%Y-%m-%d", errors="coerce")
             )
-            if not df_prices.empty:
-                if not external_axes:
-                    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
-                else:
-                    if len(external_axes) != 1:
-                        logger.error("Expected list of one axis item.")
-                        console.print("[red]Expected list of one axis item./n[/red]")
-                        return
-                    (ax,) = external_axes
 
-                roadmap_dates = np.array(
-                    pd.to_datetime(df["Date"], format="%Y-%m-%d", errors="coerce")
-                )
+            df_copy = df
+            df_copy["Date"] = pd.to_datetime(
+                df_copy["Date"], format="%Y-%m-%d", errors="coerce"
+            )
 
-                df_copy = df
-                df_copy["Date"] = pd.to_datetime(
-                    df_copy["Date"], format="%Y-%m-%d", errors="coerce"
-                )
+            df_copy = df_copy[df_copy["Date"].notnull()]
+            titles = list(df_copy[df_copy["Date"] > df_prices.index[0]]["Title"])
 
-                df_copy = df_copy[df_copy["Date"].notnull()]
-                titles = list(df_copy[df_copy["Date"] > df_prices.index[0]]["Title"])
+            roadmap_dates = mdates.date2num(roadmap_dates)
+            counter = 0
+            max_price = df_prices["Close"].max()
+            for x in roadmap_dates:
+                if x > mdates.date2num(df_prices.index[0]):
+                    ax.text(
+                        x,
+                        max_price * 0.7,
+                        titles[counter],
+                        rotation=-90,
+                        verticalalignment="center",
+                        size=6,
+                    )
+                    counter += 1
+            ax.vlines(
+                x=roadmap_dates,
+                color="orange",
+                ymin=0,
+                ymax=max_price,
+            )
+            ax.plot(df_prices.index, df_prices["Close"].values)
+            ax.get_yaxis().set_major_formatter(
+                ticker.FuncFormatter(lambda x, _: lambda_long_number_format(x))
+            )
+            ax.set_title(f"{coin.upper()} Price and Roadmap")
+            ax.set_ylabel("Price [$]")
+            ax.set_xlim(df_prices.index[0], df_prices.index[-1])
+            theme.style_primary_axis(ax)
 
-                roadmap_dates = mdates.date2num(roadmap_dates)
-                counter = 0
-                max_price = df_prices["Close"].max()
-                for x in roadmap_dates:
-                    if x > mdates.date2num(df_prices.index[0]):
-                        ax.text(
-                            x,
-                            max_price * 0.7,
-                            titles[counter],
-                            rotation=-90,
-                            verticalalignment="center",
-                            size=6,
-                        )
-                        counter += 1
-                ax.vlines(
-                    x=roadmap_dates,
-                    color="orange",
-                    ymin=0,
-                    ymax=max_price,
-                )
-                ax.plot(df_prices.index, df_prices["Close"].values)
-                ax.get_yaxis().set_major_formatter(
-                    ticker.FuncFormatter(lambda x, _: lambda_long_number_format(x))
-                )
-                ax.set_title(f"{coin.upper()} Price and Roadmap")
-                ax.set_ylabel("Price [$]")
-                ax.set_xlim(df_prices.index[0], df_prices.index[-1])
-                theme.style_primary_axis(ax)
-
-                if not external_axes:
-                    theme.visualize_output()
+            if not external_axes:
+                theme.visualize_output()
 
         export_data(
             export,
@@ -367,7 +377,6 @@ def display_roadmap(
 def display_tokenomics(
     coin: str,
     coingecko_symbol: str,
-    circ_supply_src: str,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
@@ -380,14 +389,12 @@ def display_tokenomics(
         Crypto symbol to check tokenomics
     coingecko_symbol : str
         Coingecko crypto symbol to check tokenomics
-    circ_supply_src : str
-        Source to look at circulating supply timeseries. Options: cg,mes
     export : str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    df, circ_df = get_tokenomics(coin, coingecko_symbol, circ_supply_src)
+    df, circ_df = get_tokenomics(coin, coingecko_symbol)
 
     if not df.empty and not circ_df.empty:
         df = df.applymap(lambda x: lambda_long_number_format(x, 2))
@@ -713,7 +720,8 @@ def display_fundraising(
         if len(values) > 0 and sum(values) > 0:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
             ax.pie(
-                values,
+                [s / 100 for s in values],
+                normalize=False,
                 labels=labels,
                 wedgeprops={"linewidth": 0.5, "edgecolor": "white"},
                 labeldistance=1.05,
@@ -725,6 +733,8 @@ def display_fundraising(
             if obbff.USE_ION:
                 plt.ion()
             plt.show()
+
+        df_details.fillna("-", inplace=True)
 
         print_rich_table(
             df_details,
