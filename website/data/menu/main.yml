@@ -540,6 +540,8 @@ main:
                 ref: "/terminal/common/behavioural_analysis/spac"
               - name: getdd
                 ref: "/terminal/common/behavioural_analysis/getdd"
+              - name: reddit_sent
+                ref: "/terminal/common/behavioural_analysis/reddit_sent"                
               - name: bullbear
                 ref: "/terminal/common/behavioural_analysis/bullbear"
               - name: messages
