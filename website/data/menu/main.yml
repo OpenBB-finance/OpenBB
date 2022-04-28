@@ -1138,6 +1138,12 @@ main:
                 ref: "/terminal/portfolio/portfolio_optimization/add"
               - name: rmv
                 ref: "/terminal/portfolio/portfolio_optimization/rmv"
+              - name: show
+                ref: "/terminal/portfolio/portfolio_optimization/show"
+              - name: rpf
+                ref: "/terminal/portfolio/portfolio_optimization/rpf"
+              - name: plot
+                ref: "/terminal/portfolio/portfolio_optimization/plot"
               - name: equal
                 ref: "/terminal/portfolio/portfolio_optimization/equal"
               - name: mktcap
@@ -1158,6 +1164,8 @@ main:
                 ref: "/terminal/portfolio/portfolio_optimization/maxdiv"
               - name: maxdecorr
                 ref: "/terminal/portfolio/portfolio_optimization/maxdecorr"
+              - name: blacklitterman
+                ref: "/terminal/portfolio/portfolio_optimization/blacklitterman"
               - name: ef
                 ref: "/terminal/portfolio/portfolio_optimization/ef"
               - name: riskparity

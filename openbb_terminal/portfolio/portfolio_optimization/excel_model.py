@@ -81,6 +81,7 @@ def load_allocation(excel_file: str):
 
     try:
         categories.set_index("TICKER", inplace=True)
+        categories.sort_index(inplace=True)
     except KeyError:
         console.print("Allocation table needs a TICKER column\n")
         return [], {}

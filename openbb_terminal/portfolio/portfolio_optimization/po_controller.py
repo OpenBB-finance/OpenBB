@@ -441,11 +441,11 @@ class PortfolioOptimizationController(BaseController):
 [param]Categories: [/param]{('None', ', '.join(self.categories.keys()))[bool(self.categories.keys())]}
 [param]Portfolios: [/param]{('None', ', '.join(self.portfolios.keys()))[bool(self.portfolios.keys())]}
 [cmds]
-    add           add tickers to the list of the tickers to be optimized
-    rmv           remove tickers from the list of the tickers to be optimized
-    show          show selected portfolios and categories from the list of saved portfolios
-    rpf           remove portfolios from the list of saved portfolios
-    plot          plot selected charts from the list of saved portfolios[/cmds]
+    add             add tickers to the list of the tickers to be optimized
+    rmv             remove tickers from the list of the tickers to be optimized
+    show            show selected portfolios and categories from the list of saved portfolios
+    rpf             remove portfolios from the list of saved portfolios
+    plot            plot selected charts from the list of saved portfolios[/cmds]
 
 [info]Mean Risk Optimization:[/info][cmds]
     maxsharpe       maximal Sharpe ratio portfolio (a.k.a the tangency portfolio)
@@ -744,7 +744,7 @@ class PortfolioOptimizationController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="plot",
-            description="plot selected charts for portfolios",
+            description="Plot selected charts for portfolios",
         )
         parser.add_argument(
             "-pf",
@@ -752,7 +752,15 @@ class PortfolioOptimizationController(BaseController):
             type=lambda s: [str(item).upper() for item in s.split(",")],
             default=[],
             dest="portfolios",
-            help="selected portfolios that will be plotted",
+            help="Selected portfolios that will be plotted",
+        )
+        parser.add_argument(
+            "-ct",
+            "--categories",
+            dest="categories",
+            type=lambda s: [str(item).upper() for item in s.split(",")],
+            default=[],
+            help="Show selected categories",
         )
         parser.add_argument(
             "-p",
@@ -963,12 +971,15 @@ class PortfolioOptimizationController(BaseController):
                 value=1,
             )
 
+            categories = ns_parser.categories
+                    
             for i in portfolios:
                 weights = self.portfolios[i]
                 stocks = list(self.portfolios[i].keys())
                 optimizer_view.additional_plots(
                     weights=weights,
                     stock_returns=stock_returns[stocks],
+                    category=None,
                     title_opt=i,
                     freq=ns_parser.return_frequency,
                     risk_measure=ns_parser.risk_measure.lower(),
@@ -984,6 +995,29 @@ class PortfolioOptimizationController(BaseController):
                     heat=ns_parser.heat,
                     external_axes=None,
                 )
+                if ns_parser.pie or ns_parser.heat or ns_parser.rc_chart:
+                    for category in categories:
+                        filtered_categories = dict(filter(lambda elem: elem[0] in stocks, self.categories[category].items()))
+                        optimizer_view.additional_plots(
+                            weights=weights,
+                            stock_returns=stock_returns[stocks],
+                            category=filtered_categories,
+                            title_opt=category + " - " + i,
+                            freq=ns_parser.return_frequency,
+                            risk_measure=ns_parser.risk_measure.lower(),
+                            risk_free_rate=ns_parser.risk_free,
+                            alpha=ns_parser.significance_level,
+                            a_sim=100,
+                            beta=ns_parser.significance_level,
+                            b_sim=100,
+                            pie=ns_parser.pie,
+                            hist=ns_parser.hist,
+                            dd=ns_parser.dd,
+                            rc_chart=ns_parser.rc_chart,
+                            heat=ns_parser.heat,
+                            external_axes=None,
+                        )
+
 
     @log_start_end(log=logger)
     def call_equal(self, other_args: List[str]):

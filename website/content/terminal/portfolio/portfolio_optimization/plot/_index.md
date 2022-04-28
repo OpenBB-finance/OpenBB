@@ -1,6 +1,6 @@
 ```
-usage: plot [-pf PORTFOLIOS] [-p HISTORIC_PERIOD] [-s START_PERIOD]
-            [-e END_PERIOD] [-lr] [-f {d,w,m}] [-mn MAX_NAN]
+usage: plot [-pf PORTFOLIOS] [-ct CATEGORIES] [-p HISTORIC_PERIOD]
+            [-s START_PERIOD] [-e END_PERIOD] [-lr] [-f {d,w,m}] [-mn MAX_NAN]
             [-th THRESHOLD_VALUE] [-mt NAN_FILL_METHOD]
             [-rm {MV,MAD,MSV,FLPM,SLPM,CVaR,EVaR,WR,ADD,UCI,CDaR,EDaR,MDD}]
             [-r RISK_FREE] [-a SIGNIFICANCE_LEVEL] [-pi] [-hi] [-dd] [-rc]
@@ -12,7 +12,9 @@ Plot selected charts for portfolios
 ```
 optional arguments:
   -pf PORTFOLIOS, --portfolios PORTFOLIOS
-                        selected portfolios that will be plotted (default: [])
+                        Selected portfolios that will be plotted (default: [])
+  -ct CATEGORIES, --categories CATEGORIES
+                        Show selected categories (default: [])
   -p HISTORIC_PERIOD, --period HISTORIC_PERIOD
                         Period to get yfinance data from. Possible frequency
                         strings are: 'd': means days, for example '252d' means

@@ -3390,6 +3390,7 @@ def pie_chart_weights(
 def additional_plots(
     weights: Dict,
     stock_returns: pd.DataFrame,
+    category: Dict,
     title_opt: str,
     freq: str,
     risk_measure: str,
@@ -3481,6 +3482,35 @@ def additional_plots(
     external_axes: Optional[List[plt.Axes]]
         Optional axes to plot data on
     """
+    if category is not None:
+        weights = pd.DataFrame.from_dict(
+            data=weights, orient="index", columns=["value"], dtype=float
+        )
+        category_df = pd.DataFrame.from_dict(data=category, orient="index", columns=["category"])
+        weights = weights.join(category_df, how="inner")
+        weights.sort_index(inplace=True)
+
+        # Calculating classes returns
+        classes = list(set(weights["category"]))
+        weights_classes = weights.groupby(["category"]).sum()
+        matrix_classes = np.zeros((len(weights), len(classes)))
+        labels = weights["category"].tolist()
+
+        j = 0
+        for i in classes:
+            matrix_classes[:, j] = np.array([1 if x == i else 0 for x in labels], dtype=float)
+            matrix_classes[:, j] = matrix_classes[:, j] * weights["value"] / weights_classes.loc[
+                i, "value"]
+            j += 1
+
+        matrix_classes = pd.DataFrame(matrix_classes, columns=classes, index=weights.index)
+        stock_returns = stock_returns @ matrix_classes
+        weights = weights_classes["value"]
+        weights.replace(0, np.nan, inplace=True)
+        weights.dropna(inplace=True)
+        stock_returns = stock_returns[weights.index.tolist()]
+        weights = weights.to_dict()
+
     if pie:
         pie_chart_weights(weights, title_opt, external_axes)
 
@@ -3561,11 +3591,15 @@ def additional_plots(
         else:
             ax = external_axes[0]
 
+        k = None
+        if len(weights) <= 3:
+            k = len(weights)
+
         ax = rp.plot_clusters(
             returns=stock_returns,
             codependence="pearson",
             linkage="ward",
-            k=None,
+            k=k,
             max_k=10,
             leaf_order=True,
             dendrogram=True,
