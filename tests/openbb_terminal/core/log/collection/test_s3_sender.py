@@ -3,10 +3,8 @@ from pathlib import Path
 import pytest
 from openbb_terminal.core.log.constants import S3_FOLDER_SUFFIX
 from openbb_terminal.core.log.generation.settings import (
-    Settings,
     AppSettings,
     AWSSettings,
-    LogSettings,
 )
 from openbb_terminal.core.log.constants import DEFAULT_API_URL
 from openbb_terminal.core.log.collection import s3_sender as s3s
@@ -29,17 +27,6 @@ app_settings = AppSettings(
 aws_settings = AWSSettings(
     aws_access_key_id="MOCK_AWS_ACCESS_KEY_ID",
     aws_secret_access_key="MOCK_AWS",  # pragma: allowlist secret
-)
-settings = Settings(
-    app_settings=app_settings,
-    aws_settings=aws_settings,
-    log_settings=LogSettings(
-        directory=Path("."),
-        frequency="H",
-        handler_list="file",
-        rolling_clock=False,
-        verbosity=20,
-    ),
 )
 
 identifier = app_settings.identifier
