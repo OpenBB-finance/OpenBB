@@ -975,7 +975,10 @@ class PortfolioOptimizationController(BaseController):
 
             for i in portfolios:
                 weights = self.portfolios[i]
-                stocks = list(self.portfolios[i].keys())
+                weights = dict(
+                    sorted(weights.items(), key=lambda x: x[1], reverse=True)
+                )
+                stocks = list(weights.keys())
                 optimizer_view.additional_plots(
                     weights=weights,
                     stock_returns=stock_returns[stocks],
@@ -3498,6 +3501,20 @@ class PortfolioOptimizationController(BaseController):
             default="BL_" + str(self.count),
             help="Save portfolio with personalized or default name",
         )
+        parser.add_argument(
+            "--download",
+            type=lambda s: s if s.endswith(".xlsx") or len(s) == 0 else s + ".xlsx",
+            dest="download",
+            default="",
+            help="Create a template to design Black Litterman model views",
+        )
+        parser.add_argument(
+            "--file",
+            type=lambda s: s if s.endswith(".xlsx") or len(s) == 0 else s + ".xlsx",
+            dest="file",
+            default="",
+            help="Upload an Excel file with views for Black Litterman model",
+        )
         ns_parser = parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
@@ -3506,37 +3523,58 @@ class PortfolioOptimizationController(BaseController):
                     "Please have at least 2 loaded tickers to calculate weights.\n"
                 )
                 return
-            if ns_parser.benchmark is None:
-                benchmark = None
+
+            if len(ns_parser.download) > 0:
+                file = os.path.abspath(
+                    os.path.join(
+                        self.DEFAULT_ALLOCATION_PATH, "..", "views", ns_parser.download
+                    )
+                )
+                excel_model.excel_bl_views(file=file, stocks=self.tickers, n=1)
+                return
             else:
-                benchmark = self.portfolios[ns_parser.benchmark.upper()]
+                if ns_parser.file:
+                    excel_file = os.path.abspath(
+                        os.path.join(
+                            self.DEFAULT_ALLOCATION_PATH, "..", "views", ns_parser.file
+                        )
+                    )
+                    p_views, q_views = excel_model.load_bl_views(excel_file=excel_file)
+                else:
+                    p_views = ns_parser.p_views
+                    q_views = ns_parser.q_views
 
-            weights = optimizer_view.display_black_litterman(
-                stocks=self.tickers,
-                p_views=ns_parser.p_views,
-                q_views=ns_parser.q_views,
-                period=ns_parser.historic_period,
-                start=ns_parser.start_period,
-                end=ns_parser.end_period,
-                log_returns=ns_parser.log_returns,
-                freq=ns_parser.return_frequency,
-                maxnan=ns_parser.max_nan,
-                threshold=ns_parser.threshold_value,
-                method=ns_parser.nan_fill_method,
-                benchmark=benchmark,
-                objective=ns_parser.objective.lower(),
-                risk_free_rate=ns_parser.risk_free,
-                risk_aversion=ns_parser.risk_aversion,
-                delta=ns_parser.delta,
-                equilibrium=ns_parser.equilibrium,
-                optimize=ns_parser.optimize,
-                value=ns_parser.long_allocation,
-                value_short=ns_parser.short_allocation,
-            )
+                if ns_parser.benchmark is None:
+                    benchmark = None
+                else:
+                    benchmark = self.portfolios[ns_parser.benchmark.upper()]
 
-            self.portfolios[ns_parser.name.upper()] = weights
-            self.count += 1
-            self.update_runtime_choices()
+                weights = optimizer_view.display_black_litterman(
+                    stocks=self.tickers,
+                    p_views=p_views,
+                    q_views=q_views,
+                    period=ns_parser.historic_period,
+                    start=ns_parser.start_period,
+                    end=ns_parser.end_period,
+                    log_returns=ns_parser.log_returns,
+                    freq=ns_parser.return_frequency,
+                    maxnan=ns_parser.max_nan,
+                    threshold=ns_parser.threshold_value,
+                    method=ns_parser.nan_fill_method,
+                    benchmark=benchmark,
+                    objective=ns_parser.objective.lower(),
+                    risk_free_rate=ns_parser.risk_free,
+                    risk_aversion=ns_parser.risk_aversion,
+                    delta=ns_parser.delta,
+                    equilibrium=ns_parser.equilibrium,
+                    optimize=ns_parser.optimize,
+                    value=ns_parser.long_allocation,
+                    value_short=ns_parser.short_allocation,
+                )
+
+                self.portfolios[ns_parser.name.upper()] = weights
+                self.count += 1
+                self.update_runtime_choices()
 
     @log_start_end(log=logger)
     def call_ef(self, other_args):

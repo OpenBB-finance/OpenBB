@@ -9,6 +9,7 @@ import warnings
 from datetime import date
 from typing import Dict, List, Optional
 
+import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -3319,6 +3320,7 @@ def pie_chart_weights(
             sizes.append(size)
 
     total_size = np.sum(sizes)
+    colors = theme.get_colors()
 
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -3330,8 +3332,11 @@ def pie_chart_weights(
             sizes,
             labels=stocks,
             autopct=my_autopct,
-            textprops=dict(color="k"),
-            wedgeprops={"linewidth": 3.0, "edgecolor": "white"},
+            colors=colors,
+            textprops=dict(color="white"),
+            wedgeprops={"linewidth": 0.5, "edgecolor": "white"},
+            labeldistance=1.05,
+            startangle=45,
             normalize=True,
         )
         plt.setp(autotexts, color="white", fontweight="bold")
@@ -3340,8 +3345,11 @@ def pie_chart_weights(
             sizes,
             labels=stocks,
             autopct="",
-            textprops=dict(color="k"),
-            wedgeprops={"linewidth": 3.0, "edgecolor": "white"},
+            colors=colors,
+            textprops=dict(color="white"),
+            wedgeprops={"linewidth": 0.5, "edgecolor": "white"},
+            labeldistance=1.05,
+            startangle=45,
             normalize=True,
         )
         plt.setp(autotexts, color="white", fontweight="bold")
@@ -3353,28 +3361,28 @@ def pie_chart_weights(
 
     ax.axis("equal")
 
-    leg1 = ax.legend(
-        wedges,
-        [str(s) for s in stocks],
-        title="  Ticker",
-        loc="upper left",
-        bbox_to_anchor=(0.80, 0, 0.5, 1),
-        frameon=False,
-    )
-    leg2 = ax.legend(
-        wedges,
-        [
-            f"{' ' if ((100*s/total_size) < 10) else ''}{100*s/total_size:.2f}%"
-            for s in sizes
-        ],
-        title=" ",
-        loc="upper left",
-        handlelength=0,
-        bbox_to_anchor=(0.91, 0, 0.5, 1),
-        frameon=False,
-    )
-    ax.add_artist(leg1)
-    ax.add_artist(leg2)
+    # leg1 = ax.legend(
+    #     wedges,
+    #     [str(s) for s in stocks],
+    #     title="  Ticker",
+    #     loc="upper left",
+    #     bbox_to_anchor=(0.80, 0, 0.5, 1),
+    #     frameon=False,
+    # )
+    # leg2 = ax.legend(
+    #     wedges,
+    #     [
+    #         f"{' ' if ((100*s/total_size) < 10) else ''}{100*s/total_size:.2f}%"
+    #         for s in sizes
+    #     ],
+    #     title=" ",
+    #     loc="upper left",
+    #     handlelength=0,
+    #     bbox_to_anchor=(0.91, 0, 0.5, 1),
+    #     frameon=False,
+    # )
+    # ax.add_artist(leg1)
+    # ax.add_artist(leg2)
 
     plt.setp(autotexts, size=8, weight="bold")
 
@@ -3514,12 +3522,16 @@ def additional_plots(
             matrix_classes, columns=classes, index=weights.index
         )
         stock_returns = stock_returns @ matrix_classes
-        weights = weights_classes["value"]
+        weights = weights_classes["value"].copy()
         weights.replace(0, np.nan, inplace=True)
         weights.dropna(inplace=True)
+        weights.sort_values(ascending=True, inplace=True)
         stock_returns = stock_returns[weights.index.tolist()]
+        stock_returns.columns = [i.title() for i in stock_returns.columns]
+        weights.index = [i.title() for i in weights.index]
         weights = weights.to_dict()
 
+    colors = theme.get_colors()
     if pie:
         pie_chart_weights(weights, title_opt, external_axes)
 
@@ -3533,6 +3545,18 @@ def additional_plots(
             stock_returns, w=pd.Series(weights).to_frame(), alpha=alpha, ax=ax
         )
         ax.legend(fontsize="x-small", loc="best")
+
+        # Changing colors
+        for i in ax.get_children()[:-1]:
+            if isinstance(i, matplotlib.patches.Rectangle):
+                i.set_color(colors[0])
+                i.set_alpha(0.7)
+
+        k = 1
+        for i, j in zip(ax.get_legend().get_lines()[::-1], ax.get_lines()[::-1]):
+            i.set_color(colors[k])
+            j.set_color(colors[k])
+            k += 1
 
         title = "Portfolio - " + title_opt + "\n"
         title += ax.get_title(loc="left")
@@ -3559,6 +3583,17 @@ def additional_plots(
         ax.set_position(gs[0].get_position(fig))
         ax.set_subplotspec(gs[0])
 
+        # Changing colors
+        ax.get_lines()[0].set_color(colors[0])
+        k = 1
+        for i, j in zip(ax.get_legend().get_lines()[::-1], ax.get_lines()[1:][::-1]):
+            i.set_color(colors[k])
+            j.set_color(colors[k])
+            k += 1
+
+        ax.get_children()[1].set_facecolor(colors[0])
+        ax.get_children()[1].set_alpha(0.7)
+
         title = "Portfolio - " + title_opt + "\n"
         title += ax.get_title(loc="left")
         ax.set_title(title)
@@ -3582,10 +3617,16 @@ def additional_plots(
             a_sim=a_sim,
             beta=beta,
             b_sim=b_sim,
-            color="tab:blue",
+            color=colors[1],
             t_factor=time_factor[freq.upper()],
             ax=ax,
         )
+
+        # Changing colors
+        for i in ax.get_children()[:-1]:
+            if isinstance(i, matplotlib.patches.Rectangle):
+                i.set_width(i.get_width())
+                i.set_color(colors[0])
 
         title = "Portfolio - " + title_opt + "\n"
         title += ax.get_title(loc="left")
@@ -3620,21 +3661,41 @@ def additional_plots(
         ax = ax.get_figure().axes
         ax[0].grid(False)
         ax[0].axis("off")
-        # Vertical dendrogram
-        l, b, w, h = ax[4].get_position().bounds
-        l1 = l * 0.5
-        w1 = w * 0.2
-        ax[4].set_position([l - l1, b, w * 0.8, h])
-        # Heatmap
-        l, b, w, h = ax[1].get_position().bounds
-        ax[1].set_position([l - l1 - w1, b, w * 0.8, h])
-        w2 = w * 0.2
-        # colorbar
-        l, b, w, h = ax[2].get_position().bounds
-        ax[2].set_position([l - l1 - w1 - w2, b, w, h])
-        # Horizontal dendrogram
-        l, b, w, h = ax[3].get_position().bounds
-        ax[3].set_position([l - l1 - w1, b, w * 0.8, h])
+
+        if category is None:
+            # Vertical dendrogram
+            l, b, w, h = ax[4].get_position().bounds
+            l1 = l * 0.5
+            w1 = w * 0.2
+            b1 = h * 0.05
+            ax[4].set_position([l - l1, b + b1, w * 0.8, h * 0.95])
+            # Heatmap
+            l, b, w, h = ax[1].get_position().bounds
+            ax[1].set_position([l - l1 - w1, b + b1, w * 0.8, h * 0.95])
+            w2 = w * 0.2
+            # colorbar
+            l, b, w, h = ax[2].get_position().bounds
+            ax[2].set_position([l - l1 - w1 - w2, b, w, h])
+            # Horizontal dendrogram
+            l, b, w, h = ax[3].get_position().bounds
+            ax[3].set_position([l - l1 - w1, b, w * 0.8, h])
+        else:
+            # Vertical dendrogram
+            l, b, w, h = ax[4].get_position().bounds
+            l1 = l * 0.5
+            w1 = w * 0.4
+            b1 = h * 0.2
+            ax[4].set_position([l - l1, b + b1, w * 0.6, h * 0.8])
+            # Heatmap
+            l, b, w, h = ax[1].get_position().bounds
+            ax[1].set_position([l - l1 - w1, b + b1, w * 0.6, h * 0.8])
+            w2 = w * 0.05
+            # colorbar
+            l, b, w, h = ax[2].get_position().bounds
+            ax[2].set_position([l - l1 - w1 - w2, b, w, h])
+            # Horizontal dendrogram
+            l, b, w, h = ax[3].get_position().bounds
+            ax[3].set_position([l - l1 - w1, b, w * 0.6, h])
 
         title = "Portfolio - " + title_opt + "\n"
         title += ax[3].get_title(loc="left")
