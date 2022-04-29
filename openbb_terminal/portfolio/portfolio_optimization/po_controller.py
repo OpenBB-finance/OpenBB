@@ -425,6 +425,7 @@ class PortfolioOptimizationController(BaseController):
         if session and obbff.USE_PROMPT_TOOLKIT:
             if self.portfolios:
                 self.choices["show"] = {c: None for c in list(self.portfolios.keys())}
+                self.choices["plot"] = {c: None for c in list(self.portfolios.keys())}
 
         self.completer = NestedCompleter.from_nested_dict(self.choices)
 
@@ -943,6 +944,10 @@ class PortfolioOptimizationController(BaseController):
             default=False,
             help="Display a heatmap of correlation matrix with dendrogram",
         )
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-pf")
+
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if len(self.tickers) < 2:
