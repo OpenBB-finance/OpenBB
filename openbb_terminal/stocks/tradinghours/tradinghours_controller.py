@@ -116,8 +116,8 @@ exchange        show one exchange[/cmds]
             self.symbol = ns_parser.symbol
             self.symbol_name = self.equities[self.symbol]["short_name"]  #
             self.exchange = self.equities[self.symbol]["exchange"]
-            open = get_open()
-            if self.exchange in open.index:
+            open_ex = get_open()
+            if self.exchange in open_ex.index:
                 self.symbol_market_open = True
             else:
                 self.symbol_market_open = False
