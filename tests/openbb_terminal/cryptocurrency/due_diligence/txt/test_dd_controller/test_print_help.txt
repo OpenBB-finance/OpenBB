@@ -37,4 +37,8 @@ Coinbase
    stats           show coin stats
 Messari
    mcapdom         show market cap dominance
+Santiment
+   gh              github activity over time
+CryptoPanic
+   news            loaded coin's most recent news
 
