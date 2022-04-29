@@ -312,7 +312,7 @@ def load(
                     symbol=ticker, outputsize="full"
                 )
             except Exception as e:
-                console.print(e, "\n")
+                console.print(e, "")
                 return pd.DataFrame()
 
             df_stock_candidate.columns = [
