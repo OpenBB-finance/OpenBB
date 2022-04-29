@@ -638,7 +638,7 @@ class PortfolioOptimizationController(BaseController):
         if ns_parser:
             portfolios = set(self.portfolios.keys())
             if not ns_parser.categories:
-                categories = list(self.categories.keys())
+                categories = ["ASSET_CLASS", "COUNTRY", "SECTOR", "INDUSTRY"]
             else:
                 categories = ns_parser.categories
 
