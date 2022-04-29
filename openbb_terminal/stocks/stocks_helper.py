@@ -306,7 +306,7 @@ def load(
         # Alpha Vantage Source
         if source == "av":
             try:
-                ts = TimeSeries("P6YGOQ6FL6OEIZ3B", output_format="pandas")
+                ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas")
                 # pylint: disable=unbalanced-tuple-unpacking
                 df_stock_candidate, _ = ts.get_daily_adjusted(
                     symbol=ticker, outputsize="full"
