@@ -16,73 +16,15 @@ interactions:
     uri: https://data.messari.io/api/v2/assets/eth/profile?fields=profile%2Fgeneral%2Foverview%2Fproject_details%2Cprofile%2Ftechnology
   response:
     body:
-      string: !!binary |
-        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
+      string: no healthy upstream
     headers:
-      content-encoding:
-      - gzip
+      content-length:
+      - '19'
       content-type:
-      - application/json; charset=UTF-8
+      - text/plain
       date:
-      - Thu, 28 Apr 2022 17:46:15 GMT
-      transfer-encoding:
-      - chunked
-      vary:
-      - Accept-Encoding,Origin
-      x-ratelimit-limit:
-      - '4000'
-      x-ratelimit-remaining:
-      - '3903'
-      x-ratelimit-reset:
-      - '1651249545'
+      - Fri, 29 Apr 2022 11:23:36 GMT
     status:
-      code: 200
-      message: OK
+      code: 503
+      message: Service Unavailable
 version: 1

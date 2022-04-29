@@ -16,44 +16,15 @@ interactions:
     uri: https://data.messari.io/api/v2/assets/eth/profile?fields=profile%2Fgovernance
   response:
     body:
-      string: !!binary |
-        H4sIAAAAAAAA/3RW3W7bRhN9lQFvkgASaelznETAd9H8IDFQNAEatEDjwBhyh+TEyx1iZyhVDfzu
-        xS5lWXbSO5OcOfN3zrG+F2pokxab7wV5HJVcsVkvCuOB1HAYi02xPluvl2fny/XLz6sXm/OLzeqs
-        fP589er5+vzlxV/F7aJwaJgQxigte0p/drKlGDA0j56uHRmy12JTvLOeIk0DyEgRjRSUB/YY/R5M
-        4DVbIxzA+ihT14O07bLpkcMCOLQSB/Rwj1vCZQplhUEc+QU42pJPyAoNBtCpHthgjGLSiIdp7CI6
-        0gW4qa7JwdV0dva/BqGP1P7/qujNRt1U1UCqGLlkqTAaN54qOvS95GGMsqWBgi3HKKMo+iXxeFVk
-        MDoOeHkfCJ8OgQpP311+0mdz3QrnlAVIgLu8J5pWE5YqU2wI3rN9mGqINIqySdyX8EYiHcNPR7ae
-        AjjWZlKFQDu4608XsGPrAZ1jYwnogcM4GbRRhpQG9LdRcOSgkWGYAtu+hMsWcMwzOKj3gDDgN4ls
-        e9iK0QKa1MdJ+YFiRxmt6TF0pMDBJL+oUQkacVTCZwHcCudKo+cGU0MKo6gtM8ICgjg68EMS7qQG
-        0+jQMjpHaDxTMIUDuk88MlBpbYeRymJRSMisuX7IyB/fXtt+pGJT/CbwMSzfpK/w/j7nZ0AnZP6z
-        Z396CiGFIAY9bgkwJPZyw+hBwsziE+7eUZZtzptzoGdNV57vlaWwFePQlfC5T+NHIuCgliAUPKul
-        65CXHWBMd8Rh9KQgLXgRJb+HRqbR0ynY5ios4cvbXz4eGZJPql+f3inAoSSP0LJj66c6KeFIprK3
-        wT/LEKmnBPMGYy0hYcwQm6rarsrm+LZsZKjuU95dfoLVy4vq4vxVdXHx6mfpP+ZehV8fDOROJwI1
-        9h4akeg4ZF9JzDicKm0jPR6nPbGVejIYs8p5xESqg2nMTMtrOZ7vICPCps9fYEfc9TbrIxUwMfSA
-        g0zBUtHsGtCTP0SgJQ1GUi3hLenIdhCMxEg+SwFqsh3RcbC5BGBwYHJDQTPcAiZNmnOSCXfX8xyA
-        XkKn7OjBEAkhUSSztU3aPWR+oyalAoY9OI7pqeXE0cTceoqOQgkfKDS0mOX26Awea/LQ8ZbCrEhW
-        UNt7Shs4IXy9hz/Y0PMNvJ6MIocyXfU/5bN/wObTY6MCQj2xtyUH8LinuFzd23xLaFMkeBqppRjJ
-        5ekULG3yp4J4VqaWIJDtJN4oDBzSdil02CW9AT5OPnQyRmlIFXbZeskoDhzy2fr59iYHN5x90Etz
-        Ax0m5Q5sef7fKXlBvCcrh8d7eqLwpfbSZZe8F+l2jiobrDoKFNFX67PVi2q1rlYvqoNvZLGmfzC5
-        9mMXKhYF67VFQp3i/tpRQ8Eiev4n/SZo0SvdLoouJmUUmy9fb29vb/8NAAD//4q0Fsg/CAAA
+      string: no healthy upstream
     headers:
-      content-encoding:
-      - gzip
       content-length:
-      - '1080'
+      - '19'
       content-type:
-      - application/json; charset=UTF-8
+      - text/plain
       date:
-      - Thu, 28 Apr 2022 17:46:10 GMT
-      vary:
-      - Accept-Encoding,Origin
-      x-ratelimit-limit:
-      - '4000'
-      x-ratelimit-remaining:
-      - '3908'
-      x-ratelimit-reset:
-      - '1651249545'
+      - Fri, 29 Apr 2022 11:23:31 GMT
     status:
-      code: 200
-      message: OK
+      code: 503
+      message: Service Unavailable
 version: 1

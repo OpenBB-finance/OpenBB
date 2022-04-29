@@ -16,30 +16,15 @@ interactions:
     uri: https://data.messari.io/api/v2/assets/eth/profile?fields=profile%2Fgeneral%2Foverview%2Fofficial_links
   response:
     body:
-      string: !!binary |
-        H4sIAAAAAAAA/4SQUUvDMBSF/4rc565Zs6ojj774KjIYKiLZetteTJuQ3C3I2H+XZlI2O7EP5ZCT
-        75zce4DAmncB1AHQaBewAiUzYOowsO4cKJBzKWfzciaXq+JelXeqWOTydlHMy3JZvMIxg0qzHhKc
-        tzUZHGSDPXptBmn36PeEMem6pi1p82Go/wyg3g7Q6w5BwbolRqcdeshgcEFBy+yCEgK5RY+7Lre+
-        EdiLON4VcMzGiEfidreZ4k06z7e2G5POsTVuAjFOuRhjflF9Tq0iMV97LJ+MP+uesaqIr7f55CXU
-        j/BF7QsaY+PN0z+L+hmZrPhKwGlZ6Z+7qj5PfDC2mSZtjG1+D/9+HL7vAAAA///2QxpzMwIAAA==
+      string: no healthy upstream
     headers:
-      content-encoding:
-      - gzip
       content-length:
-      - '283'
+      - '19'
       content-type:
-      - application/json; charset=UTF-8
+      - text/plain
       date:
-      - Thu, 28 Apr 2022 17:46:13 GMT
-      vary:
-      - Accept-Encoding,Origin
-      x-ratelimit-limit:
-      - '4000'
-      x-ratelimit-remaining:
-      - '3905'
-      x-ratelimit-reset:
-      - '1651249545'
+      - Fri, 29 Apr 2022 11:23:34 GMT
     status:
-      code: 200
-      message: OK
+      code: 503
+      message: Service Unavailable
 version: 1

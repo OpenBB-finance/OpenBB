@@ -16,48 +16,15 @@ interactions:
     uri: https://data.messari.io/api/v1/assets/btc/metrics/mcap.dom/time-series?start=2022-01-10&end=2022-03-08&interval=1d
   response:
     body:
-      string: !!binary |
-        H4sIAAAAAAAA/3SVS4/byBWF/wpRmySAWr7vh7bJKkF2nc0YRoMjcdyMWw+I1DiG0f89oJpFKgFG
-        0EJQfbx17qlziz/LMLbjbSi7n6V7ay9Ddyi7lE0Z+2M3jO3xUnaFgOgJ5IniGX0ntgPfKjiyk/5S
-        3jfl0I7tVOHSXttjN3bXe712GLrx5Vv3o+zKr+O+bOZ/+kPZFewYCaN96kS6J6HQpyDYPwUFdR0R
-        AWvZTOqu4yIBnxCeAXb37y9lU7rTYVnkJ4j/WexPY3f9vX2bdjuUTTlfD9217Eo77LvToT99LZvy
-        2/l6bKcN/j2cT+Wh7Zdl5Xbq//N07N/e+qHbn0+HoWzK/vx2O56Gsvv8YNSmHNvrt27ct5eXw/nY
-        n9rTvitf3jdl2L92x7tDx2689vsPC4779rI9nI9lU07tsSu78s/6fPO35flNOXTD/tpfxv58Krvy
-        /No1yz7Nsk/TD8342jV3i/80NJfuuu9OY/u1a4bX9to159+a8Ty2b83++uMynpt9f93f3tqxP31d
-        65VN+b19u3XDyyr5MQnP9XfTn5pHT5qhn0RMCrrLef/a/Bmbv7enW3v90WA6NPVgmn89//Uvf2DV
-        Hze3djPF7dif+uPt+PL/Bzycb9d999KO47X/9fbh1+ef1dx/tP23c9mU23V64HUcL8Pu06fv379v
-        v00r2/35+Km8T8f1YUHZff6MJuhOAdNnw7kNw0RWBFSikC+bOxKa9IEIbEWJXdWNxYVmIkXtoQgH
-        kIlasM8EAX+UuBMiEKDgbs7hM4EYshKpzEzmkGBhM0Igq1ZiTwtwDCCRSiTSQkAYBaoYi2kVwu5V
-        amwjjcHcmTEsZkJMVqkkiBGik1HVEFKFVWpQilBEmDHUZowtFsuAAiLC1VRIZ8KJV1NZAlPdQjhr
-        iYC0BXA3DUoWNgOvfsRMwEZwy6iiiDxJra1kkCw1EknSgSQCEz8IBotYSmSq6HQqSmqVQFVaCQtm
-        CAlPx+o6k6AtSEQyAwYaZcjcLvOcMtgIbRU1ERWJSRXnblhQZEE40E1MEFAoZ0IBYiFIgG3KjRrz
-        QoTTQ40QQAO0COaZMGdbCNSEBBQNR6tS53x8dOOgnmacBOy1RtSITISkhTqnRTLMKeOs/d4JYxAE
-        D0xaAiCAuUqliCRjjgydexEEXV1NNoTp+JHNVSqStLoKYM5uZECiWbchj1VrggOyIRqm1BgJmzzY
-        6ooiagZqdTZFFNcM3LslxQRWr2K12nY33ghRmCbbpe5iJKvWaVjCI5HYtO7iCGsAXNnFIRDBeGn4
-        PvIVyZRMmsRbZFYkgldf00nNLKcsLc6n5apVNQI0wz0g5sxrdf6DAAywTFGmuRlFoVXq1KoaEKci
-        1cRPF+gqlXGKeji4uWitwqgPaVVCSs4A5+XK03uAl7PhSHUyEnXySsTDZKGwMFuyuMV8Nqr+MFgE
-        04BmcBhg7dfsYbAAMCLYQoTqUKjLw2AZiBBLUE7tzEQwP8Q1IYkxZDqyeWzqW2QerAjWNHQyq8Np
-        APYY1sRMdmFRrnevQdJjAjJZFMzW+9vQl8HireiUBzYPXl5oRrZMFm/ZBJJQgFWFKsK6TBZv0VRR
-        VKdrWmZX79fAmhEXy+nNQR6ms2mm9DhYmRjJmOSMtYghPl4ChMlIYojLPXEP7xoSUc5p2ZEFv3x5
-        f/9vAAAA///ZfLaN4woAAA==
+      string: no healthy upstream
     headers:
-      content-encoding:
-      - gzip
       content-length:
-      - '1270'
+      - '19'
       content-type:
-      - application/json; charset=UTF-8
+      - text/plain
       date:
-      - Thu, 28 Apr 2022 17:46:07 GMT
-      vary:
-      - Accept-Encoding,Origin
-      x-ratelimit-limit:
-      - '4000'
-      x-ratelimit-remaining:
-      - '3911'
-      x-ratelimit-reset:
-      - '1651249545'
+      - Fri, 29 Apr 2022 11:23:28 GMT
     status:
-      code: 200
-      message: OK
+      code: 503
+      message: Service Unavailable
 version: 1
