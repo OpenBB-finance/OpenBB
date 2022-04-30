@@ -30,7 +30,7 @@ def display_short_by_exchange(
     raw: bool = False,
     sort: str = "",
     asc: bool = False,
-    mpl: bool = False,
+    mpl: bool = True,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
