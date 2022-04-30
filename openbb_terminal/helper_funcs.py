@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import argparse
 import logging
 from pathlib import Path
-from typing import List, Union
+from typing import List, Tuple, Union
 from datetime import datetime, timedelta, date as d
 import os
 import random
@@ -1424,6 +1424,7 @@ def get_closing_price(ticker, days):
     df = df.rename(columns={0: "Close"})
     df.index.name = "index"
     return df
+
 
 def camel_case_split(string: str) -> str:
     """Converts a camel case string to separate words

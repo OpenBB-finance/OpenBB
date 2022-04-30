@@ -820,10 +820,8 @@ class BehaviouralAnalysisController(StockBaseController):
         parser.add_argument(
             "-c",
             "--compare",
-            action="store",
+            action="store_true",
             dest="compare",
-            type=bool,
-            default=False,
             help="show corresponding change in stock price",
         )
         if other_args and "-" not in other_args[0][0]:
