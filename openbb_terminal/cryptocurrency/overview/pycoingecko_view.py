@@ -74,7 +74,7 @@ def display_crypto_heatmap(
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
         else:
             if len(external_axes) != 1:
-                console.print("[red]Expected list of 1 axis item./n[/red]")
+                console.print("[red]Expected list of 1 axis item.\n[/red]")
                 return
             (ax,) = external_axes
 
