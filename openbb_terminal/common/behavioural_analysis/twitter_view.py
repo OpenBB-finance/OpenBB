@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_inference(ticker: str, num: int, export: str = ""):
+def display_inference(ticker: str, num: int = 100, export: str = ""):
     """Infer sentiment from past n tweets
 
     Parameters
@@ -72,8 +72,8 @@ def display_inference(ticker: str, num: int, export: str = ""):
 @log_start_end(log=logger)
 def display_sentiment(
     ticker: str,
-    n_tweets: int,
-    n_days_past: int,
+    n_tweets: int = 15,
+    n_days_past: int = 6,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
