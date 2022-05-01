@@ -51,11 +51,11 @@ from .tradingview_view import print_recommendation as recom
 
 
 # Models
-# NOTE: The ma function is used here to point to the commons path where all the
-#       ta models are expected to live
+from openbb_terminal.common import technical_analysis
+
 models = _models(
     [
-        os.path.abspath(os.path.dirname(ma.__code__.co_filename)),
+        os.path.abspath(os.path.dirname(technical_analysis.__file__)),
         os.path.abspath(os.path.dirname(__file__)),
     ]
 )
