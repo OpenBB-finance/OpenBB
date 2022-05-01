@@ -49,8 +49,6 @@ from openbb_terminal.common.quantitative_analysis.qa_view import (
 from .factors_view import capm_view as capm
 
 # Models
-# NOTE: The raw function is used here to point to the commons path where all the
-#       qa models are expected to live
 models = _models(
     [
         os.path.abspath(os.path.dirname(quantitative_analysis.__file__)),

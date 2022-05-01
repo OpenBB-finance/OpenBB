@@ -48,8 +48,6 @@ from openbb_terminal.common.quantitative_analysis.qa_view import (
 )
 
 # Models
-# NOTE: The raw function is used here to point to the commons path where all the
-#       qa models are expected to live
 models = _models(
     [
         os.path.abspath(os.path.dirname(quantitative_analysis.__file__)),

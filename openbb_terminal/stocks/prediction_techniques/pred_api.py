@@ -36,6 +36,4 @@ from openbb_terminal.common.prediction_techniques.mc_view import (
 )
 
 # Models
-# NOTE: The ets function is used here to point to the commons path where all the
-#       inference models are expected to live
 models = _models(os.path.abspath(os.path.dirname(prediction_techniques.__file__)))

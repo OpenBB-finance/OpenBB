@@ -161,7 +161,6 @@ def display_regression(
         )
 
     theme.style_primary_axis(ax1)
-
     if external_axes is None:
         theme.visualize_output()
 

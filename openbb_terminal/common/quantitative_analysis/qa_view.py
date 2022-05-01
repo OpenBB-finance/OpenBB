@@ -295,6 +295,7 @@ def display_bw(
             return
         (ax,) = external_axes
 
+    theme.style_primary_axis(ax)
     color = theme.get_colors()[0]
     if yearly:
         x_data = data.index.year
