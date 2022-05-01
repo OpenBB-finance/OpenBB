@@ -1,6 +1,7 @@
 """Screener API."""
 import os
 from openbb_terminal.helper_classes import ModelsNamespace as _models
+from openbb_terminal.common import technical_analysis
 
 # flake8: noqa
 # pylint: disable=unused-import
@@ -51,8 +52,6 @@ from .tradingview_view import print_recommendation as recom
 
 
 # Models
-from openbb_terminal.common import technical_analysis
-
 models = _models(
     [
         os.path.abspath(os.path.dirname(technical_analysis.__file__)),
