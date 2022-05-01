@@ -1,4 +1,4 @@
-"""Screener API."""
+"""Technical Analysis API."""
 import os
 from openbb_terminal.helper_classes import ModelsNamespace as _models
 from openbb_terminal.common import technical_analysis

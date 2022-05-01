@@ -113,8 +113,6 @@ def display_sentiment_analysis(
             theme.visualize_output()
 
     else:
-        sentiment.sort_index(ascending=True, inplace=True)
-
         if rich_config.USE_COLOR:
             color_df = sentiment["Sentiment Analysis"].apply(
                 lambda_sentiment_coloring, last_val=0
