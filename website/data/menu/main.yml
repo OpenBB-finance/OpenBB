@@ -433,7 +433,7 @@ main:
               - name: vsurf
                 ref: "/terminal/stocks/options/vsurf"
               - name: portfolio optimization
-                ref: "/terminal/portfolio/portfolio_optimization"
+                ref: "/terminal/portfolio/po"
               - name: parity
                 ref: "/terminal/stocks/options/parity"
               - name: binom
