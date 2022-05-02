@@ -399,22 +399,36 @@ def display_weights_sa(weights: dict, weights_sa: dict):
         .astype(str)
         .apply(lambda s: " " * (8 - len(s)) + s if len(s) < 8 else "" + s)
     )
-    weight_df["value s.a."] = (weight_df["value s.a."] * 100).apply(lambda s: f"{s:.2f}") + " %"
+    weight_df["value s.a."] = (weight_df["value s.a."] * 100).apply(
+        lambda s: f"{s:.2f}"
+    ) + " %"
     weight_df["value s.a."] = (
         weight_df["value s.a."]
         .astype(str)
-        .apply(lambda s: " " * (len("value s.a.") - len(s)) + s if len(s) < len("value s.a.") else "" + s)
+        .apply(
+            lambda s: " " * (len("value s.a.") - len(s)) + s
+            if len(s) < len("value s.a.")
+            else "" + s
+        )
     )
-    weight_df["value vs value s.a."] = (weight_df["value vs value s.a."] * 100).apply(lambda s: f"{s:.2f}") + " %"
+    weight_df["value vs value s.a."] = (weight_df["value vs value s.a."] * 100).apply(
+        lambda s: f"{s:.2f}"
+    ) + " %"
     weight_df["value vs value s.a."] = (
         weight_df["value vs value s.a."]
         .astype(str)
-        .apply(lambda s: " " * (len("value vs value s.a.") - len(s)) + s if len(s) < len("value vs value s.a.") else "" + s)
+        .apply(
+            lambda s: " " * (len("value vs value s.a.") - len(s)) + s
+            if len(s) < len("value vs value s.a.")
+            else "" + s
+        )
     )
 
     headers = list(weight_df.columns)
     headers = [s.title() for s in headers]
-    print_rich_table(weight_df, headers=headers, show_index=True, title="Weights Comparison")
+    print_rich_table(
+        weight_df, headers=headers, show_index=True, title="Weights Comparison"
+    )
 
 
 @log_start_end(log=logger)
@@ -509,7 +523,9 @@ def display_categories(weights: dict, categories: dict, column: str, title: str 
 
 
 @log_start_end(log=logger)
-def display_categories_sa(weights: dict, weights_sa: dict, categories: dict, column: str, title: str = ""):
+def display_categories_sa(
+    weights: dict, weights_sa: dict, categories: dict, column: str, title: str = ""
+):
     """
     Prints categories in a nice format
 
@@ -577,17 +593,29 @@ def display_categories_sa(weights: dict, weights_sa: dict, categories: dict, col
         .astype(str)
         .apply(lambda s: " " * (8 - len(s)) + s if len(s) < 8 else "" + s)
     )
-    table_df["value s.a."] = (table_df["value s.a."] * 100).apply(lambda s: f"{s:.2f}") + " %"
+    table_df["value s.a."] = (table_df["value s.a."] * 100).apply(
+        lambda s: f"{s:.2f}"
+    ) + " %"
     table_df["value s.a."] = (
         table_df["value s.a."]
         .astype(str)
-        .apply(lambda s: " " * (len("value s.a.") - len(s)) + s if len(s) < len("value s.a.") else "" + s)
+        .apply(
+            lambda s: " " * (len("value s.a.") - len(s)) + s
+            if len(s) < len("value s.a.")
+            else "" + s
+        )
     )
-    table_df["value vs value s.a."] = (table_df["value vs value s.a."] * 100).apply(lambda s: f"{s:.2f}") + " %"
+    table_df["value vs value s.a."] = (table_df["value vs value s.a."] * 100).apply(
+        lambda s: f"{s:.2f}"
+    ) + " %"
     table_df["value vs value s.a."] = (
         table_df["value vs value s.a."]
         .astype(str)
-        .apply(lambda s: " " * (len("value vs value s.a.") - len(s)) + s if len(s) < len("value vs value s.a.") else "" + s)
+        .apply(
+            lambda s: " " * (len("value vs value s.a.") - len(s)) + s
+            if len(s) < len("value vs value s.a.")
+            else "" + s
+        )
     )
     table_df["CURRENT_WEIGHTS"] = (table_df["CURRENT_WEIGHTS"] * 100).apply(
         lambda s: f"{s:.2f}"
@@ -1626,7 +1654,7 @@ def display_max_ret(
         d_ewma=d_ewma,
         value=value,
         value_short=value_short,
-        table=table
+        table=table,
     )
     return weights
 
@@ -1864,7 +1892,7 @@ def display_max_decorr(
             freq=freq,
         )
         console.print("")
-    
+
     return weights
 
 

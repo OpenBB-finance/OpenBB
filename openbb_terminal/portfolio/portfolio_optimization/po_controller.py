@@ -1222,11 +1222,10 @@ class PortfolioOptimizationController(BaseController):
                 value=ns_parser.long_allocation,
                 table=True,
             )
-            
+
             self.portfolios[ns_parser.name.upper()] = weights
             self.count += 1
             self.update_runtime_choices()
-
 
     @log_start_end(log=logger)
     def call_mktcap(self, other_args: List[str]):
@@ -1425,7 +1424,6 @@ class PortfolioOptimizationController(BaseController):
             self.count += 1
             self.update_runtime_choices()
 
- 
     @log_start_end(log=logger)
     def call_dividend(self, other_args: List[str]):
         """Process dividend command"""
@@ -1622,7 +1620,6 @@ class PortfolioOptimizationController(BaseController):
             self.portfolios[ns_parser.name.upper()] = weights
             self.count += 1
             self.update_runtime_choices()
-
 
     @log_start_end(log=logger)
     def call_property(self, other_args: List[str]):
@@ -1829,7 +1826,6 @@ class PortfolioOptimizationController(BaseController):
             self.portfolios[ns_parser.name.upper()] = weights
             self.count += 1
             self.update_runtime_choices()
-
 
     @log_start_end(log=logger)
     def call_maxsharpe(self, other_args: List[str]):
@@ -2069,31 +2065,35 @@ class PortfolioOptimizationController(BaseController):
         """
         Sensitivity Analysis
         """
-        subparsers = parser.add_subparsers(title = 'sensitivity analysis command', 
-                                           help='sensitivity analysis')
-        parser_update = subparsers.add_parser('sa',
-                                              help='sensitivity analysis command')
+        subparsers = parser.add_subparsers(
+            title="sensitivity analysis command", help="sensitivity analysis"
+        )
+        parser_update = subparsers.add_parser("sa", help="sensitivity analysis command")
 
         parser_dict = vars(parser)
-        for i in parser_dict['_actions']:
+        for i in parser_dict["_actions"]:
             data_dict = vars(i)
             variables = list(data_dict.keys())
-            if variables[0] == 'option_strings' and data_dict['dest'] != 'name':
-                if len(data_dict['option_strings']) == 1:
-                    parser_update.add_argument(data_dict['option_strings'][0] + '-sa',
-                                               type=data_dict['type'],
-                                               default=data_dict['default'],
-                                               dest=data_dict['dest'] + '_sa',
-                                               choices=data_dict['choices'],
-                                               help=data_dict['help'])
-                elif len(data_dict['option_strings']) == 2:
-                    parser_update.add_argument(data_dict['option_strings'][0] + '-sa',
-                                               data_dict['option_strings'][1] + '-sa',
-                                               type=data_dict['type'],
-                                               default=data_dict['default'],
-                                               dest=data_dict['dest'] + '_sa',
-                                               choices=data_dict['choices'],
-                                               help=data_dict['help'])
+            if variables[0] == "option_strings" and data_dict["dest"] != "name":
+                if len(data_dict["option_strings"]) == 1:
+                    parser_update.add_argument(
+                        data_dict["option_strings"][0] + "-sa",
+                        type=data_dict["type"],
+                        default=data_dict["default"],
+                        dest=data_dict["dest"] + "_sa",
+                        choices=data_dict["choices"],
+                        help=data_dict["help"],
+                    )
+                elif len(data_dict["option_strings"]) == 2:
+                    parser_update.add_argument(
+                        data_dict["option_strings"][0] + "-sa",
+                        data_dict["option_strings"][1] + "-sa",
+                        type=data_dict["type"],
+                        default=data_dict["default"],
+                        dest=data_dict["dest"] + "_sa",
+                        choices=data_dict["choices"],
+                        help=data_dict["help"],
+                    )
 
         parser.add_argument(
             "-ct",
@@ -2112,7 +2112,7 @@ class PortfolioOptimizationController(BaseController):
                 return
 
             table = True
-            if 'historic_period_sa' in vars(ns_parser):
+            if "historic_period_sa" in vars(ns_parser):
                 table = False
 
             weights = optimizer_view.display_max_sharpe(
@@ -2168,9 +2168,8 @@ class PortfolioOptimizationController(BaseController):
 
                 console.print("")
                 optimizer_view.display_weights_sa(
-                    weights=weights,
-                    weights_sa=weights_sa
-                    )
+                    weights=weights, weights_sa=weights_sa
+                )
 
                 if not ns_parser.categories:
                     categories = ["ASSET_CLASS", "COUNTRY", "SECTOR", "INDUSTRY"]
@@ -2183,9 +2182,8 @@ class PortfolioOptimizationController(BaseController):
                         weights_sa=weights_sa,
                         categories=self.categories,
                         column=category,
-                        title="Category - " + category.title()
-                        )
-
+                        title="Category - " + category.title(),
+                    )
 
     @log_start_end(log=logger)
     def call_minrisk(self, other_args: List[str]):
@@ -2423,31 +2421,35 @@ class PortfolioOptimizationController(BaseController):
         """
         Sensitivity Analysis
         """
-        subparsers = parser.add_subparsers(title = 'sensitivity analysis command', 
-                                           help='sensitivity analysis')
-        parser_update = subparsers.add_parser('sa',
-                                              help='sensitivity analysis command')
+        subparsers = parser.add_subparsers(
+            title="sensitivity analysis command", help="sensitivity analysis"
+        )
+        parser_update = subparsers.add_parser("sa", help="sensitivity analysis command")
 
         parser_dict = vars(parser)
-        for i in parser_dict['_actions']:
+        for i in parser_dict["_actions"]:
             data_dict = vars(i)
             variables = list(data_dict.keys())
-            if variables[0] == 'option_strings' and data_dict['dest'] != 'name':
-                if len(data_dict['option_strings']) == 1:
-                    parser_update.add_argument(data_dict['option_strings'][0] + '-sa',
-                                               type=data_dict['type'],
-                                               default=data_dict['default'],
-                                               dest=data_dict['dest'] + '_sa',
-                                               choices=data_dict['choices'],
-                                               help=data_dict['help'])
-                elif len(data_dict['option_strings']) == 2:
-                    parser_update.add_argument(data_dict['option_strings'][0] + '-sa',
-                                               data_dict['option_strings'][1] + '-sa',
-                                               type=data_dict['type'],
-                                               default=data_dict['default'],
-                                               dest=data_dict['dest'] + '_sa',
-                                               choices=data_dict['choices'],
-                                               help=data_dict['help'])
+            if variables[0] == "option_strings" and data_dict["dest"] != "name":
+                if len(data_dict["option_strings"]) == 1:
+                    parser_update.add_argument(
+                        data_dict["option_strings"][0] + "-sa",
+                        type=data_dict["type"],
+                        default=data_dict["default"],
+                        dest=data_dict["dest"] + "_sa",
+                        choices=data_dict["choices"],
+                        help=data_dict["help"],
+                    )
+                elif len(data_dict["option_strings"]) == 2:
+                    parser_update.add_argument(
+                        data_dict["option_strings"][0] + "-sa",
+                        data_dict["option_strings"][1] + "-sa",
+                        type=data_dict["type"],
+                        default=data_dict["default"],
+                        dest=data_dict["dest"] + "_sa",
+                        choices=data_dict["choices"],
+                        help=data_dict["help"],
+                    )
 
         parser.add_argument(
             "-ct",
@@ -2466,7 +2468,7 @@ class PortfolioOptimizationController(BaseController):
                 return
 
             table = True
-            if 'historic_period_sa' in vars(ns_parser):
+            if "historic_period_sa" in vars(ns_parser):
                 table = False
 
             weights = optimizer_view.display_min_risk(
@@ -2522,9 +2524,8 @@ class PortfolioOptimizationController(BaseController):
 
                 console.print("")
                 optimizer_view.display_weights_sa(
-                    weights=weights,
-                    weights_sa=weights_sa
-                    )
+                    weights=weights, weights_sa=weights_sa
+                )
 
                 if not ns_parser.categories:
                     categories = ["ASSET_CLASS", "COUNTRY", "SECTOR", "INDUSTRY"]
@@ -2537,9 +2538,8 @@ class PortfolioOptimizationController(BaseController):
                         weights_sa=weights_sa,
                         categories=self.categories,
                         column=category,
-                        title="Category - " + category.title()
-                        )
-
+                        title="Category - " + category.title(),
+                    )
 
     @log_start_end(log=logger)
     def call_maxutil(self, other_args: List[str]):
@@ -2789,31 +2789,35 @@ class PortfolioOptimizationController(BaseController):
         """
         Sensitivity Analysis
         """
-        subparsers = parser.add_subparsers(title = 'sensitivity analysis command', 
-                                           help='sensitivity analysis')
-        parser_update = subparsers.add_parser('sa',
-                                              help='sensitivity analysis command')
+        subparsers = parser.add_subparsers(
+            title="sensitivity analysis command", help="sensitivity analysis"
+        )
+        parser_update = subparsers.add_parser("sa", help="sensitivity analysis command")
 
         parser_dict = vars(parser)
-        for i in parser_dict['_actions']:
+        for i in parser_dict["_actions"]:
             data_dict = vars(i)
             variables = list(data_dict.keys())
-            if variables[0] == 'option_strings' and data_dict['dest'] != 'name':
-                if len(data_dict['option_strings']) == 1:
-                    parser_update.add_argument(data_dict['option_strings'][0] + '-sa',
-                                               type=data_dict['type'],
-                                               default=data_dict['default'],
-                                               dest=data_dict['dest'] + '_sa',
-                                               choices=data_dict['choices'],
-                                               help=data_dict['help'])
-                elif len(data_dict['option_strings']) == 2:
-                    parser_update.add_argument(data_dict['option_strings'][0] + '-sa',
-                                               data_dict['option_strings'][1] + '-sa',
-                                               type=data_dict['type'],
-                                               default=data_dict['default'],
-                                               dest=data_dict['dest'] + '_sa',
-                                               choices=data_dict['choices'],
-                                               help=data_dict['help'])
+            if variables[0] == "option_strings" and data_dict["dest"] != "name":
+                if len(data_dict["option_strings"]) == 1:
+                    parser_update.add_argument(
+                        data_dict["option_strings"][0] + "-sa",
+                        type=data_dict["type"],
+                        default=data_dict["default"],
+                        dest=data_dict["dest"] + "_sa",
+                        choices=data_dict["choices"],
+                        help=data_dict["help"],
+                    )
+                elif len(data_dict["option_strings"]) == 2:
+                    parser_update.add_argument(
+                        data_dict["option_strings"][0] + "-sa",
+                        data_dict["option_strings"][1] + "-sa",
+                        type=data_dict["type"],
+                        default=data_dict["default"],
+                        dest=data_dict["dest"] + "_sa",
+                        choices=data_dict["choices"],
+                        help=data_dict["help"],
+                    )
 
         parser.add_argument(
             "-ct",
@@ -2832,7 +2836,7 @@ class PortfolioOptimizationController(BaseController):
                 return
 
             table = True
-            if 'historic_period_sa' in vars(ns_parser):
+            if "historic_period_sa" in vars(ns_parser):
                 table = False
 
             weights = optimizer_view.display_max_util(
@@ -2885,14 +2889,13 @@ class PortfolioOptimizationController(BaseController):
                     d_ewma=ns_parser.smoothing_factor_ewma_sa,
                     value=ns_parser.long_allocation_sa,
                     value_short=ns_parser.short_allocation_sa,
-                    table=table
+                    table=table,
                 )
 
                 console.print("")
                 optimizer_view.display_weights_sa(
-                    weights=weights,
-                    weights_sa=weights_sa
-                    )
+                    weights=weights, weights_sa=weights_sa
+                )
 
                 if not ns_parser.categories:
                     categories = ["ASSET_CLASS", "COUNTRY", "SECTOR", "INDUSTRY"]
@@ -2905,9 +2908,8 @@ class PortfolioOptimizationController(BaseController):
                         weights_sa=weights_sa,
                         categories=self.categories,
                         column=category,
-                        title="Category - " + category.title()
-                        )
-
+                        title="Category - " + category.title(),
+                    )
 
     @log_start_end(log=logger)
     def call_maxret(self, other_args: List[str]):
@@ -3147,31 +3149,35 @@ class PortfolioOptimizationController(BaseController):
         """
         Sensitivity Analysis
         """
-        subparsers = parser.add_subparsers(title = 'sensitivity analysis command', 
-                                           help='sensitivity analysis')
-        parser_update = subparsers.add_parser('sa',
-                                              help='sensitivity analysis command')
+        subparsers = parser.add_subparsers(
+            title="sensitivity analysis command", help="sensitivity analysis"
+        )
+        parser_update = subparsers.add_parser("sa", help="sensitivity analysis command")
 
         parser_dict = vars(parser)
-        for i in parser_dict['_actions']:
+        for i in parser_dict["_actions"]:
             data_dict = vars(i)
             variables = list(data_dict.keys())
-            if variables[0] == 'option_strings' and data_dict['dest'] != 'name':
-                if len(data_dict['option_strings']) == 1:
-                    parser_update.add_argument(data_dict['option_strings'][0] + '-sa',
-                                               type=data_dict['type'],
-                                               default=data_dict['default'],
-                                               dest=data_dict['dest'] + '_sa',
-                                               choices=data_dict['choices'],
-                                               help=data_dict['help'])
-                elif len(data_dict['option_strings']) == 2:
-                    parser_update.add_argument(data_dict['option_strings'][0] + '-sa',
-                                               data_dict['option_strings'][1] + '-sa',
-                                               type=data_dict['type'],
-                                               default=data_dict['default'],
-                                               dest=data_dict['dest'] + '_sa',
-                                               choices=data_dict['choices'],
-                                               help=data_dict['help'])
+            if variables[0] == "option_strings" and data_dict["dest"] != "name":
+                if len(data_dict["option_strings"]) == 1:
+                    parser_update.add_argument(
+                        data_dict["option_strings"][0] + "-sa",
+                        type=data_dict["type"],
+                        default=data_dict["default"],
+                        dest=data_dict["dest"] + "_sa",
+                        choices=data_dict["choices"],
+                        help=data_dict["help"],
+                    )
+                elif len(data_dict["option_strings"]) == 2:
+                    parser_update.add_argument(
+                        data_dict["option_strings"][0] + "-sa",
+                        data_dict["option_strings"][1] + "-sa",
+                        type=data_dict["type"],
+                        default=data_dict["default"],
+                        dest=data_dict["dest"] + "_sa",
+                        choices=data_dict["choices"],
+                        help=data_dict["help"],
+                    )
 
         parser.add_argument(
             "-ct",
@@ -3190,7 +3196,7 @@ class PortfolioOptimizationController(BaseController):
                 return
 
             table = True
-            if 'historic_period_sa' in vars(ns_parser):
+            if "historic_period_sa" in vars(ns_parser):
                 table = False
 
             weights = optimizer_view.display_max_ret(
@@ -3246,9 +3252,8 @@ class PortfolioOptimizationController(BaseController):
 
                 console.print("")
                 optimizer_view.display_weights_sa(
-                    weights=weights,
-                    weights_sa=weights_sa
-                    )
+                    weights=weights, weights_sa=weights_sa
+                )
 
                 if not ns_parser.categories:
                     categories = ["ASSET_CLASS", "COUNTRY", "SECTOR", "INDUSTRY"]
@@ -3261,9 +3266,8 @@ class PortfolioOptimizationController(BaseController):
                         weights_sa=weights_sa,
                         categories=self.categories,
                         column=category,
-                        title="Category - " + category.title()
-                        )
-
+                        title="Category - " + category.title(),
+                    )
 
     @log_start_end(log=logger)
     def call_maxdiv(self, other_args: List[str]):
@@ -3432,31 +3436,35 @@ class PortfolioOptimizationController(BaseController):
         """
         Sensitivity Analysis
         """
-        subparsers = parser.add_subparsers(title = 'sensitivity analysis command', 
-                                           help='sensitivity analysis')
-        parser_update = subparsers.add_parser('sa',
-                                              help='sensitivity analysis command')
+        subparsers = parser.add_subparsers(
+            title="sensitivity analysis command", help="sensitivity analysis"
+        )
+        parser_update = subparsers.add_parser("sa", help="sensitivity analysis command")
 
         parser_dict = vars(parser)
-        for i in parser_dict['_actions']:
+        for i in parser_dict["_actions"]:
             data_dict = vars(i)
             variables = list(data_dict.keys())
-            if variables[0] == 'option_strings' and data_dict['dest'] != 'name':
-                if len(data_dict['option_strings']) == 1:
-                    parser_update.add_argument(data_dict['option_strings'][0] + '-sa',
-                                               type=data_dict['type'],
-                                               default=data_dict['default'],
-                                               dest=data_dict['dest'] + '_sa',
-                                               choices=data_dict['choices'],
-                                               help=data_dict['help'])
-                elif len(data_dict['option_strings']) == 2:
-                    parser_update.add_argument(data_dict['option_strings'][0] + '-sa',
-                                               data_dict['option_strings'][1] + '-sa',
-                                               type=data_dict['type'],
-                                               default=data_dict['default'],
-                                               dest=data_dict['dest'] + '_sa',
-                                               choices=data_dict['choices'],
-                                               help=data_dict['help'])
+            if variables[0] == "option_strings" and data_dict["dest"] != "name":
+                if len(data_dict["option_strings"]) == 1:
+                    parser_update.add_argument(
+                        data_dict["option_strings"][0] + "-sa",
+                        type=data_dict["type"],
+                        default=data_dict["default"],
+                        dest=data_dict["dest"] + "_sa",
+                        choices=data_dict["choices"],
+                        help=data_dict["help"],
+                    )
+                elif len(data_dict["option_strings"]) == 2:
+                    parser_update.add_argument(
+                        data_dict["option_strings"][0] + "-sa",
+                        data_dict["option_strings"][1] + "-sa",
+                        type=data_dict["type"],
+                        default=data_dict["default"],
+                        dest=data_dict["dest"] + "_sa",
+                        choices=data_dict["choices"],
+                        help=data_dict["help"],
+                    )
 
         parser.add_argument(
             "-ct",
@@ -3475,7 +3483,7 @@ class PortfolioOptimizationController(BaseController):
                 return
 
             table = True
-            if 'historic_period_sa' in vars(ns_parser):
+            if "historic_period_sa" in vars(ns_parser):
                 table = False
 
             weights = optimizer_view.display_max_div(
@@ -3519,9 +3527,8 @@ class PortfolioOptimizationController(BaseController):
 
                 console.print("")
                 optimizer_view.display_weights_sa(
-                    weights=weights,
-                    weights_sa=weights_sa
-                    )
+                    weights=weights, weights_sa=weights_sa
+                )
 
                 if not ns_parser.categories:
                     categories = ["ASSET_CLASS", "COUNTRY", "SECTOR", "INDUSTRY"]
@@ -3534,9 +3541,8 @@ class PortfolioOptimizationController(BaseController):
                         weights_sa=weights_sa,
                         categories=self.categories,
                         column=category,
-                        title="Category - " + category.title()
-                        )
-
+                        title="Category - " + category.title(),
+                    )
 
     @log_start_end(log=logger)
     def call_maxdecorr(self, other_args: List[str]):
@@ -3705,31 +3711,35 @@ class PortfolioOptimizationController(BaseController):
         """
         Sensitivity Analysis
         """
-        subparsers = parser.add_subparsers(title = 'sensitivity analysis command', 
-                                           help='sensitivity analysis')
-        parser_update = subparsers.add_parser('sa',
-                                              help='sensitivity analysis command')
+        subparsers = parser.add_subparsers(
+            title="sensitivity analysis command", help="sensitivity analysis"
+        )
+        parser_update = subparsers.add_parser("sa", help="sensitivity analysis command")
 
         parser_dict = vars(parser)
-        for i in parser_dict['_actions']:
+        for i in parser_dict["_actions"]:
             data_dict = vars(i)
             variables = list(data_dict.keys())
-            if variables[0] == 'option_strings' and data_dict['dest'] != 'name':
-                if len(data_dict['option_strings']) == 1:
-                    parser_update.add_argument(data_dict['option_strings'][0] + '-sa',
-                                               type=data_dict['type'],
-                                               default=data_dict['default'],
-                                               dest=data_dict['dest'] + '_sa',
-                                               choices=data_dict['choices'],
-                                               help=data_dict['help'])
-                elif len(data_dict['option_strings']) == 2:
-                    parser_update.add_argument(data_dict['option_strings'][0] + '-sa',
-                                               data_dict['option_strings'][1] + '-sa',
-                                               type=data_dict['type'],
-                                               default=data_dict['default'],
-                                               dest=data_dict['dest'] + '_sa',
-                                               choices=data_dict['choices'],
-                                               help=data_dict['help'])
+            if variables[0] == "option_strings" and data_dict["dest"] != "name":
+                if len(data_dict["option_strings"]) == 1:
+                    parser_update.add_argument(
+                        data_dict["option_strings"][0] + "-sa",
+                        type=data_dict["type"],
+                        default=data_dict["default"],
+                        dest=data_dict["dest"] + "_sa",
+                        choices=data_dict["choices"],
+                        help=data_dict["help"],
+                    )
+                elif len(data_dict["option_strings"]) == 2:
+                    parser_update.add_argument(
+                        data_dict["option_strings"][0] + "-sa",
+                        data_dict["option_strings"][1] + "-sa",
+                        type=data_dict["type"],
+                        default=data_dict["default"],
+                        dest=data_dict["dest"] + "_sa",
+                        choices=data_dict["choices"],
+                        help=data_dict["help"],
+                    )
 
         parser.add_argument(
             "-ct",
@@ -3748,7 +3758,7 @@ class PortfolioOptimizationController(BaseController):
                 return
 
             table = True
-            if 'historic_period_sa' in vars(ns_parser):
+            if "historic_period_sa" in vars(ns_parser):
                 table = False
 
             weights = optimizer_view.display_max_decorr(
@@ -3792,9 +3802,8 @@ class PortfolioOptimizationController(BaseController):
 
                 console.print("")
                 optimizer_view.display_weights_sa(
-                    weights=weights,
-                    weights_sa=weights_sa
-                    )
+                    weights=weights, weights_sa=weights_sa
+                )
 
                 if not ns_parser.categories:
                     categories = ["ASSET_CLASS", "COUNTRY", "SECTOR", "INDUSTRY"]
@@ -3807,9 +3816,8 @@ class PortfolioOptimizationController(BaseController):
                         weights_sa=weights_sa,
                         categories=self.categories,
                         column=category,
-                        title="Category - " + category.title()
-                        )
-
+                        title="Category - " + category.title(),
+                    )
 
     @log_start_end(log=logger)
     def call_blacklitterman(self, other_args: List[str]):
@@ -4039,31 +4047,38 @@ class PortfolioOptimizationController(BaseController):
         """
         Sensitivity Analysis
         """
-        subparsers = parser.add_subparsers(title = 'sensitivity analysis command', 
-                                           help='sensitivity analysis')
-        parser_update = subparsers.add_parser('sa',
-                                              help='sensitivity analysis command')
+        subparsers = parser.add_subparsers(
+            title="sensitivity analysis command", help="sensitivity analysis"
+        )
+        parser_update = subparsers.add_parser("sa", help="sensitivity analysis command")
 
         parser_dict = vars(parser)
-        for i in parser_dict['_actions']:
+        for i in parser_dict["_actions"]:
             data_dict = vars(i)
             variables = list(data_dict.keys())
-            if variables[0] == 'option_strings' and data_dict['dest'] not in ['name', 'benchmark']:
-                if len(data_dict['option_strings']) == 1:
-                    parser_update.add_argument(data_dict['option_strings'][0] + '-sa',
-                                               type=data_dict['type'],
-                                               default=data_dict['default'],
-                                               dest=data_dict['dest'] + '_sa',
-                                               choices=data_dict['choices'],
-                                               help=data_dict['help'])
-                elif len(data_dict['option_strings']) == 2:
-                    parser_update.add_argument(data_dict['option_strings'][0] + '-sa',
-                                               data_dict['option_strings'][1] + '-sa',
-                                               type=data_dict['type'],
-                                               default=data_dict['default'],
-                                               dest=data_dict['dest'] + '_sa',
-                                               choices=data_dict['choices'],
-                                               help=data_dict['help'])
+            if variables[0] == "option_strings" and data_dict["dest"] not in [
+                "name",
+                "benchmark",
+            ]:
+                if len(data_dict["option_strings"]) == 1:
+                    parser_update.add_argument(
+                        data_dict["option_strings"][0] + "-sa",
+                        type=data_dict["type"],
+                        default=data_dict["default"],
+                        dest=data_dict["dest"] + "_sa",
+                        choices=data_dict["choices"],
+                        help=data_dict["help"],
+                    )
+                elif len(data_dict["option_strings"]) == 2:
+                    parser_update.add_argument(
+                        data_dict["option_strings"][0] + "-sa",
+                        data_dict["option_strings"][1] + "-sa",
+                        type=data_dict["type"],
+                        default=data_dict["default"],
+                        dest=data_dict["dest"] + "_sa",
+                        choices=data_dict["choices"],
+                        help=data_dict["help"],
+                    )
 
         parser.add_argument(
             "-ct",
@@ -4114,7 +4129,7 @@ class PortfolioOptimizationController(BaseController):
                     benchmark = self.portfolios[ns_parser.benchmark.upper()]
 
                 table = True
-                if 'historic_period_sa' in vars(ns_parser):
+                if "historic_period_sa" in vars(ns_parser):
                     table = False
 
                 weights = optimizer_view.display_black_litterman(
@@ -4149,10 +4164,15 @@ class PortfolioOptimizationController(BaseController):
                     if ns_parser.file_sa:
                         excel_file = os.path.abspath(
                             os.path.join(
-                                self.DEFAULT_ALLOCATION_PATH, "..", "views", ns_parser.file_sa
+                                self.DEFAULT_ALLOCATION_PATH,
+                                "..",
+                                "views",
+                                ns_parser.file_sa,
                             )
                         )
-                        p_views_sa, q_views_sa = excel_model.load_bl_views(excel_file=excel_file)
+                        p_views_sa, q_views_sa = excel_model.load_bl_views(
+                            excel_file=excel_file
+                        )
                     else:
                         p_views_sa = ns_parser.p_views_sa
                         q_views_sa = ns_parser.q_views_sa
@@ -4183,9 +4203,8 @@ class PortfolioOptimizationController(BaseController):
 
                     console.print("")
                     optimizer_view.display_weights_sa(
-                        weights=weights,
-                        weights_sa=weights_sa
-                        )
+                        weights=weights, weights_sa=weights_sa
+                    )
 
                     if not ns_parser.categories:
                         categories = ["ASSET_CLASS", "COUNTRY", "SECTOR", "INDUSTRY"]
@@ -4198,9 +4217,8 @@ class PortfolioOptimizationController(BaseController):
                             weights_sa=weights_sa,
                             categories=self.categories,
                             column=category,
-                            title="Category - " + category.title()
-                            )
-
+                            title="Category - " + category.title(),
+                        )
 
     @log_start_end(log=logger)
     def call_ef(self, other_args):
@@ -4627,31 +4645,35 @@ class PortfolioOptimizationController(BaseController):
         """
         Sensitivity Analysis
         """
-        subparsers = parser.add_subparsers(title = 'sensitivity analysis command', 
-                                           help='sensitivity analysis')
-        parser_update = subparsers.add_parser('sa',
-                                              help='sensitivity analysis command')
+        subparsers = parser.add_subparsers(
+            title="sensitivity analysis command", help="sensitivity analysis"
+        )
+        parser_update = subparsers.add_parser("sa", help="sensitivity analysis command")
 
         parser_dict = vars(parser)
-        for i in parser_dict['_actions']:
+        for i in parser_dict["_actions"]:
             data_dict = vars(i)
             variables = list(data_dict.keys())
-            if variables[0] == 'option_strings' and data_dict['dest'] != 'name':
-                if len(data_dict['option_strings']) == 1:
-                    parser_update.add_argument(data_dict['option_strings'][0] + '-sa',
-                                               type=data_dict['type'],
-                                               default=data_dict['default'],
-                                               dest=data_dict['dest'] + '_sa',
-                                               choices=data_dict['choices'],
-                                               help=data_dict['help'])
-                elif len(data_dict['option_strings']) == 2:
-                    parser_update.add_argument(data_dict['option_strings'][0] + '-sa',
-                                               data_dict['option_strings'][1] + '-sa',
-                                               type=data_dict['type'],
-                                               default=data_dict['default'],
-                                               dest=data_dict['dest'] + '_sa',
-                                               choices=data_dict['choices'],
-                                               help=data_dict['help'])
+            if variables[0] == "option_strings" and data_dict["dest"] != "name":
+                if len(data_dict["option_strings"]) == 1:
+                    parser_update.add_argument(
+                        data_dict["option_strings"][0] + "-sa",
+                        type=data_dict["type"],
+                        default=data_dict["default"],
+                        dest=data_dict["dest"] + "_sa",
+                        choices=data_dict["choices"],
+                        help=data_dict["help"],
+                    )
+                elif len(data_dict["option_strings"]) == 2:
+                    parser_update.add_argument(
+                        data_dict["option_strings"][0] + "-sa",
+                        data_dict["option_strings"][1] + "-sa",
+                        type=data_dict["type"],
+                        default=data_dict["default"],
+                        dest=data_dict["dest"] + "_sa",
+                        choices=data_dict["choices"],
+                        help=data_dict["help"],
+                    )
 
         parser.add_argument(
             "-ct",
@@ -4670,7 +4692,7 @@ class PortfolioOptimizationController(BaseController):
                 return
 
             table = True
-            if 'historic_period_sa' in vars(ns_parser):
+            if "historic_period_sa" in vars(ns_parser):
                 table = False
 
             weights = optimizer_view.display_risk_parity(
@@ -4718,9 +4740,8 @@ class PortfolioOptimizationController(BaseController):
 
                 console.print("")
                 optimizer_view.display_weights_sa(
-                    weights=weights,
-                    weights_sa=weights_sa
-                    )
+                    weights=weights, weights_sa=weights_sa
+                )
 
                 if not ns_parser.categories:
                     categories = ["ASSET_CLASS", "COUNTRY", "SECTOR", "INDUSTRY"]
@@ -4733,9 +4754,8 @@ class PortfolioOptimizationController(BaseController):
                         weights_sa=weights_sa,
                         categories=self.categories,
                         column=category,
-                        title="Category - " + category.title()
-                        )
-
+                        title="Category - " + category.title(),
+                    )
 
     @log_start_end(log=logger)
     def call_relriskparity(self, other_args: List[str]):
@@ -4914,31 +4934,35 @@ class PortfolioOptimizationController(BaseController):
         """
         Sensitivity Analysis
         """
-        subparsers = parser.add_subparsers(title = 'sensitivity analysis command', 
-                                           help='sensitivity analysis')
-        parser_update = subparsers.add_parser('sa',
-                                              help='sensitivity analysis command')
+        subparsers = parser.add_subparsers(
+            title="sensitivity analysis command", help="sensitivity analysis"
+        )
+        parser_update = subparsers.add_parser("sa", help="sensitivity analysis command")
 
         parser_dict = vars(parser)
-        for i in parser_dict['_actions']:
+        for i in parser_dict["_actions"]:
             data_dict = vars(i)
             variables = list(data_dict.keys())
-            if variables[0] == 'option_strings' and data_dict['dest'] != 'name':
-                if len(data_dict['option_strings']) == 1:
-                    parser_update.add_argument(data_dict['option_strings'][0] + '-sa',
-                                               type=data_dict['type'],
-                                               default=data_dict['default'],
-                                               dest=data_dict['dest'] + '_sa',
-                                               choices=data_dict['choices'],
-                                               help=data_dict['help'])
-                elif len(data_dict['option_strings']) == 2:
-                    parser_update.add_argument(data_dict['option_strings'][0] + '-sa',
-                                               data_dict['option_strings'][1] + '-sa',
-                                               type=data_dict['type'],
-                                               default=data_dict['default'],
-                                               dest=data_dict['dest'] + '_sa',
-                                               choices=data_dict['choices'],
-                                               help=data_dict['help'])
+            if variables[0] == "option_strings" and data_dict["dest"] != "name":
+                if len(data_dict["option_strings"]) == 1:
+                    parser_update.add_argument(
+                        data_dict["option_strings"][0] + "-sa",
+                        type=data_dict["type"],
+                        default=data_dict["default"],
+                        dest=data_dict["dest"] + "_sa",
+                        choices=data_dict["choices"],
+                        help=data_dict["help"],
+                    )
+                elif len(data_dict["option_strings"]) == 2:
+                    parser_update.add_argument(
+                        data_dict["option_strings"][0] + "-sa",
+                        data_dict["option_strings"][1] + "-sa",
+                        type=data_dict["type"],
+                        default=data_dict["default"],
+                        dest=data_dict["dest"] + "_sa",
+                        choices=data_dict["choices"],
+                        help=data_dict["help"],
+                    )
 
         parser.add_argument(
             "-ct",
@@ -4957,7 +4981,7 @@ class PortfolioOptimizationController(BaseController):
                 return
 
             table = True
-            if 'historic_period_sa' in vars(ns_parser):
+            if "historic_period_sa" in vars(ns_parser):
                 table = False
 
             weights = optimizer_view.display_rel_risk_parity(
@@ -5005,9 +5029,8 @@ class PortfolioOptimizationController(BaseController):
 
                 console.print("")
                 optimizer_view.display_weights_sa(
-                    weights=weights,
-                    weights_sa=weights_sa
-                    )
+                    weights=weights, weights_sa=weights_sa
+                )
 
                 if not ns_parser.categories:
                     categories = ["ASSET_CLASS", "COUNTRY", "SECTOR", "INDUSTRY"]
@@ -5020,9 +5043,8 @@ class PortfolioOptimizationController(BaseController):
                         weights_sa=weights_sa,
                         categories=self.categories,
                         column=category,
-                        title="Category - " + category.title()
-                        )
-
+                        title="Category - " + category.title(),
+                    )
 
     @log_start_end(log=logger)
     def call_hrp(self, other_args: List[str]):
@@ -5346,31 +5368,35 @@ class PortfolioOptimizationController(BaseController):
         """
         Sensitivity Analysis
         """
-        subparsers = parser.add_subparsers(title = 'sensitivity analysis command', 
-                                           help='sensitivity analysis')
-        parser_update = subparsers.add_parser('sa',
-                                              help='sensitivity analysis command')
-                                              
+        subparsers = parser.add_subparsers(
+            title="sensitivity analysis command", help="sensitivity analysis"
+        )
+        parser_update = subparsers.add_parser("sa", help="sensitivity analysis command")
+
         parser_dict = vars(parser)
-        for i in parser_dict['_actions']:
+        for i in parser_dict["_actions"]:
             data_dict = vars(i)
             variables = list(data_dict.keys())
-            if variables[0] == 'option_strings' and data_dict['dest'] != 'name':
-                if len(data_dict['option_strings']) == 1:
-                    parser_update.add_argument(data_dict['option_strings'][0] + '-sa',
-                                               type=data_dict['type'],
-                                               default=data_dict['default'],
-                                               dest=data_dict['dest'] + '_sa',
-                                               choices=data_dict['choices'],
-                                               help=data_dict['help'])
-                elif len(data_dict['option_strings']) == 2:
-                    parser_update.add_argument(data_dict['option_strings'][0] + '-sa',
-                                               data_dict['option_strings'][1] + '-sa',
-                                               type=data_dict['type'],
-                                               default=data_dict['default'],
-                                               dest=data_dict['dest'] + '_sa',
-                                               choices=data_dict['choices'],
-                                               help=data_dict['help'])
+            if variables[0] == "option_strings" and data_dict["dest"] != "name":
+                if len(data_dict["option_strings"]) == 1:
+                    parser_update.add_argument(
+                        data_dict["option_strings"][0] + "-sa",
+                        type=data_dict["type"],
+                        default=data_dict["default"],
+                        dest=data_dict["dest"] + "_sa",
+                        choices=data_dict["choices"],
+                        help=data_dict["help"],
+                    )
+                elif len(data_dict["option_strings"]) == 2:
+                    parser_update.add_argument(
+                        data_dict["option_strings"][0] + "-sa",
+                        data_dict["option_strings"][1] + "-sa",
+                        type=data_dict["type"],
+                        default=data_dict["default"],
+                        dest=data_dict["dest"] + "_sa",
+                        choices=data_dict["choices"],
+                        help=data_dict["help"],
+                    )
 
         parser.add_argument(
             "-ct",
@@ -5389,7 +5415,7 @@ class PortfolioOptimizationController(BaseController):
                 return
 
             table = True
-            if 'historic_period_sa' in vars(ns_parser):
+            if "historic_period_sa" in vars(ns_parser):
                 table = False
 
             weights = optimizer_view.display_hrp(
@@ -5457,9 +5483,8 @@ class PortfolioOptimizationController(BaseController):
 
                 console.print("")
                 optimizer_view.display_weights_sa(
-                    weights=weights,
-                    weights_sa=weights_sa
-                    )
+                    weights=weights, weights_sa=weights_sa
+                )
 
                 if not ns_parser.categories:
                     categories = ["ASSET_CLASS", "COUNTRY", "SECTOR", "INDUSTRY"]
@@ -5472,9 +5497,8 @@ class PortfolioOptimizationController(BaseController):
                         weights_sa=weights_sa,
                         categories=self.categories,
                         column=category,
-                        title="Category - " + category.title()
-                        )
-
+                        title="Category - " + category.title(),
+                    )
 
     @log_start_end(log=logger)
     def call_herc(self, other_args: List[str]):
@@ -5796,31 +5820,35 @@ class PortfolioOptimizationController(BaseController):
         """
         Sensitivity Analysis
         """
-        subparsers = parser.add_subparsers(title = 'sensitivity analysis command', 
-                                           help='sensitivity analysis')
-        parser_update = subparsers.add_parser('sa',
-                                              help='sensitivity analysis command')
-                                              
+        subparsers = parser.add_subparsers(
+            title="sensitivity analysis command", help="sensitivity analysis"
+        )
+        parser_update = subparsers.add_parser("sa", help="sensitivity analysis command")
+
         parser_dict = vars(parser)
-        for i in parser_dict['_actions']:
+        for i in parser_dict["_actions"]:
             data_dict = vars(i)
             variables = list(data_dict.keys())
-            if variables[0] == 'option_strings' and data_dict['dest'] != 'name':
-                if len(data_dict['option_strings']) == 1:
-                    parser_update.add_argument(data_dict['option_strings'][0] + '-sa',
-                                               type=data_dict['type'],
-                                               default=data_dict['default'],
-                                               dest=data_dict['dest'] + '_sa',
-                                               choices=data_dict['choices'],
-                                               help=data_dict['help'])
-                elif len(data_dict['option_strings']) == 2:
-                    parser_update.add_argument(data_dict['option_strings'][0] + '-sa',
-                                               data_dict['option_strings'][1] + '-sa',
-                                               type=data_dict['type'],
-                                               default=data_dict['default'],
-                                               dest=data_dict['dest'] + '_sa',
-                                               choices=data_dict['choices'],
-                                               help=data_dict['help'])
+            if variables[0] == "option_strings" and data_dict["dest"] != "name":
+                if len(data_dict["option_strings"]) == 1:
+                    parser_update.add_argument(
+                        data_dict["option_strings"][0] + "-sa",
+                        type=data_dict["type"],
+                        default=data_dict["default"],
+                        dest=data_dict["dest"] + "_sa",
+                        choices=data_dict["choices"],
+                        help=data_dict["help"],
+                    )
+                elif len(data_dict["option_strings"]) == 2:
+                    parser_update.add_argument(
+                        data_dict["option_strings"][0] + "-sa",
+                        data_dict["option_strings"][1] + "-sa",
+                        type=data_dict["type"],
+                        default=data_dict["default"],
+                        dest=data_dict["dest"] + "_sa",
+                        choices=data_dict["choices"],
+                        help=data_dict["help"],
+                    )
 
         parser.add_argument(
             "-ct",
@@ -5839,7 +5867,7 @@ class PortfolioOptimizationController(BaseController):
                 return
 
             table = True
-            if 'historic_period_sa' in vars(ns_parser):
+            if "historic_period_sa" in vars(ns_parser):
                 table = False
 
             weights = optimizer_view.display_herc(
@@ -5907,9 +5935,8 @@ class PortfolioOptimizationController(BaseController):
 
                 console.print("")
                 optimizer_view.display_weights_sa(
-                    weights=weights,
-                    weights_sa=weights_sa
-                    )
+                    weights=weights, weights_sa=weights_sa
+                )
 
                 if not ns_parser.categories:
                     categories = ["ASSET_CLASS", "COUNTRY", "SECTOR", "INDUSTRY"]
@@ -5922,9 +5949,8 @@ class PortfolioOptimizationController(BaseController):
                         weights_sa=weights_sa,
                         categories=self.categories,
                         column=category,
-                        title="Category - " + category.title()
-                        )
-
+                        title="Category - " + category.title(),
+                    )
 
     @log_start_end(log=logger)
     def call_nco(self, other_args: List[str]):
@@ -6222,31 +6248,35 @@ class PortfolioOptimizationController(BaseController):
         """
         Sensitivity Analysis
         """
-        subparsers = parser.add_subparsers(title = 'sensitivity analysis command', 
-                                           help='sensitivity analysis')
-        parser_update = subparsers.add_parser('sa',
-                                              help='sensitivity analysis command')
-                                              
+        subparsers = parser.add_subparsers(
+            title="sensitivity analysis command", help="sensitivity analysis"
+        )
+        parser_update = subparsers.add_parser("sa", help="sensitivity analysis command")
+
         parser_dict = vars(parser)
-        for i in parser_dict['_actions']:
+        for i in parser_dict["_actions"]:
             data_dict = vars(i)
             variables = list(data_dict.keys())
-            if variables[0] == 'option_strings' and data_dict['dest'] != 'name':
-                if len(data_dict['option_strings']) == 1:
-                    parser_update.add_argument(data_dict['option_strings'][0] + '-sa',
-                                               type=data_dict['type'],
-                                               default=data_dict['default'],
-                                               dest=data_dict['dest'] + '_sa',
-                                               choices=data_dict['choices'],
-                                               help=data_dict['help'])
-                elif len(data_dict['option_strings']) == 2:
-                    parser_update.add_argument(data_dict['option_strings'][0] + '-sa',
-                                               data_dict['option_strings'][1] + '-sa',
-                                               type=data_dict['type'],
-                                               default=data_dict['default'],
-                                               dest=data_dict['dest'] + '_sa',
-                                               choices=data_dict['choices'],
-                                               help=data_dict['help'])
+            if variables[0] == "option_strings" and data_dict["dest"] != "name":
+                if len(data_dict["option_strings"]) == 1:
+                    parser_update.add_argument(
+                        data_dict["option_strings"][0] + "-sa",
+                        type=data_dict["type"],
+                        default=data_dict["default"],
+                        dest=data_dict["dest"] + "_sa",
+                        choices=data_dict["choices"],
+                        help=data_dict["help"],
+                    )
+                elif len(data_dict["option_strings"]) == 2:
+                    parser_update.add_argument(
+                        data_dict["option_strings"][0] + "-sa",
+                        data_dict["option_strings"][1] + "-sa",
+                        type=data_dict["type"],
+                        default=data_dict["default"],
+                        dest=data_dict["dest"] + "_sa",
+                        choices=data_dict["choices"],
+                        help=data_dict["help"],
+                    )
 
         parser.add_argument(
             "-ct",
@@ -6265,7 +6295,7 @@ class PortfolioOptimizationController(BaseController):
                 return
 
             table = True
-            if 'historic_period_sa' in vars(ns_parser):
+            if "historic_period_sa" in vars(ns_parser):
                 table = False
 
             weights = optimizer_view.display_nco(
@@ -6331,9 +6361,8 @@ class PortfolioOptimizationController(BaseController):
 
                 console.print("")
                 optimizer_view.display_weights_sa(
-                    weights=weights,
-                    weights_sa=weights_sa
-                    )
+                    weights=weights, weights_sa=weights_sa
+                )
 
                 if not ns_parser.categories:
                     categories = ["ASSET_CLASS", "COUNTRY", "SECTOR", "INDUSTRY"]
@@ -6346,6 +6375,5 @@ class PortfolioOptimizationController(BaseController):
                         weights_sa=weights_sa,
                         categories=self.categories,
                         column=category,
-                        title="Category - " + category.title()
-                        )
-
+                        title="Category - " + category.title(),
+                    )
