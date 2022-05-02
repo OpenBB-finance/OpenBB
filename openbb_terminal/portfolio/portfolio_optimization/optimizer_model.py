@@ -8,8 +8,8 @@ from typing import Dict, List, Tuple
 
 import numpy as np
 import pandas as pd
-import yfinance as yf
 import riskfolio as rp
+import yfinance as yf
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.portfolio.portfolio_optimization import yahoo_finance_model
@@ -81,6 +81,9 @@ def get_equal_weights(
         returns.
     threshold: float
         Value used to replace outliers that are higher to threshold.
+    method: str
+        Method used to fill nan values. Default value is 'time'. For more information see
+        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
     value : float, optional
         Amount to allocate.  Returns percentages if set to 1.
 
@@ -147,6 +150,9 @@ def get_property_weights(
         returns.
     threshold: float
         Value used to replace outliers that are higher to threshold.
+    method: str
+        Method used to fill nan values. Default value is 'time'. For more information see
+        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
     s_property : str
         Property to weight portfolio by
     value : float, optional
@@ -686,7 +692,7 @@ def get_black_litterman_portfolio(
     risk_aversion: float, optional
         Risk aversion factor of the 'Utility' objective function.
         The default is 1.
-    Delta: float, optional
+    delta: float, optional
         Risk aversion factor of Black Litterman model. Default value is None.
     equilibrium: bool, optional
         If True excess returns are based on equilibrium market portfolio, if False
@@ -1292,9 +1298,11 @@ def get_hcp_portfolio(
     leaf_order: bool, optional
         Indicates if the cluster are ordered so that the distance between
         successive leaves is minimal. The default is True.
-    d: float, optional
+    d_ewma: float, optional
         The smoothing factor of ewma methods.
         The default is 0.94.
+    value : float, optional
+        Amount of money to allocate. The default is 1.
 
     Returns
     -------
@@ -1383,6 +1391,8 @@ def black_litterman(
         If True excess returns are based on equilibrium market portfolio, if False
         excess returns are calculated as historical returns minus risk free rate.
         Default value is True.
+    factor: int
+        The time factor
 
     Returns
     -------
@@ -1403,7 +1413,7 @@ def black_litterman(
 
     if equilibrium:
         PI_eq = delta * (S @ benchmark)
-    elif not equilibrium:
+    else:
         PI_eq = mu - risk_free_rate
 
     flag = False
@@ -1461,15 +1471,20 @@ def generate_random_portfolios(
         Amount of money to allocate. The default is 1.
     """
     assets = stocks.copy()
+
     # Generate random portfolios
     n_samples = int(n_portfolios / 3)
     rs = np.random.RandomState(seed=seed)
+
     # Equal probability for each asset
     w1 = rs.dirichlet(np.ones(len(assets)), n_samples)
+
     # More concentrated
     w2 = rs.dirichlet(np.ones(len(assets)) * 0.65, n_samples)
+
     # More diversified
     w3 = rs.dirichlet(np.ones(len(assets)) * 2, n_samples)
+
     # Each individual asset
     w4 = np.identity(len(assets))
     w = np.concatenate((w1, w2, w3, w4), axis=0)
