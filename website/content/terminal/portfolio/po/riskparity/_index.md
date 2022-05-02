@@ -9,7 +9,13 @@ usage: riskparity [-p HISTORIC_PERIOD] [-s START_PERIOD] [-e END_PERIOD] [-lr]
                   [--name NAME] [-h]
 ```
 
-Builds a risk parity portfolio based on risk budgeting approach
+Both the Minimum Variance and Maximum Diversification portfolios are mean-variance efficient under intuitive assumptions. Minimum Variance is efficient if assets have similar returns while Maximum Diversification is efficient if assets have similar Sharpe ratios. However, both methods have the drawback that they can be quite concentrated in a small number of assets. For example, the Minimum Variance portfolio will place disproportionate weight in the lowest volatility asset while the Maximum Diversification portfolio will concentrate in assets with high volatility and low covariance with the market. In fact, these optimizations may result in portfolios that hold just a small fraction of all available assets.
+
+There are situations where this may not be preferable. Concentrated portfolios also may not accommodate large amounts of capital without high market impact costs. In addition, concentrated portfolios are more susceptible to mis-estimation of volatilities or correlations.
+
+These issues prompted a search for heuristic optimizations that meet similar optimization objectives, but with less concentration. The equal weight and capitalization weighted portfolios are common examples of this, but there are other methods that are compelling under different assumptions.
+
+**Risk parity was developed to remove the uncertainty of estimated returns and to protect against losses associated with portfolio concentration. In essence what this means is that you want to prevent allocation a significant portion to just a couple of assets because Minimum Variance and Maximum Diversification say this is the best allocation.**
 
 ```
 optional arguments:

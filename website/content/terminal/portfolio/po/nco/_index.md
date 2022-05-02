@@ -13,7 +13,7 @@ usage: nco [-p HISTORIC_PERIOD] [-s START_PERIOD] [-e END_PERIOD] [-lr]
            [-v LONG_ALLOCATION] [--name NAME] [-h]
 ```
 
-Builds a nested clustered optimization portfolio.
+Convex optimization solutions tend to be unstable, to the point of entirely offsetting the benefits of optimization. For example, in the context of financial applications, it is known that portfolios optimized in-sample often underperform the naïve (equal weights) allocation out-of-sample. This instability can be traced back to two sources: (i) noise in the input variables; and (ii) signal structure that magnifies the estimation errors in the input variables. The paper by Lopez de Prado ([source](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3469961)) introduces the nested clustered optimization algorithm (NCO), a method that tackles both sources of instability.
 
 ```
 optional arguments:

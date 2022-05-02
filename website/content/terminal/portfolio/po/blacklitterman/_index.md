@@ -7,7 +7,7 @@ usage: blacklitterman [-p PERIOD] [-s START] [-e END] [-lr] [-f {d,w,m}]
                       [-vs VALUE_SHORT] [--name NAME] [-h]
 ```
 
-Minimizes the selected risk measure of portfolio
+The Black-Litterman (BL) Model is an analytical tool used by portfolio managers to optimize asset allocation within an investor’s risk tolerance and market views. Global investors, such as pension funds and insurance companies, need to decide how to allocate their investments across different asset classes and countries. The BL model starts from a neutral position using modern portfolio theory (MPT), and then takes additional input from investors' views to determine how the ultimate asset allocation should deviate from the initial portfolio weights. It then undergoes a process of mean-variance optimization (MVO) to maximize expected return given one's objective risk tolerance.
 
 ```
 optional arguments:

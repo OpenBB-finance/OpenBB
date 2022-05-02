@@ -10,7 +10,9 @@ usage: minrisk [-p HISTORIC_PERIOD] [-s START_PERIOD] [-e END_PERIOD] [-lr]
                [-vs SHORT_ALLOCATION] [--name NAME] [-h]
 ```
 
-Minimizes the selected risk measure of portfolio
+If all investments have the same expected return independent of risk, investors seeking maximum returns for minimum risk should concentrate exclusively on minimizing risk. This is the explicit objective of the minimum variance portfolio.
+
+Haugen and Baker ([source](https://investresolve.com/portfolio-optimization-simple-optimal-methods/#ref-Haugen1991)) proposed dispensing with any relationship between risk and return, at least for equities. Their paper was one of the first to demonstrate that stock returns are not well explained by beta. In fact, they observed a negative relationship between returns and volatility. In the face of a spurious link between risk and return, Haugen and Baker suggested that a regularly reconstituted long-only Minimum Variance portfolio might dominate the capitalization weighted portfolio for stocks.
 
 ```
 optional arguments:

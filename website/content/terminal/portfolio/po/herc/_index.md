@@ -14,7 +14,7 @@ usage: herc [-p HISTORIC_PERIOD] [-s START_PERIOD] [-e END_PERIOD] [-lr]
             [-v LONG_ALLOCATION] [--name NAME] [-h]
 ```
 
-Builds a hierarchical equal risk contribution portfolio.
+In a risk budgeting portfolio, the risk contribution from each component is equal to the budget of risk defined by the portfolio manager. Maillard, Roncalli, and Teiletche ([source](https://investresolve.com/portfolio-optimization-simple-optimal-methods/#ref-Maillard2008)) described the Equal Risk Contribution optimization, which is satisfied when all assets contribute the same volatility to the portfolio (equal risk budgeting). It has been shown that the Equal Risk Contribution portfolio is a compelling balance between the objectives of the equal weight and Minimum Variance portfolios. It is also a close cousin to the Inverse Volatility portfolio, except that it is less vulnerable to the case where assets have vastly different correlations.
 
 ```
 optional arguments:

@@ -7,7 +7,7 @@ usage: relriskparity [-p HISTORIC_PERIOD] [-s START_PERIOD] [-e END_PERIOD]
                      [-v LONG_ALLOCATION] [--name NAME] [-h]
 ```
 
-Builds a relaxed risk parity based on least squares approach.
+A relaxed risk parity optimization model controls the balance of risk parity violation against the total portfolio performance. Risk parity has been criticized as being overly conservative and it is improved by re-introducing the asset expected returns into the model and permitting the portfolio to violate the risk parity condition. The paper by Gambeta & Kwon ([source](https://www.mdpi.com/1911-8074/13/10/237/htm)) proposes the incorporation of an explicit target return goal with an intuitive target return approach into a second-order-cone model of a risk parity optimization. When the target return is greater than risk parity return, a violation to risk parity allocations occurs that is controlled using a computational construct to obtain near-risk parity portfolios to retain as much risk parity-like traits as possible. This model is used to demonstrate empirically that higher returns can be achieved than risk parity without the risk contributions deviating dramatically from the risk parity allocations. Furthermore, this study reveals that the relaxed risk parity model exhibits advantageous traits of robustness to expected returns, which should not deter the use of expected returns in risk parity model. 
 
 ```
 optional arguments:

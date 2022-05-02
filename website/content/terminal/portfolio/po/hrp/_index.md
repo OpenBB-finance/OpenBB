@@ -14,7 +14,7 @@ usage: hrp [-p HISTORIC_PERIOD] [-s START_PERIOD] [-e END_PERIOD] [-lr]
            [-v LONG_ALLOCATION] [--name NAME] [-h]
 ```
 
-Builds a hierarchical risk parity portfolio.
+This Hierarchical Risk Parity (HRP) method uses the information contained in the covariance matrix without requiring its inversion or positive definiteness. In fact, HRP can compute a portfolio based on a singular covariance matrix—an impossible feat for quadratic optimizers. HRP starts by reorganizing the covariance matrix to place similar investments together. Then, it employs an inverse-variance weighting allocation based on the number of assets with no further use of the clustering.
 
 ```
 optional arguments:

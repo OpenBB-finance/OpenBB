@@ -7,7 +7,7 @@ usage: maxdiv [-p HISTORIC_PERIOD] [-s START_PERIOD] [-e END_PERIOD] [-lr]
               [-vs SHORT_ALLOCATION] [--name NAME] [-h]
 ```
 
-Maximizes diversification ratio of portfolio.
+Choueifaty and Coignard ([source](https://investresolve.com/portfolio-optimization-simple-optimal-methods/#ref-Choueifaty2008)) proposed that markets are risk-efficient, such that investments will produce returns in proportion to their total risk, as measured by volatility. This differs from CAPM, which assumes returns are proportional to non-diversifiable (i.e. systematic) risk. The Diversification Ratio, which is to be maximized, quantifies the degree to which the portfolio risk can be minimized through strategic placement of weights on diversifying (imperfectly correlated) assets.
 
 ```
 optional arguments:

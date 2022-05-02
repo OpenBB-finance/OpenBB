@@ -7,7 +7,9 @@ usage: maxdecorr [-p HISTORIC_PERIOD] [-s START_PERIOD] [-e END_PERIOD] [-lr]
                  [-vs SHORT_ALLOCATION] [--name NAME] [-h]
 ```
 
-Maximizes decorrelation of portfolio.
+Maximum Decorrelation described by Christoffersen et al. ([source](https://investresolve.com/portfolio-optimization-simple-optimal-methods/#ref-Christoff2010)) is closely related to Minimum Variance and Maximum Diversification, but applies to the case where an investor believes all assets have similar returns and volatility, but heterogeneous correlations. It is a Minimum Variance optimization that is performed on the correlation matrix rather than the covariance matrix.
+
+Interestingly, when the weights derived from the Maximum Decorrelation optimization are divided through by their respective volatilities and re-standardized so they sum to 1, we retrieve the Maximum Diversification weights. Thus, the portfolio weights that maximize decorrelation will also maximize the Diversification Ratio when all assets have equal volatility and maximize the Sharpe ratio when all assets have equal risks and returns.
 
 ```
 optional arguments:
