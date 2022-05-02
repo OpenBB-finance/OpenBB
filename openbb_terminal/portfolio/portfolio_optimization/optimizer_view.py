@@ -1,7 +1,7 @@
 """Optimization View"""
 __docformat__ = "numpy"
 
-# pylint: disable=R0913, R0914, C0302, unused-argument
+# pylint: disable=R0913, R0914, C0302, too-many-branches, too-many-statements
 
 import logging
 import math
@@ -3591,7 +3591,7 @@ def pie_chart_weights(
         ax = external_axes[0]
 
     if math.isclose(sum(sizes), 1, rel_tol=0.1):
-        wedges, _, autotexts = ax.pie(
+        _, _, autotexts = ax.pie(
             sizes,
             labels=stocks,
             autopct=my_autopct,
@@ -3604,7 +3604,7 @@ def pie_chart_weights(
         )
         plt.setp(autotexts, color="white", fontweight="bold")
     else:
-        wedges, _, autotexts = ax.pie(
+        _, _, autotexts = ax.pie(
             sizes,
             labels=stocks,
             autopct="",
@@ -3659,7 +3659,7 @@ def pie_chart_weights(
 
 @log_start_end(log=logger)
 def additional_plots(
-    weights: Dict,
+    weights,
     stock_returns: pd.DataFrame,
     category: Dict,
     title_opt: str,
@@ -3769,17 +3769,17 @@ def additional_plots(
         matrix_classes = np.zeros((len(weights), len(classes)))
         labels = weights["category"].tolist()
 
-        j = 0
+        j_value = 0
         for i in classes:
-            matrix_classes[:, j] = np.array(
+            matrix_classes[:, j_value] = np.array(
                 [1 if x == i else 0 for x in labels], dtype=float
             )
-            matrix_classes[:, j] = (
-                matrix_classes[:, j]
+            matrix_classes[:, j_value] = (
+                matrix_classes[:, j_value]
                 * weights["value"]
                 / weights_classes.loc[i, "value"]
             )
-            j += 1
+            j_value += 1
 
         matrix_classes = pd.DataFrame(
             matrix_classes, columns=classes, index=weights.index
@@ -3904,15 +3904,16 @@ def additional_plots(
         else:
             ax = external_axes[0]
 
-        k = None
         if len(weights) <= 3:
-            k = len(weights)
+            number_of_clusters = len(weights)
+        else:
+            number_of_clusters = None
 
         ax = rp.plot_clusters(
             returns=stock_returns,
             codependence="pearson",
             linkage="ward",
-            k=k,
+            k=number_of_clusters,
             max_k=10,
             leaf_order=True,
             dendrogram=True,

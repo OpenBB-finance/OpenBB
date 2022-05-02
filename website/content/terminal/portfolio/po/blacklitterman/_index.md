@@ -17,7 +17,7 @@ optional arguments:
                         252 days 'w': means weeks, for example '52w' means 52
                         weeks 'mo': means months, for example '12mo' means 12
                         months 'y': means years, for example '1y' means 1 year
-                        'ytd': downloads data from begining of year to today
+                        'ytd': downloads data from beginning of year to today
                         'max': downloads all data available for each asset
                         (default: 3y)
   -s START, --start START

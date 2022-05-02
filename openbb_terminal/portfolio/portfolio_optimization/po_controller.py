@@ -589,7 +589,7 @@ class PortfolioOptimizationController(BaseController):
             self.params, self.current_model = params_view.load_file(file_location)
 
     @log_start_end(log=logger)
-    def call_params(self):
+    def call_params(self, _):
         """Process params command"""
         self.queue = self.load_class(
             params_controller.ParametersController,
@@ -2062,9 +2062,6 @@ class PortfolioOptimizationController(BaseController):
             default="MAXSHARPE_" + str(self.count),
             help="Save portfolio with personalized or default name",
         )
-        """
-        Sensitivity Analysis
-        """
         subparsers = parser.add_subparsers(
             title="sensitivity analysis command", help="sensitivity analysis"
         )
@@ -2418,9 +2415,6 @@ class PortfolioOptimizationController(BaseController):
             default="MINRISK_" + str(self.count),
             help="Save portfolio with personalized or default name",
         )
-        """
-        Sensitivity Analysis
-        """
         subparsers = parser.add_subparsers(
             title="sensitivity analysis command", help="sensitivity analysis"
         )
@@ -2786,9 +2780,6 @@ class PortfolioOptimizationController(BaseController):
             default="MAXUTIL_" + str(self.count),
             help="Save portfolio with personalized or default name",
         )
-        """
-        Sensitivity Analysis
-        """
         subparsers = parser.add_subparsers(
             title="sensitivity analysis command", help="sensitivity analysis"
         )
@@ -3146,9 +3137,6 @@ class PortfolioOptimizationController(BaseController):
             default="MAXRET_" + str(self.count),
             help="Save portfolio with personalized or default name",
         )
-        """
-        Sensitivity Analysis
-        """
         subparsers = parser.add_subparsers(
             title="sensitivity analysis command", help="sensitivity analysis"
         )
@@ -3433,9 +3421,6 @@ class PortfolioOptimizationController(BaseController):
             default="MAXDIV_" + str(self.count),
             help="Save portfolio with personalized or default name",
         )
-        """
-        Sensitivity Analysis
-        """
         subparsers = parser.add_subparsers(
             title="sensitivity analysis command", help="sensitivity analysis"
         )
@@ -3708,9 +3693,6 @@ class PortfolioOptimizationController(BaseController):
             default="MAXDECORR_" + str(self.count),
             help="Save portfolio with personalized or default name",
         )
-        """
-        Sensitivity Analysis
-        """
         subparsers = parser.add_subparsers(
             title="sensitivity analysis command", help="sensitivity analysis"
         )
@@ -4044,9 +4026,6 @@ class PortfolioOptimizationController(BaseController):
             default="",
             help="Upload an Excel file with views for Black Litterman model",
         )
-        """
-        Sensitivity Analysis
-        """
         subparsers = parser.add_subparsers(
             title="sensitivity analysis command", help="sensitivity analysis"
         )
@@ -4111,114 +4090,114 @@ class PortfolioOptimizationController(BaseController):
                 )
                 excel_model.excel_bl_views(file=file, stocks=self.tickers, n=1)
                 return
+
+            if ns_parser.file:
+                excel_file = os.path.abspath(
+                    os.path.join(
+                        self.DEFAULT_ALLOCATION_PATH, "..", "views", ns_parser.file
+                    )
+                )
+                p_views, q_views = excel_model.load_bl_views(excel_file=excel_file)
             else:
-                if ns_parser.file:
+                p_views = ns_parser.p_views
+                q_views = ns_parser.q_views
+
+            if ns_parser.benchmark is None:
+                benchmark = None
+            else:
+                benchmark = self.portfolios[ns_parser.benchmark.upper()]
+
+            table = True
+            if "historic_period_sa" in vars(ns_parser):
+                table = False
+
+            weights = optimizer_view.display_black_litterman(
+                stocks=self.tickers,
+                p_views=p_views,
+                q_views=q_views,
+                period=ns_parser.historic_period,
+                start=ns_parser.start_period,
+                end=ns_parser.end_period,
+                log_returns=ns_parser.log_returns,
+                freq=ns_parser.return_frequency,
+                maxnan=ns_parser.max_nan,
+                threshold=ns_parser.threshold_value,
+                method=ns_parser.nan_fill_method,
+                benchmark=benchmark,
+                objective=ns_parser.objective.lower(),
+                risk_free_rate=ns_parser.risk_free,
+                risk_aversion=ns_parser.risk_aversion,
+                delta=ns_parser.delta,
+                equilibrium=ns_parser.equilibrium,
+                optimize=ns_parser.optimize,
+                value=ns_parser.long_allocation,
+                value_short=ns_parser.short_allocation,
+                table=table,
+            )
+
+            self.portfolios[ns_parser.name.upper()] = weights
+            self.count += 1
+            self.update_runtime_choices()
+
+            if table is False:
+                if ns_parser.file_sa:
                     excel_file = os.path.abspath(
                         os.path.join(
-                            self.DEFAULT_ALLOCATION_PATH, "..", "views", ns_parser.file
+                            self.DEFAULT_ALLOCATION_PATH,
+                            "..",
+                            "views",
+                            ns_parser.file_sa,
                         )
                     )
-                    p_views, q_views = excel_model.load_bl_views(excel_file=excel_file)
+                    p_views_sa, q_views_sa = excel_model.load_bl_views(
+                        excel_file=excel_file
+                    )
                 else:
-                    p_views = ns_parser.p_views
-                    q_views = ns_parser.q_views
+                    p_views_sa = ns_parser.p_views_sa
+                    q_views_sa = ns_parser.q_views_sa
 
-                if ns_parser.benchmark is None:
-                    benchmark = None
-                else:
-                    benchmark = self.portfolios[ns_parser.benchmark.upper()]
-
-                table = True
-                if "historic_period_sa" in vars(ns_parser):
-                    table = False
-
-                weights = optimizer_view.display_black_litterman(
+                weights_sa = optimizer_view.display_black_litterman(
                     stocks=self.tickers,
-                    p_views=p_views,
-                    q_views=q_views,
-                    period=ns_parser.historic_period,
-                    start=ns_parser.start_period,
-                    end=ns_parser.end_period,
-                    log_returns=ns_parser.log_returns,
-                    freq=ns_parser.return_frequency,
-                    maxnan=ns_parser.max_nan,
-                    threshold=ns_parser.threshold_value,
-                    method=ns_parser.nan_fill_method,
+                    p_views=p_views_sa,
+                    q_views=q_views_sa,
+                    period=ns_parser.historic_period_sa,
+                    start=ns_parser.start_period_sa,
+                    end=ns_parser.end_period_sa,
+                    log_returns=ns_parser.log_returns_sa,
+                    freq=ns_parser.return_frequency_sa,
+                    maxnan=ns_parser.max_nan_sa,
+                    threshold=ns_parser.threshold_value_sa,
+                    method=ns_parser.nan_fill_method_sa,
                     benchmark=benchmark,
-                    objective=ns_parser.objective.lower(),
-                    risk_free_rate=ns_parser.risk_free,
-                    risk_aversion=ns_parser.risk_aversion,
-                    delta=ns_parser.delta,
-                    equilibrium=ns_parser.equilibrium,
-                    optimize=ns_parser.optimize,
-                    value=ns_parser.long_allocation,
-                    value_short=ns_parser.short_allocation,
+                    objective=ns_parser.objective_sa.lower(),
+                    risk_free_rate=ns_parser.risk_free_sa,
+                    risk_aversion=ns_parser.risk_aversion_sa,
+                    delta=ns_parser.delta_sa,
+                    equilibrium=ns_parser.equilibrium_sa,
+                    optimize=ns_parser.optimize_sa,
+                    value=ns_parser.long_allocation_sa,
+                    value_short=ns_parser.short_allocation_sa,
                     table=table,
                 )
 
-                self.portfolios[ns_parser.name.upper()] = weights
-                self.count += 1
-                self.update_runtime_choices()
+                console.print("")
+                optimizer_view.display_weights_sa(
+                    weights=weights, weights_sa=weights_sa
+                )
 
-                if table is False:
-                    if ns_parser.file_sa:
-                        excel_file = os.path.abspath(
-                            os.path.join(
-                                self.DEFAULT_ALLOCATION_PATH,
-                                "..",
-                                "views",
-                                ns_parser.file_sa,
-                            )
-                        )
-                        p_views_sa, q_views_sa = excel_model.load_bl_views(
-                            excel_file=excel_file
-                        )
-                    else:
-                        p_views_sa = ns_parser.p_views_sa
-                        q_views_sa = ns_parser.q_views_sa
+                if not ns_parser.categories:
+                    categories = ["ASSET_CLASS", "COUNTRY", "SECTOR", "INDUSTRY"]
+                else:
+                    categories = ns_parser.categories
 
-                    weights_sa = optimizer_view.display_black_litterman(
-                        stocks=self.tickers,
-                        p_views=p_views_sa,
-                        q_views=q_views_sa,
-                        period=ns_parser.historic_period_sa,
-                        start=ns_parser.start_period_sa,
-                        end=ns_parser.end_period_sa,
-                        log_returns=ns_parser.log_returns_sa,
-                        freq=ns_parser.return_frequency_sa,
-                        maxnan=ns_parser.max_nan_sa,
-                        threshold=ns_parser.threshold_value_sa,
-                        method=ns_parser.nan_fill_method_sa,
-                        benchmark=benchmark,
-                        objective=ns_parser.objective_sa.lower(),
-                        risk_free_rate=ns_parser.risk_free_sa,
-                        risk_aversion=ns_parser.risk_aversion_sa,
-                        delta=ns_parser.delta_sa,
-                        equilibrium=ns_parser.equilibrium_sa,
-                        optimize=ns_parser.optimize_sa,
-                        value=ns_parser.long_allocation_sa,
-                        value_short=ns_parser.short_allocation_sa,
-                        table=table,
+                for category in categories:
+                    optimizer_view.display_categories_sa(
+                        weights=weights,
+                        weights_sa=weights_sa,
+                        categories=self.categories,
+                        column=category,
+                        title="Category - " + category.title(),
                     )
-
-                    console.print("")
-                    optimizer_view.display_weights_sa(
-                        weights=weights, weights_sa=weights_sa
-                    )
-
-                    if not ns_parser.categories:
-                        categories = ["ASSET_CLASS", "COUNTRY", "SECTOR", "INDUSTRY"]
-                    else:
-                        categories = ns_parser.categories
-
-                    for category in categories:
-                        optimizer_view.display_categories_sa(
-                            weights=weights,
-                            weights_sa=weights_sa,
-                            categories=self.categories,
-                            column=category,
-                            title="Category - " + category.title(),
-                        )
 
     @log_start_end(log=logger)
     def call_ef(self, other_args):
@@ -4642,9 +4621,6 @@ class PortfolioOptimizationController(BaseController):
             default="RP_" + str(self.count),
             help="Save portfolio with personalized or default name",
         )
-        """
-        Sensitivity Analysis
-        """
         subparsers = parser.add_subparsers(
             title="sensitivity analysis command", help="sensitivity analysis"
         )
@@ -4931,9 +4907,6 @@ class PortfolioOptimizationController(BaseController):
             default="RRP_" + str(self.count),
             help="Save portfolio with personalized or default name",
         )
-        """
-        Sensitivity Analysis
-        """
         subparsers = parser.add_subparsers(
             title="sensitivity analysis command", help="sensitivity analysis"
         )
@@ -5365,9 +5338,6 @@ class PortfolioOptimizationController(BaseController):
             default="HRP_" + str(self.count),
             help="Save portfolio with personalized or default name",
         )
-        """
-        Sensitivity Analysis
-        """
         subparsers = parser.add_subparsers(
             title="sensitivity analysis command", help="sensitivity analysis"
         )
@@ -5817,9 +5787,6 @@ class PortfolioOptimizationController(BaseController):
             default="HERC_" + str(self.count),
             help="Save portfolio with personalized or default name",
         )
-        """
-        Sensitivity Analysis
-        """
         subparsers = parser.add_subparsers(
             title="sensitivity analysis command", help="sensitivity analysis"
         )
@@ -6245,9 +6212,6 @@ class PortfolioOptimizationController(BaseController):
             default="NCO_" + str(self.count),
             help="Save portfolio with personalized or default name",
         )
-        """
-        Sensitivity Analysis
-        """
         subparsers = parser.add_subparsers(
             title="sensitivity analysis command", help="sensitivity analysis"
         )

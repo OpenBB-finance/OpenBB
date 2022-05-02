@@ -1,6 +1,8 @@
 """Excel Model"""
 __docformat__ = "numpy"
 
+# pylint: disable=abstract-class-instantiated
+
 import logging
 
 import pandas as pd
@@ -160,13 +162,12 @@ def excel_bl_views(file: str, stocks: str, n: int = 3):
     """
     if len(stocks) < 2:
         console.print("Please have at least 2 loaded tickers to create views.\n")
-        return {}
 
     p_views = [[""] * len(stocks) for i in range(n)]
-    p_views = pd.DataFrame(p_views, columns=stocks)
+    p_views_df = pd.DataFrame(p_views, columns=stocks)
 
     q_views = [[""] for i in range(n)]
-    q_views = pd.DataFrame(q_views, columns=["Returns"])
+    q_views_df = pd.DataFrame(q_views, columns=["Returns"])
 
     if file.endswith(".xlsx"):
         pass
@@ -174,5 +175,5 @@ def excel_bl_views(file: str, stocks: str, n: int = 3):
         file += ".xlsx"
 
     with pd.ExcelWriter(file) as writer:
-        p_views.to_excel(writer, sheet_name="p_views")
-        q_views.to_excel(writer, sheet_name="q_views")
+        p_views_df.to_excel(writer, sheet_name="p_views")
+        q_views_df.to_excel(writer, sheet_name="q_views")
