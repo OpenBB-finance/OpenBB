@@ -12,6 +12,7 @@ from openbb_terminal.cryptocurrency.due_diligence import dd_controller
 # pylint: disable=W0603
 # pylint: disable=E1111
 
+MESSARI_TIMESERIES_DF = pd.DataFrame()
 
 COIN_MAP_DF = pd.Series(
     data={
@@ -65,6 +66,11 @@ def test_menu_with_queue(expected, mocker, queue):
         target=f"{path_controller}.DueDiligenceController.switch",
         return_value=["quit"],
     )
+    # MOCK MESSARI_TIMESERIES_DF
+    mocker.patch(
+        target=f"{path_controller}.messari_model.get_available_timeseries",
+        return_value=MESSARI_TIMESERIES_DF,
+    )
     result_menu = dd_controller.DueDiligenceController(queue=queue).menu()
 
     assert result_menu == expected
@@ -100,6 +106,11 @@ def test_menu_without_queue_completion(mocker):
         target=f"{path_controller}.session.prompt",
         return_value="quit",
     )
+    # MOCK MESSARI_TIMESERIES_DF
+    mocker.patch(
+        target=f"{path_controller}.messari_model.get_available_timeseries",
+        return_value=MESSARI_TIMESERIES_DF,
+    )
 
     result_menu = dd_controller.DueDiligenceController(queue=None).menu()
 
@@ -128,6 +139,12 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
     # MOCK USER INPUT
     mocker.patch("builtins.input", return_value=mock_input)
 
+    # MOCK MESSARI_TIMESERIES_DF
+    mocker.patch(
+        target=f"{path_controller}.messari_model.get_available_timeseries",
+        return_value=MESSARI_TIMESERIES_DF,
+    )
+
     # MOCK SWITCH
     class SystemExitSideEffect:
         def __init__(self):
@@ -152,7 +169,14 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
 
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.record_stdout
-def test_print_help():
+def test_print_help(mocker):
+    path_controller = "openbb_terminal.cryptocurrency.due_diligence.dd_controller"
+
+    # MOCK MESSARI_TIMESERIES_DF
+    mocker.patch(
+        target=f"{path_controller}.messari_model.get_available_timeseries",
+        return_value=MESSARI_TIMESERIES_DF,
+    )
     controller = dd_controller.DueDiligenceController(queue=None)
     controller.print_help()
 
@@ -172,7 +196,14 @@ def test_print_help():
         ),
     ],
 )
-def test_switch(an_input, expected_queue):
+def test_switch(an_input, expected_queue, mocker):
+    path_controller = "openbb_terminal.cryptocurrency.due_diligence.dd_controller"
+
+    # MOCK MESSARI_TIMESERIES_DF
+    mocker.patch(
+        target=f"{path_controller}.messari_model.get_available_timeseries",
+        return_value=MESSARI_TIMESERIES_DF,
+    )
     controller = dd_controller.DueDiligenceController(queue=None)
     queue = controller.switch(an_input=an_input)
 
@@ -182,6 +213,14 @@ def test_switch(an_input, expected_queue):
 @pytest.mark.vcr(record_mode="none")
 def test_call_cls(mocker):
     mocker.patch("os.system")
+
+    path_controller = "openbb_terminal.cryptocurrency.due_diligence.dd_controller"
+
+    # MOCK MESSARI_TIMESERIES_DF
+    mocker.patch(
+        target=f"{path_controller}.messari_model.get_available_timeseries",
+        return_value=MESSARI_TIMESERIES_DF,
+    )
 
     controller = dd_controller.DueDiligenceController(queue=None)
     controller.call_cls([])
@@ -216,7 +255,14 @@ def test_call_cls(mocker):
         ),
     ],
 )
-def test_call_func_expect_queue(expected_queue, func, queue):
+def test_call_func_expect_queue(expected_queue, func, queue, mocker):
+    path_controller = "openbb_terminal.cryptocurrency.due_diligence.dd_controller"
+
+    # MOCK MESSARI_TIMESERIES_DF
+    mocker.patch(
+        target=f"{path_controller}.messari_model.get_available_timeseries",
+        return_value=MESSARI_TIMESERIES_DF,
+    )
     controller = dd_controller.DueDiligenceController(queue=queue)
     result = getattr(controller, func)([])
 
@@ -413,6 +459,12 @@ def test_call_func(
     mocker.patch(
         target=f"{path_controller}.coinbase_model.show_available_pairs_for_given_symbol",
         return_value=COINBASE_SHOW_AVAILABLE_PAIRS_OF_GIVEN_SYMBOL,
+    )
+
+    # MOCK MESSARI_TIMESERIES_DF
+    mocker.patch(
+        target=f"{path_controller}.messari_model.get_available_timeseries",
+        return_value=MESSARI_TIMESERIES_DF,
     )
 
     if mocked_func:

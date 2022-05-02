@@ -124,6 +124,21 @@ def lambda_very_long_number_formatter(num: Union[str, int, float]) -> str:
     return num
 
 
+def prettify_paragraph(text):
+
+    # Add tab to the beginning of paragraph
+    text = "\t" + text
+    pat = "(?<!\n)\n(?!\n)"
+
+    # Add tab to double line break
+    pretty_text = re.sub("\n\n", "\n\n\t", text)
+
+    # Replace \n with None
+    even_more_pretty_text = re.sub(pat, "", pretty_text)
+
+    return even_more_pretty_text
+
+
 def prettify_column_names(columns: list) -> list:
     """Helper method that change column names into more human readable format. E.g.
         - tradeAmount => Trade amount,

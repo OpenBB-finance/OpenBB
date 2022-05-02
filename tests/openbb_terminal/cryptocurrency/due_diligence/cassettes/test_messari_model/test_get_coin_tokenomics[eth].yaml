@@ -1,0 +1,58 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.coingecko.com/api/v3/coins/eth/
+  response:
+    body:
+      string: !!binary |
+        H4sIAOMTaGIAA6pWSi0qyi9SslJyzi/NSVHIyy9RSMvMS1FIzs/MUyjPLMlQKMlIVUjPLEvNU8hM
+        UaoFAAAA//8DAPO8ZzAxAAAA
+    headers:
+      Access-Control-Allow-Headers:
+      - Origin, X-Requested-With, Content-Type, Accept, Authorization
+      Access-Control-Allow-Methods:
+      - POST, PUT, DELETE, GET, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Expose-Headers:
+      - link, per-page, total
+      Access-Control-Request-Method:
+      - '*'
+      CF-Cache-Status:
+      - MISS
+      CF-RAY:
+      - 702073edad049501-LIS
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 26 Apr 2022 15:46:43 GMT
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding, Origin
+      X-Request-Id:
+      - 2245a258-1311-4569-bf2d-9784a424a4f7
+      X-Runtime:
+      - '0.009163'
+    status:
+      code: 404
+      message: Not Found
+version: 1
