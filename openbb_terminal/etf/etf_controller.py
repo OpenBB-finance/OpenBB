@@ -32,6 +32,7 @@ from openbb_terminal.helper_funcs import (
     export_data,
     parse_known_args_and_warn,
     valid_date,
+    compose_export_path,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
@@ -569,9 +570,10 @@ class ETFController(BaseController):
         )
         parser.add_argument(
             "--folder",
-            default=os.path.dirname(os.path.abspath(__file__)).replace(
-                "openbb_terminal", "exports"
-            ),
+            default=compose_export_path(
+                func_name=parser.prog,
+                dir_path=os.path.dirname(os.path.abspath(__file__)),
+            )[0],
             dest="folder",
             help="Folder where the excel ETF report will be saved",
         )

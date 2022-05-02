@@ -115,13 +115,11 @@ installation on Windows without WSL, @JohnnyDankseed has made one available [her
 
 These steps are common in all operating systems (Windows with or without WSL, MacOS or Linux).
 
-This project supports Python 3.7, 3.8 and 3.9.
+This project supports Python 3.8 and 3.9. By default, the newly created virtual environment will use Python 3.8.13
 
 Our current recommendation is to use this project with Anaconda's Python distribution - either full
 [**Anaconda3 Latest**](https://www.anaconda.com/products/distribution) or [**Miniconda3 Latest**](https://docs.conda.io/en/latest/miniconda.html).
-Several features in this project utilize Machine Learning. Machine Learning Python dependencies are optional.
-If you decided to add Machine Learning features at a later point, you will likely have better user experience with
-Anaconda's Python distribution.
+Several features in this project utilize Machine Learning. Machine Learning Python dependencies are optional. For MacOS systems, Miniconda3 is recommended.
 
 1. [Install Anaconda](https://docs.anaconda.com/anaconda/install/index.html) (It's on the AUR as anaconda or miniconda3!)
 
@@ -133,13 +131,21 @@ Anaconda's Python distribution.
      **ONLY REQUIRED IF NOT USING WSL**, you also need to install/update Microsoft C++ Build Tools from here: <https://visualstudio.microsoft.com/visual-cpp-build-tools/>
 
    - After following the steps, confirm that you have it by opening a terminal and running: `conda -V`. The output
-   should be something along the lines of: `conda 4.9.2`
+   should be something along the lines of: `conda 4.11.0`
 
 2. Install git
 
    ```bash
    conda install -c anaconda git
    ```
+
+    **For Linux users only, run these additional commands:**
+
+    ```bash
+    sudo apt update
+    sudo apt install -y cmake gcc
+    pip install cmake
+    ```
 
 3. Clone the Project
 
@@ -170,11 +176,28 @@ Anaconda's Python distribution.
 
    Note: At the end, you can deactivate it with: `conda deactivate`.
 
-7. Install poetry dependencies
+7. Install dependencies with poetry
+
+   Install the main dependencies with
 
    ```bash
    poetry install
    ```
+
+   To enable the `prediction` menu install additional dependencies after installing main dependencies:
+
+   - On M1 mac
+
+      ```bash
+      conda install -c conda-forge tensorflow==2.7.0
+      poetry install -E prediction
+      ```
+
+   - On all other systems
+
+      ```bash
+      poetry install -E prediction
+      ```
 
    If you are having trouble with Poetry (e.g. on a Windows system), simply install requirements.txt with pip
 
@@ -232,6 +255,18 @@ ENABLE_PREDICT = os.getenv("OPENBB_ENABLE_PREDICT") or True
 ```bash
 poetry install -E prediction
 ```
+
+  **NOTE: For MacOS users should use this method instead of the poetry command
+
+  ```bash
+  conda install -c conda-forge tensorflow==2.7.0
+  ```
+
+- Ready to launch:
+
+  ```python
+  python terminal.py
+  ```
 
 ### Update Terminal
 
@@ -327,7 +362,7 @@ There are a few things that still don't work, and you can see what works and wha
 1. Running raspbian lite(headless) or desktop (both 64bit) we should first start off with an update/upgrade.
 
    ```bash
-   sudo apt update && sydo apt upgrade
+   sudo apt update && sudo apt upgrade
    ```
 
    Once completed reboot and lets reopen.
@@ -360,13 +395,13 @@ There are a few things that still don't work, and you can see what works and wha
 
 5. Clone the Project
 
-   - Via HTTPS: `git clone https://github.com/GamestonkTerminal/GamestonkTerminal.git`
-   - via SSH: `git clone git@github.com:GamestonkTerminal/GamestonkTerminal.git`
+   - Via HTTPS: `git clone https://github.com/OpenBB-finance/OpenBBTerminal.git`
+   - via SSH: `git clone git@github.com:OpenBB-finance/OpenBBTerminal.git`
 
 6. Navigate into the project's folder
 
    ```bash
-   cd GamestonkTerminal/
+   cd OpenBB/
    ```
 
 7. Create Environment
@@ -376,13 +411,13 @@ There are a few things that still don't work, and you can see what works and wha
    from now onwards.
 
    ```bash
-   conda env create -n gst python=3.9
+   conda env create -n openbb python=3.8.13
    ```
 
 8. Activate the virtual environment
 
    ```bash
-   conda activate gst
+   conda activate openbb
    ```
 
    Note: At the end, you can deactivate it with: `conda deactivate`.
@@ -401,7 +436,7 @@ There are a few things that still don't work, and you can see what works and wha
     poetry install
     ```
 
-11. You're ready to Gamestonk it on a Raspbery Pi!
+11. Ready to rock on a Raspbery Pi!
 
     ```bash
     python terminal.py

@@ -312,7 +312,7 @@ def load(
                     symbol=ticker, outputsize="full"
                 )
             except Exception as e:
-                console.print(e)
+                console.print(e, "")
                 return pd.DataFrame()
 
             df_stock_candidate.columns = [
@@ -369,7 +369,6 @@ def load(
 
         # IEX Cloud Source
         elif source == "iex":
-
             df_stock_candidate = pd.DataFrame()
 
             try:
@@ -380,11 +379,13 @@ def load(
                 # Check that loading a stock was not successful
                 if df_stock_candidate.empty:
                     console.print("No data found.\n")
+                    return df_stock_candidate
+
             except Exception as e:
                 if "The API key provided is not valid" in str(e):
                     console.print("[red]Invalid API Key[/red]\n")
                 else:
-                    console.print(e)
+                    console.print(e, "\n")
 
                 return df_stock_candidate
 
@@ -403,6 +404,7 @@ def load(
             )
 
             df_stock_candidate.sort_index(ascending=True, inplace=True)
+
         s_start = df_stock_candidate.index[0]
         s_interval = f"{interval}min"
         int_string = "Daily" if interval == 1440 else "Intraday"
