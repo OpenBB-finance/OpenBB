@@ -29,14 +29,23 @@ CoinPaprika
    twitter         tweets for loaded coin
    events          events related to loaded coin
 Binance
-   binbook         show order book
-   balance         show coin balance
+   binbook         order book
+   balance         coin balance
 Coinbase
-   cbbook          show order book
-   trades          show last trades
-   stats           show coin stats
+   cbbook          order book
+   trades          last trades
+   stats           coin stats
 Messari
-   mcapdom         show market cap dominance
+   mcapdom         market cap dominance
+   mt              messari timeseries e.g. twitter followers, circ supply, etc
+   rm              roadmap
+   tk              tokenomics e.g. circulating/max/total supply, emission type, etc
+   pi              project information e.g. technology details, public repos, audits, vulns
+   team            contributors (individuals and organizations)
+   inv             investors (individuals and organizations)
+   gov             governance details
+   fr              fundraising details e.g. treasury accounts, sales rounds, allocation
+   links           links e.g. whitepaper, github, twitter, youtube, reddit, telegram
 Santiment
    gh              github activity over time
 CryptoPanic
