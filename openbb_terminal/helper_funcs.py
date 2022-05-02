@@ -5,7 +5,7 @@ import argparse
 import logging
 from pathlib import Path
 from typing import List, Tuple, Union
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date as d
 import os
 import random
 import re
@@ -24,6 +24,7 @@ from pandas.plotting import register_matplotlib_converters
 import pandas.io.formats.format
 import requests
 from screeninfo import get_monitors
+import yfinance as yf
 
 from openbb_terminal.rich_config import console
 from openbb_terminal import feature_flags as obbff
@@ -1396,6 +1397,33 @@ def handle_error_code(requests_obj, error_code_map):
     for error_code, error_msg in error_code_map.items():
         if requests_obj.status_code == error_code:
             console.print(error_msg)
+
+
+def get_closing_price(ticker, days):
+
+    """Get historical close price for n days in past for market asset
+
+    Parameters
+    ----------
+    ticker : str
+        Ticker to get data for
+    days : datetime
+        No. of days in past
+
+    Returns
+    ----------
+    data : pd.DataFrame
+        Historic close prices for ticker for given days
+    """
+    tick = yf.Ticker(ticker)
+    df = tick.history(
+        start=d.today() - timedelta(days=days),
+        interval="1d",
+    )["Close"]
+    df = df.to_frame().reset_index()
+    df = df.rename(columns={0: "Close"})
+    df.index.name = "index"
+    return df
 
 
 def camel_case_split(string: str) -> str:
