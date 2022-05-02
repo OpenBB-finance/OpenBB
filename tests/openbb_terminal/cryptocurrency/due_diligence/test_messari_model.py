@@ -12,7 +12,7 @@ def vcr_config():
     return {
         "filter_headers": [
             ("User-Agent", None),
-            ("x-messari-api-key", "mock_x-messari-api-key")
+            ("x-messari-api-key", "mock_x-messari-api-key"),
         ],
     }
 
