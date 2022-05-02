@@ -102,6 +102,7 @@ jedi-language-server = {version = "^0.35.1", optional = true}
 Jinja2 = "3.0.3"  # Remove pinned version when Voila supports 3.1
 click = "8.0.1"  # Remove pinned version when Black supports 8.1
 kaleido = {version = "<=0.2.1", optional = true, extras = ["bots"]}
+Riskfolio-Lib = "^3.1.1"
 
 
 [tool.poetry.dev-dependencies]
