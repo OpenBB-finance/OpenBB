@@ -371,6 +371,53 @@ def display_weights(weights: dict, market_neutral: bool = False):
 
 
 @log_start_end(log=logger)
+def display_weights_sa(weights: dict, weights_sa: dict):
+    """
+    Prints weights in a nice format
+
+    Parameters
+    ----------
+    weights: dict
+        weights to display.  Keys are stocks.  Values are either weights or values
+    market_neutral : bool
+        Flag indicating shorting allowed (negative weights)
+    """
+    if not weights or not weights_sa:
+        return
+    weight_df = pd.DataFrame.from_dict(
+        data=weights, orient="index", columns=["value"], dtype=float
+    )
+    weight_sa_df = pd.DataFrame.from_dict(
+        data=weights_sa, orient="index", columns=["value s.a."], dtype=float
+    )
+    weight_df = weight_df.join(weight_sa_df, how="inner")
+    weight_df["value vs value s.a."] = weight_df["value"] - weight_df["value s.a."]
+
+    weight_df["value"] = (weight_df["value"] * 100).apply(lambda s: f"{s:.2f}") + " %"
+    weight_df["value"] = (
+        weight_df["value"]
+        .astype(str)
+        .apply(lambda s: " " * (8 - len(s)) + s if len(s) < 8 else "" + s)
+    )
+    weight_df["value s.a."] = (weight_df["value s.a."] * 100).apply(lambda s: f"{s:.2f}") + " %"
+    weight_df["value s.a."] = (
+        weight_df["value s.a."]
+        .astype(str)
+        .apply(lambda s: " " * (len("value s.a.") - len(s)) + s if len(s) < len("value s.a.") else "" + s)
+    )
+    weight_df["value vs value s.a."] = (weight_df["value vs value s.a."] * 100).apply(lambda s: f"{s:.2f}") + " %"
+    weight_df["value vs value s.a."] = (
+        weight_df["value vs value s.a."]
+        .astype(str)
+        .apply(lambda s: " " * (len("value vs value s.a.") - len(s)) + s if len(s) < len("value vs value s.a.") else "" + s)
+    )
+
+    headers = list(weight_df.columns)
+    headers = [s.title() for s in headers]
+    print_rich_table(weight_df, headers=headers, show_index=True, title="Weights Comparison")
+
+
+@log_start_end(log=logger)
 def display_categories(weights: dict, categories: dict, column: str, title: str = ""):
     """
     Prints categories in a nice format
@@ -462,6 +509,120 @@ def display_categories(weights: dict, categories: dict, column: str, title: str 
 
 
 @log_start_end(log=logger)
+def display_categories_sa(weights: dict, weights_sa: dict, categories: dict, column: str, title: str = ""):
+    """
+    Prints categories in a nice format
+
+    Parameters
+    ----------
+    weights: dict
+        weights to display.  Keys are stocks.  Values are either weights or values
+    weights_sa: dict
+        weights of sensitivity analysis to display.  Keys are stocks.  Values are either weights or values
+    categories: dict
+        categories to display. Keys are stocks.  Values are either weights or values
+    column: int.
+        column selected to show table
+        - ASSET_CLASS
+        - SECTOR
+        - INDUSTRY
+        - COUNTRY
+    """
+    if not weights or not weights_sa:
+        return
+    weight_df = pd.DataFrame.from_dict(
+        data=weights, orient="index", columns=["value"], dtype=float
+    )
+    weight_sa_df = pd.DataFrame.from_dict(
+        data=weights_sa, orient="index", columns=["value s.a."], dtype=float
+    )
+    categories_df = pd.DataFrame.from_dict(data=categories, dtype=float)
+
+    col = list(categories_df.columns).index(column)
+    categories_df = weight_df.join(categories_df.iloc[:, [col, 4, 5]], how="inner")
+    categories_df = categories_df.join(weight_sa_df, how="inner")
+    categories_df.set_index(column, inplace=True)
+    categories_df.groupby(level=0).sum()
+
+    table_df = pd.pivot_table(
+        categories_df,
+        values=["value", "value s.a.", "CURRENT_INVESTED_AMOUNT"],
+        index=["CURRENCY", column],
+        aggfunc=np.sum,
+    )
+    table_df["CURRENT_WEIGHTS"] = (
+        table_df["CURRENT_INVESTED_AMOUNT"]
+        .groupby(level=0)
+        .transform(lambda x: x / sum(x))
+    )
+    table_df["value"] = (
+        table_df["value"].groupby(level=0).transform(lambda x: x / sum(x))
+    )
+    table_df["value s.a."] = (
+        table_df["value s.a."].groupby(level=0).transform(lambda x: x / sum(x))
+    )
+    table_df = pd.concat(
+        [
+            d.append(d.sum().rename((k, "TOTAL " + k)))
+            for k, d in table_df.groupby(level=0)
+        ]
+    )
+    table_df["value vs value s.a."] = table_df["value"] - table_df["value s.a."]
+
+    table_df = table_df.iloc[:, [0, 3, 1, 2, 4]]
+
+    table_df["value"] = (table_df["value"] * 100).apply(lambda s: f"{s:.2f}") + " %"
+    table_df["value"] = (
+        table_df["value"]
+        .astype(str)
+        .apply(lambda s: " " * (8 - len(s)) + s if len(s) < 8 else "" + s)
+    )
+    table_df["value s.a."] = (table_df["value s.a."] * 100).apply(lambda s: f"{s:.2f}") + " %"
+    table_df["value s.a."] = (
+        table_df["value s.a."]
+        .astype(str)
+        .apply(lambda s: " " * (len("value s.a.") - len(s)) + s if len(s) < len("value s.a.") else "" + s)
+    )
+    table_df["value vs value s.a."] = (table_df["value vs value s.a."] * 100).apply(lambda s: f"{s:.2f}") + " %"
+    table_df["value vs value s.a."] = (
+        table_df["value vs value s.a."]
+        .astype(str)
+        .apply(lambda s: " " * (len("value vs value s.a.") - len(s)) + s if len(s) < len("value vs value s.a.") else "" + s)
+    )
+    table_df["CURRENT_WEIGHTS"] = (table_df["CURRENT_WEIGHTS"] * 100).apply(
+        lambda s: f"{s:.2f}"
+    ) + " %"
+    table_df["CURRENT_WEIGHTS"] = (
+        table_df["CURRENT_WEIGHTS"]
+        .astype(str)
+        .apply(
+            lambda s: " " * (len("CURRENT_WEIGHTS") - len(s)) + s
+            if len(s) < len("CURRENT_WEIGHTS")
+            else "" + s
+        )
+    )
+    table_df["CURRENT_INVESTED_AMOUNT"] = (
+        table_df["CURRENT_INVESTED_AMOUNT"].apply(lambda s: f"{s:,.0f}") + " $"
+    )
+    table_df["CURRENT_INVESTED_AMOUNT"] = (
+        table_df["CURRENT_INVESTED_AMOUNT"]
+        .astype(str)
+        .apply(
+            lambda s: " " * (len("CURRENT_INVESTED_AMOUNT") - len(s)) + s
+            if len(s) < len("CURRENT_INVESTED_AMOUNT")
+            else "" + s
+        )
+    )
+
+    table_df.reset_index(inplace=True)
+    table_df.set_index("CURRENCY", inplace=True)
+
+    headers = list(table_df.columns)
+    headers = [s.title() for s in headers]
+    print_rich_table(table_df, headers=headers, show_index=True, title=title)
+
+
+@log_start_end(log=logger)
 def display_equal_weight(
     stocks: List[str],
     period: str = "3y",
@@ -476,6 +637,7 @@ def display_equal_weight(
     risk_free_rate: float = 0,
     alpha: float = 0.05,
     value: float = 1,
+    table: bool = False,
 ) -> Dict:
     """
     Equally weighted portfolio, where weight = 1/# of stocks
@@ -534,6 +696,8 @@ def display_equal_weight(
         Significance level of CVaR, EVaR, CDaR and EDaR.
     value : float, optional
         Amount to allocate to portfolio, by default 1.0
+    table: bool, optional
+        True if plot table weights, by default False
     """
     p = d_period(period, start, end)
     s_title = f"{p} Equally Weighted Portfolio\n"
@@ -550,20 +714,23 @@ def display_equal_weight(
         method=method,
         value=value,
     )
-    console.print("\n", s_title)
-    display_weights(weights)
-    portfolio_performance(
-        weights=weights,
-        stock_returns=stock_returns,
-        risk_measure=risk_choices[risk_measure],
-        risk_free_rate=risk_free_rate,
-        # alpha=alpha,
-        # a_sim=a_sim,
-        # beta=beta,
-        # b_sim=beta_sim,
-        freq=freq,
-    )
-    console.print("")
+
+    if table:
+        console.print("\n", s_title)
+        display_weights(weights)
+        portfolio_performance(
+            weights=weights,
+            stock_returns=stock_returns,
+            risk_measure=risk_choices[risk_measure],
+            risk_free_rate=risk_free_rate,
+            alpha=alpha,
+            # a_sim=a_sim,
+            # beta=beta,
+            # b_sim=beta_sim,
+            freq=freq,
+        )
+        console.print("")
+
     return weights
 
 
@@ -583,6 +750,7 @@ def display_property_weighting(
     risk_free_rate: float = 0,
     alpha=0.05,
     value: float = 1,
+    table: bool = False,
 ) -> Dict:
     """
     Builds a portfolio weighted by selected property
@@ -643,6 +811,8 @@ def display_property_weighting(
         Significance level of CVaR, EVaR, CDaR and EDaR.
     value : float, optional
         Amount to allocate to portfolio, by default 1.0
+    table: bool, optional
+        True if plot table weights, by default False
     """
     p = d_period(period, start, end)
     s_title = f"{p} Weighted Portfolio based on " + s_property + "\n"
@@ -660,20 +830,23 @@ def display_property_weighting(
         s_property=s_property,
         value=value,
     )
-    console.print("\n", s_title)
-    display_weights(weights)
-    portfolio_performance(
-        weights=weights,
-        stock_returns=stock_returns,
-        risk_measure=risk_choices[risk_measure],
-        risk_free_rate=risk_free_rate,
-        # alpha=alpha,
-        # a_sim=a_sim,
-        # beta=beta,
-        # b_sim=beta_sim,
-        freq=freq,
-    )
-    console.print("")
+
+    if table:
+        console.print("\n", s_title)
+        display_weights(weights)
+        portfolio_performance(
+            weights=weights,
+            stock_returns=stock_returns,
+            risk_measure=risk_choices[risk_measure],
+            risk_free_rate=risk_free_rate,
+            alpha=alpha,
+            # a_sim=a_sim,
+            # beta=beta,
+            # b_sim=beta_sim,
+            freq=freq,
+        )
+        console.print("")
+
     return weights
 
 
@@ -700,6 +873,7 @@ def display_mean_risk(
     d_ewma: float = 0.94,
     value: float = 1.0,
     value_short: float = 0.0,
+    table: bool = False,
 ) -> Dict:
     """
     Builds a mean risk optimal portfolio
@@ -807,6 +981,8 @@ def display_mean_risk(
         Amount to allocate to portfolio in long positions, by default 1.0
     value_short : float, optional
         Amount to allocate to portfolio in short positions, by default 0.0
+    table: bool, optional
+        True if plot table weights, by default False
     """
     p = d_period(period, start, end)
     if objective == "sharpe":
@@ -847,20 +1023,22 @@ def display_mean_risk(
         console.print("\n", "There is no solution with these parameters")
         return {}
 
-    console.print("\n", s_title)
-    display_weights(weights)
-    portfolio_performance(
-        weights=weights,
-        stock_returns=stock_returns,
-        risk_measure=risk_choices[risk_measure],
-        risk_free_rate=risk_free_rate,
-        # alpha=alpha,
-        # a_sim=a_sim,
-        # beta=beta,
-        # b_sim=beta_sim,
-        freq=freq,
-    )
-    console.print("")
+    if table:
+        console.print("\n", s_title)
+        display_weights(weights)
+        portfolio_performance(
+            weights=weights,
+            stock_returns=stock_returns,
+            risk_measure=risk_choices[risk_measure],
+            risk_free_rate=risk_free_rate,
+            alpha=alpha,
+            # a_sim=a_sim,
+            # beta=beta,
+            # b_sim=beta_sim,
+            freq=freq,
+        )
+        console.print("")
+
     return weights
 
 
@@ -885,6 +1063,7 @@ def display_max_sharpe(
     d_ewma: float = 0.94,
     value: float = 1.0,
     value_short: float = 0.0,
+    table: bool = False,
 ) -> Dict:
     """
     Builds a maximal return/risk ratio portfolio
@@ -980,6 +1159,8 @@ def display_max_sharpe(
         Amount to allocate to portfolio in long positions, by default 1.0
     value_short : float, optional
         Amount to allocate to portfolio in short positions, by default 0.0
+    table: bool, optional
+        True if plot table weights, by default False
     """
     weights = display_mean_risk(
         stocks=stocks,
@@ -1002,6 +1183,7 @@ def display_max_sharpe(
         d_ewma=d_ewma,
         value=value,
         value_short=value_short,
+        table=table,
     )
     return weights
 
@@ -1027,6 +1209,7 @@ def display_min_risk(
     d_ewma: float = 0.94,
     value: float = 1.0,
     value_short: float = 0.0,
+    table: bool = False,
 ) -> Dict:
     """
     Builds a minimum risk portfolio
@@ -1122,6 +1305,8 @@ def display_min_risk(
         Amount to allocate to portfolio in long positions, by default 1.0
     value_short : float, optional
         Amount to allocate to portfolio in short positions, by default 0.0
+    table: bool, optional
+        True if plot table weights, by default False
     """
     weights = display_mean_risk(
         stocks=stocks,
@@ -1144,6 +1329,7 @@ def display_min_risk(
         d_ewma=d_ewma,
         value=value,
         value_short=value_short,
+        table=table,
     )
     return weights
 
@@ -1170,6 +1356,7 @@ def display_max_util(
     d_ewma: float = 0.94,
     value: float = 1.0,
     value_short: float = 0.0,
+    table: bool = False,
 ) -> Dict:
     """
     Builds a maximal risk averse utility portfolio
@@ -1268,6 +1455,8 @@ def display_max_util(
         Amount to allocate to portfolio in long positions, by default 1.0
     value_short : float, optional
         Amount to allocate to portfolio in short positions, by default 0.0
+    table: bool, optional
+        True if plot table weights, by default False
     """
     weights = display_mean_risk(
         stocks=stocks,
@@ -1291,6 +1480,7 @@ def display_max_util(
         d_ewma=d_ewma,
         value=value,
         value_short=value_short,
+        table=table,
     )
     return weights
 
@@ -1316,6 +1506,7 @@ def display_max_ret(
     d_ewma: float = 0.94,
     value: float = 1.0,
     value_short: float = 0.0,
+    table: bool = False,
 ) -> Dict:
     """
     Builds a maximal return portfolio
@@ -1411,6 +1602,8 @@ def display_max_ret(
         Amount to allocate to portfolio in long positions, by default 1.0
     value_short : float, optional
         Amount to allocate to portfolio in short positions, by default 0.0
+    table: bool, optional
+        True if plot table weights, by default False
     """
     weights = display_mean_risk(
         stocks=stocks,
@@ -1433,6 +1626,7 @@ def display_max_ret(
         d_ewma=d_ewma,
         value=value,
         value_short=value_short,
+        table=table
     )
     return weights
 
@@ -1452,6 +1646,7 @@ def display_max_div(
     d_ewma: float = 0.94,
     value: float = 1.0,
     value_short: float = 0.0,
+    table: bool = False,
 ) -> Dict:
     """
     Builds a maximal diversification portfolio
@@ -1510,6 +1705,8 @@ def display_max_div(
         Amount to allocate to portfolio in long positions, by default 1.0
     value_short : float, optional
         Amount to allocate to portfolio in short positions, by default 0.0
+    table: bool, optional
+        True if plot table weights, by default False
     """
     p = d_period(period, start, end)
     s_title = f"{p} Maximal diversification portfolio\n"
@@ -1533,20 +1730,22 @@ def display_max_div(
         console.print("\n", "There is no solution with this parameters")
         return {}
 
-    console.print("\n", s_title)
-    display_weights(weights)
-    portfolio_performance(
-        weights=weights,
-        stock_returns=stock_returns,
-        risk_measure="MV",
-        risk_free_rate=0,
-        # alpha=0.05,
-        # a_sim=100,
-        # beta=None,
-        # b_sim=None,
-        freq=freq,
-    )
-    console.print("")
+    if table:
+        console.print("\n", s_title)
+        display_weights(weights)
+        portfolio_performance(
+            weights=weights,
+            stock_returns=stock_returns,
+            risk_measure="MV",
+            risk_free_rate=0,
+            # alpha=0.05,
+            # a_sim=100,
+            # beta=None,
+            # b_sim=None,
+            freq=freq,
+        )
+        console.print("")
+
     return weights
 
 
@@ -1565,6 +1764,7 @@ def display_max_decorr(
     d_ewma: float = 0.94,
     value: float = 1.0,
     value_short: float = 0.0,
+    table: bool = False,
 ) -> Dict:
     """
     Builds a maximal decorrelation portfolio
@@ -1623,6 +1823,8 @@ def display_max_decorr(
         Amount to allocate to portfolio in long positions, by default 1.0
     value_short : float, optional
         Amount to allocate to portfolio in short positions, by default 0.0
+    table: bool, optional
+        True if plot table weights, by default False
     """
     p = d_period(period, start, end)
     s_title = f"{p} Maximal decorrelation portfolio\n"
@@ -1647,20 +1849,22 @@ def display_max_decorr(
         console.print("\n", "There is no solution with this parameters")
         return {}
 
-    console.print("\n", s_title)
-    display_weights(weights)
-    portfolio_performance(
-        weights=weights,
-        stock_returns=stock_returns,
-        risk_measure="MV",
-        risk_free_rate=0,
-        # alpha=alpha,
-        # a_sim=a_sim,
-        # beta=beta,
-        # b_simb_sim,
-        freq=freq,
-    )
-    console.print("")
+    if table:
+        console.print("\n", s_title)
+        display_weights(weights)
+        portfolio_performance(
+            weights=weights,
+            stock_returns=stock_returns,
+            risk_measure="MV",
+            risk_free_rate=0,
+            # alpha=alpha,
+            # a_sim=a_sim,
+            # beta=beta,
+            # b_simb_sim,
+            freq=freq,
+        )
+        console.print("")
+    
     return weights
 
 
@@ -1686,6 +1890,7 @@ def display_black_litterman(
     optimize: bool = True,
     value: float = 1.0,
     value_short: float = 0,
+    table: bool = False,
 ) -> Dict:
     """
     Builds a black litterman portfolio
@@ -1754,6 +1959,8 @@ def display_black_litterman(
         Amount of money to allocate. The default is 1.
     value_short : float, optional
         Amount to allocate to portfolio in short positions. The default is 0.
+    table: bool, optional
+        True if plot table weights, by default False
     """
     p = d_period(period, start, end)
     s_title = f"{p} Black Litterman portfolio\n"
@@ -1784,20 +1991,22 @@ def display_black_litterman(
         console.print("\n", "There is no solution with this parameters")
         return {}
 
-    console.print("\n", s_title)
-    display_weights(weights)
-    portfolio_performance(
-        weights=weights,
-        stock_returns=stock_returns,
-        risk_measure="MV",
-        risk_free_rate=0,
-        # alpha=alpha,
-        # a_sim=a_sim,
-        # beta=beta,
-        # b_simb_sim,
-        freq=freq,
-    )
-    console.print("")
+    if table:
+        console.print("\n", s_title)
+        display_weights(weights)
+        portfolio_performance(
+            weights=weights,
+            stock_returns=stock_returns,
+            risk_measure="MV",
+            risk_free_rate=0,
+            # alpha=alpha,
+            # a_sim=a_sim,
+            # beta=beta,
+            # b_simb_sim,
+            freq=freq,
+        )
+        console.print("")
+
     return weights
 
 
@@ -2054,6 +2263,7 @@ def display_risk_parity(
     covariance: str = "hist",
     d_ewma: float = 0.94,
     value: float = 1.0,
+    table: bool = False,
 ) -> Dict:
     """
     Builds a risk parity portfolio using the risk budgeting approach
@@ -2146,6 +2356,8 @@ def display_risk_parity(
         The default is 0.94.
     value : float, optional
         Amount to allocate to portfolio, by default 1.0
+    table: bool, optional
+        True if plot table weights, by default False
     """
     p = d_period(period, start, end)
     s_title = f"{p} Risk parity portfolio based on risk budgeting approach\n"
@@ -2175,16 +2387,18 @@ def display_risk_parity(
         console.print("\n", "There is no solution with this parameters")
         return {}
 
-    console.print("\n", s_title)
-    display_weights(weights)
-    portfolio_performance(
-        weights=weights,
-        stock_returns=stock_returns,
-        risk_measure=risk_choices[risk_measure],
-        risk_free_rate=risk_free_rate,
-        freq=freq,
-    )
-    console.print("")
+    if table:
+        console.print("\n", s_title)
+        display_weights(weights)
+        portfolio_performance(
+            weights=weights,
+            stock_returns=stock_returns,
+            risk_measure=risk_choices[risk_measure],
+            risk_free_rate=risk_free_rate,
+            freq=freq,
+        )
+        console.print("")
+
     return weights
 
 
@@ -2207,6 +2421,7 @@ def display_rel_risk_parity(
     covariance: str = "hist",
     d_ewma: float = 0.94,
     value: float = 1.0,
+    table: bool = False,
 ) -> Dict:
     """
     Builds a relaxed risk parity portfolio using the least squares approach
@@ -2290,6 +2505,8 @@ def display_rel_risk_parity(
         The default is 0.94.
     value : float, optional
         Amount to allocate to portfolio, by default 1.0
+    table: bool, optional
+        True if plot table weights, by default False
     """
     p = d_period(period, start, end)
     s_title = f"{p} Relaxed risk parity portfolio based on least squares approach\n"
@@ -2317,15 +2534,17 @@ def display_rel_risk_parity(
         console.print("\n", "There is no solution with this parameters")
         return {}
 
-    console.print("\n", s_title)
-    display_weights(weights)
-    portfolio_performance(
-        weights=weights,
-        stock_returns=stock_returns,
-        risk_measure=risk_choices["mv"],
-        freq=freq,
-    )
-    console.print("")
+    if table:
+        console.print("\n", s_title)
+        display_weights(weights)
+        portfolio_performance(
+            weights=weights,
+            stock_returns=stock_returns,
+            risk_measure=risk_choices["mv"],
+            freq=freq,
+        )
+        console.print("")
+
     return weights
 
 
@@ -2359,6 +2578,7 @@ def display_hcp(
     leaf_order: bool = True,
     d_ewma: float = 0.94,
     value: float = 1.0,
+    table: bool = False,
 ) -> Dict:
     """
     Builds a hierarchical clustering portfolio
@@ -2536,6 +2756,8 @@ def display_hcp(
         The default is 0.94.
     value : float, optional
         Amount to allocate to portfolio, by default 1.0
+    table: bool, optional
+        True if plot table weights, by default False
     """
     p = d_period(period, start, end)
 
@@ -2585,21 +2807,22 @@ def display_hcp(
         console.print("\n", "There is no solution with this parameters")
         return {}
 
-    console.print("\n", s_title)
-    display_weights(weights)
+    if table:
+        console.print("\n", s_title)
+        display_weights(weights)
+        portfolio_performance(
+            weights=weights,
+            stock_returns=stock_returns,
+            risk_measure=risk_choices[risk_measure],
+            risk_free_rate=risk_free_rate,
+            alpha=alpha,
+            a_sim=a_sim,
+            beta=beta,
+            b_sim=b_sim,
+            freq=freq,
+        )
+        console.print("")
 
-    portfolio_performance(
-        weights=weights,
-        stock_returns=stock_returns,
-        risk_measure=risk_choices[risk_measure],
-        risk_free_rate=risk_free_rate,
-        alpha=alpha,
-        a_sim=a_sim,
-        beta=beta,
-        b_sim=b_sim,
-        freq=freq,
-    )
-    console.print("")
     return weights
 
 
@@ -2630,6 +2853,7 @@ def display_hrp(
     leaf_order: bool = True,
     d_ewma: float = 0.94,
     value: float = 1.0,
+    table: bool = False,
 ) -> Dict:
     """
     Builds a hierarchical risk parity portfolio
@@ -2789,6 +3013,8 @@ def display_hrp(
         Amount to allocate to portfolio in long positions, by default 1.0
     value_short : float, optional
         Amount to allocate to portfolio in short positions, by default 0.0
+    table: bool, optional
+        True if plot table weights, by default False
     """
     weights = display_hcp(
         stocks=stocks,
@@ -2817,6 +3043,7 @@ def display_hrp(
         leaf_order=leaf_order,
         d_ewma=d_ewma,
         value=value,
+        table=table,
     )
     return weights
 
@@ -2848,6 +3075,7 @@ def display_herc(
     leaf_order: bool = True,
     d_ewma: float = 0.94,
     value: float = 1.0,
+    table: bool = False,
 ) -> Dict:
     """
     Builds a hierarchical equal risk contribution portfolio
@@ -3015,6 +3243,8 @@ def display_herc(
         Amount to allocate to portfolio in long positions, by default 1.0
     value_short : float, optional
         Amount to allocate to portfolio in short positions, by default 0.0
+    table: bool, optional
+        True if plot table weights, by default False
     """
     weights = display_hcp(
         stocks=stocks,
@@ -3043,6 +3273,7 @@ def display_herc(
         leaf_order=leaf_order,
         d_ewma=d_ewma,
         value=value,
+        table=table,
     )
     return weights
 
@@ -3073,6 +3304,7 @@ def display_nco(
     leaf_order: bool = True,
     d_ewma: float = 0.94,
     value: float = 1.0,
+    table: bool = False,
 ) -> Dict:
     """
     Builds a nested clustered optimization portfolio
@@ -3252,6 +3484,8 @@ def display_nco(
         Amount to allocate to portfolio in long positions, by default 1.0
     value_short : float, optional
         Amount to allocate to portfolio in short positions, by default 0.0
+    table: bool, optional
+        True if plot table weights, by default False
     """
     weights = display_hcp(
         stocks=stocks,
@@ -3279,6 +3513,7 @@ def display_nco(
         leaf_order=leaf_order,
         d_ewma=d_ewma,
         value=value,
+        table=table,
     )
     return weights
 

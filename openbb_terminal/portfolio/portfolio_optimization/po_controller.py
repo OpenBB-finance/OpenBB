@@ -1220,10 +1220,13 @@ class PortfolioOptimizationController(BaseController):
                 risk_free_rate=ns_parser.risk_free,
                 alpha=ns_parser.significance_level,
                 value=ns_parser.long_allocation,
+                table=True,
             )
+            
             self.portfolios[ns_parser.name.upper()] = weights
             self.count += 1
             self.update_runtime_choices()
+
 
     @log_start_end(log=logger)
     def call_mktcap(self, other_args: List[str]):
@@ -1415,11 +1418,14 @@ class PortfolioOptimizationController(BaseController):
                 risk_free_rate=ns_parser.risk_free,
                 alpha=ns_parser.significance_level,
                 value=ns_parser.long_allocation,
+                table=True,
             )
+
             self.portfolios[ns_parser.name.upper()] = weights
             self.count += 1
             self.update_runtime_choices()
 
+ 
     @log_start_end(log=logger)
     def call_dividend(self, other_args: List[str]):
         """Process dividend command"""
@@ -1610,10 +1616,13 @@ class PortfolioOptimizationController(BaseController):
                 risk_free_rate=ns_parser.risk_free,
                 alpha=ns_parser.significance_level,
                 value=ns_parser.long_allocation,
+                table=True,
             )
+
             self.portfolios[ns_parser.name.upper()] = weights
             self.count += 1
             self.update_runtime_choices()
+
 
     @log_start_end(log=logger)
     def call_property(self, other_args: List[str]):
@@ -1814,10 +1823,13 @@ class PortfolioOptimizationController(BaseController):
                 risk_free_rate=ns_parser.risk_free,
                 alpha=ns_parser.significance_level,
                 value=ns_parser.long_allocation,
+                table=True,
             )
+
             self.portfolios[ns_parser.name.upper()] = weights
             self.count += 1
             self.update_runtime_choices()
+
 
     @log_start_end(log=logger)
     def call_maxsharpe(self, other_args: List[str]):
@@ -2054,14 +2066,54 @@ class PortfolioOptimizationController(BaseController):
             default="MAXSHARPE_" + str(self.count),
             help="Save portfolio with personalized or default name",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        """
+        Sensitivity Analysis
+        """
+        subparsers = parser.add_subparsers(title = 'sensitivity analysis command', 
+                                           help='sensitivity analysis')
+        parser_update = subparsers.add_parser('sa',
+                                              help='sensitivity analysis command')
 
+        parser_dict = vars(parser)
+        for i in parser_dict['_actions']:
+            data_dict = vars(i)
+            variables = list(data_dict.keys())
+            if variables[0] == 'option_strings' and data_dict['dest'] != 'name':
+                if len(data_dict['option_strings']) == 1:
+                    parser_update.add_argument(data_dict['option_strings'][0] + '-sa',
+                                               type=data_dict['type'],
+                                               default=data_dict['default'],
+                                               dest=data_dict['dest'] + '_sa',
+                                               choices=data_dict['choices'],
+                                               help=data_dict['help'])
+                elif len(data_dict['option_strings']) == 2:
+                    parser_update.add_argument(data_dict['option_strings'][0] + '-sa',
+                                               data_dict['option_strings'][1] + '-sa',
+                                               type=data_dict['type'],
+                                               default=data_dict['default'],
+                                               dest=data_dict['dest'] + '_sa',
+                                               choices=data_dict['choices'],
+                                               help=data_dict['help'])
+
+        parser.add_argument(
+            "-ct",
+            "--categories",
+            dest="categories",
+            type=lambda s: [str(item).upper() for item in s.split(",")],
+            default=[],
+            help="Show selected categories",
+        )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if len(self.tickers) < 2:
                 console.print(
                     "Please have at least 2 loaded tickers to calculate weights.\n"
                 )
                 return
+
+            table = True
+            if 'historic_period_sa' in vars(ns_parser):
+                table = False
 
             weights = optimizer_view.display_max_sharpe(
                 stocks=self.tickers,
@@ -2083,10 +2135,57 @@ class PortfolioOptimizationController(BaseController):
                 d_ewma=ns_parser.smoothing_factor_ewma,
                 value=ns_parser.long_allocation,
                 value_short=ns_parser.short_allocation,
+                table=table,
             )
+
             self.portfolios[ns_parser.name.upper()] = weights
             self.count += 1
             self.update_runtime_choices()
+
+            if table is False:
+                weights_sa = optimizer_view.display_max_sharpe(
+                    stocks=self.tickers,
+                    period=ns_parser.historic_period_sa,
+                    start=ns_parser.start_period_sa,
+                    end=ns_parser.end_period_sa,
+                    log_returns=ns_parser.log_returns_sa,
+                    freq=ns_parser.return_frequency_sa,
+                    maxnan=ns_parser.max_nan_sa,
+                    threshold=ns_parser.threshold_value_sa,
+                    method=ns_parser.nan_fill_method_sa,
+                    risk_measure=ns_parser.risk_measure_sa.lower(),
+                    risk_free_rate=ns_parser.risk_free_sa,
+                    alpha=ns_parser.significance_level_sa,
+                    target_return=ns_parser.target_return_sa,
+                    target_risk=ns_parser.target_risk_sa,
+                    mean=ns_parser.expected_return_sa.lower(),
+                    covariance=ns_parser.covariance_sa.lower(),
+                    d_ewma=ns_parser.smoothing_factor_ewma_sa,
+                    value=ns_parser.long_allocation_sa,
+                    value_short=ns_parser.short_allocation_sa,
+                    table=table,
+                )
+
+                console.print("")
+                optimizer_view.display_weights_sa(
+                    weights=weights,
+                    weights_sa=weights_sa
+                    )
+
+                if not ns_parser.categories:
+                    categories = ["ASSET_CLASS", "COUNTRY", "SECTOR", "INDUSTRY"]
+                else:
+                    categories = ns_parser.categories
+
+                for category in categories:
+                    optimizer_view.display_categories_sa(
+                        weights=weights,
+                        weights_sa=weights_sa,
+                        categories=self.categories,
+                        column=category,
+                        title="Category - " + category.title()
+                        )
+
 
     @log_start_end(log=logger)
     def call_minrisk(self, other_args: List[str]):
@@ -2321,14 +2420,54 @@ class PortfolioOptimizationController(BaseController):
             default="MINRISK_" + str(self.count),
             help="Save portfolio with personalized or default name",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        """
+        Sensitivity Analysis
+        """
+        subparsers = parser.add_subparsers(title = 'sensitivity analysis command', 
+                                           help='sensitivity analysis')
+        parser_update = subparsers.add_parser('sa',
+                                              help='sensitivity analysis command')
 
+        parser_dict = vars(parser)
+        for i in parser_dict['_actions']:
+            data_dict = vars(i)
+            variables = list(data_dict.keys())
+            if variables[0] == 'option_strings' and data_dict['dest'] != 'name':
+                if len(data_dict['option_strings']) == 1:
+                    parser_update.add_argument(data_dict['option_strings'][0] + '-sa',
+                                               type=data_dict['type'],
+                                               default=data_dict['default'],
+                                               dest=data_dict['dest'] + '_sa',
+                                               choices=data_dict['choices'],
+                                               help=data_dict['help'])
+                elif len(data_dict['option_strings']) == 2:
+                    parser_update.add_argument(data_dict['option_strings'][0] + '-sa',
+                                               data_dict['option_strings'][1] + '-sa',
+                                               type=data_dict['type'],
+                                               default=data_dict['default'],
+                                               dest=data_dict['dest'] + '_sa',
+                                               choices=data_dict['choices'],
+                                               help=data_dict['help'])
+
+        parser.add_argument(
+            "-ct",
+            "--categories",
+            dest="categories",
+            type=lambda s: [str(item).upper() for item in s.split(",")],
+            default=[],
+            help="Show selected categories",
+        )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if len(self.tickers) < 2:
                 console.print(
                     "Please have at least 2 loaded tickers to calculate weights.\n"
                 )
                 return
+
+            table = True
+            if 'historic_period_sa' in vars(ns_parser):
+                table = False
 
             weights = optimizer_view.display_min_risk(
                 stocks=self.tickers,
@@ -2350,10 +2489,57 @@ class PortfolioOptimizationController(BaseController):
                 d_ewma=ns_parser.smoothing_factor_ewma,
                 value=ns_parser.long_allocation,
                 value_short=ns_parser.short_allocation,
+                table=table,
             )
+
             self.portfolios[ns_parser.name.upper()] = weights
             self.count += 1
             self.update_runtime_choices()
+
+            if table is False:
+                weights_sa = optimizer_view.display_min_risk(
+                    stocks=self.tickers,
+                    period=ns_parser.historic_period_sa,
+                    start=ns_parser.start_period_sa,
+                    end=ns_parser.end_period_sa,
+                    log_returns=ns_parser.log_returns_sa,
+                    freq=ns_parser.return_frequency_sa,
+                    maxnan=ns_parser.max_nan_sa,
+                    threshold=ns_parser.threshold_value_sa,
+                    method=ns_parser.nan_fill_method_sa,
+                    risk_measure=ns_parser.risk_measure_sa.lower(),
+                    risk_free_rate=ns_parser.risk_free_sa,
+                    alpha=ns_parser.significance_level_sa,
+                    target_return=ns_parser.target_return_sa,
+                    target_risk=ns_parser.target_risk_sa,
+                    mean=ns_parser.expected_return_sa.lower(),
+                    covariance=ns_parser.covariance_sa.lower(),
+                    d_ewma=ns_parser.smoothing_factor_ewma_sa,
+                    value=ns_parser.long_allocation_sa,
+                    value_short=ns_parser.short_allocation_sa,
+                    table=table,
+                )
+
+                console.print("")
+                optimizer_view.display_weights_sa(
+                    weights=weights,
+                    weights_sa=weights_sa
+                    )
+
+                if not ns_parser.categories:
+                    categories = ["ASSET_CLASS", "COUNTRY", "SECTOR", "INDUSTRY"]
+                else:
+                    categories = ns_parser.categories
+
+                for category in categories:
+                    optimizer_view.display_categories_sa(
+                        weights=weights,
+                        weights_sa=weights_sa,
+                        categories=self.categories,
+                        column=category,
+                        title="Category - " + category.title()
+                        )
+
 
     @log_start_end(log=logger)
     def call_maxutil(self, other_args: List[str]):
@@ -2600,14 +2786,54 @@ class PortfolioOptimizationController(BaseController):
             default="MAXUTIL_" + str(self.count),
             help="Save portfolio with personalized or default name",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        """
+        Sensitivity Analysis
+        """
+        subparsers = parser.add_subparsers(title = 'sensitivity analysis command', 
+                                           help='sensitivity analysis')
+        parser_update = subparsers.add_parser('sa',
+                                              help='sensitivity analysis command')
 
+        parser_dict = vars(parser)
+        for i in parser_dict['_actions']:
+            data_dict = vars(i)
+            variables = list(data_dict.keys())
+            if variables[0] == 'option_strings' and data_dict['dest'] != 'name':
+                if len(data_dict['option_strings']) == 1:
+                    parser_update.add_argument(data_dict['option_strings'][0] + '-sa',
+                                               type=data_dict['type'],
+                                               default=data_dict['default'],
+                                               dest=data_dict['dest'] + '_sa',
+                                               choices=data_dict['choices'],
+                                               help=data_dict['help'])
+                elif len(data_dict['option_strings']) == 2:
+                    parser_update.add_argument(data_dict['option_strings'][0] + '-sa',
+                                               data_dict['option_strings'][1] + '-sa',
+                                               type=data_dict['type'],
+                                               default=data_dict['default'],
+                                               dest=data_dict['dest'] + '_sa',
+                                               choices=data_dict['choices'],
+                                               help=data_dict['help'])
+
+        parser.add_argument(
+            "-ct",
+            "--categories",
+            dest="categories",
+            type=lambda s: [str(item).upper() for item in s.split(",")],
+            default=[],
+            help="Show selected categories",
+        )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if len(self.tickers) < 2:
                 console.print(
                     "Please have at least 2 loaded tickers to calculate weights.\n"
                 )
                 return
+
+            table = True
+            if 'historic_period_sa' in vars(ns_parser):
+                table = False
 
             weights = optimizer_view.display_max_util(
                 stocks=self.tickers,
@@ -2630,10 +2856,58 @@ class PortfolioOptimizationController(BaseController):
                 d_ewma=ns_parser.smoothing_factor_ewma,
                 value=ns_parser.long_allocation,
                 value_short=ns_parser.short_allocation,
+                table=table,
             )
+
             self.portfolios[ns_parser.name.upper()] = weights
             self.count += 1
             self.update_runtime_choices()
+
+            if table is False:
+                weights_sa = optimizer_view.display_max_util(
+                    stocks=self.tickers,
+                    period=ns_parser.historic_period_sa,
+                    start=ns_parser.start_period_sa,
+                    end=ns_parser.end_period_sa,
+                    log_returns=ns_parser.log_returns_sa,
+                    freq=ns_parser.return_frequency_sa,
+                    maxnan=ns_parser.max_nan_sa,
+                    threshold=ns_parser.threshold_value_sa,
+                    method=ns_parser.nan_fill_method_sa,
+                    risk_measure=ns_parser.risk_measure_sa.lower(),
+                    risk_free_rate=ns_parser.risk_free_sa,
+                    risk_aversion=ns_parser.risk_aversion_sa,
+                    alpha=ns_parser.significance_level_sa,
+                    target_return=ns_parser.target_return_sa,
+                    target_risk=ns_parser.target_risk_sa,
+                    mean=ns_parser.expected_return_sa.lower(),
+                    covariance=ns_parser.covariance_sa.lower(),
+                    d_ewma=ns_parser.smoothing_factor_ewma_sa,
+                    value=ns_parser.long_allocation_sa,
+                    value_short=ns_parser.short_allocation_sa,
+                    table=table
+                )
+
+                console.print("")
+                optimizer_view.display_weights_sa(
+                    weights=weights,
+                    weights_sa=weights_sa
+                    )
+
+                if not ns_parser.categories:
+                    categories = ["ASSET_CLASS", "COUNTRY", "SECTOR", "INDUSTRY"]
+                else:
+                    categories = ns_parser.categories
+
+                for category in categories:
+                    optimizer_view.display_categories_sa(
+                        weights=weights,
+                        weights_sa=weights_sa,
+                        categories=self.categories,
+                        column=category,
+                        title="Category - " + category.title()
+                        )
+
 
     @log_start_end(log=logger)
     def call_maxret(self, other_args: List[str]):
@@ -2870,14 +3144,54 @@ class PortfolioOptimizationController(BaseController):
             default="MAXRET_" + str(self.count),
             help="Save portfolio with personalized or default name",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        """
+        Sensitivity Analysis
+        """
+        subparsers = parser.add_subparsers(title = 'sensitivity analysis command', 
+                                           help='sensitivity analysis')
+        parser_update = subparsers.add_parser('sa',
+                                              help='sensitivity analysis command')
 
+        parser_dict = vars(parser)
+        for i in parser_dict['_actions']:
+            data_dict = vars(i)
+            variables = list(data_dict.keys())
+            if variables[0] == 'option_strings' and data_dict['dest'] != 'name':
+                if len(data_dict['option_strings']) == 1:
+                    parser_update.add_argument(data_dict['option_strings'][0] + '-sa',
+                                               type=data_dict['type'],
+                                               default=data_dict['default'],
+                                               dest=data_dict['dest'] + '_sa',
+                                               choices=data_dict['choices'],
+                                               help=data_dict['help'])
+                elif len(data_dict['option_strings']) == 2:
+                    parser_update.add_argument(data_dict['option_strings'][0] + '-sa',
+                                               data_dict['option_strings'][1] + '-sa',
+                                               type=data_dict['type'],
+                                               default=data_dict['default'],
+                                               dest=data_dict['dest'] + '_sa',
+                                               choices=data_dict['choices'],
+                                               help=data_dict['help'])
+
+        parser.add_argument(
+            "-ct",
+            "--categories",
+            dest="categories",
+            type=lambda s: [str(item).upper() for item in s.split(",")],
+            default=[],
+            help="Show selected categories",
+        )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if len(self.tickers) < 2:
                 console.print(
                     "Please have at least 2 loaded tickers to calculate weights.\n"
                 )
                 return
+
+            table = True
+            if 'historic_period_sa' in vars(ns_parser):
+                table = False
 
             weights = optimizer_view.display_max_ret(
                 stocks=self.tickers,
@@ -2899,10 +3213,57 @@ class PortfolioOptimizationController(BaseController):
                 d_ewma=ns_parser.smoothing_factor_ewma,
                 value=ns_parser.long_allocation,
                 value_short=ns_parser.short_allocation,
+                table=table,
             )
+
             self.portfolios[ns_parser.name.upper()] = weights
             self.count += 1
             self.update_runtime_choices()
+
+            if table is False:
+                weights_sa = optimizer_view.display_max_ret(
+                    stocks=self.tickers,
+                    period=ns_parser.historic_period_sa,
+                    start=ns_parser.start_period_sa,
+                    end=ns_parser.end_period_sa,
+                    log_returns=ns_parser.log_returns_sa,
+                    freq=ns_parser.return_frequency_sa,
+                    maxnan=ns_parser.max_nan_sa,
+                    threshold=ns_parser.threshold_value_sa,
+                    method=ns_parser.nan_fill_method_sa,
+                    risk_measure=ns_parser.risk_measure_sa.lower(),
+                    risk_free_rate=ns_parser.risk_free_sa,
+                    alpha=ns_parser.significance_level_sa,
+                    target_return=ns_parser.target_return_sa,
+                    target_risk=ns_parser.target_risk_sa,
+                    mean=ns_parser.expected_return_sa.lower(),
+                    covariance=ns_parser.covariance_sa.lower(),
+                    d_ewma=ns_parser.smoothing_factor_ewma_sa,
+                    value=ns_parser.long_allocation_sa,
+                    value_short=ns_parser.short_allocation_sa,
+                    table=table,
+                )
+
+                console.print("")
+                optimizer_view.display_weights_sa(
+                    weights=weights,
+                    weights_sa=weights_sa
+                    )
+
+                if not ns_parser.categories:
+                    categories = ["ASSET_CLASS", "COUNTRY", "SECTOR", "INDUSTRY"]
+                else:
+                    categories = ns_parser.categories
+
+                for category in categories:
+                    optimizer_view.display_categories_sa(
+                        weights=weights,
+                        weights_sa=weights_sa,
+                        categories=self.categories,
+                        column=category,
+                        title="Category - " + category.title()
+                        )
+
 
     @log_start_end(log=logger)
     def call_maxdiv(self, other_args: List[str]):
@@ -3068,14 +3429,54 @@ class PortfolioOptimizationController(BaseController):
             default="MAXDIV_" + str(self.count),
             help="Save portfolio with personalized or default name",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        """
+        Sensitivity Analysis
+        """
+        subparsers = parser.add_subparsers(title = 'sensitivity analysis command', 
+                                           help='sensitivity analysis')
+        parser_update = subparsers.add_parser('sa',
+                                              help='sensitivity analysis command')
 
+        parser_dict = vars(parser)
+        for i in parser_dict['_actions']:
+            data_dict = vars(i)
+            variables = list(data_dict.keys())
+            if variables[0] == 'option_strings' and data_dict['dest'] != 'name':
+                if len(data_dict['option_strings']) == 1:
+                    parser_update.add_argument(data_dict['option_strings'][0] + '-sa',
+                                               type=data_dict['type'],
+                                               default=data_dict['default'],
+                                               dest=data_dict['dest'] + '_sa',
+                                               choices=data_dict['choices'],
+                                               help=data_dict['help'])
+                elif len(data_dict['option_strings']) == 2:
+                    parser_update.add_argument(data_dict['option_strings'][0] + '-sa',
+                                               data_dict['option_strings'][1] + '-sa',
+                                               type=data_dict['type'],
+                                               default=data_dict['default'],
+                                               dest=data_dict['dest'] + '_sa',
+                                               choices=data_dict['choices'],
+                                               help=data_dict['help'])
+
+        parser.add_argument(
+            "-ct",
+            "--categories",
+            dest="categories",
+            type=lambda s: [str(item).upper() for item in s.split(",")],
+            default=[],
+            help="Show selected categories",
+        )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if len(self.tickers) < 2:
                 console.print(
                     "Please have at least 2 loaded tickers to calculate weights.\n"
                 )
                 return
+
+            table = True
+            if 'historic_period_sa' in vars(ns_parser):
+                table = False
 
             weights = optimizer_view.display_max_div(
                 stocks=self.tickers,
@@ -3091,10 +3492,51 @@ class PortfolioOptimizationController(BaseController):
                 d_ewma=ns_parser.smoothing_factor_ewma,
                 value=ns_parser.long_allocation,
                 value_short=ns_parser.short_allocation,
+                table=table,
             )
+
             self.portfolios[ns_parser.name.upper()] = weights
             self.count += 1
             self.update_runtime_choices()
+
+            if table is False:
+                weights_sa = optimizer_view.display_max_div(
+                    stocks=self.tickers,
+                    period=ns_parser.historic_period_sa,
+                    start=ns_parser.start_period_sa,
+                    end=ns_parser.end_period_sa,
+                    log_returns=ns_parser.log_returns_sa,
+                    freq=ns_parser.return_frequency_sa,
+                    maxnan=ns_parser.max_nan_sa,
+                    threshold=ns_parser.threshold_value_sa,
+                    method=ns_parser.nan_fill_method_sa,
+                    covariance=ns_parser.covariance_sa.lower(),
+                    d_ewma=ns_parser.smoothing_factor_ewma_sa,
+                    value=ns_parser.long_allocation_sa,
+                    value_short=ns_parser.short_allocation_sa,
+                    table=table,
+                )
+
+                console.print("")
+                optimizer_view.display_weights_sa(
+                    weights=weights,
+                    weights_sa=weights_sa
+                    )
+
+                if not ns_parser.categories:
+                    categories = ["ASSET_CLASS", "COUNTRY", "SECTOR", "INDUSTRY"]
+                else:
+                    categories = ns_parser.categories
+
+                for category in categories:
+                    optimizer_view.display_categories_sa(
+                        weights=weights,
+                        weights_sa=weights_sa,
+                        categories=self.categories,
+                        column=category,
+                        title="Category - " + category.title()
+                        )
+
 
     @log_start_end(log=logger)
     def call_maxdecorr(self, other_args: List[str]):
@@ -3260,14 +3702,54 @@ class PortfolioOptimizationController(BaseController):
             default="MAXDECORR_" + str(self.count),
             help="Save portfolio with personalized or default name",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        """
+        Sensitivity Analysis
+        """
+        subparsers = parser.add_subparsers(title = 'sensitivity analysis command', 
+                                           help='sensitivity analysis')
+        parser_update = subparsers.add_parser('sa',
+                                              help='sensitivity analysis command')
 
+        parser_dict = vars(parser)
+        for i in parser_dict['_actions']:
+            data_dict = vars(i)
+            variables = list(data_dict.keys())
+            if variables[0] == 'option_strings' and data_dict['dest'] != 'name':
+                if len(data_dict['option_strings']) == 1:
+                    parser_update.add_argument(data_dict['option_strings'][0] + '-sa',
+                                               type=data_dict['type'],
+                                               default=data_dict['default'],
+                                               dest=data_dict['dest'] + '_sa',
+                                               choices=data_dict['choices'],
+                                               help=data_dict['help'])
+                elif len(data_dict['option_strings']) == 2:
+                    parser_update.add_argument(data_dict['option_strings'][0] + '-sa',
+                                               data_dict['option_strings'][1] + '-sa',
+                                               type=data_dict['type'],
+                                               default=data_dict['default'],
+                                               dest=data_dict['dest'] + '_sa',
+                                               choices=data_dict['choices'],
+                                               help=data_dict['help'])
+
+        parser.add_argument(
+            "-ct",
+            "--categories",
+            dest="categories",
+            type=lambda s: [str(item).upper() for item in s.split(",")],
+            default=[],
+            help="Show selected categories",
+        )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if len(self.tickers) < 2:
                 console.print(
                     "Please have at least 2 loaded tickers to calculate weights.\n"
                 )
                 return
+
+            table = True
+            if 'historic_period_sa' in vars(ns_parser):
+                table = False
 
             weights = optimizer_view.display_max_decorr(
                 stocks=self.tickers,
@@ -3283,10 +3765,51 @@ class PortfolioOptimizationController(BaseController):
                 d_ewma=ns_parser.smoothing_factor_ewma,
                 value=ns_parser.long_allocation,
                 value_short=ns_parser.short_allocation,
+                table=table,
             )
+
             self.portfolios[ns_parser.name.upper()] = weights
             self.count += 1
             self.update_runtime_choices()
+
+            if table is False:
+                weights_sa = optimizer_view.display_max_decorr(
+                    stocks=self.tickers,
+                    period=ns_parser.historic_period_sa,
+                    start=ns_parser.start_period_sa,
+                    end=ns_parser.end_period_sa,
+                    log_returns=ns_parser.log_returns_sa,
+                    freq=ns_parser.return_frequency_sa,
+                    maxnan=ns_parser.max_nan_sa,
+                    threshold=ns_parser.threshold_value_sa,
+                    method=ns_parser.nan_fill_method_sa,
+                    covariance=ns_parser.covariance_sa.lower(),
+                    d_ewma=ns_parser.smoothing_factor_ewma_sa,
+                    value=ns_parser.long_allocation_sa,
+                    value_short=ns_parser.short_allocation_sa,
+                    table=table,
+                )
+
+                console.print("")
+                optimizer_view.display_weights_sa(
+                    weights=weights,
+                    weights_sa=weights_sa
+                    )
+
+                if not ns_parser.categories:
+                    categories = ["ASSET_CLASS", "COUNTRY", "SECTOR", "INDUSTRY"]
+                else:
+                    categories = ns_parser.categories
+
+                for category in categories:
+                    optimizer_view.display_categories_sa(
+                        weights=weights,
+                        weights_sa=weights_sa,
+                        categories=self.categories,
+                        column=category,
+                        title="Category - " + category.title()
+                        )
+
 
     @log_start_end(log=logger)
     def call_blacklitterman(self, other_args: List[str]):
@@ -3507,21 +4030,57 @@ class PortfolioOptimizationController(BaseController):
             help="Save portfolio with personalized or default name",
         )
         parser.add_argument(
-            "--download",
-            type=lambda s: s if s.endswith(".xlsx") or len(s) == 0 else s + ".xlsx",
-            dest="download",
-            default="",
-            help="Create a template to design Black Litterman model views",
-        )
-        parser.add_argument(
             "--file",
             type=lambda s: s if s.endswith(".xlsx") or len(s) == 0 else s + ".xlsx",
             dest="file",
             default="",
             help="Upload an Excel file with views for Black Litterman model",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        """
+        Sensitivity Analysis
+        """
+        subparsers = parser.add_subparsers(title = 'sensitivity analysis command', 
+                                           help='sensitivity analysis')
+        parser_update = subparsers.add_parser('sa',
+                                              help='sensitivity analysis command')
 
+        parser_dict = vars(parser)
+        for i in parser_dict['_actions']:
+            data_dict = vars(i)
+            variables = list(data_dict.keys())
+            if variables[0] == 'option_strings' and data_dict['dest'] not in ['name', 'benchmark']:
+                if len(data_dict['option_strings']) == 1:
+                    parser_update.add_argument(data_dict['option_strings'][0] + '-sa',
+                                               type=data_dict['type'],
+                                               default=data_dict['default'],
+                                               dest=data_dict['dest'] + '_sa',
+                                               choices=data_dict['choices'],
+                                               help=data_dict['help'])
+                elif len(data_dict['option_strings']) == 2:
+                    parser_update.add_argument(data_dict['option_strings'][0] + '-sa',
+                                               data_dict['option_strings'][1] + '-sa',
+                                               type=data_dict['type'],
+                                               default=data_dict['default'],
+                                               dest=data_dict['dest'] + '_sa',
+                                               choices=data_dict['choices'],
+                                               help=data_dict['help'])
+
+        parser.add_argument(
+            "-ct",
+            "--categories",
+            dest="categories",
+            type=lambda s: [str(item).upper() for item in s.split(",")],
+            default=[],
+            help="Show selected categories",
+        )
+        parser.add_argument(
+            "--download",
+            type=lambda s: s if s.endswith(".xlsx") or len(s) == 0 else s + ".xlsx",
+            dest="download",
+            default="",
+            help="Create a template to design Black Litterman model views",
+        )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if len(self.tickers) < 2:
                 console.print(
@@ -3554,6 +4113,10 @@ class PortfolioOptimizationController(BaseController):
                 else:
                     benchmark = self.portfolios[ns_parser.benchmark.upper()]
 
+                table = True
+                if 'historic_period_sa' in vars(ns_parser):
+                    table = False
+
                 weights = optimizer_view.display_black_litterman(
                     stocks=self.tickers,
                     p_views=p_views,
@@ -3575,11 +4138,69 @@ class PortfolioOptimizationController(BaseController):
                     optimize=ns_parser.optimize,
                     value=ns_parser.long_allocation,
                     value_short=ns_parser.short_allocation,
+                    table=table,
                 )
 
                 self.portfolios[ns_parser.name.upper()] = weights
                 self.count += 1
                 self.update_runtime_choices()
+
+                if table is False:
+                    if ns_parser.file_sa:
+                        excel_file = os.path.abspath(
+                            os.path.join(
+                                self.DEFAULT_ALLOCATION_PATH, "..", "views", ns_parser.file_sa
+                            )
+                        )
+                        p_views_sa, q_views_sa = excel_model.load_bl_views(excel_file=excel_file)
+                    else:
+                        p_views_sa = ns_parser.p_views_sa
+                        q_views_sa = ns_parser.q_views_sa
+
+                    weights_sa = optimizer_view.display_black_litterman(
+                        stocks=self.tickers,
+                        p_views=p_views_sa,
+                        q_views=q_views_sa,
+                        period=ns_parser.historic_period_sa,
+                        start=ns_parser.start_period_sa,
+                        end=ns_parser.end_period_sa,
+                        log_returns=ns_parser.log_returns_sa,
+                        freq=ns_parser.return_frequency_sa,
+                        maxnan=ns_parser.max_nan_sa,
+                        threshold=ns_parser.threshold_value_sa,
+                        method=ns_parser.nan_fill_method_sa,
+                        benchmark=benchmark,
+                        objective=ns_parser.objective_sa.lower(),
+                        risk_free_rate=ns_parser.risk_free_sa,
+                        risk_aversion=ns_parser.risk_aversion_sa,
+                        delta=ns_parser.delta_sa,
+                        equilibrium=ns_parser.equilibrium_sa,
+                        optimize=ns_parser.optimize_sa,
+                        value=ns_parser.long_allocation_sa,
+                        value_short=ns_parser.short_allocation_sa,
+                        table=table,
+                    )
+
+                    console.print("")
+                    optimizer_view.display_weights_sa(
+                        weights=weights,
+                        weights_sa=weights_sa
+                        )
+
+                    if not ns_parser.categories:
+                        categories = ["ASSET_CLASS", "COUNTRY", "SECTOR", "INDUSTRY"]
+                    else:
+                        categories = ns_parser.categories
+
+                    for category in categories:
+                        optimizer_view.display_categories_sa(
+                            weights=weights,
+                            weights_sa=weights_sa,
+                            categories=self.categories,
+                            column=category,
+                            title="Category - " + category.title()
+                            )
+
 
     @log_start_end(log=logger)
     def call_ef(self, other_args):
@@ -4003,14 +4624,54 @@ class PortfolioOptimizationController(BaseController):
             default="RP_" + str(self.count),
             help="Save portfolio with personalized or default name",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        """
+        Sensitivity Analysis
+        """
+        subparsers = parser.add_subparsers(title = 'sensitivity analysis command', 
+                                           help='sensitivity analysis')
+        parser_update = subparsers.add_parser('sa',
+                                              help='sensitivity analysis command')
 
+        parser_dict = vars(parser)
+        for i in parser_dict['_actions']:
+            data_dict = vars(i)
+            variables = list(data_dict.keys())
+            if variables[0] == 'option_strings' and data_dict['dest'] != 'name':
+                if len(data_dict['option_strings']) == 1:
+                    parser_update.add_argument(data_dict['option_strings'][0] + '-sa',
+                                               type=data_dict['type'],
+                                               default=data_dict['default'],
+                                               dest=data_dict['dest'] + '_sa',
+                                               choices=data_dict['choices'],
+                                               help=data_dict['help'])
+                elif len(data_dict['option_strings']) == 2:
+                    parser_update.add_argument(data_dict['option_strings'][0] + '-sa',
+                                               data_dict['option_strings'][1] + '-sa',
+                                               type=data_dict['type'],
+                                               default=data_dict['default'],
+                                               dest=data_dict['dest'] + '_sa',
+                                               choices=data_dict['choices'],
+                                               help=data_dict['help'])
+
+        parser.add_argument(
+            "-ct",
+            "--categories",
+            dest="categories",
+            type=lambda s: [str(item).upper() for item in s.split(",")],
+            default=[],
+            help="Show selected categories",
+        )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if len(self.tickers) < 2:
                 console.print(
                     "Please have at least 2 loaded tickers to calculate weights.\n"
                 )
                 return
+
+            table = True
+            if 'historic_period_sa' in vars(ns_parser):
+                table = False
 
             weights = optimizer_view.display_risk_parity(
                 stocks=self.tickers,
@@ -4028,10 +4689,53 @@ class PortfolioOptimizationController(BaseController):
                 alpha=ns_parser.significance_level,
                 target_return=ns_parser.target_return,
                 value=ns_parser.long_allocation,
+                table=table,
             )
+
             self.portfolios[ns_parser.name.upper()] = weights
             self.count += 1
             self.update_runtime_choices()
+
+            if table is False:
+                weights_sa = optimizer_view.display_risk_parity(
+                    stocks=self.tickers,
+                    period=ns_parser.historic_period_sa,
+                    start=ns_parser.start_period_sa,
+                    end=ns_parser.end_period_sa,
+                    log_returns=ns_parser.log_returns_sa,
+                    freq=ns_parser.return_frequency_sa,
+                    maxnan=ns_parser.max_nan_sa,
+                    threshold=ns_parser.threshold_value_sa,
+                    method=ns_parser.nan_fill_method_sa,
+                    risk_measure=ns_parser.risk_measure_sa.lower(),
+                    risk_cont=ns_parser.risk_contribution_sa,
+                    risk_free_rate=ns_parser.risk_free_sa,
+                    alpha=ns_parser.significance_level_sa,
+                    target_return=ns_parser.target_return_sa,
+                    value=ns_parser.long_allocation_sa,
+                    table=table,
+                )
+
+                console.print("")
+                optimizer_view.display_weights_sa(
+                    weights=weights,
+                    weights_sa=weights_sa
+                    )
+
+                if not ns_parser.categories:
+                    categories = ["ASSET_CLASS", "COUNTRY", "SECTOR", "INDUSTRY"]
+                else:
+                    categories = ns_parser.categories
+
+                for category in categories:
+                    optimizer_view.display_categories_sa(
+                        weights=weights,
+                        weights_sa=weights_sa,
+                        categories=self.categories,
+                        column=category,
+                        title="Category - " + category.title()
+                        )
+
 
     @log_start_end(log=logger)
     def call_relriskparity(self, other_args: List[str]):
@@ -4207,14 +4911,54 @@ class PortfolioOptimizationController(BaseController):
             default="RRP_" + str(self.count),
             help="Save portfolio with personalized or default name",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        """
+        Sensitivity Analysis
+        """
+        subparsers = parser.add_subparsers(title = 'sensitivity analysis command', 
+                                           help='sensitivity analysis')
+        parser_update = subparsers.add_parser('sa',
+                                              help='sensitivity analysis command')
 
+        parser_dict = vars(parser)
+        for i in parser_dict['_actions']:
+            data_dict = vars(i)
+            variables = list(data_dict.keys())
+            if variables[0] == 'option_strings' and data_dict['dest'] != 'name':
+                if len(data_dict['option_strings']) == 1:
+                    parser_update.add_argument(data_dict['option_strings'][0] + '-sa',
+                                               type=data_dict['type'],
+                                               default=data_dict['default'],
+                                               dest=data_dict['dest'] + '_sa',
+                                               choices=data_dict['choices'],
+                                               help=data_dict['help'])
+                elif len(data_dict['option_strings']) == 2:
+                    parser_update.add_argument(data_dict['option_strings'][0] + '-sa',
+                                               data_dict['option_strings'][1] + '-sa',
+                                               type=data_dict['type'],
+                                               default=data_dict['default'],
+                                               dest=data_dict['dest'] + '_sa',
+                                               choices=data_dict['choices'],
+                                               help=data_dict['help'])
+
+        parser.add_argument(
+            "-ct",
+            "--categories",
+            dest="categories",
+            type=lambda s: [str(item).upper() for item in s.split(",")],
+            default=[],
+            help="Show selected categories",
+        )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if len(self.tickers) < 2:
                 console.print(
                     "Please have at least 2 loaded tickers to calculate weights.\n"
                 )
                 return
+
+            table = True
+            if 'historic_period_sa' in vars(ns_parser):
+                table = False
 
             weights = optimizer_view.display_rel_risk_parity(
                 stocks=self.tickers,
@@ -4232,10 +4976,53 @@ class PortfolioOptimizationController(BaseController):
                 target_return=ns_parser.target_return,
                 d_ewma=ns_parser.smoothing_factor_ewma,
                 value=ns_parser.long_allocation,
+                table=table,
             )
+
             self.portfolios[ns_parser.name.upper()] = weights
             self.count += 1
             self.update_runtime_choices()
+
+            if table is False:
+                weights_sa = optimizer_view.display_rel_risk_parity(
+                    stocks=self.tickers,
+                    period=ns_parser.historic_period_sa,
+                    start=ns_parser.start_period_sa,
+                    end=ns_parser.end_period_sa,
+                    log_returns=ns_parser.log_returns_sa,
+                    freq=ns_parser.return_frequency_sa,
+                    maxnan=ns_parser.max_nan_sa,
+                    threshold=ns_parser.threshold_value_sa,
+                    method=ns_parser.nan_fill_method_sa,
+                    version=ns_parser.risk_parity_model_sa,
+                    risk_cont=ns_parser.risk_contribution_sa,
+                    penal_factor=ns_parser.penal_factor_sa,
+                    target_return=ns_parser.target_return_sa,
+                    d_ewma=ns_parser.smoothing_factor_ewma_sa,
+                    value=ns_parser.long_allocation_sa,
+                    table=table,
+                )
+
+                console.print("")
+                optimizer_view.display_weights_sa(
+                    weights=weights,
+                    weights_sa=weights_sa
+                    )
+
+                if not ns_parser.categories:
+                    categories = ["ASSET_CLASS", "COUNTRY", "SECTOR", "INDUSTRY"]
+                else:
+                    categories = ns_parser.categories
+
+                for category in categories:
+                    optimizer_view.display_categories_sa(
+                        weights=weights,
+                        weights_sa=weights_sa,
+                        categories=self.categories,
+                        column=category,
+                        title="Category - " + category.title()
+                        )
+
 
     @log_start_end(log=logger)
     def call_hrp(self, other_args: List[str]):
@@ -4556,14 +5343,54 @@ class PortfolioOptimizationController(BaseController):
             default="HRP_" + str(self.count),
             help="Save portfolio with personalized or default name",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        """
+        Sensitivity Analysis
+        """
+        subparsers = parser.add_subparsers(title = 'sensitivity analysis command', 
+                                           help='sensitivity analysis')
+        parser_update = subparsers.add_parser('sa',
+                                              help='sensitivity analysis command')
+                                              
+        parser_dict = vars(parser)
+        for i in parser_dict['_actions']:
+            data_dict = vars(i)
+            variables = list(data_dict.keys())
+            if variables[0] == 'option_strings' and data_dict['dest'] != 'name':
+                if len(data_dict['option_strings']) == 1:
+                    parser_update.add_argument(data_dict['option_strings'][0] + '-sa',
+                                               type=data_dict['type'],
+                                               default=data_dict['default'],
+                                               dest=data_dict['dest'] + '_sa',
+                                               choices=data_dict['choices'],
+                                               help=data_dict['help'])
+                elif len(data_dict['option_strings']) == 2:
+                    parser_update.add_argument(data_dict['option_strings'][0] + '-sa',
+                                               data_dict['option_strings'][1] + '-sa',
+                                               type=data_dict['type'],
+                                               default=data_dict['default'],
+                                               dest=data_dict['dest'] + '_sa',
+                                               choices=data_dict['choices'],
+                                               help=data_dict['help'])
 
+        parser.add_argument(
+            "-ct",
+            "--categories",
+            dest="categories",
+            type=lambda s: [str(item).upper() for item in s.split(",")],
+            default=[],
+            help="Show selected categories",
+        )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if len(self.tickers) < 2:
                 console.print(
                     "Please have at least 2 loaded tickers to calculate weights.\n"
                 )
                 return
+
+            table = True
+            if 'historic_period_sa' in vars(ns_parser):
+                table = False
 
             weights = optimizer_view.display_hrp(
                 stocks=self.tickers,
@@ -4591,10 +5418,63 @@ class PortfolioOptimizationController(BaseController):
                 leaf_order=ns_parser.leaf_order,
                 d_ewma=ns_parser.smoothing_factor_ewma,
                 value=ns_parser.long_allocation,
+                table=table,
             )
+
             self.portfolios[ns_parser.name.upper()] = weights
             self.count += 1
             self.update_runtime_choices()
+
+            if table is False:
+                weights_sa = optimizer_view.display_hrp(
+                    stocks=self.tickers,
+                    period=ns_parser.historic_period_sa,
+                    start=ns_parser.start_period_sa,
+                    end=ns_parser.end_period_sa,
+                    log_returns=ns_parser.log_returns_sa,
+                    freq=ns_parser.return_frequency_sa,
+                    maxnan=ns_parser.max_nan_sa,
+                    threshold=ns_parser.threshold_value_sa,
+                    method=ns_parser.nan_fill_method_sa,
+                    codependence=ns_parser.co_dependence_sa.lower(),
+                    covariance=ns_parser.covariance_sa.lower(),
+                    risk_measure=ns_parser.risk_measure_sa.lower(),
+                    risk_free_rate=ns_parser.risk_free_sa,
+                    alpha=ns_parser.significance_level_sa,
+                    a_sim=ns_parser.cvar_simulations_losses_sa,
+                    beta=ns_parser.cvar_significance_sa,
+                    b_sim=ns_parser.cvar_simulations_gains_sa,
+                    linkage=ns_parser.linkage_sa.lower(),
+                    k=ns_parser.amount_clusters_sa,
+                    max_k=ns_parser.max_clusters_sa,
+                    bins_info=ns_parser.amount_bins_sa.upper(),
+                    alpha_tail=ns_parser.alpha_tail_sa,
+                    leaf_order=ns_parser.leaf_order_sa,
+                    d_ewma=ns_parser.smoothing_factor_ewma_sa,
+                    value=ns_parser.long_allocation_sa,
+                    table=table,
+                )
+
+                console.print("")
+                optimizer_view.display_weights_sa(
+                    weights=weights,
+                    weights_sa=weights_sa
+                    )
+
+                if not ns_parser.categories:
+                    categories = ["ASSET_CLASS", "COUNTRY", "SECTOR", "INDUSTRY"]
+                else:
+                    categories = ns_parser.categories
+
+                for category in categories:
+                    optimizer_view.display_categories_sa(
+                        weights=weights,
+                        weights_sa=weights_sa,
+                        categories=self.categories,
+                        column=category,
+                        title="Category - " + category.title()
+                        )
+
 
     @log_start_end(log=logger)
     def call_herc(self, other_args: List[str]):
@@ -4913,14 +5793,54 @@ class PortfolioOptimizationController(BaseController):
             default="HERC_" + str(self.count),
             help="Save portfolio with personalized or default name",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        """
+        Sensitivity Analysis
+        """
+        subparsers = parser.add_subparsers(title = 'sensitivity analysis command', 
+                                           help='sensitivity analysis')
+        parser_update = subparsers.add_parser('sa',
+                                              help='sensitivity analysis command')
+                                              
+        parser_dict = vars(parser)
+        for i in parser_dict['_actions']:
+            data_dict = vars(i)
+            variables = list(data_dict.keys())
+            if variables[0] == 'option_strings' and data_dict['dest'] != 'name':
+                if len(data_dict['option_strings']) == 1:
+                    parser_update.add_argument(data_dict['option_strings'][0] + '-sa',
+                                               type=data_dict['type'],
+                                               default=data_dict['default'],
+                                               dest=data_dict['dest'] + '_sa',
+                                               choices=data_dict['choices'],
+                                               help=data_dict['help'])
+                elif len(data_dict['option_strings']) == 2:
+                    parser_update.add_argument(data_dict['option_strings'][0] + '-sa',
+                                               data_dict['option_strings'][1] + '-sa',
+                                               type=data_dict['type'],
+                                               default=data_dict['default'],
+                                               dest=data_dict['dest'] + '_sa',
+                                               choices=data_dict['choices'],
+                                               help=data_dict['help'])
 
+        parser.add_argument(
+            "-ct",
+            "--categories",
+            dest="categories",
+            type=lambda s: [str(item).upper() for item in s.split(",")],
+            default=[],
+            help="Show selected categories",
+        )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if len(self.tickers) < 2:
                 console.print(
                     "Please have at least 2 loaded tickers to calculate weights.\n"
                 )
                 return
+
+            table = True
+            if 'historic_period_sa' in vars(ns_parser):
+                table = False
 
             weights = optimizer_view.display_herc(
                 stocks=self.tickers,
@@ -4948,10 +5868,63 @@ class PortfolioOptimizationController(BaseController):
                 leaf_order=ns_parser.leaf_order,
                 d_ewma=ns_parser.smoothing_factor_ewma,
                 value=ns_parser.long_allocation,
+                table=table,
             )
+
             self.portfolios[ns_parser.name.upper()] = weights
             self.count += 1
             self.update_runtime_choices()
+
+            if table is False:
+                weights_sa = optimizer_view.display_herc(
+                    stocks=self.tickers,
+                    period=ns_parser.historic_period_sa,
+                    start=ns_parser.start_period_sa,
+                    end=ns_parser.end_period_sa,
+                    log_returns=ns_parser.log_returns_sa,
+                    freq=ns_parser.return_frequency_sa,
+                    maxnan=ns_parser.max_nan_sa,
+                    threshold=ns_parser.threshold_value_sa,
+                    method=ns_parser.nan_fill_method_sa,
+                    codependence=ns_parser.co_dependence_sa.lower(),
+                    covariance=ns_parser.covariance_sa.lower(),
+                    risk_measure=ns_parser.risk_measure_sa.lower(),
+                    risk_free_rate=ns_parser.risk_free_sa,
+                    alpha=ns_parser.significance_level_sa,
+                    a_sim=ns_parser.cvar_simulations_losses_sa,
+                    beta=ns_parser.cvar_significance_sa,
+                    b_sim=ns_parser.cvar_simulations_gains_sa,
+                    linkage=ns_parser.linkage_sa.lower(),
+                    k=ns_parser.amount_clusters_sa,
+                    max_k=ns_parser.max_clusters_sa,
+                    bins_info=ns_parser.amount_bins_sa.upper(),
+                    alpha_tail=ns_parser.alpha_tail_sa,
+                    leaf_order=ns_parser.leaf_order_sa,
+                    d_ewma=ns_parser.smoothing_factor_ewma_sa,
+                    value=ns_parser.long_allocation_sa,
+                    table=table,
+                )
+
+                console.print("")
+                optimizer_view.display_weights_sa(
+                    weights=weights,
+                    weights_sa=weights_sa
+                    )
+
+                if not ns_parser.categories:
+                    categories = ["ASSET_CLASS", "COUNTRY", "SECTOR", "INDUSTRY"]
+                else:
+                    categories = ns_parser.categories
+
+                for category in categories:
+                    optimizer_view.display_categories_sa(
+                        weights=weights,
+                        weights_sa=weights_sa,
+                        categories=self.categories,
+                        column=category,
+                        title="Category - " + category.title()
+                        )
+
 
     @log_start_end(log=logger)
     def call_nco(self, other_args: List[str]):
@@ -5246,14 +6219,54 @@ class PortfolioOptimizationController(BaseController):
             default="NCO_" + str(self.count),
             help="Save portfolio with personalized or default name",
         )
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        """
+        Sensitivity Analysis
+        """
+        subparsers = parser.add_subparsers(title = 'sensitivity analysis command', 
+                                           help='sensitivity analysis')
+        parser_update = subparsers.add_parser('sa',
+                                              help='sensitivity analysis command')
+                                              
+        parser_dict = vars(parser)
+        for i in parser_dict['_actions']:
+            data_dict = vars(i)
+            variables = list(data_dict.keys())
+            if variables[0] == 'option_strings' and data_dict['dest'] != 'name':
+                if len(data_dict['option_strings']) == 1:
+                    parser_update.add_argument(data_dict['option_strings'][0] + '-sa',
+                                               type=data_dict['type'],
+                                               default=data_dict['default'],
+                                               dest=data_dict['dest'] + '_sa',
+                                               choices=data_dict['choices'],
+                                               help=data_dict['help'])
+                elif len(data_dict['option_strings']) == 2:
+                    parser_update.add_argument(data_dict['option_strings'][0] + '-sa',
+                                               data_dict['option_strings'][1] + '-sa',
+                                               type=data_dict['type'],
+                                               default=data_dict['default'],
+                                               dest=data_dict['dest'] + '_sa',
+                                               choices=data_dict['choices'],
+                                               help=data_dict['help'])
 
+        parser.add_argument(
+            "-ct",
+            "--categories",
+            dest="categories",
+            type=lambda s: [str(item).upper() for item in s.split(",")],
+            default=[],
+            help="Show selected categories",
+        )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if len(self.tickers) < 2:
                 console.print(
                     "Please have at least 2 loaded tickers to calculate weights.\n"
                 )
                 return
+
+            table = True
+            if 'historic_period_sa' in vars(ns_parser):
+                table = False
 
             weights = optimizer_view.display_nco(
                 stocks=self.tickers,
@@ -5280,7 +6293,59 @@ class PortfolioOptimizationController(BaseController):
                 leaf_order=ns_parser.leaf_order,
                 d_ewma=ns_parser.smoothing_factor_ewma,
                 value=ns_parser.long_allocation,
+                table=table,
             )
+
             self.portfolios[ns_parser.name.upper()] = weights
             self.count += 1
             self.update_runtime_choices()
+
+            if table is False:
+                weights_sa = optimizer_view.display_nco(
+                    stocks=self.tickers,
+                    period=ns_parser.historic_period_sa,
+                    start=ns_parser.start_period_sa,
+                    end=ns_parser.end_period_sa,
+                    log_returns=ns_parser.log_returns_sa,
+                    freq=ns_parser.return_frequency_sa,
+                    maxnan=ns_parser.max_nan_sa,
+                    threshold=ns_parser.threshold_value_sa,
+                    method=ns_parser.nan_fill_method_sa,
+                    codependence=ns_parser.co_dependence_sa.lower(),
+                    covariance=ns_parser.covariance_sa.lower(),
+                    objective=ns_parser.objective_sa.lower(),
+                    risk_measure=ns_parser.risk_measure_sa.lower(),
+                    risk_free_rate=ns_parser.risk_free_sa,
+                    risk_aversion=ns_parser.risk_aversion_sa,
+                    alpha=ns_parser.significance_level_sa,
+                    linkage=ns_parser.linkage_sa.lower(),
+                    k=ns_parser.amount_clusters_sa,
+                    max_k=ns_parser.max_clusters_sa,
+                    bins_info=ns_parser.amount_bins_sa.upper(),
+                    alpha_tail=ns_parser.alpha_tail_sa,
+                    leaf_order=ns_parser.leaf_order_sa,
+                    d_ewma=ns_parser.smoothing_factor_ewma_sa,
+                    value=ns_parser.long_allocation_sa,
+                    table=table,
+                )
+
+                console.print("")
+                optimizer_view.display_weights_sa(
+                    weights=weights,
+                    weights_sa=weights_sa
+                    )
+
+                if not ns_parser.categories:
+                    categories = ["ASSET_CLASS", "COUNTRY", "SECTOR", "INDUSTRY"]
+                else:
+                    categories = ns_parser.categories
+
+                for category in categories:
+                    optimizer_view.display_categories_sa(
+                        weights=weights,
+                        weights_sa=weights_sa,
+                        categories=self.categories,
+                        column=category,
+                        title="Category - " + category.title()
+                        )
+
