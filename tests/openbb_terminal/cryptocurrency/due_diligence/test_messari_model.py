@@ -10,13 +10,11 @@ from openbb_terminal.cryptocurrency.due_diligence import messari_model
 @pytest.fixture(scope="module")
 def vcr_config():
     return {
-        "filter_headers": [
-            ("User-Agent", None),
-            ("x-messari-api-key", "mock_x-messari-api-key")
-        ],
+        "filter_headers": [("x-messari-api-key", "mock_x-messari-api-key")],
     }
 
 
+@pytest.mark.default_cassette("test_get_marketcap_dominance")
 @pytest.mark.vcr
 @pytest.mark.parametrize(
     "coin,interval,start,end",
@@ -114,6 +112,7 @@ def test_get_links(coin, recorder):
     recorder.capture(df)
 
 
+@pytest.mark.default_cassette("test_get_messari_timeseries")
 @pytest.mark.vcr
 @pytest.mark.parametrize(
     "coin,interval,start,end,timeseries_id",
