@@ -1,14 +1,14 @@
 """ Parameters Controller Module """
 __docformat__ = "numpy"
 
-# pylint: disable=C0302
+# pylint: disable=C0302, no-else-return
 
 import argparse
 import configparser
 import logging
 import os
 from pathlib import Path
-from typing import List
+from typing import List, Optional
 
 from prompt_toolkit.completion import NestedCompleter
 
@@ -17,13 +17,12 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import parse_known_args_and_warn, log_and_raise
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
+from openbb_terminal.portfolio.portfolio_optimization.parameters import params_view
 from openbb_terminal.portfolio.portfolio_optimization.parameters.params_view import (
     AVAILABLE_OPTIONS,
     DEFAULT_PARAMETERS,
     MODEL_PARAMS,
 )
-from openbb_terminal.portfolio.portfolio_optimization import excel_model
-from openbb_terminal.portfolio.portfolio_optimization.parameters import params_view
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -34,15 +33,13 @@ def check_save_file(file: str) -> str:
     if file == "defaults.ini":
         log_and_raise(
             argparse.ArgumentTypeError(
-                f"Cannot overwrite defaults.ini file, please save with a different name"
+                "Cannot overwrite defaults.ini file, please save with a different name"
             )
         )
     else:
         if not file.endswith(".ini") and not file.endswith(".xlsx"):
             log_and_raise(
-                argparse.ArgumentTypeError(
-                    f"File to be saved needs to be .ini or .xlsx"
-                )
+                argparse.ArgumentTypeError("File to be saved needs to be .ini or .xlsx")
             )
 
     return file
@@ -87,15 +84,15 @@ class ParametersController(BaseController):
         self,
         file: str,
         queue: List[str] = None,
-        params: str = None,
-        current_model: str = None,
+        params=None,
+        current_model=None,
     ):
         """Constructor"""
         super().__init__(queue)
 
         self.current_file = file
         self.current_model = current_model
-        self.description = None
+        self.description: Optional[str] = None
         self.DEFAULT_PATH = os.path.abspath(
             os.path.join(
                 os.path.dirname(__file__),
@@ -119,21 +116,23 @@ class ParametersController(BaseController):
         if params:
             self.params = params
         else:
-            self.params.read(
-                os.path.join(
-                    self.DEFAULT_PATH,
-                    self.current_file if self.current_file else "defaults.ini",
-                )
-            )
-            self.params.optionxform = str  # type: ignore
-            self.params = self.params["OPENBB"]
+            pass
+            # TODO: Enable .ini reading
+            # self.params.read(
+            #     os.path.join(
+            #         self.DEFAULT_PATH,
+            #         self.current_file if self.current_file else "defaults.ini",
+            #     )
+            # )
+            # self.params.optionxform = str  # type: ignore
+            # self.params = self.params["OPENBB"]
 
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["set"] = {c: None for c in self.models}
             choices["set"]["-m"] = {c: None for c in self.models}
-            choices["arg"] = {c: None for c in AVAILABLE_OPTIONS.keys()}
-            choices["file"] = {c: None for c in self.DATA_FILES.keys()}
+            choices["arg"] = {c: None for c in AVAILABLE_OPTIONS}
+            choices["file"] = {c: None for c in self.DATA_FILES}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
@@ -153,7 +152,7 @@ class ParametersController(BaseController):
     arg           set a different value for an argument[/cmds]
 """
         if self.current_model:
-            max_len = max([len(k) for k in self.params.keys()])
+            max_len = max(len(k) for k in self.params.keys())
             help_text += "\n[info]Parameters:[/info]\n"
             for k, v in self.params.items():
                 all_params = DEFAULT_PARAMETERS + MODEL_PARAMS[self.current_model]
@@ -162,7 +161,7 @@ class ParametersController(BaseController):
                         f"    [param]{k}{' ' * (max_len - len(k))} :[/param] {v}\n"
                     )
         else:
-            max_len = max([len(k) for k in self.params.keys()])
+            max_len = max(len(k) for k in self.params.keys())
             help_text += "\n[info]Parameters:[/info]\n"
             for k, v in self.params.items():
                 help_text += f"    [param]{k}{' ' * (max_len - len(k))} :[/param] {v}\n"
@@ -213,9 +212,9 @@ class ParametersController(BaseController):
             self.current_file = " ".join(ns_parser.file)
 
             if self.current_file in self.DATA_FILES:
-                file_location = self.DATA_FILES[self.current_file]
+                file_location = str(self.DATA_FILES[self.current_file])
             else:
-                file_location = self.current_file
+                file_location = str(self.current_file)
 
             self.params, self.current_model = params_view.load_file(file_location)
 
@@ -263,7 +262,6 @@ class ParametersController(BaseController):
 
             elif ns_parser.file.endswith(".xlsx"):
                 console.print("It is not yet possible to save to .xlsx")
-                pass
 
     @log_start_end(log=logger)
     def call_clear(self, other_args: List[str]):
@@ -276,8 +274,9 @@ class ParametersController(BaseController):
         )
         ns_parser = parse_known_args_and_warn(parser, other_args)
 
-        self.current_model = ""
-        console.print("")
+        if ns_parser:
+            self.current_model = ""
+            console.print("")
 
     @log_start_end(log=logger)
     def call_set(self, other_args: List[str]):
@@ -355,9 +354,9 @@ class ParametersController(BaseController):
                 if argument == "historic_period":
                     for option in AVAILABLE_OPTIONS[argument]:
                         if option in str(value):
-                            self.params[argument] = str(value)
+                            self.params[argument] = value
                             break
-                    if self.params[argument] != str(value):
+                    if self.params[argument] != value:
                         console.print(
                             f"[red]The value {value} is not an option for {argument}.\n"
                             f"Please select enter a "
@@ -368,9 +367,9 @@ class ParametersController(BaseController):
                     value in AVAILABLE_OPTIONS[argument]
                     or "Any" in AVAILABLE_OPTIONS[argument]
                 ):
-                    self.params[argument] = str(value)
+                    self.params[argument] = value
                 else:
-                    if len(self.AVAILABLE_OPTIONS[argument]) > 15:
+                    if len(AVAILABLE_OPTIONS[argument]) > 15:
                         minimum = min(AVAILABLE_OPTIONS[argument])
                         maximum = max(AVAILABLE_OPTIONS[argument])
                         options = (

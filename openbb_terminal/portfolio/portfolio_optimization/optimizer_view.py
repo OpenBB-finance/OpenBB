@@ -108,43 +108,6 @@ time_factor = {
 dict_conversion = {"period": "historic_period", "start": "start_period"}
 
 
-def check_params(parser, params, params_dict):
-    """
-    Check the parameters set and change them if an argument is used within the command.
-
-    Parameters
-    ----------
-    parser : ArgumentParser
-        The parser that is being used to call the command.
-    params: tuple
-        All parameters converted into a tuple with name, value
-    params_dict: dict
-        The option to select custom parameters that only get overwritten if the default of
-        the function is altered
-    """
-    function_parameters = params_dict.copy()
-    changed_parameters = []
-
-    for parameter, value in params:
-        if parameter in function_parameters:
-            if (
-                value != parser.get_default(parameter)
-                and value != function_parameters[parameter]
-            ):
-                function_parameters[parameter] = value
-                changed_parameters.append(parameter)
-        else:
-            function_parameters[parameter] = value
-
-    if changed_parameters:
-        console.print(
-            f"Changes are made in the following parameter(s) {' '.join(changed_parameters)} "
-            f"due to user input."
-        )
-
-    return function_parameters
-
-
 @log_start_end(log=logger)
 def d_period(period: str, start: str, end: str):
     """
