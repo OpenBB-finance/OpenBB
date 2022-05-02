@@ -817,6 +817,13 @@ class BehaviouralAnalysisController(StockBaseController):
             default=6,
             help="number of days in the past to extract tweets.",
         )
+        parser.add_argument(
+            "-c",
+            "--compare",
+            action="store_true",
+            dest="compare",
+            help="show corresponding change in stock price",
+        )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
         ns_parser = parse_known_args_and_warn(
@@ -828,6 +835,7 @@ class BehaviouralAnalysisController(StockBaseController):
                     ticker=self.ticker,
                     n_tweets=ns_parser.limit,
                     n_days_past=ns_parser.n_days_past,
+                    compare=ns_parser.compare,
                     export=ns_parser.export,
                 )
             else:
