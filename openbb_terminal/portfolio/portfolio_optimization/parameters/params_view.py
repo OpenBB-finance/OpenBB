@@ -1,9 +1,10 @@
+import configparser
+
 import pandas as pd
-from openbb_terminal.rich_config import console
 
 from openbb_terminal.helper_funcs import print_rich_table
 from openbb_terminal.portfolio.portfolio_optimization import excel_model
-import configparser
+from openbb_terminal.rich_config import console
 
 DEFAULT_RANGE = [value / 1000 for value in range(0, 1001)]
 
@@ -225,7 +226,7 @@ MODEL_PARAMS = {
 }
 
 
-def load_file(file_location: str = None):
+def load_file(file_location=None):
     """
     Loads in the configuration file and return the parameters in a dictionary including the model if available.
 
@@ -250,7 +251,7 @@ def load_file(file_location: str = None):
             current_model = None
 
     elif str(file_location).endswith(".xlsx"):
-        params, description = excel_model.load_configuration(file_location)
+        params, _ = excel_model.load_configuration(file_location)
         current_model = params["technique"]
     else:
         console.print(
@@ -258,7 +259,7 @@ def load_file(file_location: str = None):
         )
         return None, None
 
-    max_len = max([len(k) for k in params.keys()])
+    max_len = max(len(k) for k in params.keys())
     help_text = "[info]Parameters:[/info]\n"
 
     if current_model:
