@@ -8,8 +8,6 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
-      User-Agent:
-      - python-requests/2.27.1
       x-messari-api-key:
       - mock_x-messari-api-key
     method: GET

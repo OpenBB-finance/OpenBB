@@ -10,7 +10,10 @@ from openbb_terminal.cryptocurrency.due_diligence import messari_model
 @pytest.fixture(scope="module")
 def vcr_config():
     return {
-        "filter_headers": [("x-messari-api-key", "mock_x-messari-api-key")],
+        "filter_headers": [
+            ("User-Agent", None),
+            ("x-messari-api-key", "mock_x-messari-api-key")
+        ],
     }
 
 

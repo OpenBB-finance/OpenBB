@@ -8,8 +8,6 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
-      User-Agent:
-      - python-requests/2.27.1
     method: GET
     uri: https://api.coingecko.com/api/v3/coins/eth/
   response:
