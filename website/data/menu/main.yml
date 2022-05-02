@@ -541,7 +541,7 @@ main:
               - name: getdd
                 ref: "/terminal/common/behavioural_analysis/getdd"
               - name: reddit_sent
-                ref: "/terminal/common/behavioural_analysis/reddit_sent"                
+                ref: "/terminal/common/behavioural_analysis/reddit_sent"
               - name: bullbear
                 ref: "/terminal/common/behavioural_analysis/bullbear"
               - name: messages
@@ -783,10 +783,28 @@ main:
                 ref: "/terminal/cryptocurrency/due_diligence/trades"
               - name: stats
                 ref: "/terminal/cryptocurrency/due_diligence/stats"
-              - name: stats
+              - name: mcapdom
                 ref: "/terminal/cryptocurrency/due_diligence/mcapdom"
               - name: nonzero
                 ref: "/terminal/cryptocurrency/due_diligence/nonzero"
+              - name: mt
+                ref: "/terminal/cryptocurrency/due_diligence/mt"
+              - name: rm
+                ref: "/terminal/cryptocurrency/due_diligence/rm"
+              - name: tk
+                ref: "/terminal/cryptocurrency/due_diligence/tk"
+              - name: pi
+                ref: "/terminal/cryptocurrency/due_diligence/pi"
+              - name: team
+                ref: "/terminal/cryptocurrency/due_diligence/team"
+              - name: inv
+                ref: "/terminal/cryptocurrency/due_diligence/inv"
+              - name: gov
+                ref: "/terminal/cryptocurrency/due_diligence/gov"
+              - name: fr
+                ref: "/terminal/cryptocurrency/due_diligence/fr"
+              - name: links
+                ref: "/terminal/cryptocurrency/due_diligence/links"
               - name: news
                 ref: "/terminal/cryptocurrency/due_diligence/news"
               - name: gh
