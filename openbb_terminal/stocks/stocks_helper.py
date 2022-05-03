@@ -488,7 +488,7 @@ def load(
             request_url = (
                 f"https://api.polygon.io/v2/aggs/ticker/"
                 f"{ticker.upper()}/range/{interval}/minute/{start.strftime('%Y-%m-%d')}/{end.strftime('%Y-%m-%d')}"
-                f"?adjusted=true&sort=desc&limit=49999&apiKey={API_POLYGON_KEY}"
+                f"?adjusted=true&sort=desc&limit=49999&apiKey={cfg.API_POLYGON_KEY}"
             )
             r = requests.get(request_url)
             if r.status_code != 200:
