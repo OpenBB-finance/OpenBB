@@ -25,7 +25,6 @@ from numpy.core.fromnumeric import transpose
 from plotly.subplots import make_subplots
 from scipy import stats
 
-from openbb_terminal.config_terminal import theme, API_POLYGON_KEY
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.helper_funcs import (
     export_data,
@@ -591,7 +590,7 @@ def display_candle(
                 ap0.append(
                     mpf.make_addplot(
                         df_stock["OC_High_trend"],
-                        color=theme.up_color,
+                        color=cfg.theme.up_color,
                         secondary_y=False,
                     ),
                 )
@@ -600,17 +599,17 @@ def display_candle(
                 ap0.append(
                     mpf.make_addplot(
                         df_stock["OC_Low_trend"],
-                        color=theme.down_color,
+                        color=cfg.theme.down_color,
                         secondary_y=False,
                     ),
                 )
 
         candle_chart_kwargs = {
             "type": "candle",
-            "style": theme.mpf_style,
+            "style": cfg.theme.mpf_style,
             "volume": True,
             "addplot": ap0,
-            "xrotation": theme.xticks_rotation,
+            "xrotation": cfg.theme.xticks_rotation,
             "scale_padding": {"left": 0.3, "right": 1, "top": 0.8, "bottom": 0.8},
             "update_width_config": {
                 "candle_linewidth": 0.6,
@@ -644,13 +643,13 @@ def display_candle(
                 colors = []
 
                 for i, _ in enumerate(ma):
-                    colors.append(theme.get_colors()[i])
+                    colors.append(cfg.theme.get_colors()[i])
 
                 lines = [Line2D([0], [0], color=c) for c in colors]
                 labels = ["MA " + str(label) for label in ma]
                 ax[0].legend(lines, labels)
 
-            theme.visualize_output(force_tight_layout=False)
+            cfg.theme.visualize_output(force_tight_layout=False)
         else:
             if len(external_axes) != 2:
                 logger.error("Expected list of one axis item.")
@@ -1281,7 +1280,7 @@ def show_codes_polygon(ticker: str):
     ticker: str
         Stock ticker
     """
-    link = f"https://api.polygon.io/v3/reference/tickers/{ticker.upper()}?apiKey={API_POLYGON_KEY}"
+    link = f"https://api.polygon.io/v3/reference/tickers/{ticker.upper()}?apiKey={cfg.API_POLYGON_KEY}"
     r = requests.get(link)
     if r.status_code != 200:
         console.print("[red]Error in polygon request[/red]\n")
