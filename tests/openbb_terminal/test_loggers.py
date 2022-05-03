@@ -68,27 +68,32 @@ def test_get_commit_hash_obff(mocker):
     value = loggers.get_commit_hash()
     assert value
 
-
+@pytest.mark.skip(reason="Change the state of the logger.")
 def test_add_stdout_handler():
     loggers.add_stdout_handler(settings)
 
 
+@pytest.mark.skip(reason="Change the state of the logger.")
 def test_add_stderr_handler():
     loggers.add_stderr_handler(settings)
 
 
+@pytest.mark.skip(reason="Change the state of the logger.")
 def test_add_nopp_handler():
     loggers.add_noop_handler(settings)
 
 
+@pytest.mark.skip(reason="Change the state of the logger + lead to file generation.")
 def test_add_file_handler():
     loggers.add_file_handler(settings)
 
 
+@pytest.mark.skip(reason="Change the state of the logger.")
 def test_setup_handlers():
     loggers.setup_handlers(settings)
 
 
+@pytest.mark.skip(reason="Change the state of the logger.")
 def test_setup_logging(mocker):
     mocker.patch("openbb_terminal.loggers.setup_handlers")
     loggers.setup_logging(settings)
