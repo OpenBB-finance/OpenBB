@@ -1344,7 +1344,7 @@ def plot_candles(
         if len(external_axes) != nr_external_axes:
             logger.error("Expected list of %s axis items.", str(nr_external_axes))
             console.print(
-                f"[red]Expected list of {nr_external_axes} axis items./n[/red]"
+                f"[red]Expected list of {nr_external_axes} axis items.\n[/red]"
             )
             return
 
@@ -1385,7 +1385,7 @@ def plot_order_book(
     else:
         if len(external_axes) != 1:
             logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of one axis item./n[/red]")
+            console.print("[red]Expected list of one axis item.\n[/red]")
             return
         (ax,) = external_axes
 

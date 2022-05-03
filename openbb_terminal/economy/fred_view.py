@@ -124,7 +124,7 @@ def display_fred_series(
         else:
             if len(external_axes) != 3:
                 logger.error("Expected list of 3 axis items")
-                console.print("[red]Expected list of 3 axis items./n[/red]")
+                console.print("[red]Expected list of 3 axis items.\n[/red]")
                 return
             (ax,) = external_axes
 
@@ -204,7 +204,7 @@ def display_yield_curve(date: datetime, external_axes: Optional[List[plt.Axes]] 
     else:
         if len(external_axes) != 1:
             logger.error("Expected list of 3 axis items")
-            console.print("[red]Expected list of 3 axis items./n[/red]")
+            console.print("[red]Expected list of 3 axis items.\n[/red]")
             return
         (ax,) = external_axes
 

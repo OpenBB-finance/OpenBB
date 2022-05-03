@@ -57,7 +57,7 @@ def display_bbands(
     else:
         if len(external_axes) != 1:
             logger.error("Expected list of two axis items.")
-            console.print("[red]Expected list of 2 axis items./n[/red]")
+            console.print("[red]Expected list of 2 axis items.\n[/red]")
             return
         (ax,) = external_axes
 
@@ -140,7 +140,7 @@ def display_donchian(
     else:
         if len(external_axes) != 1:
             logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of 1 axis item./n[/red]")
+            console.print("[red]Expected list of 1 axis item.\n[/red]")
             return
         (ax,) = external_axes
 
@@ -234,7 +234,7 @@ def view_kc(
     else:
         if len(external_axes) != 1:
             logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of 1 axis item./n[/red]")
+            console.print("[red]Expected list of 1 axis item.\n[/red]")
             return
         (ax,) = external_axes
 

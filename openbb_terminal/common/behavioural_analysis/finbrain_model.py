@@ -36,4 +36,6 @@ def get_sentiment(ticker: str) -> pd.DataFrame:
             sentiment.index = pd.to_datetime(sentiment.index).to_pydatetime()
             sentiment.index.name = "date"
             sentiment.columns = ["Sentiment Analysis"]
+            sentiment.sort_index(ascending=True, inplace=True)
+
     return sentiment

@@ -133,7 +133,7 @@ def display_arima(
             )
             console.print(
                 "[red]Expected list of 1 axis item "
-                + "or 3 axis items when backtesting./n[/red]"
+                + "or 3 axis items when backtesting.\n[/red]"
             )
             return
         ax = external_axes[0]
@@ -207,7 +207,7 @@ def display_arima(
         else:
             if len(external_axes) != 3:
                 logger.error("Expected list of one axis item.")
-                console.print("[red]Expected list of 1 axis item./n[/red]")
+                console.print("[red]Expected list of 1 axis item.\n[/red]")
                 return
             (_, ax2, ax3) = external_axes
 

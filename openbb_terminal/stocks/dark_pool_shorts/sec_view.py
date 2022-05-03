@@ -65,7 +65,7 @@ def fails_to_deliver(
     else:
         if len(external_axes) != 2:
             logger.error("Expected list of two axis items.")
-            console.print("[red]Expected list of two axis items./n[/red]")
+            console.print("[red]Expected list of two axis items.\n[/red]")
             return
         (ax1, ax2) = external_axes
 

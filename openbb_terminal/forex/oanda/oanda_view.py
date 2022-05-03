@@ -360,7 +360,7 @@ def show_candles(
     if external_axes is not None:
         if len(external_axes) != 2:
             logger.error("Expected list of 2 axis items")
-            console.print("[red]Expected list of 2 axis items./n[/red]")
+            console.print("[red]Expected list of 2 axis items.\n[/red]")
             return
         ax, volume = external_axes
         candle_chart_kwargs["ax"] = ax
@@ -528,7 +528,7 @@ def book_plot(
     else:
         if len(external_axes) != 1:
             logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of one axis item./n[/red]")
+            console.print("[red]Expected list of one axis item.\n[/red]")
             return
         (ax,) = external_axes
 

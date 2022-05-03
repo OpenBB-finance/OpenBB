@@ -201,7 +201,7 @@ def display_government_buys(
     else:
         if len(external_axes) != 1:
             logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of one axis item./n[/red]")
+            console.print("[red]Expected list of one axis item.\n[/red]")
             return
         (ax,) = external_axes
 
@@ -321,7 +321,7 @@ def display_government_sells(
     else:
         if len(external_axes) != 1:
             logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of one axis item./n[/red]")
+            console.print("[red]Expected list of one axis item.\n[/red]")
             return
         (ax,) = external_axes
 
@@ -403,7 +403,7 @@ def display_last_contracts(
         else:
             if len(external_axes) != 1:
                 logger.error("Expected list of one axis item.")
-                console.print("[red]Expected list of one axis item./n[/red]")
+                console.print("[red]Expected list of one axis item.\n[/red]")
                 return
             (ax,) = external_axes
 
@@ -447,7 +447,7 @@ def plot_government(
     else:
         if len(external_axes) != 1:
             logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of one axis item./n[/red]")
+            console.print("[red]Expected list of one axis item.\n[/red]")
             return
         (ax,) = external_axes
 
@@ -607,7 +607,7 @@ def display_contracts(
         else:
             if len(external_axes) != 1:
                 logger.error("Expected list of one axis item.")
-                console.print("[red]Expected list of one axis item./n[/red]")
+                console.print("[red]Expected list of one axis item.\n[/red]")
                 return
             (ax,) = external_axes
 
@@ -673,7 +673,7 @@ def display_qtr_contracts(
             else:
                 if len(external_axes) != 1:
                     logger.error("Expected list of one axis item.")
-                    console.print("[red]Expected list of one axis item./n[/red]")
+                    console.print("[red]Expected list of one axis item.\n[/red]")
                     return
                 (ax,) = external_axes
 
@@ -784,7 +784,7 @@ def display_hist_contracts(
         else:
             if len(external_axes) != 1:
                 logger.error("Expected list of one axis item.")
-                console.print("[red]Expected list of one axis item./n[/red]")
+                console.print("[red]Expected list of one axis item.\n[/red]")
                 return
             (ax,) = external_axes
 
@@ -861,7 +861,7 @@ def display_top_lobbying(
         else:
             if len(external_axes) != 1:
                 logger.error("Expected list of one axis item.")
-                console.print("[red]Expected list of one axis item./n[/red]")
+                console.print("[red]Expected list of one axis item.\n[/red]")
                 return
             (ax,) = external_axes
 
