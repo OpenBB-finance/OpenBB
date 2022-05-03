@@ -1,0 +1,12 @@
+,Metric,Value
+0,Type,No On-Chain Governance
+1,Details,"While Ethereum does not have an official on-chain governance model, it does have a history with coin voting. The three instances listed below are examples of loosely couple coin voting:
+- [DAO proposal votes](https://daostats.github.io/proposals.html)
+- [The DAO Carbonvote](http://v1.carbonvote.com/)
+- [The EIP 186/649/669 Carbonvote](http://carbonvote.com/)
+
+Loosely coupled coin voting still coordinates the details of the proposal off-chain, but participants submit their votes on-chain, with each vote weighted by the total amount of ether held by that address. Despite the correlation between voting weight and tokens held, users do not submit tokens alongside their votes and are therefore not subject to any direct financial burden. Hence, the loosely coupled label given to this style of governance by Vitalik Buterin.
+
+Ethereum does not have any examples of coin voting as a built-in layer-1 protocol feature (referred to as tightly couple coin voting). But networks miners engage in a tightly couple voting process when determining whether to change the block gas limit.
+
+See more details in Vitalik Buterin's [blog post](https://vitalik.ca/general/2017/12/17/voting.html) on blockchain governance"
