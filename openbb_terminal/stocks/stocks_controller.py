@@ -23,6 +23,7 @@ from openbb_terminal.helper_funcs import (
     parse_known_args_and_warn,
     valid_date,
 )
+from openbb_terminal.helper_classes import AllowArgsWithWhiteSpace
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
 from openbb_terminal.rich_config import console
@@ -176,7 +177,8 @@ Stock: [/param]{stock_text}
             "-c",
             "--country",
             default="",
-            choices=self.country,
+            nargs=argparse.ONE_OR_MORE,
+            action=choiceCheckAfterAction(self.country),
             dest="country",
             help="Search by country to find stocks matching the criteria.",
         )
@@ -184,7 +186,8 @@ Stock: [/param]{stock_text}
             "-s",
             "--sector",
             default="",
-            choices=self.sector,
+            nargs=argparse.ONE_OR_MORE,
+            action=choiceCheckAfterAction(self.sector),
             dest="sector",
             help="Search by sector to find stocks matching the criteria.",
         )
@@ -192,7 +195,8 @@ Stock: [/param]{stock_text}
             "-i",
             "--industry",
             default="",
-            choices=self.industry,
+            nargs=argparse.ONE_OR_MORE,
+            action=choiceCheckAfterAction(self.industry),
             dest="industry",
             help="Search by industry to find stocks matching the criteria.",
         )
@@ -670,3 +674,12 @@ Stock: [/param]{stock_text}
                 "Predict is disabled. Check ENABLE_PREDICT flag on feature_flags.py",
                 "\n",
             )
+
+
+def choiceCheckAfterAction(choice):
+    class ActionClass(AllowArgsWithWhiteSpace):
+        def __call__(self, parser, namespace, values, option_string=None):
+            super().__call__(parser, namespace, values, option_string)
+            if getattr(namespace, self.dest) not in choice:
+                raise ValueError("{} is not in {}".format(getattr(namespace, self.dest), choice))
+    return ActionClass
