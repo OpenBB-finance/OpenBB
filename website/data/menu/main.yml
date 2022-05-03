@@ -16,6 +16,8 @@ main:
             ref: "/terminal/stocks/quote"
           - name: news
             ref: "/terminal/stocks/news"
+          - name: codes
+            ref: "terminal/stocks/codes"
           - name: discovery
             ref: "/terminal/stocks/discovery"
             sub:
