@@ -68,6 +68,7 @@ def test_get_commit_hash_obff(mocker):
     value = loggers.get_commit_hash()
     assert value
 
+
 @pytest.mark.skip(reason="Change the state of the logger.")
 def test_add_stdout_handler():
     loggers.add_stdout_handler(settings)
