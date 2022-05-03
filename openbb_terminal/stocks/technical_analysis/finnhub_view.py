@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 def plot_pattern_recognition(
     ticker: str,
     resolution: str,
-    export: str,
+    export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot pattern recognition signal

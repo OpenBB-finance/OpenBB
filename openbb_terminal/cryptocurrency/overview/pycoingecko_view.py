@@ -36,7 +36,7 @@ register_matplotlib_converters()
 def display_crypto_heatmap(
     category: str,
     top: int,
-    export: str,
+    export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Shows cryptocurrencies heatmap [Source: CoinGecko]

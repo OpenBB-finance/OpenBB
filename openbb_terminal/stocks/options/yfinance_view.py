@@ -450,7 +450,7 @@ def plot_plot(
     x: str,
     y: str,
     custom: str,
-    export: str,
+    export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Generate a graph custom graph based on user input

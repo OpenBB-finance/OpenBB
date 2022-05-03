@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
 def realtime_performance_sector(
     raw: bool,
-    export: str,
+    export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display Real-Time Performance sector. [Source: AlphaVantage]

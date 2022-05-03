@@ -22,7 +22,7 @@ register_matplotlib_converters()
 
 @log_start_end(log=logger)
 def fear_and_greed_index(
-    indicator: str, export: str, external_axes: Optional[List[plt.Axes]] = None
+    indicator: str, export: str = "", external_axes: Optional[List[plt.Axes]] = None
 ):
     """Display CNN Fear And Greed Index. [Source: CNN Business]
 

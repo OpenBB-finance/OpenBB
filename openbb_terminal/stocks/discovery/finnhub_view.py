@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 def past_ipo(
     num_days_behind: int,
     limit: int,
-    export: str,
+    export: str = "",
     start_date: datetime = None,
 ) -> pd.DataFrame:
     """Past IPOs dates. [Source: Finnhub]
@@ -75,7 +75,7 @@ def past_ipo(
 @log_start_end(log=logger)
 @check_api_key(["API_FINNHUB_KEY"])
 def future_ipo(
-    num_days_ahead: int, limit: int, export: str, end_date: datetime = None
+    num_days_ahead: int, limit: int, export: str = "", end_date: datetime = None
 ) -> pd.DataFrame:
     """Future IPOs dates. [Source: Finnhub]
 

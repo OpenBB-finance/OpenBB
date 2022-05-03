@@ -81,7 +81,7 @@ def rating_over_time(
     ticker: str,
     num: int,
     raw: bool,
-    export: str,
+    export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Rating over time (monthly). [Source: Finnhub]

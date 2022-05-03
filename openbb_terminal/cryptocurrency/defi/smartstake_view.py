@@ -31,7 +31,7 @@ LUNA_CIR_SUPPLY_CHANGE = "lunaSupplyChallengeStats"
 @check_api_key(["API_SMARTSTAKE_KEY", "API_SMARTSTAKE_TOKEN"])
 def display_luna_circ_supply_change(
     days: int,
-    export: str,
+    export: str = "",
     supply_type: str = LUNA_CIR_SUPPLY_CHANGE,
     limit: int = 5,
     external_axes: Optional[List[plt.Axes]] = None,
