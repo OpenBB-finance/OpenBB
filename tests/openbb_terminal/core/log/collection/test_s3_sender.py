@@ -1,89 +1,168 @@
-import os
+# IMPORTATION STANDARD
 from pathlib import Path
+
+# IMPORTATION THIRDPARTY
 import pytest
-from openbb_terminal.core.log.constants import S3_FOLDER_SUFFIX
-from openbb_terminal.core.log.generation.settings import (
-    AppSettings,
-    AWSSettings,
-)
+
+# IMPORTATION INTERNAL
+from openbb_terminal.core.log.generation.settings import AWSSettings
 from openbb_terminal.core.log.constants import DEFAULT_API_URL
-from openbb_terminal.core.log.collection import s3_sender as s3s
+from openbb_terminal.core.log.collection import s3_sender
 
 # pylint: disable=W0611
 
-try:
-    import boto3  # noqa:F401
-except ImportError:
-    WITH_BOTO3 = False
-else:
-    WITH_BOTO3 = True
 
-app_settings = AppSettings(
-    commit_hash="MOCK_COMMIT_HASH",
-    name="MOCK_COMMIT_HASH",
-    identifier="MOCK_COMMIT_HASH",
-    session_id="MOCK_SESSION_ID",
-)
-aws_settings = AWSSettings(
-    aws_access_key_id="MOCK_AWS_ACCESS_KEY_ID",
-    aws_secret_access_key="MOCK_AWS",  # pragma: allowlist secret
-)
-
-identifier = app_settings.identifier
-app_name = app_settings.name
-object_key = f"{app_name}{S3_FOLDER_SUFFIX}/logs/{identifier}/file.log"
-
-
+@pytest.mark.vcr(record_mode="none")
 def test_send_to_s3_directly(mocker):
-    if WITH_BOTO3:
-        mocker.patch("openbb_terminal.core.log.collection.s3_sender.boto3")
-        s3s.send_to_s3_directly("access", "secret", "bucket", Path("."), "key")
-    else:
-        with pytest.raises(ModuleNotFoundError):
-            s3s.send_to_s3_directly("access", "secret", "bucket", Path("."), "key")
+    s3_sender.boto3 = mocker.Mock()
+    mocker.patch.object(
+        target=s3_sender,
+        attribute="WITH_BOTO3",
+        new=True,
+    )
+
+    aws_access_key_id = "MOCK_ACCESS_KEY_ID"
+    aws_secret_access_key = "MOCK_ACCESS_SECRET_KEY"
+    bucket = "MOCK_BUCKET"
+    file = Path(__file__)
+    object_key = "MOCK_S3/OBJECT_KEY"
+
+    s3_sender.send_to_s3_directly(
+        aws_access_key_id=aws_access_key_id,
+        aws_secret_access_key=aws_secret_access_key,
+        bucket=bucket,
+        file=file,
+        object_key=object_key,
+    )
 
 
-def test_send_to_s3_directly_invalid(mocker):
-    mocker.patch("openbb_terminal.core.log.collection.s3_sender.WITH_BOTO3", False)
+@pytest.mark.vcr(record_mode="none")
+def test_send_to_s3_directly_exception(mocker):
+    s3_sender.boto3 = mocker.Mock()
+    mocker.patch.object(
+        target=s3_sender,
+        attribute="WITH_BOTO3",
+        new=False,
+    )
+
+    aws_access_key_id = "MOCK_ACCESS_KEY_ID"
+    aws_secret_access_key = "MOCK_ACCESS_SECRET_KEY"
+    bucket = "MOCK_BUCKET"
+    file = Path(__file__)
+    object_key = "MOCK_S3/OBJECT_KEY"
+
     with pytest.raises(ModuleNotFoundError):
-        s3s.send_to_s3_directly("access", "secret", "bucket", Path("."), "key")
+        s3_sender.send_to_s3_directly(
+            aws_access_key_id=aws_access_key_id,
+            aws_secret_access_key=aws_secret_access_key,
+            bucket=bucket,
+            file=file,
+            object_key=object_key,
+        )
 
 
 @pytest.mark.vcr
 def test_fetch_presigned_url():
-    s3s.fetch_presigned_url(DEFAULT_API_URL, object_key)
+    object_key = "gst-app/logs/MOCK_OBJECT_KEY"
+    s3_sender.fetch_presigned_url(api_url=DEFAULT_API_URL, object_key=object_key)
 
 
-def test_send_to_s3_using_presigned_url(mocker):
+@pytest.mark.vcr(record_mode="none")
+def test_send_to_s3_using_presigned_url(mocker, tmp_path):
     mocker.patch(
         "openbb_terminal.core.log.collection.s3_sender.fetch_presigned_url",
         return_value={"fields": [1, 2, 3], "url": "http://"},
     )
     mocker.patch("openbb_terminal.core.log.collection.s3_sender.requests")
-    with open("readme.txt", "w") as f:
-        f.write("Create a new text file!")
 
-    s3s.send_to_s3_using_presigned_url(DEFAULT_API_URL, "readme.txt", object_key)
-    os.remove("readme.txt")
+    api_url = DEFAULT_API_URL
+    file = tmp_path.joinpath("mock_log_file")
+    object_key = "MOCK_S3/OBJECT_KEY"
 
+    with open(file, "w") as f:
+        f.write("Mocking a log file to send to s3.")
 
-@pytest.mark.parametrize("last", [True, False])
-def test_send_to_s3(mocker, last, tmp_path):
-    mocker.patch(
-        "openbb_terminal.core.log.collection.s3_sender.fetch_presigned_url",
-        return_value={"fields": [1, 2, 3], "url": "http://"},
+    s3_sender.send_to_s3_using_presigned_url(
+        api_url=api_url,
+        file=file,
+        object_key=object_key,
     )
-    mocker.patch("openbb_terminal.core.log.collection.s3_sender.requests")
-    if WITH_BOTO3:
-        mocker.patch("openbb_terminal.core.log.collection.s3_sender.boto3")
-    file = tmp_path / "readme.txt"
-    file.write_text("Create a new text file!")
-    file2 = tmp_path / "dontreadme.txt"
 
-    if WITH_BOTO3:
-        s3s.send_to_s3(file, aws_settings, file, object_key, file2, last)
-    elif last is False:
-        with pytest.raises(ModuleNotFoundError):
-            s3s.send_to_s3(file, aws_settings, file, object_key, file2, last)
-    if file.is_file():
-        os.remove(file)
+
+@pytest.mark.vcr(record_mode="none")
+@pytest.mark.parametrize(
+    "aws_settings, last",
+    [
+        (
+            AWSSettings(
+                aws_access_key_id="MOCK_AWS_ACCESS_KEY_ID",
+                aws_secret_access_key="MOCK_AWS_ACCESS_KEY",
+            ),
+            False,
+        ),
+        (
+            AWSSettings(
+                aws_access_key_id="REPLACE_ME",
+                aws_secret_access_key="REPLACE_ME",
+            ),
+            True,
+        ),
+    ],
+)
+def test_send_to_s3(aws_settings, mocker, last, tmp_path):
+    mocker.patch("openbb_terminal.core.log.collection.s3_sender.send_to_s3_directly")
+    mocker.patch(
+        "openbb_terminal.core.log.collection.s3_sender.send_to_s3_using_presigned_url"
+    )
+
+    archives_file = tmp_path.joinpath("archives").joinpath("mock_log_file")
+    tmp_file = tmp_path.joinpath("tmp").joinpath("mock_log_file")
+    file = tmp_path.joinpath("mock_log_file")
+    object_key = "MOCK_S3/OBJECT_KEY"
+
+    with open(file, "w") as f:
+        f.write("Mocking a log file to send to s3.")
+
+    assert file.exists()
+    assert not archives_file.exists()
+    assert not tmp_file.exists()
+
+    s3_sender.send_to_s3(
+        archives_file=archives_file,
+        aws_settings=aws_settings,
+        file=file,
+        object_key=object_key,
+        tmp_file=tmp_file,
+        last=last,
+    )
+
+    assert last or not file.exists()
+    assert archives_file.exists()
+    assert not tmp_file.exists()
+
+
+@pytest.mark.vcr(record_mode="none")
+def test_send_to_s3_exception(mocker, tmp_path):
+    mocker.patch("openbb_terminal.core.log.collection.s3_sender.send_to_s3_directly")
+    mocker.patch(
+        "openbb_terminal.core.log.collection.s3_sender.send_to_s3_using_presigned_url"
+    )
+
+    archives_file = tmp_path.joinpath("archives").joinpath("mock_log_file")
+    tmp_file = tmp_path.joinpath("tmp").joinpath("mock_log_file")
+    file = tmp_path.joinpath("mock_log_file")
+    file.touch()
+    object_key = "MOCK_S3/OBJECT_KEY"
+
+    with pytest.raises(AttributeError):
+        s3_sender.send_to_s3(
+            archives_file=archives_file,
+            aws_settings=AWSSettings(
+                aws_access_key_id="REPLACE_ME",
+                aws_secret_access_key="REPLACE_ME",
+            ),
+            file=file,
+            object_key=object_key,
+            tmp_file=tmp_file,
+            last=False,
+        )
