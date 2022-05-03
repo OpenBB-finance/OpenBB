@@ -430,49 +430,52 @@ class PortfolioOptimizationController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = f"""
-[param]Parameter file: [/param] {self.current_file}[cmds]
-
-    file          select portfolio parameter file[/cmds][menu]
->   params        specify and show portfolio risk parameters[/menu][cmds]
-    load          load tickers and categories from .xlsx or .csv file[/cmds]
+        has_tickers_start = ("[unvl]", "[cmds]")[bool(self.tickers)]
+        has_tickers_end = ("[/unvl]", "[/cmds]")[bool(self.tickers)]
+        help_text = f"""[cmds]
+    load            load tickers and categories from .xlsx or .csv file
+    add             add tickers to the list of the tickers to be optimized
+    rmv             remove tickers from the list of the tickers to be optimized[/cmds]
 
 [param]Tickers: [/param]{('None', ', '.join(self.tickers))[bool(self.tickers)]}
-[param]Categories: [/param]{('None', ', '.join(self.categories.keys()))[bool(self.categories.keys())]}
-[param]Portfolios: [/param]{('None', ', '.join(self.portfolios.keys()))[bool(self.portfolios.keys())]}
-[cmds]
-    add             add tickers to the list of the tickers to be optimized
-    rmv             remove tickers from the list of the tickers to be optimized
-    show            show selected portfolios and categories from the list of saved portfolios
-    rpf             remove portfolios from the list of saved portfolios
-    plot            plot selected charts from the list of saved portfolios[/cmds]
+[param]Categories: [/param]{('None', ', '.join(self.categories.keys()))[bool(self.categories.keys())]}[cmds]
 
-[info]Mean Risk Optimization:[/info][cmds]
+    file            select portfolio parameter file[/cmds][menu]
+>   params          specify and show portfolio risk parameters[/menu]
+
+[param]Parameter file: [/param] {self.current_file}
+
+[info]Mean Risk Optimization:[/info]{has_tickers_start}
     maxsharpe       maximal Sharpe ratio portfolio (a.k.a the tangency portfolio)
     minrisk         minimum risk portfolio
-    maxutil         maximal risk averse utility function, given some risk
-                    aversion parameter
+    maxutil         maximal risk averse utility function, given some risk aversion parameter
     maxret          maximal return portfolio
     maxdiv          maximum diversification portfolio
     maxdecorr       maximum decorrelation portfolio
     blacklitterman  black litterman portfolio
-    ef              show the efficient frontier[/cmds]
+    ef              show the efficient frontier{has_tickers_end}
 
-[info]Risk Parity Optimization:[/info][cmds]
+[info]Risk Parity Optimization:[/info]{has_tickers_start}
     riskparity      risk parity portfolio using risk budgeting approach
-    relriskparity   relaxed risk parity using least squares approach[/cmds]
+    relriskparity   relaxed risk parity using least squares approach{has_tickers_end}
 
-[info]Hierarchical Clustering Models:[/info][cmds]
+[info]Hierarchical Clustering Models:[/info]{has_tickers_start}
     hrp             hierarchical risk parity
     herc            hierarchical equal risk contribution
-    nco	            nested clustering optimization[/cmds]
+    nco	            nested clustering optimization{has_tickers_end}
 
-[info]Other Optimization Techniques:[/info][cmds]
+[info]Other Optimization Techniques:[/info]{has_tickers_start}
     equal           equally weighted
     mktcap          weighted according to market cap (property marketCap)
     dividend        weighted according to dividend yield (property dividendYield)
-    property        weight according to selected info property[/cmds]
-    """
+    property        weight according to selected info property{has_tickers_end}
+
+[param]Optimized portfolios: [/param]{('None', ', '.join(self.portfolios.keys()))[bool(self.portfolios.keys())]}[cmds]
+{('[unvl]','[cmds]')[bool(self.portfolios.keys())]}
+    rpf             remove portfolios from the list of saved portfolios
+    show            show selected portfolios and categories from the list of saved portfolios
+    plot            plot selected charts from the list of saved portfolios
+{('[/unvl]','[/cmds]')[bool(self.portfolios.keys())]}"""
         console.print(text=help_text, menu="Portfolio - Portfolio Optimization")
 
     def custom_reset(self):
@@ -736,6 +739,7 @@ class PortfolioOptimizationController(BaseController):
             self.tickers, self.categories = excel_model.load_allocation(file_location)
             self.portfolios = dict()
             self.update_runtime_choices()
+        console.print()
 
     @log_start_end(log=logger)
     def call_plot(self, other_args: List[str]):
