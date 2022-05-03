@@ -229,7 +229,6 @@ def display_correlation(
 
     if not external_axes:
         theme.visualize_output()
-    
+
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "hcorr", df_similar)
-    
     console.print("")
