@@ -277,7 +277,7 @@ code {
   --body-font-color: #343a40;
   --button-background: #498bcb;
   --button-border-color: #4186c9;
-  --link-color: #0a539a;
+  --link-color: #21cd9b;
   --link-color-visited: #7749bf;
   --code-background: #f5f6f8;
   --code-accent-color: #e3e7eb;
@@ -732,18 +732,18 @@ code {
   :root {
     --header-background: #4186c9;
     --header-font-color: white;
-    --body-background: white;
-    --body-font-color: #343a40;
+    --body-background: #343a40;
+    --body-font-color: #ced3d8;
     --button-background: #498bcb;
     --button-border-color: #4186c9;
-    --link-color: #0a539a;
-    --link-color-visited: #7749bf;
-    --code-background: #f5f6f8;
-    --code-accent-color: #e3e7eb;
-    --code-accent-color-lite: #eff1f3;
-    --code-font-color: #5f5f5f;
-    --accent-color: #e9ecef;
-    --accent-color-lite: #f8f9fa;
+    --link-color: #21cd9b;
+    --link-color-visited: #ba8ef0;
+    --code-background: #2f353a;
+    --code-accent-color: #262b2f;
+    --code-accent-color-lite: #2b3035;
+    --code-font-color: #b9b9b9;
+    --accent-color: #2b3035;
+    --accent-color-lite: #2f353a;
     --control-icons: #b2bac1;
     --footer-background: #2f333e;
     --footer-font-color: white;
@@ -795,8 +795,7 @@ code {
     color: inherit;
   }
   :root .chroma .err {
-    color: #a61717;
-    background-color: #e3d2d2;
+    color: inherit;
   }
   :root .chroma .lntd {
     vertical-align: top;
@@ -828,7 +827,7 @@ code {
   :root .chroma .hl {
     display: block;
     width: 100%;
-    background-color: #ffc;
+    background-color: #4f1605;
   }
   :root .chroma .lnt {
     padding: 0 0.8em;
@@ -836,78 +835,70 @@ code {
   :root .chroma .ln {
     margin-right: 0.4em;
     padding: 0 0.4em 0 0.4em;
+    color: #b3b3b3;
   }
   :root .chroma .k {
-    color: #000;
-    font-weight: 700;
+    color: #ff79c6;
   }
   :root .chroma .kc {
-    color: #000;
-    font-weight: 700;
+    color: #ff79c6;
   }
   :root .chroma .kd {
-    color: #000;
-    font-weight: 700;
+    color: #8be9fd;
+    font-style: italic;
   }
   :root .chroma .kn {
-    color: #000;
-    font-weight: 700;
+    color: #ff79c6;
   }
   :root .chroma .kp {
-    color: #000;
-    font-weight: 700;
+    color: #ff79c6;
   }
   :root .chroma .kr {
-    color: #000;
-    font-weight: 700;
+    color: #ff79c6;
   }
   :root .chroma .kt {
-    color: #458;
-    font-weight: 700;
+    color: #8be9fd;
   }
   :root .chroma .n {
     color: inherit;
   }
   :root .chroma .na {
-    color: #006767;
+    color: #50fa7b;
   }
   :root .chroma .nb {
-    color: #556165;
+    color: #8be9fd;
+    font-style: italic;
   }
   :root .chroma .bp {
-    color: #676767;
+    color: inherit;
   }
   :root .chroma .nc {
-    color: #458;
-    font-weight: 700;
+    color: #50fa7b;
   }
   :root .chroma .no {
-    color: #006767;
+    color: inherit;
   }
   :root .chroma .nd {
-    color: #3c5d5d;
-    font-weight: 700;
+    color: inherit;
   }
   :root .chroma .ni {
-    color: purple;
+    color: inherit;
   }
   :root .chroma .ne {
-    color: #900;
-    font-weight: 700;
+    color: inherit;
   }
   :root .chroma .nf {
-    color: #900;
-    font-weight: 700;
+    color: #50fa7b;
   }
   :root .chroma .fm {
     color: inherit;
   }
   :root .chroma .nl {
-    color: #900;
-    font-weight: 700;
+    color: #8be9fd;
+    font-style: italic;
   }
   :root .chroma .nn {
-    color: #555;
+    color: inherit;
   }
   :root .chroma .nx {
     color: inherit;
@@ -916,19 +907,23 @@ code {
     color: inherit;
   }
   :root .chroma .nt {
-    color: navy;
+    color: #ff79c6;
   }
   :root .chroma .nv {
-    color: #006767;
+    color: #8be9fd;
+    font-style: italic;
   }
   :root .chroma .vc {
-    color: #006767;
+    color: #8be9fd;
+    font-style: italic;
   }
   :root .chroma .vg {
-    color: #006767;
+    color: #8be9fd;
+    font-style: italic;
   }
   :root .chroma .vi {
-    color: #006767;
+    color: #8be9fd;
+    font-style: italic;
   }
   :root .chroma .vm {
     color: inherit;
@@ -940,157 +935,143 @@ code {
     color: inherit;
   }
   :root .chroma .s {
-    color: #d14;
+    color: #f1fa8c;
   }
   :root .chroma .sa {
-    color: #d14;
+    color: #f1fa8c;
   }
   :root .chroma .sb {
-    color: #d14;
+    color: #f1fa8c;
   }
   :root .chroma .sc {
-    color: #d14;
+    color: #f1fa8c;
   }
   :root .chroma .dl {
-    color: #d14;
+    color: #f1fa8c;
   }
   :root .chroma .sd {
-    color: #d14;
+    color: #f1fa8c;
   }
   :root .chroma .s2 {
-    color: #d14;
+    color: #f1fa8c;
   }
   :root .chroma .se {
-    color: #d14;
+    color: #f1fa8c;
   }
   :root .chroma .sh {
-    color: #d14;
+    color: #f1fa8c;
   }
   :root .chroma .si {
-    color: #d14;
+    color: #f1fa8c;
   }
   :root .chroma .sx {
-    color: #d14;
+    color: #f1fa8c;
   }
   :root .chroma .sr {
-    color: #009926;
+    color: #f1fa8c;
   }
   :root .chroma .s1 {
-    color: #d14;
+    color: #f1fa8c;
   }
   :root .chroma .ss {
-    color: #990073;
+    color: #f1fa8c;
   }
   :root .chroma .m {
-    color: #027e83;
+    color: #bd93f9;
   }
   :root .chroma .mb {
-    color: #027e83;
+    color: #bd93f9;
   }
   :root .chroma .mf {
-    color: #027e83;
+    color: #bd93f9;
   }
   :root .chroma .mh {
-    color: #027e83;
+    color: #bd93f9;
   }
   :root .chroma .mi {
-    color: #027e83;
+    color: #bd93f9;
   }
   :root .chroma .il {
-    color: #027e83;
+    color: #bd93f9;
   }
   :root .chroma .mo {
-    color: #027e83;
+    color: #bd93f9;
   }
   :root .chroma .o {
-    color: #000;
-    font-weight: 700;
+    color: #ff79c6;
   }
   :root .chroma .ow {
-    color: #000;
-    font-weight: 700;
+    color: #ff79c6;
   }
   :root .chroma .p {
     color: inherit;
   }
   :root .chroma .c {
-    color: #676765;
-    font-style: italic;
+    color: #96a6d8;
   }
   :root .chroma .ch {
-    color: #676765;
-    font-style: italic;
+    color: #96a6d8;
   }
   :root .chroma .cm {
-    color: #676765;
-    font-style: italic;
+    color: #96a6d8;
   }
   :root .chroma .c1 {
-    color: #676765;
-    font-style: italic;
+    color: #96a6d8;
   }
   :root .chroma .cs {
-    color: #676767;
-    font-weight: 700;
-    font-style: italic;
+    color: #96a6d8;
   }
   :root .chroma .cp {
-    color: #676767;
-    font-weight: 700;
-    font-style: italic;
+    color: #ff79c6;
   }
   :root .chroma .cpf {
-    color: #676767;
-    font-weight: 700;
-    font-style: italic;
+    color: #ff79c6;
   }
   :root .chroma .g {
     color: inherit;
   }
   :root .chroma .gd {
-    color: #000;
-    background-color: #fdd;
+    color: #d98f90;
   }
   :root .chroma .ge {
-    color: #000;
-    font-style: italic;
+    text-decoration: underline;
   }
   :root .chroma .gr {
-    color: #a00;
+    color: inherit;
   }
   :root .chroma .gh {
-    color: #676767;
+    font-weight: 700;
+    color: inherit;
   }
   :root .chroma .gi {
-    color: #000;
-    background-color: #dfd;
-  }
-  :root .chroma .go {
-    color: #6f6f6f;
-  }
-  :root .chroma .gp {
-    color: #555;
-  }
-  :root .chroma .gs {
     font-weight: 700;
   }
+  :root .chroma .go {
+    color: #8f9ea8;
+  }
+  :root .chroma .gp {
+    color: inherit;
+  }
+  :root .chroma .gs {
+    color: inherit;
+  }
   :root .chroma .gu {
-    color: #5f5f5f;
+    font-weight: 700;
   }
   :root .chroma .gt {
-    color: #a00;
+    color: inherit;
   }
   :root .chroma .gl {
     text-decoration: underline;
   }
   :root .chroma .w {
-    color: #bbb;
+    color: inherit;
   }
   :root .dark-mode-dim .gdoc-markdown img {
-    filter: none;
+    filter: brightness(0.75) grayscale(0.2);
   }
   :root .gdoc-markdown .gdoc-hint {
-    filter: none;
+    filter: saturate(2.5) brightness(0.85);
   }
 }
 :root[color-mode="dark"] {

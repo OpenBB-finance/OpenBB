@@ -433,7 +433,7 @@ main:
               - name: vsurf
                 ref: "/terminal/stocks/options/vsurf"
               - name: portfolio optimization
-                ref: "/terminal/portfolio/portfolio_optimization"
+                ref: "/terminal/portfolio/po"
               - name: parity
                 ref: "/terminal/stocks/options/parity"
               - name: binom
@@ -1154,34 +1154,71 @@ main:
                   - name: holdings
                     ref: "/terminal/portfolio/brokers/robinhood/holdings"
           - name: portfolio optimization
-            ref: "/terminal/portfolio/portfolio_optimization"
+            ref: "/terminal/portfolio/po"
             sub:
               - name: select
-                ref: "/terminal/portfolio/portfolio_optimization/select"
+                ref: "/terminal/portfolio/po/select"
+              - name: file
+                ref: "/terminal/portfolio/po/file"
+              - name: params
+                ref: "/terminal/portfolio/po/params"
+                sub:
+                  - name: arg
+                    ref: "/terminal/portfolio/po/params/arg"
+                  - name: clear
+                    ref: "/terminal/portfolio/po/params/clear"
+                  - name: file
+                    ref: "/terminal/portfolio/po/params/file"
+                  - name: save
+                    ref: "/terminal/portfolio/po/params/save"
+                  - name: set
+                    ref: "/terminal/portfolio/po/params/set"
+              - name: load
+                ref: "/terminal/portfolio/po/load"
               - name: add
-                ref: "/terminal/portfolio/portfolio_optimization/add"
+                ref: "/terminal/portfolio/po/add"
               - name: rmv
-                ref: "/terminal/portfolio/portfolio_optimization/rmv"
+                ref: "/terminal/portfolio/po/rmv"
+              - name: show
+                ref: "/terminal/portfolio/po/show"
+              - name: rpf
+                ref: "/terminal/portfolio/po/rpf"
+              - name: plot
+                ref: "/terminal/portfolio/po/plot"
               - name: equal
-                ref: "/terminal/portfolio/portfolio_optimization/equal"
+                ref: "/terminal/portfolio/po/equal"
               - name: mktcap
-                ref: "/terminal/portfolio/portfolio_optimization/mktcap"
+                ref: "/terminal/portfolio/po/mktcap"
               - name: dividend
-                ref: "/terminal/portfolio/portfolio_optimization/dividend"
+                ref: "/terminal/portfolio/po/dividend"
               - name: property
-                ref: "/terminal/portfolio/portfolio_optimization/property"
-              - name: maxhsarpe
-                ref: "/terminal/portfolio/portfolio_optimization/maxsharpe"
-              - name: minvol
-                ref: "/terminal/portfolio/portfolio_optimization/minvol"
-              - name: maxquadutil
-                ref: "/terminal/portfolio/portfolio_optimization/maxquadutil"
-              - name: effret
-                ref: "/terminal/portfolio/portfolio_optimization/effret"
-              - name: effrisk
-                ref: "/terminal/portfolio/portfolio_optimization/effrisk"
+                ref: "/terminal/portfolio/po/property"
+              - name: maxsharpe
+                ref: "/terminal/portfolio/po/maxsharpe"
+              - name: minrisk
+                ref: "/terminal/portfolio/po/minrisk"
+              - name: maxutil
+                ref: "/terminal/portfolio/po/maxutil"
+              - name: maxret
+                ref: "/terminal/portfolio/po/maxret"
+              - name: maxdiv
+                ref: "/terminal/portfolio/po/maxdiv"
+              - name: maxdecorr
+                ref: "/terminal/portfolio/po/maxdecorr"
+              - name: blacklitterman
+                ref: "/terminal/portfolio/po/blacklitterman"
               - name: ef
-                ref: "/terminal/portfolio/portfolio_optimization/ef"
+                ref: "/terminal/portfolio/po/ef"
+              - name: riskparity
+                ref: "/terminal/portfolio/po/riskparity"
+              - name: relriskparity
+                ref: "/terminal/portfolio/po/relriskparity"
+              - name: hrp
+                ref: "/terminal/portfolio/po/hrp"
+              - name: herc
+                ref: "/terminal/portfolio/po/herc"
+              - name: nco
+                ref: "/terminal/portfolio/po/nco"
           - name: load
             ref: "/terminal/portfolio/load"
           - name: save
