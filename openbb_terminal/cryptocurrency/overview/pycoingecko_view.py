@@ -36,7 +36,7 @@ register_matplotlib_converters()
 def display_crypto_heatmap(
     category: str,
     top: int,
-    export: str,
+    export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Shows cryptocurrencies heatmap [Source: CoinGecko]
@@ -74,7 +74,7 @@ def display_crypto_heatmap(
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
         else:
             if len(external_axes) != 1:
-                console.print("[red]Expected list of 1 axis item./n[/red]")
+                console.print("[red]Expected list of 1 axis item.\n[/red]")
                 return
             (ax,) = external_axes
 

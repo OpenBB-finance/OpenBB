@@ -30,7 +30,7 @@ def display_short_by_exchange(
     raw: bool = False,
     sort: str = "",
     asc: bool = False,
-    mpl: bool = False,
+    mpl: bool = True,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -76,7 +76,7 @@ def display_short_by_exchange(
         else:
             if len(external_axes) != 1:
                 logger.error("Expected list of one axis item.")
-                console.print("[red]Expected list of one axis item./n[/red]")
+                console.print("[red]Expected list of one axis item.\n[/red]")
                 return
             (ax,) = external_axes
 

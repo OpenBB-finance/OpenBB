@@ -147,7 +147,7 @@ def display_historical(
 def display_trending(
     start: datetime,
     hour: int,
-    export: str,
+    export: str = "",
     number: int = 10,
     limit: int = 10,
 ):

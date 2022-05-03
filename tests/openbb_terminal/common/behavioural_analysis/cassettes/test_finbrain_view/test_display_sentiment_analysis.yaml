@@ -14,32 +14,32 @@ interactions:
     uri: https://api.finbrain.tech/v0/sentiments/AAPL
   response:
     body:
-      string: '{"ticker":"AAPL","name":"Apple Inc.\r","sentimentAnalysis":{"2022-03-11":"0.069","2022-03-10":"0.206","2022-03-09":"-0.157","2022-03-08":"-0.309","2022-03-07":"0.129","2022-03-04":"-0.046","2022-03-03":"-0.245","2022-03-02":"-0.062","2022-03-01":"0.014","2022-02-28":"0.095"}}'
+      string: '{"ticker":"AAPL","name":"Apple Inc.\r","sentimentAnalysis":{"2022-04-29":"-0.078","2022-04-28":"0.255","2022-04-27":"0.239","2022-04-26":"-0.037","2022-04-25":"-0.2","2022-04-22":"0.302","2022-04-21":"0.164","2022-04-20":"-0.042","2022-04-19":"0.362","2022-04-18":"0.106"}}'
     headers:
       Connection:
       - keep-alive
       Content-Length:
-      - '276'
+      - '273'
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Mon, 14 Mar 2022 03:46:23 GMT
+      - Sun, 01 May 2022 16:18:59 GMT
       X-Amzn-Trace-Id:
-      - Root=1-622eba8f-6ae4ca31342448fb6a4da34f;Sampled=0
+      - Root=1-626eb2f3-7b31be5d5fa8658b0d04ca05;Sampled=0
       access-control-allow-origin:
       - '*'
       etag:
-      - W/"114-6eGu8gjokOhQsKD8+DjGvjRdJcE"
+      - W/"111-27YDpfQvPp1lgp3DqLfBVFZ1GiM"
       x-amz-apigw-id:
-      - O9IWYFUFoAMFosw=
+      - RdDmAHc3IAMF2vA=
       x-amzn-Remapped-connection:
       - close
       x-amzn-Remapped-content-length:
-      - '276'
+      - '273'
       x-amzn-Remapped-date:
-      - Mon, 14 Mar 2022 03:46:23 GMT
+      - Sun, 01 May 2022 16:18:59 GMT
       x-amzn-RequestId:
-      - 4b9d1851-3b0e-46a1-b8cc-c33c674f4a48
+      - cd4a9ee1-8782-452c-a5c2-1036235bf160
       x-powered-by:
       - Express
     status:
