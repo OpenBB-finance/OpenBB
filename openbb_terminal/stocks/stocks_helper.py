@@ -1271,3 +1271,33 @@ def show_quick_performance(stock_df: pd.DataFrame, ticker: str):
         df, show_index=False, headers=df.columns, title=f"{ticker.upper()} Performance"
     )
     console.print()
+
+
+def show_codes_polygon(ticker: str):
+    """Show FIGI, SIC and SIK codes for ticker
+
+    Parameters
+    ----------
+    ticker: str
+        Stock ticker
+    """
+    link = f"https://api.polygon.io/v3/reference/tickers/{ticker.upper()}?apiKey={API_POLYGON_KEY}"
+    r = requests.get(link)
+    if r.status_code != 200:
+        console.print("[red]Error in polygon request[/red]\n")
+        return
+    r_json = r.json()
+    if "results" not in r_json.keys():
+        console.print("[red]Results not found in polygon request[/red]")
+        return
+    r_json = r_json["results"]
+    cols = ["cik", "composite_figi", "share_class_figi", "sic_code"]
+    vals = []
+    for col in cols:
+        vals.append(r_json[col])
+    df = pd.DataFrame({"codes": [c.upper() for c in cols], "vals": vals})
+    df.codes = df.codes.apply(lambda x: x.replace("_", " "))
+    print_rich_table(
+        df, show_index=False, headers=["", ""], title=f"{ticker.upper()} Codes"
+    )
+    console.print()
