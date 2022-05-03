@@ -230,10 +230,18 @@ Stock: [/param]{stock_text}
     @log_start_end(log=logger)
     def call_codes(self, _):
         """Process codes command"""
-        if not self.ticker:
-            console.print("No ticker loaded. First use `load {ticker}`\n")
-            return
-        stocks_helper.show_codes_polygon(self.ticker)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="codes",
+            description="Show CIK, FIGI and SCI code from polygon for loaded ticker.",
+        )
+        ns_parser = parse_known_args_and_warn(parser, _)
+        if ns_parser:
+            if not self.ticker:
+                console.print("No ticker loaded. First use `load {ticker}`\n")
+                return
+            stocks_helper.show_codes_polygon(self.ticker)
 
     @log_start_end(log=logger)
     def call_candle(self, other_args: List[str]):
