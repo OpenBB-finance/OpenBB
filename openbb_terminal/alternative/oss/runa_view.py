@@ -66,7 +66,7 @@ def display_rossindex(
             else:
                 if len(external_axes) != 2:
                     logger.error("Expected list of two axis items.")
-                    console.print("[red]Expected list of 2 axis item./n[/red]")
+                    console.print("[red]Expected list of 2 axis item.\n[/red]")
                     return
                 ax1, _ = external_axes
             for _, row in df[::-1].iterrows():
@@ -93,7 +93,7 @@ def display_rossindex(
             else:
                 if len(external_axes) != 2:
                     logger.error("Expected list of two axis items.")
-                    console.print("[red]Expected list of 2 axis item./n[/red]")
+                    console.print("[red]Expected list of 2 axis item.\n[/red]")
                     return
                 ax, _ = external_axes
             for _, row in df[::-1].iterrows():

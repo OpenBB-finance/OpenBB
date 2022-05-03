@@ -25,7 +25,7 @@ def display_order_book(
     coin: str,
     limit: int,
     currency: str,
-    export: str,
+    export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Get order book for currency. [Source: Binance]

@@ -186,7 +186,7 @@ def display_plots_financials(
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
         else:
             if len(external_axes) != 1:
-                console.print("[red]Expected list of one axis item./n[/red]")
+                console.print("[red]Expected list of one axis item.\n[/red]")
                 return stocks_data, company_tickers
             (ax,) = external_axes
 

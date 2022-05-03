@@ -22,7 +22,7 @@ register_matplotlib_converters()
 
 @log_start_end(log=logger)
 def fear_and_greed_index(
-    indicator: str, export: str, external_axes: Optional[List[plt.Axes]] = None
+    indicator: str, export: str = "", external_axes: Optional[List[plt.Axes]] = None
 ):
     """Display CNN Fear And Greed Index. [Source: CNN Business]
 
@@ -43,7 +43,7 @@ def fear_and_greed_index(
     else:
         if len(external_axes) != 1:
             logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of 1 axis item./n[/red]")
+            console.print("[red]Expected list of 1 axis item.\n[/red]")
             return
         (ax,) = external_axes
 
