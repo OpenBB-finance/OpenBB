@@ -73,7 +73,7 @@ def send_to_s3_using_presigned_url(
 
     raw_response.raise_for_status()
 
-    # SUCCESSS IF STATUS_CODE == 204
+    # SUCCESS IF STATUS_CODE == 204
 
 
 def send_to_s3(
