@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 def plot_pattern_recognition(
     ticker: str,
     resolution: str,
-    export: str,
+    export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot pattern recognition signal
@@ -147,7 +147,7 @@ def plot_pattern_recognition(
     else:
         if len(external_axes) != 1:
             logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of 1 axis items./n[/red]")
+            console.print("[red]Expected list of 1 axis items.\n[/red]")
             return
         (ax,) = external_axes
         candle_chart_kwargs["ax"] = ax

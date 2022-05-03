@@ -124,9 +124,9 @@ def short_interest_days_to_cover(num: int, sort_field: str, export: str):
 @log_start_end(log=logger)
 def short_interest_volume(
     ticker: str,
-    num: int,
-    raw: bool,
-    export: str,
+    num: int = 84,
+    raw: bool = False,
+    export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot price vs short interest volume. [Source: Stockgrid]
@@ -189,7 +189,7 @@ def short_interest_volume(
         else:
             if len(external_axes) != 3:
                 logger.error("Expected list of three axis items.")
-                console.print("[red]Expected list of three axis items./n[/red]")
+                console.print("[red]Expected list of three axis items.\n[/red]")
                 return
             (ax, ax1, ax2) = external_axes
 
@@ -264,9 +264,9 @@ def short_interest_volume(
 @log_start_end(log=logger)
 def net_short_position(
     ticker: str,
-    num: int,
-    raw: bool,
-    export: str,
+    num: int = 84,
+    raw: bool = False,
+    export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot net short position. [Source: Stockgrid]
@@ -319,7 +319,7 @@ def net_short_position(
         else:
             if len(external_axes) != 2:
                 logger.error("Expected list of one axis item.")
-                console.print("[red]Expected list of one axis item./n[/red]")
+                console.print("[red]Expected list of one axis item.\n[/red]")
                 return
             (ax1, ax2) = external_axes
 
