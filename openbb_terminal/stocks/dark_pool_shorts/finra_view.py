@@ -185,7 +185,7 @@ def plot_dark_pools_ats(
 def darkpool_otc(
     num: int,
     promising: int,
-    tier: str,
+    tier: str = "T1",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -199,8 +199,8 @@ def darkpool_otc(
     promising : int
         Number of tickers to display from most promising with
         better linear regression slope
-    tier : int
-        Tier to process data from
+    tier : str
+        Tier to process data from: T1, T2 or OTCE
     export : str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
