@@ -14,6 +14,8 @@ Company:
     quote       view the current price for a specific stock ticker
     candle      view a candle chart for a specific stock ticker
     news        latest news of the company [News API]
+    codes       FIGI, SIK and SIC codes codes [Polygon.io]
+
 
 >   options     options menu,  			 e.g.: chains, open interest, greeks, parity
 >   disc        discover trending stocks, 	 e.g.: map, sectors, high short interest
