@@ -17,13 +17,15 @@ import pandas_market_calendars as mcal
 import plotly.graph_objects as go
 import pyEX
 import pytz
+import requests
+
 import yfinance as yf
 from alpha_vantage.timeseries import TimeSeries
 from numpy.core.fromnumeric import transpose
 from plotly.subplots import make_subplots
 from scipy import stats
 
-from openbb_terminal.config_terminal import theme
+from openbb_terminal.config_terminal import theme, API_POLYGON_KEY
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.helper_funcs import (
     export_data,
@@ -238,6 +240,7 @@ def search(
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "search", df)
 
 
+# pylint:disable=too-many-return-statements
 def load(
     ticker: str,
     start: datetime = (datetime.now() - timedelta(days=1100)),
@@ -405,42 +408,134 @@ def load(
 
             df_stock_candidate.sort_index(ascending=True, inplace=True)
 
+        # Polygon source
+        elif source == "polygon":
+
+            request_url = (
+                f"https://api.polygon.io/v2/aggs/ticker/"
+                f"{ticker.upper()}/range/1/day/{start.strftime('%Y-%m-%d')}/{end.strftime('%Y-%m-%d')}?adjusted=true"
+                f"&sort=desc&limit=49999&apiKey={API_POLYGON_KEY}"
+            )
+            r = requests.get(request_url)
+            if r.status_code != 200:
+                console.print("[red]Error in polygon request[/red]")
+                return pd.DataFrame()
+
+            r_json = r.json()
+            if "results" not in r_json.keys():
+                console.print("[red]No results found in polygon reply.[/red]")
+                return pd.DataFrame()
+
+            df_stock_candidate = pd.DataFrame(r_json["results"])
+
+            df_stock_candidate = df_stock_candidate.rename(
+                columns={
+                    "o": "Open",
+                    "c": "Adj Close",
+                    "h": "High",
+                    "l": "Low",
+                    "t": "date",
+                    "v": "Volume",
+                    "n": "Transactions",
+                }
+            )
+            df_stock_candidate["date"] = pd.to_datetime(
+                df_stock_candidate.date, unit="ms"
+            )
+            # TODO: Clean up Close vs Adj Close throughout
+            df_stock_candidate["Close"] = df_stock_candidate["Adj Close"]
+            df_stock_candidate = df_stock_candidate.sort_values(by="date")
+            df_stock_candidate = df_stock_candidate.set_index("date")
+
         s_start = df_stock_candidate.index[0]
         s_interval = f"{interval}min"
         int_string = "Daily" if interval == 1440 else "Intraday"
 
     else:
 
-        s_int = str(interval) + "m"
-        s_interval = s_int + "in"
-        d_granularity = {"1m": 6, "5m": 59, "15m": 59, "30m": 59, "60m": 729}
+        if source == "yf":
+            s_int = str(interval) + "m"
+            s_interval = s_int + "in"
+            d_granularity = {"1m": 6, "5m": 59, "15m": 59, "30m": 59, "60m": 729}
 
-        s_start_dt = datetime.utcnow() - timedelta(days=d_granularity[s_int])
-        s_date_start = s_start_dt.strftime("%Y-%m-%d")
+            s_start_dt = datetime.utcnow() - timedelta(days=d_granularity[s_int])
+            s_date_start = s_start_dt.strftime("%Y-%m-%d")
 
-        df_stock_candidate = yf.download(
-            ticker,
-            start=s_date_start if s_start_dt > start else start.strftime("%Y-%m-%d"),
-            progress=False,
-            interval=s_int,
-            prepost=prepost,
-        )
+            df_stock_candidate = yf.download(
+                ticker,
+                start=s_date_start
+                if s_start_dt > start
+                else start.strftime("%Y-%m-%d"),
+                progress=False,
+                interval=s_int,
+                prepost=prepost,
+            )
 
-        # Check that loading a stock was not successful
-        if df_stock_candidate.empty:
-            console.print("")
-            return pd.DataFrame()
+            # Check that loading a stock was not successful
+            if df_stock_candidate.empty:
+                console.print()
+                return pd.DataFrame()
 
-        df_stock_candidate.index = df_stock_candidate.index.tz_localize(None)
+            df_stock_candidate.index = df_stock_candidate.index.tz_localize(None)
 
-        if s_start_dt > start:
-            s_start = pytz.utc.localize(s_start_dt)
-        else:
-            s_start = start
+            if s_start_dt > start:
+                s_start = pytz.utc.localize(s_start_dt)
+            else:
+                s_start = start
 
-        df_stock_candidate.index.name = "date"
+            df_stock_candidate.index.name = "date"
 
+        elif source == "polygon":
+            request_url = (
+                f"https://api.polygon.io/v2/aggs/ticker/"
+                f"{ticker.upper()}/range/{interval}/minute/{start.strftime('%Y-%m-%d')}/{end.strftime('%Y-%m-%d')}"
+                f"?adjusted=true&sort=desc&limit=49999&apiKey={API_POLYGON_KEY}"
+            )
+            r = requests.get(request_url)
+            if r.status_code != 200:
+                console.print("[red]Error in polygon request[/red]")
+                return pd.DataFrame()
+
+            r_json = r.json()
+            if "results" not in r_json.keys():
+                console.print("[red]No results found in polygon reply.[/red]")
+                return pd.DataFrame()
+
+            df_stock_candidate = pd.DataFrame(r_json["results"])
+
+            df_stock_candidate = df_stock_candidate.rename(
+                columns={
+                    "o": "Open",
+                    "c": "Close",
+                    "h": "High",
+                    "l": "Low",
+                    "t": "date",
+                    "v": "Volume",
+                    "n": "Transactions",
+                }
+            )
+            df_stock_candidate["date"] = pd.to_datetime(
+                df_stock_candidate.date, unit="ms"
+            )
+            df_stock_candidate["Adj Close"] = df_stock_candidate.Close
+            df_stock_candidate = df_stock_candidate.sort_values(by="date")
+
+            df_stock_candidate = df_stock_candidate.set_index("date")
+            # Check that loading a stock was not successful
+            if df_stock_candidate.empty:
+                console.print()
+                return pd.DataFrame()
+
+            df_stock_candidate.index = df_stock_candidate.index.tz_localize(None)
+            s_start_dt = df_stock_candidate.index[0]
+
+            if s_start_dt > start:
+                s_start = pytz.utc.localize(s_start_dt)
+            else:
+                s_start = start
+            s_interval = f"{interval}min"
         int_string = "Intraday"
+
     s_intraday = (f"Intraday {s_interval}", int_string)[interval == 1440]
 
     console.print(
