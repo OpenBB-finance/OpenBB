@@ -113,7 +113,7 @@ def display_regression(
         ):
             logger.error("Expected list of 1 axis or 3 axes when backtesting.")
             console.print(
-                "[red]Expected list of 1 axis or 3 axes when backtesting./n[/red]"
+                "[red]Expected list of 1 axis or 3 axes when backtesting.\n[/red]"
             )
             return
         ax1 = external_axes[0]
@@ -161,7 +161,6 @@ def display_regression(
         )
 
     theme.style_primary_axis(ax1)
-
     if external_axes is None:
         theme.visualize_output()
 
@@ -179,7 +178,7 @@ def display_regression(
         else:
             if len(external_axes) != 3:
                 logger.error("Expected list of three axis items.")
-                console.print("[red]Expected list of 3 axis items./n[/red]")
+                console.print("[red]Expected list of 3 axis items.\n[/red]")
                 return
             (_, ax2, ax3) = external_axes
 

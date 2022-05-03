@@ -46,7 +46,7 @@ def display_star_history(
         else:
             if len(external_axes) != 1:
                 logger.error("Expected list of one axis item.")
-                console.print("[red]Expected list of one axis item./n[/red]")
+                console.print("[red]Expected list of one axis item.\n[/red]")
                 return
             (ax,) = external_axes
         ax.plot(df["Date"], df["Stars"])
@@ -97,7 +97,7 @@ def display_top_repos(
         else:
             if len(external_axes) != 1:
                 logger.error("Expected list of one axis item.")
-                console.print("[red]Expected list of one axis item./n[/red]")
+                console.print("[red]Expected list of one axis item.\n[/red]")
                 return
             (ax, _) = external_axes
         for _, row in df.iterrows():

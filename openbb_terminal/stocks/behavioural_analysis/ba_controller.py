@@ -856,12 +856,12 @@ class BehaviouralAnalysisController(StockBaseController):
                         [Source:  https://finbrain.tech]""",
         )
         ns_parser = parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, raw=True
         )
         if ns_parser:
             if self.ticker:
                 finbrain_view.display_sentiment_analysis(
-                    ticker=self.ticker, export=ns_parser.export
+                    ticker=self.ticker, raw=ns_parser.raw, export=ns_parser.export
                 )
             else:
                 console.print("No ticker loaded. Please load using 'load <ticker>'\n")

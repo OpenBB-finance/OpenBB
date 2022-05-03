@@ -142,7 +142,7 @@ def display_exponential_smoothing(
             )
             console.print(
                 "[red]Expected list of 1 axis item "
-                + "or 3 axis items when backtesting./n[/red]"
+                + "or 3 axis items when backtesting.\n[/red]"
             )
             return
         ax1 = external_axes[0]
@@ -215,7 +215,7 @@ def display_exponential_smoothing(
             (ax2, ax3) = axes
         else:
             if len(external_axes) != 3:
-                console.print("[red]Expected list of 1 axis item./n[/red]")
+                console.print("[red]Expected list of 1 axis item.\n[/red]")
                 return
             (_, ax2, ax3) = external_axes
 
