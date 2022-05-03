@@ -598,6 +598,7 @@ class ComparisonAnalysisController(BaseController):
                     similar_tickers=self.similar,
                     start=ns_parser.start.strftime("%Y-%m-%d"),
                     candle_type=ns_parser.type_candle,
+                    export=ns_parser.export,
                 )
             else:
                 console.print("Please make sure there are similar tickers selected. \n")
