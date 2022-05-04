@@ -7,7 +7,7 @@ import argparse
 import logging
 import os
 from pathlib import Path
-from typing import List, Dict, Set
+from typing import List, Dict
 
 from prompt_toolkit.completion import NestedCompleter
 
@@ -42,8 +42,6 @@ class PortfolioOptimizationController(BaseController):
 
     CHOICES_COMMANDS = [
         "select",
-        "add",
-        "rmv",
         "show",
         "rpf",
         "load",
@@ -287,6 +285,7 @@ class PortfolioOptimizationController(BaseController):
             self.categories = dict()
 
         self.count = 0
+        self.current_portfolio = ""
 
         models = [
             "maxsharpe",
@@ -430,129 +429,62 @@ class PortfolioOptimizationController(BaseController):
 
     def print_help(self):
         """Print help"""
-        help_text = f"""
-[param]Parameter file: [/param] {self.current_file}[cmds]
+        has_tickers_start = ("[unvl]", "[cmds]")[bool(self.tickers)]
+        has_tickers_end = ("[/unvl]", "[/cmds]")[bool(self.tickers)]
+        help_text = f"""[cmds]
+    load            load tickers and categories from .xlsx or .csv file[/cmds]
 
-    file          select portfolio parameter file[/cmds][menu]
->   params        specify and show portfolio risk parameters[/menu][cmds]
-    load          load tickers and categories from .xlsx or .csv file[/cmds]
+[param]Portfolio loaded: [/param]{('None', self.current_portfolio)[bool(self.current_portfolio)]}
 
-[param]Tickers: [/param]{('None', ', '.join(self.tickers))[bool(self.tickers)]}
-[param]Categories: [/param]{('None', ', '.join(self.categories.keys()))[bool(self.categories.keys())]}
-[param]Portfolios: [/param]{('None', ', '.join(self.portfolios.keys()))[bool(self.portfolios.keys())]}
-[cmds]
-    add             add tickers to the list of the tickers to be optimized
-    rmv             remove tickers from the list of the tickers to be optimized
-    show            show selected portfolios and categories from the list of saved portfolios
-    rpf             remove portfolios from the list of saved portfolios
-    plot            plot selected charts from the list of saved portfolios[/cmds]
+[param]Tickers   : [/param]{('None', ', '.join(self.tickers))[bool(self.tickers)]}
+[param]Categories: [/param]{('None', ', '.join(self.categories.keys()))[bool(self.categories.keys())]}[cmds]
 
-[info]Mean Risk Optimization:[/info][cmds]
+    file            select portfolio parameter file[/cmds][menu]
+>   params          specify and show portfolio risk parameters[/menu]
+
+[param]Parameter file: [/param] {self.current_file}
+
+[info]Mean Risk Optimization:[/info]{has_tickers_start}
     maxsharpe       maximal Sharpe ratio portfolio (a.k.a the tangency portfolio)
     minrisk         minimum risk portfolio
-    maxutil         maximal risk averse utility function, given some risk
-                    aversion parameter
+    maxutil         maximal risk averse utility function, given some risk aversion parameter
     maxret          maximal return portfolio
     maxdiv          maximum diversification portfolio
     maxdecorr       maximum decorrelation portfolio
     blacklitterman  black litterman portfolio
-    ef              show the efficient frontier[/cmds]
+    ef              show the efficient frontier{has_tickers_end}
 
-[info]Risk Parity Optimization:[/info][cmds]
+[info]Risk Parity Optimization:[/info]{has_tickers_start}
     riskparity      risk parity portfolio using risk budgeting approach
-    relriskparity   relaxed risk parity using least squares approach[/cmds]
+    relriskparity   relaxed risk parity using least squares approach{has_tickers_end}
 
-[info]Hierarchical Clustering Models:[/info][cmds]
+[info]Hierarchical Clustering Models:[/info]{has_tickers_start}
     hrp             hierarchical risk parity
     herc            hierarchical equal risk contribution
-    nco	            nested clustering optimization[/cmds]
+    nco	            nested clustering optimization{has_tickers_end}
 
-[info]Other Optimization Techniques:[/info][cmds]
+[info]Other Optimization Techniques:[/info]{has_tickers_start}
     equal           equally weighted
     mktcap          weighted according to market cap (property marketCap)
     dividend        weighted according to dividend yield (property dividendYield)
-    property        weight according to selected info property[/cmds]
-    """
+    property        weight according to selected info property{has_tickers_end}
+
+[param]Optimized portfolios: [/param]{('None', ', '.join(self.portfolios.keys()))[bool(self.portfolios.keys())]}[cmds]
+{('[unvl]','[cmds]')[bool(self.portfolios.keys())]}
+    rpf             remove portfolios from the list of saved portfolios
+    show            show selected portfolios and categories from the list of saved portfolios
+    plot            plot selected charts from the list of saved portfolios
+{('[/unvl]','[/cmds]')[bool(self.portfolios.keys())]}"""
         console.print(text=help_text, menu="Portfolio - Portfolio Optimization")
 
     def custom_reset(self):
         """Class specific component of reset command"""
+        objects_to_reload = ["portfolio", "po"]
+        if self.current_portfolio:
+            objects_to_reload.append(f"load {self.current_portfolio}")
         if self.current_file:
-            return ["portfolio", "po", f"file {self.current_file}"]
-        return []
-
-    @log_start_end(log=logger)
-    def call_add(self, other_args: List[str]):
-        """Add ticker or Select tickers for portfolio to be optimized"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            prog="add/select",
-            description="""Add/Select tickers for portfolio to be optimized.""",
-        )
-        parser.add_argument(
-            "-t",
-            "--tickers",
-            dest="add_tickers",
-            type=lambda s: [str(item).upper() for item in s.split(",")],
-            default=[],
-            help="tickers to be used in the portfolio to optimize.",
-        )
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-t")
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            tickers: Set = set(self.tickers)
-            for ticker in ns_parser.add_tickers:
-                tickers.add(ticker)
-
-            tickers_list: List = list(tickers)
-            tickers_list.sort()
-            self.tickers = tickers_list
-
-            if self.tickers:
-                console.print(
-                    f"\nCurrent Tickers: {('None', ', '.join(tickers_list))[bool(tickers_list)]}"
-                )
-
-            console.print("")
-
-    @log_start_end(log=logger)
-    def call_rmv(self, other_args: List[str]):
-        """Remove one of the tickers to be optimized"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            prog="rmv",
-            description="""Remove one of the tickers to be optimized.""",
-        )
-        parser.add_argument(
-            "-t",
-            "--tickers",
-            dest="rmv_tickers",
-            type=lambda s: [str(item).upper() for item in s.split(",")],
-            default=[],
-            help="tickers to be removed from the tickers to optimize.",
-        )
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-t")
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            tickers = set(self.tickers)
-            for ticker in ns_parser.rmv_tickers:
-                tickers.remove(ticker)
-
-            self.tickers = list(tickers)
-            self.tickers.sort()
-
-            if self.tickers:
-                console.print(
-                    f"\nCurrent Tickers: {('None', ', '.join(tickers))[bool(tickers)]}"
-                )
-
-            console.print("")
+            objects_to_reload.append(f"file {self.current_file}")
+        return objects_to_reload
 
     @log_start_end(log=logger)
     def call_file(self, other_args: List[str]):
@@ -567,7 +499,7 @@ class PortfolioOptimizationController(BaseController):
         parser.add_argument(
             "-f",
             "--file",
-            required=True,
+            required="-h" not in other_args,
             nargs="+",
             dest="file",
             help="Parameter file to be used",
@@ -712,11 +644,10 @@ class PortfolioOptimizationController(BaseController):
             prog="load",
             description="""Load file of stocks tickers with optional categories""",
         )
-
         parser.add_argument(
             "-f",
             "--file",
-            required=True,
+            required="-h" not in other_args,
             nargs="+",
             dest="file",
             help="Allocation file to be used",
@@ -736,6 +667,8 @@ class PortfolioOptimizationController(BaseController):
             self.tickers, self.categories = excel_model.load_allocation(file_location)
             self.portfolios = dict()
             self.update_runtime_choices()
+            self.current_portfolio = filename
+        console.print()
 
     @log_start_end(log=logger)
     def call_plot(self, other_args: List[str]):
