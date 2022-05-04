@@ -4,6 +4,7 @@ import os
 # IMPORTATION THIRDPARTY
 import pandas as pd
 import pytest
+import yfinance
 
 # IMPORTATION INTERNAL
 from openbb_terminal.stocks.insider import insider_controller
@@ -602,9 +603,13 @@ def test_call_func_no_stock(func):
 def test_call_load(mocker):
 
     # MOCK LOAD
-    target = "openbb_terminal.parent_classes.stocks_helper.load"
-    mocker.patch(target=target, return_value=DF_STOCK)
+    yf_download = yfinance.download
 
+    def mock_yf_download(*args, **kwargs):
+        kwargs["threads"] = False
+        return yf_download(*args, **kwargs)
+
+    mocker.patch("yfinance.download", side_effect=mock_yf_download)
     controller = insider_controller.InsiderController(
         ticker=None,
         start="2021-10-25",

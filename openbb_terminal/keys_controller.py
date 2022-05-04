@@ -1,6 +1,8 @@
 """Keys Controller Module"""
 __docformat__ = "numpy"
 
+# pylint: disable=too-many-lines
+
 import argparse
 import logging
 import os
@@ -29,13 +31,11 @@ from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console
 
-# pylint: disable=too-many-lines,no-member,too-many-public-methods,C0302
 
 logger = logging.getLogger(__name__)
-# pylint:disable=import-outside-toplevel
 
 
-class KeysController(BaseController):
+class KeysController(BaseController):  # pylint: disable=too-many-public-methods
     """Keys Controller class"""
 
     CHOICES_COMMANDS: List[str] = [
@@ -64,6 +64,7 @@ class KeysController(BaseController):
         "cpanic",
         "ethplorer",
         "smartstake",
+        "github",
     ]
     PATH = "/keys/"
     key_dict: Dict = {}
@@ -82,6 +83,20 @@ class KeysController(BaseController):
                 choices: dict = {c: {} for c in self.controller_choices}
                 self.completer = NestedCompleter.from_nested_dict(choices)
 
+    def check_github_key(self, show_output: bool = False) -> None:
+        """Check GitHub key"""
+        self.cfg_dict["GITHUB"] = "github"
+        if cfg.API_GITHUB_KEY == "REPLACE_ME":  # pragma: allowlist secret
+            logger.info("GitHub key not defined")
+            self.key_dict["GITHUB"] = "not defined"
+        else:
+            self.key_dict["GITHUB"] = "defined"
+            # github api will not fail for the first requests without key
+            # only after certain amount of requests the user will get rate limited
+
+        if show_output:
+            console.print(self.key_dict["GITHUB"] + "\n")
+
     def check_av_key(self, show_output: bool = False) -> None:
         """Check Alpha Vantage key"""
         self.cfg_dict["ALPHA_VANTAGE"] = "av"
@@ -92,7 +107,7 @@ class KeysController(BaseController):
             df = TimeSeries(
                 key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas"
             ).get_intraday(symbol="AAPL")
-            if df[0].empty:
+            if df[0].empty:  # pylint: disable=no-member
                 logger.warning("Alpha Vantage key defined, test failed")
                 self.key_dict["ALPHA_VANTAGE"] = "defined, test failed"
             else:
@@ -203,7 +218,7 @@ class KeysController(BaseController):
     def check_news_key(self, show_output: bool = False) -> None:
         """Check News API key"""
         self.cfg_dict["NEWSAPI"] = "news"
-        if cfg.API_NEWS_TOKEN == "REPLACE_ME":
+        if cfg.API_NEWS_TOKEN == "REPLACE_ME":  # nosec
             logger.info("News API key not defined")
             self.key_dict["NEWSAPI"] = "not defined"
         else:
@@ -226,7 +241,7 @@ class KeysController(BaseController):
     def check_tradier_key(self, show_output: bool = False) -> None:
         """Check Tradier key"""
         self.cfg_dict["TRADIER"] = "tradier"
-        if cfg.TRADIER_TOKEN == "REPLACE_ME":
+        if cfg.TRADIER_TOKEN == "REPLACE_ME":  # nosec
             logger.info("Tradier key not defined")
             self.key_dict["TRADIER"] = "not defined"
         else:
@@ -297,7 +312,7 @@ class KeysController(BaseController):
     def check_iex_key(self, show_output: bool = False) -> None:
         """Check IEX Cloud key"""
         self.cfg_dict["IEXCLOUD"] = "iex"
-        if cfg.API_IEX_TOKEN == "REPLACE_ME":
+        if cfg.API_IEX_TOKEN == "REPLACE_ME":  # nosec
             logger.info("IEX Cloud key not defined")
             self.key_dict["IEXCLOUD"] = "not defined"
         else:
@@ -340,7 +355,7 @@ class KeysController(BaseController):
                 logger.info("Reddit key defined, test passed")
                 self.key_dict["REDDIT"] = "defined, test passed"
             except (Exception, ResponseException):
-                logger.warning("Reddit key defined, test passed")
+                logger.warning("Reddit key defined, test failed")
                 self.key_dict["REDDIT"] = "defined, test failed"
 
         if show_output:
@@ -701,6 +716,7 @@ class KeysController(BaseController):
         self.check_cpanic_key()
         self.check_ethplorer_key()
         self.check_smartstake_key()
+        self.check_github_key()
 
     def print_help(self):
         """Print help"""
@@ -711,6 +727,8 @@ class KeysController(BaseController):
             c = "red"
             if v == "defined, test passed":
                 c = "green"
+            elif v == "defined":
+                c = "green"
             elif v == "defined, test inconclusive":
                 c = "yellow"
             elif v == "not defined":
@@ -719,6 +737,37 @@ class KeysController(BaseController):
             help_text += f" [{c}] {k} {(25 - len(k)) * ' '} {v} [/{c}]\n"
 
         console.print(text=help_text, menu="Keys")
+
+    @log_start_end(log=logger)
+    def call_github(self, other_args: List[str]):
+        """Process github command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="github",
+            description="Set GitHub API key.",
+        )
+        parser.add_argument(
+            "-k",
+            "--key",
+            type=str,
+            dest="key",
+            help="key",
+        )
+        if not other_args:
+            console.print(
+                "For your API Key, visit: https://docs.github.com/en/rest/guides/getting-started-with-the-rest-api\n"
+            )
+            return
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-k")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            os.environ["OPENBB_API_GITHUB_KEY"] = ns_parser.key
+            dotenv.set_key(self.env_file, "OPENBB_API_GITHUB_KEY", ns_parser.key)
+            cfg.API_GITHUB_KEY = ns_parser.key
+            self.check_github_key(show_output=True)
 
     @log_start_end(log=logger)
     def call_av(self, other_args: List[str]):
@@ -1076,17 +1125,17 @@ class KeysController(BaseController):
             )
             cfg.API_REDDIT_CLIENT_SECRET = ns_parser.client_secret
 
-            os.environ["OPENBB_API_REDDIT_PASSWORD"] = ns_parser.username
+            os.environ["OPENBB_API_REDDIT_PASSWORD"] = ns_parser.password
             dotenv.set_key(
-                self.env_file, "OPENBB_API_REDDIT_PASSWORD", ns_parser.username
-            )
-            cfg.API_REDDIT_USERNAME = ns_parser.username
-
-            os.environ["OPENBB_API_REDDIT_CLIENT_ID"] = ns_parser.password
-            dotenv.set_key(
-                self.env_file, "OPENBB_API_REDDIT_CLIENT_ID", ns_parser.password
+                self.env_file, "OPENBB_API_REDDIT_PASSWORD", ns_parser.password
             )
             cfg.API_REDDIT_PASSWORD = ns_parser.password
+
+            os.environ["OPENBB_API_REDDIT_USERNAME"] = ns_parser.username
+            dotenv.set_key(
+                self.env_file, "OPENBB_API_REDDIT_USERNAME", ns_parser.username
+            )
+            cfg.API_REDDIT_USERNAME = ns_parser.username
 
             os.environ["OPENBB_API_REDDIT_USER_AGENT"] = ns_parser.user_agent
             dotenv.set_key(

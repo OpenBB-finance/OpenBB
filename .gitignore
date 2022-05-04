@@ -31,11 +31,13 @@ openbb_terminal/portfolio/portfolios/*
 *.swp
 *.http
 bots/interactive/*.html
+.coverage.*
 
 # pyinstaller artifacts
 *.pyo
 dist/*
 build/terminal
+build/nsis/app
 
 # Jupyter Lab Extension build files
 jupyterlab/*/*.bundle.*

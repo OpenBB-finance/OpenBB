@@ -175,7 +175,9 @@ INTERVALS_EXCHANGE_BALANCES = ["24h"]
 
 
 @log_start_end(log=logger)
-def get_close_price(asset: str, interval: str, since: int, until: int) -> pd.DataFrame:
+def get_close_price(
+    asset: str, interval: str, since: int, until: int, print_errors: bool = True
+) -> pd.DataFrame:
     """Returns the price of a cryptocurrency
     [Source: https://glassnode.com]
 
@@ -189,6 +191,8 @@ def get_close_price(asset: str, interval: str, since: int, until: int) -> pd.Dat
         End date timestamp (e.g., 1_641_227_783_561)
     interval : str
         Interval frequency (e.g., 24h)
+    print_errors: bool
+        Flag to print errors. Default: True
 
     Returns
     -------
@@ -214,15 +218,18 @@ def get_close_price(asset: str, interval: str, since: int, until: int) -> pd.Dat
         df = pd.DataFrame(json.loads(r.text))
 
         if df.empty:
-            console.print(f"No data found for {asset} price.\n")
+            if print_errors:
+                console.print(f"No data found for {asset} price.\n")
         else:
             df = df.set_index("t")
             df.index = pd.to_datetime(df.index, unit="s")
 
     elif r.status_code == 401:
-        console.print("[red]Invalid API Key[/red]\n")
+        if print_errors:
+            console.print("[red]Invalid API Key[/red]\n")
     else:
-        console.print(r.text)
+        if print_errors:
+            console.print(r.text)
 
     return df
 

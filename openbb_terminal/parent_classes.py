@@ -1,6 +1,8 @@
 """Parent Classes"""
 __docformat__ = "numpy"
 
+# pylint: disable= C0301
+
 from abc import ABCMeta, abstractmethod
 import argparse
 import re
@@ -66,6 +68,8 @@ class BaseController(metaclass=ABCMeta):
 
     CHOICES_COMMANDS: List[str] = []
     CHOICES_MENUS: List[str] = []
+    COMMAND_SEPARATOR = "/"
+    KEYS_MENU = "keys" + COMMAND_SEPARATOR
 
     PATH: str = ""
     FILE_PATH: str = ""
@@ -133,14 +137,33 @@ class BaseController(metaclass=ABCMeta):
     def print_help(self) -> None:
         raise NotImplementedError("Must override print_help")
 
-    def log_queue(self, message: str) -> None:
-        if self.queue:
+    def contains_keys(self, string_to_check: str) -> bool:
+        if self.KEYS_MENU in string_to_check or self.KEYS_MENU in self.PATH:
+            return True
+        return False
+
+    def log_queue(self) -> None:
+        joined_queue = self.COMMAND_SEPARATOR.join(self.queue)
+        if self.queue and not self.contains_keys(joined_queue):
             logger.info(
-                "%s: {'path': '%s', 'queue': '%s'}",
-                message,
+                "QUEUE: {'path': '%s', 'queue': '%s'}",
                 self.PATH,
-                "/".join(self.queue),
+                joined_queue,
             )
+
+    def log_cmd_and_queue(
+        self, known_cmd: str, other_args_str: str, the_input: str
+    ) -> None:
+        if not self.contains_keys(the_input):
+            logger.info(
+                "CMD: {'path': '%s', 'known_cmd': '%s', 'other_args': '%s', 'input': '%s'}",
+                self.PATH,
+                known_cmd,
+                other_args_str,
+                the_input,
+            )
+        if the_input not in self.KEYS_MENU:
+            self.log_queue()
 
     @log_start_end(log=logger)
     def switch(self, an_input: str) -> List[str]:
@@ -184,14 +207,7 @@ class BaseController(metaclass=ABCMeta):
                     known_args.cmd = "reset"
 
             set_command_location(f"{self.PATH}{known_args.cmd}")
-            logger.info(
-                "CMD: {'path': '%s', 'known_cmd': '%s', 'other_args': '%s', 'input': '%s'}",
-                self.PATH,
-                known_args.cmd,
-                ";".join(other_args),
-                an_input,
-            )
-            self.log_queue("QUEUE")
+            self.log_cmd_and_queue(known_args.cmd, ";".join(other_args), an_input)
 
             # This is what mutes portfolio issue
             getattr(
@@ -200,7 +216,7 @@ class BaseController(metaclass=ABCMeta):
                 lambda _: "Command not recognized!",
             )(other_args)
 
-        self.log_queue("QUEUE")
+        self.log_queue()
 
         return self.queue
 
@@ -320,13 +336,14 @@ class BaseController(metaclass=ABCMeta):
                 self.queue = self.switch(an_input)
 
             except SystemExit:
-                logger.exception(
-                    "The command '%s' doesn't exist on the %s menu.",
-                    an_input,
-                    self.PATH,
-                )
+                if not self.contains_keys(an_input):
+                    logger.exception(
+                        "The command '%s' doesn't exist on the %s menu.",
+                        an_input,
+                        self.PATH,
+                    )
                 console.print(
-                    f"\nThe command '{an_input}' doesn't exist on the {self.PATH} menu.",
+                    f"\nThe command '{an_input}' doesn't exist on the {self.PATH} menu.\n",
                     end="",
                 )
                 similar_cmd = difflib.get_close_matches(
@@ -348,11 +365,15 @@ class BaseController(metaclass=ABCMeta):
                         an_input = candidate_input
                     else:
                         an_input = similar_cmd[0]
-                    logger.warning("Replacing by %s", an_input)
+                    if not self.contains_keys(an_input):
+                        logger.warning("Replacing by %s", an_input)
                     console.print(f" Replacing by '{an_input}'.")
                     self.queue.insert(0, an_input)
                 else:
-                    console.print("\n")
+                    if "load" in self.controller_choices:
+                        console.print(f"Trying `load {an_input}`")
+                        self.queue.insert(0, "load " + an_input)
+                    console.print("")
 
 
 class StockBaseController(BaseController, metaclass=ABCMeta):
@@ -417,7 +438,9 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
             "--source",
             action="store",
             dest="source",
-            choices=["yf", "av", "iex"] if "-i" not in other_args else ["yf"],
+            choices=["yf", "av", "iex", "polygon"]
+            if "-i" not in other_args or "--interval" not in other_args
+            else ["yf", "polygon"],
             default="yf",
             help="Source of historical data.",
         )
@@ -513,6 +536,8 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                     ns_parser.ticker
                 )
                 console.print(self.add_info)
+                if ns_parser.interval == 1440 and ns_parser.filepath is None:
+                    stocks_helper.show_quick_performance(self.stock, ns_parser.ticker)
                 if "." in ns_parser.ticker:
                     self.ticker, self.suffix = ns_parser.ticker.upper().split(".")
                 else:
@@ -635,7 +660,11 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
                 interval=ns_parser.interval,
                 vs=ns_parser.vs,
             )
-            if self.symbol:
+            if (
+                self.symbol
+                and self.current_df is not None
+                and not self.current_df.empty
+            ):
                 self.current_interval = ns_parser.interval
                 first_price = self.current_df["Close"].iloc[0]
                 last_price = self.current_df["Close"].iloc[-1]
@@ -643,10 +672,11 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
                 interval_change = calc_change(last_price, second_last_price)
                 since_start_change = calc_change(last_price, first_price)
                 if isinstance(self.current_currency, str) and self.PATH == "/crypto/":
-                    col = "green" if interval_change > 0 else "red"
+                    col1 = "green" if interval_change > 0 else "red"
+                    col2 = "green" if since_start_change > 0 else "red"
                     self.price_str = f"""Current Price: {round(last_price,2)} {self.current_currency.upper()}
-Performance in interval ({self.current_interval}): [{col}]{round(interval_change,2)}%[/{col}]
-Performance since {ns_parser.start.strftime('%Y-%m-%d')}: [{col}]{round(since_start_change,2)}%[/{col}]"""  # noqa
+Performance in interval ({self.current_interval}): [{col1}]{round(interval_change,2)}%[/{col1}]
+Performance since {ns_parser.start.strftime('%Y-%m-%d')}: [{col2}]{round(since_start_change,2)}%[/{col2}]"""  # noqa
 
                     console.print(
                         f"""
@@ -659,3 +689,7 @@ Loaded {self.coin} against {self.current_currency} from {CRYPTO_SOURCES[self.sou
                     console.print(
                         f"{delta} Days of {self.coin} vs {self.current_currency} loaded with {res} resolution.\n"
                     )
+            else:
+                console.print(
+                    f"\n[red]Could not find [bold]{ns_parser.coin}[/bold] in [bold]{CRYPTO_SOURCES[ns_parser.source]}[/bold]. Make sure you search for symbol (e.g., btc) or try another source[/red]\n"  # noqa: E501
+                )

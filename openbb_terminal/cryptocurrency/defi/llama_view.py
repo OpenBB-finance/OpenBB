@@ -55,7 +55,7 @@ def display_grouped_defi_protocols(
     else:
         if len(external_axes) != 1:
             logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of one axis item./n[/red]")
+            console.print("[red]Expected list of one axis item.\n[/red]")
             return
         (ax,) = external_axes
 
@@ -83,7 +83,8 @@ def display_grouped_defi_protocols(
 
     ax.yaxis.set_label_position("left")
     ax.yaxis.set_ticks_position("left")
-    ax.legend(loc="best")
+    handles, labels = ax.get_legend_handles_labels()
+    ax.legend(handles[::-1], labels[::-1], loc="best")
 
     if not external_axes:
         cfg.theme.visualize_output()
@@ -185,7 +186,7 @@ def display_historical_tvl(
     else:
         if len(external_axes) != 1:
             logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of one axis item./n[/red]")
+            console.print("[red]Expected list of one axis item.\n[/red]")
             return
         (ax,) = external_axes
 
@@ -244,7 +245,7 @@ def display_defi_tvl(
     else:
         if len(external_axes) != 1:
             logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of one axis item./n[/red]")
+            console.print("[red]Expected list of one axis item.\n[/red]")
             return
         (ax,) = external_axes
 

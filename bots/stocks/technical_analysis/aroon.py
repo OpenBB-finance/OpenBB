@@ -22,6 +22,7 @@ def aroon_command(
     end="",
     extended_hours: bool = False,
     heikin_candles: bool = False,
+    trendline: bool = False,
     news: bool = False,
 ):
     """Displays chart with aroon indicator [Yahoo Finance]"""
@@ -29,7 +30,7 @@ def aroon_command(
     # Debug
     if imps.DEBUG:
         logger.debug(
-            "ta aroon %s %s %s %s %s, %s, %s, %s, %s, %s",
+            "ta aroon %s %s %s %s %s %s %s %s %s %s %s",
             ticker,
             interval,
             past_days,
@@ -39,6 +40,7 @@ def aroon_command(
             end,
             extended_hours,
             heikin_candles,
+            trendline,
             news,
         )
 
@@ -85,11 +87,12 @@ def aroon_command(
         news,
         bar=bar_start,
         int_bar=interval,
+        trendline=trendline,
         rows=3,
         cols=1,
         shared_xaxes=True,
         vertical_spacing=0.02,
-        row_width=[0.2, 0.2, 0.3],
+        row_width=[0.15, 0.15, 0.7],
         specs=[
             [{"secondary_y": True}],
             [{"secondary_y": False}],
@@ -98,14 +101,17 @@ def aroon_command(
     )
     title = f"<b>{plot['plt_title']} Aroon ({length})</b>"
     fig = plot["fig"]
-    idx = 6 if interval != 1440 else 11
+    idx = 6 if (not trendline) and (interval != 1440) else 11
 
     fig.add_trace(
         go.Scatter(
             name="Aroon DOWN",
+            mode="lines",
             x=df_ta.index,
             y=df_ta.iloc[:, idx].values,
             opacity=1,
+            yaxis="y3",
+            showlegend=False,
         ),
         row=2,
         col=1,
@@ -114,9 +120,12 @@ def aroon_command(
     fig.add_trace(
         go.Scatter(
             name="Aroon UP",
+            mode="lines",
             x=df_ta.index,
             y=df_ta.iloc[:, (idx + 1)].values,
             opacity=1,
+            yaxis="y3",
+            showlegend=False,
         ),
         row=2,
         col=1,
@@ -125,9 +134,12 @@ def aroon_command(
     fig.add_trace(
         go.Scatter(
             name="Aroon OSC",
+            mode="lines",
             x=df_ta.index,
             y=df_ta.iloc[:, (idx + 2)].values,
             opacity=1,
+            yaxis="y4",
+            showlegend=False,
         ),
         row=3,
         col=1,
@@ -143,8 +155,38 @@ def aroon_command(
         row=2,
         col=1,
     )
+    fig.add_annotation(
+        xref="paper",
+        yref="paper",
+        text="Aroon DOWN",
+        x=-0.07,
+        y=0.18,
+        font_size=10,
+        font_color="#00e6c3",
+        showarrow=False,
+    )
+    fig.add_annotation(
+        xref="paper",
+        yref="paper",
+        text="Aroon UP",
+        x=-0.07,
+        y=0.25,
+        font_size=10,
+        font_color="#9467bd",
+        showarrow=False,
+    )
+    fig.add_annotation(
+        xref="paper",
+        yref="paper",
+        text="Aroon OSC",
+        x=-0.07,
+        y=0.1,
+        font_size=10,
+        font_color="#e250c3",
+        showarrow=False,
+    )
     fig.update_layout(
-        margin=dict(l=0, r=0, t=50, b=20),
+        margin=dict(l=10, r=0, t=50, b=20),
         template=imps.PLT_TA_STYLE_TEMPLATE,
         colorway=imps.PLT_TA_COLORWAY,
         title=title,
@@ -153,6 +195,26 @@ def aroon_command(
         dragmode="pan",
         yaxis=dict(nticks=10),
         yaxis2=dict(nticks=10),
+        yaxis3=dict(
+            side="right",
+            fixedrange=False,
+            nticks=5,
+            titlefont=dict(size=10),
+            tickfont=dict(
+                size=9,
+            ),
+            showline=False,
+        ),
+        yaxis4=dict(
+            side="right",
+            fixedrange=False,
+            nticks=10,
+            titlefont=dict(size=10),
+            tickfont=dict(
+                size=9,
+            ),
+            showline=False,
+        ),
     )
     imagefile = "ta_aroon.png"
 
@@ -160,11 +222,6 @@ def aroon_command(
     plt_link = ""
     if imps.INTERACTIVE:
         plt_link = imps.inter_chart(fig, imagefile, callback=False)
-
-    fig.update_layout(
-        width=800,
-        height=500,
-    )
     imagefile = imps.image_border(imagefile, fig=fig)
 
     return {

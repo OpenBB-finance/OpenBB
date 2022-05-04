@@ -25,6 +25,9 @@ Rolling Metrics:
 Risk:
     var         display value at risk
     es          display expected shortfall
+    sh          display sharpe ratio
+    so          display sortino ratio
+    om          display omega ratio
 Other:
     raw         print raw data
     decompose   decomposition in cyclic-trend, season, and residuals of prices

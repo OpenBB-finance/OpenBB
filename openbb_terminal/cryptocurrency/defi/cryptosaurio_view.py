@@ -7,9 +7,7 @@ from typing import List, Optional
 import matplotlib.pyplot as plt
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.cryptocurrency.defi import (
-    cryptosaurio_model,
-)
+from openbb_terminal.cryptocurrency.defi import cryptosaurio_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
@@ -54,11 +52,11 @@ def display_anchor_data(
     else:
         if len(external_axes) != 1:
             logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of one axis item./n[/red]")
+            console.print("[red]Expected list of one axis item.\n[/red]")
             return
         (ax,) = external_axes
     print("")
-    print(stats_str)
+    console.print(stats_str)
     print("")
 
     if show_transactions:

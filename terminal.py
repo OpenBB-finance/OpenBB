@@ -15,6 +15,7 @@ import dotenv
 
 from prompt_toolkit.completion import NestedCompleter
 
+from openbb_terminal.core.config.constants import REPO_DIR, ENV_FILE, USER_HOME
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.helper_funcs import (
     check_path,
@@ -43,7 +44,7 @@ from openbb_terminal.terminal_helper import (
 
 logger = logging.getLogger(__name__)
 
-env_file = ".env"
+env_file = str(ENV_FILE)
 
 
 class TerminalController(BaseController):
@@ -93,7 +94,7 @@ class TerminalController(BaseController):
 
     def print_help(self):
         """Print help"""
-        console.print(
+        console.print(  # nosec
             text=f"""
 [info]Multiple jobs queue (where each '/' denotes a new command).[/info]
     E.g. '/stocks $ disc/ugs -n 3/../load tsla/candle'
@@ -291,7 +292,7 @@ class TerminalController(BaseController):
                 else:
                     # If the path selected does not start from the user root, give relative location from terminal root
                     if export_path[0] == "~":
-                        export_path = export_path.replace("~", os.environ["HOME"])
+                        export_path = export_path.replace("~", os.path.expanduser("~"))
                     elif export_path[0] != "/":
                         export_path = os.path.join(base_path, export_path)
 
@@ -423,7 +424,7 @@ class TerminalController(BaseController):
                         export_path = self.queue[0].split(" ")[1]
                         # If the path selected does not start from the user root, give relative location from root
                         if export_path[0] == "~":
-                            export_path = export_path.replace("~", os.environ["HOME"])
+                            export_path = export_path.replace("~", USER_HOME.as_posix())
                         elif export_path[0] != "/":
                             export_path = os.path.join(
                                 os.path.dirname(os.path.abspath(__file__)), export_path
@@ -469,7 +470,7 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
     if export_path:
         # If the path selected does not start from the user root, give relative location from terminal root
         if export_path[0] == "~":
-            export_path = export_path.replace("~", os.environ["HOME"])
+            export_path = export_path.replace("~", USER_HOME.as_posix())
         elif export_path[0] != "/":
             export_path = os.path.join(
                 os.path.dirname(os.path.abspath(__file__)), export_path
@@ -747,7 +748,7 @@ def main(
         console.print("[green]OpenBB Terminal Integrated Tests:\n[/green]")
         for file in test_files:
             file = file.replace("//", "/")
-            file_name = file[file.rfind("OpenBBTerminal") :].replace(  # noqa: E203
+            file_name = file[file.rfind(REPO_DIR.name) :].replace(  # noqa: E203
                 "\\", "/"
             )
             console.print(f"{file_name}  {((i/length)*100):.1f}%")
@@ -763,7 +764,7 @@ def main(
         if fails:
             console.print("\n[red]Failures:[/red]\n")
             for key, value in fails.items():
-                file_name = key[key.rfind("OpenBBTerminal") :].replace(  # noqa: E203
+                file_name = key[key.rfind(REPO_DIR.name) :].replace(  # noqa: E203
                     "\\", "/"
                 )
                 logger.error("%s: %s failed", file_name, value)

@@ -20,6 +20,7 @@ def vcr_config():
             ("date", "MOCK_DATE"),
             ("token", "MOCK_TOKEN"),
             ("apikey", "MOCK_API_KEY"),
+            ("apiKey", "MOCK_API_KEY2"),
         ]
     }
 
@@ -40,7 +41,15 @@ def test_search(mocker, use_tab):
     mocker.patch.object(
         target=helper_funcs.obbff, attribute="USE_TABULATE_DF", new=use_tab
     )
-    stocks_helper.search(query="pharma", amount=5)
+    stocks_helper.search(
+        query="sonae",
+        country="Portugal",
+        sector="",
+        industry="",
+        exchange_country="",
+        limit=5,
+        export="",
+    )
 
 
 @pytest.mark.vcr
@@ -51,6 +60,8 @@ def test_search(mocker, use_tab):
         (1440, "iex"),
         (1440, "yf"),
         (60, "yf"),
+        (1440, "polygon"),
+        (60, "polygon"),
     ],
 )
 def test_load(interval, recorder, source):

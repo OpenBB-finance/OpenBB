@@ -21,7 +21,7 @@ analyzer = SentimentIntensityAnalyzer()
 @log_start_end(log=logger)
 def load_analyze_tweets(
     ticker: str,
-    count: int,
+    count: int = 100,
     start_time: Optional[str] = "",
     end_time: Optional[str] = "",
 ) -> pd.DataFrame:
@@ -78,6 +78,22 @@ def load_analyze_tweets(
             """
             Status Code 400.
             This means you are requesting data from beyond the API's 7 day limit"""
+        )
+        return pd.DataFrame()
+    elif response.status_code == 403:
+        console.print(
+            f"""
+            Status code 403.
+            It seems you're twitter credentials are invalid - {response.text}
+        """
+        )
+        return pd.DataFrame()
+    else:
+        console.print(
+            f"""
+            Status code {response.status_code}.
+            Something went wrong - {response.text}
+        """
         )
         return pd.DataFrame()
 

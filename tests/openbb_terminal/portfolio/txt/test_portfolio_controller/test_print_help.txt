@@ -21,3 +21,6 @@ Graphs:
 Risk Metrics:
     var         display value at risk
     es          display expected shortfall
+    sh          display sharpe ratio
+    so          display sortino ratio
+    om          display omega ratio

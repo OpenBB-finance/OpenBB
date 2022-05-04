@@ -5,12 +5,10 @@ import pandas as pd
 import requests
 
 from bots import imps
-from openbb_terminal.decorators import log_start_end
 
 logger = logging.getLogger(__name__)
 
 
-@log_start_end(log=logger)
 def borrowed_command(ticker: str = ""):
     """Displays borrowed shares available and fee [Stocksera.com]"""
 
@@ -24,7 +22,8 @@ def borrowed_command(ticker: str = ""):
 
     df = pd.DataFrame(
         requests.get(
-            f"https://stocksera.pythonanywhere.com/api/borrowed_shares/{ticker}"
+            f"https://stocksera.pythonanywhere.com/api/borrowed_shares/{ticker}",
+            headers={"Authorization": f"Api-Key {imps.API_STOCKSERA_TOKEN}"},
         ).json()
     )
 
@@ -57,7 +56,7 @@ def borrowed_command(ticker: str = ""):
             df_pg.append(df_pg)
             fig = imps.plot_df(
                 df_pg,
-                fig_size=(550, (40 + (40 * len(df.index)))),
+                fig_size=(550, (40 + (40 * len(df_pg.index)))),
                 col_width=[1, 1, 1.5, 2],
                 tbl_header=imps.PLT_TBL_HEADER,
                 tbl_cells=imps.PLT_TBL_CELLS,

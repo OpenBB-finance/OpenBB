@@ -29,6 +29,8 @@ EXTENSIONS_MATCHING: Dict[str, List[Type]] = {
 
 os.environ["TEST_MODE"] = "True"
 os.environ["OPENBB_IMG_HOST_ACTIVE"] = "False"
+os.environ["OPENBB_DISCORD_BOT_TOKEN"] = "123"
+os.environ["OPENBB_IMGUR_CLIENT_ID"] = "123"
 
 
 class Record:
@@ -373,6 +375,11 @@ def pytest_configure(config: Config) -> None:
 def rewrite_expected(request: SubRequest) -> bool:
     """Force rewriting of all expected data by : `record_stdout` and `recorder`."""
     return request.config.getoption("--rewrite-expected")
+
+
+@pytest.fixture(autouse=True)
+def mock_matplotlib(mocker):
+    mocker.patch("matplotlib.pyplot.show")
 
 
 @pytest.fixture

@@ -28,7 +28,7 @@ def by_ticker_command(ticker="", sort="fund_percent", num: int = 15):
     options.headless = True
     options.add_argument("--headless")
     options.add_argument("--incognito")
-    driver = uc.Chrome(options=options, version_main=98)
+    driver = uc.Chrome(options=options, version_main=100)
     driver.set_window_size(1920, 1080)
     driver.get(f"http://etf.com/stock/{ticker.upper()}/")
 
