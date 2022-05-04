@@ -1,4 +1,7 @@
 """Behavioural Analysis API."""
+import os
+from openbb_terminal.helper_classes import ModelsNamespace as _models
+from openbb_terminal.common import behavioural_analysis
 
 # flake8: noqa
 # pylint: disable=unused-import
@@ -72,4 +75,12 @@ from openbb_terminal.stocks.behavioural_analysis.cramer_view import (
 )
 from openbb_terminal.stocks.behavioural_analysis.cramer_view import (
     display_cramer_ticker as cramer_ticker,
+)
+
+# Models
+models = _models(
+    [
+        os.path.abspath(os.path.dirname(behavioural_analysis.__file__)),
+        os.path.abspath(os.path.dirname(__file__)),
+    ]
 )

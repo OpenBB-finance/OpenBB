@@ -73,8 +73,7 @@ def send_to_s3_using_presigned_url(
 
     raw_response.raise_for_status()
 
-    if raw_response.status_code == 204:
-        pass
+    # SUCCESS IF STATUS_CODE == 204
 
 
 def send_to_s3(
@@ -85,6 +84,28 @@ def send_to_s3(
     tmp_file: Path,
     last: bool = False,
 ):
+    """Send a file into a s3 bucket.
+
+    Args:
+        archives_file (Path):
+            Destination Path after processing.
+        aws_settings (AWSSettings):
+            AWS settings.
+        file (Path):
+            Path of the file to process.
+        object_key (str): _description_
+            File location inside the s3 bucket.
+        tmp_file (Path):
+            Temporary Path in which to put the file during processing.
+        last (bool, optional):
+            Whether or not this is the last sending before program exit.
+            Defaults to False.
+
+    Raises:
+        AttributeError:
+            If `file` is empty.
+    """
+
     api_url = DEFAULT_API_URL
     bucket = DEFAULT_BUCKET
 

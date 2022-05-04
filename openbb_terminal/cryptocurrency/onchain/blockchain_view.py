@@ -27,7 +27,7 @@ logger = logging.getLogger(__name__)
 def display_btc_circulating_supply(
     since: int,
     until: int,
-    export: str,
+    export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Returns BTC circulating supply [Source: https://api.blockchain.info/]
@@ -56,7 +56,7 @@ def display_btc_circulating_supply(
     else:
         if len(external_axes) != 1:
             logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of one axis item./n[/red]")
+            console.print("[red]Expected list of one axis item.\n[/red]")
             return
         (ax,) = external_axes
 
@@ -82,7 +82,7 @@ def display_btc_circulating_supply(
 def display_btc_confirmed_transactions(
     since: int,
     until: int,
-    export: str,
+    export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Returns BTC confirmed transactions [Source: https://api.blockchain.info/]
@@ -111,7 +111,7 @@ def display_btc_confirmed_transactions(
     else:
         if len(external_axes) != 1:
             logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of one axis item./n[/red]")
+            console.print("[red]Expected list of one axis item.\n[/red]")
             return
         (ax,) = external_axes
 

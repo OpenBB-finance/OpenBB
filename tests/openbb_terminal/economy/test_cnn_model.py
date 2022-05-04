@@ -10,6 +10,7 @@ from openbb_terminal.economy import cnn_model
 
 @pytest.mark.default_cassette("test_get_feargreed_report")
 @pytest.mark.vcr
+@pytest.mark.linux
 @pytest.mark.parametrize(
     "indicator",
     [

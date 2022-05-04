@@ -382,11 +382,12 @@ def test_call_func_expect_queue(expected_queue, queue, func):
         ),
         (
             "call_headlines",
-            ["--export=csv"],
+            ["--export=csv", "--raw"],
             "finbrain_view.display_sentiment_analysis",
             [],
             dict(
                 ticker="MOCK_TICKER",
+                raw=True,
                 export="csv",
             ),
         ),

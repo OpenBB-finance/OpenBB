@@ -180,7 +180,7 @@ def display_rolling_stats(
     else:
         if len(external_axes) != 4:
             logger.error("Expected list of four axis items.")
-            console.print("[red]4 axes expected./n[/red]")
+            console.print("[red]4 axes expected.\n[/red]")
             return
         ax = external_axes
     rolling_volatility = portfolio.returns.rolling(length).std()

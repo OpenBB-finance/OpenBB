@@ -438,7 +438,9 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
             "--source",
             action="store",
             dest="source",
-            choices=["yf", "av", "iex"] if "-i" not in other_args else ["yf"],
+            choices=["yf", "av", "iex", "polygon"]
+            if "-i" not in other_args or "--interval" not in other_args
+            else ["yf", "polygon"],
             default="yf",
             help="Source of historical data.",
         )

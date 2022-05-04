@@ -20,6 +20,7 @@ def vcr_config():
             ("date", "MOCK_DATE"),
             ("token", "MOCK_TOKEN"),
             ("apikey", "MOCK_API_KEY"),
+            ("apiKey", "MOCK_API_KEY2"),
         ]
     }
 
@@ -59,6 +60,8 @@ def test_search(mocker, use_tab):
         (1440, "iex"),
         (1440, "yf"),
         (60, "yf"),
+        (1440, "polygon"),
+        (60, "polygon"),
     ],
 )
 def test_load(interval, recorder, source):

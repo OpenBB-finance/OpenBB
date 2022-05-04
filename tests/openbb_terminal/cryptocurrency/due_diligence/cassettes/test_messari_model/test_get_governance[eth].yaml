@@ -1,0 +1,57 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      x-messari-api-key:
+      - mock_x-messari-api-key
+    method: GET
+    uri: https://data.messari.io/api/v2/assets/eth/profile?fields=profile%2Fgovernance
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAA/3RWXW/bVgz9K4Re2gKyFLttmhjYw/qBNsCwFlixAWuKgJIoic3VpXBJ2fOK/Pfh
+        Xjm2k3ZvkUQefp1z4u+ZGtqk2fp7Rg5HpSZbv8wz44HUcBizdbY6W60WZy8XZ8vPy4v16sX65WVx
+        8fz56vLixfnq7+wuzxo0jAhjkJYdxT872VDw6OtHTzcNGbLTbJ29s54CTQPISAGNFJQHdhjcDkzg
+        NVst7MH6IFPXg7Ttou6RfQ7sWwkDOjjiFnAVQ1lhkIZcDg1tyEVkhRo96FQNbDAGManFwTR2ARvS
+        HJqpqqiB6+ns7HmN0Adqf7nOerNR12U5kCoGLlhKDMa1o5L2fS94GINsaCBvizHIKIpuQTxeZwmM
+        DgNeHQPh0z5Q4em7q0/6bK5b4pySg3i4z3uicTV+oTKFmuA924epgkCjKJuEXQFvJNAh/HRk68lD
+        w1pPquBpC/f9aQ5bth6wadhYPDpgP04GbZAhpgH9Y+QbaqCWYZg8266AqxZwTDM0UO0AYcBvEth2
+        sBGjHOrYx0n5gUJHCa3u0XekwN4kvahQCWppqIDPArgRTpVGxzXGhhRGUVskhBy8NLTnh0TcSQ2m
+        sUFL6BygdkzeFPboLvLIQKW1LQYqsjwTn1hz85CRP769sd1I2Tr7XeCjX7yJX+H9MednQCdk/qtn
+        d3oKIQUvBj1uCNBH9nLN6ED8zOIT7t5Tlm3Om3OgZ41Xnu+VpLARY98V8LmP4wciYK8WIRQcq8Xr
+        kJMtYIh3xGF0pCAtOBElt4NaptHRKdj62i/gy9tfPx4Ykk6qX5/eK6BBiR6hRcfWT1VUwoFMRW+D
+        e5YgYk8R5g2GSnzEmCHWZblZFvXhbVHLUB5T3l19guXFeXn+4rI8P7/8WfqPudf+twcDNacTgRo7
+        B7VIaNgnX4nM2J8qbiM+HqY9sZVqMhiTynnESKq9acxMS2s5nG8vI8K6T19gS9z1NusjFjAxdICD
+        TN5i0eQa0JPbR6BFDQZSLeAt6ci2F4yEQC5JASqyLdFhsLkEoG/A5Ja8JrgcJo2aayQR7r7nOQCd
+        +E65oQdDRIRIkcTWNmp3n/mN6pgK6HfQcIhPLUeORuZWU2jIF/CBfE35LLdHZ3BYkYOON+RnRbKC
+        2s5R3MAJ4asd/MmGjm/h9WQU2Bfxqv8rn90DNp8eGxUQqomdLdiDwx2FxfJo8y2hTYHgaaCWQqAm
+        TadgcZM/FcSzIrYEnmwr4VZhYB+3S77DLuoN8HHyvpMxSE2qsE3WS0ZhYJ/O1s+3N9m74eyDTupb
+        6DAqd2BL8/9B0QvCkazsH+/picKXykmXXPIo0s0cVdRYduQpoCtXZ8tX5XJVLl+Ve99IYo3/YFLt
+        xy6U5RnrjQVCncLupqGavAV0/G/8TdCiU7rLsy5EZWTrL1/v7u7u/gsAAP//HQ1/1D8IAAA=
+    headers:
+      content-encoding:
+      - gzip
+      content-length:
+      - '1079'
+      content-type:
+      - application/json; charset=UTF-8
+      date:
+      - Sun, 01 May 2022 18:24:59 GMT
+      vary:
+      - Accept-Encoding,Origin
+      x-ratelimit-limit:
+      - '4000'
+      x-ratelimit-remaining:
+      - '3995'
+      x-ratelimit-reset:
+      - '1651511281'
+    status:
+      code: 200
+      message: OK
+version: 1

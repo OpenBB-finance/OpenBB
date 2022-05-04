@@ -20,36 +20,34 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def plot_dark_pools(
-    ticker: str,
-    ats: pd.DataFrame,
-    otc: pd.DataFrame,
-    external_axes: Optional[List[plt.Axes]] = None,
+def darkpool_ats_otc(
+    ticker: str, export: str = "", external_axes: Optional[List[plt.Axes]] = None
 ):
-    """Plots ATS and NON-ATS data
+    """Display barchart of dark pool (ATS) and OTC (Non ATS) data. [Source: FINRA]
 
     Parameters
     ----------
     ticker : str
-        Stock ticker to get data from
-    ats : pd.DataFrame
-        Dark Pools (ATS) Data
-    otc : pd.DataFrame
-        OTC (Non-ATS) Data
+        Stock ticker
+    export : str
+        Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axis is expected in the list), by default None
-
     """
+    ats, otc = finra_model.getTickerFINRAdata(ticker)
 
-    # This plot has 1 axis
+    if ats.empty and otc.empty:
+        console.print("No ticker data found!")
+
+        # This plot has 1 axis
     if not external_axes:
         _, (ax1, ax2) = plt.subplots(
             2, 1, sharex=True, figsize=plot_autoscale(), dpi=PLOT_DPI
         )
     else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of one axis item./n[/red]")
+        if len(external_axes) != 2:
+            logger.error("Expected list of two axis item.")
+            console.print("[red]Expected list of two axis item.\n[/red]")
             return
         (ax1, ax2) = external_axes
 
@@ -81,6 +79,7 @@ def plot_dark_pools(
 
     ax1.set_ylabel("Total Weekly Shares [Million]")
     ax1.set_title(f"Dark Pools (ATS) vs OTC (Non-ATS) Data for {ticker}")
+    ax1.set_xticks([])
 
     if not ats.empty:
         ax2.plot(
@@ -107,8 +106,7 @@ def plot_dark_pools(
         ax2.legend(["OTC"])
 
     ax2.set_ylabel("Shares per Trade")
-    ax2.xaxis.set_major_formatter(mdates.DateFormatter("%m/%d"))
-    ax2.xaxis.set_major_locator(mdates.DayLocator(interval=4))
+    ax2.xaxis.set_major_locator(mdates.DayLocator(interval=10))
     ax2.set_xlim(otc.index[0], otc.index[-1])
     ax2.set_xlabel("Weeks")
 
@@ -117,38 +115,19 @@ def plot_dark_pools(
 
     if not external_axes:
         theme.visualize_output()
-
-
-@log_start_end(log=logger)
-def darkpool_ats_otc(ticker: str, export: str):
-    """Display barchart of dark pool (ATS) and OTC (Non ATS) data. [Source: FINRA]
-
-    Parameters
-    ----------
-    ticker : str
-        Stock ticker
-    export : str
-        Export dataframe data to csv,json,xlsx file
-    """
-    df_ats, df_otc = finra_model.getTickerFINRAdata(ticker)
-
-    if df_ats.empty and df_otc.empty:
-        console.print("No ticker data found!")
-
-    plot_dark_pools(ticker, df_ats, df_otc)
     console.print("")
 
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "dpotc_ats",
-        df_ats,
+        ats,
     )
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "dpotc_otc",
-        df_otc,
+        otc,
     )
 
 
@@ -177,7 +156,7 @@ def plot_dark_pools_ats(
     else:
         if len(external_axes) != 1:
             logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of one axis item./n[/red]")
+            console.print("[red]Expected list of one axis item.\n[/red]")
             return
         (ax,) = external_axes
 
@@ -206,8 +185,8 @@ def plot_dark_pools_ats(
 def darkpool_otc(
     num: int,
     promising: int,
-    tier: str,
-    export: str,
+    tier: str = "T1",
+    export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display dark pool (ATS) data of tickers with growing trades activity. [Source: FINRA]
@@ -220,8 +199,8 @@ def darkpool_otc(
     promising : int
         Number of tickers to display from most promising with
         better linear regression slope
-    tier : int
-        Tier to process data from
+    tier : str
+        Tier to process data from: T1, T2 or OTCE
     export : str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
