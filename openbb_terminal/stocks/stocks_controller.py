@@ -682,7 +682,7 @@ def choiceCheckAfterAction(choice):
             super().__call__(parser, namespace, values, option_string)
             if getattr(namespace, self.dest) not in choice:
                 raise ValueError(
-                    "{} is not in {}".format(getattr(namespace, self.dest), choice)
+                    f"{getattr(namespace, self.dest)} is not in {choice}"
                 )
 
     return ActionClass
