@@ -168,6 +168,7 @@ def display_correlation(
     start: str = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
     candle_type: str = "a",
     external_axes: Optional[List[plt.Axes]] = None,
+    export: str = "",
 ):
     """
     Correlation heatmap based on historical price comparison
@@ -183,6 +184,8 @@ def display_correlation(
         OHLCA column to use, by default "a" for Adjusted Close
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
+    export : str, optional
+        Format to export correlation prices, by default ""
 
     """
     df_similar = yahoo_finance_model.get_historical(similar_tickers, start, candle_type)
@@ -227,4 +230,5 @@ def display_correlation(
     if not external_axes:
         theme.visualize_output()
 
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), "hcorr", df_similar)
     console.print("")
