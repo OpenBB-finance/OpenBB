@@ -256,6 +256,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 similar_tickers=["MOCK_SIMILAR_1", "MOCK_SIMILAR_2"],
                 start="2020-12-01",
                 candle_type="h",
+                export="",
             ),
         ),
         (

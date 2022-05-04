@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_inference(ticker: str, num: int, export: str = ""):
+def display_inference(ticker: str, num: int = 100, export: str = ""):
     """Infer sentiment from past n tweets
 
     Parameters
@@ -72,9 +72,9 @@ def display_inference(ticker: str, num: int, export: str = ""):
 @log_start_end(log=logger)
 def display_sentiment(
     ticker: str,
-    n_tweets: int,
-    n_days_past: int,
-    compare: bool,
+    n_tweets: int = 15,
+    n_days_past: int = 6,
+    compare: bool = False,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -180,7 +180,7 @@ def display_sentiment(
         else:
             if len(external_axes) != 2:
                 logger.error("Expected list of one axis item.")
-                console.print("[red]Expected list of one axis item./n[/red]")
+                console.print("[red]Expected list of one axis item.\n[/red]")
                 return
             (ax1, ax2) = external_axes
 

@@ -9,12 +9,12 @@ from typing import List
 # IMPORTATION INTERNAL
 
 
-def get_timestamp_from_x_days(x: int):
+def get_timestamp_from_x_days(x: int) -> float:
     timestamp_from_x_days = datetime.now().timestamp() - x * 86400
     return timestamp_from_x_days
 
 
-def get_expired_file_list(directory: Path, before_timestamp: float):
+def get_expired_file_list(directory: Path, before_timestamp: float) -> List[Path]:
     expired_files = list()
     if directory.exists and directory.is_dir():
         for file in directory.iterdir():

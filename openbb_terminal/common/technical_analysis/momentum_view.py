@@ -63,7 +63,7 @@ def display_cci(
     else:
         if len(external_axes) != 2:
             logger.error("Expected list of two axis items.")
-            console.print("[red]Expected list of 2 axis items./n[/red]")
+            console.print("[red]Expected list of 2 axis items.\n[/red]")
             return
         ax1, ax2 = external_axes
 
@@ -154,7 +154,7 @@ def display_macd(
     else:
         if len(external_axes) != 2:
             logger.error("Expected list of two axis items.")
-            console.print("[red]Expected list of 2 axis items./n[/red]")
+            console.print("[red]Expected list of 2 axis items.\n[/red]")
             return
         ax1, ax2 = external_axes
 
@@ -240,7 +240,7 @@ def display_rsi(
     else:
         if len(external_axes) != 2:
             logger.error("Expected list of two axis items.")
-            console.print("[red]Expected list of 2 axis items./n[/red]")
+            console.print("[red]Expected list of 2 axis items.\n[/red]")
             return
         ax1, ax2 = external_axes
 
@@ -334,7 +334,7 @@ def display_stoch(
     else:
         if len(external_axes) != 3:
             logger.error("Expected list of three axis items.")
-            console.print("[red]Expected list of 3 axis items./n[/red]")
+            console.print("[red]Expected list of 3 axis items.\n[/red]")
             return
         ax1, ax2, ax3 = external_axes
 
@@ -420,7 +420,7 @@ def display_fisher(
     else:
         if len(external_axes) != 3:
             logger.error("Expected list of three axis items.")
-            console.print("[red]Expected list of 3 axis items./n[/red]")
+            console.print("[red]Expected list of 3 axis items.\n[/red]")
             return
         ax1, ax2, ax3 = external_axes
 
@@ -508,7 +508,7 @@ def display_cg(
     else:
         if len(external_axes) != 2:
             logger.error("Expected list of two axis items.")
-            console.print("[red]Expected list of 2 axis items./n[/red]")
+            console.print("[red]Expected list of 2 axis items.\n[/red]")
             return
         ax1, ax2 = external_axes
 

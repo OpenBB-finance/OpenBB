@@ -57,7 +57,7 @@ def display_covid_ov(
     else:
         if len(external_axes) != 2:
             logger.error("Expected list of two axis items.")
-            console.print("[red]Expected list of 2 axis item./n[/red]")
+            console.print("[red]Expected list of 2 axis item.\n[/red]")
             return
         ax1, ax2 = external_axes
 

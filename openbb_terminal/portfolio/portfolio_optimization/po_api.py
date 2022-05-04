@@ -16,19 +16,37 @@ from openbb_terminal.portfolio.portfolio_optimization.optimizer_view import (
     display_max_sharpe as max_sharpe,
 )
 from openbb_terminal.portfolio.portfolio_optimization.optimizer_view import (
-    display_min_volatility as min_vol,
+    display_min_risk as min_risk,
 )
 from openbb_terminal.portfolio.portfolio_optimization.optimizer_view import (
-    display_max_quadratic_utility as maxquadutil,
+    display_max_util as max_util,
 )
 from openbb_terminal.portfolio.portfolio_optimization.optimizer_view import (
-    display_efficient_risk as effrisk,
+    display_max_ret as max_ret,
 )
 from openbb_terminal.portfolio.portfolio_optimization.optimizer_view import (
-    display_efficient_return as effret,
+    display_max_div as max_div,
+)
+from openbb_terminal.portfolio.portfolio_optimization.optimizer_view import (
+    display_max_decorr as max_decorr,
 )
 from openbb_terminal.portfolio.portfolio_optimization.optimizer_view import (
     display_ef as ef,
+)
+from openbb_terminal.portfolio.portfolio_optimization.optimizer_view import (
+    display_risk_parity as risk_parity,
+)
+from openbb_terminal.portfolio.portfolio_optimization.optimizer_view import (
+    display_rel_risk_parity as rel_risk_parity,
+)
+from openbb_terminal.portfolio.portfolio_optimization.optimizer_view import (
+    display_hrp as hrp,
+)
+from openbb_terminal.portfolio.portfolio_optimization.optimizer_view import (
+    display_herc as herc,
+)
+from openbb_terminal.portfolio.portfolio_optimization.optimizer_view import (
+    display_nco as nco,
 )
 
 # Models

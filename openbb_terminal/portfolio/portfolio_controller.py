@@ -149,7 +149,11 @@ Loaded:[/info] {self.portfolio_name or None}
                 + self.portfolio._crypto_tickers
             )
         self.queue = self.load_class(
-            po_controller.PortfolioOptimizationController, tickers, self.queue
+            po_controller.PortfolioOptimizationController,
+            tickers,
+            None,
+            None,
+            self.queue,
         )
 
     # BUG: The commands in pa menu throw errors. First one says that it's related to
