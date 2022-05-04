@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
 def realtime_performance_sector(
     raw: bool,
-    export: str,
+    export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display Real-Time Performance sector. [Source: AlphaVantage]
@@ -115,7 +115,7 @@ def display_real_gdp(
     else:
         if len(external_axes) != 1:
             logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of 1 axis items./n[/red]")
+            console.print("[red]Expected list of 1 axis items.\n[/red]")
             return
         (ax,) = external_axes
 
@@ -171,7 +171,7 @@ def display_gdp_capita(
     else:
         if len(external_axes) != 1:
             logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of one axis item./n[/red]")
+            console.print("[red]Expected list of one axis item.\n[/red]")
             return
         (ax,) = external_axes
 
@@ -231,7 +231,7 @@ def display_inflation(
     else:
         if len(external_axes) != 1:
             logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of 1 axis item./n[/red]")
+            console.print("[red]Expected list of 1 axis item.\n[/red]")
             return
         (ax,) = external_axes
 
@@ -296,7 +296,7 @@ def display_cpi(
     else:
         if len(external_axes) != 1:
             logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of 1 axis item./n[/red]")
+            console.print("[red]Expected list of 1 axis item.\n[/red]")
             return
         (ax,) = external_axes
 
@@ -359,7 +359,7 @@ def display_treasury_yield(
     else:
         if len(external_axes) != 1:
             logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of 1 axis item./n[/red]")
+            console.print("[red]Expected list of 1 axis item.\n[/red]")
             return
         (ax,) = external_axes
 
@@ -422,7 +422,7 @@ def display_unemployment(
     else:
         if len(external_axes) != 1:
             logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of 1 axis item./n[/red]")
+            console.print("[red]Expected list of 1 axis item.\n[/red]")
             return
         (ax,) = external_axes
 

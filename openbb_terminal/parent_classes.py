@@ -343,7 +343,7 @@ class BaseController(metaclass=ABCMeta):
                         self.PATH,
                     )
                 console.print(
-                    f"\nThe command '{an_input}' doesn't exist on the {self.PATH} menu.",
+                    f"\nThe command '{an_input}' doesn't exist on the {self.PATH} menu.\n",
                     end="",
                 )
                 similar_cmd = difflib.get_close_matches(
@@ -370,7 +370,10 @@ class BaseController(metaclass=ABCMeta):
                     console.print(f" Replacing by '{an_input}'.")
                     self.queue.insert(0, an_input)
                 else:
-                    console.print("\n")
+                    if "load" in self.controller_choices:
+                        console.print(f"Trying `load {an_input}`")
+                        self.queue.insert(0, "load " + an_input)
+                    console.print("")
 
 
 class StockBaseController(BaseController, metaclass=ABCMeta):
@@ -435,7 +438,9 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
             "--source",
             action="store",
             dest="source",
-            choices=["yf", "av", "iex"] if "-i" not in other_args else ["yf"],
+            choices=["yf", "av", "iex", "polygon"]
+            if "-i" not in other_args or "--interval" not in other_args
+            else ["yf", "polygon"],
             default="yf",
             help="Source of historical data.",
         )

@@ -195,7 +195,7 @@ def display_candle(
     else:
         if len(external_axes) != 1:
             logger.error("Expected list of 1 axis items.")
-            console.print("[red]Expected list of 1 axis items./n[/red]")
+            console.print("[red]Expected list of 1 axis items.\n[/red]")
             return
         (ax1,) = external_axes
         candle_chart_kwargs["ax"] = ax1

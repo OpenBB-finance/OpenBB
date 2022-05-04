@@ -362,7 +362,7 @@ There are a few things that still don't work, and you can see what works and wha
 1. Running raspbian lite(headless) or desktop (both 64bit) we should first start off with an update/upgrade.
 
    ```bash
-   sudo apt update && sydo apt upgrade
+   sudo apt update && sudo apt upgrade
    ```
 
    Once completed reboot and lets reopen.

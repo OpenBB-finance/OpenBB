@@ -1024,6 +1024,25 @@ def load_ta_data(
     return pd.DataFrame(), currency
 
 
+def load_yf_data(symbol: str, currency: str, interval: str, days: int):
+    df_coin = yf.download(
+        f"{symbol.upper()}-{currency.upper()}",
+        end=datetime.now(),
+        start=datetime.now() - timedelta(days=days),
+        progress=False,
+        interval=interval,
+    ).sort_index(ascending=False)
+
+    df_coin.index.names = ["date"]
+    if df_coin.empty:
+        console.print(
+            f"Could not download data for {symbol}-{currency} from Yahoo Finance"
+        )
+        return pd.DataFrame(), currency
+
+    return df_coin[::-1], currency
+
+
 def plot_chart(
     coin_map_df: pd.DataFrame, source: str, currency: str, **kwargs: Any
 ) -> None:
@@ -1289,7 +1308,7 @@ def plot_candles(
         if len(external_axes) != nr_external_axes:
             logger.error("Expected list of %s axis items.", str(nr_external_axes))
             console.print(
-                f"[red]Expected list of {nr_external_axes} axis items./n[/red]"
+                f"[red]Expected list of {nr_external_axes} axis items.\n[/red]"
             )
             return
 
@@ -1330,7 +1349,7 @@ def plot_order_book(
     else:
         if len(external_axes) != 1:
             logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of one axis item./n[/red]")
+            console.print("[red]Expected list of one axis item.\n[/red]")
             return
         (ax,) = external_axes
 

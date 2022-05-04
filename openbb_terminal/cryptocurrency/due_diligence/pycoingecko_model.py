@@ -233,6 +233,39 @@ def get_coin_market_chart(
     return df
 
 
+@log_start_end(log=logger)
+def get_coin_tokenomics(symbol: str = "") -> pd.DataFrame:
+    """Get tokenomics for given coin. [Source: CoinGecko]
+
+    Parameters
+    ----------
+    symbol: str
+        coin symbol to check tokenomics
+
+    Returns
+    -------
+    pandas.DataFrame
+        Metric, Value with tokenomics
+    """
+    client = CoinGeckoAPI()
+    coin_data = client.get_coin_by_id(symbol)
+    block_time = coin_data["block_time_in_minutes"]
+    total_supply = coin_data["market_data"]["total_supply"]
+    max_supply = coin_data["market_data"]["max_supply"]
+    circulating_supply = coin_data["market_data"]["circulating_supply"]
+    return pd.DataFrame(
+        {
+            "Metric": [
+                "Block time [min]",
+                "Total Supply",
+                "Max Supply",
+                "Circulating Supply",
+            ],
+            "Value": [block_time, total_supply, max_supply, circulating_supply],
+        }
+    )
+
+
 class Coin:
     """Coin class, it holds loaded coin"""
 
