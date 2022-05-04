@@ -499,7 +499,7 @@ class PortfolioOptimizationController(BaseController):
         parser.add_argument(
             "-f",
             "--file",
-            required=True,
+            required="-h" not in other_args,
             nargs="+",
             dest="file",
             help="Parameter file to be used",
@@ -647,7 +647,7 @@ class PortfolioOptimizationController(BaseController):
         parser.add_argument(
             "-f",
             "--file",
-            required=True,
+            required="-h" not in other_args,
             nargs="+",
             dest="file",
             help="Allocation file to be used",
