@@ -254,6 +254,7 @@ You can't combine these two fixtures :
 
 Example of usage :
 ```python
+import pandas as pd
 import pytest
 
 @pytest.mark.record_stdout
@@ -262,11 +263,13 @@ def test_function(recorder):
     some_list = [7, 8, 9 ]
     some_tuple = (4, 5, 6)
     some_string = "Some string"
+    some_complex_tuple = (pd.DataFrame(), some_dict)
 
     recorder.capture(some_dict)
     recorder.capture(some_list)
     recorder.capture(some_string)
     recorder.capture(some_tuple)
+    recorder.capture_list(some_complex_tuple)
 ```
 
 This will generate one or multiple text file(s) to store the `captured` variables.
