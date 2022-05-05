@@ -230,7 +230,9 @@ def display_token_info(
 
     df = ethplorer_model.get_token_info(address)
     df_data = df.copy()
-    df["Value"] = df["Value"].apply(lambda x: lambda_very_long_number_formatter(x))
+    df.loc[:, "Value"] = df["Value"].apply(
+        lambda x: lambda_very_long_number_formatter(x)
+    )
 
     socials = ["website", "telegram", "reddit", "twitter", "coingecko"]
     if social:
@@ -319,7 +321,9 @@ def display_token_history(
         console.print(f"No results found for balance: {address}\n")
         return
 
-    df["value"] = df["value"].apply(lambda x: lambda_very_long_number_formatter(x))
+    df.loc[:, "value"] = df["value"].apply(
+        lambda x: lambda_very_long_number_formatter(x)
+    )
     df = df.sort_values(by=sortby, ascending=descend)
 
     if hash_:
@@ -378,7 +382,7 @@ def display_token_historical_prices(
     df["volumeConverted"] = df["volumeConverted"].apply(
         lambda x: lambda_very_long_number_formatter(x)
     )
-    df["cap"] = df["cap"].apply(lambda x: lambda_very_long_number_formatter(x))
+    df.loc[:, "cap"] = df["cap"].apply(lambda x: lambda_very_long_number_formatter(x))
     df = df.sort_values(by=sortby, ascending=descend)
 
     print_rich_table(

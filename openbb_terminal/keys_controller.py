@@ -538,7 +538,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
     def check_walert_key(self, show_output: bool = False) -> None:
         """Check Walert key"""
         self.cfg_dict["WHALE_ALERT"] = "wa"
-        if "REPLACE_ME" == cfg.API_WHALE_ALERT_KEY:
+        if cfg.API_WHALE_ALERT_KEY == "REPLACE_ME":
             logger.info("Walert key not defined")
             self.key_dict["WHALE_ALERT"] = "not defined"
         else:
@@ -564,7 +564,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
     def check_glassnode_key(self, show_output: bool = False) -> None:
         """Check glassnode key"""
         self.cfg_dict["GLASSNODE"] = "glassnode"
-        if "REPLACE_ME" == cfg.API_GLASSNODE_KEY:
+        if cfg.API_GLASSNODE_KEY == "REPLACE_ME":
             logger.info("Glassnode key not defined")
             self.key_dict["GLASSNODE"] = "not defined"
         else:
@@ -592,7 +592,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
     def check_coinglass_key(self, show_output: bool = False) -> None:
         """Check coinglass key"""
         self.cfg_dict["COINGLASS"] = "coinglass"
-        if "REPLACE_ME" == cfg.API_COINGLASS_KEY:
+        if cfg.API_COINGLASS_KEY == "REPLACE_ME":
             logger.info("Coinglass key not defined")
             self.key_dict["COINGLASS"] = "not defined"
         else:
@@ -615,7 +615,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
     def check_cpanic_key(self, show_output: bool = False) -> None:
         """Check cpanic key"""
         self.cfg_dict["CRYPTO_PANIC"] = "cpanic"
-        if "REPLACE_ME" == cfg.API_CRYPTO_PANIC_KEY:
+        if cfg.API_CRYPTO_PANIC_KEY == "REPLACE_ME":
             logger.info("cpanic key not defined")
             self.key_dict["CRYPTO_PANIC"] = "not defined"
         else:
@@ -638,7 +638,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
     def check_ethplorer_key(self, show_output: bool = False) -> None:
         """Check ethplorer key"""
         self.cfg_dict["ETHPLORER"] = "ethplorer"
-        if "REPLACE_ME" == cfg.API_ETHPLORER_KEY:
+        if cfg.API_ETHPLORER_KEY == "REPLACE_ME":
             logger.info("ethplorer key not defined")
             self.key_dict["ETHPLORER"] = "not defined"
         else:
