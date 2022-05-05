@@ -1,6 +1,7 @@
 # IMPORTATION STANDARD
 import os
 from distutils.util import strtobool
+import pkg_resources
 
 # IMPORTATION THIRDPARTY
 from dotenv import load_dotenv
@@ -78,3 +79,9 @@ EXPORT_FOLDER_PATH = str(os.getenv("OPENBB_EXPORT_FOLDER_PATH", ""))
 PACKAGED_APPLICATION = strtobool(os.getenv("OPENBB_PACKAGED_APPLICATION", "False"))
 
 LOGGING_COMMIT_HASH = str(os.getenv("OPENBB_LOGGING_COMMIT_HASH", "REPLACE_ME"))
+
+try:
+    version = pkg_resources.get_distribution("OpenBBTerminal").version
+except Exception:
+    version = "REPLACE_ME"
+VERSION = str(os.getenv("OPENBB_VERSION", version))
