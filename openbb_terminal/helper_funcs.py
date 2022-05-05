@@ -190,7 +190,9 @@ def print_rich_table(
         for idx, values in zip(df.index.tolist(), df.values.tolist()):
             row = [str(idx)] if show_index else []
             row += [
-                str(x) if not isinstance(x, float) else f"{x:{floatfmt[idx]}}"
+                str(x)
+                if not isinstance(x, float)
+                else (f"{x:{floatfmt[idx]}}" if x >= 0.01 else f"{x:.2e}")
                 for idx, x in enumerate(values)
             ]
             table.add_row(*row)
