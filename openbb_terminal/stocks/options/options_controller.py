@@ -31,6 +31,7 @@ from openbb_terminal.stocks.options import (
     fdscanner_view,
     payoff_controller,
     pricing_controller,
+    hedge_controller,
     screener_controller,
     syncretism_view,
     tradier_model,
@@ -78,6 +79,7 @@ class OptionsController(BaseController):
         "payoff",
         "pricing",
         "screen",
+        "hedge",
     ]
 
     PRESET_PATH = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
@@ -202,6 +204,7 @@ Expiry: [/param]{self.selected_date or None}
 >   screen        screens tickers based on preset [src][Syncretism.io][/src]
 >   payoff        shows payoff diagram for a selection of options [src][Yfinance][/src]
 >   pricing       shows options pricing and risk neutral valuation [src][Yfinance][/src]
+>   hedge         shows portfolio weights in order to neutralise delta [src][Yfinance][/src]
 {has_ticker_end}"""
         console.print(text=help_text, menu="Stocks - Options")
 
@@ -1387,6 +1390,23 @@ Expiry: [/param]{self.selected_date or None}
                     self.ticker,
                     self.selected_date,
                     self.prices,
+                    self.queue,
+                )
+            else:
+                console.print("No expiry loaded. First use `exp {expiry date}`\n")
+
+        else:
+            console.print("No ticker loaded. First use `load <ticker>`\n")
+
+    @log_start_end(log=logger)
+    def call_hedge(self, _):
+        """Process hedge command"""
+        if self.ticker:
+            if self.selected_date:
+                self.queue = self.load_class(
+                    hedge_controller.HedgeController,
+                    self.ticker,
+                    self.selected_date,
                     self.queue,
                 )
             else:
