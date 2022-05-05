@@ -192,7 +192,7 @@ def print_rich_table(
             row += [
                 str(x)
                 if not isinstance(x, float)
-                else (f"{x:{floatfmt[idx]}}" if x >= 0.01 else f"{x:.2e}")
+                else (f"{x:{floatfmt[idx]}}" if abs(x) >= 0.001 else f"{x:.2e}")
                 for idx, x in enumerate(values)
             ]
             table.add_row(*row)
