@@ -167,7 +167,7 @@ class BehaviouralAnalysisController(StockBaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="snews",
-            description="""Display stock price and headlines sentiment using VADER model over time. [Source: Finnhub]""",
+            description="Display stock price and headlines sentiment using VADER model over time. [Source: Finnhub]",
         )
         ns_parser = parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
