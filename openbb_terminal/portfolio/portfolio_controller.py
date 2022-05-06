@@ -6,6 +6,7 @@ import logging
 import os
 from os import listdir
 from os.path import isfile, join
+from pathlib import Path
 from typing import Dict, List, Union
 
 import pandas as pd
@@ -26,6 +27,7 @@ from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.portfolio import portfolio_model, portfolio_view
 from openbb_terminal.portfolio.portfolio_optimization import po_controller
 from openbb_terminal.rich_config import console
+from openbb_terminal.portfolio import portfolio_view
 
 # pylint: disable=R1710,E1101,C0415,W0212
 
@@ -39,11 +41,9 @@ class PortfolioController(BaseController):
 
     CHOICES_COMMANDS = [
         "load",
-        "save",
-        "init",
         "show",
-        "add",
-        "build",
+        "alloc",
+        "perf",
         "ar",
         "rmr",
         "al",
@@ -61,33 +61,54 @@ class PortfolioController(BaseController):
         "pa",
     ]
     distributions = ["laplace", "student_t", "logistic", "normal"]
+    aggregation_methods = ['assets', 'sectors']
     PATH = "/portfolio/"
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
         super().__init__(queue)
+        self.file_types = ["xlsx", "csv"]
+
+        self.DEFAULT_HOLDINGS_PATH = os.path.abspath(
+            os.path.join(
+                os.path.dirname(__file__), "..", "..", "portfolio", "holdings"
+            )
+        )
+
+        self.DATA_HOLDINGS_FILES = {
+            filepath.name: filepath
+            for file_type in self.file_types
+            for filepath in Path(self.DEFAULT_HOLDINGS_PATH).rglob(f"*.{file_type}")
+            if filepath.is_file()
+        }
 
         self.portfolio = pd.DataFrame(
             columns=[
+                "Date",
                 "Name",
                 "Type",
-                "Quantity",
-                "Date",
+                "Sector",
+                "Industry",
+                "Country",
                 "Price",
+                "Quantity",
                 "Fees",
-                "Premium",
+                "Premium"
+                "Investment",
                 "Side",
+                "Currency"
             ]
         )
 
         self.portfolio_name = ""
-        self.portlist: List[str] = os.listdir(portfolios_path)
+        self.benchmark_name = ""
+        self.portlist: List[str] = os.listdir(self.DEFAULT_HOLDINGS_PATH)
         self.portfolio = portfolio_model.Portfolio()
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["load"] = {c: None for c in self.portlist}
-            choices["save"] = {c: None for c in self.portlist}
+            choices['alloc'] = {c: None for c in self.aggregation_methods}
             self.choices = choices
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -101,13 +122,14 @@ class PortfolioController(BaseController):
 
 [info]Portfolio:[/info][cmds]
     load        load data into the portfolio
-    save        save your portfolio for future use
-    show        show existing transactions
-    add         add a security to your portfolio
-    init        initialize empty portfolio
-    build       build portfolio from list of tickers and weights[/cmds]
-[info]
-Loaded:[/info] {self.portfolio_name or None}
+    show        show existing transactions[/cmds]
+
+[param]Loaded orderbook:[/param] {self.portfolio_name or None}
+[param]Benchmark:[/param] {self.benchmark_name or None} 
+
+[info]Performance:[/info][cmds]
+    alloc       show allocation on an asset or sector basis
+    perf        show (total) performance of the portfolio versus benchmark
 
 [info]Graphs:[/info][cmds]
     rolling     display rolling metrics of portfolio and benchmark
@@ -144,9 +166,9 @@ Loaded:[/info] {self.portfolio_name or None}
             tickers = []
         else:
             tickers = (
-                self.portfolio._stock_tickers
-                + self.portfolio._etf_tickers
-                + self.portfolio._crypto_tickers
+                    self.portfolio._stock_tickers +
+                    self.portfolio._etf_tickers +
+                    self.portfolio._crypto_tickers
             )
         self.queue = self.load_class(
             po_controller.PortfolioOptimizationController, tickers, self.queue
@@ -181,8 +203,6 @@ Loaded:[/info] {self.portfolio_name or None}
     @log_start_end(log=logger)
     def call_load(self, other_args: List[str]):
         """Process load command"""
-        path = os.path.dirname(os.path.abspath(__file__))
-        path = os.path.abspath(os.path.join(path, "portfolios"))
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -190,58 +210,65 @@ Loaded:[/info] {self.portfolio_name or None}
             description="Load your portfolio",
         )
         parser.add_argument(
-            "-n",
-            "--name",
+            "-f",
+            "--file",
             type=str,
-            choices=[f for f in listdir(path) if isfile(join(path, f))],
-            dest="name",
+            choices=[f for f in listdir(self.DEFAULT_HOLDINGS_PATH)
+                     if isfile(join(self.DEFAULT_HOLDINGS_PATH, f))],
+            dest="file",
             required="-h" not in other_args,
-            help="Name of file to be saved",
+            help="The file to be loaded",
         )
-        if other_args:
-            if "-n" not in other_args and "-h" not in other_args:
-                other_args.insert(0, "-n")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            self.portfolio = portfolio_model.Portfolio.from_csv(
-                os.path.join(portfolios_path, ns_parser.name)
-            )
-            self.portfolio_name = ns_parser.name
-            console.print()
-
-    @log_start_end(log=logger)
-    def call_save(self, other_args: List[str]):
-        """Process save command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="save",
-            description="Save your portfolio",
-        )
         parser.add_argument(
             "-n",
             "--name",
             type=str,
             dest="name",
-            required="-h" not in other_args,
-            help="Name of file to be saved",
+            help="The name that you wish to give to your portfolio",
         )
-        if other_args and "-n" not in other_args and "-h" not in other_args:
-            other_args.insert(0, "-n")
+
+        parser.add_argument(
+            "-b",
+            "--benchmark",
+            type=str,
+            default="SPY",
+            dest="benchmark",
+            help="Set the benchmark for the portfolio. By default, this is SPDR S&P 500 ETF Trust (SPY).",
+        )
+
+        if other_args:
+            if "-f" not in other_args and "-h" not in other_args:
+                other_args.insert(0, "-f")
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            if (
-                ".csv" in ns_parser.name
-                or ".xlsx" in ns_parser.name
-                or ".json" in ns_parser.name
-            ):
-                portfolio_model.save_df(self.portfolio.trades, ns_parser.name)
+
+        if ns_parser and ns_parser.file:
+            if ns_parser.file in self.DATA_HOLDINGS_FILES:
+                file_location = self.DATA_HOLDINGS_FILES[ns_parser.file]
             else:
-                console.print(
-                    "Please submit as 'filename.filetype' with filetype being csv, xlsx, or json\n"
-                )
+                file_location = ns_parser.file  # type: ignore
+
+            if str(file_location).endswith(".csv"):
+                self.portfolio = portfolio_model.Portfolio.from_csv(file_location)
+            elif str(file_location).endswith(".xlsx"):
+                self.portfolio = portfolio_model.Portfolio.from_xlsx(file_location)
+
+            if ns_parser.name:
+                self.portfolio_name = ns_parser.name
+            else:
+                self.portfolio_name = ns_parser.file
+
+            self.portfolio.add_benchmark(ns_parser.benchmark)
+            self.benchmark_name = self.portfolio.benchmark_info['longName']
+            self.benchmark_ticker = ns_parser.benchmark
+
+            self.portfolio.generate_holdings_from_trades()
+
+            console.print(f"\n[bold]Portfolio:[/bold] {self.portfolio_name}")
+            console.print(f"[bold]Benchmark:[/bold] {self.benchmark_name} ({self.benchmark_ticker})")
+
+            console.print()
 
     @log_start_end(log=logger)
     def call_show(self, _):
@@ -254,141 +281,93 @@ Loaded:[/info] {self.portfolio_name or None}
         console.print()
 
     @log_start_end(log=logger)
-    def call_add(self, other_args: List[str]):
-        """Process add command"""
+    def call_alloc(self, other_args: List[str]):
+        """Process alloc command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="add",
-            description="Adds an item to your portfolio",
-        )
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        console.print()
-        inputs: Dict[str, Union[str, float, int]] = {}
-        type_ = input("Type (stock, cash): \n")
-        if type_ not in ["stock", "cash"]:
-            logger.warning("Currently only stocks or cash supported.")
-            console.print("[red]Currently only stocks or cash supported.[/red]\n")
-            type_ = input("Type (stock, cash): \n")
-            if type_ not in ["stock", "cash"]:
-                logger.error("Two unsuccessful attempts.  Exiting add")
-                console.print("[red]Two unsuccessful attempts.  Exiting add.[/red]\n")
-                return
-
-        inputs["Type"] = type_.lower()
-        action = input("Action: (buy, sell, deposit, withdraw): \n").lower()
-
-        if type_ == "cash":
-            if action not in ["deposit", "withdraw"]:
-                console.print("Cash can only be deposit or withdraw\n")
-                action = input("Action: (buy, sell, deposit, withdraw): \n").lower()
-                if action not in ["deposit", "withdraw"]:
-                    logger.error("Two unsuccessful attempts.  Exiting add")
-                    console.print(
-                        "[red]Two unsuccessful attempts.  Exiting add.[/red]\n"
-                    )
-                    return
-
-        elif type_ == "stock":
-            if action not in ["buy", "sell"]:
-                console.print("Stock can only be buy or sell\n")
-                if action not in ["buy", "sell"]:
-                    logger.error("Two unsuccessful attempts.  Exiting add")
-                    console.print(
-                        "[red]Two unsuccessful attempts.  Exiting add.[/red]\n"
-                    )
-                    return
-
-        inputs["Side"] = action.lower()
-        inputs["Name"] = input("Name (ticker or cash [if depositing cash]):\n")
-        inputs["Date"] = valid_date(input("Purchase date (YYYY-MM-DD): \n")).strftime(
-            "%Y-%m-%d"
-        )
-        inputs["Quantity"] = float(input("Quantity: \n"))
-        inputs["Price"] = float(input("Price per share: \n"))
-        inputs["Fees"] = float(input("Fees: \n"))
-        inputs["Premium"] = ""
-        if self.portfolio.empty:
-            self.portfolio = portfolio_model.Portfolio(
-                pd.DataFrame.from_dict(inputs, orient="index").T
-            )
-            console.print(
-                f"Portfolio successfully initialized with {inputs['Name']}.\n"
-            )
-            return
-        inputs["Value"] = float(inputs["Price"] * inputs["Quantity"])  # type: ignore
-        self.portfolio.add_trade(inputs)
-
-        console.print(f"{inputs['Name']} successfully added\n")
-
-    @log_start_end(log=logger)
-    def call_build(self, other_args: List[str]):
-        """Process build command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="build",
-            description="Build portfolio from list of tickers and weights",
-        )
-        parser.add_argument(
-            "-s",
-            "--start",
-            help="Start date.",
-            dest="start",
-            default="2021-01-04",
-            type=valid_date,
-            required="-h" not in other_args,
-        )
-        parser.add_argument(
-            "-t",
-            "--tickers",
-            type=str,
-            help="List of symbols separated by commas (i.e AAPL,BTC,DOGE,SPY....)",
-            dest="tickers",
-            required="-h" not in other_args,
-        )
-        parser.add_argument(
-            "-c",
-            "--class",
-            help="Asset class (stock, crypto, etf), separated by commas.",
-            dest="classes",
-            type=str,
-            required="-h" not in other_args,
-        )
-        parser.add_argument(
-            "-w",
-            "--weights",
-            help="List of weights, separated by comma",
-            type=str,
-            dest="weights",
-            required="-h" not in other_args,
+            prog="alloc",
+            description="""
+                Show your allocation to each asset or sector compared to the benchmark.
+            """,
         )
         parser.add_argument(
             "-a",
-            "--amount",
-            help="Amount to allocate initially.",
-            dest="amount",
-            default=100_000,
-            type=check_positive,
+            "--agg",
+            default='assets',
+            choices=self.aggregation_methods,
+            dest="agg",
+            help="The type of allocation aggregation you wish to do"
+        )
+
+        parser.add_argument(
+            "-l",
+            "--limit",
+            default=10,
+            dest="limit",
+            help="The amount of assets or sectors you wish to see"
+        )
+
+        parser.add_argument(
+            "-t",
+            "--tables",
+            action="store_true",
+            default=False,
+            dest="tables",
+            help="Whether to also include the assets/sectors tables of both the benchmark and the portfolio."
         )
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
+
+        if other_args:
+            if "-a" not in other_args and "-h" not in other_args:
+                other_args.insert(0, "-a")
+
+        if ns_parser and ns_parser.agg:
+            self.portfolio.calculate_allocations()
+
+            if ns_parser.agg == 'assets':
+                portfolio_view.display_assets_allocation(self.portfolio, ns_parser.limit, ns_parser.tables)
+            elif ns_parser.agg == 'sectors':
+                portfolio_view.display_sectors_allocation(self.portfolio, ns_parser.limit, ns_parser.tables)
+            else:
+                f"{ns_parser.agg} is not an available option. The options are: {', '.join(self.aggregation_methods)}"
+
+    @log_start_end(log=logger)
+    def call_perf(self, other_args: List[str]):
+        """Process performance command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="performance",
+            description="""
+                Shows performance of each trade and total performance of the portfolio versus the benchmark.
+            """,
+        )
+        parser.add_argument(
+            "-s",
+            "--full_shares",
+            action="store_true",
+            default=False,
+            dest="full_shares",
+            help="Whether to only make a trade with the benchmark when a full share can be bought (no partial shares)."
+        )
+
+        parser.add_argument(
+            "-t",
+            "--show_trades",
+            action="store_true",
+            default=False,
+            dest="show_trades",
+            help="Whether to show performance on all trades in comparison to the benchmark."
+        )
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+
         if ns_parser:
-            list_of_tickers = ns_parser.tickers.split(",")
-            types = ns_parser.classes.split(",")
-            weights = [float(w) for w in ns_parser.weights.split(",")]
-            self.portfolio = portfolio_model.Portfolio.from_custom_inputs_and_weights(
-                start_date=ns_parser.start.strftime("%Y-%m-%d"),
-                list_of_symbols=list_of_tickers,
-                list_of_weights=weights,
-                list_of_types=types,
-                amount=ns_parser.amount,
-            )
-        console.print()
+            self.portfolio.mimic_portfolio_trades_for_benchmark(full_shares=ns_parser.full_shares)
+
+            portfolio_view.display_performance_vs_benchmark(self.portfolio, ns_parser.show_trades)
 
     @log_start_end(log=logger)
     def call_al(self, other_args: List[str]):
@@ -495,7 +474,6 @@ Loaded:[/info] {self.portfolio_name or None}
             else:
                 from openbb_terminal.common.quantitative_analysis import qa_view
 
-                self.portfolio.generate_holdings_from_trades()
                 qa_view.display_var(
                     self.portfolio.returns,
                     "Portfolio",
@@ -553,7 +531,6 @@ Loaded:[/info] {self.portfolio_name or None}
             if self.portfolio.empty:
                 console.print("[red]No portfolio loaded.[/red]\n")
                 return
-            self.portfolio.generate_holdings_from_trades()
             qa_view.display_es(
                 self.portfolio.returns,
                 "Portfolio",
@@ -599,7 +576,6 @@ Loaded:[/info] {self.portfolio_name or None}
             if self.portfolio.empty:
                 console.print("[red]No portfolio loaded.[/red]\n")
                 return
-            self.portfolio.generate_holdings_from_trades()
             data = self.portfolio.portfolio_value[1:]
             qa_view.display_sharpe(data, ns_parser.rfr, ns_parser.window)
 
@@ -648,7 +624,6 @@ Loaded:[/info] {self.portfolio_name or None}
             if self.portfolio.empty:
                 console.print("[red]No portfolio loaded.[/red]\n")
                 return
-            self.portfolio.generate_holdings_from_trades()
             data = self.portfolio.returns[1:]
             qa_view.display_sortino(
                 data, ns_parser.target_return, ns_parser.window, ns_parser.adjusted
@@ -695,7 +670,6 @@ Loaded:[/info] {self.portfolio_name or None}
             if self.portfolio.empty:
                 console.print("[red]No portfolio loaded.[/red]\n")
                 return
-            self.portfolio.generate_holdings_from_trades()
             data = self.portfolio.returns[1:]
             qa_view.display_omega(
                 data,
@@ -744,8 +718,6 @@ Loaded:[/info] {self.portfolio_name or None}
         )
         if ns_parser:
             if not self.portfolio.empty:
-                self.portfolio.generate_holdings_from_trades()
-                self.portfolio.add_benchmark("SPY")
                 portfolio_view.display_drawdown(self.portfolio.portfolio_value)
             else:
                 logger.warning("No portfolio loaded")
