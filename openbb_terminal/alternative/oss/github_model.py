@@ -2,11 +2,12 @@
 __docformat__ = "numpy"
 # pylint: disable=C0201,W1401
 
+import asyncio
+import aiohttp
 import logging
 from typing import Any, Dict
 import math
 from datetime import datetime
-import requests
 import pandas as pd
 
 from openbb_terminal import config_terminal as cfg
@@ -17,7 +18,7 @@ from openbb_terminal.helper_funcs import get_user_agent
 logger = logging.getLogger(__name__)
 
 
-def get_github_data(url: str, **kwargs):
+async def get_github_data(url: str, **kwargs):
     """Get repository stats
 
     Parameters
@@ -30,27 +31,30 @@ def get_github_data(url: str, **kwargs):
     -------
     dict with data
     """
-    res = requests.get(
-        url,
-        headers={
-            "Authorization": f"token {cfg.API_GITHUB_KEY}",
-            "User-Agent": get_user_agent(),
-            "Accept": "application/vnd.github.v3.star+json",
-        },
-        **kwargs,
-    )
-    if res.status_code == 200:
-        return res.json()
-    if res.status_code in (401, 403):
-        console.print("[red]Rate limit reached, please provide a GitHub API key.[/red]")
-    elif res.status_code == 404:
-        console.print("[red]Repo not found.[/red]")
-    else:
-        console.print(f"[red]Error occurred {res.json()}[/red]")
-    return None
+    async with aiohttp.ClientSession() as session:
+        async with session.get(
+            url,
+            headers={
+                "Authorization": f"token {cfg.API_GITHUB_KEY}",
+                "User-Agent": get_user_agent(),
+                "Accept": "application/vnd.github.v3.star+json",
+            },
+            **kwargs,
+        ) as res:
+            if res.status == 200:
+                return res.json()
+            if res.status in (401, 403):
+                console.print(
+                    "[red]Rate limit reached, please provide a GitHub API key.[/red]"
+                )
+            elif res.status == 404:
+                console.print("[red]Repo not found.[/red]")
+            else:
+                console.print(f"[red]Error occurred {res.json()}[/red]")
+            return None
 
 
-def search_repos(
+async def search_repos(
     sortby: str = "stars", page: int = 1, categories: str = ""
 ) -> pd.DataFrame:
     """Get repos sorted by stars or forks. Can be filtered by categories
@@ -73,14 +77,16 @@ def search_repos(
         params["q"] = categories.replace(",", "+")
     else:
         params["q"] = f"{sortby}:>1"
-    data = get_github_data("https://api.github.com/search/repositories", params=params)
+    data = await get_github_data(
+        "https://api.github.com/search/repositories", params=params
+    )
     if data and "items" in data:
         return pd.DataFrame(data["items"])
     return pd.DataFrame()
 
 
 @log_start_end(log=logger)
-def get_stars_history(repo: str):
+async def get_stars_history(repo: str):
     """Get repository star history
 
     Parameters
@@ -92,23 +98,27 @@ def get_stars_history(repo: str):
     -------
     pd.DataFrame - Columns: Date, Stars
     """
-    data = get_github_data(f"https://api.github.com/repos/{repo}")
+    data = await get_github_data(f"https://api.github.com/repos/{repo}")
     if data and "stargazers_count" in data:
         stars_number = data["stargazers_count"]
         stars: Dict[str, int] = {}
         pages = math.ceil(stars_number / 100)
-        for page in range(0, pages):
-            data = get_github_data(
-                f"https://api.github.com/repos/{repo}/stargazers",
-                params={"per_page": 100, "page": page},
-            )
-            if data:
-                for star in data:
-                    day = star["starred_at"].split("T")[0]
-                    if day in stars:
-                        stars[day] += 1
-                    else:
-                        stars[day] = 1
+        data = await asyncio.gather(
+            *[
+                get_github_data(
+                    f"https://api.github.com/repos/{repo}/stargazers",
+                    params={"per_page": 100, "page": page},
+                )
+                for page in range(0, pages)
+            ]
+        )
+        if data:
+            for star in data:
+                day = star["starred_at"].split("T")[0]
+                if day in stars:
+                    stars[day] += 1
+                else:
+                    stars[day] = 1
         sorted_keys = sorted(stars.keys())
         for i in range(1, len(sorted_keys)):
             stars[sorted_keys[i]] += stars[sorted_keys[i - 1]]
@@ -168,7 +178,7 @@ def get_top_repos(sortby: str, top: int, categories: str) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_repo_summary(repo: str):
+async def get_repo_summary(repo: str):
     """Get repository summary
 
     Parameters
@@ -180,10 +190,12 @@ def get_repo_summary(repo: str):
     -------
     pd.DataFrame - Columns: Metric, Value
     """
-    data = get_github_data(f"https://api.github.com/repos/{repo}")
+    data = await get_github_data(f"https://api.github.com/repos/{repo}")
     if not data:
         return pd.DataFrame()
-    release_data = get_github_data(f"https://api.github.com/repos/{repo}/releases")
+    release_data = await get_github_data(
+        f"https://api.github.com/repos/{repo}/releases"
+    )
     if not release_data:
         return pd.DataFrame()
     total_release_downloads: Any = "N/A"

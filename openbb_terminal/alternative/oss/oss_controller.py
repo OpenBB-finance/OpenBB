@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 import argparse
+import asyncio
 import logging
 from typing import List
 
@@ -88,7 +89,9 @@ class OSSController(BaseController):
                 )
             repo = ns_parser.repo + "/" + self.queue[0]
             if valid_repo(repo):
-                github_view.display_star_history(repo=repo, export=ns_parser.export)
+                asyncio.run(
+                    github_view.display_star_history(repo=repo, export=ns_parser.export)
+                )
                 self.queue = self.queue[1:]
 
     @log_start_end(log=logger)

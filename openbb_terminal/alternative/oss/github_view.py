@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_star_history(
+async def display_star_history(
     repo: str, export: str = "", external_axes: Optional[List[plt.Axes]] = None
 ) -> None:
     """Display repo summary [Source: https://api.github.com]
@@ -39,7 +39,7 @@ def display_star_history(
     external_axes : Optional[List[plt.Axes]], optional
             External axes (1 axis is expected in the list), by default None
     """
-    df = github_model.get_stars_history(repo)
+    df = await github_model.get_stars_history(repo)
     if not df.empty:
         if external_axes is None:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
